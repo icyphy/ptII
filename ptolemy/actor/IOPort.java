@@ -41,6 +41,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
+import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
 import java.io.IOException;
@@ -228,9 +229,10 @@ public class IOPort extends ComponentPort {
     }
 
     /** Create new receivers for this port, replacing any that may
-     *  previously exist. This method should only be
+     *  previously exist, and validate any instances of Settable that this
+     *  port may contain. This method should only be
      *  called on opaque ports. It should also normally only be called
-     *  during the initialize and prefire methods of the director.
+     *  during the preinitialize and prefire methods of the director.
      *  <p>
      *  If the port is an input port, receivers are created as necessary
      *  for each relation connecting to the port from the outside.
@@ -250,6 +252,11 @@ public class IOPort extends ComponentPort {
             throw new IllegalActionException(this,
                     "createReceivers: Can only create " +
                     "receivers on opaque ports.");
+        }
+        Iterator attributes = attributeList(Settable.class).iterator();
+        while(attributes.hasNext()) {
+            Settable attribute = (Settable)attributes.next();
+            attribute.validate();
         }
         int portWidth = getWidth();
         if (portWidth <= 0) return;
