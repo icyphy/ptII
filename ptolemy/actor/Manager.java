@@ -471,7 +471,7 @@ public class Manager extends NamedObj implements Runnable {
      *  errors.  As an example, in a threaded domain, each thread
      *  should catch all exceptions and report them using this method.
      *  This method is merely calls
-     *  {@link notifyListenersOfThrowable(Throwable)}.
+     *  {@link #notifyListenersOfThrowable(Throwable)}.
      *  @param exception The exception.
      */
     public void notifyListenersOfException(Exception exception) {
