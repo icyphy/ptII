@@ -409,13 +409,11 @@ public class PtolemyModule implements Module {
 		// We can't reuse the execution frame, since some 
 		// window systems don't properly dispose the frame when
 		// it is closed.
-		if(_executionFrame != null) {
-		    _executionFrame.setVisible(false);
-		}
-		_executionFrame = new JFrame();
+                JFrame frame;
+		frame = new JFrame();
 		
 		ModelPane modelPane = new ModelPane(toplevel);
-		_executionFrame.getContentPane().add(modelPane,
+		frame.getContentPane().add(modelPane,
 						     BorderLayout.NORTH);
 		// Create a panel to place placeable objects.
 		JPanel displayPanel = new JPanel();
@@ -433,11 +431,11 @@ public class PtolemyModule implements Module {
 		    }
 		}
 		
-		if(_executionFrame != null) {
-		    _executionFrame.setVisible(true);
+		if(frame != null) {
+		    frame.setVisible(true);
 		}
 		
-		final JFrame packframe = _executionFrame;
+		final JFrame packframe = frame;
 		Action packer = new AbstractAction() {
 		    public void actionPerformed(ActionEvent event) {
 			packframe.getContentPane().doLayout();
@@ -794,11 +792,6 @@ public class PtolemyModule implements Module {
     // The application that this package is associated with.
     private VergilApplication _application;
 
-    // The frame in which any placeable objects create their output.
-    //  This will be null until a model with something placeable is
-    //  executed.
-    private JFrame _executionFrame = null;
-    
     // The director selection combobox
     private JComboBox _directorComboBox;
 

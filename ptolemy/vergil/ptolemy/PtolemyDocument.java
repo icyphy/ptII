@@ -226,7 +226,7 @@ public class PtolemyDocument extends AbstractDocument
         }
         String filename = getFile().getAbsolutePath();
 	URL schematicURL = new URL("file", null, filename);
-	MoMLParser parser = new MoMLParser();
+	MoMLParser parser = new MoMLParser(new Workspace());
 	CompositeEntity toplevel =
 	    (CompositeEntity) parser.parse(schematicURL,
                     new FileInputStream(getFile()));
@@ -383,7 +383,8 @@ public class PtolemyDocument extends AbstractDocument
          */
         public Document createDocument(Application app) {
             PtolemyDocument d = new PtolemyDocument(app);
-	    TypedCompositeActor toplevel = new TypedCompositeActor();
+	    TypedCompositeActor toplevel = 
+                new TypedCompositeActor(new Workspace());
 
             d.setModel(toplevel);
             return d;
@@ -430,7 +431,7 @@ public class PtolemyDocument extends AbstractDocument
             CompositeEntity toplevel;
             try {
                 toplevel =
-                    new ptolemy.domains.fsm.kernel.FSMActor();
+                    new ptolemy.domains.fsm.kernel.FSMActor(new Workspace());
                 new ptolemy.vergil.ptolemy.fsm.PtolemyFSMNotation(toplevel, 
                         "notation");
             } catch (Exception e) {
