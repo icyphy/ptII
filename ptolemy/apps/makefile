@@ -42,10 +42,10 @@ ME =		ptolemy/apps
 # PTLEJOS_DIR is set to lejos if Legos and the commapi was found.
 # PTSOOT_DIR is set to soot if Soot was fount.
 # PTWABA_DIR is set to waba if waba was found
-DIRS =		agilent $(PTKVM_DIR) $(PTJMF_DIR) \
-		$(PTLEGO_DIR) $(PTLEJOS) \
-		tini $(PTSOOT_DIR) softwalls #$(PTWABA_DIR) 
-
+#DIRS =		agilent $(PTKVM_DIR) $(PTJMF_DIR) \
+#		$(PTLEGO_DIR) $(PTLEJOS) \
+#		tini $(PTSOOT_DIR) softwalls #$(PTWABA_DIR) 
+DIRS = tini $(PTSOOT_DIR) softwalls #$(PTWABA_DIR) 
 # Root of Ptolemy II directory
 ROOT =		../..
 
