@@ -109,10 +109,31 @@ test Commutator-4.1 {run with mutations} {
 	$m iterate
 	$m wrapup
     } results
+    # The MoML within <group> ...</group> comes 
+    # from SDFScheduler._setBufferSize
     list $results \
 	    [enumToTokenValues [$rec getRecord 0]]
-} {{StreamChangeRequest.changeExecuted(): <deleteEntity name="ramp1"/> succeeded
+} {{StreamChangeRequest.changeExecuted(): <group>
+<relation name="r1">
+<property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1"/>
+</relation>
+<relation name="_R">
+<property name="bufferSize" class="ptolemy.data.expr.Parameter" value="2"/>
+</relation>
+<relation name="_R2">
+<property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1"/>
+</relation>
+</group> succeeded
+StreamChangeRequest.changeExecuted(): <deleteEntity name="ramp1"/> succeeded
 StreamChangeRequest.changeExecuted(): <deleteRelation name="r1"/> succeeded
+StreamChangeRequest.changeExecuted(): <group>
+<relation name="_R">
+<property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1"/>
+</relation>
+<relation name="_R2">
+<property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1"/>
+</relation>
+</group> succeeded
 } {0 0 1}}
 
 test Commutator-5.1 {test under DE} {
