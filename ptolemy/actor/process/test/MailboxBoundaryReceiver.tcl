@@ -47,7 +47,7 @@ if {[info procs enumToObjects] == "" } then {
 ######################################################################
 ####
 #
-test MailboxBoundaryReceiver.Tcl-2.2 {Unlimited get(Branch) and put(Token,Branch) without calling activate()} {
+test MailboxBoundaryReceiver-2.2 {Unlimited get(Branch) and put(Token,Branch) without calling activate()} {
     # Instantiate Directors and Composite Actors
     set tL [java::new ptolemy.actor.CompositeActor]
     $tL setName "tL"
@@ -85,6 +85,10 @@ test MailboxBoundaryReceiver.Tcl-2.2 {Unlimited get(Branch) and put(Token,Branch
     # Create Receivers
     $tL preinitialize
     $tL initialize
+    # Normally this would be called after execution
+    # starts...  so we fake it here.
+    $compAct preinitialize
+    $compAct initialize
     
     set cntlr [$inDir getInputController]
     set branchList [$cntlr getBranchList]

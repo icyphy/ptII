@@ -78,9 +78,13 @@ test Branch-2.1 {Test BranchController constructors and pre-activation state} {
     # Create Receivers
     $topLevel preinitialize
     $topLevel initialize
+    # Normally this would be called after execution
+    # starts...  so we fake it here.
+    $compAct preinitialize
+    $compAct initialize
     
     set cntlrIn [$innerDir getInputController]
-    
+
     set val 1
     if { [$cntlrIn hasBranches] != 1 } {
 	set val 0
