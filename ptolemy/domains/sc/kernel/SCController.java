@@ -240,6 +240,24 @@ public class SCController extends CompositeEntity implements Actor {
     }
 
 
+    /** Return the Manager responsible for execution of this actor,
+     *  if there is one. Otherwise, return null.
+     *  @return The manager.
+     */
+    public Manager getManager() {
+	try {
+	    workspace().getReadAccess();
+	    CompositeActor container = (CompositeActor)getContainer();
+	    if (container != null) {
+		return container.getManager();
+	    }
+	    return null;
+	} finally {
+	    workspace().doneReading();
+	}
+    }
+
+
     public void initialize() throws IllegalActionException {
         try {
             setupScope();
