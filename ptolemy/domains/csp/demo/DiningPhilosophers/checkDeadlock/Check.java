@@ -76,7 +76,7 @@ public class Check {
 
         // path to the automata MoML files. Set to current directory for now,
         // should set it to
-        // $PTII/ptolemy/domains/csp/demo/DiningPhilosophers/systemLevelType
+        // $PTII/ptolemy/domains/csp/demo/DiningPhilosophers/checkDeadlock
         String base = "./";
 
         // following the comments in MoMLApplication, use the same URL for
