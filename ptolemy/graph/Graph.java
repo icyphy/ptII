@@ -1164,7 +1164,7 @@ public class Graph implements Cloneable {
 
     /** Initialize the list of analyses that are associated with this graph,
      *  and initialize the change counter of the graph. 
-     *  @see ptolemy.graph.analysis.Analysis.
+     *  @see ptolemy.graph.analysis.Analysis
      */
     protected void _initializeAnalyses() {
         _analysisList = new ArrayList();
@@ -1176,7 +1176,7 @@ public class Graph implements Cloneable {
      *  This method must be called after any change to the graph
      *  that may affect (invalidate) any of the computations associated with
      *  analyses that this graph is associated with.
-     *  @see Analysis.
+     *  @see Analysis
      */
     protected void _registerChange() {
         if (_changeCount == Long.MAX_VALUE) {
@@ -1397,10 +1397,10 @@ public class Graph implements Cloneable {
     // element of the list is an instance of ptolemy.graph.analysis.Analysis.
     private ArrayList _analysisList;
 
-    // A mapping from node weights to associated nodes. Unweighted nodes are not
-    // represented in this map. Keys in this this map are instances of
-    // of Object, and values instances of ArrayList whose elements are
-    // instances of Node.
+    // A mapping from node weights to associated nodes. Unweighted
+    // nodes are not represented in this map. Keys in this this map
+    // are instances of of Object, and values instances of ArrayList
+    // whose elements are instances of Node.
     private HashMap _nodeWeightMap;
 
     // The list of nodes in this graph.

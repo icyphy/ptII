@@ -378,7 +378,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO {
 
     /** Initialize the list of analyses that are associated with this graph,
      *  and initialize the change counter of the graph. 
-     *  @see ptolemy.graph.analysis.Analysis.
+     *  @see ptolemy.graph.analysis.Analysis
      */
     protected void _initializeAnalyses() {
         super._initializeAnalyses();

@@ -231,7 +231,7 @@ public class MoMLParser extends HandlerBase {
      *  Note that this method is static.  The specified MoMLFilter
      *  will filter all MoML for any instances of this class.
      *  @param filter  The MoMLFilter to add to the list of MoMLFilters.
-     *  @see #addMoMLFilter()
+     *  @see #addMoMLFilter(MoMLFilter filter)
      *  @see #getMoMLFilters()
      *  @see #setMoMLFilters(List filterList)
      */
