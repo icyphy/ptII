@@ -209,7 +209,7 @@ public class PortConfigurerDialog
                     if (_type != null) {
                         portInfo[COL_TYPE] = _type.getExpression();
                     } else {
-                        portInfo[COL_TYPE] = "unknown";
+                        portInfo[COL_TYPE] = "";
                     }
                     String _direction;
                     StringAttribute _cardinal =
@@ -791,17 +791,23 @@ public class PortConfigurerDialog
                     havePortUpdate = true;
                     updates[PortTableModel.COL_HIDE] = true;
                 }
-                String Type = "unknown";
-                TypeAttribute _type =
-                    (TypeAttribute) (actualPort.getAttribute("_type"));
-                if (_type != null) {
-                    Type = _type.getExpression();
+
+                String _type = null;
+                UnitAttribute _typeAttribute =
+                    (UnitAttribute) actualPort.getAttribute("_type");
+                if (_typeAttribute != null) {
+                    _type = _typeAttribute.getExpression();
                 }
-                if (!((String) (portInfo[PortTableModel.COL_TYPE]))
-                    .equals(Type)) {
+                if ((_type == null
+                    && (!((String) (portInfo[PortTableModel.COL_TYPE]))
+                        .equals("")))
+                    || ((_type != null)
+                        && (!((String) (portInfo[PortTableModel.COL_TYPE]))
+                            .equals(_type)))) {
                     havePortUpdate = true;
                     updates[PortTableModel.COL_TYPE] = true;
                 }
+
                 // Look for a change in direction
                 String _direction = null;
                 String direction =
@@ -859,6 +865,15 @@ public class PortConfigurerDialog
                 updates[PortTableModel.COL_HIDE] =
                     ((Boolean) (portInfo[PortTableModel.COL_HIDE]))
                         .booleanValue();
+
+                String _type = (String) (portInfo[PortTableModel.COL_TYPE]);
+                if (!_type.equals("")) {
+                    updates[PortTableModel.COL_TYPE] = true;
+                    _portTableModel.fireTableDataChanged();
+                } else {
+                    updates[PortTableModel.COL_TYPE] = false;
+                }
+
                 String direction =
                     (String) (portInfo[PortTableModel.COL_DIRECTION]);
                 if (!direction.equals("DEFAULT")) {
@@ -978,11 +993,15 @@ public class PortConfigurerDialog
         }
         if (updates[PortTableModel.COL_TYPE]) {
             String type = (String) (portInfo[PortTableModel.COL_TYPE]);
-            momlUpdate.append(
-                _momlProperty(
-                    "_type",
-                    "ptolemy.actor.TypeAttribute",
-                    StringUtilities.escapeForXML(type)));
+            if (type.equals("")) {
+                momlUpdate.append(_momlDeleteProperty("_type"));
+            } else {
+                momlUpdate.append(
+                    _momlProperty(
+                        "_type",
+                        "ptolemy.actor.TypeAttribute",
+                        StringUtilities.escapeForXML(type)));
+            }
         }
         if (updates[PortTableModel.COL_DIRECTION]) {
             String direction =
@@ -1205,6 +1224,8 @@ public class PortConfigurerDialog
         portTypeEditor.setValidator(new CellValidator() {
             public boolean isValid(String cellValue) {
                 try {
+                    if (cellValue.equals(""))
+                        return true;
                     ASTPtRootNode tree =
                         _typeParser.generateParseTree(cellValue);
                     Token result =
