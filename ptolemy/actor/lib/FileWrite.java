@@ -83,7 +83,8 @@ public class FileWrite extends Sink {
      *  @throws CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace ws) {
+    public Object clone(Workspace ws)
+	    throws CloneNotSupportedException {
         FileWrite newobj = (FileWrite)super.clone(ws);
         newobj.filename = (Parameter)newobj.getAttribute("filename");
         return newobj;

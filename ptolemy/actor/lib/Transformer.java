@@ -86,7 +86,8 @@ public class Transformer extends TypedAtomicActor {
      *  @exception CloneNotSupportedException If a derived class has
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace ws) throws CloneNotSupportedException {
+    public Object clone(Workspace ws)
+	    throws CloneNotSupportedException {
         Transformer newobj = (Transformer)super.clone(ws);
         newobj.input = (TypedIOPort)newobj.getPort("input");
         newobj.output = (TypedIOPort)newobj.getPort("output");

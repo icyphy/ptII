@@ -200,7 +200,8 @@ public class Pulse extends SequenceSource {
      *  @throws CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace ws) {
+    public Object clone(Workspace ws)
+	    throws CloneNotSupportedException {
         Pulse newobj = (Pulse)super.clone(ws);
         newobj.indexes = (Parameter)newobj.getAttribute("indexes");
         try {

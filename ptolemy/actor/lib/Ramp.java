@@ -117,7 +117,8 @@ public class Ramp extends SequenceSource {
      *  @throws CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace ws) {
+    public Object clone(Workspace ws)
+	    throws CloneNotSupportedException {
         Ramp newobj = (Ramp)super.clone(ws);
         newobj.init = (Parameter)newobj.getAttribute("init");
         newobj.step = (Parameter)newobj.getAttribute("step");

@@ -140,7 +140,8 @@ public class Quantizer extends Transformer {
      *  @exception CloneNotSupportedException If a derived class has
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace ws) throws CloneNotSupportedException {
+    public Object clone(Workspace ws)
+	    throws CloneNotSupportedException {
         Quantizer newobj = (Quantizer)super.clone(ws);
         try {
             newobj.levels = (Parameter)newobj.getAttribute("levels");

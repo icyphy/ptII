@@ -126,7 +126,8 @@ public class AddSubtract extends TypedAtomicActor {
      *  @throws CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace ws) {
+    public Object clone(Workspace ws)
+	    throws CloneNotSupportedException {
         try {
             AddSubtract newobj = (AddSubtract)super.clone(ws);
             newobj.plus = (TypedIOPort)newobj.getPort("plus");

@@ -81,7 +81,8 @@ public class CurrentTime extends TimedSource {
      *  @throws CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace ws) {
+    public Object clone(Workspace ws)
+	    throws CloneNotSupportedException {
         Ramp newobj = (Ramp)super.clone(ws);
 	// set the type constraints.
 	output.setTypeEquals(BaseType.DOUBLE);

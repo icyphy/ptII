@@ -120,7 +120,8 @@ public class TimedSource extends Source implements TimedActor {
      *  @throws CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace ws) {
+    public Object clone(Workspace ws)
+	    throws CloneNotSupportedException {
         TimedSource newobj = (TimedSource)super.clone(ws);
         newobj.stopTime = (Parameter)newobj.getAttribute("stopTime");
         return newobj;

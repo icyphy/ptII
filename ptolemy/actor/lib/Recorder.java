@@ -106,7 +106,8 @@ public class Recorder extends Sink {
      *  @throws CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace ws) {
+    public Object clone(Workspace ws)
+	    throws CloneNotSupportedException {
         Recorder newobj = (Recorder)super.clone(ws);
         newobj.input.setTypeEquals(BaseType.GENERAL);
         newobj.capacity = (Parameter)newobj.getAttribute("capacity");

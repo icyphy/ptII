@@ -99,7 +99,8 @@ public class SequenceSource extends Source implements SequenceActor {
      *  @throws CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace ws) {
+    public Object clone(Workspace ws)
+	    throws CloneNotSupportedException {
         SequenceSource newobj = (SequenceSource)super.clone(ws);
         newobj.firingCountLimit =
             (Parameter)newobj.getAttribute("firingCountLimit");

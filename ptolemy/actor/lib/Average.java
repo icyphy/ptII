@@ -90,7 +90,8 @@ public class Average extends Transformer {
      *  @exception CloneNotSupportedException If a derived class has
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace ws) throws CloneNotSupportedException {
+    public Object clone(Workspace ws)
+	    throws CloneNotSupportedException {
         Average newobj = (Average)super.clone(ws);
         newobj.output.setTypeSameAs(newobj.input);
         System.out.println(newobj.output.getName());

@@ -229,7 +229,8 @@ public class Clock extends TimedSource {
      *  @throws CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace ws) {
+    public Object clone(Workspace ws)
+	    throws CloneNotSupportedException {
         Clock newobj = (Clock)super.clone(ws);
         try {
             newobj.offsets = (Parameter)newobj.getAttribute("offsets");

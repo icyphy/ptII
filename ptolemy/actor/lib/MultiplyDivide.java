@@ -121,7 +121,8 @@ public class MultiplyDivide extends TypedAtomicActor {
      *  @throws CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace ws) {
+    public Object clone(Workspace ws)
+	    throws CloneNotSupportedException {
         try {
             MultiplyDivide newobj = (MultiplyDivide)super.clone(ws);
             newobj.multiply = (TypedIOPort)newobj.getPort("multiply");

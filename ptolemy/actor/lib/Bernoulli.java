@@ -90,7 +90,8 @@ public class Bernoulli extends RandomSource {
      *  @throws CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace ws) {
+    public Object clone(Workspace ws)
+	    throws CloneNotSupportedException {
         Bernoulli newobj = (Bernoulli)super.clone(ws);
         newobj.trueProbability =
             (Parameter)newobj.getAttribute("trueProbability");

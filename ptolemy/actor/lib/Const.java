@@ -103,7 +103,8 @@ public class Const extends Source {
      *  @throws CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace ws) {
+    public Object clone(Workspace ws)
+	    throws CloneNotSupportedException {
         Const newobj = (Const)super.clone(ws);
         newobj.value = (Parameter)newobj.getAttribute("value");
 	// Set the type constraint.

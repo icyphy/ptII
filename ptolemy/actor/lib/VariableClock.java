@@ -108,7 +108,8 @@ public class VariableClock extends Clock {
      *  @throws CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace ws) {
+    public Object clone(Workspace ws)
+	    throws CloneNotSupportedException {
         VariableClock newobj = (VariableClock)super.clone(ws);
         newobj.periodControl = (TypedIOPort)newobj.getPort("periodControl");
         return newobj;

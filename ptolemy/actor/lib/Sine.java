@@ -111,7 +111,8 @@ public class Sine extends Transformer {
      *  @throws CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace ws) throws CloneNotSupportedException {
+    public Object clone(Workspace ws)
+	    throws CloneNotSupportedException {
         Sine newobj = (Sine)super.clone(ws);
         newobj.amplitude = (Parameter)newobj.getAttribute("amplitude");
         newobj.omega = (Parameter)newobj.getAttribute("omega");

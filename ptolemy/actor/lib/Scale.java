@@ -104,7 +104,8 @@ public class Scale extends Transformer {
      *  @exception CloneNotSupportedException If a derived class has
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace ws) throws CloneNotSupportedException {
+    public Object clone(Workspace ws)
+	    throws CloneNotSupportedException {
         Scale newobj = (Scale)super.clone(ws);
         newobj.factor = (Parameter)newobj.getAttribute("factor");
 	newobj.output.setTypeAtLeast(newobj.input);

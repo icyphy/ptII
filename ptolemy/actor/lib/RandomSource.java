@@ -84,7 +84,8 @@ public abstract class RandomSource extends Source {
      *  @throws CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace ws) {
+    public Object clone(Workspace ws)
+	    throws CloneNotSupportedException {
         RandomSource newobj = (RandomSource)super.clone(ws);
         newobj.seed = (Parameter)newobj.getAttribute("seed");
         return newobj;

@@ -95,7 +95,8 @@ public class Gaussian extends RandomSource {
      *  @throws CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace ws) {
+    public Object clone(Workspace ws)
+	    throws CloneNotSupportedException {
         Gaussian newobj = (Gaussian)super.clone(ws);
         newobj.output.setTypeEquals(BaseType.DOUBLE);
         newobj.mean = (Parameter)newobj.getAttribute("mean");

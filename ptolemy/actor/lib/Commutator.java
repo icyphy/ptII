@@ -99,7 +99,8 @@ public class Commutator extends Transformer implements SequenceActor {
      *  @exception CloneNotSupportedException If a derived class contains
      *   attributes that cannot be cloned.
      */
-    public Object clone(Workspace ws) throws CloneNotSupportedException {
+    public Object clone(Workspace ws)
+	    throws CloneNotSupportedException {
         Commutator newobj = (Commutator)super.clone(ws);
         newobj._productionRate = (Parameter)
             (newobj.output.getAttribute("TokenProductionRate"));
