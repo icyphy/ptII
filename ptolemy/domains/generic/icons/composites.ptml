@@ -1,0 +1,31 @@
+<!-- Icons for composite actors -->
+
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE iconlibrary  PUBLIC "ptml.dtd" "http://ptolemy.eecs.berkeley.edu/ptml.dtd">
+
+<iconlibrary name="Composites" version="1.0">
+<header>
+    <description>Composite Actors</description>
+</header>
+
+<icon name="SimpleComposite">
+    <entitytype name="Out" type="composite" ports="1"/>
+    <port name="output" input="false" type="string">
+	<graphic format="tcl">
+	<tclscript>
+	    -coords {100 50}
+            -direction e
+            -style arrowout
+            -tags output
+	</tclscript>
+	</graphic>
+    </port>
+
+    <graphic format="tcl" color="green">
+    <tclscript>
+    </tclscript>
+    </graphic>
+</icon>
+
+</iconlibrary>
+
