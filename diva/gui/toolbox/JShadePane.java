@@ -355,11 +355,6 @@ public class JShadePane extends JPanel {
      * Sets the selected index for this shade pane and
      * causes the pane to refresh its display to show
      * the selected pane's component.
-     *
-     * @see SingleSelectionModel#setSelectedIndex
-     * @beaninfo
-     *   preferred: true
-     * description: The shadepane's selected tab index.
      */
     public void setSelectedIndex (int index) {
         if (index != _selectedIndex) {  //(index >= 0) &&

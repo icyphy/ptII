@@ -316,11 +316,6 @@ public class JTreePane extends JSplitPane {
      * Sets the selected index for this entry pane and
      * causes the pane to refresh its display to show
      * the selected pane's component.
-     *
-     * @see SingleSelectionModel#setSelectedIndex
-     * @beaninfo
-     *   preferred: true
-     * description: The entrypane's selected tab index.
      */
     public void setSelectedTitle (String title) {
         if (title != _selectedTitle) {  //(index >= 0) &&
