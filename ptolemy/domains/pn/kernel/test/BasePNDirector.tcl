@@ -61,6 +61,7 @@ test BasePNDirector-2.1 {Constructor tests} {
     list [$d1 getFullName] [$d2 getFullName] [$d3 getFullName]
 } {.D1 .D2 W.D3}
 
+
 ######################################################################
 ####
 #
@@ -108,4 +109,30 @@ test BasePNDirector-5.2 {Test creation of a receiver} {
 } {1 5}
 
 
+######################################################################
+####
+#
+test BasePNDirector-7.1 {Test finishing methods} {
+    set e71 [java::new ptolemy.actor.CompositeActor]
+    $e71 setName E71
+    set manager [java::new ptolemy.actor.Manager]
+    $e71 setManager $manager
+    set d71 [java::new ptolemy.domains.pn.kernel.BasePNDirector]
+    $d71 setName D71    
+    $e71 setDirector $d71
 
+    set s1 [java::new ptolemy.domains.pn.kernel.test.TestSink $e71 s1]
+    set t1 [java::new ptolemy.domains.pn.kernel.test.TestDirector $e71 t1]
+    set p1 [$s1 getPort input]
+    set p2 [$t1 getPort output]
+    $e71 connect $p1 $p2
+    set lis [java::new ptolemy.domains.pn.kernel.test.StringPNListener]
+    $d71 addProcessListener $lis
+    $manager run
+    $d71 removeProcessListener $lis
+    list [$t1 getProfile] [$lis getProfile]
+} {{broadcast new token 0
+broadcast new token 1
+} {State of .E71.t1 is PROCESS_FINISHED and the cause = FINISHED_PROPERLY
+State of .E71.s1 is PROCESS_FINISHED and the cause = FINISHED_PROPERLY
+}}
