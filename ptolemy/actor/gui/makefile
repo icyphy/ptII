@@ -129,6 +129,8 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
+	'BrowserEffigy$$Factory.class' \
+	'BrowserTableau$$Factory.class' \
 	'CompositeActorApplication$$1.class' \
 	'CompositeActorApplication$$StateReporter.class' \
 	'Configuration$$1.class' \
@@ -157,6 +159,7 @@ OPTIONAL_FILES = \
 	'PtolemyApplet$$StopButtonListener.class' \
 	'PtolemyApplication$$1.class' \
 	'PtolemyEffigy$$Factory.class' \
+	'PtolemyFrame$$XMLOrMoMLFileFilter.class' \
 	'PtolemyQuery$$1.class' \
 	'PtolemyQuery$$2.class' \
 	'PtolemyQuery$$3.class' \
