@@ -26,7 +26,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
                                         COPYRIGHTENDKEY
 
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu) isCloseTo(t), isCloseTo(t,e), epsilon
+@AcceptedRating Red (cxh@eecs.berkeley.edu) isCloseTo(t), isCloseTo(t, e), epsilon
 */
 
 package ptolemy.math;
@@ -94,16 +94,8 @@ public class Complex implements Cloneable, Serializable {
     ////                         public methods                    ////
 
 
-    /** Return the sum of this complex number and the argument <i>z</i>.
-     *  @param z A complex number.
-     *  @return A new complex number equal to the sume of the given complex
-     *  number and the argument.
-     */
-    public final Complex add(Complex z) {
-        return new Complex(real + z.real, imag + z.imag);
-    }
-
-    /** Return the principal arc cosine of this complex number.  This is defined by:
+    /** Return the principal arc cosine of this complex number.  This
+     * is defined by:
      *  <pre>
      *   acos(z) = -i * log(z + i*sqrt(1 - z*z))
      *  </pre>
@@ -135,6 +127,15 @@ public class Complex implements Cloneable, Serializable {
         Complex c2 = c1.sqrt();
         Complex c3 = add(c2);
         return c3.log();
+    }
+
+    /** Return the sum of this complex number and the argument <i>z</i>.
+     *  @param z A complex number.
+     *  @return A new complex number equal to the sume of the given complex
+     *  number and the argument.
+     */
+    public final Complex add(Complex z) {
+        return new Complex(real + z.real, imag + z.imag);
     }
 
     /** Return the angle or argument of this complex number.
@@ -303,6 +304,28 @@ public class Complex implements Cloneable, Serializable {
                 (imag*divisor.real-real*divisor.imag)/denominator);
     }
 
+    /** Return true if the real and imaginary parts of this complex number
+     *  are equal to those of the argument.
+     *
+     *  @return True if the real and imaginary parts are equal.
+     */
+    public final boolean equals(Complex z) {
+        return (z.real == real && z.imag == imag);
+    }
+
+    /** Return the exponential of this complex number,
+     *  or <em>e<sup>z</sup></em>,
+     *  where <code>z</code> is this complex number.
+     *
+     *  @param z A complex exponent.
+     *  @return A new complex number with value equal to the exponential
+     *  of this complex number.
+     */
+    public final Complex exp() {
+        double magnitude =  Math.exp(real);
+        return polarToComplex(magnitude, imag);
+    }
+
     /** Return true if both the real and imaginary parts of this
      *  complex number are close to those of the argument.  The
      *  epsilon field is used to determine closeness.
@@ -333,28 +356,6 @@ public class Complex implements Cloneable, Serializable {
         // it from the epsilon field
         return (Math.abs(z.real - real) < localEpsilon
                 && Math.abs(z.imag - imag) < localEpsilon);
-    }
-
-    /** Return true if the real and imaginary parts of this complex number
-     *  are equal to those of the argument.
-     *
-     *  @return True if the real and imaginary parts are equal.
-     */
-    public final boolean equals(Complex z) {
-        return (z.real == real && z.imag == imag);
-    }
-
-    /** Return the exponential of this complex number,
-     *  or <em>e<sup>z</sup></em>,
-     *  where <code>z</code> is this complex number.
-     *
-     *  @param z A complex exponent.
-     *  @return A new complex number with value equal to the exponential
-     *  of this complex number.
-     */
-    public final Complex exp() {
-        double magnitude =  Math.exp(real);
-        return polarToComplex(magnitude, imag);
     }
 
     /** Return true if either the real or imaginary part is infinite.
@@ -395,7 +396,8 @@ public class Complex implements Cloneable, Serializable {
 
     /** Return the magnitude or absolute value of this complex number.
      *
-     *  @return A non-negative number that is the absolute value of this complex number.
+     *  @return A non-negative number that is the absolute value of
+     *  this complex number.
      */
     public final double magnitude() {
         return Math.sqrt(magnitudeSquared());
@@ -406,7 +408,8 @@ public class Complex implements Cloneable, Serializable {
      *  to compute than the magnitude (which is the square root of this
      *  result).
      *
-     *  @return A non-negative number which is the magnitude of this complex number.
+     *  @return A non-negative number which is the magnitude of this
+     *  complex number.
      */
     public double magnitudeSquared() {
         return (real*real) + (imag*imag);
@@ -426,8 +429,9 @@ public class Complex implements Cloneable, Serializable {
 
     /** Negate this complex number.
      *
-     *  @return A new complex number that is formed by taking the negatives of both
-     *  the real and imaginary parts of this complex number.
+     *  @return A new complex number that is formed by taking the
+     *  negatives of both the real and imaginary parts of this complex
+     *  number.
      */
     public final Complex negate() {
         // Avoid negative zero.
