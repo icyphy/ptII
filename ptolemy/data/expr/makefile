@@ -40,7 +40,7 @@
 # Note that none of these classes would be relevant to FSMs, for example.
 
 # Root of the Java directory
-ROOT =		../../../..
+ROOT =		../../../../..
 
 ME =		java/pt/data/parser
 
@@ -65,13 +65,18 @@ TYZIP =		$(TYPACKAGE_DIR)/$(TYPACKAGE).zip
 JARFILE = 	$(TYPACKAGE).jar
 
 JSRCS = \
-	PtParser.java \
 	ASTPtSimpleNode.java \
 	ASTPtSumNode.java \
 	ASTPtProductNode.java \
 	ASTPtUnaryNode.java \
-	ASTPtExpNode.java \
+	ASTPtRelationalNode.java \
+	ASTPtLogicalNode.java \
 	ASTPtFunctionNode.java \
+	Node.java \
+	ASCII_CharStream.java \
+	Token.java \
+	TokenMgrError.java \
+	ParseException.java \
 	Test.java 
 
 
@@ -90,8 +95,7 @@ JCLASS = $(JSRCS:%.java=%.class)
 # Needed for compiling under Cygwin on NT
 LIB = dummylib
 
-all1: PtParser $(JCLASS)
-all:   $(JCLASS) 
+all:   PtParser $(JCLASS) 
 install: PTSimpleParser javadocs $(JARFILE)
 docs: javadocs
 
@@ -101,7 +105,7 @@ depend:
 # Get the rest of the rules
 include $(ROOT)/mk/tycommon.mk
 
-PtParser.java : PtParser.jjt
+PtParser : PtParser.jjt
 	jjtree PtParser.jjt
 	javacc PtParser.jj
 	$(JAVAC) *.java
@@ -121,12 +125,4 @@ ptAdvancedParser : ptAdvancedParser.jj
 
 
 
-clean:
-	rm *.class
-	mv Test.java Test.bak
-	mv SimpleNode.java SimpleNode.bak
-	rm *.java
-	mv Test.bak Test.java
-	mv SimpleNode.bak SimpleNode.java
-	rm -i *~
 
