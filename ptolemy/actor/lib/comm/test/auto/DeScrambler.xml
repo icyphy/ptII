@@ -14,7 +14,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="95.0, 40.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 1032, 748}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 1032, 746}}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 637]">
     </property>
@@ -107,7 +107,7 @@ The output of the DeSrambler should be the same as the input sequence.
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="495.0, 470.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="370.0, 340.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -117,149 +117,14 @@ The output of the DeSrambler should be the same as the input sequence.
             <property name="output"/>
         </port>
     </entity>
-    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
+    <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false}">
         </property>
-        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
-        <property name="title" class="ptolemy.kernel.util.StringAttribute">
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="610.0, 470.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-    </entity>
-    <entity name="BooleanToAnything" class="ptolemy.actor.lib.conversions.BooleanToAnything">
-        <property name="falseValue" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-        <property name="trueValue" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="280.0, 315.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-    </entity>
-    <entity name="Input" class="ptolemy.actor.lib.gui.SequencePlotter">
-        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="legend" class="ptolemy.kernel.util.StringAttribute">
-        </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
-        </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 189]">
-        </property>
-        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-        <property name="xInit" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
-        <property name="xUnit" class="ptolemy.data.expr.Parameter" value="1.0">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="415.0, 315.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <configure>
-<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
-"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
-<plot>
-<title>Input</title>
-<xRange min="0.0" max="19.0"/>
-<yRange min="0.0" max="1.0"/>
-</plot>?>
-        </configure>
-    </entity>
-    <entity name="Scrambled" class="ptolemy.actor.lib.gui.SequencePlotter">
-        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="legend" class="ptolemy.kernel.util.StringAttribute">
-        </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
-        </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 189]">
-        </property>
-        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-        <property name="xInit" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
-        <property name="xUnit" class="ptolemy.data.expr.Parameter" value="1.0">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="495.0, 230.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <configure>
-<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
-"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
-<plot>
-<title>Scrambled</title>
-<xRange min="0.0" max="19.0"/>
-<yRange min="0.0" max="1.0"/>
-</plot>?>
-        </configure>
-    </entity>
-    <entity name="DeScrambled" class="ptolemy.actor.lib.gui.SequencePlotter">
-        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="legend" class="ptolemy.kernel.util.StringAttribute">
-        </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
-        </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 189]">
-        </property>
-        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-        <property name="xInit" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
-        <property name="xUnit" class="ptolemy.data.expr.Parameter" value="1.0">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="675.0, 165.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <configure>
-<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
-"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
-<plot>
-<title>DeScrambled</title>
-<xRange min="0.0" max="19.0"/>
-<yRange min="0.0" max="1.0"/>
-</plot>?>
-        </configure>
-    </entity>
-    <entity name="BooleanToAnything2" class="ptolemy.actor.lib.conversions.BooleanToAnything">
-        <property name="falseValue" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-        <property name="trueValue" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="350.0, 230.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-    </entity>
-    <entity name="BooleanToAnything3" class="ptolemy.actor.lib.conversions.BooleanToAnything">
-        <property name="falseValue" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-        <property name="trueValue" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="510.0, 165.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="485.0, 340.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -272,8 +137,6 @@ The output of the DeSrambler should be the same as the input sequence.
         <vertex name="vertex1" value="175.0, 165.0">
         </vertex>
     </relation>
-    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="320.0, 165.0">
         </vertex>
@@ -284,10 +147,6 @@ The output of the DeSrambler should be the same as the input sequence.
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <link port="Bernoulli.output" relation="relation4"/>
     <link port="Scrambler2.input" relation="relation4"/>
     <link port="Scrambler2.output" relation="relation"/>
@@ -295,15 +154,6 @@ The output of the DeSrambler should be the same as the input sequence.
     <link port="DeScrambler.output" relation="relation2"/>
     <link port="LogicFunction.input" relation="relation4"/>
     <link port="LogicFunction.input" relation="relation2"/>
-    <link port="LogicFunction.output" relation="relation5"/>
-    <link port="Display.input" relation="relation5"/>
-    <link port="BooleanToAnything.input" relation="relation4"/>
-    <link port="BooleanToAnything.output" relation="relation3"/>
-    <link port="Input.input" relation="relation3"/>
-    <link port="Scrambled.input" relation="relation6"/>
-    <link port="DeScrambled.input" relation="relation7"/>
-    <link port="BooleanToAnything2.input" relation="relation"/>
-    <link port="BooleanToAnything2.output" relation="relation6"/>
-    <link port="BooleanToAnything3.input" relation="relation2"/>
-    <link port="BooleanToAnything3.output" relation="relation7"/>
+    <link port="LogicFunction.output" relation="relation3"/>
+    <link port="NonStrictTest.input" relation="relation3"/>
 </entity>

@@ -43,18 +43,24 @@ import ptolemy.kernel.util.*;
 //// HadamardCode
 /**
 Produce a Hadamard codeword by selecting a row from a Hadamard matrix.
-Log base 2 of the matrix dimension is given by the <i>log2Length</i>
+The log base 2 of the matrix dimension is given by the <i>log2Length</i>
 parameter, which should be a non-negative integer smaller than 32.
 The row index is given by the <i>index</i> parameter or by the associated
-the<i>index</i> port, which should be a non-negative integer smaller
+<i>index</i> port, which should be a non-negative integer smaller
 than the matrix dimension.
 <p>
 A Hadamard matrix is defined in the following way:
-H<sub>1</sub> = {{1, 1}, {1, -1}}
-H<sub>n+1</sub> = {{H<sub>n</sub>, H<sub>n</sub>},
-{H<sub>n</sub>, -H<sub>n</sub>}}
-where n is a positive integer. Therefore, H<sub>n</sub> is a 2<sup>n</sup>*
-2<sup>n</sup> square matrix. The codeword length is also 2<sup>n</sup>.
+<p>
+<i>H</i><sub>1</sub> = [1, 1; 1, -1]
+<p>
+<i>H</i><sub><i>n</i>+1</sub> = [<i>H</i><sub><i>n</i></sub>,
+<i>H</i><sub><i>n</i></sub>;
+<i>H</i><sub><i>n</i></sub>, -<i>H</i><sub><i>n</i></sub>]
+<p>
+where <i>n</i> is a positive integer.
+Therefore, H<sub><i>n</i></sub> is a 2<sup><i>n</i></sup> by
+2<sup><i>n</i></sup> square matrix.
+The codeword length is 2<sup><i>n</i></sup>.
 <p>
 @author Edward A. Lee and Rachel Zhou
 @version $Id$
@@ -153,8 +159,8 @@ public class HadamardCode extends Source {
      */
     public void fire() throws IllegalActionException {
         super.fire();
+        index.update();
         if (_rowValueInvalid) {
-            index.update();
             int log2LengthValue = ((IntToken)log2Length.getToken()).intValue();
             int indexValue = ((IntToken)index.getToken()).intValue();
             // Power of two calculated using a shift.

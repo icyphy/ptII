@@ -1,4 +1,4 @@
-/* Source of Scrambler Code.
+/* Given an input bit sequence, scramble it in a pseudo random way.
 
  Copyright (c) 1998-2003 The Regents of the University of California.
  All rights reserved.
@@ -54,7 +54,7 @@ line is fed back.
 The low-order bit is called the 0-th bit, and should always be set.
 The next low-order bit indicates whether the output of the first delay
 should be fed back, etc.
-All the bits to be fed are exclusive-ored together (i.e., their parity
+All the bits that are fed back are exclusive-ored together (i.e., their parity
 is computed), and the result is exclusive-ored with the input bit. The
 result is produced at the output and shifted into the delay line.
 Note in this actor and the DeScrambler actor, types of input and output
@@ -62,12 +62,12 @@ ports are set to be boolean. True and false are converted to 1 and 0
 before computing the parity. The result is converted back to boolean
 to send to the output port.
 <p>
-With proper choice of polynomial, the resulting output appears highly
+With a proper choice of polynomial, the resulting output appears highly
 random even if the input is highly non-random.
-If the polynomial is a <i>primitive polynomial</i>, the the feedback
+If the polynomial is a <i>primitive polynomial</i>, then the feedback
 shift register is a so-called <i>maximal length feedback shift register</i>.
-This means that with a constant input (or no input, as can be considered
-as input with constant zero), the output will be a sequence with
+This means that with a constant input (or no input, which is equivalent
+to a constant <i>false</i> input) the output will be a sequence with
 period 2<sup><i>N</i></sup>-1, where <i>N</i> is the order of the
 polynomial (the length of the shift register).
 This is the longest possible sequence.
@@ -90,7 +90,8 @@ to some non-zero state. The default value for the <i>shiftReg</i> is set to 1.
 The <i>polynomial</i> must be carefully chosen. It must represent a
 <i>primitive polynomial</i>, which is one that cannot be factored into two
 (nontrivial) polynomials with binary coefficients.  See Lee and Messerschmitt
-for more details.  For convenience, we give here a set of primitive polynomials
+(Kluwer, 1994) for more details.  For convenience, we give here
+a set of primitive polynomials
 (expressed as octal numbers so that they are easily translated into taps
 on shift register).  All of these will result in maximal-length pseudo-random
 sequences if the input is constant and lock-up is avoided:
@@ -147,7 +148,7 @@ intepreted as a negative integer, so the sign bit cannot be used.
 Thus, if "int" is a 32-bit word, then the highest order polynomial allowed
 is 30 (recall that indexing for the order starts at zero, and we cannot
 use the sign bit).
-Since many machines today have 32-bit integers, we give the primitive
+Java has 32-bit integers, so we give the primitive
 polynomials above only up to order 30.
 <p>
 For more information on scrambler, see Lee and Messerschmitt, Digital
@@ -180,9 +181,8 @@ public class Scrambler extends Transformer {
         initial.setTypeEquals(BaseType.INT);
         initial.setExpression("1");
 
+        // Declare data types.
         input.setTypeEquals(BaseType.BOOLEAN);
-
-        // Declare output data type.
         output.setTypeEquals(BaseType.BOOLEAN);
     }
 
@@ -208,8 +208,8 @@ public class Scrambler extends Transformer {
     ////                         public methods                    ////
 
     /** If the attribute being changed is <i>initial</i>, then verify
-     *  that is a non-negative interger; if it is <i>polynomial</i>, then
-     *  verify that is a positive interger and the lower-order bit is 1.
+     *  that it is a non-negative integer; if it is <i>polynomial</i>, then
+     *  verify that is a positive integer and the lower-order bit is 1.
      *  @exception IllegalActionException If <i>initial</i> is non-positive
      *  or polynomial is non-positive or the lower-order bit is not 1.
      */
@@ -236,9 +236,9 @@ public class Scrambler extends Transformer {
         }
     }
 
-    /** Read bit from the input port and fill it into the shift register
-     *  to scramble. Compute the parity and send "true" to the output
-     *  port if it is 1; otherwise send "false" to the output port.
+    /** Read a bit from the input port and shift it into the shift register
+     *  to scramble. Compute the parity and send <i>true</i> to the output
+     *  port if it is 1; otherwise send <i>false</i> to the output port.
      *  The parity is shifted into the delay line for the next iteration.
      */
     public void fire() throws IllegalActionException {
@@ -265,9 +265,9 @@ public class Scrambler extends Transformer {
         }
         _latestShiftReg = reg | parity;
 
-        if (parity == 1){
+        if (parity == 1) {
             output.broadcast(_tokenTrue);
-        }else {
+        } else {
             output.broadcast(_tokenFalse);
         }
     }
