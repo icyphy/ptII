@@ -84,8 +84,8 @@ public class FunctionDependencyOfAtomicActor extends FunctionDependency {
      *  ports. This method is called by the removeDependency() method
      *  of AtomicActor, which in turn is called by actors in
      *  their pruneDependencies() method.
-     *  @param input The input port.
-     *  @param output The output port that does not depend on the
+     *  @param inputPort The input port.
+     *  @param outputPort The output port that does not depend on the
      *   input port.
      *  @see ptolemy.actor.AtomicActor#removeDependency(IOPort, IOPort)
      *  @see ptolemy.actor.AtomicActor#pruneDependencies()
