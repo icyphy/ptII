@@ -40,6 +40,7 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Manager;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.attributes.IDAttribute;
 import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.undo.UndoStackAttribute;
 import ptolemy.kernel.util.BasicModelErrorHandler;
@@ -271,7 +272,10 @@ public abstract class PtolemyFrame extends TableauFrame {
      *  data written is the description of the entire model, not just
      *  the portion within some composite actor.   It also adjusts the
      *  URIAttribute in the model to match the specified file, if
-     *  necessary, and creates one otherwise.
+     *  necessary, and creates one otherwise.  It also
+     *  overrides the base class to look for an IDAttribute in the
+     *  top-level model, and if there is one, to update its
+     *  <i>lastUpdated</i> field.
      *  @param file The file to write to.
      *  @exception IOException If the write fails.
      */
@@ -280,6 +284,17 @@ public abstract class PtolemyFrame extends TableauFrame {
         if (tableau != null) {
             Effigy effigy = (Effigy)tableau.getContainer();
             if (effigy != null) {
+                // Look for an IDAttribute to update.
+                if (_model != null) {
+                    List idAttributes = _model.attributeList(IDAttribute.class);
+                    if (idAttributes.size() > 0) {
+                        // IDAttribute is a singleton, so there should be only one.
+                        IDAttribute idAttribute = (IDAttribute)idAttributes.get(0);
+                        // The null argument says set the date to now.
+                        idAttribute.setDate(null);
+                    }
+                }
+
                 // Ensure that if we do ever try to call this method,
                 // that it is the top effigy that is written.
                 Effigy topEffigy = effigy.topEffigy();

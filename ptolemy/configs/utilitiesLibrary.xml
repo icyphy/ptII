@@ -7,6 +7,7 @@
   <configure>
     <?moml
       <group>
+        <input source="ptolemy/configs/utilityIDAttribute.xml"/>
         <input source="ptolemy/configs/utilityCompositeActor.xml"/>
         <input source="ptolemy/configs/utilityModalModel.xml"/>
         <input source="ptolemy/configs/utilityRunCompositeActor.xml"/>
