@@ -190,8 +190,9 @@ public class CompositeActor extends CompositeEntity implements Actor {
         }
     }
 
-    /** If this actor is opaque, then invoke the finish() method of 
-     *  the local director. Otherwise, return. This method is 
+    /** Initiate the end of execution of the model contained in this
+     *  CompositeActor. If this actor is opaque, then invoke the finish() 
+     *  method of the local director. Otherwise, return. This method is 
      *  read-synchronized on the workspace.
      * @exception IllegalActionException if this actor's director
      *  throws an IllegalActionException while calling finish().
