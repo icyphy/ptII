@@ -30,6 +30,7 @@
 
 package ptolemy.domains.de.lib.test;
 
+import ptolemy.actor.IODependence;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.data.DoubleToken;
@@ -50,6 +51,9 @@ public class SimpleDelay extends TypedAtomicActor {
         delay = new Parameter(this, "delay", new DoubleToken(1.0));
         delay.setTypeEquals(BaseType.DOUBLE);
         input.delayTo(output);
+        // construct the IODependence attribute 
+        _IODependence = new IODependence(this, "IODependence");
+        _IODependence.addInputPort(input).addToDelayToPorts(output);       
     }
 
     public Parameter delay;
