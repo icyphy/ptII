@@ -351,8 +351,9 @@ public abstract class BaseType implements Type, Serializable {
         public Token convert(Token t) throws IllegalActionException {
             // FIXME: what does converting to general MEAN?
             return t;
-            //     throw new IllegalActionException("Cannot convert token " + t +
-            //         " to type general, because general is not a concrete type.");
+            //     throw new IllegalActionException("Cannot convert token "
+            //         + t + " to type general, because general is not a "
+            //         + concrete type.");
         }
     }
     public static final GeneralType GENERAL = new GeneralType();
