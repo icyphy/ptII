@@ -501,8 +501,9 @@ public class KernelGraphFrame extends GraphFrame {
 		entity = (CompositeEntity)deferredTo;
 	    }
 
-	    // FIXME create a new ptolemy effigy and
-	    // a new graphTableau for it.
+	    // FIXME how do we know where that object came from?
+	    // URL url = ???
+	    // _read(url);
 	}
     }
    
