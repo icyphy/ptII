@@ -44,7 +44,7 @@ public class FSMGraphModel extends AbstractGraphModel
 	    if(icon == null) {
 		// FIXME this is pretty minimal
 		try {
-		    icon = new EditorIcon(entity);
+		    icon = new EditorIcon(entity, "_icon");
 		}
 		catch (Exception e) {
 		    throw new InternalErrorException("Failed to create " +
