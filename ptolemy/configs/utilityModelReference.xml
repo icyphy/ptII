@@ -4,4 +4,4 @@
 
 <!-- Blank composite actor. -->
 <entity name="model reference"
-        class="ptolemy.vergil.actor.ModelReference"/>
+        class="ptolemy.vergil.actor.lib.ModelReference"/>

@@ -64,8 +64,7 @@ JSRCS = \
 	ActorViewerGraphController.java \
 	ExternalIOPortController.java \
 	IOPortController.java \
-	LinkController.java \
-	ModelReference.java
+	LinkController.java
 
 EXTRA_SRCS =	$(JSRCS)
 
