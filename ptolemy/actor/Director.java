@@ -102,7 +102,7 @@ the workspace to be write-protected. (Note that the workspace might still be
 not-write-protected, it all depends on other directors in the simulation).
 
 @author Mudit Goel, Edward A. Lee, Lukito Muliadi, Steve Neuendorffer, John Reekie
-@version: $Id$
+@version $Id$
 */
 public class Director extends NamedObj implements Executable {
 

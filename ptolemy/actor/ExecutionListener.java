@@ -45,7 +45,7 @@ to the ptolemy system and will block further execution within the topology
 until they return.
 
 @author Steve Neuendorffer
-@version: $Id$
+@version $Id$
 */
 
 public interface ExecutionListener {

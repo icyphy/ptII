@@ -40,7 +40,7 @@ the event, the toplevel iteration number during which the event occured and
 an exception.   Each object may or may not be a valid reference.
 
 @author Steve Neuendorffer
-@version: $Id$
+@version $Id$
 */
 
 public class ExecutionEvent {
