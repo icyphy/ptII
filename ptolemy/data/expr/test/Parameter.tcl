@@ -55,9 +55,10 @@ test Param-2.1 {Check constructors} {
     set e [java::new {pt.kernel.Entity String} parent]
     set tok [java::new  {pt.data.DoubleToken double} 4.5]
 
-    set param1 [java::new {pt.data.expr.Parameter pt.kernel.util.NamedObj String pt.data.Token} $e id1 $tok]
+    set param1 [java::new pt.data.expr.Parameter $e id1 $tok]
     
-    set param2 [java::new {pt.data.expr.Parameter pt.kernel.util.NamedObj String String} $e id2 1.5]
+    set param2 [java::new pt.data.expr.Parameter $e id2]
+    $param2 setTokenFromExpr "1.5"
     
     set name1 [$param1 getFullName]
     set name2 [$param2 getFullName]
@@ -90,20 +91,21 @@ test Param-3.0 {Check setting the contained Token with another Token} {
 #################################
 ####
 #
-test Param-4.0 {Check setting the contained Token from a String or aother Token} {
+test Param-4.0 {Check setting the contained Token from a String or another Token} {
     set e [java::new {pt.kernel.Entity String} parent]
-    set param1 [java::new {pt.data.expr.Parameter pt.kernel.util.NamedObj String String} $e id1 "1.6 + 8.3"]
+    set param1 [java::new pt.data.expr.Parameter $e id1 ]
+    $param1 setTokenFromExpr "1.6 + 8.3"
     set name1 [$param1 getFullName]
-    set value1 [[$param1 getToken] getValue]
+    set value1 [[$param1 getToken] stringValue]
 
     # Now put a new token into the Param
     set tok1 [java::new  {pt.data.DoubleToken double} 7.7]
     $param1 {setToken pt.data.Token} $tok1    
-    set value2 [[$param1 getToken] getValue]
+    set value2 [[$param1 getToken] stringValue]
 
     # Now set the Token contained from a String
-    $param1 {setTokenFromExpr String} "-((true) ? 5.5 : \"crap\")" 
-    set value3 [[$param1 getToken] getValue]
+    $param1 setTokenFromExpr "-((true) ? 5.5 : \"crap\")" 
+    set value3 [[$param1 getToken] stringValue]
 
     # Now put a new token into the Param
     set tok2 [java::new  {pt.data.DoubleToken double} 3.3]
@@ -118,13 +120,14 @@ test Param-4.0 {Check setting the contained Token from a String or aother Token}
 #
 test Param-5.0 {Check reseting the Param to its original String} {
     set e [java::new {pt.kernel.Entity String} parent]
-    set param1 [java::new {pt.data.expr.Parameter pt.kernel.util.NamedObj String String} $e id1 "1.6 + 8.3"]
+    set param1 [java::new pt.data.expr.Parameter $e id1 ]
+    $param1 setTokenFromExpr "1.6 + 8.3"
     set name1 [$param1 getFullName]
     set value1 [[$param1 getToken] getValue]
 
     # Now put a new token into the Param
     set tok1 [java::new  {pt.data.DoubleToken double} 7.7]
-    $param1 {setToken pt.data.Token} $tok1    
+    $param1 setToken $tok1    
     set value2 [[$param1 getToken] getValue]
 
     # Now reset the Token 
@@ -132,7 +135,7 @@ test Param-5.0 {Check reseting the Param to its original String} {
     set value3 [[$param1 getToken] getValue]
 
     # Put a new Token in the Param from a String
-    $param1 {setTokenFromExpr String} "((true) ? 5.5 : \"crap\")" 
+    $param1 setTokenFromExpr "((true) ? 5.5 : \"crap\")" 
     set value4 [[$param1 getToken] getValue]
     
     # Reset the Token 
@@ -177,32 +180,34 @@ test Param-5.1 {Check reseting the Param to its original Token} {
 #
 test Param-6.0 {Check updating of Params that refer to other Params} {
     set e [java::new {pt.kernel.Entity String} parent]
-    set param1 [java::new {pt.data.expr.Parameter pt.kernel.util.NamedObj String String} $e id1 1.1]
+    set param1 [java::new pt.data.expr.Parameter $e id1 ]
+    $param1 setTokenFromExpr 1.1
     $param1 setContainer $e
 
     set tok1 [java::new  {pt.data.DoubleToken double} 9.9]
-    set param2 [java::new {pt.data.expr.Parameter pt.kernel.util.NamedObj String String} $e id2 9.9]
+    set param2 [java::new pt.data.expr.Parameter $e id2 $tok1 ]
     $param2 setContainer $e
 
-    set param3 [java::new {pt.data.expr.Parameter pt.kernel.util.NamedObj String String} $e id3 "id1 + id2"]
+    set param3 [java::new pt.data.expr.Parameter $e id3 ]
+    $param3 setTokenFromExpr "id1 + id2"
     $param3 setContainer $e
  
     set name1 [$param1 getFullName]
-    set value1 [[$param1 getToken] getValue]
+    set value1 [[$param1 getToken] stringValue]
     set name2 [$param2 getFullName]
-    set value2 [[$param2 getToken] getValue]
+    set value2 [[$param2 getToken] stringValue]
     set name3 [$param3 getFullName]
-    set value3 [[$param3 getToken] getValue]
+    set value3 [[$param3 getToken] stringValue]
     
-    $param1 {setTokenFromExpr String} "((true) ? 5.5 : \"crap\")" 
+    $param1 setTokenFromExpr  "((true) ? 5.5 : \"crap\")" 
     set name4 [$param1 getFullName]
-    set value4 [[$param1 getToken] getValue]
+    set value4 [[$param1 getToken] stringValue]
 
     set name5 [$param3 getFullName]
-    set value5 [[$param3 getToken] getValue]
+    set value5 [[$param3 getToken] stringValue]
 
     list $name1 $value1 $name2 $value2 $name3 $value3 $name4 $value4 $name5 $value5 
-} {.parent.id1 1.1 .parent.id2 9.9 .parent.id3 11.0 .parent.id1 5.5 .parent.id3 15.4}
+} {.parent.id1 1.1 .parent.id2 9.9 .parent.id3 11 .parent.id1 5.5 .parent.id3 15.4}
 
 #################################
 ####
