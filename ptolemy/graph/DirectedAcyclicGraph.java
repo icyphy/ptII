@@ -306,14 +306,15 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
      *  @return The objects in there sorted order.
      */
     public Object[] topologicalSort(Object[] objs) {
+        _check();
         int N = objs.length;
         int[] ids = new int[N];
         for (int i = 0; i < N; i++) {
             ids[i] = _getNodeId(objs[i]);
         }
-        for (int i = 0; i < N; i++) {
+        for (int i = 0; i < N-1; i++) {
             for (int j = i+1; j < N; j++) {
-                if(_compareNodeId(ids[i], ids[j]) == LOWER) {
+                if(_compareNodeId(ids[i], ids[j]) == HIGHER) {
                     //swap
                     int tmp = ids[i];
                     ids[i] = ids[j];
