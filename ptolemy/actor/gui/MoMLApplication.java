@@ -210,23 +210,52 @@ public class MoMLApplication {
      *   a URL.
      */
     public static URL specToURL(String spec) throws IOException {
+	// FIXME: There is a bit of a design flaw here because
+	// we open a stream to the url (which is probably expensive)
+	// and then close it.  The reason for opening the stream
+	// is that we want to be sure that the URL is valid,
+	// and if it is not, we check the local file system
+	// and the classpath.
+
+	// One solution would be to have a method that returned a
+	// URLConnection because we can open a stream with a
+	// URLConnection and still get the original URL if necessary
+	URL specURL = null;
         try {
             // First argument is null because we are only
             // processing absolute URLs this way.  Relative
             // URLs are opened as ordinary files.
-            return new URL(null, spec);
-        } catch (MalformedURLException ex) {
+	    specURL = new URL(null, spec);
+
+	    // Make sure that the specURL actually exists
+	    InputStream urlStream = specURL.openStream();
+	    urlStream.close();
+	    return specURL;
+        } catch (Exception ex) {
             try {
+		// Try as a regular file
                 File file = new File(spec);
+
+		// Oddly, under Windows file.exists() might return even
+		// though the file does not exist if we changed user.dir.
+		// See
+		// http://forum.java.sun.com/thread.jsp?forum=31&thread=328939
+		// One hack is to convert to an absolute path first
+		File absoluteFile = file.getAbsoluteFile();
                 try {
-                    if (!file.exists()) {
-                        throw new MalformedURLException();
+                    if (!absoluteFile.exists()) {
+                        throw new IOException();
                     }
                 } catch (java.security.AccessControlException accessControl) {
-                    throw new MalformedURLException();
+                    throw new IOException();
                 }
-                return file.getCanonicalFile().toURL();
-            } catch (MalformedURLException ex2) {
+		specURL = absoluteFile.getCanonicalFile().toURL();
+
+		//InputStream urlStream = specURL.openStream();
+		//urlStream.close();
+
+                return specURL;
+            } catch (Exception ex2) {
                 try {
                     // Try one last thing, using the classpath.
                     // Need a class context, and this is a static method, so...
@@ -239,14 +268,14 @@ public class MoMLApplication {
 
                     //Class refClass = Class.forName(
                     //        "ptolemy.kernel.util.NamedObj");
-                    //URL inURL = refClass.getClassLoader().getResource(spec);
+                    //specURL = refClass.getClassLoader().getResource(spec);
 
                     // This works in Web Start, see
                     // http://java.sun.com/products/javawebstart/faq.html#54
-                    URL inURL = Thread.currentThread()
+                    specURL = Thread.currentThread()
                         .getContextClassLoader().getResource(spec);
 
-                    if (inURL == null) {
+                    if (specURL == null) {
                         throw new Exception();
                     } else {
 			// If we have a jar URL, convert spaces to %20
@@ -255,8 +284,11 @@ public class MoMLApplication {
 			// Start cache is in a directory that has
 			// spaces in the path, which is the default
 			// under Windows.
-			inURL = JNLPUtilities.canonicalizeJarURL(inURL);
-                        return inURL;
+			specURL = JNLPUtilities.canonicalizeJarURL(specURL);
+			// Verify that it can be opened
+			InputStream urlStream = specURL.openStream();
+			urlStream.close();
+                        return specURL;
                     }
                 } catch (Exception exception) {
                     throw new IOException("File not found: " + spec);
@@ -530,27 +562,22 @@ public class MoMLApplication {
     }
 
     /** Read a Configuration from the URL given by the specified string.
-     *  The URL may absolute, or relative to the Ptolemy II tree root.
-     *  @param urlSpec A string describing a URL.
+     *  The URL may absolute, or relative to the Ptolemy II tree root, 
+     *  or in the classpath.  To convert a String to a URL suitable for
+     *  use by this method, call specToURL(String).
+     *  @param specificationURL A string describing a URL.
      *  @return A configuration.
      *  @exception Exception If the configuration cannot be opened, or
      *   if the contents of the URL is not a configuration.
      */
-    protected Configuration _readConfiguration(String urlSpec)
-            throws Exception {
-        URL inURL = specToURL(urlSpec);
+    protected Configuration _readConfiguration(URL specificationURL)
+	throws Exception {
         _parser.reset();
-        Configuration toplevel = null;
-        try {
-            toplevel =
-                (Configuration) _parser.parse(inURL, inURL.openStream());
-        } catch (IOException ex) {
-            // Unfortunately, java.util.zip.ZipException does not
-            // include the file name in JDK1.3.1.
-            // This exception may be thrown under WebStart if
-            // the URL had a %20 in it.
-            throw new IOException("'" + inURL + "' not found: " + ex);
-        }
+
+	Configuration toplevel =  
+	    (Configuration) _parser.parse(specificationURL,
+					  specificationURL.openStream());
+
         // If the toplevel model is a configuration containing a directory,
         // then create an effigy for the configuration itself, and put it
         // in the directory.
@@ -561,7 +588,7 @@ public class MoMLApplication {
                 = new PtolemyEffigy(
                         (ModelDirectory)directory, toplevel.getName());
             effigy.setModel(toplevel);
-            effigy.identifier.setExpression(inURL.toExternalForm());
+            effigy.identifier.setExpression(specificationURL.toExternalForm());
         }
         return toplevel;
     }
