@@ -32,6 +32,8 @@
 
 ME =		ptolemy/copernicus/c/test
 
+DIRS =		FIR
+
 # Root of the Java directory
 ROOT =		../../../..
 
@@ -52,6 +54,7 @@ JSRCS = \
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
+	Object.tcl \
 	Simple.tcl
 
 # Graphical Java tests that use Tcl.
@@ -62,11 +65,14 @@ JGRAPHICAL_TESTS = \
 	dummy.tcl
 
 EXTRA_SRCS = \
+	array.h \
 	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	alljtests.tcl
+MISC_FILES = \
+	$(DIRS) \
+	alljtests.tcl
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
