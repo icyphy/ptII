@@ -102,13 +102,6 @@ public class ProcessThread extends PtolemyThread {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** End the iterations of the actor controlled by this thread
-     *  and prepare to wrapup.
-    public synchronized void finish() {
-        _preparingToWrapup = true;
-    }
-     */
-
     /** Return the actor being executed by this thread
      *  @return The actor being executed by this thread.
      */
@@ -132,18 +125,8 @@ public class ProcessThread extends PtolemyThread {
                     if (_actor.prefire()){
 			_actor.fire();
 			iterate =  _actor.postfire();
-                        System.out.println(_name+" finished an iteration");
 		    }
                     System.out.println(_name+" processThread.iterate = "+iterate);
-// 		    if ( _threadStopRequested && iterate) {
-//  		        _director.registerStoppedThread();
-// 			while( _threadStopRequested ) {
-//                             System.out.println(_name+" thread waiting while stopped.");
-// 			    synchronized(this) {
-//                                 wait();
-// 			    }
-// 			}
-// 		    }
 		}
             }
         } catch (TerminateProcessException t) {
@@ -167,21 +150,8 @@ public class ProcessThread extends PtolemyThread {
             + _director.getName() + "; there are "
             + _director._getActiveActorsCount()+" active actors in "
             + _director.getName() +".");
-            /*
-            System.out.println(name+": has decreased active count; there are "
-            + _director._getActiveActorsCount()+" active actors in "
-            + _director.getName());
-            */
         }
     }
-
-    /** Restart this thread if it has stopped in response to a
-     *  call to stopFire().
-    public synchronized void restartThread() {
- 	_threadStopRequested = false;
-	notifyAll();
-    }
-     */
 
     /** Request that execution of the actor controlled by this
      *  thread stop. Call stopFire() on all composite actors

@@ -120,7 +120,6 @@ public class ProcessDirector extends Director {
         newobj._actorsActive = 0;
         newobj._notDone = true;
         newobj._actorThreadList = new LinkedList();
-	// newobj._actorsStopped = 0;
         return newobj;
     }
 
@@ -133,7 +132,6 @@ public class ProcessDirector extends Director {
 	Workspace workspace = workspace();
         synchronized (this) {
             while( !_areActorsDeadlocked() ) {
-                // while( !_areActorsStopped() && !_areActorsDeadlocked() ) {
 		workspace.wait(this);
             }
             if( _areActorsDeadlocked() ) {
@@ -157,7 +155,6 @@ public class ProcessDirector extends Director {
     public void initialize() throws IllegalActionException {
 	_notDone = true;
 	_actorsActive = 0;
-	// _actorsStopped = 0;
 	_actorThreadList = new LinkedList();
 	_newActorThreadList = new LinkedList();
         CompositeActor container = ((CompositeActor)getContainer());
@@ -328,25 +325,6 @@ public class ProcessDirector extends Director {
     public void wrapup() throws IllegalActionException {
         if( _debugging ) _debug(_name+": calling wrapup()");
         
-// 	// Wake up threads if they are stopped.
-//      ProcessThread thread = null;
-// 	if( _areActorsStopped() ) {
-// 	    Iterator threads = _actorThreadList.iterator();
-// 	    while( threads.hasNext() ) {
-// 		if( _actorsStopped > 0 ) {
-// 		    _actorsStopped--;
-// 		}
-// 		thread = (ProcessThread)threads.next();
-//                 thread.finish();
-// 		thread.restartThread();
-//                 // FIXME: We should also set the local
-//                 // iterate variable of ProcessThread to
-//                 // false here...
-// 	    }
-// 	}
-
-        if( _debugging ) _debug(_name+": finished restarting threads during wrapup");
-        
 	CompositeActor cont = (CompositeActor)getContainer();
         Iterator actors = cont.deepEntityList().iterator();
         Iterator actorPorts;
@@ -403,25 +381,6 @@ public class ProcessDirector extends Director {
 	_actorThreadList.addFirst(thr);
     }
 
-    /** Return true if all of the threads containing actors 
-     *  controlled by this director have stopped due to a call
-     *  of stopFire(). Return true if this director controls
-     *  no actors. Override this method in subclasses to account
-     *  for possible deadlock situations due to additional flags
-     *  that are not present in this base class.
-     * @return True if all actors controlled by this thread 
-     *  have stopped; otherwise return false.
-    protected synchronized boolean _areActorsStopped() {
-	if( _actorsActive == 0 ) {
-	    return true;
-	} else if( _actorsStopped > 0 && _actorsStopped 
-		>= _actorsActive ) {
-	    return true;
-	}
-	return false;
-    }
-     */   
-
     /** Decrease by one the count of active processes under the control of
      *  this director. 
      *  This method should be called only when an active thread that was
@@ -464,14 +423,6 @@ public class ProcessDirector extends Director {
 	    ProcessDirector director) throws IllegalActionException {
 	return new ProcessThread(actor, director);
     }
-
-    /** Return the number of processes stopped because of a call to the
-     *  stopfire method of the process.
-     * @return The number of stopped processes.
-    protected synchronized long _getStoppedProcessesCount() {
-	return _actorsStopped;
-    }
-     */
 
     /** Return true.
      *  In derived classes, override this method to obtain domain
@@ -564,10 +515,6 @@ public class ProcessDirector extends Director {
     //A copy of threads started since the last invocation of prefire().
     private LinkedList _newActorThreadList;
 
-    // A count of the active actors controlled by
-    // this director that have been stopped
-    // private int _actorsStopped = 0;
-    
     
     private String _name = null;
     
