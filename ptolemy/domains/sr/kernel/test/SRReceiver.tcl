@@ -1,8 +1,8 @@
 # Tests for the SRReceiver class
 #
-# @Author: Christopher Hylands, Based on SDFReceiver by Brian K. Vogel
+# @Author: Christopher Hylands, Based on SDFReceiver.tcl by Brian K. Vogel
 #
-# @Version: : NamedObj.tcl,v 1.33 1998/12/05 05:37:32 cxh Exp $
+# @Version: $Id$
 #
 # @Copyright (c) 1999-2002 The Regents of the University of California.
 # All rights reserved.
