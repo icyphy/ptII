@@ -297,7 +297,7 @@ public class ViewerGraphController extends AbstractGraphController {
     ////                          inner classes                    ////
 
     public static class SchematicContextMenuFactory
-	extends PtolemyMenuFactory {
+	    extends PtolemyMenuFactory {
 	public SchematicContextMenuFactory(GraphController controller) {
 	    super(controller);
 	    addMenuItemFactory(new EditParametersFactory());
@@ -311,8 +311,3 @@ public class ViewerGraphController extends AbstractGraphController {
 	}
     }
 }
-
-
-
-
-
