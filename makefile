@@ -88,6 +88,7 @@ PTCLASSALLJARS = \
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
 EXTRA_SRCS = \
+	.classpath.in \
 	README.txt \
 	copyright.txt \
 	configure.in \
@@ -110,6 +111,7 @@ MISC_FILES = \
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
+	.classpath \
 	adm \
 	config.log \
 	config.status \
