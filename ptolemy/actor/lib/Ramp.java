@@ -176,6 +176,7 @@ public class Ramp extends SequenceSource {
      *  performed.
      */
     public int iterate(int count) throws IllegalActionException {
+	super.iterate(count);
 	// Check whether we need to reallocate the output token array.
 	if (count > _resultArray.length) {
 	    _resultArray = new Token[count];
