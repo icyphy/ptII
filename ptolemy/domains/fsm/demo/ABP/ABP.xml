@@ -28,20 +28,20 @@
     </property>
     <property name="stopTime" class="ptolemy.data.expr.Parameter" value="100.0">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[528, 491]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[528, 564]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[129, 365]">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {9, 10, 743, 600}, maximized = false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {342, 70, 743, 682}, maximized = false}">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{264.0, 245.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{264.0, 282.0}">
     </property>
     <property name="annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model demonstrates the use of the discrete event (DE) domain&#10;and hierarchical finite state machines (FSMs) to model the alternating&#10;bit protocol (ABP). ABP is a simple mechanism for achieving reliable,&#10;ordered delivery of messages over channels with unreliable delivery and&#10;variable delay.&#10;This demos shows that:&#10;* Hierarchical FSM's can efficiently capture complex sequential control behavior.&#10;* Embedding FSM's within other models of computation is a clean and flexible&#10;way to model the concurrent execution of FSM's.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model demonstrates the use of the discrete event (DE) domain&#10;and hierarchical finite state machines (FSMs) to model the alternating&#10;bit protocol (ABP). ABP is a simple mechanism for achieving reliable,&#10;ordered delivery of messages over channels with unreliable delivery and&#10;variable delay.&#10;&#10;This demo shows that:&#10;* Hierarchical FSMs can efficiently capture complex sequential control behavior.&#10;* Embedding FSMs within other models of computation is a clean and flexible&#10;way to model the concurrent execution of FSMs.&#10;&#10;A detailed discussion of this model is in&#10;$PTII/ptolemy/domains/fsm/demo/ABP/ABP.htm&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 320.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 325.0]">
         </property>
     </property>
     <entity name="MessageSource" class="ptolemy.domains.fsm.demo.ABP.DEMessageSource">
