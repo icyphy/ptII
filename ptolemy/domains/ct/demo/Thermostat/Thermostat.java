@@ -150,11 +150,11 @@ public class Thermostat extends CTApplet {
              //hsdir.addDebugListener(new StreamListener());
              
              CTCompositeActor ctInc = new CTCompositeActor(hs, "Increasing");
-             CTZeroOrderHold ctIncH = new CTZeroOrderHold(ctInc, "Hold");
+             ZeroOrderHold ctIncH = new ZeroOrderHold(ctInc, "Hold");
              Integrator ctIncI = new Integrator(ctInc, "Integrator");
              //ctIncI.addDebugListener(new StreamListener());
-             CTZeroCrossingDetector ctIncD =
-                     new CTZeroCrossingDetector(ctInc, "ZD");
+             ZeroCrossingDetector ctIncD =
+                     new ZeroCrossingDetector(ctInc, "ZD");
              //ctIncD.addDebugListener(new StreamListener());
              Expression ctIncGF =
                      new Expression(ctInc, "EXPRESSION");
@@ -198,11 +198,11 @@ public class Thermostat extends CTApplet {
              //ctIncDir.addDebugListener(dbl);
              //System.out.println(ctIncDir.getScheduler().toString());
              CTCompositeActor ctDec = new CTCompositeActor(hs, "Decreasing");
-             CTZeroOrderHold ctDecH = new CTZeroOrderHold(ctDec, "Hold");
+             ZeroOrderHold ctDecH = new ZeroOrderHold(ctDec, "Hold");
              Integrator ctDecI = new Integrator(ctDec, "Integrator");
              Scale ctGain = new Scale(ctDec, "Gain");
-             CTZeroCrossingDetector ctDecD =
-                     new CTZeroCrossingDetector(ctDec, "ZD");
+             ZeroCrossingDetector ctDecD =
+                     new ZeroCrossingDetector(ctDec, "ZD");
              
              Expression ctDecGF =
                      new Expression(ctDec, "EXPRESSION");

@@ -127,7 +127,7 @@ public class SigmaDeltaApplet extends CTApplet {
 
             CurrentTime time = new CurrentTime(ctsub, "CurTime");
             Sine sine = new Sine(ctsub, "Sine");
-            CTZeroOrderHold hold = new CTZeroOrderHold(ctsub, "Hold");
+            ZeroOrderHold hold = new ZeroOrderHold(ctsub, "Hold");
             AddSubtract add1 = new AddSubtract(ctsub, "Add1");
 
             Integrator intgl1 = new Integrator(ctsub, "Integrator1");

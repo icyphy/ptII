@@ -569,8 +569,8 @@ public class HelicopterApplet extends CTApplet {
         // ---------------------------------
 
         CTActor lin = null;
-        CTThresholdMonitor mon1 = null;
-        CTThresholdMonitor mon2 = null;
+        ThresholdMonitor mon1 = null;
+        ThresholdMonitor mon2 = null;
         switch (code) {
         case 0: // hover state
             sub.setName("HoverCTSub");
@@ -579,19 +579,19 @@ public class HelicopterApplet extends CTApplet {
         case 1: // acc state
             sub.setName("AccelCTSub");
             lin = new AccelerLinearizer(sub, "Accel");
-            mon1 = new CTThresholdMonitor(sub, "Mon1");
+            mon1 = new ThresholdMonitor(sub, "Mon1");
             break;
         case 2: // first cruise state
             sub.setName("Cruise1CTSub");
             lin = new CruiseLinearizer(sub, "Cruise1");
-            mon1 = new CTThresholdMonitor(sub, "Mon1");
-            mon2 = new CTThresholdMonitor(sub, "Mon2");
+            mon1 = new ThresholdMonitor(sub, "Mon1");
+            mon2 = new ThresholdMonitor(sub, "Mon2");
             break;
         case 3: // climb state
             sub.setName("ClimbCTSub");
             lin = new ClimbLinearizer(sub, "Climb");
-            mon1 = new CTThresholdMonitor(sub, "Mon1");
-            mon2 = new CTThresholdMonitor(sub, "Mon2");
+            mon1 = new ThresholdMonitor(sub, "Mon1");
+            mon2 = new ThresholdMonitor(sub, "Mon2");
             break;
         case 4: // second cruise state
             sub.setName("Cruise2CTSub");
@@ -605,16 +605,16 @@ public class HelicopterApplet extends CTApplet {
             break;
         }
 
-        CTZeroOrderHold hPx = new CTZeroOrderHold(sub, "HPx");
-        CTZeroOrderHold hDPx = new CTZeroOrderHold(sub, "HDPx");
-        CTZeroOrderHold hDDPx = new CTZeroOrderHold(sub, "HDDPx");
-        CTZeroOrderHold hD3Px = new CTZeroOrderHold(sub, "HD3Px");
-        CTZeroOrderHold hD4Px = new CTZeroOrderHold(sub, "HD4Px");
-        CTZeroOrderHold hPz = new CTZeroOrderHold(sub, "HPz");
-        CTZeroOrderHold hDPz = new CTZeroOrderHold(sub, "HDPz");
-        CTZeroOrderHold hDDPz = new CTZeroOrderHold(sub, "HDDPz");
-        CTZeroOrderHold hD3Pz = new CTZeroOrderHold(sub, "HD3Pz");
-        CTZeroOrderHold hD4Pz = new CTZeroOrderHold(sub, "HD4Pz");
+        ZeroOrderHold hPx = new ZeroOrderHold(sub, "HPx");
+        ZeroOrderHold hDPx = new ZeroOrderHold(sub, "HDPx");
+        ZeroOrderHold hDDPx = new ZeroOrderHold(sub, "HDDPx");
+        ZeroOrderHold hD3Px = new ZeroOrderHold(sub, "HD3Px");
+        ZeroOrderHold hD4Px = new ZeroOrderHold(sub, "HD4Px");
+        ZeroOrderHold hPz = new ZeroOrderHold(sub, "HPz");
+        ZeroOrderHold hDPz = new ZeroOrderHold(sub, "HDPz");
+        ZeroOrderHold hDDPz = new ZeroOrderHold(sub, "HDDPz");
+        ZeroOrderHold hD3Pz = new ZeroOrderHold(sub, "HD3Pz");
+        ZeroOrderHold hD4Pz = new ZeroOrderHold(sub, "HD4Pz");
 
         sub.connect(hPx.input, subinPx);
         sub.connect(hDPx.input, subinDPx);
