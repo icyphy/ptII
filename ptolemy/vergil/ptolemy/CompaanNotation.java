@@ -160,7 +160,7 @@ public class CompaanNotation extends Attribute implements VisualNotation {
                                 d.getApplication())); 
             }                
             catch (Exception e) {
-                d.getApplication().showError("Failed to create Manager", e);
+                ExceptionHandler.show("Failed to create Manager", e);
             }
         }
 

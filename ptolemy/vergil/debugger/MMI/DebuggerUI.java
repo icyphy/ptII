@@ -710,7 +710,7 @@ public class DebuggerUI extends JFrame
 			timer.setRepeats(false);
 			timer.start();
 		    } catch (Exception ex) {
-			VergilApplication.getInstance().showError("Execution Failed", ex);
+			ExceptionHandler.show("Execution Failed", ex);
 		    }
 		}
 	    });

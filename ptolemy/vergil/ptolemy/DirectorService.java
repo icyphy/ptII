@@ -105,7 +105,7 @@ public class DirectorService extends AbstractService {
 	    addDirector(dir);
 	}
 	catch (Exception ex) {
-	    getApplication().showError("Director combobox creation failed", ex);
+	    ExceptionHandler.show("Director combobox creation failed", ex);
 	}
 	//FIXME find these names somehow.
 	_directorComboBox = new JComboBox(_directorModel);
@@ -181,7 +181,6 @@ public class DirectorService extends AbstractService {
 	    }
 	};
 	application.addDocumentListener(ldl);
-
     }
 
     /**

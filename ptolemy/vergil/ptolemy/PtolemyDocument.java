@@ -462,7 +462,7 @@ public class PtolemyDocument extends AbstractDocument
                 new ptolemy.vergil.ptolemy.fsm.PtolemyFSMNotation(toplevel, 
                         "notation");
             } catch (Exception e) {
-                app.showError("Failed to create new model", e);
+                ExceptionHandler.show("Failed to create new model", e);
                 return null;
             }
             d.setModel(toplevel);

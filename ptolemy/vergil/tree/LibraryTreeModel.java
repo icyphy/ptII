@@ -30,21 +30,14 @@
 
 package ptolemy.vergil.tree;
 
-// FIXME: trim this.
-import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.moml.MoMLParser;
-
-import diva.gui.Application;
+import ptolemy.vergil.ExceptionHandler;
 
 import java.net.URL;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import javax.swing.JTree;
-import javax.swing.event.TreeModelEvent;
-import javax.swing.event.TreeModelListener;
-import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 
 //////////////////////////////////////////////////////////////////////////
@@ -98,11 +91,9 @@ public class LibraryTreeModel extends EntityTreeModel {
     /** Create a JTree object to display this library, and populate it
      *  with the master actor library given in the specified URL. 
      *  If the JTree object has already been created, then simply return it.
-     *  @param application The application, for error reporting, or null
-     *   to send errors to the standard error stream.
      *  @param entitylibURL The URL to load the entity library from.
      */
-    public static JTree createTree(Application application, URL entitylibURL) {
+    public static JTree createTree(URL entitylibURL) {
 	// FIXME: perhaps this should clear the tree and reparse?
         if (instance._pTree != null) return instance._pTree;
         // If this fails, we don't really want to throw an exception
@@ -118,12 +109,7 @@ public class LibraryTreeModel extends EntityTreeModel {
                     entitylibURL, entitylibURL.openStream());
             instance._directory.add(instance._masterLibrary);
         } catch (Exception ex) {
-            if (application != null) {
-                application.showError(
-                        "Failed to open the master library: ", ex);
-            } else {
-                System.err.println("Failed to open the master library:\n" + ex);
-            }
+            ExceptionHandler.show("Failed to open the master library: ", ex);
         }
 
         instance._pTree = new PTree(instance);

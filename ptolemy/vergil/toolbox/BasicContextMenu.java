@@ -158,7 +158,7 @@ public class BasicContextMenu extends JPopupMenu {
                         panel.restore();
                     }
                 } catch (IllegalActionException ex) {
-                    _application.showError("Edit Parameters failed", ex);
+                    ExceptionHandler.show("Edit Parameters failed", ex);
                 }
 	    }
 	};
@@ -182,7 +182,7 @@ public class BasicContextMenu extends JPopupMenu {
                         panel.restore();
                     }
                 } catch (IllegalActionException ex) {
-		    _application.showError("Edit Parameter Style failed", ex);
+		    ExceptionHandler.show("Edit Parameter Style failed", ex);
                 }
 	    }
 	};

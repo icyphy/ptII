@@ -120,8 +120,7 @@ public class FSMGraphController extends FSMViewerController {
                 link = new Arc(container, container.uniqueName("link"));
             }
             catch (Exception ex) {
-		VergilApplication.getInstance().showError(
-		    "Create relation failed:", ex);
+		ExceptionHandler.show("Create relation failed:", ex);
 		return;
 	    }
 	    // Add it to the editor

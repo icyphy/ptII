@@ -30,8 +30,9 @@
 
 package ptolemy.vergil.toolbox;
 
-import javax.swing.*;
+// FIXME: Trim this.
 import diva.gui.toolbox.*;
+
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.actor.*;
@@ -39,7 +40,10 @@ import ptolemy.actor.gui.style.*;
 import ptolemy.data.expr.*;
 import ptolemy.gui.ComponentDialog;
 import ptolemy.vergil.VergilApplication;
+import ptolemy.vergil.ExceptionHandler;
+
 import java.awt.event.*;
+import javax.swing.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// EditParametersFactory
@@ -76,7 +80,7 @@ public class EditParameterStylesFactory extends MenuItemFactory {
                         panel.restore();
                     }
                 } catch (IllegalActionException ex) {
-		    VergilApplication.getInstance().showError("Edit Parameter Style failed", ex);
+		    ExceptionHandler.show("Edit Parameter Style failed", ex);
                 }
 	    }
 	};

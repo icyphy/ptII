@@ -210,14 +210,14 @@ public class PtolemyModule implements Module {
                     iconlibURL, iconlibURL.openStream());
             LibraryIcon.setIconLibrary(_iconLibrary);
         } catch (Exception e) {
-           getApplication().showError("Failed to parse icon library", e);
+           ExceptionHandler.show("Failed to parse icon library", e);
         }
    
 	// Get the url for the entity library.
 	URL entityLibURL = 
 	    getModuleResources().getResource("rootEntityLibrary");
 	// Create the library browser.
-	JTree pTree = LibraryTreeModel.createTree(application, entityLibURL);
+	JTree pTree = LibraryTreeModel.createTree(entityLibURL);
         pTree.setBackground(BACKGROUND_COLOR);
         JScrollPane scrollPane = new JScrollPane(pTree);
         scrollPane.setMinimumSize(new Dimension(200, 200));
@@ -428,7 +428,7 @@ public class PtolemyModule implements Module {
 		timer.setRepeats(false);
 		timer.start();
 	    } catch (Exception ex) {
-		getApplication().showError("Execution Failed", ex);
+		ExceptionHandler.show("Execution Failed", ex);
 	    }	    
 	}
     }
@@ -587,7 +587,7 @@ public class PtolemyModule implements Module {
 
         // Defer to the application to display the error to the user.
 	public void executionError(Manager manager, Exception exception) {
-	    _application.showError(manager.getName(), exception);
+	    ExceptionHandler.show(manager.getName(), exception);
 	}
 	
 	// Do nothing when execution finishes
@@ -765,7 +765,7 @@ public class PtolemyModule implements Module {
         try {
             layout.layout(model.getRoot());
         } catch (Exception e) {
-            getApplication().showError("Layout failed", e);
+            ExceptionHandler.show("Layout failed", e);
         }
         jgraph.repaint();
     }
