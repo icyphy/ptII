@@ -439,7 +439,7 @@ Berkeley, CA 94706</property>
             <property name="navigationOptions">0</property>
             <property name="text"/>
             <property name="textSource">2</property>
-            <property name="fileName">c:\users\cxh\ptII\adm\gen-1.0\installshield\ptiny\copyright.txt</property>
+            <property name="fileName">C:\users\cxh\ptII\adm\trees\ptII1.0beta\ptolemy\plot\adm\tmp\ptplot5.1\copyright.txt</property>
             <property name="includeLocalizedFiles">False</property>
             <property name="contentType">1</property>
             <property name="approveCaption">$L(com.installshield.product.i18n.ProductResources, LicensePanel.approval)</property>

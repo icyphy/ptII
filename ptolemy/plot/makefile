@@ -369,8 +369,8 @@ fixtmpdist:
 
 
 
-ISPMP_PROJECT_DIR= [cC]:\\users\\cxh\\ptII\\adm\\trees\\ptII1.0beta\\ptolemy\\plot\\
-ISPMP_WINDOWS_SRC= $(IPMP_PROJECT_DIR)\\adm\\tmp\\$(PTDIST)
+ISPMP_PROJECT_DIR= [cC]:\\users\\cxh\\ptII\\adm\\trees\\ptII1.0beta\\ptolemy\\plot
+ISPMP_WINDOWS_SRC= $(ISPMP_PROJECT_DIR)\\adm\\tmp\\$(PTDIST)
 # Run this on doppler with:
 # rm unixPtiny.xml; make PTIIHOME=/home/eecs/cxh/ptII build_unixPtiny
 unix$(INSTALLSHIELD_PROJECT):  $(INSTALLSHIELD_PROJECT)
