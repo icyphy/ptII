@@ -28,10 +28,7 @@
      </property>
 </entity>
 
-<entity name="Latch" class="ptolemy.domains.sr.lib.Latch">
-</entity>
-
-<entity name="NonStrictClient" class="ptolemy.domains.sr.lib.NonStrictClient">
+<entity name="InstantaneousDialogGenerator" class="ptolemy.domains.sr.lib.InstantaneousDialogGenerator">
 </entity>
 
 <entity name="NonStrictDelay" class="ptolemy.domains.sr.lib.NonStrictDelay">
@@ -60,15 +57,6 @@
 </entity>
 
 <entity name="NonStrictThreeBitAdder" class="ptolemy.domains.sr.lib.NonStrictThreeBitAdder">
-</entity>
-
-<entity name="SequenceTest" class="ptolemy.domains.sr.lib.SequenceTest">
-</entity>
-
-<entity name="Server" class="ptolemy.domains.sr.lib.Server">
-</entity>
-
-<entity name="SingleTokenDistributor" class="ptolemy.domains.sr.lib.SingleTokenDistributor">
 </entity>
 
 <entity name="Undefined" class="ptolemy.domains.sr.lib.Undefined">
