@@ -32,14 +32,15 @@ import ptolemy.domains.de.kernel.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
+import ptolemy.data.expr.Parameter;
 import ptolemy.plot.*;
 import java.awt.*;
+import java.util.*;
 
 //////////////////////////////////////////////////////////////////////////
-//// ABPPlot
+//// DEPlot
 /**
 A plotter for discrete-event signals.
-Adapted from DEPlot to add handling of IntTokens.
 
 @author Lukito Muliadi, Edward A. Lee, Xiaojun Liu
 @version $Id$
@@ -78,10 +79,16 @@ public class ABPPlot extends DEActor {
         input.setMultiport(true);
 
         _plot = plot;
-
+        
         // FIXME: This is not the right way to handle this...
-        _yMin = (double)-1;
-        _yMax = (double)1;
+       String legends = new String("");
+        _yMin = (double)-1.0;
+        _yMax = (double)1.0;
+        _paramLegends = new Parameter(this, "Legends", 
+                new StringToken(legends));
+        _paramYMin = new Parameter(this, "Y_Min", new DoubleToken(_yMin));
+        _paramYMax = new Parameter(this, "Y_Max", new DoubleToken(_yMax));
+       
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -94,7 +101,7 @@ public class ABPPlot extends DEActor {
 
         if (_plot == null) {
             _plot = new Plot();
-            (new PlotFrame(getName())).plot = _plot;
+            new PlotFrame(getName(), _plot);
         }
 
         _plot.clear(true);
@@ -103,7 +110,19 @@ public class ABPPlot extends DEActor {
         _plot.setImpulses(true);
         _plot.setConnected(false);
         _plot.setTitle(getName());
-
+        // parameters
+        _yMin = ((DoubleToken)_paramYMin.getToken()).doubleValue();
+        _yMax = ((DoubleToken)_paramYMax.getToken()).doubleValue();
+        String legs = ((StringToken)_paramLegends.getToken()).stringValue();
+        if(!legs.equals("")) {
+            StringTokenizer stokens = new StringTokenizer(legs);
+            int index = 0;
+            _legends = new String[stokens.countTokens()];
+            while(stokens.hasMoreTokens()) {
+                 _legends[index++]= stokens.nextToken();
+            }
+        }   
+        
 	for (int i = 0; i < input.getWidth(); i++) {
             if (_legends != null && i < _legends.length && _legends[i].length() != 0) {
                 _plot.addLegend(i, _legends[i]);
@@ -146,7 +165,7 @@ public class ABPPlot extends DEActor {
                 // channel i is not empty, get all the tokens in it.
                 while (input.hasToken(i)) {
                     Token curToken = input.get(i);
-
+                    
                     if (curToken instanceof DoubleToken) {
                         _processDoubleToken(i, curTime, (DoubleToken)curToken);
                     } else if (curToken instanceof IntToken) {
@@ -204,15 +223,15 @@ public class ABPPlot extends DEActor {
     ////                         protected methods                      ////
 
     /** Process input tokens that are instances of DoubleToken.
-     *
+     *  
      * @param channel The channel number
      * @param curTime The current time of the simulation
      * @param token The input token that is an instance of DoubleToken
-     */
-    protected void _processDoubleToken(int channel,
-            double curTime,
+     */	
+    protected void _processDoubleToken(int channel, 
+            double curTime, 
             DoubleToken token) {
-
+        
         double curValue = token.doubleValue();
 
         // update the y range
@@ -238,7 +257,7 @@ public class ABPPlot extends DEActor {
                     ", CurrentValue = " + curValue + ".");
         }
         _plot.addPoint(channel, curTime, curValue, false);
-
+        
     }
 
     protected void _processIntToken(int channel,
@@ -274,15 +293,15 @@ public class ABPPlot extends DEActor {
     }
 
     /** Process pure token, i.e. typeless token.
-     *
+     *  
      * @param channel The channel number
      * @param curTime The current time of the simulation
      * @param token The input token
-     */
-    protected void _processPureToken(int channel,
-            double curTime,
+     */	
+    protected void _processPureToken(int channel, 
+            double curTime, 
             Token token) {
-
+        
         double curValue = channel;
 
         // update the y range
@@ -308,8 +327,8 @@ public class ABPPlot extends DEActor {
                     ", CurrentValue = " + curValue + ".");
         }
         _plot.addPoint(channel, curTime, curValue, false);
-
-    }
+        
+    }   
 
     ///////////////////////////////////////////////////////////////////
     ////                         public members                    ////
@@ -320,12 +339,19 @@ public class ABPPlot extends DEActor {
     ////                         private variables                 ////
 
     private String[] _legends;
-
-
-    private Plot _plot;
+    private Parameter _paramLegends;
 
     private double _yMin;
+    private Parameter _paramYMin;
     private double _yMax;
+    private Parameter _paramYMax;
+
+    //private double _xMin;
+    //private Parameter _paramXMin;
+    //private double _xMax;
+    //private Parameter _paramXMax;
+
+    private Plot _plot;
 
     private boolean[] _firstPoint;
 
