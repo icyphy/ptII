@@ -232,7 +232,8 @@ X10_JAR="@X10_CLASSES@"
 
 #### Chic stuff
 # The Chic jar file.
-CHIC_JAR="${PTII}/lib/chic.jar"
+CHIC_DIR="@CHIC_DIR@"
+CHIC_JAR="${CHIC_DIR}/chic.jar"
 
 #### All the jar files.  Useful for Vergil and ptolemy rules which must load
 # arbitrary files
@@ -772,7 +773,8 @@ if [ "$base" = "decompile" -a ! -f "$JODE_JAR" ]; then
 
 else
     # If JAVAHOME has spaces in it, we need to jump through hoops
-    str="\"$javac\" $jdbflags $javaflag $ptflag $USERJAVAPROPERTIES $JAVAFLAGS $J141BUGWORKAROUND -classpath \"$CLASSPATH\" $javastartupclass $applicationflags ${1+"$@"}"
+    # Use double quotes around ptflag to handle the case where PTII=c:\\ptII
+    str="\"$javac\" $jdbflags $javaflag \"$ptflag\" $USERJAVAPROPERTIES $JAVAFLAGS $J141BUGWORKAROUND -classpath \"$CLASSPATH\" $javastartupclass $applicationflags ${1+"$@"}"
 fi 
 if [ "$quiet" = "0" ]; then echo $str;fi
 eval exec $str
