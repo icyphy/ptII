@@ -51,7 +51,7 @@ ME =		ptolemy/actor/lib
 # $PTII/configure looks for JXTA and sets PTJXTA_DIR in
 # $PTII/mk/ptII.mk if it was found.  Otherwise, PTJXTA_DIR is empty.
 
-DIRS = 		conversions gui logic hoc image javasound net io \
+DIRS = 		conversions gui logic hoc image javasound net io xslt \
 		test comm $(PTJAI_DIR) \
 		$(PTJMF_DIR) $(PTJOYSTICK_DIR) \
 		$(PTJYTHON_DIR) $(PTJXTA_DIR) #$(PTJSPACES_DIR)
@@ -81,7 +81,8 @@ PTCLASSALLJARS = \
 	io/io.jar \
 	logic/logic.jar \
 	javasound/javasound.jar \
-	net/net.jar
+	net/net.jar \
+	xslt/xslt.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
@@ -210,7 +211,7 @@ OTHER_FILES_TO_BE_JARED = \
 	statistical.xml \
 	test.xml \
 	timedsinks.xml \
-	timedsources.xml
+	timedsources.xml \
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
