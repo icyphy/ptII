@@ -43,7 +43,6 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE =     demo
-PTDIST =        $(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR =    $(PTPACKAGE).jar
 
 JSRCS = \
@@ -65,7 +64,7 @@ JCLASS = $(JSRCS:%.java=%.class)
 all: jclass
 	@echo "To run all the demos, run 'make demo'"
 
-install: jclass jars
+install: jclass $(PTCLASSJAR)
 
 demo: subdemo
 
