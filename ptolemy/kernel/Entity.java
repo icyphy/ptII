@@ -38,11 +38,13 @@ import collections.LinkedList;
 /** 
 An Entity is a vertex in a flat graph. It incorporates the notion of graph 
 connections and disconnections. Relation is the equivalent of a graph edge.
-Entities and Relations are linked together via Ports.
+Entities and Relations are linked together via Ports. Entities own Ports
+via a NamedObjList of Ports. Relations can not own Ports.
 @author John S. Davis II
 @version $Id$
 @see Port
 @see Relation
+@see NamedObjList
 */
 public class Entity extends NamedObj { 
     /** 
