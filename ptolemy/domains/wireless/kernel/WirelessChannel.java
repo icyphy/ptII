@@ -385,10 +385,11 @@ public class WirelessChannel extends TypedAtomicActor {
     protected List _receiversInRange(
             WirelessIOPort sourcePort, Token properties)
             throws IllegalActionException {
-        if (workspace().getVersion() == _receiversInRangeListVersion) {
-            return _receiversInRangeList;
-        }
-        _receiversInRangeList = new LinkedList();
+        // NOTE: Cannot cache this. Properties parameter of the transmitting
+        // port may have changed, and the workspace version would not be
+        // incremented.  But anyway, how could this be independent of
+        // the sourcePort?
+        List receiversInRangeList = new LinkedList();
         Iterator ports = listeningInputPorts().iterator();
         while (ports.hasNext()) {
             WirelessIOPort port = (WirelessIOPort)ports.next();
@@ -400,7 +401,7 @@ public class WirelessChannel extends TypedAtomicActor {
                 Receiver[][] receivers = port.getReceivers();
                 for (int i = 0; i < receivers.length; i++) {
                     for (int j = 0; j < receivers[i].length; j++) {
-                        _receiversInRangeList.add(receivers[i][j]);
+                        receiversInRangeList.add(receivers[i][j]);
                     }
                 }
             }
@@ -413,13 +414,12 @@ public class WirelessChannel extends TypedAtomicActor {
                 Receiver[][] receivers = port.getInsideReceivers();
                 for (int i = 0; i < receivers.length; i++) {
                     for (int j = 0; j < receivers[i].length; j++) {
-                        _receiversInRangeList.add(receivers[i][j]);
+                        receiversInRangeList.add(receivers[i][j]);
                     }
                 }
             }
         }
-        _receiversInRangeListVersion = workspace().getVersion();
-        return _receiversInRangeList;
+        return receiversInRangeList;
     }
     
     /** Transform the properties to take into account channel losses,
@@ -489,10 +489,6 @@ public class WirelessChannel extends TypedAtomicActor {
         
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-    // Cached port list.
-    private List _receiversInRangeList;
-    private long _receiversInRangeListVersion = -1;
 
     // Name of the location attribute.
     private static final String LOCATION_ATTRIBUTE_NAME = "_location";
