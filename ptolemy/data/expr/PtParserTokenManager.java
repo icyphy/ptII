@@ -106,12 +106,12 @@ private final int jjMoveStringLiteralDfa0_0()
       case 58:
          return jjStopAtPos(0, 41);
       case 59:
-         return jjStopAtPos(0, 48);
+         return jjStopAtPos(0, 49);
       case 60:
          jjmatchedKind = 17;
          return jjMoveStringLiteralDfa1_0(0x80000L);
       case 61:
-         jjmatchedKind = 50;
+         jjmatchedKind = 48;
          return jjMoveStringLiteralDfa1_0(0x200000L);
       case 62:
          jjmatchedKind = 16;
@@ -121,7 +121,7 @@ private final int jjMoveStringLiteralDfa0_0()
       case 91:
          return jjStopAtPos(0, 46);
       case 93:
-         return jjStopAtPos(0, 49);
+         return jjStopAtPos(0, 50);
       case 94:
          return jjStopAtPos(0, 15);
       case 123:
@@ -826,7 +826,7 @@ public static final String[] jjstrLiteralImages = {
 "\57", "\45", "\136", "\76", "\74", "\76\75", "\74\75", "\41\75", "\75\75", "\46\46", 
 "\174\174", "\41", "\176", "\46", "\174", "\43", null, null, null, null, null, null, null, 
 null, null, null, null, "\77", "\72", "\56", "\50", "\54", "\51", "\133", "\173", 
-"\73", "\135", "\75", "\175", };
+"\75", "\73", "\135", "\175", };
 public static final String[] lexStateNames = {
    "DEFAULT", 
    "IN_SINGLE_LINE_COMMENT", 

@@ -1,4 +1,4 @@
-/* ASTPtRecordConstructNode represents record construction in the parse tree.
+/* ASTPtArrayConstructNode represents array construction in the parse tree.
 
  Copyright (c) 2000 The Regents of the University of California.
  All rights reserved.
@@ -40,18 +40,12 @@ import ptolemy.graph.CPO;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 
-import java.util.LinkedList;
-import java.util.Iterator;
-
 //////////////////////////////////////////////////////////////////////////
-//// ASTPtRecordConstructNode
+//// ASTPtArrayConstructNode
 /**
 The parse tree created from the expression string consists of a
-hierarchy of node objects. This class represents record construction using
-the following syntax: <code>{foo = "abc", bar = 1}</code>. The result of
-parsing and evaluating this expression is a record token with two fields:
-a field <i>foo</i> containing a StringToken of value "abc", and a field
-<i>bar</i> containing a IntToken of value 1.
+hierarchy of node objects. This class represents array construction using
+the following syntax: <code>{"a", "b"}</code>.
 
 @author Xiaojun Liu
 @version $Id$
@@ -59,43 +53,28 @@ a field <i>foo</i> containing a StringToken of value "abc", and a field
 @see ptolemy.data.expr.PtParser
 @see ptolemy.data.Token
 */
-public class ASTPtRecordConstructNode extends ASTPtRootNode {
+public class ASTPtArrayConstructNode extends ASTPtRootNode {
 
-    public ASTPtRecordConstructNode(int id) {
+    public ASTPtArrayConstructNode(int id) {
         super(id);
     }
 
-    public ASTPtRecordConstructNode(PtParser p, int id) {
+    public ASTPtArrayConstructNode(PtParser p, int id) {
         super(p, id);
     }
 
     public static Node jjtCreate(int id) {
-        return new ASTPtRecordConstructNode(id);
+        return new ASTPtArrayConstructNode(id);
     }
 
     public static Node jjtCreate(PtParser p, int id) {
-        return new ASTPtRecordConstructNode(p, id);
+        return new ASTPtArrayConstructNode(p, id);
     }
 
     protected ptolemy.data.Token _resolveNode() throws IllegalActionException {
-	int numFields = _fieldNames.size();
-	if (numFields != jjtGetNumChildren()) {
-	    throw new InternalErrorException("The number of labels and values "
-                    + "does not match in parsing a record expression.");
-	}
-	String[] labels = new String[numFields];
-	int i = 0;
-	Iterator fields = _fieldNames.iterator();
-	while (fields.hasNext()) {
-	    labels[i] = (String)fields.next();
-	    ++i;
-	}
-	_ptToken = new RecordToken(labels, _childTokens);
+	// Create an ArrayToken from the parsed elements.
+	_ptToken = new ArrayToken(_childTokens);
 	return _ptToken;
     }
-
-    /** The list of field names for the record.
-     */
-    protected LinkedList _fieldNames = new LinkedList();
 
 }

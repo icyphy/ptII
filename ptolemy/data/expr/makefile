@@ -54,6 +54,7 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
+	ASTPtArrayConstructNode.java \
 	ASTPtBitwiseNode.java \
 	ASTPtFunctionNode.java \
 	ASTPtFunctionalIfNode.java \

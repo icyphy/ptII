@@ -776,8 +776,12 @@ String tidied, x;
   |   LOOKAHEAD( "[" )
       matrixConstruct()
 
-  |   LOOKAHEAD( "{" )
+  |   LOOKAHEAD( "{" <ID> "=" )
       recordConstruct()
+  
+  |   LOOKAHEAD( "{" )
+      arrayConstruct()
+
 }
 
 void function() #PtFunctionNode :
@@ -878,6 +882,19 @@ void recordConstruct() #PtRecordConstructNode :
         }
       )
       "="
+      funcIf()
+    )*
+    "}"
+}
+
+void arrayConstruct() #PtArrayConstructNode :
+{
+}
+{
+    "{"
+    funcIf()
+    (
+      ","
       funcIf()
     )*
     "}"
