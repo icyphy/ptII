@@ -103,7 +103,7 @@ Finite State Machines with Multiple Concurrency Models</A>,'' April 13,
 
 @see HDFFSMDirector
 
-@author Brian K. Vogel
+@author Brian K. Vogel and Rachel Zhou
 @version $Id$
 */
 public class HDFDirector extends SDFDirector {
@@ -315,6 +315,7 @@ public class HDFDirector extends SDFDirector {
                 _cacheSize = cacheSize;
                 
                 _externalRatesCache = new TreeMap();
+                _externalRatesKeyList = new ArrayList(cacheSize);
             }
             if (_scheduleCache.containsKey(rateKey)) {
                 // cache hit.
@@ -326,8 +327,10 @@ public class HDFDirector extends SDFDirector {
                     // Remove the key from its old position in
                     // the list.
                     _scheduleKeyList.remove(rateKey);
+                    _externalRatesKeyList.remove(rateKey);
                     // and add the key to head of list.
                     _scheduleKeyList.add(0, rateKey);
+                    _externalRatesKeyList.add(0, rateKey);
                 }
                 schedule = (Schedule)_scheduleCache.get(rateKey);
                 Map externalRates = (Map)_externalRatesCache.get(rateKey); 
@@ -345,10 +348,13 @@ public class HDFDirector extends SDFDirector {
                         // remove tail of list.
                         Object object = _scheduleKeyList.get(cacheSize - 1);
                         _scheduleKeyList.remove(cacheSize - 1);
+                        _externalRatesKeyList.remove(cacheSize - 1);
                         _scheduleCache.remove(object);
+                        _externalRatesCache.remove(object);
                     }
                     // Add key to head of list.
                     _scheduleKeyList.add(0, rateKey);
+                    _externalRatesKeyList.add(0, rateKey);
                 }
                 // Add key/schedule to the schedule map.
                 schedule = ((SDFScheduler)scheduler).getSchedule();
@@ -579,8 +585,10 @@ public class HDFDirector extends SDFDirector {
                 = new Parameter(this,"scheduleCacheSize",new IntToken(cacheSize));
 
             _scheduleCache = new HashMap();
-            _externalRatesCache = new TreeMap();
             _scheduleKeyList = new ArrayList(cacheSize);
+            
+            _externalRatesCache = new TreeMap();
+            _externalRatesKeyList = new ArrayList(cacheSize);
         }
         catch (Exception e) {
             throw new InternalErrorException(
@@ -657,6 +665,7 @@ public class HDFDirector extends SDFDirector {
     private int _cacheSize = 100;
 
     private Map _externalRatesCache;
+    private List _externalRatesKeyList;
 
     private int _directorFiringCount = 1;
     // Set to true to enable debugging.
