@@ -106,6 +106,17 @@ public class Ramp extends SequenceSource {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Override the base class to update the step parameter.
+     *  @param attribute The attribute that changed.
+     *  @exception IllegalActionException Not thrown.
+     */
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+	if (attribute == step) {
+	    _step = step.getToken();
+	}
+    }
+
     /** Notify the director when type changes in the parameters occur.
      *  This will cause type resolution to be redone at the next opportunity.
      *  It is assumed that type changes in the parameters are implemented
@@ -157,11 +168,57 @@ public class Ramp extends SequenceSource {
     public void initialize() throws IllegalActionException {
         super.initialize();
         _stateToken = init.getToken();
+	_step = step.getToken();
+    }
+    
+    /** Invoke a specified number of iterations of this actor. Each
+     *  iteration updates the state of the actor by adding the
+     *  value of the <i>setp</i> parameter to the state and sending
+     *  the value of the state to the output. The iteration count
+     *  is also incremented by the value of <i>count</i>, and if
+     *  the result is greater than or equal to <i>firingCountLimit</i>
+     *  then return STOP_ITERATING.
+     *  <p>
+     *  This method should be called instead of the usual prefire(),
+     *  fire(), postfire() methods when this actor is used in a
+     *  domain that supports vectorized actors.  This leads to more
+     *  efficient execution.
+     *  @param count The number of iterations to perform.
+     *  @return COMPLETED if the actor was successfully iterated the
+     *   specified number of times. Otherwise, if the maximum
+     *   iteration count has been reached, return STOP_ITERATING.
+     *  @exception IllegalActionException If iterating cannot be
+     *  performed.
+     */
+    public int iterate(int count) throws IllegalActionException {
+	// Check whether we need to reallocate the output token array.
+	if (count > _resultArray.length) {
+	    _resultArray = new Token[count];
+	}
+	for (int i = 0; i < count; i++) {
+	    _resultArray[i] = _stateToken;
+	    try {
+		_stateToken = _stateToken.add(_step);
+	    } catch (IllegalActionException ex) {
+		// Should not be thrown because
+		// we have already verified that the tokens can be added.
+		throw new InternalErrorException(ex.getMessage());
+	    }
+	}
+	output.send(0, _resultArray, count);
+	if (_firingCountLimit != 0) {
+	    _iterationCount += count;
+	    if (_iterationCount >= _firingCountLimit) {
+		return STOP_ITERATING;
+	    }
+	}
+	return COMPLETED;
     }
 
     /** Update the state of the actor by adding the value of the
      *  <i>step</i> parameter to the state.  Also, increment the
-     *  iteration count, and if the result is equal to <i>lifetime</i>, then
+     *  iteration count, and if the result is equal to 
+     *  <i>firingCountLimit</i>, then
      *  return false.
      *  @return False if the number of iterations matches the number requested.
      *  @exception IllegalActionException If the firingCountLimit parameter
@@ -169,7 +226,7 @@ public class Ramp extends SequenceSource {
      */
     public boolean postfire() throws IllegalActionException {
         try {
-            _stateToken = _stateToken.add(step.getToken());
+            _stateToken = _stateToken.add(_step);
         } catch (IllegalActionException ex) {
             // Should not be thrown because
             // we have already verified that the tokens can be added.
@@ -182,4 +239,6 @@ public class Ramp extends SequenceSource {
     ////                         private variables                 ////
 
     private Token _stateToken = null;
+    private Token _step = null;
+    private Token[] _resultArray = new Token[1];
 }
