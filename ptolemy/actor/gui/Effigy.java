@@ -156,7 +156,13 @@ public class Effigy extends CompositeEntity {
                 if (!(protocol.equals("file"))) {
                     _modifiableURI = false;
                 } else {
-                    File file = new File(uriValue);
+                    // Use just the path here in case we
+                    // are passed a URI that has a fragment.
+                    // If we had file:/C%7C/foo.txt#bar
+                    // then bar is the fragment.  Unfortunately,
+                    // new File(file:/C%7C/foo.txt#bar) will fail,
+                    // so we add the path.
+                    File file = new File(uriValue.getPath());
                     try {
                         _modifiableURI = file.canWrite();
                     } catch (java.security.AccessControlException
