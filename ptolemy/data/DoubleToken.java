@@ -35,7 +35,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.graph.CPO;
 import ptolemy.math.Complex;
 import ptolemy.data.type.*;
-import java.text.NumberFormat;
+import java.text.DecimalFormat;
 
 //////////////////////////////////////////////////////////////////////////
 //// DoubleToken
@@ -478,9 +478,10 @@ public class DoubleToken extends ScalarToken {
      *  @return A String created using java.text.NumberFormat
      */
     public String toString() {
-        NumberFormat nf = NumberFormat.getNumberInstance();
-        nf.setMinimumFractionDigits(1);
-        return nf.format(_value);
+        //NumberFormat nf = NumberFormat.getNumberInstance();
+        //nf.setMinimumFractionDigits(1);
+        DecimalFormat format = new DecimalFormat("#0.#####E0##");
+        return format.format(_value);
     }
 
     /** Returns a new token representing the additive identity.
