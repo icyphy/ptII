@@ -37,8 +37,6 @@ object that is associated with the node).  We say that a node is
 attempt to access the weight of an unweighted node. Node weights must be
 genuine (non-null) objects.
 
-<p> Nodes are immutable.
-
 @author Shuvra S. Bhattacharyya
 @version $Id$
 @since Ptolemy II 2.0
@@ -58,12 +56,7 @@ public final class Node {
      *  @param weight The given weight.
      */
     public Node(Object weight) {
-        if (weight == null) {
-            throw new IllegalArgumentException("Attempt to assign a null "
-                    + "weight to a node.");
-        } else {
-            _weight = weight;
-        }
+        setWeight(weight);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -75,6 +68,18 @@ public final class Node {
     public boolean hasWeight() {
         return _weight != null;
     }
+
+    /** Set or change the weight of a node.
+     *  @param weight The new weight.
+     */
+    public void setWeight(Object weight) {
+        if (weight == null) {
+            throw new IllegalArgumentException("Attempt to assign a null "
+                    + "weight to a node.");
+        } else {
+            _weight = weight;
+        }
+    } 
 
     /** Return a string representation of the node.
      *  The string representation is simply a representation of the node
