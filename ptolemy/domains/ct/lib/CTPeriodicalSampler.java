@@ -90,10 +90,14 @@ public class CTPeriodicalSampler extends CTActor
      *  of this fire.
      */
     public void fire() throws IllegalActionException {
+       
         CTMixedSignalDirector dir = (CTMixedSignalDirector) getDirector();
         double tnow = dir.getCurrentTime();
         if( Math.abs(tnow-_nextSamplingTime) < dir.getTimeAccuracy()) {
             dir.setFireEndTime(tnow);
+            if(DEBUG) {
+                System.out.println("set FireEndTime:" + tnow);
+            }
         }
     }
 
@@ -113,6 +117,7 @@ public class CTPeriodicalSampler extends CTActor
                 } 
                 output.broadcast(value);
                 _nextSamplingTime = tnow+_samplePeriod;
+                dir.fireAfterDelay(this, _samplePeriod);
             }
         }
         return true;
@@ -129,6 +134,7 @@ public class CTPeriodicalSampler extends CTActor
         updateParameters();
         CTDirector dir = (CTDirector) getDirector();
         _nextSamplingTime = dir.getCurrentTime() + _samplePeriod;
+        dir.fireAfterDelay(this, _samplePeriod);
         if(DEBUG) {
             System.out.println("Sampler: next sampling time= "
                 + _nextSamplingTime);
@@ -155,7 +161,7 @@ public class CTPeriodicalSampler extends CTActor
         double tnow = dir.getCurrentTime();
         if(tnow > _nextSamplingTime) {
             _eventMissed = true;
-            _refineStep = _nextSamplingTime - tnow;
+            _refineStep = _nextSamplingTime - (tnow-dir.getCurrentTime());
             return true;
         }
         return false;
