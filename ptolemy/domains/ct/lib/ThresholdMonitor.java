@@ -43,7 +43,7 @@ import ptolemy.actor.lib.TimedActor;
 /**
 Output <i>true</i> if the input value is in the interval
 [<i>a</i>, <i>b</i>], which is centered at <i>thresholdCenter</i>
-and has width <i>thresholdWidth</i>.  This actor controls the
+and has width <i>thresholdWidth</i>.  This actor controls
 the integration step size so that the input does
 not cross the threshold without producing at least one
 <i>true</i> output. The output can be used as a pure event
