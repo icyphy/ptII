@@ -165,6 +165,13 @@ public class NonStrictTest extends Transformer {
         _numberOfInputTokensSeen = 0;
         _iteration = 0;
         _trainingTokens = null;
+        if(((BooleanToken)trainingMode.getToken()).booleanValue() &&
+                NonStrictTest.IN_NIGHTLY_BUILD) {
+            throw new IllegalActionException(this,
+                    "Training Mode set for test actor.  This flag " +
+                    "should not be set in files that are checked into " +
+                    "the nightly build!");
+        }
     }
 
     /** Read one token from each input channel and compare against
@@ -247,6 +254,11 @@ public class NonStrictTest extends Transformer {
             correctValues.setToken(new ArrayToken(newTokens));
         }
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                          public variables                 ////
+
+    public static boolean IN_NIGHTLY_BUILD = false;
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
