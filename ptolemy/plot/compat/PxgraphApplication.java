@@ -114,7 +114,7 @@ public class PxgraphApplication extends PlotApplication {
      * specified stream.  This method is only used for testing.
      */
     public void write(OutputStream out, String dtd) {
-        _plot.write(out, dtd);
+        plot.write(out, dtd);
     }
 
     ///////////////////////////////////////////////////////////////////
