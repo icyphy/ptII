@@ -64,26 +64,22 @@ public class DEPlot extends AtomicActor{
      */
     public void initialize() 
             throws CloneNotSupportedException, IllegalActionException {
-        System.out.println("Initializing DEPlot");        
-        DECQDirector _exe = (DECQDirector) getDirector();
+        System.out.println("Initializing "+description(CLASSNAME|FULLNAME));        
+        _exe = (DECQDirector) getDirector();
         if (_exe == null) {
-            System.out.println("Throw something");
             throw new IllegalActionException(this, "No director available");
-        }
+        } 
     }
 
     /** fire: consume the input tokens. In the first fire() round, 
      *  print out the data.
      */
-    public void fire() throws CloneNotSupportedException, IllegalActionException{
-        System.out.println("Firing DEPlot");
+    public void fire() 
+            throws CloneNotSupportedException, IllegalActionException{
+        System.out.println("Firing " + description(CLASSNAME|FULLNAME));
         if (_frame == null) {
             _frame = new DEPlotFrame(); 
             _frame.resize(800, 400);
-            if (_exe == null) {
-                System.out.println("A bug");
-                _exe = (DECQDirector) getDirector();
-            }
             _frame.setXRange(_exe.startTime(), _exe.stopTime());
             _frame.setYRange(getYMin(), getYMax());
             // FIXME: just assume single width first.

@@ -38,18 +38,20 @@ import java.util.Enumeration;
 //// DEPoisson
 /** 
 An actor that generate events according to Poisson process. The first event is
-generated at time zero. The mean inter-arrival time and magnitude of the events are given as parameters.
+generated at time zero. The mean inter-arrival time and magnitude of the 
+events are given as parameters.
 
 @author Lukito Muliadi
 @version $Id$
 @see Actor
 */
 public class DEPoisson extends AtomicActor {
-    /** Construct the DEPoisson star.
+    /** Construct a DEPoisson star.
      *
-     * @see CTActor#CTActor()
-     * @param container The CTSubSystem this star belongs to
-     * @param name 
+     * @param lambda The mean of the inter-arrival times.
+     * @param magnitude The magnitude of the output events.
+     * @param container The composite actor that this actor belongs to.
+     * @param name The name of this actor.
      * @exception NameDuplicationException Other star already had this name
      * @exception IllegalActionException internal problem
      */	
@@ -137,12 +139,22 @@ public class DEPoisson extends AtomicActor {
     private double _lambda = 1.0;
     private double _magnitude = 1.0;
 
-    // 
+    // an aux variable to make sure we have the first event at time zero.
     private boolean _firstTime = true;
     
-
+    // the ports.
     public IOPort output;
     private IOPort _loopIn;
     private IOPort _loopOut;
     private IORelation _loopRelation;
 }
+
+
+
+
+
+
+
+
+
+

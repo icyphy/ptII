@@ -58,13 +58,8 @@ public class DECQDirector extends Director {
      *  the workspace.
      *  If the name argument is null, then the name is set to the
      *  empty string. Increment the version number of the workspace.
-     *  The default startTime, stopTime and stepSize are all zeros. 
-     *  The director can be set to a CTSubSystem in the same workspace
-     *  by calling
-     *  the setDirector method of CTSubSystem.  The director,  when
-     *  constructed, has a CTTopSortScheduler attached. If another
-     *  scheduler is to be used, use setScheduler method.
-     * 
+     *  The default stopTime is zero. 
+     *  
      *  @param name The name
      */	
     public DECQDirector(String name) {
@@ -76,13 +71,7 @@ public class DECQDirector extends Director {
      *  The director is added to the list of objects in the workspace.
      *  If the name argument is null, then the name is set to the
      *  empty string. Increment the version number of the workspace.
-     *  The default startTime, stopTime and stepSize are all zeros.
-     *
-     *  The director can be set to a CTSubSystem in the workspace by 
-     *  calling
-     *  the setDirector method of CTSubSystem.  The director,  when
-     *  constructed, has a CTTopSortScheduler attached. If another
-     *  scheduler is to be used, use setScheduler method.
+     *  The default startTime is zero.
      *
      *  @param workspace Object for synchronization and version tracking
      *  @param name Name of this director.
@@ -94,27 +83,94 @@ public class DECQDirector extends Director {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     /** Override the default fire method so that only one actor fire.
-        The firing actor would be the one obtained from the global queue.
-        Global queue keeps track of the deeply contained actors.
-       
-    */
+     *  The firing actor would be the one obtained from the global queue.
+     *  <p>
+     *  If there are multiple simultaneous events for this firing actor,
+     *  then all events are dequeued from the global queue and put into 
+     *  the corresponding receivers.
+     *  <p>
+     *  FIXME: What to do if there are simultaneous events for the same
+     *  actor via the same receiver.
+     */
 
-
-    public void fire() throws CloneNotSupportedException, IllegalActionException {
+    public void fire()
+            throws CloneNotSupportedException, IllegalActionException {
+        
         CompositeActor container = ((CompositeActor)getContainer());
-        if (container != null) {
-            CQValue cqValue;
-            try {
-                cqValue = (CQValue)_cQueue.take();
-                _currentActor = cqValue.actor;
-                _currentDEReceiver = cqValue.deReceiver;
-                _currentDEToken = cqValue.deToken;
 
-            } catch (IllegalAccessException e) {
-                // FIXME: do nothing. The queue is empty here...
+        CQValue cqValue = null;
+        DEToken token;
+        DECQReceiver receiver;
+        
+        if (container != null) {
+            
+            _currentActor = null;
+            FIFOQueue fifo = new FIFOQueue();
+            double eventTime = 0.0;
+            
+            // Keep taking events out until there are no more simultaneous
+            // events or until the queue is empty.
+            while (true) {
+                
+                if (_cQueue.size() == 0) {
+                    // FIXME: this check is not needed, just for debugging
+                    if (_currentActor==null) {
+                        System.out.println("Why invoke DECQDirector.fire()" +
+                                           " when queue is empty ??!?!");
+                    }
+                    break;
+                }
+                
+                try {
+                    cqValue = (CQValue)_cQueue.take();
+                } catch (IllegalAccessException e) {
+                    //This shouldn't happen.
+                    System.out.println("Bug in DECQDirector.fire()");
+                }
+                
+                // At first iteration always accept the event.
+                if (_currentActor == null) {
+                    // only do this once.
+                    _currentActor = cqValue.actor;
+                    eventTime = ((DETag)cqValue.deToken.getTag()).timeStamp();
+                }
+                
+                // check if it is at the same time stamp
+                if (((DETag)cqValue.deToken.getTag()).timeStamp() != eventTime) {
+                    fifo.put(cqValue);
+                    break;
+                }
+
+                // check if it is for the same actor
+                if (cqValue.actor == _currentActor) {
+                    // FIXME: assuming it's always for different port.
+                    cqValue.deReceiver.superPut(cqValue.deToken);
+                    
+                    // FIXME: start debug stuff
+                    NamedObj b = (NamedObj) _currentActor;
+                    System.out.println("Dequeueing event: " + 
+                            b.description(CLASSNAME | FULLNAME) + 
+                        " at time: " + 
+                        ((DETag)cqValue.deToken.getTag()).timeStamp());
+                    // FIXME: end debug stuff
+
+                } else {
+                    // put it into a FIFOQueue to be returned to queue later.
+                    fifo.put(cqValue);
+                }
+            }             
+            
+            // Transfer back the events from the fifo queue into the calendar
+            // queue.
+            while (fifo.size() > 0) {
+                CQValue cqval = (CQValue)fifo.take();
+                _cQueue.put(cqval.deToken.getTag(),cqval);
             }
+            
             _currentActor.fire();
+        
         } else {
+            // Error because the container is null.
             // FIXME: Is this needed ? Cuz, the ptolemy.actor.Director.java
             // doesn't do this.
             throw new IllegalActionException("No container. Invalid topology");
@@ -138,6 +194,7 @@ public class DECQDirector extends Director {
             tag = (DETag)_cQueue.getNextKey();
         } catch (IllegalAccessException e) {
             // FIXME: can't happen ?
+            System.out.println("Check DECQDirector.postfire() for a bug!");
         }
         double currentTime = tag.timeStamp();
         if (currentTime > _stopTime) {
@@ -145,19 +202,25 @@ public class DECQDirector extends Director {
         } else {
             return true;
         }
-        
-
     }
-
-    /** Return a new receiver of a type compatible with this director.
-     *  In this base class, this returns an instance of Mailbox.
-     *  @return A new Mailbox.
+    
+    /** Return a new receiver of a type DECQReceiver.
+     *  
+     *  @return A new DECQReceiver.
      */
     public Receiver newReceiver() {
         return new DECQReceiver(this);
     }
 
-
+    /** Put the new event into the global event queue. The event consists 
+     *  of the destination actor, the destination receiver, and the 
+     *  transferred token.
+     *
+     *  @param a The destination actor.
+     *  @param r The destination receiver.
+     *  @param t The transferred token.
+     *
+     */
     public void enqueueEvent(Actor a, DECQReceiver r, DEToken t) {
 
         // FIXME: debug stuff
@@ -174,26 +237,36 @@ public class DECQDirector extends Director {
         _cQueue.put(newTag, newValue);
     }
 
-    public DEToken dequeueEvent() {
-        // FIXME: debug stuff
-        NamedObj b = (NamedObj) _currentActor;
-        System.out.println("Dequeueing event: " + b.description(CLASSNAME | FULLNAME) + " at time: " + ((DETag)_currentDEToken.getTag()).timeStamp());
-        // FIXME: debug stuff
-
-        // actually already got dequeued, during the fire() method.
-        return _currentDEToken;
-    }
-
+    /** Return the start time of the simulation. 
+     *  FIXME: Right now it's only used to determine the axis range
+     *  for the DEPlot star.
+     *  FIXME: This can be obtained from the time stamp of the first token
+     *  enqueued using the enqueueEvent() method.
+     *  FIXME: Or this can also be set by the user.
+     *
+     *  @return The start time of the simulation.  
+     */
     public double startTime() {
         //FIXME: find the first event in calendar queue and find out the 
         // time stamp
         return 0.0;
     }
 
+    /** Return the stop time of the simulation.
+     *  FIXME: Right now, it's only used to determine the axis range
+     *  for the DEPlot star.
+     *  This quantity is set by the user.
+     *  
+     *  @return The stop time of the simulation.
+     */
     public double stopTime() {
         return _stopTime;
     }
 
+    /** Set the stop time of the simulation.
+     * 
+     *  @param st The new stop time.
+     */
     public void setStopTime(double st) {
         _stopTime = st;
     }
@@ -228,17 +301,8 @@ public class DECQDirector extends Director {
 
     // variables to keep track of the objects currently firing.
     private Actor _currentActor = null;
-    private DECQReceiver _currentDEReceiver = null;
-    private DEToken _currentDEToken = null;
-
+    
     // _stopTime defines the stopping condition
     private double _stopTime = 0.0;
     
 }
-
-
-
-
-
-
-

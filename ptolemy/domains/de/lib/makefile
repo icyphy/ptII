@@ -59,7 +59,8 @@ JSRCS = \
 	DEPlot.java \
 	DEPoisson.java \
 	DEPrintln.java \
-	DERamp.java
+	DERamp.java \
+	DESampler.java
 
 EXTRA_SRCS =	$(JSRCS)
 

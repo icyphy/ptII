@@ -81,7 +81,8 @@ public class DEClock extends AtomicActor {
      *  @exception CloneNotSupportedException Not thrown in this base class.
      *  @exception IllegalActionException Not thrown in this base class.
      */
-    public void initialize() throws CloneNotSupportedException, IllegalActionException {
+    public void initialize() 
+            throws CloneNotSupportedException, IllegalActionException {
         // The initializer event is at _interval behind time zero.
         DEToken initEvent = new DEToken(1.0, new DETag(0.0-_interval,0));
         // Send out via the self loop output port.
@@ -118,12 +119,10 @@ public class DEClock extends AtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // Private variables should not have doc comments, they should
-    // have regular C++ comments.
-
     // the interval between events
     private double _interval;
 
+    // the ports
     public IOPort output;
     private IOPort _loopIn;
     private IOPort _loopOut;
