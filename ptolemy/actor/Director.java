@@ -668,7 +668,7 @@ public class Director extends Attribute implements Executable {
         Nameable container = getContainer();
         if (container instanceof CompositeActor) {
             Iterator actors = ((CompositeActor)container)
-                    .deepEntityList().iterator();
+                .deepEntityList().iterator();
             while (actors.hasNext()) {
                 Actor actor = (Actor)actors.next();
                 actor.stop();
@@ -698,7 +698,7 @@ public class Director extends Attribute implements Executable {
         Nameable container = getContainer();
         if (container instanceof CompositeActor) {
             Iterator actors = ((CompositeActor)container)
-                    .deepEntityList().iterator();
+                .deepEntityList().iterator();
             while (actors.hasNext()) {
                 Actor actor = (Actor)actors.next();
                 actor.stopFire();

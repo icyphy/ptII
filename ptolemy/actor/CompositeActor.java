@@ -214,17 +214,17 @@ public class CompositeActor extends CompositeEntity implements Actor {
             // NOTE: deepInsidePortList() is not the right thing here
             // since it will return the same port if it is opaque.
             Iterator insidePorts
-                    = ((ComponentPort)port).insidePortList().iterator();
+                = ((ComponentPort)port).insidePortList().iterator();
             try {
                 _inConnectionsChanged = true;
                 while (insidePorts.hasNext()) {
                     ComponentPort insidePort
-                            = (ComponentPort)insidePorts.next();
+                        = (ComponentPort)insidePorts.next();
                     Entity portContainer = (Entity)insidePort.getContainer();
                     // Avoid an infinite loop where notifications are traded.
                     if (!(portContainer instanceof CompositeActor)
-                           || !((CompositeActor)portContainer)
-                           ._inConnectionsChanged) {
+                            || !((CompositeActor)portContainer)
+                            ._inConnectionsChanged) {
                         portContainer.connectionsChanged(insidePort);
                     }
                 }

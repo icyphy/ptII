@@ -51,12 +51,12 @@ import ptolemy.vergil.debugger.BreakpointConfigurerDialog;
 //////////////////////////////////////////////////////////////////////////
 //// ArgumentDialogFactory
 /**
-A factory that creates a dialog to configure, add, or remove Arguments
-from objects.
+   A factory that creates a dialog to configure, add, or remove Arguments
+   from objects.
 
-@author Edward A. Lee and Steve Neuendorffer, modified by Vincent Arnould
-@version $Id$
-@since Ptolemy II 2.3
+   @author Edward A. Lee and Steve Neuendorffer, modified by Vincent Arnould
+   @version $Id$
+   @since Ptolemy II 2.3
 */
 public class ArgumentDialogFactory implements MenuItemFactory {
 

@@ -115,21 +115,21 @@ public class ThalesGraphFrame extends BasicGraphFrame {
 
         // Add debug menu.
         JMenuItem[] debugMenuItems =
-            {
-                new JMenuItem("Listen to Director",
-                        KeyEvent.VK_L),
-                new JMenuItem("Animate Execution",
-                        KeyEvent.VK_A),
-                new JMenuItem("Stop Animating",
-                        KeyEvent.VK_S),
-            };
+        {
+            new JMenuItem("Listen to Director",
+                    KeyEvent.VK_L),
+            new JMenuItem("Animate Execution",
+                    KeyEvent.VK_A),
+            new JMenuItem("Stop Animating",
+                    KeyEvent.VK_S),
+        };
 
         //TRT Add JNI Menu
         _graphMenu.addSeparator();
 
         JMenuItem[] jniMenuItems =
-            { new JMenuItem("Generate C Interface",
-                    KeyEvent.VK_G)
+        { new JMenuItem("Generate C Interface",
+                KeyEvent.VK_G)
             };
         //TRT end
 

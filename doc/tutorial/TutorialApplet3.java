@@ -11,7 +11,7 @@ import ptolemy.kernel.util.Workspace;
 
 public class TutorialApplet3 extends TypedCompositeActor {
     public TutorialApplet3(Workspace workspace)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(workspace);
 
         // Create model parameters

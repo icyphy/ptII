@@ -168,11 +168,11 @@ public class Argument extends Attribute implements Settable {
     public String getExpression() {
         String ret =
             new Boolean(isInput()).toString()
-            + ","
+                + ","
             + new Boolean(isOutput()).toString()
-            + ","
+                + ","
             + new Boolean(isReturn()).toString()
-            + ","
+                + ","
             + getCType();
         return ret;
     }
@@ -183,25 +183,25 @@ public class Argument extends Attribute implements Settable {
     public String getJNIType() {
         String returnJNIType = "";
         if (_cType.endsWith("[]")) {
-                returnJNIType = "Array";
+            returnJNIType = "Array";
         }
         if (_cType.equals("char") || _cType.startsWith("char")) {
             returnJNIType = "jboolean" + returnJNIType;
         } else if (_cType.equals("short")
-                   || _cType.startsWith("short")) {
+                || _cType.startsWith("short")) {
             // a C char is 8 bits. a java char is 16 bits,
             // so we use jbyte
             returnJNIType = "jchar" + returnJNIType;
         } else if (_cType.equals("long")
-                   || _cType.startsWith("long")) {
+                || _cType.startsWith("long")) {
             // a C long is 32 bits. a java long is 64 bits,
             // so we use jint
             returnJNIType = "jint" + returnJNIType;
         } else if (_cType.equals("double")
-                   || _cType.startsWith("double")) {
+                || _cType.startsWith("double")) {
             returnJNIType = "jdouble" + returnJNIType;
         } else if (_cType.equals("void")
-                   || _cType.startsWith("void")) {
+                || _cType.startsWith("void")) {
             returnJNIType = "void" + returnJNIType;
         } else {
             MessageHandler.error(
@@ -226,22 +226,22 @@ public class Argument extends Attribute implements Settable {
         if (_cType.equals("char") || _cType.startsWith("char")) {
             returnJType = "boolean" + returnJType;
         } else if (_cType.equals("short") ||
-                   _cType.startsWith("short")) {
+                _cType.startsWith("short")) {
             // a C short is 16 bits unsigned, a java short is 16 bits
             // but not unsigned,
             // so we use char which is 16bits unsigned.
             returnJType = "char" + returnJType;
         } else if (_cType.equals("long") ||
-                   _cType.startsWith("long")) {
+                _cType.startsWith("long")) {
             // a C long is 32 bits unsigned. a java long is 64 bits,
             // so we use int which is 32 , but not unsigned !! TBF
             returnJType = "int" + returnJType;
         } else if (_cType.equals("double") ||
-                   _cType.startsWith("double")) {
+                _cType.startsWith("double")) {
             // double is 64 bits in C and in Java, so no problem
             returnJType = "double" + returnJType;
         } else if (_cType.equals("void") ||
-                   _cType.startsWith("void")) {
+                _cType.startsWith("void")) {
             // for the functions with a void return
             returnJType = "void";
         } else {
@@ -284,26 +284,26 @@ public class Argument extends Attribute implements Settable {
 
         String returnCType = "";
         if (_cType.endsWith("[]")) {
-                returnCType = "[]";
+            returnCType = "[]";
         }
         if (_cType.equals("char") || _cType.startsWith("char")) {
             returnCType = "Boolean" + returnCType;
         } else if (_cType.equals("short")
-                   || _cType.startsWith("short")) {
+                || _cType.startsWith("short")) {
             returnCType = "Byte" + returnCType;
         } else if (_cType.equals("long")
-                   || _cType.startsWith("long")) {
+                || _cType.startsWith("long")) {
             returnCType = "Integer"+ returnCType;
         } else if (_cType.equals("double")
-                   || _cType.startsWith("double")) {
+                || _cType.startsWith("double")) {
             returnCType = "Double" + returnCType;
         } else if (_cType.equals("void")
-                   || _cType.startsWith("void")) {
+                || _cType.startsWith("void")) {
             returnCType = "Object" + returnCType;
         } else {
             // FIXME: why is this code not like the code above
             MessageHandler.error("Type = "
-                                 + _cType + " not convertible in JavaClass");
+                    + _cType + " not convertible in JavaClass");
             returnCType = "Object";
         }
         return returnCType;
@@ -342,7 +342,7 @@ public class Argument extends Attribute implements Settable {
      *  @param listener The listener to remove.
      */
     public void removeValueListener(ptolemy.kernel.util.ValueListener
-                                    listener) {
+            listener) {
     }
 
     /** Set the C type of the argument with the given string
@@ -434,11 +434,11 @@ public class Argument extends Attribute implements Settable {
                 _value, ",");
         try {
             setInput(new Boolean(tokenizer.nextToken()
-                             .toString()).booleanValue());
+                    .toString()).booleanValue());
             setOutput(new Boolean(tokenizer.nextToken()
-                              .toString()).booleanValue());
+                    .toString()).booleanValue());
             setReturn(new Boolean(tokenizer.nextToken()
-                              .toString()).booleanValue());
+                    .toString()).booleanValue());
             setCType(tokenizer.nextToken().toString());
         } catch(java.util.NoSuchElementException e) {}
         try {
@@ -455,11 +455,11 @@ public class Argument extends Attribute implements Settable {
     public void setExpression() {
         String ret =
             new Boolean(isInput()).toString()
-            + ","
+                + ","
             + new Boolean(isOutput()).toString()
-            + ","
+                + ","
             + new Boolean(isReturn()).toString()
-            + ","
+                + ","
             + getCType();
         setExpression(ret);
     }
@@ -575,13 +575,13 @@ public class Argument extends Attribute implements Settable {
      */
     protected void _checkType() {
         if (_cType.startsWith("char")
-            || _cType.startsWith("long")
-            || _cType.startsWith("short")
-            || _cType.startsWith("double")) {
+                || _cType.startsWith("long")
+                || _cType.startsWith("short")
+                || _cType.startsWith("double")) {
             if (isOutput()&&!isInput()&&!_cType.endsWith("[]")) {
                 MessageHandler.error(
-                                     "An argument can't be "
-                                     + "output with a simple type.");
+                        "An argument can't be "
+                        + "output with a simple type.");
                 setInput(true);
             }
             return;

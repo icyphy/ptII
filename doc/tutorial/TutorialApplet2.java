@@ -9,7 +9,7 @@ import ptolemy.kernel.util.Workspace;
 
 public class TutorialApplet2 extends PtolemyApplet {
     public NamedObj _createModel(Workspace workspace)
-        throws Exception {
+            throws Exception {
         TypedCompositeActor toplevel = new TypedCompositeActor(workspace);
 
         // Create the director.

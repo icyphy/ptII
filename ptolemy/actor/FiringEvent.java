@@ -210,6 +210,6 @@ public class FiringEvent implements DebugEvent {
         }
 
         // The name of this event type.
-            private String _name;
+        private String _name;
     }
 }
