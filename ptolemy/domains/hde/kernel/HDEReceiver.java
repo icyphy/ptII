@@ -1,4 +1,4 @@
-/* Discrete Event (DE) domain receiver.
+/* Hardware Discrete Event (HDE) domain receiver.
 
  Copyright (c) 1998-2002 The Regents of the University of California.
  All rights reserved.
@@ -45,7 +45,7 @@ import ptolemy.actor.Director;
 import java.util.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
-//// DEReceiver
+//// HDEReceiver
 
 /** An implementation of the ptolemy.actor.Receiver interface for the
 DE domain.  Tokens that are put into this receiver logically have time
@@ -79,7 +79,7 @@ public class HDEReceiver extends DEReceiver {
         super();
     }
 
-    /** Construct an empty DEReceiver with the specified container.
+    /** Construct an empty HDEReceiver with the specified container.
      *  @param container The container.
      *  @exception IllegalActionException If the container does
      *   not accept this receiver.
