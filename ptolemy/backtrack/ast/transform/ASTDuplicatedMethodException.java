@@ -1,4 +1,4 @@
-/* 
+/* A method is duplicated in a class declaration.
 
 Copyright (c) 2005 The Regents of the University of California.
 All rights reserved.
@@ -33,16 +33,23 @@ import ptolemy.backtrack.ast.ASTRuntimeException;
 //////////////////////////////////////////////////////////////////////////
 //// ASTDuplicatedMethodException
 /**
+   Thrown on an attempt to create a method in a class declaration, which
+   already contains a method with the same name and an argument of the
+   same type.
  
- 
- @author Thomas Feng
- @version $Id$
- @since Ptolemy II 5.1
- @Pt.ProposedRating Red (tfeng)
- @Pt.AcceptedRating Red (tfeng)
- */
+   @author Thomas Feng
+   @version $Id$
+   @since Ptolemy II 5.1
+   @Pt.ProposedRating Red (tfeng)
+   @Pt.AcceptedRating Red (tfeng)
+*/
 public class ASTDuplicatedMethodException extends ASTRuntimeException {
 
+    /** Construct an exception about creating a duplicated method in a class.
+     * 
+     *  @param className The class name.
+     *  @param methodName The method name.
+     */
     public ASTDuplicatedMethodException(String className, String methodName) {
         super("Trying to create a duplicated method \"" +
                 methodName +
