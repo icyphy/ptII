@@ -1,4 +1,5 @@
-/*
+/* An agent represents a general composite actor or a refinement in a modal model.
+
  Copyright (c) 1998-2001 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -62,12 +63,20 @@ import java.util.*;
 
 public class Agent {
 
+  /** Constructor for Agent with the content of agent
+   *  The constructor parses the content of the agent,
+   *  initializes agent name and agent parameters.
+   *  @param content The content of agent.
+   */
   public Agent(String content) {
-//    System.out.println("Agent content: " + content);
+    //    System.out.println("Agent content: " + content);
 
+    // save the string content of the agent
     _content = content;
 
     String token;
+
+    // StringTokenizer for agent content
     _contentST = new StringTokenizer(content,  "()");
 
     // get the agent name
@@ -89,66 +98,196 @@ public class Agent {
     }
  }
 
+  /** Return the content of the agent.
+   */
   public String getContent() {
     return _content;
   }
 
+  /** Return the name of the agent.
+   */
   public String getName() {
     return _name;
   }
 
+  /** Set the name of the agent.
+   *  @param name The new name for the agent.
+   */
   public void setName(String name) {
     _name = name;
   }
 
+  /** Get the list of the parameters of the agent.
+   */
   public LinkedList getParameters() {
     return _parameters;
   }
 
+  /** Get the list of the inputs of the agent.
+   */
   public LinkedList getInputs() {
     return _inputs;
   }
 
+  /** Get the list of the outputs of the agent.
+   */
   public LinkedList getOutputs() {
     return _outputs;
   }
 
+  /** Constructor for agent to build Ptolemy TypedCompositeActor.
+   *  The returned composite actor is the top level of the Ptolemy model.
+   *  This constructor constructs a top level workspace and
+   *  a top level container with the name of the agent.
+   *  @param workspace The workspace for the TypedCompositeActor.
+   *  @exception IllegalActionException When a NameDuplicationException or
+   *  an IllegalActionException is thrown inside.
+   */
   public TypedCompositeActor constructor(Workspace workspace) throws IllegalActionException {
     _workspace = workspace;
+
+    // construct a top level container
     _container = new TypedCompositeActor(_workspace);
+
+    // indicates this composite actor is top level.
     _topLevel = true;
+
     try {
-    _container.setName(_name);
+      _container.setName(_name);
     } catch (NameDuplicationException e) {
       throw new IllegalActionException(e.getMessage());
     }
-    return _constructor(true);
+
+    // return the constructed top level composite actor.
+    return _constructor();
   }
 
+  /** Constructor for agent to build Ptolemy TypedCompositeActor.
+   *  The returned composite actor is a refinement of modal model of the Ptolemy model.
+   *  This constructor does not construct a composite actor since the refinement is already the one.
+   *  @param refinement The refinement is just that will be returned TypedCompositeActor.
+   *  @exception IllegalActionException When an IllegalActionException is thrown.
+   */
   public TypedCompositeActor constructor(Refinement refinement) throws IllegalActionException {
+    // the container is the refinement
     _container = refinement;
-    return _constructor(false);
-  }
-
-  public TypedCompositeActor constructor(TypedCompositeActor container) throws IllegalActionException {
-    _container = container;
+    // it is not the top level
     _topLevel = false;
-    return _constructor(false);
+    // return the constructed composite actor
+    return _constructor();
   }
 
-  private TypedCompositeActor _constructor(boolean topLevel) throws IllegalActionException {
+  /** Constructor for agent to build Ptolemy TypedCompositeActor.
+   *  The returned composite actor is a composite actor of the Ptolemy model.
+   *  This constructor constructs a composite actor inside the given container.
+   *  @param container The container is just that will be returned TypedCompositeActor.
+   *  @exception IllegalActionException When an IllegalActionException is thrown.
+   */
+  public TypedCompositeActor constructor(TypedCompositeActor container) throws IllegalActionException {
+    // the container is the given container
+    _container = container;
+    // it is not the top level
+    _topLevel = false;
+    // return the constructed composite actor
+    return _constructor();
+  }
+
+  /** Associate the mode from modesList to the agent.
+   *  The mode is actually what the agent does, and it is usually a ODE.
+   *  Usually it is composed of one or more expression actors and integrators.
+   *  New modes may be discovered if the agent is actually a finite state machine.
+   *  @param modeString The modeString is what the agent does.
+   *  @exception IllegalActionException When an IllegalActionException is thrown inside.
+   */
+  public void addMode (String modeString) throws IllegalActionException {
+    StringTokenizer modeST = new StringTokenizer(modeString,"\n");
+    while (modeST.hasMoreTokens()) {
+      String token = modeST.nextToken().trim();
+      // The token begins with "diff" is an ODE.
+      if (token.startsWith("diff")) {
+
+	// get the output variable of the integrator (or the ODE)
+	int startOfIntegratorOutput = token.indexOf("d(") + 2;
+	int endOfIntegratorOutput = token.indexOf(")");
+	_integratorOutput = token.substring(startOfIntegratorOutput,endOfIntegratorOutput);
+
+//	System.out.println("      mode token is: " + token);
+
+	// get the expression of the ODE
+	int startOfExpression = token.indexOf("==") + 2;
+	int endOfExpression = token.indexOf(";");
+	_expression = token.substring(startOfExpression, endOfExpression);
+
+	// Here, we only check if the expression contains the output of the integrator(s)
+	// if it does, add an input port with the same name with the output port into the
+	// _expressionInputs list
+	// Note we assume that all the inputs to the agent will be used by the expression
+	// actor. Actually, it does not hurt if Accidiently several inputs are not used.
+	if (_expression.indexOf(_integratorOutput) != -1) {
+	  _expressionInputs.add(_integratorOutput);
+	}
+
+      // the token begins with "trans" means the agent is a FSM
+      } else if (token.startsWith("trans")) {
+	// It should be a modal model.
+	StringTokenizer tokenST = new StringTokenizer(token);
+	String discard = tokenST.nextToken(); //discard trans
+	discard = tokenST.nextToken(); //discard from
+	String stateName = tokenST.nextToken();
+	discard = tokenST.nextToken(); //discard to
+	String nextStateName = tokenST.nextToken();
+	token = modeST.nextToken().trim();
+	// If the next token does not begin with "when",
+	// something must be wrong witht the format of Charon code.
+	if (!token.startsWith("when")) {
+	  throw new IllegalActionException (stateName + " mode switching without correct condition!");
+	}
+	// The token begins with "when" is a guardExpression.
+    	else {
+	  // we assume when (....) and do {} are in SEPERATE lines
+	  String condition = token.substring(token.indexOf("(") + 1, token.lastIndexOf(")")).trim();
+	  System.out.println("      condition is: " + condition);
+
+	  // Transitions list is composed of transitions.
+	  // To differentiate with the Transtion class in Ptolemy,
+	  // TxtTransition is used. It has three parameters: currentState, nextState and guard.
+	  TxtTransition transition = new TxtTransition(stateName, nextStateName, condition);
+	  _transitions.add(transition);
+	}
+      } else {
+	continue;
+      }
+    }
+  }
+
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+  // actual constructor for an agent
+  // It parses the content of agent to get lists of the input ports, the output ports, the connections,
+  // the private variables, the initial states and the sub agents.
+  // Based on the agent name, it finds the mode for the agent.
+  // It constructs a composite actor or a modal model. The exception is when it is a refinement,
+  // no new composite actor or modal model is constructed.
+  private TypedCompositeActor _constructor() throws IllegalActionException {
 
     try {
 
+      // global variables for _constructor()
       String token;
       StringTokenizer tokenST;
 
+      // beginning of parsing
       while (_contentST.hasMoreTokens()) {
 
+	// the stringTokenizer get token line by line
+	// FIXME: this needs very strictly formated Charon code.
 	token = _contentST.nextToken("\n");
 
 //	System.out.println("    Token is: " + token);
 
+	// when the token of the output ports is read
 	if (token.trim().startsWith("write")) {
 	    tokenST = new StringTokenizer(token, " ,\n\t\r;");
 	    tokenST.nextToken(); // ignore write
@@ -159,6 +298,7 @@ public class Agent {
 		_outputs.add(tokenToken);
 	      }
 	    }
+	// when the token of the input ports is read
 	} else if (token.trim().startsWith("read")) {
 	    tokenST = new StringTokenizer(token, " ,\n\t\r;");
 	    tokenST.nextToken(); // ignore read
@@ -169,6 +309,7 @@ public class Agent {
 		_inputs.add(tokenToken);
 	      }
 	    }
+	// when the token of the private variables is read
 	} else if (token.trim().startsWith("private")) {
 	    tokenST = new StringTokenizer(token, " ,\n\t\r;");
 	    tokenST.nextToken(); // ignore private
@@ -179,18 +320,22 @@ public class Agent {
 		_privateVariables.add(tokenToken);
 	      }
 	    }
+	// when the token of the initial states is read
 	} else if (token.trim().startsWith("init")) {
+	    // this token use "{};" as delimiter
 	    tokenST = new StringTokenizer(token, "{};");
 	    // get rid of "init"
 	    String tokenToken = tokenST.nextToken();
 	    // get initial variable expression
 	    tokenToken = tokenST.nextToken();
 	    _initialState = tokenToken.substring(tokenToken.indexOf("=") + 1);
+	// when the token of a sub agent is read
 	} else if (token.trim().startsWith("agent")) {
 	    tokenST = new StringTokenizer(token);
 	    tokenST.nextToken("=");
 	    _subAgents.add(new Agent("agent " + tokenST.nextToken()));
-	} else if (token.trim().startsWith("[")) {
+	// when the token of the connection conditions is read
+    	} else if (token.trim().startsWith("[")) {
 //	    System.out.println("Connection: " + token);
 	    int seperator = token.indexOf(":=");
 	    String inputs = token.substring(1, seperator - 1).trim();
@@ -202,26 +347,37 @@ public class Agent {
 	      String input = inputST.nextToken();
 	      String output = outputST.nextToken();
 //	      System.out.println("    pair is: " + input + " . " + output );
+	      // the connections list is composed of connections
+	      // each connection is a pair, with
+	      // the input port at left and output port at right.
 	      _connections.add(new Pair(input, output));
 	    }
 	}
       }
 
-      // associate agent with mode
+      // associate the agent with according mode
+
       String searchAgentName;
+      // this is used for refinements of the modal model
+      // since the Charon code has a name convention that the modes for
+      // the refinements in end with "Mode"
       if (getName().endsWith("Mode")) {
 	searchAgentName = getName();
+      // this is used for other agents
       } else {
 	searchAgentName = getName() + "TopMode";
       }
 
+      // search a mode via name matching
+      // and associate the mode to the agent or the refinement
       Agent mode = _searchAgent(searchAgentName, CharonProcessor.modesList);
       if (mode != null) {
 	addMode(mode.getContent());
       }
 
       // update the container
-      // if agent contains transitions, it should be a modal model
+      // if the agent contains some transitions, it should be a modal model
+      // Note the transitions are discovered in addMode() part.
       if (_transitions.size() != 0) {
 	_container = new ModalModel(_container, _name);
       } else if (!(_container instanceof Refinement)) {
@@ -238,36 +394,42 @@ public class Agent {
 
       System.out.println("constructing new Agent: " + getName());
 
-      // add parameters
+      // add parameters to the composite actor or the modal model
 
-      // an agent may be composed of several subAgents which are in a _subAgents list
-      // an element in _subAgents list only has a name and values of parameters for the element
-      // an agent which can construct a TypedCompositeActor should refer to _agentsList
-      // of CharonProcessor via name matching
+      // An agent may be composed of several subAgents listed in the _subAgents list
+      // Note that the element in the _subAgents list only has a name and
+      // a list of parameters for the element (see constructor of Agent)
 
-     // FIXME only do this at topLevel.
       if (!_topLevel) {
 
 	ListIterator paraIterator = _parameters.listIterator();
 	while (paraIterator.hasNext()) {
 	  String paraName = (String) paraIterator.next();
+	  // Note that since it is not top level,
+	  // the parameter does not have actual value.
+	  // The actual value is eveluated during simulation
+	  // referring to the upper level parameters.
 	  Parameter parameter = new Parameter(_container, paraName);
 	  parameter.setExpression(paraName);
 	}
 
+	// refinement should have a CTEmbeddedDirector
 	if (_container instanceof Refinement) {
 	  _director = new CTEmbeddedDirector(_container, "CT Embedded Director");
 	}
+
       } else {
-	// topLevel
+	// topLevel should have a CTMixedSignalDirector
 	_director = new CTMixedSignalDirector(_container, "CT Director");
 
-	// its container is topLevel and should provide the values.
-	// The parameters will be added with information from subAgents.
+	// This composite actor has the top Level as its container,
+	// it should provide the actual values for the parameters.
+	// However, the names of the parameters have to be associated
+	// with parameters from subAgents.
 
 	ListIterator subAgents = _subAgents.listIterator();
 
-	System.out.println("      subAgents size: " + _subAgents.size());
+//	System.out.println("      subAgents size: " + _subAgents.size());
 
 	while (subAgents.hasNext()) {
 	  Agent subAgent = (Agent) subAgents.next();
@@ -286,6 +448,10 @@ public class Agent {
 	  while (subAgentParas.hasNext()) {
 	    String paraValue = (String) subAgentParas.next();
 	    String paraName = (String) agentParas.next();
+
+	    // Note that some parameters may be used by several sub agents,
+	    // so, there may be some name duplications in the following program.
+	    // However, it is bearable.
 	    try {
 	      Parameter parameter = new Parameter (_container, paraName, new DoubleToken(paraValue));
 	    } catch (NameDuplicationException e) {
@@ -296,10 +462,9 @@ public class Agent {
 	}
       }
 
-
+      // add relations and links
       System.out.println("adding relations and links to Agent: " + getName());
 
-      // add relations and links
       _relationsAndLinks();
 
     } catch (NameDuplicationException e) {
@@ -309,73 +474,39 @@ public class Agent {
     return _container;
   }
 
-  public void addMode (String modeString) throws IllegalActionException {
-    StringTokenizer modeST = new StringTokenizer(modeString,"\n");
-    while (modeST.hasMoreTokens()) {
-      String token = modeST.nextToken().trim();
-      if (token.startsWith("diff")) {
-	int startOfIntegratorOutput = token.indexOf("d(") + 2;
-	int endOfIntegratorOutput = token.indexOf(")");
-	_integratorOutput = token.substring(startOfIntegratorOutput,endOfIntegratorOutput);
 
-//	System.out.println("      mode token is: " + token);
-	int startOfExpression = token.indexOf("==") + 2;
-	int endOfExpression = token.indexOf(";");
-	_expression = token.substring(startOfExpression, endOfExpression);
-
-//	_expressionInputs = (LinkedList) _inputs.clone();
-
-	// we only check if the expression contains the output of integrator
-	// if does, add an input port with a name same with the output port
-	if (_expression.indexOf(_integratorOutput) != -1) {
-	  _expressionInputs.add(_integratorOutput);
-	}
-
-      } else if (token.startsWith("trans")) {
-	// about mode contains mode switching...
-	// modal model
-	// new TypedCompositeActor should be created with CTEmbeddedDirector
-	StringTokenizer tokenST = new StringTokenizer(token);
-	String discard = tokenST.nextToken(); //trans
-	discard = tokenST.nextToken(); //from
-	String stateName = tokenST.nextToken();
-	discard = tokenST.nextToken(); // to
-	String nextStateName = tokenST.nextToken();
-	token = modeST.nextToken().trim();
-	if (!token.startsWith("when")) {
-	  throw new IllegalActionException (stateName + " mode switching without correct condition!");
-	}
-	else {
-	  // we assume when (....) and do {} are in seperate lines
-	  String condition = token.substring(token.indexOf("(") + 1, token.lastIndexOf(")")).trim();
-	  System.out.println("      condition is: " + condition);
-	  TxtTransition transition = new TxtTransition(stateName, nextStateName, condition);
-	  _transitions.add(transition);
-	}
-      } else {
-	continue;
-      }
-    }
-  }
-
+  // search agent or mode by name matching
   private Agent _searchAgent(String agentName, LinkedList agentsList) {
     ListIterator agents = agentsList.listIterator();
     while (agents.hasNext()) {
       Agent agent = (Agent) agents.next();
-      System.out.println(" agent / mode name: " + agent.getName() + " ---------> destName " + agentName);
       if (agent.getName().equals(agentName)) {
+        System.out.println(" agent / mode name: " + agent.getName() + " ---------> destName " + agentName);
 	return agent;
       }
     }
     return null;
   }
 
+  // This method configures the input/output ports of composite actor
+  // and makes connections between ports.
+
+  // There are three cases:
+  // 1. An agent with only one mode, which is an ODE.
+  //    It is composed of one expression actor and one integrator.
+  //	(or more than one)
+  // 2. An agent with several modes, which is an FSM.
+  //    It is a modal model with several states.
+  //    Each state has an refinement implementing an mode.
+  // 3. An agent with several sub agents, which is a hierarchy structure.
   private void _relationsAndLinks() throws IllegalActionException {
     try {
 
       if (_subAgents.size() == 0) {
 	if (_transitions.size() == 0) {
-	  // mode
+	  // An agent with single mode
+
+	  // This agent has one expression actor and one integrator
 	  Integrator integrator = new Integrator(_container, "integrator");
 	  Expression expression = new Expression(_container, "expression");
 
@@ -386,46 +517,59 @@ public class Agent {
 
 	  Parameter signalType;
 
+	  // Usually, there is one direction between the output port of the expression
+	  // actor and the input port of the integrator.
 	  TypedIORelation relation0 = new TypedIORelation(_container, "relation0");
 	  expressionOutput.link(relation0);
 	  integratorInput.link(relation0);
 
-	  // integrator.output.setName(_integratorOutput);
 	  integrator.initialState.setExpression(_initialState);
 
+	  // If _expressionInputs.size() != 0, there is a loop from
+	  // the integrator output to the input port of expression actor.
 	  ListIterator exprInputs = _expressionInputs.listIterator();
 	  while (exprInputs.hasNext()) {
 	    String inputPortName = (String) exprInputs.next();
 	    TypedIOPort expressionInput = new TypedIOPort(expression, inputPortName, true, false);
+	    // If the container is a refinement,
+	    // We have to configure the signal Type of the inputs for expression actor
+	    // as "CONTINUOUS"
 	    if (_container instanceof Refinement) {
 	      signalType = new Parameter(expressionInput, "signalType", new StringToken("CONTINUOUS"));
 	    }
       	  }
 
 	  ListIterator outputs = getOutputs().listIterator();
+	  // It is presumed that there is only one output for one agent.
 	  if (getOutputs().size() > 1) throw new IllegalActionException ("Can not handle actor with more than one output.");
+
 	  while(outputs.hasNext()) {
 	    String outputStr = (String) outputs.next();
 	    TypedIOPort containerOutput = new TypedIOPort(_container, outputStr, false, true);
+	    // Usually there is direct connection between the integrator output port
+	    // and the output port of the container.
 	    TypedIORelation relation1 = new TypedIORelation(_container, "relation1");
 	    TypedIOPort integratorOutput = integrator.output;
 	    integratorOutput.link(relation1);
 	    containerOutput.link(relation1);
 	  }
 
+
 	  ListIterator inputs = getInputs().listIterator();
 	  while(inputs.hasNext()) {
 	    String inputStr = (String) inputs.next();
 	    TypedIOPort _containerInput = new TypedIOPort(_container, inputStr, true, false);
 
-	    // the inputs of composite actor are also inputs for expression actor
+	    // It is presumed that the inputs of container are also inputs for expression actor.
+	    // We have to configure the signal Type of the inputs for expression actor
+	    // as "CONTINUOUS"
 	    TypedIOPort expressionInput = new TypedIOPort(expression, inputStr, true, false);
 	    if (_container instanceof Refinement) {
 	      signalType = new Parameter(expressionInput, "signalType", new StringToken("CONTINUOUS"));
 	    }
 	  }
 	} else {
-	  // modal model
+	  // The agent is a modal model.
     	  ListIterator transitions = _transitions.listIterator();
 	  int transitionIndex = 0;
 	  while (transitions.hasNext()) {
@@ -433,8 +577,13 @@ public class Agent {
 	    System.out.println("transition from: " + transition.getState() + " ----> " + transition.getNextState());
 
 	    Refinement refinement = new Refinement(_container, transition.getState());
+
+	    // Note that the states and transitions have the controller as their container,
+	    // while the refinements have the modal model as their container.
 	    FSMActor controller = ((FSMDirector) _container.getDirector()).getController();
 
+	    // It is presumed that the first appeared state in Charon code is
+	    // also the initial state of the controller.
 	    try {
 	      State initState = controller.getInitialState();
 	    } catch (IllegalActionException e) {
@@ -446,7 +595,8 @@ public class Agent {
 
 	    state.refinementName.setExpression(transition.getState());
 	    nextState.refinementName.setExpression(transition.getNextState());
-	    // add parameters
+
+	    // Add the parameters to the current state.
 	    Agent modeState = _searchAgent(transition.getState() + "Mode", CharonProcessor.modesList);
 	    if (modeState != null) {
 	      ListIterator parameters = modeState.getParameters().listIterator();
@@ -455,6 +605,9 @@ public class Agent {
 		Parameter para = new Parameter(state, parameter);
 		para.setExpression(parameter);
 	      }
+
+	      // The modeState recursively call the constructor to
+	      // construct the according refinement.
 	      modeState.setName(transition.getState());
 	      modeState.addMode(modeState.getContent());
 	      modeState.constructor(refinement);
@@ -467,6 +620,7 @@ public class Agent {
 	    nextState.incomingPort.link(fsmTransition);
 	  }
 
+	  // Construct the input and output ports for the modal model.
 	  ListIterator outputs = getOutputs().listIterator();
 	  while(outputs.hasNext()) {
 	    String outputStr = (String) outputs.next();
@@ -483,7 +637,7 @@ public class Agent {
 
 	}
       } else {
-	// agent
+	// An composite agent contains several sub agents.
 	ListIterator outputs = getOutputs().listIterator();
 	if (getOutputs().size() > 1) throw new IllegalActionException ("Can not handle actor with more than one output.");
 	while(outputs.hasNext()) {
@@ -503,24 +657,39 @@ public class Agent {
 	  Agent subAgent = (Agent) agents.next();
 //	  TypedCompositeActor tca = new TypedCompositeActor(_container, subAgent.getName());
 	  Agent agent = _searchAgent(subAgent.getName(), CharonProcessor.agentsList);
+	  // The sub agent recursively calls its constructor.
 	  agent.constructor(_container);
 	}
       }
 
+      // The composite actors and the atomic actors are constructed
+      // and their ports are configured.
+      // The following part is for the connections of the ports.
       System.out.println("make relations and links ... ");
 
-      // since index 0 and 1 may be used.
+      // Since index 0 and 1 may have been used in the agent as an ODE case.
       int relationIndex = 2;
 
       // link internal ports
+      // The method is to trace source ports via iterating the input ports
+      // of all the enties of the container.
+      // If there is one relation associated with the input port,
+      //    there is no reason to make the port link to another relation.
+      // If there is no relation associated with the input port,
+      //    but there is one relation associated with the source port,
+      //    then, the input port should use the relation instead of
+      //    construct and use a new relation.
+      // Otherwise, make an new relation and link the relation to the input
+      //    port and the source port.
       ListIterator entities = _container.entityList().listIterator();
       while (entities.hasNext()) {
 	Actor actor = (Actor) entities.next();
 	System.out.println("    dealing with Actor: " + ((Nameable) actor).getFullName());
+
 	ListIterator inputs = actor.inputPortList().listIterator();
 	while (inputs.hasNext()) {
 	  TypedIOPort input = (TypedIOPort) inputs.next();
-	  System.out.println("      Input name: " + input.getFullName());
+	  System.out.println("      Input port name: " + input.getFullName());
 	  if(input.linkedRelationList().size() > 0)
 	    continue;
 
@@ -530,16 +699,16 @@ public class Agent {
 	  if (source != null) {
 
 	    List relations;
-	    // the source port is either in same level or in upper level
-	    // if same level, linkedRelationList() works
-	    // if upper level, insideRelationsList() is used
+	    // the source port is either in the same level or in the upper level.
+	    // if in the same level, linkedRelationList() works;
+	    // if in the upper level, insideRelationsList() is used.
 	    if (((NamedObj)source.getContainer()).depthInHierarchy() == ((NamedObj) input.getContainer()).depthInHierarchy()) {
 	      relations = source.linkedRelationList();
 	    } else {
 	      relations = source.insideRelationList();
 	    }
 
-	    System.out.println("      Source name: " + source.getFullName() + " " + relations.size());
+	    System.out.println("      Source port name: " + source.getFullName() + " " + relations.size());
 	    if(relations.size() > 1) {
 	      throw new IllegalActionException("port has two relations!");
 	    } else if (relations.size() == 1) {
@@ -549,20 +718,18 @@ public class Agent {
 	      relationIndex++;
 	      source.link(relation);
 	    }
+
 	    input.link(relation);
 
-/*	    relations = source.RelationList();
-	    System.out.println("      After linking, Source name: " + source.getFullName() + " " + relations.size());
-	    System.out.println("      relation has " + relation.linkedPortList().size());
-*/	  }
+	  }
 	}
       }
 
-      // link output ports to enviroment
+      // link container output ports to the entities output ports of the container
       ListIterator sinks = _container.outputPortList().listIterator();
       while (sinks.hasNext()) {
 	TypedIOPort sink = (TypedIOPort) sinks.next();
-	System.out.println("      Output name: " + sink.getName());
+	System.out.println("      Output port name: " + sink.getName());
 //	if(sink.insideRelationList().size() > 0)
 //	  continue;
 
@@ -571,13 +738,16 @@ public class Agent {
 
 	if (source != null) {
 	  List relations = source.linkedRelationList();
-	  System.out.println("      Source name: " + source.getName() + " " + relations.size());
+	  System.out.println("      Source port name: " + source.getName() + " " + relations.size());
 	  if(relations.size() > 1) {
 	    throw new IllegalActionException("port has two relations!");
 	  } else if (relations.size() == 1) {
 	    relation = (TypedIORelation) relations.get(0);
 	    sink.link(relation);
 	  } else {
+	      // If there is no relation associated with the entities outputs,
+	      // while the container output has one relation linked,
+	      // the entities output ports should be linked to the relation.
 	      List myRelations = sink.insideRelationList();
 	      System.out.println(sink.getName() + " has relations: " + myRelations.size());
 	      if (myRelations.size() > 1) {
@@ -592,7 +762,7 @@ public class Agent {
 	      source.link(relation);
 	  }
 
-
+	  // Status checking ...
 	  relations = source.insideRelationList();
 	  System.out.println("      After linking, Source name: " + source.getName() + " " + relations.size());
 	  System.out.println("      relation has " + relation.linkedPortList().size());
@@ -604,10 +774,13 @@ public class Agent {
   }
 
 
+  // Search source port by name mapping or
+  // based on the connections list specified in agent content.
   private TypedIOPort _searchSource(TypedIOPort port) {
     String inputName = port.getName();
     String sourceName = inputName;
 
+    // iterate the connections list
     ListIterator connections = _connections.listIterator();
     while (connections.hasNext()) {
       Pair pair = (Pair) connections.next();
@@ -618,6 +791,8 @@ public class Agent {
     }
 
     // internal connections
+    // search if there is some output port of some entity having the
+    // same name with the input port name.
     ListIterator entities = _container.entityList().listIterator();
     while (entities.hasNext()) {
       ListIterator outputs = ((Actor) entities.next()).outputPortList().listIterator();
@@ -629,7 +804,7 @@ public class Agent {
       }
     }
 
-    // spcially for the output ports to enviroment
+    // spcially for the container output port to the outside enviroment
     if (port.isOutput()) {
       entities = _container.entityList().listIterator();
       while (entities.hasNext()) {
@@ -643,6 +818,8 @@ public class Agent {
       }
     } else {
 
+      // If there is no inner outputs with the same name with
+      // the input port name, iterate the container input ports.
       ListIterator inputs = _container.inputPortList().listIterator();
       while (inputs.hasNext()) {
 	TypedIOPort enviromentInput = (TypedIOPort) inputs.next();
@@ -656,6 +833,7 @@ public class Agent {
     return null;
   }
 
+  // get the state from the controller by name matching
   private State _getState (FSMActor fsmActor, String stateName)
     throws IllegalActionException, NameDuplicationException {
       ListIterator states = fsmActor.entityList().listIterator();
@@ -669,8 +847,11 @@ public class Agent {
       return newState;
   }
 
+  // Inner class Pair
+  // It provides a utility which associate two elements together.
+  // It is used for construct connection.
+  // In one connection pair, left is for the input port and right for output port.
   private class Pair {
-
     public Pair(String left, String right) {
       _left = left;
       _right = right;
@@ -696,6 +877,11 @@ public class Agent {
     private String _right = "";
   }
 
+  // Inner class TxtTransition
+  // It is different from the State class in FSM.kernel
+  // It has three elements: currentState, nextState, guardExpression.
+  // It is a utility for construct the FSM.
+  // It is used to contruct the States and Transitions in the controller (FSMActor).
   private class TxtTransition {
 
     public TxtTransition(String state, String nextState, String condition) {
@@ -721,19 +907,34 @@ public class Agent {
     private String _condition = "";
   }
 
+  // StringTokenizer for content parsing
+  // It is set into global variable since the class constructor of Agent
+  // uses part of it to get agentName and agentParameters.
+  // While _constructor uses the following part.
   private StringTokenizer _contentST;
+
+  // Stores the agent content or the mode content.
   private String _content;
+
+  // Workspace for the whole model.
   private Workspace _workspace;
 
-  private String _integratorOutput;
-  private String _initialState;
-  private LinkedList _expressionInputs = new LinkedList();
-  private String _expression = "";
-
+  // _container for construct ports, connections.
   private TypedCompositeActor _container;
-  private Director _director;
+
+  // Indicates whether in top level
   private boolean _topLevel = false;
 
+  // The director may be CTMixedSignalDirector, CTEmbeddedDirector.
+  private Director _director;
+
+  // used for an agent with simple ODEs inside.
+  private String _integratorOutput;
+  private String _initialState;
+  private String _expression = "";
+  private LinkedList _expressionInputs = new LinkedList();
+
+  // The properties for the agent or the mode.
   private String _name;
   private String _modeName;
   private LinkedList _inputs = new LinkedList();

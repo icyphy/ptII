@@ -1,4 +1,5 @@
-/*
+/* A processor engine for transfer a Charon model to Ptolemy II model.
+
  Copyright (c) 1998-2001 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -28,6 +29,7 @@
 */
 package ptolemy.apps.charon;
 
+// Ptolemy imports.
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
@@ -35,6 +37,7 @@ import ptolemy.domains.ct.lib.Integrator;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.kernel.util.IllegalActionException;
 
+// Java imports.
 import java.io.Reader;
 import java.io.Writer;
 import java.io.InputStreamReader;
@@ -46,14 +49,31 @@ import java.io.StreamTokenizer;
 import java.util.LinkedList;
 import java.util.ListIterator;
 
+//////////////////////////////////////////////////////////////////////////
+//// CharonProcessor
+/**
+This processor engine to transfer a Charon model into a Ptolemy II model.
+
+@author Haiyang Zheng
+@version $Id:
+*/
 public class CharonProcessor {
 
+    /** constructor
+     */
   public CharonProcessor(String inputFileName, String outputFileName) {
     _inputFileName = inputFileName;
     _outputFileName = outputFileName;
 
     _makeST(_inputFileName);
   }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** The engine schedules the tranfer process.
+     *
+     */
 
   public void process() throws IllegalActionException {
 
@@ -72,26 +92,34 @@ public class CharonProcessor {
 
   }
 
+    ///////////////////////////////////////////////////////////////////
+    ////        public variables and parameters                    ////
+
+  public static LinkedList agentsList = new LinkedList();
+  public static LinkedList modesList = new LinkedList();
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                    ////
+
+  // Process the agent from the first elemnet of the agents list
   private void _constructor() throws IllegalActionException {
     if(agentsList.size() > 0) {
       Agent agent = (Agent) agentsList.get(0);
-      topLevel = agent.constructor(new Workspace());
+      _topLevel = agent.constructor(new Workspace());
     } else {
       throw new IllegalActionException(" not a good Charon file! ");
     }
   }
 
+  // Export the model into MoML file.
   private void _writer() throws IOException {
-/*    if (topLevel != null) {
-      System.out.println(topLevel.getName());
-      System.out.println(topLevel.entityList().size());
-    }
-*/
+
     try {
-//      FileOutputStream fos = new FileOutputStream(_outputFileName);
-      FileOutputStream fos = new FileOutputStream("test.xml");
+      System.out.println("Output File Name is: " + _outputFileName);
+      FileOutputStream fos = new FileOutputStream(_outputFileName);
+//      FileOutputStream fos = new FileOutputStream("test.xml");
       _writer = new OutputStreamWriter(fos);
-      String resultXML = topLevel.exportMoML();
+      String resultXML = _topLevel.exportMoML();
       _writer.write(resultXML);
       _writer.flush();
     } catch (IOException e) {
@@ -102,6 +130,7 @@ public class CharonProcessor {
 
   }
 
+  // parse the Charon code into agents list and modes list.
   private void _parser() throws IllegalActionException {
     Agent agent;
     String agentBlockString = "";
@@ -109,7 +138,8 @@ public class CharonProcessor {
 
     // get the list of agents
     // the order of the list is subtle that
-    // an element with a small index may use an element with a bigger index
+    // firstly appeared elements will be used by the later appeared ones.
+    // Thus, the later appeared agent has a smaller index.
 
     while (true) {
       agentBlockString = _readBlock("agent", "{", "}", _input);
@@ -136,21 +166,8 @@ public class CharonProcessor {
         break;
       }
     }
-
-/*    ListIterator agents = agentsList.listIterator();
-    while (agents.hasNext()) {
-      agent = (Agent) agents.next();
-      String agentModeName = agent.getName() + "TopMode";
-      _makeST(_inputFileName);
-      modeBlockString = _readBlock("mode " + agentModeName, "{", "}", _input);
-      agent.addMode(modeBlockString);
-    }
-*/
   }
 
-  /**
-   *
-   * /
   /* The blockName indicates the beginning of the block.
    * Since there may be several delimiters in the block body,
    * A counter is used to calculate the end of the block.
@@ -158,7 +175,7 @@ public class CharonProcessor {
    * When "{" is detected, counter is increased by 1; when "}" is detected,
    * counter is decreased by 1. When counter meets 0, the whole block is read.
    */
-  protected String _readBlock(String blockName, String leftDelimiter, String rightDelimiter, StreamTokenizer input)
+  private String _readBlock(String blockName, String leftDelimiter, String rightDelimiter, StreamTokenizer input)
 	throws IllegalActionException {
 
 //    System.out.println("reading block: " + blockName);
@@ -188,9 +205,10 @@ public class CharonProcessor {
 	case StreamTokenizer.TT_WORD:
 
 	  line = st.sval;
-	  // System.out.println("      ====> " + line);
-	  // limitation that one line must not contain content of two blocks.
+// System.out.println("      ====> " + line);
 
+	  // limitation:
+	  // the content of two blocks must not appear in the same line.
 
 	  if (line.startsWith(blockName) && firstLine) {
 //            System.out.println("  reading one line: " + line);
@@ -223,10 +241,10 @@ public class CharonProcessor {
     return blockString;
   }
 
+  // check the left delimiter, if dectected, counter increased by 1
   private void _leftDelimiterChecker(String line, String delimiter) {
 //    System.out.println("checking left delimiter: " + delimiter);
     int delimiterIndex = 0;
-    int counter = 0;
     do {
       delimiterIndex = line.indexOf(delimiter, (delimiterIndex));
       if (delimiterIndex != -1) {
@@ -236,10 +254,10 @@ public class CharonProcessor {
     } while (delimiterIndex != -1 && delimiterIndex < line.length());
   }
 
+  // check the right delimiter, if dectected, counter increased by 1
   private void _rightDelimiterChecker(String line, String delimiter) {
 //    System.out.println("checking right delimiter: " + delimiter);
     int delimiterIndex = 0;
-    int counter = 0;
     do {
       delimiterIndex = line.indexOf(delimiter, (delimiterIndex));
       if (delimiterIndex != -1) {
@@ -249,6 +267,8 @@ public class CharonProcessor {
     } while (delimiterIndex != -1 && delimiterIndex < line.length());
   }
 
+  // reset the streamTokenizer _input
+  // for construct agents list and modes list seperately
   private void _makeST (String fileName) {
     try {
       FileInputStream fis = new FileInputStream(fileName);
@@ -265,11 +285,12 @@ public class CharonProcessor {
     _input.whitespaceChars ('\n', '\n');
   }
 
-  // may be used for modal model
-  protected StreamTokenizer _input;
-  public static LinkedList agentsList = new LinkedList();
-  public static LinkedList modesList = new LinkedList();
-  protected TypedCompositeActor topLevel;
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+  private StreamTokenizer _input;
+  private TypedCompositeActor _topLevel;
+
   private int _counter =0;
   private Reader _reader;
   private Writer _writer;

@@ -1,4 +1,4 @@
-/* An attribute that manages generation of Giotto code.
+/* A utility to construct a Ptolemy II model from a Charon model.
 
  Copyright (c) 1998-2001 The Regents of the University of California.
  All rights reserved.
@@ -39,7 +39,7 @@ import java.io.IOException;
 //////////////////////////////////////////////////////////////////////////
 //// CharonToPtolemyII
 /**
-This class transfer a Charon code into a PtolemyII XML file.
+This class transfer a Charon model into a Ptolemy II model.
 
 @author Haiyang Zheng
 @version $Id:
@@ -51,6 +51,7 @@ public class CharonToPtolemyII {
      */
     public CharonToPtolemyII() {
     }
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -101,7 +102,7 @@ public class CharonToPtolemyII {
 	if (dotPosition == -1) _usage();
 
 	_inputFileName = arg;
-	_outputFileName = arg.substring(dotPosition) + ".xml";
+	_outputFileName = arg.substring(0, dotPosition) + ".xml";
       }
     }
 
