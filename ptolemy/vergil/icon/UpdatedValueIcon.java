@@ -131,9 +131,11 @@ public class UpdatedValueIcon extends AttributeValueIcon {
     public void valueChanged(Settable settable) {
         if (settable == _associatedAttribute) {
             // Invoke in the swing thread.
-            // FIXME: These requests should be consolidated, so that
+            // NOTE: These requests could be consolidated, so that
             // if there is a string of them pending, only one gets
-            // executed.
+            // executed. However, this results in jerky updates, with
+            // some values being skipped, so it seems like it's not
+            // a good idea.
             SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
                     if (_label != null) {
