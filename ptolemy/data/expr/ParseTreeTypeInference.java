@@ -1,6 +1,6 @@
-/* A visitor for parse trees of the expression language that generates soot code.
+/* A visitor for parse trees of the expression language that infers types.
 
- Copyright (c) 1998-2002 The Regents of the University of California
+ Copyright (c) 1998-2002 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -8,19 +8,17 @@
  copyright notice and the following two paragraphs appear in all copies
  of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA OR RESEARCH IN MOTION
- LIMITED BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT, SPECIAL,
- INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OF THIS
- SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF CALIFORNIA
- OR RESEARCH IN MOTION LIMITED HAVE BEEN ADVISED OF THE POSSIBILITY OF
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
  SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION LIMITED
- SPECIFICALLY DISCLAIM ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
- THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
- PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS"
- BASIS, AND THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION
- LIMITED HAVE NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
 
 @ProposedRating Red (neuendor@eecs.berkeley.edu)
@@ -30,7 +28,6 @@
 package ptolemy.data.expr;
 
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.copernicus.kernel.*;
 import ptolemy.data.type.*;
 import ptolemy.kernel.util.*;
 
@@ -40,11 +37,10 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 //////////////////////////////////////////////////////////////////////////
-//// ParseTreeCodeGenerator
+//// ParseTreeTypeInference
 /**
 This class visits parse trees and infers a type for each node in the
-parse tree.  After the visitor visits the tree, it maintains it internal state
-so that the types of nodes internal to the parse tree can be queried.
+parse tree.  This type is stored in the parse tree.
 
 @author Steve Neuendorffer
 @version $Id$
