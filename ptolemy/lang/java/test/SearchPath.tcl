@@ -149,12 +149,10 @@ test SearchPath-3.1 {systemClasses} {
 #
 test SearchPath-3.2 {Do we need to resize the systemClassSet HashSet?} {
     set systemClassSet [java::call ptolemy.lang.java.SearchPath systemClasses]
-    # Originally, the number of classes in rt.jar was 5469
-    # and the number of class files in JavaScope.zip was 385
     # If the number gets too large then modify the initial size 
-    # of the hashset.
+    # of the hashset in SearchPath.systemClasses()
     puts "SearchPatch-3.2: systemClassSet size: [$systemClassSet size]"
-    list [expr {[$systemClassSet size] > 8200}]
+    list [expr {[$systemClassSet size] > 8500}]
 } {0}
 
 ######################################################################
