@@ -30,7 +30,7 @@ DEC=[0-9]
 OCT=[0-7]
 
 Letter=[a-zA-Z_]
-AlphaNum=({Letter}|{DEC})
+AlphaNum=({Letter}|{DEC}|\$)
 
 UnicodeChar=(\\u+{HEX}{HEX}{HEX}{HEX})
 LiteralChar=(\\([btnfr\"'\\]|{OCT}{OCT}?|[0-3]{OCT}{OCT})|[^'\"\n]|{UnicodeChar})
