@@ -164,10 +164,14 @@ OPTIONAL_FILES = \
 	'Configuration$$1.class' \
 	'Configuration$$2.class' \
 	'Configurer$$1.class' \
+	'Configurer$$2.class' \
+	'Configurer$$3.class' \
 	'DebugListenerTableau$$1.class' \
 	'DebugListenerTableau$$DebugListenerFrame.class' \
 	'EditParametersDialog$$1.class' \
 	'EditParametersDialog$$2.class' \
+	'EditParametersDialog$$3.class' \
+	'EditParametersDialog$$4.class' \
 	'ExpressionShellEffigy$$ShellFactory.class' \
 	'ExpressionShellTableau$$1.class' \
 	'ExpressionShellTableau$$Factory.class' \
