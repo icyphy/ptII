@@ -266,15 +266,6 @@ public class MobileModel extends TypedCompositeActor {
                     throw new IllegalActionException(this, ex,
                             "Problem parsing " + str.stringValue());
                 }
-            //By calling fireAt to register an event at the current time, so that the outside
-            // time won't advance. This is necessary to allow the newly instantiated sub-model
-            // to register event that should happen before the next outside event. 
-            
-            try {
-                 getDirector().fireAtCurrentTime(this);
-            } catch (IllegalActionException ex) {
-                 throw new IllegalActionException("failed in dealing with director.");
-            }
         }               
         super.fire();
         }
@@ -289,23 +280,23 @@ public class MobileModel extends TypedCompositeActor {
         if (_debugging) {
             _debug("Invoking init");
         }
-        _moml = null;
-        try {
-            _parser = new MoMLParser();
-            _parser.setMoMLFilters(BackwardCompatibility.allFilters());
-
-            // When no model applied, output the default value.
-            if (_connectPorts) {
-                Const constActor = new Const(this, "Const");
-                constActor.value.setExpression(defaultValue.getToken().toString());
-                connect(input, constActor.trigger);
-                connect(constActor.output, output);
-            } //otherwise, do nothing.
-
-        } catch (Exception ex) {
-            throw new IllegalActionException(this, ex, "initialize() failed");
-        }
-        //connect(input, output);
+//        _moml = null;
+//        try {
+//            _parser = new MoMLParser();
+//            _parser.setMoMLFilters(BackwardCompatibility.allFilters());
+//
+//            // When no model applied, output the default value.
+//            if (_connectPorts) {
+//                Const constActor = new Const(this, "Const");
+//                constActor.value.setExpression(defaultValue.getToken().toString());
+//                connect(input, constActor.trigger);
+//                connect(constActor.output, output);
+//            } //otherwise, do nothing.
+//
+//        } catch (Exception ex) {
+//            throw new IllegalActionException(this, ex, "initialize() failed");
+//        }
+//        //connect(input, output);
         super.initialize();
     }
 
@@ -343,6 +334,22 @@ public class MobileModel extends TypedCompositeActor {
                 _debug("issues change request to modify the model");
             }
             _moml = null;
+           
+            // the model topology changes, 
+            _modelChanged = true;
+
+            //By calling fireAt to register an event at the current time, so that the outside
+            // time won't advance. This is necessary to allow the newly instantiated sub-model
+            // to register event that should happen before the next outside event. 
+            
+            // FIXME: No, this won't work. Because this model is a composite actor,
+            // if it has no inputs at the boundary, the prefire method returns false,
+            // and it won't be fired.
+            try {
+                 getDirector().fireAtCurrentTime(this);
+            } catch (IllegalActionException ex) {
+                 throw new IllegalActionException("failed in dealing with director.");
+            }
         }
         return super.postfire();
     }
@@ -354,8 +361,21 @@ public class MobileModel extends TypedCompositeActor {
         if (_debugging) {
             _debug("Invoking prefire");
         }
-        //if (input.hasToken(0) || modelString.hasToken(0)) {
+        
+        // if model just changed, there is a pure event registered
+        // for this model. this model needs firing immediately.
+        // FIXME:
+        // a correct solution is to register a pure event to local event queue
+        // and another pure event to upper level.
+        // Again, this involves hierarchical execution .... 
+        if (_modelChanged) {
+            _modelChanged = false;
+            return true;
+        } else {
             return super.prefire();
+        }
+        //if (input.hasToken(0) || modelString.hasToken(0)) {
+        //    return super.prefire();
         //}
         //return false;
     }
@@ -368,6 +388,25 @@ public class MobileModel extends TypedCompositeActor {
     public void preinitialize() throws IllegalActionException {
        _director = null;
        _createDirector();
+       
+       _moml = null;
+       try {
+           _parser = new MoMLParser();
+           _parser.setMoMLFilters(BackwardCompatibility.allFilters());
+
+           // When no model applied, output the default value.
+           if (_connectPorts) {
+               Const constActor = new Const(this, "Const");
+               constActor.value.setExpression(defaultValue.getToken().toString());
+               connect(input, constActor.trigger);
+               connect(constActor.output, output);
+           } //otherwise, do nothing.
+
+       } catch (Exception ex) {
+           throw new IllegalActionException(this, ex, "preinitialize() failed");
+       }
+       //connect(input, output);
+       
        super.preinitialize();
    }
 
@@ -504,4 +543,6 @@ public class MobileModel extends TypedCompositeActor {
      *
      */
     private MoMLParser _parser;
+    
+    private boolean _modelChanged = false;
 }
