@@ -1,7 +1,4 @@
-<?xml version="1.0" standalone="no"?>
-<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
-    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="ModalControl" class="ptolemy.actor.TypedCompositeActor">
+<?xml version="1.0" encoding="UTF-8"?><entity name="ModalControl" class="ptolemy.actor.TypedCompositeActor">
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={107, 118, 1120, 658}}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[905, 542]">
@@ -27,23 +24,23 @@
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="ODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;">
+        <property name="ODESolver" class="ptolemy.data.expr.Parameter" value="&#34;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&#34;">
             <property name="style" class="ptolemy.actor.gui.style.EditableChoiceStyle">
-                <property name="choice0" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;">
+                <property name="choice0" class="ptolemy.data.expr.Parameter" value="&#34;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&#34;">
                 </property>
-                <property name="choice1" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.BackwardEulerSolver&quot;">
+                <property name="choice1" class="ptolemy.data.expr.Parameter" value="&#34;ptolemy.domains.ct.kernel.solver.BackwardEulerSolver&#34;">
                 </property>
-                <property name="choice2" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ForwardEulerSolver&quot;">
+                <property name="choice2" class="ptolemy.data.expr.Parameter" value="&#34;ptolemy.domains.ct.kernel.solver.ForwardEulerSolver&#34;">
                 </property>
             </property>
         </property>
-        <property name="breakpointODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.DerivativeResolver&quot;">
+        <property name="breakpointODESolver" class="ptolemy.data.expr.Parameter" value="&#34;ptolemy.domains.ct.kernel.solver.DerivativeResolver&#34;">
             <property name="style" class="ptolemy.actor.gui.style.EditableChoiceStyle">
-                <property name="choice0" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.DerivativeResolver&quot;">
+                <property name="choice0" class="ptolemy.data.expr.Parameter" value="&#34;ptolemy.domains.ct.kernel.solver.DerivativeResolver&#34;">
                 </property>
-                <property name="choice1" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.BackwardEulerSolver&quot;">
+                <property name="choice1" class="ptolemy.data.expr.Parameter" value="&#34;ptolemy.domains.ct.kernel.solver.BackwardEulerSolver&#34;">
                 </property>
-                <property name="choice2" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ImpulseBESolver&quot;">
+                <property name="choice2" class="ptolemy.data.expr.Parameter" value="&#34;ptolemy.domains.ct.kernel.solver.ImpulseBESolver&#34;">
                 </property>
             </property>
         </property>
@@ -59,13 +56,13 @@
     <property name="Tfault2" class="ptolemy.data.expr.Parameter" value="70.0">
     </property>
     <entity name="LinearStateSpace" class="ptolemy.domains.ct.lib.LinearStateSpace">
-        <property name="A" class="ptolemy.data.expr.Parameter" value="readMatrix(&quot;./plant_a.mat&quot;)">
+        <property name="A" class="ptolemy.data.expr.Parameter" value="readMatrix(&#34;./plant_a.mat&#34;)">
         </property>
-        <property name="B" class="ptolemy.data.expr.Parameter" value="readMatrix(&quot;./plant_b.mat&quot;)">
+        <property name="B" class="ptolemy.data.expr.Parameter" value="readMatrix(&#34;./plant_b.mat&#34;)">
         </property>
-        <property name="C" class="ptolemy.data.expr.Parameter" value="readMatrix(&quot;./plant_c.mat&quot;)">
+        <property name="C" class="ptolemy.data.expr.Parameter" value="readMatrix(&#34;./plant_c.mat&#34;)">
         </property>
-        <property name="D" class="ptolemy.data.expr.Parameter" value="readMatrix(&quot;./plant_d.mat&quot;)">
+        <property name="D" class="ptolemy.data.expr.Parameter" value="readMatrix(&#34;./plant_d.mat&#34;)">
         </property>
         <property name="initialStates" class="ptolemy.data.expr.Parameter" value="zeroMatrix(1,10)">
         </property>
@@ -96,12 +93,12 @@
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                <property name="signalType" class="ptolemy.data.expr.Parameter" value="&#34;CONTINUOUS&#34;">
                 </property>
             </port>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                <property name="signalType" class="ptolemy.data.expr.Parameter" value="&#34;CONTINUOUS&#34;">
                 </property>
             </port>
         </entity>
@@ -125,12 +122,12 @@
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                <property name="signalType" class="ptolemy.data.expr.Parameter" value="&#34;CONTINUOUS&#34;">
                 </property>
             </port>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                <property name="signalType" class="ptolemy.data.expr.Parameter" value="&#34;CONTINUOUS&#34;">
                 </property>
             </port>
         </entity>
@@ -154,12 +151,12 @@
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                <property name="signalType" class="ptolemy.data.expr.Parameter" value="&#34;CONTINUOUS&#34;">
                 </property>
             </port>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                <property name="signalType" class="ptolemy.data.expr.Parameter" value="&#34;CONTINUOUS&#34;">
                 </property>
             </port>
         </entity>
@@ -183,12 +180,12 @@
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                <property name="signalType" class="ptolemy.data.expr.Parameter" value="&#34;CONTINUOUS&#34;">
                 </property>
             </port>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                <property name="signalType" class="ptolemy.data.expr.Parameter" value="&#34;CONTINUOUS&#34;">
                 </property>
             </port>
         </entity>
@@ -212,12 +209,12 @@
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                <property name="signalType" class="ptolemy.data.expr.Parameter" value="&#34;CONTINUOUS&#34;">
                 </property>
             </port>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                <property name="signalType" class="ptolemy.data.expr.Parameter" value="&#34;CONTINUOUS&#34;">
                 </property>
             </port>
         </entity>
@@ -241,12 +238,12 @@
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                <property name="signalType" class="ptolemy.data.expr.Parameter" value="&#34;CONTINUOUS&#34;">
                 </property>
             </port>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                <property name="signalType" class="ptolemy.data.expr.Parameter" value="&#34;CONTINUOUS&#34;">
                 </property>
             </port>
         </entity>
@@ -270,12 +267,12 @@
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                <property name="signalType" class="ptolemy.data.expr.Parameter" value="&#34;CONTINUOUS&#34;">
                 </property>
             </port>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                <property name="signalType" class="ptolemy.data.expr.Parameter" value="&#34;CONTINUOUS&#34;">
                 </property>
             </port>
         </entity>
@@ -299,12 +296,12 @@
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                <property name="signalType" class="ptolemy.data.expr.Parameter" value="&#34;CONTINUOUS&#34;">
                 </property>
             </port>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                <property name="signalType" class="ptolemy.data.expr.Parameter" value="&#34;CONTINUOUS&#34;">
                 </property>
             </port>
         </entity>
@@ -328,12 +325,12 @@
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                <property name="signalType" class="ptolemy.data.expr.Parameter" value="&#34;CONTINUOUS&#34;">
                 </property>
             </port>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                <property name="signalType" class="ptolemy.data.expr.Parameter" value="&#34;CONTINUOUS&#34;">
                 </property>
             </port>
         </entity>
@@ -357,12 +354,12 @@
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                <property name="signalType" class="ptolemy.data.expr.Parameter" value="&#34;CONTINUOUS&#34;">
                 </property>
             </port>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                <property name="signalType" class="ptolemy.data.expr.Parameter" value="&#34;CONTINUOUS&#34;">
                 </property>
             </port>
         </entity>
@@ -2499,13 +2496,13 @@
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&#34;CONTINUOUS&#34;">
             </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="multiport"/>
-            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
+            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&#34;DISCRETE&#34;">
             </property>
         </port>
     </entity>
@@ -2516,12 +2513,12 @@
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
+            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&#34;DISCRETE&#34;">
             </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&#34;CONTINUOUS&#34;">
             </property>
         </port>
     </entity>
@@ -2544,23 +2541,23 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 60.0">
             </property>
         </property>
-        <property name="A1" class="ptolemy.data.expr.Parameter" value="readMatrix(&quot;./ctrl_a1.mat&quot;)">
+        <property name="A1" class="ptolemy.data.expr.Parameter" value="readMatrix(&#34;./ctrl_a1.mat&#34;)">
         </property>
-        <property name="A2" class="ptolemy.data.expr.Parameter" value="readMatrix(&quot;./ctrl_a2.mat&quot;)">
+        <property name="A2" class="ptolemy.data.expr.Parameter" value="readMatrix(&#34;./ctrl_a2.mat&#34;)">
         </property>
-        <property name="A3" class="ptolemy.data.expr.Parameter" value="readMatrix(&quot;./ctrl_a3.mat&quot;)">
+        <property name="A3" class="ptolemy.data.expr.Parameter" value="readMatrix(&#34;./ctrl_a3.mat&#34;)">
         </property>
-        <property name="A4" class="ptolemy.data.expr.Parameter" value="readMatrix(&quot;./ctrl_a4.mat&quot;)">
+        <property name="A4" class="ptolemy.data.expr.Parameter" value="readMatrix(&#34;./ctrl_a4.mat&#34;)">
         </property>
-        <property name="B1" class="ptolemy.data.expr.Parameter" value="readMatrix(&quot;./ctrl_b1.mat&quot;)">
+        <property name="B1" class="ptolemy.data.expr.Parameter" value="readMatrix(&#34;./ctrl_b1.mat&#34;)">
         </property>
-        <property name="B2" class="ptolemy.data.expr.Parameter" value="readMatrix(&quot;./ctrl_b2.mat&quot;)">
+        <property name="B2" class="ptolemy.data.expr.Parameter" value="readMatrix(&#34;./ctrl_b2.mat&#34;)">
         </property>
-        <property name="C1" class="ptolemy.data.expr.Parameter" value="readMatrix(&quot;./ctrl_c1.mat&quot;)">
+        <property name="C1" class="ptolemy.data.expr.Parameter" value="readMatrix(&#34;./ctrl_c1.mat&#34;)">
         </property>
-        <property name="C2" class="ptolemy.data.expr.Parameter" value="readMatrix(&quot;./ctrl_c2.mat&quot;)">
+        <property name="C2" class="ptolemy.data.expr.Parameter" value="readMatrix(&#34;./ctrl_c2.mat&#34;)">
         </property>
-        <property name="D" class="ptolemy.data.expr.Parameter" value="readMatrix(&quot;./ctrl_d.mat&quot;)">
+        <property name="D" class="ptolemy.data.expr.Parameter" value="readMatrix(&#34;./ctrl_d.mat&#34;)">
         </property>
         <port name="plant_state" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -2753,11 +2750,7 @@
                 </property>
                 <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
                 </property>
-                <property name="_library" class="ptolemy.moml.LibraryAttribute">
-                    <configure>
-    <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/annotation.xml"></input><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property></entity></entity>
-  </configure>
-                </property>
+                <property name="_library" class="ptolemy.moml.LibraryAttribute"><configure><entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"/><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"/></entity></entity></configure></property>
                 <property name="annotation" class="ptolemy.kernel.util.Attribute">
                     <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                     </property>
@@ -3440,12 +3433,12 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
+            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&#34;DISCRETE&#34;">
             </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&#34;CONTINUOUS&#34;">
             </property>
         </port>
     </entity>
