@@ -38,6 +38,25 @@ import java.io.*;
 //////////////////////////////////////////////////////////////////////////
 //// IconLibrary
 /**
+An IconLibrary is the hierarchical object for organizing Icons.   An 
+IconLibrary contains a set of Icons, and a set of other IconLibraries 
+called suiblibraries.  All the Icons contained within this library should 
+have a unique name and a unique entitytype.   The sublibraries and 
+description of this Iconlibrary are kept within a dummy XMLElement with
+element type of "header".  This element should be the first child element
+to be parsed, allowing the parse to be halted without parsing all of the
+icons, since the file may be rather large.
+<!-- icon elements will be parsed into class Icon -->
+<!ELEMENT entity (description?, entitytype, parameter*, port*)>
+<!ATTLIST entity
+name ID #REQUIRED
+iconlibrary CDATA #REQUIRED>
+<!-- The following don't have separate classes. -->
+<!ELEMENT description (#PCDATA)>
+<!ELEMENT header (description, sublibrary*)>
+<!ELEMENT sublibrary EMPTY>
+<!ATTLIST sublibrary 
+file CDATA #REQUIRED>
 
 @author Steve Neuendorffer, John Reekie
 @version $Id$
@@ -53,8 +72,10 @@ public class IconLibrary extends XMLElement{
         super("iconlibrary");
         sublibraries = (HashedMap) new HashedMap();
         icons = (HashedMap) new HashedMap();
+        header = new XMLElement("header");
+        addChildElement(header);
         description = new XMLElement("description");
-        addChildElement(description);
+        header.addChildElement(description);
         setName("");
         setVersion("");
 
@@ -70,8 +91,10 @@ public class IconLibrary extends XMLElement{
         super("iconlibrary", attributes);        
         sublibraries = (HashedMap) new HashedMap();
         icons = (HashedMap) new HashedMap();
+        header = new XMLElement("header");
+        addChildElement(header);
         description = new XMLElement("description");
-        addChildElement(description);
+        header.addChildElement(description);
         if(!hasAttribute("name")) setName("");
         if(!hasAttribute("version")) setVersion("");
    }
@@ -87,11 +110,10 @@ public class IconLibrary extends XMLElement{
     /** 
      * Add a sublibrary to this library.   
      */
-
     public void addSubLibrary(String name) {
         XMLElement e = new XMLElement("sublibrary");
-        e.setPCData(name);
-        addChildElement(e);
+        e.setAttribute(name);
+        header.addChildElement(e);
         sublibraries.putAt(name, e);
     }
     
@@ -197,6 +219,7 @@ public class IconLibrary extends XMLElement{
 
     // These are package-private because the parser will set them
     XMLElement description;
+    XMLElement header;
     HashedMap sublibraries;
     HashedMap icons;
 }
