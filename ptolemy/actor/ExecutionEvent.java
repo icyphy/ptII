@@ -26,6 +26,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
                                         COPYRIGHTENDKEY
 
 @ProposedRating Yellow (neuendor@eecs.berkeley.edu)
+@AcceptedRating Red
 */
 
 package ptolemy.actor;

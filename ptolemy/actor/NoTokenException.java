@@ -26,6 +26,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Red (lmuliadi@eecs.berkeley.edu)
+@AcceptedRating Red
 */
 
 package ptolemy.actor;
