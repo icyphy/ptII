@@ -524,14 +524,6 @@ public class Graph implements Cloneable {
         return result.toString();
     }
 
-    /** Disconnect a node from the rest of the graph by hiding its incident
-     *  edges. No
-     */
-    public void hideIncidentEdges(Node node) {
-    //FIXME: complete.
-    }
-        
-
     /** Return an edge in this graph that has a specified weight. If multiple
      *  edges have the specified weight, then return one of them
      *  arbitrarily.
@@ -798,7 +790,7 @@ public class Graph implements Cloneable {
     }
 
     /** Return the set of incident edges for a specified node. Each element in
-     *  the returned set is an {@link Edge}. 
+     *  the returned set is an {@link Edge}.
      *
      *  @param node The specified node.
      *  @return The set of incident edges.
@@ -962,7 +954,7 @@ public class Graph implements Cloneable {
      *  @return The collection of edges that make node2 a neighbor of node1.
      *  @see DirectedGraph#predecessorEdges(Node, Node)
      *  @see DirectedGraph#successorEdges(Node, Node)
-     *  @exception IllegalArgumentException if node1 or node2 is not in this
+     *  @exception IllegalArgumentException If node1 or node2 is not in this
      *  graph.
      */
     public Collection neighborEdges(Node node1, Node node2) {
@@ -1187,7 +1179,7 @@ public class Graph implements Cloneable {
      *  hidden. This is an <em>O(1)</em> operation.
      *  @param edge The edge to restore.
      *  @return true If the edge is in the graph and was hidden.
-     *  @exception IllegalArgumentException if the source node and sink node
+     *  @exception IllegalArgumentException If the source node and sink node
      *  of the given edge are not both in the graph.
      *  @see #hideEdge(Edge).
      */
@@ -1226,7 +1218,7 @@ public class Graph implements Cloneable {
     /** Return the number of self loop edges of a specified node.
      *  @param node The node.
      *  @return The number of self loop edges.
-     *  @exception IllegalArgumentException if the node is not in the graph.
+     *  @exception IllegalArgumentException If the node is not in the graph.
      */
     public int selfLoopEdgeCount(Node node) {
         return selfLoopEdges(node).size();
@@ -1247,7 +1239,7 @@ public class Graph implements Cloneable {
      *
      *  @param node The node.
      *  @return The self-loop edges that are incident to the node.
-     *  @exception IllegalArgumentException if the node is not in the graph.
+     *  @exception IllegalArgumentException If the node is not in the graph.
      */
     public Collection selfLoopEdges(Node node) {
         ArrayList result = new ArrayList();
