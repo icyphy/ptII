@@ -123,7 +123,7 @@ the parameters
 <dd><code>""</code>
 <dt><code><b>nativeFunction:</b></code>
 <dd><code>"meaningOfLife"</code>
-<dt><code>nativeLibrary<b></b></code>
+<dt><code><b>nativeLibrary</b></code>
 <dd><code>"meaningOfLife"</code>
 
 </dl>
