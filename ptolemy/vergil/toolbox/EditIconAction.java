@@ -29,6 +29,7 @@ COPYRIGHTENDKEY
 package ptolemy.vergil.toolbox;
 
 import java.awt.event.ActionEvent;
+import java.util.Iterator;
 
 import ptolemy.actor.gui.Configuration;
 import ptolemy.kernel.util.ChangeRequest;
@@ -85,6 +86,26 @@ public class EditIconAction extends FigureAction {
                         // this icon and replace it.
                         icon.setContainer(null);
                         icon = new EditorIcon(object, "_icon");
+                        
+                        // Propagate this to derived objects, being
+                        // careful to not trash their custom icons
+                        // if they have them.
+                        Iterator derivedObjects
+                                = object.getDerivedList().iterator();
+                        while (derivedObjects.hasNext()) {
+                            NamedObj derived = (NamedObj)derivedObjects.next();
+                            EditorIcon derivedIcon = (EditorIcon)derived
+                                .getAttribute("_icon", EditorIcon.class);
+                            if (derivedIcon == null) {
+                                new EditorIcon(derived, "_icon");
+                            } else if (derivedIcon instanceof XMLIcon) {
+                                // There is an icon currently that is not custom.
+                                // Without trashing the _iconDescription, we can remove
+                                // this icon and replace it.
+                                derivedIcon.setContainer(null);
+                                new EditorIcon(derived, "_icon");
+                            }
+                        }
                     }
                     _configuration.openModel(icon);
                 }
