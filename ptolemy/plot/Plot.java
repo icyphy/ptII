@@ -305,7 +305,6 @@ public class Plot extends PlotBox {
         _points = new Vector();
         _prevx = new Vector();
         _prevy = new Vector();
-        _painted = false;
         _maxdataset = -1;
         _firstinset = true;
         _sawfirstdataset = false;
@@ -356,9 +355,27 @@ public class Plot extends PlotBox {
      */
     public synchronized void erasePoint(int dataset, int index) {
         _checkDatasetIndex(dataset);
-        if (isShowing()) {
-            _erasePoint(getGraphics(), dataset, index);
+        if (_showing) {
+            // In swing, updates to showing graphics must be done in the
+            // event thread, not here.  Thus, we have to queue the request.
+            final int pendingDataset = dataset;
+            final int pendingIndex = index;
+            Runnable doPlotPoint = new Runnable() {
+                public void run() {
+                    _erasePoint(getGraphics(), pendingDataset, pendingIndex);
+                }
+            };
+            try {
+                // NOTE: Have to use invokeAndWait() here, not invokeLater()
+                // for reasons that I don't understand...
+                SwingUtilities.invokeAndWait(doPlotPoint);
+            } catch (Exception ex) {
+                // Ignore InterruptedException.
+                // Other exceptions should not occur.
+            }
         }
+
+        // Remove the point from the model.
         Vector points = (Vector)_points.elementAt(dataset);
         if (points != null) {
             // If this point is at the maximum or minimum x or y boundary,
@@ -848,6 +865,7 @@ public class Plot extends PlotBox {
     protected void _drawLine(Graphics graphics,
             int dataset, long startx, long starty, long endx, long endy,
             boolean clip) {
+if(dataset == 0) System.out.println("Line: " + startx + ", " + starty + ", " + endx + ", " + endy);
 
         if (clip) {
             // Rule out impossible cases.
@@ -925,26 +943,25 @@ public class Plot extends PlotBox {
         }
     }
 
-    /** Draw the axes and then plot all points.  This is synchronized
-     *  to prevent multiple threads from drawing the plot at the same
-     *  time.  It sets _painted true and calls notifyAll() at the end so that a
-     *  thread can use <code>wait()</code> to prevent it plotting
-     *  points before the axes have been first drawn.  If the second
+    /** Draw the axes and then plot all points. If the second
      *  argument is true, clear the display first.
      *  This method is called by paintComponent().
-     *  To cause it to be called you
-     *  would normally call repaint(),
+     *  To cause it to be called you would normally call repaint(),
      *  which eventually causes paintComponent() to be called.
+     *  <p>
+     *  Note that this method is not synchronized, which is consistent
+     *  with swing's policy of unsynchronized writing to the screen.
+     *  Thus, this method should always be called from the event thread
+     *  when being used to write to the screen.
      *  @param graphics The graphics context.
      *  @param clearfirst If true, clear the plot before proceeding.
      */
-    protected synchronized void _drawPlot(Graphics graphics,
+    protected void _drawPlot(Graphics graphics,
             boolean clearfirst) {
+
         // We must call PlotBox._drawPlot() before calling _drawPlotPoint
         // so that _xscale and _yscale are set.
         super._drawPlot(graphics, clearfirst);
-
-        _showing = true;
 
         // Plot the points in reverse order so that the first colors
         // appear on top.
@@ -954,8 +971,7 @@ public class Plot extends PlotBox {
                 _drawPlotPoint(graphics, dataset, pointnum);
             }
         }
-        _painted = true;
-        notifyAll();
+        _showing = true;
     }
 
     /** Put a mark corresponding to the specified dataset at the
@@ -1508,9 +1524,6 @@ public class Plot extends PlotBox {
      */
     protected int _marks;
 
-    /** @serial Indicate that painting is complete. */
-    protected boolean _painted = false;
-
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -1610,29 +1623,21 @@ public class Plot extends PlotBox {
         if (_showing) {
             // In swing, updates to showing graphics must be done in the
             // event thread, not here.  Thus, we have to queue the request.
-            int[] pendingPointsData = new int[2];
-            pendingPointsData[0] = dataset;
-            pendingPointsData[1] = pts.size() - 1;
-            _pendingPointsData.add(pendingPointsData);
-            _pendingPointsGraphics.add(getGraphics());
+            final int pendingDataset = dataset;
+            final int pendingPoint = pts.size() - 1;
             Runnable doPlotPoint = new Runnable() {
                 public void run() {
-                    try {
-                        Graphics graphics =
-                               (Graphics)_pendingPointsGraphics.remove(0);
-                        int[] pendingPoints = 
-                               (int[])_pendingPointsData.remove(0);
-                        _drawPlotPoint(graphics, pendingPoints[0],
-                               pendingPoints[1]);
-                    } catch (NoSuchElementException ex) {
-                        // In theory, this should not occur, but in any
-                        // case, we do not want to report it since it
-                        // will be evident on the plot anyway; it will
-                        // have missing points.
-                    }
+                    _drawPlotPoint(getGraphics(), pendingDataset, pendingPoint);
                 }
             };
-            SwingUtilities.invokeLater(doPlotPoint);
+            try {
+                // NOTE: Have to use invokeAndWait() here, not invokeLater()
+                // for reasons that I don't understand...
+                SwingUtilities.invokeAndWait(doPlotPoint);
+            } catch (Exception ex) {
+                // Ignore InterruptedException.
+                // Other exceptions should not occur.
+            }
         }
 
         if(_wrap && _xRangeGiven && x == _xhighgiven) {
@@ -1646,8 +1651,13 @@ public class Plot extends PlotBox {
      * calling this method so that it calls _drawPlot(), which sets
      * _xscale and _yscale. Note that this does not check the dataset
      * index.  It is up to the caller to do that.
+     * 
+     *  Note that this method is not synchronized, which is consistent
+     *  with swing's policy of unsynchronized writing to the screen.
+     *  Thus, this method should always be called from the event thread
+     *  when being used to write to the screen.
      */
-    private synchronized void _drawPlotPoint(Graphics graphics,
+    private void _drawPlotPoint(Graphics graphics,
             int dataset, int index) {
         // Set the color
         if (_pointsPersistence > 0) {
@@ -1715,8 +1725,13 @@ public class Plot extends PlotBox {
      * calling this method so that it calls _drawPlot(), which sets
      * _xscale and _yscale.  It should be adequate to check isShowing()
      * before calling this.
+     * 
+     *  Note that this method is not synchronized, which is consistent
+     *  with swing's policy of unsynchronized writing to the screen.
+     *  Thus, this method should always be called from the event thread
+     *  when being used to write to the screen.
      */
-    private synchronized void _erasePoint(Graphics graphics,
+    private void _erasePoint(Graphics graphics,
             int dataset, int index) {
         // Set the color
         if (_pointsPersistence > 0) {
@@ -1851,12 +1866,6 @@ public class Plot extends PlotBox {
 
     /** @serial Format information on a per data set basis. */
     private Vector _formats = new Vector();
-
-    /** @serial Data on points to be drawn in the event loop. */
-    private List _pendingPointsData = new LinkedList();
-
-    /** @serial Graphics object for points to be drawn in the event loop. */
-    private List _pendingPointsGraphics = new LinkedList();
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////

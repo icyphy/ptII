@@ -319,7 +319,7 @@ public class PlotBox extends JPanel implements Printable {
      *  <code>System.out</code> as an argument.
      *  @param file A file writer to which to send the description.
      */
-    public void export(OutputStream out) {
+    public synchronized void export(OutputStream out) {
         EPSGraphics g = new EPSGraphics(out, _width, _height);
         _drawPlot(g, false);
         g.showpage();
@@ -673,8 +673,8 @@ public class PlotBox extends JPanel implements Printable {
      *   NO_SUCH_PAGE if pageIndex specifies a non-existent page.
      *  @exception PrinterException If the print job is terminated.
      */
-    public int print(Graphics graphics, PageFormat format, int index)
-            throws PrinterException {
+    public synchronized int print(Graphics graphics, PageFormat format,
+            int index) throws PrinterException {
         // We only print on one page.
         if (index >= 1) {
             return Printable.NO_SUCH_PAGE;
@@ -1041,13 +1041,18 @@ public class PlotBox extends JPanel implements Printable {
 
     /** Draw the axes using the current range, label, and title information.
      *  If the second argument is true, clear the display before redrawing.
-     *  This method is called by paintComponent().  To cause it to be called you
-     *  would normally call repaint(), which eventually causes
+     *  This method is called by paintComponent().  To cause it to be called
+     *  you would normally call repaint(), which eventually causes
      *  paintComponent() to be called.
+     *  <p>
+     *  Note that this method is not synchronized, which is consistent
+     *  with swing's policy of unsynchronized writing to the screen.
+     *  Thus, this method should always be called from the event thread
+     *  when being used to write to the screen.
      *  @param graphics The graphics context.
      *  @param clearfirst If true, clear the plot before proceeding.
      */
-    protected synchronized void _drawPlot(Graphics graphics,
+    protected void _drawPlot(Graphics graphics,
             boolean clearfirst) {
         if (graphics == null) {
             throw new RuntimeException("PlotBox._drawPlot: Attempt to draw " +
@@ -1056,7 +1061,7 @@ public class PlotBox extends JPanel implements Printable {
         // Find the width and height of the total drawing area, and clear it.
         Rectangle drawRect = getBounds();
         graphics.setPaintMode();
-        /* FIXME: The following seems to be unncessary with Swing...
+        /* NOTE: The following seems to be unncessary with Swing...
         if (clearfirst) {
             // NOTE: calling clearRect() here permits the background
             // color to show through, but it messes up printing.
@@ -1104,7 +1109,7 @@ public class PlotBox extends JPanel implements Printable {
         int titlefontheight = _titleFontMetrics.getHeight();
 
         if (_title == null) {
-            // FIXME: If the _title is null, then set it to the empty
+            // NOTE: If the _title is null, then set it to the empty
             // string to solve the problem where the fill button overlaps
             // the legend if there is no title.  The fix here would
             // be to modify the legend printing text so that it takes
@@ -1257,6 +1262,7 @@ public class PlotBox extends JPanel implements Printable {
         _lrx = drawRect.width-legendwidth-_rightPadding;
         int width = _lrx-_ulx;
         _xscale = width/(_xMax - _xMin);
+
         _xtickscale = width/(_xtickMax - _xtickMin);
 
         // Background for the plotting rectangle.

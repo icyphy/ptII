@@ -29,9 +29,10 @@ ENHANCEMENTS, OR MODIFICATIONS.
 */
 package ptolemy.plot;
 
-import java.awt.*;
+import java.awt.Graphics;
 import java.io.*;
 import java.util.*;
+import javax.swing.SwingUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// Histogram
@@ -170,7 +171,27 @@ public class Histogram extends PlotBox {
 
         // Draw the point on the screen only if the plot is showing.
         if (_showing) {
-            _drawPlotPoint(getGraphics(), dataset, bin, count);
+            // In swing, updates to showing graphics must be done in the
+            // event thread, not here.  Thus, we have to queue the request.
+            final int pendingDataset = dataset;
+            final int pendingBin = bin;
+            final int pendingCount = count;
+            Runnable doPlotPoint = new Runnable() {
+                public void run() {
+                    _drawPlotPoint(getGraphics(), pendingDataset, pendingBin,
+                           pendingCount);
+                }
+            };
+            try {
+                // Have to use invokeAndWait() here, not invokeLater()
+                // because the "final" variables above, the semantics
+                // of which are nowhere specified, do not seem to remain
+                // constant if this is invoked later.
+                SwingUtilities.invokeAndWait(doPlotPoint);
+            } catch (Exception ex) {
+                // Lots of useless exceptions get invoked here.
+                System.err.println(ex.toString());
+            }
         }
     }
 
@@ -199,7 +220,6 @@ public class Histogram extends PlotBox {
         _currentdataset = -1;
         _points = new Vector();
         _histogram = new Vector();
-        _painted = false;
         _filename = null;
         _showing = false;
 
@@ -335,11 +355,7 @@ public class Histogram extends PlotBox {
         }
     }
 
-    /** Draw the axes and then plot the histogram.  This is synchronized
-     *  to prevent multiple threads from drawing the histogram at the same
-     *  time.  It sets _painted true and calls notifyAll() at the end so that a
-     *  thread can use <code>wait()</code> to prevent it plotting
-     *  points before the axes have been first drawn.  If the second
+    /** Draw the axes and then plot the histogram. If the second
      *  argument is true, clear the display first.
      *  This method is called by paint().  To cause it to be called you
      *  would normally call repaint(), which eventually causes paint() to
@@ -347,7 +363,7 @@ public class Histogram extends PlotBox {
      *  @param graphics The graphics context.
      *  @param clearfirst If true, clear the plot before proceeding.
      */
-    protected synchronized void _drawPlot(Graphics graphics,
+    protected void _drawPlot(Graphics graphics,
             boolean clearfirst) {
         // We must call PlotBox._drawPlot() before calling _drawPlotPoint
         // so that _xscale and _yscale are set.
@@ -367,8 +383,6 @@ public class Histogram extends PlotBox {
                         bin.intValue(), count.intValue());
             }
         }
-        _painted = true;
-        notifyAll();
     }
 
     /** Parse a line that gives plotting information. Return true if
@@ -381,6 +395,7 @@ public class Histogram extends PlotBox {
         if (super._parseLine(line)) {
             return true;
         } else {
+System.out.println("Parsing: " + line);
             // We convert the line to lower case so that the command
             // names are case insensitive
             String lcLine = new String(line.toLowerCase());
@@ -432,6 +447,9 @@ public class Histogram extends PlotBox {
                 } catch (NumberFormatException e) {
                     // ignore if format is bogus.
                 }
+                return true;
+            } else if (lcLine.startsWith("numsets:")) {
+                // Obsolete field... ignore.
                 return true;
             } else if (line.startsWith("move:")) {
                 // deal with 'move: 1 2' and 'move:2 2'
@@ -526,9 +544,6 @@ public class Histogram extends PlotBox {
     /** @serial A vector of histogram data. */
     protected Vector _histogram = new Vector();
 
-    /** @serial  Indicate that painting is complete. */
-    protected boolean _painted = false;
-
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -538,7 +553,7 @@ public class Histogram extends PlotBox {
      * _xscale and _yscale. Note that this does not check the dataset
      * index.  It is up to the caller to do that.
      */
-    private synchronized void _drawPlotPoint(Graphics graphics,
+    private void _drawPlotPoint(Graphics graphics,
             int dataset, int bin, int count) {
         // Set the color
         if (_usecolor) {
