@@ -8,7 +8,7 @@
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[-4, 10]">
     </property>
-    <property name="HDE Director" class="ptolemy.domains.de.kernel.HDEDirector">
+    <property name="HDE Director" class="ptolemy.domains.hde.kernel.HDEDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="20">
