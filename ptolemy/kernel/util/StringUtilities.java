@@ -51,9 +51,13 @@ public class StringUtilities {
     /** Given a string, replace all the instances of XML special characters
      *  with their corresponding XML entities.  This is necessary to
      *  allow arbitrary strings to be encoded within XML.  This method
-     *  replaces instances of double quotes with "&quot;", instances
-     *  of less than with "&lt;" instances of ampersand with "&amp;",
-     *  and instances of greater than with "&gt;".
+     *  <pre>
+     *  & becones &amp;
+     *  "  becomes &quot;
+     *  <  becomes &lt;
+     *  >  becomes &gt;
+     *  </pre>
+     *
      *  @param string The string to escape.
      *  @return A new string with special characters replaced.
      */
