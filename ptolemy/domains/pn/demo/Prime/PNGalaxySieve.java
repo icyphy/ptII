@@ -44,7 +44,7 @@ import java.util.LinkedList;
 public class PNGalaxySieve extends AtomicActor {
 
     /** Constructor  Adds port
-     * @exception NameDuplicationException is thrown if more than one port
+     * @exception NameDuplicationException If more than one port
      *  with the same name is added to the star
      */
     public PNGalaxySieve(CompositeActor container, String name)
@@ -100,6 +100,10 @@ public class PNGalaxySieve extends AtomicActor {
             throw new IllegalActionException("Unknown parameter: " + name);
         }
     }
+
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
 
     /** Create and return a new mutation object that adds a new sieve.
      */
