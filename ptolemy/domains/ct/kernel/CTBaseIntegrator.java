@@ -37,6 +37,7 @@ import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.InvalidStateException;
@@ -87,10 +88,9 @@ import ptolemy.kernel.util.NameDuplicationException;
    <P>
    An integrator has one parameter: the <i>initialState</i>. At the
    initialization stage of the simulation, the state of the integrator is
-   set to the initial state. Changes of the <i>initialState</i> parameter
-   are ignored after the execution starts, unless the initialize() method
-   is called again. The default value of the parameter is 0.0 of type
-   DoubleToken.
+   set to the initial state. Changes of the <i>initialState</i> made during
+   execution cause the state to be reset to the specified value.
+   The default value of the parameter is 0.0 of type double.
    <P>
    An integrator can possibly have several auxiliary variables for the
    the ODE solvers to use. The number of the auxiliary variables is checked
@@ -160,6 +160,18 @@ public class CTBaseIntegrator extends TypedAtomicActor implements TimedActor,
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** If the specified attribute is <i>initialState</i>, then reset
+     *  the state of the integrator to its value.
+     *  @param attribute The attribute that has changed.
+     */
+    public void attributeChanged(Attribute attribute) throws IllegalActionException {
+    	if (attribute == initialState) {
+            _tentativeState = ((DoubleToken) initialState.getToken()).doubleValue();
+            _state = _tentativeState;
+        } else {
+        	super.attributeChanged(attribute);
+        }
+    }
     /** Clear the history information.
      */
     public void clearHistory() {
