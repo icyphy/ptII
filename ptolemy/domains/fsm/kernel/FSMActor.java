@@ -39,10 +39,16 @@ import ptolemy.actor.Manager;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.IntToken;
 import ptolemy.data.Token;
+//import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.Typeable;
+//import ptolemy.domains.hdf.kernel.HDFFSMDirector;
+//import ptolemy.domains.sdf.kernel.SDFIOPort;
+import ptolemy.domains.sdf.kernel.SDFScheduler;
 import ptolemy.graph.Inequality;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentRelation;
@@ -174,6 +180,12 @@ public class FSMActor extends CompositeEntity implements TypedActor {
      *  actor.
      */
     public StringAttribute initialStateName = null;
+    
+    /** A parameter representing the number of most recently read tokens
+     *  that are available for use in a state transition guard expression.
+     *  The default value for this parameter is 1.
+     */
+    //public Parameter tokenHistorySize;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -413,7 +425,10 @@ public class FSMActor extends CompositeEntity implements TypedActor {
     public Port newPort(String name) throws NameDuplicationException {
         try {
             _workspace.getWriteAccess();
-            return new TypedIOPort(this, name);
+            //SDFIOPort p = new SDFIOPort(this, name);
+            TypedIOPort p = new TypedIOPort(this, name);
+            return p;
+            //return new TypedIOPort(this, name);
         } catch (IllegalActionException ex) {
             // This exception should not occur.
             throw new InternalErrorException(
@@ -847,7 +862,14 @@ public class FSMActor extends CompositeEntity implements TypedActor {
             return;
         }
         // Array in which to store the shadow variables.
-        Variable[][] shadowVariables = new Variable[width][2];
+        //Variable[][] shadowVariables = new Variable[width][2];
+        Variable[][] shadowVariables = new Variable[width][3];
+
+        //int historySize = ((IntToken)(tokenHistorySize.getToken())).intValue();
+        //if (_debug_info) {
+        //    System.out.println("this.getName()" + ":tokenHistorySize =" + 
+        //        historySize);
+        //}
 
         String portName = port.getName();
         for (int channelIndex = 0; channelIndex < width; ++channelIndex) {
@@ -889,15 +911,32 @@ public class FSMActor extends CompositeEntity implements TypedActor {
                 }
                 shadowVariables[channelIndex][1]
                     = new Variable(this, shadowName);
+                
 
                 // Make the variable lazy since it will often have
                 // an expression that cannot be evaluated.
                 shadowVariables[channelIndex][1].setLazy(true);
+                
             } catch (NameDuplicationException ex) {
                 throw new InvalidStateException(this,
                         "Error creating input variables for port.\n"
                         + ex.getMessage());
             }
+            String shadowArrayName = shadowName + "Array";
+            previousAttribute = getAttribute(shadowArrayName);
+            try {
+                if (previousAttribute != null) {
+                    previousAttribute.setContainer(null);
+                }
+                shadowVariables[channelIndex][2]
+                    = new Variable(this, shadowArrayName);
+                shadowVariables[channelIndex][2].setLazy(true);
+            } catch (NameDuplicationException ex) {
+                throw new InvalidStateException(this,
+                    "Error creating input variables for port.\n"
+                    + ex.getMessage());
+            }
+            
         }
         _inputVariableMap.put(port, shadowVariables);
     }
@@ -948,6 +987,10 @@ public class FSMActor extends CompositeEntity implements TypedActor {
                 if (v != null) {
                     v.setContainer(null);
                 }
+                v =  shadowVariables[index][2];
+                if (v!= null) {
+                    v.setContainer(null);
+                }
             } catch (NameDuplicationException ex) {
                 throw new InternalErrorException(getName() + ": "
                         + "Error removing input variables for port "
@@ -984,6 +1027,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
         Iterator inPorts = inputPortList().iterator();
         while (inPorts.hasNext() && !_stopRequested) {
             IOPort p = (IOPort)inPorts.next();
+            //Parameter pRate = new Parameter(p, "tokenConsumptionRate", new IntToken(1));
             int width = p.getWidth();
             for (int channel = 0; channel < width; ++channel) {
                 _setInputVariables(p, channel);
@@ -1002,6 +1046,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
      */
     protected void _setInputVariables(IOPort port, int channel)
             throws IllegalActionException {
+        
         if (port.getContainer() != this) {
             throw new IllegalActionException(this, port,
                     "Cannot set input variables for port "
@@ -1019,25 +1064,59 @@ public class FSMActor extends CompositeEntity implements TypedActor {
                     + port.getName() + ".\n");
         }
         if (port.isKnown(channel)) {
+            int portRate = SDFScheduler.getTokenConsumptionRate(port);
+            //int portSDFRate = ((SDFIOPort)port).getTokenConsumptionRate();
+            if (_debug_info) {
+                System.out.println(port.getName() + " port rate = " + portRate);
+            }
+            //if (portRate < 1) portRate = 1;
+            //System.out.println(port.getName() + " port rate = " + portSDFRate);
+            //portRate = 3;
+            //pRate.setToken(new IntToken(portRate));
+            //int historySize = ((IntToken)(tokenHistorySize.getToken())).intValue();
+            //Token[] hdfArray = new Token[historySize];
+            Token[] hdfArray = new Token[portRate]; 
+            for (int i = 0; i < portRate; i++) {
+                hdfArray[i] = new IntToken(0); 
+            }
+            int index = 0;
             // Update the value variable if there is a token in the channel.
-            if (port.hasToken(channel)) {
+            //while (port.hasToken(channel)) { 
+            while (index < portRate && port.hasToken(channel)) {
                 shadowVariables[channel][0].setToken(BooleanToken.TRUE);
                 Token token = port.get(channel);
                 if (_debugging) {
                     _debug("---", port.getName(),"("+channel+
-                            ") has ", token.toString());
+                                ") has ", token.toString());
                 }
-                shadowVariables[channel][1].setToken(token);
+                // Set the value of tokens here.
+                //shadowVariables[channel][1].setToken(token);
+                // if (index < portRate) {
+                hdfArray[index] = token;
+                if (_debug_info) {
+                   System.out.println("hdfArray index = " + index + 
+                       " value = " + hdfArray[index].toString());
+                }
+                index ++;
+            }
+            if (index > 0) {
+                shadowVariables[channel][1].setToken(hdfArray[index - 1]);
+                shadowVariables[channel][2].setToken(new ArrayToken(hdfArray));
+                if (_debug_info){
+                    System.out.println("shadowVariables[channel][1] = " 
+                        + hdfArray[index -1].toString());
+                }
             } else {
                 shadowVariables[channel][0].setToken(BooleanToken.FALSE);
                 if (_debugging) {
                     _debug("---", port.getName(), "("+channel+
-                            ") has no token.");
+                        ") has no token.");
                 }
             }
         } else {
             shadowVariables[channel][0].setUnknown(true);
             shadowVariables[channel][1].setUnknown(true);
+            shadowVariables[channel][2].setUnknown(true);
         }
     }
 
@@ -1208,10 +1287,21 @@ public class FSMActor extends CompositeEntity implements TypedActor {
             throw new InternalErrorException("Constructor error "
                     + ex.getMessage());
         }
+        /*
+        try {
+            tokenHistorySize = 
+                new Parameter(this, "tokenHistorySize", new IntToken(1));
+        } catch (Exception e) {
+            throw new InternalErrorException(
+                "cannot create default tokenHistorySize parameter:\n" + e);
+        }
+        */
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
+    //private Parameter _portRate;
 
     // Cached lists of input and output ports.
     private transient long _inputPortsVersion = -1;
@@ -1243,4 +1333,8 @@ public class FSMActor extends CompositeEntity implements TypedActor {
 
     // True if the current state is a final state.
     private boolean _reachedFinalState;
+    
+    // Set to true to enable debugging.
+    private boolean _debug_info = false;
+    //private boolean _debug_info = true;
 }
