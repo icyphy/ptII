@@ -28,8 +28,13 @@ COPYRIGHTENDKEY
 
 package ptolemy.codegen.kernel;
 
+import java.util.StringTokenizer;
+
+import ptolemy.data.expr.Variable;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -73,6 +78,102 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      */
     public NamedObj getComponent() {
         return _component;
+    }
+    
+    /** Return the value of the specified parameter of the
+     *  associated actor.
+     *  @param parameterName The name of the parameter.
+     *  @return The value as a string.
+     *  @exception IllegalActionException If the parameter
+     *   does not exist or does not have a value.
+     */
+    public String getParameterValue(String name) 
+            throws IllegalActionException {
+    	Attribute attribute = _component.getAttribute(name);
+        if (attribute == null) {
+        	throw new IllegalActionException(_component,
+                    "No attribute named: " + name);
+        }
+        if (attribute instanceof Variable) {
+            // FIXME: need to ensure that the returned string
+            // is correct syntax for the target language.
+        	return ((Variable)attribute).getToken().toString();
+        } else if (attribute instanceof Settable) {
+        	return ((Settable)attribute).getExpression();
+        }
+        // FIXME: Are there any other values that a
+        // parameter might have?
+        throw new IllegalActionException(_component,
+                "Attribute does not have a value: " + name);
+    }
+
+    /** Return the reference to the specified parameter or port of the
+     *  associated actor.
+     *  @param parameterName The name of the parameter or port
+     *  @return The reference to that parameter or port (a variable
+     *   name, for example).
+     *  @exception IllegalActionException If the parameter or port
+     *   does not exist or does not have a value.
+     */
+    public String getReference(String name) 
+            throws IllegalActionException {
+    	// FIXME: Implement this. The returned name should be that
+        // of a unique variable that represents the parameter
+        // or the port value. First deal with ports: a
+        // declaration should be created for each connection
+        // and produced in the initialization code. E.g.,
+        // the name fullName_inputPortName_channelNumber
+        // could be used for a variable representing the connection.
+        // This method needs to generate this name given
+        // the input port name.
+        return name;
+    }
+
+    /** Process the specified code, replacing macros with their
+     *  values.
+     *  @param code The code to process.
+     *  @return The processed code.
+     */
+    public String processCode(String code) throws IllegalActionException {
+        
+        StringTokenizer tokenizer = new StringTokenizer(code, "$()", true);
+        StringBuffer result = new StringBuffer();
+        while (tokenizer.hasMoreTokens()) {
+        	String token = tokenizer.nextToken();
+            boolean foundIt = false;
+            if (token.equals("$") && tokenizer.hasMoreTokens()) {
+                String macroName = tokenizer.nextToken();
+                if (macroName.equals("val") && tokenizer.hasMoreTokens()) {
+                    String openParen = tokenizer.nextToken();
+                    if (openParen.equals("(") && tokenizer.hasMoreTokens()) {
+                        String parameterName = tokenizer.nextToken();
+                        if (tokenizer.hasMoreTokens()) {
+                        	String closeParen = tokenizer.nextToken();
+                            if (closeParen.equals(")")) {
+                            	result.append(getParameterValue(parameterName));
+                                foundIt = true;
+                            }
+                        }
+                    }
+                } else if (macroName.equals("ref") && tokenizer.hasMoreTokens()) {
+                    String openParen = tokenizer.nextToken();
+                    if (openParen.equals("(") && tokenizer.hasMoreTokens()) {
+                        String name = tokenizer.nextToken();
+                        if (tokenizer.hasMoreTokens()) {
+                            String closeParen = tokenizer.nextToken();
+                            if (closeParen.equals(")")) {
+                                result.append(getReference(name));
+                                foundIt = true;
+                            }
+                        }
+                    }
+                }
+            }
+            if (!foundIt) {
+                result.append(token);   
+            }
+        }
+        return result.toString();
     }
 
     ///////////////////////////////////////////////////////////////////

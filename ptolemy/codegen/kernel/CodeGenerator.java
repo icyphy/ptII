@@ -115,6 +115,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         generateWrapupCode(code);
         
         // FIXME: Write the code to standard out for now.
+        // The code should be written to a file in the
+        // codeDirectory instead.
         System.out.println(code.toString());
     }
     

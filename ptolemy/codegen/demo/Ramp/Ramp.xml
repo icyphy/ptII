@@ -12,16 +12,20 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
     </property>
-    <entity name="CGCBlackHole" class="ptolemy.codegen.lib.CGCBlackHole">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{285, 80}">
+    <property name="CGCDirector" class="ptolemy.codegen.kernel.CGCDirector">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 60.0]">
+        </property>
+    </property>
+    <entity name="CGCRamp" class="ptolemy.codegen.lib.CGCRamp">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 160.0]">
         </property>
     </entity>
-    <entity name="CGCRamp" class="ptolemy.codegen.lib.CGCRamp">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{140, 75}">
+    <entity name="CGCBlackHole" class="ptolemy.codegen.lib.CGCBlackHole">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 165.0]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="CGCBlackHole.input" relation="relation"/>
     <link port="CGCRamp.output" relation="relation"/>
+    <link port="CGCBlackHole.input" relation="relation"/>
 </entity>

@@ -29,6 +29,7 @@ COPYRIGHTENDKEY
 package ptolemy.codegen.c.actor.lib;
 
 import ptolemy.codegen.kernel.CCodeGeneratorHelper;
+import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
 ////Scale
@@ -55,8 +56,9 @@ public class Scale extends CCodeGeneratorHelper {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-	public void generateFireCode(StringBuffer stream) {
-        stream.append(_codeBlock);
+	public void generateFireCode(StringBuffer stream)
+                throws IllegalActionException {
+        stream.append(processCode(_codeBlock));
 	}
     
     ///////////////////////////////////////////////////////////////////
