@@ -390,7 +390,8 @@ jstest_jsimple:
 	$(MAKE) AUXCLASSPATH="$(CLASSPATHSEPARATOR)$(JSCLASSPATH)" \
 		test_jsimple
 	@echo "To view code coverage results, run javascope or jsreport"
-	@echo "To get a summary, run jsreport or jsreport -HTML" 
+	@echo "To get a summary, run jsreport or jsreport -HTML or" 
+	@echo "jsreport -HTML -PROGRESS -RECURSIVE -OUTDIR=$HOME/public_html/private/js"
 
 # Run the test_jsimple rule with the proper classpath  
 jstest_jgraphical:
