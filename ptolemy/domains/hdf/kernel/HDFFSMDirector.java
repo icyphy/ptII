@@ -35,7 +35,7 @@ package ptolemy.domains.hdf.kernel;
 import ptolemy.domains.fsm.kernel.*;
 import ptolemy.actor.Director;
 import ptolemy.actor.TypedCompositeActor;
-import ptolemy.actor.sched.Scheduler;
+import ptolemy.actor.sched.*;
 import ptolemy.actor.sched.StaticSchedulingDirector;
 import ptolemy.actor.Actor;
 import ptolemy.actor.TypedActor;
@@ -392,7 +392,12 @@ public class HDFFSMDirector extends FSMDirector {
 		if (_debug_info) System.out.println(getName() + 
 					   " : invalidating " +
 					    "current schedule.");
-		_invalidateSchedule();
+		// should only invalidate schedule if director is HDF.
+		CompositeActor hdfActor = _getHighestFSM();
+		Director director = hdfActor.getExecutiveDirector();
+		if (director instanceof HDFDirector) {
+		    ((HDFDirector)director).invalidateSchedule();
+		}
 		// Get the firing count for the HDF actor (the container
 		// of this director) in the current schedule.
 		_firingsPerScheduleIteration = 
@@ -445,7 +450,7 @@ public class HDFFSMDirector extends FSMDirector {
 		Scheduler refinmentSched = 
 		    ((StaticSchedulingDirector)refinementDir).getScheduler();
 		refinmentSched.setValid(false);
-		refinmentSched.schedule();
+		refinmentSched.getSchedule();
 		if (_debug_info) System.out.println(getName() + 
                   " : preinitialize(): refinement's director : " + 
 				      refinementDir.getFullName());
@@ -470,7 +475,9 @@ public class HDFFSMDirector extends FSMDirector {
 	    if (_debug_info) System.out.println(getName() + 
                         " : preinitialize(): invalidating " +
 					  "current schedule.");
-	    _invalidateSchedule();
+	    CompositeActor hdfActor = _getHighestFSM();
+	    Director director = hdfActor.getExecutiveDirector();
+	    ((StaticSchedulingDirector)director).invalidateSchedule();
 	} else {
 	    throw new IllegalActionException(this,
                     "current refinement is null.");
@@ -631,6 +638,43 @@ public class HDFFSMDirector extends FSMDirector {
                     ((CompositeActor)(curState.getRefinement())).getFullName());
     }
 
+    /** If the container of this director does not have an 
+     *  HDFFSMDirector as its executive director, then return it.
+     *  Otherwise, move up the hierarchy until we reach a container
+     *  actor that does not have an HDFFSMDirector director for its
+     *  executive director.
+     *
+     *  @exception IllegalActionException If the top level director
+     *  is an HDFFSMDirector.
+     */
+    private CompositeActor _getHighestFSM()
+	throws IllegalActionException {
+	    // Keep moving up towards the toplevel of the hierarchy until
+	    // we find either an SDF or HDF executive director or we reach
+	    // the toplevel composite actor.
+	    CompositeActor container = (CompositeActor)getContainer();
+	    Director director = container.getExecutiveDirector();
+	    boolean foundValidDirector = false;
+	    while (foundValidDirector == false) {
+		if (director == null) {
+		    // We have reached the toplevel without finding a
+		    // valid director.
+		    throw new IllegalActionException(this,
+						     "This model is not a refinement of an SDF or " +
+						     "an HDF model.");
+		} else if (director instanceof SDFDirector) {
+		    foundValidDirector = true;
+		} else if (director instanceof HDFDirector) {
+		    foundValidDirector = true;
+		} else {
+		    // Move up another level in the hierarchy.
+		    container = (CompositeActor)(container.getContainer());
+		    director = container.getExecutiveDirector();
+		}
+	    }
+	    return container;
+	}
+
     /** Get the SDF or HDF scheduler associated with the container of
      *  this director.
      *
@@ -641,29 +685,8 @@ public class HDFFSMDirector extends FSMDirector {
      */
     private Scheduler _getDataflowScheduler() 
 	throws IllegalActionException {
-	// Keep moving up towards the toplevel of the hierarchy until
-	// we find either an SDF or HDF executive director or we reach
-	// the toplevel composite actor.
-	CompositeActor container = (CompositeActor)getContainer();
+	CompositeActor container =   _getHighestFSM();
 	Director director = container.getExecutiveDirector();
-	boolean foundValidDirector = false;
-	while (foundValidDirector == false) {
-	    if (director == null) {
-		// We have reached the toplevel without finding a
-		// valid director.
-		throw new IllegalActionException(this,
-                   "This model is not a refinement of an SDF or " +
-						 "an HDF model.");
-	    } else if (director instanceof SDFDirector) {
-		foundValidDirector = true;
-	    } else if (director instanceof HDFDirector) {
-		foundValidDirector = true;
-	    } else {
-		// Move up another level in the hierarchy.
-		container = (CompositeActor)(container.getContainer());
-		director = container.getExecutiveDirector();
-	    }
-	}
 	Scheduler scheduler = 
 	    ((StaticSchedulingDirector)director).getScheduler();
 	if (scheduler == null) {
@@ -710,39 +733,49 @@ public class HDFFSMDirector extends FSMDirector {
 	// Now, "container" is directly contained by either an
 	// SDF or an HDF model.
 	// Get the firing count of "container" in the schedule.
-	// FIXME: replace this with cleaner/faster code.
-	Scheduler scheduler = 
+	if ((((StaticSchedulingDirector)director).isScheduleValid()) && (_cachedFiringCount  > -1)) {
+	    return _cachedFiringCount;
+	} else if (director instanceof HDFDirector) {
+	    return ((HDFDirector)director).getFiringCount(container);
+	} else if (director instanceof SDFDirector) {
+	    Scheduler scheduler = 
 	    ((StaticSchedulingDirector)director).getScheduler();
-	if (scheduler == null) {
-	    throw new IllegalActionException(this, "Unable to get " + 
+	    if (scheduler == null) {
+		throw new IllegalActionException(this, "Unable to get " + 
 					 "the SDF or HDF scheduler.");
-	}
-	Enumeration actors = scheduler.schedule();
-	int occurrence = 0;
-	while (actors.hasMoreElements()) {
-	    Actor actor = (Actor)actors.nextElement();
-	    String scheduleName = ((Nameable)actor).getName();
-	    String actorName = ((Nameable)container).getName();
-	    if (scheduleName.equals(actorName)) {
-		// Current actor in the static schedule is
-		// the HDF composite actor containing this FSM.
-		// Increment the occurrence count of this actor.
-		occurrence++;
 	    }
-
-	    if (_debug_info) { 
-		System.out.println(getName() + 
-     " :  _getFiringsPerSchedulIteration(): Actor in static schedule: " +
-				   ((Nameable)actor).getName());
-		System.out.println(getName() + 
-      " : _getFiringsPerSchedulIteration(): Actors in static schedule:" +
-				   occurrence);
-		System.out.println(getName() + 
-          " :  _getFiringsPerSchedulIteration(): current fire count: " +
-		   _firingsSoFar);
+	    Schedule schedule = scheduler.getSchedule();
+	    Iterator firings = schedule.firingIterator();
+	    int occurrence = 0;
+	    while (firings.hasNext()) {
+		Firing firing = (Firing)firings.next();
+		Actor actorInSchedule = (Actor)(firing.getActor());
+		String actorInScheduleName = 
+		    ((Nameable)actorInSchedule).getName();
+		String actorName = ((Nameable)container).getName();
+		if (actorInScheduleName.equals(actorName)) {
+		    // Current actor in the static schedule is
+		    // the HDF composite actor containing this FSM.
+		    // Increment the occurrence count of this actor.
+		    occurrence += firing.getIterationCount();
+		}
+		
+		if (_debug_info) { 
+		    System.out.println(getName() + 
+				       " :  _getFiringsPerSchedulIteration(): Actor in static schedule: " +
+				       ((Nameable)container).getName());
+		    System.out.println(getName() + 
+				       " : _getFiringsPerSchedulIteration(): Actors in static schedule:" +
+				       occurrence);
+		}
 	    }
+	    _cachedFiringCount = occurrence;
+	    return _cachedFiringCount;
+	} else {
+	    throw new IllegalActionException(this, "The executive " +
+		"director is invalid. The executive director " +
+		"should be either an SDFDirector or an HDFDirector.");
 	}
-	return occurrence;
     }
 
     /** Get the number of tokens that are produced or consumed
@@ -788,20 +821,6 @@ public class HDFFSMDirector extends FSMDirector {
         return ((ptolemy.data.IntToken)param.getToken()).intValue();
     }
 
-    /** Invalidate the current dataflow schedule. This needs to
-     *  be done when we make a state transition to a new state
-     *  such that the type signature of the new state is 
-     *  different from the type signature of the old state.
-     *
-     *  @exception IllegalActionException If there is a
-     *   problem invalidating the schedule. This should
-     *   not happen.
-     */
-    private void _invalidateSchedule() 
-	throws IllegalActionException {
-	Scheduler scheduler = _getDataflowScheduler();
-	scheduler.setValid(false);
-    }
 
     private void _setTokenConsumptionRate(Entity e, IOPort port, int rate)
             throws NotSchedulableException {
@@ -1071,5 +1090,6 @@ public class HDFFSMDirector extends FSMDirector {
     // The firing count for the HDF actor (the container
     // of this director) in the current schedule.
     private int _firingsPerScheduleIteration = -1;
+    private int _cachedFiringCount = -1;
 
 }

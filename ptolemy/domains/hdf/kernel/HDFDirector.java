@@ -148,6 +148,107 @@ public class HDFDirector extends SDFDirector {
      */
     public Parameter scheduleCacheSize;
 
+    /**
+     *
+     *  @exception IllegalActionException If fixme.
+     */
+    public Schedule getSchedule() throws IllegalActionException{
+	Scheduler scheduler = 
+	    getScheduler();
+	if (scheduler == null) {
+	    throw new IllegalActionException(this, "Unable to get " + 
+					 "the SDF or HDF scheduler.");
+	}
+	Schedule schedule;
+	if (isScheduleValid()) {
+	    // This will return a the current schedule.
+	    schedule = scheduler.getSchedule();
+	} else {
+	    // The schedule is no longer valid, so check the schedule
+	    // cache.
+
+	    // Convert the model to a moml string. Note: This can generate
+	    // quite a bit of text. This should still be more efficient
+	    // than solving the balance equations. Do
+	    // performance analysis to verify this.
+	    CompositeActor container =  (CompositeActor)getContainer();
+	    String momlKey = container.exportMoML();
+	    //System.out.println("MoML: " + momlKey);
+
+	    if (_scheduleCache.containsKey(momlKey)) {
+		// cache hit.
+		if (_debug_info) { 
+		    System.out.println(getName() + 
+				       " : Cache hit!");
+		}
+		// Remove the key from the list.
+		_scheduleKeyList.remove(momlKey);
+		// Now add the key to head of list.
+		_scheduleKeyList.add(0, momlKey);
+
+		schedule = (Schedule)_scheduleCache.get(momlKey);
+	    } else {
+		// cache miss.
+		if (_debug_info) { 
+		    System.out.println(getName() + 
+				       " : Cache miss.");
+		}
+		// Add key to head of list.
+		_scheduleKeyList.add(0, momlKey);
+		int cacheSize = 
+		    ((IntToken)(scheduleCacheSize.getToken())).intValue();
+		if (_scheduleCache.size() >= cacheSize) {
+		    // cache is  full.
+		    // remove tail of list.
+		    _scheduleKeyList.remove(cacheSize - 1);
+		    // remove key from map.
+		    _scheduleCache.remove(momlKey);
+		}
+		// Add key/schedule to the schedule map.
+		schedule = scheduler.getSchedule();
+		_scheduleCache.put(momlKey, schedule);
+	    } 
+	}
+	return schedule;
+    }
+
+    /** Return the firing count of the specified actor in the schedule.
+     *  The specified actor must be director contained by this director.
+     *  Otherwise an exception will occur.
+     *
+     *  @param actor The actor to return the firing count for.
+     *  @exception IllegalActionException I
+     */
+    public int getFiringCount(Actor actor) throws IllegalActionException {
+	
+	Schedule schedule = getSchedule();
+	Iterator firings = schedule.firingIterator();
+	int occurrence = 0;
+	while (firings.hasNext()) {
+	    Firing firing = (Firing)firings.next();
+	    Actor actorInSchedule = (Actor)(firing.getActor());
+	    String actorInScheduleName = 
+		((Nameable)actorInSchedule).getName();
+	    String actorName = ((Nameable)actor).getName();
+	    if (actorInScheduleName.equals(actorName)) {
+		// Current actor in the static schedule is
+		// the HDF composite actor containing this FSM.
+		// Increment the occurrence count of this actor.
+		occurrence += firing.getIterationCount();
+	    }
+
+	    if (_debug_info) { 
+		System.out.println(getName() + 
+     " :  _getFiringsPerSchedulIteration(): Actor in static schedule: " +
+				   ((Nameable)actor).getName());
+		System.out.println(getName() + 
+      " : _getFiringsPerSchedulIteration(): Actors in static schedule:" +
+				   occurrence);
+	    }
+	}
+	return occurrence;
+    }
+
     /** Initialize the actors associated with this director, set the
      *  size of the schedule cache, and then compute the schedule. 
      *  The schedule is computed during initialization so that 
@@ -163,10 +264,9 @@ public class HDFDirector extends SDFDirector {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        HDFScheduler scheduler = (HDFScheduler)getScheduler();
+        SDFScheduler scheduler = (SDFScheduler)getScheduler();
 	int cacheSize = 
 	    ((IntToken)(scheduleCacheSize.getToken())).intValue();
-	scheduler.setCacheSize(cacheSize);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -177,8 +277,8 @@ public class HDFDirector extends SDFDirector {
      */
     private void _init() {
         try {
-            HDFScheduler scheduler = 
-                new HDFScheduler(this, uniqueName("Scheduler"));
+            SDFScheduler scheduler = 
+                new SDFScheduler(this, uniqueName("Scheduler"));
             setScheduler(scheduler);
         }
         catch (Exception e) {
@@ -190,8 +290,12 @@ public class HDFDirector extends SDFDirector {
                     e.getMessage());
         }
         try {
+	    int cacheSize = 100;
 	    scheduleCacheSize
-                = new Parameter(this,"scheduleCacheSize",new IntToken(100));
+                = new Parameter(this,"scheduleCacheSize",new IntToken(cacheSize));
+
+	    _scheduleCache = new HashMap();
+	    _scheduleKeyList = new ArrayList(cacheSize);
         }
         catch (Exception e) {
             throw new InternalErrorException(
@@ -200,5 +304,11 @@ public class HDFDirector extends SDFDirector {
         }
     }
 
+    // The hashmap for the schedule cache.
+    private Map _scheduleCache;
+    private List _scheduleKeyList;
 
+    // Set to true to enable debugging.
+    //private boolean _debug_info = true;
+    private boolean _debug_info = false;
 }
