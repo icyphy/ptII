@@ -62,7 +62,10 @@ EXTRA_SRCS =	$(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	$(DIRS)
+# javasound is in MISC_FILES because JDK1.2 does not have the javasound
+# facility, so DIRS will not contain javasound, but we don't want
+# make checkjunk to barf
+MISC_FILES =	$(DIRS) javasound
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
