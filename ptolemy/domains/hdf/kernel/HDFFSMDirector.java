@@ -45,6 +45,7 @@ import ptolemy.actor.sched.NotSchedulableException;
 import ptolemy.actor.sched.Schedule;
 import ptolemy.actor.sched.Scheduler;
 import ptolemy.actor.sched.StaticSchedulingDirector;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.domains.fsm.kernel.FSMActor;
@@ -255,6 +256,73 @@ public class HDFFSMDirector extends FSMDirector {
         // iteration of the current schedule of the executive
         // director.
         _firingsSoFar = 0;
+        FSMActor controller = getController();
+        State initialState = controller.getInitialState();
+        // Get the current refinement.
+        TypedCompositeActor curRefinement =
+            // FIXME
+            //(TypedCompositeActor)initialState.getRefinement();
+            (TypedCompositeActor)(initialState.getRefinement())[0];
+        if (curRefinement != null) {
+            Director refinementDir = curRefinement.getDirector();
+            if (_debug_info) {
+                System.out.println(getName() + " : initialize()" +
+                    "initial refinement is " + curRefinement.getFullName());
+                System.out.println(getName() + " : initialize(): " +
+                         "initial director is " + refinementDir.getFullName());
+            }
+            
+            if (refinementDir instanceof HDFFSMDirector) {
+                //System.out.println("There is a HDFFSM Director");
+                refinementDir.initialize();
+            } else if (refinementDir instanceof HDFDirector) {
+                Scheduler refinmentSched =
+                    ((StaticSchedulingDirector)refinementDir).getScheduler();
+                refinmentSched.setValid(false);
+                //refinmentSched.getSchedule();
+                //System.out.println("compute HDF schdule");
+                ((HDFDirector)refinementDir).getSchedule();
+                if (_debug_info) System.out.println(getName() +
+                    " : initialize(): refinement's director : " +
+                        refinementDir.getFullName());
+
+                if (_debug_info) {
+                    CompositeActor container =
+                        (CompositeActor)getContainer();
+                    System.out.println(getName() +
+                        " : initialize(): Name of HDF composite actor: " +
+                                  ((Nameable)container).getName());
+                }
+            } else if (refinementDir instanceof SDFDirector) {
+                Scheduler refinmentSched =
+                ((StaticSchedulingDirector)refinementDir).getScheduler();
+                refinmentSched.setValid(false);
+                //System.out.println("compute the SDF schedule");
+                refinmentSched.getSchedule();
+            } else {
+                // Invalid director.
+                throw new IllegalActionException(this,
+                  "The current refinement has an invalid director. " +
+                  "Allowed directors are SDF, HDF, or HDFFSMDirector.");
+            }
+            _updateInputTokenConsumptionRates(curRefinement);
+            _updateOutputTokenProductionRates(curRefinement);
+            //_firingsPerScheduleIteration =
+            //                updateFiringsPerScheduleIteration();
+            //System.out.println("preinitialize: firingsPerScheduleIteration = "
+            //   + _firingsPerScheduleIteration);
+            // Tell the scheduler that the current schedule is no
+            // longer valid.
+            if (_debug_info) System.out.println(getName() +
+                        " : initialize(): invalidating " +
+                                          "current schedule.");
+            CompositeActor hdfActor = _getHighestFSM();
+            Director director = hdfActor.getExecutiveDirector();
+            ((StaticSchedulingDirector)director).invalidateSchedule();
+        } else {
+            throw new IllegalActionException(this,
+                    "current refinement is null.");
+        }
     }
 
     /** Return a new receiver of a type compatible with this director.
@@ -355,6 +423,9 @@ public class HDFFSMDirector extends FSMDirector {
                 // Extract the token consumption/production rates from the
                 // ports of the new refinement and update the
                 // rates of the ports of the FSM actor.
+                Director refinementDir = actor.getDirector();
+                //System.out.println("refinement name " + actor.getName()
+                //    + " refinmentDir = " + refinementDir.getFullName());
                 
                 //Director director = actor.getDirector();
                 _updateInputTokenConsumptionRates(actor);
@@ -382,6 +453,11 @@ public class HDFFSMDirector extends FSMDirector {
                 if (_debug_info) System.out.println(getName() +
                    " : postfire(): making state transition to: " +
                                            newState.getFullName());
+                BooleanToken resetToken =
+                            (BooleanToken)lastChosenTr.reset.getToken();
+                if (resetToken.booleanValue()) {
+                    initialize();
+                }
                 curState = newState;
                 // Since a state change has occurred, recompute the
                 // Mapping from input ports of the modal model to
@@ -404,6 +480,29 @@ public class HDFFSMDirector extends FSMDirector {
                     // FIXME
                     //(TypedCompositeActor)curState.getRefinement();
                     (TypedCompositeActor)(curState.getRefinement())[0];
+                Director refinementDir = actor.getDirector();
+                //System.out.println("refinementName = " + actor.getName()
+                //    + " refinementDir = " + refinementDir.getName());
+                if (refinementDir instanceof HDFFSMDirector) {
+                    refinementDir.postfire();
+                } else if (refinementDir instanceof HDFDirector) {
+                    //System.out.println("yes, its a HDFDirector");
+                    Scheduler refinmentSched =
+                    ((StaticSchedulingDirector)refinementDir).getScheduler();
+                    refinmentSched.setValid(false);
+                    refinmentSched.getSchedule();
+                    //System.out.println(actor.getFullName() + 
+                    //    " precompute schedule for next refinement");
+                    ((HDFDirector)refinementDir).getSchedule();
+                } else if (refinementDir instanceof SDFDirector) {
+                    //System.out.println("yes, it's a SDF dir");
+                    Scheduler refinmentSched =
+                        ((StaticSchedulingDirector)refinementDir).getScheduler();
+                    refinmentSched.setValid(false);
+                    refinmentSched.getSchedule();
+                } else {
+                    //System.out.println("no, it's neither SDF nor HDF");
+                }
                 // Extract the token consumption/production rates from the
                 // ports of the new refinement and update the
                 // rates of the ports of the FSM actor.
@@ -415,7 +514,7 @@ public class HDFFSMDirector extends FSMDirector {
                     ((HDFDirector)director).invalidateSchedule();
                     //System.out.println(director.getFullName() + 
                     //    "invalidate HDF schedule");
-                //    ((HDFDirector)director).getSchedule();
+                    //((HDFDirector)director).getSchedule();
                 }
                 
                 // Tell the scheduler that the current schedule is no
@@ -433,6 +532,7 @@ public class HDFFSMDirector extends FSMDirector {
                 //    + _firingsPerScheduleIteration);
                 //_firingsPerScheduleIteration = -1;
             }
+            //System.out.println("postfire ends.");
             return super.postfire();
         }
         if (_debug_info) System.out.println(getName() +
@@ -486,35 +586,39 @@ public class HDFFSMDirector extends FSMDirector {
         if (curRefinement != null) {
             Director refinementDir = curRefinement.getDirector();
             if (_debug_info) {
+                System.out.println(getName() + " : preinitialize()" +
+                    "initial refinement is " + curRefinement.getFullName());
                 System.out.println(getName() + " : preinitialize(): " +
-                         "refinementDir1 is " + refinementDir.getName());
+                         "initial director is " + refinementDir.getFullName());
             }
+            
             if (refinementDir instanceof HDFFSMDirector) {
                 //System.out.println("There is a HDFFSM Director");
                 refinementDir.preinitialize();
-            } else if (refinementDir instanceof SDFDirector) {
-                Scheduler refinmentSched =
-                ((StaticSchedulingDirector)refinementDir).getScheduler();
-                refinmentSched.setValid(true);
-                refinmentSched.getSchedule();
             } else if (refinementDir instanceof HDFDirector) {
                 Scheduler refinmentSched =
                     ((StaticSchedulingDirector)refinementDir).getScheduler();
                 refinmentSched.setValid(false);
                 //refinmentSched.getSchedule();
+                //System.out.println("compute HDF schdule");
                 ((HDFDirector)refinementDir).getSchedule();
                 if (_debug_info) System.out.println(getName() +
-                  " : preinitialize(): refinement's director : " +
-                                      refinementDir.getFullName());
+                    " : preinitialize(): refinement's director : " +
+                        refinementDir.getFullName());
 
                 if (_debug_info) {
                     CompositeActor container =
                         (CompositeActor)getContainer();
                     System.out.println(getName() +
                         " : preinitialize(): Name of HDF composite actor: " +
-                                      ((Nameable)container).getName());
-                
+                                  ((Nameable)container).getName());
                 }
+            } else if (refinementDir instanceof SDFDirector) {
+                Scheduler refinmentSched =
+                ((StaticSchedulingDirector)refinementDir).getScheduler();
+                refinmentSched.setValid(false);
+                //System.out.println("compute the SDF schedule");
+                refinmentSched.getSchedule();
             } else {
                 // Invalid director.
                 throw new IllegalActionException(this,

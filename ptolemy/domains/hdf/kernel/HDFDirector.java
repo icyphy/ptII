@@ -409,10 +409,11 @@ public class HDFDirector extends SDFDirector {
     public void initialize() throws IllegalActionException {
         //System.out.println("HDF Director initialize");
         super.initialize();
-        
         SDFScheduler scheduler = (SDFScheduler)getScheduler();
+        getSchedule();
         int cacheSize =
             ((IntToken)(scheduleCacheSize.getToken())).intValue();
+        
     }
     
     public void preinitialize() throws IllegalActionException {
@@ -452,14 +453,16 @@ public class HDFDirector extends SDFDirector {
     
     public boolean postfire() throws IllegalActionException {
         //System.out.println(getFullName() + " HDF postfire now!");
+        // Get schedule here, no matter if it is the top level.
         getSchedule();
         //System.out.println(getFullName() + " HDF get new schedule");
         CompositeActor container = (CompositeActor)getContainer();
         //Director director = container.getDirector();
         Director exeDirector = container.getExecutiveDirector();
         if (exeDirector == null
-            //|| (! (exeDirector instanceof HDFDirector))
+            //|| (! (exeDirector instanceof SDFDirector))
             //|| (! (exeDirector instanceof HDFFSMDirector))
+            //|| (! (exeDirector instanceof HDFDirector))
             ) {
             //System.out.println(this.getFullName() 
             //    + " top director is rescheduling.");
