@@ -758,89 +758,125 @@ public class DEDirector extends Director {
         // Initialize the _filledReceivers field.
         _filledReceivers.clear();
 
-                DEEvent currentEvent = null;
-                // Keep taking events out until there are no more simultaneous
-                // events or until the queue is empty. Some events get put back
-                // into the queue.  We collect those in the following fifo
-                // to put them back outside the loop.
-                FIFOQueue fifo = new FIFOQueue();
+        DEEvent currentEvent = null;
+        // Keep taking events out until there are no more simultaneous
+        // events or until the queue is empty. Some events get put back
+        // into the queue.  We collect those in the following fifo
+        // to put them back outside the loop.
+        FIFOQueue fifo = new FIFOQueue();
 
+        while (true) {
+
+            if (_stopWhenQueueIsEmpty) {
+                try {
+                    currentEvent = (DEEvent)_eventQueue.take();
+                } catch (IllegalAccessException ex) {
+                    // Queue is empty.
+                    // The next iteration time will be equal to stop time.
+                    _nextIterationTime = getStopTime();
+                    break;
+                }
+            } else {
+                // In this case, effectively, we want to do a blocking
+                // take(). So, keep invoking take() until an exception
+                // is not thrown.
                 while (true) {
-
-                    if (_stopWhenQueueIsEmpty) {
-                        try {
-                            currentEvent = (DEEvent)_eventQueue.take();
-                        } catch (IllegalAccessException ex) {
-                            // Queue is empty.
-                            // The next iteration time will be equal to stop time.
-                            _nextIterationTime = getStopTime();
-                            break;
-                        }
-                    } else {
-                        // In this case, effectively, we want to do a blocking
-                        // take(). So, keep invoking take() until an exception
-                        // is not thrown.
-                        while (true) {
+                    try {
+                        currentEvent = (DEEvent)_eventQueue.take();
+                    } catch (IllegalAccessException ex) {
+                        synchronized(_eventQueue) {
                             try {
-                                currentEvent = (DEEvent)_eventQueue.take();
-                            } catch (IllegalAccessException ex) {
-                                synchronized(_eventQueue) {
-                                    try {
-                                        _eventQueue.wait();
-                                    } catch (InterruptedException e) {
+                                _eventQueue.wait();
+                            } catch (InterruptedException e) {
                                 // this shouldn't happen.
-                                        throw new InternalErrorException(
-                                                "In DEDirector._prepareActor"+
-                                                "ToFire(), a thread got " +
-                                                "interrupted.");
-                                    }
-                                }
-                                continue;
+                                throw new InternalErrorException(
+                                        "In DEDirector._prepareActor"+
+                                        "ToFire(), a thread got " +
+                                        "interrupted.");
                             }
-                            break;
                         }
+                        continue;
                     }
+                    break;
+                }
+            }
 
-                    if (_actorToFire == null) {
-                        // This is first time we're in the loop, therefore
-                        // always accept the event.
-                        _actorToFire = currentEvent.getDestinationActor();
+            if (_actorToFire == null) {
+                // This is first time we're in the loop, therefore
+                // always accept the event.
+                _actorToFire = currentEvent.getDestinationActor();
 
-                        // Advance current time.
-                        _currentTime = currentEvent.getEventTag().timeStamp();
+                // Advance current time.
+                _currentTime = currentEvent.getEventTag().timeStamp();
 
-                        // Note: The following comparison is true
-                        // only during the first iteration, before the start time
-                        // is initialized to the smallest time stamp in the
-                        // event queue.
-                        if (_currentTime < _startTime) {
-                            if (_startTimeInitialized) {
-                                throw new InternalErrorException("DEDirector "+
-                                        "_prepareActorToFire() bug.. trying " +
-                                        "to initialize start time twice.");
-                            }
-                            _startTime = _currentTime;
-                            _startTimeInitialized = true;
-                        }
+                // Note: The following comparison is true
+                // only during the first iteration, before the start time
+                // is initialized to the smallest time stamp in the
+                // event queue.
+                if (_currentTime < _startTime) {
+                    if (_startTimeInitialized) {
+                        throw new InternalErrorException("DEDirector "+
+                                "_prepareActorToFire() bug.. trying " +
+                                "to initialize start time twice.");
+                    }
+                    _startTime = _currentTime;
+                    _startTimeInitialized = true;
+                }
 
-                        if (_currentTime >= getStopTime()) {
-                            // The stopping condition is met.
-                            _shouldPostfireReturnFalse = true;
-                            if (DEBUG) {
-                                System.out.println("Stopping time is met " +
-                                        "in DEDirector.prefire() of " +
-                                        getFullName() + ".");
-                            }
-                            return false;
-                        }
+                if (_currentTime >= getStopTime()) {
+                    // The stopping condition is met.
+                    _shouldPostfireReturnFalse = true;
+                    if (DEBUG) {
+                        System.out.println("Stopping time is met " +
+                                "in DEDirector.prefire() of " +
+                                getFullName() + ".");
+                    }
+                    return false;
+                }
 
-                        // Transfer the event to the receiver and keep track
-                        // of which receiver is filled.
+                // Transfer the event to the receiver and keep track
+                // of which receiver is filled.
+                DEReceiver rec = currentEvent.getDestinationReceiver();
+                // If rec is null, then it's a 'pure event', and there's
+                // no need to put event into receiver.
+                if (rec != null) {
+                    // Adds the receiver to the _filledreceivers list.
+                    if (!_filledReceivers.includes(rec)) {
+                        _filledReceivers.insertFirst(rec);
+                    }
+                    // Transfer the event to the receiver.
+                    rec._triggerEvent(currentEvent.getTransferredToken());
+                }
+            } else {
+                // Not the first time through the loop; check if the event
+                // has time stamp equal to previously obtained current
+                // time. Then check if it's for the same actor.
+
+                // Check whether the event occurred at current time.
+                if (currentEvent.getEventTag().timeStamp() < _currentTime) {
+                    throw new InternalErrorException("Event that was "+
+                            "dequeued later has smaller time stamp. " +
+                            "Check DEDirector for bug.");
+                }
+                if (currentEvent.getEventTag().timeStamp() > _currentTime) {
+                    // The event has a later time stamp, so we put it back
+                    fifo.put(currentEvent);
+                    // Save the next iteration time, because some inner
+                    // domains might require this information.
+                    _nextIterationTime = currentEvent.getEventTag().timeStamp();
+                    // Break the loop, since all events after this will
+                    // all have time stamp later or equal to this one.
+                    break;
+                } else {
+                    // The event has the same time stamp as the first
+                    // event seen.  Check whether it is for the same actor.
+                    if (currentEvent.getDestinationActor() == _actorToFire) {
                         DEReceiver rec = currentEvent.getDestinationReceiver();
-                        // If rec is null, then it's a 'pure event', and there's
-                        // no need to put event into receiver.
+                                // if rec is null, then it's a 'pure event' and
+                                // there's no need to put event into receiver.
                         if (rec != null) {
-                            // Adds the receiver to the _filledreceivers list.
+                            // Adds the receiver to the _filledreceivers
+                            // list.
                             if (!_filledReceivers.includes(rec)) {
                                 _filledReceivers.insertFirst(rec);
                             }
@@ -848,64 +884,28 @@ public class DEDirector extends Director {
                             rec._triggerEvent(currentEvent.getTransferredToken());
                         }
                     } else {
-                        // Not the first time through the loop; check if the event
-                        // has time stamp equal to previously obtained current
-                        // time. Then check if it's for the same actor.
-
-                        // Check whether the event occurred at current time.
-                        if (currentEvent.getEventTag().timeStamp() < _currentTime) {
-                            throw new InternalErrorException("Event that was "+
-                                    "dequeued later has smaller time stamp. " +
-                                    "Check DEDirector for bug.");
-                        }
-                        if (currentEvent.getEventTag().timeStamp() > _currentTime) {
-                            // The event has a later time stamp, so we put it back
-                            fifo.put(currentEvent);
-                            // Save the next iteration time, because some inner
-                            // domains might require this information.
-                            _nextIterationTime = currentEvent.getEventTag().timeStamp();
-                            // Break the loop, since all events after this will
-                            // all have time stamp later or equal to this one.
-                            break;
-                        } else {
-                            // The event has the same time stamp as the first
-                            // event seen.  Check whether it is for the same actor.
-                            if (currentEvent.getDestinationActor() == _actorToFire) {
-                                DEReceiver rec = currentEvent.getDestinationReceiver();
-                                // if rec is null, then it's a 'pure event' and
-                                // there's no need to put event into receiver.
-                                if (rec != null) {
-                                    // Adds the receiver to the _filledreceivers
-                                    // list.
-                                    if (!_filledReceivers.includes(rec)) {
-                                        _filledReceivers.insertFirst(rec);
-                                    }
-                                    // Transfer the event to the receiver.
-                                    rec._triggerEvent(currentEvent.getTransferredToken());
-                                }
-                            } else {
                                 // Put it back in the queue.
-                                fifo.put(currentEvent);
-                            }
-                        }
+                        fifo.put(currentEvent);
                     }
                 }
-                // Transfer back the events from the fifo queue into the calendar
-                // queue.
-                while (fifo.size() > 0) {
-                    DEEvent event = (DEEvent)fifo.take();
-
-                    _eventQueue.put(event);
-                }
-
-                if (_actorToFire == null) {
-                    _debug("No more actors to fire.");
-                    _shouldPostfireReturnFalse = true;
-                } else {
-                    _shouldPostfireReturnFalse = false;
-                }
-                return _actorToFire != null;
             }
+        }
+        // Transfer back the events from the fifo queue into the calendar
+        // queue.
+        while (fifo.size() > 0) {
+            DEEvent event = (DEEvent)fifo.take();
+
+            _eventQueue.put(event);
+        }
+
+        if (_actorToFire == null) {
+            _debug("No more actors to fire.");
+            _shouldPostfireReturnFalse = true;
+        } else {
+            _shouldPostfireReturnFalse = false;
+        }
+        return _actorToFire != null;
+    }
 
     // Construct a directed graph with the nodes representing input ports and
     // directed edges representing zero delay path.  The directed graph
