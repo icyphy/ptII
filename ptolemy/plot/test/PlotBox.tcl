@@ -45,7 +45,7 @@ test PlotBox-1.1 {} {
     set frame [java::new java.awt.Frame]
     set plot [java::new ptolemy.plot.PlotBox]
     $frame pack
-    $frame {add java.lang.String java.awt.Component} "Center" $p
+    $frame {add java.lang.String java.awt.Component} "Center" $plot
     $frame show
     $frame setSize 500 300
     $frame repaint
@@ -78,7 +78,7 @@ test PlotBox-2.2 {setDataurl, getDataurl, getDocumentBase} {
     set url [$plot getDataurl]
     set docbase [$plot getDocumentBase]
     list $url [java::isnull $docbase]
-} {http://notasite/foo.plt }
+} {http://notasite/bar/foo.plt 1}
 
 test PlotBox-3.1 {getMinimumSize getPreferredSize} {
     $frame setSize 425 600
@@ -89,13 +89,14 @@ test PlotBox-3.1 {getMinimumSize getPreferredSize} {
 	    [java::field $minimumDimension height] \
 	    [java::field $preferredDimension width] \
 	    [java::field $preferredDimension height] \
-} {}
+} {488 264 488 264}
 
 test PlotBox-4.1 {parseFile} {
     $plot parseFile ../demo/data.plt
 } {}
 
 test PlotBox-5.1 {getColorByName} {
-    $plot getColorByName "red"
-} {}
+    set color [$plot getColorByName "red"]
+    $color toString
+} {java.awt.Color[r=255,g=0,b=0]}
 
