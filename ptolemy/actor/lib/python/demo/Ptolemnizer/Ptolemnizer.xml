@@ -166,7 +166,7 @@ on the actor.</text></svg></configure>
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
             </property>
         </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.TextEditorFactory">
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.TextEditorConfigureFactory">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
             </property>
             <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="80">

@@ -122,11 +122,14 @@ Set fromAddress and toAddress accordingly.
             <property name="input"/>
         </port>
     </entity>
-    <entity name="PythonScript - email test failure" class="ptolemy.actor.lib.python.PythonScript">
+    <entity name="PythonActor - email test failure" class="ptolemy.actor.lib.python.PythonScript">
         <property name="script" class="ptolemy.kernel.util.StringAttribute" value="# A test actor that sends email&#10;# notification on test failure&#10;&#10;from smtplib import SMTP&#10;from ptolemy.data import BooleanToken&#10;&#10;class Main:&#10;  &quot;email test failure&quot;&#10;&#10;  # required parameters&#10;  # correctValues, tolerance,&#10;  # SMTPServer, fromAddress, toAddress&#10;&#10;  # required ports&#10;  # input, type general&#10;  # output, type boolean&#10;&#10;  numInput = 0&#10;  tol = 1.0&#10;&#10;  def preinitialize(self):&#10;    self.numInput = 0&#10;    self.tol = self.tolerance.getToken().doubleValue()&#10;&#10;  def fire(self):&#10;    v = self.input.get(0)&#10;&#10;    if self.correctValues.getToken().length() \&#10;        &lt;= self.numInput :&#10;      self.output.send(0, BooleanToken.TRUE);&#10;      return&#10;&#10;    refVals = self.correctValues.getToken()&#10;    refV = refVals.getElement(self.numInput)&#10;    t = v.isCloseTo(refV, self.tol)&#10;    self.output.send(0, t)&#10;&#10;    if not t.booleanValue() :&#10;      msg = &quot;Test fails in iteration &quot; \&#10;          + str(self.numInput) \&#10;          + &quot;.\r\n&quot; \&#10;          + &quot;Value was: &quot; + v.toString() \&#10;          + &quot;. Should have been: &quot; + refV.toString()&#10;      self.notify(msg)&#10;      raise msg&#10;    self.numInput = self.numInput + 1&#10;&#10;  def notify(self, msg):&#10;    server = SMTP(self.SMTPServer.getToken().stringValue())&#10;    server.sendmail( \&#10;        self.fromAddress.getToken().stringValue(), \&#10;        self.toAddress.getToken().stringValue(), \&#10;        &quot;Subject: Test failed\r\n&quot; \&#10;        + &quot;In actor &quot; + self.actor.getFullName() \&#10;        + &quot;:\r\n&quot; + msg + &quot;\r\n&quot;)&#10;    server.quit()&#10;">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
             </property>
         </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" value="script"/>
+        </property>     
         <property name="_location" class="ptolemy.kernel.util.Location" value="215.0, 295.0">
         </property>
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 1, 2, 4}">
@@ -169,7 +172,7 @@ Set fromAddress and toAddress accordingly.
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="Ramp.output" relation="relation"/>
-    <link port="PythonScript - email test failure.input" relation="relation"/>
-    <link port="PythonScript - email test failure.output" relation="relation2"/>
+    <link port="PythonActor - email test failure.input" relation="relation"/>
+    <link port="PythonActor - email test failure.output" relation="relation2"/>
     <link port="Display.input" relation="relation2"/>
 </entity>

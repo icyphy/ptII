@@ -70,10 +70,13 @@ actor.  </text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="-10.0, 250.0">
         </property>
     </property>
-    <entity name="PythonScript" class="ptolemy.actor.lib.python.PythonScript">
+    <entity name="PythonActor" class="ptolemy.actor.lib.python.PythonScript">
         <property name="script" class="ptolemy.kernel.util.StringAttribute" value="class Main :&#10;  &quot;scale&quot;&#10;  def fire(self) :&#10;    if not self.input.hasToken(0) :&#10;      return&#10;    s = self.scale.getToken()&#10;    t = self.input.get(0)&#10;    self.output.broadcast(s.multiply(t))&#10;&#10;">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
             </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" value="script"/>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="195.0, 220.0">
         </property>
@@ -127,8 +130,8 @@ actor.  </text></svg></configure>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="PythonScript.input" relation="relation"/>
-    <link port="PythonScript.output" relation="relation2"/>
+    <link port="PythonActor.input" relation="relation"/>
+    <link port="PythonActor.output" relation="relation2"/>
     <link port="Ramp.output" relation="relation"/>
     <link port="Display.input" relation="relation2"/>
 </entity>
