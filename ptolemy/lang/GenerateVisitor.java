@@ -873,7 +873,7 @@ public class GenerateVisitor {
 
                             default:
                                 throw new RuntimeException(
-                                        "unknown variable placment");
+                                        "unknown variable placement");
                             }
 
                             if (typeItr.hasNext()) {
