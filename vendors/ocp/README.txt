@@ -16,6 +16,10 @@ To check out the OCP_B1_0 release, run these commands:
 cd $PTII/vendors/ocp
 cvs -d :ext:gigasource.eecs.berkeley.edu:/home/cvs co -r OCP_B1_0 ocp
 
+To check out the older OCP_BO_2 version:
+cvs -d :ext:gigasource.eecs.berkeley.edu:/home/cvs co -r OCP_B0_2 ocp
+
+
 Nits about this code:
 1) The tar file creates multiple files and directories in the current
 directory. 
