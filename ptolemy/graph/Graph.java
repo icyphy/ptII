@@ -85,6 +85,9 @@ Thus, multigraphs are supported.
 affect comparison under the <code>equals</code> method.
 Otherwise, unpredictable behavior may result.
 
+<p>In discussions of complexity, <em>n</em> and <em>e</em> refers to the number
+of graph nodes and edges, respectively.
+
 @author Shuvra S. Bhattacharyya, Yuhong Xiong, Jie Liu, Ming-Yung Ko,
 Shahrooz Shahparnia
 @version $Id$
@@ -1012,6 +1015,7 @@ public class Graph implements Cloneable {
      * An edge that is removed from a graph can be re-inserted
      * into the graph at a later time (using {@link #addEdge(Edge)}),
      * provided that the incident nodes are still in the graph.
+     * This is an <em>O(e)</em> operation.
      * @param edge The edge to be removed.
      * @exception IllegalArgumentException If the edge is not contained
      * in the graph.
@@ -1036,7 +1040,9 @@ public class Graph implements Cloneable {
     }
 
     /** Remove a node from this graph.
-     * All edges incident to the node are also removed.
+     * All edges incident to the node are also removed. This is an 
+     * <em>O(n + ke)</em> operation, where <em>k</em> is the number of
+     * incident edges.
      * @param node The node to be removed.
      * @exception IllegalArgumentException If the node is not contained
      * in the graph.
