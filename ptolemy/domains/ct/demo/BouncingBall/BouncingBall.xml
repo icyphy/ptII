@@ -97,7 +97,7 @@ and the GR domain to simulate a bouncing ball.</text></svg></configure>
 <title>Position</title>
 <xLabel>time (sec)</xLabel>
 <yLabel>height meters</yLabel>
-<xRange min="0.0" max="26.264020509825656"/>
+<xRange min="0.0" max="25.66936147010122"/>
 <yRange min="9.027550412032514E-8" max="10.0"/>
 </plot>?>
         </configure>
@@ -425,7 +425,7 @@ and the GR domain to simulate a bouncing ball.</text></svg></configure>
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="520.0, 155.0">
+                <property name="_location" class="ptolemy.moml.Location" value="360.0, 125.0">
                 </property>
                 <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
                 </port>
@@ -453,7 +453,7 @@ and the GR domain to simulate a bouncing ball.</text></svg></configure>
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="175.0, 50.0">
+                <property name="_location" class="ptolemy.moml.Location" value="130.0, 25.0">
                 </property>
                 <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
                 </port>
@@ -468,6 +468,8 @@ and the GR domain to simulate a bouncing ball.</text></svg></configure>
                 <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -485,6 +487,8 @@ and the GR domain to simulate a bouncing ball.</text></svg></configure>
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.4216814692820417">
                 </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
@@ -499,7 +503,9 @@ and the GR domain to simulate a bouncing ball.</text></svg></configure>
                 </property>
                 <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="free.initialVelocity = -elasticity * velocity; free.initialPosition = position">
                 </property>
-                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="1.0471975511965976">
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.376245723355259">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.19714521705895027">
                 </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
@@ -520,9 +526,9 @@ and the GR domain to simulate a bouncing ball.</text></svg></configure>
             </property>
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 102]">
             </property>
-            <property name="initialPosition" class="ptolemy.data.expr.Parameter" value="2.079773116361069E-5">
+            <property name="initialPosition" class="ptolemy.data.expr.Parameter" value="1.1525740281667E-5">
             </property>
-            <property name="initialVelocity" class="ptolemy.data.expr.Parameter" value="0.3184938024781">
+            <property name="initialVelocity" class="ptolemy.data.expr.Parameter" value="0.6662751804233">
             </property>
             <property name="CTEmbedded Director" class="ptolemy.domains.ct.kernel.CTEmbeddedDirector">
                 <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -609,7 +615,7 @@ falling in a gravitational field.</text></svg></configure>
             <entity name="ZeroCrossingDetector" class="ptolemy.domains.ct.lib.ZeroCrossingDetector">
                 <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1e-4">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="385.0, 125.0">
+                <property name="_location" class="ptolemy.moml.Location" value="415.0, 125.0">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -630,7 +636,7 @@ falling in a gravitational field.</text></svg></configure>
             <entity name="Position" class="ptolemy.domains.ct.lib.Integrator">
                 <property name="initialState" class="ptolemy.data.expr.Parameter" value="initialPosition">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="250.0, 164.5">
+                <property name="_location" class="ptolemy.moml.Location" value="250.0, 170.0">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
