@@ -94,13 +94,8 @@ of graph nodes and edges, respectively.
 attention regarding whether or not they should be overridden:
 <br>{@link #validEdgeWeight(Object)} {@link #validNodeWeight(Object)}
 
-@author Shuvra S. Bhattacharyya, Ming-Yung Ko,
-Fuat Keceli, Shahrooz Shahparnia, Yuhong Xiong, Jie Liu.
-<<<<<<< Graph.java
+@author Shuvra S. Bhattacharyya, Ming-Yung Ko, Fuat Keceli, Shahrooz Shahparnia, Yuhong Xiong, Jie Liu.
 @version $Id$
-=======
-@version $Id$
->>>>>>> 1.134
 @since Ptolemy II 0.2
 @see ptolemy.graph.Edge
 @see ptolemy.graph.Node
@@ -880,8 +875,8 @@ public class Graph implements Cloneable {
     /** Return a node in this graph given the node label.
      *  @param label The node label.
      *  @return The node.
-     *  @exception IndexOutOfBoundsException If the label is not associated with
-     *  a node in this graph.
+     *  @exception IndexOutOfBoundsException If the label is not
+     *  associated with a node in this graph.
      *  @see #nodeLabel(Node)
      */
     public Node node(int label) {
@@ -961,8 +956,8 @@ public class Graph implements Cloneable {
         return _nodes.elements(weight);
     }
 
-    /** Return the collection of nodes in this graph whose weights are contained
-     *  in a specified collection.
+    /** Return the collection of nodes in this graph whose weights are
+     *  contained in a specified collection.
      *  Each element in the returned collection is an instance of
      *  {@link Node}.
      *  A null element in the argument collection is interpreted
@@ -1118,7 +1113,7 @@ public class Graph implements Cloneable {
      *  method returns the same type of graph as is returned by
      *  {@link ptolemy.graph.Graph#_emptyGraph()}.
      *  Derived classes that do not have zero-argument constructors may
-     *  need to override this method to properly intialize the subgraph.
+     *  need to override this method to properly initialize the subgraph.
      *  @param nodes The collection of nodes; each element is a {@link Node}.
      *  @return The induced subgraph.
      *  @exception GraphElementException If the collection contains a node
@@ -1243,8 +1238,8 @@ public class Graph implements Cloneable {
     /** Validate the weight of an edge. Operation parallels that of
      *  #validateWeight(Node).
      *  @param edge The edge whose weight is to be validated.
-     *  @return True if the edge weight has changed, as determined by the equals
-     *  method.
+     *  @return True if the edge weight has changed, as determined by
+     *  the equals method.
      *  @exception GraphElementException If the specified edge is not in
      *  the graph.
      *  @exception GraphWeightException If the weight of the given edge
@@ -1279,8 +1274,8 @@ public class Graph implements Cloneable {
      *  @param edge The edge whose weight is to be validated.
      *  @param oldWeight The previous weight of the edge (null if the edge
      *  was previously unweighted).
-     *  @return True if the edge weight has changed, as determined by the equals
-     *  method.
+     *  @return True if the edge weight has changed, as determined by
+     *  the equals method.
      *  @see #validateWeight(Edge)
      *  @see #validateWeight(Node, Object)
      */
@@ -1318,8 +1313,8 @@ public class Graph implements Cloneable {
      *  this way,  a graph change is registered.
      *  This is an <em>O(n)</em> operation.
      *  @param node The node whose weight is to be validated.
-     *  @return True if the node weight has changed, as determined by the equals
-     *  method.
+     *  @return True if the node weight has changed, as determined by
+     *  the equals method.
      *  @exception GraphElementException If the specified node is not in
      *  the graph.
      *  @exception GraphWeightException If the weight of the given node
@@ -1353,14 +1348,15 @@ public class Graph implements Cloneable {
      *  to the graph or last had its node validated, whichever was more recent.
      *  Operation is equivalent to {@link #validateWeight(Node)}
      *  except that the additional argument is used to improve efficiency.
-     *  The previous node weight should be set to null to incidate that
+     *  The previous node weight should be set to null to indicate that
      *  the node was previously unweighted.
      *
-     *  <p>Consider an example in which a given Node <em>node</em> is contained
-     *  in two graphs <em>graph1</em> and <em> graph2 </em>, and suppose that we
-     *  wish to change the weight of the node. Below is a sample code fragment
-     *  that achieves such a weight change with proper notification to the
-     *  containing graphs.
+     *  <p>Consider an example in which a given Node <em>node</em> is
+     *  contained in two graphs <em>graph1</em> and <em> graph2 </em>,
+     *  and suppose that we wish to change the weight of the
+     *  node. Below is a sample code fragment that achieves such a
+     *  weight change with proper notification to the containing
+     *  graphs.
      *
      *  <pre>
      *  Object oldWeight = node.getWeight();
@@ -1376,8 +1372,8 @@ public class Graph implements Cloneable {
      *
      *  @param node The node whose weight is to be validated.
      *  @param oldWeight The previous weight of the node.
-     *  @return True if the node weight has changed, as determined by the equals
-     *  method.
+     *  @return True if the node weight has changed, as determined by
+     *  the equals method.
      *  @see #validateWeight(Node)
      */
      public boolean validateWeight(Node node, Object oldWeight) {

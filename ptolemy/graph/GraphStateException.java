@@ -30,7 +30,7 @@ package ptolemy.graph;
 //////////////////////////////////////////////////////////////////////////
 //// GraphStateException
 /**
-The exception of computing a funcion of graph with wrong states.
+The exception of computing a function of graph with wrong states.
 In some cases, a proper input graph is required to evaluate functions of
 a graph. Graphs with wrong states lead to invalid results or even making
 functions incomputable. Some examples of the states are: topology,

@@ -36,7 +36,7 @@ import ptolemy.graph.Node;
 //// GraphElementException
 /**
 The exception of accessing graph elements in wrong ways. This exception
-could be caused by accessing inexistent elements or elements with incorrect
+could be caused by accessing nonexistent elements or elements with incorrect
 association values.
 
 @author Mingyung Ko, Shuvra S. Bhattacharyya
