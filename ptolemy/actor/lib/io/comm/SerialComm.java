@@ -67,10 +67,10 @@ This actor requires that the Java comm API be installed.
 The comm API comes from http://java.sun.com/products/javacomm/
 To install the comm API on a Windows machine:
 <ul>
-<li> place the win32com.dll in $JDK\jre\bin directory. 
+<li> place the win32com.dll in $JDK\jre\bin directory.
 <li> make sure the win32com.dll is executable.
-<li> Place the comm.jar in $JDK\jre\lib\ext. 
-<li> Place the javax.comm.properties in $JDK\jre\lib . 
+<li> Place the comm.jar in $JDK\jre\lib\ext.
+<li> Place the javax.comm.properties in $JDK\jre\lib .
 </ul>
 where $JDK is the location of your Java development kit.
 
@@ -177,7 +177,7 @@ public class SerialComm extends TypedAtomicActor
         minimumOutputSize = new Parameter(this, "minimumOutputSize");
         minimumOutputSize.setTypeEquals(BaseType.INT);
         minimumOutputSize.setToken(new IntToken(1));
-        
+
         maximumOutputSize = new Parameter(this, "maximumOutputSize");
         maximumOutputSize.setTypeEquals(BaseType.INT);
         maximumOutputSize.setExpression("MaxInt");
@@ -195,7 +195,7 @@ public class SerialComm extends TypedAtomicActor
      *  type integer and defaults to 9600.
      */
     public Parameter baudRate;
-    
+
     /** Indicator of whether fire method is blocking.  If true, fire()
      *  waits until <i>minimumOutputSize</i> bytes have arrived.
      *  The type is boolean with default false.
@@ -218,7 +218,7 @@ public class SerialComm extends TypedAtomicActor
      *  discarding the rest.  This is a boolean that defaults to false.
      */
     public Parameter discardOldData;
-        
+
     /** The maximum number of bytes produced in each firing on the output.
      *  This is an integer that defaults to MaxInt. It is required to be
      *  at least as large as <i>minimumOutputSize</i>
@@ -294,7 +294,7 @@ public class SerialComm extends TypedAtomicActor
      *  serial port.  If <i>blocking</i> is true, then before doing
      *  either of these, stall the calling thread until there is
      *  data available at the serial port.  The <i>minimumOutputSize</i>
-     *  specifies the minimum number of bytes that must be available. 
+     *  specifies the minimum number of bytes that must be available.
      *  <p>
      *  Before returning, if data is sent to the serial port, this
      *  method calls flush(). However, the flush() method does not
@@ -305,7 +305,7 @@ public class SerialComm extends TypedAtomicActor
      *  <p>
      *  If data is still available on the serial port when this returns,
      *  then before returning it calls fireAtCurrentTime() on the director.
-     * 
+     *
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public synchronized void fire() throws IllegalActionException {
@@ -341,7 +341,7 @@ public class SerialComm extends TypedAtomicActor
                     dataTokens[j] = new UnsignedByteToken(dataBytes[j]);
                 }
                 dataReceived.broadcast(new ArrayToken(dataTokens));
-                
+
                 if (in.available() >= _minimumOutputSize) {
                     getDirector().fireAtCurrentTime(this);
                 }
@@ -398,11 +398,11 @@ public class SerialComm extends TypedAtomicActor
             _serialPort.notifyOnCarrierDetect(true); // isCD
             _serialPort.notifyOnRingIndicator(true); // isRI
             // Direct serial events on this port to my serialEvent() method.
-            
+
             _stopFireRequested = false;
 
         } catch (Exception ex) {
-            
+
             throw new IllegalActionException(this, ex,
                     "Communication port initialization failed.");
         }
@@ -433,7 +433,7 @@ public class SerialComm extends TypedAtomicActor
                     "Failure calling fireAtCurrentTime() from the event listener.");
         }
     }
-    
+
     /** Override the base class to stop waiting for input data.
      */
     public synchronized void stop() {
@@ -473,7 +473,7 @@ public class SerialComm extends TypedAtomicActor
     // Threshold for reading serial port data.  Don't read unless
     // at least this many bytes are available.
     private int _maximumOutputSize;
-    
+
     // Threshold for reading serial port data.  Don't read unless
     // at least this many bytes are available.
     private int _minimumOutputSize;
@@ -488,7 +488,7 @@ public class SerialComm extends TypedAtomicActor
     // but either the director has not yet fired this actor, or it has
     // been fired but fire() has not completed.  Could be in wait().
     private boolean _directorFiredAtAlready;
-    
+
     // Indicator that stopFire() has been called.
     private boolean _stopFireRequested = false;
 
