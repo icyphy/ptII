@@ -203,10 +203,10 @@ public class FSMGraphFrame extends ExtendedGraphFrame {
                     Effigy textEffigy = new TextEffigy(effigy,
                             effigy.uniqueName("debug listener"));
                     DebugListenerTableau tableau =
-                            new DebugListenerTableau(textEffigy,
-                            textEffigy.uniqueName("debugListener"));
+                        new DebugListenerTableau(textEffigy,
+                                textEffigy.uniqueName("debugListener"));
                     tableau.setDebuggable(
-                                  ((FSMActor)getModel()).getDirector());
+                            ((FSMActor)getModel()).getDirector());
                 }
                 else if (actionCommand.equals("Listen to State Machine")) {
                     Effigy effigy = (Effigy)getTableau().getContainer();
@@ -214,8 +214,8 @@ public class FSMGraphFrame extends ExtendedGraphFrame {
                     Effigy textEffigy = new TextEffigy(effigy,
                             effigy.uniqueName("debug listener"));
                     DebugListenerTableau tableau =
-                            new DebugListenerTableau(textEffigy,
-                            textEffigy.uniqueName("debugListener"));
+                        new DebugListenerTableau(textEffigy,
+                                textEffigy.uniqueName("debugListener"));
                     tableau.setDebuggable(getModel());
                 } else if (actionCommand.equals("Animate States")) {
                     // Dialog to ask for a delay time.

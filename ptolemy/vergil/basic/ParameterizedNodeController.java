@@ -93,7 +93,7 @@ public class ParameterizedNodeController extends NamedObjController {
 
         // Add a double click interactor.
         ActionInteractor doubleClickInteractor
-                = new ActionInteractor(_configureAction);
+            = new ActionInteractor(_configureAction);
         doubleClickInteractor.setConsuming(false);
         doubleClickInteractor.setMouseFilter(new MouseFilter(1, 0, 0, 2));
 
@@ -118,5 +118,5 @@ public class ParameterizedNodeController extends NamedObjController {
 
     /** The configure action, which handles edit parameters requests. */
     protected static ConfigureAction _configureAction
-             = new ConfigureAction("Configure (Ctrl-E)");
+    = new ConfigureAction("Configure (Ctrl-E)");
 }

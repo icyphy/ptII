@@ -110,10 +110,10 @@ public class TransitionRefinementPort extends RefinementPort {
                 // process request for the sibling
                 if (_hasSibling && isOutput() && getContainer() != null) {
                     TransitionRefinement transContainer =
-                                (TransitionRefinement) oldContainer;
+                        (TransitionRefinement) oldContainer;
                     TransitionRefinementPort sibling =
                         (TransitionRefinementPort)transContainer.getPort(
-                                                        getName() + "_in");
+                                getName() + "_in");
 
                     sibling._mirrorDisable  = true;
                     sibling.setContainer(container);
@@ -217,7 +217,7 @@ public class TransitionRefinementPort extends RefinementPort {
                         (TransitionRefinement) getContainer();
                     TransitionRefinementPort sibling =
                         (TransitionRefinementPort)container.getPort(
-                                                        getName() + "_in");
+                                getName() + "_in");
 
                     sibling._mirrorDisable  = true;
                     sibling.setMultiport(isMultiport);
@@ -263,16 +263,16 @@ public class TransitionRefinementPort extends RefinementPort {
             if (_mirrorDisable || getContainer() == null) {
                 //change sibling
                 if (_hasSibling && isOutput() && getContainer() != null)
-                {
-                    TransitionRefinement container =
-                                (TransitionRefinement) getContainer();
-                    TransitionRefinementPort sibling =
-                        (TransitionRefinementPort)container.getPort(
-                                                        getName() + "_in");
-                    sibling._mirrorDisable = true;
-                    sibling.setName(name + "_in");
-                    sibling._mirrorDisable = false;
-                }
+                    {
+                        TransitionRefinement container =
+                            (TransitionRefinement) getContainer();
+                        TransitionRefinementPort sibling =
+                            (TransitionRefinementPort)container.getPort(
+                                    getName() + "_in");
+                        sibling._mirrorDisable = true;
+                        sibling.setName(name + "_in");
+                        sibling._mirrorDisable = false;
+                    }
 
                 // Have already called the super class.
                 // This time, process the request.
@@ -319,15 +319,15 @@ public class TransitionRefinementPort extends RefinementPort {
         // check first that this isn't an input sibling port,
         // if it is then it *cannot* be set as an output too
         if (_hasSibling && isInput() && !isOutput())
-        {
-            if (isOutput) {
-                throw new InternalErrorException(
-                             "TransitionRefinementPort.setOutput:" +
-                             " cannot set input sibling port to be an output");
-            } else {
-                return;
+            {
+                if (isOutput) {
+                    throw new InternalErrorException(
+                            "TransitionRefinementPort.setOutput:" +
+                            " cannot set input sibling port to be an output");
+                } else {
+                    return;
+                }
             }
-        }
         try {
             _workspace.getWriteAccess();
             if (_mirrorDisable || getContainer() == null) {
@@ -341,10 +341,10 @@ public class TransitionRefinementPort extends RefinementPort {
 
                     try {
                         TransitionRefinement container =
-                                          (TransitionRefinement) getContainer();
+                            (TransitionRefinement) getContainer();
                         TransitionRefinementPort sibling =
-                                new TransitionRefinementPort(container,
-                                                        getName() + "_in");
+                            new TransitionRefinementPort(container,
+                                    getName() + "_in");
 
                         sibling._hasSibling = true;
                         sibling._mirrorDisable = true;
@@ -364,12 +364,12 @@ public class TransitionRefinementPort extends RefinementPort {
                         }
                         _hasSibling = true;
                     } catch(IllegalActionException ex) {
-                      throw new InternalErrorException(
-                           "TransitionRefinementPort.setOutput: Internal error: " +
+                        throw new InternalErrorException(
+                                "TransitionRefinementPort.setOutput: Internal error: " +
                                 ex.getMessage());
                     } catch(NameDuplicationException ex) {
-                      throw new InternalErrorException(
-                           "TransitionRefinementPort.setOutput: Internal error: " +
+                        throw new InternalErrorException(
+                                "TransitionRefinementPort.setOutput: Internal error: " +
                                 ex.getMessage());
                     }
                 }

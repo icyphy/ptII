@@ -89,8 +89,8 @@ public class Arc {
     public String toString() {
         return "Arc("
             + _head + ", "
-                + _tail + ", "
-                    + _relation + ")";
+            + _tail + ", "
+            + _relation + ")";
     }
 
     private Object _head;

@@ -151,7 +151,7 @@ public abstract class ExtendedGraphFrame extends BasicGraphFrame {
 
     // An action to display in full-screen mode.
     public class FullScreenAction extends AbstractAction
-            implements KeyListener {
+        implements KeyListener {
         public FullScreenAction(String description) {
             super(description);
 

@@ -97,7 +97,7 @@ public class InterfaceAutomatonGraphTableau extends FSMGraphTableau {
     public void createGraphFrame(
             CompositeEntity model, LibraryAttribute defaultLibrary) {
         InterfaceAutomatonGraphFrame frame =
-                new InterfaceAutomatonGraphFrame(model, this, defaultLibrary);
+            new InterfaceAutomatonGraphFrame(model, this, defaultLibrary);
         try {
             setFrame(frame);
         } catch (IllegalActionException ex) {
@@ -152,10 +152,10 @@ public class InterfaceAutomatonGraphTableau extends FSMGraphTableau {
                         "_library", LibraryAttribute.class);
 
                 InterfaceAutomatonGraphTableau tableau =
-                        new InterfaceAutomatonGraphTableau(
-                        (PtolemyEffigy)proxy,
-                        proxy.uniqueName("tableau"),
-                        library);
+                    new InterfaceAutomatonGraphTableau(
+                            (PtolemyEffigy)proxy,
+                            proxy.uniqueName("tableau"),
+                            library);
                 return tableau;
             } else {
                 return null;

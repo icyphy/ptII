@@ -73,7 +73,7 @@ public class DebugController extends TransientSingletonConfigurableAttribute
      *   attribute already in the container.
      */
     public DebugController(NamedObj container, String name)
-             throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _toDebug = new Hashtable();
     }
@@ -222,10 +222,10 @@ public class DebugController extends TransientSingletonConfigurableAttribute
         // different thread.
         SwingUtilities.invokeLater(
                 new Runnable() {
-                    public void run() {
-                        _debugRenderer.renderSelected(figure);
-                    }
-                });
+                        public void run() {
+                            _debugRenderer.renderSelected(figure);
+                        }
+                    });
 
         final Figure debugRendered = figure;
 
@@ -235,10 +235,10 @@ public class DebugController extends TransientSingletonConfigurableAttribute
             // Unhighlight the actor after resuming execution.
             SwingUtilities.invokeLater(
                     new Runnable() {
-                        public void run() {
-                            _debugRenderer.renderDeselected(debugRendered);
-                        }
-                    });
+                            public void run() {
+                                _debugRenderer.renderDeselected(debugRendered);
+                            }
+                        });
         }
     }
 

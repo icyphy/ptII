@@ -113,19 +113,19 @@ public class FSMGraphController extends FSMViewerGraphController {
         super.addToMenuAndToolbar(menu, toolbar);
 
         diva.gui.GUIUtilities.addMenuItem(menu, _newInputPortAction);
-               diva.gui.GUIUtilities.addToolBarButton(toolbar, _newInputPortAction);
+        diva.gui.GUIUtilities.addToolBarButton(toolbar, _newInputPortAction);
         diva.gui.GUIUtilities.addMenuItem(menu, _newOutputPortAction);
-               diva.gui.GUIUtilities.addToolBarButton(toolbar, _newOutputPortAction);
+        diva.gui.GUIUtilities.addToolBarButton(toolbar, _newOutputPortAction);
         diva.gui.GUIUtilities.addMenuItem(menu, _newInOutPortAction);
-               diva.gui.GUIUtilities.addToolBarButton(toolbar, _newInOutPortAction);
+        diva.gui.GUIUtilities.addToolBarButton(toolbar, _newInOutPortAction);
         diva.gui.GUIUtilities.addMenuItem(menu, _newInputMultiportAction);
-               diva.gui.GUIUtilities.addToolBarButton(
+        diva.gui.GUIUtilities.addToolBarButton(
                 toolbar, _newInputMultiportAction);
         diva.gui.GUIUtilities.addMenuItem(menu, _newOutputMultiportAction);
-               diva.gui.GUIUtilities.addToolBarButton(
+        diva.gui.GUIUtilities.addToolBarButton(
                 toolbar, _newOutputMultiportAction);
         diva.gui.GUIUtilities.addMenuItem(menu, _newInOutMultiportAction);
-               diva.gui.GUIUtilities.addToolBarButton(
+        diva.gui.GUIUtilities.addToolBarButton(
                 toolbar, _newInOutMultiportAction);
 
         // Add an item that adds new states.
@@ -439,27 +439,27 @@ public class FSMGraphController extends FSMViewerGraphController {
 
             ChangeRequest request =
                 new MoMLChangeRequest(this, toplevel, moml) {
-                protected void _execute() throws Exception {
-                    super._execute();
-                    // Set the location of the icon.
-                    // Note that this really needs to be done after
-                    // the change request has succeeded, which is why
-                    // it is done here.  When the graph controller
-                    // gets around to handling this, it will draw
-                    // the icon at this location.
+                        protected void _execute() throws Exception {
+                            super._execute();
+                            // Set the location of the icon.
+                            // Note that this really needs to be done after
+                            // the change request has succeeded, which is why
+                            // it is done here.  When the graph controller
+                            // gets around to handling this, it will draw
+                            // the icon at this location.
 
-                    NamedObj newObject = toplevel.getEntity(stateName);
-                    Location location =
-                        (Location) newObject.getAttribute(locationName);
-                    if (location == null) {
-                        location = new Location(newObject, locationName);
-                    }
-                    double point[] = new double[2];
-                    point[0] = ((int)finalX);
-                    point[1] = ((int)finalY);
-                    location.setLocation(point);
-                }
-            };
+                            NamedObj newObject = toplevel.getEntity(stateName);
+                            Location location =
+                                (Location) newObject.getAttribute(locationName);
+                            if (location == null) {
+                                location = new Location(newObject, locationName);
+                            }
+                            double point[] = new double[2];
+                            point[0] = ((int)finalX);
+                            point[1] = ((int)finalY);
+                            location.setLocation(point);
+                        }
+                    };
             toplevel.requestChange(request);
             try {
                 request.waitForCompletion();

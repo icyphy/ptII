@@ -180,7 +180,7 @@ public class EditorDropTarget extends DropTarget {
             GraphModel model = controller.getGraphModel();
             final CompositeEntity toplevel = (CompositeEntity)model.getRoot();
             NamedObj container =
-                    MoMLChangeRequest.getDeferredToParent(toplevel);
+                MoMLChangeRequest.getDeferredToParent(toplevel);
             if (container == null) {
                 container = toplevel;
             }
@@ -204,7 +204,7 @@ public class EditorDropTarget extends DropTarget {
                 }
                 if (dropObj.getMoMLInfo().deferTo != null) {
                     CompositeEntity sourceContainer =
-                            (CompositeEntity)dropObj.getContainer();
+                        (CompositeEntity)dropObj.getContainer();
                     if (sourceContainer != null) {
                         Iterator imports = sourceContainer.attributeList(
                                 ImportAttribute.class).iterator();
@@ -233,48 +233,48 @@ public class EditorDropTarget extends DropTarget {
                     // so that undo will work.
                     request = new MoMLChangeRequest(
                             this, container, moml.toString()) {
-                        protected void _execute() throws Exception {
-                            super._execute();
-                            NamedObj newObject = toplevel.getEntity(name);
-                            _setLocation(name, newObject, point);
-                        }
-                    };
+                            protected void _execute() throws Exception {
+                                super._execute();
+                                NamedObj newObject = toplevel.getEntity(name);
+                                _setLocation(name, newObject, point);
+                            }
+                        };
 
                 } else if (dropObj instanceof Port) {
 
                     // Dropped object is a port.
                     request = new MoMLChangeRequest(
                             this, container, moml.toString()) {
-                        protected void _execute() throws Exception {
-                            super._execute();
-                            NamedObj newObject = toplevel.getPort(name);
-                            _setLocation(name, newObject, point);
-                        }
-                    };
+                            protected void _execute() throws Exception {
+                                super._execute();
+                                NamedObj newObject = toplevel.getPort(name);
+                                _setLocation(name, newObject, point);
+                            }
+                        };
 
                 } else if (dropObj instanceof Relation) {
 
                     // Dropped object is a relation.
                     request = new MoMLChangeRequest(
                             this, container, moml.toString()) {
-                        protected void _execute() throws Exception {
-                            super._execute();
-                            NamedObj newObject = toplevel.getRelation(name);
-                            _setLocation(name, newObject, point);
-                        }
-                    };
+                            protected void _execute() throws Exception {
+                                super._execute();
+                                NamedObj newObject = toplevel.getRelation(name);
+                                _setLocation(name, newObject, point);
+                            }
+                        };
 
                 } else if (dropObj instanceof Attribute) {
 
                     // Dropped object is an attribute.
                     request = new MoMLChangeRequest(
                             this, container, moml.toString()) {
-                        protected void _execute() throws Exception {
-                            super._execute();
-                            NamedObj newObject = toplevel.getAttribute(name);
-                            _setLocation(name, newObject, point);
-                        }
-                    };
+                            protected void _execute() throws Exception {
+                                super._execute();
+                                NamedObj newObject = toplevel.getAttribute(name);
+                                _setLocation(name, newObject, point);
+                            }
+                        };
                 }
 
                 // NOTE: If the drop object is not recognized, nothing
@@ -302,13 +302,13 @@ public class EditorDropTarget extends DropTarget {
         // Note that this needs to be done after the change request
         // that creates the object has succeeded.
         private void _setLocation(String name,
-                                  NamedObj newObject, Point2D point)
+                NamedObj newObject, Point2D point)
                 throws Exception {
             if (newObject == null) {
                 throw new InternalErrorException("Dropped object '"
-                                                 + name
-                                                 + "' not found after "
-                                                 + "change completed!");
+                        + name
+                        + "' not found after "
+                        + "change completed!");
             }
             // Constrain point to snap to grid.
             Point2D newPoint = SnapConstraint.constrainPoint(point);

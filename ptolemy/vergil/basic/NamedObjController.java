@@ -116,15 +116,15 @@ public class NamedObjController extends LocatableNodeController {
                     }
                 } else {
                     MessageHandler.error("Cannot find documentation for "
-                           + className
-                           + "\nTry Running \"make\" in ptII/doc,"
-                           + "\nor installing the documentation component.");
+                            + className
+                            + "\nTry Running \"make\" in ptII/doc,"
+                            + "\nor installing the documentation component.");
                 }
             } catch (Exception ex) {
                 MessageHandler.error("Cannot find documentation for "
-                       + className
-                       + "\nTry Running \"make\" in ptII/doc."
-                       + "\nor installing the documentation component.", ex);
+                        + className
+                        + "\nTry Running \"make\" in ptII/doc."
+                        + "\nor installing the documentation component.", ex);
             }
         }
     };

@@ -113,7 +113,7 @@ public class ModalTransitionController extends TransitionController {
                 return;
             }
             final CompositeEntity container
-                     = (CompositeEntity)immediateContainer.getContainer();
+                = (CompositeEntity)immediateContainer.getContainer();
             if (container == null) {
                 MessageHandler.error("Transition container has no container!");
                 return;
@@ -126,20 +126,20 @@ public class ModalTransitionController extends TransitionController {
 
             // See whether the configuration offers transition refinements.
             Configuration configuration
-                    = ((FSMGraphController)getController()).getConfiguration();
+                = ((FSMGraphController)getController()).getConfiguration();
             Entity refinements
-                    = configuration.getEntity("_transitionRefinements");
+                = configuration.getEntity("_transitionRefinements");
 
             // Default choices.
             String[] choiceClasses
-                    = {"ptolemy.vergil.fsm.modal.TransitionRefinement" };
+                = {"ptolemy.vergil.fsm.modal.TransitionRefinement" };
             String[] choiceNames = {"Default Refinement"};
 
             // Check the configuration to see whether the default is overridden.
             if (refinements instanceof CompositeEntity) {
                 // There is a specification.
                 List refinementList
-                        = ((CompositeEntity)refinements).entityList();
+                    = ((CompositeEntity)refinements).entityList();
                 choiceNames = new String[refinementList.size()];
                 choiceClasses = new String[refinementList.size()];
                 Iterator iterator = refinementList.iterator();
@@ -172,7 +172,7 @@ public class ModalTransitionController extends TransitionController {
             String newClass = choiceClasses[choiceIndex];
 
             String currentRefinements
-                   = transition.refinementName.getExpression();
+                = transition.refinementName.getExpression();
             if (currentRefinements == null || currentRefinements.equals("")) {
                 currentRefinements = newName;
             } else {
@@ -184,26 +184,26 @@ public class ModalTransitionController extends TransitionController {
             if (refinements instanceof CompositeEntity) {
                 String choiceName = choiceNames[choiceIndex];
                 Entity template = ((CompositeEntity)refinements)
-                         .getEntity(choiceName);
+                    .getEntity(choiceName);
                 String templateDescription = template.exportMoML(newName);
                 moml = "<group>"
-                         + templateDescription
-                         + "<relation name=\""
-                         + transition.getName(container)
-                         + "\"><property name=\"refinementName\" value=\""
-                         + currentRefinements
-                         + "\"/></relation></group>";
+                    + templateDescription
+                    + "<relation name=\""
+                    + transition.getName(container)
+                    + "\"><property name=\"refinementName\" value=\""
+                    + currentRefinements
+                    + "\"/></relation></group>";
             } else {
                 moml = "<group><entity name=\""
-                         + newName
-                         + "\" class=\""
-                         + newClass
-                         + "\"/>"
-                         + "<relation name=\""
-                         + transition.getName(container)
-                         + "\"><property name=\"refinementName\" value=\""
-                         + currentRefinements
-                         + "\"/></relation></group>";
+                    + newName
+                    + "\" class=\""
+                    + newClass
+                    + "\"/>"
+                    + "<relation name=\""
+                    + transition.getName(container)
+                    + "\"><property name=\"refinementName\" value=\""
+                    + currentRefinements
+                    + "\"/></relation></group>";
             }
             MoMLChangeRequest change = new MoMLChangeRequest(
                     this, container, moml)  {
@@ -355,7 +355,7 @@ public class ModalTransitionController extends TransitionController {
             // Check to see whether any other transition has
             // this refinment, and if not, remove it from its container.
             Iterator transitions =
-                    immediateContainer.relationList().iterator();
+                immediateContainer.relationList().iterator();
             boolean foundOne = false;
             while (transitions.hasNext()) {
                 NamedObj other = (NamedObj)transitions.next();
@@ -376,12 +376,12 @@ public class ModalTransitionController extends TransitionController {
             }
             if (!foundOne) {
                 Iterator states =
-                        immediateContainer.entityList().iterator();
+                    immediateContainer.entityList().iterator();
                 while (states.hasNext()) {
                     NamedObj other = (NamedObj)states.next();
                     if (other instanceof State) {
                         String refinementList = ((State)other)
-                                .refinementName.getExpression();
+                            .refinementName.getExpression();
                         if (refinementList == null) continue;
                         tokenizer = new StringTokenizer(refinementList, ",");
                         while (tokenizer.hasMoreTokens()) {

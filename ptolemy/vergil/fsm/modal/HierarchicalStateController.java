@@ -124,7 +124,7 @@ public class HierarchicalStateController extends StateController {
                 return;
             }
             final CompositeEntity container
-                    = (CompositeEntity)immediateContainer.getContainer();
+                = (CompositeEntity)immediateContainer.getContainer();
             if (container == null) {
                 MessageHandler.error("State container has no container!");
                 return;
@@ -137,21 +137,21 @@ public class HierarchicalStateController extends StateController {
 
             // See whether the configuration offers state refinements.
             Configuration configuration
-                    = ((FSMGraphController)getController()).getConfiguration();
+                = ((FSMGraphController)getController()).getConfiguration();
             Entity refinements
-                    = configuration.getEntity("_stateRefinements");
+                = configuration.getEntity("_stateRefinements");
 
             // Default choices.
             String[] choiceClasses = {"ptolemy.vergil.fsm.modal.Refinement",
-                    "ptolemy.vergil.fsm.modal.ModalController"};
+                                      "ptolemy.vergil.fsm.modal.ModalController"};
             String[] choiceNames = {"Default Refinement",
-                    "State Machine Refinement"};
+                                    "State Machine Refinement"};
 
             // Check the configuration to see whether the default is overridden.
             if (refinements instanceof CompositeEntity) {
                 // There is a specification.
                 List refinementList
-                        = ((CompositeEntity)refinements).entityList();
+                    = ((CompositeEntity)refinements).entityList();
                 choiceNames = new String[refinementList.size()];
                 choiceClasses = new String[refinementList.size()];
                 Iterator iterator = refinementList.iterator();
@@ -195,26 +195,26 @@ public class HierarchicalStateController extends StateController {
             if (refinements instanceof CompositeEntity) {
                 String choiceName = choiceNames[choiceIndex];
                 Entity template = ((CompositeEntity)refinements)
-                         .getEntity(choiceName);
+                    .getEntity(choiceName);
                 String templateDescription = template.exportMoML(newName);
                 moml = "<group>"
-                         + templateDescription
-                         + "<entity name=\""
-                         + state.getName(container)
-                         + "\"><property name=\"refinementName\" value=\""
-                         + currentRefinements
-                         + "\"/></entity></group>";
+                    + templateDescription
+                    + "<entity name=\""
+                    + state.getName(container)
+                    + "\"><property name=\"refinementName\" value=\""
+                    + currentRefinements
+                    + "\"/></entity></group>";
             } else {
                 moml = "<group><entity name=\""
-                         + newName
-                         + "\" class=\""
-                         + newClass
-                         + "\"/>"
-                         + "<entity name=\""
-                         + state.getName(container)
-                         + "\"><property name=\"refinementName\" value=\""
-                         + currentRefinements
-                         + "\"/></entity></group>";
+                    + newName
+                    + "\" class=\""
+                    + newClass
+                    + "\"/>"
+                    + "<entity name=\""
+                    + state.getName(container)
+                    + "\"><property name=\"refinementName\" value=\""
+                    + currentRefinements
+                    + "\"/></entity></group>";
             }
             MoMLChangeRequest change = new MoMLChangeRequest(
                     this, container, moml)  {
@@ -386,12 +386,12 @@ public class HierarchicalStateController extends StateController {
             }
             if (!foundOne) {
                 Iterator transitions =
-                        immediateContainer.relationList().iterator();
+                    immediateContainer.relationList().iterator();
                 while (transitions.hasNext()) {
                     NamedObj other = (NamedObj)transitions.next();
                     if (other instanceof Transition) {
                         String refinementList = ((Transition)other)
-                                .refinementName.getExpression();
+                            .refinementName.getExpression();
                         if (refinementList == null) continue;
                         tokenizer = new StringTokenizer(refinementList, ",");
                         while (tokenizer.hasMoreTokens()) {

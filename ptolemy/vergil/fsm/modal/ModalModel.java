@@ -156,7 +156,7 @@ public class ModalModel extends TypedCompositeActor
 
     /** React to a change of the _director or other property. */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute.getName().equals("directorClass")) {
             FSMDirector director = (FSMDirector)getDirector();
             Class newDirectorClass = null;

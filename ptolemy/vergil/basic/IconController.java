@@ -98,7 +98,7 @@ public class IconController extends ParameterizedNodeController {
                 }
             } catch (KernelException ex) {
                 throw new InternalErrorException(null, ex,
-                         "Could not create icon " +
+                        "Could not create icon " +
                         "in " + object + " even " +
                         "though one did not previously exist.");
             }

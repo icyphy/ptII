@@ -63,7 +63,7 @@ model, then execution commands are propagated up to the top level.
 @since Ptolemy II 2.1
 */
 public abstract class RunnableGraphController
-       extends BasicGraphController implements ExecutionListener {
+    extends BasicGraphController implements ExecutionListener {
 
     /** Create a new controller.
      */
@@ -81,11 +81,11 @@ public abstract class RunnableGraphController
     public void addToMenuAndToolbar(JMenu menu, JToolBar toolbar) {
         super.addToMenuAndToolbar(menu, toolbar);
         GUIUtilities.addHotKey(getFrame().getJGraph(), _runModelAction);
-               GUIUtilities.addToolBarButton(toolbar, _runModelAction);
+        GUIUtilities.addToolBarButton(toolbar, _runModelAction);
         GUIUtilities.addHotKey(getFrame().getJGraph(), _pauseModelAction);
-               GUIUtilities.addToolBarButton(toolbar, _pauseModelAction);
+        GUIUtilities.addToolBarButton(toolbar, _pauseModelAction);
         GUIUtilities.addHotKey(getFrame().getJGraph(), _stopModelAction);
-               GUIUtilities.addToolBarButton(toolbar, _stopModelAction);
+        GUIUtilities.addToolBarButton(toolbar, _stopModelAction);
     }
 
     /** Report that an execution error has occurred.  This method
@@ -127,11 +127,11 @@ public abstract class RunnableGraphController
      */
     protected Manager _getManager() throws IllegalActionException {
         AbstractBasicGraphModel graphModel =
-                (AbstractBasicGraphModel)getGraphModel();
+            (AbstractBasicGraphModel)getGraphModel();
         NamedObj toplevel = graphModel.getPtolemyModel().toplevel();
         if (!(toplevel instanceof CompositeActor)) {
             throw new IllegalActionException(toplevel,
-            "Cannot get a manager because the model is not a CompositeActor.");
+                    "Cannot get a manager because the model is not a CompositeActor.");
         }
         Manager manager = ((CompositeActor)toplevel).getManager();
         if (manager == null) {

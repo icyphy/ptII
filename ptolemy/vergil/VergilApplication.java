@@ -140,7 +140,7 @@ public class VergilApplication extends MoMLApplication {
                             _errorAndExit("Command failed", args, throwable);
                         }
                     }
-                 });
+                });
         } catch (Throwable throwable2) {
             // We are not likely to get here, but just to be safe
             // we try to print the error message and display it in a
@@ -202,11 +202,11 @@ public class VergilApplication extends MoMLApplication {
 
             ChangeRequest request =
                 new ChangeRequest(configuration, file.toURL().toString()) {
-                    protected void _execute() throws Exception {
-                        userLibrary.setContainer(libraryContainer);
-                        finalLibraryEffigy.setContainer(directory);
-                    }
-                };
+                        protected void _execute() throws Exception {
+                            userLibrary.setContainer(libraryContainer);
+                            finalLibraryEffigy.setContainer(directory);
+                        }
+                    };
 
             libraryContainer.requestChange(request);
             request.waitForCompletion();
@@ -306,8 +306,8 @@ public class VergilApplication extends MoMLApplication {
         }
         // FIXME: This code is Dog slow for some reason.
         URL inURL = specToURL("ptolemy/configs/"
-                              + _configurationSubdirectory
-                              + "/welcomeWindow.xml");
+                + _configurationSubdirectory
+                + "/welcomeWindow.xml");
         _parser.reset();
         _parser.setContext(configuration);
         _parser.parse(inURL, inURL.openStream());
@@ -513,7 +513,7 @@ public class VergilApplication extends MoMLApplication {
     // are using JNI, then we might get a java.lang.UnsatistifiedLineError,
     // which is an Error, not and Exception.
     private static void _errorAndExit(String message,
-                                      String [] args, Throwable throwable) {
+            String [] args, Throwable throwable) {
         StringBuffer argsBuffer =
             new StringBuffer("Command failed");
 

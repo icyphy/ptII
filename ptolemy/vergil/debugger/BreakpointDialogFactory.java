@@ -92,28 +92,28 @@ public class BreakpointDialogFactory implements MenuItemFactory {
         }
 
         Action action = new AbstractAction(name) {
-            public void actionPerformed(ActionEvent e) {
-                // Create a dialog for configuring the object.  First,
-                // identify the top parent frame.  Normally, this is a
-                // Frame, but just in case, we check.  If it isn't a
-                // Frame, then the set breakpoints dialog will not
-                // have the appropriate parent, and will disappear
-                // when put in the background.
-                Component parent = menu.getInvoker();
-                while (parent.getParent() != null) {
-                    parent = parent.getParent();
+                public void actionPerformed(ActionEvent e) {
+                    // Create a dialog for configuring the object.  First,
+                    // identify the top parent frame.  Normally, this is a
+                    // Frame, but just in case, we check.  If it isn't a
+                    // Frame, then the set breakpoints dialog will not
+                    // have the appropriate parent, and will disappear
+                    // when put in the background.
+                    Component parent = menu.getInvoker();
+                    while (parent.getParent() != null) {
+                        parent = parent.getParent();
+                    }
+                    if (parent instanceof Frame) {
+                        new BreakpointConfigurerDialog((Frame)parent,
+                                (Entity)target,
+                                _graphController);
+                    } else {
+                        new BreakpointConfigurerDialog(null,
+                                (Entity)target,
+                                _graphController);
+                    }
                 }
-                if (parent instanceof Frame) {
-                    new BreakpointConfigurerDialog((Frame)parent,
-                            (Entity)target,
-                            _graphController);
-                } else {
-                    new BreakpointConfigurerDialog(null,
-                            (Entity)target,
-                            _graphController);
-                }
-            }
-        };
+            };
 
         return menu.add(action, name);
     }
