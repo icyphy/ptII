@@ -108,6 +108,7 @@ public class ShapeIcon extends EditorIcon {
         }
         newFigure.setLineWidth(_lineWidth);
         newFigure.setStrokePaint(_lineColor);
+        newFigure.setFillPaint(_fillColor);
         _figures.add(new WeakReference(newFigure));
         
         return newFigure;
