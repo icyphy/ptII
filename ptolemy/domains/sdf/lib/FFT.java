@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (neuendor@eecs.berkeley.edu)
+@ProposedRating Green (neuendor@eecs.berkeley.edu)
 @AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
 */
 
@@ -47,13 +47,12 @@ import ptolemy.math.SignalProcessing;
 //// FFT
 
 /**
-This actor calculates the FFT of a sequence of complex inputs.
-The order of the FFT determines the number of tokens that
-will be consumed and produced on each firing. The order is
-the base-2 logarithm of the size. The default order is 8,
-which means that 2<sup>8</sup> = 256 tokens are read and 2<sup>8</sup>
-= 256 tokens are produced.
-The result of the FFT is a new array of Complex tokens.
+This actor calculates the Fast Fourier Transform of a sequence of
+complex inputs.  The order of the FFT determines the number of tokens
+that will be consumed and produced on each firing. The order is the
+base-2 logarithm of the size. The default order is 8, which means that
+2<sup>8</sup> = 256 tokens are read and 2<sup>8</sup> = 256 tokens are
+produced.  The result of the FFT is a new array of Complex tokens.
 
 @author Bart Kienhuis, Steve Neuendorffer
 @version $Id$
@@ -80,6 +79,9 @@ public class FFT extends SDFTransformer {
 
         order = new Parameter(this, "order", new IntToken(8));
         order.setTypeEquals(BaseType.INT);
+
+        input_tokenConsumptionRate.setExpression("2^order");
+        output_tokenProductionRate.setExpression("2^order");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -111,15 +113,8 @@ public class FFT extends SDFTransformer {
             }
             _transformSize = (int)Math.pow(2, _orderValue );
 
-            // Set the correct consumption/production values
-            _productionRate = _transformSize;
-            _consumptionRate = _transformSize;
-
-            input.setTokenConsumptionRate(_consumptionRate);
-            output.setTokenProductionRate(_productionRate);
-
-            _inComplexArray = new Complex[_consumptionRate];
-            _outTokenArray = new ComplexToken[_productionRate];
+            _inComplexArray = new Complex[_transformSize];
+            _outTokenArray = new ComplexToken[_transformSize];
 
             Director director = getDirector();
             if (director != null) {
@@ -135,23 +130,21 @@ public class FFT extends SDFTransformer {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        Token[] inTokenArray = input.get(0, _consumptionRate);
-        for (int i = 0; i < _consumptionRate; i++) {
-            _inComplexArray[i] = ((ComplexToken)inTokenArray[i]).complexValue();
+        Token[] inTokenArray = input.get(0, _transformSize);
+        for (int i = 0; i < _transformSize; i++) {
+            _inComplexArray[i] = 
+                ((ComplexToken)inTokenArray[i]).complexValue();
         }
         Complex[] outComplexArray =
             SignalProcessing.FFTComplexOut(_inComplexArray, _orderValue);
-        for (int i = 0; i < _productionRate; i++) {
+        for (int i = 0; i < _transformSize; i++) {
             _outTokenArray[i] = new ComplexToken(outComplexArray[i]);
         }
-        output.send(0, _outTokenArray, _productionRate);
+        output.send(0, _outTokenArray, _transformSize);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-    private int _productionRate;
-    private int _consumptionRate;
 
     private int _transformSize;
     private int _orderValue;

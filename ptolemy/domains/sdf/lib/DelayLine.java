@@ -82,12 +82,6 @@ public class DelayLine extends SDFTransformer {
         initialValues.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
         initialValues.setExpression("{0, 0, 0, 0}");
 
-        // default tokenConsumptionRate is 1.
-        input.setTokenConsumptionRate(1);
-
-        // tokenProductionRate is 1.
-        output.setTokenProductionRate(1);
-
         // set the output type to be an ArrayType, and input type to
         // be the corresponding token type.
         output.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
@@ -143,25 +137,6 @@ public class DelayLine extends SDFTransformer {
     public void initialize() throws IllegalActionException {
         super.initialize();
         _delayLine = ((ArrayToken)initialValues.getToken()).arrayValue();
-    }
-
-    /** Return true if the input port has enough tokens for this actor to
-     *  fire.
-     *  @return boolean True if there is a token at the input port
-     *   for this actor to fire.
-     *  @exception IllegalActionException If the hasToken() query to the
-     *   input port throws it.
-     *  @see ptolemy.actor.IOPort#hasToken(int, int)
-     */
-    public boolean prefire() throws IllegalActionException {
-        if (!input.hasToken(0)) {
-            if (_debugging) {
-                _debug("Called prefire(), which returns false.");
-            }
-            return false;
-        } else {
-            return super.prefire();
-        }
     }
 
     /** Return the type constraint that the type of the elements of the

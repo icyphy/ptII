@@ -84,12 +84,9 @@ public class MatrixToSequence extends SDFTransformer {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-        input.setTokenConsumptionRate(1);
-        output.setTokenProductionRate(1);
-
         input.setTypeAtMost(BaseType.MATRIX);
         output.setTypeAtLeast(new FunctionTerm(input));
-
+        
         // Set parameters.
         rows = new Parameter(this, "rows");
         rows.setExpression("1");
@@ -99,6 +96,8 @@ public class MatrixToSequence extends SDFTransformer {
         enforceMatrixSize.setExpression("true");
         enforceMatrixSize.setTypeEquals(BaseType.BOOLEAN);
 
+        output_tokenProductionRate.setExpression("rows * columns");
+ 
         // Set the icon.
         _attachText("_iconDescription", "<svg>\n" +
                 "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
@@ -148,7 +147,7 @@ public class MatrixToSequence extends SDFTransformer {
                         "Invalid number of columns: " + columnsValue);
             }
             int rate = rowsValue * columnsValue;
-            output.setTokenProductionRate(rate);
+        
             Director director = getDirector();
             if (director != null) {
                 director.invalidateSchedule();

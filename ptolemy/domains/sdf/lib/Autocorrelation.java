@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
+@ProposedRating Green (eal@eecs.berkeley.edu)
 @AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
 */
 
@@ -128,13 +128,18 @@ public class Autocorrelation extends SDFTransformer {
         throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
+        input_tokenConsumptionRate.setExpression("numberOfInputs");
+
         numberOfInputs =
             new Parameter(this, "numberOfInputs", new IntToken(256));
         numberOfInputs.setTypeEquals(BaseType.INT);
+
         numberOfLags = new Parameter(this, "numberOfLags", new IntToken(64));
         numberOfLags.setTypeEquals(BaseType.INT);
+
         biased = new Parameter(this, "biased", new BooleanToken(false));
         biased.setTypeEquals(BaseType.BOOLEAN);
+
         symmetricOutput =
             new Parameter(this, "symmetricOutput", new BooleanToken(false));
         symmetricOutput.setTypeEquals(BaseType.BOOLEAN);
@@ -151,7 +156,12 @@ public class Autocorrelation extends SDFTransformer {
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
 
-    /** Number of input samples to average.
+    /** If true, the estimate will be biased.
+     *  This is a boolean with default value false.
+     */
+    public Parameter biased;
+
+     /** Number of input samples to average.
      *  This is an integer with default value 256.
      */
     public Parameter numberOfInputs;
@@ -161,12 +171,7 @@ public class Autocorrelation extends SDFTransformer {
      */
     public Parameter numberOfLags;
 
-    /** If true, the estimate will be biased.
-     *  This is a boolean with default value false.
-     */
-    public Parameter biased;
-
-    /** If true, then the output from each firing
+   /** If true, then the output from each firing
      *  will have 2*<i>numberOfLags</i> + 1
      *  samples (an odd number) whose values are symmetric about
      *  the midpoint. If false, then the output from each firing will
@@ -212,7 +217,7 @@ public class Autocorrelation extends SDFTransformer {
             } else {
                 _lengthOfOutput = 2 * _numberOfLags;
             }
-            input.setTokenConsumptionRate(_numberOfInputs);
+     
             if (_outputs == null || _lengthOfOutput != _outputs.length) {
                 _outputs = new Token[_lengthOfOutput];
             }
@@ -251,7 +256,8 @@ public class Autocorrelation extends SDFTransformer {
         boolean biasedValue = ((BooleanToken) biased.getToken()).booleanValue();
         Token[] inputValues = input.get(0, _numberOfInputs);
         int notSymmetric = _symmetricOutput ? 0 : 1;
-        // NOTE: Is there a better way to determine whether the input is complex?
+        // NOTE: Is there a better way to determine whether the input
+        // is complex?
         boolean complex = inputValues[0] instanceof ComplexToken;
         for (int i = _numberOfLags; i >= 0; i--) {
             Token sum = inputValues[0].zero();

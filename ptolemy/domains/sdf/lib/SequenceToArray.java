@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (yuhong@eecs.berkeley.edu)
+@ProposedRating Green (yuhong@eecs.berkeley.edu)
 @AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
 */
 
@@ -34,6 +34,7 @@ import ptolemy.actor.Director;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
+import ptolemy.actor.lib.Transformer;
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.ArrayType;
@@ -79,12 +80,8 @@ public class SequenceToArray extends SDFTransformer {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-        // default tokenConsumptionRate is 1.
-        input.setTokenConsumptionRate(1);
-
-        // tokenProductionRate is 1.
-        output.setTokenProductionRate(1);
-
+        input_tokenConsumptionRate.setExpression("arrayLength");
+        
         // set the output type to be an ArrayType.
         output.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
 
@@ -106,7 +103,7 @@ public class SequenceToArray extends SDFTransformer {
      *  to 1.
      */
     public PortParameter arrayLength;
-
+    
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -124,7 +121,7 @@ public class SequenceToArray extends SDFTransformer {
                 throw new IllegalActionException(this,
                         "Invalid arrayLength: " + rate);
             }
-            input.setTokenConsumptionRate(rate);
+        
             Director director = getDirector();
             if (director != null) {
                 director.invalidateSchedule();

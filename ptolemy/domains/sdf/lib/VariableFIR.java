@@ -104,6 +104,9 @@ public class VariableFIR extends FIR {
         taps.setVisibility(Settable.NONE);
 
         output.setTypeSameAs(input);
+
+        output_tokenProductionRate.setExpression("interpolation * blockSize");
+        input_tokenConsumptionRate.setExpression("decimation * blockSize");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -133,14 +136,7 @@ public class VariableFIR extends FIR {
         if (attribute == interpolation
                 || attribute == decimation
                 || attribute == blockSize) {
-            // The base class doesn't set the production/consumption
-            // rates correctly for the blockSize, so we redo it.
-            IntToken blockSizeToken = (IntToken)(blockSize.getToken());
-            _blockSizeValue = blockSizeToken.intValue();
-            output.setTokenProductionRate(_interpolationValue
-                    * _blockSizeValue);
-            input.setTokenConsumptionRate(_decimationValue
-                    *_blockSizeValue);
+    
             Director director = getDirector();
             if (director != null) {
                 director.invalidateSchedule();
@@ -179,7 +175,8 @@ public class VariableFIR extends FIR {
 
             _reinitialize();
         }
-        for (int i = 0; i < _blockSizeValue; i++) {
+        int blockSizeValue = ((IntToken)blockSize.getToken()).intValue();
+        for (int i = 0; i < blockSizeValue; i++) {
             super.fire();
         }
     }
@@ -196,8 +193,7 @@ public class VariableFIR extends FIR {
         // this is the first fire(), then reinitialize.
         if (_reinitializeNeeded) _reinitialize();
 
-        if (input.hasToken(0, _decimationValue * _blockSizeValue) &&
-                newTaps.hasToken(0)) {
+        if (newTaps.hasToken(0)) {
             return super.prefire();
         } else {
             if (_debugging) {
@@ -206,9 +202,4 @@ public class VariableFIR extends FIR {
             return false;
         }
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    private int _blockSizeValue = 1;
 }

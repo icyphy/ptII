@@ -103,7 +103,7 @@ test FIR-2.1 {Test FIR type exeception} {
 	    {ptolemy.actor.TypeConflictException: Type conflicts occurred in .top on the following inequalities:} \
 	    $msg]
     set containsFIRclone [regexp \
-	    {(ptolemy.domains.sdf.kernel.SDFIOPort {.top.FIRclone.output}, scalar)} \
+	    {(ptolemy.actor.TypedIOPort {.top.FIRclone.output}, scalar)} \
 	    $msg]
     set containsRecInput [regexp \
 	    {(ptolemy.actor.TypedIOPort {.top.rec.input}, scalar)} \

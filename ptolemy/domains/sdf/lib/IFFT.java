@@ -80,6 +80,9 @@ public class IFFT extends SDFTransformer {
 
         order = new Parameter(this, "order", new IntToken(8));
         order.setTypeEquals(BaseType.INT);
+
+        input_tokenConsumptionRate.setExpression("2^order");
+        output_tokenProductionRate.setExpression("2^order");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -111,15 +114,8 @@ public class IFFT extends SDFTransformer {
             }
             _transformSize = (int)Math.pow(2, _orderValue );
 
-            // Set the correct consumption/production values
-            _productionRate = _transformSize;
-            _consumptionRate = _transformSize;
-
-            input.setTokenConsumptionRate(_consumptionRate);
-            output.setTokenProductionRate(_productionRate);
-
-            _inComplexArray = new Complex[_consumptionRate];
-            _outTokenArray = new ComplexToken[_productionRate];
+            _inComplexArray = new Complex[_transformSize];
+            _outTokenArray = new ComplexToken[_transformSize];
 
             Director director = getDirector();
             if (director != null) {
@@ -135,23 +131,21 @@ public class IFFT extends SDFTransformer {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        Token[] inTokenArray = input.get(0, _consumptionRate);
-        for (int i = 0; i < _consumptionRate; i++) {
-            _inComplexArray[i] = ((ComplexToken)inTokenArray[i]).complexValue();
+        Token[] inTokenArray = input.get(0, _transformSize);
+        for (int i = 0; i < _transformSize; i++) {
+            _inComplexArray[i] = 
+                ((ComplexToken)inTokenArray[i]).complexValue();
         }
         Complex[] outComplexArray =
             SignalProcessing.IFFTComplexOut(_inComplexArray, _orderValue);
-        for (int i = 0; i < _productionRate; i++) {
+        for (int i = 0; i < _transformSize; i++) {
             _outTokenArray[i] = new ComplexToken(outComplexArray[i]);
         }
-        output.send(0, _outTokenArray, _productionRate);
+        output.send(0, _outTokenArray, _transformSize);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-    private int _productionRate;
-    private int _consumptionRate;
 
     private int _transformSize;
     private int _orderValue;

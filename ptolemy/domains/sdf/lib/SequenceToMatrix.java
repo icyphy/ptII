@@ -77,12 +77,6 @@ public class SequenceToMatrix extends SDFTransformer {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-        // default tokenConsumptionRate is 1.
-        input.setTokenConsumptionRate(1);
-
-        // tokenProductionRate is 1.
-        output.setTokenProductionRate(1);
-
         output.setTypeAtLeast(new FunctionTerm(input));
 
         // Set parameters.
@@ -90,6 +84,8 @@ public class SequenceToMatrix extends SDFTransformer {
         rows.setExpression("1");
         columns = new Parameter(this, "columns");
         columns.setExpression("1");
+
+        input_tokenConsumptionRate.setExpression("rows * columns");
 
         // Set the icon.
         _attachText("_iconDescription", "<svg>\n" +
@@ -133,8 +129,7 @@ public class SequenceToMatrix extends SDFTransformer {
                 throw new IllegalActionException(this,
                         "Invalid number of columns: " + columnsValue);
             }
-            int rate = rowsValue * columnsValue;
-            input.setTokenConsumptionRate(rate);
+
             Director director = getDirector();
             if (director != null) {
                 director.invalidateSchedule();

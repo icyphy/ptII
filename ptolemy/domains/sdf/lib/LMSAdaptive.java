@@ -46,7 +46,7 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
-//// LMS
+//// LMSAdaptive
 /**
 An adaptive filter using the Least-Mean Square (LMS) algorithm, also
 known as the stochastic gradient algorithm.

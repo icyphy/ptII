@@ -109,7 +109,7 @@ test SampleDelay-2.5 {test with type change to error condition} {
 	    {(ptolemy.actor.TypedIOPort {.top.rec.input}, \[general\])} \
 	    $msg]
     set containsSampleDelayOutput [regexp \
-	    {(ptolemy.domains.sdf.kernel.SDFIOPort {.top.SampleDelay.output}, \[general\])} \
+	    {(ptolemy.actor.TypedIOPort {.top.SampleDelay.output}, \[general\])} \
 	    $msg]
     list $containsException $containsRecInput $containsSampleDelayOutput
 } {1 1 1}

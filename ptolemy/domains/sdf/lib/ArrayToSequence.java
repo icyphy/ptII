@@ -97,6 +97,8 @@ public class ArrayToSequence extends SDFTransformer {
         enforceArrayLength.setExpression("true");
         enforceArrayLength.setTypeEquals(BaseType.BOOLEAN);
 
+        output_tokenProductionRate.setExpression("arrayLength");
+
         // Set the icon.
         _attachText("_iconDescription", "<svg>\n" +
                 "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
@@ -135,7 +137,7 @@ public class ArrayToSequence extends SDFTransformer {
                 throw new IllegalActionException(this,
                         "Invalid arrayLength: " + rate);
             }
-            output.setTokenProductionRate(rate);
+          
             Director director = getDirector();
             if (director != null) {
                 director.invalidateSchedule();

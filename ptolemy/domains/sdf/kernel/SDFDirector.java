@@ -44,13 +44,18 @@ import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Entity;
+import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
-import java.util.Iterator;
+import ptolemy.copernicus.java.ConstVariableModelAnalysis;
+
+import java.util.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// SDFDirector
@@ -341,6 +346,7 @@ public class SDFDirector extends StaticSchedulingDirector {
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
+                
         Scheduler scheduler = getScheduler();
         if (scheduler == null)
             throw new IllegalActionException("Attempted to initialize " +

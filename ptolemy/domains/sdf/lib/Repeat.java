@@ -31,6 +31,7 @@
 package ptolemy.domains.sdf.lib;
 
 import ptolemy.actor.Director;
+import ptolemy.actor.lib.Transformer;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
@@ -76,6 +77,9 @@ public class Repeat extends SDFTransformer {
 
         blockSize = new Parameter(this, "blockSize", new IntToken(1));
         blockSize.setTypeEquals(BaseType.INT);
+
+        input_tokenConsumptionRate.setExpression("blockSize");
+        output_tokenProductionRate.setExpression("numberOfTimes*blockSize");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -116,8 +120,6 @@ public class Repeat extends SDFTransformer {
                         "The value of blockSize must be positive, but "
                         + "was set to " + count);
 
-            input.setTokenConsumptionRate(count);
-            output.setTokenProductionRate(count * repetitions);
             Director director = getDirector();
             if (director != null) {
                 director.invalidateSchedule();
@@ -145,23 +147,5 @@ public class Repeat extends SDFTransformer {
         for (int i = 0; i < repetitions; i += 1) {
             output.send(0, inputBlock, count);
         }
-    }
-
-    /** Return true if the input port has enough tokens for this actor to
-     *  fire. The number of tokens required is determined by the
-     *  value of the <i>blockSize</i> parameter.
-     *  @return boolean True if there are enough tokens at the input port
-     *   for this actor to fire.
-     *  @exception IllegalActionException If the hasToken() query to the
-     *   input port throws it.
-     *  @see ptolemy.actor.IOPort#hasToken(int, int)
-     */
-    public boolean prefire() throws IllegalActionException {
-        int length = ((IntToken)blockSize.getToken()).intValue();
-        boolean result = input.hasToken(0, length);
-        if (_debugging) {
-            _debug("Called prefire(), which returns " + result + ".");
-        }
-        return result;
     }
 }

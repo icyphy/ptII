@@ -131,6 +131,9 @@ public class FIR extends SDFTransformer {
         taps.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
         taps.setExpression("{1.0}");
 
+        input_tokenConsumptionRate.setExpression("decimation");
+        output_tokenProductionRate.setExpression("interpolation");
+
         // Set type constraints.
         ArrayType paramType = (ArrayType)taps.getType();
         InequalityTerm elementTerm = paramType.getElementTypeTerm();
@@ -179,7 +182,7 @@ public class FIR extends SDFTransformer {
                         "Invalid interpolation: " + _interpolationValue
                         + ". Must be positive.");
             }
-            output.setTokenProductionRate(_interpolationValue);
+
             Director director = getDirector();
             if (director != null) {
                 director.invalidateSchedule();
@@ -193,7 +196,7 @@ public class FIR extends SDFTransformer {
                         "Invalid decimation: " + _decimationValue
                         + ". Must be positive.");
             }
-            input.setTokenConsumptionRate(_decimationValue);
+
             Director director = getDirector();
             if (director != null) {
                 director.invalidateSchedule();

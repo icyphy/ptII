@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (neuendor@eecs.berkeley.edu)
+@ProposedRating Green (neuendor@eecs.berkeley.edu)
 @AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
 */
 
@@ -65,10 +65,10 @@ public class BitsToInt extends SDFConverter {
 
         super(container, name);
 
-        input.setTokenConsumptionRate(32);
+        input_tokenConsumptionRate.setExpression("32");
+
         input.setTypeEquals(BaseType.BOOLEAN);
 
-        output.setTokenProductionRate(1);
         output.setTypeEquals(BaseType.INT);
     }
 

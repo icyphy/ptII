@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
+@ProposedRating Green (eal@eecs.berkeley.edu)
 @AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
 
@@ -167,9 +167,10 @@ public class LineCoder extends SDFTransformer {
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
 
-        // FIXME: Handle mutations.
         _wordLength = ((IntToken)(wordLength.getToken())).intValue();
-        input.setTokenConsumptionRate(_wordLength);
+
+        // Set the token consumption rate.
+        input_tokenConsumptionRate.setToken(new IntToken(_wordLength));
 
         ArrayToken tableToken = (ArrayToken)table.getToken();
         int size = (int)Math.pow(2, _wordLength);

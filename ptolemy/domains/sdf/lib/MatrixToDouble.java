@@ -85,6 +85,8 @@ public class MatrixToDouble extends SDFConverter {
 
         output.setTypeEquals(BaseType.DOUBLE);
         input.setTypeEquals(BaseType.DOUBLE_MATRIX);
+
+        output_tokenProductionRate.setExpression("rows * columns");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -120,7 +122,7 @@ public class MatrixToDouble extends SDFConverter {
                 throw new IllegalActionException(this,
                         "Number of rows and columns is required to be positive.");
             }
-            output.setTokenProductionRate(_rows*_columns);
+
             Director director = getDirector();
             if (director != null) {
                 director.invalidateSchedule();

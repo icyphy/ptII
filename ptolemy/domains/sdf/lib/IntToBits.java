@@ -64,10 +64,9 @@ public class IntToBits extends SDFConverter {
 
         super(container, name);
 
-        input.setTokenConsumptionRate(1);
         input.setTypeEquals(BaseType.INT);
 
-        output.setTokenProductionRate(32);
+        output_tokenProductionRate.setExpression("32");
         output.setTypeEquals(BaseType.BOOLEAN);
     }
 

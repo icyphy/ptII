@@ -56,6 +56,9 @@ parameters are present, the scheduler does not override them.
 @author Stephen Neuendorffer
 @version $Id$
 @since Ptolemy II 0.2
+@deprecated It is prefereable to declare the rate parameters directly
+in the actors, instead of using this class.  This allows the
+dependence of rates to be understood by various SDF schedulers.
 */
 public final class SDFIOPort extends TypedIOPort {
 

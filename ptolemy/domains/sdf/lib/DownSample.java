@@ -80,8 +80,11 @@ public class DownSample extends SDFTransformer {
         // Set parameters.
         factor = new Parameter(this, "factor");
         factor.setExpression("2");
+
         phase = new Parameter(this, "phase");
         phase.setExpression("0");
+
+        input_tokenConsumptionRate.setExpression("factor");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -118,7 +121,7 @@ public class DownSample extends SDFTransformer {
                 throw new IllegalActionException(this,
                         "Invalid factor: " + factorValue);
             }
-            input.setTokenConsumptionRate(factorValue);
+
             Director director = getDirector();
             if (director != null) {
                 director.invalidateSchedule();
@@ -151,23 +154,5 @@ public class DownSample extends SDFTransformer {
         }
         // Send the token.
         output.send(0, valueArray[factorValue - phaseValue - 1]);
-    }
-
-    /** Return false if the number of tokens available on the input
-     *  is less than the <i>factor</i> value.
-     *  Otherwise, return whatever the superclass returns.
-     *  @return False if there are not enough input tokens to fire.
-     *  @exception IllegalActionException If there is no director.
-     */
-    public boolean prefire() throws IllegalActionException {
-        int factorValue = ((IntToken)factor.getToken()).intValue();
-        if (!input.hasToken(0, factorValue)) {
-            if (_debugging) {
-                _debug("Called prefire(), which returns false.");
-            }
-            return false;
-        } else {
-            return super.prefire();
-        }
     }
 }

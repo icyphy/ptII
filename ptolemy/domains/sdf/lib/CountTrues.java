@@ -54,7 +54,7 @@ Read the given number of input booleans and output the number that are true.
 @since Ptolemy II 0.3
 */
 
-public class CountTrues extends Transformer {
+public class CountTrues extends SDFTransformer {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -74,10 +74,7 @@ public class CountTrues extends Transformer {
         blockSize = new Parameter(this, "blockSize", new IntToken(1));
         blockSize.setTypeEquals(BaseType.INT);
 
-        input_tokenConsumptionRate = 
-            new Parameter(input, "tokenConsumptionRate");
         input_tokenConsumptionRate.setExpression("blockSize");
-        input_tokenConsumptionRate.setTypeEquals(BaseType.INT);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -87,10 +84,6 @@ public class CountTrues extends Transformer {
      *  The input is of type integer and has a default value of 1.
      */
     public Parameter blockSize;
-
-    /** The number of tokens consumed by the input port.
-     */
-    public Parameter input_tokenConsumptionRate;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -125,23 +118,5 @@ public class CountTrues extends Transformer {
         }
 
         output.send(0, new IntToken(trueCount));
-    }
-
-    /** Return true if the input port has enough tokens for this actor to
-     *  fire. The number of tokens required is determined by the
-     *  value of the <i>blockSize</i> parameter.
-     *  @return boolean True if there are enough tokens at the input port
-     *   for this actor to fire.
-     *  @exception IllegalActionException If the hasToken() query to the
-     *   input port throws it.
-     *  @see ptolemy.actor.IOPort#hasToken(int, int)
-     */
-    public boolean prefire() throws IllegalActionException {
-        int length = ((IntToken)blockSize.getToken()).intValue();
-        boolean result = input.hasToken(0, length);
-        if (_debugging) {
-            _debug("Called prefire(), which returns " + result + ".");
-        }
-        return result;
     }
 }

@@ -30,12 +30,7 @@
 
 package ptolemy.domains.sdf.kernel;
 
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
@@ -64,8 +59,11 @@ import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.ValueListener;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.math.Fraction;
+
+import ptolemy.copernicus.java.ConstVariableModelAnalysis;
 
 ///////////////////////////////////////////////////////////
 //// SDFScheduler
@@ -130,7 +128,7 @@ is somewhat conservative in this respect.
 @version $Id$
 @since Ptolemy II 0.2
 */
-public class SDFScheduler extends Scheduler {
+public class SDFScheduler extends Scheduler implements ValueListener {
     /** Construct a scheduler with no container(director)
      *  in the default workspace, the name of the scheduler is
      *  "Scheduler".
@@ -232,22 +230,6 @@ public class SDFScheduler extends Scheduler {
         }
     }
     
-    /** This method simply calls _saveContainerRates(Map externalRates). 
-     *  It is used in HDF when a cached schedule is used instead of 
-     *  computing a new schedule.
-     *  @param externalRates A map from external port to the rate of that
-     *  port.
-     *  @throws NotSchedulableException If an external port is both
-     *  an input and an output, or neither an input or an output, or
-     *  connected on the inside to ports that have different
-     *  tokenInitProduction.
-     *  @throws IllegalActionException If any called method throws it.
-     */
-    public void setContainerRates(Map externalRates)
-        throws NotSchedulableException, IllegalActionException  {
-        _saveContainerRates(externalRates);
-    }
-
     /** Get the number of tokens that are produced
      *  on the given port.  If the port is not an
      *  output port, then return zero.  Otherwise, return the value of
@@ -268,6 +250,22 @@ public class SDFScheduler extends Scheduler {
         } else {
             return _getRateVariableValue(port, "tokenProductionRate", 1);
         }
+    }
+
+    /** This method simply calls _saveContainerRates(Map externalRates). 
+     *  It is used in HDF when a cached schedule is used instead of 
+     *  computing a new schedule.
+     *  @param externalRates A map from external port to the rate of that
+     *  port.
+     *  @throws NotSchedulableException If an external port is both
+     *  an input and an output, or neither an input or an output, or
+     *  connected on the inside to ports that have different
+     *  tokenInitProduction.
+     *  @throws IllegalActionException If any called method throws it.
+     */
+    public void setContainerRates(Map externalRates)
+        throws NotSchedulableException, IllegalActionException  {
+        _saveContainerRates(externalRates);
     }
 
     /** Set the <i>tokenConsumptionRate</i> parameter of the given port
@@ -308,6 +306,21 @@ public class SDFScheduler extends Scheduler {
         _setRate(port, "tokenProductionRate", rate);
     }
 
+    /** React to the fact that the specified Settable has changed.
+     *  This class removes itself as a value listener from all rate
+     *  parameters, and invalidates the schedule.
+     *  @param settable The object that has changed value.
+     */
+    public void valueChanged(Settable settable) {
+    //     for(Iterator variables = _rateVariables.iterator();
+//             variables.hasNext();) {
+//             Variable variable = (Variable)variables.next();
+//             variable.removeValueListener(this);
+//         }
+        _rateVariables.clear();
+        setValid(false);
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -335,6 +348,42 @@ public class SDFScheduler extends Scheduler {
             throws NotSchedulableException, IllegalActionException {
         StaticSchedulingDirector director =
             (StaticSchedulingDirector)getContainer();
+        CompositeActor model = (CompositeActor)director.getContainer();
+        // Check for rate parameters which are dynamic.
+        ConstVariableModelAnalysis analysis =
+            new ConstVariableModelAnalysis((Entity)toplevel());
+        for(Iterator entities = model.deepEntityList().iterator();
+            entities.hasNext();) {
+            Entity entity = (Entity)entities.next();
+            for(Iterator ports = entity.portList().iterator();
+                ports.hasNext();) {
+                Port port = (Port) ports.next();
+                for(Iterator variables =
+                        analysis.getNotConstVariables(port).iterator();
+                    variables.hasNext();) {
+                    Variable variable = (Variable)variables.next();
+                    String name = variable.getName();
+                    if(name.equals("tokenInitProduction") ||
+                            name.equals("tokenProductionRate") ||
+                            name.equals("tokenConsumptionRate")) {
+                        System.out.println("Warning: Port " + port.getFullName() + 
+                                " has rate parameter that may change.");
+                        // The schedule depends on the rate parameter.
+                        if(!_rateVariables.contains(variable)) {
+                            variable.addValueListener(this);
+                            _rateVariables.add(variable);
+                        }
+                    }
+                    Entity changeContext = 
+                        analysis.getChangeContext(variable);
+                    if(!model.getFullName().startsWith(changeContext.getFullName())) {
+                        throw new IllegalActionException(
+                                "Rate parameter of port " + port.getFullName() 
+                                + " might change during execution of the model.");
+                    }
+                }
+            }
+        }
 
         int vectorizationFactor = 1;
         if (director instanceof SDFDirector) {
@@ -860,6 +909,7 @@ public class SDFScheduler extends Scheduler {
             }
         }
         Token token = parameter.getToken();
+  
         if (token instanceof IntToken) {
             return ((IntToken)token).intValue();
         } else {
@@ -872,7 +922,7 @@ public class SDFScheduler extends Scheduler {
                     + ".");
         }
     }
-
+    
     /** Normalize fractional firing ratios into a firing vector that
      *  corresponds to a single SDF iteration.   Multiply all of the
      *  fractions by the least common multiple (LCM)
@@ -1783,17 +1833,18 @@ public class SDFScheduler extends Scheduler {
         _firingVectorValid = true;
     }
 
-    /** If the specified container does not contain a variable with the specified
-     *  name, then create such a variable and set its value to the specified integer.
-     *  The resulting variable is not persistent and
-     *  not editable, but will be visible to the user.
+    /** If the specified container does not contain a variable with
+     *  the specified name, then create such a variable and set its
+     *  value to the specified integer.  The resulting variable is not
+     *  persistent and not editable, but will be visible to the user.
      *  If the variable does exist, then just set its value.
      *  @param port The port.
      *  @param name Name of the variable.
      *  @param value The value.
      *  @exception If the variable exists and its value cannot be set.
      */
-    private static void _setOrCreate(NamedObj container, String name, int value)
+    private static void _setOrCreate(
+            NamedObj container, String name, int value)
             throws IllegalActionException {
         Variable rateParameter = (Variable)container.getAttribute(name);
         if (rateParameter == null) {
@@ -2157,4 +2208,6 @@ public class SDFScheduler extends Scheduler {
     private Fraction _minusOne = new Fraction(-1);
     
     private Map _externalRates = new TreeMap(new NamedObjComparator());
+
+    private Set _rateVariables = new HashSet();
 }

@@ -77,7 +77,7 @@ public class SampleDelay extends SDFTransformer {
         initialOutputs.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
         initialOutputs.setExpression("{0}");
 
-        output.setTokenInitProduction(1);
+        output_tokenInitProduction.setExpression("initialOutputs.length()");
 
         // set type constraints.
         ArrayType paramType = (ArrayType)initialOutputs.getType();
@@ -172,7 +172,6 @@ public class SampleDelay extends SDFTransformer {
                     " array token.");
         }
         _outputsArray = (ArrayToken)contents;
-        output.setTokenInitProduction(_outputsArray.length());
 
         getDirector().invalidateResolvedTypes();
     }

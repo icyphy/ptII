@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
+@ProposedRating Green (eal@eecs.berkeley.edu)
 @AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
 */
 
@@ -137,19 +137,25 @@ public class Chop extends SDFTransformer {
     public Chop(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-       
+        
         numberToRead = new Parameter(this, "numberToRead");
         numberToRead.setExpression("128");
         numberToRead.setTypeEquals(BaseType.INT);
+        
         numberToWrite = new Parameter(this, "numberToWrite");
         numberToWrite.setExpression("64");
         numberToWrite.setTypeEquals(BaseType.INT);
+        
         offset = new Parameter(this, "offset");
         offset.setExpression("0");
         offset.setTypeEquals(BaseType.INT);
+
         usePastInputs = new Parameter(this, "usePastInputs");
         usePastInputs.setExpression("true");
         usePastInputs.setTypeEquals(BaseType.BOOLEAN);
+        
+        input_tokenConsumptionRate.setExpression("numberToRead");
+        output_tokenProductionRate.setExpression("numberToWrite");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -195,7 +201,7 @@ public class Chop extends SDFTransformer {
                 throw new IllegalActionException(this,
                         "Invalid numberToRead: " + _numberToRead);
             }
-            input.setTokenConsumptionRate(_numberToRead);
+            
             Director director = getDirector();
             if (director != null) {
                 director.invalidateSchedule();
@@ -207,7 +213,7 @@ public class Chop extends SDFTransformer {
                         "Invalid numberToWrite: " + _numberToRead);
             }
             _buffer = new Token[_numberToWrite];
-            output.setTokenProductionRate(_numberToWrite);
+        
             Director director = getDirector();
             if (director != null) {
                 director.invalidateSchedule();
