@@ -11,7 +11,7 @@
 	        class="ptolemy.actor.gui.style.CheckBoxStyle"-->
             <!-- /property-->
 	</property>
-    <property class="ptolemy.domains.ct.kernel.CTRealTimeDirector">
+    <property name="director" class="ptolemy.domains.ct.kernel.CTRealTimeDirector">
         <property name="stopTime" value="240">
         </property>
     </property>
@@ -20,11 +20,23 @@
     <entity name="time" class="ptolemy.actor.lib.CurrentTime">
       	<port name="output"></port>
     </entity>
-    <entity name="forceV" class="ptolemy.actor.lib.Sine">
-	<property name="omega" value="0.05*PI"></property>
-	<property name="amplitude" value="1.0"></property>
-      	<port name="input"></port>
-      	<port name="output"></port>
+    <entity name="forceV" class="ptolemy.actor.lib.TrigFunction">
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="scaleV" class="ptolemy.actor.lib.Scale">
+        <property name="factor" class="ptolemy.data.expr.Parameter" value="0.05*PI">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
     </entity>
     <entity name="forceC" class="ptolemy.actor.lib.Const">
 	<property name="value" value="1.0"></property>
@@ -130,7 +142,10 @@
     <!-- Make the connections -->
     <relation name="r0" class="ptolemy.actor.TypedIORelation"></relation>
   	<link port="time.output" relation="r0"/>
-  	<link port="forceV.input" relation="r0"/>
+  	<link port="scaleV.input" relation="r0"/>
+    <relation name="r0_3" class="ptolemy.actor.TypedIORelation"></relation>
+  	<link port="scaleV.output" relation="r0_3"/>
+  	<link port="forceV.input" relation="r0_3"/>
     <relation name="r0_1" class="ptolemy.actor.TypedIORelation"></relation>
   	<link port="forceV.output" relation="r0_1"/>
   	<link port="add0.plus" relation="r0_1"/>
