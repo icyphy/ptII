@@ -68,7 +68,7 @@ test MoMLParser-1.1 {Test adding an entity} {
     set manager [java::new ptolemy.actor.Manager [$toplevel workspace] "w"]
     $toplevel setManager $manager
 
-    set change [java::new ptolemy.moml.MoMLChangeRequest $parser {
+    set change [java::new ptolemy.moml.MoMLChangeRequest $toplevel $parser {
         <model name=".top">
             <entity name="const" class="ptolemy.actor.lib.Const"/>
         </model>
@@ -102,7 +102,7 @@ test MoMLParser-1.1 {Test adding an entity} {
 
 #----------------------------------------------------------------------
 test MoMLParser-1.2 {Test adding another entity} {
-    set change [java::new ptolemy.moml.MoMLChangeRequest $parser {
+    set change [java::new ptolemy.moml.MoMLChangeRequest $toplevel $parser {
         <model name=".top">
             <entity name="rec" class="ptolemy.actor.lib.Recorder"/>
         </model>
@@ -115,7 +115,7 @@ test MoMLParser-1.2 {Test adding another entity} {
 
 #----------------------------------------------------------------------
 test MoMLParser-1.3 {Test adding a relation} {
-    set change [java::new ptolemy.moml.MoMLChangeRequest $parser {
+    set change [java::new ptolemy.moml.MoMLChangeRequest $toplevel $parser {
         <model name=".top">
             <relation name="r" class="ptolemy.actor.TypedIORelation"/>
         </model>
@@ -127,7 +127,7 @@ test MoMLParser-1.3 {Test adding a relation} {
 
 #----------------------------------------------------------------------
 test MoMLParser-1.4 {Test adding a pair of links} {
-    set change [java::new ptolemy.moml.MoMLChangeRequest $parser {
+    set change [java::new ptolemy.moml.MoMLChangeRequest $toplevel $parser {
         <model name=".top">
             <link relation="r" port="const.output"/>
             <link relation="r" port="rec.input"/>
@@ -140,7 +140,7 @@ test MoMLParser-1.4 {Test adding a pair of links} {
 
 #----------------------------------------------------------------------
 test MoMLParser-1.5 {Test changing a parameter} {
-    set change [java::new ptolemy.moml.MoMLChangeRequest $parser {
+    set change [java::new ptolemy.moml.MoMLChangeRequest $toplevel $parser {
         <model name=".top">
             <entity name="const">
                 <property name="value" value="2"/>
@@ -157,7 +157,7 @@ test MoMLParser-1.5 {Test changing a parameter} {
 
 #----------------------------------------------------------------------
 test MoMLParser-1.5 {Test deleting an entity} {
-    set change [java::new ptolemy.moml.MoMLChangeRequest $parser {
+    set change [java::new ptolemy.moml.MoMLChangeRequest $toplevel $parser {
         <model name=".top">
             <deleteEntity name="const"/>
         </model>
@@ -190,7 +190,7 @@ test MoMLParser-1.5 {Test deleting an entity} {
 
 #----------------------------------------------------------------------
 test MoMLParser-1.6 {Test deleting a relation} {
-    set change [java::new ptolemy.moml.MoMLChangeRequest $parser {
+    set change [java::new ptolemy.moml.MoMLChangeRequest $toplevel $parser {
         <model name=".top">
             <deleteRelation name="r"/>
         </model>
@@ -219,11 +219,9 @@ test MoMLParser-1.6 {Test deleting a relation} {
 }
 
 #----------------------------------------------------------------------
-test MoMLParser-1.6 {Test deleting a port, using a new parser} {
-    set change [java::new ptolemy.moml.MoMLChangeRequest $toplevel {
-        <model name=".top">
-            <deletePort name="rec.input"/>
-        </model>
+test MoMLParser-1.6 {Test deleting a port, using a new parser and context} {
+    set change [java::new ptolemy.moml.MoMLChangeRequest $toplevel $toplevel {
+        <deletePort name="rec.input"/>
     }]
     $manager requestChange $change
     $toplevel exportMoML
@@ -240,6 +238,29 @@ test MoMLParser-1.6 {Test deleting a port, using a new parser} {
     <entity name="rec" class="ptolemy.actor.lib.Recorder">
         <property name="capacity" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
+    </entity>
+</model>
+}
+
+#----------------------------------------------------------------------
+test MoMLParser-1.7 {Test deleting a property using a lower context} {
+    set rec [$toplevel getEntity "rec"]
+    set change [java::new ptolemy.moml.MoMLChangeRequest $toplevel $rec {
+        <deleteProperty name="capacity"/>
+    }]
+    $manager requestChange $change
+    $toplevel exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<model name="top" class="ptolemy.actor.TypedCompositeActor">
+    <director name="dir" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </director>
+    <entity name="rec" class="ptolemy.actor.lib.Recorder">
     </entity>
 </model>
 }
