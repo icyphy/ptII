@@ -45,7 +45,7 @@ Dummy actor fot sink. Multi-input, no output.
 public class CTDummySink extends CTActor{
     /** Constructor
      */
-    CTDummySink(TypedCompositeActor container, String name)
+    public CTDummySink(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         input = new TypedIOPort(this, "input");

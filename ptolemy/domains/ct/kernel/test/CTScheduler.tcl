@@ -107,7 +107,7 @@ test CTScheduler-2.1 {schedule a chain of actors} {
 	 [enumToFullNames [$sch dynamicActorSchedule]] \
 	 [enumToFullNames [$sch stateTransitionSchedule]] \
 	 [enumToFullNames [$sch outputSchedule]]
-} {}
+} {{.CA.A1 .CA.A2 .CA.A3} {} {} {} {} {} {} {} {.CA.A1 .CA.A2 .CA.A3}}
 
 ######################################################################
 ####
