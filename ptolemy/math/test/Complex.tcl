@@ -110,7 +110,7 @@ test Complex-3.1.3 {atan} {
 } {1.4099210495965755 - 0.2290726829685388i}
 
 ####################################################################
-test Complex-3.1.4 {atanh} {
+test Complex-3.1.4 {taanh} {
     set c9 [java::call ptolemy.math.Complex atanh $c2]
     $c9 toString
 } {0.14694666622552977 - 1.3389725222944935i}
@@ -319,7 +319,41 @@ test Complex-13.1 {tan} {
 } {}
 
 ####################################################################
-test Complex-11.2.2 {tanh} {
+test Complex-14.1 {tanh} {
     set c9 [java::call ptolemy.math.Complex tanh $c2]
     $c9 toString
 } {0.965385879022133 + 0.009884375038322507i}
+
+####################################################################
+test Complex-15.1 {isInfinite} {
+    set negativeInfinity [java::field java.lang.Double NEGATIVE_INFINITY]
+    set complexNegativeInfinity \
+	    [java::new ptolemy.math.Complex $negativeInfinity]
+    set complexImaginaryNegativeInfinity \
+	    [java::new ptolemy.math.Complex 0.0 $negativeInfinity]
+
+    set positiveInfinity [java::field java.lang.Double POSITIVE_INFINITY]
+    set complexPositiveInfinity \
+	    [java::new ptolemy.math.Complex $positiveInfinity]
+
+    set complexImaginaryPositiveInfinity \
+	    [java::new ptolemy.math.Complex 0.0 $positiveInfinity]
+
+    set minValue [java::field java.lang.Double MIN_VALUE]
+    set complexMinValue \
+	    [java::new ptolemy.math.Complex $minValue]
+
+    set maxValue [java::field java.lang.Double MAX_VALUE]
+    set complexMaxValue \
+	    [java::new ptolemy.math.Complex $maxValue]
+
+
+    list [$complexNegativeInfinity isInfinite] \
+	    [$complexImaginaryNegativeInfinity isInfinite] \
+	    [$complexPositiveInfinity isInfinite] \
+	    [$complexImaginaryPositiveInfinity isInfinite] \
+	    [$complexMinValue isInfinite] \
+	    [$complexMaxValue isInfinite]
+
+
+} {1 1 1 1 0 0}
