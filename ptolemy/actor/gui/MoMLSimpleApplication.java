@@ -31,13 +31,14 @@
 
 package ptolemy.actor.gui;
 
-// Ptolemy imports
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Manager;
 import ptolemy.kernel.util.ChangeListener;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLParser;
+
+import java.io.File;
 
 //////////////////////////////////////////////////////////////////////////
 //// MoMLSimpleApplication
@@ -58,8 +59,14 @@ public class MoMLSimpleApplication implements ChangeListener {
      */
     public MoMLSimpleApplication(String xmlFilename) throws Exception{
         MoMLParser parser = new MoMLParser();
-        CompositeActor toplevel =
-            (CompositeActor) parser.parseFile(xmlFilename);
+
+        // We use parse(URL, URL) here instead of parseFile(String)
+        // because parseFile() works best on relative pathnames and
+        // has problems finding resources like files specified in
+        // parameters if the xml file was specified as an absolute path.
+        CompositeActor toplevel = (CompositeActor) parser.parse(null,
+                new File(xmlFilename).toURL());
+
         Manager manager = new Manager(toplevel.workspace(),
                 "MoMLSimpleApplication");
         toplevel.setManager(manager);
@@ -111,6 +118,7 @@ public class MoMLSimpleApplication implements ChangeListener {
                 new MoMLSimpleApplication(args[0]);
         } catch (Exception ex) {
             System.err.println("Command failed: " + ex);
+            ex.printStackTrace();
         }
     }
 }
