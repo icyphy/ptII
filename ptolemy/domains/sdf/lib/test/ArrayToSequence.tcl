@@ -44,7 +44,7 @@ test ArrayToSequence-1.1 {test constructor and clone} {
     set e0 [java::new ptolemy.actor.TypedCompositeActor]
     set a2sbase [java::new ptolemy.domains.sdf.lib.ArrayToSequence $e0 a2sbase]
     set a2s [java::cast ptolemy.domains.sdf.lib.ArrayToSequence \
-							[$a2sbase clone]]
+		 [$a2sbase clone [$e0 workspace]]]
     $a2s setName a2s
     # Success here is just not throwing an exception.
     list {}
@@ -127,7 +127,7 @@ test ArrayToSequence-2.4 {check types} {
 test ArrayToSequence-2.5 {test cascading SequenceToArray and ArrayToSequence} {
     # clone s2a2
     set s2a2 [java::cast ptolemy.domains.sdf.lib.SequenceToArray \
-							[$s2a clone]]
+		  [$s2a clone [$e0 workspace]]]
     $s2a2 setName s2a2
     $s2a2 setContainer $e0
     set s2a2In [java::field [java::cast ptolemy.domains.sdf.lib.SDFTransformer $s2a2] input]
@@ -135,7 +135,7 @@ test ArrayToSequence-2.5 {test cascading SequenceToArray and ArrayToSequence} {
 
     # clone a2s2
     set a2s2 [java::cast ptolemy.domains.sdf.lib.ArrayToSequence \
-							[$a2s clone]]
+		  [$a2s clone [$e0 workspace]]]
     $a2s2 setName a2s2
     $a2s2 setContainer $e0
     set a2s2In [java::field [java::cast ptolemy.domains.sdf.lib.SDFTransformer $a2s2] input]

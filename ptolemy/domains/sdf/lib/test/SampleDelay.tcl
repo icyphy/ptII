@@ -52,7 +52,8 @@ test SampleDelay-2.1 {test constructor and clone} {
     set sampleDelayBase [java::new ptolemy.domains.sdf.lib.SampleDelay $e0 SampleDelay]
     # FIXME: If I use a clone instead of the original, the original is
     # tested for type satisfaction!
-    set sampleDelay [java::cast ptolemy.domains.sdf.lib.SampleDelay [$sampleDelayBase clone]]
+    set sampleDelay [java::cast ptolemy.domains.sdf.lib.SampleDelay \
+			 [$sampleDelayBase clone [$e0 workspace]]]
     $sampleDelayBase setContainer [java::null]
     $sampleDelay setContainer $e0
     set initialOutputs [getParameter $sampleDelay initialOutputs]

@@ -49,7 +49,8 @@ test FIR-1.1 {Test FIR for double FIR} {
                     $e0 FIR ]
 
     # Get a clone of the FIR to test cloning.
-    set clone [java::cast ptolemy.domains.sdf.lib.FIR [$conver clone]]
+    set clone [java::cast ptolemy.domains.sdf.lib.FIR \
+		   [$conver clone [$e0 workspace]]]
     $conver setContainer [java::null]
     $clone setName FIRclone
     $clone setContainer $e0

@@ -49,7 +49,8 @@ test FFT-1.1 {Test FFT} {
                     $e0 FFT ]
 
     # Get a clone of the FFT to test cloning.
-    set clone [java::cast ptolemy.domains.sdf.lib.FFT [$conver clone]]
+    set clone [java::cast ptolemy.domains.sdf.lib.FFT \
+		   [$conver clone [$e0 workspace]]]
     $conver setContainer [java::null]
     $clone setName FFTclone
     $clone setContainer $e0

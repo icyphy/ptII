@@ -43,7 +43,8 @@ if {[string compare test [info procs test]] == 1} then {
 test Repeat-1.1 {test constructor and clone} {
     set e0 [java::new ptolemy.actor.TypedCompositeActor]
     set repeatbase [java::new ptolemy.domains.sdf.lib.Repeat $e0 repeat]
-    set repeat [java::cast ptolemy.domains.sdf.lib.Repeat [$repeatbase clone]]
+    set repeat [java::cast ptolemy.domains.sdf.lib.Repeat \
+		    [$repeatbase clone [$e0 workspace]]]
     # Success here is just not throwing an exception.
     list {}
 } {{}}
@@ -60,7 +61,8 @@ test Repeat-2.1 {test with the default output values} {
     $step setExpression {1.0}
 
     # Use clone of repeat to make sure that is ok.
-    set clone [java::cast ptolemy.domains.sdf.lib.SDFTransformer [$repeat clone]]
+    set clone [java::cast ptolemy.domains.sdf.lib.SDFTransformer \
+		   [$repeat clone [$e0 workspace]]]
     $repeat setContainer [java::null]
     $clone setName clone
     $clone setContainer $e0
