@@ -100,6 +100,7 @@ public class ExtendedMouseFilter extends MouseFilter {
                 InputEvent.SHIFT_DOWN_MASK
                 | InputEvent.CTRL_DOWN_MASK
                 | InputEvent.ALT_DOWN_MASK
+                | InputEvent.ALT_GRAPH_DOWN_MASK
                 | InputEvent.META_DOWN_MASK);
     }
 
@@ -150,10 +151,9 @@ public class ExtendedMouseFilter extends MouseFilter {
         int m = event.getModifiersEx();
         boolean val = (event.getButton() == _button) &&
             (_modifierFlags == (m & _modifierMask));
-//        System.out.println("event = " + event);
-//        System.out.println("button = " + event.getButton());
-//        System.out.println("FILTER = " + this);
-//        System.out.println("ACCEPT? = " + val);
+//         System.out.println("event = " + event);
+//         System.out.println("FILTER = " + this);
+//         System.out.println("ACCEPT? = " + val);
         return val;
     }
 

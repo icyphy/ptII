@@ -166,9 +166,9 @@ public class MouseFilter {
         int m = event.getModifiers();
         boolean val = (m & _buttonMask) != 0 &&
             (_modifierFlags == (m & _modifierMask));
-        // System.out.println("event = " + event);
-        // System.out.println("FILTER = " + this);
-        // System.out.println("ACCEPT? = " + val);
+//         System.out.println("event = " + event);
+//         System.out.println("FILTER = " + this);
+//         System.out.println("ACCEPT? = " + val);
         return val;
     }
 
@@ -177,84 +177,12 @@ public class MouseFilter {
     public String toString () {
         StringBuffer result = new StringBuffer();
         result.append(super.toString()
-                + "; Button " + buttonsToString(_buttonMask)
-                + "; Modifiers " + modifiersToString(_modifierFlags)
-                + "; Modifier mask " + modifiersToString(_modifierMask)
+                + "; Button " + MouseEvent.getMouseModifiersText(_buttonMask)
+                + "; Modifiers " + MouseEvent.getMouseModifiersText(_modifierFlags)
+                + "; Modifier mask " + MouseEvent.getMouseModifiersText(_modifierMask)
                 + "; Press Number " + _pressNumber);
         return result.toString();
     }
-
-     /** Print the string representation of modifier flags
-      */
-     private static String buttonsToString (int flags) {
-         StringBuffer result = new StringBuffer();
-         int i = 256;
-         boolean sep = false;
-         while (i > 0) {
-             String s = buttonToString(i & flags);
-             if (s != null) {
-                 if (sep) {
-                     result.append("|");
-                 }
-                 result.append(s);
-                 sep = true;
-             }
-             i = i / 2;
-         }
-         return result.toString();
-     }
-
-     /** Print the string representation of modifier flags
-      */
-     private static String modifiersToString (int flags) {
-         StringBuffer result = new StringBuffer();
-         int i = 256;
-         boolean sep = false;
-         while (i > 0) {
-             String s = modifierToString(i & flags);
-             if (s != null) {
-                 if (sep) {
-                     result.append("|");
-                 }
-                 result.append(s);
-                 sep = true;
-             }
-             i = i / 2;
-         }
-         return result.toString();
-     }
-
-     /** Print the string representation of a single button flag
-      */
-     private static String buttonToString(int flag) {
-         switch (flag) {
-         case InputEvent.BUTTON1_MASK:
-             return "BUTTON1_MASK";
-         case InputEvent.BUTTON2_MASK:
-             return "BUTTON2_MASK";
-         case InputEvent.BUTTON3_MASK:
-             return "BUTTON3_MASK";
-         }
-         return null;
-     } 
-
-     /** Print the string representation of a single modifier flag
-      */
-     private static String modifierToString(int flag) {
-         switch (flag) {
-         case InputEvent.CTRL_MASK:
-             return "CTRL_MASK";
-         case InputEvent.SHIFT_MASK:
-             return "SHIFT_MASK";
-         case InputEvent.ALT_MASK:
-             return "ALT_MASK";
-         case InputEvent.ALT_GRAPH_MASK:
-             return "ALT_GRAPH_MASK";
-         case InputEvent.META_MASK:
-             return "META_MASK";
-         }
-         return null;
-     }
 }
 
 

@@ -200,6 +200,7 @@ public class LayerEvent extends MouseEvent {
                 + ",clickcount=" + getClickCount()
                 + ",figure=" + getFigureSource()
                 + ",layer=(" + _layerX + "," + _layerY + ")"
+                + ",consumed=" + isConsumed()
                 + "]");
         return result.toString() + _backingEvent;
     }
