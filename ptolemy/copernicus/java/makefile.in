@@ -136,6 +136,7 @@ treeshake_codegen.jar: treeShake
 treeShake:
 	@echo "Create the minimal jar file from the final codegen version"
 	@"$(TREESHAKE)" "$(JAR)" $(TREESHAKE_PREFIX)_codegen.jar \
+		-c $(TARGETPATH)jarClassList.txt \
 		"$(JAVA)" \
 			-classpath "$(CLASSPATH)" \
 			$(TARGETPACKAGE).Main | tail -1
