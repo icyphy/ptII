@@ -1,5 +1,5 @@
-/* An instance of IODependence is an attribute of an actor containing
-the input-output dependence information.
+/* An instance of IODependenceOfCompositeActor is an attribute of a 
+composite actor containing the input-output dependence information.
 
  Copyright (c) 2003 The Regents of the University of California.
  All rights reserved.
@@ -42,19 +42,10 @@ import java.util.Set;
 
 //////////////////////////////////////////////////////////////////////////
 //// IODependence
-/** An instance of IODependence is an attribute containing
-the input-output dependence information of an actor. For atomic actors,
-this attribute is constructed in the preinitialize method. For
-composite actors, this attribute is inferred in a bottom-up way from the
-IODependence attributes of the embedded actors. 
-<p>
-For atomic actors, by default, all the input ports and output ports are
-directly dependent. To check the direct dependence of a pair of input port
-and output port, use <i>hasDependence(input, output)</i> method. To remove
-the direct dependence of a pair of input port and output port, use 
-<i>removeDependence(input, output)</i> method.
-<p>
-This attribute is synchronized with the workspace. 
+/** An instance of IODependenceOfCompositeActor is an attribute containing
+the input-output dependence information of a composite actor. The attribute 
+is inferred in a bottom-up way from the IODependence attributes of the 
+embedded actors, which may be either atomic or composite. 
 <p>
 This attribute is not persistent by default, so it will not be exported
 into a MoML representation of the model.
@@ -89,13 +80,12 @@ public class IODependenceOfCompositeActor extends IODependence {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    // Construct a directed graph with the nodes representing input and
-    // output ports, and directed edges representing dependencies.  
-    // The directed graph is returned.
-
+    /** Construct a directed graph with the nodes representing input and
+     *  output ports, and directed edges representing dependencies.  
+     *  The directed graph is returned.
+     */
     // The following code has recursive calls. 
     // FIXME: Steve suggests the performance analysis.
-
     protected void _constructDirectedGraph() 
         throws IllegalActionException, NameDuplicationException {
 

@@ -1380,13 +1380,13 @@ public class DEDirector extends Director {
                         castContainer, "_IODependence");
             } 
         }catch (NameDuplicationException e) {
-            // do nothing.
+            throw new InternalErrorException(e.getMessage());
         }
          
         // The IODependence attribute is used to construct
         // the schedule. If the schedule needs recalculation,
         // the IODependence also needs recalculation.
-        ioDependence.inValidate();
+        ioDependence.invalidate();
         
         // FIXME: The following may be a very costly test. 
         // -- from the comments of former implementation. 

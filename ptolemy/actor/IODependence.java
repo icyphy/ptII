@@ -1,5 +1,5 @@
-/* An instance of IODependence is an attribute of an actor containing
-the input-output dependence information.
+/* An IODependence is an abstract class to describe the input-output 
+dependence relation of an entity.
 
  Copyright (c) 2003 The Regents of the University of California.
  All rights reserved.
@@ -46,24 +46,29 @@ import java.util.Set;
 
 //////////////////////////////////////////////////////////////////////////
 //// IODependence
-/** An instance of IODependence is an attribute containing
-the input-output dependence information of an actor. For atomic actors,
-this attribute is constructed in the preinitialize method. For
-composite actors, this attribute is inferred in a bottom-up way from the
-IODependence attributes of the embedded actors. 
+/** An IODependence is an abstract class to describe the input-output 
+dependence relation of an entity. The query methods are implemented,
+while the implementation of its construction is left undefined. The 
+sub classes @see IODependenceOfAtomicActor, IODependenceOfCompositeActor,
+should provide the detailed implementation. 
 <p>
-For atomic actors, by default, all the input ports and output ports are
-directly dependent. To check the direct dependence of a pair, input port
-and output port, use the <i>hasDependence(input, output)</i> method. To remove
-the direct dependence of a pair, input port and output port, use 
-<i>removeDependence(input, output)</i> method.
+To check if the IODependence has cycles, use the <i>getCycleNodes</i>. The 
+method returns an array of IOPorts. if the array is empty, the IODependence
+has no cycles. To check if a pair, input and output, have dependence, 
+use the <i>hasDependence(input, output)</i> method. 
 <p>
-//FIXME:
-This attribute is synchronized with the workspace. 
+This attribute can be invalidated by calling the <i>invalididate()<i/> 
+method. It is the executive director of the container of this IODependence
+attribute decides when to invalidate this attribute. For example, the
+DEDirector invalidates this attribute when its scheule needs recalculated.
+@see ptolemy.domains.de.kernel.DEDirector.
 <p>
 This attribute is not persistent by default, so it will not be exported
 into a MoML representation of the model.
 
+@see IODependenceOfAtomicActor
+@see IODependenceOfCompositeActor
+@see ptolemy.domains.de.kernel.DEDirector
 @see ptolemy.domains.de.lib.TimedDelay
 @author Haiyang Zheng
 @version $Id$
@@ -97,7 +102,7 @@ public abstract class IODependence extends Attribute {
 
     /** Return the nodes in a directed cycle loop. If there are multiple
      *  cycles, all the nodes will be returned. If there is no cycle, return
-     *  an empty array. The nodes are IOPorts. 
+     *  an empty array. The type of the returned nodes is IOPort. 
      *  @return An array contains the IOPorts in the cycles.
      */
     public Object[] getCycleNodes() throws IllegalActionException {
@@ -151,30 +156,31 @@ public abstract class IODependence extends Attribute {
 
     /** Invalidate this attribute.
      */        
-    public void inValidate() {
+    public void invalidate() {
         _dgValid = -1;
-    }
-    
-    /** Check the validity of the IODependence.
-     */        
-    public void validate() throws IllegalActionException {
-        if (_dgValid == -1) {
-            _inferDependence();
-        }
     }
     
     ///////////////////////////////////////////////////////////////////
     ////                      protected methods                    ////
 
-    // Construct a directed graph with the nodes representing input and
-    // output ports, and directed edges representing dependencies.  
-    // The directed graph is returned.
-
-    // The following code has recursive calls. 
-    // FIXME: Steve suggests the performance analysis.
-
+    //
+    
+    /** Construct a directed graph with the nodes representing input and
+     *  output ports, and directed edges representing dependencies.  
+     *  The directed graph is returned.
+     *  This method is left undefined and the sub classes provide
+     *  the detailed implementation.
+     */
     protected abstract void _constructDirectedGraph() 
         throws IllegalActionException, NameDuplicationException; 
+
+    /** Check the validity of the IODependence.
+     */        
+    protected void validate() throws IllegalActionException {
+        if (_dgValid == -1) {
+            _inferDependence();
+        }
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                      protected variables                    ////
@@ -186,9 +192,7 @@ public abstract class IODependence extends Attribute {
     ////                         private methods                   ////
 
     /** Infer the dependence relationship between the inputs and outputs 
-     *  of the container of this attribute. If the cached version
-     *  is valid, use the cached directed graph. Otherwise, recaculate a new 
-     *  one. Cache and synchronize the new version with the workspace. 
+     *  of the container of this attribute. 
      *  @exception IllegalActionException If the name has a period in it, or
      *   the attribute is not compatible with the specified container.
      *  @exception NameDuplicationException If the container already contains
@@ -199,21 +203,14 @@ public abstract class IODependence extends Attribute {
         try {
             // FIXME: Update the _dgValid before it is actually constructed
             // may be dangerous. However, if update is put after construction,
-            // it will never be called because the construction may force 
+            // it will never happen because the construction may introduce 
             // infinite _inferDependence calls. (See the removeDependencies()
             // and removeDependence() of the IODependenceOfAtomicActor.)
             _dgValid = workspace().getVersion();
             _constructDirectedGraph();
 
-            System.out.println(_dg.toString());
-            // FIXME: how to show the following debugging information
-            // when listening to director?
-            if (_debugging){ 
-                _debug(getContainer().getName() +
-                    " has a directed graph based on input and" +
-                    " output ports: ");
-                _debug(_dg.toString());
-            }
+            //System.out.println(_dg.toString());
+
         } catch(NameDuplicationException e) {
             throw new InternalErrorException( 
                 " has NameDuplicationException thrown.");

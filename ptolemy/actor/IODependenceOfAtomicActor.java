@@ -40,24 +40,21 @@ import java.util.Iterator;
 
 //////////////////////////////////////////////////////////////////////////
 //// IODependenceOfAtomicActor
-/** An instance of IODependence is an attribute containing
-the input-output dependence information of an actor. For atomic actors,
-this attribute is constructed in the preinitialize method. For
-composite actors, this attribute is inferred in a bottom-up way from the
-IODependence attributes of the embedded actors. 
+/** An instance of IODependenceOfAtomicActor is an attribute containing
+the input-output dependence information of an atomic actor. The attribute is 
+constructed in the preinitialize method of the atomic actors. This class
+extends IODependence.
 <p>
 For atomic actors, by default, all the input ports and output ports are
-directly dependent. To check the direct dependence of a pair of input port
-and output port, use <i>hasDependence(input, output)</i> method. To remove
-the direct dependence of a pair of input port and output port, use 
-<i>removeDependence(input, output)</i> method.
-<p>
-This attribute is synchronized with the workspace. 
+directly dependent. If the atomic actor explicitly declares that some input
+and output ports are not directly dependent, use the 
+<i>removeDependence(input, output)</i> method to remove the direct dependence 
+of a pair, input port and output port. 
 <p>
 This attribute is not persistent by default, so it will not be exported
 into a MoML representation of the model.
 
-@see ptolemy.domains.de.lib.TimedDelay
+@see IODependence
 @author Haiyang Zheng
 @version $Id$
 @since Ptolemy II 3.1
@@ -108,13 +105,10 @@ public class IODependenceOfAtomicActor extends IODependence {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    // Construct a directed graph with the nodes representing input and
-    // output ports, and directed edges representing dependencies.  
-    // The directed graph is returned.
-
-    // The following code has recursive calls. 
-    // FIXME: Steve suggests the performance analysis.
-
+    /** Construct a directed graph with the nodes representing input and
+     *  output ports, and directed edges representing dependencies.  
+     *  The directed graph is returned.
+     */
     protected void _constructDirectedGraph() 
         throws IllegalActionException, NameDuplicationException {
 
@@ -159,8 +153,10 @@ public class IODependenceOfAtomicActor extends IODependence {
         }
         
         // if the atomic actor declares some dependencies do not
-        // exist, remove them.
+        // exist, remove them. 
+        // Note: this method calls the removeDependence(input, output)
+        // method defined above.
         container.removeDependencies(); 
-        System.out.println("after removing edges:\n " + _dg.toString());
+        //System.out.println("after removing edges:\n " + _dg.toString());
     }
 }
