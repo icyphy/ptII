@@ -246,10 +246,11 @@ Berkeley, CA 94706</property>
                     <property name="title">Vergil Launcher</property>
                     <property name="mainClass">ptolemy.vergil.VergilApplication</property>
                     <property name="mainClassArguments"/>
-                    <property array="True" length="7" name="classPath" type="string">
+                    <property array="True" length="8" name="classPath" type="string">
                         <arrayItem>./</arrayItem>
                         <arrayItem>./ptolemy/vergil/vergil.jar</arrayItem>
                         <arrayItem>./ptolemy/ptolemy.jar</arrayItem>
+                        <arrayItem>./ptolemy/domains/experimentalDomains.jar</arrayItem>
                         <arrayItem>./ptolemy/actor/lib/javasound/javasound.jar</arrayItem>
                         <arrayItem>./ptolemy/media/javasound/javasound.jar</arrayItem>
                         <arrayItem>./lib/diva.jar</arrayItem>
