@@ -323,15 +323,18 @@ JAR=c:/j2sdk1.4.2_05/bin/jar
 # The Jar file that we create.
 hyvisual.jar: $(HYVISUAL_SRC_JAR)
 $(HYVISUAL_SRC_JAR): hyvisual_src_jar
+bar:
 	(cd src_jar/hyvisual$(VERSION); $(JAR) -cf ../../hyvisual$(VERSION).src.jar .)
 
 # The directory we jar up.
+# We include DE because some of the kernel/util tests use it.  CT demos also.
 hyvisual_src_jar: ptII$(VERSION).src.jar
 	if [ ! -d src_jar/hyvisual$(VERSION) ]; then \
 		 mkdir -p src_jar/hyvisual$(VERSION); \
 	fi
 	(cd src_jar/hyvisual$(VERSION); \
 		$(JAR) -xf ../../ptII$(VERSION).src.jar)
+
 	(cd src_jar/hyvisual$(VERSION); \
 		rm -rf jni \
 		lib/hsif \
@@ -370,7 +373,6 @@ hyvisual_src_jar: ptII$(VERSION).src.jar
 		ptolemy/domains/ci \
 		ptolemy/domains/csp \
 		ptolemy/domains/dde \
-		ptolemy/domains/de \
 		ptolemy/domains/domains.xml \
 		ptolemy/domains/dt \
 		ptolemy/domains/giotto \
@@ -382,13 +384,8 @@ hyvisual_src_jar: ptII$(VERSION).src.jar
 		ptolemy/domains/sr \
 		ptolemy/domains/tm \
 		ptolemy/domains/wireless \
-		ptolemy/kernel/util/test/TestDE.java \
-		ptolemy/kernel/util/test/ChangeRequest.tcl \
 		thales; \
-		egrep -v "TestDE.java|ChangeRequest.tcl" \
-			ptolemy/kernel/util/test/TestDE.java \
-			> foo; \
-		mv foo ptolemy/kernel/util/test/TestDE.java > foo; \
+	   touch configure;
 	)
 
 	(cd src_jar/hyvisual$(VERSION); $(FINDCLEAN))
