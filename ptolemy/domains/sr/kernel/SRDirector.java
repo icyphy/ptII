@@ -149,8 +149,10 @@ public class SRDirector extends Director {
      */
     public void fire() throws IllegalActionException {
 
+        // FIXME: change this to use a scheduler.
+
         List actorList = _getActorList();
-        // FIXME distinguish between iteration of an actor and iteration
+        // FIXME: distinguish between iteration of an actor and iteration
         // through the actors
         Iterator actorIterator;
 
@@ -163,6 +165,9 @@ public class SRDirector extends Director {
         // _fireActor and _postfireActor are responsible for checking that
         // firing is allowed (in other words, the actor will not call fire()
         // or postfire() on an actor until it returns true in prefire()).
+
+        // _fireActor is also responsible for checking that the actor is
+        // ready to fire (sufficient known inputs are available).
 
         do {
             actorIterator = actorList.iterator();
@@ -390,7 +395,8 @@ public class SRDirector extends Director {
         return actorList;
     }
 
-    /** Return true if the specified actor has completed firing.
+    /** Return true if the specified actor has completed firing.  An actor 
+     *  has completed firing if it has defined all of its outputs.
      *  @return True if the specified actor has completed firing.
      *  @exception IllegalActionException If it cannot be determined
      *   whether the output ports have known state.
@@ -516,7 +522,8 @@ public class SRDirector extends Director {
                 !_doNotIterateActors.contains(actor));
     }
 
-    /** Return true if the specified actor is ready to fire.
+    /** Return true if the specified actor is ready to fire.  An actor is
+     *  ready to fire if sufficient known inputs are available.
      *  @return True if the specified actor is ready to fire.
      *  @exception IllegalActionException If it cannot be determined
      *   whether the input ports have known state.
@@ -569,7 +576,6 @@ public class SRDirector extends Director {
      *  if it has been fired in the current iteration.  If this actor has 
      *  not been fired in the current iteration, return true without
      *  calling the postfire() method of the actor.
-     *  FIXME: Is this right?  Some actors may never fire or postfire.
      *  @param actor The actor to postfire.
      *  @return True if this actor can execute in the next iteration.
      *  @exception IllegalActionException If the postfire() method of the

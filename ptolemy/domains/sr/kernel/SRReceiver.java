@@ -45,8 +45,6 @@ import ptolemy.kernel.util.InvalidStateException;
 
 FIXME: update.
 
-FIXME: correct types of exceptions?
-
 The receiver for the SR domain. This receiver is a mailbox with capacity one,
 and any token put in the receiver overwrites any token previously present in
 the receiver. As a consequence, hasRoom() method always returns true. The
@@ -102,8 +100,7 @@ public class SRReceiver extends Mailbox {
     }
 
     /** Return true if the receiver contains a token, or false otherwise.
-     *  FIXME: If the receiver has unknown status, what should this method
-     *  return?  super.hasToken() does not throw any compile-time exceptions.
+     *  If the receiver has unknown status, this method will return false.
      *  @return True if this receiver contains a token.
      */
     public boolean hasToken() {
@@ -115,8 +112,6 @@ public class SRReceiver extends Mailbox {
                         "state cannot contain a token.");
             } else {
                 return super.hasToken();
-                //throw new IllegalActionException("hasToken() called on " +
-                //"SRReceiver with unknown state.");
             }
         }
     }
@@ -229,4 +224,3 @@ public class SRReceiver extends Mailbox {
     private boolean _known;
 
 }
-
