@@ -26,8 +26,7 @@ domains.
                                         COPYRIGHTENDKEY
 
 @ProposedRating Green (mudit@eecs.berkeley.edu)
-@AcceptedRating Yellow
-
+@AcceptedRating Yellow (mudit@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.process;

@@ -1,6 +1,5 @@
 /* Helper thread for calling notifyAll on a LinkedList of locks.
 
-
  Copyright (c) 1998-2001 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -26,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Green (mudit@eecs.berkeley.edu)
-@AcceptedRating Yellow
+@AcceptedRating Yellow (mudit@eecs.berkeley.edu)
 
 
 */

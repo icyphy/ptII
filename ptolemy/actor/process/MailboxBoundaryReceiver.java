@@ -26,8 +26,7 @@ composite actors.
                                         COPYRIGHTENDKEY
 
 @ProposedRating Green (mudit@eecs.berkeley.edu)
-@AcceptedRating Yellow
-
+@AcceptedRating Yellow (davisj@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.process;
