@@ -150,7 +150,7 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
     ////                         public methods                    ////
 
     public void changeExecuted(ChangeRequest change) {
-	System.out.println("changeExecuted: " + change + "\n" + change.getDescription());
+	System.out.println("changeExecuted: " + change);
     }
 
     public void changeFailed(ChangeRequest change, final Exception exception) {
