@@ -283,6 +283,22 @@ public class Query extends JPanel {
         entryBox.addFocusListener(new QueryFocusListener(name));
     }
 
+    /*  Create a text area.
+     *  @param name The name used to identify the entry (when calling get).
+     *  @param label The label to attach to the entry.
+     *  @param theValues The value of this text area
+     */
+    public void addTextArea(String name, String label, String theValue) {
+        JLabel lbl = new JLabel(label + ": ");
+        lbl.setBackground(_background);
+        JTextArea textArea = new JTextArea(theValue, _heigth, _width);
+        textArea.setEditable(true);
+        textArea.setBackground(Color.white);
+        QueryScrollPane textPane = new QueryScrollPane(textArea);
+        _addPair(name, lbl, textPane, textPane);
+        textArea.addFocusListener(new QueryFocusListener(name));
+    }
+
     /** Add a listener.  The changed() method of the listener will be
      *  called when any of the entries is changed.  Note that "line"
      *  entries only trigger this call when Return or Enter is pressed, or
@@ -581,6 +597,15 @@ public class Query extends JPanel {
         return _width;
     }
 
+    /** Get the preferred heigth to be used for entry boxes created
+     *  in using addText().  The preferred heigth is set using
+     *  setTextHeigth().
+     *  @return The preferred heigth.
+     */
+    public int getTextHeigth() {
+        return _heigth;
+    }
+
     /** Get the current value in the entry with the given name,
      *  and return as a String.  All entry types support this.
      *  Note that this method should be called from the event dispatch
@@ -676,6 +701,8 @@ public class Query extends JPanel {
             }
             if (toReturn == null) toReturn = "";
             return toReturn;
+        } else if (result instanceof QueryScrollPane) {
+            return ((QueryScrollPane)result).getText();
         } else {
             throw new IllegalArgumentException("Query class cannot generate"
                     + " a string representation for entries of type "
@@ -754,6 +781,8 @@ public class Query extends JPanel {
             ((JTextField)result).setText(value);
         } else if (result instanceof JTextArea) {
             ((JTextArea)result).setText(value);
+        } else if (result instanceof QueryScrollPane) {
+            ((QueryScrollPane)result).setText(value);
         } else if (result instanceof JRadioButton) {
             Boolean flag = new Boolean(value);
             setBoolean(name, flag.booleanValue());
@@ -988,6 +1017,15 @@ public class Query extends JPanel {
         _notifyListeners(name);
     }
 
+    /** Specify the preferred heigth to be used for entry boxes created
+     *  in using addLine().  If this is called multiple times, then
+     *  it only affects subsequent calls.
+     *  @param characters The preferred heigth.
+     */
+    public void setTextHeigth(int characters) {
+        _heigth = characters;
+    }
+
     /** Specify the preferred width to be used for entry boxes created
      *  in using addLine().  If this is called multiple times, then
      *  it only affects subsequent calls.
@@ -1030,8 +1068,12 @@ public class Query extends JPanel {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
+    /** The default heigth of entries created with addText(). */
+    public static final int DEFAULT_ENTRY_HEIGTH = 10;
+
     /** The default width of entries created with addLine(). */
     public static final int DEFAULT_ENTRY_WIDTH = 20;
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -1141,6 +1183,9 @@ public class Query extends JPanel {
     // A scroll pane that contains the _entryPanel.
     private JScrollPane _entryScrollPane;
 
+    // The heigth of the text boxes.
+    private int _heigth = DEFAULT_ENTRY_HEIGTH;
+
     // The hashtable of labels in the query.
     private Map _labels = new HashMap();
 
@@ -1212,6 +1257,22 @@ public class Query extends JPanel {
             _notifyListeners(_name);
         }
         private String _name;
+    }
+
+    /** Inner class to tie textArea to scroll pane */
+    class QueryScrollPane extends JScrollPane {
+        public JTextArea textArea;
+        QueryScrollPane(JTextArea c) {
+            super(c);
+            textArea = c;
+        }
+        public String getText() {
+            String retval = textArea.getText();
+            return retval;
+        }
+        public void setText(String s) {
+            textArea.setText(s);
+        }
     }
 
     /** Listener for changes in slider.
