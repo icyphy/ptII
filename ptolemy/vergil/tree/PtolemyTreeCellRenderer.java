@@ -32,7 +32,9 @@ package ptolemy.vergil.tree;
 
 import ptolemy.kernel.util.Nameable;
 
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.moml.Documentation;
 
 import java.awt.Component;
 import javax.swing.JTree;
@@ -51,6 +53,11 @@ public class PtolemyTreeCellRenderer extends DefaultTreeCellRenderer {
     /** Create a new rendition for the given object.  The rendition is
      *  the default provided by the base class with the text set to
      *  the name of the node (if it is an object implementing Nameable).
+     *  If the object is an instance of NamedObj and it has attributes
+     *  of type Documentation, then construct a tooltip as follows.
+     *  If there is a Documentation attribute named "tooltip", then
+     *  use that.  Otherwise, consolidate all the Documentation
+     *  attributes and use those.
      */
     public Component getTreeCellRendererComponent(JTree tree,
 	Object value, boolean selected, boolean expanded, boolean leaf, 
@@ -63,7 +70,6 @@ public class PtolemyTreeCellRenderer extends DefaultTreeCellRenderer {
 	    NamedObj object = (NamedObj) value;
 	    // Fix the background colors because transparent 
 	    // labels don't work quite right.
-            // FIXME: is this still needed?
 	    if(!selected) {
 		component.setBackground(tree.getBackground());
 		component.setOpaque(true);
@@ -81,6 +87,18 @@ public class PtolemyTreeCellRenderer extends DefaultTreeCellRenderer {
 
                 // Wow.. this is a confusing line of code.. :)
                 component.setIcon(icon.createIcon());
+            }
+
+            Attribute tooltipAttribute = object.getAttribute("tooltip");
+            if (tooltipAttribute != null
+                    && tooltipAttribute instanceof Documentation) {
+                component.setToolTipText(
+                    ((Documentation)tooltipAttribute).getValue());
+            } else {
+                String tip = Documentation.consolidate(object);
+                if (tip != null) {
+                    component.setToolTipText(tip);
+                }
             }
 
             // FIXME: Create a default icon if none has been defined.
