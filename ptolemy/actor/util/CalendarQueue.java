@@ -111,6 +111,9 @@ Thus, the queue becomes less efficient if change operations are less
 frequent.  Change operations can be entirely disabled by calling
 setAdaptive().
 <p>
+This implementation is not synchronized, so if multiple threads
+depend on it, the caller must be.
+<p>
 This implementation is based on:
 <ul>
 <li>Randy Brown, <i>CalendarQueues:A Fast Priority Queue Implementation for
@@ -175,7 +178,7 @@ public class CalendarQueue {
 
     /** Empty the queue.
      */
-    public synchronized void clear() {
+    public void clear() {
         _zeroRef = null;
         _qSize = 0;
         _takenKey = null;
@@ -192,7 +195,7 @@ public class CalendarQueue {
      *  @return Object The smallest sort key in the queue.
      *  @exception IllegalActionException If the queue is empty.
      */
-    public synchronized final Object getNextKey()
+    public final Object getNextKey()
             throws IllegalActionException {
         // First check whether the queue is empty.
         if (_qSize == 0) {
@@ -217,7 +220,7 @@ public class CalendarQueue {
      *  @exception IllegalActionException If take() has not been
      *   called, or the queue was empty when it was last called.
      */
-    public synchronized final Object getPreviousKey()
+    public final Object getPreviousKey()
             throws IllegalActionException {
         // First check if _takenKey == null which means either the last take()
         // threw an exception or take() has never been called.
@@ -233,7 +236,7 @@ public class CalendarQueue {
      *  @param key The sort-key of the entry.
      *  @param value The value of the entry.
      */
-    public synchronized boolean includes(Object key, Object value) {
+    public boolean includes(Object key, Object value) {
         // If the queue is empty, then return false
         if (_qSize == 0) return false;
 
@@ -267,7 +270,7 @@ public class CalendarQueue {
      *  @return True.
      *  @exception IllegalArgumentException If the key is null.
      */
-    public synchronized boolean put(Object key, Object value) {
+    public boolean put(Object key, Object value) {
         // create a CQEntry object to wrap value and key
         CQEntry cqEntry = new CQEntry(value, key);
         return put(cqEntry);
@@ -284,7 +287,7 @@ public class CalendarQueue {
      *  @return True.
      *  @exception IllegalArgumentException If the key is null.
      */
-    public synchronized boolean put(CQEntry cqEntry) {
+    public boolean put(CQEntry cqEntry) {
         if (cqEntry.key == null) {
             throw new IllegalArgumentException(
                 "CalendarQueue.put() can't accept null key"
@@ -312,10 +315,11 @@ public class CalendarQueue {
         // Make sure the bin number is non-negative.
         if (i < 0) i += _nBuckets;
 
-        // If _minKey equal to null (which happens when there are no entries
-        // in the queue), or if the new entry has lower key than the current
-        // smallest key) then update.
-        if (_minKey == null ||
+        // If _minKey equal to null (which happens before any entries are put
+        // in the queue), or the queue size is zero,
+        // or if the new entry has lower key than the current
+        // smallest key) then update the minimum key of the queue.
+        if (_minKey == null || _qSize == 0 ||
                 _cqComparator.compare(cqEntry.key, _minKey) < 0) {
             _minKey = cqEntry.key;
             _minVirtualBucket = _getBinIndex(_minKey);
@@ -333,9 +337,6 @@ public class CalendarQueue {
         if (_qSizeOverThreshold > _RESIZE_LAG) {
             _resize(_nBuckets*_queueResizeFactor);
         }
-
-        // Notify other threads that might be waiting for data.
-        notifyAll();
         return true;
     }
 
@@ -352,7 +353,7 @@ public class CalendarQueue {
      *  @param value The value for the entry to remove.
      *  @return True if a match is found and removed, false otherwise.
      */
-    public synchronized boolean remove(Object key, Object value) {
+    public boolean remove(Object key, Object value) {
         // If the queue is empty then return false.
         if (_qSize == 0) {
             return false;
@@ -423,11 +424,10 @@ public class CalendarQueue {
      *  @return The value associated with the smallest key.
      *  @exception IllegalActionException If the queue is empty.
      */
-    public synchronized final Object take() throws IllegalActionException {
+    public final Object take() throws IllegalActionException {
         // First check whether the queue is empty.
         if (_qSize == 0) {
             _takenKey = null;
-            _minKey = null;
             throw new IllegalActionException(
                 "Cannot take from an empty queue.");
         }
@@ -509,7 +509,7 @@ public class CalendarQueue {
      *  @param limit The maximum number of keys and values desired.
      *  @return The keys and values currently in the queue.
      */
-    public synchronized final Object[][] toArray(int limit) {
+    public final Object[][] toArray(int limit) {
         if (limit > _qSize) limit = _qSize;
         Object[][] result = new Object[2][limit];
         if (_qSize == 0) return result;
@@ -586,6 +586,8 @@ public class CalendarQueue {
     ////                         private methods                   ////
 
     // Collect a key for later use to recalculate bin widths.
+    // The key is collected only if it is strictly greater than the
+    // previously collected key.
     private void _collect(Object key) {
         if ((_previousTakenKey == null) ||
                 (_cqComparator.compare(key, _previousTakenKey) > 0)) {
@@ -667,7 +669,16 @@ public class CalendarQueue {
         // Find new bucket width, if appropriate.
         Object new_width = _width;
         if (_sampleValid) {
-            new_width = _cqComparator.getBinWidth(_sampleKeys);
+            // Have to copy samples into a new array to ensure that they
+            // increasing...
+            Object[] sampleCopy = new Object[_SAMPLE_SIZE];
+            for (int i = 0; i < _SAMPLE_SIZE; i++) {
+                sampleCopy[i] = _sampleKeys[_sampleKeyIndex++];
+                if(_sampleKeyIndex == _SAMPLE_SIZE) {
+                    _sampleKeyIndex = 0;
+                }
+            }
+            new_width = _cqComparator.getBinWidth(sampleCopy);
             if (_debugging) _debug(">>> changing bin width to: " + new_width);
         }
 
@@ -704,7 +715,6 @@ public class CalendarQueue {
         _minKey = minEntry.key;
         _minVirtualBucket = _getBinIndex(_minKey);
         --_qSize;
-        if (_qSize == 0) _minKey = null;
 
         // Reduce the calendar size if needed.
         if (_qSize < _bottomThreshold) _qSizeUnderThreshold++;
