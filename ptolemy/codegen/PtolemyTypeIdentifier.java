@@ -32,6 +32,7 @@
 
 package ptolemy.codegen;
 
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -473,14 +474,16 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
     static {
         System.out.println("PtolemyTypeIdentifier<static>: start");
 
-        CompileUnitNode typedAtomicActorUnit = StaticResolution.loadFile(
-                SearchPath.NAMED_PATH.openSource("ptolemy.actor.TypedAtomicActor"), 1);
-
-        TYPED_ATOMIC_ACTOR_DECL = (ClassDecl) StaticResolution.findDecl(
-                typedAtomicActorUnit, "TypedAtomicActor", CG_CLASS);
-
-        TYPED_ATOMIC_ACTOR_TYPE = TYPED_ATOMIC_ACTOR_DECL.getDefType();
-
+        try {
+            CompileUnitNode typedAtomicActorUnit = StaticResolution.loadFile(
+                    SearchPath.NAMED_PATH.openSource(
+                            "ptolemy.actor.TypedAtomicActor"), 1);
+            TYPED_ATOMIC_ACTOR_DECL = (ClassDecl) StaticResolution.findDecl(
+                    typedAtomicActorUnit, "TypedAtomicActor", CG_CLASS);
+            TYPED_ATOMIC_ACTOR_TYPE = TYPED_ATOMIC_ACTOR_DECL.getDefType();
+        } catch (IOException e) {
+            throw new ExceptionInInitializerError(e);
+        }
 
         //System.out.println("PtolemyTypeIdentifier<static>: load Complex");
 
