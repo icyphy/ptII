@@ -155,19 +155,19 @@ public class SliderSource extends Source implements ChangeListener, Placeable {
         return newObject;
     }
 
+    /** Output the value of the slider recorded when prefire() is last called.
+     */
+    public void fire() throws IllegalActionException {
+        super.fire();
+        output.send(0, _outputVal);
+    }
+
     /** Return the background.
      *  @return The background color.
      *  @see #setBackground(Color)
      */
     public Color getBackground() {
         return _panel.getBackground();
-    }
-
-    /** Output the value of the slider recorded when prefire() is last called.
-     */
-    public void fire() throws IllegalActionException {
-        super.fire();
-        output.send(0, _outputVal);
     }
 
     /** Create a slider on the screen, if necessary. If a graphical container

@@ -230,16 +230,21 @@ public class LogicFunction extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
-    // An indicator for the function to compute.
-    // Valid values are _AND, _OR, and _XOR.
+    /** An indicator for the function to compute.
+     *  Valid values are {@link #_AND}, {@link#_OR}, and {@link_XOR}.
+     */
     protected int _function;
 
-    // An indicator for negating the final result.
+    /** True if the intermediate results should be negated. */
     protected boolean _negate;
 
-    // Constants used for more efficient execution.
+    /** Perform a logical AND. */
     protected static final int _AND = 0;
+
+    /** Perform a logical OR. */
     protected static final int _OR  = 1;
+
+    /** Perform a logical XOR. */
     protected static final int _XOR = 2;
 }
 
