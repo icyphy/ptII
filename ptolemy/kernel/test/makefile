@@ -61,7 +61,8 @@ JSRCS = \
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
 	NamedObj.tcl \
-	NamedObjList.tcl
+	NamedObjList.tcl \
+	ParamList.tcl
 
 # Graphical Java tests that use Tcl.
 # Since there are no tests, we use a dummy file so that the script that builds
