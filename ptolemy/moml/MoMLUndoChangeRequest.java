@@ -30,6 +30,7 @@
 package ptolemy.moml;
 
 import ptolemy.kernel.util.ChangeRequest;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NamedObj;
 
 import java.util.Iterator;
@@ -130,11 +131,16 @@ public class MoMLUndoChangeRequest extends ChangeRequest {
     protected void _execute() throws Exception {
         // Check to see whether there is a parser...
         if (_context == null) {
-            // If there is no context, then there is no parser to
-            // carry out an undo on!
-            // FIXME: raise an exception!
-            System.out.println("FIXME: require a context to carry out an undo");
-            return;
+	    throw new InternalErrorException("_context == null "
+					     + " FIXME: We require a context "
+					     + "to carry out an undo. "
+					     + "If there is no context, then "
+					     + "there is no parser to carry "
+					     + "out an undo on."
+					     + "\n UndoChange was:\n"
+					     + getDescription()
+					     + "\n Source was:\n"
+					     + getSource());
         }
         // Get the parser to request an undo on...
         NamedObj toplevel = _context.toplevel();
@@ -144,9 +150,22 @@ public class MoMLUndoChangeRequest extends ChangeRequest {
         if (parserAttribute == null) {
             // FIXME: what to do? Given a context, but it has no parser
             // associated with it!
-            System.out.println("FIXME: Undo request on a model with no " +
-                               "associated parser");
-            return;
+	    throw new InternalErrorException(_context, null,
+					     "There was no _parser attribute "
+					     + "found. "
+					     + "FIXME: Undo request on a "
+					     + "model with no "
+					     + "associated parser.\n"
+					     + "This might be caused by "
+					     + "clicking undo many times "
+					     + "until there is nothing left "
+					     + "to undo."
+					     + "\n UndoChange was:\n"
+					     + getDescription()
+					     + "\n Source was:\n"
+					     + getSource()
+					     + "\n _context was:\n"
+					     + _context.exportMoML());
         }
         _parser = parserAttribute.getParser();
         _parser.reset();
