@@ -49,8 +49,7 @@ weight of an unweighted edge.
 <p>Self-loop edges (edges whose source and sink nodes are identical)
 are allowed.
 
-<p> Edges are immutable: the source node, sink node, and weight of an edge
-cannot be changed.
+<p> Once an edge is created, its source node and sink node cannot be changed.
 
 @author Shuvra S. Bhattacharyya
 @version $Id$
