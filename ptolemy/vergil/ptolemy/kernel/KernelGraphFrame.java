@@ -52,7 +52,6 @@ import ptolemy.vergil.toolbox.MenuItemFactory;
 import ptolemy.vergil.toolbox.PtolemyListCellRenderer;
 import ptolemy.vergil.toolbox.PtolemyMenuFactory;
 import ptolemy.vergil.toolbox.XMLIcon;
-import ptolemy.vergil.form.FormFrameFactory;
 
 import diva.canvas.CanvasUtilities;
 import diva.canvas.Site;
@@ -61,10 +60,9 @@ import diva.canvas.event.LayerEvent;
 import diva.canvas.event.MouseFilter;
 import diva.canvas.connector.FixedNormalSite;
 import diva.canvas.connector.Terminal;
+import diva.canvas.interactor.ActionInteractor;
 import diva.canvas.interactor.SelectionModel;
 import diva.canvas.interactor.CompositeInteractor;
-import diva.canvas.interactor.Interactor;
-import diva.canvas.interactor.ActionInteractor;
 
 import diva.gui.ApplicationContext;
 import diva.gui.Document;
@@ -155,24 +153,23 @@ public class KernelGraphFrame extends GraphFrame {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    protected void _addDoubleClickInteractor(NodeInteractor interactor,
-            Interactor doubleClickInteractor) {
-        interactor.addInteractor(doubleClickInteractor);
-        // FIXME this is a horrible dance so that the
-        // doubleclickinteractor gets the events before the drag interactor.
-        interactor.setDragInteractor(
-                interactor.getDragInteractor());
-    }
-
     /** Create the menus that are used by this frame.
+     *  It is essential that _createGraphPane() be called before this.
      */
     protected void _addMenus() {
 	super._addMenus();
-	diva.gui.GUIUtilities.addMenuItem(_graphMenu, _newPortAction);
-       	diva.gui.GUIUtilities.addToolBarButton(_toolbar, _newPortAction);
 
-	diva.gui.GUIUtilities.addMenuItem(_graphMenu, _newRelationAction);
-	diva.gui.GUIUtilities.addToolBarButton(_toolbar, _newRelationAction);
+        // Add an item to the Graph menu that adds new ports.
+	diva.gui.GUIUtilities.addMenuItem(_graphMenu,
+                _controller._newPortAction);
+       	diva.gui.GUIUtilities.addToolBarButton(_toolbar,
+                _controller._newPortAction);
+
+        // Add an item to the Graph menu that adds new relations.
+	diva.gui.GUIUtilities.addMenuItem(_graphMenu, 
+                _controller._newRelationAction);
+	diva.gui.GUIUtilities.addToolBarButton(_toolbar,
+                _controller._newRelationAction);
     }
 
     /** Create a new graph pane.
@@ -184,8 +181,6 @@ public class KernelGraphFrame extends GraphFrame {
 	final PtolemyGraphModel graphModel = new PtolemyGraphModel(getModel());
 
 	GraphPane pane = new GraphPane(_controller, graphModel);
-	_newPortAction = _controller.getNewPortAction();
-	_newRelationAction = _controller.getNewRelationAction();
 
         // 'Edit Icon' pop up menu not shipped with PtII1.0.
         // See also ptolemy/vergil/ptolemy/GraphFrame.java
@@ -199,10 +194,13 @@ public class KernelGraphFrame extends GraphFrame {
                 LayerEvent event = (LayerEvent)e.getSource();
                 Figure figure = event.getFigureSource();
                 Object object = figure.getUserObject();
-                NamedObj target = 
-                (NamedObj)graphModel.getSemanticObject(object);
+                NamedObj target =
+                         (NamedObj)graphModel.getSemanticObject(object);
                 // Create a dialog for configuring the object.
-                new EditParametersDialog(null, target);
+                // The first argument below is the parent window
+                // (a Frame), which ensures that if this is iconified
+                // or sent to the background, it can be found again.
+                new EditParametersDialog(KernelGraphFrame.this, target);
 	    }
 	};
         ActionInteractor doubleClickInteractor = new ActionInteractor(action);
@@ -268,7 +266,8 @@ public class KernelGraphFrame extends GraphFrame {
 	public AttributeContextMenuFactory(GraphController controller) {
 	    super(controller);
 	    addMenuItemFactory(new EditParametersFactory("Configure"));
-	    addMenuItemFactory(new FormFrameFactory());
+            // NOTE: Removed by EAL. I don't like this interface.
+	    // addMenuItemFactory(new FormFrameFactory());
 	    addMenuItemFactory(new RenameDialogFactory());
 	    addMenuItemFactory(new MenuActionFactory(_getDocumentationAction));
 	    //addMenuItemFactory(new MenuActionFactory(_editIconAction));
@@ -282,7 +281,8 @@ public class KernelGraphFrame extends GraphFrame {
 	public EntityContextMenuFactory(GraphController controller) {
 	    super(controller);
 	    addMenuItemFactory(new EditParametersFactory());
-	    addMenuItemFactory(new FormFrameFactory());
+            // NOTE: Removed by EAL. I don't like this interface.
+	    // addMenuItemFactory(new FormFrameFactory());
 	    addMenuItemFactory(new PortDialogFactory());
 	    addMenuItemFactory(new RenameDialogFactory());
 	    addMenuItemFactory(new MenuActionFactory(_getDocumentationAction));
@@ -299,7 +299,8 @@ public class KernelGraphFrame extends GraphFrame {
 	    super(controller);
 	    addMenuItemFactory(new PortDescriptionFactory());
 	    addMenuItemFactory(new EditParametersFactory());
-	    addMenuItemFactory(new FormFrameFactory());
+            // NOTE: Removed by EAL. I don't like this interface.
+	    // addMenuItemFactory(new FormFrameFactory());
 	    addMenuItemFactory(new RenameDialogFactory());
 	    addMenuItemFactory(new MenuActionFactory(_getDocumentationAction));
 	}
@@ -484,7 +485,8 @@ public class KernelGraphFrame extends GraphFrame {
 	public RelationContextMenuFactory(GraphController controller) {
 	    super(controller);
 	    addMenuItemFactory(new EditParametersFactory());
-	    addMenuItemFactory(new FormFrameFactory());
+            // NOTE: Removed by EAL. I don't like this interface.
+	    // addMenuItemFactory(new FormFrameFactory());
 	    addMenuItemFactory(new MenuActionFactory(_getDocumentationAction));
 	}
     }
@@ -496,7 +498,5 @@ public class KernelGraphFrame extends GraphFrame {
     private Action _getDocumentationAction;
     //private Action _editIconAction;
     private Action _lookInsideAction;
-    private Action _newPortAction;
-    private Action _newRelationAction;
     private JMenu _executeMenu;
 }

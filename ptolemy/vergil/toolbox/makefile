@@ -49,6 +49,7 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
+	AnnotationEditorFactory.java \
 	EditorIcon.java \
 	EditParametersFactory.java \
 	FigureAction.java \

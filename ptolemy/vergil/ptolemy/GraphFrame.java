@@ -65,7 +65,6 @@ import ptolemy.moml.MoMLParser;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.Vertex;
 import ptolemy.vergil.icon.IconEditor;
-import ptolemy.vergil.toolbox.EditParametersFactory;
 import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
 import ptolemy.vergil.toolbox.MenuItemFactory;
@@ -81,6 +80,7 @@ import diva.canvas.Site;
 import diva.canvas.Figure;
 import diva.canvas.connector.FixedNormalSite;
 import diva.canvas.connector.Terminal;
+import diva.canvas.interactor.Interactor;
 import diva.canvas.interactor.SelectionModel;
 
 import diva.gui.ApplicationContext;
@@ -97,6 +97,7 @@ import diva.graph.GraphModel;
 import diva.graph.GraphPane;
 import diva.graph.GraphUtilities;
 import diva.graph.GraphEvent;
+import diva.graph.NodeInteractor;
 import diva.graph.MutableGraphModel;
 import diva.graph.basic.BasicLayoutTarget;
 import diva.graph.layout.LevelLayout;
@@ -540,6 +541,20 @@ public abstract class GraphFrame extends PtolemyFrame
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
+
+    /** Add the second specified interactor to the first interactor
+     *  in such a way that it gets mouse events before the drag interactor
+     *  associated with the first interactor.
+     *  @param interactor The node interactor.
+     *  @param doubleClickInteractor The interactor to add.
+     */
+    protected void _addDoubleClickInteractor(NodeInteractor interactor,
+            Interactor doubleClickInteractor) {
+        interactor.addInteractor(doubleClickInteractor);
+        // NOTE: This dance is so that the
+        // doubleclickinteractor gets the events before the drag interactor.
+        interactor.setDragInteractor(interactor.getDragInteractor());
+    }
 
     /** Create the menus that are used by this frame.
      */

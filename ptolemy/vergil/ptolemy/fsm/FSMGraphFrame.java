@@ -75,7 +75,6 @@ import diva.canvas.event.MouseFilter;
 import diva.canvas.connector.FixedNormalSite;
 import diva.canvas.connector.Terminal;
 import diva.canvas.interactor.SelectionModel;
-import diva.canvas.interactor.Interactor;
 import diva.canvas.interactor.CompositeInteractor;
 import diva.canvas.interactor.ActionInteractor;
 
@@ -165,15 +164,6 @@ public class FSMGraphFrame extends GraphFrame {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    protected void _addDoubleClickInteractor(NodeInteractor interactor,
-            Interactor doubleClickInteractor) {
-        interactor.addInteractor(doubleClickInteractor);
-        // FIXME this is a horrible dance so that the
-        // doubleclickinteractor gets the events before the drag interactor.
-        interactor.setDragInteractor(
-                interactor.getDragInteractor());
-    }
-
     /** Create the menus that are used by this frame.
      */
     protected void _addMenus() {
@@ -210,7 +200,10 @@ public class FSMGraphFrame extends GraphFrame {
                 NamedObj target = 
                 (NamedObj)graphModel.getSemanticObject(object);
                 // Create a dialog for configuring the object.
-                new EditParametersDialog(null, target);
+                // The first argument below is the parent window
+                // (a Frame), which ensures that if this is iconified
+                // or sent to the background, it can be found again.
+                new EditParametersDialog(FSMGraphFrame.this, target);
 	    }
 	};
         ActionInteractor doubleClickInteractor = new ActionInteractor(action);

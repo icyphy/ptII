@@ -37,6 +37,8 @@ import ptolemy.vergil.toolbox.MenuItemFactory;
 
 import diva.gui.toolbox.JContextMenu;
 
+import java.awt.Component;
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -58,7 +60,7 @@ public class PortDialogFactory extends MenuItemFactory {
      *  @param menu The context menu.
      *  @param object The object whose ports are being manipulated.
      */
-    public JMenuItem create(JContextMenu menu, NamedObj object) {
+    public JMenuItem create(final JContextMenu menu, NamedObj object) {
         String name = _getName();
         final NamedObj target = _getItemTargetFromMenuTarget(object);
         // ensure that we actually have a target, and that it's an Entity.
@@ -66,9 +68,20 @@ public class PortDialogFactory extends MenuItemFactory {
         Action action = new AbstractAction(name) {
             public void actionPerformed(ActionEvent e) {
                 // Create a dialog for configuring the object.
-                // FIXME: First argument below should be a parent window
-                // (a JFrame).
-                new PortConfigurerDialog(null, (Entity)target);
+                // First, identify the top parent frame.
+                // Normally, this is a Frame, but just in case, we check.
+                // If it isn't a Frame, then the edit parameters dialog
+                // will not have the appropriate parent, and will disappear
+                // when put in the background.
+                Component parent = menu.getInvoker();
+                while (parent.getParent() != null) {
+                    parent = parent.getParent();
+                }
+                if (parent instanceof Frame) {
+                    new PortConfigurerDialog((Frame)parent, (Entity)target);
+                } else {
+                    new PortConfigurerDialog(null, (Entity)target);
+                }
             }
         };
 	return menu.add(action, name);

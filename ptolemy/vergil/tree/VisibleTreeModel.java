@@ -34,13 +34,17 @@ import ptolemy.actor.Director;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.gui.MessageHandler;
 import ptolemy.moml.EntityLibrary;
 import ptolemy.moml.MoMLParser;
 
 import java.net.URL;
+import java.util.Iterator;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import javax.swing.JTree;
 import javax.swing.tree.TreePath;
 
@@ -49,8 +53,9 @@ import javax.swing.tree.TreePath;
 /**
 
 A tree model for the Vergil library panel.  This is a tree model that
-shows entities, ports, relations, and visible attributes.  Attributes
-that are not marked visible are not shown. A composite entity that contains
+shows entities, ports, relations, and visible attributes.  An attribute
+is visible if it contains an attribute called "_iconDescription". Attributes
+that are not visible are not shown. A composite entity that contains
 an attribute with name "_libraryMarker" is treated as a sublibrary.
 A composite entity without such an attribute is treated as an atomic entity.
 This is designed for use with JTree, which renders the hierarchy.
@@ -65,6 +70,8 @@ public class VisibleTreeModel extends EntityTreeModel {
      */
     public VisibleTreeModel(CompositeEntity root) {
 	super(root);
+        _workspace = root.workspace();
+        _workspaceVersion = _workspace.getVersion();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -77,39 +84,31 @@ public class VisibleTreeModel extends EntityTreeModel {
      *  @return A node, or null if there is no such child.
      */
     public Object getChild(Object parent, int index) {
-	if(index > getChildCount(parent)) return null;
-        // FIXME: How do we determine whether an attribute is visible?
-        // Here, we only show directors.
+	if(index > getChildCount(parent) || index < 0) return null;
 	if(!(parent instanceof NamedObj)) return null;
         NamedObj obj = (NamedObj)parent;
-        List attributes = obj.attributeList(Director.class);
+
+        List attributes = _visibleAttributes(obj);
         int numAttributes = attributes.size();
-	if(index >= numAttributes) {
-            return super.getChild(parent, index - numAttributes);
-        } else if(index < 0) {
-            return null;
-        } else {
+        if(index < numAttributes) {
             return attributes.get(index);
         }
-
-        // FIXME: Perhaps the list of visible attributes should be cached.
+        return super.getChild(parent, index - numAttributes);
 
         // FIXME: need to do ports and relations.
     }
 
     /** Return the number of children of the given parent.
-     *  This is the number attributes, ports, relations, and contained
-     *  entities, filtered by the filter specified by setFilter(),
-     *  if any has been specified.
+     *  This is the number of visible attributes, ports, relations,
+     *  and contained entities, filtered by the filter specified by
+     *  setFilter(), if any has been specified.
      *  @param parent A parent node.
      *  @return The number of children.
      */
     public int getChildCount(Object parent) {
 	if (!(parent instanceof NamedObj)) return 0;
         NamedObj obj = (NamedObj)parent;
-        // FIXME: How do we determine whether an attribute is visible?
-        // Here, we only show directors.
-        List attributes = obj.attributeList(Director.class);
+        List attributes = _visibleAttributes(obj);
         int numAttributes = attributes.size();
         int result = numAttributes + super.getChildCount(parent);
         return result;
@@ -123,9 +122,7 @@ public class VisibleTreeModel extends EntityTreeModel {
         // FIXME: doing attributes only.
 	if (!(parent instanceof NamedObj)) return -1;
         NamedObj obj = (NamedObj)parent;
-        // FIXME: How do we determine whether an attribute is visible?
-        // Here, we only show directors.
-        List attributes = obj.attributeList(Director.class);
+        List attributes = _visibleAttributes(obj);
         int index = attributes.indexOf(child);
 	if(index >= 0) return index;
         else return super.getIndexOfChild(parent, child);
@@ -157,11 +154,45 @@ public class VisibleTreeModel extends EntityTreeModel {
         }
 
         // FIXME: Only doing attributes for now.
-        // FIXME: How do we determine whether an attribute is visible?
-        // Here, we only show directors.
-        List attributes = obj.attributeList(Director.class);
+        List attributes = _visibleAttributes(obj);
         int numAttributes = attributes.size();
         if (numAttributes > 0) return false;
         else return super.isLeaf(object);
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** Get the list of visible attributes.
+     */
+    private List _visibleAttributes(NamedObj object) {
+        // Use the cached list, if possible.
+        long version = _workspace.getVersion();
+        if (version == _workspaceVersion) {
+            Object result = _attributeListCache.get(object);
+            if (result != null) return (List)result;
+        }
+        // Cache is not valid.
+        List result = new LinkedList();
+        Iterator attributes = object.attributeList().iterator();
+        while(attributes.hasNext()) {
+            Attribute attribute = (Attribute)attributes.next();
+            if (attribute.getAttribute("_iconDescription") != null) {
+                result.add(attribute);
+            }
+        }
+        _attributeListCache.put(object, result);
+        _workspaceVersion = _workspace.getVersion();
+        return result;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    // Workspace and version information.
+    private Workspace _workspace;
+    private long _workspaceVersion;
+
+    // Cache for visible attributes;
+    private Map _attributeListCache = new HashMap();
 }
