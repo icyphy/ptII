@@ -63,7 +63,7 @@ public class ReceiverActionEvent {
      *  @param c Current capacity of the receiver.
      */
     public ReceiverActionEvent(PNQueueReceiver r, int c) {
-        _receiver r;
+        _receiver = r;
         _capacity = c;
     }
 
