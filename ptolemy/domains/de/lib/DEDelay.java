@@ -46,7 +46,7 @@ no other delays to maintain determinacy.
 @author Edward A. Lee
 @version $Id$
 */
-public class DEDelay extends AtomicActor {
+public class DEDelay extends DEActor {
 
     /** Constructor.
      *  @param container The composite actor that this actor belongs too.

@@ -44,7 +44,7 @@ the waited for event.
 @author Edward A. Lee
 @version $Id$
 */
-public class DEWaitingTime extends AtomicActor {
+public class DEWaitingTime extends DEActor {
 
     /** Constructor.
      *  @param container The composite actor that this actor belongs too.

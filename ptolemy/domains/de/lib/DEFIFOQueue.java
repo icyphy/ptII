@@ -43,7 +43,7 @@ import ptolemy.actor.util.*;
 @version $Id$
 @see Actor
 */
-public class DEFIFOQueue extends AtomicActor {
+public class DEFIFOQueue extends DEActor {
     /** Construct a DEFIFOQueue star.
      *
      * @param value The initial output event value.

@@ -38,11 +38,13 @@ import java.util.Enumeration;
 //// DEClock
 /**
 Generate events at regular intervals, starting at time zero.
+FIXME: I assumed here that a typical user don't want to know about director.
+So, I'll try to abstract away any code that uses method in the director.
 
 @author Lukito Muliadi, Edward A. Lee
 @version $Id$
 */
-public class DEClock extends AtomicActor {
+public class DEClock extends DEActor {
 
     /** Construct a clock that generates events with the specified values
      *  at the specified interval.
@@ -80,8 +82,7 @@ public class DEClock extends AtomicActor {
         // FIXME: This class should be derived from DEActor, which should
         // ensure that this cast is valid.
         super.initialize();
-        DECQDirector dir = (DECQDirector)getDirector();
-        dir.enqueueEvent(this, 0.0, 0);
+	refireAtTime(0.0);
     }
 
     /** Produce an output event at the current time, and then schedule
@@ -92,9 +93,8 @@ public class DEClock extends AtomicActor {
      */
     public void fire()
             throws CloneNotSupportedException, IllegalActionException {
-        DECQDirector dir = (DECQDirector)getDirector();
         output.broadcast(new DoubleToken(_value));
-        dir.enqueueEvent(this, _interval, 0);
+	refireAtTime(_interval);
     }
 
     ///////////////////////////////////////////////////////////////////

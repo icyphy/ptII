@@ -43,7 +43,7 @@ A plotter for discrete-event signals.
 @author Lukito Muliadi, Edward A. Lee
 @version $Id$
 */
-public class DEPlot extends AtomicActor {
+public class DEPlot extends DEActor {
 
     /** Construct a plot actor with a new plot window. The default Y-range is
      *  [-1, 1]. The default X-range is the start time to the stop time.
@@ -112,12 +112,8 @@ public class DEPlot extends AtomicActor {
     public void fire()
             throws CloneNotSupportedException, IllegalActionException{
 
-	if (_firstFiring) {
-            DECQDirector dir = ((DECQDirector)getDirector());
-            if (dir == null) {
-                throw new IllegalActionException(this, "No director available");
-            }
-            _plot.setXRange(dir.getStartTime(), dir.getStopTime());
+        if (_firstFiring) {
+            _plot.setXRange(getStartTime(), getStopTime());
             _plot.setYRange(getYMin(), getYMax());
             _firstFiring = false;
         }
@@ -133,6 +129,8 @@ public class DEPlot extends AtomicActor {
                 while (input.hasToken(i)) {
                     DoubleToken curToken = null;
                     try {
+			// FIXME: this might be changed once changes in the
+			// Receiver class go through.
                         curToken = (DoubleToken)input.get(i);
                     } catch (NoSuchItemException e) {}
                     double curValue = curToken.doubleValue();
@@ -145,33 +143,6 @@ public class DEPlot extends AtomicActor {
                 // are empty..
                 numEmptyChannel++;
             }
-            /*
-
-
-
-
-
-
-
-            try {
-                // the following statement might throw an exception.
-                DoubleToken curToken = (DoubleToken)input.get(i);
-
-                // if an exception is not thrown then continue below.
-                double curValue = curToken.doubleValue();
-                double curTime = ((DECQDirector)getDirector()).getCurrentTime();
-                _plot.addPoint(i, curTime, curValue, false);
-            } catch (NoSuchItemException e) {
-                // Empty channel.  Ignore.
-                numEmptyChannel++;
-            }
-
-            */
-
-
-
-
-
         }
         // If all channels are empty, then the scheduler is wrong.
         if (numEmptyChannel == width) {
@@ -183,8 +154,9 @@ public class DEPlot extends AtomicActor {
 
     /** Rescale the plot so that all the data plotted is visible.
      */
-    public void wrapup() {
+    public void wrapup() throws IllegalActionException {
 	_plot.fillPlot();
+        super.wrapup();
     }
 
     // FIXME: This is not the right way to handle this.
@@ -218,3 +190,10 @@ public class DEPlot extends AtomicActor {
 
     private boolean _firstFiring = true;
 }
+
+
+
+
+
+
+

@@ -47,7 +47,7 @@ meaning of zero depends on the token type.
 @version $Id$
 @see Actor
 */
-public class DESampler extends AtomicActor {
+public class DESampler extends DEActor {
 
     /** Constructor.
      *  @param container The composite actor that this actor belongs too.

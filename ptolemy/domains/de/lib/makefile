@@ -57,17 +57,18 @@ JARFILE = 	$(TYPACKAGE).jar
 JSRCS = \
 	DEClock.java \
 	DEDelay.java \
-	DEFIFOQueue.java \
-	DENot.java \
 	DEPassGate.java \
 	DEPlot.java \
 	DEPoisson.java \
 	DEPrintln.java \
-	DERamp.java \
 	DESampler.java \
 	DEServer.java \
-	DETestLevel.java \
-	DEWaitingTime.java
+	DEWaitingTime.java \
+	FIFOQueue.java \
+	Not.java \
+	TestLevel.java \
+	Ramp.java
+
 
 EXTRA_SRCS =	$(JSRCS)
 

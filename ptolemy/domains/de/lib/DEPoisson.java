@@ -40,11 +40,14 @@ import java.util.Enumeration;
 Generate events according to Poisson process. The first event is
 always at time zero. The mean inter-arrival time and value of the
 events are given as parameters.
+FIXME: at current implementation, the first event is not at time zero, rather
+it'll depend on the initialization value of current time field in the
+director.
 
 @author Lukito Muliadi
 @version $Id$
 */
-public class DEPoisson extends AtomicActor {
+public class DEPoisson extends DEActor {
 
     /** Constructor.
      *  @param container The composite actor that this actor belongs to.
@@ -80,8 +83,7 @@ public class DEPoisson extends AtomicActor {
         // FIXME: This class should be derived from DEActor, which should
         // ensure that this cast is valid.
         super.initialize();
-        DECQDirector dir = (DECQDirector)getDirector();
-        dir.enqueueEvent(this,0.0,0);
+	refireAtTime(0.0);
     }
 
     /** Produce an output event at the current time, and then schedule
@@ -92,12 +94,13 @@ public class DEPoisson extends AtomicActor {
      */
     public void fire()
             throws CloneNotSupportedException, IllegalActionException {
-        DECQDirector dir = (DECQDirector)getDirector();
-        output.broadcast(new DoubleToken(_value));
+        
+	// send a token via the output port.
+	output.broadcast(new DoubleToken(_value));
 
         // compute an exponential random variable.
         double exp = -Math.log((1-Math.random()))*_lambda;
-        dir.enqueueEvent(this,exp,0);
+	refireAtTime(exp);
     }
 
     ///////////////////////////////////////////////////////////////////

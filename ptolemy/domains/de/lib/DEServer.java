@@ -46,7 +46,7 @@ become free from the previous tasks.
 @version $Id$
 @see Actor
 */
-public class DEServer extends AtomicActor {
+public class DEServer extends DEActor {
     /** Construct a DEServer star.
      *  
      * @param serviceTime The service time

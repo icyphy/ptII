@@ -45,7 +45,7 @@ import java.util.Enumeration;
 @version $Id$
 @see Actor
 */
-public class DEPassGate extends AtomicActor {
+public class DEPassGate extends DEActor {
     /** Construct a DEPassGate star.
      *
      * @param container The composite actor that this actor belongs too.
@@ -150,6 +150,17 @@ public class DEPassGate extends AtomicActor {
 
     }
 
+    /** 
+     *
+     *  @exception CloneNotSupportedException Not thrown in this base class.
+     *  @exception IllegalActionException Thrown if could not create the 
+     *   receivers.
+     */
+    public void initialize() throws CloneNotSupportedException, IllegalActionException {
+        _gateOpen = true;
+        _lastToken = null;
+            
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
