@@ -38,7 +38,6 @@ import ptolemy.actor.*;
 import ptolemy.actor.gui.style.*;
 import ptolemy.data.expr.*;
 import ptolemy.gui.ComponentDialog;
-import ptolemy.vergil.VergilApplication;
 import java.awt.event.*;
 
 //////////////////////////////////////////////////////////////////////////
