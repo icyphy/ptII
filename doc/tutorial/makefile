@@ -46,7 +46,10 @@ DIRS =
 # Root of the Ptolemy II directory
 ROOT =		../..
 
-CLASSPATH =	$(ROOT)
+# These classes use ptolemy/actor/gui/PlotTableauFrame.java which requires
+# diva.jar, so we add diva.jar to the CLASSPATH in case PlotTableauFrame.java
+# has not yet been compiled.
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
