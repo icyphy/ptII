@@ -86,9 +86,9 @@ public class LocalZenoApplet extends DDEApplet {
 	JPanel topPanel = new JPanel();
 	topPanel.setSize( new Dimension(600, 200) );
 
-	// The '3' argument specifies a 'go', 'stop' and 
+	// The '3' argument specifies a 'go', 'stop' and
         // 'layout' buttons.
-	topPanel.add( _createRunControls(3), 
+	topPanel.add( _createRunControls(3),
         	BorderLayout.NORTH );
 
 	_plotPanel = new JPanel();
@@ -181,7 +181,7 @@ public class LocalZenoApplet extends DDEApplet {
 	e = impl.createEdge(null);
 	impl.setEdgeTail(e, n1);
 	impl.setEdgeHead(e, n2);
-	
+
 	e = impl.createEdge(null);
 	impl.setEdgeTail(e, n2);
 	impl.setEdgeHead(e, n3);
@@ -193,11 +193,11 @@ public class LocalZenoApplet extends DDEApplet {
 	e = impl.createEdge(null);
 	impl.setEdgeTail(e, n3);
 	impl.setEdgeHead(e, n4);
-	
+
 	e = impl.createEdge(null);
 	impl.setEdgeTail(e, n3);
 	impl.setEdgeHead(e, n5);
-	
+
 	e = impl.createEdge(null);
 	impl.setEdgeTail(e, n1);
 	impl.setEdgeHead(e, n6);
@@ -217,7 +217,7 @@ public class LocalZenoApplet extends DDEApplet {
 	e = impl.createEdge(null);
 	impl.setEdgeTail(e, n8);
 	impl.setEdgeHead(e, n6);
-	
+
         return graph;
     }
 
@@ -265,7 +265,7 @@ public class LocalZenoApplet extends DDEApplet {
 	    _fBack2.setDelay(4.5);
 
 	    // Set up ports, relations and connections
-            Relation clkRelation = 
+            Relation clkRelation =
             	    _toplevel.connect( _clock.output, _join1.input );
             _join2.input.link( clkRelation );
 
@@ -418,7 +418,7 @@ public class LocalZenoApplet extends DDEApplet {
     public class LocalZenoGraphController extends BasicGraphController {
 	private SelectionDragger _selectionDragger;
 	/**
-	 * Create a new basic controller with default 
+	 * Create a new basic controller with default
 	 * node and edge interactors.
 	 */
 	public LocalZenoGraphController () {
@@ -428,7 +428,7 @@ public class LocalZenoApplet extends DDEApplet {
 	    getNodeController().setNodeRenderer(new ThreadRenderer());
 	    getEdgeController().setEdgeRenderer(new LocalEdgeRenderer());
 	}
-	
+
 	/**
 	 * Initialize all interaction on the graph pane. This method
 	 * is called by the setGraphPane() method of the superclass.
@@ -438,14 +438,14 @@ public class LocalZenoApplet extends DDEApplet {
 	 */
 	protected void initializeInteraction () {
 	    GraphPane pane = getGraphPane();
-	    
+
 	    // Create and set up the selection dragger
 	    _selectionDragger = new SelectionDragger(pane);
 	    _selectionDragger.addSelectionInteractor(
 		(SelectionInteractor)getEdgeController().getEdgeInteractor());
 	    _selectionDragger.addSelectionInteractor(
                 (SelectionInteractor)getNodeController().getNodeInteractor());
-	} 
+	}
     }
 
 

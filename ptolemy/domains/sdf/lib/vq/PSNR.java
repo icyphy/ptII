@@ -89,13 +89,13 @@ public class PSNR extends SDFAtomicActor {
     public SDFIOPort output;
 
     /** Fire the actor.
-     *  Consume one image on each of the input ports.   Calculate the 
+     *  Consume one image on each of the input ports.   Calculate the
      *  PSNR as follows:
      *  noise = signal-distortedSignal;
      *  signalPower = Power(signal);
      *  noisePower = Power(noise);
      *  PSNR = 10 * log10(signalPower/noisePower);
-     *  @exception IllegalActionException if 
+     *  @exception IllegalActionException if
      *  the dimensions of the input tokens do not match.
      */
     public void fire() throws IllegalActionException {
@@ -108,9 +108,9 @@ public class PSNR extends SDFAtomicActor {
 
         double PSNRValue;
 
-        IntMatrixToken signalToken = 
+        IntMatrixToken signalToken =
             (IntMatrixToken) signal.get(0);
-        IntMatrixToken distortedSignalToken = 
+        IntMatrixToken distortedSignalToken =
             (IntMatrixToken) distortedSignal.get(0);
         int columns = signalToken.getColumnCount();
         int rows = signalToken.getRowCount();

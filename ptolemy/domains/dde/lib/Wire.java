@@ -80,11 +80,11 @@ public class Wire extends TypedAtomicActor {
     /** The output port.
      */
     public TypedIOPort output;
-    
+
     /** The input port.
      */
     public TypedIOPort input;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 

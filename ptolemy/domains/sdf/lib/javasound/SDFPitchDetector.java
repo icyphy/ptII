@@ -63,7 +63,7 @@ import ptolemy.domains.sdf.kernel.*;
 
 public class SDFPitchDetector extends SDFAtomicActor {
 
-    /** 
+    /**
      *  @param container The container.
      *  @param name The name of this actor.
      *  @exception IllegalActionException If the actor cannot be contained
@@ -89,7 +89,7 @@ public class SDFPitchDetector extends SDFAtomicActor {
 	input = new SDFIOPort(this, "input", true, false);
         input.setTypeEquals(BaseType.DOUBLE);
 	input.setTokenConsumptionRate(consumptionRate);
-		
+
 	sampleRate = new Parameter(this, "sampleRate",
 				     new DoubleToken(22050));
         sampleRate.setTypeEquals(BaseType.DOUBLE);
@@ -159,19 +159,19 @@ public class SDFPitchDetector extends SDFAtomicActor {
      *  current index.
      */
     public void fire() throws IllegalActionException {
-        
-	
+
+
         input.getArray(0, audioTokenArray);
 	// Convert to double[].
-        
+
         int i;
         for (i = 0; i < consumptionRate; i++) {
             audioInDoubleArray[i] = audioTokenArray[i].doubleValue();
         }
-	
+
 	double[] currPitchArray = pd.performPitchDetect(audioInDoubleArray);
 
-	
+
 	// Convert to DoubleToken[].
 	// FIXME: I don't think this is very efficient. Currently
 	// creating a new token for each sample!
@@ -189,21 +189,21 @@ public class SDFPitchDetector extends SDFAtomicActor {
         super.initialize();
 
 	sampRate = ((DoubleToken)sampleRate.getToken()).doubleValue();
-	
+
 	pd = new PitchDetector(productionRate,
 			       (int)sampRate);
-	    
+
 	audioTokenArray = new DoubleToken[consumptionRate];
 	audioInDoubleArray = new double[consumptionRate];
     }
 
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   //// 
+    ////                         private methods                   ////
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     private double sampRate;
 
     private PitchDetector pd;

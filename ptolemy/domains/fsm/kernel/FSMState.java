@@ -329,7 +329,7 @@ public class FSMState extends ComponentEntity {
     }
 
     /** Add all of the output ports of this state's refining actor to the
-     *  scope. Here, the scope refers to the scope of variables 
+     *  scope. Here, the scope refers to the scope of variables
      *  which can be used as part of a guard expression or action
      *  of a state transition.
      */

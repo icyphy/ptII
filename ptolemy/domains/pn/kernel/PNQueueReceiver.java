@@ -177,12 +177,12 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
 	return true;
     }
 
-    /** Return true if this receiver is connected to the inside of a 
-     *  boundary port. A boundary port is an opaque port that is contained 
-     *  by a composite actor. If this receiver is connected to the inside 
-     *  of a boundary port, then return true; otherwise return false. 
+    /** Return true if this receiver is connected to the inside of a
+     *  boundary port. A boundary port is an opaque port that is contained
+     *  by a composite actor. If this receiver is connected to the inside
+     *  of a boundary port, then return true; otherwise return false.
      *  This method is not synchronized so the caller should be.
-     * @return True if this receiver is connected to the inside of a 
+     * @return True if this receiver is connected to the inside of a
      *  boundary port; return false otherwise.
      */
      public boolean isConnectedToBoundary() {
@@ -195,22 +195,22 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
                  _isConnectedBoundaryValue = false;
                  return _isConnectedBoundaryValue;
              }
-             ComponentEntity innerEntity = 
-                     (ComponentEntity)innerPort.getContainer(); 
-             Port outerPort = null; 
-             ComponentEntity outerEntity = null; 
+             ComponentEntity innerEntity =
+                     (ComponentEntity)innerPort.getContainer();
+             Port outerPort = null;
+             ComponentEntity outerEntity = null;
 
-             Iterator ports = innerPort.connectedPortList().iterator();              
+             Iterator ports = innerPort.connectedPortList().iterator();
              while( ports.hasNext()) {
                  outerPort = (Port)ports.next();
                  outerEntity = (ComponentEntity)outerPort.getContainer();
                  if( outerEntity == innerEntity.getContainer() ) {
-		     // The port container of this receiver is 
-                     // connected to a boundary port. Now determine 
-                     // if this receiver's channel is connected to 
+		     // The port container of this receiver is
+                     // connected to a boundary port. Now determine
+                     // if this receiver's channel is connected to
                      // a boundary port.
                      try {
-		 	 Receiver[][] rcvrs = 
+		 	 Receiver[][] rcvrs =
                         	 ((IOPort)outerPort).deepGetReceivers();
 		     	 for( int i = 0; i < rcvrs.length; i++ ) {
                              for( int j = 0; j < rcvrs[i].length; j++ ) {
@@ -225,18 +225,18 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
                          // FIXME: Do Something!
                      }
                  }
-             } 
-             _connectedBoundaryCacheIsOn = true; 
+             }
+             _connectedBoundaryCacheIsOn = true;
              _isConnectedBoundaryValue = false;
              return _isConnectedBoundaryValue;
          }
      }
-     
-    /** Return true if this receiver is contained on the inside of a 
-     *  boundary port. A boundary port is an opaque port that is 
-     *  contained by a composite actor. If this receiver is contained 
-     *  on the inside of a boundary port then return true; otherwise 
-     *  return false. This method is not synchronized so the caller 
+
+    /** Return true if this receiver is contained on the inside of a
+     *  boundary port. A boundary port is an opaque port that is
+     *  contained by a composite actor. If this receiver is contained
+     *  on the inside of a boundary port then return true; otherwise
+     *  return false. This method is not synchronized so the caller
      *  should be.
      * @return True if this receiver is contained on the inside of
      *  a boundary port; return false otherwise.
@@ -251,10 +251,10 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
                  _isInsideBoundaryValue = false;
                  return _isInsideBoundaryValue;
              }
-             ComponentEntity innerEntity = 
-             	     (ComponentEntity)innerPort.getContainer(); 
+             ComponentEntity innerEntity =
+             	     (ComponentEntity)innerPort.getContainer();
              if( !innerEntity.isAtomic() && innerPort.isOpaque() ) {
-                 // This receiver is contained by the port 
+                 // This receiver is contained by the port
                  // of a composite actor.
                  if( innerPort.isOutput() && !innerPort.isInput() ) {
                      _isInsideBoundaryValue = true;
@@ -263,27 +263,27 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
                  } else if( !innerPort.isOutput() && !innerPort.isInput() ) {
                      _isInsideBoundaryValue = false;
                  } else {
-                     // CONCERN: The following only works if the port 
+                     // CONCERN: The following only works if the port
                      // is not both an input and output.
                      throw new IllegalArgumentException("A port that "
-                             + "is both an input and output can not be " 
+                             + "is both an input and output can not be "
                              + "properly dealt with by "
                              + "PNQueueReceiver.isInsideBoundary");
                  }
                  _insideBoundaryCacheIsOn = true;
                  return _isInsideBoundaryValue;
-             } 
+             }
              _insideBoundaryCacheIsOn = true;
              _isInsideBoundaryValue = false;
              return _isInsideBoundaryValue;
          }
      }
 
-    /** Return true if this receiver is contained on the outside of a 
-     *  boundary port. A boundary port is an opaque port that is 
-     *  contained by a composite actor. If this receiver is contained 
-     *  on the outside of a boundary port then return true; otherwise 
-     *  return false. This method is not synchronized so the caller 
+    /** Return true if this receiver is contained on the outside of a
+     *  boundary port. A boundary port is an opaque port that is
+     *  contained by a composite actor. If this receiver is contained
+     *  on the outside of a boundary port then return true; otherwise
+     *  return false. This method is not synchronized so the caller
      *  should be.
      * @return True if this receiver is contained on the outside of
      *  a boundary port; return false otherwise.
@@ -298,10 +298,10 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
                  _isOutsideBoundaryValue = false;
                  return _isOutsideBoundaryValue;
              }
-             ComponentEntity innerEntity = 
-                     (ComponentEntity)innerPort.getContainer(); 
+             ComponentEntity innerEntity =
+                     (ComponentEntity)innerPort.getContainer();
              if( !innerEntity.isAtomic() && innerPort.isOpaque() ) {
-                 // This receiver is contained by the port 
+                 // This receiver is contained by the port
                  // of a composite actor.
                  if( innerPort.isOutput() && !innerPort.isInput() ) {
                      _isOutsideBoundaryValue = false;
@@ -310,10 +310,10 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
                  } else if( !innerPort.isOutput() && !innerPort.isInput() ) {
                      _isOutsideBoundaryValue = false;
                  } else {
-                     // CONCERN: The following only works if the port 
+                     // CONCERN: The following only works if the port
                      // is not both an input and output.
                      throw new IllegalArgumentException("A port that "
-                             + "is both an input and output can not be " 
+                             + "is both an input and output can not be "
                              + "properly dealt with by "
                              + "PNQueueReceiver.isInsideBoundary");
                  }
@@ -323,7 +323,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
              _outsideBoundaryCacheIsOn = true;
              _isOutsideBoundaryValue = false;
              return _isOutsideBoundaryValue;
-         } 
+         }
      }
 
     /** Return a true or false to indicate whether there is a read pending
@@ -467,13 +467,13 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
     private boolean _writepending = false;
     private boolean _pause = false;
     private boolean _terminate = false;
-    
+
     private boolean _insideBoundaryCacheIsOn = false;
     private boolean _isInsideBoundaryValue = false;
-    
+
     private boolean _outsideBoundaryCacheIsOn = false;
     private boolean _isOutsideBoundaryValue = false;
-    
+
     private boolean _connectedBoundaryCacheIsOn = false;
     private boolean _isConnectedBoundaryValue = false;
 }

@@ -30,7 +30,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.domains.sdf.lib.huffman;
 
-import ptolemy.kernel.*;              
+import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import ptolemy.data.expr.*;
@@ -44,21 +44,21 @@ import java.lang.Math;
 
 //////////////////////////////////////////////////////////////////////////
 //// HuffLeaf --- A tree class derived from HuffTree class which represents
-//                the leaf class of huffman tree.     
+//                the leaf class of huffman tree.
 /**
 @author Michael Leung
 @version $Id$
 */
 
 public class HuffLeaf extends ptolemy.domains.sdf.lib.huffman.HuffTree {
-     
+
     // Constructor for Huffman leaf.
     public HuffLeaf(String d, double p) {
         super();
         _prob = p;
         _data = d;
     }
-    
+
     // Returns the StringValue of the data contains in this Huffman leaf.
     public String getData() {
         return _data;
@@ -68,7 +68,7 @@ public class HuffLeaf extends ptolemy.domains.sdf.lib.huffman.HuffTree {
     public double getProb() {
         return _prob;
     }
-    
+
     // Set the value of probability
     public void setProb(double p) {
          _prob = p;
@@ -79,7 +79,7 @@ public class HuffLeaf extends ptolemy.domains.sdf.lib.huffman.HuffTree {
         _data = d;
     }
 
-    /*Override the toString of Object class for debugging and testing 
+    /*Override the toString of Object class for debugging and testing
      *purposes.
      *This method will return the string representation of a HuffLeaf.
      */
@@ -89,7 +89,7 @@ public class HuffLeaf extends ptolemy.domains.sdf.lib.huffman.HuffTree {
         str = str + getProb() + " " + "data:" + getData();
         return str;
     }
-    
+
     private double _prob;
     private String _data;
 }

@@ -164,7 +164,7 @@ public class HDFFSMTransition extends FSMTransition {
      *  the only variables allowed in the guard expressions are variables
      *  containing tokens transfered through the input and output ports of
      *  the HDF actor. Following the syntax of [1], if the HDF actor contains
-     *  an input port called dataIn, then use dataIn$0 in the guard 
+     *  an input port called dataIn, then use dataIn$0 in the guard
      *  expression to reference the token most recently transfered through
      *  port dataIn. Use dataIn$1 to reference the next most recent token,
      *  dataIn$2 to reference the next most recent token, and so on. By
@@ -202,7 +202,7 @@ public class HDFFSMTransition extends FSMTransition {
      *  the local director's container (an opaque composite actor).
      *  For example, if the director's container has an input port
      *  called "dataIn", then the associated sequence of guard
-     *  variables is dataIn$0, dataIn$1, dataIn$2, .... Here, 
+     *  variables is dataIn$0, dataIn$1, dataIn$2, .... Here,
      *  dataIn$0 denotes the most recently read token, dataIn$1
      *  denotes the next most recently read token, and so on.
      *  <p>

@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Red (vogel@eecs.berkeley.edu)
-@AcceptedRating 
+@AcceptedRating
 */
 
 package ptolemy.domains.sdf.test.pitchshift;
@@ -54,7 +54,7 @@ public class PitchShift {
     private double[] outputRingBuf;
 
     private int inputRingBufWritePos;
-  
+
 
 
     private double minimumPitch = MINIMUM_PITCH;
@@ -86,35 +86,35 @@ public class PitchShift {
     /* Current period length (in samples) of input signal. This gets updated once
      * per input signal period.
      */
-    private int inputPeriodLength; 
+    private int inputPeriodLength;
 
     /* The number of remaining samples to process before upding <inputPeriodLength>.
      * <inputPeriodLength> is updated when <samplesLeftInPeriod> is 0.
      */
     private int samplesLeftInPeriod;
 
-  
+
     /* Output signal pitch = input signal pitch * pitchScaleFactor.
      */
-    private double pitchScaleFactor;  
+    private double pitchScaleFactor;
 
     private int isUnvoiced;  // 1 if unvoice (no pitch), else set to 0.
 
 
-  
+
     private int minimumPitchSamps; // This is minimumPitch converted to samples.
-  
+
     //private int sampleRate; // sampling rate.
 
     /* Initialize the current output ring buffer read postition.
      * Maybe need to add ringBuffSize because % does not like negative numbers?
      */
-	
+
     // Constructor
     public PitchShift(float sampleRate) {
 	this.sampleRate = (int)sampleRate;
 	this.pitchDetectorDelay = (int)(2048*(float)sampleRate/44100);
-	
+
 	OUTPUT_BUFFER_DELAY = (int)(1000*(float)sampleRate/44100);
 	this.outputDelay = OUTPUT_BUFFER_DELAY;
 	this.ringBufSize = RING_BUFFER_SIZE;
@@ -125,8 +125,8 @@ public class PitchShift {
 	// This is delay from the pitch detector.
 	this.inputRingBufWritePos = 0;
 	//////////////////////////////////////
-	
-	this.readPos = (inputRingBufWritePos - outputDelay + ringBufSize) % 
+
+	this.readPos = (inputRingBufWritePos - outputDelay + ringBufSize) %
 	    ringBufSize;
 
 	// The input ring buffer:
@@ -166,58 +166,58 @@ public class PitchShift {
 	double[] out = new double[in.length];
 	// Temporary variables
 	int size = in.length;
-	
+
 	double periodRatio;
-	
+
 	double correctedPitchScale;
 	double correctedPitchIn;
-	
+
 	double windowVal;  // Current value of window function.
-	
-	
-	
+
+
+
 	/* Current position in OLA process relative to current synthesis
 	 * pitch marker.
 	 */
 	int olaIndex;
-	
+
 	int outLag; // Set to 1 if x->outputRingBufPitchMarkerPos
 	// lags x->inputRingBufWritePos, else set to zero.
-	
+
 	/* This is a marker for the element half way around the cirucular
 	   buffer w.r.t. x->inputRingBufWritePos */
 	int inHalfAway;
-	
+
 	//t_pitcher *x = (t_pitcher *)(w[6]);
-	
+
 	/* The main loop. This will iterate <MSP vector size> times for each
 	 *  call to this perform
 	 * method. */
 	while (size > 0) {
-	    
-	    
-	    
+
+
+
 	    // Write the current input sample into the input circular array.
 	    //inputRingBuf[inputRingBufWritePos] = in[curInSamp];
 	    // Add some delay, to compensate for the pitch detector.
 	    inputRingBuf[(inputRingBufWritePos+pitchDetectorDelay) %
 			ringBufSize] = in[curInSamp];
-	    
+
 	    //////////////////////////////////////////////////////
 	    //////////////////////////////////////////////////////
 	    // Do all interesting processing here.
-	    
+
 	    /* Check if have reached the end of the current period in the
 	       input signal.
 	    */
 	    if (samplesLeftInPeriod == 0)
 		{
 		    /* Check if ok to do an OLA in the output buffer. */
-		    /* That is, check if the the outputRingBufPitchMarkerPos 
+		    /* That is, check if the the outputRingBufPitchMarkerPos
 		     *  lags nputRingBufWritePos.
 		     */
-		    
-		    
+
+
 		    outLag = 1;
 		    inHalfAway = (inputRingBufWritePos + ringBufSize/2) %
 			ringBufSize;
@@ -244,11 +244,11 @@ public class PitchShift {
 				    outLag = 0;
 				}
 			}
-		    
-		    while (outLag == 1)	   
+
+		    while (outLag == 1)
 			{
 	           	    	// Do an OLA
-			    
+
 	           	    	/* Update the synthesis pitch marker posistion
 				   (in the output buffer)/
 				 */
@@ -262,8 +262,8 @@ public class PitchShift {
 			    else
 				{
 				    correctedPitchScale = pitchScaleIn;
-				}  
-			    
+				}
+
 
 			     // Period scale factor.
 			    periodRatio = 1.0/(correctedPitchScale);
@@ -271,8 +271,8 @@ public class PitchShift {
 				(int)(outputRingBufPitchMarkerPos +
 				      (int)(inputPeriodLength*periodRatio)) %
 				ringBufSize;
-	           	    				    
-			    
+
+
 	           	    	/* Do an OLA (in the output buffer) about the
 				 *  synthesis pitch marker. Note that
 				 * this implementation differs slightly from
@@ -285,18 +285,18 @@ public class PitchShift {
 			    for (olaIndex = -inputPeriodLength; olaIndex <=
 				     inputPeriodLength; ++olaIndex)
 				{
-				    
+
 				    windowVal = (1 + Math.cos(Math.PI*olaIndex/
 					        (float)inputPeriodLength))*0.5;
-				
+
 				    outputRingBuf[(olaIndex +
 						   outputRingBufPitchMarkerPos +
-						   ringBufSize) % ringBufSize] += 
+						   ringBufSize) % ringBufSize] +=
 					windowVal*inputRingBuf[(olaIndex +
 					inputRingBufWritePos - minimumPitchSamps +
 						      ringBufSize) % ringBufSize];
-								}  
-	           	    	// Update loop condition variable.    	
+								}
+	           	    	// Update loop condition variable.
 			    outLag = 1;
 			    inHalfAway = (inputRingBufWritePos + ringBufSize/2) %
 				ringBufSize;
@@ -326,10 +326,10 @@ public class PitchShift {
 					}
 				}
 			}
-		    
+
 		    /* Update input period value */
-		    
-		    
+
+
 		    // Do error checking on input pitch signal value.
 		    if (pitchArray[inputPitchInPtr] <= minimumPitch)
 			{
@@ -339,52 +339,52 @@ public class PitchShift {
 			}
 		    else
 			{
-			    
+
 			    correctedPitchIn = pitchArray[inputPitchInPtr];
 			    isUnvoiced = 0;
-			}  
+			}
 		    // correctedPitchIn = 441.0;  // FOR DEBUG
 		    inputPeriodLength =
 			(int)((1.0/correctedPitchIn)*(float)sampleRate);
 		    // inputPeriodLength = 100;  // FOR DEBUG
 		    samplesLeftInPeriod = inputPeriodLength;
 		}
-	    
-	    --samplesLeftInPeriod; 
-	    
-	    	    
+
+	    --samplesLeftInPeriod;
+
+
 	    // End of all interesting processing.
 	    ////////////////////////////////////////////////////////
 	    ////////////////////////////////////////////////////////
-	    
+
 	    // Read an output sample from the output Ring buffer.
 	    out[curOutSamp] = outputRingBuf[readPos];
 	    //*out = inputRingBuf[readPos];
-	    
+
 	    // Now set the element just read from to zero, since it is no
 	    // longer needed.
-	    outputRingBuf[readPos] = 0;	
-	    
+	    outputRingBuf[readPos] = 0;
+
 	    // Update the pointers.
 	    inputRingBufWritePos++;
 	    // Make the write postition pointer wrap back to the begining after it
 	    // reaches the end of the buffer.
 	    inputRingBufWritePos %= ringBufSize;
-	    
+
 	    readPos++;
 	    // Make the write postition pointer wrap back to the begining after it
 	    // reaches the end of the buffer.
 	    readPos %= ringBufSize;
-	    
-	    
+
+
 	    curInSamp++;
 	    curOutSamp++;
 	    inputPitchInPtr++;
 	    size--;
 	}
-	
+
 	return out;
     }
-    
+
 
 }

@@ -41,7 +41,7 @@ import ptolemy.data.type.BaseType;
 //////////////////////////////////////////////////////////////////////////
 //// ND_66
 
-/**  
+/**
 
 This class defines an experimental SBF object that is part of the
 compilation of the QR algorithm written in Matlab into a process
@@ -58,7 +58,7 @@ public class ND_66 extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Construct an actor that is an SBF object with the given container 
+    /** Construct an actor that is an SBF object with the given container
      *  and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -68,7 +68,7 @@ public class ND_66 extends TypedAtomicActor {
      *   actor with this name.
      */
     public ND_66(TypedCompositeActor aContainer, String aName)
-            throws IllegalActionException, NameDuplicationException   
+            throws IllegalActionException, NameDuplicationException
         {
             super(aContainer, aName);
             in0 = new TypedIOPort(this,"in0",true,false);
@@ -103,11 +103,11 @@ public class ND_66 extends TypedAtomicActor {
             parameter_K = new Parameter(this,"K", new IntToken(10));
             parameter_d = new Parameter(this,"d", new IntToken(0));
         }
- 
+
     /** Initialize controller and state of the SBF object.
      *  @exception IllegalActionException If the parent class throws it.
      */
-    public void initialize() throws IllegalActionException {	
+    public void initialize() throws IllegalActionException {
 	super.initialize();
 
 	_t = 0;
@@ -148,7 +148,7 @@ public class ND_66 extends TypedAtomicActor {
 
 	if (_t0 == 1) {
 	    _t = _t+1;
-	    if (_t == 2) { 
+	    if (_t == 2) {
                 _returnValue = false;
 	    }
 	}
@@ -179,7 +179,7 @@ public class ND_66 extends TypedAtomicActor {
         on the basis of the content of the state of the SBF object.
         @exception IllegalActionException Not Thrown.
     */
-    public void fire() throws IllegalActionException {	
+    public void fire() throws IllegalActionException {
 	if  ( k - 2 >= 0 ) { // ED_5
 	    _argIn0 = ((DoubleToken) in0.get(0)).doubleValue();
 	    r_3.store( _argIn0, r_3.atKey(k - 1, j, i) );
@@ -254,7 +254,7 @@ public class ND_66 extends TypedAtomicActor {
         <i>false</i> to indicate it is done; otherwise <i>true</i> is
         returned.
     */
-    public boolean postfire() {	
+    public boolean postfire() {
         _returnValue = true;
 	if (_t == 0){
 	    _t0 = 1;
@@ -355,7 +355,7 @@ public class ND_66 extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
- 
+
     private void _Rotate(double arg0, double arg1, double arg2) {
 	_argOut0 = Math.cos(arg2) * arg0   -   Math.sin(arg2) * arg1;
 	_argOut1 = Math.sin(arg2) * arg0   +   Math.cos(arg2) * arg1;
@@ -379,7 +379,7 @@ public class ND_66 extends TypedAtomicActor {
     private int k;
     private int j;
     private int i;
- 
+
     private int _t;
     private int _t0;
     private int _t1;

@@ -50,8 +50,8 @@ import javax.swing.JPanel;
 //// NonlinearClient
 /**
 The square wave response of a second order CT system with a CORBA
-actor in the feedback. . This simple 
-CT system demonstrate the use of CORBA actor solvers over the network. 
+actor in the feedback. . This simple
+CT system demonstrate the use of CORBA actor solvers over the network.
 The query box allow the users to input the ORB initialization parameter
 and the name of the CORBA actor.
 @author  Jie Liu
@@ -80,7 +80,7 @@ public class NonlinearClient extends CTApplet{
         _query.addLine("servant", "Servant Name", "Nonlinear");
 
         controlpanel.add(_createRunControls(2), BorderLayout.EAST);
-    
+
         //public void main(String[] args) {
         try {
             _toplevel.setName( "system");
@@ -170,13 +170,13 @@ public class NonlinearClient extends CTApplet{
                     _query.stringValue("init")));
             _client.remoteActorName.setToken(new StringToken(
                     _query.stringValue("servant")));
-            
+
             super._go();
         } catch (Exception ex) {
             report(ex);
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

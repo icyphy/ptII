@@ -88,7 +88,7 @@ public class DEMessageSource extends TypedAtomicActor {
         //        getCurrentTime());
         DEDirector dir = (DEDirector) getDirector();
         double now = dir.getCurrentTime();
-        dir.fireAt(this, now + 
+        dir.fireAt(this, now +
                 ((DoubleToken)_maxDelay.getToken()).doubleValue()*Math.random());
     }
 

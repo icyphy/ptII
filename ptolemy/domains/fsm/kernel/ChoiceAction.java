@@ -33,9 +33,9 @@ package ptolemy.domains.fsm.kernel;
 //// ChoiceAction
 /**
 An action implementing this interface is a choice action. When an FSMActor
-is fired, a transition among the outgoing transitions of the current state 
-is chosen if it is enabled. The choice actions contained by the chosen 
-transition are executed. A choice action may be executed more than once 
+is fired, a transition among the outgoing transitions of the current state
+is chosen if it is enabled. The choice actions contained by the chosen
+transition are executed. A choice action may be executed more than once
 during an iteration in domains with fixed-point semantics.
 
 @author Xiaojun Liu

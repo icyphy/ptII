@@ -39,7 +39,7 @@ import ptolemy.domains.sdf.kernel.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// FIR
-/** 
+/**
 
 This actor implements a type polymorphic finite-impulse response
 filter with multirate capability. Since this filter operates on
@@ -109,7 +109,7 @@ public class FIR extends SDFAtomicActor {
 
         taps = new Parameter(this, "taps", new DoubleMatrixToken());
         interpolation = new Parameter(this, "interpolation", new IntToken(1));
-        
+
         // FIXME: Added decimation and decimationPhase parameters
         attributeTypeChanged( taps );
     }
@@ -140,22 +140,22 @@ public class FIR extends SDFAtomicActor {
     ////                         public methods                    ////
 
     /** If the argument is the meanTime parameter, check that it is
-      *  positive.  
+      *  positive.
       * @exception IllegalActionException If the
       *  meanTime value is not positive.
       */
-    public void attributeTypeChanged(Attribute attribute) 
+    public void attributeTypeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == taps) {
 
 	    // Get the first token from the Matrix
 	    // Used this tokne to extract its type.
-	    Token tmpToken = 
+	    Token tmpToken =
 		    ((MatrixToken)taps.getToken()).getElementAsToken(0, 0);
 
 	    // Get a token representing zero in the requested type.
 	    // _zero = tmpToken.zero();
-	    
+
 	    // Set the type to the input and output port.
 	    input.setTypeEquals( tmpToken.getType() );
 	    output.setTypeEquals( tmpToken.getType() );
@@ -214,11 +214,11 @@ public class FIR extends SDFAtomicActor {
 
                     int dataIndex =
                         (_mostRecent + _dec - inC + i)%(_data.length);
-                    if (tapsIndex < _taps.length) {                       
+                    if (tapsIndex < _taps.length) {
                         _tapItem = _taps[tapsIndex];
                         _dataItem = _data[dataIndex];
                         _dataItem = _tapItem.multiply( _dataItem );
-                        _outToken = _outToken.add( _dataItem ); 
+                        _outToken = _outToken.add( _dataItem );
                     } else {
                         _dataItem = _data[dataIndex];
                         _outToken = _outToken.add( _dataItem );
@@ -237,14 +237,14 @@ public class FIR extends SDFAtomicActor {
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
-        
+
         IntToken interptoken = (IntToken)(interpolation.getToken());
         _interp = interptoken.intValue();
-        
+
         // FIXME: Support multirate.  Get values from parameters.
         _dec = 1;
         _decPhase = 0;
-        
+
         // FIXME: Does the SDF infrastructure support accessing past samples?
         // FIXME: Handle mutations.
         input.setTokenConsumptionRate(_dec);
@@ -252,7 +252,7 @@ public class FIR extends SDFAtomicActor {
         if (_decPhase >= _dec) {
             throw new IllegalActionException(this,"decimationPhase too large");
         }
-	
+
 	// Get the taps now to allows for type resolution before initialize
         tapstoken = (MatrixToken)(taps.getToken());
 
@@ -260,17 +260,17 @@ public class FIR extends SDFAtomicActor {
 	_zero = tapstoken.getElementAsToken(0,0).zero();
     }
 
-    /** Initialize the taps of the FIR filter. 
+    /** Initialize the taps of the FIR filter.
      *  @exception IllegalActionException If the parent class throws it.
      */
     public void initialize() throws  IllegalActionException {
 	super.initialize();
-	
+
         _taps = new Token[tapstoken.getColumnCount()];
         for (int i = 0; i < _taps.length; i++) {
             _taps[i] = tapstoken.getElementAsToken(0, i);
         }
-       
+
         _phaseLength = (int)(_taps.length / _interp);
         if ((_taps.length % _interp) != 0) _phaseLength++;
 
@@ -293,12 +293,12 @@ public class FIR extends SDFAtomicActor {
      */
     protected int _phaseLength;
 
-    /** Control variables for the FIR main loop. */ 
+    /** Control variables for the FIR main loop. */
     protected int _dec, _interp, _decPhase;
 
     /** The MatrixToken containing the taps of the FIR. */
     protected MatrixToken tapstoken;
- 
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

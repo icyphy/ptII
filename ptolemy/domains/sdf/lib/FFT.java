@@ -121,12 +121,12 @@ public class FFT extends TypedAtomicActor {
         int i;
         input.getArray(0, inTokenArray);
         for (i = 0; i < _consumptionRate; i++) {
-            inDoubleArray[i] = inTokenArray[i].doubleValue();	   
+            inDoubleArray[i] = inTokenArray[i].doubleValue();
         }
-        Complex[] outComplexArray = 
-            SignalProcessing.FFTComplexOut( inDoubleArray, _orderValue );      
+        Complex[] outComplexArray =
+            SignalProcessing.FFTComplexOut( inDoubleArray, _orderValue );
         for (i = 0; i < _productionRate; i++) {
-            outTokenArray[i] = new ComplexToken( outComplexArray[i] );	   
+            outTokenArray[i] = new ComplexToken( outComplexArray[i] );
         }
         output.sendArray(0, outTokenArray);
     }

@@ -53,39 +53,39 @@ method defaults to false.
  */
 public class CSPSink extends AtomicActor {
 
-    /** Construct a CSPSink in the default workspace with an 
+    /** Construct a CSPSink in the default workspace with an
      *  empty string as a name.
      *  @exception IllegalActionException If there is an error
      *   with instantiation of the tokenLimit parameter.
      *  @exception NameDuplicationException If there is an error
      *   with instantiation of the tokenLimit parameter.
      */
-    public CSPSink() throws IllegalActionException, 
+    public CSPSink() throws IllegalActionException,
     	    NameDuplicationException {
         super();
-        tokenLimit = new Parameter( this, "tokenLimit", 
+        tokenLimit = new Parameter( this, "tokenLimit",
         	(new IntToken(-1)) );
     }
 
     /** Construct a CSPSink with the sepcified container and the
-     *  specified name. The name must be unique within the container 
-     *  or an exception is thrown. The container argument must not be 
-     *  null, or a NullPointerException will be thrown. 
+     *  specified name. The name must be unique within the container
+     *  or an exception is thrown. The container argument must not be
+     *  null, or a NullPointerException will be thrown.
      *  @param cont The container of this actor.
      *  @param name The name of this actor.
      *  @param limit The number of tokens that this actor will produce.
      *  @exception IllegalActionException If the superclass throws it
-     *   or if there is an error with instantiation of the tokenLimit 
+     *   or if there is an error with instantiation of the tokenLimit
      *   parameter.
      *  @exception NameDuplicationException If the name of the actor
-     *   or the tokenLimit parameter is not unique within the 
+     *   or the tokenLimit parameter is not unique within the
      *   container.
      */
     public CSPSink(CompositeActor cont, String name, int limit)
             throws IllegalActionException, NameDuplicationException {
         super(cont, name);
         input = new IOPort(this, "input", true, false);
-        tokenLimit = new Parameter( this, "tokenLimit", 
+        tokenLimit = new Parameter( this, "tokenLimit",
         	(new IntToken(limit)) );
     }
 
@@ -95,17 +95,17 @@ public class CSPSink extends AtomicActor {
     /** The input port.
      */
     public IOPort input;
-    
-    /** The number of tokens produced by this actor. If this limit 
+
+    /** The number of tokens produced by this actor. If this limit
      *  is set to -1, then produce output tokens indefinitely. The
      *  default value of this parameter is -1.
      */
     public Parameter tokenLimit;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Execute this actor by consuming ten tokens through the 
+    /** Execute this actor by consuming ten tokens through the
      *  input port.
      */
     public void fire() {
@@ -127,7 +127,7 @@ public class CSPSink extends AtomicActor {
         }
     }
 
-    /** Return false indicating that this actor should not be 
+    /** Return false indicating that this actor should not be
      *  executed in the next iteration of the containing
      *  composite actor.
      * @return True indicating that execution of this actor

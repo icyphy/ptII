@@ -159,7 +159,7 @@ public class DEReceiver implements Receiver {
      *  Instead, the token is queued with the director, and the director
      *  must put the token back into this receiver using the _triggerEvent()
      *  protected method in order for the token to become available to
-     *  the get() method.  By default, this token will be enqueued by 
+     *  the get() method.  By default, this token will be enqueued by
      *  the director with the current time
      *  of the director.  However, by calling setDelay() before calling put(),
      *  you can enqueue the event with a time stamp at a future time.
@@ -186,17 +186,17 @@ public class DEReceiver implements Receiver {
     }
 
     /** Put a token into this receiver with a future time stamp. This token
-     *  will be available to the get() method at the time specified. 
+     *  will be available to the get() method at the time specified.
      *  Note that the time should be greater than or equal
      *  to the current time of the director, otherwise an exception will
-     *  be thrown. 
-     *  
+     *  be thrown.
+     *
      *  @param token The token to be put.
      *  @param time The time stamp of the token
-     *  @exception IllegalActionException If time is less than the 
+     *  @exception IllegalActionException If time is less than the
      *     current time of the director, or no director is available.
      */
-    public void put(Token token, double time) 
+    public void put(Token token, double time)
             throws IllegalActionException{
         DEDirector dir = getDirector();
         double now = dir.getCurrentTime();

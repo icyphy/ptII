@@ -46,12 +46,12 @@ option of producing an equivalent token on the output with an
 incremented time stamp value. Alternatively, the FeedBackDelay actor
 will simply produce the token without altering the time stamp.
 <P>
-Two parameters - <I>nullDelay</I> and <I>realDelay</I> - are 
-available for determining whether an FeedBackDelay actor 
-increments the time stamp of produced output tokens. The default 
-value of nullDelay (realDelay) is true (false). If the nullDelay 
-(realDelay) parameter is set to true, then the time stamps of 
-NullTokens (real tokens) will be incremented as they pass through 
+Two parameters - <I>nullDelay</I> and <I>realDelay</I> - are
+available for determining whether an FeedBackDelay actor
+increments the time stamp of produced output tokens. The default
+value of nullDelay (realDelay) is true (false). If the nullDelay
+(realDelay) parameter is set to true, then the time stamps of
+NullTokens (real tokens) will be incremented as they pass through
 this actor.
 <P>
 The delay value that is applied (given that one of the above
@@ -59,14 +59,14 @@ parameters is true) is determined by the setDelay() and getDelay()
 methods. More elaborate delay values can be made available by
 overriding the getDelay() method in derived classes.
 <P>
-FeedBackDelay actors are effective for preventing Zeno conditions 
-involving cycles of null tokens. If a DDE model has a feedback 
+FeedBackDelay actors are effective for preventing Zeno conditions
+involving cycles of null tokens. If a DDE model has a feedback
 topology, a FeedBackDelay actor should be added into the feedback loop.
 <P>
-The delay value of a FeedBackDelay actor must be wisely chosen. The 
-delay value should be smaller than any other successive time stamp 
-increment found in a given DDE model. This means that if a particular 
-model might have any two time stamps with time difference delta, then 
+The delay value of a FeedBackDelay actor must be wisely chosen. The
+delay value should be smaller than any other successive time stamp
+increment found in a given DDE model. This means that if a particular
+model might have any two time stamps with time difference delta, then
 the delay value should be smaller than delta.
 
 @author John S. Davis II
@@ -115,7 +115,7 @@ public class FeedBackDelay extends DDEActor {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _setVariables();
-        
+
         _name = name;
     }
 
@@ -150,12 +150,12 @@ public class FeedBackDelay extends DDEActor {
     /** Consume a single input token and produce an identical output
      *  token. If the input token is a NullToken and the nullDelay
      *  parameter is set to true, then produce an output NullToken to
-     *  have a time stamp with a delay specified by getDelay(). 
-     *  Otherwise produce a NullToken that does not have a delayed 
-     *  time stamp value. If the input token is a real token and the 
-     *  realDelay parameter is set to true, then produce an output 
-     *  real token to have a time stamp with a delay specified by 
-     *  getDelay(). Otherwise produce a real token that does not have 
+     *  have a time stamp with a delay specified by getDelay().
+     *  Otherwise produce a NullToken that does not have a delayed
+     *  time stamp value. If the input token is a real token and the
+     *  realDelay parameter is set to true, then produce an output
+     *  real token to have a time stamp with a delay specified by
+     *  getDelay(). Otherwise produce a real token that does not have
      *  a delayed time stamp value.
      * @exception IllegalActionException If there is an error when
      *  sending the output token or setting the current time.
@@ -219,12 +219,12 @@ public class FeedBackDelay extends DDEActor {
     public void setDelay(double delay) {
 	_delay = delay;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
     protected double _delay = 4.0;
-    
+
     private String _name;
 
     ///////////////////////////////////////////////////////////////////

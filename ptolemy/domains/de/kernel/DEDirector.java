@@ -192,8 +192,8 @@ public class DEDirector extends Director {
      *  DoubleToken.  Its value defaults to Double.MaxValue.
      */
     public Parameter stopTime;
-    
-    /** Stop when queue is empty.  If this parameter is true, the 
+
+    /** Stop when queue is empty.  If this parameter is true, the
      *  execution of the model will be stop when the queue is empty.
      *  Its value defaults to true.
      */
@@ -242,9 +242,9 @@ public class DEDirector extends Director {
             throws IllegalActionException {
         if (_debugging) _debug("Updating DEDirector parameter", attr.getName());
         if (attr == stopWhenQueueIsEmpty) {
-            _stopWhenQueueIsEmpty = 
+            _stopWhenQueueIsEmpty =
                 ((BooleanToken)stopWhenQueueIsEmpty.getToken()).booleanValue();
-        } 
+        }
     }
 
     /** Disable the specified actor.  All events destined to this actor
@@ -263,7 +263,7 @@ public class DEDirector extends Director {
      */
     public DEEventQueue getEventQueue() {
         return _eventQueue;
-    } 
+    }
 
     /** Advance current time to the next event in the event queue,
      *  and fire one or more actors that have events at that time.
@@ -519,7 +519,7 @@ public class DEDirector extends Director {
 
         // Haven't seen any events yet, so...
         _startTime = Double.MAX_VALUE;
-        
+
 
         // Call the parent preinitialize method to create the receivers.
         super.preinitialize();
@@ -626,7 +626,7 @@ public class DEDirector extends Director {
             }
         }
         int depth = _getDepth(actor);
-        if(_debugging) _debug("enqueue a pure event: ", 
+        if(_debugging) _debug("enqueue a pure event: ",
                 ((NamedObj)actor).getName(),
                 "time = "+ time + " microstep = "+ microstep + " depth = "
                 + depth);
@@ -634,7 +634,7 @@ public class DEDirector extends Director {
     }
 
     /** Put an event into the event queue with the specified destination
-     *  receiver, token, and time stamp. The depth of the event is the 
+     *  receiver, token, and time stamp. The depth of the event is the
      *  depth of the actor that has the receiver.
      *  A smaller depth corresponds
      *  to a higher priority.  The microstep is always equal to zero,
@@ -665,7 +665,7 @@ public class DEDirector extends Director {
         }
         Actor destn = (Actor)(receiver.getContainer()).getContainer();
         int depth = _getDepth(destn);
-        if(_debugging) _debug("enqueue event: to", 
+        if(_debugging) _debug("enqueue event: to",
                 receiver.getContainer().getName()+ " ("+token.toString()+") ",
                 "time = "+ time + " microstep = "+ microstep + " depth = "
                 + depth);
@@ -673,16 +673,16 @@ public class DEDirector extends Director {
     }
 
     /** Put an event into the event queue with the specified destination
-     *  receiver, and token. 
+     *  receiver, and token.
      *  The time stamp of the event is the
      *  current time, but the microstep is one larger than the current
-     *  microstep. The depth is the depth of the actor.  
+     *  microstep. The depth is the depth of the actor.
      *  This method is used by actors that declare that they
      *  introduce delay, but where the value of the delay is zero.
      *  This method must not be used before any firings have occurred
      *  (i.e. in the initialize() method) because current time has no
      *  meaning there.
-     *  
+     *
      *  @param receiver The destination receiver.
      *  @param token The token destined for that receiver.
      *  @param depth The depth.
@@ -884,7 +884,7 @@ public class DEDirector extends Director {
             Iterator ports = actor.inputPortList().iterator();
             while (ports.hasNext()) {
                 IOPort inputPort = (IOPort)ports.next();
-                    
+
                 Set delayPorts = null;
                 if (inputPort instanceof DEIOPort) {
                     DEIOPort dePort = (DEIOPort) inputPort;
@@ -902,7 +902,7 @@ public class DEDirector extends Director {
                         continue;
                     }
                     // find the input ports connected to outPort
-                    Iterator inPortIter = 
+                    Iterator inPortIter =
                         outPort.deepConnectedInPortList().iterator();
                     while (inPortIter.hasNext()) {
                         IOPort pp = (IOPort)inPortIter.next();
@@ -960,9 +960,9 @@ public class DEDirector extends Director {
         _actorToDepth = new Hashtable(sort.length);
 	for(int i = sort.length-1; i >= 0; i--) {
             Actor actor = (Actor)sort[i];
-            if (_debugging) _debug(((Nameable)actor).getFullName(), 
+            if (_debugging) _debug(((Nameable)actor).getFullName(),
                     "depth : " + i);
-            // Insert the hashtable entry. 
+            // Insert the hashtable entry.
             _actorToDepth.put(actor, new Integer(i));
 	}
         if (_debugging) _debug("## End of topological sort.");
@@ -977,15 +977,15 @@ public class DEDirector extends Director {
                 return depth.intValue();
             }
         }
-        throw new IllegalActionException (this, 
+        throw new IllegalActionException (this,
                 "Request the depth of an actor which is not sorted");
-    } 
-            
+    }
+
     // initialize parameters. Set all parameters to their default
     // values.
     private void _initParameters() {
         try {
-            stopTime = new Parameter(this, "stopTime", 
+            stopTime = new Parameter(this, "stopTime",
                     new DoubleToken(Double.MAX_VALUE));
             stopWhenQueueIsEmpty = new Parameter(this, "stopWhenQueueIsEmpty",
                     new BooleanToken(true));

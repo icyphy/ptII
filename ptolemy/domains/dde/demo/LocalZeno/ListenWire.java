@@ -45,12 +45,12 @@ import java.util.LinkedList;
 //// ListenWire
 /**
 A Wire actor that can notify an ExecEventListener of ExecEvents.
-In particular, the listener will be notified each time the prefire(), 
-postfire() and wrapup() methods of this actor are invoked. Such 
-notification is enabled by adding an ExecEventListener to this actor's 
-listener list via the addListeners() method. Listeners can be removed 
-via the removeListeners() method. ExecEventListeners are currently 
-implemented to serve as conduits between Ptolemy II and the Diva 
+In particular, the listener will be notified each time the prefire(),
+postfire() and wrapup() methods of this actor are invoked. Such
+notification is enabled by adding an ExecEventListener to this actor's
+listener list via the addListeners() method. Listeners can be removed
+via the removeListeners() method. ExecEventListeners are currently
+implemented to serve as conduits between Ptolemy II and the Diva
 graphical user interface.
 
 @author John S. Davis II
@@ -90,7 +90,7 @@ public class ListenWire extends Wire {
         _listenerList.addLast(listener);
     }
 
-    /** Inform all listeners that the specified ExecEvent 
+    /** Inform all listeners that the specified ExecEvent
      *  has occurred.
      * @params event The specified ExecEvent.
      */
@@ -126,8 +126,8 @@ public class ListenWire extends Wire {
 	return super.postfire();
     }
 
-    /** Generate an ExecEvent with a state value of 1, cause the 
-     *  calling thread to sleep for 100 milliseconds and then call 
+    /** Generate an ExecEvent with a state value of 1, cause the
+     *  calling thread to sleep for 100 milliseconds and then call
      *  the superclass prefire() method. Return true if this actor
      *  is enabled to call fire(); return false otherwise.
      * @return True if this actor is enabled to call fire(); return
@@ -146,8 +146,8 @@ public class ListenWire extends Wire {
 	return super.prefire();
     }
 
-    /** Remove one instance of the specified ExecEventListener 
-     *  from this actor's list of listeners. 
+    /** Remove one instance of the specified ExecEventListener
+     *  from this actor's list of listeners.
      * @param listener The specified ExecEventListener.
      */
     public void removeListeners(ExecEventListener listener) {

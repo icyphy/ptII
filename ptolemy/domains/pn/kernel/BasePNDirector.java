@@ -589,7 +589,7 @@ public class BasePNDirector extends ProcessDirector {
     }
 
     /** Resolve an artificial deadlock and return true. If the
-     *  deadlock is not an artificial deadlock (it is a real deadlock), 
+     *  deadlock is not an artificial deadlock (it is a real deadlock),
      *  then return false.
      *  If it is an artificial deadlock, select the
      *  receiver with the smallest queue capacity on which any process is
@@ -605,12 +605,12 @@ public class BasePNDirector extends ProcessDirector {
      *  alone.
      *  @return True after handling an artificial deadlock. Otherwise return
      *  false.
-     *  @exception IllegalActionException Not thrown in this base class. 
+     *  @exception IllegalActionException Not thrown in this base class.
      *  This might be thrown by derived classes.
      */
     protected boolean _resolveDeadlock() throws IllegalActionException {
         if (_writeBlockCount == 0) {
-	    //There is a real deadlock. 
+	    //There is a real deadlock.
 	    return false;
         } else {
             //This is an artificial deadlock. Hence find the input port with

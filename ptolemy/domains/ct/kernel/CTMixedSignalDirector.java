@@ -196,8 +196,8 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
             _eventPhaseExecution();
             _setEventPhase(false);
             if(_debugging) _debug(getFullName(),
-                    "Request a refire at the current time." + 
-                    exe.getCurrentTime(), 
+                    "Request a refire at the current time." +
+                    exe.getCurrentTime(),
                     "--END of fire");
             exe.fireAt(ca, exe.getCurrentTime());
             return;
@@ -222,7 +222,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
             if (_isStoppedByEvent()) {
                 if(_debugging) {
                     _debug(getFullName() + " fire stopped by event.",
-                            "at " + getCurrentTime(), 
+                            "at " + getCurrentTime(),
                             "request refire at " + getCurrentTime(),
                             "set Event phase to TRUE");
                 }
@@ -233,7 +233,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
                        < getTimeResolution()) {
                 if(_debugging) {
                     _debug(getFullName() + " fire stopped regularly.",
-                            "at " + getCurrentTime(), 
+                            "at " + getCurrentTime(),
                             "request refire at " + getIterationEndTime(),
                             "set Event phase to FALSE");
                 }
@@ -270,7 +270,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
             TypedCompositeActor ca = (TypedCompositeActor)getContainer();
             Director exe = ca.getExecutiveDirector();
             exe.fireAt(ca, getCurrentTime());
-        } 
+        }
     }
 
     /** If this is a top-level director, returns true if the current time
@@ -385,17 +385,17 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
             // fireAt(null, _outsideTime);
             // fireAt(null, getIterationEndTime());
             // Now it's guaranteed that the current time is the outside time.
-            if(_debugging) _debug(getName(), "Iteration end time = " + 
+            if(_debugging) _debug(getName(), "Iteration end time = " +
                     getIterationEndTime(), "End of Prefire");
         }
         return true;
     }
 
-    /** Return true if it 
+    /** Return true if it
      *  transfers data from an input port of the container to the
      *  ports it is connected to on the inside.  The port argument must
      *  be an opaque input port.  If any channel of the input port
-     *  has no data, then that channel is ignored. The execution 
+     *  has no data, then that channel is ignored. The execution
      *  phase is set to event phase if there's any data transfered.
      *
      *  @exception IllegalActionException If the port is not an opaque

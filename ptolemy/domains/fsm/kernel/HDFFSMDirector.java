@@ -74,7 +74,7 @@ the FSM. This TypedCompositeActor will henceforth be refered to as
 "the HDF actor." Create an HDFFSMDirector with the HDF actor as its
 container. Create an HDFFSMController actor with the HDF actor as
 its container. Create a TypedComposite actor (one for each state
-in the FSM) with the HDF actor as its container. This 
+in the FSM) with the HDF actor as its container. This
 TypedComposite actor is henceforth refered to as "the refining state
 actor." Create the necessary ports on each refining state actor
 such that each refining state actor contains the same number and
@@ -103,7 +103,7 @@ The guard expressions use the Ptolemy II expression language. Currently,
 the only variables allowed in the guard expressions are variables
 containing tokens transfered through the input and output ports of
 the HDF actor. Following the syntax of [1], if the HDF actor contains
-an input port called dataIn, then use dataIn$0 in the guard 
+an input port called dataIn, then use dataIn$0 in the guard
 expression to reference the token most recently transfered through
 port dataIn. Use dataIn$1 to reference the next most recent token,
 dataIn$2 to reference the next most recent token, and so on. By
@@ -165,9 +165,9 @@ public class HDFFSMDirector extends FSMDirector {
 
 
 	// FIXME: Remove this when get something better.
-	
 
-	
+
+
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -201,7 +201,7 @@ public class HDFFSMDirector extends FSMDirector {
     }
 
 
-    
+
     /** Invoke an iteration on the current state's refinement. Update
      *  the count of the number of times the current state's refinement
      *  has been fired in the current iteration of the HDF diagram in
@@ -218,7 +218,7 @@ public class HDFFSMDirector extends FSMDirector {
 	if (_controller != null) {
 	    _controller.fire();
 	} else {
-	    throw new IllegalActionException(this, 
+	    throw new IllegalActionException(this,
 		     "HDFFSMDirector must have a contoller. "
 		     + "Use setController() to set the contoller"
 					     + " and try again.");
@@ -264,12 +264,12 @@ public class HDFFSMDirector extends FSMDirector {
                 }
             }
 	    //if (_debugging) _debug("HDFFSMDirector: initialize(): " +
-	    //      "initializing " + 
+	    //      "initializing " +
 	    //		   ((NamedObj)_controller).getFullName());
             _controller.initialize();
         }
-        
-        
+
+
 
     }
 
@@ -343,7 +343,7 @@ public class HDFFSMDirector extends FSMDirector {
      *  one of the associated actors throws it.
      */
     public void preinitialize() throws IllegalActionException {
-	
+
         CompositeActor container = ((CompositeActor)getContainer());
         if (container!= null) {
 	    // Initialize input guard variables.
@@ -365,7 +365,7 @@ public class HDFFSMDirector extends FSMDirector {
 		ArrayFIFOQueue guardTokenArray =
 		    new ArrayFIFOQueue(getGuardTokenHistory());
 
-		
+
 		// Fill up guardTokenArray. The queue should always
 		// be full so that its size does not need to be checked
 		// on each call to fire().
@@ -386,7 +386,7 @@ public class HDFFSMDirector extends FSMDirector {
 		    _portNameToArrayFIFOQueue.put(aPort.getFullName(),
 						  guardTokenArray);
 		}
-		
+
 		// Create guard variables for this port, for use
 		// in state transition guard expressions.
 		_createGuardVariables(aPort);
@@ -447,7 +447,7 @@ public class HDFFSMDirector extends FSMDirector {
      *  These guard variables have the names dataIn$0, dataIn$1,
      *  dataIn$2, .... Here, dataIn$0 references the token most
      *  recently read in port "dataIn", dataIn$1 references the
-     *  next most recently read token, and so on. 
+     *  next most recently read token, and so on.
      *
      * @param history The number of tokens in the guard history.
      */
@@ -455,7 +455,7 @@ public class HDFFSMDirector extends FSMDirector {
     public void  setGuardTokenHistory(int histSize) {
 	_guardLength = histSize;
     }
-    
+
 
 
     /** Return true if it transfers data from an input port of the
@@ -467,12 +467,12 @@ public class HDFFSMDirector extends FSMDirector {
      *  a length set by setGuardTokenHistory(). The token queue is
      *  used when evaluating state transition expressions.
      *  <p>
-     *  The port argument must be an opaque input port.  If 
+     *  The port argument must be an opaque input port.  If
      *  channel 0 of the input port has no data, then that channel
      *  is ignored.
      *  <p>
      *  This assumes that the name of the
-     *  refining state's port must have the same name 
+     *  refining state's port must have the same name
      *  as the input port and is connected to the input port.
      *  Therefore, it is necessary that all input ports of a
      *  heterochronous dataflow actor that refines to an FSM be
@@ -487,12 +487,12 @@ public class HDFFSMDirector extends FSMDirector {
      */
     // ************ FIXME *************
     /* This is stupid. This assumes that the name of the
-     * refining state's port must have the same name 
+     * refining state's port must have the same name
      * as the input port (of this director's container) to
-     * which it is connected. 
+     * which it is connected.
      */
     public boolean transferInputs(IOPort port) throws IllegalActionException {
-	
+
 
         if (!port.isInput() || !port.isOpaque()) {
             throw new IllegalActionException(this, port,
@@ -517,16 +517,16 @@ public class HDFFSMDirector extends FSMDirector {
 	Token t = null;
         while (port.hasToken(0)) {
             try {
-		
-		
+
+
 		// This  port.get(0) removes the token from the port, so
 		// that subsequent port.hasToken(0) will return false.
 		//Token t = port.get(0);
 		t = port.get(0);
-		
 
-		
-		
+
+
+
 		// Remove the oldest token from the queue and throw it away
 		// to make room for a new token.
 		// Note that "guardTokenArray" is filled to capacity when
@@ -540,8 +540,8 @@ public class HDFFSMDirector extends FSMDirector {
 
 		//if (_debugging) _debug("HDFFSMDirector: transferInputs(): Port " + port.getFullName() + " has token.");
 		//if (_debugging) _debug("HDFFSMDirector: transferInputs(): input port's token: " + t.toString());
-		
-		
+
+
 		if (_controller == null) {
 		    throw new IllegalActionException(this,
 		      "_controller is null.");
@@ -556,7 +556,7 @@ public class HDFFSMDirector extends FSMDirector {
 
 		// ************ FIXME ***************
 		/* This is stupid. This assumes that the name of the
-		 * refining state's port must have the same name 
+		 * refining state's port must have the same name
 		 * as the input port (of this director's container) to
 		 * which it is connected. It the names don't match,
 		 * then things silently fail! :(
@@ -567,7 +567,7 @@ public class HDFFSMDirector extends FSMDirector {
 
                 if (p != null) {
                     rec = (p.getReceivers())[0][0];
-                    
+
 		    //if (_debugging) _debug("HDFFSMDirector: transferInputs(): Put a token in the current refining state");
                     rec.put(t);
                 } else {
@@ -586,7 +586,7 @@ public class HDFFSMDirector extends FSMDirector {
 	// on the last firing of an iteration.
 	// Get the array of variables associated with "port".
 	Variable[] guardVarArray = (Variable[])_inputPortNameToVariableArray.get(port.getFullName());
-	
+
 	if (guardVarArray == null) {
 	    throw new InternalErrorException("Guard variable array is null " +
 					     "in transferInputs().");
@@ -594,10 +594,10 @@ public class HDFFSMDirector extends FSMDirector {
 
 	// Copy the newest token into the Variable array.
 	//Token tempToken2 = (Token)guardTokenArray.get(0);
-	
+
 	// Copy the token(s) into the array of variables.
 	//(guardVarArray[0]).setToken(tempToken2);
-	
+
 	int i; // loop var.
 	for (i = 0; i < guardVarArray.length; i++) {
 	    (guardVarArray[i]).setToken((Token)guardTokenArray.get(guardVarArray.length -1 - i));
@@ -616,12 +616,12 @@ public class HDFFSMDirector extends FSMDirector {
      *  a length set by setGuardTokenHistory(). The token queue is
      *  used when evaluating state transition expressions.
      *  <p>
-     *  The port argument must be an opaque output port.  If 
+     *  The port argument must be an opaque output port.  If
      *  channel 0 of the output port has no data, then that channel
      *  is ignored.
      *  <p>
      *  This assumes that the name of the
-     *  refining state's port must have the same name 
+     *  refining state's port must have the same name
      *  as the output port and that is connected to the output port.
      *  Therefore, it is necessary that all output ports of a
      *  heterochronous dataflow actor that refines to an FSM be
@@ -649,7 +649,7 @@ public class HDFFSMDirector extends FSMDirector {
 
 	// ************ FIXME *********
 	/* This is stupid. This assumes that the name of the
-	 * refining state's port must have the same name 
+	 * refining state's port must have the same name
 	 * as the output port (of this director's container) to
 	 * which it is connected.
 	 */
@@ -697,20 +697,20 @@ public class HDFFSMDirector extends FSMDirector {
 	// on the last firing of an iteration.
 	// Get the array of variables associated with "port".
 	Variable[] guardVarArray = (Variable[])_outputPortNameToVariableArray.get(p.getFullName());
-	
+
 	if (guardVarArray == null) {
 	    // This should not happen.
 	    throw new InternalErrorException("Guard variable array is null " +
 					     "in transferOutputs().");
-			      
+
 	}
 
 	// Copy the newest token into the Variable array.
 	//Token tempToken2 = (Token)guardTokenArray.get(0);
-	
+
 	// Copy the token(s) into the array of variables.
 	//(guardVarArray[0]).setToken(tempToken2);
-	
+
 	int i; // loop var.
 	for (i = 0; i < guardVarArray.length; i++) {
 	    (guardVarArray[i]).setToken((Token)guardTokenArray.get(guardVarArray.length -1 - i));
@@ -738,7 +738,7 @@ public class HDFFSMDirector extends FSMDirector {
 
 	int history = getGuardTokenHistory();
 	Variable[] guardVarArray = new Variable[history];
-	
+
 
 	if (port.isInput()) {
 	    if (_inputPortNameToVariableArray == null) {
@@ -748,7 +748,7 @@ public class HDFFSMDirector extends FSMDirector {
 		_inputPortNameToVariableArray = new HashMap();
 	    }
 	    // Create a mapping from the current port's name to
-	    // an array of variables. The tokens in the 
+	    // an array of variables. The tokens in the
 	    // ArrayFIFOQueue associated with the port will
 	    // be copied into the variables in the array on the
 	    // last firing of an iteration (Type B firing in the
@@ -757,12 +757,12 @@ public class HDFFSMDirector extends FSMDirector {
 		_inputPortNameToVariableArray.put(port.getFullName(), guardVarArray);
 		try {
 		    for(int i = 0; i < history; i++) {
-			
+
 			Integer iInt = new Integer(i);
 			String guardName = port.getName() + "$" + iInt.toString();
-			
+
 			//if (_debugging) _debug("guard: with guard name:" + guardName);
-			
+
 			guardVarArray[i] = new Variable(this, guardName);
 		    }
 		    // Put this variable in a list of variables and make
@@ -770,7 +770,7 @@ public class HDFFSMDirector extends FSMDirector {
 		    // transition will then add the variables in the
 		    // list to its scope of variables allowed in the
 		    // transition guard expression.
-		    
+
 		    // create new variable lists
 		    if (_allGuardVars == null) {
 			_allGuardVars = new ArrayFIFOQueue();
@@ -788,7 +788,7 @@ public class HDFFSMDirector extends FSMDirector {
 		_outputPortNameToVariableArray = new HashMap();
 	    }
 	    // Create a mapping from the current port's name to
-	    // an array of variables. The tokens in the 
+	    // an array of variables. The tokens in the
 	    // ArrayFIFOQueue associated with the port will
 	    // be copied into the variables in the array on the
 	    // last firing of an iteration (Type B firing in the
@@ -797,12 +797,12 @@ public class HDFFSMDirector extends FSMDirector {
 		_outputPortNameToVariableArray.put(port.getFullName(), guardVarArray);
 		try {
 		    for(int i = 0; i < history; i++) {
-			
+
 			Integer iInt = new Integer(i);
 			String guardName = port.getName() + "$" + iInt.toString();
-			
+
 			//if (_debugging) _debug("guard: with guard name:" + guardName);
-			
+
 			guardVarArray[i] = new Variable(this, guardName);
 		    }
 		    // Put this variable in a list of variables and make
@@ -810,7 +810,7 @@ public class HDFFSMDirector extends FSMDirector {
 		    // transition will then add the variables in the
 		    // list to its scope of variables allowed in the
 		    // transition guard expression.
-		    
+
 		    // create new variable lists
 		    if (_allGuardVars == null) {
 			_allGuardVars = new ArrayFIFOQueue();
@@ -833,7 +833,7 @@ public class HDFFSMDirector extends FSMDirector {
     ///////////////////////////////////////////////////////////////
     //////////        protected methods           /////////////////
 
-    
+
     /* Get an enumeration of all of the variables that can be part
      * of a transistion's guard expression. This method should
      * only be called by an instance of HDFFSMTransistion.
@@ -867,19 +867,19 @@ public class HDFFSMDirector extends FSMDirector {
     // array of Variables stores the _guardLength most recently
     // transfered tokens by the input port. The variables in the
     // array are updated by copying the tokens contained in the
-    // ArrayFIFOQueue of the same port (obtained from 
+    // ArrayFIFOQueue of the same port (obtained from
     // _portNameToArrayFIFOQueue). Note that the array
     // of variables is only updated on the last firing of an
     // iteration.
     private HashMap _inputPortNameToVariableArray;
 
- 
+
 
     // Map a port name to its associated array of Variables. The
     // array of Variables stores the _guardLength most recently
     // transfered tokens by the output port. The variables in the
     // array are updated by copying the tokens contained in the
-    // ArrayFIFOQueue of the same port (obtained from 
+    // ArrayFIFOQueue of the same port (obtained from
     // outputPortNameToArrayFIFOQueue). Note that the array
     // of variables is only updated on the last firing of an
     // iteration.

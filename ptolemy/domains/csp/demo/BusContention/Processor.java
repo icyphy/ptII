@@ -1,4 +1,4 @@
-/* A CSP actor that contends for a shared resource. 
+/* A CSP actor that contends for a shared resource.
 
  Copyright (c) 1998-1999 The Regents of the University of California.
  All rights reserved.
@@ -57,28 +57,28 @@ import java.util.List;
 A CSP actor that contends for a shared resource. A Processor actor
 is granted access to the shared resource via a Controller actor.
 The processor must connect to a Controller via its requestInput
-and requestOutput ports. The shared resource that the Processor 
+and requestOutput ports. The shared resource that the Processor
 attempts to gain access to is a Memory actor. The memory actor
 is connected to via the Processor's memoryInput and memoryOutput
 ports.
 
-The Processor actor has four informal states. In state one it 
-determines at what time it will next attempt to access the 
+The Processor actor has four informal states. In state one it
+determines at what time it will next attempt to access the
 shared resource. It will then place a request at the determined
 time. In state two, it will wait to see if it has been granted
 the request. The Processor enters state three if it is granted
-the request. It remains in state three for 300 milliseconds, 
-accesses the shared resource and then returns to state two. If 
+the request. It remains in state three for 300 milliseconds,
+accesses the shared resource and then returns to state two. If
 the Processor is denied its request, then it enters four and
 remains in that state for 300 milliseconds after which it returns
 to state four.
 
 In addition to the resource contention features of Processor,
-it can also notify an ExecEventListener as this actor jumps between 
-its three states. Such notification is enabled by adding an 
-ExecEventListener to this actor's listener list via the addListeners() 
-method. Listeners can be removed via the removeListeners() method. 
-ExecEventListeners are currently implemented to serve as conduits 
+it can also notify an ExecEventListener as this actor jumps between
+its three states. Such notification is enabled by adding an
+ExecEventListener to this actor's listener list via the addListeners()
+method. Listeners can be removed via the removeListeners() method.
+ExecEventListeners are currently implemented to serve as conduits
 between Ptolemy II and the Diva graphical user interface.
 
 @author John S. Davis II
@@ -87,14 +87,14 @@ between Ptolemy II and the Diva graphical user interface.
 
 public class Processor extends CSPActor {
 
-    /** Construct a Processor actor with the specified container, 
+    /** Construct a Processor actor with the specified container,
      *  name and priority code of this actor.
      * @param cont The container of this actor.
      * @param name The name of this actor.
      * @param code The priority code of this actor.
-     * @exception IllegalActionException If the actor cannot be 
+     * @exception IllegalActionException If the actor cannot be
      *  contained by the proposed container.
-     * @exception NameDuplicationException If the container 
+     * @exception NameDuplicationException If the container
      *  already has an actor with this name.
      */
     public Processor(TypedCompositeActor cont, String name, int code)
@@ -119,22 +119,22 @@ public class Processor extends CSPActor {
     ////                     ports and parameters                  ////
 
     /** The resource request input port. Resources are granted through
-     *  this port. The type of this port is BaseType.BOOLEAN. 
+     *  this port. The type of this port is BaseType.BOOLEAN.
      */
     public TypedIOPort requestInput;
-    
+
     /** The resource request output port. Resource requests are made
      *  through this port with a token that include's the requestor's
-     *  priority level. The type of this port is BaseType.INT. 
+     *  priority level. The type of this port is BaseType.INT.
      */
     public TypedIOPort requestOutput;
-    
+
     /** The input port through which this actor receives data from
      *  the shared resource. The type of this port is BaseType.GENERAL.
      */
     public TypedIOPort memoryInput;
-    
-    /** The output port through which this actor sends data to the 
+
+    /** The output port through which this actor sends data to the
      *  shared resource. The type of this port is BaseType.STRING.
      */
     public TypedIOPort memoryOutput;
@@ -155,7 +155,7 @@ public class Processor extends CSPActor {
         _listeners.add(listener);
     }
 
-    /** Attempt to access the shared resource. 
+    /** Attempt to access the shared resource.
      * @exception IllegalActionException If there is an error
      *  during communication through any of this actor's ports.
      */
@@ -215,7 +215,7 @@ public class Processor extends CSPActor {
         accessMemory(read);
     }
 
-    /** Return true when the time of the director has exceeded 
+    /** Return true when the time of the director has exceeded
      *  50; return false otherwise.
      * @return True when the global time has exceeded 50; return
      *  false otherwise.
@@ -246,8 +246,8 @@ public class Processor extends CSPActor {
         }
     }
 
-    /** Notify all ExecEventListeners on this actor's 
-     *  listener list that the specified event was 
+    /** Notify all ExecEventListeners on this actor's
+     *  listener list that the specified event was
      *  generated.
      * @param event The specified ExecEvent.
      */
@@ -287,8 +287,8 @@ public class Processor extends CSPActor {
         return false;
     }
 
-    /** Remove one instance of the specified ExecEventListener 
-     *  from this actor's list of listeners. 
+    /** Remove one instance of the specified ExecEventListener
+     *  from this actor's list of listeners.
      * @param listener The specified ExecEventListener.
      */
     public void removeListeners(ExecEventListener listener) {
@@ -304,5 +304,5 @@ public class Processor extends CSPActor {
     private int _code;
     private CSPDirector _dir;
     private List _listeners;
-    
+
 }

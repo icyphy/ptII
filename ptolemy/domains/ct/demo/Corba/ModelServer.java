@@ -41,7 +41,7 @@ A model server register the servant to the name server and wait for calls.
 @version $Id$
 */
 public class ModelServer {
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -52,10 +52,10 @@ public class ModelServer {
         try {
             // Initialize the ORB.
             org.omg.CORBA.ORB orb = org.omg.CORBA.ORB.init(args,null);
-            
+
             //create a GoodDay obj
             NonlinearServant impl = new NonlinearServant();
-            
+
             // register the servant to ORB
             orb.connect(impl);
             System.out.println(orb.object_to_string(impl));
@@ -69,7 +69,7 @@ public class ModelServer {
             NameComponent nc = new NameComponent("Nonlinear", "");
             NameComponent path[] = {nc};
             ncRef.rebind(path, impl);
-            
+
             //wait for request
             java.lang.Object sync = new java.lang.Object();
             synchronized (sync) {
@@ -80,4 +80,4 @@ public class ModelServer {
         }
     }
 }
-               
+

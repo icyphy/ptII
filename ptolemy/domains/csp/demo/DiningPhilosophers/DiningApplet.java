@@ -278,7 +278,7 @@ public class DiningApplet extends Applet
             ctt = new CurrentTimeThread();
             //ctt = new CurrentTimeThread(this);
             ctt.start();
-            
+
             // Start the simulation.
             _manager.run();
         } catch (Exception ex) {

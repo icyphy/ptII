@@ -50,7 +50,7 @@ public interface CTWaveformGenerator extends Actor{
 
     /** Consume the discrete event that happens at the current time.
      *  If there are no such events, do nothing.
-     *  @exception IllegalActionException 
+     *  @exception IllegalActionException
      *     May be need by the derived classes.
      */
     public void consumeCurrentEvents() throws IllegalActionException;

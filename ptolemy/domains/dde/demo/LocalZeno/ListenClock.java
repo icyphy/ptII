@@ -42,13 +42,13 @@ import java.util.Iterator;
 //////////////////////////////////////////////////////////////////////////
 //// ListenClock
 /**
-A ListenClock is a clock source that can notify an ExecEventListener 
-of ExecEvents. In particular, the listener will be notified each time the 
-prefire(), postfire() and wrapup() methods of this actor are 
-invoked. Such notification is enabled by adding an ExecEventListener 
-to this actor's listener list via the addListeners() method. Listeners 
-can be removed via the removeListeners() method. ExecEventListeners 
-are currently implemented to serve as conduits between Ptolemy II and 
+A ListenClock is a clock source that can notify an ExecEventListener
+of ExecEvents. In particular, the listener will be notified each time the
+prefire(), postfire() and wrapup() methods of this actor are
+invoked. Such notification is enabled by adding an ExecEventListener
+to this actor's listener list via the addListeners() method. Listeners
+can be removed via the removeListeners() method. ExecEventListeners
+are currently implemented to serve as conduits between Ptolemy II and
 the Diva graphical user interface.
 
 @author John S. Davis II
@@ -62,9 +62,9 @@ public class ListenClock extends Clock {
     /** Construct an actor with the specified container and name.
      *  @param container The container.
      *  @param name The name of this actor.
-     *  @exception IllegalActionException If the actor cannot be 
+     *  @exception IllegalActionException If the actor cannot be
      *   contained by the proposed container.
-     *  @exception NameDuplicationException If the container 
+     *  @exception NameDuplicationException If the container
      *   already has an actor with this name.
      */
     public ListenClock(TypedCompositeActor container, String name)
@@ -88,8 +88,8 @@ public class ListenClock extends Clock {
         _listenerList.addLast(listener);
     }
 
-    /** Notify all ExecEventListeners on this actor's 
-     *  listener list that the specified event was 
+    /** Notify all ExecEventListeners on this actor's
+     *  listener list that the specified event was
      *  generated.
      * @param event The specified ExecEvent.
      */
@@ -105,10 +105,10 @@ public class ListenClock extends Clock {
         }
     }
 
-    /** Generate an ExecEvent with a state value of 1, cause the 
-     *  calling thread to sleep for 100 milliseconds and then call 
+    /** Generate an ExecEvent with a state value of 1, cause the
+     *  calling thread to sleep for 100 milliseconds and then call
      *  the superclass prefire() method.
-     * @exception IllegalActionException If there is an 
+     * @exception IllegalActionException If there is an
      *  interruption while the calling thread sleeps.
      */
     public boolean prefire() throws IllegalActionException {
@@ -142,11 +142,11 @@ public class ListenClock extends Clock {
 	return super.postfire();
     }
 
-    /** Generate an ExecEvent with a state value of 3, cause the 
-     *  calling thread to sleep for 100 milliseconds and then call 
+    /** Generate an ExecEvent with a state value of 3, cause the
+     *  calling thread to sleep for 100 milliseconds and then call
      *  the superclass wrapup() method.
-     * @exception IllegalActionException If there is an exception 
-     *  in the execution of the wrapup method of this actor's 
+     * @exception IllegalActionException If there is an exception
+     *  in the execution of the wrapup method of this actor's
      *  superclass.
      */
     public void wrapup() throws IllegalActionException {
@@ -154,8 +154,8 @@ public class ListenClock extends Clock {
 	super.wrapup();
     }
 
-    /** Remove one instance of the specified ExecEventListener 
-     *  from this actor's list of listeners. 
+    /** Remove one instance of the specified ExecEventListener
+     *  from this actor's list of listeners.
      * @param listener The specified ExecEventListener.
      */
     public void removeListeners(ExecEventListener listener) {

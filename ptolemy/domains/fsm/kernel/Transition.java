@@ -53,10 +53,10 @@ a guard expression and a trigger expression. The trigger of a transition
 should imply the guard. A transition is enabled and can be taken when its
 guard is true. A transition is triggered and must be taken when its trigger
 is true.
-<p> 
+<p>
 A transition can contain a set of actions. The actions are executed when
 the FSMActor containing the transition is fired and the transition is chosen,
-or when the FSMActor is postfired and the transition is the last chosen 
+or when the FSMActor is postfired and the transition is the last chosen
 transition.
 <p>
 A transition can be preemptive or non-preemptive. When a preemptive transition
@@ -88,7 +88,7 @@ public class Transition extends ComponentRelation {
         super(container, name);
         // Create the variables for evaluating guard and trigger.
         _guardVar = new Variable(this, "_Guard");
-        _triggerVar = new Variable(this, "_Trigger");        
+        _triggerVar = new Variable(this, "_Trigger");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -169,7 +169,7 @@ public class Transition extends ComponentRelation {
      *  the transition from its container.
      *
      *  @param entity The proposed container.
-     *  @exception IllegalActionException If the transition would result 
+     *  @exception IllegalActionException If the transition would result
      *   in a recursive containment structure, or if
      *   this transition and container are not in the same workspace, or
      *   if the argument is not a FSMActor or null.
@@ -224,7 +224,7 @@ public class Transition extends ComponentRelation {
     ////                         protected methods                 ////
 
     /** Throw an IllegalActionException if the port cannot be linked
-     *  to this transition. A transition has a source state and a 
+     *  to this transition. A transition has a source state and a
      *  destination state. A transition is only linked to the outgoing
      *  port of its source state and the incoming port of its destination
      *  state.

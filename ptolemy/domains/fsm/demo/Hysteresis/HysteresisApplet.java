@@ -77,7 +77,7 @@ public class HysteresisApplet extends SDFApplet {
         // The 1 argument requests a go and a stop button.
         getContentPane().add(_createRunControls(2), BorderLayout.SOUTH);
         try {
-	    
+
 
 	    // Create and configure ramp source
 	    Ramp rampSig = new Ramp(_toplevel, "rampSig");
@@ -85,7 +85,7 @@ public class HysteresisApplet extends SDFApplet {
 	    // Create and configure Sine transformer
 	    Sine sineSig = new Sine(_toplevel, "sineSig");
 	    sineSig.omega.setToken(new DoubleToken(0.1));
-          
+
 	    // Create and configure noise source
             Gaussian noise = new Gaussian(_toplevel, "noise");
             noise.standardDeviation.setToken(new DoubleToken(0.2));
@@ -96,12 +96,12 @@ public class HysteresisApplet extends SDFApplet {
             // Create and configure hystplotter
             SequencePlotter hystplotter = new SequencePlotter(_toplevel, "plot1");
 
-	   
+
 
             // Place the hystplotter in the applet in such a way that it fills
             // the available space.
             hystplotter.place(getContentPane());
-	    
+
             hystplotter.plot.setBackground(getBackground());
             hystplotter.plot.setGrid(false);
             hystplotter.plot.setTitle("Threshold = 0.3, Noise std dev = 0.2");
@@ -112,18 +112,18 @@ public class HysteresisApplet extends SDFApplet {
             hystplotter.plot.setPointsPersistence(200);
 
 	    // Create and configure the SDF test acotor which refines
-	    // to a FSM.	    
+	    // to a FSM.
 	    TypedCompositeActor tempAct =
 		new TypedCompositeActor(_toplevel, "tempAct");
-	    
+
 	    // ports
-	    TypedIOPort tempActInPort = 
+	    TypedIOPort tempActInPort =
 		(TypedIOPort)tempAct.newPort("dataIn");
             tempActInPort.setInput(true);
             tempActInPort.setTypeEquals(BaseType.DOUBLE);
-	    
 
-            TypedIOPort tempActOutPort = 
+
+            TypedIOPort tempActOutPort =
 		(TypedIOPort)tempAct.newPort("dataOut");
             tempActOutPort.setOutput(true);
             tempActOutPort.setTypeEquals(BaseType.DOUBLE);
@@ -145,7 +145,7 @@ public class HysteresisApplet extends SDFApplet {
             ctrlTrs0Tos1.setTriggerEvent("dataIn$0");
 	    // Note: setTriggerCondition sets the guard.
             ctrlTrs0Tos1.setTriggerCondition("dataIn$0 < -0.3");
-	    
+
 
 	    HDFFSMTransition ctrlTrs0Tos0 =
 	    (HDFFSMTransition)ctrl.createTransition(ctrls0, ctrls0);
@@ -154,8 +154,8 @@ public class HysteresisApplet extends SDFApplet {
 	    ctrlTrs0Tos0.setTriggerEvent("dataIn$0");
 	    // Note: setTriggerCondition sets the guard.
 	    ctrlTrs0Tos0.setTriggerCondition("dataIn$0 > -0.3");
-	    
-	    
+
+
 
 	    HDFFSMTransition ctrlTrs1Tos0 =
 		(HDFFSMTransition)ctrl.createTransition(ctrls1, ctrls0);
@@ -191,17 +191,17 @@ public class HysteresisApplet extends SDFApplet {
 
 	    // FIXME: Currently, the names of all ports linked
 	    // to a common relation must have the same name.
-	    TypedIOPort tempActState0InPort = 
+	    TypedIOPort tempActState0InPort =
 		(TypedIOPort)tempActState0.newPort("dataIn");
             tempActState0InPort.setInput(true);
             tempActState0InPort.setTypeEquals(BaseType.DOUBLE);
 
-	     TypedIOPort tempActState0OutPort = 
+	     TypedIOPort tempActState0OutPort =
 		 (TypedIOPort)tempActState0.newPort("dataOut");
             tempActState0OutPort.setOutput(true);
             tempActState0OutPort.setTypeEquals(BaseType.DOUBLE);
 
-	    
+
 
 	    // Set up tempAct to contain an SDFDirector and an SDF diagram.
 	    try {
@@ -210,21 +210,21 @@ public class HysteresisApplet extends SDFApplet {
 		    new SDFDirector(tempActState0, "SDFDirector0");
 
 		SDFScheduler scheduler0 = new SDFScheduler(_workspace);
-		
+
 		_director0.setScheduler(scheduler0);
 		_director0.setScheduleValid(false);
 	    } catch (Exception ex) {
 		report("Failed to setup SDF director 0 and scheduler:\n", ex);
-		
+
 	    }
 
 	    // Add an SDF Actor and connect up ports.
 	    Const const0 = new Const(tempActState0, "Const0");
 	    const0.value.setToken(new DoubleToken(-1));
-	    
+
 	    // For Const actor, no input port is required.
 	    //tempActState0.connect(tempActState0InPort, const0.input);
-	    
+
 	    tempActState0.connect(const0.output, tempActState0OutPort);
 
 	    // submachine refining tempAct's s1 state
@@ -232,14 +232,14 @@ public class HysteresisApplet extends SDFApplet {
 		new TypedCompositeActor(tempAct, "state1");
 	    ctrls1.setRefinement(tempActState1);
             // ports
-	    //TypedIOPort tempActState1InPort = 
+	    //TypedIOPort tempActState1InPort =
 	    //(TypedIOPort)tempActState1.newPort("tempActState1InPort");
-	    TypedIOPort tempActState1InPort = 
+	    TypedIOPort tempActState1InPort =
 		(TypedIOPort)tempActState1.newPort("dataIn");
             tempActState1InPort.setInput(true);
             tempActState1InPort.setTypeEquals(BaseType.DOUBLE);
 
-	    TypedIOPort tempActState1OutPort = 
+	    TypedIOPort tempActState1OutPort =
 	    (TypedIOPort)tempActState1.newPort("dataOut");
             tempActState1OutPort.setOutput(true);
             tempActState1OutPort.setTypeEquals(BaseType.DOUBLE);
@@ -250,7 +250,7 @@ public class HysteresisApplet extends SDFApplet {
             tempActInPort.link(tempActInRel);
             tempActState0InPort.link(tempActInRel);
             tempActState1InPort.link(tempActInRel);
-	    
+
 	     TypedIORelation tempActOutRel =
 		 (TypedIORelation)tempAct.newRelation("tempActOutRel");
             tempActOutPort.link(tempActInRel);
@@ -264,25 +264,25 @@ public class HysteresisApplet extends SDFApplet {
 		    new SDFDirector(tempActState1, "SDFDirector1");
 
 		SDFScheduler scheduler1 = new SDFScheduler(_workspace);
-		
+
 		_director1.setScheduler(scheduler1);
 		_director1.setScheduleValid(false);
 	    } catch (Exception ex) {
 		report("Failed to setup SDF director 1 and scheduler:\n", ex);
-		
+
 	    }
 
 	    // Add an SDF Actor and connect up ports.
 	    Const const1 = new Const(tempActState1, "Const1");
 	    const1.value.setToken(new DoubleToken(1));
-	    
+
 	    tempActState1.connect(const1.output, tempActState1OutPort);
 
 	    //////////
             _toplevel.connect(rampSig.output, sineSig.input);
 	    _toplevel.connect(sineSig.output, add.plus);
 	    _toplevel.connect(noise.output, add.plus);
-	    
+
 	    _toplevel.connect(tempActOutPort, hystplotter.input);
 
 	    TypedIORelation noisyRel =
@@ -290,7 +290,7 @@ public class HysteresisApplet extends SDFApplet {
 	    (add.output).link(noisyRel);
 	    (tempActInPort).link(noisyRel);
 	    (hystplotter.input).link(noisyRel);
-           
+
         } catch (Exception ex) {
             report("Setup failed:", ex);
         }

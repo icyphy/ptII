@@ -1,4 +1,4 @@
-/* Combine subimages into a larger image. 
+/* Combine subimages into a larger image.
 @Copyright (c) 1998-1999 The Regents of the University of California.
 All rights reserved.
 
@@ -66,13 +66,13 @@ public class ImageUnpartition extends SDFAtomicActor {
 
         super(container, name);
 
-	imageColumns = 
+	imageColumns =
             new Parameter(this, "imageColumns", new IntToken("176"));
-        imageRows = 
+        imageRows =
             new Parameter(this, "imageRows", new IntToken("144"));
-        partitionColumns = 
+        partitionColumns =
             new Parameter(this, "partitionColumns", new IntToken("4"));
-        partitionRows = 
+        partitionRows =
             new Parameter(this, "partitionRows", new IntToken("2"));
 
         input = (SDFIOPort) newPort("input");
@@ -119,13 +119,13 @@ public class ImageUnpartition extends SDFAtomicActor {
             ImageUnpartition newobj = (ImageUnpartition)(super.clone(ws));
             newobj.output = (SDFIOPort)newobj.getPort("output");
             newobj.input = (SDFIOPort)newobj.getPort("input");
-            newobj.imageRows = 
+            newobj.imageRows =
                 (Parameter)newobj.getAttribute("imageRows");
-            newobj.imageColumns = 
+            newobj.imageColumns =
                 (Parameter)newobj.getAttribute("imageColumns");
-            newobj.partitionRows = 
+            newobj.partitionRows =
                 (Parameter)newobj.getAttribute("partitionRows");
-            newobj.partitionColumns = 
+            newobj.partitionColumns =
                 (Parameter)newobj.getAttribute("partitionColumns");
             return newobj;
         } catch (CloneNotSupportedException ex) {
@@ -137,7 +137,7 @@ public class ImageUnpartition extends SDFAtomicActor {
 
     /**
      * Initialize this actor.
-     * @exception IllegalActionException If a parameter does not contain a 
+     * @exception IllegalActionException If a parameter does not contain a
      * legal value.
      */
     public void initialize() throws IllegalActionException {
@@ -148,11 +148,11 @@ public class ImageUnpartition extends SDFAtomicActor {
         _partitionRows = ((IntToken)partitionRows.getToken()).intValue();
 
         if(_imageColumns % _partitionColumns != 0) {
-            throw new IllegalActionException(imageColumns, partitionColumns, 
+            throw new IllegalActionException(imageColumns, partitionColumns,
                     "Partition size must evenly divide image size");
         }
         if(_imageRows % _partitionRows != 0) {
-            throw new IllegalActionException(imageRows, partitionRows, 
+            throw new IllegalActionException(imageRows, partitionRows,
                     "Partition size must evenly divide image size");
         }
 
@@ -177,15 +177,15 @@ public class ImageUnpartition extends SDFAtomicActor {
         int partitionNumber;
 
         input.getArray(0, partitions);
-        
+
         for(j = 0, partitionNumber = 0; j < _imageRows; j += _partitionRows)
-            for(i = 0; i < _imageColumns; i += _partitionColumns, 
+            for(i = 0; i < _imageColumns; i += _partitionColumns,
                     partitionNumber++) {
                 IntMatrixToken partition = partitions[partitionNumber];
                 if((partition.getRowCount() != _partitionRows) ||
                         (partition.getColumnCount() != _partitionColumns)) {
                     throw new IllegalActionException(
-                            "input data must be partitionRows " + 
+                            "input data must be partitionRows " +
                             "by partitionColumns");
                 }
                 part = partition.intArray();
@@ -194,8 +194,8 @@ public class ImageUnpartition extends SDFAtomicActor {
                             image, (j + y) * _imageColumns + i,
                             _partitionColumns);
             }
-        
-        output.send(0, 
+
+        output.send(0,
                 new IntMatrixToken(image, _imageRows, _imageColumns));
     }
 

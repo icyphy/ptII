@@ -118,7 +118,7 @@ public class InspectionApplet extends DEApplet implements QueryListener {
     }
 
     /** Override the base class to display the recorded average.
-     * 
+     *
      */
     public void executionFinished(Manager manager) {
         super.executionFinished(manager);
@@ -211,9 +211,9 @@ public class InspectionApplet extends DEApplet implements QueryListener {
             _histplot.fillOnWrapup.setToken(new BooleanToken(false));
 
             // Connections, except the bus source, which is postponed.
-            _busRelation = 
+            _busRelation =
                 _toplevel.connect(_wait.waitee, _eventplot.input);
-            ComponentRelation rel2 = 
+            ComponentRelation rel2 =
                 _toplevel.connect(_passenger1.output, _eventplot.input);
             _wait.waiter.link(rel2);
             ComponentRelation rel3 =

@@ -38,14 +38,14 @@ import ptolemy.kernel.util.*;
 //////////////////////////////////////////////////////////////////////////
 //// DEActor
 /** A base class for actors specific to the DE domain.  This class
- *  implements both SequenceActor and TimedActor. 
+ *  implements both SequenceActor and TimedActor.
  *  Actors in DE models need not derive from this class.
  *
  *  @author Jie Liu
  *  @version $Id$
  *  @see Actor
  */
-public abstract class DEActor extends TypedAtomicActor 
+public abstract class DEActor extends TypedAtomicActor
     implements SequenceActor, TimedActor {
 
     /** Constructor an with the specified container and name.

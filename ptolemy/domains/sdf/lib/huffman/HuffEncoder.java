@@ -1,5 +1,5 @@
-/* 
- 
+/*
+
  Copyright (c) 1998-1999 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -41,12 +41,12 @@ import java.util.Vector;
 import ptolemy.domains.sdf.lib.huffman.*;
 
 ///////////////////////////////////////////////////////////////
-/// HuffEncoder -- This is a huffman encoder actor that use the huffman code 
-//                 book to encode the input tokens into a sequence of boolean 
+/// HuffEncoder -- This is a huffman encoder actor that use the huffman code
+//                 book to encode the input tokens into a sequence of boolean
 //                 tokens. If tokens are not found in
 //                 the code book, illegal exception will be throw. The huffman
 //                 code book (huffman tree) will be input as a parameter.
-/** 
+/**
 
 @author Michael Leung
 @version $Id$
@@ -86,10 +86,10 @@ public class HuffEncoder extends TypedAtomicActor {
 
     /** The input port. This has type ObjectToken. */
     public TypedIOPort codeBookInput;
-    
+
     /** The input port. This has type ObjectToken. */
     public TypedIOPort codeInput;
-    
+
     /** The output port. This has type BooleanToken. */
     public TypedIOPort output;
 
@@ -118,9 +118,9 @@ public class HuffEncoder extends TypedAtomicActor {
         super.initialize();
 	Parameter p;
 	p = (Parameter) getAttribute("huffmanTree");
-        huffmanTree = (HuffTree) ((ObjectToken)p.getToken()).getValue();     
+        huffmanTree = (HuffTree) ((ObjectToken)p.getToken()).getValue();
     }
-    
+
     public boolean prefire() throws IllegalActionException {
         /* if (no CodeBook yet and no codebook waiting)
          *    return notReady;
@@ -131,7 +131,7 @@ public class HuffEncoder extends TypedAtomicActor {
             _debug("ready to fire");
             return true;
         }
-        return false;        
+        return false;
     }
 
     /** Left branch represents False.
@@ -149,7 +149,7 @@ public class HuffEncoder extends TypedAtomicActor {
         //of that data into a HashMap --  map;
         HashMap map = new HashMap();
         ((HuffTree) huffmanTree.getRoot()).fill(map);
-        
+
         if (map.containsKey(data)) {
             HuffTree leaf = (HuffTree) map.get(data);
             while (leaf.getParent() != null) {
@@ -159,9 +159,9 @@ public class HuffEncoder extends TypedAtomicActor {
                     output.send(0, new BooleanToken(true));
                 leaf = (HuffTree) leaf.getParent();
             }
-                        
+
         }
-        
+
     }
 
     private HuffTree huffmanTree;

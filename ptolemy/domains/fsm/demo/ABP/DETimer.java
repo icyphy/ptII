@@ -75,7 +75,7 @@ public class DETimer extends TypedAtomicActor {
     public void fire() throws IllegalActionException {
         DEDirector dir = (DEDirector)getDirector();
         double now = dir.getCurrentTime();
-        
+
         if (set.hasToken(0)) {
             // reset timer
             double delay = ((DoubleToken)set.get(0)).doubleValue();

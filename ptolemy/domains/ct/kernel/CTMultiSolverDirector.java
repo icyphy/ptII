@@ -56,7 +56,7 @@ This class has one additional parameters than the CTSingleSolverDirector,
 which is "breakpointODESolver". The value of the
 parameter is a String that specifies the full class name of ODE solvers.
 The default "ODESolver" is ExplicitRK23Solver. The default
-"breakpointODESolver" is the DerivativeResolver, which assumes the 
+"breakpointODESolver" is the DerivativeResolver, which assumes the
 continuity of state.
 All other parameters are maintained by the CTDirector base class. And the
 two solvers share them.
@@ -139,7 +139,7 @@ public class CTMultiSolverDirector extends CTSingleSolverDirector {
         return _breakpointsolver;
     }
 
-    /** In addition to initialize the system as those in 
+    /** In addition to initialize the system as those in
      *  CTSingleSolverDirector, this method set up the breakpoint
      *  solver.
      *  It throws an exception if the super class does.
@@ -200,9 +200,9 @@ public class CTMultiSolverDirector extends CTSingleSolverDirector {
                 _setIsBPIteration(true);
                 _setCurrentODESolver(_breakpointsolver);
                 setCurrentStepSize(0.0); //getMinStepSize());
-                if(_debugging) _debug(getFullName(), 
+                if(_debugging) _debug(getFullName(),
                         "IN BREAKPOINT iteration.");
-            }else { 
+            }else {
                 // adjust step size according to the first break point.
                 bp = ((Double)breakPoints.first()).doubleValue();
                 double iterEndTime = getCurrentTime() + getCurrentStepSize();
@@ -212,7 +212,7 @@ public class CTMultiSolverDirector extends CTSingleSolverDirector {
             }
         }
     }
-    
+
     /** Predict the next step size. This method should be called if the
      *  current integration step is acceptable. The predicted step size
      *  is the minimum of all predictions from step size control actors.

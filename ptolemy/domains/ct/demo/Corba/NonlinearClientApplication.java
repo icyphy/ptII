@@ -48,8 +48,8 @@ import ptolemy.domains.ct.lib.*;
 //// NonlinearClient
 /**
 The square wave response of a second order CT system with a CORBA
-actor in the feedback. . This simple 
-CT system demonstrate the use of CORBA actor solvers over the network. 
+actor in the feedback. . This simple
+CT system demonstrate the use of CORBA actor solvers over the network.
 The query box allow the users to input the ORB initialization parameter
 and the name of the CORBA actor.
 @author  Jie Liu
@@ -88,7 +88,7 @@ public class NonlinearClientApplication {
             TypedIOPort cin = new TypedIOPort(_client, "input", true, false);
             TypedIOPort cout = new TypedIOPort(_client, "output", false, true);
             TimedPlotter myplot = new TimedPlotter( _toplevel, "Sink");
-            
+
             myplot.place(null);
             myplot.plot.setGrid(true);
             myplot.plot.setXRange(0.0, 6.0);
@@ -136,14 +136,14 @@ public class NonlinearClientApplication {
             gain2.factor.setToken(new DoubleToken(-10.0));
 
             gain3.factor.setToken(new DoubleToken(-1000.0));
-            
+
             String orbinit = new String("");
             for(int i =0; i < args.length; i++) {
                 orbinit = orbinit + args[i] + " ";
             }
             _client.ORBInitProperties.setToken(new StringToken(orbinit));
             _client.remoteActorName.setToken(new StringToken("Nonlinear"));
-            
+
             man.startRun();
         } catch (NameDuplicationException ex) {
             throw new InternalErrorException("NameDuplication");
@@ -152,7 +152,7 @@ public class NonlinearClientApplication {
                     ex.getMessage());
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

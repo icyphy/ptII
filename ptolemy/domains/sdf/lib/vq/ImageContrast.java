@@ -45,7 +45,7 @@ import ptolemy.domains.sdf.kernel.*;
 /**
 This actor changes the contrast of an image. i.e.
 if the input image has a lot of pixels with the same or similar color,
-This actor uses gray scale equalization to redistribute the value of each 
+This actor uses gray scale equalization to redistribute the value of each
 pixel between 0 and 255.
 
 @author Michael Leung
@@ -53,7 +53,7 @@ pixel between 0 and 255.
 */
 
 public final class ImageContrast extends SDFAtomicActor {
- 
+
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.

@@ -30,7 +30,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.domains.sdf.lib.huffman;
 
-import ptolemy.kernel.*;              
+import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.data.*;
@@ -44,9 +44,9 @@ import ptolemy.domains.sdf.kernel.*;
 
 
 //////////////////////////////////////////////////////////////////////////
-//// BinaryTree --- A class containing methods 
+//// BinaryTree --- A class containing methods
 //                  for creating and manipulating a binary tree.
-/////           
+/////
 /**
 @author Michael Leung
 @version $Id$
@@ -61,22 +61,22 @@ public class BinaryTree extends java.lang.Object {
         _left = null;
         _right = null;
     }
-        
+
     // Returns the parent of this tree.
     public BinaryTree getParent() {
         return _parent;
     }
-    
+
     // Returns the left branch of this tree.
     public BinaryTree getLeft() {
         return _left;
     }
-    
+
     // Returns the right branch of this tree.
     public BinaryTree getRight() {
         return _right;
     }
-    
+
     // Returns the root of this tree.
     public BinaryTree getRoot() {
         BinaryTree temp;
@@ -86,13 +86,13 @@ public class BinaryTree extends java.lang.Object {
         }
         return temp;
     }
-    
+
     /* Add an new left child.
      * Throw an IllegalActionException if want to add a child to the left and
      * the child already has a parent.
      */
-    
-    public void addLeft(BinaryTree child) 
+
+    public void addLeft(BinaryTree child)
             throws IllegalActionException {
         if (child._parent != null)
             throw new IllegalActionException("BinaryTree: " +
@@ -102,13 +102,13 @@ public class BinaryTree extends java.lang.Object {
         _left = child;
         child._parent = this;
     }
-    
+
     /* Add an new right child.
      * Throw an IllegalActionException if want to add an children to the right
      * and the child already has a parent.
      */
 
-    public void addRight(BinaryTree child) 
+    public void addRight(BinaryTree child)
             throws IllegalActionException {
         if (child._parent != null)
                 throw new IllegalActionException("BinaryTree: " +
@@ -117,7 +117,7 @@ public class BinaryTree extends java.lang.Object {
                         " has a parent already.");
             _right = child;
             child._parent = this;
-    } 
+    }
 
     /* Set the parent of this obj to be myParent.
      * Throw an IllegalActionException if we set the parent of this
@@ -134,13 +134,13 @@ public class BinaryTree extends java.lang.Object {
         }
         _parent = myParent;
     }
-        
+
     // Remove left branch.
     public void removeLeft() {
         _left._parent = null;
         _left = null;
     }
-    
+
     // Remove right branch.
     public void removeRight() {
         _right._parent = null;
@@ -153,8 +153,8 @@ public class BinaryTree extends java.lang.Object {
         boo = ((_left == null) && (_right == null));
         return boo;
     }
-    
-    /* Check if it is the root of tree by checking if the parent 
+
+    /* Check if it is the root of tree by checking if the parent
      * is null or not.
      */
     public boolean isRoot() {
@@ -165,32 +165,32 @@ public class BinaryTree extends java.lang.Object {
 
     /**
      * Merging two BinaryTree to form a new tree.
-     * First argument will be the left branch, and second argument will 
+     * First argument will be the left branch, and second argument will
      * be the right branch.
      * Throws an IllegalActionException if either right tree or left tree
      * has a parent already.
      */
-    
-    public void merge (BinaryTree leftTree, BinaryTree rightTree) 
+
+    public void merge (BinaryTree leftTree, BinaryTree rightTree)
         throws IllegalActionException {
         if ((leftTree._parent != null) || (rightTree._parent != null)) {
             throw new IllegalActionException("BinaryTree: "+
-                    "Cannot megre because either left or right" + 
+                    "Cannot megre because either left or right" +
                     "has a parent already.");
-        } 
+        }
         addLeft(leftTree);
         addRight(rightTree);
     }
-            
+
     /* Override toString method for the java.lang.Object class. The overrided
-     * version should recursively return the name of the node 
-     * of a tree class and will return null either their left or right is 
-     * null. 
-     * 
-     * The return sequence should be : 
+     * version should recursively return the name of the node
+     * of a tree class and will return null either their left or right is
+     * null.
+     *
+     * The return sequence should be :
      * first return itself;
      * then return the left branch;
-     * then return the right branch. 
+     * then return the right branch.
      */
 
     public String toString() {
@@ -198,10 +198,10 @@ public class BinaryTree extends java.lang.Object {
         treeString += "tree";
 
         if (getLeft() != null) {
-            treeString += "("; 
+            treeString += "(";
             treeString += _left.toString();
         } else {
-            treeString += "("; 
+            treeString += "(";
             treeString += "null";
         }
 
@@ -222,11 +222,11 @@ public class BinaryTree extends java.lang.Object {
     private BinaryTree _parent;
     private BinaryTree _left;
     private BinaryTree _right;
-            
+
 }
 
-            
-            
+
+
 
 
 

@@ -156,7 +156,7 @@ public class Server extends DETransformer {
             _currentInput = input.get(0);
             double delay =
                 ((DoubleToken)serviceTime.getToken()).doubleValue();
-            _nextTimeFree = ((DEDirector)getDirector()).getCurrentTime() 
+            _nextTimeFree = ((DEDirector)getDirector()).getCurrentTime()
                 + delay;
         } else {
             _currentInput = null;

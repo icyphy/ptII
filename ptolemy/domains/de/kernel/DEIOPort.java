@@ -112,7 +112,7 @@ public class DEIOPort extends TypedIOPort {
 
     /** Broadcast a token to all receivers connected to this output
      *  port.  The time stamp of the token is the current time of
-     *  the director.  If you want to broadcast a token with 
+     *  the director.  If you want to broadcast a token with
      *  a specified delay, use broadcast(token, delay) instead.
      *
      *  @param token The token to send.
@@ -134,12 +134,12 @@ public class DEIOPort extends TypedIOPort {
                             ((DEReceiver)fr[i][j]).setDelay(_delay);
                         } catch (ClassCastException e) {
                             throw new InvalidStateException("DEIOPort.send() " +
-                                    "expects to connect to receivers " + 
+                                    "expects to connect to receivers " +
                                     "of type DEReceiver.");
                         }
                     }
                 }
-                broadcast(token);            
+                broadcast(token);
             } finally {
                 _workspace.doneReading();
             }
@@ -147,7 +147,7 @@ public class DEIOPort extends TypedIOPort {
             super.broadcast(token);
         }
     }
-    
+
     /** Broadcast a token to all receivers connected to this output
      *  port with the specified time delay.  The time stamp of
      *  of the token is equal to current time plus the specified delay.
@@ -189,7 +189,7 @@ public class DEIOPort extends TypedIOPort {
 
     /** Sent a token to the receivers connected on the specified channel
      *  with the time stamp equaling to the current time of the director.
-     *  If you want to send a token with a specified delay, use 
+     *  If you want to send a token with a specified delay, use
      *  send(token, delay) instead. If the channel index is out of range,
      *  then the token is not sent anywhere.
      *

@@ -534,7 +534,7 @@ public class TimedPNDirector extends BasePNDirector {
      *  waiting for time to advance to the new time, and remove them from
      *  the priority queue. This method is synchronized on the director.
      *  @return true if a real deadlock is detected, false otherwise.
-     *  @exception IllegalActionException Not thrown in this base class. 
+     *  @exception IllegalActionException Not thrown in this base class.
      *  This might be thrown by derived classes.
      */
     protected boolean _resolveDeadlock()
@@ -544,7 +544,7 @@ public class TimedPNDirector extends BasePNDirector {
             _incrementLowestWriteCapacityPort();
 	    return true;
         } else if (_delayBlockCount == 0) {
-	    // Real deadlock with no delayed processes. 
+	    // Real deadlock with no delayed processes.
 	    return false;
 	} else {
 	    // Artificial deadlock due to delayed processes.

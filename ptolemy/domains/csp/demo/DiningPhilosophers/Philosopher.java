@@ -122,17 +122,17 @@ public class Philosopher extends CSPActor {
      *  is granted access to the left chopstick.
      */
     public TypedIOPort leftIn;
-    
+
     /** The port through which this philosopher
      *  releases access to the left chopstick.
      */
     public TypedIOPort leftOut;
-    
+
     /** The port through which this philosopher
      *  is granted access to the right chopstick.
      */
     public TypedIOPort rightIn;
-    
+
     /** The port through which this philosopher
      *  releases access to the right chopstick.
      */
@@ -142,12 +142,12 @@ public class Philosopher extends CSPActor {
      *  this philosopher will spend time eating.
      */
     public Parameter eating;
-    
+
     /** This parameter determines the rate at which
      *  this philosopher will spend time thinking.
      */
     public Parameter thinking;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 

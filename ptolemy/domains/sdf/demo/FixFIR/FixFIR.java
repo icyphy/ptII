@@ -78,7 +78,7 @@ public class FixFIR extends SDFApplet implements QueryListener {
      */
     public void changed(String name) {
         try {
-            
+
 	    if ( name == "taps_1" ) {
                 _fir.taps.setExpression(_query.stringValue("taps_1"));
             } else {
@@ -87,16 +87,16 @@ public class FixFIR extends SDFApplet implements QueryListener {
                 } else {
                     if ( name == "taps_3" ) {
                         _fir_fix.taps.setExpression(_query.stringValue("taps_3"));
-                    } 
+                    }
                 }
-                
-            }                    
-            _go();            
+
+            }
+            _go();
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(ex.toString());
         }
     }
-        
+
     /** After invoking super.init(), create and connect the actors.
      */
     public void init() {
@@ -104,12 +104,12 @@ public class FixFIR extends SDFApplet implements QueryListener {
 
         // The 1 argument requests a go and a stop button.
         // add(_createRunControls(2));
-        
-        try {            
+
+        try {
 
             getContentPane().setLayout(
                     new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
-    
+
             _query = new Query();
             _query.setBackground(getBackground());
             _query.addLine("taps_1", "Regular double Taps", "[ -.040609, -.001628, .17853, .37665, .37665, .17853, -.001628, -.040609 ]");
@@ -117,14 +117,14 @@ public class FixFIR extends SDFApplet implements QueryListener {
             _query.addLine("taps_3", "FixPoint Taps", "fix([ -.040609, -.001628, .17853, .37665, .37665, .17853, -.001628, -.040609 ],8,2)");
             _query.addQueryListener(this);
             getContentPane().add( _query );
-     
+
             // Create and Impuls
             int pvalues[][] = {{1}};
             int pindexes[][] = {{0}};
             _pulse = new Pulse(_toplevel, "ramp");
             _pulse.indexes.setToken(new IntMatrixToken(pindexes));
             _pulse.values.setToken(new IntMatrixToken(pvalues));
-    
+
             // FIR Filter Double
             double taps[][] = {{-.040609, -.001628, .17853, .37665, .37665, .17853, -.001628, -.040609}};
             _fir = new FIRDouble(_toplevel, "FIR_double");
@@ -166,29 +166,29 @@ public class FixFIR extends SDFApplet implements QueryListener {
             _myplot.xUnit.setToken(new DoubleToken( Math.PI/256 ));
 
 
-            // Create a Hierarchical Composite Actor that 
+            // Create a Hierarchical Composite Actor that
             // describes the FFT transform.
 
             _transform = new TypedCompositeActor(_toplevel,"transform");
-            TypedIOPort input_transform = 
+            TypedIOPort input_transform =
                 new TypedIOPort(_transform, "input", true, false);
-            TypedIOPort output_transform  = 
+            TypedIOPort output_transform  =
                 new TypedIOPort(_transform, "output", false, true);
-                   
-            
+
+
             // Multiply the incoming stream with the alternating
             // sequence of the Pulse
             _mult = new MultiplyDivide(_transform, "Multiply");
 
             // Multiply the incoming stream with alternating
-            // 1, -1. 
+            // 1, -1.
             _waveform = new Pulse(_transform, "Waveform");
             int values[][] = {{1,-1}};
             int indexes[][] = {{0,1}};
             _waveform.indexes.setToken(new IntMatrixToken(indexes));
             _waveform.values.setToken(new IntMatrixToken(values));
             _waveform.repeat.setToken(new BooleanToken(true));
-            
+
             // Perform an FFT
             _fft = new FFT(_transform, "FFT");
 
@@ -198,39 +198,39 @@ public class FixFIR extends SDFApplet implements QueryListener {
             // Go from Rectangular coordinates to Polar coordinates
             _rtop = new RectangularToPolar(_transform,"RecToPolar");
 
-            // Go from Real to Decible 
-            _rtod = new dB(_transform, "dB"); 
+            // Go from Real to Decible
+            _rtod = new dB(_transform, "dB");
 
             // Connect the actors inside the FFT transform
             _transform.connect( input_transform, _mult.multiply );
             _transform.connect( _waveform.output, _mult.multiply );
-            _transform.connect( _mult.output,  _fft.input ); 
-            _transform.connect( _fft.output, _ctor.input);          
+            _transform.connect( _mult.output,  _fft.input );
+            _transform.connect( _fft.output, _ctor.input);
             _transform.connect( _ctor.realOutput, _rtop.xInput );
             _transform.connect( _ctor.imagOutput, _rtop.yInput );
             _transform.connect( _rtop.magnitudeOutput, _rtod.input);
             _transform.connect( _rtod.output, output_transform );
 
-            
+
 
             // Clone the FFT Transform two more times.
             _transform_1 = (TypedCompositeActor)_transform.clone();
-            TypedIOPort input_transform_1 
+            TypedIOPort input_transform_1
                 = (TypedIOPort) _transform_1.getPort("input");
-            TypedIOPort output_transform_1 
+            TypedIOPort output_transform_1
                 = (TypedIOPort) _transform_1.getPort("output");
             _transform_1.setName("transform_1");
             _transform_1.setContainer( _toplevel );
 
             _transform_2 = (TypedCompositeActor)_transform.clone();
-            TypedIOPort input_transform_2 
+            TypedIOPort input_transform_2
                 = (TypedIOPort) _transform_2.getPort("input");
-            TypedIOPort output_transform_2 
+            TypedIOPort output_transform_2
                 = (TypedIOPort) _transform_2.getPort("output");
             _transform_2.setName("transform_2");
             _transform_2.setContainer( _toplevel );
 
-            // Connect the actors at the toplevel            
+            // Connect the actors at the toplevel
             Relation r = _toplevel.connect( _pulse.output, _fir.input );
             _fir_quantize.input.link( r );
             _d2f.input.link( r );
@@ -254,10 +254,10 @@ public class FixFIR extends SDFApplet implements QueryListener {
 
             // We initialize the model correctly.
             _initCompleted = true;
-                         
+
             // The 2 argument requests a go and stop button.
             getContentPane().add(_createRunControls(2));
-            
+
         } catch (Exception ex) {
             report("Setup failed:", ex);
         }
@@ -289,7 +289,7 @@ public class FixFIR extends SDFApplet implements QueryListener {
     }
 
 
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

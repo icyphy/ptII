@@ -55,7 +55,7 @@ Generally, their widths should match. Otherwise, if the width of the
 <i>input</i> is greater than
 the width of the <i>output</i>, the extra input tokens will
 not be produced. If the width of the <i>output</i> is greater
-than that of the <i>input</i>, then the last few 
+than that of the <i>input</i>, then the last few
 channels of the <i>output</i> will never emit tokens.
 <p>
 Note: If the width of the input changes during execution, then
@@ -113,7 +113,7 @@ public class Sampler extends DETransformer {
         return newobj;
     }
 
-    /** If there is a token in the <i>trigger</i> port, 
+    /** If there is a token in the <i>trigger</i> port,
      *  emit the most recent token from the <i>input</i> port. If there
      *  has been no input token, or there is no token on the <i>trigger</i>
      *  port, emit nothing.
@@ -133,13 +133,13 @@ public class Sampler extends DETransformer {
                 while (input.hasToken(i)) {
                     _lastInputs[i] = input.get(i);
                 }
-                // in is the most recent token, assuming 
+                // in is the most recent token, assuming
                 // the receiver has a FIFO behavior.
                 if (_lastInputs[i] != null) {
                     output.send(i, _lastInputs[i]);
                 }
             }
-            // Consume tokens in extra input channels so they 
+            // Consume tokens in extra input channels so they
             // don't get accumulated.
             for (int i = n; i < win; i++) {
                 while (input.hasToken(i)) {

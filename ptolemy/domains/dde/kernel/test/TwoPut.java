@@ -117,7 +117,7 @@ public class TwoPut extends TypedAtomicActor {
     public TypedIOPort input;
     private int _outChannel = -1;
     private boolean _continueIterations = true;
-    
+
     private String _name;
 
 }

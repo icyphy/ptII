@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Red (vogel@eecs.berkeley.edu)
-@AcceptedRating 
+@AcceptedRating
 */
 package ptolemy.domains.sdf.test.pitchshift;
 
@@ -61,7 +61,7 @@ import ptolemy.math.SignalProcessing;
 	// Cutoff value in cepstrum for voiced/unvoiced. If largest peak
 	// in the high-time part is greater than cepstralCutoff, then
 	// call it voiced, else call it unvoiced.
-	private final double cepstralCutoff = 0.03; 
+	private final double cepstralCutoff = 0.03;
 
 	// The lowest pitch to search for.
 	private final double minAllowablePitch = 70;
@@ -69,7 +69,7 @@ import ptolemy.math.SignalProcessing;
 	private final double maxAllowablePitch = 300;
 
 	private double[] outPitchArray;
-	
+
 	private double[] windowedInput;
 	private Complex[] dftInput;
 	private Complex[] outCmplxArray;
@@ -125,12 +125,12 @@ import ptolemy.math.SignalProcessing;
 	   length
 	   array of doubles containing the pitch estimates.
 	   <p>
-	   Note that there is a 2048 sample delay between an element of 
+	   Note that there is a 2048 sample delay between an element of
 	   <i>inputArray[]</i> and the corresponding element of the returned
 	   vector of pitch estimates.
 	*/
 	public double[] performPitchDetect(double [] inputArray) {
-	   
+
 	    //System.out.println("in");
 	    //for (int i=0; i < outArray.length; i++) {
 	    //outArray[i] = inputArray[i];
@@ -143,25 +143,25 @@ import ptolemy.math.SignalProcessing;
 		//System.out.println("vectorLoopPos " + vectorLoopPos);
 		if (recentInputArrayPos < recentInputArraySize) {
 		    // Ok to read in another samples, array not full yet.
-		     
+
 		    // Read in an input sample.
 		    recentInputArray[recentInputArrayPos] =
 			inputArray[vectorLoopPos];
-		   
+
 		    recentInputArrayPos++;
 		} else {
 		    // Array is full now. Time to update pitch estimate.
-		    
+
 		    // Perforam pitch detection using Cepstral Analysis.
-		    
+
 		    // Step 1. Window recent input with a hamming window.
 		    for (int ind1 = 0; ind1 <
 			     recentInputArray.length; ind1++) {
-			
+
 			windowedInput[ind1] =
 			    recentInputArray[ind1]*hammingWindow[ind1];
-		    }	
-		    
+		    }
+
 		    // Step 2. Take DFT of recent input.
 		    dftInput = SignalProcessing.FFTComplexOut(windowedInput);
 		    // Step 3. Take log of magnitude of dftInput.
@@ -176,7 +176,7 @@ import ptolemy.math.SignalProcessing;
 			SignalProcessing.IFFTRealOut(logMagDFTWinInputArray);
 		    // Step 5. Find the peak in the high time part. This is
 		    // the pitch. FIXME: clean this up.
-		    voiced = 0; 
+		    voiced = 0;
 
 		    // Initialize largest element found so far to 0.
 		    double largest = 0;
@@ -190,7 +190,7 @@ import ptolemy.math.SignalProcessing;
 		    int stopCepstralIndex =
 			(int)Math.min((double)sampleRate/minAllowablePitch,
 				      (double)recentInputArray.length/3);
-		    
+
 		    int pitchIndex = 0; // Index corresp to the pitch.
 		    int foundAPeak = 0;
 		    double linearLength2 = cepstrumArray.length/4 -
@@ -208,11 +208,11 @@ import ptolemy.math.SignalProcessing;
 		    // decreasing pitch!
 		    for (pitchIndex = startCepstralIndex; pitchIndex <
 			     stopCepstralIndex; pitchIndex++) {
-			
+
 			// Now find the largest element in the high-time
 			// part of the cepstrum.
 			if ((cepstrumArray[pitchIndex]) > largest) {
-			  
+
 			    largest = cepstrumArray[pitchIndex];
 			    initialPitchInd = pitchIndex;
 			    //System.out.println("largest = " + largest);
@@ -223,7 +223,7 @@ import ptolemy.math.SignalProcessing;
 		    // of the length of the cepstrum, I do not check that
 		    // largest > cepstralCutoff. This is because peaks
 		    // higher in the high-time are more significant.
-		   
+
 		    if ((initialPitchInd > startCepstralIndex) &&
 			(cepstrumArray[initialPitchInd] > cepstralCutoff)) {
 			// Current windowed signal is voiced (pitched).
@@ -232,10 +232,10 @@ import ptolemy.math.SignalProcessing;
 			    (double)sampleRate/(double)initialPitchInd;
 		    // Now check that largest is greater than cepstralCutoff.
 		    }
-		    
+
 		    if (voiced == 0) {
 			// Found a peak in the ceptsrum
-			
+
 			currentPitch = -1;
 			//System.out.println("UNVOICED" );
 		    } else {
@@ -247,7 +247,7 @@ import ptolemy.math.SignalProcessing;
 			System.out.println("n1 n2 n3 = " +
 			cepstrumArray[thirdEstPitchInd] + " " +
 			cepstrumArray[secondEstPitchInd] + " " +
-			cepstrumArray[initialPitchInd]); 
+			cepstrumArray[initialPitchInd]);
 			System.out.println("p1 p2 p3 = " +
 			(double)sampleRate/(double)thirdEstPitchInd +
 			" " + (double)sampleRate/(double)secondEstPitchInd +
@@ -256,7 +256,7 @@ import ptolemy.math.SignalProcessing;
 			System.out.println(" " );
 			*/
 		    }
-	
+
 		    recentInputArrayPos = 0;
 		}
 		outPitchArray[vectorLoopPos] = currentPitch;

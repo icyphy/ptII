@@ -185,7 +185,7 @@ public abstract class CTSingleSolverDirector extends CTDirector {
 
     /** Initialization after type resolution. This
      *  is called exactly once at the start of the entire execution.
-     *  It sets the step size and the suggested next step size 
+     *  It sets the step size and the suggested next step size
      *  to the initial step size. The ODE solver is instantiated.
      *  And the stop time is registered as a breakpoint.
      *  It invoke the initialize() method for all the Actors in the
@@ -203,24 +203,24 @@ public abstract class CTSingleSolverDirector extends CTDirector {
                 _solverclassname);
         _defaultSolver = _instantiateODESolver(_solverclassname);
         _setCurrentODESolver(_defaultSolver);
-        if(_debugging) _debug(getFullName(), "assert the current ODE solver ", 
+        if(_debugging) _debug(getFullName(), "assert the current ODE solver ",
                 getCurrentODESolver().getName());
         // set step sizes
         setCurrentStepSize(getInitialStepSize());
         if(_debugging) _debug(getFullName(), " set current step size to "
-                + getCurrentStepSize());  
+                + getCurrentStepSize());
         setSuggestedNextStepSize(getInitialStepSize());
         if(_debugging) _debug(getFullName(), " set suggested next step size to "
-                + getSuggestedNextStepSize()); 
-        if(_debugging) _debug(getFullName(), " set the current time as a break point: " + 
+                + getSuggestedNextStepSize());
+        if(_debugging) _debug(getFullName(), " set the current time as a break point: " +
                 getCurrentTime());
         fireAt(null, getCurrentTime());
-        if(_debugging) _debug(getFullName(), " set the stop time as a break point: " + 
+        if(_debugging) _debug(getFullName(), " set the stop time as a break point: " +
                 getStopTime());
         fireAt(null, getStopTime());
         //_first = true;
         if(_debugging) _debug(getFullName() + " initialize directed actors: ");
-        super.initialize();  
+        super.initialize();
         if(_debugging) _debug(getFullName() + " End of Initialization.");
     }
 
@@ -358,7 +358,7 @@ public abstract class CTSingleSolverDirector extends CTDirector {
      *  current step size.
      */
     protected void _fireOneIteration() throws IllegalActionException {
-        if(_debugging) _debug(getFullName(), 
+        if(_debugging) _debug(getFullName(),
                 "Fire one iteration from " + getCurrentTime(),
                 "Using step size" + getCurrentStepSize());
         ODESolver solver = getCurrentODESolver();
@@ -459,7 +459,7 @@ public abstract class CTSingleSolverDirector extends CTDirector {
         while (sscs.hasNext()) {
             CTStepSizeControlActor a =
                 (CTStepSizeControlActor) sscs.next();
-            if(_debugging) _debug("Checking State Step Size Control Actor: " + 
+            if(_debugging) _debug("Checking State Step Size Control Actor: " +
                     ((NamedObj)a).getName());
             successful = successful && a.isThisStepSuccessful();
         }
@@ -500,7 +500,7 @@ public abstract class CTSingleSolverDirector extends CTDirector {
                 // now is the break point.
                 breakPoints.removeFirst();
                 _setIsBPIteration(true);
-            }else { 
+            }else {
                 // adjust step size according to the first break point.
                 bp = ((Double)breakPoints.first()).doubleValue();
                 double iterEndTime = getCurrentTime() + getCurrentStepSize();

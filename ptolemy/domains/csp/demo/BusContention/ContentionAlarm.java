@@ -1,5 +1,5 @@
 /* A CSP actor that creates an output only after timed deadlock
-has been reached by all other CSP actors in the containing 
+has been reached by all other CSP actors in the containing
 composite actor.
 
  Copyright (c) 1998-1999 The Regents of the University of California.
@@ -51,33 +51,33 @@ import java.util.List;
 //////////////////////////////////////////////////////////////////////////
 //// ContentionAlarm
 /**
-A ContentionAlarm is a CSP actor that creates an output only after 
-timed deadlock has been reached by all other CSP actors in the 
+A ContentionAlarm is a CSP actor that creates an output only after
+timed deadlock has been reached by all other CSP actors in the
 containing composite actor. A ContentionAlarm has one input and
 one output port as well as three "informal" states. During the
 fire() method, the actor is enabled to cycle through each of the
-three states. 
+three states.
 
 In state one, the ContentionAlarm attempts to receive a token through
 its input port. Once a token has been received, the actor enters state
-two and calls the _waitForDeadlock() method that it inherits from 
-CSPActor. This method means that the actor becomes time delayed and 
-will not continue until all other actors in the composite actor are 
-either blocked or time delayed. Once _waitForDeadlock() returns, the 
-actor enters state three and sends a token through its output port. 
+two and calls the _waitForDeadlock() method that it inherits from
+CSPActor. This method means that the actor becomes time delayed and
+will not continue until all other actors in the composite actor are
+either blocked or time delayed. Once _waitForDeadlock() returns, the
+actor enters state three and sends a token through its output port.
 
 A useful application of ContentionAlarm is to notify other actors
 if there are multiple contenders for a given resource at a given
-time. Because of the semantics of _waitForDeadlock(), ContentionAlarm 
-will not "wake up" until all contenders have attempted to access a 
+time. Because of the semantics of _waitForDeadlock(), ContentionAlarm
+will not "wake up" until all contenders have attempted to access a
 particular resource.
 
 In addition to the time delay oriented semantics of ContentionAlarm,
-it can also notify an ExecEventListener as this actor jumps between 
-its three states. Such notification is enabled by adding an 
-ExecEventListener to this actor's listener list via the addListeners() 
-method. Listeners can be removed via the removeListeners() method. 
-ExecEventListeners are currently implemented to serve as conduits 
+it can also notify an ExecEventListener as this actor jumps between
+its three states. Such notification is enabled by adding an
+ExecEventListener to this actor's listener list via the addListeners()
+method. Listeners can be removed via the removeListeners() method.
+ExecEventListeners are currently implemented to serve as conduits
 between Ptolemy II and the Diva graphical user interface.
 
 @author John S. Davis II
@@ -88,14 +88,14 @@ between Ptolemy II and the Diva graphical user interface.
 
 public class ContentionAlarm extends CSPActor {
 
-    /** Construct a ContentionAlarm actor with the specified container 
-     *  and name. Set the type of the input and ouput ports to 
+    /** Construct a ContentionAlarm actor with the specified container
+     *  and name. Set the type of the input and ouput ports to
      *  BaseType.GENERAL.
      * @param cont The container of this actor.
      * @param name The name of this actor.
-     * @exception IllegalActionException If the actor cannot be 
+     * @exception IllegalActionException If the actor cannot be
      *  contained by the proposed container.
-     * @exception NameDuplicationException If the container 
+     * @exception NameDuplicationException If the container
      *  already has an actor with this name.
      */
     public ContentionAlarm(TypedCompositeActor cont, String name)
@@ -114,8 +114,8 @@ public class ContentionAlarm extends CSPActor {
 
     /** The input port.  The type of this port is BaseType.GENERAL.
      */
-    public TypedIOPort input; 
-    
+    public TypedIOPort input;
+
     /** The output port.  The type of this port is BaseType.GENERAL.
      */
     public TypedIOPort output;
@@ -139,8 +139,8 @@ public class ContentionAlarm extends CSPActor {
     /** Execute this actor by cycling through its three states
      *  continually. Each state can potentially block due to
      *  the blocking semantics of CSP communication. Upon entry
-     *  into each state, generate an ExecEvent with the 
-     *  corresponding state value. 
+     *  into each state, generate an ExecEvent with the
+     *  corresponding state value.
      * @exception IllegalActionException If communication through
      *  the input or output ports throws an IllegalActionException.
      */
@@ -161,8 +161,8 @@ public class ContentionAlarm extends CSPActor {
         }
     }
 
-    /** Notify all ExecEventListeners on this actor's 
-     *  listener list that the specified event was 
+    /** Notify all ExecEventListeners on this actor's
+     *  listener list that the specified event was
      *  generated.
      * @param event The specified ExecEvent.
      */
@@ -178,8 +178,8 @@ public class ContentionAlarm extends CSPActor {
         }
     }
 
-    /** Remove one instance of the specified ExecEventListener 
-     *  from this actor's list of listeners. 
+    /** Remove one instance of the specified ExecEventListener
+     *  from this actor's list of listeners.
      * @param listener The specified ExecEventListener.
      */
     public void removeListeners(ExecEventListener listener) {

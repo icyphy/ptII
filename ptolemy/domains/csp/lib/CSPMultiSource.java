@@ -45,10 +45,10 @@ import ptolemy.data.type.BaseType;
 //// CSPMultiSource
 /**
 A CSPMultiSource actor produces tokens through an output channel
-via a continuous do (CDO) construct. The tokenLimit parameter 
-specifies how many tokens are produced by this actor. If the value 
-of tokenLimit is a nonnegative integer, then the actor produces 
-that many tokens. If the value is negative, then the actor produces 
+via a continuous do (CDO) construct. The tokenLimit parameter
+specifies how many tokens are produced by this actor. If the value
+of tokenLimit is a nonnegative integer, then the actor produces
+that many tokens. If the value is negative, then the actor produces
 tokens indefinitely. The default value of tokenLimit is -1.
 
 @author Neil Smyth
@@ -57,33 +57,33 @@ tokens indefinitely. The default value of tokenLimit is -1.
 @see ptolemy.domains.csp.kernel.ConditionalBranch
 */
 public class CSPMultiSource extends CSPActor {
-    
-    /** Construct a CSPMultiSource in the default workspace with an 
-     *  empty string as its name. The actor is created with a single 
-     *  input port named "input". The number of tokens produced by this 
-     *  actor is specified by the tokenLimit parameter. The actor will 
-     *  produce N=tokenLimit tokens unless tokenLimit < 0 in which case 
+
+    /** Construct a CSPMultiSource in the default workspace with an
+     *  empty string as its name. The actor is created with a single
+     *  input port named "input". The number of tokens produced by this
+     *  actor is specified by the tokenLimit parameter. The actor will
+     *  produce N=tokenLimit tokens unless tokenLimit < 0 in which case
      *  this actor will produce tokens indefinitely.
-     *  @exception IllegalActionException If the tokenLimit parameter 
+     *  @exception IllegalActionException If the tokenLimit parameter
      *   cannot be contained by this actor.
-     *  @exception NameDuplicationException If the tokenLimit parameter 
+     *  @exception NameDuplicationException If the tokenLimit parameter
      *   name coincides with a port already in this actor.
      */
-    public CSPMultiSource() throws 
+    public CSPMultiSource() throws
     	    IllegalActionException, NameDuplicationException {
         super();
-        tokenLimit = new Parameter( this, "tokenLimit", 
+        tokenLimit = new Parameter( this, "tokenLimit",
         	(new IntToken(-1)) );
     }
 
     /** Construct a CSPMultiSource with the specified container and
-     *  name. The actor is created with a single input port named 
-     *  "input". The name of the actor must be unique within the 
-     *  container or a NameDuplicationException is thrown. The 
-     *  container argument must not be null, or a NullPointerException 
-     *  will be thrown. The number of tokens produced by this actor is 
-     *  specified by the tokenLimit parameter. The actor will produce 
-     *  N=tokenLimit tokens unless tokenLimit < 0 in which case this 
+     *  name. The actor is created with a single input port named
+     *  "input". The name of the actor must be unique within the
+     *  container or a NameDuplicationException is thrown. The
+     *  container argument must not be null, or a NullPointerException
+     *  will be thrown. The number of tokens produced by this actor is
+     *  specified by the tokenLimit parameter. The actor will produce
+     *  N=tokenLimit tokens unless tokenLimit < 0 in which case this
      *  actor will produce tokens indefinitely.
      *  @param cont The container of this actor.
      *  @param name The name of this actor.
@@ -91,17 +91,17 @@ public class CSPMultiSource extends CSPActor {
      *  @exception IllegalActionException If the port or tokenLimit
      *   parameter cannot be contained by this actor.
      *  @exception NameDuplicationException If the port or tokenLimit
-     *   parameter name coincides with a port or parameter already 
+     *   parameter name coincides with a port or parameter already
      *   in this actor.
      */
     public CSPMultiSource(TypedCompositeActor cont, String name,
-    	    int limit) throws IllegalActionException, 
+    	    int limit) throws IllegalActionException,
             NameDuplicationException {
         super(cont, name);
         output = new TypedIOPort(this, "output", false, true);
         output.setMultiport(true);
 	output.setTypeEquals(BaseType.INT);
-        tokenLimit = new Parameter( this, "tokenLimit", 
+        tokenLimit = new Parameter( this, "tokenLimit",
         	(new IntToken(limit)) );
     }
 
@@ -112,23 +112,23 @@ public class CSPMultiSource extends CSPActor {
      */
     public TypedIOPort output;
 
-    /** The number of tokens produced by this actor. If this limit 
+    /** The number of tokens produced by this actor. If this limit
      *  is set to -1, then produce output tokens indefinitely. The
      *  default value of this parameter is -1.
      */
     public Parameter tokenLimit;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** Execute this actor by producing IntTokens on the output port.
      *  If the tokenCount was not set to a nonnegative, integer value,
      *  then produce output tokens indefinitely. Otherwise, produce
-     *  N output tokens for N = tokenCount. 
+     *  N output tokens for N = tokenCount.
      */
     public void fire() {
         try {
-            int limit = 
+            int limit =
             	    ((IntToken)tokenLimit.getToken()).intValue();
             int count = 0;
             int size = output.getWidth();
@@ -189,7 +189,7 @@ public class CSPMultiSource extends CSPActor {
         return false;
     }
 
-    /** Discontinue the execution of this actor.  
+    /** Discontinue the execution of this actor.
      */
     public void wrapup() {
         System.out.println("Invoking wrapup of CSPMultiSource...\n");
@@ -205,7 +205,7 @@ public class CSPMultiSource extends CSPActor {
 
     // Array storing the number of times each branch rendezvous.
     private int[] _branchCount;
-    
+
 }
 
 

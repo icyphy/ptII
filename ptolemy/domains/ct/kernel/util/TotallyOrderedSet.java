@@ -112,7 +112,7 @@ public class TotallyOrderedSet {
     public Enumeration elements() {
         return  Collections.enumeration(_set);
     }
-    
+
     /** Return the first element, ie. the <i>"smallest"</i> element.
      *  If the set is empty, then return null.
      *  @return The smallest element.
@@ -173,7 +173,7 @@ public class TotallyOrderedSet {
     /** Remove all the elements that are (strictly) less than the argument.
      *  If the set is empty or all the elements are greater than
      *  the argument, then do nothing.
-     *  
+     *
      *  @param obj The argument.
      */
     public void removeAllLessThan(Object obj) {

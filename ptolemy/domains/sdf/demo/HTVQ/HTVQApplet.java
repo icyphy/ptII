@@ -90,11 +90,11 @@ public class HTVQApplet extends SDFApplet {
             prnPanel.add(new JLabel("SNR (dB)"), BorderLayout.NORTH);
             displayPanel.add(prnPanel, BorderLayout.EAST);
 
-            Parameter blockWidth = new Parameter(_toplevel, "blockWidth", 
+            Parameter blockWidth = new Parameter(_toplevel, "blockWidth",
                     new IntToken(4));
             Parameter blockHeight = new Parameter(_toplevel, "blockHeight",
                     new IntToken(2));
-            
+
             URL baseURL = new URL(getDocumentBase(), "../../../../../");
 	    ImageSequence source = new ImageSequence(_toplevel, "Source");
             source.setBaseURL(baseURL);
@@ -104,7 +104,7 @@ public class HTVQApplet extends SDFApplet {
 
             ImagePartition part = new ImagePartition(_toplevel, "Part");
             part.partitionColumns.setExpression("blockWidth");
-            part.partitionRows.setExpression("blockHeight");           
+            part.partitionRows.setExpression("blockHeight");
 
 	    HTVQEncode encode = new HTVQEncode(_toplevel, "Encoder");
             encode.setBaseURL(baseURL);
@@ -116,12 +116,12 @@ public class HTVQApplet extends SDFApplet {
             decode.setBaseURL(baseURL);
             decode.blockCount.setExpression("176*144/blockWidth/blockHeight");
             decode.blockWidth.setExpression("blockWidth");
-            decode.blockHeight.setExpression("blockHeight");            
+            decode.blockHeight.setExpression("blockHeight");
 
 	    ImageUnpartition unPartition =
 		new ImageUnpartition(_toplevel, "Unpart");
             unPartition.partitionColumns.setExpression("blockWidth");
-            unPartition.partitionRows.setExpression("blockHeight");           
+            unPartition.partitionRows.setExpression("blockHeight");
 
 	    ImageDisplay consumer = new ImageDisplay(_toplevel, "Compressed");
 	    consumer.place(compressedPanel);

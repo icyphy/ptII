@@ -80,7 +80,7 @@ public final class ImageDisplay extends Sink implements Placeable {
             throws IllegalActionException, NameDuplicationException {
 
         super(container, name);
-        
+
         input.setTypeEquals(BaseType.INT_MATRIX);
 
         _oldxsize = 0;
@@ -127,16 +127,16 @@ public final class ImageDisplay extends Sink implements Placeable {
         int xsize = message.getColumnCount();
         int ysize = message.getRowCount();
 
-        // If the image changes size, then we have to go through some 
+        // If the image changes size, then we have to go through some
         // trouble to resize the window.
         if((_oldxsize != xsize) || (_oldysize != ysize)) {
             _oldxsize = xsize;
             _oldysize = ysize;
             _RGBbuffer = new int[xsize * ysize];
-	    
+
 	    if(_picture != null)
                 _container.remove(_picture);
-            	  
+
             _picture = new Picture(xsize, ysize);
             _picture.setImage(_RGBbuffer);
             _container.add("Center", _picture);
@@ -170,7 +170,7 @@ public final class ImageDisplay extends Sink implements Placeable {
         // display it.
         _picture.displayImage();
         _picture.repaint();
-        
+
         Runnable painter = new Runnable() {
             public void run() {
                 _container.paint(_container.getGraphics());
@@ -195,7 +195,7 @@ public final class ImageDisplay extends Sink implements Placeable {
 	}
 	if(c instanceof JFrame) {
 	    _frame = (JFrame)c;
-	}	
+	}
     }
 
     /** This inner class provides a convenient way to create a JFrame for the

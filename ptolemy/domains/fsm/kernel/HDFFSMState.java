@@ -53,7 +53,7 @@ which is an opaque composite actor. The association between this state
 and the opaque composite actor representing the subsystem is established
 by calling setRefinement().
 <p>
-Note that instances of HDFFSMState must be contained by an 
+Note that instances of HDFFSMState must be contained by an
 HDFFSMController actor and that instances of the associated
 refining states (an opaque composite actor) must be contained
 by the HDF actor that this FSM refines. A HDF actor refining to an FSM

@@ -41,7 +41,7 @@ import ptolemy.math.Complex;
 
 ///////////////////////////////////////////////////////////////
 /// IntToBits
-/** This actor takes in an IntToken and output 32 consecutive BooleanTokens 
+/** This actor takes in an IntToken and output 32 consecutive BooleanTokens
     (bitwise representation of the input IntToken).
 
 @author Michael Leung
@@ -60,7 +60,7 @@ public class IntToBits extends SDFAtomicActor {
      */
     public IntToBits(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {
-        
+
         super(container, name);
 
         input = (SDFIOPort) newPort("input");
@@ -101,11 +101,11 @@ public class IntToBits extends SDFAtomicActor {
     }
 
 
-    /** Consume a single IntToken on the input. Produce 32 consecutive 
+    /** Consume a single IntToken on the input. Produce 32 consecutive
      *  BooleanTokens on the output port which is the bitwise
-     *  representation of the input IntToken. 
-     *  The most significant bit is the first boolean 
-     *  token send out. The least significant bit is the last 
+     *  representation of the input IntToken.
+     *  The most significant bit is the first boolean
+     *  token send out. The least significant bit is the last
      *  boolean token send out.
      *
      *  @exception IllegalActionException If there is no director.
@@ -124,7 +124,7 @@ public class IntToBits extends SDFAtomicActor {
         for (i = 31; i >= 0; i--) {
             remainder = integer % 2;
             integer = integer / 2;
-            if (remainder == 0) 
+            if (remainder == 0)
                 bits[i] = new BooleanToken(false);
             else
                 bits[i] = new BooleanToken(true);

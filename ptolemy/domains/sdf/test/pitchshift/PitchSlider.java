@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Red (vogel@eecs.berkeley.edu)
-@AcceptedRating 
+@AcceptedRating
 */
 package ptolemy.domains.sdf.test.pitchshift;
 
@@ -69,7 +69,7 @@ then peak finding is performed on the high-time region of the cepstrum.
 This cepstral technique works well for vocal sounds but does not
 currently perform well for pitches above about 600 Hz.
 <p>
-Note: This application requires JDK 1.3. and at least a 
+Note: This application requires JDK 1.3. and at least a
 Pentium II 400 MHz class processor (for 22050 Hz sample rate).
 Also requires ptolemy.math (used by the pitch detector).
 @author Brian K. Vogel
@@ -86,7 +86,7 @@ public class PitchSlider extends JFrame {
 
     public PitchSlider(String windowTitle) {
         super(windowTitle);
-        
+
 
         //Create the slider and its label
         JLabel sliderLabel = new JLabel("Pitch Scale Factor", JLabel.CENTER);
@@ -94,13 +94,13 @@ public class PitchSlider extends JFrame {
 
 	NumberFormat numberFormat = NumberFormat.getNumberInstance();
         numberFormat.setMaximumFractionDigits(3);
-	textField = new DecimalField(1, 10, numberFormat); 
+	textField = new DecimalField(1, 10, numberFormat);
 	sliderModel = new ConverterRangeModel();
         textField.setValue(0.001*sliderModel.getDoubleValue());
         textField.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 		    sliderModel.setDoubleValue(1000*textField.getValue());
-		    
+
 		}
 		});
 
@@ -119,7 +119,7 @@ public class PitchSlider extends JFrame {
         pitchSlider.setBorder(
                 BorderFactory.createEmptyBorder(0,0,10,0));
 
-         
+
 
         //Put everything in the content pane.
         JPanel contentPane = new JPanel();
@@ -130,13 +130,13 @@ public class PitchSlider extends JFrame {
         contentPane.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
         setContentPane(contentPane);
 
-        
+
 
         //Add a listener for window events
-        addWindowListener(new WindowAdapter() {          
+        addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
                 System.exit(0);
-            }  
+            }
         });
 
     }
@@ -148,9 +148,9 @@ public class PitchSlider extends JFrame {
 	     int fps = (int)source.getValue();
 	     // Update pitch while user is sliding the slider.
 	     processAudio.updatePitchScaleFactor((double)fps/(double)1000);
-		
+
         }
-    }    
+    }
 
     public void startPitchShifting(double sampRate) {
 	   processAudio = new ProcessAudio();
@@ -163,7 +163,7 @@ public class PitchSlider extends JFrame {
        frozen = true;
     }
 
- 
+
     public static void main(String[] args) {
 	double sampRate;
         PitchSlider pitchSlider = new PitchSlider("PitchSlider");
@@ -175,14 +175,14 @@ public class PitchSlider extends JFrame {
 	System.out.println("Usage: java PitchSlider <sample rate>");
 	System.out.println("<sample rate> is optional.");
 	System.out.println("");
-	
+
 	if (args.length == 1) {
 	    // Optional argument is the sampling rate.
 	    sampRate = (new Double(args[0])).doubleValue();
 	} else {
 	    sampRate = 22050;
 	}
-        pitchSlider.startPitchShifting(sampRate);	
+        pitchSlider.startPitchShifting(sampRate);
     }
 }
 

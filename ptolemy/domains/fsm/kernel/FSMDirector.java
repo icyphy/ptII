@@ -46,7 +46,7 @@ import java.util.Enumeration;
 /**
 An FSMDirector governs the execution of a *charts model.
 
-Note:  The name of a refining state's input port must have the same 
+Note:  The name of a refining state's input port must have the same
 name as the input port (of this director's container) to which it
 is connected. If the names don't match, then token transfer will
 silently fail when transferInputs() is called on the input port.
@@ -353,7 +353,7 @@ public class FSMDirector extends Director {
      *  has no data, then that channel is ignored.
      *
      *  Note: This method assumes that the name of the
-     *  refining state's input port has the same name 
+     *  refining state's input port has the same name
      *  as the input port (of this director's container) to
      *  which it is connected. It the names don't match,
      *  then token transfer will silently fail.
@@ -387,9 +387,9 @@ public class FSMDirector extends Director {
                     rec.put(t);
                 }
 
-		// ************ FIXME ************* 
+		// ************ FIXME *************
 		/* This assumes that the name of the
-		 * refining state's port must have the same name 
+		 * refining state's port must have the same name
 		 * as the input port (of this director's container) to
 		 * which it is connected. It the names don't match,
 		 * then things silently fail! :(
@@ -420,7 +420,7 @@ public class FSMDirector extends Director {
      *  has no data, then that channel is ignored.
      *
      *  Note: This method assumes that the name of the
-     *  refining state's output port has the same name 
+     *  refining state's output port has the same name
      *  as the output port (of this director's container) to
      *  which it is connected. It the names don't match,
      *  then token transfer will silently fail.

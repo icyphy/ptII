@@ -54,7 +54,7 @@ import ptolemy.domains.sdf.kernel.*;
 Read a sound file and sequentially output the samples. The output
 is of type DoubleToken, and one output token is produced on
 each firing. This actor will periodically repeat the the sound
-file if the <i>isPeriodic</i> parameter is set to be true. 
+file if the <i>isPeriodic</i> parameter is set to be true.
 Otherwise, this actor finishes after the last sample is output.
 The location of the sound file is given by the <i>pathName</i>
 parameter. This parameter contains the URL or filename of the sound file.
@@ -98,7 +98,7 @@ public class AudioSource extends SDFAtomicActor {
 		     new StringToken("http://localhost/soundFile.au"));
 	isURL = new Parameter(this, "isURL", new BooleanToken(true));
 	isURL.setTypeEquals(BaseType.BOOLEAN);
-	
+
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -170,9 +170,9 @@ public class AudioSource extends SDFAtomicActor {
     public boolean postfire() throws IllegalActionException {
         try {
 	    int i;
-            
+
 	    int numBytesRead;
-	   
+
 
 		// Read some audio into data[].
             numBytesRead =
@@ -188,7 +188,7 @@ public class AudioSource extends SDFAtomicActor {
 		    for (i = 0; i < productionRate; i++) {
 			audioTokenArray[i] = new DoubleToken(0);
 		    }
-		    
+
 		    output.sendArray(0, audioTokenArray);
 		    return false;
 		} else if (numBytesRead != data.length) {
@@ -204,16 +204,16 @@ public class AudioSource extends SDFAtomicActor {
 		    for (i = 0; i < productionRate; i++) {
 			audioTokenArray[i] = new DoubleToken(0);
 		    }
-		    
+
 		    output.sendArray(0, audioTokenArray);
 		    return false;
                 }
 
-		
+
 		// Convert byte array to double array.
 		audioInDoubleArray = _byteArrayToDoubleArray(data, frameSizeInBytes);
 
-                
+
 
                 audioTokenArray = new DoubleToken[productionRate];
 		// Convert to DoubleToken[].
@@ -223,7 +223,7 @@ public class AudioSource extends SDFAtomicActor {
                     audioTokenArray[i] = new DoubleToken(audioInDoubleArray[i]);
 	    }
 
-	    
+
             output.sendArray(0, audioTokenArray);
 
 
@@ -232,7 +232,7 @@ public class AudioSource extends SDFAtomicActor {
             // Should not be thrown because this is an output port.
             throw new InternalErrorException(ex.getMessage());
         } catch (IOException ex) {
-            
+
             throw new InternalErrorException(ex.getMessage());
         }
 	return true;
@@ -245,13 +245,13 @@ public class AudioSource extends SDFAtomicActor {
     public void initialize() throws IllegalActionException {
         super.initialize();
 
-	
+
 
 	try {
 
-	    
+
 	    //Sound sound = new Sound();
-	    
+
 
 	    if (((BooleanToken)isURL.getToken()).booleanValue() == true) {
 		// Load audio from a URL.
@@ -265,7 +265,7 @@ public class AudioSource extends SDFAtomicActor {
 		    new File(((StringToken)pathName.getToken()).toString());
 		//sound.load(soundFile);
 		if (soundFile != null && soundFile.isFile()) {
-		    
+
 		    try {
 			audioInputStream = AudioSystem.getAudioInputStream(soundFile);
 		    } catch (UnsupportedAudioFileException e) {
@@ -273,16 +273,16 @@ public class AudioSource extends SDFAtomicActor {
 		    } catch (IOException e) {
 			System.err.println("IOException " + e);
 		    }
-		    
+
 		    String fileName = soundFile.getName();
 		}
-		
+
 		// make sure we have something to play
 		if (audioInputStream == null) {
 		    System.err.println("No loaded audio to play back");
 		    return;
 		}
-		
+
 		AudioFormat origFormat = audioInputStream.getFormat();
 		// Now convert to PCM_SIGNED_BIG_ENDIAN so that can get double
 		// representation of samples.
@@ -295,33 +295,33 @@ public class AudioSource extends SDFAtomicActor {
 					  sampleSizeInBits, channels,
 						     signed, bigEndian);
 		//System.out.println("Converted format: " + format.toString());
-		
-		properFormatAudioInputStream = 
+
+		properFormatAudioInputStream =
 		    AudioSystem.getAudioInputStream(format, audioInputStream);
 		frameSizeInBytes = format.getFrameSize();
 		// Array of audio samples in byte format.
 		data = new byte[productionRate*frameSizeInBytes];
-		
+
 	    }
-	    
+
 	    // Put all the samples in a double array.
             //	    audioArray = sound.getDoubleArray();
 
 	    // Initialize the index to the first sample of the sound file.
 	    _index = 0;
-	   
+
 
 	} catch (MalformedURLException e) {
 	    System.err.println(e.toString());
 	} catch (IOException e) {
 	    System.err.println("AudioSource: error reading"+
 			       " input file: " +e);
-	} 
-	
+	}
+
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   //// 
+    ////                         private methods                   ////
 
     /* Convert a byte array of audio samples in linear signed pcm big endian
      * format into a double array of audio samples (-1,1) range.
@@ -334,7 +334,7 @@ public class AudioSource extends SDFAtomicActor {
 	int lengthInSamples = byteArray.length / _bytesPerSample;
 	double[] doubleArray = new double[lengthInSamples];
 	double mathDotPow = Math.pow(2, 8 * _bytesPerSample - 1);
-	    
+
 	for (int currSamp = 0; currSamp < lengthInSamples; currSamp++) {
 
 	    byte[] b = new byte[_bytesPerSample];
@@ -345,7 +345,7 @@ public class AudioSource extends SDFAtomicActor {
 	    long result = (b[0] >> 7) ;
 	    for (int i = 0; i < _bytesPerSample; i += 1)
 		result = (result << 8) + (b[i] & 0xff);
-	    doubleArray[currSamp] = ((double) result/ 
+	    doubleArray[currSamp] = ((double) result/
 				     (mathDotPow));
 		}
 	//System.out.println("a value " + doubleArray[34]);
@@ -354,13 +354,13 @@ public class AudioSource extends SDFAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-       
+
     private AudioInputStream  properFormatAudioInputStream;
 
     private AudioInputStream audioInputStream;
 
     private int productionRate;
-    
+
     private double[] audioArray;
 
     // Array of audio samples in double format.
@@ -369,7 +369,7 @@ public class AudioSource extends SDFAtomicActor {
     private DoubleToken[] audioTokenArray;
 
     private int _index;
-    
+
     // An array of length productionRate containing samples to output.
     // private DoubleToken[] audioTokenArray;
 

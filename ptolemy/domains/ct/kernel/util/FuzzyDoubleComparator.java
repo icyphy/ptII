@@ -35,7 +35,7 @@ import java.util.Comparator;
 //// FuzzyDoubleComparator
 /**
 Compare two Double objects with respect to a fuzzy threshold.
-The threshold is set by setThreshold(). If the difference of the 
+The threshold is set by setThreshold(). If the difference of the
 two double number is less than the threshold, then they are considered
 equal. The default value of the fuzzy threshold is 1e-10.
 @author Jie Liu

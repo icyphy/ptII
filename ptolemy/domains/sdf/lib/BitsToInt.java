@@ -40,7 +40,7 @@ import ptolemy.actor.lib.*;
 
 ///////////////////////////////////////////////////////////////
 /// BitsToInt
-/** This actor takes in 32 consecutive boolean tokens and output 
+/** This actor takes in 32 consecutive boolean tokens and output
     a single IntToken.
 
 @author Michael Leung
@@ -59,7 +59,7 @@ public class BitsToInt extends SDFAtomicActor {
      */
     public BitsToInt(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {
-        
+
         super(container, name);
 
         input = (SDFIOPort) newPort("input");
@@ -100,8 +100,8 @@ public class BitsToInt extends SDFAtomicActor {
     }
 
 
-    /** Consume 32 consecutive BooleanTokens on the input. 
-     *  The first token consumed is the most significant bit. 
+    /** Consume 32 consecutive BooleanTokens on the input.
+     *  The first token consumed is the most significant bit.
      *  Output a single IntToken which is representing by the
      *  BooleanTokens.
      *
@@ -114,13 +114,13 @@ public class BitsToInt extends SDFAtomicActor {
         BooleanToken[] bits = new BooleanToken[32];
 
         input.getArray(0, bits);
-        
+
         for (i = 0; i < 32; i++) {
             integer = integer << 1;
             if (bits[i].booleanValue())
                 integer += 1;
         }
-    
+
         IntToken value = new IntToken(integer);
         output.send(0, value);
     }

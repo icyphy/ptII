@@ -33,10 +33,10 @@ package ptolemy.domains.fsm.kernel;
 //// CommitAction
 /**
 An action implementing this interface is a commit action. When an FSMActor
-is postfired, the chosen transition of the latest firing of the actor is 
-commited. The commit actions contained by the transition are executed and 
-the current state of the actor is set to the destination state of the 
-transition. 
+is postfired, the chosen transition of the latest firing of the actor is
+commited. The commit actions contained by the transition are executed and
+the current state of the actor is set to the destination state of the
+transition.
 
 @author Xiaojun Liu
 @version $Id$

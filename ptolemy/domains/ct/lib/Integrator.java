@@ -36,7 +36,7 @@ import ptolemy.actor.*;
 //////////////////////////////////////////////////////////////////////////
 //// Integrator
 /**
-A wrapper of CTBaseIntegrator. The only purpose of this actor is 
+A wrapper of CTBaseIntegrator. The only purpose of this actor is
 that it is in the ct.lib package.
 @author Jie Liu
 @version $Id$

@@ -6,7 +6,7 @@ import java.util.*;
 public class ArrayIndex extends TreeMap {
 
     SourceMatrix  x_0;
-    
+
     //    private Map _map = Collections.synchronizedMap(new HashMap());
     private Map _map = new HashMap();
 
@@ -30,20 +30,20 @@ public class ArrayIndex extends TreeMap {
     }
 
     public String atKey(int i_1, int i_2, int i_3, int i_4 ) {
-	String key =  "(" + i_1 + "," + i_2 + "," + i_3 + "," + i_4 
+	String key =  "(" + i_1 + "," + i_2 + "," + i_3 + "," + i_4
 	    +")";
 	return key;
     }
 
     public String atKey(int i_1, int i_2, int i_3, int i_4, int i_5 ) {
-	String key =  "(" + i_1 + "," + i_2 + "," + i_3 + "," + i_4 
+	String key =  "(" + i_1 + "," + i_2 + "," + i_3 + "," + i_4
 	    + "," + i_5 + ")";
 	return key;
     }
 
-    public String atKey(int i_1, int i_2, int i_3, int i_4, int i_5, 
+    public String atKey(int i_1, int i_2, int i_3, int i_4, int i_5,
 			int i_6 ) {
-	String key =  "(" + i_1 + "," + i_2 + "," + i_3 + "," + i_4 
+	String key =  "(" + i_1 + "," + i_2 + "," + i_3 + "," + i_4
 	    + "," + i_5 + "," + i_6  + ")";
 	return key;
     }
@@ -64,7 +64,7 @@ public class ArrayIndex extends TreeMap {
 	// System.out.println(" --- ReadMatrix: " + filename);
 
 	if ( filename == "U_1000x16" ) {
-            
+
 	    // System.out.println(" ---- CREATE U_1000x16 ----- ");
 	    for (int i=0;i<500;i++) {
 		for (int j=0;j<16;j++) {

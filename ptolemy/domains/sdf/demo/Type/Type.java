@@ -94,14 +94,14 @@ public class Type extends SDFApplet implements ChangeListener {
                 _plotter.plot.setConnected(false);
                 _plotter.plot.setImpulses(true);
                 _plotter.plot.setMarksStyle("dots");
-                
+
                 _expr.output.unlinkAll();
                 _display.setContainer(null);
                 _plotter.setContainer(_toplevel);
-                
+
                 _toplevel.connect(_expr.output, _plotter.input);
                 _director.setScheduleValid(false);
-                
+
             } else if (display == 1 && !_previousWasDisplay) {
                 _previousWasDisplay = true;
                 _expr.output.unlinkAll();
@@ -317,7 +317,7 @@ public class Type extends SDFApplet implements ChangeListener {
     private Graph _constructLattice() {
 	GraphImpl impl = new BasicGraphImpl();
 	Graph graph = impl.createGraph(null);
-	
+
         // nodes, with user object set to the actor
         Node nNaT = impl.createNode(BaseType.NAT);
         Node nInt = impl.createNode(BaseType.INT);
@@ -358,11 +358,11 @@ public class Type extends SDFApplet implements ChangeListener {
 	e = impl.createEdge(null);
 	impl.setEdgeTail(e, nObject);
 	impl.setEdgeHead(e, nNaT);
-	
+
         e = impl.createEdge(null);
 	impl.setEdgeTail(e, nGeneral);
 	impl.setEdgeHead(e, nObject);
-	
+
 	e = impl.createEdge(null);
 	impl.setEdgeTail(e, nGeneral);
 	impl.setEdgeHead(e, nString);
@@ -370,15 +370,15 @@ public class Type extends SDFApplet implements ChangeListener {
 	e = impl.createEdge(null);
 	impl.setEdgeTail(e, nString);
 	impl.setEdgeHead(e, nBoolean);
-	
+
 	e = impl.createEdge(null);
 	impl.setEdgeTail(e, nBoolean);
 	impl.setEdgeHead(e, nNaT);
-	    
+
 	e = impl.createEdge(null);
 	impl.setEdgeTail(e, nString);
 	impl.setEdgeHead(e, nScalar);
-	
+
         e = impl.createEdge(null);
 	impl.setEdgeTail(e, nScalar);
 	impl.setEdgeHead(e, nLong);
@@ -398,11 +398,11 @@ public class Type extends SDFApplet implements ChangeListener {
         e = impl.createEdge(null);
 	impl.setEdgeTail(e, nComplex);
 	impl.setEdgeHead(e, nDouble);
-	
+
 	e = impl.createEdge(null);
 	impl.setEdgeTail(e, nScalar);
 	impl.setEdgeHead(e, nComplex);
-	
+
         return graph;
     }
 
@@ -750,13 +750,13 @@ public class Type extends SDFApplet implements ChangeListener {
     }
 
     public class TypeGraphController extends BasicGraphController {
-	
+
 	/** The selection interactor for drag-selecting nodes
 	 */
 	private SelectionDragger _selectionDragger;
-	
+
 	/**
-	 * Create a new basic controller with default 
+	 * Create a new basic controller with default
 	 * node and edge interactors.
 	 */
 	public TypeGraphController () {
@@ -766,7 +766,7 @@ public class Type extends SDFApplet implements ChangeListener {
             getNodeController().setNodeRenderer(new TypeRenderer());
             getEdgeController().setEdgeRenderer(new LineRenderer());
 	}
-	
+
 	/**
 	 * Initialize all interaction on the graph pane. This method
 	 * is called by the setGraphPane() method of the superclass.
@@ -776,7 +776,7 @@ public class Type extends SDFApplet implements ChangeListener {
 	 */
 	protected void initializeInteraction () {
 	    GraphPane pane = getGraphPane();
-	    
+
 	    // Create and set up the selection dragger
 	    _selectionDragger = new SelectionDragger(pane);
 	    _selectionDragger.addSelectionInteractor(
@@ -927,7 +927,7 @@ public class Type extends SDFApplet implements ChangeListener {
                         // Create the new element
                         double currentTime = (double) (_counter);
                         _counter++;
-                        
+
                         // Make the elements look large in case they're the
                         // last one
                         TraceModel.Element element =

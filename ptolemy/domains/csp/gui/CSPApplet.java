@@ -43,7 +43,7 @@ import ptolemy.kernel.util.InternalErrorException;
 A base class for applets that use the CSP domain. This is provided
 for convenience, in order to promote certain common elements among
 CSP applets. It is by no means required in order to create an applet
-that uses the CSP domain. 
+that uses the CSP domain.
 
 @author John S. Davis II
 @version $Id$
@@ -54,8 +54,8 @@ public class CSPApplet extends PtolemyApplet {
     ////                         public methods                    ////
 
     /** Initialize the applet. After calling the base class init() method,
-     *  this method creates a director which is accessible to derived 
-     *  classes via a protected member. 
+     *  this method creates a director which is accessible to derived
+     *  classes via a protected member.
      */
     public void init() {
         super.init();

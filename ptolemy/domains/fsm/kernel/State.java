@@ -47,7 +47,7 @@ import java.util.LinkedList;
 //// State
 /**
 A State has two ports: one for linking incoming transitions, the other for
-outgoing transitions. In a modal model, a State can be refined by a 
+outgoing transitions. In a modal model, a State can be refined by a
 TypedActor.
 
 @author Xiaojun Liu
@@ -98,7 +98,7 @@ public class State extends ComponentEntity {
         }
         return _nonpreemptiveTransitionList;
     }
-        
+
     /** Return the list of preemptive outgoing transitions from
      *  this state.
      *  @return A list of preemptive transitions.
@@ -116,7 +116,7 @@ public class State extends ComponentEntity {
      *  the state from its container.
      *
      *  @param entity The proposed container.
-     *  @exception IllegalActionException If the state would result 
+     *  @exception IllegalActionException If the state would result
      *   in a recursive containment structure, or if
      *   this state and container are not in the same workspace, or
      *   if the argument is not an instance of FSMActor or null.
@@ -134,14 +134,14 @@ public class State extends ComponentEntity {
         super.setContainer(container);
     }
 
-    /** Set the refinement of this state. The refinement must implement 
-     *  the Nameable interface, otherwise an IllegalActionException is 
-     *  thrown. The refinement must have the same container as the 
+    /** Set the refinement of this state. The refinement must implement
+     *  the Nameable interface, otherwise an IllegalActionException is
+     *  thrown. The refinement must have the same container as the
      *  FSMActor containing this state.
      *  @param refinement The refinement of this state.
-     *  @exception IllegalActionException If the refinement does not 
-     *   implement the Nameable interface, or if the refinement does 
-     *   not have the same container as the FSMActor containing this 
+     *  @exception IllegalActionException If the refinement does not
+     *   implement the Nameable interface, or if the refinement does
+     *   not have the same container as the FSMActor containing this
      *   state.
      */
     public void setRefinement(TypedActor refinement)
@@ -151,7 +151,7 @@ public class State extends ComponentEntity {
             return;
         }
         if (!(refinement instanceof Nameable)) {
-            throw new IllegalActionException(this, 
+            throw new IllegalActionException(this,
                     "The refinement of a state must implement the "
                     + "Nameable interface.");
         }
@@ -214,4 +214,3 @@ public class State extends ComponentEntity {
     // Version of cached transition lists.
     private long _transitionListVersion = -1;
 
-}

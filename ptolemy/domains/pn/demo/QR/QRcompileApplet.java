@@ -92,8 +92,8 @@ public class QRcompileApplet extends PNApplet implements QueryListener {
 	    _eventplot.plot.setConnected(false);
 	    _eventplot.plot.setImpulses(true);
 	    _eventplot.plot.setMarksStyle("dots");
-	    _eventplot.fillOnWrapup.setToken(new BooleanToken(false)); 	    
-	    // _eventplot.timed.setToken(new BooleanToken(false)); 
+	    _eventplot.fillOnWrapup.setToken(new BooleanToken(false));
+	    // _eventplot.timed.setToken(new BooleanToken(false));
 
 	    // Construct the Ptolemy kernel topology
 	    _ND_6  = new ND_6(_toplevel,"ND_6");
@@ -129,7 +129,7 @@ public class QRcompileApplet extends PNApplet implements QueryListener {
 	    _toplevel.connect(_s2m.output, _matrixViewer.input);
 
             _initCompleted = true;
-	    
+
 	    // The 2 argument requests a go and stop button.
             getContentPane().add(_createRunControls(2));
 
@@ -146,7 +146,7 @@ public class QRcompileApplet extends PNApplet implements QueryListener {
     *   model or parameter changes on the actors throw it.
     */
     protected void _go() throws IllegalActionException {
-        
+
         // If an exception occurred during initialization, then we don't
         // want to run here.  The model is probably not complete.
         if (!_initCompleted) return;
@@ -155,11 +155,11 @@ public class QRcompileApplet extends PNApplet implements QueryListener {
         // or the model has been corrupted.  In either case, we do not
         // want to run.
         if (_manager.getState() != _manager.IDLE) return;
-        
+
         super._go();
 
     }
-        
+
     /** Changing of a parameter has occured. First check if the
      *  parameter (K or N) falls within the range of allowed
      *  values. Then propagate the new parameter value to the various
@@ -190,7 +190,7 @@ public class QRcompileApplet extends PNApplet implements QueryListener {
 		    throw new IllegalActionException(" Select a number between 1 < K < 500 ");
 		}
 	    }
-	    
+
 	    if ( name == "N" ) {
 		int n = (int)_query.intValue("N");
 		if ( (n<17) && ( n>1) ) {
@@ -212,7 +212,7 @@ public class QRcompileApplet extends PNApplet implements QueryListener {
 		}
 	    }
 
-            if ( done ) { 
+            if ( done ) {
                 _go();
             }
 
@@ -236,11 +236,11 @@ public class QRcompileApplet extends PNApplet implements QueryListener {
     private ND_14    _ND_14;
     private ND_36    _ND_36;
     private ND_86    _ND_86;
- 
+
     private MatrixViewer   _matrixViewer;
     private StreamToMatrix _s2m;
-    
-    private SequencePlotter   _eventplot;    
+
+    private SequencePlotter   _eventplot;
     private Query             _query;
 
 }

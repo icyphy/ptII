@@ -119,7 +119,7 @@ public class ZeroCrossingDetector extends CTActor
      *  @exception IllegalActionException If the event cannot be broadcasted.
      */
     public void emitCurrentEvents() throws IllegalActionException{
-        if(_debugging) 
+        if(_debugging)
             _debug(this.getFullName() + " checking for current event...");
 
         if(_eventNow) {
@@ -137,7 +137,7 @@ public class ZeroCrossingDetector extends CTActor
      */
     public void fire() throws IllegalActionException {
         _thisTrg = ((DoubleToken) trigger.get(0)).doubleValue();
-        if(_debugging) 
+        if(_debugging)
             _debug(getFullName() + " consuming trigger Token" +  _thisTrg);
         _inputToken = input.get(0);
     }
@@ -198,7 +198,7 @@ public class ZeroCrossingDetector extends CTActor
                     _eventMissed = true;
                     _refineStep = (-_lastTrg*dir.getCurrentStepSize())/
                         (_thisTrg-_lastTrg);
-                   if(_debugging) _debug(getFullName() + 
+                   if(_debugging) _debug(getFullName() +
                            " Event Missed: refined step at" +  _refineStep);
                     return false;
                 }

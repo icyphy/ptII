@@ -1,5 +1,5 @@
-/* 
- 
+/*
+
  Copyright (c) 1998-1999 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -42,10 +42,10 @@ import ptolemy.domains.sdf.lib.huffman.*;
 
 ///////////////////////////////////////////////////////////////
 /// HuffDecoder -- Huffman decoder that takes in a stream of boolean token,
-//                 decode it and output the corresponding token in the 
+//                 decode it and output the corresponding token in the
 //                 code book. Huffman code book (huffman tree) will be input
 //                 as a parameter.
-/** 
+/**
 
 @author Michael Leung
 @version $Id$
@@ -85,10 +85,10 @@ public class HuffDecoder extends TypedAtomicActor {
 
     /** The input port. This has type ObjectToken. */
     public TypedIOPort codeBookInput;
-    
+
     /** The input port. This has type BooleanToken. */
     public TypedIOPort bitInput;
-    
+
     /** The output port. This has type ObjectToken. */
     public TypedIOPort output;
 
@@ -117,27 +117,27 @@ public class HuffDecoder extends TypedAtomicActor {
         super.initialize();
 	Parameter p;
 	p = (Parameter) getAttribute("huffmanTree");
-        huffmanTree = (HuffTree) ((ObjectToken)p.getToken()).getValue();     
+        huffmanTree = (HuffTree) ((ObjectToken)p.getToken()).getValue();
     }
-    
+
     public final boolean prefire() throws IllegalActionException {
         /* if (no CodeBook yet and no codebook waiting)
          *    return notReady;
          * else
          *    return ready;
          */
-        if (codeBookInput.hasToken(0)) 
+        if (codeBookInput.hasToken(0))
             return true;
-        return false;   
+        return false;
     }
 
     /** Left branch represents False.
      *  Right branch represents True.
      *  @exception IllegalActionException If there is no director.
      */
-    
+
     public void fire() throws IllegalActionException  {
-        
+
         HuffTree tree = (HuffTree) huffmanTree.getRoot();
 
         while (!tree.isLeaf()) {
@@ -154,7 +154,7 @@ public class HuffDecoder extends TypedAtomicActor {
     }
 
     private HuffTree huffmanTree;
-                
+
 }
 
 

@@ -835,7 +835,7 @@ public class SDFScheduler extends Scheduler {
 		ComponentEntity currentActor
 		    = (ComponentEntity) readyToScheduleActorList.getFirst();
 		// remove it from the list of actors we are waiting to fire
-                while(readyToScheduleActorList.remove(currentActor)); 
+                while(readyToScheduleActorList.remove(currentActor));
 
 		if (_debugging) {
                     _debug("Scheduling Actor " + currentActor.getName());
@@ -866,7 +866,7 @@ public class SDFScheduler extends Scheduler {
 		// Update the firingRemainingVector for this actor.
 		int firingsRemaining =
                     ((Integer) firingsRemainingVector.get(currentActor)).
-                    intValue(); 
+                    intValue();
 		firingsRemaining -= 1;
                 firingsRemainingVector.put(currentActor,
                         new Integer(firingsRemaining));
@@ -904,7 +904,7 @@ public class SDFScheduler extends Scheduler {
 			while(actorsLeft.hasNext()) {
 			    Entity e = (Entity)actorsLeft.next();
 			    if (_debugging) _debug(e.getFullName());
-			}			
+			}
 		    }
 		    // Otherwise the actor still has firings left
 		    else {
@@ -922,8 +922,8 @@ public class SDFScheduler extends Scheduler {
 			// appears in the unscheduled actors list
 			// then put it
 			// at the END of readyToScheduleActorList.
-			if(inputCount < 1 && 
-			   unscheduledActorList.contains(currentActor)) 
+			if(inputCount < 1 &&
+			   unscheduledActorList.contains(currentActor))
 			    readyToScheduleActorList.addLast(currentActor);
 		    }
 		}
@@ -1398,7 +1398,7 @@ public class SDFScheduler extends Scheduler {
 					 port.getName() + " receivers.");
     }
 
-    /** A comparator for Named Objects.  This is currently SLOW because 
+    /** A comparator for Named Objects.  This is currently SLOW because
      *  getFullName is not cached.
      */
     private class NamedObjComparator implements Comparator {
@@ -1413,16 +1413,16 @@ public class SDFScheduler extends Scheduler {
                 Class c1 = n1.getClass();
                 Class c2 = n2.getClass();
                 compare = c1.getName().compareTo(c2.getName());
-                if(compare != 0) return compare;                
-                if(o1.equals(o2)) 
-                    return 0; 
+                if(compare != 0) return compare;
+                if(o1.equals(o2))
+                    return 0;
                 else {
                     // FIXME This should never happen, hopefully.  Otherwise
                     // the comparator needs to be made more specific.
-                    throw new InternalErrorException("Comparator not " + 
+                    throw new InternalErrorException("Comparator not " +
                             "capable of comparing not equal objects.");
                 }
-            } else 
+            } else
                 throw new ClassCastException("Object must be NamedObjs");
         }
     }

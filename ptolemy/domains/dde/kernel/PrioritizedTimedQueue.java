@@ -1,4 +1,4 @@
-/* A FIFO queue with time and priority attributes that is used for 
+/* A FIFO queue with time and priority attributes that is used for
 storing tokens with time stamps.
 
  Copyright (c) 1997-1999 The Regents of the University of California.
@@ -44,20 +44,20 @@ import java.util.Iterator;
 //////////////////////////////////////////////////////////////////////////
 //// PrioritizedTimedQueue
 /**
-/* A FIFO queue with time and priority attributes that is used for 
-storing tokens with time stamps. A "time stamp" is a time value that 
-is associated with a token and is used to order the consumption of a 
-token with respect to other time stamped tokens. To help organize the 
-tokens contained by this queue, two flags are maintained: <I>last time</I> 
-and <I>receiver time</I>. The last time flag is defined to be equivalent 
-to the time stamp of the token that was most recently placed in the queue. 
-The receiver time flag is defined as the time stamp of the oldest token in 
-the queue or the last token to be removed from the queue if the queue is 
-empty. Both of these flags must have monotonically, non-decreasing values 
-(with the exception of the IGNORE, INACTIVE and ETERNITY values). At the 
+/* A FIFO queue with time and priority attributes that is used for
+storing tokens with time stamps. A "time stamp" is a time value that
+is associated with a token and is used to order the consumption of a
+token with respect to other time stamped tokens. To help organize the
+tokens contained by this queue, two flags are maintained: <I>last time</I>
+and <I>receiver time</I>. The last time flag is defined to be equivalent
+to the time stamp of the token that was most recently placed in the queue.
+The receiver time flag is defined as the time stamp of the oldest token in
+the queue or the last token to be removed from the queue if the queue is
+empty. Both of these flags must have monotonically, non-decreasing values
+(with the exception of the IGNORE, INACTIVE and ETERNITY values). At the
 conclusion of a simulation run the receiver time is set to INACTIVE.
 <P>
-A PrioritizedTimedQueue is subclassed by DDEReceiver. Hence, 
+A PrioritizedTimedQueue is subclassed by DDEReceiver. Hence,
 PrioritizedTimedQueues serve as the foundation for receivers
 contained in the IO ports of actors operating within DDE models.
 A TimeKeeper object is assigned to each actor that operates according to
@@ -67,19 +67,19 @@ each receiver. As information flows through a PrioritizedTimedQueue, the
 TimeKeeper must be kept up to date with respect to the receiver times.
 The TimeKeeper orders the PrioritizedTimedQueues according to their receiver
 times and priorities. PrioritizedTimedQueues with smaller receiver times are
-ordered first. 
+ordered first.
 <P>
-PrioritizedTimedQueues with identical receiver times are sorted according 
-to their respective priorities. PrioritizedTimedQueues are assigned 
-priorities (a nonnegative integer) by a TimeKeeper when the TimeKeeper 
-is instantiated. Receivers with higher receiver priorities are ordered 
+PrioritizedTimedQueues with identical receiver times are sorted according
+to their respective priorities. PrioritizedTimedQueues are assigned
+priorities (a nonnegative integer) by a TimeKeeper when the TimeKeeper
+is instantiated. Receivers with higher receiver priorities are ordered
 before receivers with lower priorities. A receiver's priority can be
 explicitly specified or it can be implicitly determined based on the
 topology. In the latter case, a receiver's priority is set according
-to the inverse order in which it was connected to the model topology. 
-I.e., if two input receivers (receiver A and receiver B) are added to 
-an actor such that receiver A is connected in the model topology before 
-receiver B, then receiver B will have a higher priority than receiver A. 
+to the inverse order in which it was connected to the model topology.
+I.e., if two input receivers (receiver A and receiver B) are added to
+an actor such that receiver A is connected in the model topology before
+receiver B, then receiver B will have a higher priority than receiver A.
 <P>
 If the oldest token in the queue has a time stamp of IGNORE, then the
 next oldest token from the other receivers contained by the actor in
@@ -96,10 +96,10 @@ as long as they have unique, negative values. ETERNITY is used in
 conjunction with the completionTime to indicate that an actor should
 continue executing indefinitely.
 <P>
-Note that a PrioritizedTimedQueue is intended for use within a 
-multi-threaded environment. PrioritizedTimedQueue does not 
-require the synchronization facilities provided by 
-ptolemy.kernel.util.Workspace. PrioritizedTimedQueue is subclassed 
+Note that a PrioritizedTimedQueue is intended for use within a
+multi-threaded environment. PrioritizedTimedQueue does not
+require the synchronization facilities provided by
+ptolemy.kernel.util.Workspace. PrioritizedTimedQueue is subclassed
 by DDEReceiver which add significant synchronization facilities
 and where appropriate employs workspace.
 
@@ -158,7 +158,7 @@ public class PrioritizedTimedQueue {
      * @exception NoTokenException If the queue is empty.
      */
     public Token get() {
-        // Get a token and set all relevant 
+        // Get a token and set all relevant
         // local time parameters
 	Token token = null;
         Event event = (Event)_queue.take();
@@ -172,7 +172,7 @@ public class PrioritizedTimedQueue {
             Event nextEvent = (Event)_queue.get(0);
             _rcvrTime = nextEvent.getTime();
         }
-        
+
         // Set relevant TimeKeeper time parameters
 	Thread thread = Thread.currentThread();
         try {
@@ -255,10 +255,10 @@ public class PrioritizedTimedQueue {
      *  queue is empty immediately prior to putting the token on
      *  the queue, then set the receiver time value to be equal to the
      *  last time value. If the queue is full, throw a NoRoomException.
-     *  Time stamps can not be set to negative values that are not equal 
+     *  Time stamps can not be set to negative values that are not equal
      *  to IGNORE or INACTIVE; otherwise an IllegalArgumentException
      *  will be thrown.
-     * @param token The token to put on the queue. 
+     * @param token The token to put on the queue.
      * @param time The time stamp of the token.
      * @exception NoRoomException If the queue is full.
      */
@@ -306,7 +306,7 @@ public class PrioritizedTimedQueue {
         if( getRcvrTime() != PrioritizedTimedQueue.IGNORE ) {
             return;
         }
-        // Get the token and set all relevant 
+        // Get the token and set all relevant
         // local time parameters
         Event event = (Event)_queue.take();
         if (event == null) {
@@ -319,7 +319,7 @@ public class PrioritizedTimedQueue {
             Event nextEvent = (Event)_queue.get(0);
             _rcvrTime = nextEvent.getTime();
         }
-        
+
         // Set relevant time keeper time parameters
 	Thread thread = Thread.currentThread();
         try {
@@ -332,7 +332,7 @@ public class PrioritizedTimedQueue {
             System.err.println("An exception thrown while setting"
                     + " the output time of TimeKeeper");
         }
-        
+
 	// Set the receiver time if value is still IGNORE
 	if( getRcvrTime() == PrioritizedTimedQueue.IGNORE ) {
 	    if( thread instanceof DDEThread ) {
@@ -383,7 +383,7 @@ public class PrioritizedTimedQueue {
     }
 
     /** Return true if this receiver has a NullToken at the front
-     *  of the queue; return false otherwise. 
+     *  of the queue; return false otherwise.
      *  This method is not synchronized so the caller should be.
      * @return True if this receiver contains a NullToken in the
      *  oldest queue position; return false otherwise.
@@ -449,7 +449,7 @@ public class PrioritizedTimedQueue {
 
     // The IOPort which contains this receiver.
     private IOPort _container;
-    
+
     // The queue in which this receiver stores tokens.
     private FIFOQueue _queue = new FIFOQueue();
 

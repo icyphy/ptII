@@ -44,53 +44,53 @@ import java.util.NoSuchElementException;
 //// DDEReceiver
 /**
 A DDEReceiver stores time stamped tokens according to distributed
-discrete event semantics. A <I>time stamped token</I> is a token 
+discrete event semantics. A <I>time stamped token</I> is a token
 that has a time stamp associated with it. A DDEReceiver stores time
-stamped tokens by enforcing a blocking read and blocking write style. 
-Time stamped tokens are appended to the queue with one of the two put() 
-methods, both of which block on a write if the queue is full. Time 
+stamped tokens by enforcing a blocking read and blocking write style.
+Time stamped tokens are appended to the queue with one of the two put()
+methods, both of which block on a write if the queue is full. Time
 stamped tokens are removed from the queue via the get() method. The
-get() method will throw a NoTokenException if it is invoked when the 
-hasToken() method returns false. 
+get() method will throw a NoTokenException if it is invoked when the
+hasToken() method returns false.
 <P>
 Each DDEReceiver is managed by a TimeKeeper. A single time keeper is
 assigned to manage all of the receivers of a given actor by keeping
 track of the actor's local notion of time. As tokens are consumed
 (returned by the get() method) in a receiver, the local time of the
-actor will advance to the value of the consumed token's time stamp. 
-The hasToken() method of a receiver will return true only if the 
-receiver's get() method will result in the minimum advancement of local 
-time with respect to all of the receivers controlled by the TimeKeeper. 
+actor will advance to the value of the consumed token's time stamp.
+The hasToken() method of a receiver will return true only if the
+receiver's get() method will result in the minimum advancement of local
+time with respect to all of the receivers controlled by the TimeKeeper.
 If the get() method of multiple receivers will result in a minimum
 but identical local time advancement, then the hasToken() method of the
 receiver with the highest priority will true (the others will return
-false). 
+false).
 <P>
-If a receiver with a nonnegative receiver time is empty, then the 
-hasToken() method will perform a blocking read. Once, a token is 
-available then hasToken() will return true or false according to 
-the minimum time advancement rules cited in the preceding paragraph. 
+If a receiver with a nonnegative receiver time is empty, then the
+hasToken() method will perform a blocking read. Once, a token is
+available then hasToken() will return true or false according to
+the minimum time advancement rules cited in the preceding paragraph.
 Note that hasToken() blocks while get() does not block.
 <P>
 DDEReceivers process certain events that are hidden from view by
-ports and actors. In particular, NullTokens and time stamps of 
-value PrioritizedTimedQueue.IGNORE. NullTokens allow actors to 
-communicate information on their local time advancement to 
+ports and actors. In particular, NullTokens and time stamps of
+value PrioritizedTimedQueue.IGNORE. NullTokens allow actors to
+communicate information on their local time advancement to
 neighboring actors without the need for an actual data exchange.
 NullTokens are passed at the receiver level and circumvent the
-Ptolemy II data typing mechanism. 
+Ptolemy II data typing mechanism.
 <P>
 Time stamps of value PrioritizedTimedQueue.IGNORE are used to initiate
 execution in feedback cycles. If a receiver has a time stamp with
 value IGNORE, then it will not be considered when determining which
-receiver's get() method will result in the minimum local time 
+receiver's get() method will result in the minimum local time
 advancement. Once a single token has been consumed by any other
 receiver, then the event with time stamp of value IGNORE will be
 removed. If all receivers have receiver times of IGNORE, then all
 such events will be removed.
 <P>
 IMPORTANT: This class assumes that valid time stamps have non-negative
-values. Reserved negative values exist for special purposes: INACTIVE, 
+values. Reserved negative values exist for special purposes: INACTIVE,
 IGNORE and RECEIVER. These values are attributes of PrioritizedTimedQueue.
 
 
@@ -128,14 +128,14 @@ public class DDEReceiver extends PrioritizedTimedQueue
     ////                         public methods                    ////
 
     /** Return a token from the queue. If no token is available,
-     *  then throw a NoTokenException. If at any point during 
-     *  this method this receiver is scheduled for termination, 
-     *  then throw a TerminateProcessException to cease execution 
+     *  then throw a NoTokenException. If at any point during
+     *  this method this receiver is scheduled for termination,
+     *  then throw a TerminateProcessException to cease execution
      *  of the actor that contains this receiver.
      *  <P>
      *  IMPORTANT: This method is designed to be called after
      *  hasToken() has been called. Verify that this method is
-     *  safe to call by calling hasToken() first. Note that 
+     *  safe to call by calling hasToken() first. Note that
      *  this method does not perform a blocking read but hasToken()
      *  does.
      * @return The oldest token on this queue.
@@ -156,7 +156,7 @@ public class DDEReceiver extends PrioritizedTimedQueue
 		_writePending = false;
 		notifyAll();
 	    }
-            
+
 	    Thread thread = Thread.currentThread();
 	    if( thread instanceof DDEThread ) {
 		TimeKeeper timeKeeper =
@@ -176,28 +176,28 @@ public class DDEReceiver extends PrioritizedTimedQueue
      *  receiver's actor. The sorting rules are found in
      *  ptolemy.domains.dde.kernel.RcvrComparator.
      *  <P>
-     *  If at any point during this method this receiver is scheduled 
-     *  for termination, then throw a TerminateProcessException to 
+     *  If at any point during this method this receiver is scheduled
+     *  for termination, then throw a TerminateProcessException to
      *  cease execution of the actor that contains this receiver.
      * @return Return true if the get() method of this receiver will
      *  return a token without throwing a NoTokenException.
      */
     public boolean hasToken() {
 	Workspace workspace = getContainer().workspace();
-        DDEDirector director = (DDEDirector)((Actor) 
+        DDEDirector director = (DDEDirector)((Actor)
 		getContainer().getContainer()).getDirector();
 	Thread thread = Thread.currentThread();
 	TimeKeeper timeKeeper = ((DDEThread)thread).getTimeKeeper();
-        
+
 	if( !(thread instanceof DDEThread) ) {
             return false;
         }
-        
+
         boolean sendNullTokens = false;
-        
+
 	synchronized(this) {
-        
-            
+
+
 	    //////////////////////
 	    // Update the RcvrList
 	    //////////////////////
@@ -211,7 +211,7 @@ public class DDEReceiver extends PrioritizedTimedQueue
 	    }
 
 	    //////////////////////////////////////////
-	    // Determine if the TimeKeeper is inactive 
+	    // Determine if the TimeKeeper is inactive
 	    //////////////////////////////////////////
             if( timeKeeper.getNextTime() == INACTIVE ) {
                 requestFinish();
@@ -266,11 +266,11 @@ public class DDEReceiver extends PrioritizedTimedQueue
                 throw new TerminateProcessException("");
 	    }
         }
-        
+
         if( sendNullTokens ) {
 	    timeKeeper.sendOutNullTokens(this);
         }
-	return hasToken(); 
+	return hasToken();
     }
 
     /** Do a blocking write on the queue. Set the time stamp to be
@@ -278,15 +278,15 @@ public class DDEReceiver extends PrioritizedTimedQueue
      *  connected to a boundary port, then set the time stamp to
      *  be the current time of the time keeper that is associated
      *  with the composite actor that contains the boundary port.
-     *  If the time stamp of the token is greater than the 
-     *  completionTime of this receiver, then set the time stamp to 
-     *  INACTIVE and the token to null. If the queue is full, then 
-     *  inform the director that this receiver is blocking on a write 
-     *  and wait until room becomes available. When room becomes 
-     *  available, put the token and time stamp in the queue and 
-     *  inform the director that the block no longer exists. If at 
-     *  any point during this method this receiver is scheduled for 
-     *  termination, then throw a TerminateProcessException which 
+     *  If the time stamp of the token is greater than the
+     *  completionTime of this receiver, then set the time stamp to
+     *  INACTIVE and the token to null. If the queue is full, then
+     *  inform the director that this receiver is blocking on a write
+     *  and wait until room becomes available. When room becomes
+     *  available, put the token and time stamp in the queue and
+     *  inform the director that the block no longer exists. If at
+     *  any point during this method this receiver is scheduled for
+     *  termination, then throw a TerminateProcessException which
      *  will cease activity for the actor that contains this receiver.
      * @param token The token to put on the queue.
      */
@@ -318,11 +318,11 @@ public class DDEReceiver extends PrioritizedTimedQueue
 	Thread thread = Thread.currentThread();
         Workspace workspace = getContainer().workspace();
         DDEDirector director = null;
-        director = (DDEDirector)((Actor) 
+        director = (DDEDirector)((Actor)
 		getContainer().getContainer()).getDirector();
-                
+
         synchronized(this) {
-        
+
             if( time > getCompletionTime() &&
                     getCompletionTime() != ETERNITY && !_terminate ) {
 	        time = INACTIVE;
@@ -356,7 +356,7 @@ public class DDEReceiver extends PrioritizedTimedQueue
                         + "during _put()");
             }
 	}
-        
+
         put(token, time);
     }
 
@@ -377,7 +377,7 @@ public class DDEReceiver extends PrioritizedTimedQueue
      *  accordance with the constraints of the ProcessReceiver
      *  interface.
      * @param flag The boolean pause flag of this receiver.
-     * @deprecated This code is being replaced by 
+     * @deprecated This code is being replaced by
      *  ptolemy.actor.CompositeActor.stopFire()
      */
     public synchronized void requestPause(boolean pause) {
@@ -404,7 +404,7 @@ public class DDEReceiver extends PrioritizedTimedQueue
      *  NullTokens should not be taken into consideration by
      *  hasToken() if the parameter is true; otherwise do consider
      *  NullTokens. This method is used in special circumstances
-     *  in NullTokens must be manipulated at the actor level. In 
+     *  in NullTokens must be manipulated at the actor level. In
      *  particular, FeedBackDelay use this method so that it can
      *  "see" NullTokens that it receives and give them appropriate
      *  delay values.
@@ -420,7 +420,7 @@ public class DDEReceiver extends PrioritizedTimedQueue
 
     ///////////////////////////////////////////////////////////////////
     ////                      package friendly variables           ////
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

@@ -46,7 +46,7 @@ import ptolemy.data.expr.Parameter;
 A single channel buffer. This actor is the canonical example of how
 to use a CDO construct. It is parameterized by the Parameter "depth",
 which controls how many Tokens can be stored in this buffer.
-The default depth of the buffer is 1. The buffer depth is set upon 
+The default depth of the buffer is 1. The buffer depth is set upon
 calling the fire method. The fire() method does not return until a
 TerminateProcessException is thrown.
 <p>
@@ -56,21 +56,21 @@ TerminateProcessException is thrown.
 
 public class CSPBuffer extends CSPActor {
 
-    /** Construct a CSPBuffer in the default workspace with an empty 
-     *  string as its name. The actor is parameterized by its depth, 
-     *  which must be an integer. The default depth of the buffer is 
-     *  one. The actor is created with a single input port and a single 
-     *  output port, both of width one. The input port is called "input", 
-     *  and similarly, the output port is called "output". The object is 
-     *  added to the workspace directory. Increment the version number of 
+    /** Construct a CSPBuffer in the default workspace with an empty
+     *  string as its name. The actor is parameterized by its depth,
+     *  which must be an integer. The default depth of the buffer is
+     *  one. The actor is created with a single input port and a single
+     *  output port, both of width one. The input port is called "input",
+     *  and similarly, the output port is called "output". The object is
+     *  added to the workspace directory. Increment the version number of
      *  the workspace.
-     *  @exception IllegalActionException If the port or parameter 
+     *  @exception IllegalActionException If the port or parameter
      *   cannot be contained by this actor.
-     *  @exception NameDuplicationException If the port name coincides 
-     *   with a port already in this actor, or if the parameter name 
+     *  @exception NameDuplicationException If the port name coincides
+     *   with a port already in this actor, or if the parameter name
      *   coincides with a parameter already in this actor.
      */
-    public CSPBuffer() throws IllegalActionException, 
+    public CSPBuffer() throws IllegalActionException,
     	    NameDuplicationException {
         super();
         depth = new Parameter(this, "depth", (new IntToken(1)) );
@@ -81,22 +81,22 @@ public class CSPBuffer extends CSPActor {
 	input.setTypeEquals(BaseType.GENERAL);
     }
 
-    /** Construct a CSPBuffer in the specified container with the 
-     *  specified name. The name must be unique within the container 
-     *  or an exception is thrown. The container argument must not be 
-     *  null, or a NullPointerException will be thrown. The actor is 
-     *  parameterized by its depth, which must be an integer. The default 
-     *  depth of the buffer is one. The actor is created with a single 
-     *  input port and a single output port, both of width one. The input 
-     *  port is called "input", and similarly, the output port is called 
-     *  "output". 
+    /** Construct a CSPBuffer in the specified container with the
+     *  specified name. The name must be unique within the container
+     *  or an exception is thrown. The container argument must not be
+     *  null, or a NullPointerException will be thrown. The actor is
+     *  parameterized by its depth, which must be an integer. The default
+     *  depth of the buffer is one. The actor is created with a single
+     *  input port and a single output port, both of width one. The input
+     *  port is called "input", and similarly, the output port is called
+     *  "output".
      *  <p>
-     *  @param container The TypedCompositeActor that contains this 
-     *   actor. 
+     *  @param container The TypedCompositeActor that contains this
+     *   actor.
      *  @param name The actor's name.
-     *  @exception IllegalActionException If the entity cannot be 
+     *  @exception IllegalActionException If the entity cannot be
      *   contained by the proposed container.
-     *  @exception NameDuplicationException If the name argument 
+     *  @exception NameDuplicationException If the name argument
      *   coincides with an entity already in the container.
      */
     public CSPBuffer(TypedCompositeActor cont, String name)
@@ -104,14 +104,14 @@ public class CSPBuffer extends CSPActor {
         this(cont, name, 1);
     }
 
-    /** Construct a CSPBuffer in the specified container with the 
-     *  specified name.  The name must be unique within the container 
-     *  or an exception is thrown. The container argument must not be 
-     *  null, or a NullPointerException will be thrown. The actor is 
-     *  parameterized by its depth, which must be an integer. The buffer 
-     *  depth is assigned to the value passed in. The actor is created 
-     *  with a single input port and a single output port, both of width 
-     *  one. The input port is called "input", and similarly, the output 
+    /** Construct a CSPBuffer in the specified container with the
+     *  specified name.  The name must be unique within the container
+     *  or an exception is thrown. The container argument must not be
+     *  null, or a NullPointerException will be thrown. The actor is
+     *  parameterized by its depth, which must be an integer. The buffer
+     *  depth is assigned to the value passed in. The actor is created
+     *  with a single input port and a single output port, both of width
+     *  one. The input port is called "input", and similarly, the output
      *  port is called "output".
      *  <p>
      *  @param container The TypedCompositeActor that contains this actor.
@@ -119,7 +119,7 @@ public class CSPBuffer extends CSPActor {
      *  @exception IllegalActionException If the entity cannot be contained
      *   by the proposed container.
      *  @param theDepth The depth of this buffer.
-     *  @exception NameDuplicationException If the name argument coincides 
+     *  @exception NameDuplicationException If the name argument coincides
      *   with an entity already in the container.
      */
     public CSPBuffer(TypedCompositeActor cont, String name, int theDepth)

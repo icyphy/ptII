@@ -35,7 +35,7 @@ import ptolemy.domains.ct.demo.Corba.util.*;
 //// NonlinearServant
 /**
 This is a stateless function that does a nonlinear transformation of the
-input data. This is a CORBA servant implement the 
+input data. This is a CORBA servant implement the
 ptolemy.actor.corba.util.CorbaActor interface, served as a CORBA servant.
 This is designed as independent of the ptolemy packages.
 
@@ -56,7 +56,7 @@ public class NonlinearServant extends _CorbaActorImplBase {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     /**Implement
-       <p> 
+       <p>
        Operation: <b>::util::CorbaActor::fire</b>.
        <pre>
        #pragma prefix "util/CorbaActor"
@@ -79,7 +79,7 @@ public class NonlinearServant extends _CorbaActorImplBase {
         _output = new Double(Math.atan(_input.doubleValue()));
         _input = null;
     }
-    
+
     /** Throws CorbaUnknowParamException always, since there's
      *  no parameter defined in this actor. Implement
        <p>
@@ -160,7 +160,7 @@ public class NonlinearServant extends _CorbaActorImplBase {
         }
         return (_output != null);
     }
-    
+
     /** Return false always, since there's no parameter defined.
      *  <p>
      *  Operation: <b>::util::CorbaActor::hasParameter</b>.
@@ -202,7 +202,7 @@ public class NonlinearServant extends _CorbaActorImplBase {
             ) {
         if (portName.equals("input") && isInput && !isOutput && !isMultiport) {
             return true;
-        }  else if (portName.equals("output") && !isInput && 
+        }  else if (portName.equals("output") && !isInput &&
                 isOutput && !isMultiport) {
             return true;
         } else {
@@ -346,7 +346,7 @@ public class NonlinearServant extends _CorbaActorImplBase {
     }
 
     /** Transfer the input data. The port name must be "input",
-     *  the index must be 0, and the value must be able to convert 
+     *  the index must be 0, and the value must be able to convert
      *  to a double, otheriwise a corresponding exception will be thrown.
      *  Implement
      *  <p>
@@ -397,7 +397,7 @@ public class NonlinearServant extends _CorbaActorImplBase {
         } catch (NumberFormatException ex) {
             _input = null;
             throw new CorbaIllegalValueException(ex.getMessage());
-        }       
+        }
     }
 
     /** Transfer output data. The port name must be "output" and
@@ -420,7 +420,7 @@ public class NonlinearServant extends _CorbaActorImplBase {
      *  </p>
      *  @exception CorbaIllegalActionException If the port name is "input",
      *    or if there's no output data.
-     *  @exception CorbaUnknownPortException If the port name is neither 
+     *  @exception CorbaUnknownPortException If the port name is neither
      *    "output" nor "input".
      *  @exception CorbaIndexOutofBoundException If the port index is not 0.
      */

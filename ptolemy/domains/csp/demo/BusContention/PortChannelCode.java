@@ -42,12 +42,12 @@ import java.util.Hashtable;
 //////////////////////////////////////////////////////////////////////////
 //// PortChannelCode
 /**
-A PortChannelCode is an object that carries prioritization information 
+A PortChannelCode is an object that carries prioritization information
 to be associated with different contenders in a resource contention
-scheme. A PortChannelCode consists of three components as its name 
-implies and each instance of PortChannelCode is associated with a 
-single resource contender. The port (channel) value represents the 
-port (channel) through which a particular contender is connected. The 
+scheme. A PortChannelCode consists of three components as its name
+implies and each instance of PortChannelCode is associated with a
+single resource contender. The port (channel) value represents the
+port (channel) through which a particular contender is connected. The
 code value represents the priority assigned to the contender.
 
 @author John S. Davis II
@@ -55,8 +55,8 @@ code value represents the priority assigned to the contender.
 */
 
 public class PortChannelCode {
-    
-    /** Construct a PortChannelCode with the specified port, 
+
+    /** Construct a PortChannelCode with the specified port,
      *  channel and priority code.
      * @param port The specified port.
      * @param channel The specified channel.

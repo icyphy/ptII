@@ -62,7 +62,7 @@ import ptolemy.domains.sdf.kernel.*;
 
 public class SDFPitchShift extends SDFAtomicActor {
 
-    /** 
+    /**
      *  @param container The container.
      *  @param name The name of this actor.
      *  @exception IllegalActionException If the actor cannot be contained
@@ -96,12 +96,12 @@ public class SDFPitchShift extends SDFAtomicActor {
 	pitchIn = new SDFIOPort(this, "pitchIn", true, false);
         pitchIn.setTypeEquals(BaseType.DOUBLE);
 	pitchIn.setTokenConsumptionRate(consumptionRate);
-		
+
 	sampleRate = new Parameter(this, "sampleRate",
 				     new DoubleToken(22050));
         sampleRate.setTypeEquals(BaseType.DOUBLE);
-	
-	
+
+
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -176,29 +176,29 @@ public class SDFPitchShift extends SDFAtomicActor {
      *  current index.
      */
     public void fire() throws IllegalActionException {
-        
+
 
         input.getArray(0, audioTokenArray);
 	pitchIn.getArray(0, pitchTokenArray);
 	scaleFactor.getArray(0, scaleFactorTokenArray);
-	
+
         int i;
         for (i = 0; i < consumptionRate; i++) {
             audioInDoubleArray[i] = audioTokenArray[i].doubleValue();
-       	    
+
             pitchInDoubleArray[i] = pitchTokenArray[i].doubleValue();
-        
-	   
+
+
         }
 	// FIXME: May want to eventually make scaleFactorDoubleArray,
 	// scaleFactorTokenArray be length consumptionRate to have
 	// finer granularity pitch scale control.
 	 scaleFactorDoubleArray[0] = scaleFactorTokenArray[0].doubleValue();
-	// FIXME: Should pass scaleFactorDoubleArray[] to 
+	// FIXME: Should pass scaleFactorDoubleArray[] to
 	// performPitchShift(), not just the first element.
 	double pitchScaleIn = scaleFactorDoubleArray[0];
 
-	
+
 	audioOutDoubleArray = ps.performPitchShift(audioInDoubleArray,
 				      pitchInDoubleArray, pitchScaleIn);
 
@@ -217,9 +217,9 @@ public class SDFPitchShift extends SDFAtomicActor {
         super.initialize();
 
 	sampRate = ((DoubleToken)sampleRate.getToken()).doubleValue();
-	
+
 	ps = new PitchShift((float)sampRate);
-	    
+
 	audioTokenArray = new DoubleToken[consumptionRate];
 	pitchTokenArray = new DoubleToken[consumptionRate];
 	scaleFactorTokenArray = new DoubleToken[1];
@@ -231,11 +231,11 @@ public class SDFPitchShift extends SDFAtomicActor {
 
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   //// 
+    ////                         private methods                   ////
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     private double sampRate;
 
     private PitchShift ps;

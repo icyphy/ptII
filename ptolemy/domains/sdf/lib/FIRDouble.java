@@ -63,7 +63,7 @@ public class FIRDouble extends FIR {
         input.setTypeEquals(BaseType.DOUBLE);
         output.setTypeEquals(BaseType.DOUBLE);
     }
- 
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -118,7 +118,7 @@ public class FIRDouble extends FIR {
      */
     public void initialize() throws IllegalActionException {
 
-	// Case the tapsToken matrix because it will be 
+	// Case the tapsToken matrix because it will be
 	// a matrix with doubles.
         _taps = new double[tapstoken.getColumnCount()];
         for (int i = 0; i < _taps.length; i++) {

@@ -1,7 +1,7 @@
 /* An actor that takes in arbitray numbers of tokens and output
    two identaical huffman tree that is built according to the input tokens
    distribution.
- 
+
  Copyright (c) 1998-1999 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -44,7 +44,7 @@ import java.util.Vector;
 
 ///////////////////////////////////////////////////////////////
 /// CodeBook  -- Create a code book to be use for huffman encoder and
-//               decoder according to the huffman encoding scheme. 
+//               decoder according to the huffman encoding scheme.
 //               Code book will be built according to the distribution
 //               of input tokens. This actor will take in arbitrary numbers of
 //               Tokens as the training sequence and output a huffman tree.
@@ -71,13 +71,13 @@ public class CodeBook extends TypedAtomicActor {
 
         new Parameter(this, "trainingSequenceSize", new IntToken("30"));
 
-        
+
         input = new TypedIOPort(this, "input", true, false);
         input.setTypeEquals(Token.class);
 
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(ObjectToken.class);
-        
+
         /*
         output = (TypedIOPort) newPort("output");
         output.setOutput(true);
@@ -122,17 +122,17 @@ public class CodeBook extends TypedAtomicActor {
         super.initialize();
 	Parameter p;
 	p = (Parameter) getAttribute("trainingSequenceSize");
-        size = ((IntToken)p.getToken()).intValue();     
+        size = ((IntToken)p.getToken()).intValue();
         _debug("The training Sequence Size is " + size);
     }
-    
+
     /**
      *  @exception IllegalActionException If there is no director.
      */
 
     public void fire() throws IllegalActionException  {
         _debug("fired");
-        
+
         HashMap map = new HashMap ();
         //codeVector stores strings which are
         //the stringValues of the value of input tokens.
@@ -141,7 +141,7 @@ public class CodeBook extends TypedAtomicActor {
 
         /* Put new objects into the HashMap or if the HashMap contains the key
          * already, increment the count for that object.
-         * 
+         *
          * Assumptions : All the input tokens are with the same type and
          *               all the stringValues of tokens are unique.
          */
@@ -159,18 +159,18 @@ public class CodeBook extends TypedAtomicActor {
                 counter = counter + 1;
             }
         }
-        
+
         /* Initialized the huffTree array.
          * Use private variable currentSize to keep track of how many huffman
          * nodes are in the huffTree array currently.
          */
 
-        _debug("Number of unique tokens = " + counter); 
+        _debug("Number of unique tokens = " + counter);
         HuffTree[] huffArray = new HuffTree[counter];
         int currentSize = counter ;
-        
-        /* Fill the huffTree array with huffLeaf that is constructed by giving 
-         * the HuffLeaf constructor object and the probability related to the 
+
+        /* Fill the huffTree array with huffLeaf that is constructed by giving
+         * the HuffLeaf constructor object and the probability related to the
          * object.
          */
 
@@ -185,7 +185,7 @@ public class CodeBook extends TypedAtomicActor {
             _debug("Things in the huffArray with index " + j);
             _debug(huffArray[j].toString());
         }
-        while (currentSize > 1) {             
+        while (currentSize > 1) {
             _debug("currentSize = " +  currentSize);
             for (int c = 0; c < currentSize; c++) {
                 _debug(huffArray[c].toString());
@@ -202,7 +202,7 @@ public class CodeBook extends TypedAtomicActor {
                      first = i;
                      _debug("current first is " + first);
                  }
-                 
+
              }
              for (int j = 0; j < currentSize; j++) {
                  double currentProb = huffArray[j].getProb();
@@ -211,7 +211,7 @@ public class CodeBook extends TypedAtomicActor {
                      _debug("current second is " + second);
                      second = j;
                  }
-             }        
+             }
 
              _debug("first= " + first);
              _debug("second= " + second);
@@ -224,8 +224,8 @@ public class CodeBook extends TypedAtomicActor {
              huffArray[second] = huffArray[currentSize - 1];
              currentSize --;
          }
-         
-         
+
+
          //debugging line to print out the huffman tree in order
          System.out.println(huffArray[0].printPreOrder());
 
@@ -236,13 +236,13 @@ public class CodeBook extends TypedAtomicActor {
 
     /* Postfire method make sure that the fire method only
      * get executed once.
-     */    
+     */
     public boolean postfire() throws IllegalActionException {
         return false;
     }
 
     private int size;
-                
+
 }
 
 

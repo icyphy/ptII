@@ -187,7 +187,7 @@ public class SigmaDeltaApplet extends CTApplet {
             clk.offsets.setToken(new DoubleMatrixToken(offs));
             clk.period.setToken(new DoubleToken(1.0));
             clk.values.setExpression("[true]");
-            
+
             _dePlot = new TimedPlotter(_toplevel, "DEPlot");
             _dePlot.place(getContentPane());
             _dePlot.plot.setBackground(getBackground());

@@ -26,7 +26,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 						PT_COPYRIGHT_VERSION 2
 						COPYRIGHTENDKEY
 @ProposedRating Red (vogel@eecs.berkeley.edu)
-@AcceptedRating 
+@AcceptedRating
 */
 
 package ptolemy.domains.sdf.lib.javasound;
@@ -53,7 +53,7 @@ import ptolemy.domains.sdf.kernel.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// AudioSink
-/** 
+/**
 This actor reads in audio data from one input channel and records the
 data to a sound file and/or plays the audio data. The input is of type
 DoubleToken. Each DoubleToken read from the input represents one sample
@@ -64,7 +64,7 @@ This actor will play the accumulated audio data on wrapup if the
 <i>playAudio</i> parameter is true. It is true by default. This actor
 will save the accumulated audio data to the file specified by the
 <i>fileName</i> parameter if <i>saveAudio</i> is true. It is true
-by default. The audio file format to use is inferred from the 
+by default. The audio file format to use is inferred from the
 <i>fileName</i> parameter. Refer to the Java Sound API documentation
 for a list of supported file formats (or just look at this code).
 <p>
@@ -74,7 +74,7 @@ bits/sample can be specified by the <i>sampleSizeInBits</i>
 parameter. The default sample size is 16 bits.
 
 @author  Brian K. Vogel
-@version 
+@version
 */
 public class AudioSink extends SDFAtomicActor {
 
@@ -185,7 +185,7 @@ public class AudioSink extends SDFAtomicActor {
 						       frameSizeInBytes);
 
         sourceLine.write(audioOutByteArray, 0, consumptionRate);
-				        
+
 	return true;
     }
 
@@ -198,7 +198,7 @@ public class AudioSink extends SDFAtomicActor {
         super.initialize();
         double samplingRate = ((IntToken)sampRate.getToken()).intValue();
         int sampleSizeInBitsInt = ((IntToken)sampleSizeInBits.getToken()).intValue();
-        int channels = 1; // If change this, then need to change 
+        int channels = 1; // If change this, then need to change
         // frameSizeInBits and frameRate accordingly.
         boolean signed = true;
         boolean bigEndian = true;
@@ -207,12 +207,12 @@ public class AudioSink extends SDFAtomicActor {
 					      sampleSizeInBitsInt,
 					      channels, signed, bigEndian);
         frameSizeInBytes = format.getFrameSize();
-        
+
         DataLine.Info sourceInfo = new DataLine.Info(SourceDataLine.class,
 					 null, null,
 					 new Class[0], format,
 					 AudioSystem.NOT_SPECIFIED);
-        
+
         // get and open the source data line for playback.
 	try {
 	    sourceLine = (SourceDataLine) AudioSystem.getLine(sourceInfo);
@@ -220,7 +220,7 @@ public class AudioSink extends SDFAtomicActor {
             // sample frames. Will write to the buffer in consumptionRate
             // size chunks.
 	    sourceLine.open(format, consumptionRate*8);
-	} catch (LineUnavailableException ex) { 
+	} catch (LineUnavailableException ex) {
             System.err.println("LineUnavailableException " + ex);
 	    return;
 	}
@@ -248,7 +248,7 @@ public class AudioSink extends SDFAtomicActor {
               // the file extension.
               // Separate the extension from the file using a period.
               StringTokenizer st = new StringTokenizer(fileToSave, ".");
-              
+
               // Do error checking:
               if (st.countTokens() != 2) {
                   System.err.println("Error: Incorrect file name format. Format: filname.extension");
@@ -272,7 +272,7 @@ public class AudioSink extends SDFAtomicActor {
                   System.err.println("Error saving file: Unknown file format: " + fileExtension);
               }
 
-              
+
 
               na.saveAs(fileToSave, FileStream.FileType.AU);  // Save the file.
           }

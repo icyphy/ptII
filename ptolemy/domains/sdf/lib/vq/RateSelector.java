@@ -67,7 +67,7 @@ public class RateSelector extends SDFAtomicActor {
 	data.setTypeEquals(BaseType.INT_MATRIX);
         data.setInput(true);
         data.setMultiport(true);
-      
+
 	rate = (SDFIOPort) newPort("rate");
         rate.setTypeEquals(BaseType.INT);
         rate.setInput(true);
@@ -77,7 +77,7 @@ public class RateSelector extends SDFAtomicActor {
 	output.setTypeEquals(BaseType.INT_MATRIX);
         output.setOutput(true);
 
-        maxRate = 
+        maxRate =
             new Parameter(this, "maxRate", new IntToken("8000"));
 	blocks =
 	    new Parameter(this, "blocks", new IntToken("1584"));
@@ -113,7 +113,7 @@ public class RateSelector extends SDFAtomicActor {
             newobj.data = (SDFIOPort)newobj.getPort("data");
             newobj.rate = (SDFIOPort)newobj.getPort("rate");
             newobj.output = (SDFIOPort)newobj.getPort("output");
-	    newobj.maxRate = 
+	    newobj.maxRate =
 		(Parameter)newobj.getAttribute("maxRate");
 	    newobj.blocks = (Parameter)newobj.getAttribute("blocks");
             return newobj;
@@ -126,7 +126,7 @@ public class RateSelector extends SDFAtomicActor {
 
     /**
      * Initialize this actor
-     * @exception IllegalActionException If a parameter does not contain a 
+     * @exception IllegalActionException If a parameter does not contain a
      * legal value, or partitionColumns does not equally divide imageColumns,
      * or partitionRows does not equally divide imageRows.
      */
@@ -143,16 +143,16 @@ public class RateSelector extends SDFAtomicActor {
         int i, j;
 	int x, y;
         int partitionNumber;
-	double _maxRate = 
+	double _maxRate =
 	    ((ScalarToken)maxRate.getToken()).doubleValue();
 	int _blocks =
 	    ((ScalarToken)blocks.getToken()).intValue();
-	
+
 	IntMatrixToken optimalData[] = new IntMatrixToken[_blocks];
         IntToken optimalRate[] = new IntToken[_blocks];
         double bestDistortion[] = new double[_blocks];
         IntMatrixToken bestData[] = new IntMatrixToken[_blocks];
-        
+
         int width = data.getWidth();
 	if(data.getWidth() != rate.getWidth()) {
             throw new IllegalActionException("Widths of input ports must " +
@@ -167,11 +167,11 @@ public class RateSelector extends SDFAtomicActor {
 	for(i = 0; i < width; i++) {
 	    data.getArray(i, _data[i]);
 	    rate.getArray(i, _rate[i]);
-	}	    
+	}
 
 	for(j = 0; j < _blocks; j++) {
 	    for(i = 0; i < width; i++) {
-		IntMatrixToken difference = 
+		IntMatrixToken difference =
 		    (IntMatrixToken) _data[0][j].subtract(_data[i][j]);
 		double dist = 0;
 		int diff[] = difference.intArray();
@@ -187,7 +187,7 @@ public class RateSelector extends SDFAtomicActor {
 	    for(i = 1; i < width; i++) {
 		lambda[i][j] = (distortion[i][j] - distortion[i-1][j])/
 		    (_rate[i][j].intValue() - _rate[i-1][j].intValue());
-		if(lambda[i][j] < 0) 
+		if(lambda[i][j] < 0)
 		    lambda[i][j] = -lambda[i][j];
 	    }
 	    channel[j] = width - 1;
@@ -205,11 +205,11 @@ public class RateSelector extends SDFAtomicActor {
 		}
 	    }
 	    channel[bestBlock]--;
-	    totalrate += _rate[channel[bestBlock]][bestBlock].intValue() - 
+	    totalrate += _rate[channel[bestBlock]][bestBlock].intValue() -
 		_rate[channel[bestBlock]++][bestBlock].intValue();
 	    System.out.println("totalrate = " + totalrate);
 	}
-	
+
 	IntMatrixToken outputs[] = new IntMatrixToken[_blocks];
 	for(j = 0; j < _blocks; j++) {
 	    outputs[j] = _data[channel[j]][j];

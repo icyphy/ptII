@@ -146,7 +146,7 @@ public class CTEmbeddedDirector  extends CTMultiSolverDirector
      *  @exception IllegalActionException If the time is before
      *  the current time, or there is no executive director.
      */
-    public void fireAt(Actor actor, double time) 
+    public void fireAt(Actor actor, double time)
             throws IllegalActionException{
         super.fireAt(actor, time);
         CompositeActor ca = (CompositeActor) getContainer();
@@ -160,7 +160,7 @@ public class CTEmbeddedDirector  extends CTMultiSolverDirector
         }
         exeDir.fireAt(ca, time);
     }
-     
+
     /** Return true if this is an embedded director and the current fire
      *  is successful. The success is determined by asking all the
      *  step size control actors in the output schedule. If this is a
@@ -169,7 +169,7 @@ public class CTEmbeddedDirector  extends CTMultiSolverDirector
      */
     public boolean isThisStepSuccessful() {
         try {
-            _debug(getName() + ": Checking local actors for success."); 
+            _debug(getName() + ": Checking local actors for success.");
             if (!_isStateAcceptable()) {
                 //if(_debugging) _debug(getFullName() +
                 //        " current step not successful because of STATE.");
@@ -203,7 +203,7 @@ public class CTEmbeddedDirector  extends CTMultiSolverDirector
         if(_debugging) _debug(getFullName(), " postfire.");
         _eventPhaseExecution();
         updateStates();
-        
+
         /*if(_first) {
             _first = false;
             }*/
@@ -277,9 +277,9 @@ public class CTEmbeddedDirector  extends CTMultiSolverDirector
             breakPoints.removeAllLessThan(tnow);
             if(breakPoints.contains(tnow)) {
                 if(_debugging) _debug(getName(), " Break point now at" + _outsideTime);
-                // Breakpoints iterations are always successful 
+                // Breakpoints iterations are always successful
                 // so remove the breakpoints.
-                _setCurrentODESolver(getBreakpointSolver());   
+                _setCurrentODESolver(getBreakpointSolver());
                 breakPoints.removeFirst();
                 // does not adjust step size, since the exe-dir should do it.
                 _setIsBPIteration(true);
@@ -291,7 +291,7 @@ public class CTEmbeddedDirector  extends CTMultiSolverDirector
         }
         _outsideStepSize = nextIterTime - _outsideTime;
         setCurrentStepSize(_outsideStepSize);
-        if(_debugging) _debug(getName(), "at" + getCurrentTime(), 
+        if(_debugging) _debug(getName(), "at" + getCurrentTime(),
                 "breakpt table contains ", getBreakPoints().toString());
         return true;
     }

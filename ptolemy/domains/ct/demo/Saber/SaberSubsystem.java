@@ -50,7 +50,7 @@ For each input port, there is one parameter, the varName.
 For each output port, there is one parameter, the nodeId.
 <P>
 Note: This actor is still under modification, and is lack of test,
-please avoid using it. 
+please avoid using it.
 @author Jie Liu, William Wu
 @version $Id$
 */

@@ -55,23 +55,23 @@ import java.util.List;
 A CSP actor that serves as a controller of a shared resource. This
 actor has four "informal" states that are cycled through in the
 fire() method. In these four states this actor accepts and grants
-requests for access to a shared resource. An Actor that wants to 
+requests for access to a shared resource. An Actor that wants to
 request or be granted access to a shared resource must connect to
 this controller via the requestInput and requestOutput ports. To
-aid in monitoring such requests, the controller connects to a 
+aid in monitoring such requests, the controller connects to a
 ContentionAlarm actor through its contendInput and contendOutput
 ports.
 
 In state one the controller waits for requests on its requestInput
 port. Once the first request has been received, the controller
-moves to state two and sends a message to the ContentionAlarm 
-notifying it that a request has occurred at the current time. The 
-controller then moves to state three and performs a conditional 
-rendezvous on its contendInput and requestInput ports. Once an input 
-has been received from the ContentionAlarm, then the controller knows 
-that that the request contention period is over and it moves to state 
-four. In state four the controller notifies the resource requestors as 
-to whether their requests were granted based on priority relative to 
+moves to state two and sends a message to the ContentionAlarm
+notifying it that a request has occurred at the current time. The
+controller then moves to state three and performs a conditional
+rendezvous on its contendInput and requestInput ports. Once an input
+has been received from the ContentionAlarm, then the controller knows
+that that the request contention period is over and it moves to state
+four. In state four the controller notifies the resource requestors as
+to whether their requests were granted based on priority relative to
 other contenders.
 
 @author John S. Davis II
@@ -80,13 +80,13 @@ other contenders.
 
 public class Controller extends CSPActor {
 
-    /** Construct a Controller actor with the specified container 
+    /** Construct a Controller actor with the specified container
      *  and name.
      * @param cont The container of this actor.
      * @param name The name of this actor.
-     * @exception IllegalActionException If the actor cannot be 
+     * @exception IllegalActionException If the actor cannot be
      *  contained by the proposed container.
-     * @exception NameDuplicationException If the container 
+     * @exception NameDuplicationException If the container
      *  already has an actor with this name.
      */
     public Controller(TypedCompositeActor cont, String name)
@@ -117,22 +117,22 @@ public class Controller extends CSPActor {
      *  port is a multiport.
      */
     public TypedIOPort requestInput;
-    
+
     /** The resource request output port. Resources are granted through
      *  this port. The type of this port is BaseType.BOOLEAN. This port
      *  is a multiport.
      */
     public TypedIOPort requestOutput;
-    
+
     /** The contention input port. The availability of data on this
      *  port indicates that additional resource contention does not
-     *  exist at the current time. The type of this port is 
+     *  exist at the current time. The type of this port is
      *  BaseType.GENERAL.
      */
     public TypedIOPort contendInput;
-    
+
     /** The contention output port. Output data on this port can be
-     *  used to trigger a ContentionAlarm. The type of this port is 
+     *  used to trigger a ContentionAlarm. The type of this port is
      *  BaseType.GENERAL.
      */
     public TypedIOPort contendOutput;
@@ -153,7 +153,7 @@ public class Controller extends CSPActor {
         _listeners.add(listener);
     }
 
-    /** Execute this actor indefinitely. 
+    /** Execute this actor indefinitely.
      * @exception IllegalActionException If there is an error
      *  during communication through any of the input or output
      *  ports.
@@ -278,8 +278,8 @@ public class Controller extends CSPActor {
         }
     }
 
-    /** Notify all ExecEventListeners on this actor's 
-     *  listener list that the specified event was 
+    /** Notify all ExecEventListeners on this actor's
+     *  listener list that the specified event was
      *  generated.
      * @param event The specified ExecEvent.
      */
@@ -295,8 +295,8 @@ public class Controller extends CSPActor {
         }
     }
 
-    /** Remove one instance of the specified ExecEventListener 
-     *  from this actor's list of listeners. 
+    /** Remove one instance of the specified ExecEventListener
+     *  from this actor's list of listeners.
      * @param listener The specified ExecEventListener.
      */
     public void removeListeners(ExecEventListener listener) {

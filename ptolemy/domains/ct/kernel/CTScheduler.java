@@ -255,7 +255,7 @@ public class CTScheduler extends Scheduler{
     }
 
     /** Return the list of event generators in their creation order.
-     *  This list is locally  cached. 
+     *  This list is locally  cached.
      *  If the workspace version equals to the cached version,
      *  then it returns the cached list.
      *  Otherwise, it reconstructs the list, and cache the new version.
@@ -420,7 +420,7 @@ public class CTScheduler extends Scheduler{
         }
     }
 
-    /** Return an enumeration of sinks. 
+    /** Return an enumeration of sinks.
      *  This method read-synchronize on the workspace.
      *  @return An enumeration of sinks.
      *  @deprecated Use sinkActorList() instead.
@@ -447,7 +447,7 @@ public class CTScheduler extends Scheduler{
         }
     }
 
-    /** Return an enumeration of stateful actors. 
+    /** Return an enumeration of stateful actors.
      *  @return An enumeration of stateful actors.
      *  @deprecated Use statefulActorList() instead.
      */
@@ -778,7 +778,7 @@ public class CTScheduler extends Scheduler{
 
         if(numofsink > 0) {
             Object[] sinkactors =  _sink.toArray();
-           
+
             //Output map.
             Object[] gx = g.backwardReachableNodes(sinkactors);
             Object[] gxsort = g.topologicalSort(gx);
@@ -797,7 +797,7 @@ public class CTScheduler extends Scheduler{
                     _outputssc.addLast(a);
                 }
             }
-            
+
             _scheList.addLast(_outputschedule);
         }
 
@@ -909,7 +909,7 @@ public class CTScheduler extends Scheduler{
         actors = actorlist.iterator();
         while (actors.hasNext()) {
             Actor a = (Actor) actors.next();
-            
+
             // Find the successors of a
             Iterator successors = _successorList(a).iterator();
             while (successors.hasNext()) {

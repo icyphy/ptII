@@ -38,20 +38,20 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// Action
 /**
-An Action is contained by a Transition in an FSMActor. 
+An Action is contained by a Transition in an FSMActor.
 <p>
-When the FSMActor is fired, a transition among the outgoing transitions 
-of the current state is chosen if it is enabled. The choice actions 
-contained by the chosen transition are executed. An action is a choice 
-action if it implements the ChoiceAction marker interface. A choice 
+When the FSMActor is fired, a transition among the outgoing transitions
+of the current state is chosen if it is enabled. The choice actions
+contained by the chosen transition are executed. An action is a choice
+action if it implements the ChoiceAction marker interface. A choice
 action may be executed more than once during an iteration in domains
 with fixed-point semantics.
 <p>
-When the FSMActor is postfired, the chosen transition of the latest firing 
+When the FSMActor is postfired, the chosen transition of the latest firing
 of the actor is commited. The commit actions contained by the transition
-are executed and the current state of the actor is set to the destination 
+are executed and the current state of the actor is set to the destination
 state of the transition. An action is a commit action if it implements the
-CommitAction marker interface. 
+CommitAction marker interface.
 
 @author Xiaojun Liu
 @version $Id$
@@ -61,7 +61,7 @@ CommitAction marker interface.
 @see FSMActor
 */
 public abstract class Action extends Attribute {
- 
+
     /** Construct an action with the given name contained by the specified
      *  transition. The transition argument must not be null, or a
      *  NullPointerException will be thrown.  This action will use the
@@ -86,7 +86,7 @@ public abstract class Action extends Attribute {
     ////                         public methods                    ////
 
     /** Execute the action.
-     *  @exception IllegalActionException When the action cannot be 
+     *  @exception IllegalActionException When the action cannot be
      *   successfully completed.
      */
     abstract public void execute() throws IllegalActionException;

@@ -249,7 +249,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
             Parameter param = (Parameter)attr;
             _timeResolution = ((DoubleToken)param.getToken()).doubleValue();
             TotallyOrderedSet bptable = getBreakPoints();
-            FuzzyDoubleComparator comp = 
+            FuzzyDoubleComparator comp =
                 (FuzzyDoubleComparator) bptable.getComparator();
             comp.setThreshold(_timeResolution);
         } else if(attr == MaxIterations) {
@@ -280,7 +280,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
     public boolean canBeTopLevelDirector() {
         return false;
     }
-    
+
     /** Return the break point table.
      *  @return The break point table.
      */
@@ -440,7 +440,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
 
     /** Prepare for an execution.
      *  Check to see if the director has a container and a scheduler.
-     *  Invalidate the schedule. Clear statistic variables. 
+     *  Invalidate the schedule. Clear statistic variables.
      *  Reset the break point table.
      *  Set the current time. And preinitialize all the directed actors.
      */
@@ -481,12 +481,12 @@ public abstract class CTDirector extends StaticSchedulingDirector {
         if( containersContainer == null ) {
             setCurrentTime(getStartTime());
         } else {
-            double time = 
+            double time =
                 containersContainer.getDirector().getCurrentTime();
             setStartTime(time);
             setCurrentTime(time);
         }
-        if(_debugging) _debug(getFullName(), 
+        if(_debugging) _debug(getFullName(),
                 " init current time to " + getCurrentTime());
         if(_debugging) _debug(getFullName(), " clear break point table.");
         TotallyOrderedSet bps = getBreakPoints();
@@ -504,7 +504,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
                     ((NamedObj)actor).getFullName());
             actor.preinitialize();
         }
-    }   
+    }
 
     /** Set the current step size. This variable is very import during
      *  the simulation and should NOT be changed in the middle of an
@@ -518,7 +518,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
     /**  Set the current time of the model under this director.
      *  It is allowed that the new time is less than the current time
      *  in the director, since CT sometimes needs roll-back.
-     *  This is a critical parameter in an execution, and the 
+     *  This is a critical parameter in an execution, and the
      *  actors are not supposed to call it.
      *  @exception IllegalActionException Never throw.
      *  @param newTime The new current simulation time.

@@ -66,13 +66,13 @@ public class ImagePartition extends SDFAtomicActor {
 
         super(container, name);
 
-	imageColumns = 
+	imageColumns =
             new Parameter(this, "imageColumns", new IntToken("176"));
-        imageRows = 
+        imageRows =
             new Parameter(this, "imageRows", new IntToken("144"));
-        partitionColumns = 
+        partitionColumns =
             new Parameter(this, "partitionColumns", new IntToken("4"));
-        partitionRows = 
+        partitionRows =
             new Parameter(this, "partitionRows", new IntToken("2"));
 
         input = (SDFIOPort) newPort("input");
@@ -120,13 +120,13 @@ public class ImagePartition extends SDFAtomicActor {
             ImagePartition newobj = (ImagePartition)(super.clone(ws));
             newobj.input = (SDFIOPort)newobj.getPort("input");
             newobj.output = (SDFIOPort)newobj.getPort("output");
-            newobj.imageRows = 
+            newobj.imageRows =
                 (Parameter)newobj.getAttribute("imageRows");
-            newobj.imageColumns = 
+            newobj.imageColumns =
                 (Parameter)newobj.getAttribute("imageColumns");
-            newobj.partitionRows = 
+            newobj.partitionRows =
                 (Parameter)newobj.getAttribute("partitionRows");
-            newobj.partitionColumns = 
+            newobj.partitionColumns =
                 (Parameter)newobj.getAttribute("partitionColumns");
             return newobj;
         } catch (CloneNotSupportedException ex) {
@@ -138,7 +138,7 @@ public class ImagePartition extends SDFAtomicActor {
 
     /**
      * Initialize this actor
-     * @exception IllegalActionException If a parameter does not contain a 
+     * @exception IllegalActionException If a parameter does not contain a
      * legal value, or partitionColumns does not equally divide imageColumns,
      * or partitionRows does not equally divide imageRows.
      */
@@ -151,14 +151,14 @@ public class ImagePartition extends SDFAtomicActor {
         _partitionRows = ((IntToken)partitionRows.getToken()).intValue();
 
         if(_imageColumns % _partitionColumns != 0) {
-            throw new IllegalActionException(imageColumns, partitionColumns, 
+            throw new IllegalActionException(imageColumns, partitionColumns,
                     "Partition size must evenly divide image size");
         }
         if(_imageRows % _partitionRows != 0) {
-            throw new IllegalActionException(imageRows, partitionRows, 
+            throw new IllegalActionException(imageRows, partitionRows,
                     "Partition size must evenly divide image size");
         }
-            
+
         part = new int[_partitionColumns * _partitionRows];
         int partitionCount = _imageColumns * _imageRows
                 / _partitionColumns / _partitionRows;
@@ -171,7 +171,7 @@ public class ImagePartition extends SDFAtomicActor {
      * Consume a single IntMatrixToken on the input.  Produce IntMatrixTokens
      * on the output port by partitioning the input image.
      *
-     * @exception IllegalActionException If the 
+     * @exception IllegalActionException If the
      * input size is not imageRows by imageColumns.
      */
     public void fire() throws IllegalActionException {
@@ -183,18 +183,18 @@ public class ImagePartition extends SDFAtomicActor {
         message = (IntMatrixToken) input.get(0);
         if((message.getRowCount() != _imageRows) ||
                 (message.getColumnCount() != _imageColumns)) {
-            throw new IllegalActionException("Input data must be imageRows " + 
+            throw new IllegalActionException("Input data must be imageRows " +
                     "by imageColumns");
         }
         image = message.intArray();
 
         for(j = 0, partitionNumber = 0 ; j < _imageRows; j += _partitionRows)
-            for(i = 0; i < _imageColumns; i += _partitionColumns, 
+            for(i = 0; i < _imageColumns; i += _partitionColumns,
                     partitionNumber++) {
                 for(y = 0; y < _partitionRows; y++)
                     System.arraycopy(image, (j + y) * _imageColumns + i,
                             part, y * _partitionColumns, _partitionColumns);
-                partitions[partitionNumber] = 
+                partitions[partitionNumber] =
                     new IntMatrixToken(part, _partitionRows,
                             _partitionColumns);
             }

@@ -80,7 +80,7 @@ A TimeKeeper manages the ordering of receivers by keeping track of
 its receivers and their corresponding receiver times and priorities.
 As tokens are placed in and taken out of the receivers of an actor,
 the TimeKeeper's receiver list is updated. The receiver list is sorted
-by RcvrComparator. This same information allows the TimeKeeper to 
+by RcvrComparator. This same information allows the TimeKeeper to
 determine what the current time is local to the actor.
 
 @author John S. Davis II
@@ -154,12 +154,12 @@ public class TimeKeeper {
      */
     public synchronized double getOutputTime() {
 	Thread thread = Thread.currentThread();
-        
+
         if( !((ComponentEntity)_actor).isAtomic() ) {
             return _outputTime;
         }
-        
-        
+
+
         if( _outputTime < _currentTime ) {
             _outputTime = _currentTime;
         }
@@ -187,13 +187,13 @@ public class TimeKeeper {
 	}
     }
 
-    /** Send a NullToken to all output channels that have a receiver 
-     *  time less than or equal to the current time of this time keeper. 
-     *  In this case, set the time stamp of the NullTokens to be equal 
+    /** Send a NullToken to all output channels that have a receiver
+     *  time less than or equal to the current time of this time keeper.
+     *  In this case, set the time stamp of the NullTokens to be equal
      *  to the current time of this time keeper. This method assumes
      *  that the actor controlled by this time keeper is atomic.
      *  <P>
-     *  This method is not synchronized so the calling method should be. 
+     *  This method is not synchronized so the calling method should be.
      * @params rcvr The receiver that is causing this method to be invoked.
      */
     public void sendOutNullTokens(DDEReceiver rcvr) {
@@ -207,11 +207,11 @@ public class TimeKeeper {
 	    }
 	}
 	*/
-	Iterator ports = _actor.outputPortList().iterator(); 
-	double time = getCurrentTime(); 
+	Iterator ports = _actor.outputPortList().iterator();
+	double time = getCurrentTime();
 	while( ports.hasNext() ) {
-	    IOPort port = (IOPort)ports.next(); 
-	    Receiver rcvrs[][] = 
+	    IOPort port = (IOPort)ports.next();
+	    Receiver rcvrs[][] =
 		(Receiver[][])port.getRemoteReceivers();
 	    for (int i = 0; i < rcvrs.length; i++) {
 		for (int j = 0; j < rcvrs[i].length; j++) {
@@ -239,14 +239,14 @@ public class TimeKeeper {
 		&& time != PrioritizedTimedQueue.IGNORE ) {
 	    throw new IllegalArgumentException(
 		    ((NamedObj)_actor).getName() + " - Attempt to "
-		    + "set current time in the past." 
+		    + "set current time in the past."
 		    + " time = " + time
 		    + "; current time = " + _currentTime );
 	}
-            
+
 	if( time != PrioritizedTimedQueue.IGNORE ) {
             _currentTime = time;
-	} 
+	}
     }
 
     /** Update the list of receivers by adding a receiver to the
@@ -285,7 +285,7 @@ public class TimeKeeper {
     ////                   package friendly methods		   ////
 
     /** Print the contents of the receiver list contained by
-     *  this actor. 
+     *  this actor.
      * @deprecated Use for testing purposes only.
     synchronized void printRcvrList() {
 	String name = ((NamedObj)_actor).getName();
@@ -328,7 +328,7 @@ public class TimeKeeper {
      */
     synchronized void setOutputTime(double outputTime)
             throws IllegalActionException {
-            
+
         if( outputTime < _currentTime ) {
             throw new IllegalActionException("Illegal attempt "
             	    + "to set the time keeper's output time "
@@ -384,7 +384,7 @@ public class TimeKeeper {
             Receiver[][] rcvrs = port.getReceivers();
             for( int i = 0; i < rcvrs.length; i++ ) {
                 for( int j = 0; j < rcvrs[i].length; j++ ) {
-                    ((DDEReceiver)rcvrs[i][j])._priority = 
+                    ((DDEReceiver)rcvrs[i][j])._priority =
 			    currentPriority;
 		    //
 		    // Is the following necessary??
@@ -408,23 +408,23 @@ public class TimeKeeper {
     private Actor _actor;
 
     // The currentTime of the actor that is controlled by this
-    // time keeper is equivalent to the minimum positive rcvrTime 
+    // time keeper is equivalent to the minimum positive rcvrTime
     // of each input receiver.
     private double _currentTime = 0.0;
 
     // The output time associated with this time keeper.
     private double _outputTime = 0.0;
 
-    // This flag is set to true if any of the receivers have 
+    // This flag is set to true if any of the receivers have
     // a time stamp of PrioritizedTimedQueue.IGNORE
     boolean _ignoredRcvrs = false;
 
-    // The comparator that sorts the receivers 
+    // The comparator that sorts the receivers
     // controlled by this time keeper.
     private RcvrComparator _rcvrComparator;
 
     // The _rcvrList stores the receivers controlled by
-    // this time keeper. The receivers are ordered 
+    // this time keeper. The receivers are ordered
     // according to the rcvr comparator.
     private LinkedList _rcvrList;
 

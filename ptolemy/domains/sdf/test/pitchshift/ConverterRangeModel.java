@@ -7,9 +7,9 @@ import ptolemy.domains.sdf.test.pitchshift.*;
 import javax.swing.*;
 import javax.swing.event.*;
 
-/** 
+/**
  * Based on the source code for DefaultBoundedRangeModel,
- * this class stores its value as a double, rather than 
+ * this class stores its value as a double, rather than
  * an int.  The minimum value and extent are always 0.
  **/
 public class ConverterRangeModel implements BoundedRangeModel {
@@ -176,9 +176,9 @@ public class ConverterRangeModel implements BoundedRangeModel {
         }
     }
 
-    /* 
-     * The rest of this is event handling code copied from 
-     * DefaultBoundedRangeModel. 
+    /*
+     * The rest of this is event handling code copied from
+     * DefaultBoundedRangeModel.
      */
     public void addChangeListener(ChangeListener l) {
         listenerList.add(ChangeListener.class, l);

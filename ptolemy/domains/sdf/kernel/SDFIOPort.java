@@ -245,14 +245,14 @@ public final class SDFIOPort extends TypedIOPort {
 
     /** Send an array of tokens to all receivers connected to the
      *  specified channel.  Operation is similar to IOPort.send(),
-     *  except that it sends a sequence of tokens in an array.   
-     *  The token in the first position in the array is interpreted 
+     *  except that it sends a sequence of tokens in an array.
+     *  The token in the first position in the array is interpreted
      *  as the oldest token in the sequence, and
      *  the token in the last position of the
      *  array is interpreted as the newest token in the sequence.
      *  This method is provided for efficiency only, and is
      *  semantically equivalent to calling IOPort.put() consecutively for
-     *  each element in the array.  
+     *  each element in the array.
      *
      *  @param channelindex The index of the channel, from 0 to width-1
      *  @param tokens The tokens to send
@@ -278,7 +278,7 @@ public final class SDFIOPort extends TypedIOPort {
                 throw new IllegalActionException(this,
                         "send: channel index is out of range.");
             }
-	    
+
 	    // check the types for all of the tokens in the array.
 	    Type _resolvedType = getType();
 	    int compare = TypeLattice.compare(firstToken.getType(),
@@ -291,7 +291,7 @@ public final class SDFIOPort extends TypedIOPort {
 		    ", port: " + getFullName() + ", port type: " +
 		    getType().toString());
 	    }
-	    
+
 	    for(int i = 1; i < tokens.length; i++) {
 		if( !(tokens[i].getType().isEqualTo(firstToken.getType())))
 		    throw new IllegalArgumentException(
@@ -313,7 +313,7 @@ public final class SDFIOPort extends TypedIOPort {
 	    for (int j = 0; j < farRec[channelindex].length; j++) {
 		TypedIOPort port =
 		    (TypedIOPort)farRec[channelindex][j].getContainer();
-		
+
 		Type farType = port.getType();
 		if((farRec[channelindex][j] instanceof SDFReceiver)&&
 		   (farType.isEqualTo(firstToken.getType()))) {
@@ -323,13 +323,13 @@ public final class SDFIOPort extends TypedIOPort {
 		    // Method convert = _getConvertMethod(farType);
 		    // for (int i = 0; i < tokens.length; i++) {
 		    // 	arg[0] = tokens[i];
-		    //	ptolemy.data.Token newToken = 
+		    //	ptolemy.data.Token newToken =
 		    //	    (ptolemy.data.Token)convert.invoke(null, arg);
 		    //	farRec[channelindex][j].put(newToken);
 		    // }
 
 		    for (int i = 0; i < tokens.length; i++) {
-		    	ptolemy.data.Token newToken = 
+		    	ptolemy.data.Token newToken =
 		    	    farType.convert(tokens[i]);
 		    	farRec[channelindex][j].put(newToken);
 		    }
@@ -345,13 +345,13 @@ public final class SDFIOPort extends TypedIOPort {
     }
 
     /**
-     * Set whether or not this port is an input.  In addition to the base 
+     * Set whether or not this port is an input.  In addition to the base
      * class operation, set the port rate parameters to reasonable values.
      * If setting the port to be an input, then set the consumption rate to
      * be 1.  If setting the port to not be an input, then set the consumption
      * rate to be 0.
-     */   
-    public void setInput(boolean isInput) { 
+     */
+    public void setInput(boolean isInput) {
 	super.setInput(isInput);
 	try {
 	    if(isInput) {
@@ -359,19 +359,19 @@ public final class SDFIOPort extends TypedIOPort {
 	    } else {
 		tokenConsumptionRate.setToken(new IntToken(0));
 	    }
-	} catch (Exception e) { 
+	} catch (Exception e) {
 	    // This should never happen
 	    throw new InternalErrorException(e.getMessage());
 	}
     }
 
     /**
-     * Set whether or not this port is an output.  In addition to the base 
+     * Set whether or not this port is an output.  In addition to the base
      * class operation, set the port rate parameters to reasonable values.
      * If setting the port to be an output, then set the consumption rate to
      * be 1.  If setting the port to not be an output, then set the consumption
      * rate to be 0.
-     */   
+     */
     public void setOutput(boolean isOutput) {
 	super.setOutput(isOutput);
 	try {
@@ -407,7 +407,7 @@ public final class SDFIOPort extends TypedIOPort {
      *  on the appropriate port of this Actor during initialize
      *  by setting the value of the tokenInitProduction parameter.
      *
-     *  @exception IllegalActionException If the count is less than zero, 
+     *  @exception IllegalActionException If the count is less than zero,
      *  or the port is not an output port.
      */
     public void setTokenInitProduction(int count)
@@ -439,7 +439,7 @@ public final class SDFIOPort extends TypedIOPort {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** 
+    /**
      * Return the convert() Method for the resolved type of this port.
      */
     private Method _getConvertMethod(Class dataType) {
@@ -458,13 +458,13 @@ public final class SDFIOPort extends TypedIOPort {
         }
     }
 
-    /** 
+    /**
      * Initialize local data members.
      */
     private void _initialize() {
 	try {
 	    tokenConsumptionRate = new Parameter(this, "TokenConsumptionRate",
-						 new IntToken(0));	
+						 new IntToken(0));
 	    tokenInitProduction = new Parameter(this, "TokenInitProduction",
 						new IntToken(0));
 	    tokenProductionRate = new Parameter(this, "TokenProductionRate",
@@ -474,5 +474,5 @@ public final class SDFIOPort extends TypedIOPort {
 	    // This should never happen.
 	    throw new InternalErrorException(e.getMessage());
 	}
-    } 	
+    }
 }

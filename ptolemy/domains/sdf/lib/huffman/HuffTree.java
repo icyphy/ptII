@@ -30,7 +30,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.domains.sdf.lib.huffman;
 
-import ptolemy.kernel.*;              
+import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import ptolemy.data.expr.*;
@@ -45,7 +45,7 @@ import java.lang.Math;
 
 //////////////////////////////////////////////////////////////////////////
 //// HuffTree --- A tree class derived from BinaryTree class
-//                containing methods that     
+//                containing methods that
 //                will be used to construct Huffman Tree in Huffman coding.
 /**
 @author Michael Leung
@@ -57,14 +57,14 @@ public class HuffTree extends ptolemy.domains.sdf.lib.huffman.BinaryTree {
     /* Constructor for HuffTree*/
     public HuffTree() {
         super();
-    }   
+    }
 
 
     /* This method get the probability of a HuffTree Node
-     * Probability of a HuffTree is equal to sum of the probability 
-     * of its branches. 
+     * Probability of a HuffTree is equal to sum of the probability
+     * of its branches.
      */
-    
+
     public double getProb() {
         if (isLeaf())
             return _prob;
@@ -78,7 +78,7 @@ public class HuffTree extends ptolemy.domains.sdf.lib.huffman.BinaryTree {
         }
         return _prob;
     }
-   
+
     /* This method gets the depth of this HuffTree.*/
     public int getDepth() {
         int depth;
@@ -91,10 +91,10 @@ public class HuffTree extends ptolemy.domains.sdf.lib.huffman.BinaryTree {
 
     /* Override the addLeft method of BinaryTree.
      * Throw IllegalActionException when the child has a parent already.
-     * Throw IllegalAcitonException when adding other tree type to the 
+     * Throw IllegalAcitonException when adding other tree type to the
      *       left of the HuffTree.
      */
-    
+
     public void addLeft(BinaryTree child)
         throws IllegalActionException {
         if (!(child instanceof HuffTree)) {
@@ -109,14 +109,14 @@ public class HuffTree extends ptolemy.domains.sdf.lib.huffman.BinaryTree {
                     " has a parent already.");
         super.addLeft(child);
     }
-    
+
     /* Override the addRight method of BinaryTree.
      * Throw IllegalActionException when the child has a parent already.
-     * Throw IllegalAcitonException when adding other tree type to the 
+     * Throw IllegalAcitonException when adding other tree type to the
      * left of the HuffTree.
      */
 
-     public void addRight(BinaryTree child) 
+     public void addRight(BinaryTree child)
             throws IllegalActionException {
          if (!(child instanceof HuffTree))
             throw new IllegalActionException("HuffTree: "+
@@ -128,9 +128,9 @@ public class HuffTree extends ptolemy.domains.sdf.lib.huffman.BinaryTree {
                     " to the right branch because " + child +
                     " has a parent already.");
         super.addRight(child);
-    } 
+    }
 
-    /*Override the toString of Object class for debugging and testing 
+    /*Override the toString of Object class for debugging and testing
      *purposes.
      *This method will return the string representation of a HuffTree node.
      */
@@ -146,17 +146,17 @@ public class HuffTree extends ptolemy.domains.sdf.lib.huffman.BinaryTree {
     public String printPreOrder() {
         String treeString="";
         treeString += this.toString();
-        
+
         if (getLeft() != null) {
-            treeString += "("; 
+            treeString += "(";
             treeString += ((HuffTree) getLeft()).printPreOrder();
         } else {
-            treeString += "("; 
+            treeString += "(";
             treeString += "null";
         }
-        
+
         treeString += ",";
-        
+
         if (getRight() != null) {
             treeString += ((HuffTree) getRight()).printPreOrder();
             treeString += ")";
@@ -166,7 +166,7 @@ public class HuffTree extends ptolemy.domains.sdf.lib.huffman.BinaryTree {
         }
         return treeString;
     }
-    
+
     // Helper functions:
 
     /* This method modified the HashMap with all the
@@ -184,19 +184,19 @@ public class HuffTree extends ptolemy.domains.sdf.lib.huffman.BinaryTree {
             ((HuffTree) this.getRight()).fill(map);
         }
     }
-    
+
     /* This method find and return the max of two int.
      */
 
     private int _max(int a, int b) {
-        int temp = 0;    
+        int temp = 0;
         if (a >= b)
             temp = a;
-        else 
+        else
             temp = b;
         return temp;
     }
-    
+
     private double _prob;
 }
 

@@ -50,7 +50,7 @@ getDelay() method that approximates a Zeno condition.
 */
 public class ZenoDelay extends ListenFeedBackDelay {
 
-    /** Construct a ZenoDelay actor with no container and a name 
+    /** Construct a ZenoDelay actor with no container and a name
      *  that is an empty string.
      */
     public ZenoDelay()
@@ -58,7 +58,7 @@ public class ZenoDelay extends ListenFeedBackDelay {
         super();
     }
 
-    /** Construct a ZenoDelay actor with the specified workspace 
+    /** Construct a ZenoDelay actor with the specified workspace
      *  and no name.
      * @param workspace The workspace for this ZenoDelay actor.
      */
@@ -67,7 +67,7 @@ public class ZenoDelay extends ListenFeedBackDelay {
 	super(workspace);
     }
 
-    /** Construct a ZenoDelay actor with the specified container 
+    /** Construct a ZenoDelay actor with the specified container
      *  and name.
      * @param container The container of this actor.
      * @param name The name of this actor.

@@ -81,15 +81,15 @@ public class Thermostat extends CTApplet {
     /** Initialize the applet.
      */
      public void init() {
-         
+
          super.init();
          try {
              // The 1 argument requests only a go button.
              getContentPane().add(_createRunControls(2), BorderLayout.NORTH);
-             
+
              // the top level composite actor
              _toplevel.setName("HybridSystem");
-             
+
              // the top level CT director
              CTMultiSolverDirector topdir = new CTMultiSolverDirector(
                      _toplevel, "CTTopLevelDirector");
@@ -98,7 +98,7 @@ public class Thermostat extends CTApplet {
              // a CT ramp
              Const source = new Const(_toplevel, "Const");
              source.value.setToken(new DoubleToken(1.0));
-                 
+
              // the plot
              TimedPlotter responsePlot = new TimedPlotter(_toplevel, "plot");
              responsePlot.place(getContentPane());
@@ -112,7 +112,7 @@ public class Thermostat extends CTApplet {
              responsePlot.plot.setXRange(0.0, 5.0);
              responsePlot.plot.setYRange(-0.1, 0.3);
              responsePlot.plot.setSize(500, 300);
-             
+
              CTCompositeActor hs = new CTCompositeActor(_toplevel, "HS");
              // the ports
              TypedIOPort hsin = (TypedIOPort)hs.newPort("input");
@@ -127,7 +127,7 @@ public class Thermostat extends CTApplet {
              //TypedIOPort hstr = (TypedIOPort)hs.newPort("trig");
              //hstr.setOutput(true);
              //hstr.setTypeEquals(BaseType.DOUBLE);
-             
+
              HSController ctrl = new HSController(hs, "Controller");
              FSMState ctrlInc = new FSMState(ctrl, "Increasing");
              FSMState ctrlDec = new FSMState(ctrl, "Decreasing");
@@ -142,13 +142,13 @@ public class Thermostat extends CTApplet {
              ctrlTr2.setTriggerEvent("output");
              //ctrlTr2.setInitEntry(true);
              HSInit hsinit2 = new HSInit(ctrlTr2, "Integrator", "state");
-             
+
              // the hybrid system director
              HSDirector hsdir = new HSDirector(hs, "HSDirector");
              //hs.setDirector(hsdir);
              hsdir.setController(ctrl);
              //hsdir.addDebugListener(new StreamListener());
-             
+
              CTCompositeActor ctInc = new CTCompositeActor(hs, "Increasing");
              ZeroOrderHold ctIncH = new ZeroOrderHold(ctInc, "Hold");
              Integrator ctIncI = new Integrator(ctInc, "Integrator");
@@ -158,7 +158,7 @@ public class Thermostat extends CTApplet {
              //ctIncD.addDebugListener(new StreamListener());
              Expression ctIncGF =
                      new Expression(ctInc, "EXPRESSION");
-             
+
              TypedIOPort ctIncGFi = (TypedIOPort)ctIncGF.newPort("in");
              ctIncGFi.setInput(true);
              ctIncGFi.setTypeEquals(BaseType.DOUBLE);
@@ -203,7 +203,7 @@ public class Thermostat extends CTApplet {
              Scale ctGain = new Scale(ctDec, "Gain");
              ZeroCrossingDetector ctDecD =
                      new ZeroCrossingDetector(ctDec, "ZD");
-             
+
              Expression ctDecGF =
                      new Expression(ctDec, "EXPRESSION");
              TypedIOPort ctDecGFi = (TypedIOPort)ctDecGF.newPort("in");
@@ -244,10 +244,10 @@ public class Thermostat extends CTApplet {
              CTEmbeddedDirector ctDecDir = new CTEmbeddedDirector(
                       ctDec, "CTDecDir");
              //ctDecDir.addDebugListener(new StreamListener());
-                         
+
              ctrlInc.setRefinement(ctInc);
              ctrlDec.setRefinement(ctDec);
-             
+
              // connect hs
              TypedIORelation hsr1 = (TypedIORelation)hs.newRelation("HSr1");
              hsin.link(hsr1);
@@ -265,21 +265,21 @@ public class Thermostat extends CTApplet {
              //hstr.link(hsr4);
              ctIncTr.link(hsr4);
              ctDecTr.link(hsr4);
-             
+
              // connect the top level system
              _toplevel.connect(source.output, hsin);
              //sys.connect(hsout, responsePlot.input);
              _toplevel.connect(hsst, responsePlot.input);
              //_toplevel.connect(hstr, responsePlot.input);
-             
+
              // try to run the system
              topdir.setStopTime(5.0);
-             
+
              // CT embedded director 1 parameters
              ctIncDir.InitStepSize.setToken(new DoubleToken(0.01));
              ctIncDir.MinStepSize.setToken(new DoubleToken(1e-3));
              ctIncDir.MaxStepSize.setToken(new DoubleToken(0.05));
-                          
+
              StringToken tok = new StringToken(
                      "ptolemy.domains.ct.kernel.solver.DerivativeResolver");
              ctIncDir.BreakpointODESolver.setToken(tok);
@@ -287,19 +287,19 @@ public class Thermostat extends CTApplet {
              tok = new StringToken(
                      "ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver");
              ctIncDir.ODESolver.setToken(tok);
-                                 
+
              // CT embedded director 2  parameters
              ctDecDir.InitStepSize.setToken(new DoubleToken(0.01));
              ctDecDir.MinStepSize.setToken(new DoubleToken(1e-3));
              ctDecDir.MaxStepSize.setToken(new DoubleToken(0.05));
-             
+
              tok = new StringToken(
                      "ptolemy.domains.ct.kernel.solver.DerivativeResolver");
              ctDecDir.BreakpointODESolver.setToken(tok);
              tok = new StringToken(
                      "ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver");                 ctDecDir.ODESolver.setToken(tok);
              ctGain.factor.setToken(new DoubleToken(-1.0));
-                                         
+
              // CT director parameters
              topdir.InitStepSize.setToken(new DoubleToken(0.01));
              topdir.MinStepSize.setToken(new DoubleToken(1e-3));

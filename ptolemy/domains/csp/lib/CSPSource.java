@@ -44,8 +44,8 @@ import java.util.Random;
 //// CSPSource
 /**
 A CSPSource actor produces tokens through an output channel.
-The tokenLimit parameter specifies how many tokens are 
-produced by this actor. If the value of tokenLimit is a 
+The tokenLimit parameter specifies how many tokens are
+produced by this actor. If the value of tokenLimit is a
 nonnegative integer, then the actor produces that many tokens.
 If the value is negative, then the actor produces tokens
 indefinitely. The default value of tokenLimit is -1.
@@ -57,31 +57,31 @@ indefinitely. The default value of tokenLimit is -1.
 
 public class CSPSource extends AtomicActor {
 
-    /** Construct a CSPSource in the default workspace with an 
+    /** Construct a CSPSource in the default workspace with an
      *  empty string as a name.
      *  @exception IllegalActionException If there is an error
      *   with instantiation of the tokenLimit parameter.
      *  @exception NameDuplicationException If there is an error
      *   with instantiation of the tokenLimit parameter.
      */
-    public CSPSource() throws IllegalActionException, 
+    public CSPSource() throws IllegalActionException,
     	     NameDuplicationException {
         super();
-        tokenLimit = new Parameter( this, "tokenLimit", 
+        tokenLimit = new Parameter( this, "tokenLimit",
         	(new IntToken(-1)) );
     }
 
     /** Construct a CSPSource with the sepcified container and the
-     *  specified name. The name must be unique within the container 
-     *  or an exception is thrown. The container argument must not be 
-     *  null, or a NullPointerException will be thrown. 
+     *  specified name. The name must be unique within the container
+     *  or an exception is thrown. The container argument must not be
+     *  null, or a NullPointerException will be thrown.
      *  @param cont The container of this actor.
      *  @param name The name of this actor.
      *  @exception IllegalActionException If the superclass throws it
-     *   or if there is an error with instantiation of the tokenLimit 
+     *   or if there is an error with instantiation of the tokenLimit
      *   parameter.
      *  @exception NameDuplicationException If the name of the actor
-     *   or the tokenLimit parameter is not unique within the 
+     *   or the tokenLimit parameter is not unique within the
      *   container.
      */
     public CSPSource(CompositeActor cont, String name)
@@ -90,13 +90,13 @@ public class CSPSource extends AtomicActor {
     }
 
     /** Construct a CSPSource with the sepcified container and the
-     *  specified name. The name must be unique within the container 
-     *  or an exception is thrown. The container argument must not be 
+     *  specified name. The name must be unique within the container
+     *  or an exception is thrown. The container argument must not be
      *  null, or a NullPointerException will be thrown. The limit
      *  argument specifies how many tokens will be produced during an
-     *  invocation of the fire() method. If the value of limit is set 
-     *  to -1, then tokens will be produced indefinitely. The initValue 
-     *  argument specifies the initial integer value of the output 
+     *  invocation of the fire() method. If the value of limit is set
+     *  to -1, then tokens will be produced indefinitely. The initValue
+     *  argument specifies the initial integer value of the output
      *  tokens.
      *  @param cont The container of this actor.
      *  @param name The name of this actor.
@@ -104,45 +104,45 @@ public class CSPSource extends AtomicActor {
      *  @param initValue The initial integer value of the produced
      *   tokens.
      *  @exception IllegalActionException If the superclass throws it
-     *   or if there is an error with instantiation of the tokenLimit 
+     *   or if there is an error with instantiation of the tokenLimit
      *   parameter.
      *  @exception NameDuplicationException If the name of this actor
      *   or the tokenLimit paramter is not unique within the container.
      */
-    public CSPSource(CompositeActor cont, String name, int limit, 
-    	    int initValue) throws IllegalActionException, 
+    public CSPSource(CompositeActor cont, String name, int limit,
+    	    int initValue) throws IllegalActionException,
             NameDuplicationException {
         super(cont, name);
         _value = initValue;
-        tokenLimit = new Parameter( this, "tokenLimit", 
+        tokenLimit = new Parameter( this, "tokenLimit",
         	(new IntToken(limit)) );
         output = new IOPort(this, "output", false, true);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The output port. 
+    /** The output port.
      */
     public IOPort output;
-    
-    /** The number of tokens produced by this actor. If this limit 
+
+    /** The number of tokens produced by this actor. If this limit
      *  is set to -1, then produce output tokens indefinitely. The
      *  default value of this parameter is -1.
      */
     public Parameter tokenLimit;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** Execute this actor by producing IntTokens on the output port.
      *  If the tokenCount was not set to a nonnegative, integer value,
      *  then produce output tokens indefinitely. Otherwise, produce
-     *  N output tokens for N = tokenCount. 
+     *  N output tokens for N = tokenCount.
      */
     public void fire() {
         try {
-            int limit = 
+            int limit =
             	    ((IntToken)tokenLimit.getToken()).intValue();
             Random rand = new Random();
             while ( (_value < limit) || (limit < 0) ) {
@@ -170,5 +170,5 @@ public class CSPSource extends AtomicActor {
     ////                         public variables                  ////
 
     private int _value = 0;
-    
+
 }

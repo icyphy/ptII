@@ -88,11 +88,11 @@ public class TimeAdvance extends DDEActor {
     /** The output port.
      */
     public TypedIOPort output;
-    
+
     /** The input port.
      */
     public TypedIOPort input;
-    
+
     /** A parameter used to specify the value of the DoubleTokens
      * that are produced as outputs of this actor.
      */

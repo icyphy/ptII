@@ -57,7 +57,7 @@ import java.lang.Comparable;
  *  <p>
  *  This class implements the Comparable interface.  The time stamp,
  *  microstep, and depth are compared in that order by the compareTo()
- *  method. 
+ *  method.
  *  <p>
  *  @author Lukito Muliadi, Edward A. Lee
  *  @version $Id$

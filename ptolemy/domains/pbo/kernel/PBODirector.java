@@ -46,9 +46,9 @@ import java.util.Enumeration;
 //// PBODirector
 /**
 This class implements the Port-based object model of computation.
-This model of computation is not data driven, like most of the other 
-ptolemy domains.  Instead, it relies on analysis and user tuning of the 
-scheduling to ensure that no important data is lost (or that lost data is 
+This model of computation is not data driven, like most of the other
+ptolemy domains.  Instead, it relies on analysis and user tuning of the
+scheduling to ensure that no important data is lost (or that lost data is
 not critical to the execution of the system.  This gives good real-time
 performance, and this model of computation is often used in embedded control
 systems.
@@ -60,41 +60,41 @@ so that an object is always guaraunteed to have the most recent consistent
 available state of its inputs when it fires.   Note that in this communication
 model, data may be lost!
 
-Port-based objects are normally associated with independant processes.  
-However, 
+Port-based objects are normally associated with independant processes.
+However,
 unlike Process Networks, the threads are time-driven, instead of data-driven.
 Each actor has an associated firing period, which determines how often
 it will execute.  When a process is scheduled, it reads the current state
-of its input ports, performs calculation, and then sets the state of its 
-output ports.   Because of this model, the calculated output during any 
+of its input ports, performs calculation, and then sets the state of its
+output ports.   Because of this model, the calculated output during any
 firing is dependant on the arrival of events, which results in
 non-deterministic output.  Some effort must be expended at some point in the
 design of a system using this domain in properly choosing the firing
 periods of each actor.
 
-Instead of associating a process with each actor, this director manually 
-schedules the actors.  This can be useful for simulating execution on 
+Instead of associating a process with each actor, this director manually
+schedules the actors.  This can be useful for simulating execution on
 a target architecture that is different from the development machine.  In the
 future, a director based on actor/process could be developed that would allow
 the fastest execution on a given architecture.
 
 The scheduling of actors is purposefully handled in an informal way.  Each
-actor specifies its firing period through the "firingPeriod" parameter.  The 
-scheduler attempts to fire the actor every time that period expires.  
+actor specifies its firing period through the "firingPeriod" parameter.  The
+scheduler attempts to fire the actor every time that period expires.
 This director implements a very simple scheduler, and just fires the actor.
-This is sufficient, since only zero-delay actors are currently supported.  
+This is sufficient, since only zero-delay actors are currently supported.
 If delays are allowed, then more complex schedulers are preferable, since
 some actors may require a very low latency when they are fired.  In such a case
 priority scheduling of various kinds is probably necessary.
 
-This director maintains a calendar queue of all the actors in the 
+This director maintains a calendar queue of all the actors in the
 simulation, and fires them in the order given by the queue.  This director
 creates receivers of class PBOReceiver, which implements the shared memory
 communication.
 
 Only zero-delay actors are currently supported.  (This is bogus.  The
 scheduling should be frequent enough that actors have a significant latency.
-Also, when scheduling on a single processor, the processor is a resource that 
+Also, when scheduling on a single processor, the processor is a resource that
 must be distributed among all the actors.)
 
 @author Steve Neuendorffer
@@ -179,29 +179,29 @@ public class PBODirector extends Director {
      */
     public void fire() throws IllegalActionException {
 	// advance the current time, if necessary.
-	if(getNextIterationTime() > getCurrentTime()) 
+	if(getNextIterationTime() > getCurrentTime())
 	    setCurrentTime(getNextIterationTime());
-	
+
 	_debug("Starting iteration at " + getCurrentTime());
 	double firingTime = getCurrentTime();
-	double desiredFiringTime = 
+	double desiredFiringTime =
 	    ((Double)_startQueue.getNextKey()).doubleValue();
 	boolean postfireReturns;
 	// get the next actor to fire.
 	Actor actor = (Actor)_startQueue.take();
 	if(actor.prefire()) {
-	    _debug("Firing actor " + ((Entity) actor).getFullName() + 
+	    _debug("Firing actor " + ((Entity) actor).getFullName() +
 		   " at " + firingTime);
 	    actor.fire();
 	    // This is the time that the actor next wants to get fired.
-	    Double refireTime = new Double(desiredFiringTime + 
+	    Double refireTime = new Double(desiredFiringTime +
 					   _getFiringPeriod(actor));
-	    
+
 	    setCurrentTime(firingTime + _getDelay(actor));
 	    _debug("Postfiring actor at " + getCurrentTime());
 	    postfireReturns = actor.postfire();
 	    _debug("done firing");
-	    
+
 	    if(postfireReturns) {
 		_debug("Rescheduling actor at " + refireTime);
 		// reschedule the actor's next firing.
@@ -211,7 +211,7 @@ public class PBODirector extends Director {
 
 	// reschedule this composite to handle the next process starting.
 	CompositeActor container = (CompositeActor)getContainer();
-	Director executive = container.getExecutiveDirector();	
+	Director executive = container.getExecutiveDirector();
 	if(executive != null) {
 	    _debug("Rescheduling composite");
 	    executive.fireAt(container, getNextIterationTime());
@@ -280,7 +280,7 @@ public class PBODirector extends Director {
 
 	/** Initialize the queue of next firings to contain all the actors.
 	 */
-	CompositeActor container = (CompositeActor) getContainer(); 
+	CompositeActor container = (CompositeActor) getContainer();
 	if(container != null) {
 	    Enumeration allActors = container.deepGetEntities();
 	    while(allActors.hasMoreElements()) {
@@ -318,7 +318,7 @@ public class PBODirector extends Director {
         double stoptime = ((DoubleToken) stopTime.getToken()).doubleValue();
 	double curtime = getCurrentTime();
 	_debug("CurrentTime = " + curtime);
-	if(curtime > stoptime) 
+	if(curtime > stoptime)
 	    return false;
 	else
 	    return true;
@@ -396,7 +396,7 @@ public class PBODirector extends Director {
     }
 
     /** Get the period that the given actor will fire, as supplied by
-     *  by the port's "firingPeriod" Parameter.   
+     *  by the port's "firingPeriod" Parameter.
      *
      *  @exception IllegalActionException If the Actor does not implement
      *  the nameable interface, if the firingPeriod
@@ -404,22 +404,22 @@ public class PBODirector extends Director {
      */
     private double _getFiringPeriod(Actor a)
             throws IllegalActionException {
-	if(!(a instanceof Nameable)) 
+	if(!(a instanceof Nameable))
 	    throw new IllegalActionException(
 		"Cannot get the firing period for an actor that is not " +
 		"an entity");
-        Parameter param = 
+        Parameter param =
 	    (Parameter)((ComponentEntity)a).getAttribute("firingPeriod");
 	if(param == null) {
 	    throw new IllegalActionException("Actor does not have a " +
 		"firingPeriod parameter");
-	}		     
+	}
 	return ((DoubleToken)param.getToken()).doubleValue();
     }
 
     /** Get the delay between the inputs and the outputs for a given actor.
      *  When the actor is fired, it is considered to be "active" for this
-     *  amount of time, after which it will create new output values and 
+     *  amount of time, after which it will create new output values and
      *  pause execution.
      *
      *  @exception IllegalActionException If the Actor does not implement
@@ -428,16 +428,16 @@ public class PBODirector extends Director {
      */
     private double _getDelay(Actor a)
             throws IllegalActionException {
-	if(!(a instanceof Nameable)) 
+	if(!(a instanceof Nameable))
 	    throw new IllegalActionException(
 		"Cannot get the delay for an actor that is not " +
 		"an entity.");
-        Parameter param = 
+        Parameter param =
 	    (Parameter)((ComponentEntity)a).getAttribute("delay");
 	if(param == null) {
 	    throw new IllegalActionException("Actor does not have a " +
 		"delay parameter.");
-	}		     
+	}
 	return ((DoubleToken)param.getToken()).doubleValue();
     }
 

@@ -77,17 +77,17 @@ public class FixPointSystem extends SDFApplet implements QueryListener {
         try {
 	    if ( name == "precision" ) {
 		 _doubleToFix.precision.setToken(new StringToken(_query.stringValue("precision")));
-	    } 
+	    }
             if ( name == "rounding" ) {
                 String option = _query.stringValue("rounding");
                 if ( option.equals("Round") ) {
                     _doubleToFix.quantizer.setToken(
-                            new IntToken(0));                
+                            new IntToken(0));
                 } else {
                     _doubleToFix.quantizer.setToken(
-                            new IntToken(1));       
-                }                
-	    } 
+                            new IntToken(1));
+                }
+	    }
             _go();
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(ex.toString());
@@ -100,13 +100,13 @@ public class FixPointSystem extends SDFApplet implements QueryListener {
     public void init() {
         super.init();
 
-        try {            
+        try {
 
             getContentPane().setLayout(
                     new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 
 	    String[] options = {"Round", "Truncate"};
-	    
+
 	    _query = new Query();
             _query.setBackground(getBackground());
             _query.addLine("precision", "Precision of the FixTokens", "2.1");
@@ -118,17 +118,17 @@ public class FixPointSystem extends SDFApplet implements QueryListener {
 	    _ramp = new Ramp(_toplevel, "ramp");
 	    _ramp.step.setToken(new DoubleToken(0.1));
 	    _ramp.init.setToken(new IntToken(-1));
-            
+
             // Create and configure coder
             _doubleToFix = new DoubleToFix(_toplevel, "tofix");
 	    _doubleToFix.precision.setToken(new StringToken("(2.1)"));
-            _doubleToFix.quantizer.setToken(new IntToken(0));	    
-            
+            _doubleToFix.quantizer.setToken(new IntToken(0));
+
             // Create and configure coder
             _fixToDouble = new FixToDouble(_toplevel, "todouble");
             _fixToDouble.precision.setToken(new StringToken("(2.16)"));
             _fixToDouble.quantizer.setToken(new IntToken(0));
-            
+
             // Create and configure plotter
             _myplot = new SequencePlotter(_toplevel, "plot");
             _myplot.place( getContentPane() );
@@ -144,10 +144,10 @@ public class FixPointSystem extends SDFApplet implements QueryListener {
 	    _myplot.xInit.setToken(new DoubleToken( -1.1 ));
 	    _myplot.xUnit.setToken(new DoubleToken( 0.1 ));
 
-            Relation r = 
+            Relation r =
 		_toplevel.connect( _ramp.output, _doubleToFix.input);
             _toplevel.connect( _doubleToFix.output, _fixToDouble.input);
-            _toplevel.connect( _fixToDouble.output, _myplot.input);          
+            _toplevel.connect( _fixToDouble.output, _myplot.input);
             _myplot.input.link( r );
 
             // We initialize the model correctly.
@@ -155,7 +155,7 @@ public class FixPointSystem extends SDFApplet implements QueryListener {
 
             // The 2 argument requests a go and stop button.
             getContentPane().add(_createRunControls(2));
-            
+
         } catch (Exception ex) {
             report("Setup failed:", ex);
         }

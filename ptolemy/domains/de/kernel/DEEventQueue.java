@@ -38,8 +38,8 @@ import ptolemy.kernel.util.IllegalActionException;
 //
 /** This interface defines the global event queue used by DE directors
  *  to sort and manage events. Events are sorted according to their time
- *  stamps, microstep and the depth of the destination actor. 
- *  One DEEvent is said to be earlier than another, if it has 
+ *  stamps, microstep and the depth of the destination actor.
+ *  One DEEvent is said to be earlier than another, if it has
  *  a smaller time stamp, or when the time stamps are identical,
  *  it has a smaller microstep, or when both time stamps and
  *  microsteps are identical, it has a smaller depth.

@@ -199,7 +199,7 @@ public class DDEDirector extends ProcessDirector {
     }
 
     /** Wait until a deadlock is detected. Then handle the deadlock
-     *  (by calling the protected method _handleDeadlock()) and return. 
+     *  (by calling the protected method _handleDeadlock()) and return.
      *  This method is synchronized on the director.
      *  @exception IllegalActionException If a derived class throws it.
      */
@@ -211,21 +211,21 @@ public class DDEDirector extends ProcessDirector {
             }
             if( _isDeadlocked() ) {
                 if( _isInternallyReadDeadlocked() ) {
-                
+
                     _notDone = _resolveInternalReadDeadlock();
-                    
+
                 } else if( _isInternallyWriteDeadlocked() ) {
-                
+
                     _notDone = _resolveInternalWriteDeadlock();
-                    
+
                 } else if( _isExternallyReadDeadlocked() ) {
-                
+
                     _notDone = _resolveExternalReadDeadlock();
-                    
+
                 } else if( _isExternallyWriteDeadlocked() ) {
-                
+
                     _notDone = _resolveExternalWriteDeadlock();
-                    
+
                 } else {
                     throw new IllegalActionException("Actor is "
                             + "deadlocked but not of one of the "
@@ -233,7 +233,7 @@ public class DDEDirector extends ProcessDirector {
                             + "types.");
                 }
             } else {
-                // Processes Are Stopped; Continued Execution 
+                // Processes Are Stopped; Continued Execution
                 // Is Allowed
 		_notDone = true;
 	    }
@@ -356,7 +356,7 @@ public class DDEDirector extends ProcessDirector {
     public boolean postfire() throws IllegalActionException {
 	Thread thread = Thread.currentThread();
 	if( thread instanceof DDEThread ) {
-	    TimeKeeper timeKeeper = 
+	    TimeKeeper timeKeeper =
 		    ((DDEThread)thread).getTimeKeeper();
 	    timeKeeper.removeAllIgnoreTokens();
 	}
@@ -393,7 +393,7 @@ public class DDEDirector extends ProcessDirector {
                             if( port.hasToken(i) ) {
                                 token = port.get(i);
                                 insiderecs[i][j].put(token);
-                            } 
+                            }
                         } else {
                             insiderecs[i][j].put(token);
                         }
@@ -435,7 +435,7 @@ public class DDEDirector extends ProcessDirector {
                                 if( port.hasRoom(i) ) {
                                     Token t = insiderecs[i][j].get();
                                     port.send(i, t);
-                                } 
+                                }
                                 trans = true;
                             } catch (NoTokenException ex) {
                                 throw new InternalErrorException(
@@ -514,7 +514,7 @@ public class DDEDirector extends ProcessDirector {
     }
 
     /** Decrement the count of actors blocked on a write.
-     *  @param rcvr The DDEReceiver that is no longer 
+     *  @param rcvr The DDEReceiver that is no longer
      *   write blocked.
      */
     synchronized void removeWriteBlock(DDEReceiver rcvr) {
@@ -543,15 +543,15 @@ public class DDEDirector extends ProcessDirector {
 
 	// All threads are stopped due to stopFire()
 	if( threadsStopped > 0 && threadsStopped >= actorsActive ) {
-	    return true; 
-	} 
+	    return true;
+	}
 
 	// Some threads are stopped due to stopFire() while others
 	// are blocked waiting to read or write data.
-	if( threadsStopped + _writeBlocks + _externalReadBlocks 
+	if( threadsStopped + _writeBlocks + _externalReadBlocks
                 + _internalReadBlocks >= actorsActive ) {
 	    if( threadsStopped > 0 ) {
-	        return true; 
+	        return true;
 	    }
 	}
 
@@ -583,7 +583,7 @@ public class DDEDirector extends ProcessDirector {
 	if( _writeBlockedQs == null ) {
 	    _writeBlockedQs = new LinkedList();
 	}
-        Collections.sort( _writeBlockedQs, 
+        Collections.sort( _writeBlockedQs,
                 new RcvrCapacityComparator() );
         DDEReceiver smallestQueue;
         smallestQueue = (DDEReceiver)_writeBlockedQs.getFirst();
@@ -607,7 +607,7 @@ public class DDEDirector extends ProcessDirector {
      *  deadlocked; return false otherwise.
      */
     protected synchronized boolean _isDeadlocked() {
-        if( _getActiveActorsCount() == _writeBlocks + 
+        if( _getActiveActorsCount() == _writeBlocks +
         	_internalReadBlocks + _externalReadBlocks ) {
             return true;
         }
@@ -615,7 +615,7 @@ public class DDEDirector extends ProcessDirector {
     }
 
     /** Check to see if the actors governed by this director are
-     *  externally read deadlocked. Return true in the affirmative 
+     *  externally read deadlocked. Return true in the affirmative
      *  and false otherwise. This method is not synchronized so
      *  the caller should be.
      *  @return True if the actors governed by this director are
@@ -629,9 +629,9 @@ public class DDEDirector extends ProcessDirector {
         }
         return false;
     }
-    
+
     /** Check to see if the actors governed by this director are
-     *  externally write deadlocked. Return true in the affirmative 
+     *  externally write deadlocked. Return true in the affirmative
      *  and false otherwise. This method is not synchronized so
      *  the caller should be.
      *  @return True if the actors governed by this director are
@@ -645,10 +645,10 @@ public class DDEDirector extends ProcessDirector {
         }
         return false;
     }
-    
+
     /** Check to see if the actors governed by this director are
-     *  internally deadlocked on a read. Return true in the 
-     *  affirmative and false otherwise. This method is not 
+     *  internally deadlocked on a read. Return true in the
+     *  affirmative and false otherwise. This method is not
      *  synchronized so the caller should be
      *  @return True if the actors governed by this director are
      *   internally deadlocked on a read; return false otherwise.
@@ -658,20 +658,20 @@ public class DDEDirector extends ProcessDirector {
             if( _writeBlocks == 0 ) {
                 if( _externalReadBlocks == 0 ) {
                     /*
-                    System.out.println("#####Deadlock: _internalReadBlocks = " 
+                    System.out.println("#####Deadlock: _internalReadBlocks = "
                     + _internalReadBlocks);
                     */
             	    return true;
                 }
-                
+
             }
         }
         return false;
     }
-    
+
     /** Check to see if the actors governed by this director are
-     *  internally deadlocked on a write. Return true in the 
-     *  affirmative and false otherwise. This method is not 
+     *  internally deadlocked on a write. Return true in the
+     *  affirmative and false otherwise. This method is not
      *  synchronized so the caller should be
      *  @return True if the actors governed by this director are
      *   internally deadlocked on a write; return false otherwise.
@@ -684,7 +684,7 @@ public class DDEDirector extends ProcessDirector {
         }
         return false;
     }
-    
+
     /** Mutate the model that this director controls.
      */
     protected void _performMutations() {
@@ -692,8 +692,8 @@ public class DDEDirector extends ProcessDirector {
     }
 
     /** Return true indicating that this actor is allowed to continue
-     *  execution. Note that transferInputs() modifies its behavior 
-     *  based on the existence of an external read deadlock. 
+     *  execution. Note that transferInputs() modifies its behavior
+     *  based on the existence of an external read deadlock.
      *  <P>
      *  NOTE: This method is preliminary and will likely change.
      *  @return True.
@@ -712,16 +712,16 @@ public class DDEDirector extends ProcessDirector {
      */
     protected boolean _resolveExternalWriteDeadlock() throws
     	    IllegalActionException {
-            
+
         _incrementLowestCapacityPort();
-        
+
         if( _pendingMutations ) {
         }
         return true;
     }
 
     /** Return false indicating that this director can not resolve
-     *  internal read deadlocks. 
+     *  internal read deadlocks.
      *  <P>
      *  NOTE: This method is preliminary and will likely change.
      * @return False.
@@ -740,7 +740,7 @@ public class DDEDirector extends ProcessDirector {
      */
     protected boolean _resolveInternalWriteDeadlock() throws
     	    IllegalActionException {
-            
+
         _incrementLowestCapacityPort();
 
         if( _pendingMutations ) {

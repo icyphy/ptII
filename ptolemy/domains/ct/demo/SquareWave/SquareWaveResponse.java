@@ -48,9 +48,9 @@ import javax.swing.JPanel;
 //////////////////////////////////////////////////////////////////////////
 //// SquareWaveResponse
 /**
-The square wave response of a second order CT system. This simple 
+The square wave response of a second order CT system. This simple
 CT system demonstrate the use of ODE solvers and domain polymorephic
-actors in the CT domain. 
+actors in the CT domain.
 The solvers are not allowed to change during the execution.
 It is also useful for correctness and performancs testing.
 @author  Jie Liu
@@ -170,7 +170,7 @@ public class SquareWaveResponse extends CTApplet {
             report(ex);
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

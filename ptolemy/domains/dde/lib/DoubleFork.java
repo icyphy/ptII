@@ -84,15 +84,15 @@ public class DoubleFork extends TypedAtomicActor {
     /** The first output port.
      */
     public TypedIOPort output1;
-    
+
     /** The second output port.
      */
     public TypedIOPort output2;
-    
+
     /** The input port.
      */
     public TypedIOPort input;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 

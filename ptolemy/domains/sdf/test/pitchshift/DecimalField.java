@@ -1,8 +1,8 @@
 package ptolemy.domains.sdf.test.pitchshift;
 
 import ptolemy.domains.sdf.test.pitchshift.*;
-import javax.swing.*; 
-import javax.swing.text.*; 
+import javax.swing.*;
+import javax.swing.text.*;
 
 import java.awt.Toolkit;
 import java.text.*;

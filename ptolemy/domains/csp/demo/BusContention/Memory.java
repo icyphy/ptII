@@ -1,4 +1,4 @@
-/* A CSP actor that continually performs conditional rendezvous in 
+/* A CSP actor that continually performs conditional rendezvous in
 an alternating fashion with its input and output ports.
 
  Copyright (c) 1998-1999 The Regents of the University of California.
@@ -45,7 +45,7 @@ import ptolemy.data.type.BaseType;
 //////////////////////////////////////////////////////////////////////////
 //// Memory
 /**
-A CSP actor that continually performs conditional rendezvous in 
+A CSP actor that continually performs conditional rendezvous in
 an alternating fashion with its input and output ports. The Memory
 actor can optionally send tokens with string values during
 conditional rendezvous.
@@ -56,13 +56,13 @@ conditional rendezvous.
 
 public class Memory extends CSPActor {
 
-    /** Construct a Memory actor with the specified container 
+    /** Construct a Memory actor with the specified container
      *  and name.
      * @param cont The container of this actor.
      * @param name The name of this actor.
-     * @exception IllegalActionException If the actor cannot be 
+     * @exception IllegalActionException If the actor cannot be
      *  contained by the proposed container.
-     * @exception NameDuplicationException If the container 
+     * @exception NameDuplicationException If the container
      *  already has an actor with this name.
      */
     public Memory(TypedCompositeActor cont, String name)
@@ -88,7 +88,7 @@ public class Memory extends CSPActor {
      *  This is a multiport.
      */
     public TypedIOPort input;
-    
+
     /** The output port. The type of this port is BaseType.GENERAL.
      *  This is a multiport.
      */
@@ -130,7 +130,7 @@ public class Memory extends CSPActor {
             token = new StringToken( _strValue );
 
             int numBranches = _numInChannels + _numOutChannels;
-            ConditionalBranch[] branches = 
+            ConditionalBranch[] branches =
             	    new ConditionalBranch[numBranches];
 
             // Receive Branches
@@ -142,7 +142,7 @@ public class Memory extends CSPActor {
             // Send Branches
             for( int i = 0; i < _numOutChannels; i++ ) {
                 branches[i+_numInChannels] = new
-                    ConditionalSend(true, output, i, 
+                    ConditionalSend(true, output, i,
                     i+_numInChannels, token);
             }
 
@@ -181,5 +181,5 @@ public class Memory extends CSPActor {
     private int _numInChannels = -1;
     private int _numOutChannels = -1;
     private String _strValue = null;
-    
+
 }

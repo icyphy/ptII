@@ -60,7 +60,7 @@ contains the FSM model (i.e., the states and transitions). The states
 are instances of HDFFSMState and and transitions are instances of
 HDFFSMTransition. It is required that each state (HDFFSMState) refine
 to another FSM or to an SDF or HDF diagram. It is important to note that
-the refining diagram is not placed inside an HDFFSMState, but is 
+the refining diagram is not placed inside an HDFFSMState, but is
 instead placed inside an opaque composite actor with the same
 container as the HDFFSMController. Since the state (HDFFSMState) and
 its refinement are distinct actors, an association between them must
@@ -71,7 +71,7 @@ ports. It is only necessary that each of the refining opaque
 composite actors contain the same number and type of ports (with
 the same names) as its container, and that each of the refining
 actor's ports be linked to the corresponding port of its container.
- 
+
 @version $Id$
 @author Brian K. Vogel
 */
@@ -163,7 +163,7 @@ public class HDFFSMController  extends FSMController implements TypedActor {
 	// iteration of the current static schedule to 0.
 	_currentIterFireCount = 0;
 
-	
+
     }
 
     public Object clone(Workspace ws) throws CloneNotSupportedException {
@@ -233,14 +233,14 @@ public class HDFFSMController  extends FSMController implements TypedActor {
         }
     }
 
-    /** See fire() comment of the director. 
+    /** See fire() comment of the director.
      *
      */
     public void fire() throws IllegalActionException {
 	if (_debugging) _debug("FSMController: fire()");
 
         _takenTransition = null;
-        
+
         FSMTransition trans;
 
 	// Fire the refinement.
@@ -275,7 +275,7 @@ public class HDFFSMController  extends FSMController implements TypedActor {
 		}
 	    }
 	}
-	 
+
 	if (_debugging) _debug("FSMController:  fire(): finished");
     }
 
@@ -445,7 +445,7 @@ public class HDFFSMController  extends FSMController implements TypedActor {
 
     /** Determine the initial state. Progagate the
      *  consumption/production rates of the current refinement's
-     *  HDF diagram out to the HDF actor and invalidate the 
+     *  HDF diagram out to the HDF actor and invalidate the
      *  current schedule of the diagram in which the HDF actor
      *  is contained. Set up the scope of variables allowed to be
      *  used in transition guard expressions.
@@ -461,11 +461,11 @@ public class HDFFSMController  extends FSMController implements TypedActor {
             // FIXME!!
             // ignore for now
 
-            throw new InvalidStateException(this, "DEAL WITH IT" + 
+            throw new InvalidStateException(this, "DEAL WITH IT" +
 					    ex.getMessage());
 
         }
-	
+
         // Evaluate initial transitions, determine initial state.
         _setInputVars();
         _takenTransition = null;
@@ -498,9 +498,9 @@ public class HDFFSMController  extends FSMController implements TypedActor {
             // Throw exception!
             //System.out.println("Initialization error: no initial state!");
         }
-        
 
-	
+
+
 	// Get the current refinement.
 	TypedCompositeActor curRefinement =
 	    (TypedCompositeActor)currentRefinement();
@@ -543,13 +543,13 @@ public class HDFFSMController  extends FSMController implements TypedActor {
 	// been fired the number of times specified by the current
 	// static schedule of the HDF/SDF graph in which this FSM
 	// refines.
-	
+
 	// Get the HDF/SDF schedule.
 	CompositeActor container = (CompositeActor)getContainer();
 	if (_debugging) _debug("Name of HDF composite acotr: " +
 			       ((Nameable)container).getName());
 	String hdfCompositeActName = ((Nameable)container).getName();
-	
+
 	// Get the SDF Director.
 	SDFDirector sdfDir = (SDFDirector)(container.getExecutiveDirector());
 	// Get the SDF Director's scheduler.
@@ -558,22 +558,22 @@ public class HDFFSMController  extends FSMController implements TypedActor {
 	    throw new IllegalActionException("Attempted to postfire " +
 					     "FSM system with no SDF scheduler");
 	Enumeration allactors = s.schedule();
-	
-	
+
+
 	int hdfCompositeActOccurrence = 0;
-	
+
 	while (allactors.hasMoreElements()) {
 	    Actor actor = (Actor)allactors.nextElement();
 	    String schedActName = ((Nameable)actor).getName();
-	    
+
 	    if (schedActName.equals(hdfCompositeActName)) {
 		// Current actor in the static schedule is
 		// the HDF compisite actor containing this FSM.
-		
+
 		// Increment the occurence count of this actor.
 		hdfCompositeActOccurrence++;
 	    }
-	    
+
 	    if (_debugging) _debug("Actor in static schedule: " +
 				   ((Nameable)actor).getName());
 	}
@@ -594,13 +594,13 @@ public class HDFFSMController  extends FSMController implements TypedActor {
 	} else {
 	    okToMakeTransition = false;
 	}
-	
+
 	if (okToMakeTransition) {
 
 	    if (_takenTransition == null) {
 		// Do not make a state transition (remain in the current
 		// state).
-		
+
 		// No transition is enabled when last fire. FSMController does not
 		// change state. Note this is different from when a transition
 		// back to the current state is taken.
@@ -609,7 +609,7 @@ public class HDFFSMController  extends FSMController implements TypedActor {
 	    } else {
 		// Make a state transition (possibly back to the current
 		// state).
-		
+
 		// The HDF/SDF graph in which this FSM is embedded has
 		// just finished one iteration, so change state. Note
 		// that this transition could simply
@@ -620,10 +620,10 @@ public class HDFFSMController  extends FSMController implements TypedActor {
 		// Update the current refinement to point to the destination
 		// state of the (enabled) transition.
 		_currentState = _takenTransition.destinationState();
-		
+
 		// execute the transition actions
 		//_takenTransition.executeTransitionActions();
-		
+
 		// Now update the token consumption/production rates of
 		// the ports of the HDF actor refining to the FSM (this
 		// actor's container). I.e., queue a mutation with the
@@ -632,7 +632,7 @@ public class HDFFSMController  extends FSMController implements TypedActor {
 		// schedule based in the new port rates.
 
 		// Get the new current refinement acotr.
-		TypedCompositeActor actor = 
+		TypedCompositeActor actor =
 		    (TypedCompositeActor)currentRefinement();
 		// Extract the token consumption/production rates from the
 		// ports of the current refinement and update the
@@ -647,8 +647,8 @@ public class HDFFSMController  extends FSMController implements TypedActor {
 				       "current schedule.");
 		s.setValid(false);
 	    }
-	
-	}	
+
+	}
 
 	return true;
     }
@@ -879,7 +879,7 @@ public class HDFFSMController  extends FSMController implements TypedActor {
             }
         }
     }
-    
+
     protected void _setInputVars()
             throws IllegalArgumentException, IllegalActionException {
         // Do not deal with multiport, multiple tokens now.
@@ -894,7 +894,7 @@ public class HDFFSMController  extends FSMController implements TypedActor {
                 if (port.hasToken(0)) {
 
                     if (_debugging) _debug("HDFSMController: " +
-					   "_setInputVars(): Port " + 
+					   "_setInputVars(): Port " +
 					   port.getFullName() + " has token.");
 
                     _inputStatusVars.setVarValue(port.getName(), PRESENT);
@@ -902,7 +902,7 @@ public class HDFFSMController  extends FSMController implements TypedActor {
                 } else {
 
                     if (_debugging) _debug("HDFSMController: " +
-					   "_setInputVars(): Port " + 
+					   "_setInputVars(): Port " +
 					   port.getFullName() + " has no token.");
 
                     _inputStatusVars.setVarValue(port.getName(), ABSENT);
@@ -910,7 +910,7 @@ public class HDFFSMController  extends FSMController implements TypedActor {
             } else {
                 // FIXME!!
                 // Outside receivers are always created, so this branch
-                // is not necessary.		
+                // is not necessary.
                 Receiver[][] recs = port.getReceivers();
                 if (recs != null) {
                     Receiver rec = recs[0][0];
@@ -943,7 +943,7 @@ public class HDFFSMController  extends FSMController implements TypedActor {
     }
 
 
- 
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -1038,7 +1038,7 @@ public class HDFFSMController  extends FSMController implements TypedActor {
             throw new InternalErrorException(exception.getMessage());
         }
     }
-    
+
     protected void _setTokenProductionRate(Entity e, IOPort port, int rate)
             throws NotSchedulableException {
         if(rate <= 0) throw new NotSchedulableException(
@@ -1079,25 +1079,25 @@ public class HDFFSMController  extends FSMController implements TypedActor {
      * @param actor The current refinement.
      */
     // FIXME: queue the mutation with the director?
-    protected void _updateInputTokenConsumptionRates(TypedCompositeActor actor) 
+    protected void _updateInputTokenConsumptionRates(TypedCompositeActor actor)
 	throws IllegalActionException {
 	// Get all of its input ports.
 	Enumeration refineInPorts = Collections.enumeration(actor.inputPortList());
 	// Get the current refinement's container.
 	ComponentEntity refineInPortContainer =
 	    (ComponentEntity) actor.getContainer();
-	
+
 	while (refineInPorts.hasMoreElements()) {
 	    IOPort refineInPort =
 		(IOPort)refineInPorts.nextElement();
 	    if (_debugging) _debug("Current port of refining actor " +
 				   refineInPort.getFullName());
-	    
-	    
+
+
 	    // Get all of the input ports this port is
 	    // linked to on the outside (should only consist
 	    // of 1 port).
-	    Enumeration inPortsOutside = 
+	    Enumeration inPortsOutside =
 		Collections.enumeration(refineInPort.deepConnectedInPortList());
 	    if (!inPortsOutside.hasMoreElements()) {
 		throw new IllegalActionException("Current " +
@@ -1135,7 +1135,7 @@ public class HDFFSMController  extends FSMController implements TypedActor {
 		    } else {
 			IOPort portWithRateInfo =
 			    (IOPort)listOfPorts.get(0);
-			
+
 			refineInPortRate =
 			    _getTokenConsumptionRate(portWithRateInfo);
 		    }
@@ -1149,7 +1149,7 @@ public class HDFFSMController  extends FSMController implements TypedActor {
 	    }
 	}
     }
-    
+
     /* Extract the token production rates from the output
      * ports of the current refinement and update the
      * rates of the output ports of the HDF opaque composite actor
@@ -1160,25 +1160,25 @@ public class HDFFSMController  extends FSMController implements TypedActor {
      * @param actor The current refinement.
      */
     // FIXME: queue the mutation with the director?
-    protected void _updateOutputTokenProductionRates(TypedCompositeActor actor) 
+    protected void _updateOutputTokenProductionRates(TypedCompositeActor actor)
 	throws IllegalActionException {
 	// Get all of its input ports.
 	Enumeration refineOutPorts = Collections.enumeration(actor.outputPortList());
 	// Get the current refinement's container.
 	ComponentEntity refineOutPortContainer =
 	    (ComponentEntity) actor.getContainer();
-	
+
 	while (refineOutPorts.hasMoreElements()) {
 	    IOPort refineOutPort =
 		(IOPort)refineOutPorts.nextElement();
 	    if (_debugging) _debug("Current port of refining actor " +
 				   refineOutPort.getFullName());
-	    
-	    
+
+
 	    // Get all of the output ports this port is
 	    // linked to on the outside (should only consist
 	    // of 1 port).
-	    Enumeration outPortsOutside = 
+	    Enumeration outPortsOutside =
 		Collections.enumeration(refineOutPort.deepConnectedOutPortList());
 	    if (!outPortsOutside.hasMoreElements()) {
 		throw new IllegalActionException("Current " +
@@ -1216,7 +1216,7 @@ public class HDFFSMController  extends FSMController implements TypedActor {
 		    } else {
 			IOPort portWithRateInfo =
 			    (IOPort)listOfPorts.get(0);
-			
+
 			refineOutPortRate =
 			    _getTokenProductionRate(portWithRateInfo);
 		    }
@@ -1230,7 +1230,7 @@ public class HDFFSMController  extends FSMController implements TypedActor {
 	    }
 	}
     }
-    
+
     ////////////////////////////////////////////////////////////
     /////                  private methods             /////////
 
@@ -1239,8 +1239,8 @@ public class HDFFSMController  extends FSMController implements TypedActor {
      */
     private void _setupScope()
             throws NameDuplicationException, IllegalActionException {
-	
-	
+
+
         try {
             // remove old variable lists
             if (_inputStatusVars != null) {
@@ -1260,11 +1260,11 @@ public class HDFFSMController  extends FSMController implements TypedActor {
 	    _inputStatusVars.createVariables(Collections.enumeration(((CompositeEntity)getContainer()).portList()));
 	    //_inputValueVars.createVariables(((CompositeEntity)getContainer()).getPorts());
 	    _inputValueVars.createVariables(Collections.enumeration(((CompositeEntity)getContainer()).portList()));
-	    
+
         } catch (IllegalActionException ex) {
         } catch (NameDuplicationException ex) {
         }
-	
+
         Enumeration states = Collections.enumeration(entityList());
         FSMState state;
 	// Setup the scope associated with each state. The scope

@@ -185,7 +185,7 @@ public class BusContentionApplet extends CSPApplet {
 	e = impl.createEdge(null);
 	impl.setEdgeHead(e, n1);
 	impl.setEdgeTail(e, n2);
-	
+
  	e = impl.createEdge(null);
 	impl.setEdgeHead(e, n1);
 	impl.setEdgeTail(e, n4);
@@ -209,7 +209,7 @@ public class BusContentionApplet extends CSPApplet {
 	e = impl.createEdge(null);
 	impl.setEdgeHead(e, n3);
 	impl.setEdgeTail(e, n6);
-	
+
         return graph;
     }
 
@@ -229,46 +229,46 @@ public class BusContentionApplet extends CSPApplet {
 
 	    // Set up connections
 	    inReqs = (TypedIORelation)_toplevel.connect(
-            	    _contentionActor.requestInput, 
+            	    _contentionActor.requestInput,
                     _processActor1.requestOutput );
 	    inReqs = (TypedIORelation)_toplevel.connect(
-            	    _contentionActor.requestInput, 
+            	    _contentionActor.requestInput,
                     _processActor2.requestOutput );
 	    inReqs = (TypedIORelation)_toplevel.connect(
-            	    _contentionActor.requestInput, 
+            	    _contentionActor.requestInput,
                     _processActor3.requestOutput );
 	    outContends = (TypedIORelation)_toplevel.connect(
-            	    _contentionActor.contendOutput, 
+            	    _contentionActor.contendOutput,
                     _alarmActor.input );
             inContends = (TypedIORelation)_toplevel.connect(
-            	    _contentionActor.contendInput, 
+            	    _contentionActor.contendInput,
                     _alarmActor.output );
-            outReqs = (TypedIORelation)_toplevel.connect( 
-            	    _contentionActor.requestOutput, 
+            outReqs = (TypedIORelation)_toplevel.connect(
+            	    _contentionActor.requestOutput,
                     _processActor1.requestInput );
-	    outReqs = (TypedIORelation)_toplevel.connect( 
-            	    _contentionActor.requestOutput, 
+	    outReqs = (TypedIORelation)_toplevel.connect(
+            	    _contentionActor.requestOutput,
                     _processActor2.requestInput );
-	    outReqs = (TypedIORelation)_toplevel.connect( 
-            	    _contentionActor.requestOutput, 
+	    outReqs = (TypedIORelation)_toplevel.connect(
+            	    _contentionActor.requestOutput,
                     _processActor3.requestInput );
-	    reads = (TypedIORelation)_toplevel.connect( 
-            	    _memoryActor.output, 
+	    reads = (TypedIORelation)_toplevel.connect(
+            	    _memoryActor.output,
                     _processActor1.memoryInput );
-	    reads = (TypedIORelation)_toplevel.connect( 
-            	    _memoryActor.output, 
+	    reads = (TypedIORelation)_toplevel.connect(
+            	    _memoryActor.output,
                     _processActor2.memoryInput );
-	    reads = (TypedIORelation)_toplevel.connect( 
-            	    _memoryActor.output, 
+	    reads = (TypedIORelation)_toplevel.connect(
+            	    _memoryActor.output,
                     _processActor3.memoryInput );
-	    writes = (TypedIORelation)_toplevel.connect( 
-            	    _memoryActor.input, 
+	    writes = (TypedIORelation)_toplevel.connect(
+            	    _memoryActor.input,
                     _processActor1.memoryOutput );
-	    writes = (TypedIORelation)_toplevel.connect( 
-            	    _memoryActor.input, 
+	    writes = (TypedIORelation)_toplevel.connect(
+            	    _memoryActor.input,
                     _processActor2.memoryOutput );
-	    writes = (TypedIORelation)_toplevel.connect( 
-            	    _memoryActor.input, 
+	    writes = (TypedIORelation)_toplevel.connect(
+            	    _memoryActor.input,
                     _processActor3.memoryOutput );
 
         } catch (Exception e) {
@@ -387,7 +387,7 @@ public class BusContentionApplet extends CSPApplet {
     public class BusContentionGraphController extends BasicGraphController {
 	private SelectionDragger _selectionDragger;
 	/**
-	 * Create a new basic controller with default 
+	 * Create a new basic controller with default
 	 * node and edge interactors.
 	 */
 	public BusContentionGraphController () {
@@ -397,7 +397,7 @@ public class BusContentionApplet extends CSPApplet {
 	    getNodeController().setNodeRenderer(new ThreadRenderer());
 	    getEdgeController().setEdgeRenderer(new LocalEdgeRenderer());
 	}
-	
+
 	/**
 	 * Initialize all interaction on the graph pane. This method
 	 * is called by the setGraphPane() method of the superclass.
@@ -407,14 +407,14 @@ public class BusContentionApplet extends CSPApplet {
 	 */
 	protected void initializeInteraction () {
 	    GraphPane pane = getGraphPane();
-	    
+
 	    // Create and set up the selection dragger
 	    _selectionDragger = new SelectionDragger(pane);
 	    _selectionDragger.addSelectionInteractor(
 		(SelectionInteractor)getEdgeController().getEdgeInteractor());
 	    _selectionDragger.addSelectionInteractor(
                 (SelectionInteractor)getNodeController().getNodeInteractor());
-	} 
+	}
     }
 
     ///////////////////////////////////////////////////////////////////

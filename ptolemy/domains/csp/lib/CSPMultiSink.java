@@ -1,4 +1,4 @@
-/* An actor that accepts a token from any channel connected to 
+/* An actor that accepts a token from any channel connected to
 its input.
 
  Copyright (c) 1998-1999 The Regents of the University of California.
@@ -42,9 +42,9 @@ import ptolemy.data.type.BaseType;
 //////////////////////////////////////////////////////////////////////////
 //// CSPMultiSink
 /**
-A CSPMultiSink actor accepts a token from any channel connected to 
-its input. It uses a conditional do (CDO) construct to always be 
-ready to accept a new token. The channels it can accept from are set 
+A CSPMultiSink actor accepts a token from any channel connected to
+its input. It uses a conditional do (CDO) construct to always be
+ready to accept a new token. The channels it can accept from are set
 at the start of each firing.
 
 @author Neil Smyth
@@ -53,23 +53,23 @@ at the start of each firing.
 */
 public class CSPMultiSink extends CSPActor {
 
-    /** Construct a CSPMultiSink in the default workspace with an 
-     *  empty string as its name. The actor is created with a single 
-     *  input port named "input". 
+    /** Construct a CSPMultiSink in the default workspace with an
+     *  empty string as its name. The actor is created with a single
+     *  input port named "input".
      */
     public CSPMultiSink() {
         super();
     }
 
     /** Construct a CSPMultiSink with the specified container and
-     *  name. The actor is created with a single input port named 
-     *  "input". The name of the actor must be unique within the 
-     *  container or a NameDuplicationException is thrown. The 
-     *  container argument must not be null, or a NullPointerException 
+     *  name. The actor is created with a single input port named
+     *  "input". The name of the actor must be unique within the
+     *  container or a NameDuplicationException is thrown. The
+     *  container argument must not be null, or a NullPointerException
      *  will be thrown.
-     *  @exception IllegalActionException If the port cannot be 
+     *  @exception IllegalActionException If the port cannot be
      *   contained by this actor.
-     *  @exception NameDuplicationException If the port name coincides 
+     *  @exception NameDuplicationException If the port name coincides
      *   with a port already in this actor.
      */
     public CSPMultiSink(TypedCompositeActor cont, String name)
@@ -151,7 +151,7 @@ public class CSPMultiSink extends CSPActor {
         return false;
     }
 
-    /** Discontinue the execution of this actor.  
+    /** Discontinue the execution of this actor.
      */
     public void wrapup() {
         System.out.println(Thread.currentThread().getName() +

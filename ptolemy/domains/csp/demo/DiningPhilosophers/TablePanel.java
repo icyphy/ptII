@@ -132,7 +132,7 @@ class TablePanel extends Panel {
     protected TablePanel(Philosopher[] philosophers) {
         initialize(philosophers);
     }
-    
+
     /**
      * Initializes the objects and the display.
      */

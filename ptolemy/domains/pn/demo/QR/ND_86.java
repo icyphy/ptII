@@ -41,7 +41,7 @@ import ptolemy.data.type.BaseType;
 //////////////////////////////////////////////////////////////////////////
 //// ND_86
 
-/**  
+/**
 
 This class defines an experimental SBF object that is part of the
 compilation of the QR algorithm written in Matlab into a process
@@ -58,7 +58,7 @@ public class ND_86 extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Construct an actor that is an SBF object with the given container 
+    /** Construct an actor that is an SBF object with the given container
      *  and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -68,7 +68,7 @@ public class ND_86 extends TypedAtomicActor {
      *   actor with this name.
      */
     public ND_86(TypedCompositeActor aContainer, String aName)
-            throws IllegalActionException, NameDuplicationException   
+            throws IllegalActionException, NameDuplicationException
         {
             super(aContainer, aName);
             in0 = new TypedIOPort(this,"in0",true,false);
@@ -87,11 +87,11 @@ public class ND_86 extends TypedAtomicActor {
             parameter_K = new Parameter(this,"K", new IntToken(10));
             parameter_d = new Parameter(this,"d", new IntToken(0));
         }
- 
+
     /** Initialize controller and state of the SBF object.
      *  @exception IllegalActionException If the parent class throws it.
      */
-    public void initialize() throws IllegalActionException {	
+    public void initialize() throws IllegalActionException {
 	super.initialize();
 
 	_t = 0;
@@ -149,7 +149,7 @@ public class ND_86 extends TypedAtomicActor {
         on the basis of the content of the state of the SBF object.
         @exception IllegalActionException Not Thrown.
     */
-    public void fire() throws IllegalActionException {	
+    public void fire() throws IllegalActionException {
 
 	if  ( -i + j == 0 ) { // ED_11_in
 	    _argIn0 = ((DoubleToken) in0.get(0)).doubleValue();
@@ -179,7 +179,7 @@ public class ND_86 extends TypedAtomicActor {
         <i>false</i> to indicate it is done; otherwise <i>true</i> is
         returned.
     */
-    public boolean postfire() {	
+    public boolean postfire() {
 
 	if (_t == 0){
 	    _t0 = 1;
@@ -243,13 +243,13 @@ public class ND_86 extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
- 
+
     private void Vectorize(double arg0, double arg1) {
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     // -- Get a private copy of the parameters
     private int _N;
     private int _K;
@@ -263,7 +263,7 @@ public class ND_86 extends TypedAtomicActor {
     private int k = 0;
     private int j = 0;
     private int i = 0;
- 
+
     private int _t;
     private int _t0;
     private int _t1;
@@ -274,7 +274,7 @@ public class ND_86 extends TypedAtomicActor {
     private ArrayIndex r_2 = new ArrayIndex();
     private ArrayIndex r_3 = new ArrayIndex();
     private ArrayIndex Sink_1 = new ArrayIndex();
- 
+
     private boolean _returnValue = true;
 
 }

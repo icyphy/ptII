@@ -68,14 +68,14 @@ public class Butterfly {
     public static void init(TypedCompositeActor toplevel, Container panel,
 			    Dimension size)
 	throws Exception {
-	
+
 	Scale scale1 = new Scale(toplevel,"scale1");
 	scale1.factor.setToken(new DoubleToken(4.0));
 	Scale scale2 = new Scale(toplevel,"scale2");
 	scale2.factor.setToken(new DoubleToken(1.0/12.0));
 	Scale scale3 = new Scale(toplevel,"scale3");
 	scale3.factor.setToken(new DoubleToken(-2.0));
-	    
+
 	AddSubtract add1 = new AddSubtract(toplevel,"add1");
 	MultiplyDivide mpy1 = new MultiplyDivide(toplevel,"mpy1");
 	MultiplyDivide mpy2 = new MultiplyDivide(toplevel,"mpy2");
@@ -86,7 +86,7 @@ public class Butterfly {
 
 	PolarToRectangular polarToRect1 =
 	    new PolarToRectangular(toplevel, "polarToRect1");
-	    
+
 	Expression sin1 = new Expression(toplevel, "sin1");
 	TypedIOPort sin1Input = new TypedIOPort(sin1, "sin1Input",
 						    true, false);
@@ -143,7 +143,7 @@ public class Butterfly {
 	polarToRect1.angleInput.link(node9);
 	cos2Input.link(node9);
 
-	toplevel.connect(polarToRect1.xOutput, xyPlotter.inputX); 
+	toplevel.connect(polarToRect1.xOutput, xyPlotter.inputX);
 	toplevel.connect(polarToRect1.yOutput, xyPlotter.inputY);
     }
 }

@@ -192,13 +192,13 @@ public class DDEIOPort extends TypedIOPort {
 
         super.send( chIndex, token );
     }
-    
+
     /** Constrain DDEIOPorts to only be contained by non-atomic
      *  entities.
      * @exception IllegalActionException If the container argument
      *  is not atomic.
      * @exception NameDuplicationException If the name of this
-     *  port is not unique with respect to other objects 
+     *  port is not unique with respect to other objects
      *  contained by this port's container.
      */
     public void setContainer(ComponentEntity container)

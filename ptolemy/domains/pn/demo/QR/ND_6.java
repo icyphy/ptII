@@ -41,7 +41,7 @@ import ptolemy.data.type.BaseType;
 //////////////////////////////////////////////////////////////////////////
 //// ND_6
 
-/**  
+/**
 
 This class defines an experimental SBF object that is part of the
 compilation of the QR algorithm written in Matlab into a process
@@ -58,7 +58,7 @@ public class ND_6 extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Construct an actor that is an SBF object with the given container 
+    /** Construct an actor that is an SBF object with the given container
      *  and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -68,7 +68,7 @@ public class ND_6 extends TypedAtomicActor {
      *   actor with this name.
      */
     public ND_6(TypedCompositeActor aContainer, String aName)
-            throws IllegalActionException, NameDuplicationException   
+            throws IllegalActionException, NameDuplicationException
         {
             super(aContainer, aName);
             // ED_2
@@ -87,13 +87,13 @@ public class ND_6 extends TypedAtomicActor {
             parameter_d = new Parameter(this,"d", new IntToken(0));
 
             // Fill up R_1 with data.
-            r_1.ReadMatrix( "Zeros_64x64" );    
+            r_1.ReadMatrix( "Zeros_64x64" );
         }
- 
+
     /** Initialize controller and state of the SBF object.
      *  @exception IllegalActionException If the parent class throws it.
      */
-    public void initialize() throws IllegalActionException {	
+    public void initialize() throws IllegalActionException {
 	super.initialize();
 
 	_t = 0;
@@ -151,7 +151,7 @@ public class ND_6 extends TypedAtomicActor {
         on the basis of the content of the state of the SBF object.
         @exception IllegalActionException Not Thrown.
     */
-    public void fire() throws IllegalActionException {	
+    public void fire() throws IllegalActionException {
 	_value = r_1.retrieve( r_1.atKey(j, i) );
 
 	if ( -i + j == 0 ) {
@@ -175,7 +175,7 @@ public class ND_6 extends TypedAtomicActor {
         <i>false</i> to indicate it is done; otherwise <i>true</i> is
         returned.
     */
-    public boolean postfire() {	
+    public boolean postfire() {
 
 
 	if (_t == 0){
@@ -236,7 +236,7 @@ public class ND_6 extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
- 
+
     private void Vectorize(double arg0, double arg1) {
     }
 
@@ -256,7 +256,7 @@ public class ND_6 extends TypedAtomicActor {
     private int k;
     private int j;
     private int i;
- 
+
     private int _t;
     private int _t0;
     private int _t1;
@@ -269,6 +269,6 @@ public class ND_6 extends TypedAtomicActor {
     private boolean _returnValue = true;
 
     private int _count = 0;
-    
+
 
 }

@@ -210,7 +210,7 @@ public class CSPDirector extends ProcessDirector {
     /** Set the current model time. It is intended for use when composing
      *  CSP with other timed domains.
      *  <P>
-     *  This method should only be called when no processes are delayed, 
+     *  This method should only be called when no processes are delayed,
      *  as the director stores the model time at which to resume them. If
      *  the current model time changed while one or more processes are
      *  delayed, then the state of the director would be undefined as
@@ -236,7 +236,7 @@ public class CSPDirector extends ProcessDirector {
      */
     public void wrapup() throws IllegalActionException {
         super.wrapup();
-        Iterator actors = 
+        Iterator actors =
                 ((CompositeActor)getContainer()).deepEntityList().iterator();
         while(actors.hasNext()) {
             Object actor = actors.next();
@@ -307,15 +307,15 @@ public class CSPDirector extends ProcessDirector {
 
 	// All threads are stopped due to stopFire()
 	if( threadsStopped != 0 && threadsStopped >= actorsActive ) {
-	    return true; 
-	} 
+	    return true;
+	}
 
 	// Some threads are stopped due to stopFire() while others
 	// are blocked waiting to read or write data.
-	if( threadsStopped + _actorsBlocked + _actorsDelayed 
+	if( threadsStopped + _actorsBlocked + _actorsDelayed
 		    >= actorsActive ) {
 	    if( threadsStopped != 0 ) {
-	        return true; 
+	        return true;
 	    }
 	}
 
@@ -396,7 +396,7 @@ public class CSPDirector extends ProcessDirector {
                 }
             }
         } else {
-            // Real deadlock. 
+            // Real deadlock.
             return false;
         }
         // Return true for topology changes and time deadlock.

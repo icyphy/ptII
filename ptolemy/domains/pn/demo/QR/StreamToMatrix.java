@@ -44,7 +44,7 @@ import java.io.*;
 /**
 
 Convert a stream of Double Tokens into a Matrix. The Matrix is
-considered to be an Upper triangular Matrix.  
+considered to be an Upper triangular Matrix.
 @author Bart Kienhuis
 @version $Id: StreamToMatrix.java,v 1.2 1999/11/30 03:55:57 kienhuis
 Exp $
@@ -61,7 +61,7 @@ public class StreamToMatrix extends Transformer {
      *   actor with this name.
      */
     public StreamToMatrix(TypedCompositeActor container, String name)
-            throws IllegalActionException, NameDuplicationException 
+            throws IllegalActionException, NameDuplicationException
         {
             super(container, name);
 
@@ -86,7 +86,7 @@ public class StreamToMatrix extends Transformer {
     ////                         public methods                    ////
 
     /** If the argument is the meanTime parameter, check that it is
-     *  positive.  
+     *  positive.
      * @exception IllegalActionException If the
      *  meanTime value is * not positive.
      */
@@ -135,10 +135,10 @@ public class StreamToMatrix extends Transformer {
     }
 
 
-    /** Initialize the row and column number. 
+    /** Initialize the row and column number.
      *  @exception IllegalActionException If the parent class throws it.
      */
-    public void initialize() throws IllegalActionException {	
+    public void initialize() throws IllegalActionException {
 	super.initialize();
 
 	// Get the correct value from the parameters

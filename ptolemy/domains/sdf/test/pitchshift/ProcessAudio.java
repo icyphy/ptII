@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Red (vogel@eecs.berkeley.edu)
-@AcceptedRating 
+@AcceptedRating
 */
 package ptolemy.domains.sdf.test.pitchshift;
 
@@ -62,7 +62,7 @@ then peak finding is performed on the high-time region of the cepstrum.
 This cepstral technique works well for vocal sounds but does not
 currently perform well for pitches above about 600 Hz.
 <p>
-Note: This application requires JDK 1.3. and at least a 
+Note: This application requires JDK 1.3. and at least a
 Pentium II 400 MHz class processor (for 22050 Hz sample rate).
 @author Brian K. Vogel
 @version
@@ -72,9 +72,9 @@ public class ProcessAudio implements Runnable {
     String errStr;
     AudioInputStream audioInputStream;
     AudioInputStream properFormatAudioInputStream;
-   
+
     Thread thread;
-    
+
     // Set the default sample rate.
     double sampleRate = 22050;
 
@@ -96,7 +96,7 @@ public class ProcessAudio implements Runnable {
     public void stop() {
 	thread = null;
     }
-    
+
     private void shutDown(String message) {
 	if ((errStr = message) != null) {
 	    System.err.println(errStr);
@@ -116,13 +116,13 @@ public class ProcessAudio implements Runnable {
 
 
     // Set the sampling rate. Valid sampling rates are 11025, 22050, 44100.
-    // This method should be the first method called in this class. 
+    // This method should be the first method called in this class.
     public void setSamplingRate(double sr) {
 	this.sampleRate = sr;
     }
 
     public void run() {
-	
+
 	// Capture specific stuff:
 
 	// Number of sample frames to attempt to read from the target data
@@ -137,17 +137,17 @@ public class ProcessAudio implements Runnable {
 	int readWriteDataSizeInFrames = (int)(512*sampleRate/44100);
 	int jsBufferSizeOverReadWriteSize = 8;
 	TargetDataLine targetLine;
-        
-	
+
+
 	 int sampleSizeInBitsInt = 16;
-	 int channels = 1; // If change this, then need to change 
+	 int channels = 1; // If change this, then need to change
          //frameSizeInBits and frameRate accordingly.
 	 int frameSizeInBits = sampleSizeInBitsInt;
 	 double frameRate = sampleRate;
 	 boolean signed = true;
 	 boolean bigEndian = true;
-	
-	
+
+
 
 	 AudioFormat format = new AudioFormat((float)sampleRate,
 					      sampleSizeInBitsInt,
@@ -155,13 +155,13 @@ public class ProcessAudio implements Runnable {
 
 	  int frameSizeInBytes = format.getFrameSize();
 
-	 
+
 	DataLine.Info targetInfo = new DataLine.Info(TargetDataLine.class,
 					  null, null,
 					  new Class[0], format
 					  ,  AudioSystem.NOT_SPECIFIED);
-	  
-	
+
+
             if (!AudioSystem.isSupportedLine(targetInfo)) {
                 shutDown("Line matching " + targetInfo + " not supported.");
                 return;
@@ -170,22 +170,22 @@ public class ProcessAudio implements Runnable {
 	    try {
                 targetLine = (TargetDataLine) AudioSystem.getLine(targetInfo);
                 targetLine.open(format, readWriteDataSizeInFrames*jsBufferSizeOverReadWriteSize);
-            } catch (LineUnavailableException ex) { 
+            } catch (LineUnavailableException ex) {
                 shutDown("Unable to open the line: " + ex);
                 return;
             }
 
-	    
 
-	    
+
+
 	    System.out.println("JavaSound target (microphone/line in)" +
 			       "line buffer size in sample frames = " +
 			       targetLine.getBufferSize());
-	    
+
 	    int targetBufferLengthInBytes = readWriteDataSizeInFrames *
 		frameSizeInBytes;
 	    byte[] targetData = new byte[targetBufferLengthInBytes];
-	    
+
 	    int numFramesRead;
 
 	// uses 32768 sample frames for buffer length no matter what
@@ -195,7 +195,7 @@ public class ProcessAudio implements Runnable {
 					 new Class[0], format,
 					 AudioSystem.NOT_SPECIFIED);
 
-	
+
 
 	if (!AudioSystem.isSupportedLine(sourceInfo)) {
 	    shutDown("Line matching " + sourceInfo + " not supported.");
@@ -207,22 +207,22 @@ public class ProcessAudio implements Runnable {
 	try {
 	    sourceLine = (SourceDataLine) AudioSystem.getLine(sourceInfo);
 	    sourceLine.open(format, readWriteDataSizeInFrames*jsBufferSizeOverReadWriteSize);
-	} catch (LineUnavailableException ex) { 
+	} catch (LineUnavailableException ex) {
 	    shutDown("Unable to open the line: " + ex);
 	    return;
 	}
 
-		
+
 	System.out.println("JavaSound source (audio out/speaker) " +
 			   "line buffer size in sample frames  = " +
 			   sourceLine.getBufferSize());
-	
+
 	// Array of audio samples in double format.
 	double[] audioInDoubleArray;
-	
+
 	byte[] audioOutByteArray;
 	int numBytesRead = 0;
-	
+
 	// start the target data line
 	targetLine.start();
 
@@ -232,48 +232,48 @@ public class ProcessAudio implements Runnable {
 	if (thread == null) {
 	    System.out.println("thread == null !!!!");
 	}
-	
-	
+
+
 	// Initialize the pitch detector.
 	PitchDetector pd = new PitchDetector(readWriteDataSizeInFrames,
 					     (int)sampleRate);
 	// Initialize the pitch shifter.
 	PitchShift ps = new PitchShift((float)sampleRate);
-	
+
 	double[] psArray1 = new double[readWriteDataSizeInFrames];
 	double[] psArray2 = new double[readWriteDataSizeInFrames];
-	
+
 	double[] currPitchArray;
-	
+
 	while (thread != null) {
 	    try {
-		
-		
-		
+
+
+
 		// Read some audio into data[].
 		if ((numFramesRead = targetLine.read(targetData, 0,
 				      readWriteDataSizeInFrames)) == -1) {
 		  break;
 		}
-		
-		
-		
+
+
+
 		audioInDoubleArray = _byteArrayToDoubleArray(targetData,
 							     frameSizeInBytes);
 
 		///////////////////////////////////////////////////////////
 		//////   Do processing on audioInDoubleArray here     /////
-		
+
 		currPitchArray = pd.performPitchDetect(audioInDoubleArray);
 
 		audioInDoubleArray = ps.performPitchShift(audioInDoubleArray,
 		             currPitchArray, pitchScaleIn1);
-		
+
 		audioOutByteArray = _doubleArrayToByteArray(audioInDoubleArray,
 							    frameSizeInBytes);
 
 		int numFramesRemaining = numFramesRead;
-		
+
 
 		// I think this while loop is not needed, since it should
 		// only execute 1 iteration.
@@ -296,7 +296,7 @@ public class ProcessAudio implements Runnable {
 	sourceLine.close();
 	sourceLine = null;
 	shutDown(null);
-	
+
     }
 
 
@@ -328,7 +328,7 @@ public class ProcessAudio implements Runnable {
 	    long result = (b[0] >> 7) ;
 	    for (int i = 0; i < _bytesPerSample; i += 1)
 		result = (result << 8) + (b[i] & 0xff);
-	    doubleArray[currSamp] = ((double) result/ 
+	    doubleArray[currSamp] = ((double) result/
 				     (mathDotPow));
 		}
 	//System.out.println("a value " + doubleArray[34]);

@@ -40,8 +40,8 @@ import ptolemy.actor.util.CalendarQueue;
 //
 /** A calendar queue implementation of the DE event queue. It store DE
  *  events in the order of their time stamps, microstep and the depth
- *  of the destination actor. One DEEvent is said to be earlier than 
- *  another, if it has 
+ *  of the destination actor. One DEEvent is said to be earlier than
+ *  another, if it has
  *  a smaller time stamp, or when the time stamps are identical,
  *  it has a smaller microstep, or when both time stamps and
  *  microsteps are identical, it has a smaller depth.
@@ -74,7 +74,7 @@ public class DECQEventQueue implements DEEventQueue {
      *  @param isAdaptive If the queue changes its number of bins
      *     at run time.
      */
-    public DECQEventQueue(int minBinCount, int binCountFactor, 
+    public DECQEventQueue(int minBinCount, int binCountFactor,
             boolean isAdaptive) {
         _cQueue = new CalendarQueue(new DECQComparator(),
                 minBinCount, binCountFactor);
@@ -152,7 +152,7 @@ public class DECQEventQueue implements DEEventQueue {
     // An implementation of the CQComparator interface for use with
     // calendar queue that compares two DEEvents according to there
     // time stamps, microstep, and depth in that order.
-    // One DEEvent is said to be earlier than another, if it has 
+    // One DEEvent is said to be earlier than another, if it has
     // a smaller time stamp, or when the time stamps are identical,
     // it has a smaller microstep, or when both time stamps and
     // microsteps are identical, it has a smaller depth.
@@ -253,10 +253,10 @@ public class DECQEventQueue implements DEEventQueue {
 
         ///////////////////////////////////////////////////////////////////
         ////                         private members                   ////
-        
+
         // The bin width.
         private DEEvent _binWidth = new DEEvent(null, 1.0, 0, 0);
-        
+
         // The zero reference.
         private DEEvent _zeroReference = new DEEvent(null, 0.0, 0, 0);
     }

@@ -100,7 +100,7 @@ public class NewFSMDirector extends Director {
             _controller._setInputVariables((TypedIOPort)ctrlInPorts.next());
         }
         State st = _controller.currentState();
-        Transition tr = 
+        Transition tr =
                 _controller._chooseTransition(st.preemptiveTransitionList());
         if (tr != null) {
             return;
@@ -126,10 +126,10 @@ public class NewFSMDirector extends Director {
     }
 
     /** Set the mode controller of this director. Throw an exception if the
-     *  proposed controller does not have the same container as this 
+     *  proposed controller does not have the same container as this
      *  director.
      *  @param The proposed mode controller.
-     *  @exception IllegalActionException If the proposed controller does not 
+     *  @exception IllegalActionException If the proposed controller does not
      *   have the same container as this director.
      */
     public void setController(FSMActor controller)
@@ -149,7 +149,7 @@ public class NewFSMDirector extends Director {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** List the external input ports to the mode controller. These 
+    /** List the external input ports to the mode controller. These
      *  inputs come from outside the modal model.
      *  @return A list of ports.
      */
@@ -159,7 +159,7 @@ public class NewFSMDirector extends Director {
     }
 
     /** List the internal input ports to the mode controller. These
-     *  inputs come from refinements of the states of the mode 
+     *  inputs come from refinements of the states of the mode
      *  controller.
      *  @return A list of ports.
      */
@@ -174,4 +174,3 @@ public class NewFSMDirector extends Director {
     // The FSMActor capturing mode control logic.
     private FSMActor _controller = null;
 
-}

@@ -40,7 +40,7 @@ import ptolemy.data.type.BaseType;
 //////////////////////////////////////////////////////////////////////////
 //// ND_36
 
-/**  
+/**
 
 This class defines an experimental SBF object that is part of the
 compilation of the QR algorithm written in Matlab into a process
@@ -58,7 +58,7 @@ public class ND_36 extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Construct an actor that is an SBF object with the given container 
+    /** Construct an actor that is an SBF object with the given container
      *  and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -85,7 +85,7 @@ public class ND_36 extends TypedAtomicActor {
                 in1.setTypeEquals(BaseType.DOUBLE);
                 in2.setTypeEquals(BaseType.DOUBLE);
                 in3.setTypeEquals(BaseType.DOUBLE);
-        
+
                 out0.setTypeEquals(BaseType.DOUBLE);
                 out1.setTypeEquals(BaseType.DOUBLE);
                 out2.setTypeEquals(BaseType.DOUBLE);
@@ -96,11 +96,11 @@ public class ND_36 extends TypedAtomicActor {
                 parameter_K = new Parameter(this,"K", new IntToken(10));
                 parameter_d = new Parameter(this,"d", new IntToken(0));
     }
- 
+
     /** Initialize controller and state of the SBF object.
      *  @exception IllegalActionException If the parent class throws it.
      */
-    public void initialize() throws IllegalActionException {	
+    public void initialize() throws IllegalActionException {
 	super.initialize();
 
 	_t = 0;
@@ -110,7 +110,7 @@ public class ND_36 extends TypedAtomicActor {
 	_N = ((IntToken) parameter_N.getToken()).intValue();
 	_K = ((IntToken) parameter_K.getToken()).intValue();
 	_d = ((IntToken) parameter_d.getToken()).intValue();
-	
+
 	if (_t == 0){
 	    _t0 = 1;
 	    _t1 = 1;
@@ -158,7 +158,7 @@ public class ND_36 extends TypedAtomicActor {
         on the basis of the content of the state of the SBF object.
         @exception IllegalActionException Not Thrown.
      */
-    public void fire() throws IllegalActionException {	
+    public void fire() throws IllegalActionException {
 	if  ( k - 2 >= 0 ) { // ED_1_in
 	    _argIn0 = ((DoubleToken) in0.get(0)).doubleValue();
 	    r_2.store( _argIn0, r_2.atKey(k - 1, j) );
@@ -211,7 +211,7 @@ public class ND_36 extends TypedAtomicActor {
         <i>false</i> to indicate it is done; otherwise <i>true</i> is
         returned.
     */
-    public boolean postfire() {	
+    public boolean postfire() {
         _returnValue = true;
 	if (_t == 0){
 	    _t0 = 1;
@@ -286,12 +286,12 @@ public class ND_36 extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
- 
+
     private void Vectorize(double arg0, double arg1) {
 	_argOut2 = -1*Math.atan2( arg1,arg0 );
 	_argOut0 = Math.cos(_argOut2) * arg0   -   Math.sin(_argOut2) * arg1;
 	_argOut1 = 0.0;
-    }    
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -307,7 +307,7 @@ public class ND_36 extends TypedAtomicActor {
 
     private int k;
     private int j;
- 
+
     private int _t;
     private int _t0;
     private int _t1;

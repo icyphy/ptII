@@ -1,7 +1,7 @@
 package ptolemy.domains.sdf.test.pitchshift;
 
-import javax.swing.*; 
-import javax.swing.text.*; 
+import javax.swing.*;
+import javax.swing.text.*;
 
 import java.awt.Toolkit;
 import java.text.*;
@@ -18,7 +18,7 @@ public class FormattedDocument extends PlainDocument {
         return format;
     }
 
-    public void insertString(int offs, String str, AttributeSet a) 
+    public void insertString(int offs, String str, AttributeSet a)
         throws BadLocationException {
 
         String currentText = getText(0, getLength());

@@ -66,20 +66,20 @@ import java.util.Enumeration;
 //// FSMActor
 /**
 An FSMActor contains a set of states and transitions. A transition has
-a guard expression and a trigger expression. A transition is enabled and 
-can be taken when its guard is true. A transition is triggered and must be 
-taken when its trigger is true. A transition can contain a set of actions. 
-The actions are executed when the FSMActor is fired or postfired and the 
+a guard expression and a trigger expression. A transition is enabled and
+can be taken when its guard is true. A transition is triggered and must be
+taken when its trigger is true. A transition can contain a set of actions.
+The actions are executed when the FSMActor is fired or postfired and the
 transition is taken.
 <p>
 An FSMActor enters its initial state during initialization. There are two
-ways to set the initial state: one is by calling setInitialState(), the 
-other is by putting the name of the initial state in a StringToken, and 
-setting the initialState parameter with this token. The first way has 
+ways to set the initial state: one is by calling setInitialState(), the
+other is by putting the name of the initial state in a StringToken, and
+setting the initialState parameter with this token. The first way has
 precedence.
 <p>
 For each input port, an FSMActor creates two variables which can be referenced
-in guard and trigger expressions: a status variable with name portname$S, and 
+in guard and trigger expressions: a status variable with name portname$S, and
 a value variable with name portname$V. When an FSMActor is fired, it will set
 portname$S = port.hasToken(); portname$V = portname$S ? port.getToken() : null.
 <p>
@@ -90,9 +90,9 @@ in postfire(), where the new state is the destination state of the transition
 enabled in the last firing.
 <p>
 An FSMActor can be used in a modal model to represent the mode control logic.
-A state can have a TypedActor refinement. A transition in an FSMActor can be 
-preemptive or non-preemptive. When a preemptive transition is taken, the 
-refinement of its source state is not fired. A non-preemptive transition is 
+A state can have a TypedActor refinement. A transition in an FSMActor can be
+preemptive or non-preemptive. When a preemptive transition is taken, the
+refinement of its source state is not fired. A non-preemptive transition is
 only taken after the refinement of its source state is fired.
 
 @author Xiaojun Liu
@@ -127,11 +127,11 @@ public class FSMActor extends CompositeEntity implements TypedActor {
 
     /** React to a change in an attribute. If the changed attribute is
      *  the initialState parameter, set the initial state of this actor
-     *  to the state named with the value of the parameter. If this 
+     *  to the state named with the value of the parameter. If this
      *  actor does not contain such a state, throw an exception.
      *  @param attribute The attribute that changed.
-     *  @exception IllegalActionException If the changed attribute is 
-     *   the initialState parameter and this actor does not contain a 
+     *  @exception IllegalActionException If the changed attribute is
+     *   the initialState parameter and this actor does not contain a
      *   state named with the value of the parameter, or if thrown by
      *   the superclass attributeChanged() method.
      */
@@ -158,12 +158,12 @@ public class FSMActor extends CompositeEntity implements TypedActor {
         return _currentState;
     }
 
-    /** Set the values of input variables. Choose the enabled transition 
-     *  among the outgoing transitions of the current state. Throw an 
-     *  exception if there are more than one transitions enabled. 
-     *  Otherwise, execute the choice actions contained by the chosen 
+    /** Set the values of input variables. Choose the enabled transition
+     *  among the outgoing transitions of the current state. Throw an
+     *  exception if there are more than one transitions enabled.
+     *  Otherwise, execute the choice actions contained by the chosen
      *  transition.
-     *  @exception IllegalActionException If there are more than one 
+     *  @exception IllegalActionException If there are more than one
      *   transitions enabled.
      */
     public void fire() throws IllegalActionException {
@@ -341,7 +341,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
         return true;
     }
 
-    /** Return true. 
+    /** Return true.
      *  @return True.
      *  @exception IllegalActionException Not thrown in this base class.
      */
@@ -350,7 +350,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
     }
 
     /** Create receivers and input variables for the input ports of this
-     *  actor. Set current state to the initial state. Throw an 
+     *  actor. Set current state to the initial state. Throw an
      *  IllegalActionException if the initial state is not set.
      *  @exception IllegalActionException If the initial state is not set.
      */
@@ -360,7 +360,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
         _gotoInitialState();
     }
 
-    /** Reset current state to the initial state. Throw an 
+    /** Reset current state to the initial state. Throw an
      *  IllegalActionException if the initial state is not set.
      *  @exception IllegalActionException If the initial state is not set.
      */
@@ -374,7 +374,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
      *  the actor from its container.
      *  If the director of this actor is an FSMDirector and this actor is
      *  the mode controller of the director, set the controller of the
-     *  director to null if the proposed container is not the current 
+     *  director to null if the proposed container is not the current
      *  container.
      *  @param entity The proposed container.
      *  @exception IllegalActionException If the action would result in a
@@ -417,7 +417,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
     public void setInitialState(State state)
             throws IllegalActionException {
         if (state.getContainer() != this) {
-            throw new IllegalActionException(this, state, 
+            throw new IllegalActionException(this, state,
                     "The proposed initial state is not contained by the "
                     + "FSMActor.");
         }
@@ -531,12 +531,12 @@ public class FSMActor extends CompositeEntity implements TypedActor {
 
     /** Parameter containing name of initial state.
      */
-    public Parameter initialState = null;	
+    public Parameter initialState = null;
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Add a state to this FSMActor. This overrides the base-class 
+    /** Add a state to this FSMActor. This overrides the base-class
      *  method to make sure the argument is an instance of State.
      *  This method is <i>not</i> synchronized on the workspace, so the
      *  caller should be.
@@ -565,7 +565,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
      *  workspace, so the caller should be.
      *
      *  @param relation Transition to contain.
-     *  @exception IllegalActionException If the transition has no name, or 
+     *  @exception IllegalActionException If the transition has no name, or
      *   is not an instance of Transition.
      *  @exception NameDuplicationException If the name collides with a name
      *   already on the contained transitions list.
@@ -584,7 +584,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
      *  Throw an exception if more than one transitions are enabled.
      *  @param transitionList A list of transitions.
      *  @return An enabled transition, or null if none is enabled.
-     *  @exception IllegalActionException If more than one transitions 
+     *  @exception IllegalActionException If more than one transitions
      *   are enabled, or if thrown by any choice action contained by the
      *   enabled transition.
      */
@@ -596,7 +596,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
             Transition tr = (Transition)trs.next();
             if (!tr.isEnabled()) {
                 continue;
-            } 
+            }
             if (result != null) {
                 throw new IllegalActionException(this, currentState(),
                         "Multiple enabled transitions.");
@@ -616,11 +616,11 @@ public class FSMActor extends CompositeEntity implements TypedActor {
     }
 
     /** Execute all commit actions contained by the transition chosen
-     *  during the last call to _chooseTransition(). Change current state 
+     *  during the last call to _chooseTransition(). Change current state
      *  to the destination state of the transition.
      *  @exception IllegalActionException If any commit action throws it.
      */
-    protected void _commitLastChosenTransition() 
+    protected void _commitLastChosenTransition()
             throws IllegalActionException {
         if (_lastChosenTransition == null) {
             return;
@@ -638,7 +638,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
      *  @param transition A transition.
      *  @exception IllegalActionException If any commit action throws it.
      */
-    protected void _commitTransition(Transition transition) 
+    protected void _commitTransition(Transition transition)
             throws IllegalActionException {
         Iterator actions = transition.commitActionList().iterator();
         while (actions.hasNext()) {
@@ -653,10 +653,10 @@ public class FSMActor extends CompositeEntity implements TypedActor {
      *  expressions of transitions.
      *  If the given port is a single port, two variables are created:
      *  one is input status variable with name "port_name$S"; the other is
-     *  input value variable with name "port_name$V". The input status 
+     *  input value variable with name "port_name$V". The input status
      *  variable always contains a BooleanToken. When this actor is fired,
      *  The status variable is set to true if the port has a token, false
-     *  otherwise. The input value variable always contains the token 
+     *  otherwise. The input value variable always contains the token
      *  received from the port, or null if the port has no token.
      *  If the given port is a multiport, a status variable and a value
      *  variable are created for each channel. The status variable is
@@ -669,7 +669,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
      *  @exception IllegalActionException If the port is not contained
      *   by this FSMActor or is not an input port.
      */
-    protected void _createInputVariables(TypedIOPort port) 
+    protected void _createInputVariables(TypedIOPort port)
             throws IllegalActionException {
         if (port.getContainer() != this) {
             throw new IllegalActionException(this, port,
@@ -768,18 +768,18 @@ public class FSMActor extends CompositeEntity implements TypedActor {
      *  @see #_createInputVariables(TypedIOPort port)
      *  @param port A port.
      *  @exception IllegalActionException If the port is not contained by
-     *   this actor, or if the port is not an input port, or if the value 
+     *   this actor, or if the port is not an input port, or if the value
      *   variable cannot take the token read from the port.
      */
-    protected void _setInputVariables(TypedIOPort port) 
+    protected void _setInputVariables(TypedIOPort port)
             throws IllegalActionException {
         if (port.getContainer() != this) {
-            throw new IllegalActionException(this, port, 
+            throw new IllegalActionException(this, port,
                     "Cannot set input variables for port "
                     + "not contained by this FSMActor.");
         }
         if (!port.isInput()) {
-            throw new IllegalActionException(this, port, 
+            throw new IllegalActionException(this, port,
                     "Cannot set input variables for port "
                     + "that is not input.");
         }
@@ -842,11 +842,11 @@ public class FSMActor extends CompositeEntity implements TypedActor {
         }
     }
 
-    /** Set the current state to initial state. There are two ways 
-     *  to set the initial state: one is by calling setInitialState(), 
-     *  the other is by putting the name of the initial state in a 
-     *  StringToken, and setting the initialState parameter with this 
-     *  token. 
+    /** Set the current state to initial state. There are two ways
+     *  to set the initial state: one is by calling setInitialState(),
+     *  the other is by putting the name of the initial state in a
+     *  StringToken, and setting the initialState parameter with this
+     *  token.
      *  An exception will be thrown if initial state is not set.
      *  @exception IllegalActionException If initial state is not set.
      */
@@ -872,7 +872,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
 
     // Initial state.
     private State _initialState = null;
-    
+
     // The last chosen transition.
     private Transition _lastChosenTransition = null;
 

@@ -125,7 +125,7 @@ public class Chopstick extends CSPActor {
      *  releases access to this chopstick.
      */
     public TypedIOPort leftIn;
-    
+
     /** The port through which the left philosopher
      *  receives access to this chopstick.
      */
@@ -135,12 +135,12 @@ public class Chopstick extends CSPActor {
      *  releases access to this chopstick.
      */
     public TypedIOPort rightIn;
-    
+
     /** The port through which the right philosopher
      *  receives access to this chopstick.
      */
     public TypedIOPort rightOut;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 

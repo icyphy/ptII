@@ -51,14 +51,14 @@ known as Table-lookup Vector Quantization).  However, for large vector sizes
 the lookup tables are unmanageably large.   This actor approximates a
 full search VQ by storing the lookup tables hierarchically.
 The encoding is broken up into stages, and at each stage a number of 2x1
-table lookup VQs are performed. For example, 
+table lookup VQs are performed. For example,
 starting with a 4x2 vector in the first stage, codebook 0 (which operates
-on raw pixels) is used 4 times, resulting in a 2x2 vector of codewords.  
-In the second stage, codebook 1 is used twice, resulting in a 2x1 vector.  
+on raw pixels) is used 4 times, resulting in a 2x2 vector of codewords.
+In the second stage, codebook 1 is used twice, resulting in a 2x1 vector.
 Lastly, a single 2x1 VQ using codebook 2 (which operates on codewords
 representing 2x2 vectors) returns a single codeword for the 4x2 vector.
 <p>
-The input is an IntMatrixToken corresponding to the block to be encoded.  
+The input is an IntMatrixToken corresponding to the block to be encoded.
 The values in this matrix are assumed to be between 0 and 255.  The output
 is an IntToken with value between 0 and 255.  Integers are used here because
 of the minimal byte support in Ptolemy or JAVA.
@@ -66,8 +66,8 @@ The size of the input matrix should be the same as the parameters blockHeight
 and blockWidth.
 <p>
 The codebook is specified as a binary file that will be read during
-initialization.  This file actually contains five sets of codebooks and 
-lookups tables.  The first set is for 2x1 blocks, the second is for 2x2 
+initialization.  This file actually contains five sets of codebooks and
+lookups tables.  The first set is for 2x1 blocks, the second is for 2x2
 blocks, etc.  (Thus the supplied codebook is only sufficient for block sizes
 up to 8x4 pixels.) In each set, the codebook precedes the lookup-tables.
 The codebook consists of all 256 codevectors, row scanned from top to bottom.
@@ -123,7 +123,7 @@ public final class HTVQEncode extends SDFAtomicActor {
             throws IllegalActionException, NameDuplicationException {
 
         super(container, name);
-        
+
         input = (SDFIOPort) newPort("input");
         input.setInput(true);
         input.setTypeEquals(BaseType.INT_MATRIX);
@@ -139,9 +139,9 @@ public final class HTVQEncode extends SDFAtomicActor {
         _blockCount = ((IntToken)blockCount.getToken()).intValue();
         output.setTokenProductionRate(_blockCount);
         input.setTokenConsumptionRate(_blockCount);
-        blockWidth = 
+        blockWidth =
             new Parameter(this, "blockWidth", new IntToken("4"));
-        blockHeight = 
+        blockHeight =
             new Parameter(this, "blockHeight", new IntToken("2"));
     }
     ///////////////////////////////////////////////////////////////////
@@ -149,16 +149,16 @@ public final class HTVQEncode extends SDFAtomicActor {
 
     /** The input port. */
     public SDFIOPort input;
-    
+
     /** The output port. */
     public SDFIOPort output;
-    
+
     /** A Parameter of type String, giving the location of the codebook data
      *  file relative to the root classpath.
      */
     public Parameter codeBook;
 
-    /** The number of blocks to be encoded during each firing.  
+    /** The number of blocks to be encoded during each firing.
      *  The default value is one, which will always work, but using a higher
      *  number (such as the number of blocks in a frame) will speed things up.
      */
@@ -209,7 +209,7 @@ public final class HTVQEncode extends SDFAtomicActor {
 
         for(j = 0; j < _blockCount; j++) {
             _codewords[j] = new IntToken(
-                    _encode(_blocks[j].intArray(), 
+                    _encode(_blocks[j].intArray(),
                             _blockWidth * _blockHeight));
 	}
 
@@ -479,7 +479,7 @@ public final class HTVQEncode extends SDFAtomicActor {
     /** Given a vector of the given length, compute the codebook stage
      *  appropriate.  Basically, compute log base 2 of len, assuming
      *  len is a power of 2.
-     */ 
+     */
     private int _stages(int len) {
         int x = 0;
         if(len < 2) throw new RuntimeException(

@@ -67,7 +67,7 @@ public class FlowThrough extends TypedAtomicActor {
         input = new TypedIOPort(this, "input", true, false);
         input.setMultiport(true);
         input.setTypeEquals(BaseType.GENERAL);
-        
+
         _name = name;
     }
 
@@ -99,7 +99,7 @@ public class FlowThrough extends TypedAtomicActor {
 			    DDEReceiver outRcvr = (DDEReceiver)outRcvrs[k][l];
 			    Thread thr = Thread.currentThread();
 			    if( thr instanceof DDEThread ) {
-				TimeKeeper kpr = 
+				TimeKeeper kpr =
                                         ((DDEThread)thr).getTimeKeeper();
 			        outRcvr.put(token, kpr.getCurrentTime());
 			    }
@@ -130,7 +130,7 @@ public class FlowThrough extends TypedAtomicActor {
     private int _outChannel = -1;
     private boolean _continueIterations = true;
     private Receiver[][] _inRcvrs;
-    
+
     private String _name;
 
 }

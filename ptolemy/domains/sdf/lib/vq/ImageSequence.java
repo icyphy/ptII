@@ -46,14 +46,14 @@ import ptolemy.domains.sdf.kernel.*;
 //// ImageSequence
 /**
 Load a sequence of binary images from files, and create a sequence of
-IntMatrixTokens from them.  The data is assumed to row scanned, starting 
-at the top row.  Each byte of the binary file is assumed to be the 
+IntMatrixTokens from them.  The data is assumed to row scanned, starting
+at the top row.  Each byte of the binary file is assumed to be the
 greyscale intensity of a single pixel in the image.
 <p>
 The files to be loaded are specified as relative URLs from the base URL path.
-Usually the base path should be set to the root ptolemy classpath. 
+Usually the base path should be set to the root ptolemy classpath.
 The file names are created by replacing *'s in the filename with consecutive
-integers (using zero padding).  For example, specifying a URLtemplate of 
+integers (using zero padding).  For example, specifying a URLtemplate of
 "missa***.qcf" and a starting frame of
 zero, will create the names:
 <ul>
@@ -72,7 +72,7 @@ for loading images.
 @version $Id$
 */
 public final class ImageSequence extends Source {
- 
+
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -91,13 +91,13 @@ public final class ImageSequence extends Source {
         imageURLTemplate = new Parameter(this, "imageURLTemplate",
                 new StringToken("ptolemy/domains/sdf/lib/vq" +
                         "/data/seq/missa/missa***.qcf"));
-        imageColumns = 
+        imageColumns =
             new Parameter(this, "imageColumns", new IntToken("176"));
-        imageRows = 
+        imageRows =
             new Parameter(this, "imageRows", new IntToken("144"));
-        startFrame = 
+        startFrame =
             new Parameter(this, "startFrame", new IntToken("0"));
-        endFrame = 
+        endFrame =
             new Parameter(this, "endFrame", new IntToken("29"));
     }
 
@@ -126,20 +126,20 @@ public final class ImageSequence extends Source {
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then creates new ports and parameters.  The new
      *  actor will have the same parameter values as the old.
-     *  @param ws The workspace for the new object.     
+     *  @param ws The workspace for the new object.
      *  @return A new actor.
      */
     public Object clone(Workspace ws) throws CloneNotSupportedException {
         ImageSequence newobj = (ImageSequence)(super.clone(ws));
-        newobj.imageURLTemplate = 
+        newobj.imageURLTemplate =
             (Parameter)newobj.getAttribute("imageURLTemplate");
-        newobj.imageColumns = 
+        newobj.imageColumns =
             (Parameter)newobj.getAttribute("imageColumns");
-        newobj.imageRows = 
+        newobj.imageRows =
             (Parameter)newobj.getAttribute("imageRows");
-        newobj.startFrame = 
+        newobj.startFrame =
             (Parameter)newobj.getAttribute("startFrame");
-        newobj.endFrame = 
+        newobj.endFrame =
             (Parameter)newobj.getAttribute("endFrame");
         return newobj;
     }
@@ -153,7 +153,7 @@ public final class ImageSequence extends Source {
         super.initialize();
         InputStream source = null;
 
-        String fileroot = 
+        String fileroot =
             ((StringToken)imageURLTemplate.getToken()).toString();
         _startFrame = ((IntToken)startFrame.getToken()).intValue();
         _endFrame = ((IntToken)endFrame.getToken()).intValue();
@@ -207,7 +207,7 @@ public final class ImageSequence extends Source {
                         source = new FileInputStream(sourcefile);
                     }
                 }
-                
+
                 // Load the frame from the file.
                 if(_fullread(source, _frameBytes)
                         != _imageRows*_imageColumns)
@@ -218,8 +218,8 @@ public final class ImageSequence extends Source {
                     for(j = 0; j < _imageColumns; j++, n++)
                         _frameInts[n] = ((int) _frameBytes[n]) & 255;
                 }
-                
-                _images[_frameNumber] = 
+
+                _images[_frameNumber] =
                     new IntMatrixToken(_frameInts, _imageRows, _imageColumns);
             }
             catch (IllegalActionException ex) {

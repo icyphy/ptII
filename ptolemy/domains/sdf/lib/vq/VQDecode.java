@@ -1,4 +1,4 @@
-/* This actor decompresses a vector quantized signal. 
+/* This actor decompresses a vector quantized signal.
 @Copyright (c) 1998-1999 The Regents of the University of California.
 All rights reserved.
 
@@ -81,9 +81,9 @@ public final class VQDecode extends SDFAtomicActor {
         _blockCount = ((IntToken)blockCount.getToken()).intValue();
         output.setTokenProductionRate(_blockCount);
         input.setTokenConsumptionRate(_blockCount);
-        blockWidth = 
+        blockWidth =
             new Parameter(this, "blockWidth", new IntToken("4"));
-        blockHeight = 
+        blockHeight =
             new Parameter(this, "blockHeight", new IntToken("2"));
     }
 
@@ -101,7 +101,7 @@ public final class VQDecode extends SDFAtomicActor {
      */
     public Parameter codeBook;
 
-    /** The number of blocks to be decoded during each firing.  
+    /** The number of blocks to be decoded during each firing.
      *  The default value is one, which will always work, but using a higher
      *  number (such as the number of blocks in a frame) will speed things up.
      *  This should contain an integer.
@@ -142,11 +142,11 @@ public final class VQDecode extends SDFAtomicActor {
 
     /**
      * Fire this actor.
-     * Consume a number of tokens on the input port, each representing a 
-     * VQ codeword.  Index into the appropriate codebook given by the 
+     * Consume a number of tokens on the input port, each representing a
+     * VQ codeword.  Index into the appropriate codebook given by the
      * blockWidth and blockHeight parameters to find the decoded vector for
      * each codeword.  Output an IntMatrixToken representing each decoded
-     * vector on the output port.  
+     * vector on the output port.
      * @exception IllegalActionException If the input or output are not
      * connected
      * @exception ArrayOutOfBoundsException If the input codewords are
@@ -158,8 +158,8 @@ public final class VQDecode extends SDFAtomicActor {
         input.getArray(0, _codewords);
 
         for(j = 0; j < _blockCount; j++) {
-            _blocks[j] = 
-                new IntMatrixToken(_codebook[stage][_codewords[j].intValue()], 
+            _blocks[j] =
+                new IntMatrixToken(_codebook[stage][_codewords[j].intValue()],
                         _blockHeight, _blockWidth);
         }
 
@@ -167,7 +167,7 @@ public final class VQDecode extends SDFAtomicActor {
     }
 
     /**
-     * Initialize this actor. 
+     * Initialize this actor.
      * Load the codebooks and lookup tables from the file given by the
      * parameter "codeBook".
      * @exception IllegalActionException If the parameters do not have
@@ -281,7 +281,7 @@ public final class VQDecode extends SDFAtomicActor {
     /** Given a vector of the given length, compute the codebook stage
      *  appropriate.  Basically, compute log base 2 of len, assuming
      *  len is a power of 2.
-     */ 
+     */
     private int _stages(int len) {
         int x = 0;
         if(len < 2) throw new RuntimeException(

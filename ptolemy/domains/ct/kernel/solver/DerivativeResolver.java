@@ -41,13 +41,13 @@ import ptolemy.data.*;
 //// DerivativeResolver
 /**
 This "odesolver" resolves the derivative with respect to the current
-state of the system. The derivative is obtained by 
-firing the system for one iteration. 
+state of the system. The derivative is obtained by
+firing the system for one iteration.
 This is used for preparing histiry for other
 methods. This is the default breakpoint solver. When this is used as
-the breakpoint solver, it assumes that the state is continuous 
+the breakpoint solver, it assumes that the state is continuous
 after the breakpoint. This may not be true if there are impulses
-in the system. In that case, use ImpulseBESolver as the 
+in the system. In that case, use ImpulseBESolver as the
 breakpoint solver for a better result.
 <P>
 Note that time does not progress after one iteration of this solver.
