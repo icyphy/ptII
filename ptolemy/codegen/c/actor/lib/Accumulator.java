@@ -55,13 +55,13 @@ public class Accumulator extends CCodeGeneratorHelper {
     public void  generateFireCode(StringBuffer stream)
             throws IllegalActionException {
 
-        CodeStream tmpStream = new CodeStream(this);            
+        CodeStream tmpStream = new CodeStream(this);
             tmpStream.appendCodeBlock("codeBlock1");
         stream.append(processCode(tmpStream.toString()));
-        
+
         /**** Previous Code Style *******
-         
-         StringBuffer tmpStream = new StringBuffer();        
+
+         StringBuffer tmpStream = new StringBuffer();
 
          tmpStream.append(
               "if ($val(reset)) {\n"
@@ -70,18 +70,18 @@ public class Accumulator extends CCodeGeneratorHelper {
                 + "    sum += $val(input);\n"
                 + "    $val(output) = sum;\n"
               + "}\n");
-      
+
         stream.append(processCode(tmpStream.toString()));
-        
+
         */
 
     }
 
     public String generateInitializeCode()
             throws IllegalActionException {
-        CodeStream tmpStream = new CodeStream(this);        
+        CodeStream tmpStream = new CodeStream(this);
         tmpStream.appendCodeBlock("initBlock");
-        
+
         //stream.append(processCode(tmpStream.toString()));
         //stream.append(processCode(_initBlock));
 

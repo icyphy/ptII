@@ -59,7 +59,7 @@ public class Sequence extends CCodeGeneratorHelper {
         ptolemy.actor.lib.Sequence actor =
             (ptolemy.actor.lib.Sequence)getComponent();
 
-        CodeStream tmpStream = new CodeStream(this);        
+        CodeStream tmpStream = new CodeStream(this);
 
         if (actor.enable.getWidth() == 0) {
             tmpStream.appendCodeBlock("codeBlock1");
@@ -67,7 +67,7 @@ public class Sequence extends CCodeGeneratorHelper {
             tmpStream.appendCodeBlock("codeBlock2");
         }
         tmpStream.appendCodeBlock("codeBlock3");
-        
+
         stream.append(processCode(tmpStream.toString()));
 
     }
@@ -75,10 +75,10 @@ public class Sequence extends CCodeGeneratorHelper {
     public String generateInitializeCode()
             throws IllegalActionException {
         super.generateInitializeCode();
-        CodeStream tmpStream = new CodeStream(this);        
+        CodeStream tmpStream = new CodeStream(this);
         tmpStream.appendCodeBlock("initBlock");
-        
+
         //stream.append(processCode(tmpStream.toString()));
         return processCode(tmpStream.toString());
-    }   
+    }
 }

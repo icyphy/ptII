@@ -42,9 +42,9 @@ import ptolemy.kernel.util.IllegalActionException;
    @Pt.AcceptedRating Red (eal)
 */
 public class Minimum extends CCodeGeneratorHelper {
-    
-    /** FIXME 
-     *  
+
+    /** FIXME
+     *
      */
     public Minimum (ptolemy.actor.lib.Minimum actor) {
         super(actor);
@@ -52,15 +52,15 @@ public class Minimum extends CCodeGeneratorHelper {
 
     ///////////////////////////////////////////////////////////////////
     ////                     public methods                        ////
-    
-    public void  generateFireCode(StringBuffer stream) 
+
+    public void  generateFireCode(StringBuffer stream)
             throws IllegalActionException {
-        
-        ptolemy.actor.lib.Sequence actor = 
+
+        ptolemy.actor.lib.Sequence actor =
             (ptolemy.actor.lib.Sequence)getComponent();
-        
+
         StringBuffer tmpStream = new StringBuffer();
-        
+
         if (actor.enable.getWidth() == 0) {
             tmpStream.append(
                       "if (currentIndex < $size(values)) {\n"
@@ -75,7 +75,7 @@ public class Minimum extends CCodeGeneratorHelper {
                     + "    outputProduced = 1;\n"
                     + "}\n");
         }
-        
+
         tmpStream.append(
                   "if (outputProduced != 0) {\n"
                 + "    outputProduced = 0;\n"
@@ -89,24 +89,24 @@ public class Minimum extends CCodeGeneratorHelper {
                 + "        }\n"
                 + "    }\n"
                 + "}\n");
-        
-        
+
+
         _codeBlock = tmpStream.toString();
         stream.append(processCode(_codeBlock));
     }
-    
+
     public void generateInitializeCode(StringBuffer stream)
             throws IllegalActionException {
         stream.append(processCode(_initBlock));
 }
 
-   
+
     ///////////////////////////////////////////////////////////////////
     ////                     protected variables                   ////
 
     protected String _codeBlock;
-    
-    protected String _initBlock = 
+
+    protected String _initBlock =
               "int max = 0;\n"
-            + "int maxChannel = 0;\n";    
+            + "int maxChannel = 0;\n";
 }
