@@ -13,16 +13,17 @@
 #fi
 mailto=$1
 
-ADMDIR=/users/ptII/adm/
+ADMDIR=/users/ptII/adm
 if [ "`hostname`" = "gigasource.eecs.berkeley.edu" ]; then
-    ADMDIR=/home/bldmastr/ptII/adm/
+    ADMDIR=/home/bldmastr/ptII/adm
 fi
 
 # If you change the version number, then edit 
 # ptII/adm/bin/ptIInightly
 # ptII/adm/gen-xxx/makefile
 # buildmaster/web/adm/makefile
-GENDIR=$ADMDIR/gen-2.1
+GENVERSION=gen-2.1
+GENDIR=$ADMDIR/$GENVERSION
 cd $GENDIR
 
 
@@ -139,7 +140,8 @@ echo "Test results during code coverage" >> $mailmsg
 echo "" >> $mailmsg
 echo "............................................................" >> $mailmsg
 echo "|To add a directory to the list of directories to be tested|" >> $mailmsg
-echo "|edit the value of JSALLDIRS in $GENDIR/makefile           |" >> $mailmsg
+echo "|edit the value of JSALLDIRS in                            |" >> $mailmsg
+echo "| \$PTII/adm/$GENVERSION/makefile |" >> $mailmsg
 echo "............................................................" >> $mailmsg
 echo "" >> $mailmsg
 echo "------------------------------------------------" >> $mailmsg
