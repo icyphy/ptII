@@ -391,7 +391,7 @@ Pxgraph works best under JDK1.1.6.
 untar the tar file:
 <PRE>
 cd $PTOLEMY/tycho/java
-gzcat /tmp/ptolemy.plot2.0a2.tar.gz | tar -xf
+gzcat /tmp/ptolemy.plot2.0.tar.gz | tar -xf
 </PRE>
 
 <LI> The <CODE>pxgraph</CODE>shell script reads
@@ -540,7 +540,7 @@ public class Pxgraph extends Frame {
                 "        A Java Plotting Tool\n\n" +
                 "By: Edward A. Lee, eal@eecs.berkeley.edu and\n" +
                 "    Christopher Hylands, cxh@eecs.berkeley.edu\n" +
-                "Version 2.0a2, Build: $Id$\n\n"+
+                "Version 2.0, Build: $Id$\n\n"+
                 "For help, type 'pxgraph -help', or see \n" +
                 "the Pxgraph class documentation.\n" +
                 "For more information, see\n" +
