@@ -561,22 +561,22 @@ public class MoMLParser extends HandlerBase {
                 String className = (String)_attributes.get("class");
                 _checkForNull(className, "No class for element \"rendition\"");
 
-                _checkClass(_current, TypedCompositeActor.class,
+                _checkClass(_current, NamedObj.class,
                         "Element \"rendition\" found inside an element that "
-                        + "is not a TypedCompositeActor. It is: "
+                        + "is not a NamedObj. It is: "
                         + _current.toString());
 
                 // Get a constructor for the rendition.
                 Class renditionClass = Class.forName(className);
                 Class[] argTypes = new Class[2];
-                argTypes[0] = TypedCompositeActor.class;
+                argTypes[0] = NamedObj.class;
                 argTypes[1] = String.class;
                 Constructor renditionConstructor
                       = renditionClass.getConstructor(argTypes);
             
                 // Invoke the constructor.
                 Object[] arguments = new Object[2];
-                arguments[0] = (TypedCompositeActor)_current;
+                arguments[0] = (NamedObj)_current;
                 arguments[1] = "_icon";
 
                 _containers.push(_current);

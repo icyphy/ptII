@@ -30,9 +30,9 @@
 
 package ptolemy.moml;
 
-import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
@@ -56,7 +56,7 @@ public class Icon extends Attribute implements Locatable {
      *  @exception NameDuplicationException If the name coincides with
      *   an attribute already in the container.
      */	
-    public Icon(Entity container, String name)
+    public Icon(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
