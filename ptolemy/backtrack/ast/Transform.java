@@ -49,7 +49,7 @@ import ptolemy.backtrack.util.PathFinder;
   
    @author Thomas Feng
    @version $Id$
-   @since Ptolemy II 4.1
+   @since Ptolemy II 5.1
    @Pt.ProposedRating Red (tfeng)
    @Pt.AcceptedRating Red (tfeng)
 */
