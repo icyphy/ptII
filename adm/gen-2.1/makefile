@@ -585,7 +585,6 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/tm \
 	$(REMOTE1PTIIDIST)/ptolemy/gui \
 	$(REMOTE1PTIIDIST)/jni \
-	$(REMOTE1PTIIDIST)/ptolemy/copernicus/applet \
 	$(REMOTE1PTIIDIST)/ptolemy/configs 
 
 
@@ -605,7 +604,9 @@ NONJSALLDIRS = \
 # Run JavaScope Code Coverage tool in the distribution tree
 # For command line options, see
 #http://www.gigascale.org/pubs/gsrc-downloads/JavaScope/docs/pdf/UGApxTools.pdf
-remote1distjsall:
+remote1distjsall: remote1distjsall_1 remote1distjsall_2 remote1distjsall_3
+
+remote1distjsall_1:
 	@echo "#"
 	@echo "# Now running make jsall in $(REMOTE1PTIIDIST)"
 	@echo "# on  `hostname`"
@@ -634,6 +635,19 @@ remote1distjsall:
 		    fi ; \
 		done ; \
 	fi
+
+remote1distjsall_2:
+	@echo "copernicus/applet requires that the jar files are present"
+	(cd $(REMOTE1PTIIDIST); \
+	    $(MAKE) $(MFLAGS) $(MAKEVARS) \
+		AUXCLASSPATH="$(CLASSPATHSEPARATOR)$(JSCLASSPATH)" \
+		install)
+	(cd $(REMOTE1PTIIDIST)/ptolemy/copernicus/applet;
+		$(MAKE) $(MFLAGS) $(MAKEVARS) \
+			JTCLSHFLAGS=-Dptolemy.ptII.isRunningNightlyBuild=true \
+			jsall JSINSTRFLAGS=;)
+
+remote1distjsall_3:
 	jssummary -HTML -PROGRESS \
 		-OUTFILE=$(JSOUTDIR)/coverage.html
 	jsreport -HTML -PROGRESS -RECURSIVE \
