@@ -104,8 +104,10 @@ public abstract class ODESolver extends NamedObj {
      *  in the last step is tolerable.
      *  This is the AND of all the error control actor's response.
      *  @return True if the local error in the last step is tolerable.
+     *  @deprecate No convergence control in Solvers.
+     *  FIXME: DEPRECATED!
      */
-    public abstract boolean errorTolerable();
+    public  boolean errorTolerable(){return true;}
 
     /** Return the director contains this solver.
      *  @return the director contains this solver.
@@ -167,8 +169,10 @@ public abstract class ODESolver extends NamedObj {
      *  Different solver may interpret "success" and implement
      *  startOverLastStep() differently. 
      *
-     * @exception IllegalActionException Not thrown in this base
+     *  @exception IllegalActionException Not thrown in this base
      *  class. May be needed by the derived class.
+     *  @deprecate Use resolveStates() only. No step size control in solvers.
+     * FIXME: deprecated!
      */
     public void proceedOneStep() throws IllegalActionException {
         while(true) {
@@ -190,24 +194,27 @@ public abstract class ODESolver extends NamedObj {
     /** Abstract method for resolving the next step size if the current
      *  step is a success.
      *  Different solver may implement it differently.
-     *
+     *  @deprecate No step size control in solvers.
+     *  FIXME: deprecated.
      */
-    public abstract void resolveNextStepSize();
+    public void resolveNextStepSize(){}
 
-    /** Abstract method for resolving the new states of the integrators.
+    /** Return true if the state of the system is resolved successfully.
      *  Different solver may implement it differently.
      *
      * @exception IllegalActionException Not thrown in this base
      *  class. May be needed by the derived class.
      */
-    public abstract void resolveStates() throws IllegalActionException;
+    public abstract boolean resolveStates() throws IllegalActionException;
 
     /** Abstract method for restarting the last integration step with a
      *  smaller step size.
      *  The typical operations involved in this method are resetting
      *  the currentTime and halving the currentStepSize of the director.
+     *  @deprecate No step size control in SOlvers!
+     *  FIXME: deprecated!
      */
-    public abstract void startOverLastStep();
+    public void startOverLastStep() {}
 
 
     ///////////////////////////////////////////////////////////////////

@@ -79,7 +79,7 @@ public class ExplicitRK23Solver extends VariableStepSolver{
      * @exception IllegalActionException Not thrown in this base
      *  class. May be needed by the derived class.
      */
-    public void resolveStates() throws IllegalActionException {
+    public boolean resolveStates() throws IllegalActionException {
         if(VERBOSE) {
             System.out.println("RK23: resolveState().");
         }
@@ -123,6 +123,7 @@ public class ExplicitRK23Solver extends VariableStepSolver{
             // for error control.
             dir.NFUNC ++;
         }
+        return true;
     }
 
     /**  fire() method for integrators.

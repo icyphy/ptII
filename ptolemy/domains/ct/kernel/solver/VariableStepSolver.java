@@ -83,7 +83,7 @@ public abstract class VariableStepSolver extends ODESolver{
     ////                         public methods                    ////
     /** Return true always, since this is a fixed step size method.
      *  @return true always.
-     */
+     
     public final boolean errorTolerable(){
         try {
             CTDirector dir = (CTDirector)getContainer();
@@ -116,7 +116,7 @@ public abstract class VariableStepSolver extends ODESolver{
                 "has no scheduler avaliable");
         }
     }
-
+    */
     /** Resolve the next step size if the current
      *  step is a success. It ask all the error control actors for
      *  their suggestion and resolve the minimum. Set this value
@@ -126,7 +126,7 @@ public abstract class VariableStepSolver extends ODESolver{
      *
      * @exception IllegalActionException Not thrown in this base
      *  class. May be needed by the derived class.
-     */
+     
     public void resolveNextStepSize() {
         CTDirector dir = (CTDirector)getContainer();
         if(dir == null) {
@@ -146,10 +146,10 @@ public abstract class VariableStepSolver extends ODESolver{
             newh = Math.min(newh, eca.suggestedNextStepSize());
         }
         dir.setSuggestedNextStepSize(newh);
-    }
+        }*/
 
     /** Override the startOverLastStep() for the base class. Do nothing.
-     */
+     
     public void startOverLastStep() throws NumericalNonconvergeException{
         CTDirector dir = (CTDirector)getContainer();
         if(dir == null) {
@@ -170,7 +170,7 @@ public abstract class VariableStepSolver extends ODESolver{
             dir.getCurrentStepSize());
         }
     }
-
+    */
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

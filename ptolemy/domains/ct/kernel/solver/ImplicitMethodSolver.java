@@ -42,10 +42,4 @@ public interface ImplicitMethodSolver {
      *  @param converge True if vote for converge.
      */
     public void voteForConverge(boolean converge);
-
-    /** Return true if the vote result is true.
-     *  @return True if all the votes are true.
-     */
-    public boolean isConverged();
-
 }
