@@ -196,7 +196,7 @@ public class IIR extends Transformer {
 	    window = xCurrent;
 	    for (int j = 1; j < _denominator.length; j++) {
 		window += _denominator[j]*_stateVector[(_currentTap + j) %
-						      _stateVector.length];
+                        _stateVector.length];
 	    }
 	    // Shadowed state. used in postfire().
 	    _latestWindow = window;
@@ -206,7 +206,7 @@ public class IIR extends Transformer {
 	    yCurrent = 0;
 	    for (int k = 0; k < _numerator.length; k++) {
 		yCurrent +=	_numerator[k]*_stateVector[(_currentTap +k) %
-							  _stateVector.length];
+                        _stateVector.length];
 	    }
 	    // Restore state vector to previous state.
 	    _stateVector[_currentTap] = savedState;
