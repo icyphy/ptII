@@ -46,16 +46,23 @@ grep StatRT $statsfile | grep ave | sort |
 		     runs["jimple6"] = 1
 		     runs["codegen"] = 1
 		     print "# Time and Memory"
-		     printf ("# Model Name     ")
+		     printf ("# Model Name   cg/interp% ")
 		     for (run in runs) {		     
 			    printf("%s: time mem free static statRT dynRT ",
 				    run);
 		     }
 		     printf("\n");
-
 		}
-		{   if ($1 != current ) {
+		{   if ($1 != current && current == "") {
+			current = $1
+		    } else if ( $1 != current) {
 		        printf("%-16s ", current)
+			if (time["interpreted"] == 0) {
+				codegenOverInterp = 0
+			} else {
+				codegenOverInterp = int ( ((time["codegen"]+0.0)/(time["interpreted"]+0.0) * 100.0) +0.5)
+			}
+			printf("%2d%% ", codegenOverInterp);
 			#if (time["interpreted"] == 0) {
 			#    printf("code/interp 0 0 0 0 0 0 ");
 			#} else {    
@@ -67,7 +74,7 @@ grep StatRT $statsfile | grep ave | sort |
   #int( (dynamicRT["codegen"]+0.0)/(dynamicRT["interpreted"]+0.0) * 100 + 0.5))
 			#}
 			for (run in runs) {
-			    printf("%s: %3d %5s %5s %5s %5s %5s ", run, time[run], mem[run], free[run], static[run], staticRT[run], dynamicRT[run]);
+			    printf("%s: %2d %5s %5s %5s %5s %5s ", run, time[run], mem[run], free[run], static[run], staticRT[run], dynamicRT[run]);
 			    time[run] = 0
 			    mem[run] = 0
 			    free[run] = 0
@@ -87,6 +94,12 @@ grep StatRT $statsfile | grep ave | sort |
         }
         END {
 		        printf("%-16s ", $1)
+			if (time["interpreted"] == 0) {
+				codegenOverInterp = 0
+			} else {
+				codegenOverInterp = int ( ((time["codegen"]+0.0)/(time["interpreted"]+0.0) * 100.0) +0.5)
+			}
+			printf("%2d%% ", codegenOverInterp);
 			for (run in runs) {
 			    printf("%s: %3d %5s %5s %5s %5s %5s ", run, time[run], mem[run], free[run], static[run], staticRT[run], dynamicRT[run]);
 			    time[run] = 0
@@ -108,10 +121,13 @@ grep /treeshake $statsfile | egrep '^-rw' | sort | uniq |
 	sed 's/treeshake_//' | sed 's/.jar//' |
 	awk '{n=split($8,f,"/"); print f[n-1], f[n], $4}' | sort |
 	awk '
-		BEGIN { print "# Jar File sizes"
+		BEGIN { print "#"
+			print "# Jar File sizes"
 			print "#Model        cg/interp% interp codegen jimple1 jimple2"  
 		}
-		{   if ($1 != current ) {
+		{   if ($1 != current && current == "") {
+			current = $1
+		    } else if ( $1 != current) {
 			if (row["interp"] == 0) {
 				codegenOverInterp = 0
 			} else {
