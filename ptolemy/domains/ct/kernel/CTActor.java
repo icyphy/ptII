@@ -103,7 +103,7 @@ public class CTActor extends TypedAtomicActor {
      *  of the token. The IllegalActionException may be thrown by the 
      *  super class.
      *  @param att The attribute changed. 
-     *  @exception IllgalActionException If thrown by the super class.
+     *  @exception IllegalActionException If thrown by the super class.
      */
     public void attributeChanged(Attribute att) throws IllegalActionException{
         super.attributeChanged(att);
