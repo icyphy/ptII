@@ -1230,7 +1230,7 @@ public abstract class ScalarToken extends Token
      */
     protected BooleanToken _isEqualTo(ScalarToken token)
             throws IllegalActionException {
-	return BooleanToken.getInstance(equals(token));
+        return BooleanToken.getInstance(equals(token));
     }
 
     /** Test for ordering of the values of this Token and the argument

@@ -403,8 +403,8 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      *  or equal to the second argument.  This method only makes sense
      *  for tokens where the distance between them is reasonably
      *  represented as a double. It is assumed that the argument is
-     * 	an ArrayToken, and the isCloseTo() method of the array elements
-     * 	is used.
+     *         an ArrayToken, and the isCloseTo() method of the array elements
+     *         is used.
      *  @param token The token to compare to this token.
      *  @exception IllegalActionException If the elements do not support
      *   this comparison.
@@ -434,7 +434,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
 
     /** Return a true-valued token if the argument is equal to this one.
      *  The isEqualTo() method of the element tokens is used to make the
-     * 	comparison.  It is assumed that the argument is an ArrayToken.
+     *         comparison.  It is assumed that the argument is an ArrayToken.
      *  @param token The token to compare to this token.
      *  @exception IllegalActionException If the element types do not
      *   support this comparison.

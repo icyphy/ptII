@@ -288,7 +288,7 @@ public class ComplexToken extends ScalarToken {
      *  the argument is ComplexToken.
      *  @param rightArgument The rightArgument to compare to this rightArgument.
      *  @return A true-valued rightArgument if the first argument is close in value
-     * 	 to this rightArgument.
+     *          to this rightArgument.
      */
     protected BooleanToken _isCloseTo(
             ScalarToken rightArgument, double epsilon) {

@@ -501,9 +501,10 @@ public abstract class AbstractNotConvertibleToken extends Token {
      *  @param token The token to compare to this token.
      *  @return A token containing true if the value element of the first
      *   argument is equal to the value of this token.
-     * 	@exception IllegalActionException Not thrown in this base class.
+     *         @exception IllegalActionException Not thrown in this base class.
      */
-    protected BooleanToken _isEqualTo(Token token) throws IllegalActionException {
+    protected BooleanToken _isEqualTo(Token token)
+            throws IllegalActionException {
         return BooleanToken.getInstance(equals(token));
     }
 

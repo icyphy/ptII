@@ -434,7 +434,7 @@ public abstract class MatrixToken extends Token {
      *  divided by the value of the argument token.  Division is not
      *  supported for matrices, so this throws an exception if the
      *  argument is a matrix. However, if it is a scalar, then division
-     * 	is performed elementwise.
+     *         is performed elementwise.
      *  @param rightArgument The token that divides this token.
      *  @return A new token containing the result.
      *  @exception IllegalActionException If the operation
@@ -1262,10 +1262,10 @@ public abstract class MatrixToken extends Token {
      *  isCloseTo() method. If the two matrices do have the same dimension,
      *  then this method returns false.
      *  @param token The matrix token to compare to this token.
-     * 	@param distance The specified distance.
+     *         @param distance The specified distance.
      *  @return True if every element of the specified matrix is within
      *   the specified distance of the corresponding element of this matrix.
-     * 	@exception IllegalActionException If a derived class throws it.
+     *         @exception IllegalActionException If a derived class throws it.
      */
     protected BooleanToken _isCloseTo(
             MatrixToken token, double distance)
@@ -1293,12 +1293,12 @@ public abstract class MatrixToken extends Token {
      *  class.  This method can be overridden in derived classes to
      *  provide type-specific operation and return a token of the
      *  appropriate subclass.  In this base class, this method
-     * 	delegates to equals().
+     *         delegates to equals().
      *  @param rightArgument The token to compare to this token.
      *  @exception IllegalActionException If this method is not
      *   supported by a derived class.
      *  @return A true-valued token if the argument is equal to this
-     * 	 matrix.
+     *          matrix.
      */
     protected BooleanToken _isEqualTo(MatrixToken rightArgument)
             throws IllegalActionException {
