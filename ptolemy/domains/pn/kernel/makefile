@@ -56,6 +56,10 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = BasePNDirector.java \
 	PNDirector.java \
 	PNQueueReceiver.java \
+	ProcessStateEvent.java \
+        ProcessStateListener.java \
+	ReceiverActionEvent.java \
+	ReceiverListener.java \
 	TimedPNDirector.java
 
 
