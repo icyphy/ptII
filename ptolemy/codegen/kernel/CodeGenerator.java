@@ -109,6 +109,18 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     ///////////////////////////////////////////////////////////////////
     ////                     public methods                        ////
 
+    /** Return a formatted comment containing the
+     *  specified string. In this base class, the
+     *  comments is a C-style comment, which begins with
+     *  "\/*" and ends with "*\/". Subclasses may override this
+     *  produce comments that match the code generation language.
+     *  @param comment The string to put in the comment.
+     *  @return A formatted comment.
+     */
+    public String comment(String comment) {
+        return "/* " + comment + " */\n";
+    }
+    
     /** Generate the body code that lies between initialize and wrapup.
      *  In this base class, nothing is generated.
      */
@@ -132,7 +144,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                         + " exists. OK to overwrite?")) {
                     throw new IllegalActionException(this,
                             "Please select another file name.");        
-                        }
+                }
             }
             Writer writer = codeDirectory.openForWriting();
             writer.write(code.toString());
@@ -142,17 +154,6 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         }
     }
     
-    /** Return a formatted comment containing the
-     *  specified string. In this base class, the
-     *  comments is a C-style comment, which begins with
-     *  "\/*" and ends with "*\/". Subclasses may override this
-     *  produce comments that match the code generation language.
-     *  @param comment The string to put in the comment.
-     *  @return A formatted comment.
-     */
-    public String comment(String comment) {
-    	return "/* " + comment + " */\n";
-    }
 
     /** Generate the code associated with initialization of the
      *  container composite actor. This is created by stringing

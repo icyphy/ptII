@@ -73,14 +73,14 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
     /**
      * FIXME
      */
-    public void generateInitializeCode(StringBuffer code)
+    public void generateInitializeCode(StringBuffer stream)
             throws IllegalActionException {
     }
 
     /**
      * FIXME
      */
-    public void generateWrapupCode(StringBuffer code)
+    public void generateWrapupCode(StringBuffer stream)
             throws IllegalActionException {
     }
 
