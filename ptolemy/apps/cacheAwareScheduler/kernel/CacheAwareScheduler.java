@@ -962,7 +962,8 @@ public class CacheAwareScheduler extends SDFScheduler {
 
         // Get the function dependency object of the container of this 
         // director. If there is no such attribute, construct one.
-        FunctionDependency functionDependency = castContainer.getFunctionDependencies();
+        FunctionDependency functionDependency 
+            = castContainer.getFunctionDependency();
          
         // The FunctionDependency attribute is used to construct
         // the schedule. If the schedule needs recalculation,
@@ -1002,7 +1003,7 @@ public class CacheAwareScheduler extends SDFScheduler {
         while (actors.hasNext()) {
             Actor actor = (Actor)actors.next();
             // Get the FunctionDependency attribute of current actor.
-            functionDependency = actor.getFunctionDependencies();
+            functionDependency = actor.getFunctionDependency();
             // The following check may not be necessary since the FunctionDependency
             // attribute is constructed before. However, we check
             // it anyway. 

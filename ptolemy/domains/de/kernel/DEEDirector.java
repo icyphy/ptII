@@ -505,7 +505,7 @@ public class DEEDirector extends DEDirector {
         // director. If there is no such attribute, construct one.
         FunctionDependencyOfCompositeActor functionDependency = 
             (FunctionDependencyOfCompositeActor) 
-            castContainer.getFunctionDependencies();
+            castContainer.getFunctionDependency();
 
         //        Since the functionDependency is synchronized to workspace,
         //        there is no need to invalidate functionDependency here.
@@ -589,7 +589,7 @@ public class DEEDirector extends DEDirector {
             }
 
             FunctionDependency functionDependency =
-                ((Actor)portContainer).getFunctionDependencies();
+                ((Actor)portContainer).getFunctionDependency();
 
             Set inputPorts = functionDependency.getInputPortsDependentOn(ioPort);
             Iterator inputsIterator = inputPorts.iterator();

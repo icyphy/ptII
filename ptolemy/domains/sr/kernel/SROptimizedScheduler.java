@@ -143,7 +143,7 @@ public class SROptimizedScheduler extends Scheduler {
 
         FunctionDependencyOfCompositeActor functionDependency =
             (FunctionDependencyOfCompositeActor)
-            compositeActor.getFunctionDependencies();
+            compositeActor.getFunctionDependency();
 
         Object[] cycleNodes = 
             ((FunctionDependencyOfCompositeActor)functionDependency)

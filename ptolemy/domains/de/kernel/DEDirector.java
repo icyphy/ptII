@@ -1435,7 +1435,7 @@ public class DEDirector extends Director {
 
         // Get the FunctionDependency attribute of the container. 
         FunctionDependency functionDependency = 
-            castContainer.getFunctionDependencies();
+            castContainer.getFunctionDependency();
 
         // The FunctionDependency attribute is used to construct
         // the schedule. If the schedule needs recalculation,
@@ -1477,7 +1477,7 @@ public class DEDirector extends Director {
         while (actors.hasNext()) {
             Actor actor = (Actor)actors.next();
             // Get the FunctionDependency attribute of current actor.
-            functionDependency = actor.getFunctionDependencies();
+            functionDependency = actor.getFunctionDependency();
             // FIXME:
             // The following check may not be necessary since the 
             // FunctionDependency attribute is constructed before. 
