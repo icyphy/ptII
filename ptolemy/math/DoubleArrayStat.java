@@ -478,6 +478,11 @@ public class DoubleArrayStat extends DoubleArrayMath {
     public static double[] randomUniform(double a, double b, int N) {
         double range = b - a;
         double[] returnValue = new double[N];
+
+        if(_random == null) {
+            _random = new Random();
+        }
+
         for (int i = 0; i < N; i++) {
             returnValue[i] = _random.nextDouble() * range + a;
         }
@@ -493,6 +498,10 @@ public class DoubleArrayStat extends DoubleArrayMath {
             double standardDeviation, int N) {
         double[] returnValue = new double[N];
 
+        if(_random == null) {
+            _random = new Random();
+        }
+
         for (int i = 0; i < N; i++) {
             returnValue[i] = mean + _random.nextGaussian()*standardDeviation;
         }
@@ -507,6 +516,10 @@ public class DoubleArrayStat extends DoubleArrayMath {
     public static final double[] randomBernoulli(double p, int N) {
         double[] returnValue = new double[N];
 
+        if(_random == null) {
+            _random = new Random();
+        }
+
         for (int i = 0; i < N; i++) {
             returnValue[i] = (_random.nextDouble() < p) ? 1.0 : 0.0;
         }
@@ -519,6 +532,10 @@ public class DoubleArrayStat extends DoubleArrayMath {
      */
     public static final double[] randomExponential(double lambda, int N) {
         double[] returnValue = new double[N];
+
+        if(_random == null) {
+            _random = new Random();
+        }
 
         for (int i = 0; i < N; i++) {
             double r;
@@ -537,6 +554,10 @@ public class DoubleArrayStat extends DoubleArrayMath {
      */
     public static final double[] randomPoisson(double mean, int N) {
         double[] returnValue = new double[N];
+
+        if(_random == null) {
+            _random = new Random();
+        }
 
         for (int i = 0; i < N; i++) {
             double j;
@@ -564,5 +585,5 @@ public class DoubleArrayStat extends DoubleArrayMath {
     // a random number.  If we do not share a single Random, then
     // under Windows, closely spaced calls to nextGaussian() on two
     // separate Randoms could yield the same return value.
-    private static Random _random = new Random();
+    private static Random _random;
 }
