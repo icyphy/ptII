@@ -65,7 +65,7 @@ public abstract class ScalarToken extends Token {
     /** Return the value of this token as a Complex.
      *  In this base class, we just throw an exception.
      *  @return A Complex
-     *  @exception IllegalActionException always thrown
+     *  @exception IllegalActionException Always thrown
      */
     public Complex complexValue()
 	    throws IllegalActionException {
@@ -76,7 +76,7 @@ public abstract class ScalarToken extends Token {
     /** Return the value of this token as a double.
      *  In this base class, we just throw an exception.
      *  @return A double
-     *  @exception IllegalActionException always thrown
+     *  @exception IllegalActionException Always thrown
      */
     public double doubleValue()
 	    throws IllegalActionException {
@@ -94,7 +94,7 @@ public abstract class ScalarToken extends Token {
     /** Return the value of this token as a FixPoint.
      *  In this base class, we just throw an exception.
      *  @return A FixPoint
-     *  @exception IllegalActionException always thrown.
+     *  @exception IllegalActionException Always thrown.
      */
    public FixPoint fixValue()
             throws IllegalActionException {
@@ -105,7 +105,7 @@ public abstract class ScalarToken extends Token {
     /** Return the value of this token as an int.
      *  In this base class, we just throw an exception.
      *  @return An integer
-     *  @exception IllegalActionException always thrown
+     *  @exception IllegalActionException Always thrown
      */
     public int intValue()
 	    throws IllegalActionException {
@@ -127,7 +127,7 @@ public abstract class ScalarToken extends Token {
     /** Return the value of this token as a long integer.
      *  In this base class, we just throw an exception.
      *  @return A long
-     *  @exception IllegalActionException always thrown.
+     *  @exception IllegalActionException Always thrown.
      */
     public long longValue()
 	    throws IllegalActionException {
