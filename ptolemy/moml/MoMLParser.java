@@ -471,10 +471,9 @@ public class MoMLParser extends HandlerBase {
 
              } else if (elementName.equals("location")) {
                 String xSpec = (String)_attributes.get("x");
-                String ySpec = (String)_attributes.get("x");
-                String zSpec = (String)_attributes.get("x");
+                String ySpec = (String)_attributes.get("y");
+                String zSpec = (String)_attributes.get("z");
                 _checkForNull(xSpec, "No x attribute for element \"location\"");
-
                 _checkClass(_current, Locatable.class,
                        "Element \"location\" found inside an element that "
                        + "is not Locatable. It is: "
