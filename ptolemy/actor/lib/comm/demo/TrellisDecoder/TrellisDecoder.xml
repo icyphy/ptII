@@ -7,14 +7,14 @@
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="iterations" class="ptolemy.data.expr.Parameter" value="-1">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="1000">
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 50.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {0, 1, 1032, 651}, maximized = false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {0, 1, 1032, 658}, maximized = false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 542]">
     </property>
@@ -75,7 +75,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="165.0, 75.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 70.0]">
         </property>
     </property>
     <property name="constellation" class="ptolemy.data.expr.Parameter" value="{1.0+i, -1.0+ i, -1.0-i, 1.0-i}">
@@ -92,7 +92,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="165.0, 95.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 90.0]">
         </property>
     </property>
     <property name="uncodeBlockSize" class="ptolemy.kernel.util.Attribute">
@@ -341,7 +341,7 @@ the error rate.</text></svg></configure>
         <link port="MultiplyDivide.output" relation="relation6"/>
     </entity>
     <entity name="Errors on Coded Channel" class="ptolemy.actor.lib.MonitorValue">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="0">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="3">
         </property>
         <doc>Monitor and display values</doc>
         <property name="_icon" class="ptolemy.vergil.icon.UpdatedValueIcon">
@@ -354,7 +354,7 @@ the error rate.</text></svg></configure>
         </property>
     </entity>
     <entity name="Error Rate on Coded Channel" class="ptolemy.actor.lib.MonitorValue">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="0.0">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="0.0015">
         </property>
         <doc>Monitor and display values</doc>
         <property name="_icon" class="ptolemy.vergil.icon.UpdatedValueIcon">
@@ -514,7 +514,7 @@ the error rate.</text></svg></configure>
         <link port="MultiplyDivide.output" relation="relation6"/>
     </entity>
     <entity name="Errors on Uncoded Channel" class="ptolemy.actor.lib.MonitorValue">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="59">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="67">
         </property>
         <doc>Monitor and display values</doc>
         <property name="_icon" class="ptolemy.vergil.icon.UpdatedValueIcon">
@@ -527,7 +527,7 @@ the error rate.</text></svg></configure>
         </property>
     </entity>
     <entity name="Error Rate on Uncoded Channel" class="ptolemy.actor.lib.MonitorValue">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="0.0311839323467">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="0.0335">
         </property>
         <doc>Monitor and display values</doc>
         <property name="_icon" class="ptolemy.vergil.icon.UpdatedValueIcon">
