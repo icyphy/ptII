@@ -42,14 +42,23 @@ import ptolemy.data.BooleanToken;
 import ptolemy.domains.sdf.codegen.SDFCodeGenerator;
 import ptolemy.gui.MessageHandler;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.URL;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -158,7 +167,8 @@ public class GeneratorTableau extends Tableau {
             moreInfoButton.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent evt) {
                     Configuration configuration = getConfiguration();
-                    URL infoURL = getClass().getResource("../../../doc/codegen.htm");
+                    URL infoURL =
+                        getClass().getResource("../../../doc/codegen.htm");
                     try {
                         configuration.openModel(
                                 null, infoURL, infoURL.toExternalForm());
@@ -176,7 +186,7 @@ public class GeneratorTableau extends Tableau {
 
             // Panel for push buttons.
             JPanel buttonPanel = new JPanel();
-            buttonPanel.setLayout(new GridLayout(3,1));
+            buttonPanel.setLayout(new GridLayout(3, 1));
             buttonPanel.setBorder(
                     BorderFactory.createEmptyBorder(10, 0, 10, 0));
 
@@ -357,12 +367,10 @@ public class GeneratorTableau extends Tableau {
                             } else {
                                 className = model.getName();
                             }
-			    execCommands.add(
-                                    "java "
+			    execCommands.add("java "
                                     + runOptions
-                                    + " "
-                                    + "ptolemy.actor.gui.CompositeActorApplication "
-                                    + "-class "
+                                    + " ptolemy.actor.gui"
+                                    + ".CompositeActorApplication -class"
                                     + className);
                         }
                         if(execCommands.size() > 0) {
