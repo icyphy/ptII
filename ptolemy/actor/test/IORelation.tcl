@@ -415,30 +415,63 @@ test IORelation-5.4 {Test linkedDestinationPorts} {
             [enumToFullNames [$r7 linkedDestinationPorts]]
 } {{.E0.E1.P3 .E0.E6.P7} .E0.E3.E4.P8 .E0.E3.E5.P9 .E0.E3.E5.P9}
 
+
+######################################################################
+####
+# Test linkedDestinationPortList
+# NOTE: These build on system above...
+#
+
+test IORelation-6.1 {Test linkedDestinationPortList} {
+    list \
+            [listToFullNames [$r1 linkedDestinationPortList]] \
+            [listToFullNames [$r1 linkedDestinationPortList $p4]]
+} {{.E0.E1.P2 .E0.E1.P3 .E0.E1.P4} {.E0.E1.P2 .E0.E1.P3}}
+
+test IORelation-6.2 {Test linkedDestinationPortList} {
+    list \
+            [listToFullNames [$r2 linkedDestinationPortList]] \
+            [listToFullNames [$r2 linkedDestinationPortList $p4]]
+} {{.E0.E1.P2 .E0.E3.P5} {.E0.E1.P2 .E0.E3.P5}}
+
+test IORelation-6.3 {Test linkedDestinationPortList} {
+    list \
+            [listToFullNames [$r3 linkedDestinationPortList]] \
+            [listToFullNames [$r3 linkedDestinationPortList $p5]]
+} {{.E0.E1.P2 .E0.E3.P5 .E0.E3.P6} {.E0.E1.P2 .E0.E3.P6}}
+
+test IORelation-6.4 {Test linkedDestinationPortList} {
+    list \
+            [listToFullNames [$r4 linkedDestinationPortList]] \
+            [listToFullNames [$r5 linkedDestinationPortList]] \
+            [listToFullNames [$r6 linkedDestinationPortList]] \
+            [listToFullNames [$r7 linkedDestinationPortList]]
+} {{.E0.E1.P3 .E0.E6.P7} .E0.E3.E4.P8 .E0.E3.E5.P9 .E0.E3.E5.P9}
+
 ######################################################################
 ####
 # Test linkedSourcePorts
 # NOTE: These build on system above...
 #
-test IORelation-6.1 {Test linkedSourcePorts} {
+test IORelation-7.1 {Test linkedSourcePorts} {
     list \
             [enumToFullNames [$r1 linkedSourcePorts]] \
             [enumToFullNames [$r1 linkedSourcePorts $p4]]
 } {{.E0.E1.E2.P1 .E0.E1.P2 .E0.E1.P3 .E0.E1.P4} {.E0.E1.E2.P1 .E0.E1.P2 .E0.E1.P3}}
 
-test IORelation-6.2 {Test linkedSourcePorts} {
+test IORelation-7.2 {Test linkedSourcePorts} {
     list \
             [enumToFullNames [$r2 linkedSourcePorts]] \
             [enumToFullNames [$r2 linkedSourcePorts $p4]]
 } {.E0.E1.P2 .E0.E1.P2}
 
-test IORelation-6.3 {Test linkedSourcePorts} {
+test IORelation-7.3 {Test linkedSourcePorts} {
     list \
             [enumToFullNames [$r3 linkedSourcePorts]] \
             [enumToFullNames [$r3 linkedSourcePorts $p2]]
 } {.E0.E1.P2 {}}
 
-test IORelation-6.4 {Test linkedSourcePorts} {
+test IORelation-7.4 {Test linkedSourcePorts} {
     list \
             [enumToFullNames [$r4 linkedSourcePorts]] \
             [enumToFullNames [$r5 linkedSourcePorts]] \
@@ -451,7 +484,7 @@ test IORelation-6.4 {Test linkedSourcePorts} {
 # Test isWidthFixed
 # NOTE: These build on system above...
 #
-test IORelation-7.1 {Test isWidthFixed} {
+test IORelation-8.1 {Test isWidthFixed} {
     list \
             [$r1 isWidthFixed] \
             [$r2 isWidthFixed] \
@@ -467,17 +500,17 @@ test IORelation-7.1 {Test isWidthFixed} {
 # Test description
 # NOTE: These build on system above...
 
-test IORelation-8.1 {Test description} {
+test IORelation-9.1 {Test description} {
     set configuration [java::field ptolemy.actor.IORelation CONFIGURATION]
     $r1 description $configuration
 } {configuration {width 4}}
 
-test IORelation-8.2 {Test description} {
+test IORelation-9.2 {Test description} {
     set configuration [java::field ptolemy.actor.IORelation CONFIGURATION]
     $r2 description $configuration
 } {configuration {width 3 fixed}}
 
-test IORelation-8.3 {Test description} {
+test IORelation-9.3 {Test description} {
     set configuration [java::field ptolemy.actor.IORelation CONFIGURATION]
     $r3 description $configuration
 } {configuration {width 1 fixed}}
@@ -487,13 +520,13 @@ test IORelation-8.3 {Test description} {
 # Test clone
 # NOTE: These build on system above...
 
-test IORelation-9.1 {Test clone} {
+test IORelation-10.1 {Test clone} {
     set w [java::new ptolemy.kernel.util.Workspace W]
     set r8 [java::cast ptolemy.actor.IORelation [$r1 clone $w]]
     $r8 description $configuration
 } {configuration {width 1}}
 
-test IORelation-9.2 {Test clone} {
+test IORelation-10.2 {Test clone} {
     set w [java::new ptolemy.kernel.util.Workspace W]
     set r9 [java::cast ptolemy.actor.IORelation [$r2 clone $w]]
     $r9 description $configuration
