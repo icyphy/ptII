@@ -214,6 +214,17 @@ public class DEDirector extends Director {
         super.addDebugListener(listener);
     }
 
+    /** Disable the specified actor.  All events destined to this actor
+     *  will be ignored.
+     *  @param actor The actor to disable.
+     */
+    public void disableActor(Actor actor) {
+        if (_deadActors == null) {
+            _deadActors = new HashSet();
+        }
+        _deadActors.add(actor);
+    }
+
     /** Advance current time to the next event in the event queue,
      *  and fire one or more actors that have events at that time.
      *  Each actor is iterated repeatedly (prefire(), fire(), postfire()),
@@ -261,10 +272,7 @@ public class DEDirector extends Director {
                     _debug("Postfire returned false:",
                             ((Entity)actorToFire).getName());
                     // Actor requests that it not be fired again.
-                    if (_deadActors == null) {
-                        _deadActors = new HashSet();
-                    }
-                    _deadActors.add(actorToFire);
+                    disableActor(actorToFire);
                 }
                 // Check the input ports of the actor see whether there
                 // is additional input data available.
