@@ -303,9 +303,7 @@ test RemoveGraphicalClasses-1.4 {Try a configuration has a class that we are goi
     set parser [java::new ptolemy.moml.MoMLParser]
     # Note that 1.1 added the filter for all the parsers
     removeGraphicalClasses $parser
-    #set toplevel [$parser parse $hideMoml]
-    #set toplevel [$parser parseFile "../../../../ptolemy/actor/lib/sources.xml"]
-    set toplevel [$parser parseFile "configuration.xml"]
+    set toplevel [$parser parse $hideMoml]
     set newMoML [$toplevel exportMoML]
     list $newMoML
 } {{<?xml version="1.0" standalone="no"?>
