@@ -1,14 +1,12 @@
 
 To Do:
 
-check manual tests
-look over the vergil library
-
+verify that sr tests are passing in the nightly build
 respond to review
 talk to xiaojun - monday
-verify that sr tests are passing in the nightly build
 
 FIXMEs
+implement static recursive scheduler
 
 outline
 
@@ -49,7 +47,6 @@ NonStrictThreeBitAdder - lib
 NonStrictThreeBitAdder2 - lib
 PulseNonStrictAnd - lib
 PulseNonStrictOr - lib
-
 
 -------------------------------------------------------------------------------
 
