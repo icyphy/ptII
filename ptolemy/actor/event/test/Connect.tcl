@@ -57,7 +57,7 @@ test Connect-1.0 {test adding a new entity and connecting it} {
             [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
     set m [$e0 getManager]
     $m addChangeListener \
-            [java::new ptolemy.kernel.event.StandardOutChangeListener]
+            [java::new ptolemy.kernel.event.StreamChangeListener]
     set dir [$e0 getDirector]
     $dir addDebugListener \
             [java::new ptolemy.kernel.util.StreamListener]

@@ -35,15 +35,19 @@ import ptolemy.kernel.util.*;
 import ptolemy.kernel.*;
 import ptolemy.actor.Actor;
 import ptolemy.actor.Director;
+import ptolemy.actor.IOPort;
 
 import java.util.Enumeration;
+import collections.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// RemoveActor
 /**
 A request to remove an actor.  The execute() method of this request
 invokes the wrapup() method of the actor, then disconnects it from
-the topology and sets its container to null.
+the topology and sets its container to null.  The execute() method
+also called createReceivers() on all remote input ports that were
+connected to this actor.
 
 @author  Edward A. Lee
 @version $Id$
@@ -69,8 +73,8 @@ public class RemoveActor extends ChangeRequest {
      *  actor, then disconnecting all its ports and setting its container
      *  to null.  This method also notifies the director that the
      *  schedule and type resolution may be invalid.
-     *  @exception ChangeFailedException If the wrapup() method throws it,
-     *   or if the actor is not an instance of ComponentEntity.
+     *  @exception ChangeFailedException If the wrapup() method throws an
+     *   exception, or if the actor is not an instance of ComponentEntity.
      */
     public void execute() throws ChangeFailedException {
         try {
@@ -81,9 +85,19 @@ public class RemoveActor extends ChangeRequest {
             }
             ComponentEntity entity = (ComponentEntity)_actor;
             Enumeration ports = entity.getPorts();
+            LinkedList farPorts = new LinkedList();
             while (ports.hasMoreElements()) {
                 Port port = (Port)ports.nextElement();
+                if (port instanceof IOPort) {
+                    farPorts.appendElements(
+                        ((IOPort)port).deepConnectedInPorts());
+                }
                 port.unlinkAll();
+            }
+            ports = farPorts.elements();
+            while (ports.hasMoreElements()) {
+                IOPort port = (IOPort)ports.nextElement();
+                port.createReceivers();
             }
             Director director = _actor.getDirector();
             director.invalidateSchedule();

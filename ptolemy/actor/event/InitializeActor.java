@@ -43,7 +43,7 @@ A request to initialize an actor.  This class is used for certain
 kinds of mutations where the actor can be created directly (not via
 a queued mutation), but the initialization of the actor must be
 deferred so that it executes at an appropriate time.  Note that
-many domain will tolerate the creation of an actor at any time,
+many domains will tolerate the creation of an actor at any time,
 and as long as the actor is not connected to any pre-existing actor,
 the director will ignore it.
 

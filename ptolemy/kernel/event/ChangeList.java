@@ -40,14 +40,15 @@ import ptolemy.kernel.util.Nameable;
 A list of change requests to execute all at once.  To ensure that a
 set of changes is executed in one step, between two iterations,
 collect the requested changes in a ChangeList and register that
-list with the manager or director.
+list with whatever object will execute the changes (such as a manager
+or director).
 
 @author  Edward A. Lee
 @version $Id$
 */
 public class ChangeList extends ChangeRequest {
 
-    /** Construct a request with the specified originator and description.
+    /** Construct a list with the specified originator and description.
      *  The change list is initially empty.
      *  @param originator The source of the change request.
      *  @param description A description of the batch of changes.
@@ -60,6 +61,7 @@ public class ChangeList extends ChangeRequest {
     ////                         public methods                    ////
 
     /** Add a change to the list.
+     *  @param change The change to add.
      */
     public void add(ChangeRequest change) {
         if (_changes == null) {
@@ -70,31 +72,40 @@ public class ChangeList extends ChangeRequest {
 
     /** Execute each of the changes in the change list.
      *  If there are none, do nothing. If any of the changes fails
-     *  with an exception, then only those changes up to the exception
-     *  will have been executed.
+     *  with an exception, then no more changes in the list are attempted.
      *  @exception ChangeFailedException If any of the change requests
-     *   in the list throw it.
+     *   in the list throws it.
      */
     public void execute() throws ChangeFailedException {
         if (_changes != null) {
+            _changesExecuted = new LinkedList();
             Enumeration changes = _changes.elements();
             while (changes.hasMoreElements()) {
                 ChangeRequest change = (ChangeRequest)changes.nextElement();
                 change.execute();
+                // If we get here, the change succeeded.
+                _changesExecuted.insertLast(change);
             }
+            _changesSucceeded = true;
         }
     }
 
-    /** Notify the specified listener of the changes in the list.
+    /** Notify the specified listener of the changes in the list that
+     *  succeeded in the last call to execute.
      *  I.e., call the changeExecuted() method of the listener once
-     *  for each change in the list.
+     *  for each change in the list.  If all the changes succeeded,
+     *  then also notify listeners of this change.
+     *  @param listener The listener to notify.
      */
     public void notify(ChangeListener listener) {
         if (_changes != null) {
-            Enumeration changes = _changes.elements();
+            Enumeration changes = _changesExecuted.elements();
             while (changes.hasMoreElements()) {
                 ChangeRequest change = (ChangeRequest)changes.nextElement();
                 listener.changeExecuted(change);
+            }
+            if (_changesSucceeded) {
+                listener.changeExecuted(this);
             }
         }
     }
@@ -104,4 +115,10 @@ public class ChangeList extends ChangeRequest {
 
     // The list of change requests.
     private LinkedList _changes;
+
+    // The list of changes the succeeded.
+    private LinkedList _changesExecuted;
+
+    // An indicator of whether the changes have been executed.
+    private boolean _changesSucceeded = false;
 }

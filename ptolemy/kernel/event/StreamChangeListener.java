@@ -30,8 +30,10 @@
 
 package ptolemy.kernel.event;
 
+import java.io.*;
+
 //////////////////////////////////////////////////////////////////////////
-//// StandardOutChangeListener
+//// StreamChangeListener
 /**
 A change listener that describes the changes on the standard output.
 It simply prints the description of the change once it executes.
@@ -39,15 +41,36 @@ It simply prints the description of the change once it executes.
 @author Edward A. Lee
 @version $Id$
 */
-public class StandardOutChangeListener implements ChangeListener {
+public class StreamChangeListener implements ChangeListener {
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         constructors                      ////
+
+    /** Create a change listener that sends messages to the standard output.
+     */
+    public StreamChangeListener() {
+        _output = System.out;
+    }
+
+
+    /** Create a change listener that sends messages to the specified stream.
+     */
+    public StreamChangeListener(OutputStream out) {
+        _output = new PrintStream(out);
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Notify the listener that a change has been successfully executed.
+    /** Print the description of the change to the stream output.
      *  @param change The change that has been executed.
      */
     public void changeExecuted(ChangeRequest change) {
-        System.out.println(change.getDescription());
+        _output.println(change.getDescription());
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    private PrintStream _output;
 }

@@ -30,6 +30,7 @@
 
 package ptolemy.actor.event;
 
+import java.util.Enumeration;
 import ptolemy.kernel.event.*;
 import ptolemy.kernel.util.*;
 import ptolemy.kernel.*;
@@ -41,10 +42,13 @@ import ptolemy.actor.*;
 A request to link a port to a relation.  When this request is executed, if
 the container of the port implements the Actor interface, then both
 the schedule and the type resolution are invalidated, forcing them to
-be recomputed at the next opportunity. In addition,
+be recomputed when they are next needed. In addition,
 if the port is an IOPort and is also an input, then this method calls its
 createReceivers() method.  Notice that will result in the loss of any
-data that might be present in the port.
+data that might be present in the port.  In addition, if the port is
+an output port, then createReceivers() is called on all deeply connected
+input ports.  This may again result in loss of data.  Notice that this
+could make this class difficult to use deterministically.
 
 @author  Edward A. Lee
 @version $Id$
@@ -86,6 +90,13 @@ public class Link extends ChangeRequest {
                 if (port.isInput()) {
                     port.createReceivers();
                 }
+                if (port.isOutput()) {
+                    Enumeration ports = port.deepConnectedInPorts();
+                    while (ports.hasMoreElements()) {
+                        IOPort farPort = (IOPort)ports.nextElement();
+                        farPort.createReceivers();
+                    }
+                }                    
             }
             ComponentEntity portContainer
                 = (ComponentEntity)_port.getContainer();

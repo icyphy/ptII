@@ -41,10 +41,13 @@ import ptolemy.actor.*;
 A request to connect two ports.  When this request is executed, if
 the container of either port implements the Actor interface, then both
 the schedule and the type resolution are invalidated, forcing them to
-be recomputed at the next opportunity. In addition,
+be recomputed when they are next required. In addition,
 if either port is an IOPort and is also an input, then this method calls its
 createReceivers() method.  Notice that will result in the loss of any
-data that might be present in the port.
+data that might be present in the port.  This means that this type
+of mutation could be tricky to use if determinism is important, since
+it may be difficult to understand under what circumstances data will
+be lost.
 
 @author  Edward A. Lee
 @version $Id$

@@ -49,6 +49,8 @@ public class ChangeFailedException extends KernelException {
 
     /** Create an exception with a detailed message constructed from
      *  the message of another exception.
+     *  @param request The change request.
+     *  @param ex The exception that resulted from executing it.
      */
     public ChangeFailedException(ChangeRequest request, Exception ex) {
         super(request.getOriginator(), null, "Change request failed: "
@@ -58,6 +60,9 @@ public class ChangeFailedException extends KernelException {
 
     /** Create an exception with a detailed message about the change
      *  that failed.
+     *  @param request The change request.
+     *  @param msg A message explaining the problem with executing the change
+     *   request.
      */
     public ChangeFailedException(ChangeRequest request, String msg) {
         super(request.getOriginator(), null, "Change request failed: "

@@ -55,7 +55,7 @@ JSRCS = \
 	ChangeList.java \
 	ChangeListener.java \
 	ChangeRequest.java \
-	StandardOutChangeListener.java
+	StreamChangeListener.java
 
 EXTRA_SRCS =	$(JSRCS)
 

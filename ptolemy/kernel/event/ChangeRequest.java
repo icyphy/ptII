@@ -60,6 +60,8 @@ ChangeList with the director or manager.
 public abstract class ChangeRequest {
 
     /** Construct a request with the specified originator and description.
+     *  The description is a string that is used to report the change,
+     *  typically to the user in a debugging environment.
      *  @param originator The source of the change request.
      *  @param description A description of the change request.
      */
@@ -77,7 +79,7 @@ public abstract class ChangeRequest {
      */
     public abstract void execute() throws ChangeFailedException;
 
-    /** Get the description
+    /** Get the description.
      *  @return The description of the change.
      */
     public String getDescription() {
@@ -92,8 +94,12 @@ public abstract class ChangeRequest {
     }
 
     /** Notify the specified listener of this change.
-     *  In this base class, just call the changeExecuted() method of
-     *  the listener.
+     *  In this base class, this just calls the changeExecuted() method of
+     *  the listener.  This is defined so that derived classes can alter
+     *  the way they notify listeners.  In particular, ChangeList will
+     *  notify listeners of all changes that succeeded.
+     *  @param listener The listener to notify.
+     *  @see ChangeList
      */
     public void notify(ChangeListener listener) {
         listener.changeExecuted(this);

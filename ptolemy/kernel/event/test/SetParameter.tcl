@@ -103,7 +103,7 @@ test SetParameter-4.0 {queue a change list} {
     $value setExpression {"b"}
     $m initialize
     $m iterate
-    set listener [java::new ptolemy.kernel.event.StandardOutChangeListener]
+    set listener [java::new ptolemy.kernel.event.StreamChangeListener]
     $m addChangeListener $listener
     set c1 [java::new ptolemy.kernel.event.SetParameter $e0 $value {"x"}]
     set c2 [java::new ptolemy.kernel.event.SetParameter $e0 $value {"y"}]
