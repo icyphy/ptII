@@ -430,18 +430,25 @@ public class MoMLParser extends HandlerBase {
     /** Parse the given string, which contains MoML.
      *  If there are external references in the MoML, they are interpreted
      *  relative to the current working directory.
+     *  Note that this method attempts to read the user.dir system
+     *  property, which is not generally available in applets.  Hence
+     *  it is probably not a good idea to use this method in applet code,
+     *  since it will probably fail outright.
      *  @param text The string from which to read MoML.
      *  @return The top-level composite entity of the Ptolemy II model.
      *  @exception Exception If the parser fails.
+     *  @exception SecurityException If the user.dir system property is
+     *  not available.
      */
     public NamedObj parse(String text) throws Exception {
         URL base = null;
         // Use the current working directory as a base.
-        String cwd = System.getProperty("user.dir");
-        if (cwd != null) {
-            base = new URL("file", null, cwd);
-        }
-        return parse(base, new StringReader(text));
+	String cwd = System.getProperty("user.dir");
+	if (cwd != null) {
+	    base = new URL("file", null, cwd);
+	}
+
+	return parse(base, new StringReader(text));
     }
 
     /** Parse the given string, which contains MoML, using the specified
@@ -460,17 +467,24 @@ public class MoMLParser extends HandlerBase {
     /** Parse the given file, which contains MoML.
      *  If there are external references in the MoML, they are interpreted
      *  relative to the current working directory.
+     *  Note that this method attempts to read the user.dir system
+     *  property, which is not generally available in applets.  Hence
+     *  it is probably not a good idea to use this method in applet code,
+     *  since it will probably fail outright.
      *  @param text The file name from which to read MoML.
      *  @return The top-level composite entity of the Ptolemy II model.
      *  @exception Exception If the parser fails.
+     *  @exception SecurityException If the user.dir system property is
+     *  not available.
      */
     public NamedObj parseFile(String filename) throws Exception {
         URL base = null;
         // Use the current working directory as a base.
-        String cwd = System.getProperty("user.dir");
-        if (cwd != null) {
-            base = new URL("file", null, cwd);
-        }
+	String cwd = System.getProperty("user.dir");
+	if (cwd != null) {
+	    base = new URL("file", null, cwd);
+	}
+		
         // Java's I/O is so lame that it can't find files in the current
         // working directory...
         FileReader input = new FileReader(new File(new File(cwd), filename));
