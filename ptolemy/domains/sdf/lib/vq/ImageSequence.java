@@ -193,11 +193,11 @@ public class ImageSequence extends Source {
             }
             catch (IllegalActionException ex) {
                 _images = null;
-                throw ex;
+                throw new IllegalActionException(this, ex, "Failed to initialize");
             }
             catch (Exception ex) {
                 _images = null;
-                throw new IllegalActionException(this, ex, null);
+                throw new IllegalActionException(this, ex, "Failed to initialize");
             }
             finally {
                 if (source != null) {
