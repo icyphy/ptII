@@ -155,7 +155,7 @@ import java.applet.Applet;
  * </ul>
  *
  * @author Edward A. Lee, Christopher Hylands
- * @version: $Id$
+ * @version $Id$
  */
 public class Plot extends PlotBox {
 

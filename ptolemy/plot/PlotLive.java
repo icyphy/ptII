@@ -62,7 +62,7 @@ import java.applet.Applet;
  * be specified in a separate file rather than in Java code.
  *
  * @author Edward A. Lee
- * @version: $Id$
+ * @version $Id$
  */
 public abstract class PlotLive extends Plot implements Runnable {
 

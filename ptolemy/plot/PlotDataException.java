@@ -32,7 +32,7 @@ package ptplot;
  * problems with the data to be plotted.
  *
  * @author Christopher Hylands
- * @version: $Id$
+ * @version $Id$
  */
 class PlotDataException extends Throwable {
     public PlotDataException() { super(); }

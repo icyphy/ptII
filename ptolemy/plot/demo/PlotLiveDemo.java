@@ -37,7 +37,7 @@ import java.applet.Applet;
  * <code>PlotLive</code> class.
  *
  * @author Edward A. Lee
- * @version: $Id$
+ * @version $Id$
  */
 public class PlotLiveDemo extends PlotLive {
 

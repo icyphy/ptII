@@ -2,7 +2,7 @@
 rem MSDOS batch script to start up pxgraph
 
 rem @author Christopher Hylands
-rem @version: $Id$
+rem @version $Id$
 rem @copyright: Copyright (c) 1997 The Regents of the University of California.
 rem All rights reserved.
 

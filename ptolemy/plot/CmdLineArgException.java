@@ -32,7 +32,7 @@ package ptplot;
  * problems with the data to be plotted.
  *
  * @author Christopher Hylands
- * @version: $Id$
+ * @version $Id$
  */
 class CmdLineArgException extends Throwable {
     public CmdLineArgException() { super(); }

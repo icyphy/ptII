@@ -37,7 +37,7 @@ import java.applet.Applet;
  * This is a demonstration of the use of the Plot class.
  *
  * @author Edward A. Lee
- * @version: $Id$
+ * @version $Id$
  */
 public class PlotFourierSeries extends Plot {
 
