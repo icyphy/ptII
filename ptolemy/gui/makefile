@@ -45,8 +45,7 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	gui
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR = 	#$(PTPACKAGE).jar
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
 	Message.java \
