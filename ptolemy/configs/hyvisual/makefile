@@ -64,6 +64,7 @@ OTHER_FILES_TO_BE_JARED = \
 	docs.htm \
 	help.htm \
 	intro.htm \
+	planet.gif \
 	welcomeWindow.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
