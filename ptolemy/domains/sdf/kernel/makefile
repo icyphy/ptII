@@ -49,7 +49,6 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
 	ArrayFIFOQueue.java \
-	SDFAtomicActor.java \
 	SDFDirector.java \
 	SDFIOPort.java \
 	SDFReceiver.java \

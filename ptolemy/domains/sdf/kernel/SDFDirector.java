@@ -246,6 +246,26 @@ public class SDFDirector extends StaticSchedulingDirector {
         }
     }
 
+    /** Initialize the actors associated with this director and
+     *  then compute the schedule.  The schedule is computed
+     *  during initialization so that hierarchical opaque composite actors
+     *  can be scheduled properly (since the act of computing the
+     *  schedule sets the rate parameters of the external ports).
+     *  The order in which the actors are initialized is arbitrary.
+     *  @exception IllegalActionException If the initialize() method of
+     *  one of the associated actors throws it, or if there is no 
+     *  scheduler.
+     */
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+        Scheduler s = getScheduler();
+        if (s == null)
+            throw new IllegalActionException("Attempted to initialize " +
+                    "SDF system with no scheduler");
+        // force the schedule to be computed.
+        Schedule sched = s.getSchedule();
+    }
+
     /** Return a new receiver consistent with the SDF domain.
      *  @return A new SDFReceiver.
      */
@@ -294,9 +314,9 @@ public class SDFDirector extends StaticSchedulingDirector {
 	return true;
     }
 
-    /** Initialize the actors associated with this director and
+    /** Preinitialize the actors associated with this director and
      *  initialize the number of iterations to zero.  The order in which
-     *  the actors are initialized is arbitrary.
+     *  the actors are preinitialized is arbitrary.
      *  @exception IllegalActionException If the preinitialize() method of
      *  one of the associated actors throws it.
      */

@@ -127,9 +127,6 @@ public class SDFScheduler extends Scheduler {
         return _getFiringCount(entity);
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-
     /** Get the number of tokens that are produced or consumed
      *  on the designated port of this Actor, as supplied by
      *  by the port's "tokenConsumptionRate" Parameter.   If the parameter
@@ -255,23 +252,6 @@ public class SDFScheduler extends Scheduler {
 
         while(entities.hasNext()) {
             ComponentEntity a = (ComponentEntity)entities.next();
-
-            if(a instanceof CompositeActor) {
-		if (_debugging) _debug("Scheduling contained system");
-                Director containedDirector =
-                    ((CompositeActor) a).getDirector();
-                if(containedDirector instanceof StaticSchedulingDirector) {
-                    Scheduler containedScheduler =
-                        ((StaticSchedulingDirector) containedDirector)
-                        .getScheduler();
-                    try {
-                        containedScheduler.schedule();
-                    } catch (IllegalActionException e) {
-                        // This should never happen.
-                        throw new InternalErrorException(e.getMessage());
-                    }
-                }
-            }
 
             // Fill AllActors with the list of things that we can schedule
             // FIXME: What if other things can be scheduled than actors?
