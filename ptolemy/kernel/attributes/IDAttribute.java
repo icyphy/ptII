@@ -40,15 +40,18 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
+import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.SingletonAttribute;
 import ptolemy.kernel.util.StringAttribute;
 
 //////////////////////////////////////////////////////////////////////////
 //// IDAttribute
 /**
-This attribute identifies the containing model, showing its name
-and author information. If the name is changed in
-this attribute, then the name of the container will be changed to match.
+This attribute identifies the containing model, showing its name, base
+class, last modified date, and author information. Of these, only the
+author information is editable.  For the others, they are inferred
+from the model.  Unfortunately, if they change, the display will
+not be updated, however, until the model is re-opened.
 <p>
 @author Edward A. Lee
 @version $Id$
@@ -78,6 +81,11 @@ public class IDAttribute extends SingletonAttribute {
         // This should not be persistent, in case the name changes outside
         // of this parameter.
         this.name.setPersistent(false);
+        // This should not be editable, since the name is set by saveAs.
+        this.name.setVisibility(Settable.NOT_EDITABLE);
+        
+        // FIXME: Need to listen for changes to the name.
+        // How to do that?
         
         boolean isClass = false;
         if (container instanceof Prototype) {
@@ -98,18 +106,19 @@ public class IDAttribute extends SingletonAttribute {
         // This should not be persistent, because the base class
         // is set already, generally.
         baseClass.setPersistent(false);
+        // Cannot change the base class.
+        baseClass.setVisibility(Settable.NOT_EDITABLE);
         
-        // FIXME: Need to make baseClass unmodifiable. How?
+        lastUpdated = new StringAttribute(this, "lastUpdated");
+        setDate(null);
+        lastUpdated.setVisibility(Settable.NOT_EDITABLE);
         
         author = new StringAttribute(this, "author");
         String userName = System.getProperty("user.name");
         if (userName != null) {
             author.setExpression(userName);
         }
-        
-        lastUpdated = new StringAttribute(this, "lastUpdated");
-        setDate(null);
-        
+
         // Hide the name.
         new Attribute(this, "_hideName");
     }
