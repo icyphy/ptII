@@ -525,6 +525,10 @@ public class PtolemyUtilities {
             ptolemy.data.type.BaseType baseType =
                 (ptolemy.data.type.BaseType)type;
             return RefType.v(baseType.getTokenClass().getName());
+        } else if (type instanceof ptolemy.data.type.UnsizedMatrixType) {
+            ptolemy.data.type.UnsizedMatrixType matrixType =
+                (ptolemy.data.type.UnsizedMatrixType)type;
+            return RefType.v(matrixType.getTokenClass().getName());
         }
         else throw new RuntimeException("unknown type = " + type);
     }
