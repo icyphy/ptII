@@ -41,8 +41,7 @@ a FiringEvent).
 
 @author  Steve Neuendorffer
 @version $Id$
-@see DebugListener
-@see FiringEvent
+@see ptolemy.kernel.util.DebugListener
 */
 public class FiringEvent implements DebugEvent {
     
