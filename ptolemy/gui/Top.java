@@ -27,10 +27,6 @@
 @AcceptedRating Red (eal@eecs.berkeley.edu)
 */
 
-// FIXME: To do:
-//  - Fix printing.
-//  - Handle file changes
-
 package ptolemy.gui;
 
 // Java imports
@@ -141,6 +137,22 @@ public abstract class Top extends JFrame {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Get the key used to identify this window.
+     *  @return The key identifying the model.
+     */
+    public Object getKey() {
+        return _key;
+    }
+
+    /** Set the key used to identify this window, and display a string
+     *  representation of this key in the titlebar.
+     *  @param key The key identifying the model.
+     */
+    public void setKey(Object key) {
+        _key = key;
+        setTitle(key.toString());
+    }
 
     /** Report an exception.  This displays a message in a dialog and
      *  prints the stack trace to the standard error stream.
@@ -270,15 +282,9 @@ public abstract class Top extends JFrame {
         }
         int returnVal = fileDialog.showOpenDialog(this);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
-            _file = fileDialog.getSelectedFile();
-            _directory = fileDialog.getCurrentDirectory();
-            setTitle(_file.getName());
-            // FIXME: Need to examine the extension and open
-            // an appropriate, registered instance of Top.
-            // For now, we just clear the current data and replace.
-            _clear();
+            File file = fileDialog.getSelectedFile();
             try {
-                _read(_file.toURL());
+                _read(file.toURL());
             } catch (IOException ex) {
                 report("Error reading input", ex);
             }
@@ -345,6 +351,12 @@ public abstract class Top extends JFrame {
      *  @exception IOException If the write fails.
      */
     protected abstract void _writeFile(File file) throws IOException;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    // The key used to identify the model.
+    private Object _key;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
