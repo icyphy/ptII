@@ -110,7 +110,7 @@ public class IconLibrary extends XMLElement{
      */
     public void addSubLibrary(String name) {
         XMLElement e = new XMLElement("sublibrary");
-        e.setPCData(name);
+        e.setAttribute("uri",name);
         _header.addChildElement(e);
         _sublibraries.putAt(name, e);
     }
@@ -220,7 +220,7 @@ public class IconLibrary extends XMLElement{
      * figure out what semantic meaning that has within this XMLElement.
      * By default an arbitrary XMLElement has no semantic meaning for its
      * child elements, so this just returns.
-     * This is primarily used by the parser to keep the semantic structures
+a     * This is primarily used by the parser to keep the semantic structures
      * within an XMLElement consistant with the childElements.
      */
     void applySemanticsToChild(XMLElement e) {
@@ -230,7 +230,7 @@ public class IconLibrary extends XMLElement{
                     ((Icon) e).getName(), e);
         } else if(e.getElementType().equals("sublibrary")) {
             // if it's a sublibrary, then add it to the list of sublibraries.
-            String filename = e.getPCData();
+            String filename = e.getAttribute("uri");
             _sublibraries.putAt(filename,e);
         } else if(e.getElementType().equals("header")) {
             /* Remove the old header and swap in the new one.
