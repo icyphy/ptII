@@ -359,9 +359,9 @@ test NamedObj-11.1 {Test exportMoML} {
     set a2 [java::new ptolemy.kernel.util.Attribute $a1 "A2"]
     $a exportMoML
 } {<entity name="A" class="ptolemy.kernel.util.NamedObj">
-    <attribute name="A1" class="ptolemy.kernel.util.Attribute">
-        <attribute name="A2" class="ptolemy.kernel.util.Attribute">
-        </attribute>
-    </attribute>
+    <property name="A1" class="ptolemy.kernel.util.Attribute">
+        <property name="A2" class="ptolemy.kernel.util.Attribute">
+        </property>
+    </property>
 </entity>
 }

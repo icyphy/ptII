@@ -928,13 +928,13 @@ test CompositeEntity-18.0 {test exportMoML} {
     $p2 link $r
     $e1 exportMoML
 } {<entity name="e1" class="ptolemy.kernel.CompositeEntity">
-    <attribute name="a1" class="ptolemy.kernel.util.Attribute">
-    </attribute>
+    <property name="a1" class="ptolemy.kernel.util.Attribute">
+    </property>
     <port name="p1" class="ptolemy.kernel.ComponentPort">
     </port>
     <entity name="e2" class="ptolemy.kernel.ComponentEntity">
-        <attribute name="a2" class="ptolemy.kernel.util.Attribute">
-        </attribute>
+        <property name="a2" class="ptolemy.kernel.util.Attribute">
+        </property>
         <port name="p2" class="ptolemy.kernel.ComponentPort">
         </port>
     </entity>

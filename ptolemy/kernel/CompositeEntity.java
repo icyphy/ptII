@@ -370,6 +370,10 @@ public class CompositeEntity extends ComponentEntity {
      *  typically be "entity", "model", or "class".  If it is "class",
      *  then the element is written with "name" and "extends" attributes.
      *  Otherwise, it is written with "name" and "class" attributes.
+     *  If it is "model", or it is "class" and the depth argument is zero,
+     *  then the exported MoML includes header information that 
+     *  identifies the data as XML and cites the PUBLIC DTD.
+     *  <p>
      *  The body of the element is written using
      *  the _exportMoMLContents() protected method, so that derived classes
      *  can override that method alone to alter only how the contents
@@ -385,8 +389,14 @@ public class CompositeEntity extends ComponentEntity {
     public void exportMoML(Writer output, int depth) throws IOException {
         String classAttribute = "\" class=\"";
         String momlElement = getMoMLElementName();
-        if (momlElement.equals("class")) {
+        boolean isClass = momlElement.equals("class");
+        if (isClass) {
             classAttribute = "\" extends=\"";
+        }
+        if ((isClass && depth == 0) || momlElement.equals("model")) {
+            output.write("<?xml version=\"1.0\" standalone=\"no\"?>\n"
+            + "<!DOCTYPE model PUBLIC \"-//UC Berkeley//DTD MoML 1//EN\"\n"
+            + "    \"http://ptolemy.eecs.berkeley.edu/archive/moml.dtd\">\n");
         }
         output.write(_getIndentPrefix(depth)
                + "<"
