@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
-  <property class="ptolemy.domains.sdf.kernel.SDFDirector">
+  <property name="director" class="ptolemy.domains.sdf.kernel.SDFDirector">
     <property name="iterations" value="100">
         <doc>Number of iterations in an execution.</doc>
     </property>
