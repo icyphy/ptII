@@ -112,7 +112,8 @@ public class Main extends KernelMain {
         // Inline the director into the composite actor.
         InlineDirectorTransformer directorTransformer = null;
         if (_generateLoopedSchedule) {
-            directorTransformer = LoopedScheduleTransformer.v(_toplevel);
+            // directorTransformer = LoopedScheduleTransformer.v(_toplevel);
+            directorTransformer = InlineDirectorTransformer.v(_toplevel);
         } else {
             directorTransformer = InlineDirectorTransformer.v(_toplevel);
         }
