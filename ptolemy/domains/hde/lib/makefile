@@ -31,13 +31,12 @@
 
 ME =		ptolemy/domains/hde/lib
 
-DIRS =  
+DIRS =  	test
 
 # Root of the Java directory
 ROOT =		../../../..
 
 CLASSPATH =	$(ROOT)
-
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
