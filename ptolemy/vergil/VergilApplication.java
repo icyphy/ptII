@@ -33,6 +33,7 @@ package ptolemy.vergil;
 // Ptolemy imports
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Effigy;
+import ptolemy.actor.gui.JNLPUtilities;
 import ptolemy.actor.gui.MoMLApplication;
 import ptolemy.actor.gui.ModelDirectory;
 import ptolemy.actor.gui.PtolemyEffigy;
@@ -105,7 +106,6 @@ public class VergilApplication extends MoMLApplication {
      */
     public VergilApplication(String args[]) throws Exception {
 	super(args);
-
         // Create register an error handler with the parser so that
         // MoML errors are tolerated more than the default.
         _parser.setErrorHandler(new VergilErrorHandler());
@@ -119,10 +119,23 @@ public class VergilApplication extends MoMLApplication {
      *  @param args The command-line arguments.
      */
     public static void main(String args[]) {
+	// FIXME: Java superstition dictates that if you want something
+	// to work, you should invoke it in event thread.  Otherwise,
+	// weird things happens at the user interface level.  This
+        // seems to prevent occasional errors rending HTML under Web Start.
 	try {
-	    new VergilApplication(args);
-        } catch (Exception ex) {
-            MessageHandler.error("Command failed", ex);
+	    SwingUtilities.invokeLater(new Runnable() {
+		    public void run() {
+			try {
+			    new VergilApplication(args);
+			} catch (Exception ex) {
+			    MessageHandler.error("Command failed", ex);
+			    System.exit(0);
+			}
+		    }
+ 		});
+        } catch (Error ex2) {
+            MessageHandler.error("Command failed" + ex2.toString());
             System.exit(0);
         }
 
@@ -154,11 +167,9 @@ public class VergilApplication extends MoMLApplication {
             return;
         }
 
-        //FIXME: why do we have problems with spaces?
-        //URL fileURL = file.toURL();
-        URL fileURL =
-            new URL( StringUtilities.substitute(file.toURL().toExternalForm(),
-                             " ", "%20"));
+	// If we have a jar URL, convert spaces to %20
+        URL fileURL =  JNLPUtilities.canonicalizeJarURL(file.toURL());
+
         String identifier = fileURL.toExternalForm();
 
         // Check to see whether the library is already open.
@@ -235,6 +246,7 @@ public class VergilApplication extends MoMLApplication {
         //
         // Use StringUtilities.getProperty() so we get the proper
         // canonical path
+
 	// FIXME: If the name is something like
 	// "vergilUserLibrary.xml" then when we save an actor in the
 	// library and then save the window that comes up the name of
@@ -242,6 +254,7 @@ public class VergilApplication extends MoMLApplication {
 	// of VERGIL_USER_LIBRARY_NAME.  This causes problems when we
 	// try to save another file.  The name of the entity gets
 	// changed by the saveAs code.
+
         String libraryName = StringUtilities.preferencesDirectory()
 	    + BasicGraphFrame.VERGIL_USER_LIBRARY_NAME + ".xml";
         System.out.print("Opening user library " + libraryName + "...");
@@ -283,20 +296,21 @@ public class VergilApplication extends MoMLApplication {
             _configurationSubdirectory = "full";
         }
         // FIXME: This code is Dog slow for some reason.
-        URL inurl = specToURL("ptolemy/configs/"
+        URL inURL = specToURL("ptolemy/configs/"
                 + _configurationSubdirectory + "/welcomeWindow.xml");
+
         _parser.reset();
         _parser.setContext(configuration);
-        _parser.parse(inurl, inurl.openStream());
+        _parser.parse(inURL, inURL.openStream());
         Effigy doc = (Effigy)configuration.getEntity("directory.doc");
 
         if (_configurationSubdirectory == null) {
             _configurationSubdirectory = "full";
         }
-        URL idurl = specToURL("ptolemy/configs/"
+        URL idURL = specToURL("ptolemy/configs/"
                 + _configurationSubdirectory + "/intro.htm");
 
-        doc.identifier.setExpression(idurl.toExternalForm());
+        doc.identifier.setExpression(idURL.toExternalForm());
         return configuration;
     }
 
@@ -373,6 +387,7 @@ public class VergilApplication extends MoMLApplication {
         try {
             // Look for configuration directories in ptolemy/configs
             // This will likely fail if ptolemy/configs is in a jar file
+	    // We use a URI here so that we cause call File(URI).
             URI configurationURI =
                 new URI(specToURL("ptolemy/configs").toExternalForm());
             File configurationDirectory = new File(configurationURI);
