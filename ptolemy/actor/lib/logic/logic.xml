@@ -22,7 +22,7 @@
 	              class="ptolemy.kernel.util.StringAttribute"/>
         </property>
      </property>
-    <property name="_icon" class="ptolemy.vergil.toolbox.AttributeValueIcon">
+    <property name="_icon" class="ptolemyvergil.icon.AttributeValueIcon">
         <property name="attributeName" value="comparison"/>
     </property>
   </entity>
@@ -53,7 +53,7 @@
 	              class="ptolemy.kernel.util.StringAttribute"/>
         </property>
      </property>
-    <property name="_icon" class="ptolemy.vergil.toolbox.AttributeValueIcon">
+    <property name="_icon" class="ptolemyvergil.icon.AttributeValueIcon">
         <property name="attributeName" value="function"/>
     </property>
   </entity>

@@ -312,7 +312,7 @@
         <property name="value" class="ptolemy.data.expr.Parameter" value="speed">
         </property>
         <doc>Create a constant sequence</doc>
-        <property name="_icon" class="ptolemy.vergil.toolbox.BoxedValueIcon">
+        <property name="_icon" class="ptolemyvergil.icon.BoxedValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
             </property>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
@@ -420,7 +420,7 @@
         <entity name="Expression" class="ptolemy.actor.lib.Expression">
             <property name="expression" class="ptolemy.data.expr.Parameter" value="(heading &gt; PI / 2) ? (PI - heading) : heading">
             </property>
-            <property name="_icon" class="ptolemy.vergil.toolbox.BoxedValueIcon">
+            <property name="_icon" class="ptolemyvergil.icon.BoxedValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
                 </property>
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
@@ -438,7 +438,7 @@
         <entity name="Expression3" class="ptolemy.actor.lib.Expression">
             <property name="expression" class="ptolemy.data.expr.Parameter" value="(heading &gt; PI / 2) ? (2*(heading - PI / 2) / heading_dot_max) : 0.0">
             </property>
-            <property name="_icon" class="ptolemy.vergil.toolbox.BoxedValueIcon">
+            <property name="_icon" class="ptolemyvergil.icon.BoxedValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
                 </property>
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
@@ -456,7 +456,7 @@
         <entity name="Expression4" class="ptolemy.actor.lib.Expression">
             <property name="expression" class="ptolemy.data.expr.Parameter" value="heading / heading_dot_max + (boundary_x - p_x - r_min * sin(heading)) / speed">
             </property>
-            <property name="_icon" class="ptolemy.vergil.toolbox.BoxedValueIcon">
+            <property name="_icon" class="ptolemyvergil.icon.BoxedValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
                 </property>
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
@@ -477,7 +477,7 @@
         <entity name="Expression5" class="ptolemy.actor.lib.Expression">
             <property name="expression" class="ptolemy.data.expr.Parameter" value="(heading - asin((r_min*sin(heading) - (boundary_x - p_x)) / r_min)) / heading_dot_max">
             </property>
-            <property name="_icon" class="ptolemy.vergil.toolbox.BoxedValueIcon">
+            <property name="_icon" class="ptolemyvergil.icon.BoxedValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
                 </property>
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
@@ -514,7 +514,7 @@
         <entity name="Expression6" class="ptolemy.actor.lib.Expression">
             <property name="expression" class="ptolemy.data.expr.Parameter" value="p_x &lt;= boundary_x - r_min*sin(heading)">
             </property>
-            <property name="_icon" class="ptolemy.vergil.toolbox.BoxedValueIcon">
+            <property name="_icon" class="ptolemyvergil.icon.BoxedValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
                 </property>
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
@@ -726,7 +726,7 @@
             </property>
             <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_icon" class="ptolemy.vergil.toolbox.AttributeValueIcon">
+            <property name="_icon" class="ptolemyvergil.icon.AttributeValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
                 </property>
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
@@ -818,7 +818,7 @@
         <entity name="Expression" class="ptolemy.actor.lib.Expression">
             <property name="expression" class="ptolemy.data.expr.Parameter" value="(heading &gt;= 0.0) ? 1.0 : -1.0">
             </property>
-            <property name="_icon" class="ptolemy.vergil.toolbox.BoxedValueIcon">
+            <property name="_icon" class="ptolemyvergil.icon.BoxedValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
                 </property>
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
@@ -836,7 +836,7 @@
         <entity name="Expression2" class="ptolemy.actor.lib.Expression">
             <property name="expression" class="ptolemy.data.expr.Parameter" value="-1.5 * m * m / (PI - 2.0) * (c - PI / m)">
             </property>
-            <property name="_icon" class="ptolemy.vergil.toolbox.BoxedValueIcon">
+            <property name="_icon" class="ptolemyvergil.icon.BoxedValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
                 </property>
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
@@ -858,7 +858,7 @@
             <property name="value" class="ptolemy.data.expr.Parameter" value="heading_dot_max">
             </property>
             <doc>Create a constant sequence</doc>
-            <property name="_icon" class="ptolemy.vergil.toolbox.BoxedValueIcon">
+            <property name="_icon" class="ptolemyvergil.icon.BoxedValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
                 </property>
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">

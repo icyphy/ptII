@@ -63,7 +63,7 @@
 
   <entity name="InUnitsOf"
           class="ptolemy.actor.lib.conversions.InUnitsOf">
-    <property name="_icon" class="ptolemy.vergil.toolbox.BoxedValueIcon">
+    <property name="_icon" class="ptolemyvergil.icon.BoxedValueIcon">
         <property name="attributeName" value="units"/>
         <property name="displayWidth" value="40"/>
     </property>

@@ -244,7 +244,7 @@
         <property name="value" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <doc>Create a constant sequence</doc>
-        <property name="_icon" class="ptolemy.vergil.toolbox.BoxedValueIcon">
+        <property name="_icon" class="ptolemyvergil.icon.BoxedValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
             </property>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
@@ -266,7 +266,7 @@
         <property name="value" class="ptolemy.data.expr.Parameter" value="2">
         </property>
         <doc>Create a constant sequence</doc>
-        <property name="_icon" class="ptolemy.vergil.toolbox.BoxedValueIcon">
+        <property name="_icon" class="ptolemyvergil.icon.BoxedValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
             </property>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">

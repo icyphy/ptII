@@ -663,7 +663,7 @@ falling in a gravitational field.</text></svg></configure>
                 <property name="value" class="ptolemy.data.expr.Parameter" value="-10">
                 </property>
                 <doc>Create a constant sequence</doc>
-                <property name="_icon" class="ptolemy.vergil.toolbox.AttributeValueIcon">
+                <property name="_icon" class="ptolemyvergil.icon.AttributeValueIcon">
                     <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
                     </property>
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
