@@ -35,6 +35,7 @@ import ptolemy.graph.*;
 import ptolemy.data.*;
 import ptolemy.data.type.BaseType;
 import ptolemy.actor.*;
+import ptolemy.actor.lib.Transformer;
 
 //////////////////////////////////////////////////////////////////////////
 //// LogicalOr
@@ -52,10 +53,10 @@ It consumes at most one input token from each port.
 If no input tokens are available at all, then no output is produced.
 
 @author John Li
-@version $Id: 
+@version $Id$
 */
 
-public class LogicalOr extends ptolemy.actor.lib.Transformer {
+public class LogicalOr extends Transformer {
 
     /** Construct an actor in the specified container with the specified
      *  name.
@@ -68,10 +69,10 @@ public class LogicalOr extends ptolemy.actor.lib.Transformer {
      */
     public LogicalOr(TypedCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
-        super(container, name);
-	input.setMultiport(true);
-        input.setTypeEquals(BaseType.BOOLEAN);
-        output.setTypeEquals(BaseType.BOOLEAN);
+                super(container, name);
+                input.setMultiport(true);
+                input.setTypeEquals(BaseType.BOOLEAN);
+                output.setTypeEquals(BaseType.BOOLEAN);
     }
 
 

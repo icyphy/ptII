@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Red (johnli@eecs.berkeley.edu)
-@AcceptedRating 
+@AcceptedRating Red (johnli@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib.logic;
@@ -35,6 +35,7 @@ import ptolemy.graph.*;
 import ptolemy.data.*;
 import ptolemy.data.type.BaseType;
 import ptolemy.actor.*;
+import ptolemy.actor.lib.Transformer;
 
 //////////////////////////////////////////////////////////////////////////
 //// LogicalNand
@@ -54,10 +55,10 @@ all, then no output is produced.  This actor will consume as many tokens
 as are available in each channel.
 
 @author John Li
-@version $Id:
+@version $Id$
 */
 
-public class LogicalNand extends ptolemy.actor.lib.Transformer {
+public class LogicalNand extends Transformer {
 
     /** Construct an actor in the specified container with the specified
      *  name.

@@ -35,6 +35,7 @@ import ptolemy.graph.*;
 import ptolemy.data.*;
 import ptolemy.data.type.BaseType;
 import ptolemy.actor.*;
+import ptolemy.actor.lib.Transformer;
 
 //////////////////////////////////////////////////////////////////////////
 //// LogicalXnor
@@ -54,10 +55,10 @@ all, then no output is produced.  This actor will consume as many tokens
 as are available in each channel.
 
 @author John Li
-@version $Id: 
+@version $Id$
 */
 
-public class LogicalXnor extends ptolemy.actor.lib.Transformer {
+public class LogicalXnor extends Transformer {
 
     /** Construct an actor in the specified container with the specified
      *  name.

@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Red (johnli@eecs.berkeley.edu)
-@AcceptedRating
+@AcceptedRating Red (johnli@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib.logic;
@@ -35,6 +35,7 @@ import ptolemy.graph.*;
 import ptolemy.data.*;
 import ptolemy.data.type.BaseType;
 import ptolemy.actor.*;
+import ptolemy.actor.lib.Transformer;
 
 //////////////////////////////////////////////////////////////////////////
 //// LogicalNor
@@ -52,10 +53,10 @@ It consumes at most one input token from each port.
 If no input tokens are available at all, then no output is produced.
 
 @author John Li
-@version $Id: 
+@version $Id$
 */
 
-public class LogicalNor extends ptolemy.actor.lib.Transformer {
+public class LogicalNor extends Transformer {
 
     /** Construct an actor in the specified container with the specified
      *  name.
