@@ -1,5 +1,4 @@
-/* Receives a key from an AsymmetricDecryption actor and uses it to encrypt a
-   data input based on a given asymmetric algorithm.
+/* Encrypt data using a public key.
 
  Copyright (c) 2003 The Regents of the University of California.
  All rights reserved.
@@ -42,6 +41,7 @@ import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 
 import ptolemy.data.ArrayToken;
+import ptolemy.data.ObjectToken;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.actor.TypedIOPort;
@@ -52,17 +52,17 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// AsymmetricEncryption
 /**
+Encrypt data using a public key. 
+The cleartext input is an unsigned byte array, the encrypted output
+is an unsigned byte array.
 
-This actor takes an unsigned byte array at the input and encrypts the
-message using the public key retrieved from the AsymmetricDecryption
-actor.  The resulting output is an unsigned byte array. Various
-ciphers that are implemented by "providers" and installed on the
-system maybe used by specifying the algorithm in the <i>algorithm</i>
-parameter. The algorithm specified must be asymmetric. The mode and
-padding can also be specified in the <i>mode</i> and <i>padding</i>
-parameters. In case a provider specific instance of an algorithm is
-needed the provider may also be specified in the <i>provider</i>
-parameter.
+<p>Various ciphers that are implemented by "providers" and installed on
+the system maybe used by specifying the algorithm in the
+<i>algorithm</i> parameter. The algorithm specified must be
+asymmetric. The mode and padding can also be specified in the
+<i>mode</i> and <i>padding</i> parameters. In case a provider specific
+instance of an algorithm is needed the provider may also be specified
+in the <i>provider</i> parameter.
 
 <p>This actor relies on the Java Cryptography Architecture (JCA) and Java
 Cryptography Extension (JCE).
@@ -78,9 +78,6 @@ Cryptography Extension (JCE).
 */
 public class AsymmetricEncryption extends CipherActor {
 
-    // TODO: include sources of information on JCE cipher and algorithms
-    // TODO: Use cipher streaming to allow for easier file input reading.
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -93,18 +90,17 @@ public class AsymmetricEncryption extends CipherActor {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-        keyIn = new TypedIOPort(this, "keyIn", true, false);
-        keyIn.setTypeEquals(new ArrayType(BaseType.UNSIGNED_BYTE));
+        publicKey = new TypedIOPort(this, "publicKey", true, false);
+        publicKey.setTypeEquals(BaseType.OBJECT);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** This port receives the public key to be used from the
-     *  AsymmetricDecryption actor in the form of an unsigned byte array.
-     *  This key is used to encrypt data from the <i>input</i> port.
+    /** The public key to be used by this actor to encrypt the data.
+     *  The type is an ObjectToken of type java.security.Key.
      */
-    public TypedIOPort keyIn;
+    public TypedIOPort publicKey;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -118,13 +114,25 @@ public class AsymmetricEncryption extends CipherActor {
      *
      */
     public void fire() throws IllegalActionException {
-        if (keyIn.hasToken(0)) {
-            _publicKey = (PublicKey)_bytesToKey(
-                    _arrayTokenToUnsignedByteArray((ArrayToken)keyIn.get(0)));
+        if (publicKey.hasToken(0)) {
+            try {
+                ObjectToken objectToken = (ObjectToken)publicKey.get(0);
+                //SecretKey key = (SecretKey)objectToken.getValue();
+                //java.security.Key key = (java.security.Key)objectToken.getValue(); 
+                PublicKey key = (PublicKey)objectToken.getValue(); 
+                System.out.println("AsymmetricEncryption: " + key);
+                _cipher.init(Cipher.ENCRYPT_MODE, key);
+                //_algorithmParameters = _cipher.getParameters();
+            } catch (Exception ex) {
+                throw new IllegalActionException (this, ex,
+                        "Failed to initialize Cipher");
+            }
+            //_publicKey = (PublicKey)_bytesToKey(
+            //        _arrayTokenToUnsignedByteArray((ArrayToken)keyIn.get(0)));
         }
-        if (_publicKey != null) {
+        //if (_publicKey != null) {
             super.fire();
-        }
+            //}
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -142,7 +150,7 @@ public class AsymmetricEncryption extends CipherActor {
     protected byte[] _process(byte[] dataBytes)throws IllegalActionException {
         ByteArrayOutputStream byteOutputStream = new ByteArrayOutputStream();
         try {
-            _cipher.init(Cipher.ENCRYPT_MODE, _publicKey);
+            //_cipher.init(Cipher.ENCRYPT_MODE, _publicKey);
             int blockSize = _cipher.getBlockSize();
             int length = 0;
             for (int i = 0; i < dataBytes.length; i += blockSize) {
@@ -167,5 +175,5 @@ public class AsymmetricEncryption extends CipherActor {
     ////                         private variables                 ////
 
     //The public key to be used for asymmetric encryption.
-    private PublicKey _publicKey = null;
+    //private PublicKey _publicKey = null;
 }

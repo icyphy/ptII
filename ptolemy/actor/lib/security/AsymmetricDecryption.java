@@ -43,6 +43,7 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 
+import ptolemy.data.ObjectToken;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.actor.TypedIOPort;
@@ -54,18 +55,15 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// AsymmetricDecryption
 /**
 This actor takes an unsigned byte array at the input and decrypts the
-message.  The resulting output is an unsigned byte array. Various
+message.  The resulting output is an unsigned byte array.
+
+<p> Various
 ciphers that are implemented by "providers" and installed maybe used
 by specifying the algorithm in the <i>algorithm</i> parameter.  The
 algorithm specified must be asymmetric.  The mode and padding can also
 be specified in the <i>mode</i> and <i>padding</i> parameters. In case
 a provider specific instance of an algorithm is needed the provider
-may also be specified in the <i>provider</i> parameter.  This actor
-creates a private key for decryption use and a public key which is
-sent on the <i>keyOut</i> port to an encryption actor for encryption
-purposes.  Key creation is done in pre-initialization and is put on
-the <i>keyOut</i> port during initialization so the encryption actor
-has a key to use when it is first fired.
+may also be specified in the <i>provider</i> parameter.
 
 <p>This actor relies on the Java Cryptography Architecture (JCA) and Java
 Cryptography Extension (JCE).
@@ -92,19 +90,18 @@ public class AsymmetricDecryption extends CipherActor {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-        keyOut = new TypedIOPort(this, "keyOut", false, true);
-        keyOut.setTypeEquals(new ArrayType(BaseType.UNSIGNED_BYTE));
+        privateKey = new TypedIOPort(this, "privateKey", true, false);
+        privateKey.setTypeEquals(BaseType.OBJECT);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
 
-    /** This port outputs the key to be used by the AsymmetricEncryption actor
-     *  as an unsigned byte array.
+    /** The private key to be used by this actor to dencrypt the data.
+     *  The type is an ObjectToken of type java.security.Key.
      */
-    public TypedIOPort keyOut;
-
+    public TypedIOPort privateKey;
 
 
     ///////////////////////////////////////////////////////////////////
@@ -121,10 +118,24 @@ public class AsymmetricDecryption extends CipherActor {
      *  @exception IllegalActionException If thrown by base class.
      */
     public void fire() throws IllegalActionException {
+        if (privateKey.hasToken(0)) {
+            try {
+                ObjectToken objectToken = (ObjectToken)privateKey.get(0);
+                //SecretKey key = (SecretKey)objectToken.getValue();
+                //java.security.Key key = (java.security.Key)objectToken.getValue(); 
+                PrivateKey key = (PrivateKey)objectToken.getValue(); 
+                _cipher.init(Cipher.ENCRYPT_MODE, key);
+                //_algorithmParameters = _cipher.getParameters();
+            } catch (Exception ex) {
+                throw new IllegalActionException (this, ex,
+                        "Failed to initialize Cipher");
+            }
+        }
         super.fire();
-        keyOut.send(0,
-                CryptographyActor.unsignedByteArrayToArrayToken(
-                        CryptographyActor.keyToBytes(_publicKey)));
+
+        //keyOut.send(0,
+        //        CryptographyActor.unsignedByteArrayToArrayToken(
+        //                CryptographyActor.keyToBytes(_publicKey)));
     }
 
     /** Outputs the key required for decryption.  The base classes retrieve
@@ -133,12 +144,12 @@ public class AsymmetricDecryption extends CipherActor {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        KeyPair pair = _createAsymmetricKeys();
-        _publicKey = pair.getPublic();
-        _privateKey = pair.getPrivate();
-        keyOut.send(0,
-                CryptographyActor.unsignedByteArrayToArrayToken(
-                        CryptographyActor.keyToBytes(_publicKey)));
+        //KeyPair pair = _createAsymmetricKeys();
+        //_publicKey = pair.getPublic();
+        //_privateKey = pair.getPrivate();
+        //keyOut.send(0,
+        //        CryptographyActor.unsignedByteArrayToArrayToken(
+        //                CryptographyActor.keyToBytes(_publicKey)));
     }
 
     /** Sets token production for keyOut to 1 and resolves scheduling.
@@ -161,7 +172,6 @@ public class AsymmetricDecryption extends CipherActor {
             throws IllegalActionException {
         ByteArrayOutputStream byteOutputStream = new ByteArrayOutputStream();
         try {
-            _cipher.init(Cipher.DECRYPT_MODE, _privateKey);
             int blockSize = _cipher.getBlockSize();
             int length = 0;
             for (int i = 0; i < dataBytes.length; i += blockSize) {
@@ -185,11 +195,7 @@ public class AsymmetricDecryption extends CipherActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /* The public key to be used for asymmetric encryption.
-     */
-    private PublicKey _publicKey = null;
-
     /* The private key to be used for asymmetric decryption.
      */
-    private PrivateKey _privateKey = null;
+    //private PrivateKey _privateKey = null;
 }
