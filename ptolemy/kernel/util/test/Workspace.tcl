@@ -273,24 +273,28 @@ T4.getWriteAccess()
 T4.doneWriting()
 }} 
 
+# In the redesigned Workspace, the support for setting it read only is
+# removed, because this feature no longer provides substantial performance
+# improvement.
+
 ######################################################################
 ####
 #
-test Workspace-7.1 {Test isReadOnly, setReadOnly} {
-    set w [java::new ptolemy.kernel.util.Workspace W]
-    set readOnly1 [$w isReadOnly]
-    set n1 [java::new ptolemy.kernel.util.NamedObj $w N1]
-    $w setReadOnly 1
-    set readOnly2 [$w isReadOnly]
-    catch {set n2 [java::new ptolemy.kernel.util.NamedObj $w N2]} errMsg
-    $w setReadOnly 0
-    set readOnly3 [$w isReadOnly]
-    set n2 [java::new ptolemy.kernel.util.NamedObj $w N2]
-    set n3 [java::new ptolemy.kernel.util.NamedObj $w N3]
-    list $readOnly1 $readOnly2 $errMsg $readOnly3 \
-	    [enumToFullNames [$w directory]]
-} {0 1 {ptolemy.kernel.util.InvalidStateException: Trying to relinquish write access on a write-protected workspace.
-  in .W} 0 {.N1 .null .N2 .N3}}
+#test Workspace-7.1 {Test isReadOnly, setReadOnly} {
+#    set w [java::new ptolemy.kernel.util.Workspace W]
+#    set readOnly1 [$w isReadOnly]
+#    set n1 [java::new ptolemy.kernel.util.NamedObj $w N1]
+#    $w setReadOnly 1
+#    set readOnly2 [$w isReadOnly]
+#    catch {set n2 [java::new ptolemy.kernel.util.NamedObj $w N2]} errMsg
+#    $w setReadOnly 0
+#    set readOnly3 [$w isReadOnly]
+#    set n2 [java::new ptolemy.kernel.util.NamedObj $w N2]
+#    set n3 [java::new ptolemy.kernel.util.NamedObj $w N3]
+#    list $readOnly1 $readOnly2 $errMsg $readOnly3 \
+#	    [enumToFullNames [$w directory]]
+#} {0 1 {ptolemy.kernel.util.InvalidStateException: Trying to relinquish write access on a write-protected workspace.
+#  in .W} 0 {.N1 .null .N2 .N3}}
 
 ######################################################################
 #### The following assumptions are made for this test to work. 
