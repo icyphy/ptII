@@ -604,12 +604,23 @@ public class GeneratorTableau extends Tableau {
             String generatorAttributeFileName =
             Copernicus.exportMoMLToTemporaryFile(generatorAttribute);
 
-            // Add the name of the file that contains the
-            // GeneratorAttribute so that we can use it when substituting
-            // while running commandToCompile() and commandToRun();
-            new Parameter(generatorAttribute,
+	    Parameter generatorAttributeFileNameParameter =
+		(Parameter) generatorAttribute
+		.getAttribute("_generatorAttributeFileName");
+
+	    if (generatorAttributeFileNameParameter == null) {
+		// Add the name of the file that contains the
+		// GeneratorAttribute so that we can use it when substituting
+		// while running commandToCompile() and commandToRun();
+		new Parameter(generatorAttribute,
                     "_generatorAttributeFileName",
                     new StringToken(generatorAttributeFileName));
+	    } else {
+		// Already have a Parameter by that name, so we 
+		// set its value. 
+		generatorAttributeFileNameParameter
+		    .setExpression(generatorAttributeFileName);
+	    }
 
 	    results.add(Copernicus.commandToCompile(generatorAttribute));
 	    results.add(Copernicus.commandToRun(generatorAttribute));
