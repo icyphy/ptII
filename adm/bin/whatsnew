@@ -1,0 +1,42 @@
+#!/bin/sh
+# Generate a whatsnew text
+#
+# Generate a diff file with:
+#   diff -r gen-3.0/src/ptII3.0.2 gen-3.1/src/ptII3.1devel > /tmp/pt.diffs
+#   grep 'Only in gen-3.1' /tmp/pt.diffs | grep -v cvsignore > /tmp/pt4
+#   egrep 'java$' /tmp/pt4 > /tmp/pt4j
+#   sed 's@^Only in gen-3.1/src/ptII3.1devel/@@' /tmp/pt4j | sed 's@: @/@' | grep /lib/ > /tmp/pt4j.3
+
+onlyInFileNames=/tmp/pt4j.3
+onlyInFiles=`cat $onlyInFileNames` 
+
+oldpackagepath=""
+echo "<menu>"
+for file in $onlyInFiles
+do
+   classpath="`dirname $file`/`basename $file .java`"
+   htmlFile=$classpath.html
+   packagepath=`dirname $classpath`
+   classname="`echo $classpath | sed 's@/@.@g'`"
+   
+   if [ "$packagepath" != "$oldpackagepath" ]; then
+       if [ "$oldpackagepath" != "" ]; then
+           echo "</dl>"
+	   echo ""
+       fi
+       packagename="`echo $packagepath | sed 's@/@.@g'`"
+       echo "<li> <a href=\"codeDoc/$packagepath/package-summary.html\">$packagename</a>:"
+       echo ""
+       echo "<dl>"
+       oldpackagepath=$packagepath
+   fi    
+
+   echo "<dt><a href=\"codeDoc/$htmlFile\">`basename $file .java`</a>:"
+    
+   echo "<dd>(`grep @author $PTII/$file| sed 's/.*@author //'`)"
+   echo "`head -1 $PTII/$file| sed 's@^/\* @@'`"
+   echo ""
+done
+echo "</dl>"
+echo "</menu>"
+
