@@ -59,12 +59,12 @@ public class ComplexArrayMath {
      *  array but with absolute real values.
      */
     public static final Complex[] absValues (Complex[] array) {
-	int length = array.length;
+        int length = array.length;
 
-	for (int i = 0; i < length; i++) {
-	    array[i]= new Complex(Math.abs(array[i].real), array[i].imag);
-	}
-	return array;
+        for (int i = 0; i < length; i++) {
+            array[i]= new Complex(Math.abs(array[i].real), array[i].imag);
+        }
+        return array;
     }
 
     /** Return a new array that is constructed from <i>array</i> by
@@ -143,7 +143,7 @@ public class ComplexArrayMath {
      */
     public static final Complex[] applyBinaryOperation(
             ComplexBinaryOperation op, final Complex[] array,
-	    final Complex z) {
+            final Complex z) {
         int length = array.length;
         Complex[] returnValue = new Complex[length];
         for (int i = 0; i < length; i++) {
@@ -292,9 +292,9 @@ public class ComplexArrayMath {
      *  each element of <i>array</i> by <i>divisor</i>.
      */
     public static final Complex[] divide(Complex[] array, Complex divisor) {
-	int length = array.length;
+        int length = array.length;
         Complex[] returnValue = new Complex[length];
-	for (int i = 0; i < length; i++) {
+        for (int i = 0; i < length; i++) {
             returnValue[i] = array[i].divide(divisor);
         }
         return returnValue;
@@ -800,11 +800,11 @@ public class ComplexArrayMath {
         int len = array.length;
         Complex[] returnValue = new Complex[len];
 
-	for (int i = 0; i < len; i++) {
-	    returnValue[i] = array[i].multiply(factor);
-	}
+        for (int i = 0; i < len; i++) {
+            returnValue[i] = array[i].multiply(factor);
+        }
 
-	return returnValue;
+        return returnValue;
     }
 
     /** Return a new array that is constructed from the argument by
@@ -988,11 +988,11 @@ public class ComplexArrayMath {
 
         for (int i = 0; i < length; i++) {
 
-	    if (maxError[i] < 0) {
-		throw new IllegalArgumentException(
-			 "ComplexArrayMath.within requires that the third "
-			  + "argument be non-negative.");
-	    }
+            if (maxError[i] < 0) {
+                throw new IllegalArgumentException(
+                         "ComplexArrayMath.within requires that the third "
+                          + "argument be non-negative.");
+            }
 
             double realDifference = array1[i].real - array2[i].real;
             double imagDifference = array1[i].imag - array2[i].imag;
@@ -1023,12 +1023,12 @@ public class ComplexArrayMath {
     public static final boolean within(Complex[] array1,
             Complex[] array2, Complex[] maxError) {
 
-	int length = maxError.length;
-	double[] doubleError = new double[length];
+        int length = maxError.length;
+        double[] doubleError = new double[length];
 
-	for (int i = 0; i < length; i++) {
-	    doubleError[i] = maxError[i].magnitude();
-	}
+        for (int i = 0; i < length; i++) {
+            doubleError[i] = maxError[i].magnitude();
+        }
 
         return within(array1, array2, doubleError);
     }

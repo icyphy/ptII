@@ -66,7 +66,7 @@ public class Complex implements Cloneable, Serializable {
      */
     public Complex() {
         this.real = 0.0;
-	this.imag = 0.0;
+        this.imag = 0.0;
     }
 
     /** Construct a Complex with a zero imaginary part.\
@@ -74,7 +74,7 @@ public class Complex implements Cloneable, Serializable {
      */
     public Complex(double real) {
         this.real = real;
-	this.imag = 0.0;
+        this.imag = 0.0;
     }
 
     /** Construct a Complex with the specified real and imaginary parts.

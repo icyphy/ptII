@@ -225,10 +225,10 @@ public class ComplexMatrixMath {
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
 
-		matrix[i][j]= new Complex(Math.abs(matrix[i][j].real), matrix[i][j].imag);
-	    }
-	}
-	return matrix;
+                matrix[i][j]= new Complex(Math.abs(matrix[i][j].real), matrix[i][j].imag);
+            }
+        }
+        return matrix;
     }
 
 
@@ -1103,10 +1103,10 @@ public class ComplexMatrixMath {
                     + "be non-negative.");
         }
 
-	int rows = _rows (matrix1);
-	int columns = _columns (matrix1);
+        int rows = _rows (matrix1);
+        int columns = _columns (matrix1);
 
-	for (int i = 0; i < rows; i++) {
+        for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
 
             double realDifference = matrix1[i][j].real - matrix2[i][j].real;
@@ -1116,8 +1116,8 @@ public class ComplexMatrixMath {
                    > maxError*maxError) {
                 return false;
             }
-	    }
-	}
+            }
+        }
         return true;
     }
 
@@ -1137,17 +1137,17 @@ public class ComplexMatrixMath {
 
         _checkSameDimension("within", matrix1, matrix2);
 
-     	int rows = _rows (matrix1);
-	int columns = _columns (matrix1);
+             int rows = _rows (matrix1);
+        int columns = _columns (matrix1);
 
-	for (int i = 0; i < rows; i++) {
+        for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
 
-		if (maxError[i][j] < 0) {
-		    throw new IllegalArgumentException(
-			 "ComplexMatrixMath.within requires that the third argument "
-			  + "be non-negative.");
-	    }
+                if (maxError[i][j] < 0) {
+                    throw new IllegalArgumentException(
+                         "ComplexMatrixMath.within requires that the third argument "
+                          + "be non-negative.");
+            }
 
             double realDifference = matrix1[i][j].real - matrix2[i][j].real;
             double imagDifference = matrix1[i][j].imag - matrix2[i][j].imag;
@@ -1156,8 +1156,8 @@ public class ComplexMatrixMath {
                    > maxError[i][j]*maxError[i][j]) {
                 return false;
             }
-	    }
-	}
+            }
+        }
         return true;
     }
 
@@ -1179,15 +1179,15 @@ public class ComplexMatrixMath {
             Complex[][] matrix2, Complex[][] maxError) {
 
         int rows = _rows (maxError);
-	int columns = _columns (maxError);
+        int columns = _columns (maxError);
 
-	double[][] doubleError = new double[rows][columns];
+        double[][] doubleError = new double[rows][columns];
 
-	for (int i = 0; i < rows; i++) {
+        for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-		doubleError[i][j] = maxError[i][j].magnitude();
-	    }
-	}
+                doubleError[i][j] = maxError[i][j].magnitude();
+            }
+        }
 
         return within(matrix1, matrix2, doubleError);
     }
@@ -1341,9 +1341,9 @@ public class ComplexMatrixMath {
             // norm^2 for later computation.
             double normSqrd = ComplexArrayMath.l2normSquared(rowArray);
 
-	    Complex normSquared = new Complex (normSqrd, 0.0);
+            Complex normSquared = new Complex (normSqrd, 0.0);
 
-	    Complex Zero_Complex = new Complex(0.0,0.0);
+            Complex Zero_Complex = new Complex(0.0,0.0);
             if (normSquared == Zero_Complex) {
                 if (i == 0) {
                     // The input row was the zero vector, we now have
@@ -1365,7 +1365,7 @@ public class ComplexMatrixMath {
                 nullity++;
             } else {
                 orthogonalMatrix[i] = rowArray;
-		Complex One_Complex = new Complex (1.0,0.0);
+                Complex One_Complex = new Complex (1.0,0.0);
                 oneOverNormSquaredArray[i] = One_Complex.divide(normSquared);
             }
         }

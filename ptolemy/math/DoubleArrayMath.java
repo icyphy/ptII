@@ -225,7 +225,7 @@ public class DoubleArrayMath {
      */
     public static final double[] divide(double[] array, double num) {
         double[] returnValue = new double[array.length];
-	for (int i = 0; i < array.length; i++) {
+        for (int i = 0; i < array.length; i++) {
             returnValue[i] = array[i]/num;
         }
         return returnValue;

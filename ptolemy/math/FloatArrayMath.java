@@ -221,7 +221,7 @@ public class FloatArrayMath {
      */
     public static final float[] divide(float[] array, float num) {
         float[] returnValue = new float[array.length];
-	for (int i = 0; i < array.length; i++) {
+        for (int i = 0; i < array.length; i++) {
             returnValue[i] = array[i]/num;
         }
         return returnValue;
