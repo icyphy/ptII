@@ -29,9 +29,11 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.actor.lib.jai;
 
 import ptolemy.actor.lib.Sink;
+import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
+import ptolemy.data.Token;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
@@ -103,6 +105,13 @@ public class JAIPNGWriter extends Sink {
         setGamma.setToken(BooleanToken.FALSE);
 
         gamma = new Parameter(this, "gamma", new DoubleToken(0.455F));
+    
+        setBackground = new Parameter(this, "setBackground");
+        setBackground.setTypeEquals(BaseType.BOOLEAN);
+        setBackground.setToken(BooleanToken.FALSE);
+
+        background = new Parameter(this, "background", 
+                new ArrayToken(_initialArray));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -116,6 +125,8 @@ public class JAIPNGWriter extends Sink {
 
     public Parameter adam7Interlacing;
 
+    public Parameter background;
+    
     public Parameter bitDepth;
 
     /** If <i>false</i>, then overwrite the specified file if it exists
@@ -126,9 +137,13 @@ public class JAIPNGWriter extends Sink {
 
     public Parameter gamma;
 
+    public Parameter setBackground;
+
     public Parameter setGamma;
 
     //public Parameter setTransparency;
+
+    //public Parameter transparency;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -156,6 +171,15 @@ public class JAIPNGWriter extends Sink {
             _gamma = ((DoubleToken)gamma.getToken()).doubleValue();
         } else if (attribute == bitDepth) {
             _bitDepth = ((IntToken)bitDepth.getToken()).intValue();
+        } else if (attribute == setBackground) {
+            _setBackground = 
+                ((BooleanToken)setBackground.getToken()).booleanValue();
+        } else if (attribute == background) {
+            Token data[] = ((ArrayToken)background.getToken()).arrayValue();
+            for(int i = 0; i < data.length; i++) {
+                _valueArray = new int[data.length];
+                _valueArray[i] = ((IntToken)(data[i])).intValue();
+            }
         } else {
             super.attributeChanged(attribute);
         }
@@ -200,19 +224,83 @@ public class JAIPNGWriter extends Sink {
         }    
         PNGEncodeParam parameters = 
             PNGEncodeParam.getDefaultEncodeParam(image);
-
-        parameters.setBitDepth(_bitDepth);
-        parameters.setInterlacing(_adam7Interlacing);
-
-        ImageEncoder encoder = ImageCodec.createImageEncoder(
-            "PNG", _stream, parameters);
-        try {
-            encoder.encode(image);
-            _stream.close();
-        } catch (IOException error) {
-            throw new IllegalActionException("Couldn't encode image");
+        if(parameters instanceof PNGEncodeParam.Gray) {
+            PNGEncodeParam.Gray parametersGray = new PNGEncodeParam.Gray();
+            parametersGray.setBitDepth(_bitDepth);
+            parametersGray.setInterlacing(_adam7Interlacing);
+            if(_setGamma) {
+                parametersGray.setGamma((float)_gamma);
+            }
+            if(_setBackground) {
+                if(_valueArray.length < 1) {
+                    throw new IllegalActionException("Need "
+                            + "one value to set Transparency");
+                } else {
+                    parametersGray.setBackgroundGray(_valueArray[0]);
+                }
+            }
+            ImageEncoder encoderGray = ImageCodec.createImageEncoder(
+                    "PNG", _stream, parametersGray);
+            try {
+                encoderGray.encode(image);
+                _stream.close();
+            } catch (IOException error) {
+                throw new IllegalActionException("Couldn't encode image");
+            }
+        } else if(parameters instanceof PNGEncodeParam.RGB) {
+            PNGEncodeParam.RGB parametersRGB = new PNGEncodeParam.RGB();
+            parametersRGB.setBitDepth(_bitDepth);
+            parametersRGB.setInterlacing(_adam7Interlacing);
+            if(_setGamma) {
+                parametersRGB.setGamma((float)_gamma);
+            }
+            if(_setBackground) {
+                if(_valueArray.length < 3) {
+                    throw new IllegalActionException("Need "
+                            + "three values to set transparency");
+                } else {
+                    int RGBvalues[] = new int[3];
+                    for(int i = 0; i < 3; i++) {
+                        RGBvalues[i] = _valueArray[i];
+                    }
+                    parametersRGB.setBackgroundRGB(RGBvalues);
+                }
+            }
+            ImageEncoder encoderRGB = ImageCodec.createImageEncoder(
+                    "PNG", _stream, parametersRGB);
+            try {
+                encoderRGB.encode(image);
+                _stream.close();
+            } catch (IOException error) {
+                throw new IllegalActionException("Couldn't encode image");
+            }
+        } else {
+            throw new IllegalActionException("can't create encoding "
+                    + "parameters");
         }
-        return true;
+        //parameters.setBitDepth(_bitDepth);
+        //parameters.setInterlacing(_adam7Interlacing);
+        //if(_setGamma) {
+        //    parameters.setGamma((float)_gamma);
+        //}
+        //if(_setTransparency) {
+        //    if(parameters instanceof PNGEncodeParam.Gray) {
+        //        parameters = (PNGEncodeParam.Gray)parameters;
+        //        parameters.setTransparentGray(_valueArray[0]);
+        //    }
+        //    if(parameters instanceof PNGEncodeParam.RGB) {
+        //    
+        //    }
+        //}
+        //ImageEncoder encoder = ImageCodec.createImageEncoder(
+        //    "PNG", _stream, parameters);
+        //try {
+        //    encoder.encode(image);
+        //    _stream.close();
+        //} catch (IOException error) {
+        //    throw new IllegalActionException("Couldn't encode image");
+        //}
+        return super.postfire();
     }
 
 
@@ -239,4 +327,21 @@ public class JAIPNGWriter extends Sink {
     private boolean _setGamma;
 
     private double _gamma;
+
+    private boolean _setBackground;
+
+    private IntToken _initialArray[] = {new IntToken(0),
+                                        new IntToken(0),
+                                        new IntToken(0)};
+
+    private int _valueArray[];
 }
+
+
+
+
+
+
+
+
+
