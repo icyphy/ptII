@@ -16,12 +16,6 @@
       <property name="TM Director" class="ptolemy.domains.tm.kernel.TMDirector"/>
       <property name="PSDF Director" class="ptolemy.domains.psdf.kernel.PSDFDirector"/>
       <property name="PetriNet Director" class="ptolemy.domains.petrinet.kernel.PetriNetDirector"/>
-      <property name="Sensor Director" class="ptolemy.apps.sensor.lib.SensorDirector">
-        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
-          <property name="attributeName" value="value"/>
-          <property name="displayWidth" value="10"/>
-        </property>
-      </property>
       <!-- Don't include RTP -->
       <property name="SR Director" class="ptolemy.domains.sr.kernel.SRDirector">      
          <property name="scheduler">
