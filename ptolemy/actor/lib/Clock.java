@@ -323,7 +323,7 @@ public class Clock extends TimedSource {
         // Used to use any negative number here to indicate
         // that no future firing should be scheduled.
         // Now, we leave it up to the director, unless the value
-        // explicity indicates no firing with Double.NEGATIVE_INFINITY.
+        // explicitly indicates no firing with Double.NEGATIVE_INFINITY.
         if (_tentativeNextFiringTime != Double.NEGATIVE_INFINITY) {
             getDirector().fireAt(this, _tentativeNextFiringTime);
         }
