@@ -374,23 +374,39 @@ public class TimeKeeper {
     public synchronized void sendOutNullTokens() {
 	Enumeration ports = _actor.outputPorts();
         double time = getCurrentTime();
-	/*
-	System.out.println("\t\t" + ((NamedObj)_actor).getName() +
-		": null token time = " + time);
-	*/
+	String name = ((NamedObj)_actor).getName();
+	if( name.equals("fBack") ) {
+	    System.out.println(name+": Entered TimeKeeper.sendOutNullTokens().");
+	}
         while( ports.hasMoreElements() ) {
             IOPort port = (IOPort)ports.nextElement();
 	    Receiver rcvrs[][] = 
 		    (Receiver[][])port.getRemoteReceivers();
+	if( name.equals("fBack") ) {
+	    System.out.println(name+": getRemoteReceivers() called."
+		    + "  rcvrs.length = " + rcvrs.length
+			       + "  rcvrs[0].length = " + rcvrs[0].length );
+	}
             for (int i = 0; i < rcvrs.length; i++) {
                 for (int j = 0; j < rcvrs[i].length; j++) {
+	if( name.equals("fBack") ) {
+	    System.out.println(name+": Inside TimeKeeper.sendOutNullTokens() "
+		    + " i = " + i + "  j = " + j);
+	}
                     if( time >
 			    ((DDEReceiver)rcvrs[i][j]).getLastTime() ) {
                         ((DDEReceiver)rcvrs[i][j]).put(
                                 new NullToken(), time );
                     }
+	if( name.equals("fBack") ) {
+	    System.out.println(name+": Inside TimeKeeper.sendOutNullTokens() AGAIN "
+		    + " i = " + i + "  j = " + j);
+	}
 		}
             }
+	if( name.equals("fBack") ) {
+	    System.out.println(name+": Leaving TimeKeeper.sendOutNullTokens().");
+	}
         }
     }
 
