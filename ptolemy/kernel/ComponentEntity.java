@@ -421,10 +421,24 @@ public class ComponentEntity extends Entity {
         super._addPort(port);
     }
 
-    /** Adjust the deferrals in this object.
-     *  Specifically, if this object has a class name that refers
-     *  to a class in scope, then replace the current parent with
-     *  that object.
+    /** Adjust the deferrals in this object. This method should
+     *  be called on any newly created object that is created by
+     *  cloning. While cloning, parent relations are set to null.
+     *  That is, no object in the clone has a parent. This method
+     *  identifies the correct parent for any object in the clone.
+     *  To do this, it uses the class name. Specifically, if this
+     *  object has a class name that refers to a class in scope,
+     *  then it replaces the current parent with that object.
+     *  To look for a class in scope, we go up the hierarchy, but
+     *  no more times than the return value of getDerivedLevel().
+     *  The reason for this is that if the class from which this
+     *  object is defined is above that level, then we do not want
+     *  to establish a parent relationship with that class. This
+     *  object is implied, and the parent relationship of the object
+     *  from which it is implied is sufficient.
+     *  <p>
+     *  Derived classes that contain other objects should recursively
+     *  call this method on contained objects.
      *  @exception IllegalActionException If the class found in scope
      *   cannot be set.
      */
@@ -434,6 +448,8 @@ public class ComponentEntity extends Entity {
 
         // Search upwards in the hierarchy.
         NamedObj context = this;
+        int levelsToSearch = getDerivedLevel();
+        int aboveLevel = 0;
         ComponentEntity candidate = null;        
         // Make sure we get a real candidate, which is a
         // class definition. The second term in the if will
@@ -443,12 +459,14 @@ public class ComponentEntity extends Entity {
         // maybe incomprehensible) identification of
         // the base class, particularly when pasting
         // an instance or subclass into a new context.
-        while ((candidate == null || !candidate.isClassDefinition())
+        while (aboveLevel < levelsToSearch
+                && (candidate == null || !candidate.isClassDefinition())
                 && context != null) {
             context = (NamedObj)context.getContainer();
             if (context instanceof CompositeEntity) {
                 candidate = ((CompositeEntity)context).getEntity(className);
             }
+            aboveLevel += 1;
         }
         if (candidate != null) {
             _setParent(candidate);

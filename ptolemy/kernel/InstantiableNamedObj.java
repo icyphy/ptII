@@ -38,7 +38,6 @@ import java.util.ListIterator;
 
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Instantiable;
-import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
@@ -150,6 +149,10 @@ public class InstantiableNamedObj extends NamedObj implements Instantiable {
             // Set the parent using _setParent() rather than the default
             // clone to get the side effects.
             newObject._parent = null;
+            // NOTE: This used to do the following,
+            // but we now rely on _adjustDeferrals()
+            // to fix the parent relationships.
+            /*
             if (_parent != null) {
                 try {
                     newObject._setParent(_parent);
@@ -157,6 +160,7 @@ public class InstantiableNamedObj extends NamedObj implements Instantiable {
                     throw new InternalErrorException(ex);
                 }
             }
+            */
             return newObject;
         } finally {
             workspace().doneReading();
