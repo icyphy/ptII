@@ -141,7 +141,7 @@ test Minimum-2.7 {test complex} {
     $value setExpression {4}
     catch {[$e0 getManager] execute} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: The isLessThan() method is not supported in ComplexToken since complex numbers cannot be compared.}}
+} {ptolemy.kernel.util.IllegalActionException: isLessThan operation not supported between ptolemy.data.ComplexToken '4.0 + 0.0i' and ptolemy.data.ComplexToken '-2.0 + 1.0i' because complex numbers cannot be compared.}
 
 ######################################################################
 #### Check types of above model
