@@ -591,7 +591,7 @@ public class PtolemyUtilities {
                 } else if (field.equals(booleanMatrixTypeField)) {
                     return ptolemy.data.type.BaseType.BOOLEAN_MATRIX;
                 } else if (field.equals(byteTypeField)) {
-                    return ptolemy.data.type.BaseType.BYTE;
+                    return ptolemy.data.type.BaseType.UNSIGNED_BYTE;
                 } else if (field.equals(complexTypeField)) {
                     return ptolemy.data.type.BaseType.COMPLEX;
                 } else if (field.equals(complexMatrixTypeField)) {
