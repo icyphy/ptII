@@ -237,13 +237,18 @@ xmlns:xalan="http://xml.apache.org/xslt" version="1.0">
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
            <svg>
-           <text x="20" style="font-size:14; font-family:sanserif; fill:blue" y="20">Please use Ctrl_t to get the actors automatically Placed. 
+           <text x="20" style="font-size:14; font-family:sanserif; fill:blue" y="20">To run the model, follow these steps:
+1. To automatically layout the actors, 
+   type Ctrl-t
+     or
+   use the Graph -> Automatic Layout menu choice.
 
-Please add the TimedPoltter from the actor_library / timed_sinks
-in the left upper box, and wire the output you want to see to it.
+2. Connect a TimedPlotter from the actor library -> timed sinks
+   palette in the upper left tree widget to one of the
+   relations.
 
-To run the model, choose View -> Run_Window. You may modify the parameters
-there showed in the opened run_window.
+3. To run the model, choose View -> Run Window.
+   Feel free to modify the parameters in the run window.
 
 For more help, choose Help from the upper menu bar.</text>
            </svg>
