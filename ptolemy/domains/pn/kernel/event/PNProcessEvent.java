@@ -31,6 +31,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.domains.pn.kernel.event;
 import ptolemy.actor.Actor;
 import ptolemy.kernel.Entity;
+import ptolemy.kernel.util.InternalErrorException;
 
 //////////////////////////////////////////////////////////////////////////
 //// PNProcessEvent
@@ -50,18 +51,31 @@ The exception might not be a valid reference.
 public class PNProcessEvent {
 
     /** Create a new event
-     *  @param The actor
+     *  @param actor The actor
+     *  @param state The state of the actor, should be one of
+     *  PROCESS_BLOCKED, PROCESS_FINISHED, PROCESS_PAUSED
+     *  or PROCESS_RUNNING.
      */
     public PNProcessEvent(Actor actor, int state) {
-        _actor = actor;
-        _state = state;
+        this(actor, state, 0);
     }
 
     /** Create a new event that corresponds to an exception
      *  caught by the process.
+     *  @param actor The actor.
+     *  @param state The state of the actor, should be one of
+     *  PROCESS_BLOCKED, PROCESS_FINISHED, PROCESS_PAUSED
+     *  or PROCESS_RUNNING.
+     *  @param cause The cause.
      */
     public PNProcessEvent(Actor actor, int state, int cause) {
         _actor = actor;
+        if (state < PROCESS_BLOCKED || state > PROCESS_RUNNING) {
+            throw new InternalErrorException(
+                    "state '" + state + "' is incorrect, it must be one of "
+                    + PROCESS_BLOCKED + ", " + PROCESS_FINISHED + ", "
+                    + PROCESS_PAUSED + " or " + PROCESS_RUNNING);
+        }
         _state = state;
         _cause = cause;
     }
