@@ -86,6 +86,11 @@ public class Round extends Transformer {
         // Ports
         input.setTypeEquals(BaseType.DOUBLE);
         output.setTypeEquals(BaseType.INT);
+
+        _attachText("_iconDescription", "<svg>\n"
+                + "<circle cx=\"0\" cy=\"0\" r=\"17\""
+                + "style=\"fill:white\"/>\n"
+                + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
