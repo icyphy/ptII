@@ -853,16 +853,6 @@ public class DEDirector extends Director {
 	}
     }
 
-    // Return true if this director is embedded inside an opaque composite
-    // actor contained by another composite actor.
-    public boolean _isEmbedded() {
-        if (getContainer().getContainer() == null) {
-            return false;
-        } else {
-            return true;
-        }
-    }
-
     // Request that the container of this director be refired in the future.
     // This method is used when the director is embedded inside an opaque
     // composite actor (i.e. a wormhole in Ptolemy 0.x terminology).
@@ -882,6 +872,16 @@ public class DEDirector extends Director {
             (Actor)getContainer(), nextRefire);
 
         _debug("DEDirector requests refiring at " + nextRefire);
+    }
+
+    // Return true if this director is embedded inside an opaque composite
+    // actor contained by another composite actor.
+    private boolean _isEmbedded() {
+        if (getContainer().getContainer() == null) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
