@@ -43,7 +43,7 @@ import java.net.*;              // Need URL
  * <p> The <code>dataurl</code> parameter contains a single URL
  * that refers to the data to be plotted.
  * <p> The <code>pxgraphargs</code> parameter contains a list
- * of commmand line style arguments, ending in one or more URLs.
+ * of command line style arguments, ending in one or more URLs.
  * See the <code>Pxgraph</code> documentation for the format of
  * these arguments.
  *
