@@ -391,10 +391,19 @@ $(PTAUXALLJAR): $(PTAUXALLJARS) $(JCLASS) $(OTHER_FILES_TO_BE_JARED)
 jsinstr:
 	$(JSINSTR) $(JSINSTRFLAGS) $(JSRCS)
 # If the jsoriginal directory does not exist, then instrument the Java files.
+# If JSSKIP is set, then we skip running JavaScope on them. 
+# JSSKIP is used in mescal/domains/mescalPE/kernel/makefile
 jsoriginal:
 	@if [ ! -d jsoriginal -a "$(JSRCS)" != "" ]; then \
 		echo "$(JSINSTR) $(JSINSTRFLAGS) $(JSRCS)"; \
 		$(JSINSTR) $(JSINSTRFLAGS) $(JSRCS); \
+		if [ "$(JSSKIP)" != "" ]; then \
+			set $(JSSKIP); \
+			for x do \
+				echo "Restoring $$x so that JavaScope is not run on it"; \
+				cp jsoriginal/$$x .; \
+			done; \
+		fi; \
 	fi
 
 # Back out the instrumentation.
