@@ -167,18 +167,31 @@ public class SDFCodeGenerator extends CompositeActorApplication
 
         Iterator actorItr = _actorSet.iterator();
 
+	Runtime runtime = Runtime.getRuntime();
         System.out.println("SDFCodeGenerator: Starting to accumulate " +
                 "class info ---" +
-                (System.currentTimeMillis() - startTime) + " ms");
+                (System.currentTimeMillis() - startTime) + " ms " +
+			   " totalMemory: " + runtime.totalMemory() + 
+			   " freeMemory: " + runtime.freeMemory());
+
 
         ActorCodeGenerator actorCodeGen =
             new ActorCodeGenerator(_codeGenClassFactory, _outputDirectoryName,
                     _outputPackageName);
         System.out.println("\nSDFCodeGenerator: " +
                 "Done accumulating class info ---" +
-                (System.currentTimeMillis() - startTime) + " ms");
+                (System.currentTimeMillis() - startTime) + " ms" +
+			   " totalMemory: " + runtime.totalMemory() + 
+			   " freeMemory: " + runtime.freeMemory());
 
-        System.out.println("SDFCodeGenerator: pass1");
+        System.out.println("SDFCodeGenerator: calling System.gc()");
+	System.gc();
+
+        System.out.println("SDFCodeGenerator: pass1 ---" +
+                (System.currentTimeMillis() - startTime) + " ms" +
+			   " totalMemory: " + runtime.totalMemory() + 
+			   " freeMemory: " + runtime.freeMemory());
+
 
         LinkedList renamedSourceList = new LinkedList();
 
@@ -194,7 +207,9 @@ public class SDFCodeGenerator extends CompositeActorApplication
         }
 
         System.out.println("\nSDFCodeGenerator: pass2 ---" +
-                (System.currentTimeMillis() - startTime) + " ms");
+                (System.currentTimeMillis() - startTime) + " ms" +
+			   " totalMemory: " + runtime.totalMemory() + 
+			   " freeMemory: " + runtime.freeMemory());
 
         actorItr = _actorSet.iterator();
         Iterator renamedSourceItr = renamedSourceList.iterator();
@@ -212,7 +227,10 @@ public class SDFCodeGenerator extends CompositeActorApplication
         _generateMainClass();
 
         System.out.println("\nSDFCodeGenerator: pass3 ---" +
-                (System.currentTimeMillis() - startTime) + " ms");
+                (System.currentTimeMillis() - startTime) + " ms" +
+			   " totalMemory: " + runtime.totalMemory() + 
+			   " freeMemory: " + runtime.freeMemory());
+
         renamedSourceItr = renamedSourceList.iterator();
 
         while (renamedSourceItr.hasNext()) {
@@ -221,8 +239,9 @@ public class SDFCodeGenerator extends CompositeActorApplication
             actorCodeGen.pass3(renamedSource);
         }
         System.out.println("\nSDFCodeGenerator: done " +
-                (System.currentTimeMillis() - startTime) + " ms");
-
+                (System.currentTimeMillis() - startTime) + " ms" +
+			   " totalMemory: " + runtime.totalMemory() + 
+			   " freeMemory: " + runtime.freeMemory());
     }
 
     /** The top-level main() method. Create an SDF code generator using the
