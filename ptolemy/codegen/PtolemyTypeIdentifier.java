@@ -207,9 +207,11 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
         //    System.err.println(i + " " + _KNOWN_TOKEN_TYPES[i]);
         //}
 
-        System.err.println("PtolemyTypeIdentifier.kindOfTokenType(): "
-			   + "type = '" + type + "' == failed, trying " 
-			   + "isEqualTo()");
+        if (_debug) {
+            System.err.println("PtolemyTypeIdentifier.kindOfTokenType(): "
+                    + "type = '" + type + "' == failed, trying " 
+                    + "isEqualTo()");
+        }
 
         //try {
         //    throw new Exception("kindOfTokenType() stack");
@@ -218,13 +220,15 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
         //}
         for (int i = 0; i < _KNOWN_TOKEN_TYPES.length; i++) {
             if (type.isEqualTo(_KNOWN_TOKEN_TYPES[i])) {
-		System.err.println("kindOfTokenType(): isEqualTo() found one\n"
-				   + "  type: " + type
-				   + " " + type.hashCode()
-				   + "\n   _KNOWN_TOKEN_TYPES: "
-				   + _KNOWN_TOKEN_TYPES[i] 
-				   + " " + _KNOWN_TOKEN_TYPES[i].hashCode()
-				   );
+                if (_debug) {
+                    System.err.println("kindOfTokenType(): isEqualTo() found"
+                            + "one\n type: " + type
+                            + " " + type.hashCode()
+                            + "\n   _KNOWN_TOKEN_TYPES: "
+                            + _KNOWN_TOKEN_TYPES[i] 
+                            + " " + _KNOWN_TOKEN_TYPES[i].hashCode()
+                                       );
+                }
                 return i + TYPE_KIND_TOKEN;
             }
         }
@@ -1013,4 +1017,9 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
 
         System.out.println("PtolemyTypeIdentifier<static>: end");
     }
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    // Set to true to turn on debugging messages.
+    protected final static boolean _debug = false;
 }
