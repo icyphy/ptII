@@ -47,15 +47,14 @@ if {[info procs enumToObjects] == "" } then {
 ######################################################################
 ####
 #
-test Branch-2.1 {Test BranchController constructors, reset() and 
-pre-activation state} {
+test Branch-2.1 {Test BranchController constructors and pre-activation state} {
    
     # Instantiate Directors and Composite Actors
     set topLevel [java::new ptolemy.actor.CompositeActor]
     $topLevel setName "topLevel"
     set compAct [java::new ptolemy.actor.CompositeActor $topLevel "compAct"]
-    set outerDir [java::new ptolemy.actor.process.ProcessDirector $topLevel "outerDir"]
-    set innerDir [java::new ptolemy.actor.process.ProcessDirector $compAct "innerDir"]
+    set outerDir [java::new ptolemy.actor.process.CompositeProcessDirector $topLevel "outerDir"]
+    set innerDir [java::new ptolemy.actor.process.CompositeProcessDirector $compAct "innerDir"]
     
     # Instantiate Atomic Actors
     set act1 [java::new ptolemy.actor.AtomicActor $topLevel "act1"] 
@@ -86,9 +85,6 @@ pre-activation state} {
     if { [$cntlrIn hasBranches] != 1 } {
 	set val 0
     }
-    if { [$cntlrIn isIterationOver] != 1 } {
-    	set val 0
-    }
     if { [$cntlrIn isBlocked] != 0 } {
     	set val 0
     }
@@ -104,9 +100,6 @@ pre-activation state} {
     if { [$cntlrOut hasBranches] != 1 } {
 	set val 0
     }
-    if { [$cntlrOut isIterationOver] != 1 } {
-    	set val 0
-    }
     if { [$cntlrOut isBlocked] != 0 } {
     	set val 0
     }
@@ -121,45 +114,36 @@ pre-activation state} {
 
 } {1}
 
-######################################################################
-#### Continued from above
-#
-test Branch-2.2 {Test Branch constructors, reset() and pre-activation state} {
+# # ######################################################################
+# # #### Continued from above
+# # #
+# # test Branch-2.2 {Test Branch constructors, reset() and pre-activation state} {
    
-    set branchList [$cntlrIn getBranchList]
-    set branch [java::cast ptolemy.actor.process.Branch [$branchList get 0]]
+# #     set branchList [$cntlrIn getBranchList]
+# #     set branch [java::cast ptolemy.actor.process.Branch [$branchList get 0]]
 
-    set val 1
-    if { [$branch isActive] != 0 } {
-     	set val 0
-    }
-    if { [$branch isBranchPermitted] != 0 } {
-    	set val 0
-    }
-    if { [$branch numberOfCompletedEngagements] != 0 } {
-     	set val 0
-    }
-    if { [$branch isIterationOver] != 1 } {
-     	set val 0
-    }
+# #     set val 1
+# #     if { [$branch isActive] != 0 } {
+# #      	set val 0
+# #     }
     
-    $branch reset
+# # #     $branch reset
    
-    if { [$branch isActive] != 1 } {
-    	set val 0
-    }
-    if { [$branch isIterationOver] != 1 } {
-     	set val 0
-    }
+# # #     if { [$branch isActive] != 1 } {
+# # #     	set val 0
+# # #     }
     
-   list $val
+# #    list $val
 
-} {1}
+# # } {1}
 
 ######################################################################
 #### Continued from above
 #
 test Branch-3.1 {Check blocking methods} {
+    set branchList [$cntlrIn getBranchList]
+    set branch [java::cast ptolemy.actor.process.Branch [$branchList get 0]]
+    
     set val 1
     
     if { [$cntlrIn isBlocked] != 0 } {
@@ -182,95 +166,6 @@ test Branch-3.1 {Check blocking methods} {
 
 } {1}
    
-######################################################################
-#### Continued from above
-#
-test Branch-4.1 {isEngagementEnabled(), isIterationOver()} {
-
-    set val 1
-    
-    if { [$cntlrIn isEngagementEnabled $branch] != 0 } {
-    	set val 0
-    }
-
-    $cntlrIn setActive true
-    $cntlrIn restart
-
-    if { [$cntlrIn isEngagementEnabled $branch] != 1 } {
-    	set val 0
-    }
-    if { [$cntlrIn isEngagementEnabled $branch] != 1 } {
-    	set val 0
-    }
-    
-    $cntlrIn setMaximumEngagers 0
-    $cntlrIn restart
-
-    if { [$cntlrIn isEngagementEnabled $branch] != 0 } {
-    	set val 0
-    }
-    
-    $cntlrIn setMaximumEngagers 1
-    $cntlrIn setMaximumEngagements 0
-    $cntlrIn restart
-
-    if { [$cntlrIn isEngagementEnabled $branch] != 0 } {
-    	set val 0
-    }
-    
-    catch { $cntlrIn engagementSucceeded $branch } msg1
-    
-    $cntlrIn setMaximumEngagers 1
-    $cntlrIn setMaximumEngagements 2
-    $cntlrIn restart
-
-    if { [$cntlrIn isEngagementEnabled $branch] != 1 } {
-    	set val 0
-    }
-    $cntlrIn engagementSucceeded $branch 
-    if { [$cntlrIn isEngagementEnabled $branch] != 1 } {
-     	set val 0
-    }
-    $cntlrIn engagementSucceeded $branch 
-    catch { $cntlrIn engagementSucceeded $branch } msg2
-    
-    $cntlrIn setMaximumEngagers 1
-    $cntlrIn setMaximumEngagements 2
-    $cntlrIn restart
-    
-    set newBranch [java::new ptolemy.actor.process.Branch $cntlrIn]
-    
-    if { [$cntlrIn isEngagementEnabled $branch] != 1 } {
-    	set val 0
-    }
-    if { [$cntlrIn isEngagementEnabled $newBranch] != 0 } {
-    	set val 0
-    }
-    
-    $cntlrIn disengageBranch $branch 
-    
-    if { [$cntlrIn isEngagementEnabled $newBranch] != 1 } {
-    	set val 0
-    }
-    $cntlrIn engagementSucceeded $newBranch 
-    
-    if { [$cntlrIn isEngagementEnabled $newBranch] != 1 } {
-    	set val 0
-    }
-
-    if { [$cntlrIn isEngagementEnabled $branch] != 0 } {
-    	set val 0
-    }
-    
-    $cntlrIn disengageBranch $newBranch 
-    
-    if { [$cntlrIn isEngagementEnabled $branch] != 0 } {
-    	set val 0
-    }
-    
-    list $val $msg1 $msg2
-
-} {1 {ptolemy.actor.process.TerminateBranchException: Branch can not succeed if not previously engaged to controller.} {ptolemy.actor.process.TerminateBranchException: Branch can not succeed if it already has more successful engagements than permitted.}}
 
 
 

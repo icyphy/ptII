@@ -56,15 +56,12 @@ JSRCS = \
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
 	BoundaryDetector.tcl \
+	Branch.tcl \
+	BranchController.tcl \
  	CompositeProcessDirector.tcl \
 	MailboxBoundaryReceiver.tcl \
  	ProcessDirector.tcl \
 	ProcessThread.tcl 
-	
-# 	ProcessDirector.tcl  
-#	BoundaryDetector.tcl \
-#	Branch.tcl \
-#	BranchController.tcl \
 	
 	
 

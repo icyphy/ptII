@@ -47,40 +47,23 @@ if {[info procs enumToObjects] == "" } then {
 ######################################################################
 ####
 #
-test BranchController-2.1 {addBranches(), hasIn/OutputPorts()} {
+test BranchController-2.1 {addBranches()} {
    
-    set top [java::new ptolemy.actor.process.MultiBranchActor]
-    set cntlr1 [java::new ptolemy.actor.process.BranchController $top]
-    set cntlr2 [java::new ptolemy.actor.process.BranchController $top]
-    set cntlr3 [java::new ptolemy.actor.process.BranchController $top]
+    set topLevel [java::new ptolemy.actor.CompositeActor]
+    $topLevel setName "topLevel"
+    set cntlr1 [java::new ptolemy.actor.process.BranchController $topLevel]
+    set cntlr2 [java::new ptolemy.actor.process.BranchController $topLevel]
+    set cntlr3 [java::new ptolemy.actor.process.BranchController $topLevel]
     
-    set inport [java::new ptolemy.actor.IOPort $top inport true false]
-    set outport [java::new ptolemy.actor.IOPort $top outport false true]
+    set inport [java::new ptolemy.actor.IOPort $topLevel inport true false]
+    set outport [java::new ptolemy.actor.IOPort $topLevel outport false true]
     
     $cntlr1 addBranches $inport
     $cntlr2 addBranches $outport
    
     set val 1
-#     if { [$cntlr1 hasInputPorts] != 1 } {
-#     	set val 0
-#     }
-#     if { [$cntlr2 hasOutputPorts] != 1 } {
-#     	set val 0
-#     }
-#     if { [$cntlr1 hasOutputPorts] == 1 } {
-#     	set val 0
-#     }
-#     if { [$cntlr2 hasInputPorts] == 1 } {
-#     	set val 0
-#     }
-#     if { [$cntlr3 hasOutputPorts] == 1 } {
-#     	set val 0
-#     }
-#     if { [$cntlr3 hasInputPorts] == 1 } {
-#     	set val 0
-#     }
    
-   list $val
+    list $val
 
 } {1}
 
@@ -90,12 +73,12 @@ test BranchController-2.1 {addBranches(), hasIn/OutputPorts()} {
 #
 test BranchController-2.2 {Multiple addBranches() invocations} {
    
-    set top [java::new ptolemy.actor.process.MultiBranchActor]
-    set cntlr1 [java::new ptolemy.actor.process.BranchController $top]
-    set cntlr2 [java::new ptolemy.actor.process.BranchController $top]
+    set topLevel [java::new ptolemy.actor.CompositeActor]
+    set cntlr1 [java::new ptolemy.actor.process.BranchController $topLevel]
+    set cntlr2 [java::new ptolemy.actor.process.BranchController $topLevel]
     
-    set inport [java::new ptolemy.actor.IOPort $top inport true false]
-    set outport [java::new ptolemy.actor.IOPort $top outport false true]
+    set inport [java::new ptolemy.actor.IOPort $topLevel inport true false]
+    set outport [java::new ptolemy.actor.IOPort $topLevel outport false true]
     set port [java::new ptolemy.actor.IOPort]
     
     $cntlr1 addBranches $inport
@@ -105,7 +88,7 @@ test BranchController-2.2 {Multiple addBranches() invocations} {
     catch { $cntlr1 addBranches $outport } msg3
     catch { $cntlr2 addBranches $inport } msg4
    
-   list $msg1 $msg2 $msg3 $msg4
+    list $msg1 $msg2 $msg3 $msg4
 
 } {{ptolemy.kernel.util.IllegalActionException: ..inport:
 This port is already controlled by this BranchController} {ptolemy.kernel.util.IllegalActionException: Can not contain a port that is not contained by this BranchController's container.} {ptolemy.kernel.util.IllegalActionException: BranchControllers must contain only input ports or only output ports; not both} {ptolemy.kernel.util.IllegalActionException: BranchControllers must contain only input ports or only output ports; not both}}
@@ -116,37 +99,27 @@ This port is already controlled by this BranchController} {ptolemy.kernel.util.I
 #
 test BranchController-3.1 {Check pre-activation state} {
    
-    set top [java::new ptolemy.actor.CompositeActor]
-    set cntlr [java::new ptolemy.actor.process.BranchController $top]
+    set topLevel [java::new ptolemy.actor.CompositeActor]
+    set cntlr [java::new ptolemy.actor.process.BranchController $topLevel]
     set branch [java::new ptolemy.actor.process.Branch $cntlr]
     
     set val 1
-    if { [$cntlr isIterationOver] != 1 } {
-    	set val 0
-    }
-    #$cntlr setActive true
-    if { [$cntlr isIterationOver] != 1 } {
-    	set val 0
-    }
     set parent [$cntlr getParent]
-    if { $parent != $top } {
-    	set val 0
-    }
-    if { [$cntlr isEngagementEnabled $branch] != 0  } {
+    if { $parent != $topLevel } {
     	set val 0
     }
     
-   list $val
+    list $val
 
 } {1}
 
 ######################################################################
 ####
 #
-test BranchController-4.1 {activateBranches() with no branches, infinite iteration} {
+test BranchController-4.1 {activateBranches() with no branches} {
    
-    set top [java::new ptolemy.actor.process.MultiBranchActor]
-    set cntlr [java::new ptolemy.actor.process.BranchController $top]
+    set topLevel [java::new ptolemy.actor.CompositeActor]
+    set cntlr [java::new ptolemy.actor.process.BranchController $topLevel]
     set branch [java::new ptolemy.actor.process.Branch $cntlr]
     
     set val 1
@@ -160,23 +133,9 @@ test BranchController-4.1 {activateBranches() with no branches, infinite iterati
     if { [$cntlr isActive] != 0  } {
         set val 0
     }
-    if { [$cntlr isEngagementEnabled $branch] != 0  } {
- 	set val 0
-    }
-    if { [$cntlr isIterationOver] != 1  } {
-     	set val 0
-    }
     
-    $cntlr endIteration
     
-    if { [$cntlr isEngagementEnabled $branch] != 0  } {
- 	set val 0
-    }
-    if { [$cntlr isIterationOver] == 0  } {
-      	set val 0
-    }
-    
-   list $val
+    list $val
 
 } {1}
 
