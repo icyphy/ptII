@@ -51,6 +51,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
+	Configurer.java \
 	GUIApplication.java \
 	ExecEvent.java \
 	ExecEventListener.java \
