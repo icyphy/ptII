@@ -31,6 +31,7 @@ import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
 import ptolemy.actor.Actor;
@@ -135,7 +136,7 @@ import ptolemy.kernel.util.Workspace;
    ports and actors is that the depth of an actor is the smallest of the depths
    of its IO ports. Pure events can only be produced by calling the fireAt()
    method, and trigger events can only be produced by actors that produce 
-   outputs. See {@link ptolemy.domains.de.kernel.DEReceiver#put(Token)}.
+   outputs. See {@link ptolemy.domains.de.kernel.DEReceiver#put}.
    <p>
    Directed loops of IO ports with no delay are not permitted because it is
    impossible to do a topological sort to assign depths. Such a loop can be
@@ -409,6 +410,7 @@ public class DEDirector extends Director implements TimedDirector {
                                 "at the current tag.");
                     }
                 }
+                _microstep = 0;
                 // Nothing more needs to be done in the current iteration.
                 // Simply return.
                 return;
@@ -560,13 +562,14 @@ public class DEDirector extends Director implements TimedDirector {
                         // fired at the current iteration.
                         // Continue the current iteration.
                     }
-                } else {
-                    // The event queue is empty, proceed to postfire().
-                    // Jump out of the BIG while loop.
-                    // FIXME: It is too early to give up. Let
-                    // _getNextActorToFire handle this.
-                    break;
                 }
+//                else {
+//                    // The event queue is empty, proceed to postfire().
+//                    // Jump out of the BIG while loop.
+//                    // FIXME: It is too early to give up. Let
+//                    // _getNextActorToFire handle this.
+//                    break;
+//                }
             }
         } // Close the BIG while loop.
 
@@ -1296,17 +1299,63 @@ public class DEDirector extends Director implements TimedDirector {
         // analysis independent of the function dependency analysis. 
         // 02/2005 hyzheng
         
+        LinkedList actorsWithPortDepthsAdjusted = new LinkedList();
+        
         // The rule is simple. If an output depends on several inputs directly,
         // all inputs must have the same depth, the biggest one.
         for (int i = sort.length-1; i >= 0; i--) {
             IOPort ioPort = (IOPort)sort[i];
-            // We adjust port depths based on output ports.
-            // Here we skip input ports.
-            if (ioPort.isInput()) {
-                continue;
-            }
             // Get the container actor of the current output port.
             Actor portContainer = (Actor)ioPort.getContainer();
+            // Normally, we adjust port depths based on output ports.
+            // However, if this input port belongs to a sink actor, and 
+            // the sink actor has more than one input ports, adjust the depths
+            // of all the input ports to their maximum value.
+            if (ioPort.isInput()) {
+                // TESTIT: with the WirelessSoundDetection demo.
+                int numberOfOutputPorts = portContainer.outputPortList().size();
+                if (numberOfOutputPorts != 0) {
+                    // we skip actors with output ports and will adjust the 
+                    // depths of their input ports based on their output ports.
+                    continue;
+                } else {
+                    List inputPorts = portContainer.inputPortList();
+                    if (inputPorts.size() <= 1) {
+                        // If the sink actor has only one input port, there is
+                        // no need to adjust its depth.
+                        continue;
+                    }
+                    if (actorsWithPortDepthsAdjusted.contains(portContainer)) {
+                        // The depths of the input ports of this acotr 
+                        // have been adjusted.
+                        continue;
+                    } else {
+                        actorsWithPortDepthsAdjusted.add(portContainer);
+                    }
+                    Iterator inputsIterator = inputPorts.iterator();
+                    // Iterate all input ports of the sink actor. 
+                    int maximumPortDepth = -1;
+                    while (inputsIterator.hasNext()) {
+                        Object object = inputsIterator.next();
+                        IOPort input = (IOPort)object;
+                        int inputPortDepth = ports.indexOf(input);
+                        if (maximumPortDepth < inputPortDepth) {
+                            maximumPortDepth = inputPortDepth;
+                        }
+                    }
+                    // Set the depths of the input ports to the maximum one.
+                    inputsIterator = inputPorts.iterator();
+                    while (inputsIterator.hasNext()) {
+                        IOPort input = (IOPort)inputsIterator.next();
+                        if (_debugging) {
+                            _debug(((Nameable)input).getFullName(),
+                                    "depth is adjusted to: " + maximumPortDepth);
+                        }
+                        // Insert the hashtable entry.
+                        _portToDepth.put(input, new Integer(maximumPortDepth));
+                    }
+                }
+            }
             // we skip the ports of the container.
             if (portContainer.equals(getContainer())) {
                 continue;
@@ -1514,10 +1563,7 @@ public class DEDirector extends Director implements TimedDirector {
                     // An embedded director should process events
                     // that only happen at the current tag.
                     // If the event is in the past, that is an error.
-                    if ((nextEvent.timeStamp().compareTo(getModelTime()) < 0)
-                            ||
-                            (nextEvent.timeStamp().equals(getModelTime())
-                                    && (nextEvent.microstep() < _microstep))) {
+                    if (nextEvent.timeStamp().compareTo(getModelTime()) < 0) {
                         //missed an event
                         nextEvent = null;
                         throw new IllegalActionException(
@@ -1530,10 +1576,8 @@ public class DEDirector extends Director implements TimedDirector {
                     }
                     // If the event is in the future, it is ignored
                     // and will be processed later.
-                    if ((nextEvent.timeStamp().compareTo(getModelTime()) > 0)
-                            ||
-                            (nextEvent.timeStamp().equals(getModelTime())
-                                    && (nextEvent.microstep() > _microstep))) {
+                    // However, if the microstep gets incremented, that is okay.
+                    if ((nextEvent.timeStamp().compareTo(getModelTime()) > 0)) {
                         //reset the next event
                         nextEvent = null;
                         // jump out of the loop: LOOPLABEL::GetNextEvent
