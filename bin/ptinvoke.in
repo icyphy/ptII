@@ -61,6 +61,68 @@ fi
 # $PTII with forward slashes
 PTII_CLEAN="`echo "$PTII" | sed 's@\\\@/@g'`"
 
+# Determine if we are on windows and try to set JAVAHOME
+windows=no
+if [ "${OSTYPE-no}" = "no" ]; then
+    case "`uname -s`" in
+    CYGWIN*) 
+	windows=yes;;
+    # Tcsh
+    Windows*)
+	windows=yes;;
+    esac
+else    
+    case "${OSTYPE-no}" in
+    # Cygwin Bash
+    cygwin*)
+	windows=yes;;
+    # Tcsh
+    Windows*)
+	windows=yes;;
+    esac
+fi
+
+# Unfortunately, there are issues around setting PTII if your
+# Cygwin installation is installed in c:/cygwin.  
+# Briefly, if Cygwin is installed in c:/cygwin, and your ptII tree
+# is installed in c:/ptII, then if you cd to c:/ptII and do 'pwd',
+# in bash, you will get something like /cygdrive/c/ptII/, which
+# will not work with the JDK.  For details, see
+# $PTII/doc/install.htm#setting.htm 
+if [ "$windows" = "yes" ]; then
+    # Windows via Cygwin32
+    # chdir prints the current directory in DOS format.
+    # The tr command deletes the \r at the end
+    case "`uname -s`" in
+    CYGWIN_ME-*) 
+	# Windows ME is not a real os, and it does not have CMD.
+        # So, we punt
+	PTII_DIR=$PTII;;
+    CYGWIN_98-*) 
+	# Windows 98 is not a real os, and it does not have CMD.
+        # So, we punt
+	PTII_DIR=$PTII;;
+    *)
+	PTII_DIR=`(cd "$PTII"; cmd /c chdir) | tr -d '\r'`
+    esac
+
+    # Set the path to include $PTII/bin so that the Matlab interface
+    # will work.  
+
+    # Unfortunately, we need to change things like d: to /cygdrive/d,
+    # and deal with backslashes.  Note that java does not understand
+    # /cygdrive, so we can't use PTII_CYGDRIVE when we invoke java.
+    PTII_CYGDRIVE=`echo "$PTII_DIR" | sed 's@^\([a-zA-Z]\):@/cygdrive/\1@' | sed 's@\\\\@//@'`
+    
+    # It would be nice to check if the PTII_CYGDRIVE was already in the PATH.
+    PATH="${PTII_CYGDRIVE};$PATH"
+    export PATH
+    base=`/usr/bin/basename "$0"`
+else
+    PTII_DIR=$PTII
+    base=`basename "$0"`
+fi
+
 # Default JDK Home, may have /cygdrive in it
 PTJAVA_DIR="@PTJAVA_DIR@"
 
@@ -71,6 +133,7 @@ PTJAVA_DIR_CLEAN="`echo "$PTJAVA_DIR" | sed 's@/cygdrive/\([a-z]\)@\1:@'`"
 # For Unix, this would be :
 # For Cygwin, this would be ;
 CLASSPATHSEPARATOR="@CLASSPATHSEPARATOR@"
+
 
 ##################################################################
 # Below here, we set up for each of the optional packages.
@@ -525,8 +588,15 @@ and run:
         help="Mescal UI"
 	javastartupclass=mescal.MescalApplication
 	javasourcedir=mescal
-	jarfile="$ALL_JAR${CLASSPATHSEPARATOR}$PTII/mescal/lib/jsat.jar${CLASSPATHSEPARATOR}$PTII/mescal/lib/mescal_java_cup.jar${CLASSPATHSEPARATOR}$PTII/mescal/lib/chloe.jar"
+	jarfile="$ALL_JAR${CLASSPATHSEPARATOR}$PTII/mescal/lib/jsat.jar${CLASSPATHSEPARATOR}$PTII/mescal/lib/mescal_java_cup.jar${CLASSPATHSEPARATOR}${PTII}/mescal/lib/chloe.jar"
 	javaflag="$ALL_JFLAG \"-DmescalBinaries=$PTII/mescal/bin\""
+	if [ "$windows" = "yes" ]; then
+	    PATH="${PTII_CYGDRIVE}/mescal/bin;$PATH"
+	    echo "PATH = $PATH" 
+	else    
+	    LD_LIBRARY_PATH="${PTII}/mescal/lib:${PTII}/mescal/bin:/usr/local/lib:${LD_LIBRARY_PATH}"
+	    echo "LD_LIBRARY_PATH = $LD_LIBRARY_PATH" 
+        fi
 	;;	
     moml)
 	help="This command has no default configuration, use this command \
@@ -681,27 +751,6 @@ and run:
 esac
 
 
-# Determine if we are on windows and try to set JAVAHOME
-windows=no
-if [ "${OSTYPE-no}" = "no" ]; then
-    case "`uname -s`" in
-    CYGWIN*) 
-	windows=yes;;
-    # Tcsh
-    Windows*)
-	windows=yes;;
-    esac
-else    
-    case "${OSTYPE-no}" in
-    # Cygwin Bash
-    cygwin*)
-	windows=yes;;
-    # Tcsh
-    Windows*)
-	windows=yes;;
-    esac
-fi
-
 jdbflags=""
 # ${1#-} will not work under Solaris 8
 #while [ "${1#-}" != "$1" ]; do
@@ -815,47 +864,6 @@ EOF
     # was not one of the args we were looking for.
     break;
 done
-
-# Unfortunately, there are issues around setting PTII if your
-# Cygwin installation is installed in c:/cygwin.  
-# Briefly, if Cygwin is installed in c:/cygwin, and your ptII tree
-# is installed in c:/ptII, then if you cd to c:/ptII and do 'pwd',
-# in bash, you will get something like /cygdrive/c/ptII/, which
-# will not work with the JDK.  For details, see
-# $PTII/doc/install.htm#setting.htm 
-if [ "$windows" = "yes" ]; then
-    # Windows via Cygwin32
-    # chdir prints the current directory in DOS format.
-    # The tr command deletes the \r at the end
-    case "`uname -s`" in
-    CYGWIN_ME-*) 
-	# Windows ME is not a real os, and it does not have CMD.
-        # So, we punt
-	PTII_DIR=$PTII;;
-    CYGWIN_98-*) 
-	# Windows 98 is not a real os, and it does not have CMD.
-        # So, we punt
-	PTII_DIR=$PTII;;
-    *)
-	PTII_DIR=`(cd "$PTII"; cmd /c chdir) | tr -d '\r'`
-    esac
-
-    # Set the path to include $PTII/bin so that the Matlab interface
-    # will work.  
-
-    # Unfortunately, we need to change things like d: to /cygdrive/d,
-    # and deal with backslashes.  Note that java does not understand
-    # /cygdrive, so we can't use PTII_CYGDRIVE when we invoke java.
-    PTII_CYGDRIVE=`echo "$PTII_DIR" | sed 's@^\([a-zA-Z]\):@/cygdrive/\1@' | sed 's@\\\\@//@'`
-    
-    # It would be nice to check if the PTII_CYGDRIVE was already in the PATH.
-    PATH="${PTII_CYGDRIVE};$PATH"
-    export PATH
-    base=`/usr/bin/basename "$0"`
-else
-    PTII_DIR=$PTII
-    base=`basename "$0"`
-fi
 
 # Add the user classpath (we prepend to be able to override classes,
 # but Berkeley prefers to append, so append)
