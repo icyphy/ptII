@@ -330,7 +330,7 @@ test BackwardCompatibility-7.1 {HTVQEncode: Property Class Change} {
         </property>
         <property name="blockHeight" class="ptolemy.data.expr.Parameter" value="2">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="244.0, 124.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="244.0, 124.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -386,6 +386,9 @@ set expressionMoml  "$header
             <property name=\"input\"/>
             <property name=\"multiport\"/>
         </port>
+        <port name=\"step\" class=\"ptolemy.actor.parameters.ParameterPort\">
+            <property name=\"input\"/>
+        </port>
     </entity>
     <entity name=\"fast\" class=\"ptolemy.actor.lib.Ramp\">
         <property name=\"firingCountLimit\" class=\"ptolemy.data.expr.Parameter\" value=\"0\">
@@ -402,6 +405,9 @@ set expressionMoml  "$header
         <port name=\"trigger\" class=\"ptolemy.actor.TypedIOPort\">
             <property name=\"input\"/>
             <property name=\"multiport\"/>
+        </port>
+        <port name=\"step\" class=\"ptolemy.actor.parameters.ParameterPort\">
+            <property name=\"input\"/>
         </port>
     </entity>
     <entity name=\"Expression\" class=\"ptolemy.actor.lib.Expression\">
@@ -463,7 +469,7 @@ test BackwardCompatibility-7.2 {Expression: Property Class Change} {
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="73.0, 25.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="73.0, 25.0">
         </property>
     </property>
     <entity name="slow" class="ptolemy.actor.lib.Ramp">
@@ -473,7 +479,7 @@ test BackwardCompatibility-7.2 {Expression: Property Class Change} {
         </property>
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="PI/100.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="63.0, 113.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="63.0, 113.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -481,6 +487,9 @@ test BackwardCompatibility-7.2 {Expression: Property Class Change} {
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
+        </port>
+        <port name="step" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
         </port>
     </entity>
     <entity name="fast" class="ptolemy.actor.lib.Ramp">
@@ -490,7 +499,7 @@ test BackwardCompatibility-7.2 {Expression: Property Class Change} {
         </property>
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="PI/10.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="63.0, 200.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="63.0, 200.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -499,11 +508,14 @@ test BackwardCompatibility-7.2 {Expression: Property Class Change} {
             <property name="input"/>
             <property name="multiport"/>
         </port>
+        <port name="step" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+        </port>
     </entity>
     <entity name="Expression" class="ptolemy.actor.lib.Expression">
         <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="cos(slow) + cos(fast)">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="202.0, 191.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="202.0, 191.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -519,7 +531,7 @@ test BackwardCompatibility-7.2 {Expression: Property Class Change} {
         <property name="filename" class="ptolemy.data.expr.Parameter" value="&quot;&quot;">
         </property>
         <doc>Write to a file</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="428.0, 205.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="428.0, 205.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -559,7 +571,7 @@ set editorFactoryMoml  "$header
       </svg>
     </configure>
         </property>
-        <property name=\"_location\" class=\"ptolemy.moml.Location\" value=\"355.0, 200.0\">
+        <property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"355.0, 200.0\">
         </property>
     </property>
 </entity>"
@@ -589,7 +601,7 @@ test BackwardCompatibility-8.1 {Is a parameter, does not have _editorFactory} {
       </svg>
     </configure>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="355.0, 200.0">
+        <property name="_location" class="ptolemy.moml.kernel.util.Location" value="355.0, 200.0">
         </property>
         <property name="_editorFactory" class="ptolemy.kernel.util.Attribute">
         </property>
@@ -632,7 +644,7 @@ test BackwardCompatibility-9.1 {annotation named annotation1 without a _hideName
     <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
     </property>
     <property name="0:annotation1" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.moml.Location" value="426.0, 80.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="426.0, 80.0">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -653,7 +665,7 @@ model is known as a Lorenz attractor.</text>
 </entity>
 }}
 
-test FilterBackwardCompatiblity-10.1 {Try running old models, first check that the makefile created the compat/ directory} { 
+test BackwardCompatiblity-10.1 {Try running old models, first check that the makefile created the compat/ directory} { 
     if {! [file exists compat]} {
 	error "compat directory does not exist.  This could happen\
 		If you do not have access to old Ptolemy II tests"
