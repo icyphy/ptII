@@ -113,39 +113,6 @@ public abstract class AbstractActionsAttribute extends Action {
         }
     }
 
-    /** Return the list of destination names given in expression set
-     *  for this attribute.  If no destinations are specified, then return
-     *  an empty list.
-     */
-    public List getDestinationNameList() {
-        if(_destinationNames == null) {
-            return new LinkedList();
-        } else {
-            return Collections.unmodifiableList(_destinationNames);
-        }
-    }
-
-    /** Return the destination object referred to by the given name.
-     *  Depending on the subclass of this class, this might be a variable,
-     *  or an output port.
-     *  @exception IllegalActionException If the given name is not a valid
-     *  destination for this action.
-     */
-    public NamedObj getDestination(String name)
-            throws IllegalActionException {
-        return _getDestination(name);
-    }
-
-    /** Return the expression referred to by the given name.  When the
-     *  action is executed, this expression will be evaluated and
-     *  assigned to the object associated with the name.
-     */
-    public String getExpression(String name) {
-        Variable var = (Variable) _variables.get(
-                _destinationNames.indexOf(name));
-        return var.getExpression();
-    }
-
     /** Return the channel number associated with the given name, assuming
      *  that the destination is a port object.
      *  @exception IllegalActionException If the name does not refer to a
@@ -160,6 +127,39 @@ public abstract class AbstractActionsAttribute extends Action {
                    "No channel was specified for " + name);
        }
        return integer.intValue();
+    }
+
+    /** Return the destination object referred to by the given name.
+     *  Depending on the subclass of this class, this might be a variable,
+     *  or an output port.
+     *  @exception IllegalActionException If the given name is not a valid
+     *  destination for this action.
+     */
+    public NamedObj getDestination(String name)
+            throws IllegalActionException {
+        return _getDestination(name);
+    }
+
+    /** Return the list of destination names given in expression set
+     *  for this attribute.  If no destinations are specified, then return
+     *  an empty list.
+     */
+    public List getDestinationNameList() {
+        if(_destinationNames == null) {
+            return new LinkedList();
+        } else {
+            return Collections.unmodifiableList(_destinationNames);
+        }
+    }
+
+    /** Return the expression referred to by the given name.  When the
+     *  action is executed, this expression will be evaluated and
+     *  assigned to the object associated with the name.
+     */
+    public String getExpression(String name) {
+        Variable var = (Variable) _variables.get(
+                _destinationNames.indexOf(name));
+        return var.getExpression();
     }
 
     /** Test if a channel number is associated with the given name.
@@ -203,8 +203,8 @@ public abstract class AbstractActionsAttribute extends Action {
             int equalSign = command.indexOf("=");
             if (equalSign < 1 || equalSign >= command.length()-1) {
                 throw new IllegalActionException(this,
-                        "Malformed action: expected destination == expression."
-                        + " Got: "
+                        "Malformed action: expected destination == "
+                        + "expression. Got: "
                         + command);
             }
 
@@ -217,8 +217,8 @@ public abstract class AbstractActionsAttribute extends Action {
                 int closeParen = completeDestinationSpec.indexOf(")");
                 if (closeParen < openParen) {
                     throw new IllegalActionException(this,
-                            "Malformed action: expected destination == expression. "
-                            + "Got: "
+                            "Malformed action: expected destination == "
+                            "expression. Got: "
                             + command);
                 }
                 _destinationNames.add(
