@@ -1182,6 +1182,9 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
 
         // if the target is Token, return a null pointer
         if (targetKind == ExtendedJavaTypeIdentifier.TYPE_KIND_TOKEN) {
+	    System.err.println("Warning: ExtendedJavaConverter."
+				   + "convertExprToToken(): target is of type "
+				   + "Token, returning null");
 	    if (_debug) {
 		System.out.println("ExtendedJavaConverter."
 				   + "convertExprToToken(): "
@@ -1448,7 +1451,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
 
 	    case ExtendedJavaTypeIdentifier.TYPE_KIND_INT_ARRAY:
                 return new MethodCallNode(new TypeFieldAccessNode(
-                        new NameNode(AbsentTreeNode.instance, "toIntArray"),
+                        new NameNode(AbsentTreeNode.instance, "toIntegerArray"),
 			_arrayMathClassNodeForKind(exprKind)),
                         TNLManip.addFirst(expr));
 
