@@ -42,7 +42,6 @@ import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import java.util.Random;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// Customer
 /**
@@ -65,6 +64,11 @@ public class Customer extends CSPActor {
      *  port, of width one, called "output".
      *  The object is added to the workspace directory.
      *  Increment the version number of the workspace.
+     *  @exception IllegalActionException If the port or parameter cannot 
+     *   be contained by this actor.
+     *  @exception NameDuplicationException If the port name coincides with
+     *   a port already in this actor, or if the parameter name coincides with
+     *   a parameter already in this actor
      */
     public Customer() throws IllegalActionException, NameDuplicationException {
         super();

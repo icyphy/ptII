@@ -54,6 +54,8 @@ public class CSPSieve extends CSPActor {
     /** Calls the super class constructor and creates the neccessary ports.
      *  @exception NameDuplicationException is thrown if more than one port
      *  with the same name is added to the star
+     *  @exception IllegalActionException If the entity cannot be contained
+     *   by the proposed container.
      */
     public CSPSieve(CompositeActor container, String name, int prime)
             throws NameDuplicationException, IllegalActionException {
@@ -70,6 +72,8 @@ public class CSPSieve extends CSPActor {
     /** Reads one Token from it's input port and writes this token to
      *  it's output ports. Needs to read one token for every output
      *  port.
+     *  @exception IllegalActionException If an error occurs during 
+     *   executing the process.
      */
     public void fire() throws IllegalActionException {
         Token data;

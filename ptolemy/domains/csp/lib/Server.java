@@ -63,6 +63,11 @@ public class Server extends CSPActor {
      *  called "input".
      *  The object is added to the workspace directory.
      *  Increment the version number of the workspace.
+     *  @exception IllegalActionException If the port or parameter cannot 
+     *   be contained by this actor.
+     *  @exception NameDuplicationException If the port name coincides with
+     *   a port already in this actor, or if the parameter name coincides with
+     *   a parameter already in this actor
      */
     public Server() throws IllegalActionException, NameDuplicationException {
         super();
@@ -100,9 +105,9 @@ public class Server extends CSPActor {
      *  <p>
      *  @param container The CompositeActor that contains this actor.
      *  @param name The actor's name.
+     *  @param rate The rate at which customers are served.
      *  @exception IllegalActionException If the entity cannot be contained
      *   by the proposed container.
-     *  @param rate The rate at which customers are served.
      *  @exception NameDuplicationException If the name argument coincides with
      *   an entity already in the container.
      */

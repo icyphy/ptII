@@ -54,7 +54,7 @@ buffer on the right. Two ports are needed to communicate with each philosopher
 as the philosopher holds the chopstick for some random time.
 <p>
 @author Neil Smyth
-@version 
+@version $Id$
 
 */
 
@@ -67,6 +67,11 @@ public class CSPChopstick extends CSPActor {
      *  and "rightOut".
      *  The object is added to the workspace directory.
      *  Increment the version number of the workspace.
+     *  @exception IllegalActionException If the port or parameter cannot 
+     *   be contained by this actor.
+     *  @exception NameDuplicationException If the port name coincides with
+     *   a port already in this actor, or if the parameter name coincides with
+     *   a parameter already in this actor
      */
     public CSPChopstick() 
             throws IllegalActionException, NameDuplicationException{
