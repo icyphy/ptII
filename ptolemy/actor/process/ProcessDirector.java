@@ -301,6 +301,9 @@ public class ProcessDirector extends Director {
     public void stop() {
         // Set this before calling stopThread(), in case the thread
         // needs to distinguish between stopFire() and this method.
+        if (_debugging) {
+            _debug("stop() has been called.");
+        }
         _stopRequested = true;
         Iterator threads = _actorThreadList.iterator();
         while (threads.hasNext() ) {
@@ -322,6 +325,9 @@ public class ProcessDirector extends Director {
      *  non-blocking.
      */
     public void stopFire() {
+        if (_debugging) {
+            _debug("stopFire() has been called.");
+        }
         Iterator threads = _actorThreadList.iterator();
         while (threads.hasNext() ) {
             ProcessThread thread = (ProcessThread)threads.next();
@@ -428,12 +434,13 @@ public class ProcessDirector extends Director {
 
             // wait until all process threads stop
             synchronized (this) {
-                while (_activeActorCount > 0)
+                while (_activeActorCount > 0) {
                     try {
                         wait();
                     } catch (InterruptedException ex) {
                         // ignore, wait until all process threads stop
                     }
+                }
             }
         }
     }
