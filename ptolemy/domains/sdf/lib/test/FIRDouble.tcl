@@ -63,11 +63,8 @@ test FIRDouble-1.1 {Test FIRDouble} {
      [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
 
     # Set the taps for the FIRDouble
-    set taps [java::new {double[][]} 1 [list [list -0.040609 -0.001628 \
-	0.17853 0.37665 0.37665 0.17853 -0.001628 -0.040609]] ]
-    set tapMatrix [java::new {ptolemy.data.DoubleMatrixToken} $taps ]
     set tapParam [getParameter $clone taps]
-    $tapParam setToken $tapMatrix
+    $tapParam setExpression {[-0.040609,-0.001628,0.17853,0.37665,0.37665,0.17853,-0.001628,-0.040609]}
 
     [$e0 getManager] execute
     epsilonDiff \
