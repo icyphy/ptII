@@ -1996,7 +1996,7 @@ public class PlotBox extends Panel {
                     if (xtick) addXTick(label, idx);
                     else addYTick(label, idx);
                 } catch (NumberFormatException e) {
-                    System.err.println("Warning from PlotBox: " + 
+                    System.err.println("Warning from PlotBox: " +
                     "Unable to parse ticks: " + e.getMessage());
                     // ignore if format is bogus.
                 }

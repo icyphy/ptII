@@ -194,7 +194,7 @@ public abstract class PlotLive extends Plot implements Runnable {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /** @serial Thread of this plotter */ 
+    /** @serial Thread of this plotter */
     private Thread _plotLiveThread = null;
 
     /** @serial True if we are actually plotting. */
@@ -202,7 +202,7 @@ public abstract class PlotLive extends Plot implements Runnable {
     /** @serial True if we are paused. */
     private boolean _paused = false;
 
-    /** @serial Start and Stop Buttons. */ 
+    /** @serial Start and Stop Buttons. */
     private Button _startButton, _stopButton;
 
     ///////////////////////////////////////////////////////////////////

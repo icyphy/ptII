@@ -68,7 +68,7 @@ import java.util.*;
  * and defaults to 0.5.  The <i>offset</i> is a real number
  * specifying how much the bar of the <i>i</i><sup>th</sup> data set
  * is offset from the previous one.  This allows bars to "peek out"
- * from behind the ones in front.  It defaults to 0.15. 
+ * from behind the ones in front.  It defaults to 0.15.
  * Note that the frontmost data set will be the first one.
  * <p>
  * The width of each bin of the histogram can be specified using:
