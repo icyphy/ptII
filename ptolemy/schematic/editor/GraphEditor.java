@@ -48,6 +48,8 @@ import diva.graph.model.*;
 import diva.graph.toolbox.*;
 import diva.gui.*;
 import diva.gui.toolbox.*;
+import diva.resource.DefaultBundle;
+import diva.resource.RelativeBundle;
 import java.awt.Image;
 import java.awt.event.*;
 import java.io.File;
@@ -243,7 +245,7 @@ public class GraphEditor extends MDIApplication {
 
     /** Initialize the given menubar. Currently, all strings are
      * hard-wired, but maybe we should be getting them out of the
-     * ApplicationResources.
+     * application resources.
      */
     public void initializeMenuBar (JMenuBar mb) {
         Action action;
@@ -364,25 +366,23 @@ public class GraphEditor extends MDIApplication {
     }
 
     /** Initialize the given toolbar. Image icons will be obtained
-     * from the ApplicationResources object and added to the
+     * from the application resources and added to the
      * actions. Note that the image icons are not added to the actions
      * -- if we did that, the icons would appear in the menus, which I
      * suppose is a neat trick but completely useless.
      */
     public void initializeToolBar (JToolBar tb) {
         Action action;
-        ApplicationResources resources = getApplicationResources();
+        RelativeBundle resources = getResources();
 
         // Conventional new/open/save buttons
         action = getAction("New");
-        addToolBarButton(tb, action, null, resources.getImageIcon("New"));
+        addToolBarButton(tb, action, null, resources.getImageIcon("NewImage"));
 
         action = getAction("Open");
-        addToolBarButton(tb, action, null, resources.getImageIcon("Open"));
-
+        addToolBarButton(tb, action, null, resources.getImageIcon("OpenImage"));
         action = getAction("Save");
-        addToolBarButton(tb, action, null, resources.getImageIcon("Save"));
-
+        addToolBarButton(tb, action, null, resources.getImageIcon("SaveImage"));
         //tb.addSeparator();
 
         // Layout combobox
