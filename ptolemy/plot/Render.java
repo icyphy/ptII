@@ -90,6 +90,12 @@ public class Render extends PlotBox {
 //         }
     }
 
+    /** Clear the render object's data structure.
+     */
+    public synchronized void clear() {
+	_imageData = new LinkedList();
+    }
+
     /** Get the current colormap.
      */
     public synchronized int[][] getColormap() {
@@ -133,6 +139,8 @@ public class Render extends PlotBox {
                     setGrid(false);
 
                     setTitle("Sample image");
+		    setYLabel("hertz");
+		    setXLabel("time");
 
                     // Create the stripes in data form (arrays).
                     int[] stripe1 = new int[100];
@@ -152,7 +160,7 @@ public class Render extends PlotBox {
                     stripe2[0] = _LOWCOLOR;
                     
 		    // Reset the data structure.
-		    _imageData = new LinkedList();
+		    clear();
 
                     // Add the stripes to the data structure.
                     for (int i = 1; i <= 50; i++) {
@@ -254,6 +262,7 @@ public class Render extends PlotBox {
         ListIterator imageDataIterator = _imageData.listIterator(0);
 
         while (imageDataIterator.hasNext()) {
+
             int[] currentStripe = (int[])imageDataIterator.next();
             _drawStripe(graphics, currentStripe, x1, (int)x2 - (int)x1);
 	    x1 = x2;
@@ -354,6 +363,7 @@ public class Render extends PlotBox {
 	 double y2 = y1 + height;
 
          for (int i = 0; i < stripe.length; i++) {
+
              _drawPatch(graphics, (int)x, (int)y1, (int)width,
 			(int)y2 - (int)y1, stripe[i]);
 
