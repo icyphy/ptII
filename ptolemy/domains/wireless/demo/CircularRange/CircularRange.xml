@@ -2,9 +2,9 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="CircularRange" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.0-alpha">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={30, 5, 963, 757}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {30, 5, 963, 750}, maximized = false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[748, 641]">
     </property>
@@ -258,6 +258,8 @@ require physical connectivity.</text></svg></configure>
       </svg>
     </configure>
                 </property>
+                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                </property>
                 <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                     <configure>
       <svg>
@@ -272,25 +274,6 @@ require physical connectivity.</text></svg></configure>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="185.0, 260.0">
             </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
-            </entity>
-            <entity name="TrigFunction" class="ptolemy.actor.lib.TrigFunction">
-            </entity>
-            <entity name="Const" class="ptolemy.actor.lib.Const">
-            </entity>
-            <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-            </entity>
-            <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-            </relation>
         </entity>
         <entity name="Display" class="ptolemy.actor.lib.gui.Display">
             <property name="title" class="ptolemy.kernel.util.StringAttribute" value="Received Signals">
@@ -350,13 +333,13 @@ require physical connectivity.</text></svg></configure>
                 </property>
             </property>
             <property name="antenna2" class="ptolemy.vergil.kernel.attributes.PolygonAttribute">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="30">
+                </property>
                 <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 1.0, 0.0, 1.0}">
                 </property>
                 <property name="vertices" class="ptolemy.data.expr.Parameter" value="{0, -5, -5, -15, 5, -15, 0, -5, 0, 15}">
-                </property>
-                <property name="width" value="10">
-                </property>
-                <property name="height" value="30">
                 </property>
             </property>
         </property>
