@@ -304,15 +304,15 @@ public class CSPDirector extends ProcessDirector {
             actor._continue();
             return;
         }
-        System.out.println(Thread.currentThread().getName() + 
-                ": delaying for " + delta);
-        double resumeTime = 0.0;
+        if (delta < 0) {
+            delta = 0.0;
+            System.out.println("Warning: actor( " + actor.getName() +
+                    ") delaying for negative time, treating as zero delay.");
+        }
         _actorsDelayed++;
-        resumeTime = getCurrentTime() + delta;
         // Enter the actor and the time to wake it up into the
         // LinkedList of delayed actors..
-        _registerDelayedActor(resumeTime, actor);
-
+        _registerDelayedActor( (getCurrentTime() + delta), actor);
         _checkForDeadlock();
         return;
     }
@@ -334,6 +334,8 @@ public class CSPDirector extends ProcessDirector {
                 ", delayed = " + _actorsDelayed );
         if (_actorsActive == (_actorsBlocked + _actorsDelayed)) {
             this.notifyAll();
+        } else if (_pauseRequested) {
+            _checkForPause();
         }
     }
 
@@ -389,11 +391,12 @@ public class CSPDirector extends ProcessDirector {
                         Actor actor = (Actor)newActors.nextElement(); 
                         System.out.println("Adding and starting new actor; " +
                                 ((Nameable)actor).getName() + "\n");
-                        //increaseActiveCount should be called before 
+                        // increaseActiveCount should be called before 
                         // createReceivers as that might increase the 
                         // count of processes blocked and deadlocks 
                         // might get detected even if there are no 
-                        //deadlocks
+                        // deadlocks
+                        // FIXME: ask mudit about this.
                         increaseActiveCount();
                         actor.createReceivers();
                         actor.initialize();
@@ -464,19 +467,15 @@ public class CSPDirector extends ProcessDirector {
             throw new InvalidStateException("CSPDirector: failed to " +
                     "create new receivers following a topology " +
                     "change request.");
-        } catch (Exception ex) {
-            System.out.println("arrrgggghhhh!!!" + ex.getClass().getName() + 
-                    ": " + ex.getMessage());
-        }
-        return true;
+        } 
     }
     
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /* Used to keep track of when and for how long processes are delayed.
+    /*  Used to keep track of when and for how long processes are delayed.
      *  @param actor The delayed actor.
-     *  @param actorTime The time at which to rsume the actor.
+     *  @param actorTime The time at which to resume the actor.
      */
     private void _registerDelayedActor(double actorTime, CSPActor actor) {
         DelayListLink newLink = new DelayListLink();
