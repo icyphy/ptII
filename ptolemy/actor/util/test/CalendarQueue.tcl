@@ -67,7 +67,7 @@ test CalendarQueue-2.2 {Construct an empty queue and attempt a take} {
     set queue [java::new ptolemy.actor.util.CalendarQueue $comparator]
     catch {[$queue take]} msg1
     list $msg1
-} {{java.lang.IllegalAccessException: Invoking take() on empty queue is not allowed.}}
+} {{ptolemy.kernel.util.IllegalActionException: Invoking take() on empty queue is not allowed.}}
 
 ######################################################################
 ######################################################################
@@ -398,7 +398,7 @@ test CalendarQueue-4.1 {Tests the getNextKey method} {
             [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] \
             getName] \
 	    [$queue getPreviousKey]
-} {java.lang.IllegalAccessException: Invoking getNextKey() on empty queue is not allowed. 0.0 0.0 0.0 0.0 n5 0.0 0.0 n10 0.0 n4 0.1 n11 0.2 n9 3.0 n2 4.0 n8 7.6 8.9 n3 8.9 50.0 n7 50.0 999.1 n1 999.1}
+} {ptolemy.kernel.util.IllegalActionException: Invoking getNextKey() on empty queue is not allowed. 0.0 0.0 0.0 0.0 n5 0.0 0.0 n10 0.0 n4 0.1 n11 0.2 n9 3.0 n2 4.0 n8 7.6 8.9 n3 8.9 50.0 n7 50.0 999.1 n1 999.1}
 
 
 
@@ -433,7 +433,7 @@ test CalendarQueue-5.1 {Tests remove and includes method} {
     catch {[$queue take]} msg1
     catch {[$queue getNextKey]} msg2
     lappend mylist $msg1 $msg2
-} {0.0 1 0.1 n4 0.1 1 0 0 1 n3 n8 n7 {java.lang.IllegalAccessException: Invoking take() on empty queue is not allowed.} {java.lang.IllegalAccessException: Invoking getNextKey() on empty queue is not allowed.}}
+} {0.0 1 0.1 n4 0.1 1 0 0 1 n3 n8 n7 {ptolemy.kernel.util.IllegalActionException: Invoking take() on empty queue is not allowed.} {ptolemy.kernel.util.IllegalActionException: Invoking getNextKey() on empty queue is not allowed.}}
 
 ######################################################################
 ####
@@ -512,7 +512,7 @@ test CalendarQueue-5.2 {Comprehensive tests of everything} {
             [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] \
             getName] \
 	    [$queue getPreviousKey]
-} {{java.lang.IllegalAccessException: Invoking getNextKey() on empty queue is not allowed.} {java.lang.IllegalAccessException: Invoking take() on empty queue is not allowed.} {java.lang.IllegalAccessException: No take() or valid take() precedes this operation} 0.0 0.0 0.0 1 0.0 n5 0.0 0.0 n10 0.0 0 {java.lang.IllegalAccessException: Invoking take() on empty queue is not allowed.} {java.lang.IllegalAccessException: Invoking getNextKey() on empty queue is not allowed.} 0 0 1 1 n4 0.1 n11 0.2 n9 3.0 n1 999.1 {java.lang.IllegalAccessException: Invoking take() on empty queue is not allowed.} {java.lang.IllegalAccessException: No take() or valid take() precedes this operation} 8.9 n3 8.9 50.0 n7 50.0 999.3 n16 999.3}
+} {{ptolemy.kernel.util.IllegalActionException: Invoking getNextKey() on empty queue is not allowed.} {ptolemy.kernel.util.IllegalActionException: Invoking take() on empty queue is not allowed.} {ptolemy.kernel.util.IllegalActionException: No take() or valid take() precedes this operation} 0.0 0.0 0.0 1 0.0 n5 0.0 0.0 n10 0.0 0 {ptolemy.kernel.util.IllegalActionException: Invoking take() on empty queue is not allowed.} {ptolemy.kernel.util.IllegalActionException: Invoking getNextKey() on empty queue is not allowed.} 0 0 1 1 n4 0.1 n11 0.2 n9 3.0 n1 999.1 {ptolemy.kernel.util.IllegalActionException: Invoking take() on empty queue is not allowed.} {ptolemy.kernel.util.IllegalActionException: No take() or valid take() precedes this operation} 8.9 n3 8.9 50.0 n7 50.0 999.3 n16 999.3}
 
 
 ######################################################################
@@ -549,7 +549,7 @@ test CalendarQueue-6.1 {Test identical entry} {
     catch {[$queue getNextKey]} msg1
     lappend mylist $msg1
 
-} {0.0 1 0.0 n5 0.0 0 0 0 0 n5 n5 n5 n5 {java.lang.IllegalAccessException: Invoking getNextKey() on empty queue is not allowed.}}
+} {0.0 1 0.0 n5 0.0 0 0 0 0 n5 n5 n5 n5 {ptolemy.kernel.util.IllegalActionException: Invoking getNextKey() on empty queue is not allowed.}}
 
 ######################################################################
 ####
@@ -594,7 +594,7 @@ test CalendarQueue-7.1 {Test the clear method} {
     catch {[$queue getNextKey]} msg1
     lappend mylist $msg1
 
-} {0.0 1 0.0 n5 0.0 0 0 0 0 n5 n5 n5 n5 {java.lang.IllegalAccessException: Invoking getNextKey() on empty queue is not allowed.}}
+} {0.0 1 0.0 n5 0.0 0 0 0 0 n5 n5 n5 n5 {ptolemy.kernel.util.IllegalActionException: Invoking getNextKey() on empty queue is not allowed.}}
 
 ######################################################################
 ####
