@@ -103,14 +103,17 @@ CHARS=	alpha.gif \
 	gamma.gif \
 	logic_or.gif \
 	logicand.gif \
-	lt_equal.gif \
+	lt_equal.gif
+
+
+SUPPORT_HTMLS = \
 	$(WPUBLISH_OUTPUT_DIR)/index.html \
 	$(WPUBLISH_OUTPUT_DIR)/support/bottom.gif \
 	$(WPUBLISH_OUTPUT_DIR)/idx.html \
 	$(WPUBLISH_OUTPUT_DIR)/content.html \
 	$(WPUBLISH_OUTPUT_DIR)/search.html
 
-support_htmls:	
+support_htmls:	$(SUPPORT_HTMLS)
 	-mkdir $(WPUBLISH_OUTPUT_DIR)/chars
 	for file in $(CHARS); \
 	do \
