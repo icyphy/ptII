@@ -259,11 +259,11 @@ public class GeneratorTableau extends Tableau {
             // configuration information, use that.  Otherwise, make one.
             GeneratorAttribute attribute =
                 (GeneratorAttribute)
-                model.getAttribute("_generator",
+                model.getAttribute(Copernicus.GENERATOR_NAME);
                         GeneratorAttribute.class);
             if (attribute == null) {
                 attribute = new GeneratorAttribute(
-                        model, "_generator");
+                        model, Copernicus.GENERATOR_NAME);
             }
 
 	    // Update the modelPath parameter with the path to the model
