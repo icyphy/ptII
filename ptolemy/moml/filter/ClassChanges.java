@@ -64,12 +64,13 @@ public class ClassChanges implements MoMLFilter {
      *  rest of the element;
      *
      *  @param container  The container for this attribute.
+     *  @param element The XML element name.
      *  @param attributeName The name of the attribute.
      *  @param attributeValue The value of the attribute.
      *  @return the value of the attributeValue argument.
      */
     public String filterAttributeValue(NamedObj container,
-            String attributeName, String attributeValue) {
+            String element, String attributeName, String attributeValue) {
 
         // This method gets called many times by the MoMLParser,
         // so we try to be smart about the number of comparisons

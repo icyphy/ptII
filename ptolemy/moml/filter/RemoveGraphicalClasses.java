@@ -69,13 +69,14 @@ public class RemoveGraphicalClasses implements MoMLFilter {
      *
      *  @param container  The container for this attribute, ignored
      *  in this method.
+     *  @param element The XML element name.
      *  @param attributeName The name of the attribute, ignored
      *  in this method.
      *  @param attributeValue The value of the attribute.
      *  @return the filtered attributeValue.
      */
     public String filterAttributeValue(NamedObj container,
-            String attributeName, String attributeValue) {
+            String element, String attributeName, String attributeValue) {
 
         // If the nightly build is failing with messages like:
         // " X connection to foo:0 broken (explicit kill or server shutdown)."

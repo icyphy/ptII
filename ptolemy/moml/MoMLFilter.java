@@ -54,7 +54,7 @@ public interface MoMLFilter {
      *  element.  So, for example, if you have:
      *  <pre>
      *    &lt;entity name="foo" class="..."&gt;
-     *       &lt;attribute name="x" value="10"/&gt;
+     *       &lt;property name="x" value="10"/&gt;
      *    &lt;/entity&gt;
      *  </pre>
      *  then this method will be called twice with the container
@@ -82,6 +82,7 @@ public interface MoMLFilter {
      *  save the modified model.
      *
      *  @param container  The container for XML element.
+     *  @param element The XML element name.
      *  @param attributeName The name of the attribute.
      *  @param attributeValue The value of the attribute.
      *  @return A new value for the attribute, or the same value
@@ -89,7 +90,7 @@ public interface MoMLFilter {
      *   to be ignored (unless the attributeValue argument is null).
      */
     public String filterAttributeValue(NamedObj container,
-            String attributeName, String attributeValue);
+            String element, String attributeName, String attributeValue);
 
     /** Make modifications to the specified container, which is
      *  defined in a MoML element with the specified name.

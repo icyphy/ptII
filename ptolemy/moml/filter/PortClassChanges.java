@@ -57,12 +57,13 @@ public class PortClassChanges implements MoMLFilter {
      *
      *  @param container  The container for this attribute.
      *  in this method.
+     *  @param element The XML element name.
      *  @param attributeName The name of the attribute.
      *  @param attributeValue The value of the attribute.
      *  @return the value of the attributeValue argument.
      */
     public String filterAttributeValue(NamedObj container,
-            String attributeName, String attributeValue) {
+            String element, String attributeName, String attributeValue) {
 
         // This method gets called many times by the MoMLParser,
         // so we try to be smart about the number of comparisons
@@ -227,5 +228,36 @@ public class PortClassChanges implements MoMLFilter {
         _actorsWithPortClassChanges
             .put("ptolemy.domains.de.lib.Server",
             serverPortChanges);
+        
+        // ImagePartition input and output are now TypedIOPort
+        HashMap sdfPortChanges = new HashMap();
+        sdfPortChanges.put(
+                "ptolemy.domains.sdf.kernel.SDFIOPort",
+                "ptolemy.actor.TypedIOPort");
+        HashMap inputOutputTypedIOPortClassChanges = new HashMap();
+        inputOutputTypedIOPortClassChanges.put("input",
+                sdfPortChanges);
+        inputOutputTypedIOPortClassChanges.put("output",
+                sdfPortChanges);
+
+        _actorsWithPortClassChanges
+                .put("ptolemy.domains.sdf.lib.vq.ImagePartition",
+                inputOutputTypedIOPortClassChanges);
+        
+        // ImageUnpartition
+        _actorsWithPortClassChanges
+                .put("ptolemy.domains.sdf.lib.vq.ImageUnpartition",
+                inputOutputTypedIOPortClassChanges);
+
+        // HTVQEncode
+        _actorsWithPortClassChanges
+                .put("ptolemy.domains.sdf.lib.vq.HTVQEncode",
+                inputOutputTypedIOPortClassChanges);
+
+        // VQDecode
+        _actorsWithPortClassChanges
+               .put("ptolemy.domains.sdf.lib.vq.VQDecode",
+               inputOutputTypedIOPortClassChanges);
+
     }
 }

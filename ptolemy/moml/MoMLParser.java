@@ -386,12 +386,15 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         // Filters can filter out graphical classes, or change
         // the names of ports to handle backward compatibility.
         if (_filterList != null) {
+            String currentElement = _parser.getCurrentElement();
             Iterator filters = _filterList.iterator();
             String filteredValue = value;
             while (filters.hasNext()) {
                 MoMLFilter filter = (MoMLFilter)filters.next();
                 filteredValue =
-                    filter.filterAttributeValue(_current, name,
+                    filter.filterAttributeValue(_current,
+                            currentElement,
+                            name,
                             filteredValue);
             }
 
@@ -405,7 +408,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 // startElement() because we already did it in
                 // attribute().
                 _skipElementIsNew = true;
-                _skipElementName = _parser.getCurrentElement();
+                _skipElementName = currentElement;
                 // Is there ever a case when _skipElement would not
                 // be 0 here?  I'm not sure . . .
                 _skipElement++;

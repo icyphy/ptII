@@ -79,12 +79,13 @@ public class MultiportToSinglePort implements MoMLFilter {
      *
      *  @param container  The container for this attribute.
      *  in this method.
+     *  @param element The XML element name.
      *  @param attributeName The name of the attribute.
      *  @param attributeValue The value of the attribute.
      *  @return the value of the attributeValue argument.
      */
     public String filterAttributeValue(NamedObj container,
-            String attributeName, String attributeValue) {
+            String element, String attributeName, String attributeValue) {
 
         //System.out.println("filterAttributeValue: " + container + "\t"
         //  +  attributeName + "\t" + attributeValue);

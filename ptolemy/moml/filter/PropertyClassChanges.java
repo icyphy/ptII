@@ -84,22 +84,28 @@ import ptolemy.moml.MoMLParser;
 */
 public class PropertyClassChanges implements MoMLFilter {
 
-    /**  If the attributeName is "class" and attributeValue names a
-     *        class that has had its port names changed between releases,
-     *  then substitute in the new port names.
-     *
+    /** Return new class names for properties that have been
+     *  registered as having changed classes. This filter
+     *  may also return null to remove the element.
      *  @param container  The container for this attribute.
      *  in this method.
+     *  @param element The XML element name.
      *  @param attributeName The name of the attribute.
      *  @param attributeValue The value of the attribute.
-     *  @return the value of the attributeValue argument.
+     *  @return The value of the attributeValue argument or
+     *   a new value if the value has changed.
      */
     public String filterAttributeValue(NamedObj container,
-            String attributeName, String attributeValue) {
+            String element, String attributeName, String attributeValue) {
+
+        // If you change this class, you should run before and after
+        // timing tests on large moml files, a good command to run
+        // is:
+        // $PTII/bin/ptolemy -test $PTII/ptolemy/domains/ct/demo/CarTracking/CarTracking.xml
+        // which will open up a large xml file and then close after 2 seconds.
 
         // System.out.println("filterAttributeValue: " + container + "\t"
         //  +  attributeName + "\t" + attributeValue);
-
 
         // This method gets called many times by the MoMLParser,
         // so we try to be smart about the number of comparisons
@@ -115,7 +121,9 @@ public class PropertyClassChanges implements MoMLFilter {
         if (attributeName.equals("name")) {
             // Save the name of the attribute for later use if we see a "class"
             _lastNameSeen = attributeValue;
-            if (_currentlyProcessingActorWithPropertyClassChanges) {
+            if (_currentlyProcessingActorWithPropertyClassChanges
+                    && element != null
+                    && element.equals("property")) {
                 if (_propertyMap.containsKey(attributeValue)) {
                     // We will do the above checks only if we found a
                     // class that had property class changes.
@@ -138,12 +146,6 @@ public class PropertyClassChanges implements MoMLFilter {
                 }
             }
         }
-
-        // If you change this class, you should run before and after
-        // timing tests on large moml files, a good command to run
-        // is:
-        // $PTII/bin/ptolemy -test $PTII/ptolemy/domains/ct/demo/CarTracking/CarTracking.xml
-        // which will open up a large xml file and then close after 2 seconds.
 
         if (attributeName.equals("class")) {
             if (_actorsWithPropertyClassChanges
@@ -169,12 +171,10 @@ public class PropertyClassChanges implements MoMLFilter {
                 _newClass = null;
                 _foundChange = false;
                 return temporaryNewClass;
-            } else if (  _currentlyProcessingActorWithPropertyClassChanges
+            } else if (_currentlyProcessingActorWithPropertyClassChanges
                     && container != null
-                    && !container.getFullName()
-                    .equals(_currentActorFullName)
-                    && !container.getFullName()
-                    .startsWith(_currentActorFullName)) {
+                    && !container.getFullName().equals(_currentActorFullName)
+                    && !container.getFullName().startsWith(_currentActorFullName)) {
                 // We found another class in a different container
                 // while handling a class with port name changes
                 _currentlyProcessingActorWithPropertyClassChanges = false;
@@ -317,17 +317,6 @@ public class PropertyClassChanges implements MoMLFilter {
             .put("ptolemy.actor.lib.io.DirectoryListing",
                     directoryListingClassChanges);
 
-        // ImagePartition
-        HashMap inputOutputTypedIOPortClassChanges = new HashMap();
-        inputOutputTypedIOPortClassChanges.put("input",
-                "ptolemy.actor.TypedIOPort");
-        inputOutputTypedIOPortClassChanges.put("output",
-                "ptolemy.actor.TypedIOPort");
-
-        _actorsWithPropertyClassChanges
-        .put("ptolemy.domains.sdf.lib.vq.ImagePartition",
-                inputOutputTypedIOPortClassChanges);
-
         // SRDirector
         HashMap srDirectorClassChanges = new HashMap();
         // Key = property name, Value = new class name
@@ -369,21 +358,6 @@ public class PropertyClassChanges implements MoMLFilter {
         _actorsWithPropertyClassChanges
             .put("ptolemy.domains.ct.lib.ZeroCrossingDetector",
                     zeroCrossingDetectorClassChanges);
-
-        // ImageUnpartition
-        _actorsWithPropertyClassChanges
-            .put("ptolemy.domains.sdf.lib.vq.ImageUnpartition",
-                    inputOutputTypedIOPortClassChanges);
-
-        // HTVQEncode
-        _actorsWithPropertyClassChanges
-            .put("ptolemy.domains.sdf.lib.vq.HTVQEncode",
-                    inputOutputTypedIOPortClassChanges);
-
-        // VQDecode
-        _actorsWithPropertyClassChanges
-            .put("ptolemy.domains.sdf.lib.vq.VQDecode",
-                    inputOutputTypedIOPortClassChanges);
 
         // SDF actors don't record rates.
         HashMap rateParameterChanges = new HashMap();

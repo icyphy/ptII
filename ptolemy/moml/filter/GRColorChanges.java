@@ -57,6 +57,7 @@ public class GRColorChanges implements MoMLFilter {
     
     /** Handle parameter name changes.
      *  @param container  The container for XML element.
+     *  @param element The XML element name.
      *  @param attributeName The name of the attribute.
      *  @param attributeValue The value of the attribute.
      *  @return A new value for the attribute, or the same value
@@ -64,7 +65,7 @@ public class GRColorChanges implements MoMLFilter {
      *   to be ignored (unless the attributeValue argument is null).
      */
     public String filterAttributeValue(NamedObj container,
-            String attributeName, String attributeValue) {
+            String element, String attributeName, String attributeValue) {
         if (attributeValue != null && attributeName != null) {
             if (attributeValue.equals("RGB Color")
                     && attributeName.equals("name")
