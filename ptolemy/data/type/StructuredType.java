@@ -66,11 +66,25 @@ public interface StructuredType extends Type {
      */
     public int compare(StructuredType t);
 
+    /** Determine if the specified StructuredType is a direct or
+     *  indirect user of this type. This method returns true if the
+     *  argument is this StructuredType itself, or is the user of this
+     *  StructuredType, or the user on a higher level.
+     *  @return A boolean.
+     */
+    public booean deepIsUser(StructuredType st);
+
     /** Return a static instance of this structured type. The return
      *  value is used by TypeLattice to represent this type.
      *  @return a StructuredType.
      */
     public StructuredType getRepresentative();
+
+    /** Return the user of this StructuredType. If the user is not set,
+     *  return null.
+     *  @return An Object.
+     */
+    public Object getUser();
 
     /** Return the greatest lower bound of this type with the specified
      *  type. The specified type must be of the same structured type,
@@ -91,5 +105,13 @@ public interface StructuredType extends Type {
      *   not the same structured type as this one.
      */
     public StructuredType leastUpperBound(StructuredType t);
+
+    /** Set the user of this StructuedType. This method can only be
+     *  called once. Otherwise, an exception will be thrown.
+     *  @param Object The user.
+     *  @exception IllegalActionException If this method is called more
+     *   than once.
+     */
+    public void setUser(Object user) throws IllegalActionException;
 }
 
