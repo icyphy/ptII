@@ -42,36 +42,42 @@ Base class for integrators for continuous time simulation.
 An integrator has one input port and one output port. Conceptually,
 the input is the differential of the output. So an ordinary
 differential equation dx/dt = f(x,t) can be represented by:
-<code><P>
-                ---------------<BR>
-        dx/dt  |               |   x<BR>
-     --------->|   Integrator  |-----------------><BR>
-    |          |               |         |<BR>
-    |           ---------------          |<BR>
-    |                                    |<BR>
-    |             |---------|            |<BR>
-    |-------------| f(x,t)  |<-----------|<BR>
-                  |---------|<BR<
-</code><P>
+<P>
+<pre>
+<pre>               +---------------+
+<pre>        dx/dt  |               |   x
+<pre>    +--------->|   Integrator  |---------+----->
+<pre>    |          |               |         |
+<pre>    |          +---------------+         |
+<pre>    |                                    |
+<pre>    |             |---------|            |
+<pre>    +-------------| f(x,t)  |<-----------+
+<pre>                  |---------|
+</pre></pre></pre></pre></pre></pre></pre></pre></pre></pre>
+
+<P>
 An integrator
 is a dynamic actor that emit a token (internal state) at the beginning
 of the simulation. An integrator is an error control actor that can control
 the accuracy of the ODE solution by adjusting step sizes. An integrator has
 one memory, which is its state. 
 <P>
-For different ODE solving method, the functionality
+For different ODE solving methods, the functionality
 of a integrator could be different. This class provide a basic
-implementation of the integrator, in which the hook methods points to the
-current ODE solver.
+implementation of the integrator, in which some solver-dependent method
+are hooked to the current ODE solver.
 <P>
-An integrator has one parameter: <code>initialState</code>. At the first
-step of a simulaition, the initialState will be emitted. The  
-initialState will not impact the simulation
+An integrator has one parameter: <code>initialState</code>. At the 
+initialization stage of the simulation, the state of the integrator is 
+set to the initial state. The initialState will not impact the simulation
 after the simulation starts. The default value of the parameter is 0.
-An integrator has one state, and possibly several auxiliary variables--
+An integrator can possibly have several auxiliary variables--
 <code>_auxVariables</code>. The number of <code>_auxVariabless</code> is get
-from the ODE solver.
-
+from the ODE solver. 
+<P>
+The integrator has a history array, which remembered the states and 
+their derivative for the past several steps. The history is used for
+multistep methods.
 
 @author Jie Liu
 @version $Id$
@@ -82,12 +88,11 @@ public class CTBaseIntegrator extends CTActor
         implements CTErrorControlActor, CTDynamicActor, CTMemarisActor {
     /** Construct an integrator in the default workspace with an
      *  empty string name.
+     *  A integrator has one single input port and one single
+     *  output port.
      *  The object is added to the workspace directory.
      *  Increment the version number of the workspace.
-     *  A integrator is dynamic, with a single input port and a single
-     *  output port.
      *
-     *  @param isDynamic true if the actor is a dynamic actor.
      *  @exception NameDuplicationException Never thrown.
      *  @exception IllegalActionException Never thrown.
      */
@@ -109,11 +114,11 @@ public class CTBaseIntegrator extends CTActor
 
     /** Construct an integrator in the specified workspace with an empty
      *  string as the name. You can then change the name with setName().
+     *  A integrator has one single input port and one single
+     *  output port.
      *  If the workspace argument is null, then use the default workspace.
      *  The object is added to the workspace directory.
      *  Increment the version number of the workspace.
-     *  A integrator is dynamic, with a single input port and a single
-     *  output port.
      *
      *  @param workspace The workspace that will list the entity.
      *  @exception NameDuplicationException Never thrown.
@@ -136,7 +141,7 @@ public class CTBaseIntegrator extends CTActor
 
     /** Construct an integrator, with a name, a input port, a output port
      *  and a CTSubSystem as the container.
-     *  A integrator is dynamic, with a single input port and a single
+     *  A integrator has one single input port and one single
      *  output port.
      *
      * @param container The CTSubSystem that contains this integrator.
@@ -165,8 +170,8 @@ public class CTBaseIntegrator extends CTActor
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Fire method in the execution sequence. It in turn calls
-     *  the integratorFire() of the ODE solver of the director.
+    /** Fire() method in the execution sequence. It in turn calls
+     *  the integratorFire() of the current ODE solver.
      *
      *  @exception IllegalActionException If there's no director or the
      *       director has no ODE solver, or thrown by integratorFire()
@@ -186,8 +191,8 @@ public class CTBaseIntegrator extends CTActor
         solver.integratorFire(this);
     }
 
-    /** Return the _auxVariabless in a double array. This method get the
-     *  _auxVariabless stored in the integrator. Return null if the
+    /** Return the _auxVariables in a double array. This method get the
+     *  _auxVariables stored in the integrator. Return null if the
      *  _auxVariables has never been created.
      *
      *  @return The _auxVariabless in a double array.
@@ -197,9 +202,11 @@ public class CTBaseIntegrator extends CTActor
     }
 
     /** Return the history information of the last index-th step.
-     *  The history array has langth 2, where<Br>
-     *  history[0] is the state at the last index-th step;<Br>
-     *  history[1] is its derivative.<Br>
+     *  The history array is a two dimensional array, in which 
+     *  the first dimension is the capacity of the history,
+     *  and the second dimension has length 2.<BR> 
+     *  history[*][0] is the state at the last index-th step;<Br>
+     *  history[*][1] is its derivative.<Br>
      *  @param index The index
      *  @return The history array at that index point.
      *  @exception IllegalActionException If the index is out of bound.
@@ -244,7 +251,8 @@ public class CTBaseIntegrator extends CTActor
         return _state;
     }
 
-    /** Update initial state parameter.
+    /** Update initial state parameter. Set the initial state to
+     *  the potential state.
      *
      *  @exception IllegalActionException If there's no director or
      *       the director has no ODE solver, or thrown by the
@@ -255,22 +263,27 @@ public class CTBaseIntegrator extends CTActor
         _potentialState = _initState;
     }
 
-    /** Excite output.
+    /** Emit the potential states.
+     *  @exception IllegalActionException Never thrown in this class.
      */
     public void emitPotentialStates() throws IllegalActionException {
         output.broadcast(new DoubleToken(_potentialState));
     }
 
-    /** Return true if current step is successful.
+    /** Return true if last integration step is successful.
+     *  It in turn calls the integratorIsSuccess() method of the current
+     *  ODE solver.
+     *  @return True if last integration step is successful.
      */
     public boolean isSuccessful() {
         ODESolver solver = ((CTDirector)getDirector()).getCurrentODESolver();
         return solver.integratorIsSuccess(this);
     }
 
-    /** Postfire method in the execution sequence. It in turn calls
-     *  the integratorPostfire() of ODE solver of the director.
-     *
+    /** Postfire method in the execution sequence. It updates the 
+     *  the states and push the current state and its derivative
+     *  into history.
+     *  @return True always.
      *  @exception IllegalActionException If there's no director or
      *       the director has no ODE solver, or thrown by the
      *       integratorInitialize() of the solver.
@@ -281,9 +294,10 @@ public class CTBaseIntegrator extends CTActor
         return true;
     }
 
-    /** Prefire method in the execution sequence. It in turn calls
-     *  the integratorPrefire() of ODE solver of the director.
-     *
+    /** Prefire method in the execution sequence. This method checks
+     *  if there enough auxVariables in the integrator given the
+     *  current ODE solver. If not, create more auxVariables.
+     *  @return True always.
      *  @exception IllegalActionException If there's no director or
      *       the director has no ODE solver, or thrown by the
      *       integratorInitialize() of the solver.
@@ -307,11 +321,11 @@ public class CTBaseIntegrator extends CTActor
         return true;
     }
 
-    /** Backup the saved state to current state. This method may be used
-     *  for backup the simulation from a previous time point.
+    /** Restore the saved state to current state. This method may be used
+     *  for rollback the simulation from a previous time point.
      */
     public void restoreStates() {
-        setState(_storedState);
+        _setState(_storedState);
         setPotentialState(_storedState);
     }
 
@@ -323,10 +337,8 @@ public class CTBaseIntegrator extends CTActor
         _storedState = getState();
     }
 
-    /** Set the value of a temporary state. The number of temporary states
-     *  is set by newAuxVariables, which in turn calls the
-     *  integratorNewAuxVariables()
-     *  of the solver. If the index is out of the bound of the auxVariables
+    /** Set the value of an auxVariable.  If the index is out of
+     *  the bound of the auxVariables
      *  array, an IllegalActionException is thrown to indicate a error
      *  in the integration method.
      *
@@ -345,16 +357,19 @@ public class CTBaseIntegrator extends CTActor
         }
     }
 
-    /** Set history capacity.
-     *  FIXME: In the current implementation, it does nothing.
-     *
+    /** Set history capacity. If the argument is less than 0,
+     *  the capacity is set to 0.
+     *  @param cap The capacity.
      */
+    // FIXME: In the current implementation, it does nothing.
     public final void setHistoryCapacity(int cap) {
     }
 
     /** Set the potential state. Potential state is the state that
-     *  the ODE solver think to be the fixed point. This may not
+     *  the ODE solver think to be the new state for the integrator.
+     *  It may not
      *  be the final state due to the event detection.
+     *  @param value The value to be set. 
      */
      public final void setPotentialState(double value) {
          _potentialState = value;
@@ -363,34 +378,26 @@ public class CTBaseIntegrator extends CTActor
     /** Set the potential derivative dx/dt. Potential derivative
      *  is the derivative of the state that
      *  the ODE solver think to be at the fixed point. This may not
-     *  be the final state due to the event detection.
+     *  be the final derivative due to the event detection.
+     *  @param value The value to be set. 
      */
     public final void setPotentialDerivative(double value) {
          _potentialDerivative = value;
      }
 
-    /** Set the state of the integrator.
-     *  NOTE: Should only be called by Directors.
-     *
-     *  @param value The value to be set to the state.
-     */
-    public final void setState(double value) {
-        _state = value;
-    }
-
-    /** Return the suggested next step size.
+    /** Return the suggested next step size. It in turn calls the 
+     *  integratorSuggestedNextStepSize() in the current ODE solver.
+     *  @return The suggested next step size.
      */
     public double suggestedNextStepSize() {
         ODESolver solver = ((CTDirector)getDirector()).getCurrentODESolver();
         return solver.integratorSuggestedNextStepSize(this);
     }
 
-    /** Wrapup method in the execution sequence. It in turn calls
-     *  the integratorWrapup() of the ODE solver of the director.
+    /** Wrapup method in the execution sequence. It cleans the 
+     *  unconsumed tokens at the input port.
      *
-     *  @exception IllegalActionException If there's no director or
-     *       the director has no ODE solver, or thrown by the
-     *       integratorInitialize() of the solver.
+     *  @exception IllegalActionException Never thrown.
      */
     public void wrapup() throws IllegalActionException {
         try {
@@ -416,7 +423,8 @@ public class CTBaseIntegrator extends CTActor
      *  If the history capacity is full, then the oldest history
      *  will be lost. The contents of the history storage can be
      *  retrieved by getHistory() method.
-     *  FIXME: In this implementaion, the history storage has
+     */
+    /*  FIXME: In this implementaion, the history storage has
      *        capacity 1.
      */
     protected void _pushHistory(double state, double derivative) {
@@ -424,6 +432,13 @@ public class CTBaseIntegrator extends CTActor
         _history[1] = derivative;
     }
 
+    /** Set the state of the integrator.
+     *
+     *  @param value The value to be set to the state.
+     */
+    protected final void _setState(double value) {
+        _state = value;
+    }
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

@@ -44,11 +44,10 @@ setParam() method at any time, but the parameter will not be used
 immediately until it is updated by the updateParams() method. When a
 parameter is changed, the <code>paramChanged</code> flag is set.
 The parameter will be updated in the updateParams() method, if the
-<code>paramChanged</code> flag is set.  In this base class
-implementation, the updateParams() happens at the prefire()
+<code>paramChanged</code> flag is set.  In this base class,
+ the updateParams() happens at the prefire()
 stage of the iteration, so that the parameters are keep consistent
-during the iteration. Parameters can be get by the getUpdatedParam()
-method.
+during the iteration. 
 @author Jie Liu
 @version $Id$
 @see ptolemy.actor.AtomicActor
@@ -96,7 +95,7 @@ public class CTActor extends TypedAtomicActor implements ParameterListener{
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return true if the paramter has changed from the last time it
+    /** Return true if the parameter has changed from the last time it
      *  was updated.
      *
      *  @return true if the parameter has changed.
@@ -105,14 +104,14 @@ public class CTActor extends TypedAtomicActor implements ParameterListener{
         return _paramChanged;
     }
 
-    /** Set the <code>paramChanged</code> flag to true. The paramter will
+    /** Set the <code>paramChanged</code> flag to true. The parameter will
      *  be updated when the next time the updateParameters() is called.
      */
     public void parameterChanged(ParameterEvent e) {
         _paramChanged = true;
     }
 
-    /** Responds the paramter removed event. Do nothing in this base class.
+    /** Responds the parameter removed event. Do nothing in this base class.
      */
     public void parameterRemoved(ParameterEvent e) {
     }
@@ -132,27 +131,6 @@ public class CTActor extends TypedAtomicActor implements ParameterListener{
         }
         return true;
     }
-
-    /** FIXME: For the reason of domain polymorphic, consider not doing
-     *  this
-     *  Override setContainer() to insure the container is a CTSubSystem
-     *  or null (for removing a CTActor).
-     *
-     *  @param a CTSubSystem that contains this actor.
-     *  @exception IllegalActionException If the container is not an
-     *             instance of CTSubSystem or null.
-     *  @exception NameDuplicationException If the container has
-     *             already contained a object with the name of this
-     *             actor.
-     *
-    public void setContainer(CompositeEntity container)
-            throws IllegalActionException, NameDuplicationException {
-        if(!(container instanceof CTSubSystem) && (container != null)) {
-            throw new IllegalActionException(container,
-                    " is not a CTSubSystem.");
-        }
-        super.setContainer(container);
-    }*/
 
     /** Set the <code>paramChanged</code> flag if the argument
      *  is true, otherwise reset the flag to false.

@@ -38,7 +38,7 @@ import ptolemy.data.*;
 /**
 The receiver for continuous time simulation. This is basically a mailbox
 receiver which has just one capacity. If a token is sent to the receiver
-when the receiver is full, then the old token will be overwirtten.
+when the receiver is full, then the old token will be overwritten.
 @author  Jie Liu
 @version $Id$
 

@@ -33,22 +33,30 @@ import ptolemy.kernel.util.*;
 //////////////////////////////////////////////////////////////////////////
 //// CTMemarisActor
 /**
-An interface for actors that can remembers their state. The states
+An interface for actors that can remember their states. The states
 of the actor can be used for rolling back the simulation when needed.
-This ability is essential when embbeding CT subsystem inside an
+This ability is essential when embedding CT subsystem inside an
 event based system.
+<P>
+The interface defines two methods, saveStates() and restoreStates().
+If the saveStates() method is called, the current states of the actor, 
+for example local variables, should be remembered. When the 
+restoreStates() is called, the saved states should be restored. 
 @author  Jie Liu
 @version $Id$
 @see classname
 @see full-classname
 */
 public interface CTMemarisActor {
+    
+    /** Restore the saved States. If there's no saved states, throws
+     *  an exception.
+     *  @exception IllegalActionException If there were no saved state.
+     */
+    public void restoreStates() throws IllegalActionException ;
+
     /** Save the current state of the actor.
      */
     public void saveStates();
 
-    /** Restore the saved States.
-     *  @exception IllegalActionException If there were no saved state.
-     */
-    public void restoreStates() throws IllegalActionException ;
 }

@@ -35,14 +35,16 @@ import collections.LinkedList;
 //////////////////////////////////////////////////////////////////////////
 //// CTEventGenerateActor
 /**
-Interface for event generator in the CT domain. All event generators,
-including zero-crossing event detector, event triggered sampler,
-and sample-point event generator
-should implement this interface. The event generators can be asked if
-there is an event happened at the current time. If no, then it can be
-further asked if there is a event during the last integration step.
-If so, the event detector should suggest a new step size to further
-finding the event time point.
+Interface for event generator in the CT domain. All actors that may 
+generate unexpected breakpoint should implement this interface.
+An unexpected breakpoint is a breakpoint that can not be known beforehand.
+In particular, all event generators, including zero-crossing event detector, 
+event triggered sampler, and sample-point event generator
+should also implement this interface. An event generating actor can be
+asked if there is an event happened at the current time. If no, then it
+can be further asked if there is a event "missed" during the last 
+integration step. If there is a missed event, the event generator should
+suggest a new step size to further locating the event time point.
 
 @author Jie Liu
 @version  $Id$
@@ -54,7 +56,9 @@ public interface CTEventGenerateActor {
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
 
-    /** Return true if there is defintly an event missed in the
+    /** Return true if there is an event missed in the
+     *  last step.
+     *  @return True if there is an event missed in the
      *  last step.
      */
     public boolean hasMissedEvent();
@@ -62,6 +66,7 @@ public interface CTEventGenerateActor {
     /** Suggest a new refined step size if the there is an event in the
      *  last step. If no event is detected in the last step, returns
      *  the currentStepSize.
+     *  @return The refined step size for locating the missed event.
      */
     public double refineStepSize();
 

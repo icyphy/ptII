@@ -189,8 +189,6 @@ public abstract class ODESolver extends NamedObj {
      *  step is a success.
      *  Different solver may implement it differently.
      *
-     * @exception IllegalActionException Not thrown in this base
-     *  class. May be needed by the derived class.
      */
     public abstract void resolveNextStepSize();
 

@@ -32,12 +32,16 @@ import ptolemy.kernel.util.*;
 //// CTDynamicActor
 /**
 Interface of dynamic actors in the CT domain. Dynamic actors are actors
-that have state and will emit their state at the begining of a execution.
-Typically, integrators and analog filters are dynamic actors.
+that have states and will emit their states at the beginning of an execution.
+Typically, integrators and analog filters are dynamic actors. 
+There is one method defined in this interface, which is
+emitPotentialStates(). The potential state is the (new) state after 
+each iteration (but before postfire). They are emitted for exciting the
+the event generating schedule and the output schedule. The potential 
+states may not be the "real" states, if there is an "missed" event 
+reported during the firing of the event generation schedule.
 @author Jie Liu
 @version $Id$
-@see classname
-@see full-classname
 */
 public interface CTDynamicActor {
     /** Emit the potential state.
