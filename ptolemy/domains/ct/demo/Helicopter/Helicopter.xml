@@ -9,7 +9,7 @@
         </property>
         <property name="initStepSize" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
-        <property name="minStepSize" class="ptolemy.data.expr.Parameter" value="1.0E-3">
+        <property name="minStepSize" class="ptolemy.data.expr.Parameter" value="1.0E-7">
         </property>
         <property name="maxStepSize" class="ptolemy.data.expr.Parameter" value="0.5">
         </property>
@@ -206,15 +206,15 @@ Five controllers are applied sequentially to the modes.</text>
             <relation name="tr1" class="ptolemy.domains.fsm.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="inputAction">
                 </property>
-                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+                <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
                 </property>
                 <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
                 </property>
-                <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
+                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                 </property>
                 <property name="actions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
                 </property>
@@ -222,15 +222,15 @@ Five controllers are applied sequentially to the modes.</text>
             <relation name="tr2" class="ptolemy.domains.fsm.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="(outputV &gt;= 5.0) &amp;&amp; (inputPz&gt; -2.05) &amp;&amp; (inputPz &lt; -1.95)">
                 </property>
-                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+                <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
                 </property>
                 <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
                 </property>
-                <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
+                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                 </property>
                 <property name="actions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
                 </property>
@@ -238,15 +238,15 @@ Five controllers are applied sequentially to the modes.</text>
             <relation name="tr3" class="ptolemy.domains.fsm.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="(outputV &gt; 4.9) &amp;&amp; (outputV &lt; 5.1) &amp;&amp; (outputR &gt; -0.01) &amp;&amp; (outputR &lt; 0.01)">
                 </property>
-                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+                <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
                 </property>
                 <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
                 </property>
-                <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
+                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                 </property>
                 <property name="actions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
                 </property>
@@ -254,15 +254,15 @@ Five controllers are applied sequentially to the modes.</text>
             <relation name="tr4" class="ptolemy.domains.fsm.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="(outputV &gt; 4.9) &amp;&amp; (outputV &lt; 5.1) &amp;&amp; (inputPz &gt; -10.05) &amp;&amp; (inputPz &lt; -9.95)">
                 </property>
-                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+                <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
                 </property>
                 <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
                 </property>
-                <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
+                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                 </property>
                 <property name="actions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
                 </property>
@@ -432,6 +432,8 @@ Five controllers are applied sequentially to the modes.</text>
                 </port>
             </entity>
             <entity name="HPx" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
                 <property name="_location" class="ptolemy.moml.Location" value="240.0, 351.0">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -442,6 +444,8 @@ Five controllers are applied sequentially to the modes.</text>
                 </port>
             </entity>
             <entity name="HDPx" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
                 <property name="_location" class="ptolemy.moml.Location" value="240.0, 387.0">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -452,6 +456,8 @@ Five controllers are applied sequentially to the modes.</text>
                 </port>
             </entity>
             <entity name="HDDPx" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
                 <property name="_location" class="ptolemy.moml.Location" value="240.0, 315.0">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -462,6 +468,8 @@ Five controllers are applied sequentially to the modes.</text>
                 </port>
             </entity>
             <entity name="HD3Px" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
                 <property name="_location" class="ptolemy.moml.Location" value="240.0, 279.0">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -472,6 +480,8 @@ Five controllers are applied sequentially to the modes.</text>
                 </port>
             </entity>
             <entity name="HD4Px" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
                 <property name="_location" class="ptolemy.moml.Location" value="240.0, 207.0">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -482,6 +492,8 @@ Five controllers are applied sequentially to the modes.</text>
                 </port>
             </entity>
             <entity name="HPz" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
                 <property name="_location" class="ptolemy.moml.Location" value="240.0, 171.0">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -492,6 +504,8 @@ Five controllers are applied sequentially to the modes.</text>
                 </port>
             </entity>
             <entity name="HDPz" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
                 <property name="_location" class="ptolemy.moml.Location" value="240.0, 243.0">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -502,6 +516,8 @@ Five controllers are applied sequentially to the modes.</text>
                 </port>
             </entity>
             <entity name="HDDPz" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
                 <property name="_location" class="ptolemy.moml.Location" value="240.0, 135.0">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -512,6 +528,8 @@ Five controllers are applied sequentially to the modes.</text>
                 </port>
             </entity>
             <entity name="HD3Pz" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
                 <property name="_location" class="ptolemy.moml.Location" value="240.0, 63.0">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -522,6 +540,8 @@ Five controllers are applied sequentially to the modes.</text>
                 </port>
             </entity>
             <entity name="HD4Pz" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
                 <property name="_location" class="ptolemy.moml.Location" value="240.0, 99.0">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -800,6 +820,8 @@ Five controllers are applied sequentially to the modes.</text>
                 </port>
             </entity>
             <entity name="HPx" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
                 <property name="_location" class="ptolemy.moml.Location" value="300.0, 323.18182373046875">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -810,6 +832,8 @@ Five controllers are applied sequentially to the modes.</text>
                 </port>
             </entity>
             <entity name="HDPx" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
                 <property name="_location" class="ptolemy.moml.Location" value="300.0, 126.81818008422852">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -820,6 +844,8 @@ Five controllers are applied sequentially to the modes.</text>
                 </port>
             </entity>
             <entity name="HDDPx" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
                 <property name="_location" class="ptolemy.moml.Location" value="300.0, 257.7272720336914">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -830,6 +856,8 @@ Five controllers are applied sequentially to the modes.</text>
                 </port>
             </entity>
             <entity name="HD3Px" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
                 <property name="_location" class="ptolemy.moml.Location" value="300.0, 355.9090881347656">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -840,6 +868,8 @@ Five controllers are applied sequentially to the modes.</text>
                 </port>
             </entity>
             <entity name="HD4Px" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
                 <property name="_location" class="ptolemy.moml.Location" value="300.0, 290.4545593261719">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -850,6 +880,8 @@ Five controllers are applied sequentially to the modes.</text>
                 </port>
             </entity>
             <entity name="HPz" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
                 <property name="_location" class="ptolemy.moml.Location" value="300.0, 159.5454559326172">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -860,6 +892,8 @@ Five controllers are applied sequentially to the modes.</text>
                 </port>
             </entity>
             <entity name="HDPz" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
                 <property name="_location" class="ptolemy.moml.Location" value="300.0, 388.6363525390625">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -870,6 +904,8 @@ Five controllers are applied sequentially to the modes.</text>
                 </port>
             </entity>
             <entity name="HDDPz" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
                 <property name="_location" class="ptolemy.moml.Location" value="300.0, 192.27272033691406">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -880,6 +916,8 @@ Five controllers are applied sequentially to the modes.</text>
                 </port>
             </entity>
             <entity name="HD3Pz" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
                 <property name="_location" class="ptolemy.moml.Location" value="300.0, 94.09091186523438">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -890,6 +928,8 @@ Five controllers are applied sequentially to the modes.</text>
                 </port>
             </entity>
             <entity name="HD4Pz" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
                 <property name="_location" class="ptolemy.moml.Location" value="300.0, 225.0">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -1185,6 +1225,8 @@ Five controllers are applied sequentially to the modes.</text>
                 </port>
             </entity>
             <entity name="HPx" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
                 <property name="_location" class="ptolemy.moml.Location" value="204.0, 351.0">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -1195,6 +1237,8 @@ Five controllers are applied sequentially to the modes.</text>
                 </port>
             </entity>
             <entity name="HDPx" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
                 <property name="_location" class="ptolemy.moml.Location" value="204.0, 63.0">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -1205,6 +1249,8 @@ Five controllers are applied sequentially to the modes.</text>
                 </port>
             </entity>
             <entity name="HDDPx" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
                 <property name="_location" class="ptolemy.moml.Location" value="204.0, 315.0">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -1215,6 +1261,8 @@ Five controllers are applied sequentially to the modes.</text>
                 </port>
             </entity>
             <entity name="HD3Px" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
                 <property name="_location" class="ptolemy.moml.Location" value="204.0, 243.0">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -1225,6 +1273,8 @@ Five controllers are applied sequentially to the modes.</text>
                 </port>
             </entity>
             <entity name="HD4Px" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
                 <property name="_location" class="ptolemy.moml.Location" value="204.0, 171.0">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -1235,6 +1285,8 @@ Five controllers are applied sequentially to the modes.</text>
                 </port>
             </entity>
             <entity name="HPz" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
                 <property name="_location" class="ptolemy.moml.Location" value="204.0, 387.0">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -1245,6 +1297,8 @@ Five controllers are applied sequentially to the modes.</text>
                 </port>
             </entity>
             <entity name="HDPz" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
                 <property name="_location" class="ptolemy.moml.Location" value="204.0, 99.0">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -1255,6 +1309,8 @@ Five controllers are applied sequentially to the modes.</text>
                 </port>
             </entity>
             <entity name="HDDPz" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
                 <property name="_location" class="ptolemy.moml.Location" value="204.0, 135.0">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -1265,6 +1321,8 @@ Five controllers are applied sequentially to the modes.</text>
                 </port>
             </entity>
             <entity name="HD3Pz" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
                 <property name="_location" class="ptolemy.moml.Location" value="204.0, 279.0">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -1275,6 +1333,8 @@ Five controllers are applied sequentially to the modes.</text>
                 </port>
             </entity>
             <entity name="HD4Pz" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
                 <property name="_location" class="ptolemy.moml.Location" value="204.0, 207.0">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -1571,6 +1631,8 @@ Five controllers are applied sequentially to the modes.</text>
                 </port>
             </entity>
             <entity name="HPx" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
                 <property name="_location" class="ptolemy.moml.Location" value="260.0, 388.6363525390625">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -1581,6 +1643,8 @@ Five controllers are applied sequentially to the modes.</text>
                 </port>
             </entity>
             <entity name="HDPx" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
                 <property name="_location" class="ptolemy.moml.Location" value="260.0, 192.27272033691406">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -1591,6 +1655,8 @@ Five controllers are applied sequentially to the modes.</text>
                 </port>
             </entity>
             <entity name="HDDPx" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
                 <property name="_location" class="ptolemy.moml.Location" value="260.0, 355.9090881347656">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -1601,6 +1667,8 @@ Five controllers are applied sequentially to the modes.</text>
                 </port>
             </entity>
             <entity name="HD3Px" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
                 <property name="_location" class="ptolemy.moml.Location" value="260.0, 126.81818008422852">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -1611,6 +1679,8 @@ Five controllers are applied sequentially to the modes.</text>
                 </port>
             </entity>
             <entity name="HD4Px" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
                 <property name="_location" class="ptolemy.moml.Location" value="260.0, 323.18182373046875">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -1621,6 +1691,8 @@ Five controllers are applied sequentially to the modes.</text>
                 </port>
             </entity>
             <entity name="HPz" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
                 <property name="_location" class="ptolemy.moml.Location" value="260.0, 257.7272720336914">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -1631,6 +1703,8 @@ Five controllers are applied sequentially to the modes.</text>
                 </port>
             </entity>
             <entity name="HDPz" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
                 <property name="_location" class="ptolemy.moml.Location" value="260.0, 94.09091186523438">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -1641,6 +1715,8 @@ Five controllers are applied sequentially to the modes.</text>
                 </port>
             </entity>
             <entity name="HDDPz" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
                 <property name="_location" class="ptolemy.moml.Location" value="260.0, 159.5454559326172">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -1651,6 +1727,8 @@ Five controllers are applied sequentially to the modes.</text>
                 </port>
             </entity>
             <entity name="HD3Pz" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
                 <property name="_location" class="ptolemy.moml.Location" value="260.0, 225.0">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -1661,6 +1739,8 @@ Five controllers are applied sequentially to the modes.</text>
                 </port>
             </entity>
             <entity name="HD4Pz" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
                 <property name="_location" class="ptolemy.moml.Location" value="260.0, 290.4545593261719">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -1931,6 +2011,8 @@ Five controllers are applied sequentially to the modes.</text>
                 </port>
             </entity>
             <entity name="HPx" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
                 <property name="_location" class="ptolemy.moml.Location" value="240.0, 279.0">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -1941,6 +2023,8 @@ Five controllers are applied sequentially to the modes.</text>
                 </port>
             </entity>
             <entity name="HDPx" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
                 <property name="_location" class="ptolemy.moml.Location" value="240.0, 63.0">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -1951,6 +2035,8 @@ Five controllers are applied sequentially to the modes.</text>
                 </port>
             </entity>
             <entity name="HDDPx" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
                 <property name="_location" class="ptolemy.moml.Location" value="240.0, 387.0">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -1961,6 +2047,8 @@ Five controllers are applied sequentially to the modes.</text>
                 </port>
             </entity>
             <entity name="HD3Px" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
                 <property name="_location" class="ptolemy.moml.Location" value="240.0, 351.0">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -1971,6 +2059,8 @@ Five controllers are applied sequentially to the modes.</text>
                 </port>
             </entity>
             <entity name="HD4Px" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
                 <property name="_location" class="ptolemy.moml.Location" value="240.0, 171.0">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -1981,6 +2071,8 @@ Five controllers are applied sequentially to the modes.</text>
                 </port>
             </entity>
             <entity name="HPz" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
                 <property name="_location" class="ptolemy.moml.Location" value="240.0, 135.0">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -1991,6 +2083,8 @@ Five controllers are applied sequentially to the modes.</text>
                 </port>
             </entity>
             <entity name="HDPz" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
                 <property name="_location" class="ptolemy.moml.Location" value="240.0, 243.0">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -2001,6 +2095,8 @@ Five controllers are applied sequentially to the modes.</text>
                 </port>
             </entity>
             <entity name="HDDPz" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
                 <property name="_location" class="ptolemy.moml.Location" value="240.0, 99.0">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -2011,6 +2107,8 @@ Five controllers are applied sequentially to the modes.</text>
                 </port>
             </entity>
             <entity name="HD3Pz" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
                 <property name="_location" class="ptolemy.moml.Location" value="240.0, 207.0">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -2021,6 +2119,8 @@ Five controllers are applied sequentially to the modes.</text>
                 </port>
             </entity>
             <entity name="HD4Pz" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
                 <property name="_location" class="ptolemy.moml.Location" value="240.0, 315.0">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -2555,14 +2655,16 @@ Five controllers are applied sequentially to the modes.</text>
             <property name="input"/>
             <property name="multiport"/>
         </port>
-        <configure><?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+        <configure><?plotml
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>Helicopter Position</title>
-<xRange min="-4.193642165171823E-5" max="312.22790418141665"/>
-<yRange min="1.5" max="11.007173166601966"/>
+<xRange min="-4.464903751167566E-5" max="212.36154963308977"/>
+<yRange min="1.5" max="10.975309469683468"/>
 </plot>?>
-                </configure>    </entity>
+        </configure>
+    </entity>
     <entity name="Horizontal Speed" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -2576,14 +2678,16 @@ Five controllers are applied sequentially to the modes.</text>
             <property name="input"/>
             <property name="multiport"/>
         </port>
-        <configure><?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+        <configure><?plotml
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>Horizontal Speed</title>
 <xRange min="0.0" max="70.0"/>
-<yRange min="-3.005456973454998E-4" max="5.231238808607423"/>
+<yRange min="-2.6081690452206085E-4" max="5.3458406199202715"/>
 </plot>?>
-                </configure>    </entity>
+        </configure>
+    </entity>
     <entity name="Vertical Position" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -2597,14 +2701,16 @@ Five controllers are applied sequentially to the modes.</text>
             <property name="input"/>
             <property name="multiport"/>
         </port>
-        <configure><?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+        <configure><?plotml
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>Vertical Position</title>
 <xRange min="0.0" max="70.0"/>
-<yRange min="1.5" max="11.007173166601966"/>
+<yRange min="1.5" max="10.975309469683468"/>
 </plot>?>
-                </configure>    </entity>
+        </configure>
+    </entity>
     <entity name="Pitch Angle" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -2618,14 +2724,16 @@ Five controllers are applied sequentially to the modes.</text>
             <property name="input"/>
             <property name="multiport"/>
         </port>
-        <configure><?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+        <configure><?plotml
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>Pitch Angle</title>
 <xRange min="0.0" max="70.0"/>
-<yRange min="-0.03769854363051949" max="0.04283328124293933"/>
+<yRange min="-0.029413093164408523" max="0.04148829691037313"/>
 </plot>?>
-                </configure>    </entity>
+        </configure>
+    </entity>
     <relation name="_R0" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="rPx" class="ptolemy.actor.TypedIORelation">
