@@ -180,13 +180,9 @@ public class HDFFSMDirector extends FSMDirector {
         State destinationState;
         Transition transition =
             _chooseTransition(state.nonpreemptiveTransitionList());
-        if (transition != null)
-            destinationState = transition.destinationState();
-        else
-            destinationState = state;   
-        
-        if (transition != null) {
 
+        if (transition != null) {
+            destinationState = transition.destinationState();
             TypedActor[] trRefinements = (transition.getRefinement());
 
             Actor[] actors = transition.getRefinement();
@@ -216,6 +212,8 @@ public class HDFFSMDirector extends FSMDirector {
                 action.execute();
             }
             _readOutputsFromRefinement();
+        } else {
+            destinationState = state;
         }
         return destinationState;
     }
@@ -261,7 +259,7 @@ public class HDFFSMDirector extends FSMDirector {
         Actor[] actors = currentState.getRefinement();
         _fireRefinement = false;
 
-        if (actors != null) {
+        //if (actors != null) {
             for (int i = 0; i < actors.length; ++ i) {
                 if (_stopRequested) break;
                 if (actors[i].prefire()) {
@@ -269,7 +267,7 @@ public class HDFFSMDirector extends FSMDirector {
                     actors[i].postfire();
                 }
             }
-        }
+        //}
 
         _readOutputsFromRefinement();
 
@@ -349,7 +347,7 @@ public class HDFFSMDirector extends FSMDirector {
             controller.setNewIteration(_sendRequest);
             currentState = transientStateTransition();
             TypedActor[] curRefinements = currentState.getRefinement();
-            if (curRefinements != null) {
+            //if (curRefinements != null) {
                 // FIXME
                 TypedCompositeActor curRefinement =
                     (TypedCompositeActor)(curRefinements[0]);
@@ -379,10 +377,10 @@ public class HDFFSMDirector extends FSMDirector {
                 CompositeActor hdfActor = _getHighestFSM();
                 Director director = hdfActor.getExecutiveDirector();
                 ((StaticSchedulingDirector)director).invalidateSchedule();
-            } else {
-                throw new IllegalActionException(this,
-                        "current refinement is null.");
-            }
+            //} else {
+            //    throw new IllegalActionException(this,
+            //            "current refinement is null.");
+            //}
         }
     }
 
@@ -397,38 +395,38 @@ public class HDFFSMDirector extends FSMDirector {
     public boolean makeStateTransition() throws IllegalActionException {
         FSMActor controller = getController();
         State currentState = controller.currentState();
-        Transition lastChosenTr = _getLastChosenTransition();
+        Transition lastChosenTransition = _getLastChosenTransition();
         TypedCompositeActor actor;
         Director refinementDir;
         boolean superPostfire;
-        if (lastChosenTr  == null) {
+        if (lastChosenTransition  == null) {
             // No transition enabled. Remain in the current state.
             TypedActor[] actors = currentState.getRefinement();
-            if (actors != null) {
+            //if (actors != null) {
                 // FIXME
                 actor = (TypedCompositeActor)(actors[0]);
                 //refinementDir = actor.getDirector();
                 superPostfire = super.postfire();
-            } else {
-                throw new IllegalActionException(this,
-                        "State refinement cannot be null in HDF or SDF");
-            }
+            //} else {
+            //    throw new IllegalActionException(this,
+            //            "State refinement cannot be null in HDF or SDF");
+            //}
         } else {
             // Make a state transition.
-            State newState = lastChosenTr.destinationState();
+            State newState = lastChosenTransition.destinationState();
             _setCurrentState(newState);
 
             superPostfire = super.postfire();
             currentState = newState;
             // Get the new current refinement actor.
             TypedActor[] actors = currentState.getRefinement();
-            if (actors != null) {
+            //if (actors != null) {
                 //FIXME
                 actor = (TypedCompositeActor)(actors[0]);
-            } else {
-                throw new IllegalActionException(this,
-                        "State refinement cannot be null in HDF or SDF");
-            }
+            //} else {
+            //    throw new IllegalActionException(this,
+            //            "State refinement cannot be null in HDF or SDF");
+            //}
             refinementDir = actor.getDirector();
             if (refinementDir instanceof HDFFSMDirector) {
                 refinementDir.postfire();
@@ -486,10 +484,10 @@ public class HDFFSMDirector extends FSMDirector {
         CompositeActor container = (CompositeActor)getContainer();
         TypedActor[] currentRefinement = _lastIntransientState.getRefinement();
         
-        if (currentRefinement == null) {
-            throw new IllegalActionException(this,
-                    "Can't postfire because current refinement is null.");
-        }
+        //if (currentRefinement == null) {
+        //    throw new IllegalActionException(this,
+        //            "Can't postfire because current refinement is null.");
+        //}
 
         // FIXME
         //boolean postfireReturn = currentRefinement.postfire();
@@ -546,7 +544,7 @@ public class HDFFSMDirector extends FSMDirector {
         _setCurrentState(_nextIntransientState);
         TypedActor[] currentRefinements
             = _nextIntransientState.getRefinement();
-        if (currentRefinements != null) {
+        //if (currentRefinements != null) {
             // FIXME
             TypedCompositeActor curRefinement
                 = (TypedCompositeActor)(currentRefinements[0]);
@@ -562,10 +560,10 @@ public class HDFFSMDirector extends FSMDirector {
             _updateInputTokenConsumptionRates(curRefinement);
             _updateOutputTokenProductionRates(curRefinement);
 
-        } else {
-            throw new IllegalActionException(this,
-                    "current refinement is null.");
-        }
+        //} else {
+        //    throw new IllegalActionException(this,
+        //            "current refinement is null.");
+        //}
            
         // Declare reconfiguration constraints on the ports of the
         // actor.  The constraints indicate that the ports are
@@ -932,7 +930,7 @@ public class HDFFSMDirector extends FSMDirector {
                         //System.out.println("port rate = " + portRateToSet);
                     SDFUtilities.setTokenConsumptionRate
                         (inputPortOutside, portRateToSet);
-                } //else {
+                } else {
                     State curState = ctrl.currentState();
                     List transitionList =
                         curState.nonpreemptiveTransitionList();
@@ -977,7 +975,7 @@ public class HDFFSMDirector extends FSMDirector {
                         }
                     }
                 }
-            //}
+            }
         }
     }
 
