@@ -101,6 +101,10 @@ WABA_CLASSES = @WABA_CLASSES@
 # Directory that contains the waba used by PalmOS
 WABA_DIR = @WABA_DIR@
 
+# Lejos is a JDK for Lego Mindstorms, see
+# http://lejos.sourceforge.net
+LEJOS_DIR = ${PTII}/vendors/lejos/lejosBeta3
+
 ########## You should not have to change anything below this line ######
 
 # The 'javac' compiler.
