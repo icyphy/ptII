@@ -53,6 +53,8 @@ JSRCS = \
 	RLEncoding.java \
 	RLEncodingApplet.java \
 	TimedPrimeExample.java \
+	TicTacToe.java \
+	TTTApplet.java \
 	PNPrimeGalaxy.java \
 	PNWavepacket.java
 
@@ -87,8 +89,7 @@ RLEncodingApplet.jar: $(JSRCS) $(JCLASS)
 		(cd $(CLASSPATH); \
                 $(JAR) cf \
                 $(ME)/$@ \
-		$(ME)/*.class)
-
+		$(ME)/*.class )
 depend:
 	@echo "no dependencies in this directory"
 
