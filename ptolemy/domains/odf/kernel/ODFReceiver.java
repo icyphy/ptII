@@ -206,9 +206,6 @@ public class ODFReceiver extends TimedQueueReceiver
 	    }
 
             if( super.hasRoom() && !_terminate ) {
-		if( time == -1.0 ) {
-		    System.out.println("-1 placed in the queue.");
-		}
                 super.put(token, time);
                 notifyAll();
 		if( thread instanceof ODFThread ) {
