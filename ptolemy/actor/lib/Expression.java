@@ -234,8 +234,9 @@ public class Expression extends TypedAtomicActor {
         Attribute there = getAttribute(portName);
         if (there == null) {
             // FIXME: Have to initialize with a token since vergil
-            // evaluates variables at start-up.
-            new Variable(this, portName, new IntToken(1));
+            // evaluates variables at start-up.  This needs to be a double
+            // so that expressions that use java.Math work.
+            new Variable(this, portName, new DoubleToken(1.0));
         } else if ((there instanceof Parameter)
                 || !(there instanceof Variable)) {
             throw new IllegalActionException(this, "Port name collides with"
