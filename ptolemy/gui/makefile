@@ -53,7 +53,8 @@ JSRCS = \
 	Configurer.java \
 	Message.java \
 	Query.java \
-	QueryListener.java
+	QueryListener.java \
+	StatusBar.java
 
 EXTRA_SRCS =	$(JSRCS)
 
