@@ -52,7 +52,7 @@ Tokens, it is polymorphic in the type of data it operates on.
 <p>
 If the <i>decimation</i> parameter is unity (the default), then
 the <i>blockSize</i> parameter specifies the number of inputs
-of the filter are processed per coefficient set provided on the
+of the filter that are processed per coefficient set provided on the
 <i>newTaps</i> input.  Otherwise, if <i>decimation</i> is greater than unity,
 then the number of tokens consumed is the product of <i>decimation</i>
 and <i>blockSize</i>, and all these inputs are processed using the
