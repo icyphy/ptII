@@ -406,13 +406,17 @@ public class CompositeEntity extends ComponentEntity {
     }
 
     /** Enumerate the contained entities in the order they were added
-     *  by addEntity().
+     *  by addEntity(). This is a safe method and the returned enumeration
+     *  would not be affected by any changes to the list.
      *  This method is synchronized on the workspace.
      *  @return An enumeration of ComponentEntity objects.
      */	
     public Enumeration getEntities() {
         synchronized(workspace()) {
-            return _containedEntities.getElements();
+            NamedList entitiesCopy = new NamedList(_containedEntities);
+            Enumeration entities = entitiesCopy.getElements();
+            //return _containedEntities.getElements();
+            return entities;
         }
     }
 
