@@ -199,16 +199,32 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
         Object result = null;
         while (allClasses.hasNext()) {
             Class nextClass = (Class)allClasses.next();
+            System.out.println("ASTPtFunctionNode: " + nextClass);
+            // First we look for the method, and if we get an exception,
+            // we ignore it and keep looking.
             try {
-                Method m = nextClass.getMethod(_funcName, argTypes);
-                result = m.invoke(nextClass, argValues);
-                foundMethod = true;
+                Method method = nextClass.getMethod(_funcName, argTypes);
+                // Then we invoke it, and report errors.
+                try {
+                    // System.out.println("ASTPtFunctionNode: Method:" +
+                    //        method + 
+                    //        " nextClass: " + nextClass +
+                    //        " argValues: " + argValues);
+                    result = method.invoke(nextClass, argValues);
+                    foundMethod = true;
+                } catch (Exception  ex) {
+                    System.out.println("Invocation of method " + _funcName +
+                            " in " + nextClass.getName() + " threw: " + ex);
+                    ex.printStackTrace();
+                }
             } catch (Exception  ex) {
                 // FIXME: a lot of exceptions get caught here, perhaps
                 // want to specify each of them separately?
-                // System.out.println("Method " + _funcName + " not found in " +
-                //  nextClass.getName());
+                //System.out.println("Method " + _funcName + " not found in " +
+                //        nextClass.getName() + ": " + ex);
+                //ex.printStackTrace();
             }
+
             if (foundMethod) {
                 if (result instanceof ptolemy.data.Token) {
                     return (ptolemy.data.Token)result;
