@@ -36,6 +36,7 @@ import java.util.NoSuchElementException;
 import collections.*;
 import ptolemy.schematic.xml.XMLElement;
 import diva.util.java2d.*;
+import java.awt.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// GraphicElement
@@ -92,13 +93,22 @@ public class GraphicElement extends Object {
      */
     public PaintedObject getPaintedObject() {
         PaintedObject paintedObject;
-        if(_type.equals("box")) {
-            Rectangle shape = new Rectangle();
-            paintedObject = new PaintedShape(shape);//, getFill(), getWidth());
-        } else if(_type.equals("string")) {
+        if(_type.equals("rect")) {
+            Rectangle shape = new Rectangle(-20, -20, 40, 40);
+            paintedObject = new PaintedShape(shape, Color.red, 0);
+        } else if(_type.equals("textline")) {
             paintedObject = new PaintedString("test string");
-        }
-        return paintedObject();
+        } else if(_type.equals("polygon")) {
+	    Polygon2D shape = new Polygon2D.Double(0, 0);
+	    shape.lineTo(30, 30);
+	    shape.lineTo(0, 30);
+	    shape.lineTo(30, 0);
+	    paintedObject = new PaintedShape(shape, Color.blue, 2);
+	} else { // if(_type.equals("ellipse")
+            Rectangle shape = new Rectangle(0, 0, 10, 10);
+            paintedObject = new PaintedShape(shape, Color.black, 0);
+	}
+        return paintedObject;
     }
     /**
      * Test if this schematic has the attribute wuth the given name.

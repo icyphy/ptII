@@ -147,9 +147,11 @@ public class EditorNodeRenderer implements NodeRenderer {
             double scale = getCompositeScale();
             rep.getTransformContext().getTransform().scale(scale, scale);
 
-            Figure f = getFigure("test.ptml");
-            
-return f;
+            Figure f = getFigure("file:/c:/users/neuendor/ptII/ptolemy/" + 
+				 "schematic/util/test/" + 
+				 "exampleIconLibrary.ptml");
+
+	    return f;
         }
 
         //if it is not composite

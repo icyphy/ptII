@@ -35,6 +35,8 @@ import java.util.Enumeration;
 import java.util.NoSuchElementException;
 import collections.*;
 import ptolemy.schematic.xml.XMLElement;
+import diva.canvas.Figure;
+import diva.canvas.toolbox.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// Icon
@@ -98,7 +100,7 @@ public class Icon extends PTMLObject {
         Enumeration graphics = graphicElements();
         PaintedFigure figure = new PaintedFigure();
         while(graphics.hasMoreElements()) {
-            GraphicElement element = graphics.nextElement();
+            GraphicElement element = (GraphicElement) graphics.nextElement();
             figure.add(element.getPaintedObject());
         }
         return figure;
