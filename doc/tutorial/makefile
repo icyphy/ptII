@@ -60,7 +60,8 @@ PTCLASSJAR =
 JSRCS = \
 	TutorialApplet1.java \
 	TutorialApplet2.java \
-	TutorialApplet3.java
+	TutorialApplet3.java \
+	tutorial.htm
 
 # Note that the TutorialApplet*.java files get copied to
 # TutorialApplet.java and then made
