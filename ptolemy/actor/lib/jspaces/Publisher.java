@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (liuj@eecs.berkeley.edu)
+@ProposedRating Yellow (liuj@eecs.berkeley.edu)
 @AcceptedRating Red (yuhong@eecs.berkeley.edu)
 */
 
@@ -51,9 +51,20 @@ import net.jini.core.lease.Lease;
 //////////////////////////////////////////////////////////////////////////
 //// Publisher
 /**
-An actor that sends entries to a Java Space. New entries will override
-the old ones.
+An actor that pulish TokenEntries to Java Spaces. The Java Space that the
+entries are published to is identified by the <i>jspaceName</i>
+parameter. TokenEntries in Java Spaces has a name, a serial number, 
+and a Ptolemy token. This actor has a single input port.
+When the actor is fired, it consumes at most one token from the input
+port and publish the token to the Java Space with the name specifed by
+the <i>entyName</i> parameter. The serial number of the TokenEntry is
+always set to 0. If there is already an entry in the
+Java Spaces with the entry name, The new token will override the existing
+one. The entry exists in the Java Space as long as the lease time is 
+not expired. The lease time of an entry is specified by the 
+<i>leaseTime</i> parameter in terms of milliseconds.
 
+@see TokenEntry
 @author Jie Liu, Yuhong Xiong
 @version $Id$
 */
@@ -108,10 +119,12 @@ public class Publisher extends Sink {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Find the JavaSpaces according to the jspaceName parameter.
-     *  Write the minimum and maximum index token.
-     *  At the beginning, the minimum index is larger than maximum by 1,
-     *  and the maximum index is the current serial number.
+    /** Find the JavaSpaces according to the <i>jspaceName</i> parameter.
+     *  If there are already enties in the Java Space with the 
+     *  specified entry name, then remove all the old entries.
+     *  @exception IllegalActionException If the removal 
+     *  action fails due to network problems, transaction errors,
+     *  or any remote exceptions.
      */
     public void preinitialize() throws IllegalActionException {
 	super.preinitialize();
@@ -147,9 +160,12 @@ public class Publisher extends Sink {
     }
 
 
-    /** Read at most one input token from each channel of the input
-     *  and write an entry into the space for each token read.
-     *  @exception IllegalActionException Not thrown in this base class.
+    /** Read one input token, if there is one, from the input
+     *  and publish an entry into the space for the token read.
+     *  Do nothing if there's no token in the input port.
+     *  @exception IllegalActionException If the publication
+     *  action fails due to network problems, transaction errors,
+     *  or any remote exceptions.
      */
     public void fire() throws IllegalActionException {
 	try {
@@ -183,7 +199,21 @@ public class Publisher extends Sink {
         }
     }
 
-    /** Kill the lookup thread if it is not returned.
+    /** Read one input token, if there is one, from the input port,
+     *  publish an entry into the space for the token read, and 
+     *  return true.
+     *  Simply return true if there's no token in the input port.
+     *  @exception IllegalActionException If the publication
+     *  action fails due to network problems, transaction errors,
+     *  or any remote exceptions.
+     */
+    public boolean postfire() throws IllegalActionException {
+        fire();
+        return true;
+    }
+
+    /** Kill the lookup thread if it is not returned. The lookup
+     *  thread is the thread of the execution of the model.
      */
     public void stopFire() {
         if (_lookupThread != null) {
@@ -195,6 +225,7 @@ public class Publisher extends Sink {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
+    // The Java Space.
     private JavaSpace _space;
 
     // The thread that finds jini.

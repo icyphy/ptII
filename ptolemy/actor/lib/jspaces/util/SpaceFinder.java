@@ -40,7 +40,7 @@ import com.sun.jini.outrigger.Finder;
 //////////////////////////////////////////////////////////////////////////
 //// SpaceFiner
 /**
-An utility that finds a Java Space.
+An utility that finds a Java Space with a given name.
 
 This class is based on Sun's SpaceAccessor class in the book "JavaSpaces
 Principles, Patterns, and Practice", by Freeman, Hupfer, and Arnold.
@@ -68,15 +68,14 @@ public class SpaceFinder {
                         new RMISecurityManager());
             }
 
-            System.out.println("java.security.policy=" +
-                    System.getProperty("java.security.policy") + "\n" +
-                    "outrigger.spacename=" +
-                    System.getProperty("outrigger.spacename") + "\n" +
-                    "com.sun.jini.lookup.groups=" +
-                    System.getProperty("com.sun.jini.lookup.groups") + "\n" +
-                    "java.rmi.server.codebase=" +
-                    System.getProperty("java.rmi.server.codebase") + "\n");
-
+            System.out.println("java.security.policy=" 
+                    + System.getProperty("java.security.policy") + "\n"
+                    + "outrigger.spacename="
+                    + System.getProperty("outrigger.spacename") + "\n"
+                    + "com.sun.jini.lookup.groups="
+                    + System.getProperty("com.sun.jini.lookup.groups") + "\n"
+                    + "java.rmi.server.codebase="
+                    + System.getProperty("java.rmi.server.codebase") + "\n");
 
             if (System.getProperty("com.sun.jini.use.registry") == null) {
                 Locator locator =
@@ -86,30 +85,10 @@ public class SpaceFinder {
                     new com.sun.jini.outrigger.LookupFinder();
                 if (finder != null) System.out.println("Found Lookup Finder.");
                 return (JavaSpace)finder.find(locator, name);
-                /**
-                   ServiceFinder finder = new ServiceFinder(JavaSpace.class);
-                   while (true) {
-                   JavaSpace space =  (JavaSpace)finder.getObjects()[0];
-                   if (space == null) {
-                   System.err.println("Can't find JavaSpace. Trying...");
-                   try {
-                   Thread.sleep(10000);
-                   } catch (InterruptedException ex) {
-                   // ignore...
-                   }
-                   } else {
-                   return space;
-                   }
-                   }
-                */
             } else {
                 RefHolder rh = (RefHolder)Naming.lookup(name);
                 return (JavaSpace)rh.proxy();
             }
-
-
-
-
         } catch (Exception ex) {
             throw new IllegalActionException("Cannot find JavaSpace. " +
                     ex.getClass().getName() + " " + ex.getMessage());

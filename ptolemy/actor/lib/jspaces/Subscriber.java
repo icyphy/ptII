@@ -1,4 +1,4 @@
-/* A subscriber class to the Java Spaces.
+/* A subscriber actor that read entries from Java Spaces.
 
  Copyright (c) 1998-2000 The Regents of the University of California.
  All rights reserved.
@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (liuj@eecs.berkeley.edu)
+@ProposedRating Yellow (liuj@eecs.berkeley.edu)
 @AcceptedRating Red (yuhong@eecs.berkeley.edu)
 */
 
@@ -33,8 +33,11 @@ package ptolemy.actor.lib.jspaces;
 import ptolemy.actor.lib.Source;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.data.expr.Parameter;
-import ptolemy.data.*;
-import ptolemy.actor.TypedCompositeActor;
+import ptolemy.data.Token;
+import ptolemy.data.StringToken;
+import ptolemy.data.DoubleToken;
+import ptolemy.data.LongToken;
+import ptolemy.data.BooleanToken;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 import ptolemy.data.type.BaseType;
@@ -50,14 +53,22 @@ import java.util.Iterator;
 //////////////////////////////////////////////////////////////////////////
 //// Subscriber
 /**
-A subscriber to the Java Spaces. This actor register a TokenEntry
-of interest to the JavaSpaces. When get notified, it reads the
-TokenEntry. Entries are not ordered. New entry will overwrite the
-old one, if the actor is not fired during the time.
-
-If the parameter "blocking" is set to true, the actor will block
-when it is fired but it has no receivings from last firing.
-Otherwise, it will produce no output.
+A subscriber that read TokenEnties from a Java Space. 
+The Java Space is identified by the <i>jspaceName</i> parameter.
+Upon preinitialization, this actor register a template of TokenEntries 
+with the name given by the <i>entryName<i> parameter. The Java Space 
+will notify the actor if there are new TokenEntries with that name.
+When get notified, this actor starts another thread which reads the
+TokenEntry. In the execution thread, when the actor's fire method 
+is called, the actor outputs the last token read from the Java Space.
+That is if there are more than one notified entries, the old entry
+will be overriden by the new one. If there are no notifications
+between to successive fires, the behavior of the actor depends on
+the <i>blocking</i> parameter. If this parameter is true, then
+the fire() call will block the execution thread, until there is
+a new entry coming. If this parameter is false, then the fire()
+method outputs the <i>defaultToken</i>. The type of the output
+port is also determined by the type of this parameter.
 
 @author Jie Liu, Yuhong Xiong
 @version $Id$
@@ -66,7 +77,6 @@ Otherwise, it will produce no output.
 public class Subscriber extends Source implements RemoteEventListener {
 
     /** Construct an actor with the given container and name.
-     *  The output and trigger ports are also constructed.
      *  @param container The container.
      *  @param name The name of this actor.
      *  @exception IllegalActionException If the entity cannot be contained
@@ -110,11 +120,14 @@ public class Subscriber extends Source implements RemoteEventListener {
      */
     public Parameter blocking;
 
-    /** The default initial token. If the actor is nonblocking
+    /** The default token. If the actor is nonblocking
      *  and there is no matching entry in the space, then this
-     *  token will be output. Default value is 0.0 of type
-     *  DoubleToken. The token and the type will be override
-     *  by the first entry read from the space.
+     *  token will be output when the fire() method is called.
+     *  The default value is 0.0 of type
+     *  DoubleToken. Notice that the type of the output port
+     *  is determined by the first token read from the Java Space.
+     *  The user should make sure that the type of this token 
+     *  is compatible with the type of the output port.
      */
     public Parameter defaultToken;
 
@@ -122,17 +135,23 @@ public class Subscriber extends Source implements RemoteEventListener {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Update parameters.
+    /** If the attribute is <i>blocking</i> update the local 
+     *  cache of the parameter value, otherwise pass the call to
+     *  the super class. 
+     *  @param attribute The attribute that changed.
+     *  @exception IllegalActionException Not thrown in this class.
      */
-    public void attributeChanged(Attribute attr)
+    public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if (attr == blocking) {
+        if (attribute == blocking) {
             _blocking = ((BooleanToken)blocking.getToken()).booleanValue();
+        } else {
+            super.attributeChanged(attribute);
         }
     }
 
-    /** Find the JavaSpaces and retrieve the first token. The type of
-     *  the output is infered from the type of the token
+    /** Find the JavaSpaces and register for notification. Set the type of
+     *  the output to be the type of the defaultToken.
      *  @exception IllegalActionException If the space cannot be found.
      */
     public void preinitialize() throws IllegalActionException {
@@ -149,18 +168,14 @@ public class Subscriber extends Source implements RemoteEventListener {
         try {
             UnicastRemoteObject.exportObject(this);
         } catch (RemoteException e) {
-            //throw new IllegalActionException( this,
-            //        "unable to export object. Please check if RMI is OK. " +
-            //        e.getMessage());
             System.err.println("Warning: " + e.getMessage());
         }
-        //_tokenList = new LinkedList();
-        //FIXME: set type by the token read.
+        //FIXME: Consider set type by the token read.
         output.setTypeEquals(defaultToken.getToken().getType());
 
         TokenEntry template = new TokenEntry(_entryName, null, null);
 
-        // request for notification
+        // Register for notification
         try {
             _eventReg = _space.notify(
                     template, null, this, Lease.FOREVER, null);
@@ -168,12 +183,13 @@ public class Subscriber extends Source implements RemoteEventListener {
 
         } catch (Exception e) {
             throw new IllegalActionException( this,
-                    "error reading from the JavaSpace." +
+                    "Error register for notification from the JavaSpace." +
                     e.getMessage());
         }
     }
 
-    /** Fork a new thread to handle the notify event.
+    /** Star a new thread to read the TokenEntry from the Java Space.
+     *  @param event The notification event sent from the Java Space.
      */
     public void notify(RemoteEvent event) {
         if (_debugging) {
@@ -183,15 +199,14 @@ public class Subscriber extends Source implements RemoteEventListener {
         new Thread(nh).start();
     }
 
-    /** Produce the oldest received token. One for each firing.
+    /** Output the latest received token from last time the fire() 
+     *  method is called.
      *  If there's no token available, then the bahavior depends
      *  on the "blocking" parameter. If blocking is true, the
      *  exexution blocks until there's a token coming in.
      *  Otherwise, the defaultToken is produced.
      */
     public void fire() throws IllegalActionException {
-        // make sure no one is writing the token list.
-        //System.out.println("Subscriber get fired");
         synchronized(_lock) {
             while(true) {
                 if (_lastReadToken == null) {
@@ -264,9 +279,17 @@ public class Subscriber extends Source implements RemoteEventListener {
     ///////////////////////////////////////////////////////////////////
     ////                         inner class                       ////
 
+    /** The inner class that retrive token entries from the Java Spaces.
+     *  This class is runnable, and when there is a notification 
+     *  from the Java Space, a thread will be created associated
+     *  with this class. The run() method will then read the TokenEntry
+     *  from the Java Space.
+     */
     public class NotifyHandler implements Runnable {
 
-        /** construct the notify handler
+        /** construct the notify handler.
+         *  @param container The subscriber that contains this handler.
+         *  @param event The notification event.
          */
         public NotifyHandler(TypedAtomicActor container, RemoteEvent event) {
             _container = container;
@@ -298,8 +321,8 @@ public class Subscriber extends Source implements RemoteEventListener {
                                 e.getMessage());
                     }
                     if(entry == null) {
-                        //System.out.println(getName() +
-                        //        " read null from space");
+                        System.out.println("Warning: " + getName() +
+                                " read null from space");
                     } else {
                         //System.out.println(getName() +
                         //        " reads successfully.");
@@ -309,17 +332,16 @@ public class Subscriber extends Source implements RemoteEventListener {
                     _lock.notifyAll();
                 }
             }
-            //Thread.currentThread().yield();
             _notificationSeq = _event.getSequenceNumber();
         }
 
         //////////////////////////////////////////////////////////////
         ////                     private variables                ////
 
-        // the container
+        // The container.
         private TypedAtomicActor _container;
 
-        // the event
+        // The notification event.
         private RemoteEvent _event;
     }
 }
