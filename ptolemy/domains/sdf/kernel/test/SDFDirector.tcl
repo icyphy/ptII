@@ -88,7 +88,7 @@ test SDFDirector-5.1 {Test action methods} {
     set a1 [java::new ptolemy.domains.sdf.kernel.test.SDFRamp $e0 Ramp]
     set a2 [java::new ptolemy.domains.sdf.kernel.test.SDFConsumer $e0 Consumer]
     $e0 connect [java::field $a1 output] [java::field $a2 input] R1
-    set iter [$d3 getAttribute Iterations]
+    set iter [$d3 getAttribute iterations]
     $iter setToken [java::new {ptolemy.data.IntToken int} 6]
     $manager run
     list [$a2 getHistory]
@@ -111,7 +111,7 @@ test SDFDirector-5.2 {Test action methods} {
     set a3 [java::new ptolemy.domains.sdf.kernel.test.SDFConsumer $e0 Consumer]
     $e0 connect [java::field $a1 output] [java::field $a2 input] R1
     $e0 connect [java::field $a2 output] [java::field $a3 input] R2
-    set iter [$d3 getAttribute Iterations]
+    set iter [$d3 getAttribute iterations]
     $iter setToken [java::new {ptolemy.data.IntToken int} 6]
     $manager run
     list [$a3 getHistory]
@@ -136,7 +136,7 @@ test SDFDirector-5.3 {Test action methods} {
     $e0 connect [java::field $a1 output] [java::field $a2 input] R1
     $e0 connect [java::field $a2 output1] [java::field $a3 input] R2
     $e0 connect [java::field $a2 output2] [java::field $a4 input] R3
-    set iter [$d3 getAttribute Iterations]
+    set iter [$d3 getAttribute iterations]
     $iter setToken [java::new {ptolemy.data.IntToken int} 6]
     $manager run
     list [$a3 getHistory] [$a4 getHistory]
@@ -168,7 +168,7 @@ test SDFDirector-5.4 {Test action methods} {
     $e0 connect [java::field $a2 output1] [java::field $a3 input1] R2a
     $e0 connect [java::field $a2 output2] [java::field $a3 input2] R2d
     $e0 connect [java::field $a3 output] [java::field $a4 input] R3
-    set iter [$d3 getAttribute Iterations]
+    set iter [$d3 getAttribute iterations]
     $iter setToken [java::new {ptolemy.data.IntToken int} 6]
     $manager run
     list [$a4 getHistory]
@@ -214,7 +214,7 @@ test SDFDirector-6.1 {Test wormhole activation} {
 #set debugger [java::new ptolemy.domains.sdf.kernel.DebugListener]
 #java::call $debug register $debugger
 
-    set iter [$d3 getAttribute Iterations]
+    set iter [$d3 getAttribute iterations]
     $iter setToken [java::new {ptolemy.data.IntToken int} 6]
     $manager run
     list [$a3 getHistory] 
@@ -240,7 +240,7 @@ test SDFDirector-7.1 {Test mutations (adding an actor} {
     set a3 [java::new ptolemy.domains.sdf.kernel.test.SDFConsumer $e0 Consumer]
     $e0 connect [java::field $a1 output] [java::field $a2 input] R1
     $e0 connect [java::field $a2 output] [java::field $a3 input] R2
-    set iter [$d3 getAttribute Iterations]
+    set iter [$d3 getAttribute iterations]
     $iter setToken [java::new {ptolemy.data.IntToken int} 6]
 } {
 } {REWRITE}

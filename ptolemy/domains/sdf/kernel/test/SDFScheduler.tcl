@@ -366,7 +366,7 @@ test SDFScheduler-7.5 {Multirate and Hierarchy Scheduling tests} {
 ####
 #
 # Tests 8.* test multiport scheduling without hierarchy.
-test SDFScheduler-8.1 {Multiport, Multirate Scheduling tests} {
+test SDFScheduler-8.1 {input Multiport, Multirate Scheduling tests} {
     set manager [java::new ptolemy.actor.Manager $w Manager]
     set director [java::new ptolemy.domains.sdf.kernel.SDFDirector $w Director]
     set toplevel [java::new ptolemy.actor.TypedCompositeActor $w]
@@ -391,7 +391,7 @@ test SDFScheduler-8.1 {Multiport, Multirate Scheduling tests} {
     list $sched1
 } {{{Ramp2 Ramp1 Consumer}}}
 
-test SDFScheduler-8.2 {Multiport, Multirate Scheduling tests} {
+test SDFScheduler-8.2 {input Multiport, Multirate Scheduling tests} {
     # uses previous setup.
     $a3 setTokenConsumptionRate [java::field $a3 input] 2
  
@@ -403,7 +403,7 @@ test SDFScheduler-8.2 {Multiport, Multirate Scheduling tests} {
     list $sched1
 } {{{Ramp2 Ramp1 Ramp2 Ramp1 Consumer}}}
 
-test SDFScheduler-8.3 {Multiport, Multirate Scheduling tests} {
+test SDFScheduler-8.3 {input Multiport, Multirate Scheduling tests} {
     # uses previous setup.
     $a2 setTokenProductionRate [java::field $a2 output] 2
 
@@ -416,7 +416,7 @@ test SDFScheduler-8.3 {Multiport, Multirate Scheduling tests} {
 } {{{Ramp1 Ramp2 Ramp1 Consumer Consumer}}} {Scheduler needs to keep track of 
 fulfilled ports on a channel-by-channel basis}
 
-test SDFScheduler-8.4 {Multiport, Multirate Scheduling tests} {
+test SDFScheduler-8.4 {input Multiport, Multirate Scheduling tests} {
     # uses previous setup.
     $a3 setTokenConsumptionRate [java::field $a3 input] 2
     $a2 setTokenProductionRate [java::field $a2 output] 2
@@ -431,7 +431,7 @@ test SDFScheduler-8.4 {Multiport, Multirate Scheduling tests} {
 } {{{Ramp1 Ramp2 Ramp1 Consumer}}} {Scheduler needs to keep track of 
 fulfilled ports on a channel-by-channel basis}
 
-test SDFScheduler-8.5 {Multiport, Multirate Scheduling tests} {
+test SDFScheduler-8.5 {input Multiport, Multirate Scheduling tests} {
     # uses previous setup.
     $a3 setTokenConsumptionRate [java::field $a3 input] 2
     $a2 setTokenProductionRate [java::field $a2 output] 2
@@ -447,7 +447,7 @@ test SDFScheduler-8.5 {Multiport, Multirate Scheduling tests} {
     list $sched1
 } {{{Ramp2 Ramp1 Consumer}}}
 
-test SDFScheduler-8.6 {Multiport with no connections} {
+test SDFScheduler-8.6 {input Multiport with no connections} {
     set manager [java::new ptolemy.actor.Manager $w Manager]
     set director [java::new ptolemy.domains.sdf.kernel.SDFDirector $w Director]
     set toplevel [java::new ptolemy.actor.TypedCompositeActor $w]
@@ -467,11 +467,111 @@ test SDFScheduler-8.6 {Multiport with no connections} {
     list $sched1
 } {Consumer}
 
+test SDFScheduler-8.11 {output Multiport, Multirate Scheduling tests} {
+    set manager [java::new ptolemy.actor.Manager $w Manager]
+    set director [java::new ptolemy.domains.sdf.kernel.SDFDirector $w Director]
+    set toplevel [java::new ptolemy.actor.TypedCompositeActor $w]
+    $toplevel setName Toplevel
+    $toplevel setManager $manager
+    $toplevel setDirector $director
+    set scheduler [java::new ptolemy.domains.sdf.kernel.SDFScheduler $w]
+    $director setScheduler $scheduler
+
+    set a1 [java::new ptolemy.domains.sdf.kernel.test.SDFRamp $toplevel Ramp]
+    set a2 [java::new ptolemy.domains.sdf.kernel.test.SDFConsumer $toplevel Consumer1]
+    set a3 [java::new ptolemy.domains.sdf.kernel.test.SDFConsumer $toplevel Consumer2]
+    set port [java::field $a1 output] 
+    $port setMultiport true
+
+    $toplevel connect [java::field $a1 output] [java::field $a2 input] R1
+    $toplevel connect [java::field $a1 output] [java::field $a3 input] R2
+
+    $scheduler setValid false
+
+    set sched1 [_testEnums schedule $scheduler]
+    list $sched1
+} {{{Ramp Consumer1 Consumer2}}}
+
+test SDFScheduler-8.12 {output Multiport, Multirate Scheduling tests} {
+    # uses previous setup.
+    $a1 setTokenProductionRate [java::field $a1 output] 2
+ 
+    $scheduler setValid false
+    $s5 setValid false
+    set sched1 [_testEnums schedule $scheduler]
+    set sched2 [_testEnums schedule $s5]
+    $a1 setTokenProductionRate [java::field $a1 output] 1
+    list $sched1
+} {{{Ramp Consumer1 Consumer2 Consumer1 Consumer2}}}
+
+test SDFScheduler-8.13 {output Multiport, Multirate Scheduling tests} {
+    # uses previous setup.
+    $a2 setTokenConsumptionRate [java::field $a2 input] 2
+ 
+    $scheduler setValid false
+    $s5 setValid false
+    set sched1 [_testEnums schedule $scheduler]
+    set sched2 [_testEnums schedule $s5]
+    $a2 setTokenConsumptionRate [java::field $a2 input] 1
+    list $sched1
+} {{{Ramp Ramp Consumer2 Consumer1 Consumer2}}}
+
+test SDFScheduler-8.14 {output Multiport, Multirate Scheduling tests} {
+    # uses previous setup.
+    $a1 setTokenProductionRate [java::field $a1 output] 2
+    $a2 setTokenConsumptionRate [java::field $a2 input] 2
+ 
+    $scheduler setValid false
+    $s5 setValid false
+    set sched1 [_testEnums schedule $scheduler]
+    set sched2 [_testEnums schedule $s5]
+    $a1 setTokenProductionRate [java::field $a1 output] 1
+    $a2 setTokenConsumptionRate [java::field $a2 input] 1
+    list $sched1
+} {{{Ramp Consumer1 Consumer2 Consumer2}}}
+
+test SDFScheduler-8.15 {output Multiport, Multirate Scheduling tests} {
+    # uses previous setup.
+    $a1 setTokenProductionRate [java::field $a1 output] 2
+    $a2 setTokenConsumptionRate [java::field $a2 input] 2
+    $a3 setTokenConsumptionRate [java::field $a3 input] 2
+ 
+    $scheduler setValid false
+    $s5 setValid false
+    set sched1 [_testEnums schedule $scheduler]
+    set sched2 [_testEnums schedule $s5]
+    $a1 setTokenProductionRate [java::field $a1 output] 1
+    $a2 setTokenConsumptionRate [java::field $a2 input] 1
+    $a3 setTokenConsumptionRate [java::field $a3 input] 1
+    list $sched1
+} {{{Ramp Consumer1 Consumer2}}}
+
+test SDFScheduler-8.16 {output Multiport with no connections} {
+    set manager [java::new ptolemy.actor.Manager $w Manager]
+    set director [java::new ptolemy.domains.sdf.kernel.SDFDirector $w Director]
+    set toplevel [java::new ptolemy.actor.TypedCompositeActor $w]
+    $toplevel setName Toplevel
+    $toplevel setManager $manager
+    $toplevel setDirector $director
+    set scheduler [java::new ptolemy.domains.sdf.kernel.SDFScheduler $w]
+    $director setScheduler $scheduler
+
+    set a3 [java::new ptolemy.domains.sdf.kernel.test.SDFRamp $toplevel Ramp]
+    set port [java::field $a3 output] 
+    $port setMultiport true
+
+    $scheduler setValid false
+
+    set sched1 [_testEnums schedule $scheduler]
+    list $sched1
+} {Ramp}
+
+
 ######################################################################
 ####
 #
 # Tests 9.* test multiport, multirate scheduling with hierarchy
-test SDFScheduler-9.1 {Multirate and Hierarchy Scheduling tests} {
+test SDFScheduler-9.1 {Input Multirate and Hierarchy Scheduling tests} {
     set manager [java::new ptolemy.actor.Manager $w Manager]
     set director [java::new ptolemy.domains.sdf.kernel.SDFDirector $w Director]
     set toplevel [java::new ptolemy.actor.TypedCompositeActor $w]
@@ -501,4 +601,305 @@ test SDFScheduler-9.1 {Multirate and Hierarchy Scheduling tests} {
     set sched1 [_testEnums schedule $scheduler]
     set sched2 [_testEnums schedule $s5]
     list $sched1 $sched2
-} {{{Ramp1 Ramp2}} Consumer}
+} {{{Ramp2 Ramp1 Cont}} Consumer}
+
+test SDFScheduler-9.2 {Input Multiport, Multirate, and Hierarchy Scheduling tests} {
+    # uses previous setup.
+    $a3 setTokenConsumptionRate [java::field $a3 input] 2
+ 
+    $scheduler setValid false
+    $s5 setValid false
+    set sched1 [_testEnums schedule $scheduler]
+    set sched2 [_testEnums schedule $s5]
+    $a3 setTokenConsumptionRate [java::field $a3 input] 1
+    list $sched1 $sched2
+} {{{Ramp2 Ramp1 Ramp2 Ramp1 Cont}} Consumer}
+
+test SDFScheduler-9.3 {Input Multiport, Multirate, and Hierarchy Scheduling tests} {
+    # uses previous setup.
+    $a2 setTokenProductionRate [java::field $a2 output] 2
+
+    $scheduler setValid false
+    $s5 setValid false
+    set sched1 [_testEnums schedule $scheduler]
+    set sched2 [_testEnums schedule $s5]
+    $a2 setTokenProductionRate [java::field $a2 output] 1
+    list $sched1 $sched2
+} {{{Ramp1 Ramp2 Ramp1 Cont Cont}} Consumer} {Scheduler needs to keep track of 
+fulfilled ports on a channel-by-channel basis}
+
+test SDFScheduler-9.4 {Input Multiport, Multirate, and Hierarchy Scheduling tests} {
+    # uses previous setup.
+    $a3 setTokenConsumptionRate [java::field $a3 input] 2
+    $a2 setTokenProductionRate [java::field $a2 output] 2
+ 
+    $scheduler setValid false
+    $s5 setValid false
+    set sched1 [_testEnums schedule $scheduler]
+    set sched2 [_testEnums schedule $s5]
+    $a3 setTokenConsumptionRate [java::field $a3 input] 1
+    $a2 setTokenProductionRate [java::field $a2 output] 1
+    list $sched1 $sched2
+} {{{Ramp1 Ramp2 Ramp1 Cont}} Consumer} {Scheduler needs to keep track of 
+fulfilled ports on a channel-by-channel basis}
+
+test SDFScheduler-9.5 {Input Multiport, Multirate, and Hierarchy Scheduling tests} {
+    # uses previous setup.
+    $a3 setTokenConsumptionRate [java::field $a3 input] 2
+    $a2 setTokenProductionRate [java::field $a2 output] 2
+    $a1 setTokenProductionRate [java::field $a1 output] 2
+
+    $scheduler setValid false
+    $s5 setValid false
+    set sched1 [_testEnums schedule $scheduler]
+    set sched2 [_testEnums schedule $s5]
+    $a3 setTokenConsumptionRate [java::field $a3 input] 1
+    $a2 setTokenProductionRate [java::field $a2 output] 1
+    $a1 setTokenProductionRate [java::field $a1 output] 1
+    list $sched1 $sched2
+} {{{Ramp2 Ramp1 Cont}} Consumer}
+
+test SDFScheduler-9.11 {Output Multirate and Hierarchy Scheduling tests} {
+    set manager [java::new ptolemy.actor.Manager $w Manager]
+    set director [java::new ptolemy.domains.sdf.kernel.SDFDirector $w Director]
+    set toplevel [java::new ptolemy.actor.TypedCompositeActor $w]
+    $toplevel setName Toplevel
+    $toplevel setManager $manager
+    $toplevel setDirector $director
+    set scheduler [java::new ptolemy.domains.sdf.kernel.SDFScheduler $w]
+    $director setScheduler $scheduler
+
+    set a2 [java::new ptolemy.domains.sdf.kernel.test.SDFConsumer $toplevel Consumer1]
+    set a3 [java::new ptolemy.domains.sdf.kernel.test.SDFConsumer $toplevel Consumer2]
+    set c1 [java::new ptolemy.actor.TypedCompositeActor $toplevel Cont]
+    set p1 [java::new ptolemy.domains.sdf.kernel.SDFIOPort $c1 p1]
+    $p1 setOutput 1
+    $p1 setMultiport true
+    set d5 [java::new ptolemy.domains.sdf.kernel.SDFDirector $w d5]
+    $c1 setDirector $d5
+    set s5 [$d5 getScheduler]
+    set a1 [java::new ptolemy.domains.sdf.kernel.test.SDFRamp $c1 Ramp]
+    $c1 connect [java::field $a1 output] $p1 R1
+    $toplevel connect $p1 [java::field $a2 input] R2
+    $toplevel connect $p1 [java::field $a3 input] R3
+
+    $scheduler setValid false
+    $s5 setValid false
+
+    set sched1 [_testEnums schedule $scheduler]
+    set sched2 [_testEnums schedule $s5]
+    list $sched1 $sched2
+} {{{Cont Consumer1 Consumer2}} Ramp}
+
+test SDFScheduler-9.12 {output Multiport, Multirate Scheduling tests} {
+    # uses previous setup.
+    $a1 setTokenProductionRate [java::field $a1 output] 2
+ 
+    $scheduler setValid false
+    $s5 setValid false
+    set sched1 [_testEnums schedule $scheduler]
+    set sched2 [_testEnums schedule $s5]
+    $a1 setTokenProductionRate [java::field $a1 output] 1
+    list $sched1 $sched2
+} {{{Cont Consumer1 Consumer2 Consumer1 Consumer2}} Ramp}
+
+test SDFScheduler-9.13 {output Multiport, Multirate Scheduling tests} {
+    # uses previous setup.
+    $a2 setTokenConsumptionRate [java::field $a2 input] 2
+ 
+    $scheduler setValid false
+    $s5 setValid false
+    set sched1 [_testEnums schedule $scheduler]
+    set sched2 [_testEnums schedule $s5]
+    $a2 setTokenConsumptionRate [java::field $a2 input] 1
+    list $sched1 $sched2
+} {{{Cont Cont Consumer2 Consumer1 Consumer2}} Ramp}
+
+test SDFScheduler-9.14 {output Multiport, Multirate Scheduling tests} {
+    # uses previous setup.
+    $a1 setTokenProductionRate [java::field $a1 output] 2
+    $a2 setTokenConsumptionRate [java::field $a2 input] 2
+ 
+    $scheduler setValid false
+    $s5 setValid false
+    set sched1 [_testEnums schedule $scheduler]
+    set sched2 [_testEnums schedule $s5]
+    $a1 setTokenProductionRate [java::field $a1 output] 1
+    $a2 setTokenConsumptionRate [java::field $a2 input] 1
+    list $sched1 $sched2
+} {{{Cont Consumer1 Consumer2 Consumer2}} Ramp}
+
+test SDFScheduler-9.15 {output Multiport, Multirate Scheduling tests} {
+    # uses previous setup.
+    $a1 setTokenProductionRate [java::field $a1 output] 2
+    $a2 setTokenConsumptionRate [java::field $a2 input] 2
+    $a3 setTokenConsumptionRate [java::field $a3 input] 2
+ 
+    $scheduler setValid false
+    $s5 setValid false
+    set sched1 [_testEnums schedule $scheduler]
+    set sched2 [_testEnums schedule $s5]
+    $a1 setTokenProductionRate [java::field $a1 output] 1
+    $a2 setTokenConsumptionRate [java::field $a2 input] 1
+    $a3 setTokenConsumptionRate [java::field $a3 input] 1
+    list $sched1 $sched2
+} {{{Cont Consumer1 Consumer2}} Ramp}
+
+######################################################################
+####
+#
+# Tests 10.* test multiport scheduling without hierarchy.
+test SDFScheduler-10.1 {input Broadcast Multirate Scheduling tests} {
+    set manager [java::new ptolemy.actor.Manager $w Manager]
+    set director [java::new ptolemy.domains.sdf.kernel.SDFDirector $w Director]
+    set toplevel [java::new ptolemy.actor.TypedCompositeActor $w]
+    $toplevel setName Toplevel
+    $toplevel setManager $manager
+    $toplevel setDirector $director
+    set scheduler [java::new ptolemy.domains.sdf.kernel.SDFScheduler $w]
+    $director setScheduler $scheduler
+
+    set a1 [java::new ptolemy.domains.sdf.kernel.test.SDFRamp $toplevel Ramp1]
+    set a2 [java::new ptolemy.domains.sdf.kernel.test.SDFRamp $toplevel Ramp2]
+    set a3 [java::new ptolemy.domains.sdf.kernel.test.SDFConsumer $toplevel Consumer]
+
+    set r1 [$toplevel connect [java::field $a1 output] [java::field $a3 input] R1]
+    [java::field $a2 output] link $r1
+
+    $scheduler setValid false
+
+    set sched1 [_testEnums schedule $scheduler]
+    list $sched1
+} {{{Ramp2 Ramp1 Consumer Consumer}}} {KNOWN}
+
+test SDFScheduler-10.2 {input Broadcast Multirate Scheduling tests} {
+    # uses previous setup.
+    $a3 setTokenConsumptionRate [java::field $a3 input] 2
+ 
+    $scheduler setValid false
+    $s5 setValid false
+    set sched1 [_testEnums schedule $scheduler]
+    set sched2 [_testEnums schedule $s5]
+    $a3 setTokenConsumptionRate [java::field $a3 input] 1
+    list $sched1
+} {{{Ramp2 Ramp1 Consumer}}} {KNOWN}
+
+test SDFScheduler-10.3 {input Broadcast Multirate Scheduling tests} {
+    # uses previous setup.
+    $a2 setTokenProductionRate [java::field $a2 output] 2
+
+    $scheduler setValid false
+    $s5 setValid false
+    set sched1 [_testEnums schedule $scheduler]
+    set sched2 [_testEnums schedule $s5]
+    $a2 setTokenProductionRate [java::field $a2 output] 1
+    list $sched1
+} {{{Ramp1 Ramp2 Consumer Consumer Consumer}}} {KNOWN}
+
+test SDFScheduler-10.4 {input Broadcast Multirate Scheduling tests} {
+    # uses previous setup.
+    $a3 setTokenConsumptionRate [java::field $a3 input] 2
+    $a2 setTokenProductionRate [java::field $a2 output] 2
+ 
+    $scheduler setValid false
+    $s5 setValid false
+    set sched1 [_testEnums schedule $scheduler]
+    set sched2 [_testEnums schedule $s5]
+    $a3 setTokenConsumptionRate [java::field $a3 input] 1
+    $a2 setTokenProductionRate [java::field $a2 output] 1
+    list $sched1
+} {Not sure} {KNOWN}
+
+test SDFScheduler-10.5 {input Broadcast Multirate Scheduling tests} {
+    # uses previous setup.
+    $a3 setTokenConsumptionRate [java::field $a3 input] 2
+    $a2 setTokenProductionRate [java::field $a2 output] 2
+    $a1 setTokenProductionRate [java::field $a1 output] 2
+
+    $scheduler setValid false
+    $s5 setValid false
+    set sched1 [_testEnums schedule $scheduler]
+    set sched2 [_testEnums schedule $s5]
+    $a3 setTokenConsumptionRate [java::field $a3 input] 1
+    $a2 setTokenProductionRate [java::field $a2 output] 1
+    $a1 setTokenProductionRate [java::field $a1 output] 1
+    list $sched1
+} {{{Ramp2 Ramp1 Consumer Consumer}}} {KNOWN}
+
+test SDFScheduler-10.11 {output Broadcast Multirate Scheduling tests} {
+    set manager [java::new ptolemy.actor.Manager $w Manager]
+    set director [java::new ptolemy.domains.sdf.kernel.SDFDirector $w Director]
+    set toplevel [java::new ptolemy.actor.TypedCompositeActor $w]
+    $toplevel setName Toplevel
+    $toplevel setManager $manager
+    $toplevel setDirector $director
+    set scheduler [java::new ptolemy.domains.sdf.kernel.SDFScheduler $w]
+    $director setScheduler $scheduler
+
+    set a1 [java::new ptolemy.domains.sdf.kernel.test.SDFRamp $toplevel Ramp]
+    set a2 [java::new ptolemy.domains.sdf.kernel.test.SDFConsumer $toplevel Consumer1]
+    set a3 [java::new ptolemy.domains.sdf.kernel.test.SDFConsumer $toplevel Consumer2]
+
+    set r1 [$toplevel connect [java::field $a1 output] [java::field $a2 input] R1]
+    [java::field $a3 input] link $r1
+
+    $scheduler setValid false
+
+    set sched1 [_testEnums schedule $scheduler]
+    list $sched1
+} {{{Ramp Consumer1 Consumer2}}}
+
+test SDFScheduler-10.12 {output Broadcast Multirate Scheduling tests} {
+    # uses previous setup.
+    $a1 setTokenProductionRate [java::field $a1 output] 2
+ 
+    $scheduler setValid false
+    $s5 setValid false
+    set sched1 [_testEnums schedule $scheduler]
+    set sched2 [_testEnums schedule $s5]
+    $a1 setTokenProductionRate [java::field $a1 output] 1
+    list $sched1
+} {{{Ramp Consumer1 Consumer2 Consumer1 Consumer2}}}
+
+test SDFScheduler-10.13 {output Broadcast Multirate Scheduling tests} {
+    # uses previous setup.
+    $a2 setTokenConsumptionRate [java::field $a2 input] 2
+ 
+    $scheduler setValid false
+    $s5 setValid false
+    set sched1 [_testEnums schedule $scheduler]
+    set sched2 [_testEnums schedule $s5]
+    $a2 setTokenConsumptionRate [java::field $a2 input] 1
+    list $sched1
+} {{{Ramp Ramp Consumer2 Consumer1 Consumer2}}}
+
+test SDFScheduler-10.14 {output Broadcast Multirate Scheduling tests} {
+    # uses previous setup.
+    $a1 setTokenProductionRate [java::field $a1 output] 2
+    $a2 setTokenConsumptionRate [java::field $a2 input] 2
+ 
+    $scheduler setValid false
+    $s5 setValid false
+    set sched1 [_testEnums schedule $scheduler]
+    set sched2 [_testEnums schedule $s5]
+    $a1 setTokenProductionRate [java::field $a1 output] 1
+    $a2 setTokenConsumptionRate [java::field $a2 input] 1
+    list $sched1
+} {{{Ramp Consumer1 Consumer2 Consumer2}}}
+
+test SDFScheduler-10.15 {output Broadcast Multirate Scheduling tests} {
+    # uses previous setup.
+    $a1 setTokenProductionRate [java::field $a1 output] 2
+    $a2 setTokenConsumptionRate [java::field $a2 input] 2
+    $a3 setTokenConsumptionRate [java::field $a3 input] 2
+ 
+    $scheduler setValid false
+    $s5 setValid false
+    set sched1 [_testEnums schedule $scheduler]
+    set sched2 [_testEnums schedule $s5]
+    $a1 setTokenProductionRate [java::field $a1 output] 1
+    $a2 setTokenConsumptionRate [java::field $a2 input] 1
+    $a3 setTokenConsumptionRate [java::field $a3 input] 1
+    list $sched1
+} {{{Ramp Consumer1 Consumer2}}}
+
