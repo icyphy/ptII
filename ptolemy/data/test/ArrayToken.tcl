@@ -125,15 +125,16 @@ test ArrayToken-3.1 {test isEqualTo on an array of Complexes} {
 ####
 # 
 test ArrayToken-4.0 {test isCloseTo on an array of Doubles} {
+    # A is close to B if abs((a-b)/a)<epsilon  
     set epsilon 0.001
     set oldEpsilon [java::field ptolemy.math.Complex epsilon]
     java::field ptolemy.math.Complex epsilon $epsilon
 
     set t1 [java::new {ptolemy.data.ArrayToken String} "{0.5, 1.5, 6.0}"]
 
-    set a [expr {0.5 - 0.5 * $epsilon}]
-    set b [expr {1.5 + 0.5 * $epsilon}]
-    set c [expr {6.0 + 0.5 * $epsilon}]
+    set a [expr {0.5 - 0.05 * $epsilon}]
+    set b [expr {1.5 + 0.05 * $epsilon}]
+    set c [expr {6.0 + 0.05 * $epsilon}]
     set t2 [java::new {ptolemy.data.ArrayToken String} "{$a, $b, $c}"]
 
     set d [expr {0.5 - 2.0 * $epsilon}]
