@@ -141,8 +141,29 @@ public class GenerateCopyrights {
                 if (entityBuffer.length() > 0) {
                     entityBuffer.append(", ");
                 }
-                entityBuffer.append((String)entities.next());
+                String entityClassName = (String)entities.next();
+
+                // If we have javadoc, link to it.
+                String entityHTML = entityClassName;
+
+                // Assuming that entityClassName contains a dot separated
+                // classpath here.
+                String docName = "doc.codeDoc." + entityBuffer;
+                try {
+                    // This works in Web Start, see
+                    // http://java.sun.com/products/javawebstart/faq.html#54
+                    URL toRead = Thread.currentThread()
+                        .getContextClassLoader().getResource(
+                                docName.replace('.', '/') + ".html");
+                    entityHTML = "<a href=\"" + toRead.toString() 
+                        + "\">" + entityHTML + "</a>";
+                } catch (Exception ex) {
+                    // Ignore, we could not find the documentation.
+                }
+                entityBuffer.append(entityHTML);
             }
+
+
             htmlBuffer.append("<dt>" + entityBuffer
                     + "\n<dd> <a href=\"" + copyrightURL + "\"><code>"
                     + copyrightURL + "</code></a>\n");
