@@ -314,6 +314,15 @@ test DoubleMatrixMath-7.1 {negative double[][]} {
 } {{{-3.7, 6.6, -3.0E-4}, {-4862.2, -236.1, 36.25}}}
 
 ####################################################################
+test DoubleMatrixMath-7.8 {orthogonalizeColumns double[][]} {
+    set mr [java::call ptolemy.math.DoubleMatrixMath orthogonalizeColumns $m3]
+    set s [java::call ptolemy.math.DoubleMatrixMath toString $mr]
+    # Get rid of trailing ,
+    regsub -all {,} $s {} stmp
+    epsilonDiff $stmp {{{3.7 -6.779869606653945 -1.1646268307442962} {4862.2 -0.26810850616519133 0.004773493257714222} {-56.4 -23.558203833707434 0.3351163057437292}}}
+} {} 
+
+####################################################################
 test DoubleMatrixMath-8.1 {subtract double[][] double[][] not same size} {
     catch {set r [java::call ptolemy.math.DoubleMatrixMath subtract $m32 $m3]} errMsg
     list $errMsg
