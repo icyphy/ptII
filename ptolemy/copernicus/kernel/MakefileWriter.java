@@ -321,7 +321,7 @@ public class MakefileWriter extends SceneTransformer {
 	try {
             inputFile = Copernicus.openAsFileOrURL(obfuscateTemplate);
         } catch (IOException ex) {
-            System.err.println("Note: Optional obfuscation template not "
+            System.out.println("Note: Optional obfuscation template not "
                     + "found (This can be ignored): "  + ex);
         }
         if (inputFile != null) {
