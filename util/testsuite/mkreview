@@ -44,6 +44,7 @@ fi
 
 # The name of the directory that the review materials will reside in
 reviewname=$1
+reviewdate=`basename $reviewname`
 
 shift
 files=$@
@@ -105,7 +106,7 @@ fi
 cd ..
 
 # Generate PostScript of the code
-enscript -Grp - $shortfiles > javafilesup.ps
+enscript -Grp - $shortfiles > javafiles.ps
 psnup -n 2 < javafiles.ps > javafiles2up.ps
 
 # Generate PDF
@@ -151,22 +152,22 @@ EoF
 
 for file in $shortfiles
 do
-    echo "  <li><a href=\"$file\"><code>$file</code><a/>" >>$reviewfile
+    echo "  <li><a href=\"$reviewdate/$file\"><code>$file</code><a/>" >>$reviewfile
 done
 
 cat >>$reviewfile <<EOF
-  <li><a href="javafiles.ps" target="_top">PostScript</a> -
-<a href="javafiles.pdf" target="_top">PDF</a>
-  <li><a href="javafiles2up.ps" target="_top">2 up PostScript</a> -
-<a href="javafiles2up.pdf" target="_top">2 up PDF</a>
+  <li><a href="$reviewdate/javafiles.ps" target="_top">PostScript</a> -
+<a href="$reviewdate/javafiles.pdf" target="_top">PDF</a>
+  <li><a href="$reviewdate/javafiles2up.ps" target="_top">2 up PostScript</a> -
+<a href="$reviewdate/javafiles2up.pdf" target="_top">2 up PDF</a>
   </menu>
 <li> Javadoc 
   <menu>
-  <li><a href="codeDoc/index.html">HTML</a>
-  <li><a href="javadocs.ps">PostScript</a> -
-    <a href="javadocs.pdf">PDF</a>
-  <li><a href="javadocs2up.ps" target="_top">2 up PostScript</a> -
-<a href="javadocs2up.pdf" target="_top">2 up PDF</a>
+  <li><a href="$reviewdate/codeDoc/index.html">HTML</a>
+  <li><a href="$reviewdate/javadocs.ps">PostScript</a> -
+    <a href="$reviewdate/javadocs.pdf">PDF</a>
+  <li><a href="$reviewdate/javadocs2up.ps" target="_top">2 up PostScript</a> -
+<a href="$reviewdate/javadocs2up.pdf" target="_top">2 up PDF</a>
   </menu>
 <li> <i>UML Diagram</i>
 </menu>
@@ -230,7 +231,7 @@ outputfiles="javafiles.ps javafiles2up.ps javafiles.pdf javafiles2up.pdf javadoc
 for outputfile in $outputfiles
 do
     if [ ! -f $outputfile ]; then
-	echo "$0: Warning: '$outputfile' does not exist."
+	echo "$0: Warning: '$outputfile' does not exist in `pwd`."
 	retval=3
     fi
 done
