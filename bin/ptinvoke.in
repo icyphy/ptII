@@ -125,7 +125,7 @@ JVERSION=@JVERSION@
 # See if we are running under JDK1.4.1 with XP
 if test "`uname -s`" = "CYGWIN_NT-5.1"; then
    case "$JVERSION" in
-	1.4.1*)  
+	1.4.1)  
         # There is a bug under JDK1.4.1 XP with Radeon display cards
         # that causes XP to hang when exiting.  For details, see
         # http://developer.java.sun.com/developer/bugParade/bugs/4713003.html
@@ -138,6 +138,12 @@ if test "`uname -s`" = "CYGWIN_NT-5.1"; then
 #	   J141BUGWORKAROUND=-Dsun.java2d.d3d=false
 	   J141BUGWORKAROUND=-Dsun.java2d.noddraw=true
 	;;     
+	1.4.1_01)  
+	   J141BUGWORKAROUND=-Dsun.java2d.noddraw=true
+	;;     
+	1.4.1_02)  
+	   # 1.4.1_02 and later does not have the bug.
+	;;    
    esac
 fi
 
