@@ -54,6 +54,14 @@ JARFILE = 	$(TYPACKAGE).jar
 CLASSPATH = ../../../..
 
 JSRCS = \
+	CTAdd.java \
+	CTConst.java \
+	CTGain.java \
+	CTIntegrator.java \
+	CTMultiply.java \
+	CTPrintln.java \
+	CTRamp.java \
+	CTSquareWave.java 
 
 EXTRA_SRCS =	$(JSRCS)
 
@@ -63,9 +71,7 @@ MISC_FILES =	doc test
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	'CTPlot$$CTPlotFrame.class' \
-	'CTXYPlot$$CTPlotFrame.class'
+OPTIONAL_FILES = 
 
 JCLASS = $(JSRCS:%.java=%.class)
 
