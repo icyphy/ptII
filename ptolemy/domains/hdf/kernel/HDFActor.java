@@ -50,8 +50,6 @@ FIXME
 @author Rachel Zhou
 @version $Id$
 @since Ptolemy II 3.0
-@see Scrambler
-@see ViterbiDecoder
 */
 public class HDFActor extends Transformer {
 
@@ -132,8 +130,11 @@ public class HDFActor extends Transformer {
     public void preinitialize() throws IllegalActionException {
         //rate.update();
         _rateValue = ((IntToken)rate.getToken()).intValue();
+        _rateOldValue = _rateValue;
         _outputRate.setToken(new IntToken(_rateValue));
         _inputRate.setToken(new IntToken(_rateValue));
+        Director director = getDirector();
+        super.preinitialize();
     }
 
     /** Record the most recent shift register state as the new
@@ -146,9 +147,14 @@ public class HDFActor extends Transformer {
         _outputRate.setToken(new IntToken(_rateValue));
         _inputRate.setToken(new IntToken(_rateValue));
         Director director = getDirector();
-        if (director instanceof HDFDirector) {
-            ((HDFDirector)director).invalidateSchedule();
-             //System.out.println("invalidate HDF schedule");
+        if (_rateValue != _rateOldValue) {
+            if (director instanceof HDFDirector) {
+                ((HDFDirector)director).invalidateSchedule();
+                 _rateOldValue = _rateValue;
+            } else {
+                throw new IllegalActionException(this,
+                    "Rate can't change under non-HDF directors.");
+            }
         }
         return super.postfire();
     }
@@ -168,5 +174,7 @@ public class HDFActor extends Transformer {
 
     // Record the state of the shift register.
     private int _rateValue;
+    
+    private int _rateOldValue;
 
 }

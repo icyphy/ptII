@@ -491,8 +491,8 @@ public class HDFFSMDirector extends FSMDirector {
             _updateInputTokenConsumptionRates(curRefinement);
             _updateOutputTokenProductionRates(curRefinement);
             //_firingsPerScheduleIteration =
-            //                _getFiringsPerSchedulIteration();
-            //System.out.println("firingsPerScheduleIteration = "
+            //                updateFiringsPerScheduleIteration();
+            //System.out.println("preinitialize: firingsPerScheduleIteration = "
             //   + _firingsPerScheduleIteration);
             // Tell the scheduler that the current schedule is no
             // longer valid.
@@ -692,7 +692,6 @@ public class HDFFSMDirector extends FSMDirector {
                  throw new IllegalActionException(this, "Unable to get " +
                                           "the SDF or HDF scheduler.");
              }
-             //System.out.println("called in getFiringPerSchedule in HDFFSM.");
              Schedule schedule = scheduler.getSchedule();
              Iterator firings = schedule.firingIterator();
              int occurrence = 0;
@@ -1143,6 +1142,6 @@ public class HDFFSMDirector extends FSMDirector {
     private boolean _debug_info = false;
     // The firing count for the HDF actor (the container
     // of this director) in the current schedule.
-    private int _firingsPerScheduleIteration = -1;
+    private int _firingsPerScheduleIteration = 1;
     private int _cachedFiringCount = -1;
 }
