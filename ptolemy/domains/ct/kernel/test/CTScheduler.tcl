@@ -333,68 +333,67 @@ test CTScheduler-3.1 {get the description} {
     list [$sch description]
 } {{CTSchedule {
     arithmaticActors {
-        .CA.A1
-        .CA.A2
-        .CA.A3
-        .CA.A4
-        .CA.EG
-        .CA.EI
-        .CA.SSC
-        .CA.A5
-        .CA.A6S 
-        .CA.A7S
-        .CA.ED
-        .CA.A8
+	.CA.A1
+	.CA.A2
+	.CA.A3
+	.CA.A4
+	.CA.EG
+	.CA.EI
+	.CA.SSC
+	.CA.A5
+	.CA.A6S
+	.CA.A7S
+	.CA.ED
+	.CA.A8
     }
     dynamicActors {
-        .CA.Dyn
-        .CA.D2
-        .CA.D3
+	.CA.Dyn
+	.CA.D2
+	.CA.D3
     }
     stateTransitionSSCActors {
     }
     outputSSCActors {
-        .CA.SSC
+	.CA.SSC
     }
     eventGenerators {
-        .CA.EG
-        .CA.ED
+	.CA.EG
+	.CA.ED
     }
     eventInterpreters {
-        .CA.EI
+	.CA.EI
     }
     statefulActors {
-        .CA.A6S
-        .CA.A7S
+	.CA.A6S
+	.CA.A7S
     }
     sinkActors {
-        .CA.A3
-        .CA.A5
-        .CA.A6S
-        .CA.ED
-        .CA.A8
+	.CA.A3
+	.CA.A5
+	.CA.A6S
+	.CA.ED
+	.CA.A8
     }
     dynamicActorSchedule {
-        .CA.D2
-        .CA.D3
-        .CA.Dyn
+	.CA.D2
+	.CA.D3
+	.CA.Dyn
     }
     stateTransitionSchedule {
-        .CA.A1
-        .CA.A4
-        .CA.A7S
-        .CA.A2
+	.CA.A1
+	.CA.A4
+	.CA.A7S
+	.CA.A2
     }
     outputSchedule {
-        .CA.EG
-        .CA.SSC
-        .CA.EI
-        .CA.A3
-        .CA.A5
-        .CA.A6S
-        .CA.ED
-        .CA.A8
+	.CA.EG
+	.CA.SSC
+	.CA.EI
+	.CA.A3
+	.CA.A5
+	.CA.A6S
+	.CA.ED
+	.CA.A8
     }
 }
-}
-} {Known_fail}
+}}
