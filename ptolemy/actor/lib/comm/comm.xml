@@ -8,7 +8,6 @@
 
 <entity name="ConvolutionalCoder" class="ptolemy.actor.lib.comm.ConvolutionalCoder"/>
 <entity name="DeScrambler" class="ptolemy.actor.lib.comm.DeScrambler"/>
-<entity name="FlipFlop" class="ptolemy.actor.lib.comm.FlipFlop"/>
 <entity name="HadamardCode" class="ptolemy.actor.lib.comm.HadamardCode"/>
 <entity name="LineCoder" class="ptolemy.domains.sdf.lib.LineCoder"/>
 <entity name="LMSAdaptive" class="ptolemy.domains.sdf.lib.LMSAdaptive"/>
