@@ -31,7 +31,7 @@
 
 ME =		jni
 
-DIRS = #dll
+DIRS = 		doc #dll
 
 # Root of Ptolemy II directory
 ROOT =		..
