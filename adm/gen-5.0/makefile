@@ -180,7 +180,7 @@ $(PTIIDIST):
 	#@echo "Be sure that ptolemy/actor/lib/javasound/javasound.jar exists"
 	#(cd $(PTIIHOME)/ptolemy/actor/lib/javasound; make jars)
 	(cd $(PTIIHOME); \
-		$(TAR) -c -X $(GENDIR)/src.ex  -X $(GENDIR)/src1.ex \
+		$(TAR) -c --no-anchored -X $(GENDIR)/src.ex -X $(GENDIR)/src1.ex \
 		$ -f - $(PTII_TOPDIR) )| \
 		(cd $@; $(TAR) -xpf -)
 	@echo "Removing codeDoc directories and other documentation"
@@ -222,7 +222,7 @@ $(PTII_FULL): $(PTIIDIST)
 	@echo "For some reason under Cygwin, we need to build the compressed"
 	@echo "  tar file or we get errors"
 	(cd $(PTIIDIST)/..; \
-		$(TAR) -c -X $(GENDIR)/src.ex \
+		$(TAR) -c --no-anchored -X $(GENDIR)/src.ex \
 		 -f $@ \
 		ptII$(VERSION))
 	#(cd $(PTIIDIST)/..; \
@@ -277,7 +277,7 @@ $(PTII_SRC): $(PTII_FULL)
 		$(FINDCLEAN); \
 		cd ..; \
 		echo "#  Starting tar of $@"; \
-		$(TAR) -c -X $(GENDIR)/src.ex -f $(PTII_SRC) ptII$(VERSION); \
+		$(TAR) -c --no-anchored -X $(GENDIR)/src.ex -f $(PTII_SRC) ptII$(VERSION); \
 		);
 
 ###############
@@ -427,6 +427,7 @@ src_jar/hyvisual$(VERSION): ptII$(VERSION).src.jar
 	        ptolemy/actor/lib/test/auto/Switch.xml \
 		ptolemy/actor/lib/x10 \
 		ptolemy/actor/lib/xslt \
+		ptolemy/backtrack \
 		ptolemy/build.xml \
 		ptolemy/caltrop \
 		ptolemy/codegen \
