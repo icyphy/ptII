@@ -37,20 +37,23 @@
 set univ [java::new ptolemy.actor.CompositeActor]
 $univ setName BasicDemo
 set manager [java::new ptolemy.actor.Manager Manager]
-set dir [java::new ptolemy.domains.csp.CSPDirector CSPDirector]
+set dir [java::new ptolemy.domains.csp.kernel.CSPDirector CSPDirector]
 $univ setDirector $dir
 $univ setManager $manager
 
-set source [java::new ptolemy.domains.csp.lib.CSPSource Source]
-set sink [java::new ptolemy.domains.csp.lib.CSPSource Source]
+set source [java::new ptolemy.domains.csp.lib.CSPSource $univ Source]
+set sink [java::new ptolemy.domains.csp.lib.CSPSink $univ Sink]
 
-set input [$sink input]
-set output [$source output]
+set input [java::field $sink input]
+set output [java::field $source output]
 
-set relation [$univ connect output input R1]
-# $univ description 1023
+set relation [$univ connect $output $input R1]
+#puts [ $univ description 1023]
 
-$univ {go int} 1
+# For now this just returns, a bug
+puts [$manager {go int} 1]
+
+
 
 
 
