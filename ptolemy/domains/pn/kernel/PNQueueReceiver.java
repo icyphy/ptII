@@ -410,7 +410,6 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
     /** Reset the state variables in the receiver.
      */
     public void reset() {
-	super.reset();
 	_readBlocked = false;
 	_writeBlocked = false;
 	_terminate = false;
