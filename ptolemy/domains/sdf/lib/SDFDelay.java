@@ -111,7 +111,7 @@ public class SDFDelay extends SDFAtomicActor {
      * Instance variables come at the end of the class.
      */
 
-    /* The fire method is where the bulk fo the action takes place.   In
+    /* The fire method is where the bulk of the action takes place.   In
      * SDF, fire will be called exactly once between prefire and postfire.
      * In this class, we get an input port, print its value, and put the
      * same token back on the output port.
