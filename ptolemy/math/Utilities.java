@@ -49,14 +49,13 @@ public class Utilities {
      *  @param precision The precision.
      *  @return A double value with the given precision.
      */
-    public static double round(double value, double precision) {
-        // FIXME: check the precision as 1.0 exp(x), where x is an int.
-        // FIXME: the limitation of this round algorithm.
-        long numberOfDigits 
-            = - Math.round((float)Math.log(precision) / Math.log(10));
+    public static double round(double value, int precision) {
+        // NOTE: when the value is too big, e.g. close to the
+        // maximum double value, the following algorithm will 
+        // get overflow, which gives a wrong answer.
         double newValue = 
-            Math.round(value * Math.pow(10, numberOfDigits))
-                / Math.pow(10, numberOfDigits);
+            Math.round(value * Math.pow(10, precision))
+                / Math.pow(10, precision);
         return newValue;
     }
 }
