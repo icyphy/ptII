@@ -146,7 +146,9 @@ public class GiottoDirector extends StaticSchedulingDirector {
 		if(_debugging) {
 		    _debug("Iterating " + ((NamedObj)actor).getFullName());
 		}
-                _postfirereturns = _postfirereturns && actor.iterate(1);
+                if (actor.iterate(1) == STOP_ITERATING) {
+                    _postfirereturns = false;
+                }
             }
         }
     }
