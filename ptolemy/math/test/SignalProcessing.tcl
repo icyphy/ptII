@@ -702,8 +702,8 @@ test SignalProcessing-11.7 {IFFTComplexOut Complex int: array is longer than ord
 } {{0.5 + 0.0i} {0.5 + 0.0i}}
 
 ####################################################################
-test SignalProcessing-12.1 {poleZeroToFreq} {
-    list "We need tests for poleZeroToFreq with realistic input data"
+test SignalProcessing-12.1 {poleZeroToFrequency} {
+    list "We need tests for poleZeroToFrequency with realistic input data"
 
     # some complex numbers
     set zero0 [java::new ptolemy.math.Complex -0.1 0]
@@ -718,7 +718,7 @@ test SignalProcessing-12.1 {poleZeroToFreq} {
 
     # try with 6 steps
     set result [java::call ptolemy.math.SignalProcessing \
-            poleZeroToFreq $poles $zeros $gain 6]
+            poleZeroToFrequency $poles $zeros $gain 6]
 
     javaPrintArray $result
 
@@ -972,23 +972,21 @@ test SignalProcessing-21.3 {triangle: negative phase} {
 ####################################################################
 test SignalProcessing-22.1 {unwrap double[] start at 0.0} {
     set uwarray [java::new {double[]} 3 [list 0.0 4.14 -15.7]]
-    java::call ptolemy.math.SignalProcessing {unwrap double[]} $uwarray
-    epsilonDiff [$uwarray getrange 0] \
+    epsilonDiff [[java::call ptolemy.math.SignalProcessing {unwrap double[]} $uwarray] getrange 0] \
             {0.0 -2.14318530717959 -3.13362938564083}
 } {}
 
 ####################################################################
 test SignalProcessing-22.2 {unwrap double[] start at > pi} {
     set uwarray [java::new {double[]} 3 [list 4.14 7.28 15.7]]
-    java::call ptolemy.math.SignalProcessing {unwrap double[]} $uwarray
-    epsilonDiff [$uwarray getrange 0] \
+    epsilonDiff [[java::call ptolemy.math.SignalProcessing {unwrap double[]} $uwarray] getrange 0] \
             {-2.14318530717959 0.99681469282041 3.13362938564083}
 } {}
 
 ####################################################################
 test SignalProcessing-22.3 {unwrap double[] empty array} {
     set a0 [java::new {double[]} 0]
-    java::call ptolemy.math.SignalProcessing {unwrap double[]} $a0
+    set a0 [java::call ptolemy.math.SignalProcessing {unwrap double[]} $a0]
     $a0 getrange 0
 } {}
 

@@ -878,7 +878,27 @@ public class SignalProcessing {
         return window;
     }
     
-
+    /** Return an array with samples the Gaussian curve (the "bell curve").
+     *  The returned array is symmetric.  E.g., to get a Gaussian curve
+     *  that extends out to "four sigma," then the <i>extent</i> argument
+     *  should be 4.0.
+     *  @param standardDeviation The standard deviation.
+     *  @param extent The multiple of the standard deviation out to
+     *   which the curve is plotted.
+     *  @param length The length returned array.
+     *  @return An array that contains samples of the Gaussian curve.
+     */
+    public static final double[] generateGaussianCurve(
+            double standardDeviation, double extent, int length) {
+        GaussianSampleGenerator generator
+               = new GaussianSampleGenerator(0.0, standardDeviation);
+        return sampleWave(
+               length,
+               -extent*standardDeviation,
+               2.0*extent*standardDeviation/length,
+               generator);
+    }
+    
     /** Return a new array that is filled with samples of a Hamming
      *  window of a specified length. Throw an IllegalArgumentException
      *  if the length is less than 1 or the window type is unknown.
@@ -931,7 +951,58 @@ public class SignalProcessing {
         return window;
     }
 
-
+    /** Return an array with samples a polynomial curve.
+     *  The returned array is symmetric.  E.g., to get a Gaussian curve
+     *  that extends out to "four sigma," then the <i>extent</i> argument
+     *  should be 4.0.
+     *  @param standardDeviation The standard deviation.
+     *  @param extent The multiple of the standard deviation out to
+     *   which the curve is plotted.
+     *  @param length The length returned array.
+     *  @return An array that contains samples of the Gaussian curve.
+     */
+    public static final double[] generatePolynomialCurve(
+            double[] polynomial, double start, double step, int length) {
+        PolynomialSampleGenerator generator
+               = new PolynomialSampleGenerator(polynomial, 1);
+        return sampleWave(
+               length,
+               start,
+               step,
+               generator);
+    }
+    
+    /** Return an array containing a symmetric raised-cosine pulse.
+     *  This pulse is widely used in communication systems, and is called
+     *  a "raised cosine pulse" because the magnitude its Fourier transform
+     *  has a shape that ranges from rectangular (if the excess bandwidth
+     *  is zero) to a cosine curved that has been raised to be non-negative
+     *  (for excess bandwidth of 1.0).  The elements of the returned array
+     *  are samples of the function:
+     *  <pre>
+     *         sin(PI t)   cos(x PI t)
+     *  h(t) = --------- * -----------
+     *           PI t      1-(2 x t)<sup>2</sup>
+     *  </pre>
+     *  where x is the excess bandwidth. The samples are taken with a
+     *  sampling interval of 1.0, and the returned array is symmetric.
+     *  With an excessBandwidth of 0.0, this pulse is a sinc pulse.
+     *  @param excessBandwidth The excess bandwidth.
+     *  @param firstZeroCrossing The number of samples from the center of the
+     *   pulse to the first zero crossing.
+     *  @param length The length of the returned array.
+     *  @return
+     */
+    public static final double[] generateRaisedCosinePulse(
+            double excessBandwidth, double firstZeroCrossing, int length) {
+        RaisedCosineSampleGenerator generator
+               = new RaisedCosineSampleGenerator(firstZeroCrossing, excessBandwidth);
+        return sampleWave(
+               length,
+               -(length-1)/2.0,
+               1.0,
+               generator);        
+    }
 
     /** Return a new array that is filled with samples of a rectangular
      *  window of a specified length. Throw an IllegalArgumentException
@@ -1058,7 +1129,7 @@ public class SignalProcessing {
      *  @param numSteps The number of samples in the returned
      *  frequency response.
      */
-    public static final Complex[] poleZeroToFreq(Complex[] poles,
+    public static final Complex[] poleZeroToFrequency(Complex[] poles,
             Complex[] zeros, Complex gain, int numSteps){
         double step = 2*Math.PI/numSteps;
         Complex[] freq = new Complex[numSteps];
@@ -1232,47 +1303,51 @@ public class SignalProcessing {
         return 20.0 * Math.log(value) * _LOG10SCALE;
     }
 
-    /** Modify the specified array to unwrap the angles.  That is, if
-     *  the difference between successive values is greater than *
+    /** Return a new array that is consturcted from the specified
+     *  array by unwrapping the angles.  That is, if
+     *  the difference between successive values is greater than
      *  <em>PI</em> in magnitude, then the second value is modified by
-     *  * multiples of 2<em>PI</em> until the difference is less than
-     *  or * equal to <em>PI</em>.
-     *
+     *  multiples of 2<em>PI</em> until the difference is less than
+     *  or equal to <em>PI</em>.
      *  In addition, the first element is modified so that its
      *  difference from zero is less than or equal to <em>PI</em> in
      *  magnitude.  This method is used for generating more meaningful
      *  phase plots.
+     *  @param angles An array of angles.
+     *  @return A new array of phase-unwrapped angles.
      */
-    public static final void unwrap(double[] angles) {
+    public static final double[] unwrap(double[] angles) {
         double previous = 0.0;
+        double[] result = new double[angles.length];
         for (int i = 0; i < angles.length; i++) {
-            while (angles[i] - previous < -Math.PI) {
-                angles[i] += 2*Math.PI;
+            result[i] = angles[i];
+            while (result[i] - previous < -Math.PI) {
+                result[i] += 2*Math.PI;
             }
-            while (angles[i] - previous > Math.PI) {
-                angles[i] -= 2*Math.PI;
+            while (result[i] - previous > Math.PI) {
+                result[i] -= 2*Math.PI;
             }
-            previous = angles[i];
+            previous = result[i];
         }
+        return result;
     }
 
     /** Return a new array that is the result of inserting (n-1) zeroes
      *  between each successive sample in the input array, resulting in an
      *  array of length n * L, where L is the length of the original array.
-     *
-     *  Throw an exception for n < 0.
-     *
+     *  Throw an exception for n <= 0.
      *  @param x The input array of doubles.
      *  @param n An integer specifying the upsampling factor.
      *  @return A new array of doubles.
+     *  @exception IllegalArgumentException If the second argument is not
+     *   strictly positive.
      */
     public static final double[] upsample(double[] x, int n) {
-        if (n < 0) {
+        if (n <= 0) {
             throw new IllegalArgumentException(
                     "ptolemy.math.SignalProcessing.upsample(): " +
                     "upsampling factor must be greater than or equal to 0.");
         }
-
         int length = x.length * n;
         double[] returnValue = new double[length];
         int srcIndex = 0;
@@ -1448,14 +1523,18 @@ public class SignalProcessing {
     }
 
     /** This class generates samples of a polynomial.
-     *  The function computed is :
-     *  <p>
+     *  The function computed is:
      *  <pre>
-     *  h(t) = a<sub>0</sub> + a<sub>1</sub>t + a<sub>2</sub>t<sup>2</sup> + ... + a<sub>n-1</sub>t<sup>n-1</sup>
-     *  or
-     *  h(t) = a<sub>0</sub> + a<sub>1</sub>t<sup>-1</sup> + a<sub>2</sub>t<sup>-2</sup> + ... + a<sub>n-1</sub>t<sup>-(n-1)</sup>
-     *  depending on the direction specified.
+     *  h(t) = a<sub>0</sub> + a<sub>1</sub>t + a<sub>2</sub>t<sup>2</sup> + ...
+     *         + a<sub>n-1</sub>t<sup>n-1</sup>
      *  </pre>
+     *  or
+     *  <pre>
+     *  h(t) = a<sub>0</sub> + a<sub>1</sub>t<sup>-1</sup>
+     *         + a<sub>2</sub>t<sup>-2</sup> + ...
+     *         + a<sub>n-1</sub>t<sup>-(n-1)</sup>
+     *  </pre>
+     *  depending on the direction specified.
      *  </p>
      */
     public static class PolynomialSampleGenerator
@@ -1584,7 +1663,7 @@ public class SignalProcessing {
      *  <p>
      *  <pre>
      *         sin(PI t/T)   cos(excess PI t/T)
-     *  h(n) = ----------- * -----------------
+     *  h(t) = ----------- * -----------------
      *          PI t/T      1-(2 excess t/T)<sup>2</sup>
      *  </pre>
      *  <p>
