@@ -115,17 +115,17 @@ public class Controller extends CSPActor {
             //
             generateEvents( new ExecEvent( this, 1 ) );
 	    // System.out.println("\t\t\tSTATE 1: " +getName());
-            ConditionalBranch[] reqBrchs =
+            ConditionalBranch[] requiredBranches =
                     new ConditionalBranch[_numRequestInChannels];
             for( int i=0; i<_numRequestInChannels; i++ ) {
-                reqBrchs[i] = new
+                requiredBranches[i] = new
                         ConditionalReceive(true, _requestIn, i, i);
             }
 
-            br = chooseBranch(reqBrchs);
+            br = chooseBranch(requiredBranches);
 
             if( br != -1 ) {
-                IntToken token = (IntToken)reqBrchs[br].getToken();
+                IntToken token = (IntToken)requiredBranches[br].getToken();
                 code = token.intValue();
                 _winningPortChannelCode =
                         new PortChannelCode(_requestIn, br, code);
@@ -148,19 +148,19 @@ public class Controller extends CSPActor {
             _losingPortChannelCodes = new LinkedList();
             boolean continueCDO = true;
             while( continueCDO ) {
-                reqBrchs = new ConditionalBranch[_numRequestInChannels+1];
+                requiredBranches = new ConditionalBranch[_numRequestInChannels+1];
                 for( int i=0; i<_numRequestInChannels; i++ ) {
-                    reqBrchs[i] = new ConditionalReceive(true, _requestIn, i, i);
+                    requiredBranches[i] = new ConditionalReceive(true, _requestIn, i, i);
                 }
                 int j = _numRequestInChannels;
-                reqBrchs[j] = new ConditionalReceive(true, _contendIn, 0, j);
+                requiredBranches[j] = new ConditionalReceive(true, _contendIn, 0, j);
 
-                br = chooseBranch(reqBrchs);
+                br = chooseBranch(requiredBranches);
 
 
                 // Contention Occurred...and might happen again
                 if( br >= 0 && br < _numRequestInChannels ) {
-                    IntToken token = (IntToken)reqBrchs[br].getToken();
+                    IntToken token = (IntToken)requiredBranches[br].getToken();
                     code = token.intValue();
                     if( code > _winningPortChannelCode.getCode() ) {
                         _losingPortChannelCodes.
@@ -180,7 +180,7 @@ public class Controller extends CSPActor {
                     generateEvents( new ExecEvent( this, 4 ) );
 	            // System.out.println("\t\t\tSTATE 4: " +getName());
 
-                    reqBrchs[br].getToken();
+                    requiredBranches[br].getToken();
 
                     // Send Positive Ack
                     int ch =  _winningPortChannelCode.getChannel();
