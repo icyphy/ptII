@@ -75,144 +75,14 @@ public class Argument extends Attribute implements Settable {
         super();
     }
 
-    /** This is for derivates of Attribute
-        @return the Visibility
-    */
-    public Visibility getVisibility() {
-        return (Visibility) null;
-    }
-
-    /** This is for derivates of Attribute
-     * set the Visibility
-     @return void
-    */
-    public void setVisibility(ptolemy.kernel.util.
-            Settable.Visibility v) {
-    }
-
-    /** Return true if it is an input.
-        @return true is it is an input, or false if not.
-    */
-    public boolean isInput() {
-        return _isInput;
-    }
-
-    /** Return true if it an output.
-        @return true is it is an output, or false if not.
-    */
-    public boolean isOutput() {
-        return _isOutput;
-    }
-
-    /** Return true if it is a return
-        @return true is it is an return, or false if not.
-    */
-    public boolean isReturn() {
-        return _isReturn;
-    }
-
-    /** Set to true if the attribute is an input.
-     *        @param input True if this is an input, false if it is not.
+    /** Get the C type of the argument.
+     *   @return the _cType attribute
      */
-    public void setInput(boolean input) {
-        _isInput = input;
-    }
-
-    /** Set to true if the attribute is an output.
-     *        @param output True if this is an output, false if it is not.
-     */
-    public void setOutput(boolean output) {
-        _isOutput = output;
-    }
-
-    /** Set to true if the attribute is a return
-     *        @param returnFlag True if this is an input, false if it is not.
-     */
-    public void setReturn(boolean returnFlag) {
-        _isReturn = returnFlag;
-    }
-
-    /** Set the kind of the argument with the given string
-     *  @param selectedValues A string describing the type of Argument.
-     *  valid values are "input", "output", "return", "input, output".
-     *
-     */
-    public void setKind(String selectedValues) {
-        if (selectedValues.equals("input")) {
-            this.setInput(true);
-        } else {
-            this.setInput(false);
-        }
-        if (selectedValues.equals("output")) {
-            this.setOutput(true);
-        } else {
-            this.setOutput(false);
-        }
-        if (selectedValues.equals("return")) {
-            this.setReturn(true);
-        } else {
-            this.setReturn(false);
-        }
-        if (selectedValues.equals("input, output")) {
-            this.setInput(true);
-            this.setOutput(true);
-        }
-        // FIXME: this should throw an exception not call MessageHandler
-        // directly.
-        if (selectedValues.equals("input, return")) {
-            MessageHandler.error(
-                    "An argument can't be input "
-                    + "and return at the same time.");
-        }
-        if (selectedValues.equals("output, return")) {
-            MessageHandler.error(
-                    "An argument can't be output "
-                    + "and return or in at the same time.");
-        }
-        if (selectedValues.equals("input, output, return")) {
-            MessageHandler.error(
-                    "An argument can't be in-out "
-                    + "and return at the same time.");
-        }
-    }
-
-    /** Get the kind as a comma separated list
-        @return "input", "output" "input, output" or "return"
-    */
-    public String getKind() {
-        String returnValue = "";
-        //set Kind
-        if (isInput()) {
-            returnValue = "input";
-        }
-        if (isOutput() && !isInput()) {
-            returnValue = "output";
-        }
-        if (isOutput() && isInput()) {
-            returnValue = "input,output";
-        }
-        if (isReturn()) {
-            returnValue = "return";
-        }
-        return returnValue;
-    }
-
-    /** Set the C type of the argument with the given string
-        @return void
-    */
-    public void setCType(String cType) {
-        _cType = cType.trim();
-    }
-
-    /** Get the C type of the argument
-        @return the _cType attribute
-    */
     public String getCType() {
         return _cType;
     }
 
-    /** Get the C type of the argument
-     * as a pointer if it is an array
+    /** Get the C type of the argument as a pointer if it is an array.
      @return the _cType attribute in pointer
     */
     public String getC2Type() {
@@ -222,9 +92,25 @@ public class Argument extends Attribute implements Settable {
         return ret;
     }
 
+    /** Get the expression of the argument.
+     * The format is "_isInput, _isOutput, _isReturn, _cType".
+     * @return the string containing the argument specifications
+     */
+    public String getExpression() {
+        String ret =
+            new Boolean(isInput()).toString()
+            + ","
+            + new Boolean(isOutput()).toString()
+            + ","
+            + new Boolean(isReturn()).toString()
+            + ","
+            + getCType();
+        return ret;
+    }
+
     /** Get the Java type of the argument
-        @return the corresponding Java type
-    */
+     *  @return the corresponding Java type
+     */
     public String getJType() {
         String returnJType = "";
         //if it's an array
@@ -266,36 +152,25 @@ public class Argument extends Attribute implements Settable {
         return returnJType;
     }
 
-    /** Get the Java class corresponding to the Java Type
-        @return the corresponding Java class
-    */
-    public String getType() {
-
-        String returnCType = "";
-        if (_cType.endsWith("[]")) {
-                returnCType = "[]";
+    /** Get the kind as a comma separated list
+     *  @return "input", "output" "input, output" or "return"
+     */
+    public String getKind() {
+        String returnValue = "";
+        //set Kind
+        if (isInput()) {
+            returnValue = "input";
         }
-        if (_cType.equals("char") || _cType.startsWith("char")) {
-            returnCType = "Boolean" + returnCType;
-        } else if (_cType.equals("short")
-                   || _cType.startsWith("short")) {
-            returnCType = "Byte" + returnCType;
-        } else if (_cType.equals("long")
-                   || _cType.startsWith("long")) {
-            returnCType = "Integer"+ returnCType;
-        } else if (_cType.equals("double")
-                   || _cType.startsWith("double")) {
-            returnCType = "Double" + returnCType;
-        } else if (_cType.equals("void")
-                   || _cType.startsWith("void")) {
-            returnCType = "Object" + returnCType;
-        } else {
-            // FIXME: why is this code not like the code above
-            MessageHandler.error("Type = "
-                                 + _cType + " not convertible in JavaClass");
-            returnCType = "Object";
+        if (isOutput() && !isInput()) {
+            returnValue = "output";
         }
-        return returnCType;
+        if (isOutput() && isInput()) {
+            returnValue = "input,output";
+        }
+        if (isReturn()) {
+            returnValue = "return";
+        }
+        return returnValue;
     }
 
     /** Get the JNI type of the argument
@@ -334,26 +209,76 @@ public class Argument extends Attribute implements Settable {
         return returnJNIType;
     }
 
-    /** Get the expression of the argument.
-     * The format is "_isInput, _isOutput, _isReturn, _cType".
-     @return the string containing the argument specifications
-    */
-    public String getExpression() {
-        String ret =
-            new Boolean(isInput()).toString()
-            + ","
-            + new Boolean(isOutput()).toString()
-            + ","
-            + new Boolean(isReturn()).toString()
-            + ","
-            + getCType();
-        return ret;
+
+    /** Get the Java class corresponding to the Java Type
+     *  @return the corresponding Java class
+     */
+    public String getType() {
+
+        String returnCType = "";
+        if (_cType.endsWith("[]")) {
+                returnCType = "[]";
+        }
+        if (_cType.equals("char") || _cType.startsWith("char")) {
+            returnCType = "Boolean" + returnCType;
+        } else if (_cType.equals("short")
+                   || _cType.startsWith("short")) {
+            returnCType = "Byte" + returnCType;
+        } else if (_cType.equals("long")
+                   || _cType.startsWith("long")) {
+            returnCType = "Integer"+ returnCType;
+        } else if (_cType.equals("double")
+                   || _cType.startsWith("double")) {
+            returnCType = "Double" + returnCType;
+        } else if (_cType.equals("void")
+                   || _cType.startsWith("void")) {
+            returnCType = "Object" + returnCType;
+        } else {
+            // FIXME: why is this code not like the code above
+            MessageHandler.error("Type = "
+                                 + _cType + " not convertible in JavaClass");
+            returnCType = "Object";
+        }
+        return returnCType;
+    }
+
+    /** This is for derivates of Attribute
+     *  @return the Visibility
+     */
+    public Visibility getVisibility() {
+        return (Visibility) null;
+    }
+
+    /** Return true if it is an input.
+     *  @return true is it is an input, or false if not.
+     */
+    public boolean isInput() {
+        return _isInput;
+    }
+
+    /** Return true if it an output.
+     *  @return true is it is an output, or false if not.
+     */
+    public boolean isOutput() {
+        return _isOutput;
+    }
+
+    /** Return true if it is a return
+     *   @return true is it is an return, or false if not.
+     */
+    public boolean isReturn() {
+        return _isReturn;
+    }
+
+    /** Set the C type of the argument with the given string
+     */
+    public void setCType(String cType) {
+        _cType = cType.trim();
     }
 
     /** Set the expression of the argument.
-     * The format waited is "_isInput,_isOutput,_isReturn,_cType".
-     @return void
-    */
+     * The format wanted is "_isInput,_isOutput,_isReturn,_cType".
+     */
     public void setExpression(String expression) {
         _value = expression;
         StringTokenizer tokenizer = new StringTokenizer(
@@ -377,8 +302,7 @@ public class Argument extends Attribute implements Settable {
     }
 
     /** Set the expression of the argument from its attributes
-        @return void
-    */
+     */
     public void setExpression() {
         String ret =
             new Boolean(isInput()).toString()
@@ -389,6 +313,76 @@ public class Argument extends Attribute implements Settable {
             + ","
             + getCType();
         setExpression(ret);
+    }
+
+    /** Set to true if the attribute is an input.
+     *  @param input True if this is an input, false if it is not.
+     */
+    public void setInput(boolean input) {
+        _isInput = input;
+    }
+
+    /** Set the kind of the argument with the given string
+     *  @param selectedValues A string describing the type of Argument.
+     *  valid values are "input", "output", "return", "input, output".
+     */
+    public void setKind(String selectedValues) {
+        if (selectedValues.equals("input")) {
+            this.setInput(true);
+        } else {
+            this.setInput(false);
+        }
+        if (selectedValues.equals("output")) {
+            this.setOutput(true);
+        } else {
+            this.setOutput(false);
+        }
+        if (selectedValues.equals("return")) {
+            this.setReturn(true);
+        } else {
+            this.setReturn(false);
+        }
+        if (selectedValues.equals("input, output")) {
+            this.setInput(true);
+            this.setOutput(true);
+        }
+        // FIXME: this should throw an exception not call MessageHandler
+        // directly.
+        if (selectedValues.equals("input, return")) {
+            MessageHandler.error(
+                    "An argument can't be input "
+                    + "and return at the same time.");
+        }
+        if (selectedValues.equals("output, return")) {
+            MessageHandler.error(
+                    "An argument can't be output "
+                    + "and return or in at the same time.");
+        }
+        if (selectedValues.equals("input, output, return")) {
+            MessageHandler.error(
+                    "An argument can't be in-out "
+                    + "and return at the same time.");
+        }
+    }
+
+    /** Set to true if the attribute is an output.
+     *        @param output True if this is an output, false if it is not.
+     */
+    public void setOutput(boolean output) {
+        _isOutput = output;
+    }
+
+    /** Set to true if the attribute is a return
+     *        @param returnFlag True if this is an input, false if it is not.
+     */
+    public void setReturn(boolean returnFlag) {
+        _isReturn = returnFlag;
+    }
+
+    /** This is for derivates of Attribute set the Visibility
+     */
+    public void setVisibility(ptolemy.kernel.util.
+            Settable.Visibility v) {
     }
 
     /** Notify the container that an attribute has changed
