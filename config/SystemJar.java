@@ -62,8 +62,18 @@ public class SystemJar {
         // However, we should wait until this is a problem.
         // The code works with Sun JDK1.2 and 1.3 and IBM JDK1.3.
         if ( ! systemJar.isFile()) {
-            throw new FileNotFoundException(systemJarPathName +
-                    " either does not exist or is not readable");
+            // Try this for IBM JDK 1.4.1
+            String systemJarPathName2 =
+                new String(System.getProperty("java.home") +
+                    File.separator + "lib" +
+                    File.separator + "core.jar");
+            systemJar = new File(systemJarPathName2);
+            if ( ! systemJar.isFile()) {
+                throw new FileNotFoundException(systemJarPathName +
+                        " and " + systemJarPathName2
+                        + "either do not exist or are not readable");
+            }
+            systemJarPathName = systemJarPathName2;
         }
         if ( ! systemJar.canRead()) {
             throw new IOException("Can't read '" + systemJarPathName +
