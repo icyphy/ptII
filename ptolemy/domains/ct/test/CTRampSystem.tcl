@@ -85,23 +85,28 @@ test CTRampSystem-4.1 {Ramp with ForwardEulerSolver} {
     set r2 [$sys connect $intglout $printin R2]
     #$sinkin link $r2
     
-    set initstate [$integral getAttribute InitialState]
+    set initstate [java::cast ptolemy.data.expr.Parameter \
+	    [$integral getAttribute InitialState]]
     $initstate setExpression 0.0
     #$initstate parameterChanged [java::null]
 
-    set starttime [$dir getAttribute StartTime]
+    set starttime [java::cast ptolemy.data.expr.Parameter \
+	    [$dir getAttribute StartTime]]
     $starttime setExpression 0.0
     #$starttime parameterChanged [java::null]
     
-    set stoptime [$dir getAttribute StopTime]
+    set stoptime [java::cast ptolemy.data.expr.Parameter \
+	    [$dir getAttribute StopTime]]
     $stoptime setExpression 1.0
     #$stoptime parameterChanged [java::null]
     
-    set initstep [$dir getAttribute InitialStepSize]
+    set initstep [java::cast ptolemy.data.expr.Parameter \
+	    [$dir getAttribute InitialStepSize]]
     $initstep setExpression 0.1
     #$initstep parameterChanged [java::null]
     
-    set constval [$const getAttribute Value]
+    set constval [java::cast ptolemy.data.expr.Parameter \
+	    [$const getAttribute Value]]
     $constval setExpression 1.0
     #$constval parameterChanged [java::null]
     
@@ -111,29 +116,35 @@ test CTRampSystem-4.1 {Ramp with ForwardEulerSolver} {
 
 test CTRampSystem-4.2 {Ramp with BackwardEulerSolver} {
     #Note: use above setup. reset parameters.
-    set solver [$dir getAttribute ODESolver]
+    set solver [java::cast ptolemy.data.expr.Parameter \
+	    [$dir getAttribute ODESolver]]
     set token [java::new ptolemy.data.StringToken\
 	    ptolemy.domains.ct.kernel.solver.BackwardEulerSolver]
     $solver setToken $token
     #$solver parameterChanged [java::null]
 
-    set initstate [$integral getAttribute InitialState]
+    set initstate [java::cast ptolemy.data.expr.Parameter \
+	    [$integral getAttribute InitialState]]
     $initstate setExpression 0.0
     #$initstate parameterChanged [java::null]
 
-    set starttime [$dir getAttribute StartTime]
+    set starttime [java::cast ptolemy.data.expr.Parameter \
+	    [$dir getAttribute StartTime]]
     $starttime setExpression 0.0
     #$starttime parameterChanged [java::null]
     
-    set stoptime [$dir getAttribute StopTime]
+    set stoptime [java::cast ptolemy.data.expr.Parameter \
+	    [$dir getAttribute StopTime]]
     $stoptime setExpression 1.0
     #$stoptime parameterChanged [java::null]
     
-    set initstep [$dir getAttribute InitialStepSize]
+    set initstep [java::cast ptolemy.data.expr.Parameter \
+	    [$dir getAttribute InitialStepSize]]
     $initstep setExpression 0.1
     #$initstep parameterChanged [java::null]
     
-    set constval [$const getAttribute Value]
+    set constval [java::cast ptolemy.data.expr.Parameter \
+	    [$const getAttribute Value]]
     $constval setExpression 1.0
     #$constval parameterChanged [java::null]
     
@@ -143,29 +154,35 @@ test CTRampSystem-4.2 {Ramp with BackwardEulerSolver} {
 
 test CTRampSystem-4.3 {Ramp with ExplicitRK23Solver} {
     #Note: use above setup. reset parameters.
-    set solver [$dir getAttribute ODESolver]
+    set solver [java::cast ptolemy.data.expr.Parameter \
+	    [$dir getAttribute ODESolver]]
     set token [java::new ptolemy.data.StringToken\
 	    ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver]
     $solver setToken $token
     #$solver parameterChanged [java::null]
 
-    set initstate [$integral getAttribute InitialState]
+    set initstate [java::cast ptolemy.data.expr.Parameter \
+	    [$integral getAttribute InitialState]]
     $initstate setExpression 0.0
     #$initstate parameterChanged [java::null]
 
-    set starttime [$dir getAttribute StartTime]
+    set starttime [java::cast ptolemy.data.expr.Parameter \
+	    [$dir getAttribute StartTime]]
     $starttime setExpression 0.0
     #$starttime parameterChanged [java::null]
     
-    set stoptime [$dir getAttribute StopTime]
+    set stoptime [java::cast ptolemy.data.expr.Parameter \
+	    [$dir getAttribute StopTime]]
     $stoptime setExpression 1.0
     #$stoptime parameterChanged [java::null]
     
-    set initstep [$dir getAttribute InitialStepSize]
+    set initstep [java::cast ptolemy.data.expr.Parameter \
+	    [$dir getAttribute InitialStepSize]]
     $initstep setExpression 0.1
     #$initstep parameterChanged [java::null]
     
-    set constval [$const getAttribute Value]
+    set constval [java::cast ptolemy.data.expr.Parameter \
+	    [$const getAttribute Value]]
     $constval setExpression 1.0
     #$constval parameterChanged [java::null]
     
