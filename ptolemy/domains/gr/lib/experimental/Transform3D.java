@@ -28,7 +28,7 @@
 @AcceptedRating Red (chf@eecs.berkeley.edu)
 */
 
-package ptolemy.domains.gr.lib;
+package ptolemy.domains.gr.lib.experimental;
 
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
