@@ -39,8 +39,6 @@ import ptolemy.actor.*;
 import ptolemy.actor.lib.SequenceActor;
 import ptolemy.plot.*;
 
-import javax.swing.SwingUtilities;
-
 /**
 A sequence plotter for sequences that are potentially infinitely long.
 This plotter contains an instance of the Plot
@@ -139,67 +137,15 @@ public class SequenceScope extends SequencePlotter {
         plot.repaint();
     }
 
-    /** Read at most one token from each input channel and plot it as
-     *  a function of the iteration number, scaled by <i>xUnit</i>.
-     *  The first point is plotted at the horizontal position given by
-     *  <i>xInit</i>. The increments on the position are given by
-     *  <i>xUnit</i>. The input data are plotted in postfire() to
-     *  ensure that the data have settled.
+    /** Call the base class postfire() method, then yield so that the
+     *  event thread gets a chance.
      *  @exception IllegalActionException If there is no director,
      *   or if the base class throws it.
      *  @return True if it is OK to continue.
      */
     public boolean postfire() throws IllegalActionException {
-        Runnable doPostfire = new Runnable() {
-            public void run() {
-                try {
-                    _xValue += _xUnit;
-                    int width = input.getWidth();
-                    int offset = 
-                        ((IntToken)startingDataset.getToken()).intValue();
-                    for (int i = width - 1; i >= 0; i--) {
-                        if (input.hasToken(i)) {
-                            DoubleToken curToken = (DoubleToken)input.get(i);
-                            double curValue = curToken.doubleValue();
-                            plot.addPoint(i + offset, _xValue, curValue, true);
-                        }
-                    }
-                } catch (IllegalActionException ex) {
-                    getManager().notifyListenersOfException(ex);
-                }
-            }
-        };
-        try {
-            SwingUtilities.invokeAndWait(doPostfire);
-        } catch (Exception ex) {
-            // Ignore InterruptedException.
-            // Other exceptions should not occur.
-        }
-        return true;
-    }
-
-    /** If the <i>fillOnWrapup</i> parameter is true, rescale the
-     *  plot so that all the data is visible.  This overrides the base
-     *  class to do the fill in the event thread.
-     */
-    public void wrapup() {
-        try {
-            if(((BooleanToken)fillOnWrapup.getToken()).booleanValue()) {
-                Runnable doFill = new Runnable() {
-                    public void run() {
-                        plot.fillPlot();
-                    }
-                };
-                try {
-                    SwingUtilities.invokeAndWait(doFill);
-                } catch (Exception ex) {
-                    // Ignore InterruptedException.
-                    // Other exceptions should not occur.
-                }
-            }
-        } catch (IllegalActionException ex) {
-            // fillOnWrapup does not evaluate to a valid token,
-            // skip fillPlot()
-        }
+        boolean result = super.postfire();
+        Thread.yield();
+        return result;
     }
 }
