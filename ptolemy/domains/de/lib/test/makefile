@@ -90,7 +90,8 @@ KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
 test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl
 	$(JTCLSH) alljtests.tcl
 
-
+time: Time.class
+	CLASSPATH=$(CLASSPATH) $(JAVA) ptolemy.domains.de.lib.test.Time
 
 depend:
 	@echo "no dependencies in this directory"
