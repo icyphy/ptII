@@ -75,8 +75,6 @@ the fire end time and the first detected event time.
 
 @author  Jie Liu
 @version $Id$
-@see classname
-@see full-classname
 */
 public class CTMixedSignalDirector extends CTMultiSolverDirector
         implements CTEmbeddedDirector {

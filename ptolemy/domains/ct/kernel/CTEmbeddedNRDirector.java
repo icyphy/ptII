@@ -45,8 +45,6 @@ import collections.LinkedList;
 Don't need to run ahead of time and don't need to rollback.
 @author  liuj
 @version $Id$
-@see classname
-@see full-classname
 */
 public class CTEmbeddedNRDirector  extends CTMultiSolverDirector
         implements CTEmbeddedDirector{

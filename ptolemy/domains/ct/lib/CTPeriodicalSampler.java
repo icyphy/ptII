@@ -41,8 +41,6 @@ This actor periodically sample the input signal and generate an event
 which has the value of the input signal.
 @author Jie Liu
 @version $Id$
-@see classname
-@see full-classname
 */
 public class CTPeriodicalSampler extends CTActor
         implements CTEventGenerator {

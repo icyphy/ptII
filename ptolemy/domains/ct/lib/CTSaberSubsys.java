@@ -48,8 +48,6 @@ For each inputport, there is one parameter, the varName.
 For each output port, there is one parameter, the nodeId.
 @author Jie Liu, William Wu
 @version $Id$
-@see classname
-@see full-classname
 */
 public class CTSaberSubsys extends CTActor 
     implements IPCInterface, CTDynamicActor{

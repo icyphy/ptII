@@ -43,8 +43,6 @@ import java.util.Enumeration;
 Consume the input token and do nothing.
 @author  Jie Liu
 @version $Id$
-@see classname
-@see full-classname
 */
 public class CTSink extends CTActor{
     /** Construct the sink.
