@@ -196,7 +196,11 @@ public class Transition extends ComponentRelation {
                 TypedCompositeActor modalModel = (TypedCompositeActor) container.getContainer();                
                 
                 // If the executive director is HSDirector, 
-                if (modalModel.getDirector() instanceof HSDirector) {                
+                if (modalModel != null && 
+                      modalModel.getDirector() instanceof HSDirector) {                
+                    
+                    _exeDirectorIsHSDirector = true;
+                    
                     // construct a relation list for the transition;
                     _relationList = new RelationList(this, "relationList");
            
@@ -215,6 +219,8 @@ public class Transition extends ComponentRelation {
                     // tree evaluator
                     _guard.setParseTreeEvaluator( 
                             (ParseTreeEvaluator) _parseTreeEvaluator);
+                } else {
+                    _exeDirectorIsHSDirector = false;
                 }
                 
                 // If the executive director is FSMDirector, do nothing.
@@ -312,10 +318,14 @@ public class Transition extends ComponentRelation {
         if (attribute == guardExpression) {
             String expr = guardExpression.getExpression();
             _guard.setExpression(expr);
-            // Invalid a relation list for the transition.
-            _relationList.destroy();
-            // Reconstruct the relation list.
-            _parseTreeEvaluator.setEvaluationMode(true);
+
+            // If the executive director is HSDirector, 
+            if (_exeDirectorIsHSDirector) {                
+                // Invalid a relation list for the transition.
+                _relationList.destroy();
+                // Reconstruct the relation list.
+                _parseTreeEvaluator.setEvaluationMode(true);
+            }
         }
         if (attribute == triggerExpression) {
             String expr = triggerExpression.getExpression();
@@ -515,7 +525,7 @@ public class Transition extends ComponentRelation {
      */
     public boolean isEnabled() throws IllegalActionException {
         try {
-            if (!_relationList.isEmpty()) {
+            if (_exeDirectorIsHSDirector && !_relationList.isEmpty()) {
                 _parseTreeEvaluator.setEvaluationMode(false);
             }
             Token token = _guard.getToken();
@@ -791,6 +801,9 @@ public class Transition extends ComponentRelation {
     // Variable for evaluating guard.
     private Variable _guard = null;
 
+    // Flag to indicate whether the executive director is HSDirector.
+    private boolean _exeDirectorIsHSDirector = false;
+    
     // Set to true when the transition is preemptive.
     private boolean _preemptive = false;
 
