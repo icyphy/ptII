@@ -30,7 +30,12 @@
 
 package ptolemy.schematic.editor;
 
-import ptolemy.schematic.util.*;
+import ptolemy.schematic.util.SchematicEntity;
+import ptolemy.schematic.util.IconLibrary;
+import ptolemy.schematic.util.EntityLibrary;
+import ptolemy.schematic.util.EntityTemplate;
+import ptolemy.schematic.util.PTMLObjectFactory;
+import ptolemy.schematic.util.SchematicGraphImpl;
 import diva.graph.*;
 import diva.graph.editor.*;
 import diva.graph.layout.*;
@@ -38,13 +43,16 @@ import diva.graph.model.*;
 import diva.graph.toolbox.*;
 import diva.gui.*;
 import diva.gui.toolbox.*;
-import java.awt.*;
+import java.awt.Image;
 import java.awt.event.*;
-import java.io.*;
+import java.io.File;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.io.DataOutputStream;
 import java.net.URL;
 import java.util.*;
 import javax.swing.*;
-import javax.swing.filechooser.*;
+import javax.swing.filechooser.FileFilter;
 
 //////////////////////////////////////////////////////////////////////////
 //// GraphEditor
