@@ -64,7 +64,8 @@ proc expandConfiguration {configuration} {
 
     # Filter out graphical classes while inside MoMLParser so that
     # these test will run at night.
-    $parser addMoMLFilter [java::new ptolemy.moml.FilterOutGraphicalClasses]
+    $parser addMoMLFilter [java::new \
+	    ptolemy.moml.filter.RemoveGraphicalClasses]
 
     set loader [[$parser getClass] getClassLoader]
     
