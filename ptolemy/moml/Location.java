@@ -168,7 +168,7 @@ public class Location extends SingletonAttribute
      *  The visibility is set by default to NONE.
      *  @return The visibility of this attribute.
      */
-    public Visibility getVisibility() {
+    public Settable.Visibility getVisibility() {
         return _visibility;
     }
 
@@ -238,7 +238,7 @@ public class Location extends SingletonAttribute
      *  of the public static instances in Settable.
      *  @param visibility The visibility of this attribute.
      */
-    public void setVisibility(Visibility visibility) {
+    public void setVisibility(Settable.Visibility visibility) {
         _visibility = visibility;
     }
 

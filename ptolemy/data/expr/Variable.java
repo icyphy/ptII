@@ -509,7 +509,7 @@ public class Variable extends Attribute implements Typeable, Settable {
      *  The visibility is set by default to NONE.
      *  @return The visibility of this variable.
      */
-    public Visibility getVisibility() {
+    public Settable.Visibility getVisibility() {
         return _visibility;
     }
 
@@ -848,7 +848,7 @@ public class Variable extends Attribute implements Typeable, Settable {
      *  of the public static instances in Settable.
      *  @param visibility The visibility of this variable.
      */
-    public void setVisibility(Visibility visibility) {
+    public void setVisibility(Settable.Visibility visibility) {
         _visibility = visibility;
     }
 
