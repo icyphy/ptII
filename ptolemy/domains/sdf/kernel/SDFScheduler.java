@@ -509,10 +509,10 @@ public class SDFScheduler extends Scheduler {
         ComponentEntity currentActor =
             (ComponentEntity) currentPort.getContainer();
 
-        //Calculate over all the output ports of this actor.
+        // Calculate over all the output ports of this actor.
         int currentRate = getTokenConsumptionRate(currentPort);
 
-        if(currentRate>0) {
+        if(currentRate > 0) {
             // Compute the rate for the Actor currentPort is connected to
             Iterator connectedPorts =
                 currentPort.deepConnectedOutPortList().iterator();
@@ -546,7 +546,8 @@ public class SDFScheduler extends Scheduler {
                 try {
                     Fraction presentFiring =
                         (Fraction) firings.get(connectedActor);
-                    if(presentFiring.equals(Fraction.ZERO)) {
+		    if(presentFiring == null) {			
+		    } else if(presentFiring.equals(Fraction.ZERO)) {
                         // create the entry in the firing table
                         firings.put(connectedActor, desiredFiring);
                         // Remove them from remainingActors

@@ -1164,3 +1164,40 @@ test SDFScheduler-13.1 {connected graph, disconnected relation} {
 } {{} {ptolemy.actor.sched.NotSchedulableException: Actors remain that cannot be scheduled:
 .Toplevel.Consumer
 }}
+
+test SDFScheduler-13.2 {Output External port connected } {
+    set manager [java::new ptolemy.actor.Manager $w Manager]
+    set toplevel [java::new ptolemy.actor.TypedCompositeActor $w]
+    set director [java::new ptolemy.domains.sdf.kernel.SDFDirector $toplevel Director]
+    $toplevel setName Toplevel
+    $toplevel setManager $manager
+    $toplevel setDirector $director
+    set scheduler [java::new ptolemy.domains.sdf.kernel.SDFScheduler $w]
+    $director setScheduler $scheduler
+
+    set a1 [java::new ptolemy.domains.sdf.kernel.test.SDFTestRamp $toplevel Ramp1]
+    set a2 [java::new ptolemy.domains.sdf.kernel.test.SDFTestRamp $toplevel Ramp2]
+    set c1 [java::new ptolemy.actor.TypedCompositeActor $toplevel Cont]
+    set p1 [java::new ptolemy.domains.sdf.kernel.SDFIOPort $c1 p1]
+    $p1 setInput 1
+    $p1 setMultiport true
+    set d5 [java::new ptolemy.domains.sdf.kernel.SDFDirector $c1 d5]
+    $c1 setDirector $d5
+    set s5 [$d5 getScheduler]
+    set a3 [java::new ptolemy.domains.sdf.kernel.test.SDFTestConsumer $c1 Consumer]
+    set port [java::field $a3 input]
+    $port setMultiport true
+
+    $toplevel connect [java::field $a1 output] $p1 R1
+    $toplevel connect [java::field $a2 output] $p1 R2
+    $c1 connect $p1 [java::field $a3 input] R3
+    set r3 [$c1 getRelation R3]
+    [java::cast ptolemy.actor.IORelation $r3] setWidth 2
+
+    $scheduler setValid false
+    $s5 setValid false
+
+    set sched1 [_getSchedule $toplevel $scheduler]
+    set sched2 [_testEnums schedule $s5]
+    list $sched1 $sched2
+} {{{Ramp2 Ramp1 Cont}} Consumer}
