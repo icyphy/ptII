@@ -108,13 +108,6 @@ public class CTSingleSolverDirector extends CTDirector {
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
 
-    /** Return the fire begin time, which is the value set by 
-     *  setFireBeginTime().
-     *  @return Fire begin time.
-     */
-    public double getFireBeginTime() {
-        return _fireBeginTime;
-    }
 
     /**  Fire the system for one iteration. One iteration is defined as
      *   simulating the system at one time point, which includes
@@ -607,12 +600,6 @@ public class CTSingleSolverDirector extends CTDirector {
         return refinedstep;
     }
 
-    /** Set the fire begin time.
-     *  @param fbt Fire begin time.
-     */
-    protected void _setFireBeginTime(double fbt) {
-        _fireBeginTime = fbt;
-    }
 
     ////////////////////////////////////////////////////////////////////////
     ////                         private methods                      ////
@@ -644,9 +631,5 @@ public class CTSingleSolverDirector extends CTDirector {
 
     //indicate the first round of execution.
     private boolean _first;
-    
-    // the start time of a iteration. This value is remembered so that
-    // we don't need to resolve it from the end time and step size.
-    private double _fireBeginTime;
 
 }
