@@ -105,24 +105,11 @@ depend:
 # Get the rest of the rules
 include $(ROOT)/mk/tycommon.mk
 
+# Perhaps these definitions should be moved into tycho.mk?
+JJTREE = /users/ptdesign/vendors/sun/JavaCC/bin/jjtree
+JAVACC = /users/ptdesign/vendors/sun/JavaCC/bin/javacc
+
 PtParser : PtParser.jjt
-	jjtree PtParser.jjt
-	javacc PtParser.jj
+	$(JJTREE) PtParser.jjt
+	$(JAVACC) PtParser.jj
 	$(JAVAC) *.java
-
-PtTreeParser: PtTreeParser.jjt
-	jjtree PtTreeParser.jjt
-	javacc PtTreeParser.jj
-	$(JAVAC) *.java
-
-PtSimpleParser : PtSimpleParser.jj
-	javacc PtSimpleParser.jj
-	$(JAVAC) *.java
-
-ptAdvancedParser : ptAdvancedParser.jj
-	$(JAVACC) ptAdvancedParser.jj
-	$(JAVAC) *.java
-
-
-
-
