@@ -37,14 +37,18 @@
 <li>Download the latest <b>Release</b> version of Eclipse from
 <a href="http://www.eclipse.org" target="_top"><CODE>http://www.eclipse.org</CODE></a>.
 
-<br>In June 2002, the Release version of Eclipse was 2.1, so for Windows
-download the the file eclipse-SDK-2.1-win32.zip and for Linux download
-be either eclipse-SDK-2.1-linux-motif.zip, or
-eclipse-SDK-2.1-linux-gtk.zip.
+<br>In March 2003, the Release version of Eclipse was 2.1.2, so for Windows
+download the the file eclipse-SDK-2.1.2-win32.zip and for Linux download
+be either eclipse-SDK-2.1.2-linux-motif.zip, or
+eclipse-SDK-2.1.2-linux-gtk.zip.
 
 <li>The download file is a zip file that contains the eclipse
 directory. Unzip the download file into an appropriate place (such as
 <code>c:\Program Files</code>, or <code>c:\InstalledStuff</code>).
+
+<li><b>IMPORTANT</b>If you plan on using Eclipse with a cvs server
+later than cvs-1.11.7, you will need to install <code>cvs.jar</code>.
+See <a href="#cvs-1.11.7">Eclipse 2.1.2 does not work with cvs 1.11.7</a>.
 
 <li>Finish the installation by running
 <code>eclipse/eclipse.exe</code>. The first time this is run it will
@@ -480,19 +484,57 @@ Resources:
 http://dev.eclipse.org/viewcvs/index.cgi/platform-vcm-home/docs/online/cvs_features2.0/cvs-faq.html?rev=1.28
 <li><a href="http://www.gigascale.org/softdevel/faq/1/" target="_top">GSRC CVS FAQ</a></a>
 </ul>
-
-<a
-href="http://dev.eclipse.org/viewcvs/index.cgi/~checkout~/platform-vcm-home/docs/online/cvs_features2.0/cvs-faq.html#server_1a">Why
-doesn't Eclipse 2.1.x work with CVS server versions 1.11.7 and
-beyond?</a> says:
+<h3><a name="cvs-1.11.7">Eclipse 2.1.2 does not work with cvs-1.11.7</a></h3>
+Note that Eclipse 2.1.2 does not work with cvs-1.11.7, you must
+download and install <code>cvs.jar</code.
+<p><a
+href="http://dev.eclipse.org/viewcvs/index.cgi/~checkout~/platform-vcm-home/docs/online/cvs_features2.0/cvs-faq.html#server_1a">Why doesn't Eclipse 2.1.x work with CVS server versions 1.11.7 and beyond?</a> says:
 <blockquote>
 Most of the interesting Eclipse CVS functionality relies on the format
 of the messages and the change in format made in 1.11.7 breaks the
 parsing in 2.1.x.
-
 See bug <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=45138">45138</a>
 for more information on this issue.
 </blockquote>
+
+That bug says that a fix is to download <code>cvs.jar</code>
+<a href="https://bugs.eclipse.org/bugs/attachment.cgi?id=6491&action=view"><code>https://bugs.eclipse.org/bugs/attachment.cgi?id=6491&action=view</code></a>
+and:
+<blockquote
+This fix will most likely not make it into 2.1.2. I have attached a jar that
+can be used with 2.1.1 and 2.1.2. Place it in the
+eclipse/plugins/org.eclipse.team.cvs.core_2.1.1 directory inside your eclipse
+install. You only need this if you are using CVS server versions 1.11.7 and
+beyond. The fix is backward compatible but has not been extensively tested. Use
+at your own risk.
+</blockquote>
+<b>However</b>, under Internet Explorer, you might not be able to
+download an uncorrupted version of the jar.  Instead grab
+<a href="http://ptolemy.eecs.berkeley.edu/~cxh/eclipse/cvs_jar.zip"><code>http://ptolemy.eecs.berkeley.edu/~cxh/eclipse/cvs_jar.zip</code></a>
+<menu>
+<li><code>cvs_jar.zip</code> is a zipped version of the jar because
+IE sometimes has problems with save-as for jars
+<li>We unjar'd and rejared the file so as to avoid an error message
+<li>It is unfortunate that the jar is on the eclipse website in
+a <code>https:</code> url, because it means we cannot use lynx
+or wget.
+</menu>
+
+<h3>Debugging CVS<h3>
+<a href="http://dev.eclipse.org/viewcvs/index.cgi/~checkout~/platform-vcm-home/docs/online/cvs_features2.0/cvs-faq.html#misc_0"><code>http://dev.eclipse.org/viewcvs/index.cgi/~checkout~/platform-vcm-home/docs/online/cvs_features2.0/cvs-faq.html#misc_0</code>
+has instructions about how to enable debugging for cvs.
+<ol>
+<li>In your eclipse directory, create a <code>.options</code> file:
+<pre>
+org.eclipse.team.cvs.core/debug=true
+org.eclipse.team.cvs.core/cvsprotocol=true
+</pre>
+<li>Start up eclipse
+<pre>
+./eclipse  -vm c:/j2sdk1.4.2_03/jre/bin/java.exe -debug -consolelog
+</pre>
+Note that it is important that you run the jre version of java and not javaw.
+</ol>
 
 <h3>Syncronizing with the repository</h3>
 
