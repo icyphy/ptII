@@ -58,15 +58,15 @@
 # SOURCE_SYSTEM_CLASS  Classpath to the source system we are generating
 #		code for, for example ptolemy.kvm.demo.ramp.RampSystem
 # ITERATIONS	Number of iterations, for example 50
-# OUTPKG	Output package name for generated code, which also
+# TARGETPACKAGE	Output package name for generated code, which also
 # 		determines the directory relative to PTII where the
-#		code will appear.  If OUTPKG is set to cg.ramp, then
+#		code will appear.  If TARGETPACKAGE is set to cg.ramp, then
 #		the code will appear in $PTII/cg/ramp.
-# OUTPKG_DIR	Location of the OUTPKG directory.
-#		If OUTPKG is cg.ramp, then OUTPKG_DIR would be cg/ramp
-# OUTPKG_ROOT   The relative path from OUTPKG to $PTII.
-#		If OUTPKG is cg.ramp, then OUTPKG_ROOT would be ../..
-# OUTPKG_MAIN_CLASS The class that contains the main() method
+# TARGETPACKAGE_DIR	Location of the TARGETPACKAGE directory.
+#		If TARGETPACKAGE is cg.ramp, then TARGETPACKAGE_DIR would be cg/ramp
+# TARGETPACKAGE_ROOT   The relative path from TARGETPACKAGE to $PTII.
+#		If TARGETPACKAGE is cg.ramp, then TARGETPACKAGE_ROOT would be ../..
+# TARGETPACKAGE_MAIN_CLASS The class that contains the main() method
 #		For example CG_Main
 
 # Uncomment these to turn on verbosity, or run
@@ -81,6 +81,11 @@ MIDP_CLASSES = 	$(MIDP_DIR)/lib/midpapi.zip
 CONVERTER_DIR =		$(ROOT)/vendors/sun/midp4palm1.0/Converter
 CONVERTER_CLASSES =	$(CONVERTER_DIR)/Converter.jar 
 
+KRUFT = $(TARGETPACKAGE_MAIN_CLASS).prc \
+	$(TARGETPACKAGE_MAIN_CLASS).jar \
+	$(TARGETPACKAGE_MAIN_CLASS).jad \
+	STDERR.txt \
+	STDOUT.txt
 # Run the demo via the usual method without any codegen.
 demo_interpreted: $(PTCLASSJAR)
 	CLASSPATH="$(CLASSPATH)" \
@@ -90,104 +95,160 @@ demo_interpreted: $(PTCLASSJAR)
 
 codegen: generate_sdf_code compile_codegen preverify build_prc run_codegen kvm
 
-# Read in SOURCE_SYSTEM_CLASS and generate .java files in $PTII/$(OUTPKG)
-generate_sdf_code: $(JCLASS) $(ROOT)/$(OUTPKG_DIR)/$(OUTPKG_MAIN_CLASS).java
-$(ROOT)/$(OUTPKG_DIR)/$(OUTPKG_MAIN_CLASS).java:
+# Read in SOURCE_SYSTEM_CLASS and generate .java files in $PTII/$(TARGETPACKAGE)
+generate_sdf_code: $(JCLASS) $(ROOT)/$(TARGETPACKAGE_DIR)/$(TARGETPACKAGE_MAIN_CLASS).java
+$(ROOT)/$(TARGETPACKAGE_DIR)/$(TARGETPACKAGE_MAIN_CLASS).java:
 	@echo "###################################"
-	@echo "# Generating code for $(SOURCE_SYSTEM_CLASS) in $PTII/$(OUTPKG)"
+	@echo "# Generating code for $(SOURCE_SYSTEM_CLASS) in $PTII/$(TARGETPACKAGE)"
 	@echo "###################################"
 	CLASSPATH="$(ROOT)" \
 	$(JAVA) $(JAVA_VERBOSE) ptolemy.domains.sdf.codegen.SDFCodeGenerator \
 		-class $(SOURCE_SYSTEM_CLASS) \
 		-iterations $(ITERATIONS) \
-		-outdir $(ROOT) -outpkg $(OUTPKG)
+		-outdir $(ROOT) -outpkg $(TARGETPACKAGE)
 
-# Compile the codegen kvm code in $(PTII)/$(OUTPKG)
+# Compile the codegen kvm code in $(PTII)/$(TARGETPACKAGE)
 # Note that we compile without debug as the default
-compile_codegen: $(ROOT)/$(OUTPKG_DIR)/$(OUTPKG_MAIN_CLASS).class
-$(ROOT)/$(OUTPKG_DIR)/$(OUTPKG_MAIN_CLASS).class: \
-			$(ROOT)/$(OUTPKG_DIR)/$(OUTPKG_MAIN_CLASS).java
+compile_codegen: $(ROOT)/$(TARGETPACKAGE_DIR)/$(TARGETPACKAGE_MAIN_CLASS).class
+$(ROOT)/$(TARGETPACKAGE_DIR)/$(TARGETPACKAGE_MAIN_CLASS).class: \
+			$(ROOT)/$(TARGETPACKAGE_DIR)/$(TARGETPACKAGE_MAIN_CLASS).java
 	@echo "###################################"
-	@echo "# Compiling codegen kvm *.java files in $(PTII)/$(OUTPKG)"
+	@echo "# Compiling codegen kvm *.java files in $(PTII)/$(TARGETPACKAGE)"
 	@echo "###################################"
-	(cd $(ROOT)/$(OUTPKG_DIR); \
+	(cd $(ROOT)/$(TARGETPACKAGE_DIR); \
 	$(JAVAC) -g:none -O $(JAVAC_VERBOSE) \
 		-bootclasspath $(MIDP_CLASSES)  \
-		-classpath $(OUTPKG_ROOT) \
-		$(OUTPKG_MAIN_CLASS).java)
+		-classpath $(TARGETPACKAGE_ROOT) \
+		$(TARGETPACKAGE_MAIN_CLASS).java)
 
-# Compile the non-codegen kvm code in $(PTII)/$(OUTPKG)
+# Compile the non-codegen kvm code in $(PTII)/$(TARGETPACKAGE)
 # Note that we compile without debug as the default
 compile_midp:
 	@echo "###################################"
-	@echo "# Compiling non-codegen kvm *.java files in $(PTII)/$(OUTPKG)"
+	@echo "# Compiling non-codegen kvm *.java files in $(PTII)/$(TARGETPACKAGE)"
 	@echo "###################################"
-	(cd $(ROOT)/$(OUTPKG_DIR); \
+	(cd $(ROOT)/$(TARGETPACKAGE_DIR); \
 	"$(JAVAC)" -g:none -O $(JAVAC_VERBOSE) \
 		-bootclasspath $(MIDP_CLASSES)  \
-		-classpath $(OUTPKG_ROOT) \
-		$(OUTPKG_MAIN_CLASS).java)
+		-classpath $(TARGETPACKAGE_ROOT) \
+		$(TARGETPACKAGE_MAIN_CLASS).java)
 
 
-# Run the kvm preverify tool in $(PTII)/$(OUTPKG)
-# and generate .class files in $(PTII)/$(OUTPKG)/output/$(OUTPKG_DIR)
-preverify: output/$(OUTPKG_DIR)/$(OUTPKG_MAIN_CLASS).class
-output/$(OUTPKG_DIR)/$(OUTPKG_MAIN_CLASS).class: jclass
+# Run the kvm preverify tool in $(PTII)/$(TARGETPACKAGE)
+# and generate .class files in $(PTII)/$(TARGETPACKAGE)/output/$(TARGETPACKAGE_DIR)
+preverify: output/$(TARGETPACKAGE_DIR)/$(TARGETPACKAGE_MAIN_CLASS).class
+output/$(TARGETPACKAGE_DIR)/$(TARGETPACKAGE_MAIN_CLASS).class: $(JCLASS)
 	@echo "###################################"
-	@echo "# preverifying in $(PTII)/$(OUTPKG_DIR), creating new .class files"
+	@echo "# preverifying in $(PTII)/$(TARGETPACKAGE_DIR), creating new .class files"
 	@echo "###################################"
-	(cd $(ROOT)/$(OUTPKG_DIR); \
+	(cd $(ROOT)/$(TARGETPACKAGE_DIR); \
 	for class in *.class; do \
 		echo $$class ; \
 		$(MIDP_DIR)/bin/preverify \
 			-classpath \
-			"$(MIDP_CLASSES)$(CLASSPATHSEPARATOR)$(OUTPKG_ROOT)" \
-			$(OUTPKG).`basename $$class .class`; \
+			"$(MIDP_CLASSES)$(CLASSPATHSEPARATOR)$(TARGETPACKAGE_ROOT)" \
+			$(TARGETPACKAGE).`basename $$class .class`; \
 	done)
 
 
+# Run the kvm preverify tool in $(PTII)/$(TARGETPACKAGE)
+# and generate .class files in $(PTII)/$(TARGETPACKAGE)/output/$(TARGETPACKAGE_DIR)
+preverifyModel: $(MODEL)/output/$(TARGETPACKAGE_DIR)/$(TARGETPACKAGE_MAIN_CLASS).class
+$(MODEL)/output/$(TARGETPACKAGE_DIR)/$(TARGETPACKAGE_MAIN_CLASS).class: $(JCLASS)
+	@echo "###################################"
+	@echo "# preverifying in $(PTII)/$(TARGETPACKAGE_DIR), creating new .class files"
+	@echo "###################################"
+	(cd $(ROOT)/$(TARGETPACKAGE_DIR); \
+	for class in *.class; do \
+		echo $$class ; \
+		../$(MIDP_DIR)/bin/preverify \
+			-classpath \
+			"../$(MIDP_CLASSES)$(CLASSPATHSEPARATOR)../$(TARGETPACKAGE_ROOT)" \
+			$(TARGETPACKAGE).`basename $$class .class`; \
+	done)
+
+
+
+
+TREESHAKE_PREFIX = $(ROOT)/$(TARGETPATH)/treeshake
+TREESHAKE=$(ROOT)/util/testsuite/treeshake
+# Location of class files that shadow and replace class files in $PTII
+PTII_MIDP =  		$(ROOT)/ptolemy/apps/midp
+treeShakeDemo: $(MODEL)/treeshake.jar
+$(MODEL)/treeshake.jar:
+	@echo "Create the minimal jar file and run it" 
+	@echo "We include .class files from $PTII_MIDP"
+	"$(TREESHAKE)" "$(JAR)" $(TREESHAKE_PREFIX).jar \
+		"$(JAVA)" -Xfuture -classpath "$(PTII_MIDP)$(CLASSPATHSEPARATOR)$(CLASSPATH)" \
+		$(TARGETPACKAGE).Main 
+	ls -l $(TREESHAKE_PREFIX).jar
+
+runTreeShake: $(MODEL)/treeshake.jar
+	java -jar $(MODEL)/treeshake.jar
+
+# Preverify a jar file
+RELATIVE_PREVERIFY_JAR = ../$(MODEL)/treeshake.jar
+preverifyTreeShake: $(MODEL)/treeshake.jar
+	@echo "Run preverify on the treeshaken jar file and generate"
+	@echo "a new set of .class files in the ./output/ directory"
+	rm -rf ptjar_tmpdir output
+	mkdir ptjar_tmpdir
+	(cd ptjar_tmpdir; jar -xf $(RELATIVE_PREVERIFY_JAR); \
+		classes=`find . -name "*.class" -print | sed -e 's@^./@@g' -e 's/.class//g' -e 's@/@.@g'`; \
+		for class in $$classes; do \
+			echo "$$class" ; \
+			../$(MIDP_DIR)/bin/preverify \
+				-classpath \
+				"../$(MIDP_CLASSES)$(CLASSPATHSEPARATOR).$(CLASSPATHSEPARATOR)../$(TARGETPACKAGE_ROOT)" \
+				-d ../output \
+				$$classes; \
+		done; \
+	)
+	rm -rf ptjar_tmpdir
+
+
 # Create a Palm binary from the class files in
-# $(PTII)/$(OUTPKG)/output/$(OUTPKG_DIR)
+# $(PTII)/$(TARGETPACKAGE)/output/$(TARGETPACKAGE_DIR)
 #   Note that to build a Palm binary, you should first run the preverifier
 #   and then use the .class files from the output directory that are
 #   created by the preverifier.  If you use the class files that were
 #   created by javac directly, then you may get verifier errors.
 
-$(OUTPKG_MAIN_CLASS).jad:
-	echo "MIDlet-Name: $(OUTPKG_MAIN_CLASS)" > $@
+$(TARGETPACKAGE_MAIN_CLASS).jad:
+	echo "MIDlet-Name: $(TARGETPACKAGE_MAIN_CLASS)" > $@
 	echo "MIDlet-Version: 1.0" >> $@
 	echo "MIDlet-Vendor: `whoami`" >> $@
 	echo "MIDlet-Description: Test midlet" >> $@
 	echo "MicroEdition-Profile: MIDP-1.0" >> $@
 	echo "MicroEdition-Configuration: CLDC-1.0" >> $@
-	echo "MIDlet-1: $(OUTPKG).$(OUTPKG_MAIN_CLASS), $(OUTPKG_MAIN_CLASS).png, $(OUTPKG).$(OUTPKG_MAIN_CLASS)" >> $@
-	echo "MIDlet-Jar-URL: $(OUTPKG_MAIN_CLASS).jar" >> $@
+	echo "MIDlet-1: $(TARGETPACKAGE).$(TARGETPACKAGE_MAIN_CLASS), $(TARGETPACKAGE_MAIN_CLASS).png, $(TARGETPACKAGE).$(TARGETPACKAGE_MAIN_CLASS)" >> $@
+	echo "MIDlet-Jar-URL: $(TARGETPACKAGE_MAIN_CLASS).jar" >> $@
 
-$(OUTPKG_MAIN_CLASS).jar: $(OUTPKG_MAIN_CLASS).jad \
-		output/$(OUTPKG_DIR)/$(OUTPKG_MAIN_CLASS).class
-	(cd output; "$(JAR)" -cfm ../$(OUTPKG_MAIN_CLASS).jar ../$(OUTPKG_MAIN_CLASS).jad .)
+$(TARGETPACKAGE_MAIN_CLASS).jar: $(TARGETPACKAGE_MAIN_CLASS).jad \
+		output/$(TARGETPACKAGE_DIR)/$(TARGETPACKAGE_MAIN_CLASS).class
+	(cd output; "$(JAR)" -cfm ../$(TARGETPACKAGE_MAIN_CLASS).jar ../$(TARGETPACKAGE_MAIN_CLASS).jad .)
 
-build_prc: $(OUTPKG_MAIN_CLASS).prc
-$(OUTPKG_MAIN_CLASS).prc: $(OUTPKG_MAIN_CLASS).jar
+build_prc: $(TARGETPACKAGE_MAIN_CLASS).prc
+$(TARGETPACKAGE_MAIN_CLASS).prc: $(TARGETPACKAGE_MAIN_CLASS).jar
 	@echo "###################################"
 	@echo "# Creating Palm executable from classes in"
-	@echo "# $(OUTPKG_MAIN_CLASS).jar"
+	@echo "# $(TARGETPACKAGE_MAIN_CLASS).jar"
 	@echo "###################################"
 	"$(JAVA)" -cp $(CONVERTER_CLASSES) \
 		com.sun.midp.palm.database.MakeMIDPApp \
 		-verbose \
 		-creator PTOL \
-		$(OUTPKG_MAIN_CLASS).jar
+		$(TARGETPACKAGE_MAIN_CLASS).jar
 
 
 # Run the java profiler (javap) on all the classes
 javap:
-	(cd $(ROOT)/$(OUTPKG_DIR); \
-	javap -classpath $PTII `ls -1 *.class | awk '{s=substr($0,1,length($0)-6); print "$(OUTPKG)."s}' `)
+	(cd $(ROOT)/$(TARGETPACKAGE_DIR); \
+	javap -classpath $PTII `ls -1 *.class | awk '{s=substr($0,1,length($0)-6); print "$(TARGETPACKAGE)."s}' `)
 
 # Remove all "import ptolemy.*" lines
 fix:
-	(cd $(ROOT)/$(OUTPKG_DIR); \
+	(cd $(ROOT)/$(TARGETPACKAGE_DIR); \
 	for files in *.java; do \
 		sed 's@\(import ptolemy.*;\)@//\1@' $$files > tmp; \
 		diff $$files  tmp; \
@@ -195,9 +256,9 @@ fix:
 	done)
 
 run_codegen:
-	(cd $(ROOT)/$(OUTPKG_DIR); \
-		$(JAVA) -classpath $(OUTPKG_ROOT) \
-			$(OUTPKG).$(OUTPKG_MAIN_CLASS))
+	(cd $(ROOT)/$(TARGETPACKAGE_DIR); \
+		$(JAVA) -classpath $(TARGETPACKAGE_ROOT) \
+			$(TARGETPACKAGE).$(TARGETPACKAGE_MAIN_CLASS))
 
 # FIXME: what about Solaris?
 MIDP_BINARY = $(MIDP_DIR)/kvm/VmWin/build/kvm.exe
@@ -210,11 +271,11 @@ kvm:
 		echo "It is not required but it is useful for debugging"; \
 		echo "To build it, see the kvm instructions."; \
 	else \
-		(cd $(ROOT)/$(OUTPKG_DIR); \
+		(cd $(ROOT)/$(TARGETPACKAGE_DIR); \
 			$(MIDP_BINARY) -classpath \
 			"$(MIDP_CLASSES)$(CLASSPATHSEPARATOR)output" \
-			$(OUTPKG).$(OUTPKG_MAIN_CLASS)); \
+			$(TARGETPACKAGE).$(TARGETPACKAGE_MAIN_CLASS)); \
 	fi
 
 clean_codegen: clean
-	rm -rf $(ROOT)/$(OUTPKG_DIR)
+	rm -rf $(ROOT)/$(TARGETPACKAGE_DIR)
