@@ -98,10 +98,6 @@ depend:
 demo: deepDemo
 deepDemo: compileDeepDemo runDeepDemo
 
-TARGETPATH =	ptolemy/copernicus/java/cg
-
-JADTARGETPACKAGE =	ptolemy.copernicus.java.cg.jad
-JADTARGETPATH =		$(ROOT)/ptolemy/copernicus/java/cg/jad
 
 # Orthocom
 SOURCEPACKAGE = ptolemy.domains.sdf.demo.OrthogonalCom
@@ -109,11 +105,24 @@ MODEL = OrthogonalCom
 SOURCECLASS = $(SOURCEPACKAGE).$(MODEL)
 #make DEEPSOURCECLASS=../../../ptolemy/actor/lib/test/auto/ArrayAppend.xml MODEL=ArrayAppend compileDeepDemo
 
+TARGETPATH =	ptolemy/copernicus/java/cg/$(MODEL)
+
 # Dump the .class files for each model in a separate directory
 # so as to make debugging easier
 TARGETPACKAGE = ptolemy.copernicus.java.cg.$(MODEL)
 
 TARGETCLASS = $(TARGETPACKAGE).$(MODEL)
+
+# jad is a Java disassembler we use for debugging
+JAD=jad
+
+# Package that jad creates classes in
+JADTARGETPACKAGE =	$(TARGETPACKAGE).jad
+
+# Path to directory where jad creates classes
+JADTARGETPATH =		$(ROOT)/$(TARGETPATH)/jad
+JADTARGET=		$(ROOT)/$(TARGETPATH)
+
 
 JVM_SIZE = -Xmx256m
 
@@ -148,11 +157,22 @@ compileDeepDemo: $(JCLASS)
 #	@echo "Here is that javap output"
 #	javap -verbose -l -s -classpath $(ROOT) $(TARGETCLASS)
 
-# Jad is a Java disassembler
-JAD=jad
+runDeepDemo:
+	@echo "Run the deep model"
+	$(JAVA) \
+	-Xfuture -classpath "$(CLASSPATH)" \
+	$(TARGETPACKAGE).Main 
 
-JADTARGETCLASS=CG$(MODEL)
-JADTARGET=$(ROOT)/$(TARGETPATH)/
+runStaticDeepDemo:
+	@echo "Run the deep model static"
+	$(JAVA) \
+	-Xfuture -classpath "$(CLASSPATH)" \
+	$(TARGETPACKAGE).StaticMain 
+# -iterations 50
+
+
+# Class to disassemble
+JADTARGETCLASS =		Main
 
 # Generate a .java file from a class file and recompile it
 recompileDeepDemo:
@@ -168,18 +188,6 @@ recompileDeepDemo:
 		ptolemy.actor.gui.CompositeActorApplication \
 		-class $(JADTARGETPACKAGE).$(JADTARGETCLASS)
 
-runDeepDemo:
-	@echo "Run the deep model"
-	$(JAVA) \
-	-Xfuture -classpath "$(CLASSPATH)" \
-	$(TARGETPACKAGE).Main 
-
-runStaticDeepDemo:
-	@echo "Run the deep model static"
-	$(JAVA) \
-	-Xfuture -classpath "$(CLASSPATH)" \
-	$(TARGETPACKAGE).StaticMain 
-# -iterations 50
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
