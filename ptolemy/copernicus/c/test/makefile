@@ -101,7 +101,7 @@ test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl
 ptjacl:
 	$(JTCLSH)
 
-demo: Simple
+demo: ramp
 
 # Generate C code for java.lang.Object
 # FIXME: get this to work again once non-singleclass mode translation is
@@ -111,6 +111,12 @@ Object:
 		$(JAVA) ptolemy.copernicus.c.JavaToC \
 		".$(CLASSPATHSEPARATOR)$(JAVA_SYSTEM_JAR)" \
 		java.lang.Object
+
+ramp:
+	@echo Generating C code from the Ptolemy II model in ramp.xml.
+	sh $(ROOT)/bin/ptjacl ramp.tcl
+	@echo Finished with C code generation. The following files were created:
+	ls -l -a ramp.out
 
 # Generate C code under single class mode for a simple class 
 Simple:

@@ -93,7 +93,7 @@ OPTIONAL_FILES = \
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
-	@echo "To run the demo, cd to the 'test/FIR' directory, and run 'runme'"
+	@echo "To rn the demo, cd to 'test', and run 'make demo'."
 
 install: all jars
 
