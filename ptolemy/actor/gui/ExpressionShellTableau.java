@@ -31,21 +31,14 @@ package ptolemy.actor.gui;
 
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
-import ptolemy.gui.MessageHandler;
 import ptolemy.gui.ShellInterpreter;
 import ptolemy.gui.ShellTextArea;
-import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.BorderLayout;
-import java.awt.Panel;
 import java.net.URL;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
-
-import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
 //// ExpressionShellTableau
