@@ -70,9 +70,19 @@ public class PTMLParser extends HandlerBase{
     /** 
      * Implement com.microstar.xml.XMLHandler.attribute
      * Accumulate all the attributes until the next startElement.
+     * 
+     * @throws XmlException if the attribute is not valid.
      */
     public void attribute(String name, String value, boolean specified) 
     throws Exception {
+        if(name == null) throw new XmlException("Attribute has no name",
+                currentExternalEntity(),
+                parser.getLineNumber(),
+                parser.getColumnNumber());
+        if(value == null) throw new XmlException("Attribute has no value",
+                currentExternalEntity(),
+                parser.getLineNumber(),
+                parser.getColumnNumber());
         attributes.putAt(name, value);
     }
         
@@ -91,8 +101,12 @@ public class PTMLParser extends HandlerBase{
      * parse tree, then something is wrong, and throw an exception.
      */
     public void endDocument() throws Exception {
-               if(current!=root) 
-                throw new IllegalActionException("internal error in PTMLParser");
+        if(current!=root) 
+            throw new XmlException(
+                    "internal error in PTMLParser",
+                    currentExternalEntity(),
+                    parser.getLineNumber(),
+                    parser.getColumnNumber());
     }
 
     /** 
@@ -106,17 +120,23 @@ public class PTMLParser extends HandlerBase{
         XMLElement parent= current.getParent();
         if(parent!=null)
             parent.applySemanticsToChild(current);
-        /*            if(current instanceof Icon) {
-                ((IconLibrary) parent).icons.putAt(
-                        ((Icon) current).getEntityType(),
-                        current);
-            } else if(current.getElementType().equals("sublibrary")) {
-                String file = current.getAttribute("file");
-                ((IconLibrary) parent).sublibraries.putAt(file,current);
-            }
-            */
         current = parent;
     }
+
+    /**
+     * Implement com.microstr.xml.XMLHandler.endExternalEntity
+     * move up one leve in the entity tree.
+     */
+    public void endExternalEntity(String URI) throws Exception {
+        if(DEBUG) 
+            System.out.println("endExternalEntity: URI=\"" + URI + "\"\n");
+        if(!currentExternalEntity().equals(URI)) 
+            throw new XmlException("Entities out of order",
+                    currentExternalEntity(),
+                    parser.getLineNumber(),
+                    parser.getColumnNumber());
+        sysids.removeFirst();
+    }                                                  
 
     /** 
      * Implement com.microstar.xml.XMLHandler.error
@@ -145,9 +165,13 @@ public class PTMLParser extends HandlerBase{
      * @throws IllegalActionException if the parser fails.
      */
     public XMLElement parse() throws Exception {
-        XmlParser parser = new XmlParser();
+        try {
         parser.setHandler(this);
         parser.parse(url, null, (String)null); 
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
         return root;      
     }
 
@@ -162,9 +186,13 @@ public class PTMLParser extends HandlerBase{
      */
     public XMLElement parse(InputStream is) 
     throws Exception {
-        XmlParser parser = new XmlParser();
-        parser.setHandler(this);
-        parser.parse(url, null, is, null);
+        try {
+            parser.setHandler(this);
+            parser.parse(url, null, is, null);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
         return root;
     }
  
@@ -223,11 +251,34 @@ public class PTMLParser extends HandlerBase{
         current=e;
         attributes = (HashedMap) new HashedMap();
     }
+    
+    /** 
+     * implement com.microstar.xml.XMLHandler.startExternalEntity
+     * move down one level in the entity tree.
+     */
+    public void startExternalEntity(String URI) throws Exception {
+        if(DEBUG)
+            System.out.println("startExternalEntity: URI=\"" + URI + "\"\n");
+        sysids.insertFirst(URI);
+    }
 
+    protected String currentExternalEntity() {
+        if(DEBUG)
+            System.out.println("currentExternalEntity: URI=\"" + 
+                    (String)sysids.first() + "\"\n");
+        return (String)sysids.first();
+    } 
+
+    /* this linkedlist contains the current path in the tree of 
+     * entities being parsed.  The leaf is first in the list.
+     */
+    private LinkedList sysids = new LinkedList();
     private String url;
     private HashedMap attributes;
     private XMLElement current;
     private XMLElement root;
+    private XmlParser parser = new XmlParser();
+    private static final boolean DEBUG = false;
 
 }
 
