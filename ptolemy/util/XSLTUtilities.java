@@ -180,7 +180,7 @@ public class XSLTUtilities {
             outputStream = new ByteArrayOutputStream();
             StreamResult result = new StreamResult(outputStream);
             TransformerFactory transformerFactory =
-            TransformerFactory.newInstance();
+                TransformerFactory.newInstance();
             Transformer serializer = transformerFactory.newTransformer();
             serializer.transform(new DOMSource(document), result);
             return outputStream.toString();

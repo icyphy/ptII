@@ -581,16 +581,16 @@ public class StringUtilities {
                         newURI = baseDirectory.resolve(name2);
                         name = name2;
                     } catch (IllegalArgumentException ex2) {
-                    IOException io = new IOException(
-                            "Problem with URI format in '" + name + "'. "
-                            + "and '" + name2 + "'"
-                            + "This can happen if the file name "
-                            + " is not absolute"
-                            + " and is not present relative to the directory"
-                            + " in which the specified model was read"
-                            + " (which was '" + baseDirectory + "')");
-                    io.initCause(ex2);
-                    throw io;
+                        IOException io = new IOException(
+                                "Problem with URI format in '" + name + "'. "
+                                + "and '" + name2 + "'"
+                                + "This can happen if the file name "
+                                + " is not absolute"
+                                + " and is not present relative to the directory"
+                                + " in which the specified model was read"
+                                + " (which was '" + baseDirectory + "')");
+                        io.initCause(ex2);
+                        throw io;
                     }
                 }
                 try {
