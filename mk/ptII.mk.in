@@ -314,6 +314,10 @@ PTGMP_LD_FLAGS =        @PTGMP_LD_FLAGS@
 # and used in $PTII/mescal/relsat
 PTGMP_LIB =	@PTGMP_LIB@
 
+# Name of the jar file that includes the GR domain if Java 3D was found.
+# Used in domains/makefile.
+PTGRDOMAIN_JAR =	@PTGRDOMAIN_JAR@
+
 # Set to ptjacl and used in
 # $PTII/ptolemy/actor/gui/makefile if ptjacl.jar was found 
 PTJACL_DIR =	@PTJACL_DIR@
