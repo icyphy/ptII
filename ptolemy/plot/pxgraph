@@ -36,12 +36,12 @@
 # environment variables.  If you do not set these variables
 # then the script will guess values.
 #
-# If the Pxgraph class is at /users/ptdesign/tycho/java/pt/plot/Pxgraph.class
+# If the Pxgraph class is at /users/ptdesign/tycho/java/ptolemy/plot/Pxgraph.class
 # then the TYCHO variable should be set to /users/ptdesign/tycho
 #
 # Your JAVAHOME variable should be set to the directory that
 # contains your Java distribution.  For example, your .cshrc could contain:
-# setenv JAVAHOME /opt/jdk1.1.5
+# setenv JAVAHOME /optolemy/jdk1.1.5
 #
 # See the Pxgraph class documentation for further instructions.
 #
@@ -78,8 +78,8 @@ if [ -z "$TYCHO" ]; then
     export TYCHO
 fi
 
-if [ ! -f $TYCHO/java/pt/plot/pt.plot.jar ]; then 
-    echo "$0: Warning, $TYCHO/java/pt/plot/pt.plot.jar does not exist"
+if [ ! -f $TYCHO/java/ptolemy/plot/ptolemy.plot.jar ]; then 
+    echo "$0: Warning, $TYCHO/java/ptolemy/plot/ptolemy.plot.jar does not exist"
     echo "  Perhaps you need to install ptplot or edit the variables in $0?"
 fi
 
@@ -144,13 +144,13 @@ if [ "$windows" = "yes" ]; then
     # chdir prints the current directory in DOS format.
     # The tr command deletes the \r at the end
     WINTYCHOJAVA=`(cd $TYCHO/java; cmd /c chdir) | tr -d '\r'`
-    $JAVAHOME/bin/java -classpath $WINTYCHOJAVA\;$JAVAHOME\\lib\\classes.zip pt.plot.Pxgraph ${1+"$@"}
+    $JAVAHOME/bin/java -classpath $WINTYCHOJAVA\;$JAVAHOME\\lib\\classes.zip ptolemy.plot.Pxgraph ${1+"$@"}
 elif [ "$PTARCH" = "alpha4" ]; then
     CLASSPATH=$TYCHO/java
     export CLASSPATH
-    java pt.plot.Pxgraph ${1+"$@"}
+    java ptolemy.plot.Pxgraph ${1+"$@"}
 else
-    $JAVAHOME/bin/java -classpath $TYCHO/java:$JAVAHOME/lib/classes.zip pt.plot.Pxgraph ${1+"$@"}
+    $JAVAHOME/bin/java -classpath $TYCHO/java:$JAVAHOME/lib/classes.zip ptolemy.plot.Pxgraph ${1+"$@"}
 fi
 
 

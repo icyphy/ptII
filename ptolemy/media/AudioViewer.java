@@ -25,8 +25,8 @@
                                         COPYRIGHTENDKEY
 */
 
-package pt.plot.apps;
-import pt.plot.*;
+package ptolemy.plot.apps;
+import ptolemy.plot.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
@@ -96,7 +96,7 @@ public class Sound extends PtolemyPlot {
         File file = new File(_directory, filename);
         _filename = null;
         try {
-            _sound = new pt.math.SignalProcessing.AudioData(
+            _sound = new ptolemy.math.SignalProcessing.AudioData(
                 new DataInputStream(
                     new FileInputStream(file)));
         } catch (FileNotFoundException ex) {
@@ -322,7 +322,7 @@ public class Sound extends PtolemyPlot {
     ////////////////////////////////////////////////////////////////////////
     ////                         private variables                      ////
 
-    private pt.math.SignalProcessing.AudioData _sound;
+    private ptolemy.math.SignalProcessing.AudioData _sound;
     private ByteArrayInputStream _instream;
 
     ////////////////////////////////////////////////////////////////////////
