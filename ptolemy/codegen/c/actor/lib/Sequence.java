@@ -106,6 +106,9 @@ public class Sequence extends CCodeGeneratorHelper {
 
     protected String _codeBlock;
     
+    // FIXME: This is not going to work since currentIndex
+    // and outputProduced are not defined in java as variables.
+    // E.g., $ref(ouput, currentIndex) does not make sense to java.
     protected String _initBlock = 
               "int currentIndex = 0;\n"
             + "int outputProduced = 0;\n";    
