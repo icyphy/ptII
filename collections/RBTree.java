@@ -81,7 +81,7 @@ public class RBTree extends    UpdatableBagImpl
     }
 
     /**
-     * Make an indepenent copy of the tree. Does not clone elements.
+     * Make an independent copy of the tree. Does not clone elements.
      **/
     protected Object clone() throws CloneNotSupportedException {
         if (count_ == 0) return new RBTree(screener_, cmp_);
