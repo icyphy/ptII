@@ -418,9 +418,9 @@ For more help, choose Help from the upper menu bar.</text>
 
                 <!-- Default setActions to ensure continuity of integrator states. -->
                 <!-- This part always appears first because the following actions may over write part of it. -->
-                <xsl:apply-templates select="defaultSetAction">
+                <xsl:call-template name="defaultSetAction">
                     <xsl:with-param name="stateName" select="$dstState"/>
-                </xsl:apply-templates>
+                </xsl:call-template>
 
                 <!-- It turns out that exit actions of current state
                 can be regarded as the entry actions of next state. -->
@@ -911,7 +911,7 @@ For more help, choose Help from the upper menu bar.</text>
 <!-- Default setActions to ensure the continuity of integrator states. -->
 <!-- While the states of integrators could be modified by other following actions. -->
 
-<xsl:template match="defaultSetAction">
+<xsl:template name="defaultSetAction">
     <xsl:param name="stateName" select="'Default StateName'"/>
     <xsl:for-each select="../IntegerVariable[@kind='Output']|../RealVariable[@kind='Output']|../BooleanVariable[@kind='Output']">
         <xsl:variable name="temp"><xsl:value-of select="@name"/></xsl:variable>
