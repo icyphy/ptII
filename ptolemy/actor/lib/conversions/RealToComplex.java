@@ -41,10 +41,14 @@ import ptolemy.math.Complex;
 
 ///////////////////////////////////////////////////////////////
 /// RealToComplex
-/** This actor takes in two double tokens (the real part and imaginary parts
-    of the output token) and outputs a complex token.
+/** 
+An actor that converts a pair of real tokens to a complex token.
+At each firing of the actor, it will consume at exactly one token
+from each input port, if there is any, and convert them in to 
+a complex token. If any of the port is empty, a zero will be used
+in the corresponding part. 
 
-@author Michael Leung
+@author Michael Leung, Jie Liu
 @version $Id$
 */
 
@@ -76,12 +80,16 @@ public class RealToComplex extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    /** The real part. This has type DoubleToken. */
+    /** The real part. This has type DoubleToken. 
+     */
     public TypedIOPort realInput;
-    /** The imaginary part. This has type DoubleToken. */
+
+    /** The imaginary part. This has type DoubleToken. 
+     */
     public TypedIOPort imagInput;
 
-    /** The output ports. This has type ComplexToken. */
+    /** The output ports. This has type ComplexToken. 
+     */
     public TypedIOPort output;
 
     ///////////////////////////////////////////////////////////////////
@@ -101,24 +109,26 @@ public class RealToComplex extends TypedAtomicActor {
         return newobj;
     }
 
-    /** Consume one token from each input port
-     *  (the real and imaginary parts of the output complex token) and output
-     *  a new complex token.
+    /** Consume at exactly one token from each input port, 
+     *  if there is any, and convert them in to 
+     *  a complex token. If any of the port is empty, a zero will be used
+     *  in the corresponding part. 
      *
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-
-        DoubleToken real = (DoubleToken) (realInput.get(0));
-        DoubleToken imag = (DoubleToken) (imagInput.get(0));
-
-        double realPart = real.doubleValue();
-        double imagPart = imag.doubleValue();
-
-        Complex complexNumber = new Complex(realPart, imagPart);
+        double real = 0.0;
+        double imag = 0.0;
+        if (realInput.hasToken(0)) {
+            real = ((DoubleToken)realInput.get(0)).doubleValue();
+        }
+        if (imagInput.hasToken(0)) {
+            imag = ((DoubleToken)imagInput.get(0)).doubleValue();
+        }
+        
+        Complex complexNumber = new Complex(real, imag);
         ComplexToken token = new ComplexToken (complexNumber);
 
         output.broadcast(token);
-
     }
 }
