@@ -163,13 +163,17 @@ public class CTBaseIntegrator extends TypedAtomicActor implements TimedActor,
     /** If the specified attribute is <i>initialState</i>, then reset
      *  the state of the integrator to its value.
      *  @param attribute The attribute that has changed.
+     *  @exception IllegalActionException If the new parameter value
+     *  is not valid.
      */
-    public void attributeChanged(Attribute attribute) throws IllegalActionException {
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
     	if (attribute == initialState) {
-            _tentativeState = ((DoubleToken) initialState.getToken()).doubleValue();
+            _tentativeState =
+                ((DoubleToken) initialState.getToken()).doubleValue();
             _state = _tentativeState;
         } else {
-        	super.attributeChanged(attribute);
+            super.attributeChanged(attribute);
         }
     }
     /** Clear the history information.
