@@ -52,6 +52,7 @@ OTHER_FILES_TO_BE_JARED = \
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \
+	NonAppletStaticUnits.htm \
 	StaticUnits.htm \
 	StaticUnits1.gif \
 	StaticUnits2.gif \
