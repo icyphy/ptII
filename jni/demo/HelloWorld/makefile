@@ -94,9 +94,12 @@ HelloWorld.h: HelloWorld.class
 	javah -classpath $(ROOT) -o HelloWorld.h jni.demo.HelloWorld.HelloWorld
 
 # PTCC is set in $PTII/mk/ptII.mk
-# See also ptolemy/matlab/makefile
+# See also ptolemy/matlab/makefile and jni/JNIUtilities.java
 $(SHARED_LIBRARY): HelloWorld.h HelloWorld.c
-	$(PTCC) -shared $(PTJNI_SHAREDLIBRARY_CFLAG) \
+	$(PTCC) -shared \
+		$(PTJNI_NO_CYGWIN) $(PTJNI_SHAREDLIBRARY_LDFLAG) \
+		"-I$(PTJAVA_DIR)/include" \
+		"-I$(PTJAVA_DIR)/include/$(PTJNI_ARCHITECTURE)" \
 		-o $@ \
 		HelloWorld.c
 
