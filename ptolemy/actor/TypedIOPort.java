@@ -368,18 +368,62 @@ public class TypedIOPort extends IOPort implements Typeable {
         return newObject;
     }
 
-    /** Return the type of this port.  The type is represented
-     *  by an instance of Class associated with a token type.
-     *  If the type is not set through setTypeEquals(), and this method
-     *  is called before type resolution takes place, this method
-     *  returns BaseType.UNKNOWN.
+    /** Return the type of this port.  If this port is opaque, this method
+     *  returns the resolved type of this port; if this port is a transparent
+     *  input port, this method returns the greatest lower bound of the types
+     *  of the inside ports; if this port is a transparent output port, this
+     *  method returns the least upper bound of the typs of the inside ports.
      *  This method is read-synchronized on the workspace.
      *  @return An instance of Type.
      */
     public Type getType() {
         try {
             _workspace.getReadAccess();
-            return _resolvedType;
+	    Type result = BaseType.UNKNOWN;
+	    if (isOpaque()) {
+                result = _resolvedType;
+	    } else if (isInput()) {
+                // is a transparent input port. Get all the ports connected
+		// on the inside through receivers.
+		Receiver[][] receivers = this.deepGetReceivers();
+	        List portTypeList = new LinkedList();
+	        if (receivers != null) {
+	            for (int i = 0; i < receivers.length; i++) {
+		        if (receivers[i] != null) {
+		            for (int j = 0; j < receivers[i].length; j++) {
+			        TypedIOPort port =
+				   (TypedIOPort)receivers[i][j].getContainer();
+		                portTypeList.add(port.getType());
+	                    }
+	                }
+                     }
+                }
+
+		CPO lattice = TypeLattice.lattice();
+		Object[] portTypeArray = portTypeList.toArray();
+	        result = (Type)lattice.greatestLowerBound(portTypeArray);
+            } else if (isOutput()) {
+	        // is a transparent output port. Get all the ports connected
+		// on the inside through deepInsidePortList().
+                Iterator ports = deepInsidePortList().iterator();
+	        List portTypeList = new LinkedList();
+                while(ports.hasNext()) {
+                    TypedIOPort port = (TypedIOPort) ports.next();
+                    // Rule out case where this port itself is listed...
+                    if (port != this && port.isOutput()) {
+		        portTypeList.add(port.getType());
+                    }
+                }
+
+		CPO lattice = TypeLattice.lattice();
+		Object[] portTypeArray = portTypeList.toArray();
+	        result = (Type)lattice.leastUpperBound(portTypeArray);
+            }
+	    return result;
+        } catch (IllegalActionException exception) {
+	    // deepGetReceiver throws it. This means that there is no director,
+	    // hence no receiver has been created. Return unknown.
+	    return BaseType.UNKNOWN;
         } finally {
             _workspace.doneReading();
         }
