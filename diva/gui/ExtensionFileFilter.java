@@ -236,9 +236,9 @@ public class ExtensionFileFilter extends FileFilter {
      * Sets the human readable description of this filter. For
      * example: filter.setDescription("Gif and JPG Images");
      *
-     * @see setDescription(String)
-     * @see setExtensionListInDescription(boolean)
-     * @see isExtensionListInDescription()
+     * @see #setDescription(String)
+     * @see #setExtensionListInDescription(boolean)
+     * @see #isExtensionListInDescription()
      */
     public void setDescription(String description) {
         this.description = description;

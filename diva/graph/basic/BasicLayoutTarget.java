@@ -236,7 +236,7 @@ public class BasicLayoutTarget implements LayoutTarget {
      * is sized layoutPercentage*bounds, where "bounds" is the rectangular
      * bounding box of the visual representation of a particular graph.
      *
-     * @see #getViewport(Graph)
+     * @see #getViewport(Object)
      */
     public void setLayoutPercentage(double d) {
         if ((d <= 0) || d > 1) {
