@@ -52,6 +52,8 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
+# We do not include ptjacl/ptjacl.jar, it gets included separately 
+# because it requires lib/ptjacl.jar
 PTCLASSALLJARS = \
 	doc/doc.jar \
 	style/style.jar
@@ -62,6 +64,9 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 # Except: NOTE: HTMLEffigy has to come before Configuration
 # because its inner class, HTMLEffigy$Factory, is referenced.
 JSRCS = \
+	BrowserEffigy.java \
+	BrowserLauncher.java \
+	BrowserTableau.java \
 	CompositeActorApplication.java \
 	Configuration.java \
 	ConfigurationEffigy.java \
