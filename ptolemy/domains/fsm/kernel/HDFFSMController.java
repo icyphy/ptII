@@ -1,4 +1,6 @@
-/* An FSM Controller to be used with HDF
+/* An HDFFSMController is an actor that contains the FSM states and
+   transitions when the FSM is embedded within a heterochronous
+   dataflow model.
 
  Copyright (c) 1998-1999 The Regents of the University of California.
  All rights reserved.
@@ -47,12 +49,31 @@ import ptolemy.domains.fsm.kernel.util.VariableList;
 //// HDFFSMController
 /**
 An HDFFSMController should be used instead of an FSMController when the
-FSM refines a heterochronous dataflow (HDF) graph. In this case,
-it is necessary that each of the states (instance of FSMState) refine
-to a SDF graph.
+FSM refines a heterochronous dataflow (HDF) graph. The HDFFSMController
+contains the FSM model (i.e., the states and transitions). The states
+are instances of HDFFSMState and and transitions are instances of
+HDFFSMTransition. It is required that each state (HDFFSMState) refine
+to another FSM or an SDF or HDF diagram. It is important to note that
+the refining diagram is not placed inside an HDFFSMState, but is 
+instead placed inside an opaque composite actor with the same
+container as the HDFFSMController. Since the state (HDFFSMState) and
+its refinement are distinct actors, an association between them must
+be created. This is accomplished by calling the setRefinement()
+method of each instance of HDFFSMState. Note also that the
+HDFFSMController actor should not contain any ports. It is only
+necessary that each of the refining opaque composite actors contains
+the same number and type of ports (with the same names) as its
+container, and that each of the refining actor's ports be linked
+to the corresponding port of its container.
+ 
 FIXME: Each state of the FSM must refine to a homogenous SDF graph.
 FIXME: The FSM guards are evaluated after each call to fire() of its
 refining SDF graph.
+FIXME: This controller does too much work. The director should handle
+most of this work.
+FIXME: Why is this controller even needed at all?
+FIXME: Why have two distinct actors (and HDFFSMState and its refinement)
+to represent each state?
 
 @version $Id$
 @author Brian K. Vogel
@@ -178,12 +199,19 @@ public class HDFFSMController  extends FSMController implements TypedActor {
 
 
 
-
+    /** Return the current state of the FSM. The returned state is
+     *  an instance of FSMState.
+     */
     public FSMState currentState() {
         return _currentState;
     }
 
 
+    /** Return the refining actor associated with the current state.
+     *  If there is no current state (something is broken) then
+     *  return null.
+     *  FIXME: throw an exception instead of returning null.
+     */
     public Actor currentRefinement() {
         if (_currentState != null) {
             return _currentState.getRefinement();
@@ -192,7 +220,8 @@ public class HDFFSMController  extends FSMController implements TypedActor {
         }
     }
 
-    /*
+    /* Do stuff. 
+     * FIXME: elaborate.
      *
      */
     public void fire() throws IllegalActionException {
@@ -324,43 +353,9 @@ public class HDFFSMController  extends FSMController implements TypedActor {
         return true;
     }
 
-
-    /*  public double getCurrentTime() throws IllegalActionException {
-        DEDirector dir = (DEDirector)getDirector();
-        if (dir == null) {
-        throw new IllegalActionException("No director available");
-        }
-        return dir.getCurrentTime();
-        }
-
-        public double getStartTime() throws IllegalActionException {
-	DEDirector dir = (DEDirector)getDirector();
-	if (dir == null) {
-        throw new IllegalActionException("No director available");
-	}
-	return dir.getStartTime();
-        }
-
-        public double getStopTime() throws IllegalActionException {
-	DEDirector dir = (DEDirector)getDirector();
-	if (dir == null) {
-        throw new IllegalActionException("No director available");
-	}
-	return dir.getStopTime();
-        }
-
-        public void refireAfterDelay(double delay) throws IllegalActionException {
-	DEDirector dir = (DEDirector)getDirector();
-	// FIXME: the depth is equal to zero ???
-        // If this actor has input ports, then the depth is set to be
-        // one higher than the max depth of the input ports.
-        // If this actor has no input ports, then the depth is set to
-        // to be zero.
-
-        dir.fireAfterDelay(this, delay);
-        }
-    */
-    
+    /* FIXME: Throw exception since this actor should not contain
+     * any ports.
+     */
     public Port newPort(String name) throws NameDuplicationException {
         try {
             workspace().getWriteAccess();

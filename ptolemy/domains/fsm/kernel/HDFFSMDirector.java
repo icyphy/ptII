@@ -159,73 +159,15 @@ public class HDFFSMDirector extends FSMDirector {
     public void fire() throws IllegalActionException {
         // _controller must not be null
 	System.out.println("HDFFSMDirector: fire()");
-        _controller.fire();
+	if (_controller != null) {
+	    _controller.fire();
+	} else {
+	    throw new IllegalActionException(this, 
+		     "HDFFSMDirector must have a contoller. "
+		     + "Use setController() to set the contoller"
+					     + " and try again.");
+	}
     }
-
-    public void fireAt(Actor actor, double time)
-            throws IllegalActionException {
-        CompositeActor cont = (CompositeActor)getContainer();
-        Director execDir = (Director)cont.getExecutiveDirector();
-        if (execDir == null) {
-            // PANIC!!
-            throw new InvalidStateException(this,
-                    "HDFFSMDirector must have an executive director!");
-        }
-        execDir.fireAt(cont, time);
-    }
-
-    /** Return the current time of the simulation. In this base class,
-     *  it returns 0. The derived class should override this method
-     *  and return the current time.
-     */
-    // FIXME: complete this.
-    // Should ask its executive director for current time.
-    public double getCurrentTime() {
-        double ctime = 0.0;
-        CompositeActor cont = (CompositeActor)getContainer();
-        if (cont == null) {
-            // In fact this should not happen, this director must have
-            // a container.
-            ctime = 0.0;
-        } else {
-            Director execDir = (Director)cont.getExecutiveDirector();
-            if (execDir == null) {
-                // PANIC!!
-                throw new InvalidStateException(this,
-                        "HDFFSMDirector must have an executive director!");
-            }
-            ctime = execDir.getCurrentTime();
-        }
-        return ctime;
-    }
-
-    /** Get the next iteration time.
-     */
-    // FIXME: complete this.
-    // Note we should make clear which entities call this method: the
-    // executive director, or the directors of the composite actors
-    // governed by this director.
-    // Should only be called by executive director.
-    public double getNextIterationTime() {
-        double nextTime = 0.0;
-        CompositeActor cont = (CompositeActor)getContainer();
-        if (cont == null) {
-            // In fact this should not happen, this director must have
-            // a container.
-            nextTime = 0.0;
-        } else {
-            Director execDir = (Director)cont.getExecutiveDirector();
-            if (execDir == null) {
-                // PANIC!!
-                throw new InvalidStateException(this,
-                        "HDFFSMDirector must have an executive director!");
-            }
-            nextTime = execDir.getNextIterationTime();
-        }
-        return nextTime;
-    }
-
-
 
 
     /** Create receivers and then invoke the initialize()
@@ -352,19 +294,7 @@ public class HDFFSMDirector extends FSMDirector {
      *  one of the associated actors throws it.
      */
     public void preinitialize() throws IllegalActionException {
-	// Initialize guard variables.
-	/*
-	if (guardVar == null) {
-	    try {
-		if (_debugging) _debug("Setting guard variables.");
-		guardVar = new Variable(this, "TheGuard");
-	    } catch (NameDuplicationException ex) {
-		System.out.println("HDFFSMDirector " +ex.getMessage());
-	    }
-	}
-	*/
-	//guardLength
-	// Code from base Direcotr class:
+	
         CompositeActor container = ((CompositeActor)getContainer());
         if (container!= null) {
 	    // Initialize guard variables.
@@ -452,6 +382,9 @@ public class HDFFSMDirector extends FSMDirector {
 	    }
 
 	    // End of Initialize guard variables.
+
+	    // Now preinitialize all actors in this director's
+	    // container.
 	    CompositeActor containersContainer =
                 (CompositeActor)container.getContainer();
 	    if( containersContainer == null ) {
@@ -469,9 +402,6 @@ public class HDFFSMDirector extends FSMDirector {
                 actor.preinitialize();
             }
         }
-	// End of code from base Direcotr class.
-
-
 
         if (_debugging) _debug("Finished preinitialize().");
     }
@@ -532,8 +462,7 @@ public class HDFFSMDirector extends FSMDirector {
      *   input port.
      *  @return True if data are transfered.
      */
-    // ******************************************************
-    // ************ FIXME ************* THIS IS REALLY STUPID! ****
+    // ************ FIXME *************
     /* This is stupid. This assumes that the name of the
      * refining state's port must have the same name 
      * as the input port (of this director's container) to
@@ -683,8 +612,7 @@ public class HDFFSMDirector extends FSMDirector {
 
         CompositeActor cont = (CompositeActor)getContainer();
 
-	// ******************************************************
-	// ************ FIXME ************* THIS IS REALLY STUPID! ****
+	// ************ FIXME *********
 	/* This is stupid. This assumes that the name of the
 	 * refining state's port must have the same name 
 	 * as the output port (of this director's container) to
