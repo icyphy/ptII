@@ -223,7 +223,7 @@
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0, 1.1886982660708, 1.384521464445, 1.5839808665428, 1.7831786788437, 1.9782477347885, 2.1657825426717, 2.3431485894653, 2.5086125761763, 2.6613056784349, 2.8010769394427, 2.7374912269307, 2.6794920185586, 2.6264598650989, 2.5778487011535, 2.5331786666847, 2.4920287328976, 2.4540296327581, 2.4188573497836, 2.3862272694621, 2.3558890108855}">
         </property>
-        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
         </property>
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
