@@ -65,7 +65,7 @@ test Parameter-2.0 {Check constructors} {
     set name2 [$param2 getFullName]    
     set name3 [$param3 getFullName]
     set name4 [$param4 getFullName]
-    set value3 [[$param3 getToken] getValue]
+    set value3 [[$param3 getToken] stringValue]
     list $name1 $name2 $name3 $name4 $value3
 } {. workspace. .entity.id2 .entity.id1 4.5}
 
@@ -78,14 +78,14 @@ test Parameter-3.1 {Check setting the contained Token with another Token} {
 
     set param1 [java::new ptolemy.data.expr.Parameter $e id1 $tok1]
     set name1 [$param1 getFullName]
-    set value1 [[$param1 getToken] getValue]
+    set value1 [[$param1 getToken] stringValue]
 
     # Now put a new token into the Param
     set tok2 [java::new  {ptolemy.data.DoubleToken double} 7.3]
     $param1 setToken $tok2
     
     set name2 [$param1 getFullName]
-    set value2 [[$param1 getToken] getValue]
+    set value2 [[$param1 getToken] stringValue]
 
     list $name1 $value1 $name2 $value2
 } {.entity.id1 4.5 .entity.id1 7.3}
@@ -99,14 +99,14 @@ test Parameter-3.2 {Check type constriants on contained Token type} {
 
     set param1 [java::new ptolemy.data.expr.Parameter $e id1 $tok1]
     set name1 [$param1 getFullName]
-    set value1 [[$param1 getToken] getValue]
+    set value1 [[$param1 getToken] stringValue]
 
     # Now put a new token into the Param
     set tok2 [java::new  {ptolemy.data.DoubleToken double} 7.3]
     catch {$param1 setToken $tok2} errmsg
     
     set name2 [$param1 getFullName]
-    set value2 [[$param1 getToken] getValue]
+    set value2 [[$param1 getToken] stringValue]
 
     list $name1 $value1 $errmsg
 } {.entity.id1 11 {java.lang.IllegalArgumentException: Cannot store a Token of type ptolemy.data.DoubleToken in a Parameter restricted to tokens of type ptolemy.data.IntToken or lower}}
@@ -119,14 +119,14 @@ test Parameter-3.3 {Check type constriants: ok to put int in a double} {
 
     set param1 [java::new ptolemy.data.expr.Parameter $e id1 $tok1]
     set name1 [$param1 getFullName]
-    set value1 [[$param1 getToken] getValue]
+    set value1 [[$param1 getToken] stringValue]
 
     # Now put a new token into the Param
     set tok2 [java::new  {ptolemy.data.IntToken int} 7]
     catch {$param1 setToken $tok2} errmsg
     
     set name2 [$param1 getFullName]
-    set value2 [[$param1 getToken] getValue]
+    set value2 [[$param1 getToken] stringValue]
 
     list $name1 $value1 $name2 $value2
 } {.entity.id1 4.4 .entity.id1 7}
@@ -153,7 +153,7 @@ test Parameter-4.0 {Check setting the contained Token from a String or another T
     # Now put a new token into the Param
     set tok2 [java::new {ptolemy.data.DoubleToken double} 3.3]
     $param1 setToken $tok2    
-    set value4 [[$param1 getToken] getValue]
+    set value4 [[$param1 getToken] stringValue]
 
     list $name1 $value1 $value2 $value3 $value4
 } {.parent.id1 9.9 7.7 -5.5 3.3}
@@ -166,24 +166,24 @@ test Parameter-5.0 {Check reseting the Parameter to its original String} {
     set param1 [java::new ptolemy.data.expr.Parameter $e id1 ]
     $param1 setExpression "1.6 + 8.3"
     set name1 [$param1 getFullName]
-    set value1 [[$param1 getToken] getValue]
+    set value1 [[$param1 getToken] stringValue]
 
     # Now put a new token into the Param
     set tok1 [java::new  {ptolemy.data.DoubleToken double} 7.7]
     $param1 setToken $tok1    
-    set value2 [[$param1 getToken] getValue]
+    set value2 [[$param1 getToken] stringValue]
 
     # Now reset the Token 
     $param1 reset
-    set value3 [[$param1 getToken] getValue]
+    set value3 [[$param1 getToken] stringValue]
 
     # Put a new Token in the Parameter from a String
     $param1 setExpression "((true) ? 5.5 : \"crap\")" 
-    set value4 [[$param1 getToken] getValue]
+    set value4 [[$param1 getToken] stringValue]
     
     # Reset the Token 
     $param1 reset
-    set value5 [[$param1 getToken] getValue]
+    set value5 [[$param1 getToken] stringValue]
 
     list $name1 $value1 $value2 $value3 $value4 $value5 
 } {.parent.id1 9.9 7.7 9.9 5.5 9.9}
@@ -197,24 +197,24 @@ test Parameter-5.1 {Check reseting the Parameter to its original Token} {
     set tok1 [java::new {ptolemy.data.DoubleToken double} 9.9]
     set param1 [java::new ptolemy.data.expr.Parameter $e id1 $tok1]
     set name1 [$param1 getFullName]
-    set value1 [[$param1 getToken] getValue]
+    set value1 [[$param1 getToken] stringValue]
 
     # Put a new token into the Parameter from a String 
     $param1 setExpression "((true) ? 7.7 : \"crap\")" 
-    set value2 [[$param1 getToken] getValue]
+    set value2 [[$param1 getToken] stringValue]
     
     # Reset the Token 
     $param1 reset
-    set value3 [[$param1 getToken] getValue]
+    set value3 [[$param1 getToken] stringValue]
 
     # Put a new Token in the Param from a Token
     set tok1 [java::new  {ptolemy.data.DoubleToken double} 5.5]
     $param1 setToken $tok1    
-    set value4 [[$param1 getToken] getValue]
+    set value4 [[$param1 getToken] stringValue]
     
     # Reset the Token 
     $param1 reset
-    set value5 [[$param1 getToken] getValue]
+    set value5 [[$param1 getToken] stringValue]
 
     list $name1 $value1 $value2 $value3 $value4 $value5 
 } {.parent.id1 9.9 7.7 9.9 5.5 9.9}
@@ -302,3 +302,32 @@ test Parameter-8.0 {Check that previous dependencies are cleared when a new Toke
     
     list $value2
 } {ptolemy.data.IntToken(20)}
+#################################
+####
+# 
+test Parameter-9.0 {Check that notification works properly when a Parameter is removed} {
+    set top [java::new ptolemy.kernel.CompositeEntity]
+    $top setName topLevel
+    set bottom [java::new ptolemy.kernel.CompositeEntity $top bottomLevel]
+    set param1 [java::new ptolemy.data.expr.Parameter $top clock ]
+    $param1 setExpression "11"
+    $param1 evaluate
+
+    set param2 [java::new ptolemy.data.expr.Parameter $bottom clock ]
+    $param2 setExpression "66"
+    $param2 evaluate
+
+    set param3 [java::new ptolemy.data.expr.Parameter $bottom newFreq ]
+    $param3 setExpression "clock * 100"
+    $param3 evaluate
+
+    set res1 [[$param3 getToken] toString]
+
+    # This should remove clack parameter from the bottom entity and make
+    # the clock parameter from the top entity visible.
+    $param2 setContainer [java::null]
+
+    set res2 [[$param3 getToken] toString]
+
+    list $res1 $res2
+} {ptolemy.data.IntToken(6600) ptolemy.data.IntToken(1100)}
