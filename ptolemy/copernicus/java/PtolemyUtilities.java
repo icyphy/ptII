@@ -589,6 +589,9 @@ public class PtolemyUtilities {
     // Soot class representing the ptolemy.actor.TypedCompositeActor class.
     public static SootClass compositeActorClass;
 
+    // Soot class representing the ptolemy.kernel.Entity class.
+    public static SootClass entityClass;
+
     // Soot class representing the ptolemy.actor.Executable interface.
     public static SootClass executableInterface;
 
@@ -603,6 +606,10 @@ public class PtolemyUtilities {
     // SootMethod representing
     // ptolemy.kernel.util.Settable.getExpression();
     public static SootMethod getExpressionMethod;
+
+    // SootMethod representing
+    // ptolemy.kernel.Entity.getPort
+    public static SootMethod getPortMethod;
 
     // SootMethod representing ptolemy.kernel.ComponentPort.insertLink().
     public static SootMethod insertLinkMethod;
@@ -624,6 +631,13 @@ public class PtolemyUtilities {
 
     // SootMethod representing ptolemy.kernel.util.Settable.setExpression().
     public static SootMethod setExpressionMethod;
+
+    // SootMethod representing ptolemy.actor.IOPort.setInput().
+    public static SootMethod setInputMethod;
+    // SootMethod representing ptolemy.actor.IOPort.setOutput().
+    public static SootMethod setOutputMethod;
+    // SootMethod representing ptolemy.actor.IOPort.setMultiport().
+    public static SootMethod setMultiportMethod;
 
     // Soot Class representing the ptolemy.kernel.util.Settable class.
     public static SootClass settableClass;
@@ -704,6 +718,11 @@ public class PtolemyUtilities {
         executableInterface = 
             Scene.v().loadClassAndSupport("ptolemy.actor.Executable");
         
+        entityClass =
+            Scene.v().loadClassAndSupport("ptolemy.kernel.Entity");
+        getPortMethod = 
+            entityClass.getMethod("ptolemy.kernel.Port getPort(java.lang.String)");
+
         actorClass =
             Scene.v().loadClassAndSupport("ptolemy.actor.TypedAtomicActor");
         actorType = RefType.v(actorClass);
@@ -718,7 +737,10 @@ public class PtolemyUtilities {
         portType = RefType.v(portClass);
         insertLinkMethod = SootUtilities.searchForMethodByName(portClass,
                 "insertLink");
-
+        setInputMethod = Scene.v().getMethod("<ptolemy.actor.IOPort: void setInput(boolean)>");
+        setOutputMethod = Scene.v().getMethod("<ptolemy.actor.IOPort: void setOutput(boolean)>");
+        setMultiportMethod = Scene.v().getMethod("<ptolemy.actor.IOPort: void setMultiport(boolean)>");
+             
         tokenClass = 
             Scene.v().loadClassAndSupport("ptolemy.data.Token");
         tokenType = RefType.v(tokenClass);

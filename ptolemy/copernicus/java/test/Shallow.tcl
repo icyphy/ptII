@@ -55,7 +55,9 @@ if {[info procs jdkClassPathSeparator] == "" } then {
 
 #test Shallow-1.1 {Compile and run the Orthocomm test} {
 #    set result [sootShallowCodeGeneration \
-#  	    ptolemy.domains.sdf.demo.OrthogonalCom.OrthogonalCom]
+#  	    [file join $relativePathToPTII ptolemy actor lib test auto \
+#	    RecordUpdater.xml]]
+#ptolemy.domains.sdf.demo.OrthogonalCom.OrthogonalCom]
 #    lrange $result 0 9
 #} {2 4 6 8 10 12 14 16 18 20}
 

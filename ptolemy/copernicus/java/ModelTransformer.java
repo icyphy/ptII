@@ -30,6 +30,7 @@
 package ptolemy.copernicus.java;
 
 import ptolemy.actor.CompositeActor;
+import ptolemy.actor.IOPort;
 import ptolemy.actor.IORelation;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.copernicus.kernel.SootUtilities;
@@ -131,6 +132,9 @@ public class ModelTransformer extends SceneTransformer {
         Chain units = body.getUnits();
         Local thisLocal = body.getThisLocal();
 
+	_entityLocalMap = new HashMap();
+	_portLocalMap = new HashMap();
+
         // Now instantiate all the stuff inside the model.
         _composite(body, thisLocal, _model, modelClass, options);
 
@@ -191,7 +195,7 @@ public class ModelTransformer extends SceneTransformer {
             CompositeEntity composite, EntitySootClass modelClass,
             Map options) {
 
-        _externalPorts(body, thisLocal, composite, modelClass);
+        _ports(body, thisLocal, composite, thisLocal, composite, modelClass);
         _entities(body, thisLocal, composite, modelClass, options);
         // create fields for attributes.
         createFieldsForAttributes(body, composite, thisLocal, 
@@ -335,7 +339,6 @@ public class ModelTransformer extends SceneTransformer {
     private void _entities(JimpleBody body, Local thisLocal, 
             CompositeEntity composite, EntitySootClass modelClass,
             Map options) {
-	_entityLocalMap = new HashMap();
 	for(Iterator entities = composite.entityList().iterator();
 	    entities.hasNext();) {
 	    Entity entity = (Entity)entities.next();
@@ -361,6 +364,8 @@ public class ModelTransformer extends SceneTransformer {
 
             if(entity instanceof CompositeEntity) {
                 _composite(body, local, (CompositeEntity)entity, modelClass, options);
+            } else {
+                _ports(body, thisLocal, composite, local, entity, modelClass);
             }
 
             if(Options.getBoolean(options, "deep")) {
@@ -380,21 +385,77 @@ public class ModelTransformer extends SceneTransformer {
     }
 
     // Create and set external ports.
-    private void _externalPorts(JimpleBody body, Local thisLocal,
-            CompositeEntity composite, EntitySootClass modelClass) {
-	_portLocalMap = new HashMap();
+    private void _ports(JimpleBody body, Local containerLocal,
+            CompositeEntity container, Local entityLocal,
+            Entity entity, EntitySootClass modelClass) {
+        Entity classObject = (Entity)_findDeferredInstance(entity);
 
-	for(Iterator ports = composite.portList().iterator();
+        // This local is used to store the return from the getPort
+        // method, before it is stored in a type-specific local variable.
+        Local tempPortLocal = Jimple.v().newLocal("tempPort",
+                RefType.v("ptolemy.kernel.Port"));
+        body.getLocals().add(tempPortLocal);
+
+	for(Iterator ports = entity.portList().iterator();
 	    ports.hasNext();) {
 	    Port port = (Port)ports.next();
 	    String className = port.getClass().getName();
-            String fieldName = SootUtilities.sanitizeName(port.getName());
-	    Local local = 
-                PtolemyUtilities.createNamedObjAndLocal(body, className,
-                        thisLocal, fieldName);
-	    _portLocalMap.put(port, local);
+            String fieldName = SootUtilities.sanitizeName(port.getName(container));
+	    Local portLocal;
+
+            portLocal = Jimple.v().newLocal("port",
+                    PtolemyUtilities.portType);
+            body.getLocals().add(portLocal);
+
+            if(classObject.getPort(port.getName()) != null) {
+                // If the class for the object already creates the
+                // attribute, then get a reference to the existing attribute.
+
+                // First assign to temp
+                body.getUnits().add(Jimple.v().newAssignStmt(tempPortLocal,
+                        Jimple.v().newVirtualInvokeExpr(entityLocal,
+                                PtolemyUtilities.getPortMethod,
+                                StringConstant.v(port.getName()))));
+                // and then cast to portLocal
+                body.getUnits().add(Jimple.v().newAssignStmt(portLocal,
+                        Jimple.v().newCastExpr(tempPortLocal,
+                                PtolemyUtilities.portType)));
+            } else {
+                // If the class does not create the attribute,
+                // then create a new attribute with the right name.
+                Local local = PtolemyUtilities.createNamedObjAndLocal(body, className,
+                        entityLocal, port.getName());
+                if(port instanceof IOPort) {
+                    IOPort ioport = (IOPort)port;
+                    if(ioport.isInput()) {
+                        body.getUnits().add(Jimple.v().newInvokeStmt(
+                                Jimple.v().newVirtualInvokeExpr(local,
+                                        PtolemyUtilities.setInputMethod,
+                                        IntConstant.v(1))));
+                    }
+                    if(ioport.isOutput()) {
+                        body.getUnits().add(Jimple.v().newInvokeStmt(
+                                Jimple.v().newVirtualInvokeExpr(local,
+                                        PtolemyUtilities.setOutputMethod,
+                                        IntConstant.v(1))));
+                    }
+                    if(ioport.isMultiport()) {
+                        body.getUnits().add(Jimple.v().newInvokeStmt(
+                                Jimple.v().newVirtualInvokeExpr(local,
+                                        PtolemyUtilities.setMultiportMethod,
+                                        IntConstant.v(1))));
+                    }
+                }
+                // and then cast to portLocal
+                body.getUnits().add(Jimple.v().newAssignStmt(portLocal,
+                        Jimple.v().newCastExpr(local,
+                                PtolemyUtilities.portType)));
+
+            }
+
+            _portLocalMap.put(port, portLocal);
 	    SootUtilities.createAndSetFieldFromLocal(body, 
-                    local, modelClass, PtolemyUtilities.portType,
+                    portLocal, modelClass, PtolemyUtilities.portType,
                     fieldName);
 	}
     }
@@ -438,11 +499,9 @@ public class ModelTransformer extends SceneTransformer {
             JimpleBody body, CompositeEntity composite) {
         // This local is used to store the return from the getPort
         // method, before it is stored in a type-specific local variable.
-        Local tempPortLocal = Jimple.v().newLocal("tempPort",
-                RefType.v("ptolemy.kernel.Port"));
-        body.getLocals().add(tempPortLocal);
-
-
+        //       Local tempPortLocal = Jimple.v().newLocal("tempPort",
+        //        RefType.v("ptolemy.kernel.Port"));
+        //body.getLocals().add(tempPortLocal);
 	Chain units = body.getUnits();
 
         for(Iterator entities = composite.entityList().iterator();
@@ -458,8 +517,11 @@ public class ModelTransformer extends SceneTransformer {
                     // then just get the reference.
                     portLocal = (Local)_portLocalMap.get(port);
                 } else {
+                    throw new RuntimeException("Found a port: " + port + 
+                            " that does not have a local variable!");
                     // Otherwise, create a new local for the given port.
-                    Local entityLocal = (Local)_entityLocalMap.get(entity);
+                    /*
+                      Local entityLocal = (Local)_entityLocalMap.get(entity);
                     portLocal = Jimple.v().newLocal(port.getName(),
                             PtolemyUtilities.portType);
                     body.getLocals().add(portLocal);
@@ -480,6 +542,7 @@ public class ModelTransformer extends SceneTransformer {
                     units.add(Jimple.v().newAssignStmt(portLocal,
                             Jimple.v().newCastExpr(tempPortLocal,
                                     PtolemyUtilities.portType)));
+                    */
                 }
                     /*
                     // Set the type of the port if we need to.
