@@ -133,7 +133,13 @@ public class Ramp extends SequenceSource {
      */
     public void initialize() {
         _stateToken = init.getToken();
-        super.initialize();
+        try {
+            super.initialize();
+        } catch (IllegalActionException ex) { 
+            // This should never happen.  SequenceSource documents that 
+            // it never throws IllegalActionException
+            throw new InternalErrorException(ex.getMessage());
+        }
     }
 
     /** Send the current value of the state of this actor to the output.
