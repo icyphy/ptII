@@ -29,6 +29,7 @@
 */
 
 package ptolemy.domains.sr.lib;
+
 import ptolemy.actor.lib.SequenceActor;
 import ptolemy.actor.lib.Transformer;
 import ptolemy.data.Token;
@@ -37,9 +38,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
-//// SingleTokenCommutator
+//// TokenMultiplexor
 /**
- The   SingleTokenCommutator  has a multiport  input port and an output port.  The  types of the ports are undeclared and will be resolved by the type resolution mechanism, with the constraint that the output type must be greater than or equal to the input type. On each call to the fire method, the actor reads 
+ The TokenMultiplexor has a multiport  input port and an output port.  The
+ types of the ports are undeclared and will be resolved by the type resolution mechanism, with the constraint that the output type must be greater than or equal to the input type. On each call to the fire method, the actor reads 
 one token from the current input, and writes one token to an output channel.
 If there is no token on the input, then it will not produce a token on
 the  output.  In the next iteration of this actor, it will
@@ -49,7 +51,7 @@ read  the next channel.
 @version $Id$
 @since Ptolemy II 2.0
 */
-public class  SingleTokenCommutator   extends Transformer
+public class  TokenMultiplexor  extends Transformer
     implements SequenceActor {
 
     /** Construct an actor in the specified container with the specified
@@ -63,7 +65,7 @@ public class  SingleTokenCommutator   extends Transformer
      *  @exception IllegalActionException If the actor cannot be contained
      *  by the proposed container.
      */
-    public SingleTokenCommutator(CompositeEntity container, String name)
+    public TokenMultiplexor(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
         input.setMultiport(true);
