@@ -37,6 +37,7 @@ import ptolemy.domains.de.lib.*;
 import ptolemy.domains.ct.kernel.*;
 import ptolemy.domains.ct.gui.CTApplet;
 import ptolemy.domains.ct.lib.*;
+import ptolemy.domains.sdf.lib.FIR;
 import ptolemy.actor.*;
 import ptolemy.gui.Query;
 import ptolemy.actor.lib.*;
@@ -63,7 +64,7 @@ Reference:  Mark A. Lemkin, <I>"Micro Accelerometer Design with Digital
 Feedback Control"</I>, doctoral dissertation,  University of California,
 Berkeley, Fall 1997
 
-@author Jie LIu
+@author Jie Liu
 @version $Id$
 */
 public class SigmaDeltaApplet extends CTApplet {
@@ -173,19 +174,19 @@ public class SigmaDeltaApplet extends CTApplet {
             _ctPlot.input.link(cr10);
 
             // DE System
-            // approximate the FIR filter by a delay and a gain.
-            DEFIRfilter fir = new DEFIRfilter(_toplevel, "FIR", "0.7 0.3");
-            Parameter firdelay = (Parameter)fir.getAttribute("Delay");
-            firdelay.setToken(new DoubleToken(0.02));
-
+            ptolemy.domains.de.lib.Delay delay =
+                    new ptolemy.domains.de.lib.Delay(_toplevel, "delay");
+            delay.delay.setToken(new DoubleToken(0.02));
+            FIR fir = new FIR(_toplevel, "fir");
+            fir.taps.setExpression("[0.7, 0.3]");
             Quantizer quan = new Quantizer(_toplevel, "Quantizer");
-            DEStatistics accu = new DEStatistics(_toplevel, "Accumulator");
+            Average accumulator = new Average(_toplevel, "accumulator");
+            Sampler sampler = new Sampler(_toplevel, "sampler");
             Clock clk = new Clock(_toplevel, "ADClock");
             double[][] offs = {{0.0}};
             clk.offsets.setToken(new DoubleMatrixToken(offs));
             clk.period.setToken(new DoubleToken(1.0));
-            int[][] vals = {{0}};
-            clk.values.setToken(new IntMatrixToken(vals));
+            clk.values.setExpression("[true]");
             
             _dePlot = new TimedPlotter(_toplevel, "DEPlot");
             _dePlot.setPanel(this);
@@ -198,20 +199,22 @@ public class SigmaDeltaApplet extends CTApplet {
             _dePlot.plot.addLegend(0, "Accum");
             _dePlot.plot.addLegend(1, "Quantize");
 
-            DEFIRfilter mav = new DEFIRfilter(_toplevel, "MAV",
-                    "0.1 0.1 0.1 0.1" +
-                    " 0.1 0.05 0.05 0.05 0.05 0.05 0.05 0.05 0.05 0.05 0.05");
+            FIR mav = new FIR(_toplevel, "MAV");
+            mav.taps.setExpression(
+                "[0.1, 0.1, 0.1, 0.1, 0.1, 0.05, 0.05, 0.05, "
+                + "0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05]");
 
             // DE connections.
-            Relation dr0 = _toplevel.connect(subout,  fir.input, "DR1");
-            Relation dr2 = _toplevel.connect(fir.output, quan.input, "DR2");
-            Relation dr3 = _toplevel.connect(quan.output, subin, "DR3");
-            Relation dr4 = _toplevel.connect(clk.output, accu.demand, "DR4");
-            accu.reset.link(dr4);
+            Relation dr0 = _toplevel.connect(subout,  delay.input);
+            Relation dr1 = _toplevel.connect(delay.output,  fir.input);
+            Relation dr2 = _toplevel.connect(fir.output, quan.input);
+            Relation dr3 = _toplevel.connect(quan.output, subin);
             mav.input.link(dr3);
-            Relation dr5 = _toplevel.connect(accu.input, mav.output, "DR5");
-            Relation dr6 = _toplevel.connect(_dePlot.input, accu.average,
-                    "DR6");
+            Relation dr5 = _toplevel.connect(mav.output, accumulator.input);
+            Relation dr4 = _toplevel.connect(clk.output, sampler.trigger);
+            accumulator.reset.link(dr4);
+            Relation dr6 = _toplevel.connect(accumulator.output, sampler.input);
+            Relation dr7 = _toplevel.connect(sampler.output, _dePlot.input);
             _dePlot.input.link(dr3);
 
             // CT Director parameters
