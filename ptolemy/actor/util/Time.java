@@ -28,6 +28,9 @@ COPYRIGHTENDKEY
 
 package ptolemy.actor.util;
 
+import ptolemy.actor.Actor;
+import ptolemy.actor.Director;
+import ptolemy.actor.Executable;
 import ptolemy.data.TokenUtilities;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.math.Utilities;
@@ -42,7 +45,8 @@ import ptolemy.math.Utilities;
    directors. The time value has a precision specified by the time resolution.
    
    <p> This class supports two operations only, add and subtract, where the 
-   operand can be either a double or a Time object. 
+   operand can be either a double or a Time object. This class also implements
+   the Comparable interface, where two time objects can compare with each other. 
 
    @author Haiyang Zheng
    @version $Id$
@@ -50,12 +54,29 @@ import ptolemy.math.Utilities;
    @Pt.ProposedRating Red (hyzheng)
    @Pt.AcceptedRating Red (hyzheng)
 */
-public class Time {
+public class Time implements Comparable {
 
-    /** Construct a Time instance with the specified value.
+    /** Construct a Time object with 0.0 as the time value in
+     *  the given container. 
+     *  @param container The container of this time object.
+     *  @exception IllegalActionException If the container is 
+     *  neither a director nor an actor.
      */
-    public Time(double value) {
-        _time = Utilities.round(value, _timeResolution);
+    public Time(Executable container) throws IllegalActionException {
+        _init(container);
+    }
+
+    /** Construct a Time object with the specified value as its
+     *  time value in the given container. 
+     *  @param container The container of this time object.
+     *  @param value The time value.
+     *  @exception IllegalActionException If the container is 
+     *  neither a director nor an actor.
+     */
+    public Time(Executable container, double value) 
+        throws IllegalActionException {
+        _init(container);
+        setTimeValue(value);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -76,19 +97,31 @@ public class Time {
         add(time.getTimeValue());
     }
 
-    /** Return true if the argument has the same time value.
-     *  @param time An instance of Time.
-     *  @return True if the argument has the same time value.
+    /** Return -1, 0, or 1 if this time object is less than, equal to, or 
+     *  greater than the given argument object. Note that a ClassCastException 
+     *  will be thrown if the argument is not an instance of Time.     
+     *  @param time An object.
+     *  @return a integer as -1, 0, or 1.
      */
-    public boolean equals(Time time) {
-        return (time.getTimeValue() == _time); 
+    public int compareTo(Object time) {
+        return compareTo((Time) time);;
     }
 
-    /** Return the time resolution.
-     *  @return The time resolution contained in this class as a double.
+    /** Return -1, 0, or 1 if this time object is less than, equal to, or 
+     *  greater than the given time argument. Note that a ClassCastException 
+     *  will be thrown if the argument is not an instance of Time.     
+     *  @param time An object of Time.
+     *  @return a integer as -1, 0, or 1.
      */
-    public double getTimeResolution() {
-        return _timeResolution;
+    public int compareTo(Time time) {
+        double difference = _time - time.getTimeValue();
+        if (difference < 0) {
+            return -1;
+        } else if (difference == 0) {
+            return 0;
+        } else {
+            return 1;
+        }
     }
 
     /** Return the time value.
@@ -100,12 +133,14 @@ public class Time {
 
     /** Set the time resolution.
      *  @throws IllegalActionException If the timeResolution parameter
-     *  is not in scientific notation and the mantissa is not 1. 
+     *  is not in scientific notation or the mantissa is not 1. 
      */
     public void setTimeResolution(double timeResolution) 
         throws IllegalActionException {
         // FIXME: check whether the new time resolution is
-        // in scientific notation and the mantissa is 1.
+        // in scientific notation or the mantissa is 1.
+        // FIXME: Time resolution may only be changed by a director.
+        // How to enforce that? 
         _timeResolution = timeResolution;
     }
 
@@ -156,7 +191,31 @@ public class Time {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+    // Initialize the states. Throw an illegalActionException if the
+    // given container argument is neither a director or an actor.
+    private void _init(Executable container) throws IllegalActionException {
+        if (container instanceof Actor) {
+            _timeResolution = 
+                ((Actor)container).getDirector().getTimeResolution();
+        } else if (container instanceof Director) {
+            _timeResolution = 
+                ((Director)container).getTimeResolution();
+        } else{
+            throw new IllegalActionException("Can not create " +
+                "a Time object because the container is neither " +
+                "a director nor an actor.");
+        }
+        _container = container;
+        _time = Utilities.round(0.0, _timeResolution);
+    }
+
+    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+    // The container of this time object.
+    private Executable _container;
+    // The time value.
     private double _time;
+    // The time resolution.
     private double _timeResolution;
 }
