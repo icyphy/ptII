@@ -31,9 +31,14 @@ package ptolemy.actor.gui;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Manager;
+import ptolemy.kernel.attributes.VersionAttribute;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.*;
+import ptolemy.moml.MoMLParser;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -42,7 +47,6 @@ import java.net.URL;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-
 import javax.swing.event.HyperlinkEvent;
 
 
@@ -71,6 +75,8 @@ public class HTMLAbout {
      *  features.
      */   
     public static String about() {
+        String version = VersionAttribute.CURRENT_VERSION.getExpression();
+
         return "<html><head><title>About Ptolemy II</title></head>"
             + "<body><h1>About Ptolemy II</h1>\n"
             + "The HTML Viewer in Ptolemy II handles the <code>about:</code>\n"
@@ -82,20 +88,53 @@ public class HTMLAbout {
             + "Expand the configuration (good way to test for "
             + "missing classes).\n"
             + "<li><a href=\"about:copyright\"><code>about:copyright</code></a> "
-            + "Display information about the copyrights.\n"
-            + "<li><a href=\"about:demos\"><code>about:demos</code></a>"
-            + "Open up all the demonstrations (May fail in Ptiny, DSP or "
-            + "Hyvisual configurations).\n"
-            + "<li><a href=\"about:demos#ptolemy/configs/doc/demosPtiny.htm\">"
-            + "<code>about:demos#ptolemy/configs/doc/demosPtiny.htm</code></a>"
-            + "\nOpen up the .xml files in\n"
-            + "<code>ptolemy/configs/doc/demosPtiny.htm</code>.\n"
+            + " Display information about the copyrights.\n"
+            + "<li>Full\n"
+            + " <ul>\n"
+            + "  <li><a href=\"about:demos\"><code>about:demos</code></a>"
+            + "   Open up all the .xml in"
+            + "   <code>ptolemy/configs/doc/completeDemos.htm</code>.\n"
+            + "   (May fail in Ptiny, DSP or Hyvisual configurations).\n"
+            + "  <li><a href=\"about:demos#ptolemy/configs/doc/demos.htm\">"
+            + "   <code>about:demos#ptolemy/configs/doc/demos.htm</code></a>\n"
+            + "   Open up the .xml files in\n"
+            + "   <code>ptolemy/configs/doc/demos.htm</code>.\n"
+            + "  <li><a href=\"about:demos#ptolemy/configs/doc/whatsNew"
+            + version + ".htm\">"
+            + "   <code>about:demos#ptolemy/configs/doc/whatsNew"
+            + version + ".htm</code></a>\n"
+            + "   Open up the .xml files in\n"
+            + "   <code>ptolemy/configs/doc/whatsNew"
+            + version + ".htm</code>.\n"
+            + " </ul>\n"
+            // Don't include DSP here, it uses the Ptiny demos anyway.
+            + "<li>Hyvisual\n"
+            + " <ul>\n"
+            + "  <li><a href=\"about:demos#ptolemy/configs/hyvisual/intro.htm\">"
+            + "   <code>about:demos#ptolemy/configs/hyvisual/intro.htm</code></a>"
+            + "   \nOpen up the .xml files in\n"
+            + "   <code>ptolemy/configs/hyvisual/intro.htm</code>.\n"
+            + " </ul>\n"
+
+            + "<li>Ptiny\n"
+            + " <ul>\n"
+            + "  <li><a href=\"about:demos#ptolemy/configs/doc/completeDemosPtiny.htm\">"
+            + "   <code>about:demos#ptolemy/configs/doc/completeDemosPtiny.htm</code></a>"
+            + "   \nOpen up the .xml files in\n"
+            + "   <code>ptolemy/configs/doc/completeDemosPtiny.htm</code>.\n"
+
+            + "  <li><a href=\"about:demos#ptolemy/configs/doc/demosPtiny.htm\">"
+            + "   <code>about:demos#ptolemy/configs/doc/demosPtiny.htm</code></a>"
+            + "   \nOpen up the .xml files in\n"
+            + "   <code>ptolemy/configs/doc/demosPtiny.htm</code>.\n"
+            + " </ul>\n"
+
 //             + "<li><a href=\"about:runAllDemos\"><code>about:runAllDemos</code></a>"
 //             + "Run all the demonstrations.\n"
 //             + "<li><a href=\"about:runAllDemos#ptolemy/configs/doc/demosPtiny.htm\">"
 //             + "<code>about:runAllDemosdemos#ptolemy/configs/doc/demosPtiny.htm</code></a>"
 //             + "\nRun all the .xml files in\n"
-//             + "<code>ptolemy/configs/doc/demosPtiny.htm</code>.\n"
+//             + "<code>ptolemy/configs/doc/completeDemosPtiny.htm</code>.\n"
             + "</ul>\n</body>\n</html>\n";
     }
 
@@ -103,7 +142,7 @@ public class HTMLAbout {
      *  are linked to from an HTML file.
      *  @param demosFileName The name of the HTML file that contains links
      *  to the .xml files.  If this argument is the empty string, then
-     *  "ptolemy/configs/doc/demos.htm" is used.
+     *  "ptolemy/configs/doc/completeDemos.htm" is used.
      *  @param configuration  The configuration to open the files in.
      *  @return the URL of the HTML file that was searched. 
      */   
@@ -164,7 +203,7 @@ public class HTMLAbout {
             // Expand all the local .xml files in the fragment
             // and return a URL pointing to the fragment.
             // If there is no fragment, then use
-            // "ptolemy/configs/doc/demos.htm"
+            // "ptolemy/configs/doc/completeDemos.htm"
             URI aboutURI = new URI(event.getDescription());
             newURL = demos(aboutURI.getFragment(), configuration);
         } else if (event.getDescription()
@@ -182,7 +221,7 @@ public class HTMLAbout {
     /** Run all the local .xml files that are linked to from an HTML file.
      *  @param demosFileName The name of the HTML file that contains links
      *  to the .xml files.  If this argument is the empty string, then
-     *  "ptolemy/configs/doc/demos.htm" is used.
+     *  "ptolemy/configs/doc/completeDemos.htm" is used.
      *  @param configuration  The configuration to run the files in.
      *  @return the URL of the HTML file that was searched. 
      */   
@@ -219,10 +258,10 @@ public class HTMLAbout {
 
     // Return the URL of the file that contains links to .xml files
     private static URL _getDemoURL(String demosFileName) throws IOException {
-        // Open the demos.htm file and read the contents into
+        // Open the completeDemos.htm file and read the contents into
         // a String
         if (demosFileName == null || demosFileName.length() == 0) {
-            demosFileName = "ptolemy/configs/doc/demos.htm";
+            demosFileName = "ptolemy/configs/doc/completeDemos.htm";
         }
         return MoMLApplication.specToURL(demosFileName);
     }
