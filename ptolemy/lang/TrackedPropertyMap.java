@@ -34,12 +34,13 @@ package ptolemy.lang;
 
 import java.util.Iterator;
 import java.util.HashSet;
+import java.util.Collections;
 
 //////////////////////////////////////////////////////////////////////////
 //// TrackedPropertyMap
 /** A base class for objects that may be visited. Visitors may mark
 such objects with their corresponding Class objects.
-@author Jeff Tsay
+@author Jeff Tsay, Steve Neuendorffer
 @version $Id$
  */
 public class TrackedPropertyMap extends PropertyMap {
@@ -59,12 +60,18 @@ public class TrackedPropertyMap extends PropertyMap {
      *  @return true if the set did not already contain the specified element.
      */
     public boolean addVisitor(Class c) {
+        if(_visitedBySet == null) {
+            _visitedBySet = new HashSet(1);
+        }
         return _visitedBySet.add(c);
     }
 
     /** Clear all traces of visitation from any visitor. */
     public void clearVisitors() {
-        _visitedBySet.clear();
+        if(_visitedBySet == null) 
+            return;
+        else
+            _visitedBySet.clear();
     }
 
     /** Remove the visitor with the argument class object from the set of
@@ -72,7 +79,10 @@ public class TrackedPropertyMap extends PropertyMap {
      *  @param The class to be added.
      */
     public boolean removeVisitor(Class c) {
-        return _visitedBySet.remove(c);
+        if(_visitedBySet == null)
+            return false;
+        else
+            return _visitedBySet.remove(c);
     }
 
     /** Return an iterator over the class objects of the visitors that have
@@ -80,7 +90,10 @@ public class TrackedPropertyMap extends PropertyMap {
      *  @return The Iterator of visitor class objects that have visited.
      */
     public Iterator visitorIterator() {
-        return _visitedBySet.iterator();
+        if(_visitedBySet == null)
+            return Collections.EMPTY_LIST.iterator();
+        else 
+            return _visitedBySet.iterator();
     }
 
     /** Return true iff this object was visited by a visitor with the
@@ -88,7 +101,10 @@ public class TrackedPropertyMap extends PropertyMap {
      *  @return true if the class argument has visited.
      */
     public boolean wasVisitedBy(Class c) {
-        return _visitedBySet.contains(c);
+        if(_visitedBySet == null)
+            return false;
+        else 
+            return _visitedBySet.contains(c);
     }
 
 
@@ -98,6 +114,8 @@ public class TrackedPropertyMap extends PropertyMap {
     /** A set of class objects of the visitors that have visited this
      *  object. The initial capacity is set to 1 to conserve memory.
      */
-    protected HashSet _visitedBySet = new HashSet(1);
+    // Notice that this is not initialized.  The code attempts to be
+    // optimistict that most subclasses will never actually use this field
+    private HashSet _visitedBySet = null;
 }
 

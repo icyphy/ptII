@@ -37,6 +37,7 @@ import java.lang.reflect.Method;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Set;
 import java.util.HashMap;
 
@@ -46,7 +47,7 @@ import java.util.HashMap;
 A class on which to base objects that have properties.
 A property is an arbitrary object that is associated with the object
 by a key.
-@author Jeff Tsay and Shuvra S. Bhattacharyya 
+@author Jeff Tsay, Shuvra S. Bhattacharyya and Steve Neuendorffer
 @version $Id$
  */
 public class PropertyMap implements Cloneable {
@@ -67,7 +68,8 @@ public class PropertyMap implements Cloneable {
         }
 
         // make a shallow copy of keys and values
-        propertyMap._propertyMap = (HashMap) _propertyMap.clone();
+        if(_propertyMap != null)
+            propertyMap._propertyMap = (HashMap) _propertyMap.clone();
         return propertyMap;
     }
 
@@ -82,7 +84,12 @@ public class PropertyMap implements Cloneable {
      *  Throw a RuntimeException if the property in not defined.
      */
     public Object getDefinedProperty(Integer property) {
-        Object returnValue = _propertyMap.get(property);
+        Object returnValue;
+        if(_propertyMap == null) 
+            returnValue = null;
+        else 
+            returnValue = _propertyMap.get(property);
+
         if (returnValue == null) {
             throw new RuntimeException("Property " + property +
                     " not defined");
@@ -92,7 +99,10 @@ public class PropertyMap implements Cloneable {
 
     /** Get a property. If the property is not defined, returned null. */
     public Object getProperty(Integer property) {
-        return _propertyMap.get(property);
+        if(_propertyMap == null) 
+            return null;
+        else 
+            return _propertyMap.get(property);
     }
 
     /** Set a property.
@@ -103,6 +113,9 @@ public class PropertyMap implements Cloneable {
             object = NullValue.instance;
         }
 
+        if(_propertyMap == null) 
+            _propertyMap = new HashMap(2);
+        
         Object returnValue = _propertyMap.put(property, object);
 
         if (returnValue == null) {
@@ -114,7 +127,10 @@ public class PropertyMap implements Cloneable {
 
     /** Return the a Set of the defined properties. */
     public Set keySet() {
-        return _propertyMap.keySet();
+       if(_propertyMap == null) 
+           return Collections.EMPTY_SET;
+       else
+           return _propertyMap.keySet();
     }
 
     /** Set a property.
@@ -124,6 +140,9 @@ public class PropertyMap implements Cloneable {
         if (object == null) {
             object = NullValue.instance;
         }
+        if(_propertyMap == null) 
+            _propertyMap = new HashMap(2);
+        
         return _propertyMap.put(property, object);
     }
 
@@ -132,17 +151,26 @@ public class PropertyMap implements Cloneable {
      *  defined. If the property is not defined, return null.
      */
     public Object removeProperty(Integer property) {
-        return _propertyMap.remove(property);
+        if(_propertyMap == null) 
+            return null;
+        else
+            return _propertyMap.remove(property);
     }
 
     /** Return true iff this instance has the specified property. */
     public boolean hasProperty(Integer property) {
-        return _propertyMap.containsKey(property);
+        if(_propertyMap == null) 
+            return false;
+        else
+            return _propertyMap.containsKey(property);
     }
 
     /** Return a Collection containing all of the property values. */
     public Collection values() {
-        return _propertyMap.values();
+        if(_propertyMap == null) 
+            return Collections.EMPTY_SET;
+        else
+            return _propertyMap.values();
     }
 
 
@@ -174,8 +202,9 @@ public class PropertyMap implements Cloneable {
     ////                      protected variables                  ////
 
     /** A map from properties (instances of Integer) to values
-     *  (instances of Objects). The initial capacity is set to 2 to
-     *  conserve memory.
+     *  (instances of Objects).
      */
-    protected HashMap _propertyMap = new HashMap(2);
+    // Note that this is not allocated in the beginning, under the assumption
+    // that most PropertyMaps won't contain any values.
+    protected HashMap _propertyMap = null;
 }
