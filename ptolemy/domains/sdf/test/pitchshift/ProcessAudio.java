@@ -118,8 +118,8 @@ public class ProcessAudio implements Runnable {
         int sampleSizeInBits = 16;
         int channels = 1; 
 
-	int inBufferSize = 4096;  // Internal buffer size for capture.
-	int outBufferSize = 4096; // Internal buffer size for playback.
+	int inBufferSize = 6000;  // Internal buffer size for capture.
+	int outBufferSize = 6000; // Internal buffer size for playback.
 
 	// Amount of data to read or write from/to the internal buffer
 	// at a time. This should be set smaller than the internal buffer
