@@ -75,6 +75,7 @@ public class Queue extends DETransformer {
         output.setTypeAtLeast(input);
         trigger = new TypedIOPort(this, "trigger", true, false);
         trigger.setTypeEquals(BaseType.GENERAL);
+        _queue = new FIFOQueue();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -99,6 +100,7 @@ public class Queue extends DETransformer {
     public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
         Queue newObject = (Queue)super.clone(workspace);
+        newObject._queue = new FIFOQueue();
         newObject.output.setTypeAtLeast(newObject.input);
         return newObject;
     }
@@ -150,5 +152,5 @@ public class Queue extends DETransformer {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private FIFOQueue _queue = new FIFOQueue();
+    private FIFOQueue _queue;
 }

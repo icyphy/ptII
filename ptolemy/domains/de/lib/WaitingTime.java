@@ -78,6 +78,7 @@ public class WaitingTime extends DEActor {
         output.setTypeEquals(BaseType.DOUBLE);
         waiter = new TypedIOPort(this, "waiter", true, false);
         waitee = new TypedIOPort(this, "waitee", true, false);
+        _waiting = new Vector();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -101,6 +102,20 @@ public class WaitingTime extends DEActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Clone the actor into the specified workspace. This calls the
+     *  base class and then sets the ports.
+     *  @param workspace The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class has
+     *   has an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace)
+            throws CloneNotSupportedException {
+        WaitingTime newObject = (WaitingTime)super.clone(workspace);
+        newObject._waiting = new Vector();
+        return newObject;
+    }
 
     /** If this firing is triggered by an event at <i>waitee</i>, then output
      *  the waiting time for each prior event arrival at <i>waiter</i>
@@ -144,5 +159,5 @@ public class WaitingTime extends DEActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private Vector _waiting = new Vector();
+    private Vector _waiting;
 }
