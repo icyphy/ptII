@@ -75,7 +75,6 @@ public class Print extends TypedAtomicActor implements Placeable {
         try {
             Print newobj = (Print)super.clone(ws);
             newobj.input = (TypedIOPort)newobj.getPort("input");
-            newobj.input.setMultiport(true);
             // newobj.input.setDeclaredType(StringToken.class);
             return newobj;
         } catch (CloneNotSupportedException ex) {

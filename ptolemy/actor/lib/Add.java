@@ -92,7 +92,6 @@ public class Add extends TypedAtomicActor {
         try {
             Add newobj = (Add)super.clone(ws);
             newobj.input = (TypedIOPort)newobj.getPort("input");
-            newobj.input.setMultiport(true);
             newobj.output = (TypedIOPort)newobj.getPort("output");
             return newobj;
         } catch (CloneNotSupportedException ex) {
