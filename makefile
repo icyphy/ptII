@@ -143,6 +143,10 @@ KRUFT = \
 DISTCLEAN_STUFF = \
 	mk/ptII.mk config.log config.status config.cache
 
+# The first rule is make fast so that if a user types 'make' they will 
+# get make fast
+default: fast 
+
 # Make copyright.txt readonly so that when we open up the text editor
 # we open up a readonly texteditor
 all: mk/ptII.mk suball
