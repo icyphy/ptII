@@ -1623,7 +1623,7 @@ public class Plot extends PlotBox {
                 if (x - old.originalx <= _xPersistence) break;
                 numToDelete++;
             }
-            for (int i=0; i < numToDelete; i++) {
+            for (int i = 0; i < numToDelete; i++) {
                 erasePoint(dataset, 0);
             }
         }
