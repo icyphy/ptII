@@ -98,7 +98,8 @@ test KeyToken-4.1 {equals} {
 # 
 test KeyToken-4.1.1 {isEqualTo} {
     # uses 1.1 above
-    set  boolean [$secretKeyToken isEqualTo [java::null]
+    set  boolean [$secretKeyToken isEqualTo \
+		      [java::new ptolemy.actor.lib.security.KeyToken [java::null]]]
     $boolean toString
 } {false}
 
