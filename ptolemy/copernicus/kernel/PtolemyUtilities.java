@@ -1178,6 +1178,8 @@ public class PtolemyUtilities {
     // ptolemy.kernel.Entity.getPort
     public static SootMethod getPortMethod;
 
+    public static SootMethod handleModelErrorMethod;
+
     // SootMethod representing ptolemy.actor.IOPort.hasToken(int).
     public static SootMethod hasTokenMethod;
 
@@ -1410,12 +1412,14 @@ public class PtolemyUtilities {
             namedObjClass.getMethod("java.lang.String getName()");
         toplevelMethod =
             namedObjClass.getMethod("ptolemy.kernel.util.NamedObj toplevel()");
+        handleModelErrorMethod = 
+            namedObjClass.getMethod("boolean handleModelError(ptolemy.kernel.util.NamedObj,ptolemy.kernel.util.IllegalActionException)");
+
         getContainerMethod =
             Scene.v().getMethod("<ptolemy.kernel.util.Nameable: ptolemy.kernel.util.Nameable getContainer()>");
         getModelURIMethod =
             Scene.v().loadClassAndSupport("ptolemy.kernel.attributes.URIAttribute")
-            .getMethod("java.net.URI getModelURI(ptolemy.kernel.util.NamedObj)");
-     
+            .getMethod("java.net.URI getModelURI(ptolemy.kernel.util.NamedObj)");        
 
         attributeClass =
             Scene.v().loadClassAndSupport("ptolemy.kernel.util.Attribute");
