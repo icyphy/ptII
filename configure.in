@@ -591,6 +591,9 @@ PTJACL_JAR=$PTII/lib/ptjacl.jar
 # JTCLSH uses JAVAFLAGS for use with the 
 # vergil/test/VergilConfiguration.tcl test
 JTCLSH='["$(JAVA)" $(JAVAFLAGS) tcl.lang.Shell]'
+# PTJACL_DIR is set to ptjacl and used in $PTII/ptolemy/actor/gui/makefile
+# if the ptjacl.jar file was found
+PTJACL_DIR= 
 
 if test ! -d "$PTII/util/testsuite"; then
     AC_MSG_RESULT([$PTII/util/testsuite is not present,
@@ -607,6 +610,7 @@ else
 	# This command starts up Jacl
 	if echo "set java::jdkVersion; exit" | CLASSPATH=$PTJACL_JAR "$JAVA" tcl.lang.Shell; then
 		AC_MSG_RESULT(ok)
+		PTJACL_DIR=ptjacl
 	else
 		AC_MSG_RESULT([CLASSPATH=$PTJACL_JAR "$JAVA" tcl.lang.Shell failed])
 		AC_MSG_CHECKING([for how to run jacl with "$JAVA" "$PTJACL_FLAG]")
@@ -1270,6 +1274,10 @@ AC_SUBST(PTDLLTOOL)
 # Location of the the PTII directory
 # $PTII/ptolemy/plot/ptplot.jnlp.in reads this
 AC_SUBST(PTII)
+
+# Set to ptjacl and used in
+# $PTII/ptolemy/actor/gui/makefile if ptjacl.jar was found
+AC_SUBST(PTJACL_DIR)
 
 # ptjacl.jar file, used to run the test suites
 AC_SUBST(PTJACL_JAR)

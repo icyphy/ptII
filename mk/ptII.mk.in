@@ -210,6 +210,10 @@ JAVACC_DIR =	@JAVACC_DIR@
 JJTREE =	@JJTREE@
 JAVACC =	@JAVACC@
 
+# Set to ptjacl and used in
+# $PTII/ptolemy/actor/gui/makefile if ptjacl.jar was found 
+PTJACL_DIR =	@PTJACL_DIR@
+
 # Jar file that contains Jacl
 PTJACL_JAR =	@PTJACL_JAR@
 
