@@ -137,6 +137,12 @@ a on memory-limited platforms.
  <p>Currently, in Ptolemy II, it is not possible to generate custom code 
 for an individual actor using a codeblock.
 
+
+<li> If you run deep code generation of a model that uses a plot,
+then a plot will be displayed while the deep code generator is run.
+This is because the code generator calls initialize() and the plot
+actors render the plotter during initialize().
+
 <li> Deep code generation does not work under Mac OSX because
 the deep code generator cannot find the Java <CODE>rt.jar</CODE>
 
