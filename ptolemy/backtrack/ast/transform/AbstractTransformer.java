@@ -155,63 +155,17 @@ public abstract class AbstractTransformer {
      */
     public static String getClassName(String name, TypeAnalyzerState state, 
             CompilationUnit root) {
-        LocalClassLoader loader = state.getClassLoader();
-        int lastDot = name.lastIndexOf('.');
-        String packageName = lastDot == -1 ? "" : name.substring(0, lastDot);
-        String className = name.substring(lastDot + 1);
-        String simpleName;
-        int lastSeparator = lastIndexOf(name, new char[]{'.', '$'});
-        if (lastSeparator == -1)
-            return name;
-        else
-            simpleName = name.substring(lastSeparator + 1);
-        
-        if (name.equals(state.getCurrentClass().getName()))
-            return simpleName;
-        // FIXME
-        
-        Iterator importedClasses = loader.getImportedClasses().iterator();
-        while (importedClasses.hasNext()) {
-            ClassImport importedClass = (ClassImport)importedClasses.next();
-            if (importedClass.getPackageName().equals(packageName) &&
-                    importedClass.getClassName().equals(className))
-                // Already imported.
-                return simpleName;
-            else {
-                String importedName = importedClass.getClassName();
-                int lastDollar = importedName.lastIndexOf('$');
-                if (lastDollar == -1 && importedName.equals(simpleName))
-                    return name;
-                else if (lastDollar >= 0 &&
-                        importedName.substring(lastDollar + 1)
-                            .equals(simpleName))
-                    return name;
-            }
+        int dimensions = Type.dimensions(name);
+        if (dimensions > 0)
+            name = Type.getElementType(name);
+        name = _getNonarrayClassName(name, state, root);
+        if (dimensions > 0) {
+            Type type = Type.createType(name);
+            for (int i = 0; i < dimensions; i++)
+                type = type.addOneDimension();
+            name = type.getName();
         }
-        
-        Iterator importedPackages = loader.getImportedPackages().iterator();
-        while (importedPackages.hasNext()) {
-            String importedPackage = (String)importedPackages.next();
-            if (importedPackage.equals(packageName))    // Already imported.
-                return simpleName;
-            else {
-                try {
-                    // Test if a class with the same name exists in the
-                    // package.
-                    loader.loadClass(importedPackage + "." + simpleName);
-                    // If exists, conflict.
-                    return name;
-                } catch (ClassNotFoundException e) {
-                }
-            }
-        }
-        
-        AST ast = root.getAST();
-        ImportDeclaration declaration = ast.newImportDeclaration();
-        declaration.setName(createName(ast, name));
-        root.imports().add(declaration);
-        loader.importClass(name);
-        return simpleName;
+        return name;
     }
     
     /** Find the first appearance of any of the given characters in a string.
@@ -352,4 +306,77 @@ public abstract class AbstractTransformer {
     /** The name of the method to set a checkpoint.
      */
     public static String SET_CHECKPOINT_NAME = "$SET$CHECKPOINT";
+    
+    /** Get the shortest possible name of the a class. If there is no conflict,
+     *  the class is first imported, and only the simple class is returned;
+     *  otherwise, the its full name is returned.
+     * 
+     *  @param name The full class name. It must not be the name of an array
+     *   type.
+     *  @param loader The class loader used to test importation conflicts.
+     *  @param root The root of the AST. If there is no conflict and the class
+     *   has not been imported yet, a new {@link ImportDeclaration} is added to
+     *   it.
+     *  @return The shortest possible class name.
+     */
+    private static String _getNonarrayClassName(String name, 
+            TypeAnalyzerState state, CompilationUnit root) {
+        LocalClassLoader loader = state.getClassLoader();
+        int lastDot = name.lastIndexOf('.');
+        String packageName = lastDot == -1 ? "" : name.substring(0, lastDot);
+        String className = name.substring(lastDot + 1);
+        String simpleName;
+        int lastSeparator = lastIndexOf(name, new char[]{'.', '$'});
+        if (lastSeparator == -1)
+            return name;
+        else
+            simpleName = name.substring(lastSeparator + 1);
+        
+        if (name.equals(state.getCurrentClass().getName()))
+            return simpleName;
+        // FIXME
+        
+        Iterator importedClasses = loader.getImportedClasses().iterator();
+        while (importedClasses.hasNext()) {
+            ClassImport importedClass = (ClassImport)importedClasses.next();
+            if (importedClass.getPackageName().equals(packageName) &&
+                    importedClass.getClassName().equals(className))
+                // Already imported.
+                return simpleName;
+            else {
+                String importedName = importedClass.getClassName();
+                int lastDollar = importedName.lastIndexOf('$');
+                if (lastDollar == -1 && importedName.equals(simpleName))
+                    return name;
+                else if (lastDollar >= 0 &&
+                        importedName.substring(lastDollar + 1)
+                            .equals(simpleName))
+                    return name;
+            }
+        }
+        
+        Iterator importedPackages = loader.getImportedPackages().iterator();
+        while (importedPackages.hasNext()) {
+            String importedPackage = (String)importedPackages.next();
+            if (importedPackage.equals(packageName))    // Already imported.
+                return simpleName;
+            else {
+                try {
+                    // Test if a class with the same name exists in the
+                    // package.
+                    loader.loadClass(importedPackage + "." + simpleName);
+                    // If exists, conflict.
+                    return name;
+                } catch (ClassNotFoundException e) {
+                }
+            }
+        }
+        
+        AST ast = root.getAST();
+        ImportDeclaration declaration = ast.newImportDeclaration();
+        declaration.setName(createName(ast, name));
+        root.imports().add(declaration);
+        loader.importClass(name);
+        return simpleName;
+    }
 }

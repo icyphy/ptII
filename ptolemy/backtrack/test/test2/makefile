@@ -31,12 +31,12 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		ptolemy/backtrack/test
+ME =		ptolemy/backtrack/test/test2
 
-DIRS =		test1 test2
+DIRS =		
 
 # Root of the Java directory
-ROOT =		../../..
+ROOT =		../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -45,12 +45,11 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	test
+PTPACKAGE = 	test2
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
-JSRCS = Test1Main.java \
-        Test2Main.java
+JSRCS = Test2.java
 
 OTHER_FILES_TO_BE_JARED = 
 
@@ -64,43 +63,15 @@ MISC_FILES =	#test
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES =
+OPTIONAL_FILES = \
+	demo \
+	doc
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-all:
-	# First, compile all the sources in the test subdirectories.
-	for subdir in $(DIRS); do \
-	  $(MAKE) -C $$subdir; \
-	done
-	
-	# Transform the source and add prefix "ptolemy.backtrack.test" to the package name.
-	# The output root dir is $(ROOT).
-	# The transformed code is in package ptolemy.backtrack.test.ptolemy.backtrack.test.test1.
-	for subdir in $(DIRS); do \
-	  java \
-	    -classpath "$(CLASSPATH)$(CLASSPATHSEPARATOR)$(PTBACKTRACK_JARS)" \
-	    ptolemy.backtrack.ast.Transformer \
-	    -prefix ptolemy.backtrack.test \
-	    -output $(ROOT) \
-	    $$subdir/*.java; \
-	done
+all: jclass
 
-	# Compile all the tests in the current directory.
-	$(MAKE) jclass
-
-	# Finally, run the test program.
-	for test in $(JSRCS); do \
-	  java \
-	    -classpath "$(CLASSPATH)" \
-	    ptolemy.backtrack.test.`basename $$test .java`; \
-	done
+install: all jars $(PTPACKAGE).jar $(PTPACKAGE_NATIVE_JAR)
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
-
-# Is this the right way to remove subdirectory ptolemy?
-# It is generated during the testing, and should not be preserved.
-CRUD := $(CRUD) -r ptolemy
-
-install: all jars $(PTPACKAGE).jar $(PTPACKAGE_NATIVE_JAR)
