@@ -238,13 +238,13 @@ public class BasePNDirector extends CompositeProcessDirector {
         while( _readBlockCount != _getActiveActorsCount() ) {
         	// && !_areActorsStopped() ) {
 	    //In this case, wait until a real deadlock occurs.
-            System.out.println("DIRECTOR: JUST INSIDE OF OUTER FIRE LOOP");
+            //System.out.println("DIRECTOR: JUST INSIDE OF OUTER FIRE LOOP");
 	    synchronized (this) {
 		while (!_areActorsDeadlocked()) {
                 // while (!_areActorsDeadlocked() && !_areActorsStopped() ) {
 		    //Wait until a deadlock is detected.
 		    workspace.wait(this);
-                    System.out.println("PN Director Awakened"
+                    //System.out.println("PN Director Awakened"
                     +"; Active Actors = " + _getActiveActorsCount() 
                     +"; ReadBlocked Actors = " + _readBlockCount
                     +"; WriteBlocked Actors = " + _writeBlockCount );
@@ -252,12 +252,12 @@ public class BasePNDirector extends CompositeProcessDirector {
                     Iterator threads = _actorThreadList.iterator();
 		}
 		//Set this flag as a derived class might use this variable.
-        	System.out.println("RESOLVE DEADLOCK CALLED");
+        	//System.out.println("RESOLVE DEADLOCK CALLED");
 		_notDone = _resolveDeadlock();
-        	System.out.println("RESOLVE DEADLOCK ENDED");
+        	//System.out.println("RESOLVE DEADLOCK ENDED");
 	    }
         }
-        System.out.println("DIRECTOR: END OF FIRE");
+        //System.out.println("DIRECTOR: END OF FIRE");
         return;
     }
      */
@@ -321,10 +321,10 @@ public class BasePNDirector extends CompositeProcessDirector {
             System.out.println("DIRECTOR.POSTFIRE() returning true");
 	    return true;
             */
-            System.out.println("DIRECTOR.POSTFIRE() returning " + _notDone);
+            //System.out.println("DIRECTOR.POSTFIRE() returning " + _notDone);
 	    return _notDone;
 	} else {
-            System.out.println("DIRECTOR.POSTFIRE() returning " + _notDone + " again.");
+            //System.out.println("DIRECTOR.POSTFIRE() returning " + _notDone + " again.");
 	    return _notDone;
 	}
     }
@@ -586,7 +586,7 @@ public class BasePNDirector extends CompositeProcessDirector {
             //This is an artificial deadlock. Hence find the input port with
 	    //lowest capacity queue that is blocked on a write and increment
 	    //its capacity;
-            System.out.println("_resolveDeadlock() calling increment capacity");
+            //System.out.println("_resolveDeadlock() calling increment capacity");
             _incrementLowestWriteCapacityPort();
 	    return true;
         }
