@@ -72,7 +72,7 @@ JSRCS = \
 	TokenToExpression.java
 
 OTHER_FILES_TO_BE_JARED = \
-	conversions.xml
+	conversions.xml \
 	'ExpressionToToken$$1.class' \
 	'ExpressionToToken$$ExpressionScope.class'
 
