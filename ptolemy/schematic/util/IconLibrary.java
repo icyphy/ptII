@@ -32,6 +32,8 @@ package ptolemy.schematic.util;
 
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
+import ptolemy.actor.*;
+import ptolemy.moml.*;
 import java.util.Enumeration;
 import java.util.StringTokenizer;
 import collections.*;

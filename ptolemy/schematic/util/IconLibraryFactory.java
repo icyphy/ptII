@@ -34,6 +34,7 @@ import ptolemy.kernel.*;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.*;
 import ptolemy.actor.*;
+import ptolemy.moml.*;
 import java.util.*;
 import collections.*;
 import java.io.*;
@@ -73,7 +74,7 @@ public class IconLibraryFactory {
             if(etype.equals("icon")) {
                 // if it's an Icon, then create it, 
                 // and add it to the list of icons.
-                ptmlobject.addIcon(_createIcon(child));
+                _createIcon(ptmlobject, child);
             } else if(etype.equals("sublibrary")) {
                 // if it's a sublibrary, then add it to the 
                 // list of sublibraries.
@@ -170,12 +171,12 @@ public class IconLibraryFactory {
         return ptmlobject;
     }
 
-    private static Icon _createIcon(XMLElement e)
+    private static Icon _createIcon(Entity object, XMLElement e)
         throws NameDuplicationException, IllegalActionException {
 
         _verifyElement(e, "icon");
 
-        XMLIcon ptmlobject = new XMLIcon();
+        XMLIcon ptmlobject = new XMLIcon(object);
         Enumeration children = e.childElements();
         while(children.hasMoreElements()) {
             XMLElement child = (XMLElement)children.nextElement();

@@ -32,8 +32,12 @@ package ptolemy.schematic.util;
 
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
+import ptolemy.actor.Configurable;
+import ptolemy.moml.*;
 import java.util.Enumeration;
 import java.util.NoSuchElementException;
+import java.net.URL;
+import java.io.*;
 import collections.*;
 import ptolemy.schematic.xml.XMLElement;
 import diva.canvas.Figure;
@@ -47,32 +51,22 @@ An icon is the graphical representation of a schematic entity.
 Icons are stored hierarchically in icon libraries.   Every icon has a 
 name, along with a graphical representation.
 
-This icon is for those based on XML.
+This icon is for those based on XML.  If the icon is never configured, then
+it will have a default figure.
 
 @author Steve Neuendorffer, John Reekie
 @version $Id$
 */
-public class XMLIcon extends Icon {
+public class XMLIcon extends Icon implements Configurable {
 
     /**
-     * Create a new icon with the name "Icon" in the default workspace.
-     * By default, the icon contains no graphic
-     * representations.
-     */
-    public XMLIcon () 
-        throws NameDuplicationException, IllegalActionException {
-        super();
-        _graphics = (CircularList) new CircularList();
-    }
-
-     /**
      * Create a new icon with the name "Icon" in the given container.
      * By default, the icon contains no graphic
      * representations.
      */
     public XMLIcon (Entity container) 
         throws NameDuplicationException, IllegalActionException {
-        super(container);
+        super(container, "_icon");
         _graphics = (CircularList) new CircularList();
     }
 
@@ -82,6 +76,20 @@ public class XMLIcon extends Icon {
     public void addGraphicElement (GraphicElement g) 
             throws IllegalActionException {
         _graphics.insertLast(g);
+    }
+
+    /** Configure the object with data from the specified input stream.
+     *  This method is defined to throw a very general exception to allow
+     *  classes that implement the interface to use whatever exceptions
+     *  are appropriate.
+     *  @param base The base relative to which references within the input
+     *   stream are found, or null if this is not known.
+     *  @param in InputStream
+     *  @exception Exception If the stream cannot be read or its syntax
+     *   is incorrect.
+     */
+    public void configure(URL base, InputStream in) throws Exception {
+        // Do nothing for right now.
     }
 
     /**
