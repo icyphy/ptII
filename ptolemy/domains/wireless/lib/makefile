@@ -63,6 +63,7 @@ JSRCS = \
 	Locator.java \
 	NodeRandomizer.java \
 	PowerLossChannel.java \
+	SetProperties.java \
 	TerrainProperty.java \
 	TransmitPropertyTransformer.java \
 	Triangulator.java \
