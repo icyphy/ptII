@@ -30,14 +30,8 @@
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="Sine1" class="ptolemy.actor.lib.Sine">
-        <property name="amplitude" class="ptolemy.data.expr.Parameter" value="1.0">
-        </property>
-        <property name="omega" class="ptolemy.data.expr.Parameter" value="1.0">
-        </property>
-        <property name="phase" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
-        <property name="_location" class="ptolemy.moml.Location" value="299.0, 129.0">
+    <entity name="TrigFunction1" class="ptolemy.actor.lib.TrigFunction">
+        <property name="function" value="sin">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -66,13 +60,8 @@
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="Sine3" class="ptolemy.actor.lib.Sine">
-        <property name="amplitude" class="ptolemy.data.expr.Parameter" value="1.0">
-        </property>
-        <property name="omega" class="ptolemy.data.expr.Parameter" value="1.0">
-        </property>
-        <property name="phase" class="ptolemy.data.expr.Parameter" value="pi/2">
-        </property>
+    <entity name="TrigFunction3" class="ptolemy.actor.lib.TrigFunction">
+        <property name="function" value="sin">
         <property name="editorFactory0" class="ptolemy.actor.gui.EditorPaneFactory">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="300.0, 315.0">
@@ -111,11 +100,11 @@
     <relation name="relation12" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="Ramp0.output" relation="relation6"/>
-    <link port="Sine1.input" relation="relation6"/>
-    <link port="Sine1.output" relation="relation10"/>
+    <link port="TrigFunction1.input" relation="relation6"/>
+    <link port="TrigFunction1.output" relation="relation10"/>
     <link port="Ramp2.output" relation="relation8"/>
-    <link port="Sine3.input" relation="relation8"/>
-    <link port="Sine3.output" relation="relation12"/>
+    <link port="TrigFunction3.input" relation="relation8"/>
+    <link port="TrigFunction3.output" relation="relation12"/>
     <link port="XYScope4.inputX" relation="relation10"/>
     <link port="XYScope4.inputY" relation="relation12"/>
 </entity>
