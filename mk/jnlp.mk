@@ -48,6 +48,8 @@ CORE_JNLP_JARS = \
 	ptolemy/domains/sdf/demo/demo.jar \
 	ptolemy/ptsupport.jar \
 	ptolemy/vergil/vergil.jar \
+	ptolemy/actor/lib/javasound/javasound.jar \
+	ptolemy/media/javasound/javasound.jar \
 	$(DOC_CODEDOC_JAR)
 
 #######
@@ -69,12 +71,11 @@ DSP_JNLP_JARS =	\
 #
 # Jar files that will appear in a smaller (Ptiny) JNLP Ptolemy II Runtime.
 PTINY_ONLY_JNLP_JARS = \
-	ptolemy/actor/lib/javasound/javasound.jar \
-	ptolemy/media/javasound/javasound.jar \
 	ptolemy/actor/lib/javasound/demo/demo.jar \
 	ptolemy/data/type/demo/demo.jar \
 	ptolemy/domains/ct/demo/demo.jar \
 	ptolemy/domains/de/demo/demo.jar \
+	ptolemy/domains/fsm/demo/demo.jar \
 	ptolemy/moml/demo/demo.jar
 
 PTINY_MAIN_JAR = \
@@ -89,17 +90,22 @@ PTINY_JNLP_JARS = \
 #######
 # Full
 #
+COPERNICUS_JARS = \
+	lib/jasminclasses.jar \
+	lib/sootclasses.jar \
+	ptolemy/copernicus/copernicus.jar
+
 # Jar files that will appear in a full JNLP Ptolemy II Runtime
 FULL_ONLY_JNLP_JARS = \
+	$(COPERNICUS_JARS) \
 	ptolemy/domains/experimentalDomains.jar \
 	ptolemy/codegen/codegen.jar \
-	ptolemy/copernicus/copernicus.jar \
 	ptolemy/domains/dt/demo/demo.jar \
 	ptolemy/domains/giotto/demo/demo.jar \
 	ptolemy/domains/gr/demo/demo.jar \
-	ptolemy/domains/fsm/demo/demo.jar \
 	ptolemy/domains/pn/demo/demo.jar \
-	ptolemy/domains/rtos/demo/demo.jar
+	ptolemy/domains/rtos/demo/demo.jar \
+	ptolemy/domains/sr/demo/demo.jar
 
 FULL_MAIN_JAR = \
 	ptolemy/actor/gui/jnlp/FullApplication.jar
