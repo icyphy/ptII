@@ -914,7 +914,9 @@ public class Variable extends Attribute implements Typeable {
     public List typeConstraintList() {
 	// If this variable has a structured type, and the TypeTerm of this
 	// variable is unsettable, make the component of the structured type
-	// to be unsettable.
+	// to be unsettable. The TypeTerm of this variable can be unsettable
+	// if the token or expression of this variable is not null, even
+	// though the type contains NaT currently.
 	if (_varType instanceof StructuredType) {
 	    if ( !getTypeTerm().isSettable()) {
 	    	((StructuredType)_varType).fixType();
