@@ -44,8 +44,7 @@ include $(CONFIG)
 PTPACKAGE = 	SoundGenerator
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
-JSRCS = \
-	SoundGenerator.java
+JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	SoundGenerator.xml \
