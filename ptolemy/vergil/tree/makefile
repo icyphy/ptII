@@ -50,7 +50,6 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = \
 	EntityTreeModel.java \
 	FullTreeModel.java \
-	LibraryTreeModel.java \
 	PTree.java \
 	PtolemyTreeCellRenderer.java \
 	TreeEditor.java \
