@@ -33,14 +33,16 @@ package ptolemy.actor;
 import ptolemy.graph.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
-import ptolemy.kernel.event.*;
-import ptolemy.data.*;
+import ptolemy.kernel.event.ChangeRequest;
+import ptolemy.kernel.event.ChangeListener;
+import ptolemy.kernel.event.ChangeFailedException;
+import ptolemy.data.TypeLattice;
 
-import collections.LinkedList;
-import collections.HashedSet;
 import java.util.Enumeration;
+import java.util.Collections;
+import java.util.List;
+import java.util.LinkedList;
 import java.util.Iterator;
-import java.lang.reflect.*;
 
 import java.util.Date;			// For timing measurements
 
@@ -121,6 +123,10 @@ public final class Manager extends NamedObj implements Runnable {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
+    /** Indicator that the execution is in the begin phase.
+     */
+    public final State BEGIN = new State("Begin");
+
     /** Indicator that the model may be corrupted.
      */
     public final State CORRUPTED = new State(
@@ -167,11 +173,11 @@ public final class Manager extends NamedObj implements Runnable {
         if (_changeListeners == null) {
             _changeListeners = new LinkedList();
         } else {
-            if (_changeListeners.includes(listener)) {
+            if (_changeListeners.contains(listener)) {
                 return;
             }
         }
-        _changeListeners.insertLast(listener);
+        _changeListeners.add(listener);
     }
 
     /** Add a listener to be notified when the model execution changes state.
@@ -180,9 +186,9 @@ public final class Manager extends NamedObj implements Runnable {
     public void addExecutionListener(ExecutionListener listener) {
         if(listener == null) return;
         if(_executionListeners == null) {
-            _executionListeners = new HashedSet();
+            _executionListeners = new LinkedList();
         }
-        _executionListeners.include(listener);
+        _executionListeners.add(listener);
     }
 
     /** Execute the model.  Begin with the initialization phase, followed
@@ -214,7 +220,7 @@ public final class Manager extends NamedObj implements Runnable {
             initialize();
             // Call iterate() until finish() is called or postfire()
             // returns false.
-            _debug(getName() + ": begin to iterate.");
+            _debug("Begin to iterate.");
             while (!_finishRequested) {
                 if (!iterate()) break;
                 if (_pauseRequested) {
@@ -300,30 +306,46 @@ public final class Manager extends NamedObj implements Runnable {
         return _state;
     }
 
-    /** Initialize the model.
+    /** Initialize the model.  This calls the initialize() method of
+     *  the container, followed by the begin() method.
+     *  This method is read synchronized on the workspace.
      *  @exception KernelException If the model throws it.
      *  @exception IllegalActionException If the model is already running, or
      *   if there is no container.
      */
     public synchronized void initialize()
             throws KernelException, IllegalActionException {
-        if (_state != IDLE) {
-            throw new IllegalActionException(this,
-                    "The model is already running.");
-        }
-        if (_container == null) {
-            throw new IllegalActionException(this,
-                    "No model to run!");
-        }
-        _setState(INITIALIZING);
+        try {
+            workspace().getReadAccess();
+            if (_state != IDLE) {
+                throw new IllegalActionException(this,
+                "The model is already running.");
+            }
+            if (_container == null) {
+                throw new IllegalActionException(this,
+                "No model to run!");
+            }
+            _setState(INITIALIZING);
+            
+            _pauseRequested = false;
+            _finishRequested = false;
+            _typesResolved = false;
+            _iterationCount = 0;
+            
+            // Initialize the topology
+            _container.initialize();
+            
+            resolveTypes();
+            _typesResolved = true;
+            _setState(BEGIN);
+            _container.begin();
 
-        _pauseRequested = false;
-        _finishRequested = false;
-        _typesResolved = false;
-        _iterationCount = 0;
-
-        // Initialize the topology
-        _container.initialize();
+            // Since we have just initialized all actors, clear the
+            // list of actors pending initialization.
+            _actorsToInitialize.clear();
+        } finally {
+            workspace().doneReading();
+        }
     }
 
     /** Indicate that resolved types in the system may no longer be valid.
@@ -359,14 +381,20 @@ public final class Manager extends NamedObj implements Runnable {
         boolean result = true;
         try {
             workspace().getReadAccess();
-            _debug(getName() + " process change requests.");
+            _debug("Process change requests.");
             _processChangeRequests();
 
+            // Initialize actors that have been added.
+            if (_actorsToInitialize.size() > 0) {
+                Iterator actors = _actorsToInitialize.iterator();
+                while (actors.hasNext()) {
+                    Actor actor = (Actor)actors.next();
+                    actor.initialize();
+                }
+            }
             if (!_typesResolved) {
-                _debug(getName() + ": need resolve type.");
                 resolveTypes();
                 _typesResolved = true;
-                _debug(getName() + ": typed resolved.");
             }
 
             _iterationCount++;
@@ -377,16 +405,25 @@ public final class Manager extends NamedObj implements Runnable {
             if (!_needWriteAccess()) {
                 workspace().setReadOnly(true);
             }
-            _debug(getName() + ": prefire the system.");
+            _debug("Prefire container.");
             if (_container.prefire()) {
-                _debug(getName() + ": fire the system.");
+                // Invoke begin on actors that have been added.
+                if (_actorsToInitialize.size() > 0) {
+                    Iterator actors = _actorsToInitialize.iterator();
+                    while (actors.hasNext()) {
+                        Actor actor = (Actor)actors.next();
+                        actor.begin();
+                    }
+                    _actorsToInitialize.clear();
+                }
+                _debug("Fire container.");
                 _container.fire();
-		_debug(getName() + ": postfire the system.");
+		_debug("Postfire container.");
                 result = _container.postfire();
             }
-            _debug(getName() + ": finish one iteration, returning " + result);
-        } 
-	finally {
+            if (result) _debug("Finish one iteration, returning true.");
+            else _debug("Finish one iteration, returning false.");
+        } finally {
             workspace().setReadOnly(false);
             workspace().doneReading();
         }
@@ -408,10 +445,10 @@ public final class Manager extends NamedObj implements Runnable {
             System.err.println(errorMessage);
             ex.printStackTrace();
         } else {
-            Enumeration listeners = _executionListeners.elements();
-            while(listeners.hasMoreElements()) {
+            Iterator listeners = _executionListeners.iterator();
+            while(listeners.hasNext()) {
                 ExecutionListener listener =
-                    (ExecutionListener) listeners.nextElement();
+                    (ExecutionListener) listeners.next();
                 listener.executionError(this, ex);
             }
         }
@@ -440,7 +477,7 @@ public final class Manager extends NamedObj implements Runnable {
      */
     public void removeExecutionListener(ExecutionListener listener) {
         if(listener == null || _executionListeners == null) return;
-        _executionListeners.exclude(listener);
+        _executionListeners.remove(listener);
     }
 
     /** Remove a change listener. If the specified listener is not
@@ -451,7 +488,7 @@ public final class Manager extends NamedObj implements Runnable {
         if (_changeListeners == null) {
             return;
         }
-        _changeListeners.exclude(change);
+        _changeListeners.remove(change);
     }
 
     /** Queue a change request.
@@ -468,9 +505,19 @@ public final class Manager extends NamedObj implements Runnable {
         if (_changeRequests == null) {
             _changeRequests = new LinkedList();
         }
-        _changeRequests.insertLast(change);
+        _changeRequests.add(change);
         CompositeActor container = (CompositeActor) getContainer();
         container.stopFire();
+    }
+
+    /** Queue an initialization request.
+     *  The specified actor will be initialized at an appropriate time,
+     *  in the iterate() method, by calling its initialize()
+     *  and begin() methods.
+     *  @param actor The actor to initialize.
+     */
+    public void requestInitialization(Actor actor) {
+        _actorsToInitialize.add(actor);
     }
 
     /** Check types on all the connections and resolve undeclared types.
@@ -486,10 +533,14 @@ public final class Manager extends NamedObj implements Runnable {
 	try {
 	    workspace().getWriteAccess();
             _setState(RESOLVING_TYPES);
+            _debug("Resolving types.");
 
-	    LinkedList conflicts = new LinkedList();
-	    conflicts.appendElements(
-                    ((TypedCompositeActor)_container).checkTypes());
+	    List conflicts = new LinkedList();
+            Enumeration typeConflicts = 
+                    ((TypedCompositeActor)_container).checkTypes();
+            while (typeConflicts.hasMoreElements()) {
+                conflicts.add(typeConflicts.nextElement());
+            }
 
             Enumeration constraints =
                 ((TypedCompositeActor)_container).typeConstraints();
@@ -506,37 +557,36 @@ public final class Manager extends NamedObj implements Runnable {
                 if ( !resolved) {
 		    Iterator unsatisfied = solver.unsatisfiedInequalities();
 		    while (unsatisfied.hasNext()) {
-		        Inequality ineq =
-                            (Inequality)unsatisfied.next();
+		        Inequality ineq = (Inequality)unsatisfied.next();
 		        InequalityTerm term =
                             (InequalityTerm)ineq.getLesserTerm();
 		        Object typeObj = term.getAssociatedObject();
 		        if (typeObj != null) {
 			    // typeObj is a Typeable
-			    conflicts.insertLast(typeObj);
+			    conflicts.add(typeObj);
 		        }
 		        term = (InequalityTerm)ineq.getGreaterTerm();
 		        typeObj = term.getAssociatedObject();
 		        if (typeObj != null) {
 			    // typeObj is a Typeable
-			    conflicts.insertLast(typeObj);
+			    conflicts.add(typeObj);
 		        }
 		    }
                 }
-
 	        // check whether resolved types are acceptable.
                 // They might be, for example, NaT.
 	        Iterator var = solver.variables();
 	        while (var.hasNext()) {
 		    InequalityTerm term = (InequalityTerm)var.next();
 		    if ( !term.isValueAcceptable()) {
-		        conflicts.insertLast(term.getAssociatedObject());
+		        conflicts.add(term.getAssociatedObject());
 		    }
 	        }
 	    }
 
 	    if (conflicts.size() > 0) {
-		throw new TypeConflictException(conflicts.elements(),
+		throw new TypeConflictException(
+                        Collections.enumeration(conflicts),
                         "Type conflicts occurred in " + _container.getFullName()
 			+ " on the following Typeables:");
 	    }
@@ -697,10 +747,10 @@ public final class Manager extends NamedObj implements Runnable {
     private void _notifyListenersOfCompletion() {
         _debug("Completed execution with " + _iterationCount + " iterations");
         if (_executionListeners != null) {
-            Enumeration listeners = _executionListeners.elements();
-            while(listeners.hasMoreElements()) {
+            Iterator listeners = _executionListeners.iterator();
+            while(listeners.hasNext()) {
                 ExecutionListener listener =
-                    (ExecutionListener) listeners.nextElement();
+                    (ExecutionListener) listeners.next();
                 listener.executionFinished(this);
             }
         }
@@ -718,10 +768,10 @@ public final class Manager extends NamedObj implements Runnable {
         }
         _debug(msg);
         if (_executionListeners != null) {
-            Enumeration listeners = _executionListeners.elements();
-            while(listeners.hasMoreElements()) {
+            Iterator listeners = _executionListeners.iterator();
+            while(listeners.hasNext()) {
                 ExecutionListener listener =
-                    (ExecutionListener) listeners.nextElement();
+                    (ExecutionListener) listeners.next();
                 listener.managerStateChanged(this);
             }
         }
@@ -765,13 +815,7 @@ public final class Manager extends NamedObj implements Runnable {
 
             // Clone the change request list before iterating through it
             // in case any of the changes themselves post change requests.
-            // Regrettably, LinkedList makes its clone() method protected,
-            // so we have to copy by hand...
-            LinkedList clonedList = new LinkedList();
-            Enumeration enum = _changeRequests.elements();
-            while (enum.hasMoreElements()) {
-                clonedList.insertLast(enum.nextElement());
-            }
+            LinkedList clonedList = new LinkedList(_changeRequests);
 
             // Clear the request queue.  We want to discard the queue even
             // if the changes fail.
@@ -779,18 +823,18 @@ public final class Manager extends NamedObj implements Runnable {
             // further with the model.
             _changeRequests = null;
 
-            enum = clonedList.elements();
-            while (enum.hasMoreElements()) {
-                ChangeRequest request = (ChangeRequest)enum.nextElement();
+            Iterator enum = clonedList.iterator();
+            while (enum.hasNext()) {
+                ChangeRequest request = (ChangeRequest)enum.next();
                 request.execute();
 
                 // Inform all listeners. Of course, this won't happen
                 // if the change request failed
                 if (_changeListeners != null) {
-                    Enumeration listeners = _changeListeners.elements();
-                    while(listeners.hasMoreElements()) {
+                    Iterator listeners = _changeListeners.iterator();
+                    while(listeners.hasNext()) {
                         ChangeListener listener
-                            = (ChangeListener)listeners.nextElement();
+                            = (ChangeListener)listeners.next();
                         request.notify(listener);
                     }
                 }
@@ -801,17 +845,20 @@ public final class Manager extends NamedObj implements Runnable {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    // A list of actors with pending initialization.
+    private List _actorsToInitialize = new LinkedList();
+
     // A list of change listeners.
-    private LinkedList _changeListeners;
+    private List _changeListeners;
 
     // A list of pending changes.
-    private LinkedList _changeRequests;
+    private List _changeRequests;
 
     // The top-level CompositeActor that contains this Manager
     private CompositeActor _container = null;
 
     // Listeners for execution events.
-    private HashedSet _executionListeners;
+    private List _executionListeners;
 
     // Flag indicating that finish() has been called.
     private boolean _finishRequested = false;
