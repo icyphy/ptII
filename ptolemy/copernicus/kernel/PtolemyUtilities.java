@@ -141,7 +141,8 @@ public class PtolemyUtilities {
                                                arrayTokenConstructor, tokenArrayLocal)),
                     insertPoint);
             return tokenLocal;
-            //     } else if (token instanceof ptolemy.data.RecordToken) {
+        } else if (token instanceof ptolemy.data.RecordToken) {
+            throw new RuntimeException("Code Generation for RecordTokens is not supported.");
             //             RecordToken recordToken = (RecordToken)token;
             //             int size = recordToken.labelSet().size();
             //             Type stringArrayType =
@@ -286,8 +287,12 @@ public class PtolemyUtilities {
                     localName, fixTokenClass, fixTokenThreeArgConstructor,
                     args);
             return tokenLocal;
-        } else if (token instanceof MatrixToken ||
-                token instanceof FunctionToken) {
+        } else if (token instanceof FunctionToken) {
+            // Function tokens are partially supported, but cannot be
+            // type specialized.  This can be folded into the case
+            // below, if you are interested in trying it.
+            throw new RuntimeException("Unboxing is not supported for FunctionTokens.");
+        } else if (token instanceof MatrixToken) {
             // Can't do this for all tokens, because it causes an
             // infinite loop!
             String expression = token.toString();
