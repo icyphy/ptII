@@ -705,8 +705,6 @@ Press 'r' or 'f' to rotate over wrist</text>
                 </property>
                 <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
-                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
-                </property>
                 <property name="polyline" class="ptolemy.data.expr.Parameter" value="[0.5, 0.125, 0.5, 0.0,0.0,0.0,0.0,0.125,0.5,0.125]">
                 </property>
                 <property name="angleSpan" class="ptolemy.data.expr.Parameter" value="PI">
@@ -726,8 +724,6 @@ Press 'r' or 'f' to rotate over wrist</text>
                 <property name="RGB color" class="ptolemy.data.expr.Parameter" value="[1.0,1.0,0.0]">
                 </property>
                 <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
-                </property>
-                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
                 </property>
                 <property name="polyline" class="ptolemy.data.expr.Parameter" value="[0.5, 0.125, 0.5, 0.0,0.0,0.0,0.0,0.125,0.5,0.125]">
                 </property>
@@ -777,8 +773,6 @@ Press 'r' or 'f' to rotate over wrist</text>
                 <property name="RGB color" class="ptolemy.data.expr.Parameter" value="[1.0,1.0,0.0]">
                 </property>
                 <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
-                </property>
-                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
                 </property>
                 <property name="xLength" class="ptolemy.data.expr.Parameter" value="1.0">
                 </property>
@@ -862,8 +856,6 @@ Press 'r' or 'f' to rotate over wrist</text>
                 </property>
                 <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
-                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
-                </property>
                 <property name="polyline" class="ptolemy.data.expr.Parameter" value="[0.5, 0.125, 0.5, 0.0,0.0,0.0,0.0,0.125,0.5,0.125]">
                 </property>
                 <property name="angleSpan" class="ptolemy.data.expr.Parameter" value="PI">
@@ -881,8 +873,6 @@ Press 'r' or 'f' to rotate over wrist</text>
                 </property>
                 <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
-                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
-                </property>
                 <property name="polyline" class="ptolemy.data.expr.Parameter" value="[0.5, 0.125, 0.5, 0.0,0.0,0.0,0.0,0.125,0.5,0.125]">
                 </property>
                 <property name="angleSpan" class="ptolemy.data.expr.Parameter" value="PI">
@@ -899,8 +889,6 @@ Press 'r' or 'f' to rotate over wrist</text>
                 <property name="RGB color" class="ptolemy.data.expr.Parameter" value="[1.0,1.0,0.0]">
                 </property>
                 <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
-                </property>
-                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
                 </property>
                 <property name="xLength" class="ptolemy.data.expr.Parameter" value="1.0">
                 </property>
@@ -1025,8 +1013,6 @@ Press 'r' or 'f' to rotate over wrist</text>
                 </property>
                 <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
-                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
-                </property>
                 <property name="xLength" class="ptolemy.data.expr.Parameter" value="0.1">
                 </property>
                 <property name="yHeight" class="ptolemy.data.expr.Parameter" value="2.0">
@@ -1043,8 +1029,6 @@ Press 'r' or 'f' to rotate over wrist</text>
                 <property name="RGB color" class="ptolemy.data.expr.Parameter" value="[0.84,0.95,0.55]">
                 </property>
                 <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
-                </property>
-                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
                 </property>
                 <property name="xLength" class="ptolemy.data.expr.Parameter" value="0.1">
                 </property>
@@ -1063,8 +1047,6 @@ Press 'r' or 'f' to rotate over wrist</text>
                 </property>
                 <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
-                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
-                </property>
                 <property name="xLength" class="ptolemy.data.expr.Parameter" value="0.1">
                 </property>
                 <property name="yHeight" class="ptolemy.data.expr.Parameter" value="2.0">
@@ -1081,8 +1063,6 @@ Press 'r' or 'f' to rotate over wrist</text>
                 <property name="RGB color" class="ptolemy.data.expr.Parameter" value="[0.84,0.95,0.55]">
                 </property>
                 <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
-                </property>
-                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
                 </property>
                 <property name="xLength" class="ptolemy.data.expr.Parameter" value="0.1">
                 </property>
@@ -1422,8 +1402,6 @@ Press 'r' or 'f' to rotate over wrist</text>
                 </property>
                 <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
-                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
-                </property>
                 <property name="xLength" class="ptolemy.data.expr.Parameter" value="6.0">
                 </property>
                 <property name="yHeight" class="ptolemy.data.expr.Parameter" value="0.125">
@@ -1464,8 +1442,6 @@ Press 'r' or 'f' to rotate over wrist</text>
                 <property name="RGB color" class="ptolemy.data.expr.Parameter" value="[1.0,1.0,0.0]">
                 </property>
                 <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
-                </property>
-                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
                 </property>
                 <property name="xLength" class="ptolemy.data.expr.Parameter" value="6.0">
                 </property>
@@ -1512,8 +1488,6 @@ Press 'r' or 'f' to rotate over wrist</text>
                 </property>
                 <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
-                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
-                </property>
                 <property name="xLength" class="ptolemy.data.expr.Parameter" value="0.125">
                 </property>
                 <property name="yHeight" class="ptolemy.data.expr.Parameter" value="0.85">
@@ -1530,8 +1504,6 @@ Press 'r' or 'f' to rotate over wrist</text>
                 <property name="RGB color" class="ptolemy.data.expr.Parameter" value="[0.7,0.7,0.7]">
                 </property>
                 <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
-                </property>
-                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
                 </property>
                 <property name="xLength" class="ptolemy.data.expr.Parameter" value="0.125">
                 </property>
@@ -1634,8 +1606,6 @@ Press 'r' or 'f' to rotate over wrist</text>
                 </property>
                 <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
-                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
-                </property>
                 <property name="xLength" class="ptolemy.data.expr.Parameter" value="0.125">
                 </property>
                 <property name="yHeight" class="ptolemy.data.expr.Parameter" value="0.85">
@@ -1653,8 +1623,6 @@ Press 'r' or 'f' to rotate over wrist</text>
                 </property>
                 <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
-                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
-                </property>
                 <property name="xLength" class="ptolemy.data.expr.Parameter" value="0.125">
                 </property>
                 <property name="yHeight" class="ptolemy.data.expr.Parameter" value="0.85">
@@ -1671,8 +1639,6 @@ Press 'r' or 'f' to rotate over wrist</text>
                 <property name="RGB color" class="ptolemy.data.expr.Parameter" value="[0.7,0.7,0.7]">
                 </property>
                 <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
-                </property>
-                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
                 </property>
                 <property name="xLength" class="ptolemy.data.expr.Parameter" value="0.125">
                 </property>
@@ -1775,8 +1741,6 @@ Press 'r' or 'f' to rotate over wrist</text>
                 </property>
                 <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
-                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
-                </property>
                 <property name="xLength" class="ptolemy.data.expr.Parameter" value="0.125">
                 </property>
                 <property name="yHeight" class="ptolemy.data.expr.Parameter" value="0.85">
@@ -1793,8 +1757,6 @@ Press 'r' or 'f' to rotate over wrist</text>
                 <property name="RGB color" class="ptolemy.data.expr.Parameter" value="[0.7,0.7,0.7]">
                 </property>
                 <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
-                </property>
-                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
                 </property>
                 <property name="xLength" class="ptolemy.data.expr.Parameter" value="0.125">
                 </property>
@@ -1869,8 +1831,6 @@ Press 'r' or 'f' to rotate over wrist</text>
                 </property>
                 <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
-                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
-                </property>
                 <property name="xLength" class="ptolemy.data.expr.Parameter" value="0.125">
                 </property>
                 <property name="yHeight" class="ptolemy.data.expr.Parameter" value="0.85">
@@ -1888,8 +1848,6 @@ Press 'r' or 'f' to rotate over wrist</text>
                 </property>
                 <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
-                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
-                </property>
                 <property name="xLength" class="ptolemy.data.expr.Parameter" value="1.7">
                 </property>
                 <property name="yHeight" class="ptolemy.data.expr.Parameter" value="0.75">
@@ -1906,8 +1864,6 @@ Press 'r' or 'f' to rotate over wrist</text>
                 <property name="RGB color" class="ptolemy.data.expr.Parameter" value="[0.1,0.1,0.1]">
                 </property>
                 <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
-                </property>
-                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
                 </property>
                 <property name="xLength" class="ptolemy.data.expr.Parameter" value="1.7">
                 </property>
@@ -1981,8 +1937,6 @@ Press 'r' or 'f' to rotate over wrist</text>
                 <property name="RGB color" class="ptolemy.data.expr.Parameter" value="[0.2,0.2,0.2]">
                 </property>
                 <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
-                </property>
-                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
                 </property>
                 <property name="radius" class="ptolemy.data.expr.Parameter" value="0.2">
                 </property>
@@ -2298,8 +2252,6 @@ Press 'r' or 'f' to rotate over wrist</text>
                 </property>
                 <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
-                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
-                </property>
                 <property name="polyline" class="ptolemy.data.expr.Parameter" value="[0.5, 0.125, 0.5, 0.0,0.0,0.0,0.0,0.125,0.5,0.125]">
                 </property>
                 <property name="angleSpan" class="ptolemy.data.expr.Parameter" value="2*PI*0.6">
@@ -2316,8 +2268,6 @@ Press 'r' or 'f' to rotate over wrist</text>
                 <property name="RGB color" class="ptolemy.data.expr.Parameter" value="[0.9,0.9,0.0]">
                 </property>
                 <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
-                </property>
-                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
                 </property>
                 <property name="polygon" class="ptolemy.data.expr.Parameter" value="[-0.25, 0.46, -1.8,0.125, -1.8,-0.125, -0.25,-0.46,-0.1,0.0]">
                 </property>
@@ -2428,8 +2378,6 @@ Press 'r' or 'f' to rotate over wrist</text>
                 </property>
                 <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
-                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
-                </property>
                 <property name="polyline" class="ptolemy.data.expr.Parameter" value="[0.5, 0.125, 0.5, 0.0,0.0,0.0,0.0,0.125,0.5,0.125]">
                 </property>
                 <property name="angleSpan" class="ptolemy.data.expr.Parameter" value="6.2831853">
@@ -2492,8 +2440,6 @@ Press 'r' or 'f' to rotate over wrist</text>
                 <property name="RGB color" class="ptolemy.data.expr.Parameter" value="[0.9,0.9,0.0]">
                 </property>
                 <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
-                </property>
-                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
                 </property>
                 <property name="polygon" class="ptolemy.data.expr.Parameter" value="[-0.25, 0.46, -1.8,0.125, -1.8,-0.125, -0.25,-0.46,-0.1,0.0]">
                 </property>
@@ -2610,8 +2556,6 @@ Press 'r' or 'f' to rotate over wrist</text>
                 </property>
                 <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
-                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
-                </property>
                 <property name="xLength" class="ptolemy.data.expr.Parameter" value="0.125">
                 </property>
                 <property name="yHeight" class="ptolemy.data.expr.Parameter" value="1.95">
@@ -2628,8 +2572,6 @@ Press 'r' or 'f' to rotate over wrist</text>
                 <property name="RGB color" class="ptolemy.data.expr.Parameter" value="[0.8,0.8,0.8]">
                 </property>
                 <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
-                </property>
-                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
                 </property>
                 <property name="xLength" class="ptolemy.data.expr.Parameter" value="0.125">
                 </property>
@@ -2799,8 +2741,6 @@ Press 'r' or 'f' to rotate over wrist</text>
                 <property name="RGB color" class="ptolemy.data.expr.Parameter" value="[0.9,0.9,0.0]">
                 </property>
                 <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
-                </property>
-                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
                 </property>
                 <property name="polygon" class="ptolemy.data.expr.Parameter" value="[0.75,0.0, 0.75,0.5, 0.625,0.5, 0.375,0.75, 0.375,1.0, 0.625, 1.25, 0.375, 2.25, -0.375,2.25, -0.625,1.25, -0.375,1.0, -0.375,0.75, -0.625,0.5, -0.75,0.5, -0.75,0]">
                 </property>
@@ -3014,8 +2954,6 @@ Press 'r' or 'f' to rotate over wrist</text>
                 </property>
                 <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
-                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
-                </property>
                 <property name="polygon" class="ptolemy.data.expr.Parameter" value="[0.75,0.0, 0.8,0.2, 0.0,0.3, -0.8,0.2, -0.75,0.0]">
                 </property>
                 <property name="thickness" class="ptolemy.data.expr.Parameter" value="0.125">
@@ -3030,8 +2968,6 @@ Press 'r' or 'f' to rotate over wrist</text>
                 <property name="RGB color" class="ptolemy.data.expr.Parameter" value="[0.9,0.9,0.0]">
                 </property>
                 <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
-                </property>
-                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
                 </property>
                 <property name="polygon" class="ptolemy.data.expr.Parameter" value="[0.75,0.0, 0.8,0.2, 0.0,0.3, -0.8,0.2, -0.75,0.0]">
                 </property>
@@ -3142,8 +3078,6 @@ Press 'r' or 'f' to rotate over wrist</text>
                 </property>
                 <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
-                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
-                </property>
                 <property name="xLength" class="ptolemy.data.expr.Parameter" value="0.25">
                 </property>
                 <property name="yHeight" class="ptolemy.data.expr.Parameter" value="1.0">
@@ -3211,8 +3145,6 @@ Press 'r' or 'f' to rotate over wrist</text>
                 </property>
                 <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
-                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
-                </property>
                 <property name="xLength" class="ptolemy.data.expr.Parameter" value="0.25">
                 </property>
                 <property name="yHeight" class="ptolemy.data.expr.Parameter" value="1.0">
@@ -3258,8 +3190,6 @@ Press 'r' or 'f' to rotate over wrist</text>
                 </property>
                 <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
-                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
-                </property>
                 <property name="xLength" class="ptolemy.data.expr.Parameter" value="0.25">
                 </property>
                 <property name="yHeight" class="ptolemy.data.expr.Parameter" value="1.0">
@@ -3276,8 +3206,6 @@ Press 'r' or 'f' to rotate over wrist</text>
                 <property name="RGB color" class="ptolemy.data.expr.Parameter" value="[0.9,0.9,0.0]">
                 </property>
                 <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
-                </property>
-                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
                 </property>
                 <property name="xLength" class="ptolemy.data.expr.Parameter" value="0.25">
                 </property>
@@ -3374,8 +3302,6 @@ Press 'r' or 'f' to rotate over wrist</text>
                 </property>
                 <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
-                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
-                </property>
                 <property name="polygon" class="ptolemy.data.expr.Parameter" value="[0.0417,0.0, 0.125,0.0833, 0.125,1.0, 0.375,1.25, 0.2286,1.3536, -0.125,1.0, -0.125,0.0833, -0.0417,0.0]">
                 </property>
                 <property name="thickness" class="ptolemy.data.expr.Parameter" value="0.125">
@@ -3441,8 +3367,6 @@ Press 'r' or 'f' to rotate over wrist</text>
                 </property>
                 <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
-                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
-                </property>
                 <property name="polygon" class="ptolemy.data.expr.Parameter" value="[0.0417,0.0, 0.125,0.0833, 0.125,1.0, 0.375,1.25, 0.2286,1.3536, -0.125,1.0, -0.125,0.0833, -0.0417,0.0]">
                 </property>
                 <property name="thickness" class="ptolemy.data.expr.Parameter" value="0.125">
@@ -3485,8 +3409,6 @@ Press 'r' or 'f' to rotate over wrist</text>
                 <property name="RGB color" class="ptolemy.data.expr.Parameter" value="[0.9,0.9,0.0]">
                 </property>
                 <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
-                </property>
-                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
                 </property>
                 <property name="polygon" class="ptolemy.data.expr.Parameter" value="[0.0417,0.0, 0.125,0.0833, 0.125,1.0, 0.375,1.25, 0.2286,1.3536, -0.125,1.0, -0.125,0.0833, -0.0417,0.0]">
                 </property>
@@ -3552,8 +3474,6 @@ Press 'r' or 'f' to rotate over wrist</text>
                 <property name="RGB color" class="ptolemy.data.expr.Parameter" value="[0.9,0.9,0.0]">
                 </property>
                 <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
-                </property>
-                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
                 </property>
                 <property name="polygon" class="ptolemy.data.expr.Parameter" value="[0.0417,0.0, 0.125,0.0833, 0.125,1.0, 0.375,1.25, 0.2286,1.3536, -0.125,1.0, -0.125,0.0833, -0.0417,0.0]">
                 </property>
@@ -3833,8 +3753,6 @@ Press 'r' or 'f' to rotate over wrist</text>
                 </property>
                 <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
-                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
-                </property>
                 <property name="polygon" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, -3.5, 0.0, -4.375,-2.5,0.875,-2.5 ]">
                 </property>
                 <property name="thickness" class="ptolemy.data.expr.Parameter" value="0.75">
@@ -3849,8 +3767,6 @@ Press 'r' or 'f' to rotate over wrist</text>
                 <property name="RGB color" class="ptolemy.data.expr.Parameter" value="[0.9,0.9,0.6]">
                 </property>
                 <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
-                </property>
-                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
                 </property>
                 <property name="polygon" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, -3.5, 0.0, -4.375,-2.5,0.875,-2.5 ]">
                 </property>
@@ -3894,8 +3810,6 @@ Press 'r' or 'f' to rotate over wrist</text>
                 <property name="RGB color" class="ptolemy.data.expr.Parameter" value="[0.7,0.7,0.0]">
                 </property>
                 <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
-                </property>
-                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
                 </property>
                 <property name="xLength" class="ptolemy.data.expr.Parameter" value="3.5">
                 </property>
@@ -3969,8 +3883,6 @@ Press 'r' or 'f' to rotate over wrist</text>
                 <property name="RGB color" class="ptolemy.data.expr.Parameter" value="[0.1,0.1,0.1]">
                 </property>
                 <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
-                </property>
-                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
                 </property>
                 <property name="xLength" class="ptolemy.data.expr.Parameter" value="1.7">
                 </property>
@@ -4065,8 +3977,6 @@ Press 'r' or 'f' to rotate over wrist</text>
                 <property name="RGB color" class="ptolemy.data.expr.Parameter" value="[0.9,0.9,0.0]">
                 </property>
                 <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
-                </property>
-                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
                 </property>
                 <property name="polygon" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, -1.0,-1.0,-1.0,-2.5,0.0,-3.5,0.125,-3.5,0.125,-4.75,2.125,-4.75,2.125,-3.125,3.5,-3.125,3.5,-1.5,3.5,-1.5,2.5,-1.5,2.5,-1.0,1.5,0]">
                 </property>
@@ -4231,8 +4141,6 @@ Press 'r' or 'f' to rotate over wrist</text>
                 </property>
                 <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
-                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
-                </property>
                 <property name="xLength" class="ptolemy.data.expr.Parameter" value="1.7">
                 </property>
                 <property name="yHeight" class="ptolemy.data.expr.Parameter" value="0.75">
@@ -4250,8 +4158,6 @@ Press 'r' or 'f' to rotate over wrist</text>
                 </property>
                 <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
-                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
-                </property>
                 <property name="xLength" class="ptolemy.data.expr.Parameter" value="1.7">
                 </property>
                 <property name="yHeight" class="ptolemy.data.expr.Parameter" value="0.75">
@@ -4268,8 +4174,6 @@ Press 'r' or 'f' to rotate over wrist</text>
                 <property name="RGB color" class="ptolemy.data.expr.Parameter" value="[0.1,0.1,0.1]">
                 </property>
                 <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
-                </property>
-                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
                 </property>
                 <property name="xLength" class="ptolemy.data.expr.Parameter" value="1.7">
                 </property>
@@ -4371,8 +4275,6 @@ Press 'r' or 'f' to rotate over wrist</text>
                 <property name="RGB color" class="ptolemy.data.expr.Parameter" value="[0.0, 0.5, 0.0]">
                 </property>
                 <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
-                </property>
-                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
                 </property>
                 <property name="xLength" class="ptolemy.data.expr.Parameter" value="1.0">
                 </property>
