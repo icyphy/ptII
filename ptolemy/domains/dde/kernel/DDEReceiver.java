@@ -117,6 +117,12 @@ public class DDEReceiver extends TimedQueueReceiver
 	if( hasToken() ) {
 	    Token token = super.get(); 
 	    notifyAll(); 
+	    Thread thread = Thread.currentThread();
+	    if( thread instanceof DDEThread ) {
+		TimeKeeper timeKeeper = 
+                        ((DDEThread)thread).getTimeKeeper();
+		timeKeeper.sendOutNullTokens();
+	    }
 	    return token;
 	} else {
 	    throw new NoTokenException(getContainer(), "No tokens " 
@@ -208,10 +214,6 @@ public class DDEReceiver extends TimedQueueReceiver
             if( super.hasRoom() && !_terminate ) {
                 super.put(token, time);
                 notifyAll();
-		if( thread instanceof DDEThread ) {
-		    TimeKeeper timeKeeper = ((DDEThread)thread).getTimeKeeper();
-		    timeKeeper.sendOutNullTokens();
-		}
                 return;
             }
 
