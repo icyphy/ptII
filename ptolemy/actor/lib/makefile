@@ -37,7 +37,8 @@ ME =		ptolemy/actor/lib
 # in $PTII/mk/ptII.mk if it was found.  Otherwise, PTJAVASOUND is empty
 # $PTII/configure looks for Jini and sets PTJSPACES_DIR in
 # $PTII/mk/ptII.mk if was found.  Otherwise, PTJSPACES_DIR is empty
-DIRS = 		conversions gui logic test $(PTJAVASOUND_DIR) $(PTJSPACES_DIR)
+DIRS = 		conversions gui logic hoc \
+		test $(PTJAVASOUND_DIR) $(PTJSPACES_DIR)
 
 # Root of the Java directory
 ROOT =		../../..
@@ -63,7 +64,6 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
-	AbstractCase.java \
 	AddSubtract.java \
 	AbsoluteValue.java \
 	ArrayAppend.java \
@@ -73,7 +73,6 @@ JSRCS = \
 	Average.java \
 	Bernoulli.java \
 	BooleanExpression.java \
-	Case.java \
 	ClassWrapper.java \
 	Clock.java \
 	Commutator.java \
