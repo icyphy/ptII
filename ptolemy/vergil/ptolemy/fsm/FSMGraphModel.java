@@ -1,3 +1,32 @@
+/* A graph model for ptolemy fsm models.
+
+ Copyright (c) 1999-2000 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
+
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
+
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
+
+                                        PT_COPYRIGHT_VERSION_2
+                                        COPYRIGHTENDKEY
+
+@ProposedRating Red (eal@eecs.berkeley.edu)
+@AcceptedRating Red (johnr@eecs.berkeley.edu)
+*/
 
 package ptolemy.vergil.ptolemy.fsm;
 
@@ -5,28 +34,36 @@ import ptolemy.kernel.util.*;
 import ptolemy.vergil.toolbox.*;
 
 import ptolemy.kernel.*;
+import ptolemy.kernel.util.*;
+import ptolemy.kernel.event.*;
 import ptolemy.actor.*;
+import ptolemy.data.*;
+import ptolemy.data.expr.Variable;
 import ptolemy.moml.*;
-import diva.graph.*;
+import ptolemy.vergil.ExceptionHandler;
+import diva.graph.AbstractGraphModel;
+import diva.graph.GraphEvent;
+import diva.graph.GraphException;
+import diva.graph.MutableGraphModel;
 import diva.graph.toolbox.*;
+import diva.graph.modular.ModularGraphModel;
+import diva.graph.modular.CompositeModel;
+import diva.graph.modular.NodeModel;
+import diva.graph.modular.EdgeModel;
+import diva.graph.modular.CompositeNodeModel;
 import diva.util.*;
 import java.util.*;
+import javax.swing.SwingUtilities;
 
-public class FSMGraphModel extends AbstractGraphModel 
-    implements MutableGraphModel {
-    
-    /**
-     * Construct an empty graph model whose
-     * root is a new CompositeEntity.
-     */
-    public FSMGraphModel() {
-	_root = new CompositeEntity();
-	try {
-	    new PtolemyFSMNotation(_root, "notation");
-	} catch (Exception ex) {
-	    throw new InternalErrorException("Couldn't create FSM notation");
-	}
-    }
+//////////////////////////////////////////////////////////////////////////
+//// FSMGraphModel
+/**
+a graph model for graphically manipulating ptolemy FSM models.
+
+@author Steve Neuendorffer
+@version $Id$
+*/
+public class FSMGraphModel extends ModularGraphModel {
 
     /**
      * Construct a new graph model whose root is the given composite entity.
@@ -34,611 +71,446 @@ public class FSMGraphModel extends AbstractGraphModel
      * necessary.
      */
     public FSMGraphModel(CompositeEntity toplevel) {
-	_root = toplevel;
-
-	Iterator entities = toplevel.entityList().iterator();
-	while(entities.hasNext()) {
-	    Entity entity = (Entity)entities.next();
-	    Icon icon = (Icon)entity.getAttribute("_icon");
-	    if(icon == null) {
-		// FIXME this is pretty minimal
-		try {
-		    icon = new EditorIcon(entity, "_icon");
-		}
-		catch (Exception e) {
-		    throw new InternalErrorException("Failed to create " +
-			"icon, even though one does not exist:" +
-						     e.getMessage());
-		}
-	    }
-	}
-	
-	Iterator relations = toplevel.relationList().iterator();
-	while(relations.hasNext()) {
-	    ComponentRelation relation = (ComponentRelation)relations.next();
-	    Iterator vertexes =
-		relation.attributeList(Vertex.class).iterator();
-	    // get the Root vertex.
-	    Vertex rootVertex = null;
-	    while(vertexes.hasNext()) {
-		Vertex v = (Vertex)vertexes.next();
-		if(v.getLinkedVertex() == null) {
-		    rootVertex = v;
-		}
-	    }
-
-	    // Count the linked ports.
-	    int count = 0;
-	    Enumeration links = relation.linkedPorts();
-	    while(links.hasMoreElements()) {
-		links.nextElement();
-		count++;
-	    }
-	    
-	    // If there are no verticies, and the relation has
-	    // two connections, then create a direct link.
-	    if(rootVertex == null && count == 2) {
-		links = relation.linkedPorts();
-		Port port1 = (Port)links.nextElement();
-		Port port2 = (Port)links.nextElement();
-		Arc link;
-		try {
-		    link = new Arc(toplevel, toplevel.uniqueName("link"));
-		} 
-		catch (Exception e) {
-		    throw new InternalErrorException(
-				"Failed to create " +
-			        "new link, even though one does not " +
-			        "already exist:" + e.getMessage());
-		}
-		link.setRelation(relation);
-		link.setHead(port1);
-		link.setTail(port2);
-	    } else {
-		throw new RuntimeException("Found a relation without two" +
-					   " links! " + relation.exportMoML());
-	    }
-	}
-    }
-    	
-    /**
-     * Return true if the head of the given edge can be attached to the
-     * given node.
-     */
-    public boolean acceptHead(Object edge, Object node) {
-	if (edge instanceof Arc &&
-	    node instanceof Icon) {
-	    return true;
-	} else
-	    return false;
+	super(toplevel);
+	_toplevel = toplevel;
+	toplevel.addChangeListener(new GraphChangeListener());
     }
 
-    /**
-     * Return true if the tail of the given edge can be attached to the
-     * given node.
+    /** 
+     * Return the model for the given composite object.  If the object is not
+     * a composite, meaning that it does not contain other nodes, 
+     * then return null.
      */
-    public boolean acceptTail(Object edge, Object node) {
-	if (edge instanceof Arc &&
-	    node instanceof Icon) {
-	    return true;
-	} else
-	    return false;
-    }
-
-    /**
-     * Add a node to the given graph and notify listeners with a
-     * NODE_ADDED event. <p>
-     */
-    public void addNode(Object eventSource, Object node, Object parent) {
-	 if (node instanceof Icon &&
-		   parent instanceof CompositeEntity) {
-	    addNode(eventSource, (Icon)node, (CompositeEntity)parent);
-	} else if (node instanceof Port &&
-		   parent instanceof CompositeEntity) {
-	    addNode(eventSource, (ComponentPort)node, (CompositeEntity)parent);
+    public CompositeModel getCompositeModel(Object composite) {
+	if(composite.equals(getRoot())) {
+	    return _toplevelModel;
 	} else {
-	    throw new RuntimeException("FSMGraphModel only handles " +
-				       "named objects. node = " + node + 
-				       "parent = " + parent);
+	    return null;
 	}
     }
 
-    /**
-     * Add a node to the given graph and notify listeners with a
-     * NODE_ADDED event. <p>
+    /** 
+     * Return the model for the given edge object.  If the object is not
+     * an edge, then return null.
      */
-    public void addNode(Object eventSource, Icon icon, CompositeEntity parent) {
-	ComponentEntity entity = (ComponentEntity)icon.getContainer();
-	try {
-            // FIXME: This needs to be a change request.
-	    entity.setContainer(parent);
-	} catch (Exception ex) {
-	    ex.printStackTrace();
-	    throw new RuntimeException(ex.getMessage());
-	}
-        GraphEvent e = new GraphEvent(eventSource, GraphEvent.NODE_ADDED,
-                icon, parent);
-        dispatchGraphEvent(e);
-    }
-
-    /**
-     * Add a node to the given graph and notify listeners with a
-     * NODE_ADDED event. <p>
-     */
-    public void addNode(Object eventSource, ComponentPort port, CompositeEntity parent) {
-	try {
-            // FIXME: This needs to be a change request.
-	    port.setContainer(parent);
-	} catch (Exception ex) {
-	    ex.printStackTrace();
-	    throw new RuntimeException(ex.getMessage());
-	}
-        GraphEvent e = new GraphEvent(eventSource, GraphEvent.NODE_ADDED,
-                port, parent);
-        dispatchGraphEvent(e);
-    }
-
-    /**
-     * Connect the given edge to the given tail and head nodes,
-     * then dispatch events to the listeners.
-     */
-    public void connectEdge(Object eventSource, 
-			    Object link,
-			    Object tail,
-			    Object head) {
-	if(link instanceof Arc) {
-	    if(tail instanceof Icon &&
-	       head instanceof Icon) {
-		connectEdge(eventSource, 
-			    (Arc)link, 
-			    (Icon)tail,
-			    (Icon)head);
-	    }
-	} else {
-	    throw new RuntimeException("Ptolemy Graph Model only handles " +
-				       "named objects. link = " + link +
-				       "tail = " + tail + " head = " + head);
-	}
-    }
-
-    public void connectEdge(Object eventSource, 
-			    Arc link, 
-			    Icon tail,
-			    Icon head) {
-	setEdgeTail(eventSource, link, tail);
-	setEdgeHead(eventSource, link, head);
-    }
-
-    /**
-     * Return true if this composite node contains the given node.
-     */
-    public boolean containsNode(Object composite, Object node) {
-        return composite.equals(getParent(node));
-    }
-
-    /**
-     * Disconnect an edge from its two enpoints and notify graph
-     * listeners with an EDGE_HEAD_CHANGED and an EDGE_TAIL_CHANGED
-     * event.
-     */
-    public void disconnectEdge(Object eventSource, Object edge) {
+    public EdgeModel getEdgeModel(Object edge) {
 	if(edge instanceof Arc) {
-	    disconnectEdge(eventSource, (Arc) edge);
+	    return _arcModel;
 	} else {
-	    throw new RuntimeException("FSMGraphModel only handles " +
-				       "named objects. edge = " + edge);
+	    return null;
 	}
     }
 
-    /**
-     * Disconnect an edge from its two enpoints and notify graph
-     * listeners with an EDGE_HEAD_CHANGED and an EDGE_TAIL_CHANGED
-     * event.
+    /** 
+     * Return the node model for the given object.  If the object is not
+     * a node, then return null.
      */
-    public void disconnectEdge(Object eventSource, Arc edge) {
-	/*  FIXME
-	    Edge edgePeer = (Edge)edge;
-        Node headPeer = edgePeer.getHead();
-        Node tailPeer = edgePeer.getTail();
-        if(headPeer != null) {
-            headPeer.removeInEdge(edgePeer);
-            GraphEvent e = new GraphEvent(GraphEvent.EDGE_HEAD_CHANGED,
-                    this, edgePeer, headPeer);
-            dispatchGraphEvent(e);
-        }
-        if(tailPeer != null) {
-            tailPeer.removeOutEdge(edgePeer);
-            GraphEvent e = new GraphEvent(GraphEvent.EDGE_TAIL_CHANGED,
-                    this, edgePeer, tailPeer);
-            dispatchGraphEvent(e);
-        }
-	*/
-    }
-
-    /**
-     * Return the root graph of this graph model.
-     */
-    public Object getRoot() {
-        return _root;
-    }
-
-    /**
-     * Return the head node of the given edge.
-     */
-    public Object getHead(Object link) {
-	if(link instanceof Arc) {
-	    return getHead((Arc)link);
-	} else {
-	    throw new RuntimeException("Ptolemy Graph Model only handles " +
-				       "named objects. link = " + link);
-	}       
-    }
-		
-    /**
-     * Return the head node of the given edge.
-     */
-    public Object getHead(Arc link) {
-	return link.getHead();
-    }
-		
-    /**
-     * Return the number of nodes contained in
-     * this graph or composite node.
-     */
-    public int getNodeCount(Object composite) {
-	if(composite instanceof CompositeEntity) {
-	    return getNodeCount((CompositeEntity)composite);
-	} else {
-	    throw new RuntimeException("Ptolemy Graph Model only handles " +
-				       "named objects. composite = " + 
-				       composite);
-	}
-    }
-	
-    /**
-     * Return the number of nodes contained in
-     * this graph or composite node.
-     */
-    public int getNodeCount(CompositeEntity entity) {
-	int count = entity.entityList().size();
-	return count;
-    }
-	
-    /**
-     * Return the parent graph of this node, return
-     * null if there is no parent.
-     */
-    public Object getParent(Object node) {	
+    public NodeModel getNodeModel(Object node) {
 	if(node instanceof Icon) {
-	    return getParent((Icon)node);
-	} else if(node instanceof ComponentPort) {
-	    return getParent((ComponentPort)node);
+	    return _stateModel;
 	} else {
-	    throw new RuntimeException("Ptolemy Graph Model only handles " +
-				       "named objects. node = " + node);
-	}       
-    }
-
-    /**
-     * Return the parent graph of this node, return
-     * null if there is no parent.
-     */
-    public Object getParent(Icon icon) {	
-        return icon.getContainer().getContainer();
-    }
-
-    /**
-     * Return the parent graph of this node, return
-     * null if there is no parent.
-     */
-    public Object getParent(ComponentPort port) {	
-        ComponentEntity entity = (ComponentEntity)port.getContainer();
-	return entity;
-    }
-
-    /**
-     * Return the tail node of this edge.
-     */
-    public Object getTail(Object link) {
-	if(link instanceof Arc) {
-	    return getTail((Arc)link);
-	} else {
-	    throw new RuntimeException("FSMGraphModel only handles " +
-				       "named objects. link =" + link);
-	}       
-    }
-
-    /**
-     * Return the tail node of this edge.
-     */
-    public Object getTail(Arc link) {
-	return link.getTail();
-    }
-
-    /**
-     * Return the semantic object correspoding
-     * to the given node, edge, or composite.
-     */
-    public Object getSemanticObject(Object o) {
-	if(o instanceof Port) {
-	    return o;
-	} else if(o instanceof Icon) {
-	    return getSemanticObject((Icon)o);
-	} else if(o instanceof Arc) {
-	    return getSemanticObject((Arc)o);
-	} else {
-	    throw new RuntimeException("Ptolemy Graph Model only handles " +
-				       "named objects. object= " + o);
-	}       
-    }
-
-    /**
-     * Return the semantic object correspoding
-     * to the given node, edge, or composite.
-     */
-    public Object getSemanticObject(Icon icon) {
-	return icon.getContainer();
-    }
-
-    /**
-     * Return the semantic object correspoding
-     * to the given node, edge, or composite.
-     */
-    public Object getSemanticObject(Arc link) {
-	return link.getRelation();
-    }
-    
-    /**
-     * Return an iterator over the <i>in</i> edges of this
-     * node. This iterator does not support removal operations.
-     * If there are no in-edges, an iterator with no elements is
-     * returned.
-     */
-    public Iterator inEdges(Object node) {
-	if(node instanceof ComponentPort || node instanceof Icon) {
-	    return inEdges((NamedObj) node);
-	} else {
-	    throw new RuntimeException("Ptolemy Graph Model only handles " +
-				       "named objects. icon = " + node);
-	}       
-    }
-    
-    /**
-     * Return an iterator over the <i>in</i> edges of this
-     * node. This iterator does not support removal operations.
-     * If there are no in-edges, an iterator with no elements is
-     * returned.
-     */
-    public Iterator inEdges(NamedObj object) {
-	List linkList = _root.attributeList(Arc.class);
-	// filter out the links that aren't attached to this port.
-	List portLinks = new LinkedList();
-	Iterator links = linkList.iterator();
-	while(links.hasNext()) {
-	    Arc link = (Arc)links.next();
-	    Object head = link.getHead();
-	    if(head != null && head.equals(object)) {
-		portLinks.add(link);
-	    }
+	    return null;
 	}
-	return portLinks.iterator();
     }
 
     /**
-     * Return whether or not this edge is directed.
+     * Return the property of the object associated with
+     * the given property name.
      */
-    public boolean isDirected(Object edge) {
-        return false;
-    }
-
-    /**
-     * Return true if the given object is a composite
-     * node in this model, i.e. it contains children.
-     */
-    public boolean isComposite(Object o) {
-        return false;
-    }
-
-    /**
-     * Return true if the given object is a 
-     * edge in this model.
-     */
-    public boolean isEdge(Object o) {
-        return (o != null) && (o instanceof Arc);
-    }
-
-    /**
-     * Return true if the given object is a 
-     * node in this model.
-     */
-    public boolean isNode(Object o) {
-        return (o != null) && 
-	    ((o instanceof Icon) || 
-	     (o instanceof ComponentPort));
-    }
-
-    /**
-     * Provide an iterator over the nodes in the
-     * given graph or composite node.  This iterator
-     * does not necessarily support removal operations.
-     */
-    public Iterator nodes(Object object) {
-	if(object instanceof CompositeEntity) {
-	    return nodes((CompositeEntity)object);
-	} else {
-	    throw new RuntimeException("Ptolemy Graph Model only handles " +
-				       "named objects. icon = " + object);
-	}       
-    }
-
-    /**
-     * Provide an iterator over the nodes in the
-     * given graph or composite node.  This iterator
-     * does not necessarily support removal operations.
-     */
-    public Iterator nodes(CompositeEntity toplevel) {
-	Set nodes = new HashSet();
-	Iterator entities = toplevel.entityList().iterator();
-	while(entities.hasNext()) {
-	    ComponentEntity entity = (ComponentEntity)entities.next();
-	    List icons = entity.attributeList(Icon.class);
-	    if(icons.size() > 0) {
-		nodes.add(icons.get(0));
-	    }
-	}
-
-	Iterator ports = toplevel.portList().iterator();
-	while(ports.hasNext()) {
-	    ComponentPort port = (ComponentPort)ports.next();
-	    nodes.add(port);
-	}
-
-	return nodes.iterator();
-    }
-
-
-    /**
-     * Return an iterator over the <i>out</i> edges of this
-     * node.  This iterator does not support removal operations.
-     * If there are no out-edges, an iterator with no elements is
-     * returned.
-     */
-    public Iterator outEdges(Object node) {
-	if(node instanceof Port || node instanceof Icon) {
-	    return outEdges((NamedObj)node);
-	} else {
-	    throw new RuntimeException("Ptolemy Graph Model only handles " +
-				       "named objects. icon = " + node);
-	}       
-    }
-
-    /**
-     * Return an iterator over the <i>out</i> edges of this
-     * node.  This iterator does not support removal operations.
-     * If there are no out-edges, an iterator with no elements is
-     * returned.
-     */
-    public Iterator outEdges(NamedObj object) {
-	List linkList = _root.attributeList(Arc.class);
-	// filter out the links that aren't attached to this port.
-	List portLinks = new LinkedList();
-	Iterator links = linkList.iterator();
-	while(links.hasNext()) {
-	    Arc link = (Arc)links.next();
-	    Object tail = link.getTail();
-	    if(tail != null && tail.equals(object)) {
-		portLinks.add(link);
-	    }
-	}
-	return portLinks.iterator();
-    }	
-
-    /**
-     * Delete a node from its parent graph and notify
-     * graph listeners with a NODE_REMOVED event.
-     */
-    public void removeNode(Object eventSource, Object node) {
-	Object parent = getParent(node);
-	if(node instanceof Icon) {
-	    removeNode(eventSource, (Icon)node);
-	} else {
-	    throw new RuntimeException("Ptolemy Graph Model only handles " +
-				       "named objects. node = " + node);
-	}
-	GraphEvent e = new GraphEvent(eventSource, GraphEvent.NODE_REMOVED,
-				      node, parent);
-	dispatchGraphEvent(e);
-    }
-
-    /**
-     * Delete a node from its parent graph and notify
-     * graph listeners with a NODE_REMOVED event.
-     */
-    public void removeNode(Object eventSource, Icon icon) {
-	ComponentEntity entity = (ComponentEntity)icon.getContainer();
+    public Object getProperty(Object o, String propertyName) {
 	try {
-	    Iterator ports = entity.portList().iterator();
-	    while(ports.hasNext()) {
-		Port port = (Port) ports.next();
-		port.unlinkAll();
-	    }
-	    entity.setContainer(null);
-	} catch (Exception ex) {
-	    ex.printStackTrace();
-	    throw new RuntimeException(ex.getMessage());
-	}
-    }
-
-    /**
-     * Connect an edge to the given head node and notify listeners
-     * with an EDGE_HEAD_CHANGED event.
-     */
-    public void setEdgeHead(Object eventSource, Object link, Object object) {
-	if(link instanceof Arc) {
-	    setEdgeHead(eventSource, (Arc)link,
-			(NamedObj)object);
+	    NamedObj object = (NamedObj)o;
+	    Attribute a = object.getAttribute(propertyName);
+	    Token t = ((Variable)a).getToken();
+	    if(t instanceof ObjectToken) {
+		return ((ObjectToken)t).getValue();
 	    } else {
-		throw new RuntimeException("FSMGraphModel only handles " +
-					   "named objects. link = " + link + 
-					   "object = " + object);
+		return t.toString();
+	    }
+	} catch (Exception ex) {
+	    return null;
 	}
     }
 
-    /**
-     * Connect an edge to the given head node and notify listeners
-     * with an EDGE_HEAD_CHANGED event.
+    /** Return the semantic object correspoding to the given node, edge,
+     *  or composite.  A "semantic object" is an object associated with
+     *  a node in the graph.  In this case, if the node is icon, the
+     *  semantic object is an entity.  If it is a vertex or a link, the
+     *  semantic object is a relation.  If it is a port, then the
+     *  semantic object is the port itself.
+     *  @param element A graph element.
+     *  @return The semantic object associated with this element.
      */
-    public void setEdgeHead(Object eventSource, Arc link, Object head) {
-	link.unlink();
-	link.setHead(head);
-	link.link();
-        GraphEvent e = 
-	    new GraphEvent(eventSource, GraphEvent.EDGE_HEAD_CHANGED,
-			   link, head);
-        dispatchGraphEvent(e);
-    }
-
-    /**
-     * Connect an edge to the given head node and notify listeners
-     * with an EDGE_HEAD_CHANGED event.
-     */
-    public void setEdgeTail(Object eventSource, Object link, Object object) {
-	if(link instanceof Arc) {
-	    setEdgeTail(eventSource, (Arc)link,
-			(NamedObj)object);
+    public Object getSemanticObject(Object element) {
+	if(element instanceof Icon) {
+	    return ((Icon)element).getContainer();
+	} else if(element instanceof Arc) {
+	    return ((Arc)element).getRelation();
 	} else {
-	    throw new RuntimeException("Ptolemy Graph Model only handles " +
-				       "named objects. link = " + link +
-				       "object = " + object);
-	}
+	    return null;
+	}       
     }
 
     /**
-     * Connect an edge to the given tail node and notify listeners
-     * with an EDGE_TAIL_CHANGED event.
+     * Set the property of the object associated with
+     * the given property name.
      */
-    public void setEdgeTail(Object eventSource, Arc link, NamedObj tail) {
-	link.unlink();
-	link.setTail(tail);
-	link.link();
-        GraphEvent e = 
-	    new GraphEvent(eventSource, GraphEvent.EDGE_TAIL_CHANGED,
-			   link, tail);
-        dispatchGraphEvent(e);
+    public void setProperty(Object o, String propertyName, Object value) {
+	try {
+	    NamedObj object = (NamedObj)o;
+	    Attribute a = object.getAttribute(propertyName);
+	    if(a == null) {
+		a = new Variable(object, propertyName);
+	    } 
+	    Variable v = (Variable)a;
+	    if(value instanceof String) {
+		v.setExpression((String)value);
+		v.getToken();
+	    } else {
+		v.setToken(new ObjectToken(value));
+	    }
+	}
+	catch (Exception ex) {
+	    // Ignore any errors, which will just result in the property
+	    // not being set.
+	}
     }
-
+	
     /**
      * Set the semantic object correspoding
      * to the given node, edge, or composite.
      */
     public void setSemanticObject(Object o, Object sem) {
-	throw new RuntimeException("FSMGraphModel does not support" + 
-				   " setting semantic objects.");
+	throw new UnsupportedOperationException("Ptolemy FSM Graph Model does" +
+						" not allow semantic objects" +
+						" to be changed");
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    public class ArcModel implements EdgeModel {
+	/** Return true if the head of the given edge can be attached to the
+	 *  given node.
+	 *  @param edge The edge to attach.
+	 *  @param node The node to attach to.
+	 */
+	public boolean acceptHead(Object edge, Object node) {
+	    if (node instanceof Icon) {
+		return true;
+	    } else
+		return false;
+	}
+	
+	/** Return true if the tail of the given edge can be attached to the
+	 *  given node.
+	 *  @param edge The edge to attach.
+	 *  @param node The node to attach to.
+	 */
+	public boolean acceptTail(Object edge, Object node) {
+	    if (node instanceof Icon) {
+		return true;
+	    } else
+		return false;
+	}
+
+	/** Return the head node of the given edge.
+	 *  @param edge The edge.
+	 *  @return The head node.
+	 */
+	public Object getHead(Object edge) {
+	    return ((Arc)edge).getHead();
+	}
+
+	/** Return the tail node of the specified edge.
+	 *  @param edge The edge.
+	 *  @return The node that is the tail of the specified edge.
+	 */
+	public Object getTail(Object edge) {
+	    return ((Arc)edge).getTail();
+	}	
+
+	/** Return true if this edge is directed.  
+	 *  All transitions are directed, so this always returns true.
+	 *  @return True.
+	 */
+	public boolean isDirected(Object edge) {
+	    return true;
+	}	
+
+	/** Connect the given edge to the given head node.
+	 *  @param edge The edge.
+	 *  @param head The new head for the edge.
+	 */
+	public void setHead(final Object edge, final Object head) {
+	    _toplevel.requestChange(new ChangeRequest(
+	        FSMGraphModel.this,
+		"move head of link" +  ((Arc)edge).getFullName()) {
+		protected void _execute() throws Exception {
+		    ((Arc)edge).unlink();		
+		    ((Arc)edge).setHead(head);
+		    ((Arc)edge).link();
+		}
+	    });
+	}	
+	
+	/** Connect the given edge to the given tail node.
+	 *  @param edge The edge.
+	 *  @param tail The new tail for the edge.
+	 */
+	public void setTail(final Object edge, final Object tail) {
+	    _toplevel.requestChange(new ChangeRequest(
+	        FSMGraphModel.this, 
+		"move tail of link" +  ((Arc)edge).getFullName()) {
+		protected void _execute() throws Exception {
+		    ((Arc)edge).unlink();		
+		    ((Arc)edge).setTail(tail);
+		    ((Arc)edge).link();
+		}
+	    });
+	}	
     }
     
-    /**
-     * The root of the graph contained by this model.
+    public class StateModel implements NodeModel {
+	/**
+	 * Return an iterator over the edges coming into the given node.
+	 */
+	public Iterator inEdges(Object node) {
+	    Icon icon = (Icon)node;
+	    Entity entity = (Entity)icon.getContainer();
+	    // make sure that the links to relations that we are connected to
+	    // are up to date.
+	    // FIXME could be more efficient.
+	    Iterator ports = entity.portList().iterator();
+	    while(ports.hasNext()) {
+		ComponentPort port = (ComponentPort)ports.next();
+		List relationList = port.linkedRelationList();
+		Iterator relations = relationList.iterator();
+		while(relations.hasNext()) {
+		    ComponentRelation relation = 
+			(ComponentRelation)relations.next();
+		    _updateLinks(relation);
+		}
+	    }
+	    
+	    // Go through all the links, creating a list of
+	    // those we are connected to.
+	    List stateLinkList = new LinkedList();
+	    List linkList = _toplevel.attributeList(Arc.class);
+	    Iterator links = linkList.iterator();
+	    while(links.hasNext()) {
+		Arc link = (Arc)links.next();
+		Object head = link.getHead();
+		if(head != null && head.equals(icon)) {
+		    stateLinkList.add(link);
+		}
+	    }
+	    
+	    return stateLinkList.iterator();
+	}
+	
+	/**
+	 * Return an iterator over the edges coming out of the given node.
+	 */
+	public Iterator outEdges(Object node) {
+	    Icon icon = (Icon)node;
+	    Entity entity = (Entity)icon.getContainer();
+	    // make sure that the links to relations that we are connected to
+	    // are up to date.
+	    // FIXME could be more efficient.
+	    Iterator ports = entity.portList().iterator();
+	    while(ports.hasNext()) {
+		ComponentPort port = (ComponentPort)ports.next();
+		List relationList = port.linkedRelationList();
+		Iterator relations = relationList.iterator();
+		while(relations.hasNext()) {
+		    ComponentRelation relation = 
+			(ComponentRelation)relations.next();
+		    _updateLinks(relation);
+		}
+	    }
+	    
+	    // Go through all the links, creating a list of 
+	    // those we are connected to.
+	    List stateLinkList = new LinkedList();
+	    List linkList = _toplevel.attributeList(Arc.class);
+	    Iterator links = linkList.iterator();
+	    while(links.hasNext()) {
+		Arc link = (Arc)links.next();
+		Object tail = link.getTail();
+		if(tail != null && tail.equals(entity)) {
+		    stateLinkList.add(link);
+		}
+	    }
+	    
+	    return stateLinkList.iterator();
+	}
+	
+	/**
+	 * Return the graph parent of the given node.
+	 */
+	public Object getParent(Object node) {
+	    return ((Icon)node).getContainer().getContainer();
+	}
+	
+	/**
+	 * Set the graph parent of the given node.  Implementors of this method
+	 * are also responsible for insuring that it is set properly as
+	 * the child of the graph in the graph.
+	 */
+	public void setParent(final Object node, final Object parent) {
+	    _toplevel.requestChange(new ChangeRequest(
+	        FSMGraphModel.this, 
+		"Set Parent of Icon " +  ((Icon)node).getFullName()) {
+		protected void _execute() throws Exception {
+		    ComponentEntity entity = 
+                        (ComponentEntity)((Icon)node).getContainer();
+		    entity.setContainer((CompositeEntity)parent);
+		}
+	    });
+	}
+    }
+
+    public class ToplevelModel implements CompositeModel {
+	/**
+	 * Return the number of nodes contained in
+	 * this graph or composite node.
+	 */
+	public int getNodeCount(Object composite) {
+	    CompositeEntity entity = (CompositeEntity)composite;
+	    int count = entity.entityList().size();
+	    return count;
+	}
+	
+	/**
+	 * Provide an iterator over the nodes in the
+	 * given graph or composite node.  This iterator
+	 * does not necessarily support removal operations.
+	 */
+	public Iterator nodes(Object composite) {
+	    Set nodes = new HashSet();
+	    Iterator entities = _toplevel.entityList().iterator();
+	    while(entities.hasNext()) {
+		ComponentEntity entity = (ComponentEntity)entities.next();
+		List icons = entity.attributeList(Icon.class);
+		if(icons.size() > 0) {
+		    nodes.add(icons.get(0));
+		} else {
+		    // FIXME this is pretty minimal for an icon.
+		    try {
+			Icon icon = new EditorIcon(entity, "_icon");
+			nodes.add(icon);
+		    }
+		    catch (Exception e) {
+			throw new InternalErrorException("Failed to create " +
+			    "icon, even though one does not exist:" +
+							 e.getMessage());
+		    }
+		}
+	    }
+	    
+	    return nodes.iterator();
+	}
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+
+    /** Mutations may happen to the ptolemy model without the knowledge of
+     *  this model.  This change listener listens for those changes
+     *  and when they occur, issues a GraphEvent so that any views of
+     *  this graph model can come back and update themselves.
      */
-    private CompositeEntity _root = null;
+    public class GraphChangeListener implements ChangeListener {
+
+        /** Notify the listener that a change has been successfully executed.
+	 *  @param change The change that has been executed.
+	 */
+	public void changeExecuted(ChangeRequest change) {
+	    // Ignore anything that comes from this graph model.  
+	    // the other methods take care of issuing the graph event in
+	    // that case.
+	    if(change.getOriginator() == FSMGraphModel.this) {
+                return;
+            }
+	    // This has to happen in the swing thread, because Diva assumes
+	    // that everything happens in the swing thread.  We invoke later
+	    // because the changeRequest that we are listening for often
+	    // occurs in the execution thread of the ptolemy model.
+	    SwingUtilities.invokeLater(new Runnable() {
+		public void run() {
+		    // Otherwise notify any graph listeners 
+		    // that the graph might have
+		    // completely changed.
+		    dispatchGraphEvent(new GraphEvent(
+			FSMGraphModel.this, 
+			GraphEvent.STRUCTURE_CHANGED, getRoot()));
+		}
+	    });
+	}
+
+        /** Notify the listener that the change has failed with the
+         *  specified exception.
+ 	 *  @param change The change that has failed.
+         *  @param exception The exception that was thrown.
+         */
+        public void changeFailed(ChangeRequest change, Exception exception) {
+            ExceptionHandler.show("Change failed", exception);
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    // Check to make sure that there is a Link object representing
+    // the given relation.
+    private void _updateLinks(ComponentRelation relation) {
+	// Find the link for this relation
+	List linkList = _toplevel.attributeList(Arc.class);
+	Iterator links = linkList.iterator();
+	Arc foundLink = null;
+	while(links.hasNext()) {
+	    Arc link = (Arc)links.next();
+	    // only consider links that are associated with this relation.
+	    if(link.getRelation() == relation) {
+		foundLink = link;
+		break;
+	    }
+	}
+
+	// A link exists, so there is nothing to do.
+	if(foundLink != null) return;
+
+	List linkedPortList = relation.linkedPortList();
+	if(linkedPortList.size() != 2) {
+	    throw new GraphException("A transition was found connecting more "
+				     + "thwn two states.");
+	}
+	Port port1 = (Port)linkedPortList.get(0);
+	Port port2 = (Port)linkedPortList.get(1);
+	Arc link;
+	try {
+	    link = new Arc(_toplevel, _toplevel.uniqueName("arc"));
+	} 
+	catch (Exception e) {
+	    throw new InternalErrorException(
+		"Failed to create " +
+		"new link, even though one does not " +
+		"already exist:" + e.getMessage());
+	}
+	link.setRelation(relation);
+	// FIXME which is which?
+	link.setHead(port1);
+	link.setTail(port2);
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    // The root of the graph contained by this model.
+    private CompositeEntity _toplevel = null;
+    private ArcModel _arcModel = new ArcModel();
+    private ToplevelModel _toplevelModel = new ToplevelModel();
+    private StateModel _stateModel = new StateModel();
 }
 
