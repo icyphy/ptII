@@ -378,7 +378,7 @@ public class TimeKeeper {
 	}
 	_searchingForIgnoredTokens = true;
 	if( _ignoredReceivers ) {
-	    // System.out.println("***Call to updateIgnoredReceivers()***");
+	    // System.out.println("###Call to updateIgnoredReceivers()###");
 	    RcvrTimeTriple triple; 
 	    DDEReceiver rcvr; 
 	    for( int i = 0; i < _rcvrTimeList.size(); i++ ) {
@@ -386,7 +386,7 @@ public class TimeKeeper {
 		rcvr = (DDEReceiver)triple.getReceiver(); 
 		if( rcvr.getRcvrTime() == 
 			TimedQueueReceiver.IGNORE ) {
-		    System.out.println("***Ignore Token Found!!!***");
+		    System.out.println("###Ignore Token Found!!!###");
 		    rcvr.clearIgnoredTokens();
 		}
 	    }
@@ -425,12 +425,12 @@ public class TimeKeeper {
      */
     synchronized void printRcvrList() {
 	String name = ((NamedObj)_actor).getName();
-        System.out.println("\n***Print "+name+"'s RcvrList.");
+        System.out.println("\n###Print "+name+"'s RcvrList.");
         System.out.println("   Number of Receivers in RcvrList = "
                 + _rcvrTimeList.size() );
         if( _rcvrTimeList.size() == 0 ) {
             System.out.println("\tList is empty");
-            System.out.println("***End of printRcvrList()\n");
+            System.out.println("###End of printRcvrList()\n");
 	    return;
         }
         for( int i = 0; i < _rcvrTimeList.size(); i++ ) {
@@ -442,7 +442,7 @@ public class TimeKeeper {
             System.out.println("\t"+name+"'s Receiver "+i+
 	            " has a time of " +time+" and string: "+testString);
         }
-        System.out.println("***End of printRcvrList()\n");
+        System.out.println("###End of printRcvrList()\n");
     }
 
     /** Set a flag indicating whether a search for ignored

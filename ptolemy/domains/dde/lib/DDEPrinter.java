@@ -71,8 +71,8 @@ public class DDEPrinter extends DDEActor {
     public void fire() throws IllegalActionException {
 	getNextToken();
         double time = getCurrentTime();
-	System.out.println("\n***DDEPrinter at time = " 
-                + time + " ***");
+	System.out.println("\n###DDEPrinter at time = " 
+                + time + " ###");
     }
     
     /** 
