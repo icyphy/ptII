@@ -148,7 +148,7 @@ public class DDEThread extends ProcessThread {
     /** End the execution of the actor under the control of this
      *  thread. Notify all actors connected to this actor that
      *  this actor is preparing to cease execution.
-     *  @exception IllegalActionException if an error occurs while
+     *  @exception IllegalActionException If an error occurs while
      *  ending execution of the actor under the control of this
      *  thread.
      */

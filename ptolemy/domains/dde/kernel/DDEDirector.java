@@ -154,9 +154,8 @@ public class DDEDirector extends ProcessDirector {
      *  empty string. Increment the version number of the workspace.
      * @param container The container of this director.
      * @param name Name of this director.
-     * @exception IllegalActionException It may be thrown in derived
-     *  classes if the director is not compatible with the specified
-     *  container.
+     * @exception IllegalActionException If the director is not compatible
+     * with the specified container.  May be thrown in a dirived class.
      */
     public DDEDirector(CompositeActor container, String name)
             throws IllegalActionException {
@@ -350,7 +349,7 @@ public class DDEDirector extends ProcessDirector {
      *  deadlocked in a manner that can not be resolved even if
      *  external communication occurs.
      * @return True if execution can continue; false otherwise.
-     * @exception IllegalActionException Not thrown in this class.
+     * @exception IllegalActionException Not thrown in this base class.
      *  May be thrown in derived classes.
      */
     public boolean postfire() throws IllegalActionException {
@@ -575,7 +574,7 @@ public class DDEDirector extends ProcessDirector {
     /** Increment the port capacity's according to Tom Parks'
      *  algorithm. Select the port with the smallest capacity
      *  and double the capacity.
-     * @exceptions IllegalActionException If there is an error
+     * @exception IllegalActionException If there is an error
      *  while attempting to set the capacity of a DDE receiver.
      */
     protected void _incrementLowestCapacityPort()

@@ -124,8 +124,7 @@ public class Wire extends TypedAtomicActor {
     /** Return true if this actor will allow subsequent iterations to
      *  occur; return false otherwise.
      * @return True if continued execution is enabled; false otherwise.
-     * @exception IllegalActionException Is not thrown. It is declared
-     *  to allow this exception in derived classes.
+     * @exception IllegalActionException Not thrown in this base class.
      */
     public boolean postfire() throws IllegalActionException {
 	return _continueIterations;

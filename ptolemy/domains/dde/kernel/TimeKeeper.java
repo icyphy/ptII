@@ -93,7 +93,7 @@ public class TimeKeeper {
      *  in the DDE domain. Set the receiver priorities of all receivers
      *  contained by the actor of this time keeper.
      * @param actor The DDEActor for which time will be managed.
-     * @exception IllegalActionException if there is an error
+     * @exception IllegalActionException If there is an error
      *  while setting the receiver priorities.
      */
     public TimeKeeper(Actor anActor) throws IllegalActionException {
@@ -320,10 +320,8 @@ public class TimeKeeper {
     */
 
     /** Set the output time associated with this time keeper.
-     *  Throw an IllegalActionException if the output time is
-     *  less than the current time.
      * @param outputTime The output time of this time keeper.
-     * @exception IllegalActionException if the output time is
+     * @exception IllegalActionException If the output time is
      *  less than the current time.
      */
     synchronized void setOutputTime(double outputTime)
