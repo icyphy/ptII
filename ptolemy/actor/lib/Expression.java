@@ -280,7 +280,7 @@ public class Expression extends TypedAtomicActor {
         }
         return super.prefire();
     }
-    
+
     /** Preinitialize this actor.
      */
     public void preinitialize() throws IllegalActionException {

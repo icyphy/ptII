@@ -47,7 +47,7 @@ import ptolemy.math.Complex;
 //////////////////////////////////////////////////////////////////////////
 //// Rician
 /**
-Produce a random sequence with a Rician distribution. 
+Produce a random sequence with a Rician distribution.
 A Rician random variable is defined as follows:
 Let Z = sqrt(X<sup>2</sup> + Y<sup>2</sup>), where X and Y are statistically
 independent Gaussian random variables with means given by parameters
@@ -56,7 +56,7 @@ parameter <i>standardDeviation</i>.
 <p>
 The default values of <i>xMean</i> and <i>yMean</i> are both set to be zero,
 in which the distribution is also called a Rayleigh distribution. Hence,
-the actor is by default a Rayleigh random generator. 
+the actor is by default a Rayleigh random generator.
 <p>
 On each iteration, a new random number is produced. The output port
 is of type DoubleToken. The values that are generated are independent
@@ -87,7 +87,7 @@ public class Rician extends RandomSource {
 
         xMean = new Parameter(this, "xMean", new DoubleToken(0.0));
         xMean.setTypeEquals(BaseType.DOUBLE);
-       
+
         yMean = new Parameter(this, "yMean", new DoubleToken(0.0));
         yMean.setTypeEquals(BaseType.DOUBLE);
 
