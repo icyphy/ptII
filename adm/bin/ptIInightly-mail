@@ -33,7 +33,7 @@ echo "The Ptolemy II nightly build is run from a bldmaster cronjob" >> $mailmsg
 echo "See http://www.gigascale.org/buildmaster" >> $mailmsg
 
 # The log of the build
-ptbuildlog=/users/ptII/logs/java`date  '+%m%d'`
+ptbuildlog=/users/ptII/adm/test/ptIInightly.txt
 if [ "`hostname`" = "gigasource.eecs.berkeley.edu" ]; then
     ptbuildlog=/home/bldmastr/ptII/adm/logs/ptIInightly.txt
 fi
@@ -62,7 +62,11 @@ echo "------------------------------------------------" >> $mailmsg
 echo "Errors during the build and test process in ptII:" >> $mailmsg
 echo "" >> $mailmsg
 echo "To see the complete build and test log, see:" >> $mailmsg
-echo "http://www.gigascale.org/ptolemy/src/ptII/adm/logs/ptIInightly.txt" >> $mailmsg
+if [ "`hostname`" = "gigasource.eecs.berkeley.edu" ]; then
+    echo "http://www.gigascale.org/ptolemy/src/ptII/adm/logs/ptIInightly.txt" >> $mailmsg
+else
+    echo "$ptbuildlog on `hostname`" >> $mailmsg
+fi
 echo "" >> $mailmsg
 
 AWK=awk
@@ -149,13 +153,15 @@ egrep 'Total Tests' $ptbuildlog |
     egrep '^Failed: 0' >> $mailmsg
 
 
-echo "" >> $mailmsg
-echo "------------------------------------------------" >> $mailmsg
-echo "Code Coverage Summary" >> $mailmsg
-echo "" >> $mailmsg
-echo "To see code coverage, view:" >> $mailmsg
-echo "http://www.gigascale.org/ptolemy/nightly/coverage.html" >> $mailmsg
-echo "" >> $mailmsg
-sh $ADMDIR/bin/coveragesummary >> $mailmsg
+if [ "`hostname`" = "gigasource.eecs.berkeley.edu" ]; then
+    echo "" >> $mailmsg
+    echo "------------------------------------------------" >> $mailmsg
+    echo "Code Coverage Summary" >> $mailmsg
+    echo "" >> $mailmsg
+    echo "To see code coverage, view:" >> $mailmsg
+    echo "http://www.gigascale.org/ptolemy/nightly/coverage.html" >> $mailmsg
+    echo "" >> $mailmsg
+    sh $ADMDIR/bin/coveragesummary >> $mailmsg
+fi
 
 cat $mailmsg | /usr/ucb/Mail -s "Ptolemy II Nightly Build" $mailto
