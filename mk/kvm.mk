@@ -179,7 +179,7 @@ KVM_BINARY = $(KVM_DIR)/kvm/VmWin/build/kvm.exe
 # Run a Java simulator of the Palm
 # kvm.exe needs to be built by hand, see the kvm instructions. 
 kvm:
-	if [ ! -e $(KVM_BINARY) ]; then \
+	if [ ! -f "$(KVM_BINARY)" ]; then \
 		echo "$(KVM_BINARY) is not found."; \
 		echo "This binary simulates the Palm/KVM environment"; \
 		echo "It is not required but it is useful for debugging"; \
