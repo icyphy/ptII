@@ -58,7 +58,8 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
 	Audio.java \
-	AudioViewer.java
+	AudioViewer.java \
+	Picture.java
 
 EXTRA_SRCS =	$(JSRCS)
 
