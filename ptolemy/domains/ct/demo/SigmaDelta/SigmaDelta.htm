@@ -6,7 +6,8 @@
 <link href="../../../../../doc/default.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-<H1>CT domain demo - Micro Accelerometer with Digital Feedback Control</H1>
+<H1>Mixed Signal Model -
+<br>Micro Accelerometer with Digital Feedback Control</H1>
 <P>
  <!-- All of the controls of the applet should be visible when the
 applet is displayed on a XGA screen-->
@@ -55,52 +56,53 @@ Micro accelerometers are MEMS devices that use beams, gaps, and electrostatics
 to measure acceleration. Beams and anchors, separating by gaps, form parallel 
 plate capacitors. When the device is accelerated in the sensing direction, the 
 displacement of the beams causes the change of the gap sizes, which further 
-causes the change of the capacity. By measuring the change of capacity (using
- the Winston capacitor bridge), the accelerate can be obtained accurately. 
+causes the change of the capacitance. By measuring the change of capacitance
+(using the Winston capacitor bridge), the acceleration can be obtained
+accurately.  A schematic diagram is shown below:
+<P>
+<CENTER><img src="SigmaDelta2.gif"></CENTER>
+<P>
 Feedback can be applied to the beams by charging the capacitors. Using 
 feedback can reduce the sensitivity to process variations, 
 eliminate mechanical resonances, and increase sensor bandwidth, selectivity 
-and dynamic range.
+and dynamic range. The feedback effectively reduces the mechanical
+excursion of the beams.
 <P>
 Sigma-delta modulation[1], also called the pulse density modulation or the 
-bang-bang control, is a digital feedback technique, which gets the A/D 
-conversion functionality "for free". The figure below shows the conceptual
-diagram of system. The central part of the digital feedback is an one
+bang-bang control, is a digital feedback technique. It gets the A/D 
+conversion functionality for free, since the same mechanism that is
+used to generate the feedback control can be used to measure the
+capacitance. The central part of the digital feedback is an one
 bit quantizer.
-<P>
-<CENTER><img src="SigmaDelta.gif"></CENTER>
-<P>
 <H2>Implementation:</H2>
 We implemented the system as Mark Alan Lemkin designed in [2]. As shown in
-the Figure below, the second order CT subsystem is used to model the beam.
- The voltage on the beam-gap capacitor is sampled every T seconds (much
- faster than the required output of the digital signal),  then filtered by
- a lead compensator (FIR filter), and fed to an one-bit quantizer. 
+the figure below, a second order CT subsystem is used to model the beam.
+The voltage on the beam-gap capacitor is sampled every <i>T</i> seconds (much
+faster than the required output of the digital signal),  then filtered by
+a lead compensator (an FIR filter), and fed to an one-bit quantizer. 
 The outputs of the quantizer are converted to force and fed back to the
- beams. The outputs are also counted and averaged every N*T seconds to 
+beams. The outputs are also counted and averaged every <i>NT</i> seconds to 
 produce the digital output. In our example, the external acceleration 
-is a Sin wave. The TclBlend code is<A HREF="SigmaDelta.tcl"> here</A>
-<P >
-<CENTER><img src="SigmaDelta2.gif"></CENTER>
+is a sine wave.
+<P>
+<CENTER><img src="SigmaDelta.gif"></CENTER>
 <P>
 <H2>Simulation</H2>
 To run the simulation, click <B>Go</B> in the above applet.
 <P>
 
-<H2>Result</H2>
-If the simulation runs correctly, the result should be like:<BR>
-<B>CTPlot:</B>
+<H2>Results</H2>
+If the model runs correctly, the result should look like:<BR>
+<B>Continuous time part:</B>
 <p>
 <CENTER><img src="SDCTPlot.gif"></CENTER>
 <P>
-<B>DEPlot:</B>
+<B>Discrete time part:</B>
 <p>
 <CENTER><img src="SDDEPlot.gif"></CENTER>
 <P>
 <H2>References</H2>
 [1] James C. Candy, <I>"A Use of Limit Cycle Oscillations to Obtain Robust Analog-to-Digital Converters"</I>, IEEE Trans. on Communications, Vol. COM-22, No. 3, March 1974, pp298-305<BR>
 [2] Mark A. Lemkin, <I>"Micro Accelerometer Design with Digital Feedback Control"</I>, doctoral dissertation,  University of California, Berkeley, Fall 1997
-
-<p><font size="2" color="#cc0000">Last Updated: $Date$</font>
 </BODY>
 </HTML>
