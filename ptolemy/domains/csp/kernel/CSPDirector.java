@@ -233,6 +233,20 @@ public class CSPDirector extends CompositeProcessDirector
         super.setModelTime(newTime);
     }
 
+    /** (non-Javadoc)
+     *  @see ptolemy.actor.Director#suggestedModalModelDirectors()
+     */
+    public String[] suggestedModalModelDirectors() {
+        // This method does not call the method defined in the super class,
+        // because this method provides complete new information. 
+        // Default is a NonStrictFSMDirector, while FSMDirector is also 
+        // in the array.
+        String[] defaultSuggestions = 
+            {"ptolemy.domains.fsm.kernel.NonStrictFSMDirector"};
+        defaultSuggestions[1] = "ptolemy.domains.fsm.kernel.FSMDirector";
+        return defaultSuggestions;
+    }
+    
     /** Override the base class to stop any actors that might be stalled
      *  in a call to delay().
      *  @exception IllegalActionException If the parent class throws it.
