@@ -69,16 +69,16 @@ public class FlowFifoQ extends NamedObj implements Receiver {
      *  If the offset is 1, return second most recent the object, etc.
      *  If there is no such element on the queue (the offset is greater
      *  than or equal to the size, or is negative), throw an exception.
-     *  @exception NoSuchItemException The offset is out of range.
      */	
-    public Token get() 
-            throws NoSuchItemException {
+    public Token get() { 
         synchronized (workspace()) {
 	    return (Token)_queue.take();
 	}
     }
 
-    /** Does not remove the element */
+    /** Does not remove the element
+     *  @exception NoSuchItemException The offset is out of range.
+     */
     public Token get(int offset) 
             throws NoSuchItemException {
 	synchronized (workspace()) {
