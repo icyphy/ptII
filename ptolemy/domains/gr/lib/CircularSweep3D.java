@@ -84,7 +84,7 @@ public class CircularSweep3D extends GRShadedShape {
       	ArrayToken defaultPolygon = new ArrayToken(tokenArray);
 
         polyline = new Parameter(this, "polyline", defaultPolygon);
-        polyline.setTypeEquals(new ArrayType(BaseType.ANY));
+        polyline.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
         angleSpan = new Parameter(this, "angleSpan", new DoubleToken(2*Math.PI));
         slices = new Parameter(this, "slices", new IntToken(32));
     }

@@ -81,7 +81,7 @@ public class PolyCylinder3D extends GRShadedShape {
         tokenArray[5] = new DoubleToken(0.5*-0.5);
       	ArrayToken defaultPolygon = new ArrayToken(tokenArray);
         polygon = new Parameter(this, "polygon", defaultPolygon);
-        polygon.setTypeEquals(new ArrayType(BaseType.ANY));
+        polygon.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
         thickness = new Parameter(this, "thickness", new DoubleToken(0.3));
     }
 
