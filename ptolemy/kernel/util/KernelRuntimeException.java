@@ -56,7 +56,7 @@ exception chaining.
 
 <p>JDK1.4 supports exception chaining.  We are implement them
 ourselves here so that we can use JVMs earlier than JDK1.4.
-See the {@link #KernelException KernelException} documentation
+See the {@link KernelException KernelException} documentation
 for differences between our exception chaining implementation and
 the JDK1.4 implementation.
 
