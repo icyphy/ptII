@@ -76,4 +76,6 @@ public class PetriNetReceiver extends Mailbox {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
+    private int _token = 3;
 }

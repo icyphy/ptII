@@ -73,6 +73,15 @@ public class Place extends Transformer {
         input.setMultiport(true);
         input.setTypeEquals(BaseType.GENERAL);
         output.setMultiport(true);
+
+
+   //  We need multiport, but each channel has only one link.
+   // however, at this moment, we do not check how many links we have 
+   // from one place to one transition.
+   // yuke
+
+
+
         output.setTypeEquals(BaseType.GENERAL);
     }
 
@@ -80,7 +89,9 @@ public class Place extends Transformer {
     ////                         ports and parameters              ////
 
     /** The number of initial tokens in the place. This is an integer. */
+
     public Parameter initialMarking;
+    
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -89,32 +100,23 @@ public class Place extends Transformer {
      *  output channel.
      *  @exception IllegalActionException If the send method throws it.
      */
-    public void fire() throws IllegalActionException {
-        for(int i=0; i < input.getWidth(); i++) {
-            if (input.hasToken(i)) {
-                Token token = input.get(i);
-                _currentMarking++;
-                // FIXME
-                System.out.println(getName()
-                       + " consuming input from channel " + i);
-            }
-        }
-        if (_currentMarking > 0) {
-            // FIXME: Choosing a random output isn't the right
-            // thing to do.
-            int outputWidth = output.getWidth();
-            if (outputWidth > 0) {
-                int destination = _random.nextInt(outputWidth);
-                output.send(destination, _token);
-                _currentMarking--;
-                // FIXME
-                System.out.println(getName()
-                        + " producing output on channel " + destination);
-            }
-        }
+
+    public int getMarking() {
+        return _currentMarking;
     }
 
-    /** Set the current marking equal to the initial marking.
+    public void increaseMarking(int i) {
+         _currentMarking=_currentMarking +i;
+    }
+
+    public void decreaseMarking(int i) {
+         _currentMarking=_currentMarking - i;
+    }
+    public void printMarking() {
+        System.out.println("the current marking is " + _currentMarking);
+    }
+
+   /** Set the current marking equal to the initial marking.
      *  @exception IllegalActionException If the initialMarking parameter
      *   throws it.
      */
@@ -137,12 +139,11 @@ public class Place extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // Random number generator.
-    private Random _random = new Random();
 
     // Current marking.
     private int _currentMarking = 0;
 
-    // Token to send.
-    private Token _token = new Token();
+
+
+
 }
