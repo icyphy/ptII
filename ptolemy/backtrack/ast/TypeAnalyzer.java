@@ -162,6 +162,7 @@ public class TypeAnalyzer extends ASTVisitor {
                 handler.handle(node, _state);
             }
         }
+        _state.unsetClassScope();
         _closeScope();
         _state.leaveClass();
     }
@@ -725,6 +726,7 @@ public class TypeAnalyzer extends ASTVisitor {
                 handler.handle(node, _state);
             }
         }
+        _state.unsetClassScope();
         _closeScope();
         _state.leaveClass();
     }
@@ -839,6 +841,7 @@ public class TypeAnalyzer extends ASTVisitor {
 
         // A class declaration starts a new scope.
         _openScope();
+        _state.setClassScope();
         _recordFields();
 
         // Sort body declarations.
@@ -936,6 +939,7 @@ public class TypeAnalyzer extends ASTVisitor {
 
         // A class declaration starts a new scope.
         _openScope();
+        _state.setClassScope();
         _recordFields();
 
         // Sort body declarations.
