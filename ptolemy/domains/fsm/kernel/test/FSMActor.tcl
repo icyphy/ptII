@@ -280,7 +280,7 @@ test FSMActor-7.1 {test exception when multiple transitions enabled} {
     catch {$dir fire} msg
     $dir terminate
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: Multiple enabled transitions: t0 and t1.
+} {{ptolemy.domains.fsm.kernel.MultipleEnabledTransitionsException: Multiple enabled transitions: t0 and t1.
   in .<Unnamed Object>.fsm.s0}}
 
 ######################################################################
