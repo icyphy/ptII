@@ -1,4 +1,4 @@
-/* The node controller for entities (and icons)
+/* The node controller for states.
 
  Copyright (c) 1998-2001 The Regents of the University of California.
  All rights reserved.
@@ -30,12 +30,21 @@
 
 package ptolemy.vergil.ptolemy.fsm;
 
+import java.awt.event.ActionEvent;
+
+import ptolemy.actor.TypedActor;
+import ptolemy.domains.fsm.kernel.State;
+import ptolemy.gui.MessageHandler;
+import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.Location;
 import ptolemy.vergil.ptolemy.kernel.AttributeController;
 import ptolemy.vergil.toolbox.EditorIcon;
+import ptolemy.vergil.toolbox.FigureAction;
+import ptolemy.vergil.toolbox.MenuActionFactory;
 import ptolemy.vergil.toolbox.XMLIcon;
 
 import diva.canvas.Figure;
@@ -47,8 +56,9 @@ import diva.graph.NodeRenderer;
 /**
 This class provides interaction with nodes that represent states in an
 FSM graph.  It provides a double click binding to edit the parameters
-of the state, and a context menu containing a command to edit parameters
-("Configure"), a command to rename, and a command to get documentation.
+of the state, and a context menu containing a commands to edit parameters
+("Configure"), rename, get documentation, and look inside.  The looks
+inside command opends the refinement of the state, if it exists.
 
 @author Steve Neuendorffer and Edward A. Lee
 @version $Id$
@@ -71,10 +81,51 @@ public class FSMStateController extends AttributeController {
     public FSMStateController(GraphController controller, Access access) {
 	super(controller, access);
 	setNodeRenderer(new StateRenderer());
+
+        // NOTE: This requires that the configuration be non null,
+        // or it will report an error.
+        _menuFactory.addMenuItemFactory(
+                new MenuActionFactory(new LookInsideAction()));
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
+
+    /** An action to look inside a state at its refinement, if it has one.
+     *  NOTE: This requires that the configuration be non null, or it
+     *  will report an error with a fairly cryptic message.
+     */
+    private class LookInsideAction extends FigureAction {
+	public LookInsideAction() {
+	    super("Look Inside");
+	}
+	public void actionPerformed(ActionEvent e) {
+
+            if (_configuration == null) {
+                MessageHandler.error(
+                        "Cannot look inside without a configuration.");
+                return;
+            }
+	    super.actionPerformed(e);
+	    NamedObj target = getTarget();
+            // If the target is not an instance of State, do nothing.
+            if (target instanceof State) {
+                try {
+                    TypedActor[] refinements = ((State)target).getRefinement();
+                    if (refinements != null && refinements.length > 0) {
+                        for (int i=0; i < refinements.length; i++) {
+                            // Open each refinement.
+                            _configuration.openModel((NamedObj)refinements[i]);
+                        }
+                    } else {
+                        MessageHandler.error("State has no refinement.");
+                    }
+                } catch (Exception ex) {
+                    MessageHandler.error("Look inside failed: ", ex);
+                }
+            }
+	}
+    }
 
     /** Render the state as a circle.
      */
@@ -82,7 +133,6 @@ public class FSMStateController extends AttributeController {
 	public Figure render(Object n) {
 	    Location location = (Location)n;
 	    NamedObj object = (NamedObj) location.getContainer();
-
 	    EditorIcon icon;
             try {
                 icon = (EditorIcon)object.getAttribute("_icon");

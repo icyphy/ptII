@@ -135,6 +135,7 @@ public abstract class PtolemyGraphController extends AbstractGraphController {
                            factoryList.get(0);
                     PtolemyNodeController controller = factory.create(this);
                     controller.setConfiguration(getConfiguration());
+                    _initializeInteraction(controller);
                     return controller;
                 }
             }
@@ -174,6 +175,9 @@ public abstract class PtolemyGraphController extends AbstractGraphController {
                  AttributeController.PARTIAL);
     }
 
+    // NOTE: The following method name does not have a leading underscore
+    // because it is a diva method.
+
     /** Initialize all interaction on the graph pane. This method
      *  is called by the setGraphPane() method of the superclass.
      *  This initialization cannot be done in the constructor because
@@ -186,6 +190,15 @@ public abstract class PtolemyGraphController extends AbstractGraphController {
 	_menuCreator = new MenuCreator(_menuFactory);
 	pane.getBackgroundEventLayer().addInteractor(_menuCreator);
 	pane.getBackgroundEventLayer().setConsuming(false);
+    }
+
+    /** Initialize interactions for the specified controller.  This
+     *  method is called when a new constroller is constructed. This
+     *  base class does nothing, but derived classes may attach interactors
+     *  to the specified controller.
+     *  @param controller The controller for which to initialize interaction.
+     */
+    protected void _initializeInteraction(PtolemyNodeController controller) {
     }
 
     ///////////////////////////////////////////////////////////////////

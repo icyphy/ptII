@@ -318,100 +318,10 @@ public class EntityController extends AttributeController {
             }
 	    CompositeEntity entity = (CompositeEntity)object;
 
-            // If the entity defers its MoML definition to another,
-            // then open that other.
-	    NamedObj deferredTo = entity.getMoMLInfo().deferTo;
-	    if(deferredTo != null) {
-		entity = (CompositeEntity)deferredTo;
-	    }
-
-            // Search the model directory for an effigy that already
-            // refers to this model.
-            PtolemyEffigy effigy = _configuration.getEffigy(entity);
-            if (effigy != null) {
-                // Found one.  Display all open tableaux.
-                effigy.showTableaux();
-            } else {
-                try {
-
-                    // There is no pre-existing effigy.  Create one.
-                    effigy = new PtolemyEffigy(_configuration.workspace());
-                    effigy.setModel(entity);
-
-                    // Look to see whether the model has a URLAttribute.
-                    List attributes = entity.attributeList(URLAttribute.class);
-                    if (attributes.size() > 0) {
-                        // The entity has a URL, which was probably
-                        // inserted by MoMLParser.
-
-                        URL url = ((URLAttribute)attributes.get(0)).getURL();
-
-                        // Set the url and identifier of the effigy.
-                        effigy.url.setURL(url);
-                        effigy.identifier.setExpression(url.toExternalForm());
-
-                        // Put the effigy into the directory
-                        ModelDirectory directory =
-                                _configuration.getDirectory();
-                        effigy.setName(directory.uniqueName(entity.getName()));
-                        effigy.setContainer(directory);
-
-                        // Create a default tableau.
-                        _configuration.createPrimaryTableau(effigy);
-
-                    } else {
-
-                        // If we get here, then we are looking inside a model
-                        // that is defined within the same file as the parent,
-                        // probably.  Create a new PtolemyEffigy
-                        // and open a tableau for it.
-
-                        // Put the effigy inside the effigy of the parent,
-                        // rather than directly into the directory.
-                        CompositeEntity parent =
-                            (CompositeEntity)entity.getContainer();
-                        boolean isContainerSet = false;
-                        if (parent != null) {
-                            PtolemyEffigy parentEffigy =
-                                    _configuration.getEffigy(parent);
-                            if (parentEffigy != null) {
-                                // OK, we can put it into this other effigy.
-                                effigy.setName(parentEffigy.uniqueName(
-                                        entity.getName()));
-                                effigy.setContainer(parentEffigy);
-
-                                // Set the identifier of the effigy to be that
-                                // of the parent with the model name appended.
-                                effigy.identifier.setExpression(
-                                        parentEffigy.identifier.getExpression()
-                                        + "#" + entity.getName());
-
-                                // Set the url of the effigy to that of
-                                // the parent.
-                                effigy.url.setURL(parentEffigy.url.getURL());
-
-                                // Indicate success.
-                                isContainerSet = true;
-                            }
-                        }
-                        // If the above code did not find an effigy to put
-                        // the new effigy within, then put it into the
-                        // directory directly.
-                        if (!isContainerSet) {
-                            CompositeEntity directory = 
-                                    _configuration.getDirectory();
-                            effigy.setName(
-                                    directory.uniqueName(entity.getName()));
-                            effigy.setContainer(directory);
-                            effigy.identifier.setExpression(
-                                    entity.getFullName());
-                        }
-
-                        _configuration.createPrimaryTableau(effigy);
-                    }
-                } catch (Exception ex) {
-                    MessageHandler.error("Look inside failed: ", ex);
-                }
+            try {
+                _configuration.openModel(entity);
+            } catch (Exception ex) {
+                MessageHandler.error("Look inside failed: ", ex);
             }
 	}
     }

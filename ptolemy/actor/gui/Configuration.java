@@ -41,6 +41,7 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.moml.URLAttribute;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -97,79 +98,79 @@ public class Configuration extends CompositeEntity {
 
     /** Create the first tableau for the given effigy, using the
      *  tableau factory.  This is called after an effigy is first opened,
-     *  or when a new effigy is created.  The body of this method is
-     *  actually executed later, in the event thread, so that it can
-     *  safely interact with the user interface. If the method fails
+     *  or when a new effigy is created.  If the method fails
      *  to create a tableau, then it removes the effigy from the directory.
      *  This prevents us from having lingering effigies that have no
      *  user interface.
      */
-    public void createPrimaryTableau(final Effigy effigy) {
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
+    public Tableau createPrimaryTableau(final Effigy effigy) {
+        // NOTE: It used to be that the body of this method was
+        // actually executed later, in the event thread, so that it can
+        // safely interact with the user interface. 
+        // However, this does not appear to be necessary, and it
+        // makes it impossible to return the tableau.
+        // So we no longer do this.
 
-                // If the object referenced by the effigy contains
-                // an attribute that is an instance of TableauFactory,
-                // then use that factory to create the tableau.
-                // Otherwise, use the first factory encountered in the
-                // configuration that agrees to represent this effigy.
-                TableauFactory factory = null;
-                if (effigy instanceof PtolemyEffigy) {
-                    NamedObj model = ((PtolemyEffigy)effigy).getModel();
-                    if (model != null) {
-                        Iterator factories = model.attributeList(
-                                TableauFactory.class).iterator();
-                        // If there are more than one of these, use the first
-                        // one that agrees to open the model.
-                        while (factories.hasNext() && factory == null) {
-                            factory = (TableauFactory)factories.next();
-                            try {
-                                Tableau tableau = factory.createTableau(effigy);
-                                if (tableau != null) {
-                                    // The first tableau is a master.
-                                    tableau.setMaster(true);
-                                    tableau.setEditable(effigy.isModifiable());
-                                    tableau.show();
-                                    return;
-                                }
-                            } catch (Exception ex) {
-                                // Ignore so we keep trying.
-                                factory = null;
-                            }
-                        }
-                    }
-                }
-
-                // Defer to the configuration.
-                // Create a tableau if there is a tableau factory.
-                factory = (TableauFactory)getAttribute("tableauFactory");
-                if (factory != null) {
-                    // If this fails, we do not want the effigy to linger
+        // If the object referenced by the effigy contains
+        // an attribute that is an instance of TableauFactory,
+        // then use that factory to create the tableau.
+        // Otherwise, use the first factory encountered in the
+        // configuration that agrees to represent this effigy.
+        TableauFactory factory = null;
+        if (effigy instanceof PtolemyEffigy) {
+            NamedObj model = ((PtolemyEffigy)effigy).getModel();
+            if (model != null) {
+                Iterator factories = model.attributeList(
+                        TableauFactory.class).iterator();
+                // If there are more than one of these, use the first
+                // one that agrees to open the model.
+                while (factories.hasNext() && factory == null) {
+                    factory = (TableauFactory)factories.next();
                     try {
                         Tableau tableau = factory.createTableau(effigy);
-                        if (tableau == null) {
-                            throw new Exception(
-                                    "Tableau factory returns null.");
+                        if (tableau != null) {
+                            // The first tableau is a master.
+                            tableau.setMaster(true);
+                            tableau.setEditable(effigy.isModifiable());
+                            tableau.show();
+                            return tableau;
                         }
-                        // The first tableau is a master.
-                        tableau.setMaster(true);
-                        tableau.setEditable(effigy.isModifiable());
-                        tableau.show();
                     } catch (Exception ex) {
-                        // Note that we can't rethrow the exception here
-                        // because removing the effigy may result in
-                        // the application exiting.
-                        MessageHandler.error("Failed to open tableau for "
-                                + effigy.identifier.getExpression(), ex);
-                        try {
-                            effigy.setContainer(null);
-                        } catch (KernelException e) {
-                            throw new InternalErrorException(e.toString());
-                        }
+                        // Ignore so we keep trying.
+                        factory = null;
                     }
                 }
             }
-        });
+        }
+        // Defer to the configuration.
+        // Create a tableau if there is a tableau factory.
+        factory = (TableauFactory)getAttribute("tableauFactory");
+        if (factory != null) {
+            // If this fails, we do not want the effigy to linger
+            try {
+                Tableau tableau = factory.createTableau(effigy);
+                if (tableau == null) {
+                    throw new Exception("Tableau factory returns null.");
+                }
+                // The first tableau is a master.
+                tableau.setMaster(true);
+                tableau.setEditable(effigy.isModifiable());
+                tableau.show();
+                return tableau;
+            } catch (Exception ex) {
+                // Note that we can't rethrow the exception here
+                // because removing the effigy may result in
+                // the application exiting.
+                MessageHandler.error("Failed to open tableau for "
+                + effigy.identifier.getExpression(), ex);
+                try {
+                    effigy.setContainer(null);
+                } catch (KernelException e) {
+                    throw new InternalErrorException(e.toString());
+                }
+            }
+        }
+        return null;
     }
 
     /** Get the model directory.
@@ -269,6 +270,103 @@ public class Configuration extends CompositeEntity {
             effigy.showTableaux();
         }
     }
+
+    /** Open the specified Ptolemy II model. If a model already has
+     *  open tableaux, then put those in the foreground.  Otherwise,
+     *  create a new tableau.
+     *  @param entity The model.
+     *  @throws IllegalActionException If constructing an effigy or tableau
+     *   fails.
+     *  @throws NameDuplicationException If a name conflict occurs (this
+     *   should not be thrown).
+     */
+    public void openModel(NamedObj entity)
+            throws IllegalActionException, NameDuplicationException {
+
+        // If the entity defers its MoML definition to another,
+        // then open that other.
+        NamedObj deferredTo = entity.getMoMLInfo().deferTo;
+        if(deferredTo != null) {
+            entity = deferredTo;
+        }
+
+        // Search the model directory for an effigy that already
+        // refers to this model.
+        PtolemyEffigy effigy = getEffigy(entity);
+        if (effigy != null) {
+            // Found one.  Display all open tableaux.
+            effigy.showTableaux();
+        } else {
+            // There is no pre-existing effigy.  Create one.
+            effigy = new PtolemyEffigy(workspace());
+            effigy.setModel(entity);
+
+            // Look to see whether the model has a URLAttribute.
+            List attributes = entity.attributeList(URLAttribute.class);
+            if (attributes.size() > 0) {
+                // The entity has a URL, which was probably
+                // inserted by MoMLParser.
+                
+                URL url = ((URLAttribute)attributes.get(0)).getURL();
+                
+                // Set the url and identifier of the effigy.
+                effigy.url.setURL(url);
+                effigy.identifier.setExpression(url.toExternalForm());
+                
+                // Put the effigy into the directory
+                ModelDirectory directory = getDirectory();
+                effigy.setName(directory.uniqueName(entity.getName()));
+                effigy.setContainer(directory);
+                
+                // Create a default tableau.
+                createPrimaryTableau(effigy);
+            } else {
+                // If we get here, then we are looking inside a model
+                // that is defined within the same file as the parent,
+                // probably.  Create a new PtolemyEffigy
+                // and open a tableau for it.
+                
+                // Put the effigy inside the effigy of the parent,
+                // rather than directly into the directory.
+                NamedObj parent = (NamedObj)entity.getContainer();
+                boolean isContainerSet = false;
+                if (parent != null) {
+                    PtolemyEffigy parentEffigy = getEffigy(parent);
+                    if (parentEffigy != null) {
+                        // OK, we can put it into this other effigy.
+                        effigy.setName(parentEffigy.uniqueName(
+                                entity.getName()));
+                        effigy.setContainer(parentEffigy);
+                            
+                        // Set the identifier of the effigy to be that
+                        // of the parent with the model name appended.
+                        effigy.identifier.setExpression(
+                                parentEffigy.identifier.getExpression()
+                                + "#" + entity.getName());
+                                
+                        // Set the url of the effigy to that of
+                        // the parent.
+                        effigy.url.setURL(parentEffigy.url.getURL());
+                        
+                        // Indicate success.
+                        isContainerSet = true;
+                    }
+                }
+                // If the above code did not find an effigy to put
+                // the new effigy within, then put it into the
+                // directory directly.
+                if (!isContainerSet) {
+                    CompositeEntity directory = getDirectory();
+                    effigy.setName(directory.uniqueName(entity.getName()));
+                    effigy.setContainer(directory);
+                    effigy.identifier.setExpression(entity.getFullName());
+                }
+                        
+                createPrimaryTableau(effigy);
+            }
+        }
+    }
+
 
     /** If the argument is not null, then throw an exception.
      *  This ensures that the object is always at the top level of

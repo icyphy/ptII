@@ -53,6 +53,7 @@ import diva.canvas.interactor.AbstractInteractor;
 import diva.canvas.interactor.ActionInteractor;
 import diva.canvas.interactor.CompositeInteractor;
 import diva.canvas.interactor.GrabHandle;
+import diva.canvas.interactor.Interactor;
 import diva.graph.GraphException;
 import diva.graph.GraphPane;
 import diva.graph.NodeRenderer;
@@ -125,6 +126,8 @@ public class EditorGraphController extends ViewerGraphController {
        	diva.gui.GUIUtilities.addToolBarButton(
                    toolbar, _newInoutMultiportAction);
 
+        menu.addSeparator();
+
         // Add an item that adds new relations.
 	diva.gui.GUIUtilities.addMenuItem(menu, _newRelationAction);
 	diva.gui.GUIUtilities.addToolBarButton(toolbar, _newRelationAction);
@@ -174,6 +177,9 @@ public class EditorGraphController extends ViewerGraphController {
         // Create the interactor that drags new edges.
 	_linkCreator = new LinkCreator();
 	_linkCreator.setMouseFilter(_controlFilter);
+        // NOTE: Do not use _initializeInteraction() because we are
+        // still in the constructor, and that method is overloaded in
+        // derived classes.
 	((CompositeInteractor)_portController.getNodeInteractor())
                 .addInteractor(_linkCreator);
         ((CompositeInteractor)_entityPortController.getNodeInteractor())
@@ -186,6 +192,25 @@ public class EditorGraphController extends ViewerGraphController {
                 new MouseFilter(InputEvent.BUTTON1_MASK,0));
 	((CompositeInteractor)_entityPortController.getNodeInteractor())
                 .addInteractor(linkCreator2);
+    }
+
+    /** Initialize interactions for the specified controller.  This
+     *  method is called when a new controller is constructed. In this
+     *  class, this method attaches a link creator to the controller
+     *  if the controller is an instance of PortController,
+     *  EntityPortController, or RelationController.
+     *  @param controller The controller for which to initialize interaction.
+     */
+    protected void _initializeInteraction(PtolemyNodeController controller) {
+        super._initializeInteraction(controller);
+        if (controller instanceof PortController
+                || controller instanceof EntityPortController
+                || controller instanceof RelationController) {
+            Interactor interactor = controller.getNodeInteractor();
+            if (interactor instanceof CompositeInteractor) {
+                ((CompositeInteractor)interactor).addInteractor(_linkCreator);
+            }
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

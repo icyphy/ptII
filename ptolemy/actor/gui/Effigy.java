@@ -272,25 +272,27 @@ public class Effigy extends CompositeEntity {
      *  If there is no tableau contained directly by
      *  this effigy, then create one by calling createPrimaryTableau()
      *  in the configuration.
+     *  @return The first tableau encountered, or a new one if there are none.
      */
-    public void showTableaux() {
+    public Tableau showTableaux() {
         Iterator effigies = entityList(Effigy.class).iterator();
         while(effigies.hasNext()) {
             Effigy effigy = (Effigy)effigies.next();
             effigy.showTableaux();
         }
         Iterator tableaux = entityList(Tableau.class).iterator();
-        boolean foundOne = false;
+        Tableau result = null;
         while(tableaux.hasNext()) {
             Tableau tableau = (Tableau)tableaux.next();
             tableau.show();
-            foundOne = true;
+            if (result == null) result = tableau;
         }
-        if (!foundOne) {
+        if (result == null) {
             // Create a new tableau.
             Configuration configuration = (Configuration)toplevel();
-            configuration.createPrimaryTableau(this);
+            result = configuration.createPrimaryTableau(this);
         }
+        return result;
     }
 
     /** If this effigy is contained by another effigy, then return

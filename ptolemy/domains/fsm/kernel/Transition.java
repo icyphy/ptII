@@ -127,10 +127,6 @@ The <i>reset</i> parameter specifies whether the refinement of the destination
 state is reset when the transition is taken. There is no reset() method in the
 Actor interface, so the initialize() method of the refinement is called. Please
 note that this feature is still under development.
-<p>
-There is also an <i>exitAngle</i> parameter, which should take
-a value between -PI and PI.  This parameter determines the arc used
-to draw the transition.
 
 @author Xiaojun Liu and Edward A. Lee
 @version $Id$
@@ -163,6 +159,7 @@ public class Transition extends ComponentRelation {
 	outputActions = new OutputActionsAttribute(this, "outputActions");
         setActions = new CommitActionsAttribute(this, "setActions");
         exitAngle = new Parameter(this, "exitAngle");
+        exitAngle.setVisibility(Settable.NONE);
         exitAngle.setExpression("PI/5.0");
 	exitAngle.setTypeEquals(BaseType.DOUBLE);
         reset = new Parameter(this, "reset");

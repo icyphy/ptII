@@ -79,6 +79,7 @@ public class KernelGraphFrame extends GraphFrame {
 
         // Add any commands to graph menu and toolbar that the controller
         // wants in the graph menu and toolbar.
+        _graphMenu.addSeparator();
         _controller.addToMenuAndToolbar(_graphMenu, _toolbar);
     }
 

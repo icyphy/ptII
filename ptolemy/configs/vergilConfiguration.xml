@@ -16,30 +16,12 @@
     </entity>
     <entity name="FSM Editor" class="ptolemy.actor.gui.PtolemyEffigy$Factory">
       <entity name="blank" class="ptolemy.domains.fsm.kernel.FSMActor">
-        <property name="_library" class="ptolemy.moml.LibraryAttribute">
-          <configure>
-            <entity name="state library" class="ptolemy.kernel.CompositeEntity">
-              <input source="ptolemy/configs/annotation.xml"/>
-              <entity name="state" class="ptolemy.domains.fsm.kernel.State">
-                <property name="_centerName" class="ptolemy.kernel.util.Attribute"/>
-              </entity>
-            </entity>
-          </configure>
-        </property>
+        <input source="ptolemy/configs/fsmLibrary.xml"/>
       </entity>
     </entity>
     <entity name="Interface Automaton Editor" class="ptolemy.actor.gui.PtolemyEffigy$Factory">
       <entity name="blank" class="ptolemy.domains.fsm.kernel.InterfaceAutomaton">
-        <property name="_library" class="ptolemy.moml.LibraryAttribute">
-          <configure>
-            <entity name="state library" class="ptolemy.kernel.CompositeEntity">
-              <input source="ptolemy/configs/annotation.xml"/>
-              <entity name="state" class="ptolemy.domains.fsm.kernel.State">
-                <property name="_centerName" class="ptolemy.kernel.util.Attribute"/>
-              </entity>
-            </entity>
-          </configure>
-        </property>
+        <input source="ptolemy/configs/fsmLibrary.xml"/>
       </entity>
     </entity>
     <entity name="HTML Viewer" class="ptolemy.actor.gui.HTMLEffigyFactory"/>
@@ -87,30 +69,13 @@
             <input source="ptolemy/configs/annotation.xml"/>
     <!-- Blank composite actor. -->
     <entity name="typed composite actor" class="ptolemy.actor.TypedCompositeActor"/>
+    <entity name="modal model" class="ptolemy.vergil.ptolemy.fsm.modal.ModalModel"/>
     <entity name="continuous time composite actor" class="ptolemy.domains.ct.kernel.CTCompositeActor"/>
     <entity name="fsm actor" class="ptolemy.domains.fsm.kernel.FSMActor">
-        <property name="_library" class="ptolemy.moml.LibraryAttribute">
-          <configure>
-            <entity name="state library" class="ptolemy.kernel.CompositeEntity">
-              <input source="ptolemy/configs/annotation.xml"/>
-              <entity name="state" class="ptolemy.domains.fsm.kernel.State">
-                <property name="_centerName" class="ptolemy.kernel.util.Attribute"/>
-              </entity>
-            </entity>
-          </configure>
-        </property>
+      <input source="ptolemy/configs/fsmLibrary.xml"/>
     </entity>
     <entity name="interface automaton" class="ptolemy.domains.fsm.kernel.InterfaceAutomaton">
-        <property name="_library" class="ptolemy.moml.LibraryAttribute">
-          <configure>
-            <entity name="state library" class="ptolemy.kernel.CompositeEntity">
-              <input source="ptolemy/configs/annotation.xml"/>
-              <entity name="state" class="ptolemy.domains.fsm.kernel.State">
-                <property name="_centerName" class="ptolemy.kernel.util.Attribute"/>
-              </entity>
-            </entity>
-          </configure>
-        </property>
+      <input source="ptolemy/configs/fsmLibrary.xml"/>
     </entity>
           </group>
         ?>

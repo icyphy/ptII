@@ -1,10 +1,10 @@
-# Makefile for the Ptolemy runtime configs
+# Makefile for modal model package.
 #
 # @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2000-2001 The Regents of the University of California.
+# @Copyright (c) 1998-2001 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,12 +29,14 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/configs
+# This directory contains polymorphic actors.
 
-DIRS =		doc test
+ME =		ptolemy/vergil/ptolemy/fsm/modal
+
+DIRS =
 
 # Root of the Java directory
-ROOT =		../..
+ROOT =		../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -43,56 +45,49 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	configs
+PTPACKAGE = 	modal
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR =
 
-JSRCS =
-
-# These files go into PTCLASSALLJAR
-OTHER_FILES_TO_BE_JARED = \
-	annotation.xml \
-	fsmLibrary.xml \
-	intro.htm \
-	introDSP.htm \
-	introPtiny.htm \
-	runConfiguration.xml \
-	runPanelConfiguration.xml \
-	runWelcomeWindow.xml \
-	vergilConfiguration.xml \
-	vergilConfigurationDSP.xml \
-	vergilConfigurationPtiny.xml \
-	vergilWelcomeWindow.xml
-
-# Include these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-		doc/doc.jar
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS =
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
-EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+# Keep this list alphabetized.
+# Except: NOTE: HTMLEffigy has to come before Configuration
+# because its inner class, HTMLEffigy$Factory, is referenced.
+JSRCS = \
+	HierarchicalStateController.java \
+	HierarchicalStateControllerFactory.java \
+	ModalModel.java \
+	ModalPort.java
+
+# Files to be included in the jar file
+OTHER_FILES_TO_BE_JARED =
+
+# Note that PtolemyIISmallIcon.gif is also in doc/img.
+# We place a duplicate copy here to make it easy to ship
+# jar files that contain all the appropriate images.
+EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 MISC_FILES =	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make realclean removes OPTIONAL_FILES
+# make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES =
 
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
-	@echo "nothing need be done for make all in this directory"
 
 install: jclass jars
-	@echo "nothing need be done for make install in this directory"
 
 depend:
 	@echo "no dependencies in this directory"
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
-
-
-

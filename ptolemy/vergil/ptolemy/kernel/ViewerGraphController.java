@@ -32,6 +32,7 @@ package ptolemy.vergil.ptolemy.kernel;
 
 import java.util.List;
 
+import diva.canvas.interactor.Interactor;
 import diva.canvas.interactor.SelectionDragger;
 import diva.canvas.interactor.SelectionInteractor;
 import diva.graph.EdgeController;
@@ -179,18 +180,40 @@ public class ViewerGraphController extends PtolemyGraphController {
 
         // Create and set up the selection dragger
         _selectionDragger = new SelectionDragger(pane);
-	_selectionDragger.addSelectionInteractor(
+
+        // NOTE: Do not call _initializeInteraction to do this because
+        // that is overloaded in derived classes, and we are still
+        // in a constructor call.
+        _selectionDragger.addSelectionInteractor(
                 (SelectionInteractor)_entityController.getNodeInteractor());
-	_selectionDragger.addSelectionInteractor(
+        _selectionDragger.addSelectionInteractor(
                 (SelectionInteractor)_relationController.getNodeInteractor());
-	_selectionDragger.addSelectionInteractor(
+        _selectionDragger.addSelectionInteractor(
                 (SelectionInteractor)_portController.getNodeInteractor());
-	_selectionDragger.addSelectionInteractor(
-                (SelectionInteractor)_linkController.getEdgeInteractor());
-	_selectionDragger.addSelectionInteractor(
+        _selectionDragger.addSelectionInteractor(
                 (SelectionInteractor)_attributeController.getNodeInteractor());
 
+        // Link controller is not a PtolemyNodeController, so it has
+        // to be done directly.
+	_selectionDragger.addSelectionInteractor(
+                (SelectionInteractor)_linkController.getEdgeInteractor());
+
         super.initializeInteraction();
+    }
+
+    /** Initialize interactions for the specified controller.  This
+     *  method is called when a new controller is constructed. In this
+     *  class, this method attaches a selection dragger to the controller
+     *  if the controller.
+     *  @param controller The controller for which to initialize interaction.
+     */
+    protected void _initializeInteraction(PtolemyNodeController controller) {
+        super._initializeInteraction(controller);
+        Interactor interactor = controller.getNodeInteractor();
+        if (interactor instanceof SelectionInteractor) {
+            _selectionDragger.addSelectionInteractor(
+                    (SelectionInteractor)interactor);
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

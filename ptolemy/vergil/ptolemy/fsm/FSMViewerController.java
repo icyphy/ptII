@@ -30,6 +30,7 @@
 
 package ptolemy.vergil.ptolemy.fsm;
 
+import diva.canvas.interactor.Interactor;
 import diva.canvas.interactor.SelectionDragger;
 import diva.canvas.interactor.SelectionInteractor;
 import diva.graph.GraphPane;
@@ -77,6 +78,9 @@ public class FSMViewerController extends PtolemyGraphController {
         NodeController result = super.getNodeController(object);
         if (result != null) {
             // Add to the selection dragger.
+            // NOTE: Do not use _initializeInteraction() because we are
+            // still in the constructor, and that method is overloaded in
+            // derived classes.
             // NOTE: This should not be null, but in case it is,
             // it is better to just have the selection dragger not
             // work than to get a null pointer exception.
@@ -148,17 +152,39 @@ public class FSMViewerController extends PtolemyGraphController {
         GraphPane pane = getGraphPane();
 
         // Create and set up the selection dragger
-	SelectionDragger _selectionDragger = new SelectionDragger(pane);
+        _selectionDragger = new SelectionDragger(pane);
+
+        // NOTE: Do not use _initializeInteraction() because we are
+        // still in the constructor, and that method is overloaded in
+        // derived classes.
 	_selectionDragger.addSelectionInteractor(
                 (SelectionInteractor)_attributeController.getNodeInteractor());
-        _selectionDragger.addSelectionInteractor(
+	_selectionDragger.addSelectionInteractor(
                 (SelectionInteractor)_portController.getNodeInteractor());
 	_selectionDragger.addSelectionInteractor(
                 (SelectionInteractor)_stateController.getNodeInteractor());
+
+        // Transition controller is not a PtolemyNodeController, so it has
+        // to be done directly.
 	_selectionDragger.addSelectionInteractor(
                 (SelectionInteractor)_transitionController.getEdgeInteractor());
 
         super.initializeInteraction();
+    }
+
+    /** Initialize interactions for the specified controller.  This
+     *  method is called when a new controller is constructed. In this
+     *  class, this method attaches a selection dragger to the controller
+     *  if the controller.
+     *  @param controller The controller for which to initialize interaction.
+     */
+    protected void _initializeInteraction(PtolemyNodeController controller) {
+        super._initializeInteraction(controller);
+        Interactor interactor = controller.getNodeInteractor();
+        if (interactor instanceof SelectionInteractor) {
+            _selectionDragger.addSelectionInteractor(
+                    (SelectionInteractor)interactor);
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

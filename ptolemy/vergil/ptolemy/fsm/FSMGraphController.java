@@ -51,6 +51,7 @@ import diva.canvas.interactor.AbstractInteractor;
 import diva.canvas.interactor.ActionInteractor;
 import diva.canvas.interactor.CompositeInteractor;
 import diva.canvas.interactor.GrabHandle;
+import diva.canvas.interactor.Interactor;
 import diva.graph.GraphException;
 import diva.graph.GraphPane;
 import diva.graph.NodeRenderer;
@@ -59,16 +60,19 @@ import diva.gui.toolbox.FigureIcon;
 import ptolemy.gui.MessageHandler;
 import ptolemy.domains.fsm.kernel.State;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.SingletonAttribute;
+import ptolemy.moml.LibraryAttribute;
 import ptolemy.moml.Location;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.vergil.ptolemy.GraphFrame;
 import ptolemy.vergil.ptolemy.kernel.AttributeController;
 import ptolemy.vergil.ptolemy.kernel.PortController;
+import ptolemy.vergil.ptolemy.kernel.PtolemyNodeController;
 import ptolemy.vergil.toolbox.FigureAction;
 
 //////////////////////////////////////////////////////////////////////////
@@ -120,6 +124,7 @@ public class FSMGraphController extends FSMViewerController {
                    toolbar, _newInoutMultiportAction);
 
         // Add an item that adds new states.
+        menu.addSeparator();
 	diva.gui.GUIUtilities.addMenuItem(menu, _newStateAction);
         diva.gui.GUIUtilities.addToolBarButton(toolbar, _newStateAction);
     }
@@ -157,13 +162,27 @@ public class FSMGraphController extends FSMViewerController {
 	// Create the interactor that drags new edges.
 	_linkCreator = new LinkCreator();
 	_linkCreator.setMouseFilter(_controlFilter);
-	((CompositeInteractor)_stateController
-                .getNodeInteractor()).addInteractor(_linkCreator);
+        // NOTE: Do not use _initializeInteraction() because we are
+        // still in the constructor, and that method is overloaded in
+        // derived classes.
+        ((CompositeInteractor)_stateController.getNodeInteractor())
+                .addInteractor(_linkCreator);
+    }
 
-        // Create a listener that creates new states.
-	_stateCreator = new StateCreator();
-        _stateCreator.setMouseFilter(_controlFilter);
-        pane.getBackgroundEventLayer().addInteractor(_stateCreator);
+    /** Initialize interactions for the specified controller.  This
+     *  method is called when a new controller is constructed. In this
+     *  class, this method attaches a link creator to the controller
+     *  if the controller is an instance of FSMStateController.
+     *  @param controller The controller for which to initialize interaction.
+     */
+    protected void _initializeInteraction(PtolemyNodeController controller) {
+        super._initializeInteraction(controller);
+        if (controller instanceof FSMStateController) {
+            Interactor interactor = controller.getNodeInteractor();
+            if (interactor instanceof CompositeInteractor) {
+                ((CompositeInteractor)interactor).addInteractor(_linkCreator);
+            }
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -171,9 +190,6 @@ public class FSMGraphController extends FSMViewerController {
 
     /** The interactor that interactively creates edges. */
     private LinkCreator _linkCreator;
-
-    /** The interactor that interactively creates states. */
-    private StateCreator _stateCreator;
 
     /** The action for creating states. */
     private NewStateAction _newStateAction = new NewStateAction();
@@ -317,9 +333,9 @@ public class FSMGraphController extends FSMViewerController {
 	    // Standard toolbar icons are 25x25 pixels.
 	    FigureIcon icon = new FigureIcon(figure, 25, 25, 1, true);
 	    putValue(diva.gui.GUIUtilities.LARGE_ICON, icon);
-	    putValue("tooltip", "Control-click to create a new state.");
+	    putValue("tooltip", "New State.");
 	    putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
-                    new Integer(KeyEvent.VK_S));
+                    new Integer(KeyEvent.VK_W));
 	}
 
         /** Execute the action. */
@@ -349,26 +365,49 @@ public class FSMGraphController extends FSMViewerController {
 		y = getY();
 	    }
 
-	    FSMGraphModel graphModel =
-		(FSMGraphModel)getGraphModel();
+	    FSMGraphModel graphModel = (FSMGraphModel)getGraphModel();
 	    final double finalX = x;
 	    final double finalY = y;
 	    final CompositeEntity toplevel = graphModel.getPtolemyModel();
 
 	    final String stateName = toplevel.uniqueName("state");
 	    // Create the state.
-	    StringBuffer moml = new StringBuffer();
-	    final String locationName = "location1";
-            moml.append("<entity name=\"" + stateName +
-                    "\" class=\"ptolemy.domains.fsm.kernel.State\">\n");
-	    moml.append("<property name=\"" + locationName +
-                    "\" class=\"ptolemy.moml.Location\"/>\n");
-	    moml.append("<property name=\"_centerName\"" +
-                    " class=\"ptolemy.kernel.util.SingletonAttribute\"/>\n");
-	    moml.append("</entity>\n");
+	    String moml = null;
+	    final String locationName = "_location";
+
+            // Try to get the class name for the state from the library,
+            // so that the library and the toolbar are assured of creating
+            // the same object.
+            String className = "ptolemy.domains.fsm.kernel.State";
+            try {
+                LibraryAttribute attribute = (LibraryAttribute)toplevel
+                        .getAttribute("_library", LibraryAttribute.class);
+                if (attribute != null) {
+                    CompositeEntity library = attribute.getLibrary();
+                    Entity prototype = library.getEntity("state");
+                    if (prototype != null) {
+                        moml = prototype.exportMoML(stateName);
+                        // FIXME: Get location name from prototype.
+                    }
+                }
+            } catch (Exception ex) {
+                // Ignore and use the default.
+            }
+            if (moml == null) {
+                moml = new String("<entity name=\""
+                        + stateName
+                        + "\" class=\"ptolemy.domains.fsm.kernel.State\">\n"
+                        + "<property name=\""
+                        + locationName
+                        + "\" class=\"ptolemy.moml.Location\"/>\n"
+                        + "<property name=\"_centerName\""
+                        + " class=\"ptolemy.kernel.util.SingletonAttribute\""
+                        + "/>\n"
+                        + "</entity>\n");
+            }
 
 	    ChangeRequest request =
-		new MoMLChangeRequest(this, toplevel, moml.toString()) {
+		    new MoMLChangeRequest(this, toplevel, moml) {
                 protected void _execute() throws Exception {
                     super._execute();
                     // Set the location of the icon.
@@ -378,14 +417,12 @@ public class FSMGraphController extends FSMViewerController {
                     // gets around to handling this, it will draw
                     // the icon at this location.
 
-                    // NOTE: Have to know whether this is an entity,
-                    // port, etc. Since this is a state, it is safe
-                    // to assume it is an entity.
-                    NamedObj newObject =
-			toplevel.getEntity(stateName);
+                    NamedObj newObject = toplevel.getEntity(stateName);
                     Location location =
-			(Location) newObject.getAttribute(locationName);
-
+			    (Location) newObject.getAttribute(locationName);
+                    if (location == null) {
+                        location = new Location(newObject, locationName);
+                    }
                     double point[] = new double[2];
                     point[0] = ((int)finalX);
                     point[1] = ((int)finalY);
@@ -398,17 +435,6 @@ public class FSMGraphController extends FSMViewerController {
 	    } catch (Exception ex) {
 		throw new GraphException(ex);
 	    }
-	}
-    }
-
-    ///////////////////////////////////////////////////////////////
-    //// State Creator
-
-    /** An interactor for the new state action.*/
-    protected class StateCreator extends ActionInteractor {
-	public StateCreator() {
-	    super();
-            setAction(_newStateAction);
 	}
     }
 }

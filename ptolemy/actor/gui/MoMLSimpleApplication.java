@@ -41,9 +41,7 @@ import ptolemy.moml.MoMLParser;
 //// MoMLSimpleApplication
 /** A simple application that reads in a .xml file as a command
 line argument and runs it.
-MoMLApplication sets the look and feel, and
-ptolemy.actor.gui.Configuration.createPrimaryTableau() calls
-javax.swing.SwingUtilities.invokeLater(), which starts up Swing,
+MoMLApplication sets the look and feel, which starts up Swing,
 so we can't use MoMLApplication for non-graphical simulations.
 
 @author Christopher Hylands

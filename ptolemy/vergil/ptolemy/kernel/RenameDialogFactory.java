@@ -32,7 +32,6 @@ package ptolemy.vergil.ptolemy.kernel;
 
 import ptolemy.actor.gui.RenameDialog;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.gui.ComponentDialog;
 import ptolemy.vergil.toolbox.MenuItemFactory;
 
 import diva.gui.toolbox.JContextMenu;
