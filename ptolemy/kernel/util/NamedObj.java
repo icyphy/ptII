@@ -677,12 +677,12 @@ public class NamedObj implements Nameable, Debuggable,
                         + "/xml/dtd/MoML_1.dtd\">\n");
             }
             // Add the version.
-            output.write(_getIndentPrefix(depth)
-                    + "<entity name=\"_createdBy\" " 
-                    + "class=\"ptolemy.kernel.util.VersionAttribute\" "
-                    + "value=\""
-                    + VersionAttribute.CURRENT_VERSION.getExpression()
-                    + "\">\n");
+//              output.write(_getIndentPrefix(depth)
+//                      + "<entity name=\"_createdBy\" " 
+//                      + "class=\"ptolemy.kernel.util.VersionAttribute\" "
+//                      + "value=\""
+//                      + VersionAttribute.CURRENT_VERSION.getExpression()
+//                      + "\">\n");
         }
         output.write(_getIndentPrefix(depth)
                 + "<"
