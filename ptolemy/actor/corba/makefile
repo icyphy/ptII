@@ -39,9 +39,12 @@
 #  Universe
 # Note that none of these classes would be relevant to FSMs, for example.
 
+# Note: To compile the CorbaActor.idl, use:
+# prompt> idltojava -p ptolemy.actor.corba -j ../../.. CorbaActor.idl
+
 ME =		ptolemy/actor/corba
 
-DIRS = 		
+DIRS = 		CorbaActor	
 
 # Root of the Ptolemy II directory
 ROOT =		../../..

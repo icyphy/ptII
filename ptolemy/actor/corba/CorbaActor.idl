@@ -27,29 +27,34 @@
 @AcceptedRating Red (moderator@eecs.berkeley.edu)
 */
 
-module CorbaActor {
+#pragma javaPackage "ptolemy.actor.corba"
+
+module util {
+	/* Exception for generic illegal actions on the server side.
+	*/
 	exception CorbaIllegalActionException{
 		string message;
 	};
-
+	//Exception for unknow parameter name when passing a parameter.
 	exception CorbaUnknownParamException {
 		string paramName;
 		string message;	
 	};
-
+	//Exception for illegal value when passing data.
 	exception CorbaIllegalValueException{
 		string message;
 	};
-
+	//Exception for unknow port when accessing a remote port/
 	exception CorbaUnknownPortException{
 		string portName;
 		string message;	
 	};
-
+	//Exception for channel indeces.
 	exception CorbaIndexOutofBoundException{
 		short index;
 	};
-
+	//A CORBA compatible interface that implements the execution 
+	//methods of Ptolemy II.
 	interface CorbaActor {
 		void fire() raises (CorbaIllegalActionException);
 		string getParameter(in string paramName)		
