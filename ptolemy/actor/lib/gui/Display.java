@@ -70,7 +70,7 @@ converge to a fixed point.
 @author  Yuhong Xiong, Edward A. Lee
 @version $Id$
  */
-public class Display extends Sink implements Placeable, SequenceActor {
+public class Display extends Sink implements Placeable {
 
     /** Construct an actor with an input multiport of type GENERAL.
      *  @param container The container.
