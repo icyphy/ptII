@@ -43,35 +43,40 @@ import ptolemy.lang.java.*;
 import ptolemy.lang.java.nodetypes.*;
 
 /** A class containing declarations created by the compiler of
- *  of known fields and methods in the ptolemy.actor and ptolemy.data
- *  packages.
- *
- *  @author Jeff Tsay
- */
+of known fields and methods in the ptolemy.actor and ptolemy.data
+packages.
+@author Jeff Tsay
+@version: $Id$
+*/
 public class PtolemyTypeIdentifier extends TypeIdentifier {
 
+    /** Empty constructor that does nothing. */
     public PtolemyTypeIdentifier() {}
 
-    /** Return a new TypeNode which reprents the type of the data encapsulated by
-     *  the token class of the argument kind. Throw an IllegalArgumentException
-     *  if the kind is not a kind of token. If kind is TYPE_KIND_TOKEN or
-     *  TYPE_KIND_SCALAR, return IntTypeNode.instance. If kind is
-     *  TYPE_KIND_MATRIX_TOKEN, return an array type with base type
-     *  IntTypeNode.instance and dimension 2.
+    /** Return a new TypeNode which reprents the type of the data
+     *  encapsulated by the token class of the argument kind. Throw an
+     *  IllegalArgumentException if the kind is not a kind of
+     *  token. If kind is TYPE_KIND_TOKEN or TYPE_KIND_SCALAR, return
+     *  IntTypeNode.instance. If kind is TYPE_KIND_MATRIX_TOKEN,
+     *  return an array type with base type IntTypeNode.instance and
+     *  dimension 2.
      */
     public TypeNode encapsulatedDataType(int kind) {
         if (!isSupportedTokenKind(kind)) {
-            throw new IllegalArgumentException("kind " + kind + " is not a token kind");
+            throw new IllegalArgumentException("kind "
+                    + kind + " is not a token kind");
         }
 
-        return (TypeNode) _TOKEN_CONTAINED_TYPES[kind - TYPE_KIND_TOKEN].clone();
+        return
+            (TypeNode) _TOKEN_CONTAINED_TYPES[kind - TYPE_KIND_TOKEN].clone();
     }
 
-    /** Return a new TypeNode which reprents the type of the data encapsulated by
-     *  the token class of the argument Ptolemy type. Throw an
-     *  IllegalArgumentException if the Ptolemy type is not supported. If kind is
-     *  TYPE_KIND_TOKEN or TYPE_KIND_SCALAR, return IntTypeNode.instance.
-     *  If kind is TYPE_KIND_MATRIX_TOKEN, return an array type with base type
+    /** Return a new TypeNode which reprents the type of the data
+     *  encapsulated by the token class of the argument Ptolemy
+     *  type. Throw an IllegalArgumentException if the Ptolemy type is
+     *  not supported. If kind is TYPE_KIND_TOKEN or TYPE_KIND_SCALAR,
+     *  return IntTypeNode.instance.  If kind is
+     *  TYPE_KIND_MATRIX_TOKEN, return an array type with base type
      *  IntTypeNode.instance and dimension 2.
      */
     public TypeNode encapsulatedDataType(Type type) {
@@ -102,9 +107,9 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
                 (kind <= TYPE_KIND_FIX_MATRIX_TOKEN));
     }
 
-    /** Return true iff the kind represents an exception in Ptolemy. This method
-     *  should be overridden in derived classes if additional exceptions are
-     *  thrown in a domain.
+    /** Return true iff the kind represents an exception in
+     *  Ptolemy. This method should be overridden in derived classes
+     *  if additional exceptions are thrown in a domain.
      */
     public boolean isPtolemyExceptionKind(int kind) {
         return (/*(kind >= TYPE_KIND_CHANGE_FAILED_EXCEPTION) &&*/
@@ -112,9 +117,9 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
                 (kind <= TYPE_KIND_NO_TOKEN_EXCEPTION));
     }
 
-    /** Return true iff the kind represents a runtime exception in Ptolemy. This method
-     *  should be overridden in derived classes if additional runtime exceptions are
-     *  thrown in a domain.
+    /** Return true iff the kind represents a runtime exception in
+     *  Ptolemy. This method should be overridden in derived classes
+     *  if additional runtime exceptions are thrown in a domain.
      */
     public boolean isPtolemyRuntimeExceptionKind(int kind) {
         return ((kind >= TYPE_KIND_INTERNAL_ERROR_EXCEPTION) &&
@@ -127,9 +132,10 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
                 (kind <= TYPE_KIND_FIX_TOKEN));
     }
 
-    /** Return true iff the kind represents a TypedAtomicActor or a subclass of it
-     *  that is valid in the given domain. This method should be overridden in
-     *  derived classes if there are additional actor classes in a domain.
+    /** Return true iff the kind represents a TypedAtomicActor or a
+     *  subclass of it that is valid in the given domain. This method
+     *  should be overridden in derived classes if there are
+     *  additional actor classes in a domain.
      */
     public boolean isSupportedActorKind(int kind) {
         return (kind == TYPE_KIND_TYPED_ATOMIC_ACTOR);
@@ -150,9 +156,10 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
                 (kind <= TYPE_KIND_FIX_MATRIX_TOKEN));
     }
 
-    /** Return an integer representing the user type that has the specified ClassDecl,
-     *  which may be a special type in Ptolemy. If the type is not a special type,
-     *  return the integer given by super.kindOfClassDecl(classDecl).
+    /** Return an integer representing the user type that has the
+     *  specified ClassDecl, which may be a special type in
+     *  Ptolemy. If the type is not a special type, return the integer
+     *  given by super.kindOfClassDecl(classDecl).
      */
     public int kindOfClassDecl(ClassDecl classDecl) {
         for (int i = 0; i < _KNOWN_CLASS_DECLS.length; i++) {
@@ -163,16 +170,18 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
         return super.kindOfClassDecl(classDecl);
     }
 
-    /** Return the kind of token that would be returned by getElementAsToken() on
-     *  a Token of the given kind. Throw an IllegalArgumentException if the kind is
-     *  not a MatrixToken kind. If kind is TYPE_KIND_MATRIX_TOKEN, return
-     *  TYPE_KIND_INT.
+    /** Return the kind of token that would be returned by
+     *  getElementAsToken() on a Token of the given kind. Throw an
+     *  IllegalArgumentException if the kind is not a MatrixToken
+     *  kind. If kind is TYPE_KIND_MATRIX_TOKEN, return TYPE_KIND_INT.
      */
     public int kindOfMatrixElement(int kind) {
         if ((kind < TYPE_KIND_MATRIX_TOKEN) ||
                 (kind > TYPE_KIND_FIX_MATRIX_TOKEN)) {
-            throw new IllegalArgumentException("matrixElementTokenKind() : kind ("
-                    + kind + ") is not a MatrixToken kind,");
+            throw new IllegalArgumentException("matrixElementTokenKind() "
+                    + "kind ("
+                    + kind
+                    + ") is not a MatrixToken kind,");
         }
 
         return _MATRIX_ELEMENT_TOKEN_KINDS[kind - TYPE_KIND_MATRIX_TOKEN];
@@ -187,7 +196,8 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
                 return i + TYPE_KIND_TOKEN;
             }
         }
-        throw new RuntimeException("kindOfTokenType(): type unknown, type = " + type);
+        throw new RuntimeException("kindOfTokenType(): type unknown, type = "
+                + type);
         //return TYPE_KIND_UNKNOWN;
     }
 
@@ -207,14 +217,14 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
         return (TypeNameNode) _KNOWN_TYPENAMENODES[kind - TYPE_KINDS].clone();
     }
 
-    // mathematical kinds
+    // Mathematical kinds.
     public static final int TYPE_KIND_COMPLEX              = TYPE_KINDS;
     public static final int TYPE_KIND_FIX_POINT            = TYPE_KIND_COMPLEX + 1;
 
-    // actor kind
+    // Actor kinds.
     public static final int TYPE_KIND_TYPED_ATOMIC_ACTOR   = TYPE_KIND_FIX_POINT + 1;
 
-    // token kinds
+    // Token kinds.
     public static final int TYPE_KIND_TOKEN                = TYPE_KIND_TYPED_ATOMIC_ACTOR + 1;
     public static final int TYPE_KIND_BOOLEAN_TOKEN        = TYPE_KIND_TOKEN + 1;
     public static final int TYPE_KIND_SCALAR_TOKEN         = TYPE_KIND_BOOLEAN_TOKEN + 1;
@@ -225,7 +235,14 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
     public static final int TYPE_KIND_FIX_TOKEN            = TYPE_KIND_COMPLEX_TOKEN + 1;
     public static final int TYPE_KIND_OBJECT_TOKEN         = TYPE_KIND_FIX_TOKEN + 1;
     public static final int TYPE_KIND_STRING_TOKEN         = TYPE_KIND_OBJECT_TOKEN + 1;
+
+    /*
+    public static final int TYPE_KIND_ARRAY_TOKEN         = TYPE_KIND_STRING_TOKEN + 1;
+    public static final int TYPE_KIND_INT_ARRAY_TOKEN         = TYPE_KIND_ARRAY_TOKEN + 1;
+    public static final int TYPE_KIND_MATRIX_TOKEN         = TYPE_KIND_INT_ARRAY_TOKEN + 1;
+    */
     public static final int TYPE_KIND_MATRIX_TOKEN         = TYPE_KIND_STRING_TOKEN + 1;
+
     public static final int TYPE_KIND_BOOLEAN_MATRIX_TOKEN = TYPE_KIND_MATRIX_TOKEN + 1;
     public static final int TYPE_KIND_INT_MATRIX_TOKEN     = TYPE_KIND_BOOLEAN_MATRIX_TOKEN + 1;
     public static final int TYPE_KIND_DOUBLE_MATRIX_TOKEN  = TYPE_KIND_INT_MATRIX_TOKEN + 1;
@@ -235,17 +252,13 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
 
     public static final int TYPE_KIND_DUMMY_TOKEN          = TYPE_KIND_FIX_MATRIX_TOKEN + 1;
 
-    // parameter kind
+    // Parameter kind.
     public static final int TYPE_KIND_PARAMETER            = TYPE_KIND_DUMMY_TOKEN + 1;
 
-    // port kind
+    // Port kind.
     public static final int TYPE_KIND_TYPED_IO_PORT        = TYPE_KIND_PARAMETER + 1;
 
-    // Ptolemy exception kinds
-    // public static final int TYPE_KIND_CHANGE_FAILED_EXCEPTION
-    // = TYPE_KIND_TYPED_IO_PORT + 1;
-    // public static final int TYPE_KIND_ILLEGAL_ACTION_EXCEPTION
-    // = TYPE_KIND_CHANGE_FAILED_EXCEPTION + 1;
+    // Ptolemy exception kinds.
     public static final int TYPE_KIND_ILLEGAL_ACTION_EXCEPTION
     = TYPE_KIND_TYPED_IO_PORT + 1;
     public static final int TYPE_KIND_KERNEL_EXCEPTION
@@ -267,26 +280,24 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
     public static final int TYPE_KIND_NO_TOKEN_EXCEPTION
     = TYPE_KIND_NO_ROOM_EXCEPTION + 1;
 
-    // actor interface kind
+    // Actor interface kind.
     public static final int TYPE_KIND_ACTOR
     = TYPE_KIND_NO_TOKEN_EXCEPTION + 1;
 
     public static final int LAST_PTOLEMY_TYPE_KIND = TYPE_KIND_ACTOR;
 
-    // atomic actor type
+    // Atomic actor type.
     public static final ClassDecl TYPED_ATOMIC_ACTOR_DECL;
     public static final TypeNameNode TYPED_ATOMIC_ACTOR_TYPE;
 
-    // mathematical types
-
+    // Mathematical types.
     public static final ClassDecl COMPLEX_DECL;
     public static final TypeNameNode COMPLEX_TYPE;
 
     public static final ClassDecl FIX_POINT_DECL;
     public static final TypeNameNode FIX_POINT_TYPE;
 
-    // token types
-
+    // Token types.
     public static final ClassDecl TOKEN_DECL;
     public static final TypeNameNode TOKEN_TYPE;
 
@@ -317,6 +328,13 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
     public static final ClassDecl OBJECT_TOKEN_DECL;
     public static final TypeNameNode OBJECT_TOKEN_TYPE;
 
+    /*public static final ClassDecl ARRAY_TOKEN_DECL;
+    public static final TypeNameNode ARRAY_TOKEN_TYPE;
+
+    public static final ClassDecl INT_ARRAY_TOKEN_DECL;
+    public static final TypeNameNode INT_ARRAY_TOKEN_TYPE;
+    */
+
     public static final ClassDecl MATRIX_TOKEN_DECL;
     public static final TypeNameNode MATRIX_TOKEN_TYPE;
 
@@ -338,22 +356,19 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
     public static final ClassDecl FIX_MATRIX_TOKEN_DECL;
     public static final TypeNameNode FIX_MATRIX_TOKEN_TYPE;
 
-    // a lower bound for type resolution
+    // A lower bound for type resolution.
     public static final ClassDecl DUMMY_LOWER_BOUND;
     public static final TypeNameNode DUMMY_LOWER_BOUND_TYPE;
 
-    // parameter type
+    // Parameter type.
     public static final ClassDecl PARAMETER_DECL;
     public static final TypeNameNode PARAMETER_TYPE;
 
-    // port type
+    // Port type.
     public static final ClassDecl TYPED_IO_PORT_DECL;
     public static final TypeNameNode TYPED_IO_PORT_TYPE;
 
-    // kernel exception types
-    //public static final ClassDecl CHANGE_FAILED_EXCEPTION_DECL;
-    //public static final TypeNameNode CHANGE_FAILED_EXCEPTION_TYPE;
-
+    // Kernel exception types.
     public static final ClassDecl ILLEGAL_ACTION_EXCEPTION_DECL;
     public static final TypeNameNode ILLEGAL_ACTION_EXCEPTION_TYPE;
 
@@ -384,7 +399,7 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
     public static final ClassDecl NO_TOKEN_EXCEPTION_DECL;
     public static final TypeNameNode NO_TOKEN_EXCEPTION_TYPE;
 
-    // actor interface type
+    // Actor interface type.
     public static final ClassDecl ACTOR_DECL;
     public static final TypeNameNode ACTOR_TYPE;
 
@@ -415,14 +430,15 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
         TYPE_KIND_TOKEN, TYPE_KIND_BOOLEAN_TOKEN, TYPE_KIND_SCALAR_TOKEN,
         TYPE_KIND_INT_TOKEN, TYPE_KIND_DOUBLE_TOKEN, TYPE_KIND_LONG_TOKEN,
         TYPE_KIND_COMPLEX_TOKEN, TYPE_KIND_FIX_TOKEN, TYPE_KIND_OBJECT_TOKEN,
-        TYPE_KIND_STRING_TOKEN, TYPE_KIND_MATRIX_TOKEN,
+        TYPE_KIND_STRING_TOKEN, 
+        /*TYPE_KIND_ARRAY_TOKEN, TYPE_KIND_INT_ARRAY_TOKEN,*/
+        TYPE_KIND_MATRIX_TOKEN,
         TYPE_KIND_BOOLEAN_MATRIX_TOKEN, TYPE_KIND_INT_MATRIX_TOKEN,
         TYPE_KIND_DOUBLE_MATRIX_TOKEN, TYPE_KIND_LONG_MATRIX_TOKEN,
         TYPE_KIND_COMPLEX_MATRIX_TOKEN, TYPE_KIND_FIX_MATRIX_TOKEN,
         TYPE_KIND_DUMMY_TOKEN,
         TYPE_KIND_PARAMETER,
         TYPE_KIND_TYPED_IO_PORT,
-        /*TYPE_KIND_CHANGE_FAILED_EXCEPTION,*/
 	TYPE_KIND_ILLEGAL_ACTION_EXCEPTION,
         TYPE_KIND_KERNEL_EXCEPTION, TYPE_KIND_NAME_DUPLICATION_EXCEPTION,
         TYPE_KIND_NO_SUCH_ITEM_EXCEPTION, TYPE_KIND_TYPE_CONFLICT_EXCEPTION,
@@ -437,7 +453,9 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
         BaseType.GENERAL, BaseType.BOOLEAN, BaseType.SCALAR,
             BaseType.INT, BaseType.DOUBLE, BaseType.LONG,
             BaseType.COMPLEX, BaseType.FIX, BaseType.OBJECT,
-            BaseType.STRING, BaseType.MATRIX,
+            BaseType.STRING, 
+            /* ARRAY? INT_ARRAY?*/
+            BaseType.MATRIX,
             BaseType.BOOLEAN_MATRIX, BaseType.INT_MATRIX,
             BaseType.DOUBLE_MATRIX, BaseType.LONG_MATRIX,
             BaseType.COMPLEX_MATRIX, BaseType.FIX_MATRIX,
@@ -577,6 +595,15 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
         STRING_TOKEN_TYPE = STRING_TOKEN_DECL.getDefType();
 
 
+        /*
+        CompileUnitNode arrayTokenUnit =
+            StaticResolution.loadClassName("ptolemy.data.ArrayToken", 1);
+        Array_TOKEN_DECL =
+            (ClassDecl) StaticResolution.findDecl(arrayTokenUnit,
+                    "ArrayToken", CG_CLASS);
+        Array_TOKEN_TYPE = Array_TOKEN_DECL.getDefType();
+        */
+
         CompileUnitNode matrixTokenUnit =
             StaticResolution.loadClassName("ptolemy.data.MatrixToken", 1);
         MATRIX_TOKEN_DECL =
@@ -586,7 +613,8 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
 
 
         CompileUnitNode booleanMatrixTokenUnit =
-            StaticResolution.loadClassName("ptolemy.data.BooleanMatrixToken", 1);
+            StaticResolution.loadClassName("ptolemy.data.BooleanMatrixToken",
+                    1);
         BOOLEAN_MATRIX_TOKEN_DECL =
             (ClassDecl) StaticResolution.findDecl(booleanMatrixTokenUnit,
                     "BooleanMatrixToken", CG_CLASS);
@@ -602,7 +630,8 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
 
 
         CompileUnitNode doubleMatrixTokenUnit =
-            StaticResolution.loadClassName("ptolemy.data.DoubleMatrixToken", 1);
+            StaticResolution.loadClassName("ptolemy.data.DoubleMatrixToken",
+                    1);
         DOUBLE_MATRIX_TOKEN_DECL =
             (ClassDecl) StaticResolution.findDecl(doubleMatrixTokenUnit,
                     "DoubleMatrixToken", CG_CLASS);
@@ -618,7 +647,8 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
 
 
         CompileUnitNode complexMatrixTokenUnit =
-            StaticResolution.loadClassName("ptolemy.data.ComplexMatrixToken", 1);
+            StaticResolution.loadClassName("ptolemy.data.ComplexMatrixToken",
+                    1);
         COMPLEX_MATRIX_TOKEN_DECL =
             (ClassDecl) StaticResolution.findDecl(complexMatrixTokenUnit,
                     "ComplexMatrixToken", CG_CLASS);
@@ -634,7 +664,8 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
 
 
         DUMMY_LOWER_BOUND = new ClassDecl("DummyLowerBound", null);
-        NameNode dummyName = new NameNode(AbsentTreeNode.instance, "DummyLowerBound");
+        NameNode dummyName = new NameNode(AbsentTreeNode.instance,
+                "DummyLowerBound");
         dummyName.setProperty(DECL_KEY, DUMMY_LOWER_BOUND);
         DUMMY_LOWER_BOUND_TYPE = new TypeNameNode(dummyName);
 
@@ -655,14 +686,17 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
 
 
         CompileUnitNode illegalActionUnit =
-            StaticResolution.loadClassName("ptolemy.kernel.util.IllegalActionException", 1);
+            StaticResolution
+            .loadClassName("ptolemy.kernel.util.IllegalActionException", 1);
         ILLEGAL_ACTION_EXCEPTION_DECL =
             (ClassDecl) StaticResolution.findDecl(illegalActionUnit,
                     "IllegalActionException", CG_CLASS);
-        ILLEGAL_ACTION_EXCEPTION_TYPE = ILLEGAL_ACTION_EXCEPTION_DECL.getDefType();
+        ILLEGAL_ACTION_EXCEPTION_TYPE =
+            ILLEGAL_ACTION_EXCEPTION_DECL.getDefType();
 
         CompileUnitNode kernelExceptionUnit =
-            StaticResolution.loadClassName("ptolemy.kernel.util.KernelException", 1);
+            StaticResolution
+            .loadClassName("ptolemy.kernel.util.KernelException", 1);
         KERNEL_EXCEPTION_DECL =
             (ClassDecl) StaticResolution.findDecl(kernelExceptionUnit,
                     "KernelException", CG_CLASS);
@@ -670,7 +704,8 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
 
 
         CompileUnitNode nameDuplicationUnit =
-            StaticResolution.loadClassName("ptolemy.kernel.util.NameDuplicationException", 1);
+            StaticResolution
+            .loadClassName("ptolemy.kernel.util.NameDuplicationException", 1);
         NAME_DUPLICATION_EXCEPTION_DECL =
             (ClassDecl) StaticResolution.findDecl(nameDuplicationUnit,
                     "NameDuplicationException", CG_CLASS);
@@ -679,7 +714,8 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
 
 
         CompileUnitNode nosuchItemUnit =
-            StaticResolution.loadClassName("ptolemy.kernel.util.NoSuchItemException", 1);
+            StaticResolution
+            .loadClassName("ptolemy.kernel.util.NoSuchItemException", 1);
         NO_SUCH_ITEM_EXCEPTION_DECL =
             (ClassDecl) StaticResolution.findDecl(nosuchItemUnit,
                     "NoSuchItemException", CG_CLASS);
@@ -687,40 +723,48 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
 
 
         CompileUnitNode typeConflictUnit =
-            StaticResolution.loadClassName("ptolemy.actor.TypeConflictException", 1);
-
+            StaticResolution
+            .loadClassName("ptolemy.actor.TypeConflictException", 1);
         TYPE_CONFLICT_EXCEPTION_DECL =
             (ClassDecl) StaticResolution.findDecl(typeConflictUnit,
                     "TypeConflictException", CG_CLASS);
-        TYPE_CONFLICT_EXCEPTION_TYPE = TYPE_CONFLICT_EXCEPTION_DECL.getDefType();
+        TYPE_CONFLICT_EXCEPTION_TYPE =
+            TYPE_CONFLICT_EXCEPTION_DECL.getDefType();
 
 
         CompileUnitNode internalErrorUnit =
-            StaticResolution.loadClassName("ptolemy.kernel.util.InternalErrorException", 1);
+            StaticResolution
+            .loadClassName("ptolemy.kernel.util.InternalErrorException", 1);
         INTERNAL_ERROR_EXCEPTION_DECL =
             (ClassDecl) StaticResolution.findDecl(internalErrorUnit,
                     "InternalErrorException", CG_CLASS);
-        INTERNAL_ERROR_EXCEPTION_TYPE = INTERNAL_ERROR_EXCEPTION_DECL.getDefType();
+        INTERNAL_ERROR_EXCEPTION_TYPE =
+            INTERNAL_ERROR_EXCEPTION_DECL.getDefType();
 
 
         CompileUnitNode invalidStateUnit =
-            StaticResolution.loadClassName("ptolemy.kernel.util.InvalidStateException", 1);
+            StaticResolution
+            .loadClassName("ptolemy.kernel.util.InvalidStateException", 1);
         INVALID_STATE_EXCEPTION_DECL =
             (ClassDecl) StaticResolution.findDecl(invalidStateUnit,
                     "InvalidStateException", CG_CLASS);
-        INVALID_STATE_EXCEPTION_TYPE = INVALID_STATE_EXCEPTION_DECL.getDefType();
+        INVALID_STATE_EXCEPTION_TYPE =
+            INVALID_STATE_EXCEPTION_DECL.getDefType();
 
 
         CompileUnitNode notSchedulableUnit =
-            StaticResolution.loadClassName("ptolemy.actor.sched.NotSchedulableException", 1);
+            StaticResolution
+            .loadClassName("ptolemy.actor.sched.NotSchedulableException", 1);
         NOT_SCHEDULABLE_EXCEPTION_DECL =
             (ClassDecl) StaticResolution.findDecl(notSchedulableUnit,
                     "NotSchedulableException", CG_CLASS);
-        NOT_SCHEDULABLE_EXCEPTION_TYPE = NOT_SCHEDULABLE_EXCEPTION_DECL.getDefType();
+        NOT_SCHEDULABLE_EXCEPTION_TYPE =
+            NOT_SCHEDULABLE_EXCEPTION_DECL.getDefType();
 
 
         CompileUnitNode noRoomUnit =
-            StaticResolution.loadClassName("ptolemy.actor.NoRoomException", 1);
+            StaticResolution
+            .loadClassName("ptolemy.actor.NoRoomException", 1);
         NO_ROOM_EXCEPTION_DECL =
             (ClassDecl) StaticResolution.findDecl(noRoomUnit,
                     "NoRoomException", CG_CLASS);
@@ -728,12 +772,12 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
 
 
         CompileUnitNode noTokenUnit =
-            StaticResolution.loadClassName("ptolemy.actor.NoTokenException", 1);
+            StaticResolution
+            .loadClassName("ptolemy.actor.NoTokenException", 1);
         NO_TOKEN_EXCEPTION_DECL =
             (ClassDecl) StaticResolution.findDecl(noTokenUnit,
                     "NoTokenException", CG_CLASS);
         NO_TOKEN_EXCEPTION_TYPE = NO_TOKEN_EXCEPTION_DECL.getDefType();
-
 
 
         CompileUnitNode actorUnit =
@@ -744,7 +788,8 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
 
 
         CompileUnitNode sequenceActorUnit =
-            StaticResolution.loadClassName("ptolemy.actor.lib.SequenceActor", 1);
+            StaticResolution
+            .loadClassName("ptolemy.actor.lib.SequenceActor", 1);
         SEQUENCE_ACTOR_DECL = (ClassDecl) StaticResolution.findDecl(
                 sequenceActorUnit,
                 "SequenceActor", CG_INTERFACE);
@@ -764,7 +809,6 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
                 DUMMY_LOWER_BOUND,
                 PARAMETER_DECL,
                 TYPED_IO_PORT_DECL,
-                /*CHANGE_FAILED_EXCEPTION_DECL,*/
 		ILLEGAL_ACTION_EXCEPTION_DECL,
                 KERNEL_EXCEPTION_DECL, NAME_DUPLICATION_EXCEPTION_DECL,
                 NO_SUCH_ITEM_EXCEPTION_DECL, TYPE_CONFLICT_EXCEPTION_DECL,
@@ -781,14 +825,14 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
                 TOKEN_TYPE, BOOLEAN_TOKEN_TYPE, SCALAR_TOKEN_TYPE,
                 INT_TOKEN_TYPE, DOUBLE_TOKEN_TYPE, LONG_TOKEN_TYPE,
                 COMPLEX_TOKEN_TYPE, FIX_TOKEN_TYPE, OBJECT_TOKEN_TYPE,
-                STRING_TOKEN_TYPE, MATRIX_TOKEN_TYPE,
+                STRING_TOKEN_TYPE, 
+                MATRIX_TOKEN_TYPE,
                 BOOLEAN_MATRIX_TOKEN_TYPE, INT_MATRIX_TOKEN_TYPE,
                 DOUBLE_MATRIX_TOKEN_TYPE, LONG_MATRIX_TOKEN_TYPE,
                 COMPLEX_MATRIX_TOKEN_TYPE, FIX_MATRIX_TOKEN_TYPE,
                 DUMMY_LOWER_BOUND_TYPE,
                 PARAMETER_TYPE,
                 TYPED_IO_PORT_TYPE,
-                /*CHANGE_FAILED_EXCEPTION_TYPE,*/
 		ILLEGAL_ACTION_EXCEPTION_TYPE,
                 KERNEL_EXCEPTION_TYPE, NAME_DUPLICATION_EXCEPTION_TYPE,
                 NO_SUCH_ITEM_EXCEPTION_TYPE, TYPE_CONFLICT_EXCEPTION_TYPE,
