@@ -280,43 +280,17 @@ public class ComplexToken extends ScalarToken {
         }
     }
 
-    /** Check if the magnitude of the value of this ComplexToken is strictly
-     *  less than that of the argument token.
+    /** Throw an exception. Mathematically, there is no "less than"
+     *  relationship among complex numbers.
      *  @param arg A ScalarToken.
-     *  @return A BooleanToken with value true if the magnitude of this token
-     *   is strictly less than the argument.
-     *  @exception IllegalActionException If the type of the argument token
-     *   is incomparable with the type of this token.
+     *  @return A BooleanToken 
+     *  @exception IllegalActionException Always thrown.
      */
     public BooleanToken isLessThan(ScalarToken arg)
 	    throws IllegalActionException {
-        int typeInfo = TypeLattice.compare(this, arg);
-        if (typeInfo == CPO.INCOMPARABLE) {
-            throw new IllegalActionException("ComplexToken.isLessThan: The "
-	            + "type of the argument token is incomparable with the "
-		    + "type of this token. argType: " + arg.getType());
-	}
-
-	if (typeInfo == CPO.LOWER) {
-	    if (arg.isEqualTo(this).booleanValue()) {
-	        return new BooleanToken(false);
-	    } else {
-	        return arg.isLessThan(this).not();
-	    }
-	}
-
-	// Argument type is lower or equal to this token.
-	ScalarToken complexArg = arg;
-	if (typeInfo == CPO.HIGHER) {
-	    complexArg = (ScalarToken)convert(arg);
-	}
-
-	// using magnitudeSquared() saves the square root calculation
-	if (_value.magnitudeSquared() <
-		complexArg.complexValue().magnitudeSquared()) {
-	    return new BooleanToken(true);
-	}
-	return new BooleanToken(false);
+        throw new IllegalActionException("The isLessThan() method is not "
+                + "supported in ComplexToken since complex numbers cannot "
+		+ "be compared.");
     }
 
     /** Return a new token whose value is the product of this token

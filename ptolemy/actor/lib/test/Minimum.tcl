@@ -139,9 +139,9 @@ test Minimum-2.6 {check types} {
 test Minimum-2.7 {test complex} {
     $values setExpression {{-2+i, -1-i, 0+0i, 3+3i, 5+4i}}
     $value setExpression {4}
-    [$e0 getManager] execute
-    enumToTokenValues [$rec getRecord 0]
-} {{-2.0 + 1.0i} {-1.0 - 1.0i} {0.0 + 0.0i} {4.0 + 0.0i} {4.0 + 0.0i}}
+    catch {[$e0 getManager] execute} msg
+    list $msg
+} {{ptolemy.kernel.util.IllegalActionException: The isLessThan() method is not supported in ComplexToken since complex numbers cannot be compared.}}
 
 ######################################################################
 #### Check types of above model
