@@ -185,7 +185,7 @@ public class ModelCompiler extends Attribute {
                 Director directorOfOrigin = compositeActor.getDirector();
                 Director directorOfClone = (Director) directorOfOrigin.clone();
                 directorOfClone.setContainer(newLayer);
-
+                
                 Iterator portsOfOrigin = compositeActor.portList().iterator();
                 while (portsOfOrigin.hasNext()) {
                     TypedIOPort portOfOrigin =
@@ -202,8 +202,7 @@ public class ModelCompiler extends Attribute {
                         portOfClone.link(relation);
                         // Create a new inside relation between newLayer
                         // composite.
-                        TypedIORelation insideRelation 
-                            = new TypedIORelation(newLayer,
+                        TypedIORelation insideRelation = new TypedIORelation(newLayer,
                                 "insideRelation_" + relation.getName());
                         // link newLayer with this inside relation.
                         portOfClone.link(insideRelation);
