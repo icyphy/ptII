@@ -388,19 +388,21 @@ else
 
     if test -f "$PTJACL_JAR"; then
 	AC_MSG_RESULT([$PTJACL_JAR])
-	AC_MSG_CHECKING([for how to run jacl with $PTJACL_FLAG])
+	AC_MSG_CHECKING([for how to run jacl with "$JAVA" "$PTJACL_JFLAG"])
 	# This command starts up Jacl
 	if echo "set java::jdkVersion; exit" | CLASSPATH=$PTJACL_JAR "$JAVA" $PTJACL_JFLAG tcl.lang.Shell; then
 		AC_MSG_RESULT([CLASSPATH=$PTJACL_JAR "$JAVA" $PTJACL_JFLAG tcl.lang.Shell])
 	else
-		AC_MSG_RESULT(["$JAVA" $PTJACL_JFLAG failed])
+		AC_MSG_RESULT([CLASSPATH=$PTJACL_JAR "$JAVA" $PTJACL_JFLAG tcl.lang.Shell failed])
 		PTJACL_JFLAG=
-		AC_MSG_CHECKING([for how to run jacl with "$PTJACL_FLAG]")
+		AC_MSG_CHECKING([for how to run jacl with "$JAVA" "$PTJACL_FLAG]")
 		if echo "set java::jdkVersion; exit" | CLASSPATH=$PTJACL_JAR "$JAVA" $PTJACL_JFLAG tcl.lang.Shell; then
 			AC_MSG_RESULT([CLASSPATH=$PTJACL_JAR "$JAVA" $PTJACL_JFLAG tcl.lang.Shell])
 		else
 			AC_MSG_RESULT(['CLASSPATH=$PTJACL_JAR "$JAVA" $PTJACL_JFLAG tcl.lang.Shell' failed,
-	  use CLASSPATH=$PTJACL_JAR "$JAVA" tcl.lang.Shell])
+	use CLASSPATH=$PTJACL_JAR "$JAVA" tcl.lang.Shell
+	ptjacl is used by the test suite, so you may be able to
+	ignore this error.])
 		fi
 		JTCLSH='["$(JAVA)" tcl.lang.Shell]'
 	fi
