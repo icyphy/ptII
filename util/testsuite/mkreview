@@ -32,13 +32,14 @@
 # 
 # This script expects as its arguments:
 if [ $# -lt 1 ]; then
-    echo "$0: Usage: $0 reviewtopdir reviewname file1 [file2...]"
+    echo "$0: Usage: $0 reviewtopdir packagename reviewname file1 [file2...]"
     echo "reviewtopdir should be of the form: /users/ptII/public_html/reviews"
-    echo "reviewname should be of the form YYYYMMDD-design or YYMMDD-code"
-    echo "file should be of the form: ptolemy/package/foo.java"
+    echo "packagename should be of the form: ptolemy/actor"
+    echo "reviewname should be of the form: YYYYMMDD-design or YYYYMMDD-code"
+    echo "file should be of the form: foo.java or util/bar.java"
     echo "For example:"
-    echo "mkreview ~/ptIIweb/reviews 19990430-design ptolemy/data/expr/{Variable,VariableList}.java"
-    echo "Source files will be loaded from $PTII/file and a review created in $reviewtopdir/reviewname"
+    echo "mkreview ~/ptIIweb/reviews ptolemy/kernel 20000724-code {Port,ComponentPort,CompositeEntity}.java util/CrossRefList.java"
+    echo "Source files will be loaded from $PTII/packagename/file and a review created in reviewtopdir/packagename/reviewname"
     exit 2
 fi
 # It generates PostScript and PDF versions of the source files and 
@@ -46,19 +47,18 @@ fi
 
 # The name of the directory that the review materials will reside in
 reviewtopdir=$1
-reviewname=$2
+packagename=$2
+reviewname=$3
 reviewdate=`basename $reviewname`
 
+shift
 shift
 shift
 
 files=$@
 
-basedir=`dirname $1`
-
-
 # This directory will contain the docs
-reviewdir=$reviewtopdir/$basedir/$reviewname
+reviewdir=$reviewtopdir/$packagename/$reviewname
 if [ -d $reviewdir ]; then
     echo "$0: $reviewdir exists, will not overwrite it, exiting."
     exit 3
@@ -66,7 +66,7 @@ fi
 
 # Name of the HTML page that refers to the review materials
 # Note that this page is in the directory above the review materials
-reviewfile=$reviewtopdir/$basedir/$reviewname.htm
+reviewfile=$reviewtopdir/$packagename/$reviewname.htm
 
 
 echo "Will generate review materials in $reviewdir"
@@ -78,9 +78,7 @@ mkdir $reviewdir
 
 ####################################
 echo "Generating codeDoc"
-cd $PTII/$basedir
-rm -rf codeDoc
-mkdir codeDoc
+cd $PTII/$packagename
 
 # Remove the directories from the filenames
 shortfiles=""
@@ -89,21 +87,33 @@ do
    shortfiles=" $shortfiles `basename $file`"
 done
 
+# copy the source files into the review directory.
+cp $files $reviewdir
+cd $reviewdir
+
+# generate HTML codedocs from the java sources.
+mkdir codeDoc
+
 CLASSPATH=$PTII
 export CLASSPATH
 javadoc -d codeDoc $shortfiles
-cp -r codeDoc $reviewdir
-cp $shortfiles $reviewdir
 
 ####################################
 cd $reviewdir/codeDoc
+
 echo "Generating PostScript of the docs in `pwd`"
+
+# find which directories ended up with javadocs...  these must be
+# subdirs of the package
+htmldirs=`find $packagename -name "*.htm*" -exec dirname {} \; | sort -u`
+
+echo "dirs with html are :\n$htmldirs"
 
 if [ "$DISPLAY" = "" ]; then
     echo "$0: Warning: \$DISPLAY is not set, so we are not generating PS or PDF of the docs"
 else
     # html2ps is a hack that often does not work
-    sh $PTII/util/testsuite/html2ps -d ../javadocs.ps $basedir
+    sh $PTII/util/testsuite/html2ps -d ../javadocs.ps $htmldirs
     psnup -n 2 < ../javadocs.ps > ../javadocs2up.ps
 fi
 
@@ -154,9 +164,9 @@ Links are relative, not absolute.
 EoF
 
 
-for file in $shortfiles
+for file in $files
 do
-    echo "  <li><a href=\"$reviewdate/$file\"><code>$file</code></a>" >>$reviewfile
+     echo "  <li><a href=\"$reviewdate/$file\"><code>$file</code></a>" >>$reviewfile
 done
 
 cat >>$reviewfile <<EOF

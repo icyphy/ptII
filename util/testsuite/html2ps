@@ -568,9 +568,10 @@ proc html2psProcessArgs {} {
 	  }
 	default { 
 	    if {"$commandarg" != "-d" } {
-		error "html2ps: usage: html2ps -d htmlfile outputfile directoriese"
+		error "html2ps: usage: html2ps -d htmlfile outputfile directories "
 	    }
-	    eval htmlTree2ps $indexfile $outputfile [lrange $argv 3 end] 
+	    set outputfile [lindex $argv 1]
+	    eval htmlTree2ps dummy $outputfile [lrange $argv 2 end] 
           }
     }
 }
