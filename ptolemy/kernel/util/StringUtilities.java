@@ -52,10 +52,10 @@ public class StringUtilities {
      *  with their corresponding XML entities.  This is necessary to
      *  allow arbitrary strings to be encoded within XML.  This method
      *  <pre>
-     *  & becones &amp;
-     *  "  becomes &quot;
-     *  <  becomes &lt;
-     *  >  becomes &gt;
+     *  & becomes &amp;amp;
+     *  " becomes &amp;quot;
+     *  < becomes &amp;lt;
+     *  > becomes &amp;gt;
      *  </pre>
      *
      *  @param string The string to escape.
