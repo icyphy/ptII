@@ -150,11 +150,26 @@ public class Relation extends NamedObj {
 
         /** @param exceptPort Do not return this port in the enumeration. */
         public PortEnumeration(Port exceptPort) {
-            if(exceptPort != null) {	    // Remove exceptPort.
-                CrossRefList censored = new CrossRefList(this);
-                censored.duplicate(_portList);
-                censored.dissociate(exceptPort);
-                _XRefEnum = censored.elements();
+            // Create a list that does not include exceptPort.
+            if(exceptPort != null) {
+                // LinkedList is used instead of a CrossRefList
+                // so that the lifetime of the internal portlist
+                // copy that excludes "exceptPort" ends when
+                // "censored" goes out of scope.  This is not true
+                // with CrossRefList since the internal list would
+                // maintain references to CrossRefs in _portList after
+                // this PortEnumeration has been marked for garbage
+                // collection.  As usual, modifying the port lists 
+                // during the lifetime of PortEnumeration is very 
+                // dangerous and must be avoided.
+                LinkedList internalList = new LinkedList();
+                Enumeration ports = _portList.elements();
+                while(ports.hasMoreElements()) {
+                    Port p = (Port)ports.nextElement();
+                    if(p != exceptPort)
+                        internalList.insertFirst(p);
+                }
+                _XRefEnum = internalList.elements();
             } else {
                 _XRefEnum = _portList.elements();
             }
