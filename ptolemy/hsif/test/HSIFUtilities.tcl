@@ -45,10 +45,21 @@ if {[string compare test [info procs test]] == 1} then {
 test HSIFUtilities-1.1 {Convert the SwimmingPool example} {
     java::call ptolemy.hsif.HSIFUtilities HSIFToMoML \
 	../demo/SwimmingPool/SwimmingPool.xml SwimmingPool_moml.xml
-} {}
+    set parser [java::new ptolemy.moml.MoMLParser]
+    set toplevel [$parser parseFile SwimmingPool_moml.xml]
+    set composite [java::cast ptolemy.actor.CompositeActor $toplevel]
+    set director [$composite getDirector]	
+    list [$director toString]
+} {{ptolemy.domains.ct.kernel.CTMixedSignalDirector {.new_swimmingpool.CT Director}}}
 
 test HSIFUtilities-1.2 {Convert the Thermostat example using main to increase code coverage} {
-    exec java -classpath $PTII ptolemy.hsif.HSIFUtilities \
-	../demo/Thermostat/Thermostat.xml Thermostat_moml.xml
-} {}
+    set args [java::new {String[]} 2 \
+	[list "../demo/Thermostat/Thermostat.xml" "Thermostat_moml.xml"]]
+    java::call ptolemy.hsif.HSIFUtilities main $args
+    set parser [java::new ptolemy.moml.MoMLParser]
+    set toplevel [$parser parseFile Thermostat_moml.xml]
+    set composite [java::cast ptolemy.actor.CompositeActor $toplevel]
+    set director [$composite getDirector]	
+    list [$director toString]
+} {{ptolemy.domains.ct.kernel.CTMixedSignalDirector {.Thermostat.CT Director}}}
 
