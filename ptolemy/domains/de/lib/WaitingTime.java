@@ -34,6 +34,7 @@ import ptolemy.domains.de.kernel.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
+import ptolemy.data.type.BaseType;
 import ptolemy.actor.lib.TimedActor;
 import ptolemy.actor.lib.SequenceActor;
 import java.util.Vector;
@@ -71,11 +72,11 @@ public class WaitingTime extends TypedAtomicActor
         super(container, name);
         // create the ports
         output = new TypedIOPort(this, "output", false, true);
-        output.setTypeEquals(DoubleToken.class);
+        output.setTypeEquals(BaseType.DOUBLE);
         waiter = new TypedIOPort(this, "waiter", true, false);
-        waiter.setTypeEquals(Token.class);
+        waiter.setTypeEquals(BaseType.GENERAL);
         waitee = new TypedIOPort(this, "waitee", true, false);
-        waitee.setTypeEquals(Token.class);
+        waitee.setTypeEquals(BaseType.GENERAL);
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -37,6 +37,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.data.Token;
 import ptolemy.data.IntToken;
+import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
 
 //////////////////////////////////////////////////////////////////////////
@@ -81,10 +82,10 @@ public class Chopstick extends CSPActor {
         rightOut = new TypedIOPort(this, "rightOut", false, true);
         rightIn = new TypedIOPort(this, "rightIn", true, false);
 
-	leftIn.setTypeEquals(Token.class);
-	rightIn.setTypeEquals(Token.class);
-	leftOut.setTypeEquals(IntToken.class);
-	rightOut.setTypeEquals(IntToken.class);
+	leftIn.setTypeEquals(BaseType.GENERAL);
+	rightIn.setTypeEquals(BaseType.GENERAL);
+	leftOut.setTypeEquals(BaseType.INT);
+	rightOut.setTypeEquals(BaseType.INT);
     }
 
     /** Construct a Chopstick in the specified container with the specified
@@ -111,10 +112,10 @@ public class Chopstick extends CSPActor {
         rightOut = new TypedIOPort(this, "rightOut", false, true);
         rightIn = new TypedIOPort(this, "rightIn", true, false);
 
-	leftIn.setTypeEquals(Token.class);
-	rightIn.setTypeEquals(Token.class);
-	leftOut.setTypeEquals(IntToken.class);
-	rightOut.setTypeEquals(IntToken.class);
+	leftIn.setTypeEquals(BaseType.GENERAL);
+	rightIn.setTypeEquals(BaseType.GENERAL);
+	leftOut.setTypeEquals(BaseType.INT);
+	rightOut.setTypeEquals(BaseType.INT);
     }
 
     ///////////////////////////////////////////////////////////////////

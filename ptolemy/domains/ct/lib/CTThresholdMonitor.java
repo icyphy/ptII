@@ -33,6 +33,7 @@ import ptolemy.domains.ct.kernel.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
+import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.*;
 import ptolemy.actor.*;
 
@@ -70,7 +71,7 @@ public class CTThresholdMonitor extends CTActor
         input.setMultiport(false);
         input.setInput(true);
         input.setOutput(false);
-        input.setTypeEquals(DoubleToken.class);
+        input.setTypeEquals(BaseType.DOUBLE);
 
         _thWidth = (double)1e-2;
         ThresholdWidth = new Parameter(this, "ThresholdWidth",

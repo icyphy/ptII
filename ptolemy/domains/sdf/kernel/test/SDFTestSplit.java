@@ -31,6 +31,7 @@ package ptolemy.domains.sdf.kernel.test;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
+import ptolemy.data.type.BaseType;
 import ptolemy.actor.*;
 import java.util.Enumeration;
 import ptolemy.domains.sdf.kernel.*;
@@ -49,17 +50,17 @@ public class SDFTestSplit extends SDFAtomicActor {
             input = (SDFIOPort)newPort("input");
             input.setInput(true);
             input.setTokenConsumptionRate(2);
-            input.setTypeEquals(IntToken.class);
+            input.setTypeEquals(BaseType.INT);
 
             output1 = (SDFIOPort)newPort("output1");
             output1.setOutput(true);
             output1.setTokenProductionRate(1);
-            output1.setTypeEquals(IntToken.class);
+            output1.setTypeEquals(BaseType.INT);
 
             output2 = (SDFIOPort)newPort("output2");
             output2.setOutput(true);
             output2.setTokenProductionRate(1);
-            output2.setTypeEquals(IntToken.class);
+            output2.setTypeEquals(BaseType.INT);
         }
         catch (IllegalActionException e1) {
             System.out.println("SDFTestSplit: constructor error");

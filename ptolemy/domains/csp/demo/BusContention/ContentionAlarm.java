@@ -38,6 +38,7 @@ import ptolemy.domains.csp.kernel.*;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.data.Token;
+import ptolemy.data.type.BaseType;
 import java.util.Enumeration;
 import collections.LinkedList;
 
@@ -62,8 +63,8 @@ public class ContentionAlarm extends CSPActor {
         _input = new TypedIOPort(this, "input", true, false);
         _output = new TypedIOPort(this, "output", false, true);
 
-        _input.setTypeEquals(Token.class);
-        _output.setTypeEquals(Token.class);
+        _input.setTypeEquals(BaseType.GENERAL);
+        _output.setTypeEquals(BaseType.GENERAL);
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -32,6 +32,7 @@ package ptolemy.domains.sdf.lib.vq;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
+import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.*;
 import java.io.*;
 import ptolemy.actor.*;
@@ -72,12 +73,12 @@ public final class ImageContrast extends SDFAtomicActor {
         output = (SDFIOPort) newPort("output");
         output.setOutput(true);
         output.setTokenProductionRate(1);
-        output.setTypeEquals(IntMatrixToken.class);
+        output.setTypeEquals(BaseType.INT_MATRIX);
 
         input = (SDFIOPort) newPort("input");
         input.setInput(true);
         input.setTokenConsumptionRate(1);
-        input.setTypeEquals(IntMatrixToken.class);
+        input.setTypeEquals(BaseType.INT_MATRIX);
     }
 
     ///////////////////////////////////////////////////////////////////

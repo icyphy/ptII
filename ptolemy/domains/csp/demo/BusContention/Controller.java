@@ -40,6 +40,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.data.Token;
 import ptolemy.data.IntToken;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.type.BaseType;
 import java.util.Enumeration;
 import collections.LinkedList;
 
@@ -70,10 +71,10 @@ public class Controller extends CSPActor {
         _requestOut.setMultiport(true);
         _requestIn.setMultiport(true);
 
-        _requestOut.setTypeEquals(BooleanToken.class);
-        _requestIn.setTypeEquals(IntToken.class);
-        _contendOut.setTypeEquals(Token.class);
-        _contendIn.setTypeEquals(Token.class);
+        _requestOut.setTypeEquals(BaseType.BOOLEAN);
+        _requestIn.setTypeEquals(BaseType.INT);
+        _contendOut.setTypeEquals(BaseType.GENERAL);
+        _contendIn.setTypeEquals(BaseType.GENERAL);
 
     }
 

@@ -39,6 +39,7 @@ import ptolemy.data.Token;
 import ptolemy.data.IntToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import java.util.Enumeration;
@@ -68,10 +69,10 @@ public class Processor extends CSPActor {
         _memoryOut = new TypedIOPort(this, "memoryOut", false, true);
         _memoryIn = new TypedIOPort(this, "memoryIn", true, false);
 
-        _requestOut.setTypeEquals(IntToken.class);
-        _requestIn.setTypeEquals(BooleanToken.class);
-        _memoryOut.setTypeEquals(StringToken.class);
-        _memoryIn.setTypeEquals(Token.class);
+        _requestOut.setTypeEquals(BaseType.INT);
+        _requestIn.setTypeEquals(BaseType.BOOLEAN);
+        _memoryOut.setTypeEquals(BaseType.STRING);
+        _memoryIn.setTypeEquals(BaseType.GENERAL);
 
         _code = code;
 

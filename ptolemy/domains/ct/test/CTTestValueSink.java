@@ -34,6 +34,7 @@ import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.actor.*;
 import ptolemy.data.*;
+import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
 
 
@@ -61,7 +62,7 @@ public class CTTestValueSink extends TypedAtomicActor {
         input.setInput(true);
         input.setOutput(false);
         input.setMultiport(true);
-        input.setTypeEquals(DoubleToken.class);
+        input.setTypeEquals(BaseType.DOUBLE);
         testValue = new Parameter(this, "Value", new DoubleToken(1.0));
         print = new Parameter(this, "Print", new BooleanToken(false));
     }

@@ -34,6 +34,7 @@ package ptolemy.domains.fsm.kernel;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
+import ptolemy.data.type.BaseType;
 import ptolemy.actor.*;
 import ptolemy.data.expr.Variable;
 import ptolemy.domains.fsm.kernel.util.VariableList;
@@ -371,12 +372,8 @@ public class FSMTransition extends ComponentRelation {
         try {
             Variable var = new Variable(_actions, name);
             if (expr == null) {
-                try {
-                    var.setTypeEquals(Class.forName("ptolemy.data.Token"));
-                    var.setToken(new ptolemy.data.Token());
-                } catch (ClassNotFoundException ex) {
-                    // ignore for now
-                }
+                var.setTypeEquals(BaseType.GENERAL);
+                var.setToken(new ptolemy.data.Token());
             } else {
                 var.setExpression(expr);
             }
@@ -397,12 +394,8 @@ public class FSMTransition extends ComponentRelation {
             Variable var = new Variable(_localVarUpdates, name);
             if (expr == null) {
                 // We can just forbid expr to be null.
-                try {
-                    var.setTypeEquals(Class.forName("ptolemy.data.Token"));
-                    var.setToken(new ptolemy.data.Token());
-                } catch (ClassNotFoundException ex) {
-                    // ignore for now
-                }
+                var.setTypeEquals(BaseType.GENERAL);
+                var.setToken(new ptolemy.data.Token());
             } else {
                 var.setExpression(expr);
             }

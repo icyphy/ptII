@@ -34,6 +34,7 @@ import ptolemy.kernel.util.*;
 import ptolemy.kernel.*;
 import ptolemy.actor.*;
 import ptolemy.data.*;
+import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.*;
 import ptolemy.domains.ct.kernel.*;
 import ptolemy.domains.ct.lib.*;
@@ -58,86 +59,86 @@ public class ClimbLinearizer extends CTActor{
         inputPx.setInput(true);
         inputPx.setOutput(false);
         inputPx.setMultiport(false);
-        inputPx.setTypeEquals(DoubleToken.class);
+        inputPx.setTypeEquals(BaseType.DOUBLE);
 
         inputDPx = new TypedIOPort(this, "inputDPx");
         inputDPx.setInput(true);
         inputDPx.setOutput(false);
         inputDPx.setMultiport(false);
-        inputDPx.setTypeEquals(DoubleToken.class);
+        inputDPx.setTypeEquals(BaseType.DOUBLE);
 
         inputDDPx = new TypedIOPort(this, "inputDDPx");
         inputDDPx.setInput(true);
         inputDDPx.setOutput(false);
         inputDDPx.setMultiport(false);
-        inputDDPx.setTypeEquals(DoubleToken.class);
+        inputDDPx.setTypeEquals(BaseType.DOUBLE);
 
         inputD3Px = new TypedIOPort(this, "inputD3Px");
         inputD3Px.setInput(true);
         inputD3Px.setOutput(false);
         inputD3Px.setMultiport(false);
-        inputD3Px.setTypeEquals(DoubleToken.class);
+        inputD3Px.setTypeEquals(BaseType.DOUBLE);
 
         inputD4Px = new TypedIOPort(this, "inputD4Px");
         inputD4Px.setInput(true);
         inputD4Px.setOutput(false);
         inputD4Px.setMultiport(false);
-        inputD4Px.setTypeEquals(DoubleToken.class);
+        inputD4Px.setTypeEquals(BaseType.DOUBLE);
 
         inputPz = new TypedIOPort(this, "inputPz");
         inputPz.setInput(true);
         inputPz.setOutput(false);
         inputPz.setMultiport(false);
-        inputPz.setTypeEquals(DoubleToken.class);
+        inputPz.setTypeEquals(BaseType.DOUBLE);
 
         inputDPz = new TypedIOPort(this, "inputDPz");
         inputDPz.setInput(true);
         inputDPz.setOutput(false);
         inputDPz.setMultiport(false);
-        inputDPz.setTypeEquals(DoubleToken.class);
+        inputDPz.setTypeEquals(BaseType.DOUBLE);
 
         inputDDPz = new TypedIOPort(this, "inputDDPz");
         inputDDPz.setInput(true);
         inputDDPz.setOutput(false);
         inputDDPz.setMultiport(false);
-        inputDDPz.setTypeEquals(DoubleToken.class);
+        inputDDPz.setTypeEquals(BaseType.DOUBLE);
 
         inputD3Pz = new TypedIOPort(this, "inputD3Pz");
         inputD3Pz.setInput(true);
         inputD3Pz.setOutput(false);
         inputD3Pz.setMultiport(false);
-        inputD3Pz.setTypeEquals(DoubleToken.class);
+        inputD3Pz.setTypeEquals(BaseType.DOUBLE);
 
         inputD4Pz = new TypedIOPort(this, "inputD4Pz");
         inputD4Pz.setInput(true);
         inputD4Pz.setOutput(false);
         inputD4Pz.setMultiport(false);
-        inputD4Pz.setTypeEquals(DoubleToken.class);
+        inputD4Pz.setTypeEquals(BaseType.DOUBLE);
 
 
         outputVx = new TypedIOPort(this, "outputVx");
         outputVx.setInput(false);
         outputVx.setOutput(true);
         outputVx.setMultiport(false);
-        outputVx.setTypeEquals(DoubleToken.class);
+        outputVx.setTypeEquals(BaseType.DOUBLE);
 
         outputVz = new TypedIOPort(this, "outputVz");
         outputVz.setInput(false);
         outputVz.setOutput(true);
         outputVz.setMultiport(false);
-        outputVz.setTypeEquals(DoubleToken.class);
+        outputVz.setTypeEquals(BaseType.DOUBLE);
 
         outputV = new TypedIOPort(this, "outputV");
         outputV.setInput(false);
         outputV.setOutput(true);
         outputV.setMultiport(false);
-        outputV.setTypeEquals(DoubleToken.class);
+        outputV.setTypeEquals(BaseType.DOUBLE);
 
         outputR = new TypedIOPort(this, "outputR");
         outputR.setInput(false);
         outputR.setOutput(true);
         outputR.setMultiport(false);
-        outputR.setTypeEquals(DoubleToken.class);
+        outputR.setTypeEquals(BaseType.DOUBLE);
 
         String sV = new String();
         for(int i = 0; i< 4; i++) {

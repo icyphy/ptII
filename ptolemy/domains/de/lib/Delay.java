@@ -31,6 +31,7 @@ import ptolemy.domains.de.kernel.*;
 import ptolemy.domains.de.lib.DETransformer;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
+import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
 import ptolemy.actor.TypedCompositeActor;
 
@@ -81,7 +82,7 @@ public class Delay extends DETransformer {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         delay = new Parameter(this, "delay", new DoubleToken(1.0));
-        delay.setTypeEquals(DoubleToken.class);
+        delay.setTypeEquals(BaseType.DOUBLE);
         input.delayTo(output);
     }
 

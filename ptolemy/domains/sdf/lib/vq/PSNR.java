@@ -31,6 +31,7 @@ package ptolemy.domains.sdf.lib.vq;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
+import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.*;
 import java.io.*;
 import ptolemy.actor.*;
@@ -66,15 +67,15 @@ public final class PSNR extends SDFAtomicActor {
 
         output = (SDFIOPort) newPort("output");
         output.setOutput(true);
-        output.setTypeEquals(DoubleToken.class);
+        output.setTypeEquals(BaseType.DOUBLE);
 
         signal = (SDFIOPort) newPort("signal");
         signal.setInput(true);
-        signal.setTypeEquals(IntMatrixToken.class);
+        signal.setTypeEquals(BaseType.INT_MATRIX);
 
         distortedSignal = (SDFIOPort) newPort("distortedSignal");
         distortedSignal.setInput(true);
-        distortedSignal.setTypeEquals(IntMatrixToken.class);
+        distortedSignal.setTypeEquals(BaseType.INT_MATRIX);
 
     }
 

@@ -37,6 +37,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.data.Token;
 import ptolemy.data.StringToken;
+import ptolemy.data.type.BaseType;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -62,8 +63,8 @@ public class Memory extends CSPActor {
         _input.setMultiport(true);
         _output.setMultiport(true);
 
-        _input.setTypeEquals(StringToken.class);
-        _output.setTypeEquals(Token.class);
+        _input.setTypeEquals(BaseType.STRING);
+        _output.setTypeEquals(BaseType.GENERAL);
 
         _strValue = "initialValue";
     }

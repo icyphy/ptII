@@ -46,6 +46,7 @@ import ptolemy.actor.lib.*;
 import ptolemy.actor.gui.TimedPlotter;
 import ptolemy.actor.*;
 import ptolemy.data.*;
+import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
 import java.util.Enumeration;
 
@@ -110,19 +111,19 @@ public class StickyBallApplet extends CTApplet {
             // Input for ball 1
             TypedIOPort hsin1 = (TypedIOPort)hs.newPort("force1");
             hsin1.setInput(true);
-            hsin1.setTypeEquals(DoubleToken.class);
+            hsin1.setTypeEquals(BaseType.DOUBLE);
             // Input for ball 2
             TypedIOPort hsin2 = (TypedIOPort)hs.newPort("force2");
             hsin2.setInput(true);
-            hsin2.setTypeEquals(DoubleToken.class);
+            hsin2.setTypeEquals(BaseType.DOUBLE);
             // Output ball 1 position
             TypedIOPort hsout1 = (TypedIOPort)hs.newPort("P1");
             hsout1.setOutput(true);
-            hsout1.setTypeEquals(DoubleToken.class);
+            hsout1.setTypeEquals(BaseType.DOUBLE);
             // Output ball 2 position
             TypedIOPort hsout2 = (TypedIOPort)hs.newPort("P2");
             hsout2.setOutput(true);
-            hsout2.setTypeEquals(DoubleToken.class);
+            hsout2.setTypeEquals(BaseType.DOUBLE);
 
             //System.out.println("Building the FSM controller.");
             HSController ctrl = new HSController(hs, "Controller");
@@ -161,11 +162,11 @@ public class StickyBallApplet extends CTApplet {
             Expression ctIncE1 = new Expression(ctInc, "E1");
             TypedIOPort ctIncE1In = (TypedIOPort)ctIncE1.newPort("In");
             ctIncE1In.setInput(true);
-            ctIncE1In.setTypeEquals(DoubleToken.class);
-            ctIncE1.output.setTypeEquals(DoubleToken.class);
+            ctIncE1In.setTypeEquals(BaseType.DOUBLE);
+            ctIncE1.output.setTypeEquals(BaseType.DOUBLE);
             TypedIOPort ctIncE1P1 = (TypedIOPort)ctIncE1.newPort("P1");
             ctIncE1P1.setInput(true);
-            ctIncE1P1.setTypeEquals(DoubleToken.class);
+            ctIncE1P1.setTypeEquals(BaseType.DOUBLE);
             // The expression is:
             // (K1*Y1 + In - K1*P1)/M1
             ctIncE1.expression.setExpression("1.0*1.0 + In - 1.0*P1");
@@ -176,11 +177,11 @@ public class StickyBallApplet extends CTApplet {
             Expression ctIncE2 = new Expression(ctInc, "E2");
             TypedIOPort ctIncE2In = (TypedIOPort)ctIncE2.newPort("In");
             ctIncE2In.setInput(true);
-            ctIncE2In.setTypeEquals(DoubleToken.class);
-            ctIncE2.output.setTypeEquals(DoubleToken.class);
+            ctIncE2In.setTypeEquals(BaseType.DOUBLE);
+            ctIncE2.output.setTypeEquals(BaseType.DOUBLE);
             TypedIOPort ctIncE2P2 = (TypedIOPort)ctIncE2.newPort("P2");
             ctIncE2P2.setInput(true);
-            ctIncE2P2.setTypeEquals(DoubleToken.class);
+            ctIncE2P2.setTypeEquals(BaseType.DOUBLE);
             // The expression is:
             // (K2*Y2 + In - K2*P2)/M2
             ctIncE2.expression.setExpression("2.0*2.0 + In - 2.0*P2");
@@ -193,31 +194,31 @@ public class StickyBallApplet extends CTApplet {
             // Force on ball 1
             TypedIOPort ctIncF1 = (TypedIOPort)ctInc.newPort("force1");
             ctIncF1.setInput(true);
-            ctIncF1.setTypeEquals(DoubleToken.class);
+            ctIncF1.setTypeEquals(BaseType.DOUBLE);
             // Force on ball 2
             TypedIOPort ctIncF2 = (TypedIOPort)ctInc.newPort("force2");
             ctIncF2.setInput(true);
-            ctIncF2.setTypeEquals(DoubleToken.class);
+            ctIncF2.setTypeEquals(BaseType.DOUBLE);
             // Touched trigger
             TypedIOPort ctIncTouched = (TypedIOPort)ctInc.newPort("touched");
             ctIncTouched.setOutput(true);
-            ctIncTouched.setTypeEquals(DoubleToken.class);
+            ctIncTouched.setTypeEquals(BaseType.DOUBLE);
             // Position of ball 1
             TypedIOPort ctIncOP1 = (TypedIOPort)ctInc.newPort("P1");
             ctIncOP1.setOutput(true);
-            ctIncOP1.setTypeEquals(DoubleToken.class);
+            ctIncOP1.setTypeEquals(BaseType.DOUBLE);
             // Position of ball 2
             TypedIOPort ctIncOP2 = (TypedIOPort)ctInc.newPort("P2");
             ctIncOP2.setOutput(true);
-            ctIncOP2.setTypeEquals(DoubleToken.class);
+            ctIncOP2.setTypeEquals(BaseType.DOUBLE);
             // Velocity of ball 1
             TypedIOPort ctIncOV1 = (TypedIOPort)ctInc.newPort("V1");
             ctIncOV1.setOutput(true);
-            ctIncOV1.setTypeEquals(DoubleToken.class);
+            ctIncOV1.setTypeEquals(BaseType.DOUBLE);
             // Velocity of ball 2
             TypedIOPort ctIncOV2 = (TypedIOPort)ctInc.newPort("V2");
             ctIncOV2.setOutput(true);
-            ctIncOV2.setTypeEquals(DoubleToken.class);
+            ctIncOV2.setTypeEquals(BaseType.DOUBLE);
 
             // connect ctInc
             //ctInc.connect(ctIncF1, ctIncH1.input);
@@ -261,8 +262,8 @@ public class StickyBallApplet extends CTApplet {
             Expression ctDecE1 = new Expression(ctDec, "E1");
             TypedIOPort ctDecE1P1 = (TypedIOPort)ctDecE1.newPort("P1");
             ctDecE1P1.setInput(true);
-            ctDecE1P1.setTypeEquals(DoubleToken.class);
-            ctDecE1.output.setTypeEquals(DoubleToken.class);
+            ctDecE1P1.setTypeEquals(BaseType.DOUBLE);
+            ctDecE1.output.setTypeEquals(BaseType.DOUBLE);
             // The expression is:
             // (K1*Y1 + K2*Y2 - K1*P1 - K2*P1)/(M1+M2)
             ctDecE1.expression.setExpression(
@@ -270,8 +271,8 @@ public class StickyBallApplet extends CTApplet {
             Expression ctDecE2 = new Expression(ctDec, "E2");
             TypedIOPort ctDecE2P1 = (TypedIOPort)ctDecE2.newPort("P1");
             ctDecE2P1.setInput(true);
-            ctDecE2P1.setTypeEquals(DoubleToken.class);
-            ctDecE2.output.setTypeEquals(DoubleToken.class);
+            ctDecE2P1.setTypeEquals(BaseType.DOUBLE);
+            ctDecE2.output.setTypeEquals(BaseType.DOUBLE);
             // The expression is:
             // (K1*Y1 - K2*Y2 - K1*P1 + K2*P1)
             ctDecE2.expression.setExpression(
@@ -280,22 +281,22 @@ public class StickyBallApplet extends CTApplet {
             // Sticky force
             TypedIOPort ctDecOSTI = (TypedIOPort)ctDec.newPort("STI");
             ctDecOSTI.setOutput(true);
-            ctDecOSTI.setTypeEquals(DoubleToken.class);
+            ctDecOSTI.setTypeEquals(BaseType.DOUBLE);
             TypedIOPort ctDecOF = (TypedIOPort)ctDec.newPort("F");
             ctDecOF.setOutput(true);
-            ctDecOF.setTypeEquals(DoubleToken.class);
+            ctDecOF.setTypeEquals(BaseType.DOUBLE);
             // Position of ball 1
             TypedIOPort ctDecOP1 = (TypedIOPort)ctDec.newPort("P1");
             ctDecOP1.setOutput(true);
-            ctDecOP1.setTypeEquals(DoubleToken.class);
+            ctDecOP1.setTypeEquals(BaseType.DOUBLE);
             // Position of ball 2
             TypedIOPort ctDecOP2 = (TypedIOPort)ctDec.newPort("P2");
             ctDecOP2.setOutput(true);
-            ctDecOP2.setTypeEquals(DoubleToken.class);
+            ctDecOP2.setTypeEquals(BaseType.DOUBLE);
             // Velocity of balls
             TypedIOPort ctDecOV1 = (TypedIOPort)ctDec.newPort("V1");
             ctDecOV1.setOutput(true);
-            ctDecOV1.setTypeEquals(DoubleToken.class);
+            ctDecOV1.setTypeEquals(BaseType.DOUBLE);
 
             // connect
             ctDec.connect(ctDecSTI.input, _ctGain.output);

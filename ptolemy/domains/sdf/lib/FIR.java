@@ -33,6 +33,7 @@ package ptolemy.domains.sdf.lib;
 import ptolemy.actor.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
+import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
 import ptolemy.domains.sdf.kernel.*;
 
@@ -97,10 +98,10 @@ public class FIR extends SDFAtomicActor {
         super(container, name);
 
         input = new SDFIOPort(this, "input", true, false);
-        input.setTypeEquals(DoubleToken.class);
+        input.setTypeEquals(BaseType.DOUBLE);
 
         output = new SDFIOPort(this, "output", false, true);
-        output.setTypeEquals(DoubleToken.class);
+        output.setTypeEquals(BaseType.DOUBLE);
 
         taps = new Parameter(this, "taps", new DoubleMatrixToken());
         interpolation = new Parameter(this, "interpolation", new IntToken(1));

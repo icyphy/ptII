@@ -32,6 +32,7 @@ package ptolemy.domains.sdf.lib.vq;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
+import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.*;
 import ptolemy.actor.*;
 import ptolemy.actor.gui.Placeable;
@@ -78,7 +79,7 @@ public final class ImageDisplay extends SDFAtomicActor implements Placeable {
         
 	input = (SDFIOPort) newPort("input");
         input.setInput(true);
-        input.setTypeEquals(IntMatrixToken.class);
+        input.setTypeEquals(BaseType.INT_MATRIX);
 
         _oldxsize = 0;
         _oldysize = 0;

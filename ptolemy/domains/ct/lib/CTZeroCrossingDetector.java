@@ -30,6 +30,7 @@ import ptolemy.domains.ct.kernel.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
+import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
 import ptolemy.actor.*;
 
@@ -72,17 +73,17 @@ public class CTZeroCrossingDetector extends CTActor
         input.setMultiport(false);
         input.setInput(true);
         input.setOutput(false);
-        input.setTypeEquals(DoubleToken.class);
+        input.setTypeEquals(BaseType.DOUBLE);
         trigger = new TypedIOPort(this, "trigger");
         trigger.setMultiport(false);
         trigger.setInput(true);
         trigger.setOutput(false);
-        trigger.setTypeEquals(DoubleToken.class);
+        trigger.setTypeEquals(BaseType.DOUBLE);
         output = new TypedIOPort(this, "output");
         output.setMultiport(false);
         output.setInput(false);
         output.setOutput(true);
-        output.setTypeEquals(DoubleToken.class);
+        output.setTypeEquals(BaseType.DOUBLE);
         _errorTolerance = (double)1e-4;
         ErrorTolerance = new Parameter(this, "ErrorTolerance",
                 new DoubleToken(_errorTolerance));

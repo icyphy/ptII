@@ -33,6 +33,7 @@ package ptolemy.domains.sdf.lib;
 import ptolemy.actor.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
+import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
 import ptolemy.domains.sdf.kernel.*;
 import ptolemy.math.SignalProcessing;
@@ -61,11 +62,11 @@ public class LineCoder extends SDFAtomicActor {
         super(container, name);
 
         input = new SDFIOPort(this, "input", true, false);
-        input.setTypeEquals(BooleanToken.class);
+        input.setTypeEquals(BaseType.BOOLEAN);
 
         output = new SDFIOPort(this, "output", false, true);
         // FIXME: Type should be inferred from the code table.
-        output.setTypeEquals(DoubleToken.class);
+        output.setTypeEquals(BaseType.DOUBLE);
 
         double[][] deftbl = {{-1.0, 1.0}};
         table = new Parameter(this, "table", new DoubleMatrixToken(deftbl));

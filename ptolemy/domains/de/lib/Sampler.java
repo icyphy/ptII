@@ -34,6 +34,7 @@ package ptolemy.domains.de.lib;
 import ptolemy.domains.de.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
+import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
 import ptolemy.actor.lib.Transformer;
 import ptolemy.actor.lib.SequenceActor;
@@ -83,7 +84,7 @@ public class Sampler extends Transformer
         output.setMultiport(true);
         output.setTypeAtLeast(input);
         trigger = new TypedIOPort(this, "trigger", true, false);
-        trigger.setTypeEquals(Token.class);
+        trigger.setTypeEquals(BaseType.GENERAL);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -109,7 +110,7 @@ public class Sampler extends Transformer
         Sampler newobj = (Sampler)super.clone(ws);
         newobj.output.setTypeAtLeast(newobj.input);
         newobj.trigger = (TypedIOPort)newobj.getPort("trigger");
-        newobj.trigger.setTypeEquals(Token.class);
+        newobj.trigger.setTypeEquals(BaseType.GENERAL);
         return newobj;
     }
 

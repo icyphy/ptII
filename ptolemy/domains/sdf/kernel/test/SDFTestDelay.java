@@ -32,6 +32,7 @@ package ptolemy.domains.sdf.kernel.test;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
+import ptolemy.data.type.BaseType;
 import ptolemy.actor.*;
 import java.util.Enumeration;
 import ptolemy.domains.sdf.kernel.*;
@@ -92,13 +93,13 @@ public class SDFTestDelay extends SDFAtomicActor {
 	     * The setDeclaredType calls use the type system to define what
 	     * types of tokens are valid for this actor.
 	     */
-	    input.setTypeEquals(IntToken.class);
+	    input.setTypeEquals(BaseType.INT);
 
 	    /* Similarly for the output port */
 	    output = (SDFIOPort)newPort("output");
             output.setOutput(true);
             output.setTokenProductionRate(1);
-	    output.setTypeEquals(IntToken.class);
+	    output.setTypeEquals(BaseType.INT);
         }
         catch (IllegalActionException e1) {
             System.out.println("SDFTestDelay: constructor error");

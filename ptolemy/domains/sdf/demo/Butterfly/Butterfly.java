@@ -37,6 +37,7 @@ import java.awt.Dimension;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
+import ptolemy.data.type.BaseType;
 import ptolemy.actor.*;
 import ptolemy.actor.lib.*;
 import ptolemy.actor.lib.conversions.*;
@@ -101,7 +102,7 @@ public class Butterfly {
 	TypedIOPort cos2Input = new TypedIOPort(cos2, "cos2Input",
 						    true, false);
 	cos2.expression.setExpression("exp(cos(cos2Input))");
-	cos2.output.setTypeEquals(DoubleToken.class);
+	cos2.output.setTypeEquals(BaseType.DOUBLE);
 
 	XYPlotter xyPlotter = new XYPlotter(toplevel, "xyPlotter");
 	xyPlotter.place(panel);

@@ -36,6 +36,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.data.Token;
 import ptolemy.data.StringToken;
+import ptolemy.data.type.BaseType;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -57,7 +58,7 @@ public class CSPGet extends CSPActor {
 
         inputPort = new TypedIOPort(this, "input", true, false);
         inputPort.setMultiport(true);
-        inputPort.setTypeEquals(Token.class);
+        inputPort.setTypeEquals(BaseType.GENERAL);
     }
 
     ///////////////////////////////////////////////////////////////////

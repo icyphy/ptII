@@ -31,6 +31,7 @@ package ptolemy.domains.sdf.lib.vq;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
+import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.*;
 import java.io.*;
 import ptolemy.actor.*;
@@ -65,12 +66,12 @@ public final class ImageScale extends SDFAtomicActor {
         SDFIOPort outputport = (SDFIOPort) newPort("contrast");
         outputport.setOutput(true);
         outputport.setTokenProductionRate(1);
-        outputport.setTypeEquals(IntMatrixToken.class);
+        outputport.setTypeEquals(BaseType.INT_MATRIX);
 
         SDFIOPort inputport = (SDFIOPort) newPort("figure");
         inputport.setInput(true);
         inputport.setTokenConsumptionRate(1);
-        inputport.setTypeEquals(IntMatrixToken.class);
+        inputport.setTypeEquals(BaseType.INT_MATRIX);
     }
 
     /** Initialize the actor.

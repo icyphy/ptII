@@ -33,6 +33,7 @@ import ptolemy.kernel.util.*;
 import ptolemy.kernel.*;
 import ptolemy.data.expr.*;
 import ptolemy.data.*;
+import ptolemy.data.type.BaseType;
 import ptolemy.actor.*;
 import java.util.Enumeration;
 
@@ -112,10 +113,10 @@ public class CTBaseIntegrator extends CTActor
         input.setInput(true);
         input.setOutput(false);
         input.setMultiport(false);
-        input.setTypeEquals(DoubleToken.class);
+        input.setTypeEquals(BaseType.DOUBLE);
         output = new TypedIOPort(this, "output");
         output.setOutput(true);
-        output.setTypeEquals(DoubleToken.class);
+        output.setTypeEquals(BaseType.DOUBLE);
         _initState = 0.0;
         InitialState = new Parameter(this, "InitialState",
                 new DoubleToken(_initState));
@@ -140,10 +141,10 @@ public class CTBaseIntegrator extends CTActor
         input.setInput(true);
         input.setOutput(false);
         input.setMultiport(false);
-        input.setTypeEquals(DoubleToken.class);
+        input.setTypeEquals(BaseType.DOUBLE);
         output = new TypedIOPort(this, "output");
         output.setOutput(true);
-        output.setTypeEquals(DoubleToken.class);
+        output.setTypeEquals(BaseType.DOUBLE);
         InitialState = new Parameter(this, "InitialState",
                 new DoubleToken(_initState));
     }
@@ -168,10 +169,10 @@ public class CTBaseIntegrator extends CTActor
         input.setInput(true);
         input.setOutput(false);
         input.setMultiport(false);
-        input.setTypeEquals(DoubleToken.class);
+        input.setTypeEquals(BaseType.DOUBLE);
         output = new TypedIOPort(this, "output");
         output.setOutput(true);
-        output.setTypeEquals(DoubleToken.class);
+        output.setTypeEquals(BaseType.DOUBLE);
         InitialState = new Parameter(this, "InitialState",
                 new DoubleToken(_initState));
     }

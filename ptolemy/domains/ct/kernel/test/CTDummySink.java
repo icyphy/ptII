@@ -33,6 +33,7 @@ import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.actor.*;
 import ptolemy.data.*;
+import ptolemy.data.type.BaseType;
 
 //////////////////////////////////////////////////////////////////////////
 //// CTDummySink
@@ -52,7 +53,7 @@ public class CTDummySink extends CTActor{
         input.setInput(true);
         input.setOutput(false);
         input.setMultiport(true);
-        input.setTypeEquals(DoubleToken.class);
+        input.setTypeEquals(BaseType.DOUBLE);
     }
 
 

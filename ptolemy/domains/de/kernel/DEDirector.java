@@ -35,6 +35,7 @@ import ptolemy.kernel.util.*;
 import ptolemy.actor.*;
 import ptolemy.actor.util.*;
 import ptolemy.data.*;
+import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
 import ptolemy.graph.*;
 
@@ -536,7 +537,7 @@ public class DEDirector extends Director {
         try {
             if (stopTime == null) {
                 stopTime = new Parameter(this, "stopTime");
-                stopTime.setTypeEquals(DoubleToken.class);
+                stopTime.setTypeEquals(BaseType.DOUBLE);
             }
             stopTime.setToken(new DoubleToken(time));
         } catch (KernelException e) {

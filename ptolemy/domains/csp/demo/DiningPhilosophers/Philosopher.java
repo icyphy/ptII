@@ -39,6 +39,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.data.Token;
 import ptolemy.data.IntToken;
 import ptolemy.data.DoubleToken;
+import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
 import collections.LinkedList;
 import java.util.Enumeration;
@@ -97,10 +98,10 @@ public class Philosopher extends CSPActor {
         rightIn = new TypedIOPort(this, "rightIn", true, false);
         rightOut = new TypedIOPort(this, "rightOut", false, true);
 
-	leftIn.setTypeEquals(Token.class);
-	rightIn.setTypeEquals(Token.class);
-	leftOut.setTypeEquals(IntToken.class);
-	rightOut.setTypeEquals(IntToken.class);
+	leftIn.setTypeEquals(BaseType.GENERAL);
+	rightIn.setTypeEquals(BaseType.GENERAL);
+	leftOut.setTypeEquals(BaseType.INT);
+	rightOut.setTypeEquals(BaseType.INT);
 
         _eating = new Parameter(this, "eatingRate");
         _eating.setExpression("1.0");

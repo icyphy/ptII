@@ -32,6 +32,7 @@ package ptolemy.domains.sdf.kernel.test;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
+import ptolemy.data.type.BaseType;
 import ptolemy.actor.*;
 import java.util.Enumeration;
 import ptolemy.domains.sdf.kernel.*;
@@ -53,17 +54,17 @@ public class SDFTestJoin extends SDFAtomicActor {
             input1 = (SDFIOPort)newPort("input1");
             input1.setInput(true);
             input1.setTokenConsumptionRate(1);
-            input1.setTypeEquals(Token.class);
+            input1.setTypeEquals(BaseType.GENERAL);
 
             input2 = (SDFIOPort)newPort("input2");
             input2.setInput(true);
             input2.setTokenConsumptionRate(1);
-            input2.setTypeEquals(Token.class);
+            input2.setTypeEquals(BaseType.GENERAL);
 
             output = (SDFIOPort)newPort("output");
             output.setOutput(true);
             output.setTokenProductionRate(2);
-            output.setTypeEquals(Token.class);
+            output.setTypeEquals(BaseType.GENERAL);
         }
         catch (IllegalActionException e1) {
             System.out.println("SDFTestJoin: constructor error");

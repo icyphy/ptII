@@ -33,6 +33,7 @@ package ptolemy.domains.sdf.lib;
 import ptolemy.actor.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
+import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
 import ptolemy.domains.sdf.kernel.*;
 import ptolemy.actor.lib.*;
@@ -65,12 +66,12 @@ public class IntToBits extends SDFAtomicActor {
         input = (SDFIOPort) newPort("input");
         input.setInput(true);
         input.setTokenConsumptionRate(1);
-        input.setTypeEquals(IntToken.class);
+        input.setTypeEquals(BaseType.INT);
 
         output = (SDFIOPort) newPort("output");
         output.setOutput(true);
         output.setTokenProductionRate(32);
-        output.setTypeEquals(BooleanToken.class);
+        output.setTypeEquals(BaseType.BOOLEAN);
 
     }
 

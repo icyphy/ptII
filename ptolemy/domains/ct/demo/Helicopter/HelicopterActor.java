@@ -34,6 +34,7 @@ import ptolemy.kernel.util.*;
 import ptolemy.kernel.*;
 import ptolemy.actor.*;
 import ptolemy.data.*;
+import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.*;
 import ptolemy.domains.ct.kernel.*;
 import ptolemy.domains.ct.lib.*;
@@ -75,37 +76,37 @@ public class HelicopterActor extends CTActor{
         inputTm.setInput(true);
         inputTm.setOutput(false);
         inputTm.setMultiport(false);
-        inputTm.setTypeEquals(DoubleToken.class);
+        inputTm.setTypeEquals(BaseType.DOUBLE);
 
         inputA = new TypedIOPort(this, "inputA");
         inputA.setInput(true);
         inputA.setOutput(false);
         inputA.setMultiport(false);
-        inputA.setTypeEquals(DoubleToken.class);
+        inputA.setTypeEquals(BaseType.DOUBLE);
 
         inputTh = new TypedIOPort(this, "inputTh");
         inputTh.setInput(true);
         inputTh.setOutput(false);
         inputTh.setMultiport(false);
-        inputTh.setTypeEquals(DoubleToken.class);
+        inputTh.setTypeEquals(BaseType.DOUBLE);
 
         outputDDPx = new TypedIOPort(this, "outputDDPx");
         outputDDPx.setInput(false);
         outputDDPx.setOutput(true);
         outputDDPx.setMultiport(false);
-        outputDDPx.setTypeEquals(DoubleToken.class);
+        outputDDPx.setTypeEquals(BaseType.DOUBLE);
 
         outputDDPz = new TypedIOPort(this, "outputDDPz");
         outputDDPz.setInput(false);
         outputDDPz.setOutput(true);
         outputDDPz.setMultiport(false);
-        outputDDPz.setTypeEquals(DoubleToken.class);
+        outputDDPz.setTypeEquals(BaseType.DOUBLE);
 
         outputDDTh = new TypedIOPort(this, "outputDDTh");
         outputDDTh.setInput(false);
         outputDDTh.setOutput(true);
         outputDDTh.setMultiport(false);
-        outputDDTh.setTypeEquals(DoubleToken.class);
+        outputDDTh.setTypeEquals(BaseType.DOUBLE);
 
         _Iy = (double)0.271256;
         paramIy = new Parameter(this, "Iy", new DoubleToken(_Iy));

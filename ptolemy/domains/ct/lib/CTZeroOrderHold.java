@@ -30,6 +30,7 @@ import ptolemy.domains.ct.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.actor.*;
 import ptolemy.data.*;
+import ptolemy.data.type.BaseType;
 //import ptolemy.data.expr.*;
 
 
@@ -71,12 +72,12 @@ public class CTZeroOrderHold extends TypedAtomicActor
         input.setMultiport(false);
         input.setInput(true);
         input.setOutput(false);
-        input.setTypeEquals(DoubleToken.class);
+        input.setTypeEquals(BaseType.DOUBLE);
         output = new TypedIOPort(this, "output");
         output.setMultiport(false);
         output.setInput(false);
         output.setOutput(true);
-        output.setTypeEquals(DoubleToken.class);
+        output.setTypeEquals(BaseType.DOUBLE);
     }
 
     ////////////////////////////////////////////////////////////////////////

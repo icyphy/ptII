@@ -30,6 +30,7 @@ import ptolemy.domains.ct.kernel.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
+import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.*;
 import ptolemy.actor.*;
 
@@ -68,12 +69,12 @@ public class CTPeriodicSampler extends CTActor
         input.setMultiport(false);
         input.setInput(true);
         input.setOutput(false);
-        input.setTypeEquals(DoubleToken.class);
+        input.setTypeEquals(BaseType.DOUBLE);
         output = new TypedIOPort(this, "output");
         output.setMultiport(false);
         output.setInput(false);
         output.setOutput(true);
-        output.setTypeEquals(DoubleToken.class);
+        output.setTypeEquals(BaseType.DOUBLE);
 
         _samplePeriod = (double)0.1;
         SamplePeriod = new Parameter(this,

@@ -31,6 +31,7 @@ package ptolemy.domains.sdf.lib.vq;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
+import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.*;
 import ptolemy.actor.*;
 import java.util.Enumeration;
@@ -67,11 +68,11 @@ public final class VQDecode extends SDFAtomicActor {
 
         input = (SDFIOPort) newPort("input");
         input.setInput(true);
-        input.setTypeEquals(IntToken.class);
+        input.setTypeEquals(BaseType.INT);
 
         output = (SDFIOPort) newPort("output");
         output.setOutput(true);
-        output.setTypeEquals(IntMatrixToken.class);
+        output.setTypeEquals(BaseType.INT_MATRIX);
 
         codeBook = new Parameter(this, "codeBook",
                 new StringToken("ptolemy/domains/sdf" +

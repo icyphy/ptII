@@ -6,6 +6,7 @@ import ptolemy.actor.TypedAtomicActor;
 import ptolemy.domains.de.kernel.DEIOPort;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.Token;
+import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.kernel.util.IllegalActionException;
@@ -20,7 +21,7 @@ public class SimpleDelay extends TypedAtomicActor {
         input = new DEIOPort(this, "input", true, false);
         output = new DEIOPort(this, "output", false, true);
         delay = new Parameter(this, "delay", new DoubleToken(1.0));
-        delay.setTypeEquals(DoubleToken.class);
+        delay.setTypeEquals(BaseType.DOUBLE);
         input.delayTo(output);
     }
 

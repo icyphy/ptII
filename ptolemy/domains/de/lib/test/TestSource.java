@@ -7,6 +7,7 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.Director;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.Token;
+import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.kernel.util.IllegalActionException;
@@ -30,9 +31,9 @@ public class TestSource extends TypedAtomicActor {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         input = new TypedIOPort(this, "input", true, false);
-        input.setTypeEquals(DoubleToken.class);
+        input.setTypeEquals(BaseType.DOUBLE);
         output = new TypedIOPort(this, "output", false, true);
-        output.setTypeEquals(DoubleToken.class);
+        output.setTypeEquals(BaseType.DOUBLE);
     }
 
     public TypedIOPort input;

@@ -33,6 +33,7 @@ import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.actor.*;
 import ptolemy.data.*;
+import ptolemy.data.type.BaseType;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -52,11 +53,11 @@ public class CTDummySSControlActor extends CTActor
         input = new TypedIOPort(this, "input");
         input.setInput(true);
         input.setOutput(false);
-        input.setTypeEquals(DoubleToken.class);
+        input.setTypeEquals(BaseType.DOUBLE);
         output = new TypedIOPort(this, "output");
         output.setInput(false);
         output.setOutput(true);
-        output.setTypeEquals(DoubleToken.class);
+        output.setTypeEquals(BaseType.DOUBLE);
     }
 
 

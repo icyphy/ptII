@@ -31,6 +31,7 @@ package ptolemy.domains.sdf.lib.vq;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
+import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.*;
 import java.io.*;
 import ptolemy.actor.*;
@@ -79,7 +80,7 @@ public final class ImageUnpartition extends SDFAtomicActor {
 
         output = (SDFIOPort) newPort("output");
         output.setOutput(true);
-        output.setTypeEquals(IntMatrixToken.class);
+        output.setTypeEquals(BaseType.INT_MATRIX);
         output.setTokenProductionRate(1);
     }
 

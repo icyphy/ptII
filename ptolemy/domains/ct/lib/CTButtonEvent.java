@@ -32,6 +32,7 @@ import ptolemy.domains.ct.kernel.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
+import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.*;
 import ptolemy.actor.*;
 import java.util.Enumeration;
@@ -64,7 +65,7 @@ public class CTButtonEvent extends CTActor {
         output = new TypedIOPort(this, "output");
         output.setInput(false);
         output.setOutput(true);
-        output.setTypeEquals(BooleanToken.class);
+        output.setTypeEquals(BaseType.BOOLEAN);
         _buttonClicked = false;
         paramButtonClicked = new Parameter(this, "ButtonClicked",
                 new BooleanToken(_buttonClicked));

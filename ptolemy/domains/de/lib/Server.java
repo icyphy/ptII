@@ -31,6 +31,7 @@ import ptolemy.domains.de.kernel.*;
 import ptolemy.domains.de.lib.DETransformer;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
+import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
 import ptolemy.actor.TypedCompositeActor;
 
@@ -85,9 +86,9 @@ public class Server extends DETransformer {
         super(container, name);
         serviceTime =
             new Parameter(this, "serviceTime", new DoubleToken(1.0));
-        serviceTime.setTypeEquals(DoubleToken.class);
+        serviceTime.setTypeEquals(BaseType.DOUBLE);
         newServiceTime = new DEIOPort(this, "newServiceTime", true, false);
-        newServiceTime.setTypeEquals(DoubleToken.class);
+        newServiceTime.setTypeEquals(BaseType.DOUBLE);
         output.setTypeAtLeast(input);
         input.delayTo(output);
         newServiceTime.delayTo(output);

@@ -34,6 +34,7 @@ import ptolemy.kernel.util.*;
 import ptolemy.kernel.*;
 import ptolemy.actor.*;
 import ptolemy.data.*;
+import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.*;
 import ptolemy.domains.ct.kernel.*;
 import ptolemy.domains.ct.lib.*;
@@ -107,61 +108,61 @@ public class ControllerActor extends CTActor{
         inputTm.setInput(true);
         inputTm.setOutput(false);
         inputTm.setMultiport(false);
-        inputTm.setTypeEquals(DoubleToken.class);
+        inputTm.setTypeEquals(BaseType.DOUBLE);
 
         inputDTm = new TypedIOPort(this, "inputDTm");
         inputDTm.setInput(true);
         inputDTm.setOutput(false);
         inputDTm.setMultiport(false);
-        inputDTm.setTypeEquals(DoubleToken.class);
+        inputDTm.setTypeEquals(BaseType.DOUBLE);
 
         inputDDTm = new TypedIOPort(this, "inputDDTm");
         inputDDTm.setInput(true);
         inputDDTm.setOutput(false);
         inputDDTm.setMultiport(false);
-        inputDDTm.setTypeEquals(DoubleToken.class);
+        inputDDTm.setTypeEquals(BaseType.DOUBLE);
 
         inputA = new TypedIOPort(this, "inputA");
         inputA.setInput(true);
         inputA.setOutput(false);
         inputA.setMultiport(false);
-        inputA.setTypeEquals(DoubleToken.class);
+        inputA.setTypeEquals(BaseType.DOUBLE);
 
         inputTh = new TypedIOPort(this, "inputTh");
         inputTh.setInput(true);
         inputTh.setOutput(false);
         inputTh.setMultiport(false);
-        inputTh.setTypeEquals(DoubleToken.class);
+        inputTh.setTypeEquals(BaseType.DOUBLE);
 
         inputDTh = new TypedIOPort(this, "inputDTh");
         inputDTh.setInput(true);
         inputDTh.setOutput(false);
         inputDTh.setMultiport(false);
-        inputDTh.setTypeEquals(DoubleToken.class);
+        inputDTh.setTypeEquals(BaseType.DOUBLE);
 
         inputVx = new TypedIOPort(this, "inputVx");
         inputVx.setInput(true);
         inputVx.setOutput(false);
         inputVx.setMultiport(false);
-        inputVx.setTypeEquals(DoubleToken.class);
+        inputVx.setTypeEquals(BaseType.DOUBLE);
 
         inputVz = new TypedIOPort(this, "inputVz");
         inputVz.setInput(true);
         inputVz.setOutput(false);
         inputVz.setMultiport(false);
-        inputVz.setTypeEquals(DoubleToken.class);
+        inputVz.setTypeEquals(BaseType.DOUBLE);
 
         outputDDDTm = new TypedIOPort(this, "outputDDDTm");
         outputDDDTm.setInput(false);
         outputDDDTm.setOutput(true);
         outputDDDTm.setMultiport(false);
-        outputDDDTm.setTypeEquals(DoubleToken.class);
+        outputDDDTm.setTypeEquals(BaseType.DOUBLE);
 
         outputDA = new TypedIOPort(this, "outputDA");
         outputDA.setInput(false);
         outputDA.setOutput(true);
         outputDA.setMultiport(false);
-        outputDA.setTypeEquals(DoubleToken.class);
+        outputDA.setTypeEquals(BaseType.DOUBLE);
 
         _Iy = (double)0.271256;
         paramIy = new Parameter(this, "Iy", new DoubleToken(_Iy));
