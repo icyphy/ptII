@@ -244,6 +244,18 @@ jclass1_1: $(JSRCS1_1) $(JCLASS1_1)
 
 # Build the Java documentation.
 javadocs: doc/codeDoc/tree.html
+	@if [ "x$(DIRS)" != "x" ]; then \
+		set $(DIRS); \
+		for x do \
+		    if [ -w $$x ] ; then \
+			( cd $$x ; \
+			echo making javadocs in $$x ; \
+			$(MAKE) $(MFLAGS) $(MAKEVARS) javadocs ;\
+			) \
+		    fi ; \
+		done ; \
+	fi
+
 jhtml: doc/codeDoc/tree.html
 # $(DERIVED_JSRCS) is used in ptolemy/data/expr
 doc/codeDoc/tree.html:	$(JSRCS) $(OPTIONAL_JSRCS) $(DERIVED_JSRCS)
