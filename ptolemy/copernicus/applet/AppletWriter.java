@@ -350,6 +350,15 @@ public class AppletWriter extends SceneTransformer {
 		}
 	    }
 	}
+
+        // Copy $PTII/doc/default.css as well.
+	File defaultStyleSheetDirectory =
+            new File(_outputDirectory + "/doc");
+	defaultStyleSheetDirectory.mkdirs();
+        // We use a Copernicus.substitute() here, but do not actually
+        // substitute anything.
+        Copernicus.substitute("doc/default.css", _substituteMap,
+                defaultStyleSheetDirectory.toString() + "/default.css" );
     }
 
     // Copy sourceFile to the destinationFile in destinationDirectory.
