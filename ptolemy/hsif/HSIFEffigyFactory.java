@@ -123,13 +123,37 @@ public class HSIFEffigyFactory extends EffigyFactory {
             try {
                 _inCreateEffigy = true;
 
-                //URL temporaryMoMLFileURL = new URL("temporary.xml");
-                String temporaryOutputName = "temporary.xml";
-                // FIXME: HSIFToMoML does NOT work.
-                _HSIFToMoML(input, temporaryOutputName);
 
-                return ((EffigyFactory)getContainer()).createEffigy(container,
-                       base, MoMLApplication.specToURL(temporaryOutputName));
+		// Generate a MoML file with a name 'xxx_moml.xml'
+		String inputFileName = input.getFile();
+		int index = inputFileName.lastIndexOf(".");
+                String temporaryOutputFileName;
+		if (index < 0) {
+		    temporaryOutputFileName = inputFileName + "_moml.xml";
+		} else {
+		    try {
+			temporaryOutputFileName =
+			    inputFileName.substring(0, index)
+			    + "_moml.xml";
+		    } catch (IndexOutOfBoundsException ex) {
+			temporaryOutputFileName = inputFileName + "_moml.xml";
+		    }
+		}
+		System.out.print("Converting HSIFToMoML...");
+		HSIFUtilities.HSIFToMoML(inputFileName,
+					 temporaryOutputFileName);
+		System.out.println(" Done");
+
+		URL temporaryOutputURL =
+		    MoMLApplication.specToURL(temporaryOutputFileName);
+    
+
+		Effigy effigy = ((EffigyFactory)getContainer())
+		    .createEffigy(container,
+				  temporaryOutputURL, temporaryOutputURL);
+
+		effigy.identifier.setExpression(temporaryOutputURL.toString());
+		return effigy;
            } finally {
                _inCreateEffigy = false;
            }
@@ -139,17 +163,6 @@ public class HSIFEffigyFactory extends EffigyFactory {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
-
-    // Read in the file named by input, transform it and generate output.
-    private static void _HSIFToMoML(URL input, String output) throws Exception {
-        XSLTUtilities.transform("xsl/GlobalVariablePreprocessor.xsl", input.toString(), "outputDocument_g");
-        XSLTUtilities.transform("xsl/SlimPreprocessor.xsl", "outputDocument_g", "outputDocument_sg");
-        XSLTUtilities.transform("xsl/LocalVariablePreprocessor.xsl", "outputDocument_sg", "outputDocument_l");
-        XSLTUtilities.transform("xsl/SlimPreprocessor.xsl", "outputDocument_l", "outputDocument_sl");
-        XSLTUtilities.transform("xsl/HSIF.xsl", "outputDocument_sl", output);
-    }
-
 
     // Return true if the input file is a HSIF file.
     private static boolean _isHSIF(URL inputURL) throws IOException {
