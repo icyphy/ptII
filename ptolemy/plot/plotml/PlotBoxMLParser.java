@@ -61,7 +61,7 @@ a PlotBox object and then call its parse() method.
 */
 public class PlotBoxMLParser extends HandlerBase {
 
-    /** Contruct an parser to parse commands for the specified plot object.
+    /** Construct an parser to parse commands for the specified plot object.
      *  @param plot The plot object to which to apply the commands.
      */
     public PlotBoxMLParser(PlotBox plot) {
