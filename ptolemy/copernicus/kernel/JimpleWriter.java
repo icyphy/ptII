@@ -95,12 +95,17 @@ public class JimpleWriter extends SceneTransformer {
                 theClass.printJimpleStyleTo(writerOut, 0);
             }
             catch (IOException e) {
-                System.out.println("Failed to output jimple for file " + fileName);
+                System.out.println("Failed to output jimple for file '"
+                        + fileName + "':" + e);
             }
             finally {
-                writerOut.close();
+                if (writerOut != null) {
+                    writerOut.close();
+                }
                 try {
-                    streamOut.close();
+                    if (streamOut != null) {
+                        streamOut.close();
+                    }
                 } catch (IOException io) {
                 }
             }
