@@ -40,6 +40,7 @@ import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.RecordType;
 import ptolemy.data.type.Type;
+import ptolemy.graph.Inequality;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
@@ -48,6 +49,7 @@ import ptolemy.kernel.util.*;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -70,7 +72,7 @@ input record. For example, if the input record has type
 name/type: value/double and id/int, then the output record will have type
 {item: string, value: double, id: int}
 
-@author Michael Shilman
+@author Michael Shilman, Steve Neuendorffer
 @version $Id$
 @since Ptolemy II 1.0
 @see RecordAssembler
@@ -92,8 +94,6 @@ public class RecordUpdater extends TypedAtomicActor {
 
         output = new TypedIOPort(this, "output", false, true);
         input = new TypedIOPort(this, "input", true, false);
-
-        output.setTypeAtLeast(new FunctionTerm(this));
 
         _attachText("_iconDescription", "<svg>\n" +
                 "<rect x=\"0\" y=\"0\" width=\"6\" " +
@@ -123,7 +123,7 @@ public class RecordUpdater extends TypedAtomicActor {
     public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
         RecordUpdater newObject = (RecordUpdater)super.clone(workspace);
-        newObject.output.setTypeAtLeast(new FunctionTerm(newObject));
+        newObject.output.setTypeAtLeast(newObject.new FunctionTerm());
         return newObject;
     }
 
@@ -194,6 +194,32 @@ public class RecordUpdater extends TypedAtomicActor {
         return true;
     }
 
+    /** Return the type constraints of this actor. The type constraint is
+     *  that the type of the output port is no less than the type of the
+     *  input port, and contains additional fields for each input port.
+     *  @return a list of Inequality.
+     */
+    public List typeConstraintList() {
+        Object[] portArray = outputPortList().toArray();
+        int size = portArray.length;
+        String[] labels = new String[0];
+        Type[] types = new Type[0];
+  
+        RecordType declaredType = new RecordType(labels, types);
+        input.setTypeAtMost(declaredType);
+        
+        // Set the constraints between record fields and output ports
+        List constraints = new LinkedList();
+     
+        // Since the input port has a clone of the above RecordType, need to
+        // get the type from the input port.
+        Inequality inequality =
+            new Inequality(new FunctionTerm(), output.getTypeTerm());
+        constraints.add(inequality);
+
+        return constraints;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
@@ -210,12 +236,8 @@ public class RecordUpdater extends TypedAtomicActor {
     // the type of this port is not bottom (it must be a record), the value
     // of the function is computed as described above.
     private class FunctionTerm implements InequalityTerm {
-
-        // The constructor takes a reference to the RecordUpdater actor
-        // so that the clone() method can construct an instance of this
-        // class.
-        private FunctionTerm(RecordUpdater updater) {
-            _updater = updater;
+        // private constructor...
+        private FunctionTerm() {
         }
 
         ///////////////////////////////////////////////////////////////
@@ -232,17 +254,9 @@ public class RecordUpdater extends TypedAtomicActor {
          *  @return A Type.
          */
         public Object getValue() {
-            TypedIOPort recordInput = (TypedIOPort)_updater.getPort("input");
-            Type inputType = recordInput.getType();
-            if (inputType == BaseType.UNKNOWN) {
+            Type inputType = input.getType();
+            if (!(inputType instanceof RecordType)) {
                 return BaseType.UNKNOWN;
-            }
-
-            if ( !(inputType instanceof RecordType)) {
-                throw new InvalidStateException(_updater, "RecordUpdater: "
-                        + "The type of the input port must be record, \n"
-                        + "but the connection forces it to be "
-                        + inputType);
             }
 
             RecordType recordType = (RecordType)inputType;
@@ -255,11 +269,11 @@ public class RecordUpdater extends TypedAtomicActor {
                 outputMap.put(label, type);
             }
 
-            List inputPorts = _updater.inputPortList();
+            List inputPorts = inputPortList();
             iterator = inputPorts.iterator();
             while (iterator.hasNext()) {
                 TypedIOPort port = (TypedIOPort)iterator.next();
-                if (port != recordInput) {
+                if (port != input) {
                     outputMap.put(port.getName(), port.getType());
                 }
             }
@@ -281,7 +295,7 @@ public class RecordUpdater extends TypedAtomicActor {
          *  @return An array of InequalityTerm.
          */
         public InequalityTerm[] getVariables() {
-            List inputPorts = _updater.inputPortList();
+            List inputPorts = inputPortList();
             Object[] portsObj = inputPorts.toArray();
             InequalityTerm[] variables = new InequalityTerm[portsObj.length];
 
@@ -332,11 +346,6 @@ public class RecordUpdater extends TypedAtomicActor {
         public String toString() {
             return "(RecordUpdater$FunctionTerm, " + getValue() + ")";
         }
-
-        ///////////////////////////////////////////////////////////////
-        ////                       private inner variable          ////
-
-        private RecordUpdater _updater;
     }
 }
 
