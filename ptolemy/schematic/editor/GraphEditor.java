@@ -111,7 +111,7 @@ public class GraphEditor extends MDIApplication {
         super();
 
         // Create local objects
-	JTreePane treepane = new JTreePane("");	
+	JTreePane treepane = new JTreePane(".");	
         DesktopFrame frame = new DesktopFrame(this, treepane);
         setApplicationFrame(frame);
        
@@ -286,7 +286,8 @@ public class GraphEditor extends MDIApplication {
  
 	// We have "" because that is the name that was given in the
 	// treepane constructor.
-        createTreeNodes(pane, "", lib);	
+	//System.out.println("lib = " + lib.description());
+        createTreeNodes(pane, lib.getFullName(), lib);	
 	
 	JSplitPane splitPane = frame.getSplitPane();
 
@@ -302,7 +303,7 @@ public class GraphEditor extends MDIApplication {
 	    setPreferredSize(new Dimension(150,150));
 	splitPane.validate();	
     }
-    
+    /*
     public void createTreeNodes(JTreePane pane,
             String parent, CompositeEntity library) {
 	SchematicPalette palette = new SchematicPalette();
@@ -327,6 +328,36 @@ public class GraphEditor extends MDIApplication {
         }	
 	palette.setMinimumSize(new Dimension(200, 200));
 	//palette.triggerLayout();
+    }*/
+
+    public void createTreeNodes(JTreePane pane,
+            String parent, CompositeEntity library) {
+	Enumeration enum = library.getEntities();
+        int i = 0;
+	//	pane.addEntry(parent, library.getFullName(), palette);
+ 
+        while(enum.hasMoreElements()) {
+            Entity entity = 
+                (Entity) enum.nextElement();
+            if(!(entity instanceof CompositeEntity)) {
+		SchematicPalette palette = (SchematicPalette)
+		    pane.getComponentAt(library.getFullName());
+		ptolemy.moml.Icon icon = 
+		    (ptolemy.moml.Icon) entity.getAttribute("_icon");
+                palette.addNode(icon, 
+                        60, 50 + (i++) * 50);     
+            }
+
+            if(entity instanceof CompositeEntity) {
+		System.out.println("parent = " + parent);
+		System.out.println("entity = " + entity.getFullName());
+		SchematicPalette palette = new SchematicPalette();
+		pane.addEntry(parent, entity.getFullName(), palette);
+		createTreeNodes(pane, entity.getFullName(),
+                        (CompositeEntity)entity);
+		palette.setMinimumSize(new Dimension(200, 200));
+            }
+        }	
     }
 
     public RelativeBundle getGUIResources() {
