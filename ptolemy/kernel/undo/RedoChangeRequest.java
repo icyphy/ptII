@@ -49,6 +49,7 @@ import ptolemy.kernel.util.NamedObj;
    <p>
    @author Edward A. Lee and Neil Smyth
    @version $Id$
+   @since Ptolemy II 4.0
 */
 public class RedoChangeRequest extends ChangeRequest {
 

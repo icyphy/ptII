@@ -121,6 +121,7 @@ import java.net.URL;
    @author Edward A. Lee
    @version $Id$
    @see URIAttribute
+   @since Ptolemy II 3.0
 */
 public class FileAttribute extends StringAttribute {
 

@@ -61,6 +61,7 @@ import javax.swing.SwingUtilities;
 
    @author Elaine Cheong
    @version $Id$
+   @since Ptolemy II 2.0
 */
 public class DebugController extends SingletonConfigurableAttribute
     implements DebugListener {
