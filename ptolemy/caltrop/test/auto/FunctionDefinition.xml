@@ -1,0 +1,176 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="FunctionDefinition" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.0-devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={50, 88, 868, 554}}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[653, 436]">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+        </property>
+        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="55.0, 30.0">
+        </property>
+    </property>
+    <property name="annotation" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This model demonstrates the definition of recursive functions inside CAL actors.
+
+The Power and Factorial actors contain recursive definitions of the exponentiation 
+and factorial functions, respectively.</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 290.0">
+        </property>
+    </property>
+    <entity name="Factorial" class="ptolemy.caltrop.actors.CalInterpreter">
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+          <property name="attributeName" value="calCode"/>
+        </property>
+        <property name="calCode" class="ptolemy.kernel.util.StringAttribute" value="actor Factorial () int X ==&gt; int Out :&#10;&#10;  function fac (T n) --&gt; T : &#10;    if n &lt;= 1 then 1 else n * fac(n - 1) end end&#10;&#10;  action [k] ==&gt; [fac(k)] end&#10;end">
+            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="380.0, 245.0">
+        </property>
+        <port name="X" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="Out" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="power, factorial">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={197, 37, 731, 686}}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[723, 631]">
+        </property>
+        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="xInit" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="xUnit" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="520.0, 175.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>SequencePlotter</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="9.0"/>
+<yRange min="1.0" max="3628800.0"/>
+<default marks="dots"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="Power" class="ptolemy.caltrop.actors.CalInterpreter">
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+          <property name="attributeName" value="calCode"/>
+        </property>
+        <property name="calCode" class="ptolemy.kernel.util.StringAttribute" value="actor Power () double X, int Y ==&gt; double Out :&#10;&#10;  function pow (a, b)  : &#10;      if b &lt; 1 then 1 else&#10;	a * pow(a, b - 1)&#10;      end&#10;  end&#10;&#10;  action [x], [y] ==&gt; [pow(x, y)] end&#10;end">
+            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="380.0, 120.0">
+        </property>
+        <port name="X" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="Y" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="Out" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="Const" class="ptolemy.caltrop.actors.CalInterpreter">
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+          <property name="attributeName" value="calCode"/>
+        </property>
+        <property name="calCode" class="ptolemy.kernel.util.StringAttribute" value="actor Const (v) ==&gt; Out:&#10;&#10;  action ==&gt; [v] end&#10;end">
+            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+            </property>
+        </property>
+        <property name="v" class="ptolemy.data.expr.Parameter" value="4">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="95.0, 110.0">
+        </property>
+        <port name="Out" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+            </property>
+        </port>
+    </entity>
+    <entity name="Ramp" class="ptolemy.caltrop.actors.CalInterpreter">
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+          <property name="attributeName" value="calCode"/>
+        </property>
+        <property name="calCode" class="ptolemy.kernel.util.StringAttribute" value="actor Ramp (init, step) &#10;	==&gt; Out:&#10;&#10;  n := init;&#10;&#10;  action ==&gt; [oldN]&#10;  var &#10;    T oldN = n &#10;  do&#10;    n := n + step;&#10;  end&#10;end">
+            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+            </property>
+        </property>
+        <property name="init" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="step" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="95.0, 245.0">
+        </property>
+        <port name="Out" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+            </property>
+        </port>
+    </entity>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="180.0, 245.0">
+        </vertex>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="200.0, 110.0">
+        </vertex>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Factorial.X" relation="relation4"/>
+    <link port="Factorial.Out" relation="relation3"/>
+    <link port="SequencePlotter.input" relation="relation"/>
+    <link port="SequencePlotter.input" relation="relation3"/>
+    <link port="Power.X" relation="relation2"/>
+    <link port="Power.Y" relation="relation4"/>
+    <link port="Power.Out" relation="relation"/>
+    <link port="Const.Out" relation="relation2"/>
+    <link port="Ramp.Out" relation="relation4"/>
+</entity>
