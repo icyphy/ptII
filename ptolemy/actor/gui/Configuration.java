@@ -449,107 +449,7 @@ public class Configuration extends CompositeEntity {
             entity = deferredTo;
         }
 
-        // Search the model directory for an effigy that already
-        // refers to this model.
-        PtolemyEffigy effigy = getEffigy(entity);
-        if (effigy != null) {
-            // Found one.  Display all open tableaux.
-            return effigy.showTableaux();
-        } else {
-            // There is no pre-existing effigy.  Create one.
-            effigy = new PtolemyEffigy(workspace());
-            effigy.setModel(entity);
-
-            // Look to see whether the model has a URIAttribute.
-            List attributes = entity.attributeList(URIAttribute.class);
-            if (attributes.size() > 0) {
-                // The entity has a URI, which was probably
-                // inserted by MoMLParser.
-
-                URI uri = ((URIAttribute) attributes.get(0)).getURI();
-
-                // Set the URI and identifier of the effigy.
-                effigy.uri.setURI(uri);
-                effigy.identifier.setExpression(uri.toString());
-
-                if (container == null) {
-                    // Put the effigy into the directory
-                    ModelDirectory directory = getDirectory();
-                    effigy.setName(directory.uniqueName(entity.getName()));
-                    effigy.setContainer(directory);
-                } else {
-                    effigy.setName(container.uniqueName(entity.getName()));
-                    effigy.setContainer(container);
-                }
-
-                // Create a default tableau.
-                return createPrimaryTableau(effigy);
-            } else {
-                // If we get here, then we are looking inside a model
-                // that is defined within the same file as the parent,
-                // probably.  Create a new PtolemyEffigy
-                // and open a tableau for it.
-
-                // Put the effigy inside the effigy of the parent,
-                // rather than directly into the directory.
-                NamedObj parent = (NamedObj) entity.getContainer();
-                PtolemyEffigy parentEffigy = null;
-                // Find the first container above in the hierarchy that
-                // has an effigy.
-                while (parent != null && parentEffigy == null) {
-                    parentEffigy = getEffigy(parent);
-                    parent = (NamedObj) parent.getContainer();
-                }
-                boolean isContainerSet = false;
-                if (parentEffigy != null) {
-                    // OK, we can put it into this other effigy.
-                    effigy.setName(parentEffigy.uniqueName(entity.getName()));
-                    effigy.setContainer(parentEffigy);
-
-                    // Set the identifier of the effigy to be that
-                    // of the parent with the model name appended.
-
-                    // Note that we add a # the first time, and
-                    // then add . after that.  So
-                    // file:/c:/foo.xml#bar.bif is ok, but
-                    // file:/c:/foo.xml#bar#bif is not
-                    // If the title does not contain a legitimate
-                    // way to reference the submodel, then the user
-                    // is likely to look at the title and use the wrong
-                    // value if they xml edit files by hand. (cxh-4/02)
-                    String entityName = parentEffigy.identifier.getExpression();
-                    String separator = "#";
-                    if (entityName.indexOf("#") > 0) {
-                        separator = ".";
-                    }
-                    effigy.identifier.setExpression(
-                        entityName + separator + entity.getName());
-
-                    // Set the uri of the effigy to that of
-                    // the parent.
-                    effigy.uri.setURI(parentEffigy.uri.getURI());
-
-                    // Indicate success.
-                    isContainerSet = true;
-                }
-                // If the above code did not find an effigy to put
-                // the new effigy within, then put it into the
-                // directory directly or the specified container.
-                if (!isContainerSet) {
-                    if (container == null) {
-                        CompositeEntity directory = getDirectory();
-                        effigy.setName(directory.uniqueName(entity.getName()));
-                        effigy.setContainer(directory);
-                    } else {
-                        effigy.setName(container.uniqueName(entity.getName()));
-                        effigy.setContainer(container);                        
-                    }
-                    effigy.identifier.setExpression(entity.getFullName());
-                }
-
-                return createPrimaryTableau(effigy);
-            }
-        }
+        return _openModel(entity, container);
     }
 
     /** If the argument is not null, then throw an exception.
@@ -607,6 +507,33 @@ public class Configuration extends CompositeEntity {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
+    
+    /** Return an identifier for the specified effigy based on its
+     *  container (if any) and its name.
+     *  @return An identifier for the effigy.
+     */
+    private String _effigyIdentifier(Effigy effigy, NamedObj entity) {
+        // Set the identifier of the effigy to be that
+        // of the parent with the model name appended.
+        Effigy parentEffigy = (Effigy)effigy.getContainer();
+        if (parentEffigy == null) {
+            return effigy.getFullName();
+        }
+        // Note that we add a # the first time, and
+        // then add . after that.  So
+        // file:/c:/foo.xml#bar.bif is ok, but
+        // file:/c:/foo.xml#bar#bif is not
+        // If the title does not contain a legitimate
+        // way to reference the submodel, then the user
+        // is likely to look at the title and use the wrong
+        // value if they xml edit files by hand. (cxh-4/02)
+        String entityName = parentEffigy.identifier.getExpression();
+        String separator = "#";
+        if (entityName.indexOf("#") > 0) {
+            separator = ".";
+        }
+        return (entityName + separator + entity.getName());
+    }
 
     // Recursively search the specified composite for an instance of
     // PtolemyEffigy that matches the specified model.
@@ -632,6 +559,113 @@ public class Configuration extends CompositeEntity {
             }
         }
         return null;
+    }
+
+    /** Open the specified model without deferring to its class definition.
+     *  @param entity The model to open.
+     *  @param container The container for any new effigy.
+     *  @return The tableau that is created, or the first one found,
+     *   or null if none is created or found.
+     *  @exception IllegalActionException If constructing an effigy or tableau
+     *   fails.
+     *  @exception NameDuplicationException If a name conflict occurs (this
+     *   should not be thrown).
+     */
+    private Tableau _openModel(NamedObj entity, CompositeEntity container)
+        throws IllegalActionException, NameDuplicationException {
+        // Search the model directory for an effigy that already
+        // refers to this model.
+        PtolemyEffigy effigy = getEffigy(entity);
+        if (effigy != null) {
+            // Found one.  Display all open tableaux.
+            return effigy.showTableaux();
+        } else {
+            // There is no pre-existing effigy.  Create one.
+            effigy = new PtolemyEffigy(workspace());
+            effigy.setModel(entity);
+        
+            // Look to see whether the model has a URIAttribute.
+            List attributes = entity.attributeList(URIAttribute.class);
+            if (attributes.size() > 0) {
+                // The entity has a URI, which was probably
+                // inserted by MoMLParser.
+        
+                URI uri = ((URIAttribute) attributes.get(0)).getURI();
+                
+                // Set the URI and identifier of the effigy.
+                effigy.uri.setURI(uri);
+
+                // NOTE: The uri might be null, which results in
+                // a null pointer exception below. In particular,
+                // the class Effigy always has a URI attribute, but
+                // the value might not get set.
+                if (uri == null) {
+                    effigy.identifier.setExpression(
+                            _effigyIdentifier(effigy, entity));
+                } else {
+                    effigy.identifier.setExpression(
+                            uri.toString());
+                }
+        
+                if (container == null) {
+                    // Put the effigy into the directory
+                    ModelDirectory directory = getDirectory();
+                    effigy.setName(directory.uniqueName(entity.getName()));
+                    effigy.setContainer(directory);
+                } else {
+                    effigy.setName(container.uniqueName(entity.getName()));
+                    effigy.setContainer(container);
+                }
+        
+                // Create a default tableau.
+                return createPrimaryTableau(effigy);
+            } else {
+                // If we get here, then we are looking inside a model
+                // that is defined within the same file as the parent,
+                // probably.  Create a new PtolemyEffigy
+                // and open a tableau for it.
+        
+                // Put the effigy inside the effigy of the parent,
+                // rather than directly into the directory.
+                NamedObj parent = (NamedObj) entity.getContainer();
+                PtolemyEffigy parentEffigy = null;
+                // Find the first container above in the hierarchy that
+                // has an effigy.
+                while (parent != null && parentEffigy == null) {
+                    parentEffigy = getEffigy(parent);
+                    parent = (NamedObj) parent.getContainer();
+                }
+                boolean isContainerSet = false;
+                if (parentEffigy != null) {
+                    // OK, we can put it into this other effigy.
+                    effigy.setName(parentEffigy.uniqueName(entity.getName()));
+                    effigy.setContainer(parentEffigy);
+        
+                    // Set the uri of the effigy to that of
+                    // the parent.
+                    effigy.uri.setURI(parentEffigy.uri.getURI());
+        
+                    // Indicate success.
+                    isContainerSet = true;
+                }
+                // If the above code did not find an effigy to put
+                // the new effigy within, then put it into the
+                // directory directly or the specified container.
+                if (!isContainerSet) {
+                    if (container == null) {
+                        CompositeEntity directory = getDirectory();
+                        effigy.setName(directory.uniqueName(entity.getName()));
+                        effigy.setContainer(directory);
+                    } else {
+                        effigy.setName(container.uniqueName(entity.getName()));
+                        effigy.setContainer(container);                        
+                    }
+                }
+                effigy.identifier.setExpression(_effigyIdentifier(effigy, entity));
+        
+                return createPrimaryTableau(effigy);
+            }
+        }
     }
 
     // Call show() on all instances of Tableaux contained by the specified
