@@ -567,3 +567,16 @@ test Graph-7.6 {test cloneAs()} {
     list $clnnam
 } {ptolemy.graph.DirectedGraph}
 
+######################################################################
+####
+#
+test Graph-7.7 {test hashCode() and equals(): graphs of different types with 
+the same nodes and edges} {
+    set sameg    [$og equals $clng]
+    set hashog   [$og hashCode]
+    set hashclng [$clng hashCode]
+    set ogv      [java::new java.lang.Integer $hashog]
+    set cgv      [java::new java.lang.Integer $hashclng]
+    set ehash    [$cgv equals $ogv]
+    list $sameg $ehash
+} {0 0}
