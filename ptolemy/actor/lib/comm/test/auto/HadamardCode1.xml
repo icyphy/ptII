@@ -53,7 +53,7 @@
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">For convenience to change parameters and see other Hadamard matrices:
-Set x to be the matrix dimension (codeword length), and y should be log2(x).
+Set x to be the matrix dimension (codeword length), and set y to be log base 2 of x.
 The parameters in the above actors will be set to the new values.</text></svg></configure>
         </property>
         <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
@@ -208,7 +208,7 @@ The parameters in the above actors will be set to the new values.</text></svg></
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
-        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="true">
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="730.0, 175.0">
         </property>
