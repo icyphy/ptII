@@ -39,7 +39,7 @@ import ptolemy.media.javasound.LiveSound;
    computer's audio input port. The processing consists of a simple soft-clipping
    function (the arc tangent is used). The soft-clipped audio data is then played
    out the speaker.
-   @author Brian K. Vogel (vogel@eecs.berkeley.edu)
+   @author Brian K. Vogel
    @version $Id$
    @since Ptolemy II 1.0
    @Pt.ProposedRating Red (vogel)

@@ -81,8 +81,8 @@ import diva.graph.layout.LevelLayout;
 /**
  *  A DDE application illustrating localized Zeno conditions.
  *
- *  @author John S. Davis II (davisj@eecs.berkeley.edu)
- *  @author Michael Shilman  (michaels@eecs.berkeley.edu)
+ *  @author John S. Davis II (davisj)
+ *  @author Michael Shilman  (michaels)
  *  @version $Id$
  *  @since Ptolemy II 0.3
  *  @Pt.ProposedRating Yellow (davisj)

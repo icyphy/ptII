@@ -24,9 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-
-@ProposedRating Red (ctsay@eecs.berkeley.edu)
-@AcceptedRating Red (ctsay@eecs.berkeley.edu)
 */
 
 
@@ -53,6 +50,8 @@ why it is written in Java instead of using MoML.
 
 @author Jeff Tsay
 @version $Id$
+@Pt.ProposedRating Red (ctsay)
+@Pt.AcceptedRating Red (ctsay)
 */
 public class OrthogonalCom extends TypedCompositeActor {
 

@@ -36,7 +36,7 @@ import ptolemy.media.javasound.SoundPlayback;
     This application synthesizes and plays a simple harmonic
     signal, using simple additive synthesis. The signal
     is the some of a few harmonically related sinusoids.
-    @author Brian K. Vogel (vogel@eecs.berkeley.edu)
+    @author Brian K. Vogel
     @version $Id$
     @since Ptolemy II 1.0
     @Pt.ProposedRating Red (vogel)

@@ -117,7 +117,7 @@ public class AudioViewer extends PlotApplication {
     protected void _about() {
         JOptionPane.showMessageDialog(this,
                 "Ptolemy AudioViewer (ptaudio program)\n" +
-                "By: Edward A. Lee, eal@eecs.berkeley.edu\n" +
+                "By: Edward A. Lee\n" +
                 "Version 2.0, Build: " +
                 "$Id$" +
                 "\n\n"+

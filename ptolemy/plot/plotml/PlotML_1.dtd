@@ -1,4 +1,4 @@
-<!-- PlotML DTD. Author: Edward A. Lee, eal@eecs.berkeley.edu. -->
+<!-- PlotML DTD. Author: Edward A. Lee. -->
 <!-- Version: $Id$ -->
 <!ELEMENT plot (
 	barGraph |
