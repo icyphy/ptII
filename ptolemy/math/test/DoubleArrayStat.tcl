@@ -262,3 +262,45 @@ test DoubleArrayStat-3.5 {variance sample false, length 1 array} {
     set r [java::call ptolemy.math.DoubleArrayStat variance $a1 false]
     epsilonDiff [list $r] {0.0}
 } {}
+
+####################################################################
+test DoubleArrayStat-4.1 {randomGaussian should be different} {
+    # Zoltan Kemenczy writes:
+    # The behaviour of randomGaussian() et al. functions in
+    # ptolemy.math.DoubleArrayStat depends on how much time elapses between
+    # subsequent calls...  Specifically if multiple calls are made within a java
+    # system time "unit", the same result will be returned since the seed for
+    # java.util.Random() is the same.
+    # 
+    # Here is a small java example that illustrates this problem:
+    # ---------------------------------------
+    # import ptolemy.math.DoubleArrayStat;
+    #
+    #class tmp {
+    #    public static void main(String[] args) {
+    #        double[] v1 = DoubleArrayStat.randomGaussian(0.0,1.0,10);
+    #        double[] v2 = DoubleArrayStat.randomGaussian(0.0,1.0,10);
+    #        for (int i = 0; i < v1.length; i++)
+    #            System.out.print(v1[i]);
+    #        System.out.println();
+    #        for (int i = 0; i < v1.length; i++)
+    #            System.out.print(v2[i]);
+    #    }
+    #   }
+    #  ----------------------------------------
+    #
+    #   It would be maybe better if there was a single:
+    #   
+    #   static Random random = new Random();
+    # 
+    # in ptolemy.math.DoubleArrayStat and all DoubleArrayStat randomXXX()
+    # functions referred to it?
+
+
+    # Note that this bug only appears under Windows?
+    set v1 [java::call ptolemy.math.DoubleArrayStat randomGaussian 0.0 1.0 10]
+    set v2 [java::call ptolemy.math.DoubleArrayStat randomGaussian 0.0 1.0 10]
+    set r1 [$v1 getrange 0]
+    set r2 [$v2 getrange 0]
+    expr {$r1 != $r2}
+} {1}

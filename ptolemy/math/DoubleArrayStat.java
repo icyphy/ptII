@@ -1,5 +1,4 @@
-/*
-A library of statistical operations on arrays of doubles.
+/* A library of statistical operations on arrays of doubles.
 
 Copyright (c) 1998-2001 The Regents of the University of California.
 All rights reserved.
@@ -480,9 +479,8 @@ public class DoubleArrayStat extends DoubleArrayMath {
     public static double[] randomUniform(double a, double b, int N) {
         double range = b - a;
         double[] retval = new double[N];
-        Random r = new Random();
         for (int i = 0; i < N; i++) {
-            retval[i] = r.nextDouble() * range + a;
+            retval[i] = _random.nextDouble() * range + a;
         }
         return retval;
     }
@@ -494,11 +492,10 @@ public class DoubleArrayStat extends DoubleArrayMath {
      */
     public static final double[] randomGaussian(double mean,
             double standardDeviation, int N) {
-        Random random = new Random();
         double[] retval = new double[N];
 
         for (int i = 0; i < N; i++) {
-            retval[i] = mean + random.nextGaussian()*standardDeviation;
+            retval[i] = mean + _random.nextGaussian()*standardDeviation;
         }
         return retval;
     }
@@ -509,11 +506,10 @@ public class DoubleArrayStat extends DoubleArrayMath {
      *  The number of elements to allocate is given by N.
      */
     public static final double[] randomBernoulli(double p, int N) {
-        Random random = new Random();
         double[] retval = new double[N];
 
         for (int i = 0; i < N; i++) {
-            retval[i] = (random.nextDouble() < p) ? 1.0 : 0.0;
+            retval[i] = (_random.nextDouble() < p) ? 1.0 : 0.0;
         }
         return retval;
     }
@@ -523,13 +519,12 @@ public class DoubleArrayStat extends DoubleArrayMath {
      *  Note lambda may not be 0!
      */
     public static final double[] randomExponential(double lambda, int N) {
-        Random random = new Random();
         double[] retval = new double[N];
 
         for (int i = 0; i < N; i++) {
             double r;
             do {
-                r = random.nextDouble();
+                r = _random.nextDouble();
             } while (r != 0.0);
 
             retval[i] = -Math.log(r) / lambda;
@@ -542,7 +537,6 @@ public class DoubleArrayStat extends DoubleArrayMath {
      *  This algorithm is from [1].
      */
     public static final double[] randomPoisson(double mean, int N) {
-        Random random = new Random();
         double[] retval = new double[N];
 
         for (int i = 0; i < N; i++) {
@@ -551,7 +545,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
 
             j = 0.0;
             f = p = Math.exp(-mean);
-            u = random.nextDouble();
+            u = _random.nextDouble();
 
             while (f <= u) {
                 p *= (mean / (j + 1.0));
@@ -564,5 +558,12 @@ public class DoubleArrayStat extends DoubleArrayMath {
         return retval;
     }
 
-
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables               ////
+    
+    // Common instance of Random to be shared by all methods that need
+    // a random number.  If we do not share a single Random, then
+    // under Windows, closely spaced calls to nextGaussian() on two
+    // separate Randoms could yield the same return value.
+    protected static Random _random = new Random();
 }
