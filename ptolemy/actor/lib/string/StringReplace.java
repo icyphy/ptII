@@ -60,11 +60,6 @@ The <i>pattern</i> is given by a regular expression.
 For a reference on regular expression syntax see:
 <a href="http://java.sun.com/docs/books/tutorial/extra/regex/index.html">
 http://java.sun.com/docs/books/tutorial/extra/regex/index.html</a>
-<p>
-FIXME:
-Note, there could be problems using backslashes in the regular expression.
-Use double backslashes instead of single backslashes and remember to enclose
-the regular expression in quotes.
 
 @author Antonio Yordan-Nones, Neil E. Turner, Edward A. Lee
 @version $Id$
