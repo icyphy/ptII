@@ -22,6 +22,7 @@
          </property>
       </property>
       <property name="DDE Director" class="ptolemy.domains.dde.kernel.DDEDirector"/>
+      <property name="DDF Director" class="ptolemy.domains.ddf.kernel.DDFDirector"/>
        </group>
     ?>
   </configure>
