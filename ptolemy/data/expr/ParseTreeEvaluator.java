@@ -509,16 +509,25 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
             return;
         }
 
+        String name = node.getName();
+        
         // The node refers to a variable, or something else that is in
         // scope.
         if(_scope != null) {
-            String name = node.getName();
             ptolemy.data.Token value = _scope.get(name);
             if(value != null) {
                 node.setToken(value);
                 return;
             }
         }
+
+        // Look up for constants.
+        if (Constants.get(name) != null) {
+            // A named constant that is recognized by the parser.
+            node.setToken(Constants.get(name));
+            return;
+        }
+
         throw new IllegalActionException(
                 "The ID " + node.getName() + " is undefined.");
     }

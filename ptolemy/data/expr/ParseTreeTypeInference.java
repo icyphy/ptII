@@ -422,6 +422,13 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
                 return type;
             }
         }
+        
+        // Look up for constants.
+        if (Constants.get(name) != null) {
+            // A named constant that is recognized by the parser.
+            return Constants.get(name).getType();
+        }
+        
         throw new IllegalActionException(
                 "The ID " + name + " is undefined.");
     }

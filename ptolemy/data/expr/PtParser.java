@@ -1794,11 +1794,12 @@ String tidied, x;
         jjtn000._name = token.image;
 
         //BIG FIXME: Constants shouldn't shadow other variables in scope.
-        if (Constants.get(token.image) != null) {
-            // A named constant that is recognized by the parser.
-            jjtn000._ptToken = Constants.get(token.image);
-            jjtn000._isConstant = true;
-        }
+//         if (Constants.get(token.image) != null) {
+//             // A named constant that is recognized by the parser.
+//             jjtThis._ptToken = Constants.get(token.image);
+//             jjtThis._isConstant = true;
+//         }
+
     } finally {
       if (jjtc000) {
         jjtree.closeNodeScope(jjtn000, true);

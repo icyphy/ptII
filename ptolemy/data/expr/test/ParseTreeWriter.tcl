@@ -226,7 +226,7 @@ test ParseTreeWriter-9.0 {Check that evaluation of the parse tree does not chang
 # Need to test that constants can be registered and recognized by the parser.
 test ParseTreeWriter-10.0 {Test that constants can be registered and recognized by the parser} {
     list [theTest "half + one + neil"] [theTest "boolean == true"] [theTest "long"]
-} {(0.5+1+\"neil\") (true==true) 1000L}
+} {(half+one+neil) (boolean==true) long}
 
 ######################################################################
 ####
@@ -235,7 +235,7 @@ test ParseTreeWriter-10.0 {Test that constants can be registered and recognized 
 # FIXME: this test is not finished.
 test ParseTreeWriter-10.1 {Test that functions can access registered classes.} {
     list [theTest "min(1,3)"] [theTest "sin(30*PI/180)"]
-} {{min(1, 3)} sin((30*3.1415926535898/180))}
+} {{min(1, 3)} sin((30*PI/180))}
 
 #
 
@@ -256,11 +256,11 @@ test ParseTreeWriter-12.2 {Test matrix construction.} {
 # Test array reference.
 test ParseTreeWriter-13.0 {Test array reference.} {
     list [theTest "v1(0+1,2)+v1(0, v2-1)"] [theTest "cast(complex,v1(0+1,2)+v1(0, v2-1).add(v2))"]
-} {{(v1((0+1), 2)+v1(0, (v2-1)))} {cast(0.0 + 0.0i, (v1((0+1), 2)+v1(0, (v2-1)).add(v2)))}}
+} {{(v1((0+1), 2)+v1(0, (v2-1)))} {cast(complex, (v1((0+1), 2)+v1(0, (v2-1)).add(v2)))}}
 
 test ParseTreeWriter-13.1 {Test array method calls.} {
     list [theTest "cast(int, {1, 2, 3}.getElement(1))"]
-} {{cast(0, {1, 2, 3}.getElement(1))}}
+} {{cast(int, {1, 2, 3}.getElement(1))}}
 
 # Test record construction,
 test ParseTreeWriter-13.2 {Test record construction.} {
@@ -279,7 +279,7 @@ test ParseTreeWriter-14.0 {Test eval inference.} {
 # 
 test ParseTreeWriter-16.0 {Test method calls on arrays, matrices, etc.} {
     list [theTest "cast({int},{1,2,3}.add({3,4,5}))"] [theTest "cast({int},{{a=1,b=2},{a=3,b=4},{a=5,b=6}}.get(\"a\"))"] [theTest "cast(\[int\],create({1,2,3,4,5,6},2,3))"] [theTest "cast({int},{1,1,1,1}.leftShift({1,2,3,4}))"]
-} {{cast({0}, {1, 2, 3}.add({3, 4, 5}))} {cast({0}, {{a=1, b=2}, {a=3, b=4}, {a=5, b=6}}.get("a"))} {cast([0], create({1, 2, 3, 4, 5, 6}, 2, 3))} {cast({0}, {1, 1, 1, 1}.leftShift({1, 2, 3, 4}))}}
+} {{cast({int}, {1, 2, 3}.add({3, 4, 5}))} {cast({int}, {{a=1, b=2}, {a=3, b=4}, {a=5, b=6}}.get("a"))} {cast([int], create({1, 2, 3, 4, 5, 6}, 2, 3))} {cast({int}, {1, 1, 1, 1}.leftShift({1, 2, 3, 4}))}}
 
 test ParseTreeWriter-16.2 {Test record indexing} {
     list [theTest "true ? 2 : ({a={0,0,0}}.a).length()"] [theTest "false ? 2 : ({a={0,0,0}}.a).length()"]

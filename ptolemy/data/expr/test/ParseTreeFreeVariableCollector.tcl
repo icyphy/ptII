@@ -235,17 +235,16 @@ test ParseTreeFreeVariableCollector-9.0 {Check that evaluation of the parse tree
 # Need to test that constants can be registered and recognized by the parser.
 test ParseTreeFreeVariableCollector-10.0 {Test that constants can be registered and recognized by the parser} {
     list [theTest "half + one + neil"] [theTest "boolean == true"] [theTest "long"]
-} {{} {} {}}
+} {{half neil one} boolean long}
 
 ######################################################################
 ####
 # Need to test that functions can access methods registered in the 
 # search path of the parser. can be registered and recognized by the parser.
-# FIXME: this test is not finished.
 test ParseTreeFreeVariableCollector-10.1 {Test that functions can access registered classes.
 } {
     list [theTest "min(1,3)"] [theTest "sin(30*PI/180)"]
-} {min {sin PI}} {expression constants should not take precendence over other identifiers}
+} {min {sin PI}}
 
 #
 
@@ -266,11 +265,11 @@ test ParseTreeFreeVariableCollector-12.2 {Test matrix construction.} {
 # Test array reference.
 test ParseTreeFreeVariableCollector-13.0 {Test array reference.} {
     list [theTest "v1(0+1,2)+v1(0, v2-1)"] [theTest "cast(complex,v1(0+1,2)+v1(0, v2-1).add(v2))"]
-} {{v1 v2} {v1 v2 cast}}
+} {{v1 v2} {v1 complex v2 cast}}
 
 test ParseTreeFreeVariableCollector-13.1 {Test array method calls.} {
     list [theTest "cast(int, {1, 2, 3}.getElement(1))"]
-} {cast}
+} {{int cast}}
 
 # Test record construction,
 test ParseTreeFreeVariableCollector-13.2 {Test record construction.} {
@@ -289,7 +288,7 @@ test ParseTreeFreeVariableCollector-14.0 {Test eval inference.} {
 # 
 test ParseTreeFreeVariableCollector-16.0 {Test method calls on arrays, matrices, etc.} {
     list [theTest "cast({int},{1,2,3}.add({3,4,5}))"] [theTest "cast({int},{{a=1,b=2},{a=3,b=4},{a=5,b=6}}.get(\"a\"))"] [theTest "cast(\[int\],create({1,2,3,4,5,6},2,3))"] [theTest "cast({int},{1,1,1,1}.leftShift({1,2,3,4}))"]
-} {cast cast {create cast} cast}
+} {{int cast} {int cast} {create int cast} {int cast}}
 
 test ParseTreeFreeVariableCollector-16.2 {Test record indexing} {
     list [theTest "true ? 2 : ({a={0,0,0}}.a).length()"] [theTest "false ? 2 : ({a={0,0,0}}.a).length()"]

@@ -1113,11 +1113,11 @@ void identifier() #PtLeafNode :
         jjtThis._name = token.image;
   
         //BIG FIXME: Constants shouldn't shadow other variables in scope.
-        if (Constants.get(token.image) != null) {
-            // A named constant that is recognized by the parser.
-            jjtThis._ptToken = Constants.get(token.image);
-            jjtThis._isConstant = true;
-        }
+//         if (Constants.get(token.image) != null) {
+//             // A named constant that is recognized by the parser.
+//             jjtThis._ptToken = Constants.get(token.image);
+//             jjtThis._isConstant = true;
+//         }
     }
 } 
    
