@@ -627,7 +627,7 @@ public class RecordType extends StructuredType {
                         + "The argument is not a Type.");
             }
 
-            if (_declaredType == BaseType.NAT) {
+            if (_declaredType == BaseType.ANY) {
                 _resolvedType = (Type)e;
             } else {
                 // this field type is a structured type.
@@ -671,7 +671,7 @@ public class RecordType extends StructuredType {
 			+ ", New type: " + e.toString());
             }
 
-            if (_declaredType == BaseType.NAT) {
+            if (_declaredType == BaseType.ANY) {
 	        try {
                     _resolvedType = (Type)((Type)e).clone();
 		} catch (CloneNotSupportedException cnse) {

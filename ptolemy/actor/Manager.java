@@ -614,7 +614,7 @@ public class Manager extends NamedObj implements Runnable {
                 }
 
 	        // check whether resolved types are acceptable.
-                // They might be, for example, NaT.
+                // They might be, for example, ANY.
 	        Iterator variableTerms = solver.variables();
 	        while (variableTerms.hasNext()) {
 		    InequalityTerm term = (InequalityTerm)variableTerms.next();

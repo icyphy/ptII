@@ -69,10 +69,10 @@ test TypeConflictException-1.0 {Constructor that takes a List} {
 	    [listToFullNames [$ex1 objectList]]
 } {{Type conflicts occurred at the following places:
   ..E1.P1: double
-  ..E1.P2: NaT
+  ..E1.P2: any
 } {Detail Message
   ..E1.P1: double
-  ..E1.P2: NaT
+  ..E1.P2: any
 } {..E1.P1 ..E1.P2}}
 
 ######################################################################
@@ -83,14 +83,14 @@ test TypeConflictException-1.1 {Test with structured types} {
     set param [java::new ptolemy.data.expr.Parameter $e1 param]
 
     # an ArrayType
-    set nat [java::field ptolemy.data.type.BaseType NAT]
-    set arrayT [java::new ptolemy.data.type.ArrayType $nat]
+    set any [java::field ptolemy.data.type.BaseType ANY]
+    set arrayT [java::new ptolemy.data.type.ArrayType $any]
 
     # a RecordType
     set l [java::new {String[]} {2} {{name} {value}}]
 
     set nt [java::field ptolemy.data.type.BaseType STRING]
-    set vt [java::field ptolemy.data.type.BaseType NAT]
+    set vt [java::field ptolemy.data.type.BaseType ANY]
     set v [java::new {ptolemy.data.type.Type[]} 2 [list $nt $vt]]
 
     set recordT [java::new {ptolemy.data.type.RecordType} $l $v]
@@ -105,8 +105,8 @@ test TypeConflictException-1.1 {Test with structured types} {
     set ex [java::new ptolemy.actor.TypeConflictException $conflicts]
     list [$ex getMessage] [listToFullNames [$ex objectList]]
 } {{Type conflicts occurred at the following places:
-  ..E1.port: NaT
-  ..E1.param: NaT
-  (NaT)array
-  {name:string, value:NaT}
+  ..E1.port: any
+  ..E1.param: any
+  (any)array
+  {name:string, value:any}
 } {..E1.port ..E1.param NOT_NAMEABLE. NOT_NAMEABLE.}}

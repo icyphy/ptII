@@ -82,7 +82,7 @@ public class ArrayToSequence extends SDFTransformer {
 	output.setTokenProductionRate(1);
 
 	// set type constraints.
-	input.setTypeEquals(new ArrayType(BaseType.NAT));
+	input.setTypeEquals(new ArrayType(BaseType.ANY));
 	ArrayType inputType = (ArrayType)input.getType();
 	InequalityTerm elemTerm = inputType.getElementTypeTerm();
 	output.setTypeAtLeast(elemTerm);

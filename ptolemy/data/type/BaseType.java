@@ -83,15 +83,15 @@ public class BaseType implements Type, Serializable {
     }
 
     /** Test if the argument token is compatible with this type. The method
-     *  returns true if this type is NAT, since any type is a substitution
-     *  instance of it. If this type is not NAT, this method returns true
+     *  returns true if this type is ANY, since any type is a substitution
+     *  instance of it. If this type is not ANY, this method returns true
      *  if the argument type is less than or equal to this type in the type
      *  lattice, and false otherwise.
      *  @param t A Token.
      *  @return True if the argument token is compatible with this type.
      */
     public boolean isCompatible(Token t) {
-	if (this == NAT) {
+	if (this == ANY) {
 	    return true;
 	}
 
@@ -99,11 +99,11 @@ public class BaseType implements Type, Serializable {
 	return (typeInfo == CPO.SAME || typeInfo == CPO.HIGHER);
     }
 
-    /** Test if this Type is NAT.
-     *  @return True if this Type is not NAT; false otherwise.
+    /** Test if this Type is ANY.
+     *  @return True if this Type is not ANY; false otherwise.
      */
     public boolean isConstant() {
-	return this != NAT;
+	return this != ANY;
     }
 
     /** Determine if the argument represents the same BaseType as this
@@ -120,11 +120,11 @@ public class BaseType implements Type, Serializable {
 
     /** Determine if this type corresponds to an instantiable token
      *  classes. A BaseType is instantiable if it does not correspond
-     *  to an abstract token class, or an interface, or NaT.
+     *  to an abstract token class, or an interface, or ANY.
      *  @return True if this type is instantiable.
      */
     public boolean isInstantiable() {
-	if (this == NAT) {
+	if (this == ANY) {
 	    return false;
 	}
 
@@ -142,10 +142,10 @@ public class BaseType implements Type, Serializable {
 
     /** Return true if the argument is a substitution instance of this type.
      *  @param type A Type.
-     *  @return True if this type is NAT; false otherwise.
+     *  @return True if this type is ANY; false otherwise.
      */
     public boolean isSubstitutionInstance(Type type) {
-	return (this == NAT) || (this == type);
+	return (this == ANY) || (this == type);
     }
 
     /** Return the string representation of this type.
@@ -158,14 +158,10 @@ public class BaseType implements Type, Serializable {
     ///////////////////////////////////////////////////////////////////
     ////                        public variables                   ////
 
-    /** The bottom element of the data type lattice. This type has two
-     *  roles. It represents either a type variable or "not a type". When
-     *  it represents a type variable, it is called ANY since a type variable
-     *  may be changed to any type. The two objects ANY and NAT are
-     *  the same BaseType instance.
-     *  @see #NAT
+    /** The bottom element of the data type lattice. It represents a
+     *  type variable.
      */
-    public static final BaseType ANY = new BaseType(Void.TYPE, "NaT",
+    public static final BaseType ANY = new BaseType(Void.TYPE, "any",
             new ConvertOperator() {
         public Token convert(Token t) throws IllegalActionException {
             // Since any type is a substitution instance of ANY, just
@@ -294,12 +290,6 @@ public class BaseType implements Type, Serializable {
             return MatrixToken.convert(t);
         }
     });
-
-    /** The type object that represents "not a type." This is the same object
-     *  as ANY.
-     *  @see #ANY
-     */
-    public static final BaseType NAT = ANY;
 
     /** The numerical data type */
     public static final BaseType NUMERICAL = new BaseType(Numerical.class,

@@ -785,7 +785,7 @@ test IOPort-10.7 {Construct a simple system, then call description} {
         } remotereceivers {
             {
             }
-        } type {declared NaT resolved NaT}}
+        } type {declared any resolved any}}
     }}
     {ptolemy.actor.TypedAtomicActor {..dest} attributes {
         {ptolemy.kernel.util.TransientSingletonConfigurableAttribute {..dest._iconDescription} attributes {
@@ -800,7 +800,7 @@ test IOPort-10.7 {Construct a simple system, then call description} {
             {
             }
         } remotereceivers {
-        } type {declared NaT resolved NaT}}
+        } type {declared any resolved any}}
     }}
 } relations {
     {ptolemy.actor.TypedIORelation {..edge0} attributes {
@@ -810,13 +810,13 @@ test IOPort-10.7 {Construct a simple system, then call description} {
         } remotereceivers {
             {
             }
-        } type {declared NaT resolved NaT}}
+        } type {declared any resolved any}}
         {ptolemy.actor.TypedIOPort {..dest.input} attributes {
         } configuration {input opaque {width 1}} receivers {
             {
             }
         } remotereceivers {
-        } type {declared NaT resolved NaT}}
+        } type {declared any resolved any}}
     } configuration {width 1 fixed}}
 }}
 

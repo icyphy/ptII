@@ -206,7 +206,7 @@ public class ArrayType extends StructuredType {
     }
 
     /** Test if this ArrayType is a constant. An ArrayType is a constant if
-     *  it does not contain BaseType.NAT in any level.
+     *  it does not contain BaseType.ANY in any level.
      *  @return True if this type is a constant.
      */
     public boolean isConstant() {
@@ -288,7 +288,7 @@ public class ArrayType extends StructuredType {
         }
 
         Type newElemType = ((ArrayType)newType).getElementType();
-        if (_declaredElementType == BaseType.NAT) {
+        if (_declaredElementType == BaseType.ANY) {
             try {
                 _elementType = (Type)newElemType.clone();
             } catch (CloneNotSupportedException cnse) {
@@ -402,7 +402,7 @@ public class ArrayType extends StructuredType {
 
     private ElementTypeTerm _elemTypeTerm = null;
 
-    private static ArrayType _representative = new ArrayType(BaseType.NAT);
+    private static ArrayType _representative = new ArrayType(BaseType.ANY);
 
     ///////////////////////////////////////////////////////////////////
     ////                           inner class                     ////
@@ -465,7 +465,7 @@ public class ArrayType extends StructuredType {
                         "The argument is not a Type.");
             }
 
-            if (_declaredElementType == BaseType.NAT) {
+            if (_declaredElementType == BaseType.ANY) {
                 _elementType = (Type)e;
             } else {
                 // element type is a structured type.
@@ -512,7 +512,7 @@ public class ArrayType extends StructuredType {
 			+ ", New type: " + e.toString());
             }
 
-            if (_declaredElementType == BaseType.NAT) {
+            if (_declaredElementType == BaseType.ANY) {
                 try {
                     _elementType = (Type)((Type)e).clone();
                 } catch (CloneNotSupportedException cnse) {

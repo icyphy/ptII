@@ -288,7 +288,7 @@ public class ASTPtMatrixConstructNode extends ASTPtRootNode {
         }
 
         Type mtype = (Type)TypeLattice.lattice().leastUpperBound(termTypes);
-        if (mtype == BaseType.NAT) {
+        if (mtype == BaseType.ANY) {
             throw new IllegalActionException("Cannot resolve type for "
                     + "matrix construction: ");
         }

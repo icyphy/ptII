@@ -125,7 +125,7 @@ public class FIR extends SDFTransformer {
         interpolation.setTypeEquals(BaseType.INT);
 
         taps = new Parameter(this, "taps");
-        taps.setTypeEquals(new ArrayType(BaseType.NAT));
+        taps.setTypeEquals(new ArrayType(BaseType.ANY));
         taps.setExpression("[1.0]");
 
 	// set type constraints.

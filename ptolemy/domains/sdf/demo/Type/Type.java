@@ -102,7 +102,7 @@ public class Type extends MoMLViewerApplet implements ValueListener {
     }
 
     /** Override the base class to avoid executing the model automatically
-     *  when the applet starts.  This way, the initial types (NaT) are
+     *  when the applet starts.  This way, the initial types (ANY) are
      *  displayed in the animation.
      */
     public void start() {
@@ -239,7 +239,7 @@ public class Type extends MoMLViewerApplet implements ValueListener {
         jgraph.setMaximumSize(new Dimension(400, 290));
 
         // nodes, with user object set to the actor
-        Object nNaT = model.createNode(BaseType.NAT);
+        Object nAny = model.createNode(BaseType.ANY);
         Object nInt = model.createNode(BaseType.INT);
         Object nDouble = model.createNode(BaseType.DOUBLE);
         Object nComplex = model.createNode(BaseType.COMPLEX);
@@ -259,11 +259,11 @@ public class Type extends MoMLViewerApplet implements ValueListener {
         gc.addNode(nInt, 120, 220);
         gc.addNode(nBoolean, 250, 120);
         gc.addNode(nObject, 340, 140);
-        gc.addNode(nNaT, 230, 260);
+        gc.addNode(nAny, 230, 260);
 
         Object e;
         e = model.createEdge(null);
-	gc.addEdge(e, nObject, nNaT);
+	gc.addEdge(e, nObject, nAny);
 
         e = model.createEdge(null);
 	gc.addEdge(e, nGeneral, nObject);
@@ -275,7 +275,7 @@ public class Type extends MoMLViewerApplet implements ValueListener {
 	gc.addEdge(e, nString, nBoolean);
 
 	e = model.createEdge(null);
-	gc.addEdge(e, nBoolean, nNaT);
+	gc.addEdge(e, nBoolean, nAny);
 
 	e = model.createEdge(null);
 	gc.addEdge(e, nString, nScalar);
@@ -287,7 +287,7 @@ public class Type extends MoMLViewerApplet implements ValueListener {
 	gc.addEdge(e, nLong, nInt);
 
         e = model.createEdge(null);
-	gc.addEdge(e, nInt, nNaT);
+	gc.addEdge(e, nInt, nAny);
 
         e = model.createEdge(null);
 	gc.addEdge(e, nDouble, nInt);
@@ -482,9 +482,9 @@ public class Type extends MoMLViewerApplet implements ValueListener {
             // Get the color and label
             Color color = Color.black;
             String label = "UNKNOWN";
-            if (typeObj == BaseType.NAT) {
+            if (typeObj == BaseType.ANY) {
                 color = Color.black;
-                label = "NaT";
+                label = "Any";
             } else if (typeObj == BaseType.INT) {
                 color = Color.blue;
                 label = "Int";
@@ -573,7 +573,7 @@ public class Type extends MoMLViewerApplet implements ValueListener {
                 public void run() {
                     ptolemy.data.type.Type typeObj = event.getNewType();
                     int color = 7;
-                    if (typeObj == BaseType.NAT) {
+                    if (typeObj == BaseType.ANY) {
                         color = 7;
                     } else if (typeObj == BaseType.INT) {
                         color = 4;

@@ -87,7 +87,7 @@ test RecordType-1.2 {Create an instance with an ANY field} {
     set r [java::new {ptolemy.data.type.RecordType} $l $v]
     set varRT [java::cast ptolemy.data.type.RecordType [$r clone]]
     list [$r toString] [$varRT toString]
-} {{{name:string, value:NaT}} {{name:string, value:NaT}}}
+} {{{name:string, value:any}} {{name:string, value:any}}}
 
 ######################################################################
 ####
@@ -126,7 +126,7 @@ test RecordType-3.1 {Test get} {
 # 
 test RecordType-3.2 {Test get} {
     list [[$varRT get name] toString] [[$varRT get value] toString]
-} {string NaT}
+} {string any}
 
 ######################################################################
 ####
@@ -262,7 +262,7 @@ test RecordType-8.2 {Test initialize} {
     set ANY [java::field ptolemy.data.type.BaseType ANY]
     $varRT initialize $ANY
     $varRT toString
-} {{name:string, value:NaT}}
+} {{name:string, value:any}}
 
 ######################################################################
 ####
@@ -286,7 +286,7 @@ test RecordType-9.1 {Test updateType} {
 test RecordType-9.2 {Test updateType} {
     catch {$sdRT updateType $varRT} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: RecordType.updateType: This type is a constant and the argument is not the same as this type. This type: {name:string, value:double} argument: {name:string, value:NaT}}}
+} {{ptolemy.kernel.util.IllegalActionException: RecordType.updateType: This type is a constant and the argument is not the same as this type. This type: {name:string, value:double} argument: {name:string, value:any}}}
 
 ######################################################################
 ####

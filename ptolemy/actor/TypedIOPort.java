@@ -63,7 +63,7 @@ import java.util.List;
 An IOPort with a type. This class implements the Typeable interface.
 The type is represented by an instance of Type in data.type package.
 It can be declared by calling setTypeEquals(). If this method is not
-called, or called with a BaseType.NAT argument, the type of this port
+called, or called with a BaseType.ANY argument, the type of this port
 will be set by type resolution using the type constraints. The type
 constraints on this port can be specified using the methods defined in
 the Typeable interface.
@@ -202,7 +202,7 @@ public class TypedIOPort extends IOPort implements Typeable {
      *  by an instance of Class associated with a token type.
      *  If the type is not set through setTypeEquals(), and this method
      *  is called before type resolution takes place, this method
-     *  returns BaseType.NAT.
+     *  returns BaseType.ANY.
      *  This method is read-synchronized on the workspace.
      *  @return An instance of Type.
      */
@@ -448,7 +448,7 @@ public class TypedIOPort extends IOPort implements Typeable {
     }
 
     /** Set the type of this port. The type is represented by an instance
-     *  of Type. If the type is BaseType.NaT, the determination of the type
+     *  of Type. If the type is BaseType.ANY, the determination of the type
      *  is left to type resolution.
      *  This method is write-synchronized on the workspace.
      *  @param type A Type.
@@ -583,7 +583,7 @@ public class TypedIOPort extends IOPort implements Typeable {
      *  TYPE, then append to the description a field of the form
      *  "type {declared <i>declaredType</i> resolved <i>resolvedType</i>}".
      *  The declared type is the type set through setTypeEquals(). If this
-     *  method is not called, the declared type is BaseType.NAT. The resolved
+     *  method is not called, the declared type is BaseType.ANY. The resolved
      *  type is the type of this port.  Both types are represented by the names
      *  of the corresponding tokens.
      *  <p>
@@ -640,8 +640,8 @@ public class TypedIOPort extends IOPort implements Typeable {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private Type _declaredType = BaseType.NAT;
-    private Type _resolvedType = BaseType.NAT;
+    private Type _declaredType = BaseType.ANY;
+    private Type _resolvedType = BaseType.ANY;
 
     private TypeTerm _typeTerm = null;
 
@@ -711,7 +711,7 @@ public class TypedIOPort extends IOPort implements Typeable {
             }
 
             Type oldType = _resolvedType;
-            if (_declaredType == BaseType.NAT) {
+            if (_declaredType == BaseType.ANY) {
                 _resolvedType = (Type)e;
             } else {
                 // _declaredType is a StructuredType
@@ -725,7 +725,7 @@ public class TypedIOPort extends IOPort implements Typeable {
 
         /** Test if the type of this TypedIOPort can be changed.
          *  The type can be changed if setTypeEquals() is not called,
-         *  or called with a BaseType.NAT argument.
+         *  or called with a BaseType.ANY argument.
          *  @return True if the type of this TypedIOPort can be changed;
          *   false otherwise.
          */
@@ -772,7 +772,7 @@ public class TypedIOPort extends IOPort implements Typeable {
             }
 
             Type oldType = _resolvedType;
-            if (_declaredType == BaseType.NAT) {
+            if (_declaredType == BaseType.ANY) {
                 _resolvedType = (Type)e;
             } else {
                 // _declaredType is a StructuredType
