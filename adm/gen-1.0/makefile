@@ -374,7 +374,7 @@ remote1distjavadocs:
 # Tests in actor/lib use DE, so actor/lib should be after de/lib
 # Tests in actor/lib/auto use vergil and moml
 # sdf/codegen should be run after lang and codegen
-# dt/kernel should be run after sdf
+# dt/kernel should be run after sdfes
 # We include the following directories so that they will appear in the
 # code coverage stats even though they are graphical: gui actor/gui
 #
