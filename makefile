@@ -44,7 +44,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 EXTRA_SRCS = \
-	README \
+	README.txt \
 	copyright.txt \
 	configure.in \
 	configure
