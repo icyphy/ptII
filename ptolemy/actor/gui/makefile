@@ -78,12 +78,14 @@ JSRCS = \
 	PtolemyEffigy.java \
 	PtolemyQuery.java \
 	PtolemyTableauFactory.java \
-	PtolemyTop.java \
+	PtolemyFrame.java \
 	RunTableau.java \
+	TableauFrame.java \
 	TextEditor.java \
 	TextEditorTableau.java \
 	Tableau.java \
-	TableauFactory.java
+	TableauFactory.java \
+	URLAttribute.java
 
 EXTRA_SRCS =	$(JSRCS)
 
