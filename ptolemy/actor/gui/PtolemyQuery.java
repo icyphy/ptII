@@ -193,11 +193,17 @@ public class PtolemyQuery extends Query
     }
 
     /** Set the variable to the value of the Query entry. This
-     *  method is called whenever an entry changes.
+     *  method is called whenever an entry changes. If the 
+     *  variable has a director, then queue a change request with
+     *  the director. If the variable does not have a director,
+     *  then set the variable imediately, without queuing
+     *  a change request.
      *  @param name The name of the entry that has changed.
      */
     // FIXME: This only works with a Parameter, not a Variable.
     // See note below.
+    // FIXME: It is stupid to assume the every variable that has
+    // a director will be contained by an actor.
     public void changed(String name) {
 	// Check if the entry that changed is in the mapping.
 	if (_parameters.containsKey(name)) {
@@ -229,19 +235,21 @@ public class PtolemyQuery extends Query
 		if (_director == null) {
 		    // FIXME: Modify interface defn so that can throw
 		    // exception here?
-		    System.out.println("Could not get" +
-		      " director from variable: " + var.getFullName());
-		}
+		    //System.out.println("Could not get" +
+		    //  " director from variable: " + var.getFullName());
+		    var.setExpression(stringValue(name));
+		} else {
 
-		// Queue a change request with the director.
-		// FIXME: 1st param to SetParameter does what?
-		// Set the variable.
-		
-		// FIXME: This only works with Parameter, not Variable,
-		// becuase of the use of SetParameter.
-		// Write a SetVariable class to fix this. This should be
-		// fairly trivial to do.
-		_director.requestChange(new SetParameter((Parameter)var, (Parameter)var, stringValue(name)));
+		    // Queue a change request with the director.
+		    // FIXME: 1st param to SetParameter does what?
+		    // Set the variable.
+		    
+		    // FIXME: This only works with Parameter, not Variable,
+		    // becuase of the use of SetParameter.
+		    // Write a SetVariable class to fix this. This should be
+		    // fairly trivial to do.
+		    _director.requestChange(new SetParameter((Parameter)var, (Parameter)var, stringValue(name)));
+		}
 		
 	    } else {
 		// Don't ignore next time this method is called.
