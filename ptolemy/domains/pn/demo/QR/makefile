@@ -48,7 +48,6 @@ JSRCS = \
 	StreamToMatrix.java \
 	SourceMatrix.java \
 	SourceMatrix1.java \
-	Pass12.java \
 	ArrayIndex.java \
 	ND_6.java \
 	ND_14.java \
