@@ -176,7 +176,7 @@ LoopNode C IterationNode k 0 TreeNode foreStmt ExprNode test TreeNode aftStmt k
 ExprStmtNode C TreeNode i StatementNode i k 0 ExprNode expr k
 UserTypeDeclStmtNode C TreeNode i StatementNode i k 0 UserTypeDeclNode defType k
 
-// test will be a BoolLitNode in "for(;;)"
+// test will be a BoolLitNode("true") in "for(;;)"
 ForNode C IterationNode k 0 List init ExprNode test List update StatementNode stmt k
 
 // label may be absent !!!

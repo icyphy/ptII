@@ -45,7 +45,7 @@ import ptolemy.lang.java.nodetypes.*;
  *  </p>  
  *  <p> 
  *  By convention, a JavaDecl member named "getFoo()" will return the "foo"
- *  attribute when called with no parameters, and the member "setFoo()"
+ *  attribute when called with no parameters, and a member "setFoo()"
  *  will set the "foo" attribute when called with one parameter.  
  *  Thus, decl.getType() is the type of the entity referred to by decl 
  *  (a JavaDecl, presumably), and decl.setFoo(aType) sets the type attribute 

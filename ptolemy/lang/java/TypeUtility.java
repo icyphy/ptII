@@ -62,4 +62,26 @@ public class TypeUtility implements JavaStaticSemanticConstants {
         }
         return elementType;
     }
+    
+    /** Return the base type of the array type, which is not itself an array type. */
+    public static TypeNode arrayBaseType(TypeNode type) {
+        if (type instanceof ArrayTypeNode) {
+           return arrayBaseType(((ArrayTypeNode) type).getBaseType()); 
+        
+        }
+        return type;
+    }
+    
+    /** Return the dimension of the array, which is the number of contiguous
+     *  bracket pairs required after the base type.
+     */
+    public static int arrayDimension(TypeNode type) {
+        if (type instanceof ArrayTypeNode) {
+           return 1 + arrayDimension(((ArrayTypeNode) type).getBaseType()); 
+        
+        }
+        return 0;
+        
+    
+    }
 }

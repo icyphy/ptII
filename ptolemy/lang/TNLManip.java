@@ -46,7 +46,7 @@ public class TNLManip {
 
     private TNLManip() {}
 
-    /** Make a deep clone of a list. */
+    /** Make a deep clone of a child list. */
     public static final ArrayList cloneList(List list) {
         Iterator itr = list.iterator();
         ArrayList retval = new ArrayList(list.size());
@@ -66,7 +66,8 @@ public class TNLManip {
     }
 
     /** Have each member of the list accept the argument visitor. Return a list
-     *  of the return values from each visitation.
+     *  of the return values from each visitation. Each member of the list
+     *  should be a child list.
      */
     public static final List traverseList(IVisitor v, TreeNode parent,
      LinkedList args, List childList) {
@@ -101,15 +102,41 @@ public class TNLManip {
        return retList;
     }
     
+    /** Create a LinkedList with one element. If obj is null, the element in
+     *  the LinkedList should be NullValue.instance. This method
+     *  may be used to create a list from any object.
+     */
     public static final LinkedList cons(Object obj) {
        return cons(obj, new LinkedList());        
     }
     
     public static final LinkedList cons(Object obj, LinkedList list) {
-       list.addFirst(obj);
+       if (obj == null) {
+          list.addFirst(NullValue.instance);
+       } else {
+          list.addFirst(obj);
+       }
        return list;
     }
-  
+
+    /** Convert an array of objects into a LinkedList with elements in the same 
+     *  order as in the array. If an array element is null, the corresponding
+     *  element in the LinkedList will be NullValue.instance. This method
+     *  may be used for lists of any objects.
+     */
+    public static final LinkedList arrayToList(Object[] objArray) {
+       LinkedList retval = new LinkedList();
+       for (int i = 0; i < objArray.length; i++) {
+           Object obj = objArray[i];
+           if (obj == null) {
+              retval.addLast(NullValue.instance);
+           } else {
+              retval.addLast(objArray[i]);
+           }
+       }
+       return retval;
+    } 
+ 
     public static final String toString(List list) {
        return toString(list, "");
     }
@@ -143,7 +170,7 @@ public class TNLManip {
           }
        }
 
-       sb.append(indent); // FIXME
+       sb.append(indent); 
        
        sb.append("END list\n");
 
