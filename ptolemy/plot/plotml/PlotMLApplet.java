@@ -46,15 +46,16 @@ import java.net.URL;
 //////////////////////////////////////////////////////////////////////////
 //// PlotMLApplet
 
-/** An Applet that can plot data in PlotML format from a URL.
- *  The URL should be specified using the dataurl applet parameter.
- *
- *  @author Edward A. Lee
- *  @version $Id$
- *  @since Ptolemy II 0.4
- *  @see ptolemy.plot.PlotBox
- *  @see ptolemy.plot.Plot
- */
+/**
+An Applet that can plot data in PlotML format from a URL.
+The URL should be specified using the dataurl applet parameter.
+
+@author Edward A. Lee
+@version $Id$
+@since Ptolemy II 0.4
+@see ptolemy.plot.PlotBox
+@see ptolemy.plot.Plot
+*/
 public class PlotMLApplet extends PlotApplet {
 
     /** Return a string describing this applet.
