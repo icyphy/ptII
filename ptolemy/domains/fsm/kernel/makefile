@@ -64,10 +64,6 @@ JSRCS = \
 	FSMDirector.java \
 	FSMState.java \
 	FSMTransition.java \
-	HDFFSMController.java \
-	HDFFSMDirector.java \
-	HDFFSMState.java \
-	HDFFSMTransition.java \
 	NewFSMDirector.java \
 	ProduceOutput.java \
 	State.java \
