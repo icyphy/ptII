@@ -1,4 +1,4 @@
-/* Read ArrayTokens and send their elements to the output.
+/* Append arrays together to form a larger array.
 
  Copyright (c) 1998-2001 The Regents of the University of California.
  All rights reserved.
