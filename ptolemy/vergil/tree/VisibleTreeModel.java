@@ -51,7 +51,8 @@ is visible if it contains an attribute of class EditorIcon, or an
 attribute named "_iconDescription" or "_iconSmallDescription".
 Attributes that are not visible are not shown.
 A composite entity that contains an attribute with name "_libraryMarker"
-is treated as a sublibrary. A composite entity without such an attributeis treated as an atomic entity.
+is treated as a sublibrary. A composite entity without such an attribute
+is treated as an atomic entity.
 This is designed for use with JTree, which renders the hierarchy.
 
 @author Steve Neuendorffer and Edward A. Lee
