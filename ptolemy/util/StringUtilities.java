@@ -304,16 +304,12 @@ public class StringUtilities {
      *  displaying adding newlines every 80 characters.
      *  If the <i>longName</i> argument is null, then the string
      *  "<Unnamed>" is returned.
-     *  @see GUIStringUtilities#abbreviate
+     *  @see #abbreviate(String longName)
      *  @param longName The string to optionally split up
      *  @return Either the original string, or the string with newlines
      *  inserted
      */
     public static String split(String longName) {
-	// In theory, this method should be in
-	// ptolemy.util.StringUtilities, but ptolemy.gui gets shipped
-	// without StringUtilities, so we include it here
-
         if (longName == null) {
             return "<Unnamed>";
         }
