@@ -3,7 +3,7 @@
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="dt_dt_transparent" class="ptolemy.actor.TypedCompositeActor">
     <property name="SDF1" class="ptolemy.domains.sdf.kernel.SDFDirector">
-        <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="5">
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
@@ -120,7 +120,7 @@
             </property>
             <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="299.0, 233.0">
+            <property name="_location" class="ptolemy.moml.Location" value="283.0, 234.0">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -132,7 +132,7 @@
             </property>
             <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="519.0, 225.0">
+            <property name="_location" class="ptolemy.moml.Location" value="528.0, 227.0">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -142,7 +142,7 @@
         <entity name="CurrentTime9" class="ptolemy.actor.lib.CurrentTime">
             <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="222.0, 234.0">
+            <property name="_location" class="ptolemy.moml.Location" value="192.0, 234.0">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -155,7 +155,7 @@
         <entity name="CurrentTime11" class="ptolemy.actor.lib.CurrentTime">
             <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="417.0, 223.0">
+            <property name="_location" class="ptolemy.moml.Location" value="422.0, 227.0">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -177,9 +177,13 @@
             <vertex name="vertex1" class="ptolemy.moml.Vertex" value="331.0, 162.0">
             </vertex>
         </relation>
-        <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+        <relation name="relation1" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="235.0, 239.0">
+            </vertex>
         </relation>
-        <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="471.0, 232.0">
+            </vertex>
         </relation>
         <link port="port0" relation="relation2"/>
         <link port="port1" relation="relation4"/>
@@ -189,11 +193,11 @@
         <link port="Scale1.output" relation="relation0"/>
         <link port="Scale3.input" relation="relation5"/>
         <link port="Scale3.output" relation="relation4"/>
-        <link port="Test6.input" relation="relation10"/>
-        <link port="Test7.input" relation="relation12"/>
-        <link port="CurrentTime9.output" relation="relation10"/>
+        <link port="Test6.input" relation="relation1"/>
+        <link port="Test7.input" relation="relation3"/>
+        <link port="CurrentTime9.output" relation="relation1"/>
         <link port="CurrentTime9.trigger" relation="relation0"/>
-        <link port="CurrentTime11.output" relation="relation12"/>
+        <link port="CurrentTime11.output" relation="relation3"/>
         <link port="CurrentTime11.trigger" relation="relation5"/>
     </entity>
     <entity name="Discard2" class="ptolemy.actor.lib.Discard">
