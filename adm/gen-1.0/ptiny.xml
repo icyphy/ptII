@@ -244,6 +244,25 @@ Berkeley, CA 94706</property>
                     <property name="folderOwner"/>
                     <property name="folderGroup"/>
                 </action>
+                <action class="com.installshield.product.actions.DesktopIcon" id="bean6">
+                    <displayName>Vergil Documentation</displayName>
+                    <active>true</active>
+                    <extendedProperty name="win32ppk" type="com.installshield.wizard.platform.win32.Win32DesktopIconExtra">
+                        <property name="iconFile"/>
+                        <property name="platformSpecificTarget"/>
+                        <property name="iconFileType">1</property>
+                        <property name="folderContext">$AllUsersPrograms$</property>
+                    </extendedProperty>
+                    <property name="folder">Ptolemy/$P(productBean1.displayName)</property>
+                    <property name="name">Vergil Documentation</property>
+                    <property name="target">doc/design/usingVergil.pdf</property>
+                    <property name="args"/>
+                    <property name="workingDirectory"/>
+                    <property name="itemOwner"/>
+                    <property name="itemGroup"/>
+                    <property name="folderOwner"/>
+                    <property name="folderGroup"/>
+                </action>
             </component>
         </feature>
     </product>
