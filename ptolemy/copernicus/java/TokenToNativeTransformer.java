@@ -572,12 +572,16 @@ public class TokenToNativeTransformer extends SceneTransformer implements HasPha
                 local, typeAnalysis, unsafeLocalSet,
                 depth, debug);
 
-            // Check if token arguments are being used.
-            // This makes sure we get methods like Scale._scaleOnRight
-            // inlined.
+            // Check if token arguments are being used.  This makes
+            // sure we get methods like Scale._scaleOnRight and
+            // DB._doFunction inlined.  It would be better if the
+            // token inliner modified the functions, but it doesn't.
             if (baseType instanceof RefType &&
                     Scene.v().getApplicationClasses().contains(
                             ((RefType)baseType).getSootClass())) {
+                Type returnType = r.getMethod().getReturnType(); 
+                isInlineableTokenMethod |= _isInlineableTokenType(returnType);
+                        
                 for (Iterator args = r.getArgs().iterator();
                      args.hasNext() && !isInlineableTokenMethod;) {
                     Object arg = args.next();
