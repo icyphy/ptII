@@ -197,7 +197,8 @@ do
 	fi
 
 	# Check for problems with equals signs
-	results=`egrep '=[^ =]' $file | \
+	# Note that we ignore =\", which is used in moml
+	results=`egrep '=[^ =\\]' $file | \
 	    egrep -iv 'HREF=|NAME=|=WxH|"="' `
 	if [ "x$results" != "x" ]; then
 	    echo "$file: contains an equal sign without a trailing space"
