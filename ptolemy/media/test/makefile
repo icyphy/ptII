@@ -88,7 +88,8 @@ KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
 test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl
 	$(JTCLSH) alljtests.tcl
 
-
+# 'make clean' removes $(KRUFT)
+KRUFT = tmp*.au
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
