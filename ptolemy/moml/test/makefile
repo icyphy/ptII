@@ -59,6 +59,7 @@ JSIMPLE_TESTS = \
 	MoMLParser.tcl \
 	MoMLUndoChangeRequest.tcl \
 	StreamErrorHandler.tcl \
+	UndoContext.tcl \
 	UndoDeleteEntity.tcl \
 	UndoDeletePort.tcl \
 	UndoDeleteProperty.tcl \
