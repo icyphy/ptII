@@ -30,7 +30,7 @@ package diva.graph.layout;
  * layout delegate.  This class implements the proxy design pattern,
  * hence its name.  It is a useful base class for building layouts
  * that know how to do a certain specific task, but want to delegate
- * work to a more general layout for the cases that it dosn't know how
+ * work to a more general layout for the cases that it doesn't know how
  * to deal with.
  *
  * @author Michael Shilman  (michaels@eecs.berkeley.edu)
