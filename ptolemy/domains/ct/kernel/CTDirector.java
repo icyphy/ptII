@@ -500,7 +500,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
      *  @param tstart The start time. 
      */
     public void setStartTime(double tstart) {
-        _stopTime = tstart;
+        _startTime = tstart;
     }
 
     /** Set the stop time for the simulation.  The stopt time is not 

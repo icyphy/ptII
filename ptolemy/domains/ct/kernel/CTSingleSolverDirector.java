@@ -131,6 +131,7 @@ public class CTSingleSolverDirector extends CTDirector {
         // If this is the first fire, the states are not resolved.
         if (_first) {
             _first = false;
+            _prefireSystem();
             produceOutput();
             updateStates();
             return;
@@ -191,7 +192,10 @@ public class CTSingleSolverDirector extends CTDirector {
             "does not have a scheduler.");
         }
         sch.setValid(false);
+        updateParameters();
         _initialize();
+        fireAt(null, getCurrentTime());
+        fireAt(null, getStopTime());
     }
 
     /** Return false if simulation stop time is reached.
@@ -471,7 +475,6 @@ public class CTSingleSolverDirector extends CTDirector {
         if(VERBOSE) {
             System.out.println("updating parameters");
         }
-        updateParameters();
         // Instantiate ODE solver
         if(VERBOSE) {
             System.out.println("instantiating ODE solver"+_solverclass);
@@ -480,15 +483,17 @@ public class CTSingleSolverDirector extends CTDirector {
             _defaultSolver = _instantiateODESolver(_solverclass);
         }
         // set time
+        System.out.println(this.getFullName() + 
+                "_init get State Time " + getStartTime());
+
         setCurrentTime(getStartTime());
         setSuggestedNextStepSize(getInitialStepSize());
+        setCurrentStepSize(getInitialStepSize());
         setCurrentODESolver(_defaultSolver);
         TotallyOrderedSet bps = getBreakPoints();
         if(bps != null) {
             bps.clear();
         }
-        fireAt(null, getCurrentTime());
-        fireAt(null, getStopTime());
         _first = true;
         if (VERBOSE) {
             System.out.println("Director.super initialize.");
