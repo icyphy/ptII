@@ -200,15 +200,17 @@ public class PlotBox extends Applet {
 	// up to date.
 	Thread.yield();
 	    
-       // Find the width and height of the total drawing area, and clear it.
+        // Find the width and height of the total drawing area, and clear it.
         Rectangle drawRect = bounds(); // FIXME: bounds() is deprecated
-	// in JDK1.1, but we need to compile // under 1.0.2 for
+	// in JDK1.1, but we need to compile under 1.0.2 for
 	// netscape3.x compatibilty.
 
         graphics.setPaintMode();
         if (clearfirst) {
-            graphics.clearRect(drawRect.x, drawRect.y,
-			       drawRect.width, drawRect.height);
+	    // Clear all the way from the top so that we erase the title.
+	    // If we don't dothis, then zooming in with the pxgraph application
+	    // ends up blurring the title.
+            graphics.clearRect(0,0,drawRect.width, drawRect.height);
         }
         
 	// For use by all text displays below.
