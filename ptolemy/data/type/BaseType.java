@@ -146,7 +146,7 @@ public class BaseType implements Type, Serializable {
      *  it represents a type variable, it is called ANY since a type variable
      *  may be changed to any type. The two objects ANY and NAT are 
      *  the same BaseType instance.
-     *  @see BaseType.NAT
+     *  @see #NAT
      */
     public static final BaseType ANY = new BaseType(Void.TYPE, "NaT",
             new ConvertOperator() {
@@ -280,7 +280,7 @@ public class BaseType implements Type, Serializable {
 
     /** The type object that represents "not a type." This is the same object
      *  as ANY.
-     *  @see BaseType.ANY
+     *  @see #ANY
      */
     public static final BaseType NAT = ANY;
 
