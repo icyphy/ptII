@@ -1,4 +1,4 @@
-/* A source that emit a trigger signal periodically.
+/* A source that emits a trigger signal periodically.
 
  Copyright (c) 2001-2003 The Regents of the University of California.
  All rights reserved.
