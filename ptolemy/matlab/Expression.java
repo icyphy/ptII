@@ -147,10 +147,10 @@ public class Expression extends TypedAtomicActor {
                 "<svg>"
                 + "<rect width=\"50\" height=\"40\" style=\"fill:white\"/>"
 
-                + "<image x=\"4\" y=\"3\" width=\"32\" height=\"32\" "
-                +        "xlink:href=\"ptolemy/matlab/matlab.jpg\"></image>"
-                // + "<polygon style=\"fill:#FF6930;stroke:black\" "
-                // +          "points=\"25,4 39,30 25,24 11,30\"/>"
+                // + "<image x=\"4\" y=\"3\" width=\"32\" height=\"32\" "
+                // +        "xlink:href=\"ptolemy/matlab/matlab.jpg\"></image>"
+                + "<polygon style=\"fill:#FF6930;stroke:black\" "
+                +          "points=\"25,4 39,30 25,24 11,30\"/>"
 
                 + "<text x=\"6\" y=\"38\" style=\"font-size:12\">Matlab</text>"
                 + "</svg>");
