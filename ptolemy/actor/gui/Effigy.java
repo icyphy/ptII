@@ -163,8 +163,8 @@ public class Effigy extends CompositeEntity {
      */
     public Object clone(Workspace ws) throws CloneNotSupportedException {
         Effigy newObject = (Effigy)super.clone(ws);
-        newObject.identifier = (StringAttribute)newobj.getAttribute("identifier");
-        newObject.url = (URLAttribute)newobj.getAttribute("url");
+        newObject.identifier = (StringAttribute)newObject.getAttribute("identifier");
+        newObject.url = (URLAttribute)newObject.getAttribute("url");
         return newObject;
     }
 

@@ -143,8 +143,8 @@ public class Ramp extends SequenceSource {
 	    throws CloneNotSupportedException {
         Ramp newObject = (Ramp)super.clone(ws);
 	// set the type constraints.
-	newObject.output.setTypeAtLeast(newobj.init);
-	newObject.output.setTypeAtLeast(newobj.step);
+	newObject.output.setTypeAtLeast(newObject.init);
+	newObject.output.setTypeAtLeast(newObject.step);
         return newObject;
     }
 

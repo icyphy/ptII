@@ -108,9 +108,9 @@ public class Select extends TypedAtomicActor {
     public Object clone(Workspace ws)
 	    throws CloneNotSupportedException {
         Select newObject = (Select) super.clone(ws);
-        newObject.input = (TypedIOPort) newobj.getPort("input");
-        newObject.output = (TypedIOPort) newobj.getPort("output");
-        newObject.select = (TypedIOPort) newobj.getPort("select");
+        newObject.input = (TypedIOPort) newObject.getPort("input");
+        newObject.output = (TypedIOPort) newObject.getPort("output");
+        newObject.select = (TypedIOPort) newObject.getPort("select");
         return newObject;
     }
 

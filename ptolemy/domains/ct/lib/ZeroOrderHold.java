@@ -94,7 +94,7 @@ public class ZeroOrderHold extends Transformer
         ZeroOrderHold newObject = (ZeroOrderHold)super.clone(ws);
         // newObject.input.setTypeEquals(BaseType.DOUBLE);
         // newObject.output.setTypeEquals(BaseType.DOUBLE);
-        newObject.output.setTypeAtLeast(newobj.input);
+        newObject.output.setTypeAtLeast(newObject.input);
         return newObject;
     }
 

@@ -164,7 +164,7 @@ public class Reader extends Source {
         Reader newObject = (Reader)super.clone(workspace);
         newObject.output.setMultiport(true);
         try {
-            newObject.attributeChanged(newobj.sourceURL);
+            newObject.attributeChanged(newObject.sourceURL);
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(ex.getMessage());
         }

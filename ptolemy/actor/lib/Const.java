@@ -108,7 +108,7 @@ public class Const extends Source {
 	    throws CloneNotSupportedException {
         Const newObject = (Const)super.clone(ws);
 	// Set the type constraint.
-	newObject.output.setTypeAtLeast(newobj.value);
+	newObject.output.setTypeAtLeast(newObject.value);
         return newObject;
     }
 

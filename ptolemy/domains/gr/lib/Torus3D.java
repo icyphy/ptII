@@ -115,8 +115,8 @@ public class Torus3D extends GRShadedShape {
     
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Torus3D newObject = (Torus3D)super.clone(workspace);
-        newObject.angleSpan = (Parameter) newobj.getAttribute("angleSpan");
-        newObject.slices = (Parameter) newobj.getAttribute("slices");
+        newObject.angleSpan = (Parameter) newObject.getAttribute("angleSpan");
+        newObject.slices = (Parameter) newObject.getAttribute("slices");
         return newObject;
     }
 

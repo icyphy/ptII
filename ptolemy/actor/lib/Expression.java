@@ -167,8 +167,8 @@ public class Expression extends TypedAtomicActor {
  	    throws CloneNotSupportedException {
         Expression newObject = (Expression)super.clone(ws);
         newObject._iterationCount = 1;
-        newObject._time = (Variable)newobj.getAttribute("time");
-        newObject._iteration = (Variable)newobj.getAttribute("iteration");
+        newObject._time = (Variable)newObject.getAttribute("time");
+        newObject._iteration = (Variable)newObject.getAttribute("iteration");
         return newObject;
     }
 

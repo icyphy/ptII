@@ -129,7 +129,7 @@ public class ProduceOutput extends BroadcastOutput {
     public Object clone(Workspace ws)
             throws CloneNotSupportedException {
         ProduceOutput newObject = (ProduceOutput)super.clone(ws);
-        newObject.channel = (Parameter)newobj.getAttribute("channel");
+        newObject.channel = (Parameter)newObject.getAttribute("channel");
         return newObject;
     }
 

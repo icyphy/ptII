@@ -145,8 +145,8 @@ public class State extends ComponentEntity {
     public Object clone(Workspace ws)
             throws CloneNotSupportedException {
         State newObject = (State)super.clone(ws);
-        newObject.incomingPort = (ComponentPort)newobj.getPort("incomingPort");
-        newObject.outgoingPort = (ComponentPort)newobj.getPort("outgoingPort");
+        newObject.incomingPort = (ComponentPort)newObject.getPort("incomingPort");
+        newObject.outgoingPort = (ComponentPort)newObject.getPort("outgoingPort");
         newObject.refinementName =
                 (Parameter)newObject.getAttribute("refinementName");
         newObject._refinementVersion = -1;

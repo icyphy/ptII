@@ -140,8 +140,8 @@ public class BroadcastOutput extends Action implements ChoiceAction {
         BroadcastOutput newObject = (BroadcastOutput)super.clone(ws);
         // FIXME: is this necessary?  This extends Attribute, will
         // cloning an attribute do the right thing?
-        newObject.expression = (Parameter)newobj.getAttribute("expression");
-        newObject.portName = (Parameter)newobj.getAttribute("portName");
+        newObject.expression = (Parameter)newObject.getAttribute("expression");
+        newObject.portName = (Parameter)newObject.getAttribute("portName");
         newObject._portVersion = -1;
         return newObject;
     }

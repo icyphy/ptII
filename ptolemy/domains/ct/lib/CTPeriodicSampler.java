@@ -121,7 +121,7 @@ public class CTPeriodicSampler extends Transformer
         CTPeriodicSampler newObject = (CTPeriodicSampler)super.clone(ws);
         newObject.input.setMultiport(true);
         newObject.output.setMultiport(true);
-        newObject.output.setTypeAtLeast(newobj.input);
+        newObject.output.setTypeAtLeast(newObject.input);
         return newObject;
     }
 

@@ -109,7 +109,7 @@ public class Sampler extends DETransformer {
      */
     public Object clone(Workspace ws) throws CloneNotSupportedException {
         Sampler newObject = (Sampler)super.clone(ws);
-        newObject.output.setTypeAtLeast(newobj.input);
+        newObject.output.setTypeAtLeast(newObject.input);
         return newObject;
     }
 

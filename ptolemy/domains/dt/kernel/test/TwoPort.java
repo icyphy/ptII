@@ -80,14 +80,14 @@ public class TwoPort extends SDFAtomicActor {
      */
     public Object clone(Workspace ws) throws CloneNotSupportedException {
         TwoPort newObject = (TwoPort)(super.clone(ws));
-        newObject.input1 = (SDFIOPort)newobj.getPort("input1");
-        newObject.input2 = (SDFIOPort)newobj.getPort("input2");
-        newObject.output1 = (SDFIOPort)newobj.getPort("output1");
-        newObject.output2 = (SDFIOPort)newobj.getPort("output2");
-        newObject.inrate1 = (Parameter) newobj.getAttribute("inrate1");
-        newObject.inrate2 = (Parameter) newobj.getAttribute("inrate2");
-        newObject.outrate1 = (Parameter) newobj.getAttribute("outrate1");
-        newObject.outrate2 = (Parameter) newobj.getAttribute("outrate2");
+        newObject.input1 = (SDFIOPort)newObject.getPort("input1");
+        newObject.input2 = (SDFIOPort)newObject.getPort("input2");
+        newObject.output1 = (SDFIOPort)newObject.getPort("output1");
+        newObject.output2 = (SDFIOPort)newObject.getPort("output2");
+        newObject.inrate1 = (Parameter) newObject.getAttribute("inrate1");
+        newObject.inrate2 = (Parameter) newObject.getAttribute("inrate2");
+        newObject.outrate1 = (Parameter) newObject.getAttribute("outrate1");
+        newObject.outrate2 = (Parameter) newObject.getAttribute("outrate2");
 
         
         return newObject;

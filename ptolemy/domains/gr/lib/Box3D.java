@@ -107,9 +107,9 @@ public class Box3D extends GRShadedShape {
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Box3D newObject = (Box3D)super.clone(workspace);
-        newObject.xLength = (Parameter) newobj.getAttribute("xLength");
-        newObject.yHeight = (Parameter) newobj.getAttribute("yHeight");
-        newObject.zWidth = (Parameter) newobj.getAttribute("zWidth");
+        newObject.xLength = (Parameter) newObject.getAttribute("xLength");
+        newObject.yHeight = (Parameter) newObject.getAttribute("yHeight");
+        newObject.zWidth = (Parameter) newObject.getAttribute("zWidth");
         return newObject;
     }
 

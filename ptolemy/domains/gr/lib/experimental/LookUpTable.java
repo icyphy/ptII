@@ -221,9 +221,9 @@ public class LookUpTable extends Transformer {
     public Object clone(Workspace ws)
 	    throws CloneNotSupportedException {
         LookUpTable newObject = (LookUpTable)super.clone(ws);
-        newObject.indexes = (Parameter)newobj.getAttribute("indexes");
-        newObject.values = (Parameter)newobj.getAttribute("values");
-        newObject.order = (Parameter)newobj.getAttribute("order");
+        newObject.indexes = (Parameter)newObject.getAttribute("indexes");
+        newObject.values = (Parameter)newObject.getAttribute("values");
+        newObject.order = (Parameter)newObject.getAttribute("order");
         return newObject;
     }
 

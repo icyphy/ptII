@@ -240,7 +240,7 @@ public class Clock extends TimedSource {
 	    throws CloneNotSupportedException {
         Clock newObject = (Clock)super.clone(ws);
         try {
-            newObject.attributeChanged(newobj.offsets);
+            newObject.attributeChanged(newObject.offsets);
             newObject.attributeChanged(values);
 
 	    // Set the type constraints.

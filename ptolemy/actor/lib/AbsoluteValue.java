@@ -86,7 +86,7 @@ public class AbsoluteValue extends Transformer {
     public Object clone(Workspace ws)
 	    throws CloneNotSupportedException {
         AbsoluteValue newObject = (AbsoluteValue)super.clone(ws);
-	newObject.output.setTypeAtLeast(new FunctionTerm(newobj.input));
+	newObject.output.setTypeAtLeast(new FunctionTerm(newObject.input));
 	newObject.output.setTypeAtMost(BaseType.SCALAR);
         return newObject;
     }

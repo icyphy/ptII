@@ -222,7 +222,7 @@ public class DTDirector extends SDFDirector {
             throws CloneNotSupportedException {
         _reset();
         DTDirector newObject = (DTDirector)(super.clone(ws));
-        newObject.period = (Parameter)newobj.getAttribute("period");
+        newObject.period = (Parameter)newObject.getAttribute("period");
         return newObject;
     }
     

@@ -97,8 +97,8 @@ public class Cone3D extends GRShadedShape {
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Cone3D newObject = (Cone3D)super.clone(workspace);
-        newObject.radius = (Parameter)newobj.getAttribute("radius");
-        newObject.height = (Parameter)newobj.getAttribute("height");
+        newObject.radius = (Parameter)newObject.getAttribute("radius");
+        newObject.height = (Parameter)newObject.getAttribute("height");
         return newObject;
     }
 

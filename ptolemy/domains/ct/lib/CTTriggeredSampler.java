@@ -103,7 +103,7 @@ public class CTTriggeredSampler extends Transformer
         CTTriggeredSampler newObject = (CTTriggeredSampler)super.clone(ws);
         newObject.input.setMultiport(true);
         newObject.output.setMultiport(true);
-        newObject.output.setTypeAtLeast(newobj.input);
+        newObject.output.setTypeAtLeast(newObject.input);
         return newObject;
     }
 

@@ -217,9 +217,9 @@ public class Pulse extends SequenceSource {
 	    throws CloneNotSupportedException {
         Pulse newObject = (Pulse)super.clone(ws);
         try {
-            newObject.attributeChanged(newobj.indexes);
-            newObject.attributeChanged(newobj.values);
-            newObject.attributeChanged(newobj.repeat);
+            newObject.attributeChanged(newObject.indexes);
+            newObject.attributeChanged(newObject.values);
+            newObject.attributeChanged(newObject.repeat);
             // set the type constraints
 	    ArrayType valuesArrayType = (ArrayType)newObject.values.getType();
 	    InequalityTerm elemTerm = valuesArrayType.getElementTypeTerm();

@@ -96,7 +96,7 @@ public class TimeBomb extends DETransformer {
         newObject.input.setTypeEquals(BaseType.COMPLEX);
         newObject.output.setTypeEquals(BaseType.DOUBLE);
         try {
-            newObject.input.delayTo(newobj.output);
+            newObject.input.delayTo(newObject.output);
         } catch (IllegalActionException ex) {
             throw new InternalErrorException("Clone failed.");
         }

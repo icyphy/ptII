@@ -114,8 +114,8 @@ public class GRTransform extends GRActor {
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         GRTransform newObject = (GRTransform)super.clone(workspace);
-        newObject.input  = (TypedIOPort) newobj.getPort("input");
-        newObject.output = (TypedIOPort) newobj.getPort("output");
+        newObject.input  = (TypedIOPort) newObject.getPort("input");
+        newObject.output = (TypedIOPort) newObject.getPort("output");
         return newObject;
     }
     

@@ -175,7 +175,7 @@ public class TypedIOPort extends IOPort implements Typeable {
                 !_declaredType.isConstant()) {
             newObject._declaredType =
                 (Type)((StructuredType)_declaredType).clone();
-            newObject._resolvedType = newobj._declaredType;
+            newObject._resolvedType = newObject._declaredType;
         }
 
         newObject._typeTerm = null;

@@ -105,8 +105,8 @@ public class Delay extends Transformer {
         // This is private Variable, so it is ok.
         newObject._dummy =
             (Variable)newObject.getAttribute("_dummy");
-	newObject.output.setTypeAtLeast(newobj._dummy);
-        newObject.output.setTypeAtLeast(newobj.input);
+	newObject.output.setTypeAtLeast(newObject._dummy);
+        newObject.output.setTypeAtLeast(newObject.input);
         return newObject;
     }
 

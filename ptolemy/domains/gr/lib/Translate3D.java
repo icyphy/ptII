@@ -127,12 +127,12 @@ public class Translate3D extends GRTransform {
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Translate3D newObject = (Translate3D)super.clone(workspace);
-        newObject.xTranslate = (TypedIOPort) newobj.getPort("xTranslate");
-        newObject.yTranslate = (TypedIOPort) newobj.getPort("yTranslate");
-        newObject.zTranslate = (TypedIOPort) newobj.getPort("zTranslate");
-        newObject.initialXTranslation = (Parameter)newobj.getAttribute("xTranslation");
-        newObject.initialYTranslation = (Parameter)newobj.getAttribute("yTranslation");
-        newObject.initialZTranslation = (Parameter)newobj.getAttribute("zTranslation");
+        newObject.xTranslate = (TypedIOPort) newObject.getPort("xTranslate");
+        newObject.yTranslate = (TypedIOPort) newObject.getPort("yTranslate");
+        newObject.zTranslate = (TypedIOPort) newObject.getPort("zTranslate");
+        newObject.initialXTranslation = (Parameter)newObject.getAttribute("xTranslation");
+        newObject.initialYTranslation = (Parameter)newObject.getAttribute("yTranslation");
+        newObject.initialZTranslation = (Parameter)newObject.getAttribute("zTranslation");
         return newObject;
     }
  

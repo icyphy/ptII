@@ -176,11 +176,11 @@ public class Transition extends ComponentRelation {
         Transition newObject = (Transition)super.clone(ws);
         newObject.guardExpression =
                 (Parameter)newObject.getAttribute("guardExpression");
-        newObject.preemptive = (Parameter)newobj.getAttribute("preemptive");
+        newObject.preemptive = (Parameter)newObject.getAttribute("preemptive");
         newObject.triggerExpression =
                 (Parameter)newObject.getAttribute("triggerExpression");
-        newObject._guard = (Variable)newobj.getAttribute("_guard");
-        newObject._trigger = (Variable)newobj.getAttribute("_trigger");
+        newObject._guard = (Variable)newObject.getAttribute("_guard");
+        newObject._trigger = (Variable)newObject.getAttribute("_trigger");
         newObject._actionListsVersion = -1;
 	newObject._choiceActionList = new LinkedList();
 	newObject._commitActionList = new LinkedList();

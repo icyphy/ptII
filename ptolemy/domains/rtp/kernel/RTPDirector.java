@@ -131,7 +131,7 @@ public class RTPDirector extends ProcessDirector {
     public Object clone(Workspace ws)
             throws CloneNotSupportedException {
         RTPDirector newObject = (RTPDirector)(super.clone(ws));
-        newObject.executionDuration = (Parameter)newobj.getAttribute
+        newObject.executionDuration = (Parameter)newObject.getAttribute
             ("executionDuration");
         return newObject;
     }
