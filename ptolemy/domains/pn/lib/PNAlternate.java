@@ -40,17 +40,6 @@ import java.util.NoSuchElementException;
 @version $Id$
 */
 public class PNAlternate extends PNActor {
-    /** Constructor
-     */	
-    public PNAlternate() {
-	super();
-    }
-    
-    /** Constructor
-     */
-    public PNAlternate(Workspace workspace) {
-        super(workspace);
-    }
     
     /** Constructor. Creates ports
      * @exception NameDuplicationException is thrown if more than one port 
@@ -93,6 +82,7 @@ public class PNAlternate extends PNActor {
                     writeTo(_output1, data);
                 }
             }                
+            ((PNDirector)getDirector()).processStopped();
         } catch (NoSuchElementException e) {
 	    System.out.println("Terminating "+ this.getName());
             return;
