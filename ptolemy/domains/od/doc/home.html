@@ -13,7 +13,7 @@ a distributed notion of time into a dataflow style communication semantic.
 Much of the functionality of the OD domain is consistent with the 
 <A HREF="../../pn/doc/home.html"> Process Networks domain </A>. 
 In particular, this model of computation's mechanism for dealing with 
-blocking due to empty or full queues is functionally identical that of
+blocking due to empty or full queues is functionally identical to that of
 the PN domain.
 <P>
 The OD domain's use of time serves as the point of divergence in the 
@@ -31,7 +31,8 @@ constraints:
 	 time stamps greater than or equal to that of P1.
     <LI> If an ODActor has two or more input ports with pending time stamps 
 	 that are identical, then a local <BR> input port prioritization rule 
-	 will be invoked.
+	 must be invoked to determine the ordering of these "simultaneous" 
+	 tokens.
 </UL>
 The above rules facilitate a local notion of time and are consistent with
 the "conservative" blocking mechanism of Chandy and Misra's distributed 
@@ -44,12 +45,8 @@ semantics from two different perspectives. In particular, we can benefit
 from denotational semantics that are based on metric spaces (the Banach
 oriented DE approach) or posets (the Tarskian dataflow approach). Matthews
 offers a partial metric topology which incorporates both of these 
-mathematical tools.
-<P>
-Currently a feedforward version of the OD domain has been implemented. In
-the coming weeks a feedback system will be implemented. We expect to 
-apply the OD domain towards modelling distributed systems and in the use
-of distributed debuggers.
+mathematical tools. We expect to apply the OD domain towards modelling 
+distributed systems and in the use of distributed debuggers.
 <P>
 
 <B>References:</B>
