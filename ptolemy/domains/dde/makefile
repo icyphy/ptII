@@ -31,7 +31,7 @@
 
 ME =		ptolemy/domains/dde
 
-DIRS =		kernel lib demo
+DIRS =		kernel lib gui demo 
 
 # Root of Ptolemy II directory
 ROOT =		../../..
@@ -49,6 +49,7 @@ PTCLASSJAR =
 PTCLASSALLJARS = \
 		kernel/kernel.jar \
 		lib/lib.jar \
+		gui/gui.jar \
 		demo/demo.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
