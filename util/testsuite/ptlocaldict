@@ -12,6 +12,7 @@ Bilung
 CELLPADDING
 CELLSPACING
 Chandy
+Chatoyant
 CLASSPATH
 COPYRIGHTENDKEY
 CSF
@@ -71,6 +72,7 @@ Korn
 Koo
 Lenzmann
 Levitan
+Linux
 Liu
 Lukito
 Majordomo
@@ -84,6 +86,7 @@ Miniconference
 Misra's
 Mudit
 Muliadi
+Nanni
 Netscape
 Neuendorffer
 Newsgroup
@@ -91,6 +94,7 @@ Octtools
 Optronics
 PDF
 PN
+Passerone
 Pauer
 Photonics
 Pino
@@ -101,15 +105,18 @@ Queueing
 Reekie
 SDF
 Sartre
+Sastry
 Screenshot
 Scriptics
 Shang
+Shankar
 Shilman
 Sinopoli
 Smyth
 Solaris
 Sparc
 Solaris
+Synopsys
 Tarskian
 Tcl
 Tobias
@@ -154,6 +161,7 @@ checkjunk
 chown
 codebase
 codebook
+codesign
 colspan
 containees
 cshrc
@@ -161,6 +169,7 @@ csp
 css
 ct
 ctsay
+cvs
 cxh
 cygnus
 cygwin
@@ -184,6 +193,7 @@ h1
 h2
 h3
 h4
+hardwired
 hashtable
 href
 hspace
@@ -212,6 +222,7 @@ jindent
 johnr
 kienhuis
 lang
+linux
 liuj
 liuxj
 lmuliadi
@@ -257,6 +268,7 @@ servlets
 setenv
 sourceware
 src
+ssh
 standalone
 starcharts
 stylesheet
@@ -276,5 +288,6 @@ upcasting
 util
 wbwu
 website
+www
 www.scriptics.com
 yuhong
