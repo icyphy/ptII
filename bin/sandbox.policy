@@ -3,6 +3,8 @@
 //
 // This file is used by vergil -sandbox to run in a secure sandbox.
 //
+// See $PTII/doc/sandbox.htm for details.
+//
 // In theory, you can use policytool, which is shipped with the JDK
 // to edit this file.  However, if you do use policytool, then
 // any comments will be lost.	
