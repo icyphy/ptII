@@ -38,6 +38,19 @@ import java.net.*;              // Need URL
 //////////////////////////////////////////////////////////////////////////
 //// PlotApplet
 /** 
+ * Create an Applet that can plot data from a URL.
+ * The URL can be specified using either the
+ * <code>dataurl</code> or <code>pxgraphargs</code> applet parameter.  
+ * <p> The <code>dataurl</code> parameter contains a single URL
+ * that refers to the data to be plotted.
+ * <p> The <code>pxgraphargs</code> parameter contains a list
+ * of commmand line style arguments, ending in one or more URLs.
+ * See the <code>Pxgraph</code> documentation for the format of
+ * these arguments.
+ *
+ * @author Edward A. Lee, Christopher Hylands
+ * @version $Id$
+ * @see Pxgraph
  */
 public class PlotApplet extends Applet implements Runnable {
 

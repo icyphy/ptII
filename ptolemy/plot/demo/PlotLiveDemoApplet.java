@@ -38,6 +38,10 @@ import java.awt.*;
 //////////////////////////////////////////////////////////////////////////
 //// PlotLiveDemoApplet
 /** 
+ * An Applet that demonstrates the PlotLiveDemo class. 
+ * 
+ * @author Edward A. Lee, Christopher Hylands
+ * @version @(#)PlotApplet.java	1.4 10/13/97
  */
 public class PlotLiveDemoApplet extends Applet implements Runnable {
 
