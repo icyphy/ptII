@@ -76,23 +76,57 @@ public class FFT extends TypedAtomicActor {
         output.setTypeEquals(BaseType.COMPLEX);
 
         order = new Parameter(this, "order", new IntToken(8));
-
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    /** The input port. */
+    /** The input port, which has type double. */
     public SDFIOPort input;
 
-    /** The output port. */
+    /** The output port, which has type complex. */
     public SDFIOPort output;
 
-    /** The order of the FFT. */
+    /** The order of the FFT, which is an integer that defaults to 8. */
     public Parameter order;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** If the argument is the <i>order</i> parameter, then
+     *  set up the consumption and production constants, and invalidate
+     *  the schedule of the director.
+     *  @param attribute The attribute that has changed.
+     *  @exception IllegalActionException If the parameters are out of range.
+     */
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        if (attribute == order) {
+            // Get the size of the FFT transform
+            _orderValue = ((IntToken)order.getToken()).intValue();
+            _transformSize = (int)Math.pow(2, _orderValue );
+            
+            // Set the correct consumption/production values
+            _productionRate = _transformSize;
+            _consumptionRate = _transformSize;
+            
+            input.setTokenConsumptionRate(_consumptionRate);
+            output.setTokenProductionRate(_productionRate);
+            
+            inDoubleArray = new double[_consumptionRate];
+            outComplexArray = new Complex[_productionRate];
+            
+            inTokenArray = new DoubleToken[ _consumptionRate ];
+            outTokenArray = new ComplexToken[ _productionRate ];
+
+            Director dir = getDirector();
+            if (dir != null) {
+                dir.invalidateSchedule();
+            }
+        } else {
+            super.attributeChanged(attribute);
+        }
+    }
 
     /** Consume the inputs and produce the outputs of the FFT filter.
      *  @exception IllegalActionException Not thrown in this base class.
@@ -109,31 +143,6 @@ public class FFT extends TypedAtomicActor {
             outTokenArray[i] = new ComplexToken( outComplexArray[i] );
         }
 	output.send(0, outTokenArray, _productionRate);
-    }
-
-    /** Set up the consumption and production constants.
-     *  @exception IllegalActionException If the parameters are out of range.
-     */
-    public void preinitialize() throws IllegalActionException {
-        super.preinitialize();
-
-        // Get the size of the FFT transform
-        _orderValue = ((IntToken)order.getToken()).intValue();
-        _transformSize = (int)Math.pow(2, _orderValue );
-
-        // Set the correct consumption/production values
-        _productionRate = _transformSize;
-        _consumptionRate = _transformSize;
-
-        input.setTokenConsumptionRate(_consumptionRate);
-        output.setTokenProductionRate(_productionRate);
-
-        inDoubleArray = new double[_consumptionRate];
-        outComplexArray = new Complex[_productionRate];
-
-        inTokenArray = new DoubleToken[ _consumptionRate ];
-        outTokenArray = new ComplexToken[ _productionRate ];
-
     }
 
     ///////////////////////////////////////////////////////////////////
