@@ -127,6 +127,7 @@ public class AsymmetricDecryption extends CipherActor {
 
     /** Outputs the key required for decryption.  The base classes retrieve
      *  the parameters and initialize the cipher.
+     *  @exception IllegalActionException If the kyes cannot be created.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();

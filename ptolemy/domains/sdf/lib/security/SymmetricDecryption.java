@@ -127,7 +127,7 @@ public class SymmetricDecryption extends CipherActor {
      *  sent on the <i>output</i>.  All parameters should be the same as the
      *  corresponding encryption actor.
      *
-     *  @exception IllegalActionException if retrieving parameters fails,
+     *  @exception IllegalActionException If retrieving parameters fails,
      *  the algorithm does not exist or if the provider does not exist.
      */
     public void fire() throws IllegalActionException {
@@ -152,7 +152,7 @@ public class SymmetricDecryption extends CipherActor {
                 _algParams.init(encodedAP);
             }
 
-            if (_secretKey !=null) {
+            if (_secretKey != null) {
                 super.fire();
             }
         } catch (Exception ex) {

@@ -1,4 +1,5 @@
-/* Creates a signature for the given piece of data and creates the key to be sent to the signature verifier.
+/* Creates a signature for the given piece of data and creates the key
+to be sent to the signature verifier.
 
  Copyright (c) 2003 The Regents of the University of California.
  All rights reserved.
@@ -57,8 +58,8 @@ of some data and encrypting it.  Various signature algorithms that are
 implemented by "providers" and installed maybe used by specifying the
 algorithm in the <i>algorithm</i> parameter.  In case a provider
 specific instance of an algorithm is needed, the provider may also be
-specified in the <i>provider</i> parameter.  This actor creates a
-private key to sign data and a public key which is sent on the
+specified in the <i>provider</i> parameter.  This actor creates 
+a private key to sign data and a public key which is sent on the
 <i>keyOut</i> port to verify the signature.
 
 This actor relies on the Java Cryptography Architecture (JCA) and Java
@@ -127,7 +128,7 @@ public class SignatureSigner extends SignatureActor {
      *  out on the <i>keyOut</i> port.  All parameters should be the
      *  same as the corresponding encryption actor.
      *
-     *  @exception IllegalActionException if thrown by base class.
+     *  @exception IllegalActionException If thrown by base class.
      */
     public void fire() throws IllegalActionException {
         super.fire();
@@ -138,7 +139,7 @@ public class SignatureSigner extends SignatureActor {
 
     /** Get an instance of the cipher and outputs the key required for
      *  decryption.
-     *  @exception IllegalActionException if thrown by base class.
+     *  @exception IllegalActionException If thrown by base class.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();

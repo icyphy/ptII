@@ -312,21 +312,21 @@ public class Cryptography extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
-    // The name of the algorithm to be used.
+    /** The name of the algorithm to be used. */
     protected String _algorithm;
 
-    // The key size to be used for the transformation.
+    /** The key size to be used for the transformation. */
     protected int _keySize;
 
-    // The mode for transformation.
+    /** The mode for transformation. */
     protected String _mode;
 
-    //The padding for transformation.
+    /** The padding for transformation. */
     protected String _padding;
 
-    // The provider for transformation.
+    /** The provider for transformation. */
     protected String _provider;
 
-    // The cipher to be used for transformation.
+    /** The cipher to be used for transformation. */
     protected Cipher _cipher;
 }

@@ -176,12 +176,9 @@ public class CryptographyActor extends TypedAtomicActor {
     /** This method retrieves the <i>algorithm</i>, <i>provider</i>,
      *  and, <i>keySize</i>.
      *
-     * @exception IllegalActionException if exception below is thrown.
-     * @exception NoSuchAlgorihmException when the algorithm is not found.
-     * @exception NoSuchPaddingException when the padding scheme is illegal
-     *     for the given algorithm.
-     * @exception NoSuchProviderException if the specified provider does not
-     *     exist.
+     * @exception IllegalActionException If the alorithm is not found,
+     * the padding scheme is illegal for a given algorithm or the
+     * specified provider does not exist.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
@@ -224,7 +221,7 @@ public class CryptographyActor extends TypedAtomicActor {
             Key key;
             byteArrayInputStream = new ByteArrayInputStream(keyBytes);
             objectInputStream = new ObjectInputStream(byteArrayInputStream);
-            key =(Key)objectInputStream.readObject();
+            key = (Key)objectInputStream.readObject();
             return key;
         } catch (Exception ex) {
             throw new IllegalActionException(this, ex,
@@ -234,7 +231,8 @@ public class CryptographyActor extends TypedAtomicActor {
 
     /** Create a pair of keys to be used for asymmetric algorithms.
      *
-     * @exception IllegalActionException if algorithm or provider is not found.
+     * @exception IllegalActionException If the algorithm or provider is
+     * not found.
      *
      */
     protected KeyPair _createAsymmetricKeys() throws IllegalActionException{
@@ -262,7 +260,7 @@ public class CryptographyActor extends TypedAtomicActor {
 
     /** Create a symmetric secret key for symmetric algorithms.
      *
-     * @exception IllegalActionException if algorithm or provider is not found.
+     * @exception IllegalActionException If algorithm or provider is not found.
      */
     protected Key _createSymmetricKey() throws IllegalActionException{
         try {
@@ -289,7 +287,7 @@ public class CryptographyActor extends TypedAtomicActor {
      *
      * @param key the object whose byte array value is determined.
      * @return the byte array of the key object.
-     * @exception IllegalActionException if IOException occurs.
+     * @exception IllegalActionException If IOException occurs.
      */
     protected byte[] _keyToBytes(Key key) throws IllegalActionException {
         ByteArrayOutputStream byteArrayOutputStream =
@@ -312,10 +310,10 @@ public class CryptographyActor extends TypedAtomicActor {
      *
      * @param dataBytes the data to be processed.
      * @return dataBytes the data unchanged.
-     * @exception IlligalActionException if subclass throws exception.
+     * @exception IlligalActionException Not thrown in this base class
      */
     protected byte[] _process(byte [] dataBytes)
-            throws IllegalActionException{
+            throws IllegalActionException {
         return dataBytes;
     }
 
@@ -323,7 +321,7 @@ public class CryptographyActor extends TypedAtomicActor {
      *
      * @param dataBytes data to be converted to an ArrayToken.
      * @return dataArrayToken the resulting ArrayToken.
-     * @exception IllegalActionException if ArrayTOken can not be created.
+     * @exception IllegalActionException If ArrayToken can not be created.
      */
     protected ArrayToken _unsignedByteArrayToArrayToken( byte[] dataBytes)
             throws IllegalActionException{

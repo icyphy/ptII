@@ -111,7 +111,7 @@ public class Decryption extends TypedAtomicActor {
      *   actor with this name.
      */
     public Decryption(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         //Create ports and parameters and set defalut values and types.
@@ -134,7 +134,7 @@ public class Decryption extends TypedAtomicActor {
 
         cryptoMode = new StringAttribute(this, "mode");
         cryptoMode.setExpression("asymmetric");
-        _keyMode=_ASYMMETRIC;
+        _keyMode = _ASYMMETRIC;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -205,7 +205,7 @@ public class Decryption extends TypedAtomicActor {
 
     /** Determine whether to use aysmmetric or symmetric decryption.
      *  @param attribute The attribute that changed.
-     *  @exception IllegalActionException if namming conflict is encountered.
+     *  @exception IllegalActionException If naming conflict is encountered.
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
@@ -224,15 +224,17 @@ public class Decryption extends TypedAtomicActor {
      *  based on the <i>algorithm</i>, <i>provider</i>, <i>mode</i> and
      *  <i>padding</i>.  This is the sent on the <i>output</i>.  All paramters
      *  should be the same as the corresponding encryptoion actor.
-     *  @exception IllegalActionException
+     *  @exception IllegalActionException If decryption fails or the
+     *  base class throws it.
      */
     public void fire() throws IllegalActionException {
         super.fire();
         try {
             if (input.hasToken(0)) {
-                byte[] dataBytes = _ArrayTokenToUnsignedByteArray((ArrayToken)input.get(0));
-                dataBytes=_crypt(dataBytes);
-                output.send(0, _UnsignedByteArrayToArrayToken(dataBytes));
+                byte[] dataBytes =
+                    _ArrayTokenToUnsignedByteArray((ArrayToken)input.get(0));
+                dataBytes = _crypt(dataBytes);
+                output.send(0, _unsignedByteArrayToArrayToken(dataBytes));
             }
 
             if (_keyMode == _ASYMMETRIC) {
@@ -275,14 +277,15 @@ public class Decryption extends TypedAtomicActor {
     /** Get parameter information and sets token poduction for iniitialize to
      *  one.
      *
-     * @exception IllegalActionException
+     * @exception IllegalActionException If the base class throws it
+     * or the keys cannot be created. 
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
 
         _algorithm = ((StringToken)algorithm.getToken()).stringValue();
         byte[] keyBytes = _createKeys();
-        //_keyOutput = _UnsignedByteArrayToArrayToken(keyBytes);
+        //_keyOutput = _unsignedByteArrayToArrayToken(keyBytes);
         keyOut.setTokenInitProduction(1);
         getDirector().invalidateResolvedTypes();
     }
@@ -311,11 +314,10 @@ public class Decryption extends TypedAtomicActor {
     /** Create a pair of keys to be used for asymmetric encryption and
      *  decryption.
      *
-     * @exception IllegalActionException
-     * @exception NoSuchAlgorithmException when algorithm is not found.
-     * @exception NoSuchProviderException when provider is not found.
+     * @exception IllegalActionException If the algorithm or provider is
+     * not found and the key cannot be created.
      */
-    protected void _createAsymmetricKeys()throws IllegalActionException{
+    protected void _createAsymmetricKeys()throws IllegalActionException {
         try {
             KeyPairGenerator keyPairGen =
                 KeyPairGenerator.getInstance(_algorithm, _provider);
@@ -323,16 +325,17 @@ public class Decryption extends TypedAtomicActor {
             KeyPair pair = keyPairGen.generateKeyPair();
             _publicKey = pair.getPublic();
             _privateKey = pair.getPrivate();
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new IllegalActionException(this.getName() + e.getMessage());
+        } catch (Exception ex) {
+            throw new IllegalActionException(this, ex,
+                    "Failed to create asymmetric keys");
         }
     }
 
     /** Determine what kind of keys to create and calls the respective
      *  function.
      *
-     * @exception ThrowsIllegalActionException
+     * @exception IllegalActionException If there are problems creating
+     * the keys.
      */
     protected byte[] _createKeys() throws IllegalActionException {
         switch(_keyMode) {
@@ -352,21 +355,19 @@ public class Decryption extends TypedAtomicActor {
 
     /** Create a symmetric secret key for encryption and decryption use.
      *
-     * @exception IllegalActionException
+     * @exception IllegalActionException If the symmetric key could not
+     * be created.
      */
     protected void _createSymmetricKey() throws IllegalActionException{
         try {
-            KeyGenerator keyGen = KeyGenerator.getInstance(_algorithm, _provider);
+            KeyGenerator keyGen =
+                KeyGenerator.getInstance(_algorithm, _provider);
             keyGen.init(56, new SecureRandom());
             _secretKey = keyGen.generateKey();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-            throw new IllegalActionException(this.getName() + e.getMessage());
-        } catch (NoSuchProviderException e) {
-            e.printStackTrace();
-            throw new IllegalActionException(this.getName() + e.getMessage());
+        } catch (Exception ex) {
+            throw new IllegalActionException(this, ex,
+                    "Failed to create symmetric keys");
         }
-
     }
 
     /** Determine what key to use and decrypt the data with the specified
@@ -375,14 +376,13 @@ public class Decryption extends TypedAtomicActor {
      *
      * @param initialData
      * @return byte[]
-     * @exception IllegalActionException
-     * @exception IOException
-     * @exception InvalideKeyException when key is invalid.
-     * @exception BadPaddingException when padding is bad.
-     * @exception IllegalBockSizeException for illegal blcok sizes.
+     * @exception IllegalActionException If an error occurs in
+     * ByteArrayOutputStream, a key is invalid, padding is bad, or if
+     * the block size is illegal.
      */
-    protected byte[] _crypt(byte[] initialData)throws IllegalActionException{
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+    protected byte[] _crypt(byte[] initialData) throws IllegalActionException{
+        ByteArrayOutputStream byteArrayOutputStream =
+            new ByteArrayOutputStream();
         Key key;
         try {
             if (_keyMode == _SYMMETRIC) {
@@ -394,40 +394,35 @@ public class Decryption extends TypedAtomicActor {
                 _cipher.init(Cipher.DECRYPT_MODE, key);
                 int blockSize = _cipher.getBlockSize();
                 int length = 0;
-                for (int i = 0; i<initialData.length; i+=blockSize) {
+                for (int i = 0; i < initialData.length; i += blockSize) {
                     if (initialData.length-i <= blockSize) {
                         length = initialData.length-i;
                     } else {
                         length = blockSize;
                     }
-                    byteArrayOutputStream.write(_cipher.doFinal(initialData, i, length));
+                    byteArrayOutputStream.write(_cipher.doFinal(initialData,
+                            i, length));
                 }
                 byteArrayOutputStream.flush();
                 byteArrayOutputStream.close();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new IllegalActionException(this.getName()+e.getMessage());
-        } catch (InvalidKeyException e) {
-            e.printStackTrace();
-            throw new IllegalActionException(this.getName()+e.getMessage());
-        } catch (BadPaddingException e) {
-            e.printStackTrace();
-            throw new IllegalActionException(this.getName()+e.getMessage());
-        } catch (IllegalBlockSizeException e) {
-            e.printStackTrace();
-            throw new IllegalActionException(this.getName()+e.getMessage());
+        } catch (Exception ex) {
+            throw new IllegalActionException(this, ex,
+                    "Problem decrypting " + initialData.length
+                    + "bytes data with the private key.");
         }
         return byteArrayOutputStream.toByteArray();
     }
 
     /** Take an array of unsigned bytes and convert it to an ArrayToken.
      *
-     * @param dataBytes
-     * @return dataArrayToken
-     * @exception IllegalActionException
+     * @param dataBytes The array of unsigned bytes to convert
+     * @return The dataBytes converted to and ArrayToken
+     * @exception IllegalActionException If instantiating the ArrayToken
+     * throws it.
      */
-    protected ArrayToken _UnsignedByteArrayToArrayToken( byte[] dataBytes)throws IllegalActionException{
+    protected ArrayToken _unsignedByteArrayToArrayToken(byte[] dataBytes)
+            throws IllegalActionException {
         int bytesAvailable = dataBytes.length;
         Token[] dataArrayToken = new Token[bytesAvailable];
         for (int j = 0; j < bytesAvailable; j++) {

@@ -120,7 +120,7 @@ public class SignatureVerifier extends SignatureActor {
             _publicKey = (PublicKey)_bytesToKey(
                     _arrayTokenToUnsignedByteArray((ArrayToken)keyIn.get(0)));
         }
-        if (input.hasToken(0) && data.hasToken(0) && _publicKey!=null) {
+        if (input.hasToken(0) && data.hasToken(0) && _publicKey != null) {
             _data = _arrayTokenToUnsignedByteArray((ArrayToken)data.get(0));
             super.fire();
         }

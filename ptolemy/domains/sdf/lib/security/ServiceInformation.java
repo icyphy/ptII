@@ -53,12 +53,12 @@ Determine the cryptographic services available on the system.
 This actor lists the following services:
 
 <ul>
-<li>Provider
 <li>Cipher
-<li>Signature
 <li>KeyGenerator
 <li>KeyPairGenerator
 <li>MessageDigest
+<li>Providers
+<li>Signature
 </ul>
 
 Services are those algorithms have been implemented by providers and are
@@ -70,6 +70,7 @@ Java Cryptography Architecture (JCA) and Java Cryptography Extension (JCE).
 @since Ptolemy II 3.1
 */
 public class ServiceInformation extends TypedAtomicActor {
+    // FIXME: Isn't this a source?
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -86,7 +87,7 @@ public class ServiceInformation extends TypedAtomicActor {
         output = new SDFIOPort(this, "output", false, true);
         output.setTypeEquals(new ArrayType(BaseType.STRING));
 
-        service = new StringAttribute(this, "mode");
+        service = new StringAttribute(this, "service");
         service.setExpression("Providers");
 
     }
@@ -94,10 +95,17 @@ public class ServiceInformation extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** This StringAttribute determines whether decryption will be
-     *  performed on a asymmetric or symmetric cryptographic
-     *  algorithm.  The to possible values are "symmetric" or
-     *  "asymmetric".  THe default value is "asymmetric."
+    /** The service that the system is queried for.  Must be one
+     *  of the following strings: 
+     *  <ul>
+     *  <li>Cipher
+     *  <li>KeyGenerator
+     *  <li>KeyPairGenerator
+     *  <li>MessageDigest
+     *  <li>Providers
+     *  <li>Signature
+     *  </ul>
+     *  The default value is Providers.
      */
     public StringAttribute service;
 
@@ -110,7 +118,8 @@ public class ServiceInformation extends TypedAtomicActor {
 
     /** Determine what information to send to a display.
      *  @param attribute The attribute that changed.
-     *  @exception IllegalActionException if naming conflict is encountered.
+     *  @exception IllegalActionException If attribute being changed is
+     *  the service attribute and its value cannot be decoded.
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
@@ -123,6 +132,7 @@ public class ServiceInformation extends TypedAtomicActor {
                     || request.equals("KeyGenerator")
                     || request.equals("KeyPairGenrator")) {
 
+                // FIXME: this just always sends the same data?
                 Iterator it = (Security.getAlgorithms("Request")).iterator();
                 int i = 0;
                 while (it.hasNext()) {
@@ -136,7 +146,7 @@ public class ServiceInformation extends TypedAtomicActor {
                 }
             } else {
                 throw new IllegalActionException(this,
-                        "Service request '" + request + "' is not valid");
+                        "Service request '" + request + "' is not valid.");
             }
         } else super.attributeChanged(attribute);
     }

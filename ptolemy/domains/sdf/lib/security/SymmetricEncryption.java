@@ -156,7 +156,7 @@ public class SymmetricEncryption extends CipherActor {
         //  // TODO Auto-generated catch block
         //       }
         //       _cos = new CipherOutputStream(_byteArrayOutputStream,
-        /        _cipher);
+        //           _cipher);
         //       FIRST_RUN = false;
         //   }
         //        //} catch (NoRoomException e) {
@@ -221,7 +221,7 @@ public class SymmetricEncryption extends CipherActor {
     protected byte[] _process(byte[] dataBytes)
             throws IllegalActionException{
         // ByteArrayOutputStream byteArrayOutputStream =
-        /      new ByteArrayOutputStream();
+        //      new ByteArrayOutputStream();
         _byteArrayOutputStream.reset();
         // byteArrayInputStream = new ByteArrayInputStream(initialData);
         // int length = 0;
