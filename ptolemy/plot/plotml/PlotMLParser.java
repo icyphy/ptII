@@ -81,7 +81,6 @@ public class PlotMLParser extends PlotBoxMLParser {
 
         if (elementName.equals("dataset")) {
             // Reset the default, in case it was changed for this dataset.
-            ((Plot)_plot).setBars(_bars);
             ((Plot)_plot).setConnected(_connected);
         }
     }
@@ -213,9 +212,6 @@ public class PlotMLParser extends PlotBoxMLParser {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected members                 ////
-
-    /** The default bars state. */
-    protected boolean _bars = false;
 
     /** The default connected state. */
     protected boolean _connected = true;
