@@ -286,7 +286,7 @@ public class IORelation extends ComponentRelation {
             throws IllegalActionException, NameDuplicationException {
         if (!(container instanceof CompositeActor)) {
             throw new IllegalActionException (this, container,
-            "IORelation can only be contained by CompositeActor.");
+                    "IORelation can only be contained by CompositeActor.");
         }
     }
 
@@ -311,8 +311,8 @@ public class IORelation extends ComponentRelation {
                 _inferWidth();
             } catch (InvalidStateException ex) {
                 throw new IllegalActionException(this,
-                "Cannot use unspecified width on this relation " +
-                "because of its links.");
+                        "Cannot use unspecified width on this relation " +
+                        "because of its links.");
             }
         }
         if (width != 1) {
@@ -322,8 +322,8 @@ public class IORelation extends ComponentRelation {
                 IOPort p = (IOPort) ports.nextElement();
                 if (!p.isMultiport()) {
                     throw new IllegalActionException(this, p,
-                    "Cannot make bus because the " +
-                    "relation is linked to a non-multiport.");
+                            "Cannot make bus because the " +
+                            "relation is linked to a non-multiport.");
                 }
             }
         }
@@ -419,10 +419,10 @@ public class IORelation extends ComponentRelation {
     }
 
     //////////////////////////////////////////////////////////////////////////
-    ////                         private variables                        ////
+            ////                         private variables                        ////
 
-    // whether the relation is a bus
-    private boolean _bus = false;
+            // whether the relation is a bus
+            private boolean _bus = false;
 
     // width of the relation. 
     private int _width = 1;

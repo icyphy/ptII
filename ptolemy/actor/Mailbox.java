@@ -64,7 +64,7 @@ public class Mailbox implements Receiver {
     public Token get() throws NoSuchItemException {
         if(_isEmpty) {
             throw new NoSuchItemException(getContainer(),
-            "Attempt to get data from an empty mailbox.");
+                    "Attempt to get data from an empty mailbox.");
         }
         _isEmpty = true;
         return _token;
