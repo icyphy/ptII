@@ -82,7 +82,7 @@ test CTScheduler-1.3 {sheduler and its container} {
 ####  Test schedules
 #  
 test CTScheduler-2.1 {schedule a chain of actors} {
-    set ca [java::new ptolemy.actor.TypedCompositeActor]
+    set ca [java::new ptolemy.domains.ct.kernel.CTCompositeActor]
     $ca setName CA
     set dir [java::new ptolemy.domains.ct.kernel.CTMultiSolverDirector $ca Dir]
     set sch [java::cast ptolemy.domains.ct.kernel.CTScheduler \
@@ -419,8 +419,9 @@ test CTScheduler-2.7 {contained in a composite actor} {
     list [[$sch getSchedule] toString]
 } {{CTSchedule {
     continuousActors {
-	.CA.A1
+	.CA.A7S
 	.CA.A2
+	.CA.A1
 	.CA.Dyn
 	.CA.D3
 	.CA.D2
@@ -431,7 +432,6 @@ test CTScheduler-2.7 {contained in a composite actor} {
 	.CA.A6S
 	.CA.EI
 	.CA.SSC
-	.CA.A7S
 	.CA.A5
     }
     discreteActors {
@@ -461,9 +461,9 @@ test CTScheduler-2.7 {contained in a composite actor} {
 	.CA.A7S
     }
     stateTransitionActors {
+	.CA.A7S
 	.CA.A1
 	.CA.A4
-	.CA.A7S
 	.CA.A2
     }
     outputActors {
@@ -495,8 +495,10 @@ test CTScheduler-2.8 {get the schedule again} {
     list [[$sch getSchedule] toString]
 } {{CTSchedule {
     continuousActors {
-	.CA.A1
+	.CA.A7S
 	.CA.A2
+	.CA.A8
+	.CA.A1
 	.CA.Dyn
 	.CA.D3
 	.CA.D2
@@ -507,8 +509,6 @@ test CTScheduler-2.8 {get the schedule again} {
 	.CA.A6S
 	.CA.EI
 	.CA.SSC
-	.CA.A7S
-	.CA.A8
 	.CA.A5
     }
     discreteActors {
@@ -538,19 +538,19 @@ test CTScheduler-2.8 {get the schedule again} {
 	.CA.A7S
     }
     stateTransitionActors {
+	.CA.A7S
 	.CA.A1
 	.CA.A4
-	.CA.A7S
 	.CA.A2
     }
     outputActors {
 	.CA.EI
 	.CA.SSC
+	.CA.A8
 	.CA.A3
 	.CA.EG
 	.CA.ED
 	.CA.A6S
-	.CA.A8
 	.CA.A5
     }
 }

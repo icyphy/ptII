@@ -58,20 +58,33 @@ if {[string compare test [info procs test]] == 1} then {
 ######################################################################
 ####  Test constructors.
 #
-test CTReceiver-1.1 {Construct a CTReceiver, put and get Token} {
+test CTReceiver-1.1 {Construct a CTReceiver, set and get signal type} {
     set re1 [java::new ptolemy.domains.ct.kernel.CTReceiver]
+    $re1 setSignalType [java::field ptolemy.domains.ct.kernel.CTReceiver \
+	CONTINUOUS]
+    set compareResult [[$re1 getSignalType] equals [java::field \
+	ptolemy.domains.ct.kernel.CTReceiver CONTINUOUS]]
+    list $compareResult
+} {1}
+
+
+test CTReceiver-1.2 {Construct a CTReceiver, put and get Token} {
+    set re1 [java::new ptolemy.domains.ct.kernel.CTReceiver]
+    $re1 setSignalType [java::field ptolemy.domains.ct.kernel.CTReceiver \
+	CONTINUOUS]
     set one [java::new {ptolemy.data.DoubleToken double} 1.0]
     $re1 put $one
-    #list [[$re1 get] doubleValue]
     [java::cast ptolemy.data.DoubleToken [$re1 get]] doubleValue
 } {1.0}
 
-test CTReceiver-1.2 {Construct a CTReceiver with container} {
+
+test CTReceiver-1.3 {Construct a CTReceiver with container} {
     set p1 [java::new ptolemy.actor.TypedIOPort]
     set re1 [java::new ptolemy.domains.ct.kernel.CTReceiver $p1]
+    $re1 setSignalType [java::field ptolemy.domains.ct.kernel.CTReceiver \
+	DISCRETE]
     set one [java::new {ptolemy.data.DoubleToken double} 1.0]
     $re1 put $one
-    #list [[$re1 get] doubleValue]
     [java::cast ptolemy.data.DoubleToken [$re1 get]] doubleValue
 } {1.0}
 
@@ -99,6 +112,33 @@ test CTReceiver-2.2 {put two tokens} {
 } {0.0}
 
 ######################################################################
+####  Retake tokens from a continuous receiver
+#
+test CTReceiver-2.3 {take a token twice} {
+    $re1 setSignalType  [java::field ptolemy.domains.ct.kernel.CTReceiver \
+	CONTINUOUS]
+    set zero [java::new {ptolemy.data.DoubleToken double} 0.0]
+    $re1 put $zero
+    $re1 get
+    [java::cast ptolemy.data.DoubleToken [$re1 get]] doubleValue
+} {0.0}
+
+######################################################################
+####  Retake tokens from a discrete receiver should throw an exception.
+#
+test CTReceiver-2.4 {take a token twice} {
+    $re1 setSignalType  [java::field ptolemy.domains.ct.kernel.CTReceiver \
+	DISCRETE]
+    $re1 put $one
+    $re1 get
+    catch {$re1 get} errMsg
+    list $errMsg
+} {{ptolemy.actor.NoTokenException: Object name: .<Unnamed Object>:
+Attempt to get data from an empty discrete CTReceiver.
+Are you trying to use a discrete signal to drive a continuous port?
+}}
+
+######################################################################
 ####
 #
 test CTReceiver-3.1 {passing tokens} {
@@ -110,8 +150,10 @@ test CTReceiver-3.1 {passing tokens} {
     set p1o [java::cast ptolemy.actor.IOPort [$a1 getPort output]]
     set p2i [java::cast ptolemy.actor.IOPort [$a2 getPort input]]
     set r1 [$ca connect $p1o $p2i]
-    $a1 preinitialize
-    $a2 preinitialize
+    $dir preinitialize
+    $dir initialize	
+    #$a1 preinitialize
+    #$a2 preinitialize
     $p1o broadcast $zero
     [java::cast ptolemy.data.DoubleToken [$p2i get 0]] doubleValue
 } {0.0}
@@ -122,3 +164,4 @@ test CTReceiver-3.2 {overwriting tokens} {
     $p1o broadcast $one
     [java::cast ptolemy.data.DoubleToken [$p2i get 0]] doubleValue
 } {1.0}
+
