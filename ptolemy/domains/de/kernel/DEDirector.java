@@ -37,8 +37,10 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.FiringEvent;
+import ptolemy.actor.IODependence;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
+import ptolemy.actor.IODependence.IOInformation;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
@@ -61,6 +63,7 @@ import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
 
@@ -1357,17 +1360,25 @@ public class DEDirector extends Director {
         actors = castContainer.deepEntityList().iterator();
         while (actors.hasNext()) {
             Actor actor = (Actor)actors.next();
+            IODependence ioDependence = actor.getIODependence();
             // get all the input ports in that actor
             Iterator ports = actor.inputPortList().iterator();
             while (ports.hasNext()) {
                 IOPort inputPort = (IOPort)ports.next();
+//              // For each input port, if it is a delay port, record the ports 
+//              // triggered by its delayed event.
+//              Set delayPorts = null;
+//              if (inputPort instanceof DEIOPort) {
+//                  DEIOPort dePort = (DEIOPort) inputPort;
+//                  delayPorts = dePort.getDelayToPorts();
+//              }
 
-                // For each input port, if it is a delay port, record the ports 
-                // triggered by its delayed event.
-                Set delayPorts = null;
-                if (inputPort instanceof DEIOPort) {
-                    DEIOPort dePort = (DEIOPort) inputPort;
-                    delayPorts = dePort.getDelayToPorts();
+                List delayPorts = null;
+                // Use IODependence instead of special DEIOPorts
+                // to figure self loops.
+                if (ioDependence != null) {
+                    IOInformation ioInfo = ioDependence.getInputPort(inputPort);
+                    delayPorts = ioInfo.getDelayToPorts();
                 }
 
                 // Find the successor of the port.
@@ -1400,9 +1411,24 @@ public class DEDirector extends Director {
                         }
                         Actor destination = (Actor)(port.getContainer());
                         if (destination.equals(actor)) {
-                            throw new IllegalActionException(this,
+                            List directFeedthroughOutputs = null;
+                            if (ioDependence != null) { 
+                                //FIXME: Here we assume that if there is no
+                                // IODependence attribute, all IOs are direct
+                                // feedthrough connected. 
+                                directFeedthroughOutputs = 
+                                    ioDependence.getInputPort(port).
+                                    getDirectFeedthroughPorts();
+                            } else {
+                                directFeedthroughOutputs =
+                                    destination.outputPortList();
+                            }
+                            
+                            if (directFeedthroughOutputs.contains(port)) {
+                                throw new IllegalActionException(this,
                                     "Zero delay self-loop on actor: "
                                     + ((Nameable)actor).getFullName());
+                            }
                         }
                         // create an arc from this actor to the successor.
                         if (dag.containsNodeWeight(destination)) {
