@@ -86,6 +86,8 @@ PTIIDIST = 	$(PTIIADM)/dists/ptII$(VERSION)
 # Directories and files in the top level ptII directory that we should
 # include in the tar file.
 PTII_TOPDIR=	.cshrc \
+		.classpath \
+		.eclipse.epf \
 		README.txt \
 		bin \
 		com/JLex \
