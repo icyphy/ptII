@@ -46,7 +46,7 @@ public interface Module {
     /** 
      * Return the application that contains this module.
      */
-    public Application getApplication();
+    public VergilApplication getApplication();
 
     /** 
      * Return the resources for this module.
