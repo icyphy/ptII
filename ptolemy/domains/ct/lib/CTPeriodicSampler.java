@@ -159,8 +159,11 @@ public class CTPeriodicSampler extends Transformer
     public void initialize() throws IllegalActionException {
         super.initialize();
         // clear receivers
-        if(input.hasToken(0)) {
-            input.get(0);
+        for (int i = 0; i < Math.min(input.getWidth(), output.getWidth());
+             i++) {
+            if(input.hasToken(i)) {
+                input.get(i);
+            }
         }
         _hasCurrentEvent = false;
         CTDirector dir = (CTDirector) getDirector();
