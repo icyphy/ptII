@@ -175,7 +175,7 @@ public class Quantizer {
 
             // When  positive number, add a small
             // number bringing the number closer
-            // to the x=y line.
+            // to the x = y line.
             for(i = 5; i < 10; i++) {
              resolution += Math.pow(2, -(number+i));
             }
@@ -183,7 +183,7 @@ public class Quantizer {
         } else {
 
             // When negative, subtract a small number
-            // to bring the number close to x=y line
+            // to bring the number close to x = y line
             for(i = 1; i < 10; i++) {
                 resolution += Math.pow(2, -(number+i));
             }
