@@ -1,4 +1,4 @@
-/* A token that contains a set of labeled Tokens.
+/* A token that contains a set of label/token pairs.
 
  Copyright (c) 1997-2000 The Regents of the University of California.
  All rights reserved.
@@ -44,7 +44,7 @@ import java.util.Set;
 //////////////////////////////////////////////////////////////////////////
 //// RecordToken
 /**
-A token that contains a set of labeled Tokens.
+A token that contains a set of label/token pairs.
 
 @author Yuhong Xiong
 @version $Id$
@@ -54,7 +54,7 @@ public class RecordToken extends Token {
 
     /** Construct a RecordToken with the specified labeles and values. 
      *  The labels and values array must have the same length, and have one
-     *  to correspondance. That is, the i'th entry in the labels array
+     *  to one correspondance. That is, the i'th entry in the labels array
      *  is the label for the i'th value in the values array. Both arrays
      *  must be non-empty.
      *  @param labels An array of labels.
@@ -91,7 +91,7 @@ public class RecordToken extends Token {
      *  this token and the argument. The argument must be a RecordToken.
      *  The result is a RecordToken whose label set is the intersection
      *  of the label sets of this token and the argument. The type of
-     *  the result token is greater than or equal to the type of this
+     *  the result token is greater than or equal to the types of this
      *  token and the argument.
      *  @param t The token to add to this token.
      *  @return A new RecordToken.
@@ -113,18 +113,15 @@ public class RecordToken extends Token {
         intersectionSet.addAll(myLabelSet);
         intersectionSet.retainAll(argLabelSet);
 
-        int size = intersectionSet.size();
+        Object[] labelsObj = intersectionSet.toArray();
+        int size = labelsObj.length;
         String[] labels = new String[size];
         Token[] values = new Token[size];
-
-        Iterator iter = intersectionSet.iterator();
-        int i = 0;
-        while (iter.hasNext()) {
-            labels[i] = (String)iter.next();
+        for (int i=0; i<size; i++) {
+            labels[i] = (String)labelsObj[i];
             Token value1 = this.get(labels[i]);
             Token value2 = argRecTok.get(labels[i]);
             values[i] = value1.add(value2);
-            i++;
         }
 
         return new RecordToken(labels, values);
@@ -153,16 +150,14 @@ public class RecordToken extends Token {
      *  @return An instance of RecordType.
      */
     public Type getType() {
-        Iterator iter = _fields.keySet().iterator();
-        int size = _fields.size();
+        Object[] labelsObj = _fields.keySet().toArray();
+        int size = labelsObj.length;
         String[] labels = new String[size];
         Type[] types = new Type[size];
 
-        int i = 0;
-        while (iter.hasNext()) {
-            labels[i] = (String)iter.next();
+        for (int i=0; i<size; i++) {
+            labels[i] = (String)labelsObj[i];
             types[i] = this.get(labels[i]).getType();
-            i++;
         }
 
         return new RecordType(labels, types);
@@ -175,8 +170,7 @@ public class RecordToken extends Token {
      *   RecordToken, or calling the isEqualTo method of the element token
      *   throws it.
      */
-    public BooleanToken isEqualTo(Token t)
-            throws IllegalActionException {
+    public BooleanToken isEqualTo(Token t) throws IllegalActionException {
         if ( !(t instanceof RecordToken)) {
             throw new IllegalActionException("RecordToken.isEqualTo: The " +
                 "argument is not a RecordToken.");
@@ -221,17 +215,18 @@ public class RecordToken extends Token {
      */
     public Token one() throws IllegalActionException {
         Object[] labelsObj = _fields.keySet().toArray();
-        String[] labels = new String[labelsObj.length];
-        Token[] values = new Token[labels.length];
-        for (int i=0; i<labels.length; i++) {
+        int size = labelsObj.length;
+        String[] labels = new String[size];
+        Token[] values = new Token[size];
+
+        for (int i=0; i<size; i++) {
             labels[i] = (String)labelsObj[i];
             values[i] = this.get(labels[i]).one();
         }
         return new RecordToken(labels, values);
     }
 
-    /** Return the value of this token as a string that can be parsed
-     *  by the expression language to recover a token with the same value.
+    /** Return the value of this token as a string.
      *  The syntax is similar to the ML record:
      *  {<label>=<value>, <label>=<value>, ...}
      *  The record fields are listed in the lexicographical order of the
@@ -278,9 +273,11 @@ public class RecordToken extends Token {
      */
     public Token zero() throws IllegalActionException {
         Object[] labelsObj = _fields.keySet().toArray();
-        String[] labels = new String[labelsObj.length];
-        Token[] values = new Token[labels.length];
-        for (int i=0; i<labels.length; i++) {
+        int size = labelsObj.length;
+        String[] labels = new String[size];
+        Token[] values = new Token[size];
+
+        for (int i=0; i<size; i++) {
             labels[i] = (String)labelsObj[i];
             values[i] = this.get(labels[i]).zero();
         }
