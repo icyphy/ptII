@@ -40,6 +40,12 @@ if [info exist env(TYCHO)] {
     set TYCHO $env(TYCHO)
 }
 
+if {![info exist TYCHO]} {
+    # If we are here, then we are probably running jacl and we can't
+    # read environment variables
+    set TYCHO [file join [pwd] .. .. .. ..]
+}
+
 # Load up the test definitions.
 if {[string compare test [info procs test]] == 1} then { 
     source [file join $TYCHO kernel test testDefs.tcl]
