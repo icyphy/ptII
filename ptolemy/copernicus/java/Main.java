@@ -40,6 +40,7 @@ import ptolemy.copernicus.kernel.InstanceEqualityEliminator;
 import ptolemy.copernicus.kernel.JimpleWriter;
 import ptolemy.copernicus.kernel.SideEffectFreeInvocationRemover;
 import ptolemy.copernicus.kernel.TransformerAdapter;
+import ptolemy.copernicus.kernel.UnusedFieldRemover;
 import ptolemy.copernicus.kernel.WatchDogTimer;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -274,7 +275,6 @@ public class Main extends KernelMain {
                 new Transform("wjtp.ts",
                         TypeSpecializer.v(_toplevel)));
 
- 
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.tie",
                         new TransformerAdapter(
@@ -358,13 +358,28 @@ public class Main extends KernelMain {
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.ttn",
                         TokenToNativeTransformer.v(_toplevel)));
+ 
+        _addStandardOptimizations(Scene.v().getPack("wjtp"));
+        
+        Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.ufr", 
+                        UnusedFieldRemover.v()));
 
+        Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.smr",
+                        SideEffectFreeInvocationRemover.v()));
+
+        Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.doe",
+                        new TransformerAdapter(
+                                DeadObjectEliminator.v())));
+        
+        _addStandardOptimizations(Scene.v().getPack("wjtp"));
+        
+        // This snapshot should be last...
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.finalSnapshot",
                         JimpleWriter.v()));
-
-        _addStandardOptimizations(Scene.v().getPack("wjtp"));
-        _addStandardOptimizations(Scene.v().getPack("wjtp"));
 
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.watchDogCancel",

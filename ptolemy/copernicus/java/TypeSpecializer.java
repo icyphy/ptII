@@ -185,31 +185,83 @@ public class TypeSpecializer extends SceneTransformer {
                     continue;
                 }
                 AssignStmt assignStmt = (AssignStmt)unit;
+
                 // Ignore anything that isn't an assignment to a field.
                 if (!(assignStmt.getLeftOp() instanceof FieldRef)) {
                     continue;
                 }
-                if(debug) System.out.println("checking assignment to field " + assignStmt);
-                FieldRef ref = (FieldRef)((AssignStmt)assignStmt).getLeftOp();
-                SootField field = ref.getField();
-                Type type = field.getType();
-                // Things that aren't token types are ignored.
-                // Things that are already the same type are ignored.
-                Type newType = 
-                    typeAnalysis.getSpecializedSootType(field);
-                if (newType != null && !newType.equals(type)) {
-                    if(debug) System.out.println("inserting cast");
-                    Local tempLocal = 
-                        Jimple.v().newLocal("fieldUpdateLocal", newType);
-                    body.getLocals().add(tempLocal);
-                    body.getUnits().insertBefore(
-                            Jimple.v().newAssignStmt(tempLocal,
-                                    Jimple.v().newCastExpr(
-                                            assignStmt.getRightOp(),
-                                            newType)),
-                            unit);
-                    assignStmt.setRightOp(tempLocal);
+                if(!PtolemyUtilities.isTokenType(assignStmt.getLeftOp().getType())) {
+                    continue;
                 }
+                
+                if(debug) System.out.println("checking assignment " + assignStmt);
+
+                // FIXME: We need to figure out a way to insert casts where appropriate.
+                // See RampFiringLimitSDF
+//                 ptolemy.data.type.Type leftType, rightType;
+//                 leftType = _getReplacementTokenType(
+//                         assignStmt.getLeftOp(), typeAnalysis);
+//                 rightType = _getReplacementTokenType(
+//                         assignStmt.getRightOp(), typeAnalysis);
+                
+//                 if(leftType != null && rightType != null && !leftType.equals(rightType)) {
+//                     if(debug) System.out.println("inserting conversion: leftType = " + 
+//                             leftType + ", rightType = " + rightType);
+                    
+                     
+//                     // insert a call to convert(), and a cast.
+//                     FieldRef ref = (FieldRef)assignStmt.getLeftOp();
+//                     SootField field = ref.getField();
+//                     Type newType = 
+//                         typeAnalysis.getSpecializedSootType(field);
+//                     Local tempLocal = 
+//                         Jimple.v().newLocal("fieldUpdateLocal", newType);
+//                     body.getLocals().add(tempLocal);
+//                     Local tokenLocal = 
+//                         Jimple.v().newLocal("tokenLocal", PtolemyUtilities.tokenType);
+//                     body.getLocals().add(tokenLocal);
+//                     Local typeLocal = 
+//                         PtolemyUtilities.buildConstantTypeLocal(body, unit, leftType);
+                    
+//                     body.getUnits().insertBefore(
+//                             Jimple.v().newAssignStmt(tokenLocal,
+//                                     Jimple.v().newVirtualInvokeExpr(
+//                                             typeLocal,
+//                                             PtolemyUtilities.typeConvertMethod,
+//                                             assignStmt.getRightOp())),
+//                             unit);
+//                     body.getUnits().insertBefore(
+//                             Jimple.v().newAssignStmt(tempLocal,
+//                                     Jimple.v().newCastExpr(
+//                                             tokenLocal,
+//                                             newType)),
+//                             unit);
+//                     assignStmt.setRightOp(tempLocal);
+
+                  
+//                 } else {
+                    FieldRef ref = (FieldRef)assignStmt.getLeftOp();
+                    SootField field = ref.getField();
+                    
+                    Type type = field.getType();
+                    // Things that aren't token types are ignored.
+                    // Things that are already the same type are ignored.
+                    Type newType = 
+                        typeAnalysis.getSpecializedSootType(field);
+                    if (newType != null && !newType.equals(type)) {
+                        if(debug) System.out.println("inserting cast");
+                        Local tempLocal = 
+                            Jimple.v().newLocal("fieldUpdateLocal", newType);
+                        body.getLocals().add(tempLocal);
+                        body.getUnits().insertBefore(
+                                Jimple.v().newAssignStmt(tempLocal,
+                                        Jimple.v().newCastExpr(
+                                                assignStmt.getRightOp(),
+                                                newType)),
+                                unit);
+                        assignStmt.setRightOp(tempLocal);
+                    }
+                    //     }
             }
         }
 
@@ -255,42 +307,22 @@ public class TypeSpecializer extends SceneTransformer {
         return map;
     }
 
-    // Given an object (which must be either a local, or a field) of
-    // the given type, look into the given map and retrieve the
-    // inequality term for the object.  retrieve the resolved type,
-    // and return it.
-    private static Type _getUpdateType(boolean debug,
-            Object object, Type type, Map objectToInequalityTerm) {
-        RefType tokenType = PtolemyUtilities.getBaseTokenType(type);
-        if (tokenType != null) {
-            if (debug) System.out.println("type of value " + object
-                    + " = " + type);
-            InequalityTerm term = 
-                (InequalityTerm)objectToInequalityTerm.get(object);
-            if (term == null) {
-                return null;
-            }
-            ptolemy.data.type.Type newTokenType = (ptolemy.data.type.Type)term.getValue();
-            RefType newType = PtolemyUtilities.getSootTypeForTokenType(newTokenType);
-            if (debug) System.out.println("newType = " + newType);
-            if (!SootUtilities.derivesFrom(newType.getSootClass(), tokenType.getSootClass())) {
-                // If the new Type is less specific, in Java terms,
-                // than what we had before, then the resulting code is
-                // likely not correct.  FIXME: hack to get around the
-                // bogus type lattice.  This should be an exception.
-                System.out.println("Warning! Resolved type of " + object +
-                        " to " + newType +
-                        " which is more general than the old type " + type);
-                newType = tokenType;
-            }
-
-            // create a new type isomorphic with the old type.
-            return SootUtilities.createIsomorphicType(type, newType);
-        }
-        // If this is not a token class, then we don't change it.
-        return null;
+    private static ptolemy.data.type.Type _getReplacementTokenType(
+            Value value, TypeSpecializerAnalysis typeAnalysis) {
+        if (value instanceof FieldRef) {
+            FieldRef ref = (FieldRef)value;
+            SootField field = ref.getField();
+            return typeAnalysis.getSpecializedType(field);
+        } else if(value instanceof Local) {
+            Local local = (Local)value;
+            return typeAnalysis.getSpecializedType(local);
+      //   } else if(value.getType().equals(NullType.v())) {
+//             return tokenClass
+        } else {
+            return null;
+            //throw new RuntimeException("Unrecognized value:" + value);
+        } 
     }
-
     private CompositeActor _model;
 }
 

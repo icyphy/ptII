@@ -147,6 +147,7 @@ public class TypeSpecializerAnalysis {
      *  @param list A list of SootClass.
      */
     public TypeSpecializerAnalysis(List list, Set unsafeLocals) {
+        //  _debug = true;
         _unsafeLocals = unsafeLocals;
 
         _solver = new InequalitySolver(TypeLattice.lattice());

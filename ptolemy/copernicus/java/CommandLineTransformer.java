@@ -46,6 +46,7 @@ import soot.Local;
 import soot.Modifier;
 import soot.NullType;
 import soot.Options;
+import soot.BooleanType;
 import soot.RefType;
 import soot.Scene;
 import soot.SceneTransformer;
@@ -404,6 +405,9 @@ public class CommandLineTransformer extends SceneTransformer {
 	    }
 	}
 
+        Local postfireReturnsLocal = Jimple.v().newLocal("postfireReturns", BooleanType.v());
+        body.getLocals().add(postfireReturnsLocal);
+        
         Local iterationLocal = null;
         if (iterationLimit > 1) {
             iterationLocal = Jimple.v().newLocal("iteration",
@@ -443,6 +447,21 @@ public class CommandLineTransformer extends SceneTransformer {
                 Jimple.v().newVirtualInvokeExpr(modelLocal,
                         SootUtilities.searchForMethodByName(modelClass,
                                 "fire"))),
+                unit);
+
+        // call postfire on the model.
+        units.insertBefore(Jimple.v().newAssignStmt(postfireReturnsLocal,
+                          Jimple.v().newVirtualInvokeExpr(modelLocal,
+                                  SootUtilities.searchForMethodByName(modelClass,
+                                          "postfire"))),
+                unit);
+        
+        // If postfire returned false,
+        // then we're done.
+        units.insertBefore(Jimple.v().newIfStmt(
+                                   Jimple.v().newEqExpr(postfireReturnsLocal,
+                                           IntConstant.v(0)),
+                                   iterationEndStmt),
                 unit);
 
         // If we need to keep track of the number of iterations, then...

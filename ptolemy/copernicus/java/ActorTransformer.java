@@ -46,6 +46,7 @@ import ptolemy.kernel.util.StringUtilities;
 
 import soot.Hierarchy;
 import soot.IntType;
+import soot.BooleanType;
 import soot.Local;
 import soot.Modifier;
 import soot.Options;
@@ -480,7 +481,7 @@ public class ActorTransformer extends SceneTransformer {
         }
         if (!theClass.declaresMethodByName("postfire")) {
             SootMethod method = new SootMethod("postfire",
-                    new LinkedList(), IntType.v(), Modifier.PUBLIC);
+                    new LinkedList(), BooleanType.v(), Modifier.PUBLIC);
             theClass.addMethod(method);
             JimpleBody body = Jimple.v().newBody(method);
             method.setActiveBody(body);

@@ -40,6 +40,7 @@ import soot.Body;
 import soot.Hierarchy;
 import soot.Local;
 import soot.Modifier;
+import soot.BooleanType;
 import soot.NullType;
 import soot.Options;
 import soot.RefType;
@@ -121,6 +122,7 @@ public class InlineDirectorTransformer extends SceneTransformer {
         System.out.println("InlineDirectorTransformer.internalTransform("
                 + phaseName + ", " + options + ")");
 
+       
         // First remove methods that are called on the director.
         // Loop over all the entity classes...
         for (Iterator i = _model.deepEntityList().iterator();
@@ -161,6 +163,10 @@ public class InlineDirectorTransformer extends SceneTransformer {
 
         SootClass modelClass = ModelTransformer.getModelClass();
 
+        SootField postfireReturnsField = new SootField("_postfireReturns", 
+                BooleanType.v(), Modifier.PRIVATE);
+        modelClass.addField(postfireReturnsField);
+
         // Inline the director
         {
             // populate the preinitialize method
@@ -174,6 +180,16 @@ public class InlineDirectorTransformer extends SceneTransformer {
             body.insertIdentityStmts();
             Chain units = body.getUnits();
             Local thisLocal = body.getThisLocal();
+
+            Local postfireReturnsLocal = Jimple.v().newLocal("postfireReturns", BooleanType.v());
+            body.getLocals().add(postfireReturnsLocal);
+            
+            // Initialize the postfire flag.
+            units.add(Jimple.v().newAssignStmt(postfireReturnsLocal,
+                                       IntConstant.v(1)));
+            units.add(Jimple.v().newAssignStmt(
+                              Jimple.v().newInstanceFieldRef(thisLocal, postfireReturnsField),
+                              postfireReturnsLocal));
 
             for (Iterator entities = _model.deepEntityList().iterator();
                  entities.hasNext();) {
@@ -250,7 +266,18 @@ public class InlineDirectorTransformer extends SceneTransformer {
 
             Local actorLocal = Jimple.v().newLocal("actor", actorType);
             body.getLocals().add(actorLocal);
-            // Execute the schedule
+            
+            Local postfireReturnsLocal = Jimple.v().newLocal("postfireReturns", BooleanType.v());
+            body.getLocals().add(postfireReturnsLocal);
+
+            Local localPostfireReturnsLocal = Jimple.v().newLocal("localPostfireReturns", BooleanType.v());
+            body.getLocals().add(localPostfireReturnsLocal);
+
+            units.add(Jimple.v().newAssignStmt(postfireReturnsLocal,
+                              Jimple.v().newInstanceFieldRef(thisLocal, 
+                                      postfireReturnsField)));
+         
+           // Execute the schedule
             SDFDirector director = (SDFDirector)_model.getDirector();
             Iterator schedule = null;
             try {
@@ -286,12 +313,42 @@ public class InlineDirectorTransformer extends SceneTransformer {
                 units.add(Jimple.v().newInvokeStmt(
                         Jimple.v().newVirtualInvokeExpr(actorLocal,
                                 actorFireMethod)));
-                units.add(Jimple.v().newInvokeStmt(
-                        Jimple.v().newVirtualInvokeExpr(actorLocal,
-                                actorPostfireMethod)));
-
+                units.add(Jimple.v().newAssignStmt(localPostfireReturnsLocal,
+                                  Jimple.v().newVirtualInvokeExpr(actorLocal,
+                                          actorPostfireMethod)));
+                units.add(Jimple.v().newAssignStmt(postfireReturnsLocal,
+                                  Jimple.v().newAndExpr(postfireReturnsLocal,
+                                          localPostfireReturnsLocal)));
             }
+
+            units.add(Jimple.v().newAssignStmt(
+                              Jimple.v().newInstanceFieldRef(thisLocal, 
+                                      postfireReturnsField),
+                              postfireReturnsLocal));
             units.add(Jimple.v().newReturnVoidStmt());
+            LocalSplitter.v().transform(body, phaseName + ".lns");
+            LocalNameStandardizer.v().transform(body, phaseName + ".lns");
+            TypeResolver.resolve(body, Scene.v());
+        }
+
+        {
+            // populate the postfire method
+            SootMethod classMethod = new SootMethod("postfire",
+                    new LinkedList(), BooleanType.v(),
+                    Modifier.PUBLIC);
+            modelClass.addMethod(classMethod);
+            JimpleBody body = Jimple.v().newBody(classMethod);
+            classMethod.setActiveBody(body);
+            body.insertIdentityStmts();
+            Chain units = body.getUnits();
+            Local thisLocal = body.getThisLocal();
+
+            Local postfireReturnsLocal = Jimple.v().newLocal("postfireReturns", BooleanType.v());
+            body.getLocals().add(postfireReturnsLocal);
+                units.add(Jimple.v().newAssignStmt(postfireReturnsLocal,
+                                  Jimple.v().newInstanceFieldRef(thisLocal, 
+                                          postfireReturnsField)));
+            units.add(Jimple.v().newReturnStmt(postfireReturnsLocal));
             LocalSplitter.v().transform(body, phaseName + ".lns");
             LocalNameStandardizer.v().transform(body, phaseName + ".lns");
             TypeResolver.resolve(body, Scene.v());
