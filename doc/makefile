@@ -184,6 +184,10 @@ PTINYPACKAGES = \
 			ptolemy.domains.de.kernel \
 			ptolemy.domains.de.lib \
 
+# Packages for the SUPERB classes
+SUPERBPACKAGES = \
+			ptolemy.apps.superb.actor.lib
+
 # actor.lib.comm uses the Java comm api for communicating with
 # serial ports.  javacomm is not always available, so actor.lib.comm
 # is not part of the default build	
@@ -203,6 +207,7 @@ ALLPACKAGES =		$(COMMPACKAGES) \
 			$(JOYSTICKPACKAGES) \
 			$(PTINYPACKAGES) \
 			$(GRPACKAGES) \
+			$(SUPERBPACKAGES) \
 			jni \
 			ptolemy.plot \
 			ptolemy.plot.plotml \
