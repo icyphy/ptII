@@ -28,18 +28,18 @@ COPYRIGHTENDKEY
 
 package ptolemy.domains.de.lib;
 
+import java.util.LinkedList;
+
+import ptolemy.actor.parameters.PortParameter;
+import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.Token;
-import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.domains.de.kernel.DEDirector;
-import ptolemy.domains.de.kernel.DEIOPort;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
-import ptolemy.math.Utilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// Server
@@ -84,7 +84,7 @@ import ptolemy.math.Utilities;
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Yellow (cxh)
 */
-public class Server extends DETransformer {
+public class Server extends VariableDelay {
 
     /** Construct an actor with the specified container and name.
      *  @param container The composite actor to contain this one.
@@ -97,53 +97,10 @@ public class Server extends DETransformer {
     public Server(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-        serviceTime =
-            new Parameter(this, "serviceTime", new DoubleToken(1.0));
-        serviceTime.setTypeEquals(BaseType.DOUBLE);
-        newServiceTime = new DEIOPort(this, "newServiceTime", true, false);
-        newServiceTime.setTypeEquals(BaseType.DOUBLE);
-        // Put it at the bottom of the icon by default.
-        StringAttribute cardinality
-                = new StringAttribute(newServiceTime, "_cardinal");
-        cardinality.setExpression("SOUTH");
-
-        output.setTypeAtLeast(input);
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                       ports and parameters                ////
-
-    /** A port to supply new service times.  This port has type DoubleToken.
-     */
-    public DEIOPort newServiceTime;
-
-    /** The service time.  This parameter must contain a DoubleToken
-     *  with a non-negative value, or an exception will be thrown when
-     *  it is set.
-     */
-    public Parameter serviceTime;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-    /** If the attribute is <i>serviceTime</i>, then check that
-     *  the value is non-negative.
-     *  @param attribute The attribute that changed.
-     *  @exception IllegalActionException If the service time is negative.
-     */
-    public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
-        if (attribute == serviceTime) {
-            double time =
-                ((DoubleToken)(serviceTime.getToken())).doubleValue();
-            if (time < 0.0) {
-                throw new IllegalActionException(this,
-                        "Cannot have negative service time: " + time);
-            }
-        } else {
-            super.attributeChanged(attribute);
-        }
-    }
 
     /** If there is an input token, read it to begin servicing it.
      *  Note that service actually begins in the postfire() method,
@@ -151,20 +108,29 @@ public class Server extends DETransformer {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-        if (newServiceTime.getWidth() > 0 && newServiceTime.hasToken(0)) {
-            DoubleToken time = (DoubleToken)(newServiceTime.get(0));
-            serviceTime.setToken(time);
-        }
-        if (input.getWidth() > 0 && input.hasToken(0)) {
+        // update delay value
+        delay.update();
+        _delay = ((DoubleToken)delay.getToken()).doubleValue();
+        
+        Time currentTime = getDirector().getCurrentTime();
+        // consume input and put it into the task queue: _delayedTokensList
+        // NOTE: it is different from the _delayedTokens defined in the 
+        // TimedDelay class. 
+        if (input.hasToken(0)) {
             _currentInput = input.get(0);
-            double delay =
-                ((DoubleToken)serviceTime.getToken()).doubleValue();
-            double nextTimeFree = ((DEDirector)getDirector()).getCurrentTime()
-                + delay;
-            _nextTimeFree = Utilities.round(nextTimeFree, 
-                getDirector().getTimeResolution());
+            _delayedTokensList.addLast(_currentInput);
         } else {
             _currentInput = null;
+        }
+        // produce output
+        if (currentTime.compareTo(_nextTimeFree) == 0) {
+            _currentOutput = (Token)_delayedTokens.get(
+                new Double(currentTime.getTimeValue()));
+            if (_currentOutput == null) {
+                throw new InternalErrorException("Service time is " +
+                    "reached, but output is not available.");
+            }
+            output.send(0, _currentOutput);
         }
     }
 
@@ -173,24 +139,8 @@ public class Server extends DETransformer {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        _nextTimeFree = Double.NEGATIVE_INFINITY;
-    }
-
-    /** If the server is not busy, return true.  Otherwise return false.
-     *  @exception IllegalActionException If there is no director.
-     */
-    public boolean prefire() throws IllegalActionException {
-        DEDirector director = (DEDirector)getDirector();
-        if (director.getCurrentTime() >= _nextTimeFree) {
-            return true;
-        } else {
-            // Schedule a firing if there is a pending
-            // token so it can be served.
-            if (input.hasToken(0)) {
-                director.fireAt(this, _nextTimeFree);
-            }
-            return false;
-        }
+        _nextTimeFree = getDirector().timeConstants.NEGATIVE_INFINITY;
+        _delayedTokensList = new LinkedList();
     }
 
     /** If a token was read in the fire() method, then produce it on
@@ -200,30 +150,56 @@ public class Server extends DETransformer {
      *  @exception IllegalActionException If there is no director.
      */
     public boolean postfire() throws IllegalActionException {
-        if (_currentInput != null) {
-            double delay =
-                ((DoubleToken)serviceTime.getToken()).doubleValue();
-            output.send(0, _currentInput, delay);
-        }
-        return super.postfire();
-    }
+        Time currentTime = getDirector().getCurrentTime();
 
-    /** Override the base class to declare that the <i>output</i>
-     *  does not depend on the <i>input</i> or <i>newServiceTime</i>
-     *  in a firing.
-     */
-    public void pruneDependencies() {
-        super.pruneDependencies();
-        removeDependency(input, output);
-        removeDependency(newServiceTime, output);
+        // Remove the curent output token from _delayedTokens.
+        // NOTE: In this server class, the _delayedTokens can have
+        // at most one token inside (like a processer can execute
+        // at most one process at any time.) 
+        if (_currentOutput != null) {
+            _delayedTokens.remove(new Double(currentTime.getTimeValue()));
+        }
+        // If the delayedTokensList is not empty, and the delayedTokens
+        // is empty (ready for a new service), get the first token
+        // and put it into service. Schedule a refiring to wave up 
+        // after the service finishes.
+        if (_delayedTokensList.size() != 0 && _delayedTokens.isEmpty()) {
+            _nextTimeFree = currentTime.add(_delay);
+            _delayedTokens.put(new Double(_nextTimeFree.getTimeValue()), 
+                _delayedTokensList.removeFirst());
+            getDirector().fireAt(this, _nextTimeFree);
+        }
+        return !_stopRequested;
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                       protected method                    ////
+
+    // Initialize parameters.
+    protected void _init() 
+        throws NameDuplicationException, IllegalActionException  {
+        // FIXME: can not call super._init() and delay.setName(newName).
+        // The port does not get the new name. This is a bug.
+        delay = new PortParameter(this, "serviceTime");
+        delay.setExpression("1.0");
+        delay.setTypeEquals(BaseType.DOUBLE);
+        // Put the delay port at the bottom of the icon by default.
+        StringAttribute cardinality
+                = new StringAttribute(delay.getPort(), "_cardinal");
+        cardinality.setExpression("SOUTH");
+        output.setTypeSameAs(input);
+    }
+
+    // Update the private states and schedule future firings.
+    protected void _updateStates() throws IllegalActionException {
+    }
+    
+    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // Current inputs.
-    private Token _currentInput;
-
     // Next time the server becomes free.
-    private double _nextTimeFree = Double.NEGATIVE_INFINITY;
+    private Time _nextTimeFree;
+    
+    // List of delayed tokens, whose finishing times can not be decided.
+    private LinkedList _delayedTokensList;
 }

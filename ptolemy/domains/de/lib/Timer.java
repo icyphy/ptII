@@ -29,6 +29,7 @@ COPYRIGHTENDKEY
 package ptolemy.domains.de.lib;
 
 import ptolemy.actor.Director;
+import ptolemy.actor.util.Time;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.Token;
@@ -38,29 +39,29 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// Timer
 /**
-   Given an input time value, this actor produces an output event at
-   the time of the input plus the value of the input.  That is, it sets
-   a timer, and when the timer goes off, it produces an output.
-   The output value is given by the <i>value</i> parameter.
-   Note that the actor queues output events on the event queue
-   immediately, but with a future time stamp, so that even if the
-   actor no longer exists after the time delay elapses, the
-   destination actor will still see the token. If there is no
-   input token, then no output token is produced.
+   A timer actor extends TimedDelay actor and produces an event with a time 
+   delay specified by the input instead by the delay parameter.
+   When a timer actor receives an input, if the input value is bigger than 
+   0.0, it schedules itself to fire again some time later (introducing a
+   delay) to produce an output specified by the value parameter. The delay 
+   is specified by the input value. If the input value is 0.0, an output is
+   produced immediately. If there is no input token, then no output token 
+   is produced.
    @see TimedDelay
 
-   @author Jie Liu and Edward A. Lee
+   @author Jie Liu, Edward A. Lee, Haiyang Zheng
    @version $Id$
    @since Ptolemy II 1.0
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Red (liuj)
 */
-public class Timer extends DETransformer {
+public class Timer extends TimedDelay {
 
     /** Construct an actor with the specified container and name.
      *  @param container The container.
@@ -73,6 +74,7 @@ public class Timer extends DETransformer {
     public Timer(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
+        delay.setVisibility(Settable.NONE);
         input.setTypeEquals(BaseType.DOUBLE);
         value = new Parameter(this, "value", new BooleanToken(true));
         output.setTypeSameAs(value);
@@ -126,9 +128,32 @@ public class Timer extends DETransformer {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
+        _delay = -1.0;
         if (input.hasToken(0)) {
             _currentInput = input.get(0);
+            double delayValue = ((DoubleToken)_currentInput).doubleValue();
+            if (delayValue < 0) {
+                throw new IllegalActionException(
+                    "Delay can not be negative.");
+            } else {
+                _delay = delayValue;
+            }
         } else {
+            _currentInput = null;
+        }
+        Time currentTime = getDirector().getCurrentTime();
+        _currentOutput = null;
+        if (_delayedTokens.size() > 0) {
+            _currentOutput = (Token)_delayedTokens.get(currentTime);
+            if (_currentOutput != null) {
+                output.send(0, _currentOutput);
+                return;
+            } else {
+                // no tokens to be produced at the current time.
+            }
+        }
+        if (_delay == 0.0) {
+            output.send(0, value.getToken());
             _currentInput = null;
         }
     }
@@ -141,11 +166,19 @@ public class Timer extends DETransformer {
      *  @exception IllegalActionException If there is no director.
      */
     public boolean postfire() throws IllegalActionException {
-        if (_currentInput != null) {
-            double delay = ((DoubleToken)_currentInput).doubleValue();
-            if (delay >= 0.0) {
-                output.send(0, value.getToken(), delay);
-            }
+        Time currentTime = getDirector().getCurrentTime();
+        Time delayToTime = currentTime.add(_delay);
+        // Remove the token that is scheduled to be sent 
+        // at the current time.
+        if (_delayedTokens.size() > 0 && 
+            _currentOutput != null) {
+            _delayedTokens.remove(currentTime);
+        }
+        // Store the not handled token that is scheduled to 
+        // be sent in future.
+        if (_currentInput != null && _delay >= 0) {
+            _delayedTokens.put(delayToTime, value.getToken());
+            getDirector().fireAt(this, delayToTime);
         }
         return super.postfire();
     }
