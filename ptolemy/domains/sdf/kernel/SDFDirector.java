@@ -198,13 +198,13 @@ public class SDFDirector extends StaticSchedulingDirector {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        Scheduler s = getScheduler();
-        if (s == null)
+        Scheduler scheduler = getScheduler();
+        if (scheduler == null)
             throw new IllegalActionException("Attempted to initialize " +
                     "SDF system with no scheduler");
         // force the schedule to be computed.
         if(_debugging) _debug("Computing schedule");
-        Schedule sched = s.getSchedule();
+        Schedule sched = scheduler.getSchedule();
 
         // FIXME: You probably only want this from the scheduler, but
         // currently there is no easy way to listen to the scheduler

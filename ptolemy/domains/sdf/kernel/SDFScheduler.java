@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (neuendor@eecs.berkeley.edu)
-@AcceptedRating Yellow (johnr@eecs.berkeley.edu)
+@ProposedRating Green (neuendor@eecs.berkeley.edu)
+@AcceptedRating Green (neuendor@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.sdf.kernel;
@@ -352,6 +352,47 @@ public class SDFScheduler extends Scheduler {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
+
+    /** Determine the number of times the given actor can fire, based on
+     *  the number of tokens that are present on its inputs according to
+     *  the given map.
+     *
+     *  @param currentActor The actor.
+     *  @param waitingTokens A map between each input IOPort and the number of
+     *  tokens in the queue for that port.
+     *  @return The number of times the actor can fire.
+     *  @exception IllegalActionException If the rate parameters are invalid.
+     */
+    private int _computeMaximumFirings(ComponentEntity currentActor,
+            Map waitingTokens) throws IllegalActionException {
+        int maximumFirings = Integer.MAX_VALUE;
+
+        // Update the number of tokens waiting on the actor's input ports.
+        Iterator inputPorts =
+	    ((Actor) currentActor).inputPortList().iterator();
+        while(inputPorts.hasNext()) {
+            IOPort inputPort = (IOPort) inputPorts.next();
+            int[] tokens = (int []) waitingTokens.get(inputPort);
+	    int tokenRate = getTokenConsumptionRate(inputPort);
+            // Ignore zero rate ports.. they don't limit the number of times
+            // we can fire their actors.
+            if(tokenRate == 0) {
+                continue;
+            }
+	    for(int channel = 0;
+                channel < inputPort.getWidth();
+                channel++) {
+		int firings = tokens[channel] / tokenRate;
+
+		// keep track of whether or not this actor can fire again
+		// immediately
+		if(firings < maximumFirings) {
+                    maximumFirings = firings;
+                }
+	    }
+	}
+        return maximumFirings;
+    }
 
     /** Return the scheduling sequence.  An exception will be thrown if the
      *  graph is not schedulable.  This occurs in the following circumstances:
@@ -1139,37 +1180,47 @@ public class SDFScheduler extends Scheduler {
 		// Remove it from the list of actors we are waiting to fire.
                 while(readyToScheduleActorList.remove(currentActor));
 
-		if(_debugging) {
-                    _debug("Scheduling actor " + currentActor.getName());
+                // Determine the number of times currentActor can fire.
+                int numberOfFirings = 
+                    _computeMaximumFirings(currentActor, waitingTokens);
+
+                // We should never schedule something more than the number
+                // of times expected by the balance equations.  This might
+                // happen because we assume an infinite number of tokens
+                // are waiting on external ports.
+                int firingsRemaining =
+                    ((Integer) firingsRemainingVector.get(currentActor)).
+                    intValue();
+                if(numberOfFirings > firingsRemaining) {
+                    numberOfFirings = firingsRemaining;
                 }
-                
+
+                if(_debugging) {
+                    _debug("Scheduling actor " + currentActor.getName() + 
+                            " " + numberOfFirings + " times.");
+                }
+
+                // Update the firingsRemainingVector for this actor.
+                firingsRemaining -= numberOfFirings;
+                firingsRemainingVector.put(currentActor,
+                        new Integer(firingsRemaining));
+
+		if (_debugging) {
+                    _debug(currentActor.getName() + " should fire " +
+                            firingsRemaining + " more times.");
+                }
+
                 // Simulate the tokens that are consumed by the actors 
                 // input ports.
-		_simulateInputConsumption(currentActor, waitingTokens);
+		_simulateInputConsumption(currentActor, 
+                        waitingTokens, numberOfFirings);
 
-		// Add it to the schedule
-                // If we are firing the same actor twice in a row, then 
-                // compress the schedule by incrementing the number of
-                // firings.
-                boolean incrementCount = false;
-                if(newSchedule.size() > 0) {
-                    Firing lastFiring =
-                        (Firing) newSchedule.get(newSchedule.size() - 1);
-                    if(lastFiring.getActor().equals(currentActor)) {
-                        incrementCount = true;
-                        lastFiring.setIterationCount(
-                                lastFiring.getIterationCount() + 1);
-                    }
-                }
+		// Add it to the schedule numberOfFirings times.
+                Firing firing = new Firing();
+                firing.setActor((Actor)currentActor);
+                firing.setIterationCount(numberOfFirings);
+                newSchedule.add(firing);
                 
-                // If we weren't able to increment the count in the last
-                // firing, then create a new firing.
-                if(!incrementCount) {
-                    Firing firing = new Firing();
-                    firing.setActor((Actor)currentActor);
-                    newSchedule.add(firing);
-                }
-
 		// Get all its outputPorts
 		// and simulate the proper production of tokens.
 		for(Iterator outputPorts =
@@ -1180,25 +1231,12 @@ public class SDFScheduler extends Scheduler {
 		    int count = getTokenProductionRate(outputPort);
 
 		    _simulateTokensCreated(outputPort,
-                            count,
+                            count * numberOfFirings,
                             unscheduledActorList,
                             readyToScheduleActorList,
                             waitingTokens,
                             minimumBufferSize);
-		}
-
-		// Update the firingRemainingVector for this actor.
-		int firingsRemaining =
-                    ((Integer) firingsRemainingVector.get(currentActor)).
-                    intValue();
-		firingsRemaining -= 1;
-                firingsRemainingVector.put(currentActor,
-                        new Integer(firingsRemaining));
-
-		if (_debugging) {
-                    _debug(currentActor.getName() + " should fire " +
-                            firingsRemaining + " more times.");
-                }
+		}		
 
 		// Figure out what to do with the actor, now that it has been
 		// scheduled.
@@ -1219,10 +1257,8 @@ public class SDFScheduler extends Scheduler {
                             _debug("Actor = " + currentActor + 
                                     " is done firing.");
                         }
-			// Remove the actor from the readyToScheduleActorList
-			// so that it does not get scheduled.
-			//while(readyToScheduleActorList.remove(currentActor));
-			// Remove the actor from the unscheduledActorList
+			
+                        // Remove the actor from the unscheduledActorList
 			// since we don't need to fire it any more.
 			while(unscheduledActorList.remove(currentActor));
                         
@@ -1243,21 +1279,19 @@ public class SDFScheduler extends Scheduler {
                                     unscheduledActorList,
                                     waitingTokens);
 			// We've already removed currentActor from
-			// readytoSchedule actors
-			// so if it can be fired again right away,
-			// put it back on the list.
-			// if the actor can still be scheduled
+			// readytoSchedule actors, and presumably
+                        // fired it until it can be fired no more.
+			// This check is here for robustness...
+                        // if the actor can still be scheduled
 			// i.e. all its inputs are satisfied, and it
 			// appears in the unscheduled actors list
 			// then put it at the END of readyToScheduleActorList.
-                        // FIXME this is rather inefficient.. it would be 
-                        // nice if we could schedule all the firings at
-                        // once... it would probably be alot faster...
-			if(inputCount < 1 &&
+                        
+                        if(inputCount <= 0 &&
                                 unscheduledActorList.contains(currentActor)) {
 			    readyToScheduleActorList.addFirst(currentActor);
                         }
-		    }
+                    }
 		}
 	    }
 	} catch (IllegalActionException exception) {
@@ -1495,22 +1529,26 @@ public class SDFScheduler extends Scheduler {
 	}
     }
 
-    /** Simulate the consumption of tokens by the actor during an execution.
+    /** Simulate the consumption of tokens by the actor during execution of 
+     *  the given number of firings.
      *  The entries in the waitingTokens map will be modified 
      *  to reflect the number of
-     *  tokens still waiting after the actor has consumed tokens for a firing.
+     *  tokens still waiting after the actor has consumed the minimum required
+     *  number of tokens for all firings.
      *  Also determine if enough tokens still remain at the inputs of the actor
      *  for it to fire again immediately.
      *
      *  @param currentActor The actor that is being simulated.
-     *  @param waitingTokens A Map between each input IOPort and the number of
-     *  tokens in the queue for that port.
+     *  @param waitingTokens A map between each input IOPort and the number of
+     *  tokens in the queue for that port.  This will be updated to reflect
+     *  the new number of waiting tokens.
+     *  @param firingCount The number of firings to simulate.
      *  @return true If the actor can fire again right away
      *  after it has consumed tokens.
-     *  @exception IllegalActionException If any called method throws it.
+     *  @exception IllegalActionException If the rate parameters are invalid.
      */
     private boolean _simulateInputConsumption(ComponentEntity currentActor,
-            Map waitingTokens) throws IllegalActionException {
+            Map waitingTokens, int firingCount) throws IllegalActionException {
         boolean stillReadyToSchedule = true;
 
         // Update the number of tokens waiting on the actor's input ports.
@@ -1518,10 +1556,8 @@ public class SDFScheduler extends Scheduler {
 	    ((Actor) currentActor).inputPortList().iterator();
         while(inputPorts.hasNext()) {
             IOPort inputPort = (IOPort) inputPorts.next();
-            int[] tokens =
-		(int []) waitingTokens.get(inputPort);
-	    int tokenRate =
-		getTokenConsumptionRate(inputPort);
+            int[] tokens = (int []) waitingTokens.get(inputPort);
+	    int tokenRate = getTokenConsumptionRate(inputPort);
 	    for(int channel = 0;
                 channel < inputPort.getWidth();
                 channel++) {
