@@ -1,4 +1,5 @@
-/* Bundle a sequence of N input tokens into an ArrayToken.
+/* An actor that reads a token from each input channel to
+   assemble an ArrayToken.
 
  Copyright (c) 1998-2003 The Regents of the University of California.
  All rights reserved.
@@ -24,25 +25,20 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Green (yuhong@eecs.berkeley.edu)
-@AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
+@ProposedRating Red (zhouye@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
-package ptolemy.domains.sdf.lib;
+package ptolemy.actor.lib;
 
-import ptolemy.actor.Director;
 import ptolemy.data.ArrayToken;
-import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.actor.lib.Transformer;
-import ptolemy.actor.parameters.PortParameter;
-import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.graph.Inequality;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
@@ -50,11 +46,12 @@ import java.util.LinkedList;
 import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
-//// SequenceToArray
+//// ElementsToArray
 /**
-This actor bundles a specified number of input tokens into a single array.
-The number of tokens to be bundled is specified by the <i>arrayLength</i>
-parameter.
+On each firing, this actor reads exactly one token from each channel
+of the input port and assemble the tokens into an ArrayToken. The
+ArrayToken is sent to the output port. If there is no input token
+at any channel of the input port, the prefire() will return false.
 <p>
 This actor is polymorphic. It can accept inputs of any type, as long
 as the type does not change, and will produce an array with elements
@@ -66,15 +63,15 @@ of the corresponding type.
 @since Ptolemy II 0.4
 */
 
-public class ElementsToArray extends SDFTransformer {
+public class ElementsToArray extends Transformer {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
-     *  @exception IllegalActionException If the actor cannot be contained
-     *   by the proposed container.
-     *  @exception NameDuplicationException If the container already has an
-     *   actor with this name.
+     *  @exception IllegalActionException If the actor cannot be
+     *   contained by the proposed container.
+     *  @exception NameDuplicationException If the container
+     *   already has an actor with this name.
      */
     public ElementsToArray(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
@@ -83,16 +80,24 @@ public class ElementsToArray extends SDFTransformer {
         // set the output type to be an ArrayType.
         output.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
         input.setMultiport(true);
+        
+        // Set the icon.
+        _attachText("_iconDescription", "<svg>\n" +
+            "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
+            + "style=\"fill:white\"/>\n" +
+            "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Consume the inputs and produce the output ArrayToken.
-     *  @exception IllegalActionException If not enough tokens are available.
+    /** Consume one token from each channel of the input port,
+     *  assemble those tokens into an ArrayToken, and send the
+     *  result to the output.
+     *  @exception IllegalActionException If not enough tokens
+     *   are available.
      */
     public void fire() throws IllegalActionException {
-        super.fire();
         int size = input.getWidth();
         Token[] valueArray = new Token[size];
         for (int i = 0; i < size; i++)
@@ -101,14 +106,13 @@ public class ElementsToArray extends SDFTransformer {
         output.send(0, new ArrayToken(valueArray));
     }
 
-    /** Return true if the input port has enough tokens for this actor to
-     *  fire. The number of tokens required is determined by the
-     *  value of the <i>arrayLength</i> parameter.
-     *  @return boolean True if there are enough tokens at the input port
-     *   for this actor to fire.
-     *  @exception IllegalActionException If the hasToken() query to the
-     *   input port throws it.
-     *  @see ptolemy.actor.IOPort#hasToken(int, int)
+    /** Return true if all channels of the <i>input</i> port have
+     *  tokens, false if any channel does not have a token.
+     *  @return boolean True if all channels of the input port
+     *   have tokens.
+     *  @exception IllegalActionException If the hasToken() query
+     *   to the input port throws it.
+     *  @see ptolemy.actor.IOPort#hasToken(int)
      */
     public boolean prefire() throws IllegalActionException {
         for (int i = 0; i < input.getWidth(); i++) {
@@ -119,8 +123,8 @@ public class ElementsToArray extends SDFTransformer {
         return true;
     }
 
-    /** Return the type constraint that the type of the elements of the
-     *  output array is no less than the type of the input port.
+    /** Return the type constraint that the type of the elements of
+     *  the output array is no less than the type of the input port.
      *  @return A list of inequalities.
      */
     public List typeConstraintList() {

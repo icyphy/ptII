@@ -57,7 +57,6 @@ PTCLASSALLJARS = \
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
-    ArrayToElements.java \
 	ArrayToSequence.java \
 	Autocorrelation.java \
 	BitsToInt.java \
@@ -67,7 +66,6 @@ JSRCS = \
         DotProduct.java \
 	DoubleToMatrix.java \
 	DownSample.java \
-	ElementsToArray.java \
 	FIR.java \
 	FFT.java \
 	IFFT.java \

@@ -106,6 +106,7 @@ JSRCS = \
 	ArrayMinimum.java \
 	ArrayPeakSearch.java \
 	ArraySort.java \
+	ArrayToElements.java \
 	Average.java \
 	Bernoulli.java \
 	BooleanMultiplexor.java \
@@ -126,6 +127,7 @@ JSRCS = \
 	Discard.java \
 	DiscreteRandomSource.java \
 	Distributor.java \
+	ElementsToArray.java \
 	Exec.java \
 	Exit.java \
 	Expression.java \

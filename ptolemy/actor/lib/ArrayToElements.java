@@ -1,5 +1,4 @@
-/* Read ArrayTokens and send each element to one of the channels of
- * an multiport output port.
+/* An actor that disassemble an ArrayToken to a multiport output.
 
  Copyright (c) 1998-2003 The Regents of the University of California.
  All rights reserved.
@@ -25,11 +24,11 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (yuhong@eecs.berkeley.edu)
-@AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
+@ProposedRating Red (zhouye@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
-package ptolemy.domains.sdf.lib;
+package ptolemy.actor.lib;
 
 import ptolemy.data.ArrayToken;
 import ptolemy.data.Token;
@@ -46,16 +45,15 @@ import java.util.List;
 //////////////////////////////////////////////////////////////////////////
 //// ArrayToElements
 /**
-This actor reads an array at the input and writes the array elements
-as a sequence to the output. The parameter <i>arrayLength</i> can be
-used to specify the length of arrays that the actor will accept.
-If the <i>enforceArrayLength</i> parameter true, then if an input
-array does not match <i>arrayLength</i>, the fire() method will throw
-an exception.  This feature is important in domains, such as SDF,
-that do static scheduling based on production and consumption
-rates.  For other domains, such as DE and PN, the <i>enforceArrayLength</i>
-parameter can be set to false, in which case the <i>arrayLength</i>
-parameter will be ignored.
+An actor that disassembles an ArrayToken to a multiport output.
+<p>On each firing, this actor reads an ArrayToken frome the input
+port and send out each element token to each channel of the output
+port. If the width of the output port (say, <i>n</i>) is less than
+the number of elements in the array (say <i>m</i>), then the first
+<i>n</i> elements in the array will be sent, and the remaining
+tokens are discarded. If <i>n</i> is greater than <i>m</i>, then
+the last <i>n-m</i> channels of the output port will never send
+tokens out.
 <p>
 This actor is polymorphic. It can accept ArrayTokens with any element
 type and send out tokens corresponding to that type.
@@ -66,15 +64,15 @@ type and send out tokens corresponding to that type.
 @since Ptolemy II 0.4
 */
 
-public class ArrayToElements extends SDFTransformer {
+public class ArrayToElements extends Transformer {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
-     *  @exception IllegalActionException If the actor cannot be contained
-     *   by the proposed container.
-     *  @exception NameDuplicationException If the container already has an
-     *   actor with this name.
+     *  @exception IllegalActionException If the actor cannot be
+     *   contained by the proposed container.
+     *  @exception NameDuplicationException If the container
+     *   already has an actor with this name.
      */
     public ArrayToElements(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
@@ -86,7 +84,12 @@ public class ArrayToElements extends SDFTransformer {
         InequalityTerm elementTerm = inputType.getElementTypeTerm();
         output.setTypeAtLeast(elementTerm);
         output.setMultiport(true);
-
+        
+        // Set the icon.
+        _attachText("_iconDescription", "<svg>\n" +
+            "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
+            + "style=\"fill:white\"/>\n" +
+            "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -97,12 +100,13 @@ public class ArrayToElements extends SDFTransformer {
      *  base class and then creates new ports and parameters.
      *  @param workspace The workspace for the new object.
      *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class contains
-     *   an attribute that cannot be cloned.
+     *  @exception CloneNotSupportedException If a derived class
+     *   contains an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
-        ArrayToSequence newObject = (ArrayToSequence)(super.clone(workspace));
+        ArrayToElements newObject =
+            (ArrayToElements)(super.clone(workspace));
 
         // set the type constraints
         ArrayType inputType = (ArrayType)newObject.input.getType();
@@ -111,29 +115,34 @@ public class ArrayToElements extends SDFTransformer {
         return newObject;
     }
 
-    /** Consume the input ArrayToken and produce the outputs.
-     *  @exception IllegalActionException If a runtime type conflict occurs.
+    /** If there is a token at the input, read the ArrayToken
+     *  from the input port, and for each channel <i>i</i> of
+     *  the output port, send the <i>i</i>-th element of this
+     *  array to this channel. Otherwise, do nothing.
+     *  @exception IllegalActionException If a runtime
+     *   type conflict occurs.
      */
     public void fire() throws IllegalActionException {
-        super.fire();
-        ArrayToken token = (ArrayToken)input.get(0);
-        int size = token.length();
+        if (input.hasToken(0)) {
+            ArrayToken token = (ArrayToken)input.get(0);
+            int size = token.length();
         
-        int min = Math.min(size, output.getWidth());
+            int min = Math.min(size, output.getWidth());
 
-        Token[] elements = token.arrayValue();
-        for (int i = 0; i < min; i++) {
-            output.send(i, elements[i]);
+            Token[] elements = token.arrayValue();
+            for (int i = 0; i < min; i++) {
+                output.send(i, elements[i]);
+            }
         }
     }
 
-    /** Return the type constraint that the type of the output port is no
-     *  less than the type of the elements of the input array.
+    /** Return the type constraint that the type of the output port
+     *  is no less than the type of the elements of the input array.
      *  @return A list of inequalities.
      */
     public List typeConstraintList() {
-        // Override the base class implementation to not use the default
-        // constraints.
+        // Override the base class implementation to not use the
+        // default constraints.
         return output.typeConstraintList();
     }
 }
