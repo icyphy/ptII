@@ -452,6 +452,9 @@ fixtmpdist:
 		$(PTTMPDIR)/$(PTDIST)/bin/makefile
 	@echo "Copy over gui stuff"
 	cp -r "$(PTII)/ptolemy/gui" $(PTTMPDIR)/$(PTDIST)/ptolemy
+	@echo "Copy over util stuff"
+	cp -r "$(PTII)/ptolemy/util" $(PTTMPDIR)/$(PTDIST)/ptolemy
+
 	# Get rid of CVS directories in com and gui
 	-(cd $(PTTMPDIR)/$(PTDIST); \
 		find . \( -name CVS -o -name "META-INF" -o -name ".#*" -o -name "#*" -o -name "ptplot*locales" \) -print -exec rm -rf {} \; )
@@ -490,7 +493,8 @@ fixtmpdist:
 		ptolemy.gui \
 		ptolemy.plot \
 		ptolemy.plot.compat \
-		ptolemy.plot.plotml
+		ptolemy.plot.plotml \
+		ptolemy.util
 	@echo "Fixing up doc/download directory"
 	rm -rf $(PTTMPME)/doc/download
 	mkdir $(PTTMPME)/doc/download
