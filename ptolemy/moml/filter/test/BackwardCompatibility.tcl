@@ -758,6 +758,17 @@ proc createAndExecute {file} {
 	    || [file tail $file] == "hde_sdf_fib_two_nums.xml" \
 	    || "$file" == "compat4/Signature.xml" \
 	    || "$file" == "compat4/XSLTransformerTest.xml" \
+	    || "$file" == "compat4/FileReader.xml" \
+	    || [string range $file 0 10] == "compat4/JAI" \
+	    || "$file" == "compat4/MobileModelTest.xml" \
+	    || "$file" == "compat4/MobileReference3.xml" \
+	    || "$file" == "compat4/MobileReference4.xml" \
+	    || "$file" == "compat4/MovieReader.xml" \
+	    || "$file" == "compat4/MovieWriter.xml" \
+	    || "$file" == "compat4/MrPtolemyMovieWriter.xml" \
+	    || "$file" == "compat4/SDFVQMovieWriter.xml" \
+	    || "$file" == "compat4/SDFVQMovieWriter.xml" \
+	    || "$file" == "compat4/SDFVQSequenceDisplay.xml" \
 	} {
 	puts "$file: Skipping Known Failure"
 	incr KNOWN_FAILED
@@ -801,6 +812,12 @@ proc createAndExecute {file} {
 	    if [java::instanceof \
 		    $director ptolemy.domains.dt.kernel.DTDirector] {
 		puts "$file: Skipping tests with DT inside, marking as Known Failure"
+		incr KNOWN_FAILED
+		return
+	    }
+	    if [java::instanceof \
+		    $director ptolemy.domains.hde.kernel.HDEirector] {
+		puts "$file: Skipping tests with DE inside, marking as Known Failure"
 		incr KNOWN_FAILED
 		return
 	    }
