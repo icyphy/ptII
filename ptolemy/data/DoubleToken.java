@@ -41,7 +41,7 @@ import java.text.NumberFormat;
 /**
 A token that contains a double precision number.
 <p>
-Note that a double cannot be losslessly onverted to a long, and vice
+Note that a double cannot be losslessly converted to a long, and vice
 versa, as both have 64 bit representations in Java.
 <p>
 @author Neil Smyth, Yuhong Xiong

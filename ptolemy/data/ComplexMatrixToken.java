@@ -340,7 +340,7 @@ public class ComplexMatrixToken extends MatrixToken {
     }
 
     /** Return a new Token representing the additive identity.
-     *  The returned token containes a matrix whose elements are
+     *  The returned token contains a matrix whose elements are
      *  all zero, and the size of the matrix is the same as the
      *  matrix contained in this token.
      *  @return A new Token containing the additive identity.

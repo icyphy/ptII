@@ -244,7 +244,7 @@ public class ComplexToken extends ScalarToken {
 	     throws IllegalActionException {
         int compare = TypeLattice.compare(this, token);
 	if (compare == CPO.INCOMPARABLE) {
-            throw new IllegalActionException("ComplexToken.eauals: " +
+            throw new IllegalActionException("ComplexToken.equals: " +
                 "type of argument: " + token.getClass().getName() +
                 "is incomparable with ComplexToken in the type " +
                 "hierarchy.");
