@@ -99,12 +99,12 @@ public class ExampleSystemApplet extends ExampleApplet
         f.setResizable(true);
         f.add(exsys);
         f.addNotify();
-        java.awt.Insets insets = f.insets();
+        java.awt.Insets insets = f.getInsets();
         exsys.init();
-        exsys.move(insets.left, insets.top);
-        f.resize(exsys.preferredSize());
-        exsys.resize(exsys.preferredSize());
-        f.show();
+        exsys.setLocation(insets.left, insets.top);
+        f.setSize(exsys.getPreferredSize());
+        exsys.setSize(exsys.getPreferredSize());
+        f.setVisible(true);
     }
 
     ///////////////////////////////////////////////////////////////////

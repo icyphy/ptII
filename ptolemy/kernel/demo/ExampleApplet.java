@@ -97,7 +97,7 @@ class ExampleApplet extends java.applet.Applet
             rect.x += formInsets.left;
             rect.y += formInsets.top;
         }
-        comp.reshape( rect.x, rect.y, rect.width, rect.height );
+        comp.setBounds( rect.x, rect.y, rect.width, rect.height );
     }
 
     /** Create the applet. One label, one button "run" and one text area.
@@ -110,9 +110,9 @@ class ExampleApplet extends java.applet.Applet
         if( getPeer() == null ) {
             addNotify();
         }
-        show();
-        Insets formInsets = insets();
-        hide();
+        setVisible(true);
+        Insets formInsets = getInsets();
+        setVisible(false);
         setBackground( Color.lightGray );
         setForeground( Color.black );
 
@@ -129,23 +129,23 @@ class ExampleApplet extends java.applet.Applet
         _lb.setFont( new Font( "Dialog", Font.BOLD, 14 ) );
         _lb.setBackground( Color.lightGray );
         _lb.setForeground( Color.black );
-        _lb.enable(true);
-        _lb.show();
+        _lb.setEnabled(true);
+        _lb.setVisible(true);
 
         positionComponent( _bnrun, 235, 20, 50, 20, formInsets );
         _bnrun.setBackground( Color.lightGray );
         _bnrun.setForeground( Color.black );
-        _bnrun.enable(true);
-        _bnrun.show();
+        _bnrun.setEnabled(true);
+        _bnrun.setVisible(true);
         _bnrun.setLabel("Run");
 
         positionComponent( _tarea, 5, 20, 220, 185, formInsets );
         _tarea.setBackground( Color.lightGray );
         _tarea.setForeground( Color.black );
-        _tarea.enable(true);
-        _tarea.show();
+        _tarea.setEnabled(true);
+        _tarea.setVisible(true);
 
-        show();
+        setVisible(true);
         return retval;
     }
 
@@ -191,7 +191,7 @@ class ExampleApplet extends java.applet.Applet
      *  @param st The string to be printed.
      */
     public void printInTextArea(String st) {
-        _tarea.appendText(st);
+        _tarea.append(st);
     }
 
     /** Reset the text area by an empty string.

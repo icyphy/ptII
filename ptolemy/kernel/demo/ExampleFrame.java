@@ -56,7 +56,7 @@ public class ExampleFrame extends java.awt.Frame
     public boolean handleEvent(java.awt.Event event) {
         Object pEvtSource = event.target;
         if( pEvtSource == this && event.id == java.awt.Event.WINDOW_DESTROY ) {
-            hide();
+            setVisible(false);
             dispose();
             System.exit( 0 );
             return false;
