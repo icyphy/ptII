@@ -892,7 +892,8 @@ public class SDFScheduler extends Scheduler {
 			// readyToScheduleActorList
 			while(unscheduledActorList.remove(currentActor));
 			_debug("Remaining actors");
-			actorsLeft = readyToScheduleActorList.iterator();
+			Iterator actorsLeft =
+                            readyToScheduleActorList.iterator();
 			while(actorsLeft.hasNext()) {
 			    Entity e = (Entity)actorsLeft.next();
 			    if (_debugging) _debug(e.getFullName());
