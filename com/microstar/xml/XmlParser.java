@@ -1747,7 +1747,7 @@ public class XmlParser {
 				// Read the external IDs
       ids = readExternalIds(false);
       if (ids[1] == null) {
-	error("system identifer missing", name, null);
+	error("system identifier missing", name, null);
       }
 
 				// Check for NDATA declaration.
@@ -1786,7 +1786,7 @@ public class XmlParser {
 				// Read the external identifiers.
     ids = readExternalIds(true);
     if (ids[0] == null && ids[1] == null) {
-      error("external identifer missing", nname, null);
+      error("external identifier missing", nname, null);
     }
 
 				// Register the notation.
