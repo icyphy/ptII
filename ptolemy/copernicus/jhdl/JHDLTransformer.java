@@ -487,8 +487,9 @@ class JHDLTransformer extends SceneTransformer {
     }
 
     /**
-     * look at each statement in the clock method and replace method invokations
-     * for TypedIOPorts with the appropriate Wire .get, .put method.
+     * look at each statement in the clock method and replace method
+     * invocations for TypedIOPorts with the appropriate Wire .get,
+     * .put method.
      **/
     private void _modifyClockMethod(SootClass theClass, List portlist) {
 
