@@ -202,7 +202,6 @@ public abstract class ScalarToken extends Token
         }
     }
 
-
     /** Returns a token representing the bitwise AND of this token and
      *  the given token.
      *  @return The bitwise AND.
@@ -212,22 +211,38 @@ public abstract class ScalarToken extends Token
      */
     public BitwiseOperationToken bitwiseAnd(Token rightArgument)
             throws IllegalActionException {
-        if(!getClass().equals(rightArgument.getClass())) {
+        int typeInfo = TypeLattice.compare(getType(), rightArgument);
+        if (typeInfo == CPO.SAME) {
+            return _doBitwiseAnd(rightArgument);
+	} else if (typeInfo == CPO.HIGHER) {
+            ScalarToken convertedArgument = (ScalarToken)
+                    getType().convert(rightArgument);
+            try {
+                return _doBitwiseAnd(convertedArgument);
+            } catch (IllegalActionException ex) {
+                // If the type-specific operation fails, then create a
+                // better error message that has the types of the
+                // arguments that were passed in.
+                throw new IllegalActionException(null, ex,
+                        notSupportedMessage("bitwiseAnd",
+                                this, rightArgument));
+            }
+        } else if (typeInfo == CPO.LOWER) {
+            if (!(rightArgument instanceof BitwiseOperationToken)) {
+                throw new IllegalActionException(
+			notSupportedMessage("bitwiseAnd", 
+                                this, rightArgument));
+	    } else {
+                // This code uses the fact that bitwise AND is always
+                // commutative, there is no need to add a bitwiseAndReverse
+                // method.
+                return ((BitwiseOperationToken)rightArgument).bitwiseAnd(this);
+	    }
+        } else {
             throw new IllegalActionException(
                     notSupportedIncomparableMessage("bitwiseAnd",
                             this, rightArgument));
         }
-        ScalarToken convertedArgument = (ScalarToken)rightArgument;
-        if ( !_areUnitsEqual(convertedArgument)) {
-            throw new IllegalActionException(
-                    notSupportedMessage("bitwiseAnd", this, rightArgument)
-                    + " because the units of this token: " + unitsString()
-                    + " are not the same as those of the argument: "
-                    + convertedArgument.unitsString());
-        }
-        ScalarToken result = _bitwiseAnd(convertedArgument);
-        result._unitCategoryExponents = _copyOfCategoryExponents();
-        return result;
     }
 
     /** Returns a token representing the bitwise NOT of this token.
@@ -252,22 +267,38 @@ public abstract class ScalarToken extends Token
      */
     public BitwiseOperationToken bitwiseOr(Token rightArgument)
             throws IllegalActionException {
-        if(!getClass().equals(rightArgument.getClass())) {
+        int typeInfo = TypeLattice.compare(getType(), rightArgument);
+        if (typeInfo == CPO.SAME) {
+            return _doBitwiseOr(rightArgument);
+	} else if (typeInfo == CPO.HIGHER) {
+            ScalarToken convertedArgument = (ScalarToken)
+                    getType().convert(rightArgument);
+            try {
+                return _doBitwiseOr(convertedArgument);
+            } catch (IllegalActionException ex) {
+                // If the type-specific operation fails, then create a
+                // better error message that has the types of the
+                // arguments that were passed in.
+                throw new IllegalActionException(null, ex,
+                        notSupportedMessage("bitwiseOr",
+                                this, rightArgument));
+            }
+        } else if (typeInfo == CPO.LOWER) {
+            if (!(rightArgument instanceof BitwiseOperationToken)) {
+                throw new IllegalActionException(
+			notSupportedMessage("bitwiseOr", 
+                                this, rightArgument));
+	    } else {
+                // This code uses the fact that bitwise OR is always
+                // commutative, there is no need to add a bitwiseOrReverse
+                // method.
+                return ((BitwiseOperationToken)rightArgument).bitwiseOr(this);
+	    }
+        } else {
             throw new IllegalActionException(
                     notSupportedIncomparableMessage("bitwiseOr",
                             this, rightArgument));
         }
-        ScalarToken convertedArgument = (ScalarToken)rightArgument;
-        if ( !_areUnitsEqual(convertedArgument)) {
-            throw new IllegalActionException(
-                    notSupportedMessage("bitwiseOr", this, rightArgument)
-                    + " because the units of this token: " + unitsString()
-                    + " are not the same as those of the argument: "
-                    + convertedArgument.unitsString());
-        }
-        ScalarToken result = _bitwiseOr(convertedArgument);
-        result._unitCategoryExponents = _copyOfCategoryExponents();
-        return result;
     }
 
     /** Returns a token representing the bitwise XOR of this token and
@@ -279,22 +310,38 @@ public abstract class ScalarToken extends Token
      */
     public BitwiseOperationToken bitwiseXor(Token rightArgument)
             throws IllegalActionException {
-        if(!getClass().equals(rightArgument.getClass())) {
+        int typeInfo = TypeLattice.compare(getType(), rightArgument);
+        if (typeInfo == CPO.SAME) {
+            return _doBitwiseXor(rightArgument);
+	} else if (typeInfo == CPO.HIGHER) {
+            ScalarToken convertedArgument = (ScalarToken)
+                    getType().convert(rightArgument);
+            try {
+                return _doBitwiseXor(convertedArgument);
+            } catch (IllegalActionException ex) {
+                // If the type-specific operation fails, then create a
+                // better error message that has the types of the
+                // arguments that were passed in.
+                throw new IllegalActionException(null, ex,
+                        notSupportedMessage("bitwiseXor",
+                                this, rightArgument));
+            }
+        } else if (typeInfo == CPO.LOWER) {
+            if (!(rightArgument instanceof BitwiseOperationToken)) {
+                throw new IllegalActionException(
+			notSupportedMessage("bitwiseXor", 
+                                this, rightArgument));
+	    } else {
+                // This code uses the fact that bitwise XOR is always
+                // commutative, there is no need to add a bitwiseXorReverse
+                // method.
+                return ((BitwiseOperationToken)rightArgument).bitwiseXor(this);
+	    }
+        } else {
             throw new IllegalActionException(
                     notSupportedIncomparableMessage("bitwiseXor",
                             this, rightArgument));
         }
-        ScalarToken convertedArgument = (ScalarToken)rightArgument;
-        if ( !_areUnitsEqual(convertedArgument)) {
-            throw new IllegalActionException(
-                    notSupportedMessage("bitwiseXor", this, rightArgument)
-                    + " because the units of this token: " + unitsString()
-                    + " are not the same as those of the argument: "
-                    + convertedArgument.unitsString());
-        }
-        ScalarToken result = _bitwiseXor(convertedArgument);
-        result._unitCategoryExponents = _copyOfCategoryExponents();
-        return result;
     }
 
     /** Return the value in the token as a byte.
@@ -1310,6 +1357,93 @@ public abstract class ScalarToken extends Token
                     + " because the units are not the same.");
         }
         ScalarToken result = _add(convertedArgument);
+        result._unitCategoryExponents = _copyOfCategoryExponents();
+        return result;
+    }
+
+    /*  Return a new token whose value is the value of the argument
+     *  Token bitwise ANDed to the value of this Token.  It is guaranteed
+     *  by the caller that the type of the argument is the same as the
+     *  type of this class.  The resulting token will also have the same
+     *  type. This method checks that the two tokens have the same units
+     *  and throws an exception if the units are not the same. The resulting
+     *  token will have the same units as the operands. This method defers
+     *  to the _bitwiseAnd() method that takes a ScalarToken.
+     *  @param rightArgument The token to bitwise AND to this token.
+     *  @exception IllegalActionException If the units are not
+     *  compatible, or this operation is not supported by the derived
+     *  class.
+     *  @return A new Token containing the result.
+     */
+    private BitwiseOperationToken _doBitwiseAnd(Token rightArgument) 
+	    throws IllegalActionException {
+        ScalarToken convertedArgument = (ScalarToken)rightArgument;    
+        if (!_areUnitsEqual(convertedArgument)) {
+            throw new IllegalActionException(
+                    notSupportedMessage("bitwiseAnd", this, rightArgument)
+                    + " because the units of this token: " + unitsString()
+                    + " are not the same as those of the argument: "
+                    + convertedArgument.unitsString());
+        }
+        ScalarToken result = _bitwiseAnd(convertedArgument);
+        result._unitCategoryExponents = _copyOfCategoryExponents();
+        return result;
+    }
+
+    /*  Return a new token whose value is the value of the argument
+     *  Token bitwise ORed to the value of this Token.  It is guaranteed
+     *  by the caller that the type of the argument is the same as the
+     *  type of this class.  The resulting token will also have the same
+     *  type. This method checks that the two tokens have the same units
+     *  and throws an exception if the units are not the same. The resulting
+     *  token will have the same units as the operands. This method defers
+     *  to the _bitwiseOr() method that takes a ScalarToken.
+     *  @param rightArgument The token to bitwise OR to this token.
+     *  @exception IllegalActionException If the units are not
+     *  compatible, or this operation is not supported by the derived
+     *  class.
+     *  @return A new Token containing the result.
+     */
+    private BitwiseOperationToken _doBitwiseOr(Token rightArgument) 
+	    throws IllegalActionException {
+        ScalarToken convertedArgument = (ScalarToken)rightArgument;    
+        if (!_areUnitsEqual(convertedArgument)) {
+            throw new IllegalActionException(
+                    notSupportedMessage("bitwiseOr", this, rightArgument)
+                    + " because the units of this token: " + unitsString()
+                    + " are not the same as those of the argument: "
+                    + convertedArgument.unitsString());
+        }
+        ScalarToken result = _bitwiseOr(convertedArgument);
+        result._unitCategoryExponents = _copyOfCategoryExponents();
+        return result;
+    }
+
+    /*  Return a new token whose value is the value of the argument
+     *  Token bitwise XORed to the value of this Token.  It is guaranteed
+     *  by the caller that the type of the argument is the same as the
+     *  type of this class.  The resulting token will also have the same
+     *  type. This method checks that the two tokens have the same units
+     *  and throws an exception if the units are not the same. The resulting
+     *  token will have the same units as the operands. This method defers 
+     *  to the _bitwiseXOR() method that takes a ScalarToken.
+     *  @param rightArgument The token to bitwise XOR to this token.
+     *  @exception IllegalActionException If the units are not
+     *  compatible, or this operation is not supported by the derived
+     *  class.
+     *  @return A new Token containing the result.
+     */
+    private BitwiseOperationToken _doBitwiseXor(Token rightArgument) 
+	    throws IllegalActionException {
+        ScalarToken convertedArgument = (ScalarToken)rightArgument;    
+        if (!_areUnitsEqual(convertedArgument)) {
+            throw new IllegalActionException(
+                    notSupportedMessage("bitwiseXor", this, rightArgument)
+                    + " because the units of this token: " + unitsString()
+                    + " are not the same as those of the argument: "
+                    + convertedArgument.unitsString());
+        }
+        ScalarToken result = _bitwiseXor(convertedArgument);
         result._unitCategoryExponents = _copyOfCategoryExponents();
         return result;
     }
