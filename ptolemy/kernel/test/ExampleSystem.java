@@ -1,4 +1,4 @@
-/* Construct a test hierachical graph using the ptolemy.kernel classes.
+/* Construct a test hierarchal graph using the ptolemy.kernel classes.
 
  Copyright (c) 1997-1999 The Regents of the University of California.
  All rights reserved.
@@ -37,7 +37,7 @@ import java.util.Enumeration;
 //////////////////////////////////////////////////////////////////////////
 //// ExampleSystem
 /**
-ExampleSystem constructs a hierachical graph as shown in
+ExampleSystem constructs a hierarchal graph as shown in
 Ptolemy II design document, Figure 8.
 The graph has 10 entities, 14 ports, and 12 relations.
 The main function also returns the results of some key functions of
