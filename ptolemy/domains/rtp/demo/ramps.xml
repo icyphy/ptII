@@ -1,0 +1,152 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<model name="" class="ptolemy.actor.TypedCompositeActor">
+    <director name="RTP" class="ptolemy.domains.rtp.kernel.RTPDirector">
+        <property name="executionDuration" class="ptolemy.data.expr.Parameter" value="10000">
+        </property>
+    </director>
+    <entity name="PeriodicTrigger0" class="ptolemy.domains.rtp.lib.PeriodicTrigger">
+        <property name="frequency" class="ptolemy.data.expr.Parameter" value="2.0">
+        </property>
+        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
+            <location value="77.0, 99.0"/>
+            <configure>generic.transformer</configure>
+        </rendition>
+        <property name="editorFactory0" class="ptolemy.actor.gui.EditorPaneFactory">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="Ramp1" class="ptolemy.actor.lib.Ramp">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="init" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="step" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <rendition name="_icon" class="ptolemy.vergil.toolbox.XMLIcon">
+            <location value="188.0, 97.0"/>
+            <configure>
+            <![CDATA[
+                <xmlgraphic>
+                <rectangle coords="0 0 60 40" fill="white"/>
+                <polygon coords="10 30 50 10 50 30" fill="blue"/>
+                </xmlgraphic>
+            ]]>
+            </configure>
+        </rendition>
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="PeriodicTrigger2" class="ptolemy.domains.rtp.lib.PeriodicTrigger">
+        <property name="frequency" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
+            <location value="78.0, 203.0"/>
+            <configure>generic.transformer</configure>
+        </rendition>
+        <property name="editorFactory0" class="ptolemy.actor.gui.EditorPaneFactory">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="Ramp3" class="ptolemy.actor.lib.Ramp">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="init" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="step" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <rendition name="_icon" class="ptolemy.vergil.toolbox.XMLIcon">
+            <location value="193.0, 208.0"/>
+            <configure>
+            <![CDATA[
+                <xmlgraphic>
+                <rectangle coords="0 0 60 40" fill="white"/>
+                <polygon coords="10 30 50 10 50 30" fill="blue"/>
+                </xmlgraphic>
+            ]]>
+            </configure>
+        </rendition>
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="AddSubtract8" class="ptolemy.actor.lib.AddSubtract">
+        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
+            <location value="307.0, 159.0"/>
+            <configure>generic.transformer</configure>
+        </rendition>
+        <port name="plus" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="minus" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="TimedPlotter13" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
+            <location value="409.0, 164.0"/>
+            <configure>generic.sink</configure>
+        </rendition>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <configure><?plotml
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title></title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="60.0" max="9113.0"/>
+<yRange min="0.0" max="7.0"/>
+<default marks="dots" stems="yes"/>
+</plot>?>
+        </configure>
+    </entity>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation15" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="PeriodicTrigger0.output" relation="relation5"/>
+    <link port="Ramp1.output" relation="relation10"/>
+    <link port="Ramp1.trigger" relation="relation5"/>
+    <link port="PeriodicTrigger2.output" relation="relation7"/>
+    <link port="Ramp3.output" relation="relation12"/>
+    <link port="Ramp3.trigger" relation="relation7"/>
+    <link port="AddSubtract8.plus" relation="relation10"/>
+    <link port="AddSubtract8.minus" relation="relation12"/>
+    <link port="AddSubtract8.output" relation="relation15"/>
+    <link port="TimedPlotter13.input" relation="relation15"/>
+</model>
