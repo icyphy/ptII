@@ -922,12 +922,12 @@ if "$JAVAC" confTest.java ; then
     echo $ac_n "checking the value of the java.version Property ""... $ac_c" 1>&6
 echo "configure:924: checking the value of the java.version Property " >&5
     # Older versions of cygwin might not have env, but 1.1 does
-    if env CLASSPATH=$PTII/config "$JAVA" confTest > /dev/null; then
+    if env CLASSPATH="$PTII/config" "$JAVA" confTest > /dev/null; then
 	# Run it again and get the results
-	JVERSION=`CLASSPATH=$PTII/config "$JAVA" confTest`
+	JVERSION=`CLASSPATH="$PTII/config" "$JAVA" confTest`
 	echo "$ac_t""$JVERSION" 1>&6
     else	
-	{ echo "configure: error: 'CLASSPATH=$PTII/config $JAVA confTest failed.
+	{ echo "configure: error: 'CLASSPATH="$PTII/config" "$JAVA" confTest failed.
 If java fails, then you will not be able to run Ptolemy II.
 This could be because your PTII variable is set incorrectly.
 Under Cygwin, try setting PTII in the control panel 
@@ -940,7 +940,7 @@ and then rerun
 See $PTII/doc/install.htm for details.'" 1>&2; exit 1; }
    fi
 else
-   { echo "configure: error: 'CLASSPATH=$PTII/config $JAVAC confTest.java failed.
+   { echo "configure: error: 'CLASSPATH="$PTII/config" "$JAVAC" confTest.java failed.
 If javac fails, then you will not be able to compile Ptolemy II.
 This could be because your PTII variable is set incorrectly.
 Under Cygwin, try setting PTII in the control panel 
@@ -1470,18 +1470,18 @@ fi
 	echo $ac_n "checking for how to run jacl with "$JAVA"""... $ac_c" 1>&6
 echo "configure:1472: checking for how to run jacl with "$JAVA"" >&5
 	# This command starts up Jacl
-	if echo "set java::jdkVersion; exit" | CLASSPATH=$PTJACL_JAR "$JAVA" tcl.lang.Shell; then
+	if echo "set java::jdkVersion; exit" | CLASSPATH="$PTJACL_JAR" "$JAVA" tcl.lang.Shell; then
 		echo "$ac_t""ok" 1>&6
 		PTJACL_DIR=ptjacl
 	else
-		echo "$ac_t""CLASSPATH=$PTJACL_JAR "$JAVA" tcl.lang.Shell failed" 1>&6
+		echo "$ac_t""CLASSPATH="$PTJACL_JAR" "$JAVA" tcl.lang.Shell failed" 1>&6
 		echo $ac_n "checking for how to run jacl with "$JAVA" "$PTJACL_FLAG"""... $ac_c" 1>&6
 echo "configure:1480: checking for how to run jacl with "$JAVA" "$PTJACL_FLAG"" >&5
-		if echo "set java::jdkVersion; exit" | CLASSPATH=$PTJACL_JAR "$JAVA" tcl.lang.Shell; then
+		if echo "set java::jdkVersion; exit" | CLASSPATH="$PTJACL_JAR" "$JAVA" tcl.lang.Shell; then
 			echo "$ac_t""ok" 1>&6
 		else
-			echo "$ac_t""'CLASSPATH=$PTJACL_JAR "$JAVA" tcl.lang.Shell' failed,
-	use 'CLASSPATH=$PTJACL_JAR "$JAVA" tcl.lang.Shell'
+			echo "$ac_t""'CLASSPATH="$PTJACL_JAR" "$JAVA" tcl.lang.Shell' failed,
+	use 'CLASSPATH="$PTJACL_JAR" "$JAVA" tcl.lang.Shell'
 	instead. ptjacl is used by the test suite, so you may be able to
 	ignore this error." 1>&6
 		fi
@@ -1819,17 +1819,17 @@ fi
 	    echo "$ac_t""ok" 1>&6
 	    echo $ac_n "checking the value of the Matlab root directory ""... $ac_c" 1>&6
 echo "configure:1822: checking the value of the Matlab root directory " >&5
-	    if env CLASSPATH=$PTII/config "$JAVA" MatlabRootDirectory "$MATLAB"> /dev/null; then
+	    if env CLASSPATH="$PTII/config" "$JAVA" MatlabRootDirectory "$MATLAB"> /dev/null; then
 		# Run it again and get the results
-		MATLAB_DIR=`CLASSPATH=$PTII/config "$JAVA" MatlabRootDirectory "$MATLAB"`
+		MATLAB_DIR=`CLASSPATH="$PTII/config" "$JAVA" MatlabRootDirectory "$MATLAB"`
 		echo "$ac_t""'$MATLAB_DIR'" 1>&6
 	    else	
-		echo "configure: warning: 'CLASSPATH=$PTII/config $JAVA MatlabRootDirectory "$MATLAB" failed.
+		echo "configure: warning: 'CLASSPATH="$PTII/config" $JAVA MatlabRootDirectory "$MATLAB" failed.
     We will not be able to compile the Matlab interface in ptolemy/matlab" 1>&2;
 
 	    fi
 	else
-	    echo "configure: warning: 'CLASSPATH=$PTII/config $JAVAC SystemJar.java failed.
+	    echo "configure: warning: 'CLASSPATH="$PTII/config" $JAVAC SystemJar.java failed.
     We will not be able to compile the Matlab interface in ptolemy/matlab" 1>&2;
 	fi
 	cd "$startdir"
@@ -2073,16 +2073,16 @@ fi
 	echo "$ac_t""ok" 1>&6
 	echo $ac_n "checking the value of the java.home property ""... $ac_c" 1>&6
 echo "configure:2076: checking the value of the java.home property " >&5
-	if env CLASSPATH=$PTII/config "$JAVA" SystemJar > /dev/null; then
+	if env CLASSPATH="$PTII/config" "$JAVA" SystemJar > /dev/null; then
 	    # Run it again and get the results
-	    JAVA_SYSTEM_JAR=`CLASSPATH=$PTII/config "$JAVA" SystemJar`
+	    JAVA_SYSTEM_JAR=`CLASSPATH="$PTII/config" "$JAVA" SystemJar`
    	    echo "$ac_t""'$JAVA_SYSTEM_JAR'" 1>&6
 	else	
-	    { echo "configure: error: 'CLASSPATH=$PTII/config $JAVA SystemJar failed.
+	    { echo "configure: error: 'CLASSPATH="$PTII/config" "$JAVA" SystemJar failed.
     Classes that use Soot will compile, but will fail to run.'" 1>&2; exit 1; }
         fi
     else
-	{ echo "configure: error: 'CLASSPATH=$PTII/config $JAVAC SystemJar.java failed.
+	{ echo "configure: error: 'cd "$srcdir/config"; "$JAVAC" SystemJar.java failed.
     Classes that use Soot will compile, but will fail to run.'" 1>&2; exit 1; }
     fi
     cd "$startdir"
