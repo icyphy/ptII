@@ -70,7 +70,7 @@ PTII_FTP = /vol/ptolemy/pt0/ptweb/ptolemyII/ptII1.0
 # make USER=cxh PTIIHOME=/cygdrive/d/tmp/ptII COMPRESS=gzip TAR=/usr/local/bin/tar
 # make USER=cxh PTIIHOME=/home/eecs/cxh/ptII/adm/trees/ptII2.1alpha PTIIADM=/home/eecs/cxh/ptII/adm TAR=/usr/local/bin/tar
 # make USER=cxh PTIIHOME=/home/eecs/cxh/ptII PTIIADM=/home/eecs/cxh/ptII/adm TAR=/usr/local/bin/tar
-# make USER=cxh PTIIHOME=/vol/cooley/cooley1/cxh/tmp/ptII PTIIADM=/vol/cooley/cooley1/cxh/tmp/ptII/adm TAR=/usr/local/bin/tar
+# make USER=cxh PTIIHOME=/vol/maury/maury2/cxh/ptII/adm/gen-2.1 PTIIADM=/vol/maury/maury2/cxh/ptII/adm TAR=/usr/local/bin/tar
 
 USER =		ptII
 PTIIHOME =	/users/ptII
