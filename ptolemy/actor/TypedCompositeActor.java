@@ -150,16 +150,28 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
 			((TypedCompositeActor)actor).checkTypes());
 		}
 
-	        // type check on all output connections
-	        // NOTE: this can also be done on all input connections.
-		Enumeration outports = actor.outputPorts();
-		result.appendElements(_checkTypesFrom(outports));
+	        // type check from all the ports on the contained actor
+	        // to the ports that the actor can send data to.
+		Enumeration ports = ((Entity)actor).getPorts();
+		while (ports.hasMoreElements()) {
+		    TypedIOPort srcport = (TypedIOPort)ports.nextElement();
+		    Receiver[][] receivers = srcport.getRemoteReceivers();
+
+		    Enumeration destPorts = _receiverToPort(receivers);
+		    result.appendElements(
+				_checkTypesFromTo(srcport, destPorts));
+		}
 	    }
 
 	    // also need to check connection from the input ports on
 	    // this composite actor to input ports of contained actors.
-	    Enumeration boundaryInPorts = inputPorts();
-	    result.appendElements(_checkTypesFrom(boundaryInPorts));
+	    Enumeration boundaryPorts = getPorts();
+	    while (boundaryPorts.hasMoreElements()) {
+		TypedIOPort srcport = (TypedIOPort)boundaryPorts.nextElement();
+		Receiver[][] receivers = srcport.deepGetReceivers();
+		Enumeration destPorts = _receiverToPort(receivers);
+	    	result.appendElements(_checkTypesFromTo(srcport, destPorts));
+	    }
 
 	    return result.elements();
 	} finally {
@@ -275,16 +287,29 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
 	        TypedActor actor = (TypedActor)e.nextElement();
 	        result.appendElements(actor.typeConstraints());
 
-	        // collect constraints from topology
-	        // NOTE: this can also be done on all input connections.
-		Enumeration outports = actor.outputPorts();
-		result.appendElements(_typeConstraintsFrom(outports));
-	    }
+	        // collect constraints on all the ports in the contained
+		// actor to the ports that the actor can send data to.
+		Enumeration ports = ((Entity)actor).getPorts();
+		while (ports.hasMoreElements()) {
+		    TypedIOPort srcport = (TypedIOPort)ports.nextElement();
+                    Receiver[][] receivers = srcport.getRemoteReceivers();
+ 
+                    Enumeration destPorts = _receiverToPort(receivers);
+                    result.appendElements(
+				_typeConstraintsFromTo(srcport, destPorts));
+		}
+            }
 
 	    // also need to check connection from the input ports on
             // this composite actor to input ports of contained actors.
-	    Enumeration boundaryInPorts = inputPorts();
-	    result.appendElements(_typeConstraintsFrom(boundaryInPorts));
+	    Enumeration boundaryPorts = getPorts();
+            while (boundaryPorts.hasMoreElements()) {
+                TypedIOPort srcport = (TypedIOPort)boundaryPorts.nextElement();
+                Receiver[][] receivers = srcport.deepGetReceivers();
+                Enumeration destPorts = _receiverToPort(receivers);
+                result.appendElements(
+				_typeConstraintsFromTo(srcport, destPorts));
+            }
 
 	    return result.elements();
 	} finally {
@@ -376,56 +401,67 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
     ///////////////////////////////////////////////////////////////////
     ////                          private methods                  ////
 
-    // The argument is an Enumeration of TypedIOPorts. This method
-    // does static type checking on all connections starting from the
-    // ports in the specified Enumeration. Return an Enumeration of
+    // Check types from a source port to a group of destination ports,
+    // assuming the source port is connected to all the ports in the
+    // group of destination ports.  Return an Enumeration of
     // TypedIOPorts that have type conflicts.
-    private Enumeration _checkTypesFrom(Enumeration sources) {
+    private Enumeration _checkTypesFromTo(TypedIOPort srcport,
+					  Enumeration destPorts) {
 	LinkedList result = new LinkedList();
 
-	while (sources.hasMoreElements()) {
-            TypedIOPort outport = (TypedIOPort)sources.nextElement();
+	Class srcDeclared = srcport.getDeclaredType();
+	if (srcDeclared != null) {
+	    while (destPorts.hasMoreElements()) {
+            	TypedIOPort destport = (TypedIOPort)destPorts.nextElement();
+	    	Class destDeclared = destport.getDeclaredType();
 
-	    Enumeration inports = outport.deepConnectedInPorts();
-	    while (inports.hasMoreElements()) {
-	    	TypedIOPort inport = (TypedIOPort)inports.nextElement();
-
-	    	Class outDeclared = outport.getDeclaredType();
-	    	Class inDeclared = inport.getDeclaredType();
-	    	if (outDeclared != null && inDeclared != null) {
-		    // both in/out ports are declared, check type
-		    int compare = TypeLattice.compare(outDeclared, inDeclared);
+	    	if (destDeclared != null) {
+	    	    // both source/destination ports are declared, check type
+		    int compare = TypeLattice.compare(srcDeclared,
+						      destDeclared);
 		    if (compare == CPO.HIGHER || compare == CPO.INCOMPARABLE) {
-		    	result.insertLast(outport);
-		    	result.insertLast(inport);
-		    }
-	    	}
+		    	result.insertLast(srcport);
+		    	result.insertLast(destport);
+	    	    }
+		}
 	    }
         }
 	return result.elements();
     }
 
+    // Return all the ports containing the specified receivers.
+    private Enumeration _receiverToPort(Receiver[][] receivers) {
+	LinkedList result = new LinkedList();
+	if (receivers != null) {
+	    for (int i = 0; i < receivers.length; i++) {
+		if (receivers[i] != null) {
+		    for (int j = 0; j < receivers[i].length; j++) {
+			result.insertLast(receivers[i][j].getContainer());
+		    }
+		}
+	    }
+	}
+	return result.elements();
+    }
+
     // Return the type constraints on all connections starting from the
-    // specified source port.
-    private Enumeration _typeConstraintsFrom(Enumeration sources) {
+    // specified source port to all the ports in a group of destination
+    // ports.
+    private Enumeration _typeConstraintsFromTo(TypedIOPort srcport,
+					       Enumeration destPorts) {
 	LinkedList result = new LinkedList();
 
-	while (sources.hasMoreElements()) {
-	    TypedIOPort outport = (TypedIOPort)sources.nextElement();
+        Class srcDeclared = srcport.getDeclaredType();
+	while (destPorts.hasMoreElements()) {
+            TypedIOPort destport = (TypedIOPort)destPorts.nextElement();
+            Class destDeclared = destport.getDeclaredType();
 
-	    Enumeration inports = outport.deepConnectedInPorts();
-	    while (inports.hasMoreElements()) {
-	    	TypedIOPort inport = (TypedIOPort)inports.nextElement();
-
-	    	Class outDeclared = outport.getDeclaredType();
-	    	Class inDeclared = inport.getDeclaredType();
-	    	if (outDeclared == null || inDeclared == null) {
-	    	    // at least one of the in/out ports does not have
-		    // declared type, form type constraint.
-		    Inequality ineq = new Inequality(outport.getTypeTerm(),
-						     inport.getTypeTerm());
-		    result.insertLast(ineq);
-	        }
+	    if (srcDeclared == null || destDeclared == null) {
+	    	// at least one of the source/destination ports does not have
+		// declared type, form type constraint.
+		Inequality ineq = new Inequality(srcport.getTypeTerm(),
+						 destport.getTypeTerm());
+		result.insertLast(ineq);
 	    }
 	}
 
