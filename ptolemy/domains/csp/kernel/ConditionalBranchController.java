@@ -350,12 +350,15 @@ public class ConditionalBranchController {
                     throw new InternalErrorException(
                             ((Nameable)getParent()).getName() +
                             ": blocked when not all enabled branches are " +
-                            "blocked.");
+                            "blocked.\nNumber of branches blocked: " + _branchesBlocked +
+                            "\nNumber of branches started: " + _branchesStarted);
+
                 }
                 // Note: acquiring a second lock, need to be careful.
                 _getDirector()._actorUnBlocked(receiver);
                 _blocked = false;
             }
+            _branchesBlocked--;
         }
     }
 

@@ -230,15 +230,11 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
     protected boolean _arriveAfterConditionalSend(CSPReceiver receiver,
             ConditionalBranchController controller)
             throws InterruptedException {
-        System.out.println(Thread.currentThread().getName() + ":\n"
-                    + "isfirst: " + controller._isBranchFirst(getID()) + "\n"
-                    + "isputwaiting: " + receiver._isPutWaiting()
-                    + "isothersidefirst: "
-                    + receiver._getOtherController()._isBranchFirst(receiver.getOtherID()));
         if (controller._isBranchFirst(getID())) {
             // receive side ok, need to check that send
             // side also ok
-            if (receiver._getOtherController()._isBranchFirst(receiver.getOtherID())) {
+            ConditionalBranchController side2 = receiver._getOtherController();
+            if (side2 != null && side2._isBranchFirst(receiver.getOtherID())) {
                 setToken( receiver.get() );
                 receiver._setConditionalSend(false, null, -1);
                 controller._branchSucceeded(getID());
@@ -298,10 +294,6 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
         getReceiver()._checkFlagsAndWait();
         getController()._branchUnblocked(this.getReceiver());
         while (true) {
-            System.out.println(Thread.currentThread().getName() + ":\n"
-                    + "isalive:" + isAlive() + "\n"
-                    + "isfirst: " + controller._isBranchFirst(getID()) + "\n"
-                    + "isputwaiting: " + receiver._isPutWaiting());
             if (!isAlive()) {
                 // reset state of receiver
                 receiver._setConditionalReceive(false, null, -1);
