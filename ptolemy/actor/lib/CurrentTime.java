@@ -28,7 +28,6 @@ COPYRIGHTENDKEY
 
 package ptolemy.actor.lib;
 
-import ptolemy.actor.Director;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
@@ -82,27 +81,26 @@ public class CurrentTime extends TimedSource {
         // are different is in DT... getCurrentTime() on the director
         // returns the "start of iteration" time, whereas getCurrentTime()
         // on the channel returns the time of the current sample.
-        double currentTime = Double.MAX_VALUE;
+        double currentTimeValue = Double.MAX_VALUE;
         if (trigger.getWidth() > 0) {
             // Trigger port is connected.
             // If there is a token in a channel of the trigger port,
             // output the current time (that is associated with the token). 
             for (int i = 0; i < trigger.getWidth(); i++) {
                 if (trigger.hasToken(i)) {
-                    currentTime = Math.min(
-                            trigger.getCurrentTime(i), currentTime);
+                    currentTimeValue = Math.min(currentTimeValue,
+                        trigger.getCurrentTime(i).getTimeValue());
                     // Do not consume the token... It will be consumed
                     // in the superclass fire().
                     // trigger.get(i);
+                    output.send(0, new DoubleToken(currentTimeValue));
                 }
             }
-        }
-        // Teigger port is not connected.
-        if (currentTime == Double.MAX_VALUE) {
-            Director director = getDirector();
-            currentTime = director.getCurrentTime();
+        } else {
+            // Trigger port is not connected.
+            currentTimeValue = getDirector().getCurrentTime().getTimeValue();
+            output.send(0, new DoubleToken(currentTimeValue));
         }
         super.fire();
-        output.send(0, new DoubleToken(currentTime));
     }
 }

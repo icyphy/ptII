@@ -28,6 +28,7 @@ COPYRIGHTENDKEY
 
 package ptolemy.actor.lib;
 
+import ptolemy.actor.util.Time;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
@@ -41,7 +42,6 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
-import ptolemy.math.Utilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// Clock
@@ -227,7 +227,7 @@ public class Clock extends TimedSource {
         super.fire();
 
         // Get the current time and period.
-        double currentTime = getDirector().getCurrentTime();
+        Time currentTime = getDirector().getCurrentTime();
         double periodValue = ((DoubleToken)period.getToken()).doubleValue();
 
         if (_debugging)_debug("--- Firing at time " + currentTime + ".");
@@ -238,7 +238,7 @@ public class Clock extends TimedSource {
 
         // Use Double.NEGATIVE_INFINITY to indicate that no refire
         // event should be scheduled because we aren't at a phase boundary.
-        _tentativeNextFiringTime = Double.NEGATIVE_INFINITY;
+        _tentativeNextFiringTime = new Time(this, Double.NEGATIVE_INFINITY);
 
         // By default, the cycle count will not be incremented.
         _tentativeCycleCountIncrement = 0;
@@ -250,20 +250,16 @@ public class Clock extends TimedSource {
         // for some time, as might happen for example in a hybrid system).
         // But do not do this if we are before the first iteration.
         if (_tentativeCycleCount > 0) {
-            while (_tentativeCycleStartTime + periodValue <= currentTime) {
-                _tentativeCycleStartTime += periodValue;
+            while (_tentativeCycleStartTime.add(periodValue)
+                .compareTo(currentTime) < 0) {
+                _tentativeCycleStartTime =
+                    _tentativeCycleStartTime.add(periodValue);
             }
-            // time resolution adjustment
-            _tentativeCycleStartTime = 
-                Utilities.round(_tentativeCycleStartTime, 
-                    getDirector().getTimeResolution());
 
-            double currentPhaseTime = 
-                _tentativeCycleStartTime + _offsets[_tentativePhase];
-            currentPhaseTime = Utilities.round(currentPhaseTime, 
-                getDirector().getTimeResolution());            
+            Time currentPhaseTime 
+                = _tentativeCycleStartTime.add(_offsets[_tentativePhase]);
             // Adjust the phase if time has moved beyond the current phase.
-            if (currentTime == currentPhaseTime) {
+            if (currentTime.compareTo(currentPhaseTime) == 0) {
 
                 // Phase boundary.  Change the current value.
                 _tentativeCurrentValue = _getValue(_tentativePhase);
@@ -274,11 +270,8 @@ public class Clock extends TimedSource {
                 if (_tentativePhase >= _offsets.length) {
                     _tentativePhase = 0;
                     // Schedule the first firing in the next period.
-                    _tentativeCycleStartTime += periodValue;
-                    // time resolution adjustment
                     _tentativeCycleStartTime = 
-                        Utilities.round(_tentativeCycleStartTime, 
-                            getDirector().getTimeResolution());
+                        _tentativeCycleStartTime.add(periodValue);
                     // Indicate that the cycle count should increase.
                     _tentativeCycleCountIncrement++;
                 }
@@ -298,11 +291,7 @@ public class Clock extends TimedSource {
                 // NOTE: In the TM domain, this may not occur if we have
                 // missed a deadline.  As a consequence, the clock will stop.
                 _tentativeNextFiringTime
-                    = _tentativeCycleStartTime + _offsets[_tentativePhase];
-                // time resolution adjustment
-                _tentativeNextFiringTime = 
-                    Utilities.round(_tentativeNextFiringTime, 
-                        getDirector().getTimeResolution());
+                    = _tentativeCycleStartTime.add(_offsets[_tentativePhase]);
                 if (_debugging) {
                     _debug("next firing is at " + _tentativeNextFiringTime);
                 }
@@ -311,10 +300,8 @@ public class Clock extends TimedSource {
         // If we are beyond the number of cycles requested, then
         // change the output value to zero.
         int cycleLimit  = ((IntToken)numberOfCycles.getToken()).intValue();
-        double stopTime = Utilities.round(
-            _tentativeStartTime + cycleLimit * periodValue, 
-            getDirector().getTimeResolution());
-        if (cycleLimit > 0 && currentTime >= stopTime) {
+        Time stopTime = _tentativeStartTime.add(cycleLimit * periodValue);
+        if (cycleLimit > 0 && currentTime.compareTo(stopTime) >= 0) {
             _tentativeCurrentValue = _tentativeCurrentValue.zero();
         }
 
@@ -335,14 +322,13 @@ public class Clock extends TimedSource {
         super.initialize();
         if (_debugging)_debug("Initializing " + getFullName() + ".");
 
-        double timeToStart = getDirector().getCurrentTime();
+        Time timeToStart = getDirector().getCurrentTime();
         _cycleStartTime = timeToStart;
-        _startTime = timeToStart + _offsets[0];
-        _startTime = Utilities.round(_startTime, 
-            getDirector().getTimeResolution());
+        _startTime = timeToStart.add(_offsets[0]);
         _currentValue = _getValue(0).zero();
         _phase = 0;
-
+        _tentativeNextFiringTime = _startTime;
+        
         // As in fire(), we use the strategy pattern so that derived classes
         // can do something different here.
         _initializeCycleCount();
@@ -355,7 +341,7 @@ public class Clock extends TimedSource {
             }
             // This should be the last line, because in threaded domains,
             // it could execute immediately.
-            getDirector().fireAt(this, _startTime);
+            getDirector().fireAt(this, _tentativeNextFiringTime);
         }
     }
 
@@ -367,45 +353,7 @@ public class Clock extends TimedSource {
     public boolean postfire() throws IllegalActionException {
 
         if (_debugging)_debug("Postfiring.");
-
-        _cycleStartTime = _tentativeCycleStartTime;
-        _currentValue = _tentativeCurrentValue;
-        _phase = _tentativePhase;
-        _cycleCount = _tentativeCycleCount;
-        _startTime = _tentativeStartTime;
-        _done = _tentativeDone;
-
-        _cycleCount += _tentativeCycleCountIncrement;
-        if (_debugging) {
-            _debug("Phase for next iteration: " + _phase);
-        }
-
-        int cycleLimit  = ((IntToken)numberOfCycles.getToken()).intValue();
-
-        // Used to use any negative number here to indicate
-        // that no future firing should be scheduled.
-        // Now, we leave it up to the director, unless the value
-        // explicitly indicates no firing with Double.NEGATIVE_INFINITY.
-        if (!_done && _tentativeNextFiringTime != Double.NEGATIVE_INFINITY) {
-            getDirector().fireAt(this, _tentativeNextFiringTime);
-            if (_debugging)_debug("Requesting firing at: "
-                    + _tentativeNextFiringTime + ".");
-        }
-        // This should be computed after the above so that a firing
-        // gets requested for the tail end of the output pulses.
-        _done = _done || (cycleLimit > 0
-                && _cycleCount > cycleLimit
-                && _phase == 0);
-
-        if (_done) {
-            _cycleCount = 0;
-            if (_debugging) {
-                _debug("Done with requested number of cycles.");
-            }
-        }
-        if (_debugging) {
-            _debug("Cycle count for next iteration: " + _cycleCount + ".");
-        }
+        _updateStates();
         return super.postfire();
     }
 
@@ -466,6 +414,52 @@ public class Clock extends TimedSource {
         _tentativeDone = _done;
     }
 
+    /** Update the states and request refiring if necessary.
+     * @throws IllegalActionException
+     */
+    protected void _updateStates() throws IllegalActionException {
+        _cycleStartTime = _tentativeCycleStartTime;
+        _currentValue = _tentativeCurrentValue;
+        _phase = _tentativePhase;
+        _cycleCount = _tentativeCycleCount;
+        _startTime = _tentativeStartTime;
+        _done = _tentativeDone;
+
+        _cycleCount += _tentativeCycleCountIncrement;
+        if (_debugging) {
+            _debug("Phase for next iteration: " + _phase);
+        }
+
+        int cycleLimit  = ((IntToken)numberOfCycles.getToken()).intValue();
+
+        // Used to use any negative number here to indicate
+        // that no future firing should be scheduled.
+        // Now, we leave it up to the director, unless the value
+        // explicitly indicates no firing with Double.NEGATIVE_INFINITY.
+        if (!_done && 
+            _tentativeNextFiringTime.compareTo(
+                getDirector().timeConstants.NEGATIVE_INFINITY) != 0) {
+            getDirector().fireAt(this, _tentativeNextFiringTime);
+            if (_debugging)_debug("Requesting firing at: "
+                    + _tentativeNextFiringTime + ".");
+        }
+        // This should be computed after the above so that a firing
+        // gets requested for the tail end of the output pulses.
+        _done = _done || (cycleLimit > 0
+                && _cycleCount > cycleLimit
+                && _phase == 0);
+
+        if (_done) {
+            _cycleCount = 0;
+            if (_debugging) {
+                _debug("Done with requested number of cycles.");
+            }
+        }
+        if (_debugging) {
+            _debug("Cycle count for next iteration: " + _cycleCount + ".");
+        }
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
@@ -476,7 +470,7 @@ public class Clock extends TimedSource {
     protected transient int _cycleCount;
 
     /** The most recent cycle start time. */
-    protected transient double _cycleStartTime;
+    protected transient Time _cycleStartTime;
 
     /** Indicator of whether the specified number of cycles have
      *  been completed.
@@ -487,14 +481,14 @@ public class Clock extends TimedSource {
     protected transient int _phase;
 
     /** The time at which output starts. */
-    protected transient double _startTime;
+    protected transient Time _startTime;
 
     // Following variables recall data from the fire to the postfire method.
     protected transient Token _tentativeCurrentValue;
     protected transient int _tentativeCycleCount;
-    protected transient double _tentativeCycleStartTime;
+    protected transient Time _tentativeCycleStartTime;
     protected transient boolean _tentativeDone;
-    protected transient double _tentativeStartTime;
+    protected transient Time _tentativeStartTime;
     protected transient int _tentativePhase;
 
     // The following are all transient because they need not be cloned.
@@ -505,7 +499,7 @@ public class Clock extends TimedSource {
 
     // Following variables recall data from the fire to the postfire method.
     protected transient int _tentativeCycleCountIncrement;
-    protected transient double _tentativeNextFiringTime;
+    protected transient Time _tentativeNextFiringTime;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////

@@ -30,6 +30,7 @@ package ptolemy.actor.lib;
 
 import ptolemy.actor.*;
 import ptolemy.actor.Director;
+import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
@@ -116,13 +117,15 @@ public class TimedSource extends Source implements TimedActor {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == stopTime) {
-            double time = ((DoubleToken)stopTime.getToken()).doubleValue();
+            double newStopTimeValue = 
+                ((DoubleToken)stopTime.getToken()).doubleValue();
+            Time newStopTime = new Time(this, newStopTimeValue);
             if (_executing) {
                 Director director = getDirector();
                 if (director != null) {
-                    double currentTime = director.getCurrentTime();
-                    if (time >= currentTime) {
-                        director.fireAt(this, time);
+                    Time currentTime = director.getCurrentTime();
+                    if (newStopTime.compareTo(currentTime) > 0) {
+                        director.fireAt(this, newStopTime);
                     } else {
                         throw new IllegalActionException(this, 
                             "The stop time " +
@@ -130,12 +133,19 @@ public class TimedSource extends Source implements TimedActor {
                     }
                 }
             }
-            _stopTime = time;
+            _stopTime = newStopTime;
         } else {
             super.attributeChanged(attribute);
         }
     }
 
+    /** Get the stop time.
+     *  @return The stop time.
+     */
+    public Time getStopTime() {
+        return _stopTime;
+    }
+    
     /** Initialize the actor. Schedule a refiring of this actor at the
      *  stop time given by the <i>stopTime</i> parameter.
      *  @exception IllegalActionException If there is no director.
@@ -146,9 +156,11 @@ public class TimedSource extends Source implements TimedActor {
         if (director == null) {
             throw new IllegalActionException(this, "No director!");
         }
-        _stopTime = ((DoubleToken)stopTime.getToken()).doubleValue();
-        double currentTime = director.getCurrentTime();
-        if (_stopTime > currentTime) {
+        double stopTimeValue = 
+            ((DoubleToken)stopTime.getToken()).doubleValue();
+        _stopTime = new Time(this, stopTimeValue); 
+        Time currentTime = director.getCurrentTime();
+        if (_stopTime.compareTo(currentTime) > 0) {
             director.fireAt(this, _stopTime);
             _executing = true;
         } 
@@ -162,7 +174,8 @@ public class TimedSource extends Source implements TimedActor {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public boolean postfire() throws IllegalActionException {
-        if (getDirector().getCurrentTime() > _stopTime) {
+        Time currentTime = getDirector().getCurrentTime();
+        if (currentTime.compareTo(_stopTime) >= 0) {
             return false;
         }
         return true;
@@ -186,5 +199,5 @@ public class TimedSource extends Source implements TimedActor {
     private boolean _executing = false;
 
     // stop time.
-    private double _stopTime;
+    private Time _stopTime;
 }

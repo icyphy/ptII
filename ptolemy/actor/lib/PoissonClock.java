@@ -29,6 +29,7 @@ COPYRIGHTENDKEY
 package ptolemy.actor.lib;
 
 import ptolemy.actor.Director;
+import ptolemy.actor.util.Time;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
@@ -42,7 +43,6 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
-import ptolemy.math.Utilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// PoissonClock
@@ -195,7 +195,7 @@ public class PoissonClock extends TimedSource {
         super.fire();
 
         // Get the current time and period.
-        double currentTime = getDirector().getCurrentTime();
+        Time currentTime = getDirector().getCurrentTime();
 
         // Indicator whether we've reached the next event.
         _boundaryCrossed = false;
@@ -206,7 +206,7 @@ public class PoissonClock extends TimedSource {
 
         // In case current time has reached or crossed a boundary to the
         // next output, update it.
-        if (currentTime >= _nextFiringTime) {
+        if (currentTime.compareTo(_nextFiringTime) == 0) {
             _tentativeCurrentOutputIndex++;
             if (_tentativeCurrentOutputIndex >= _length) {
                 _tentativeCurrentOutputIndex = 0;
@@ -223,7 +223,7 @@ public class PoissonClock extends TimedSource {
         super.initialize();
         _tentativeCurrentOutputIndex = 0;
         _currentOutputIndex = 0;
-        double currentTime = getDirector().getCurrentTime();
+        Time currentTime = getDirector().getCurrentTime();
         _nextFiringTime = currentTime;
         if (((BooleanToken)fireAtStart.getToken()).booleanValue()) {
             getDirector().fireAt(this, currentTime);
@@ -232,9 +232,7 @@ public class PoissonClock extends TimedSource {
                 ((DoubleToken)meanTime.getToken()).doubleValue();
             double exp = -Math.log((1-Math.random()))*meanTimeValue;
             Director director = getDirector();
-            _nextFiringTime = director.getCurrentTime() + exp;
-            _nextFiringTime = Utilities.round(_nextFiringTime, 
-                director.getTimeResolution());
+            _nextFiringTime = director.getCurrentTime().add(exp);
             director.fireAt(this, _nextFiringTime);
         }
     }
@@ -251,9 +249,7 @@ public class PoissonClock extends TimedSource {
                 ((DoubleToken)meanTime.getToken()).doubleValue();
             double exp = -Math.log((1-Math.random()))*meanTimeValue;
             Director director = getDirector();
-            _nextFiringTime = director.getCurrentTime() + exp;
-            _nextFiringTime = Utilities.round(_nextFiringTime, 
-                director.getTimeResolution());
+            _nextFiringTime = director.getCurrentTime().add(exp);
             director.fireAt(this, _nextFiringTime);
         }
         return super.postfire();
@@ -289,7 +285,7 @@ public class PoissonClock extends TimedSource {
     private transient int _currentOutputIndex;
 
     // The next firing time requested of the director.
-    private transient double _nextFiringTime;
+    private transient Time _nextFiringTime;
 
     // An indicator of whether a boundary is crossed in the fire() method.
     private transient boolean _boundaryCrossed;

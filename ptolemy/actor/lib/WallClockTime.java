@@ -29,6 +29,7 @@ COPYRIGHTENDKEY
 package ptolemy.actor.lib;
 
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
@@ -36,7 +37,6 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
-import ptolemy.math.Utilities;
 
 /**
    Upon firing, this actor outputs the elapsed real time in seconds
@@ -118,7 +118,7 @@ public class WallClockTime extends Source {
         if (_debugging) {
             _debug("Called fire()");
         }
-        output.broadcast(new DoubleToken(_getCurrentTime()));
+        output.broadcast(new DoubleToken(_getCurrentTime().getTimeValue()));
         for (int i = 0; i < trigger.getWidth(); i++) {
             if (trigger.hasToken(i)) {
                 Token token = trigger.get(i);
@@ -140,11 +140,10 @@ public class WallClockTime extends Source {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    protected double _getCurrentTime() {
+    protected Time _getCurrentTime() throws IllegalActionException {
         long elapsedTime = System.currentTimeMillis() - _startTime;
         double elapsedTimeDouble = elapsedTime/1000.0;
-        return Utilities.round(elapsedTimeDouble, 
-            getDirector().getTimeResolution());
+        return new Time(this, elapsedTimeDouble);
     }
 
     ///////////////////////////////////////////////////////////////////

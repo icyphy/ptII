@@ -29,6 +29,7 @@ COPYRIGHTENDKEY
 package ptolemy.actor.lib;
 
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.util.Time;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.CompositeEntity;
@@ -137,7 +138,7 @@ public class TriggeredClock extends Clock {
                 start.get(0);
                 // Indicate to postfire() that it can call fireAt().
                 _tentativeDone = false;
-                double currentTime = getDirector().getCurrentTime();
+                Time currentTime = getDirector().getCurrentTime();
                 _tentativeCycleStartTime = currentTime;
                 _tentativeStartTime = currentTime;
                 _tentativePhase = 0;

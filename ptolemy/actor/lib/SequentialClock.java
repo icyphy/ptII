@@ -30,6 +30,7 @@ package ptolemy.actor.lib;
 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.util.Time;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
@@ -43,7 +44,6 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
-import ptolemy.math.Utilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// SequentialClock
@@ -248,12 +248,9 @@ public class SequentialClock extends TypedAtomicActor implements SequenceActor {
         // for DT because this actor is a pure source without any trigger.
         // All calls to getCurrentTime will return the global time of
         // the system.
-
         // Schedule the first firing.
-        double currentTime = getDirector().getCurrentTime();
-        double nextFiringTime = _offsets[0] + currentTime;
-        nextFiringTime = Utilities.round(nextFiringTime,
-            getDirector().getTimeResolution());
+        Time currentTime = getDirector().getCurrentTime();
+        Time nextFiringTime = currentTime.add(_offsets[0]);
 
         // NOTE: This must be the last line, because it could result
         // in an immediate iteration.
@@ -281,7 +278,7 @@ public class SequentialClock extends TypedAtomicActor implements SequenceActor {
         _phase++;
         if (_phase >= _offsets.length) {
             _phase = 0;
-            _cycleStartTime += periodValue;
+            _cycleStartTime = _cycleStartTime.add(periodValue);
         }
         if (_offsets[_phase] >= periodValue) {
             throw new IllegalActionException(this,
@@ -290,9 +287,7 @@ public class SequentialClock extends TypedAtomicActor implements SequenceActor {
                     + "period, which is " + periodValue);
         }
 
-        double nextIterationTime = _cycleStartTime + _offsets[_phase];
-        nextIterationTime = Utilities.round(nextIterationTime,
-            getDirector().getTimeResolution());
+        Time nextIterationTime = _cycleStartTime.add(_offsets[_phase]);
         getDirector().fireAt(this, nextIterationTime);
 
         return true;
@@ -323,7 +318,7 @@ public class SequentialClock extends TypedAtomicActor implements SequenceActor {
     private transient Token _currentValue;
 
     // The most recent cycle start time.
-    private transient double _cycleStartTime;
+    private transient Time _cycleStartTime;
 
     // Indicator of the first firing cycle.
     private boolean _firstFiring = true;
