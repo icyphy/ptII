@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (yuhong@eecs.berkeley.edu)
+@ProposedRating Yellow (cxh@eecs.berkeley.edu)
+@AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib;
@@ -77,10 +77,11 @@ X(n) ---(+)-&gt;--o--&gt;----(+)-&gt;--o---&gt;-- ... -&gt;--(+)-&gt;--o---&gt;-
 
 </pre>
 where the [z] are unit delays and the (+) are adders
-and "y" and "w" are variables.
+and "y" and "w" are variables representing the state of the filter.
 <p>
-The reflection (or PARCOR) coefficients should be specified
-left to right, K1 to Kn as above.
+The reflection (or partial-correlation (PARCOR))
+coefficients should be specified
+right to left, K1 to Kn as above.
 Using exactly the same coefficients in the
 Lattice actor will result in precisely the inverse transfer function.
 <p>
@@ -105,7 +106,7 @@ Prentice-Hall, Englewood Cliffs, NJ, 1988.
 @see LevinsonDurbin
 @see Lattice
 @see ptolemy.domains.sdf.lib.VariableRecursiveLattice
-@author Edward A. Lee
+@author Edward A. Lee, Christopher Hylands
 @version $Id$
 */
 
@@ -127,6 +128,7 @@ public class RecursiveLattice extends Transformer {
 	output.setTypeEquals(BaseType.DOUBLE);
 
         reflectionCoefficients = new Parameter(this, "reflectionCoefficients");
+        // Note that setExpression() will call attributeChanged().
         reflectionCoefficients.setExpression(
                 "{0.804534, -0.820577, 0.521934, -0.205}");
     }
@@ -154,15 +156,17 @@ public class RecursiveLattice extends Transformer {
         if (attribute == reflectionCoefficients) {
             ArrayToken value = (ArrayToken)reflectionCoefficients.getToken();
             int valueLength = value.length();
-            if (valueLength != _backward.length - 1) {
-                // Need to reallocate the arrays.
+            if (_backward == null || valueLength != _backward.length - 1) {
+                // Need to allocate or reallocate the arrays.
                 _backward = new double[valueLength + 1];
+                _backwardCache = new double[valueLength + 1];
                 _forward = new double[valueLength + 1];
+                _forwardCache = new double[valueLength + 1];
                 _reflectionCoefs = new double[valueLength];
             }
             for (int i = 0; i < valueLength; i++) {
-                _reflectionCoefs[i] = ((DoubleToken)value.getElement(i))
-                    .doubleValue();
+                _reflectionCoefs[i] =
+                    ((DoubleToken)value.getElement(i)).doubleValue();
             }
         } else {
             super.attributeChanged(attribute);
@@ -170,41 +174,75 @@ public class RecursiveLattice extends Transformer {
     }
 
     /** Consume one input token, if there is one, and produce one output
-     *  token.  If there is no input, the produce no output.
+     *  token.  If there is no input, then produce no output.
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
         if (input.hasToken(0)) {
-            DoubleToken in = (DoubleToken)input.get(0);
+            DoubleToken inputValue = (DoubleToken)input.get(0);
             // NOTE: The following code is ported from Ptolemy Classic.
             double k;
             int M = _backward.length - 1;
             // Forward prediction error
-            _forward[0] = in.doubleValue();   // _forward(0) = x(n)
+
+            _forwardCache[0] = inputValue.doubleValue();  // _forward(0) = x(n)
             for (int i = 1; i <= M; i++) {
                 k = _reflectionCoefs[M-i];
-                _forward[i] = k * _backward[i] + _forward[i-1];
+                _forwardCache[i] = k * _backwardCache[i] + _forwardCache[i-1];
             }
-            output.broadcast(new DoubleToken(_forward[M]));
+            output.broadcast(new DoubleToken(_forwardCache[M]));
 
             // Backward:  Compute the w's for the next round
             for (int i = 1; i < M ; i++) {
                 k = - _reflectionCoefs[M-1-i];
-                _backward[i] = _backward[i+1] + k*_forward[i+1];
+                _backwardCache[i] = _backwardCache[i+1] + k*_forwardCache[i+1];
             }
-            _backward[M] = _forward[M];
+            _backwardCache[M] = _forwardCache[M];
         }
+    }
+
+    /** Update the backward and forward prediction errors that
+     *  were generated in fire() method.
+     *  @return False if the number of iterations matches the number requested.
+     *  @exception IllegalActionException If there is no director.
+     */
+    public boolean postfire() throws IllegalActionException {
+        System.arraycopy(_backwardCache, 0,
+                        _backward, 0,
+                        _backwardCache.length);
+        System.arraycopy(_forwardCache, 0,
+                        _forward, 0,
+                        _forwardCache.length);
+        return super.postfire();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                       private variables                   ////
 
-    /** Backward prediction errors. */
-    private double[] _backward = new double[5];
+    // We set these to null and then the constructor calls setExpression()
+    // which in turn calls attributeChanged() which then allocates
+    // these arrays.
 
-    /** Forward prediction errors. */
-    private double[] _forward = new double[5];
+    // Backward prediction errors, represented by "w" in the class
+    // comment.
+    private double[] _backward = null;
 
-    /** Cache of reflection coefficients. */
-    private double[] _reflectionCoefs = new double[5];
+    // Cache of backward prediction errors, represented by "w" in the class
+    // comment.  The fire() method updates _forwardCache and postfire()
+    // copies _forwardCache to _forward so this actor will work in domains
+    // like SR.
+    private double[] _backwardCache = null;
+
+    // Forward prediction errors, represented by "y" in the class
+    // comment.
+    private double[] _forward = null;
+
+    // Cache of forward prediction errors, represented by "y" in the class
+    // comment.  The fire() method updates _forwardCache and postfire()
+    // copies _forwardCache to _forward so this actor will work in domains
+    // like SR.
+    private double[] _forwardCache = null;
+
+    // Cache of reflection coefficients.
+    private double[] _reflectionCoefs = null;
 }
