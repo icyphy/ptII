@@ -110,39 +110,6 @@ public class InequalitySolver {
 	return _filterVariables(bottom);
     }
 
-    /** Solve the set of inequalities for the least solution.
-     *  If the set of inequalities is definite (when solving for the least
-     *  solution, definite means that the greater terms of all the
-     *  inequalities are either a constant of a single variable.),
-     *  this method can always determine satisfiability. In this case, if
-     *  the set of inequalities is satisfiable, this method returns
-     *  <code>true</code>, and the variables are set to the least solution.
-     *  If the set of inequalities is not satisfiable, this method returns
-     *  <code>false</code>.
-     *  <p>
-     *  If the set of inequalities is not definite, this method cannot
-     *  always determine satisfiability. In this case, if the set of
-     *  inequalities is satisfiable, this method may or may not return
-     *  <code>true</code>. If this method returns <code>true</code>,
-     *  the variables are set to the least solution. If the set of
-     *  inequalities is not satisfiable, this method returns
-     *  <code>false</code>.
-     *  <p>
-     *  In any case, if this method returns <code>false</code>, the
-     *  variables are set to the least solution for the subset of
-     *  inequalities whose greater terms are a single variable.
-     *  See the paper referred in the class document for details.
-     *  @return <code>true</code> if a solution for the inequalities is found,
-     *   <code>false</code> otherwise.
-     *  @IllegalArgumentException the value of some of the terms in the
-     *   inequalities is not a CPO element.
-     *  @exception InvalidStateException If the LUB of some elements does
-     *   not exist in the underlying CPO.
-     */
-    public boolean solveLeast() {
-	return _solve(true);
-    }
-
     /** Solve the set of inequalities for the greatest solution.
      *  If the set of inequalities is definite (when solving for the greatest
      *  solution, definite means that the lesser terms of all the
@@ -174,6 +141,39 @@ public class InequalitySolver {
      */
     public boolean solveGreatest() {
 	return _solve(false);
+    }
+
+    /** Solve the set of inequalities for the least solution.
+     *  If the set of inequalities is definite (when solving for the least
+     *  solution, definite means that the greater terms of all the
+     *  inequalities are either a constant of a single variable.),
+     *  this method can always determine satisfiability. In this case, if
+     *  the set of inequalities is satisfiable, this method returns
+     *  <code>true</code>, and the variables are set to the least solution.
+     *  If the set of inequalities is not satisfiable, this method returns
+     *  <code>false</code>.
+     *  <p>
+     *  If the set of inequalities is not definite, this method cannot
+     *  always determine satisfiability. In this case, if the set of
+     *  inequalities is satisfiable, this method may or may not return
+     *  <code>true</code>. If this method returns <code>true</code>,
+     *  the variables are set to the least solution. If the set of
+     *  inequalities is not satisfiable, this method returns
+     *  <code>false</code>.
+     *  <p>
+     *  In any case, if this method returns <code>false</code>, the
+     *  variables are set to the least solution for the subset of
+     *  inequalities whose greater terms are a single variable.
+     *  See the paper referred in the class document for details.
+     *  @return <code>true</code> if a solution for the inequalities is found,
+     *   <code>false</code> otherwise.
+     *  @IllegalArgumentException the value of some of the terms in the
+     *   inequalities is not a CPO element.
+     *  @exception InvalidStateException If the LUB of some elements does
+     *   not exist in the underlying CPO.
+     */
+    public boolean solveLeast() {
+	return _solve(true);
     }
 
     /** Return an <code>Iterator</code> of the variables whose current

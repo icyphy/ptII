@@ -84,8 +84,8 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
      *  known.
      *  @param elementCount the number of elements.
      */
-    public DirectedAcyclicGraph(int elementCount) {
-        super(elementCount);
+    public DirectedAcyclicGraph(int nodeCount) {
+        super(nodeCount);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -296,38 +296,6 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
         return _top;
     }
 
-    /** Sort the given graph objects in their topological order.
-     *  This method use the transitive closure matrix. Since generally
-     *  the graph is checked for cyclicity before this method is
-     *  called, the use of the transitive closure matrix should
-     *  not add any overhead. A bubble sort is used for the internal
-     *  implementation, so the complexity is n^2.
-     *  @return The objects in there sorted order.
-     */
-    public Object[] topologicalSort(Object[] objs) {
-        _validate();
-        int N = objs.length;
-        int[] ids = new int[N];
-        for (int i = 0; i < N; i++) {
-            ids[i] = _getNodeId(objs[i]);
-        }
-        for (int i = 0; i < N-1; i++) {
-            for (int j = i+1; j < N; j++) {
-                if(_compareNodeId(ids[i], ids[j]) == HIGHER) {
-                    //swap
-                    int tmp = ids[i];
-                    ids[i] = ids[j];
-                    ids[j] = tmp;
-                }
-            }
-        }
-        Object[] result = new Object[N];
-        for (int i = 0; i < N; i++) {
-            result[i] = _getNodeObject(ids[i]);
-        }
-        return result;
-    }
-
     /** Topological sort the whole graph.
      *  The implementation uses the method of A.B. Kahn: "Topological
      *  Sorting of Large Networks", Communications of the ACM,
@@ -370,6 +338,38 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
                 throw new InvalidStateException(
                     "DirectedAcyclicGraph.topologicalSort: Graph is cyclic.");
             }
+        }
+        return result;
+    }
+
+    /** Sort the given graph objects in their topological order.
+     *  This method use the transitive closure matrix. Since generally
+     *  the graph is checked for cyclicity before this method is
+     *  called, the use of the transitive closure matrix should
+     *  not add any overhead. A bubble sort is used for the internal
+     *  implementation, so the complexity is n^2.
+     *  @return The objects in there sorted order.
+     */
+    public Object[] topologicalSort(Object[] objs) {
+        _validate();
+        int N = objs.length;
+        int[] ids = new int[N];
+        for (int i = 0; i < N; i++) {
+            ids[i] = _getNodeId(objs[i]);
+        }
+        for (int i = 0; i < N-1; i++) {
+            for (int j = i+1; j < N; j++) {
+                if(_compareNodeId(ids[i], ids[j]) == HIGHER) {
+                    //swap
+                    int tmp = ids[i];
+                    ids[i] = ids[j];
+                    ids[j] = tmp;
+                }
+            }
+        }
+        Object[] result = new Object[N];
+        for (int i = 0; i < N; i++) {
+            result[i] = _getNodeObject(ids[i]);
         }
         return result;
     }
