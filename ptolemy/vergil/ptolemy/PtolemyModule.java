@@ -232,6 +232,7 @@ public class PtolemyModule implements Module {
 
             }
         };
+	_application.addAction(action);
 	GUIUtilities.addMenuItem(menuDevel, action, 'E', "Execute System");
 
 	action = new AbstractAction("Automatic Layout") {
