@@ -21,13 +21,13 @@
         <all-permissions/> 
   </security> 
   <resources>
-  	<j2se version="1.3+"/>
+  	<j2se version="1.4+"/>
 	<!-- Start Jars -->
 	<!-- End Jars -->
   </resources>
   <application-desc main-class="ptolemy.actor.gui.jnlp.DSPApplication">
-	<argument>ptolemy/configs/vergilConfigurationDSP.xml</argument>
-	<argument>ptolemy/configs/introDSP.htm</argument>
+	<argument>ptolemy/configs/dsp/configuration.xml</argument>
+	<argument>ptolemy/configs/dsp/intro.htm</argument>
   </application-desc>
   <!-- Need to deal with Java 3D -->
 </jnlp>
