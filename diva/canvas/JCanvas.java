@@ -257,7 +257,7 @@ public class JCanvas extends JComponent implements Printable {
      *  @param graphics The context into which the page is drawn.
      *  @param format The size and orientation of the page being drawn.
      *  @param index The zero based index of the page to be drawn.
-     *  @param printRegion The rectangular region of the canvaws, in screen
+     *  @param printRegion The rectangular region of the canvas, in screen
      *  coordinates, that will be printed to the screen.
      *  @return PAGE_EXISTS if the page is rendered successfully, or
      *   NO_SUCH_PAGE if pageIndex specifies a non-existent page.
