@@ -43,12 +43,16 @@ import java.util.ListIterator;
  It provides facilities to access the former and current information of
  each relation of a guard expression during its evaluation. The information
  includes type and difference information. (See ParseTreeEvaluatorForGuardExpression
- for detailed explanation of type and difference.)
+ for detailed explanation of type and difference.) 
+ <p>
+ This attribute is non-persistent and will not be exported into MoML.
  <p>
  This class is designed to be used with ParseTreeEvaluatorForGuardExpression.
  The common usage would be like:
  <p>
-         <i>// Construct a relation list for the transition.</i>
+         <i>// Construct a relation list for a transition.
+			// The first argument of the constructor is a 
+			// transition.</i>
          _relationList = new RelationList(this, "relationList");
  <p>
          <i>// Associate the relation list with the ParseTreeEvaluatorForGuardExpression</i>
@@ -73,6 +77,8 @@ public class RelationList extends Attribute {
      *  and version counts. If the name argument is null, then the
      *  name is set to the empty string.
      *  Increment the version of the workspace.
+     *  This attribute is a non-persistent and it will not be exported
+     *  into MoML file.
      *  @param transition The transition container.
      *  @param name The name of this relation list.
      *  @exception IllegalActionException If the relation list is not
@@ -84,6 +90,7 @@ public class RelationList extends Attribute {
     public RelationList(Transition transition, String name)
             throws IllegalActionException, NameDuplicationException {
         super(transition, name);
+        setPersistent(false);
         _relationList = new LinkedList();
     }
 
