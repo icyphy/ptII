@@ -92,7 +92,7 @@ demosPtiny.htm: demos.htm
 	awk -f $(ROOT)/doc/javahtml.awk $< | sed 's/completeDemos.htm/completeDemosPtiny.htm/' > $@  
 
 completeDemosPtiny.htm: completeDemos.htm
-	awk -f $(ROOT)/doc/javahtml.awk $< > $@  
+	awk -f $(ROOT)/doc/javahtml.awk $< | sed 's/demos.htm/demosPtiny.htm/' > $@  
 
 update: $(DERIVED_FILES)
 	cvs commit -m "Master files changed" $(DERIVED_FILES)
