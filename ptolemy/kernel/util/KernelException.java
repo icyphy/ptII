@@ -68,17 +68,17 @@ public class KernelException extends Exception {
      */
     public KernelException(Nameable object1, Nameable object2,
             String detail) {
-        String object1string = _getFullName(object1);
-        String object2string = _getFullName(object2);
+        String object1String = _getFullName(object1);
+        String object2String = _getFullName(object2);
         String prefix;
-        if (!object1string.equals("")) {
-            if (!object2string.equals("")) {
-                prefix = new String(object1string + " and " + object2string);
+        if (!object1String.equals("")) {
+            if (!object2String.equals("")) {
+                prefix = new String(object1String + " and " + object2String);
             } else {
-                prefix = object1string;
+                prefix = object1String;
             }
         } else {
-            prefix = object2string;
+            prefix = object2String;
         }
         _setMessage(prefix);
         if (detail != null) {
@@ -160,13 +160,13 @@ public class KernelException extends Exception {
     }
 
     /** Sets the error message to the specified string.
-     *  @param msg The message.
+     *  @param message The message.
      */
-    protected void _setMessage(String msg) {
-        if (msg == null) {
+    protected void _setMessage(String message) {
+        if (message == null) {
             _message = "";
         } else {
-            _message = msg;
+            _message = message;
         }
     }
 
