@@ -122,7 +122,7 @@ public class Key extends Source {
      *  system.
      *  The initial default is the first value returned by
      *  Security.getAlgorithms();
-     *  
+     *
      */
     public StringParameter algorithm;
 
@@ -135,13 +135,13 @@ public class Key extends Source {
     /** Specify the size of the key to be created.  This is an integer value
      *  representing the number of bits in the key.  The initial default
      *  depends on the algorithm that is selected, not all algorithms use
-     *  keySize.  
+     *  keySize.
      *  <p>DSA is the most common algorithm that uses keySize, the Sun
      *  documentation says:
      *  "The length, in bits, of the modulus p. This must range from
      *  512 to 1024, and must be a multiple of 64. The default keysize
      *  is 1024."
-     *  Refer to 
+     *  Refer to
      *  <a href="http://java.sun.com/j2se/1.4.2/docs/guide/security/CryptoSpec.html#AppB"><code>http://java.sun.com/j2se/1.4.2/docs/guide/security/CryptoSpec.html#AppB</code></a>
      *  for a list of possible key sizes for certain algorithms.
      *  The initial default is 1024.

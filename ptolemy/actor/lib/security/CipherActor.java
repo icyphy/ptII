@@ -99,8 +99,8 @@ public class CipherActor extends CryptographyActor {
         padding = new StringParameter(this, "padding");
         padding.setExpression("");
         padding.addChoice("");
-        padding.addChoice("NoPadding");        
-        padding.addChoice("OAEPWithMD5AndMGF1Padding");        
+        padding.addChoice("NoPadding");
+        padding.addChoice("OAEPWithMD5AndMGF1Padding");
         padding.addChoice("PKCS5Padding");
         padding.addChoice("SSL3Padding");
     }
@@ -136,13 +136,13 @@ public class CipherActor extends CryptographyActor {
      * <dd>Output Feedback Mode, as defined in FIPS PUB 81.
      *
      * <dt><code>PCBC</code>
-     * <dd>Propagating Cipher Block Chaining, as defined by Kerberos V4. 
+     * <dd>Propagating Cipher Block Chaining, as defined by Kerberos V4.
      * </dl>
      *
      *  The initial default is the empty string, which indicates that
      *  the default setting for the algorithm should be used.
      *  <p>
-     *  See the 
+     *  See the
      *  <a href="http://java.sun.com/j2se/1.4.2/docs/guide/security/jce/JCERefGuide.html#AppA">Java Cryptography Extension (JCE) Reference Guide</a>
      *  for details.
      */
@@ -151,7 +151,7 @@ public class CipherActor extends CryptographyActor {
     /** The padding scheme used by the cipher during encryption.
      *  The padding is specified as a string.
      *  Names for parameter and parameters implemented vary based on the
-     *  provider. 
+     *  provider.
      *  Possible values include
      * <dl>
      * <dt><code></code> (<i>The empty string</i>)
@@ -170,7 +170,7 @@ public class CipherActor extends CryptographyActor {
      * <dd>The padding scheme described in: RSA Laboratories, "PKCS
      * #5: Password-Based Encryption Standard," version 1.5, November
      * 1993.
-     * 
+     *
      * <dt><code>SSL3Padding</code>
      * <dd>The padding scheme defined in the SSL Protocol Version 3.0,
      * November 18, 1996, section 5.2.3.2 (CBC block cipher):
@@ -179,7 +179,7 @@ public class CipherActor extends CryptographyActor {
      *  The initial default is the empty string, which indicates that
      *  the default setting for the algorithm should be used.
      *  <p>
-     *  See the 
+     *  See the
      *  <a href="http://java.sun.com/j2se/1.4.2/docs/guide/security/jce/JCERefGuide.html#AppA">Java Cryptography Extension (JCE) Reference Guide</a>
      *  for details.
      */

@@ -73,7 +73,7 @@ be specified in the <i>provider</i> parameter.  This class takes care
 of basic initialization of the subclasses. The <i>keySize</i> also
 allows implementations of algorithms using various key sizes.
 
-<p>Actors derived from this baseclass usually have a 
+<p>Actors derived from this baseclass usually have a
 process(byte[] dataBytes) method that processes the data appropriately.
 This method is called by CryptographyActor.fire().
 
@@ -146,7 +146,7 @@ public class CryptographyActor extends TypedAtomicActor {
      *  system.
      *  The initial default is the first value returned by
      *  Security.getAlgorithms();
-     *  
+     *
      */
     public StringParameter algorithm;
 
@@ -159,13 +159,13 @@ public class CryptographyActor extends TypedAtomicActor {
     /** Specify the size of the key to be created.  This is an integer value
      *  representing the number of bits in the key.  The initial default
      *  depends on the algorithm that is selected, not all algorithms use
-     *  keySize.  
+     *  keySize.
      *  <p>DSA is the most common algorithm that uses keySize, the Sun
      *  documentation says:
      *  "The length, in bits, of the modulus p. This must range from
      *  512 to 1024, and must be a multiple of 64. The default keysize
      *  is 1024."
-     *  Refer to 
+     *  Refer to
      *  <a href="http://java.sun.com/j2se/1.4.2/docs/guide/security/CryptoSpec.html#AppB"><code>http://java.sun.com/j2se/1.4.2/docs/guide/security/CryptoSpec.html#AppB</code></a>
      *  for a list of possible key sizes for certain algorithms.
      *  The initial default is 1024.
@@ -235,7 +235,7 @@ public class CryptographyActor extends TypedAtomicActor {
                     CryptographyActor.arrayTokenToUnsignedByteArray(
                             (ArrayToken)input.get(0));
                 dataBytes = _process(dataBytes);
-                output.send(0, 
+                output.send(0,
                         CryptographyActor.unsignedByteArrayToArrayToken(
                                 dataBytes));
             }

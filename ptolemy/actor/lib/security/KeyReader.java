@@ -165,7 +165,7 @@ public class KeyReader extends Source {
      *  after initialize() is called and the certificate has been
      *  obtained from the KeyStore.
      */
-    public StringParameter signatureAlgorithm; 
+    public StringParameter signatureAlgorithm;
 
     /** The password to the KeyStore.
      *  The default password is "this.is.not.secure,it.is.for.testing.only".
@@ -221,7 +221,7 @@ public class KeyReader extends Source {
         }
 
         try {
-            _keyStore.load(keyStoreStream, 
+            _keyStore.load(keyStoreStream,
                     storePassword.getExpression().toCharArray());
             // Add all the aliases as possible choices.
             for (Enumeration aliases = _keyStore.aliases();

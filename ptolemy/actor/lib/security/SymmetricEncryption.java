@@ -121,7 +121,7 @@ public class SymmetricEncryption extends CipherActor {
             try {
                 ObjectToken objectToken = (ObjectToken)key.get(0);
                 //SecretKey key = (SecretKey)objectToken.getValue();
-                java.security.Key key = (java.security.Key)objectToken.getValue(); 
+                java.security.Key key = (java.security.Key)objectToken.getValue();
                 _cipher.init(Cipher.ENCRYPT_MODE, key);
             } catch (Exception ex) {
                 throw new IllegalActionException (this, ex,
@@ -190,6 +190,6 @@ public class SymmetricEncryption extends CipherActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-   
+
     private ByteArrayOutputStream _byteArrayOutputStream;
 }

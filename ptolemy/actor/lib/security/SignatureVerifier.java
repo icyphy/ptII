@@ -42,7 +42,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import java.security.PublicKey;
 
 //////////////////////////////////////////////////////////////////////////
-//// SignatureVerifier 
+//// SignatureVerifier
 /**
 Verify the signature of the input data.
 <p>
@@ -52,7 +52,7 @@ in cleartext.
 
 <p>The <i>provider</i> and <i>signatureAlgorithm</i>
 parameters should be set to the values used to generate the publicKey.
-See {@link PublicKeyReader} and {@link SignatureActor} 
+See {@link PublicKeyReader} and {@link SignatureActor}
 for possible values.
 
 <p>The <i>provider</i> and <i>signatureAlgorithm</i>
@@ -127,7 +127,7 @@ public class SignatureVerifier extends SignatureActor {
     public void fire() throws IllegalActionException {
         if (publicKey.hasToken(0)) {
             ObjectToken objectToken = (ObjectToken)publicKey.get(0);
-            _publicKey = (PublicKey)objectToken.getValue(); 
+            _publicKey = (PublicKey)objectToken.getValue();
         }
         if (input.hasToken(0) && signature.hasToken(0) && _publicKey != null) {
             // Process the input data to generate a signature.

@@ -52,7 +52,7 @@ in cleartext.
 
 <p>The <i>provider</i> and <i>signatureAlgorithm</i>
 parameters should be set to the values used to generate the privateKey.
-See {@link PrivateKeyReader} and {@link SignatureActor} 
+See {@link PrivateKeyReader} and {@link SignatureActor}
 for possible values.
 
 <p>The <i>provider</i> and <i>signatureAlgorithm</i>
@@ -111,7 +111,7 @@ public class SignatureSigner extends SignatureActor {
      */
     public TypedIOPort privateKey;
 
-    /** The signature of the data.  The type of this input port 
+    /** The signature of the data.  The type of this input port
      *  is unsigned byte array.
      */
     public TypedIOPort signature;
@@ -120,7 +120,7 @@ public class SignatureSigner extends SignatureActor {
     ////                         public methods                    ////
 
     /** Created a signature for the input data and the signature to the
-     *  output.   
+     *  output.
      *  @exception IllegalActionException If calling send() or super.fire()
      *  throws it.
      *
@@ -129,7 +129,7 @@ public class SignatureSigner extends SignatureActor {
     public void fire() throws IllegalActionException {
         if (privateKey.hasToken(0)) {
             ObjectToken objectToken = (ObjectToken)privateKey.get(0);
-            _privateKey = (PrivateKey)objectToken.getValue(); 
+            _privateKey = (PrivateKey)objectToken.getValue();
         }
 
         if (input.hasToken(0)) {
@@ -144,7 +144,7 @@ public class SignatureSigner extends SignatureActor {
 
                 output.send(0,
                         CryptographyActor.unsignedByteArrayToArrayToken(dataBytes));
-                signature.send(0, 
+                signature.send(0,
                         CryptographyActor.unsignedByteArrayToArrayToken(
                                 _signature.sign()));
             } catch (Exception ex) {

@@ -52,7 +52,7 @@ import javax.crypto.Cipher;
 This actor takes an unsigned byte array at the input and decrypts the
 message.  The resulting output is an unsigned byte array.  The shared
 secret key is received from the SymmetricEncryption actor on the
-<i>key</i> and is used to decrypt the message. 
+<i>key</i> and is used to decrypt the message.
 Various ciphers that are implemented by "providers" and
 installed maybe used by specifying the algorithm in the
 <i>algorithm</i> parameter.  The algorithm specified must be

@@ -168,7 +168,7 @@ public class SignatureActor extends TypedCompositeActor {
 
     /** Use the values of the <i>signatureAlgorithm</i> and
      *  <i>provider</i> parameters to initialize the Signature object.
-     *   
+     *
      *  If provider is left as "SystemDefault" the system chooses the
      *  provider based on the JCE.
      *
