@@ -398,8 +398,13 @@ public class PlotBox extends Panel {
         if (_debug > 8) {
             System.out.println("PlotBox: drawPlot _ulx "+_ulx+" "+_uly+" "+
                     _lrx+" "+_lry+" "+width+" "+height);
-
         }
+
+        if (_background == null) {
+                throw new Error("PlotBox.drawPlot(): _background == null\n" +
+                        "Be sure to call init() before calling paint().");
+        }
+
         // background for the plotting rectangle
         graphics.setColor(_background);
         graphics.fillRect(_ulx,_uly,width,height);
@@ -809,6 +814,12 @@ public class PlotBox extends Panel {
         // and having setPaintMode() called in another method.
 
         if (_debug > 9) System.out.println("PlotBox: mouseDrag "+x+" "+y);
+
+        if (_graphics == null) {
+            System.out.println("PlotBox.mouseDrag(): Internal error: " +
+                    "_graphic was null, be sure to call init()");
+        }
+
         // Bound the rectangle so it doesn't go outside the box.
         if (y > _lry) y=_lry;
         if (y < _uly) y=_uly;
@@ -1103,6 +1114,15 @@ public class PlotBox extends Panel {
         super.setBackground(_background);
     }
 
+    /** Set the debug value.  The higher the integer, the greater the
+     * number of debugging messages printed to stdout.  Useful values
+     * are 10 - argument parsing, 20 - legend parsing, 101 - data point
+     * debugging.
+     */
+    public void setDebug (int debug ) {
+        _debug = debug;
+    }
+
     /** Set the foreground color.
      */
     public void setForeground (Color foreground) {
@@ -1352,7 +1372,7 @@ public class PlotBox extends Panel {
     //////////////////////////////////////////////////////////////////////////
     ////                           protected variables                    ////
     
-    // If non-zero, print out debugging messages.
+    // If non-zero, print out debugging messages.  Use setDebug() to set this.
     protected int _debug = 0;
     
     // The graphics context to operate in.  Note that printing will call
@@ -1416,7 +1436,7 @@ public class PlotBox extends Panel {
     };
         
     // Width and height of component in pixels.
-    protected int _width, _height;
+    protected int _width = 400, _height = 400;
 
     //////////////////////////////////////////////////////////////////////////
     ////                         private methods                          ////
