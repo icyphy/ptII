@@ -236,7 +236,9 @@ if {[info command update] == ""} then {
 #
 proc epsilonDiff {newresults oldresults {epsilon 0.00001} } {
     if {[llength $newresults] != [llength $oldresults]} {
-	error "The length of the two lists is not the same: [llength $newresults] != [llength $oldresults]"
+	error "epsilonDiff {$newresults} {$oldresults}:\n\
+		The length of the two lists is not the same: \
+		[llength $newresults] != [llength $oldresults]"
     }
     set returnresults {}
     foreach newelement $newresults oldelement $oldresults {
@@ -246,6 +248,17 @@ proc epsilonDiff {newresults oldresults {epsilon 0.00001} } {
 	    continue
 	}
 
+	if {[llength $newelement] != [llength $oldelement]} {
+	    error "epsilonDiff {$newresults} {$oldresults}:\n\
+		    The lengths of these two elements is not the same:\n\
+		    '$newelement'\n '$oldelement'"
+	}
+
+	if {[llength $newelement] > 1} {
+	    # We have a sublist, so call epsilonDiff 
+	    lappend $returnresults epsilonDiff $newelement $oldelement $epsilon
+	    continue
+	}
 	# The numbers might be complex numbers with trailing 'i'
 	set newelement [string trimright $newelement "i"]
 	set oldelement [string trimright $oldelement "i"]
