@@ -87,6 +87,11 @@ public abstract class ShapeAttribute extends Attribute {
         // if there isn't one, then the icon is not shown in the
         // icon editor.
         new Location(this, "_location");
+        
+        // This must appear before lineColor or cloning could
+        // fail if lineColor references it.
+        _none = new Variable(this, "none");
+        _none.setExpression("{1.0, 1.0, 1.0, 0.0}");
 
         lineWidth = new Parameter(this, "lineWidth");
         lineWidth.setTypeEquals(BaseType.DOUBLE);
@@ -94,9 +99,6 @@ public abstract class ShapeAttribute extends Attribute {
         
         lineColor = new ColorAttribute(this, "lineColor");
         lineColor.setExpression("{0.0, 0.0, 0.0, 1.0}");
-        
-        _none = new Variable(this, "none");
-        _none.setExpression("{1.0, 1.0, 1.0, 0.0}");
     }
 
     ///////////////////////////////////////////////////////////////////
