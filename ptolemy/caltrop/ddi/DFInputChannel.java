@@ -50,8 +50,10 @@ class DFInputChannel implements InputChannel {
 
     public Object get(int n) {
         int m = n - buffer.size() + 1;
-        if (m <= 0)
+        if (m <= 0) {
+        	tokensRead = Math.max(tokensRead, n + 1);
             return buffer.get(n);
+        }
         try {
             if (!port.hasToken(channel, m)) {
                 throw new CalIOException("Insufficient number of tokens.");
@@ -59,14 +61,27 @@ class DFInputChannel implements InputChannel {
             for (int i = 0; i < m; i++) {
                 buffer.add(port.get(channel));
             }
+        	tokensRead = Math.max(tokensRead, n + 1);
             return buffer.get(n);
         } catch (IllegalActionException e) {
             throw new CalIOException("Could not read tokens.", e);
         }
     }
 
-    public void reset() {
-        buffer.clear();
+    public void commit() {
+    	assert tokensRead <= buffer.size();
+
+    	if (tokensRead == buffer.size())
+    		buffer.clear();
+    	else {
+    		for (int i = 0; i < tokensRead; i++)
+    	    	buffer.remove(0);
+    	}
+    	tokensRead = 0;
+    }
+    
+    public void rollback() {
+    	tokensRead = 0;
     }
 
     public boolean hasAvailable(int n) {
@@ -83,12 +98,14 @@ class DFInputChannel implements InputChannel {
                     ex);
         }
     }
+    
 
 
     public DFInputChannel(TypedIOPort port, int channel) {
         this.port = port;
         this.channel = channel;
         this.buffer = new ArrayList();
+        this.tokensRead = 0;
     }
 
     public String toString() {
@@ -97,5 +114,6 @@ class DFInputChannel implements InputChannel {
 
     private TypedIOPort port;
     private int channel;
+    private int tokensRead;
     private List buffer;
 }

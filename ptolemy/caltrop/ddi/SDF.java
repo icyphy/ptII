@@ -57,6 +57,7 @@ import caltrop.interpreter.ast.InputPattern;
 import caltrop.interpreter.ast.OutputExpression;
 import caltrop.interpreter.ast.PortDecl;
 import caltrop.interpreter.environment.Environment;
+import caltrop.interpreter.util.PriorityUtil;
 import caltrop.interpreter.util.Utility;
 
 //////////////////////////////////////////////////////////////////////////
@@ -93,7 +94,7 @@ public class SDF extends AbstractDDI implements DDI {
             Environment env) {
         _ptActor = ptActor;
         _actor = actor;
-        _actions = Utility.prioritySortActions(_actor);
+        _actions = PriorityUtil.prioritySortActions(_actor);
         _context = context;
         _env = env;
         _eval = new ExprEvaluator(_context,  _env);
@@ -146,8 +147,13 @@ public class SDF extends AbstractDDI implements DDI {
      * a legal SDF actor.
      */
     public boolean isLegalActor() {
+    	// FIXME: Strictly speaking, we should allow priority in SDF actors,
+    	// under certain conditions (i.e the resulting actor should remain
+    	// an SDF actor, of course). So we need to do the corresponding analysis.
+    	// Until then, we simply disallow priority clauses in SDF actors.
         if (atLeastOneUnguardedAction()
-                && checkActionRates() && checkInitializers())
+                && checkActionRates() && checkInitializers()
+				&& !PriorityUtil.hasPriorityOrder(_actor))
             return true;
         return false;
     }
@@ -453,13 +459,13 @@ public class SDF extends AbstractDDI implements DDI {
                 // call of this iteration.
                 // Hence we could put rollback work here.
 
+            	_rollbackInputChannels();
                 _selectAction();
             }
             if (_actorInterpreter.currentAction() != null) {
                 _actorInterpreter.actionStep();
                 _actorInterpreter.actionComputeOutputs();
                 _actorInterpreter.actionClear();
-                _clearInputChannels();
             }
         } catch (Exception e) {
             throw new IllegalActionException(_ptActor, e,
@@ -497,7 +503,7 @@ public class SDF extends AbstractDDI implements DDI {
      * @exception IllegalActionException
      */
     public void initialize() throws IllegalActionException {
-        _clearInputChannels();
+        _rollbackInputChannels();
         try {
             if (_actorInterpreter.currentAction() != null) {
                 _actorInterpreter.actionStep();
@@ -527,19 +533,31 @@ public class SDF extends AbstractDDI implements DDI {
         return -1;
     }
 
-    private void  _clearInputChannels() {
+    private void  _commitInputChannels() {
         for (Iterator iterator = _inputPorts.values().iterator();
              iterator.hasNext();) {
             InputPort inputPort = (InputPort) iterator.next();
             for (int i = 0; i < inputPort.width(); i++) {
-                // FIXME (and corresponding in Dataflow)
                 DFInputChannel c = (DFInputChannel)inputPort.getChannel(i);
-                c.reset();
+                c.commit();
             }
         }
     }
 
+    private void  _rollbackInputChannels() {
+        for (Iterator iterator = _inputPorts.values().iterator();
+             iterator.hasNext();) {
+            InputPort inputPort = (InputPort) iterator.next();
+            for (int i = 0; i < inputPort.width(); i++) {
+                DFInputChannel c = (DFInputChannel)inputPort.getChannel(i);
+                c.rollback();
+            }
+        }
+    }
+
+
     public boolean postfire() throws IllegalActionException {
+    	_commitInputChannels();
         return false;
     }
 

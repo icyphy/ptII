@@ -41,7 +41,8 @@ import ptolemy.kernel.util.IllegalActionException;
    @Pt.AcceptedRating Red (cxh)
 */
 public abstract class AbstractDDI implements DDI {
-    public int iterate(int i) throws IllegalActionException {
+
+	public int iterate(int i) throws IllegalActionException {
         return 0;
     }
     public void stop() {

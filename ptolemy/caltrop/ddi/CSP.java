@@ -42,6 +42,7 @@ import caltrop.interpreter.ast.OutputExpression;
 import caltrop.interpreter.ast.PortDecl;
 import caltrop.interpreter.ast.Statement;
 import caltrop.interpreter.environment.Environment;
+import caltrop.interpreter.util.PriorityUtil;
 import caltrop.interpreter.util.Utility;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
@@ -76,7 +77,7 @@ public class CSP extends AbstractDDI implements DDI {
             Context context, Environment env) {
         _ptActor = ptActor;
         _actor = actor;
-        _actions = Utility.prioritySortActions(_actor);
+        _actions = PriorityUtil.prioritySortActions(_actor);
         _context = context;
         _env = env;
         _eval = new ExprEvaluator(_context, _env);
@@ -94,7 +95,7 @@ public class CSP extends AbstractDDI implements DDI {
     private ConditionalBranchController _cbc;
 
     public boolean isLegalActor() {
-        return true; //FIXME
+        return !PriorityUtil.hasPriorityOrder(_actor);
     }
 
     public void setupActor() {

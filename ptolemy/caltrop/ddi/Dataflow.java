@@ -47,6 +47,7 @@ import caltrop.interpreter.ast.PortDecl;
 import caltrop.interpreter.ast.QID;
 import caltrop.interpreter.ast.Transition;
 import caltrop.interpreter.environment.Environment;
+import caltrop.interpreter.util.PriorityUtil;
 import caltrop.interpreter.util.Utility;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.caltrop.actors.CalInterpreter;
@@ -75,7 +76,7 @@ public class Dataflow extends AbstractDDI implements DDI {
             Environment env) {
         _ptActor = ptActor;
         _actor = actor;
-        _actions = Utility.prioritySortActions(_actor);
+        _actions = PriorityUtil.prioritySortActions(_actor);
         _context = context;
         _env = env;
         _inputPorts = createPortMap(_actor.getInputPorts(), true);
@@ -113,7 +114,7 @@ public class Dataflow extends AbstractDDI implements DDI {
 
 
     public boolean isLegalActor() {
-        return true;
+        return PriorityUtil.isValidPriorityOrder(_actor);
     }
 
     public void setupActor() {
@@ -145,6 +146,7 @@ public class Dataflow extends AbstractDDI implements DDI {
                 // fire() call of this iteration.
                 // Hence we could put rollback work here.
 
+            	_rollbackInputChannels();
                 _selectAction();
             }
             if (_actorInterpreter.currentAction() != null) {
@@ -152,7 +154,6 @@ public class Dataflow extends AbstractDDI implements DDI {
                 _actorInterpreter.actionStep();
                 _actorInterpreter.actionComputeOutputs();
                 _actorInterpreter.actionClear();
-                _clearInputChannels();
             }
         } catch (Exception ex) {
             throw new IllegalActionException(null, ex,
@@ -208,7 +209,7 @@ public class Dataflow extends AbstractDDI implements DDI {
     		_currentStateSet = Collections.singleton(_actor.getScheduleFSM().getInitialState());
     	}
     	
-        _clearInputChannels();
+        _rollbackInputChannels();
         try {
             _selectInitializer();
         } catch (Exception ex) {
@@ -229,19 +230,31 @@ public class Dataflow extends AbstractDDI implements DDI {
         }
     }
 
-    private void  _clearInputChannels() {
+    private void  _commitInputChannels() {
         for (Iterator iterator = _inputPorts.values().iterator();
              iterator.hasNext();) {
             InputPort inputPort = (InputPort) iterator.next();
             for (int i = 0; i < inputPort.width(); i++) {
                 DFInputChannel c = (DFInputChannel)inputPort.getChannel(i);
-                c.reset();
+                c.commit();
+            }
+        }
+    }
+
+    private void  _rollbackInputChannels() {
+        for (Iterator iterator = _inputPorts.values().iterator();
+             iterator.hasNext();) {
+            InputPort inputPort = (InputPort) iterator.next();
+            for (int i = 0; i < inputPort.width(); i++) {
+                DFInputChannel c = (DFInputChannel)inputPort.getChannel(i);
+                c.rollback();
             }
         }
     }
 
     public boolean postfire() throws IllegalActionException {
     	_currentStateSet = computeNextStateSet(_currentStateSet, _lastFiredAction);
+    	_commitInputChannels();
     	_lastFiredAction = null;
         return false;
     }
@@ -257,6 +270,7 @@ public class Dataflow extends AbstractDDI implements DDI {
     public boolean prefire() throws IllegalActionException {
 		_lastFiredAction = null;
         try {
+        	_rollbackInputChannels();
             _selectAction();
             if (_actorInterpreter.currentAction() != null)
                 return true;
