@@ -477,6 +477,62 @@ test SignalProcessing-8.2 {FFTRealOut Complex, order 1} {
     epsilonDiff [$result getrange 0] [$reresult getrange 0]  
 } {}
 
+###################################################################
+test SignalProcessing-15.1 {generateWindow hamming} {
+    set winType [java::field ptolemy.math.SignalProcessing \
+     WINDOW_TYPE_HAMMING] 
+    set result [java::call ptolemy.math.SignalProcessing \
+     generateWindow 16 $winType]  
+    epsilonDiff [$result getrange 0] {0.08 0.1197690894844 0.23219992107493 \
+     0.39785218258752 0.5880830931032 0.77 0.91214781741240 \
+     0.98994789633755 0.98994789633755 0.91214781741248 0.77 \
+     0.58808309310312 0.39785218258752 0.23219992107493 0.11976908948440 \
+     0.08}
+} {} 
+
+###################################################################
+test SignalProcessing-15.2 {generateWindow rectangular} {
+    set winType [java::field ptolemy.math.SignalProcessing \
+     WINDOW_TYPE_RECTANGULAR]
+    set result [java::call ptolemy.math.SignalProcessing \
+     generateWindow 16 $winType]  
+    epsilonDiff [$result getrange 0] {1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 \
+	    1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0}
+} {} 
+
+###################################################################
+test SignalProcessing-15.3 {generateWindow blackman} {
+    set winType [java::field ptolemy.math.SignalProcessing \
+     WINDOW_TYPE_BLACKMAN] 
+    set result [java::call ptolemy.math.SignalProcessing \
+     generateWindow 16 $winType]  
+    epsilonDiff [$result getrange 0] {0.0 0.01675771968741 0.07707241975916 \
+     0.20077014326253 0.39401242357512 0.63000000000000 0.84922985673747 \
+     0.98215743697831 0.98215743697831 0.84922985673747 0.63 0.39401242357512 \
+     0.20077014326253 0.07707241975916 0.01675771968741 0.0}
+} {}
+
+###################################################################
+test SignalProcessing-15.4 {generateWindow bartlett even length} {
+    set winType [java::field ptolemy.math.SignalProcessing \
+     WINDOW_TYPE_BARTLETT] 
+    set result [java::call ptolemy.math.SignalProcessing \
+     generateWindow 16 $winType]  
+    epsilonDiff [$result getrange 0] {0.0 0.13333333333333 0.26666666666667 \
+     0.40000000000000 0.53333333333333 0.66666666666667 0.80000000000000 \
+     0.93333333333333 0.93333333333333 0.80000000000000 0.66666666666667 \
+     0.53333333333333 0.40000000000000 0.26666666666667 0.13333333333333 0.0}
+} {}
+
+###################################################################
+test SignalProcessing-15.5 {generateWindow bartlett odd length} {
+    set winType [java::field ptolemy.math.SignalProcessing \
+     WINDOW_TYPE_BARTLETT] 
+    set result [java::call ptolemy.math.SignalProcessing \
+     generateWindow 5 $winType]  
+    epsilonDiff [$result getrange 0] {0.0 0.5 1.0 0.5 0.0}
+} {}
+
 ####################################################################
 test SignalProcessing-8.1 {IDCT double[] empty array} {
     catch {set eres [java::call ptolemy.math.SignalProcessing \

@@ -142,8 +142,10 @@ test DoubleArrayMath-4.4 {append with 2 non-empty arrays} {
 test DoubleArrayMath-11.1 {divide} {
     set ar [java::call ptolemy.math.DoubleArrayMath divide $a1 $a2]
     # jdkPrintArray is defined in $PTII/util/testsuite/testDefs.tcl
-    jdkPrintArray $ar
-} {0.000766648709129 -0.0279542566709 -8.2850041425e-06 -765.8 -0.0498623853211}
+    #jdkPrintArray $ar
+    epsilonDiff [$ar getrange 0] [list 0.000766648709129 -0.0279542566709 \
+     -8.2850041425e-06 -765.8 -0.0498623853211] 
+} {}
 
 ####################################################################
 test DoubleArrayMath-11.2 {divide with unequally sized arrays} {

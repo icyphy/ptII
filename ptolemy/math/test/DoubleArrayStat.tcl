@@ -67,6 +67,7 @@ set p1 [java::new {double[]} 4 [list 0.3 0.2 0.0 0.5]]
 set p2 [java::new {double[]} 4 [list 0.7 0.1 0.0 0.2]]
 set p3 [java::new {double[]} 4 [list 0.4 0.4 0.1 0.1]]
 set badp3 [java::new {double[]} 4 [list 0.4 0.4 -0.1 0.2]]
+set p4 [java::new {double[]} 3 [list 0.4 0.4 0.1]]
 
 ####################################################################
 test DoubleArrayStat-1.1 {entropy} {
@@ -75,6 +76,18 @@ test DoubleArrayStat-1.1 {entropy} {
             1.485475297]
     list $br
 } {1}
+
+####################################################################
+test DoubleArrayStat-1.2 {entropy of empty array} {
+    catch {set r [java::call ptolemy.math.DoubleArrayStat entropy $a0]} errMsg
+    list $errMsg
+} {{java.lang.IllegalArgumentException: ptolemy.math.DoubleArrayStat.entropy() : input array has length 0.}}
+
+####################################################################
+test DoubleArrayStat-1.3 {entropy bad p} {
+    catch {set r [java::call ptolemy.math.DoubleArrayStat entropy $badp3]} errMsg
+    list $errMsg
+} {{java.lang.IllegalArgumentException: ptolemy.math.DoubleArrayStat.entropy() : Negative probability encountered.}}
 
 ####################################################################
 test DoubleArrayStat-1.1 {min} {
@@ -88,6 +101,11 @@ test DoubleArrayStat-1.2 {min with weird array} {
     list $r
 } -Infinity
 
+####################################################################
+test DoubleArrayStat-1.3 {min of empty aray} {
+    catch {set r [java::call ptolemy.math.DoubleArrayStat min $a0]} errMsg
+    list $errMsg
+} {{java.lang.IllegalArgumentException: ptolemy.math.DoubleArrayStat.min() : input array has length 0.}}
 
 ####################################################################
 test DoubleArrayStat-2.1 {max} {
@@ -96,10 +114,22 @@ test DoubleArrayStat-2.1 {max} {
 }  4826.2
 
 ####################################################################
+test DoubleArrayStat-2.2 {max of empty aray} {
+    catch {set r [java::call ptolemy.math.DoubleArrayStat max $a0]} errMsg
+    list $errMsg
+} {{java.lang.IllegalArgumentException: ptolemy.math.DoubleArrayStat.max() : input array has length 0.}}
+  
+####################################################################
 test DoubleArrayStat-3.1 {mean} {
     set r [java::call ptolemy.math.DoubleArrayStat mean $a2]
     list $r
 }  1019.298
+
+####################################################################
+test DoubleArrayStat-1.3 {mean of empty aray} {
+    catch {set r [java::call ptolemy.math.DoubleArrayStat mean $a0]} errMsg
+    list $errMsg
+} {{java.lang.IllegalArgumentException: ptolemy.math.DoubleArrayStat.mean() : input array has length 0.}}
 
 ####################################################################
 test DoubleArrayStat-3.1 {productOfElements} {
@@ -116,6 +146,34 @@ test DoubleArrayStat-1.1 {relativeEntropy} {
     set rl [java::new {double[]} 1 [list $r]]
     epsilonDiff [list $r] [list 0.49424632141]
 } {}
+
+####################################################################
+test DoubleArrayStat-1.2 {relativeEntropy two empty arrays} {
+    catch {set r [java::call ptolemy.math.DoubleArrayStat relativeEntropy $a0 \
+	    $a0]} errMsg
+    list $errMsg
+} {{java.lang.IllegalArgumentException: ptolemy.math.DoubleArrayStat.relativeEntropy() : input array has length 0.}}
+
+####################################################################
+test DoubleArrayStat-1.3 {relativeEntropy unequally sized arrays} {
+    catch {set r [java::call ptolemy.math.DoubleArrayStat relativeEntropy $p3 \
+	    $p4]} errMsg
+    list $errMsg
+} {{java.lang.IllegalArgumentException: ptolemy.math.DoubleArrayStat.relativeEntropy() : input arrays must have the same length, but the first array has length 4 and the second array has length 3.}}
+
+####################################################################
+test DoubleArrayStat-1.4 {relativeEntropy bad p} {
+    catch {set r [java::call ptolemy.math.DoubleArrayStat relativeEntropy \
+$badp3 $p3]} errMsg
+    list $errMsg
+} {{java.lang.IllegalArgumentException: ptolemy.math.DoubleArrayStat.relativeEntropy() : Negative probability encountered.}}
+
+####################################################################
+test DoubleArrayStat-1.5 {relativeEntropy bad q} {
+    catch {set r [java::call ptolemy.math.DoubleArrayStat relativeEntropy $p3 \
+	    $badp3]} errMsg
+    list $errMsg
+} {{java.lang.IllegalArgumentException: ptolemy.math.DoubleArrayStat.relativeEntropy() : Negative probability encountered.}}
 
 ####################################################################
 test DoubleArrayStat-3.1 {standardDeviation} {
@@ -140,7 +198,7 @@ test DoubleArrayStat-3.2 {standardDeviation sample false} {
 test DoubleArrayStat-3.3 {standardDeviation sample true, empty array} {
     catch {set r [java::call ptolemy.math.DoubleArrayStat standardDeviation $a0 true]} errMsg
     list $errMsg
-} {{java.lang.IllegalArgumentException: ptolemy.math.DoubleArrayStat.variance() : variance and standard deviation of an empty array are not defined.}}
+} {{java.lang.IllegalArgumentException: ptolemy.math.DoubleArrayStat.variance() : input array has length 0.}}
 
 ####################################################################
 test DoubleArrayStat-3.4 {standardDeviation sample true, length 1 array} {
@@ -201,7 +259,7 @@ test DoubleArrayStat-3.2 {variance sample false} {
 test DoubleArrayStat-3.3 {variance sample true, empty array} {
     catch {set r [java::call ptolemy.math.DoubleArrayStat variance $a0 true]} errMsg
     list $errMsg
-} {{java.lang.IllegalArgumentException: ptolemy.math.DoubleArrayStat.variance() : variance and standard deviation of an empty array are not defined.}}
+} {{java.lang.IllegalArgumentException: ptolemy.math.DoubleArrayStat.variance() : input array has length 0.}}
 
 ####################################################################
 test DoubleArrayStat-3.4 {variance sample true, length 1 array} {
