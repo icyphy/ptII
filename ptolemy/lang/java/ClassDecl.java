@@ -101,11 +101,11 @@ public class ClassDecl extends TypeDecl {
     }
 
     public LinkedList getInterfaces() {
-       return _interfaces;
+        return _interfaces;
     }
 
     public void setInterfaces(LinkedList interfaces) {
-       _interfaces = interfaces;
+        _interfaces = interfaces;
     }
 
     /** Ensure that the source code for this ClassDecl is loaded. */
@@ -152,7 +152,7 @@ public class ClassDecl extends TypeDecl {
         if (_environ == null) {
            _environ = new Environ(StaticResolution.SYSTEM_PACKAGE.getEnviron());
 
-           // superClass(ObjectDecl);
+           setSuperClass(StaticResolution.OBJECT_DECL);
         }
     }
 

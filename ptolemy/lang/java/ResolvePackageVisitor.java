@@ -92,6 +92,20 @@ public class ResolvePackageVisitor extends ResolveVisitorBase {
         return null;
     }
 
+    public Object visitLabeledStmtNode(LabeledStmtNode node, LinkedList args) {
+        Environ env = _makeEnviron(node, args);
+
+        _visitNode(node.getStmt(), env);
+        return null;
+    }
+
+    public Object visitCatchNode(CatchNode node, LinkedList args) {
+        Environ env = _makeEnviron(node, args);
+
+        _visitNode(node.getBlock(), env);
+        return null;
+    }
+
     public Object visitForNode(ForNode node, LinkedList args) {
         Environ env = _makeEnviron(node, args);
 
@@ -102,7 +116,18 @@ public class ResolvePackageVisitor extends ResolveVisitorBase {
     public Object visitAllocateAnonymousClassNode(AllocateAnonymousClassNode node, LinkedList args) {
         Environ env = _makeEnviron(node, args);
 
-        _visitList(node.getMembers(), env);
+        ClassDecl decl = new ClassDecl("<anon>", null);        
+        decl.setSource(node);
+        decl.setEnviron(env);
+
+        node.setProperty("decl", decl);
+
+        LinkedList listArgs = new LinkedList();
+        listArgs.addLast(env);                  // last environment
+        listArgs.addLast(Boolean.TRUE);         // inner class = true
+        listArgs.addLast(NullValue.instance);   // no enclosing decl
+        TNLManip.traverseList(this, null, listArgs, node.getMembers());
+        
         return null;
     }
 

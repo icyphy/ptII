@@ -799,7 +799,7 @@ BlockStatement :
 	| Statement
 		{ $$ = cons($1); }
  | ClassDeclaration
-   { $$ = cons($1); }
+   { $$ = cons(new UserTypeDeclStmtNode((UserTypeDeclNode) $1)); }
 	;
 
 
@@ -867,7 +867,7 @@ EmptyStatement :
 
 LabeledStatement :
 	  SimpleName ':' Statement
-		{ $$ = new LabeledStmtNode((NameNode) $1, (TreeNode) $3); }
+		{ $$ = new LabeledStmtNode((NameNode) $1, (StatementNode) $3); }
 	;
 
 
@@ -895,9 +895,9 @@ ExpressionStatement :
 
 SelectionStatement :
 	  IF '(' Expression ')' Statement %prec ELSE
-		{ $$ = new IfStmtNode((ExprNode) $3, (TreeNode) $5, AbsentTreeNode.instance); }
+		{ $$ = new IfStmtNode((ExprNode) $3, (StatementNode) $5, AbsentTreeNode.instance); }
 	| IF '(' Expression ')' Statement ELSE Statement
-		{ $$ = new IfStmtNode((ExprNode) $3, (TreeNode) $5, (TreeNode) $7); }
+		{ $$ = new IfStmtNode((ExprNode) $3, (StatementNode) $5, (TreeNode) $7); }
 	| SWITCH '(' Expression ')' SwitchBlock
 		{ $$ = new SwitchNode((ExprNode) $3, (LinkedList) $5); }
 	;
@@ -943,10 +943,10 @@ IterationStatement :
 		{ $$ = new LoopNode((TreeNode) $2, (ExprNode) $5, new EmptyStmtNode()); }
 	| FOR '(' ForInit Expression ';' ForUpdateOpt ')' Statement
 		{ $$ = new ForNode((LinkedList) $3, (ExprNode) $4,
-      (LinkedList) $6, (TreeNode) $8); }
+      (LinkedList) $6, (StatementNode) $8); }
 	| FOR '(' ForInit ';' ForUpdateOpt ')' Statement
 		{ $$ = new ForNode((LinkedList) $3, new BoolLitNode("true"), (LinkedList) $5,
-      (TreeNode) $7); }
+      (StatementNode) $7); }
 	;
 
 ForInit :

@@ -13,6 +13,9 @@ public class ResolveClassVisitor extends ResolveVisitorBase {
     }
 
     public Object visitCompileUnitNode(CompileUnitNode node, LinkedList args) {
+        ApplicationUtility.trace("resolveClass for " +
+         node.getDefinedProperty("ident"));
+
         _pkgDecl = (PackageDecl) node.getDefinedProperty("thePackage");
 
         _initLazyFlag(node);
@@ -198,6 +201,55 @@ public class ResolveClassVisitor extends ResolveVisitorBase {
         return null;
     }
 
+
+    public Object visitConstructorDeclNode(ConstructorDeclNode node, LinkedList args) {
+
+        ClassDecl classDecl = (ClassDecl) args.get(0);
+
+        int modifiers = node.getModifiers();
+
+        // Check that this constructor is legal
+
+        Environ classEnv = (Environ) args.get(1);
+
+        NameNode name = node.getName();
+        String constructorName = name.getIdent();
+
+        Iterator constructorItr = classEnv.lookupFirstProper(constructorName,
+         JavaDecl.CG_CONSTRUCTOR);
+
+        MethodDecl d = new MethodDecl(constructorName, JavaDecl.CG_CONSTRUCTOR,
+         NullTypeNode.instance, modifiers, node, classDecl,
+         _makeTypeList(node.getParams()), (Collection) node.getThrowsList());
+
+        while (constructorItr.hasNext()) {
+
+           MethodDecl dd = (MethodDecl) constructorItr.next();
+
+           if (dd.conflictsWith(d)) {
+              ApplicationUtility.error("illegal overloading of " +
+               constructorName);
+           }
+        }
+
+        classEnv.add(d);
+
+        name.setProperty("decl", d);
+
+        // now that we have anonymous classes, we should visit the body
+        TreeNode block = node.getBody();
+
+        if (block != AbsentTreeNode.instance) {
+
+           LinkedList childArgs = new LinkedList();
+           childArgs.addLast(NullTypeNode.instance); // enclosing class decl
+           childArgs.addLast(NullTypeNode.instance); // enclosing class environ
+           block.accept(this, childArgs);
+        }
+
+        return null;
+    }
+
     public Object visitMethodDeclNode(MethodDeclNode node, LinkedList args) {
 
         ClassDecl classDecl = (ClassDecl) args.get(0);
@@ -237,17 +289,17 @@ public class ResolveClassVisitor extends ResolveVisitorBase {
 
         // Check that this method is legal
 
-        Environ classEnv = (Environ) args.get(0);
+        Environ classEnv = (Environ) args.get(1);
 
         NameNode name = node.getName();
         String methodName = name.getIdent();
 
-        Iterator methodItr = classEnv.lookupFirstProper(
-         methodName, JavaDecl.CG_METHOD);
+        Iterator methodItr = classEnv.lookupFirstProper(methodName,
+         JavaDecl.CG_METHOD);
 
-        MethodDecl d = new MethodDecl(methodName, node.getReturnType(),
-         modifiers, node, classDecl, node.getParams(),
-         (Collection) node.getThrowsList());
+        MethodDecl d = new MethodDecl(methodName, JavaDecl.CG_METHOD,
+         node.getReturnType(), modifiers, node, classDecl,
+         _makeTypeList(node.getParams()), (Collection) node.getThrowsList());
 
         while (methodItr.hasNext()) {
 
@@ -278,6 +330,42 @@ public class ResolveClassVisitor extends ResolveVisitorBase {
 
     public Object visitParameterNode(ParameterNode node, LinkedList args) {
         return null;
+    }
+
+    public Object visitAllocateAnonymousClassNode(AllocateAnonymousClassNode node, LinkedList args) {
+
+        node.getEnclosingInstance().accept(this, args);
+         
+        ClassDecl me = (ClassDecl) node.getDefinedProperty("decl");
+               
+        TypeNameNode superType = (TypeNameNode) node.getSuperType();
+        
+        ClassDecl sdecl = (ClassDecl) JavaDecl.getDecl((NamedNode) superType);
+        
+        ClassDecl superClass = null;
+        LinkedList implList = new LinkedList();
+        if (sdecl.category == JavaDecl.CG_CLASS) {
+           superClass = sdecl;
+        } else if (sdecl.category == JavaDecl.CG_INTERFACE) {
+           superClass = StaticResolution.OBJECT_DECL;
+           implList.addLast(sdecl);
+        }
+
+        node.setProperty("superclass", superClass);     
+        node.setProperty("implements", implList);
+                         
+        me.setSuperClass(superClass);
+
+        Environ myEnviron = me.getEnviron();
+
+        // have members add themselves to this class's environment
+        LinkedList childArgs = new LinkedList();
+        childArgs.addLast(me);
+        childArgs.addLast(myEnviron);
+
+        TNLManip.traverseList(this, node, childArgs, node.getMembers());
+
+        return null;        
     }
 
     /** The default visit method. Visits all child nodes with no enclosing
@@ -312,6 +400,24 @@ public class ResolveClassVisitor extends ResolveVisitorBase {
          new SuperConstructorCallNode(new LinkedList()));
     }
 
+    /** Given a list of ParameterNodes, return a new list of TypeNodes
+     *  corresponding to the type of each parameter.
+     */
+    protected static LinkedList _makeTypeList(LinkedList paramList) {
+        LinkedList retval = new LinkedList();
+
+        Iterator paramItr = paramList.listIterator();
+
+        while (paramItr.hasNext()) {
+           ParameterNode param = (ParameterNode) paramItr.next();
+
+           TypeNode type = param.getDtype();
+
+           retval.addLast(type);
+        }
+
+        return retval;
+    }
 
     /** The package this compile unit is in. */
     protected PackageDecl _pkgDecl = null;

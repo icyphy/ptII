@@ -1284,7 +1284,7 @@ case 125:
 break;
 case 126:
 //#line 802 "jparser.y"
-{ yyval.obj = cons(val_peek(0).obj); }
+{ yyval.obj = cons(new UserTypeDeclStmtNode((UserTypeDeclNode) val_peek(0).obj)); }
 break;
 case 127:
 //#line 810 "jparser.y"
@@ -1332,7 +1332,7 @@ case 137:
 break;
 case 138:
 //#line 870 "jparser.y"
-{ yyval.obj = new LabeledStmtNode((NameNode) val_peek(2).obj, (TreeNode) val_peek(0).obj); }
+{ yyval.obj = new LabeledStmtNode((NameNode) val_peek(2).obj, (StatementNode) val_peek(0).obj); }
 break;
 case 139:
 //#line 878 "jparser.y"
@@ -1364,11 +1364,11 @@ case 145:
 break;
 case 146:
 //#line 898 "jparser.y"
-{ yyval.obj = new IfStmtNode((ExprNode) val_peek(2).obj, (TreeNode) val_peek(0).obj, AbsentTreeNode.instance); }
+{ yyval.obj = new IfStmtNode((ExprNode) val_peek(2).obj, (StatementNode) val_peek(0).obj, AbsentTreeNode.instance); }
 break;
 case 147:
 //#line 900 "jparser.y"
-{ yyval.obj = new IfStmtNode((ExprNode) val_peek(4).obj, (TreeNode) val_peek(2).obj, (TreeNode) val_peek(0).obj); }
+{ yyval.obj = new IfStmtNode((ExprNode) val_peek(4).obj, (StatementNode) val_peek(2).obj, (TreeNode) val_peek(0).obj); }
 break;
 case 148:
 //#line 902 "jparser.y"
@@ -1420,12 +1420,12 @@ break;
 case 159:
 //#line 945 "jparser.y"
 { yyval.obj = new ForNode((LinkedList) val_peek(5).obj, (ExprNode) val_peek(4).obj,
-      (LinkedList) val_peek(2).obj, (TreeNode) val_peek(0).obj); }
+      (LinkedList) val_peek(2).obj, (StatementNode) val_peek(0).obj); }
 break;
 case 160:
 //#line 948 "jparser.y"
 { yyval.obj = new ForNode((LinkedList) val_peek(4).obj, new BoolLitNode("true"), (LinkedList) val_peek(2).obj,
-      (TreeNode) val_peek(0).obj); }
+      (StatementNode) val_peek(0).obj); }
 break;
 case 161:
 //#line 954 "jparser.y"

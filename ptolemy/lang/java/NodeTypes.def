@@ -46,21 +46,25 @@ import java.util.LinkedList;
 import ptolemy.lang.TreeNode;
 </nheader>
 
+// interfaces
 NamedNode I <none> m NameNode getName m m void setName NameNode name m
 ModifiedNode I <none> m int getModifiers m m void setModifiers int modifiers m
 
 NameNode C TreeNode k 0 TreeNode qualifier String ident k
-TypeNode A TreeNode c 0 c
-StatementNode A TreeNode c 0 c
-FieldAccessNode A ExprNode c 0 c
 AbsentTreeNode S TreeNode
 
 // base
+TypeNode A TreeNode c 0 c
 PrimitiveTypeNode A TypeNode c 0 c
 ReferenceTypeNode A TypeNode c 0 c
-ExprNode A TreeNode c 0 c
 
-ConstructorCallNode C TreeNode k 0 LinkedList args k
+StatementNode A TreeNode c 0 c
+ConstructorCallNode A StatementNode k 0 LinkedList args k
+IterationNode A StatementNode c 0 c
+JumpStmtNode A StatementNode k 0 TreeNode label k
+
+ExprNode A TreeNode c 0 c
+FieldAccessNode A ExprNode c 0 c
 
 SingleExprNode A ExprNode k 0 ExprNode expr k
 SingleOpNode A SingleExprNode c 1 ExprNode expr c
@@ -139,22 +143,23 @@ InterfaceDeclNode C UserTypeDeclNode i NamedNode ModifiedNode i k 4 int modifier
 ParameterNode C TreeNode i NamedNode ModifiedNode i k 0 int modifiers TypeNode dtype NameNode name k
 BlockNode C StatementNode k 0 LinkedList stmts k
 EmptyStmtNode C StatementNode c 0 c
-LabeledStmtNode C StatementNode i NamedNode i k 0 NameNode name TreeNode stmt k
-IfStmtNode C StatementNode k 0 ExprNode condition TreeNode thenPart TreeNode elsePart k
+LabeledStmtNode C StatementNode i NamedNode i k 0 NameNode name StatementNode stmt k
+IfStmtNode C StatementNode k 0 ExprNode condition StatementNode thenPart TreeNode elsePart k
 SwitchNode C StatementNode k 0 ExprNode expr LinkedList switchBlocks k
 // expr may be absent
 CaseNode C TreeNode k 0 TreeNode expr k
 SwitchBranchNode C TreeNode k 0 LinkedList cases LinkedList stmts k
-LoopNode C StatementNode k 0 TreeNode foreStmt ExprNode test TreeNode aftStmt k
+LoopNode C IterationNode k 0 TreeNode foreStmt ExprNode test TreeNode aftStmt k
 ExprStmtNode C StatementNode k 0 ExprNode expr k
+UserTypeDeclStmtNode C StatementNode k 0 UserTypeDeclNode defType k
 
 // test will be a BoolLitNode in "for(;;)"
-ForNode C TreeNode k 0 LinkedList init ExprNode test LinkedList update TreeNode stmt k
+ForNode C IterationNode k 0 LinkedList init ExprNode test LinkedList update StatementNode stmt k
 
 // label may be absent !!!
-BreakNode C StatementNode k 0 TreeNode label k
+BreakNode C JumpStmtNode k 1 TreeNode label k
 // label may be absent
-ContinueNode C StatementNode k 0 TreeNode label k
+ContinueNode C JumpStmtNode k 1 TreeNode label k
 
 // expr may be absent
 ReturnNode C StatementNode k 0 TreeNode expr k

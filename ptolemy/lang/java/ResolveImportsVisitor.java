@@ -42,11 +42,10 @@ public class ResolveImportsVisitor extends JavaVisitor {
     }
 
     public Object visitCompileUnitNode(CompileUnitNode node, LinkedList args) {
-        LinkedList childArgs = new LinkedList();
-        childArgs.addLast(node);                               // compile unit
-        childArgs.addLast(node.getDefinedProperty("environ")); // file environment
+        _compileUnit = node; 
+        _fileEnv = (Environ) node.getDefinedProperty("environ"); // file environment
 
-        TNLManip.traverseList(this, node, childArgs, node.getImports());
+        TNLManip.traverseList(this, node, null, node.getImports());
 
         return null;
     }
@@ -54,14 +53,13 @@ public class ResolveImportsVisitor extends JavaVisitor {
 
     public Object visitImportNode(ImportNode node, LinkedList args) {
 
-        Environ fileEnv = (Environ) args.get(1);
         NameNode name = node.getName();
 
         StaticResolution.resolveAName(name,
          (Environ) StaticResolution.SYSTEM_PACKAGE.getEnviron(),
          null, false, null, JavaDecl.CG_USERTYPE);
 
-        JavaDecl old = (JavaDecl) fileEnv.lookupProper(name.getIdent());
+        JavaDecl old = (JavaDecl) _fileEnv.lookupProper(name.getIdent());
         JavaDecl current = (JavaDecl) name.getProperty("decl");
 
         if ((old != null) && (old != current)) {
@@ -70,13 +68,12 @@ public class ResolveImportsVisitor extends JavaVisitor {
                old.getName());
            }
 	     }
-        fileEnv.add((ClassDecl) name.getDefinedProperty("decl"));
+        _fileEnv.add((ClassDecl) name.getDefinedProperty("decl"));
 
         return null;
     }
 
     public Object visitImportOnDemandNode(ImportOnDemandNode node, LinkedList args) {
-        CompileUnitNode file = (CompileUnitNode) args.get(0);
 
         NameNode name = node.getName();
 
@@ -86,13 +83,19 @@ public class ResolveImportsVisitor extends JavaVisitor {
 
         PackageDecl decl = (PackageDecl) name.getDefinedProperty("decl");
 
-        StaticResolution.importOnDemand(file, decl);
+        StaticResolution.importOnDemand(_compileUnit, decl);
         return null;
     }
 
-    /** The default visit method. */
+    /** The default visit method. We shouldn't visit this node, so throw an exception. */
     protected Object _defaultVisit(TreeNode node, LinkedList args) {
         throw new RuntimeException("ResolveImports not defined on node type : " +
          node.getClass().getName());
     }
+    
+    /** The CompileUnitNode that is the root of the tree. */
+    protected CompileUnitNode _compileUnit = null;
+    
+    /** The file environment. */
+    protected Environ _fileEnv = null;
 }

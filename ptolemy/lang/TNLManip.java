@@ -81,6 +81,15 @@ public class TNLManip {
 
        return retList;
     }
+    
+    public static final LinkedList cons(Object obj) {
+       return cons(obj, new LinkedList());        
+    }
+    
+    public static final LinkedList cons(Object obj, LinkedList list) {
+       list.addFirst(obj);
+       return list;
+    }
 
     public static final String toString(LinkedList list, String indent) {
        if (list.isEmpty()) {

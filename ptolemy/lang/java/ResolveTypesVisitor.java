@@ -50,7 +50,7 @@ public class ResolveTypesVisitor extends ResolveVisitorBase {
         NameNode name = node.getName();
 
         NameNode newName = (NameNode) StaticResolution.resolveAName(
-         name, env, null, false, _pkgDecl, JavaDecl.CG_USERTYPE);
+         name, env, null, false, _currentPackage, JavaDecl.CG_USERTYPE);
 
         // this is not necessary, but by convention ...
         node.setName(newName);
@@ -63,7 +63,7 @@ public class ResolveTypesVisitor extends ResolveVisitorBase {
 
         _initLazyFlag(node);
 
-        _pkgDecl = (PackageDecl) node.getDefinedProperty("thePackage");
+        _currentPackage = (PackageDecl) node.getDefinedProperty("thePackage");
 
         LinkedList childArgs = new LinkedList();
         childArgs.add(node.getDefinedProperty("environ")); // file environment
@@ -119,7 +119,6 @@ public class ResolveTypesVisitor extends ResolveVisitorBase {
            LinkedList childArgs = new LinkedList();
            childArgs.addLast(node.getDefinedProperty("environ"));
 
-
            // resolve only the parameters and exceptions thrown
            TNLManip.traverseList(this, node, childArgs, node.getParams());
            TNLManip.traverseList(this, node, childArgs, node.getThrowsList());
@@ -136,6 +135,7 @@ public class ResolveTypesVisitor extends ResolveVisitorBase {
     }
 
     public Object visitAllocateAnonymousClassNode(AllocateAnonymousClassNode node, LinkedList args) {
+        
         return _visitNodeWithEnviron(node);
     }
 
@@ -163,8 +163,8 @@ public class ResolveTypesVisitor extends ResolveVisitorBase {
     }
 
     protected Object _visitUserTypeNode(UserTypeDeclNode node, LinkedList args) {
-        if ((node.getModifiers() & Modifier.PRIVATE_MOD) != 0) {
-           // don't resolve anything if it's a private class
+        if (_isSkippable(node)) {
+           // don't resolve anything if it's a private class and we're doing lazy resolution
            return null;
         }
 
@@ -179,5 +179,5 @@ public class ResolveTypesVisitor extends ResolveVisitorBase {
     }
 
     /** The package this compile unit is in. */
-    protected PackageDecl _pkgDecl = null;
+    protected PackageDecl _currentPackage = null;
 }
