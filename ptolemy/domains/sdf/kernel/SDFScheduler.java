@@ -1711,13 +1711,13 @@ public class SDFScheduler extends Scheduler implements ValueListener {
                     }
                 }
             }
-        } catch (IllegalActionException exception) {
+        } catch (IllegalActionException ex) {
             // This could happen if we call getTokenConsumptionRate on a
             // port that isn't a part of the actor.   This probably means
             // the graph is screwed up, or somebody else is mucking
             // with it.
-            throw new InternalErrorException("SDF Scheduler Failed " +
-                    "internal consistency check: " + exception.getMessage());
+            throw new InternalErrorException(this, ex,
+                    "SDF Scheduler Failed internal consistency check.");
         } finally {
             if (_debugging && VERBOSE) {
                 _debug("finishing loop");
@@ -1925,8 +1925,7 @@ public class SDFScheduler extends Scheduler implements ValueListener {
                 }
                 rateParameter.setToken(new IntToken(value)); 
             } catch (KernelException ex) {
-                // Should not occur.
-                throw new InternalErrorException(ex.toString());
+                throw new InternalErrorException(port, ex, "Should not occur");
             }
         }
     }
@@ -1964,8 +1963,8 @@ public class SDFScheduler extends Scheduler implements ValueListener {
                 rateParameter.setVisibility(Settable.NOT_EDITABLE);
                 rateParameter.setPersistent(false);
             } catch (KernelException ex) {
-                // Should not occur.
-                throw new InternalErrorException(ex.toString());
+                throw new InternalErrorException(container, ex,
+                        "Should not occur");
             }
         }
         rateParameter.setToken(new IntToken(value));
@@ -1993,9 +1992,8 @@ public class SDFScheduler extends Scheduler implements ValueListener {
                 parameter = new Variable(port, name, new IntToken(rate));
                 parameter.setVisibility(Settable.NOT_EDITABLE);
                 parameter.setPersistent(false);
-            } catch (KernelException exception) {
-                // This should never happen.
-                throw new InternalErrorException(exception.getMessage());
+            } catch (KernelException ex) {
+                throw new InternalErrorException(port, ex, "Should not occur");
             }
         }
     }
