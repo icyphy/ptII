@@ -22,51 +22,52 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-$Id$ 
 */
  
 package ptolemy.filter.controller;
 
 import java.util.*;
 import ptolemy.math.Complex;
-import ptolemy.math.FType;
+import ptolemy.math.filter.Filter;
 import ptolemy.filter.filtermodel.*;
 import ptolemy.filter.view.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// Manager 
 /**
- * The manager handle all the creation the filter object
- * and the views.  It also handles the user input from the Tmain
- * and passes them to the filter object.
- *
- * author: William Wu
- * version:
- * date: 3/2/98
+  The manager handle all the creation the filter object
+  and the views.  It also handles the user input from the FilterApplication 
+  and passes them to the filter object.  It can also hide/show views.
+ 
+  @author: William Wu (wbwu@eecs.berkeley.edu)
+  @version: %W%   %G%
+  @date: 3/2/98
  */
+
 public class Manager {
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         public methods                           ////
- 
+
     /**
      * Constructor.  _opMode is set for specify which mode the ptfilter is in
-     * either as stand alone application or applet on the web.  Mode 0 for frame,
-     * Mode 1 for applet.
+     * either as stand alone application or applet on the web. 
+     * @param mode mode of operation, either Frame mode, or Applet mode. 
      */ 
     public Manager(int mode){
        _opMode = mode;
-       _fobj = null;
-       _pzv = null;
-       _fv = null;
-       _iv = null; 
-       _iirfiltsetv = null; 
     }
 
+    //////////////////////////////////////////////////////////////////////////
+    ////                         public methods                           ////
 
-    // this method called by TMain to set up a new filter
-    // the method below it void setupfilter() is replaced by
-    // this one.
+    /**
+     * Create a new filter with user specification.  It will delete
+     * the previous filter if it exists.  New views will be created for
+     * the filter.  Different types of filter will have different views.
+     * A view controller will also be created.
+     *
+     * @param type filter's type. 
+     * @param name filter's name. 
+     */ 
     public void newFilter(int type, String name){
 
        if (_fobj!= null){
@@ -74,340 +75,140 @@ public class Manager {
        } 
        _fobj = new FilterObj();
        _fobj.init(name, type);
-       if (type == FType.IIR){ // IIR
-          if (_opMode == FrameMode){ // frame mode, it is ok to start 
+       if (type == Filter.IIR){ // IIR
+          if (_opMode == FRAMEMODE){ // frame mode, it is ok to start 
                                      // filter design now since all the 
                                      // graphics is taken care internally
-              _fobj.setIIRParameter(FType.Butterworth, FType.Bilinear, 
-                                    FType.Lowpass, 1.0);
+              _fobj.setIIRParameter(Filter.BUTTERWORTH, Filter.BILINEAR, 
+                                    Filter.LOWPASS, 1.0);
           }
-          addfiltparamview(); 
+          _addView("IIRFilterParameterView");
        }
-       addpolezeroview();
-       addfreqview();
-       addimpulview();
+
+       _addView("PoleZeroView");
+       _addView("FreqView");
+       _addView("ImpulseView");
+
+       // setup view controller
+       Enumeration viewkey = _views.keys();
+       String [] viewnames = new String[_views.size()];
+       int i=0;
+       while (viewkey.hasMoreElements()){
+            viewnames[i++] = new String((String) viewkey.nextElement());
+       }           
+       _viewcontroller = new ViewController(name, viewnames, this);
         
     }
 
-    public PoleZeroView getPoleZeroView(){
-       return _pzv;
-    } 
 
-    public FreqView getFreqView(){
-       return _fv;
+    /**
+     * Get view by the given name.  If the name doesn't match, 
+     * null is returned.
+     *
+     * @param name name of the view to obtain.
+     */ 
+    public FilterView getView(String name){
+       Enumeration viewkeys = _views.keys();
+       FilterView view = null;
+       while (viewkeys.hasMoreElements()){
+           String viewname = (String) viewkeys.nextElement();
+           if (viewname.equals(name)){
+                view = (FilterView) _views.get(viewname);
+                break;
+           }
+       } 
+       return view;
     }
 
-    public ImpulsView getImpulsView(){
-       return _iv;
+    public FilterObj getFilterObject(){
+       return _fobj;
     }
 
-    public IIRFiltSetView getIIRSetView(){
-       return _iirfiltsetv;
-    } 
-    
-
-   /** 
-    * get the gain of the filter. Called by TMain for 
-    * saving the filter to file.
-    */
-   public Complex getfilterGain(){
-       return _fobj.getGain();
-   }
-
-
-   /** 
-    * get the numerator of the filter. Called by TMain for
-    * saving the filter to file.
-    */
-   public Complex [] getfilterNumerator(){
-       return _fobj.getNumerator();
-   } 
-
-
-   /** 
-    * get the denominator of the filter. Called by TMain for
-    * saving the filter to file.
-    */
-   public Complex [] getfilterDenominator(){
-       return _fobj.getDenominator();
-   } 
-
- 
-   /**
-    * get the poles/zeros of the filter.  Called by TMain for 
-    * saving filter to file.
-    */
-   public int getfilter(Vector ival1, Vector ival2, Vector ival3, 
-                        String name){
-      Complex [] pole;
-      Complex [] zero;
-      name = null;
-      if (_fobj!=null){
-           pole = _fobj.getPole();
-           for (int i = 0;i<pole.length;i++){
-                Double d1 = new Double(pole[i].real);  
-                Double d2 = new Double(pole[i].imag);  
-                Boolean po = new Boolean(true);  
-                ival1.addElement(d1); 
-                ival2.addElement(d2); 
-                ival3.addElement(po); 
-           }
-           zero = _fobj.getZero();
-           for (int i = 0;i<zero.length;i++){
-                Double d1 = new Double(zero[i].real);  
-                Double d2 = new Double(zero[i].imag);  
-                Boolean po = new Boolean(false);  
-                ival1.addElement(d1); 
-                ival2.addElement(d2); 
-                ival3.addElement(po); 
-           }
-           name = _fobj.getName();
-           return _fobj.getType(); 
-      } 
-      return -1;
-   }
-
-
-   /**
-    *  Create the filter from the given set of poles and zeros.
-    *  Called by TMain when a filter is loaded in as a file that specifies
-    *  in poles and zeros.  Also it is called when an empty filter is desired.
-    */ 
-   public boolean createFilterbyPolesZeros(String name, int type, Vector ival1, 
-                            Vector ival2, Vector ival3) {
-
-         if (ival1==null) return false;
-
-         if (_fobj != null){
-              deletefilter();
-         }
-      
-         Complex [] pole;
-         Complex [] zero;
-         int pcount = 0;
-         int zcount = 0;
-         int curpole = 0;
-         int curzero = 0;
-         // count the number of poles and zeros
-         for (int i=0;i<ival3.size();i++){
-             if (((Boolean)ival3.elementAt(i)).booleanValue()==true){
-                 pcount++;
-             } else {
-                 zcount++;
-             }
-         } 
- 
-         pole = new Complex[pcount];
-         zero = new Complex[zcount];
-
-         _fobj = new FilterObj();
-// need reconstruct vector to feed into filter
-         if (type == 1) { // IIR 
-              Vector initvalue = new Vector();
-              for (int i = 0; i<ival1.size();i++){
-                     Complex c = new Complex(((Double)ival1.elementAt(i)).doubleValue(), ((Double)ival2.elementAt(i)).doubleValue());
-                     if(((Boolean)ival3.elementAt(i)).booleanValue()==true){
-                         pole[curpole]=c;
-                         curpole++;
-                     } else {
-                         zero[curzero]=c;
-                         curzero++;
-                     } 
-              }
-              _fobj.init(name, type);
-              _fobj.setPoleZeroGain(pole, zero, null, null, new Complex(1.0));
-              addpolezeroview();
-              addfreqview();
-              addimpulview();
-              
-              return true;
-         }
-         return false;
-   }
 
    /**
     * Delete the filter object.  It check if the view objects
     * exists or not, delete them if they do exist.
     */
-   public boolean deletefilter() {
+   public void deletefilter() {
         if (_fobj != null){
-            if (_pzv != null) {
-               removePoleZeroView();
-            }
-            if (_fv != null) {
-               removeFreqView();
-            }
-            if (_iv != null) {
-               removeImpulsView();
-            }
-            if (_iirfiltsetv != null){
-               removeIIRFiltSetView();
+            Enumeration viewkey = _views.keys();
+            while (viewkey.hasMoreElements()){
+                String viewname = (String) viewkey.nextElement();
+                FilterView deleteview = (FilterView) _views.get(viewname);
+                deleteview.setVisible(false);  // hide view first
+                _fobj.deleteObserver((Observer) deleteview);
+                _views.remove(viewname);
             }
             _fobj = null;
-            return true;
+            _viewcontroller.setVisible(false);
+            _viewcontroller = null;
         } 
-        return false;
-   }
-  
-   /**
-    * Add a pole-zero view. It calls filter object's <code> addObserver()
-    * </code> to add the observer to the observer list.
-    * It make sure the polezero view is null, and filter object
-    * is not null.
-    */ 
-   public boolean addpolezeroview(){
-        if ((_pzv == null) && (_fobj != null)){
-             _pzv = new PoleZeroView(_fobj, _opMode, _fobj.getName()); 
-             _fobj.addObserver(_pzv);
-             return true;
-        }
-        return false;
-   }
-
-   /**
-    * Add a freq view. It calls filter object's <code> addObserver()
-    * </code> to add the observer to the observer list.
-    * It make sure the polezero view is null, and filter object
-    * is not null.
-    */ 
-   public boolean addfreqview(){
-        if ((_fv == null) && (_fobj != null)){
-             _fv = new FreqView(_fobj, _opMode, _fobj.getName()); 
-             _fobj.addObserver(_fv);
-             return true;
-        }
-        return false;
    }
  
-   /**
-    * Add a impulse view. It calls filter object's <code> addObserver()
-    * </code> to add the observer to the observer list.
-    * It make sure the polezero view is null, and filter object
-    * is not null.
-    */ 
-   public boolean addimpulview(){
-        if ((_iv == null) && (_fobj != null)){
-             _iv = new ImpulsView(_fobj, _opMode, _fobj.getName()); 
-             _fobj.addObserver(_iv);
-             return true;
-        }
-        return false;
-   }
-
-   /** 
-    * add the filter parameter view
-    */
-   public boolean addfiltparamview(){
-        if (_fobj != null){
-             if (_fobj.getType() == 1){ // IIR
-                 if (_iirfiltsetv == null){ // make sure don't add multiple view
-                      _iirfiltsetv = new IIRFiltSetView(_fobj, _opMode, _fobj.getName());
-                      _fobj.addObserver(_iirfiltsetv);
-                      return true;
-                 }
+   public void toggleViewControllerVisibility(){
+        if (_viewcontroller != null){
+             if (_viewcontroller.isVisible()){
+                   _viewcontroller.setVisible(false);
+             } else {  
+                   _viewcontroller.setVisible(true);
              }
         }
-        return false;
-   }
-   /**
-    * Delete the pole-zero view.  This is called from TMain
-    * when user killed the view on the menu entry. 
-    * calls view's <code> userKill() </code> to dispose
-    * the frame and free the plots.
-   */
-   public void removePoleZeroView(){
-       if (_pzv!=null) {
-           _fobj.deleteObserver(_pzv);
-           _pzv.deleteFrame();
-           _pzv = null;
-       }
-   }
- 
-   /**
-    * Delete the freq view.  This is called from TMain
-    * when user killed the view on the menu entry. 
-    * calls view's <code> userKill() </code> to dispose
-    * the frame and free the plots.
-   */
-   public void removeFreqView(){
-       if (_fv!=null) {
-           _fv.deleteFrame();
-           _fobj.deleteObserver(_fv);
-           _fv = null;
-       }
-   } 
-
-   /**
-    * Delete the impuls view.  This is called from TMain
-    * when user killed the view on the menu entry. 
-    * calls view's <code> userKill() </code> to dispose
-    * the frame and free the plots.
-   */
-   public void removeImpulsView(){
-       if (_iv!= null) {
-           _iv.deleteFrame();
-           _fobj.deleteObserver(_iv);
-           _iv = null;
-       }
-   } 
-
-
-   /**
-    * this is called to delete the generic filterparam view
-    */
-   public void removefiltparamview(){
-       if ((_fobj!=null) && (_fobj.getType() == 1)){
-           removeIIRFiltSetView(); 
-       }
    }
 
-   /**
-    * Delete the IIR filter set view
-    */
-   public void removeIIRFiltSetView(){
-       if (_iirfiltsetv!= null) {
-           _iirfiltsetv.deleteFrame();
-           _fobj.deleteObserver(_iirfiltsetv);
-           _iirfiltsetv = null;
+   public void toggleView(String toggleviewname, boolean show){
+       Enumeration viewkeys = _views.keys();
+       FilterView view = null;
+       while (viewkeys.hasMoreElements()){
+           String viewname = (String) viewkeys.nextElement();
+           if (viewname.equals(toggleviewname)){
+                view = (FilterView) _views.get(viewname);
+                view.setVisible(show);
+                break;
+           }
        } 
-   }
+   }     
 
-   /**
-    * Set the pole-zero view to null.  Called by Filter object to notify
-    * the manager to delete the pole zero view object.
-    */ 
-   public void setPoleZeroView2NULL() {
-       _pzv = null;
-   }
-
-   /**
-    * Set the freq view to null.  Called by Filter object to notify
-    * the manager to delete the freq view object.
-    */ 
-   public void setFreqView2NULL() {
-       _fv = null;
-   } 
-
-   /**
-    * Set the impulse view to null.  Called by Filter object to notify
-    * the manager to delete the impulse view object.
-    */ 
-   public void setImpulsView2NULL() {
-       _iv = null;
-   }
-  
    //////////////////////////////////////////////////////////////////////////
    ////                         public variables                        ////
-   public final static int FrameMode = 0; 
-   public final static int AppletMode = 1; 
+
+   /** Operation Mode : Frame mode */
+   public final static int FRAMEMODE = 0; 
+   /** Operation Mode : Applet mode */
+   public final static int APPLETMODE = 1; 
    
+   //////////////////////////////////////////////////////////////////////////
+   ////                         private methods                         ////
+
+    // 
+    // Add a view according to the given name. 
+    // It calls filter object's <code> addObserver() </code> 
+    // to add the observer to the observer list.
+    // 
+   private void _addView(String name){
+        if (name.equals("PoleZeroView")){
+             PoleZeroView pzv = new PoleZeroView(_fobj, _opMode, new String("PoleZeroView"));
+             _fobj.addObserver(pzv);
+             _views.put(new String(name), pzv);
+        } else if (name.equals("FreqView")){
+             FreqView fv = new FreqView(_fobj, _opMode, new String("FreqView"));
+             _fobj.addObserver(fv);
+             _views.put(new String(name), fv);
+        } else if (name.equals("ImpulseView")){
+             ImpulseView iv = new ImpulseView(_fobj, _opMode, new String("ImpulseView"));
+             _fobj.addObserver(iv);
+             _views.put(new String(name), iv);
+        } else if (name.equals("IIRFilterParameterView")){
+             IIRFiltSetView iirv = new IIRFiltSetView(_fobj, _opMode, new String("IIRFilterParameterView"));
+             _fobj.addObserver(iirv);
+             _views.put(new String(name), iirv);
+        }
+   }
+             
    //////////////////////////////////////////////////////////////////////////
    ////                         private variables                        ////
  
    private int _opMode;
-   private PoleZeroView _pzv;
-   private FreqView _fv;
-   private ImpulsView _iv;
-   private IIRFiltSetView _iirfiltsetv;
-   private FilterObj _fobj;  
+   private Hashtable _views = new Hashtable();
+   private FilterObj _fobj; 
+   private ViewController _viewcontroller; 
 }

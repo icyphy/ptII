@@ -49,9 +49,8 @@ CLASSPATH =     ../../..
 
 # Sources that compile under JDK1.0.2 and later
 JSRCS = \
-       FiltTypeSetup.java \
        Manager.java \
-       TMain.java
+       FilterApplication.java
 
 JCLASS = $(JSRCS:%.java=%.class)
 
