@@ -10,7 +10,7 @@
 <H1>Hysteresis demo with Hierarchical FSM's and SDF</H1>
 
 The following plot shows the noisy input signal (blue) and the output
-signal (red).
+signal (red). The noisy input signal consists of a sinusoid plus a white Gaussian noise source.
 <P>
  <!-- All of the controls of the applet should be visible when the
 applet is displayed on a XGA screen-->
@@ -48,10 +48,10 @@ applet is displayed on a XGA screen-->
 </OBJECT>
 </center>
 
-The input signal consists of a sinusoid plus a noise source. One possible application is a heater control, where the noisy input signal (blue) could be the input from a temperature sensor. The output signal (red) would then correspond to the heater on/off, with +1 denoting the on state and -1 denoting the off state.
+One possible application of hysteresis is a heater control, where the noisy input signal (blue) could be the input from a temperature sensor. The output signal (red) would then correspond to the heater on/off, with +1 denoting the on state and -1 denoting the off state.
 
 <P>
-The topology of the model is shown below (here, all SDF actors are homogeneous.):
+The topology of the model is shown below (here, all SDF actors are homogeneous).:
 <P>
 <center>
 <img src="hysteresis_model.gif" alt="topology">
