@@ -245,7 +245,7 @@ do
 
 
         # Check the rating
-        results=`egrep '^@(Pt.)AcceptedRating' $file`
+        results=`egrep '^@(Pt.)*AcceptedRating' $file`
         if [ "x$results" != "x" ]; then
             rating=`echo $results | $awk '{print $2}' `
             if [ "$rating" != "Green" ]; then
