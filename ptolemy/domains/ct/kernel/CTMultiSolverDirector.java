@@ -49,6 +49,7 @@ import ptolemy.domains.ct.kernel.util.TotallyOrderedSet;
 
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 //// CTMultiSolverDirector
@@ -569,16 +570,23 @@ public class CTMultiSolverDirector extends CTDirector {
      *  @return The logical AND of the prefire() of all actors.
      */
     protected boolean _prefireSystem() throws IllegalActionException {
-        boolean ready = true;
+        boolean allReady = true;
         CompositeActor container = (CompositeActor) getContainer();
+        List discreteActors = ((CTScheduler)getScheduler())
+            .discreteActorSchedule();
         Iterator actors = container.deepEntityList().iterator();
         while(actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-            ready = ready && actor.prefire();
+            boolean ready = actor.prefire();
             if(_debugging) _debug("Prefire "+((Nameable)actor).getName() +
-                    " returns" + ready);
+                    " returns " + ready);
+            if (!ready && discreteActors.contains(actor)) {
+                // ignore discrete actors.
+                ready = true;
+            }
+            allReady = allReady && ready;
         }
-        return ready;
+        return allReady;
     }
 
     /** Clear obsolete breakpoints, switch to breakpointODESolver if this

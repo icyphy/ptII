@@ -813,7 +813,8 @@ public class CTScheduler extends Scheduler{
             while(successors.hasNext()) {
                 Object nextActor = successors.next();
                 if (!_discretes.contains(nextActor) && 
-                    !_waveGenerators.contains(nextActor)) {
+                    !_waveGenerators.contains(nextActor) &&
+                    !_sink.contains(nextActor)) {
                     throw new NotSchedulableException(getContainer(),
                             (NamedObj)nextActor
                             + " is a successor of an event generator "
