@@ -82,7 +82,7 @@ public class HistogramActor extends TypedAtomicActor implements Placeable {
     public Object clone(Workspace ws) {
         try {
             HistogramActor newobj =
-                    (HistogramActor)super.clone(ws);
+                (HistogramActor)super.clone(ws);
             newobj.input = (TypedIOPort)newobj.getPort("input");
             newobj.input.setMultiport(true);
             newobj.input.setDeclaredType(DoubleToken.class);

@@ -75,7 +75,7 @@ public class Expression extends TypedAtomicActor {
         output = new TypedIOPort(this, "output", false, true);
         // FIXME: The following should not be done... The type should
         // be inferred, ideally...
-//        output.setDeclaredType(DoubleToken.class);
+        //        output.setDeclaredType(DoubleToken.class);
 
         expression = new Parameter(this, "expression", new StringToken(""));
 
