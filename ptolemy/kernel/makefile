@@ -46,15 +46,16 @@ JDOCFLAGS = 	-author -version -public
 
 DIRS = 		test doc demo
 
-# Used to build zip files
-JPACKAGE = 	pt.kernel
-JPACKAGE_DIR = 	pt/kernel
-JVERSION =	1.0
-JDIST =		$(JPACKAGE)$(JVERSION)
-JZIP =		pt/kernel/pt.kernel.zip
-JARFILE = 	$(JPACKAGE).jar
-
 CLASSPATH = ../..
+
+# Used to build zip files
+TYPACKAGE = 	pt.kernel
+TYPACKAGE_ROOTDIR = $(CLASSPATH)
+TYPACKAGE_DIR = pt/kernel
+TYVERSION =	1.0
+TYDIST =	$(JPACKAGE)$(JVERSION)
+TYZIP =		pt/kernel/pt.kernel.zip
+JARFILE = 	$(JPACKAGE).jar
 
 JSRCS = \
 	ComponentEntity.java \
