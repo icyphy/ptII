@@ -477,10 +477,12 @@ public class FSMActor extends CompositeEntity implements TypedActor {
         return true;
     }
 
-    /** Create receivers and input variables for the input ports of this
-     *  actor, and validate attributes. Set current state to the initial
-     *  state. Throw an exception if this actor does not contain a state with
-     *  name specified by the <i>initialStateName</i> attribute.
+    /** Create receivers and input variables for the input ports of
+     *  this actor, and validate attributes of this actor, and
+     *  attributes of the ports of this actor. Set current state to
+     *  the initial state. Throw an exception if this actor does not
+     *  contain a state with name specified by the
+     *  <i>initialStateName</i> attribute.
      *  @exception IllegalActionException If this actor does not contain a
      *   state with name specified by the <i>initialStateName</i> attribute.
      */
@@ -494,10 +496,22 @@ public class FSMActor extends CompositeEntity implements TypedActor {
             _removeInputVariables(inport);
         }
         _createInputVariables();
-        Iterator attributes = attributeList(Settable.class).iterator();
-        while(attributes.hasNext()) {
+        // Validate the attributes of this actor.
+        for(Iterator attributes = attributeList(Settable.class).iterator();
+            attributes.hasNext();) {
             Settable attribute = (Settable)attributes.next();
             attribute.validate();
+        }
+        // Validate the attributes of the ports of this actor.
+        for(Iterator ports = portList().iterator();
+            ports.hasNext();) {
+            IOPort port = (IOPort)ports.next();
+            for(Iterator attributes = 
+                    port.attributeList(Settable.class).iterator();
+                attributes.hasNext();) {
+                Settable attribute = (Settable)attributes.next();
+                attribute.validate();
+            }
         }
         _gotoInitialState();
     }
