@@ -565,7 +565,7 @@ else
        else
            if test -f "$PTII/lib/libgc.a"; then
 	      # FIXME: what about Windows?
-	      PTGC_LD_DIRECTIVE="\"-L$PTII/lib\" -lgc"
+	      PTGC_LD_DIRECTIVE='"-L${PTII}/lib" -lgc'
 	      AC_MSG_RESULT(use $PTGC_LD_DIRECTIVE)
            else 
 	      if test -d "$PTII/vendors/gc/gc6.1"; then
