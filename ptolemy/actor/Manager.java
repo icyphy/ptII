@@ -441,7 +441,7 @@ public final class Manager extends NamedObj implements Runnable {
 	        Iterator var = solver.variables();
 	        while (var.hasNext()) {
 		    InequalityTerm term = (InequalityTerm)var.next();
-		    if ( !term.isTypeAcceptable()) {
+		    if ( !term.isValueAcceptable()) {
 		        conflicts.insertLast(term.getAssociatedObject());
 		    }
 	        }

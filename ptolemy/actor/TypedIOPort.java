@@ -613,7 +613,7 @@ public class TypedIOPort extends IOPort implements Typeable {
          *  port is not connected to anything.
          *  @return True if the current type is acceptable.
          */
-        public boolean isTypeAcceptable() {
+        public boolean isValueAcceptable() {
             if (TypeLattice.isInstantiableType(getType())) {
                 return true;
             }
