@@ -31,7 +31,7 @@
 
 ME =		ptolemy/actor
 
-DIRS = 		util sched process hoc gui lib corba parameters test
+DIRS = 		util sched process hoc gui lib corba parameters test xslt
 
 # Root of the Ptolemy II directory
 ROOT =		../..
@@ -54,7 +54,8 @@ PTCLASSALLJARS = \
 	parameters/parameters.jar \
 	process/process.jar \
 	sched/sched.jar \
-	util/util.jar
+	util/util.jar \
+	xslt/xslt.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
@@ -93,7 +94,7 @@ EXTRA_SRCS =	$(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	util sched process hoc gui lib parameters test
+MISC_FILES =	util sched process hoc gui lib parameters test xslt
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
