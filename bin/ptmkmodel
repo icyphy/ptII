@@ -1,0 +1,503 @@
+#!/bin/sh
+# Script that creates a Ptolemy II model directory
+#
+# Author:  Christopher Hylands
+# Version: $Id$
+#
+# Copyright (c) 1999 The Regents of the University of California.
+# 	All Rights Reserved.
+#
+# Permission is hereby granted, without written agreement and without
+# license or royalty fees, to use, copy, modify, and distribute this
+# software and its documentation for any purpose, provided that the
+# above copyright notice and the following two paragraphs appear in all
+# copies of this software.
+#
+# IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+# FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+# ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+# THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+# SUCH DAMAGE.
+#
+# THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+# INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+# MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+# PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+# CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+# ENHANCEMENTS, OR MODIFICATIONS.
+#
+# 						PT_COPYRIGHT_VERSION_2
+# 						COPYRIGHTENDKEY
+
+progname=`basename $0`
+
+if [ $# -ne 2 ]; then
+	echo "$progname: Usage: $progname <domain> <model>"
+	echo "  Create a directory for a model in a specific domain"
+	echo "  <domain> must be a directory in $PTII/ptolemy/domains"
+	echo "  <model>  must start with a capital letter and not be a"
+	echo "           directory that already exists"
+	exit 2
+fi
+
+# The domain to create the model in
+domain=$1
+
+# The name of the model
+model=$2
+
+######################################################################
+# Do some error checking
+
+# $PTII must be set
+if [ "x$PTII" = "x" ]; then
+	echo "$progname: Error, \$PTII is not set, exiting"
+	exit 3
+fi
+
+# Check the domain
+existingdomains=`ls -1 $PTII/ptolemy/domains`
+founddomain=0
+for existingdomain in $existingdomains
+do
+	if [ "$existingdomain" = "$domain" ]; then
+		founddomain=1
+	fi
+done 
+
+if [ "$founddomain" = "0" ]; then
+	echo "$progname: domain '$domain' is not listed in \$PTII/ptolemy/domains"
+	exit 4
+fi
+
+# Check the model
+# It could be that we should take the model directory as an
+# optional argument
+modeldir=$PTII/ptolemy/domains/$domain/demo/$model
+if [ -d $modeldir ]; then
+	echo "$progname: '$modeldir' already exists.  Exiting"
+	exit 5
+fi
+
+# Check to see that the model starts with a capital letter
+echo "$model" | egrep -s "^[A-Z]"
+status=$?
+if [ $status = 1 ]; then
+	echo "$progname: '$modeldir' does not start with a capital letter." 
+	exit 6
+fi
+
+# Get the full username.
+username=YourName
+uid=`whoami`
+if [ -f /etc/passwd ]; then
+    pwent=`grep $uid /etc/passwd`
+    status=$?
+    if [ $status = 0 ]; then
+	username=`echo $pwent | awk -F: '{print $5}' | awk -F, '{print $1}' `
+    else 	
+	if [ -f /usr/bin/ypcat ]; then
+	    pwent=`/usr/bin/ypcat passwd | grep $uid`
+	    status=$?
+	    if [ $status = 0 ]; then
+		username=`echo $pwent | awk -F: '{print $5}' | awk -F, '{print $1}' `
+	    fi
+	fi
+    fi	
+fi
+
+######################################################################
+# Now, we create the directory and files
+
+mkdir $modeldir
+year=`date "+%Y"`
+
+# Name of the Java file that contains the applet
+# We append 'Applet' in case there is a stand alone application as well.
+appletjava=${model}Applet.java
+
+# Name of the HTML file that invokes the applet
+applethtm=$model.htm
+
+echo "About to create '$modeldir/makefile'"
+
+cat > $modeldir/makefile <<EOF
+# Makefile for Ptolemy II $domain $model demo
+#
+# @Authors: $username
+#
+# @Version: $Id$
+#
+# @Copyright (c) $year The Regents of the University of California.
+# All rights reserved.
+#
+# Permission is hereby granted, without written agreement and without
+# license or royalty fees, to use, copy, modify, and distribute this
+# software and its documentation for any purpose, provided that the
+# above copyright notice and the following two paragraphs appear in all
+# copies of this software.
+#
+# IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+# FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+# ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+# THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+# SUCH DAMAGE.
+#
+# THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+# INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+# MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+# PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+# CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+# ENHANCEMENTS, OR MODIFICATIONS.
+#
+# 						PT_COPYRIGHT_VERSION_2
+# 						COPYRIGHTENDKEY
+
+ME =		ptolemy/domains/$domain/demo/$model
+
+# Root of the Java directory
+ROOT =		../../../..
+
+CLASSPATH =	$(ROOT)
+
+# Get configuration info
+CONFIG =	$(ROOT)/mk/ptII.mk
+include $(CONFIG)
+
+# Used to build jar files
+PTPACKAGE = 	$model
+PTCLASSJAR = 	$(PTPACKAGE).jar
+
+JSRCS = \\
+	$appletjava
+
+EXTRA_SRCS = \\
+	$applethtm \\
+	$(JSRCS)
+
+# Sources that may or may not be present, but if they are present, we don't
+# want make checkjunk to barf on them.
+MISC_FILES =
+
+# make checkjunk will not report OPTIONAL_FILES as trash
+# make realclean removes OPTIONAL_FILES
+OPTIONAL_FILES =
+
+JCLASS = $(JSRCS:%.java=%.class)
+
+# Don't include all or install rules here, we want the user
+# to run 'make demos' to run the tests.
+all: jclass $(PTCLASSJAR)
+	@echo "To run all the demos, run 'make demo'"
+
+install: all
+
+demo: $(PTCLASSJAR)
+	CLASSPATH=$(CLASSPATH) appletviewer $applethtm
+
+depend:
+	@echo "no dependencies in this directory"
+
+# Get the rest of the rules
+include $(ROOT)/mk/ptcommon.mk
+EOF
+
+
+
+
+######
+# Generate the Applet htm file
+
+# Code to invoke the model.  Note that this does not end in .class
+# because the JDK1.2.1 appletviewer will fail if it does.
+code=ptolemy.domains.$domain.demo.$model.${model}Applet
+
+# Jar file that contains the domain
+domainjar=ptolemy/domains/$domain/$domain.jar
+
+# Jar file that contains the model.
+modeljar=ptolemy/domains/$domain/demo/$model/$model.jar
+
+
+echo "About to create '$modeldir/$applethtm'"
+
+cat > $modeldir/$applethtm <<EOF2
+<!-- $Id$
+  @author: $username
+ -->
+<html>
+<head>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<title>$model<I>Add your own title, removing the &lt;I&gt; ... &lt;/I&gt; </I></title>
+<link href="../../../../doc/default.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<H1>$model<I>Should be the same as the title</I></H1>
+<P>
+ <!-- All of the controls of the applet should be visible when the
+applet is displayed on a XGA screen-->
+<center>
+
+<!-- The HTML below is for the Java Plugin.  
+	The first section is for IE, 
+	the second is for appletviewer, 
+	the third is for Netscape Communicator
+ -->
+<OBJECT classid="clsid:8AD9C840-044E-11D1-B3E9-00805F499D93"
+ width=400 height=400
+ name="$model"
+ codebase="http://java.sun.com/products/plugin/1.2/jinstall-12-win32.cab#Version=1,2,0,0">
+<PARAM NAME=CODE VALUE=$code.class>
+<PARAM NAME=CODEBASE VALUE=../../../../..>
+<PARAM NAME=ARCHIVE VALUE="
+	ptolemy/ptsupport.jar,
+	$domainjar,
+	$modeljar"
+<PARAM NAME=NAME VALUE="$model">
+<PARAM NAME="type" VALUE="application/x-java-applet;version=1.2">
+<PARAM NAME="background" VALUE="#faf0e6">
+<param name="defaultiterations" value="10">
+<COMMENT>
+<EMBED type="application/x-java-applet;version=1.2"
+ code=$code
+ codebase=../../../../..
+ archive="
+	ptolemy/ptsupport.jar,
+	$domainjar,
+	$modeljar"
+ java_CODE=$code.class
+ java_CODEBASE=../../../../..
+ java_ARCHIVE="
+	ptolemy/ptsupport.jar,
+	$domainjar,
+	$modeljar"
+ name="$model"
+ width=400 height=400
+ background="#faf0e6"
+ defaultiterations="10"
+ pluginspage="http://java.sun.com/products/plugin/1.2/plugin-install.html">
+<NOEMBED></COMMENT>
+<I>If you were able to run applets, you would have a demo here.</I>
+</NOEMBED></EMBED>
+</OBJECT>
+</center>
+
+<I>Add text describing the applet</I>
+<p><font size="2" color="#cc0000">Last Updated: $Date$</font>
+</body>
+</html>
+EOF2
+
+
+######
+# Generate the Applet java file
+
+upcasedomain=`echo $domain | tr "[a-z]" "[A-Z]"` 
+
+# Parent Class that this applet should inherit from
+appletparent=${upcasedomain}Applet
+
+if [ ! -f "$PTII/ptolemy/domains/$domain/gui/$appletparent.java" ]; then
+	echo "$progname: '$PTII/ptolemy/domains/$domain/gui/$appletparent.java'"
+	echo " does not exist so we will inherit from PtolemyApplet"
+	appletparent=PtolemyApplet
+fi
+
+
+echo "About to create '$modeldir/$appletjava'"
+
+cat > $modeldir/$appletjava <<EOF3 
+/* An applet that uses Ptolemy II DE domain.
+
+ Copyright (c) $year The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
+
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
+
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
+
+                                        PT_COPYRIGHT_VERSION_2
+                                        COPYRIGHTENDKEY
+
+@ProposedRating Red ($uid@eecs.berkeley.edu)
+@AcceptedRating Red (reviewmoderator@eecs.berkeley.edu)
+*/
+
+package ptolemy.domains.$domain.demo.$model;
+
+import java.applet.Applet;
+import java.awt.*;
+import java.awt.event.*;
+
+import ptolemy.kernel.*;
+import ptolemy.data.*;
+import ptolemy.actor.lib.*;
+import ptolemy.actor.gui.*;
+import ptolemy.actor.util.*;
+import ptolemy.domains.$domain.gui.*;
+import ptolemy.domains.$domain.kernel.*;
+import ptolemy.domains.$domain.lib.*;
+
+import ptolemy.plot.*;
+
+//////////////////////////////////////////////////////////////////////////
+//// $model
+/**
+
+@author $username
+@version $Id$appletjava.java,v 1.1 1999/05/06 20:14:28 cxh Exp $
+*/
+public class $model extends $appletparent {
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** Initialize the applet.
+     */
+    public void init() {
+        super.init();
+        try {
+            _query = new Query();
+            _query.addQueryListener(new ParameterListener());
+            _query.line("busmean", "Bus mean interarrival time", "1.0");
+            _query.line("passmean", "Passenger mean interarrival time", "1.0");
+            _query.onoff("regular", "Regular bus arrivals", false);
+            add(_query);
+
+            // The 2 argument requests a go and stop button.
+            add(_createRunControls(2));
+
+            // Create and configure bus source
+            _bus = new DEPoisson(_toplevel, "bus");
+            _bus.outputvalue.setToken(new DoubleToken(1.0));
+            _bus.meantime.setToken(new DoubleToken(1.0));
+
+            // Create and configure passenger source
+            _passenger1 = new DEPoisson(_toplevel, "passenger");
+            _passenger1.outputvalue.setToken(new DoubleToken(0.5));
+            _passenger1.meantime.setToken(new DoubleToken(1.0));
+
+            // Waiting time
+            _wait = new DEWaitingTime(_toplevel, "waitingTime");
+
+            // Average actor
+            Average average = new Average(_toplevel, "average");
+
+            // Display of average
+            Show show = new Show(_toplevel, "show");
+            show.setPanel(this);
+            show.labels.setToken(new StringToken("Average waiting time"));
+
+            // Create and configure plotter
+            _eventplot = new TimePlotter(_toplevel, "plot");
+            _eventplot.setPanel(this);
+            _eventplot.plot.setGrid(false);
+            _eventplot.plot.setTitle("Events");
+            _eventplot.plot.addLegend(0, "Bus");
+            _eventplot.plot.addLegend(1, "Passenger");
+            _eventplot.plot.addLegend(2, "Wait Time");
+            _eventplot.plot.setXLabel("Time");
+            _eventplot.plot.setYLabel("Wait time");
+            _eventplot.plot.setXRange(0.0, _getStopTime());
+            _eventplot.plot.setYRange(-1.0, 4.0);
+            _eventplot.plot.setSize(450,200);
+            _eventplot.plot.setConnected(false);
+            _eventplot.plot.setImpulses(true);
+            _eventplot.plot.setMarksStyle("dots");
+            _eventplot.fillOnWrapup.setToken(new BooleanToken(false));
+
+            // Create and configure histogram
+            _histplot = new HistogramPlotter(_toplevel, "histplot");
+            _histplot.setPanel(this);
+            _histplot.histogram.setGrid(false);
+            _histplot.histogram.setTitle("Histogram of Waiting Times");
+            _histplot.histogram.setXLabel("Waiting Time");
+            _histplot.histogram.setYLabel("Passengers");
+            _histplot.histogram.setXRange(0.0, 7.0);
+            _histplot.histogram.setYRange(0.0, 15.0);
+            _histplot.histogram.setSize(450,200);
+            _histplot.histogram.setBinWidth(0.2);
+            _histplot.fillOnWrapup.setToken(new BooleanToken(false));
+
+            // Connections
+            ComponentRelation rel1 = 
+                   _toplevel.connect(_bus.output, _eventplot.input);
+            ComponentRelation rel2 = 
+                   _toplevel.connect(_passenger1.output, _eventplot.input);
+            _wait.waitee.link(rel1);
+            _wait.waiter.link(rel2);
+            ComponentRelation rel3 = 
+                   _toplevel.connect(_wait.output, _eventplot.input);
+            _histplot.input.link(rel3);
+            average.input.link(rel3);
+            _toplevel.connect(average.output, show.input);
+
+            // Get one iteration right away.
+            _go();
+        } catch (Exception ex) {
+            report("Setup failed:", ex);
+        }
+    }
+
+    ////////////////////////////////////////////////////////////////////////
+    ////                         protected methods                      ////
+
+    /** Execute the system.  This overrides the base class to read the
+     *  values in the query box first and set parameters.
+     *  @exception IllegalActionException If type constraints of the
+     *   parameters have somehow been set.
+     */
+    protected void _go() throws IllegalActionException {
+        _bus.meantime.setToken
+                (new DoubleToken(_query.doubleValue("busmean")));
+        _passenger1.meantime.setToken
+                (new DoubleToken(_query.doubleValue("passmean")));
+        _eventplot.plot.setXRange(0.0, _getStopTime());
+        super._go();
+    }
+
+    ////////////////////////////////////////////////////////////////////////
+    ////                         private variables                      ////
+
+    private Query _query;
+    private DEPoisson _bus;
+    private DEPoisson _passenger1;
+    private TimePlotter _eventplot;
+    private HistogramPlotter _histplot;
+    private DEWaitingTime _wait;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+
+    /** Listener executes the system when any parameter is changed.
+     */
+    class ParameterListener implements QueryListener {
+        public void changed(String name) {
+            // _go();
+        }
+    }
+}
+EOF3
+
+
+echo "Your model '$model' has been created in"
+echo "'$modeldir'"
+echo "Be sure to do the following:"
+echo " 1. Edit the parent makefile in $domain/demo and add your model"
+if [ "$username" = "YourName" ]; then
+    echo " 2. Edit '$appletjava' and substitute your name for $username"
+fi
