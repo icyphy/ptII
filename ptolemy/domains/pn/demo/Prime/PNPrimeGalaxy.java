@@ -82,7 +82,8 @@ public class PNPrimeGalaxy {
         //myUniverse.connect(portin, portout, "plot_queue");
         //portin.getQueue(portout).setCapacity(1);
 
-        //System.out.println(myUniverse.description(pt.kernel.Nameable.LIST_PRETTYPRINT));
+        //System.out.println(
+        //     myUniverse.description(pt.kernel.Nameable.LIST_PRETTYPRINT));
 
         //DynamicGraphView view = DynamicGraphView.makeView(
 	//       "Sieve of Eratosthenes", 800, 600);

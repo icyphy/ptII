@@ -61,7 +61,8 @@ public class PNRamp extends AtomicActor {
 	    IntToken token = new IntToken(valueString);
 	    _seed = token.intValue();
 	} else {
-	    throw new IllegalActionException(this,name+" param does not exist");
+	    throw new IllegalActionException(this, name + 
+                    " param does not exist");
 	}
     }
 
