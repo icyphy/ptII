@@ -366,6 +366,56 @@ public class Query extends JPanel {
         _listeners.remove(listener);
     }
 
+    /** Set the value in the entry with the given name.
+     *  The second argument must be a string that can be parsed to the
+     *  proper type for the given entry, or an exception is thrown.
+     *  @exception NoSuchElementException If there is no item with the
+     *   specified name.  Note that this is a runtime exception, so it
+     *   need not be declared explicitly.
+     *  @exception IllegalArgumentException If the value does not parse
+     *   to the appropriate type.
+     */
+    public void set(String name, String value) 
+            throws NoSuchElementException, IllegalArgumentException {
+        Object result = _entries.get(name);
+        if(result == null) {
+            throw new NoSuchElementException("No item named \"" +
+                    name + " \" in the query box.");
+        }
+        // FIXME: Surely there is a better way to do this...
+        // We should define a set of inner classes, one for each entry type.
+        // Currently, this has to be updated each time a new entry type
+        // is added.
+        if (result instanceof JTextField) {
+            ((JTextField)result).setText(value);
+        } else if (result instanceof JTextArea) {
+            ((JTextArea)result).setText(value);
+        } else if (result instanceof JRadioButton) {
+            Boolean flag = new Boolean(value);
+            setBoolean(name, flag.booleanValue());
+        } else if (result instanceof JSlider) {
+            Integer parsed = new Integer(value);
+            ((JSlider)result).setValue(parsed.intValue());
+        } else if (result instanceof JComboBox) {
+            ((JComboBox)result).setSelectedItem(value);
+        } else if (result instanceof JRadioButton[]) {
+            // Regrettably, ButtonGroup gives no way to determine
+            // which button is selected, so we have to search...
+            JRadioButton[] buttons = (JRadioButton[])result;
+            for (int i = 0; i < buttons.length; i++) {
+                if (value.equals(buttons[i].getText())) {
+                    buttons[i].setSelected(true);
+                } else {
+                    buttons[i].setSelected(false);
+                }
+            }
+        } else {
+            throw new IllegalArgumentException("Query class cannot set"
+            + " a string representation for entries of type "
+            + result.getClass());
+        }
+    }
+
     /** Set the background color for all the widgets.
      *  @param color The background color.
      */
@@ -482,7 +532,6 @@ public class Query extends JPanel {
             + "setLine().");
         }
     }
-
 
     /** Set the position of an item that has been added using
      *  addSlider.
