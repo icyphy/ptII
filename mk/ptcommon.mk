@@ -147,6 +147,26 @@ subdemo:
 		done ; \
 	fi
 
+# Run make check in the subdirs
+check:
+	@if [ "x$(DIRS)" != "x" ]; then \
+		set $(DIRS); \
+		for x do \
+		    if [ -w $$x ] ; then \
+			( cd $$x ; \
+			echo making check in $(ME)/$$x ; \
+			$(MAKE) $(MFLAGS) $(MAKEVARS) check ;\
+			) \
+		    fi ; \
+		done ; \
+	fi
+	@if [ "x$(JSRCS)" != "x" ]; then \
+		echo "Running '$(ROOT)/util/testsuite/chkjava $(JSRCS)'"; \
+		$(ROOT)/util/testsuite/chkjava $(JSRCS); \
+		echo "Running '$(ROOT)/util/testsuite/ptspell $(JSRCS)'"; \
+		$(ROOT)/util/testsuite/ptspell $(JSRCS); \
+	fi
+
 # Create the directory that contains the scripts
 bin_install_dir:
 	if [ ! -d "$(BIN_INSTALL_DIR)" ]; then \
@@ -176,50 +196,6 @@ fast:
 
 # "make sources" will do SCCS get on anything where SCCS file is newer.
 sources::	$(SRCS) $(EXTRA_SRCS) $(HDRS) $(MISC_FILES) makefile
-	@if [ "x$(DIRS)" != "x" ]; then \
-		set $(DIRS); \
-		for x do \
-		    if [ -w $$x ] ; then \
-			( cd $$x ; \
-			echo making $@ in $(ME)/$$x ; \
-			$(MAKE) $(MFLAGS) $(MAKEVARS) $@ ;\
-			) \
-		    fi ; \
-		done ; \
-	fi
-
-# "check" does not print anything if nothing is being edited.
-sccsinfo:
-	@if [ "x$(DIRS)" != "x" ]; then \
-		set $(DIRS); \
-		for x do \
-		    if [ -w $$x ] ; then \
-			( cd $$x ; \
-			echo making $@ in $(ME)/$$x ; \
-			$(MAKE) $(MFLAGS) $(MAKEVARS) $@ ;\
-			) \
-		    fi ; \
-		done ; \
-	fi
-	@sccs check || true
-
-# Remove everything that can be retrieved from SCCS, except files that
-# are being edited.
-sccsclean:
-	@if [ "x$(DIRS)" != "x" ]; then \
-		set $(DIRS); \
-		@for x do \
-		    if [ -w $$x ] ; then \
-			( cd $$x ; \
-			echo making $@ in $(ME)/$$x ; \
-			$(MAKE) $(MFLAGS) $(MAKEVARS) $@ ;\
-			) \
-		    fi ; \
-		done ; \
-	fi
-	sccs clean
-
-makefiles: makefile
 	@if [ "x$(DIRS)" != "x" ]; then \
 		set $(DIRS); \
 		for x do \
