@@ -183,9 +183,7 @@ public class IconController extends ParameterizedNodeController {
                         + " even "
                         + "though one did not previously exist.");
             }
-            // FIXME: This text should not be hardwired here, but rather
-            // should be provided by a method of the enclosing class.
-            result.setToolTipText(object.getClass().getName());
+            result.setToolTipText(object.getClassName());
 
             // If the object is a ComponentEntity then check to see if it has
             // attributes that specify its color or an explanation.
