@@ -30,7 +30,7 @@ Ptolemy "star language" preprocessor.  This version does not support
 compiled-in galaxies yet and the language may still change slightly.
 Caveat hacker.
 
-Programmer: J. T. Buck and E. A. Lee
+Programmer: J. T. Buck and E. A. Lee, Ptolemy II Extensions by Christopher Brooks
 
 6/9/95 tgl: handle default arguments in method arglists correctly.
 
@@ -2050,7 +2050,21 @@ void genDef ()
 	//	fullClass, fullClass);
 	//fprintf (fp, "\nISA_FUNC(%s,%s);\n",fullClass,baseClass);
 
-	fprintf(fp, "public class %s extends ClassicCGCActor {\n", fullClass);
+	/* For stars, we append the domain name to the beginning of the name,
+	   unless it is already there */
+	if (derivedFrom) {
+		if (domain &&
+		    strncmp (domain, derivedFrom, strlen (domain)) != 0) {
+			sprintf (baseClass, "%s%s", galDef ? "" : 
+				domain, derivedFrom);
+		} else {
+ 		    (void) strcpy (baseClass, derivedFrom);
+                }
+	} else {
+		sprintf (baseClass, "ClassicCGCActor");
+	}
+
+	fprintf(fp, "public class %s extends %s {\n", fullClass, baseClass);
 	fprintf(fp, "    /** Construct an actor in the specified container with the specified\n");
 	fprintf(fp, "     *  name.\n");
 	fprintf(fp, "     *  @param container The container.\n");
