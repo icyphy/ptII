@@ -80,6 +80,7 @@ NUMBER_OF_JARS_TO_LOAD_EAGERLY = 10
 CORE_JNLP_JARS = \
 	doc/docConfig.jar \
 	lib/diva.jar \
+	ptolemy/actor/parameters/demo/demo.jar \
 	ptolemy/domains/domains.jar \
 	ptolemy/domains/sdf/demo/demo.jar \
 	ptolemy/domains/sdf/doc/doc.jar \
