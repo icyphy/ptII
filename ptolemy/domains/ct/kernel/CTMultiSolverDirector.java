@@ -415,7 +415,9 @@ public class CTMultiSolverDirector extends CTDirector {
             CTEventGenerator generator =
                 (CTEventGenerator) eventGenerators.next();
             // NOTE: We need to call hasCurrentEvent on all event generators,
-            // since some event generator may relie on it.
+            // since some event generator may rely on it.
+            // NOTE: This is probably not right... actors should not be
+            // relying on this.
             if (generator.hasCurrentEvent()) {
                 hasDiscreteEvents = true;
             }
@@ -436,18 +438,32 @@ public class CTMultiSolverDirector extends CTDirector {
                 schedule.get(CTSchedule.DISCRETE_ACTORS).actorIterator();
             while (discrete.hasNext()) {
                 Actor actor = (Actor)discrete.next();
+                // Skip the actor if it is an event generator with no
+                // current event.
+                // NOTE: This will not prevent the firing of actors
+                // that are discrete but have no current inputs, like
+                // the Display or Test actors. In fact, CT has an odd
+                // artifact that an actor like Display might be invoked
+                // with no input data (hasToken() returns false).  E.g.,
+                // a model with two instances of PeriodicSampler with
+                // different sample rates, each feeding a Display, will
+                // result in blank lines in the displays, indicating
+                // absent inputs. EAL 12/31/02.
+                if (actor instanceof CTEventGenerator
+                        && !((CTEventGenerator)actor).hasCurrentEvent()) {
+                    continue;
+                }
                 if (_debugging) _debug("Fire " + (Nameable)actor);
                 if (actor.prefire()) {
                     actor.fire();
                     actor.postfire();
                 }
-                // If the actor requires for refire at the current time,
+                // If the actor requires a refire at the current time,
                 // then we fire it immediately.
                 // NOTE: We use the _refireActors list to check
-                // for whether a refire at current time is requested.
-                //
-
-                if (_refireActors != null && !_refireActors.isEmpty()) {
+                // for whether a refire at the current time is requested.
+                // NOTE: Changed from "if" to "while" ... EAL 12/31/02.
+                while (_refireActors != null && !_refireActors.isEmpty()) {
                     if (actor.prefire()) {
                         actor.fire();
                         actor.postfire();
