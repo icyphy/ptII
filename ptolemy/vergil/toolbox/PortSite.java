@@ -55,7 +55,7 @@ public class PortSite extends AbstractSite {
      *  @param number The number of the port within its kind, starting with 0.
      *  @param count The number of ports of its kind.
      */
-    public PortSite (Figure figure, IOPort port, int number, int count) {
+    public PortSite(Figure figure, IOPort port, int number, int count) {
         _parentFigure = figure;
         _port = port;
         _number = number;
@@ -67,7 +67,7 @@ public class PortSite extends AbstractSite {
 
     /** Get the figure to which this site is attached.
      */
-    public Figure getFigure () {
+    public Figure getFigure() {
         return _parentFigure;
     }
 
@@ -80,7 +80,7 @@ public class PortSite extends AbstractSite {
 
     /** Get the normal of the site.
      */
-    public double getNormal () {
+    public double getNormal() {
         if (_port.isInput()) {
             if (_port.isOutput()) {
                 // Port is both an input and an output.
@@ -96,7 +96,7 @@ public class PortSite extends AbstractSite {
 
     /** Get the x-coordinate of the site.
      */
-    public double getX () {
+    public double getX() {
         Rectangle2D bounds = _parentFigure.getShape().getBounds();
         double x = 0.0;
         if (_port.isInput() && _port.isOutput()) {
@@ -120,7 +120,7 @@ public class PortSite extends AbstractSite {
 
     /** Get the y-coordinate of the site.
      */
-    public double getY () {
+    public double getY() {
         Rectangle2D bounds = _parentFigure.getShape().getBounds();
         double y = 0.0;
         if (_port.isInput() && _port.isOutput()) {
