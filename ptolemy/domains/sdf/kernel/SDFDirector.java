@@ -233,6 +233,99 @@ public class SDFDirector extends StaticSchedulingDirector {
         return _postfirereturns;
     }
 
+    /** Return true if transfers data from an input port of the
+     *  container to the ports it is connected to on the inside.
+     *  This method differs from the base class method in that this
+     *  method will transfer all available tokens in the receivers,
+     *  while the base class method will transfer at most one token.
+     *  This behavior is required to handle the case of non-homogeneous
+     *  opaque composite actors. The port argument must be an opaque
+     *  input port. If any channel of the input port has no data, then
+     *  that channel is ignored.
+     *
+     *  @exception IllegalActionException If the port is not an opaque
+     *   input port.
+     *  @param port The port to transfer tokens from.
+     *  @return True if data are tranfered.
+     */
+    public boolean transferInputs(IOPort port) throws IllegalActionException {
+        if (!port.isInput() || !port.isOpaque()) {
+            throw new IllegalActionException(this, port,
+                    "transferInputs: port argument is not an opaque" +
+                    "input port.");
+        }
+        boolean trans = false; 
+        Receiver[][] insiderecs = port.deepGetReceivers();
+        for (int i = 0; i < port.getWidth(); i++) {
+	    while (port.hasToken(i)) {
+                try {
+                    ptolemy.data.Token t = port.get(i);
+                    if (insiderecs != null && insiderecs[i] != null) {
+                        if(_debugging) _debug(getName(),
+                                "transfering input from " + port.getName());
+                        for (int j = 0; j < insiderecs[i].length; j++) {
+                            insiderecs[i][j].put(t);
+                        }
+                        trans = true;
+                    }
+                } catch (NoTokenException ex) {
+                    // this shouldn't happen.
+                    throw new InternalErrorException(
+                            "Director.transferInputs: Internal error: " +
+                            ex.getMessage());
+                }
+            }
+        }
+        return trans;
+    }
+
+    /** Return true if transfers data from an output port of the
+     *  container to the ports it is connected to on the outside.
+     *  This method differs from the base class method in that this
+     *  method will transfer all available tokens in the receivers,
+     *  while the base class method will transfer at most one token.
+     *  This behavior is required to handle the case of non-homogeneous
+     *  opaque composite actors. The port argument must be an opaque
+     *  output port.  If any channel of the output port has no data,
+     *  then that channel is ignored.
+     *
+     *  @exception IllegalActionException If the port is not an opaque
+     *   output port.
+     *  @param port The port to transfer tokens from.
+     *  @return True if data are transfered.
+     */
+    public boolean transferOutputs(IOPort port) 
+            throws IllegalActionException {
+        if (!port.isOutput() || !port.isOpaque()) {
+            throw new IllegalActionException(this, port,
+                    "transferOutputs: port argument is not " +
+                    "an opaque output port.");
+        }
+        boolean trans = false;
+        Receiver[][] insiderecs = port.getInsideReceivers();
+        if (insiderecs != null) {
+            for (int i = 0; i < insiderecs.length; i++) {
+                if (insiderecs[i] != null) {
+                    for (int j = 0; j < insiderecs[i].length; j++) {
+			while (insiderecs[i][j].hasToken()) {
+                            try {
+                                ptolemy.data.Token t = insiderecs[i][j].get();
+                                port.send(i, t);
+                                trans = true;
+                            } catch (NoTokenException ex) {
+                                throw new InternalErrorException(
+                                        "Director.transferOutputs: " +
+                                        "Internal error: " +
+                                        ex.getMessage());
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return trans;
+    }
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
