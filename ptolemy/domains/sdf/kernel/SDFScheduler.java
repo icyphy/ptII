@@ -54,7 +54,7 @@ homogenous behavior for each actor.  (i.e. each output port produces one
 token for each firing, and each input port consumes one token on each firing,
 and no tokens are created during initialization.)  If this is not the case
 then the parameters "TokenConsumptionRate", "TokenProductionRate", and
-"Token Init Production" must be set.   The SDFAtomicActor and 
+"TokenInitProduction" must be set.   The SDFAtomicActor and 
 SDFCompositeActor classes provide easier access to these parameters.
 <p>
 
@@ -206,12 +206,12 @@ public class SDFScheduler extends Scheduler{
     /**
      * Get the number of tokens that are produced on this output port
      * during initialization, as supplied by
-     * by the port's "Token Init Production" parameter.   If the parameter
+     * by the port's "TokenInitProduction" parameter.   If the parameter
      * does not exist, then assume the actor is zero-delay and return
      * a value of zero.
      */
     protected int _getTokenInitProduction(IOPort p) {
-        Parameter param = (Parameter)p.getAttribute("Token Init Production");
+        Parameter param = (Parameter)p.getAttribute("TokenInitProduction");
         if(param == null) 
             return 0;
         return ((IntToken)param.getToken()).intValue();
@@ -893,9 +893,9 @@ public class SDFScheduler extends Scheduler{
             param = new Parameter(port,"TokenProductionRate",
                     new IntToken(1)); 
         param.setToken(new IntToken(productionrate));
-        param = (Parameter)port.getAttribute("Token Init Production");
+        param = (Parameter)port.getAttribute("TokenInitProduction");
         if(param == null) 
-            param = new Parameter(port,"Token Init Production",
+            param = new Parameter(port,"TokenInitProduction",
                     new IntToken(1)); 
         param.setToken(new IntToken(initproduction));
             }
@@ -976,12 +976,12 @@ public class SDFScheduler extends Scheduler{
                 port.getName() + " is not contained in Entity " +
                 e.getName());
         Parameter param = (Parameter)
-            port.getAttribute("Token Init Production");
+            port.getAttribute("TokenInitProduction");
         if(param != null) {
             param.setToken(new IntToken(rate));
         } else {
             try {
-                param = new Parameter(port,"Token Init Production",
+                param = new Parameter(port,"TokenInitProduction",
                         new IntToken(rate));
             } 
             catch (Exception exception) {

@@ -58,7 +58,7 @@ this actor defines and sets three different port parameters, namely:
 <UL>
 <LI>Token Consumption Rate
 <LI>Token Production Rate
-<LI>Token Init Production
+<LI>TokenInitProduction
 </UL>
 These parameters can be ignored by domains that do not require this information.
 
@@ -89,7 +89,7 @@ public class Distributor extends AtomicActor {
                 new IntToken(1));
         param = new Parameter(_input,"Token Production Rate",
                 new IntToken(1));
-        param = new Parameter(_input,"Token Init Production",
+        param = new Parameter(_input,"TokenInitProduction",
                 new IntToken(0));
 
         _output = new IOPort(this, "output", false, true);
@@ -99,7 +99,7 @@ public class Distributor extends AtomicActor {
                 new IntToken(1));
         param = new Parameter(_output,"Token Production Rate",
                 new IntToken(1));
-        param = new Parameter(_output,"Token Init Production",
+        param = new Parameter(_output,"TokenInitProduction",
                 new IntToken(0));
     }
 

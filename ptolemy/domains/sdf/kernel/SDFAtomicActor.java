@@ -156,7 +156,7 @@ public class SDFAtomicActor extends TypedAtomicActor {
         if(!p.isOutput()) throw new IllegalActionException("IOPort " +
                 p.getName() + " is not an Output Port.");
 
-        Parameter param = (Parameter)p.getAttribute("Token Init Production");
+        Parameter param = (Parameter)p.getAttribute("TokenInitProduction");
         if(param != null) {
             return ((IntToken)param.getToken()).intValue();
         } else {
@@ -269,12 +269,12 @@ public class SDFAtomicActor extends TypedAtomicActor {
         if(!p.equals(pp)) throw new IllegalActionException("IOPort " +
                 p.getName() + " is not contained in Actor " +
                 getName());
-        Parameter param = (Parameter)p.getAttribute("Token Init Production");
+        Parameter param = (Parameter)p.getAttribute("TokenInitProduction");
         if(param != null)
             param.setToken(new IntToken(r));
         else {
             try {
-            param = new Parameter(p, "Token Init Production",
+            param = new Parameter(p, "TokenInitProduction",
                         new IntToken(r));
             } 
             catch (NameDuplicationException e) {
