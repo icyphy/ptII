@@ -50,7 +50,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 40.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {83, 69, 1073, 780}, maximized = false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {19, -1, 975, 780}, maximized = false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[760, 654]">
     </property>
@@ -79,7 +79,7 @@
         </property>
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
         </property>
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.54901963,0.003921569,1.0}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 5.0]">
         </property>
@@ -101,9 +101,21 @@
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The flow actor has been&#10;replaced with the flow&#10;rate actor which has&#10;units gallonUS/hour.">
         </property>
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.54901963,0.0,1.0}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 360.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The HeatExchanger.TempVessel&#10;port and the Growth.vatTemp&#10;port bothhave units degrees.&#10;However, the Integrator.output&#10;will have units calories. ">
+        </property>
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 150.0]">
         </property>
     </property>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
@@ -115,7 +127,7 @@
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[640.0, 80.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[715.0, 80.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -544,7 +556,7 @@
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[585.0, 80.0]">
+        <vertex name="vertex1" value="[665.0, 80.0]">
         </vertex>
         <property name="_explanation" class="ptolemy.kernel.util.StringAttribute">
         </property>

@@ -50,13 +50,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 40.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {42, -2, 948, 763}, maximized = false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {10, 1, 1003, 769}, maximized = false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[733, 654]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[788, 643]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{366.5, 327.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{394.0, 321.5}">
     </property>
     <property name="annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Demonstration of statically checked unit system.&#10;&#10;This is a model of the growth process in a fermenter. There are three&#10;submodels:&#10;&#10;1) Growth models the number of cells being produced as a&#10;    function of the current number of cells and the vat temperature;&#10;2) HeatProduction models the amount of heat produced (in calories) as&#10;    a function of the amount of work done (in joules); and&#10;3) HeatExchanger models the removal of heat from the vat as a&#10;    function of the rate at which water flows through the cooling&#10;    jacket around the vat.&#10;&#10;Some of the units constraints in the model are inconsistent. See the&#10;red notes. The UnitsConstraint Solver can be used to discover, and&#10;analyse these inconsistencies. (Right mouse-click and select&#10;UnitsConstraint Solver).">
@@ -101,9 +101,21 @@
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The flow.output port has&#10;units gallonUS while the&#10;HeatExchanger.flow port&#10;has units gallonUS/hour.">
         </property>
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 360.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The HeatExchanger.TempVessel&#10;port and the Growth.vatTemp&#10;port both have units degrees.&#10;However, the Integrator.output&#10;will have units calories. ">
+        </property>
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 145.0]">
         </property>
     </property>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
@@ -115,7 +127,7 @@
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[635.0, 75.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[715.0, 75.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -524,7 +536,7 @@
         </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[585.0, 75.0]">
+        <vertex name="vertex1" value="[655.0, 75.0]">
         </vertex>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
