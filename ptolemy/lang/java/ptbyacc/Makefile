@@ -47,14 +47,14 @@ ptbyacc: $(OBJ)
 # 	JavaParserval.java
 #	*.tbl
 update_lang_java: ptbyacc
-	(cd $(PTII)/ptolemy/lang/java; \
-		$(PTII)/ptolemy/lang/java/ptbyacc/ptbyacc -j \
+	(cd "$(PTII)/ptolemy/lang/java"; \
+		"$(PTII)/ptolemy/lang/java/ptbyacc/ptbyacc" -j \
 		-p ptolemy.lang.java -f JavaParser jparser.y)
 	@echo "After running this rule, you might want to update"
 	@echo "the .bin files in $(PTII)/ptolemy/lang/java"
 	@echo "by running"
-	@echo "(cd $(PTII)/ptolemy/lang/java; make update_tables)"
-	@echo "(cd $(PTII)/ptolemy/lang/java; cvs commit -m \"Modified byacc\")"
+	@echo "(cd \"$(PTII)/ptolemy/lang/java\"; make update_tables)"
+	@echo "(cd \"$(PTII)/ptolemy/lang/java\"; cvs commit -m \"Modified byacc\")"
 
 clean:
 	/bin/rm -rf $(OBJ)
