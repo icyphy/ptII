@@ -83,7 +83,7 @@ public class Const extends TypedAtomicActor {
     ////                         public methods                    ////
 
     /** Clone the actor into the specified workspace. This calls the
-     *  base class and then creates new ports and paramters.
+     *  base class and then creates new ports and parameters.
      *  @param ws The workspace for the new object.
      *  @return A new actor.
      */
@@ -114,7 +114,7 @@ public class Const extends TypedAtomicActor {
      *  set to type IntToken with value 1.
      */
     // FIXME: it may be better to set the default value for
-    // paramters in the constructor. But this requires support
+    // parameters in the constructor. But this requires support
     // for parameter type change.
     public Enumeration typeConstraints() {
 	if (value.getToken() == null) {
