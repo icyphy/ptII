@@ -75,6 +75,7 @@ JSRCS = \
 	QueueReceiver.java \
 	Receiver.java \
 	Sortable.java \
+	SortBinWidth.java \
 	SortedQueue.java \
 	TimeStamp.java \
 	TokenHolderFullException.java
