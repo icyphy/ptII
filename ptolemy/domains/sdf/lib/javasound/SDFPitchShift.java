@@ -43,9 +43,10 @@ import ptolemy.graph.Inequality;
 import java.io.*;
 import java.net.*;
 import java.util.Enumeration;
-import collections.LinkedList;
 
-//import ptolemy.media.*;
+import ptolemy.data.Token;
+import ptolemy.data.type.BaseType;
+
 import javax.media.sound.sampled.*;
 
 import ptolemy.domains.sdf.kernel.*;
@@ -75,30 +76,30 @@ public class SDFPitchShift extends SDFAtomicActor {
 	consumptionProductionRate = new Parameter(this,
 					"consumptionProductionRate",
 						 new IntToken(512));
-	consumptionProductionRate.setTypeEquals(IntToken.class);
+	consumptionProductionRate.setTypeEquals(BaseType.INT);
 	consumptionRate =
 	    ((IntToken)consumptionProductionRate.getToken()).intValue();
 	productionRate = consumptionRate;
 
 	output = new SDFIOPort(this, "output", false, true);
-        output.setTypeEquals(DoubleToken.class);
+        output.setTypeEquals(BaseType.DOUBLE);
 	output.setTokenProductionRate(productionRate);
 
 	input = new SDFIOPort(this, "input", true, false);
-        input.setTypeEquals(DoubleToken.class);
+        input.setTypeEquals(BaseType.DOUBLE);
 	input.setTokenConsumptionRate(consumptionRate);
 
 	scaleFactor = new SDFIOPort(this, "scaleFactor", true, false);
-        scaleFactor.setTypeEquals(DoubleToken.class);
+        scaleFactor.setTypeEquals(BaseType.DOUBLE);
 	scaleFactor.setTokenConsumptionRate(1);
 
 	pitchIn = new SDFIOPort(this, "pitchIn", true, false);
-        pitchIn.setTypeEquals(DoubleToken.class);
+        pitchIn.setTypeEquals(BaseType.DOUBLE);
 	pitchIn.setTokenConsumptionRate(consumptionRate);
 		
 	sampleRate = new Parameter(this, "sampleRate",
 				     new DoubleToken(22050));
-        sampleRate.setTypeEquals(DoubleToken.class);
+        sampleRate.setTypeEquals(BaseType.DOUBLE);
 	
 	
     }
