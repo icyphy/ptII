@@ -79,7 +79,7 @@ public class FIRDouble extends FIR {
     }
 
     /** Consume the inputs and produce the outputs of the FIR filter.
-     *  @exception IllegalActionException Not Thrown in this base class.
+     *  @exception IllegalActionException Not thrown in this base class.
      */
     public void fire() throws IllegalActionException {
 
