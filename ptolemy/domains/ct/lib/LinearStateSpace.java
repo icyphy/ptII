@@ -307,8 +307,7 @@ public class LinearStateSpace extends TypedCompositeActor {
             // Integrators
             for (int i = 0; i < n; i++) {
                 integrators[i] = new Integrator(this, "state_" + i);
-                integrators[i].initialState.setToken(
-                        x0.getElementAsToken(0, i));
+                integrators[i].initialState.setExpression("initialStates(0," + i + ")");
                 states[i] = new TypedIORelation(this, "relation_state_" + i);
                 integrators[i].output.link(states[i]);
                 // One adder per integrator.
@@ -322,14 +321,11 @@ public class LinearStateSpace extends TypedCompositeActor {
                 for (int j = 0; j < n; j++) {
                     // We don't create the Scale if the corresponding element
                     // in the A matrix is 0.
-                    Token tokenIJ = a.getElementAsToken(i, j);
-                    if (!(tokenIJ.isEqualTo(tokenIJ.zero())).booleanValue()) {
-                        feedback[i][j] = new Scale(this,
-                                "feedback_" + i + "_" +j);
-                        feedback[i][j].factor.setToken(tokenIJ);
-                        feedback[i][j].input.link(states[j]);
-                        connect(feedback[i][j].output, stateAdders[i].plus);
-                    }
+                    feedback[i][j] = new Scale(this,
+                            "feedback_" + i + "_" +j);
+                    feedback[i][j].factor.setExpression("A(" + i + ", " + j + ")");
+                    feedback[i][j].input.link(states[j]);
+                    connect(feedback[i][j].output, stateAdders[i].plus);
                 }
             }
             // Inputs
@@ -345,8 +341,7 @@ public class LinearStateSpace extends TypedCompositeActor {
                     // if the elements of A's in this row are also zero,
                     // then we will have an illegal topology.
                     inputScales[i][j] = new Scale(this, "b_" + i + "_" + j);
-                    inputScales[i][j].factor.setToken(
-                            b.getElementAsToken(i, j));
+                    inputScales[i][j].factor.setExpression("B(" + i + ", " + j + ")");
                     inputScales[i][j].input.link(inputs[j]);
                     connect(inputScales[i][j].output, stateAdders[i].plus);
                 }
@@ -360,15 +355,12 @@ public class LinearStateSpace extends TypedCompositeActor {
                 // Create the output scales only if the corresponding
                 // 'c' element is not 0.
                 for (int i = 0; i < n; i++) {
-                    Token tokenLI = c.getElementAsToken(l, i);
-                    if (!(tokenLI.isEqualTo(tokenLI.zero())).booleanValue()) {
-                        outputScales[l][i] = new Scale(this,
-                                "outputScale_" + l + "_" + i);
-                        outputScales[l][i].factor.setToken(tokenLI);
-                        outputScales[l][i].input.link(states[i]);
-                        connect(outputScales[l][i].output,
-                                outputAdders[l].plus);
-                    }
+                    outputScales[l][i] = new Scale(this,
+                            "outputScale_" + l + "_" + i);
+                    outputScales[l][i].factor.setExpression("C(" + l + ", " + i + ")");
+                    outputScales[l][i].input.link(states[i]);
+                    connect(outputScales[l][i].output,
+                            outputAdders[l].plus);
                 }
             }
             // Direct feed through.
@@ -376,15 +368,12 @@ public class LinearStateSpace extends TypedCompositeActor {
             for (int l = 0; l < r; l++) {
                 for (int j = 0; j < m; j++) {
                     // Create the scale only if the element is not 0.
-                    Token tokenLJ = d.getElementAsToken(l, j);
-                    if (!(tokenLJ.isEqualTo(tokenLJ.zero())).booleanValue()) {
-                        feedThrough[l][j] = new Scale(this,
-                                "feedThrough_" + l + "_" + j);
-                        feedThrough[l][j].factor.setToken(tokenLJ);
-                        feedThrough[l][j].input.link(inputs[j]);
-                        connect(feedThrough[l][j].output,
-                                outputAdders[l].plus);
-                    }
+                    feedThrough[l][j] = new Scale(this,
+                            "feedThrough_" + l + "_" + j);
+                    feedThrough[l][j].factor.setExpression("D(" + l + ", " + j + ")");
+                    feedThrough[l][j].input.link(inputs[j]);
+                    connect(feedThrough[l][j].output,
+                            outputAdders[l].plus);
                 }
             }
             _opaque = false;
@@ -434,39 +423,48 @@ public class LinearStateSpace extends TypedCompositeActor {
         DoubleMatrixToken b = (DoubleMatrixToken)B.getToken();
         if (b.getRowCount() != n) {
             throw new IllegalActionException(this,
-                    "The number of rows of the B matrix should equal to "
-                    + "the number of rows of the A matrix.");
+                    "The number of rows of the B matrix (" + b.getRowCount() +
+                    ") should be equal to "
+                    + "the number of rows of the A matrix (" + n + ").");
         }
         int m = b.getColumnCount();
         if (input.getWidth() != m) {
             throw new IllegalActionException(this,
-                    "The number of columns of the B matrix should equal to "
-                    + "the width of the input port.");
+                    "The number of columns of the B matrix (" + 
+                    b.getColumnCount() + ") should be equal to "
+                    + "the width of the input port (" 
+                    + input.getWidth() + ").");
         }
         DoubleMatrixToken c = (DoubleMatrixToken)C.getToken();
         if (c.getColumnCount() != n) {
             throw new IllegalActionException(this,
-                    "The number of columns of the C matrix should equal to "
-                    + "the number of rows of the A matrix.");
+                    "The number of columns of the C matrix (" + 
+                    c.getColumnCount() + ") should be equal to "
+                    + "the number of rows of the A matrix (" + n + ").");
         }
         // The output width is not checked, since we may only want
         // to use some of the outputs
         DoubleMatrixToken d = (DoubleMatrixToken)D.getToken();
         if (c.getRowCount() != d.getRowCount()) {
             throw new IllegalActionException(this,
-                    "The number of rows of the D matrix should equal to "
-                    + "the number of rows of the C matrix.");
+                    "The number of rows of the D matrix (" + d.getRowCount() +
+                    ") should be equal to "
+                    + "the number of rows of the C matrix (" + 
+                    c.getRowCount() + ").");
         }
         if (d.getColumnCount() != input.getWidth()) {
             throw new IllegalActionException(this,
-                    "The number of columns of the D matrix should equal to "
-                    + "the width of the input port.");
+                    "The number of columns of the D matrix (" +
+                    d.getColumnCount() + ") should be equal to "
+                    + "the width of the input port (" 
+                    + input.getWidth() + ").");
         }
         DoubleMatrixToken x0 = (DoubleMatrixToken)initialStates.getToken();
         if (x0.getColumnCount() != n) {
             throw new IllegalActionException(this,
-                    "The number of initial states should equal to "
-                    + "the number of columns of the A matrix.");
+                    "The number of initial states (" + x0.getColumnCount() +
+                    ") should equal to "
+                    + "the number of columns of the A matrix (" + n + ").");
         }
     }
 
