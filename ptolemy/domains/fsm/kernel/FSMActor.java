@@ -723,6 +723,10 @@ public class FSMActor extends CompositeEntity implements TypedActor {
             return;
         }
 
+        if (_debugging) {
+            _debug("Commit transition ", _lastChosenTransition.getFullName());
+        }
+
         Iterator actions = _lastChosenTransition.commitActionList().iterator();
         while (actions.hasNext()) {
             Action action = (Action)actions.next();
