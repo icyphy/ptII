@@ -97,7 +97,7 @@ public class BaseType implements Type {
     public boolean isEqualTo(Type t) {
 	// since BaseType is a type safe enumeration, can use == to
 	// test equality.
-	return this==t;
+	return this == t;
     }
 
     /** Determine if this type corresponds to an instantiable token
@@ -127,7 +127,7 @@ public class BaseType implements Type {
      *  @return True if this type is NAT; false otherwise.
      */
     public boolean isSubstitutionInstance(Type type) {
-	return this==NAT;
+	return this == NAT;
     }
 
     /** Return the string representation of this type.
