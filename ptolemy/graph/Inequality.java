@@ -95,6 +95,13 @@ public class Inequality {
         return (result == CPO.LOWER || result == CPO.SAME);
     }
 
+    /** Override the base class to describe the inequality.
+     *  @return A string describing the inequality.
+     */
+    public String toString() {
+        return _lesserTerm.toString() + " <= " + _greaterTerm.toString();
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private InequalityTerm _lesserTerm = null;
