@@ -174,7 +174,7 @@ test SDFReceiver-2.2 {Check put and get and hasToken with more than 1 token in t
     catch {$receiver hasToken 0} result5
 
     list $result1 $result2 $result3 $result4 [$receivedToken toString] [$receivedToken2 toString] [$receivedToken3 toString] [$receivedToken4 toString] $result5 $result6
-} {0 1 1 0 {"foo"} {"bar"} {"foo"} {"bar"} {ptolemy.kernel.util.IllegalActionException: The number of tokens must be greater than 0} {ptolemy.actor.NoTokenException: : Offset 2 out of range with 2 tokens in the receiver and 0 in history.}}
+} {0 1 1 0 {"foo"} {"bar"} {"foo"} {"bar"} {java.lang.IllegalArgumentException: The number of tokens must be greater than 0} {ptolemy.actor.NoTokenException: : Offset 2 out of range with 2 tokens in the receiver and 0 in history.}}
 
 test SDFReceiver-2.3 {Check noTokenException} {
     # uses previous setup.

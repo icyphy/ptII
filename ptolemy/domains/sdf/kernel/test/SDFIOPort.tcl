@@ -47,9 +47,11 @@ if {[string compare test [info procs test]] == 1} then {
 # Check for necessary classes and adjust the auto_path accordingly.
 #
 
-# NOTE:  All of the following tests use this director,
-# pretty much as a dummy.
-set director [java::new ptolemy.actor.Director]
+# NOTE:  All of the following tests use this director.
+
+set director [java::new ptolemy.domains.sdf.kernel.SDFDirector]
+set scheduler [java::new ptolemy.domains.sdf.kernel.SDFScheduler]
+$director setScheduler $scheduler
 set manager [java::new ptolemy.actor.Manager]
 
 ######################################################################
@@ -188,31 +190,37 @@ test SDFIOPort-4.2 {test description} {
 ####
 #
 test SDFIOPort-5.1 {test consumption rate methods} {
-    set port [java::new ptolemy.domains.sdf.kernel.SDFIOPort]
-    $port setInput 1
-    $port setTokenConsumptionRate 5
-    set rate1 [$port getTokenConsumptionRate]
-    $port setTokenConsumptionRate 1
-    set rate2 [$port getTokenConsumptionRate]
-    list $rate1 $rate2
-} {5 1}
+    # NOTE: Uses the setup above
+    $p1 setInput 1
+    $p1 setTokenConsumptionRate 5
+    set rate1 [$p1 getTokenConsumptionRate]
+    set actualRate1 [$scheduler getTokenConsumptionRate $p1]
+    $p1 setTokenConsumptionRate 1
+    set rate2 [$p1 getTokenConsumptionRate]
+    set actualRate2 [$scheduler getTokenConsumptionRate $p1]
+    list $rate1 $actualRate1 $rate2 $actualRate2
+} {5 5 1 1}
 
 test SDFIOPort-5.2 {test production methods} {
-    set port [java::new ptolemy.domains.sdf.kernel.SDFIOPort]
-    $port setOutput 1
-    $port setTokenProductionRate 5
-    set rate1 [$port getTokenProductionRate]
-    $port setTokenProductionRate 1
-    set rate2 [$port getTokenProductionRate]
-    list $rate1 $rate2
-} {5 1}
+    # NOTE: Uses the setup above
+    $p1 setOutput 1
+    $p1 setTokenProductionRate 4
+    set rate1 [$p1 getTokenProductionRate]
+    set actualRate1 [$scheduler getTokenProductionRate $p1]
+    $p1 setTokenProductionRate 1
+    set rate2 [$p1 getTokenProductionRate]
+    set actualRate2 [$scheduler getTokenProductionRate $p1]
+    list $rate1 $actualRate1 $rate2 $actualRate2
+} {4 4 1 1}
 
-test SDFIOPort-5.2 {test init production methods} {
-    set port [java::new ptolemy.domains.sdf.kernel.SDFIOPort]
-    $port setOutput 1
-    $port setTokenInitProduction 5
-    set rate1 [$port getTokenInitProduction]
-    $port setTokenInitProduction 1
-    set rate2 [$port getTokenInitProduction]
-    list $rate1 $rate2
-} {5 1}
+test SDFIOPort-5.3 {test init production methods} {
+    # NOTE: Uses the setup above
+    $p1 setOutput 1
+    $p1 setTokenInitProduction 3
+    set rate1 [$p1 getTokenInitProduction]
+    set actualRate1 [$scheduler getTokenInitProduction $p1]
+    $p1 setTokenInitProduction 1
+    set rate2 [$p1 getTokenInitProduction]
+    set actualRate2 [$scheduler getTokenInitProduction $p1]
+    list $rate1 $actualRate1 $rate2 $actualRate2
+} {3 3 1 1}
