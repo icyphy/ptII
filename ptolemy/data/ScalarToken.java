@@ -37,6 +37,8 @@ import ptolemy.math.FixPoint;
 import ptolemy.data.type.Type;
 import ptolemy.data.type.BaseType;
 
+import java.util.Arrays;
+
 //////////////////////////////////////////////////////////////////////////
 //// ScalarToken
 /**
@@ -45,6 +47,11 @@ This class defines methods for type conversion among different scalar
 tokens. The implementation in this base class just throws an exception.
 Derived class should override the methods that the corresponding
 conversion can be achieved without loss of information.
+<p>
+Instances of ScalarToken may have units. In the arithmetic methods add() and
+subtract(), the two operands must have the same units. Otherwise, an exception
+will be thrown. In the methods multiply() and divide(), the units of the
+resulting token will be computed automatically.
 
 @author Yuhong Xiong, Mudit Goel
 @version $Id$
@@ -62,15 +69,30 @@ public abstract class ScalarToken extends Token {
      */
     public abstract ScalarToken absolute();
 
+    /** Return a scalar token whose value is the sum of this token and
+     *  the argument. In this base class, the units of this token and 
+     *  the argument are compared. If the two units are not equal, an
+     *  exception is thrown. If the units are equal, or both tokens do not
+     *  have units, do nothing.
+     *  @param rightArgument The token to add to this token.
+     *  @return A new token containing the result. In this base class,
+     *   always return null.
+     *  @IllegalActionException If the units of this token and the argument
+     *   are not equal.
+     */
+    public Token add(Token rightArgument) throws IllegalActionException {
+        _assertUnitsEqual(rightArgument);
+        return null;
+    }
+
     /** Return the value of this token as a Complex.
      *  In this base class, we just throw an exception.
      *  @return A Complex
      *  @exception IllegalActionException Always thrown
      */
-    public Complex complexValue()
-	    throws IllegalActionException {
-	throw new IllegalActionException("Cannot convert the value in " +
-    		getClass().getName() + " to a Complex losslessly.");
+    public Complex complexValue() throws IllegalActionException {
+        throw new IllegalActionException("Cannot convert the value in " +
+                    getClass().getName() + " to a Complex losslessly.");
     }
 
     /** Return the value of this token as a double.
@@ -78,17 +100,16 @@ public abstract class ScalarToken extends Token {
      *  @return A double
      *  @exception IllegalActionException Always thrown
      */
-    public double doubleValue()
-	    throws IllegalActionException {
-	throw new IllegalActionException("Cannot convert the value in " +
-    		getClass().getName() + " to a double losslessly.");
+    public double doubleValue() throws IllegalActionException {
+        throw new IllegalActionException("Cannot convert the value in " +
+                    getClass().getName() + " to a double losslessly.");
     }
 
     /** Return the type of this token.
      *  @return BaseType.SCALAR
      */
     public Type getType() {
-	return BaseType.SCALAR;
+        return BaseType.SCALAR;
     }
 
     /** Return the value of this token as a FixPoint.
@@ -96,8 +117,7 @@ public abstract class ScalarToken extends Token {
      *  @return A FixPoint
      *  @exception IllegalActionException Always thrown.
      */
-    public FixPoint fixValue()
-            throws IllegalActionException {
+    public FixPoint fixValue() throws IllegalActionException {
         throw new IllegalActionException("Cannot convert the value in " +
                 getClass().getName() + " to a FixPoint losslessly.");
     }
@@ -107,10 +127,9 @@ public abstract class ScalarToken extends Token {
      *  @return The value of this token.
      *  @exception IllegalActionException Always thrown.
      */
-    public int intValue()
-	    throws IllegalActionException {
-	throw new IllegalActionException("Cannot convert the value in " +
-    		getClass().getName() + " to an int losslessly.");
+    public int intValue() throws IllegalActionException {
+        throw new IllegalActionException("Cannot convert the value in " +
+                    getClass().getName() + " to an int losslessly.");
     }
 
     /** Check whether the value of this token is strictly less than that of the
@@ -122,16 +141,303 @@ public abstract class ScalarToken extends Token {
      *   is incomparable with the type of this token.
      */
     public abstract BooleanToken isLessThan(ScalarToken arg)
-	    throws IllegalActionException;
+            throws IllegalActionException;
+
+    /** Return a scalar token that contains the value of this token in the
+     *  units of the argument token. The unit category of the argument token
+     *  must be the same as that of this token, otherwise, an exception will
+     *  be thrown. The returned token is unitless.
+     *  @param units A scalar token that represents a unit.
+     *  @return A scalar token that do not have a unit.
+     *  @exception IllegalActionException If the unit category of the
+     *   argument token is not the same as that of this one.
+    public ScalarToken inUnitsOf(ScalarToken units)
+            throws IllegalActionException {
+	_assertUnitsEqual(units);
+	return this.divide(units);
+    }
 
     /** Return the value of this token as a long integer.
      *  In this base class, we just throw an exception.
      *  @return A long
      *  @exception IllegalActionException Always thrown.
      */
-    public long longValue()
-	    throws IllegalActionException {
-	throw new IllegalActionException("Cannot convert the value in " +
-    		getClass().getName() + " to a long losslessly.");
+    public long longValue() throws IllegalActionException {
+        throw new IllegalActionException("Cannot convert the value in " +
+                    getClass().getName() + " to a long losslessly.");
+    }
+
+    /** Set the unit category this token belongs to.
+     *  @param The unit category index.
+     */
+    public void setUnitCategory(int index) {
+	_unitCategoryExponents = new int[index+1];
+	Arrays.fill(_unitCategoryExponents, 0);
+	_unitCategoryExponents[index] = 1;
+    }
+
+    /** Return a scalar token whose value is the value of the argument
+     *  token subtract from the the value of this token.
+     *  In this base class, the units of this token and the argument are
+     *  compared. If the two units are not equal, an exception is thrown.
+     *  If the units are equal, or both tokens do not have units, do nothing.
+     *  @param rightArgument The token to subtract to this token.
+     *  @return A new token containing the result. In this base class,
+     *   always return null.
+     *  @IllegalActionException If the units of this token and the argument
+     *   are not equal.
+     */
+    public Token subtract(Token rightArgument) throws IllegalActionException {
+        _assertUnitsEqual(rightArgument);
+        return null;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                        protected methods                  ////
+
+    /** Add the corresponding unit category exponents. 
+     *  @param token A token whose exponent will be added with the
+     *   exponents of this token.
+     *  @return An int array containing the addition result, or null
+     *   if the result is unitless.
+     */
+    protected int[] _addCategoryExponents(ScalarToken token) {
+        return _addCategoryExponents(token._unitCategoryExponents);
+    }
+
+    /** Return true if this token does not have a unit.
+     *  @return True if this token does not have a unit.
+     */
+    protected boolean _isUnitless() {
+	return _isUnitless(_unitCategoryExponents);
+    }
+
+    /** Subtract the corresponding unit category exponents of the
+     *  argument token from that of this token. 
+     *  @param token A token whose exponent will be subtracted from the
+     *   exponents of this token.
+     *  @return An int array containing the addition result, or null
+     *   if the result is unitless.
+     */
+    protected int[] _subtractCategoryExponents(ScalarToken token) {
+	// negate the exponents of the argument token and add to
+	// this token.
+	int length = token._unitCategoryExponents.length;
+	int[] negation = new int[length];
+	for (int i=0; i<length; i++) {
+	    negation[i] = -token._unitCategoryExponents[i];
+	}
+        return _addCategoryExponents(negation);
+    }
+
+    /** Return the string representation of the units of this token.
+     *  The general format of the returned string is
+     *  " * (l_1 * l_2 * ... * l_m) / (s_1 * s_2 * ... * s_n)".
+     *  For example: " * (meter * kilogram) / (second * second)".
+     *  If m or n is 1, then the parenthesis above or below "/" is
+     *  omited. For example: " * meter / second".
+     *  If there is no term above "/", the format becomes
+     *  " * 1 / (s_1 * s_2 * ... * s_n)". For example: " * 1 / meter".
+     *  If this token does not have a unit, return an empty string.
+     *  @return A string representation of the units of this token.
+     */
+    protected String _unitString() {
+        if (_isUnitless(_unitCategoryExponents)) {
+            return "";
+	}
+
+        String positiveUnits = "";
+	String negativeUnits = "";
+	boolean justOnePositive = true;
+	boolean justOneNegative = true;
+        for (int i=0; i<_unitCategoryExponents.length; i++) {
+            int exponent = _unitCategoryExponents[i];
+            if (exponent != 0) {
+	        String baseString = null;
+		// baseString = Constants.baseUnitString(i);
+   		if (exponent > 0) {
+		    for (int j=0; j<exponent; j++) {
+			if (positiveUnits.equals("")) {
+                            positiveUnits = baseString;
+			} else {
+			    positiveUnits += " * " + baseString;
+			    justOnePositive = false;
+			}
+		    }
+                } else {
+		    for (int j=0; j<-exponent; j++) {
+			if (negativeUnits.equals("")) {
+                            negativeUnits = baseString;
+			} else {
+			    negativeUnits += " * " + baseString;
+			    justOneNegative = false;
+			}
+		    }
+	        }
+	    }
+        }
+
+        if (positiveUnits.equals("") && negativeUnits.equals("")) {
+	    return "";
+	}
+
+        if (positiveUnits.equals("")) {
+	    positiveUnits = " * 1";
+	} else if (justOnePositive) {
+	    positiveUnits = " * " + positiveUnits;
+	} else {
+	    positiveUnits = " * (" + positiveUnits + ")";
+	}
+
+        if (negativeUnits.equals("")) {
+	    return positiveUnits;
+	} else if (justOneNegative) {
+	    return positiveUnits + " / " + negativeUnits;
+	} else {
+            return positiveUnits + " / (" + negativeUnits + ")";
+	}
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                       protected variables                 ////
+
+    /** The unit category exponents. 
+     *  The unit system contains a set of base unit categories and derived
+     *  catetories. The base categories are customizable by the user.
+     *  For example, the user may choose to use the SI unit system which
+     *  has 7 base categories: length, mass, time, electric current,
+     *  thermodynamic temperature, amount of substance, and luminous
+     *  intensity. The customization is done by defining a MoML file to specify
+     *  the categories and the units in each category. Each category has an
+     *  index, assigned by the order the category appears in the MoML file.
+     *  Derived units are recorded by the exponents of the category. For
+     *  example, the category speed, which is length/time, is stored by an
+     *  exponent of 1 for the length category, and an exponent of -1 for the
+     *  time category.
+     *  This array records the exponents of the base categories.
+     */
+    protected int[] _unitCategoryExponents = null;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    // Add the exponent array of this token with the argument array,
+    // and return the result in a new array.
+    private int[] _addCategoryExponents(int[] exponents) {
+        boolean isThisUnitless = _isUnitless(this._unitCategoryExponents);
+        boolean isArgumentUnitless = _isUnitless(exponents);
+
+        if (isThisUnitless && isArgumentUnitless) {
+            return null;
+        }
+
+        // Either this token, or the argument token, or both have non null
+        // exponent arrays.
+        if (isThisUnitless) {
+	    // exponents is not unitless.
+	    int length = exponents.length;
+	    int[] result = new int[length];
+	    System.arraycopy(exponents, 0, result, 0, length);
+            return result;
+        }
+	if (isArgumentUnitless) {
+	    // this._unitCategoryExponents is not unitless.
+	    int length = this._unitCategoryExponents.length;
+            int[] result = new int[length];
+	    System.arraycopy(_unitCategoryExponents, 0, result, 0, length);
+	    return result;
+        }
+
+        // both have units.
+        int thisLength = _unitCategoryExponents.length;
+        int argumentLength = exponents.length;
+	int[] result;
+	if (thisLength <= argumentLength) {
+	    result = new int[argumentLength];
+	    System.arraycopy(exponents, 0, result, 0, argumentLength);
+	    for (int i=0; i<thisLength; i++) {
+                result[i] += _unitCategoryExponents[i];
+	    }
+	} else {
+	    result = new int[thisLength];
+	    System.arraycopy(_unitCategoryExponents, 0, result, 0, thisLength);
+	    for (int i=0; i<argumentLength; i++) {
+                result[i] += exponents[i];
+	    }
+	}
+
+	if (_isUnitless(result)) {
+	    return null;
+	}
+	return result;
+    }
+ 
+    // Throw an exception if the units of this token and the argument
+    // are not equal.
+    private void _assertUnitsEqual(Token token) throws IllegalActionException {
+        // Assuming that the argument is a scalar token. Otherwise, this
+        // method should not be called.
+        ScalarToken scalarToken = (ScalarToken)token;
+
+        boolean isThisUnitless = _isUnitless(this._unitCategoryExponents);
+        boolean isArgumentUnitless =
+                          _isUnitless(scalarToken._unitCategoryExponents);
+
+        if (isThisUnitless && isArgumentUnitless) {
+            return;
+        }
+
+        // Either this token, or the argument token, or both have non null
+        // exponent arrays.
+        boolean unitsEqual = true;
+        if (isThisUnitless || isArgumentUnitless) {
+            // one is unitless, the other is not.
+            unitsEqual = false;
+        } else {
+            // both have units.
+            int thisLength = _unitCategoryExponents.length;
+            int argumentLength = scalarToken._unitCategoryExponents.length;
+            int shorterLength = (thisLength <= argumentLength) ? thisLength :
+                                argumentLength;
+            for (int i=0; i<shorterLength; i++) {
+                if (_unitCategoryExponents[i] !=
+                    scalarToken._unitCategoryExponents[i]) {
+                    unitsEqual = false;
+                    break;
+                }
+            }
+
+            if (unitsEqual == true) {
+                for (int i=shorterLength; i<thisLength; i++) {
+                    if (_unitCategoryExponents[i] != 0) {
+                        unitsEqual = false;
+                        break;
+                    }
+                }
+                for (int i=shorterLength; i<argumentLength; i++) {
+                    if (scalarToken._unitCategoryExponents[i] != 0) {
+                        unitsEqual = false;
+                        break;
+                    }
+                }
+            }
+        }
+
+        if (unitsEqual == false) {
+            throw new IllegalActionException("The units of this token and "
+                    + "the argument token are not equal.");
+        }
+    }
+
+    // Return true if this token does not have a unit.
+    private boolean _isUnitless(int[] exponents) {
+        if (exponents != null) {
+            for (int i=0; i<exponents.length; i++) {
+                if (exponents[i] != 0) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 }

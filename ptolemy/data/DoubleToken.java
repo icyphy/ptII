@@ -85,16 +85,30 @@ public class DoubleToken extends ScalarToken {
      *  @return A DoubleToken.
      */
     public ScalarToken absolute() {
-        return _value >= 0.0 ? this : new DoubleToken(-_value);
+	DoubleToken result;
+        if (_value >= 0.0) {
+	    result = new DoubleToken(_value);
+	} else {
+	    result = new DoubleToken(-_value);
+	}
+
+	if ( !_isUnitless()) {
+	    int length = _unitCategoryExponents.length;
+	    result._unitCategoryExponents = new int[length];
+	    System.arraycopy(_unitCategoryExponents, 0,
+			     result._unitCategoryExponents, 0, length);
+        }
+	return result;
     }
 
     /** Return a new token whose value is the sum of this token
      *  and the argument. Type resolution also occurs here, with
      *  the returned Token type chosen to achieve a lossless conversion.
      *  @param rightArgument The token to add to this Token.
-     *  @exception IllegalActionException If the passed token
-     *   is not of a type that can be added to this Tokens value.
      *  @return A new Token containing the result.
+     *  @exception IllegalActionException If the argument token
+     *   is not of a type that can be added to this Tokens value, or
+     *   the units of this token and the argument token are not the same.
      */
     public Token add(ptolemy.data.Token rightArgument)
             throws IllegalActionException {
