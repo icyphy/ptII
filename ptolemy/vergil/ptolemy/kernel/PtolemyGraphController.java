@@ -144,7 +144,7 @@ public abstract class PtolemyGraphController extends AbstractGraphController {
     }
 
     /** Set the configuration.  This is used by some of the controllers
-     *  to open files or URLs.
+     *  when opening files or URLs.
      *  @param configuration The configuration.
      */
     public void setConfiguration(Configuration configuration) {

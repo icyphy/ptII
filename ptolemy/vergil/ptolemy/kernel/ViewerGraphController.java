@@ -134,8 +134,8 @@ public class ViewerGraphController extends PtolemyGraphController {
                 "Node with unknown semantic object: " + object);
     }
 
-    /** Set the configuration.  This is used by some of the controllers
-     *  to open files or URLs.
+    /** Set the configuration.  The configuration is used when
+     *  opening documentation files.
      *  @param configuration The configuration.
      */
     public void setConfiguration(Configuration configuration) {

@@ -134,7 +134,8 @@ public class EditorGraphController extends ViewerGraphController {
 	diva.gui.GUIUtilities.addToolBarButton(toolbar, _newRelationAction);
     }
 
-    /** Set the configuration.  This is used to open documentation files.
+    /** Set the configuration.  The configuration is used when
+     *  opening documentation files.
      *  @param configuration The configuration.
      */
     public void setConfiguration(Configuration configuration) {
