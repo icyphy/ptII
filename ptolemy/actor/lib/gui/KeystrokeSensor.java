@@ -1,4 +1,4 @@
-/* An actor which pops up a keystroke-sensing JFrame window.
+/* An actor which detects Control-C and Control-V events
 
  Copyright (c) 1998-2003 The Regents of the University of California.
  All rights reserved.
@@ -30,62 +30,46 @@
 
 package ptolemy.actor.lib.gui;
 
-// Imports from ptolemy/vergil/basic/BasicGraphFrame.java (not pruned)
+import ptolemy.actor.TypedAtomicActor;
+import ptolemy.actor.TypedIOPort;
+import ptolemy.data.Token;
+import ptolemy.data.type.BaseType;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+
 import diva.gui.toolbox.FocusMouseListener;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.KeyStroke;
 import java.awt.BorderLayout;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.ClipboardOwner;
-import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.StringSelection;
-import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-//import java.awt.event.MouseListener;
-
-// Imports from ptolemy/actor/lib/net/DatagramReader.java (not pruned)
-//import ptolemy.actor.AtomicActor;
-//import ptolemy.actor.IOPort;
-  import ptolemy.actor.TypedAtomicActor;
-  import ptolemy.actor.TypedIOPort;
-  import ptolemy.data.ArrayToken;
-//import ptolemy.data.BooleanToken;
-  import ptolemy.data.IntToken;
-  import ptolemy.data.StringToken;
-  import ptolemy.data.Token;
-//import ptolemy.data.expr.Parameter;
-  import ptolemy.data.type.ArrayType;
-  import ptolemy.data.type.BaseType;
-//import ptolemy.data.type.Type;
-  import ptolemy.kernel.CompositeEntity;
-//import ptolemy.kernel.util.Attribute;
-  import ptolemy.kernel.util.IllegalActionException;
-  import ptolemy.kernel.util.NameDuplicationException;
-//import ptolemy.kernel.util.StringAttribute;
 
 //////////////////////////////////////////////////////////////////////////
 //// KeystrokeSensor
 /**
-When this actor is preinitialized, it pops up a new JFrame window on
+Detect when the user types Control-C (for Copy) or Control-V (for Paste)
+and produce an event on the corresponding output.
+
+<p>When this actor is preinitialized, it pops up a new JFrame window on
 the desktop, usually in the upper left hand corner of the screen.
 When this JFrame has the focus (such as when it has been clicked on)
-it is capable of sensing keystrokes.  <p>
+it is capable of sensing keystrokes.
 
-Only two keystrokes are sensed, control-C (for copy) and control-V
-(for paste).  This actor is designed to work with SystemClipboard.java<p>
+<p>Only two keystrokes are sensed, control-C (for copy) and control-V
+(for paste).  This actor is designed to work with SystemClipboard.java.
 
-The actor contains a private inner class which generates the JFrame.
+<p>The actor contains a private inner class which generates the JFrame.
 This frame sets up call-backs which react to the keystrokes.  When
 called back, these in turn call the director's fireAtCurrentTime()
 method.  This causes the director to call fire() on the actor.  The
 actor then broadcasts tokens from one or both outputs depending on
-which keystroke(s) have occurred since the actor was last fired.  <p>
+which keystroke(s) have occurred since the actor was last fired.
 
-NOTE: This actor only works in DE due to its reliance on the
+<p>NOTE: This actor only works in DE due to its reliance on the
 director's fireAtCurrentTime() method.
 
 @author Winthrop Williams
@@ -106,8 +90,6 @@ public class KeystrokeSensor extends TypedAtomicActor {
         throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
-        // Outputs
-
         controlC = new TypedIOPort(this, "controlC");
         controlC.setTypeEquals(BaseType.GENERAL);
         controlC.setOutput(true);
@@ -120,10 +102,14 @@ public class KeystrokeSensor extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** Output port, which has type Token. */
+    /** Output port, which has type Token. If the user types Control-V,
+     *  then a token is broadcast on this port.
+     */
     public TypedIOPort controlV;
 
-    /** Output port, which has type Token. */
+    /** Output port, which has type Token.  If the user types Control-C,
+     *  then a token is broadcast on this port.
+     */
     public TypedIOPort controlC;
 
     ///////////////////////////////////////////////////////////////////
@@ -132,8 +118,6 @@ public class KeystrokeSensor extends TypedAtomicActor {
     /** Broadcast the keystrokes detected since the last firing.
      */
     public void fire() throws IllegalActionException {
-        if (_debugging) _debug("fire has been called");
-
         if (_copyKeyPressed) {
             _copyKeyPressed = false;
             controlC.broadcast(new Token());
@@ -143,16 +127,12 @@ public class KeystrokeSensor extends TypedAtomicActor {
             _pasteKeyPressed = false;
             controlV.broadcast(new Token());
         }
-
-        if (_debugging) _debug("fire has completed");
     }
 
     /** Create the JFrame window and show() it on the desktop.
      */
     public void preinitialize() {
-        if (_debugging) _debug("frame will be constructed");
         _myFrame = new MyFrame();
-        if (_debugging) _debug("frame was constructed");
     }
 
     /** Dispose of the JFrame, thus closing that window.
@@ -184,12 +164,9 @@ public class KeystrokeSensor extends TypedAtomicActor {
          *  of this constructor.
          *  @see Tableau#show() */
         public MyFrame() {
-            if (_debugging) _debug("frame constructor called");
-
             // Copy call-back
             ActionListener myCopyListener = new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
-                        if (_debugging) _debug("copy call-back called");
                         _copyKeyPressed = true;
                         try {
                             getDirector().fireAtCurrentTime(
@@ -199,14 +176,12 @@ public class KeystrokeSensor extends TypedAtomicActor {
                                     + "Ex calling fireAtCurrentTime");
                             throw new RuntimeException("-fireAt* C catch-");
                         }
-                        if (_debugging) _debug("copy call-back completed");
                     }
             };
 
             // Paste call-back
             ActionListener myPasteListener = new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
-                        if (_debugging) _debug("pasteFrom.. has been called");
                         _pasteKeyPressed = true;
                         try {
                             getDirector().fireAtCurrentTime(
@@ -217,7 +192,6 @@ public class KeystrokeSensor extends TypedAtomicActor {
                                     + "Exception calling fireAtCurrentTime");
                             throw new RuntimeException("-fireAt* catch-");
                         }
-                        if (_debugging) _debug("pasteFrom.. has completed");
                     }
             };
 
@@ -244,7 +218,6 @@ public class KeystrokeSensor extends TypedAtomicActor {
             // is of the scrollpane.
             pack();
             show();
-            if (_debugging) _debug("frame constructor completes");
         }
     }
 }

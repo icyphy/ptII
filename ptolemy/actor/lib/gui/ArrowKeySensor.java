@@ -30,67 +30,52 @@
 
 package ptolemy.actor.lib.gui;
 
-// Imports from ptolemy/vergil/basic/BasicGraphFrame.java (not pruned)
+import ptolemy.actor.TypedAtomicActor;
+import ptolemy.actor.TypedIOPort;
+import ptolemy.data.IntToken;
+import ptolemy.data.type.BaseType;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+
 import diva.gui.toolbox.FocusMouseListener;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.KeyStroke;
 import java.awt.BorderLayout;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.ClipboardOwner;
-import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.StringSelection;
-import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-//import java.awt.event.MouseListener;
 
-// Imports from ptolemy/actor/lib/net/DatagramReader.java (not pruned)
-//import ptolemy.actor.AtomicActor;
-//import ptolemy.actor.IOPort;
-  import ptolemy.actor.TypedAtomicActor;
-  import ptolemy.actor.TypedIOPort;
-  import ptolemy.data.ArrayToken;
-//import ptolemy.data.BooleanToken;
-  import ptolemy.data.IntToken;
-  import ptolemy.data.StringToken;
-  import ptolemy.data.Token;
-//import ptolemy.data.expr.Parameter;
-  import ptolemy.data.type.ArrayType;
-  import ptolemy.data.type.BaseType;
-//import ptolemy.data.type.Type;
-  import ptolemy.kernel.CompositeEntity;
-//import ptolemy.kernel.util.Attribute;
-  import ptolemy.kernel.util.IllegalActionException;
-  import ptolemy.kernel.util.NameDuplicationException;
-//import ptolemy.kernel.util.StringAttribute;
 
 //////////////////////////////////////////////////////////////////////////
 //// ArrowKeySensor
-/**
-When this actor is preinitialized, it pops up a new JFrame window on
+/** 
+Detect when the user presses or releases an arrow key and produce an
+integer on the corresponding output.
+
+<p>When this actor is preinitialized, it pops up a new JFrame window on
 the desktop, usually in the upper left hand corner of the screen.
 When this JFrame has the focus (such as when it has been clicked on)
-it is capable of sensing keystrokes.  <p>
+it is capable of sensing keystrokes.
 
-This actor senses only the four non-numeric-pad arrow-key keystrokes.
+<p>This actor senses only the four non-numeric-pad arrow-key keystrokes.
 This actor is almost identical to KeystrokeSensor.java.  One
 difference is the different set of keystrokes sensed.  The other
 difference, is that this actor responds to key releases as well as key
 presses.  Upon each key press, the integer 1 is broadcast from the
 corresponding output.  Upon each key release, the integer 0 is
-output.<p>
+output.
 
-This actor contains a private inner class which generated the JFrame.
+<p>This actor contains a private inner class which generated the JFrame.
 The frame sets up call-backs which react to the keystrokes.  When called,
 these call the director's fireAtCurrentTime() method.  This causes
 the director to call fire() on the actor.   The actor then broadcasts
 tokens from one or both outputs depending on which keystroke(s) have
-occurred since the actor was last fired.  <p>
+occurred since the actor was last fired.
 
-NOTE: This actor only works in the DE domain due to its reliance on
+<p>NOTE: This actor only works in the DE domain due to its reliance on
 this director's fireAtCurrentTime() method.
 
 @author Winthrop Williams
@@ -153,10 +138,8 @@ public class ArrowKeySensor extends TypedAtomicActor {
      *  each released.
      */
     public void fire() throws IllegalActionException {
-        if (_debugging) _debug("fire has been called");
 
-
-        // Broadcast key presses
+        // Broadcast key presses.
 
         if (_upKeyPressed) {
             _upKeyPressed = false;
@@ -179,7 +162,7 @@ public class ArrowKeySensor extends TypedAtomicActor {
         }
 
 
-        // Broadcast key releases
+        // Broadcast key releases.
 
         if (_upKeyReleased) {
             _upKeyReleased = false;
@@ -201,14 +184,11 @@ public class ArrowKeySensor extends TypedAtomicActor {
             downArrow.broadcast(new IntToken(0));
         }
 
-        if (_debugging) _debug("fire has completed");
     }
 
     /** Create the JFrame window capable of detecting the key-presses. */
     public void initialize() {
-        if (_debugging) _debug("frame will be constructed");
         _myFrame = new MyFrame();
-        if (_debugging) _debug("frame was constructed");
     }
 
     /** Dispose of the JFrame, causing the window to vanish. */
@@ -250,14 +230,13 @@ public class ArrowKeySensor extends TypedAtomicActor {
          *  @param entity The model to put in this frame.
          *  @param tableau The tableau responsible for this frame.  */
         public MyFrame() {
-            if (_debugging) _debug("frame constructor called");
 
             // up-arrow call-backs
             ActionListener myUpPressedListener = new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
                         _upKeyPressed = true;
                         _upKeyReleased = false;
-                        tryCallingFireAtCurrentTime();
+                        _tryCallingFireAtCurrentTime();
                     }
             };
 
@@ -265,7 +244,7 @@ public class ArrowKeySensor extends TypedAtomicActor {
                     public void actionPerformed(ActionEvent e) {
                         _upKeyReleased = true;
                         _upKeyPressed = false;
-                        tryCallingFireAtCurrentTime();
+                        _tryCallingFireAtCurrentTime();
                     }
             };
 
@@ -274,7 +253,7 @@ public class ArrowKeySensor extends TypedAtomicActor {
                     public void actionPerformed(ActionEvent e) {
                         _leftKeyPressed = true;
                         _leftKeyReleased = false;
-                        tryCallingFireAtCurrentTime();
+                        _tryCallingFireAtCurrentTime();
                     }
             };
 
@@ -282,7 +261,7 @@ public class ArrowKeySensor extends TypedAtomicActor {
                     public void actionPerformed(ActionEvent e) {
                         _leftKeyReleased = true;
                         _leftKeyPressed = false;
-                        tryCallingFireAtCurrentTime();
+                        _tryCallingFireAtCurrentTime();
                     }
             };
 
@@ -291,7 +270,7 @@ public class ArrowKeySensor extends TypedAtomicActor {
                     public void actionPerformed(ActionEvent e) {
                         _rightKeyPressed = true;
                         _rightKeyReleased = false;
-                        tryCallingFireAtCurrentTime();
+                        _tryCallingFireAtCurrentTime();
                     }
             };
 
@@ -299,7 +278,7 @@ public class ArrowKeySensor extends TypedAtomicActor {
                     public void actionPerformed(ActionEvent e) {
                         _rightKeyReleased = true;
                         _rightKeyPressed = false;
-                        tryCallingFireAtCurrentTime();
+                        _tryCallingFireAtCurrentTime();
                     }
             };
 
@@ -308,7 +287,7 @@ public class ArrowKeySensor extends TypedAtomicActor {
                     public void actionPerformed(ActionEvent e) {
                         _downKeyPressed = true;
                         _downKeyReleased = false;
-                        tryCallingFireAtCurrentTime();
+                        _tryCallingFireAtCurrentTime();
                     }
             };
 
@@ -316,7 +295,7 @@ public class ArrowKeySensor extends TypedAtomicActor {
                     public void actionPerformed(ActionEvent e) {
                         _downKeyReleased = true;
                         _downKeyPressed = false;
-                        tryCallingFireAtCurrentTime();
+                        _tryCallingFireAtCurrentTime();
                     }
             };
 
@@ -390,14 +369,17 @@ public class ArrowKeySensor extends TypedAtomicActor {
             // is of the scrollpane.
             pack();
             show();
-            if (_debugging) _debug("frame constructor completes");
         }
+
+
+        ///////////////////////////////////////////////////////////////////
+        ////                     private metods                        ////
 
         /** This is simply the try-catch clause for the call to the
          *  director.  It has been pulled out to make the code terser
          *  and more readable.
          */
-        private void tryCallingFireAtCurrentTime() {
+        private void _tryCallingFireAtCurrentTime() {
             try {
                 getDirector().fireAtCurrentTime(ArrowKeySensor.this);
             } catch (IllegalActionException ex) {
