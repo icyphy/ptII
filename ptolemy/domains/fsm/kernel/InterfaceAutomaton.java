@@ -210,6 +210,57 @@ public class InterfaceAutomaton extends FSMActor {
         super.fire();
     }
 
+    /** Return a high-level description of this automaton. The returned String
+     *  has the format:
+     *  <pre>
+     *  (full name of automaton):
+     *    (number of states) states
+     *    (number of transitions) transitions
+     *    (number of input names) input names
+     *    (number of output names) output names
+     *    (number of internal transition names) internal transition names
+     *    Input Names:
+     *      (list of input names)
+     *    Output Names:
+     *      (list of output names)
+     *    Internal Transition Names:
+     *      (list of internal transition names)
+     *  </pre>
+     */
+    public String getInfo() {
+        String info = getFullName() + "\n";
+
+	Set inputNames = inputNameSet();
+	Set outputNames = outputNameSet();
+	Set internalNames = internalTransitionNameSet();
+
+        info += "  " + entityList().size() + " states\n";
+        info += "  " + relationList().size() + " transitions\n";
+	info += "  " + inputNames.size() + " input names\n";
+	info += "  " + outputNames.size() + " output names\n";
+	info += "  " + internalNames.size() + " internal transition names\n";
+
+        info += "  Input Names:\n";
+	Iterator iterator = inputNames.iterator();
+	while (iterator.hasNext()) {
+	    info += "    " + iterator.next().toString() + "\n";
+	}
+
+        info += "  Output Names:\n";
+	iterator = outputNames.iterator();
+	while (iterator.hasNext()) {
+	    info += "    " + iterator.next().toString() + "\n";
+	}
+
+        info += "  Internal Transition Names:\n";
+	iterator = internalNames.iterator();
+	while (iterator.hasNext()) {
+	    info += "    " + iterator.next().toString() + "\n";
+	}
+
+	return info;
+    }
+
     /** Return the names of the input ports as a Set.
      *  @return A Set containing all the input port names.
      */
