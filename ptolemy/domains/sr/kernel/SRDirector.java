@@ -44,11 +44,15 @@ import ptolemy.actor.sched.Firing;
 import ptolemy.actor.sched.Schedule;
 import ptolemy.actor.sched.Scheduler;
 import ptolemy.actor.sched.StaticSchedulingDirector;
+import ptolemy.data.ArrayToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.StringToken;
+import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
+import ptolemy.domains.sdf.kernel.SDFDirector;
+import ptolemy.domains.sdf.kernel.SDFUtilities;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -121,7 +125,7 @@ import ptolemy.kernel.util.Workspace;
    <i>fixed-point</i>.  Further execution would not result in more defined
    values, and the iteration has converged.
 
-   @author Paul Whitaker
+   @author Paul Whitaker, Contributor: Ivan Jeukens
    @version $Id$
    @since Ptolemy II 2.0
    @Pt.ProposedRating Green (pwhitake)
@@ -317,6 +321,61 @@ public class SRDirector extends StaticSchedulingDirector {
 
         // Force the schedule to be computed.
         _debug(_schedulerClassName + " returns: " + _getSchedule());
+
+        // This code was contributed by Ivan Jeukens to solve the
+        // problem where we have a SR typed composite actor inside an SDF
+        // topology and the SR Composite actor is part of a loop.
+        // In this situation, we need the SR composite firing initial tokens.
+
+        // Adicionado para funcionar com outros mocs.
+        CompositeActor actor = (CompositeActor) getContainer();
+        CompositeActor top = (CompositeActor) actor.getContainer();
+        if (top == null) {
+            // Esse director e top level
+            // _isEmbedded = false;
+            //_nInstants = 1;
+            return;
+        }
+        Director fatherDirector = top.getDirector();
+        // _isEmbedded = true;
+
+        // Roda o SR embedded por um instante
+        // iterations.setToken(new IntToken(1));
+
+        // FIXME: Introduces dependency on sdf
+        if (fatherDirector instanceof SDFDirector) {
+            Iterator outputPorts = actor.outputPortList().iterator();
+            while(outputPorts.hasNext()) {
+                IOPort port = (IOPort) outputPorts.next();
+                // FIXME: Introduces dependency on sdf
+                int initialToken = SDFUtilities.getTokenInitProduction(port);
+
+                if (initialToken > 0) {
+                    Parameter parameter =
+                        (Parameter) port.getAttribute("initialTokens");
+                    if (parameter != null) {
+                        Token token = parameter.getToken();
+                        if (!(token instanceof ArrayToken)) {
+                            throw new IllegalActionException(port,
+                                    "initialTokens was " + token
+                                    + " which is not an array token.");
+                        }
+                        ArrayToken initValues = (ArrayToken) token;
+
+                        if (initValues.length() != initialToken) {
+                            throw new IllegalActionException(port,
+                                    "tokenInitProduction '"
+                                    + initialToken + "' does not match " +
+                                    + "number of initialTokens '"
+                                    + initValues.length + "'");
+                        }
+
+                        port.broadcast(initvalues.arrayValue(),
+                                initValues.length());
+                    }
+                }
+            }
+        }
     }
 
     /** Return a new receiver consistent with the SR domain.
