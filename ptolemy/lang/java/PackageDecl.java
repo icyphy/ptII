@@ -91,7 +91,7 @@ public class PackageDecl extends JavaDecl implements JavaStaticSemanticConstants
 	/* SDFCodeGeneratorClassFactory.createPtolemyTypeIdentifier()
 	 * ptolemy.codegen.PtolemyTypeIdentifier has a static section
          * that calls
-	 * ptolemy.lang.java.StaticResolution.load().
+	 * ptolemy.lang.java.StaticResolution.loadFile().
 	 * StaticResolution has a static section that calls
 	 * StaticResolution.importPackage on java.lang.
 	 * StaticResolution.importPackage calls

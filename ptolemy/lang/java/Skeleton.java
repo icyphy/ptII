@@ -79,7 +79,7 @@ public class Skeleton {
 		// FIXME: chicken and egg problem here, _elminateImports
 		// requires that we have access to the java.lang .jskel
 		// files
-                ast = StaticResolution.load(ast, 0);
+                ast = StaticResolution.loadCompileUnit(ast, 0);
             }
 
             ast.accept(new SkeletonVisitor(), null);

@@ -191,8 +191,8 @@ public class StaticResolution implements JavaStaticSemanticConstants {
             TypeNameNode currentClass, JavaDecl currentPackage,
             int categories) {
 
-        ApplicationUtility.trace("StaticResolution.resolveAName(): " +
-				 nameString(name));
+        //System.out.println("StaticResolution.resolveAName(): " +
+	//			 nameString(name));
 
         // Check to whether or not we have already resolved the name.
         if (name.hasProperty(DECL_KEY)) {
@@ -398,31 +398,31 @@ public class StaticResolution implements JavaStaticSemanticConstants {
     /** Load the source file with the given filename. The filename may be
      *  relative or absolute.
      */
-    public static CompileUnitNode load(String filename, int pass) {
-        return load(new File(filename), pass);
+    public static CompileUnitNode loadFileName(String filename, int pass) {
+        return loadFile(new File(filename), pass);
     }
 
     /** Load the class by name.  The classname does not have a
      *  .class or .java suffix.  The classname should include
      *  the package name, for example "java.lang.Object"
      */
-    public static CompileUnitNode loadClass(String className, int pass) {
+    public static CompileUnitNode loadClassName(String className, int pass) {
         CompileUnitNode loadedAST =
             (CompileUnitNode) allPass0ResolvedMap.get(className);
 
         if (loadedAST == null) {
-            loadedAST = JavaParserManip.parseCanonical(className, false);
+            loadedAST = JavaParserManip.parseCanonicalClassName(className, false);
 
             if (loadedAST == null) {
                 ApplicationUtility.error("Couldn't load " + className);
             }
         }
-        return load(loadedAST, pass);
+        return loadCompileUnit(loadedAST, pass);
     }
 
-    public static CompileUnitNode load(File file, int pass) {
+    public static CompileUnitNode loadFile(File file, int pass) {
         try {
-            return _loadCanonical(file.getCanonicalPath(), pass);
+            return _loadCanonicalFile(file.getCanonicalPath(), pass);
         } catch (IOException ioe) {
             ApplicationUtility.error(ioe.toString());
         }
@@ -433,7 +433,8 @@ public class StaticResolution implements JavaStaticSemanticConstants {
      *  of static resolution up to the argument pass number.
      *
      */
-    public static CompileUnitNode load(CompileUnitNode node, int pass) {
+    public static CompileUnitNode loadCompileUnit(CompileUnitNode node,
+            int pass) {
         switch (pass) {
         case 0:
             return _resolvePass0(node);
@@ -575,7 +576,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
 
         // resolve the names of the virtual class
         System.out.println("StaticResolution<static>: --- load arrayCompileUnitNode ---" + (System.currentTimeMillis() - startTime));
-        load(arrayCompileUnitNode, 0);
+        loadCompileUnit(arrayCompileUnitNode, 0);
 
         ARRAY_CLASS_DECL = (ClassDecl) JavaDecl.getDecl((NamedNode) arrayClassNode);
         ARRAY_LENGTH_DECL = (FieldDecl) JavaDecl.getDecl((NamedNode) arrayLengthNode);
@@ -756,9 +757,10 @@ public class StaticResolution implements JavaStaticSemanticConstants {
     // Load the source file with the given canonical filename. If
     // primary is true, do full resolution of the source. Otherwise
     // do partial resolution only.
-    private static CompileUnitNode _loadCanonical(
+    private static CompileUnitNode _loadCanonicalFile(
             String filename, int pass) {
-        //System.out.println("StaticResolution._loadCanonical: " + filename);
+        //System.out.println("StaticResolution._loadCanonicalFile: " + 
+        //filename);
 	System.out.print(".");
 
         String noExtensionName = StringManip.partBeforeLast(filename, '.');
@@ -767,13 +769,14 @@ public class StaticResolution implements JavaStaticSemanticConstants {
             (CompileUnitNode) allPass0ResolvedMap.get(noExtensionName);
 
         if (loadedAST == null) {
-            loadedAST = JavaParserManip.parseCanonical(filename, false);
+            loadedAST = JavaParserManip.parseCanonicalFileName(filename,
+                    false);
 
             if (loadedAST == null) {
                 ApplicationUtility.error("Couldn't load " + filename);
             }
         }
-        return load(loadedAST, pass);
+        return loadCompileUnit(loadedAST, pass);
     }
 
 
@@ -786,7 +789,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
         Decl decl = env.lookup(name);
 
         if (decl == null) {
-	    System.out.println("StaticResolution:_requireClass(): using refl");
+	    //System.out.println("StaticResolution:_requireClass(): using refl");
 	    // Use reflection
 	    Class myClass = ASTReflect.lookupClass(name);
 	    if (myClass.isInterface()) {
