@@ -242,7 +242,8 @@ public class PortConfigurerDialog extends ComponentDialog
                     + classMoml
                     + "/>";
                     _target.addChangeListener(this);
-                    _target.requestChange(new MoMLChangeRequest(this, _target, moml));
+                    _target.requestChange(new MoMLChangeRequest(this,
+                            _target, moml));
         }
         return dialog;
     }
