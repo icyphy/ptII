@@ -1,4 +1,4 @@
-/* The controller for the 2-D helicopter.
+/* Compute the third and fourth derivatives of X and Z.
 
  Copyright (c) 1998 The Regents of the University of California.
  All rights reserved.
@@ -10,7 +10,7 @@
 
  IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
  FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ ARIMath.sinG OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
  THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
  SUCH DAMAGE.
 
@@ -39,68 +39,32 @@ import ptolemy.domains.ct.kernel.*;
 import ptolemy.domains.ct.lib.*;
 
 //////////////////////////////////////////////////////////////////////////
-//// ControllerActor
+//// XZHigherDerivatives
 /** 
-The controller for the helicopter. It has the form:
-<pre><code>
-    +-         -+         +-    +-  -+ -+
-    | dddTm/dttt|         |     | Vx |  |
-    |           | = inv(K)|-b + |    |  |
-    |    dA/dt  |         |     | Vz |  |
-    +-         -+         +-    +-  -+ -+
-</code></pre>
-where
-<pre><code>
-          [kInv11 kInv12]
-inv(K) =  [             ]
-          [kInv21 kInv22]
-and
-kInv11 = ((MM*TM*Sin[th])/(Iy*m) + (hM*TM^2*Cos[a]*Sin[th])/(Iy*m))/
-   ((MM*TM*Cos[th]^2)/(Iy*m^2) + (hM*TM^2*Cos[a]*Cos[th]^2)/(Iy*m^2) + 
-     (MM*TM*Sin[th]^2)/(Iy*m^2) + (hM*TM^2*Cos[a]*Sin[th]^2)/(Iy*m^2))
+Compute the third and fourth derivatives of Px and Pz
+DDDotPx = (Dotth*TM*Cos[th))/m + (DotTM*Math.sin[th))/m
  
-kInv12 = (-((MM*TM*Cos[th])/(Iy*m)) - (hM*TM^2*Cos[a]*Cos[th])/(Iy*m))/
-   ((MM*TM*Cos[th]^2)/(Iy*m^2) + (hM*TM^2*Cos[a]*Cos[th]^2)/(Iy*m^2) + 
-     (MM*TM*Sin[th]^2)/(Iy*m^2) + (hM*TM^2*Cos[a]*Sin[th]^2)/(Iy*m^2))
+DDDDotPx = (2*Dotth*DotTM*Cos[th))/m + 
+   (TM*Cos[th)*(a*MM + hM*TM*Math.sin[a)))/(Iy*m) + (DDotTM*Math.sin[th))/m - 
+   (Dotth^2*TM*Math.sin[th))/m
  
-kInv21 = Cos[th]/
-   (m*((MM*TM*Cos[th]^2)/(Iy*m^2) + (hM*TM^2*Cos[a]*Cos[th]^2)/(Iy*m^2) + 
-       (MM*TM*Sin[th]^2)/(Iy*m^2) + (hM*TM^2*Cos[a]*Sin[th]^2)/(Iy*m^2)))
+DDDotPz = -((DotTM*Cos[th))/m) + (Dotth*TM*Math.sin[th))/m
  
-kInv22 = Sin[th]/
-   (m*((MM*TM*Cos[th]^2)/(Iy*m^2) + (hM*TM^2*Cos[a]*Cos[th]^2)/(Iy*m^2) + 
-       (MM*TM*Sin[th]^2)/(Iy*m^2) + (hM*TM^2*Cos[a]*Sin[th]^2)/(Iy*m^2)))
- 
-    [b1]
-b = [  ]
-    [b2]
+DDDDotPz = -((DDotTM*Cos[th))/m) + (Dotth^2*TM*Cos[th))/m + 
+   (2*Dotth*DotTM*Math.sin[th))/m + (TM*(a*MM + hM*TM*Math.sin[a))*Math.sin[th))/(Iy*m)
 
-b1 = (3*DDotTM*Dotth*Cos[th])/m - (Dotth^3*TM*Cos[th])/m + 
-   (DotTM*hM*TM*Cos[th]*Sin[a])/(Iy*m) + 
-   (3*DotTM*Cos[th]*(a*MM + hM*TM*Sin[a]))/(Iy*m) - 
-   (3*Dotth^2*DotTM*Sin[th])/m - 
-   (3*Dotth*TM*(a*MM + hM*TM*Sin[a])*Sin[th])/(Iy*m)
- 
-b2 = (3*Dotth^2*DotTM*Cos[th])/m + 
-   (3*Dotth*TM*Cos[th]*(a*MM + hM*TM*Sin[a]))/(Iy*m) + 
-   (3*DDotTM*Dotth*Sin[th])/m - (Dotth^3*TM*Sin[th])/m + 
-   (DotTM*hM*TM*Sin[a]*Sin[th])/(Iy*m) + 
-   (3*DotTM*(a*MM + hM*TM*Sin[a])*Sin[th])/(Iy*m)
-</pre>
-The input of the actors are Tm, DTm, DDTm, A, Th, DTh, Vx, and Vz
-The outputs are DDDTm, and DA
-@author  Jie Liu
+@author  liuj
 @version %Id%
 
 */
-public class ControllerActor extends CTActor{
+public class XZHigherDerivatives extends CTActor{
     /** Construct the actor, all parameters take the default value.
      * @param container The TypedCompositeActor this star belongs to
      * @param name The name
      * @exception NameDuplicationException another star already had this name
      * @exception IllegalActionException illustrates internal problems
-     */
-    public ControllerActor(TypedCompositeActor container, String name)
+     */	
+    public XZHigherDerivatives(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         inputTm = new TypedIOPort(this, "inputTm");
@@ -139,29 +103,29 @@ public class ControllerActor extends CTActor{
         inputDTh.setMultiport(false);
         inputDTh.setDeclaredType(DoubleToken.class);
 
-        inputVx = new TypedIOPort(this, "inputVx");
-        inputVx.setInput(true);
-        inputVx.setOutput(false);
-        inputVx.setMultiport(false);
-        inputVx.setDeclaredType(DoubleToken.class);
+        outputD3Px = new TypedIOPort(this, "outputD3Px");
+        outputD3Px.setInput(false);
+        outputD3Px.setOutput(true);
+        outputD3Px.setMultiport(false);
+        outputD3Px.setDeclaredType(DoubleToken.class);
 
-        inputVz = new TypedIOPort(this, "inputVz");
-        inputVz.setInput(true);
-        inputVz.setOutput(false);
-        inputVz.setMultiport(false);
-        inputVz.setDeclaredType(DoubleToken.class);
+        outputD4Px = new TypedIOPort(this, "outputD4Px");
+        outputD4Px.setInput(false);
+        outputD4Px.setOutput(true);
+        outputD4Px.setMultiport(false);
+        outputD4Px.setDeclaredType(DoubleToken.class);
 
-        outputDDDTm = new TypedIOPort(this, "outputDDDTm");
-        outputDDDTm.setInput(false);
-        outputDDDTm.setOutput(true);
-        outputDDDTm.setMultiport(false);
-        outputDDDTm.setDeclaredType(DoubleToken.class);
+        outputD3Pz = new TypedIOPort(this, "outputD3Pz");
+        outputD3Pz.setInput(false);
+        outputD3Pz.setOutput(true);
+        outputD3Pz.setMultiport(false);
+        outputD3Pz.setDeclaredType(DoubleToken.class);
 
-        outputDA = new TypedIOPort(this, "outputDA");
-        outputDA.setInput(false);
-        outputDA.setOutput(true);
-        outputDA.setMultiport(false);
-        outputDA.setDeclaredType(DoubleToken.class);
+        outputD4Pz = new TypedIOPort(this, "outputD4Pz");
+        outputD4Pz.setInput(false);
+        outputD4Pz.setOutput(true);
+        outputD4Pz.setMultiport(false);
+        outputD4Pz.setDeclaredType(DoubleToken.class);
 
         _Iy = (double)0.271256;
         _paramIy = new CTParameter(this, "Iy", new DoubleToken(_Iy));
@@ -191,58 +155,29 @@ public class ControllerActor extends CTActor{
         double Th = ((DoubleToken)inputTh.get(0)).doubleValue();
         double DTh = ((DoubleToken)inputDTh.get(0)).doubleValue();
         double A = ((DoubleToken)inputA.get(0)).doubleValue();
-        double Vx = ((DoubleToken)inputVx.get(0)).doubleValue();
-        double Vz = ((DoubleToken)inputVz.get(0)).doubleValue();
         
         double CosTh2 = Math.pow(Math.cos(Th),2);
         double SinTh2 = Math.pow(Math.sin(Th),2);
         double mass2 = _mass*_mass;
-        // compute inv(K)
-        double IK11 = ((_Mm*Tm*Math.sin(Th))/(_Iy*_mass) +
-                (_hm*Tm*Tm*Math.cos(A)*Math.sin(Th))/(_Iy*_mass)) /
-            ((_Mm*Tm*CosTh2)/(_Iy*mass2) +
-                    (_hm*Tm*Tm*Math.cos(A)*CosTh2)/(_Iy*mass2) + 
-                    (_Mm*Tm*SinTh2)/(_Iy*mass2) + 
-                    (_hm*Tm*Tm*Math.cos(A)*SinTh2)/(_Iy*mass2));
-        
-        double IK12 = (-((_Mm*Tm*Math.cos(Th))/(_Iy*_mass)) - 
-                (_hm*Tm*Tm*Math.cos(A)*Math.cos(Th))/(_Iy*_mass))/
-            ((_Mm*Tm*CosTh2)/(_Iy*mass2) + 
-                    (_hm*Tm*Tm*Math.cos(A)*CosTh2)/(_Iy*mass2) + 
-                    (_Mm*Tm*SinTh2)/(_Iy*mass2) +
-                    (_hm*Tm*Tm*Math.cos(A)*SinTh2)/(_Iy*mass2));
 
-        double IK21 = Math.cos(Th)/
-            (_mass*((_Mm*Tm*CosTh2)/(_Iy*mass2) + 
-                    (_hm*Tm*Tm*Math.cos(A)*CosTh2)/(_Iy*mass2) + 
-                    (_Mm*Tm*SinTh2)/(_Iy*mass2) + 
-                    (_hm*Tm*Tm*Math.cos(A)*SinTh2)/(_Iy*mass2)));
-
-        double IK22 = Math.sin(Th)/
-            (_mass*((_Mm*Tm*CosTh2)/(_Iy*mass2) + 
-                    (_hm*Tm*Tm*Math.cos(A)*CosTh2)/(_Iy*mass2) + 
-                    (_Mm*Tm*SinTh2)/(_Iy*mass2) + 
-                    (_hm*Tm*Tm*Math.cos(A)*SinTh2)/(_Iy*mass2)));
-
-        double B1 = (3.0*DDTm*DTh*Math.cos(Th))/_mass -
-            (DTh*DTh*DTh*Tm*Math.cos(Th))/_mass + 
-            (DTm*_hm*Tm*Math.cos(Th)*Math.sin(A))/(_Iy*_mass) +
-            (3.0*DTm*Math.cos(Th)*(A*_Mm + _hm*Tm*Math.sin(A)))/(_Iy*_mass) -
-            (3.0*DTh*DTh*DTm*Math.sin(Th))/_mass - 
-            (3.0*DTh*Tm*(A*_Mm + _hm*Tm*Math.sin(A))*Math.sin(Th))/(_Iy*_mass);
+        double D3Px = (DTh*Tm*Math.cos(Th))/_mass + (DTm*Math.sin(Th))/_mass;
  
-        double B2 = (3.8*DTh*DTh*DTm*Math.cos(Th))/_mass + 
-            (3.0*DTh*Tm*Math.cos(Th)*(A*_Mm + _hm*Tm*Math.sin(A)))/(_Iy*_mass)+
-            (3.0*DDTm*DTh*Math.sin(Th))/_mass -
-            (DTh*DTh*DTh*Tm*Math.sin(Th))/_mass + 
-            (DTm*_hm*Tm*Math.sin(A)*Math.sin(Th))/(_Iy*_mass) + 
-            (3.0*DTm*(A*_Mm + _hm*Tm*Math.sin(A))*Math.sin(Th))/(_Iy*_mass);
-
-        double DDDTm = IK11*(B1+Vx) + IK12*(B2+Vz);
-        double DA = IK21*(B1+Vx) + IK22*(B2+Vz);
-        outputDDDTm.broadcast(new DoubleToken(DDDTm));
-        outputDA.broadcast(new DoubleToken(DA));
+        double D4Px = (2.0*DTh*DTm*Math.cos(Th))/_mass + 
+            (Tm*Math.cos(Th)*(A*_Mm + _hm*Tm*Math.sin(A)))/(_Iy*_mass) +
+            (DDTm*Math.sin(Th))/_mass - (DTh*DTh*Tm*Math.sin(Th))/_mass;
+ 
+        double D3Pz = -((DTm*Math.cos(Th))/_mass) +(DTh*Tm*Math.sin(Th))/_mass;
+ 
+        double D4Pz = -((DDTm*Math.cos(Th))/_mass) + 
+            (DTh*DTh*Tm*Math.cos(Th))/_mass + (2.0*DTh*DTm*Math.sin(Th))/_mass
+            + (Tm*(A*_Mm + _hm*Tm*Math.sin(A))*Math.sin(Th))/(_Iy*_mass);
+        
+        outputD3Px.broadcast(new DoubleToken(D3Px));
+        outputD4Px.broadcast(new DoubleToken(D4Px));
+        outputD3Pz.broadcast(new DoubleToken(D3Pz));
+        outputD4Pz.broadcast(new DoubleToken(D4Pz));
     }
+
 
     /** Update the parameter if they have been changed.
      *  The new parameter will be used only after this method is called.
@@ -254,9 +189,6 @@ public class ControllerActor extends CTActor{
         _Mm = ((DoubleToken)_paramMm.getToken()).doubleValue();
         _mass = ((DoubleToken)_paramMass.getToken()).doubleValue();
     }
-
-    /////////////////////////////////////////////////////////////////////
-    ////                         public variables                    ////
 
     /** Input port Tm
      */
@@ -282,21 +214,23 @@ public class ControllerActor extends CTActor{
      */
     public TypedIOPort inputDTh;
 
-    /** Input port Vx
-     */
-    public TypedIOPort inputVx;
 
-    /** Input port Vz
+    /** Output port D3Px = dddPx/dttt
      */
-    public TypedIOPort inputVz;
+    public TypedIOPort outputD3Px;
 
-    /** Output port DDDTm = dddTm/dttt
+    /** Output port D4Px = ddddPx/dtttt
      */
-    public TypedIOPort outputDDDTm;
+    public TypedIOPort outputD4Px;
+    
+    /** Output port D3Pz = dddPz/dttt
+     */
+    public TypedIOPort outputD3Pz;
 
-    /** Output port DA = dA/dt
+    /** Output port D4Pz = ddddPz/dtttt
      */
-    public TypedIOPort outputDA;
+    public TypedIOPort outputD4Pz;
+    
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -312,4 +246,5 @@ public class ControllerActor extends CTActor{
 
     private CTParameter _paramMass;
     private double _mass;
+
 }

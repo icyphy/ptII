@@ -44,8 +44,13 @@ TCL_SRCS =
 
 
 JSRCS = \
+	AccelerLinearizer.java \
+	ClimbLinearizer.java \
 	ControllerActor.java \
-	HelicopterActor.java
+	CruiseLinearizer.java \
+	HelicopterActor.java \
+	HoverLinearizer.java \
+	XZHigherDerivatives.java 
 
 EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS)
 
