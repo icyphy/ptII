@@ -82,6 +82,9 @@ docs: javadocs
 depend:
 	@echo "no dependencies in this directory"
 
+sound:
+	$(JAVA) -classpath $(CLASSPATH) ptolemy.plot.apps.Sound
+
 # Get the rest of the rules
 include $(ROOT)/mk/tycommon.mk
 
