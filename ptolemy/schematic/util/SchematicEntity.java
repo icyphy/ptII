@@ -478,7 +478,7 @@ public class SchematicEntity extends PTMLTemplateObject
      * operations.
      */
     public Iterator nodes() {
-	return new EnumerationIterator(ports());
+	return new EnumerationIterator(terminals());
     }
 
     /**
