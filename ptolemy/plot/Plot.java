@@ -627,9 +627,7 @@ public class Plot extends PlotBox {
                     // -version is not in the original X11 pxgraph.
                     //_version();
                     continue;
-                } else if (arg.equals("-m")) {
-
-                } if (arg.length() > 1  && arg.charAt(0) == '-') {
+                } else if (arg.length() > 1  && arg.charAt(0) == '-') {
                     // Process '-<digit> <datasetname>'
                     try {
                         Integer datasetnumberint = new
@@ -2010,7 +2008,7 @@ public class Plot extends PlotBox {
 
     // NOTE: This strategy fails due to a bug in jdk 1.1
     // Nothing drawn to the graphics object in this other thread ever appears.
-    //     // This class spawns a thread to load the 
+    //     // This class spawns a thread to load the
     //     // sound file in the background.
     //     // NOTE: This class has to be public or Netscape 4.0 fails.
     //     public class Painter extends Thread {
