@@ -1979,18 +1979,71 @@ public class PlotBox extends Panel {
     /*
      * Return a string for displaying the specified number
      * using the specified number of digits after the decimal point.
-     * NOTE: java.text.NumberFormat is only present in JDK1.1
-     * We use this method as a wrapper so that we can cache information.
+     * NOTE: java.text.NumberFormat in Netscape 4.61 has a bug 
+     * where it fails to round numbers instead it truncates them.
+     * As a result, we don't use java.text.NumberFormat, instead
+     * We use the method from Ptplot3.1
      */
-    private String _formatNum(double num, int numfracdigits) {
-        if (_numberFormat == null) {
-            // Cache the number format so that we don't have to get
-            // info about local language etc. from the OS each time.
-            _numberFormat = NumberFormat.getInstance();
+    private String _formatNum (double num, int numfracdigits) {
+        // When java.text.NumberFormat works under Netscape,
+        // uncomment the next block of code and remove
+        // the code after it.  
+        // Ptplot developers at UCB can access a test case at:
+        // http://ptolemy.eecs.berkeley.edu/~ptII/ptIItree/ptolemy/plot/adm/trunc/trunc-jdk11.html
+        // The plot will show two 0.7 values on the x axis if the bug
+        // continues to exist.
+
+        //if (_numberFormat == null) {
+        //   // Cache the number format so that we don't have to get
+        //    // info about local language etc. from the OS each time.
+        //    _numberFormat = NumberFormat.getInstance();
+        //}
+        //_numberFormat.setMinimumFractionDigits(numfracdigits);
+        //_numberFormat.setMaximumFractionDigits(numfracdigits);
+        //return _numberFormat.format(num);
+
+        // The section below is from Ptplot3.1
+
+        // First, round the number. 
+        double fudge = 0.5;
+        if (num < 0.0) fudge = -0.5;
+        String numString = Double.toString(num +
+                fudge*Math.pow(10.0, -numfracdigits));
+        // Next, find the decimal point.
+        int dpt = numString.lastIndexOf(".");
+        StringBuffer result = new StringBuffer();
+        if (dpt < 0) {
+            // The number we are given is an integer.
+            if (numfracdigits <= 0) {
+                // The desired result is an integer.
+                result.append(numString);
+                return result.toString();
+            }
+            // Append a decimal point and some zeros.
+            result.append(".");
+            for (int i = 0; i < numfracdigits; i++) {
+                result.append("0");
+            }
+            return result.toString();
+        } else {
+            // There are two cases.  First, there may be enough digits.
+            int shortby = numfracdigits - (numString.length() - dpt -1);
+            if (shortby <= 0) {
+                int numtocopy = dpt + numfracdigits + 1;
+                if (numfracdigits == 0) {
+                    // Avoid copying over a trailing decimal point.
+                    numtocopy -= 1;
+                }
+                result.append(numString.substring(0, numtocopy));
+                return result.toString();
+            } else {
+                result.append(numString);
+                for (int i = 0; i < shortby; i++) {
+                    result.append("0");
+                }
+                return result.toString();                
+            }
         }
-        _numberFormat.setMinimumFractionDigits(numfracdigits);
-        _numberFormat.setMaximumFractionDigits(numfracdigits);
-        return _numberFormat.format(num);
     }
 
     /*
@@ -2567,7 +2620,8 @@ public class PlotBox extends Panel {
         _titleFontMetrics = null;
 
     // Number format cache used by _formatNum.
-    private transient NumberFormat _numberFormat = null;
+    // See the comment in _formatNum for more information.
+    // private transient NumberFormat _numberFormat = null;
 
     // Used for log axes. Index into vector of axis labels.
     private transient int _gridCurJuke = 0;
