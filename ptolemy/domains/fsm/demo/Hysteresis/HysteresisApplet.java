@@ -97,23 +97,7 @@ public class HysteresisApplet extends SDFApplet {
             // Create and configure hystplotter
             SequencePlotter hystplotter = new SequencePlotter(_toplevel, "plot1");
 
-	    /*
-	    // Create and configure inputplotter
-            SequencePlotter inputplotter = new SequencePlotter(_toplevel, "plot2");
-
-	     // Place the hystplotter in the applet in such a way that it fills
-            // the available space.
-            //inputplotter.place(getContentPane());
-	    
-	    inputplotter.plot.setBackground(getBackground());
-            inputplotter.plot.setGrid(false);
-            inputplotter.plot.setTitle("Hysteresis Plot");
-            inputplotter.plot.setXRange(0.0, 150.0);
-            inputplotter.plot.setWrap(true);
-            inputplotter.plot.setYRange(-1.3, 1.3);
-            inputplotter.plot.setMarksStyle("none");
-	    inputplotter.plot.setPointsPersistence(150);
-	    */
+	   
 
             // Place the hystplotter in the applet in such a way that it fills
             // the available space.
@@ -121,7 +105,7 @@ public class HysteresisApplet extends SDFApplet {
 	    
             hystplotter.plot.setBackground(getBackground());
             hystplotter.plot.setGrid(false);
-            hystplotter.plot.setTitle("The Plot");
+            hystplotter.plot.setTitle("Plot");
             hystplotter.plot.setXRange(0.0, 150.0);
             hystplotter.plot.setWrap(true);
             hystplotter.plot.setYRange(-1.3, 1.3);
