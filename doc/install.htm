@@ -174,6 +174,50 @@ and runtime.  If you plan on only running the GR domain demos, then
 installing only the Java 3D runtime should be sufficient.
 We have verified the demos with the Java 3D 1.2.1_03 SDF (DirectX Version).
 
+<h3><a name="matlab">Matlab</a></h3>
+Ptolemy II includes an interface to Matlab that was  
+developed by Zoltan Kemenczy and Sean Simmons of 
+<a href="http://www.rim.net/">Research in Motion Limited</a>.
+
+<!-- If you change the next paragraph update the release notes -->
+<p>The Matlab interface works only under Windows and it requires that
+Matlab be installed on the local machine.  The Matlab interface has
+been tested with Matlab 6.1, which corresponds with R12.1.
+
+<p>The <a href="codeDoc/ptolemy/matlab/Expression.html">Matlab Expression</a>
+actor can access Matlab methods to process matrices and plot data
+using the Matlab plotter.
+<p>A demo can be found at
+<a href="../ptolemy/matlab/demo/MatlabExpression/MatlabExpression.xml"><code>$PTII/ptolemy/matlab/demo/MatlabExpression/MatlabExpression.xml</code>
+
+<h4>Compiling the Matlab interface</code>
+
+<p>The Matlab interface will only work under Windows.
+
+<p>If you do not have <code>gcc</code> or <code>dlltool</code>
+installed, you can install them as part of the 
+<a href="#cygwin">Cygwin installation</a>
+
+
+<p>The Matlab interface is implemented using the Java Native Interface
+(JNI).  When <code>$PTII/configure</code> is run, it look in the user
+path for a binary called <code>matlab</code>, determines the location
+of the Matlab <code>extern/include/libeng.dif</code> file and then checks
+for <code>gcc</code> and <code>dlltool</code>. 
+
+<p>If these components were not found at when configure was run, then
+you can rerun configure, remake and run the demo with:
+
+<pre>
+cd $PTII
+rm config.*; ./configure
+cd $PTII/ptolemy/matlab
+make
+$PTII/bin/vergil ./demo/MatlabExpression/MatlabExpression
+</pre>
+
+
+
 <h3><a name="javacc">JavaCC</a></h3>
 JavaCC is the Java Compiler Compiler, which similar to <CODE>yacc</CODE>
 and <CODE>lex</CODE>.
@@ -263,7 +307,7 @@ Windows '98 we recommend upgrading Windows 2000.
 to your path so that <CODE>javac</CODE> and <CODE>java</CODE>
 are available.
 
-<li> Install the Cygwin toolkit from
+<li> Install the <a name="cygwin">Cygwin</a> toolkit from
 <a href="http://sources.redhat.com/cygwin/" target="_top"><CODE>http://sources.redhat.com/cygwin/</CODE></a>
  <p>Complete installation instructions can be found at
 <a href="http://sources.redhat.com/cygwin/faq" target="_top"><CODE>http://sources.redhat.com/cygwin/faq</CODE></a>,
