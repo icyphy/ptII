@@ -5,7 +5,7 @@
   <configure>
     <?moml
       <group>
-      <doc>Experimental Domains Specific Actors</doc>
+      <doc>Experimental Domains</doc>
 
 	    <!-- All domains specific actors are included here
 	         See also ptinydomains.xml --> 
@@ -17,7 +17,8 @@
 
 	    <!-- fsm is shipped with ptiny, so no need to list fsm here -->
 	    <!-- GR depends on the 3D graphics package of Java being present-->            <input source="ptolemy/domains/gr/gr.xml"/>
-	    <input source="ptolemy/domains/petrinet/kernel/petrinetentities.xml"/>	    <input source="ptolemy/domains/rtp/lib/rtpentities.xml"/>
+	    <input source="ptolemy/domains/petrinet/kernel/petrinetentities.xml"/>	   
+	    <input source="ptolemy/domains/rtp/lib/rtpentities.xml"/>
 	    <input source="ptolemy/domains/sr/lib/srentities.xml"/>
 	    <input source="ptolemy/domains/tm/lib/tmentities.xml"/>
       </group>
