@@ -73,7 +73,7 @@ JSRCS = \
 	IOPort.java \
 	IORelation.java \
 	Mailbox.java \
-	NotScheduleableException.java \
+	NotSchedulableException.java \
 	QueueReceiver.java \
 	Receiver.java \
 	Scheduler.java \
