@@ -25,7 +25,9 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Green (eal@eecs.berkeley.edu)
-@AcceptedRating Green (davisj@eecs.berkeley.edu)
+@AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
+preinitialize: validates attributes of contained ports as well..  This used
+to be done in IOPort.connectionsChanged.
 */
 
 package ptolemy.actor;

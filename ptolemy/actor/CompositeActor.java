@@ -28,6 +28,8 @@
 @AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
 setDirector throws NameDuplicationException
 fire: call transferOutputs on local, not executive director.
+preinitialize: validate attributes of this composite and 
+    the attributes of its ports.
 */
 
 package ptolemy.actor;
@@ -575,37 +577,19 @@ public class CompositeActor extends CompositeEntity implements Actor {
         }
     }
 
-    /** If this actor is opaque, create receivers, and then
-     *  invoke the preinitialize() method of its local
-     *  director. Otherwise, throw an exception.
-     *  This method is read-synchronized on the workspace, so the
-     *  preinitialize() method of the director need not be, assuming
-     *  it is only called from here.
+    /** Create Receivers and validate the attributes contained by this
+     *  actor and the ports contained by this actor.  Also invoke the
+     *  preinitialize() method of its local director. If this actor is
+     *  not opaque, throw an exception.  This method is
+     *  read-synchronized on the workspace, so the preinitialize()
+     *  method of the director need not be, assuming it is only called
+     *  from here.
      *
      *  @exception IllegalActionException If there is no director, or if
      *   the director's preinitialize() method throws it, or if this actor
      *   is not opaque.
      */
     public void preinitialize() throws IllegalActionException {
-        // NOTE: There is no need to validate attributes because the
-        // attributes of atomic actors will be validated, and will
-        // force evaluation of any attributes they depend on.
-        // Ultimately, it is in the atomic actors that attributes are
-        // used, so this is sufficient.  We do, however, have to validate
-        // the parameters of any ports, since they will likely not be used
-        // in other places.
-
-        // Validate the attributes of the ports of this actor.
-        for(Iterator ports = portList().iterator();
-            ports.hasNext();) {
-            IOPort port = (IOPort)ports.next();
-            for(Iterator attributes = 
-                    port.attributeList(Settable.class).iterator();
-                attributes.hasNext();) {
-                Settable attribute = (Settable)attributes.next();
-                attribute.validate();
-            }
-        }
         try {
             _workspace.getReadAccess();
             _createReceivers();
@@ -618,6 +602,33 @@ public class CompositeActor extends CompositeEntity implements Actor {
             getDirector().preinitialize();
         } finally {
             _workspace.doneReading();
+        }
+
+        // NOTE: We used to not bother validating attributes because
+        // we assumed the attributes of atomic actors will be
+        // validated, and would force evaluation of any attributes
+        // they depend on.  It seems safer to just validate them here,
+        // which makes this code look just like the code in
+        // AtomicActor.  However, we definitely have to validate the
+        // parameters of any ports, since they will likely not be used
+        // in other places.
+
+        // Validate the attributes of this actor.
+        for(Iterator attributes = attributeList(Settable.class).iterator();
+            attributes.hasNext();) {
+            Settable attribute = (Settable)attributes.next();
+            attribute.validate();
+        }
+        // Validate the attributes of the ports of this actor.
+        for(Iterator ports = portList().iterator();
+            ports.hasNext();) {
+            IOPort port = (IOPort)ports.next();
+            for(Iterator attributes = 
+                    port.attributeList(Settable.class).iterator();
+                attributes.hasNext();) {
+                Settable attribute = (Settable)attributes.next();
+                attribute.validate();
+            }
         }
     }
 
