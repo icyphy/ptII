@@ -1,4 +1,4 @@
-/* An actor which pops up a keystroke-sensing JFrame.
+/* An actor which pops up a keystroke-sensing JFrame window.
 
  Copyright (c) 1998-2002 The Regents of the University of California.
  All rights reserved.
@@ -69,27 +69,39 @@ import java.awt.event.KeyEvent;
 
 //////////////////////////////////////////////////////////////////////////
 //// KeystrokeSensor
-
 /**
-When this actor is preinitialized, it pops up a new JFrame window on 
+When this actor is preinitialized, it pops up a new JFrame window on
 the desktop, usually in the upper left hand corner of the screen.
 When this JFrame has the focus (such as when it has been clicked on)
 it is capable of sensing keystrokes.  <p>
 
-This actor senses only two keystrokes, control-C (copy) and control-V
-(paste).  This actor is designed to work with SystemClipboard.java<p>
+Only two keystrokes are sensed, control-C (for copy) and control-V
+(for paste).  This actor is designed to work with SystemClipboard.java<p>
 
-This actor contains a private inner class which generated the JFrame.
-The frame sets up call-backs which react to the keystrokes.  When called, 
-these call the director's fireAtCurrentTime() method.  This causes 
-the director to call fire() on the actor.   The actor then broadcasts 
-tokens from one or both outputs depending on which keystroke(s) have 
-occured since the actor was last fired.  <p>
+The actor contains a private inner class which generates the JFrame.  
+This frame sets up call-backs which react to the keystrokes.  When 
+called back, these in turn call the director's fireAtCurrentTime() 
+method.  This causes the director to call fire() on the actor.  The 
+actor then broadcasts tokens from one or both outputs depending on 
+which keystroke(s) have occured since the actor was last fired.  <p>
+
+NOTE: This actor only works in DE due to its reliance on the 
+director's fireAtCurrentTime() method.
 
 @author Winthrop Williams
-@version $Id$ */
+@version $Id$
+@since Ptolemy II 2.0
+*/
 public class KeystrokeSensor extends TypedAtomicActor {
 
+    /** Construct an actor with the given container and name.
+     *  @param container The container.
+     *  @param name The name of this actor.
+     *  @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
+     */
     public KeystrokeSensor(CompositeEntity container, String name)
         throws NameDuplicationException, IllegalActionException {
         super(container, name);
@@ -105,16 +117,19 @@ public class KeystrokeSensor extends TypedAtomicActor {
         controlV.setOutput(true);
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                     ports and parameters                  ////
+
+    /** Output port, which has type Token. */
     public TypedIOPort controlV;
 
+    /** Output port, which has type Token. */
     public TypedIOPort controlC;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-
-    /** Fire this actor.
-     *  Blah, blah, blah.
+    /** Broadcast the keystrokes detected since the last firing.  
      */
     public void fire() throws IllegalActionException {
         if (_debugging) _debug("fire has been called");
@@ -132,12 +147,16 @@ public class KeystrokeSensor extends TypedAtomicActor {
 	if (_debugging) _debug("fire has completed");
     }
 
+    /** Create the JFrame window and show() it on the desktop.
+     */
     public void preinitialize() {
         if (_debugging) _debug("frame will be constructed");
         _myframe = new MyFrame();
         if (_debugging) _debug("frame was constructed");
     }
 
+    /** Dispose of the JFrame, thus closing that window.
+     */
     public void wrapup() {
 	_myframe.dispose();
     }
@@ -145,7 +164,12 @@ public class KeystrokeSensor extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables
 
+    /** The JFrame window */
     private MyFrame _myframe;
+
+    /** The flags indicating which keys have been pressed since 
+     *  the last firing og the actor.
+     */
     private boolean _copyKeyPressed = false;
     private boolean _pasteKeyPressed = false;
 
@@ -154,14 +178,11 @@ public class KeystrokeSensor extends TypedAtomicActor {
 
     private class MyFrame extends JFrame {
 
-        /** Construct a frame associated with the specified Ptolemy II
-         *  model.  After constructing this, it is necessary to call
-         *  setVisible(true) to make the frame appear.  This is
-         *  typically done by calling show() on the controlling
-         *  tableau.
-         *  @see Tableau#show()
-         *  @param entity The model to put in this frame.
-         *  @param tableau The tableau responsible for this frame.  */
+        /** Construct a JFrame.  After constructing this, it is
+         *  necessary to call setVisible(true) to make the frame
+         *  appear.  This is done by calling show() at the end 
+         *  of this constructor.
+         *  @see Tableau#show() */
         public MyFrame() {
             if (_debugging) _debug("frame constructor called");
 
@@ -227,7 +248,6 @@ public class KeystrokeSensor extends TypedAtomicActor {
         }
     }
 }
-
 
 
 
