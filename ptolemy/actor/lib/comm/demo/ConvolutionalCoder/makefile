@@ -1,10 +1,10 @@
-# Makefile for Ptolemy II Communciations demos
+# Makefile for Ptolemy II Comm ConvolutionalCoder
 #
 # @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1998-2003 The Regents of the University of California.
+# @Copyright (c) 2003 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,14 +29,12 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/actor/lib/comm/demo
+ME =		ptolemy/actor/lib/comm/demo/ConvolutionalCoder
 
-# If you add to DIRS, add the jar file to PTCLASSALLJARS
-DIRS =		ConvolutionalCoder \
-		ViterbiDecoder
+DIRS =
 
 # Root of the Ptolemy II directory
-ROOT =		../../../../..
+ROOT =		../../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -45,20 +43,20 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	demo
-PTCLASSJAR =
-
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-	ConvolutionalCoder/ConvolutionalCoder.jar \
-	ViterbiDecoder/ViterbiDecoder.jar
-
-PTCLASSALLJAR = $(PTPACKAGE).jar
+PTPACKAGE =	ConvolutionalCoder
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS =
 
-EXTRA_SRCS =	$(JSRCS)
+OTHER_FILES_TO_BE_JARED = \
+	$(JSRCS) \
+	ConvolutionalCoder.xml
+
+EXTRA_SRCS = \
+	$(OTHER_FILES_TO_BE_JARED)
+	#ConvolutionalCoder.htm \
+	#ConvolutionalCoderVergil.htm
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -76,7 +74,8 @@ all: jclass
 
 install: jclass jars
 
-demo: subdemo
+demo:
+	vergil ConvolutionalCoder.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
