@@ -826,8 +826,8 @@ public class SDFScheduler extends Scheduler {
         Enumeration eschedule = newSchedule.elements();
         _debug("Schedule is:" + "\n");
         while(eschedule.hasMoreElements())
-            _debug(
-                    ((ComponentEntity) eschedule.nextElement()).toString() + "\n");
+            _debug( ((ComponentEntity) eschedule.nextElement()).toString()
+                    + "\n");
         return newSchedule;
     }
 
