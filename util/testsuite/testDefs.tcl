@@ -146,15 +146,17 @@ proc print_verbose {test_name test_description contents_of_test code answer {tes
 proc ptFilterOutVersion {answer passing_results} {
 
     set createdByRegularExpression \
-	    {<entity name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="[0-9].*">\n}
+	    {    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="[0-9].*"/>\n}
 
 
     regsub -all [java::call System getProperty "line.separator"] \
 	    $answer "\n" answer2
+    # We don't use -all here so that we remove only the first _createdBy
     regsub $createdByRegularExpression $answer2 {} answer3
 
     regsub -all [java::call System getProperty "line.separator"] \
 	    $passing_results "\n" passing_results2
+    # We don't use -all here so that we remove only the first _createdBy
     regsub $createdByRegularExpression $passing_results2 {} passing_results3
 
     #puts "answer3: $answer3"
