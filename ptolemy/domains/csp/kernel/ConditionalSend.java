@@ -231,6 +231,8 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                                 // conditional rendezvous
                                 getReceiver()._setConditionalSend(false, null);
                                 getParent()._branchFailed(getID());
+                                // wakes up a get if it is waiting
+                                getReceiver().notifyAll();
                                 return;
                             } else if (getReceiver()._isGetWaiting()) {
                                 if (getParent()._amIFirst(getID())) {

@@ -230,6 +230,8 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
                                 CSPReceiver rec = getReceiver();
                                 rec._setConditionalReceive(false, null);
                                 getParent()._branchFailed(getID());
+                                 // wakes up a put if it is waiting
+                                getReceiver().notifyAll();
                                 return;
                             } else if (getReceiver()._isPutWaiting()) {
                                 if (getParent()._amIFirst(getID())) {
