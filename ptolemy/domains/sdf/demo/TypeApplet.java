@@ -350,26 +350,26 @@ public class TypeApplet extends SDFApplet {
 
 	    final int RAMP1_X = 70;
 	    final int RAMP1_Y = 40;
-	    final int RAMP1_TYPE_X = RAMP1_X+ACTOR_WIDTH+4;
-	    final int RAMP1_TYPE_Y = RAMP1_Y+ACTOR_HEIGHT/2-4;
+	    final int RAMP1_TYPE_X = RAMP1_X+ACTOR_WIDTH+8;
+	    final int RAMP1_TYPE_Y = RAMP1_Y+ACTOR_HEIGHT/2-8;
 
 	    final int RAMP2_X = 70;
 	    final int RAMP2_Y = 180;
-	    final int RAMP2_TYPE_X = RAMP2_X+ACTOR_WIDTH+4;
-	    final int RAMP2_TYPE_Y = RAMP2_Y+ACTOR_HEIGHT/2+10;
+	    final int RAMP2_TYPE_X = RAMP2_X+ACTOR_WIDTH+8;
+	    final int RAMP2_TYPE_Y = RAMP2_Y+ACTOR_HEIGHT/2+20;
 
 	    final int EXPR_X = 360;
 	    final int EXPR_Y = 110;
 	    final int EXPR_IN_TYPE_X = EXPR_X-60;
 	    final int EXPR_IN_TYPE_Y1 = EXPR_Y;
-	    final int EXPR_IN_TYPE_Y2 = EXPR_Y+ACTOR_HEIGHT+4;
-	    final int EXPR_OUT_TYPE_X = EXPR_X+ACTOR_WIDTH+4;
-	    final int EXPR_OUT_TYPE_Y = EXPR_Y+ACTOR_HEIGHT/2-4;
+	    final int EXPR_IN_TYPE_Y2 = EXPR_Y+ACTOR_HEIGHT+10;
+	    final int EXPR_OUT_TYPE_X = EXPR_X+ACTOR_WIDTH+8;
+	    final int EXPR_OUT_TYPE_Y = EXPR_Y+ACTOR_HEIGHT/2-8;
 
 	    final int PLOT_X = 650;
 	    final int PLOT_Y = 110;
-	    final int PLOT_TYPE_X = PLOT_X-60;
-	    final int PLOT_TYPE_Y = PLOT_Y+ACTOR_HEIGHT/2-4;
+	    final int PLOT_TYPE_X = PLOT_X-65;
+	    final int PLOT_TYPE_Y = PLOT_Y+ACTOR_HEIGHT/2-8;
 
 	    final int ARC_WIDTH = 12;
 	    final int ARC_HEIGHT = 12;
@@ -401,6 +401,7 @@ public class TypeApplet extends SDFApplet {
 			ACTOR_WIDTH-FILL_OFFSET, ACTOR_HEIGHT-FILL_OFFSET,
 			ARC_WIDTH, ARC_HEIGHT);
 
+	    // draw triangle in ramp1
 	    int[] xPoints = new int[3];
 	    int[] yPoints = new int[3];
 	    xPoints[0] = RAMP1_X+15;
@@ -413,9 +414,27 @@ public class TypeApplet extends SDFApplet {
 	    graph.setColor(Color.black);
 	    graph.drawPolygon(xPoints, yPoints, 3);
 	    graph.setColor(Color.yellow);
+	    xPoints[0] += 1;
+	    yPoints[1] += 1;
+	    graph.fillPolygon(xPoints, yPoints, 3);
+
+	    // draw triangle in ramp2
+	    xPoints[0] = RAMP2_X+15;
+	    xPoints[1] = RAMP2_X+ACTOR_WIDTH-15;
+	    xPoints[2] = RAMP2_X+ACTOR_WIDTH-15;
+	    yPoints[0] = RAMP2_Y+ACTOR_HEIGHT-15;
+	    yPoints[1] = RAMP2_Y+15;
+	    yPoints[2] = RAMP2_Y+ACTOR_HEIGHT-15;
+
+	    graph.setColor(Color.black);
+	    graph.drawPolygon(xPoints, yPoints, 3);
+	    graph.setColor(Color.yellow);
+	    xPoints[0] += 1;
+	    yPoints[1] += 1;
 	    graph.fillPolygon(xPoints, yPoints, 3);
 
 	    graph.setColor(Color.black);
+	    graph.setFont(new Font("Serif", Font.BOLD, 14));
 	    graph.drawString("Expression", EXPR_X+10, EXPR_Y+ACTOR_HEIGHT-20);
 
 	    graph.setColor(Color.white);
@@ -423,18 +442,56 @@ public class TypeApplet extends SDFApplet {
 				ACTOR_WIDTH-20, ACTOR_HEIGHT-20);
 	    graph.setColor(Color.black);
 	    if (_plotterBox.getState() == true) {
+		// draw the axis
 		graph.drawLine(PLOT_X+20, PLOT_Y+ACTOR_HEIGHT-20,
 				PLOT_X+20, PLOT_Y+20);
 		graph.drawLine(PLOT_X+20, PLOT_Y+ACTOR_HEIGHT-20,
 				PLOT_X+ACTOR_WIDTH-20, PLOT_Y+ACTOR_HEIGHT-20);
+		// draw the plot line
+		int x1 = PLOT_X+25; int y1 = PLOT_Y+ACTOR_HEIGHT-25;
+		int x2 = x1+ACTOR_WIDTH/4; int y2 = PLOT_Y+ACTOR_HEIGHT/2;
+		int x3 = x2+10; int y3 = y2+10;
+		int x4 = PLOT_X+ACTOR_WIDTH-20; int y4 = PLOT_Y+20;
+		graph.setColor(Color.green);
+		graph.drawLine(x1, y1, x2, y2);
+		graph.drawLine(x2, y2, x3, y3);
+		graph.drawLine(x3, y3, x4, y4);
 	    } else {
-	    	graph.setFont(new Font("Serif", Font.BOLD, 12));
-		graph.drawString("x\nxx\nxxx", PLOT_X+20, PLOT_Y+20);
+		// draw printer text
+	    	graph.setFont(new Font("ScanSerif", Font.BOLD, 12));
+		graph.drawString("x", PLOT_X+20, PLOT_Y+20);
+		graph.drawString("xx", PLOT_X+20, PLOT_Y+30);
+		graph.drawString("xxx", PLOT_X+20, PLOT_Y+40);
 	    }
+
+	    // draw ports
+	    graph.setColor(Color.red);
+	    int rad = 5;
+	    graph.fillOval(RAMP1_X+ACTOR_WIDTH-rad,
+				RAMP1_Y+ACTOR_HEIGHT/2-rad, rad*2, rad*2);
+	    graph.fillOval(RAMP2_X+ACTOR_WIDTH-rad,
+				RAMP2_Y+ACTOR_HEIGHT/2-rad, rad*2, rad*2);
+	    graph.fillOval(EXPR_X-rad, EXPR_Y+ACTOR_HEIGHT/3-rad-5,
+				rad*2, rad*2);
+	    graph.fillOval(EXPR_X-rad, EXPR_Y+ACTOR_HEIGHT*2/3-rad+5,
+				rad*2, rad*2);
+	    graph.fillOval(EXPR_X+ACTOR_WIDTH-rad, EXPR_Y+ACTOR_HEIGHT/2-rad,
+				rad*2, rad*2);
+	    graph.fillOval(PLOT_X-rad, PLOT_Y+ACTOR_HEIGHT/2-rad,
+				rad*2, rad*2);
+
+	    // draw connections
+	    graph.setColor(Color.orange);
+	    graph.drawLine(RAMP1_X+ACTOR_WIDTH+rad-1, RAMP1_Y+ACTOR_HEIGHT/2+1,
+			   EXPR_X-rad+1, EXPR_Y+ACTOR_HEIGHT/3-rad-2);
+	    graph.drawLine(RAMP2_X+ACTOR_WIDTH+rad-1, RAMP2_Y+ACTOR_HEIGHT/2-1,
+			   EXPR_X-rad+1, EXPR_Y+ACTOR_HEIGHT*2/3-rad+6);
+	    graph.drawLine(EXPR_X+ACTOR_WIDTH+rad-1, EXPR_Y+ACTOR_HEIGHT/2,
+			   PLOT_X-rad, PLOT_Y+ACTOR_HEIGHT/2);
 
 	    // draw types
 	    graph.setColor(Color.red);
-	    graph.setFont(new Font("Serif", Font.BOLD, 18));
+	    graph.setFont(new Font("Dialog", Font.BOLD, 18));
 	    graph.drawString(_ramp1Type, RAMP1_TYPE_X, RAMP1_TYPE_Y);
 	    graph.drawString(_ramp2Type, RAMP2_TYPE_X, RAMP2_TYPE_Y);
 	    graph.drawString(_exprIn1Type, EXPR_IN_TYPE_X, EXPR_IN_TYPE_Y1);
