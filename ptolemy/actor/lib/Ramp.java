@@ -226,7 +226,6 @@ public class Ramp extends SequenceSource {
     public boolean postfire() throws IllegalActionException {
         try {
             _stateToken = _stateToken.add(_step);
-            _stateToken = _stateToken.add(step.getToken());
         } catch (IllegalActionException ex) {
             // Should not be thrown because
             // we have already verified that the tokens can be added.
