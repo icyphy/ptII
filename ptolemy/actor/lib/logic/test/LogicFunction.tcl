@@ -43,8 +43,11 @@ if {[string compare test [info procs test]] == 1} then {
 #
 test LogicFunction-1.1 {test constructor and clone} {
     set e0 [sdfModel 1]
-    set logic [java::new ptolemy.actor.lib.logic.LogicFunction $e0 logic]
-    set newObject [java::cast ptolemy.actor.lib.logic.LogicFunction [$logic clone]]
+    set logicbase [java::new ptolemy.actor.lib.logic.LogicFunction $e0 logic]
+    set logic [java::cast ptolemy.actor.lib.logic.LogicFunction \
+	    [$logicbase clone]]
+    $logicbase setContainer [java::null]
+    $logic setContainer $e0
     set function [java::cast ptolemy.kernel.util.StringAttribute \
             [$logic getAttribute function]]
     # Success here is just not throwing an exception.
