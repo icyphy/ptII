@@ -198,10 +198,11 @@ public class PSDFScheduler extends ptolemy.domains.sdf.kernel.SDFScheduler {
         _debugMessage("Completed PSDFScheduler._getSchedule().\n The "
                 + "schedule follows.\n" + scheduleResult.toString() + "\n");
 
-         // FIXME: The schedule being returned cannot be executed.
-         return scheduleResult;
-        // Just return an empty schedule for now
-        // return new Schedule();
+         // FIXME: scheduleResult is not executable.
+         // return scheduleResult;
+
+         // Just return an empty schedule for now
+         return new Schedule();
     }
 
     // Print a debugging message if the debugging flag is turned on.
@@ -227,7 +228,10 @@ public class PSDFScheduler extends ptolemy.domains.sdf.kernel.SDFScheduler {
         return result;
     }
 
-    // Expand the P-APGAN-clustered graph.
+    // Expand the P-APGAN-clustered graph. The schedule element that is
+    // returned has an iteration count of 1. This iteration count expression
+    // can be changed by the caller to iterate the schedule computed in
+    // this method.
     // @param graph The graph containing the node.
     // @param node The super node to expand.
     // @param apgan The scheduler that was used to build the cluster hierarchy.
@@ -361,22 +365,6 @@ public class PSDFScheduler extends ptolemy.domains.sdf.kernel.SDFScheduler {
          */
         public void setIterationCount(String expression) {
             _expression = expression;
-            // FIXME: Incorporate better exception handling.
-            try {
-                PtParser parser = new PtParser();
-                _parseTree = parser.generateParseTree(expression);
-            } catch (Exception exception) {
-                throw new RuntimeException("Error setting iteration count to "
-                        + expression + ".\n" + exception.getMessage());
-            }
-            _debugMessage("----------------------------\n");
-            _debugMessage("Setting the iteration count of a symbolic schedule "
-                    + "element.\n");
-            _debugMessage("The expression is: " + expression + "\n");
-            _debugMessage("The schedule element is " + _scheduleElement + "\n");
-            _debugMessage("The parse tree follows.\n");
-            _parseTree.displayParseTree("");
-            _debugMessage("----------------------------\n");
         }
 
         /** Get the parse tree of the iteration expression. 
