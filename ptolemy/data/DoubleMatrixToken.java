@@ -46,7 +46,8 @@ import ptolemy.math.DoubleMatrixMath;
 /**
 A token that contains a 2-D double matrix.
 
-@author Yuhong Xiong, Jeff Tsay, Christopher Hylands, Steve Neuendorffer
+@author Yuhong Xiong, Jeff Tsay, Christopher Hylands, Steve Neuendorffer,
+Shuvra S. Bhattacharyya
 @version $Id$
 @since Ptolemy II 0.2
 */
@@ -148,6 +149,24 @@ public class DoubleMatrixToken extends MatrixToken {
                         " is not a ScalarToken");
             }
         }
+    }
+
+    /** Construct a DoubleMatrixToken with the specified 1-D matrix.
+     *  Make a copy of the matrix and store the copy,
+     *  so that changes on the specified matrix after this token is
+     *  constructed will not affect the content of this token.
+     *  @exception IllegalActionException If the specified matrix
+     *   is null.
+     */
+    public DoubleMatrixToken(double[] value, int rows, int columns)
+            throws IllegalActionException {
+        if (value == null) {
+            throw new IllegalActionException("DoubleMatrixToken: The specified "
+                    + "matrix is null.");
+        }
+        _rowCount = rows;
+        _columnCount = columns;
+        _value = DoubleMatrixMath.toMatrixFromArray(value, rows, columns);
     }
 
     ///////////////////////////////////////////////////////////////////
