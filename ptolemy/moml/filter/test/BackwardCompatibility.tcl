@@ -685,6 +685,7 @@ proc createAndExecute {file} {
 	    || "$file" == "compat/testAudioPlayer.xml" \
 	    || "$file" == "compat/testAudioCapture_AudioPlayer.xml" \
 	    || "$file" == "compat/testAudioCapture.xml" \
+	    || "$file" == "compat/vqtest1.xml" \
 	    || "$file" == "compat/DifferentialSystem.xml" \
 	    || "$file" == "compat/MaximumEntropySpectrum.xml" \
 	    || "$file" == "compat/ArrayAppend.xml" } {
