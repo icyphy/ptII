@@ -619,7 +619,7 @@ public class GeneratorTableau extends Tableau {
 		// Already have a Parameter by that name, so we 
 		// set its value. 
 		generatorAttributeFileNameParameter
-		    .setExpression(generatorAttributeFileName);
+		    .setExpression("\"" + generatorAttributeFileName + "\"");
 	    }
 
 	    results.add(Copernicus.commandToCompile(generatorAttribute));
