@@ -236,16 +236,6 @@ public class QueueReceiver extends AbstractReceiver {
         return _queue.historySize();
     }
 
-    /** Reset the state of the receiver. Clear the FIFO queue. This is needed
-     *  to restart the simulation
-     *  @deprecated Use reset() instead.
-     */
-    public void initialize() {
-        while (_queue.size() > 0) {
-            _queue.take();
-        }
-    }
-
     /** Put a token to the receiver. If the receiver is full, throw an
      *  exception.
      *  @param token The token to be put to the receiver.
@@ -255,15 +245,6 @@ public class QueueReceiver extends AbstractReceiver {
         if (!_queue.put(token)) {
             throw new NoRoomException(getContainer(),
                     "Queue is at capacity. Cannot put a token.");
-        }
-    }
-
-    /** Reset the state of the receiver. Clear the FIFO queue. This is needed
-     *  to restart the simulation
-     */
-    public void reset() {
-        while (_queue.size() > 0) {
-            _queue.take();
         }
     }
 
