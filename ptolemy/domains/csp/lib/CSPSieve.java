@@ -34,6 +34,7 @@ import ptolemy.kernel.event.*;
 import ptolemy.kernel.util.*;
 import ptolemy.actor.*;
 import ptolemy.data.*;
+import ptolemy.data.type.BaseType;
 import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
@@ -66,8 +67,8 @@ public class CSPSieve extends CSPActor {
         _input = new TypedIOPort(this, "input", true, false);
         _output = new TypedIOPort(this, "output", false, true);
 
-	_input.setTypeEquals(Token.class);
-	_output.setTypeEquals(Token.class);
+	_input.setTypeEquals(BaseType.GENERAL);
+	_output.setTypeEquals(BaseType.GENERAL);
     }
 
 

@@ -36,6 +36,7 @@ import ptolemy.actor.process.TerminateProcessException;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.data.Token;
+import ptolemy.data.type.BaseType;
 
 //////////////////////////////////////////////////////////////////////////
 //// CSPMultiSink
@@ -58,7 +59,7 @@ public class CSPMultiSink extends CSPActor {
         super(cont, name);
         input = new TypedIOPort(this, "input", true, false);
         input.setMultiport(true);
-        input.setTypeEquals(Token.class);
+	input.setTypeEquals(BaseType.GENERAL);
     }
 
     ///////////////////////////////////////////////////////////////////

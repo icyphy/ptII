@@ -37,6 +37,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.data.Token;
 import ptolemy.data.IntToken;
+import ptolemy.data.type.BaseType;
 
 //////////////////////////////////////////////////////////////////////////
 //// CSPMultiSource
@@ -60,7 +61,7 @@ public class CSPMultiSource extends CSPActor {
         super(cont, name);
         output = new TypedIOPort(this, "output", false, true);
         output.setMultiport(true);
-        output.setTypeEquals(IntToken.class);
+	output.setTypeEquals(BaseType.INT);
     }
 
     ///////////////////////////////////////////////////////////////////
