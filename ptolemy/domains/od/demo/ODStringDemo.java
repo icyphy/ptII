@@ -56,6 +56,9 @@ public class ODStringDemo {
     ////                         public methods                    ////
 
     /** 
+     * @exception IllegalActionException If there are problems
+     * @exception IllegalStateException If there are problems
+     * @exception NameDuplicationException If there are problems
      */
     public static void main( String args[] ) throws IllegalActionException,
             IllegalStateException, NameDuplicationException {
@@ -66,7 +69,7 @@ public class ODStringDemo {
         topLevelActor.setName("universe");
         Manager manager = new Manager(workSpc, "manager");
         ODDirector director = new ODDirector(workSpc, "director");
-        director.setCompletionTime(5500);
+        director.setCompletionTime(577);
         topLevelActor.setManager( manager );
         topLevelActor.setDirector( director );
         
