@@ -1,10 +1,10 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="Generic5" class="ptolemy.actor.TypedCompositeActor">
+<entity name="Generic9" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={298, 30, 812, 568}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={308, 48, 812, 568}}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[597, 457]">
     </property>
@@ -42,7 +42,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="315.0, 60.0">
         </property>
     </property>
-    <property name="threshold" class="ptolemy.data.expr.Parameter" value="6">
+    <property name="threshold" class="ptolemy.data.expr.Parameter" value="2">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -64,7 +64,7 @@
         </property>
         <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="iterations" class="ptolemy.data.expr.Parameter" value="5">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
@@ -363,36 +363,6 @@ to another. Then delete this annotation.</text>
                     </property>
                 </port>
             </entity>
-            <entity name="SampleDelay" class="ptolemy.domains.sdf.lib.SampleDelay">
-                <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="{0}">
-                </property>
-                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="initialOutputs">
-                    </property>
-                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
-                    </property>
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="520.0, 315.0">
-                </property>
-                <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
-                    <property name="input"/>
-                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
-                    <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
-                    </property>
-                    <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
-                    </property>
-                </port>
-                <port name="output" class="ptolemy.domains.sdf.kernel.SDFIOPort">
-                    <property name="output"/>
-                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
-                    </property>
-                    <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
-                    <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
-                </port>
-            </entity>
             <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="635.0, 325.0">
                 </property>
@@ -411,18 +381,12 @@ to another. Then delete this annotation.</text>
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
                 <vertex name="vertex1" value="565.0, 315.0">
                 </vertex>
-                <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="6">
-                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                    </property>
-                </property>
-            </relation>
-            <relation name="relation3" class="ptolemy.actor.TypedIORelation">
                 <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="5">
                     <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
                     </property>
                 </property>
             </relation>
-            <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+            <relation name="relation3" class="ptolemy.actor.TypedIORelation">
                 <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="5">
                     <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
                     </property>
@@ -444,11 +408,9 @@ to another. Then delete this annotation.</text>
             <link port="out" relation="relation"/>
             <link port="output of first mode.input" relation="relation2"/>
             <link port="ArrayToSequence.input" relation="relation4"/>
-            <link port="ArrayToSequence.output" relation="relation6"/>
+            <link port="ArrayToSequence.output" relation="relation2"/>
             <link port="SequenceToArray.input" relation="relation3"/>
             <link port="SequenceToArray.output" relation="relation4"/>
-            <link port="SampleDelay.input" relation="relation6"/>
-            <link port="SampleDelay.output" relation="relation2"/>
             <link port="AddSubtract.plus" relation="relation2"/>
             <link port="AddSubtract.output" relation="relation"/>
         </entity>
@@ -577,36 +539,6 @@ to another. Then delete this annotation.</text>
                     <property name="output"/>
                 </port>
             </entity>
-            <entity name="SampleDelay" class="ptolemy.domains.sdf.lib.SampleDelay">
-                <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="{-100}">
-                </property>
-                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="initialOutputs">
-                    </property>
-                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
-                    </property>
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="440.0, 165.0">
-                </property>
-                <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
-                    <property name="input"/>
-                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
-                    <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
-                    </property>
-                    <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
-                    </property>
-                </port>
-                <port name="output" class="ptolemy.domains.sdf.kernel.SDFIOPort">
-                    <property name="output"/>
-                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
-                    </property>
-                    <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
-                    <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
-                </port>
-            </entity>
             <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="555.0, 175.0">
                 </property>
@@ -622,14 +554,6 @@ to another. Then delete this annotation.</text>
                     <property name="output"/>
                 </port>
             </entity>
-            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex1" value="380.0, 165.0">
-                </vertex>
-                <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="6">
-                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                    </property>
-                </property>
-            </relation>
             <relation name="relation3" class="ptolemy.actor.TypedIORelation">
                 <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
                     <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
@@ -651,7 +575,7 @@ to another. Then delete this annotation.</text>
             <relation name="relation6" class="ptolemy.actor.TypedIORelation">
                 <vertex name="vertex1" value="485.0, 165.0">
                 </vertex>
-                <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="7">
+                <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="6">
                     <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
                     </property>
                 </property>
@@ -668,11 +592,9 @@ to another. Then delete this annotation.</text>
             <link port="SequenceToArray.input" relation="relation4"/>
             <link port="SequenceToArray.output" relation="relation3"/>
             <link port="ArrayToSequence.input" relation="relation3"/>
-            <link port="ArrayToSequence.output" relation="relation2"/>
+            <link port="ArrayToSequence.output" relation="relation6"/>
             <link port="Scale.input" relation="relation"/>
             <link port="Scale.output" relation="relation4"/>
-            <link port="SampleDelay.input" relation="relation2"/>
-            <link port="SampleDelay.output" relation="relation6"/>
             <link port="AddSubtract.plus" relation="relation6"/>
             <link port="AddSubtract.output" relation="relation5"/>
         </entity>
@@ -729,7 +651,7 @@ to another. Then delete this annotation.</text>
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 145.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="20.0, 145.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -742,15 +664,47 @@ to another. Then delete this annotation.</text>
             <property name="input"/>
         </port>
     </entity>
+    <entity name="Repeat" class="ptolemy.domains.sdf.lib.Repeat">
+        <property name="numberOfTimes" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <property name="blockSize" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="110.0, 145.0">
+        </property>
+        <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+            <property name="input"/>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+            <property name="output"/>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="2">
+            </property>
+        </port>
+    </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="165.0, 145.0">
         </vertex>
-        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="5">
+        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="10">
             <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
             </property>
         </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="10">
+            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="5">
             <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
             </property>
@@ -760,5 +714,7 @@ to another. Then delete this annotation.</text>
     <link port="modeCtrl.out" relation="relation"/>
     <link port="original ramp.input" relation="relation3"/>
     <link port="output of Modal model.input" relation="relation"/>
-    <link port="Ramp.output" relation="relation3"/>
+    <link port="Ramp.output" relation="relation2"/>
+    <link port="Repeat.input" relation="relation2"/>
+    <link port="Repeat.output" relation="relation3"/>
 </entity>

@@ -4,9 +4,9 @@
 <entity name="TwoFSMSync1" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-9, -4, 1032, 748}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={258, 25, 879, 569}}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 637]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[664, 458]">
     </property>
     <property name="pilotLength" class="ptolemy.data.expr.Parameter" value="2">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -25,7 +25,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="235.0, 55.0">
         </property>
     </property>
-    <property name="packetLength" class="ptolemy.data.expr.Parameter" value="3">
+    <property name="packetLength" class="ptolemy.data.expr.Parameter" value="4">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -47,7 +47,7 @@
         </property>
         <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="4">
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
@@ -110,7 +110,7 @@ to another. Then delete this annotation.</text>
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 128, 815, 511}}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={375, 140, 815, 511}}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
@@ -394,7 +394,7 @@ to another. Then delete this annotation.</text>
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="150.0, -5.0">
                 </property>
-                <property name="_tokenProductionRate" class="ptolemy.data.expr.NotEditableParameter" value="3">
+                <property name="_tokenProductionRate" class="ptolemy.data.expr.NotEditableParameter" value="4">
                     <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
                     </property>
                 </property>
@@ -460,7 +460,7 @@ to another. Then delete this annotation.</text>
                 </property>
                 <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
                     <property name="input"/>
-                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="3">
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="4">
                     </property>
                     <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
                     </property>
@@ -499,14 +499,14 @@ to another. Then delete this annotation.</text>
                     </property>
                     <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
                     </property>
-                    <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="3">
+                    <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="4">
                     </property>
                 </port>
             </entity>
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
                 <vertex name="vertex1" value="80.0, -5.0">
                 </vertex>
-                <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="3">
+                <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="4">
                     <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
                     </property>
                 </property>
@@ -526,7 +526,7 @@ to another. Then delete this annotation.</text>
                 </property>
             </relation>
             <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-                <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="3">
+                <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="4">
                     <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
                     </property>
                 </property>
@@ -571,14 +571,14 @@ to another. Then delete this annotation.</text>
             <property name="input"/>
             <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
-            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="3">
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="4">
             </property>
         </port>
         <port name="output" class="ptolemy.vergil.fsm.modal.ModalPort">
             <property name="output"/>
             <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
-            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="3">
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="4">
             </property>
         </port>
         <entity name="_Controller" class="ptolemy.vergil.fsm.modal.ModalController">
@@ -615,7 +615,7 @@ to another. Then delete this annotation.</text>
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location">
                 </property>
-                <property name="tokenConsumptionRate" class="ptolemy.data.expr.NotEditableParameter" value="3">
+                <property name="tokenConsumptionRate" class="ptolemy.data.expr.NotEditableParameter" value="4">
                     <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
                     </property>
                 </property>
@@ -625,7 +625,7 @@ to another. Then delete this annotation.</text>
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location">
                 </property>
-                <property name="tokenConsumptionRate" class="ptolemy.data.expr.NotEditableParameter" value="3">
+                <property name="tokenConsumptionRate" class="ptolemy.data.expr.NotEditableParameter" value="4">
                     <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
                     </property>
                 </property>
@@ -775,7 +775,7 @@ to another. Then delete this annotation.</text>
                 </property>
                 <property name="enforceArrayLength" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="295.0, 155.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="300.0, 155.0">
                 </property>
                 <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
                     <property name="input"/>
@@ -844,7 +844,7 @@ to another. Then delete this annotation.</text>
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="-130.0, -15.0">
                 </property>
-                <property name="_tokenConsumptionRate" class="ptolemy.data.expr.NotEditableParameter" value="3">
+                <property name="_tokenConsumptionRate" class="ptolemy.data.expr.NotEditableParameter" value="4">
                     <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
                     </property>
                 </property>
@@ -853,7 +853,7 @@ to another. Then delete this annotation.</text>
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="185.0, 50.0">
                 </property>
-                <property name="_tokenProductionRate" class="ptolemy.data.expr.NotEditableParameter" value="3">
+                <property name="_tokenProductionRate" class="ptolemy.data.expr.NotEditableParameter" value="4">
                     <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
                     </property>
                 </property>
@@ -900,7 +900,7 @@ to another. Then delete this annotation.</text>
                     </property>
                     <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
                     </property>
-                    <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="3">
+                    <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="4">
                     </property>
                 </port>
             </entity>
@@ -911,7 +911,7 @@ to another. Then delete this annotation.</text>
                 </property>
                 <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
                     <property name="input"/>
-                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="3">
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="4">
                     </property>
                     <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
                     </property>
@@ -931,7 +931,7 @@ to another. Then delete this annotation.</text>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
                 <vertex name="vertex1" value="-55.0, -15.0">
                 </vertex>
-                <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="3">
+                <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="4">
                     <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
                     </property>
                 </property>
@@ -939,7 +939,7 @@ to another. Then delete this annotation.</text>
             <relation name="relation4" class="ptolemy.actor.TypedIORelation">
                 <vertex name="vertex1" value="150.0, -15.0">
                 </vertex>
-                <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="3">
+                <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="4">
                     <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
                     </property>
                 </property>
@@ -1006,13 +1006,13 @@ to another. Then delete this annotation.</text>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="295.0, 205.0">
         </vertex>
-        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="3">
+        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="4">
             <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
             </property>
         </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="3">
+        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="4">
             <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
             </property>
         </property>
