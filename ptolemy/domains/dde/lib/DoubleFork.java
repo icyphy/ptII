@@ -42,7 +42,7 @@ import ptolemy.data.Token;
 /**
 DoubleFork is a simple DDE actor with one input and two outputs. It
 has two multiport outputs - "output1" and "output2." The fire method of
-DoubleFork passes real tokens throught the first output (output1).
+DoubleFork passes real tokens through the first output (output1).
 Real tokens are never produced on output2.
 
 @author John S. Davis II
