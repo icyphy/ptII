@@ -38,6 +38,7 @@ import ptolemy.gui.MessageHandler;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
 
 //////////////////////////////////////////////////////////////////////////
 //// DialogTableau
@@ -108,62 +109,78 @@ public class DialogTableau extends Tableau {
         Effigy effigy,
         Class dialogClass,
         Entity target) {
-        if ((effigy instanceof PtolemyEffigy)
-            && dialogClass == PortConfigurerDialog.class) {
-            // First see whether the effigy already contains a
-            // PortConfigurerDialog on this entity.
-            Iterator dialogs =
-                effigy.entityList(DialogTableau.class).iterator();
-            while (dialogs.hasNext()) {
-                DialogTableau existingDialog = (DialogTableau) dialogs.next();
-                JFrame dialogJFrame = existingDialog.getFrame();
-                if (dialogJFrame instanceof PortConfigurerDialog) {
-                    PortConfigurerDialog pcd =
-                        (PortConfigurerDialog) dialogJFrame;
-                    if (pcd.getTarget() == target) {
+        if (dialogClass == PortConfigurerDialog.class) {
+            if (effigy instanceof PtolemyEffigy) {
+                // First see whether the effigy already contains a
+                // PortConfigurerDialog on this entity.
+                Iterator dialogs =
+                    effigy.entityList(DialogTableau.class).iterator();
+                while (dialogs.hasNext()) {
+                    DialogTableau existingDialog =
+                        (DialogTableau) dialogs.next();
+                    if (existingDialog.hasTarget(target)) {
                         return existingDialog;
                     }
                 }
             }
-            // A DialogTableau doesn't exist, so create one.
-            DialogTableau newDialog;
-            try {
-                newDialog =
-                    new DialogTableau(
-                        effigy,
-                        effigy.uniqueName("dialog"),
-                        "Configure ports for " + target.getFullName());
-
-                PortConfigurerDialog pcd =
-                    new PortConfigurerDialog(
-                        newDialog,
-                        parent,
-                        target,
-                        configuration);
-                newDialog.setFrame(pcd);
-                return newDialog;
-            } catch (Exception ex) {
-                MessageHandler.error(
-                    "Failed to create a DialogTableau for "
-                        + target.getFullName());
+            NamedObj container = (NamedObj) (effigy.getContainer());
+            if ((container != null) && (container instanceof PtolemyEffigy)) {
+                // First see whether the effigy already contains a
+                // PortConfigurerDialog on this entity.
+                Iterator dialogs =
+                    ((PtolemyEffigy) container)
+                        .entityList(DialogTableau.class)
+                        .iterator();
+                while (dialogs.hasNext()) {
+                    DialogTableau existingDialog =
+                        (DialogTableau) dialogs.next();
+                    if (existingDialog.hasTarget(target)) {
+                        return existingDialog;
+                    }
+                }
             }
+        }
+
+        // A DialogTableau doesn't exist, so create one.
+        DialogTableau newDialog;
+        try {
+            newDialog =
+                new DialogTableau(
+                    effigy,
+                    effigy.uniqueName("dialog"),
+                    "Configure ports for " + target.getFullName());
+            PortConfigurerDialog pcd =
+                new PortConfigurerDialog(
+                    newDialog,
+                    parent,
+                    target,
+                    configuration);
+            newDialog.setFrame(pcd);
+            return newDialog;
+        } catch (Exception ex) {
+            MessageHandler.error(
+                "Failed to create a DialogTableau for " + target.getFullName());
         }
         return null;
     }
 
-    ///////////////////////////////////////////////////////////////////
+    public boolean hasTarget(Entity target) {
+        JFrame dialogJFrame = getFrame();
+        if (dialogJFrame instanceof PortConfigurerDialog) {
+            PortConfigurerDialog pcd = (PortConfigurerDialog) dialogJFrame;
+            if (pcd.getTarget() == target) {
+                return true;
+            }
+        }
+        return false;
+    } ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     ///////////////////////////////////////////////////////////////////
     ////                     public inner classes                  ////
-
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-
     ///////////////////////////////////////////////////////////////////
     ////                         public varialbles                 ////
-
 }
