@@ -1428,7 +1428,7 @@ Sender.</text></svg></configure>
             </relation>
             <link port="SetVariable.input" relation="relation3"/>
             <link port="UpdateProperty.gain" relation="relation2"/>
-            <link port="UpdateProperty.property" relation="relation3"/>
+            <link port="UpdateProperty.properties" relation="relation3"/>
             <link port="AngleOfReceiverAndSender.theta" relation="relation"/>
             <link port="AntennaGain.theta" relation="relation"/>
             <link port="AntennaGain.gain" relation="relation2"/>
