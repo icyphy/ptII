@@ -186,10 +186,10 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
                 methodName.equals("attributeTypeChanged") ||
 		methodName.equals("clone") ||
 		methodName.equals("iterate")
-	    ) {
+             ) {
 	    System.out.println(
-		       "ActorTransformerVisitor.visitMethodDeclNode(): " +
-		       "removing " + methodName);
+                    "ActorTransformerVisitor.visitMethodDeclNode(): " +
+                    "removing " + methodName);
 
             return NullValue.instance;
         }
@@ -1102,10 +1102,10 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
 
         while (interfaceItr.hasNext()) {
             TypeNameNode interfaceTypeNode =
-             (TypeNameNode) interfaceItr.next();
+                (TypeNameNode) interfaceItr.next();
 
             ClassDecl interfaceDecl =
-             (ClassDecl) JavaDecl.getDecl((NamedNode) interfaceTypeNode);
+                (ClassDecl) JavaDecl.getDecl((NamedNode) interfaceTypeNode);
 
             if (!_typePolicy.isSuperInterface(
                     PtolemyTypeIdentifier.ACTOR_DECL,
@@ -1114,12 +1114,12 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
                             PtolemyTypeIdentifier.SEQUENCE_ACTOR_DECL,
                             interfaceDecl)
                 ) {
-               modifiedInterfaceList.add(interfaceTypeNode);
+                modifiedInterfaceList.add(interfaceTypeNode);
             } else {
-               System.err.println("Warning: Interface \"" +
-                interfaceDecl.getName() +
-                "\" removed from implements list of class \"" +
-                node.getName().getIdent() + "\".");
+                System.err.println("Warning: Interface \"" +
+                        interfaceDecl.getName() +
+                        "\" removed from implements list of class \"" +
+                        node.getName().getIdent() + "\".");
             }
         }
 
@@ -1173,8 +1173,8 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
 		methodName.equals("_setDefaultIcon")
 	    ) {
 	    System.out.println(
-		       "ActorTransformerVisitor._actorMethodCallNode(): " +
-		       "removing " + methodName);
+                    "ActorTransformerVisitor._actorMethodCallNode(): " +
+                    "removing " + methodName);
 
             return NullValue.instance;
         }
@@ -1190,9 +1190,9 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
         // and an invocation of super.XXX() occurs
         if (_isBaseClass && (fieldAccessNode.classID() == SUPERFIELDACCESSNODE_ID)) {
             if (methodName.equals("initialize") ||
-		methodName.equals("fire") ||
-		methodName.equals("preinitialize") ||
-		methodName.equals("wrapup")) {
+                    methodName.equals("fire") ||
+                    methodName.equals("preinitialize") ||
+                    methodName.equals("wrapup")) {
                 return NullValue.instance;
             }
 

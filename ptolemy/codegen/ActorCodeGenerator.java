@@ -165,7 +165,7 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
 
         return _outputPackageName + "." +
 	    StringManip.partAfterLast((String) renamedClassNameList.getLast(),
-				      '.');
+                    '.');
     }
 
     /** Perform pass 2 on the actor with the information given by the
@@ -296,7 +296,7 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
 	    String className = (String)classNameItr.next();
 
 	    System.out.println("ActorCodeGenerator.pass3(): " +
-			       "openSource(" +className +")");
+                    "openSource(" +className +")");
 
             File file;
             try {
@@ -522,7 +522,7 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
 	    // Get the classname without the package name
 	    String className =
 		StringManip.partAfterLast((String)classNameItr.next(),
-					  '.');
+                        '.');
 
             String newClassName = "CG_" +  className + "_" + actorName;
 
@@ -534,7 +534,7 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
 
 	    //renamedClassNameList.addLast(newClassName);
 	    renamedClassNameList.addLast(_outputPackageName +
-					 '.' + newClassName);
+                    '.' + newClassName);
         }
 
         TNLManip.traverseList(new RenameJavaVisitor(),
@@ -560,8 +560,8 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
 	    // Strip out the package name
 	    String filename =
 		_makeOutputFilename(StringManip.
-				    partAfterLast((String)classNameItr.next(),
-						  '.'));
+                        partAfterLast((String)classNameItr.next(),
+                                '.'));
             filenameList.add(filename);
 	    //System.out.println("ActorCodeGenerator._rewriteSources(): " +
 	    //		       filename);
