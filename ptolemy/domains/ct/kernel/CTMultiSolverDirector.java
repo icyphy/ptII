@@ -72,8 +72,8 @@ import ptolemy.kernel.util.Workspace;
    and how the initial and final states are resolved.
    <ul>
    <li>Edward A. Lee and Haiyang Zheng, <a href= 
-   "http://ptolemy.eecs.berkeley.edu/publications/papers/05/
-   OperationalSemantics"><i>Operational Semantics of Hybrid Systems</i>, 
+   "http://ptolemy.eecs.berkeley.edu/publications/papers/05/OperationalSemantics">
+   <i>Operational Semantics of Hybrid Systems</i>, 
    Invited paper in Hybrid Systems: Computation and Control: 8th International 
    Workshop, HSCC, LNCS 3414, Zurich, Switzerland, March 9-11, 2005</a></ul>
    <p>
