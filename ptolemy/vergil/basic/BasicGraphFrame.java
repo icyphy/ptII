@@ -192,8 +192,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame
             // there appears to be no way to control the size of the
             // JGraph from the size of the Frame, which is specified
             // by the WindowPropertiesAttribute.
-            SizeAttribute size = (
-                    SizeAttribute)getModel().getAttribute(
+            SizeAttribute size
+                    = (SizeAttribute)getModel().getAttribute(
                     "_vergilSize", SizeAttribute.class);
             if (size != null) {
                 size.setSize(_jgraph);
