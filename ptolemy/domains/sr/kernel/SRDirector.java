@@ -277,7 +277,7 @@ public class SRDirector extends StaticSchedulingDirector {
      */
     public void receiverChanged(Receiver receiver) {
         // In this implementation, we do not make use of the receiver itself.
-        _currentNumOfKnownReceivers++;
+        _currentNumberOfKnownReceivers++;
     }
 
     /** Initialize the director and invoke the initialize() methods of all
@@ -531,28 +531,30 @@ public class SRDirector extends StaticSchedulingDirector {
     private boolean _hasIterationConverged() {
 
         // Get the previous values for local use.
-        int previousNumOfActorsAllowedToFire = _lastNumOfActorsAllowedToFire;
-        int previousNumOfKnownReceivers = _lastNumOfKnownReceivers;
+        int previousNumberOfActorsAllowedToFire =
+            _lastNumberOfActorsAllowedToFire;
+        int previousNumberOfKnownReceivers = _lastNumberOfKnownReceivers;
 
         // Get the current values for local use.
-        int currentNumOfActorsAllowedToFire = _numOfActorsAllowedToFire();
-        int currentNumOfKnownReceivers = _currentNumOfKnownReceivers;
+        int currentNumberOfActorsAllowedToFire =
+            _NumberOfActorsAllowedToFire();
+        int currentNumberOfKnownReceivers = _currentNumberOfKnownReceivers;
 
         if (_debugging) {
-            _debug("  previousNumOfActorsAllowedToFire is",
-                    String.valueOf(previousNumOfActorsAllowedToFire));
-            _debug("  currentNumOfActorsAllowedToFire is",
-                    String.valueOf(currentNumOfActorsAllowedToFire));
-            _debug("  previousNumOfKnownReceivers is",
-                    String.valueOf(previousNumOfKnownReceivers));
-            _debug("  currentNumOfKnownReceivers is",
-                    String.valueOf(currentNumOfKnownReceivers));
+            _debug("  previousNumberOfActorsAllowedToFire is",
+                    String.valueOf(previousNumberOfActorsAllowedToFire));
+            _debug("  currentNumberOfActorsAllowedToFire is",
+                    String.valueOf(currentNumberOfActorsAllowedToFire));
+            _debug("  previousNumberOfKnownReceivers is",
+                    String.valueOf(previousNumberOfKnownReceivers));
+            _debug("  currentNumberOfKnownReceivers is",
+                    String.valueOf(currentNumberOfKnownReceivers));
         }
 
         // Update the previous values for use the next time this method
         // is called.
-        _lastNumOfActorsAllowedToFire = currentNumOfActorsAllowedToFire;
-        _lastNumOfKnownReceivers = _currentNumOfKnownReceivers;
+        _lastNumberOfActorsAllowedToFire = currentNumberOfActorsAllowedToFire;
+        _lastNumberOfKnownReceivers = _currentNumberOfKnownReceivers;
 
         // Note that having zero actors to fire is not sufficient for
         // convergence.  Some actors may fire in the next phase if
@@ -563,20 +565,20 @@ public class SRDirector extends StaticSchedulingDirector {
         // have the opportunity to fire before the end of the iteration.
 
         // This is the first phase of actor firings.
-        if (previousNumOfKnownReceivers == -1) {
+        if (previousNumberOfKnownReceivers == -1) {
             return false;
         }
 
         // The number of actors to fire has not converged, so the
         // iteration has not converged.
-        if (previousNumOfActorsAllowedToFire !=
-                currentNumOfActorsAllowedToFire) {
+        if (previousNumberOfActorsAllowedToFire !=
+                currentNumberOfActorsAllowedToFire) {
             return false;
         }
 
         // The number of known receivers has not converged, so the
         // iteration has not converged.
-        if (previousNumOfKnownReceivers != currentNumOfKnownReceivers) {
+        if (previousNumberOfKnownReceivers != currentNumberOfKnownReceivers) {
             return false;
         }
 
@@ -617,8 +619,8 @@ public class SRDirector extends StaticSchedulingDirector {
         _cachedAllInputsKnown = null;
         _cachedAllOutputsKnown = null;
 
-        _lastNumOfActorsAllowedToFire = -1;
-        _lastNumOfKnownReceivers = -1;
+        _lastNumberOfActorsAllowedToFire = -1;
+        _lastNumberOfKnownReceivers = -1;
 
         CompositeActor container = (CompositeActor) getContainer();
         Director outsideDirector = container.getExecutiveDirector();
@@ -751,7 +753,7 @@ public class SRDirector extends StaticSchedulingDirector {
 
     /** Return the number of actors that are allowed to fire.
      */
-    private int _numOfActorsAllowedToFire() {
+    private int _NumberOfActorsAllowedToFire() {
         if (_actorsAllowedToFire == null) {
            return 0;
         }
@@ -779,7 +781,7 @@ public class SRDirector extends StaticSchedulingDirector {
      */
     private void _resetAllReceivers() {
         _debug("    SRDirector is resetting all receivers");
-        _currentNumOfKnownReceivers = 0;
+        _currentNumberOfKnownReceivers = 0;
         Iterator receiverIterator = _receivers.iterator();
         while (receiverIterator.hasNext()) {
             ((SRReceiver) receiverIterator.next()).reset();
@@ -850,18 +852,18 @@ public class SRDirector extends StaticSchedulingDirector {
     private Set _cachedAllOutputsKnown;
 
     // The current number of receivers with known state.
-    private int _currentNumOfKnownReceivers;
+    private int _currentNumberOfKnownReceivers;
 
     // The count of iterations executed.
     private int _currentIteration;
 
     // The number of actors that were fired on the last phase of
     // actor firings.
-    private int _lastNumOfActorsAllowedToFire;
+    private int _lastNumberOfActorsAllowedToFire;
 
     // The number of receivers with known state on the last phase of
     // actor firings.
-    private int _lastNumOfKnownReceivers;
+    private int _lastNumberOfKnownReceivers;
 
     // List of all receivers this director has created.
     private List _receivers;

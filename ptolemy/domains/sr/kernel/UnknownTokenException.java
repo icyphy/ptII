@@ -54,19 +54,19 @@ public class UnknownTokenException extends KernelRuntimeException {
 
     /** Constructs an Exception with a detail message that is only the
      *  name of the argument.
-     *  @param obj The object.
+     *  @param object The object.
      */
-    public UnknownTokenException(Nameable obj) {
-        this(obj, null);
+    public UnknownTokenException(Nameable object) {
+        this(object, null);
     }
 
     /** Constructs an Exception with a detail message that includes the
      *  name of the first argument.
-     *  @param obj The object.
+     *  @param object The object.
      *  @param detail The message.
      */
-    public UnknownTokenException(Nameable obj, String detail) {
-        super(obj, detail);
+    public UnknownTokenException(Nameable object, String detail) {
+        super(object, detail);
     }
 
 }

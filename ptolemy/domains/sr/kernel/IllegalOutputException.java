@@ -55,19 +55,19 @@ public class IllegalOutputException extends KernelRuntimeException {
 
     /** Constructs an Exception with a detail message that is only the
      *  name of the argument.
-     *  @param obj The object.
+     *  @param object The object.
      */
-    public IllegalOutputException(Nameable obj) {
-        this(obj, null);
+    public IllegalOutputException(Nameable object) {
+        this(object, null);
     }
 
     /** Constructs an Exception with a detail message that includes the
      *  name of the first argument.
-     *  @param obj The object.
+     *  @param object The object.
      *  @param detail The message.
      */
-    public IllegalOutputException(Nameable obj, String detail) {
-        super(obj, detail);
+    public IllegalOutputException(Nameable object, String detail) {
+        super(object, detail);
     }
 
 }
