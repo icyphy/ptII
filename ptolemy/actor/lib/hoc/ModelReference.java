@@ -39,6 +39,8 @@ import ptolemy.actor.ExecutionListener;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Manager;
 import ptolemy.actor.TypedAtomicActor;
+import ptolemy.actor.parameters.ParameterPort;
+import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.LongToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
@@ -70,9 +72,12 @@ import ptolemy.moml.MoMLParser;
    model, this actor will read an input token from the input port, if
    there is one, and use it to set the value of a top-level parameter
    in the referenced model that has the same name as the port, if there
-   is one.  If the top-level parameter of the referenced model is an
-   instance of Variable (or its derived class Parameter), then the token
-   read at the input is moved into it using its setToken() method.
+   is one. The simplest way to ensure that there is a matching parameter
+   is to use a PortParameter for inputs.  However, this actor will work
+   also for ordinary ports. In this case, if there is a top-level
+   parameter of the referenced model with the same name as the port, and
+   it is an instance of Variable (or its derived class Parameter), then
+   the token read at the input is moved into it using its setToken() method.
    Otherwise, if it is an instance of Settable, then a string representation
    of the token is copied using the setExpression() method.
    Input ports should not be multiports, and if they are, then
@@ -96,6 +101,9 @@ import ptolemy.moml.MoMLParser;
    Normally, when you create output ports for this actor, you will have
    to manually set the type.  There is no type inference from the
    parameter of the referenced model.
+   <p>
+   A typical use of this actor will use the SetVariable actor
+   inside to define the value of the output port.
    <p>
    A suite of parameters is provided to control what happens when this
    actor executes:
@@ -157,6 +165,8 @@ import ptolemy.moml.MoMLParser;
    @author Edward A. Lee
    @version $Id$
    @since Ptolemy II 4.0
+   @see RunCompositeActor
+   @see ptolemy.actor.lib.SetVariable
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Red (eal)
 */
@@ -448,9 +458,6 @@ public class ModelReference
             }
             // Iterate over input ports and read any available values into
             // the referenced model parameters.
-            if (_debugging) {
-                _debug("** Reading inputs (if any).");
-            }
             _readInputs();
 
             if (_executionOnFiringValue == _RUN_IN_CALLING_THREAD) {
@@ -462,9 +469,6 @@ public class ModelReference
                 } catch (KernelException ex) {
                     throw new IllegalActionException(this, ex,
                             "Execution failed.");
-                }
-                if (_debugging) {
-                    _debug("** Writing outputs (if any).");
                 }
                 _writeOutputs();
             } else if (_executionOnFiringValue == _RUN_IN_A_NEW_THREAD) {
@@ -496,9 +500,6 @@ public class ModelReference
                                     _debug("** Executing model in a new thread.");
                                 }
                                 _manager.execute();
-                                if (_debugging) {
-                                    _debug("** Writing outputs (if any).");
-                                }
                                 _writeOutputs();
                             } catch (Throwable throwable) {
                                 // If running tried to load in some native code using JNI
@@ -632,9 +633,22 @@ public class ModelReference
      *   setting the parameters causes it.
      */
     private void _readInputs() throws IllegalActionException {
+        // NOTE: This is an essentially exact copy of the code in RunCompositeActor,
+        // but this class and that one can't easily share a common base class.
+        if (_debugging) {
+            _debug("** Reading inputs (if any).");
+        }
         Iterator ports = inputPortList().iterator();
         while (ports.hasNext()) {
             IOPort port = (IOPort) ports.next();
+            if (port instanceof ParameterPort) {
+                PortParameter parameter = ((ParameterPort)port).getParameter();
+                if (_debugging) {
+                    _debug("** Updating PortParameter: " + port.getName());
+                }
+                parameter.update();
+                continue;
+            }
             if (port.getWidth() > 0 && port.hasToken(0)) {
                 Token token = port.get(0);
                 Attribute attribute = _model.getAttribute(port.getName());
@@ -660,6 +674,11 @@ public class ModelReference
      *   writing to the ports causes it.
      */
     private void _writeOutputs() throws IllegalActionException {
+        // NOTE: This is an essentially exact copy of the code in RunCompositeActor,
+        // but this class and that one can't easily share a common base class.
+        if (_debugging) {
+            _debug("** Writing outputs (if any).");
+        }
         Iterator ports = outputPortList().iterator();
         while (ports.hasNext()) {
             IOPort port = (IOPort) ports.next();

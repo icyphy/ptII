@@ -81,7 +81,6 @@ JSRCS = \
 	NoTokenException.java \
 	QueueReceiver.java \
 	Receiver.java \
-	RunCompositeActor.java \
 	StreamExecutionListener.java \
 	TypeAttribute.java \
 	TypeConflictException.java \

@@ -42,6 +42,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.ChangeListener;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
@@ -62,7 +63,9 @@ import ptolemy.util.MessageHandler;
    <p>
    Note that the variable name is observed during preinitialize().
    If it is changed after that, the change will not take effect
-   until the next time the model is executed.
+   until the next time the model is executed. Moreover, the
+   type of the variable is constrained in preinitialize()
+   to be at least that of the input port for this actor.
 
    <p>
    The variable can be either any attribute that implements
@@ -143,7 +146,7 @@ public class SetVariable extends TypedAtomicActor
      *  with the name given by the variableName attribute.  If no such
      *  attribute is found, then this method creates a new variable in
      *  the actor's container with the correct name.  This method
-     *  requires write access on the workspace.
+     *  gets write access on the workspace.
      *  @exception IllegalActionException If the variable cannot be found.
      */
     public Attribute getModifiedVariable() throws IllegalActionException {
@@ -156,15 +159,12 @@ public class SetVariable extends TypedAtomicActor
                 variableNameValue);
         if (attribute == null) {
             try {
-                attribute = new Variable(this, variableNameValue);
+                workspace().getWriteAccess();
+                attribute = new Variable(container, variableNameValue);
             } catch (NameDuplicationException ex) {
-                throw new IllegalActionException(
-                        this, ex,
-                        "Existing attribute that is not an attribute " +
-                        "with specified name: "
-                        + variableNameValue
-                        + ". It is: "
-                        + container.getAttribute(variableNameValue));
+                throw new InternalErrorException(ex);
+            } finally {
+                workspace().doneWriting();
             }
         }
         return attribute;
@@ -228,8 +228,8 @@ public class SetVariable extends TypedAtomicActor
 
     /** If there is no variable with the specified name, then create one.
      *  This is done in preinitialize() so that we can set up a type
-     *  constraint that ensures that the variable and the input port
-     *  have the same type.
+     *  constraint that ensures that the type of the variable is at
+     *  least that of the input port.
      *  @exception IllegalActionException If the superclass throws it,
      *   or if there is no container.
      */
@@ -237,7 +237,7 @@ public class SetVariable extends TypedAtomicActor
         super.preinitialize();
         Attribute attribute = getModifiedVariable();
         if (attribute instanceof Variable) {
-            ((Variable)attribute).setTypeSameAs(input);
+            ((Variable)attribute).setTypeAtLeast(input);
         }
     }
 }

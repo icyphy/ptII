@@ -57,7 +57,8 @@ JSRCS = \
 	MobileFunction.java \
 	MobileModel.java \
 	ModelReference.java \
-	MultiInstanceComposite.java
+	MultiInstanceComposite.java \
+	RunCompositeActor.java
 
 OTHER_FILES_TO_BE_JARED = \
 	hoc.xml

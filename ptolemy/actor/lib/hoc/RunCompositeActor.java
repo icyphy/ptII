@@ -27,35 +27,76 @@ COPYRIGHTENDKEY
 
 */
 
-package ptolemy.actor;
+package ptolemy.actor.lib.hoc;
 
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 
+import ptolemy.actor.IOPort;
+import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.parameters.ParameterPort;
+import ptolemy.actor.parameters.PortParameter;
+import ptolemy.data.IntToken;
+import ptolemy.data.StringToken;
+import ptolemy.data.Token;
+import ptolemy.data.expr.Variable;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
-import ptolemy.moml.MoMLChangeRequest;
 
 //////////////////////////////////////////////////////////////////////////
 //// RunCompositeActor
 /**
-   A composite actor that performs a complete execution of the inside model
-   in the fire() method. It overwrite its initialize() and wrapup() method 
-   to do nothing; it overwite its prefire() to always return true to indicate
-   that this actor is always ready to fire; it overwrite its postfire() 
-   method to indicate that the execution can continue; In its fire() method, 
-   it run a complete execution of the contained model, which consists of 
-   invocation of super.initialize(), repeated invocations of super.prefire(), 
-   super.fire(), and super.postfire(), followed by super.wrapup().  The 
-   invocations of prefire(), fire(), and postfire() are repeated until either
-   the model indicates it is not ready to execute (prefire() returns false), 
-   or it request a stop (postfire() returns false or stop() is called).
-   Before running the complete execution, this method calls the director's 
-   transferInputs() method to read any available inputs. After running the 
-   complete execution, it calls transferOutputs() to to transfer outputs.
+   This is a composite actor that can executes the contained model
+   completely, as if it were a top-level model, on each firing.
+   This can be used to define an actor whose firing behavior
+   is given by a complete execution of a submodel.
+   <p>
+   An instance of this actor can have ports added to it.  If it has
+   input ports, then on each firing, before executing the referenced
+   model, this actor will read an input token from the input port, if
+   there is one, and use it to set the value of a top-level parameter
+   in the referenced model that has the same name as the port, if there
+   is one.  The simplest way to ensure that there is a matching parameter
+   is to use a PortParameter for inputs.  However, this actor will work
+   also for ordinary ports. In this case, if this actor has a
+   parameter with the same name as the port, and it is an instance
+   of Variable (or its derived class Parameter), then the token
+   read at the input is moved into it using its setToken() method.
+   Otherwise, if it is an instance of Settable, then a string representation
+   of the token is copied using the setExpression() method.
+   Input ports should not be multiports, and if they are, then
+   all but the first channel will be ignored.
+   <p>
+   If this actor has output ports and the contained model is executed,
+   then upon completion of that execution, if this actor has parameters
+   whose names match those of the output ports, then the final value of
+   those parameters is sent to the output ports. If such a parameter is an
+   instance of Variable (or its derived class Parameter), then its
+   contained token is sent to the output token. Otherwise, if it is an
+   instance of Settable, then a string token is produced on the output
+   with its value equal to that returned by getExpression() of the
+   Settable. Output ports should not be multiports. If they are,
+   then all but the first channel will be ignored.
+   A typical use of this actor will use the SetVariable actor
+   inside to define the value of the output port.
+   <p>
+   In preinitialize(), type constraints are set up so that input
+   and output ports with (name) matching parameters are constrained
+   to have compatible types. Note that if the ports or parameters
+   are changed during execution, then it will be necessary to set
+   up matching type constraints by hand.  Since this isn't possible
+   to do from Vergil, the ports and parameters of this actor
+   should not be changed using Vergil during execution.
    <p>
    The subclass of this may need to call a method, for example prefire(), 
    of  the superclass of this when execute the inside model. Since Java 
@@ -64,18 +105,17 @@ import ptolemy.moml.MoMLChangeRequest;
    call the method of the superclass of this. To to so, Subclass of this can
    set the <i>_isSubclassOfRunCompositeActor</i> to be true.
    <p>
-   This actor also overwrite the requestChange() method and the 
+   This actor also overrides the requestChange() method and the 
    executeChangerRequests() method to execute the given change. It does not
-   delegate the change request to the container, but execute the request 
-   immediately or record it, depending on the argument when 
-   setDeferringChangeRequests() is called, i.e. if setDeferChangeRequests() 
-   has been called with a true argument, then simply queue the request until 
-   either setDeferChangeRequests() is called with a false argument or 
-   executeChangeRequests() is called. 
+   delegate the change request to the container, but executes the request 
+   immediately or records it, depending on whether setDeferringChangeRequests()
+   has been called with a true argument. 
 
    @author Edward A. Lee, Yang Zhao
    @version $Id$
    @since Ptolemy II 4.0
+   @see ModelReference
+   @see ptolemy.actor.lib.SetVariable
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Red (eal)
 */
@@ -195,26 +235,26 @@ public class RunCompositeActor extends TypedCompositeActor {
                                     + "with description: "
                                     + change.getDescription());
                         }
+                        // The change listeners should be those of this
+                        // actor and any container that it has!
+                        // FIXME: This is expensive... Better solution?
+                        // We previously tried issuing a dummy change
+                        // request to the container, but this caused big
+                        // problems... (weird null-pointer expections
+                        // deep in diva when making connections).
+                        // Is it sufficient to just go to the top level?
+                        List changeListeners = new LinkedList();
+                        NamedObj container = getContainer();
+                        while (container != null) {
+                            List list = container.getChangeListeners();
+                            if (list != null) {
+                                changeListeners.addAll(list);
+                            }
+                            container = container.getContainer();
+                        }
+                        change.setListeners(changeListeners);
+
                         change.execute();
-                        //Note: The display of an entity in the UI window are
-                        //handled by some listeners's changeExecuted() method. 
-                        //When a change request is executed sucessfully, the 
-                        //listeners of it will be notified. Here, each change
-                        //request is set to have the same set of listeners as 
-                        //this actor's. But the listeners deal with UI changes
-                        //are not registered with this actor and in turn will 
-                        //not be notified when the change is executed, i.e. 
-                        //copy/paste entities to this actor couldn't be displayed.
-                        //To fix this problem, we issue a dumy change request 
-                        //to the container of this, which will notify the proper
-                        //listeners to update the graph. Yang
-                        //FIXME: instead of using a dumy change request, can we
-                        //set the listeners of the change to be the listeners of
-                        //the top level?
-                        MoMLChangeRequest dumyChange =
-                            new MoMLChangeRequest(this, getContainer(), "<group> </group>");
-                        dumyChange.setUndoable(true);
-                        getContainer().requestChange(dumyChange);
                     }
                 } finally {
                     _workspace.doneWriting();
@@ -251,27 +291,19 @@ public class RunCompositeActor extends TypedCompositeActor {
             super.fire();
             return;
         }
-        // Use the local director to transfer inputs.
         try {
-            _workspace.getReadAccess();
             // Make sure that change requests are not executed when requested,
             // but rather only executed when executeChangeRequests() is called.
             setDeferringChangeRequests(true);
+            
+            _readInputs();
+            if (_stopRequested) return;
 
-            Iterator inputPorts = inputPortList().iterator();
-            while (inputPorts.hasNext() && !_stopRequested) {
-                IOPort p = (IOPort)inputPorts.next();
-                getDirector().transferInputs(p);
-            }
-        } finally {
-            _workspace.doneReading();
-        }
-        if (_stopRequested) return;
-
-        try {
             _executeInsideModel();
+            
         } finally {
             try {
+                executeChangeRequests();
                 wrapup();
             } finally {
                 // Indicate that it is now safe to execute
@@ -279,17 +311,7 @@ public class RunCompositeActor extends TypedCompositeActor {
                 setDeferringChangeRequests(false);
             }
             if (!_stopRequested) {
-                try {
-                    _workspace.getReadAccess();
-                    // Use the local director to transfer outputs.
-                    Iterator outports = outputPortList().iterator();
-                    while (outports.hasNext() && !_stopRequested) {
-                        IOPort p = (IOPort)outports.next();
-                        getDirector().transferOutputs(p);
-                    }
-                } finally {
-                    _workspace.doneReading();
-                }
+                _writeOutputs();
             }
             if (_debugging) {
                 _debug("---- Firing of RunCompositeActor is complete.");
@@ -343,7 +365,61 @@ public class RunCompositeActor extends TypedCompositeActor {
     public boolean prefire() throws IllegalActionException {
         return true;
     }
-
+    
+    /** Override the base class to set type constraints between the
+     *  output ports and parameters of this actor whose name matches
+     *  the output port. If there is no such parameter, then create
+     *  an instance of Variable with a matching name and set up the
+     *  type constriants to that instance.  The type of the output
+     *  port is constrained to be at least that of the parameter
+     *  or variable.
+     *  @exception IllegalActionException If there is no director, or if
+     *   the director's preinitialize() method throws it, or if this actor
+     *   is not opaque.
+     */
+    public void preinitialize() throws IllegalActionException {
+        super.preinitialize();
+        
+        Iterator ports = outputPortList().iterator();
+        while (ports.hasNext()) {
+            TypedIOPort port = (TypedIOPort) ports.next();
+            
+            // Ensure that the production rate is one.
+            // FIXME: This may not be right if there is no
+            // actual source of data for this port (e.g. no
+            // SetVariable actor).
+            Variable rate = (Variable)port.getAttribute("tokenProductionRate");
+            if (rate == null) {
+                try {
+                    rate = new Variable(port, "tokenProductionRate");
+                } catch (NameDuplicationException e) {
+                    throw new InternalErrorException(e);
+                }
+            }
+            rate.setToken(new IntToken(1));
+            
+            String portName = port.getName();
+            Attribute attribute = getAttribute(portName);
+            if (attribute == null) {
+                try {
+                    workspace().getWriteAccess();
+                    attribute = new Variable(this, portName);
+                } catch (NameDuplicationException ex) {
+                    throw new InternalErrorException(ex);
+                } finally {
+                    workspace().doneWriting();
+                }
+            }
+            // attribute is now assured to be non-null.
+            if (attribute instanceof Variable) {
+                port.setTypeAtLeast((Variable)attribute);
+            } else {
+                // Assume the port type must be a string.
+                port.setTypeEquals(BaseType.STRING);
+            }
+        }
+    }
+    
     /** Request that given change be executed.   In this class,
      *  do not delegate the change request to the container, but
      *  execute the request immediately or record it, depending on
@@ -395,15 +471,6 @@ public class RunCompositeActor extends TypedCompositeActor {
     ///////////////////////////////////////////////////////////////////
     ////                        protected methods                  ////
 
-    /** Call the initialize method of the superclass.  This is
-     *  provided so that subclasses have a mechanism for doing
-     *  this, since Java doesn't supported super.super.initialize().
-     *  @exception IllegalActionException If super.initialize() throws it.
-     */
-    //protected void _callSuperInitialize() throws IllegalActionException {
-    //  super.initialize();
-    //}
-
     /** Run a complete execution of the contained model.  A complete
      *  execution consists of invocation of super.initialize(), repeated
      *  invocations of super.prefire(), super.fire(), and super.postfire(),
@@ -415,8 +482,7 @@ public class RunCompositeActor extends TypedCompositeActor {
      *   the director's action methods throw it.
      */
     protected void _executeInsideModel() throws IllegalActionException {
-        // FIXME: Should preinitialize() also be called?
-        // FIXME: Reset time to zero.
+        // FIXME: Reset time to zero. How?
         // NOTE: Use the superclass initialize() because this method overrides
         // initialize() and does not initialize the model.
         super.initialize();
@@ -442,11 +508,6 @@ public class RunCompositeActor extends TypedCompositeActor {
             }
         }
     }
-    ///////////////////////////////////////////////////////////////////
-    ////                        private variables                  ////
-
-    /** Indicator of what the last call to iterate() returned. */
-    private int _lastIterateResult = NOT_READY;
 
     ///////////////////////////////////////////////////////////////////
     ////                        protected variables                ////
@@ -456,5 +517,92 @@ public class RunCompositeActor extends TypedCompositeActor {
      *  provided so that subclasses have a mechanism for doing
      *  this, since Java doesn't supported super.super.initialize(), etc.
      */
+    // FIXME: This variable is misnamed.
     protected boolean _isSubclassOfRunCompositeActor = false;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                        private methods                    ////
+
+    /** Iterate over input ports and read any available values into
+     *  the referenced model parameters.
+     *  @exception IllegalActionException If reading the ports or
+     *   setting the parameters causes it.
+     */
+    private void _readInputs() throws IllegalActionException {
+        // NOTE: This is an essentially exact copy of the code in ModelReference,
+        // but this class and that one can't easily share a common base class.
+        if (_debugging) {
+            _debug("** Reading inputs (if any).");
+        }
+        Iterator ports = inputPortList().iterator();
+        while (ports.hasNext()) {
+            IOPort port = (IOPort) ports.next();
+            if (port instanceof ParameterPort) {
+                PortParameter parameter = ((ParameterPort)port).getParameter();
+                if (_debugging) {
+                    _debug("** Updating PortParameter: " + port.getName());
+                }
+                parameter.update();
+                continue;
+            }
+            if (port.getWidth() > 0 && port.hasToken(0)) {
+                Token token = port.get(0);
+                Attribute attribute = getAttribute(port.getName());
+                // Use the token directly rather than a string if possible.
+                if (attribute instanceof Variable) {
+                    if (_debugging) {
+                        _debug("** Transferring input to parameter: " + port.getName());
+                    }
+                    ((Variable) attribute).setToken(token);
+                } else if (attribute instanceof Settable) {
+                    if (_debugging) {
+                        _debug("** Transferring input as string to parameter: " + port.getName());
+                    }
+                    ((Settable) attribute).setExpression(token.toString());
+                }
+            }
+        }
+    }
+
+    /** Iterate over output ports and read any available values from
+     *  the referenced model parameters and produce them on the outputs.
+     *  @exception IllegalActionException If reading the parameters or
+     *   writing to the ports causes it.
+     */
+    private void _writeOutputs() throws IllegalActionException {
+        // NOTE: This is an essentially exact copy of the code in ModelReference,
+        // but this class and that one can't easily share a common base class.
+        if (_debugging) {
+            _debug("** Writing outputs (if any).");
+        }
+        Iterator ports = outputPortList().iterator();
+        while (ports.hasNext()) {
+            IOPort port = (IOPort) ports.next();
+            // Only write if the port has a connected channel.
+            if (port.getWidth() > 0) {
+                Attribute attribute = getAttribute(port.getName());
+                // Use the token directly rather than a string if possible.
+                if (attribute instanceof Variable) {
+                    if (_debugging) {
+                        _debug("** Transferring parameter to output: " + port.getName());
+                    }
+                    port.send(0, ((Variable) attribute).getToken());
+                } else if (attribute instanceof Settable) {
+                    if (_debugging) {
+                        _debug("** Transferring parameter as string to output: " + port.getName());
+                    }
+                    port.send(
+                            0,
+                            new StringToken(
+                                    ((Settable) attribute).getExpression()));
+                }
+            }
+        }
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                        private variables                  ////
+
+    /** Indicator of what the last call to iterate() returned. */
+    private int _lastIterateResult = NOT_READY;
 }
