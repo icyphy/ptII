@@ -54,6 +54,7 @@ JSRCS = \
 	Attribute.java \
 	CrossRefList.java \
 	Debuggable.java \
+	DebugEvent.java \
 	DebugListener.java \
 	KernelException.java \
 	IllegalActionException.java \

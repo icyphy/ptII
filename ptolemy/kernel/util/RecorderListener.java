@@ -56,6 +56,13 @@ public class RecorderListener implements DebugListener {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Append a string representation of the event to the current
+     *  set of messages.
+     */
+    public void event(DebugEvent event) {
+	_buffer.append(event.toString() + "\n");
+    }
+
     /** Get the messages recorded so far.
      */
     public String getMessages() {

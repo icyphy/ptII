@@ -1,6 +1,6 @@
-/* Interface debug listeners.
+/* Interface for debug events.
 
- Copyright (c) 1998-2000 The Regents of the University of California.
+ Copyright (c) 2000 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -24,32 +24,30 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Green (eal@eecs.berkeley.edu)
-@AcceptedRating Green (cxh@eecs.berkeley.edu)
+@ProposedRating Red (neuendor@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.kernel.util;
 
 //////////////////////////////////////////////////////////////////////////
-//// DebugListener
+//// DebugEvent
 /**
-Interface for listeners that receive debug messages.
+An interface for events that can be used for debugging.  These events will
+generally be subclassed to create events with more meaning (such as 
+a FiringEvent).
 
-@author  Edward A. Lee
+@author  Steve Neuendorffer
 @version $Id$
-@see NamedObj
-
+@see DebugListener
+@see FiringEvent
 */
-public interface DebugListener {
+public interface DebugEvent {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** React to a debug message.
+    /** The source of the event.
      */
-    public void message(String message);
-
-    /** React to the given event.
-     */
-    public void event(DebugEvent event);
+    public NamedObj getSource();
 }

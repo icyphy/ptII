@@ -881,6 +881,18 @@ public class NamedObj implements Nameable, Debuggable,
         }
     }
 
+    /** Send a debug event to all debug listeners that have registered.
+     *  @param event The event.
+     */
+    protected final void _debug(DebugEvent event) {
+        if (_debugging) {
+            Iterator listeners = _debugListeners.iterator();
+            while (listeners.hasNext()) {
+                ((DebugListener)listeners.next()).event(event);
+            }
+        }
+    }
+
     /** Send a debug message to all debug listeners that have registered.
      *  By convention, messages should not include a newline at the end.
      *  The newline will be added by the listener, if appropriate.

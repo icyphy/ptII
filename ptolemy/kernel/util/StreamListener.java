@@ -64,6 +64,13 @@ public class StreamListener implements DebugListener {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Print a string representation of the event to the stream 
+     *  associated with this listener.
+     */
+    public void event(DebugEvent event) {
+	_output.println(event.toString());
+    }
+
     /** Copy the message argument to the stream associated with
      *  the listener.  Note that a newline is appended to the
      *  end of the message.
