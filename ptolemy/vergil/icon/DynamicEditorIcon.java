@@ -76,6 +76,24 @@ associated nastiness.
 */
 public class DynamicEditorIcon extends EditorIcon {
 
+    /** Construct an icon in the specified workspace and name.
+     *  This constructor is typically used in conjuction with
+     *  setContainerToBe() and createFigure() to create an icon
+     *  and generate a figure without having to have write access
+     *  to the workspace.
+     *  If the workspace argument is null, then use the default workspace.
+     *  The object is added to the directory of the workspace.
+     *  @see #setContainerToBe(NamedObj)
+     *  Increment the version number of the workspace.
+     *  @param workspace The workspace that will list the attribute.
+     *  @exception IllegalActionException If the specified name contains
+     *   a period.
+     */
+    public DynamicEditorIcon(Workspace workspace, String name)
+            throws IllegalActionException {
+        super(workspace, name);
+    }
+
     /** Create a new icon with the given name in the given container.
      *  @param container The container.
      *  @param name The name of the attribute.

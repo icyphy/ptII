@@ -76,7 +76,7 @@ only supports a small subset of SVG.
 @version $Id$
 @since Ptolemy II 2.0
 */
-public class XMLIcon extends EditorIcon implements ValueListener {
+public class XMLIcon extends DynamicEditorIcon implements ValueListener {
 
     /** Construct an icon in the specified workspace and name.
      *  This constructor is typically used in conjuction with

@@ -286,7 +286,7 @@ public class EditorIcon extends Attribute {
 
     /** Create a new Swing icon.  In this base class, this icon is created
      *  from the background figure returned by createBackgroundFigure().
-     *  Note that the background figure does NOT include a label for the name.
+   *  Note that the background figure does NOT include a label for the name.
      *  This method might be suitable, for example, for creating a small icon
      *  for use in a library.
      *  @return A new Swing Icon.
@@ -402,26 +402,26 @@ public class EditorIcon extends Attribute {
         // change request is processed.  This is what the code would
         // look like:
         /*
-        StringBuffer moml = new StringBuffer();
-        NamedObj context = MoMLChangeRequest.getDeferredToParent(this);
-        if (context != null && context != this) {
-            moml.append("<property name=\"" + getName(context) + "\">\n");
-        }
-        moml.append("<group name=\"auto\">" +
-            "<property name=\"defaultFigure\" " +
-            "class=\"ptolemy.vergil.kernel.attributes.RectangleAttribute\">\n" +
-            "<property name=\"width\" value=\"60\"/>\n" +
-            "<property name=\"height\" value=\"40\"/>\n" +
-            "<property name=\"centered\" value=\"true\"/>\n" +
-            "<property name=\"fillColor\" value=\"{1.0, 1.0, 1.0, 1.0}\"/>\n" +
-            "</property></group>" );
-        if (context != null && context != this) {
-            moml.append("</property>");
-        } else {
-            context = this;
-        }
-        MoMLChangeRequest request = new MoMLChangeRequest(
-                this, context, moml.toString());
+          StringBuffer moml = new StringBuffer();
+          NamedObj context = MoMLChangeRequest.getDeferredToParent(this);
+          if (context != null && context != this) {
+          moml.append("<property name=\"" + getName(context) + "\">\n");
+          }
+          moml.append("<group name=\"auto\">" +
+          "<property name=\"defaultFigure\" " +
+          "class=\"ptolemy.vergil.kernel.attributes.RectangleAttribute\">\n" +
+          "<property name=\"width\" value=\"60\"/>\n" +
+          "<property name=\"height\" value=\"40\"/>\n" +
+          "<property name=\"centered\" value=\"true\"/>\n" +
+          "<property name=\"fillColor\" value=\"{1.0, 1.0, 1.0, 1.0}\"/>\n" +
+          "</property></group>" );
+          if (context != null && context != this) {
+          moml.append("</property>");
+          } else {
+          context = this;
+          }
+          MoMLChangeRequest request = new MoMLChangeRequest(
+          this, context, moml.toString());
         context.requestChange(request);
         */
 

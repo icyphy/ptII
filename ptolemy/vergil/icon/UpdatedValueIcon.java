@@ -33,6 +33,8 @@ package ptolemy.vergil.icon;
 import java.awt.Color;
 import java.awt.geom.Rectangle2D;
 
+import java.util.Iterator;
+
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
@@ -101,6 +103,7 @@ public class UpdatedValueIcon extends AttributeValueIcon {
                     _associatedAttribute.addValueListener(this);
                 }
             }
+            _updateFigures();
         } else {
             super.attributeChanged(attribute);
         }
@@ -141,13 +144,13 @@ public class UpdatedValueIcon extends AttributeValueIcon {
             int numberOfCharacters
                 = ((IntToken)displayWidth.getToken()).intValue();
             // NOTE: Padding of 20.
-            int width = (int)(stringBounds.getWidth()*numberOfCharacters + 20);
-            _background = new BasicRectangle(0, 0, width, 30, Color.white, 1);
+            int width = (int)
+                (stringBounds.getWidth() * numberOfCharacters + 20);
+            return new BasicRectangle(0, 0, width, 30, Color.white, 1);
         } catch (IllegalActionException ex) {
             // Should not be thrown.
             throw new InternalErrorException(ex);
         }
-        return _background;
     }
 
     /** React to the specified Settable has changing by requesting a
@@ -156,24 +159,36 @@ public class UpdatedValueIcon extends AttributeValueIcon {
      */
     public void valueChanged(Settable settable) {
         if (settable == _associatedAttribute) {
-            // Invoke in the swing thread.
-            // NOTE: These requests could be consolidated, so that
-            // if there is a string of them pending, only one gets
-            // executed. However, this results in jerky updates, with
-            // some values being skipped, so it seems like it's not
-            // a good idea.
-            SwingUtilities.invokeLater(new Runnable() {
-                    public void run() {
-                        if (_label != null) {
-                            _label.setString(_displayString());
-                        }
-                        if (_background != null) {
-                            _background.repaint();
-                        }
-                    }});
+            _updateFigures();
         } else {
             super.valueChanged(settable);
         }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Update the figures that were created by this icon to reflect the 
+     *  new attribute value.  This method is called by this class in response
+     *  to notification that attributes have changed.
+     */
+    protected void _updateFigures() {
+        // Invoke in the swing thread.
+        // NOTE: These requests could be consolidated, so that
+        // if there is a string of them pending, only one gets
+        // executed. However, this results in jerky updates, with
+        // some values being skipped, so it seems like it's not
+        // a good idea.
+        SwingUtilities.invokeLater(new Runnable() {
+                public void run() {
+                    String string = _displayString();
+                    Iterator figures = _liveFigureIterator();
+                    while (figures.hasNext()) {
+                        LabelFigure figure = (LabelFigure)figures.next();
+                        figure.setString(string);
+                    }
+                }
+            });
     }
 
     ///////////////////////////////////////////////////////////////////

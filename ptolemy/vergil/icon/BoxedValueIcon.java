@@ -89,7 +89,6 @@ public class BoxedValueIcon extends AttributeValueIcon {
             width = stringBounds.getWidth() + 20;
             heigth = stringBounds.getHeight() + 10;
         }
-        _background = new BasicRectangle(0, 0, width, heigth, Color.white, 1);
-        return _background;
+        return new BasicRectangle(0, 0, width, heigth, Color.white, 1);
     }
 }

@@ -95,33 +95,6 @@ public class AttributeValueIcon extends XMLIcon {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Clone the object into the specified workspace. The new object is
-     *  <i>not</i> added to the directory of that workspace (you must do this
-     *  yourself if you want it there).
-     *  The result is an object with no container.
-     *  @param workspace The workspace for the cloned object.
-     *  @exception CloneNotSupportedException Not thrown in this base class
-     *  @return The new Attribute.
-     */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        AttributeValueIcon newObject = (AttributeValueIcon)
-            super.clone(workspace);
-        newObject._background = null;
-        newObject._label = null;
-        return newObject;
-    }
-
-    /** Create a new background figure.  This overrides the base class
-     *  to remember the background figure so that it can center the label
-     *  over it in createFigure().
-     *  @return A new figure.
-     */
-    public Figure createBackgroundFigure() {
-        _background = super.createBackgroundFigure();
-        return _background;
-    }
-
     /** Create a new Diva figure that visually represents this icon.
      *  The figure will be an instance of LabelFigure that renders the
      *  value of the specified attribute of the container.
@@ -139,11 +112,13 @@ public class AttributeValueIcon extends XMLIcon {
         // This attribute is part of the model, and should not have
         // a reference to this figure.  By doing so, it precludes the
         // possibility of having multiple views on this model.
-        _label = new LabelFigure(truncated,
+        LabelFigure label = new LabelFigure(truncated,
                 _labelFont, 1.0, SwingConstants.CENTER);
-        Rectangle2D backBounds = _background.getBounds();
-        _label.translateTo(backBounds.getCenterX(), backBounds.getCenterY());
-        result.add(_label);
+        Rectangle2D backBounds = result.getBackgroundFigure().getBounds();
+        label.translateTo(backBounds.getCenterX(), backBounds.getCenterY());
+        result.add(label);
+        
+        _addLiveFigure(label);
         return result;
     }
 
@@ -225,12 +200,6 @@ public class AttributeValueIcon extends XMLIcon {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected members                 ////
-
-    /** The background figure. */
-    protected Figure _background;
-
-    /** The label figure. */
-    protected LabelFigure _label;
 
     /** The font used. */
     protected static Font _labelFont = new Font("SansSerif", Font.PLAIN, 12);
