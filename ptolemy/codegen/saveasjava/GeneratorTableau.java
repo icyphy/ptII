@@ -65,6 +65,10 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.SwingUtilities;
+import java.util.Iterator;
+import java.util.List;
+import java.util.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// GeneratorTableau
@@ -223,37 +227,45 @@ public class GeneratorTableau extends Tableau {
                                   codeFile.toExternalForm());
                         }
 
+			// List of commands to be run
+			LinkedList commands = new LinkedList();
+			
 			// Handle the compile checkbox.
 			_compile=query.booleanValue("compile");
+			String compileCommand = null;
                         if (_compile) {
-			    text.setText("");
-			    _Exec exec = new _Exec(text,
-						   "javac "
-						   + _classpathName
-						   + _directoryName
-						   + File.separatorChar
-						   + model.getName()
-						   + ".java");
-			    new Thread(exec).start();
-                            report("Compilation complete.");
+			    commands.add(new String("javac "
+						    + _classpathName
+						    + " \""
+						    + _directoryName
+						    + File.separatorChar
+						    + model.getName()
+						    + ".java\""));
                         }
-
+			
 			// Handle the run checkbox.
 			_run = query.booleanValue("run");
+			String runCommand = null;
                         if (_run) {
-			    _Exec exec =
 				//FIXME: we should not need to set iterations.
-				new _Exec(text,
-					  "java " 
-					  + _classpathName
-					  + "ptolemy.actor.gui.CompositeActorApplication "
-					  + "-class " 
-					  + _packageName 
-					  + model.getName()
-					  + " -iterations 5");
+			    commands.add(new String("java " 
+						    + _classpathName
+						    + "ptolemy.actor.gui.CompositeActorApplication "
+						    + "-class " 
+						    + _packageName 
+						    + model.getName()
+						    + " -iterations 5"));
+                        }
+
+			if (_compile || _run) {
+			    // Do this in the Event thread before
+			    // we start a new thread.
+			    text.setText("");
+			    _Exec exec = new _Exec(text, commands);
 			    new Thread(exec).start();
                             report("Execution complete.");
-                        }
+			}
+			
                     } catch (Exception ex) {
                         MessageHandler.error("Code generation failed.", ex);
                     }
@@ -365,59 +377,120 @@ public class GeneratorTableau extends Tableau {
 
 
     // Wrapper for exec() that runs the process in a separate thread.
+    // Sample Use:
+    // <pre>
+    //  LinkedList commands = new LinkedList();
+    //  commands.add(new String("ls"));
+    //  commands.add(new String("date"));
+    //  _Exec exec = new _Exec(text, commands);
+    //  new Thread(exec).start();
+    // </pre>
+    // FIXME: we need a way for the user to kill the thread.
     private class _Exec implements Runnable {
 	
 	// Construct an _Exec object to run a command.
-	public _Exec(JTextArea text, String command) {
+	// @param text The JTextArea to update with the command and the
+	// results
+	// @param commands A List of Strings that contain commands to
+	// be run sequentially.
+	public _Exec(JTextArea text, List commands) {
 	    _text = text;
-	    _command = command;
+	    _commands = commands;
 	}
 
         // Execute the specified command and report errors to the
 	// JTextArea.
         public void run() {
             Runtime runtime = Runtime.getRuntime();
-	    try {
-		_text.append("Executing: " + _command + '\n' );
+	    Iterator commands = _commands.iterator();
+	    while(commands.hasNext()) {
+		_command = (String) commands.next();
 
-		Process process = runtime.exec(_command);
-
-		InputStream errorStream = process.getErrorStream();
-		BufferedReader reader =
-		    new BufferedReader(new InputStreamReader(errorStream));
-		String line;
-		while((line = reader.readLine()) != null) {
-		    _text.append(line + '\n');
-		}
-		reader.close();
-
-		errorStream = process.getInputStream();
-		reader =
-		    new BufferedReader(new InputStreamReader(errorStream));
-		while((line = reader.readLine()) != null) {
-		    _text.append(line);
-		}
-		reader.close();
-
+		SwingUtilities.invokeLater(new Runnable() {
+		    public void run() {
+			_text.append("Executing: " + _command + '\n' );
+		    }
+		});
+		    
 		try {
-		    process.waitFor();
-		} catch (InterruptedException interrupted) {
-		    _text.append("InterruptedException: "
-				+ interrupted + '\n' );
+		    _process = runtime.exec(_command);
+		} catch (final IOException io) {
+		    SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+			    _text.append("IOException: " + io + '\n' );
+			}
+		    });
 		}
+		
+		SwingUtilities.invokeLater(new Runnable() {
+		    public void run() {
+			try {
+			    InputStream errorStream =
+				_process.getErrorStream();
+			    BufferedReader reader =
+				new
+				BufferedReader(new
+					       InputStreamReader(errorStream));
+			    String line;
+			    while((line = reader.readLine()) != null) {
+				_text.append(line + '\n');
+			    }
+			    reader.close();
 
-	    } catch (IOException io) {
-		_text.append("IOException: " + io + '\n' );
+			    errorStream = _process.getInputStream();
+			    reader =
+				new
+				BufferedReader(new
+					       InputStreamReader(errorStream));
+			    while((line = reader.readLine()) != null) {
+				_text.append(line);
+			    }
+			    reader.close();
+			} catch (IOException io) {
+			    _text.append("IOException: " + io + '\n' );
+			}
+		    }
+		});
+			
+		try {
+		    _process.waitFor();
+		    SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+			    if (_process.exitValue() == 0) {
+				_text.append("\nDone.\n");
+			    } else {
+				_text.append("\nDone. Exit Value is: " 
+					     + _process.exitValue()
+					     + "\n");
+			    }
+			    
+			}
+		    });
+
+		} catch (InterruptedException interrupted) {
+		    // FIXME: this should probably be inside invokeLater.
+		    // but it can't be because interrupted would
+		    // need to be final
+		    _text.append("InterruptedException: "
+				 + interrupted + '\n' );
+		}
 	    }
-	    _text.append("Done.\n");
-
         }
 
 	// The command to be executed
-	private String _command;
+	protected String _command;
 
 	// JTextArea to write the command and the output of the command.
-	private JTextArea _text;
+	// _text is protected so we can get at it from within the
+	// Runnables
+	protected JTextArea _text;
+
+	// The List of Strings that contain commands to be executed.
+	private List _commands;
+
+	// java.lang.Process that controls the command being executed.
+	private Process _process;
     }
 }
+
 
