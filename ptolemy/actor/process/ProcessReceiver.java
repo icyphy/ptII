@@ -214,15 +214,6 @@ public interface ProcessReceiver extends Receiver {
      */
     public boolean isWriteBlocked();
 
-    /** Set a local flag requesting that the simulation be finished.
-     */
-    public void requestFinish();
-
-    /** Reset the local flags of this receiver. Use this method when
-     *  restarting execution.
-     */
-    public void reset();
-
     /** Put a token into this receiver and pass in a branch object as
      *  an argument. This method can accommodate blocking writes at the
      *  boundary of composite actors. If the branch argument is not
@@ -234,4 +225,12 @@ public interface ProcessReceiver extends Receiver {
      */
     public void put(Token token, Branch controllingBranch);
 
+    /** Set a local flag requesting that the simulation be finished.
+     */
+    public void requestFinish();
+
+    /** Reset the local flags of this receiver. Use this method when
+     *  restarting execution.
+     */
+    public void reset();
 }

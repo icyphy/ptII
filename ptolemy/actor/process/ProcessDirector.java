@@ -154,23 +154,6 @@ public class ProcessDirector extends Director {
         }
     }
 
-    /** Preinitialize the model controlled by this director.  This
-     *  subclass overrides the base class to initialize the number of
-     *  running threads before proceeding with preinitialization of
-     *  the model.
-     *
-     *  @exception IllegalActionException If creating an actor thread
-     *  throws it.
-     */
-    public void preinitialize() throws IllegalActionException {
-         _notDone = true;
-        _activeActorCount = 0;
-        _blockedActorCount = 0;
-        _actorThreadList = new LinkedList();
-        _newActorThreadList = new LinkedList();
-        super.preinitialize();
-    }
-
     /** Initialize the given actor.  This class overrides the base
      *  class to reset the flags for all of the receivers, and to
      *  create a new ProcessThread for each actor being controlled.
@@ -262,6 +245,23 @@ public class ProcessDirector extends Director {
         return true;
     }
 
+    /** Preinitialize the model controlled by this director.  This
+     *  subclass overrides the base class to initialize the number of
+     *  running threads before proceeding with preinitialization of
+     *  the model.
+     *
+     *  @exception IllegalActionException If creating an actor thread
+     *  throws it.
+     */
+    public void preinitialize() throws IllegalActionException {
+         _notDone = true;
+        _activeActorCount = 0;
+        _blockedActorCount = 0;
+        _actorThreadList = new LinkedList();
+        _newActorThreadList = new LinkedList();
+        super.preinitialize();
+    }
+
     /** Request that the director cease execution altogether.
      *  This causes a call to stop() on all actors contained by
      *  the container of this director, and a call to stopThread()
@@ -298,6 +298,27 @@ public class ProcessDirector extends Director {
          }
     }
 
+    /** Terminates all threads under control of this director immediately.
+     *  This abrupt termination will not allow normal cleanup actions
+     *  to be performed, and the model should be recreated after calling
+     *  this method.
+     */
+    //  Note: for now call Thread.stop() but should change to use
+    //  Thread.destroy() when it is eventually implemented.
+    public void terminate() {
+        // First need to invoke terminate on all actors under the
+        // control of this director.
+        super.terminate();
+        // Now stop any threads created by this director.
+        LinkedList list = new LinkedList();
+        list.addAll(_actorThreadList);
+        _actorThreadList.clear();
+        Iterator threads = list.iterator();
+        while (threads.hasNext()) {
+            ((Thread)threads.next()).stop();
+        }
+    }
+
     /** Throw an IllegalActionException as an indication that this method
      *  should not be used within process domains.
      *
@@ -318,27 +339,6 @@ public class ProcessDirector extends Director {
     public boolean transferOutputs(IOPort port) throws IllegalActionException {
         throw new IllegalActionException(this, "transferOutputs() is not " +
                 "intended for use by directors in the process domains.");
-    }
-
-    /** Terminates all threads under control of this director immediately.
-     *  This abrupt termination will not allow normal cleanup actions
-     *  to be performed, and the model should be recreated after calling
-     *  this method.
-     */
-    //  Note: for now call Thread.stop() but should change to use
-    //  Thread.destroy() when it is eventually implemented.
-    public void terminate() {
-        // First need to invoke terminate on all actors under the
-        // control of this director.
-        super.terminate();
-        // Now stop any threads created by this director.
-        LinkedList list = new LinkedList();
-        list.addAll(_actorThreadList);
-        _actorThreadList.clear();
-        Iterator threads = list.iterator();
-        while (threads.hasNext()) {
-            ((Thread)threads.next()).stop();
-        }
     }
 
     /** End the execution of the model under the control of this
@@ -417,6 +417,19 @@ public class ProcessDirector extends Director {
         notifyAll();
     }
 
+    /** Increase the count of stopped actors by one.  This method is
+     *  called by instances of ProcessThread in response to a call to
+     *  their stopThread method. This method may be overridden in
+     *  derived classes to added domain specific
+     *  functionality. Implementations of this method must be
+     *  synchronized.
+     *
+     */
+    protected synchronized void _actorHasStopped() {
+        _stoppedActorCount++;
+        notifyAll();
+    }
+
     /** Decrease the count of blocked actors by one and unregister the
      *  receiver that was previously blocked. This method may be
      *  overridden in derived classes to added domain specific
@@ -440,19 +453,6 @@ public class ProcessDirector extends Director {
      */
     protected synchronized void _actorUnBlocked(LinkedList receivers) {
         _blockedActorCount--;
-        notifyAll();
-    }
-
-    /** Increase the count of stopped actors by one.  This method is
-     *  called by instances of ProcessThread in response to a call to
-     *  their stopThread method. This method may be overridden in
-     *  derived classes to added domain specific
-     *  functionality. Implementations of this method must be
-     *  synchronized.
-     *
-     */
-    protected synchronized void _actorHasStopped() {
-        _stoppedActorCount++;
         notifyAll();
     }
 

@@ -104,6 +104,14 @@ public class ProcessThread extends PtolemyThread {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Request that execution of the actor controlled by this
+     *  thread continue.  This is normally called by the ProcessDirector
+     *  in the prefire method.
+     */
+    public void cancelStopThread() {
+        _threadStopRequested = false;
+    }
+
     /** Return the actor being executed by this thread
      *  @return The actor being executed by this thread.
      */
@@ -163,14 +171,6 @@ public class ProcessThread extends PtolemyThread {
               + _director.getName() +".");
              */
         }
-    }
-
-    /** Request that execution of the actor controlled by this
-     *  thread continue.  This is normally called by the ProcessDirector
-     *  in the prefire method.
-     */
-    public void cancelStopThread() {
-        _threadStopRequested = false;
     }
 
     /** Request that execution of the actor controlled by this

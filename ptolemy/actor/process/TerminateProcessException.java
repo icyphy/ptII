@@ -120,24 +120,6 @@ public class TerminateProcessException extends RuntimeException {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Get the name of a Nameable object.
-     *  If the argument is a null reference, return an empty string.
-     *  @param obj An object with a name.
-     *  @return The name of the argument.
-     */
-    protected String _getName(Nameable object) {
-        String name;
-        if (object == null) {
-            return "";
-        } else {
-            name = object.getName();
-            if (name.equals("")) {
-                name = new String("<Unnamed Object>");
-            }
-        }
-        return name;
-    }
-
     /** Get the name of a Nameable object.  This method attempts to use
      *  getFullName(), if it is defined, and resorts to getName() if it is
      *  not.  If the argument is a null reference, return an empty string.
@@ -153,6 +135,24 @@ public class TerminateProcessException extends RuntimeException {
                 name = object.getFullName();
             } catch (TerminateProcessException ex) {
                 name = object.getName();
+            }
+        }
+        return name;
+    }
+
+    /** Get the name of a Nameable object.
+     *  If the argument is a null reference, return an empty string.
+     *  @param obj An object with a name.
+     *  @return The name of the argument.
+     */
+    protected String _getName(Nameable object) {
+        String name;
+        if (object == null) {
+            return "";
+        } else {
+            name = object.getName();
+            if (name.equals("")) {
+                name = new String("<Unnamed Object>");
             }
         }
         return name;
