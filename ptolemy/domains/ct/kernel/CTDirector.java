@@ -535,34 +535,6 @@ public abstract class CTDirector extends StaticSchedulingDirector {
         _breakPoints.insert(new Double(time));
     }
 
-    /** Set the current time to be the start time or the current
-     *  time of the executive director, depending on whether this
-     *  director is at the top level. Initialize all actors.
-     *  @exception IllegalActionException If thrown by an actor.
-     *
-    public void initialize() throws IllegalActionException {
-        /* if(_debugging) {
-            _debug(getFullName(), " initializing");
-            _debug(getFullName(), " get start Time parameter " +
-                    ((DoubleToken)startTime.getToken()).doubleValue());
-        }
-        CompositeActor containersContainer =
-            (CompositeActor)getContainer().getContainer();
-        if( containersContainer == null ) {
-            setCurrentTime(((DoubleToken)startTime.getToken()).doubleValue());
-        } else {
-            double time =
-                containersContainer.getDirector().getCurrentTime();
-            //startTime.setToken(new DoubleToken(time));
-            setCurrentTime(time);
-        }
-        if(_debugging) {
-            _debug(getFullName(), " set current time to " + getCurrentTime());
-            }
-        super.initialize();
-        System.out.println("CTDirector initialize is called.");
-        }*/
-
     /** Return true if this is the first iteration after a breakpoint.
      *  In a breakpoint iteration, the ODE solver is the breakpoint
      *  ODE solver, and the step size is the minimum step size.
@@ -587,9 +559,9 @@ public abstract class CTDirector extends StaticSchedulingDirector {
      *  an IllegalActionException will be thrown.
      *  Invalidate the schedule. Clear statistical variables.
      *  Clear the break point table.
-     *  Set the current time to the start time or the time of 
-     *  the executive director.
      *  Preinitialize all the directed actors.
+     *  Time does not have a meaning yet. So actors should not
+     *  use a notion of time at the preinitialize stage.
      *  
      *  @exception IllegalActionException If the director has no
      *  container, the director does not fit this level of hierarchy,

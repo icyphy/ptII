@@ -95,7 +95,6 @@ public class ResetRefinement extends Action implements CommitAction {
             throw new IllegalActionException(this, dest,
                     "The destination state has no refinement.");
         }
-        ref.preinitialize();
         ref.initialize();
     }
 }

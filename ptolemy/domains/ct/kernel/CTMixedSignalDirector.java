@@ -292,7 +292,8 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
             Director exe = container.getExecutiveDirector();
             exe.fireAt(container, getCurrentTime());
         }
-    }
+        }
+
 
     /** If this is a top-level director, behave exactly as a
      *  CTMultiSolverDirector, otherwise always return true.

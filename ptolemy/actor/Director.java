@@ -227,12 +227,14 @@ public class Director extends Attribute implements Executable {
         return _currentTime;
     }
 
-    /** Invoke the initialize() method of each deeply contained actor,
-     *  unless the container is not an instance of CompositeActor, in which
-     *  case, do nothing.
-     *  This method should be invoked once per execution, after the
-     *  initialization phase, but before any iteration.  Since type
-     *  resolution has been completed, the initialize() method of a contained
+    /** Set the current time to 0.0 or the time of the executive director,
+     *  and then invoke the initialize() method of each deeply contained actor.
+     *  If the container is not an instance of CompositeActor, do nothing.
+     *  This method should typically be invoked once per execution, after the
+     *  preinitialization phase, but before any iteration.  It may be
+     *  invoked in the middle of an execution, if reinitialization is desired.
+     *  Since type resolution has been completed and the current time is set,
+     *  the initialize() method of a contained
      *  actor may produce output or schedule events.
      *  This method is <i>not</i> synchronized on the workspace, so the
      *  caller should be.
@@ -243,6 +245,14 @@ public class Director extends Attribute implements Executable {
     public void initialize() throws IllegalActionException {
         Nameable container = getContainer();
         if (container instanceof CompositeActor) {
+	    Nameable containersContainer = container.getContainer();
+	    if(containersContainer instanceof CompositeActor) {
+		double time = ((CompositeActor)containersContainer)
+                    .getDirector().getCurrentTime();
+                _currentTime = time;
+	    } else {
+                _currentTime = 0.0;
+	    }
             Iterator actors = ((CompositeActor)container)
                 .deepEntityList().iterator();
             while (actors.hasNext()) {
@@ -428,9 +438,11 @@ public class Director extends Attribute implements Executable {
 
     /** Validate the attributes and then invoke the preinitialize()
      *  methods of all its deeply contained actors.
-     *  Set the current time to 0.0.
      *  This method is invoked once per execution, before any
      *  iteration, and before the initialize() method.
+     *  Time is not set during this stage. So preinitialize() method
+     *  of actors should not make use of time. They should wait
+     *  until the initialize phase of the execution.
      *  This method is <i>not</i> synchronized on the workspace, so the
      *  caller should be.
      *
@@ -445,14 +457,6 @@ public class Director extends Attribute implements Executable {
         }
         Nameable container = getContainer();
         if (container instanceof CompositeActor) {
-	    Nameable containersContainer = container.getContainer();
-	    if(containersContainer instanceof CompositeActor) {
-		double time = ((CompositeActor)containersContainer)
-                    .getDirector().getCurrentTime();
-                _currentTime = time;
-	    } else {
-                _currentTime = 0.0;
-	    }
             Iterator actors = ((CompositeActor)container)
                 .deepEntityList().iterator();
             while (actors.hasNext()) {

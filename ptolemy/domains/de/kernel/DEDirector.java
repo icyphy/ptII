@@ -589,18 +589,20 @@ public class DEDirector extends Director {
      *   one of the associated actors throws it.
      */
     public void initialize() throws IllegalActionException {
-        _realStartTime = System.currentTimeMillis();
         if (!_isEmbedded() && getStartTime() > getStopTime()) {
             throw new IllegalActionException(this,
                     " startTime must be less than the stopTime.");
         }
         _exceedStopTime = false;
         super.initialize();
+        // use the protected variable directly, since time can go backward.
+        // This is the only place in DE where time can go backward.
+        _currentTime = getStartTime();
+        _realStartTime = System.currentTimeMillis();
         // Request a firing to the outer director if the queue is not empty.
         if (_isEmbedded() && !_eventQueue.isEmpty()) {
             _requestFiring();
         }
-        //if (_debugging) _debug(getContainer().description());
     }
 
     /** Indicate that the topological depth of the ports in the model may
@@ -676,9 +678,6 @@ public class DEDirector extends Director {
             }
         }
         _disabledActors = null;
-        // use the protected variable directly, since time can go backward.
-        // This is the only place in DE where time can go backward.
-        _currentTime = getStartTime();
         _noMoreActorsToFire = false;
         _microstep = 0;
 
