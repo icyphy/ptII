@@ -368,20 +368,20 @@ public class DEDirector extends Director {
                         _disableActor(actorToFire);
                         break;
                     }
-                    _debug(new FiringEvent(this, actorToFire, 
+                    _debug(new FiringEvent(this, actorToFire,
                             FiringEvent.BEFORE_PREFIRE));
                     if (!actorToFire.prefire()) {
                         _debug("*** Prefire returned false.");
                         break;
                     }
-                    _debug(new FiringEvent(this, actorToFire, 
+                    _debug(new FiringEvent(this, actorToFire,
                             FiringEvent.AFTER_PREFIRE));
-                    _debug(new FiringEvent(this, actorToFire, 
+                    _debug(new FiringEvent(this, actorToFire,
                             FiringEvent.BEFORE_FIRE));
                     actorToFire.fire();
-                    _debug(new FiringEvent(this, actorToFire, 
+                    _debug(new FiringEvent(this, actorToFire,
                             FiringEvent.AFTER_FIRE));
-                    _debug(new FiringEvent(this, actorToFire, 
+                    _debug(new FiringEvent(this, actorToFire,
                             FiringEvent.BEFORE_POSTFIRE));
                     if (!actorToFire.postfire()) {
                         _debug("*** Postfire returned false:",
@@ -389,7 +389,7 @@ public class DEDirector extends Director {
                         // Actor requests that it not be fired again.
                         _disableActor(actorToFire);
                     }
-                    _debug(new FiringEvent(this, actorToFire, 
+                    _debug(new FiringEvent(this, actorToFire,
                             FiringEvent.AFTER_POSTFIRE));
                 } else {
                     // Not debugging.
@@ -432,7 +432,7 @@ public class DEDirector extends Director {
 			break;
 		    } else if (next.timeStamp() < getCurrentTime()) {
 			throw new InternalErrorException(
-			        "fire(): the time stamp of the next event " 
+			        "fire(): the time stamp of the next event "
                                 + next.timeStamp() + " is smaller than the "
                                 + "current time " + getCurrentTime() + " !");
 		    }
@@ -634,7 +634,7 @@ public class DEDirector extends Director {
     public void initialize() throws IllegalActionException {
         if (!_isEmbedded() && getStartTime() > getStopTime()) {
             throw new IllegalActionException(this,
-                    " startTime (" + getStartTime() 
+                    " startTime (" + getStartTime()
                     + ") must be less than the stopTime ("
                     + getStopTime() + ").");
         }
@@ -700,7 +700,7 @@ public class DEDirector extends Director {
      *  inputs and the outside time is less than the current time.
      *  Throw an exception if there are inputs and the outside time
      *  is less than the current time.
-     *  @return True if the composite actor is ready to run for one 
+     *  @return True if the composite actor is ready to run for one
      *          iteration.
      *  @exception IllegalActionException If there are input events
      *          in the past, or the outside time is larger than the
@@ -727,7 +727,7 @@ public class DEDirector extends Director {
             throw new IllegalActionException(this,
                     "Missed a firing at "
                     + nextEventTime + "."
-                    + " The outside time is already " + 
+                    + " The outside time is already " +
                     + outsideCurrentTime + ".");
         }
         */
@@ -742,7 +742,7 @@ public class DEDirector extends Director {
                     break;
                 }
             }
-        } 
+        }
         if (hasInput) {
             // FIXME: Also need a time resolution parameter, like the one
             // in CT.
@@ -751,10 +751,10 @@ public class DEDirector extends Director {
                         "Received an event in the past at "
                         + "an opaque composite actor boundary: "
                         + "Outside time is " + outsideCurrentTime
-                        + ". Local current time is " 
+                        + ". Local current time is "
                         + getCurrentTime() + ".");
             }
-            
+
             // Otherwise it is a proper timing relation.
             // We set the current time.
             if (Math.abs(nextEventTime - outsideCurrentTime)< 1e-10) {
@@ -767,7 +767,7 @@ public class DEDirector extends Director {
             }
             return true;
         } else {
-            // If there is no input, we test whether there's anything 
+            // If there is no input, we test whether there's anything
             // internal to fire.
             if (Math.abs(nextEventTime - outsideCurrentTime)< 1e-10) {
                 // Round up the error in double number calculation.
@@ -884,7 +884,7 @@ public class DEDirector extends Director {
      *  flag is true (which is set to true by default) then return null,
      *  which will have the effect of stopping the simulation.
      *  If _stopWhenQueueIsEmpty is false and the queue is empty, then
-     *  stall the current thread by calling wait() on the 
+     *  stall the current thread by calling wait() on the
      *  _eventQueue(Was this, _eventQueue again before that)
      *  until there are events available.  If _synchronizeToRealTime
      *  is true, then this method may suspend the calling thread using
@@ -984,13 +984,13 @@ public class DEDirector extends Director {
                 }
 
                 // Consume the event from the queue.  The event must be
-                // obtained here, since a new event could have been injected 
+                // obtained here, since a new event could have been injected
                 // into the queue while the queue was waiting.
 		synchronized(_eventQueue/**/) {
 		    currentEvent = (DEEvent) _eventQueue.take();
 		    currentTime = currentEvent.timeStamp();
 		    actorToFire = currentEvent.actor();
-   
+
 		    if (_disabledActors != null &&
 			_disabledActors.contains(actorToFire)) {
 			// This actor has requested that it not be fired again.
@@ -1105,7 +1105,7 @@ public class DEDirector extends Director {
         } else if ( time < getCurrentTime()) {
             throw new IllegalActionException((Nameable)actor,
                     "Attempt to queue an event in the past:"
-                    + " Current time is " + getCurrentTime() 
+                    + " Current time is " + getCurrentTime()
                     + " while event time is " + time);
         }
         int depth = _getDepth(actor);
@@ -1143,7 +1143,7 @@ public class DEDirector extends Director {
             Nameable destination = receiver.getContainer();
             throw new IllegalActionException(destination,
                     "Attempt to queue an event in the past: "
-                    + " Current time is " + getCurrentTime() 
+                    + " Current time is " + getCurrentTime()
                     + " while event time is " + time);
         }
 
