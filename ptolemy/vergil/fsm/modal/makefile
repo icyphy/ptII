@@ -49,16 +49,10 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
-	RefinementPort.java \
-	Refinement.java \
-	ModalPort.java \
-	ModalModel.java \
-	ModalController.java \
-        ModalTransitionController.java \
 	HierarchicalStateControllerFactory.java \
 	HierarchicalStateController.java \
-        TransitionRefinement.java \
-        TransitionRefinementPort.java \
+	ModalTableauFactory.java \
+	ModalTransitionController.java
 
 EXTRA_SRCS =	$(JSRCS)
 
@@ -72,8 +66,7 @@ OPTIONAL_FILES = \
 	$(PTCLASSJAR) \
 	'HierarchicalStateController$$1.class' \
 	'HierarchicalStateController$$AddRefinementAction.class' \
-	'HierarchicalStateController$$RemoveRefinementAction.class' \
-	'ModalModel$$ModalTableauFactory.class'
+	'HierarchicalStateController$$RemoveRefinementAction.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
