@@ -288,7 +288,8 @@ htest-netscape: $(JTESTHTML) $(JCLASS)
 # We remove the file in case it is a symbolic link
 tyzip: $(PTCLASSZIP)
 $(PTCLASSZIP): $(JSRCS) $(JCLASS)
-	(cd $(CLASSPATH); rm -f $@; $(JAR) -c0Mf $@ $(PTPACKAGE_DIR)/*.class)
+	(cd $(CLASSPATH); rm -f $(PTPACKAGE_DIR)/$@; \
+		 $(JAR) -c0Mf $(PTPACKAGE_DIR)/$@ $(PTPACKAGE_DIR)/*.class)
 
 jars: $(PTCLASSJAR) 
 $(PTCLASSJAR): $(JSRCS) $(JCLASS)
