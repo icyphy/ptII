@@ -83,7 +83,7 @@ import ptolemy.kernel.util.Workspace;
    @author  Haiyang Zheng
    @version $Id$
    @since Ptolemy II 5.0
-   @Pt.ProposedRating Yellow (hyzheng)
+   @Pt.ProposedRating Green (hyzheng)
    @Pt.AcceptedRating Red (hyzheng)
 */
 public class ExplicitRK45Solver extends ODESolver {
