@@ -860,7 +860,7 @@ public class CTScheduler extends Scheduler {
      *  @param list The list of actors to be converted to a graph.
      *  @return A graph representation of the actors.
      */
-    protected DirectedAcyclicGraph _toGraph(List list) {
+    private DirectedAcyclicGraph _toGraph(List list) {
 
         DirectedAcyclicGraph g = new DirectedAcyclicGraph();
         // Create the nodes.
