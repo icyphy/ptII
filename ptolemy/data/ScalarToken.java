@@ -555,6 +555,25 @@ public abstract class ScalarToken extends Token
         }
     }
 
+    /** Return a scalar token that contains the value of this token in the
+     *  units of the argument token. The unit category of the argument token
+     *  must be the same as that of this token, otherwise, an exception will
+     *  be thrown. The returned token is unitless.
+     *  @param units A scalar token that represents a unit.
+     *  @return A scalar token that does not have a unit.
+     *  @exception IllegalActionException If the unit category of the
+     *  argument token is not the same as that of this one.
+     */
+    public ScalarToken inUnitsOf(ScalarToken units)
+            throws IllegalActionException {
+        if ( !_areUnitsEqual(units)) {
+            throw new IllegalActionException(
+                    notSupportedMessage("inUnitsOf", this, units) +
+                    " because the units are not the same.");
+        }
+        return (ScalarToken)this.divide(units);
+    }
+
     /** Check whether the value of this token is strictly less than that of the
      *  argument token.  The argument and this token are converted to
      *  equivalent types, and then compared.  Generally, this is the
@@ -587,7 +606,8 @@ public abstract class ScalarToken extends Token
                 // better error message that has the types of the
                 // arguments that were passed in.
                 throw new IllegalActionException(null, ex,
-                        notSupportedMessage("isLessThan", this, rightArgument));
+                        notSupportedMessage("isLessThan", this,
+                                rightArgument));
             }
         } else if (typeInfo == CPO.LOWER) {
             return rightArgument.isGreaterThan(this);
@@ -596,25 +616,6 @@ public abstract class ScalarToken extends Token
                     notSupportedIncomparableMessage("isLessThan",
                             this, rightArgument));
         }
-    }
-
-    /** Return a scalar token that contains the value of this token in the
-     *  units of the argument token. The unit category of the argument token
-     *  must be the same as that of this token, otherwise, an exception will
-     *  be thrown. The returned token is unitless.
-     *  @param units A scalar token that represents a unit.
-     *  @return A scalar token that does not have a unit.
-     *  @exception IllegalActionException If the unit category of the
-     *  argument token is not the same as that of this one.
-     */
-    public ScalarToken inUnitsOf(ScalarToken units)
-            throws IllegalActionException {
-        if ( !_areUnitsEqual(units)) {
-            throw new IllegalActionException(
-                    notSupportedMessage("inUnitsOf", this, units) +
-                    " because the units are not the same.");
-        }
-        return (ScalarToken)this.divide(units);
     }
 
     /** Returns a token representing the result of shifting the bits
