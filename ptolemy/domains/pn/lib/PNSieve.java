@@ -79,37 +79,40 @@ public class PNSieve extends PNActor {
 		  if (((IntToken)data[0]).intValue()%_prime != 0) {
 		      // is it the next prime? 
 		      if (_output == null) {
-			  // yes - make the sieve for it 
-			  PNSieve newSieve = new PNSieve((CompositeActor)
-                                  getContainer(), ((IntToken)data[0]).intValue() + "_sieve");
-                            newSieve.setInitState(((IntToken)data[0]).intValue());
-                            _output = new PNOutPort(this, "output");
-                            IORelation relation = new IORelation((CompositeEntity)
-                                    getContainer(), ((IntToken)data[0]).intValue()+"_queue");
-                            _output.link(relation);
-                            PNPort inport = (PNPort)newSieve.getPort("input");
-                            inport.link(relation);
-                            //inport.getQueue(_output).setCapacity(1);
-			    //THIS IS CURRENTLY VERY IMPORTANT
-                            ((PNDirector)getDirector()).setMutate(true);
-                        } 
-                        else {
-                            writeTo(_output, data[0]);
-                        }
-                    }
-                }
+
+			  // yes - make the mutation for it 
+                          Mutation m = makeMutation(((IntToken)data[0]).intValue());
+
+                          PNDirector director = (PNDirector)getDirector();
+
+                          // Queue the new mutation
+                          director.queueMutation(m);
+
+                          // In PN, we should process the mutations NOW
+                          director.processPendingMutations();
+
+                          // In PN, we notify the director so that it
+                          // schedules the new actor threads
+                          director.startNewActors();
+
+                      } 
+                      else {
+                          writeTo(_output, data[0]);
+                      }
+                  }
+              }
             }
             ((PNDirector)getDirector()).processStopped();
         } catch (NoSuchItemException e) {
             System.out.println("Terminating "+ this.getName());
             return;
-        } catch (NameDuplicationException e) {
+        } /* catch (NameDuplicationException e) {
             System.err.println("Exception: " + e.toString());
             //This should never be thrown
-        } catch (IllegalActionException e) {
+        }  catch (IllegalActionException e) {
             //This should never be thrown
             System.err.println("Exception: " + e.toString());
-        }
+        } */
     }
     
     public void setParam(String name, double value)
@@ -119,6 +122,48 @@ public class PNSieve extends PNActor {
         } else {
             throw new IllegalActionException("Unknown parameter: " + name);
         }
+    }
+
+    /** Create and return a new mutation object that adds a new sieve.
+     */
+    private Mutation makeMutation(final int value) {
+        Mutation m = new Mutation() {
+            // remember this
+            PNSieve newSieve = null;
+            Relation newRelation = null;
+            PNPort input = null;
+
+            // Create the mutation
+            public void perform() {
+                try {
+                    CompositeActor container = (CompositeActor)PNSieve.this.getContainer();
+
+                    newSieve = new PNSieve(container, value + "_sieve");
+                    newSieve.setInitState(value);
+                    input = (PNPort)newSieve.getPort("input");
+                    
+                    _output = new PNOutPort(PNSieve.this, "output");
+                    newRelation = container.connect(input, _output, value+"_queue");
+                } catch (NameDuplicationException e) {
+                    System.err.println("Exception: " + e.toString());
+                    //This should never be thrown
+                }  catch (IllegalActionException e) {
+                    //This should never be thrown
+                    System.err.println("Exception: " + e.toString());
+                }
+            }
+            // Inform a listener about the mutation
+            public void update(MutationListener listener) {
+                CompositeActor container = (CompositeActor)PNSieve.this.getContainer();
+                listener.addEntity(container, newSieve);
+                listener.addPort(PNSieve.this, _output);
+                listener.addRelation(container, newRelation);
+                listener.link(newRelation, input);
+                listener.link(newRelation, _output);
+            }
+        };
+
+        return m;
     }
 
     //////////////////////////////////////////////////////////////////////////
