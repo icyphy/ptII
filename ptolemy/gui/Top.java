@@ -229,7 +229,7 @@ public abstract class Top extends JFrame {
      *  @param lastOverallURL The last overall URL
      *  @see getLastOverallURL
      */
-    public void setLastOverallURL(String lastOverallURL) {
+    public static void setLastOverallURL(String lastOverallURL) {
 	// This method is static so that we can get at it from
 	// MoMLParser.  MoMLApplet calls this method as well
         // so that signed applets will not invoke the 
