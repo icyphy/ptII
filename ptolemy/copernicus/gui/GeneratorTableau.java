@@ -140,9 +140,6 @@ public class GeneratorTableau extends Tableau {
     // Default background color is a light grey.
     private static Color BACKGROUND_COLOR = new Color(0xe5e5e5);
 
-    // The .java file should be created in this package.
-    private static String _packageName = new String("");
-
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
