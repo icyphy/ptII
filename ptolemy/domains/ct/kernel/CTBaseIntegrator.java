@@ -30,8 +30,8 @@
 
 package ptolemy.domains.ct.kernel;
 
-import ptolemy.actor.IODependence;
-import ptolemy.actor.IODependenceOfAtomicActor;
+import ptolemy.actor.IODependency;
+import ptolemy.actor.IODependencyOfAtomicActor;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.TimedActor;
@@ -350,22 +350,6 @@ public class CTBaseIntegrator extends TypedAtomicActor
         return solver.integratorPredictedStepSize(this);
     }
 
-    /** Create an IODependence attribute for this actor.
-     *  @exception IllegalActionException thrown by super class or
-     *  the IODependence constructor.
-     */
-    public void preinitialize() throws IllegalActionException {
-        super.preinitialize();
-        try {
-            IODependenceOfAtomicActor ioDependence = 
-                new IODependenceOfAtomicActor(this, "_IODependence");
-        } catch (NameDuplicationException e) {
-            // because the IODependence attribute is not persistent,
-            // and it is only created once in the preinitialize method,
-            // there should be no NameDuplicationException thrown.
-        }
-    }
-    
     /** Setup the integrator to operate with the current ODE solver.
      *  This method checks whether
      *  there are enough auxiliary variables in the integrator for the
@@ -440,11 +424,8 @@ public class CTBaseIntegrator extends TypedAtomicActor
     /** Explicitly declare which inputs and outputs are not dependent.
      *  
      */
-    public void removeDependencies() throws IllegalActionException {
-        IODependenceOfAtomicActor ioDependence = (IODependenceOfAtomicActor) 
-                        this.getAttribute(
-                        "_IODependence", IODependence.class);
-        ioDependence.removeDependence(input, output);
+    public void removeDependencies() {
+        super.removeDependency(input, output);
     }
 
     /** Set history capacity. This will typically be set by the ODE solvers

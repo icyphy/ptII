@@ -33,7 +33,8 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.Executable;
-import ptolemy.actor.IODependence;
+import ptolemy.actor.IODependency;
+import ptolemy.actor.IODependencyOfFSMActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.IORelation;
 import ptolemy.actor.Manager;
@@ -332,6 +333,20 @@ public class FSMActor extends CompositeEntity
         } finally {
             workspace().doneReading();
         }
+    }
+
+    /** Return an instance of DirectedGraph, where the nodes are IOPorts,
+     *  and the edges are the relations between ports. The graph shows 
+     *  the dependencies between the input and output ports. If there is
+     *  an path between a pair, input and output, they are dependent. 
+     *  Otherwise, they are independent.
+     */
+    public IODependency getIODependencies() {
+        if (_ioDependency == null) {
+            _ioDependency = new IODependencyOfFSMActor(this);
+        }
+        //_ioDependency.validate();
+        return _ioDependency;
     }
 
     /** Return the Manager responsible for execution of this actor,
@@ -1519,6 +1534,6 @@ public class FSMActor extends CompositeEntity
     private Hashtable _hdfArrays;
     
     // The IODependence attribute of this actor.
-    private IODependence _ioDependence;
+    private IODependencyOfFSMActor _ioDependency;
 
 }

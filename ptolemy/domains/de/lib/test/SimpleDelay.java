@@ -30,8 +30,6 @@
 
 package ptolemy.domains.de.lib.test;
 
-import ptolemy.actor.IODependence;
-import ptolemy.actor.IODependenceOfAtomicActor;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.data.DoubleToken;
@@ -62,28 +60,13 @@ public class SimpleDelay extends TypedAtomicActor {
         _currentInput = input.get(0);
     }
 
-    public void preinitialize() throws IllegalActionException {
-        super.preinitialize();
-        try {
-            IODependenceOfAtomicActor ioDependence = 
-                new IODependenceOfAtomicActor(this, "_IODependence");
-        } catch (NameDuplicationException e) {
-            // because the IODependence attribute is not persistent,
-            // and it is only created once in the preinitialize method,
-            // there should be no NameDuplicationException thrown.
-        }
-    }
-
     public boolean postfire() throws IllegalActionException {
         output.send(0, _currentInput,
                 ((DoubleToken)delay.getToken()).doubleValue());
         return super.postfire();
     }
 
-    public void removeDependencies() throws IllegalActionException {
-        IODependenceOfAtomicActor ioDependence = (IODependenceOfAtomicActor) 
-                        this.getAttribute(
-                        "_IODependence", IODependence.class);
-        ioDependence.removeDependence(input, output);
+    public void removeDependencies() {
+        super.removeDependency(input, output);
     }
 }
