@@ -46,7 +46,6 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
-import ptolemy.kernel.util.StringAttribute;
 import ptolemy.math.Complex;
 
 //////////////////////////////////////////////////////////////////////////
@@ -144,15 +143,15 @@ public class ViterbiDecoder extends Transformer {
         trellisDecoding.setExpression("false");
         trellisDecoding.setTypeEquals(BaseType.BOOLEAN);
         trellisDecoding.setVisibility(Settable.NONE);
-        
+
         constellation = new Parameter(this, "constellation");
         constellation.setTypeEquals(new ArrayType(BaseType.DOUBLE));
         constellation.setExpression("{-1.0, 1.0}");
-        
+
         //mode = new StringAttribute(this, "mode");
         //mode.setExpression("Hard Decoding");
         //mode.setVisibility(Settable.NONE);
-        
+
         // Declare data types, consumption rate and production rate.
         _type = new ptolemy.actor.TypeAttribute(input, "inputType");
         _type.setExpression("boolean");
@@ -198,11 +197,11 @@ public class ViterbiDecoder extends Transformer {
      *  If it is true, the input data and constellation type will be
      *  complex; otherwise, they follow the constraints set by
      *  <i>softDecoding</i>. This parameter is always set to "false"
-     *  in ViterbiDecoder. It will always be set to "true" in 
+     *  in ViterbiDecoder. It will always be set to "true" in
      *  TrellisDecoder subclass.
      */
     public Parameter trellisDecoding;
-    
+
     /** The constellation for soft decoding.  Inputs are expected to be
      *  symbols from this constellation with added noise.
      *  This parameter should be a double array of length 2. The first
@@ -210,7 +209,7 @@ public class ViterbiDecoder extends Transformer {
      *  defines the amplitude of "true" input.
      */
     public Parameter constellation;
-    
+
     //public StringAttribute mode;
 
     ///////////////////////////////////////////////////////////////////
@@ -239,7 +238,7 @@ public class ViterbiDecoder extends Transformer {
             } else if (modeName.equals("Soft Decoding")) {
                 //_mode = _SOFT;
                 //_type.setExpression("double");
-                //constellation.setTypeEquals(new ArrayType(BaseType.DOUBLE)); 
+                //constellation.setTypeEquals(new ArrayType(BaseType.DOUBLE));
             } else if (modeName.equals("Trellis Decoding")) {
                 //_mode = _TRELLIS;
                 //_type.setExpression("complex");
@@ -250,13 +249,13 @@ public class ViterbiDecoder extends Transformer {
                     "Unrecognized interpolation type: " + modeName);
             }
         } else */
-        if (attribute == softDecoding || 
+        if (attribute == softDecoding ||
                 attribute == trellisDecoding) {
             _trellisMode =
                 ((BooleanToken)trellisDecoding.getToken()).booleanValue();
             _softMode = ((BooleanToken)softDecoding.getToken()).booleanValue();
             // Set different input port types for soft and hard decoding.
-            
+
             if (_trellisMode) {
                 _mode = _TRELLIS;
                 _type.setExpression("complex");
@@ -269,7 +268,7 @@ public class ViterbiDecoder extends Transformer {
                 _mode = _HARD;
                 _type.setExpression("boolean");
             }
-            
+
         } else if (attribute == uncodedRate) {
             _inputNumber = ((IntToken)uncodedRate.getToken()).intValue();
             if (_inputNumber < 1 ) {
@@ -331,7 +330,7 @@ public class ViterbiDecoder extends Transformer {
      *  to the observed inputs.
      */
     public void fire() throws IllegalActionException {
-        
+
         //boolean trellisMode =
         //    ((BooleanToken)trellisDecoding.getToken()).booleanValue();
         int constellationOrder;
@@ -343,7 +342,7 @@ public class ViterbiDecoder extends Transformer {
             constellationOrder = 1;
             inputRate = _maskNumber;
         }
-           
+
         if (_mode == _TRELLIS){
             _constellation = new Complex[1 << constellationOrder];
             ArrayToken ampToken = ((ArrayToken)constellation.getToken());
@@ -352,7 +351,7 @@ public class ViterbiDecoder extends Transformer {
                 "Invalid amplitudes for soft decoding!");
             }
             for (int i = 0; i < ampToken.length(); i++ ) {
-                _constellation[i] = 
+                _constellation[i] =
                     ((ComplexToken)ampToken.getElement(i)).complexValue();
             }
         } else if (_mode == _SOFT) {
@@ -368,7 +367,7 @@ public class ViterbiDecoder extends Transformer {
         // If the private variable _inputNumberInvalid is true, verify
         // the validity of the parameters. If they are valid, compute
         // the state-transition table of this convolutional code, which
-        // is stored in a 3-D array _truthTable[][][]. 
+        // is stored in a 3-D array _truthTable[][][].
         if (_inputNumberInvalid) {
             if (_inputNumber >= _maskNumber) {
                 throw new IllegalActionException(this,
@@ -464,7 +463,7 @@ public class ViterbiDecoder extends Transformer {
                 double d = 0.0;
                 if (_mode == _TRELLIS) {
                     Complex y = ((ComplexToken)inputToken[0]).complexValue();
-                    d = _computeTrellisDistance(y, _constellation, 
+                    d = _computeTrellisDistance(y, _constellation,
                         _truthTable[state][colIndex][0]);
                 } else if (_mode == _SOFT) {
                     double[] y = new double[inputRate];
@@ -624,7 +623,7 @@ public class ViterbiDecoder extends Transformer {
      *  @return The distance.
      */
     private double _computeSoftDistance(double[] y,
-            double falseAmp, double trueAmp, int truthValue, 
+            double falseAmp, double trueAmp, int truthValue,
             int inputRate) throws IllegalActionException {
         /*if (trellisMode) {
             Complex truthComplex = constellation[truthValue];
@@ -643,19 +642,19 @@ public class ViterbiDecoder extends Transformer {
 
             // Euclidean distance for soft decoding. Here we
             // actually compute the square of the Euclidean distance.
-            distance = distance + 
+            distance = distance +
                 java.lang.Math.pow(y[i] - truthAmp, 2);
-            
+
             truthValue = truthValue >> 1;
         }
-        return distance;    
+        return distance;
     }
-    
+
     /** Compute the Euclidean distance given by the datum received
      *  from the input port and the value in the truthTable in
      *  trellis decoding mode.
      *  @param y Complex number received from the input port.
-     *  @param constellation Complex array defining the constellation. 
+     *  @param constellation Complex array defining the constellation.
      *  @param truthValue integer representing the truth value
      *  from the truth table.
      *  @return The distance.
@@ -750,11 +749,11 @@ public class ViterbiDecoder extends Transformer {
     private double[] _tempDistance;
     private int[][] _path;
     private int[][] _tempPath;
-    
+
     // A flag used to indicate the positions that new values
     // should be inserted in the buffers.
     private int _flag;
-    
+
     private static final int _HARD = 0;
     private static final int _SOFT = 1;
     private static final int _TRELLIS = 2;
