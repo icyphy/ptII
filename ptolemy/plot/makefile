@@ -132,6 +132,10 @@ install: sources jclass javadocs subinstall $(PTCLASSJAR) ptolemy.plotapplet.jar
 
 # FIXME: this is ugly, dangerous, and unportable.
 #
+# This is a workaround so that EPSGraphics can extend Graphics in 
+# both JDK1.1 and JDK1.2
+# See the class comment in PtolemyGraphics1_2 for the complete story
+
 # There are two files:
 # PtolemyGraphics1_1.java and PtolemyGraphics1_2.java
 # 
@@ -156,23 +160,28 @@ install: sources jclass javadocs subinstall $(PTCLASSJAR) ptolemy.plotapplet.jar
 # values for JDK 1.2.  Also, this will break when JDK1.2 is upgraded to
 # JDK1.2.1 etc.  I'll work on a fix to this.
 #
-# See the class comment in PtolemyGraphics1_2 for the complete story
 #
-# Don't use GNU make only directives here, since that will make the problem
-# even  worse.
+# Don't use GNU make only directives here, since that will make the
+# portability problem even worse, instead, use a sh case statement
+# so that we can look for the "1.2" substring.  If we don't do this,
+# then the version number from JDK1.2.1 etc. will not match properly.
 #
 PtolemyGraphics.java: PtolemyGraphics1_1.java PtolemyGraphics1_2.java \
 				$(ROOT)/mk/ptII.mk
-	@if [ "$(JVERSION)" = "1.2 " ]; then \
-	    echo "configure determined that java.version=$(JVERSION)"; \
+	@case "$(JVERSION)" in \
+	1.2*) \
+	    echo "configure determined that java.version='$(JVERSION)'"; \
+	    echo " so we are running JDK1.2 or later."; \
 	    echo 'Copying PtolemyGraphics1_2.java to PtolemyGraphics.java'; \
 	    cp PtolemyGraphics1_2.java PtolemyGraphics.java; \
-	else \
-	    echo "configure determined that java.version=$(JVERSION)"; \
-	    echo " which is not equal to 1.2 ."; \
+	    ;; \
+	*) \
+	    echo "configure determined that java.version='$(JVERSION)'"; \
+	    echo " so we are not running JDK1.2 or later."; \
 	    echo 'Copying PtolemyGraphics1_1.java to PtolemyGraphics.java'; \
 	    cp PtolemyGraphics1_1.java PtolemyGraphics.java; \
-	fi
+	    ;; \
+	esac
 
 
 ptplot: ptplot.in ../../config.status
