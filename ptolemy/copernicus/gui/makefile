@@ -41,7 +41,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	kernel
+PTPACKAGE = 	gui
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 DIRS =		test
@@ -51,10 +51,9 @@ JSRCS = \
 	GeneratorTableau.java \
 	GeneratorTableauAttribute.java
 
-
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	$(DIRS) cg
+MISC_FILES =	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
@@ -74,10 +73,7 @@ JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
 
-install: all
-
-depend:
-	@echo "no dependencies in this directory"
+install: all $(PTCLASSJAR)
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
