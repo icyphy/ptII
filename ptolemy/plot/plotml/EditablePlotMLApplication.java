@@ -58,8 +58,8 @@ Edit Dataset item to make a data set editable.
 
 @author Edward A. Lee
 @version $Id$
-@see PlotBox
-@see Plot
+@see ptolemy.plot.PlotBox
+@see ptolemy.plot.Plot
 */
 public class EditablePlotMLApplication extends PlotMLApplication {
 

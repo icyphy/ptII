@@ -51,8 +51,8 @@ import java.net.URL;
  *
  *  @author Edward A. Lee
  *  @version $Id$
- *  @see PlotBox
- *  @see Plot
+ *  @see ptolemy.plot.PlotBox
+ *  @see ptolemy.plot.Plot
  */
 public class PlotMLApplet extends PlotApplet {
 
