@@ -33,9 +33,9 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 45.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={37, 132, 815, 509}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={37, 132, 815, 562}}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 453]">
     </property>
     <property name="y" class="ptolemy.data.expr.StringParameter" value="bar">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -139,6 +139,25 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="455.0, 130.0">
         </property>
     </property>
+    <property name="zz" class="ptolemy.data.expr.StringParameter" value="${i}...">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:red" y="20">-S-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="300.0, 30.0">
+        </property>
+    </property>
     <entity name="Const" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="x">
         </property>
@@ -240,7 +259,7 @@
         </port>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{&quot;foo&quot;, &quot;&quot;, &quot;foobar&quot;, &quot;foo&quot;, &quot;foobarx&quot;, &quot;foo12b&quot;}}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{&quot;foo&quot;, &quot;&quot;, &quot;foobar&quot;, &quot;foo&quot;, &quot;foobarx&quot;, &quot;afoo12b&quot;, &quot;0.0 + 1.0i...&quot;}}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
@@ -276,6 +295,26 @@
             <property name="multiport"/>
         </port>
     </entity>
+    <entity name="Const7" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="zz">
+        </property>
+        <doc>Create a constant sequence</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="130.0, 410.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -288,6 +327,8 @@
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="Const.output" relation="relation"/>
     <link port="Const2.output" relation="relation4"/>
     <link port="Const3.output" relation="relation2"/>
@@ -299,5 +340,7 @@
     <link port="Test.input" relation="relation4"/>
     <link port="Test.input" relation="relation5"/>
     <link port="Test.input" relation="relation6"/>
+    <link port="Test.input" relation="relation7"/>
     <link port="Const6.output" relation="relation6"/>
+    <link port="Const7.output" relation="relation7"/>
 </entity>
