@@ -116,7 +116,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
      *  If the name argument is null, then the name is set to the
      *  empty string. Increment the version number of the workspace.
      *  All the parameters take their default values.
-     *  @param workspace Object for synchronization and version tracking
+     *  @param container The container.
      *  @param name Name of this director.
      *  @exception IllegalActionException If the director is not compatible
      *   with the specified container.  May be thrown in a derived class.
@@ -141,7 +141,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
     /** React to a change in an attribute. If the changed attribute matches
      *  a parameter of the director, then the corresponding private copy of the
      *  parameter value will be updated.
-     *  @param param The changed parameter.
+     *  @param attribute The changed attribute.
      *  @exception IllegalActionException If the superclass throws it.
      */
     public void attributeChanged(Attribute attribute)
@@ -644,7 +644,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
     /** Set the end time for this iteration. If the argument is
      *  less than the current time, then an InvalidStateException
      *  will be thrown.
-     *  @param The fire end time.
+     *  @param time The fire end time.
      */
     protected void _setIterationEndTime(double time) {
         if (time < getCurrentTime()) {

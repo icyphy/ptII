@@ -126,7 +126,7 @@ public class CTMultiSolverDirector extends CTDirector {
      *  If the name argument is null, then the name is set to the
      *  empty string. Increment the version number of the workspace.
      *  All the parameters take their default values.
-     *  @param workspace Object for synchronization and version tracking.
+     *  @param container The container.
      *  @param name Name of this director.
      *  @exception IllegalActionException If the director is not compatible
      *   with the specified container.  May be thrown in derived classes.
@@ -165,7 +165,7 @@ public class CTMultiSolverDirector extends CTDirector {
      *  instantiated is an instance of BreakpointODESolver, then
      *  an IllegalActionException will be thrown, and the original
      *  ODESolver will be unchanged.
-     *  @param param The changed parameter.
+     *  @param attribute The changed attribute.
      *  @exception IllegalActionException If the new solver that is specified
      *   is not valid.
      */
