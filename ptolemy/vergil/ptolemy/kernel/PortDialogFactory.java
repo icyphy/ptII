@@ -53,7 +53,7 @@ from objects.
 @author Edward A. Lee and Steve Neuendorffer
 @version $Id$
 */
-public class PortDialogFactory extends MenuItemFactory {
+public class PortDialogFactory implements MenuItemFactory {
 
     /** Add an item to the given context menu that will open a dialog
      *  to add or remove ports from an object.
@@ -61,8 +61,12 @@ public class PortDialogFactory extends MenuItemFactory {
      *  @param object The object whose ports are being manipulated.
      */
     public JMenuItem create(final JContextMenu menu, NamedObj object) {
-        String name = _getName();
-        final NamedObj target = _getItemTargetFromMenuTarget(object);
+        String name = "Configure Ports";
+
+        // Removed this method since it was never used. EAL
+        // final NamedObj target = _getItemTargetFromMenuTarget(object);
+        final NamedObj target = object;
+
         // ensure that we actually have a target, and that it's an Entity.
         if(!(target instanceof Entity)) return null;
         Action action = new AbstractAction(name) {
@@ -85,12 +89,5 @@ public class PortDialogFactory extends MenuItemFactory {
             }
         };
 	return menu.add(action, name);
-    }
-
-    /** Get the name of the menu item that will be created, as it appears
-     *  in the menu.
-     */
-    protected String _getName() {
-	return "Configure Ports";
     }
 }

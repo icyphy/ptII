@@ -1,4 +1,4 @@
-/* A Factory for Popup menus
+/* An interface for factories that create menu items.
 
  Copyright (c) 2000-2001 The Regents of the University of California.
  All rights reserved.
@@ -37,35 +37,22 @@ import ptolemy.kernel.util.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// MenuItemFactory
-/**
- * A factory for popup menus.  Use this class in conjuction with
- * a MenuCreator to implement context sensitive menus.
+
+/** This is an interface for factories that create menu items.
+ *  Objects that implement this interface can be used in conjunction
+ *  with a MenuCreator to implement context menu items.
  *
- * @author Steve Neuendorffer (neuendor@eecs.berkeley.edu)
- * @version $Id$
+ *  @author Steve Neuendorffer and Edward A. Lee
+ *  @version $Id$
  */
-public abstract class MenuItemFactory {
-    /**
-     * Add an item to the given context menu.  The menu item should act on the
-     * given figure.
-     */
-    public abstract JMenuItem create(JContextMenu menu, NamedObj object);
+public interface MenuItemFactory {
 
-    /**
-     * Get the name of the items that will be created.  This is provided so
-     * that factory can be overriden slightly with the name changed.
+    /** Add an item to the given context menu that will operate on
+     *  specified target, and return the menu item.  Return null to
+     *  decline to add a menu item for the specified target.
+     *  @param menu The context menu to add to.
+     *  @param target The object that the menu item command will operate on.
+     *  @return A menu item, or null to decline to provide a menu item.
      */
-    protected abstract String _getName();
-
-    /**
-     * Given the object that is the target of the MenuFactory, return a new
-     * object that is related to the original.  This is provided so that
-     * the target of a menu item can be different from the target of the
-     * menu that it is contained in.  In this base class, just return the
-     * object that is passed in, since menu items will usually have the
-     * same target as the menu.
-     */
-    protected NamedObj _getItemTargetFromMenuTarget(NamedObj object) {
-	return object;
-    }
+    public abstract JMenuItem create(JContextMenu menu, NamedObj target);
 }

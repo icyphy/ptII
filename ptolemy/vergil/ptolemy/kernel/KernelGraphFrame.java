@@ -139,7 +139,7 @@ import javax.swing.SwingUtilities;
 A simple graph view for ptolemy models.  This represents a level of the
 hierarchy of a ptolemy model as a diva graph.  Cut, copy and paste operations
 are supported using MoML and the graph itself is created using a visual
-notation as a a factory
+notation as a factory
 
 @author  Steve Neuendorffer
 @version $Id$
@@ -259,8 +259,7 @@ public class KernelGraphFrame extends GraphFrame {
     ///////////////////////////////////////////////////////////////////
     ////                     private inner classes                 ////
 
-    /**
-     * The factory for creating context menus on visible attributes
+    /** The factory for creating context menus on visible attributes
      */
     private class AttributeContextMenuFactory extends PtolemyMenuFactory {
 	public AttributeContextMenuFactory(GraphController controller) {
@@ -274,8 +273,7 @@ public class KernelGraphFrame extends GraphFrame {
 	}
     }
  
-    /**
-     * The factory for creating context menus on entities.
+    /** The factory for creating context menus on entities.
      */
     private class EntityContextMenuFactory extends PtolemyMenuFactory {
 	public EntityContextMenuFactory(GraphController controller) {
@@ -291,8 +289,7 @@ public class KernelGraphFrame extends GraphFrame {
 	}
     }
 
-    /**
-     * The factory for creating context menus on ports.
+    /** The factory for creating context menus on ports.
      */
     public class PortContextMenuFactory extends PtolemyMenuFactory {
 	public PortContextMenuFactory(GraphController controller) {
@@ -305,13 +302,14 @@ public class KernelGraphFrame extends GraphFrame {
 	    addMenuItemFactory(new MenuActionFactory(_getDocumentationAction));
 	}
 
-	public class PortDescriptionFactory extends MenuItemFactory {
+	public class PortDescriptionFactory implements MenuItemFactory {
 	    /**
 	     * Add an item to the given context menu that will configure the
 	     * parameters on the given target.
 	     */
 	    public JMenuItem create(JContextMenu menu, NamedObj target) {
-		target = _getItemTargetFromMenuTarget(target);
+                // Removed this method since it was never used. EAL
+		// target = _getItemTargetFromMenuTarget(target);
 		if(target instanceof IOPort) {
 		    IOPort port = (IOPort)target;
 		    String string = "";
@@ -338,15 +336,6 @@ public class KernelGraphFrame extends GraphFrame {
 			return menu.add(new JMenuItem("   " + string));
 		    }
 		}
-		return null;
-	    }
-
-	    /**
-	     * Get the name of the items that will be created.
-	     * This is provided so
-	     * that factory can be overriden slightly with the name changed.
-	     */
-	    protected String _getName() {
 		return null;
 	    }
 	}
@@ -477,8 +466,7 @@ public class KernelGraphFrame extends GraphFrame {
 	}
     }
 
-    /**
-     * The factory for creating context menus on relations.
+    /** The factory for creating context menus on relations.
      */
     private class RelationContextMenuFactory
 	extends PtolemyMenuFactory {

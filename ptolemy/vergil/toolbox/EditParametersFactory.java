@@ -52,7 +52,7 @@ parameters on the given object.
 @author Steve Neuendorffer
 @version $Id$
 */
-public class EditParametersFactory extends MenuItemFactory {
+public class EditParametersFactory implements MenuItemFactory {
 
     /** Construct a factory with the default name, "Edit Parameters".
      */
@@ -77,11 +77,14 @@ public class EditParametersFactory extends MenuItemFactory {
      *  @param object The object whose parameters are being configured.
      */
     public JMenuItem create(final JContextMenu menu, NamedObj object) {
-	String name = _getName();
-	final NamedObj target = _getItemTargetFromMenuTarget(object);
+
+        // Removed this method since it was never used. EAL
+	// final NamedObj target = _getItemTargetFromMenuTarget(object);
+        final NamedObj target = object;
+
 	// ensure that we actually have a target.
 	if(target == null) return null;
-	Action action = new AbstractAction(name) {
+	Action action = new AbstractAction(_name) {
 	    public void actionPerformed(ActionEvent e) {
 		// Create a dialog for configuring the object.
                 // First, identify the top parent frame.
@@ -100,17 +103,7 @@ public class EditParametersFactory extends MenuItemFactory {
                 }
 	    }
 	};
-	return menu.add(action, name);
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                     protected methods                     ////
-
-    /** Get the name of the items that will be created.  This is provided so
-     *  that factory can be overriden slightly with the name changed.
-     */
-    protected String _getName() {
-	return _name;
+	return menu.add(action, _name);
     }
 
     ///////////////////////////////////////////////////////////////////

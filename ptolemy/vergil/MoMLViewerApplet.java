@@ -284,13 +284,16 @@ public class MoMLViewerApplet extends MoMLApplet {
 	    addMenuItemFactory(new MenuActionFactory(_getDocumentationAction));
 	}
 
-	public class PortDescriptionFactory extends MenuItemFactory {
+        // FIXME: This is silly... this should be a tooltip, not a menu
+        // item.  It describes the port, and has no action associated with it.
+	public class PortDescriptionFactory implements MenuItemFactory {
 	    /**
 	     * Add an item to the given context menu that will configure the
 	     * parameters on the given target.
 	     */
 	    public JMenuItem create(JContextMenu menu, NamedObj target) {
-		target = _getItemTargetFromMenuTarget(target);
+                // Removed this method since it was never used. EAL
+                // target = _getItemTargetFromMenuTarget(target);
 		if(target instanceof IOPort) {
 		    IOPort port = (IOPort)target;
 		    String string = "";
@@ -319,15 +322,6 @@ public class MoMLViewerApplet extends MoMLApplet {
 		}
 		return null;
 	    }
-
-	    /**
-	     * Get the name of the items that will be created.
-	     * This is provided so
-	     * that factory can be overriden slightly with the name changed.
-	     */
-	    protected String _getName() {
-		return null;
-	    }
 	}
     }
 
@@ -350,5 +344,3 @@ public class MoMLViewerApplet extends MoMLApplet {
 	}
     }
 }
-
-

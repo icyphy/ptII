@@ -58,12 +58,12 @@ import diva.util.Filter;
 import diva.util.java2d.Polygon2D;
 
 import java.awt.geom.Rectangle2D;
-import java.awt.*;
 import java.awt.event.InputEvent;
 import java.awt.event.ActionEvent;
-import java.util.HashMap;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.net.URL;
 import javax.swing.*;
 import javax.swing.event.*;
@@ -81,9 +81,9 @@ create a context-sensitive menu for the graph.
 @version $Id$
 */
 public class ViewerGraphController extends AbstractGraphController {
-    /**
-     * Create a new basic controller with default
-     * terminal and edge interactors.
+
+    /** Create a new basic controller with default
+     *  terminal and edge interactors and default context menus.
      */
     public ViewerGraphController() {
 	_attributeController = new AttributeController(this);
@@ -96,60 +96,124 @@ public class ViewerGraphController extends AbstractGraphController {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    /**
-     * Return the controller for entities
-     */
-    public EntityController getEntityController() {
-	return _entityController;
-    }
 
-    /**
-     * Return the controller for visible attributes
+    /** Return the controller for visible attributes.
+     *  @return The controller for visible attributes.
      */
     public AttributeController getAttributeController() {
 	return _attributeController;
     }
 
-    /**
-     * Return the controller for ports
+    /** Return the controller for entities.
+     *  @return The controller for entities.
      */
-    public PortController getPortController() {
-	return _portController;
+    public EntityController getEntityController() {
+	return _entityController;
     }
 
-    /**
-     * Return the controller for ports
+    /** Return the controller for ports of an entity.
+     *  @return The controller for ports of an entity.
      */
     public EntityPortController getEntityPortController() {
 	return _entityPortController;
     }
 
-    /**
-     * Return the controller for relations
-     */
-    public RelationController getRelationController() {
-        return _relationController;
-    }
-
-    /**
-     * Return the controller for links
+    /** Return the controller for links.
+     *  @return The controller for links.
      */
     public LinkController getLinkController() {
         return _linkController;
     }
 
-    /**
-     * Initialize all interaction on the graph pane. This method
-     * is called by the setGraphPane() method of the superclass.
-     * This initialization cannot be done in the constructor because
-     * the controller does not yet have a reference to its pane
-     * at that time.
+    /** Return the node controller appropriate for the given object.
+     *  If the object is an instance of Vertex, then return the
+     *  local relation controller.  If it is an instance of Location,
+     *  then determine whether it is an Entity, Attribute, or Port,
+     *  and return the appropriate default controller.
+     *  If the argument is an instance of Port, then return the
+     *  local port controller.
+     *  @param object A Vertex, Location, or Port.
+     */
+    public NodeController getNodeController(Object object) {
+	//return _controllerMap.get(getGraphModel().getNodeModel(object));
+	if(object instanceof Vertex) {
+            return _relationController;
+        } else if(object instanceof Location) {
+            Object semanticObject = getGraphModel().getSemanticObject(object);
+            // Check to see whether
+            // this is a NamedObj that contains a NodeControllerFactory.
+            // If so, that could be used. If not, use the defaults
+            // below.  This allows any object in Ptolemy II to have
+            // its own controller, which means its own context menu
+            // and its own interactors.
+            if (semanticObject instanceof NamedObj) {
+                List factoryList = ((NamedObj)semanticObject)
+                        .attributeList(NodeControllerFactory.class);
+                if(factoryList.size() > 0) {
+                    NodeControllerFactory factory = (NodeControllerFactory)
+                           factoryList.get(0);
+                    NodeController controller = factory.create(this);
+                    // Add to the selection dragger.
+                    // NOTE: This should not be null, but in case it is,
+                    // it is better to just have the selection dragger not
+                    // work than to get a null pointer exception.
+                    if(_selectionDragger != null) {
+                        _selectionDragger.addSelectionInteractor(
+                                (SelectionInteractor)controller
+                                .getNodeInteractor());
+                    }
+                    return controller;
+                } else {
+                    // No controller factory, so return a default one.
+                    if (semanticObject instanceof Entity) {
+                        return _entityController;
+                    } else if (semanticObject instanceof Attribute) {
+                        return _attributeController;
+                    } else if (semanticObject instanceof Port) {
+                        return _portController;
+                    } else {
+                        throw new RuntimeException(
+                       "Unrecognized object: " + semanticObject);
+                   }
+               }
+           }
+       } else if(object instanceof Port) {
+           return _entityPortController;
+       } else {
+           throw new RuntimeException(
+                    "Node with unknown semantic object: " + object);
+       }
+       // The compiler seems to lose track of the fact that all branches
+       // above either return or throw an exception, so to silence an
+       // error, we need this:
+       return null;
+   }
+
+    /** Return the controller for ports of this composite.
+     *  @return The controller for ports of this composite.
+     */
+    public PortController getPortController() {
+	return _portController;
+    }
+
+    /** Return the controller for relations.
+     *  @return The controller for relations.
+     */
+    public RelationController getRelationController() {
+        return _relationController;
+    }
+
+    /** Initialize all interaction on the graph pane. This method
+     *  is called by the setGraphPane() method of the superclass.
+     *  This initialization cannot be done in the constructor because
+     *  the controller does not yet have a reference to its pane
+     *  at that time.
      */
     protected void initializeInteraction() {
         GraphPane pane = getGraphPane();
 
         // Create and set up the selection dragger
-	SelectionDragger _selectionDragger = new SelectionDragger(pane);
+        _selectionDragger = new SelectionDragger(pane);
 	_selectionDragger.addSelectionInteractor(
                 (SelectionInteractor)_entityController.getNodeInteractor());
 	_selectionDragger.addSelectionInteractor(
@@ -166,32 +230,6 @@ public class ViewerGraphController extends AbstractGraphController {
 	pane.getBackgroundEventLayer().addInteractor(_menuCreator);
 
 	pane.getBackgroundEventLayer().setConsuming(false);
-    }
-
-    /**
-     * Return the node controller appropriate for the given node.
-     */
-    public NodeController getNodeController(Object object) {
-	//return _controllerMap.get(getGraphModel().getNodeModel(object));
-	if(object instanceof Vertex) {
-            return _relationController;
-        } else if(object instanceof Location &&
-                getGraphModel().getSemanticObject(object)
-                instanceof Entity) {
-            return _entityController;
-	} else if(object instanceof Location &&
-                getGraphModel().getSemanticObject(object)
-                instanceof Attribute) {
-            return _attributeController;
-	} else if(object instanceof Location &&
-                getGraphModel().getSemanticObject(object)
-                instanceof Port) {
-	    return _portController;
-	} else if(object instanceof Port) {
-            return _entityPortController;
-        } else
-            throw new RuntimeException(
-                    "Node with unknown semantic object: " + object);
     }
 
     /**

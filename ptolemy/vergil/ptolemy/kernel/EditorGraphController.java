@@ -92,21 +92,20 @@ public class EditorGraphController extends ViewerGraphController {
     ///////////////////////////////////////////////////////////////////
     ////                         package friendly                  ////
 
-    /** Actrion for creating a new port. */
+    /** Action for creating a new port. */
     Action _newPortAction = new NewPortAction();
 
-    /** Actrion for creating a new relation. */
+    /** Action for creating a new relation. */
     Action _newRelationAction = new NewRelationAction();
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /**
-     * Initialize all interaction on the graph pane. This method
-     * is called by the setGraphPane() method of the superclass.
-     * This initialization cannot be done in the constructor because
-     * the controller does not yet have a reference to its pane
-     * at that time.
+    /** Initialize all interaction on the graph pane. This method
+     *  is called by the setGraphPane() method of the superclass.
+     *  This initialization cannot be done in the constructor because
+     *  the controller does not yet have a reference to its pane
+     *  at that time.
      */
     protected void initializeInteraction() {
         super.initializeInteraction();
@@ -198,11 +197,12 @@ public class EditorGraphController extends ViewerGraphController {
                         event.getLayerX(),
                         event.getLayerY());
 		// Render the edge.
-		Connector c =
-		    getEdgeController(link).render(link, layer, tailSite, headSite);
+                Connector c = getEdgeController(link)
+                        .render(link, layer, tailSite, headSite);
 		// get the actual attach site.
 		tailSite =
-		    getEdgeController(link).getConnectorTarget().getTailSite(c, source,
+		    getEdgeController(link).getConnectorTarget()
+                            .getTailSite(c, source,
                             event.getLayerX(),
                             event.getLayerY());
 		if(tailSite == null) {

@@ -81,7 +81,7 @@ menu for the entity.
 */
 public class AttributeController extends LocatableNodeController {
 
-    /** Create an entity controller associated with the specified graph
+    /** Create an attribute controller associated with the specified graph
      *  controller.
      *  @param controller The associated graph controller.
      */

@@ -48,7 +48,7 @@ A factory that adds a given action a given context menu.
 @author Steve Neuendorffer
 @version $Id$
 */
-public class MenuActionFactory extends MenuItemFactory {
+public class MenuActionFactory implements MenuItemFactory {
     public MenuActionFactory(Action action) {
 	_action = action;
     }
@@ -59,14 +59,6 @@ public class MenuActionFactory extends MenuItemFactory {
      */
     public JMenuItem create(JContextMenu menu, NamedObj object) {
 	return menu.add(_action, (String)_action.getValue(Action.NAME));
-    }
-
-    /**
-     * Get the name of the items that will be created.  This is provided so
-     * that factory can be overriden slightly with the name changed.
-     */
-    protected String _getName() {
-	return (String)_action.getValue(Action.NAME);
     }
 
     // The action that will be added to the context menu.
