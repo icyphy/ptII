@@ -85,22 +85,6 @@ public class GiottoReceiver extends AbstractReceiver {
         return _token;
     }
 
-    /** Get the contained and available token, i.e., get the last
-     *  token that has been put into the receiver before the last
-     *  update and reset the _token only.
-     *  @return A token.
-     *  @exception NoTokenException If no token is available.
-     */
-    public Token remove() throws NoTokenException {
-        if (_token == null) {
-            throw new NoTokenException(getContainer(),
-                    "Attempt to get data from an empty receiver.");
-        }
-        Token buffer =  _token;
-	_token = null;
-	return buffer;
-    }
-
     /** Return true, since writing to this receiver is always allowed.
      *  @return True.
      */
@@ -148,11 +132,20 @@ public class GiottoReceiver extends AbstractReceiver {
 	_nextToken = token;
     }
 
-    /** Update the receiver by making the last token that has been
-     *  passed to put() available to get().
+    /** Get the contained and available token, i.e., get the last
+     *  token that has been put into the receiver before the last
+     *  update and reset the _token only.
+     *  @return A token.
+     *  @exception NoTokenException If no token is available.
      */
-    public void update() {
-        _token = _nextToken;
+    public Token remove() throws NoTokenException {
+        if (_token == null) {
+            throw new NoTokenException(getContainer(),
+                    "Attempt to get data from an empty receiver.");
+        }
+        Token buffer =  _token;
+	_token = null;
+	return buffer;
     }
 
     /** Reset the receiver by removing all tokens from the receiver.
@@ -160,6 +153,13 @@ public class GiottoReceiver extends AbstractReceiver {
     public void reset() {
         _token = null;
 	_nextToken = null;
+    }
+
+    /** Update the receiver by making the last token that has been
+     *  passed to put() available to get().
+     */
+    public void update() {
+        _token = _nextToken;
     }
 
     ///////////////////////////////////////////////////////////////////
