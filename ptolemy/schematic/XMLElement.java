@@ -30,6 +30,7 @@
 
 package ptolemy.schematic;
 
+import java.util.NoSuchElementException;
 import java.util.Enumeration;
 import collections.HashedMap;
 import collections.LinkedList;
@@ -53,10 +54,10 @@ public class XMLElement extends Object {
      * @param name The element type
      */
     public XMLElement(String type) {
-        attributes = (HashedMap) new HashedMap();
-        childelements = (LinkedList) new LinkedList();
-        elementtype = type;
-        pcdata = "";
+        _attributes = (HashedMap) new HashedMap();
+        _childelements = (LinkedList) new LinkedList();
+        _elementtype = type;
+        _pcdata = "";
     }
 
     /** 
@@ -67,16 +68,16 @@ public class XMLElement extends Object {
      * @param attribs The attributes of this XMLElement.
      */
     public XMLElement(String type, HashedMap attribs) {
-        attributes = attribs;
-        elementtype = type;
-        childelements = (LinkedList) new LinkedList();
-        pcdata = "";
+        _attributes = attribs;
+        _elementtype = type;
+        _childelements = (LinkedList) new LinkedList();
+        _pcdata = "";
     }
 
     /** Add a child element to this element
      */
     public void addChildElement(XMLElement e) {
-        childelements.insertLast(e);
+        _childelements.insertLast(e);
         e.setParent(this);
     }
     
@@ -84,7 +85,7 @@ public class XMLElement extends Object {
      * Add the String to the end of the current PCDATA for this element.
      */
     public void appendPCData(String s) {
-        pcdata = pcdata + s;
+        _pcdata = _pcdata + s;
     }
     
     /**
@@ -92,15 +93,33 @@ public class XMLElement extends Object {
      * in this schematic.
      */
     public Enumeration attributeNames () {
-        return attributes.keys();
+        return _attributes.keys();
     }
 
-    /** Return an Enumaration of all the child elements of this element.
+    /**
+     * Return an Enumeration of all the child elements of this element.
      *  
      *  @return an Enumeration of XMLElements
      */
     public Enumeration childElements() {
-        return childelements.elements();
+        return _childelements.elements();
+    }
+
+   /**
+     * Return an Enumeration of all the child elements of this element that
+     * have the given element type.
+     *  
+     *  @return an Enumeration of XMLElements
+     */
+    public Enumeration childElements(String type) {
+        LinkedList filter = new LinkedList();
+        Enumeration elements = childElements();
+        while(elements.hasMoreElements()) {
+            XMLElement el = (XMLElement) elements.nextElement();
+            if(type.equals(el.getElementType()))
+                filter.insertFirst(el);
+        }
+        return filter.elements();
     }
 
     /**
@@ -109,14 +128,31 @@ public class XMLElement extends Object {
      * given name in this schematic.
      */
     public String getAttribute (String name) {
-        return (String) attributes.at(name);
+        return (String) _attributes.at(name);
     }
+
+    /**
+     * Return the first child element of this element with the given type
+     * @throws NoSuchElementException if no element with the given type exists.
+     */
+    public XMLElement getChildElement(String type) 
+    throws NoSuchElementException {
+       Enumeration elements = childElements();
+        while(elements.hasMoreElements()) {
+            XMLElement el = (XMLElement) elements.nextElement();
+            if(type.equals(el.getElementType()))
+                return el;
+        }
+        throw new NoSuchElementException("XMLElement does not contain a " +
+                "child element with type " + type);
+    }
+        
 
     /** Return the type of this XMLElement.  The type is immutably set when
      *  the XMLElement is created.  
      */
     public String getElementType() {
-        return elementtype;
+        return _elementtype;
     }
     
     /**
@@ -124,42 +160,55 @@ public class XMLElement extends Object {
      * has not been set.
      */
     public XMLElement getParent() {
-        return parent;
+        return _parent;
     }
 
     /**
      * Return the PCData that is associated with this XMLElement.
      */
     public String getPCData() {
-        return pcdata;
+        return _pcdata;
     }
     
     /**
      * Test if this schematic has the attribute wuth the given name.
      */
     public boolean hasAttribute (String name) {
-        return attributes.includesKey(name);
+        return _attributes.includesKey(name);
     }
 
     /** 
      * Test if the element is a child element of this element 
      */
     public boolean hasChildElement(XMLElement e) {
-        return childelements.includes(e);
+        return _childelements.includes(e);
+    }
+
+    /** 
+     * Test if a child element of this element has the given type
+     */
+    public boolean hasChildElement(String type) {
+        Enumeration elements = childElements();
+        while(elements.hasMoreElements()) {
+            XMLElement el = (XMLElement) elements.nextElement();
+            if(type.equals(el.getElementType()))
+                return true;
+        }
+        return false;
     }
 
     /** 
      * Remove an attribute from this element
      */
     public void removeAttribute(String name) {
-        attributes.removeAt(name);
+        _attributes.removeAt(name);
     }
 
     /** 
      * Remove an child element from this element
      */
     public void removeChildElement(XMLElement e) {
-        childelements.removeOneOf(e);
+        _childelements.removeOneOf(e);
     }
 
     /**
@@ -168,21 +217,21 @@ public class XMLElement extends Object {
      * given name in this schematic.
      */
     public void setAttribute (String name, String value) {
-        attributes.putAt(name, value);
+        _attributes.putAt(name, value);
     }
 
     /** 
      * Set the parent element of this element.
      */
     public void setParent(XMLElement p) {
-        parent = p;
+        _parent = p;
     }
 
     /** 
      * Set the text of this element to the given string. 
      */
     public void setPCData(String s) {
-        pcdata = s;
+        _pcdata = s;
     }
 
     /**
@@ -209,7 +258,7 @@ public class XMLElement extends Object {
             XMLElement child = (XMLElement) children.nextElement();
             s = s + child.toString();
         }
-        s = s + pcdata;
+        s = s + _pcdata;
         s = s + "</";
         s = s + getElementType();
         s = s + ">\n";
@@ -236,18 +285,18 @@ public class XMLElement extends Object {
      * within an XMLElement consistant with the childElements.
      */
     void applySemanticsToChild(XMLElement e) {
-        if(parent != null) parent.applySemanticsToChild(e);
+        if(_parent != null) _parent.applySemanticsToChild(e);
     }
 
     // The child elements of this element
-    private LinkedList childelements;
+    private LinkedList _childelements;
     // The attributes of this element
-    private HashedMap attributes;
+    private HashedMap _attributes;
     // The element type of this element
-    private String elementtype;
+    private String _elementtype;
     // The character data that is contained in this element
-    private String pcdata;
+    private String _pcdata;
     // The XMLElement that contains this element (possibly null).
-    private XMLElement parent;
+    private XMLElement _parent;
 }
 
