@@ -45,12 +45,11 @@ include $(CONFIG)
 TCL_SRCS = \
 	testDefs.tcl
 
-JSRCS = \
-	TestSink.java \
-	TestSource.java
+JSRCS =
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
+	Average.tcl \
 	Bernoulli.tcl \
 	Const.tcl \
 	Gaussian.tcl \

@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Yellow (cxh@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib;
@@ -57,7 +57,7 @@ is recorded.
 
 // FIXME: This class does not support mutations.
 
-public class Recorder extends TypedAtomicActor {
+public class Recorder extends Sink {
 
     /** Construct an actor with an input multiport that can accept any
      *  StringToken.  Since almost all tokens can be converted to StringToken,
@@ -72,17 +72,8 @@ public class Recorder extends TypedAtomicActor {
     public Recorder(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-    	input = new TypedIOPort(this, "input", true, false);
-        input.setMultiport(true);
         input.setTypeEquals(StringToken.class);
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public variables                  ////
-
-    /** The input port, which has declared type StringToken.
-     */
-    public TypedIOPort input = null;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -94,15 +85,9 @@ public class Recorder extends TypedAtomicActor {
      *  @return A new actor.
      */
     public Object clone(Workspace ws) {
-	try {
-	    Recorder newobj = (Recorder)super.clone(ws);
-	    newobj.input = (TypedIOPort)newobj.getPort("input");
-	    return newobj;
-        } catch (CloneNotSupportedException ex) {
-            // Errors should not occur here...
-            throw new InternalErrorException(
-                    "Clone failed: " + ex.getMessage());
-        }
+        Recorder newobj = (Recorder)super.clone(ws);
+        newobj.input.setTypeEquals(StringToken.class);
+        return newobj;
     }
 
     /** Get the record for the specified channel.

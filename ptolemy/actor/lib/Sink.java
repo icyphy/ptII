@@ -1,4 +1,4 @@
-/* A source actor for testing.
+/* Base class for simple sink actors.
 
  Copyright (c) 1998-1999 The Regents of the University of California.
  All rights reserved.
@@ -23,26 +23,32 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
+
+@ProposedRating Yellow (eal@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
-package ptolemy.actor.lib.test;
+package ptolemy.actor.lib;
 
 import ptolemy.actor.*;
 import ptolemy.kernel.util.*;
-import ptolemy.data.*;
 
 //////////////////////////////////////////////////////////////////////////
-//// TestSink
+//// Sink
 /**
-A source actor for testing.
+Base class for simple data sinks.  This class provides an input port,
+exposed as a public variable, and a clone method that ensures that the
+public variable is correctly set in the clone.  The main reason for this
+class to ensure that the input ports of all sinks have the same name
+and are correctly handled in cloned actors.
 
-@author Yuhong Xion
+@author Edward A. Lee
 @version $Id$
 */
 
-public class TestSource extends TypedAtomicActor {
+public class Sink extends TypedAtomicActor {
 
-    /** Construct a testSource.
+    /** Construct an actor with an input multiport.
      *  @param container The container.
      *  @param name The name of this actor.
      *  @exception IllegalActionException If the entity cannot be contained
@@ -50,36 +56,38 @@ public class TestSource extends TypedAtomicActor {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public TestSource(TypedCompositeActor container, String name)
+    public Sink(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-
-	_output = new TypedIOPort(this, "Output", false, true);
+    	input = new TypedIOPort(this, "input", true, false);
+        input.setMultiport(true);
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+
+    /** The input port, which has declared type StringToken.
+     */
+    public TypedIOPort input = null;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Send out the contained token.
-     *  @exception IllegalActionException Not thrown in this class.
+    /** Clone the actor into the specified workspace. This calls the
+     *  base class and then sets the <code>input</code>
+     *  variable to equal the new port.
+     *  @param ws The workspace for the new object.
+     *  @return A new actor.
      */
-    public void fire()
-	    throws IllegalActionException {
-	_output.broadcast(_token);
+    public Object clone(Workspace ws) {
+	try {
+	    Sink newobj = (Sink)super.clone(ws);
+	    newobj.input = (TypedIOPort)newobj.getPort("input");
+	    return newobj;
+        } catch (CloneNotSupportedException ex) {
+            // Errors should not occur here...
+            throw new InternalErrorException(
+                    "Clone failed: " + ex.getMessage());
+        }
     }
-
-    /** Set the specified token into this actor and set the declared
-     *  type.
-     */
-    public void setToken(Token t) {
-	_token = t;
-	_output.setTypeEquals(_token.getClass());
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    private Token _token = new IntToken(0);
-    private TypedIOPort _output = null;
 }
-

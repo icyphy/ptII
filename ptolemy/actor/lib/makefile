@@ -70,8 +70,10 @@ JSRCS = \
 	SequenceActor.java \
 	SequenceSource.java \
 	Sin.java \
+	Sink.java \
 	Show.java \
-	Source.java
+	Source.java \
+	Transformer.java
 
 EXTRA_SRCS =	$(JSRCS)
 

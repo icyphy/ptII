@@ -1,4 +1,4 @@
-/* A sink actor for testing.
+/* A base class for actors that transform an input stream into an output stream.
 
  Copyright (c) 1998-1999 The Regents of the University of California.
  All rights reserved.
@@ -23,66 +23,73 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
+
+@ProposedRating Yellow (eal@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
-package ptolemy.actor.lib.test;
+package ptolemy.actor.lib;
 
 import ptolemy.actor.*;
 import ptolemy.kernel.util.*;
-import ptolemy.data.*;
 
 //////////////////////////////////////////////////////////////////////////
-//// TestSink
+//// Transformer
 /**
-A sink actor for testing.
-This actor reads a token from its input port on each firing. It returns
-the last token read in getToken().
-The type of the input port is undeclared. This means that this actor
-can accept any token on its input.
+This is an abstract base class for actors that transform
+an input stream into an output stream.  It provides an input
+and an output port, and manages the cloning of these ports.
 
-@author Yuhong Xion
+@author Edward A. Lee
 @version $Id$
 */
 
-public class TestSink extends TypedAtomicActor {
+public class Transformer extends TypedAtomicActor {
 
-    /** Construct a TestSink.
+    /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
-     *  @exception IllegalActionException If the entity cannot be contained
+     *  @exception IllegalActionException If the actor cannot be contained
      *   by the proposed container.
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public TestSink(TypedCompositeActor container, String name)
+    public Transformer(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-	_input = new TypedIOPort(this, "Input", true, false);
+        input = new TypedIOPort(this, "input", true, false);
+        output = new TypedIOPort(this, "output", false, true);
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+
+    /** The input port. */
+    public TypedIOPort input;
+
+    /** The output port. */
+    public TypedIOPort output;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Read a token from the input port.
-     *  @exception IllegalActionException Not thrown in this class.
+    /** Clone the actor into the specified workspace. This calls the
+     *  base class and then sets the ports.
+     *  @param ws The workspace for the new object.
+     *  @return A new actor.
      */
-    public void fire()
-	    throws IllegalActionException {
-        _token = _input.get(0);
+    public Object clone(Workspace ws) {
+        try {
+            Transformer newobj = (Transformer)super.clone(ws);
+            newobj.input = (TypedIOPort)newobj.getPort("input");
+            newobj.output = (TypedIOPort)newobj.getPort("output");
+            return newobj;
+        } catch (CloneNotSupportedException ex) {
+            // Errors should not occur here...
+            throw new InternalErrorException(
+                    "Clone failed: " + ex.getMessage());
+        }
     }
-
-    /** Return the token read in during the last firing.
-     *  @return A Token.
-     */
-    public Token getToken() {
-	return _token;
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    private Token _token = null;
-    private TypedIOPort _input = null;
 }
 

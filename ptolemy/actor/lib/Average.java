@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (eal@eecs.berkeley.edu)
+@ProposedRating Yellow (eal@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
@@ -39,9 +39,11 @@ import ptolemy.data.*;
 /**
 Output the average of the inputs so far.
 One output is produced each time the actor fires.
-The inputs can be any token type that supports addition and division.
+The inputs and outputs can be any token type that
+supports addition and division.  The output type is constrained
+to be the same as the input type.
 <p>
-Note that the type system is currently fairly tolerant. Static type
+Note that the type system will fail to catch some errors. Static type
 checking may result in a resolved type that does not support addition
 and division.  In this case, a run-time error will occur.
 
@@ -49,7 +51,7 @@ and division.  In this case, a run-time error will occur.
 @version $Id$
 */
 
-public class Average extends TypedAtomicActor {
+public class Average extends Transformer {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -62,19 +64,8 @@ public class Average extends TypedAtomicActor {
     public Average(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-
-        input = new TypedIOPort(this, "input", true, false);
-        output = new TypedIOPort(this, "output", false, true);
+        output.setTypeSameAs(input);
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public variables                  ////
-
-    /** The input port. */
-    public TypedIOPort input;
-
-    /** The output port. */
-    public TypedIOPort output;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -85,31 +76,32 @@ public class Average extends TypedAtomicActor {
      *  @return A new actor.
      */
     public Object clone(Workspace ws) {
-        try {
-            Average newobj = (Average)super.clone(ws);
-            newobj.input = (TypedIOPort)newobj.getPort("input");
-            newobj.output = (TypedIOPort)newobj.getPort("output");
-            return newobj;
-        } catch (CloneNotSupportedException ex) {
-            // Errors should not occur here...
-            throw new InternalErrorException(
-                    "Clone failed: " + ex.getMessage());
-        }
+        Average newobj = (Average)super.clone(ws);
+        newobj.output.setTypeSameAs(newobj.input);
+        return newobj;
     }
 
-    /** Compute the average of the inputs so far.
+    /** Compute the average of the input tokens so far and send the
+     *  result to the output.  It is assumed that there is at least
+     *  one input token available, or a NoTokenException will be thrown.
+     *  This is a runtime exception, so it need not be declared explicitly.
+     *  If the fire method
+     *  is invoked multiple times in one iteration, then only the
+     *  input read on the last invocation in the iteration will affect
+     *  future averages.  Inputs that are read earlier in the iteration
+     *  are forgotten.
+     *  @exception IllegalActionException If the right arithmetic operations
+     *   are not supported by the supplied tokens.
      */
-    public void fire() {
+    public void fire() throws IllegalActionException {
         try {
-            while(input.hasToken(0)) {
-                Token in = input.get(0);
-                if (_accum == null) {
-                    _accum = in.zero();
-                }
-                _accum = _accum.add(in);
-                Token out = _accum.divide(new IntToken(_count++));
-                output.broadcast(out);
+            Token in = input.get(0);
+            if (_accum == null) {
+                _accum = in.zero();
             }
+            _latestSum = _accum.add(in);
+            Token out = _latestSum.divide(new IntToken(_count));
+            output.broadcast(out);
         } catch (IllegalActionException ex) {
             // Should not be thrown because this is an output port.
             throw new InternalErrorException(ex.getMessage());
@@ -122,10 +114,21 @@ public class Average extends TypedAtomicActor {
         _count = 1;
     }
 
+    /** Record the most recent input as part of the running average.
+     *  Do nothing if there is no input.
+     *  @exception IllegalActionException If the base class throws it.
+     */
+    public boolean postfire() throws IllegalActionException {
+        _accum = _latestSum;
+        _count++;
+        return super.postfire();
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
 
-    Token _accum;
-    int _count = 1;
+    private Token _accum;
+    private int _count = 1;
+    private Token _latestSum;
 }
 

@@ -88,7 +88,7 @@ test Const-2.1 {test with the default output value} {
     set rec [java::new ptolemy.actor.lib.Recorder $e0 rec]
     $e0 connect \
             [java::field [java::cast ptolemy.actor.lib.Source $const] output] \
-            [java::field $rec input]
+            [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
     [$e0 getManager] run
     enumToTokenValues [$rec getRecord 0]
 } {1}

@@ -62,21 +62,13 @@ test Bernoulli-1.2 {test clone} {
 ######################################################################
 #### Test Bernoulli in an SDF model
 #
-test Bernoulli-2.1 {test without seed set} {
+test Bernoulli-2.1 {test with seed set} {
     set e0 [sdfModel]
     set g [java::new ptolemy.actor.lib.Bernoulli $e0 g]
     set rec [java::new ptolemy.actor.lib.Recorder $e0 rec]
     $e0 connect \
             [java::field [java::cast ptolemy.actor.lib.Source $g] output] \
-            [java::field $rec input]
-    [$e0 getManager] run
-    set first [enumToTokenValues [$rec getRecord 0]]
-    [$e0 getManager] run
-    set second [enumToTokenValues [$rec getRecord 0]]
-    expr {$first != $second}
-} {1}
-
-test Bernoulli-2.2 {test with seed set} {
+            [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
     set seed [getParameter $g seed]
     $seed setExpression {2l}   
     [$e0 getManager] run
