@@ -95,8 +95,8 @@ public class PSNR extends SDFAtomicActor {
      *  signalPower = Power(signal);
      *  noisePower = Power(noise);
      *  PSNR = 10 * log10(signalPower/noisePower);
-     *  @exception IllegalActionException if
-     *  the dimensions of the input tokens do not match.
+     *  @exception IllegalActionException If the dimensions of the
+     *  input tokens do not match.
      */
     public void fire() throws IllegalActionException {
 

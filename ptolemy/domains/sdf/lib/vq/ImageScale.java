@@ -76,7 +76,7 @@ public final class ImageScale extends SDFAtomicActor {
 
     /** Initialize the actor.
      *  Get the values of all parameters.
-     *  @exception IllegalActionException if outmax is less than outmin,
+     *  @exception IllegalActionException If outmax is less than outmin,
      *  or xframesize is less than one, or yframesize is less than one.
      */
     public void initialize() throws IllegalActionException {
@@ -113,7 +113,7 @@ public final class ImageScale extends SDFAtomicActor {
      *  range between the values specified in parameters outmax and outmin.
      *  Send the new image out the output port.
      *
-     *  @exception IllegalActionException if a contained method throws it.
+     *  @exception IllegalActionException If a contained method throws it.
      */
     public void fire() throws IllegalActionException {
 

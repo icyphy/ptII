@@ -114,7 +114,7 @@ public final class ImageContrast extends SDFAtomicActor {
 
     /** Initialize the actor.
      *  Get the values of all parameters.
-     *  @exception IllegalActionException if xframesize is less than one,
+     *  @exception IllegalActionException If xframesize is less than one,
      *  or yframesize is less than one.
      */
 
@@ -146,7 +146,7 @@ public final class ImageContrast extends SDFAtomicActor {
      *  Contrast the image so that
      *  an more evenly color distributed image can be obtained.
      *  Assume that color is bounded from 0 to 255 inclusively.
-     *  @exception IllegalActionException if image color is out-of-bound.
+     *  @exception IllegalActionException If image color is out-of-bound.
      *
      *  Algorithm:
      *  Construct a color histogram for the input image.

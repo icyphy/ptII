@@ -201,7 +201,7 @@ public final class HTVQEncode extends SDFAtomicActor {
      * Consume a codeword on the input, and perform Vector Quantization using
      * Hierarchical Table-Lookup Vector Quantization.  Send the computed
      * codeword on the output.
-     * @exception IllegalActionException if a contained method throws it.
+     * @exception IllegalActionException If a contained method throws it.
      */
     public void fire() throws IllegalActionException {
         int j;
