@@ -151,9 +151,9 @@ public class ExtendedMouseFilter extends MouseFilter {
         int m = event.getModifiersEx();
         boolean val = (event.getButton() == _button) &&
             (_modifierFlags == (m & _modifierMask));
-//         System.out.println("event = " + event);
-//         System.out.println("FILTER = " + this);
-//         System.out.println("ACCEPT? = " + val);
+        //         System.out.println("event = " + event);
+        //         System.out.println("FILTER = " + this);
+        //         System.out.println("ACCEPT? = " + val);
         return val;
     }
 
