@@ -63,9 +63,7 @@ JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
 
-ifneq ($(MATLAB_DIR),@MATLAB_DIR@)
 jclass: $(ROOT)/bin/ptmatlab.dll
-endif
 
 install: jclass jars
 
