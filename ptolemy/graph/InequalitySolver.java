@@ -83,6 +83,16 @@ public class InequalitySolver {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Add a group of inequalities to the set of constraints.
+     *  @param inequalities An <code>Iterator</code> for instances of
+     *  <code>Inequality</code>.
+     */
+    public void addInequalities(Iterator inequalities) {
+        while (inequalities.hasNext()) {
+            addInequality((Inequality)inequalities.next());
+        }
+    }
+
     /** Add an <code>Inequality</code> to the set of constraints.
      *  @param ineq An <code>Inequality</code>.
      */
@@ -95,16 +105,6 @@ public class InequalitySolver {
         // add var->ineq to Hashtable
         _addToClist(ineq.getLesserTerm().getVariables(), indexWrap);
         _addToClist(ineq.getGreaterTerm().getVariables(), indexWrap);
-    }
-
-    /** Add a group of inequalities to the set of constraints.
-     *  @param inequalities An <code>Iterator</code> for instances of
-     *  <code>Inequality</code>.
-     */
-    public void addInequalities(Iterator inequalities) {
-        while (inequalities.hasNext()) {
-            addInequality((Inequality)inequalities.next());
-        }
     }
 
     /** Return an <code>Iterator</code> of the variables whose current
