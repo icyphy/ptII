@@ -61,6 +61,7 @@ JSRCS = \
 	Autocorrelation.java \
 	BitsToInt.java \
 	Delay.java \
+	DelayLine.java \
         DotProduct.java \
 	DownSample.java \
 	FIR.java \
