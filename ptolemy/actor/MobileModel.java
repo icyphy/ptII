@@ -35,7 +35,6 @@ import ptolemy.data.StringToken;
 import ptolemy.data.FunctionToken;
 import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
-import ptolemy.domains.de.kernel.DEDirector;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -85,10 +84,8 @@ public class MobileModel extends TypedCompositeActor{
         modelString = new TypedIOPort(this, "modelString", true, false);
         modelString.setTypeEquals(BaseType.STRING);
         output = new TypedIOPort(this, "output", false, true);
-        new ptolemy.domains.de.kernel.DEDirector(this, "director");
+        new Director(this, "director");
         getMoMLInfo().className = "ptolemy.actor.MobileModel";
-        //TypedIORelation r0 = new TypedIORelation(this, "" + getName() + "_r1");
-        connect(input, output);
     }
 
     /** Construct a model manager with a name and a container.
@@ -108,11 +105,8 @@ public class MobileModel extends TypedCompositeActor{
         modelString = new TypedIOPort(this, "modelString", true, false);
         modelString.setTypeEquals(BaseType.STRING);
         output = new TypedIOPort(this, "output", false, true);
-        new ptolemy.domains.de.kernel.DEDirector(this, "director");
+        new Director(this, "director");
         getMoMLInfo().className = "ptolemy.actor.MobileModel";
-        getMoMLInfo().className = "ptolemy.actor.MobileModel";
-        //TypedIORelation r0 = new TypedIORelation(this, "r1");
-        connect(input, output);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -145,7 +139,7 @@ public class MobileModel extends TypedCompositeActor{
         }catch (Exception ex) {
             throw new IllegalActionException(this, ex.getMessage());
         }
-
+        connect(input, output);
         super.initialize();
     }
 
