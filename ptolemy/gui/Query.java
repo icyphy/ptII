@@ -814,14 +814,19 @@ public class Query extends JPanel {
 		// files, one for multiple files, one for urls, one for
 		// files.  This would point to some sort of configuration
 		// mechanism being used in the style.
-		StringBuffer urls = new StringBuffer("{");
+		StringBuffer urls = new StringBuffer();
+		// If only one file is chosen, then return
+		// "file:/c:/foor/bar"
 		// If there was more than one file chosen, then return
 		// an array of strings of the format
-		// {"file:/c/foo/bar", "file:c:/foo/bar"}
+		// {"file:/c:/foo/bar", "file:c:/foo/bar"}
 		for( int i = 0; i < files.length; i++ ) {
+		    if (i == 0 && files.length > 1) {
+			urls.append("{");
+		    }
 		    if (i > 0) {
 			// If we throw an exception below, then 
-			// urls will have a trailing comma
+			// urls will have a trailing comma.
 			urls.append(", ");
 		    }
 		    try {
