@@ -8,11 +8,12 @@ To execute the model:
 
 1. Compile all the files on all the machines that are involved.
 2. Select a port for the name service, say 1050
-3. Start the transient name server from some machine, say
+   
+   Start the transient name server from some machine, say
    xyz.eecs.berkeley.edu
 
    xyz> tnameserv -ORBInitialPort 1050
-4. Possibly from another machine, say abc.eecs.berkeley.edu, open
+3. Possibly from another machine, say abc.eecs.berkeley.edu, open
    mobilemodelRec.xml or crazyboardRec.xml, specify the
    <i>ORBInitProperties<i>paremerter of the PushConsumer actor,
    for example:
@@ -23,7 +24,7 @@ To execute the model:
 
    start the receiver part first.
 
-5. Possibly from a third machine, say def.eecs.berkeley.edu
+4. Possibly from a third machine, say def.eecs.berkeley.edu
    open mobilemodelSnd.xml, and specify the <i>ORBInitProperties<i>
    paremerter of the PushSupplier actor, for example:
    

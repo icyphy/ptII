@@ -2,6 +2,8 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="mobilemodelRec" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
+    </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={82, 37, 896, 731}}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[681, 622]">
@@ -34,7 +36,9 @@ running. When no model defined inside, it will output a default token.
 
 This example has one local change triggered by the SingleEvent actor. It can 
 also accept changes remotely from the PushConsumer actor. During executing,
-any number of changes may be issured. </text></svg></configure>
+any number of changes may be issured. 
+
+Please run mobilemodelSnd.xml also to send the change.</text></svg></configure>
         </property>
         <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -137,8 +141,8 @@ any number of changes may be issured. </text></svg></configure>
 <title>TimedPlotter</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="0.0" max="46.0"/>
-<yRange min="0.0" max="69.0"/>
+<xRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
+<yRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
 <default connected="no" marks="points" stems="yes"/>
 </plot>?>
         </configure>
@@ -157,27 +161,13 @@ any number of changes may be issured. </text></svg></configure>
     <entity name="MobileModel2" class="ptolemy.actor.MobileModel">
         <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="director" class="ptolemy.actor.Director">
+        <property name="defaultDirector" class="ptolemy.actor.Director">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="135.0, 60.0">
+            </property>
+        </property>
+        <property name="director" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.actor.Director&quot;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="450.0, 220.0">
-        </property>
-        <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-            <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
-            <property name="stopTime" class="ptolemy.data.expr.Parameter" value="1.7976931348623E308">
-            </property>
-            <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-            <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-            <property name="isCQAdaptive" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-            <property name="minBinCount" class="ptolemy.data.expr.Parameter" value="2">
-            </property>
-            <property name="binCountFactor" class="ptolemy.data.expr.Parameter" value="2">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="90.0, 40.0">
-            </property>
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>

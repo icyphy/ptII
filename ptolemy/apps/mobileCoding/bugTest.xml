@@ -4,7 +4,7 @@
 <entity name="bugTest" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={168, 389, 896, 731}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={66, -1, 896, 731}}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[681, 622]">
     </property>
@@ -143,24 +143,6 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="450.0, 220.0">
         </property>
-        <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-            <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
-            <property name="stopTime" class="ptolemy.data.expr.Parameter" value="1.7976931348623E308">
-            </property>
-            <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-            <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-            <property name="isCQAdaptive" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-            <property name="minBinCount" class="ptolemy.data.expr.Parameter" value="2">
-            </property>
-            <property name="binCountFactor" class="ptolemy.data.expr.Parameter" value="2">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="300.0, 332.8671875">
-            </property>
-        </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="298.7734375, 77.4921875">
@@ -204,7 +186,7 @@
         </port>
     </entity>
     <entity name="FileReader2" class="ptolemy.actor.lib.io.FileReader">
-        <property name="fileOrURL" class="ptolemy.kernel.attributes.FileAttribute" value="extractLocation.xml">
+        <property name="fileOrURL" class="ptolemy.kernel.attributes.FileAttribute" value="foo.xml">
         </property>
         <doc>Read a text file and output the string of it.</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="165.0, 280.0">
@@ -227,21 +209,45 @@
             <property name="output"/>
         </port>
     </entity>
-    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
+    <entity name="LongToDouble" class="ptolemy.actor.lib.conversions.LongToDouble">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="550.0, 135.0">
         </property>
-        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="title" class="ptolemy.kernel.util.StringAttribute">
+        <property name="legend" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={704, 257, 292, 222}}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={258, 210, 508, 348}}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="545.0, 220.0">
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
+        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="625.0, 205.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
         </port>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>TimedPlotter</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="58.0"/>
+<yRange min="0.0" max="2.09758132535191731E18"/>
+<default connected="no" marks="dots" stems="yes"/>
+</plot>?>
+        </configure>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
@@ -257,6 +263,8 @@
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="Ramp.output" relation="relation5"/>
@@ -265,7 +273,7 @@
     <link port="SingleEvent.output" relation="relation3"/>
     <link port="MobileModel2.input" relation="relation5"/>
     <link port="MobileModel2.modelString" relation="relation6"/>
-    <link port="MobileModel2.output" relation="relation2"/>
+    <link port="MobileModel2.output" relation="relation9"/>
     <link port="Merge.input" relation="relation4"/>
     <link port="Merge.input" relation="relation8"/>
     <link port="Merge.output" relation="relation6"/>
@@ -274,5 +282,7 @@
     <link port="FileReader2.trigger" relation="relation7"/>
     <link port="FileReader2.output" relation="relation8"/>
     <link port="SingleEvent2.output" relation="relation7"/>
-    <link port="Display.input" relation="relation2"/>
+    <link port="LongToDouble.input" relation="relation9"/>
+    <link port="LongToDouble.output" relation="relation2"/>
+    <link port="TimedPlotter.input" relation="relation2"/>
 </entity>

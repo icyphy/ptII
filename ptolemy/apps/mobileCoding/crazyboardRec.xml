@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="crazyboardRec" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.0-devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
     </property>
     <property name="initial_omega" class="ptolemy.data.expr.Parameter" value="0.0">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -388,9 +388,11 @@ any number of changes may be issured. </text></svg></configure>
     <entity name="MobileModel" class="ptolemy.actor.MobileModel">
         <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="{85ub, 0ub, 0ub}">
         </property>
-        <property name="director" class="ptolemy.actor.Director">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, 60.0">
+        <property name="defaultDirector" class="ptolemy.actor.Director">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="110.0, 50.0">
             </property>
+        </property>
+        <property name="director" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.de.kernel.DEDirector&quot;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="345.0, 320.0">
         </property>

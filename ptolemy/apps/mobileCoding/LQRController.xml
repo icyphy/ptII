@@ -135,7 +135,7 @@
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
     </property>
-    <property name="speed_desired" class="ptolemy.data.expr.Parameter" value=".3">
+    <property name="speed_desired" class="ptolemy.data.expr.Parameter" value=".05">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="y_desired" class="ptolemy.vergil.icon.ValueIcon">
@@ -356,9 +356,9 @@
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 129, 1051, 751}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 1036, 780}}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[836, 642]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[821, 671]">
     </property>
     <port name="input" class="ptolemy.actor.TypedIOPort">
         <property name="input"/>
@@ -465,7 +465,7 @@
             </port>
         </entity>
         <entity name="Expression" class="ptolemy.actor.lib.Expression">
-            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="inputTime*vbeta/10">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="inputTime*vbeta">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
