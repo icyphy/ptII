@@ -87,9 +87,9 @@ public class Sin extends TypedAtomicActor {
         try {
             Sin newobj = (Sin)super.clone(ws);
             newobj.input = (TypedIOPort)newobj.getPort("input");
-            newobj.input.setDeclaredType(DoubleToken.class);
+            // newobj.input.setDeclaredType(DoubleToken.class);
             newobj.output = (TypedIOPort)newobj.getPort("output");
-            newobj.output.setDeclaredType(DoubleToken.class);
+            // newobj.output.setDeclaredType(DoubleToken.class);
             return newobj;
         } catch (CloneNotSupportedException ex) {
             // Errors should not occur here...

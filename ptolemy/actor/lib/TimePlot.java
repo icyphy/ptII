@@ -85,7 +85,7 @@ public class TimePlot extends TypedAtomicActor implements Placeable {
             TimePlot newobj = (TimePlot)super.clone(ws);
             newobj.input = (TypedIOPort)newobj.getPort("input");
             newobj.input.setMultiport(true);
-            newobj.input.setDeclaredType(DoubleToken.class);
+            // newobj.input.setDeclaredType(DoubleToken.class);
             newobj.timed
                 = (Parameter)newobj.getAttribute("timed");
             return newobj;
