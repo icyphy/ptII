@@ -92,8 +92,7 @@ public class DatagramReceiver extends TypedAtomicActor {
         localPort = new Parameter(this, "localPort");
         localPort.setTypeEquals(BaseType.INT);
         localPort.setToken(new IntToken(-1));
-        overwrite = new Parameter(this, "overwrite");
-        overwrite.setToken(new BooleanToken(true));
+        overwrite = new Parameter(this, "overwrite", new BooleanToken(true));
         overwrite.setTypeEquals(BaseType.BOOLEAN);
     }
 
@@ -132,7 +131,7 @@ public class DatagramReceiver extends TypedAtomicActor {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == overwrite) {
-            _overwrite = ((BooleanToken)(localPort.getToken())).booleanValue();
+            _overwrite = ((BooleanToken)(overwrite.getToken())).booleanValue();
         }
         if (attribute == localPort) {
             if ( socket != null ) {
@@ -264,7 +263,8 @@ public class DatagramReceiver extends TypedAtomicActor {
 
     // Variables used
     private DatagramPacket _receivePacket = new DatagramPacket(new byte[440],0,440);
-    private DatagramPacket _broadcastPacket = new DatagramPacket(new byte[440],0,440);
+    private DatagramPacket _broadcastPacket = 
+    new DatagramPacket(new byte[440],0,440);
     private int packetsAlreadyAwaitingFire;
     private boolean _overwrite;
     private DatagramSocket socket;
