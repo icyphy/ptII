@@ -98,7 +98,7 @@ public class SourceNodeAnalysis extends Analysis {
      */
     public String toString() {
         return "Source node analysis for the following graph.\n"
-            + graph().toString() "The source nodes are:\n" + _cachedResult();
+            + graph().toString() + "The source nodes are:\n" + _cachedResult();
     }
 
     ///////////////////////////////////////////////////////////////////
