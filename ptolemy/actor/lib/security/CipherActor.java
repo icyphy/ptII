@@ -60,7 +60,7 @@ algorithm is needed, the provider may also be specified in the
 implementations of algorithms using various key sizes.
 
 <p>Derived classes should implement the abstract 
-{@link #CryptographyActor._process(byte)[]} method.
+{@link #CryptographyActor._process(byte[])} method.
 
 <p>This actor relies on the Java Cryptography Architecture (JCA) and Java
 Cryptography Extension (JCE).
