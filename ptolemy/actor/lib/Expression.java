@@ -112,10 +112,10 @@ public class Expression extends TypedAtomicActor {
             Expression newobj = (Expression)super.clone(ws);
             newobj.output = (TypedIOPort)newobj.getPort("output");
             expression = (Parameter)newobj.getAttribute("expression");
-         // newobj._time =
-         //     new PassiveVariable(this, "time", new DoubleToken(0.0));
-         // newobj._firing =
-         //     new PassiveVariable(this, "firing", new IntToken(0));
+            // newobj._time =
+            //     new PassiveVariable(this, "time", new DoubleToken(0.0));
+            // newobj._firing =
+            //     new PassiveVariable(this, "firing", new IntToken(0));
 	    newobj._time = (PassiveVariable)newobj.getAttribute("time");
 	    newobj._firing = (PassiveVariable)newobj.getAttribute("firing");
             return newobj;
@@ -151,7 +151,7 @@ public class Expression extends TypedAtomicActor {
                     //}
                     PassiveVariable pvar =
                         new PassiveVariable(workspace());
-                     pvar.setName(portname);
+                    pvar.setName(portname);
                     _variables.prepend(pvar);
                 } catch (IllegalActionException ex) {
                     // Not expected because a variable can be added to this
@@ -199,7 +199,7 @@ public class Expression extends TypedAtomicActor {
             if(port.hasToken(0)) {
                 Token inputtoken = port.get(0);
                 PassiveVariable var =
-                        (PassiveVariable)(_variables.get(port.getName()));
+                    (PassiveVariable)(_variables.get(port.getName()));
                 var.setToken(inputtoken);
             }
         }

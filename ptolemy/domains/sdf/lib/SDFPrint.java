@@ -43,7 +43,7 @@ import ptolemy.domains.sdf.kernel.*;
 public class SDFPrint extends SDFAtomicActor {
 
     public SDFPrint(TypedCompositeActor container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         try{
             TypedIOPort inputport = (TypedIOPort)newPort("input");

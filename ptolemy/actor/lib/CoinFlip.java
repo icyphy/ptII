@@ -105,7 +105,7 @@ public class CoinFlip extends TypedAtomicActor {
             newobj.output = (TypedIOPort)newobj.getPort("output");
             // newobj.output.setDeclaredType(DoubleToken.class);
 	    newobj.trueProbability =
-                    (Parameter)newobj.getAttribute("trueProbability");
+                (Parameter)newobj.getAttribute("trueProbability");
 	    newobj.seed = (Parameter)newobj.getAttribute("seed");
             return newobj;
         } catch (CloneNotSupportedException ex) {

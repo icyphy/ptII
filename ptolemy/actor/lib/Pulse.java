@@ -86,7 +86,7 @@ public class Pulse extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-// FIXME: Clone method.
+    // FIXME: Clone method.
 
     /** Evaluate the value of the pulse
      *  and set the declared type of the output port.

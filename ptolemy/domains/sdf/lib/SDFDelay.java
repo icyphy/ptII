@@ -69,7 +69,7 @@ public class SDFDelay extends SDFAtomicActor {
      * @exception NameDuplicationException If the contained methods throw it
      */
     public SDFDelay(TypedCompositeActor container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         /* This starts out by calling SDFAtomicActor's constructor.
          * allows us to add some extra code specific to this actor, in
          * addition to the regular initializer in SDFAtomicActor.

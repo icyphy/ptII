@@ -124,7 +124,7 @@ public class RaisedCosine extends FIR {
         excessBW = new Parameter(this, "excessBW", new DoubleToken(1.0));
         root = new Parameter(this, "root", new BooleanToken(false));
         symbolInterval =
-                new Parameter(this, "symbolInterval", new IntToken(16));
+            new Parameter(this, "symbolInterval", new IntToken(16));
 
         // FIXME: Need a way to hide taps and interpolation from UI.
     }
@@ -169,7 +169,7 @@ public class RaisedCosine extends FIR {
         newobj.excessBW = (Parameter)(newobj.getAttribute("excessBW"));
         newobj.root = (Parameter)(newobj.getAttribute("root"));
         newobj.symbolInterval = (Parameter)
-                 (newobj.getAttribute("symbolInterval"));
+            (newobj.getAttribute("symbolInterval"));
         return newobj;
     }
 

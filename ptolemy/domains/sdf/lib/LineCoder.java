@@ -100,7 +100,7 @@ public class LineCoder extends SDFAtomicActor {
      */
     public Parameter table;
 
-// FIXME: This table should be allowed to have any Matrix type.
+    // FIXME: This table should be allowed to have any Matrix type.
 
     /** The word length is the number of boolean inputs that are consumed
      *  to construct an index into the table.  Its value is an IntToken,
@@ -145,7 +145,7 @@ public class LineCoder extends SDFAtomicActor {
         DoubleMatrixToken tabletoken = (DoubleMatrixToken)(table.getToken());
         if (tabletoken.getRowCount() != 1) {
             throw new IllegalActionException(this, "Table parameter is " +
-                   "required to have exactly one row.");
+                    "required to have exactly one row.");
         }
         // FIXME: Check that table is at least 2^wordlength.
         _table = new double[tabletoken.getColumnCount()];

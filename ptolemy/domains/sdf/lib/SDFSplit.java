@@ -43,7 +43,7 @@ import ptolemy.domains.sdf.kernel.*;
  */
 public class SDFSplit extends SDFAtomicActor {
     public SDFSplit(TypedCompositeActor container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         try{
             TypedIOPort inputport = (TypedIOPort)newPort("input");

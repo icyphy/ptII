@@ -128,7 +128,7 @@ public class FIR extends SDFAtomicActor {
      */
     public Parameter taps;
 
-// FIXME: Check that the above comment is correct.
+    // FIXME: Check that the above comment is correct.
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -145,7 +145,7 @@ public class FIR extends SDFAtomicActor {
             newobj.input = (TypedIOPort)newobj.getPort("input");
             newobj.output = (TypedIOPort)newobj.getPort("output");
             newobj.interpolation =
-                    (Parameter)newobj.getAttribute("interpolation");
+                (Parameter)newobj.getAttribute("interpolation");
             newobj.taps = (Parameter)newobj.getAttribute("taps");
             return newobj;
         } catch (CloneNotSupportedException ex) {
@@ -214,7 +214,7 @@ public class FIR extends SDFAtomicActor {
                     double tap = 0.0;
                     if (tapsIndex < _taps.length) tap = _taps[tapsIndex];
                     int dataIndex =
-                            (_mostrecent + _dec - inC + i)%(_data.length);
+                        (_mostrecent + _dec - inC + i)%(_data.length);
                     out += tap * _data[dataIndex];
                 }
                 output.broadcast(new DoubleToken(out));
