@@ -116,6 +116,9 @@ import ptolemy.vergil.kernel.VergilUtilities;
    If the target is a TypedActor, then the ports are of type
    TypedIOPort, and we add the "Type" and "Units" columns.
 
+   NOTE: This code checks for the existence of each column that may be
+   used, but it sometimes assumes the existence of the "Name" column.
+
    @author Rowland R Johnson, Elaine Cheong
    @version $Id$
    @since Ptolemy II 1.0
@@ -948,7 +951,6 @@ public class PortConfigurerDialog
                         (String) portInfo.get(ColumnNames.COL_NAME);
                     if (!(actualPort.getName().equals(tableValue))) {
                         havePortUpdate = true;
-                        //updates[PortTableModel.COL_NAME] = true;
                         updates.put(ColumnNames.COL_NAME, Boolean.TRUE);
                     }
                 }
