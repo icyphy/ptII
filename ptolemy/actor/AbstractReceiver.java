@@ -99,7 +99,7 @@ public abstract class AbstractReceiver implements Receiver {
     public Token[] getArray(int vectorLength) {
 	// Check if we need to reallocate the cached
 	// token array.
-	if (vectorLength > _tokenCache.length) {
+	if (_tokenCache == null || vectorLength > _tokenCache.length) {
 	    // Reallocate token array.
 	    _tokenCache = new Token[vectorLength];
 	}
