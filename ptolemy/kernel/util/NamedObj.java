@@ -132,6 +132,9 @@ public class NamedObj implements Nameable, Serializable {
             throw new IllegalActionException("Trying to attach a param to a namedObj that is not its container");
         }
         try {
+            if (_params == null) {
+                _params = new NamedList();
+            }
             _params.append(p);
         } catch (IllegalActionException ex) {
             // cannot happen as every Param must have a name
