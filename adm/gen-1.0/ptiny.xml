@@ -522,7 +522,7 @@ Berkeley, CA 94706</property>
             <property array="True" length="0" name="additionalResourceBundles" type="string"/>
         </arrayItem>
         <arrayItem type="com.installshield.isje.build.DistributionSupport">
-            <property array="True" length="3" name="distributions" type="com.installshield.isje.build.Distribution">
+            <property array="True" length="2" name="distributions" type="com.installshield.isje.build.Distribution">
                 <arrayItem type="com.installshield.wizard.platform.win32.Win32LauncherDistribution">
                     <property name="enabled">True</property>
                     <property name="fileName">ptIIsetup.exe</property>
@@ -536,7 +536,7 @@ Berkeley, CA 94706</property>
                             <property name="fileName">C:\Program Files\InstallShield\ISMPP40\jvms\win32\ibm_win32_130.jvm</property>
                         </arrayItem>
                     </property>
-                    <property name="bundledJVMSource">C:\Program Files\InstallShield\ISMPP40\jvms\win32\sun_win32_13.jvm</property>
+                    <property name="bundledJVMSource"/>
                     <property array="True" length="0" name="embeddedJARs" type="string"/>
                     <property array="True" length="0" name="additionalClassPaths" type="string"/>
                     <property name="embedArchive">True</property>
@@ -557,21 +557,6 @@ Berkeley, CA 94706</property>
                     <property name="pageBackground">ffffff</property>
                     <property name="installAutomatically">1</property>
                     <property name="iconImage">wizard.gif</property>
-                </arrayItem>
-                <arrayItem type="com.installshield.wizard.platform.solaris.distribution.SolarisLauncherDistributionSparc">
-                    <property name="enabled">True</property>
-                    <property name="fileName">ptIIsetupsparc</property>
-                    <property array="True" length="0" name="JVMFileSources" type="com.installshield.util.jvm.JVMFile"/>
-                    <property name="bundledJVMSource"/>
-                    <property array="True" length="0" name="embeddedJARs" type="string"/>
-                    <property array="True" length="0" name="additionalClassPaths" type="string"/>
-                    <property name="embedArchive">True</property>
-                    <property name="externalArchivePath"/>
-                    <property name="launcherUIDisplayTime">0</property>
-                    <property name="javaArguments"/>
-                    <property name="wizardArguments"/>
-                    <property array="True" length="0" name="systemProperties" type="string"/>
-                    <property name="showConsole">False</property>
                 </arrayItem>
             </property>
         </arrayItem>
