@@ -150,7 +150,7 @@ public class FIR extends SDFAtomicActor {
         if (attribute == taps) {
 
 	    // Get the first token from the Matrix
-	    // Used this tokne to extract its type.
+	    // Used this token to extract its type.
 	    Token tmpToken =
                 ((MatrixToken)taps.getToken()).getElementAsToken(0, 0);
 
