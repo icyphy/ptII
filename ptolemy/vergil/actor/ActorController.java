@@ -30,18 +30,19 @@
 
 package ptolemy.vergil.actor;
 
-import diva.canvas.CompositeFigure;
-import diva.canvas.Figure;
-import diva.canvas.toolbox.LabelFigure;
-import diva.graph.GraphController;
-import diva.graph.GraphModel;
-import diva.graph.basic.BasicLayoutTarget;
-import diva.graph.layout.AbstractGlobalLayout;
-import diva.graph.layout.GlobalLayout;
-import diva.graph.layout.IncrLayoutAdapter;
-import diva.graph.layout.IncrementalLayoutListener;
-import diva.gui.GUIUtilities;
-import diva.util.Filter;
+import java.awt.Event;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
+import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Vector;
+
+import javax.swing.KeyStroke;
+import javax.swing.SwingConstants;
 
 import ptolemy.actor.IOPort;
 import ptolemy.actor.gui.Configuration;
@@ -50,7 +51,6 @@ import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TextEffigy;
 import ptolemy.gui.MessageHandler;
-import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.KernelException;
@@ -67,21 +67,18 @@ import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
 import ptolemy.vergil.toolbox.MenuItemFactory;
 import ptolemy.vergil.toolbox.PortSite;
-
-import java.awt.Event;
-import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Rectangle2D;
-import java.net.URL;
-import java.util.Enumeration;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Vector;
-
-import javax.swing.KeyStroke;
-import javax.swing.SwingConstants;
+import diva.canvas.CompositeFigure;
+import diva.canvas.Figure;
+import diva.canvas.toolbox.LabelFigure;
+import diva.graph.GraphController;
+import diva.graph.GraphModel;
+import diva.graph.basic.BasicLayoutTarget;
+import diva.graph.layout.AbstractGlobalLayout;
+import diva.graph.layout.GlobalLayout;
+import diva.graph.layout.IncrLayoutAdapter;
+import diva.graph.layout.IncrementalLayoutListener;
+import diva.gui.GUIUtilities;
+import diva.util.Filter;
 
 //////////////////////////////////////////////////////////////////////////
 //// ActorController
