@@ -112,14 +112,14 @@ public class VariableLattice extends Lattice {
             _blockSizeValue = blockSizeToken.intValue();
             if (_blockSizeValue < 1) {
                 throw new IllegalActionException(this,
-                "Invalid blockSize: " + _blockSizeValue);
+                        "Invalid blockSize: " + _blockSizeValue);
             }
             // NOTE: The base class is not an SDF actor, so we have
             // to manually add these port parameter.
             IntToken rate = new IntToken(_blockSizeValue);
             try {
                 Parameter tokenConsumptionRate = (Parameter)
-                        input.getAttribute("tokenConsumptionRate");
+                    input.getAttribute("tokenConsumptionRate");
                 if (tokenConsumptionRate == null) {
                     tokenConsumptionRate = new Parameter(input,
                             "tokenConsumptionRate");
@@ -127,7 +127,7 @@ public class VariableLattice extends Lattice {
                 tokenConsumptionRate.setToken(rate);
 
                 Parameter tokenProductionRate = (Parameter)
-                        output.getAttribute("tokenProductionRate");
+                    output.getAttribute("tokenProductionRate");
                 if (tokenProductionRate == null) {
                     tokenProductionRate = new Parameter(output,
                             "tokenProductionRate");
@@ -186,7 +186,7 @@ public class VariableLattice extends Lattice {
      */
     public boolean prefire() throws IllegalActionException {
         if (input.hasToken(0, _blockSizeValue)
-               && newCoefficients.hasToken(0)) return super.prefire();
+                && newCoefficients.hasToken(0)) return super.prefire();
         else return false;
     }
 

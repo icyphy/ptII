@@ -112,14 +112,14 @@ public class VariableRecursiveLattice extends RecursiveLattice {
             _blockSizeValue = blockSizeToken.intValue();
             if (_blockSizeValue < 1) {
                 throw new IllegalActionException(this,
-                "Invalid blockSize: " + _blockSizeValue);
+                        "Invalid blockSize: " + _blockSizeValue);
             }
             // NOTE: The base class is not an SDF actor, so we have
             // to manually add these port parameter.
             IntToken rate = new IntToken(_blockSizeValue);
             try {
                 Parameter tokenConsumptionRate = (Parameter)
-                        input.getAttribute("tokenConsumptionRate");
+                    input.getAttribute("tokenConsumptionRate");
                 if (tokenConsumptionRate == null) {
                     tokenConsumptionRate = new Parameter(input,
                             "tokenConsumptionRate");
@@ -127,7 +127,7 @@ public class VariableRecursiveLattice extends RecursiveLattice {
                 tokenConsumptionRate.setToken(rate);
 
                 Parameter tokenProductionRate = (Parameter)
-                        output.getAttribute("tokenProductionRate");
+                    output.getAttribute("tokenProductionRate");
                 if (tokenProductionRate == null) {
                     tokenProductionRate = new Parameter(output,
                             "tokenProductionRate");
@@ -157,7 +157,7 @@ public class VariableRecursiveLattice extends RecursiveLattice {
     public Object clone(Workspace workspace)
 	    throws CloneNotSupportedException {
         VariableRecursiveLattice newObject
-                = (VariableRecursiveLattice)(super.clone(workspace));
+            = (VariableRecursiveLattice)(super.clone(workspace));
 
         newObject.newCoefficients.setTypeSameAs(
                 newObject.reflectionCoefficients);
@@ -187,7 +187,7 @@ public class VariableRecursiveLattice extends RecursiveLattice {
      */
     public boolean prefire() throws IllegalActionException {
         if (input.hasToken(0, _blockSizeValue)
-               && newCoefficients.hasToken(0)) return super.prefire();
+                && newCoefficients.hasToken(0)) return super.prefire();
         else return false;
     }
 
