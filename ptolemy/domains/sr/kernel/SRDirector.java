@@ -274,14 +274,6 @@ public class SRDirector extends StaticSchedulingDirector {
         return ((IntToken) iterations.getToken()).intValue();
     }
 
-    /** React to the change in receiver status by incrementing the count of
-     *  known receivers.
-     */
-    public void receiverChanged(Receiver receiver) {
-        // In this implementation, we do not make use of the receiver itself.
-        _currentNumberOfKnownReceivers++;
-    }
-
     /** Initialize the director and invoke the initialize() methods of all
      *  actors deeply contained by the container.
      *  @exception IllegalActionException If the superclass throws it.
@@ -383,6 +375,14 @@ public class SRDirector extends StaticSchedulingDirector {
             _setNewScheduler(_schedulerClassName);
             _updateScheduler = false;
         }
+    }
+
+    /** React to the change in receiver status by incrementing the count of
+     *  known receivers.
+     */
+    public void receiverChanged(Receiver receiver) {
+        // In this implementation, we do not make use of the receiver itself.
+        _currentNumberOfKnownReceivers++;
     }
 
     ///////////////////////////////////////////////////////////////////
