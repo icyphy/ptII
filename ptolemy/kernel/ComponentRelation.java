@@ -88,7 +88,7 @@ public class ComponentRelation extends Relation {
      *  @param workspace The workspace that will list the relation.
      */
     public ComponentRelation(Workspace workspace) {
-	super(workspace);
+        super(workspace);
     }
 
     /** Construct a relation with the given name contained by the specified

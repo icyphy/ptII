@@ -50,7 +50,7 @@ public class Attribute extends NamedObj {
      *  Increment the version number of the workspace.
      */
     public Attribute() {
-	super();
+        super();
         getMoMLInfo().elementName = "property";
     }
 
@@ -63,7 +63,7 @@ public class Attribute extends NamedObj {
      *  @param workspace The workspace that will list the attribute.
      */
     public Attribute(Workspace workspace) {
-	super(workspace);
+        super(workspace);
         getMoMLInfo().elementName = "property";
     }
 

@@ -91,9 +91,9 @@ public abstract class ChangeRequest {
      *  @param listener The listener to add.
      */
     public void addChangeListener(ChangeListener listener) {
-	if (_localListeners == null) {
-	    _localListeners = new LinkedList();
-	}
+        if (_localListeners == null) {
+            _localListeners = new LinkedList();
+        }
         if (!_localListeners.contains(listener)) {
             _localListeners.add(0, listener);
         }
@@ -136,8 +136,8 @@ public abstract class ChangeRequest {
                 if (_exception == null) {
                     listener.changeExecuted(this);
                 } else {
-		    // note that local listeners do not prevent an exception
-		    // from being seen globally.  This is weird.
+                    // note that local listeners do not prevent an exception
+                    // from being seen globally.  This is weird.
                     listener.changeFailed(this, _exception);
                 }
             }
@@ -220,9 +220,9 @@ public abstract class ChangeRequest {
      *  notified when the change is executed, or the change fails.
      */
     public void removeChangeListener(ChangeListener listener) {
-	if (_localListeners != null) {
-	    _localListeners.remove(listener);
-	}
+        if (_localListeners != null) {
+            _localListeners.remove(listener);
+        }
     }
 
     /** Call with a true argument to indicate that an error has been

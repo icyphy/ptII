@@ -236,8 +236,8 @@ public class NamedObj implements Nameable, Debuggable,
      *  @param listener The listener to add.
      */
     public synchronized void addChangeListener(ChangeListener listener) {
-	NamedObj container = (NamedObj) getContainer();
-	if (container != null) {
+        NamedObj container = (NamedObj) getContainer();
+        if (container != null) {
             container.addChangeListener(listener);
         } else {
             if (_changeListeners == null) {
@@ -817,7 +817,7 @@ public class NamedObj implements Nameable, Debuggable,
      *  @return null.
      */
     public Nameable getContainer() {
-	return null;
+        return null;
     }
 
     /** Get the model error handler specified by setErrorHandler().
@@ -921,9 +921,9 @@ public class NamedObj implements Nameable, Debuggable,
      *  @return A string of the form "name2...nameN".
      */
     public String getName(NamedObj parent) {
-	if (parent == null) {
-	    return getFullName();
-	}
+        if (parent == null) {
+            return getFullName();
+        }
         try {
             _workspace.getReadAccess();
             StringBuffer name = new StringBuffer(getName());
@@ -937,7 +937,7 @@ public class NamedObj implements Nameable, Debuggable,
                     // Cannot use "this" as a constructor argument to the
                     // exception or we'll get stuck infinitely
                     // calling getFullName(),
-		    // since that method is used to report
+                    // since that method is used to report
                     // exceptions.  InvalidStateException is a runtime
                     // exception, so it need not be declared.
                     throw new InvalidStateException(
@@ -948,10 +948,10 @@ public class NamedObj implements Nameable, Debuggable,
                 visited.add(container);
                 container = container.getContainer();
             }
-	    if (container == null) {
-		return getFullName();
-	    }
-	    return name.toString();
+            if (container == null) {
+                return getFullName();
+            }
+            return name.toString();
         } finally {
             _workspace.doneReading();
         }
@@ -1005,8 +1005,8 @@ public class NamedObj implements Nameable, Debuggable,
      *  @see #addChangeListener(ChangeListener)
      */
     public synchronized void removeChangeListener(ChangeListener listener) {
-	NamedObj container = (NamedObj) getContainer();
-	if (container != null) {
+        NamedObj container = (NamedObj) getContainer();
+        if (container != null) {
             container.removeChangeListener(listener);
         } else if (_changeListeners != null) {
             _changeListeners.remove(listener);
@@ -1040,17 +1040,17 @@ public class NamedObj implements Nameable, Debuggable,
      *  @param change The requested change.
      */
     public void requestChange(ChangeRequest change) {
-  	NamedObj container = (NamedObj) getContainer();
-	if (container == null) {
+          NamedObj container = (NamedObj) getContainer();
+        if (container == null) {
             // Make sure the list of listeners is not being concurrently
             // modified by making this synchronized.
             synchronized(this) {
                 change.setListeners(_changeListeners);
             }
             change.execute();
-	} else {
-	    container.requestChange(change);
-	}
+        } else {
+            container.requestChange(change);
+        }
     }
 
     /** Specify that when generating a MoML description of this named
@@ -1306,22 +1306,22 @@ public class NamedObj implements Nameable, Debuggable,
      *  @param text The text with which to configure the attribute.
      */
     protected void _attachText(String name, String text) {
-	try {
-	    TransientSingletonConfigurableAttribute icon
+        try {
+            TransientSingletonConfigurableAttribute icon
                 = new TransientSingletonConfigurableAttribute(this, name);
             // The first argument below is the base w.r.t. which to open
             // relative references within the text, which doesn't make
             // sense in this case, so it's null. The second argument is
             // an external URL source for the text, which is again null.
             icon.configure(null, null, text);
-	} catch (Exception ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
-	    throw new InternalErrorException(
+            throw new InternalErrorException(
                     "Error creating singleton attribute named "
                     + name
                     + " for "
                     + getFullName() + ":" + ex);
-	}
+        }
     }
 
     /** Send a debug event to all debug listeners that have registered.

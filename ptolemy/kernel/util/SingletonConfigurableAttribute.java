@@ -69,7 +69,7 @@ public class SingletonConfigurableAttribute extends ConfigurableAttribute {
      *  @param workspace The workspace that will list the attribute.
      */
     public SingletonConfigurableAttribute(Workspace workspace) {
-	super(workspace);
+        super(workspace);
     }
 
     /** Construct an attribute with the given container and name.
@@ -87,7 +87,7 @@ public class SingletonConfigurableAttribute extends ConfigurableAttribute {
      */
     public SingletonConfigurableAttribute(NamedObj container, String name)
             throws NameDuplicationException, IllegalActionException  {
-	super(container, name);
+        super(container, name);
     }
 
     ///////////////////////////////////////////////////////////////////

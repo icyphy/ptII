@@ -70,7 +70,7 @@ public class StreamListener implements DebugListener {
      *  associated with this listener.
      */
     public void event(DebugEvent event) {
-	_output.println(event.toString());
+        _output.println(event.toString());
     }
 
     /** Copy the message argument to the stream associated with

@@ -100,7 +100,7 @@ public class ComponentPort extends Port {
      *  The object is added to the workspace directory.
      */
     public ComponentPort() {
-	super();
+        super();
     }
 
     /** Construct a port in the specified workspace with an empty
@@ -111,7 +111,7 @@ public class ComponentPort extends Port {
      *  @param workspace The workspace that will list the port.
      */
     public ComponentPort(Workspace workspace) {
-	super(workspace);
+        super(workspace);
     }
 
     /** Construct a port with the given name contained by the specified
@@ -129,7 +129,7 @@ public class ComponentPort extends Port {
      */
     public ComponentPort(ComponentEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
-	super(container, name);
+        super(container, name);
     }
 
     ///////////////////////////////////////////////////////////////////

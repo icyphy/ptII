@@ -64,7 +64,7 @@ public class SingletonAttribute extends Attribute {
      *  @param workspace The workspace that will list the attribute.
      */
     public SingletonAttribute(Workspace workspace) {
-	super(workspace);
+        super(workspace);
     }
 
     /** Construct an attribute with the given container and name.
@@ -82,7 +82,7 @@ public class SingletonAttribute extends Attribute {
      */
     public SingletonAttribute(NamedObj container, String name)
             throws NameDuplicationException, IllegalActionException  {
-	super(container, name);
+        super(container, name);
     }
 
     ///////////////////////////////////////////////////////////////////

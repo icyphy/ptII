@@ -78,7 +78,7 @@ public class Port extends NamedObj {
      *  Increment the version number of the workspace.
      */
     public Port() {
-	super();
+        super();
         getMoMLInfo().elementName = "port";
     }
 
@@ -91,7 +91,7 @@ public class Port extends NamedObj {
      *  @param workspace The workspace that will list the port.
      */
     public Port(Workspace workspace) {
-	super(workspace);
+        super(workspace);
         getMoMLInfo().elementName = "port";
     }
 

@@ -163,7 +163,7 @@ public class KernelException extends Exception {
             printWriter.print("Caused by: ");
             _cause.printStackTrace(printWriter);
         }
-	printWriter.flush();
+        printWriter.flush();
     }
 
     /** Return the stack trace of the given argument as a String.

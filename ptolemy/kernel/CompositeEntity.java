@@ -104,7 +104,7 @@ public class CompositeEntity extends ComponentEntity {
      */
     public CompositeEntity() {
         super();
-	_addIcon();
+        _addIcon();
     }
 
     /** Construct an entity in the specified workspace with an empty
@@ -115,8 +115,8 @@ public class CompositeEntity extends ComponentEntity {
      *  @param workspace The workspace that will list the entity.
      */
     public CompositeEntity(Workspace workspace) {
-	super(workspace);
-	_addIcon();
+        super(workspace);
+        _addIcon();
     }
 
     /** Create an object with a name and a container.
@@ -135,7 +135,7 @@ public class CompositeEntity extends ComponentEntity {
     public CompositeEntity(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-	_addIcon();
+        _addIcon();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -458,7 +458,7 @@ public class CompositeEntity extends ComponentEntity {
     public List entityList(Class filter) {
         try {
             _workspace.getReadAccess();
-	    List result = new LinkedList();
+            List result = new LinkedList();
             Iterator entities = _containedEntities.elementList().iterator();
             while (entities.hasNext()) {
                 Object entity = entities.next();
@@ -785,7 +785,7 @@ public class CompositeEntity extends ComponentEntity {
      *  @return False.
      */
     public final boolean isAtomic() {
-	return false;
+        return false;
     }
 
     /** Return false.  Derived classes may return true in order to hide
@@ -794,7 +794,7 @@ public class CompositeEntity extends ComponentEntity {
      *  @see ptolemy.kernel.CompositeEntity
      */
     public boolean isOpaque() {
-	return false;
+        return false;
     }
 
     /** Create a new relation with the specified name, add it to the
@@ -1093,26 +1093,26 @@ public class CompositeEntity extends ComponentEntity {
         super._exportMoMLContents(output, depth);
 
         if (depth == 0 && getContainer() == null) {
-	    if ( getAttribute("_createdBy") == null) {
-		// If there is no _createdBy attribute, then add one.
-		output.write(_getIndentPrefix(depth+1)
-			     + "<property name=\"_createdBy\" "
-			     + "class=\"ptolemy.kernel.util.VersionAttribute\" "
-			     + "value=\""
-			     + VersionAttribute.CURRENT_VERSION.getExpression()
-			     + "\">\n");
-		output.write(_getIndentPrefix(depth+1) + "</property>\n");
-	    } else if (getAttribute("_createdBy") != null) {
-		try {
-		    ((VersionAttribute)getAttribute("_createdBy"))
-			.setExpression(VersionAttribute
-				       .CURRENT_VERSION.getExpression());
-		} catch (IllegalActionException ex) {
-		    throw new InternalErrorException(this, ex,
+            if ( getAttribute("_createdBy") == null) {
+                // If there is no _createdBy attribute, then add one.
+                output.write(_getIndentPrefix(depth+1)
+                             + "<property name=\"_createdBy\" "
+                             + "class=\"ptolemy.kernel.util.VersionAttribute\" "
+                             + "value=\""
+                             + VersionAttribute.CURRENT_VERSION.getExpression()
+                             + "\">\n");
+                output.write(_getIndentPrefix(depth+1) + "</property>\n");
+            } else if (getAttribute("_createdBy") != null) {
+                try {
+                    ((VersionAttribute)getAttribute("_createdBy"))
+                        .setExpression(VersionAttribute
+                                       .CURRENT_VERSION.getExpression());
+                } catch (IllegalActionException ex) {
+                    throw new InternalErrorException(this, ex,
                             "Failed to update _createdBy");
-		}
-	    }
-  	}
+                }
+            }
+          }
 
         Iterator entities = entityList().iterator();
         while (entities.hasNext()) {
@@ -1165,7 +1165,7 @@ public class CompositeEntity extends ComponentEntity {
     ////                         private methods                   ////
 
     private void _addIcon() {
-	_attachText("_iconDescription", "<svg>\n" +
+        _attachText("_iconDescription", "<svg>\n" +
                 "<rect x=\"-30\" y=\"-20\" width=\"60\" " +
                 "height=\"40\" style=\"fill:red\"/>\n" +
                 "<rect x=\"-28\" y=\"-18\" width=\"56\" " +

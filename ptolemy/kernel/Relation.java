@@ -69,7 +69,7 @@ public class Relation extends NamedObj {
      *  The object is added to the workspace directory.
      */
     public Relation() {
-	super();
+        super();
         getMoMLInfo().elementName = "relation";
     }
 
@@ -81,7 +81,7 @@ public class Relation extends NamedObj {
      *  @exception IllegalActionException If the name has a period.
      */
     public Relation(String name) throws IllegalActionException {
-	super(name);
+        super(name);
         getMoMLInfo().elementName = "relation";
     }
 
@@ -93,7 +93,7 @@ public class Relation extends NamedObj {
      *  @param workspace The workspace for synchronization and version tracking.
      */
     public Relation(Workspace workspace) {
-	super(workspace);
+        super(workspace);
         getMoMLInfo().elementName = "relation";
     }
 
@@ -108,7 +108,7 @@ public class Relation extends NamedObj {
      */
     public Relation(Workspace workspace, String name)
             throws IllegalActionException {
-	super(workspace, name);
+        super(workspace, name);
         getMoMLInfo().elementName = "relation";
     }
 

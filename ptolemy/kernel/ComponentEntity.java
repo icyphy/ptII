@@ -70,8 +70,8 @@ public class ComponentEntity extends Entity {
      *  as its name. Increment the version number of the workspace.
      */
     public ComponentEntity() {
-	super();
-	_addIcon();
+        super();
+        _addIcon();
     }
 
     /** Construct an entity in the specified workspace with an empty
@@ -82,8 +82,8 @@ public class ComponentEntity extends Entity {
      *  @param workspace The workspace that will list the entity.
      */
     public ComponentEntity(Workspace workspace) {
-	super(workspace);
-	_addIcon();
+        super(workspace);
+        _addIcon();
     }
 
     /** Construct an entity with the given name contained by the specified
@@ -104,7 +104,7 @@ public class ComponentEntity extends Entity {
             throws IllegalActionException, NameDuplicationException {
         super(container.workspace(), name);
         setContainer(container);
-	_addIcon();
+        _addIcon();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -144,7 +144,7 @@ public class ComponentEntity extends Entity {
      *  @see ptolemy.kernel.CompositeEntity
      */
     public boolean isAtomic() {
-	return true;
+        return true;
     }
 
     /** Return true if the entity is opaque.
@@ -157,7 +157,7 @@ public class ComponentEntity extends Entity {
      *  @see ptolemy.kernel.CompositeEntity
      */
     public boolean isOpaque() {
-	return true;
+        return true;
     }
 
     /** Create a new port with the specified name.
@@ -326,7 +326,7 @@ public class ComponentEntity extends Entity {
     ////                         private methods                   ////
 
     private void _addIcon() {
-	_attachText("_iconDescription", "<svg>\n" +
+        _attachText("_iconDescription", "<svg>\n" +
                 "<rect x=\"-30\" y=\"-20\" width=\"60\" " +
                 "height=\"40\" style=\"fill:white\"/>\n" +
                 "<polygon points=\"-20,-10 20,0 -20,10\" " +

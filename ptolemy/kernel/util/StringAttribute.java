@@ -74,7 +74,7 @@ public class StringAttribute extends Attribute implements Settable {
      *  Increment the version number of the workspace.
      */
     public StringAttribute() {
-	super();
+        super();
         _value = "";
     }
 

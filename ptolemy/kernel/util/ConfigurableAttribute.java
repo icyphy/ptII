@@ -81,7 +81,7 @@ public class ConfigurableAttribute
      *  @param workspace The workspace that will list the attribute.
      */
     public ConfigurableAttribute(Workspace workspace) {
-	super(workspace);
+        super(workspace);
     }
 
     /** Construct a new attribute with the given container and name.
@@ -94,7 +94,7 @@ public class ConfigurableAttribute
      */
     public ConfigurableAttribute(NamedObj container, String name)
             throws NameDuplicationException, IllegalActionException  {
-	super(container, name);
+        super(container, name);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -255,7 +255,7 @@ public class ConfigurableAttribute
      */
     public String value() throws IOException {
         StringBuffer value = new StringBuffer();
-	// If a source is given, read its data.
+        // If a source is given, read its data.
         if (_source != null && !_source.trim().equals("")) {
             URL textFile = new URL(_source);
             InputStream stream = textFile.openStream();
@@ -274,7 +274,7 @@ public class ConfigurableAttribute
         if (_text != null) {
             value.append(_text);
         }
-	return value.toString();
+        return value.toString();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -292,7 +292,7 @@ public class ConfigurableAttribute
             throws IOException {
         super._exportMoMLContents(output, depth);
         String sourceSpec = "";
-	if (_source != null && !_source.trim().equals("")) {
+        if (_source != null && !_source.trim().equals("")) {
             sourceSpec = " source=\"" + _source + "\"";
             if (_text == null) {
                 output.write(_getIndentPrefix(depth)

@@ -140,8 +140,8 @@ public class URIAttribute extends SingletonAttribute {
      */
     public URL getURL() throws MalformedURLException {
         if (_value == null) {
-	    return null;
-	}
+            return null;
+        }
         return _value.toURL();
     }
 
@@ -169,17 +169,17 @@ public class URIAttribute extends SingletonAttribute {
         try {
             _value = new URI(url.toExternalForm());
         } catch (URISyntaxException ex) {
-	    // Unfortunately, URLs are not necessarily valid URIs.
-	    // For example, a URL that has a space in it is not
-	    // a valid URI, the space must be quoted (converted) to %20
-	    try {
-		_value = new URI(url.getProtocol(), url.getFile(),
-				 url.getRef());
-	    } catch (URISyntaxException ex2) {
-		// Should not occur because a URL is a valid URI.
-		throw new InternalErrorException(this, ex2,
+            // Unfortunately, URLs are not necessarily valid URIs.
+            // For example, a URL that has a space in it is not
+            // a valid URI, the space must be quoted (converted) to %20
+            try {
+                _value = new URI(url.getProtocol(), url.getFile(),
+                                 url.getRef());
+            } catch (URISyntaxException ex2) {
+                // Should not occur because a URL is a valid URI.
+                throw new InternalErrorException(this, ex2,
                     "Error constructing URI from " + url);
-	    }
+            }
         }
         NamedObj container = (NamedObj)getContainer();
         if (container != null) {

@@ -151,7 +151,7 @@ public final class NamedList implements Cloneable, Serializable {
      *  @return The specified element.
      */
     public Nameable first() throws NoSuchElementException {
-	return (Nameable)_namedList.getFirst();
+        return (Nameable)_namedList.getFirst();
     }
 
     /** Get an element by name.
@@ -224,7 +224,7 @@ public final class NamedList implements Cloneable, Serializable {
      *  @return The last element.
      */
     public Nameable last() throws NoSuchElementException {
-	return (Nameable)_namedList.getLast();
+        return (Nameable)_namedList.getLast();
     }
 
     /** Add an element to the beginning of the list.

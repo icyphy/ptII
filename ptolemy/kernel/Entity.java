@@ -91,7 +91,7 @@ public class Entity extends NamedObj {
      *  Increment the version number of the workspace.
      */
     public Entity() {
-	super();
+        super();
         _portList = new NamedList(this);
     }
 
@@ -104,7 +104,7 @@ public class Entity extends NamedObj {
      *  @exception IllegalActionException If the name has a period.
      */
     public Entity(String name) throws IllegalActionException {
-	super(name);
+        super(name);
         _portList = new NamedList(this);
     }
 
@@ -116,7 +116,7 @@ public class Entity extends NamedObj {
      *  @param workspace The workspace for synchronization and version tracking.
      */
     public Entity(Workspace workspace) {
-	super(workspace);
+        super(workspace);
         _portList = new NamedList(this);
     }
 
@@ -132,7 +132,7 @@ public class Entity extends NamedObj {
      */
     public Entity(Workspace workspace, String name)
             throws IllegalActionException {
-	super(workspace, name);
+        super(workspace, name);
         _portList = new NamedList(this);
     }
 

@@ -57,10 +57,10 @@ workspace.  To read-synchronize on its workspace, it uses the following
 code in a method:
 <pre>
     try {
-	_workspace.getReadAccess();
-	// ... code that reads
+        _workspace.getReadAccess();
+        // ... code that reads
     } finally {
-	_workspace.doneReading();
+        _workspace.doneReading();
     }
 </pre>
 We assume that the _workspace variable references the workspace, as for example
@@ -77,10 +77,10 @@ To make changes in the workspace, a thread must write-synchronize
 using the following code:
 <pre>
     try {
-	_workspace.getWriteAccess();
-	// ... code that writes
+        _workspace.getWriteAccess();
+        // ... code that writes
     } finally {
-	_workspace.doneWriting();
+        _workspace.doneWriting();
     }
 </pre>
 Only one thread can be writing to the workspace at a time, and
@@ -313,7 +313,7 @@ public final class Workspace implements Nameable, Serializable {
      *  @return null.
      */
     public Nameable getContainer() {
-	return null;
+        return null;
     }
 
     /** Get the full name.
@@ -482,11 +482,11 @@ public final class Workspace implements Nameable, Serializable {
                     }
                 }
             }
-	    try {
-		wait();
-	    } catch (InterruptedException e) {
-		System.err.println(e.toString());
-	    }
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                System.err.println(e.toString());
+            }
         }
     }
 
@@ -591,7 +591,7 @@ public final class Workspace implements Nameable, Serializable {
      *  @param obj The object that the thread wants to wait on.
      */
     public void wait(Object obj) {
-	int depth = 0;
+        int depth = 0;
         depth = _releaseAllReadPermissions();
         try {
             synchronized(obj) {
@@ -686,7 +686,7 @@ public final class Workspace implements Nameable, Serializable {
         // the current thread to has read depth equal to 0, i.e. not a reader,
         // then it's already trivially done, since this method call is always
         // preceded by _releaseAllReadPermissions.
-	if (count == 0) return;
+        if (count == 0) return;
 
         // Go into an infinite 'while (true)' loop, and each time through
         // the loop, check if the condition is satisfied to have the current

@@ -59,7 +59,7 @@ public class RecorderListener implements DebugListener {
      *  set of messages.
      */
     public void event(DebugEvent event) {
-	_buffer.append(event.toString() + "\n");
+        _buffer.append(event.toString() + "\n");
     }
 
     /** Get the messages recorded so far.

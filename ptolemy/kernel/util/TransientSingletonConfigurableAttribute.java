@@ -84,7 +84,7 @@ public class TransientSingletonConfigurableAttribute
      *  @param workspace The workspace that will list the attribute.
      */
     public TransientSingletonConfigurableAttribute(Workspace workspace) {
-	super(workspace);
+        super(workspace);
     }
 
     /** Construct an attribute with the given container and name.
@@ -102,7 +102,7 @@ public class TransientSingletonConfigurableAttribute
     public TransientSingletonConfigurableAttribute(
             NamedObj container, String name)
             throws NameDuplicationException, IllegalActionException  {
-	super(container, name);
+        super(container, name);
     }
 
     ///////////////////////////////////////////////////////////////////
