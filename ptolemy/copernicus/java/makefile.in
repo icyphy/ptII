@@ -411,7 +411,11 @@ gcj2_0: $(TARGETPATH)/gcj
 # treeshaker output.  However, gcj does a C style link, where all
 # the symbols in a .o file must be resolved.  So we include these
 # other classes.
-GCJ_AUX_DIRS = ptolemy/data/expr ptolemy/data/unit ptolemy/util ptolemy/math ptolemy/data ptolemy/kernel/util ptolemy/graph
+GCJ_AUX_DIRS = ptolemy/data/expr ptolemy/data/unit ptolemy/data ptolemy/kernel/util ptolemy/graph ptolemy/data/type ptolemy/actor ptolemy/kernel ptolemy/util ptolemy/graph/analysis ptolemy/actor/util ptolemy/kernel/attributes
+
+GCJ_TO_BE_REMOVED = ptolemy/util/XSLTUtilities.class \
+	ptolemy/data/expr/NotEditableParameter.class \
+	ptolemy/actor/MobileModel.class
 
 gcj2_0a: $(TARGETPATH)/gcj
 	@echo "For each directory in the treeshaken output,"
@@ -453,6 +457,7 @@ gcj2_1:
 					--encoding=UTF-8 *.class); \
 			fi; \
 		done;
+	(cd $(TARGETPATH)/gcj; rm -f $(GCJ_TO_BE_REMOVED))
 
 gcj2_2:
 	@echo "--- Run gcj on all the .o files in the jar file dir"
