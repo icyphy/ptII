@@ -246,15 +246,6 @@ public class PropertyClassChanges implements MoMLFilter {
         // Actors that have properties that have changed class.
         _actorsWithPropertyClassChanges = new HashMap();
 
-        // AudioReader
-        HashMap sourceURLClassChanges = new HashMap();
-        // Key = property name, Value = new class name
-        sourceURLClassChanges.put("sourceURL", "ptolemy.data.expr.Parameter");
-
-        _actorsWithPropertyClassChanges
-            .put("ptolemy.actor.lib.javasound.AudioReader",
-                    sourceURLClassChanges);
-
         // Expression
         HashMap expressionClassChanges = new HashMap();
         // Key = property name, Value = new class name
