@@ -2,7 +2,7 @@
 #
 # @Authors: Christopher Hylands, Neil Smyth
 #
-# @Version:
+# @Version: $Id$
 #
 # @Copyright (c) 1998-2004 The Regents of the University of California.
 # All rights reserved.
@@ -50,6 +50,7 @@ JSRCS = \
 	LiveSound.java \
 	LiveSoundListener.java \
 	LiveSoundEvent.java \
+	SoundCapture.java \
 	SoundPlayback.java \
 	SoundReader.java \
 	SoundWriter.java
