@@ -275,7 +275,7 @@ public class Plotter extends TypedAtomicActor
 	    PrintWriter print = new PrintWriter(writer);
             // NOTE: Cannot include xml spec in the header because processing
             // instructions cannot be nested in XML (lame, isn't it?).
-            //print.write(header);           
+            //print.write(header);
             print.write("\n<plot>\n");
             // The second (null) argument indicates that PlotML PUBLIC DTD
 	    // should be referenced.

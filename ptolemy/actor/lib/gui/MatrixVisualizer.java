@@ -215,7 +215,7 @@ public class MatrixVisualizer extends TypedAtomicActor implements Placeable {
         IntMatrixToken token = (IntMatrixToken)input.get(0);
         int rows = token.getRowCount();
         int colums = token.getColumnCount();
-      
+
         int stripe[] = new int[rows];
 
         // Clear the render object's image data.

@@ -99,7 +99,7 @@ public class RealTimePlotter extends Plotter {
      *  @return True if it is OK to continue.
      */
     public boolean postfire() throws IllegalActionException {
-    
+
         long elapsedTime = System.currentTimeMillis() - _startTime;
         double currentTime = ((double)elapsedTime)/1000.0;
         int width = input.getWidth();

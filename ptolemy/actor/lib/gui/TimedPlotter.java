@@ -91,7 +91,7 @@ public class TimedPlotter extends Plotter implements TimedActor {
      *  @return True if it is OK to continue.
      */
     public boolean postfire() throws IllegalActionException {
-    
+
         double currentTime;
         int width = input.getWidth();
         int offset = ((IntToken)startingDataset.getToken()).intValue();

@@ -93,12 +93,12 @@ public class MatrixViewer extends Sink implements Placeable {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The width of the table in pixels. This must contain an 
+    /** The width of the table in pixels. This must contain an
      *  integer.  The default value is 500.
      */
     public Parameter width;
 
-    /** The height of the table in pixels. This must contain an 
+    /** The height of the table in pixels. This must contain an
      *  integer.  The default value is 300.
      */
     public Parameter height;
@@ -123,7 +123,7 @@ public class MatrixViewer extends Sink implements Placeable {
     }
 
     /** Consume a matrix token from the <i>input</i> port when present and
-     *  display the token in a table.  If a token is not available, 
+     *  display the token in a table.  If a token is not available,
      *  do nothing.
      *
      *  @exception IllegalActionException If there is no director, or
@@ -177,7 +177,7 @@ public class MatrixViewer extends Sink implements Placeable {
      *  table is configured such that a user cannot reorder the
      *  columns of the table. Also, the table maintains a fixed
      *  preferred size, and will employ scrollbars if the table is
-     *  larger than the preferred size. If this method is not called, 
+     *  larger than the preferred size. If this method is not called,
      *  the JTable will be placed in its own frame. The table is also
      *  placed in its own frame if this method is called with a null
      *  argument. The background of the table is set equal to that of
@@ -278,10 +278,10 @@ public class MatrixViewer extends Sink implements Placeable {
     ///////////////////////////////////////////////////////////////////
     ////                         Inner Class                       ////
 
-    /** This class provides an implementations of the 
-     *  TableModel interface for viewing matrix tokens. 
+    /** This class provides an implementations of the
+     *  TableModel interface for viewing matrix tokens.
      */
-    // FIXME this should be factored so we can use it to edit 
+    // FIXME this should be factored so we can use it to edit
     // matrix parameters more nicely in PtolemyQuery.
     private class MatrixAsTable extends AbstractTableModel {
 

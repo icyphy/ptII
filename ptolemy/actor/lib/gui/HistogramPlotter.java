@@ -301,7 +301,7 @@ public class HistogramPlotter extends Sink implements Configurable, Placeable {
             String header
             = "<!DOCTYPE plot PUBLIC \"-//UC Berkeley//DTD PlotML 1//EN\"\n"                + "\"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd\">";
             StringBuffer buffer = new StringBuffer();
-            buffer.append(header);           
+            buffer.append(header);
             buffer.append("\n<plot>\n");
 	    PrintWriter print = new PrintWriter(new StringWriter());
 	    // The second (null) argument indicates that PlotML PUBLIC DTD
