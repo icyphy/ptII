@@ -83,7 +83,6 @@ test Variable-2.0 {Check addition of variables to the scope} {
     set list [java::new ptolemy.kernel.util.NamedList]
     $list prepend $var1
     $var2 {addToScope java.util.Enumeration} [$list elements]
-    $var2 evaluate
     set tok [$var2 getToken]
     $tok stringValue
 } {3}

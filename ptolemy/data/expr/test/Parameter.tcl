@@ -230,20 +230,15 @@ test Parameter-8.0 {Check that previous dependencies are cleared when a new Toke
     set e [java::new {ptolemy.kernel.Entity String} parent]
     set param1 [java::new ptolemy.data.expr.Parameter $e id1 ]
     $param1 setExpression "10"
-    $param1 evaluate
 
     set param2 [java::new ptolemy.data.expr.Parameter $e id2 ]
     $param2 setExpression "id1"
 
-    $param2 evaluate
-
     # This should clear the previous dependence on param2
     $param2 setExpression "20"
-    $param2 evaluate
 
     # This should be ok as there is no dependency loop
     $param1 setExpression "id2"
-    $param1 evaluate
     
     set value2 [[$param1 getToken] toString]
     
@@ -258,15 +253,12 @@ test Parameter-9.0 {Check that notification works properly when a Parameter is r
     set bottom [java::new ptolemy.kernel.CompositeEntity $top bottomLevel]
     set param1 [java::new ptolemy.data.expr.Parameter $top clock ]
     $param1 setExpression "11"
-    $param1 evaluate
 
     set param2 [java::new ptolemy.data.expr.Parameter $bottom clock ]
     $param2 setExpression "66"
-    $param2 evaluate
 
     set param3 [java::new ptolemy.data.expr.Parameter $bottom newFreq ]
     $param3 setExpression "clock * 100"
-    $param3 evaluate
 
     set res1 [[$param3 getToken] toString]
 
@@ -322,3 +314,17 @@ test Parameter11.0 {Check that variables are not added to the scope of parameter
     list [$ra toString] $msg
 } {ptolemy.data.IntToken(2) {ptolemy.data.expr.IllegalExpressionException: Error parsing expression "b+1":
 The ID b is undefined.}}
+
+#################################
+####
+#
+test Parameter12.0 {Check that variables are in the scope of variables.} {
+    set e [java::new {ptolemy.kernel.Entity String} entity]
+    set a [java::new ptolemy.data.expr.Variable $e a]
+    set b [java::new ptolemy.data.expr.Variable $e b]
+    set tok [java::new {ptolemy.data.IntToken int} 1]
+    $b setToken $tok
+    $a setExpression "b"
+    set ra [$a getToken]
+    $ra toString
+} {ptolemy.data.IntToken(1)}
