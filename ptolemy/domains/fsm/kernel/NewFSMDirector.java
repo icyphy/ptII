@@ -173,5 +173,4 @@ public class NewFSMDirector extends Director {
 
     // The FSMActor capturing mode control logic.
     private FSMActor _controller = null;
-
-    
+}
