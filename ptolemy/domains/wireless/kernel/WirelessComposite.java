@@ -34,6 +34,7 @@ import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// WirelessComposite
@@ -50,6 +51,17 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Yellow (cxh)
 */
 public class WirelessComposite extends TypedCompositeActor {
+
+    /** Construct a composite actor in the specified workspace with
+     *  no container and an empty string as a name. You can then change
+     *  the name with setName(). If the workspace argument is null, then
+     *  use the default workspace. Add the actor to the workspace directory.
+     *  @param workspace The workspace that will list the actor.
+     */
+    public WirelessComposite(Workspace workspace) {
+        super(workspace);
+        _initialize();
+    }
 
     /** Construct a composite actor with a name and a container.
      *  The container argument must not be null, or a
@@ -69,36 +81,9 @@ public class WirelessComposite extends TypedCompositeActor {
     public WirelessComposite(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        // By default, when exporting MoML, the class name is whatever
-        // the Java class is, which in this case is WirelessComposite.
-        // In derived classes, however, we usually do not want to identify
-        // the class name as that of the derived class, but rather want
-        // to identify it as WirelessComposite.  This way, the MoML
-        // that is exported does not depend on the presence of the
-        // derived class Java definition. Thus, we force the class name
-        // here to be WirelessComposite.
-        setClassName("ptolemy.domains.wireless.kernel.WirelessComposite");
-
-        _attachText("_iconDescription", "<svg>\n" +
-                "<ellipse cx=\"0\" cy=\"0\" " +
-                "rx=\"27\" ry=\"27\" " +
-                "style=\"fill:red\"/>\n" +
-                "<ellipse cx=\"0\" cy=\"0\" " +
-                "rx=\"25\" ry=\"25\" " +
-                "style=\"fill:lightgrey\"/>\n" +
-                "<rect x=\"-15\" y=\"-10\" width=\"10\" height=\"8\" " +
-                "style=\"fill:white\"/>\n" +
-                "<rect x=\"-15\" y=\"2\" width=\"10\" height=\"8\" " +
-                "style=\"fill:white\"/>\n" +
-                "<rect x=\"5\" y=\"-4\" width=\"10\" height=\"8\" " +
-                "style=\"fill:white\"/>\n" +
-                "<line x1=\"-5\" y1=\"-6\" x2=\"0\" y2=\"-6\"/>" +
-                "<line x1=\"-5\" y1=\"6\" x2=\"0\" y2=\"6\"/>" +
-                "<line x1=\"0\" y1=\"-6\" x2=\"0\" y2=\"6\"/>" +
-                "<line x1=\"0\" y1=\"0\" x2=\"5\" y2=\"0\"/>" +
-                "</svg>\n");
+        _initialize();
     }
-
+    
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -121,5 +106,39 @@ public class WirelessComposite extends TypedCompositeActor {
         } finally {
             workspace().doneWriting();
         }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    private void _initialize() {
+        // By default, when exporting MoML, the class name is whatever
+        // the Java class is, which in this case is WirelessComposite.
+        // In derived classes, however, we usually do not want to identify
+        // the class name as that of the derived class, but rather want
+        // to identify it as WirelessComposite.  This way, the MoML
+        // that is exported does not depend on the presence of the
+        // derived class Java definition. Thus, we force the class name
+        // here to be WirelessComposite.
+        setClassName("ptolemy.domains.wireless.kernel.WirelessComposite");
+        
+        _attachText("_iconDescription", "<svg>\n" +
+                "<ellipse cx=\"0\" cy=\"0\" " +
+                "rx=\"27\" ry=\"27\" " +
+                "style=\"fill:red\"/>\n" +
+                "<ellipse cx=\"0\" cy=\"0\" " +
+                "rx=\"25\" ry=\"25\" " +
+                "style=\"fill:lightgrey\"/>\n" +
+                "<rect x=\"-15\" y=\"-10\" width=\"10\" height=\"8\" " +
+                "style=\"fill:white\"/>\n" +
+                "<rect x=\"-15\" y=\"2\" width=\"10\" height=\"8\" " +
+                "style=\"fill:white\"/>\n" +
+                "<rect x=\"5\" y=\"-4\" width=\"10\" height=\"8\" " +
+                "style=\"fill:white\"/>\n" +
+                "<line x1=\"-5\" y1=\"-6\" x2=\"0\" y2=\"-6\"/>" +
+                "<line x1=\"-5\" y1=\"6\" x2=\"0\" y2=\"6\"/>" +
+                "<line x1=\"0\" y1=\"-6\" x2=\"0\" y2=\"6\"/>" +
+                "<line x1=\"0\" y1=\"0\" x2=\"5\" y2=\"0\"/>" +
+                "</svg>\n");
     }
 }
