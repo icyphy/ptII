@@ -51,7 +51,7 @@ set exec [java::new ptolemy.actor.Manager]
 $sys setManager $exec
 
 # Build the system
-set poisson [java::new ptolemy.domains.de.lib.DEPoisson $sys Poisson 1.0 0.5]
+set poisson [java::new {ptolemy.domains.de.lib.DEPoisson ptolemy.actor.TypedCompositeActor String double double} $sys Poisson 1.0 0.5]
 set sampler1 [java::new ptolemy.domains.de.lib.DESampler $sys Sampler1]
 set sampler2 [java::new ptolemy.domains.de.lib.DESampler $sys Sampler2]
 set ramp1 [java::new {ptolemy.domains.de.lib.Ramp \
