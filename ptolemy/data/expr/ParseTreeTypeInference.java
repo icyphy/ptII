@@ -196,11 +196,11 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
     public void visitFunctionDefinitionNode(ASTPtFunctionDefinitionNode node)
             throws IllegalActionException {
         final Map map = new HashMap();
-        Type[] argTypes = new Type[node.getArgumentNameList().size()];
-        for(int i = 0; i < argTypes.length; i++) {
+        node._argTypes = new Type[node.getArgumentNameList().size()];
+        for(int i = 0; i < node._argTypes.length; i++) {
             _visitChild(node, i);
             Type type = ((ASTPtRootNode)node.jjtGetChild(i)).getType();
-            argTypes[i] = type;
+            node._argTypes[i] = type;
             map.put(node.getArgumentNameList().get(i), type);
         }
         // Push the current scope.
@@ -225,7 +225,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
         _scope = functionScope;
         node.getExpressionTree().visit(this);
         Type returnType = node.getExpressionTree().getType();
-        FunctionType type = new FunctionType(argTypes, returnType);
+        FunctionType type = new FunctionType(node._argTypes, returnType);
         _setType(node, type);
         _scope = currentScope;
         return;

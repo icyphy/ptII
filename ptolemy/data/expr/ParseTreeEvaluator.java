@@ -411,15 +411,16 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
                     "The ID " + name + " is undefined.");
         }
         NamedConstantsScope constantsScope = new NamedConstantsScope(map);
-        ExpressionFunction definedFunction =
-            new ExpressionFunction(node.getArgumentNameList(),
-                    (ASTPtRootNode)node.getExpressionTree(), constantsScope);
-        // Infer the return type.
+         // Infer the return type.
         if(_typeInference == null) {
             _typeInference = new ParseTreeTypeInference();
         }
         _typeInference.inferTypes(node, _scope);
         FunctionType type = (FunctionType)node.getType();
+        ExpressionFunction definedFunction =
+            new ExpressionFunction(node.getArgumentNameList(),
+                    node.getArgumentTypes(),
+                    (ASTPtRootNode)node.getExpressionTree(), constantsScope);
         FunctionToken result = new FunctionToken(definedFunction, type);
         node.setToken(result);
         return;
@@ -1015,9 +1016,10 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
 
     private class ExpressionFunction implements FunctionToken.Function {
         
-        public ExpressionFunction(List argumentNames, ASTPtRootNode exprRoot,
-                ParserScope freeVariablesScope) {
+        public ExpressionFunction(List argumentNames, Type[] argumentTypes, 
+                ASTPtRootNode exprRoot, ParserScope freeVariablesScope) {
             _argumentNames = new ArrayList(argumentNames);
+            _argumentTypes = argumentTypes;
             _exprRoot = exprRoot;
             _freeVariablesScope = freeVariablesScope;
         }
@@ -1052,10 +1054,20 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
             StringBuffer buffer = new StringBuffer("(function(");
             if(_argumentNames.size() > 0) {
                 buffer.append((String)_argumentNames.get(0));
+                Type type = _argumentTypes[0];
+                if(type != BaseType.GENERAL) {
+                    buffer.append(":");
+                    buffer.append(type.toString());
+                }
             }
             for(int i = 1; i < _argumentNames.size(); i++) {
                 buffer.append(", ");
                 buffer.append((String)_argumentNames.get(i));
+                Type type = _argumentTypes[i];
+                if(type != BaseType.GENERAL) {
+                    buffer.append(":");
+                    buffer.append(type.toString());
+                }
             }
             buffer.append(") ");
             ParseTreeWriter writer = new ParseTreeWriter();
@@ -1067,6 +1079,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
 
         private ASTPtRootNode _exprRoot;
         private List _argumentNames;
+        private Type[] _argumentTypes;
         private ParserScope _freeVariablesScope;
         private ParseTreeEvaluator _parseTreeEvaluator;
     }   

@@ -87,7 +87,14 @@ public class ASTPtFunctionDefinitionNode extends ASTPtRootNode {
     public List getArgumentNameList() {
         return _argList;
     }
-    
+
+    /** Return the type of the arguments, or null if type inference
+     *  has not occured yet.
+     */
+    public Type[] getArgumentTypes() {
+        return _argTypes;
+    }
+
     /** Return the parse tree of the expression for this function.
      */
     public ASTPtRootNode getExpressionTree() {
@@ -110,5 +117,6 @@ public class ASTPtFunctionDefinitionNode extends ASTPtRootNode {
     }
 
     protected ArrayList _argList = new ArrayList();
+    protected Type[] _argTypes = null;
 }
 

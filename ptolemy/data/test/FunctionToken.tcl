@@ -53,7 +53,7 @@ if {[string compare test [info procs test]] == 1} then {
 test FunctionToken-1.0 {Create an empty instance} {
     set r [java::new {ptolemy.data.FunctionToken} "function() 4"]
     list [$r toString] [[$r getType] toString]
-} {{(function() 4)} {() -> double}}
+} {{(function() 4)} {() -> int}}
 
 ######################################################################
 ####
@@ -61,7 +61,27 @@ test FunctionToken-1.0 {Create an empty instance} {
 test FunctionToken-1.1 {Create a non-empty instance} {
     set r [java::new {ptolemy.data.FunctionToken} "function(x,y) 4+x+y"]
     list [$r toString] [[$r getType] toString]
-} {{(function(x, y) 4+x+y)} {(unknown, unknown) -> unknown}}
+} {{(function(x, y) (4+x+y))} {(general, general) -> general}}
+
+test FunctionToken-1.2 {Create a non-empty instance} {
+    set r [java::new {ptolemy.data.FunctionToken} "function(x:int,y:double) 4+x+y"]
+    list [$r toString] [[$r getType] toString]
+} {{(function(x:int, y:double) (4+x+y))} {(int, double) -> double}}
+
+test FunctionToken-1.3 {Create an empty instance} {
+    set r [java::new {ptolemy.data.FunctionToken} "function(x,y) 4"]
+    list [$r toString] [[$r getType] toString]
+} {{(function(x, y) 4)} {(general, general) -> int}}
+
+test FunctionToken-1.4 {Create an empty instance} {
+    set r [java::new {ptolemy.data.FunctionToken} "function(x:long) function(y:double) 4"]
+    list [$r toString] [[$r getType] toString]
+} {{(function(x:long) function(y:double) 4)} {(long) -> (double) -> int}}
+
+test FunctionToken-1.5 {Create an empty instance} {
+    set r [java::new {ptolemy.data.FunctionToken} "function(x:(function(y:double) long)) 4"]
+    list [$r toString] [[$r getType] toString]
+} {{(function(x:(double) -> long) 4)} {((double) -> long) -> int}}
 
 ######################################################################
 ####
@@ -72,7 +92,7 @@ test FunctionToken-2.1 {Test add} {
     set r2 [java::new {ptolemy.data.FunctionToken} "function(a,b) 8+2"]
 
     [$r1 add $r2] toString
-} {{(function(x,y) (function(x,y) 4+x+y)(x,y) + (function(a,b) 8+2)(x,y)}}
+} {{(function(x, y) (function(x,y) 4+x+y)(x,y) + (function(a,b) 8+2)(x,y)}}
 
 ######################################################################
 ####
