@@ -60,14 +60,15 @@ a while and puts the chopsticks down. This cycle continues.
 @version $Id$
 */
 
-public class DiningApplet extends Applet implements Runnable, PhilosopherListener {
+public class DiningApplet extends Applet implements
+                                                                                  Runnable, PhilosopherListener {
 
-    ////////////////////////////////////////////////////////////////////////
-////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
-/** Initialize the applet.
- */
-public void init() {
+    /** Initialize the applet.
+     */
+    public void init() {
 
     // Process the background parameter.
     Color background = Color.white;
@@ -131,30 +132,70 @@ public void init() {
         CSPChopstick f5 = new CSPChopstick(univ, "Chopstick5");
 
         // Now connect up the Actors
-        IORelation r1 = (IORelation)univ.connect((IOPort)p1.getPort("leftIn"), (IOPort)f5.getPort("rightOut"));
-        IORelation r2 = (IORelation)univ.connect((IOPort)p1.getPort("leftOut"), (IOPort)f5.getPort("rightIn"));
-        IORelation r3 = (IORelation)univ.connect((IOPort)p1.getPort("rightIn"), (IOPort)f1.getPort("leftOut"));
-        IORelation r4 = (IORelation)univ.connect((IOPort)p1.getPort("rightOut"), (IOPort)f1.getPort("leftIn"));
+        IORelation r1 =
+            (IORelation)univ.connect((IOPort)p1.getPort("leftIn"),
+                    (IOPort)f5.getPort("rightOut"));
+        IORelation r2 =
+            (IORelation)univ.connect((IOPort)p1.getPort("leftOut"),
+                    (IOPort)f5.getPort("rightIn"));
+        IORelation r3 =
+            (IORelation)univ.connect((IOPort)p1.getPort("rightIn"),
+                    (IOPort)f1.getPort("leftOut"));
+        IORelation r4 =
+            (IORelation)univ.connect((IOPort)p1.getPort("rightOut"),
+                    (IOPort)f1.getPort("leftIn"));
 
-        IORelation r5 = (IORelation)univ.connect((IOPort)p2.getPort("leftIn"), (IOPort)f1.getPort("rightOut"));
-        IORelation r6 = (IORelation)univ.connect((IOPort)p2.getPort("leftOut"), (IOPort)f1.getPort("rightIn"));
-        IORelation r7 = (IORelation)univ.connect((IOPort)p2.getPort("rightIn"), (IOPort)f2.getPort("leftOut"));
-        IORelation r8 = (IORelation)univ.connect((IOPort)p2.getPort("rightOut"), (IOPort)f2.getPort("leftIn"));
+        IORelation r5 =
+            (IORelation)univ.connect((IOPort)p2.getPort("leftIn"),
+                    (IOPort)f1.getPort("rightOut"));
+        IORelation r6 =
+            (IORelation)univ.connect((IOPort)p2.getPort("leftOut"),
+                    (IOPort)f1.getPort("rightIn"));
+        IORelation r7 =
+            (IORelation)univ.connect((IOPort)p2.getPort("rightIn"),
+                    (IOPort)f2.getPort("leftOut"));
+        IORelation r8 =
+            (IORelation)univ.connect((IOPort)p2.getPort("rightOut"),
+                    (IOPort)f2.getPort("leftIn"));
 
-        IORelation r9  = (IORelation)univ.connect((IOPort)p3.getPort("leftIn"), (IOPort)f2.getPort("rightOut"));
-        IORelation r10 = (IORelation)univ.connect((IOPort)p3.getPort("leftOut"), (IOPort)f2.getPort("rightIn"));
-        IORelation r11 = (IORelation)univ.connect((IOPort)p3.getPort("rightIn"), (IOPort)f3.getPort("leftOut"));
-        IORelation r12 = (IORelation)univ.connect((IOPort)p3.getPort("rightOut"), (IOPort)f3.getPort("leftIn"));
+        IORelation r9  =
+            (IORelation)univ.connect((IOPort)p3.getPort("leftIn"),
+                    (IOPort)f2.getPort("rightOut"));
+        IORelation r10 =
+            (IORelation)univ.connect((IOPort)p3.getPort("leftOut"),
+                    (IOPort)f2.getPort("rightIn"));
+        IORelation r11 =
+            (IORelation)univ.connect((IOPort)p3.getPort("rightIn"),
+                    (IOPort)f3.getPort("leftOut"));
+        IORelation r12 =
+            (IORelation)univ.connect((IOPort)p3.getPort("rightOut"),
+                    (IOPort)f3.getPort("leftIn"));
 
-        IORelation r13 = (IORelation)univ.connect((IOPort)p4.getPort("leftIn"), (IOPort)f3.getPort("rightOut"));
-        IORelation r14 = (IORelation)univ.connect((IOPort)p4.getPort("leftOut"), (IOPort)f3.getPort("rightIn"));
-        IORelation r15 = (IORelation)univ.connect((IOPort)p4.getPort("rightIn"), (IOPort)f4.getPort("leftOut"));
-        IORelation r16 = (IORelation)univ.connect((IOPort)p4.getPort("rightOut"), (IOPort)f4.getPort("leftIn"));
+        IORelation r13 =
+            (IORelation)univ.connect((IOPort)p4.getPort("leftIn"),
+                    (IOPort)f3.getPort("rightOut"));
+        IORelation r14 =
+            (IORelation)univ.connect((IOPort)p4.getPort("leftOut"),
+                    (IOPort)f3.getPort("rightIn"));
+        IORelation r15 =
+            (IORelation)univ.connect((IOPort)p4.getPort("rightIn"),
+                    (IOPort)f4.getPort("leftOut"));
+        IORelation r16 =
+            (IORelation)univ.connect((IOPort)p4.getPort("rightOut"),
+                    (IOPort)f4.getPort("leftIn"));
 
-        IORelation r17 = (IORelation)univ.connect((IOPort)p5.getPort("leftIn"), (IOPort)f4.getPort("rightOut"));
-        IORelation r18 = (IORelation)univ.connect((IOPort)p5.getPort("leftOut"), (IOPort)f4.getPort("rightIn"));
-        IORelation r19 = (IORelation)univ.connect((IOPort)p5.getPort("rightIn"), (IOPort)f5.getPort("leftOut"));
-        IORelation r20 = (IORelation)univ.connect((IOPort)p5.getPort("rightOut"), (IOPort)f5.getPort("leftIn"));
+        IORelation r17 =
+            (IORelation)univ.connect((IOPort)p5.getPort("leftIn"),
+                    (IOPort)f4.getPort("rightOut"));
+        IORelation r18 =
+            (IORelation)univ.connect((IOPort)p5.getPort("leftOut"),
+                    (IOPort)f4.getPort("rightIn"));
+        IORelation r19 =
+            (IORelation)univ.connect((IOPort)p5.getPort("rightIn"),
+                    (IOPort)f5.getPort("leftOut"));
+        IORelation r20 =
+            (IORelation)univ.connect((IOPort)p5.getPort("rightOut"),
+                    (IOPort)f5.getPort("leftIn"));
 
     } catch (Exception ex) {
         System.err.println("Setup failed: " + ex.getMessage());
@@ -220,8 +261,8 @@ public void init() {
         }
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         private variables                      ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
 
     // The thread that runs the simulation.
     Thread simulationThread;
@@ -245,8 +286,8 @@ public void init() {
     public CSPDirector _localDirector;
     public Manager _manager;
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                       inner classes                              ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
 
 
     // Show simulation progress.
