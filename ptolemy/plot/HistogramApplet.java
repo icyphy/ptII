@@ -40,7 +40,7 @@ If none is given, then a sample histogram is generated.
 @author Edward A. Lee
 @version $Id$
 @since Ptolemy II 0.3
- */
+*/
 public class HistogramApplet extends PlotApplet {
 
     ///////////////////////////////////////////////////////////////////
