@@ -173,17 +173,17 @@ public class SerialComm extends TypedAtomicActor
         blocking.setTypeEquals(BaseType.BOOLEAN);
         blocking.setToken(new BooleanToken(false));
 
-	if (false) System.out.println("<>1<>");
+        if (false) System.out.println("<>1<>");
         Enumeration allPorts = CommPortIdentifier.getPortIdentifiers();
         while (allPorts.hasMoreElements()) {
-	    if (false) System.out.println("<>2<>");
+            if (false) System.out.println("<>2<>");
             CommPortIdentifier id = (CommPortIdentifier)allPorts.nextElement();
             if (id.getPortType() == CommPortIdentifier.PORT_SERIAL) {
                 serialPortName.setToken(new StringToken(id.getName()));
                 break;
             }
         }
-	if (false) System.out.println("<>3<>");
+        if (false) System.out.println("<>3<>");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -246,7 +246,7 @@ public class SerialComm extends TypedAtomicActor
             // One desired behavior would be to use the new serial port
             // and/or new baud rate with next transmission and
             // to set to receive on the new port and/or at new baud rate
-	    // with the reception following that transmission.
+            // with the reception following that transmission.
             // The latter may be tricky since this actor (which is a
             // java class) implements 'SerialPortEventListener'.
             // I'm not sure what happens when baud rate is altered
@@ -259,10 +259,10 @@ public class SerialComm extends TypedAtomicActor
             // its baud rate, then it is desirable to be able to quickly
             // change one's own baud rate so as to catch the reply at the
             // new rate.
-	} else if (attribute == threshold) {
-	    _threshold = ((IntToken)threshold.getToken()).intValue();
-	} else if (attribute == truncation) {
-	    _truncation = ((IntToken)truncation.getToken()).intValue();
+        } else if (attribute == threshold) {
+            _threshold = ((IntToken)threshold.getToken()).intValue();
+        } else if (attribute == truncation) {
+            _truncation = ((IntToken)truncation.getToken()).intValue();
         } else {
             super.attributeChanged(attribute);
         }
@@ -292,26 +292,26 @@ public class SerialComm extends TypedAtomicActor
 
             InputStream in = _serialPort.getInputStream();
             int bytesAvailable;
-	    // Note: This needs _threshold to be at least 1.
-	    while ((bytesAvailable = in.available()) < _threshold
-		   && _blocking) {
-		try{
-		    wait();
-		} catch (InterruptedException ex) {
-		    throw new IllegalActionException(this,"wait interrupted");
-		}
-	    }
+            // Note: This needs _threshold to be at least 1.
+            while ((bytesAvailable = in.available()) < _threshold
+                   && _blocking) {
+                try{
+                    wait();
+                } catch (InterruptedException ex) {
+                    throw new IllegalActionException(this,"wait interrupted");
+                }
+            }
 
-	    //(moved to finally clause)_directorFiredAtAlready = false;
+            //(moved to finally clause)_directorFiredAtAlready = false;
 
             if (bytesAvailable >= _threshold) {
-		// Read only if the at least desired amount of data is present.
-		if (_truncation != 0 && bytesAvailable > _truncation) {
-		    // Attempt to skip excess bytes if more than _truncation.
-		    // Reduce bytesAvailable by the actual number skipped.
-		    bytesAvailable -= (int)in.skip((long)
+                // Read only if the at least desired amount of data is present.
+                if (_truncation != 0 && bytesAvailable > _truncation) {
+                    // Attempt to skip excess bytes if more than _truncation.
+                    // Reduce bytesAvailable by the actual number skipped.
+                    bytesAvailable -= (int)in.skip((long)
                             (bytesAvailable-_truncation));
-		}
+                }
                 byte[] dataBytes = new byte[bytesAvailable];
                 in.read(dataBytes, 0, bytesAvailable);
                 Token[] dataTokens = new Token[bytesAvailable];
@@ -336,8 +336,8 @@ public class SerialComm extends TypedAtomicActor
             throw new IllegalActionException(this, "I/O error: " +
                     ex.getMessage());
         } finally {
-	    _directorFiredAtAlready = false;
-	}
+            _directorFiredAtAlready = false;
+        }
     }
 
     /** [Pre]initialize does the resource allocation for this actor.
@@ -353,7 +353,7 @@ public class SerialComm extends TypedAtomicActor
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-	_directorFiredAtAlready = false;
+        _directorFiredAtAlready = false;
         try {
 
             String serialPortNameValue =
@@ -361,7 +361,7 @@ public class SerialComm extends TypedAtomicActor
             CommPortIdentifier portID =
                     CommPortIdentifier.getPortIdentifier(serialPortNameValue);
             _serialPort = (SerialPort) portID.open("Ptolemy!", 2000);
-	    // The 2000 above is 2000mS to open the port, otherwise time out.
+            // The 2000 above is 2000mS to open the port, otherwise time out.
 
             int bits_per_second = ((IntToken)(baudRate.getToken())).intValue();
             _serialPort.setSerialPortParams(
@@ -379,40 +379,40 @@ public class SerialComm extends TypedAtomicActor
             // Direct serial events on this port to my serialEvent() method.
 
         } catch (Exception ex) {
-	    // Maybe the port was the problem, _debug() the available ports.
-	    if (_debugging) _debug("Enumerating available ports."
-	            + "  Testing which, if any, are serial ports. {");
-	    Enumeration allPorts = CommPortIdentifier.getPortIdentifiers();
-	    while (allPorts.hasMoreElements()) {
-		CommPortIdentifier id = (CommPortIdentifier)
+            // Maybe the port was the problem, _debug() the available ports.
+            if (_debugging) _debug("Enumerating available ports."
+                    + "  Testing which, if any, are serial ports. {");
+            Enumeration allPorts = CommPortIdentifier.getPortIdentifiers();
+            while (allPorts.hasMoreElements()) {
+                CommPortIdentifier id = (CommPortIdentifier)
                         allPorts.nextElement();
-		if (_debugging) {
-		    _debug("    {");
-		    _debug("        id.toString()=" + id.toString());
-		    _debug("        id.getName()=" + id.getName());
-		    _debug("        id.getPortType()=" + id.getPortType());
-		    _debug("        (id.getPortType() =="
+                if (_debugging) {
+                    _debug("    {");
+                    _debug("        id.toString()=" + id.toString());
+                    _debug("        id.getName()=" + id.getName());
+                    _debug("        id.getPortType()=" + id.getPortType());
+                    _debug("        (id.getPortType() =="
                         + " CommPortIdentifier.PORT_SERIAL)="
-			+ (id.getPortType() ==
+                        + (id.getPortType() ==
                         CommPortIdentifier.PORT_SERIAL));
-		    _debug("    }");
-		}
-	    }
-	    if (_debugging) _debug("}");
+                    _debug("    }");
+                }
+            }
+            if (_debugging) _debug("}");
 
             throw new IllegalActionException(this,
                     "Communication port initialization failed: "
-		    + " for available ports, 'listen' to actor & rerun "
+                    + " for available ports, 'listen' to actor & rerun "
                     + ex);
         }
 
-	/*
-	System.out.println("------");
-	System.out.println(_serialPort.isReceiveThresholdEnabled());
-	System.out.println(_serialPort.getReceiveThreshold());
-	System.out.println(_serialPort.getInputBufferSize());
-	System.out.println("------");
-	*/
+        /*
+        System.out.println("------");
+        System.out.println(_serialPort.isReceiveThresholdEnabled());
+        System.out.println(_serialPort.getReceiveThreshold());
+        System.out.println(_serialPort.getInputBufferSize());
+        System.out.println("------");
+        */
     }
 
 
@@ -427,29 +427,29 @@ public class SerialComm extends TypedAtomicActor
      *  KernelRuntimeException is permitted.
      */
     public synchronized void serialEvent(SerialPortEvent e) {
-	if (false) {
-	    if (e.getEventType() == SerialPortEvent.CD) {
-		System.out.println("+++CD+++");
-	    }
-	    if (e.getEventType() == SerialPortEvent.CTS) {
-		System.out.println("+++CTS+++");
-	    }
-	    if (e.getEventType() == SerialPortEvent.RI) {
-		System.out.println("+++RI+++");
-	    }
-	    if (e.getEventType() == SerialPortEvent.DSR) {
-		System.out.println("+++DSR+++");
-	    }
-	}
+        if (false) {
+            if (e.getEventType() == SerialPortEvent.CD) {
+                System.out.println("+++CD+++");
+            }
+            if (e.getEventType() == SerialPortEvent.CTS) {
+                System.out.println("+++CTS+++");
+            }
+            if (e.getEventType() == SerialPortEvent.RI) {
+                System.out.println("+++RI+++");
+            }
+            if (e.getEventType() == SerialPortEvent.DSR) {
+                System.out.println("+++DSR+++");
+            }
+        }
 
         try {
             if (e.getEventType() == SerialPortEvent.DATA_AVAILABLE) {
-	    //if (e.getEventType() == SerialPortEvent.RI && !_serialPort.isRI()) {
+            //if (e.getEventType() == SerialPortEvent.RI && !_serialPort.isRI()) {
                 if (!_directorFiredAtAlready) {
-		    _directorFiredAtAlready = true;
-		    getDirector().fireAtCurrentTime(this);
-		}
-		notifyAll();
+                    _directorFiredAtAlready = true;
+                    getDirector().fireAtCurrentTime(this);
+                }
+                notifyAll();
             }
         } catch (Exception ex) {
             // This class implements
