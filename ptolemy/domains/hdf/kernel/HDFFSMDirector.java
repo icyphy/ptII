@@ -199,17 +199,22 @@ public class HDFFSMDirector extends FSMDirector {
             //ref[0].postfire();
             _setInputsFromRefinement();
         }
-        if (_firingsSoFar == _firingsPerIteration - 1) {
+        if (_embeddedInSDF || _firingsSoFar == _firingsPerIteration - 1) {
             _chooseTransition(st.nonpreemptiveTransitionList());
         }
-        ChangeRequest request =
-            new ChangeRequest(this, "choose transition") {
-            protected void _execute() throws KernelException {
-                
-            }
-        };
-        request.setPersistent(false);
-        container.requestChange(request);
+        if (_firingsSoFar == 0 && !_embeddedInSDF) {
+            ChangeRequest request =
+                new ChangeRequest(this, "choose transition") {
+                protected void _execute() throws KernelException {
+                    //System.out.println("request executed, firingSoFar = "
+                    //+ _firingsSoFar);  
+                    _firingsSoFar = 0;
+                    //makeStateTransition();   
+                }
+            };
+            request.setPersistent(false);
+            container.requestChange(request);
+        }
         return;
     }
 
@@ -314,6 +319,76 @@ public class HDFFSMDirector extends FSMDirector {
         return list;
     }
     
+    public boolean makeStateTransition() throws IllegalActionException {
+        FSMActor ctrl = getController();
+        State curState = ctrl.currentState();
+        CompositeActor container = (CompositeActor)getContainer();
+        // FIXME
+        //TypedActor currentRefinement =
+        TypedActor[] currentRefinement = curState.getRefinement();
+        // One global iteration has finished.
+        // A state transition can now occur.
+        // Set firing count back to zero for next iteration.
+        //_firingsSoFar = 0;
+        Transition lastChosenTr = _getLastChosenTransition();
+        TypedCompositeActor actor;
+        Director refinementDir;
+        boolean superPostfire;
+        if (lastChosenTr  == null) {
+            // No transition enabled. Remain in the current state.
+            // FIXME
+            //actor = (TypedCompositeActor)curState.getRefinement();
+            actor = (TypedCompositeActor)(curState.getRefinement())[0];
+            refinementDir = actor.getDirector();
+            superPostfire = super.postfire();
+        } else {
+            // Make a state transition.
+            State newState = lastChosenTr.destinationState();
+            _setCurrentState(newState);
+
+            superPostfire = super.postfire();
+            curState = newState;
+
+            // Get the new current refinement actor.
+            // FIXME
+            // actor = (TypedCompositeActor)curState.getRefinement();
+            actor = (TypedCompositeActor)(curState.getRefinement())[0];
+            refinementDir = actor.getDirector();
+            if (refinementDir instanceof HDFFSMDirector) {
+                refinementDir.postfire();
+            } else if (refinementDir instanceof HDFDirector) {
+                Scheduler refinmentSched = ((StaticSchedulingDirector)
+                        refinementDir).getScheduler();
+                refinmentSched.setValid(false);
+                //refinmentSched.getSchedule();
+                ((HDFDirector)refinementDir).getSchedule();
+            } else if (refinementDir instanceof SDFDirector) {
+                Scheduler refinmentSched = ((StaticSchedulingDirector)
+                        refinementDir).getScheduler();
+                refinmentSched.setValid(true);
+                ((SDFScheduler)refinmentSched).getSchedule();
+            } else {
+                throw new IllegalActionException(this,
+                        "Only HDF, SDF, or HDFFSM director is "
+                        + "allowed in the refinement.");
+            }
+        }
+        // Even when the finite state machine remains in the
+        // current state, the schedule may change. This occurs
+        // in cases of multi-level HDFFSM model. The sup-mode
+        // remains the same but the sub-mode has changed.
+        _updateInputTokenConsumptionRates(actor);
+        _updateOutputTokenProductionRates(actor);
+
+        CompositeActor hdfActor = _getHighestFSM();
+        Director director = hdfActor.getExecutiveDirector();
+        if (director instanceof HDFDirector) {
+            ((HDFDirector)director).invalidateSchedule();
+        }
+        //return super.postfire();
+        return superPostfire;
+    }
+    
     /** Return a new receiver of a type compatible with this director.
      *  This returns an instance of SDFReceiver.
      *  @return A new SDFReceiver.
@@ -357,7 +432,7 @@ public class HDFFSMDirector extends FSMDirector {
         boolean postfireReturn = currentRefinement[0].postfire();
         boolean superPostfire;
         _firingsSoFar++;
-
+        /*
         ChangeRequest request =
             new ChangeRequest(this, "commit transition") {
             protected void _execute() throws KernelException {   
@@ -366,67 +441,13 @@ public class HDFFSMDirector extends FSMDirector {
         request.setPersistent(false);
         //container.requestChange(request);
         container.requestChange(request);
-        if (_firingsSoFar == _firingsPerIteration) {
-            // One global iteration has finished.
-            // A state transition can now occur.
-            // Set firing count back to zero for next iteration.
-            _firingsSoFar = 0;
-            Transition lastChosenTr = _getLastChosenTransition();
-            TypedCompositeActor actor;
-            Director refinementDir;
-            if (lastChosenTr  == null) {
-                // No transition enabled. Remain in the current state.
-                // FIXME
-                //actor = (TypedCompositeActor)curState.getRefinement();
-                actor = (TypedCompositeActor)(curState.getRefinement())[0];
-                refinementDir = actor.getDirector();
-                superPostfire = super.postfire();
-            } else {
-                // Make a state transition.
-                State newState = lastChosenTr.destinationState();
-                _setCurrentState(newState);
-
-                superPostfire = super.postfire();
-                curState = newState;
-
-                // Get the new current refinement actor.
-                // FIXME
-                // actor = (TypedCompositeActor)curState.getRefinement();
-                actor = (TypedCompositeActor)(curState.getRefinement())[0];
-                refinementDir = actor.getDirector();
-                if (refinementDir instanceof HDFFSMDirector) {
-                    refinementDir.postfire();
-                } else if (refinementDir instanceof HDFDirector) {
-                    Scheduler refinmentSched = ((StaticSchedulingDirector)
-                            refinementDir).getScheduler();
-                    refinmentSched.setValid(false);
-                    //refinmentSched.getSchedule();
-                    ((HDFDirector)refinementDir).getSchedule();
-                } else if (refinementDir instanceof SDFDirector) {
-                    Scheduler refinmentSched = ((StaticSchedulingDirector)
-                            refinementDir).getScheduler();
-                    refinmentSched.setValid(true);
-                    ((SDFScheduler)refinmentSched).getSchedule();
-                } else {
-                    throw new IllegalActionException(this,
-                            "Only HDF, SDF, or HDFFSM director is "
-                            + "allowed in the refinement.");
-                }
-            }
-            // Even when the finite state machine remains in the
-            // current state, the schedule may change. This occurs
-            // in cases of multi-level HDFFSM model. The sup-mode
-            // remains the same but the sub-mode has changed.
-            _updateInputTokenConsumptionRates(actor);
-            _updateOutputTokenProductionRates(actor);
-
-            CompositeActor hdfActor = _getHighestFSM();
-            Director director = hdfActor.getExecutiveDirector();
-            if (director instanceof HDFDirector) {
-                ((HDFDirector)director).invalidateSchedule();
-            }
-            //return super.postfire();
-            return superPostfire;
+        */
+        if (_embeddedInSDF) {
+            //_firingsSoFar = 0;
+            makeStateTransition();
+        } else if (_firingsSoFar == _firingsPerIteration) {
+            //_firingsSoFar = 0;
+            makeStateTransition();
         }
 
         return postfireReturn;
@@ -452,6 +473,7 @@ public class HDFFSMDirector extends FSMDirector {
         _firingsPerIteration = 1;
         _firingsSoFar = 0;
         _reinitialize = false;
+        _getHighestFSM();
         super.preinitialize();
 
         FSMActor ctrl = getController();
@@ -699,10 +721,11 @@ public class HDFFSMDirector extends FSMDirector {
                 throw new IllegalActionException(this,
                         "This model is not a refinement of an SDF or " +
                         "an HDF model.");
-            } else if (director instanceof SDFDirector) {
-                foundValidDirector = true;
             } else if (director instanceof HDFDirector) {
                 foundValidDirector = true;
+            } else if (director instanceof SDFDirector) {
+                foundValidDirector = true;
+                _embeddedInSDF = true;
             } else {
                 // Move up another level in the hierarchy.
                 container = (CompositeActor)(container.getContainer());
@@ -861,6 +884,8 @@ public class HDFFSMDirector extends FSMDirector {
     // global iteration.
     private int _firingsPerIteration = 1;
 
+    private boolean _embeddedInSDF = false;
+    
     // A flag indicating whether the initialize method is
     // called due to reinitialization.
     private boolean _reinitialize;
