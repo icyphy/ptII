@@ -57,6 +57,7 @@ public class PNPrimeExample {
         port = (PNPort)ramp.getPort("output");
         port.link(queue);
 
+        //System.out.println(myUniverse.description(pt.kernel.Nameable.LIST_PRETTYPRINT));
         //FIXME: Should I use connect() rather than all the above stuff??
         myUniverse.execute();
         System.out.println("Bye World\n");
