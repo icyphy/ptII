@@ -3,6 +3,8 @@
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="TestChain2" class="ptolemy.actor.TypedCompositeActor">
     <property name="DT0" class="ptolemy.domains.dt.kernel.DTDirector">
+        <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+        </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
@@ -12,7 +14,11 @@
         <property name="_location" class="ptolemy.moml.Location" value="526.0, 35.0">
         </property>
     </property>
-    <entity name="OnePort1" class="ptolemy.domains.dt.kernel.test.OnePort">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
+    </property>
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
+    </property>
+    <entity name="1_4" class="ptolemy.domains.dt.kernel.test.OnePort">
         <property name="inrate" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <property name="outrate" class="ptolemy.data.expr.Parameter" value="4">
@@ -40,7 +46,7 @@
             </property>
         </port>
     </entity>
-    <entity name="OnePort2" class="ptolemy.domains.dt.kernel.test.OnePort">
+    <entity name="3_1" class="ptolemy.domains.dt.kernel.test.OnePort">
         <property name="inrate" class="ptolemy.data.expr.Parameter" value="3">
         </property>
         <property name="outrate" class="ptolemy.data.expr.Parameter" value="1">
@@ -68,14 +74,14 @@
             </property>
         </port>
     </entity>
-    <entity name="OnePort3" class="ptolemy.domains.dt.kernel.test.OnePort">
+    <entity name="1_2" class="ptolemy.domains.dt.kernel.test.OnePort">
         <property name="inrate" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <property name="outrate" class="ptolemy.data.expr.Parameter" value="2">
         </property>
         <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="[0, 0]">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="332.0, 121.0">
+        <property name="_location" class="ptolemy.moml.Location" value="336.0, 123.0">
         </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
             <property name="input"/>
@@ -96,14 +102,14 @@
             </property>
         </port>
     </entity>
-    <entity name="OnePort6" class="ptolemy.domains.dt.kernel.test.OnePort">
+    <entity name="3_1_" class="ptolemy.domains.dt.kernel.test.OnePort">
         <property name="inrate" class="ptolemy.data.expr.Parameter" value="3">
         </property>
         <property name="outrate" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="[0, 0]">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="460.0, 121.0">
+        <property name="_location" class="ptolemy.moml.Location" value="474.0, 123.0">
         </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
             <property name="input"/>
@@ -200,15 +206,15 @@
         </port>
     </entity>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="105.0, 127.0">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="109.0, 128.0">
         </vertex>
     </relation>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="392.0, 126.0">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="392.0, 128.0">
         </vertex>
     </relation>
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="276.0, 127.0">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="277.0, 128.0">
         </vertex>
     </relation>
     <relation name="relation23" class="ptolemy.actor.TypedIORelation">
@@ -217,12 +223,12 @@
     </relation>
     <relation name="relation40" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="OnePort1.output" relation="relation8"/>
-    <link port="OnePort2.input" relation="relation8"/>
-    <link port="OnePort2.output" relation="relation10"/>
-    <link port="OnePort3.input" relation="relation10"/>
-    <link port="OnePort3.output" relation="relation9"/>
-    <link port="OnePort6.input" relation="relation9"/>
+    <link port="1_4.output" relation="relation8"/>
+    <link port="3_1.input" relation="relation8"/>
+    <link port="3_1.output" relation="relation10"/>
+    <link port="1_2.input" relation="relation10"/>
+    <link port="1_2.output" relation="relation9"/>
+    <link port="3_1_.input" relation="relation9"/>
     <link port="CurrentTime14.output" relation="relation23"/>
     <link port="CurrentTime14.trigger" relation="relation8"/>
     <link port="CurrentTime16.output" relation="relation35"/>
