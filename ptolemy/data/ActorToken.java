@@ -28,7 +28,7 @@
 @AcceptedRating Red (neuendor@eecs.berkeley.edu)
 
 */
-package ptolemy.data.type.test;
+package ptolemy.data
 
 import java.io.Serializable;
 
