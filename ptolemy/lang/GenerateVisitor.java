@@ -138,7 +138,7 @@ public class GenerateVisitor {
                     _ofs.write(
                             "\n" +
                             "    public Object visit" + typeName + "(" +
-                            + typeName +
+                            typeName +
                             " node, LinkedList args) {\n" +
                             "        return _defaultVisit(node, args);\n" +
                             "    }\n");
