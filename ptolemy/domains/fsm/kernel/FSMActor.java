@@ -60,6 +60,7 @@ import ptolemy.data.expr.Variable;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.Typeable;
 import ptolemy.data.type.BaseType;
+import ptolemy.graph.Inequality;
 
 import java.util.Collections;
 import java.util.Iterator;
@@ -541,20 +542,46 @@ public class FSMActor extends CompositeEntity implements TypedActor {
     }
 
     /** Return the type constraints of this actor. The constraints
-     *  have the form of a list of inequalities. This method collects
-     *  type constraints from the contained Typeables (ports, variables,
-     *  and parameters). In addition, type constraints from all the
-     *  transitions are added. These constraints are determined by the
-     *  guard and trigger expressions of transitions, and actions
-     *  contained by the transitions.
+     *  have the form of a list of inequalities. This method first
+     *  creates constraints such that the type of any input port that
+     *  does not have its type declared must be less than or equal to
+     *  the type of any output port that does not have its type
+     *  declared. Type constraints from the contained Typeables
+     *  (ports, variables, and parameters) are collected. In addition,
+     *  type constraints from all the transitions are added. These
+     *  constraints are determined by the guard and trigger expressions
+     *  of transitions, and actions contained by the transitions.
      *  This method is read-synchronized on the workspace.
-     *  @return a list of inequalities.
+     *  @return A list of inequalities.
      *  @see ptolemy.graph.Inequality
      */
     public List typeConstraintList() {
         try {
             _workspace.getReadAccess();
+
             List result = new LinkedList();
+            Iterator inPorts = inputPortList().iterator();
+            while (inPorts.hasNext()) {
+                TypedIOPort inport = (TypedIOPort)inPorts.next();
+                boolean isUndeclared = inport.getTypeTerm().isSettable();
+                if (isUndeclared) {
+                    // inport has undeclared type
+                    Iterator outPorts = outputPortList().iterator();
+                    while (outPorts.hasNext()) {
+                        TypedIOPort outport =
+                                (TypedIOPort)outPorts.next();
+
+                        isUndeclared = outport.getTypeTerm().isSettable();
+                        if (isUndeclared && inport != outport) {
+                            // outport also has undeclared type
+                            Inequality ineq = new Inequality(
+                                    inport.getTypeTerm(),
+                                    outport.getTypeTerm());
+                            result.add(ineq);
+                        }
+                    }
+                }
+            }
 
             // Collect constraints from contained Typeables.
             Iterator ports = portList().iterator();
