@@ -29,6 +29,7 @@
 execute catches Exceptions and rethrows them as runtime exceptions. why?
 requestInitialization is pickier about what actors are initialized.
 added preinitialization analyses (i.e. constVariableModelAnalysis)
+Look over exitAfterWrapup().
 */
 
 package ptolemy.actor;
@@ -44,10 +45,12 @@ import java.util.ListIterator;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
+import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.PtolemyThread;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// Manager
@@ -211,6 +214,11 @@ public class Manager extends NamedObj implements Runnable {
      */
     public final static State WRAPPING_UP = new State("wrapping up");
 
+    /** Indicator that the execution is in the wrapup phase and about
+     *  to exit. 
+     */
+    public final static State EXITING = new State("exiting");
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -305,6 +313,17 @@ public class Manager extends NamedObj implements Runnable {
             }
         }
         System.out.println(timeAndMemory(startTime));
+    }
+
+    /** Cause the system to exit after wrapup().
+     *  If the ptolemy.ptII.isRunningNightlyBuild property is <b>not</b>
+     *  set, then when wrapup() is almost finished, we call System.exit().
+     *  If the ptolemy.ptII.isRunningNightlyBuild property is set, then
+     *  we throw an Exception.
+     */   
+    public void exitAfterWrapup() {
+        _exitAfterWrapup = true;
+        _setState(EXITING);
     }
 
     /** If the state is not IDLE, set a flag to request that execution
@@ -1006,6 +1025,22 @@ public class Manager extends NamedObj implements Runnable {
         setDeferChangeRequests(false);
 
         _workspace.incrVersion();
+
+        if (_exitAfterWrapup) {
+            if (StringUtilities
+                .getProperty("ptolemy.ptII.isRunningNightlyBuild")
+                .length() > 0) {
+                throw new KernelRuntimeException(this, "Normally, we would "
+                        + "exit here because Manager.exitAfterWrapup() "
+                        + "was called.  However, because the "
+                        + "ptolemy.ptII.isRunningNightlyBuild property "
+                        + "is set, we throw this exception instead.");
+            } else {
+                // Non-zero indicates a problem.
+                System.exit(0);
+            }
+
+        }
         // Wrapup completed successfully
         _setState(IDLE);
     }
@@ -1111,6 +1146,9 @@ public class Manager extends NamedObj implements Runnable {
 
     // Listeners for execution events. This list has weak references.
     private List _executionListeners;
+
+    // Set to true if we should exit after wrapup().
+    private boolean _exitAfterWrapup = false;
 
     // Flag indicating that finish() has been called.
     private boolean _finishRequested = false;

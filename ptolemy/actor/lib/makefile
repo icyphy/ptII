@@ -127,6 +127,7 @@ JSRCS = \
 	DiscreteRandomSource.java \
 	Distributor.java \
 	Exec.java \
+	Exit.java \
 	Expression.java \
 	FileWriter.java \
 	Gaussian.java \
