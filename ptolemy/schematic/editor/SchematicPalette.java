@@ -130,8 +130,8 @@ public class SchematicPalette extends JGraph {
 	public PaletteController (SchematicPalette palette) {
 	    // The interactors attached to terminals and edges
 	    SelectionModel sm = getSelectionModel();	    
-	    NodeInteractor ni = new NodeInteractor(this, sm);
-	    DragInteractor di = new NodeDnDInteractor(this, palette);
+	    NodeInteractor ni = new NodeInteractor(sm);
+	    DragInteractor di = new NodeDnDInteractor(palette);
 
 	    ni.setDragInteractor(di);
 	    setNodeInteractor(ni);
@@ -183,10 +183,6 @@ public class SchematicPalette extends JGraph {
         // FIXME there is probably a better way to do this, rather than 
         // using a drag interactor that doesn't do any dragging.
 	public class NodeDnDInteractor extends DragInteractor {
-	    /** The controller that this interactor is a part of
-	     */
-	    private PaletteController _controller;
-	    
 	    /** The Palette that this interactor is a part of.
 	     */
 	    private SchematicPalette _palette;
@@ -194,10 +190,8 @@ public class SchematicPalette extends JGraph {
 	    /** Create a new NodeDragInteractor and give it a pointer
 	     * to its controller to it can find other useful objects
 	     */
-	    public NodeDnDInteractor (GraphController c, 
-				      SchematicPalette palette) {
-		_controller = (PaletteController) c;
-		_palette = palette;
+	    public NodeDnDInteractor (SchematicPalette palette) {
+                _palette = palette;
 	    }
 
             /** Respond to a mouse press in the palette by setting the 

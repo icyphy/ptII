@@ -284,27 +284,36 @@ public class GraphEditor extends AbstractApplication {
 	System.out.println("library = " + lib.description());
 	//        JTabbedPane pane = createPaneFromComposite(lib);	
 	//        JTabbedPane pane = createPaneFromComposite(getEntityLibrary());
-	DefaultMutableTreeNode top = 
+        /*	DefaultMutableTreeNode top = 
 	    new DefaultMutableTreeNode("Entity Library");
 	createTreeNodes(top, lib);
 	final JTree tree = new JTree(top);       
-	JScrollPane pane = new JScrollPane(tree);
+	JScrollPane pane = new JScrollPane(tree);*/
+        JTreePane pane = new JTreePane("EntityLibrary");
+        createTreeNodes(pane, null, lib);
         s.addShade("Entity Library", null, pane, "The Default entity library");
+        //       pane.setSelectedTitle(lib.getFullName());
     }
     
-    public void createTreeNodes(DefaultMutableTreeNode node,
-				CompositeEntity library) {
+    public void createTreeNodes(JTreePane pane,
+            String parent, CompositeEntity library) {
+        SchematicPalette palette = new SchematicPalette();
 	Enumeration enum = library.getEntities();
+        int i = 0;
         while(enum.hasMoreElements()) {
             Entity entity = 
                 (Entity) enum.nextElement();
-	    DefaultMutableTreeNode newNode =
-		new DefaultMutableTreeNode(entity);
-	    node.add(newNode);
+            if(!(entity instanceof CompositeEntity)) {
+                palette.addEntity(entity, 
+                        60, 50 + (i++) * 50);     
+            }
+
             if(entity instanceof CompositeEntity) {
-		createTreeNodes(node, (CompositeEntity)entity);
+		createTreeNodes(pane, library.getFullName(),
+                        (CompositeEntity)entity);
             }
         }	
+        pane.addEntry(parent, library.getFullName(), palette);
     }
 
     public JTabbedPane createPaneFromComposite(CompositeEntity library) {

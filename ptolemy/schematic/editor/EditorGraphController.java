@@ -123,9 +123,9 @@ public class EditorGraphController extends GraphController {
     public EditorGraphController () {
         // The interactors attached to terminals and edges
         SelectionModel sm = getSelectionModel();
-        NodeInteractor ni = new NodeInteractor(this, sm);
+        NodeInteractor ni = new NodeInteractor(sm);
 	//ni.setSelectionManipulator(new BoundsManipulator());
-        EdgeInteractor ei = new EdgeInteractor(this, sm);
+        EdgeInteractor ei = new EdgeInteractor(sm);
         setNodeInteractor(ni);
         setEdgeInteractor(ei);
 
