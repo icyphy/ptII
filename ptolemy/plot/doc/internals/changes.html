@@ -9,6 +9,14 @@
 <menu>
 <li> The major change is that the classes were moved from
 the <CODE>ptplot</CODE> package to the <CODE>pt.plot</CODE> package.
+
+<li> Ignore the <CODE>-bb</CODE> command line argument.  In the X11
+version of <CODE>pxgraph</CODE>, <CODE>-bb</CODE> drew a bounding box
+around the data region. Formerly, the Java version printed a message about
+<CODE>-bb</CODE> not being supported.  In the Java version of
+<CODE>pxgraph</CODE>, the region where plots appear is a different
+color than the surround region, which makes <CODE>-bb</CODE> useless.
+
 </menu>
 
 <H2>The changes between ptplot1.3 and ptplot1.3p1</H2>
