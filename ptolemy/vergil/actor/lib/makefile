@@ -49,6 +49,7 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
+	EllipseAttribute.java \
 	FilledShapeAttribute.java \
 	ImageAttribute.java \
 	LineAttribute.java \
