@@ -4,38 +4,38 @@ package ptolemy.data.expr;
 
 public interface PtParserTreeConstants
 {
-    public int JJTPTROOTNODE = 0;
-    public int JJTVOID = 1;
-    public int JJTPTFUNCTIONALIFNODE = 2;
-    public int JJTPTLOGICALNODE = 3;
-    public int JJTPTBITWISENODE = 4;
-    public int JJTPTRELATIONALNODE = 5;
-    public int JJTPTSUMNODE = 6;
-    public int JJTPTPRODUCTNODE = 7;
-    public int JJTPTUNARYNODE = 8;
-    public int JJTPTMETHODCALLNODE = 9;
-    public int JJTPTLEAFNODE = 10;
-    public int JJTPTFUNCTIONNODE = 11;
-    public int JJTPTMATRIXCONSTRUCTNODE = 12;
-    public int JJTPTRECORDCONSTRUCTNODE = 13;
-    public int JJTPTARRAYCONSTRUCTNODE = 14;
+  public int JJTPTROOTNODE = 0;
+  public int JJTVOID = 1;
+  public int JJTPTFUNCTIONALIFNODE = 2;
+  public int JJTPTLOGICALNODE = 3;
+  public int JJTPTBITWISENODE = 4;
+  public int JJTPTRELATIONALNODE = 5;
+  public int JJTPTSUMNODE = 6;
+  public int JJTPTPRODUCTNODE = 7;
+  public int JJTPTUNARYNODE = 8;
+  public int JJTPTMETHODCALLNODE = 9;
+  public int JJTPTLEAFNODE = 10;
+  public int JJTPTFUNCTIONNODE = 11;
+  public int JJTPTMATRIXCONSTRUCTNODE = 12;
+  public int JJTPTRECORDCONSTRUCTNODE = 13;
+  public int JJTPTARRAYCONSTRUCTNODE = 14;
 
 
-    public String[] jjtNodeName = {
-        "PtRootNode",
-        "void",
-        "PtFunctionalIfNode",
-        "PtLogicalNode",
-        "PtBitwiseNode",
-        "PtRelationalNode",
-        "PtSumNode",
-        "PtProductNode",
-        "PtUnaryNode",
-        "PtMethodCallNode",
-        "PtLeafNode",
-        "PtFunctionNode",
-        "PtMatrixConstructNode",
-        "PtRecordConstructNode",
-        "PtArrayConstructNode",
-    };
+  public String[] jjtNodeName = {
+    "PtRootNode",
+    "void",
+    "PtFunctionalIfNode",
+    "PtLogicalNode",
+    "PtBitwiseNode",
+    "PtRelationalNode",
+    "PtSumNode",
+    "PtProductNode",
+    "PtUnaryNode",
+    "PtMethodCallNode",
+    "PtLeafNode",
+    "PtFunctionNode",
+    "PtMatrixConstructNode",
+    "PtRecordConstructNode",
+    "PtArrayConstructNode",
+  };
 }

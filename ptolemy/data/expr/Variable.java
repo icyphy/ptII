@@ -41,6 +41,7 @@ import ptolemy.graph.*;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Iterator;
+import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.List;
 import java.lang.reflect.Method;
@@ -167,7 +168,8 @@ The derived class Parameter is fully visible by default.
 
 */
 
-public class Variable extends Attribute implements Typeable, Settable {
+public class Variable extends Attribute
+        implements Typeable, Settable, ValueListener {
 
     /** Construct a variable in the default workspace with an empty string
      *  as its name. The variable is added to the list of objects in the
@@ -321,20 +323,22 @@ public class Variable extends Attribute implements Typeable, Settable {
         newvar._scopeDependents = null;
         newvar._valueDependents = null;
         newvar._scope = null;
+        newvar._parserScope = null;
         newvar._scopeVersion = -1;
 
-	// set _declaredType and _varType
-	if (_declaredType instanceof StructuredType &&
+        // set _declaredType and _varType
+        if (_declaredType instanceof StructuredType &&
                 !_declaredType.isConstant()) {
-	    newvar._declaredType =
+            newvar._declaredType =
                 (Type)((StructuredType)_declaredType).clone();
-	    newvar._varType = newvar._declaredType;
-	}
+            newvar._varType = newvar._declaredType;
+        }
         // _typeAtMost is preserved
         newvar._parser = null;
         newvar._parseTree = null;
+        newvar._parseTreeVersion = -1;
 
-	newvar._constraints = new LinkedList();
+        newvar._constraints = new LinkedList();
         newvar._typeTerm = null;
         return newvar;
     }
@@ -412,7 +416,7 @@ public class Variable extends Attribute implements Typeable, Settable {
                         }
                         try {
                             _scope.append(var);
-                            ((Variable)var)._addScopeDependent(this);
+                            //((Variable)var)._addScopeDependent(this);
                         } catch (NameDuplicationException ex) {
                             // This occurs when a variable is shadowed by one
                             // that has been previously entered in the scope.
@@ -422,6 +426,34 @@ public class Variable extends Attribute implements Typeable, Settable {
                         }
                     }
                 }
+                level1 =
+                    container.attributeList(ScopeExtender.class).iterator();
+                while (level1.hasNext()) {
+                    ScopeExtender extender = (ScopeExtender)level1.next();
+                    Iterator level2 = extender.attributeList().iterator();
+                    while (level2.hasNext()) {
+                        // add the variables in the scope extender to _scope,
+                        // excluding this
+                        var = (Attribute)level2.next();
+                        if ((var instanceof Variable) && (var != this)) {
+                            if (!_isLegalInScope((Variable)var)) {
+                                continue;
+                            }
+                            try {
+                                _scope.append(var);
+                                //((Variable)var)._addScopeDependent(this);
+                            } catch (NameDuplicationException ex) {
+                                // This occurs when a variable is shadowed by
+                                // one that has been previously entered in the
+                                // scope.
+                            } catch (IllegalActionException ex) {
+                                // This should not happen since we are dealing
+                                // with variables which are Nameable.
+                            }
+                        }
+                    }
+                }
+
                 container = (NamedObj)container.getContainer();
             }
             _scopeVersion = workspace().getVersion();
@@ -469,9 +501,9 @@ public class Variable extends Attribute implements Typeable, Settable {
         try {
             if (_needsEvaluation) _evaluate();
             return _varType;
-	} catch (IllegalActionException iae) {
-	    return _declaredType;
-	}
+        } catch (IllegalActionException iae) {
+            return _declaredType;
+        }
     }
 
     /** Return an InequalityTerm whose value is the type of this variable.
@@ -479,8 +511,8 @@ public class Variable extends Attribute implements Typeable, Settable {
      */
     public InequalityTerm getTypeTerm() {
         if (_typeTerm == null) {
-	    _typeTerm = new TypeTerm();
-	}
+            _typeTerm = new TypeTerm();
+        }
         return _typeTerm;
     }
 
@@ -531,15 +563,17 @@ public class Variable extends Attribute implements Typeable, Settable {
         // Force evaluation.
         if (_needsEvaluation) _evaluate();
         // All the value dependents now need evaluation also.
-        if (_valueDependents != null) {
-            Iterator variables = _valueDependents.iterator();
-            while (variables.hasNext()) {
-                Variable var = (Variable)variables.next();
+        if (_valueListeners != null) {
+            Iterator listeners = _valueListeners.iterator();
+            while (listeners.hasNext()) {
+                ValueListener listener = (ValueListener)listeners.next();
                 // Avoid doing this more than once if the the value
                 // dependent appears more than once.  This also has
                 // the advantage of stopping circular reference looping.
-                if (var._needsEvaluation) {
-                    var.propagate();
+                if (listener instanceof Variable) {
+                    if (((Variable)listener)._needsEvaluation) {
+                        ((Variable)listener).propagate();
+                    }
                 }
             }
         }
@@ -658,6 +692,7 @@ public class Variable extends Attribute implements Typeable, Settable {
                 }
                 _scopeDependents.clear();
             }
+            _notifyScopeChange();
 
             _destroyParseTree();
             if (_scope != null) {
@@ -666,13 +701,6 @@ public class Variable extends Attribute implements Typeable, Settable {
                     Variable var = (Variable)vars.next();
                     var._removeScopeDependent(this);
                 }
-                /*
-                  Enumeration vars = _scope.elements();
-                  while (vars.hasMoreElements()) {
-                  Variable var = (Variable)vars.nextElement();
-                  var._removeScopeDependent(this);
-                  }
-                */
             }
             if (_scopeVariables != null) {
                 _scopeVariables.removeAll();
@@ -701,13 +729,13 @@ public class Variable extends Attribute implements Typeable, Settable {
         if (expr == null || expr.equals("")) {
             _token = null;
             _needsEvaluation = false;
-	    // set _varType
-	    if (_declaredType instanceof BaseType) {
-	    	_varType = _declaredType;
-	    } else {
-		// _varType = _declaredType
-		((StructuredType)_varType).initialize(BaseType.UNKNOWN);
-	    }
+            // set _varType
+            if (_declaredType instanceof BaseType) {
+                    _varType = _declaredType;
+            } else {
+                // _varType = _declaredType
+                ((StructuredType)_varType).initialize(BaseType.UNKNOWN);
+            }
         } else {
             _needsEvaluation = true;
         }
@@ -754,7 +782,7 @@ public class Variable extends Attribute implements Typeable, Settable {
     public void setTypeAtLeast(Typeable lesser) {
         Inequality ineq = new Inequality(lesser.getTypeTerm(),
                 this.getTypeTerm());
-	_constraints.add(ineq);
+        _constraints.add(ineq);
     }
 
     /** Constrain the type of this variable to be equal to or
@@ -765,7 +793,7 @@ public class Variable extends Attribute implements Typeable, Settable {
      */
     public void setTypeAtLeast(InequalityTerm typeTerm) {
         Inequality ineq = new Inequality(typeTerm, this.getTypeTerm());
-	_constraints.add(ineq);
+        _constraints.add(ineq);
     }
 
     /** Set a type constraint that the type of this object be less than
@@ -823,31 +851,31 @@ public class Variable extends Attribute implements Typeable, Settable {
      */
     public void setTypeEquals(Type type) throws IllegalActionException {
         if (_token != null) {
-	    if (type.isCompatible(_token.getType())) {
-		_token = type.convert(_token);
-	    } else {
+            if (type.isCompatible(_token.getType())) {
+                _token = type.convert(_token);
+            } else {
                 throw new IllegalActionException(this,
                         "Variable.setTypeEquals(): the currently contained " +
                         "token " + _token.getClass().getName() + "(" +
                         _token.toString() + ") is not compatible " +
                         "with the desired type " + type.toString());
-	    }
+            }
         }
 
-	// set _declaredType to a clone of the argument since the argument
-	// may be a structured type and may change later.
-	try {
-	    _declaredType = (Type)type.clone();
-	} catch (CloneNotSupportedException cnse) {
+        // set _declaredType to a clone of the argument since the argument
+        // may be a structured type and may change later.
+        try {
+            _declaredType = (Type)type.clone();
+        } catch (CloneNotSupportedException cnse) {
             throw new InternalErrorException("Variable.setTypeEquals: " +
                     "The specified type cannot be cloned.");
         }
 
-	// set _varType. It is _token.getType() if _token is not null, or
-	// _declaredType if _token is null.
-	_varType = _declaredType;
-	if (_token != null && _declaredType instanceof StructuredType) {
-	    ((StructuredType)_varType).updateType(
+        // set _varType. It is _token.getType() if _token is not null, or
+        // _declaredType if _token is null.
+        _varType = _declaredType;
+        if (_token != null && _declaredType instanceof StructuredType) {
+            ((StructuredType)_varType).updateType(
                     (StructuredType)_token.getType());
         }
     }
@@ -878,10 +906,10 @@ public class Variable extends Attribute implements Typeable, Settable {
     public void setTypeSameAs(Typeable equal) {
         Inequality ineq = new Inequality(this.getTypeTerm(),
                 equal.getTypeTerm());
-	_constraints.add(ineq);
-	ineq = new Inequality(equal.getTypeTerm(),
+        _constraints.add(ineq);
+        ineq = new Inequality(equal.getTypeTerm(),
                 this.getTypeTerm());
-	_constraints.add(ineq);
+        _constraints.add(ineq);
     }
 
     /** Same as getExpression().
@@ -916,29 +944,29 @@ public class Variable extends Attribute implements Typeable, Settable {
      */
     public List typeConstraintList() {
         // Include all relative types that have been specified.
-	List result = new LinkedList();
-	result.addAll(_constraints);
+        List result = new LinkedList();
+        result.addAll(_constraints);
 
-	// If the variable has a value known at this time, add a constraint.
-	// If the variable is not evaluatable at this time (an exception is
-	// thrown in _evaluate(), do nothing.
-	// Add the inequality to the result list directly to add the
-	// constraint only for this round of type resolution. If using
-	// setTypeAtLeast(), the constraint will be permanent for this
-	// Variable.
+        // If the variable has a value known at this time, add a constraint.
+        // If the variable is not evaluatable at this time (an exception is
+        // thrown in _evaluate(), do nothing.
+        // Add the inequality to the result list directly to add the
+        // constraint only for this round of type resolution. If using
+        // setTypeAtLeast(), the constraint will be permanent for this
+        // Variable.
         try {
             Token currentToken = getToken();
-	    if (currentToken != null) {
-	        Type currentType = currentToken.getType();
+            if (currentToken != null) {
+                Type currentType = currentToken.getType();
 
-	        TypeConstant current = new TypeConstant(currentType);
+                TypeConstant current = new TypeConstant(currentType);
                 Inequality ineq = new Inequality(current, getTypeTerm());
                 result.add(ineq);
             }
         } catch (Exception e) {
             // expression cannot be evaluated at this time.
             // do nothing.
-	}
+        }
 
         // If the variable has a type, add a constraint.
         // Type currentType = getType();
@@ -955,7 +983,7 @@ public class Variable extends Attribute implements Typeable, Settable {
             result.add(ineq);
         }
 
-	return result;
+        return result;
     }
 
     /** Notify the container, if there is one, by calling its
@@ -975,6 +1003,24 @@ public class Variable extends Attribute implements Typeable, Settable {
         while (attributes.hasNext()) {
             Settable attribute = (Settable)attributes.next();
             attribute.validate();
+        }
+    }
+
+    /** React to the change in the specified instance of Settable.
+     *  Mark this variable as needing reevaluation when next accessed.
+     *  Notify the value listeners of this variable.
+     *  @param settable The object that has changed value.
+     */
+    public void valueChanged(Settable settable) {
+        if (!_needsEvaluation) {
+            _needsEvaluation = true;
+            if (_valueListeners != null) {
+                Iterator listeners = _valueListeners.iterator();
+                while (listeners.hasNext()) {
+                    ValueListener listener = (ValueListener)listeners.next();
+                    listener.valueChanged(this);
+                }
+            }
         }
     }
 
@@ -1064,6 +1110,35 @@ public class Variable extends Attribute implements Typeable, Settable {
         }
     }
 
+    /** Notify the value listeners of this variable that this variable
+     *  changed.
+     */
+    protected void _notifyValueListeners() {
+        if (_valueListeners != null) {
+            Iterator listeners = _valueListeners.iterator();
+            while (listeners.hasNext()) {
+                ValueListener listener = (ValueListener)listeners.next();
+                listener.valueChanged(this);
+            }
+        }
+    }
+
+    /** Notify the value listeners of this variable that their scope
+     *  changed.
+     */
+    protected void _notifyScopeChange() {
+        if (_valueListeners != null) {
+            Iterator listeners =
+                    (new LinkedList(_valueListeners)).iterator();
+            while (listeners.hasNext()) {
+                ValueListener listener = (ValueListener)listeners.next();
+                if (listener instanceof Variable) {
+                    ((Variable)listener).removeFromScope(this);
+                }
+            }
+        }
+    }
+
     /** Remove the argument from the list of scope dependents of this
      *  variable.
      *  @param var The variable whose scope no longer includes this
@@ -1095,7 +1170,8 @@ public class Variable extends Attribute implements Typeable, Settable {
      *  Do nothing if a parse tree already exists.
      */
     private void _buildParseTree() throws IllegalActionException {
-        if (_parseTree != null) {
+        if (_parseTreeVersion == workspace().getVersion() &&
+                _parseTree != null) {
             return;
         }
         if (_parser == null) {
@@ -1106,9 +1182,13 @@ public class Variable extends Attribute implements Typeable, Settable {
             _parseTree = _parser.generateParseTree(_currentExpression);
         } else {
             // System.out.println("Compiled but needed scope.");
+            if (_parserScope == null) {
+                _parserScope = new VariableScope();
+            }
             _parseTree = _parser.generateParseTree(_currentExpression,
-                    getScope());
+                    _parserScope);
         }
+        _parseTreeVersion = workspace().getVersion();
         return;
     }
 
@@ -1135,7 +1215,7 @@ public class Variable extends Attribute implements Typeable, Settable {
         if (node instanceof ASTPtLeafNode) {
             ASTPtLeafNode leaf = (ASTPtLeafNode)node;
             if (leaf._var != null) {
-                leaf._var._removeValueDependent(this);
+                leaf._var.removeValueListener(this);
             }
         }
     }
@@ -1151,7 +1231,7 @@ public class Variable extends Attribute implements Typeable, Settable {
         if (_currentExpression != null) {
             _needsEvaluation = true;
         }
-        _notifyValueDependents();
+        _notifyValueListeners();
     }
 
     /** Evaluate the current expression to a token. If this variable
@@ -1191,7 +1271,7 @@ public class Variable extends Attribute implements Typeable, Settable {
         // have been triggered by evaluating the expression of this variable,
         // which means that the expression directly or indirectly refers
         // to itself.
-	if (_dependencyLoop) {
+        if (_dependencyLoop) {
             _dependencyLoop = false;
             throw new IllegalActionException("Found dependency loop "
                     + "when evaluating " + getFullName()
@@ -1213,9 +1293,9 @@ public class Variable extends Attribute implements Typeable, Settable {
                     + "\"\nIn variable: "
                     + getFullName());
         } finally {
-	    _dependencyLoop = false;
-	    workspace().doneReading();
-	}
+            _dependencyLoop = false;
+            workspace().doneReading();
+        }
     }
 
     /*  Set the token value and type of the variable.
@@ -1240,48 +1320,48 @@ public class Variable extends Attribute implements Typeable, Settable {
             _token = null;
             _needsEvaluation = false;
 
-	    // set _varType
-	    if (_declaredType instanceof BaseType) {
-	    	_varType = _declaredType;
-	    } else {
-		// _varType = _declaredType
-		((StructuredType)_varType).initialize(BaseType.UNKNOWN);
-	    }
+            // set _varType
+            if (_declaredType instanceof BaseType) {
+                    _varType = _declaredType;
+            } else {
+                // _varType = _declaredType
+                ((StructuredType)_varType).initialize(BaseType.UNKNOWN);
+            }
         } else {
-	    // newToken is not null, check if it is compatible with
-	    // _declaredType. For structured types, _declaredType and _varType
-	    // are the same reference, need to initialize this type
-	    // before checking compatibility. But if the new token is not
-	    // compatible with the declared type, the current resolved type
-	    // need to be preserved, so make a clone.
-	    Type declaredType;
-	    try {
-	        declaredType = (Type)_declaredType.clone();
-	    } catch (CloneNotSupportedException cnse) {
-	        throw new InternalErrorException("Variable._setToken: " +
-		        "Cannot clone the declared type of this Variable.");
-	    }
-	    if (declaredType instanceof StructuredType) {
-		((StructuredType)declaredType).initialize(BaseType.UNKNOWN);
-	    }
-	    if (declaredType.isCompatible(newToken.getType())) {
-		newToken = declaredType.convert(newToken);
-	    } else {
+            // newToken is not null, check if it is compatible with
+            // _declaredType. For structured types, _declaredType and _varType
+            // are the same reference, need to initialize this type
+            // before checking compatibility. But if the new token is not
+            // compatible with the declared type, the current resolved type
+            // need to be preserved, so make a clone.
+            Type declaredType;
+            try {
+                declaredType = (Type)_declaredType.clone();
+            } catch (CloneNotSupportedException cnse) {
+                throw new InternalErrorException("Variable._setToken: " +
+                        "Cannot clone the declared type of this Variable.");
+            }
+            if (declaredType instanceof StructuredType) {
+                ((StructuredType)declaredType).initialize(BaseType.UNKNOWN);
+            }
+            if (declaredType.isCompatible(newToken.getType())) {
+                newToken = declaredType.convert(newToken);
+            } else {
                 throw new IllegalActionException(this,
-			"Variable._setToken: Cannot store a token of type " +
-                    	newToken.getType().toString() +
-			", which is incompatible with type " +
-			declaredType.toString());
-	    }
+                        "Variable._setToken: Cannot store a token of type " +
+                            newToken.getType().toString() +
+                        ", which is incompatible with type " +
+                        declaredType.toString());
+            }
 
-	    // update _varType to the type of the new token.
-	    if (_declaredType instanceof StructuredType) {
-	    	((StructuredType)_varType).updateType(
+            // update _varType to the type of the new token.
+            if (_declaredType instanceof StructuredType) {
+                    ((StructuredType)_varType).updateType(
                         (StructuredType)newToken.getType());
-	    } else {
-		// _declaredType is a BaseType
-		_varType = newToken.getType();
-	    }
+            } else {
+                // _declaredType is a BaseType
+                _varType = newToken.getType();
+            }
 
             // Check setTypeAtMost constraint.
             if (_typeAtMost != BaseType.UNKNOWN) {
@@ -1333,7 +1413,7 @@ public class Variable extends Attribute implements Typeable, Settable {
         // Save to restore in case the change is rejected.
         Token oldToken = _token;
         Type oldVarType = _varType;
-	if (_varType instanceof StructuredType) {
+        if (_varType instanceof StructuredType) {
             try {
                 oldVarType = (Type)((StructuredType)_varType).clone();
             } catch (CloneNotSupportedException ex2) {
@@ -1342,14 +1422,15 @@ public class Variable extends Attribute implements Typeable, Settable {
                         " Cannot clone _varType" +
                         ex2.getMessage());
             }
-	}
+        }
         boolean oldNoTokenYet = _noTokenYet;
         String oldInitialExpression = _initialExpression;
         Token oldInitialToken = _initialToken;
 
+
         try {
             _setToken(newToken);
-            _notifyValueDependents();
+            //_notifyValueDependents();
             NamedObj container = (NamedObj)getContainer();
             if (container != null) {
                 if ( !oldVarType.equals(_varType) &&
@@ -1358,22 +1439,16 @@ public class Variable extends Attribute implements Typeable, Settable {
                 }
                 container.attributeChanged(this);
             }
-            if (_valueListeners != null) {
-                Iterator listeners = _valueListeners.iterator();
-                while (listeners.hasNext()) {
-                    ValueListener listener = (ValueListener)listeners.next();
-                    listener.valueChanged(this);
-                }
-            }
+            _notifyValueListeners();
         } catch (IllegalActionException ex) {
             // reverse the changes
             _token = oldToken;
-	    if (_varType instanceof StructuredType) {
+            if (_varType instanceof StructuredType) {
                 ((StructuredType)_varType).updateType(
                         (StructuredType)oldVarType);
-	    } else {
-		_varType = oldVarType;
-	    }
+            } else {
+                _varType = oldVarType;
+            }
             _noTokenYet = oldNoTokenYet;
             _initialExpression = oldInitialExpression;
             _initialToken = oldInitialToken;
@@ -1431,9 +1506,15 @@ public class Variable extends Attribute implements Typeable, Settable {
     // The parser used by this variable to parse expressions.
     private PtParser _parser;
 
+    // The instance of VariableScope.
+    private ParserScope _parserScope = new VariableScope();
+
     // If the variable was last set from an expression, this stores
     // the parse tree for that expression.
     private ASTPtRootNode _parseTree;
+
+    // The version of the parse tree.
+    private long _parseTreeVersion = -1;
 
     // The token contained by this variable.
     private ptolemy.data.Token _token;
@@ -1462,77 +1543,77 @@ public class Variable extends Attribute implements Typeable, Settable {
 
     private class TypeTerm implements InequalityTerm {
 
-	///////////////////////////////////////////////////////////////
-	////                       public inner methods            ////
+        ///////////////////////////////////////////////////////////////
+        ////                       public inner methods            ////
 
-	/** Return this Variable.
-	 *  @return A Variable.
-	 */
-	public Object getAssociatedObject() {
-	    return Variable.this;
-	}
+        /** Return this Variable.
+         *  @return A Variable.
+         */
+        public Object getAssociatedObject() {
+            return Variable.this;
+        }
 
-	/** Return the type of this Variable.
-	 */
-	public Object getValue() {
-	    return getType();
+        /** Return the type of this Variable.
+         */
+        public Object getValue() {
+            return getType();
         }
 
         /** Return this TypeTerm in an array if this term represent
-	 *  a type variable. This term represents a type variable
-	 *  if the type of this variable is not set through setTypeEquals().
+         *  a type variable. This term represents a type variable
+         *  if the type of this variable is not set through setTypeEquals().
          *  If the type of this variable is set, return an array of size zero.
-	 *  @return An array of InequalityTerm.
+         *  @return An array of InequalityTerm.
          */
         public InequalityTerm[] getVariables() {
-	    if (isSettable()) {
-	    	InequalityTerm[] result = new InequalityTerm[1];
-	    	result[0] = this;
-	    	return result;
-	    }
-	    return (new InequalityTerm[0]);
+            if (isSettable()) {
+                    InequalityTerm[] result = new InequalityTerm[1];
+                    result[0] = this;
+                    return result;
+            }
+            return (new InequalityTerm[0]);
         }
 
-	/** Reset the variable part of this type to te specified type.
-	 *  @param e A Type.
-	 *  @exception IllegalActionException If the type is not settable,
-	 *   or the argument is not a Type.
-	 */
-	public void initialize(Object e)
-		throws IllegalActionException {
+        /** Reset the variable part of this type to te specified type.
+         *  @param e A Type.
+         *  @exception IllegalActionException If the type is not settable,
+         *   or the argument is not a Type.
+         */
+        public void initialize(Object e)
+                throws IllegalActionException {
 
-	    if ( !isSettable()) {
-		throw new IllegalActionException("TypeTerm.initialize: " +
+            if ( !isSettable()) {
+                throw new IllegalActionException("TypeTerm.initialize: " +
                         "The type is not settable.");
-	    }
+            }
 
-	    if ( !(e instanceof Type)) {
-		throw new IllegalActionException("TypeTerm.initialize: " +
+            if ( !(e instanceof Type)) {
+                throw new IllegalActionException("TypeTerm.initialize: " +
                         "The argument is not a Type.");
-	    }
+            }
 
-	    if (_declaredType == BaseType.UNKNOWN) {
-		_varType = (Type)e;
-	    } else {
-		// _declaredType is a StructuredType
-		((StructuredType)_varType).initialize((Type)e);
-	    }
-	}
+            if (_declaredType == BaseType.UNKNOWN) {
+                _varType = (Type)e;
+            } else {
+                // _declaredType is a StructuredType
+                ((StructuredType)_varType).initialize((Type)e);
+            }
+        }
 
         /** Test if the type of this variable is fixed. The type is fixed if
-	 *  setTypeEquals() is called with an argument that is not
-	 *  BaseType.UNKNOWN, or the user has set a non-null expression or
-	 *  token into this variable.
+         *  setTypeEquals() is called with an argument that is not
+         *  BaseType.UNKNOWN, or the user has set a non-null expression or
+         *  token into this variable.
          *  @return True if the type of this variable can be set;
-	 *   false otherwise.
+         *   false otherwise.
          */
         public boolean isSettable() {
-	    return ( !_declaredType.isConstant());
+            return ( !_declaredType.isConstant());
         }
 
         /** Check whether the current value of this term is acceptable.
          *  This method delegates the check to the isTypeAcceptable()
-	 *  method of the outer class.
+         *  method of the outer class.
          *  @return True if the current value is acceptable.
          */
         public boolean isValueAcceptable() {
@@ -1540,31 +1621,32 @@ public class Variable extends Attribute implements Typeable, Settable {
         }
 
         /** Set the type of this variable.
-	 *  @param e a Type.
+         *  @param e a Type.
          *  @exception IllegalActionException If this type is not settable,
-	 *   or this type cannot be updated to the new type.
+         *   or this type cannot be updated to the new type.
          */
         public void setValue(Object e) throws IllegalActionException {
-	    if ( !isSettable()) {
-	    	throw new IllegalActionException("TypeTerm.setValue: The " +
-                        "type is not settable.");
-	    }
+            if ( !isSettable()) {
+                    throw new IllegalActionException("TypeTerm.setValue: The "
+                        + "type is not settable.");
+            }
 
-	    if ( !_declaredType.isSubstitutionInstance((Type)e)) {
-	    	throw new IllegalActionException("Variable$TypeTerm.setValue: "
-		        + "Cannot update the type of this variable to the "
-			+ "new type."
-			+ " Variable: " + Variable.this.getFullName()
-			+ ", Variable type: " + _declaredType.toString()
-			+ ", New type: " + e.toString());
-	    }
+            if ( !_declaredType.isSubstitutionInstance((Type)e)) {
+                    throw new IllegalActionException("Variable$TypeTerm"
+                        + ".setValue: "
+                        + "Cannot update the type of this variable to the "
+                        + "new type."
+                        + " Variable: " + Variable.this.getFullName()
+                        + ", Variable type: " + _declaredType.toString()
+                        + ", New type: " + e.toString());
+            }
 
-	    if (_declaredType == BaseType.UNKNOWN) {
-		_varType = (Type)e;
-	    } else {
-		// _declaredType is a StructuredType
-		((StructuredType)_varType).updateType((StructuredType)e);
-	    }
+            if (_declaredType == BaseType.UNKNOWN) {
+                _varType = (Type)e;
+            } else {
+                // _declaredType is a StructuredType
+                ((StructuredType)_varType).updateType((StructuredType)e);
+            }
         }
 
         /** Override the base class to give a description of the variable
@@ -1575,5 +1657,81 @@ public class Variable extends Attribute implements Typeable, Settable {
             return "(" + Variable.this.toString() + ", " + getType() + ")";
         }
     }
+
+    private class VariableScope implements ParserScope {
+
+        /** Look up and return the attribute with the specified name in the
+         *  scope. Return null if such an attribute does not exist.
+         *  @return The attribute with the specified name in the scope.
+         */
+        public Attribute get(String name) {
+            Attribute result = null;
+            if (_cacheVersion == workspace().getVersion()) {
+                // cache is valid
+                result = (Attribute)_cachedAttributes.get(name);
+                if (result != null) return result;
+            } else {
+                _cachedAttributes.clear();
+                _cacheVersion = workspace().getVersion();
+            }
+
+            if (_scopeVariables != null) {
+                result = (Attribute)_scopeVariables.get(name);
+                if (result != null) {
+                    // add to/remove from scope does not change workspace
+                    // version number, so cannot cache this result
+                    //_cachedAttributes.put(name, result);
+                    return result;
+                }
+            }
+
+            NamedObj container = (NamedObj)getContainer();
+            while (container != null) {
+                result = _searchIn(container, name);
+                if (result != null) {
+                    _cachedAttributes.put(name, result);
+                    return result;
+                } else {
+                    container = (NamedObj)container.getContainer();
+                }
+            }
+            return result;
+        }
+
+        /** Return the list of attributes within the scope.
+         *  @return The list of attributes within the scope.
+         */
+        public NamedList attributeList() {
+            return getScope();
+        }
+
+        // Search in the container for an attribute with the given name.
+        // Search recursively in any instance of ScopeExtender in the
+        // container.
+        private Attribute _searchIn(NamedObj container, String name) {
+            Attribute result = container.getAttribute(name);
+            if (result != null && result != Variable.this &&
+                    result instanceof Variable)
+                return result;
+            Iterator extenders =
+                    container.attributeList(ScopeExtender.class).iterator();
+            while (extenders.hasNext()) {
+                ScopeExtender extender = (ScopeExtender)extenders.next();
+                result = extender.getAttribute(name);
+                if (result != null && result != Variable.this &&
+                        result instanceof Variable)
+                    return result;
+            }
+            return null;
+        }
+
+        // Version number of the scope cache.
+        private long _cacheVersion = -1;
+
+        // Cache of attributes that are looked up.
+        private Hashtable _cachedAttributes = new Hashtable();
+
+    }
+
 }
 

@@ -47,9 +47,6 @@ when the expression is evaluated. The constants are stored in a hash table,
 using their names as key. The value of each constant is wrapped in a data
 token.
 
-FIXME: Make this a subclass of Attribute. Any parameter contained will be
-added as a constant that can be used in the expression language.
-
 @author Xiaojun Liu
 @version $Id$
 @since Ptolemy II 2.0
@@ -80,7 +77,7 @@ public class Constants {
      *   if there is no constant with the given name in the table.
      */
     public static ptolemy.data.Token get(String name) {
-	return (ptolemy.data.Token)_table.get(name);
+        return (ptolemy.data.Token)_table.get(name);
     }
 
     /** Remove the constant with the given name from the table.
@@ -103,10 +100,10 @@ public class Constants {
 
     // Add the default set of named constants to the table.
     static {
-	DoubleToken token = new DoubleToken(java.lang.Math.PI);
-	_table.put("PI", token);
-	_table.put("pi", token);
-	token = new DoubleToken(java.lang.Math.E);
+        DoubleToken token = new DoubleToken(java.lang.Math.PI);
+        _table.put("PI", token);
+        _table.put("pi", token);
+        token = new DoubleToken(java.lang.Math.E);
         _table.put("E", token);
         _table.put("e", token);
         ComplexToken i = new ComplexToken(new Complex(0.0, 1.0));
@@ -125,17 +122,17 @@ public class Constants {
         } catch (Exception e) {}
 
         // Type constants.
-	_table.put("boolean", BooleanToken.FALSE);
-	_table.put("complex", new ComplexToken(new Complex(0.0, 0.0)));
-	_table.put("double", new DoubleToken(0.0));
+        _table.put("boolean", BooleanToken.FALSE);
+        _table.put("complex", new ComplexToken(new Complex(0.0, 0.0)));
+        _table.put("double", new DoubleToken(0.0));
         _table.put("fixedpoint", new FixToken(0.0, 2, 1));
-	_table.put("general", new ptolemy.data.Token());
-	_table.put("int", new IntToken(0));
-	_table.put("long", new LongToken(0));
-	_table.put("matrix", new ConcreteMatrixToken());
+        _table.put("general", new ptolemy.data.Token());
+        _table.put("int", new IntToken(0));
+        _table.put("long", new LongToken(0));
+        _table.put("matrix", new ConcreteMatrixToken());
         _table.put("object", new ObjectToken());
-	_table.put("scalar", new ConcreteScalarToken());
-	_table.put("string", new StringToken(""));
+        _table.put("scalar", new ConcreteScalarToken());
+        _table.put("string", new StringToken(""));
         _table.put("unknown", new UnknownToken());
     }
 }

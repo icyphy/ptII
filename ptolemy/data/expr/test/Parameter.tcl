@@ -366,3 +366,64 @@ test Parameter-13.2 {Test exportMoML} {
     </property>
 </entity>
 }
+
+######################################################################
+####
+#
+test Parameter-14.0 {Test the mechanism for extending scope} {
+    set e1 [java::new ptolemy.kernel.CompositeEntity]
+    set e2 [java::new ptolemy.kernel.ComponentEntity $e1 "e2"]
+    set ext1 [java::new ptolemy.data.expr.ScopeExtendingAttribute $e1 "ext1"]
+    set p1 [java::new ptolemy.data.expr.Parameter $ext1 "p"]
+    set ext2 [java::new ptolemy.data.expr.ScopeExtendingAttribute $e2 "ext2"]
+    set p2 [java::new ptolemy.data.expr.Parameter $ext2 "p"]
+    set p3 [java::new ptolemy.data.expr.Parameter $e1 "p3"]
+    set p4 [java::new ptolemy.data.expr.Parameter $e2 "p4"]
+
+    $p1 setExpression "5"
+    $p2 setExpression "0"
+
+    $p3 setExpression "p"
+    $p4 setExpression "p"
+
+    set r1 [$p3 getToken]
+    set r2 [$p4 getToken]
+
+    $ext2 setContainer [java::null]
+
+    set r3 [$p4 getToken]
+
+    $ext1 setContainer [java::null]
+
+    catch {$p4 getToken} msg
+
+    list [$r1 toString] [$r2 toString] [$r3 toString] $msg
+} {5 0 5 {ptolemy.kernel.util.IllegalActionException: Object name: .<Unnamed Object>.e2.p4:
+Error evaluating expression: "p"
+In variable: ..e2.p4
+Caused by:
+ ptolemy.kernel.util.IllegalActionException: Error parsing expression "p":
+The ID p is undefined.}}
+
+######################################################################
+####
+#
+test Parameter-15.0 {Test for a known bug - insert a new parameter does not shadow same-named parameter at higher level} {
+    set e1 [java::new ptolemy.kernel.CompositeEntity]
+    set e2 [java::new ptolemy.kernel.ComponentEntity $e1 "e2"]
+    set p1 [java::new ptolemy.data.expr.Parameter $e1 "p"]
+    set p3 [java::new ptolemy.data.expr.Parameter $e2 "p3"]
+
+    $p1 setExpression "5"
+    $p3 setExpression "p"
+    
+    set r1 [$p3 getToken]
+
+    set p2 [java::new ptolemy.data.expr.Parameter $e2 "p"]
+    $p2 setExpression "10"
+
+    set r2 [$p3 getToken]
+
+    list [$r1 toString] [$r2 toString]
+} {5 10} {KNOWN_FAILED}
+
