@@ -52,7 +52,10 @@ OTHER_FILES_TO_BE_JARED = \
 	StaticUnits.xml \
 	StaticUnits1.gif \
 	StaticUnits2.gif \
-	StaticUnits3.gif
+	StaticUnits3.gif \
+	StaticUnits4.gif \
+	StaticUnits5.gif \
+	StaticUnits6.gif
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \

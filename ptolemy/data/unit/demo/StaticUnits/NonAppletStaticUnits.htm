@@ -67,17 +67,73 @@ the same units as the minus port.
 </p>
 <p>
 Some of the units constraints in the model are inconsistent.
-In addition to the HeatExchanger port unitconstraints, and AddSubtract actor unit constraints
+In addition to the HeatExchanger port unit constraints, and AddSubtract actor unit constraints
 illustrated above,
 the HeatProduction.heat port has the units <b>calories</b>.
 Since the HeatProduction.heat port is connected (via the AddSubtract actor)
 to the HeatExchanger.output port which has units <b>calories/second</b>
 the model is inconsistent in terms of the units constraints.
+<h2>UnitConstraints Solver<a name="UnitConstraintsSolver"></h2>
 <p>
-The UnitsConstraint Solver can be used to discover, and
-analyse these inconsistencies. (Right mouse-click and select
-UnitsConstraint Solver).
+The UnitConstraint Solver is used to discover, analyze, and, in some cases, fix,
+any unit inconsistencies that exist in a model.
+The UnitConstraintSolver ialog
+<p>
+The following is a step-by-step example of units, that, among other things, involve using the UCSD.
+For a detailed reference explanation of just the UnitConstraints Solver Dialog,
+<a href="../../../../actor/gui/doc/unitConstraintsSolver.htm">click here</a>.
+<p>
+ To start the UnitConstraint Solver right mouse-click and select
+UnitsConstraint Solver as shown below.
 </p>
+<p>
+<center>
+<img src="StaticUnits4.gif" alt="Starting the UnitConstraints Solver">
+</center>
+</p>
+<p>
+This will cause the UnitConstraints Solver Dialog to appear as shown below.
+Although, no components were selected prior to starting the UCSD it is assumed that all
+of the components will be used. A component is highlighted with yellow if it is a member of this set.
+<p>
+<center>
+<img src="StaticUnits5.gif" alt="The UnitConstraints Solver">
+</center>
+</p>
+By clicking on the Run button in the Minimal Span Solutions panel the solver finds a single minimal
+span solution.
+<p>
+<center>
+<img src="StaticUnits6.gif" alt="Result of running Minimal Span Solutions">
+</center>
+</p>
+<p>
+This is indicated in the results pane with the label
+<b>Inconsistent relation5 joule/population relation7 1/hour</b>.
+This is a shortened version of the results and indicates three properties
+<ul>
+<li>The soultion is inconsistent.
+<li>To become consistent relation5 would need to have an actor inserted that
+transforms the input by joule/population.
+<li>To become consistent relation7 would need to have an actor inserted that
+transforms the input by 1/hour.
+</ul>
+<p>
+If the result <b>Inconsistent relation5 joule/population relation7 1/hour</b> is selected
+the result is then displayed in the graph viewer.
+The components that are part of the minimal span solution are colored with green signifying that
+a component is consistent and red signifying that it is inconsistent.
+In the above illustration, relation7 connects the flow actor to the HeaExchanger actor with
+flow.output having units gallonUS, and HeatExchanger.flow having units gallonUS/hour.
+This relation is red indicating that it is inconsistent.
+In addition, the illustration also shows that if the cursor is placed over the relation on
+the graph viewer the requisite transformation is displayed as a tooltip.
+<p>
+The graph viewer also displays the inconsistency found on relation5 (this is in a portion
+of the graph viewer not shown in the above illustration).
+In this case the growth.population port has units population and is connedted (via relation5)
+to the HeatProduction.work port that has units joules.
+Placing the cursor over this relation causes the tooltip <b>joule/population</b> to appear.
 </body>
 </html>
 
