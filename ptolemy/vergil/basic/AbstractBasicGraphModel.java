@@ -34,8 +34,6 @@ import diva.graph.GraphEvent;
 import diva.graph.modular.CompositeModel;
 import diva.graph.modular.ModularGraphModel;
 import diva.graph.modular.NodeModel;
-
-import java.util.List;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Variable;
@@ -47,6 +45,8 @@ import ptolemy.moml.Location;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.vergil.kernel.AttributeNodeModel;
 import ptolemy.vergil.kernel.CompositeEntityModel;
+
+import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 //// AbstractBasicGraphModel

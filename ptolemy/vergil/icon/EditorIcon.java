@@ -35,6 +35,7 @@ import diva.canvas.Figure;
 import diva.canvas.toolbox.BasicRectangle;
 import diva.canvas.toolbox.LabelFigure;
 import diva.gui.toolbox.FigureIcon;
+import ptolemy.kernel.util.*;
 
 import javax.swing.SwingConstants;
 import java.awt.Color;
@@ -42,7 +43,6 @@ import java.awt.Font;
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 import java.io.Writer;
-import ptolemy.kernel.util.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// EditorIcon

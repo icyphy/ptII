@@ -44,17 +44,6 @@ import diva.graph.layout.IncrementalLayoutListener;
 import diva.graph.layout.IncrLayoutAdapter;
 import diva.graph.layout.LayoutTarget;
 import diva.util.Filter;
-
-import java.awt.Font;
-import java.awt.Shape;
-import java.awt.event.ActionEvent;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Rectangle2D;
-import java.net.URL;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import javax.swing.Action;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.gui.MessageHandler;
@@ -69,7 +58,18 @@ import ptolemy.vergil.toolbox.MenuActionFactory;
 import ptolemy.vergil.toolbox.MenuItemFactory;
 import ptolemy.vergil.toolbox.PortSite;
 
+import javax.swing.Action;
 import javax.swing.SwingConstants;
+import java.awt.Font;
+import java.awt.Shape;
+import java.awt.event.ActionEvent;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
+import java.net.URL;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+
 //////////////////////////////////////////////////////////////////////////
 //// ActorController
 /**

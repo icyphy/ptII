@@ -31,13 +31,6 @@
 package ptolemy.vergil.fsm.modal;
 
 import diva.graph.GraphController;
-
-import java.awt.Component;
-import java.awt.event.ActionEvent;
-import java.util.Iterator;
-import java.util.List;
-import java.util.StringTokenizer;
-import javax.swing.Action;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedActor;
 import ptolemy.domains.fsm.kernel.State;
@@ -54,6 +47,13 @@ import ptolemy.vergil.kernel.AttributeController;
 import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
 import ptolemy.vergil.toolbox.MenuItemFactory;
+
+import javax.swing.Action;
+import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.util.Iterator;
+import java.util.List;
+import java.util.StringTokenizer;
 
 //////////////////////////////////////////////////////////////////////////
 //// HierarchicalStateController
