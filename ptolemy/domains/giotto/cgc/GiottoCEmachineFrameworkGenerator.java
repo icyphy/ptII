@@ -56,6 +56,7 @@ import ptolemy.actor.gui.TableauFrame;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.domains.giotto.kernel.GiottoCodeGenerator;
+import ptolemy.domains.giotto.kernel.GiottoCodeGeneratorUtilities;
 import ptolemy.domains.giotto.kernel.GiottoDirector;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -474,7 +475,7 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
 
                     String portInitialValueFunction = "CGinit_" + portID;
                     String portInitialValue = _getInitialValueString(port);
-                    _checkGiottoID(portID);
+                    GiottoCodeGeneratorUtilities.checkGiottoID(portID);
                     FCoutDriversImplString += "inline void"
                         + " "
                         + portInitialValueFunction
@@ -648,7 +649,7 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
         Iterator actors = model.entityList().iterator();
         while (actors.hasNext()) {
             actor = (Actor) actors.next();
-            if (!_needsInputDriver(actor)) {
+            if (!GiottoCodeGeneratorUtilities.needsInputDriver(actor)) {
                 continue;
             }
 
