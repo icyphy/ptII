@@ -44,7 +44,7 @@ virtual machine, but with Sun's JDK 1.3 under Windows 2000, it is
 
 @author  Edward A. Lee
 @version $Id$
- */
+*/
 public class WallClockTime extends Source {
 
     /** Construct an actor with the given container and name.
@@ -76,7 +76,7 @@ public class WallClockTime extends Source {
     }
 
     /** Record the start time.
-     *  @throws IllegalActionException If the base class throws it.
+     *  @exception IllegalActionException If the base class throws it.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
