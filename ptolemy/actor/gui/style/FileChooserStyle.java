@@ -32,6 +32,9 @@ import java.io.File;
 import java.net.URI;
 
 import ptolemy.actor.gui.PtolemyQuery;
+import ptolemy.data.BooleanToken;
+import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -108,8 +111,11 @@ public class FileChooserStyle extends ParameterEditorStyle {
      *  attribute containing this style.  The name of the entry is
      *  the name of the attribute.  Attach the attribute to the created entry.
      *  @param query The query into which to add the entry.
+     *  @exception IllegalActionException If thrown when accessing parameters
+     *   specifying whether files or directories should be listed.
      */
-    public void addEntry(PtolemyQuery query) {
+    public void addEntry(PtolemyQuery query)
+            throws IllegalActionException {
         Settable container = (Settable)getContainer();
         String name = container.getName();
         String defaultValue = container.getExpression();
@@ -122,14 +128,30 @@ public class FileChooserStyle extends ParameterEditorStyle {
                 directory = modelFile.getParentFile();
             }
         }
+        // Check to see whether the attribute being configured
+        // specifies whether files or directories should be listed.
+        // By default, only files are selectable.
         boolean allowFiles = true;
         boolean allowDirectories = false;
         if (container instanceof NamedObj) {
-            if (((NamedObj)container).getAttribute("noFiles") != null) {
-                allowFiles = false;
+            Parameter marker = (Parameter)((NamedObj)container)
+                    .getAttribute("allowFiles", Parameter.class);
+            if (marker != null) {
+                Token value = marker.getToken();
+                if (value instanceof BooleanToken) {
+                    allowFiles = ((BooleanToken)value)
+                            .booleanValue();
+                }
             }
-            if (((NamedObj)container).getAttribute("allowDirectories") != null) {
-                allowDirectories = true;
+            marker = (Parameter)((NamedObj)container)
+                    .getAttribute("allowDirectories",
+                    Parameter.class);
+            if (marker != null) {
+                Token value = marker.getToken();
+                if (value instanceof BooleanToken) {
+                    allowDirectories = ((BooleanToken)value)
+                            .booleanValue();
+                }
             }
         }
         // FIXME: What to do when neither files nor directories are allowed?
