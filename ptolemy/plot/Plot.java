@@ -384,9 +384,14 @@ public class Plot extends PlotBox {
                 }
             };
             try {
-                // NOTE: Have to use invokeAndWait() here, not invokeLater()
-                // for reasons that I don't understand...
-                SwingUtilities.invokeAndWait(doPlotPoint);
+                // NOTE: Using invokeAndWait() here rather than invokeLater()
+                // seems to help LivePlot somewhat to leave less cruft on
+                // the screen, for reasons that are not clear.  However,
+                // this causes a deadlock...  If the fill button has
+                // been pushed, then the event thread is stalled, and won't
+                // deal with this request.  Thus, this call never returns.
+                // SwingUtilities.invokeAndWait(doPlotPoint);
+                SwingUtilities.invokeLater(doPlotPoint);
             } catch (Exception ex) {
                 // Ignore InterruptedException.
                 // Other exceptions should not occur.
@@ -1649,9 +1654,14 @@ public class Plot extends PlotBox {
                 }
             };
             try {
-                // NOTE: Have to use invokeAndWait() here, not invokeLater()
-                // for reasons that I don't understand...
-                SwingUtilities.invokeAndWait(doPlotPoint);
+                // NOTE: Using invokeAndWait() here rather than invokeLater()
+                // seems to help LivePlot somewhat to leave less cruft on
+                // the screen, for reasons that are not clear.  However,
+                // this causes a deadlock...  If the fill button has
+                // been pushed, then the event thread is stalled, and won't
+                // deal with this request.  Thus, this call never returns.
+                // SwingUtilities.invokeAndWait(doPlotPoint);
+                SwingUtilities.invokeLater(doPlotPoint);
             } catch (Exception ex) {
                 // Ignore InterruptedException.
                 // Other exceptions should not occur.
