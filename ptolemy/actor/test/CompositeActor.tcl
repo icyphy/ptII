@@ -144,6 +144,9 @@ test CompositeActor-5.1 {Test newPort} {
 #
 test CompositeActor-6.1 {Invoke all the action methods} {
     # NOTE: Uses the setup above
+    # e0 has to be called first to setup the time information
+    $e0 preinitialize
+    $e0 initialize
 
     set stream [java::new java.io.ByteArrayOutputStream]
     set printStream [java::new \

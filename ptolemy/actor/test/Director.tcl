@@ -92,6 +92,10 @@ test Director-4.1 {Test _makeDirectorOf} {
 #
 test Director-5.1 {Test action methods} {
     # NOTE: Uses the setup above
+    # directors have to be called first to set up time information
+    $d4 preinitialize
+    $d3 preinitialize
+
     set a1 [java::new ptolemy.actor.test.TestActor $e0 A1]
     set a2 [java::new ptolemy.actor.test.TestActor $e0 A2]
     $a1 clear
