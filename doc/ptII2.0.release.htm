@@ -39,7 +39,7 @@ java classes and the Ptolemy II design document
 of the Java classes.  The design document is not included
 with Ptolemy II 2.0beta, but will be shipped with the Ptolemy II 2.0
 production release.   In the interim, please see the "Using Vergil"
-chapter (<a href="design/usingVergil.pdf">PDF</a> - 
+chapter (<a href="design/usingVergil/usingVergil.pdf">PDF</a> - 
 <a href="design/usingVergil/index.htm">HTML</a>)
 
 
@@ -499,36 +499,75 @@ An actor that converts a matrix to sequence of output tokens.
 <h2>Backward compatibility issues</h2>
 Most models developed under Ptolemy II 1.0.1 should run under Ptolemy II 2.0.
 
- <p>The MoMLParser includes a backward compatibility filter that looks
-for actors that have changed while parsing a model.  The backward
-compatibility filter will make what ever change is necessary, and
-the user will eventually be prompted to save the model.
+ <p>The MoMLParser has been extended to include a list of backward
+compatibility filters that look for actors that have changed while
+parsing a model.  The backward compatibility filters will make what
+ever change is necessary, and the user will eventually be prompted to
+save the model.  The filters themselves are defined in <a
+href="codeDoc/ptolemy/moml/filter/package-summary.html">ptolemy.moml.filter</a>
 
  <p>Below are the backward compatibility issues
 that are handled automatically.
 
 <menu>
+<li> ptolemy.moml.filter.AddEditorFactory:
+ If a parameter has a <code>_location</code>, then
+Add a VisibleParameterEditorFactory named <code>_editorFactory</code>
+<li> ptolemy.moml.filter.AddIcon:
+Add specialized icons that display the value
+of one of the parameters.
+<br>The affected actors are:
+  <menu>
+  <li>ptolemy.actor.lib.Scale
+  <li>ptolemy.actor.lib.Const
+  <li>ptolemy.actor.lib.TrigFunction
+  <li>ptolemy.actor.lib.MathFunction
+  <li>ptolemy.actor.lib.Expression
+  </menu>
+<li> ptolemy.moml.filter.HideAnnotationNames:
+If an annotation name ends with
+'annotation1', then add <code>_hideName</code> if necessary.
 
-<li> actor.lib.conversions.ComplexToCartesian,
-actor.lib.conversions.CartesianToComplex: 
-port <I>real</I>  is now called <CODE>x</CODE>
-port <I>imag</I>  is now called <CODE>y</CODE>
- <br>The backward compatibility filter should make this change automatically
+<li> ptolemy.moml.filter.PortNameChanges:
+Update any actor port names that have been
+renamed. 
+  <br>Below are the actors that are affected, along with the old port name 
+  and the new port name:
+  <menu>
+  <li>ptolemy.actor.lib.Sleep
+  <br>&nbsp;&nbsp;		delay	 -&gt; sleepTime
+  <li>ptolemy.actor.lib.conversions.ComplexToCartesian
+  <br>&nbsp;&nbsp;		imag	 -&gt; y
+  <br>&nbsp;&nbsp;		real	 -&gt; x
+  <li>	ptolemy.actor.lib.conversions.CartesianToComplex
+  <br>&nbsp;&nbsp;		imag	 -&gt; y
+  <br>&nbsp;&nbsp;		real	 -&gt; x
+  </menu>
 
-<li> actor.lib.Sleep: 
-<I>delay</I> parameter is now called <I>sleepTime</I>
- <br>The backward compatibility filter should make this change automatically
-
-<li> actor.lib.javasound.AudioReader:
-<I>sourceURL</I> is now a parameter
- <br>The backward compatibility filter should make this change automatically
-
-<li> sdf.lib.vq.ImagePartition, sdf.lib.vq.ImageUnpartition, 
-sdf.lib.vq.HTVQEncode, sdf.lib.vq.VQDecode: 
-<I>input</I> and <I>output</I> are not of type ptolemy.actor.TypedIOPort
+<li>ptolemy.moml.filter.PropertyClassChanges:
+Update any actor port class names that have been renamed. 
+  <br>Below are the actors that are affected, along with the port name 
+  and the new classname:
+   
+  <menu>
+  <li>	ptolemy.domains.sdf.lib.vq.ImageUnpartition
+  <br>&nbsp;&nbsp;		output	 -&gt; ptolemy.actor.TypedIOPort
+  <br>&nbsp;&nbsp;		input	 -&gt; ptolemy.actor.TypedIOPort
+  <li>	ptolemy.actor.lib.javasound.AudioReader
+  <br>&nbsp;&nbsp;		sourceURL	 -&gt; ptolemy.data.expr.Parameter
+  <li>	ptolemy.domains.sdf.lib.vq.VQDecode
+  <br>&nbsp;&nbsp; 		output	 -&gt; ptolemy.actor.TypedIOPort
+  <br>&nbsp;&nbsp;		input	 -&gt; ptolemy.actor.TypedIOPort
+  <li>	ptolemy.domains.sdf.lib.vq.HTVQEncode
+  <br>&nbsp;&nbsp;		output	 -&gt; ptolemy.actor.TypedIOPort
+  <br>&nbsp;&nbsp;		input	 -&gt; ptolemy.actor.TypedIOPort
+  <li>	ptolemy.domains.sdf.lib.vq.ImagePartition
+  <br>&nbsp;&nbsp;		output	 -&gt; ptolemy.actor.TypedIOPort
+  <br>&nbsp;&nbsp;		input	 -&gt; ptolemy.actor.TypedIOPort
+  </menu>
 </menu>
 
-Below are the changes that are not handled automatically
+Below are the changes that are not handled automatically:
 <menu>
 <li> ct.kernel.CTRealTimeDirector has been removed, the fix
 is to use ct.kernel.CTDirector instead and to 
@@ -576,7 +615,7 @@ recompiling is safer.
      <li> <a href="codeDoc/ptolemy/data/type/ArrayType.html">Array types,</a> and
      <li> <a href="codeDoc/ptolemy/data/FixToken.html">Fixed-point type</a>
      </ul>
-<li> An expression language for parameter expressions;
+<li> <a href="expression.htm">An expression language for parameter expressions;</a>
 <li> <a href="codeDoc/ptolemy/actor/lib/package-summary.html">Data and domain polymorphic component library;</a>
 <li> <a href="codeDoc/ptolemy/actor/lib/Expression.html">A polymorphic expression actor;</a>
 <li> <a href="codeDoc/ptolemy/moml/package-summary.html">A very simple XML file format called MoML;</a>
@@ -587,7 +626,7 @@ recompiling is safer.
 <a href="../ptolemy/domains/dde/doc/body.htm" target="body">DDE</a>
 )
 <li> Hierarchically interoperable domains
-(<a href="../ptolemy/domains/ct/demo/SigmaDelta/SigmaDelta.htm" target="body">(CT/FSM Accelerometer demo</a>);
+(<a href="../ptolemy/domains/ct/demo/SigmaDelta/SigmaDelta.htm" target="main">CT/FSM Accelerometer demo</a>);
 
 <li> <a href="docbody.htm" target="body">On-line documentation (in HTML);</a>
 <li> <a href="../ptolemy/actor/lib/javasound/demo/KarplusStrong/KarplusStrong.htm" target="main">Audio signal processing capabilities;</a></br>
@@ -723,7 +762,7 @@ been tested with Matlab 6.1, which corresponds with R12.1.
 
 <li> The actor.lib.comm.SerialComm actor requires that Javacomm is installed
 
-<a href="http://java.sun.com/products/javacomm/index.html#in_browser"><CODE>http://java.sun.com/products/javacomm/index.html</CODE></a>.  The SerialComm actor
+<a href="http://java.sun.com/products/javacomm/index.html#in_browser" target="_top"><CODE>http://java.sun.com/products/javacomm/index.html</CODE></a>.  The SerialComm actor
 will only work under Windows.
 
 </menu>
