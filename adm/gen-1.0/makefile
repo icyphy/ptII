@@ -67,6 +67,7 @@ GNU_DEST =	$(FTP_DEST)/pub/gnu/$(PTOLEMY_SRC)$(VERSION)
 # make USER=cxh PTIIHOME=//c/users/cxh/ptII TAR=tar 
 # make USER=cxh PTIIHOME=//c/users/cxh/ptII/adm/trees/ptII1.0beta TAR=tar 
 # make USER=cxh PTIIHOME=//c/users/cxh/ptII/adm/trees/ptII1.0beta TAR=tar PTIIADM=//c/users/cxh/ptII/adm
+# make USER=cxh PTIIHOME=/home/eecs/cxh/ptII/adm/trees/ptII1.0beta PTIIADM=/home/eecs/cxh/ptII/adm
 USER =		ptII
 PTIIHOME =	/users/ptII
 PTIIADM =	$(PTIIHOME)/adm
