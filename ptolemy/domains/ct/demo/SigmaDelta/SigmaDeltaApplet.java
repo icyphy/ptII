@@ -67,12 +67,12 @@ Berkeley, Fall 1997
 */
 public class SigmaDeltaApplet extends CTApplet {
 
-    ////////////////////////////////////////////////////////////////////////
-////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
-/** Initialize the applet.
- */
-public void init() {
+    /** Initialize the applet.
+     */
+    public void init() {
 
     super.init();
     Panel controlpanel = new Panel();
@@ -269,11 +269,11 @@ public void init() {
         }
     }
 
-    ////////////////////////////////////////////////////////////////////////
-////                         private variables                      ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
 
-// The query box.
-private Query _query;
+    // The query box.
+    private Query _query;
 
     // FIXME: Under jdk 1.2, the following can (and should) be private
     private DEDirector _deDirector;
@@ -285,8 +285,4 @@ private Query _query;
     private CTPeriodicSampler _sampler;
     private TimedPlotter _ctPlot;
     private TimedPlotter _dePlot;
-
 }
-
-
-
