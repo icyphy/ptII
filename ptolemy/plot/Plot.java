@@ -937,8 +937,10 @@ public class Plot extends PlotBox {
                     connected = false;
 		    break;
 		default:
-		    throw new PlotDataException("Don't understand `" + c + 
-						"'character in binary data");
+		    throw new PlotDataException("Don't understand `" + 
+						(char)c + "' character " +
+						"(decimal value = " + c +
+						") in binary file");
 		}
 	    } 
 	} catch (EOFException e) {}	    
