@@ -31,11 +31,12 @@
 package ptolemy.schematic.util;
 
 import ptolemy.kernel.util.*;
+import ptolemy.schematic.xml.XMLElement;
+import diva.util.*;
+
 import java.util.Enumeration;
 import java.util.NoSuchElementException;
 import collections.*;
-import ptolemy.schematic.xml.XMLElement;
-import diva.util.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// PTMLObject
@@ -134,7 +135,7 @@ public class PTMLObject extends diva.util.BasicPropertyContainer
      *  atomic (see CompositeEntity), and always returns false if the entities
      *  are not in the same workspace.
      *  This method is read-synchronized on the workspace.
-     *  @see CompositeEntity.isAtomic
+     *  @see ptolemy.kernel.CompositeEntity#isAtomic
      *  @return True if this contains the argument, directly or indirectly.
      */
     public boolean deepContains(NamedObj inside) {
