@@ -33,6 +33,7 @@ package ptolemy.data;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.graph.CPO;
 import ptolemy.math.Complex;
+import ptolemy.math.IntegerMatrixMath;
 import ptolemy.data.type.*;
 
 //////////////////////////////////////////////////////////////////////////
