@@ -91,6 +91,7 @@ JSRCS = \
 	Latch.java \
 	Lattice.java \
 	LevinsonDurbin.java \
+	Limiter.java \
 	LookupTable.java \
 	MathFunction.java \
 	MaxIndex.java \

@@ -25,6 +25,9 @@
   <entity name="Expression" class="ptolemy.actor.lib.Expression">
   </entity>
 
+  <entity name="Limiter" class="ptolemy.actor.lib.Limiter">
+  </entity>
+
   <entity name="LookupTable" class="ptolemy.actor.lib.LookupTable">
   </entity>
 
