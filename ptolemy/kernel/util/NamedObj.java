@@ -72,13 +72,11 @@ public class NamedObj {
         return name;
     }
 
-   /** Set the name of the object if not previously set
-     * @return false if previously set and left unchanged, else true
+   /** Set the name of the object
+     * @param name newName
      */	
-    public boolean setName(String newName) {
-        if (!name.equals("")) { return false; }
+    public void setName(String newName) {
         name = newName;
-        return true;
     }
 
     /** Specify the specific instance's place in the
