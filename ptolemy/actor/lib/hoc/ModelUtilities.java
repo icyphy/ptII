@@ -52,10 +52,9 @@ A collection of utilities for manipulating a Ptolemy model.
 FIXME: Currently there is only one major operation for invoke
 the execution of a model. We may add more later.
 
-
 @author Yang Zhao
-@version $ $
-@since Ptolemy II 3.0
+@version $Id$
+@since Ptolemy II 3.1
 */
 public class ModelUtilities {
 
