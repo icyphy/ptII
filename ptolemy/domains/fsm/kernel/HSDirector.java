@@ -32,7 +32,6 @@ package ptolemy.domains.fsm.kernel;
 
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.ParseTreeEvaluator;
-import ptolemy.data.expr.ParseTreeEvaluatorForGuardExpression;
 import ptolemy.data.expr.Variable;
 import ptolemy.domains.ct.kernel.CTTransparentDirector;
 import ptolemy.domains.ct.kernel.CTDirector;
@@ -257,22 +256,18 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
             Transition tr = _ctrl._checkTransition(_st.
                 nonpreemptiveTransitionList());
             if (tr == null) {
+                _lastTransitionAccurate = true;
                 return result;
             }
             else {
                 Variable guard = tr._guard2;
-                guard.setParseTreeEvaluator( (ParseTreeEvaluator)new
-                    ParseTreeEvaluatorForGuardExpression());
                 _distanceToBoundary = ( (DoubleToken) guard.getToken()).
                     doubleValue();
-                if (_debugging) _debug("The distance to the boundary is: " + _distanceToBoundary);
-                System.out.println("The distance to the boundary is: " + _distanceToBoundary);
+                _transitionAccurate = (_distanceToBoundary < 1e-4);
 
-                _transitionAccurate = (_distanceToBoundary < 1e-5);
-
-                if (_transitionAccurate && _debugging) _debug("good choice.");
-                if (_transitionAccurate) System.out.println("good choice.");
-
+                if (_transitionAccurate) {
+                    _lastTransitionAccurate = true;
+                }
                 return result && _transitionAccurate;
             }
         } catch (Exception e) {
@@ -391,30 +386,68 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
         } else {
             // FIXME: needs better algorithm
             // FIXME: only handles one integrator
-            double maximumDerivative = 0.0;
 
-            Iterator actors = _enabledRefinements.iterator();
-            while (actors.hasNext()) {
-                CompositeActor actor = (CompositeActor)actors.next();
-                Iterator integrators = actor.entityList(Integrator.class).iterator();
-                while (integrators.hasNext()) {
-                    Integrator integrator = (Integrator) integrators.next();
-                    try {
-                        double input = ( (DoubleToken) integrator.input.get(0)).
-                            absolute().doubleValue();
-                        if (input > maximumDerivative) {
-                            maximumDerivative = input;
+            // If last step size is not accurate, we use a linear interpolation
+            // approach to get the refined step size; otherwise, we use the
+            // current derivatives of integrators to refine the step size.
+
+            double possibleStepSize = result;
+
+            if (!_lastTransitionAccurate) {
+                /*
+                System.out.println();
+                System.out.println("====> using linear interopolation.");
+                System.out.println("====> current step size " + result + " former step size " + _lastStepSize);
+                System.out.println("====> current distance to boundary " + _distanceToBoundary + " former " + _lastDistanceToBoundary);
+*/
+                possibleStepSize = _lastStepSize - (_lastStepSize - result)
+                    *_lastDistanceToBoundary / (_lastDistanceToBoundary - _distanceToBoundary);
+            } else {
+
+//                System.out.println();
+//                System.out.println("***** using derivative.");
+                double maximumDerivative = 0.0;
+
+                Iterator actors = _enabledRefinements.iterator();
+                while (actors.hasNext()) {
+                    CompositeActor actor = (CompositeActor) actors.next();
+                    Iterator integrators = actor.entityList(Integrator.class).
+                        iterator();
+                    while (integrators.hasNext()) {
+                        Integrator integrator = (Integrator) integrators.next();
+                        try {
+                            double input = ( (DoubleToken) integrator.input.get(
+                                0)).
+                                absolute().doubleValue();
+                            if (input > maximumDerivative) {
+                                maximumDerivative = input;
+                            }
                         }
-                    } catch (IllegalActionException e) {
-                        //FIXME: how to handle the exception.
-                        System.out.println("FIXME" + e.getMessage());
-                        maximumDerivative = 1.0;
+                        catch (IllegalActionException e) {
+                            //FIXME: how to handle the exception.
+                            System.out.println("FIXME" + e.getMessage());
+                            maximumDerivative = 1.0;
+                        }
                     }
                 }
+
+                possibleStepSize = result - _distanceToBoundary/maximumDerivative;
             }
 
-            // step size is always reduced.
-            return result - _distanceToBoundary/Math.abs(maximumDerivative);
+            // save for next step size checking.
+            _lastDistanceToBoundary = _distanceToBoundary;
+            _lastTransitionAccurate = false;
+            _lastStepSize = result;
+
+//            System.out.println("           refined current Step size " + possibleStepSize);
+
+            if (possibleStepSize < dir.getMinStepSize()) {
+                // This step size is too small and not accurate.
+                return result/2.0;
+            } else {
+                // step size is always reduced.
+                return possibleStepSize;
+            }
         }
     }
 
@@ -435,4 +468,6 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
 
     // Lcoal variable to indicate the distance to boundary.
     private double _lastDistanceToBoundary = 0.0;
+    private double _lastStepSize = 0.0;
+    private boolean _lastTransitionAccurate = true;
 }

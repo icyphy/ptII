@@ -50,6 +50,8 @@ import ptolemy.data.BooleanToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.ParseTreeEvaluator;
+import ptolemy.data.expr.ParseTreeEvaluatorForGuardExpression;
 import ptolemy.data.expr.UnknownResultException;
 import ptolemy.data.type.BaseType;
 import ptolemy.actor.TypedActor;
@@ -196,6 +198,8 @@ public class Transition extends ComponentRelation {
         // an expression that cannot be evaluated.
         _guard2.setLazy(true);
         _guard2.setTypeEquals(BaseType.DOUBLE);
+        _guard2.setParseTreeEvaluator( (ParseTreeEvaluator)new
+            ParseTreeEvaluatorForGuardExpression());
 
         _trigger = new Variable(this, "_trigger");
         // Make the variable lazy since it will often have
