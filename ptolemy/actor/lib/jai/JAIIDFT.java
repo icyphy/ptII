@@ -42,13 +42,24 @@ import ptolemy.kernel.util.*;
 //////////////////////////////////////////////////////////////////////////
 //// JAIIDFT
 /**
-   Calculate the inverse discrete Fourier transform of an image.  The 
-   output has half as many bands as the input.  Bands 0 and 1 get 
-   transformed into Band 0.  Bands 2 and 3 get transformed into Band 1,
-   etc.
+   Calculate the inverse discrete Fourier transform of an image.  If the 
+   input is complex, there are two options.  One is to set the dataNature
+   parameter to <i>complexToReal</i> (the default).  The output would have 
+   half the bands of the input (bands 0 and 1 get transformed into band 0,
+   bands 2 and 3 would get transformed into band 1, etc.), and could be 
+   display or saved after passing through a JAIDataCaster actor.
    <p>
-   The data of the output is of a high resolution, not suitable for
-   displaying or saving.  To display or save the output of this image,
+   The other option would be to set it to <i>complexToComplex</i>, in which
+   case the output would have the same number of bands as the input.
+   <p>
+   If the input is real, the only option is to set the dataNature parameter
+   to <i>realToComplex</i>.  An alternative to this would be to create a
+   complex image from this real image by using the real image as a magnitude
+   image, and creating a phase image of all 0's, and making a complex image
+   using the JAIPolarToComplex actor.
+   <p>
+   The data of the output is of a high resolution (doubles), not suitable 
+   for displaying or saving.  To display or save the output of this image,
    use the JAIDataCaster Actor to cast the data to an appropriate type
    (for instance, byte).
  
@@ -87,18 +98,28 @@ public class JAIIDFT extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** Fill in here.
+    /** A parameter that describes the nature of the input and output
+     *  data.  The default is <i>complexToReal</i> (so that the output
+     *  can be saved and/or displayed after putting it through the
+     *  JAIDataCaster actor).  The setting <i>complexToComplex</i> can 
+     *  also be used.  The setting <i>realToComplex</i> should probably
+     *  not be used.
      */
     public StringAttribute dataNature;
 
-    /** Fill in here.
+   /** The scaling to be done on the output.  There are three options,
+     *  <i>none</i> (does no scaling), <i>unitary</i> (multiplies by 
+     *  square root of the product of the dimensions), and 
+     *  <i>dimensions</i> (the default, multiplies by the product of the 
+     *  dimensions).  In a DFT-IDFT chain, the overall scaling should 
+     *  equal the product of the dimensions.
      */
     public StringAttribute scalingType;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Fill in here.
+    /** Override the base class and set the parameters.
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the function is not recognized.
      */
@@ -136,7 +157,9 @@ public class JAIIDFT extends Transformer {
     /** Fire this actor.
      *  Output the inverse discrete Fourier transform of the inputted 
      *  image.
-     *  @exception IllegalActionException If a contained method throws it.
+     *  @exception IllegalActionException If a contained method throws it,
+     *  or if there is an invalid scaling type, or an invalid data nature
+     *  set.     
      */
     public void fire() throws IllegalActionException {
         super.fire();

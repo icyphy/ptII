@@ -53,8 +53,12 @@ import ptolemy.kernel.util.*;
    as the input (the dataNature parameter should be set to 
    "complexToComplex", "complexToReal should never be used").
    <p>
+   The image is zero-padded to the next highest power of 2 (unless it 
+   already is a power of 2, in which case nothing happens).
+   <p>
    The output of this actor may not be suitable for displaying or saving 
-   because of the increase in the number of bands.  
+   because of the increase in the number of bands, as well as the high
+   resolution of the data (doubles).
 
    @see JAIIDFT
    @author James Yeh
@@ -147,7 +151,8 @@ public class JAIDFT extends Transformer {
     /** Fire this actor.
      *  Output the discrete Fourier transform of the inputted image.
      *  @exception IllegalActionException If a contained method throws it,
-     *  
+     *  or if there is an invalid scaling type, or an invalid data nature
+     *  set.
      */
     public void fire() throws IllegalActionException {
         super.fire();
