@@ -108,7 +108,7 @@ public class Location extends SingletonAttribute
      */
     public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
-        Location newObject = (Location)super.clone(workspace());
+        Location newObject = (Location)super.clone(workspace);
         // Copy the location so that the reference in the new object
         // does not refer to the same array.
         int length = _location.length;
