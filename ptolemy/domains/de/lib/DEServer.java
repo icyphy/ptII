@@ -89,6 +89,12 @@ public class DEServer extends DEActor {
 
 
     ///////////////////////////////////////////////////////////////////
+    ////                     ports and parameters                  ////
+
+    public DEIOPort output;
+    public DEIOPort input;
+
+    ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
 
@@ -133,8 +139,4 @@ public class DEServer extends DEActor {
     private double _serviceTime;
     private boolean _firstInput = true;
     private double _doneTime = 0.0;
-
-    // the ports.
-    public DEIOPort output;
-    public DEIOPort input;
 }
