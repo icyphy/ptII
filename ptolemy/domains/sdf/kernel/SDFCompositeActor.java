@@ -40,15 +40,16 @@ import collections.HashedMap;
 //////////////////////////////////////////////////////////////////////////
 //// SDFCompositeActor
 /**
-A CompositeActor that can exist in an SDF-scheduled domain.   Implements
+A TypedCompositeActor that can exist in an SDF-scheduled domain.   Implements
 rated ports via the DataflowActor interface.
 
 @author Stephen Neuendorffer
 @version $Id$
-@see ptolemy.actors.CompositeActor
+@see ptolemy.actors.TypedCompositeActor
 @see ptolemy.actors.IOPort
 */
-public class SDFCompositeActor extends CompositeActor implements DataflowActor {
+public class SDFCompositeActor extends TypedCompositeActor 
+    implements DataflowActor {
 
     /** Construct an actor in the default workspace with an empty string
      *  The object is added to the workspace directory.
@@ -83,7 +84,7 @@ public class SDFCompositeActor extends CompositeActor implements DataflowActor {
      *  @exception NameDuplicationException If the name coincides with
      *   an entity already in the container.
      */
-    public SDFCompositeActor(CompositeActor container, String name)
+    public SDFCompositeActor(TypedCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _init();

@@ -46,19 +46,24 @@ import ptolemy.domains.sdf.kernel.*;
 
 public class SDFJoin extends SDFAtomicActor {
 
-    public SDFJoin(CompositeActor container, String name)
+    public SDFJoin(TypedCompositeActor container, String name)
         throws IllegalActionException, NameDuplicationException {
         super(container, name);
         try{
-            IOPort inputport1 = (IOPort)newPort("input1");
+            TypedIOPort inputport1 = (TypedIOPort)newPort("input1");
             inputport1.setInput(true);
             setTokenConsumptionRate(inputport1, 1);
-            IOPort inputport2 = (IOPort)newPort("input2");
+            inputport1.setDeclaredType(IntToken.class);
+
+            TypedIOPort inputport2 = (TypedIOPort)newPort("input2");
             inputport2.setInput(true);
             setTokenConsumptionRate(inputport2, 1);
-            IOPort outputport = (IOPort)newPort("output");
+            inputport2.setDeclaredType(IntToken.class);
+         
+            TypedIOPort outputport = (TypedIOPort)newPort("output");
             outputport.setOutput(true);
             setTokenProductionRate(outputport, 2);
+            outputport.setDeclaredType(IntToken.class);
         }
         catch (IllegalActionException e1) {
             System.out.println("SDFJoin: constructor error");
@@ -68,9 +73,9 @@ public class SDFJoin extends SDFAtomicActor {
     public void fire() throws IllegalActionException {
         IntToken message;
 
-        IOPort inputport1 = (IOPort) getPort("input1");
-        IOPort inputport2 = (IOPort) getPort("input2");
-        IOPort outputport = (IOPort) getPort("output");
+        TypedIOPort inputport1 = (TypedIOPort) getPort("input1");
+        TypedIOPort inputport2 = (TypedIOPort) getPort("input2");
+        TypedIOPort outputport = (TypedIOPort) getPort("output");
 
         message = (IntToken)inputport1.get(0);
         System.out.print("Join1 - ");

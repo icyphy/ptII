@@ -46,14 +46,15 @@ import ptolemy.domains.sdf.kernel.*;
  * @author Steve Neuendorffer
  */
 public class SDFRamp extends SDFAtomicActor {
-    public SDFRamp(CompositeActor container, String name)
+    public SDFRamp(TypedCompositeActor container, String name)
             throws IllegalActionException,
             NameDuplicationException {
         super(container, name);
         try{
-            IOPort outputport = (IOPort) newPort("output");
+            TypedIOPort outputport = (TypedIOPort) newPort("output");
             outputport.setOutput(true);
             setTokenProductionRate(outputport, 1);
+            outputport.setDeclaredType(IntToken.class);
         }
         catch (IllegalActionException e1) {
             System.out.println("SDFRamp: constuctor error");
@@ -64,7 +65,7 @@ public class SDFRamp extends SDFAtomicActor {
 
     public void fire() throws IllegalActionException {
         int i;
-        IOPort outputport = (IOPort) getPort("output");
+        TypedIOPort outputport = (TypedIOPort) getPort("output");
         int tokens = getTokenProductionRate(outputport);
         for(i = 0; i < tokens; i++) {
             Token message = new IntToken(value);

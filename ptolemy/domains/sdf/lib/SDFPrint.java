@@ -42,13 +42,14 @@ import ptolemy.domains.sdf.kernel.*;
  */
 public class SDFPrint extends SDFAtomicActor {
 
-    public SDFPrint(CompositeActor container, String name)
+    public SDFPrint(TypedCompositeActor container, String name)
         throws IllegalActionException, NameDuplicationException {
         super(container, name);
         try{
-            IOPort inputport = (IOPort)newPort("input");
+            TypedIOPort inputport = (TypedIOPort)newPort("input");
             inputport.setInput(true);
             setTokenConsumptionRate(inputport, 1);
+            inputport.setDeclaredType(IntToken.class);
         }
         catch (IllegalActionException e1) {
             System.out.println("SDFPrint: Constructor error");
@@ -58,7 +59,7 @@ public class SDFPrint extends SDFAtomicActor {
     public void fire() throws IllegalActionException {
         IntToken message;
 
-        IOPort inputport = (IOPort)getPort("input");
+        TypedIOPort inputport = (TypedIOPort)getPort("input");
 
         message = (IntToken)inputport.get(0);
         System.out.println(message.intValue());

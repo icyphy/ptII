@@ -23,6 +23,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
                                                 PT_COPYRIGHT_VERSION 2
                                                 COPYRIGHTENDKEY
+@AcceptedRating Red
+@ProposedRating Red
 */
 package ptolemy.domains.sdf.lib.vq;
 
@@ -43,17 +45,19 @@ import java.io.*;
 */
 
 public final class VQDecode extends SDFAtomicActor {
-    public VQDecode(CompositeActor container, String name) 
+    public VQDecode(TypedCompositeActor container, String name) 
             throws IllegalActionException, NameDuplicationException {
 
-        super(container,name);
+        super(container, name);
         SDFIOPort inputport = (SDFIOPort) newPort("index");
         inputport.setInput(true);
         setTokenConsumptionRate(inputport, 3168);
+        inputport.setDeclaredType(IntToken.class);
 
         SDFIOPort outputport = (SDFIOPort) newPort("imagepart");
         outputport.setOutput(true);
         setTokenProductionRate(outputport, 3168);
+        outputport.setDeclaredType(IntMatrixToken.class);
 
         Parameter p = new Parameter(this, "Codebook", 
                 new StringToken("/users/neuendor/htvq/usc_hvq_s5.dat"));
@@ -70,21 +74,16 @@ public final class VQDecode extends SDFAtomicActor {
         int numpartitions = 
             _xframesize * _yframesize / _xpartsize / _ypartsize;
 
-        //for(j = 0; j < numpartitions; j++) {
-        //    _codewords[j] = (IntToken) ((SDFIOPort) getPort("index")).get(0);
-        //}
         ((SDFIOPort) getPort("index")).getArray(0, _codewords); 
 
         for(j = 0; j < numpartitions; j++) {
-            System.arraycopy(_codebook[2][_codewords[j].intValue()], 0, _part, 0,
+            System.arraycopy(_codebook[2][_codewords[j].intValue()], 0, 
+                    _part, 0,
                     _xpartsize * _ypartsize);
-            _partitions[j] = new ImageToken(_part, _ypartsize, _xpartsize);
+            _partitions[j] = new IntMatrixToken(_part, _ypartsize, _xpartsize);
         }
 
         ((SDFIOPort) getPort("imagepart")).sendArray(0, _partitions);      
-        //        for(j = 0; j < numpartitions; j++) {
-        //            ((SDFIOPort) getPort("imagepart")).send(0, _partitions[j]);            
-        //}
     }
     
     public void initialize() throws IllegalActionException {
@@ -102,10 +101,12 @@ public final class VQDecode extends SDFAtomicActor {
         _ypartsize = ((IntToken)p.getToken()).intValue();
         
         _partitions = 
-            new ImageToken[_yframesize * _xframesize / _ypartsize / _xpartsize];
+            new IntMatrixToken[_yframesize * _xframesize 
+                    / _ypartsize / _xpartsize];
 
         _codewords = 
-            new IntToken[_yframesize * _xframesize / _ypartsize / _xpartsize];
+            new IntToken[_yframesize * _xframesize 
+                    / _ypartsize / _xpartsize];
        
         _part = new int[_ypartsize * _xpartsize];
 
@@ -123,12 +124,12 @@ public final class VQDecode extends SDFAtomicActor {
             
             byte temp[];
             int i, j, y, x, size = 1;
-            for(i=0; i<3; i++) {
+            for(i = 0; i<3; i++) {
                 size = size * 2;
                 temp = new byte[size];
-                for(j=0; j<256; j++) {
+                for(j = 0; j<256; j++) {
                     _codebook[i][j] = new int[size];
-                    if(source.read(temp)!=size)
+                    if(source.read(temp) != size)
                         throw new IllegalActionException("Error reading " +
                                 "codebook file!");
                     for(x = 0; x < size; x++)
@@ -142,7 +143,7 @@ public final class VQDecode extends SDFAtomicActor {
             throw new IllegalActionException(e.getMessage());
         }
         finally {
-            if(source!=null) {
+            if(source != null) {
                 try {
                     source.close(); 
                 }
@@ -154,7 +155,7 @@ public final class VQDecode extends SDFAtomicActor {
     
     private int _codebook[][][] = new int[6][256][];
     private IntToken _codewords[];
-    private ImageToken _partitions[];
+    private IntMatrixToken _partitions[];
     private int _part[];
     private int _xframesize;
     private int _yframesize;

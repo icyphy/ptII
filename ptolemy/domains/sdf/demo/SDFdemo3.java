@@ -57,10 +57,10 @@ public class SDFdemo3 {
         {
 
             Manager m = new Manager();
-            CompositeActor c = new CompositeActor();
+            TypedCompositeActor c = new TypedCompositeActor();
             SDFDirector d = new SDFDirector();
             SDFScheduler s = new SDFScheduler();
-            IORelation r;
+            TypedIORelation r;
 
             c.setDirector(d);
             c.setManager(m);
@@ -68,39 +68,39 @@ public class SDFdemo3 {
             d.setScheduleValid(false);
 
             SDFPrint print = new SDFPrint(c, "print");
-            IOPort printinput = (IOPort) print.getPort("input");
+            TypedIOPort printinput = (TypedIOPort) print.getPort("input");
             SDFPrint print2 = new SDFPrint(c, "print2");
-            IOPort print2input = (IOPort) print2.getPort("input");
+            TypedIOPort print2input = (TypedIOPort) print2.getPort("input");
             SDFRamp ramp = new SDFRamp(c, "ramp");
-            IOPort rampoutput = (IOPort) ramp.getPort("output");
+            TypedIOPort rampoutput = (TypedIOPort) ramp.getPort("output");
             SDFRamp ramp2 = new SDFRamp(c, "ramp2");
-            IOPort ramp2output = (IOPort) ramp2.getPort("output");
+            TypedIOPort ramp2output = (TypedIOPort) ramp2.getPort("output");
             SDFDelay delay = new SDFDelay(c, "delay");
-            IOPort delayinput = (IOPort) delay.getPort("input");
-            IOPort delayoutput = (IOPort) delay.getPort("output");
+            TypedIOPort delayinput = (TypedIOPort) delay.getPort("input");
+            TypedIOPort delayoutput = (TypedIOPort) delay.getPort("output");
             delay.setTokenConsumptionRate(delayinput, 2);
             delay.setTokenProductionRate(delayoutput, 2);
             SDFDelay delay2 = new SDFDelay(c, "delay2");
-            IOPort delay2input = (IOPort) delay2.getPort("input");
-            IOPort delay2output = (IOPort) delay2.getPort("output");
+            TypedIOPort delay2input = (TypedIOPort) delay2.getPort("input");
+            TypedIOPort delay2output = (TypedIOPort) delay2.getPort("output");
             delay2.setTokenConsumptionRate(delay2input, 2);
             delay2.setTokenProductionRate(delay2output, 2);
             SDFSplit split = new SDFSplit(c, "split");
-            IOPort splitinput = (IOPort) split.getPort("input");
-            IOPort splitoutput1 = (IOPort) split.getPort("output1");
-            IOPort splitoutput2 = (IOPort) split.getPort("output2");
+            TypedIOPort splitinput = (TypedIOPort) split.getPort("input");
+            TypedIOPort splitoutput1 = (TypedIOPort) split.getPort("output1");
+            TypedIOPort splitoutput2 = (TypedIOPort) split.getPort("output2");
             SDFJoin join = new SDFJoin(c, "join");
-            IOPort joininput1 = (IOPort) join.getPort("input1");
-            IOPort joininput2 = (IOPort) join.getPort("input2");
-            IOPort joinoutput = (IOPort) join.getPort("output");
+            TypedIOPort joininput1 = (TypedIOPort) join.getPort("input1");
+            TypedIOPort joininput2 = (TypedIOPort) join.getPort("input2");
+            TypedIOPort joinoutput = (TypedIOPort) join.getPort("output");
 
-            r = (IORelation) c.connect(rampoutput, splitinput, "R1");
-            r = (IORelation) c.connect(splitoutput1, delayinput, "R2");
-            r = (IORelation) c.connect(splitoutput2, delay2input, "R3");
-            r = (IORelation) c.connect(delayoutput, printinput, "R4");
-            r = (IORelation) c.connect(delay2output, joininput1, "R5");
-            r = (IORelation) c.connect(ramp2output, joininput2, "R6");
-            r = (IORelation) c.connect(joinoutput, print2input, "R7");
+            r = (TypedIORelation) c.connect(rampoutput, splitinput, "R1");
+            r = (TypedIORelation) c.connect(splitoutput1, delayinput, "R2");
+            r = (TypedIORelation) c.connect(splitoutput2, delay2input, "R3");
+            r = (TypedIORelation) c.connect(delayoutput, printinput, "R4");
+            r = (TypedIORelation) c.connect(delay2output, joininput1, "R5");
+            r = (TypedIORelation) c.connect(ramp2output, joininput2, "R6");
+            r = (TypedIORelation) c.connect(joinoutput, print2input, "R7");
 
             Parameter p = (Parameter) d.getAttribute("Iterations");
             p.setToken(new IntToken(1));

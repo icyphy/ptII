@@ -35,7 +35,7 @@
 #
 
 # Create the top level Composite Actor
-set sys [java::new ptolemy.actor.CompositeActor]
+set sys [java::new ptolemy.actor.TypedCompositeActor]
 $sys setName SDFSystem
 
 # Create directors and associate them with the top level composite actor.

@@ -51,7 +51,7 @@ the overhead in send and get over a large number of tokens.
 @authors Stephen Neuendorffer
 @version $Id$
 */
-public final class SDFIOPort extends IOPort {
+public final class SDFIOPort extends TypedIOPort {
 
     /** Construct an SDFIOPort with no container and no name that is
      *  neither an input nor an output.

@@ -44,10 +44,10 @@ import ptolemy.domains.sdf.kernel.*;
 */
 
 public final class ImageContrast extends SDFAtomicActor {
-    public ImageContrast(CompositeActor container, String name) 
+    public ImageContrast(TypedCompositeActor container, String name) 
             throws IllegalActionException, NameDuplicationException {
 
-        super(container,name);
+        super(container, name);
     
 	new Parameter(this, "XFramesize", new IntToken("176"));
         new Parameter(this, "YFramesize", new IntToken("144"));
@@ -57,12 +57,12 @@ public final class ImageContrast extends SDFAtomicActor {
         SDFIOPort outputport = (SDFIOPort) newPort("contrast");
         outputport.setOutput(true);
         setTokenProductionRate(outputport, 1);
-        //        outputport.setDeclaredType(IntMatrixToken.class);
+        outputport.setDeclaredType(IntMatrixToken.class);
 
         SDFIOPort inputport = (SDFIOPort) newPort("figure");
         inputport.setInput(true);
         setTokenConsumptionRate(inputport, 1);
-        // inputport.setDeclaredType(IntMatrixToken.class);
+        inputport.setDeclaredType(IntMatrixToken.class);
     }
 
     public void initialize() throws IllegalActionException {
@@ -87,8 +87,8 @@ public final class ImageContrast extends SDFAtomicActor {
         //for just now, we used inMax = 255 and inMin =0
         inMax = 255;
         inMin = 0;
-        message = (ImageToken) inputport.get(0);
-        frame = message.intArrayRef();
+        message = (IntMatrixToken) inputport.get(0);
+        frame = message.intArray();
 
         for(j = 0; j < yframesize; j ++) 
             for(i = 0; i < xframesize; i ++) {    
@@ -108,12 +108,12 @@ public final class ImageContrast extends SDFAtomicActor {
                 for(i = 0; i < xframesize; i ++) {
                     frameElement = frame[xframesize*j+i];
                     frameElement = (frameElement - inMin)* 255 / (inMax-inMin);                 }
-        message = new ImageToken(frame, yframesize, xframesize);
+        message = new IntMatrixToken(frame, yframesize, xframesize);
         outputport.send(0, message);
 	
     } 
 
-    ImageToken message;
+    IntMatrixToken message;
  
     private int part[];
     private int frame[];

@@ -42,10 +42,6 @@ CLASSPATH =	$(ROOT)
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-# FIXME: overriding JFLAGS will cause problems when we ship
-JFLAGS =
-
-
 # Used to build jar files
 PTPACKAGE = 	kernel
 PTDIST =	$(PTPACKAGE)$(PTVERSION)

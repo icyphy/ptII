@@ -42,19 +42,24 @@ import ptolemy.domains.sdf.kernel.*;
  * @version $Id$
  */
 public class SDFSplit extends SDFAtomicActor {
-    public SDFSplit(CompositeActor container, String name)
+    public SDFSplit(TypedCompositeActor container, String name)
         throws IllegalActionException, NameDuplicationException {
         super(container, name);
         try{
-            IOPort inputport = (IOPort)newPort("input");
+            TypedIOPort inputport = (TypedIOPort)newPort("input");
             inputport.setInput(true);
             setTokenConsumptionRate(inputport, 2);
-            IOPort outputport1 = (IOPort)newPort("output1");
+            inputport.setDeclaredType(IntToken.class);
+
+            TypedIOPort outputport1 = (TypedIOPort)newPort("output1");
             outputport1.setOutput(true);
             setTokenProductionRate(outputport1, 1);
-            IOPort outputport2 = (IOPort)newPort("output2");
+            outputport1.setDeclaredType(IntToken.class);
+            
+            TypedIOPort outputport2 = (TypedIOPort)newPort("output2");
             outputport2.setOutput(true);
             setTokenProductionRate(outputport2, 1);
+            outputport2.setDeclaredType(IntToken.class);
         }
         catch (IllegalActionException e1) {
             System.out.println("SDFSplit: constructor error");
@@ -63,9 +68,9 @@ public class SDFSplit extends SDFAtomicActor {
 
     public void fire() throws IllegalActionException {
         IntToken message;
-        IOPort inputport = (IOPort)getPort("input");
-        IOPort outputport1 = (IOPort)getPort("output1");
-        IOPort outputport2 = (IOPort)getPort("output2");
+        TypedIOPort inputport = (TypedIOPort)getPort("input");
+        TypedIOPort outputport1 = (TypedIOPort)getPort("output1");
+        TypedIOPort outputport2 = (TypedIOPort)getPort("output2");
 
         message = (IntToken)inputport.get(0);
         System.out.print("Split1 - ");

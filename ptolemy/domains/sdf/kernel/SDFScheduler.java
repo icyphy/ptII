@@ -225,7 +225,7 @@ public class SDFScheduler extends Scheduler{
 
     /** Initialize the local data members of this object.
      */
-    private void _localMemberInitialize() {
+    protected void _localMemberInitialize() {
         HashedMap _firingvector = new HashedMap();
         _firingvectorvalid = true;
     }
@@ -269,7 +269,7 @@ public class SDFScheduler extends Scheduler{
                 throw new ArithmeticException("Failed to properly perform " +
                         "fraction normalization");
             Firings = (HashedMap) 
-                Firings.puttingAt(actor,new Integer(reps.getNumerator()));
+                Firings.puttingAt(actor, new Integer(reps.getNumerator()));
         }
         return Firings;
     }
@@ -330,7 +330,7 @@ public class SDFScheduler extends Scheduler{
                     // based on currentActor
                     Fraction desiredFiring =
                         Fraction.multiply(currentFiring,
-                                new Fraction(currentRate,connectedRate));
+                                new Fraction(currentRate, connectedRate));
 
                     // What the firing for connectedActor already is set to.
                     // This should be either 0, or equal to desiredFiring.
@@ -340,9 +340,9 @@ public class SDFScheduler extends Scheduler{
 
                         desiredFiring.simplify();
 
-                        if(Fraction.equals(presentFiring,Fraction.ZERO)) {
+                        if(Fraction.equals(presentFiring, Fraction.ZERO)) {
                             // create the entry in the firing table
-                            Firings.putAt(connectedActor,desiredFiring);
+                            Firings.putAt(connectedActor, desiredFiring);
 
                             // Remove them from RemainingActors
                             RemainingActors.exclude(connectedActor);
@@ -351,7 +351,7 @@ public class SDFScheduler extends Scheduler{
                             PendingActors.include(connectedActor);
                         }
 
-                        else if(!Fraction.equals(presentFiring,desiredFiring))
+                        else if(!Fraction.equals(presentFiring, desiredFiring))
                             throw new NotSchedulableException("Graph is not" +
                                     "consistent under the SDF domain");
                     }
@@ -426,7 +426,7 @@ public class SDFScheduler extends Scheduler{
                     // based on currentActor
                     Fraction desiredFiring =
                         Fraction.multiply(currentFiring,
-                                new Fraction(currentRate,connectedRate));
+                                new Fraction(currentRate, connectedRate));
 
                     // What the firing for connectedActor already is set to.
                     // This should be either 0, or equal to desiredFiring.
@@ -436,8 +436,8 @@ public class SDFScheduler extends Scheduler{
 
                         desiredFiring.simplify();
 
-                        if(Fraction.equals(presentFiring,Fraction.ZERO)) {
-                            Firings.putAt(connectedActor,desiredFiring);
+                        if(Fraction.equals(presentFiring, Fraction.ZERO)) {
+                            Firings.putAt(connectedActor, desiredFiring);
 
                             // Remove them from RemainingActors
                             RemainingActors.exclude(connectedActor);
@@ -445,7 +445,7 @@ public class SDFScheduler extends Scheduler{
                             // and add them to the PendingActors.
                             PendingActors.include(connectedActor);
                         }
-                        else if(!Fraction.equals(presentFiring,desiredFiring))
+                        else if(!Fraction.equals(presentFiring, desiredFiring))
                             throw new NotSchedulableException("Graph is not" +
                                     "consistent under the SDF domain");
                     }
@@ -528,14 +528,14 @@ public class SDFScheduler extends Scheduler{
 
     protected CircularList _scheduleConnectedActors(
             HashedSet UnscheduledActors) {
-
+        
         // A linked list containing all the actors that have no inputs
         CircularList ReadyToScheduleActors = new CircularList();
         // A linked list that will contain our new schedule.
         CircularList newSchedule = new CircularList();
-
+        
         boolean Done = false;
-
+        
         // an association between AllActors and the number of unfulfilledInputs
         // that that actor contains.   when this number goes to zero, then the
         // actor is ready to fire.
@@ -606,7 +606,7 @@ public class SDFScheduler extends Scheduler{
 
 
                 boolean stillReadyToSchedule =
-                    _simulateInputConsumption(currentActor,waitingTokens);
+                    _simulateInputConsumption(currentActor, waitingTokens);
 
                 // Reset the number of unfulfilled inputs.
                 int inputcount = _countUnfulfilledInputs((Actor)currentActor,
@@ -616,7 +616,7 @@ public class SDFScheduler extends Scheduler{
                 // Update the firingCount for this actor.
                 int firingsRemaining = getFiringCount(currentActor);
                 firingsRemaining -= 1;
-                setFiringCount(currentActor,firingsRemaining);
+                setFiringCount(currentActor, firingsRemaining);
 
                 Debug.print(currentActor.getName() + " should fire ");
                 Debug.print((new Integer(firingsRemaining)).toString());
@@ -689,13 +689,13 @@ public class SDFScheduler extends Scheduler{
                             Integer newTokenAmt =
                                 new Integer(curTokenAmt.intValue() +
                                         createdTokens.intValue());
-                            waitingTokens.putAt(connectedPort,newTokenAmt);
+                            waitingTokens.putAt(connectedPort, newTokenAmt);
 
                             // update unfulfilledInputs
                             int inputThreshold =
                                 _getTokenConsumptionRate(connectedPort);
-                            if((curTokenAmt.intValue()<inputThreshold) &&
-                                    ((newTokenAmt.intValue()>=inputThreshold)))
+                            if((curTokenAmt.intValue() < inputThreshold) &&
+                               ((newTokenAmt.intValue() >= inputThreshold)))
                                 {
                                 Integer i =
                                     (Integer) unfulfilledInputs.at(
@@ -838,7 +838,7 @@ public class SDFScheduler extends Scheduler{
             // Pick an actor as a reference
             Actor a = (Actor) RemainingActors.take();
             // And set it's rate to one per iteration
-            Firings.putAt(a,new Fraction(1));
+            Firings.putAt(a, new Fraction(1));
             // And start the list to recurse over.
             PendingActors.include(a);
         }

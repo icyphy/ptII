@@ -23,6 +23,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
                                                 PT_COPYRIGHT_VERSION 2
                                                 COPYRIGHTENDKEY
+@AcceptedRating Red
+@ProposedRating Red
 */
 package ptolemy.domains.sdf.lib.vq;
 
@@ -38,22 +40,22 @@ import ptolemy.domains.sdf.kernel.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// ImageScale
-/** ImageScale re-scales the contrast of the appearance of the image. i.e.
-/   it change the degree of black/white according to the user specified
-/   outmax & outmin. Outmax is the upperlimit that user wants to scale the 
-/   image to and outmin is the lowerlimit that user wants to scale the image
-/   to. For the sake of convenience, right now I've set the VideoDemo.tcl
-/   outmax = 255 and outmin = 0.
-/ 
+/** 
+This actor re-scales an image. i.e.
+it change the degree of black/white according to the user specified
+outmax & outmin. Outmax is the upperlimit that user wants to scale the 
+image to and outmin is the lowerlimit that user wants to scale the image
+to. Default values are 255 for outmax and 0 for outmin.
+ 
 @author Michael Leung
 @version $Id$
 */
 
 public final class ImageScale extends SDFAtomicActor {
-    public ImageScale(CompositeActor container, String name) 
+    public ImageScale(TypedCompositeActor container, String name) 
             throws IllegalActionException, NameDuplicationException {
 
-        super(container,name);
+        super(container, name);
     
 	new Parameter(this, "XFramesize", new IntToken("176"));
         new Parameter(this, "YFramesize", new IntToken("144"));
@@ -63,25 +65,54 @@ public final class ImageScale extends SDFAtomicActor {
         SDFIOPort outputport = (SDFIOPort) newPort("contrast");
         outputport.setOutput(true);
         setTokenProductionRate(outputport, 1);
+        outputport.setDeclaredType(IntMatrixToken.class);
 
         SDFIOPort inputport = (SDFIOPort) newPort("figure");
         inputport.setInput(true);
         setTokenConsumptionRate(inputport, 1);
+        inputport.setDeclaredType(IntMatrixToken.class);
     }
 
+    /** Initialize the actor.
+     *  Get the values of all parameters.
+     *  @exception IllegalActionException if outmax is less than outmin, 
+     *  or xframesize is less than one, or yframesize is less than one.
+     */
     public void initialize() throws IllegalActionException {
 
 	Parameter p;
 	p = (Parameter) getAttribute("XFramesize");
         xframesize = ((IntToken)p.getToken()).intValue();
+        if(xframesize < 0) 
+            throw new IllegalActionException(
+                    "The value of the xframesize parameter(" + xframesize +
+                    ") must be greater than zero.");
         p = (Parameter) getAttribute("YFramesize");
         yframesize = ((IntToken)p.getToken()).intValue();
+        if(yframesize < 0) 
+            throw new IllegalActionException(
+                    "The value of the yframesize parameter(" + yframesize + 
+                    ") must be greater than zero.");
         p = (Parameter) getAttribute("outmax");
         outmax = ((IntToken)p.getToken()).intValue();
         p = (Parameter) getAttribute("outmin");
         outmin = ((IntToken)p.getToken()).intValue();
+        if(outmax < outmin) 
+            throw new IllegalActionException(
+                    "The value of the outmax parameter(" + outmax + 
+                    ") must be greater than " + 
+                    "the value of the outmin parameter(" + outmin +").");
+        
+
     }
 
+    /** Fire the actor.
+     *  Consume one image on the input port.  Rescale it, so that its values
+     *  range between the values specified in parameters outmax and outmin.
+     *  Send the new image out the output port.
+     *
+     *  @exception IllegalActionException if a contained method throws it.
+     */
     public void fire() throws IllegalActionException {
 
         int i, j;
@@ -91,20 +122,13 @@ public final class ImageScale extends SDFAtomicActor {
         SDFIOPort outputport = (SDFIOPort) getPort("contrast");
         SDFIOPort inputport = (SDFIOPort) getPort("figure");
        
-        //setting inMax and inMin to the user specified outmax and outmin
-        //contrast degree, the largest contrast will be outmax = 255 and 
-        //outmin = 0
-
+        ImageToken message = (ImageToken) inputport.get(0);
+        int frame[] = message.intArray();
+        
+        //look into the image to find and set the most dark spot (inMin) and
+        // the most light spot (inMax)
         inMax = 0;
         inMin = 255;
-        message = (ImageToken) inputport.get(0);
-        frame = message.intArray();
-        //System.out.println("outmax="+outmax);
-        //System.out.println("outmin="+outmin);
-
-        //look into the image to find and set the most dark spot (inMax) and
-        // the most light spot (inMin)
-
         for(j = 0; j < yframesize; j ++) 
             for(i = 0; i < xframesize; i ++) {    
                 frameElement = frame[xframesize*j+i];
@@ -116,10 +140,10 @@ public final class ImageScale extends SDFAtomicActor {
               
         //There are two cases which we should not do the for loop
         //to change the contrast.
-        // case I : if inMax and inMin variable all has the same values
-        //          which you don't have to do the job
-        // case II: if inMax and inMin is already the same as the user
-        //          specified contrast degree, which is outmax and outmin
+        // case I : if inMax == inMin, in which case there will be a 
+        //          division by zero.
+        // case II: if inMax and inMin are already the same as the user
+        //          specified outmax and outmin
 
         if ((inMax != inMin) && !((inMax == outmax) && (inMin == outmin))) 
             for (j = 0; j < yframesize; j ++)
@@ -132,11 +156,7 @@ public final class ImageScale extends SDFAtomicActor {
         outputport.send(0, message);
 	
     } 
-
-    ImageToken message;
  
-    private int part[];
-    private int frame[];
     private int xframesize;
     private int yframesize;
     private int outmax;

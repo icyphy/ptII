@@ -23,6 +23,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
                                                 PT_COPYRIGHT_VERSION 2
                                                 COPYRIGHTENDKEY
+@AcceptedRating Red
+@ProposedRating Red
 */
 package ptolemy.domains.sdf.lib.vq;
 
@@ -43,17 +45,19 @@ import java.io.*;
 */
 
 public final class HTVQEncode extends SDFAtomicActor {
-    public HTVQEncode(CompositeActor container, String name) 
+    public HTVQEncode(TypedCompositeActor container, String name) 
             throws IllegalActionException, NameDuplicationException {
 
-        super(container,name);
+        super(container, name);
         SDFIOPort outputport = (SDFIOPort) newPort("index");
         outputport.setOutput(true);
         setTokenProductionRate(outputport, 3168);
-
+        outputport.setDeclaredType(IntToken.class);
+        
         SDFIOPort inputport = (SDFIOPort) newPort("imagepart");
         inputport.setInput(true);
         setTokenConsumptionRate(inputport, 3168);
+        inputport.setDeclaredType(IntMatrixToken.class);
 
         Parameter p = new Parameter(this, "Codebook", 
                 new StringToken("/users/neuendor/htvq/usc_hvq_s5.dat"));
@@ -73,7 +77,7 @@ public final class HTVQEncode extends SDFAtomicActor {
 
         for(j = 0; j < numpartitions; j++) {
            _codewords[j] = new IntToken(
-                _encode(_tokens[j].intArrayRef(), _xpartsize * _ypartsize));
+                _encode(_tokens[j].intArray(), _xpartsize * _ypartsize));
         }
 
         ((SDFIOPort) getPort("index")).sendArray(0, _codewords);
@@ -97,7 +101,7 @@ public final class HTVQEncode extends SDFAtomicActor {
         _codewords = 
             new IntToken[_yframesize * _xframesize / _ypartsize / _xpartsize];
         _tokens =
-            new ImageToken[_yframesize * _xframesize / _ypartsize / _xpartsize];
+            new IntMatrixToken[_yframesize * _xframesize / _ypartsize / _xpartsize];
 
         p = (Parameter) getAttribute("Codebook");
         String filename = ((StringToken)p.getToken()).stringValue();
@@ -113,12 +117,12 @@ public final class HTVQEncode extends SDFAtomicActor {
 
             int i, j, y, x, size = 1;
             byte temp[];
-            for(i=0; i<5; i++) {
+            for(i = 0; i<5; i++) {
                 size = size * 2;
                 temp = new byte[size];
-                for(j=0; j<256; j++) {
+                for(j = 0; j<256; j++) {
                     _codebook[i][j] = new int[size];
-                    if(_fullread(source, temp)!=size)
+                    if(_fullread(source, temp) != size)
                         throw new IllegalActionException("Error reading " +
                                 "codebook file!");
                     for(x = 0; x < size; x++)
@@ -127,7 +131,7 @@ public final class HTVQEncode extends SDFAtomicActor {
                 
                 temp = new byte[65536];
                 // read in the lookup table.
-                if(_fullread(source,temp) != 65536)
+                if(_fullread(source, temp) != 65536)
                     throw new IllegalActionException("Error reading " +
                             "codebook file!");
                 for(x = 0; x < 65536; x++)
@@ -138,7 +142,7 @@ public final class HTVQEncode extends SDFAtomicActor {
             throw new IllegalActionException(e.getMessage());
         }
         finally {
-            if(source!=null) {
+            if(source != null) {
                 try {
                     source.close(); 
                 }
@@ -161,7 +165,7 @@ public final class HTVQEncode extends SDFAtomicActor {
     }
 
     int _encode(int p[], int len) {
-        int[][] p5,p4,p3,p2,p1,p0;
+        int[][] p5, p4, p3, p2, p1, p0;
         int numstages;
 	int stage = 0;
         int ip;
@@ -215,7 +219,7 @@ public final class HTVQEncode extends SDFAtomicActor {
 	}	
 	switch(numstages) {
         case 4:
-            //XSIZE=8, YSIZE=4
+            //XSIZE = 8, YSIZE = 4
             ip = ((p5[0][0] & 255) << 8) + (p5[0][1] & 255);
             p4[0][0] = _lookup_table[stage][ip];
             ip = ((p5[0][2] & 255) << 8) + (p5[0][3] & 255);
@@ -253,7 +257,7 @@ public final class HTVQEncode extends SDFAtomicActor {
              p4[3][3] = _lookup_table[stage][ip];
             stage++;
         case 3:
-            //XSIZE=4, YSIZE=4
+            //XSIZE = 4, YSIZE = 4
             ip = ((p4[0][1] & 255) << 8) + (p4[0][0] & 255);
             p3[0][0] = _lookup_table[stage][ip];
             ip = ((p4[0][3] & 255) << 8) + (p4[0][2] & 255);
@@ -275,7 +279,7 @@ public final class HTVQEncode extends SDFAtomicActor {
              p3[1][3] = _lookup_table[stage][ip];
             stage++;
         case 2:
-            //XSIZE=4, YSIZE=2
+            //XSIZE = 4, YSIZE = 2
             ip = ((p3[0][1] & 255) << 8) + (p3[0][0] & 255);
             p2[0][0] = _lookup_table[stage][ip];
             ip = ((p3[0][3] & 255) << 8) + (p3[0][2] & 255);
@@ -287,7 +291,7 @@ public final class HTVQEncode extends SDFAtomicActor {
             p2[1][1] = _lookup_table[stage][ip];
             stage++;
         case 1:
-            //XSIZE=2, YSIZE=2
+            //XSIZE = 2, YSIZE = 2
             ip = ((p2[0][1] & 255) << 8) + (p2[0][0] & 255);
             p1[0][0] = _lookup_table[stage][ip];
             ip = ((p2[1][1] & 255) << 8) + (p2[1][0] & 255);
@@ -295,7 +299,7 @@ public final class HTVQEncode extends SDFAtomicActor {
             stage++;
             
         case 0:
-            //XSIZE=2, YSIZE=1
+            //XSIZE = 2, YSIZE = 1
             ip = ((p1[0][1] & 255) << 8) + (p1[0][0] & 255);
             p0[0][0] = _lookup_table[stage][ip];
             stage++;
@@ -305,7 +309,7 @@ public final class HTVQEncode extends SDFAtomicActor {
     }
 
     long _distortion(int a[], int b[], int len) {
-        long c,d = 0;
+        long c, d = 0;
         int i;
         for(i = 0;i<len;i++)
         {
@@ -332,7 +336,7 @@ public final class HTVQEncode extends SDFAtomicActor {
     private int _codebook[][][] = new int[6][256][];
     private int _lookup_table[][] = new int[6][65536];
     private IntToken _codewords[];
-    private ImageToken _tokens[];
+    private IntMatrixToken _tokens[];
     private int _part[];
     private int _xframesize;
     private int _yframesize;

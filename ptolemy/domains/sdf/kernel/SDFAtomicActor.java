@@ -50,10 +50,10 @@ constant for all firings and it is known before execution begins.
 
 @author Stephen Neuendorffer
 @version $Id$
-@see ptolemy.actors.CompositeActor
+@see ptolemy.actors.TypedCompositeActor
 @see ptolemy.actors.IOPort
 */
-public class SDFAtomicActor extends AtomicActor implements DataflowActor{
+public class SDFAtomicActor extends TypedAtomicActor implements DataflowActor{
 
     /** Construct an actor in the default workspace with an empty string
      *  The object is added to the workspace directory.
@@ -86,7 +86,7 @@ public class SDFAtomicActor extends AtomicActor implements DataflowActor{
      *  @exception NameDuplicationException If the name coincides with
      *   an entity already in the container.
      */
-    public SDFAtomicActor(CompositeActor container, String name)
+    public SDFAtomicActor(TypedCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
@@ -169,7 +169,7 @@ public class SDFAtomicActor extends AtomicActor implements DataflowActor{
     public Port newPort(String name) throws NameDuplicationException {
         try {
             workspace().getWriteAccess();
-            IOPort port = new SDFIOPort(this, name);
+            SDFIOPort port = new SDFIOPort(this, name);
             return port;
         } catch (IllegalActionException ex) {
             // This exception should not occur, so we throw a runtime

@@ -103,6 +103,15 @@ public class SDFDirector extends StaticSchedulingDirector {
         return new SDFReceiver();
     }
 
+
+    /** Initialize the number of iterations to zero.
+     *  @exception IllegalActionException Not Thrown.
+     */
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+        _iteration = 0;
+    }
+
     /** The SDFDirector always assumes that it can be fired.  
      *  @return True If the Director can be fired.
      *  @exception IllegalActionException Not Thrown
@@ -213,7 +222,7 @@ public class SDFDirector extends StaticSchedulingDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private int _iteration;
+    private int _iteration = 0;
     private Parameter _parameteriterations;
 
     // Support for mutations.

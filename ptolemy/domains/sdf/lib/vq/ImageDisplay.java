@@ -23,6 +23,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
                                                 PT_COPYRIGHT_VERSION 2
                                                 COPYRIGHTENDKEY
+@AcceptedRating Red
+@ProposedRating Red
 */
 package ptolemy.domains.sdf.lib.vq;
 
@@ -48,28 +50,37 @@ import ptolemy.media.Picture;
 */
 
 public final class ImageDisplay extends SDFAtomicActor {
-    public ImageDisplay(CompositeActor container, String name) 
+    public ImageDisplay(TypedCompositeActor container, String name) 
             throws IllegalActionException, NameDuplicationException {
 
-        super(container,name);
-        IOPort inputport = (IOPort) newPort("image");
+        super(container, name);
+        TypedIOPort inputport = (TypedIOPort) newPort("image");
         inputport.setInput(true);
         setTokenConsumptionRate(inputport, 1);
+        inputport.setDeclaredType(IntMatrixToken.class);
+ 
+        _oldxsize = 0;
+        _oldysize = 0;
+        _frame = null;
+        _panel = null;
     }
 
     public void initialize() throws IllegalActionException {
-        _frame = null;
+        
         _port_image = (IOPort) getPort("image");
         _oldxsize = 0;
         _oldysize = 0;
-    }
-
-    public void wrapup() throws IllegalActionException {
-        _frame.dispose();
+        if(_panel == null) {
+            _frame = new _PictureFrame("ImageDisplay");   
+            _panel = _frame.getPanel();            
+        } else {
+            _frame = null;
+        }                              
+        System.out.println("initialize");
     }
 
     public void fire() throws IllegalActionException {
-        ImageToken message = (ImageToken)
+        IntMatrixToken message = (IntMatrixToken)
             _port_image.get(0);
         int frame[][] = message.intMatrix();
         int xsize = message.getColumnCount();
@@ -79,17 +90,43 @@ public final class ImageDisplay extends SDFAtomicActor {
             _oldxsize = xsize;
             _oldysize = ysize;
             _RGBbuffer = new int[xsize*ysize];
-            if(_frame != null) {
-                _frame.dispose();
+            if(_panel == null) {
+                System.out.println("panel disappeared!");
+                _frame = new _PictureFrame("ImageDisplay");   
+                _panel = _frame.getPanel();
+            } else {
+                _frame = null;
             }
-            _frame = new _PictureFrame("ImageDisplay", xsize, ysize);   
-            _frame._picture.setImage(_RGBbuffer);
+            if(_picture != null) 
+                _panel.remove(_picture);
+            _panel.setSize(xsize, ysize);
+            _picture = new Picture(xsize, ysize);
+            _picture.setImage(_RGBbuffer);
+            _panel.add("Center", _picture);
+            _panel.validate();
+            
+            Container c = _panel.getParent();
+            while(c.getParent() != null) {
+                c = c.getParent();
+            }
+            if(c instanceof Window) {
+                ((Window) c).pack();
+            } else {                
+                c.validate();
+            }
+
+            _panel.invalidate();
+            _panel.repaint();
+
+            if(_frame != null) {
+                _frame.pack();
+            }
 
             System.out.println("new buffer");
         }     
 
-        //        System.out.println("xsize = "+xsize);
-        // System.out.println("ysize = "+ysize);
+        //              System.out.println("xsize = "+xsize);
+        //System.out.println("ysize = "+ysize);
        
         // convert the B/W image to a packed RGB image
         int i, j, index = 0;
@@ -100,25 +137,33 @@ public final class ImageDisplay extends SDFAtomicActor {
                     ((frame[j][i] & 255) << 8) | 
                     (frame[j][i] & 255);
              }  
+        _picture.displayImage();
+        _picture.repaint();
+    }
 
-        _frame._picture.displayImage();
+    public void setPanel(Panel panel) {
+        _panel = panel;
     }
 
     private class _PictureFrame extends Frame {
-        public _PictureFrame(String title, int xsize, int ysize) {
+        public _PictureFrame(String title) {
             super(title);
             this.setLayout(new BorderLayout(15, 15));
-            _picture = new Picture(xsize, ysize);
-            this.setVisible(true);
-            add("Center",_picture);
+            this.show();            
+            _panel = new Panel();
+            this.add("Center", _panel);
             this.pack();
-
+            this.validate();
         }
-        private Picture _picture;        
-     
+        public Panel getPanel() {
+            return _panel;
+        }
+        private Panel _panel;
     }
-
+    
+    private Picture _picture;        
     private _PictureFrame _frame;
+    private Panel _panel;
     private IOPort _port_image;
     private int _oldxsize, _oldysize;
     private int _RGBbuffer[] = null;

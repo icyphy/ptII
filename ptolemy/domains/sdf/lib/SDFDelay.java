@@ -68,7 +68,7 @@ public class SDFDelay extends SDFAtomicActor {
      * @exception IllegalActionException If the contained methods throw it
      * @exception NameDuplicationException If the contained methods throw it
      */
-    public SDFDelay(CompositeActor container, String name)
+    public SDFDelay(TypedCompositeActor container, String name)
         throws IllegalActionException, NameDuplicationException {
         /* This starts out by calling SDFAtomicActor's constructor.
          * allows us to add some extra code specific to this actor, in
@@ -84,7 +84,7 @@ public class SDFDelay extends SDFAtomicActor {
          */
         try{
             /* Create a new port */
-            IOPort inputport = (IOPort)newPort("input");
+            TypedIOPort inputport = (TypedIOPort)newPort("input");
             /* Make it an input port */
             inputport.setInput(true);
             /* Set the Consumption rate on the port.  A good way to think of
@@ -95,7 +95,7 @@ public class SDFDelay extends SDFAtomicActor {
              */
             setTokenConsumptionRate(inputport, 1);
             /* Similarly for the output port */
-            IOPort outputport = (IOPort)newPort("output");
+            TypedIOPort outputport = (TypedIOPort)newPort("output");
             outputport.setOutput(true);
             setTokenProductionRate(outputport, 1);
         }
@@ -131,11 +131,16 @@ public class SDFDelay extends SDFAtomicActor {
 
         /* The getPort method (in ptolemy.kernel.Entity) finds a port by
          * name.  It returns a Port object, but all the ports in the
-         * actor package are of type IOPort, which extends Port.   So, we
+         * actor package are of type TypedIOPort, which extends Port.   So, we
          * have to upcast the return value to the appropriate type.
+         * The setDelcaredType calls use the type system to define what
+         * types of tokens are valid for this actor.
          */
-        IOPort inputport = (IOPort)getPort("input");
-        IOPort outputport = (IOPort)getPort("output");
+        TypedIOPort inputport = (TypedIOPort)getPort("input");
+        inputport.setDeclaredType(IntToken.class);
+        
+        TypedIOPort outputport = (TypedIOPort)getPort("output");
+        outputport.setDeclaredType(IntToken.class);
 
         /* Figure out how many tokens should be copied from the input to the
          * output.

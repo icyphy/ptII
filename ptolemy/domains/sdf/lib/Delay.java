@@ -45,16 +45,19 @@ import ptolemy.domains.sdf.kernel.*;
  * @version $Id$
  */
 public class Delay extends SDFAtomicActor {
-    public Delay(CompositeActor container, String name)
+    public Delay(TypedCompositeActor container, String name)
         throws IllegalActionException, NameDuplicationException {
         super(container, name);
         try{
-            IOPort inputport = (IOPort)newPort("input");
+            TypedIOPort inputport = (TypedIOPort)newPort("input");
             inputport.setInput(true);
             setTokenConsumptionRate(inputport, 1);
-            IOPort outputport = (IOPort)newPort("output");
+            inputport.setDeclaredType(IntToken.class);
+
+            TypedIOPort outputport = (TypedIOPort)newPort("output");
             outputport.setOutput(true);
             setTokenProductionRate(outputport, 1);
+            outputport.setDeclaredType(IntToken.class);
             setTokenInitProduction(outputport, 1);
         }
         catch (IllegalActionException e1) {
@@ -65,14 +68,14 @@ public class Delay extends SDFAtomicActor {
 
     public void initialize() throws IllegalActionException {
         IntToken token = new IntToken();
-        IOPort outputport = (IOPort)getPort("output");
+        TypedIOPort outputport = (TypedIOPort)getPort("output");
         outputport.send(0, token);
     }
 
     public void fire() throws IllegalActionException {
         IntToken message;
-        IOPort inputport = (IOPort)getPort("input");
-        IOPort outputport = (IOPort)getPort("output");
+        TypedIOPort inputport = (TypedIOPort)getPort("input");
+        TypedIOPort outputport = (TypedIOPort)getPort("output");
 
         message = (IntToken)inputport.get(0);
         System.out.print("Delay - ");

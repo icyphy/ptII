@@ -23,6 +23,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
                                                 PT_COPYRIGHT_VERSION 2
                                                 COPYRIGHTENDKEY
+@AcceptedRating Red
+@ProposedRating Red
 */
 package ptolemy.domains.sdf.lib.vq;
 
@@ -44,17 +46,18 @@ import ptolemy.domains.sdf.kernel.*;
 */
 
 public final class ImageSequence extends SDFAtomicActor {
-    public ImageSequence(CompositeActor container, String name) 
+    public ImageSequence(TypedCompositeActor container, String name) 
             throws IllegalActionException, NameDuplicationException {
 
-        super(container,name);
-        IOPort outputport = (IOPort) newPort("image");
+        super(container, name);
 
+        TypedIOPort outputport = (TypedIOPort) newPort("image");
         outputport.setOutput(true);
         setTokenProductionRate(outputport, 1);
+        outputport.setDeclaredType(IntMatrixToken.class);
 
         Parameter p = new Parameter(this, "File Name Template", 
-                new StringToken("/users/neuendor/htvq/seq/missa/missa***.qcf"));
+                new StringToken("../lib/vq/data/seq/missa/missa***.qcf"));
         new Parameter(this, "XImageSize", new IntToken("176"));
         new Parameter(this, "YImageSize", new IntToken("144"));
         new Parameter(this, "Start Frame", new IntToken("0"));
@@ -75,9 +78,9 @@ public final class ImageSequence extends SDFAtomicActor {
         p = (Parameter) getAttribute("YImageSize");
         ysize = ((IntToken)p.getToken()).intValue();
  
-        numframes = endframe-startframe+1;
-        frames = new byte[numframes][ysize*xsize];
-        frame = new int[ysize*xsize];
+        numframes = endframe - startframe + 1;
+        frames = new byte[numframes][ysize * xsize];
+        frame = new int[ysize * xsize];
         try {
             for(framenumber = 0; 
                 framenumber < numframes; 
@@ -104,23 +107,22 @@ public final class ImageSequence extends SDFAtomicActor {
                             filename + " is unreadable!");
                 source = new FileInputStream(sourcefile);
   
-                int j;
-                //              for(j = ysize - 1; j >= 0; j--) { 
-                        if(source.read(frames[framenumber],0,ysize*xsize)!=ysize*xsize)
-                            throw new IllegalActionException("Error reading " +
-                                    "Image file!");
-                        //  }
+                if(source.read(frames[framenumber], 0, ysize * xsize)
+                        != ysize*xsize)
+                    throw new IllegalActionException("Error reading " +
+                            "Image file!");
             }
         }
         catch (Exception e) {
             throw new IllegalActionException(e.getMessage());
         }
         finally {
-            if(source!=null) {
+            if(source != null) {
                 try {
                     source.close(); 
                 }
                 catch (IOException e) {
+                    throw new IllegalActionException(e.getMessage());
                 }
             }
         }
@@ -139,7 +141,7 @@ public final class ImageSequence extends SDFAtomicActor {
                 frame[n] = frames[framenumber][n];
         }
 
-        ImageToken message = new ImageToken(frame, ysize, xsize);
+        IntMatrixToken message = new IntMatrixToken(frame, ysize, xsize);
         port_image.send(0, message);
 
         framenumber++; 

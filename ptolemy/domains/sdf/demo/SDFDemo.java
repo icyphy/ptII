@@ -59,10 +59,10 @@ public class SDFdemo {
             throws IllegalActionException, NameDuplicationException
         {
             Manager m = new Manager();
-            CompositeActor c = new CompositeActor();
+            TypedCompositeActor c = new TypedCompositeActor();
             SDFDirector d = new SDFDirector();
             SDFScheduler s = new SDFScheduler();
-            IORelation r;
+            TypedIORelation r;
 
             c.setDirector(d);
             c.setManager(m);
@@ -73,13 +73,13 @@ public class SDFdemo {
             SDFRamp ramp = new SDFRamp(c, "ramp");
             SDFDelay delay = new SDFDelay(c, "delay");
 
-            IOPort rampoutput = (IOPort) ramp.getPort("output");
-            IOPort delayinput = (IOPort) delay.getPort("input");
-            IOPort delayoutput = (IOPort) delay.getPort("output");
-            IOPort printinput = (IOPort) print.getPort("input");
+            TypedIOPort rampoutput = (TypedIOPort) ramp.getPort("output");
+            TypedIOPort delayinput = (TypedIOPort) delay.getPort("input");
+            TypedIOPort delayoutput = (TypedIOPort) delay.getPort("output");
+            TypedIOPort printinput = (TypedIOPort) print.getPort("input");
 
-            r = (IORelation) c.connect(rampoutput, delayinput, "R1");
-            r = (IORelation) c.connect(delayoutput, printinput, "R2");
+            r = (TypedIORelation) c.connect(rampoutput, delayinput, "R1");
+            r = (TypedIORelation) c.connect(delayoutput, printinput, "R2");
 
             Parameter p = (Parameter) d.getAttribute("Iterations");
             p.setToken(new IntToken(6));

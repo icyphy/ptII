@@ -39,16 +39,17 @@ import ptolemy.domains.sdf.kernel.*;
  * This actor will consume and discard all tokens on its input port.
  * This actor is aware of the rate that is set on its input port and will
  * consume an appropriate number of tokens with each firing.
+ * This actor is type Polymorphic.
  *
  * @version $Id$
  * @author Steve Neuendorffer
  */
 public class SDFConsumer extends SDFAtomicActor {
-    public SDFConsumer(CompositeActor container, String name)
+    public SDFConsumer(TypedCompositeActor container, String name)
         throws IllegalActionException, NameDuplicationException {
         super(container, name);
         try{
-            IOPort inputport = (IOPort)newPort("input");
+            TypedIOPort inputport = (TypedIOPort)newPort("input");
             inputport.setInput(true);
             setTokenConsumptionRate(inputport, 1);
         }
@@ -58,7 +59,7 @@ public class SDFConsumer extends SDFAtomicActor {
     }
 
     public void fire() throws IllegalActionException {
-        IOPort inputport = (IOPort)getPort("input");
+        TypedIOPort inputport = (TypedIOPort)getPort("input");
         int tokens = getTokenConsumptionRate(inputport);
         int i;
         for(i = 0; i < tokens; i++)

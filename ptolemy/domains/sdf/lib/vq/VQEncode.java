@@ -23,6 +23,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
                                                 PT_COPYRIGHT_VERSION 2
                                                 COPYRIGHTENDKEY
+@AcceptedRating Red
+@ProposedRating Red
 */
 package ptolemy.domains.sdf.lib.vq;
 
@@ -43,17 +45,19 @@ import java.io.*;
 */
 
 public class VQEncode extends SDFAtomicActor {
-    public VQEncode(CompositeActor container, String name) 
+    public VQEncode(TypedCompositeActor container, String name) 
             throws IllegalActionException, NameDuplicationException {
 
         super(container,name);
-        IOPort outputport = (IOPort) newPort("index");
+        TypedIOPort outputport = (TypedIOPort) newPort("index");
         outputport.setOutput(true);
         setTokenProductionRate(outputport, 1);
+        outputport.setDeclaredType(IntToken.class);
 
-        IOPort inputport = (IOPort) newPort("imagepart");
+        TypedIOPort inputport = (TypedIOPort) newPort("imagepart");
         inputport.setInput(true);
         setTokenConsumptionRate(inputport, 1);
+        inputport.setDeclaredType(IntMatrixToken.class);
 
         Parameter p = new Parameter(this, "Codebook", 
                 new StringToken("/users/neuendor/htvq/usc_hvq_s5.dat"));
@@ -65,7 +69,8 @@ public class VQEncode extends SDFAtomicActor {
 
 
     public void fire() throws IllegalActionException {
-        ObjectToken t = (ObjectToken) ((IOPort) getPort("imagepart")).get(0);
+        ObjectToken t = (ObjectToken) 
+            ((TypedIOPort) getPort("imagepart")).get(0);
 
         _partitions = (int[][]) t.getValue();
         int numpartitions = 
@@ -87,7 +92,7 @@ public class VQEncode extends SDFAtomicActor {
             //          System.out.println(nn);
         }
         ObjectToken ot = new ObjectToken(_codewords);
-        ((IOPort) getPort("index")).send(0,ot);
+        ((TypedIOPort) getPort("index")).send(0,ot);
 
     }
 
@@ -122,10 +127,10 @@ public class VQEncode extends SDFAtomicActor {
 
             byte temp[];
             int i, j, y, x, size = 1;
-            for(i=0; i<3; i++) {
+            for(i = 0; i < 3; i++) {
                 size = size * 2;
                 temp = new byte[size];
-                for(j=0; j<256; j++) {
+                for(j = 0; j < 256; j++) {
                     _codebook[i][j] = new int[size];
                     if(source.read(temp)!=size)
                         throw new IllegalActionException("Error reading " +
@@ -141,7 +146,7 @@ public class VQEncode extends SDFAtomicActor {
             throw new IllegalActionException(e.getMessage());
         }
         finally {
-            if(source!=null) {
+            if(source != null) {
                 try {
                     source.close(); 
                 }

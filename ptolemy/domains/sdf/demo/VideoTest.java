@@ -56,10 +56,10 @@ public class VideoTest {
             throws IllegalActionException, NameDuplicationException
         {            
             Manager m = new Manager();
-            CompositeActor c = new CompositeActor();
+            TypedCompositeActor c = new TypedCompositeActor();
             SDFDirector d = new SDFDirector();
             SDFScheduler s = new SDFScheduler();
-            IORelation r;
+            
             c.setDirector(d);
             c.setManager(m);
             d.setScheduler(s);
@@ -70,12 +70,12 @@ public class VideoTest {
             ImageUnpartition unpart = new ImageUnpartition(c, "Unpart");
             SDFConsumer consumer = new SDFConsumer(c, "Display");
             
-            r = (IORelation) c.connect((IOPort)source.getPort("image"),
-                    (IOPort)part.getPort("image"), "R1");
-            r = (IORelation) c.connect((IOPort)part.getPort("partition"),
-                    (IOPort)unpart.getPort("partition"), "R2");
-            r = (IORelation) c.connect((IOPort)unpart.getPort("image"),
-                    (IOPort)consumer.getPort("input"), "R3");
+            c.connect((TypedIOPort)source.getPort("image"),
+                    (TypedIOPort)part.getPort("image"), "R1");
+            c.connect((TypedIOPort)part.getPort("partition"),
+                    (TypedIOPort)unpart.getPort("partition"), "R2");
+            c.connect((TypedIOPort)unpart.getPort("image"),
+                    (TypedIOPort)consumer.getPort("input"), "R3");
             
             Parameter p = (Parameter) d.getAttribute("Iterations");
             p.setToken(new IntToken(60));

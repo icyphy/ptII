@@ -47,6 +47,7 @@ TCL_SRCS = \
 JSRCS = \
 	ComSystem.java \
 	ExpressionApplet.java \
+	HTVQApplet.java \
 	VideoTest.java \
 	SDFApplet.java \
 	SDFdemo.java \
@@ -73,8 +74,7 @@ all: $(JCLASS) ../lib/*.class ../kernel/*.class
 install: all
 
 VideoDemo: ../lib/vq/*.class ../kernel/*.class
-	setenv CLASSPATH $(CLASSPATH)
-	jtclsh VideoDemo.tcl
+	set classpath = $(CLASSPATH); jtclsh VideoDemo.tcl
 
 demo: $(JSRCS)
 	CLASSPATH=$(CLASSPATH) $(JAVA) ptolemy.domains.sdf.demo.SDFdemo

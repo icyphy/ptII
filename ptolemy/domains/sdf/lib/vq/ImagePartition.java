@@ -23,6 +23,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
                                                 PT_COPYRIGHT_VERSION 2
                                                 COPYRIGHTENDKEY
+@AcceptedRating Red
+@ProposedRating Red
 */
 package ptolemy.domains.sdf.lib.vq;
 
@@ -44,10 +46,10 @@ import ptolemy.domains.sdf.kernel.*;
 */
 
 public final class ImagePartition extends SDFAtomicActor {
-    public ImagePartition(CompositeActor container, String name) 
+    public ImagePartition(TypedCompositeActor container, String name) 
             throws IllegalActionException, NameDuplicationException {
 
-        super(container,name);
+        super(container, name);
     
 	new Parameter(this, "XFramesize", new IntToken("176"));
         new Parameter(this, "YFramesize", new IntToken("144"));
@@ -57,10 +59,13 @@ public final class ImagePartition extends SDFAtomicActor {
         SDFIOPort outputport = (SDFIOPort) newPort("partition");
         outputport.setOutput(true);
         setTokenProductionRate(outputport, 3168);
+        outputport.setDeclaredType(IntMatrixToken.class);
 
         SDFIOPort inputport = (SDFIOPort) newPort("image");
         inputport.setInput(true);
         setTokenConsumptionRate(inputport, 1);
+        inputport.setDeclaredType(IntMatrixToken.class);
+        
     }
 
     public void initialize() throws IllegalActionException {
@@ -77,7 +82,7 @@ public final class ImagePartition extends SDFAtomicActor {
         partition = ((SDFIOPort) getPort("partition"));
         image = ((SDFIOPort) getPort("image"));
         part = new int[xpartsize*ypartsize];
-        partitions = new ImageToken[3168];
+        partitions = new IntMatrixToken[3168];
     }
 
     public void fire() throws IllegalActionException {
@@ -86,8 +91,8 @@ public final class ImagePartition extends SDFAtomicActor {
         int a;
         int numpartitions = xframesize * yframesize / xpartsize / ypartsize;
 
-        message = (ImageToken) image.get(0);
-        frame = message.intArrayRef();
+        message = (IntMatrixToken) image.get(0);
+        frame = message.intArray();
 
 	//for(j = 0, a = numpartitions - 1 ; j < yframesize; j += ypartsize)
         //    for(i = 0; i < xframesize; i += xpartsize, a--) {
@@ -96,17 +101,17 @@ public final class ImagePartition extends SDFAtomicActor {
                 for(y = 0; y < ypartsize; y++)
                     System.arraycopy(frame, (j + y) * xframesize + i,
                             part, y * xpartsize, xpartsize);
-                partitions[a] = new ImageToken(part, ypartsize, xpartsize);
+                partitions[a] = new IntMatrixToken(part, ypartsize, xpartsize);
             }
 	
         partition.sendArray(0, partitions);
 	
     }
 
-    ImageToken message;
+    IntMatrixToken message;
     SDFIOPort partition;
     SDFIOPort image;
-    private ImageToken partitions[];
+    private IntMatrixToken partitions[];
     private int part[];
     private int frame[];
     private int xframesize;
