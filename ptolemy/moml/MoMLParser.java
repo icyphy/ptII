@@ -2233,21 +2233,21 @@ public class MoMLParser extends HandlerBase {
             throws XmlException {
         Attribute result = null;
         // If the name is absolute, strip the prefix.
-        String topLevelName = "(no top level)";
-        if (_toplevel != null) {
-            topLevelName = _toplevel.getFullName();
+        String currentName = "(no top level)";
+        if (_current != null) {
+            currentName = _current.getFullName();
         }
-        if (_toplevel != null && name.startsWith(topLevelName)) {
-            int prefix = topLevelName.length();
+        if (_current != null && name.startsWith(currentName)) {
+            int prefix = currentName.length();
             if (name.length() > prefix) {
-                name = name.substring(1, name.length());
+                name = name.substring(prefix + 1);
             }
         }
         // Now we are assured that name is relative.
         result = _current.getAttribute(name);
         if (result == null) {
             throw new XmlException("No such property: " + name
-                    + " in " + topLevelName,
+                     + " in " + currentName,
                     _currentExternalEntity(),
                     _parser.getLineNumber(),
                     _parser.getColumnNumber());
