@@ -7,13 +7,30 @@
 <h1>Ptolemy II Installation</h1>
 The Ptolemy II distribution includes the compiled Java <CODE>.class</CODE>
 files and the <CODE>javadoc</CODE> output, so it is not
-necessary to 'build' or run <CODE>make</CODE>.
+necessary to 'build' or run <CODE>make</CODE> to use Ptolemy II
+ <p>However, if you would like to rebuild from the Java sources, below
+is an overview
+
+ <p><CODE>$PTII/mk/tycho.mk</CODE> contains the makefile variables
+that are likely to vary between sites.  The <CODE>JAVAHOME</CODE>
+variable should be set to the directory that contains your Java
+Development Kit (JDK).
+ <p>You can either edit <CODE>tycho.mk</CODE>, or call <CODE>make</CODE>
+and pass a new value of <CODE>JAVAHOME</CODE>.
+ <p>For example, to recompile with JDK 1.2beta4:
+<pre>
+cd $PTII
+make clean
+make JAVAHOME=/opt/jdk1.2beta4
+</pre>
+
+
 
 <HR>
-Copyright &#169 1997- The Regents of the University of California.
+Copyright &#169 1998 The Regents of the University of California.
 All rights reserved.
 <br>
 Last updated: $Date$,
-comments to: <author>ptII@eecs.berkeley.edu</author>
+comments to: <author>cxh@eecs.berkeley.edu</author>
 </body>
 </html>
