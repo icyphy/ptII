@@ -1,0 +1,39 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<class name="composite" extends="ptolemy.actor.TypedCompositeActor">
+    <property name="GiottoDirector" class="ptolemy.domains.giotto.kernel.GiottoDirector">
+    </property>
+    <port name="input" class="ptolemy.actor.TypedIOPort">
+        <property name="input"/>
+    </port>
+    <port name="output" class="ptolemy.actor.TypedIOPort">
+        <property name="output"/>
+    </port>
+    <property name="internalFrequency" class="ptolemy.data.expr.Parameter" value="3">
+    </property>
+    <entity name="adder" class="ptolemy.actor.lib.AddSubtract">
+	<property name="frequency" class="ptolemy.data.expr.Parameter" value="internalFrequency">
+	</property>
+        <port name="plus" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="minus" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="input" relation="relation4"/>
+    <link port="adder.plus" relation="relation4"/>
+    <link port="adder.output" relation="relation5"/>
+    <link port="adder.plus" relation="relation5"/>
+    <link port="output" relation="relation5"/>
+</class>

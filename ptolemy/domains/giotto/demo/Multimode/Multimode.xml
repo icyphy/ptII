@@ -1,0 +1,110 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Multimode" class="ptolemy.actor.TypedCompositeActor">
+  <doc>This model demonstrates the hierarchical composition of the
+FSM and Giotto domains.</doc>
+  <property name="giotto" class="ptolemy.domains.giotto.kernel.GiottoDirector">
+    <property name="iterations" value="40">
+        <doc>Number of iterations in an execution.</doc>
+    </property>
+  </property>
+
+  <entity name="ramp" class="ptolemy.actor.lib.Ramp">
+    <property name="init" class="ptolemy.data.expr.Parameter" value="1">
+    </property>
+  </entity>
+
+  <entity name="dualMode" class="ptolemy.actor.TypedCompositeActor">
+    <property name="modal" class="ptolemy.domains.fsm.kernel.FSMDirector">
+      <property name="controllerName" value="controller">
+      </property>
+    </property>
+
+    <port name="in" class="ptolemy.actor.TypedIOPort">
+        <property name="input"/>
+    </port>
+    <port name="mode" class="ptolemy.actor.TypedIOPort">
+        <property name="output"/>
+    </port>
+    <port name="output1" class="ptolemy.actor.TypedIOPort">
+        <property name="output"/>
+    </port>
+    <port name="output2" class="ptolemy.actor.TypedIOPort">
+        <property name="output"/>
+    </port>
+
+    <entity name="controller" class="ptolemy.domains.giotto.demo.MultiMode.ctrl">
+      <property name="State0.refinementName" value="mode0">
+      </property>
+      <property name="State1.refinementName" value="mode1">
+      </property>
+    </entity>
+
+    <entity name="mode0" class="ptolemy.domains.giotto.demo.MultiMode.one_mode">
+    </entity>
+
+    <entity name="mode1" class="ptolemy.domains.giotto.demo.MultiMode.one_mode">
+      <property name="ramp2.frequency" value="4">
+      </property>
+    </entity>
+
+    <!-- Make the connections -->
+    <relation name="r1" class="ptolemy.actor.TypedIORelation"></relation>
+    <link port="in" relation="r1"/>
+    <link port="controller.in" relation="r1"/>
+
+    <relation name="r2" class="ptolemy.actor.TypedIORelation"></relation>
+    <link port="controller.out" relation="r2"/>
+    <link port="mode" relation="r2"/>
+
+    <relation name="r3" class="ptolemy.actor.TypedIORelation"></relation>
+    <link port="mode0.output1" relation="r3"/>
+    <link port="mode1.output1" relation="r3"/>
+    <link port="controller.refIn1" relation="r3"/>
+    <link port="output1" relation="r3"/>
+
+    <relation name="r4" class="ptolemy.actor.TypedIORelation"></relation>
+    <link port="mode0.output2" relation="r4"/>
+    <link port="mode1.output2" relation="r4"/>
+    <link port="controller.refIn2" relation="r4"/>
+    <link port="output2" relation="r4"/>
+  </entity>
+
+  <entity name="display" class="ptolemy.actor.lib.gui.SequencePlotter">
+    <port name="input"></port>
+    <!-- Configure provided in both a referenced file and local data -->
+    <configure source="plotConfigure.xml"><![CDATA[
+      <?xml version="1.0" standalone="no"?>
+      <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+           "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+      <plot>
+        <title>Hierarchical Composition of the FSM and Giotto Domains</title>
+      </plot>
+    ]]></configure>
+  </entity>
+
+  <relation name="r1" class="ptolemy.actor.TypedIORelation"></relation>
+  <link port="ramp.output" relation="r1"/>
+  <link port="dualMode.in" relation="r1"/>
+
+  <relation name="r2" class="ptolemy.actor.TypedIORelation"></relation>
+  <link port="dualMode.mode" relation="r2"/>
+  <link port="display.input" relation="r2"/>
+
+  <relation name="r3" class="ptolemy.actor.TypedIORelation"></relation>
+  <link port="dualMode.output1" relation="r3"/>
+  <link port="display.input" relation="r3"/>
+
+  <relation name="r4" class="ptolemy.actor.TypedIORelation"></relation>
+  <link port="dualMode.output2" relation="r4"/>
+  <link port="display.input" relation="r4"/>
+
+</entity>
+
+
+
+
+
+
+

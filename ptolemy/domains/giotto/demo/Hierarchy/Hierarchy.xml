@@ -1,0 +1,51 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="hierarchy" class="ptolemy.actor.TypedCompositeActor">
+    <property name="GiottoDirector" class="ptolemy.domains.giotto.kernel.GiottoDirector">
+        <property name="iterations" value="10">
+            <doc>Number of iterations in an execution.</doc>
+        </property>
+    </property>
+    <entity name="const" class="ptolemy.actor.lib.Const">
+    </entity>
+
+    <import source="composite.xml"/>
+
+    <entity name="composite1" class=".composite">
+    </entity>
+    <entity name="composite2" class=".composite">
+    </entity>
+
+    <entity name="display" class="ptolemy.actor.lib.gui.SequencePlotter">
+        <port name="input"></port>
+        <!-- Configure provided in both a referenced file and local data -->
+        <configure source="plotConfigure.xml"><![CDATA[
+            <?xml version="1.0" standalone="no"?>
+            <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+                "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+            <plot>
+                <size width="600" height="400"/>
+                <title>A Simple Hierarchical Giotto Model</title>
+            </plot>
+        ]]></configure>
+    </entity>
+
+    <relation name="r1" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="r2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="r3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="const.output" relation="r1"/>
+    <link port="composite1.input" relation="r1"/>
+    <link port="composite2.input" relation="r1"/>
+    <link port="composite1.output" relation="r2"/>
+    <link port="display.input" relation="r2"/>
+    <link port="composite2.output" relation="r3"/>
+    <link port="display.input" relation="r3"/>
+</entity>
+
+
+
+

@@ -1,9 +1,10 @@
-# Makefile for PtolemyII Giotto demos
+# Makefile for Ptolemy II Giotto Lego Demo
+#
+# @Authors: Christopher Hylands (makefile only)
 #
 # @Version: $Id$
-# @Author: Christopher Hylands
 #
-# @Copyright (c) 1998-2000 The Regents of the University of California.
+# @Copyright (c) 2000 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -28,42 +29,67 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/giotto/demo
+ME =		ptolemy/domains/giotto/demo/Legiotto
 
-DIRS = 		Hierarchy Legiotto Multimode
+# Root of the Java directory
+ROOT =		../../../../..
 
-# Root of Ptolemy II directory
-ROOT =		../../../..
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-
 # Used to build jar files
 PTPACKAGE =
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR =
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS =
+JSRCS =
+
+EXTRA_SRCS = \
+	Legiotto.htm \
+	Legiotto.xml \
+	lego.xml \
+	lego1.nqc \
+	lego2.nqc \
+	lego3.nqc \
+	spider1.nqc \
+	spider2.nqc \
+	spider3.nqc \
+	test_lego.xml \
+	test_spider.xml \
+	$(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES = 	$(DIRS) \
-	index.htm
+MISC_FILES =
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	doc
+OPTIONAL_FILES =
 
-all: jclass
+JCLASS = $(JSRCS:%.java=%.class)
+
+# Don't include all or install rules here, we want the user
+# to run 'make demos' to run the tests.
+all: jclass $(PTCLASSJAR)
 	@echo "To run all the demos, run 'make demo'"
 
-install: jclass jars
 
-demo: subdemo
+install: all
+
+demo: demo_applet demo_ptolemy demo_vergil
+demo_applet: $(PTCLASSJAR)
+	CLASSPATH=$(CLASSPATH) appletviewer Legiotto.htm
+
+demo_ptolemy:
+	"$(PTII)/bin/ptolemy" Legiotto.xml
+
+demo_vergil:
+	"$(PTII)/bin/vergil" Legiotto.xml
+
+depend:
+	@echo "no dependencies in this directory"
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
