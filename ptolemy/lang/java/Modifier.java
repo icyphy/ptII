@@ -1,5 +1,9 @@
 package ptolemy.lang.java;
 
+/** This class contains helper methods for the constants
+ *  defined in JavaStaticSemanticConstants.  Unfortunately,
+ *  most of this class is a duplicate of java.lang.reflect.Modifiers
+ */
 public class Modifier implements JavaStaticSemanticConstants {
 
     public static final String toString(final int modifier) {
@@ -118,5 +122,47 @@ public class Modifier implements JavaStaticSemanticConstants {
             throw new RuntimeException("Illegal parameter modifier : " +
                     toString(modifiers));
         }
+    }
+
+    /** Convert java.lang.Modifiers into ptolemy.lang.java.Modifiers
+     */
+    public static final int convertModifiers(final int modifier) {
+	int retval = 0;
+	//System.out.println("convertModifiers(" + modifier + ") " +
+	//		   java.lang.reflect.Modifier.toString(modifier));
+	if (java.lang.reflect.Modifier.isPublic(modifier)) {
+	    retval = retval | PUBLIC_MOD;
+	}
+	if (java.lang.reflect.Modifier.isProtected(modifier)) {
+	    retval = retval | PROTECTED_MOD;
+	}
+	if (java.lang.reflect.Modifier.isPrivate(modifier)) {
+	    retval = retval | PRIVATE_MOD;
+	}
+	if (java.lang.reflect.Modifier.isAbstract(modifier)) {
+	    retval = retval | ABSTRACT_MOD;
+	}
+	if (java.lang.reflect.Modifier.isFinal(modifier)) {
+	    retval = retval | FINAL_MOD;
+	}
+	if (java.lang.reflect.Modifier.isNative(modifier)) {
+	    retval = retval | NATIVE_MOD;
+	}
+	if (java.lang.reflect.Modifier.isSynchronized(modifier)) {
+	    retval = retval | SYNCHRONIZED_MOD;
+	}
+	if (java.lang.reflect.Modifier.isTransient(modifier)) {
+	    retval = retval | TRANSIENT_MOD;
+	}
+	if (java.lang.reflect.Modifier.isVolatile(modifier)) {
+	    retval = retval | VOLATILE_MOD;
+	}
+	if (java.lang.reflect.Modifier.isStatic(modifier)) {
+	    retval = retval | STATIC_MOD;
+	}
+	if (java.lang.reflect.Modifier.isStrict(modifier)) {
+	    retval = retval | STRICTFP_MOD;
+	}
+	return retval;
     }
 }
