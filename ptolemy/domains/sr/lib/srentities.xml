@@ -13,6 +13,9 @@
 <entity name="Latch" class="ptolemy.domains.sr.lib.Latch">
 </entity>
 
+<entity name="NonStrictLogicFunction" class="ptolemy.domains.sr.lib.NonStrictLogicFunction">
+</entity>
+
 <entity name="SequenceTest" class="ptolemy.domains.sr.lib.SequenceTest">
 </entity>
 

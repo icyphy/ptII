@@ -52,6 +52,7 @@ JSRCS = \
 	Delay.java \
 	Latch.java \
 	NonStrictActor.java \
+	NonStrictLogicFunction.java \
 	SequenceTest.java \
 	SingleTokenDistributor.java \
 	TriggeredTime.java

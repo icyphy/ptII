@@ -1,4 +1,4 @@
-/* Marker interface for actors that are not strict.
+/* Marker interface for actors that are nonstrict.
 
  Copyright (c) 1998-2001 The Regents of the University of California.
  All rights reserved.
@@ -33,10 +33,11 @@ package ptolemy.domains.sr.lib;
 //////////////////////////////////////////////////////////////////////////
 //// NonStrictActor
 /**
-This is a marker interface for actors that are not strict.
-That is, the actor does not require that all its inputs are known
-before it is fired.  All ports contained by actors that implement this 
-marker interface are expected to be NonStrictIOPorts.
+This is a marker interface for actors that are nonstrict. That is, the actor
+does not require that all its inputs are known before it is fired.  Actors
+that implement this interface should produce outputs only if those outputs
+can be determined from the given inputs.  Outputs that cannot be determined 
+from the given inputs should not be produced.
 
 @author Paul Whitaker
 @version $Id$
