@@ -88,7 +88,8 @@ public class ThalesGraphTableau extends ActorGraphTableau {
             ThalesGraphFrame frame = new ThalesGraphFrame(entity, this);
             setFrame(frame);
             frame.setBackground(BACKGROUND_COLOR);
-            frame.setVisible(true);
+            // Don't call setVisible() here, otherwise there will be no menus.
+            // frame.setVisible(true);
         }
     }
 
