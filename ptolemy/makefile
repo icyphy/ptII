@@ -35,8 +35,11 @@ ME =		ptolemy
 # so that when we compile in a directory we should have already compiled
 # any classes in other directories that we depend on.
 # Note that data.expr uses moml
+# PTCOPERNICUS_DIR is set to copernicus by configure in $PTII/mk/ptII.mk
+# if the Soot package was found.
+
 DIRS = kernel plot graph moml data actor gui math media	\
-	lang codegen domains vergil apps configs
+	lang codegen $(PTCOPERNICUS_DIR) domains vergil apps configs
 
 # Root of Ptolemy II directory
 ROOT =		..
