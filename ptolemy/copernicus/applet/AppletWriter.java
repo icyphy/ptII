@@ -199,10 +199,10 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
 	    _modelJarFiles = jarFilesResults.toString();
         } catch (IOException ex) {
             // This exception tends to get eaten by soot, so we print as well.
-            System.err.println("Problem writing makefile or html files:" + ex);
+            System.err.println("Problem writing makefile or html files:");
             ex.printStackTrace();
             throw new InternalErrorException(null, ex,
-                    "Problem writing the makefile or htm files");
+                    "Problem writing the makefile or htm files.");
         }
 
         // Set up the HashMap we will use when we read in files like
@@ -495,21 +495,34 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                         
                     } else {   
                         String warning = "Looking up '" + className
-                            + "' returned the $PTII directory '"
-                            + _ptIIDirectory + "' instead of a jar file. "
-                            + " Perhaps you need to run 'make install'"
-                            + "to create the jar files?";
+                            + "'\nreturned the $PTII directory '"
+                            + _ptIIDirectory + "' instead of a jar file.\n'"
+                            + jarFileName + "' was not present?\n";
                         if (_codeBase.equals(".")) {
                             // We only need print an error message if
                             // we are actually trying to copy the file
                             throw new IOException(warning 
-                                    + "\nIf the jar files are not "
-                                    + "present, then we cannot copy "
-                                    + "them to the new location.");
+                                    + "Since the applet directory is not "
+                                    + "inside the Ptolemy II tree, we need "
+                                    + "to have\n"
+                                    + "access to the jar files. If the jar "
+                                    + "files are not present, then we cannot"
+                                    + "copy\n"
+                                    + "them to the new location and the java "
+                                    + "classes will not be found by the "
+                                    + "applet.\n"
+                                    + "One solution is to run \" cd $PTII;"
+                                    + "make install\" to create the jar files."
+                                    + "\nAnother solution is to place the "
+                                    + "applet directory under the\nPtolemy II "
+                                    + "directory.");
                         } else {
                             // Print it so that the user knows that running
                             // make install would be a good job
                             System.out.println("Warning: " + warning
+                                    + "Perhaps you need to run "
+                                    + "'make install' to create the "
+                                    + "jar files?"
                                     + "\nIf the jar files are not "
                                     + "present, then the archive "
                                     + "applet parameter will not "
