@@ -76,7 +76,7 @@ results of the execution.  Any entity in the model that implements
 the Placeable interface is placed in the display region.
 
 @see Placeable
-@author Edward A. Lee
+@author Edward A. Lee, Elaine Cheong
 @version $Id$
 @since Ptolemy II 0.4
 */

@@ -111,7 +111,7 @@ Such directors are declaring that they will not make changes to the
 topology during execution.  Instead, any desired mutations are delegated
 to the manager via the requestChange() method.
 
-@author Steve Neuendorffer, Lukito Muliadi, Edward A. Lee
+@author Steve Neuendorffer, Lukito Muliadi, Edward A. Lee, Elaine Cheong
 // Contributors: Mudit Goel, John S. Davis II
 @version $Id$
 @since Ptolemy II 0.2
