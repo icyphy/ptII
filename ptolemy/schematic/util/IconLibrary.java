@@ -32,6 +32,7 @@ package ptolemy.schematic.util;
 
 import ptolemy.kernel.util.*;
 import java.util.Enumeration;
+import java.util.StringTokenizer;
 import collections.*;
 import java.io.*;
 
@@ -122,8 +123,48 @@ public class IconLibrary extends PTMLObject {
         return _terminalstyles.includes(style);
     }
 
+    /** 
+     * Search for an icon with the given hierarchical name in 
+     * this library and all its deeply contained sublibraries.
+     * @return The found icon
+     * @exception IllegalActionException If no icon with the given
+     * name is found.
+     */
+    public Icon findIcon(String dottedName) 
+            throws IllegalActionException {
+        StringTokenizer tokens = new StringTokenizer(dottedName, ".");
+        IconLibrary temp = this;
+        int count = tokens.countTokens();
+        
+        int i;
+        for(i = 0; i < (count - 1); i++) 
+            temp = temp.getSubLibrary((String) (tokens.nextElement()));
+        
+        return temp.getIcon((String) (tokens.nextElement()));
+    }
+
+    /** 
+     * Search for an terminal style with the given hierarchical name in 
+     * this library and all its deeply contained sublibraries.
+     * @return The found terminal style
+     * @exception IllegalActionException If no terminal style with the given
+     * name is found.
+     */
+    public TerminalStyle findTerminalStyle(String name)
+            throws IllegalActionException {
+        StringTokenizer tokens = new StringTokenizer(name, ".");
+        IconLibrary temp = this;
+        int count = tokens.countTokens();
+        
+        int i;
+        for(i = 0; i < (count - 1); i++) 
+            temp = temp.getSubLibrary((String) (tokens.nextElement()));
+        
+        return temp.getTerminalStyle((String) (tokens.nextElement()));
+    }
+
     /**
-     * Get the Icon that is stored in this IconLibrary with the given name
+     * Get the icon that is stored in this icon library with the given name
      */
     public Icon getIcon(String name) 
         throws IllegalActionException {

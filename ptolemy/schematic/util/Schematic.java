@@ -197,6 +197,48 @@ public class Schematic extends PTMLObject
     }
 */
 
+    /** Return the terminalstyle with the given name in the 
+     *  given root icon library.
+     *  If no terminal style with the given name exists, 
+     *  then throw an exception.
+     */
+    public SchematicTerminal findSchematicTerminal(String name)
+            throws IllegalActionException {
+        StringTokenizer tokens = new StringTokenizer(name, ".");
+        int count = tokens.countTokens();
+
+        SchematicTerminal terminal = null;
+        if(count == 1) {
+            // Then this is a terminal contained directly in the schematic
+            String terminalName = (String)tokens.nextElement();
+            terminal = getTerminal(terminalName);
+        } else if(count == 2) {
+            String objectName = (String)tokens.nextElement();
+            String terminalName = (String)tokens.nextElement();
+
+            // Then the terminal is in an entity or relation
+            if(containsRelation(objectName)) {
+                SchematicRelation relation = getRelation(objectName);
+                if(relation.containsTerminal(terminalName)) 
+                    terminal = relation.getTerminal(terminalName);
+            }
+            if(containsEntity(objectName)) {
+                SchematicEntity entity = getEntity(objectName);
+                if(entity.containsTerminal(terminalName)) { 
+                    if(terminal == null)  
+                        terminal = entity.getTerminal(terminalName);
+                    else 
+                        throw new IllegalActionException(
+                                "Ambiguous Terminals " +
+                                "found with name " + name);
+                }
+            }
+        }            
+        if(terminal == null) throw new IllegalActionException("Terminal not " +
+                "found with name " + name);
+        return terminal;
+    }
+
     /**
      * Return the schematic entity that has the given name.
      * Throw an exception if there is no entity with the

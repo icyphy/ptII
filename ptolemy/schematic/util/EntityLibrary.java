@@ -32,6 +32,7 @@ package ptolemy.schematic.util;
 
 import ptolemy.kernel.util.*;
 import java.util.Enumeration;
+import java.util.StringTokenizer;
 import collections.*;
 import java.io.*;
 
@@ -103,7 +104,28 @@ public class EntityLibrary extends PTMLObject {
     }
 
     /**
-     * Get the Entity that is stored in this EntityLibrary with the given name
+     * Search for an entity template with the given hierarchical name in 
+     * this library and all its deeply contained sublibraries.
+     * @return The found entity template
+     * @exception IllegalActionException If no entity template with the given
+     * name is found.
+     */
+    public EntityTemplate findEntityTemplate(String dottedName)
+            throws IllegalActionException {
+        StringTokenizer tokens = new StringTokenizer(dottedName, ".");
+        EntityLibrary temp = this;
+        int count = tokens.countTokens();
+        
+        int i;
+        for(i = 0; i < (count - 1); i++) 
+            temp = temp.getSubLibrary((String) (tokens.nextElement()));
+        
+        return temp.getEntity((String) (tokens.nextElement()));
+    }
+
+    /**
+     * Get the Entity that is stored directly 
+     * in this EntityLibrary with the given name.
      */
     public EntityTemplate getEntity(String name)
             throws IllegalActionException {

@@ -77,7 +77,6 @@ public class EditorNodeRenderer implements NodeRenderer {
 	    Icon icon = entity.getIcon();	    
             Figure background = icon.createFigure();
 	    figure = new IconFigure(background, entity.getName());
-	    figure.setUserObject(n);
 	    
 	    Enumeration terminals = entity.terminals();
 	    // FIXME this needs to do the right thing. 

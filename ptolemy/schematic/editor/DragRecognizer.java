@@ -35,9 +35,7 @@ public class DragRecognizer
 
     public void registerListeners() {
 	GraphController controller = ((SchematicPalette) getComponent()).getGraphPane().getGraphController();
-	System.out.println("controller = " + controller);
 	NodeInteractor ni = controller.getNodeInteractor();
-	System.out.println("nodeinteractor = " + ni);
 	DragInteractor di = ni.getDragInteractor();
 	di.addLayerListener(this);
     }
@@ -50,7 +48,6 @@ public class DragRecognizer
 	int deltaY = java.lang.Math.abs(currentY - _startY);
 	if((deltaX + deltaY) > _gestureDistance) {
 	    ((SchematicPalette) getComponent()).setDraggedNode((Node)_draggedFigure.getUserObject());
-	    System.out.println("source action = " + getSourceActions());
 	    fireDragGestureRecognized(DnDConstants.ACTION_COPY, 
 				     _startPoint);
 	}

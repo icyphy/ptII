@@ -330,11 +330,11 @@ public class PTMLObjectFactory {
             if (n.equals("name")) {
                 entity.setName(_getString(e, n));
             } else if (n.equals("icon")) {
-                Icon icon = _findIcon(iconroot, _getString(e, n));
+                Icon icon = iconroot.findIcon(_getString(e, n));
                 entity.setIcon(icon);
             } else if (n.equals("terminalstyle")) {
                 TerminalStyle terminalstyle =
-                    _findTerminalStyle(iconroot, _getString(e, n));
+                    iconroot.findTerminalStyle(_getString(e, n));
                 entity.setTerminalStyle(terminalstyle);
             } else {
                 _unknownAttribute(e, n);
@@ -416,7 +416,7 @@ public class PTMLObjectFactory {
         EntityTemplate template = null;
         if(e.hasAttribute("template")) {
             String templateString = _getString(e, "template");
-            template = _findEntityTemplate(entityLib, templateString);
+            template = entityLib.findEntityTemplate(templateString);
         } else {
             throw new IllegalActionException(
                     "SchematicEntity has no template.");
@@ -469,10 +469,10 @@ public class PTMLObjectFactory {
             String n = (String) attributes.nextElement();
             if (n.equals("to")) {
                 entity.setTo(
-                        _findSchematicTerminal(schematic, _getString(e, n)));
+                        schematic.findSchematicTerminal(_getString(e, n)));
             } else if (n.equals("from")) {
                 entity.setFrom(
-                        _findSchematicTerminal(schematic, _getString(e, n)));
+                        schematic.findSchematicTerminal(_getString(e, n)));
             } else {
                 _unknownAttribute(e, n);
             }
@@ -597,104 +597,6 @@ public class PTMLObjectFactory {
             }
         }
         return terminalStyle;
-    }
-
-    /** Return the icon with the given name in the given root icon library.
-     *  If no icon with the given name exists, then throw an exception.
-     */
-    private static Icon _findIcon(
-            IconLibrary root, String name) 
-            throws IllegalActionException {
-        StringTokenizer tokens = new StringTokenizer(name, ".");
-        IconLibrary temp = root;
-        int count = tokens.countTokens();
-        
-        int i;
-        for(i = 0; i < (count - 1); i++) 
-            temp = temp.getSubLibrary((String) (tokens.nextElement()));
-        
-        return temp.getIcon((String) (tokens.nextElement()));
-    }
-
-    /** Return the terminalstyle with the given name in the 
-     *  given root icon library.
-     *  If no terminal style with the given name exists, 
-     *  then throw an exception.
-     */
-    private static SchematicTerminal _findSchematicTerminal(
-            Schematic schematic, String name)
-            throws IllegalActionException {
-        StringTokenizer tokens = new StringTokenizer(name, ".");
-        int count = tokens.countTokens();
-
-        SchematicTerminal terminal = null;
-        if(count == 1) {
-            // Then this is a terminal contained directly in the schematic
-            String terminalName = (String)tokens.nextElement();
-            terminal = schematic.getTerminal(terminalName);
-        } else if(count == 2) {
-            String objectName = (String)tokens.nextElement();
-            String terminalName = (String)tokens.nextElement();
-
-            // Then the terminal is in an entity or relation
-            if(schematic.containsRelation(objectName)) {
-                SchematicRelation relation = schematic.getRelation(objectName);
-                if(relation.containsTerminal(terminalName)) 
-                    terminal = relation.getTerminal(terminalName);
-            }
-            if(schematic.containsEntity(objectName)) {
-                SchematicEntity entity = schematic.getEntity(objectName);
-                if(entity.containsTerminal(terminalName)) { 
-                    if(terminal == null)  
-                        terminal = entity.getTerminal(terminalName);
-                    else 
-                        throw new IllegalActionException(
-                                "Ambiguous Terminals " +
-                                "found with name " + name);
-                }
-            }
-        }            
-        if(terminal == null) throw new IllegalActionException("Terminal not " +
-                "found with name " + name);
-        return terminal;
-    }
-
-    /** Return the terminalstyle with the given name in the 
-     *  given root icon library.
-     *  If no terminal style with the given name exists, 
-     *  then throw an exception.
-     */
-    private static TerminalStyle _findTerminalStyle(
-            IconLibrary root, String name)
-            throws IllegalActionException {
-        StringTokenizer tokens = new StringTokenizer(name, ".");
-        IconLibrary temp = root;
-        int count = tokens.countTokens();
-        
-        int i;
-        for(i = 0; i < (count - 1); i++) 
-            temp = temp.getSubLibrary((String) (tokens.nextElement()));
-        
-        return temp.getTerminalStyle((String) (tokens.nextElement()));
-    }
-
-    /** Return the terminalstyle with the given name in the 
-     *  given root icon library.
-     *  If no terminal style with the given name exists, 
-     *  then throw an exception.
-     */
-    private static EntityTemplate _findEntityTemplate(
-            EntityLibrary root, String name)
-            throws IllegalActionException {
-        StringTokenizer tokens = new StringTokenizer(name, ".");
-        EntityLibrary temp = root;
-        int count = tokens.countTokens();
-        
-        int i;
-        for(i = 0; i < (count - 1); i++) 
-            temp = temp.getSubLibrary((String) (tokens.nextElement()));
-        
-        return temp.getEntity((String) (tokens.nextElement()));
     }
 
     /** Return a boolean corresponding to the value of the attribute with

@@ -156,8 +156,8 @@ public class GraphEditor extends AbstractApplication {
 	JGraph jgraph = new JGraph(pane);
 	new EditorDropTarget(jgraph);
         GraphController controller = jgraph.getGraphPane().getGraphController();
-        GraphModel model = (GraphModel) d.getSheet(0).getModel();
-        Graph graph = model.getGraph();
+        //        GraphModel model = (GraphModel) d.getSheet(0).getModel();
+        Graph graph = (Graph) d.getSheet(0).getModel();//model.getGraph();
 
         // Set and draw the new graph
         controller.setGraph(graph);
@@ -262,11 +262,12 @@ public class GraphEditor extends AbstractApplication {
 
         try {
             parseLibraries();
-            EntityTemplate template = _entityLibrary.getEntity("SaveImage");
+            EntityTemplate template = 
+                _entityLibrary.findEntityTemplate("SDF.SaveImage");
             SchematicEntity node = new SchematicEntity("test1", template);
             p3.addNode(node, 60, 50);
             
-            template = _entityLibrary.getEntity("LoadImage");
+            template = _entityLibrary.findEntityTemplate("SDF.LoadImage");
             node = new SchematicEntity("test2", template);
             p3.addNode(node, 60, 140);
         } catch (Exception ex) {

@@ -1,9 +1,3 @@
-/*
- * $Id$
- *
- * Copyright (c) 1998 The Regents of the University of California.
- * All rights reserved.  See the file COPYRIGHT for details.
- */
 package ptolemy.schematic.editor;
 
 import ptolemy.schematic.util.*;
@@ -31,8 +25,8 @@ import java.net.URL;
  * A class representing graph-structured documents.
  * This class saves and loads graphs to a schematic ptml file.
  *
- * @author John Reekie (johnr@eecs.berkeley.edu)
- * @version $Revision$
+ * @author John Reekie (johnr@eecs.berkeley.edu), Steve Neuendorffer
+ * @version $Id$
  */
 public class GraphDocument extends AbstractDocument {
     //DEBUG
@@ -96,11 +90,12 @@ public class GraphDocument extends AbstractDocument {
      * @throws Exception  If the I/O operation failed.
      */
     public void saveAs (File file) throws Exception {
-        String filename = file.getName();
-        FileOutputStream fout = new FileOutputStream(filename);
-        DataOutputStream out = new DataOutputStream(fout);
-        GraphModel model = (GraphModel) getSheet(0).getModel();
-        new GraphWriter().write(model, out);
+        // FIXME
+        //        String filename = file.getName();
+        //FileOutputStream fout = new FileOutputStream(filename);
+        //DataOutputStream out = new DataOutputStream(fout);
+        //GraphModel model = (GraphModel) getSheet(0).getModel();
+        //new GraphWriter().write(model, out);
     }
 
     /** Throw an exception, as save to URLs is not supported.
@@ -132,7 +127,7 @@ public class GraphDocument extends AbstractDocument {
          */
         public Document createDocument (Application app) {
             GraphDocument d = new GraphDocument(app);
-            d.addSheet(new BasicSheet(d, "New graph", new GraphModel()));
+            d.addSheet(new BasicSheet(d, "New graph", new Schematic()));
             return d;
         }
 
