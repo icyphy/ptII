@@ -32,6 +32,9 @@ review output port.
 
 package ptolemy.actor.lib;
 
+import java.util.ArrayList;
+
+import ptolemy.actor.TypedIOPort;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
@@ -113,8 +116,18 @@ public class Test extends NonStrictTest {
         // Note that the parent class (NonStrictTest) does not have a multiport
         // input port.
         input.setMultiport(true);
+        output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.BOOLEAN);
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         ports                             ////
+    
+    /** Boolean output that is false as long as there is data to
+     *  compare against the input, but becomes true on the first
+     *  firing after such data has been exhausted.
+     */
+    public TypedIOPort output;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -133,6 +146,29 @@ public class Test extends NonStrictTest {
      */
     public void fire() throws IllegalActionException {
         int width = input.getWidth();
+        
+        // If we are in training mode, read the inputs and at to the
+        // training data.
+        boolean training = ((BooleanToken)trainingMode.getToken())
+            .booleanValue();
+        if (training) {
+            if (_trainingTokens == null) {
+                _trainingTokens = new ArrayList();
+            }
+            if (width == 1) {
+                if (input.hasToken(0)) {
+                    _trainingTokens.add(input.get(0));
+                }
+            } else {
+                ArrayList arrayList = new ArrayList();
+                _trainingTokens.add(arrayList);
+                for (int i = 0; i < width; i++) {
+                    arrayList.add(input.get(i));
+                }
+            }
+            return;
+        }
+        
         if (_numberOfInputTokensSeen
                 >= ((ArrayToken)(correctValues.getToken())).length()) {
             // Consume and discard input values.  We are beyond the end
