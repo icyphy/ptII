@@ -102,8 +102,8 @@ public class TimedSource extends Source implements TimedActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** If the <i>stopTime</i> parameter is changed, then
-     *  if the new value is greater
+    /** If the <i>stopTime</i> parameter is changed and the model is
+     *  executing, then if the new value is greater
      *  than zero and greater than the current time, then ask the director
      *  to fire this actor at that time.  If the new value is less than
      *  the current time, then request refiring at the current time.
@@ -113,7 +113,9 @@ public class TimedSource extends Source implements TimedActor {
             throws IllegalActionException {
         if (attribute == stopTime) {
             double time = ((DoubleToken)stopTime.getToken()).doubleValue();
-            if (time > 0.0) {
+            Manager manager = getManager();
+            if (time > 0.0 && manager != null
+                    && manager.getState() != Manager.IDLE) {
                 Director director = getDirector();
                 if (director != null) {
                     double currentTime = director.getCurrentTime();
