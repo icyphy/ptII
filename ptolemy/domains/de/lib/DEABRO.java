@@ -89,7 +89,7 @@ public class DEABRO extends DEThreadActor {
                 if (DEBUG) {
                     System.out.println("In initial state..");
                 }
-                waitForInputs();
+                waitForNewInputs();
                 if (R.hasToken(0)) {
                     if (DEBUG) {
                         System.out.println("Resetting..");
@@ -105,7 +105,7 @@ public class DEABRO extends DEThreadActor {
 
                     while (true) {
 
-                        waitForInputs();
+                        waitForNewInputs();
                         if (R.hasToken(0)) {
                             if (DEBUG) {
                                 System.out.println("Resetting..");
@@ -131,7 +131,7 @@ public class DEABRO extends DEThreadActor {
 
                     while (true) {
 
-                        waitForInputs();
+                        waitForNewInputs();
                         if (R.hasToken(0)) {
                             if (DEBUG) {
                                 System.out.println("Resetting..");

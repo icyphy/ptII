@@ -65,7 +65,7 @@ public class DEPoisson extends DEActor {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         output = new TypedIOPort(this, "output", false, true);
-        output.setDeclaredType(Token.class);
+        output.setDeclaredType(DoubleToken.class);
         _lambda = new Parameter(this, "lambda", new DoubleToken(lambda));
         _value = new Parameter(this, "value", new DoubleToken(value));
     }

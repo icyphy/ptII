@@ -49,6 +49,7 @@ QUANTIFY_JAVA_HOME_ENV = /usr/tools/pure/quantify-4.2-solaris2
 TYPACKAGE_DIR = ptolemy/domains/de/demo
 
 JSRCS = \
+	ABROApplet.java \
 	AdderApplet.java \
 	ClockApplet.java \
 	ClockSystem.java \

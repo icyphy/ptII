@@ -55,6 +55,7 @@ TYZIP =		$(TYPACKAGE_DIR)/$(TYPACKAGE).zip
 JARFILE = 	$(TYPACKAGE).jar
 
 JSRCS = \
+	DEABRO.java \
 	DEANDGate.java \
 	DEBus.java \
 	DEClock.java \
