@@ -83,7 +83,7 @@ public class ExprUtility implements JavaStaticSemanticConstants {
             return null;
         }
 
-        ApplicationUtility.error("accessedObject() : node not supported " + node);
+        throw new RuntimeException("accessedObject() : node not supported " + node);
         return null;
     }
 

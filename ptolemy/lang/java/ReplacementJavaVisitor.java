@@ -59,7 +59,7 @@ public abstract class ReplacementJavaVisitor extends JavaVisitor {
 
         if ((_traversalMethod != TM_CUSTOM) &&
                 (_traversalMethod != TM_CHILDREN_FIRST)) {
-            ApplicationUtility.error("traversal method for replacement must be " +
+            throw new RuntimeException("traversal method for replacement must be " +
                     "custom or children first.");
         }
     }

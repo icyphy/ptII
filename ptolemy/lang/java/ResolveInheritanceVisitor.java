@@ -89,7 +89,7 @@ public class ResolveInheritanceVisitor extends ResolveVisitorBase
 
         if (superClass != null) {
             if ((superClass.getModifiers() & FINAL_MOD) != 0) {
-                ApplicationUtility.error("final class " + superClass.getName() +
+                throw new RuntimeException("final class " + superClass.getName() +
                         " cannot be extended");
             }
 
@@ -111,7 +111,7 @@ public class ResolveInheritanceVisitor extends ResolveVisitorBase
 
         if ((modifiers & ABSTRACT_MOD) == 0) {
             if (_hasAbstractMethod(node)) {
-                ApplicationUtility.error("ResolveInheritanceVisitor." +
+                throw new RuntimeException("ResolveInheritanceVisitor." +
                         "visitClassDeclNode(): " +  me.fullName() +
                         " has abstract methods: it must be declared abstract");
             }
@@ -147,7 +147,7 @@ public class ResolveInheritanceVisitor extends ResolveVisitorBase
         ClassDecl superClass = me.getSuperClass();
 
         if ((superClass.getModifiers() & FINAL_MOD) != 0) {
-            ApplicationUtility.error("final class " + superClass.getName() +
+            throw new RuntimeException("final class " + superClass.getName() +
                     " cannot be extended");
         }
 
@@ -283,7 +283,7 @@ public class ResolveInheritanceVisitor extends ResolveVisitorBase
 
                     if (!_typePolicy.compareTypes(d.getType(),
                             methodMember.getType())) {
-  	                ApplicationUtility.error(to.getName() +
+  	                throw new RuntimeException(to.getName() +
                                 ": overriding of " + memberName +
                                 " changes return type: " +
                                 d.getType() + " vs. " + 
@@ -291,13 +291,13 @@ public class ResolveInheritanceVisitor extends ResolveVisitorBase
                     }
 
                     if ((dm & STATIC_MOD) != (mm & STATIC_MOD)) {
-                        ApplicationUtility.error("overriding of "
+                        throw new RuntimeException("overriding of "
                                 + memberName + " adds/removes 'static'");
                     }
 
                     // make sure d was a legal override/hide of member
                     if ((mm & FINAL_MOD) != 0) {
-                        ApplicationUtility.error(to.getName() +
+                        throw new RuntimeException(to.getName() +
 						 ": cannot override final " +
 						 memberName);
                     }
@@ -309,7 +309,7 @@ public class ResolveInheritanceVisitor extends ResolveVisitorBase
        		      !(dm & (PUBLIC_MOD | PROTECTED_MOD)) ||
                       !(mm & (PUBLIC_MOD | PROTECTED_MOD)) &&
                       (dm & PRIVATE_MOD)) {
-                      ApplicationUtility.error("overriding of " + memberName +
+                      throw new RuntimeException("overriding of " + memberName +
                       " must provide at least as much access");
                       }
                     */
@@ -317,7 +317,7 @@ public class ResolveInheritanceVisitor extends ResolveVisitorBase
                     if (!inheritAllAbstract &&
                             !_throwsSubset(d.getThrows(),
                                     methodMember.getThrows())) {
-                        ApplicationUtility.error(d.getName() +
+                        throw new RuntimeException(d.getName() +
                                 " throws more exceptions than overridden " +
                                 memberName);
                     }

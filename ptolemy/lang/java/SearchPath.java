@@ -360,7 +360,7 @@ public class SearchPath extends Vector {
             try {
                 return file.getCanonicalFile();
             } catch (IOException ioe) {
-                ApplicationUtility.error("cannot get canonical filename");
+                throw new RuntimeException("cannot get canonical filename");
             }
         }
         return null;

@@ -441,7 +441,7 @@ public class TypeVisitor extends JavaVisitor implements JavaStaticSemanticConsta
 
     /** The default visit method. */
     protected Object _defaultVisit(TreeNode node, LinkedList args) {
-        ApplicationUtility.error("node " + node.toString() +
+        throw new RuntimeException("node " + node.toString() +
                 " is not an expression, so it does not have a type");
         return null;
     }
@@ -468,7 +468,7 @@ public class TypeVisitor extends JavaVisitor implements JavaStaticSemanticConsta
             return accessedObjectType((SuperFieldAccessNode) node);
         }
 
-        ApplicationUtility.error("accessdObjectType() not supported for node " + node);
+        throw new RuntimeException("accessdObjectType() not supported for node " + node);
         return null;
     }
 

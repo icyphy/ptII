@@ -222,7 +222,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
 					", using most specific one.");
 
             } else {
-                ApplicationUtility.error("ambiguous reference to " +
+                throw new RuntimeException("ambiguous reference to " +
 					 name.getIdent() +
 					 " in environment " + env);
             }
@@ -255,7 +255,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
                         // inner class, in the same package?
                         // FIXME : this check is too simple
                         if (!classDecl.deepContainedBy(currentPackage)) {
-                            ApplicationUtility.error(classDecl.getName() +
+                            throw new RuntimeException(classDecl.getName() +
                                     " is not accessible. The container " +
                                     container + " is not the same as the " +
                                     "currentPackage " + currentPackage +
@@ -425,7 +425,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
                 JavaParserManip.parseCanonicalClassName(className, false);
 
             if (loadedAST == null) {
-                ApplicationUtility.error("Couldn't load " + className);
+                throw new RuntimeException("Couldn't load " + className);
             }
         }
         return loadCompileUnit(loadedAST, pass);
@@ -437,7 +437,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
         try {
             return _loadCanonicalFile(file.getCanonicalPath(), pass);
         } catch (IOException ioe) {
-            ApplicationUtility.error(ioe.toString());
+            throw new RuntimeException(ioe.toString());
         }
         return null;
     }
@@ -707,7 +707,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
                 TypedDecl typedContainer = (TypedDecl) container;
                 TypeNode type = typedContainer.getType();
                 if (type instanceof PrimitiveTypeNode) {
-                    ApplicationUtility.error("cannot select " +
+                    throw new RuntimeException("cannot select " +
 					     name.getIdent() +
 					     " from non-reference type" +
 					     " represented by " + type);
@@ -764,7 +764,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
 		    "the java sources or the directory that contains\n" +
 		    "those .jskel files is not in the CLASSPATH?";
 	    }
-            ApplicationUtility.error(message);
+            throw new RuntimeException(message);
         }
 
         JavaDecl d = (JavaDecl) possibles.head();
@@ -794,7 +794,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
                     false);
 
             if (loadedAST == null) {
-                ApplicationUtility.error("Couldn't load " + filename);
+                throw new RuntimeException("Couldn't load " + filename);
             }
         }
         return loadCompileUnit(loadedAST, pass);
@@ -827,7 +827,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
 		//interfaceDecl =
 		//   (ClassDecl) interfaceDeclNode.getDefinedProperty(DECL_KEY);
 		if (classDecl == null) {
-		    ApplicationUtility.error("could not find class or " +
+		    throw new RuntimeException("could not find class or " +
 					     "interface \"" + name + 
 					     "\" in bootstrap environment: "
 					     + env);
@@ -846,7 +846,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
 		//classDecl =
 		//   (ClassDecl) classDeclNode.getDefinedProperty(DECL_KEY);
 		if (classDecl == null) {
-		    ApplicationUtility.error("could not find class or " +
+		    throw new RuntimeException("could not find class or " +
 					     "interface \"" + name + 
 					     "\" in bootstrap environment: "
 					     + env);
@@ -859,7 +859,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
             return classDecl;
         } else {
 	    if ((decl.category & (CG_CLASS | CG_INTERFACE)) == 0) {
-		ApplicationUtility.error("fatal error: " + decl.getName() +
+		throw new RuntimeException("fatal error: " + decl.getName() +
 					 " should be a class or interface");
 	    }
 	    classDecl = (ClassDecl) decl;
@@ -914,7 +914,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
         }
 
         if (node == null) {
-            ApplicationUtility.error("Couldn't find " + filename +
+            throw new RuntimeException("Couldn't find " + filename +
                     " in pass 1 resolved map.");
         }
 

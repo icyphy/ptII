@@ -101,7 +101,7 @@ public class TypeIdentifier implements JavaStaticSemanticConstants {
         case VOIDTYPENODE_ID:      return TYPE_KIND_VOID;
         }
 
-        ApplicationUtility.error("unknown type encountered : " + type);
+        throw new RuntimeException("unknown type encountered : " + type);
         return TYPE_KIND_UNKNOWN;
     }
 
@@ -124,11 +124,11 @@ public class TypeIdentifier implements JavaStaticSemanticConstants {
     /** Return the primitive type corresponding to the argument kind. */
     public TypeNode primitiveKindToType(int kind) {
         if (kind < 0) {
-            ApplicationUtility.error("unknown type is not primitive");
+            throw new RuntimeException("unknown type is not primitive");
         }
 
         if (kind > NUM_PRIMITIVE_TYPES) {
-            ApplicationUtility.error("type is not primitive");
+            throw new RuntimeException("type is not primitive");
         }
 
         return _PRIMITIVE_KIND_TO_TYPE[kind];

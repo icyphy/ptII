@@ -146,7 +146,7 @@ public class ResolveClassVisitor extends ResolveVisitorBase
 			   ": " + superDecl + ": " +
 			   superClass + ": " + StaticResolution.OBJECT_DECL );
         if ((superDecl != null) && (superDecl.category != CG_CLASS)) {
-            ApplicationUtility.error("class " + node.getName().getIdent() +
+            throw new RuntimeException("class " + node.getName().getIdent() +
                     " cannot extend interface " + superDecl.getName());
         }
 
@@ -165,7 +165,7 @@ public class ResolveClassVisitor extends ResolveVisitorBase
                     (NamedNode) interfaceItr.next());
 
             if ((intf.category & CG_INTERFACE) == 0) {
-                ApplicationUtility.error("class " + node.getName().getIdent() +
+                throw new RuntimeException("class " + node.getName().getIdent() +
                         " cannot implement class " + intf.getName() +
 			" " + intf.category);
             }
@@ -212,7 +212,7 @@ public class ResolveClassVisitor extends ResolveVisitorBase
         Decl d = encEnviron.lookupProper(nameString, CG_FIELD);
 
         if (d != null) {
-            ApplicationUtility.error("redeclaration of " + d.getName());
+            throw new RuntimeException("redeclaration of " + d.getName());
         }
 
         d = new FieldDecl(nameString, node.getDefType(), modifiers,
@@ -268,7 +268,7 @@ public class ResolveClassVisitor extends ResolveVisitorBase
                     (NamedNode) interfaceItr.next());
 
             if ((intf.category & CG_INTERFACE) == 0) {
-                ApplicationUtility.error("class " + node.getName().getIdent() +
+                throw new RuntimeException("class " + node.getName().getIdent() +
                         " cannot implement class " + intf.getName() +
 			" " + intf.category);
             }
@@ -322,7 +322,7 @@ public class ResolveClassVisitor extends ResolveVisitorBase
            MethodDecl dd = (MethodDecl) constructorItr.next();
 
            if (dd.conflictsWith(d)) {
-           ApplicationUtility.error("illegal overloading of " +
+           throw new RuntimeException("illegal overloading of " +
            constructorName);
            }
            }
@@ -387,7 +387,7 @@ public class ResolveClassVisitor extends ResolveVisitorBase
                 if ((modifiers &
                         (PRIVATE_MOD | STATIC_MOD | FINAL_MOD | SYNCHRONIZED_MOD |
                                 NATIVE_MOD)) != 0) {
-                    ApplicationUtility.error("can't use private, static, final, " +
+                    throw new RuntimeException("can't use private, static, final, " +
                             "synchronized, or native with abstract");
                 }
             } else if ((modifiers & NATIVE_MOD) == 0) {
@@ -395,11 +395,11 @@ public class ResolveClassVisitor extends ResolveVisitorBase
 		// have a body.  The skeleton mechanism uses a hack
 		// to mark everything as native in the .jskel files to
 		// get by this.
-                //ApplicationUtility.error("abstract or native modifier " +
+                //throw new RuntimeException("abstract or native modifier " +
 		// required on  methods without a body");
             }
         } else if ((modifiers & (ABSTRACT_MOD | NATIVE_MOD)) != 0) {
-            ApplicationUtility.error("an abstract or native method " +
+            throw new RuntimeException("an abstract or native method " +
                     "cannot have a body");
         }
 
@@ -422,7 +422,7 @@ public class ResolveClassVisitor extends ResolveVisitorBase
            MethodDecl dd = (MethodDecl) methodItr.next();
 
            if (dd.conflictsWith(d)) {
-           ApplicationUtility.error("illegal overloading of " + methodName);
+           throw new RuntimeException("illegal overloading of " + methodName);
            }
            }
         */

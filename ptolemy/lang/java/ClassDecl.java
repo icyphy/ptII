@@ -155,7 +155,7 @@ public class ClassDecl extends TypeDecl implements JavaStaticSemanticConstants {
                 //        fileName + " by loadClassName");
                 StaticResolution.loadClassName(fileName, 0);
                 if (_source == AbsentTreeNode.instance) {
-                    ApplicationUtility.error("Could not load " +
+                    throw new RuntimeException("Could not load " +
                             fullName());
                 }
             } else {
@@ -168,7 +168,7 @@ public class ClassDecl extends TypeDecl implements JavaStaticSemanticConstants {
                 StaticResolution.loadFile(file, 0); // should set the source
 
                 if (_source == AbsentTreeNode.instance) {
-                    ApplicationUtility.error("file " + fileName +
+                    throw new RuntimeException("file " + fileName +
                             " doesn't contain class or interface " +
                             fullName());
                 }
@@ -196,7 +196,7 @@ public class ClassDecl extends TypeDecl implements JavaStaticSemanticConstants {
 
         // If class didn't load, give it a dummy environment, etc
         if (_environ == null) {
-            ApplicationUtility.error("class " + _name + " did not load, " +
+            throw new RuntimeException("class " + _name + " did not load, " +
                     "using dummy environment.");
 
             _environ =

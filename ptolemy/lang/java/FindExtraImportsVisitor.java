@@ -164,7 +164,7 @@ public class FindExtraImportsVisitor extends ReplacementJavaVisitor
         JavaDecl container = classDecl.getContainer();
 
         if (container == null) {
-            ApplicationUtility.error("user type \"" + classDecl.getName() +
+            throw new RuntimeException("user type \"" + classDecl.getName() +
                     "\" has no container.");
         }
 
@@ -178,7 +178,7 @@ public class FindExtraImportsVisitor extends ReplacementJavaVisitor
             return  _packageOfType((ClassDecl) container);
         }
 
-        ApplicationUtility.error("container of class \"" + 
+        throw new RuntimeException("container of class \"" + 
          classDecl.getName() + "\" is not a package nor a user type");
 
         return null;

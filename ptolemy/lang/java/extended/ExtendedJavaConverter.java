@@ -97,7 +97,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
             case TypeIdentifier.TYPE_KIND_BOOLEAN:
             return new CandNode(expr1, expr2);
           }
-          ApplicationUtility.error("boolean * other type not supported");
+          throw new RuntimeException("boolean * other type not supported");
           break;
 
           case TypeIdentifier.TYPE_KIND_BYTE:
@@ -119,7 +119,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
              TNLManip.addFirst(convertExprToKind(expr1, kind1,
               TypeIdentifier.TYPE_KIND_DOUBLE)));
           }
-          ApplicationUtility.error("byte * other type not supported");
+          throw new RuntimeException("byte * other type not supported");
           break;
 
           case TypeIdentifier.TYPE_KIND_SHORT:
@@ -144,7 +144,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
              TNLManip.addFirst(convertExprToKind(expr1, kind1,
               TypeIdentifier.TYPE_KIND_DOUBLE)));
           }
-          ApplicationUtility.error("short * other type not supported");
+          throw new RuntimeException("short * other type not supported");
           break;
 
 
@@ -170,7 +170,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
              TNLManip.addFirst(convertExprToKind(expr1, kind1,
               TypeIdentifier.TYPE_KIND_DOUBLE)));
           }
-          ApplicationUtility.error("int * other type not supported");
+          throw new RuntimeException("int * other type not supported");
           break;
 
           case TypeIdentifier.TYPE_KIND_LONG:
@@ -184,7 +184,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
             case TypeIdentifier.TYPE_KIND_LONG:
             return node;
           }
-          ApplicationUtility.error("long * other type not supported");
+          throw new RuntimeException("long * other type not supported");
           break;
 
           case TypeIdentifier.TYPE_KIND_FLOAT:
@@ -208,7 +208,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
              TNLManip.addFirst(convertExprToKind(expr1, kind1,
               TypeIdentifier.TYPE_KIND_DOUBLE)));
           }
-          ApplicationUtility.error("float * other type not supported");
+          throw new RuntimeException("float * other type not supported");
           break;
 
           case TypeIdentifier.TYPE_KIND_DOUBLE:
@@ -229,7 +229,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
               AbsentTreeNode.instance, "scale"), expr2),
              TNLManip.addFirst(expr1));
           }
-          ApplicationUtility.error("double * other type not supported");
+          throw new RuntimeException("double * other type not supported");
           break;
 
           case ExtendedJavaTypeIdentifier.TYPE_KIND_COMPLEX:
@@ -251,7 +251,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
               AbsentTreeNode.instance, "multiply"), expr1),
              TNLManip.addFirst(expr2));
           }
-          ApplicationUtility.error("complex * other type not supported");
+          throw new RuntimeException("complex * other type not supported");
           break;
 
           case ExtendedJavaTypeIdentifier.TYPE_KIND_FIX_POINT:
@@ -262,7 +262,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
               new NameNode(AbsentTreeNode.instance, "multiply"), expr1),
              TNLManip.addFirst(expr2));
           }
-          ApplicationUtility.error("fix point * other type not supported");
+          throw new RuntimeException("fix point * other type not supported");
           break;
 
           case ExtendedJavaTypeIdentifier.TYPE_KIND_BOOLEAN_MATRIX:
@@ -285,7 +285,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
              methodArgs);
           }
         }
-        ApplicationUtility.error("MultNode contains one or more unknown types");
+        throw new RuntimeException("MultNode contains one or more unknown types");
         return null;
     }
 
@@ -306,7 +306,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
             // what should we do here?
             break;
           }
-          ApplicationUtility.error("boolean / other type not supported");
+          throw new RuntimeException("boolean / other type not supported");
           break;
 
           case TypeIdentifier.TYPE_KIND_BYTE:
@@ -328,7 +328,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
                convertExprToKind(expr1, kind1, kind2)),
              TNLManip.addFirst(expr2));
           }
-          ApplicationUtility.error("byte / other type not supported");
+          throw new RuntimeException("byte / other type not supported");
           break;
 
           case TypeIdentifier.TYPE_KIND_SHORT:
@@ -353,7 +353,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
                convertExprToKind(expr1, kind1, kind2)),
              TNLManip.addFirst(expr2));
           }
-          ApplicationUtility.error("short / other type not supported");
+          throw new RuntimeException("short / other type not supported");
           break;
 
           case TypeIdentifier.TYPE_KIND_INT:
@@ -378,7 +378,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
                convertExprToKind(expr1, kind1, kind2)),
              TNLManip.addFirst(expr2));
           }
-          ApplicationUtility.error("int / other type not supported");
+          throw new RuntimeException("int / other type not supported");
           break;
 
           case TypeIdentifier.TYPE_KIND_LONG:
@@ -392,7 +392,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
             case TypeIdentifier.TYPE_KIND_LONG:
             return node;
           }
-          ApplicationUtility.error("long / other type not supported");
+          throw new RuntimeException("long / other type not supported");
           break;
 
           case TypeIdentifier.TYPE_KIND_FLOAT:
@@ -417,7 +417,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
              TNLManip.addFirst(expr2));
 
           }
-          ApplicationUtility.error("float / other type not supported");
+          throw new RuntimeException("float / other type not supported");
           break;
 
           case TypeIdentifier.TYPE_KIND_DOUBLE:
@@ -439,7 +439,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
                convertExprToKind(expr1, kind1, kind2)),
              TNLManip.addFirst(expr2));
           }
-          ApplicationUtility.error("double / other type not supported");
+          throw new RuntimeException("double / other type not supported");
           break;
 
           case ExtendedJavaTypeIdentifier.TYPE_KIND_COMPLEX:
@@ -463,7 +463,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
               AbsentTreeNode.instance, "divide"), expr1),
              TNLManip.addFirst(expr2));
           }
-          ApplicationUtility.error("complex / other type not supported");
+          throw new RuntimeException("complex / other type not supported");
           break;
 
           case ExtendedJavaTypeIdentifier.TYPE_KIND_FIX_POINT:
@@ -474,7 +474,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
               new NameNode(AbsentTreeNode.instance, "divide"), expr1),
              TNLManip.addFirst(expr2));
           }
-          ApplicationUtility.error("fix point / other type not supported");
+          throw new RuntimeException("fix point / other type not supported");
           break;
 
           case ExtendedJavaTypeIdentifier.TYPE_KIND_BOOLEAN_MATRIX:
@@ -486,7 +486,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
           // what is the meaning of divide in these cases?
           break;
         }
-        ApplicationUtility.error("DivNode contains one or more unknown types");
+        throw new RuntimeException("DivNode contains one or more unknown types");
         return null;
     }
 
@@ -502,7 +502,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
 
         switch (kind1) {
           case TypeIdentifier.TYPE_KIND_BOOLEAN:
-          ApplicationUtility.error("boolean % other type not supported");
+          throw new RuntimeException("boolean % other type not supported");
           break;
 
           case TypeIdentifier.TYPE_KIND_BYTE:
@@ -516,7 +516,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
             node.setExpr1(convertExprToKind(expr1, kind1, kind2));
             return node;
           }
-          ApplicationUtility.error("byte % other type not supported");
+          throw new RuntimeException("byte % other type not supported");
           break;
 
           case TypeIdentifier.TYPE_KIND_SHORT:
@@ -533,7 +533,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
             node.setExpr1(convertExprToKind(expr1, kind1, kind2));
             return node;
           }
-          ApplicationUtility.error("short % other type not supported");
+          throw new RuntimeException("short % other type not supported");
           break;
 
           case TypeIdentifier.TYPE_KIND_INT:
@@ -551,7 +551,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
             node.setExpr1(convertExprToKind(expr1, kind1, kind2));
             return node;
           }
-          ApplicationUtility.error("int % other type not supported");
+          throw new RuntimeException("int % other type not supported");
           break;
 
           case TypeIdentifier.TYPE_KIND_LONG:
@@ -563,19 +563,19 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
             case TypeIdentifier.TYPE_KIND_LONG:
             return node;
           }
-          ApplicationUtility.error("long % x not supported");
+          throw new RuntimeException("long % x not supported");
           break;
 
           case TypeIdentifier.TYPE_KIND_DOUBLE:
-          ApplicationUtility.error("double % x not supported");
+          throw new RuntimeException("double % x not supported");
           break;
 
           case ExtendedJavaTypeIdentifier.TYPE_KIND_COMPLEX:
-          ApplicationUtility.error("complex % x not supported");
+          throw new RuntimeException("complex % x not supported");
           break;
 
           case ExtendedJavaTypeIdentifier.TYPE_KIND_FIX_POINT:
-          ApplicationUtility.error("fix point % x not supported");
+          throw new RuntimeException("fix point % x not supported");
           break;
 
           case ExtendedJavaTypeIdentifier.TYPE_KIND_BOOLEAN_MATRIX:
@@ -584,10 +584,10 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
           case ExtendedJavaTypeIdentifier.TYPE_KIND_DOUBLE_MATRIX:
           case ExtendedJavaTypeIdentifier.TYPE_KIND_COMPLEX_MATRIX:
           case ExtendedJavaTypeIdentifier.TYPE_KIND_FIX_POINT_MATRIX:
-          ApplicationUtility.error("matrix % x not supported");
+          throw new RuntimeException("matrix % x not supported");
           break;
         }
-        ApplicationUtility.error("RemNode contains one or more unknown types");
+        throw new RuntimeException("RemNode contains one or more unknown types");
         return null;
     }
 
@@ -620,7 +620,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
             return new CandNode(new CorNode(expr1, expr2),
              new NotNode(new CandNode(expr1, expr2)));
           }
-          ApplicationUtility.error("boolean + other type not supported");
+          throw new RuntimeException("boolean + other type not supported");
           break;
 
           case TypeIdentifier.TYPE_KIND_BYTE:
@@ -642,7 +642,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
                convertExprToKind(expr1, kind1, kind2)),
              TNLManip.addFirst(expr2));
           }
-          ApplicationUtility.error("byte + other type not supported");
+          throw new RuntimeException("byte + other type not supported");
           break;
 
           case TypeIdentifier.TYPE_KIND_SHORT:
@@ -667,7 +667,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
                convertExprToKind(expr1, kind1, kind2)),
              TNLManip.addFirst(expr2));
           }
-          ApplicationUtility.error("short + other type not supported");
+          throw new RuntimeException("short + other type not supported");
           break;
 
           case TypeIdentifier.TYPE_KIND_INT:
@@ -691,7 +691,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
                AbsentTreeNode.instance, "add"), expr2),
               TNLManip.addFirst(convertExprToKind(expr1, kind1, kind2)));
           }
-          ApplicationUtility.error("int + other type not supported");
+          throw new RuntimeException("int + other type not supported");
           break;
 
           case TypeIdentifier.TYPE_KIND_LONG:
@@ -705,7 +705,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
             case TypeIdentifier.TYPE_KIND_LONG:
             return node;
           }
-          ApplicationUtility.error("long + other type not supported");
+          throw new RuntimeException("long + other type not supported");
           break;
 
           case TypeIdentifier.TYPE_KIND_FLOAT:
@@ -730,7 +730,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
              TNLManip.addFirst(expr2));
 
           }
-          ApplicationUtility.error("float + other type not supported");
+          throw new RuntimeException("float + other type not supported");
           break;
 
           case TypeIdentifier.TYPE_KIND_DOUBLE:
@@ -750,7 +750,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
               AbsentTreeNode.instance, "add"), expr2),
              TNLManip.addFirst(convertExprToKind(expr1, kind1, kind2)));
           }
-          ApplicationUtility.error("double + other type not supported");
+          throw new RuntimeException("double + other type not supported");
           break;
 
           case ExtendedJavaTypeIdentifier.TYPE_KIND_COMPLEX:
@@ -766,7 +766,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
               AbsentTreeNode.instance, "add"), expr1),
               TNLManip.addFirst(convertExprToKind(expr2, kind2, kind1)));
           }
-          ApplicationUtility.error("complex + other type not supported");
+          throw new RuntimeException("complex + other type not supported");
           break;
 
           case ExtendedJavaTypeIdentifier.TYPE_KIND_FIX_POINT:
@@ -777,7 +777,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
               new NameNode(AbsentTreeNode.instance, "add"), expr1),
              TNLManip.addFirst(expr2));
           }
-          ApplicationUtility.error("fix point + other type not supported");
+          throw new RuntimeException("fix point + other type not supported");
           break;
 
           case ExtendedJavaTypeIdentifier.TYPE_KIND_BOOLEAN_MATRIX:
@@ -800,7 +800,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
              methodArgs);
           }
         }
-        ApplicationUtility.error("PlusNode contains one or more unknown types");
+        throw new RuntimeException("PlusNode contains one or more unknown types");
         return null;
     }
 
@@ -823,7 +823,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
             return new CandNode(new CorNode(expr1, expr2),
              new NotNode(new CandNode(expr1, expr2)));
           }
-          ApplicationUtility.error("boolean - other type not supported");
+          throw new RuntimeException("boolean - other type not supported");
           break;
 
           case TypeIdentifier.TYPE_KIND_BYTE:
@@ -845,7 +845,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
                convertExprToKind(expr1, kind1, kind2)),
              TNLManip.addFirst(expr2));
           }
-          ApplicationUtility.error("byte - other type not supported");
+          throw new RuntimeException("byte - other type not supported");
           break;
 
           case TypeIdentifier.TYPE_KIND_SHORT:
@@ -870,7 +870,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
                convertExprToKind(expr1, kind1, kind2)),
              TNLManip.addFirst(expr2));
           }
-          ApplicationUtility.error("short - other type not supported");
+          throw new RuntimeException("short - other type not supported");
           break;
 
 
@@ -896,7 +896,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
                convertExprToKind(expr1, kind1, kind2)),
               TNLManip.addFirst(expr2));
           }
-          ApplicationUtility.error("int - other type not supported");
+          throw new RuntimeException("int - other type not supported");
           break;
 
           case TypeIdentifier.TYPE_KIND_LONG:
@@ -910,7 +910,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
             case TypeIdentifier.TYPE_KIND_LONG:
             return node;
           }
-          ApplicationUtility.error("long - other type not supported");
+          throw new RuntimeException("long - other type not supported");
           break;
 
           case TypeIdentifier.TYPE_KIND_FLOAT:
@@ -935,7 +935,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
              TNLManip.addFirst(expr2));
 
           }
-          ApplicationUtility.error("float - other type not supported");
+          throw new RuntimeException("float - other type not supported");
           break;
 
           case TypeIdentifier.TYPE_KIND_DOUBLE:
@@ -956,7 +956,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
                convertExprToKind(expr1, kind1, kind2)),
               TNLManip.addFirst(expr2));
           }
-          ApplicationUtility.error("double - other type not supported");
+          throw new RuntimeException("double - other type not supported");
           break;
 
           case ExtendedJavaTypeIdentifier.TYPE_KIND_COMPLEX:
@@ -972,7 +972,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
               AbsentTreeNode.instance, "subtract"), expr1),
               TNLManip.addFirst(convertExprToKind(expr2, kind2, kind1)));
           }
-          ApplicationUtility.error("complex - other type not supported");
+          throw new RuntimeException("complex - other type not supported");
           break;
 
           case ExtendedJavaTypeIdentifier.TYPE_KIND_FIX_POINT:
@@ -983,7 +983,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
               new NameNode(AbsentTreeNode.instance, "subtract"), expr1),
              TNLManip.addFirst(expr2));
           }
-          ApplicationUtility.error("fix point - other type not supported");
+          throw new RuntimeException("fix point - other type not supported");
           break;
 
           case ExtendedJavaTypeIdentifier.TYPE_KIND_BOOLEAN_MATRIX:
@@ -1006,7 +1006,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
              methodArgs);
           }
         }
-        ApplicationUtility.error("MinusNode contains one or more unknown types");
+        throw new RuntimeException("MinusNode contains one or more unknown types");
         return null;
     }
 
@@ -1072,7 +1072,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
           break;
 
           default:
-          ApplicationUtility.error("kind is not a matrix kind");
+          throw new RuntimeException("kind is not a matrix kind");
         }
 
         return new TypeNameNode(
@@ -1405,7 +1405,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
           }
           break;
         }
-        ApplicationUtility.error("cannot convert " + expr + " (kind " +
+        throw new RuntimeException("cannot convert " + expr + " (kind " +
          exprKind + ") to kind " + targetKind);
         return null;
     }

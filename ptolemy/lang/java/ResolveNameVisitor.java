@@ -103,13 +103,13 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
         Decl other = env.lookup(varName, CG_FORMAL);
 
         if (other != null) {
-            ApplicationUtility.error("declaration shadows " + varName);
+            throw new RuntimeException("declaration shadows " + varName);
         }
 
         other = env.lookupProper(varName, CG_LOCALVAR);
 
         if (other != null) {
-            ApplicationUtility.error("redeclaration of " + varName);
+            throw new RuntimeException("redeclaration of " + varName);
         }
 
         LocalVarDecl d = new LocalVarDecl(varName, node.getDefType(),
@@ -185,7 +185,7 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
         Decl other = env.lookup(varName, CG_FORMAL | CG_LOCALVAR);
 
         if (other != null) {
-            ApplicationUtility.error("declaration shadows " + varName);
+            throw new RuntimeException("declaration shadows " + varName);
         }
 
         FormalParameterDecl d = new FormalParameterDecl(varName,
@@ -220,7 +220,7 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
         Environ newEnv = new Environ(ctx.environ);
 
         if (other != null) {
-            ApplicationUtility.error("duplicate " + labelString);
+            throw new RuntimeException("duplicate " + labelString);
         }
 
         StmtLblDecl d = new StmtLblDecl(labelString, node);
@@ -295,7 +295,7 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
 
         if ((node.getLabel() == AbsentTreeNode.instance) &&
                 (ctx.breakTarget == null)) {
-            ApplicationUtility.error("unlabeled break only allowed in loops or switches");
+            throw new RuntimeException("unlabeled break only allowed in loops or switches");
         }
 
         _resolveJump(node, ctx.breakTarget, ctx.environ);
@@ -307,7 +307,7 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
         NameContext ctx = (NameContext) args.get(0);
 
         if (ctx.encLoop == null) {
-            ApplicationUtility.error("unlabeled continue only allowed in loops");
+            throw new RuntimeException("unlabeled continue only allowed in loops");
         }
 
         _resolveJump(node, ctx.encLoop, ctx.environ);
@@ -318,7 +318,7 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
                 node.getDefinedProperty(JUMP_DESTINATION_KEY);
 
             if (!(dest instanceof IterationNode)) {
-                ApplicationUtility.error("continue's target is not a loop");
+                throw new RuntimeException("continue's target is not a loop");
             }
         }
 
@@ -437,7 +437,7 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
                 env.lookup(labelString, CG_STMTLABEL);
 
             if (dest == null) {
-                ApplicationUtility.error("label " + labelString + " not found");
+                throw new RuntimeException("label " + labelString + " not found");
             }
 
             labelName.setProperty(DECL_KEY, dest);

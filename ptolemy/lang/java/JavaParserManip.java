@@ -74,7 +74,7 @@ public class JavaParserManip implements JavaStaticSemanticConstants {
         try {
             return parseCanonicalFileName(file.getCanonicalPath(), debug);
         } catch (IOException ioe) {
-            ApplicationUtility.error(ioe.toString());
+            throw new RuntimeException(ioe.toString());
         }
         return null;
     }
@@ -102,7 +102,7 @@ public class JavaParserManip implements JavaStaticSemanticConstants {
 	try {
 	    p.init(filename);
 	} catch (Exception e) {
-	    ApplicationUtility.error("error opening " + filename +
+	    throw new RuntimeException("error opening " + filename +
 					 " : " + e);
 	}
 

@@ -147,7 +147,7 @@ public class ResolvePackageVisitor extends ResolveVisitorBase
         Decl other = encEnv.lookupProper(className);
 
         if (other != null) {
-            ApplicationUtility.error("attempt to redefine " + other.getName() +
+            throw new RuntimeException("attempt to redefine " + other.getName() +
                     " as a class");
         }
 
@@ -205,7 +205,7 @@ public class ResolvePackageVisitor extends ResolveVisitorBase
                     new TypeNameNode(node.getName()), node.getModifiers(), node, encDecl);
 
             if (ocl != null)  { // Redefinition in same package.
-                ApplicationUtility.error("ResolvePackageVisitor: " +
+                throw new RuntimeException("ResolvePackageVisitor: " +
 					 "User type name " + className +
 					 " conflicts with " + ocl.getName() +
 					 " in same package");

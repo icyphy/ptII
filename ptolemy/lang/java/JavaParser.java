@@ -528,7 +528,7 @@ protected void yyerror(String msg)
   if (_lexer != null) {
      errMsg += " on line " + _lexer.lineNumber();
   }
-  ApplicationUtility.error(errMsg);
+  throw new RuntimeException(errMsg);
 }
 
 protected String _filename = null;
