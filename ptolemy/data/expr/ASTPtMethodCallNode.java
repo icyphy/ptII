@@ -229,6 +229,7 @@ public class ASTPtMethodCallNode extends ASTPtRootNode {
 		retval = new ComplexToken((Complex)result);
 	    } else if (result instanceof FixPoint) {
 		//retval = ((FixPoint)result).tokenValue();
+                retval = null;
 	    } else if (result instanceof int[][]) {
 		retval = new IntMatrixToken((int[][])result);
 	    } else if (result instanceof double[][]) {
