@@ -28,6 +28,8 @@ package ptolemy.data;
  
 import java.awt.Image;
 
+import ptolemy.data.type.*;
+
 //////////////////////////////////////////////////////////////////////////
 //// AWTImageToken
 /**
