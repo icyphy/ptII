@@ -679,14 +679,14 @@ public class ABPApplet extends Applet {
 
     private class FinishButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent evt) {
-            _manager.terminate();
+            _manager.finish();
             _isSimulationRunning = false;
         }
     }
 
     private class TerminateButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent evt) {
-            _manager.terminate();
+            _manager.finish();
         }
     }
 }
