@@ -275,6 +275,19 @@ awk ' {
                break;
            }
        }
+       # Get the value of the _id field
+       position=""
+       nf = split($0, f, "\"")   
+       for (i = 1; i <= nf; i++) {
+           if ( f[i] ~ /position=$/) {
+               position = f[i+1]
+               break;
+           }
+       }
+       if (position != "") {
+           position = "position=\"" position "\""
+       }
+
        indent = substr($0, 0, index($0,"<") - 1)  
 
 #        if ($0 ~ /dstSignal_end_/) {
@@ -300,7 +313,10 @@ awk ' {
 #            }
 #           print indent "<link port=\"" srcSignal_end_ "\" relation=\"" id "\"/>" 
 #        } else {
-           print indent "<relation name=\"" id "\" class=\"ptolemy.actor.TypedIORelation\"/>"
+           # We include the position here, if any, and strip it out later
+           # if the position is (-1,-1). Signals often have (-1,-1) position
+           # FIXME: A real hack. we depend on position being at the end
+           print indent "<relation name=\"" id "\" class=\"ptolemy.actor.TypedIORelation\" " position "/>"
 #       }
 
     } else { # bar
@@ -640,10 +656,26 @@ $0 ~ /<entity/ {
                 }
             }
 
+
+            # Get the value of the position field
+            position=""
+            nf = split($0, f, "\"")   
+            for (i = 1; i <= nf; i++) {
+               if ( f[i] ~ /osition=$/) {
+                   position = f[i+1]
+                   break;
+               }
+            }
+
             indent = substr($0, 0, index($0,"<") - 1)  
 
             # Get the location, if any
-            if (relationLocationMap[name] == "") { 
+
+            if (position ~/(-1,-1)/) {
+                # FIXME: A real hack. we depend on position being at the end
+                positionLength = length("position=\"" position "\"/>") 
+                print substr($0, 0, length($0)-positionHack) "/>"
+            } else if (relationLocationMap[name] == "") { 
                 print $0
             } else {
                 # Get rid of the />
