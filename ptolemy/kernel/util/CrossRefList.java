@@ -279,7 +279,6 @@ public final class CrossRefList implements Serializable  {
      */
     public synchronized void unlink(Object obj) {
         if (obj == null || _size == 0) return;
-        Object v;
         CrossRef p = _headNode;
         while (p != null) {
             CrossRef n = p._next;

@@ -242,7 +242,6 @@ public class VersionAttribute
         while (tokenizer.hasMoreTokens()) {
             _tupleList.add(tokenizer.nextToken());
         }
-        Iterator tuples = _tupleList.iterator();
     }
 
     ///////////////////////////////////////////////////////////////////
