@@ -29,3 +29,6 @@ on 8/19, Attila Vizhanyo <viza@isis.vanderbilt.edu> wrote:
 
   Please let me know if you have any questions, or problems.
 --end--
+
+10/19
+You need GME 4.8.25
