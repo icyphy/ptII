@@ -40,7 +40,7 @@ Constructors are provided that take 1 or 2 Nameable references
 plus an arbitrary String.  The constructors are robust in that null
 references are ignored.  The preferred constructors are those that
 take two named objects (the container and the would-be containee),
-or two named objects and an abitrary string (which can be used to
+or two named objects and an arbitrary string (which can be used to
 provide additional information about the error).
 
 @author John S. Davis II, Christopher Hylands, Edward A. Lee
