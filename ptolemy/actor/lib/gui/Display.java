@@ -271,7 +271,10 @@ public class Display extends Sink implements Placeable {
         }
         if (_frame != null) {
             // Do not use show() as it overrides manual placement.
-            _frame.setVisible(true);
+            // FIXME: So does setVisible()... But with neither one used,
+            // then if the user dismisses the window, it does not reappear
+            // on re-running!
+            // _frame.setVisible(true);
             _frame.toFront();
         }
         /*

@@ -185,7 +185,10 @@ public class Plotter extends PlotterBase {
         }
         if (_frame != null) {
             // Do not use show() here as it overrides manual placement.
-            _frame.setVisible(true);
+            // FIXME: So does setVisible()... But with neither one used,
+            // then if the user dismisses the window, it does not reappear
+            // on re-running!
+            // _frame.setVisible(true);
             _frame.toFront();
         }
     }
