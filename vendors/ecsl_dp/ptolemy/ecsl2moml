@@ -220,50 +220,47 @@ awk ' {
 
 # Convert <Primitive to <entity
 awk 'BEGIN {
-    map["Abs"] = "ptolemy.actor.lib.AbsoluteValue"
-    map["Clock"] = "ptolemy.actor.lib.Clock"
+    map["Abs"] = "vendors.ecsl_dp.ptolemy.ECSLAbs"
+    map["Clock"] = "vendors.ecsl_dp.ptolemy.ECSLClock"
     map["Constant"] = "vendors.ecsl_dp.ptolemy.ECSLConstant"
     map["Demux"] = "vendors.ecsl_dp.ptolemy.ECSLDemux"
     # FIXME
-    map["DiscreteFilter"] = "ptolemy.domains.de.lib.EventFilter"
-    map["DiscretePulseGenerator"] = "ptolemy.actor.lib.Pulse"
-    map["Display"] = "ptolemy.actor.lib.gui.Display"
+    map["DiscreteFilter"] = "vendors.ecsl_dp.ptolemy.ECSLDiscreteFilter"
+    map["DiscretePulseGenerator"] = "vendors.ecsl_dp.ptolemy.ECSLDiscretePulseGenerator"
+    map["Display"] = "vendors.ecsl_dp.ptolemy.ECSLDisplay"
     # FIXME
-    map["From"] = "ptolemy.actor.lib.Stop"
+    map["From"] = "vendors.ecsl_dp.ptolemy.ECSLFrom"
     map["Gain"] = "vendors.ecsl_dp.ptolemy.ECSLGain"
     # FIXME
-    map["Goto"] = "ptolemy.actor.lib.Stop"
-    map["Ground"] = "ptolemy.actor.lib.Discard"
+    map["Goto"] = "vendors.ecsl_dp.ptolemy.ECSLGoto"
+    map["Ground"] = "vendors.ecsl_dp.ptolemy.ECSLGround"
     map["Integrator"] = "ptolemy.domains.ct.lib.Integrator"
-    map["Logic"] = "ptolemy.actor.lib.logic.LogicFunction"
+    map["Logic"] = "vendors.ecsl_dp.ptolemy.ECSLLogic"
     map["Merge"] = "vendors.ecsl_dp.ptolemy.ECSLMerge"
     # FIXME: should be Minimum or Maximum 
-    map["MinMax"] = "ptolemy.actor.lib.Maximum"
+    map["MinMax"] = "vendors.ecsl_dp.ptolemy.ECSLMinMax"
     # FIXME
-    map["MultiPortSwitch"] = "ptolemy.actor.lib.Switch"
+    map["MultiPortSwitch"] = "vendors.ecsl_dp.ptolemy.ECSLMultiPortSwitch"
     map["Mux"] = "vendors.ecsl_dp.ptolemy.ECSLMux"
-    map["Product"] = "ptolemy.actor.lib.MultiplyDivide"
+    map["Product"] = "vendors.ecsl_dp.ptolemy.ECSLProduct"
     # FIXME
     map["RelationalOperator"] = "vendors.ecsl_dp.ptolemy.ECSLRelationalOperator"
     map["S-Function"] = "vendors.ecsl_dp.ptolemy.ECSLSFunction"
     # FIXME
     map["Saturate"] = "vendors.ecsl_dp.ptolemy.ECSLSaturate"
-    #map["Scope"] = "ptolemy.actor.lib.gui.TimedPlotter"
-    map["Scope"] = "vendors.ecsl_dp.ptolemy.Scope"
-    map["Signum"] = "ptolemy.actor.lib.Quantizer"
+    map["Scope"] = "vendors.ecsl_dp.ptolemy.ECSLScope"
+    map["Signum"] = "vendors.ecsl_dp.ptolemy.ECSLSignum"
     # FIXME: set to Sin
-    map["Sin"] = "ptolemy.actor.lib.TrigFunction"
+    map["Sin"] = "vendors.ecsl_dp.ptolemy.ECSLSin"
     # FIXME Leave off sampleTime, convert integers to doubles
-    #map["Step"] = "ptolemy.domains.ct.lib.ContinuousClock"
     map["Step"] = "vendors.ecsl_dp.ptolemy.ECSLStep"
-    #map["Sum"] = "ptolemy.actor.lib.AddSubtract"
     map["Sum"] = "vendors.ecsl_dp.ptolemy.ECSLSum"
     map["Switch"] = "vendors.ecsl_dp.ptolemy.ECSLSwitch"
-    map["Terminator"] = "ptolemy.actor.lib.Stop"
+    map["Terminator"] = "vendors.ecsl_dp.ptolemy.ECSLTerminator"
     # FIXME
-    map["ToWorkspace"] = "ptolemy.actor.lib.Stop"
-    map["UnitDelay"] = "ptolemy.domains.de.lib.TimedDelay"
-    map["ZeroOrderHold"] = "ptolemy.domains.ct.lib.ZeroOrderHold"
+    map["ToWorkspace"] = "vendors.ecsl_dp.ptolemy.ECSLToWorkspace"
+    map["UnitDelay"] = "vendors.ecsl_dp.ptolemy.ECSLUnitDelay"
+    map["ZeroOrderHold"] = "vendors.ecsl_dp.ptolemy.ECSLZeroOrderHold"
 }
 {
     if ($1 ~ /<Primitive/) {

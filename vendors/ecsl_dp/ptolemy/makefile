@@ -50,17 +50,36 @@ PTCLASSJAR =    ecslptolemy.jar
 
 # Keep this list alphabetized.
 JSRCS = \
-        ECSLConstant.java \
+	ECSLAbs.java \
+	ECSLClock.java \
+	ECSLConstant.java \
 	ECSLDemux.java \
-        ECSLGain.java \
+	ECSLDiscreteFilter.java \
+	ECSLDiscretePulseGenerator.java \
+	ECSLDisplay.java \
+	ECSLFrom.java \
+	ECSLGain.java \
+	ECSLGoto.java \
+	ECSLGround.java \
+	ECSLIntegrator.java \
+	ECSLLogic.java \
 	ECSLMerge.java \
+	ECSLMinMax.java \
+	ECSLMultiPortSwitch.java \
 	ECSLMux.java \
+	ECSLProduct.java \
 	ECSLRelationalOperator.java \
-	ECSLSaturate.java \
 	ECSLSFunction.java \
+	ECSLSaturate.java \
+	ECSLSignum.java \
+	ECSLSin.java \
 	ECSLStep.java \
 	ECSLSum.java \
-	ECSLSwitch.java
+	ECSLSwitch.java \
+	ECSLTerminator.java \
+	ECSLToWorkspace.java \
+	ECSLUnitDelay.java \
+	ECSLZeroOrderHold.java
 
 OTHER_FILES_TO_BE_JARED = \
 
