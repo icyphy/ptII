@@ -77,11 +77,12 @@ public class FixPointSystem extends SDFApplet implements QueryListener {
 	// System.out.println(" QUERY CHANGED TO: " + name);
         try {
 	    if ( name == "precision" ) {
-		 _doubleToFix_A.precision.setToken(new StringToken(_query.stringValue("precision")));
+		 _doubleToFix.precision.setToken(new StringToken(_query.stringValue("precision")));
 	    }
 	    if ( name=="rounding" ) {
-		_doubleToFix_A.mode.setToken(new StringToken(_query.stringValue("rounding")));
+		_doubleToFix.mode.setToken(new StringToken(_query.stringValue("rounding")));
 	    }
+            _go();
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(ex.toString());
         }
@@ -101,7 +102,7 @@ public class FixPointSystem extends SDFApplet implements QueryListener {
             getContentPane().setLayout(
                     new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 
-	    String[] options = {"SATURATE", "TRUNCATE", "ZERO_SATURATE"};
+	    String[] options = {"Saturate", "Rounding", "Truncate"};
 	    
 	    _query = new Query();
             _query.setBackground(_getBackground());
@@ -124,24 +125,13 @@ public class FixPointSystem extends SDFApplet implements QueryListener {
 
             
             // Create and configure coder
-            _doubleToFix_A = new DoubleToFix(_toplevel, "tofix_A");
-	    _doubleToFix_A.precision.setToken(new StringToken("(2.1)"));
-            _doubleToFix_A.mode.setToken(new StringToken("SATURATE"));	    
-            
-            /*
-            _doubleToFix_B = new DoubleToFix(_toplevel, "tofix_B");
-	    _doubleToFix_B.precision.setToken(new StringToken("(2.0)"));
-	    _doubleToFix_A.mode.setToken(new StringToken("SATURATE"));	    
-            */
-
+            _doubleToFix = new DoubleToFix(_toplevel, "tofix");
+	    _doubleToFix.precision.setToken(new StringToken("(2.1)"));
+            _doubleToFix.mode.setToken(new StringToken("SATURATE"));	    
             
             // Create and configure coder
-            _fixToDouble_A = new FixToDouble(_toplevel, "todoubleA");
+            _fixToDouble = new FixToDouble(_toplevel, "todouble");
             
-            /*
-            _fixToDouble_B = new FixToDouble(_toplevel, "todoubleB");
-            */
-
             // Create and configure plotter
             _myplot = new SequencePlotter(_toplevel, "plot");
             _myplot.place( getContentPane() );
@@ -154,41 +144,13 @@ public class FixPointSystem extends SDFApplet implements QueryListener {
             // _myplot.plot.setPointsPersistence(1512);
             _myplot.plot.setSize(500, 300);
 
-            /*
-            // Create and configure plotter
-            _myplot1 = new SequencePlotter(_toplevel, "plot1");
-            _myplot1.place( getContentPane() );
-            _myplot1.plot.setGrid(false);
-            _myplot1.plot.setTitle("Ramp Diagram");
-            _myplot1.plot.setXRange(-50.0, 50.0);
-            _myplot1.plot.setWrap(true);
-            _myplot1.plot.setYRange(-10, 10);
-            _myplot1.plot.setMarksStyle("dots");
-            // _myplot.plot.setPointsPersistence(1512);
-            _myplot1.plot.setSize(500, 300);
-            */
-
-            // _toplevel.connect(ramp.output, doubleToFix_A.input);
-            // _toplevel.connect(doubleToFix_A.output, fixToDouble_A.input);
-            // _toplevel.connect(fixToDouble_A.output, myplot.input);
-            // _toplevel.connect(ramp.output, copy.in0);
-            // _toplevel.connect(copy.out0, myplot.input);
-            // _toplevel.connect(copy.out1, myplot.input);
-
-
-            _toplevel.connect( _ramp.output, _doubleToFix_A.input);
-            _toplevel.connect( _doubleToFix_A.output, _fixToDouble_A.input);
-            _toplevel.connect( _fixToDouble_A.output, _myplot.input);
-           
+            _toplevel.connect( _ramp.output, _doubleToFix.input);
+            _toplevel.connect( _doubleToFix.output, _fixToDouble.input);
+            _toplevel.connect( _fixToDouble.output, _myplot.input);          
             _toplevel.connect( _ramp1.output, _myplot.input);
-         
-            
-            // _toplevel.connect(ramp1.output, doubleToFix_B.input);
-            // _toplevel.connect(doubleToFix_B.output, fixToDouble_B.input);
-            // _toplevel.connect(fixToDouble_B.output, myplot1.input);
-       
-            // _toplevel.connect(ramp1.output, myplot.input);
 
+            // We initialize the model correctly.
+            _initCompleted = true;
 
             // The 2 argument requests a go and stop button.
             getContentPane().add(_createRunControls(2));
@@ -198,17 +160,43 @@ public class FixPointSystem extends SDFApplet implements QueryListener {
         }
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Execute the model.  This overrides the base class to read the
+     *  values in the query box first and set parameters.
+     *  @exception IllegalActionException If topology changes on the
+     *   model or parameter changes on the actors throw it.
+     */
+    protected void _go() throws IllegalActionException {
+        // If an exception occurred during initialization, then we don't
+        // want to run here.  The model is probably not complete.
+        if (!_initCompleted) return;
+
+        // If the manager is not idle then either a run is in progress
+        // or the model has been corrupted.  In either case, we do not
+        // want to run.
+        if (_manager.getState() != _manager.IDLE) return;
+
+        // The superclass sets the stop time of the director based on
+        // the value in the entry box on the screen.  Then it starts
+        // execution of the model in its own thread, leaving the user
+        // interface of this applet live.
+        super._go();
+    }
+
     // Actors in the model.
     private Query _query;
-    private DoubleToFix _doubleToFix_A;
-    private DoubleToFix _doubleToFix_B;
-    private FixToDouble _fixToDouble_A;
-    private FixToDouble _fixToDouble_B;
+    private DoubleToFix _doubleToFix;
+    private FixToDouble _fixToDouble;
     private SequencePlotter _myplot;
     private SequencePlotter _myplot1;
     private Ramp _ramp;
     private Ramp _ramp1;
 
+    // Flag to prevent spurious exception being thrown by _go() method.
+    // If this flag is not true, the _go() method will not execute the model.
+    private boolean _initCompleted = false;
 }
 
 
