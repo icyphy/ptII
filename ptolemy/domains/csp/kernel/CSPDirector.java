@@ -58,7 +58,7 @@ process is active, it can also be <i>blocked</i> or <i>delayed</i>, but
 not both. A process is blocked if it is trying to communicate but
 the the process with which it is trying to communicate is not
 ready to do so yet. A process is delayed if it is waiting for
-time to advance. It the simulation is untimed this cannot happen.
+time to advance.
 <p>
 The director is responsible for handling deadlocks, both real
 and timed.  It is also responsible for carrying out any requests for
@@ -69,14 +69,15 @@ delayed processes. <i>Deadlock</i> is when the number of blocked processes
 plus the number delayed processes equals the number of active processes.
 <i>Time deadlock</i> occurs if at least one of the active processes
 is delayed. <i>Real deadlock</i> occurs if all of the active processes
- under the control of this director are blocked trying to communicate.
+under the control of this director are blocked trying to communicate.
 The fire method controls and responds to deadlocks and carries out
 changes to the topology when it is appropriate.
 <p>
 If real deadlock occurs, the fire method returns and is the end
 of one iteration one level up in the hierarchy. If there are no
 levels above this level in the hierarchy then this marks the end
-of the simulation. The simulation is terminated by setting a flag in every
+of execution of the model. The model execution is terminated by setting 
+a flag in every
 receiver contained in actors controlled by this director. When a
 process tries to send or receive from a receiver with the terminated
 flag set, a TerminateProcessException is thrown which causes the
@@ -90,16 +91,16 @@ may specify zero delay, in which case they
 delay until the next occasion time is advanced. Note that time can
 be advanced to the current time. This happens if one of the
 delayed actors delayed with a delta delay of zero. Otherwise the
-simulation time is increased as well as being advanced. Time can be
-turned on or off by calling setUntimed(). By default the simulation
-uses time.
+simulation time is increased as well as being advanced.  By default the 
+simulation uses time. To use CSP without a notion of time, do not use the 
+delay(double) method in any process.
 <p>
-The simulation may be paused by calling setPauseRequested() which
+The execution of the model may be paused by calling setPauseRequested() which
 will cause each process to pause the next time it tries to communicate.
 Note that the a pause can only be requested and may not happen
 immediately or even at all(if there are no communications taking
-place).To resume a paused simulation call setResumeRequested(). The
-simulation may also be terminated abruptly by calling the
+place).To resume a paused model call setResumeRequested(). The
+execution of the model may also be terminated abruptly by calling the
 terminate() method directly. This may led to inconsistent state
 so any results outputted after it should be ignored.
 <p>
@@ -169,7 +170,6 @@ public class CSPDirector extends ProcessDirector {
 	newobj._actorsDelayed = 0;
         newobj._currentTime = 0.0;
         newobj._delayedActorList = new LinkedList();
-        newobj._simulationUntimed = false;
         newobj._topologyChangesPending = false;
         return newobj;
     }
@@ -188,8 +188,8 @@ public class CSPDirector extends ProcessDirector {
         };
     }
 
-    /** The current simulation time.
-     *  @return The current simulation time.
+    /** The current model time.
+     *  @return The current model time.
      */
     public double getCurrentTime() {
         return _currentTime;
@@ -223,51 +223,43 @@ public class CSPDirector extends ProcessDirector {
         super.queueTopologyChangeRequest(req);
     }
 
-    /** Set the current simulation time. This method should only be
+    /** Set the current model time. This method should only be
      *  called when no processes are delayed. It is intended for
      *  use when composing CSP with other timed domains.
      *  @exception IllegalActionException If one or more processes
      *   are delayed.
-     *  @param newTime The new current simulation time.
+     *  @param newTime The new current model time.
      */
     public synchronized void setCurrentTime(double newTime)
             throws IllegalActionException {
         if (_actorsDelayed != 0) {
-            throw new IllegalActionException("CSPDirector.setTime() can " +
-                    "only be called when no processes are delayed.");
+            throw new IllegalActionException("CSPDirector.setCurrentTime() " +
+                    "can only be called when no processes are delayed.");
         }
         _currentTime = newTime;
     }
 
-    /** Call this method with a true argument to turn off time.
-     *  @param value Boolean setting whether or not the simulation
-     *   uses time.
-     */
-    public synchronized void setUntimed(boolean value) {
-        _simulationUntimed = value;
-    }
-
-    /** End the simulation. A flag is set in all the receivers, and
+    /** Finish executing the model. A flag is set in all the receivers, and
      *  in the director, which causes each process to terminate the
      *  next time it reaches a synchronization or delay point.
      *  <p>
-     *  The simulation is ended when real deadlock occurs and this
+     *  The model finishes executing when real deadlock occurs and this
      *  director is controlling the top-level composite actor. It can
      *  also happen when the desired number of iterations have passed
-     *  one level up or when the user decides to finish the simulation.
+     *  one level up or when the user decides to finish executing the model.
      *  <p>
-     *  Note that the wrapup methods are not invoked on the actors
+     *  Note that the wrapup() methods are not directly invoked on the actors
      *  under control of this director as each actor is executed by a
      *  separate thread.
      *  <p>
      *  This method is <i>not</i> synchronized on the workspace, so the
      *  caller should be.
-     *  @exception IllegalActionException if a method accessing the topology
+     *  @exception IllegalActionException If a method accessing the topology
      *   throws it.
      */
     public synchronized void wrapup() throws IllegalActionException {
         System.out.println(Thread.currentThread().getName() +
-                ": CSPDirector: about to end the simulation");
+                ": CSPDirector: about to end the model");
         if ((_actorsDelayed !=0) || _topologyChangesPending
                 || (_actorsPaused != 0)){
             /*throw new InvalidStateException( "CSPDirector wrapping up " +
@@ -298,10 +290,6 @@ public class CSPDirector extends ProcessDirector {
      *  @param actor The actor being delayed.
      */
     protected synchronized void _actorDelayed(double delta, CSPActor actor) {
-        if (_simulationUntimed) {
-            actor._continue();
-            return;
-        }
         if (delta < 0) {
             delta = 0.0;
             System.out.println("Warning: actor( " + actor.getName() +
@@ -338,22 +326,22 @@ public class CSPDirector extends ProcessDirector {
     }
 
     /** Check if all active processes are either blocked, delayed or
-     *  paused. If so, then none of the processes are running so the
-     *  simulation has been paused.
+     *  paused. If so, then all of the processes cannot make any progress 
+     *  and the model has been paused.
      */
     protected synchronized void _checkForPause() {
         if (_actorsBlocked + _actorsPaused + _actorsDelayed == _actorsActive) {
             _paused = true;
-            System.out.println("CSPDirector: simulation successfully paused!");
+            System.out.println("CSPDirector: model successfully paused!");
             // FIXME should throw a pauseEvent here
 
         }
         return;
     }
 
-    /** The heart of the director that responds when a deadlock is
+    /** Determines how the director responds when a deadlock is
      *  detected. It is where nearly all the control for the
-     *  simulation at this level in the hierarchy is located.
+     *  model at this level in the hierarchy is located.
      *  <p>
      *  Deadlock occurs if the number of blocked and delayed process
      *  equals the number of active processes. The method looks for
@@ -362,23 +350,24 @@ public class CSPDirector extends ProcessDirector {
      *  processes blocked trying to rendezvous.
      *  <p>
      *  If there are changes to the topology waiting to happen, they are
-     *  performed and the simulation continues. Note that the result of
-     *  performing the topology changes may be to remove the deadlock
-     *  that had occurred.
+     *  performed and the execution of the model continues. 
+     *  Note that the result of performing the topology changes may be 
+     *  to remove the deadlock that had occurred.
      *  <p>
      *  If the number of delayed processes is greater than zero, then
      *  <i> time deadlock</i> has occurred. Time is advanced and at least
      *  one of the delayed actors will wake up and continue. Note that
      *  time can be advanced to the current time. This happens if one of the
      *  delayed actors delayed with a delta delay of zero. Otherwise the
-     *  simulation time is increased as well as being advanced.
+     *  current model time is increased as well as being advanced.
      *  Current time is defined as the double value returned by
      *  getCurrentTime() plus/minus 10e-10.
      *  <p>
      *  If all the processes are blocked, then <i>real deadlock</i> has
      *  occurred. This method returns true, indicating the end of one
      *  iteration one level up in the hierarchy. If there is no level
-     *  above this one, then real deadlock marks the end of the simulation.
+     *  above this one, then real deadlock marks the end of executing the
+     *  model.
      *  @return True if real deadlock occurred, false otherwise.
      */
     protected synchronized boolean _handleDeadlock() {
@@ -517,7 +506,7 @@ public class CSPDirector extends ProcessDirector {
     // sufficiently advances.
     private int _actorsDelayed = 0;
 
-    // A sorted list of the times of delayed actors. The time the simulation
+    // A sorted list of the times of delayed actors. The time the model
     // will next be advanced to is the time at the top of the list.
     private LinkedList _delayedActorList = new LinkedList();
 
@@ -525,10 +514,7 @@ public class CSPDirector extends ProcessDirector {
     // registered with this director.
     private boolean _topologyChangesPending = false;
 
-    // Flag indicating if the simulation is timed.
-    private boolean _simulationUntimed = false;
-
-    // The current time of this simulation.
+    // The current time of this model.
     private double _currentTime = 0;
 
     ///////////////////////////////////////////////////////////////////

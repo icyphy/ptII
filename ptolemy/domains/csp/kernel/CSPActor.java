@@ -65,14 +65,16 @@ Then it waits for one branch to succeed, after which it wakes up and
 terminates the remaining branches. When the last conditional branch
 thread has finished it allows the actor thread to continue.
 <p>
-Time is supported by two methods, delay() and delay(double). These methods
-do nothing if the simulation is untimed. If the simulation
-is timed, the first method just pauses the actor until the next occasion the
+Time is supported by two methods, delay() and delay(double). The first 
+method just pauses the process until the next occasion the
 director advances time. The second method
-pauses the actor until time is advanced the argument time from the
-current simulation time. Thus time is centralized in that it is
-controlled by the director controlling this actor, and that
-each actor can only deal with delta (as opposed to absolute) time.
+pauses the process until time is advanced the argument time from the
+current model time. As far as each process is concerned, time can 
+only increase while the process is blocked trying to rendezvous or when 
+it is delayed. A process can be aware of the current model time, but it 
+should only ever affect the model time through delays. Thus time is 
+centralized in that it is controlled by the director controlling the 
+process represented by this actor.
 <p>
 @author Neil Smyth
 @version $Id$
@@ -146,16 +148,14 @@ public class CSPActor extends AtomicActor {
 	return newobj;
     }
 
-    /** Delay until the director advances time. If the simulation is
-     *  not timed do nothing.
+    /** Delay until the director advances time. 
      */
     public void delay() {
         delay(0.0);
     }
 
     /** Delay this actor until the director sufficiently advances
-     *  time from the current time. If the simulation is not timed
-     *  do nothing.
+     *  time from the current time. 
      *  @param The delta time to delay this actor by.
      */
     public void delay(double delta) {
@@ -253,7 +253,7 @@ public class CSPActor extends AtomicActor {
      */
     protected void _branchFailed(int branchNumber) {
         if (_successfulBranch == branchNumber) {
-            // simulation must have finished.
+            // the execution of the model must have finished.
             _successfulBranch = -1;
         }
         synchronized(_getInternalLock()) {
@@ -530,7 +530,7 @@ public class CSPActor extends AtomicActor {
     private int _successfulBranch = -1;
 
     // Threads created by this actor to perform a conditional rendezvous.
-    // Need to keep a list of them in case the simulation is
+    // Need to keep a list of them in case the execution of the model is
     // terminated abruptly.
     private LinkedList _threadList = null;
 }
