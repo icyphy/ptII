@@ -169,7 +169,7 @@ public class URIAttribute extends SingletonAttribute {
         } catch (URISyntaxException ex) {
             // Should not occur because a URL is a valid URI.
             throw new InternalErrorException(this, ex,
-                    "Error constructing URI!");
+                    "Error constructing URI from " + url);
         }
         NamedObj container = (NamedObj)getContainer();
         if (container != null) {
