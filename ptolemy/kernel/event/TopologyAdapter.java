@@ -1,4 +1,4 @@
-/* A EventAdapter is an empty implementation of TopologyListener.
+/* A TopologyAdapter is an empty implementation of TopologyListener.
 
  Copyright (c) 1998 The Regents of the University of California.
  All rights reserved.
@@ -33,9 +33,10 @@ package ptolemy.kernel.event;
 //////////////////////////////////////////////////////////////////////////
 //// TopologyAdapter
 /**
-A EventAdapter is an empty implementation of EventListener,
+A TopologyAdapter is an empty implementation of TopologyListener,
 provided to make it easy to write mutation listeners that are not interested
 in all possible types of mutation event.
+"Empty" means that every method does nothing.
 
 @author John Reekie
 @version $Id$

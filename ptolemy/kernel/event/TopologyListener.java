@@ -1,4 +1,4 @@
-/* A EventListener is an interface implemented by objects that are
+/* A TopologyListener is an interface implemented by objects that are
    interested in being kept informed about changes in a graph topology.
 
  Copyright (c) 1998 The Regents of the University of California.
@@ -114,7 +114,4 @@ public interface TopologyListener {
      * @param event The mutation event
      */
     public void relationRemoved (TopologyEvent event);
-
-
-
 }

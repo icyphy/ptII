@@ -1,4 +1,4 @@
-/* A EventAdapter is an empty implementation of TopologyListener.
+/* An aggregation of listeners.
 
  Copyright (c) 1998 The Regents of the University of California.
  All rights reserved.
@@ -35,7 +35,7 @@ import collections.LinkedList;
 //////////////////////////////////////////////////////////////////////////
 //// TopologyMulticaster
 /**
-A TopologyEventMulticaster that forwards topology change events it
+A TopologyMulticaster forwards topology change events it
 receives to a list of other listeners. This is typically used
 by classes that provide addTopologyListener() and removeTologyListener()
 methods.
@@ -50,7 +50,7 @@ public class TopologyMulticaster implements TopologyListener {
     ////                         public methods                    ////
 
     /** Add a new topology listener. Any time any of the
-     * event notification methods is called, it will be forwarded
+     * event notification methods is called, the call will be forwarded
      * to the added listener.
      *
      * @param listener An object that listens to topology events
@@ -107,7 +107,7 @@ public class TopologyMulticaster implements TopologyListener {
         }
     }
 
-    /** Remove a new topology listener. The listener will
+    /** Remove a topology listener. The listener will
      * no longer be notified of topology events. If the
      * given listener has not been previously registered
      * with addTopologyListener() (or is null), then do
