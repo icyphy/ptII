@@ -51,7 +51,6 @@ JSRCS = \
 	CTButtonEvent.java \
 	CTPeriodicSampler.java \
 	CTSaberSubsys.java \
-	CTSquareWave.java \
 	CTThresholdMonitor.java \
 	CTZeroCrossingDetector.java \
 	CTZeroOrderHold.java \
