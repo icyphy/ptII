@@ -524,8 +524,9 @@ boolean doaction;
   yychar = -1;          //impossible char forces a read
   yystate=0;            //initial state
   state_push(yystate);  //save it
+  String yyrule[] = null;
   if (yydebug)
-     final static String yyrule = read_string_table("yyrule.tbl", NRULES - 2);
+     yyrule = read_string_table("yyrule.tbl", NRULES - 2);
   while (true) //until parsing is done, either correctly, or w/error
     {
     doaction=true;
@@ -1843,7 +1844,7 @@ case 287:
 //#line 1479 "/home/eecs/cxh/ptII/ptolemy/lang/java/jparser.y"
 { yyval.obj = new BitOrAssignNode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
 break;
-//#line 3381 "JavaParser.java"
+//#line 3382 "JavaParser.java"
 //########## END OF USER-SUPPLIED ACTIONS ##########
     }//switch
     //#### Now let's reduce... ####
