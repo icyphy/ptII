@@ -219,7 +219,7 @@ public class DiningApplet extends Applet
     controlPanel.add(_goButton, "North");
     controlPanel.add(_stopButton, "North");
 
-    // Add the listners for the go and stop buttons
+    // Add the listeners for the go and stop buttons
     _goButton.addActionListener(new GoButtonListener());
     _stopButton.addActionListener(new StopButtonListener());
 
@@ -230,7 +230,7 @@ public class DiningApplet extends Applet
     //controlPanel.add(_eatingRateBox, "South");
     //controlPanel.add(_thinkingRateBox, "South");
 
-    // Add the listners for the go and stop buttons
+    // Add the listeners for the go and stop buttons
     _eatingRateBox.addActionListener(new EatingRateListener());
     _thinkingRateBox.addActionListener(new ThinkingRateListener());
 }
@@ -296,9 +296,9 @@ public class DiningApplet extends Applet
         public void run() {
             while ((simulationThread != null) || simulationThread.isAlive()) {
                 // get the current time from director.
-                double currenttime = _localDirector.getCurrentTime();
+                double currentTime = _localDirector.getCurrentTime();
                 _currentTimeLabel.setText("Current time = " +
-                        nf.format(currenttime));
+                        nf.format(currentTime));
                 try {
                     sleep(100);
                 } catch (InterruptedException e) {}
