@@ -52,7 +52,7 @@ if {[string compare test [info procs test]] == 1} then {
 #
 test ODFActor-2.1 {getNextToken() - Send One Token} {
     set wspc [java::new ptolemy.kernel.util.Workspace]
-    set toplevel [java::new ptolemy.actor.CompositeActor $wspc]
+    set toplevel [java::new ptolemy.actor.TypedCompositeActor $wspc]
     set dir [java::new ptolemy.domains.odf.kernel.ODFDirector $wspc "director"]
     set mgr [java::new ptolemy.actor.Manager $wspc "manager"]
     $toplevel setDirector $dir
@@ -76,7 +76,7 @@ test ODFActor-2.1 {getNextToken() - Send One Token} {
 	    $actorSend]
     $odr setSendingTimeKeeper $sendkeeper
 
-    set rcvrs [ [java::cast ptolemy.actor.IOPort $ioprcvr] getReceivers]
+    set rcvrs [ [java::cast ptolemy.actor.TypedIOPort $ioprcvr] getReceivers]
     if { $rcvrs == [java::null] } {
 	set null 1
     }
