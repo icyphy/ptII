@@ -37,7 +37,6 @@ import ptolemy.data.expr.*;
 import ptolemy.actor.*;
 import ptolemy.plot.*;
 import java.awt.Panel;
-import java.awt.Dimension;
 
 /** Base class for plotters.  This class contains an instance of the
  *  Plot class from the Ptolemy plot package as a public member.
@@ -118,7 +117,11 @@ public class Plotter extends TypedAtomicActor implements Placeable {
      *  This method needs to be called before the first call to initialize().
      *  Otherwise, the plot will be placed in its own frame.
      *  The plot is also placed in its own frame if this method
-     *  is called with a null argument.
+     *  is called with a null argument.  The size of the plot,
+     *  unfortunately, cannot be effectively determined from the size
+     *  of the panel because the panel may not yet be laid out
+     *  (its size will be zero).  Thus, you will have to explicitly
+     *  set the size of the plot by calling plot.setSize().
      *
      *  @param panel The panel into which to place the plot.
      */
@@ -135,8 +138,6 @@ public class Plotter extends TypedAtomicActor implements Placeable {
                 plot = new Plot();
                 _panel.add(plot);
                 plot.setButtons(true);
-                Dimension size = _panel.getSize();
-                plot.setSize(size.width, size.height);
             }
         }
     }
