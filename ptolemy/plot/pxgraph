@@ -117,6 +117,12 @@ if [ -z "$JAVAHOME" ]; then
 	IFS="$oldifs"
     fi
     if [ -z "$JAVAHOME" ]; then
+	if [ -d "/usr/eesww/lang/jdk1.1latest" ]; then
+		# Locally, Java can sometimes be found here.
+		JAVAHOME=/usr/eesww/lang/jdk1.1latest
+	fi
+    fi	
+    if [ -z "$JAVAHOME" ]; then
 	echo "$0: Could not find $searchfile in your \$PATH"
 	echo " Please set \$JAVAHOME to the directory that contains your"
 	echo " Java distribution"
