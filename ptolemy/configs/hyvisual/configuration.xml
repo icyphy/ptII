@@ -145,7 +145,7 @@ to another. Then delete this annotation.</text></svg></configure></property>
     <property name="_libraryMarker"
               class="ptolemy.kernel.util.SingletonAttribute"/>
 
-    <input source="ptolemy/configs/utilitiesLibrary.xml"/>
+    <input source="ptolemy/configs/hyvisual/utilitiesLibrary.xml"/>
 
     <!-- Custom actor library. -->
     <entity name="Actors" class="ptolemy.moml.EntityLibrary">
