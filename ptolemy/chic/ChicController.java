@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating 
-@AcceptedRating 
+@ProposedRating
+@AcceptedRating
 */
 
 package ptolemy.chic;
@@ -55,13 +55,13 @@ import javax.swing.KeyStroke;
 //////////////////////////////////////////////////////////////////////////
 //// ChicController
 /**
-This class provides interaction with nodes that represent ChicInvoker 
-visible attributes.  It provides a double click binding and context menu 
-entry to edit the parameters of the node ("Configure"), a command to get 
-documentation ("Get Documentation"), a command to look inside ("Look 
-Inside") and commands for invoking Chic. It can have one of two access 
-levels, FULL or PARTIAL. If the access level is FULL, then the context 
-menu also contains a command to rename the node ("Customize Name") and 
+This class provides interaction with nodes that represent ChicInvoker
+visible attributes.  It provides a double click binding and context menu
+entry to edit the parameters of the node ("Configure"), a command to get
+documentation ("Get Documentation"), a command to look inside ("Look
+Inside") and commands for invoking Chic. It can have one of two access
+levels, FULL or PARTIAL. If the access level is FULL, then the context
+menu also contains a command to rename the node ("Customize Name") and
 a command to set the icon of the node ("Set Icon").
 
 @author Eleftherios Matsikoudis
@@ -265,7 +265,7 @@ public class ChicController extends AttributeController {
 //            NamedObj object = getTarget();
 //            try {
 //                ((ChicInvoker)object).checkInterfaceCompatibility(
-//                        ChicInvoker.STATEFUL_SOFTWARE, 
+//                        ChicInvoker.STATEFUL_SOFTWARE,
 //                        false);
 //            } catch (IllegalActionException ex) {
 //                MessageHandler.error(ex.getMessage());
@@ -291,7 +291,7 @@ public class ChicController extends AttributeController {
 //            NamedObj object = getTarget();
 //            try {
 //                ((ChicInvoker)object).checkInterfaceCompatibility(
-//                        ChicInvoker.STATELESS_SOFTWARE, 
+//                        ChicInvoker.STATELESS_SOFTWARE,
 //                        false);
 //            } catch (IllegalActionException ex) {
 //                MessageHandler.error(ex.getMessage());
@@ -317,7 +317,7 @@ public class ChicController extends AttributeController {
             NamedObj object = getTarget();
             try {
                 ((ChicInvoker)object).checkInterfaceCompatibility(
-                        ChicInvoker.SYNCHRONOUS_AG, 
+                        ChicInvoker.SYNCHRONOUS_AG,
                         false);
             } catch (IllegalActionException ex) {
                 MessageHandler.error(ex.getMessage());

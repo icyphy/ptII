@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating 
-@AcceptedRating 
+@ProposedRating
+@AcceptedRating
 */
 
 package ptolemy.chic;

@@ -23,8 +23,8 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-@ProposedRating 
-@AcceptedRating 
+@ProposedRating
+@AcceptedRating
 */
 
 package ptolemy.chic;
@@ -47,16 +47,16 @@ Use setExpression() to define the value, as in for example
 <p>The default value of the string contained by this attribute is the empty
 string.
 
-<p>By default, an instance of this class is fully visible in a user 
-interface and it is annotated with a TextStyle attribute.  The 
-visibility is indicated to the user interface when the user interface 
-calls the getVisibility() method of this class and the value 
+<p>By default, an instance of this class is fully visible in a user
+interface and it is annotated with a TextStyle attribute.  The
+visibility is indicated to the user interface when the user interface
+calls the getVisibility() method of this class and the value
 Settable.FULL is returned to the userInterface.
 
 <p>Note that the string value within ChicAttribute will not be parsed
 and you do not have to type a leading and a trailing double quote.
 
-<p>This class is an attribute that replaces any previously existing 
+<p>This class is an attribute that replaces any previously existing
 attribute of the same class in the container that has the same name.
 
 @author Eleftherios Matsikoudis
@@ -66,14 +66,14 @@ attribute of the same class in the container that has the same name.
 public class ChicAttribute extends StringAttribute {
 
     /** Construct an attribute with the given name contained by the specified
-     *  container and annotate it with a TextStyle attribute. The container  
-     *  argument must not be null, or a NullPointerException will be thrown.  
+     *  container and annotate it with a TextStyle attribute. The container
+     *  argument must not be null, or a NullPointerException will be thrown.
      *  This attribute will use the workspace of the container for
      *  synchronization and version counts. If the name argument is null,
-     *  then the name is set to the empty string. This attribute that replaces 
-     *  any previously existing attribute of the same class in the container 
-     *  that has the same name. The object is added to the directory of the 
-     *  workspace if the container is null. 
+     *  then the name is set to the empty string. This attribute that replaces
+     *  any previously existing attribute of the same class in the container
+     *  that has the same name. The object is added to the directory of the
+     *  workspace if the container is null.
      *  Increment the version of the workspace.
      *  @param container The container.
      *  @param name The name of this attribute.
@@ -92,12 +92,12 @@ public class ChicAttribute extends StringAttribute {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Remove any previous ChicAttribute in the container that has the 
-     *  same name as this attribute, and then call the base class method 
-     *  to set the container. If the container has an attribute with the 
-     *  same name that is not an instance of this class, throw an exception. 
-     *  If the container is not in the same workspace as this attribute, 
-     *  throw an exception. If this attribute is already contained by the 
+    /** Remove any previous ChicAttribute in the container that has the
+     *  same name as this attribute, and then call the base class method
+     *  to set the container. If the container has an attribute with the
+     *  same name that is not an instance of this class, throw an exception.
+     *  If the container is not in the same workspace as this attribute,
+     *  throw an exception. If this attribute is already contained by the
      *  NamedObj, do nothing. If the attribute already has a container, remove
      *  this attribute from its attribute list first.  Otherwise, remove
      *  it from the directory of the workspace, if it is there.
@@ -158,4 +158,3 @@ public class ChicAttribute extends StringAttribute {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-}
