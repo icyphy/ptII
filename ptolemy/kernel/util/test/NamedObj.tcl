@@ -296,6 +296,17 @@ This is the second Message, trailing newline.
 This is the third Message, no trailing newline.
 }
 
+test NamedObj-8.9 {Test RecorderListener: call event() directly} {
+    set a [java::new ptolemy.kernel.util.NamedObj]
+    set listener [java::new ptolemy.kernel.util.RecorderListener]
+    $a addDebugListener $listener
+    set source [java::new ptolemy.kernel.util.NamedObj "event source"]
+    set debugEvent [java::new ptolemy.kernel.util.test.TestDebugEvent $source]
+    $listener event $debugEvent
+    $listener getMessages
+} {ptolemy.kernel.util.NamedObj {.event source}
+}
+
 test NamedObj-9.1 {Test StreamListener} {
     set a [java::new ptolemy.kernel.util.NamedObj]
     jdkCapture {
