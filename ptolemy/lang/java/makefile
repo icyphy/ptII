@@ -133,10 +133,10 @@ all: JavaVisitor.class jclass
 install: jclass $(PTCLASSJAR)
 
 Yylex.java: Yylex
-	CLASSPATH=$(CLASSPATH) $(JAVA) com.JLex.Main Yylex
+	CLASSPATH=$(CLASSPATH)$(AUXCLASSPATH) $(JAVA) com.JLex.Main Yylex
 
 run_GenerateVisitor JavaVisitor.java: NodeTypes.def ../GenerateVisitor.class
-	CLASSPATH=$(CLASSPATH) $(JAVA) ptolemy.lang.GenerateVisitor NodeTypes.def JavaVisitor TreeNode nodetypes
+	CLASSPATH=$(CLASSPATH)$(AUXCLASSPATH) $(JAVA) ptolemy.lang.GenerateVisitor NodeTypes.def JavaVisitor TreeNode nodetypes
 ../GenerateVisitor.class: ../GenerateVisitor.java
 	(cd ..; $(MAKE) GenerateVisitor.class)
 
