@@ -354,7 +354,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
         _layoutAction = new LayoutAction();
         _saveInLibraryAction = new SaveInLibraryAction();
         _importLibraryAction = new ImportLibraryAction();
-        _instantiateClassAction = new InstantiateClassAction();
+        _instantiateEntityAction = new InstantiateEntityAction();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -1423,8 +1423,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame
         GUIUtilities.addMenuItem(_graphMenu, _saveInLibraryAction);
         GUIUtilities.addHotKey(_jgraph, _importLibraryAction);
         GUIUtilities.addMenuItem(_graphMenu, _importLibraryAction);
-        GUIUtilities.addMenuItem(_graphMenu, _instantiateClassAction);
-        GUIUtilities.addHotKey(_jgraph, _instantiateClassAction);
+        GUIUtilities.addMenuItem(_graphMenu, _instantiateEntityAction);
+        GUIUtilities.addHotKey(_jgraph, _instantiateEntityAction);
         _graphMenu.addSeparator();
         diva.gui.GUIUtilities.addHotKey(_jgraph, _createHierarchyAction);
         diva.gui.GUIUtilities.addMenuItem(_graphMenu, _createHierarchyAction);
@@ -1588,7 +1588,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
     protected Action _layoutAction;
     protected Action _saveInLibraryAction;
     protected Action _importLibraryAction;
-    protected Action _instantiateClassAction;
+    protected Action _instantiateEntityAction;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -1868,10 +1868,13 @@ public abstract class BasicGraphFrame extends PtolemyFrame
                     NamedObj library =
                         configuration.getEntity("actor library");
                     if (library == null) return;
-                    ChangeRequest request =
+                    MoMLChangeRequest request =
                         new MoMLChangeRequest(this, library,
                                 buffer.toString(),
                                 file.toURL());
+                    // No need to propagate this library to instances
+                    // that defer to this one.
+                    request.enablePropagation(false);
                     library.requestChange(request);
                     _setDirectory(chooser.getCurrentDirectory());
                 } catch (Exception ex) {
@@ -1882,17 +1885,17 @@ public abstract class BasicGraphFrame extends PtolemyFrame
     };
 
     ///////////////////////////////////////////////////////////////////
-    //// InstantiateClassAction
+    //// InstantiateEntityAction
 
     /** An action to import a library of components. */
-    private class InstantiateClassAction extends AbstractAction {
+    private class InstantiateEntityAction extends AbstractAction {
 
         /** Create a new action to import a library of components. */
-        public InstantiateClassAction() {
-            super("Instantiate Class");
-            putValue("tooltip", "Instantiate a class by name");
+        public InstantiateEntityAction() {
+            super("Instantiate Entity");
+            putValue("tooltip", "Instantiate an entity by class name");
             putValue(GUIUtilities.MNEMONIC_KEY,
-                    new Integer(KeyEvent.VK_C));
+                    new Integer(KeyEvent.VK_E));
         }
 
         /** Instantiate a class by first opening a dialog to get
@@ -1939,7 +1942,6 @@ public abstract class BasicGraphFrame extends PtolemyFrame
                        + "\"></property></entity></group>";
                 MoMLChangeRequest request = new MoMLChangeRequest(this, context, moml);
                 context.requestChange(request);
-                // FIXME: Listen for errors?
             }
         }
     };
