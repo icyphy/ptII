@@ -69,7 +69,7 @@ public class GRActor extends TypedAtomicActor {
     }
     
     ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
+    ////                         public methods                    ////
 
     /** Initialize the scene graph if it is not yet initialized.
      *  
@@ -91,10 +91,10 @@ public class GRActor extends TypedAtomicActor {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        if (!(getDirector() instanceof GRDirector)) {
+        /*if (!(getDirector() instanceof GRDirector)) {
             throw new IllegalActionException(
                       "GR Actors can only be used under a GR Director");
-        }
+        }*/
     }
     
     /** Reset this actor back to uninitialized state to prepare for

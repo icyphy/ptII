@@ -45,7 +45,7 @@ import java.util.*;
 /**
 
 A scheduler that implements scheduling of the active parts of a GR
-scene graph. The scene graph is assumed to be a directed-acyclic-graph.
+scene graph. The scene graph is assumed to be a directed acyclic graph.
 Scheduling is done by performing a topological sort on all the actors.
 
 @see ptolemy.actor.sched.Scheduler

@@ -49,19 +49,19 @@ import java.util.*;
 /**
 
 <h1>GR overview</h1>
-GR is a domain/infrastructure for displaying three-dimensional graphics in
-Ptolemy II.  GR. is an untimed domain that follows loop-less
+GR is a domain for displaying three-dimensional graphics in
+Ptolemy II.  GR is an untimed domain that follows loop-less
 synchronous/reactive (SR) semantics.
 
 The basic idea behind the GR domain is to arrange geometry and transform
-actors in a directed-acyclic-graph to represent the location and orientation
-of objects in a natural world scene. This topology of connected GR actors
-form what is commonly called in computer graphics literature as a scene graph.
+actors in a directed acyclic graph to represent the location and orientation
+of objects in a scene. This topology of connected GR actors form what is 
+commonly called a scene graph in computer graphics literature. 
 The GR director converts the GR scene graph into a Java3D representation for
 rendering on the computer screen.
 
-@see ptolemy.domains.gr.kernel.GRReceiver
-@see ptolemy.domains.gr.kernel.GRActor
+@see GRReceiver
+@see GRActor
 
 @author C. Fong
 @version $Id$
@@ -77,7 +77,7 @@ public class GRDirector extends StaticSchedulingDirector {
         _init();
     }
 
-    /** Construct a director in the  workspace with an empty name.
+    /** Construct a director in the workspace with an empty name.
      *  The director is added to the list of objects in the workspace.
      *  Increment the version number of the workspace.
      *
@@ -97,7 +97,7 @@ public class GRDirector extends StaticSchedulingDirector {
      *  @param name Name of this director.
      *  @exception IllegalActionException If the
      *   director is not compatible with the specified container.
-     *  @exception NameDuplicationException If the container not a
+     *  @exception NameDuplicationException If the container is not a
      *   CompositeActor and the name collides with an entity in the container.
      */
     public GRDirector(CompositeEntity container, String name)
@@ -117,13 +117,13 @@ public class GRDirector extends StaticSchedulingDirector {
      */
     public Parameter iterations;
     
-    /** A parameter that indicates the time upper bound of each iteration.
+    /** A parameter that indicates the time lower bound of each iteration.
      *  This parameter is useful for guaranteeing that each frame of an
      *  animation takes at least a certain amount of time before proceeding
      *  to the next frame. This parameter is measured in milliseconds.
-     *  The default value is an IntToken with value 33.
+     *  The default value is an IntToken with value the 33.
      */
-    public Parameter iterationTimeUpperBound;
+    public Parameter iterationTimeLowerBound;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -143,20 +143,20 @@ public class GRDirector extends StaticSchedulingDirector {
         GRDirector newObject = (GRDirector)(super.clone(workspace));
         newObject.iterations = (Parameter) 
                                 newObject.getAttribute("iterations");
-        newObject.iterationTimeUpperBound = (Parameter)
-            newObject.getAttribute("iteration time upper bound");
+        newObject.iterationTimeLowerBound = (Parameter)
+            newObject.getAttribute("iteration time lower bound");
         return newObject;
     }
 
 
 
-    /** Make sure that <i>iterationTimeUpperBound</i> milliseconds have
+    /** Make sure that <i>iterationLowerUpperBound</i> milliseconds have
      *  elapsed since the last iteration.  Go through the schedule and 
-     *  iterate every actor If an actor returns false in its prefire(),
+     *  iterate every actor if an actor returns false in its prefire(),
      *  fire() and postfire() will not be called on it.
      *
      *  @exception IllegalActionException If an actor executed by this
-     *  director return false in its prefire().
+     *  director returns false in its prefire().
      */
     public void fire() throws IllegalActionException {
         // -fire-
@@ -164,7 +164,7 @@ public class GRDirector extends StaticSchedulingDirector {
         Director outsideDirector = _getOutsideDirector();
 
         long currentTime = System.currentTimeMillis();
-        int frameRate = ((IntToken)iterationTimeUpperBound.getToken()).intValue();
+        int frameRate = ((IntToken)iterationTimeLowerBound.getToken()).intValue();
         long timeElapsed = currentTime - _lastIterationTime;
         long timeRemaining = frameRate - timeElapsed;
         if (timeRemaining > 0) {
@@ -274,7 +274,8 @@ public class GRDirector extends StaticSchedulingDirector {
     /** Process the mutation that occurred.  Reset this director
      *  to an uninitialized state to prepare for rescheduling.  
      *  Notify parent class about invalidated schedule.  
-     *  see also other mutation methods:
+     *
+     *  see other mutation methods:
      *
      *  @see ptolemy.kernel.util.NamedObj.#attributeChanged
      *  @see ptolemy.kernel.util.NamedObj.#attributeTypeChanged
@@ -293,8 +294,7 @@ public class GRDirector extends StaticSchedulingDirector {
      *  @return A new GRReceiver.
      */
     public Receiver newReceiver() {
-        GRReceiver currentReceiver = new GRReceiver();
-        return currentReceiver;
+        return new GRReceiver();
     }
 
     /** Always return true. A GR composite actor will always be iterated.
@@ -313,7 +313,7 @@ public class GRDirector extends StaticSchedulingDirector {
 
     /** Preinitialize the actors associated with this director and
      *  initialize the number of iterations to zero.  The order in which
-     *  the actors are preinitialized is arbitrary.
+     *  the actors are preinitialized is non-deterministic.
      *
      *  @exception IllegalActionException If the preinitialize() method of
      *  one of the associated actors throws it.
@@ -325,8 +325,8 @@ public class GRDirector extends StaticSchedulingDirector {
     }
 
 
-    /** Return false if the system has finished executing, either by
-     *  reaching the iteration limit. Increment the number of iterations.
+    /** Return false if the system has finished executing, when the 
+     *  iteration limit is reached. Increment the number of iterations.
      *  If the "iterations" parameter is greater than zero, then
      *  check if the limit has been reached.  If so, return false.
      *
@@ -662,8 +662,8 @@ public class GRDirector extends StaticSchedulingDirector {
 
         try {
             iterations = new Parameter(this,"iterations",new IntToken(0));
-            iterationTimeUpperBound = new Parameter(this,
-                    "iteration time upper bound",new IntToken(33));
+            iterationTimeLowerBound = new Parameter(this,
+                    "iteration time lower bound",new IntToken(33));
         } catch (Exception e) {
             throw new InternalErrorException(
                     "Cannot create default iterations parameter:\n" +

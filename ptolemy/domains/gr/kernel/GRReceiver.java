@@ -41,7 +41,7 @@ import ptolemy.kernel.util.IllegalActionException;
 /**
 The receiver for the GR domain. This receiver is a mailbox with capacity one,
 and any token put in the receiver overwrites any token previously present in
-the receiver. As a consequence, hasRoom() method always returns true. The
+the receiver. As a consequence, the hasRoom() method always returns true. The
 get() method will consume the token if there exists one. After the
 consumption, the hasToken() method will return false, until a token is put
 into this receiver.
@@ -81,7 +81,7 @@ public class GRReceiver extends Mailbox {
     }
 
     /** Put a token into this receiver. If the argument is null,
-     *  then this receiver will not contain any token after this method
+     *  then this receiver will not contain a token after this method
      *  returns. If the receiver already has a token, then the new token
      *  will override the old token, and the old
      *  token will be lost.
@@ -95,5 +95,4 @@ public class GRReceiver extends Mailbox {
         }
         super.put(token);
     }
-
 }
