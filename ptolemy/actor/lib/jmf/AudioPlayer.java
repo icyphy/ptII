@@ -88,7 +88,7 @@ public class AudioPlayer extends Sink implements ControllerListener {
     ////                         public methods                    ////
 
     /** React to notification of a change in controller status.
-     *  event The event.
+     *  @param event The event.
      */
     public synchronized void controllerUpdate(ControllerEvent event) {
         notifyAll();
@@ -133,17 +133,17 @@ public class AudioPlayer extends Sink implements ControllerListener {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
+    /** The container that contains the control panel components. */ 
+    private Container _container;
     
     /** The JFrame where the the container is put. */
     private JFrame _frame;
 
-    /** The container that contains the control panel components. */ 
-    private Container _container;
-
     /** The player. */
     private Player _player;
 
-    /** Start time for an audio clip. */
+    /** Start time for the audio clip. */
     private Time _startTime = new Time(0.0);
 }
 

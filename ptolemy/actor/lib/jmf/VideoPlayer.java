@@ -1,8 +1,16 @@
 package ptolemy.actor.lib.jmf;
 
+import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.lib.Sink;
+import ptolemy.data.ObjectToken;
+import ptolemy.data.type.BaseType;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+
+import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Container;
-import java.awt.GridLayout;
 import java.io.IOException;
 
 import javax.media.ControllerEvent;
@@ -14,15 +22,21 @@ import javax.media.Time;
 import javax.media.protocol.DataSource;
 import javax.swing.JFrame;
 
-import ptolemy.actor.TypedAtomicActor;
-import ptolemy.actor.TypedIOPort;
-import ptolemy.data.ObjectToken;
-import ptolemy.data.type.BaseType;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
+//////////////////////////////////////////////////////////////////////////
+//// VideoPlayer
+/**
+   This actor accepts an ObjectToken that contains a DataSource.
+   This is typically obtained from the output of the StreamLoader
+   actor.  This actor will play Datasources containing a AVI, Quicktime,
+   or MPEG video file.  After the model is runned, a window will pop up
+   allowing control of playing, rate of playback, and volume control.
 
-public class VideoPlayer extends TypedAtomicActor implements ControllerListener {
+   @author James Yeh
+   @version $Id$
+   @since Ptolemy II 3.1
+*/
+
+public class VideoPlayer extends Sink implements ControllerListener {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -40,15 +54,20 @@ public class VideoPlayer extends TypedAtomicActor implements ControllerListener 
         input.setTypeEquals(BaseType.OBJECT);
     }
 
-    public TypedIOPort input;
-
     /** React to notification of a change in controller status.
-     *  event The event.
+     *  @param event The event.
      */
     public synchronized void controllerUpdate(ControllerEvent event) {
         notifyAll();
     }
-
+    
+    /** Accept an ObjectToken containing a DataSource, and set it up
+     *  for playing.
+     *  @exception IllegalActionException If there is no director,
+     *  if the file cannot be opened, or if the Java Media Framework
+     *  throws an exception.
+     *  @return super.postfire()
+     */
     public boolean postfire() throws IllegalActionException {
         ObjectToken objectToken = (ObjectToken) input.get(0);
         DataSource input = (DataSource) objectToken.getValue();
@@ -56,9 +75,9 @@ public class VideoPlayer extends TypedAtomicActor implements ControllerListener 
             _player.removeControllerListener(this);
         }
         try {
-        _player = Manager.createRealizedPlayer(input);
-        _player.addControllerListener(this); 
-        _player.prefetch();
+            _player = Manager.createRealizedPlayer(input);
+            _player.addControllerListener(this); 
+            _player.prefetch();
         } catch (IOException ex) {
             throw new IllegalActionException(this,
                     "Cannot open file: " + ex.toString());
@@ -66,57 +85,34 @@ public class VideoPlayer extends TypedAtomicActor implements ControllerListener 
             throw new IllegalActionException(this,
                     "Exception thrown by media framework: " + ex.toString());
         }
-
+        
         _player.setMediaTime(_startTime);
-
+        
         _frame = new JFrame();
         _container = _frame.getContentPane();
-        _container.setLayout(new GridLayout(2,1));
+        _container.setLayout(new BorderLayout());
         Component controlPanel = _player.getControlPanelComponent();
         Component videoPanel = _player.getVisualComponent();
-        _container.add(videoPanel);
-        _container.add(controlPanel);
+        _container.add(videoPanel, BorderLayout.CENTER);
+        _container.add(controlPanel, BorderLayout.SOUTH);
+        _container.validate();
+        _frame.pack();
         _frame.show();
         
-         _player.start();
-//         synchronized(this) {
-//             while(_player.getState() == Controller.Started
-//                     && !_stopRequested) {
-//                 try {
-//                     wait();
-//                 } catch (InterruptedException ex) {
-//                     break;
-//                 }
-//             } 
-//         }
+        _player.start();
         return super.postfire();
     }
     
-    /** Override the base class to stop the currently playing audio.
-     */
-    public void stopFire() {
-        super.stopFire();
-        if (_player != null) {
-            // FIXME: Doesn't seem to stop the sound.
-            _player.stop();
-        }
-    }
-
-    /** Close the media processor.
-     */
-    public void wrapup() {
-        if (_player != null) {
-            _player.stop();
-        }
-    }
-
-    private JFrame _frame;
-
+    
+    /** The container that contains the control panel components. */ 
     private Container _container;
+    
+    /** The JFrame where the the container is put. */
+    private JFrame _frame;
 
     /** The player. */
     private Player _player;
 
-    /** Start time for an audio clip. */
+    /** Start time for the video clip. */
     private Time _startTime = new Time(0.0);
 }
