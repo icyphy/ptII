@@ -281,8 +281,4 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
         }
         super._addPort(port);
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
 }
