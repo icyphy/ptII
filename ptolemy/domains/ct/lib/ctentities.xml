@@ -9,6 +9,8 @@
 <doc>Continuous-time actors</doc>
 
 <entity name="continuous time composite actor" class="ptolemy.domains.ct.kernel.CTCompositeActor"/>
+<entity name="CTAssertion" class="ptolemy.actor.lib.CTAssertion">
+</entity>
 <entity name="Integrator" class="ptolemy.domains.ct.lib.Integrator">
 </entity>
 <entity name="LaplaceTransferFunction" class="ptolemy.domains.ct.lib.ContinuousTransferFunction">
