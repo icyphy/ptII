@@ -40,26 +40,24 @@ import ptolemy.kernel.util.*;
 /**
 Base class for classes representing guarded communication statements. A
 guarded communication statement is of the form
-<br>
+<P>
       <CENTER>guard; communication => statements </CENTER>
-<br>
+<P>
 If the guard is true, or absent which implies true, then the branch
 is enabled. Guarded communication statements are the used to perform
 both forms of conditional communication constructs: CIF and CDO.  
 Each guarded communication statement is one branch of a CIF or CDO.
 <p>
 A CDO has the form
-<br>
-<CODE>
-CDO {
-     G1; C1 => S1;
-[]
-     G2; C2 => S2;
-[]
-     ...
-}
-</CODE>
-<br>
+<P>
+&nbsp;&nbsp;&nbsp                              CDO {
+<br>&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp;       G1; C1 => S1;
+<br>&nbsp;&nbsp;&nbsp                          []
+<br>&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp;       G2; C2 => S2;
+<br>&nbsp;&nbsp;&nbsp                          []
+<br>&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp;       ...
+<br>&nbsp;&nbsp;&nbsp                          }
+<P>
 While at least one of the branches is enabled, the construct continues
 to evaluate and execute one of the enabled branches. If more than one
 branch is enabled, the first branch to be able to rendezvous succeeds
