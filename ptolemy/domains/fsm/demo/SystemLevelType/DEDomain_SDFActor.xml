@@ -14,18 +14,18 @@
     </property>
     <property name="fR" class="ptolemy.data.expr.Parameter">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 635]">
     </property>
-    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 116]">
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[-4, -4]">
     </property>
     <port name="p" class="ptolemy.actor.TypedIOPort">
         <property name="input"/>
-        <property name="_location" class="ptolemy.moml.Location" value="300.0, 315.0">
+        <property name="_location" class="ptolemy.moml.Location" value="305.0, 165.0">
         </property>
     </port>
     <port name="pR" class="ptolemy.actor.TypedIOPort">
         <property name="output"/>
-        <property name="_location" class="ptolemy.moml.Location" value="300.0, 135.0">
+        <property name="_location" class="ptolemy.moml.Location" value="305.0, 220.0">
         </property>
     </port>
 </entity>
