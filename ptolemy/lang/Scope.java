@@ -1,5 +1,5 @@
-/* An environment for declarations, which may be contained in another
-environment.
+/* An scope for declarations, which may be contained in another
+scope.
 
 Copyright (c) 1998-2000 The Regents of the University of California.
 All rights reserved.
@@ -40,8 +40,8 @@ import java.util.ListIterator;
 
 //////////////////////////////////////////////////////////////////////////
 //// Scope
-/** An environment for declarations, which may be contained in another
-environment.  Scopes are used to implement scoping for declarations.
+/** An scope for declarations, which may be contained in another
+scope.  Scopes are used to implement scoping for declarations.
 <p>
 Portions of this code were derived from sources developed under the
 auspices of the Titanium project, under funding from the DARPA, DoE,
@@ -52,20 +52,20 @@ and Army Research Office.
  */
 public class Scope {
 
-    /** Construct an empty environment. */
+    /** Construct an empty scope. */
     public Scope() {
         this(null, new LinkedList());
     }
 
-    /** Construct an environment nested inside the parent argument,
+    /** Construct an scope nested inside the parent argument,
      *  without its own proper Decl's.
      */
     public Scope(Scope parent) {
         this(parent, new LinkedList());
     }
 
-    /** Construct an environment nested inside the parent argument,
-     *  with the given List of Decl's in this environment itself.
+    /** Construct an scope nested inside the parent argument,
+     *  with the given List of Decl's in this scope itself.
      */
     public Scope(Scope parent, List declList) {
         _parent = parent;
@@ -75,7 +75,7 @@ public class Scope {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Adds a mapping to the argument decl in this environment proper.
+    /** Adds a mapping to the argument decl in this scope proper.
      *  This does not affect any Scopes in which this is nested.
      */
     public void add(Decl decl) {
@@ -132,31 +132,31 @@ public class Scope {
         _declList.addAll(env._declList);
     }
 
-    /** Lookup a decl by name in the current environment, do not look
-     *  in the parent environment, if any.
+    /** Lookup a decl by name in the current scope, do not look
+     *  in the parent scope, if any.
      */
     public Decl lookup(String name) {
         return lookup(name, Decl.CG_ANY, new boolean[1], false);
     }
 
-    /** Lookup a decl by name and mask in the current environment, do not look
-     *  in the parent environment, if any.
+    /** Lookup a decl by name and mask in the current scope, do not look
+     *  in the parent scope, if any.
      */
     public Decl lookup(String name, int mask) {
         return lookup(name, mask, new boolean[1], false);
     }
 
-    /** Lookup a decl by name in the current environment, do not look
-     *  in the parent environment. Set more[0] to true if there are
-     *  other decls with the same name in the environment.
+    /** Lookup a decl by name in the current scope, do not look
+     *  in the parent scope. Set more[0] to true if there are
+     *  other decls with the same name in the scope.
      */
     public Decl lookup(String name, boolean[] more) {
         return lookup(name, Decl.CG_ANY, more, false);
     }
 
-    /** Lookup a decl by name and mask in the current environment, do not look
-     *  in the parent environment, if any. Set more[0] to true if there
-     *  is one or more decls with the same name in the environment.
+    /** Lookup a decl by name and mask in the current scope, do not look
+     *  in the parent scope, if any. Set more[0] to true if there
+     *  is one or more decls with the same name in the scope.
      *  Note that more[0] will be true if the other decls have the
      *  same name but different masks.
      */
@@ -164,23 +164,23 @@ public class Scope {
         return lookup(name, mask, more, false);
     }
 
-    /** Lookup a decl by name in the current environment and
-     *  in the parent environment, if any.
+    /** Lookup a decl by name in the current scope and
+     *  in the parent scope, if any.
      */
     public Decl lookupProper(String name) {
         return lookup(name, Decl.CG_ANY, new boolean[1], true);
     }
 
-    /** Lookup a decl by name and mask in the current environment and
-     *  in the parent environment, if any.
+    /** Lookup a decl by name and mask in the current scope and
+     *  in the parent scope, if any.
      */
     public Decl lookupProper(String name, int mask) {
         return lookup(name, mask, new boolean[1], true);
     }
 
-    /** Lookup a decl by name in the current environment and
-     *  in the parent environment, if any. Set more[0] to true if there
-     *  is one or more decls with the same name in the environment.
+    /** Lookup a decl by name in the current scope and
+     *  in the parent scope, if any. Set more[0] to true if there
+     *  is one or more decls with the same name in the scope.
      *  Note that more[0] will be true if the other decls have the
      *  same name but different masks.
      */
@@ -188,9 +188,9 @@ public class Scope {
         return lookup(name, Decl.CG_ANY, more, true);
     }
 
-    /** Lookup a decl by name and mask in the current environment and
-     *  in the parent environment, if any. Set more[0] to true if there
-     *  is one or more decls with the same name in the environment.
+    /** Lookup a decl by name and mask in the current scope and
+     *  in the parent scope, if any. Set more[0] to true if there
+     *  is one or more decls with the same name in the scope.
      *  Note that more[0] will be true if the other decls have the
      *  same name but different masks.
      */
@@ -198,13 +198,13 @@ public class Scope {
         return lookup(name, mask, more, true);
     }
 
-    /** Lookup a decl by name and mask in the current environment or
-     *  in the parent environment, if any. Set more[0] to true if there
-     *  is one or more decls with the same name in the environment.
+    /** Lookup a decl by name and mask in the current scope or
+     *  in the parent scope, if any. Set more[0] to true if there
+     *  is one or more decls with the same name in the scope.
      *  Note that more[0] will be true if the other decls have the
      *  same name but different masks.  If the proper argument is
-     *  true, then look in the parent environment, if any.  If it
-     *  is false, then do not look in the parent environment.
+     *  true, then look in the parent scope, if any.  If it
+     *  is false, then do not look in the parent scope.
      */
     public Decl lookup(String name, int mask, boolean[] more, boolean proper) {
         ScopeIterator itr = lookupFirst(name, mask, proper);
