@@ -64,28 +64,28 @@ EXTRA_SRCS =	$(JSRCS)
 # should not complain about
 MISC_FILES =	$(DIRS) doc #test
 
-PTAUXJAR =	RLEncodingApplet.jar
+PTAUXJAR =	pndemo.jar
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	$(PTCLASSJAR) \
-	RLEncodingApplet.jar
+	pndemo.jar
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-all: jclass RLEncodingApplet.jar
+all: jclass pndemo.jar
 
-install: jclass RLEncodingApplet.jar javadocs
+install: jclass pndemo.jar javadocs
 docs: javadocs
 
 
 # 'make clean' removes everything in KRUFT
-KRUFT = RLEncodingApplet.jar
+KRUFT = pndemo.jar
 
 # Jar file consisting of classes used by an applet.  Basically,
 # everything but Message and Pxgraph.
-RLEncodingApplet.jar: $(JSRCS) $(JCLASS)
+pndemo.jar: $(JSRCS) $(JCLASS)
 		(cd $(CLASSPATH); \
                 $(JAR) cf \
                 $(ME)/$@ \
