@@ -91,7 +91,7 @@ public class QueueWithNextOut extends DETransformer {
     ////                     ports and parameters                  ////
 
     /** The trigger port, which has type Token. If this port
-     *  receives a token, then the oldest token in the queue 
+     *  receives a token, then the oldest token in the queue
      *  will be emitted on the <i>output</i> port.
      */
     public TypedIOPort trigger;
@@ -131,19 +131,19 @@ public class QueueWithNextOut extends DETransformer {
             if(_queue.size() == 1) {
 	        // Queue was empty, new item is next item.
 		// Send it without removing it from the queue.
-                nextOut.send(0, (Token)_queue.get(0));    
+                nextOut.send(0, (Token)_queue.get(0));
             }
         }
         if(trigger.hasToken(0)) {
             // Consume the trigger token.
             trigger.get(0);
             if(_queue.size() > 0) {
-                output.send(0, (Token)_queue.take());    
+                output.send(0, (Token)_queue.take());
             }
             if(_queue.size() > 0) {
-		// If queue still has token(s), send the 
+		// If queue still has token(s), send the
 		// next token while keeping a copy in the queue.
-                nextOut.send(0, (Token)_queue.get(0));    
+                nextOut.send(0, (Token)_queue.get(0));
             }
         }
     }

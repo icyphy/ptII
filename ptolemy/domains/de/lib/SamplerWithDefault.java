@@ -59,11 +59,11 @@ width of the <i>output</i>, the extra input tokens will not appear on
 any output, although they will be consumed from the input port. If the
 width of the <i>output</i> is greater than that of the <i>input</i>,
 then the last few channels of the <i>output</i> will never emit
-tokens. 
+tokens.
 
 <p> Note: If the width of the input changes during
 execution, then the most recent inputs are forgotten, as if the
-execution of the model were starting over.  
+execution of the model were starting over.
 
 <p> This actor differs
 from the Sampler actor in how it handles the initial condition.  If
@@ -88,7 +88,7 @@ public class SamplerWithDefault extends DETransformer {
        after its output has been generated.  A register could be
        used to break feedback loops, whereas this cannot.
     */
-       
+
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -137,7 +137,7 @@ public class SamplerWithDefault extends DETransformer {
      */
     public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
-        SamplerWithDefault newObject = 
+        SamplerWithDefault newObject =
             (SamplerWithDefault)super.clone(workspace);
         newObject.output.setTypeAtLeast(newObject.input);
         newObject.initialValue.setTypeSameAs(newObject.input);

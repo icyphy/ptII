@@ -45,9 +45,9 @@ import ptolemy.actor.*;
 //// EventFilter
 /**
 An actor that filters a stream of Boolean Tokens.  Every true input token
-that it receives is reproduced on the output port.  
+that it receives is reproduced on the output port.
 False tokens are discarded.
-This is usually used to properly trigger other discrete event actors 
+This is usually used to properly trigger other discrete event actors
 (such as inhibit and select) based on boolean values.
 <p>
 

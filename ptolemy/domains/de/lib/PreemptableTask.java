@@ -98,7 +98,7 @@ public class PreemptableTask extends DETransformer {
      *  execute the task.
      */
     public Parameter executionTime;
-    
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -136,7 +136,7 @@ public class PreemptableTask extends DETransformer {
         newObject.output.setTypeAtLeast(newObject.input);
         return newObject;
     }
-    
+
     /**  When the actor is in a non-executing and non-interrupted
      *   state, and there is an available input token, begin execution
      *   of the task by scheduling the actor to fire at
@@ -177,7 +177,7 @@ public class PreemptableTask extends DETransformer {
             }
         }
     }
-                    
+
     /** Indicate that the task in non-interrupted, non-executing
      *  state.  Also create a new linked list to store input tokens.
      *  @exception IllegalActionException If the base class throws it.
@@ -234,14 +234,14 @@ public class PreemptableTask extends DETransformer {
         }
         return super.postfire();
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     // If true, the actor received a token on the input port and has not yet
     // emitted the corresponding output.
     private boolean _executing = false;
-    
+
     // Records the time at which a token arrives on the interrupt port
     // (the time at which the task is interrupted).
     private double _interruptTime = 0.0;

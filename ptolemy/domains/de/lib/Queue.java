@@ -82,7 +82,7 @@ public class Queue extends DETransformer {
     ////                     ports and parameters                  ////
 
     /** The trigger port, which has type Token. If this port
-     *  receives a token, then the oldest token in the queue 
+     *  receives a token, then the oldest token in the queue
      *  will be emitted on the <i>output</i> port.
      */
     public TypedIOPort trigger;
@@ -119,7 +119,7 @@ public class Queue extends DETransformer {
             // Consume the trigger token.
             trigger.get(0);
             if(_queue.size() > 0) {
-                output.send(0, (Token)_queue.take());    
+                output.send(0, (Token)_queue.take());
             }
         }
     }
