@@ -73,17 +73,18 @@ public class ArrayType extends StructuredType {
      *  @return An ArrayType.
      */
     public Object clone() {
-	ArrayType newObj = new ArrayType(_declaredElementType);
-	if ( !isConstant()) {
+        if (isConstant()) {
+	    return this;
+        } else {
+	    ArrayType newObj = new ArrayType(_declaredElementType);
 	    try {
 	        newObj.updateType(this);
 	    } catch (IllegalActionException ex) {
-		throw new InternalErrorException("ArrayType.clone: Cannot " +
-			"update new instance. " + ex.getMessage());
+                throw new InternalErrorException("ArrayType.clone: " +
+	            "Cannot update new instance. " + ex.getMessage());
 	    }
+	    return newObj;
 	}
-
-	return newObj;
     }
 
     /** Convert the argument token into an ArrayToken having this type,
