@@ -37,7 +37,7 @@ import java.io.Reader;
  */
 public interface ModelParser {
     /**
-     * Parse the data in the given charater stream into a data
+     * Parse the data in the given character stream into a data
      * structure and return the data structure.
      */
     public Object parse(Reader reader) throws java.lang.Exception;
