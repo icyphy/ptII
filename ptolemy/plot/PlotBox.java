@@ -877,7 +877,7 @@ public class PlotBox extends Panel {
      *  specified stream in PlotML syntax.  PlotML is an XML
      *  extension for plot data.  The written information is
      *  standalone, in that it includes the DTD (document type
-     *  defintion).  This makes is somewhat verbose.  To get
+     *  definition).  This makes is somewhat verbose.  To get
      *  smaller files, use the two argument version of write().
      *  The output is buffered, and is flushed and
      *  closed before exiting.  Derived classes should override _write()
@@ -892,7 +892,7 @@ public class PlotBox extends Panel {
      *  specified stream in PlotML syntax.  PlotML is an XML
      *  extension for plot data.  The written information is not
      *  standalone, in that it refers to an external DTD (document type
-     *  defintion). The URL (relative or absolute) for the DTD is
+     *  definition). The URL (relative or absolute) for the DTD is
      *  given as the second argument.  If that argument is null,
      *  then standalone file is written, which includes the DTD. 
      *  The output is buffered, and is flushed and
