@@ -45,6 +45,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.print.PageFormat;
 import java.awt.print.Printable;
@@ -491,7 +492,15 @@ public abstract class GraphFrame extends PtolemyFrame
         _libraryModel.setRoot(null);
         super.dispose();
     }
- 
+
+    /** Return the center of the visible part of the pane.
+     *  @return The center of the visible part.
+     */
+    public Point2D getCenter() {
+        Rectangle rect = _graphScrollPane.getViewport().getViewRect();
+        return new Point2D.Double(rect.getCenterX(), rect.getCenterY());
+    }
+
     /** Return the jgraph instance that this view uses to represent the
      *  ptolemy model.
      */

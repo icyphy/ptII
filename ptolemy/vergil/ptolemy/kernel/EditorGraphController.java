@@ -65,6 +65,7 @@ import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.moml.Location;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.Vertex;
+import ptolemy.vergil.ptolemy.GraphFrame;
 import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.SnapConstraint;
 
@@ -364,15 +365,25 @@ public class EditorGraphController extends ViewerGraphController {
 
 	public void actionPerformed(ActionEvent e) {
 	    super.actionPerformed(e);
-	    GraphPane pane = getGraphPane();
 	    double x;
 	    double y;
 	    if(getSourceType() == TOOLBAR_TYPE ||
                     getSourceType() == MENUBAR_TYPE) {
 		// No location in the action, so put it in the middle.
-		Point2D point = pane.getSize();
-		x = point.getX()/2;
-		y = point.getY()/2;
+                GraphFrame frame = getFrame();
+                Point2D center;
+                if (frame != null) {
+                    // Put in the middle of the visible part.
+                    center = frame.getCenter();
+                    x = center.getX();
+                    y = center.getY();
+                } else {
+                    // Put in the middle of the pane.
+                    GraphPane pane = getGraphPane();
+                    center = pane.getSize();
+                    x = center.getX()/2;
+                    y = center.getY()/2;
+                }
 	    } else {
 		x = getX();
 		y = getY();
