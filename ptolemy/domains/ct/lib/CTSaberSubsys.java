@@ -329,7 +329,7 @@ public class CTSaberSubsys extends CTActor
                         int tmp = locsep+1;
                         for (int i = 0; i < outindex; i++) {
                             // get ride of space between
-                            // seperator and first number
+                            // separator and first number
                             while (line.charAt(tmp) == ' '){
                                 tmp++;
                             }
