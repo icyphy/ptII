@@ -47,7 +47,7 @@ if {[info procs sootCodeGeneration] == "" } then {
 test Actor-1.1 {Compile and run the SDF IIR test} {
     global PTII
     set result [sootCodeGeneration $PTII \
-	    [file join $relativePathToPTII ptolemy actor lib Sinewavce.xml] \
+	    [file join $relativePathToPTII ptolemy actor lib Sinewave.xml] \
 	    "Actor"]
     puts $result
     list {}
