@@ -4,7 +4,7 @@
 
 @Version: $Id$
 
-@Copyright (c) 1997-1998 The Regents of the University of California.
+@Copyright (c) 1997-1999 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -74,7 +74,7 @@ public class PlotApplet extends Applet {
     public String[][] getParameterInfo () {
         String pinfo[][] = {
             {"background", "hexcolor value", "background color"},
-b            {"foreground", "hexcolor value", "foreground color"},
+            {"foreground", "hexcolor value", "foreground color"},
             {"dataurl",   "url",     "the URL of the data to plot"},
             {"pxgraphargs",   "args",
              "pxgraph style command line arguments"}
