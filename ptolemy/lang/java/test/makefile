@@ -131,7 +131,7 @@ RegenerateCode:
 
 
 codegen: $(ROOT)/ptolemy/domains/sdf/demo/OrthogonalCom/OrthogonalCom.class \
-		generate_codegen compile_codegen run_codegen 
+		generate_codegen compile_codegen run_codegen
 
 $(ROOT)/ptolemy/domains/sdf/demo/OrthogonalCom/OrthogonalCom.class: \
 	$(ROOT)/ptolemy/domains/sdf/demo/OrthogonalCom/OrthogonalCom.java
@@ -146,7 +146,7 @@ generate_codegen:
 		-outdir $(ROOT) -outpkg cg.OrthogonalCom
 compile_codegen:
 	(cd $(ROOT)/cg/OrthogonalCom; $(JAVAC) -classpath ../.. CG_Main.java)
-run_codegen: 	
+run_codegen:
 	(cd $(ROOT)/cg/OrthogonalCom; \
 		$(JAVA) -classpath ../.. cg.OrthogonalCom.CG_Main)
 

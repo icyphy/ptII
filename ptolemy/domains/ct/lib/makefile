@@ -54,7 +54,7 @@ JSRCS = \
 	IPCInterface.java \
 	ThresholdMonitor.java \
 	ZeroCrossingDetector.java \
-	ZeroOrderHold.java	
+	ZeroOrderHold.java
 
 EXTRA_SRCS =	$(JSRCS)
 

@@ -2,29 +2,29 @@
 # Version: @(#)makefile	1.90 09/22/00
 # Copyright (c) 1994-2000 The Regents of the University of California.
 # All rights reserved.
-# 
+#
 # Permission is hereby granted, without written agreement and without
 # license or royalty fees, to use, copy, modify, and distribute this
 # software and its documentation for any purpose, provided that the
 # above copyright notice and the following two paragraphs appear in all
 # copies of this software.
-# 
+#
 # IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
 # FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
 # ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
 # THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
-# 
+#
 # THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
 # INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 # MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
 # PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 # CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 # ENHANCEMENTS, OR MODIFICATIONS.
-# 
+#
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
-#		       
+#
 # Programmer:  Christopher Hylands
 
 # Variables
@@ -47,9 +47,9 @@ NON_GNUTAR =	/bin/tar
 SUFFIX =	gz
 
 # Script to split tar files into smaller chunks
-SPLITTAR =	/users/ptolemy/adm/bin/splittar	
+SPLITTAR =	/users/ptolemy/adm/bin/splittar
 
-# FTP Directory 
+# FTP Directory
 # Use this for release
 FTP_DEST =	/vol/ptolemy/pt0/ftp
 # Use this for testing, comment out for release.
@@ -111,7 +111,7 @@ PTII_DEVEL_SRC = $(GENDIR)/ptolemy.devel$(VERSION).src.tar.$(SUFFIX)
 ##############################################################################
 # Targets
 all: $(PTII_SRC) $(PTII_SRC_ZIP) #$(PTII_DEVEL_SRC)
-clean: 
+clean:
 	@echo "#"
 	@echo "# Now cleaning old tar files in ~ptII/adm/gen-latest"
 	@echo "#"
@@ -133,18 +133,18 @@ $(PTIIDIST):
 		$(TAR) -c -X $(GENDIR)/src.ex  -X $(GENDIR)/src1.ex \
 		$ -f - $(PTII_TOPDIR) )| \
 		(cd $@; $(TAR) -xpf -)
-	@echo "Removing codeDoc directories and other documentation" 
+	@echo "Removing codeDoc directories and other documentation"
 	find $(PTIIDIST) -name codeDoc -exec rm -rf {} \;
 	@echo "Regenerate the documentation"
 	(cd $(PTIIDIST)/doc; make)
 	#@echo "Do make realclean to clean up any trash"
 	#cd $(PTIIDIST); make clean
-	#cd $(PTIIDIST); make 
+	#cd $(PTIIDIST); make
 	#cd $(PTIIDIST); make javadocs
 	rm -f $(PTIIDIST)/.glimpse*
 	cp $(PTIIHOME)/.glimpse_exclude $(PTIIDIST)
 
-clean_src: 
+clean_src:
 	rm -f $(PTII_SRC)
 src: $(PTII_SRC) $(PTII_SRC_ZIP)
 ptii_src: $(PTII_SRC) $(PTII_SRC_ZIP)
@@ -159,7 +159,7 @@ $(PTII_SRC): $(PTIIDIST)
 	$(COMPRESS) $(basename $@)
 	mv $(basename $@).bak $(basename $@)
 	chmod g+w $@ $(basename $@)
-	chgrp ptolemy $@ $(basename $@) 
+	chgrp ptolemy $@ $(basename $@)
 	ls -l $@ $(basename $@)
 
 $(PTII_SRC_SPLIT):: $(PTII_SRC)
@@ -173,7 +173,7 @@ $(PTII_SRC_ZIP): $(PTIIDIST)
 	$(ZIP) -r -q $@ \
 	ptII$(VERSION) \
 	)
-	chmod g+w $@ 
+	chmod g+w $@
 	chgrp ptolemy $@
 	ls -l $@
 
@@ -190,7 +190,7 @@ $(VERGIL): $(PTIIDIST)
 	$(COMPRESS) $(basename $@)
 	mv $(basename $@).bak $(basename $@)
 	chmod g+w $@ $(basename $@)
-	chgrp ptolemy $@ $(basename $@) 
+	chgrp ptolemy $@ $(basename $@)
 	ls -l $@ $(basename $@)
 
 update_ftp: update_ptii_ftp update_ptii_itcl untar
@@ -214,7 +214,7 @@ htmlchek:
 	(cd $(PTIIDIST); ls -d `cat htmlchekout.HREF | grep -v '#' | grep -v http: | grep -v mailto: | grep -v ftp:` | grep 'not found' 2>&1)
 
 # Stuff to do every night.
-# ptII's crontab runs ~ptII/adm/bin/ptIInightly, which runs 'make nightly' 
+# ptII's crontab runs ~ptII/adm/bin/ptIInightly, which runs 'make nightly'
 # when the remote jobs finish, the remotealldone rule is called, which
 # runs the ptIInightly-mail script.
 nightly: ptclean ptbuild \
@@ -248,7 +248,7 @@ ptbuild:
 	-(cd $(PTIIHOME); cvs update -d -P; PTII=/users/ptII $(MAKE) JFLAGS="-deprecation -g" JDOCFLAGS="-author -version -J-Xmx132m" -k sources install)  > /users/$(USER)/logs/java`date  '+%m%d'` 2>&1
 
 # test in ~ptII
-pttests: 
+pttests:
 	(cd $(PTIIHOME); $(MAKE) tests)
 
 # Generate the glimpse file in the master tree
@@ -276,12 +276,12 @@ $(GENLOGDIR):
 	fi
 
 ####################################
-# Build and generate test case coverage on a remote host 
+# Build and generate test case coverage on a remote host
 
 # Use a non-gnu make here for testing purposes
 OTHERMAKE = /usr/ccs/bin/make
 
-# Remote location of Ptolemy II tree for testing 
+# Remote location of Ptolemy II tree for testing
 REMOTE1HOME = /vol/tycho/tycho2/ptII
 REMOTE1PTIIDIST = $(REMOTE1HOME)/ptII$(VERSION)
 
@@ -298,7 +298,7 @@ REMOTE1LOG = $(GENLOGDIR)/remote1.out
 JSDATABASE=/users/ptII/jsdatabase
 
 # Directory to place output in
-JSOUTDIR=/users/ptII/public_html/nightly/js 
+JSOUTDIR=/users/ptII/public_html/nightly/js
 
 # Create a separate tree and run the test suite with code coverage
 # on REMOTE1HOST
@@ -378,7 +378,7 @@ remote1distjavadocs:
 # code coverage stats even though they are graphical: gui actor/gui
 #
 # Don't run
-#	$(REMOTE1PTIIDIST)/ptolemy/domains/sdf/lib/huffman 
+#	$(REMOTE1PTIIDIST)/ptolemy/domains/sdf/lib/huffman
 # it hangs
 #
 JSALLDIRS = \
@@ -453,7 +453,7 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/gui \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/gui
 
-# Run JavaScope Code Coverage tool in the distribution tree 
+# Run JavaScope Code Coverage tool in the distribution tree
 # For command line options, see
 #http://www.gigascale.org/pubs/gsrc-downloads/JavaScope/docs/pdf/UGApxTools.pdf
 remote1distjsall:
@@ -487,7 +487,7 @@ remote1distjsall:
 	jssummary -HTML -PROGRESS \
 		-OUTFILE=$(JSOUTDIR)/coverage.html
 	jsreport -HTML -PROGRESS -RECURSIVE \
-		-OUTDIR=$(JSOUTDIR) 
+		-OUTDIR=$(JSOUTDIR)
 	# Add links and colorize the coverage.html page
 	sh $(PTIIADM)/bin/coveragerating $(PTII) \
 		$(JSOUTDIR)/coverage.html
@@ -529,10 +529,10 @@ remote1build:
 
 
 
-##################################################################### 
+#####################################################################
 # Build on a remote host under JDK1.1
 
-# Remote location of Ptolemy II tree for testing 
+# Remote location of Ptolemy II tree for testing
 # Host to run on
 REMOTE2HOST = julian
 
@@ -616,7 +616,7 @@ remote2distjdk1.1test: $(REMOTE2PTJACL_JAR)
 	@echo `date`
 
 
-##################################################################### 
+#####################################################################
 # Build on a remote host by doing a cvs checkout
 
 # Host to run on
@@ -639,7 +639,7 @@ remote3cvs:  $(GENLOGDIR)
 	@echo "#"
 	@echo `date`
 	ssh -x -n $(REMOTE3HOST) "cd $(GENDIR); make remote3nuke >& $(REMOTE3LOG)"
-	# ssh-ing and then using cvs to ssh results in 
+	# ssh-ing and then using cvs to ssh results in
 	# (cd /vol/gauss/gauss2/ptII; cvs -d :ext:gigasource.eecs.berkeley.edu:/home/cvs checkout ptII)
 	# You have no controlling tty and no DISPLAY.  Cannot read passphrase.
 	# so we do the cvs co locally
@@ -708,7 +708,7 @@ remote3disttest: $(REMOTE3PTJACL_JAR)
 	@echo `date`
 
 
-##################################################################### 
+#####################################################################
 # Since we are running on multiple machines, when we are done
 # each remote build creates a file.  When all the files are present
 # we concatenate the results to the log file and then call ptIInightly-mail

@@ -2,7 +2,7 @@
 #
 # @Authors: Christopher Hylands, Neil Smyth
 #
-# @Version: 
+# @Version:
 #
 # @Copyright (c) 1998-2000 The Regents of the University of California.
 # All rights reserved.

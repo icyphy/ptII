@@ -41,7 +41,7 @@
 
 ME =		ptolemy/domains/ct/demo/Corba/util
 
-DIRS = 	
+DIRS =
 
 # Root of the Ptolemy II directory
 ROOT =		../../../../../..
@@ -86,7 +86,7 @@ MISC_FILES =	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = 
+OPTIONAL_FILES =
 
 JCLASS = $(JSRCS:%.java=%.class)
 

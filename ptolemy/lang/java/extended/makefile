@@ -62,7 +62,7 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	$(PTCLASSJAR) 
+	$(PTCLASSJAR)
 
 # This is a bit of a problem, since these classes depend on a class
 # in the parent directory
@@ -74,10 +74,10 @@ install: jclass $(PTCLASSJAR)
 depend:
 	@echo "no dependencies in this directory"
 
-../JavaVisitor.java: 
+../JavaVisitor.java:
 	(cd ..; $(MAKE) JavaVisitor.java)
 
-../Yylex.java: 
+../Yylex.java:
 	(cd ..; $(MAKE) Yylex.java)
 
 # Get the rest of the rules

@@ -55,7 +55,7 @@ SHELL_FILES = \
 	ptolemy \
 	pxgraph \
 	startjini.gui \
-	vergil 
+	vergil
 
 # DOS batch files
 BAT_FILES = \
@@ -65,7 +65,7 @@ BAT_FILES = \
 	ptplot.bat \
 	ptolemy.bat \
 	pxgraph.bat \
-	vergil.bat 
+	vergil.bat
 
 EXTRA_SRCS = \
 	policy.all \

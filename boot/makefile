@@ -31,12 +31,12 @@
 
 ME =		boot
 
-DIRS = 		
+DIRS =
 
 # Root of the Java directory
 ROOT =		..
 
-CLASSPATH =	
+CLASSPATH =
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk

@@ -31,7 +31,7 @@
 
 #
 # To compile the tutorial files, consult the Ptolemy II Design Document.
-# 
+#
 # Basically, each *.java file gets copied to TutorialApplet.java
 # and then run:
 #
@@ -82,7 +82,7 @@ OPTIONAL_FILES = \
 	$(PTCLASSJAR) \
 	$(PTCLASSALLJAR) \
 	TutorialApplet.class \
-	TutorialApplet.java 
+	TutorialApplet.java
 
 JCLASS = $(JSRCS:%.java=%.class)
 

@@ -76,7 +76,7 @@ JSRCS = ArrayStringFormat.java \
 	DoubleBinaryOperation.java \
 	IntegerBinaryOperation.java \
 	LongBinaryOperation.java \
-        ComplexBinaryOperation.java 
+        ComplexBinaryOperation.java
 
 EXTRA_SRCS =	$(JSRCS)
 

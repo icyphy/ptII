@@ -53,14 +53,14 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR =	$(PTPACKAGE).jar
 
 # Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = 
+PTCLASSALLJARS =
 
 PTCLASSALLJAR =
 
 # Keep this list alphabetized.
 JSRCS = \
 	StockQuote.java \
-	StockServer.java 
+	StockServer.java
 
 EXTRA_SRCS =	$(JSRCS) \
 	README.txt \

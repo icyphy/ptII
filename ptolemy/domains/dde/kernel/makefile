@@ -57,7 +57,7 @@ JSRCS = \
 	NullToken.java \
 	RcvrComparator.java \
         TimeKeeper.java \
-	PrioritizedTimedQueue.java 
+	PrioritizedTimedQueue.java
 
 EXTRA_SRCS =	$(JSRCS)
 

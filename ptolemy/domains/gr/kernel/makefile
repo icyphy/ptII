@@ -31,7 +31,7 @@
 
 ME =		ptolemy/domains/gr/kernel
 
-DIRS = 		
+DIRS =
 
 # Root of the Java directory
 ROOT =		../../../..
@@ -74,7 +74,7 @@ JCLASS = $(JSRCS:%.java=%.class)
 
 
 all: jclass
-install: jclass 
+install: jclass
 
 
 depend:

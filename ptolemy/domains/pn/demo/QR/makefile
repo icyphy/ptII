@@ -77,9 +77,9 @@ JCLASS = $(JSRCS:%.java=%.class)
 all: jclass $(PTCLASSJAR)
 	@echo "To run all the demos, run 'make demo'"
 
-install: all 
+install: all
 
-demo: 
+demo:
 	CLASSPATH=$(CLASSPATH) appletviewer QR.htm
 
 docs: javadocs

@@ -1,4 +1,4 @@
-# Makefile for Communicating Sequential Processes Dining Philosophers demo 
+# Makefile for Communicating Sequential Processes Dining Philosophers demo
 #
 # @Authors: Christopher Hylands, Neil Smyth
 #

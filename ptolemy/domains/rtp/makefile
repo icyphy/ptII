@@ -60,7 +60,7 @@ MISC_FILES =	kernel
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	demo \
-	lib 
+	lib
 
 all: jclass
 install: jclass jars

@@ -61,7 +61,7 @@ include $(CONFIG)
 # Used to build jar files
 PTPACKAGE = 	corba
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR = 
+PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS =  \
@@ -83,7 +83,7 @@ MISC_FILES =	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = 	
+OPTIONAL_FILES =
 
 JCLASS = $(JSRCS:%.java=%.class)
 

@@ -30,7 +30,7 @@
 
 ME =		ptolemy/domains/rtp/demo/simple
 
-DIRS =	
+DIRS =
 
 # Root of Ptolemy II directory
 ROOT =		../../../../..
@@ -46,9 +46,9 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = 
+PTCLASSALLJARS =
 
-PTCLASSALLJAR = 
+PTCLASSALLJAR =
 
 # Files or directories that are present, but that 'make checkjunk'
 # should not complain about
@@ -57,9 +57,9 @@ MISC_FILES =	simple.xml
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = 
+OPTIONAL_FILES =
 
-all:	
+all:
 install:
 
 

@@ -44,7 +44,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-TCL_SRCS = 
+TCL_SRCS =
 
 
 JSRCS = \
@@ -78,7 +78,7 @@ OPTIONAL_FILES = \
 	'LocalZenoApplet$$LocalEdgeRenderer.class' \
 	'LocalZenoApplet$$LocalZenoGraphController.class' \
 	'LocalZenoApplet$$StateListener.class' \
-	'LocalZenoApplet$$ThreadRenderer.class' 
+	'LocalZenoApplet$$ThreadRenderer.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

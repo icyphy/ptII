@@ -41,7 +41,7 @@ CLASSPATH =	$(ROOT)
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-JSRCS = 
+JSRCS =
 
 # These files get copied to TutorialApplet.java and then compiled
 TUTORIAL_JSRCS = \

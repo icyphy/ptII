@@ -59,7 +59,7 @@ JSRCS = \
 	PolarToRectangular.java \
 	RectangularToPolar.java \
 	RealToComplex.java \
-	Round.java 
+	Round.java
 
 EXTRA_SRCS =	$(JSRCS) \
 	conversions.xml

@@ -142,7 +142,7 @@ PtParser.java: PtParser.jj
 	@echo "If you don't have JavaCC, you can workaround this with"
 	@echo "   touch PtParser.jj PtParser.java"
 	CLASSPATH="$(CLASSPATH)" $(JAVACC) PtParser.jj
- 
+
 PtParser.jj: PtParser.jjt
 	@echo "This command runs JJTree, which is part of JavaCC"
 	@echo "JavaCC can be downloaded from http://www.sun.com/suntest"
@@ -162,7 +162,7 @@ MatrixParser.java: MatrixParser.jj
 	@echo "If you don't have JavaCC, you can workaround this with"
 	@echo "   touch MatrixParser.jj MatrixParser.java"
 	CLASSPATH="$(CLASSPATH)" $(JAVACC) MatrixParser.jj
- 
+
 MatrixParser.jj: MatrixParser.jjt
 	@echo "This command runs JJTree, which is part of JavaCC"
 	@echo "JavaCC can be downloaded from http://www.sun.com/suntest"

@@ -31,7 +31,7 @@
 
 ME =		ptolemy/lang/java
 
-DIRS =		extended nodetypes tree test 
+DIRS =		extended nodetypes tree test
 
 # Root of the Java directory
 ROOT =		../../..
@@ -151,8 +151,8 @@ yylhs.bin: yylhs.tbl
 
 # This is our modified version of byacc, which is written in C
 PTBYACC = $(ROOT)/$(ME)/ptbyacc/ptbyacc
-yylhs.tbl: jparser.y 
-	$(PTBYACC) -j -p ptolemy.lang.java -f JavaParserTmp jparser.y	
+yylhs.tbl: jparser.y
+	$(PTBYACC) -j -p ptolemy.lang.java -f JavaParserTmp jparser.y
 
 demo: PrintTree RegenerateCode
 
@@ -172,7 +172,7 @@ analysis:
 	CLASSPATH="$(CLASSPATH)" \
 	 "$(JAVA)" ptolemy.lang.java.Main ./nodetypes/IntLitNode.java
 
-codegen: generate_codegen compile_codegen run_codegen 
+codegen: generate_codegen compile_codegen run_codegen
 generate_codegen:
 	CLASSPATH="$(CLASSPATH)" \
 	 "$(JAVA)" ptolemy.domains.sdf.codegen.SDFCodeGenerator \
@@ -188,7 +188,7 @@ run_codegen:
 		"$(JAVA)" -classpath ../.. cg.OrthogonalCom.CG_Main)
 
 # Generate code for a trivial ramp demo - much faster for testing
-ramp: generate_ramp compile_ramp run_ramp 
+ramp: generate_ramp compile_ramp run_ramp
 generate_ramp:
 	CLASSPATH="$(CLASSPATH)" \
 	"$(JAVA)" ptolemy.domains.sdf.codegen.SDFCodeGenerator \
@@ -198,7 +198,7 @@ generate_ramp:
 
 compile_ramp:
 	(cd $(ROOT)/cg/RampSystem; "$(JAVAC)" $(JFLAGS) -classpath ../.. CG_Main.java)
-run_ramp: 	
+run_ramp:
 	(cd $(ROOT)/cg/RampSystem; \
 		"$(JAVA)" -classpath ../.. cg.RampSystem.CG_Main)
 

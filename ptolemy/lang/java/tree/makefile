@@ -31,7 +31,7 @@
 
 ME =		ptolemy/lang/java/tree
 
-DIRS =		
+DIRS =
 
 # Root of the Java directory
 ROOT =		../../../..

@@ -212,7 +212,7 @@ MISC_FILES =	$(DIRS)
 OPTIONAL_FILES = \
         GenerateVisitor$ClassField.class \
         GenerateVisitor$MethodSignature.class \
-	$(PTCLASSJAR) 
+	$(PTCLASSJAR)
 
 JCLASS = $(JSRCS:%.java=%.class) $(DERIVED_JSRCS:%.java=%.class)
 

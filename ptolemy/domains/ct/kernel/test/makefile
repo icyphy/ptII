@@ -30,7 +30,7 @@
 # 						COPYRIGHTENDKEY
 
 # Location of this directory, relative to the Ptolemy II directory
-ME =		
+ME =
 
 # Root of the Ptolemy II directory
 ROOT =		../../../../..
@@ -62,7 +62,7 @@ JSIMPLE_TESTS = \
 	CTBaseIntegrator.tcl \
 	CTDirector.tcl \
 	CTReceiver.tcl \
-	CTScheduler.tcl 
+	CTScheduler.tcl
 
 # Graphical Java tests that use Tcl.
 # If there are no tests, we use a dummy file so that the script that builds

@@ -60,7 +60,7 @@ PTCLASSALLJARS = \
 PTCLASSALLJAR = vergil.jar
 
 JSRCS = \
-	VergilApplication.java 
+	VergilApplication.java
 
 # FIXME: Needs work
 #	VergilApplet.java

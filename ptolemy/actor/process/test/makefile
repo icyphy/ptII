@@ -30,7 +30,7 @@
 # 						COPYRIGHTENDKEY
 
 # Location of this directory, relative to the Ptolemy II directory
-ME =		
+ME =
 
 # Root of the Ptolemy II directory
 ROOT =		../../../..
@@ -58,7 +58,7 @@ JSIMPLE_TESTS = \
 	CompositeProcessDirector.tcl \
 	MailboxBoundaryReceiver.tcl \
 	ProcessDirector.tcl \
-	ProcessThread.tcl 
+	ProcessThread.tcl
 
 # Graphical Java tests that use Tcl.
 # If there are no tests, we use a dummy file so that the script that builds

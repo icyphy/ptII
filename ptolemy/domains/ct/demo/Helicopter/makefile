@@ -52,7 +52,7 @@ JSRCS = \
 	HelicopterActor.java \
 	HelicopterApplet.java \
 	HoverLinearizer.java \
-	XZHigherDerivatives.java 
+	XZHigherDerivatives.java
 
 EXTRA_SRCS =	$(JSRCS) \
 	Helicopter.htm \

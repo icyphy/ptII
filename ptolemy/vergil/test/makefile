@@ -31,7 +31,7 @@
 
 ME =		ptolemy/vergil/test
 
-DIRS =		
+DIRS =
 
 # Root of the Java directory
 ROOT =		../../..

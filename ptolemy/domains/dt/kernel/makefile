@@ -68,7 +68,7 @@ JCLASS = $(JSRCS:%.java=%.class)
 
 
 all: jclass
-install: jclass 
+install: jclass
 
 
 depend:

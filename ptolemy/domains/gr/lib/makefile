@@ -34,7 +34,7 @@ ME =		ptolemy/domains/gr/lib
 # Rule for index.xml uses this
 TITLE = 	"3D actors"
 
-DIRS = 	
+DIRS =
 
 # Root of the Java directory
 ROOT =		../../../..
@@ -64,7 +64,7 @@ JSRCS = \
 	Sphere3D.java \
 	TextString3D.java \
 	Torus3D.java \
-	ViewScreen.java 
+	ViewScreen.java
 
 EXTRA_SRCS =	$(JSRCS) \
 	grentities.xml

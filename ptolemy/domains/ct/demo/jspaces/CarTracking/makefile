@@ -55,7 +55,7 @@ JSRCS = \
 	RealTimePublisher.java \
 	TrackingAlarm.java
 
-EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) 
+EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -67,7 +67,7 @@ MISC_FILES = \
 	FollowingCar.xml \
 	Monitor.xml \
 	plotConfigure.xml \
-	policy.all 
+	policy.all
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES

@@ -72,12 +72,12 @@ MISC_FILES =	$(DIRS)
 OPTIONAL_FILES = \
         'GenerateVisitor$$ClassField.class' \
         'GenerateVisitor$$MethodSignature.class' \
-	$(PTCLASSJAR) 
+	$(PTCLASSJAR)
 
 JCLASS = $(JSRCS:%.java=%.class)
 
 
-# Urk! we need to build GenerateVisitor.class so that we can 
+# Urk! we need to build GenerateVisitor.class so that we can
 # generate the node files
 all: GenerateVisitor.class jclass
 install: jclass $(PTCLASSJAR)

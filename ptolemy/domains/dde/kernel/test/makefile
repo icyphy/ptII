@@ -61,9 +61,9 @@ JSIMPLE_TESTS = \
 	FeedBackDelay.tcl \
 	RcvrComparator.tcl \
 	PrioritizedTimedQueue.tcl \
-	TimeKeeper.tcl 
+	TimeKeeper.tcl
 
-	# test.tcl 
+	# test.tcl
 
 # Graphical Java tests that use Tcl.
 # If there are no tests, we use a dummy file so that the script that builds

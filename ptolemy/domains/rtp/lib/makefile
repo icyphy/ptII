@@ -31,7 +31,7 @@
 
 ME =		ptolemy/domains/rtp/lib
 
-DIRS = 	
+DIRS =
 
 # Root of the Java directory
 ROOT =		../../../..

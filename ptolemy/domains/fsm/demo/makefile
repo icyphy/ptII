@@ -45,7 +45,7 @@ include $(CONFIG)
 PTPACKAGE =     demo
 PTCLASSJAR =    $(PTPACKAGE).jar
 
-JSRCS = 
+JSRCS =
 
 EXTRA_SRCS =    $(JSRCS) \
 	index.htm

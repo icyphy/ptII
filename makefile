@@ -69,7 +69,7 @@ OPTIONAL_FILES = \
 	logs \
 	public_html \
 	tcl \
-	vendors 
+	vendors
 
 # Files to be removed by 'make clean'
 KRUFT =
@@ -104,10 +104,10 @@ configure: configure.in
 	@echo "This may occur if you do a cvs update, and the mod time"
 	@echo "of configure.in is newer than that of configure"
 	@echo "even though the configure script in the repository"
-	@echo "was modified after configure.in was modified." 
+	@echo "was modified after configure.in was modified."
 	@echo "Note that if you don't have GNU autoconf installed,"
 	@echo "you can try running 'touch configure' to work around"
-	@echo "this problem."  
+	@echo "this problem."
 	autoconf
 
 # Get the rest of the rules

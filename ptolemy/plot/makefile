@@ -46,7 +46,7 @@ include $(CONFIG)
 PTPACKAGE = 	plot
 # If you change PTVERSION, modify the version numbers in:
 #    PlotBox.java,
-#    PlotApplication.java, doc/main.htm, doc/changes.htm, doc/install.htm 
+#    PlotApplication.java, doc/main.htm, doc/changes.htm, doc/install.htm
 PTVERSION =	4.1
 PTDIST =	ptplot$(PTVERSION)
 PTCLASSJAR =
@@ -154,7 +154,7 @@ OPTIONAL_FILES = \
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-all: sources jclass 
+all: sources jclass
 
 install: all jars \
 		$(PXGRAPHAPPLETJAR) $(PLOTMLAPPLETJAR) $(PLOTAPPLICATIONJAR)

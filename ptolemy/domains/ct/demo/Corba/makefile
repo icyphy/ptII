@@ -50,7 +50,7 @@ JSRCS = \
 	ModelServer.java \
 	NonlinearClient.java \
 	NonlinearClientApplication.java \
-	NonlinearServant.java	
+	NonlinearServant.java
 
 EXTRA_SRCS =	$(JSRCS) \
 	CorbaActor.idl \

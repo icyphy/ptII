@@ -42,10 +42,10 @@ CLASSPATH =	$(ROOT)
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-TCL_SRCS = 
+TCL_SRCS =
 
 
-JSRCS = 
+JSRCS =
 
 EXTRA_SRCS =	$(JSRCS)
 

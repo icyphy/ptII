@@ -33,7 +33,7 @@
 
 ME =		ptolemy/actor/lib/jspaces/util
 
-DIRS =	
+DIRS =
 
 # Root of the Java directory
 ROOT =		../../../../..
@@ -53,9 +53,9 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR =	$(PTPACKAGE).jar
 
 # Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = 
+PTCLASSALLJARS =
 
-PTCLASSALLJAR = 
+PTCLASSALLJAR =
 
 # Keep this list alphabetized.
 JSRCS = \

@@ -52,14 +52,14 @@ JSRCS = \
 	DDESink.java \
 	DoubleFork.java \
 	TimeAdvance.java \
-	Wire.java 
+	Wire.java
 
 
 EXTRA_SRCS =	$(JSRCS)
 
 # Files or directories that are present, but that 'make checkjunk'
 # should not complain about
-MISC_FILES =	$(DIRS) 
+MISC_FILES =	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES

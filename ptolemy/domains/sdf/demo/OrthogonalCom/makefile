@@ -41,7 +41,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 JSRCS = \
-	OrthogonalCom.java 
+	OrthogonalCom.java
 
 EXTRA_SRCS = \
 	$(JSRCS)
@@ -52,7 +52,7 @@ MISC_FILES =
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
-OPTIONAL_FILES = 
+OPTIONAL_FILES =
 
 JCLASS = $(JSRCS:%.java=%.class)
 

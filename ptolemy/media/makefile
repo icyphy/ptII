@@ -31,7 +31,7 @@
 
 ME =		ptolemy/media
 
-# JAVASOUND_NEEDED_DIRS is set in $PTII/mk/ptII.mk by configure 
+# JAVASOUND_NEEDED_DIRS is set in $PTII/mk/ptII.mk by configure
 # if sound.jar is found.
 
 DIRS =		test $(JAVASOUND_NEEDED_DIRS)

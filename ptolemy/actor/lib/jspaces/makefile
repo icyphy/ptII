@@ -47,7 +47,7 @@ include $(CONFIG)
 # Used to build jar files
 PTPACKAGE = 	jspaces
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR =	
+PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
@@ -62,7 +62,7 @@ JSRCS = \
 	IndexedSubscriber.java \
 	Publisher.java \
 	Subscriber.java \
-	TokenEntry.java 
+	TokenEntry.java
 
 EXTRA_SRCS =	$(JSRCS) \
 	README.txt
