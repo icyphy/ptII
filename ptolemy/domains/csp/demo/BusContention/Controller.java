@@ -117,7 +117,7 @@ public class Controller extends CSPActor {
 	    // System.out.println("\t\t\tSTATE 1: " +getName());
             ConditionalBranch[] requiredBranches =
                 new ConditionalBranch[_numRequestInChannels];
-            for( int i=0; i<_numRequestInChannels; i++ ) {
+            for( int i = 0; i < _numRequestInChannels; i++ ) {
                 requiredBranches[i] = new
                     ConditionalReceive(true, _requestIn, i, i);
             }
@@ -148,12 +148,15 @@ public class Controller extends CSPActor {
             _losingPortChannelCodes = new LinkedList();
             boolean continueCDO = true;
             while( continueCDO ) {
-                requiredBranches = new ConditionalBranch[_numRequestInChannels+1];
-                for( int i=0; i<_numRequestInChannels; i++ ) {
-                    requiredBranches[i] = new ConditionalReceive(true, _requestIn, i, i);
+                requiredBranches =
+                    new ConditionalBranch[_numRequestInChannels+1];
+                for( int i = 0; i < _numRequestInChannels; i++ ) {
+                    requiredBranches[i] =
+                        new ConditionalReceive(true, _requestIn, i, i);
                 }
                 int j = _numRequestInChannels;
-                requiredBranches[j] = new ConditionalReceive(true, _contendIn, 0, j);
+                requiredBranches[j] =
+                    new ConditionalReceive(true, _contendIn, 0, j);
 
                 br = chooseBranch(requiredBranches);
 
