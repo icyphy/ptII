@@ -150,12 +150,6 @@ public class ODFReceiver extends TimedQueueReceiver
 	return _hasToken( workspace, director, thread );
     }
 
-    /** Reset local flags.
-     */
-    public void reset() {
-	_terminate = false;
-    }
-
     /** FIXME
     public void put(double time) {
 	Token token = null;
@@ -191,47 +185,40 @@ public class ODFReceiver extends TimedQueueReceiver
      *  a TerminateProcessException which will cease activity for the 
      *  actor that contains this receiver. If the specified time stamp 
      *  of the token is greater than the completionTime of this receiver,
-     *  then set the time stamp to -1.0 and the token to null. If 
-     *  the queue is full, then inform the director that this receiver 
-     *  is blocking on a write and wait until room becomes available. 
-     *  When room becomes available, put the token and time stamp in the 
-     *  queue and inform the director that the block no longer exists. 
+     *  then set the time stamp to -1.0. If the queue is full, then 
+     *  inform the director that this receiver is blocking on a write 
+     *  and wait until room becomes available. When room becomes 
+     *  available, put the token and time stamp in the queue and inform 
+     *  the director that the block no longer exists. 
      * @param token The token to put on the queue.
      * @param time The time stamp associated with the token.
      */
     public void put(Token token, double time) {
         Workspace workspace = getContainer().workspace();
-        ODFActor actor = (ODFActor)getContainer().getContainer();
-        // ODFDirector director = (ODFDirector)actor.getDirector();
         ODFDirector director = (ODFDirector)
                 ((Actor)getContainer().getContainer()).getDirector();
 	Thread thread = Thread.currentThread(); 
 
         synchronized(this) {
-	    if( _terminate ) {
-                throw new TerminateProcessException( getContainer(), 
-                        "This receiver has been terminated " 
-                        + "during put()");
-	    } if( time > getCompletionTime() && 
-                    getCompletionTime() != -5.0 ) {
+            if( time > getCompletionTime() && 
+                    getCompletionTime() != -5.0 && !_terminate ) {
 	        time = -1.0;
-		token = null;
 	    }
-            if( !super.hasRoom() ) {
-                director.addWriteBlock();
-                while( !_terminate && !super.hasRoom() ) {
-                    notifyAll();
-                    workspace.wait( this );
-                }
-	    } else if( !_terminate ) {
+            
+            if( super.hasRoom() && !_terminate ) {
                 super.put(token, time);
                 notifyAll(); 
 		if( thread instanceof ODFThread ) {
 		    ((ODFThread)thread).sendOutNullTokens();
 		}
-		return;
-	    }
+                return;
+            }
             
+            director.addWriteBlock();
+            while( !super.hasRoom() && !_terminate ) {
+                notifyAll();
+                workspace.wait( this );
+            }
             if( _terminate ) {
                 director.removeWriteBlock(); 
                 throw new TerminateProcessException( getContainer(), 
@@ -239,12 +226,7 @@ public class ODFReceiver extends TimedQueueReceiver
                         + "during put()");
             } else {
                 director.removeWriteBlock(); 
-                super.put(token, time);
-                notifyAll();
-		if( thread instanceof ODFThread ) {
-		    ((ODFThread)thread).sendOutNullTokens();
-		}
-		return;
+                put(token, time);
             }
         }
     }
@@ -263,10 +245,17 @@ public class ODFReceiver extends TimedQueueReceiver
         ;
     }
     
+    /** Reset local flags.
+     */
+    public void reset() {
+	_terminate = false;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods 		   ////
 
-    // This method provides the recursive functionality of hasToken()
+    // This method provides the recursive functionality 
+    // of hasToken()
     private synchronized boolean _hasToken(Workspace workspace, 
 	    ODFDirector director, ODFThread thread ) {
         if( thread.getNextTime() == -1.0 ) {
