@@ -29,7 +29,6 @@
 Review changeRequest / changeListener code.
 Review container relationship and new parent class.
 Win added methods fireAtCurrentTime(Actor) and
-fireAtRelativeTime(Actor, double)
 Semantics of initialize(Actor) have changed.
 Also, review stop() method.
 */
@@ -183,12 +182,15 @@ public class Director extends Attribute implements Executable {
         }
     }
 
-    /** Schedule a firing of the given actor at the given absolute time.
-     *  It does nothing in this base class. Derived classes
-     *  should override this method.
-     *  <p>
-     *  Note that this method is not made abstract to facilitate the use
-     *  of the test suite.
+    /** Schedule a firing of the given actor at the given absolute
+     *  time.  This method is only intended to be called from within
+     *  main simulation thread.  Actors that create their own
+     *  asynchronous threads should used the fireAtCurrentTime()
+     *  method to schedule firings.
+     * 
+     *  This method does nothing in this base class. Derived classes
+     *  should override this method.  <p> Note that this method is not
+     *  made abstract to facilitate the use of the test suite.
      *  @param actor The actor scheduled to be fired.
      *  @param time The scheduled time.
      *  @exception IllegalActionException If the operation is not
@@ -204,45 +206,37 @@ public class Director extends Attribute implements Executable {
 
     }
 
-    /** Schedule a firing of the given actor at the CURRENT time. It does
-     *  nothing in this base class. Derived classes
-     *  should override this method.
-     *  <p>
-     *  Note that this method is not made abstract to facilitate the use
-     *  of the test suite.
-     *  @param actor The actor scheduled to be fired.
-     *  @exception IllegalActionException If the operation is not
-     *    permissible (e.g. the given time is in the past).
+    /** Schedule a firing of the given actor as soon as possible.  If
+     *  this method is called from within the main simulation thread,
+     *  then this will result in the actor being fired at the current
+     *  time.  This method may also be invoked from a thread other
+     *  than the main simulation thread, making it useful for actors
+     *  that perform asynchronous processing, such as waiting for data
+     *  in another thread. In these cases, calling fireAt(actor,
+     *  getCurrenttime()) is not sufficient, since there is no way for
+     *  an asynchronous thread to ensure that time does not advance in
+     *  the model.  When invoked from an asynchronous thread, this
+     *  method will attempt to fire the actor at the earliest time
+     *  that this director is fired.
+     * 
+     *  This base class checks to see if the director is embedded
+     *  within a hierarchical model and, if so, calls the
+     *  fireAtCurrentTime method of its executive director. Derived
+     *  classes may should extend this behavior to ensure that the
+     *  given actor is fired as soon as possible.  <p> Note that this
+     *  method is not made abstract to facilitate the use of the test
+     *  suite.
+     *  @param actor The actor to be fired.
+     *  @exception IllegalActionException If this method is called
+     *  before the model is running.
      */
     public void fireAtCurrentTime(Actor actor)
             throws IllegalActionException {
-
-        // do nothing in this base class.
-        // Note that, alternatively, this method could have been abstract.
-        // But we didn't do that, because otherwise we wouldn't be able
-        // to run Tcl Blend test script on this class.
-
-    }
-
-    /** Schedule a firing of the given actor at the given relative time.
-     *  It does nothing in this base class. Derived classes
-     *  should override this method.
-     *  <p>
-     *  Note that this method is not made abstract to facilitate the use
-     *  of the test suite.
-     *  @param actor The actor scheduled to be fired.
-     *  @param time The scheduled time.
-     *  @exception IllegalActionException If the operation is not
-     *    permissible (e.g. the given time is in the past).
-     */
-    public void fireAtRelativeTime(Actor actor, double time)
-            throws IllegalActionException {
-
-        // do nothing in this base class.
-        // Note that, alternatively, this method could have been abstract.
-        // But we didn't do that, because otherwise we wouldn't be able
-        // to run Tcl Blend test script on this class.
-
+        if(_isEmbedded()) {
+            CompositeActor container = (CompositeActor)getContainer();
+            container.getExecutiveDirector().fireAtCurrentTime(
+                    container);
+        }
     }
 
     /** Return the current time of the model being executed by this director.
@@ -842,6 +836,27 @@ public class Director extends Attribute implements Executable {
             return result;
         } finally {
             _workspace.doneReading();
+        }
+    }
+
+    /** Return true if this director is embedded inside an opaque composite
+     *  actor contained by another composite actor.
+     */
+    protected boolean _isEmbedded() {
+        return (getContainer() != null &&
+                getContainer().getContainer() != null);
+    }
+
+    /** Return true if this is a top-level director. 
+     *  Parts of this method is read synchronized on the workspace.
+     * @return True if this director is at the top-level.
+     */
+    protected boolean _isTopLevel() {
+        CompositeActor container = (CompositeActor)getContainer();
+        if (container.getExecutiveDirector() == null) {
+            return true;
+        } else {
+            return false;
         }
     }
 
