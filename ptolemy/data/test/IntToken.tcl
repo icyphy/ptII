@@ -229,3 +229,47 @@ test IntToken-9.0 {Create an non-empty instance and add it to Strings} {
 
     list [$token6 toString]
 } {{"value is 2323....."}}
+
+######################################################################
+####
+# test isLessThan
+test IntToken-10.0 {test isLessThan} {
+    set i2 [java::new ptolemy.data.IntToken 2]
+    set i3 [java::new ptolemy.data.IntToken 3]
+    set d2 [java::new ptolemy.data.DoubleToken 2.0]
+    set d3 [java::new ptolemy.data.DoubleToken 3.0]
+
+    list [[$i2 isLessThan $i3] booleanValue] \
+         [[$i2 isLessThan $d2] booleanValue] \
+	 [[$i2 isLessThan $d3] booleanValue] \
+         [[$i3 isLessThan $i2] booleanValue] \
+         [[$d2 isLessThan $i2] booleanValue] \
+	 [[$d3 isLessThan $i2] booleanValue] \
+	 [[$i3 isLessThan $d2] booleanValue] \
+	 [[$i3 isLessThan $d3] booleanValue] \
+	 [[$d2 isLessThan $i3] booleanValue] \
+	 [[$d3 isLessThan $i3] booleanValue] \
+	 [[$d2 isLessThan $d3] booleanValue] \
+	 [[$d3 isLessThan $d2] booleanValue]
+} {1 0 1 0 0 0 0 0 1 0 1 0}
+
+test IntToken-10.1 {test isLessThan} {
+    set i2 [java::new ptolemy.data.IntToken 2]
+    set i3 [java::new ptolemy.data.IntToken 3]
+    set l2 [java::new ptolemy.data.LongToken 2]
+    set l3 [java::new ptolemy.data.LongToken 3]
+
+    list [[$i2 isLessThan $i3] booleanValue] \
+         [[$i2 isLessThan $l2] booleanValue] \
+	 [[$i2 isLessThan $l3] booleanValue] \
+         [[$i3 isLessThan $i2] booleanValue] \
+         [[$l2 isLessThan $i2] booleanValue] \
+	 [[$l3 isLessThan $i2] booleanValue] \
+	 [[$i3 isLessThan $l2] booleanValue] \
+	 [[$i3 isLessThan $l3] booleanValue] \
+	 [[$l2 isLessThan $i3] booleanValue] \
+	 [[$l3 isLessThan $i3] booleanValue] \
+	 [[$l2 isLessThan $l3] booleanValue] \
+	 [[$l3 isLessThan $l2] booleanValue]
+} {1 0 1 0 0 0 0 0 1 0 1 0}
+

@@ -275,7 +275,11 @@ public class LongToken extends ScalarToken {
 	}
 
 	if (typeInfo == CPO.LOWER) {
-	    return arg.isLessThan(this);
+	    if (arg.isEqualTo(this).booleanValue()) {
+	        return new BooleanToken(false);
+	    } else {
+	        return arg.isLessThan(this).not();
+	    }
 	}
 
 	// Argument type is lower or equal to this token.

@@ -418,3 +418,31 @@ test FixToken-6.7 {Test round with a Precision, -5.97534, ZeroSaturate} {
 	    [FixedPointToString $res5]
 
 } {fix(-5.97534000129,32,4) fix(-5.97265625,12,4) fix(-5.96875,10,4) fix(-5.75,8,6) fix(-5.75,6,4)}
+
+######################################################################
+####
+# test isLessThan
+test FixToken-7.0 {test isLessThan} {
+    set p0 [java::new ptolemy.math.Precision "(16/4)" ]
+    set c0 [java::call ptolemy.math.Quantizer \
+	    {round double ptolemy.math.Precision } \
+	    2.0 $p0]
+    set f2 [java::new ptolemy.data.FixToken $c0 ]
+
+    set p1 [java::new ptolemy.math.Precision "(16/4)" ]
+    set c1 [java::call ptolemy.math.Quantizer \
+	    {round double ptolemy.math.Precision } \
+	    2.0 $p1]
+    set ff2 [java::new ptolemy.data.FixToken $c1 ]
+
+    set p3 [java::new ptolemy.math.Precision "(16/4)" ]
+    set c3 [java::call ptolemy.math.Quantizer \
+	    {round double ptolemy.math.Precision } \
+	    3.0 $p3]
+    set f3 [java::new ptolemy.data.FixToken $c3 ]
+
+    list [[$f2 isLessThan $ff2] booleanValue] \
+         [[$f2 isLessThan $f3] booleanValue] \
+	 [[$f3 isLessThan $f2] booleanValue]
+} {0 1 0}
+

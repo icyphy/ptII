@@ -350,3 +350,30 @@ test ComplexToken-8.1 {Test subtract operator between Complex and double} {
 
     list [$res1 toString] [$res2 toString] [$res3 toString] 
 } {{-6.0 + 7.0i} {6.0 - 7.0i} {6.0 - 7.0i}}
+
+######################################################################
+####
+# 
+test ComplexToken-9.0 {test isLessThan} {
+    set cc67 [java::new {ptolemy.math.Complex double double} 6.0 7.0]
+    set c67 [java::new {ptolemy.data.ComplexToken ptolemy.math.Complex} $cc67]
+    set cc34 [java::new {ptolemy.math.Complex double double} 3.0 4.0]
+    set c34 [java::new {ptolemy.data.ComplexToken ptolemy.math.Complex} $cc34]
+
+    set d5 [java::new ptolemy.data.DoubleToken 5.0]
+    set d3 [java::new ptolemy.data.DoubleToken 3.0]
+
+    list [[$d3 isLessThan $d5] booleanValue] \
+         [[$d3 isLessThan $c34] booleanValue] \
+	 [[$d3 isLessThan $c67] booleanValue] \
+         [[$d5 isLessThan $d3] booleanValue] \
+         [[$c34 isLessThan $d3] booleanValue] \
+	 [[$c67 isLessThan $d3] booleanValue] \
+	 [[$d5 isLessThan $c34] booleanValue] \
+	 [[$d5 isLessThan $c67] booleanValue] \
+	 [[$c34 isLessThan $d5] booleanValue] \
+	 [[$c67 isLessThan $d5] booleanValue] \
+	 [[$c34 isLessThan $c67] booleanValue] \
+	 [[$c67 isLessThan $c34] booleanValue]
+} {1 1 1 0 0 0 0 1 0 0 1 0}
+

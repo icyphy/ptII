@@ -292,13 +292,17 @@ public class ComplexToken extends ScalarToken {
 	    throws IllegalActionException {
         int typeInfo = TypeLattice.compare(this, arg);
         if (typeInfo == CPO.INCOMPARABLE) {
-            throw new IllegalActionException("ComplexToken.isLessThan: The " +
-                    "type of the argument token is incomparable with the type " +
-                    "of this token. argType: " + arg.getType());
+            throw new IllegalActionException("ComplexToken.isLessThan: The "
+	            + "type of the argument token is incomparable with the "
+		    + "type of this token. argType: " + arg.getType());
 	}
 
 	if (typeInfo == CPO.LOWER) {
-	    return arg.isLessThan(this);
+	    if (arg.isEqualTo(this).booleanValue()) {
+	        return new BooleanToken(false);
+	    } else {
+	        return arg.isLessThan(this).not();
+	    }
 	}
 
 	// Argument type is lower or equal to this token.
