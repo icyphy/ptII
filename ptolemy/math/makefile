@@ -57,6 +57,7 @@ JARFILE = 	$(TYPACKAGE).jar
 JSRCS = \
 	ArrayMath.java \
 	Complex.java \
+	ExtendedMath.java \
 	SignalProcessing.java
 
 EXTRA_SRCS =	$(JSRCS)
