@@ -129,17 +129,19 @@ public abstract class AbstractReceiver implements Receiver {
      *  Returning true in this method should also guarantee that calling
      *  the put() method will not result in an exception.
      *  In this base class, if the number of tokens equals one, 
-     *  then call the zero argument method instead.  If the number of
+     *  then call the zero-argument method instead.  If the number of
      *  tokens is greater than 1, then return false, since domains are
      *  not required to provide more than one token.  
-     *  @exception IllegalActionException If the Receiver implementation
-     *  does not support this query, or the number of tokens is less
-     *  than one.
+     *  @exception IllegalActionException Not thrown in this base class.
+     *  @exception IllegalArgumentException If the argument is not positive.
+     *   This is a runtime exception, so it does not need to be declared
+     *   explicitly.
      */
-    public boolean hasRoom(int tokens) throws IllegalActionException {
+    public boolean hasRoom(int tokens)
+            throws IllegalActionException, IllegalArgumentException {
 	if(tokens < 1) 
-	    throw new IllegalActionException("The number of " + 
-					     "tokens must be greater than 0");
+	    throw new IllegalArgumentException(
+                    "hasRoom() requires a positive argument.");
 	if(tokens == 1) return hasRoom();
 	return false;
     }
@@ -160,15 +162,17 @@ public abstract class AbstractReceiver implements Receiver {
      *  not required to provide more than one token.  
      *  @return A boolean indicating whether there are the given number of
      *  tokens in this receiver.
-     *  @exception IllegalActionException If the Receiver implementation
-     *  does not support this query, or the number of tokens is less
-     *  than one.
+     *  @exception IllegalActionException Not thrown in this base class.
+     *  @exception IllegalArgumentException If the argument is not positive.
+     *   This is a runtime exception, so it does not need to be declared
+     *   explicitly.
      */
-    public boolean hasToken(int tokens) throws IllegalActionException {
+    public boolean hasToken(int tokens)
+            throws IllegalActionException, IllegalArgumentException {
 	if(tokens < 1) 
-	    throw new IllegalActionException("The number of " + 
-					     "tokens must be greater than 0");
-	if(tokens == 1) return hasRoom();
+	    throw new IllegalArgumentException(
+                    "hasToken() requires a positive argument.");
+	if(tokens == 1) return hasToken();
 	return false;
     }
     
