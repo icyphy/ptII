@@ -29,13 +29,15 @@ ENHANCEMENTS, OR MODIFICATIONS.
 */
 package ptolemy.plot;
 
+//////////////////////////////////////////////////////////////////////////
+//// CmdLineArgException
 /**
- * Exception thrown by plot classes if there are format
- * problems with the data to be plotted.
- *
- * @author Christopher Hylands
- * @version $Id$
- */
+Exception thrown by plot classes if there are format
+problems with the data to be plotted.
+
+@author Christopher Hylands
+@version $Id$
+*/
 public class CmdLineArgException extends Exception {
     public CmdLineArgException() { super(); }
     public CmdLineArgException(String s) { super(s); }
