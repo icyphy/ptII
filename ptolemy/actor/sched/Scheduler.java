@@ -35,8 +35,7 @@ import ptolemy.kernel.util.*;
 import ptolemy.kernel.event.*;
 import ptolemy.actor.*;
 
-import java.util.Enumeration;
-import collections.LinkedList;
+import java.util.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// Scheduler
@@ -67,8 +66,6 @@ Scheduler does perform any mutations, and it is not a topology change
 listener. The director who uses this scheduler should set the validation
 flag accordingly when mutations occur.
 
-FIXME: This class uses LinkedList in the collections package. Change it
-to Java collection when we update to JDK1.2
 @author Jie Liu
 @version $Id$
 */
@@ -167,13 +164,13 @@ public class Scheduler extends NamedObj {
                         "is a dangling scheduler.");
             }
             if(!isValid()) {
-                _cachedSchedule = new LinkedList();
+                _cachedSchedule = new ArrayList();
                 Enumeration newSchedEnum = _schedule();
                 while (newSchedEnum.hasMoreElements()) {
-                    _cachedSchedule.insertLast(newSchedEnum.nextElement());
+                    _cachedSchedule.add(newSchedEnum.nextElement());
                 }
             }
-            return _cachedSchedule.elements();
+            return Collections.enumeration(_cachedSchedule);
         } finally {
             workspace().doneReading();
         }
@@ -253,5 +250,5 @@ public class Scheduler extends NamedObj {
     // The flag that indicate whether the current schedule is valid.
     private boolean _valid = false;
     // The cached schedule.
-    private LinkedList _cachedSchedule = null;
+    private List _cachedSchedule = null;
 }
