@@ -32,6 +32,7 @@ package ptolemy.vergil.ptolemy.fsm.modal;
 
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.data.type.Type;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.Entity;
@@ -273,12 +274,61 @@ public class ModalPort extends TypedIOPort {
                     } finally {
                         castPort._mirrorDisable = disableStatus;
                     }
+                    // If the entity is a controller, then set the
+                    // port to also be an input.
+                    if (entity.getName().equals("_Controller")) {
+                        boolean controlPortStatus = castPort._mirrorDisable;
+                        try {
+                            castPort._mirrorDisable = true;
+                            castPort.setInput(true);
+                            // If we don't do the following,
+                            // this will port will both an input
+                            // and an output in the controller,
+                            // which is probably what we want.
+                            // castPort.setOutput(false);
+                        } finally {
+                            castPort._mirrorDisable = controlPortStatus;
+                        }
+                    }
                 }
             }
         } finally {
             _workspace.doneWriting();
         }
     }
+
+    /** Set the type of this port and all the mirror ports.
+     *  If the type is BaseType.UNKNOWN, the determination of the type
+     *  is left to type resolution.
+     *  This method is write-synchronized on the workspace.
+     *  @param type A Type.
+     */
+/* FIXME: not needed??
+    public void setTypeEquals(Type type) {
+        try {
+            _workspace.getWriteAccess();
+            super.setTypeEquals(type);
+            ModalModel container = (ModalModel)getContainer();
+            Iterator entities = container.entityList().iterator();
+            while (entities.hasNext()) {
+                Entity entity = (Entity)entities.next();
+                Port mirrorPort = entity.getPort(getName());
+                if (mirrorPort instanceof RefinementPort) {
+                    RefinementPort castPort = (RefinementPort)mirrorPort;
+                    boolean disableStatus = castPort._mirrorDisable;
+                    try {
+                        castPort._mirrorDisable = true;
+                        castPort.setTypeEquals(type);
+                    } finally {
+                        castPort._mirrorDisable = disableStatus;
+                    }
+                }
+            }
+        } finally {
+            _workspace.doneWriting();
+        }
+    }
+*/
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////

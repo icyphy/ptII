@@ -36,6 +36,7 @@ import java.util.StringTokenizer;
 
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedActor;
+import ptolemy.actor.TypedIOPort;
 import ptolemy.gui.ComponentDialog;
 import ptolemy.gui.MessageHandler;
 import ptolemy.gui.Query;
@@ -204,6 +205,11 @@ public class HierarchicalStateController extends FSMStateController {
                                      if (((IOPort)port).isMultiport()) {
                                          ((RefinementPort)newPort)
                                                   .setMultiport(true);
+                                     }
+                                     if (port instanceof TypedIOPort
+                                            && newPort instanceof TypedIOPort) {
+                                         ((TypedIOPort)newPort).setTypeSameAs(
+                                                 (TypedIOPort)port);
                                      }
                                  } finally {
                                      ((RefinementPort)newPort)

@@ -33,6 +33,7 @@ import java.util.Iterator;
 
 import ptolemy.actor.Director;
 import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.PtolemyEffigy;
@@ -237,7 +238,7 @@ public class ModalModel extends TypedCompositeActor
             throws NameDuplicationException {
         try {
             _workspace.getWriteAccess();
-            Port port = new ModalPort(this, name);
+            ModalPort port = new ModalPort(this, name);
             // Create mirror ports.
             Iterator entities = entityList().iterator();
             while (entities.hasNext()) {
@@ -246,7 +247,10 @@ public class ModalModel extends TypedCompositeActor
                     if (entity.getPort(name) == null) {
                         try {
                             ((ModalController)entity)._mirrorDisable = true;
-                            entity.newPort(name);
+                            Port newPort = entity.newPort(name);
+                            if (newPort instanceof TypedIOPort) {
+                                ((TypedIOPort)newPort).setTypeSameAs(port);
+                            }
                         } finally {
                             ((ModalController)entity)._mirrorDisable = false;
                         }
@@ -255,7 +259,10 @@ public class ModalModel extends TypedCompositeActor
                     if (entity.getPort(name) == null) {
                         try {
                             ((Refinement)entity)._mirrorDisable = true;
-                            entity.newPort(name);
+                            Port newPort = entity.newPort(name);
+                            if (newPort instanceof TypedIOPort) {
+                                ((TypedIOPort)newPort).setTypeSameAs(port);
+                            }
                         } finally {
                             ((Refinement)entity)._mirrorDisable = false;
                         }

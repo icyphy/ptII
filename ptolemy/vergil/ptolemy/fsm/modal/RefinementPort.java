@@ -32,6 +32,7 @@ package ptolemy.vergil.ptolemy.fsm.modal;
 
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.data.type.Type;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
@@ -274,34 +275,6 @@ public class RefinementPort extends TypedIOPort {
                             ((IOPort)port).setOutput(isOutput);
                             success = true;
                         }
-                        if (isOutput && container instanceof Refinement) {
-                            // Find the corresponding port in the controller
-                            // and make an input and not an output
-                            ModalController controller = (ModalController)
-                                    ((ModalModel)modal)
-                                    .getEntity("_Controller");
-                            if (controller != null) {
-                                RefinementPort controlPort
-                                       = (RefinementPort)controller
-                                       .getPort(getName());
-                                if (controlPort != null) {
-                                    boolean controlPortStatus
-                                            = controlPort._mirrorDisable;
-                                    try {
-                                        controlPort._mirrorDisable = true;
-                                        controlPort.setInput(true);
-                                        // If we don't do the following,
-                                        // this will port will both an input
-                                        // and an output in the controller,
-                                        // which is probably what we want.
-                                        // controlPort.setOutput(false);
-                                    } finally {
-                                        controlPort._mirrorDisable
-                                                = controlPortStatus;
-                                    }
-                                }
-                            }
-                        }
                     }
                 }
                 if (!success) super.setOutput(isOutput);
@@ -311,6 +284,34 @@ public class RefinementPort extends TypedIOPort {
             _workspace.doneWriting();
         }
     }
+
+    /** Set the type of this port and all the mirror ports.
+     *  If the type is BaseType.UNKNOWN, the determination of the type
+     *  is left to type resolution.
+     *  This method is write-synchronized on the workspace.
+     *  @param type A Type.
+     */
+/* FIXME: not needed??
+    public void setTypeEquals(Type type) {
+        if (_mirrorDisable || getContainer() == null) {
+            super.setTypeEquals(type);
+        } else {
+            boolean success = false;
+            Nameable container = getContainer();
+            if (container != null) {
+                Nameable modal = container.getContainer();
+                if (modal instanceof ModalModel) {
+                    Port port = ((ModalModel)modal).getPort(getName());
+                    if (port instanceof TypedIOPort) {
+                        ((TypedIOPort)port).setTypeEquals(type);
+                        success = true;
+                    }
+                }
+            }
+            if (!success) super.setTypeEquals(type);
+        }
+    }
+*/
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
