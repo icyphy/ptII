@@ -7,6 +7,7 @@
 </head>
 <body>
 <h1>Programming Style for Ptolemy II</h1>
+This document is also <a href="style.pdf" target="_top">Available in PDF format</a>
 <H3 CLASS="FM2Heading">
 <A NAME="pgfId-175727"></A>Motivation</H3>
 <P CLASS="FirstBody">
@@ -46,7 +47,7 @@ $PTII/util/testsuite/chkjava *.java</EM>
 <H3 CLASS="FM2Heading">
 <A NAME="pgfId-176671"></A>Anatomy of a File</H3>
 <P CLASS="FirstBody">
-<A NAME="pgfId-176733"></A>A Java file has the structure shown in figure <A HREF="#31451" CLASS="XRef">See Anatomy of a Java file.</A>. The key points to note about this organization are:</P>
+<A NAME="pgfId-176733"></A>A Java file has the structure shown in figure <A HREF="#31451" CLASS="XRef">See Anatomy of a Java file.</A>.
 <DIV>
 <MAP NAME="codingStyle-1">
 </MAP>
@@ -107,6 +108,7 @@ public class ClassName ... {
 }
 </pre>
 </DIV>
+ The key points to note about this organization are:</P>
 <UL>
 <LI CLASS="Bulleted">
 <A NAME="pgfId-176659"></A>The file is divided into sections with highly visible delimiters. The sections contain constructors, public variables (including ports and parameters for actor definitions), public methods, protected variables, protected members, private methods, and private variables, in that order. Note in particular that although it is customary in the Java community to list private variables at the beginning of a class definition, we put them at the end. They are not part of the public interface, and thus should not be the first thing you see.</LI>
@@ -119,11 +121,12 @@ public class ClassName ... {
 <H4 CLASS="FM3Heading">
 <A NAME="pgfId-176030"></A>Copyright</H4>
 <P CLASS="FirstBody">
-<A NAME="pgfId-176041"></A>The copyright used in Ptolemy II is shown in figure <A HREF="#66094" CLASS="XRef">See Copyright notice used in Ptolemy II.</A>. This style of copyright is often referred to the community as a &quot;BSD&quot; copyright because it was used for the &quot;Berkeley standard distribution&quot; of Unix. It is much more liberal that the commonly used &quot;GPL&quot; or &quot;Gnu Public License,&quot; which encumbers the software and derivative works with the requirement that they carry the source code and the same copyright agreement. The BSD copyright requires that the software and derivative work carry the identity of the copyright owner, as emboddied in the lines:</P>
+<A NAME="pgfId-176041"></A>The copyright used in Ptolemy II is shown in figure <A HREF="#66094" CLASS="XRef">See Copyright notice used in Ptolemy II.</A>.
+
 <DIV>
 <MAP NAME="codingStyle-2">
 </MAP>
- <pre>
+<pre>
 Copyright (c) 1995-2003 The Regents of the University of California.
 All rights reserved.
 
@@ -147,6 +150,10 @@ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 </pre>
 </DIV>
+
+<P CLASS="LBody">
+ This style of copyright is often referred to the community as a &quot;BSD&quot; copyright because it was used for the &quot;Berkeley standard distribution&quot; of Unix. It is much more liberal that the commonly used &quot;GPL&quot; or &quot;Gnu Public License,&quot; which encumbers the software and derivative works with the requirement that they carry the source code and the same copyright agreement. The BSD copyright requires that the software and derivative work carry the identity of the copyright owner, as emboddied in the lines:</P>
+
 <P CLASS="Code">
 <A NAME="pgfId-176858"></A>&nbsp;</P>
 <P CLASS="Code">
@@ -335,134 +342,87 @@ Adding an @since tag to a new class is optional, we usually update these tags pr
 <A NAME="pgfId-177047"></A>Method documentation</H4>
 <P CLASS="FirstBody">
 <A NAME="pgfId-177055"></A>Method documentation needs to state what the method does and how it should be used. For example:</P>
-<P CLASS="Code">
-<A NAME="pgfId-177063"></A>&nbsp;</P>
-<P CLASS="Code">
-<A NAME="pgfId-177091"></A>/** Mark the object invalid, indicating that when a method</P>
-<P CLASS="Code">
-<A NAME="pgfId-177079"></A> *  is next called to get information from the object, that</P>
-<P CLASS="Code">
-<A NAME="pgfId-177081"></A> *  information needs to be reconstructed from the database.</P>
-<P CLASS="Code">
-<A NAME="pgfId-177082"></A> */</P>
-<P CLASS="Code">
-<A NAME="pgfId-177083"></A>public void invalidate() {</P>
-<P CLASS="Code">
-<A NAME="pgfId-177116"></A>    _valid = false;</P>
-<P CLASS="Code">
-<A NAME="pgfId-177115"></A>}</P>
-<P CLASS="Code">
-<A NAME="pgfId-177087"></A>&nbsp;</P>
-<P CLASS="LBody">
+<pre>
+/** Mark the object invalid, indicating that when a method
+ *  is next called to get information from the object, that
+ *  information needs to be reconstructed from the database.
+ */
+public void invalidate() {
+    _valid = false;
+}
+</pre>
+
 <A NAME="pgfId-177066"></A>By contrast, here is a poor method comment:</P>
-<P CLASS="Code">
-<A NAME="pgfId-177092"></A>&nbsp;</P>
-<P CLASS="Code">
-<A NAME="pgfId-177098"></A>/** Set the variable _valid to false.</P>
-<P CLASS="Code">
-<A NAME="pgfId-177101"></A> */</P>
-<P CLASS="Code">
-<A NAME="pgfId-177120"></A>public void invalidate() {</P>
-<P CLASS="Code">
-<A NAME="pgfId-177121"></A>    _valid = false;</P>
-<P CLASS="Code">
-<A NAME="pgfId-177122"></A>}</P>
-<P CLASS="Code">
-<A NAME="pgfId-177102"></A>&nbsp;</P>
-<P CLASS="LBody">
+<pre>
+/** Set the variable _valid to false.
+ */
+public void invalidate() {
+    _valid = false;
+}
+</pre>
 <A NAME="pgfId-177109"></A>While this certainly describes what the method does from the perspective of the coder, it says nothing useful from the perspective of the user of the class, who cannot see the (presumably private) variable _valid nor how that variable is used. On closer examination, this comment describes how the method is accomplishing what it does, but it does not describe what it accomplishes.</P>
 <P CLASS="Body">
 <A NAME="pgfId-177151"></A>Here is an even worse method comment:</P>
-<P CLASS="Code">
-<A NAME="pgfId-177133"></A>&nbsp;</P>
-<P CLASS="Code">
-<A NAME="pgfId-177134"></A>/** Invalidate this object.</P>
-<P CLASS="Code">
-<A NAME="pgfId-177135"></A> */</P>
-<P CLASS="Code">
-<A NAME="pgfId-177136"></A>public void invalidate() {</P>
-<P CLASS="Code">
-<A NAME="pgfId-177137"></A>    _valid = false;</P>
-<P CLASS="Code">
-<A NAME="pgfId-177138"></A>}</P>
-<P CLASS="Code">
-<A NAME="pgfId-177152"></A>&nbsp;</P>
+<pre>
+/** Invalidate this object.
+ */
+public void invalidate() {
+    _valid = false;
+}
+</pre>
 <P CLASS="LBody">
 <A NAME="pgfId-177153"></A>This says absolutely nothing.</P>
 <P CLASS="Body">
 <A NAME="pgfId-177169"></A>Note the use of the imperative case in all of the above comments. It is common in the Java community to use the following style for documenting methods:</P>
-<P CLASS="Code">
-<A NAME="pgfId-177170"></A><BR>
-/** Sets the expression of this variable. <BR>
- *  @param expression The expression for this variable.<BR>
- */<BR>
-public void setExpression(String expression) {<BR>
-	...<BR>
-}<BR>
-</P>
+<pre>
+/** Sets the expression of this variable.
+ *  @param expression The expression for this variable.
+ */
+public void setExpression(String expression) {
+	...
+}
+</pre>
 <P CLASS="LBody">
 <A NAME="pgfId-177171"></A>We use instead the imperative case, as in</P>
-<P CLASS="Code">
-<A NAME="pgfId-177172"></A><BR>
-/** Set the expression of this variable.<BR>
- *  @param expression The expression for this variable.<BR>
- */<BR>
-public void setExpression(String expression) {<BR>
-	...<BR>
-}<BR>
-</P>
+<pre>
+/** Set the expression of this variable.
+ *  @param expression The expression for this variable.
+ */
+public void setExpression(String expression) {
+	...
+}
+</pre>
 <P CLASS="LBody">
 <A NAME="pgfId-177173"></A>The reason we do this is that our sentence is a well-formed, grammatical English sentence, while the usual convention is not (it is missing the subject). Moreover, calling a method is a command &quot;do this,&quot; so it seems reasonable that the documentation say &quot;Do this.&quot; The use of imperative case has a large impact on how interfaces are documented, especially when using the listener design pattern. For instance, the java.awt.event.ItemListener interface has the method:</P>
-<P CLASS="Code">
-<A NAME="pgfId-177174"></A>&nbsp;</P>
-<P CLASS="Code">
-<A NAME="pgfId-177175"></A>/** Invoked when an item has been selected or deselected.</P>
-<P CLASS="Code">
-<A NAME="pgfId-177176"></A> *  The code written for this method performs the operations</P>
-<P CLASS="Code">
-<A NAME="pgfId-177177"></A> *  that need to occur when an item is selected (or deselected).</P>
-<P CLASS="Code">
-<A NAME="pgfId-177178"></A> */</P>
-<P CLASS="Code">
-<A NAME="pgfId-177179"></A>void itemStateChanged(ItemEvent e);</P>
-<P CLASS="Code">
-<A NAME="pgfId-177180"></A>&nbsp;</P>
+<pre>
+/** Invoked when an item has been selected or deselected.
+ *  The code written for this method performs the operations
+ *  that need to occur when an item is selected (or deselected).
+ */
+void itemStateChanged(ItemEvent e);
+</pre>
 <P CLASS="LBody">
 <A NAME="pgfId-177181"></A>A naive attempt to rewrite this in imperative tense might result in:</P>
-<P CLASS="Code">
-<A NAME="pgfId-177182"></A>&nbsp;</P>
-<P CLASS="Code">
-<A NAME="pgfId-177183"></A>/** Notify this object that an item has been selected or deselected.</P>
-<P CLASS="Code">
-<A NAME="pgfId-177184"></A> */</P>
-<P CLASS="Code">
-<A NAME="pgfId-177185"></A>void itemStateChanged(ItemEvent e);	</P>
-<P CLASS="Code">
-<A NAME="pgfId-177186"></A>&nbsp;</P>
+<pre>
+/** Notify this object that an item has been selected or deselected.
+ */
+void itemStateChanged(ItemEvent e);	
+</pre>
 <P CLASS="LBody">
 <A NAME="pgfId-177187"></A>However, this sentence does not capture what the method does. The method may be called in order to notify the listener, but the method does not &quot;notify this object&quot;. The correct way to concisely document this method in imperative case (and with meaningful names) is:</P>
-<P CLASS="Code">
-<A NAME="pgfId-177188"></A>&nbsp;</P>
-<P CLASS="Code">
-<A NAME="pgfId-177189"></A>/** React to the selection or deselection of an item.</P>
-<P CLASS="Code">
-<A NAME="pgfId-177190"></A> */</P>
-<P CLASS="Code">
-<A NAME="pgfId-177191"></A>void itemStateChanged(ItemEvent event);	</P>
-<P CLASS="Code">
-<A NAME="pgfId-177192"></A>&nbsp;</P>
+<pre>
+/** React to the selection or deselection of an item.
+ */
+void itemStateChanged(ItemEvent event);	
+</pre>
 <P CLASS="LBody">
 <A NAME="pgfId-177193"></A>The above is defining an interface (no implementation is given). To define the implementation, it is also necessary to describe what the method does:</P>
-<P CLASS="Code">
-<A NAME="pgfId-177194"></A>&nbsp;</P>
-<P CLASS="Code">
-<A NAME="pgfId-177195"></A>/** React to the selection or deselection of an item by doing...</P>
-<P CLASS="Code">
-<A NAME="pgfId-177196"></A> */</P>
-<P CLASS="Code">
-<A NAME="pgfId-177197"></A>void itemStateChanged(ItemEvent event) { ... implementation ... }</P>
-<P CLASS="Code">
-<A NAME="pgfId-177206"></A>&nbsp;</P>
+<pre>
+/** React to the selection or deselection of an item by doing...
+ */
+void itemStateChanged(ItemEvent event) { ... implementation ... }
+</pre>
+
 <P CLASS="Body">
 <A NAME="pgfId-177223"></A>Comments for base class methods that are intended to be overridden should include information about what the method generally does, plus information that a programmer may need to override it. If the derived class uses the base class method (by calling <EM CLASS="Code">
 super.methodName()</EM>
@@ -563,15 +523,14 @@ make docs</EM>
 <A NAME="pgfId-176384"></A><A NAME="marker-167870"></A>Indentation and brackets</H4>
 <P CLASS="Body">
 <A NAME="pgfId-167618"></A>Nested statements should be indented by 4 characters, as in: </P>
-<P CLASS="Code">
-<A NAME="pgfId-167770"></A><BR>
-if (container != null) {<BR>
-    Manager manager = container.getManager();<BR>
-    if (manager != null) {<BR>
-        manager.requestChange(change);<BR>
-    }<BR>
-}<BR>
-</P>
+<pre>
+if (container != null) {
+    Manager manager = container.getManager();
+    if (manager != null) {
+        manager.requestChange(change);
+    }
+}
+</pre>
 <P CLASS="LBody">
 <A NAME="pgfId-177711"></A>Closing brackets should be on a line by themselves, aligned with the beginning of the line that contains the open bracket. Tabs are 8 space characters, not a <A NAME="marker-177712"></A>Tab character. The reason for this is that code becomes unreadable when the Tab character is interpreted differently by different programs. Do not override this in your text editor. Long lines should be broken up into many small lines. The easiest places to break long lines are usually just before operators, with the operator appearing on the next line. Long strings can be broken up using the + operator in Java, with the + starting the next line. Continuation lines are indented by 8 characters, as in the throws clause of the constructor in figure <A HREF="#33578" CLASS="XRef"></A>.</P>
 <P CLASS="Body">
@@ -610,34 +569,38 @@ if (container != null) {<BR>
 <A NAME="pgfId-167986"></A>The convention we follow is that a run-time exception is acceptable only if the cause of the exception can be tested for prior to calling the method. This is called a <A NAME="marker-167987"></A>testable <A NAME="marker-167988"></A>precondition. For example, if a particular method will fail if the argument is negative, and this fact is documented, then the method can throw a run-time exception if the argument is negative. On the other hand, consider a method that takes a string argument and evaluates it as an expression. The expression may be malformed, in which case an exception will be thrown. Can this be a run-time exception? No, because to determine whether the expression is malformed, you really need to invoke the evaluator. Making this a compile-time exception forces the caller to explicitly deal with the exception, or to declare that it too throws the same exception. In general, we prefer to use compile-time exceptions wherever possible.</P>
 <P CLASS="Body">
 <A NAME="pgfId-167449"></A>When throwing an exception, the detail message should be a complete sentence that includes a string that fully describes what caused the exception. For example</P>
-<P CLASS="Code">
-<A NAME="pgfId-167452"></A><BR>
-throw IllegalActionException(this,<BR>
-        &quot;ptolemy/doc/coCannot append an object of type: &quot;<BR>
-        + obj.getClass().getName() + &quot;because &quot;</P>
-<P CLASS="Code">
-<A NAME="pgfId-170566"></A>        + &quot;it does not implement Cloneable.&quot;);<BR>
-</P>
+<pre>
+throw new IllegalActionException(this,
+        &quot;ptolemy/doc/coCannot append an object of type: &quot;
+        + obj.getClass().getName() + &quot;because &quot;
+        + &quot;it does not implement Cloneable.&quot;);
+</pre>
 <P CLASS="LBody">
 <A NAME="pgfId-168925"></A>Note that the exception not only gives a way to identify the objects that caused the exception, but also why the exception occurred. There is no need to include in the message an identification of the &quot;this&quot; object passed as the first argument to the exception constructor. That object will be identified when the exception is reported to the user.</P>
 <P CLASS="Body">
 <A NAME="pgfId-177623"></A>If an exception is caught, be sure to use exception chaining to include the original exception. For example:</P>
-<P CLASS="Code">
-<A NAME="pgfId-177624"></A>String fileName = foo();</P>
-<P CLASS="Code">
-<A NAME="pgfId-177638"></A>try {</P>
-<P CLASS="Code">
-<A NAME="pgfId-177639"></A>    // Try to open the file</P>
-<P CLASS="Code">
-<A NAME="pgfId-177625"></A>} catch (IOException ex) {</P>
-<P CLASS="Code">
-<A NAME="pgfId-177640"></A>    throw new IllegalActionException(this, ex,</P>
-<P CLASS="Code">
-<A NAME="pgfId-177641"></A>        &quot;Failed to open '&quot; + fileName + &quot;'&quot;);<BR>
-}</P>
+<pre>
+String fileName = foo();
+try {
+    // Try to open the file
+} catch (IOException ex) {
+    throw new IllegalActionException(this, ex,
+            "Failed to open '" + fileName + "'");
+}
+</pre>
 </DIV>
 </DIV>
 </DIV>
+
+<H3 CLASS="FM2Heading">
+Directory naming conventions</H3>
+<DIV>
+<P CLASS="Body">
+Individual demonstrations should be in directories under a demo/ directory. The name of the directory, and the name of the model should match and both begin with capital letters. The demos should be capitalized so that it is possible to generate code for demonstrations. For example, the Butterfly demonstration is in sdf/demo/Butterfly/Butterfly.xml.
+</p>
+<P CLASS="Body">
+All other directories begin with lower case letters and most consist solely of lower case letters.
+<p>
 <HR>
 <DIV CLASS="footnotes">
 <DIV CLASS="footnote">
@@ -656,103 +619,3 @@ http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII3.0/ptII3.0.2/doc/coding/sftwarep
 </DIV>
 </BODY>
 </HTML>
-
-
-<h2><a name="applet conventions">Applet conventions</a></h2>
-Applets should have the same look and feel as other HTML pages.
-See the <a href="applets.htm">Applet information for Ptolemy II Developers</a>
-page for links to Applet resources and other information.
-
-<menu>
-<li> Applets that are demonstrations should follow these naming guidelines:
-<menu>
-<li> Each individual applet should be in its own directory -
-this make it easier to move applets around, and retire old applets
-
-<li> The directory that contains an applet and the name of the
-<CODE>.htm</CODE> file that runs the applet should have the same base.
-For example, <CODE>ct/demo/SigmaDelta/SigmaDelta.htm</CODE> is
-the <CODE>.htm</CODE> file that runs the CT Sigma Delta Applet.
-
-</menu>
-
-
-<li> All of the essential parts of the applet should be visible
-if the browser is set to fill the screen of an XGA display.
-The essential parts of the demo include the controls and any output
-widgets, such as plots.
-
-<li> The explanation of the demo should follow the applet.
-
-<li> It is best if the applet does not bring up separate windows, all of
-the activity should occur within the main browser window.
-
-
-<li> All applets should use the <a href="../install.htm#Plugin">Java
-plug-in 1.3</a>.  Using the Java plug-in complicates the html for the applet.
-The Java Plug-in website includes a converter that converts an html file
-from a JDK1.1 applet to a Java plug-in.  The resulting html
-has two sections, one for Internet Explorer, one for Netscape.
- <br> The section within <CODE>&lt;Object ... &lt;COMMENT</CODE> is
-for Internet Explorer.
- <br> The section within <CODE>&lt;EMBED&gt;...&lt;&lt;/EMBED&gt;</CODE>
-is for Netscape.
-<a href="templates/applet.htm"><CODE>$PTII/doc/coding/templates/applet.htm</CODE></a> contains a sample template with the two sections.
-
-<li> Most applets should include the following jar files.  Note that
-since we are using the plug-in, the each jar file will need to be mentioned
-twice, once for IE, once for Netscape
-	<dl>
-	<dt> <CODE><I>YourApplet.jar</I></CODE>
-	<dd> A jar file containing all the class files necessary for
-	your applet.  Usually all the classes that are in the
-	demo directory go into this jar file.  If this is the
-	case, then the makefile should set <CODE>PTPACKAGE</CODE>
-	to the name of the demo, and then the install rule should depend
-	on <CODE>PTCLASSJAR</CODE>:
-<pre>
-PTPACKAGE = 	BusContention
-[...]
-install: jclass $(PTCLASSJAR)
-</pre>
-
-	<dt> <CODE>lib/diva.jar</CODE>
-	<dd> If the applet uses Diva, then this file will need to be included
-
-	<dt> <CODE>ptolemy/ptsupport.jar</CODE>
-	<dd> The jar file that contains class files necessary for
-	all demos.  See
-	<a href="../../ptolemy/makefile"><CODE>$PTII/ptolemy/makefile</CODE></a>
-	for a list of what is in <CODE>ptsupport.jar</CODE>
-
-	<dt> <CODE>ptolemy/domains/<I>domain</I>/<I>domain</I>.jar</CODE>
-	<dd> The jar file that contains the kernel and library for
-	the domain of this applet
-	</dl>
-
-<li> Test your applet under Netscape and Internet Explorer under
-NT and under Netscape under Solaris.
-
-<li> The makefile for each applet should have a demo rule that looks
-like:
-<pre>
-demo:
-	CLASSPATH="$(CLASSPATH)" appletviewer ComSystem.htm
-</pre>
-
-Note that the double quotes around CLASSPATH are necessary for
-demos that use diva under NT because the darn CLASSPATH separator
-is a semicolon.
-
-<li> The makefile for a directory above a set of demos should have
-a rule like:
-<pre>
-demo: subdemo
-</pre>
-so that <CODE>make demo</CODE> will run the demos in the subdirectory
-</menu>
-
-
-<p><font size="2" color="#cc0000">Last Updated: $Date$</font>
-</body>
-</html>
