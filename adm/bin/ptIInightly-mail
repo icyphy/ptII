@@ -32,7 +32,7 @@ mailmsg=$ADMDIR/logs/ptIInightly_mail.txt
 
 echo "`date`" > $mailmsg
 echo "The Ptolemy II nightly build is run from a bldmaster cronjob" >> $mailmsg
-echo "See http://www.gigascale.org/buildmaster" >> $mailmsg
+echo "See http://embedded.eecs.berkeley.edu/buildmaster" >> $mailmsg
 
 # The log of the build
 ptbuildlog=/users/ptII/adm/test/ptIInightly.txt
