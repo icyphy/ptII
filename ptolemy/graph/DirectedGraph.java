@@ -196,6 +196,9 @@ public class DirectedGraph extends Graph {
 
     /** Find all the nodes that can be reached backward from the
      *  specified node (weights version).
+     *  If the specified weight
+     *  is null, find all the nodes that can be reached backward from any node
+     *  that is unweighted.
      *  The reachable nodes do not include the argument unless
      *  there is a loop from the specified node back to itself.
      *  @param node A node weight in this graph.
@@ -205,7 +208,12 @@ public class DirectedGraph extends Graph {
      *  not a node weight in this graph.
      */
     public Object[] backwardReachableNodes(Object weight) {
-        return weightArray(backwardReachableNodes(nodes(weight)));
+        Collection sameWeightNodes = nodes(weight);
+        if (sameWeightNodes.size() == 0) {
+            throw new IllegalArgumentException("The specified weight is not a "
+                    + "node weight in this graph." + _weightDump(weight));
+        }
+        return weightArray(backwardReachableNodes(sameWeightNodes));
     }
 
     /** Find all the nodes that can be reached backward from the
@@ -441,7 +449,9 @@ public class DirectedGraph extends Graph {
     }
 
     /** Find all the nodes that can be reached from any node that has the
-     *  specified node weight (weights version).
+     *  specified node weight (weights version). If the specified weight
+     *  is null, find all the nodes that can be reached from any node
+     *  that is unweighted.
      *  @param node The specified node weight.
      *  @return An array of node weights reachable from the specified weight;
      *  each element is an {@link Object}.
@@ -450,7 +460,12 @@ public class DirectedGraph extends Graph {
      *  @see #reachableNodes(Node)
      */
     public Object[] reachableNodes(Object weight) {
-        return weightArray(reachableNodes(nodes(weight)));
+        Collection sameWeightNodes = nodes(weight);
+        if (sameWeightNodes.size() == 0) {
+            throw new IllegalArgumentException("The specified weight is not a "
+                    + "node weight in this graph." + _weightDump(weight));
+        }
+        return weightArray(reachableNodes(sameWeightNodes));
     }
 
     /** Find all the nodes that can be reached from the specified collection
@@ -778,6 +793,16 @@ public class DirectedGraph extends Graph {
         if ((index = list.indexOf(element)) != -1) {
             list.remove(index);
         }
+    }
+
+    // Return a dump of a node or edge weight and this graph suitable to be
+    // appended to an error message.
+    // FIXME: move this to exception class. 
+    private String _weightDump(Object weight) {
+        String weightString = (weight == null) ? "<null>" : weight.toString();
+        return "\nDumps of the offending weight and graph follow.\n"
+            + "The offending weight:\n" + weightString
+            + "\nThe offending graph:\n" + this.description() + "\n";
     }
 
     ///////////////////////////////////////////////////////////////////
