@@ -448,7 +448,7 @@ public class CachedMethod {
                     + toString() + " cannot be found");
         }
 
-	Object result = null;
+        Object result = null;
 
         int type = getType();
         Method method = getMethod();
@@ -456,8 +456,8 @@ public class CachedMethod {
         if (isMethod()) {
             int num = argValues.length;
             Object[] methodArgValues = new Object[num - 1];
-	    if (num == 1)
-		methodArgValues = null;
+            if (num == 1)
+                methodArgValues = null;
             for (int i = 1; i < num; i++) {
                 methodArgValues[i-1] = _conversions[i-1].convert(
                         (ptolemy.data.Token)argValues[i]);
@@ -484,8 +484,8 @@ public class CachedMethod {
         } else if(isFunction()) {
             int num = argValues.length;
             Object[] methodArgValues = new Object[num];
-	    if (num == 0)
-		methodArgValues = null;
+            if (num == 0)
+                methodArgValues = null;
             for (int i = 0; i < num; i++) {
                 // System.out.println("Conversion = " + _conversions[i]);
                 methodArgValues[i] = _conversions[i].convert(
