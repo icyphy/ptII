@@ -64,19 +64,14 @@ Suppose for example that the width of the input is one,
 and the first three inputs should be 1, 2, and 3.  Then you can
 set <i>correctValues</i> to
 <pre>
-    [1, 2, 3]
+    {1, 2, 3}
 </pre>
-or
-<pre>
-    [1; 2; 3]
-</pre>
-Either syntax is acceptable.
 Suppose instead that the input has width two, and the correct values
 in the first iteration are 1 on the first channel and 2 on the second.
 Then on the second iteration, the correct values are 3 on the first
 channel and 4 on the second.  Then you can set <i>correctValues</i> to
 <pre>
-    [1, 2; 3, 4]
+    {{1, 2}, {3, 4}}
 </pre>
 With this setting, no tests are performed after the first two iterations
 of this actor.
