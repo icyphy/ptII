@@ -410,9 +410,20 @@ public class Director extends NamedObj implements Executable {
      *  one of the associated actors throws it.
      */
     public void preinitialize() throws IllegalActionException {
-        setCurrentTime(0.0);
+        // setCurrentTime(0.0);
         CompositeActor container = ((CompositeActor)getContainer());
         if (container!= null) {
+	    CompositeActor containersContainer =
+                (CompositeActor)container.getContainer();
+	    if( containersContainer == null ) {
+                _currentTime = 0.0;
+		// setCurrentTime(0.0);
+	    } else {
+		double time =
+                    containersContainer.getDirector().getCurrentTime();
+                _currentTime = time;
+                // setCurrentTime(time);
+	    }
             Enumeration allactors = container.deepGetEntities();
             while (allactors.hasMoreElements()) {
                 Actor actor = (Actor)allactors.nextElement();
