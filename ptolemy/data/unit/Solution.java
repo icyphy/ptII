@@ -289,6 +289,8 @@ public class Solution {
             _done[k] = true;
         }
         _analyzeState();
+        if (_debug)
+            trace();
         return this;
     }
 
@@ -496,8 +498,7 @@ public class Solution {
                         && _vectorA[i].equals(UnitLibrary.Identity)) {
                     _constraintState[i] = _NONUNIQUE;
                 } else {
-                    Unit factor = _vectorA[i].invert();
-                    String uString = factor.descriptiveForm();
+                    String uString = _vectorA[i].descriptiveForm();
                     _constraintState[i] = _CONSISTENT;
                     _constraintExplanations[i] = uString;
                 }
