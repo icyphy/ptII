@@ -230,6 +230,9 @@ public class TimedQueueReceiver implements Receiver {
         Actor actor = (Actor)port.getContainer();
         synchronized(this) {
             _lastTime = time;
+	    if( _lastTime == -1.0 ) {
+		System.out.println("TimedQueueReceiver.put() has _lastTime = -1.0");
+	    }
             event = new Event(token, _lastTime);
 
             if( getSize() == 0 ) {
