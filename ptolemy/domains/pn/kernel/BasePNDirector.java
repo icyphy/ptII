@@ -325,7 +325,7 @@ public class BasePNDirector extends ptolemy.actor.process.ProcessDirector {
                 smallestCapacityQueue.setCapacity(1);
                 //System.out.println("Setting capacity of "+smallestCapacityQueue.getContainer().getFullName()+" to 1");
             } else {
-	        smallestCapacityQueue.setCapacity(smallestCapacityQueue.getCapacity()+1);
+	        smallestCapacityQueue.setCapacity(smallestCapacityQueue.getCapacity()*2);
                 //System.out.println("Setting capacity of "+smallestCapacityQueue.getContainer().getFullName()+" to "+(smallestCapacityQueue.getCapacity()+1) );
             }
 	    _writeUnblock(smallestCapacityQueue);
