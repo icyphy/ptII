@@ -207,15 +207,15 @@ public class HDFFSMDirector extends FSMDirector {
                         actors[i].postfire();
                     }
                 }
+                _readOutputsFromRefinement();
+                //execute the output actions
+                Iterator actions = transition.choiceActionList().iterator();
+                while (actions.hasNext()) {
+                    Action action = (Action)actions.next();
+                    action.execute();
+                }
+                _readOutputsFromRefinement();
             }
-            _readOutputsFromRefinement();
-            //execute the output actions
-            Iterator actions = transition.choiceActionList().iterator();
-            while (actions.hasNext()) {
-                Action action = (Action)actions.next();
-                action.execute();
-            }
-            _readOutputsFromRefinement();
         } else {
             destinationState = state;
         }
