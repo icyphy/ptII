@@ -220,11 +220,17 @@ public class ButtonTime extends WallClockTime implements Placeable {
             try {
                 _buttonPressed = true;
 
+                Director director = getDirector();
+
                 // JDK1.2 bug: WallClockTime._getCurrentTime() is
                 // protected, but not accessible here.
-                Time firingTime = _getCurrentTime(); // JDK1.2 bug
 
-                Director director = getDirector();
+                // Note, WallClockTime._getCurrentTime() returns a double,
+                // which we are going to compare against model time,
+                // so we create a Time object that accounts for the
+                // precision of the director.
+                Time firingTime = new Time(director, _getCurrentTime());
+
                 Time currentTime = director.getModelTime();
                 if (firingTime.compareTo(currentTime) < 0) {
                     // This shouldn't happen, but it will prevent us
