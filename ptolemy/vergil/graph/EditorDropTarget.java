@@ -147,19 +147,17 @@ public class EditorDropTarget extends DropTarget {
                 // displaying the classname in the icon.
                 final String name = container.uniqueName(data.getName());
                 String moml = data.exportMoML(name);
-                // The first argument is the originator of the request.
-                // We declare the model to be the originator so that the
-                // model does not react to the added entity as if it were
-                // added by some external request.
-                ChangeRequest request = new MoMLChangeRequest(model,
+               
+                ChangeRequest request = new MoMLChangeRequest(this,
                         container, moml) {
                     protected void _execute() throws Exception {
                         super._execute();
-
-                        // Add the icon for the entity to the graph model.
+                        // Set the location of the icon.
                         // Note that this really needs to be done after
                         // the change request has succeeded, which is why
-                        // it is done here.
+                        // it is done here.  When the graph controller
+			// gets around to handling this, it will draw 
+			// the icon at this location.
 
                         // FIXME: Have to know whether this is an entity,
                         // port, etc. For now, assuming it is an entity.
@@ -169,21 +167,11 @@ public class EditorDropTarget extends DropTarget {
                         if(icon == null) {
                             icon = new EditorIcon(newObject, "_icon");
                         }
-                        // NOTE: The following call triggers a truly baroque
-                        // series of calls in diva, where graph controller,
-                        // which is an instance of CompositeGraphController,
-                        // gets a node controller for an icon, which is
-                        // an instance of EntityController, and then
-                        // calls addNode() on that node controller, which
-                        // finds the model, which is an instance of
-                        // MutableGraphModel, and calls addNode() on that
-                        // model.  The model in turn calls various addNode()
-                        // methods, depending on the type of node being added
-                        // (in this case, an Icon).
-                        // Whew!  I wonder if would have been possible
-                        // to make this more complicated?
-                        controller.addNode(
-                                icon, ((int)point.x), ((int)point.y));
+                      
+			double location[] = new double[2];
+			location[0] = ((int)point.x);
+			location[1] = ((int)point.y);
+			icon.setLocation(location);
                     }
                 };
 
