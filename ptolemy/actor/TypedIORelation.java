@@ -58,6 +58,8 @@ $Id$
 */
 public class TypedIORelation extends IORelation {
 
+    // all the constructors are wrappers of the super class constructors.
+
     /** Construct a relation in the default workspace with an empty string
      *  as its name. Add the relation to the directory of the workspace.
      */

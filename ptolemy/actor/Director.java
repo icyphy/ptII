@@ -422,9 +422,12 @@ public class Director extends NamedObj implements Executable {
      *  If the container is not an instance of TypedCompositeActor,
      *  do nothing.
      *  This method is write-synchronized on the workspace.
+     *  @exception TypeConflictException If type conflict is detected in
+     *   the containing TypedCompositeActor.
      *  FIXME: pending review.
      */
-    public void resolveTypes() {
+    public void resolveTypes()
+	    throws TypeConflictException {
 	try {
 	    workspace().getWriteAccess();
             CompositeActor container = ((CompositeActor)getContainer());
@@ -437,10 +440,6 @@ public class Director extends NamedObj implements Executable {
             InequalitySolver solver = new InequalitySolver(TypeCPO.cpo());
 	    while (constraints.hasMoreElements()) {
                 Object ineq = constraints.nextElement();
-		if ( !(ineq instanceof Inequality)) {
-		    throw new InvalidStateException("Director.resolveType: " +
-			"some of the type constraints is not an Inequality.");
-		}
                 solver.addInequality((Inequality)ineq);
 	    }
 
@@ -448,14 +447,26 @@ public class Director extends NamedObj implements Executable {
             boolean resolved = solver.solveGreatest();
             if ( !resolved) {
 		Enumeration unsatisfied = solver.unsatisfiedInequalities();
-                // FIXME: should have a new TypeConflictException?
-                throw new InvalidStateException("Type Conflict.");
+		// exception only contains info. on first unsatisfied ineq.
+		if (unsatisfied.hasMoreElements()) {
+		    Inequality ineq = (Inequality)unsatisfied.nextElement();
+		    TypedIOPort arg1 = null, arg2 = null;
+		    if (ineq.getLesserTerm() instanceof TypedIOPort) {
+			arg1 = (TypedIOPort)ineq.getLesserTerm();
+		    }
+		    if (ineq.getGreaterTerm() instanceof TypedIOPort) {
+			arg2 = (TypedIOPort)ineq.getGreaterTerm();
+		    }
+                    throw new TypeConflictException(arg1, arg2,
+					"cannot satisfy constraint.");
+		}
             }
 
 	    // see if any resolved type is NaT
 	    Enumeration nats = solver.bottomVariables();
 	    if (nats.hasMoreElements()) {
-		throw new InvalidStateException("Some resolved types are NaT.");
+		TypedIOPort port = (TypedIOPort)nats.nextElement();
+		throw new TypeConflictException(port, "port resolved to NaT.");
 	    }
 	} finally {
 	    workspace().doneWriting();

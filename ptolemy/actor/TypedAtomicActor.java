@@ -30,7 +30,6 @@ package ptolemy.actor;
 
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
-
 import ptolemy.graph.*;
 
 import java.util.Enumeration;
@@ -40,9 +39,6 @@ import collections.LinkedList;
 //// TypedAtomicActor
 /**
 A TypedAtomicActor is an AtomicActor whose ports have types.
-The typeConstraints() method returns the type constraints among
-the ports.  This base class provides a default implementation of this
-method, which should be suitable for most of the derived classes.
 The container is required to be an instance of TypedCompositeActor.
 Derived classes may further constrain the container by overriding
 setContainer(). The Ports of TypedAtomicActors are constrained to be
@@ -51,6 +47,11 @@ overriding the public method newPort() to create a port of the
 appropriate subclass, and the protected method _addPort() to throw an
 exception if its argument is a port that is not of the appropriate
 subclass.
+<p>
+The typeConstraints() method returns the type constraints among
+the contained ports.  This base class provides a default implementation
+of this method, which should be suitable for most of the derived classes.
+
 
 @author Yuhong Xiong
 $Id$
@@ -60,9 +61,11 @@ $Id$
 */
 public class TypedAtomicActor extends AtomicActor implements TypedActor {
 
+    // all the constructors are wrappers of the super class constructors.
+
     /** Construct an actor in the default workspace with an empty string
-     *  The object is added to the workspace directory.
-     *  as its name. Increment the version number of the workspace.
+     *  as its name.  The object is added to the workspace directory.
+     *  Increment the version number of the workspace.
      */
     public TypedAtomicActor() {
 	super();
@@ -86,12 +89,12 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
      *
      *  @param container The container.
      *  @param name The name of this actor within the container.
-     *  @exception IllegalActionException If the entity cannot be contained
+     *  @exception IllegalActionException If this actor cannot be contained
      *   by the proposed container (see the setContainer() method).
      *  @exception NameDuplicationException If the name coincides with
      *   an entity already in the container.
      */
-    public TypedAtomicActor(CompositeActor container, String name)
+    public TypedAtomicActor(TypedCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
@@ -117,7 +120,8 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
             // This exception should not occur, so we throw a runtime
             // exception.
             throw new InternalErrorException(
-                    "TypedAtomicActor.newPort: Internal error: " + ex.getMessage());
+                    "TypedAtomicActor.newPort: Internal error: " +
+		    ex.getMessage());
         } finally {
             workspace().doneWriting();
         }
@@ -131,10 +135,10 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
      *  @param entity The proposed container.
      *  @exception IllegalActionException If the action would result in a
      *   recursive containment structure, or if
-     *   this entity and container are not in the same workspace, or
+     *   this actor and container are not in the same workspace, or
      *   if the argument is not a TypedCompositeActor or null.
      *  @exception NameDuplicationException If the container already has
-     *   an entity with the name of this entity.
+     *   an entity with the name of this actor.
      */
     public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
@@ -148,7 +152,7 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
     }
 
     /** Return the type constraints of this actor.
-     *  The constraints is an enumeration of inequalities.
+     *  The constraints have the form of an enumeration of inequalities.
      *  In this base class, the default implementation of type constraints
      *  is: If all the ports of this actor have undeclared type,
      *  then the type of any input port must be less than or equal to
@@ -166,35 +170,32 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
 
 	    LinkedList result = new LinkedList();
 	    // check if all the ports are undeclared
-	    boolean allUndeclared = true;
-            for (Enumeration ports = getPorts(); ports.hasMoreElements() ;) {
+	    Enumeration ports = getPorts();
+            while (ports.hasMoreElements()) {
             	TypedIOPort p = (TypedIOPort)ports.nextElement();
-            	if (p.declaredType() != null) {
-		    // at least one port has a declared type
-		    allUndeclared = false;
-		    break;
+            	if (p.getDeclaredType() != null) {
+		    // at least one port has a declared type,
+		    // return an empty Enumerations.
+		    return result.elements();
 	    	}
 	    }
 
-	    if (allUndeclared) {
-	    	for (Enumeration inPorts = inputPorts();
-                     inPorts.hasMoreElements() ;) {
-	    	    TypedIOPort inport = (TypedIOPort)inPorts.nextElement();
-	    	    for (Enumeration outPorts = outputPorts();
-                         outPorts.hasMoreElements() ;) {
-		    	TypedIOPort outport =
-                            (TypedIOPort)outPorts.nextElement();
+	    Enumeration inPorts = inputPorts();
+	    while (inPorts.hasMoreElements()) {
+	        TypedIOPort inport = (TypedIOPort)inPorts.nextElement();
+		Enumeration outPorts = outputPorts();
+	    	while (outPorts.hasMoreElements()) {
+		    TypedIOPort outport = (TypedIOPort)outPorts.nextElement();
 
-		    	if (inport != outport) {
-		            // not bi-directional port
-		            Inequality ineq = new Inequality(inport, outport);
-			    result.insertLast(ineq);
-		        }
+		    if (inport != outport) {
+		        // not bi-directional port
+		        Inequality ineq = new Inequality(inport, outport);
+			result.insertLast(ineq);
 		    }
-	        }
+		}
 	    }
-
 	    return result.elements();
+
 	}finally {
 	    workspace().doneReading();
 	}
@@ -208,28 +209,25 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
      *  directly.  Call the setContainer() method of the port instead.
      *  This method does not set the container of the port to point to
      *  this entity. It assumes that the port is in the same workspace
-     *  as this entity, but does not check.  The caller should check.
+     *  as this actor, but does not check.  The caller should check.
      *  Derived classes may override this method to further constrain to
      *  a subclass of TypedIOPort. This method is <i>not</i> synchronized on
      *  the workspace, so the caller should be.
      *
-     *  @param port The port to add to this entity.
+     *  @param port The port to add to this actor.
      *  @exception IllegalActionException If the port class is not
-     *   acceptable to this entity, or the port has no name.
+     *   acceptable to this actor, or the port has no name.
      *  @exception NameDuplicationException If the port name coincides with a
-     *   name already in the entity.
+     *   name already in the actor.
      */
     protected void _addPort(Port port)
             throws IllegalActionException, NameDuplicationException {
         if (!(port instanceof TypedIOPort)) {
             throw new IllegalActionException(this, port,
-                    "Incompatible port class for this entity.");
+                    "Incompatible port class for this actor.");
         }
         super._addPort(port);
     }
-
-    // NOTE: There is nothing new to report in the _description() method,
-    // so we do not override it.
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
