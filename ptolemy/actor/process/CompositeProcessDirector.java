@@ -176,7 +176,7 @@ public class CompositeProcessDirector extends ProcessDirector {
     public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
         CompositeProcessDirector newObj =
-                (CompositeProcessDirector)super.clone(workspace);
+            (CompositeProcessDirector)super.clone(workspace);
         newObj._onFirstIteration = true;
         newObj._inputBranchController = null;
         newObj._outputBranchController = null;
@@ -199,8 +199,8 @@ public class CompositeProcessDirector extends ProcessDirector {
         while ( ports.hasNext() ) {
             port = (IOPort)ports.next();
             if (!port.isOpaque()) {
-                    throw new IllegalActionException(this, port,
-                    "port argument is not an opaque port.");
+                throw new IllegalActionException(this, port,
+                        "port argument is not an opaque port.");
             }
             if ( port.isInput() ) {
                 _inputBranchController.addBranches(port);
@@ -485,10 +485,10 @@ public class CompositeProcessDirector extends ProcessDirector {
      *   blocked; return false otherwise.
      */
     protected boolean _areActorsExternallyBlocked() {
-            Iterator blockedReceivers = _blockedReceivers.iterator();
+        Iterator blockedReceivers = _blockedReceivers.iterator();
         while ( blockedReceivers.hasNext() ) {
             ProcessReceiver receiver =
-                    (ProcessReceiver)blockedReceivers.next();
+                (ProcessReceiver)blockedReceivers.next();
             if ( receiver.isConnectedToBoundaryInside() ) {
                 return true;
             }
