@@ -52,6 +52,7 @@ SHELL_FILES = \
 	ptjaclapp \
 	ptjini \
 	ptplot \
+	ptstartjini \
 	ptolemy \
 	pxgraph \
 	startjini.gui \
