@@ -132,7 +132,6 @@ OPTIONAL_FILES = \
 
 # Files to be removed by 'make clean'
 KRUFT = \
-	auto4mte* \
 	vergil.jnlp \
 	vergilDSP.jnlp \
 	vergilHyVisual.jnlp \
