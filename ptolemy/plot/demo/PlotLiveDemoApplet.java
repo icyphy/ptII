@@ -66,7 +66,6 @@ public class PlotLiveDemoApplet extends PlotApplet implements Runnable {
         newPlot();              // Create a PlotLive to operate on.
         add("Center",plot());
 
-        plot().init();
         super.init();
     }
 
@@ -144,12 +143,6 @@ public class PlotLiveDemoApplet extends PlotApplet implements Runnable {
     }
 
     //////////////////////////////////////////////////////////////////////////
-    ////                         protected variables                      ////
-
-    // The higher the number, the more debugging
-    protected int _debug = 0;
-
-    //////////////////////////////////////////////////////////////////////////
     ////                         private variables                        ////
 
     // The Plot component we are running.
@@ -157,5 +150,4 @@ public class PlotLiveDemoApplet extends PlotApplet implements Runnable {
 
     // Thread for this applet.
     private Thread _plotLiveDemoAppletThread;
-
 }
