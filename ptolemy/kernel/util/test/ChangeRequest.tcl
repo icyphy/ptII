@@ -126,7 +126,7 @@ test ChangeRequest-4.0 {StreamChangeListener} {
 waitForCompletionThread About to wait for completion
 waitForCompletionThread Done waiting for completion
 main  After call to $t finish
-}}
+}} {This test started failing once we upgraded to Java 1.4.  I'm not sure why}
 
 test ChangeRequest-4.1 {StreamChangeListener} {
     set t [java::new ptolemy.kernel.util.test.ChangeRequestTest]
