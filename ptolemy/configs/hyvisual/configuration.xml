@@ -107,7 +107,14 @@ create refinements for the states.</text></svg></configure></property>
             <input source="ptolemy/configs/utilityParameter.xml"/>
             <input source="ptolemy/configs/utilityIntRangeParameter.xml"/>
             <input source="ptolemy/configs/utilityPortParameter.xml"/>
-            <input source="ptolemy/configs/utilityCompositeActor.xml"/>
+	    <!-- Blank CT composite actor. -->
+	    <entity name="CTCompositeActor"
+	    class="ptolemy.domains.ct.kernel.CTCompositeActor">
+		    <property name="Continuous Time (CT) Embedded Solver"
+		          class="ptolemy.domains.ct.kernel.CTEmbeddedDirector"/>
+		    <property name="_location"
+		          class="ptolemy.kernel.util.Location" value="68.0, 32.0"/>
+            </entity>
             <input source="ptolemy/configs/utilityModalModel.xml"/>
           </group>
         ?>
