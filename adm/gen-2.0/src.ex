@@ -34,6 +34,7 @@ java.hprof.txt
 jsdatabase
 junk
 mail
+make.out
 mems
 nsmail
 ptjar_tmpdir
@@ -48,12 +49,15 @@ ptolemy/filter
 ptolemy/com
 ptolemy/data/expr/TVariable.java
 ptolemy/gui/JPanelTest.java
+ptolemy/copernicus/*/cg
+ptolemy/copernicus/java/test/ptolemy*
 ptolemy/domains/ct/demo/Saber
 ptolemy/domains/ct/demo/Corba
 ptolemy/domains/ct/demo/SigmaDelta/DEStatistics.java
 ptolemy/domains/dde/kernel/test/DDEDirector.tcl
 ptolemy/domains/dde/kernel/test/test.tcl
 ptolemy/domains/dde/kernel/DEThreadActor.java
+ptolemy/domains/ddf
 ptolemy/domains/de/kernel/DETheadActor.java
 ptolemy/domains/dt/kernel/test/bugs
 ptolemy/domains/dt/kernel/test/chf
@@ -63,8 +67,10 @@ ptolemy/domains/generic
 ptolemy/domains/gr/lib/Loader3D.java
 ptolemy/domains/gr/lib/Loader3D.class
 ptolemy/domains/gr/lib/experimental
+ptolemy/domains/hdf
 ptolemy/domains/odf
 ptolemy/domains/pbo
+ptolemy/domains/pdf
 ptolemy/domains/rtos
 ptolemy/domains/rtp
 ptolemy/domains/sc
