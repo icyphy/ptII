@@ -78,7 +78,7 @@ public class BranchController implements Runnable {
         be an actor.
         @param container The parent actor that contains this object.
     */
-    public BranchController(MultiBranchActor container) {
+    public BranchController(CompositeActor container) {
         _parentActor = container;
     }
 
@@ -88,11 +88,11 @@ public class BranchController implements Runnable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return the MultiBranchActor that creates the branch 
+    /** Return the CompositeActor that creates the branch 
      *  and owns this controller.
-     *  @return The MultiBranchActor that owns this controller.
+     *  @return The CompositeActor that owns this controller.
      */
-    public MultiBranchActor getParent() {
+    public CompositeActor getParent() {
         return _parentActor;
     }
 
@@ -176,7 +176,66 @@ public class BranchController implements Runnable {
         return false;
     }
     
-    /**
+    /** Return true if all of the branches controlled by this
+     *  controller are stopped. Stopped branches are defined
+     *  as either being locked or waiting for the next
+     *  iteration. If this controller has no branches, then
+     *  return true.
+     * @return True if all branches controlled by this 
+     *  controller are stopped or if there are no branches;
+     *  return false otherwise.
+     */
+    public boolean isStopped() {
+        if( !hasBranches() ) {
+            return true;
+        }
+        if( _branchesStopped + _branchesBlocked >= _branches.size() ) {
+            if( _branchesStopped > 0 ) {
+                return true;
+            }
+            if( _branchesBlocked > 0 ) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    /** Return true if all of the branches controlled by this
+     *  controller are stopped and at least one of the branches
+     *  is blocked or if this controller has no branches. Stopped 
+     *  branches are defined as either being locked or waiting 
+     *  for the next iteration. Note that this method is a special 
+     *  case of isStopped().
+     * @return True if all branches controlled by this 
+     *  controller are stopped and at least one branch is
+     *  blocked or if there are no branches; return false otherwise.
+     */
+    public boolean isBlocked() {
+        if( !hasBranches() ) {
+            return true;
+        }
+        if( _branchesStopped + _branchesBlocked >= _branches.size() ) {
+            if( _branchesBlocked > 0 ) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    /** Return true if this controller controls one or more branches;
+     *  return false otherwise.
+     * @return True if this controller controls one or more branche;
+     *  return false otherwise.
+     */
+    public boolean hasBranches() {
+        return _branches.size() > 0;
+    }
+    
+    /** Return true if this controller is not in the midst of an
+     *  iteration. This controller is not in an iteration if it
+     *  is not active or if all engagement attempts are complete.
+     * @return True if this controller is not active or if all
+     *  engagements are complete.
      */
     public boolean isIterationOver() {
 	if( !isActive() ) {
@@ -185,9 +244,23 @@ public class BranchController implements Runnable {
 	return areEngagementsComplete();
     }
 
-    /**
+    /** Add branches corresponding to the channels of the port
+     *  argument. The port must be contained by the same actor
+     *  that contains this controller. If branches corresponding
+     *  to the port have already been added to this controller,
+     *  then an IllegalActionException will be thrown. If the
+     *  input/output polarity of this port does not match that
+     *  of ports for whom branches have been previously added
+     *  to this controller, then throw an IllegalActionException.
+     * @param port The port for which branches will be added to this
+     *  controller.
+     * @exception IllegalActionException If branches for the
+     *  port have been previously added to this controller or
+     *  if the port input/output polarity does not match that
+     *  of ports for whom branches were previously add to this
+     *  controller.
      */
-    public void createBranches(IOPort port) throws 
+    public void addBranches(IOPort port) throws 
             IllegalActionException {
 	if( port.getContainer() != getParent() ) {
 	    throw new IllegalActionException("Can not contain "
@@ -307,6 +380,9 @@ public class BranchController implements Runnable {
      */
     public void activateBranches() {
         synchronized(this) {
+            if( !hasBranches() ) {
+                return;
+            }
             setActive(true);
             LinkedList threadList = new LinkedList();
             BranchThread bThread = null;
@@ -330,9 +406,13 @@ public class BranchController implements Runnable {
         }
     }
     
-    /** 
+    /** Restart this controller by resetting the branches that
+     *  it controls and setting flags so engagements can take
+     *  place. If this controller is inactive, do nothing. This
+     *  method is synchronized and will notify any threads that
+     *  are synchronized to this object.
      */
-    public synchronized void reset() {
+    public synchronized void restart() {
         if( !isActive() ) {
             return;
         }
@@ -436,19 +516,19 @@ public class BranchController implements Runnable {
 			if( isDeadlocked() && !isIterationOver() ) {
 			    while( isDeadlocked() && 
 				    !isIterationOver() ) {
-				_getDirector()._branchCntlrBlocked();
+				_getDirector()._controllerBlocked(this);
 				wait();
 			    }
-			    _getDirector()._branchCntlrUnBlocked();
+			    _getDirector()._controllerUnBlocked(this);
 			}
 		    }
 
 		    if( isIterationOver() && isActive() ) {
 			while( isIterationOver() && isActive() ) {
-			    _getDirector()._branchCntlrBlocked();
+			    _getDirector()._controllerBlocked(this);
 			    wait();
 			}
-			_getDirector()._branchCntlrUnBlocked();
+			_getDirector()._controllerUnBlocked(this);
 		    }
 		}
 	    } catch( InterruptedException e ) {
@@ -514,12 +594,16 @@ public class BranchController implements Runnable {
     // active.
     private int _branchesActive = 0;
 
-    // Contains the number of conditional branches that are blocked
+    // The number of branches that are blocked
     // trying to rendezvous.
     private int _branchesBlocked = 0;
+    
+    // The number of branches that are waiting for
+    // the next iteration.
+    private int _branchesStopped = 0;
 
-    // The MultiBranchActor who owns this controller object.
-    private MultiBranchActor _parentActor;
+    // The CompositeActor who owns this controller object.
+    private CompositeActor _parentActor;
 
     private LinkedList _branches = new LinkedList(); 
     private LinkedList _ports;
