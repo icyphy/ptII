@@ -364,7 +364,7 @@ public class XmlReader extends LoggableOp {
         /**
          * Handle a processing instruction.
          * <p>The default implementation does nothing.
-         * @see com.microstare.xml.XmlHandler#processingInstruction
+         * @see com.microstar.xml.XmlHandler#processingInstruction
          * @exception java.lang.Exception Derived methods may throw exceptions.
          */
         public void processingInstruction (String target, String data)
