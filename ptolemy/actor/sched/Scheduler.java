@@ -45,20 +45,20 @@ The base class for schedulers. A scheduler schedules the execution order
 of the containees of a CompositeActor.
 <p>
 A scheduler has a reference to a StaticSchedulingDirector, and
-provides the schedule for it. 
+provides the schedule for it.
 The director will use this schedule to govern the execution of a
 CompositeActor.
 <p>
  A schedule is simply a
-collection of objects. It could be the firing order of actors in a 
+collection of objects. It could be the firing order of actors in a
 particular composite actor, and it also could consist of sub-schedules,
-each of which is another collection. We leave for the director to 
+each of which is another collection. We leave for the director to
 interpret what a schedule means. In this base class, the default schedule
 is an Enumeration of deep contained actors in their construction order.
 <P>
-The schedule, once constructed, is cached and reused in the next time 
+The schedule, once constructed, is cached and reused in the next time
 if the schedule is still valid. The validation of a schedule is set by
-the setValid() method. If the current schedule is set to be not valid, 
+the setValid() method. If the current schedule is set to be not valid,
 the schedule() method will call the protected _schedule() method to
 reconstruct it. The _schedule() method is the place
 the scheduling algorithm goes, and the derived class should override it.
@@ -126,7 +126,7 @@ public class Scheduler extends NamedObj{
 
     /** Return the scheduling sequence. If the cached version of the
      *  schedule is valid, return it directly. Otherwise call
-     *  _schedule() to reconstruct it. The validity of the current 
+     *  _schedule() to reconstruct it. The validity of the current
      *  schedule is set by the setValid() method.
      *  If the scheduler has no container, or the container
      *  StaticSchedulingDirector has no container, throw an
@@ -193,7 +193,7 @@ public class Scheduler extends NamedObj{
 
     /** Make this scheduler the scheduler of the specified director, and
      *  register it as a topology listener of the director.
-     *  This method should not be called directly.  Instead, call the 
+     *  This method should not be called directly.  Instead, call the
      *  setScheduler() method of the StaticSchedulingDirector class
      *  (or a derived class).
      */
@@ -206,11 +206,11 @@ public class Scheduler extends NamedObj{
 
     /** Return the scheduling sequence. In this base class, it returns
      *  the containees of the CompositeActor in the order of construction.
-     *  (Same as calling CompositeActor.deepCetEntities()). 
+     *  (Same as calling CompositeActor.deepCetEntities()).
      *  The derived classes should
      *  override this method and add their scheduling algorithms here.
      *  This method should not be called directly, rather the schedule()
-     *  method 
+     *  method
      *  will call it when the schedule is invalid. So it is not
      *  synchronized on the workspace.
      *

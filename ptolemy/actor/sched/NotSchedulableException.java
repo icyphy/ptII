@@ -37,8 +37,8 @@ import java.util.Enumeration;
 //////////////////////////////////////////////////////////////////////////
 //// NotSchedulableException
 /**
-This is a special case of the InvalidStateException such that a 
-CompositeActor is not schedulable by a certain scheduler. 
+This is a special case of the InvalidStateException such that a
+CompositeActor is not schedulable by a certain scheduler.
 This class has the same constructors as its supper class, but it also
 has an Enumeration that contains the unschedulable
 actors in the CompositeActor. The enumeration can be used by other
@@ -83,7 +83,7 @@ public class NotSchedulableException extends InvalidStateException {
     }
 
     /** Constructs an Exception with a detail message that includes the
-     *  names of an enumeration of nameable plus the an argument string. An 
+     *  names of an enumeration of nameable plus the an argument string. An
      *  addition Enumeration of unschedulable actors is also set. This
      *  enumeration may be used by the UI to illustrate the unschedulable
      *  actors, or by the directors to perform some actions to correct
