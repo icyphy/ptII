@@ -69,9 +69,31 @@ public class StringToken extends AbstractConvertibleToken {
         }
         // If a String token is "has an embedded " quote", then
         // toString() should return "has an embedded \" quote" 
-        // FIXME: what if the string already has a \" in it?
-        _toString = "\""
-            + StringUtilities.substitute(_value, "\"", "\\\"") + "\"";
+        if (_value.indexOf('"') == -1) {
+            _toString = "\"" + _value + "\"";
+        } else {
+            if (_value.indexOf("\\\"") == -1) {
+                _toString = "\""
+                    + StringUtilities.substitute(_value, "\"", "\\\"") + "\"";
+            } else {
+                // The string already has a \" in it.
+
+                // 1. Substitute a special word for every instance of \"
+                String backslashed =
+                    StringUtilities.substitute(_value,
+                            "\\\"", "MaGiCBakSlash");
+
+                // 2. Substitute \" for every remaining "
+                String backslashed2 =
+                    StringUtilities.substitute(backslashed, "\"", "\\\"");
+
+                // 3. Add the leading and trailing " and substitute
+                //    \" for every instance of the special word
+                _toString = "\"" +
+                    StringUtilities.substitute(backslashed2,
+                            "MaGiCBakSlash", "\\\"") + "\"";
+            }
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
