@@ -76,7 +76,7 @@ public class MessageHandler {
      *  user clicks on the "Display Stack Trace" button.
      *
      *  @param info The message.
-     *  @param exception The exception.
+     *  @param throwable The throwable.
      *  @see CancelException
      */
     public static void error(String info, Throwable throwable) {

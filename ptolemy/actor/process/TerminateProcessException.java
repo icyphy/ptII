@@ -142,7 +142,7 @@ public class TerminateProcessException extends RuntimeException {
 
     /** Get the name of a Nameable object.
      *  If the argument is a null reference, return an empty string.
-     *  @param obj An object with a name.
+     *  @param object An object with a name.
      *  @return The name of the argument.
      */
     protected String _getName(Nameable object) {

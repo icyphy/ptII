@@ -701,7 +701,6 @@ public class TMDirector extends Director {
      *  listeners that have registered.
      *  By convention, messages should not include a newline at the end.
      *  The newline will be added by the listener, if appropriate.
-     *  @param message The message.
      */
     protected final void _displaySchedule() {
         if (_eventQueue != null) {
@@ -726,7 +725,9 @@ public class TMDirector extends Director {
     /** Send a debug message to all debug listeners that have registered.
      *  By convention, messages should not include a newline at the end.
      *  The newline will be added by the listener, if appropriate.
-     *  @param message The message.
+     *  @param actorName The name of the actor.
+     *  @param time The time.
+     *  @param scheduleEvent The schedule event.
      */
     protected final void _displaySchedule(String actorName,
             double time, int scheduleEvent) {

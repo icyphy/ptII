@@ -101,6 +101,8 @@ public class FunctionToken extends Token {
      *  Token.  It is assumed that the type of the argument is
      *  FunctionToken.
      *  @param rightArgument The token to add to this token.
+     *  @param epsilon The value that we use to determine whether two
+     *  tokens are close.
      *  @exception IllegalActionException If this method is not
      *  supported by the derived class.
      *  @return A BooleanToken containing the result.

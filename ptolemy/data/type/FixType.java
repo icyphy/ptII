@@ -89,14 +89,14 @@ public class FixType extends StructuredType
                 Token.notSupportedConversionMessage(token, toString()));
     }
 
-    /** Determine if the argument represents the same MatrixType as this
+    /** Determine if the argument represents the same FixType as this
      *  object.
-     *  @param type A Type.
-     *  @return True if the argument type is a matrix type representing the
-     *  same class, with the same number of rows and columns.
+     *  @param object A Type.
+     *  @return Always return true
      */
     public boolean equals(Object object) {
         if(!(object instanceof FixType)) return false;
+        // FIXME: This sure does not look right?
         FixType matrixType = (FixType)object;
         return true;
     }

@@ -316,7 +316,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO {
      *  The result is unpredictable if the multiple nodes have the same
      *  weight (i.e., if the specified weights are not uniquely
      *  associated with nodes).
-     *  @param objects The given node weights.
+     *  @param weights The given node weights.
      *  @return The weights in their sorted order.
      */
     public Object[] topologicalSort(Object[] weights) {

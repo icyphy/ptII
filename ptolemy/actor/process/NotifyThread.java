@@ -1,4 +1,4 @@
-/* Helper thread for calling notifyAll on a LinkedList of locks.
+/* Helper thread for calling notifyAll()on a LinkedList of locks.
 
  Copyright (c) 1998-2003 The Regents of the University of California.
  All rights reserved.
@@ -39,13 +39,13 @@ import java.util.LinkedList;
 //////////////////////////////////////////////////////////////////////////
 //// NotifyThread
 /**
-Helper thread for calling notifyAll on a single lock or a LinkedList
+Helper thread for calling notifyAll() on a single lock or a LinkedList
 of locks. Since this is a new thread without any locks, calling notifyAll
  from this thread reduces the possibility of deadlocks.
 <p>
 To use this to wake up any threads waiting on a lock, create a new instance
 of this class with a LinkedList of lock objects (or single lock) to call
-notifyAll on.
+notifyAll() on.
 <p>
 @author Neil Smyth, Mudit Goel
 @version $Id$
@@ -55,8 +55,8 @@ notifyAll on.
 
 public class NotifyThread extends Thread {
 
-    /** Construct a thread to be used call notifyAll on a set of locks.
-     *  @param locks The set of locks to call notifyAll on.
+    /** Construct a thread to be used call notifyAll() on a set of locks.
+     *  @param locks The set of locks to call notifyAll() on.
      */
     public NotifyThread(LinkedList locks) {
         _locks = new LinkedList();
@@ -66,8 +66,8 @@ public class NotifyThread extends Thread {
         }
     }
 
-    /** Construct a thread to be used call notifyAll on a set of locks.
-     *  @param locks The set of locks to call notifyAll on.
+    /** Construct a thread to be used call notifyAll() on a set of locks.
+     *  @param lock The lock to call notifyAll() on.
      */
     public NotifyThread(Object lock) {
         _lock = lock;
@@ -98,9 +98,9 @@ public class NotifyThread extends Thread {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // The locks to call notifyAll on.
+    // The locks to call notifyAll() on.
     private LinkedList _locks = null;
 
-    // The lock to call notifyAll on.
+    // The lock to call notifyAll() on.
     private Object _lock = null;
 }

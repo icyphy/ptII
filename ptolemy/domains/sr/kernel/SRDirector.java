@@ -194,7 +194,7 @@ public class SRDirector extends StaticSchedulingDirector {
      *  the corresponding scheduler name will be recorded.  The new
      *  scheduler will be instantiated during the next invocation of
      *  preinitialize().
-     *  @param param The changed parameter.
+     *  @param attribute The changed attribute.
      *  @exception IllegalActionException If the new scheduler that is
      *   specified is not valid.
      */

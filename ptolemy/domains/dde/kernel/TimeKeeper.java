@@ -97,8 +97,8 @@ public class TimeKeeper {
      * @exception IllegalActionException If there is an error
      *  while setting the receiver priorities.
      */
-    public TimeKeeper(Actor anActor) throws IllegalActionException {
-	_actor = anActor;
+    public TimeKeeper(Actor actor) throws IllegalActionException {
+	_actor = actor;
         _receiverList = new LinkedList();
 	_receiverComparator = new ReceiverComparator(this);
 

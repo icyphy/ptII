@@ -296,7 +296,7 @@ public class StaticSchedulingDirector extends Director {
      *  cached schedule is no longer valid, and the director should
      *  invoke the scheduler again for a new schedule. This calls the
      *  setValid() method of Scheduler.
-     *  @param true to set the schedule to be valid.
+     *  @param valid True if the schedule is to be marked valid.
      *  @exception IllegalActionException If there's no scheduler.
      */
     public void setScheduleValid(boolean valid)

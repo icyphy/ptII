@@ -134,9 +134,10 @@ public class DirectedGraph extends Graph {
      *  that is unweighted.
      *  The reachable nodes do not include the argument unless
      *  there is a loop from the specified node back to itself.
-     *  @param node A node weight in this graph.
+     *  @param weight A node weight in this graph.
      *  @return An array of node weights that are backward-reachable from the
-     *  nodes that have the specified weight; each element is an {@link Object}.
+     *  nodes that have the specified weight; each element is an
+     *  {@link Object}.
      *  @exception GraphWeightException If the specified weight is
      *  not a node weight in this graph.
      */
@@ -154,8 +155,8 @@ public class DirectedGraph extends Graph {
      *  specified collection of nodes.
      *  The reachable nodes do not include the specific ones unless
      *  there is a loop from the specified node back to itself.
-     *  @param nodes A collection of nodes in this graph; each element is
-     *  a {@link Node}.
+     *  @param nodeCollection A collection of nodes in this graph;
+     *  each element is a {@link Node}.
      *  @return The collection of nodes that are backward-reachable from
      *  the specified nodes; each element is a {@link Node}.
      */
@@ -389,7 +390,7 @@ public class DirectedGraph extends Graph {
      *  specified node weight (weights version). If the specified weight
      *  is null, find all the nodes that can be reached from any node
      *  that is unweighted.
-     *  @param node The specified node weight.
+     *  @param weight The specified node weight.
      *  @return An array of node weights reachable from the specified weight;
      *  each element is an {@link Object}.
      *  @exception GraphWeightException If the specified node weight is
@@ -422,8 +423,8 @@ public class DirectedGraph extends Graph {
     /** Find all the nodes that can be reached from the specified collection
      *  of nodes. The reachable nodes do not include a specified one unless
      *  there is a loop from the specified node back to itself.
-     *  @param nodes The specified collection of nodes; each element is
-     *  a {@link Node}.
+     *  @param nodeCollection The specified collection of nodes;
+     *  each element is a {@link Node}.
      *  @return The collection of nodes that are reachable from
      *  the specified one; each element is a {@link Node}.
      */
@@ -561,7 +562,6 @@ public class DirectedGraph extends Graph {
 
     /** Return the number of sink nodes in this graph.
      *  A <i>sink node</i> is a node that has no output edges.
-     *  @param node The node.
      *  @return The number of sink nodes.
      */
     public int sinkNodeCount() {
@@ -579,7 +579,6 @@ public class DirectedGraph extends Graph {
 
     /** Return the number of source nodes in this graph.
      *  A <i>source node</i> is a node that has no input edges.
-     *  @param node The node.
      *  @return The number of source nodes.
      */
     public int sourceNodeCount() {
@@ -655,8 +654,8 @@ public class DirectedGraph extends Graph {
      *  called, the use of the transitive closure matrix should
      *  not add any overhead. A bubble sort is used for the internal
      *  implementation, so the complexity is <i>O(V^2)</i>.
-     *  @param nodes The collection of nodes to be sorted; each element is
-     *  a {@link Node}.
+     *  @param nodeCollection The collection of nodes to be sorted;
+     *  each element is a {@link Node}.
      *  @return The nodes in their sorted order in the form of a list;
      *  each element is a {@link Node}.
      *  @exception GraphActionException If any two nodes are strongly

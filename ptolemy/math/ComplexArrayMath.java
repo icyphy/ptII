@@ -1032,8 +1032,8 @@ public class ComplexArrayMath {
      *  or if either array is null. An exception is NOT thrown if both
      *  arrays are of length 0. If no exception is thrown, return the common
      *  length of the arrays.
-     *  @param array The first array of doubles.
-     *  @param array The second array of doubles.
+     *  @param array1 The first array of doubles.
+     *  @param array2 The second array of doubles.
      *  @param methodName A String representing the method name of the caller,
      *  without parentheses.
      *  @return The common length of both arrays.

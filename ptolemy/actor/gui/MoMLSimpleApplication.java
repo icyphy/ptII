@@ -79,7 +79,7 @@ public class MoMLSimpleApplication implements ChangeListener {
      *  @exception Exception If there was a problem parsing
      *  or running the model.
      */
-    public MoMLSimpleApplication(String xmlFilename) throws Exception {
+    public MoMLSimpleApplication(String xmlFileName) throws Exception {
         MoMLParser parser = new MoMLParser();
 
         // The test suite calls MoMLSimpleApplication multiple times,
@@ -103,7 +103,7 @@ public class MoMLSimpleApplication implements ChangeListener {
         // has problems finding resources like files specified in
         // parameters if the xml file was specified as an absolute path.
         CompositeActor toplevel = (CompositeActor) parser.parse(null,
-                new File(xmlFilename).toURL());
+                new File(xmlFileName).toURL());
 
         _manager = new Manager(toplevel.workspace(),
                 "MoMLSimpleApplication");

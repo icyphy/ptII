@@ -339,7 +339,7 @@ public class DDEDirector extends CompositeProcessDirector {
      *  and increment the count of blocked actors by one.
      *  Note whether the receivers are read blocked or write blocked.
      *
-     *  @param receiver The receivers whose data transfer is blocked.
+     *  @param receivers The receivers whose data transfer is blocked.
      */
     protected synchronized void _actorBlocked(LinkedList receivers) {
 	Iterator receiverIterator = receivers.iterator();
@@ -350,8 +350,9 @@ public class DDEDirector extends CompositeProcessDirector {
 	notifyAll();
     }
 
-    /** Implementations of this method must be synchronized.
-     *  @param internal True if internal read block.
+    /** Call _actorsUnblocked(DDEReceivers) on each element of
+     *  the list.  Implementations of this method must be synchronized.
+     *  @param receivers A list of DDEReceivers to unblock.
      */
     protected synchronized void _actorUnBlocked(LinkedList receivers) {
         Iterator receiverIterator = receivers.iterator();

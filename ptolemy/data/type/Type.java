@@ -62,7 +62,7 @@ public interface Type {
     public Token convert(Token token) throws IllegalActionException;
 
     /** Determine if the argument represents the same type as this object.
-     *  @param type A Type.
+     *  @param object A Type.
      *  @return True if the argument represents the same type as this
      *   object; false otherwise.
      */

@@ -716,7 +716,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
 
     /** Override the base class to invalidate the schedule and
      *  resolved types of the director.
-     *  @param entity The proposed container.
+     *  @param container The proposed container.
      *  @exception IllegalActionException If the action would result in a
      *   recursive containment structure, or if
      *   this entity and container are not in the same workspace.

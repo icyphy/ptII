@@ -709,7 +709,8 @@ public class Variable extends Attribute
     }
 
     /** Set a new parseTreeEvaluator.
-     *  @param parseTreeEveluator The new parseTreeEvaluator used by this variable.
+     *  @param parseTreeEvaluator The new parseTreeEvaluator used by
+     *  this variable.
      */
     public void setParseTreeEvaluator(ParseTreeEvaluator parseTreeEvaluator) {
         _parseTreeEvaluator = parseTreeEvaluator;

@@ -303,7 +303,7 @@ public class DoubleToken extends ScalarToken {
     /** Return a new token whose value is the value of this token
      *  divided by the value of the argument token. It is assumed that
      *  the type of the argument is an DoubleToken
-     *  @param rightArgument The token to divide this token by.
+     *  @param divisor The token to divide this token by.
      *  @return A new DoubleToken containing the result.
      */
     protected ScalarToken _divide(ScalarToken divisor) {

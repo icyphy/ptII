@@ -165,7 +165,8 @@ public class UnitUtilities {
 
     /** Return true if the units of this token are the same as that of the
      *  argument token. If both tokens do not have units, return true.
-     *  @param scalarToken A scalar token.
+     *  @param units1 The first array of units.
+     *  @param units2 The second array of units.
      *  @return True if the units of this token is the same as that of
      *  the argument token; false otherwise.
      */

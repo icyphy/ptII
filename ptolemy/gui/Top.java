@@ -243,7 +243,7 @@ public abstract class Top extends JFrame {
 
     /** Specify whether or not to center the window on the screen when
      *  packing it.  The default is true.
-     *  @param False to disable centering.
+     *  @param centering Set to false to disable centering.
      */
     public void setCentering(boolean centering) {
         _centering = centering;

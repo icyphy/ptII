@@ -121,14 +121,14 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
      *   that this branch will try to rendezvous with.
      *  @param channel The channel in the IOPort that this branch is
      *   trying to rendezvous with.
-     *  @param branch The identification number assigned to this branch
+     *  @param branchID The identification number assigned to this branch
      *   upon creation by the CSPActor.
-     *  @param t The token this branch is trying to send.
+     *  @param token The token this branch is trying to send.
      *  @exception IllegalActionException If the channel has more
      *   than one receiver or if the receiver is not of type CSPReceiver.
      */
     public ConditionalSend(boolean guard, IOPort port, int channel,
-            int branchID, Token t) throws IllegalActionException {
+            int branchID, Token token) throws IllegalActionException {
         super(guard, port, branchID);
         Receiver[][] receivers;
         try {
@@ -160,7 +160,7 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
         } finally {
             port.workspace().doneReading();
         }
-        setToken(t);
+        setToken(token);
     }
 
     ///////////////////////////////////////////////////////////////////

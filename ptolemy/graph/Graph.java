@@ -578,7 +578,7 @@ public class Graph implements Cloneable {
 
     /** Return the weight of a given edge in the graph given the edge label.
      *
-     *  @param edge The edge label.
+     *  @param label The edge label.
      *  @return The weight of the edge.
      *  @exception IndexOutOfBoundsException If the label is
      *  not valid.
@@ -923,7 +923,7 @@ public class Graph implements Cloneable {
 
     /** Return the weight of a given node in the graph given the node label.
      *
-     *  @param node The node label.
+     *  @param label The node label.
      *  @return The weight of the node.
      *  @exception IndexOutOfBoundsException If the label is
      *  not valid.
@@ -1059,7 +1059,6 @@ public class Graph implements Cloneable {
     }
 
     /** Return the number of self loop edges in this graph.
-     *  @param node The node.
      *  @return The number of self loop edges.
      */
     public int selfLoopEdgeCount() {
@@ -1114,7 +1113,8 @@ public class Graph implements Cloneable {
      *  {@link ptolemy.graph.Graph#_emptyGraph()}.
      *  Derived classes that do not have zero-argument constructors may
      *  need to override this method to properly initialize the subgraph.
-     *  @param nodes The collection of nodes; each element is a {@link Node}.
+     *  @param collection The collection of nodes; each element
+     *  is a {@link Node}.
      *  @return The induced subgraph.
      *  @exception GraphElementException If the collection contains a node
      *  that is not in this graph.
@@ -1151,9 +1151,9 @@ public class Graph implements Cloneable {
      *  In derived classes, this
      *  method returns the same type of graph as is returned by
      *  {@link ptolemy.graph.Graph#_emptyGraph()}.
-     *  @param nodes The subset of nodes; each element is an instance
+     *  @param nodeCollection The subset of nodes; each element is an instance
      *  of {@link Node}.
-     *  @param edges The subset of edges. Each element is an instance
+     *  @param edgeCollection The subset of edges. Each element is an instance
      *  of {@link Edge}.
      *  @exception GraphElementException If the argument collections contain
      *  a node or edge that is not in this graph.

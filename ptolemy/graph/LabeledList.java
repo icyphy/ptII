@@ -316,7 +316,7 @@ public class LabeledList implements List {
      * Elements that have higher-valued
      * labels than this element will have their labels reduced in value
      * by one. All other element labels will remain unchanged.
-     * @param element The specified label.
+     * @param label The specified label.
      * @return The element that is removed.
      * @exception IndexOutOfBoundsException If there is no element with
      * the specified label.

@@ -500,7 +500,6 @@ public class Complex implements Cloneable, Serializable {
      *  or <em>e<sup>z</sup></em>,
      *  where <code>z</code> is this complex number.
      *
-     *  @param z A complex exponent.
      *  @return A new complex number with value equal to the exponential
      *  of this complex number.
      */

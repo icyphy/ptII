@@ -111,7 +111,7 @@ public abstract class ConditionalBranch {
      *   represented by this object.
      *  @param port The IOPort that contains the channel to
      *   try an communicate through.
-     *  @param branch The identification number assigned to this branch
+     *  @param branchID The identification number assigned to this branch
      *   upon creation by the CSPActor.
      *  @exception IllegalActionException If the actor that contains
      *   the port is not of type CSPActor.

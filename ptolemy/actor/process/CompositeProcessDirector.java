@@ -147,7 +147,7 @@ public class CompositeProcessDirector extends ProcessDirector {
      *  NullPointerException will be thrown. If the name argument is null,
      *  then the name is set to the empty string. Increment the version
      *  number of the workspace.
-     *  @param workspace Object for synchronization and version tracking
+     *  @param container The container.
      *  @param name Name of this director.
      *  @exception IllegalActionException If the name contains a period,
      *   or if the director is not compatible with the specified container.

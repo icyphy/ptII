@@ -419,7 +419,7 @@ public class ComplexMatrixMath {
      *  for a (m, n) matrix :
      *  (0, 0), (0, 1), (0, 2), ... , (0, n-1), (1, 0), (1, 1), ..., (m-1)(n-1)
      *
-     *  @param A matrix of complex numbers.
+     *  @param matrix A matrix of complex numbers.
      *  @return A new array of complex numbers filled with
      *  the contents of the matrix.
      */
@@ -480,7 +480,7 @@ public class ComplexMatrixMath {
     /** Return a new matrix that is formed by taking the imaginary parts of the
      *  complex numbers in the argument matrix.
      *
-     *  @param array A matrix of complex numbers.
+     *  @param matrix A matrix of complex numbers.
      *  @return A new matrix of doubles from the imaginary parts
      *  of <i>matrix</i>.
      */
@@ -911,7 +911,7 @@ public class ComplexMatrixMath {
     /** Return a new matrix that is formed by taking the real parts of the
      *  complex numbers in the argument matrix.
      *
-     *  @param array An matrix of complex numbers.
+     *  @param matrix An matrix of complex numbers.
      *  @return A new matrix of the double coefficients of the complex
      *  numbers of <i>matrix</i>.
      */

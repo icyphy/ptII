@@ -86,7 +86,7 @@ public abstract class SizedMatrixType extends StructuredType
 
     /** Determine if the argument represents the same MatrixType as this
      *  object.
-     *  @param type A Type.
+     *  @param object A Type.
      *  @return True if the argument type is a matrix type representing the
      *  same class, with the same number of rows and columns.
      */

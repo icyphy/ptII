@@ -101,7 +101,7 @@ public class PlotTableauFrame extends TableauFrame {
      *  contains an instance of Plot. After constructing this, it is necessary
      *  to call setVisible(true) to make the plot appear.
      *  @param tableau The tableau where the window is placed.
-     *  @param plotArg the plot object to put in the frame, or null to create
+     *  @param plotBox the plot object to put in the frame, or null to create
      *   an instance of Plot.
      */
     public PlotTableauFrame(Tableau tableau, PlotBox plotBox) {
