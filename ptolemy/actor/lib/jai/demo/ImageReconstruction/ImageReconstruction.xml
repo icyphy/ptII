@@ -20,7 +20,7 @@
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:darkgray">Author: James Yeh, Christopher Brooks</text></svg></configure>
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:darkgray">Authors: James Yeh, Christopher Hylands Brooks</text></svg></configure>
         </property>
         <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -36,13 +36,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 370.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {104, 129, 815, 509}, maximized = false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {76, 129, 864, 509}, maximized = false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[649, 400]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{288.8222064393939, 201.4012784090909}">
     </property>
     <property name="annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Read in two images, combine them, recover one.">
@@ -234,24 +234,24 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 340.0]">
         </property>
     </entity>
-    <entity name="Recoverd Camera Image Display" class="ptolemy.actor.lib.image.ImageDisplay">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {559, 68, 264, 304}, maximized = false}">
+    <entity name="Recoverd Helen Image Display" class="ptolemy.actor.lib.image.ImageDisplay">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {380, 232, 264, 304}, maximized = false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[256, 256]">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 340.0]">
         </property>
     </entity>
-    <entity name="Original Camera Image Display" class="ptolemy.actor.lib.image.ImageDisplay">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {380, 232, 264, 304}, maximized = false}">
+    <entity name="Original Helen Image Display" class="ptolemy.actor.lib.image.ImageDisplay">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {727, 262, 264, 304}, maximized = false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[256, 256]">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 265.0]">
         </property>
     </entity>
-    <entity name="Original Bridge Image Display" class="ptolemy.actor.lib.image.ImageDisplay">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {380, 232, 264, 304}, maximized = false}">
+    <entity name="Original Ptolemy Image Display" class="ptolemy.actor.lib.image.ImageDisplay">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {175, 174, 264, 304}, maximized = false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[256, 256]">
         </property>
@@ -259,11 +259,11 @@
         </property>
     </entity>
     <entity name="Combined Image Display" class="ptolemy.actor.lib.image.ImageDisplay">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {576, 162, 264, 304}, maximized = false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {652, 8, 264, 304}, maximized = false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[256, 256]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{465.0, 370.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 375.0]">
         </property>
     </entity>
     <entity name="JAIBandCombine2" class="ptolemy.actor.lib.jai.JAIBandCombine">
@@ -315,7 +315,7 @@
         </vertex>
     </relation>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[475.0, 295.0]">
+        <vertex name="vertex1" value="{475.0, 295.0}">
         </vertex>
     </relation>
     <relation name="relation12" class="ptolemy.actor.TypedIORelation">
@@ -351,9 +351,9 @@
     <link port="JAIDataConvert.output" relation="relation11"/>
     <link port="JAICrop.input" relation="relation11"/>
     <link port="JAICrop.output" relation="relation12"/>
-    <link port="Recoverd Camera Image Display.input" relation="relation12"/>
-    <link port="Original Camera Image Display.input" relation="relation2"/>
-    <link port="Original Bridge Image Display.input" relation="relation"/>
+    <link port="Recoverd Helen Image Display.input" relation="relation12"/>
+    <link port="Original Helen Image Display.input" relation="relation2"/>
+    <link port="Original Ptolemy Image Display.input" relation="relation"/>
     <link port="Combined Image Display.input" relation="relation9"/>
     <link port="JAIBandCombine2.input" relation="relation13"/>
     <link port="JAIBandCombine2.output" relation="relation14"/>
