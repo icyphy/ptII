@@ -265,7 +265,16 @@ public final class Manager extends NamedObj implements Runnable {
                 "Attempted to call finish on an executing manager with no" +
                 " associated model");
         container.stopFire();
-        resume();
+
+	// Since Manager.resume() is synchronized, start a thread
+	// to call resume() in order to avoid deadlock
+	Thread resumeThread = new PtolemyThread( new Runnable() {
+	    public void run() {
+		resume();
+	    }
+	});
+	resumeThread.start();
+
     }
 
     /** Return the top-level composite actor for which this manager
@@ -372,10 +381,12 @@ public final class Manager extends NamedObj implements Runnable {
             if (_container.prefire()) {
                 _debug(getName() + ": fire the system.");
                 _container.fire();
+		_debug(getName() + ": postfire the system.");
                 result = _container.postfire();
             }
             _debug(getName() + ": finish one iteration, returning " + result);
-        } finally {
+        } 
+	finally {
             workspace().setReadOnly(false);
             workspace().doneReading();
         }
@@ -390,9 +401,11 @@ public final class Manager extends NamedObj implements Runnable {
      *  @param ex The exception.
      */
     public void notifyListenersOfException(Exception ex) {
-        _debug(ex.getMessage());
+	String errorMessage = new String("Exception Caught:" + ex.getClass());
+	errorMessage += "(" + ex.getMessage() + ")";
+        _debug(errorMessage);
         if (_executionListeners == null) {
-            System.err.println(ex.getMessage());
+            System.err.println(errorMessage);
         } else {
             Enumeration listeners = _executionListeners.elements();
             while(listeners.hasMoreElements()) {
@@ -534,9 +547,10 @@ public final class Manager extends NamedObj implements Runnable {
 	}
     }
 
-    /** If the model is paused, resume execution.  This method must be called
-     *  from a different thread than that controlling the execution, since
-     *  the thread controlling the execution is suspended.
+    /** If the model is paused, resume execution.  This method must
+     *  be called from a different thread than that controlling the 
+     *  execution, since the thread controlling the execution is 
+     *  suspended.
      */
     public synchronized void resume() {
         if(_state == PAUSED) {
