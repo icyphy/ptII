@@ -66,6 +66,7 @@ import soot.toolkits.graph.Block;
 import soot.Value;
 import soot.Type;
 import soot.IntType;
+import soot.BooleanType;
 
 //////////////////////////////////////////////////////////////////////////
 //// CircuitCreator
@@ -153,11 +154,16 @@ public class CircuitGenerator {
 		ParameterRef pr = (ParameterRef) nweight;
 		Type t = pr.getType();
 		// Currently only support IntType
-		if (!(t instanceof IntType))
+		int bits=0;
+		if (t instanceof IntType)
+		    bits = 32;
+		else if (t instanceof BooleanType)
+		    bits = 1;
+		else
 		    _unsupportedOperation(t);
 		int index = pr.getIndex();
 		// Create wire for parameter
-		Wire param = createPrimaryInput(new String("i"+index),32);
+		Wire param = createPrimaryInput(new String("i"+index),bits);
 		wires.put(node,param);
 	    } else if (nweight instanceof BinopExpr) {
 		// get two nodes coming into this op
@@ -310,17 +316,21 @@ public class CircuitGenerator {
 	    System.exit(1);
 	}
 	soot.SootMethod testMethod = testClass.getMethodByName(methodname);
-	soot.Body body = testMethod.retrieveActiveBody();
-	soot.toolkits.graph.BriefBlockGraph bbgraph = 
-	    new soot.toolkits.graph.BriefBlockGraph(body);
-	Block firstBlock = (Block) bbgraph.getBlocks().get(0);
-	System.out.println(firstBlock);
 
 	CircuitGenerator cg = new CircuitGenerator();
 	try {
+	    ConditionalControlCompactor.compact(testMethod);
+	    soot.Body body = testMethod.retrieveActiveBody();
+	    soot.toolkits.graph.BriefBlockGraph bbgraph = 
+		new soot.toolkits.graph.BriefBlockGraph(body);
+	    Block firstBlock = (Block) bbgraph.getBlocks().get(0);
+	    System.out.println(firstBlock);
 	    cg.firstBasicBlockHardware(firstBlock);
 	} catch (JHDLUnsupportedException e) {
 	    System.err.println(e);
+	    System.exit(1);
+	} catch (IllegalActionException f) {
+	    System.err.println(f);
 	    System.exit(1);
 	}
 

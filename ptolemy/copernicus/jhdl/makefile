@@ -57,6 +57,10 @@ JSRCS = \
 	RegisterDelay.java \
 	BlockDataFlowGraph.java \
 	BlockControlFlowGraph.java \
+	CircuitGenerator.java \
+	DominatorHashMap.java \
+	Region.java \
+	Interval.java \
 	ConditionalControlCompactor.java
 
 OTHER_FILES_TO_BE_JARED = \

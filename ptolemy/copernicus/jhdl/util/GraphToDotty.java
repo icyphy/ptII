@@ -43,6 +43,18 @@ public abstract class GraphToDotty {
     }
  
     /**
+     * Print a .dot file header
+     **/
+    public static String header(String creatorName, String graphName) {
+	StringBuffer sb = new StringBuffer();
+	sb.append("//Dotfile created by "+creatorName+"\r\n");
+	sb.append("digraph "+graphName+" {\r\n");
+	sb.append("\tsize=\"8,11\"\r\n");
+	sb.append("\t// Vertices\r\n");
+	return sb.toString();
+    }
+
+    /**
      * Converts all the special characters in <code>str</code> (like newlines
      * and quotes) to escape sequences (like \n)
      *

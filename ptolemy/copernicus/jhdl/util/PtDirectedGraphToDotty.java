@@ -61,9 +61,7 @@ public class PtDirectedGraphToDotty  extends GraphToDotty {
 	int count=0;
 	HashMap hm=new HashMap();
 	StringBuffer sb = new StringBuffer();
-	sb.append("//Dotfile created by PtDirectedGraphToDotty\r\n");
-	sb.append("digraph "+ename+" {\r\n");
-	sb.append("\t// Vertices\r\n");
+	sb.append(header("PtDirectedGraphToDotty",ename));
 	for(Iterator nodes = g.nodes().iterator(); nodes.hasNext();) {
 	    Node source = (Node)nodes.next();
 	    String name="v" + count++;

@@ -173,6 +173,32 @@ public class test1 extends TypedAtomicActor {
 	    d = 4;	    
 	}
     }
+    public void method16(int b, int c) {
+	int d=0;
+	if (b < 4 || b > 10) {
+	    d = 2;
+	    if (b == 9)
+		d = 5;
+	} else {
+	    d = 4;	    
+	}
+    }
+
+    /** If-Else Control Flow (no Boolean expressions) **/
+    public void method17(int b) {
+	int d=0;
+	if (b < 4) {
+	    if (b==3) {
+		d += b;
+	    } else 
+		d -= b;
+	} else {
+	    if (b > 7)
+		d -= b;
+	    else
+		d += b;
+	}
+    }
 
     /** tableswitch expression Control Flow **/
     public void method20(int b) {
