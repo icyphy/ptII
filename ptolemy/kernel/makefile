@@ -44,10 +44,12 @@ include $(CONFIG)
 DIRS = 		test doc
 
 # Used to build zip files
-JPACKAGE = 	pt/kernel
+JPACKAGE = 	pt.kernel
+JPACKAGE_DIR = 	pt/kernel
 JVERSION =	1.0
 JDIST =		$(JPACKAGE)$(JVERSION)
 JZIP =		pt/kernel/pt.kernel.zip
+JARFILE = 	$(JPACKAGE).jar
 
 CLASSPATH = ../..
 
@@ -86,7 +88,7 @@ JCLASS = $(JSRCS:%.java=%.class)
 LIB = dummylib
 
 all: jclass
-install: jclass javadocs
+install: jclass javadocs $(JARFILE)
 docs: javadocs
 
 depend:
