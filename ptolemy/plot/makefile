@@ -86,7 +86,7 @@ JCLASS1_1 = \
 
 JCLASS = $(JCLASS1_0) $(JCLASS1_1)
 
-all: $(EXTRA_SRCS) jclass 
+all: $(EXTRA_SRCS) jclass $(JZIP)
 	chmod a+x pxgraph testpxgraph
 install: $(EXTRA_SRCS) jclass javadocs $(JZIP) 
 	chmod a+x pxgraph testpxgraph
