@@ -150,7 +150,7 @@ public class RecordToken extends Token {
                 "in RecordType.");
     }
 
-    /** Return true if the argument is an instnace of RecordToken with the
+    /** Return true if the argument is an instance of RecordToken with the
      *  same set of labels and the corresponding fields are equal.
      *  @param object An instance of Object.
      *  @return True if the argument is an instance of RecordToken with the

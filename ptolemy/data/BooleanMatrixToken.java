@@ -167,7 +167,7 @@ public class BooleanMatrixToken extends MatrixToken {
 		"BooleanMatrixToken.");
     }
 
-    /** Return true if the argument is an instnace of BooleanMatrixToken
+    /** Return true if the argument is an instance of BooleanMatrixToken
      *  of the same dimensions and the corresponding elements of the matrices
      *  are equal.
      *  @param object An instance of Object.

@@ -257,7 +257,7 @@ public class IntMatrixToken extends MatrixToken {
         return IntegerMatrixMath.toDoubleMatrix(_value);
     }
 
-    /** Return true if the argument is an instnace of IntMatrixToken
+    /** Return true if the argument is an instance of IntMatrixToken
      *  of the same dimensions and the corresponding elements of the matrices
      *  are equal.
      *  @param object An instance of Object.

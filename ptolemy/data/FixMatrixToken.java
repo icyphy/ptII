@@ -215,7 +215,7 @@ public class FixMatrixToken extends MatrixToken {
 		"FixMatrixToken.");
     }
 
-    /** Return true if the argument is an instnace of FixMatrixToken
+    /** Return true if the argument is an instance of FixMatrixToken
      *  of the same dimensions and the corresponding elements of the matrices
      *  are equal.
      *  @param object An instance of Object.

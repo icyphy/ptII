@@ -238,7 +238,7 @@ public class DoubleMatrixToken extends MatrixToken {
         return DoubleMatrixMath.allocCopy(_value);
     }
 
-    /** Return true if the argument is an instnace of DoubleMatrixToken
+    /** Return true if the argument is an instance of DoubleMatrixToken
      *  of the same dimensions and the corresponding elements of the matrices
      *  are equal.
      *  @param object An instance of Object.

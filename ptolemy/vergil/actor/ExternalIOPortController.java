@@ -162,7 +162,7 @@ public class ExternalIOPortController extends AttributeController {
 
         /** Render a port.  If the argument is an instance of Location,
          *  then render the port that is the container of that location.
-         *  If the argument is an instnace of _GENERIC_INPUT,
+         *  If the argument is an instance of _GENERIC_INPUT,
          *  _GENERIC_OUTPUT, or _GENERIC_INOUT, then render an input,
          *  output, or inout port with no name.  If the argument is null,
          *  then render a port that is neither an input nor an output.

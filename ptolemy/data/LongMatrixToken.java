@@ -222,7 +222,7 @@ public class LongMatrixToken extends MatrixToken {
 		"LongMatrixToken.");
     }
 
-    /** Return true if the argument is an instnace of LongMatrixToken
+    /** Return true if the argument is an instance of LongMatrixToken
      *  of the same dimensions and the corresponding elements of the matrices
      *  are equal.
      *  @param object An instance of Object.
