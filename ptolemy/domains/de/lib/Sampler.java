@@ -133,9 +133,9 @@ public class Sampler extends DETransformer {
             trigger.get(0);
             int widthOfInputs = input.getWidth();
             int widthOfOutputs = output.getWidth();
-            int n = Math.min(win, widthOfOutputs);
-            if (_lastInputs == null || _lastInputs.length != win) {
-                _lastInputs = new Token[win];
+            int n = Math.min(widthOfInputs, widthOfOutputs);
+            if (_lastInputs == null || _lastInputs.length != widthOfInputs) {
+                _lastInputs = new Token[widthOfInputs];
             }
             for (int i = 0; i < n; i++) {
                 while (input.hasToken(i)) {
@@ -149,7 +149,7 @@ public class Sampler extends DETransformer {
             }
             // Consume tokens in extra input channels so they
             // don't get accumulated.
-            for (int i = n; i < win; i++) {
+            for (int i = n; i < widthOfInputs; i++) {
                 while (input.hasToken(i)) {
                     input.get(i);
                 }
