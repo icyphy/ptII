@@ -23,6 +23,8 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
+@ProposedRating Red (cxh@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib;
@@ -56,7 +58,7 @@ one entry in the array with the minimum value, then the index of the
 first such entry is what is produced.
 
 @author Mark Oliver and Edward A. Lee
-@version $ID: ArrayMinimum.java,v0.1 2003/05/19
+@version $Id$
 */
 
 public class ArrayMinimum extends Transformer {
