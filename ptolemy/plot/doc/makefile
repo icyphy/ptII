@@ -39,7 +39,17 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 EXTRA_SRCS = \
-	index.htm
+	acks.htm \
+	body.htm \
+	buttons.htm \
+	changes.htm \
+	index.htm \
+	install.htm \
+	main.htm \
+	ptplotfaq.htm \
+	thirdparty.htm \
+	toc.htm \
+	troubleshooting.htm
 
 # Files or directories that are present, but that 'make checkjunk'
 # should not complain about
