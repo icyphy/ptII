@@ -105,8 +105,8 @@ public class TclShellEffigy extends Effigy {
     private void _init() {
         _model = new NamedObj();
         try {
-            _model.setName("Expression");
-            identifier.setExpression("Expression Evaluator");
+            _model.setName("Tcl");
+            identifier.setExpression("Tcl Evaluator");
         } catch (KernelException ex) {
             throw new InternalErrorException(ex);
         }
