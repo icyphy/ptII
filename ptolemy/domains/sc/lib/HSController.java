@@ -138,6 +138,10 @@ public class HSController extends SCController {
 
         // execute the transition actions
         _takenTransition.executeTransitionActions();
+	Actor actor = currentRefinement();
+	if (actor != null) {
+	    actor.postfire();
+        }
 
         if (_takenTransition.isInitEntry() || _currentState.isInitEntry()) {   
             // Initialize the refinement.
