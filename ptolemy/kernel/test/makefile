@@ -47,8 +47,7 @@ TCL_SRCS = \
 	testDefs.tcl \
 	testEnums.tcl
 
-JSRCS = \
-	ParamTest.java
+JSRCS = 
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
