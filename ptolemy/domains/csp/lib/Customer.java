@@ -80,15 +80,16 @@ public class Customer extends CSPActor {
             while (count < 100 ) {
                 // exponential distribution parameterised by _rate.
                 interval = Math.exp(-(rand.nextDouble())*_rate);
-                delay(interval);
-                //Thread.currentThread().sleep((long)(rand.nextDouble()*1000));
+                interval = (int)(interval*1000);
+                delay(interval/1000);
                 Token t = new IntToken(count);
-                //System.out.println(getName() + " sending...");
                 output.send(0,t);
-                System.out.println(getName() + " sent Token: " + t.toString());
+                System.out.println(getName() + " sent: " +
+                        t.toString());
                 count++;
             }
-            System.out.println("CSP(" + getName() + "):finished normally.");
+            System.out.println("Customer(" + getName() + 
+                    "):finished normally.");
             _again = false;
             return;
         } catch (IllegalActionException ex) {
