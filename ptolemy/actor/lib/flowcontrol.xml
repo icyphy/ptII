@@ -21,7 +21,6 @@
   <entity name="SampleDelay" class="ptolemy.domains.sdf.lib.SampleDelay"/>
   <entity name="Select" class="ptolemy.actor.lib.Select"/>
   <entity name="Sequencer" class="ptolemy.actor.lib.Sequencer"/>
-  <entity name="SingleTokenDistributor" class="ptolemy.actor.lib.SingleTokenDistributor"/>
   <entity name="Sleep" class="ptolemy.actor.lib.Sleep"/>
   <entity name="Switch" class="ptolemy.actor.lib.Switch"/>
   <entity name="Synchronizer" class="ptolemy.actor.lib.Synchronizer"/>

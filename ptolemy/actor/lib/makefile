@@ -132,7 +132,6 @@ JSRCS = \
 	Sequencer.java \
 	SequenceSource.java \
 	SequentialClock.java \
-	SingleTokenDistributor.java \
 	Sink.java \
 	Sleep.java \
 	Source.java \
