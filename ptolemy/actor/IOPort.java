@@ -150,16 +150,16 @@ public class IOPort extends ComponentPort {
     }
 
     /** Return a description of the object specified by verbosity.
-     *  If versobity = RECEIVERS(7), then returns a String containing
+     *  If verbosity = RECEIVERS(7), then returns a String containing
      *  the receivers of this port. The returned String has the same 
      *  format as the Receivers array, ie. each row corresponding to 
      *  a channel, and all the elements in a row are receiving the 
      *  clone of the same token. Each element in the receivers array 
      *  has the form: container's_full_name.receiver_type, 
-     *  e.g. e0.p0.Mailbox. Every null element in the array is 
+     *  e.g. e0.p0.pt.actors.Mailbox. Every null element in the array is 
      *  is a string "null" in the returned String. 
      *
-     *  If versobity = REMOTE_RECEIVERS(7), then returns a String 
+     *  If verbosity = REMOTE_RECEIVERS(8), then returns a String 
      *  containing the remote receivers of this port.
      *  The returned String has the same 
      *  format as the remoteReceivers array, ie. each row corresponding to 
@@ -167,9 +167,9 @@ public class IOPort extends ComponentPort {
      *  receiving the 
      *  clone of the same token. Each element in the receivers array 
      *  has the form: container's_full_name.receiver_type, 
-     *  e.g. e0.p0.Mailbox. 
+     *  e.g. e0.p0.pt.acotrs.Mailbox. 
      * 
-     *  FIXME: The information of getReceivers(IORelation) and 
+     *  NOTE: The information of getReceivers(IORelation) and 
      *  getRemoteReceivers(IORelation) is not included.
      *  @param verbosity The level of verbosity.
      */
@@ -185,23 +185,23 @@ public class IOPort extends ComponentPort {
                 break;
             default :
                 return super.description(verbosity);
-            }
-            if (recvrs == null) {
-                return "null\n";
-            }
-            for (int i = 0; i<recvrs.length; i++) {
-                if(recvrs[i] == null) {
-                    results += "null";
-                } else {
-                    for (int j = 0; j< recvrs[i].length; j++) {
-                        results = results.concat(
-                            (recvrs[i][j].getContainer()).getFullName() +
-                            "." + (recvrs[i][j].getClass()).getName() +
-                            " ");
-                    }
+        }
+        if (recvrs == null) {
+            return "null\n";
+        }
+        for (int i = 0; i<recvrs.length; i++) {
+            if(recvrs[i] == null) {
+                results += "null";
+            } else {
+                for (int j = 0; j< recvrs[i].length; j++) {
+                    results = results.concat(
+                        (recvrs[i][j].getContainer()).getFullName() +
+                        "." + (recvrs[i][j].getClass()).getName() +
+                        " ");
                 }
-                results += "\n";
             }
+            results += "\n";
+        }
         return results; 
     }
 
@@ -629,7 +629,8 @@ public class IOPort extends ComponentPort {
     }
 
     /** Override parent method to ensure validity of the width of the port.
-     *  If the given relation is already linked to this port or the
+     *  If the given relation is already linked to this port from the 
+     *  inside or the outside, or the
      *  argument is null, do nothing.
      *  Otherwise, create a new link or throw an exception if the link is
      *  invalid.  If this port is not a multiport, then the width of the
@@ -648,7 +649,7 @@ public class IOPort extends ComponentPort {
         synchronized(workspace()) {
             _checkRelation(relation);
             IORelation rel = (IORelation) relation;
-            if(!isLinked(rel)) {
+            if(!isLinked(rel) && !isInsideLinked(rel)) {
                 // Check for existing inside or outside links
                 boolean insidelink = _outside(relation.getContainer());
                 if(!isMultiport()) {
@@ -672,6 +673,16 @@ public class IOPort extends ComponentPort {
                             throw new IllegalActionException(this, rel,
                             "Attempt to link a second bus relation with " +
                             "unspecified width to the inside of a port.");
+                        }
+                    } else {
+                        Enumeration relations = linkedRelations();
+                        while (relations.hasMoreElements()) {
+                            IORelation r = (IORelation)relations.nextElement();
+                            if (!r.widthFixed()) {
+                                throw new IllegalActionException(this, rel,
+                                "Attempt to link a second bus relation with " +
+                                "unspecified width to the outside of a port.");
+                            }
                         }
                     }
                 }
@@ -852,10 +863,11 @@ public class IOPort extends ComponentPort {
     // then it will be considered an inside or output port respectively.
     // This determination is cached, so we need variables to track the
     // validity of the cache.
+    // 'transient' means that the variable will not be serialized.
     private boolean _isinput, _isoutput;
-    private boolean _insideinput, _insideoutput;
-    private long _insideinputversion = -1;
-    private long _insideoutputversion = -1;
+    private transient boolean _insideinput, _insideoutput;
+    private transient long _insideinputversion = -1;
+    private transient long _insideoutputversion = -1;
 
     // Indicate whether the port is a multiport. Default false.
     private boolean _ismultiport = false;
@@ -863,9 +875,11 @@ public class IOPort extends ComponentPort {
     // The cached width of the port, which is the sum of the widths of the
     // linked relations.  The default 0 because initially there are no
     // linked relations.  It is set or updated when getWidth() is called.
-    private int _width = 0;
+    // 'transient' means that the variable will not be serialized.
+    private transient int _width = 0;
     // The workspace version number on the last update of the _width.
-    private long _widthversion = -1;
+    // 'transient' means that the variable will not be serialized.
+    private transient long _widthversion = -1;
 
     // A cache of the deeply connected Receivers, and the versions.
     // 'transient' means that the variable will not be serialized.
