@@ -30,10 +30,10 @@
 # 						COPYRIGHTENDKEY
 
 # Location of this directory, relative to the Ptolemy II directory
-ME =		ptolemy/apps/superb/actor/lib/test
+ME =		ptolemy/actor/lib/string/test
 
 # Root of the Ptolemy II directory
-ROOT =		../../../../../..
+ROOT =		../../../../..
 
 CLASSPATH =	$(ROOT)
 
