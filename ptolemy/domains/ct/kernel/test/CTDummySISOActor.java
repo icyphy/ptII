@@ -23,7 +23,7 @@
  
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-@ProposedRating Green (yourname@eecs.berkeley.edu)
+@ProposedRating Red (cxh@eecs.berkeley.edu)
 @AcceptedRating Green (reviewmoderator@eecs.berkeley.edu)
 
 */
