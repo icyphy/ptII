@@ -57,136 +57,136 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 public class NavigableActorGraphTableau extends Tableau {
 
-	/** Create a tableau in the specified workspace.
-	 *  @param workspace The workspace.
-	 */
-	public NavigableActorGraphTableau(Workspace workspace)
-		throws IllegalActionException, NameDuplicationException {
-		super(workspace);
-	}
+        /** Create a tableau in the specified workspace.
+         *  @param workspace The workspace.
+         */
+        public NavigableActorGraphTableau(Workspace workspace)
+                throws IllegalActionException, NameDuplicationException {
+                super(workspace);
+        }
 
-	/** Create a tableau with the specified container and name, with
-	 *  no specified default library.
-	 *  @param container The container.
-	 *  @param name The name.
-	 */
-	public NavigableActorGraphTableau(PtolemyEffigy container, String name)
-		throws IllegalActionException, NameDuplicationException {
-		this(container, name, null);
-	}
+        /** Create a tableau with the specified container and name, with
+         *  no specified default library.
+         *  @param container The container.
+         *  @param name The name.
+         */
+        public NavigableActorGraphTableau(PtolemyEffigy container, String name)
+                throws IllegalActionException, NameDuplicationException {
+                this(container, name, null);
+        }
 
-	/** Create a tableau with the specified container, name, and
-	 *  default library.
-	 *  @param container The container.
-	 *  @param name The name.
-	 *  @param defaultLibrary The default library, or null to not specify one.
-	 */
-	public NavigableActorGraphTableau(
-		PtolemyEffigy container,
-		String name,
-		LibraryAttribute defaultLibrary)
-		throws IllegalActionException, NameDuplicationException {
+        /** Create a tableau with the specified container, name, and
+         *  default library.
+         *  @param container The container.
+         *  @param name The name.
+         *  @param defaultLibrary The default library, or null to not specify one.
+         */
+        public NavigableActorGraphTableau(
+                PtolemyEffigy container,
+                String name,
+                LibraryAttribute defaultLibrary)
+                throws IllegalActionException, NameDuplicationException {
 
-		super(container, name);
+                super(container, name);
 
-		if (container instanceof PtolemyEffigy) {
-			NamedObj model = container.getModel();
-			if (model == null) {
-				return;
-			}
-			if (!(model instanceof CompositeEntity)) {
-				throw new IllegalActionException(
-					this,
-					"Cannot graphically edit a model "
-						+ "that is not a CompositeEntity. Model is a "
-						+ model);
-			}
-			CompositeEntity entity = (CompositeEntity) model;
+                if (container instanceof PtolemyEffigy) {
+                        NamedObj model = container.getModel();
+                        if (model == null) {
+                                return;
+                        }
+                        if (!(model instanceof CompositeEntity)) {
+                                throw new IllegalActionException(
+                                        this,
+                                        "Cannot graphically edit a model "
+                                                + "that is not a CompositeEntity. Model is a "
+                                                + model);
+                        }
+                        CompositeEntity entity = (CompositeEntity) model;
 
-			NavigableActorGraphFrame frame =
-				new NavigableActorGraphFrame(entity, this, defaultLibrary);
-			setFrame(frame);
-			frame.setBackground(BACKGROUND_COLOR);
-		}
-	}
+                        NavigableActorGraphFrame frame =
+                                new NavigableActorGraphFrame(entity, this, defaultLibrary);
+                        setFrame(frame);
+                        frame.setBackground(BACKGROUND_COLOR);
+                }
+        }
 
-	/* (non-Javadoc)
-	 * @see ptolemy.actor.gui.Tableau#show()
-	 */
-	public void show() {
-		JFrame frame = getFrame();
-		if (frame != null) {
-			if (!frame.isVisible()) {
-				frame.pack();
-			}
-		}
-		SingleWindowApplication._mainFrame.selectTab(frame.getName());
-	}
+        /* (non-Javadoc)
+         * @see ptolemy.actor.gui.Tableau#show()
+         */
+        public void show() {
+                JFrame frame = getFrame();
+                if (frame != null) {
+                        if (!frame.isVisible()) {
+                                frame.pack();
+                        }
+                }
+                SingleWindowApplication._mainFrame.selectTab(frame.getName());
+        }
 
-	///////////////////////////////////////////////////////////////////
-	////                         private members                   ////
+        ///////////////////////////////////////////////////////////////////
+        ////                         private members                   ////
 
-	// The background color.
-	private static Color BACKGROUND_COLOR = new Color(0xe5e5e5);
+        // The background color.
+        private static Color BACKGROUND_COLOR = new Color(0xe5e5e5);
 
-	///////////////////////////////////////////////////////////////////
-	////                     public inner classes                  ////
+        ///////////////////////////////////////////////////////////////////
+        ////                     public inner classes                  ////
 
-	/** A factory that creates graph editing tableaux for Ptolemy models.
-	 */
-	public static class Factory extends TableauFactory {
+        /** A factory that creates graph editing tableaux for Ptolemy models.
+         */
+        public static class Factory extends TableauFactory {
 
-		/** Create an factory with the given name and container.
-		 *  @param container The container.
-		 *  @param name The name.
-		 *  @exception IllegalActionException If the container is incompatible
-		 *   with this attribute.
-		 *  @exception NameDuplicationException If the name coincides with
-		 *   an attribute already in the container.
-		 */
-		public Factory(NamedObj container, String name)
-			throws IllegalActionException, NameDuplicationException {
-			super(container, name);
-		}
+                /** Create an factory with the given name and container.
+                 *  @param container The container.
+                 *  @param name The name.
+                 *  @exception IllegalActionException If the container is incompatible
+                 *   with this attribute.
+                 *  @exception NameDuplicationException If the name coincides with
+                 *   an attribute already in the container.
+                 */
+                public Factory(NamedObj container, String name)
+                        throws IllegalActionException, NameDuplicationException {
+                        super(container, name);
+                }
 
-		/** Create a tableau in the default workspace with no name for the
-		 *  given Effigy.  The tableau will created with a new unique name
-		 *  in the given model effigy.  If this factory cannot create a tableau
-		 *  for the given effigy (perhaps because the effigy is not of the
-		 *  appropriate subclass) then return null.
-		 *  It is the responsibility of callers of this method to check the
-		 *  return value and call show().
-		 *
-		 *  @param effigy The model effigy.
-		 *  @return A new ActorGraphTableau, if the effigy is a
-		 *  PtolemyEffigy, or null otherwise.
-		 *  @exception Exception If an exception occurs when creating the
-		 *  tableau.
-		 */
-		public Tableau createTableau(Effigy effigy) throws Exception {
-			if (effigy instanceof NavigableEffigy) {
-				// First see whether the effigy already contains a RunTableau.
-				NavigableActorGraphTableau tableau =
-					(NavigableActorGraphTableau) effigy.getEntity(
-						"navigableGraphTableau");
-				if (tableau == null) {
-					// Check to see whether this factory contains a
-					// default library.
-					LibraryAttribute library =
-						(LibraryAttribute) getAttribute("_library",
-							LibraryAttribute.class);
-					tableau =
-						new NavigableActorGraphTableau(
-							(PtolemyEffigy) effigy,
-							"navigableGraphTableau",
-							library);
-				}
-				// Don't call show() here, it is called for us in
-				// TableauFrame.ViewMenuListener.actionPerformed()
-				return tableau;
-			} else {
-				return null;
-			}
-		}
-	}
+                /** Create a tableau in the default workspace with no name for the
+                 *  given Effigy.  The tableau will created with a new unique name
+                 *  in the given model effigy.  If this factory cannot create a tableau
+                 *  for the given effigy (perhaps because the effigy is not of the
+                 *  appropriate subclass) then return null.
+                 *  It is the responsibility of callers of this method to check the
+                 *  return value and call show().
+                 *
+                 *  @param effigy The model effigy.
+                 *  @return A new ActorGraphTableau, if the effigy is a
+                 *  PtolemyEffigy, or null otherwise.
+                 *  @exception Exception If an exception occurs when creating the
+                 *  tableau.
+                 */
+                public Tableau createTableau(Effigy effigy) throws Exception {
+                        if (effigy instanceof NavigableEffigy) {
+                                // First see whether the effigy already contains a RunTableau.
+                                NavigableActorGraphTableau tableau =
+                                        (NavigableActorGraphTableau) effigy.getEntity(
+                                                "navigableGraphTableau");
+                                if (tableau == null) {
+                                        // Check to see whether this factory contains a
+                                        // default library.
+                                        LibraryAttribute library =
+                                                (LibraryAttribute) getAttribute("_library",
+                                                        LibraryAttribute.class);
+                                        tableau =
+                                                new NavigableActorGraphTableau(
+                                                        (PtolemyEffigy) effigy,
+                                                        "navigableGraphTableau",
+                                                        library);
+                                }
+                                // Don't call show() here, it is called for us in
+                                // TableauFrame.ViewMenuListener.actionPerformed()
+                                return tableau;
+                        } else {
+                                return null;
+                        }
+                }
+        }
 }

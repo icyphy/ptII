@@ -44,69 +44,69 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 public class NavigationTreeModel extends EntityTreeModel {
 
-	public NavigationTreeModel(NamedObj root) {
-		super(root);
-	}
+        public NavigationTreeModel(NamedObj root) {
+                super(root);
+        }
 
-	/** Return true if the object is a leaf node.  In this base class,
-	 *  an object is a leaf node if it is not an instance of CompositeEntity.
-	 *  ATTENTION il se peut qu'il faille ne plus faire se test lors de 
-	 * l'utilisation de bibliothèque.
-	 *  @return True if the node has no children.
-	 */
-	public boolean isLeaf(Object object) {
-		if (!(object instanceof CompositeEntity))
-			return true;
-		// NOTE: The following is probably not a good idea because it
-		// will force evaluation of the contents of a Library prematurely.
-		else if (((CompositeEntity) object).numEntities() == 0)
-			return true;
-		return false;
-	}
-	
-	//private members
-	private List listeners = new ArrayList();
-	
-	/**
-	 * Register a listener
-	 * @param tree
-	 */
-	public void register(NavigationPTree tree){
-		listeners.add(tree);
-	}
-	
-	/**
-	 * remove a listener
-	 * @param tree
-	 * @return wether the tree was in the listeners or not
-	 */
-	public boolean unRegister(NavigationPTree tree){
-		return listeners.remove(tree);	
-	}
+        /** Return true if the object is a leaf node.  In this base class,
+         *  an object is a leaf node if it is not an instance of CompositeEntity.
+         *  ATTENTION il se peut qu'il faille ne plus faire se test lors de 
+         * l'utilisation de bibliothèque.
+         *  @return True if the node has no children.
+         */
+        public boolean isLeaf(Object object) {
+                if (!(object instanceof CompositeEntity))
+                        return true;
+                // NOTE: The following is probably not a good idea because it
+                // will force evaluation of the contents of a Library prematurely.
+                else if (((CompositeEntity) object).numEntities() == 0)
+                        return true;
+                return false;
+        }
+        
+        //private members
+        private List listeners = new ArrayList();
+        
+        /**
+         * Register a listener
+         * @param tree
+         */
+        public void register(NavigationPTree tree){
+                listeners.add(tree);
+        }
+        
+        /**
+         * remove a listener
+         * @param tree
+         * @return wether the tree was in the listeners or not
+         */
+        public boolean unRegister(NavigationPTree tree){
+                return listeners.remove(tree);        
+        }
 
-	/**
-	 * set all listening PTree to the same path
-	 * @param obj
-	 */
-	public void setSelectedItem(TreePath path) {
-		for (Iterator it = listeners.iterator(); it.hasNext();) {
-			NavigationPTree aTree = (NavigationPTree) it.next();
-			aTree.setSelectionPath(path);
-		}
-	}
+        /**
+         * set all listening PTree to the same path
+         * @param obj
+         */
+        public void setSelectedItem(TreePath path) {
+                for (Iterator it = listeners.iterator(); it.hasNext();) {
+                        NavigationPTree aTree = (NavigationPTree) it.next();
+                        aTree.setSelectionPath(path);
+                }
+        }
 
-	/**
-	 * expand/collapse all the NavigationTree
-	 * @param aPath
-	 */
-	public void expandPath(TreePath aPath, boolean collapse) {
-		for (Iterator it = listeners.iterator(); it.hasNext();) {
-			NavigationPTree aTree = (NavigationPTree) it.next();
-			if (collapse){
-				aTree.collapsePath(aPath);
-			}else{
-				aTree.expandPath(aPath);
-			}
-		}
-	}
+        /**
+         * expand/collapse all the NavigationTree
+         * @param aPath
+         */
+        public void expandPath(TreePath aPath, boolean collapse) {
+                for (Iterator it = listeners.iterator(); it.hasNext();) {
+                        NavigationPTree aTree = (NavigationPTree) it.next();
+                        if (collapse){
+                                aTree.collapsePath(aPath);
+                        }else{
+                                aTree.expandPath(aPath);
+                        }
+                }
+        }
 }
