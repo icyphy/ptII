@@ -55,7 +55,8 @@ PTAUXALLJARS = \
 		icon/icon.jar \
 		kernel/kernel.jar \
 		debugger/debugger.jar \
-		toolbox/toolbox.jar
+		toolbox/toolbox.jar \
+		tree/tree.jar
 
 # All the .class files necessary to run a Vergil applet
 PTAUXALLJAR =	vergilApplet.jar
@@ -64,9 +65,7 @@ PTAUXALLJAR =	vergilApplet.jar
 PTCLASSALLJARS = \
 		$(PTAUXALLJARS) \
 		debugger/debugger.jar \
-		kernel/kernel.jar \
-		lib/lib.jar \
-		tree/tree.jar
+		lib/lib.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
