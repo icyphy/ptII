@@ -7,31 +7,53 @@
 Quick Tour
 </h1>
 The following links open Ptolemy models in Vergil.
-To run the models, select "Run Window" from the "View" menu.
+To run the models, follow the link, then select "Run Window"
+from the "View" menu.
 The diagrams are fully editable, so feel free to explore.
+The top-level parameters are the model are shown in the run window.
+Edit these to explore the models.  They can be edited while the
+models are running.
 <ul>
-<li><a href="demo/modulation.xml">Modulation of a sine wave in SDF</a>
-<br> This example illustrates hierarchical models, the Expression actor, live
-parameter editing, the FFT actor, and a scope-style display.
+<li><a href="demo/modulation.xml">Spectrum of a modulated sine wave</a>.
+<br> This example shows simple spectral estimation of the product
+of two sinusoids in noise.  It illustrates hierarchical models,
+the Expression actor, and the FFT actor.
 The Sinewave actors with the blue outline are hierarchical.
-Right click on the mouse and select "look inside" to see their refinement.
+Right click on them and select "look inside" to see their refinement.
 This model is build using the <i>synchronous dataflow</i> (SDF) domain,
 which statically schedules the firing of the actors.
-You can also use a <i>process networks</i> (PN) director,
-in which case each actor is executed in a separate Java thread.
-The PN domain is more flexible than SDF, but this flexibility comes
-with a noticable performance penalty.  To try this model in the PN
-domain, simply drag in a PN director from the director library.
+</br></li>
 
-<li>Continuous-time model</li>
+<li><a href="demo/eye.xml">Eye diagram of a PAM communications signal</a>.
+<br> This example shows a simple pulse-amplitude moduldation, physical
+layer communication system.  It illustrates live parameter editing and
+the scope style plotter.  To get documentation on any actor, right
+click on it, and select "Get Documentation."
+</br></li>
+
+<li><a href="demo/lorenz.xml">Lorenz attractor chaotic system</a>.
+<br> This example shows a nonlinear feedback system that exhibits
+chaotic behavior.  It illustrates the continuous-time (CT) domain,
+which uses an underlying solver for ordinary differential equations,
+the Expression actor, and the X-Y plotter.
+</br></li>
 
 <li>Hybrid system model.
 <br> This example illustrates the use of the finite-state-machine (FSM)
 domain together with another domain to get a <i>modal model</i>.
 A special case of modal models are <i>hybrid systems</i>, where FSM
 is combined with CT.</br></li>
+</br></li>
 
-<li>Three-dimensional graphics</li>
+<li><a href="../../domains/gr/demo/pendulum/pendulum.xml">
+Pendulum model</a>.
+<font color="red">NOTE: This model requires that you have
+installed Java 3D from Sun.</font>
+This example shows a continuous-time physical model of pendulum
+animated in the graphics (GR) domain, in which graphical components
+can be assembled and dynamically manipulated.  Note that clicking
+and dragging in the graphics window rotates the model.
+</br></li>
 
 <li>Discrete-event model</li>
 

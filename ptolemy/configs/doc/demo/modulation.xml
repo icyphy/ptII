@@ -3,18 +3,33 @@
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="modulation" class="ptolemy.actor.TypedCompositeActor">
     <property name="SDF1" class="ptolemy.domains.sdf.kernel.SDFDirector">
-        <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="64.0, 28.0">
         </property>
     </property>
-    <property name="carrierFrequency" class="ptolemy.data.expr.Parameter" value="1000">
+    <property name="carrierFrequency" class="ptolemy.data.expr.Parameter" value="2000">
     </property>
-    <property name="signalFrequency" class="ptolemy.data.expr.Parameter" value="300">
+    <property name="signalFrequency" class="ptolemy.data.expr.Parameter" value="500">
     </property>
     <property name="noiseStandardDeviation" class="ptolemy.data.expr.Parameter" value="0.2">
+    </property>
+    <property name="0:annotation1" class="ptolemy.kernel.util.Attribute">
+        <property name="_location" class="ptolemy.moml.Location" value="200.0, 40.0">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+           <svg>
+           <text x="20" style="font-size:14; font-family:sanserif; fill:blue" y="20">This model shows a simple periodogram spectral estimate of a modulated
+sinusoid in noise.  The top-level parameters control the carrier frequency,
+the signal frequency, and the noise level. Notice that the two peaks are
+centered at the carrier frequency, with their distance from the carrier
+given by the signal frequency. The sample rate is assumed to be 8kHz.</text>
+           </svg>
+           </configure>
+        </property>
     </property>
     <entity name="Gaussian6" class="ptolemy.actor.lib.Gaussian">
         <property name="seed" class="ptolemy.data.expr.Parameter" value="0">
@@ -82,45 +97,14 @@
             <property name="input"/>
         </port>
     </entity>
-    <entity name="SequenceScope5" class="ptolemy.actor.lib.gui.SequenceScope">
-        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-        <property name="xInit" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
-        <property name="xUnit" class="ptolemy.data.expr.Parameter" value="8000.0/256.0">
-        </property>
-        <property name="width" class="ptolemy.data.expr.Parameter" value="128">
-        </property>
-        <property name="persistence" class="ptolemy.data.expr.Parameter" value="128">
-        </property>
-        <property name="_location" class="ptolemy.moml.Location" value="563.0, 192.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <configure><?plotml
-<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
-"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
-<plot>
-<title></title>
-<xRange min="0.0" max="4000.0"/>
-<yRange min="-18.781227589021682" max="29.541833329147906"/>
-<wrap/>
-<default marks="pixels"/>
-</plot>?>
-        </configure>
-    </entity>
     <entity name="FFT1" class="ptolemy.domains.sdf.lib.FFT">
-        <property name="order" class="ptolemy.data.expr.Parameter" value="7">
+        <property name="order" class="ptolemy.data.expr.Parameter" value="8">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="277.0, 193.0">
         </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
             <property name="input"/>
-            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="128">
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="256">
             </property>
             <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
             </property>
@@ -133,7 +117,7 @@
             </property>
             <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
             </property>
-            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="128">
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="256">
             </property>
         </port>
     </entity>
@@ -161,6 +145,34 @@
             <property name="output"/>
         </port>
     </entity>
+    <entity name="SequencePlotter1" class="ptolemy.actor.lib.gui.SequencePlotter">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="xInit" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="xUnit" class="ptolemy.data.expr.Parameter" value="8000.0/256.0">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="569.0, 192.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <configure><?plotml
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>Spectrum</title>
+<xLabel>frequency</xLabel>
+<yLabel>dB</yLabel>
+<xRange min="0.0" max="4000.0"/>
+<yRange min="0.0" max="36.0"/>
+<noGrid/>
+</plot>?>
+        </configure>
+    </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
@@ -173,7 +185,7 @@
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="Gaussian6.output" relation="relation2"/>
     <link port="Sinewave1.output" relation="relation3"/>
@@ -182,11 +194,11 @@
     <link port="Expression1.signal" relation="relation4"/>
     <link port="Expression1.carrier" relation="relation3"/>
     <link port="Expression1.noise" relation="relation2"/>
-    <link port="SequenceScope5.input" relation="relation9"/>
     <link port="FFT1.input" relation="relation5"/>
     <link port="FFT1.output" relation="relation6"/>
     <link port="AbsoluteValue2.input" relation="relation6"/>
     <link port="AbsoluteValue2.output" relation="relation8"/>
     <link port="DB1.input" relation="relation8"/>
-    <link port="DB1.output" relation="relation9"/>
+    <link port="DB1.output" relation="relation7"/>
+    <link port="SequencePlotter1.input" relation="relation7"/>
 </entity>
