@@ -1405,14 +1405,14 @@ public class PlotBox extends Panel {
     ////                         protected variables               ////
 
     // The range of the data to be plotted.
-    protected double _yMax = 0, _yMin = 0, _xMax = 0, _xMin = 0;
+    protected transient double _yMax = 0, _yMin = 0, _xMax = 0, _xMin = 0;
 
     // The factor we pad by so that we don't plot points on the axes.
-    protected static final double _PADDING = 0.05;
+    protected transient static final double _PADDING = 0.05;
 
     // Whether the ranges have been given.
-    protected boolean _xRangeGiven = false;
-    protected boolean _yRangeGiven = false;
+    protected transient boolean _xRangeGiven = false;
+    protected transient boolean _yRangeGiven = false;
 
     // The minimum and maximum values registered so far, for auto ranging.
     protected double _xBottom = Double.MAX_VALUE;
@@ -1429,9 +1429,9 @@ public class PlotBox extends Panel {
     // Whether to draw a background grid.
     protected boolean _grid = true;
 
-    // Color of the background, settable from HTML.
+    /** @serial Color of the background, settable from HTML. */
     protected Color _background = Color.white;
-    // Color of the foreground, settable from HTML.
+    /** @serial Color of the foreground, settable from HTML. */
     protected Color _foreground = Color.black;
 
     // Derived classes can increment these to make space around the plot.
@@ -1440,12 +1440,13 @@ public class PlotBox extends Panel {
     protected int _rightPadding = 10;
     protected int _leftPadding = 10;
 
-    // The plot rectangle in pixels.
-    // The naming convention is: "_ulx" = "upper left x", where "x" is
-    // the horizontal dimension.
+    /** @serial The plot rectangle in pixels.
+     * The naming convention is: "_ulx" = "upper left x", where "x" is
+     * the horizontal dimension.
+     */
     protected int _ulx = 1 , _uly = 1, _lrx = 100, _lry = 100;
 
-    // Scaling used in plotting points.
+    /** @serial Scaling used in plotting points. */
     protected double _yscale = 1.0, _xscale = 1.0;
 
     // Indicator whether to use _colors
@@ -2127,66 +2128,72 @@ public class PlotBox extends Panel {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // The file to be opened.
+    /** @serial The file to be opened. */
     private String _filespec = null;
 
-    // The given X and Y ranges.
+    /** @serial The given X and Y ranges. */
     private double _xlowgiven, _xhighgiven, _ylowgiven, _yhighgiven;
 
-    // Set to true if we are reading in pxgraph format binary data.
-    // Deprecated use.
+    /** @serial Set to true if we are reading in pxgraph format binary data.
+     * @deprecated
+     */ 
     private boolean _binary = false;
 
-    // The range of the plot as labeled (multiply by 10^exp for actual range.
+    /** @serial The range of the plot as labeled
+     * (multiply by 10^exp for actual range.
+     */
     private double _ytickMax = 0.0, _ytickMin = 0.0,
         _xtickMax = 0.0 , _xtickMin = 0.0 ;
-    // The power of ten by which the range numbers should be multiplied.
+    /** @serial The power of ten by which the range numbers should
+     *  be multiplied.
+     */
     private int _yExp = 0, _xExp = 0;
 
-    // Scaling used in making tick marks
+    /** @serial Scaling used in making tick marks. */
     private double _ytickscale = 0.0, _xtickscale = 0.0;
 
-    // Font information.
+    /** @serial Font information. */
     private Font _labelfont = null, _superscriptfont = null,
         _titlefont = null;
+    /** @serial FontMetric information. */
     private FontMetrics _labelFontMetrics = null,
         _superscriptFontMetrics = null,
         _titleFontMetrics = null;
 
     // Used for log axes. Index into vector of axis labels.
-    private int _gridCurJuke = 0;
+    private transient int _gridCurJuke = 0;
 
     // Used for log axes.  Base of the grid.
-    private double _gridBase = 0.0;
+    private transient double _gridBase = 0.0;
 
     // An array of strings for reporting errors.
-    private String _errorMsg[];
+    private transient String _errorMsg[];
 
-    // The title and label strings.
+    /** @serial The title and label strings. */
     private String _xlabel, _ylabel, _title;
 
-    // Legend information.
-    private Vector _legendStrings = new Vector();
-    private Vector _legendDatasets = new Vector();
+    /** @serial Legend information. */
+    private Vector _legendStrings = new Vector(),
+        _legendDatasets = new Vector();
 
-    // If XTicks or YTicks are given
+    /** @serial If XTicks or YTicks are given/ */
     private Vector _xticks = null, _xticklabels = null,
         _yticks = null, _yticklabels = null;
 
     // A button for filling the plot
-    private Button _fillButton = null;
+    private transient Button _fillButton = null;
 
     // Variables keeping track of the interactive zoom box.
     // Initialize to impossible values.
-    private int _zoomx = -1;
-    private int _zoomy = -1;
-    private int _zoomxn = -1;
-    private int _zoomyn = -1;
+    private transient int _zoomx = -1;
+    private transient int _zoomy = -1;
+    private transient int _zoomxn = -1;
+    private transient int _zoomyn = -1;
 
     // Control whether we are zooming in or out.
-    private boolean _zoomin = false;
-    private boolean _zoomout = false;
-    private boolean _drawn = false;
+    private transient boolean _zoomin = false;
+    private transient boolean _zoomout = false;
+    private transient boolean _drawn = false;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
