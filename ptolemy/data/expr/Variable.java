@@ -298,7 +298,7 @@ public class Variable extends Attribute
         // This bug only showed up when using MoML classes (e.g.
         // SmoothedPeriodogram actors, which are composite actors
         // in the library), because these are cloned when copied.
-        _variablesDependentOn = null;
+        newObject._variablesDependentOn = null;
 
         // set _declaredType and _varType
         if (_declaredType instanceof StructuredType &&
