@@ -82,7 +82,7 @@ public class MobileModel extends TypedCompositeActor {
      *  the name with setName(). If the workspace argument is null, then
      *  use the default workspace.
      *  @param workspace The workspace that will list the actor.
-     *  @throws IllegalActionException If populating the actor with
+     *  @exception IllegalActionException If populating the actor with
      *   ports and parameters fails.
      */
     public MobileModel(Workspace workspace)
@@ -399,7 +399,7 @@ public class MobileModel extends TypedCompositeActor {
     }
     
     /** Create the parameters and ports. This method is called by the constructors.
-     *  @throws IllegalActionException
+     *  @exception IllegalActionException
      */
     private void _init() throws IllegalActionException {
         try {

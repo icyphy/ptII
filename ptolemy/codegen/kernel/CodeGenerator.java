@@ -68,8 +68,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 	/** Create a new instance of the C code generator.
 	 *  @param container The container.
 	 *  @param name The name.
-	 *  @throws IllegalActionException
-	 *  @throws NameDuplicationException
+	 *  @exception IllegalActionException
+	 *  @exception NameDuplicationException
 	 */
 	public CodeGenerator(NamedObj container, String name)
 			throws IllegalActionException, NameDuplicationException {

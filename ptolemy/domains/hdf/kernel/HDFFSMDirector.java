@@ -234,7 +234,7 @@ public class HDFFSMDirector extends MultirateFSMDirector {
 
    /** Choose the next non-transient state given the current state.
     * @param currentState The current state.
-    * @throws IllegalActionException If a transient state is reached
+    * @exception IllegalActionException If a transient state is reached
     *  but no further transition is enabled.
     */
     public void chooseTransitions(State currentState) 
@@ -578,7 +578,7 @@ public class HDFFSMDirector extends MultirateFSMDirector {
      *  until a state with a refinement is
      *  found. Set that non-transient state to be the current state
      *  and return it.
-     * @throws IllegalActionException If a transient state is reached
+     * @exception IllegalActionException If a transient state is reached
      *  while no further transition is enabled.
      * @return The intransient state.
      */
@@ -640,7 +640,7 @@ public class HDFFSMDirector extends MultirateFSMDirector {
      * @param analysis
      * @param port
      * @param parameterName
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     private void _declareReconfigurationDependencyForRefinementRateVariables(
             ConstVariableModelAnalysis analysis,

@@ -527,7 +527,7 @@ public class CTMultiSolverDirector extends CTDirector {
      *  Record the current model time as the beginning time of the current
      *  iteration.
      *  @return True if this director is ready to fire.
-     *  @throws IllegalActionException If thrown by the super class.
+     *  @exception IllegalActionException If thrown by the super class.
      */
     public boolean prefire() throws IllegalActionException {
         boolean prefireReturns =  super.prefire();
@@ -635,7 +635,7 @@ public class CTMultiSolverDirector extends CTDirector {
      *  not be generated in this method. Instead, they will be
      *  generated in the immediately following discrete phase of execution.
      *
-     *  @throws IllegalActionException If the schedule does not exist, or
+     *  @exception IllegalActionException If the schedule does not exist, or
      *  any actor throws it during postfiring.
      */
     public void postfireEventGenerators() throws IllegalActionException {
@@ -1027,7 +1027,7 @@ public class CTMultiSolverDirector extends CTDirector {
      *  are those take discrete signals as inputs and generate discrete
      *  signals as outputs.
      *  @param schedule The schedule that contains purely discrete-event actors.
-     *  @throws IllegalActionException If any actor can not be iterated.
+     *  @exception IllegalActionException If any actor can not be iterated.
      */
     protected void _iteratePurelyDiscreteActors(CTSchedule schedule)
             throws IllegalActionException {
@@ -1039,7 +1039,7 @@ public class CTMultiSolverDirector extends CTDirector {
 
     /** Iterate all event generators .
      *  @param schedule The schedule that contains event generators.
-     *  @throws IllegalActionException If any actor can not be iterated.
+     *  @exception IllegalActionException If any actor can not be iterated.
      */
     protected void _iterateEventGenerators(CTSchedule schedule)
             throws IllegalActionException {
@@ -1050,7 +1050,7 @@ public class CTMultiSolverDirector extends CTDirector {
 
     /** Iterate all wave generators.
      *  @param schedule The schedule that contains wave generators.
-     *  @throws IllegalActionException If any actor can not be iterated.
+     *  @exception IllegalActionException If any actor can not be iterated.
      */
     protected void _iterateWaveformGenerators(CTSchedule schedule)
             throws IllegalActionException {

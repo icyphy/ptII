@@ -604,7 +604,7 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
      *  one function for each data type present.
      * @param model
      * @return The generated copy functions
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     protected void _outputDriversImplementationCode(TypedCompositeActor model)
             throws IllegalActionException {

@@ -58,7 +58,7 @@ public class CodeStream {
 	 * @param name
      * Given the name of the CodeBlock,
 	 * @return the string representation of the code within the file
-     * @throws IOException
+     * @exception IOException
 	 */
 	private StringBuffer _fetchCodeBlock(URL file, String name) throws IOException {
         

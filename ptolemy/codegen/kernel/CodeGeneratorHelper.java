@@ -321,7 +321,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      *  and 1 otherwise.
      * @param name The name of the parameter.
      * @return The size of a parameter.
-     * @throws IllegalActionException If no port or parameter of
+     * @exception IllegalActionException If no port or parameter of
      *  the given name is found.
      */
     public int getSize(String name)
@@ -459,7 +459,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      * @param name The given string.
      * @return An integer array of length 2, indicating the channel
      *  number and offset.
-     * @throws IllegalActionException If the channel number or offset
+     * @exception IllegalActionException If the channel number or offset
      *  specified in the given string is illegal.
      */
     private int[] _getChannelAndOffset(String name)

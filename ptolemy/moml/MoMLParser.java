@@ -4862,7 +4862,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
     }
 
     /** Process pending link and delete requests, if any.
-     *  @throws Exception If something goes wrong.
+     *  @exception Exception If something goes wrong.
      */
     private void _processPendingRequests() throws Exception {
         if (_linkRequests != null) {

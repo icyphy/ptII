@@ -65,8 +65,8 @@ public class MultirateFSMDirector extends FSMDirector {
     /**
      * @param container
      * @param name
-     * @throws IllegalActionException
-     * @throws NameDuplicationException
+     * @exception IllegalActionException
+     * @exception NameDuplicationException
      */
     public MultirateFSMDirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {

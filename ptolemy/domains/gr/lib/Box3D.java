@@ -170,7 +170,7 @@ public class Box3D extends GRShadedShape {
     ////                         private methods                   ////
 
     /** Create a box with the current parameter values.
-	 *  @throws IllegalActionException If the parameters are malformed.
+	 *  @exception IllegalActionException If the parameters are malformed.
 	 */
 	private void _createBox() throws IllegalActionException {
 		int primitiveFlags = Primitive.GENERATE_NORMALS;

@@ -67,7 +67,7 @@ public class ComponentDirector implements Component {
     
     /** Execute the component. This is invoked after preinitialize()
      *  and initialize(), and may be invoked repeatedly.
-     * @throws IllegalActionException If the run cannot be completed.
+     * @exception IllegalActionException If the run cannot be completed.
      */
     public void run() throws IllegalActionException {
         // FIXME

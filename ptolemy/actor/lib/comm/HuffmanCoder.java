@@ -134,7 +134,7 @@ public class HuffmanCoder extends HuffmanBasic {
      *  converted it to a sequence of booleans and send them to the
      *  output port.
      * @param codeword The string of codeword.
-     * @throws IllegalActionException If the output receiver throws it.
+     * @exception IllegalActionException If the output receiver throws it.
      */
     private void _sendBooleans(String codeword)
         throws IllegalActionException {

@@ -123,7 +123,7 @@ public class AtomicComponent extends ComponentEntity
      *  nothing and returning immediately.
      *  This is invoked after preinitialize()
      *  and initialize(), and may be invoked repeatedly.
-     *  @throws IllegalActionException If the run cannot be completed
+     *  @exception IllegalActionException If the run cannot be completed
      *   (not thrown in this base class).
      */
     public void run() throws IllegalActionException {

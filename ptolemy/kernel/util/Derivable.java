@@ -147,7 +147,7 @@ public interface Derivable extends Nameable {
      *  unchanged if any single derived object throws an exception
      *  when attempting to propagate the value to it.
      *  @return The list of objects to which propagation occurred.
-     *  @throws IllegalActionException If propagation is not possible.
+     *  @exception IllegalActionException If propagation is not possible.
      */
     public List propagateValue() throws IllegalActionException;
 }

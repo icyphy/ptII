@@ -345,7 +345,7 @@ public class UtilityFunctions {
      *   in the array given as an argument.
      *  @since Ptolemy II 4.1
      *  @see #find(ArrayToken, Token)
-     *  @throws IllegalActionException If the specified array is not
+     *  @exception IllegalActionException If the specified array is not
      *   a boolean array.
      */
     public static ArrayToken find(ArrayToken array)

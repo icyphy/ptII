@@ -216,9 +216,9 @@ public abstract class ColtRandomSource extends RandomSource
      *  and adds it to the high level RNG actor.
      * @param container  The container.
      * @return a Parameter that contains the random number generator class
-     * @throws IllegalActionException If there is a problem getting the
+     * @exception IllegalActionException If there is a problem getting the
      * randomNumberGenerator or seed attribute
-     * @throws NameDuplicationException If there is a problem adding the
+     * @exception NameDuplicationException If there is a problem adding the
      * randomNumberGenerator or seed attribute. 
      */
     protected Parameter _getRandomNumberGeneratorClass(

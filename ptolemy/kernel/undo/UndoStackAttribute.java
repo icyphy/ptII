@@ -217,7 +217,7 @@ public class UndoStackAttribute extends SingletonAttribute {
     /** Remove the top redo action and execute it.
      *  If there are no redo entries, do nothing.
      *  This method gets write acess on the workspace.
-     *  @throws Exception If something goes wrong.
+     *  @exception Exception If something goes wrong.
      */
     public void redo() throws Exception {
         if (_redoEntries.size() > 0) {
@@ -250,7 +250,7 @@ public class UndoStackAttribute extends SingletonAttribute {
     /** Remove the top undo action and execute it.
      *  If there are no undo entries, do nothing.
      *  This method gets write access on the workspace.
-     *  @throws Exception If something goes wrong.
+     *  @exception Exception If something goes wrong.
      */
     public void undo() throws Exception {
         try {
