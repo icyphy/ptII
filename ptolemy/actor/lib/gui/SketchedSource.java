@@ -98,8 +98,20 @@ public class SketchedSource extends SequencePlotter {
         fillOnWrapup.setVisibility(Settable.NONE);
 
         // Starting data set for producing plots is now always 1.
+        // NOTE: This gets overridden with zero if the MoML file
+        // gives the value of this variable.  Hence, we need to
+        // reset later as well.
         startingDataset.setToken(_one);
-        startingDataset.setVisibility(Settable.NONE);    
+        startingDataset.setVisibility(Settable.NONE);
+
+        // Set the initial token production parameter of the
+        // output port so that this can be used in SDF in feedback
+        // loops.
+	Parameter tokenInitProduction = new Parameter(
+                output, "tokenInitProduction");
+
+        // Use an expression here so change propagate.
+	tokenInitProduction.setExpression("length");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -177,6 +189,12 @@ public class SketchedSource extends SequencePlotter {
         // Read the trigger input, if there is one.
         super.fire();
         int periodValue = ((IntToken)period.getToken()).intValue();
+        // If this isn't periodic, then send zero only, since we already
+        // sent out the entire waveform in the initialize method.
+        if (periodValue <= 0) {
+            output.send(0, _zero);
+            return;
+        }
         if (_count < _data[1].length) {
             // NOTE: X value ignored.
             output.send(0, new DoubleToken(_data[1][_count]));
@@ -187,22 +205,36 @@ public class SketchedSource extends SequencePlotter {
                 _count++;
             }
         }
-        if (periodValue > 0 && _count >= periodValue) {
+        if (_count >= periodValue) {
             // Reread the data in case it has changed.
             _count = 0;
             _data = ((EditablePlot)plot).getData(0);
         }
     }
 
-    /** Override the base class to read data from the plot.
+    /** Override the base class to read data from the plot and to
+     *  produce all the data on the output.
      *  @exception IllegalActionException If the parent class throws it.
      */
     public void initialize() throws IllegalActionException {
+        // NOTE: This gets overridden with zero after construction
+        // if the MoML file gives the value of this variable.
+        // Hence, we need to reset here as well.
+        startingDataset.setToken(_one);
+
         super.initialize();
         if (!_initialTraceSet) {
             _setInitialTrace();
         }
         _data = ((EditablePlot)plot).getData(0);
+
+        // Produce the data on the output so that this can be used in
+        // feedback look in dataflow models.
+        for (int i = 0; i < _data[1].length; i++) {
+            // NOTE: X value ignored.
+            output.send(0, new DoubleToken(_data[1][i]));
+        }
+
         _count = 0;
     }
 
@@ -219,6 +251,19 @@ public class SketchedSource extends SequencePlotter {
         }
     }
 
+    /** Override the base class to not clear the plot.  The PlotterBase
+     *  class clears the entire plot, which will erase sketched data.
+     *  @exception IllegalActionException If triggered by creating receivers.
+     */
+    public void preinitialize() throws IllegalActionException {
+        // This code is copied from AtomicActor, since we can't call super.
+        _stopRequested = false;
+        // NOTE:  Receivers are also getting created
+        // in connectionChanged().  Perhaps this is here to ensure
+        // that the receivers are reset?
+        _createReceivers();
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -232,7 +277,7 @@ public class SketchedSource extends SequencePlotter {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    // Set the initial value of the plot and fill the plot.
+    // Set the initial value of the plot.
     // If the plot is null, return without doing anything.
     private void _setInitialTrace() throws IllegalActionException {
         if (plot == null) return;
