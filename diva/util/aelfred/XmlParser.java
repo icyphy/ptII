@@ -3485,7 +3485,7 @@ public class XmlParser {
      * or for unreading a string of characters.  It creates a new
      * readBuffer containing the characters in the array, instead
      * of characters converted from an input byte stream.
-     * <p>I've added a couple of optimisations: don't push zero-
+     * <p>I've added a couple of optimizations: don't push zero-
      * length strings, and just push back a single character
      * for 1-character strings; this should save some time and memory.
      * @param ch The char array to push.
