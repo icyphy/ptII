@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Red (yourname@eecs.berkeley.edu)
@@ -68,10 +68,10 @@ public class Weight extends Transformer {
         input.setTypeEquals(BaseType.GENERAL);
         output.setMultiport(false);
         output.setTypeEquals(BaseType.GENERAL);
-        
+
         initialWeight= new Parameter(this, "initialWeight");
         initialWeight.setExpression("1");
-        
+
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -79,11 +79,11 @@ public class Weight extends Transformer {
 
     public Parameter initialWeight;
 
-    
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-   
+
 
     public void initialize() throws IllegalActionException {
         _currentWeight = ((IntToken)initialWeight.getToken()).intValue();
@@ -93,15 +93,15 @@ public class Weight extends Transformer {
         return _currentWeight;
     }
 
-  
+
     public void printWeight() {
 
-        
+
         System.out.println("The weight here is " + _currentWeight);
 
     }
 
-   
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -116,7 +116,7 @@ public class Weight extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    
+
 
     private int _currentWeight = 1;
 }
