@@ -159,11 +159,6 @@ public class Processor extends CSPActor {
 
         // State 1
         generateEvents( new ExecEvent( this, 1 ) );
-        {
-            if( _topGraphic != null ) {
-                _topGraphic.receiveEvent(this, 1);
-            }
-        }
         double delayTime = java.lang.Math.random();
         if( delayTime < 0.25 ) {
             delayTime = 2.5;
@@ -302,24 +297,11 @@ public class Processor extends CSPActor {
         _listeners.removeOneOf(listener);
     }
 
-    /** Specify the BusContentionGraphic that will house
-     *  demo's associated with this actor.
-     * @param bcg The specified BusContentionGraphic.
-     */
-    public void setGraphicFrame(BusContentionGraphic bcg)
-            throws IllegalActionException {
-        if( bcg == null ) {
-            throw new IllegalActionException( this,
-                    "BusContentionGraphic is null");
-        }
-        _topGraphic = bcg;
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
     private int _code;
     private CSPDirector _dir;
     private LinkedList _listeners;
-    private BusContentionGraphic _topGraphic;
+    
 }
