@@ -39,7 +39,19 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+//////////////////////////////////////////////////////////////////////////
+///DataCollector
 
+/**
+    This class collectes sensor update for the state of each parking spot,
+    and provides a parking client information of available parking spots. 
+
+    @author Yang Zhao
+    @version $Id$
+    @since Ptolemy II 3.0
+    @Pt.ProposedRating Yellow (cxh)
+    @Pt.AcceptedRating Yellow (cxh)
+*/
 public class DataCollector extends TypedAtomicActor {
     public DataCollector(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
@@ -78,19 +90,11 @@ public class DataCollector extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** When it receives token from the signal port, which is
-     *  used to receive signal from the pursuer or the evader.
-     *  it tells what the signal is from by checking the signal header.
-     *  If it is from the evader, it set itself to be the root node
-     *  and broadcast a message for updating the tree. Otherwise, it
-     *  output a message to the pursuer to tell it the location of
-     *  its parent node, and the pursuer will move closer to the evader
-     *  using this information.
-     *  When it receives token from the input port, which is used to
-     *  receive message from other sensors, it check whether the rootnode
-     *  has been changed or whether there is a shorter path. If so, it
-     *  performs update and broadcast a message. Otherwise, simply
-     *  consumes the messge.
+    /** When it receives token from the update port, which is
+     *  used to receive updates from sensors,
+     *  it updates the set of available spots and signal an event
+     *  to indicate whether the parking lot is full.
+     *  @exception IllegalActionException If the superclass throws it.
      */
     public void fire() throws IllegalActionException {
         super.fire();

@@ -10,13 +10,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 30.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={230, 182, 904, 626}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={197, 63, 904, 827}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[689, 508]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[689, 709]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{319.3550347222222, 236.4040404040404}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{319.3550347222222, 336.9040404040404}">
     </property>
     <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 5.0]">
@@ -26,6 +26,20 @@
         <property name="height" class="ptolemy.data.expr.Parameter" value="151.0">
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Sensors placed in a parking lot can be used to collect data (including which parking spot is taken, &#10;how long a car has parked on a spot). The parking lot can process the collected data and provide &#10;some services to clients to guide their parking. This demo illustrates these ideas. The dots are &#10;sensors on the parking spots. We use green color to indicate the spot is free and red to indicate &#10;the spot is taken. When a sensor detect a car arrives/leaves the spot, it sends an update to the &#10;server of the parking lot, which collects and processes sensor updates to provide information to &#10;parking clients. The &quot;car model&quot; component models when a car arrive/leave, and where if pick to &#10;park based on the information the server provides. It is a abstraction for all the cars dynamics &#10;during a specific of time. The components in the up right corner represents the server function, &#10;which receives sensor data and provides information the clients. The &quot;singal light&quot; component &#10;indicate whether the parking lot is full (using red color) or not (using green color).">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 460.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Yang Zhao">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 670.0]">
         </property>
     </property>
     <entity name="LotSensor" class="ptolemy.domains.wireless.demo.SmartParking.LotSensor">
