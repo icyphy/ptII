@@ -620,7 +620,7 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
     //// public methods that implement the StmtSwitch interface    ////
 
     /** Generate code for an assignment statement.
-     *  @param stmt The assignment statment.
+     *  @param stmt The assignment statement.
      */
     public void caseAssignStmt(AssignStmt stmt) {
         stmt.getRightOp().apply(this);
