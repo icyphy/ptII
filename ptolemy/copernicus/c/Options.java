@@ -1,6 +1,6 @@
 /* A class that keeps track of compiler options.
 
- Copyright (c) 2002 The University of Maryland.
+ Copyright (c) 2003 The University of Maryland.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -35,20 +35,30 @@ import java.util.Hashtable;
 /**
 A class that keeps track of compiler options. All options are stored as
 key-value string pairs. Possible options are:
+
 <p>
 <b> verbose </b><br>
 <i>true/false</i> Turns verbose mode on or off.
+
 <p>
 <b> compileMode </b> <br>
 <i>singleClass</i> compiles only the given class, <br>
-<i>headersOnly</i> causes the C file to be generated for the given class,
-and headers for all supporting classes, <br>
 <i>full</i> generates all required files.
+
+<p>
+<b> pruneLevel </b> <br>
+<i> 0 </i> no code pruning done.
+<i> 1 </i> Code Pruning done by InvokeGraphPruner.
+
 <p>
 <b> lib </b> <br>
 stores the path to the directory where library of generated files is
 stored.
 </DL>
+
+<p>
+<b> gc </b>
+<i>true/false</i> Turns garbage collection on or off.
 
 @author Ankush Varma
 @version $Id$
@@ -61,8 +71,9 @@ public class Options {
     public Options() {
         _optionTable.put("verbose", "false");
         _optionTable.put("compileMode", "full");
-        // FIXME: Revise this default option.
+        _optionTable.put("pruneLevel", "1");
         _optionTable.put("lib", "j2c_lib");
+        _optionTable.put("gc", "true");
     }
 
 
@@ -100,6 +111,15 @@ public class Options {
                 "Stored value cannot be converted to boolean.");
          }
      }
+
+     /** Get the integer value corresponding to a given key.
+      * @param key The name of the option to be looked up.
+      * @return The integer value corresponding to this key.
+      */
+    public int getInt(String key) {
+        return Integer.valueOf(get(key)).intValue();
+    }
+
 
     /** Put a key-value pair into the options table.
      @param key The name of the option to be set.

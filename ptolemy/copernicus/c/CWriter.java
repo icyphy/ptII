@@ -125,13 +125,19 @@ public class CWriter extends SceneTransformer {
             // FIXME: move these out of the loop?
             HeaderFileGenerator hGenerator = new HeaderFileGenerator();
             CodeFileGenerator cGenerator = new CodeFileGenerator();
-            InterfaceFileGenerator iGenerator = new InterfaceFileGenerator();
+            StubFileGenerator sGenerator = new StubFileGenerator();
             CNames.setup();
 
             RequiredFileGenerator RFG = new RequiredFileGenerator();
 
             String classPath = Scene.v().getSootClassPath();
             System.out.println("CWriter: soot class path = " + classPath);
+
+            // Options for fast minimal code generation.
+            Options.v().put("pruneLevel", "0");
+            Options.v().put("compileMode", "singleClass");
+            Options.v().put("verbose", "true");
+
             RFG.init(classPath, sootClass.getName());
 
             // Figure out if this is the main class
@@ -147,9 +153,9 @@ public class CWriter extends SceneTransformer {
             //generate the .i.h, .h, and .c files
             System.out.println("Generating C code files for " + fileName);
             String code = null;
-            code = iGenerator.generate(sootClass);
+            code = sGenerator.generate(sootClass);
             FileHandler.write(fileName
-                    + InterfaceFileGenerator.interfaceFileNameSuffix(),
+                    + StubFileGenerator.stubFileNameSuffix(),
                       code);
             code = hGenerator.generate(sootClass);
             FileHandler.write(fileName + ".h", code);

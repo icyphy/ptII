@@ -230,7 +230,14 @@ public class MethodListGenerator {
                         inheritedList.set(inheritedMethodIndex, method);
                     }
                     else {
-                        newList.add(method);
+                        // New methods that are not required should be
+                        // discarded. If the corresponding method in a
+                        // subclass is required, it should be "new" for
+                        // that subclass. This applies when pruning is
+                        // enabled.
+                        if (RequiredFileGenerator.isRequired(method)) {
+                            newList.add(method);
+                        }
                     }
                 }
             }
@@ -242,6 +249,7 @@ public class MethodListGenerator {
 
         // First we create a list of the subSignatures of all inherited
         // methods.
+        /*
         HashSet subSignatures = new HashSet();
         Iterator inheritedMethods = (Iterator)inheritedList.listIterator();
         while (inheritedMethods.hasNext()) {
@@ -271,6 +279,7 @@ public class MethodListGenerator {
                 }
             }
         }
+        */
 
         _constructorListMap.put(source, constructorList);
         _inheritedListMap.put(source, inheritedList);

@@ -101,6 +101,27 @@ public class OverriddenMethodGenerator {
         _forceOverriddenMethods = new HashSet();
 
         ///////////// Methods replaced with dummy code ////////////
+        // Methods ovverriden for speed
+        _forceOverriddenMethods.add("<java.lang.String: java.lang.String "
+                + "valueOf(java.lang.Object)>");
+        _forceOverriddenMethods.add( "<java.util.Hashtable: java.lang.Object "
+                + "put(java.lang.Object,java.lang.Object)>");
+        _forceOverriddenMethods.add("<java.util.HashMap: boolean "
+                + "eq(java.lang.Object,java.lang.Object)>");
+        _forceOverriddenMethods.add("<java.util.HashMap: int "
+                + "hash(java.lang.Object)>");
+        _forceOverriddenMethods.add("<java.util.WeakHashMap: boolean "
+                + "eq(java.lang.Object,java.lang.Object)>");
+        _forceOverriddenMethods.add("<java.util.TreeMap: int "
+                + "compare(java.lang.Object,java.lang.Object)>");
+        _forceOverriddenMethods.add("<java.text.AttributedString: boolean "
+                + "valuesMatch(java.lang.Object,java.lang.Object)>");
+        _forceOverriddenMethods.add("<java.util.Vector: int "
+                + "indexOf(java.lang.Object,int)>");
+
+
+
+        // End Speed.
 
         _forceOverriddenMethods.add(
                 "<java.util.ResourceBundle: java.lang.Object "
@@ -241,13 +262,24 @@ public class OverriddenMethodGenerator {
             + "java.nio.channels.FileLock lock(long,long,boolean)>");
         // Overridden because it threw a warning for an unused variable.
 
-       _forceOverriddenMethods.add("<sun.net.www.URLConnection: "
+        _forceOverriddenMethods.add("<sun.net.www.URLConnection: "
             + "void setFileNameMap(java.net.FileNameMap)>");
-       // Overridden because it calls a nonexistent method.
+        // Overridden because it calls a nonexistent method.
 
-       _forceOverriddenMethods.add("<java.security.Signature: "
+        _forceOverriddenMethods.add("<java.security.Signature: "
             + "java.security.Signature getInstance"
             + "(java.lang.String,java.security.Provider)>");
+
+        _forceOverriddenMethods.add("<java.math.BigInteger: void <clinit>()>");
+        _forceOverriddenMethods.add(
+            "<java.text.AttributedCharacterIterator$Attribute: "
+            + "void <clinit>()>");
+        _forceOverriddenMethods.add(
+            "<java.text.MessageFormat$Field: void <clinit>()>");
+        // Causes segfault.
+
+
+
        // Overridden because it asks for a nonexistent field.
 
         ///////// Methods replaced with actual code ////////
@@ -258,11 +290,22 @@ public class OverriddenMethodGenerator {
             "<java.io.PrintStream: void println(float)>");
         _forceOverriddenMethods.add(
             "<java.io.PrintStream: void println(int)>");
+
+        //_forceOverriddenMethods.add(
+        //    "<java.io.PrintStream: void println(java.lang.String)>");
+
         _forceOverriddenMethods.add(
-            "<java.io.PrintStream: void println(java.lang.String)>");
+            "<java.io.PrintStream: void print(java.lang.Object)>");
+        _forceOverriddenMethods.add(
+            "<java.io.PrintStream: void newLine()>");
+        _forceOverriddenMethods.add(
+            "<java.io.PrintStream: void println(double)>");
+        _forceOverriddenMethods.add(
+            "<java.io.PrintStream: void write(java.lang.String)>");
 
 
-        _forceOverriddenMethods.add("<java.lang.String: void <init>()>");
+        _forceOverriddenMethods.add(
+                "<java.lang.String: void <init>(char[])>");
         // Overridden because java.lang.Object.clone() is not implemented yet.
 
         _forceOverriddenMethods.add(
@@ -300,12 +343,15 @@ public class OverriddenMethodGenerator {
                 ||(className.indexOf("com.") == 0)
                 ||(className.indexOf("javax.") == 0)
                 ||(className.indexOf("java.nio.") == 0)
+                ||(className.indexOf("java.net.") == 0)
                 ||(className.indexOf("java.lang.reflect.") == 0)
                 ||(className.indexOf("java.lang.ref.") == 0)
                 ||(className.indexOf("java.util.prefs.") == 0)
                 ||(className.indexOf("java.util.logging.") == 0)
+                ||(className.indexOf("java.util.zip.") == 0)
                 ||(className.indexOf("java.security.") == 0)
                 ||(className.indexOf("java.lang.Object") == 0)
+                ||(className.indexOf("java.util.Random") == 0)
             ) {
             return true;
         }

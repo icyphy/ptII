@@ -34,6 +34,7 @@ package ptolemy.copernicus.c;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Collection;
 
 /** A class that maintains context information for C code generation.
 
@@ -60,9 +61,15 @@ public class Context {
     /** Add an array instance to the set of array instances in the context.
      *  @param instanceName The name of the array instance.
      */
-
     public void addArrayInstance(String instanceName) {
         _arrayInstanceSet.add(instanceName);
+    }
+
+    /** Add an entire collection of array instances.
+     * @param instances The collection of array instances.
+     */
+    public void addArrayInstances(Collection instances) {
+        _arrayInstanceSet.addAll(instances);
     }
 
     /** Add an include file to the set of include files in the context.
@@ -92,13 +99,13 @@ public class Context {
         _disableImports = false;
     }
 
-    /** Return an Iterator over the set of array Instance names in the context.
-     *  Each element in the Iterator is a String representing the name of the
+    /** Return an the set of array Instance names in the context.
+     *  Each element is a String representing the name of the
      *  array instance.
-     *  @return The Iterator over the set of array Instances
+     *  @return The set of array Instances
      */
-    public Iterator getArrayInstances() {
-        return _arrayInstanceSet.iterator();
+    public HashSet getArrayInstances() {
+        return _arrayInstanceSet;
     }
 
 

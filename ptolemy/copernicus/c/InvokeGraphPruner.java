@@ -1,7 +1,7 @@
 /* Class that uses the Soot Framework to find out which methods/classes
    are really needed for code generation.
 
- Copyright (c) 2002 The University of Maryland.
+ Copyright (c) 2002-2003 The University of Maryland.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -32,17 +32,27 @@ import soot.Scene;
 import soot.SootClass;
 import soot.SootMethod;
 import soot.SootField;
+import soot.Trap;
+import soot.Unit;
+import soot.Value;
+import soot.ValueBox;
+import soot.RefType;
+import soot.Type;
 
-import soot.jimple.toolkits.invoke.*;
+import soot.jimple.toolkits.invoke.ClassHierarchyAnalysis;
+import soot.jimple.toolkits.invoke.InvokeGraph;
 
 import soot.jimple.Stmt;
+import soot.jimple.FieldRef;
+import soot.jimple.InvokeExpr;
+import soot.jimple.InstanceOfExpr;
+import soot.jimple.AssignStmt;
 
 import java.util.Iterator;
 import java.util.List;
 import java.util.LinkedList;
 import java.util.HashSet;
 import java.util.Collection;
-
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -202,11 +212,14 @@ public class InvokeGraphPruner {
         SootClass source = Scene.v().getSootClass("java.lang.String");
         SootMethod method = source.getMethod("void <init>(char[])");
         compulsoryNodes.add(method);
-
         // Add java.lang.String.<clinit>.
-        source = Scene.v().getSootClass("java.lang.String");
         method = source.getMethodByName("<clinit>");
         compulsoryNodes.add(method);
+        // java.lang.String.toString() is needed.
+        method = source.getMethodByName("toString");
+        compulsoryNodes.add(method);
+        // All fields of String are required.
+        compulsoryNodes.addAll(source.getFields());
 
         // Add java.lang.System.initializeSystemClass()
         source = Scene.v().getSootClass("java.lang.System");
@@ -237,6 +250,68 @@ public class InvokeGraphPruner {
         return compulsoryNodes;
     }
 
+    /** Returns a set of the nodes referenced in the body of a given
+     * method. This includes:
+     * <UL>
+     * <LI> Methods directly called (sometimes invokegraph fails to catch
+     * these).
+     * <LI> Fields accessed.
+     * <LI> Classes called by instanceof expressions.
+     * </UL>
+     * These are computed here in the same method so that only one pass
+     * through the statements in the body is required.
+     * @param The method.
+     * @return The set of nodes unambiguously referenced in the statements
+     * comprising its body.
+     */
+     private HashSet _getNodesAccessedInBodyOf(SootMethod method) {
+        HashSet nodes = new HashSet();
+
+        if (method.isConcrete() && !OverriddenMethodGenerator
+                    .isOverridden(method)) {
+            boolean leaf = _isLeaf(method);
+
+            Iterator units = method.retrieveActiveBody()
+                    .getUnits().iterator();
+            while (units.hasNext()) {
+                Unit unit = (Unit)units.next();
+                if (unit instanceof Stmt) {
+                    Stmt stmt = (Stmt)unit;
+
+                    // Add accessed fields.
+                    if (stmt.containsFieldRef()) {
+                        FieldRef fieldRef = (FieldRef)stmt.getFieldRef();
+                        SootField field = fieldRef.getField();
+                        nodes.add(field);
+                    }
+
+                    // Add directly called methods.
+                    if (!leaf && stmt.containsInvokeExpr()) {
+                        SootMethod m = ((InvokeExpr)stmt.getInvokeExpr())
+                                .getMethod();
+                        nodes.add(m);
+                    }
+                }
+
+                // Get all classes used in all "instanceof" expressions.
+                Iterator boxes = unit.getUseAndDefBoxes().iterator();
+                while (boxes.hasNext()) {
+                    ValueBox box = (ValueBox)boxes.next();
+                    Value value = box.getValue();
+                    if (value instanceof InstanceOfExpr) {
+                        InstanceOfExpr expr = (InstanceOfExpr)value;
+                        Type checkType = expr.getCheckType();
+                        if (checkType instanceof RefType) {
+                            nodes.add(((RefType)checkType).getSootClass());
+                        }
+                    }
+                }
+            }
+        }
+
+        return nodes;
+     }
+
     /** Sets the set of fields, methods and classes to be started off with.
      */
     private HashSet _getRoots(SootClass source) {
@@ -261,6 +336,7 @@ public class InvokeGraphPruner {
                 .newInvokeGraph(true));
 
         while (!_gray.isEmpty()) {
+            //System.out.println(_gray.size());
             Object node = _gray.getFirst();
             if (node instanceof SootClass) {
                 _processClass((SootClass)node);
@@ -329,30 +405,55 @@ public class InvokeGraphPruner {
         // If the method is in an undiscovered class, refresh the
         // invokeGraph.
         SootClass source = method.getDeclaringClass();
-        if (!_reachableClasses.contains(source)) {
+        int oldSize = _gray.size();
+        if (!source.isApplicationClass()) {
             source.setApplicationClass();
             _add(source);
-            Scene.v().setActiveInvokeGraph(ClassHierarchyAnalysis
-                    .newInvokeGraph(true));
+            InvokeGraph invokeGraph = ClassHierarchyAnalysis
+                    .newInvokeGraph(true);
+
+            Scene.v().setActiveInvokeGraph(invokeGraph);
         }
 
-        // Add all methods called by this this method directly.
+        // Add all methods shown by the invokeGraph to be called by this
+        // method.
         if (!_isLeaf(method)) {
             InvokeGraph invokeGraph = Scene.v().getActiveInvokeGraph();
-            _add(invokeGraph.getTargetsOf(method));
-        }
+            Collection targets = invokeGraph.getTargetsOf(method);
+            _add(targets);
+         }
 
-        // Add all fields called by this method.
-        if (!OverriddenMethodGenerator.isOverridden(method)) {
-            _add(AnalysisUtilities.getFieldsAccessedBy(method));
+        // Add the nodes called in the body of the method.
+        _add(_getNodesAccessedInBodyOf(method));
+
+        // Add all exception classes that can be thrown by this method.
+        _add(method.getExceptions());
+        // Add all exceptions that can be caught by this method.
+        if (method.isConcrete()
+                && !OverriddenMethodGenerator.isOverridden(method)) {
+            Iterator traps = method.retrieveActiveBody().getTraps()
+                    .iterator();
+            while (traps.hasNext()){
+                Trap trap = (Trap)traps.next();
+                _add(trap.getException());
+            }
         }
 
         // Add all arguments of this method.
         _add(AnalysisUtilities.getArgumentClasses(method));
 
+        // Add the locals declared in the body of this method.
+        _add(AnalysisUtilities.getLocalTypeClasses(method));
+
+        /*
+        if (_gray.size() - oldSize >20) {
+            System.out.println(method);
+        }
+        */
         // Remove the method from the queue.
         _done(method);
     }
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         private fields                    ////

@@ -175,6 +175,15 @@ public class CNames {
         return prefixBase.hashCode();
     }
 
+    /** Return a number resprsenting the hashCode for this class.
+     * @param source The class.
+     * @return The hashCode.
+     */
+    public static int hashNumberOf(SootClass source) {
+        return source.toString().hashCode();
+    }
+
+
     /** Return the include file name for a given class.
      *  @param source The class.
      *  @return The include file name.
@@ -219,6 +228,16 @@ public class CNames {
         else return _instanceNameOf(source);
     }
 
+
+    /** Return the C name of the method that performs lookups to
+     * diambiguate interface references.
+     * @param source The class for which this method needs to be generated.
+     * @return The name of the lookup method.
+     */
+    public static String interfaceLookupNameOf(SootClass source) {
+        // Same for all classes.
+        return _sanitize("lookup");
+    }
 
     /** Returns whether a given class is a System class.
      *  @param className A class.
@@ -313,10 +332,19 @@ public class CNames {
      *  @return The C name.
      */
     public static String typeNameOf(Type type) {
-        // FIXME: do this more efficiently.
         String name = null;
         if (type instanceof RefType) {
-            name = instanceNameOf(((RefType)type).getSootClass());
+            SootClass source = ((RefType)type).getSootClass();
+
+            // Makes sure no references are made to non-required types that
+            // are declarable in the class structure.
+            if (RequiredFileGenerator.isRequired(source)) {
+                name = instanceNameOf(source);
+            }
+            else {
+                name = "void*";
+            }
+
         }
         else if (type instanceof ArrayType) {
             name="iA"+((ArrayType)type).numDimensions+"_"
@@ -382,14 +410,23 @@ public class CNames {
     //  name of the user-defined C type that implements instances of
     //  the class.
     private static String _instanceNameOf(SootClass source) {
-        String name = source.getName();
+        String CClassName;
+        // Classes that are not required just become void*. This is so that
+        // they can be used as arguments of methods that are declared in
+        // the class structure, but not used.
+        if (!RequiredFileGenerator.isRequired(source)) {
+            CClassName = "void*";
+        }
+        else {
+            String name = source.getName();
 
-        // The choice of 'i' as the first letter stands for "instance."
-        String className = (name.indexOf(".") < 0) ? name :
-                name.substring(name.lastIndexOf(".") + 1);
-        Integer prefixCode = new Integer(name.hashCode());
-        String CClassName = _sanitize("i" + prefixCode.toString()
-                + "_" + className);
+            // The choice of 'i' as the first letter stands for "instance."
+            String className = (name.indexOf(".") < 0) ? name :
+                    name.substring(name.lastIndexOf(".") + 1);
+            Integer prefixCode = new Integer(name.hashCode());
+            CClassName = _sanitize("i" + prefixCode.toString()
+                    + "_" + className);
+        }
         _nameMap.put(source, CClassName);
         return CClassName;
     }

@@ -96,7 +96,7 @@ public abstract class CodeGenerator {
      * the arrays needed.
      */
     protected String _generateArrayInstanceDeclarations() {
-        Iterator i = _context.getArrayInstances();
+        Iterator i = _context.getArrayInstances().iterator();
         String code = new String();
 
         while (i.hasNext()) {
@@ -182,15 +182,9 @@ public abstract class CodeGenerator {
         Iterator parameters = method.getParameterTypes().iterator();
         int numberOfParameters = 0;
         if (!method.isStatic()) {
+            SootClass source = method.getDeclaringClass();
             code.append(CNames.instanceNameOf(method.getDeclaringClass()));
             numberOfParameters++;
-
-            //add this declaring class to include files
-            _context.addIncludeFile("\""
-                    + CNames.includeFileNameOf(method.getDeclaringClass())
-                    + "\"");
-
-
         }
         while (parameters.hasNext()) {
             if ((++numberOfParameters) > 1) code.append(", ");

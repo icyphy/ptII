@@ -51,8 +51,6 @@ import soot.Scene;
     @since Ptolemy II 2.0
 */
 
-// FIXME: Handle (ignore?) phantom methods and fields.
-
 public class CodeFileGenerator extends CodeGenerator {
 
     /** Construct a code file generator.
@@ -84,6 +82,7 @@ public class CodeFileGenerator extends CodeGenerator {
         _context.addIncludeFile("<setjmp.h>");
         _context.addIncludeFile("<stdlib.h>");
         _context.addIncludeFile("<stdio.h>");
+
         // This file cannot be auto-detected because its called from a
         // runtime method.
         if (source.getName().equals("java.lang.System")) {
@@ -98,6 +97,11 @@ public class CodeFileGenerator extends CodeGenerator {
             _context.addIncludeFile("\"pccg_runtime_single.h\"");
         }
 
+        // Include file for garbage collection.
+        if (Options.v().getBoolean("gc")) {
+            _context.addIncludeFile("\"GC.h\"");
+        }
+
 
         // Generate function prototypes for all private methods.
         int count = 0;
@@ -105,7 +109,7 @@ public class CodeFileGenerator extends CodeGenerator {
         while (methods.hasNext()) {
             SootMethod method = (SootMethod)(methods.next());
             if (method.isPrivate()
-                && RequiredFileGenerator.isRequiredMethod(method)) {
+                && RequiredFileGenerator.isRequired(method)) {
                 if (count++ == 0) {
                     bodyCode.append(_comment("Prototypes for functions that "
                             + "implement private methods"));
@@ -127,7 +131,7 @@ public class CodeFileGenerator extends CodeGenerator {
             SootMethod thisMethod = (SootMethod)methods.next();
             String methodCode = new String();
 
-            if (RequiredFileGenerator.isRequiredMethod(thisMethod)) {
+            if (RequiredFileGenerator.isRequired(thisMethod)) {
                 methodCode = methodCodeGenerator.generate(thisMethod);
                 bodyCode.append(methodCode);
             }
@@ -138,6 +142,14 @@ public class CodeFileGenerator extends CodeGenerator {
 
         }
 
+        // Generate the code for the method that looks up interfaces.
+        InterfaceLookupGenerator interfaceHandler =
+                new InterfaceLookupGenerator();
+        bodyCode.append(interfaceHandler.generate(source));
+
+        // Function for handing "instanceof".
+        bodyCode.append(new InstanceOfFunctionGenerator().generate(source));
+
         // Declare the run-time structure that is to contain class information.
         bodyCode.append(_comment("Structure that contains class information"));
         bodyCode.append("struct " + CNames.classNameOf(source) + " "
@@ -147,11 +159,16 @@ public class CodeFileGenerator extends CodeGenerator {
         bodyCode.append(_generateClassInitialization(source));
 
         headerCode.append(_generateIncludeDirectives() + "\n");
+        // Define memory allocation routine for garbage collection.
+        if (Options.v().getBoolean("gc")) {
+            headerCode.append("#define malloc(x) GC_malloc(x)\n");
+        }
 
         headerCode.append(_declareConstants() + "\n");
 
         // Generate the typedefs for the array instances.
         headerCode.append(_generateArrayInstanceDeclarations());
+
 
         return (headerCode.append(bodyCode)).toString();
     }
@@ -264,7 +281,7 @@ public class CodeFileGenerator extends CodeGenerator {
         if (!_context.getSingleClassMode() && source.hasSuperclass()) {
             // If the superclass is not required, comment it out and
             // replace it with a null.
-            if (!RequiredFileGenerator.isRequiredClass(source
+            if (!RequiredFileGenerator.isRequired(source
                     .getSuperclass())) {
                 code.append("/* "
                 +   "&" + CNames.classStructureNameOf(source.getSuperclass())
@@ -281,6 +298,20 @@ public class CodeFileGenerator extends CodeGenerator {
             _context.addIncludeFile("<stdio.h>");
         }
         code.append(";\n");
+
+        code.append("\n");
+        // Interface lookup function
+        if (InterfaceLookupGenerator.needsLookupFunction(source)) {
+            code.append(_indent(1) + _comment("Interface lookup function."));
+            code.append(_indent(1) + "class->lookup = &"
+                    + CNames.interfaceLookupNameOf(source)
+                    +";\n");
+        }
+
+
+        // Handler for "instanceof".
+        code.append(_indent(1) + _comment("Handler for \"instanceof\"."));
+        code.append(_indent(1) + "class->instanceOf = &instanceOf;\n");
 
         code.append("}\n");
         return code.toString();
@@ -304,9 +335,10 @@ public class CodeFileGenerator extends CodeGenerator {
             SootMethod method = (SootMethod)(methods.next());
 
             // Method Pointer Initialization is not done for methods that
-            // are not required, and for static methods.
+            // are not required, static methods, and abstracxt methods.
             if ((!method.isStatic())
-                    && RequiredFileGenerator.isRequiredMethod(method)
+                    && RequiredFileGenerator.isRequired(method)
+                    && (!method.isAbstract())
                     ) {
 
                 code.append(_indent(1) + argumentReference

@@ -88,7 +88,7 @@ public class MainFileGenerator extends CodeGenerator {
                 + ".h\"\n");
 
         Iterator requiredClasses = RequiredFileGenerator
-                .getStrictlyRequiredClasses().iterator();
+                .getRequiredClasses().iterator();
 
         // Call the Class Structure Initializations for all required
         // classes.
@@ -141,7 +141,7 @@ public class MainFileGenerator extends CodeGenerator {
                 + "/* Class Structure initializations*/\n");
 
         Iterator requiredClasses = RequiredFileGenerator
-                .getStrictlyRequiredClasses().iterator();
+                .getRequiredClasses().iterator();
 
         // Call the Class Structure Initializations for all required
         // classes.
@@ -154,121 +154,6 @@ public class MainFileGenerator extends CodeGenerator {
             code.append(_indent(1) +  CNames.initializerNameOf(nextClass)
                         + "(&" + CNames.classStructureNameOf(nextClass)
                         + ");\n");
-        }
-
-        code.append("}\n");
-        return code.toString();
-    }
-
-
-    /** Generate the code for a the wrapper "main" C function that calls
-     *  the main method of the appropriate class.
-     *  @param source The main class.
-     *  @return The code for the wrapper main method.
-     */
-    private String _generateMain(SootClass source) {
-        StringBuffer bodyCode = new StringBuffer();
-        String instanceName = CNames.instanceNameOf(source);
-        // Function that initializes the class structure.
-        String structInitFunction = CNames.initializerNameOf(source);
-        SootMethod mainMethod = source.getMethodByName("main");
-
-        // Generate the actual C "main" method.
-        bodyCode.append("\nint main(int argc, char** argv)\n{\n");
-
-        // Variable declarations.
-        bodyCode.append(_indent(1) + instanceName + " instance;\n");
-
-        // Initialize required class structures.
-        bodyCode.append("\n" + _indent(1) + "classStructInit();\n");
-
-        // Call static initializers for required classes.
-        bodyCode.append(_indent(1) + "staticInit();\n");
-
-        // Initialize java.lang.System()
-        bodyCode.append(_indent(1) + "_INITIALIZE_SYSTEM_CLASS();\n");
-
-        // Initialize the instance of the source class.
-        bodyCode.append("\n" + _indent(1)
-                + "/* Initialize the instance of the main class. */\n");
-        bodyCode.append(_indent(1)
-                + "instance = malloc(sizeof(instance));\n");
-        bodyCode.append(_indent(1) + "instance->class = &"
-                + CNames.classStructureNameOf(source) + ";\n");
-        bodyCode.append(_indent(1) + structInitFunction
-                + "(&" + CNames.classStructureNameOf(source)+ ");\n");
-
-        // Call the main method for the source class with the appropriate
-        // parameters.
-        bodyCode.append("\n" + _indent(1)
-                + "/* Call the function corresponding to the main java "
-                + "method. */\n");
-        bodyCode.append(_indent(1)
-                + CNames.functionNameOf(mainMethod) + "(" );
-        // If the method is non-static, put the name of the instance as
-        // the first argument.
-        if (!mainMethod.isStatic()) {
-            bodyCode.append("instance");
-            if (mainMethod.getParameterCount() == 1) {
-                // Assume that the only possible argument is String[]
-                // args.
-                bodyCode.append(", commandLineArgs(argc, argv)");
-            }
-        }
-        else {
-            if (mainMethod.getParameterCount() == 1) {
-                // Assume that the only possible argument is String[]
-                // args.
-                bodyCode.append("commandLineArgs(argc, argv)");
-            }
-        }
-
-        bodyCode.append(");\n");
-        bodyCode.append(_indent(1) + "return(0);\n");
-        bodyCode.append("}\n");
-
-        return bodyCode.toString();
-    }
-
-    /** Generate a function that calls the static initialization methods
-     * for all required classes.
-     *
-     * @return The code for the staticInit() method in the main file.
-     */
-    private String _generateStaticInit() {
-        StringBuffer code = new StringBuffer();
-
-        // Generate the method header.
-        code.append("void staticInit()\n{\n");
-
-        // Generate the method body
-        code.append(_indent(1)
-                + "/* Static initialization methods. */\n");
-
-        Iterator requiredClasses = RequiredFileGenerator
-                .getStrictlyRequiredClasses().iterator();
-
-        while (requiredClasses.hasNext()){
-            // Invoke the static initializer method (clinit) for the class if it
-            // exists.
-            SootClass nextClass = (SootClass)requiredClasses.next();
-
-            // FIXME: Does not initialize inner classes. Inner Classes have
-            // a "$" in their name.
-            SootMethod initializer = MethodListGenerator
-                    .getClassInitializer(nextClass);
-
-            if ((initializer!= null)
-                    &&(nextClass.toString().indexOf("$") == -1)
-                    &&(!OverriddenMethodGenerator.isOverridden(initializer))){
-
-                code.append("\n" + _indent(1)
-                        + _comment("Static initializer method for "
-                                + nextClass.toString()));
-
-                code.append(_indent(1) +
-                                CNames.functionNameOf(initializer) + "();\n");
-            }
         }
 
         code.append("}\n");
@@ -311,4 +196,126 @@ public class MainFileGenerator extends CodeGenerator {
 
         return code.toString();
     }
+
+
+    /** Generate the code for a the wrapper "main" C function that calls
+     *  the main method of the appropriate class.
+     *  @param source The main class.
+     *  @return The code for the wrapper main method.
+     */
+    private String _generateMain(SootClass source) {
+        StringBuffer bodyCode = new StringBuffer();
+        String instanceName = CNames.instanceNameOf(source);
+        // Function that initializes the class structure.
+        String structInitFunction = CNames.initializerNameOf(source);
+        SootMethod mainMethod = source.getMethodByName("main");
+
+        // Generate the actual C "main" method.
+        bodyCode.append("\nint main(int argc, char** argv)\n{\n");
+
+        // Variable declarations.
+        bodyCode.append(_indent(1) + instanceName + " instance;\n");
+        bodyCode.append(_indent(1) + "iA1_i1195259493_String args;\n");
+
+        // Initialize required class structures.
+        bodyCode.append("\n" + _indent(1) + "classStructInit();\n");
+
+        // Call static initializers for required classes.
+        if (Options.v().getInt("pruneLevel") > 0) {
+            bodyCode.append(_indent(1) + "staticInit();\n");
+        }
+        else {
+            bodyCode.append(_indent(1) + _comment("staticInit();"));
+        }
+
+        // Initialize java.lang.System()
+        bodyCode.append(_indent(1) + "_INITIALIZE_SYSTEM_CLASS();\n");
+
+        // Initialize the instance of the source class.
+        bodyCode.append("\n" + _indent(1)
+                + "/* Initialize the instance of the main class. */\n");
+        bodyCode.append(_indent(1)
+                + "instance = malloc(sizeof(instance));\n");
+        bodyCode.append(_indent(1) + "instance->class = &"
+                + CNames.classStructureNameOf(source) + ";\n");
+        bodyCode.append(_indent(1) + structInitFunction
+                + "(&" + CNames.classStructureNameOf(source)+ ");\n");
+
+        // Parse the commans-line arguments.
+        bodyCode.append(_indent(1)
+                + "args = commandLineArgs(argc, argv);\n");
+        // Call the main method for the source class with the appropriate
+        // parameters.
+        bodyCode.append("\n" + _indent(1)
+                + "/* Call the function corresponding to the main java "
+                + "method. */\n");
+        bodyCode.append(_indent(1)
+                + CNames.functionNameOf(mainMethod) + "(" );
+        // If the method is non-static, put the name of the instance as
+        // the first argument.
+        if (!mainMethod.isStatic()) {
+            bodyCode.append("instance");
+            if (mainMethod.getParameterCount() == 1) {
+                // Assume that the only possible argument is String[]
+                // args.
+                bodyCode.append(", args");
+            }
+        }
+        else {
+            if (mainMethod.getParameterCount() == 1) {
+                // Assume that the only possible argument is String[]
+                // args.
+                bodyCode.append("args");
+            }
+        }
+
+        bodyCode.append(");\n");
+        bodyCode.append(_indent(1) + "return(0);\n");
+        bodyCode.append("}\n");
+
+        return bodyCode.toString();
+    }
+
+    /** Generate a function that calls the static initialization methods
+     * for all required classes.
+     *
+     * @return The code for the staticInit() method in the main file.
+     */
+    private String _generateStaticInit() {
+        StringBuffer code = new StringBuffer();
+
+        // Generate the method header.
+        code.append("void staticInit()\n{\n");
+
+        // Generate the method body
+        code.append(_indent(1)
+                + "/* Static initialization methods. */\n");
+
+        Iterator requiredClasses = RequiredFileGenerator
+                .getRequiredClasses().iterator();
+
+        while (requiredClasses.hasNext()){
+            // Invoke the static initializer method (clinit) for the class if it
+            // exists.
+            SootClass nextClass = (SootClass)requiredClasses.next();
+            SootMethod initializer = MethodListGenerator
+                    .getClassInitializer(nextClass);
+
+            if ((initializer!= null)
+                    &&(!OverriddenMethodGenerator
+                        .isOverridden(initializer))){
+
+                code.append("\n" + _indent(1)
+                        + _comment("Static initializer method for "
+                                + nextClass.toString()));
+
+                code.append(_indent(1) +
+                                CNames.functionNameOf(initializer) + "();\n");
+            }
+        }
+
+        code.append("}\n");
+        return code.toString();
+    }
+
 }

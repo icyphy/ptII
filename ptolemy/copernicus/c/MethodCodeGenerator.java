@@ -114,7 +114,7 @@ public class MethodCodeGenerator {
             code.append(_comment(description));
             return code.toString();
         } else {
-            if (method.isNative() || method.isAbstract()) {
+            if (method.isNative() /*|| method.isAbstract()*/) {
                 _updateRequiredTypes(method.getReturnType());
                 return NativeMethodGenerator.getCode(method);
             }
@@ -223,8 +223,7 @@ public class MethodCodeGenerator {
                         Trap currentTrap = (Trap)j.next();
                         code.append("if (PCCG_instanceof("
                                 + "(PCCG_CLASS_INSTANCE*)exception_id, "
-                                + "(PCCG_CLASS*)&"
-                                + CNames.classStructureNameOf(currentTrap
+                                + CNames.hashNumberOf(currentTrap
                                         .getException())
                                 + "))\n");
                         code.append(_indent(4) + "{\n");

@@ -36,9 +36,11 @@ import soot.RefType;
 import soot.ArrayType;
 
 import soot.Unit;
+import soot.Local;
 
 import soot.jimple.Stmt;
 import soot.jimple.FieldRef;
+import soot.jimple.InvokeExpr;
 
 import java.util.LinkedList;
 import java.util.HashSet;
@@ -79,6 +81,24 @@ public class AnalysisUtilities{
         return classes;
     }
 
+    /** Return the set of interfaces, and all superInterfaces thereof
+     * implemented in a class or any of its superclasses. This is the set
+     * of all interfaces the class may be cast as.
+     * @param source The class to analyze.
+     * @return The set of interfaces the class may be cast as.
+     */
+    public static HashSet getAllInterfacesOf(SootClass source) {
+        HashSet interfaceSet = new HashSet();
+
+        while (source.hasSuperclass()) {
+            interfaceSet.addAll(getSuperInterfacesOf(source));
+            source = source.getSuperclass();
+        }
+
+        return interfaceSet;
+    }
+
+
     /** Returns the list of classes in the arguments to a given method.
      * Also takes into account the return type of the method.
      * @param method The method to be analyzed.
@@ -109,36 +129,66 @@ public class AnalysisUtilities{
         return classes;
     }
 
-    /** Returns the set of fields called by a given method.
-     * @param method The method to be analyzed.
-     * @return The set of fields accessed by this method.
+    /** Return the set of classes corresponding to the types of local variables
+     * in the body of a given method.
+     * @param method The method to analyze.
+     * @return The set of classes corresponding to the types of local variables
+     * in the body of this method.
      */
-    public static HashSet getFieldsAccessedBy(SootMethod method) {
-        HashSet fields = new HashSet();
+    public static HashSet getLocalTypeClasses(SootMethod method) {
+        HashSet classes = new HashSet();
+
         if (method.isConcrete()
-                && (!OverriddenMethodGenerator.isOverridden(method))) {
-            Iterator units = method.retrieveActiveBody()
-                    .getUnits().iterator();
-            while (units.hasNext()) {
-                Unit unit = (Unit)units.next();
-                if (unit instanceof Stmt) {
-                    if (((Stmt)unit).containsFieldRef()) {
-                        FieldRef fieldRef = (FieldRef)((Stmt)unit)
-                                .getFieldRef();
-                        SootField field = fieldRef.getField();
-                        fields.add(field);
-                    }
+            && !OverriddenMethodGenerator.isOverridden(method)) {
+
+            Iterator locals = method.retrieveActiveBody().getLocals()
+                    .iterator();
+
+            while (locals.hasNext()) {
+                Local local = (Local) locals.next();
+                if (local.getType() instanceof RefType) {
+                    RefType type = (RefType)local.getType();
+                    classes.add(type.getSootClass());
                 }
             }
         }
-        return fields;
+
+        return classes;
     }
 
+    /** Return the list of interfaces, and all superInterfaces of these
+     * interfaces implemented by a given class.
+     * @param source The class to analyze.
+     * @return The list of interfaces it can direct support.
+     */
+    public static HashSet getSuperInterfacesOf(SootClass source) {
+        HashSet interfaceSet = new HashSet();
+        LinkedList gray = new LinkedList();
 
+        gray.addAll(source.getInterfaces());
 
+        while(!gray.isEmpty()) {
+            SootClass s = (SootClass)gray.getFirst();
 
+            if (s.isInterface()) {
+                Iterator classes = s.getInterfaces().iterator();
 
+                while (classes.hasNext()) {
+                    SootClass superclass = (SootClass) classes.next();
+                    if (! interfaceSet.contains(superclass)
+                        && !gray.contains(superclass)) {
+                        gray.addLast(superclass);
+                    }
+                }
 
+            }
+
+            interfaceSet.add(s);
+            gray.remove(s);
+        }
+
+        return interfaceSet;
+    }
 
 
     ///////////////////////////////////////////////////////////////////

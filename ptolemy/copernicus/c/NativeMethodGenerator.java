@@ -81,8 +81,6 @@ public class NativeMethodGenerator {
      *  @param method The method for which a stub is needed.
      */
     public static void generateStub(SootMethod method) {
-        /* FIXME: Enable this when abstract methods are no longer treated
-         * like natives.
         if (!method.isNative()) {
             System.err.println(
                     "NativeMethodGenerator.generateStub(SootMethod):"
@@ -90,7 +88,6 @@ public class NativeMethodGenerator {
                     + method.toString()
                     + " is not native.\n");
         }
-        */
 
         // Leading Comment.
         StringBuffer code = new StringBuffer(

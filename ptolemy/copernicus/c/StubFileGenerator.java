@@ -1,5 +1,5 @@
 /*
-A C code generator for generating "interface header files"
+A C code generator for generating "stub header files"
 that implement Java classes.
 
 Copyright (c) 2002-2003 The University of Maryland.
@@ -47,7 +47,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 
-/** A C code generator for generating "interface header files"
+/** A C code generator for generating "stub header files"
     that implement Java classes.
 
     @author Ankush Varma
@@ -55,23 +55,21 @@ import java.util.List;
     @since Ptolemy II 2.0
 */
 
-// FIXME: Handle (ignore?) phantom methods and fields.
+public class StubFileGenerator extends CodeGenerator {
 
-public class InterfaceFileGenerator extends CodeGenerator {
-
-    /** Construct a header file generator.
+    /** Construct a stub file generator.
      */
-    public InterfaceFileGenerator() {
+    public StubFileGenerator() {
         super();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Generate code for an interface header file that implements
+    /** Generate code for a stub header file that implements
      *  declarations associated with a class.
      *  @param source The class.
-     *  @return Interface header code for the class.
+     *  @return Stub header code for the class.
      */
     public String generate(SootClass source) {
         StringBuffer bodyCode = new StringBuffer();
@@ -122,10 +120,10 @@ public class InterfaceFileGenerator extends CodeGenerator {
                 + footerCode.toString();
     }
 
-    /** Return the appropriate suffix for the interface header files.
+    /** Return the appropriate suffix for the stub header files.
      *  @return The suffix.
      */
-    public static String interfaceFileNameSuffix() {
+    public static String stubFileNameSuffix() {
         return ("_i.h");
     }
 

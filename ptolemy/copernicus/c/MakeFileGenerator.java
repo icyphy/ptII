@@ -71,6 +71,9 @@ public class MakeFileGenerator {
      *  The makefile will have the name <i>className</i>.make.
      */
     public static void generateMakeFile(String classPath, String className) {
+        // Garbage collection.
+        boolean gc = Options.v().getBoolean("gc");
+
         StringBuffer code = new StringBuffer();
 
         code.append("#Standard variables\n");
@@ -87,7 +90,7 @@ public class MakeFileGenerator {
 
         // The -g flag is for gdb debugging.
         //code.append("CFLAGS = -g -Wall -pedantic\n");
-        code.append("CFLAGS = -g -O2 -Wall -Wno-trigraphs\n");
+        code.append("CFLAGS = -g -Wall -pedantic -Wno-trigraphs\n");
         code.append("DEPEND = gcc -Wno-trigraphs -MM -I $(RUNTIME) -I $(LIB) "
                 + "-I $(NATIVE_BODIES) -I $(OVER_BODIES)\n\n");
 
@@ -113,16 +116,35 @@ public class MakeFileGenerator {
         code.append("\nOBJECTS = $(SOURCES:.c=.o)\n");
         code.append(  "HEADERS = $(SOURCES:.c=.h)\n");
         code.append( "IHEADERS = $(SOURCES:.c="
-                + InterfaceFileGenerator.interfaceFileNameSuffix() + ")\n");
+                + StubFileGenerator.stubFileNameSuffix() + ")\n");
+        if (gc) {
+            code.append( "GC_OBJECT = $(RUNTIME)/GC.o\n");
+        }
 
         code.append("\nLIB_OBJECTS = $(LIB_SOURCES:.c=.o)\n");
         code.append(  "LIB_HEADERS = $(LIB_SOURCES:.c=.h)\n");
         code.append( "LIB_IHEADERS = $(LIB_SOURCES:.c="
-                + InterfaceFileGenerator.interfaceFileNameSuffix() + ")\n");
+                + StubFileGenerator.stubFileNameSuffix() + ")\n");
 
         // Main Target.
-        code.append("\n"+ className + ".exe : $(OBJECTS) $(LIB_FILE)\n");
-        code.append("\tgcc -g $(OBJECTS) $(LIB_FILE) -o "+ className +".exe\n");
+        code.append("\n"+ className + ".exe : $(OBJECTS) $(LIB_FILE)");
+
+        if (gc) {
+            code.append(" $(GC_OBJECT)");
+        }
+
+        code.append("\n");
+        code.append("\tgcc -g $(OBJECTS) $(LIB_FILE) ");
+        if (gc) {
+            code.append("$(GC_OBJECT) ");
+        }
+        code.append("-o "+ className +".exe\n");
+
+        // The garbage collector cannot be compiled with -pedantic.
+        if (gc) {
+            code.append("\n$(GC_OBJECT) : $(RUNTIME)/GC.c $(RUNTIME)/GC.h\n");
+            code.append("\tgcc -g -c $(RUNTIME)/GC.c -o $(RUNTIME)/GC.o\n");
+        }
 
         // Conversion from .c to .o
         code.append(".c.o:\n");
@@ -145,7 +167,11 @@ public class MakeFileGenerator {
         code.append("\n");
 
         code.append("clean:\n");
-        code.append("\trm $(OBJECTS) $(LIB_OBJECTS) $(LIB_FILE);\n");
+        code.append("\trm $(OBJECTS) $(LIB_OBJECTS) $(LIB_FILE)");
+        if (gc) {
+            code.append(" $(GC_OBJECT)");
+        }
+        code.append(";\n");
 
         code.append("# DO NOT DELETE THIS LINE "
                     + " -- make depend depends on it.\n\n");

@@ -98,7 +98,7 @@ public class JavaToC {
 
         HeaderFileGenerator hGenerator = new HeaderFileGenerator();
         CodeFileGenerator cGenerator = new CodeFileGenerator();
-        InterfaceFileGenerator iGenerator = new InterfaceFileGenerator();
+        StubFileGenerator sGenerator = new StubFileGenerator();
 
         if (generateSingleClass) {
             cGenerator.setSingleClassMode();
@@ -109,9 +109,9 @@ public class JavaToC {
         CNames.setup();
 
         // Generate the "interface header" file.
-        String code = iGenerator.generate(sootClass);
+        String code = sGenerator.generate(sootClass);
         FileHandler.write(CNames.sanitize(className)
-                + InterfaceFileGenerator.interfaceFileNameSuffix(), code);
+                + StubFileGenerator.stubFileNameSuffix(), code);
 
         // Generate the .h file.
         code = hGenerator.generate(sootClass);
@@ -164,8 +164,10 @@ public class JavaToC {
                 }
                 // Check for possible options.
                 else if(args[i].equals("-lib")
-                        ||args[i].equals("-verbose")
-                        ||args[i].equals("-compileMode")) {
+                        || args[i].equals("-verbose")
+                        || args[i].equals("-compileMode")
+                        || args[i].equals("-pruneLevel")
+                        || args[i].equals("-gc")) {
                     if (i<args.length-1) {
                         i++;
                         Options.v().put(args[i-1].substring(1), args[i]);

@@ -136,6 +136,16 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
 
 
         String castType = CNames.typeNameOf(stmt.getLeftOp().getType());
+        // If the RHS is a InterfaceInvokeExpr, and LHS is of type "short",
+        // cast it as "long", so that no warnings are thrown on an
+        // interface lookup.
+        if (stmt.getRightOp() instanceof InterfaceInvokeExpr) {
+            if (castType.equals("short")) {
+                castType = new String("long");
+            }
+        }
+
+
         if (stmt.getLeftOp().getType() instanceof ArrayType) {
             _context.addArrayInstance(
                 CNames.typeNameOf(stmt.getLeftOp().getType()));
@@ -358,15 +368,15 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
      *  @param v The instanceof expression.
      */
     public void caseInstanceOfExpr(InstanceOfExpr v) {
-        // FIXME: Add support for all relevant types.
+        // instanceof is needed only for RefTypes.
         Type type = v.getCheckType();
 
         if ((type instanceof RefType)) {
             v.getOp().apply(this);
             _push(CNames.instanceOfFunction + "("
                 +"(PCCG_CLASS_INSTANCE*)"
-                + _pop() + ", (PCCG_CLASS*)&"
-                + CNames.classStructureNameOf(((RefType)type).getSootClass())
+                + _pop() + ", "
+                + CNames.hashNumberOf(((RefType)type).getSootClass())
                 + ")");
 
             // Add the required include file.
@@ -377,7 +387,7 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
 
         else {
             _unexpectedCase(v,
-                "Only RefTypes are presently supported for 'instanceof'");
+                "Only RefTypes are supported for 'instanceof'");
         }
     }
 
@@ -404,7 +414,29 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
      */
     public void caseInterfaceInvokeExpr(InterfaceInvokeExpr v) {
         //_generateInstanceInvokeExpression(v);
-        defaultCase(v);
+        //defaultCase(v);
+        SootMethod method = v.getMethod();
+
+        v.getBase().apply(this);
+        String instanceName = _pop().toString();
+        String cast;
+        if (!method.isStatic()) {
+            cast = new String("(void* (*) (void*, ...))");
+        }
+        else {
+            cast = new String("(void* (*) "
+                + CNames.typeNameOf(method.getParameterType(0))
+                + ", ...))");
+        }
+
+
+        _push("("
+                + cast + "(" +instanceName + "->class->lookup("
+                + CNames.hashNumberOf(method)
+                + ")))"
+                + "( " + instanceName
+                + _generateArguments(v, 1)
+                + ")");
     }
 
     /** Generate code for an invoke statement.
@@ -436,7 +468,6 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
      *  @param l The local.
      */
     public void caseLocal(Local l) {
-        // FIXME: do we need to sanitize the name?
         _push(CNames.localNameOf(l));
     }
 
@@ -444,7 +475,6 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
      * @param v The long constant.
      */
     public void caseLongConstant(LongConstant v) {
-        // FIXME: verify long qualifier
         long constant = v.value;
         long maxLong = 2147483647;
 
@@ -878,16 +908,8 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
         SootMethod method = v.getMethod();
 
         // Handling native methods here.
-        // FIXME: Redundant statements. If is same as else.
-        if (method.isNative()) {
-            _push(CNames.functionNameOf(method) + "("
+        _push(CNames.functionNameOf(method) + "("
                     + _generateArguments(v, 0) + ")");
-        }
-        else {
-            _push(CNames.functionNameOf(method) + "("
-                    +_generateArguments(v, 0) + ")");
-        }
-
     }
 
     /** Generate code for a string constant.
@@ -1285,9 +1307,6 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
         expression.getOp1().apply(this);
 
         String cast = new String();
-
-        //FIXME: Is it okay to cast, say, an object as a string
-        //       and vice-versa?
 
         cast = "("
             + CNames.typeNameOf(expression.getOp1().getType())
