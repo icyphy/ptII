@@ -234,7 +234,7 @@ public class SearchPath extends Vector {
     }
 
     /** Return a Set that contains an entry for each class in the
-     *  system jar file.
+     *  system jar file and in any jar or zip files in the classpath.
      *  Note that classes will have entries like "java.lang.Object", they
      *  will not have extension like .class or .java
      *  As a side effect, this method also updates the public variable
@@ -243,8 +243,9 @@ public class SearchPath extends Vector {
      *  @returns A set of Strings where each element is a fully
      *  qualified class name.
      *  @exception FileNotFoundException If we cannot find the JDK jar
-     *  file 'rt.jar'.
+     *  file 'rt.jar' or any of the jar or zip files in the classpath.
      *  @exception IOException If we cannot read the JDK jar file 'rt.jar'.
+     *  or any of the jar or zip files in the classpath.
      */
     public static Set systemClasses()
             throws IOException, FileNotFoundException {
@@ -298,6 +299,42 @@ public class SearchPath extends Vector {
                 }
             }
 	}
+
+        // Look for any .zip or .jar files in the classpath and
+        // add the classes contained in the zip or jar file to the set.
+        for (Enumeration searchPathEnumeration = NAMED_PATH.elements();
+	     searchPathEnumeration.hasMoreElements();) {
+            String classPathElement = 
+                (String)searchPathEnumeration.nextElement();
+            if (classPathElement.endsWith(".jar")
+                    || classPathElement.endsWith(".zip")) {
+                JarFile classPathJar = null;
+                try {
+                    classPathJar = new JarFile(classPathElement);
+                } catch (IOException e) {
+                    throw new IOException("Failed to read '"
+                            + classPathElement + "': " + e);
+                }
+
+                for (Enumeration enumeration = classPathJar.entries();
+                     enumeration.hasMoreElements();) {
+                    JarEntry jarEntry = (JarEntry)enumeration.nextElement();
+                    File jarFile = new File(jarEntry.getName());
+                    if (jarEntry.isDirectory()) {
+                        systemPackageSet.add(jarFile.getPath().
+                                replace(File.separatorChar, '.'));
+                    } else {
+                        if (jarFile.getPath().endsWith(".class")) {
+                            // Strip off the .class,
+                            // substitute . for File.separatorChar
+                            classSet.add((StringManip.partBeforeLast(jarFile.getPath(),
+                                    '.')).replace(File.separatorChar, '.'));
+                        }
+                    }
+                }
+            }
+        }
+
         return classSet;
     }
 
@@ -365,13 +402,21 @@ public class SearchPath extends Vector {
             if (end == -1) {
                 path = paths.substring(begin);
                 if (path.length() > 0) {
-		    add(path + File.separatorChar);
+                    if (path.endsWith(".jar") || path.endsWith(".zip")) {
+                        add(path);
+                    } else {
+                        add(path + File.separatorChar);
+                    }
                 }
             } else {
                 path = paths.substring(begin, end).replace('/',
                         File.separatorChar);
                 if (path.length() > 0) {
-		    add(path + File.separatorChar);
+                    if (path.endsWith(".jar") || path.endsWith(".zip")) {
+                        add(path);
+                    } else {
+                        add(path + File.separatorChar);
+                    }
                 }
                 begin = end + 1;
             }
