@@ -855,22 +855,22 @@ public class SDFScheduler extends Scheduler {
             IOPort port = (IOPort) ports.nextElement();
             // Extrapolate the Rates
             Enumeration connectedports = port.insidePorts();
-            int consumptionrate = 0;
-            int productionrate = 0;
-            int initproduction = 0;
+            int consumptionRate = 0;
+            int productionRate = 0;
+            int initProduction = 0;
             if(connectedports.hasMoreElements()) {
                 IOPort cport = (IOPort) connectedports.nextElement();
                 Entity cactor = (Entity) cport.getContainer();
-                consumptionrate = _getFiringCount(cactor) * 
+                consumptionRate = _getFiringCount(cactor) * 
                     _getTokenConsumptionRate(cport);
-                productionrate = _getFiringCount(cactor) * 
+                productionRate = _getFiringCount(cactor) * 
                     _getTokenProductionRate(cport);
-                initproduction = _getFiringCount(cactor) * 
+                initProduction = _getFiringCount(cactor) * 
                     _getTokenInitProduction(cport);
                 _debug("CPort " + cport.getName());
-                _debug("consumptionrate = " + consumptionrate + "\n");
-                _debug("productionrate = " + productionrate + "\n");
-                _debug("initproduction = " + initproduction + "\n");
+                _debug("consumptionRate = " + consumptionRate + "\n");
+                _debug("productionRate = " + productionRate + "\n");
+                _debug("initProduction = " + initProduction + "\n");
             }
             // All the ports connected to this port must have the same rate
             while(connectedports.hasMoreElements()) {
@@ -878,88 +878,88 @@ public class SDFScheduler extends Scheduler {
                 Entity cactor = (Entity) cport.getContainer();
                 int crate = _getFiringCount(cactor) * 
                     _getTokenConsumptionRate(cport);
-                if(crate != consumptionrate) throw new NotSchedulableException(
+                if(crate != consumptionRate) throw new NotSchedulableException(
                         port, cport, "Port " + cport.getName() + 
                         " has an aggregate consumption rate of " + crate + 
                         " which does not match the computed aggregate rate " +
-                        "of " + port.getName() + " of " + consumptionrate + 
+                        "of " + port.getName() + " of " + consumptionRate + 
                         "!");
                 int prate = _getFiringCount(cactor) * 
                     _getTokenProductionRate(cport);
-                if(prate != productionrate) throw new NotSchedulableException(
+                if(prate != productionRate) throw new NotSchedulableException(
                         port, cport, "Port " + cport.getName() + 
                         " has an aggregate production rate of " + prate + 
                         " which does not match the computed aggregate rate " +
-                        "of " + port.getName() + " of " + productionrate + 
+                        "of " + port.getName() + " of " + productionRate + 
                         "!");
                 int initp = _getFiringCount(cactor) * 
                     _getTokenInitProduction(cport);
-                if(initp != initproduction) throw new NotSchedulableException(
+                if(initp != initProduction) throw new NotSchedulableException(
                         port, cport, "Port " + cport.getName() + 
                         " has an aggregate init production of " + initp + 
                         " which does not match the computed aggregate " +
-                        "of " + port.getName() + " of " + initproduction + 
+                        "of " + port.getName() + " of " + initProduction + 
                         "!");
                 
             }
             _debug("Port " + port.getName() + "\n");
-            _debug("consumptionrate = " + consumptionrate + "\n");
-            _debug("productionrate = " + productionrate + "\n");
-            _debug("initproduction = " + initproduction + "\n");
+            _debug("consumptionRate = " + consumptionRate + "\n");
+            _debug("productionRate = " + productionRate + "\n");
+            _debug("initProduction = " + initProduction + "\n");
             // SDFAtomicActor blindly creates parameters with bad values.
 
             /*
-            if((consumptionrate == 0) && port.isInput()) {
+            if((consumptionRate == 0) && port.isInput()) {
                 throw new NotSchedulableException(port, "Port " +
                         port.getName() + " declares that it consumes tokens," +
                         " but has a consumption rate of 0");
             }
 
-            if((consumptionrate != 0) && !port.isInput()) {
+            if((consumptionRate != 0) && !port.isInput()) {
                 throw new NotSchedulableException(port, "Port " +
                         port.getName() + " has a nonzero consumption rate, " +
                         "but does not declare that it is an input port.");
             }
             
-            if(_getTokenConsumptionRate(port) != consumptionrate) {
+            if(_getTokenConsumptionRate(port) != consumptionRate) {
                 throw new NotSchedulableException(port, "Port " +
                         port.getName() + " has a declared consumption rate " +
                         "of " + _getTokenConsumptionRate(port) + " that " +
                         "does not match the rate extrapolated from the " +
-                        "contained model of " + consumptionrate + ".");
+                        "contained model of " + consumptionRate + ".");
             }
-            if((productionrate == 0) && port.isOutput()) {
+            if((productionRate == 0) && port.isOutput()) {
                 throw new NotSchedulableException(port, "Port " +
                         port.getName() + " declares that it produces tokens," +
                         " but has a production rate of 0");
             }
-            if((productionrate != 0) && !port.isOutput()) {
+            if((productionRate != 0) && !port.isOutput()) {
                 throw new NotSchedulableException(port, "Port " +
                         port.getName() + " has a nonzero production rate, " +
                         "but does not declare that it is an output port.");
                         }
-            if(_getTokenProductionRate(port) != productionrate) {
+            if(_getTokenProductionRate(port) != productionRate) {
                 throw new NotSchedulableException(port, "Port " +
                         port.getName() + " has a declared production rate " +
                         "of " + _getTokenProductionRate(port) + " that " +
                         "does not match the rate extrapolated from the " +
-                        "contained model of " + productionrate + ".");
+                        "contained model of " + productionRate + ".");
             }
-            if((initproduction != 0) && !port.isOutput()) {
+            if((initProduction != 0) && !port.isOutput()) {
                 throw new NotSchedulableException(port, "Port " +
                         port.getName() + " has a nonzero init production, " +
                         "but does not declare that it is an output port.");
             }
-            if(_getTokenInitProduction(port) != initproduction) {
+            if(_getTokenInitProduction(port) != initProduction) {
                 throw new NotSchedulableException(port, "Port " +
                         port.getName() + " has a declared init production " +
                         "of " + _getTokenInitProduction(port) + " that " +
                         "does not match the extrapolated value from the " +
-                        "contained model of " + initproduction + ".");
+                        "contained model of " + initProduction + ".");
             }
-            _setTokenConsumptionRate(container, port, consumptionrate);
-            _setTokenProductionRate(container, port, productionrate);
-            _setTokenInitProduction(container, port, initproduction);
+            _setTokenConsumptionRate(container, port, consumptionRate);
+            _setTokenProductionRate(container, port, productionRate);
+            _setTokenInitProduction(container, port, initProduction);
             */
             try {
         Parameter param;
@@ -967,17 +967,17 @@ public class SDFScheduler extends Scheduler {
         if(param == null) 
             param = new Parameter(port,"TokenConsumptionRate",
                     new IntToken(1)); 
-        param.setToken(new IntToken(consumptionrate));
+        param.setToken(new IntToken(consumptionRate));
         param = (Parameter)port.getAttribute("TokenProductionRate");
         if(param == null) 
             param = new Parameter(port,"TokenProductionRate",
                     new IntToken(1)); 
-        param.setToken(new IntToken(productionrate));
+        param.setToken(new IntToken(productionRate));
         param = (Parameter)port.getAttribute("TokenInitProduction");
         if(param == null) 
             param = new Parameter(port,"TokenInitProduction",
                     new IntToken(1)); 
-        param.setToken(new IntToken(initproduction));
+        param.setToken(new IntToken(initProduction));
             }
             catch (Exception ex) {
             }
