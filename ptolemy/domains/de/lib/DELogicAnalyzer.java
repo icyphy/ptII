@@ -53,16 +53,7 @@ public class DELogicAnalyzer extends DEActor {
      */
     public DELogicAnalyzer(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {
-        super(container, name);
-
-        // create the input port and make it a multiport.
-        input = new TypedIOPort(this, "input", true, false);
-        input.makeMultiport(true);
-        
-        // FIXME: Consolidate code with next constructor.
-        LogicAnalyzerFrame logicAnalyzerFrame = new LogicAnalyzerFrame(getName());
-        _logicAnalyzer = logicAnalyzerFrame.logicAnalyzer;
-        
+        this(container, name, (new LogicAnalyzerFrame(name)).logicAnalyzer);
     }
 
     /** Construct a plot actor that uses the specified plot object.
@@ -82,6 +73,7 @@ public class DELogicAnalyzer extends DEActor {
         input.makeMultiport(true);
 
         _logicAnalyzer = plot;
+        _logicAnalyzer.setButtons(true);
 
     }
 

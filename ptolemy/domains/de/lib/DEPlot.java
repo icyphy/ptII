@@ -45,6 +45,8 @@ A plotter for discrete-event signals.
 */
 public class DEPlot extends DEActor {
 
+    private static final boolean DEBUG = true;
+
     /** Construct a plot actor with a new plot window. The default Y-range is
      *  [-1, 1]. The default X-range is the start time to the stop time.
      *
@@ -93,7 +95,8 @@ public class DEPlot extends DEActor {
      *  @exception IllegalActionException Not thrown in this class.
      */
     public void initialize() throws IllegalActionException {
-
+        
+        // Call clear with 'true' argument, so it'll reset the legend...
         _plot.clear(false);
 	
 	for (int i = 0; i < input.getWidth(); i++) {
@@ -150,6 +153,12 @@ public class DEPlot extends DEActor {
                     }
 
                     // add the point
+                    if (DEBUG) {
+                        System.out.print(this.getFullName() + ":");
+                        System.out.println("Dataset = " + i + 
+                                ", CurrentTime = " + curTime + 
+                                ", CurrentValue = " + curValue + ".");
+                    }
                     _plot.addPoint(i, curTime, curValue, false);
                 }
             } else {
