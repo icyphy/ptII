@@ -285,11 +285,17 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
             // Copernicus.readInModel(), we need to copy the original
             // model so that the vergil applet has the layout info.
             File newModelFile = new File(newModelFileName);
-            System.out.println("AppletWriter: about to write '"
-                    + newModelFile + "'");
 
-            FileUtilities.binaryCopyURLToFile(
-                    new URL(_modelPath), newModelFile);
+            if (FileUtilities.binaryCopyURLToFile(
+                        new URL(_modelPath), newModelFile)) {
+                System.out.println("AppletWriter: wrote '"
+                        + newModelFile + "'");
+            } else {
+                System.out.println("AppletWriter: No need to copy the .xml "
+                        + "file,\n the source (" + _modelPath 
+                        + ")\n and destination (" + newModelFile 
+                        + ")\n refer to the same file.");
+             }
         } catch (IOException ex) {
             System.out.println("AppletWriter: WARNING: Problem reading '"
                     + _modelPath + "' and writing '" + newModelFileName
