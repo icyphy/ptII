@@ -192,7 +192,9 @@ public abstract class Top extends JFrame {
         super.setBackground(background);
         // This seems to be called in a base class constructor, before
         // this variable has been set. Hence the test against null.
-        if (_statusBar != null) _statusBar.setBackground(background);
+        if (_statusBar != null) {
+            _statusBar.setBackground(background);
+        }
     }
 
     /** Record whether the data associated with this window has been
@@ -207,10 +209,10 @@ public abstract class Top extends JFrame {
 
     /** Size this window to its preferred size and make it
      *  displayable, and override the base class to populate the menu
-     *  bar if they have not already been
-     *  populated.  This is done here rather than in the constructor
-     *  so that derived classes are assured that their constructors
-     *  have been fully executed when _addMenus() is called.
+     *  bar if the menus have not already been populated.  This is
+     *  done here rather than in the constructor so that derived
+     *  classes are assured that their constructors have been fully
+     *  executed when _addMenus() is called.
      */
     public void pack() {
         if (!_menuPopulated) {
@@ -239,7 +241,7 @@ public abstract class Top extends JFrame {
                     KeyStroke.getKeyStroke(KeyEvent.VK_P, Event.CTRL_MASK));
             // Print button disabled by default, unless this class implements
 	    // one of the JDK1.2 printing interfaces.
-            if(this instanceof Printable ||
+            if (this instanceof Printable ||
                     this instanceof Pageable) {
 		_fileMenuItems[5].setEnabled(true);
 	    } else {
@@ -250,21 +252,25 @@ public abstract class Top extends JFrame {
             _fileMenuItems[6].setAccelerator(
                     KeyStroke.getKeyStroke(KeyEvent.VK_W, Event.CTRL_MASK));
 
-            FileMenuListener fml = new FileMenuListener();
+            // Construct the File menu by adding action commands
+            // and action listeners.
+            FileMenuListener fileMenuListener = new FileMenuListener();
             // Set the action command and listener for each menu item.
             for(int i = 0; i < _fileMenuItems.length; i++) {
                 _fileMenuItems[i].setActionCommand(_fileMenuItems[i].getText());
-                _fileMenuItems[i].addActionListener(fml);
+                _fileMenuItems[i].addActionListener(fileMenuListener);
                 _fileMenu.add(_fileMenuItems[i]);
             }
             _menubar.add(_fileMenu);
 
-            HelpMenuListener sml = new HelpMenuListener();
+            // Construct the Help menu by adding action commands
+            // and action listeners.
+            HelpMenuListener helpMenuListener = new HelpMenuListener();
             // Set the action command and listener for each menu item.
             for(int i = 0; i < _helpMenuItems.length; i++) {
                 _helpMenuItems[i].setActionCommand(
                         _helpMenuItems[i].getText());
-                _helpMenuItems[i].addActionListener(sml);
+                _helpMenuItems[i].addActionListener(helpMenuListener);
                 _helpMenu.add(_helpMenuItems[i]);
             }
 
@@ -288,42 +294,6 @@ public abstract class Top extends JFrame {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-
-    /** The most recent directory used in a file dialog. */
-    protected static File _directory = null;
-
-    /** File menu for this frame. */
-    protected JMenu _fileMenu = new JMenu("File");
-
-    /** Items in the file menu. */
-    protected JMenuItem[] _fileMenuItems = {
-        new JMenuItem("Open File", KeyEvent.VK_O),
-        new JMenuItem("Open URL", KeyEvent.VK_U),
-        new JMenu("New"),
-        new JMenuItem("Save", KeyEvent.VK_S),
-        new JMenuItem("SaveAs", KeyEvent.VK_A),
-        new JMenuItem("Print", KeyEvent.VK_P),
-        new JMenuItem("Close", KeyEvent.VK_C),
-        new JMenuItem("Exit", KeyEvent.VK_X),
-    };
-
-    /** Help menu for this frame. */
-    protected JMenu _helpMenu = new JMenu("Help");
-
-    /** Help menu items. */
-    protected JMenuItem[] _helpMenuItems = {
-        new JMenuItem("About", KeyEvent.VK_A),
-        new JMenuItem("Help", KeyEvent.VK_H),
-    };
-
-    /** Menubar for this frame. */
-    protected JMenuBar _menubar = new JMenuBar();
-
-    /** The status bar. */
-    protected StatusBar _statusBar = new StatusBar();
-
-    ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
     /** Open a dialog with basic information about this window.
@@ -334,7 +304,7 @@ public abstract class Top extends JFrame {
                 "By: Claudius Ptolemaeus, ptolemy@eecs.berkeley.edu\n" +
                 "For more information, see\n" +
                 "http://ptolemy.eecs.berkeley.edu/ptolemyII\n\n" +
-                "Copyright (c) 1997-2000, " +
+                "Copyright (c) 1997-2001, " +
                 "The Regents of the University of California.",
                 "About Ptolemy II", JOptionPane.INFORMATION_MESSAGE);
     }
@@ -374,10 +344,10 @@ public abstract class Top extends JFrame {
 
     /** Close the window.  Derived classes should override this to
      *  release any resources or remove any listeners.  In this class,
-     *  if the data associated with this window has been modified,
-     *  as indicated by isModified(), then ask the user whether to
-     *  save the data before closing.
-     *  @return False if the user cancels on a save query.
+     *  if the data associated with this window has been modified, as
+     *  indicated by isModified(), then ask the user whether to save
+     *  the data before closing.  @return False if the user cancels on
+     *  a save query.
      */
     protected boolean _close() {
         // NOTE: We use dispose() here rather than just hiding the
@@ -418,8 +388,10 @@ public abstract class Top extends JFrame {
      *  @return The name.
      */
     protected String _getName() {
-        if (_file == null) return "Unnamed";
-        else return _file.getName();
+        if (_file == null) {
+            return "Unnamed";
+        }
+        return _file.getName();
     }
 
     /** Display the same information given by _about().
@@ -443,14 +415,16 @@ public abstract class Top extends JFrame {
             // The default on Windows is to open at user.home, which is
             // typically an absurd directory inside the O/S installation.
             // So we use the current directory instead.
-            // FIXME: Could this throw a security exception in an applet?
+            // This will throw a security exception in an applet.
+            // FIXME: we should support users under applets opening files
+            // on the server.
             String cwd = System.getProperty("user.dir");
             if (cwd != null) {
                 fileDialog.setCurrentDirectory(new File(cwd));
             }
         }
-        int returnVal = fileDialog.showOpenDialog(this);
-        if (returnVal == JFileChooser.APPROVE_OPTION) {
+        if (fileDialog.showOpenDialog(this)
+                == JFileChooser.APPROVE_OPTION) {
 	    _directory = fileDialog.getCurrentDirectory();
             try {
                 // NOTE: It would be nice if it were possible to enter
@@ -490,13 +464,13 @@ public abstract class Top extends JFrame {
      */
     protected void _print() {
 	PrinterJob job = PrinterJob.getPrinterJob();
-	if(this instanceof Pageable) {
+	if (this instanceof Pageable) {
 	    job.setPageable((Pageable)this);
-	} else if(this instanceof Printable) {
+	} else if (this instanceof Printable) {
 	    PageFormat format = job.pageDialog(job.defaultPage());
 	    job.setPrintable((Printable)this, format);
 	} else {
-	    // can't print it.
+	    // Can't print it.
 	    return;
 	}
 	if (job.printDialog()) {
@@ -545,8 +519,9 @@ public abstract class Top extends JFrame {
             // The default on Windows is to open at user.home, which is
             // typically an absurd directory inside the O/S installation.
             // So we use the current directory instead.
-            // FIXME: This will probably fail with a security exception in
-            // applets.
+            // This will fail with a security exception in applets.
+            // FIXME: we should support users under applets opening files
+            // on the server.
             String cwd = System.getProperty("user.dir");
             if (cwd != null) {
                 fileDialog.setCurrentDirectory(new File(cwd));
@@ -588,6 +563,42 @@ public abstract class Top extends JFrame {
     protected abstract void _writeFile(File file) throws IOException;
 
     ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    /** The most recent directory used in a file dialog. */
+    protected static File _directory = null;
+
+    /** File menu for this frame. */
+    protected JMenu _fileMenu = new JMenu("File");
+
+    /** Items in the file menu. */
+    protected JMenuItem[] _fileMenuItems = {
+        new JMenuItem("Open File", KeyEvent.VK_O),
+        new JMenuItem("Open URL", KeyEvent.VK_U),
+        new JMenu("New"),
+        new JMenuItem("Save", KeyEvent.VK_S),
+        new JMenuItem("SaveAs", KeyEvent.VK_A),
+        new JMenuItem("Print", KeyEvent.VK_P),
+        new JMenuItem("Close", KeyEvent.VK_C),
+        new JMenuItem("Exit", KeyEvent.VK_X),
+    };
+
+    /** Help menu for this frame. */
+    protected JMenu _helpMenu = new JMenu("Help");
+
+    /** Help menu items. */
+    protected JMenuItem[] _helpMenuItems = {
+        new JMenuItem("About", KeyEvent.VK_A),
+        new JMenuItem("Help", KeyEvent.VK_H),
+    };
+
+    /** Menubar for this frame. */
+    protected JMenuBar _menubar = new JMenuBar();
+
+    /** The status bar. */
+    protected StatusBar _statusBar = new StatusBar();
+
+    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     // The input file.
@@ -625,7 +636,7 @@ public abstract class Top extends JFrame {
 
         if (selected == 0) {
             return _save();
-        } else if(selected == 1) {
+        } else if (selected == 1) {
             return true;
         }
         return false;
