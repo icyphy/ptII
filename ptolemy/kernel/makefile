@@ -72,6 +72,7 @@ JSRCS = \
 	SampleTarget.java \
 	SampleSDFExecutive.java \
 	SDFPort.java \
+	SDFPrint.java \
 	SDFRamp.java \
 	SDFStar.java \
 	Star.java \
