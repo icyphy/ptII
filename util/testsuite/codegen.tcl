@@ -56,11 +56,11 @@ proc speedComparison  {xmlFile \
     set targetClass $targetPackage.$modelName.$modelClass
 
 
-    if {$codeGenType = "Deep"} {
+    if {$codeGenType == "Deep"} {
 	set args [java::new {String[]} 0]
 	puts "Running builtin $codeGenType codegen $repeat times"
 	set codegenElapsed [time {java::call \
-		$targetClass
+		$targetClass \
 		main $args} $repeat]
 
 	puts "Running exec $codeGenType codegen $repeat times"
