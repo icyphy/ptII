@@ -1,4 +1,4 @@
-/* Create and send a Key.
+/* Create a key and send it on the output.
 
  Copyright (c) 2003 The Regents of the University of California.
  All rights reserved.
@@ -55,30 +55,28 @@ import javax.crypto.SecretKey;
 //////////////////////////////////////////////////////////////////////////
 //// Key
 /**
+Create a key and send it on the <i>output</i>.
 
-This actor creates a key and sends it on the output.
-
-The key can be used by the {@link SymmetricEncryption} and 
-{@link SymmetricDecryption} actors.
+<p>The key can be used by the {@link SymmetricEncryption} and 
+{@link SymmetricDecryption} actors.  In prinicple, a class
+derived from this class could generate asymmetric public and private keys.  
 
 <p>This key should be not be visible to users as the security of
 the encrypted message relies on the secrecy of this key.
 
 <p>This actor relies on the Java Cryptography Architecture (JCA) and Java
-Cryptography Extension (JCE).
+Cryptography Extension (JCE).  See the
+{@link ptolemy.actor.lib.security.CryptographyActor} documentation for
 
-<br>Information about JCA can be found at
-<a href="http://java.sun.com/j2se/1.4.2/docs/guide/security/CryptoSpec.html" target="_top">http://java.sun.com/j2se/1.4.2/docs/guide/security/CryptoSpec.html">.
-<br>Information about JCE can be found at
-<a href="http://java.sun.com/products/jce/" target="_top">http://java.sun.com/products/jce/">.
-
-@author Christopher Hylands Brooks
+@author Christopher Hylands Brooks, Contributor: Rakesh Reddy 
 @version $Id$
 @since Ptolemy II 3.1
 */
 public class Key extends Source {
 
     /** Construct an actor with the given container and name.
+     *  The Java virtual machine is queried for algorithm and provider
+     *  choices and these choices are added to the appropriate parameters.
      *  @param container The container.
      *  @param name The name of this actor.
      *  @exception IllegalActionException If the actor cannot be contained
@@ -123,8 +121,7 @@ public class Key extends Source {
      *  specified as a string. The algorithms are limited to those
      *  implemented by providers using the Java JCE which are found on the
      *  system.
-     *  The initial default is the first value returned by
-     *  Security.getAlgorithms();
+     *  The initial default is "DES".
      */
     public StringParameter algorithm;
 
@@ -134,12 +131,13 @@ public class Key extends Source {
      */
     public StringParameter provider;
 
-    /** Specify the size of the key to be created.  This is an integer value
-     *  representing the number of bits in the key.  The initial default
-     *  depends on the algorithm that is selected, not all algorithms use
-     *  keySize.
-     *  <p>DSA is the most common algorithm that uses keySize, the Sun
-     *  documentation says:
+    /** Specify the size of the key to be created.  
+     *  The key size is an integer value representing the number of
+     *  bits in the key.  The initial default depends on the algorithm
+     *  that is selected, not all algorithms use <i>keySize</i>.
+     *
+     *  <p>DSA is the most common algorithm that uses <i>keySize<i>,
+     *  the Sun documentation says:
      *  "The length, in bits, of the modulus p. This must range from
      *  512 to 1024, and must be a multiple of 64. The default keysize
      *  is 1024."
@@ -172,23 +170,19 @@ public class Key extends Source {
         }
     }
 
-    /** If there is a token on the <i>input</i> port, this method takes the
-     *  data from the <i>input</i> and encrypts the data based on the
-     *  <i>algorithm</i>, <i>provider</i>, <i>mode</i> and <i>padding</i>
-     *  using the created secret key.  This is then sent on the
-     *  <i>output</i>.  The public key is also sent out on the <i>keyOut</i>
-     *  port.  All parameters should be the same as the corresponding
-     *  decryption actor.  The call for encryption is done in the base class.
+    /** Send the key that was generated in initialize() on the output port.
      *
      *  @exception IllegalActionException If thrown by base class.
      */
     public void fire() throws IllegalActionException {
         super.fire();
+        // FIXME: Should we generate a different key each time we fire?
+        // FIXME: What if the parameters change?
         output.send(0, _secretKeyObjectToken);
     }
 
-    /** Get an instance of the cipher and outputs the key required for
-     *  decryption.
+    /** Initialize the key by using the cached values of the 
+     *  <i>algorithm</i>, <i>keySize<i> and <i>provider</i> parameters.
      *  @exception IllegalActionException If thrown by base class or
      *  if the algorithm is not found, or if the padding scheme is illegal,
      *  or if the specified provider does not exist.
@@ -227,9 +221,7 @@ public class Key extends Source {
     /** The provider to be used for a provider specific implementation. */
     protected String _provider;
 
-    /* The public key to be used for asymmetric encryption. This key is null
-     * for symmetric decryption.
-     */
+    /* The public key to be used for asymmetric encryption. */
     private SecretKey _secretKey = null;
 
     private ObjectToken _secretKeyObjectToken;

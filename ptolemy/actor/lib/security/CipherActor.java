@@ -47,32 +47,34 @@ A base class that implements general functions used by cipher
 actors.
 
 <p>Cipher actors are any actors which perform encryption or
-decryption based on the Java JCE.  Actors extending this class take in
-an unsigned byte array at the <i>input</i>, perform the transformation
-specified in the <i>algorithm</i> parameter and send a unsigned byte
-array on the <i>output</i>.  The algorithms that maybe implemented are
-limited to the ciphers that are implemented by "providers" following
-the JCE specifications and installed in the machine being run. The
-mode and padding can also be specified in the <i>mode</i> and
-<i>padding</i> parameters.  In case a provider specific instance of an
-algorithm is needed, the provider may also be specified in the
-<i>provider</i> parameter. The <i>keySize</i> parameter allows
-implementations of algorithms using various key sizes.
+decryption based on the Java JCE.
 
-<p>Derived classes should implement the abstract 
+<p> Actors extending this class take in an unsigned byte array at the
+<i>input</i>, process the data based on the <i>algorithm</i> parameter
+and send a unsigned byte array on the <i>output</i>.  The algorithms
+that maybe implemented are limited to those that are implemented
+by "providers" following the JCE specifications and installed in the
+machine being run. The mode and padding can also be specified in the
+<i>mode</i> and <i>padding</i> parameters.  In case a provider
+specific instance of an algorithm is needed, the provider may also be
+specified in the <i>provider</i> parameter. The <i>keySize</i>
+parameter allows implementations of algorithms using various key
+sizes.
+
+<p>Concrete actors derived this base class must implement the
 {@link ptolemy.actor.lib.security.CryptographyActor#_process(byte[])} method.
+The initialize() method of this actor calls javax.crypt.Cipher.getInstance()
+with an argument that is created from the values of the <i>algorithm</i>,
+<i>padding</i> and <i>keySize</i> parameters. Derived classes
+should call _cipher.init() with the value of the key in the fire() method.
+ The_process() method in a derived class usually calls _cipher.doFinal().
 
 <p>This actor relies on the Java Cryptography Architecture (JCA) and Java
-Cryptography Extension (JCE).
+Cryptography Extension (JCE).  See the
+{@link ptolemy.actor.lib.security.CryptographyActor} documentation for
+resources about JCA and JCE.
 
-<br>Information about JCA can be found at
-<a href="http://java.sun.com/j2se/1.4.2/docs/guide/security/CryptoSpec.html" target="_top">http://java.sun.com/j2se/1.4.2/docs/guide/security/CryptoSpec.html">.
-
-<br>Information about JCE can be found at
-<a href="http://java.sun.com/products/jce/" target="_top">http://java.sun.com/products/jce/">.
-
-
-@author Rakesh Reddy, Christopher Hylands Brooks
+@author Christopher Hylands Brooks, Contributor: Rakesh Reddy 
 @version $Id$
 @since Ptolemy II 3.1
 */
@@ -208,7 +210,8 @@ abstract public class CipherActor extends CryptographyActor {
         }
     }
 
-    /** Retrieve the values of the parameters and initialize the Cipher.
+    /** Retrieve the values of the parameters and set up 
+     *  javax.crypto.Cipher.
      *
      * @exception IllegalActionException If the algorithm cannot be found,
      * the padding scheme is illegal for the the given algorithm or
