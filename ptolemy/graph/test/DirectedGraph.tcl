@@ -47,30 +47,6 @@ if {[string compare test [info procs test]] == 1} then {
 # Check for necessary classes and adjust the auto_path accordingly.
 #
 
-######################################################################
-####
-# 
-test DirectedGraph-1.1 {Get information about the class} {
-    # If anything changes, we want to know about it so we can write tests.
-    set n [java::new pt.graph.DirectedGraph]
-    list [getJavaInfo $n]
-} {{
-  class:         pt.graph.DirectedGraph
-  fields:        
-  methods:       {add java.lang.Object} {addEdge java.lang.Object java.l
-    ang.Object} allEdges allNodes {contains java.lang.Objec
-    t} {equals java.lang.Object} getClass hashCode isAcycli
-    c isDirected notify notifyAll numEdges numNodes {reacha
-    bleNodes java.lang.Object} toString topSort wait {wait 
-    long} {wait long int}
-    
-  constructors:  pt.graph.DirectedGraph {pt.graph.DirectedGraph int}
-    
-  properties:    acyclic class directed
-    
-  superclass:    pt.graph.Graph
-    
-}}
 
 ######################################################################
 ####
