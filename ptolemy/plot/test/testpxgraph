@@ -84,7 +84,7 @@ $pxgraph -test < demo/data.plt
 
 # Test out file args
 $pxgraph -test ./demo/bargraph.plt
-$pxgraph -test http://ptolemy.eecs.berkeley.edu/java/ptplot/demo/data.plt
+$pxgraph -test http://ptolemy.eecs.berkeley.edu/java/ptplot/demo/data.plt
 
 # Sample run from Ptolemy
 $pxgraph -test -binary -t "Integrator Demo" -P -x n =800x400+0+0 -1 control -0 final demo/data/integrator1.plt demo/data/integrator2.plt
