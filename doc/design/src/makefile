@@ -28,6 +28,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
+
 ########################################################
 # Convert the Ptolemy II Design Doc to HTML
 #
@@ -37,9 +38,56 @@
 # 3. As ptuser, set your DISPLAY to carson:0
 # 4. As ptuser, run cd ~ptdesign/public_html/java; make
 
-DESIGNDOC=/users/ptII/doc/design/src
+
+ME =		ptII/doc/design/src
+
+# Sub directories to run make in.
+DIRS =
+
+# Root of Ptolemy II directory
+ROOT =		../../..
+
+# Get configuration info
+CONFIG =	$(ROOT)/mk/ptII.mk
+include $(CONFIG)
+
+EXTRA_SRCS = \
+
+
+MISC_FILES =	figures
+
+# make checkjunk will not report OPTIONAL_FILES as trash
+# make distclean removes OPTIONAL_FILES
+OPTIONAL_FILES = \
+	actor.fm \
+	actorLib.fm \
+	csp.fm \
+	ct.fm \
+	data.fm \
+	dde.fm \
+	de.fm \
+	design.book \
+	design.wdt \
+	designIX.fm \
+	designTOC.fm \
+	glossary.fm \
+	graph.fm \
+	introduction.fm \
+	kernel.fm \
+	math.fm \
+	models.fm \
+	plot.fm \
+	pn.fm \
+	ptfilter.fm \
+	references.fm \
+	sdf.fm \
+	template.fm \
+	templateFontImpaired.fm \
+	title.fm \
+	type.fm
 
 all: wmwork/Output/introduction.html
+install: all
 design.pdf: $(wildcard $(DESIGNDOC)/*.fm)
 	-chmod g+w $^
 	rm -f $@
@@ -105,3 +153,8 @@ wmwork/Output/search.html:
 	echo "Sorry, no search yet" >> $@
 	echo "</body>" >> $@
 	echo "</html>" >> $@
+
+# We don't include common.mk since we don't use the compiler here
+include $(ROOT)/mk/ptno-compile.mk
+
+DESIGNDOC=/users/ptII/doc/design/src
