@@ -52,6 +52,7 @@ import ptolemy.vergil.toolbox.MenuItemFactory;
 import ptolemy.vergil.toolbox.PtolemyListCellRenderer;
 import ptolemy.vergil.toolbox.PtolemyMenuFactory;
 import ptolemy.vergil.toolbox.XMLIcon;
+import ptolemy.vergil.form.FormFrameFactory;
 
 import diva.canvas.CanvasUtilities;
 import diva.canvas.Site;
@@ -213,6 +214,7 @@ public class KernelGraphFrame extends GraphFrame {
 	public AttributeContextMenuFactory(GraphController controller) {
 	    super(controller);
 	    addMenuItemFactory(new EditParametersFactory("Configure"));
+	    addMenuItemFactory(new FormFrameFactory());
 	    addMenuItemFactory(new RenameDialogFactory());
 	    addMenuItemFactory(new MenuActionFactory(_getDocumentationAction));
 	    //addMenuItemFactory(new MenuActionFactory(_editIconAction));
@@ -226,6 +228,7 @@ public class KernelGraphFrame extends GraphFrame {
 	public EntityContextMenuFactory(GraphController controller) {
 	    super(controller);
 	    addMenuItemFactory(new EditParametersFactory());
+	    addMenuItemFactory(new FormFrameFactory());
 	    addMenuItemFactory(new PortDialogFactory());
 	    addMenuItemFactory(new RenameDialogFactory());
 	    addMenuItemFactory(new MenuActionFactory(_getDocumentationAction));
@@ -242,6 +245,7 @@ public class KernelGraphFrame extends GraphFrame {
 	    super(controller);
 	    addMenuItemFactory(new PortDescriptionFactory());
 	    addMenuItemFactory(new EditParametersFactory());
+	    addMenuItemFactory(new FormFrameFactory());
 	    addMenuItemFactory(new RenameDialogFactory());
 	    addMenuItemFactory(new MenuActionFactory(_getDocumentationAction));
 	}
@@ -426,6 +430,7 @@ public class KernelGraphFrame extends GraphFrame {
 	public RelationContextMenuFactory(GraphController controller) {
 	    super(controller);
 	    addMenuItemFactory(new EditParametersFactory());
+	    addMenuItemFactory(new FormFrameFactory());
 	    addMenuItemFactory(new MenuActionFactory(_getDocumentationAction));
 	}
     }

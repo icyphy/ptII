@@ -38,6 +38,7 @@ import ptolemy.kernel.util.*;
 import ptolemy.vergil.*;
 import ptolemy.vergil.toolbox.*;
 import ptolemy.vergil.ptolemy.*;
+import ptolemy.vergil.form.*;
 import ptolemy.gui.*;
 import ptolemy.moml.*;
 
@@ -261,6 +262,7 @@ public class ViewerGraphController extends GraphController {
 	public SchematicContextMenuFactory(GraphController controller) {
 	    super(controller);
 	    addMenuItemFactory(new EditParametersFactory());
+	    addMenuItemFactory(new FormFrameFactory());
 	    addMenuItemFactory(new PortDialogFactory());
 	}
 
