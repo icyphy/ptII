@@ -38,16 +38,16 @@ import soot.toolkits.scalar.ForwardFlowAnalysis;
 import java.util.*;
 
 /**
-An analysis that maps each local or field to the set of objects or
-fields that must alias is, at a particular point in the code.  
+An analysis that maps each local and field to the set of locals and
+fields that may alias that value.  
 */
-public class MustAliasAnalysis extends ForwardFlowAnalysis {
-    public MustAliasAnalysis(UnitGraph g) {
+public class MaybeAliasAnalysis extends ForwardFlowAnalysis {
+    public MaybeAliasAnalysis(UnitGraph g) {
         super(g);
         doAnalysis();
     }
     
-    /** Return the set of other fields and locals that must reference
+    /** Return the set of other fields and locals that may reference
      *  the same object as the given field, at a point before
      *  the given unit.
      */
@@ -61,7 +61,7 @@ public class MustAliasAnalysis extends ForwardFlowAnalysis {
         return set;
     }
 
-    /** Return the set of other fields and locals that must reference
+    /** Return the set of other fields and locals that may reference
      *  the same object as the given field, at a point after
      *  the given unit.
      */
@@ -75,7 +75,7 @@ public class MustAliasAnalysis extends ForwardFlowAnalysis {
         return set;
     }
 
-    /** Return the set of other fields and locals that must reference
+    /** Return the set of other fields and locals that may reference
      *  the same object as the given local, at a point before
      *  the given unit.
      */
@@ -89,7 +89,7 @@ public class MustAliasAnalysis extends ForwardFlowAnalysis {
         return set;
     }
 
-    /** Return the set of other fields and locals that must reference
+    /** Return the set of other fields and locals that may reference
      *  the same object as the given field, at a point after
      *  the given unit.
      */
@@ -109,7 +109,7 @@ public class MustAliasAnalysis extends ForwardFlowAnalysis {
     // to a set of aliases.  Note that for each alias-set there is exactly one instance of HashSet
     // stored in the map.  This is implemented as a flow-insensitive analysis.  
     // Method calls are handled conservatively, and we assume that they affect the values of all
-    // fields (i.e. aliases for all fields are killed.
+    // fields (i.e. aliases for all fields are killed.)
     // If the object has no other aliases, or any maybe-aliases, then it points to null.
     protected Object newInitialFlow() {
         return new HashMap();
@@ -186,43 +186,53 @@ public class MustAliasAnalysis extends ForwardFlowAnalysis {
     protected void merge(Object in1Value, Object in2Value, Object outValue) {
         Map in1 = (Map) in1Value, in2 = (Map) in2Value, out = (Map) outValue;
        
-        // First set the output to the first input.
         copy(in1, out);
 
-        // Now merge in the second input.
         for(Iterator i = in1.keySet().iterator(); i.hasNext();) {
             Object object = i.next();
             Set in1Set = (Set)in1.get(object);
             Set in2Set = (Set)in2.get(object);
+            // If neither has any aliases, then the output is the same.
             if(in1Set == null && in2Set == null) {
-                // If both inputs have maybe aliases, or no
-                // alias information, then the output
-                // is the same.
                 out.put(object, null);
-            } else if(in1Set == null) {
-                // If we have no information about one of the 
-                // inputs, then ???  
-                // FIXME: is this right?
+            } else if(in1Set == null) { 
+                // If we have any maybe aliases on either
+                // input, then the output is the union.
+                // in this case, the union is trivial.
                 in1Set = new HashSet();
                 in1Set.addAll(in2Set);
                 out.put(object, in1Set);
             } else if(!in1Set.equals(in2Set)) {
-                // If the input alias sets are not equal,
-                // then we can't tell anything for sure about
-                // what the union is.
-                // FIXME: intersection?
-                _killAlias(out, object);
+                // If we have any maybe aliases on either
+                // input, then the output is the union.
+                // In this case, computing the union is 
+                // trickier.
+                if(in2Set != null) {
+                    // Loop through all the things that
+                    // were maybe aliases from in2.
+                    for(Iterator j = in2Set.iterator();
+                        j.hasNext();) {
+                        Object mergeObject = j.next();
+                        // If the object is not already
+                        // listed as an alias.
+                        if(!in2Set.contains(mergeObject)) {
+                            // Then create a new Alias for it.
+                            _createAlias(out, mergeObject, object);
+                        }
+                    }
+                }                
             }
         }
     }
-    
-    
+   
+    // Add lobject to the set of things that are aliased by rObject.
     private static void _createAlias(Map map, Object lObject, Object rObject) {
         // Get its new set of aliases.
         Set rset = (Set)map.get(rObject);
         if(rset == null) {
             rset = new HashSet();
             rset.add(rObject);
+            map.put(rObject, rset);
         }
         
         // Add the object to the new set of aliases.
@@ -244,7 +254,9 @@ public class MustAliasAnalysis extends ForwardFlowAnalysis {
             return ((CastExpr)value).getOp();
         } else if(value instanceof NullConstant) {
             return value;
-        } else return null;
+        } else {
+            return null;
+        }
     }
 
     private static void _killAlias(Map map, Object lObject) {

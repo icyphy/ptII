@@ -171,7 +171,7 @@ public class TypeSpecializer extends SceneTransformer {
             }            
         }
         
-        // Crap: we also need the fields that we represent from
+        // FIXME: we also need the fields that we represent from
         //
         for(Iterator fields = Scene.v().getMainClass().getFields().iterator();
             fields.hasNext();) {
@@ -241,8 +241,8 @@ public class TypeSpecializer extends SceneTransformer {
                     // FIXME: Alternatively, we could create individual constraints for
                     // all of the different aliases.  This might be better
                     // given that we actually have alias information.
-                    if(MustAliasAnalysis.isAliasableValue(leftOp) && 
-                            (MustAliasAnalysis.isAliasableValue(rightOp) ||
+                    if(SootUtilities.isAliasableValue(leftOp) && 
+                            (SootUtilities.isAliasableValue(rightOp) ||
                                     rightOp instanceof NewArrayExpr)) {
                         _addInequality(debug, solver, leftOpTerm, rightOpTerm);
                     }
@@ -350,6 +350,20 @@ public class TypeSpecializer extends SceneTransformer {
 
         // Loop through all the fields and update the types.
         for(Iterator fields = theClass.getFields().iterator();
+            fields.hasNext();) {
+            SootField field = (SootField)fields.next();
+            if(debug) System.out.println("updating types for " + field);
+            Type type = field.getType();
+            // Things that aren't token types are ignored.
+            Type newType = _getUpdateType(debug, field, type, objectToInequalityTerm);
+            if(newType != null) {
+                field.setType(newType);
+                map.put(field, _getTokenType(objectToInequalityTerm, field));
+            }
+        }
+
+        // FIXME: Loop through all the fields in the main class and update the types.
+        for(Iterator fields = Scene.v().getMainClass().getFields().iterator();
             fields.hasNext();) {
             SootField field = (SootField)fields.next();
             if(debug) System.out.println("updating types for " + field);
@@ -555,6 +569,11 @@ public class TypeSpecializer extends SceneTransformer {
                             unit, 
                             localDefs, 
                             localUses);
+                if(attribute == null) {
+                    // A method invocation with a null base is bogus,
+                    // so don't create a type constraint.
+                    return null;
+                }
                 if(attribute instanceof Variable) {
                     Variable parameter = (Variable)attribute;
                     InequalityTerm parameterTypeTerm =

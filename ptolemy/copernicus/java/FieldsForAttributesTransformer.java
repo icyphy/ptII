@@ -69,41 +69,6 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
             return;
         }
 
-        SootClass stringClass =
-            Scene.v().loadClassAndSupport("java.lang.String");
-        Type stringType = RefType.v(stringClass);
-        SootClass objectClass = 
-            Scene.v().loadClassAndSupport("java.lang.Object");
-        SootMethod toStringMethod =
-            objectClass.getMethod("java.lang.String toString()");
-        SootClass namedObjClass = 
-            Scene.v().loadClassAndSupport("ptolemy.kernel.util.NamedObj");
-        SootMethod getAttributeMethod = namedObjClass.getMethod(
-                "ptolemy.kernel.util.Attribute getAttribute(java.lang.String)");
-        SootMethod attributeChangedMethod = namedObjClass.getMethod(
-                "void attributeChanged(ptolemy.kernel.util.Attribute)");
-
-        SootClass attributeClass = 
-            Scene.v().loadClassAndSupport("ptolemy.kernel.util.Attribute");
-        Type attributeType = RefType.v(attributeClass);
-        SootClass settableClass = 
-            Scene.v().loadClassAndSupport("ptolemy.kernel.util.Settable");
-        Type settableType = RefType.v(settableClass);
-        SootMethod getExpressionMethod = 
-            settableClass.getMethod("java.lang.String getExpression()");
-        SootMethod setExpressionMethod = 
-            settableClass.getMethod("void setExpression(java.lang.String)");
-        
-        SootClass tokenClass = 
-            Scene.v().loadClassAndSupport("ptolemy.data.Token");
-        Type tokenType = RefType.v(tokenClass);
-        SootClass parameterClass = 
-            Scene.v().loadClassAndSupport("ptolemy.data.expr.Variable");
-        SootMethod getTokenMethod = 
-            parameterClass.getMethod("ptolemy.data.Token getToken()");
-        SootMethod setTokenMethod = 
-            parameterClass.getMethod("void setToken(ptolemy.data.Token)");
-
         Map attributeToFieldMap = new HashMap();
         Map classToObjectMap = new HashMap();
       
@@ -157,9 +122,9 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
                             if(r.getMethod().getSubSignature().equals(
                                     PtolemyUtilities.getDirectorMethod.getSubSignature())) {
                                 // Replace calls to getDirector with null.
-                                //FIXME: we should be able to do better than this?
+                                // FIXME: we should be able to do better than this?
                                 box.setValue(NullConstant.v());
-                            } else if(r.getMethod().equals(getAttributeMethod)) {
+                            } else if(r.getMethod().equals(PtolemyUtilities.getAttributeMethod)) {
                                 // inline calls to getAttribute(arg) when arg is a string
                                 // that can be statically evaluated.
                                 Value nameValue = r.getArg(0);
@@ -194,7 +159,8 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
                                                 r.getBase(), attributeField));
                                     }                                
                                 } else {
-                                    System.out.println("attribute cannot be statically determined");
+                                    String string = "Attribute cannot be statically determined";
+                                    throw new RuntimeException(string);
                                 }
                             }
                         }

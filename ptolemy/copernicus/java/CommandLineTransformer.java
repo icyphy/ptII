@@ -71,38 +71,11 @@ import soot.toolkits.graph.Block;
 import soot.toolkits.graph.BlockGraph;
 import soot.toolkits.graph.CompleteBlockGraph;
 
-
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
-
-
-/*
-import ptolemy.kernel.util.*;
-import ptolemy.kernel.*;
-import ptolemy.actor.*;
-import ptolemy.moml.*;
-import ptolemy.domains.sdf.kernel.SDFDirector;
-
-import soot.*;
-import soot.jimple.*;
-import soot.jimple.toolkits.invoke.SiteInliner;
-import soot.jimple.toolkits.invoke.StaticInliner;
-import soot.jimple.toolkits.invoke.InvokeGraphBuilder;
-import soot.jimple.toolkits.scalar.ConditionalBranchFolder;
-import soot.jimple.toolkits.scalar.ConstantPropagatorAndFolder;
-import soot.jimple.toolkits.scalar.CopyPropagator;
-import soot.jimple.toolkits.scalar.DeadAssignmentEliminator;
-import soot.jimple.toolkits.scalar.UnreachableCodeEliminator;
-import soot.jimple.toolkits.scalar.Evaluator;
-import soot.toolkits.graph.*;
-import soot.dava.*;
-import soot.util.*;
-import java.io.*;
-import java.util.*;
-*/
 
 
 /**
@@ -142,13 +115,16 @@ public class CommandLineTransformer extends SceneTransformer {
             return;
         }
 
-        SootClass actorClass =  Scene.v().loadClassAndSupport(
+        /* SootClass actorClass =  Scene.v().loadClassAndSupport(
                 "ptolemy.actor.TypedAtomicActor");
         Type actorType = RefType.v(actorClass);
         SootClass compositeActorClass =
             Scene.v().loadClassAndSupport("ptolemy.actor.TypedCompositeActor");
+        */
+        // SootClass applicationClass = Scene.v().loadClassAndSupport(
+        //        "ptolemy.actor.gui.CompositeActorApplication");
         SootClass applicationClass = Scene.v().loadClassAndSupport(
-                "ptolemy.actor.gui.CompositeActorApplication");
+                "ptolemy.copernicus.java.CommandLineTemplate");
         applicationClass.setLibraryClass();
 
         SootClass modelClass = Scene.v().getMainClass();
@@ -173,7 +149,7 @@ public class CommandLineTransformer extends SceneTransformer {
         // We know that we have exactly one model, so create it.
         // The final field for the model.
         SootField modelField =
-            new SootField("_CGmodel", RefType.v(compositeActorClass),
+            new SootField("_CGmodel", RefType.v(PtolemyUtilities.compositeActorClass),
                     Modifier.PRIVATE | Modifier.FINAL);
         mainClass.addField(modelField);
 

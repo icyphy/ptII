@@ -62,6 +62,7 @@ import soot.Value;
 import soot.ValueBox;
 import soot.VoidType;
 
+import soot.jimple.ArrayRef;
 import soot.jimple.Expr;
 import soot.jimple.IntConstant;
 import soot.jimple.LongConstant;
@@ -675,6 +676,7 @@ public class SootUtilities {
         throw new RuntimeException("Types for shape = " + shapeType 
                 + " and element = " + elementType + " must be arrays or base types.");  
     }
+
     /** Create a new local variable in the given body, initialized before the given
      *  unit that refers to a Runtime exception with the given string message.
      */
@@ -1166,6 +1168,22 @@ public class SootUtilities {
             }
         }
         return inlinedAnything;
+    }
+
+    /** Return true if the given value represents something that can 
+     *  be aliased in Java by something else.  For instance, a local 
+     *  variable can point to the same object as another local variable.
+     */
+    public static boolean isAliasableValue(Value value) {
+        boolean isAliasableObject = 
+            value instanceof Local ||
+            value instanceof FieldRef ||
+            value instanceof CastExpr ||
+            value instanceof ArrayRef;
+        boolean isAliasableType = 
+            value.getType() instanceof ArrayType ||
+            value.getType() instanceof RefType;
+        return isAliasableObject && isAliasableType;
     }
 
     /** Make the given field a static field.

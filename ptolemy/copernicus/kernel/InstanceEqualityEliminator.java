@@ -46,6 +46,10 @@ and <i>ref2</i> are must-aliases of eachother, and false if <i>ref1</> and <i>re
 are not maybe aliases of eachother.  Similarly, <i>ref1 != ref2</i> can be
 replaced with true if <i>ref1</> and <i>ref2</i> are not maybe aliases of 
 eachother and with false if they are must-aliases
+<p>
+However, in general, making decisions base on must-aliases is much easier 
+than making decisions on maybe aliases...  in particular, a conservative
+must alias analysis makes it safe 
 
 */
 
@@ -65,15 +69,15 @@ public class InstanceEqualityEliminator extends BodyTransformer
     protected void internalTransform(Body b, String phaseName, Map options)
     {
         JimpleBody body = (JimpleBody)b;
-        if(Main.isVerbose)
-            System.out.println("[" + body.getMethod().getName() +
-                "] Eliminating instance equality checks...");
+        System.out.println("InstanceEqualityEliminator.internalTransform("
+                + phaseName + ", " + options + ")");
         
         boolean debug = Options.getBoolean(options, "debug");
         CompleteUnitGraph unitGraph = new CompleteUnitGraph(body);
-        MustAliasAnalysis aliasAnalysis = new MustAliasAnalysis(unitGraph);
+        MustAliasAnalysis mustAliasAnalysis = new MustAliasAnalysis(unitGraph);
+        MaybeAliasAnalysis maybeAliasAnalysis = new MaybeAliasAnalysis(unitGraph);
  
-        // Loop through all the uni
+        // Loop through all the unit
         for(Iterator units = body.getUnits().iterator();
             units.hasNext();) {
             Unit unit = (Unit)units.next();
@@ -90,22 +94,30 @@ public class InstanceEqualityEliminator extends BodyTransformer
                             right.getType() instanceof RefType) {
                         if(debug) System.out.println("checking unit = " + unit);
                         if(debug) System.out.println("left aliases = " + 
-                                aliasAnalysis.getAliasesOfBefore((Local)left, unit));
+                                mustAliasAnalysis.getAliasesOfBefore((Local)left, unit));
                         if(debug) System.out.println("right aliases = " + 
-                                aliasAnalysis.getAliasesOfBefore((Local)right, unit));
+                                mustAliasAnalysis.getAliasesOfBefore((Local)right, unit));
+                        if(debug) System.out.println("left maybe aliases = " + 
+                                maybeAliasAnalysis.getAliasesOfBefore((Local)left, unit));
+                        if(debug) System.out.println("right maybe aliases = " + 
+                                maybeAliasAnalysis.getAliasesOfBefore((Local)right, unit));
                         // Utter hack... Should be:
-                        // if(aliasAnalysis.getAliasesOfBefore((Local)left, unit).contains(right)) {
-                        Set intersection = aliasAnalysis.getAliasesOfBefore((Local)left, unit);
-                        intersection.retainAll(aliasAnalysis.getAliasesOfBefore((Local)right, unit));
+                        // if(mustAliasAnalysis.getAliasesOfBefore((Local)left, unit).contains(right)) {
+                        Set intersection = mustAliasAnalysis.getAliasesOfBefore((Local)left, unit);
+                        intersection.retainAll(mustAliasAnalysis.getAliasesOfBefore((Local)right, unit));
                         if(!intersection.isEmpty()) {
                             binop.getOp1Box().setValue(IntConstant.v(0));
                             binop.getOp2Box().setValue(IntConstant.v(0));
                         } else {
-                            // Another awful hack.   In order to do this, we need maybe analysis...  
-                            // System.out.println("unequivalent definitions of -" + binop.getSymbol() + "!");
-                            // Replace with operands that can be statically evaluated.
-                            binop.getOp1Box().setValue(IntConstant.v(0));
-                            binop.getOp2Box().setValue(IntConstant.v(1));
+                            /*
+                            intersection = maybeAliasAnalysis.getAliasesOfBefore((Local)left, unit);
+                            intersection.retainAll(maybeAliasAnalysis.getAliasesOfBefore((Local)right, unit));
+                            if(intersection.isEmpty()) {
+                                // System.out.println("unequivalent definitions of -" + binop.getSymbol() + "!");
+                                // Replace with operands that can be statically evaluated.
+                                binop.getOp1Box().setValue(IntConstant.v(0));
+                                binop.getOp2Box().setValue(IntConstant.v(1));
+                                }*/
                         }                      
                     }
                 }

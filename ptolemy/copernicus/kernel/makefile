@@ -45,10 +45,12 @@ DIRS =
 # Keep this list alphabetized.
 JSRCS = \
 	ActorTransformer.java \
+	AliasAnalysis.java \
 	CastAndInstanceofEliminator.java \
 	ImprovedDeadAssignmentEliminator.java \
 	InstanceEqualityEliminator.java \
 	KernelMain.java \
+	MaybeAliasAnalysis.java \
 	MustAliasAnalysis.java \
 	SootUtilities.java \
 	TransformerAdapter.java

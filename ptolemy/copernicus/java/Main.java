@@ -158,8 +158,8 @@ public class Main extends KernelMain {
         Scene.v().getPack("wjtp").add(new Transform("wjtp.umr",
                 UnreachableMethodRemover.v()));
        
-        //  Scene.v().getPack("wjtp").add(new Transform("wjtp.ttn",
-        //         TokenToNativeTransformer.v(_toplevel)));
+        Scene.v().getPack("wjtp").add(new Transform("wjtp.ttn",
+                TokenToNativeTransformer.v(_toplevel)));
 
         // Scene.v().getPack("wjtp").add(new Transform("wjtp.ibg",
         //        InvokeGraphBuilder.v()));
@@ -185,11 +185,11 @@ public class Main extends KernelMain {
         // fairly specific to our implementation above, and 
         // could be generalized to arbitrary heap-based alias 
         // analysis, but I haven't bothered yet.
-           Scene.v().getPack("jtp").add(new Transform("jtp.iee",
-               InstanceEqualityEliminator.v()));
+        Scene.v().getPack("jtp").add(new Transform("jtp.iee",
+                InstanceEqualityEliminator.v()));
       
         // Removes references to instancefields that come from 'this'.
-         Scene.v().getPack("jop").add(new Transform("jop.dae",
+        Scene.v().getPack("jop").add(new Transform("jop.dae",
                 ImprovedDeadAssignmentEliminator.v()));
     }
 

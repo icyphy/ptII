@@ -643,6 +643,12 @@ public class PtolemyUtilities {
 
     public static SootClass typeLatticeClass;
  
+    public static SootClass variableClass;
+
+    public static SootMethod variableConstructorWithoutToken;
+
+    public static SootMethod variableConstructorWithToken;
+
     static {
         SootClass objectClass =
             Scene.v().loadClassAndSupport("java.lang.Object");
@@ -670,6 +676,13 @@ public class PtolemyUtilities {
             settableClass.getMethodByName("setExpression");
         getExpressionMethod = 
             settableClass.getMethod("java.lang.String getExpression()");
+
+        variableClass = 
+            Scene.v().loadClassAndSupport("ptolemy.data.expr.Variable");
+        variableConstructorWithoutToken = variableClass.getMethod(
+                "void <init>(ptolemy.kernel.util.NamedObj,java.lang.String)");
+        variableConstructorWithToken = variableClass.getMethod(
+                "void <init>(ptolemy.kernel.util.NamedObj,java.lang.String,ptolemy.data.Token)");
 
         executableInterface = 
             Scene.v().loadClassAndSupport("ptolemy.actor.Executable");

@@ -44,6 +44,7 @@ DIRS =		test
 
 # Keep this list alphabetized.
 JSRCS = \
+	CommandLineTemplate.java \
 	CommandLineTransformer.java \
 	ConstantLoopUnroller.java \
 	DeadObjectEliminator.java \
@@ -143,7 +144,8 @@ compileDeepDemo: $(JCLASS)
 		-p wjtp.itt deep,targetPackage:$(DEEPTARGETPACKAGE) \
 		-p wjtp.ttn deep,targetPackage:$(DEEPTARGETPACKAGE) \
 		-p wjtp.ts deep \
-		-p wjtp.umr debug \
+		-p jtp.iee deep \
+		-p wjtp.umr deep \
 		$(SOOT_USER_ARGS)
 	@echo "Here is that javap output"
 	javap -verbose -l -s -classpath $(ROOT) $(DEEPTARGETCLASS)
