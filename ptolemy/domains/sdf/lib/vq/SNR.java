@@ -61,11 +61,7 @@ public final class SNR extends SDFAtomicActor {
         new Parameter(this, "originalYFramesize", new IntToken("144"));
         new Parameter(this, "modifiedXFramesize", new IntToken("176"));
         new Parameter(this, "modifiedYFramesize", new IntToken("144"));
-        
-        //Aviod it from being eaten by ActorConsumer, 
-        //for right now, don't set the 
-        //outputport.
-        
+                
         SDFIOPort outputport = (SDFIOPort) newPort("SNRvalue");
         outputport.setOutput(true);
         setTokenProductionRate(outputport, 1);
@@ -230,8 +226,6 @@ public final class SNR extends SDFAtomicActor {
                 noisePower = noisePower + 
                     (originalFrameElement - modifiedFrameElement)*
                     (originalFrameElement - modifiedFrameElement);
-                //  System.out.println ("signal = "+signalPower);
-                //  System.out.println ("noisePower = "+noisePower);
             }
         
         SNR = 10 * Math.log ((double) signalPower / noisePower) / 
@@ -239,7 +233,6 @@ public final class SNR extends SDFAtomicActor {
         
         message = new DoubleToken(SNR);
         outputport.send(0, message);
-        //System.out.println ("SNR = "+ SNR + " dB");
     }
     
     DoubleToken message;

@@ -50,7 +50,7 @@ import ptolemy.domains.sdf.lib.vq.*;
 import ptolemy.plot.*;
 
 //////////////////////////////////////////////////////////////////////////
-//// ExpressionApplet
+//// HTVQApplet
 /**
 An applet that uses Ptolemy II SDF domain.
 
@@ -81,14 +81,11 @@ public class HTVQApplet extends SDFApplet {
 	    Panel displayPanel = new Panel();
 	    add(displayPanel, "North");
 	    displayPanel.setLayout(new BorderLayout());
-	    //displayPanel.setSize(480, 200);
-	    
+	 	    
 	    Panel originalPanel = new Panel();
-	    //originalPanel.setSize(200, 200);
-	    displayPanel.add("West", originalPanel);
+            displayPanel.add("West", originalPanel);
             
             Panel compressedPanel = new Panel();
-	    //compressedPanel.setSize(200, 200);
 	    displayPanel.add("Center", compressedPanel);
 
             Panel prnPanel = new Panel();
@@ -123,6 +120,9 @@ public class HTVQApplet extends SDFApplet {
 	    ImageDisplay original = new ImageDisplay(_toplevel, "Original");
 	    original.setPanel(originalPanel);
             
+            //added Print actor and put the text area at the right of the 
+            //applet window. Text Area size is set to be 7*10 (row* column)
+            //in order to fit well with the image size.
             Print prn = new Print(_toplevel, "Print");
             prn.setPanel(prnPanel);
             prn.textArea.setColumns(10);
@@ -189,5 +189,10 @@ public class HTVQApplet extends SDFApplet {
         }
     }
 }
+
+
+
+
+
 
 
