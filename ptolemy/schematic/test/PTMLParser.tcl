@@ -50,7 +50,7 @@ if {[string compare test [info procs test]] == 1} then {
 ######################################################################
 ####
 #
-test PTMLParser-2.1 {Constructor tests} {
+test PTMLParser-2.1 {parser tests} {
     set e0 [java::new ptolemy.schematic.PTMLParser "file:/users/neuendor/ptII/ptolemy/schematic/test/exampleschematic.ptml"]
     set element [$e0 parse]
     list [$element toString]
@@ -61,16 +61,16 @@ test PTMLParser-2.1 {Constructor tests} {
 <description>Load the Image that will be transmitted and stored.</description>
 <entitytype ports="2" name="loadimage"></entitytype>
 <parameter value="" name="filename" type="string"></parameter>
-<port name="image" input="false" type="doubleArray" output="true"></port>
+<port multiport="false" name="image" input="false" type="doubleArray" output="true"></port>
 </entity>
 <entity name="Save BMP file" iconlibrary="examplelibrary.ptml">
 <entitytype ports="2" name="saveimage"></entitytype>
 <parameter value="" name="filename" type="string"></parameter>
-<port name="image" input="true" type="doubleArray" output="false"></port>
+<port multiport="false" name="image" input="true" type="doubleArray" output="false"></port>
 </entity>
-<relation name="R1">
-<link port="image" entity="Load BMP File"></link>
-<link port="image" entity="Save BMP File"></link>
+<relation name="R1" width="1">
+<link name="Load BMP File.image"></link>
+<link name="Save BMP File.image"></link>
 </relation>
 <parameter value="SDF" name="domain" type="string"></parameter>
 <parameter value="1.0" name="starttime" type="double"></parameter>
@@ -78,8 +78,74 @@ test PTMLParser-2.1 {Constructor tests} {
 </schematic>
 </Document>
 }}
-    
-test PTMLParser-2.2 {Constructor tests} {
+
+######################################################################
+####
+#
+test PTMLParser-2.2 {semantic tests:schematic} {
+    # uses setup above.
+    set children [$element childElements]
+    set schematic [$children nextElement]
+    set name [$schematic getName]
+    set version [$schematic getVersion]
+    set description [$schematic getDescription]
+    set parameters [$schematic parameters]
+    set entitynames [$schematic entityNames]
+    set relationnames [$schematic relationNames]
+    list $name $version $description 
+} {SDF 1.0 {Icons for use within SDF}}
+
+######################################################################
+####
+#
+test PTMLParser-2.3 {semantic tests:schematic.parameter} {
+    # uses setup above.
+    set p [$parameters nextElement]
+    list [$p getName] [$p getType] [$p getValue]
+} {starttime double 1.0}
+
+######################################################################
+####
+#
+test PTMLParser-2.4 {semantic tests:schematic.entity} {
+    # uses setup above.
+    set entityname [$entitynames nextElement]
+    set e [$schematic getEntity $entityname]
+    set entitytype [$e getEntityType]
+    set ps [$e parameters]
+    set p [$ps nextElement]
+    set ports [$e ports]
+    list [$e getName] [$entitytype toString] \
+[$p getName] [$p getType] [$p getValue] [$entitytype getName] 
+} {{Load BMP File} {<entitytype ports="2" name="loadimage"></entitytype>
+} filename string {} loadimage}
+
+######################################################################
+####
+#
+test PTMLParser-2.5 {semantic tests:schematic.relation} {
+    # uses setup above.
+    set relationname [$relationnames nextElement]
+    set r [$schematic getRelation $relationname]
+    set ls [$r links]
+    set l [$ls nextElement]
+    list [$r getName] $l
+
+} {R1 {Save BMP File.image}}
+
+######################################################################
+####
+#
+test PTMLParser-2.6 {semantic tests:schematic.port} {
+    # uses setup above.
+    set p [$ports nextElement]
+    list [$p getName] [$p isInput] [$p isOutput] [$p isMultiport] [$p getType]
+} {image 0 1 0 doubleArray}
+
+######################################################################
+####
+#
+test PTMLParser-3.1 {Constructor tests} {
     set e0 [java::new ptolemy.schematic.PTMLParser "file:/users/neuendor/ptII/ptolemy/schematic/test/examplelibrary.ptml"]
     set element [$e0 parse]
     list [$element toString]
@@ -99,12 +165,12 @@ test PTMLParser-2.2 {Constructor tests} {
 </tclscript>
 </graphic>
 <parameter value="" name="filename" type="string"></parameter>
-<port name="image" input="false" type="doubleArray" output="true"></port>
+<port multiport="false" name="image" input="false" type="doubleArray" output="true"></port>
 </icon>
 <icon name="SaveImage">
 <entitytype ports="2" name="saveimage"></entitytype>
-<port name="filename" input="true" type="string" output="false"></port>
-<port name="image" input="true" type="doubleArray" output="false"></port>
+<port multiport="false" name="filename" input="true" type="string" output="false"></port>
+<port multiport="false" name="image" input="true" type="doubleArray" output="false"></port>
 <graphic format="xml">
 <line width="5" style="dotted" points="0 0 10 10"></line>
 <rect fill="hatch" points="0 0 10 10" color="blue"></rect>
@@ -124,3 +190,61 @@ Hello! This is a nice big text box in a ptolemy icon.
 }}
     
         
+######################################################################
+####
+#
+test PTMLParser-3.2 {semantic tests:library} {
+    # uses setup above.
+    set children [$element childElements]
+    set library [$children nextElement]
+    set name [$library getName]
+    set version [$library getVersion]
+    set description [$library getDescription]
+    set icons [$library icons]
+    list $name $version $description 
+} {SDF 1.0 {Icons for use within SDF}}
+
+######################################################################
+####
+#
+test PTMLParser-3.3 {semantic tests:library.icon} {
+    # uses setup above.
+    set i [$icons nextElement]
+    set entitytype [$i getEntityType]
+    set graphicformats [$i graphicFormats]
+    set ports [$i ports]
+    list [$i getName] [$i getDescription] [$entitytype getName]
+} {SaveImage {} saveimage}
+
+######################################################################
+####
+#
+test PTMLParser-3.4 {semantic tests:library.icon.graphic} {
+    # uses setup above.
+    set graphicformat [$graphicformats nextElement]
+    set graphic [$i getGraphic $graphicformat]
+    list [$graphic getAttribute format] [$graphic toString]
+} {xml {<graphic format="xml">
+<line width="5" style="dotted" points="0 0 10 10"></line>
+<rect fill="hatch" points="0 0 10 10" color="blue"></rect>
+<ellipse fill="blue" points="0 0 10 10"></ellipse>
+<polygon points="0 0 10 10 15 10 15 0"></polygon>
+<textline font="helvetica" points="0 0">
+Hello!
+</textline>
+<textbox alignX="center" alignY="top" points="0 0 100 100">
+Hello! This is a nice big text box in a ptolemy icon.
+</textbox>
+<image format="gif" compression="zip" points="0 0 100 100" file="icon.gif"></image>
+</graphic>
+}}
+
+######################################################################
+####
+#
+test PTMLParser-3.5 {semantic tests:library.icon.port} {
+    # uses setup above.
+    set p [$ports nextElement]
+    list [$p getName] [$p isInput] [$p isOutput] [$p isMultiport] [$p getType]
+} {image 1 0 0 doubleArray}
+
