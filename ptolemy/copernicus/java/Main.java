@@ -34,6 +34,7 @@ import ptolemy.copernicus.kernel.ActorTransformer;
 import ptolemy.copernicus.kernel.KernelMain;
 import ptolemy.copernicus.kernel.ImprovedConstantPropagatorAndFolder;
 import ptolemy.copernicus.kernel.ImprovedDeadAssignmentEliminator;
+import ptolemy.copernicus.kernel.InstanceEqualityEliminator;
 import ptolemy.copernicus.kernel.TransformerAdapter;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -51,6 +52,9 @@ import soot.jimple.toolkits.scalar.CopyPropagator;
 import soot.jimple.toolkits.scalar.DeadAssignmentEliminator;
 import soot.jimple.toolkits.scalar.UnreachableCodeEliminator;
 import soot.jimple.toolkits.scalar.Evaluator;
+import soot.jimple.toolkits.scalar.LocalNameStandardizer;
+import soot.toolkits.scalar.LocalSplitter;
+import soot.jimple.toolkits.typing.TypeAssigner;
 import soot.toolkits.graph.*;
 import soot.dava.*;
 import soot.util.*;
@@ -87,42 +91,101 @@ public class Main extends KernelMain {
     public void addTransforms() {
 	super.addTransforms();
 
+        // Create a class for the composite actor of the model
         Scene.v().getPack("wjtp").add(new Transform("wjtp.mt",
                 ModelTransformer.v(_toplevel)));
+        // Add a command line interface (i.e. Main)
         Scene.v().getPack("wjtp").add(new Transform("wjtp.clt",
                 CommandLineTransformer.v(_toplevel)));
+        // Inline the director into the composite actor.
         Scene.v().getPack("wjtp").add(new Transform("wjtp.idt",
                 InlineDirectorTransformer.v(_toplevel)));
+        // In each actor and composite actor, ensure that there
+        // is a field for every attribute, and replace calls
+        // to getAttribute with references to those fields.
         Scene.v().getPack("wjtp").add(new Transform("wjtp.ffat",
                 FieldsForAttributesTransformer.v(_toplevel)));
-       
-        Scene.v().getPack("wjtp").add(new Transform("wjtp.ipt",
+        // In each actor and composite actor, ensure that there
+        // is a field for every port, and replace calls
+        // to getPortwith references to those fields.
+        Scene.v().getPack("wjtp").add(new Transform("wjtp.ffpt",
+                FieldsForPortsTransformer.v(_toplevel)));
+        // While we still have references to ports, use the
+        // resolved types of the ports and run a typing
+        // algorithm to specialize the types of domain
+        // polymorphic actors.  After this step, no
+        // uninstantiable types should remain.
+        Scene.v().getPack("wjtp").add(new Transform("wjtp.ts",
+                TypeSpecializer.v(_toplevel)));
+        // Set about removing reference to attributes and parameters.
+        // Anywhere where a method is called on an attribute or
+        // parameter, replace the method call with the return value
+        // of the method.  This is possible, since after
+        // initialization attribute values are assumed not to
+        // change.  (Note: There are certain cases where this is 
+        // not true, i.e. the expression actor.  Those will be 
+        // specially handled before this point, or we should detect
+        // assignments to attributes and handle them differently.)
+        Scene.v().getPack("wjtp").add(new Transform("wjtp.iat",
                 InlineParameterTransformer.v(_toplevel)));
+        // Anywhere we have a method call on a token that can be
+        // statically evaluated (usually, these will have been
+        // created by inlining parameters), inline those calls.
+        // We do this before port transformation, since it 
+        // often allows us to statically determine the channels
+        // of port reads and writes.
         Scene.v().getPack("wjtp").add(new Transform("wjtp.itt",
                 InlineTokenTransformer.v(_toplevel)));
-        // Scene.v().getPack("wjtp").add(new Transform("wjtp.fot",
-        //        FieldOptimizationTransformer.v(_toplevel)));
-        Scene.v().getPack("wjtp").add(new Transform("wjtp.iportt",
+        // Set about removing references to ports.  
+        // Anywhere where a method is called on a port, replace the
+        // method call with an inlined version of the method. 
+        // Currently this only deals with SDF, and turns
+        // all gets and puts into reads and writes from circular
+        // buffers.
+        Scene.v().getPack("wjtp").add(new Transform("wjtp.ipt",
                 InlinePortTransformer.v(_toplevel)));
+        // Deal with any more statically analyzeable token
+        // references that were created.
         Scene.v().getPack("wjtp").add(new Transform("wjtp.itt",
                 InlineTokenTransformer.v(_toplevel)));
-       
-        //    Scene.v().getPack("wjtp").add(new Transform("wjtp.ibg",
+
+        // Scene.v().getPack("wjtp").add(new Transform("wjtp.ibg",
         //        InvokeGraphBuilder.v()));
         // Scene.v().getPack("wjtp").add(new Transform("wjtp.si",
         //        StaticInliner.v()));
-
-        // When we fold classes, we create extra locals.  These optimizations
-        // will remove them.  Unfortunately, -O creates bogus code?
-         Scene.v().getPack("jop").add(new Transform("jtp.cpaf",
-                ImprovedConstantPropagatorAndFolder.v()));
-         Scene.v().getPack("jop").add(new Transform("jtp.dae",
-                ImprovedDeadAssignmentEliminator.v()));
-         //Scene.v().getPack("jop").add(new Transform("jtp.dae",
-         //       FieldLoadOptimizer.v()));
-         //  Scene.v().getPack("jtxp").add(new Transform("wjtp.clu",
+        
+        // Unroll loops with constant loop bounds.
+        //  Scene.v().getPack("jtp").add(new Transform("jtp.clu",
         //        ConstantLoopUnroller.v()));
+ 
+        // Some cleanup.
+        // Remove object creations that are now dead (i.e. aren't used
+        // and have no side effects).  This currently only deals with
+        // Token and Type constructors, since we know that these will
+        // have no interesting side effects.  More complex analysis
+        // is possible here, but not likely worth it.
+        Scene.v().getPack("jtp").add(new Transform("jop.doe",
+                DeadObjectEliminator.v()));
+        
+        // Remove tests of object equality that can be statically
+        // determined.  The generated code ends up with alot of
+        // these that are really just dead code.  This is currenlty
+        // fairly specific to our implementation above, and 
+        // could be generalized to arbitrary heap-based alias 
+        // analysis, but I haven't bothered yet.
+        Scene.v().getPack("jtp").add(new Transform("jop.iee",
+                InstanceEqualityEliminator.v()));
+      
 
+        //   Scene.v().getPack("jop").add(new Transform("jtp.cpaf",
+        //        ImprovedConstantPropagatorAndFolder.v()));
+        //Scene.v().getPack("jop").add(new Transform("jtp.cpaf",
+        //        ImprovedConstantPropagatorAndFolder.v()));
+
+        // Removes references to instancefields that come from 'this'.
+        Scene.v().getPack("jop").add(new Transform("jtp.dae",
+                ImprovedDeadAssignmentEliminator.v()));
+       
     }
 
     /** Read in a MoML model, generate java files

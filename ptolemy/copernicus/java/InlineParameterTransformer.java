@@ -13,6 +13,8 @@ import soot.jimple.toolkits.scalar.CopyPropagator;
 import soot.jimple.toolkits.scalar.DeadAssignmentEliminator;
 import soot.jimple.toolkits.scalar.UnreachableCodeEliminator;
 import soot.jimple.toolkits.scalar.Evaluator;
+import soot.jimple.toolkits.scalar.LocalNameStandardizer;
+
 import soot.toolkits.graph.*;
 import soot.toolkits.scalar.*;
 import soot.dava.*;
@@ -60,7 +62,6 @@ public class InlineParameterTransformer extends SceneTransformer {
     }
 
     protected void internalTransform(String phaseName, Map options) {
-        int localCount = 0;
         System.out.println("InlineParameterTransformer.internalTransform("
                 + phaseName + ", " + options + ")");
 
@@ -79,23 +80,14 @@ public class InlineParameterTransformer extends SceneTransformer {
             Scene.v().loadClassAndSupport("ptolemy.kernel.util.NamedObj");
         SootMethod getAttributeMethod = namedObjClass.getMethod(
                 "ptolemy.kernel.util.Attribute getAttribute(java.lang.String)");
-        SootMethod attributeChangedMethod = namedObjClass.getMethod(
-                "void attributeChanged(ptolemy.kernel.util.Attribute)");
-
+       
         SootClass attributeClass = 
             Scene.v().loadClassAndSupport("ptolemy.kernel.util.Attribute");
         Type attributeType = RefType.v(attributeClass);
         SootClass settableClass = 
             Scene.v().loadClassAndSupport("ptolemy.kernel.util.Settable");
         Type settableType = RefType.v(settableClass);
-        SootMethod getExpressionMethod = 
-            settableClass.getMethod("java.lang.String getExpression()");
-        SootMethod setExpressionMethod = 
-            settableClass.getMethod("void setExpression(java.lang.String)");
-        
-        SootClass tokenClass = 
-            Scene.v().loadClassAndSupport("ptolemy.data.Token");
-        Type tokenType = RefType.v(tokenClass);
+               
         SootClass parameterClass = 
             Scene.v().loadClassAndSupport("ptolemy.data.expr.Variable");
         SootMethod getTokenMethod = 
@@ -124,13 +116,13 @@ public class InlineParameterTransformer extends SceneTransformer {
 
         for(Iterator i = Scene.v().getApplicationClasses().iterator();
             i.hasNext();) {
-            SootClass entityClass = (SootClass)i.next();
+            SootClass theClass = (SootClass)i.next();
             
             // inline calls to parameter.getToken and getExpression
-            for(Iterator methods = entityClass.getMethods().iterator();
+            for(Iterator methods = theClass.getMethods().iterator();
                 methods.hasNext();) {
                 SootMethod method = (SootMethod)methods.next();
-
+                
                 // What about static methods?
                 if(method.isStatic()) {
                     continue;
@@ -146,7 +138,7 @@ public class InlineParameterTransformer extends SceneTransformer {
                     throw new RuntimeException("method " + method + " does not have a thisLocal!");
                 }
                 /*Jimple.v().newLocal("this", 
-                        RefType.v(entityClass));
+                        RefType.v(theClass));
                 body.getLocals().add(thisLocal);
                 body.getUnits().addFirst(Jimple.v().newIdentityStmt(thisLocal, 
                         Jimple.v().newThisRef((RefType)thisLocal.getType())));
@@ -154,190 +146,272 @@ public class InlineParameterTransformer extends SceneTransformer {
 
                 // System.out.println("method = " + method);
 
-                CompleteUnitGraph unitGraph = 
-                    new CompleteUnitGraph(body);
-                // this will help us figure out where locals are defined.
-                SimpleLocalDefs localDefs = new SimpleLocalDefs(unitGraph);
-                SimpleLocalUses localUses = new SimpleLocalUses(unitGraph, localDefs);
-
-                for(Iterator units = body.getUnits().snapshotIterator();
-                    units.hasNext();) {
-                    Unit unit = (Unit)units.next();
-                    Iterator boxes = unit.getUseBoxes().iterator();
-                    while(boxes.hasNext()) {
-                        ValueBox box = (ValueBox)boxes.next();
-                        Value value = box.getValue();
-                        if(false) {//value instanceof NewExpr) {
-                            // FIXME: do something about bogus parameter creations.
-                            SootClass theClass = ((RefType)((NewExpr)value).getType()).getSootClass();
-                            if(SootUtilities.derivesFrom(theClass, 
-                                    PtolemyUtilities.attributeClass)) {
-                                // Remove the object and anything that uses it.
-                                body.getUnits().remove(unit);
-                                if(unit instanceof DefinitionStmt) {
-                                    DefinitionStmt stmt = (DefinitionStmt)unit;
-                                    Iterator uses = localUses.getUsesOf(unit).iterator();
-                                    while(uses.hasNext()) {
-                                        body.getUnits().remove(uses.next());
+                boolean moreToDo = true;
+                while(moreToDo) {
+                    CompleteUnitGraph unitGraph = 
+                        new CompleteUnitGraph(body);
+                    // this will help us figure out where locals are defined.
+                    SimpleLocalDefs localDefs = new SimpleLocalDefs(unitGraph);
+                    SimpleLocalUses localUses = new SimpleLocalUses(unitGraph, localDefs);
+                    
+                    moreToDo = _inlineMethodCalls(theClass, method, body,
+                        unitGraph, localDefs, localUses, attributeToValueFieldMap);
+                    LocalNameStandardizer.v().transform(body, phaseName + ".lns");
+                }
+            }
+        }                
+    }
+    
+    private static boolean _inlineMethodCalls(SootClass theClass, SootMethod method, 
+            JimpleBody body, UnitGraph unitGraph,
+            LocalDefs localDefs, LocalUses localUses, Map attributeToValueFieldMap) {
+        boolean doneSomething = false;
+        for(Iterator units = body.getUnits().snapshotIterator();
+            units.hasNext();) {
+            Unit unit = (Unit)units.next();
+            Iterator boxes = unit.getUseBoxes().iterator();
+            while(boxes.hasNext()) {
+                ValueBox box = (ValueBox)boxes.next();
+                Value value = box.getValue();
+                if(value instanceof InstanceInvokeExpr) {
+                    InstanceInvokeExpr r = (InstanceInvokeExpr)value;
+                    //      System.out.println("invoking = " + r.getMethod());
+                    if(r.getBase().getType() instanceof RefType) {
+                        RefType type = (RefType)r.getBase().getType();
+                        
+                        // inline calls to attribute changed.
+                        if(r.getMethod().equals(PtolemyUtilities.attributeChangedMethod)) {
+                            // If we are calling attribute changed on one of the classes
+                            // we are generating code for.
+                            if(type.getSootClass().isApplicationClass()) {
+                             // Now inline the resulting call.
+                               List methodList = 
+                                    Scene.v().getActiveHierarchy().resolveAbstractDispatch(
+                                            type.getSootClass(), PtolemyUtilities.attributeChangedMethod);
+                                if(methodList.size() == 1) {
+                                    // inline the method.
+                                    SootMethod inlinee = (SootMethod)methodList.get(0);
+                                    if(!inlinee.getDeclaringClass().isApplicationClass()) {
+                                        inlinee.getDeclaringClass().setLibraryClass();
                                     }
+                                    inlinee.retrieveActiveBody();
+                                    SiteInliner.inlineSite(inlinee,
+                                            (Stmt)unit, method);
+                                    doneSomething = true;
+                                } else {
+                                    System.out.println("Can't inline " + unit);
+                                    for(int i = 0; i < methodList.size(); i++) {
+                                        System.out.println("target = " + methodList.get(i));
+                                    }
+                                }
+                            } else {
+                                // FIXME: this is a bit of a hack, but
+                                // for right now it seems to work.
+                                // How many things that aren't
+                                // the actors we are generating
+                                // code for do we really care about here?
+                                // Can we do this without having to create
+                                // a class for the attribute too????
+                                body.getUnits().remove(unit);
+                                doneSomething = true;
+                            }
+                        }
+
+                        // Statically evaluate constant arguments.
+                        Value argValues[] = new Value[r.getArgCount()];
+                        int argCount = 0;
+                        for(Iterator args = r.getArgs().iterator();
+                            args.hasNext();) {
+                            Value arg = (Value)args.next();
+                            //    System.out.println("arg = " + arg);
+                            if(Evaluator.isValueConstantValued(arg)) {
+                                argValues[argCount++] = Evaluator.getConstantValueOf(arg);
+                                //        System.out.println("argument = " + argValues[argCount-1]);
+                            } else {
+                                break;
+                            }
+                        }
+
+                        if(SootUtilities.derivesFrom(type.getSootClass(), 
+                                PtolemyUtilities.settableClass)) {
+                            // if we are invoking a method on a variable class, then
+                            // attempt to get the constant value of the variable.
+                            Attribute attribute =
+                                getAttributeValue((Local)r.getBase(), unit, localDefs, localUses);
+                                  
+                            // If the base is not constant, then obviously there is nothing we can do
+                            if(attribute == null) {
+                                continue;
+                            }
+                                    
+                            // Inline getType, setTypeEquals, etc...
+                            if(attribute instanceof Typeable) {
+                                PtolemyUtilities.inlineTypeableMethods(body, 
+                                        unit, box, r, (Typeable)attribute);
+                                       
+                            }
+
+                            // For Variables, we handle get/setToken, get/setExpression
+                            // different from other settables
+                            if(attribute instanceof Variable) {
+                                // Deal with tricky methods separately.
+                                if(r.getMethod().getName().equals("getToken")) {
+                                    // replace the method call with a field ref.
+                                    box.setValue(Jimple.v().newStaticFieldRef(
+                                            (SootField)attributeToValueFieldMap.get(attribute)));
+                                    doneSomething = true;
+                                } else if(r.getMethod().getName().equals("setToken")) {
+                                    // Call attribute changed AFTER we set the token.
+                                    PtolemyUtilities.callAttributeChanged(
+                                            (Local)r.getBase(), theClass, method, body, 
+                                            body.getUnits().getSuccOf(unit));
+                                            
+                                    // replace the entire statement
+                                    // (which must be an invokeStmt anyway)
+                                    // with an assignment to the field of the first argument.
+                                    body.getUnits().swapWith(unit, 
+                                            Jimple.v().newAssignStmt(
+                                                    Jimple.v().newStaticFieldRef((SootField)
+                                                            attributeToValueFieldMap.get(attribute)),
+                                                    r.getArg(0)));
+                                    doneSomething = true;
+                                } else if(r.getMethod().getName().equals("getExpression")) {
+                                    // First get the token out of the field, and then insert a call
+                                    // to its toString method to get the expression.
+                                    SootField tokenField = 
+                                        (SootField)attributeToValueFieldMap.get(attribute);
+                                    String localName = "_CGTokenLocal";
+                                    Local tokenLocal = Jimple.v().newLocal(localName,
+                                            tokenField.getType());
+                                    body.getLocals().add(tokenLocal);
+                                            
+                                    body.getUnits().insertBefore(
+                                            Jimple.v().newAssignStmt(tokenLocal,
+                                                    Jimple.v().newStaticFieldRef(tokenField)),
+                                            unit);
+                                    box.setValue(Jimple.v().newVirtualInvokeExpr(tokenLocal, 
+                                            PtolemyUtilities.toStringMethod));
+                                    doneSomething = true;
+                                    // FIXME null result => ""
+                                } else if(r.getMethod().getName().equals("setExpression")) {
+                                    // Call attribute changed AFTER we set the token.
+                                    PtolemyUtilities.callAttributeChanged(
+                                            (Local)r.getBase(), theClass, method, body, 
+                                            body.getUnits().getSuccOf(unit));
+                                            
+                                    Token token;
+                                    // First create a token with the given
+                                    // expression and then set the
+                                    // token to that value.
+                                    try {
+                                        // FIXME: This is rather tricky..
+                                        // is there a better way to do it?
+                                        Variable temp = new Variable();
+                                        temp.setTypeEquals(((Variable)attribute).getType());
+                                        temp.setExpression(((StringConstant)argValues[0]).value);
+                                        token = temp.getToken();
+                                    } catch (Exception ex) {
+                                        throw new RuntimeException("Illegal parameter value = " 
+                                                + argValues[0]);
+                                    }
+                                    // Create code to instantiate the token
+                                    SootField tokenField = 
+                                        (SootField)attributeToValueFieldMap.get(attribute);
+                                    String localName = "_CGTokenLocal";
+                                    Local tokenLocal = 
+                                        PtolemyUtilities.buildConstantTokenLocal(
+                                                body, unit, token, localName);
+                                                                                         
+                                    body.getUnits().swapWith(unit, 
+                                            Jimple.v().newAssignStmt(
+                                                    Jimple.v().newStaticFieldRef(
+                                                            tokenField), tokenLocal));
+                                    doneSomething = true;
+                                } 
+                            } else {
+                                // It's just settable, so handle get/setExpression
+                                if(r.getMethod().equals(PtolemyUtilities.getExpressionMethod)) {
+                                    // Call attribute changed AFTER we set the expression
+                                    PtolemyUtilities.callAttributeChanged(
+                                            (Local)r.getBase(), theClass, method, body, 
+                                            body.getUnits().getSuccOf(unit));
+                                            
+                                    box.setValue(Jimple.v().newStaticFieldRef(
+                                            (SootField)attributeToValueFieldMap.get(attribute)));
+                                    doneSomething = true;
+                                } else if(r.getMethod().equals(PtolemyUtilities.setExpressionMethod)) {
+                                    // Call attribute changed AFTER we set the token.
+                                    PtolemyUtilities.callAttributeChanged(
+                                            (Local)r.getBase(), theClass, method, body, 
+                                            body.getUnits().getSuccOf(unit));
+                                    // replace the entire statement (which must be an invokeStmt anyway)
+                                    // with an assignment to the field of the first argument.
+                                    body.getUnits().swapWith(unit, 
+                                            Jimple.v().newAssignStmt(
+                                                    Jimple.v().newStaticFieldRef((SootField)
+                                                            attributeToValueFieldMap.get(attribute)),
+                                                    r.getArg(0)));
+                                    doneSomething = true;
                                 }
                             }
-                        } else if(value instanceof InstanceInvokeExpr) {
-                            InstanceInvokeExpr r = (InstanceInvokeExpr)value;
-                            //      System.out.println("invoking = " + r.getMethod());
-                            if(r.getBase().getType() instanceof RefType) {
-                                RefType type = (RefType)r.getBase().getType();
-
-                                //System.out.println("baseType = " + type);
-                                // Statically evaluate constant arguments.
-                                Value argValues[] = new Value[r.getArgCount()];
-                                int argCount = 0;
-                                for(Iterator args = r.getArgs().iterator();
-                                    args.hasNext();) {
-                                    Value arg = (Value)args.next();
-                                //    System.out.println("arg = " + arg);
-                                    if(Evaluator.isValueConstantValued(arg)) {
-                                        argValues[argCount++] = Evaluator.getConstantValueOf(arg);
-                                //        System.out.println("argument = " + argValues[argCount-1]);
-                                    } else {
-                                        break;
-                                    }
-                                }
-
-                                if(SootUtilities.derivesFrom(type.getSootClass(), settableClass)) {
-                                    // if we are invoking a method on a variable class, then
-                                    // attempt to get the constant value of the variable.
-                                    Attribute attribute =
-                                        getAttributeValue((Local)r.getBase(), unit, localDefs, localUses);
-                                  
-                                    // If the base is not constant, then obviously there is nothing we can do
-                                    if(attribute == null) {
-                                        continue;
-                                    }
-                                    
-                                    if(attribute instanceof Typeable) {
-                                        PtolemyUtilities.inlineTypeableMethods(body, 
-                                                unit, box, r, (Typeable)attribute);
-                                       
-                                    }
-
-                                    if(attribute instanceof Variable) {
-                                        // Deal with tricky methods separately.
-                                        if(r.getMethod().getName().equals("getToken")) {
-                                            // replace the method call with a field ref.
-                                            box.setValue(Jimple.v().newStaticFieldRef(
-                                                    (SootField)attributeToValueFieldMap.get(attribute)));
-                                        } else if(r.getMethod().getName().equals("setToken")) {
-                                            // Call attribute changed AFTER we set the token.
-                                            PtolemyUtilities.callAttributeChanged(
-                                                    (Local)r.getBase(), body, 
-                                                    body.getUnits().getSuccOf(unit));
-                                            
-                                            // replace the entire statement
-                                            // (which must be an invokeStmt anyway)
-                                            // with an assignment to the field of the first argument.
-                                            body.getUnits().swapWith(unit, 
-                                                    Jimple.v().newAssignStmt(
-                                                            Jimple.v().newStaticFieldRef((SootField)
-                                                                    attributeToValueFieldMap.get(attribute)),
-                                                                    r.getArg(0)));
-                                        } else if(r.getMethod().getName().equals("getExpression")) {
-                                            // First get the token out of the field, and then insert a call
-                                            // to its toString method to get the expression.
-                                            SootField tokenField = 
-                                                (SootField)attributeToValueFieldMap.get(attribute);
-                                            String localName = "_CGTokenLocal" + localCount++;
-                                            Local tokenLocal = Jimple.v().newLocal(localName,
-                                                        tokenField.getType());
-                                            body.getLocals().add(tokenLocal);
-                                            
-                                            body.getUnits().insertBefore(
-                                                    Jimple.v().newAssignStmt(tokenLocal,
-                                                            Jimple.v().newStaticFieldRef(tokenField)),
-                                                    unit);
-                                            box.setValue(Jimple.v().newVirtualInvokeExpr(tokenLocal, 
-                                                    toStringMethod));
-                                            // FIXME null result => ""
-                                        } else if(r.getMethod().getName().equals("setExpression")) {
-                                            // Call attribute changed AFTER we set the token.
-                                            PtolemyUtilities.callAttributeChanged(
-                                                    (Local)r.getBase(), body, 
-                                                    body.getUnits().getSuccOf(unit));
-                                            
-                                            Token token;
-                                            // First create a token with the given
-                                            // expression and then set the
-                                            // token to that value.
-                                            try {
-                                                // FIXME: This is rather tricky..
-                                                // is there a better way to do it?
-                                                Variable temp = new Variable();
-                                                temp.setTypeEquals(((Variable)attribute).getType());
-                                                temp.setExpression(((StringConstant)argValues[0]).value);
-                                                token = temp.getToken();
-                                            } catch (Exception ex) {
-                                                throw new RuntimeException("Illegal parameter value = " 
-                                                        + argValues[0]);
-                                            }
-                                            // Create code to instantiate the token
-                                            SootField tokenField = 
-                                                (SootField)attributeToValueFieldMap.get(attribute);
-                                            String localName = "_CGTokenLocal" + localCount++;
-                                            Local tokenLocal = 
-                                                PtolemyUtilities.buildConstantTokenLocal(
-                                                        body, unit, token, localName);
-                                                                                         
-                                            body.getUnits().swapWith(unit, 
-                                                    Jimple.v().newAssignStmt(
-                                                            Jimple.v().newStaticFieldRef(
-                                                                    tokenField), tokenLocal));
-                                        } 
-                                    } else {
-                                        if(r.getMethod().equals(getExpressionMethod)) {
-                                            // Call attribute changed AFTER we set the expression
-                                            PtolemyUtilities.callAttributeChanged(
-                                                    (Local)r.getBase(), body, 
-                                                    body.getUnits().getSuccOf(unit));
-                                            
-                                            box.setValue(Jimple.v().newStaticFieldRef(
-                                                    (SootField)attributeToValueFieldMap.get(attribute)));
-                                        } else if(r.getMethod().equals(setExpressionMethod)) {
-                                            // Call attribute changed AFTER we set the token.
-                                            PtolemyUtilities.callAttributeChanged(
-                                                    (Local)r.getBase(), body, 
-                                                    body.getUnits().getSuccOf(unit));
-                                            // replace the entire statement (which must be an invokeStmt anyway)
-                                            // with an assignment to the field of the first argument.
-                                            body.getUnits().swapWith(unit, 
-                                                    Jimple.v().newAssignStmt(
-                                                            Jimple.v().newStaticFieldRef((SootField)
-                                                                    attributeToValueFieldMap.get(attribute)),
-                                                                    r.getArg(0)));
-                                        }
-                                    }
                                    
 
-                                    /*
-                                    // FIXME what about all the other methods???
-                                    // If we have a attribute and all the args are constant valued, then
-                                    if(argCount == r.getArgCount()) {
-                                        // reflect and invoke the same method on our token
-                                        Constant constant = SootUtilities.reflectAndInvokeMethod(attribute,
-                                                r.getMethod(), argValues);
-                                        System.out.println("method result  = " + constant);
+                            /*
+                              // FIXME what about all the other methods???
+                              // If we have a attribute and all the args are constant valued, then
+                              if(argCount == r.getArgCount()) {
+                              // reflect and invoke the same method on our token
+                              Constant constant = SootUtilities.reflectAndInvokeMethod(attribute,
+                              r.getMethod(), argValues);
+                              System.out.println("method result  = " + constant);
                                         
-                                        // replace the method invocation.
-                                        box.setValue(constant);
-                                    }
-                                    */
-                                } 
-                            }                              
-                        }
-                    }
+                              // replace the method invocation.
+                              box.setValue(constant);
+                              }
+                            */
+                        } 
+                    }                              
                 }
-            }            
+            }
         }
-    }
+
+        // Lastly go back and look for any constructors of attributes.
+        // Remove them and all uses of those objects.  If there is anything left,
+        // Then we should deal with it above.
+        /*
+          for(Iterator units = body.getUnits().snapshotIterator();
+          units.hasNext();) {
+          Unit unit = (Unit)units.next();
+          Iterator boxes = unit.getUseBoxes().iterator();
+          while(boxes.hasNext()) {
+          ValueBox box = (ValueBox)boxes.next();
+          Value value = box.getValue();
+          if(value instanceof NewExpr) {
+          SootClass newClass = ((RefType)((NewExpr)value).getType()).getSootClass();
+          if(SootUtilities.derivesFrom(newClass, 
+          PtolemyUtilities.attributeClass)) {
+          if(unit instanceof DefinitionStmt) {
+          // If we are keeping a definition, then 
+          // set the definition to be null.
+          box.setValue(NullConstant.v());
+          } else {
+          // I can't imagine when this would
+          // be true?
+          body.getUnits().remove(unit);
+          }
+          }
+          } else if(value instanceof SpecialInvokeExpr) {
+          SootClass newClass = ((RefType)((SpecialInvokeExpr)value).getBase().getType()).getSootClass();
+          if(SootUtilities.derivesFrom(newClass, 
+          PtolemyUtilities.attributeClass)) {
+          // and remove the constructor.
+          body.getUnits().remove(unit);
+          }
+          }
+          }
+          }*/
+        return doneSomething;
+    }            
 
     /** Attempt to determine the constant value of the given local, which is assumed to have a variable
      *  type.  Walk backwards through all the possible places that the local may have been defined and

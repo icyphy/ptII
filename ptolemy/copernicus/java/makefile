@@ -34,7 +34,7 @@ ME =		ptolemy/copernicus/java
 # Root of the Java directory
 ROOT =		../../..
 
-CLASSPATH = 	$(ROOT)$(CLASSPATHSEPARATOR)$(SOOT_CLASSES)
+CLASSPATH = 	$(ROOT)$(CLASSPATHSEPARATOR)$(ROOT)/vendors/soot/1.2.2/soot/classes$(CLASSPATHSEPARATOR)$(SOOT_CLASSES)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
@@ -45,8 +45,10 @@ DIRS =		test
 # Keep this list alphabetized.
 JSRCS = \
 	CommandLineTransformer.java \
+	DeadObjectEliminator.java \
 	EntitySootClass.java \
 	FieldsForAttributesTransformer.java \
+	FieldsForPortsTransformer.java \
 	FieldOptimizationTransformer.java \
 	InlineDirectorTransformer.java \
 	InlineParameterTransformer.java \
@@ -55,6 +57,7 @@ JSRCS = \
 	Main.java \
 	ModelTransformer.java \
 	PtolemyUtilities.java \
+	TypeSpecializer.java \
 	ConstantLoopUnroller.java \
 	ValueTag.java	
 
@@ -86,6 +89,7 @@ deepDemo: compileDeepDemo runDeepDemo
 
 SOURCEPACKAGE = ptolemy.domains.sdf.demo.OrthogonalCom
 MODEL = OrthogonalCom 
+#MODEL = test
 SOURCECLASS = $(SOURCEPACKAGE).$(MODEL)
 
 DEEPTARGETPACKAGE = ptolemy.copernicus.java.cg.deep
@@ -130,9 +134,10 @@ compileDeepDemo: $(JCLASS)
 		-p wjtp.clt deep,targetPackage:$(DEEPTARGETPACKAGE) \
 		-p wjtp.fot deep,targetPackage:$(DEEPTARGETPACKAGE) \
 		-p wjtp.ffat deep,targetPackage:$(DEEPTARGETPACKAGE) \
+		-p wjtp.ffpt deep,targetPackage:$(DEEPTARGETPACKAGE) \
 		-p wjtp.idt deep,targetPackage:$(DEEPTARGETPACKAGE) \
+		-p wjtp.iat deep,targetPackage:$(DEEPTARGETPACKAGE) \
 		-p wjtp.ipt deep,targetPackage:$(DEEPTARGETPACKAGE) \
-		-p wjtp.iportt deep,targetPackage:$(DEEPTARGETPACKAGE) \
 		-p wjtp.itt deep,targetPackage:$(DEEPTARGETPACKAGE) \
 		$(SOOT_USER_ARGS)
 	@echo "Here is that javap output"

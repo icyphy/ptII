@@ -37,10 +37,10 @@ import ptolemy.copernicus.kernel.SootUtilities;
 /**
 A Transformer that is responsible for inlining references to attributes.
 */
-public class FieldsForAttributesTransformer extends SceneTransformer {
+public class FieldsForPortsTransformer extends SceneTransformer {
     /** Construct a new transformer
      */
-    private FieldsForAttributesTransformer(CompositeActor model) {
+    private FieldsForPortsTransformer(CompositeActor model) {
         _model = model;
     }
 
@@ -48,8 +48,8 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
      *  The model is assumed to already have been properly initialized so that
      *  resolved types and other static properties of the model can be inspected.
      */
-    public static FieldsForAttributesTransformer v(CompositeActor model) { 
-        return new FieldsForAttributesTransformer(model);
+    public static FieldsForPortsTransformer v(CompositeActor model) { 
+        return new FieldsForPortsTransformer(model);
     }
 
     public String getDefaultOptions() {
@@ -62,7 +62,7 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
 
     protected void internalTransform(String phaseName, Map options) {
         int localCount = 0;
-        System.out.println("FieldsForAttributesTransformer.internalTransform("
+        System.out.println("FieldsForPortsTransformer.internalTransform("
                 + phaseName + ", " + options + ")");
 
         if(!Options.getBoolean(options, "deep")) {
@@ -104,25 +104,25 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
         SootMethod setTokenMethod = 
             parameterClass.getMethod("void setToken(ptolemy.data.Token)");
 
-        Map attributeToFieldMap = new HashMap();
+        Map portToFieldMap = new HashMap();
         Map classToObjectMap = new HashMap();
       
         // This won't actually create any fields, but will pick up
         // the fields that already exist.
-        _getAttributeFields(Scene.v().getMainClass(), _model, 
-                _model, attributeToFieldMap);
+        _getPortFields(Scene.v().getMainClass(), _model, 
+                _model, portToFieldMap);
         classToObjectMap.put(Scene.v().getMainClass(), _model);
        
-        // Loop over all the actor instance classes and create
-        // attribute fields.
+        // Loop over all the actor instance classes and get
+        // fields for ports.
         for(Iterator i = _model.entityList().iterator();
             i.hasNext();) {
             Entity entity = (Entity)i.next();
             String className = Options.getString(options, "targetPackage")
                 + "." + entity.getName();
             SootClass entityClass = Scene.v().loadClassAndSupport(className);
-            _getAttributeFields(entityClass, entity, entity,
-                    attributeToFieldMap);
+            _getPortFields(entityClass, entity, entity,
+                    portToFieldMap);
             classToObjectMap.put(entityClass, entity);
         }
 
@@ -131,8 +131,7 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
             i.hasNext();) {
             SootClass theClass = (SootClass)i.next();
             
-            // replace calls to getAttribute with field references.
-            // inline calls to parameter.getToken and getExpression
+            // Loop through all the methods in the class.
             for(Iterator methods = theClass.getMethods().iterator();
                 methods.hasNext();) {
                 SootMethod method = (SootMethod)methods.next();
@@ -141,7 +140,7 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
 
                 CompleteUnitGraph unitGraph = 
                     new CompleteUnitGraph(body);
-                // this will help us figure out where locals are defined.
+                // This will help us figure out where locals are defined.
                 SimpleLocalDefs localDefs =
                     new SimpleLocalDefs(unitGraph);
 
@@ -154,11 +153,11 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
                         Value value = box.getValue();
                         if(value instanceof InstanceInvokeExpr) {
                             InstanceInvokeExpr r = (InstanceInvokeExpr)value;
-                            if(r.getMethod().equals(getAttributeMethod)) {
-                                // inline calls to getAttribute(arg) when arg is a string
+                            // FIXME: string matching is probably not good enough.
+                            if(r.getMethod().getName().equals("getPort")) {
+                                // Inline calls to getPort(arg) when arg is a string
                                 // that can be statically evaluated.
                                 Value nameValue = r.getArg(0);
-                                //System.out.println("attribute name =" + nameValue);
                                 if(Evaluator.isValueConstantValued(nameValue)) {
                                     StringConstant nameConstant = 
                                         (StringConstant)
@@ -170,26 +169,27 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
                                     // FIXME: This is not enough.
                                     Local baseLocal = (Local)r.getBase();
                                     RefType type = (RefType)baseLocal.getType();
-                                    NamedObj object = (NamedObj)classToObjectMap.get(type.getSootClass());
-                                    SootField attributeField;
+                                    Entity object = (Entity)classToObjectMap.get(type.getSootClass());
+                                    SootField portField;
                                     if(object != null) {
-                                        // Then we are dealing with a getAttribute call on one of the
+                                        // Then we are dealing with a getPort call on one of the
                                         // classes we are generating.
-                                        Attribute attribute = object.getAttribute(name);
-                                        attributeField = (SootField)
-                                            attributeToFieldMap.get(attribute);
+                                        Port port = object.getPort(name);
+                                        portField = (SootField)
+                                            portToFieldMap.get(port);
                                     } else {
                                         // Walk back and get the definition of the field.
                                         SootField baseField = getFieldDef(baseLocal, unit, localDefs);
-                                        attributeField = baseField.getDeclaringClass().getFieldByName(
+                                        portField = baseField.getDeclaringClass().getFieldByName(
                                                 baseField.getName() + "_" + name);
                                     }
-                                    if(attributeField != null) {
+                                    if(portField != null) {
                                         box.setValue(Jimple.v().newInstanceFieldRef(
-                                                r.getBase(), attributeField));
+                                                r.getBase(), portField));
                                     }                                
                                 } else {
-                                    System.out.println("attribute cannot be statically determined");
+                                    System.out.println("Port cannot be statically determined for " + 
+                                            unit + " in method " + method + ".");
                                 }
                             }
                         }
@@ -207,6 +207,7 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
      *  variable. If the value can be determined, 
      *  then return it, otherwise return null.
      */ 
+    // FIXME: This is actually a backwards DataFlow problem.
     public static SootField getFieldDef(Local local, 
             Unit location, LocalDefs localDefs) {
         List definitionList = localDefs.getDefsOfAt(local, location);
@@ -231,40 +232,37 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
     }
     
     // Populate the given map according to the fields representing the
-    // attributes of the given object that are expected 
+    // ports of the given object that are expected 
     // to exist in the given class
-    private void _getAttributeFields(SootClass theClass, NamedObj container,
-            NamedObj object, Map attributeToFieldMap) {
-        SootClass attributeClass = 
-            Scene.v().loadClassAndSupport("ptolemy.kernel.util.Attribute");
-        Type attributeType = RefType.v(attributeClass);
-
-        for(Iterator attributes =
-                object.attributeList().iterator();
-            attributes.hasNext();) {
-            Attribute attribute = (Attribute)attributes.next();
+    private void _getPortFields(SootClass theClass, Entity container,
+            Entity object, Map portToFieldMap) {
+      
+        for(Iterator ports =
+                object.portList().iterator();
+            ports.hasNext();) {
+            Port port = (Port)ports.next();
                     
             String fieldName =
-                SootUtilities.sanitizeName(attribute.getName(container));
+                SootUtilities.sanitizeName(port.getName(container));
             SootField field;
             if(!theClass.declaresFieldByName(fieldName)) {
                 // FIXME: should be exception
                 System.out.println("Class " + theClass 
-                        + " does not declare field for attribute "
-                        + attribute.getFullName());
+                        + " does not declare field for port "
+                        + port.getFullName());
                 continue;
             } else {
                 // retrieve the existing field.
-                field = theClass.getFieldByName(fieldName);   
+                field = theClass.getFieldByName(fieldName);  
                 // Make the field final.
                 field.setModifiers(field.getModifiers() | Modifier.FINAL);
             }
             field.addTag(new ValueTag(
-                    attribute));
-            attributeToFieldMap.put(attribute, field);
-            // call recursively
-            _getAttributeFields(theClass, container, 
-                    attribute, attributeToFieldMap);
+                    port));
+            portToFieldMap.put(port, field);
+            // FIXME: call recursively
+            // _getAttributeFields(theClass, container, 
+            //        attribute, attributeToFieldMap);
         }
     }
 

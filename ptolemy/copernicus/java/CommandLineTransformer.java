@@ -336,13 +336,19 @@ public class CommandLineTransformer extends SceneTransformer {
                 // doing this.
                 SootMethod staticMainMethod = 
                     staticMainClass.getMethodByName("main");
-                staticMainClass.getMethods().remove(staticMainMethod);
+                staticMainClass.removeMethod(staticMainMethod);
 
                 break;
             }
         }
         */
-        
+        for(Iterator methods = mainClass.getMethods().iterator();
+            methods.hasNext();) {
+            SootMethod method = (SootMethod)methods.next();
+            System.out.println("method = " + method.toString());
+            SootMethod method2 = Scene.v().getMethod(method.toString());
+        }
+
     }
 
     private String _getFinalName(String dottedName) {

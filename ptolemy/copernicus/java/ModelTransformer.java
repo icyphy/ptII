@@ -129,6 +129,8 @@ public class ModelTransformer extends SceneTransformer {
         _composite(body, thisLocal, _model, modelClass, options);
 
         units.add(Jimple.v().newReturnVoidStmt());
+        
+        _removeSuperExecutableMethods(modelClass);
 
         Scene.v().setActiveHierarchy(new Hierarchy());
  
@@ -203,13 +205,6 @@ public class ModelTransformer extends SceneTransformer {
             }
             Chain clinitUnits = clinitBody.getUnits();
             
-            // Create a new local variable.
-            BaseType tokenType = RefType.v("ptolemy.data.Token");
-            Type arrayType = ArrayType.v(tokenType, 1);
-            Local arrayLocal = 
-                Jimple.v().newLocal("bufferArray", arrayType);
-            clinitBody.getLocals().add(arrayLocal);
-
             // If we're doing deep (SDF) codegen, then create a
             // queue for every channel of every relation.
             for(Iterator relations = composite.relationList().iterator();
@@ -226,6 +221,15 @@ public class ModelTransformer extends SceneTransformer {
                             relation);
                     continue;
                 }
+
+                // Create a new local variable.
+                // FIXME: This is probably not the right type for a relation...
+                ptolemy.data.type.Type type = ((TypedIOPort)relation.linkedPortList().get(0)).getType();
+                BaseType tokenType = PtolemyUtilities.getSootTypeForTokenType(type);
+                Type arrayType = ArrayType.v(tokenType, 1);
+                Local arrayLocal = 
+                    Jimple.v().newLocal("bufferArray", arrayType);
+                clinitBody.getLocals().add(arrayLocal);
 
                 for(int i=0; i < relation.getWidth(); i++) {
                     SootField field = new SootField("_" + 
@@ -544,6 +548,43 @@ public class ModelTransformer extends SceneTransformer {
                         thisLocal, relation.getName());
 	    _relationLocalMap.put(relation, local);
 	}
+    }
+
+    // FIXME: duplicate with Actor transformer.
+    private static void _removeSuperExecutableMethods(SootClass theClass) {
+        // Loop through all the methods 
+        System.out.println("theClass " + theClass);
+                
+        for(Iterator methods = theClass.getMethods().iterator();
+            methods.hasNext();) {
+            SootMethod method = (SootMethod)methods.next();
+             System.out.println("method " + method);
+             JimpleBody body = (JimpleBody)method.retrieveActiveBody();
+             for(Iterator units = body.getUnits().snapshotIterator();
+                units.hasNext();) {
+                Unit unit = (Unit)units.next();
+                Iterator boxes = unit.getUseBoxes().iterator();
+                while(boxes.hasNext()) {
+                    ValueBox box = (ValueBox)boxes.next();
+                    Value value = box.getValue();
+                    if(value instanceof SpecialInvokeExpr) {
+                        SpecialInvokeExpr r = (SpecialInvokeExpr)value;
+                        if(PtolemyUtilities.executableInterface.declaresMethod(
+                                r.getMethod().getSubSignature())) {
+                            if(r.getMethod().getName().equals("prefire") ||
+                               r.getMethod().getName().equals("postfire")) {
+                                box.setValue(IntConstant.v(1));
+                            } else {
+                                body.getUnits().remove(unit);
+                                System.out.println("removing " + r);
+                            }
+                        } else if(!r.getMethod().getName().equals("<init>")) {
+                            System.out.println("superCall:" + r);
+                        }
+                    }
+                }
+            }
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

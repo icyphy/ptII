@@ -62,10 +62,10 @@ A Transformer that is responsible for inlining the values of tokens.
 The values of the parameters are taken from the model specified for this 
 transformer.
 */
-public class InlineTokenTransformer extends SceneTransformer {
+public class TokenToNativeTransformer extends SceneTransformer {
     /** Construct a new transformer
      */
-    private InlineTokenTransformer(CompositeActor model) {
+    private TokenToNativeTransformer(CompositeActor model) {
         _model = model;
     }
 
@@ -73,8 +73,8 @@ public class InlineTokenTransformer extends SceneTransformer {
      *  The model is assumed to already have been properly initialized so that
      *  resolved types and other static properties of the model can be inspected.
      */
-    public static InlineTokenTransformer v(CompositeActor model) { 
-        return new InlineTokenTransformer(model);
+    public static TokenToNativeTransformer v(CompositeActor model) { 
+        return new TokenToNativeTransformer(model);
     }
 
     public String getDefaultOptions() {
@@ -87,7 +87,7 @@ public class InlineTokenTransformer extends SceneTransformer {
 
     protected void internalTransform(String phaseName, Map options) {
         int localCount = 0;
-        System.out.println("InlineTokenTransformer.internalTransform("
+        System.out.println("TokenToNativeTransformer.internalTransform("
                 + phaseName + ", " + options + ")");
 
         if(!Options.getBoolean(options, "deep")) {
@@ -138,32 +138,11 @@ public class InlineTokenTransformer extends SceneTransformer {
             SootClass entityClass = Scene.v().loadClassAndSupport(className);
       
             System.out.println("class = " + entityClass);
-            // replace calls to getAttribute with field references.
-            // inline calls to parameter.getToken and getExpression
             for(Iterator methods = entityClass.getMethods().iterator();
                 methods.hasNext();) {
                 SootMethod method = (SootMethod)methods.next();
 
-                // What about static methods?
-                if(method.isStatic()) {
-                    continue;
-                }
                 JimpleBody body = (JimpleBody)method.retrieveActiveBody();
-
-                // Add a this local...  note that we might not have one.
-                Local thisLocal;
-                try {
-                    thisLocal = body.getThisLocal();
-                } catch (Exception ex) {
-                    //FIXME: what if no thisLocal?
-                    continue;
-                }
-                /*Jimple.v().newLocal("this", 
-                        RefType.v(entityClass));
-                body.getLocals().add(thisLocal);
-                body.getUnits().addFirst(Jimple.v().newIdentityStmt(thisLocal, 
-                        Jimple.v().newThisRef((RefType)thisLocal.getType())));
-                */
 
                 System.out.println("method = " + method);
 
@@ -188,38 +167,28 @@ public class InlineTokenTransformer extends SceneTransformer {
                             if(r.getBase().getType() instanceof RefType) {
                                 RefType type = (RefType)r.getBase().getType();
 
-                                //System.out.println("baseType = " + type);
-                                // Statically evaluate constant arguments.
-                                Value argValues[] = new Value[r.getArgCount()];
-                                int argCount = 0;
-                                for(Iterator args = r.getArgs().iterator();
-                                    args.hasNext();) {
-                                    Value arg = (Value)args.next();
-                                    //      System.out.println("arg = " + arg);
-                                    if(Evaluator.isValueConstantValued(arg)) {
-                                        argValues[argCount++] = Evaluator.getConstantValueOf(arg);
-                                        //       System.out.println("argument = " + argValues[argCount-1]);
-                                    } else {
-                                        break;
-                                    }
-                                }
-
                                 if(SootUtilities.derivesFrom(type.getSootClass(), tokenClass)) {
-                                    // if we are invoking a method on a token class, then
-                                    // attempt to get the constant value of the token.
-                                    Token token = getTokenValue(entity, (Local)r.getBase(), unit, localDefs);
-                                    //  System.out.println("reference to Token with value = " + token);
-                                   
-                                    // If we have a token and all the args are constant valued, then
-                                    if(token != null && argCount == r.getArgCount()) {
-                                        // reflect and invoke the same method on our token
-                                        Constant constant = 
-                                            SootUtilities.reflectAndInvokeMethod(token, r.getMethod(), argValues);
-                                        //      System.out.println("method result  = " + constant);
+                                    List methodList = 
+                                        hierarchy.resolveAbstractDispatch(
+                                                type.getSootClass(), 
+                                                r.getMethod());
+                                    System.out.println("checking token method call = " + r);
+                                    System.out.println("baseType = " + type.getSootClass());
+                                    if(methodList.size() == 1) {
+                                        System.out.println("inlining");
+                                        type.getSootClass().setLibraryClass();
+                                        // Then we know exactly what method will
+                                        // be called, so inline it.
+                                        SiteInliner.inlineSite(
+                                                (SootMethod)methodList.get(0),
+                                                (Stmt)unit, method);
+                                    } else {
                                         
-                                        // replace the method invocation.
-                                        box.setValue(constant);
-                                    } 
+                                        for(Iterator targets = methodList.iterator();
+                                            targets.hasNext();) {
+                                            System.out.println("target = " + targets.next());
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -227,47 +196,6 @@ public class InlineTokenTransformer extends SceneTransformer {
                 }
             }            
         }
-    }
-
-    /** Attempt to determine the constant value of the given local, which is assumed to have a token 
-     *  type.  Walk backwards through all the possible places that the local may have been defined and
-     *  try to symbolically evaluate the token.  If the value can be determined, then return it, otherwise
-     *  return null.
-     */ 
-    public static Token getTokenValue(Entity entity, Local local, 
-            Unit location, LocalDefs localDefs) {
-        SootClass parameterClass = 
-            Scene.v().loadClassAndSupport("ptolemy.data.expr.Variable");
-        SootMethod getTokenMethod = 
-            parameterClass.getMethod("ptolemy.data.Token getToken()");
-
-        List definitionList = localDefs.getDefsOfAt(local, location);
-        if(definitionList.size() == 1) {
-            DefinitionStmt stmt = (DefinitionStmt)definitionList.get(0);
-            Value value = (Value)stmt.getRightOp();
-            if(value instanceof CastExpr) {
-                // If the local was defined by a cast, then recurse on the value we are
-                // casting from.  Note that we assume the type is acceptable.
-                return getTokenValue(entity, (Local)((CastExpr)value).getOp(), stmt, localDefs);
-            } else if(value instanceof FieldRef) {
-                SootField field = ((FieldRef)value).getField();
-                ValueTag tag = (ValueTag)field.getTag("_CGValue");
-                if(tag == null) {
-                    return null;
-                } else {
-                    return (Token)tag.getObject();
-                }
-            } else {
-                //       System.out.println("unknown value = " + value);
-            }
-        } else {
-            /* System.out.println("more than one definition of = " + local);
-            for(Iterator i = definitionList.iterator();
-                i.hasNext();) {
-                System.out.println(i.next().toString());
-                }*/
-        }
-        return null;
     }
 
     private CompositeActor _model;

@@ -86,6 +86,8 @@ import soot.jimple.StaticFieldRef;
 import soot.jimple.StaticInvokeExpr;
 import soot.jimple.Stmt;
 import soot.jimple.ThisRef;
+import soot.jimple.VirtualInvokeExpr;
+
 import soot.jimple.toolkits.invoke.SiteInliner;
 import soot.jimple.toolkits.invoke.SynchronizerManager;
 import soot.jimple.toolkits.scalar.Evaluator;
@@ -97,6 +99,7 @@ import soot.toolkits.graph.CompleteUnitGraph;
 import soot.toolkits.scalar.UnitValueBoxPair;
 import soot.toolkits.scalar.SimpleLocalDefs;
 import soot.toolkits.scalar.SimpleLocalUses;
+import soot.toolkits.scalar.SimpleLiveLocals;
 
 import soot.util.Chain;
 
@@ -267,7 +270,7 @@ public class SootUtilities {
             } else {
                 method = new SootMethod("<clinit>", new LinkedList(),
                         NullType.v(), Modifier.PUBLIC);
-                theClass.getMethods().add(method);
+                theClass.addMethod(method);
             }
             JimpleBody body = (JimpleBody)method.retrieveActiveBody();
             Chain units = body.getUnits();
@@ -313,7 +316,7 @@ public class SootUtilities {
 	//		   + newClassName + ")");
         // Create the new Class
         SootClass newClass = new SootClass(newClassName,
-                Modifier.PUBLIC);
+                oldClass.getModifiers());
 	try {
 	    Scene.v().addClass(newClass);
         } catch (RuntimeException runtime) {
@@ -358,7 +361,7 @@ public class SootUtilities {
      */
     public static void changeTypesOfFields(SootClass theClass,
             SootClass oldClass, SootClass newClass) {
-        Iterator fields = theClass.getFields().iterator();
+        Iterator fields = theClass.getFields().snapshotIterator();
         while(fields.hasNext()) {
             SootField oldField = (SootField)fields.next();
             Type type = oldField.getType();
@@ -366,6 +369,11 @@ public class SootUtilities {
             if(type instanceof RefType &&
                     ((RefType)type).getSootClass() == oldClass) {
                 oldField.setType(RefType.v(newClass));
+                // we have to do this seemingly useless 
+                // thing, since the scene caches a pointer
+                // to the method based on it's parameter types.
+                theClass.removeField(oldField);
+                theClass.addField(oldField);
             }
         }
     }
@@ -382,7 +390,7 @@ public class SootUtilities {
             SootClass theClass, SootClass oldClass, SootClass newClass) {
         //  System.out.println("fixing references on " + theClass);
         //  System.out.println("replacing " + oldClass + " with " + newClass);
-        for(Iterator methods = theClass.getMethods().iterator();
+        for(Iterator methods = theClass.getMethods().snapshotIterator();
             methods.hasNext();) {
             SootMethod newMethod = (SootMethod)methods.next();
             //   System.out.println("newMethod = " + newMethod.getSignature());
@@ -405,6 +413,12 @@ public class SootUtilities {
                 }
             }
             newMethod.setParameterTypes(paramTypes);
+
+            // we have to do this seemingly useless 
+            // thing, since the scene caches a pointer
+            // to the method based on it's parameter types.
+            theClass.removeMethod(newMethod);
+            theClass.addMethod(newMethod);
 
             Body newBody = newMethod.retrieveActiveBody();
 
@@ -697,7 +711,7 @@ public class SootUtilities {
         } else {
             clinitMethod = new SootMethod("<clinit>", new LinkedList(),
                     NullType.v(), Modifier.STATIC);
-            staticClass.getMethods().add(clinitMethod);
+            staticClass.addMethod(clinitMethod);
         }           
 
         System.out.println("constructor = " + constructorStmt);
@@ -1055,6 +1069,65 @@ public class SootUtilities {
         }    
     }
       
+    /** Inline all the method calls whose base is 'this' 
+     *  in the given method.
+     *  @return true if any changes were made.
+     */
+    public static boolean inlineCallsOnThisInMethod(SootMethod method) {
+        SootClass theClass = method.getDeclaringClass();
+        JimpleBody body = (JimpleBody)method.retrieveActiveBody();
+        // use a snapshotIterator since we are going to be manipulating
+        // the statements.
+        boolean inlinedAnything = false;
+        Iterator j = body.getUnits().snapshotIterator();
+        while(j.hasNext()) {
+            Stmt stmt = (Stmt)j.next();
+            if(stmt.containsInvokeExpr()) {
+                InvokeExpr invoke = (InvokeExpr)stmt.getInvokeExpr();
+                if(method instanceof StaticInvokeExpr) {
+                    // simply inline static methods.
+                    SootMethod inlineMethod = invoke.getMethod();
+                    // Don't inline a recursive method call.
+                    if(inlineMethod.equals(method)) {
+                        continue;
+                    }
+                    SiteInliner.inlineSite(inlineMethod,
+                                stmt, method);
+                    inlinedAnything = true;
+                } else if(!method.isStatic() && invoke instanceof InstanceInvokeExpr) {
+                    InstanceInvokeExpr instanceInvoke = 
+                        (InstanceInvokeExpr)invoke;
+                    if(instanceInvoke.getBase().equals(body.getThisLocal())) {
+                        SootMethod inlineMethod;
+                        if(instanceInvoke instanceof VirtualInvokeExpr) {
+                            inlineMethod = 
+                                searchForMethodByName(theClass, method.getName());
+                        } else {
+                            // super. method call
+                            // don't inline super constructors.
+                            if(method.getName().equals("<init>")) {
+                                continue;
+                            }
+                            inlineMethod = 
+                                searchForMethodByName(theClass.getSuperclass(), 
+                                        method.getName());
+                        }
+                        // Don't inline a recursive method call.
+                        if(inlineMethod.equals(method)) {
+                            continue;
+                        }
+
+                        //System.out.println("inlining " + invoke.getMethod());
+                        SiteInliner.inlineSite(inlineMethod,
+                                stmt, method);
+                        inlinedAnything = true;
+                    }
+                }
+            }
+        }
+        return inlinedAnything;
+    }
+
     /** Make the given field a static field.
      *  Loop through all the methods of the given class and replace
      *  instance references to the given field with static references.

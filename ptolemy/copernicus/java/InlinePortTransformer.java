@@ -35,7 +35,12 @@ import ptolemy.copernicus.kernel.SootUtilities;
 A Transformer that is responsible for inlining the values of parameters.
 The values of the parameters are taken from the model specified for this 
 transformer.
-FIXME: This is SDF specific and should get pulled out on its own
+FIXME: This is SDF specific and should get pulled out on its own.
+FIXME: currently we try to speed things up if the buffersize is only
+one by removing the index update overhead.  Note that there are other optimizations
+that can be made here (for instance, if we can statically determine all the channel
+references (which is trivially true if there is only one channel), then there 
+is no need to have the index or portbuffer arrays.
 */
 public class InlinePortTransformer extends SceneTransformer {
     /** Construct a new transformer
@@ -80,10 +85,7 @@ public class InlinePortTransformer extends SceneTransformer {
             Scene.v().loadClassAndSupport("ptolemy.kernel.Port");
         Type portType = RefType.v(portClass);
         
-        SootClass tokenClass = 
-            Scene.v().loadClassAndSupport("ptolemy.data.Token");
-        BaseType tokenType = RefType.v(tokenClass);
-
+        // FIXME toplevel ports?
         // Loop over all the actor instance classes.
         for(Iterator entities = _model.entityList().iterator();
             entities.hasNext();) {
@@ -92,119 +94,123 @@ public class InlinePortTransformer extends SceneTransformer {
                 + "." + entity.getName();
             SootClass entityClass = Scene.v().loadClassAndSupport(className);
             
-            // Create a field for every port
-            // in case we haven't been
-            // following coding convention.
+            // Loop over all the ports of the actor.
             for(Iterator ports = 
                     entity.portList().iterator();
                 ports.hasNext();) {
-                Port port = (Port)ports.next();
-                if(!entityClass.declaresFieldByName(port.getName())) {
-                    // Create the new field
-                    SootField field = new SootField(port.getName(),
-                            portType, Modifier.PUBLIC);
-                    entityClass.addField(field);
-                }
+                TypedIOPort port = (TypedIOPort)ports.next();
 
-                SootField indexArrayField = new SootField("_index_" + port.getName(),
-                        ArrayType.v(IntType.v(), 1), Modifier.PUBLIC);
-                entityClass.addField(indexArrayField);
-                SootField bufferField = new SootField("_portbuffer_" + port.getName(),
-                        ArrayType.v(tokenType, 2), Modifier.PUBLIC);
-                entityClass.addField(bufferField);
+                ptolemy.data.type.Type type = port.getType();
+                BaseType tokenType = PtolemyUtilities.getSootTypeForTokenType(type);
+                System.out.println("port = " + port.getFullName() + " type = " + type);
                 
-                // Create references to the buffer for each port channel
-                for(Iterator methods = entityClass.getMethods().iterator();
-                    methods.hasNext();) {
-                    SootMethod method = (SootMethod)methods.next();
-                    JimpleBody body = (JimpleBody)method.retrieveActiveBody();
-                    Object insertPoint = body.getUnits().getLast();
-                    if(!method.getName().equals("<init>")) {
-                        continue;
-                    }
-                    Local indexesLocal = 
-                        Jimple.v().newLocal("indexes", 
-                                ArrayType.v(IntType.v(), 1));
-                    body.getLocals().add(indexesLocal);
-                  
-                    // Initialize the index array field.
-                    body.getUnits().insertBefore(
-                            Jimple.v().newAssignStmt(
-                                    indexesLocal,
-                                    Jimple.v().newNewArrayExpr(
-                                            IntType.v(), 
-                                            IntConstant.v(((IOPort)port).getWidth()))),
-                            insertPoint);
-                    body.getUnits().insertBefore(
-                            Jimple.v().newAssignStmt(
-                                    Jimple.v().newInstanceFieldRef(
-                                            body.getThisLocal(),
-                                            indexArrayField),
-                                    indexesLocal),
-                            insertPoint);
-
-                    Local bufferLocal = 
-                        Jimple.v().newLocal("buffer", 
-                                ArrayType.v(tokenType, 1));
-                    body.getLocals().add(bufferLocal);
-                    Local channelLocal = 
-                        Jimple.v().newLocal("channel", 
-                                ArrayType.v(tokenType, 2));
-                    body.getLocals().add(channelLocal);
-
-                    // Create the array of port channels
-                    body.getUnits().insertBefore(
-                            Jimple.v().newAssignStmt(
-                                    channelLocal,
-                                    Jimple.v().newNewArrayExpr(
-                                            ArrayType.v(tokenType, 1),
-                                            IntConstant.v(
-                                                    ((IOPort)port).getWidth()))),
-                            insertPoint);;
-                    // store it to the field.
-                    body.getUnits().insertBefore(
-                            Jimple.v().newAssignStmt(
-                                    Jimple.v().newInstanceFieldRef(
-                                            body.getThisLocal(), 
-                                            bufferField),
-                                    channelLocal),
-                            insertPoint);
+                // If the port is connected.
+                if(port.getWidth() > 0) {
+                    // Create a field for the indexes into the buffer for that field.
+                    SootField indexArrayField = new SootField("_index_" + port.getName(),
+                            ArrayType.v(IntType.v(), 1), Modifier.PUBLIC);
+                    entityClass.addField(indexArrayField);
+                    // Create a field that refers to all the channels of that port.
+                    SootField bufferField = new SootField("_portbuffer_" + port.getName(),
+                            ArrayType.v(tokenType, 2), Modifier.PUBLIC);
+                    entityClass.addField(bufferField);
+                    
+                    // Create references to the buffer for each port channel
+                    for(Iterator methods = entityClass.getMethods().iterator();
+                        methods.hasNext();) {
+                        SootMethod method = (SootMethod)methods.next();
+                        JimpleBody body = (JimpleBody)method.retrieveActiveBody();
+                        Object insertPoint = body.getUnits().getLast();
+                        // Insert code into all the init methods.
+                        if(!method.getName().equals("<init>")) {
+                            continue;
+                        }
+                        Local indexesLocal = 
+                            Jimple.v().newLocal("indexes", 
+                                    ArrayType.v(IntType.v(), 1));
+                        body.getLocals().add(indexesLocal);
+                        
+                        // Initialize the index array field to contain
+                        // an array initialized to zero.
+                        body.getUnits().insertBefore(
+                                Jimple.v().newAssignStmt(
+                                        indexesLocal,
+                                        Jimple.v().newNewArrayExpr(
+                                                IntType.v(), 
+                                                IntConstant.v(port.getWidth()))),
+                                insertPoint);
+                        body.getUnits().insertBefore(
+                                Jimple.v().newAssignStmt(
+                                        Jimple.v().newInstanceFieldRef(
+                                                body.getThisLocal(),
+                                                indexArrayField),
+                                        indexesLocal),
+                                insertPoint);
+                        
+                        Local bufferLocal = 
+                            Jimple.v().newLocal("buffer", 
+                                    ArrayType.v(tokenType, 1));
+                        body.getLocals().add(bufferLocal);
+                        Local channelLocal = 
+                            Jimple.v().newLocal("channel", 
+                                    ArrayType.v(tokenType, 2));
+                        body.getLocals().add(channelLocal);
+                        
+                        // Create the array of port channels
+                        body.getUnits().insertBefore(
+                                Jimple.v().newAssignStmt(
+                                        channelLocal,
+                                        Jimple.v().newNewArrayExpr(
+                                                ArrayType.v(tokenType, 1),
+                                                IntConstant.v(
+                                                        port.getWidth()))),
+                                insertPoint);;
+                        // store it to the field.
+                        body.getUnits().insertBefore(
+                                Jimple.v().newAssignStmt(
+                                        Jimple.v().newInstanceFieldRef(
+                                                body.getThisLocal(), 
+                                                bufferField),
+                                        channelLocal),
+                                insertPoint);
                             
-                    int channel = 0;
-                    for(Iterator relations = port.linkedRelationList().iterator();
-                        relations.hasNext();) {
-                        IORelation relation = (IORelation)relations.next();
-                        for(int i = 0; 
-                            i < relation.getWidth();
-                            i++, channel++) {
-                            // FIXME: buffersize is only one!
-                            //  if(bufsize == 1) {
-                            //  } else {
-                            // This is the buffer associated with that channel.
-                            SootField arrayField = 
-                                Scene.v().getMainClass().getFieldByName(
-                                        "_" + relation.getName() + "_" + i);
-                            // Load the buffer array.
-                            body.getUnits().insertBefore(
-                                    Jimple.v().newAssignStmt(bufferLocal,
-                                            Jimple.v().newStaticFieldRef(
-                                                    arrayField)),
-                                    insertPoint);
-                            // Store to the port array.
-                            body.getUnits().insertBefore(
-                                    Jimple.v().newAssignStmt(
-                                            Jimple.v().newArrayRef(
-                                                    channelLocal, 
-                                                    IntConstant.v(channel)),
-                                            bufferLocal),
-                                    insertPoint);
+                        // For each channel of the port, make the buffer for that
+                        // channel point to the appropriate buffer of the relation.
+                        int channel = 0;
+                        for(Iterator relations = port.linkedRelationList().iterator();
+                            relations.hasNext();) {
+                            IORelation relation = (IORelation)relations.next();
+                            for(int i = 0; 
+                                i < relation.getWidth();
+                                i++, channel++) {
+                                // FIXME: buffersize is only one!
+                                //  if(bufsize == 1) {
+                                //  } else {
+                                // This is the buffer associated with that channel.
+                                SootField arrayField = 
+                                    Scene.v().getMainClass().getFieldByName(
+                                            "_" + relation.getName() + "_" + i);
+                                // Load the buffer array.
+                                body.getUnits().insertBefore(
+                                        Jimple.v().newAssignStmt(bufferLocal,
+                                                Jimple.v().newStaticFieldRef(
+                                                        arrayField)),
+                                        insertPoint);
+                                // Store to the port array.
+                                body.getUnits().insertBefore(
+                                        Jimple.v().newAssignStmt(
+                                                Jimple.v().newArrayRef(
+                                                        channelLocal, 
+                                                        IntConstant.v(channel)),
+                                                bufferLocal),
+                                        insertPoint);
+                            }
                         }
                     }
                 }
             }
 
-            // replace calls to getPort with field references.
-            // inline calls on ports.
+            // Loop through all the methods and inline calls on ports.
             for(Iterator methods = entityClass.getMethods().iterator();
                 methods.hasNext();) {
                 SootMethod method = (SootMethod)methods.next();
@@ -217,28 +223,20 @@ public class InlinePortTransformer extends SceneTransformer {
                     Jimple.v().newLocal("index",
                             IntType.v());
                 body.getLocals().add(indexLocal);
-                 Local indexArrayLocal =
-                    Jimple.v().newLocal("indexArray",
-                            ArrayType.v(IntType.v(),1));
-                body.getLocals().add(indexArrayLocal);
-                Local bufferArrayLocal = 
-                    Jimple.v().newLocal("bufferArray", 
-                            ArrayType.v(tokenType, 2));
-                body.getLocals().add(bufferArrayLocal);
+                Local indexArrayLocal =
+                Jimple.v().newLocal("indexArray",
+                        ArrayType.v(IntType.v(),1));
+                body.getLocals().add(indexArrayLocal);             
                 Local bufferLocal = 
                     Jimple.v().newLocal("buffer", 
-                            ArrayType.v(tokenType, 1));
+                            ArrayType.v(PtolemyUtilities.tokenType, 1));
                 body.getLocals().add(bufferLocal);
-                Local bufferSizeLocal = 
-                    Jimple.v().newLocal("bufferSize", 
-                            IntType.v());
-                body.getLocals().add(bufferSizeLocal);
                 Local returnArrayLocal = 
                     Jimple.v().newLocal("returnArray", 
-                            ArrayType.v(tokenType, 1));
+                            ArrayType.v(PtolemyUtilities.tokenType, 1));
                 body.getLocals().add(returnArrayLocal);
                 Local returnLocal = 
-                    Jimple.v().newLocal("return", tokenType);
+                    Jimple.v().newLocal("return", PtolemyUtilities.tokenType);
                 body.getLocals().add(returnLocal);
                     
                                                                                                        
@@ -257,23 +255,7 @@ public class InlinePortTransformer extends SceneTransformer {
                         Value value = box.getValue();
                         if(value instanceof InstanceInvokeExpr) {
                             InstanceInvokeExpr r = (InstanceInvokeExpr)value;
-                            if(r.getMethod().equals(getPortMethod)) {
-                                // inline calls to getPort(arg) when arg 
-                                // is a string
-                                // that can be statically evaluated.
-                                Value nameValue = r.getArg(0);
-                                //   System.out.println("port name =" + 
-                                //                   nameValue);
-                                if(Evaluator.isValueConstantValued(nameValue)) {
-                                    StringConstant nameConstant = 
-                                        (StringConstant)
-                                        Evaluator.getConstantValueOf(nameValue);
-                                    String name = nameConstant.value;
-                                    box.setValue(Jimple.v().newInstanceFieldRef(
-                                            r.getBase(),
-                                            entityClass.getFieldByName(name)));
-                                }
-                            } else if(r.getBase().getType() instanceof RefType) {
+                            if(r.getBase().getType() instanceof RefType) {
                                 RefType type = (RefType)r.getBase().getType();
                               
                                 // Statically evaluate constant arguments.
@@ -295,7 +277,8 @@ public class InlinePortTransformer extends SceneTransformer {
                                 if(SootUtilities.derivesFrom(type.getSootClass(), portClass)) {
                                     // if we are invoking a method on a port class, then
                                     // attempt to get the constant value of the port.
-                                    Port port = getPortValue(entity, (Local)r.getBase(), unit, localDefs);
+                                    TypedIOPort port = (TypedIOPort)
+                                        getPortValue((Local)r.getBase(), unit, localDefs, localUses);
                                     //     System.out.println("reference to port = " + port);
                                          
                                     if(port == null) {
@@ -307,16 +290,34 @@ public class InlinePortTransformer extends SceneTransformer {
                                                 unit, box, r, (Typeable)port);
                                        
                                     }
-
-
+                                    
+                                    String methodName = r.getMethod().getName();
+                                    if(port.getWidth() == 0 &&
+                                           (methodName.equals("hasToken") ||
+                                                   methodName.equals("getToken") ||
+                                                   methodName.equals("get") ||
+                                                   methodName.equals("put") ||
+                                                   methodName.equals("broadcast"))) {
+                                        // If we try to get on a port with zero width, then 
+                                        // throw a runtime exception.
+                                        Local local = SootUtilities.createRuntimeException(body, unit, 
+                                                methodName + "() called on a port with zero width: " + 
+                                                port.getFullName() + "!");
+                                        body.getUnits().insertBefore(Jimple.v().newThrowStmt(local),
+                                                unit);
+                                        body.getUnits().remove(unit);
+                                        continue;
+                                    }
+                                                                            
                                     if(r.getMethod().getName().equals("hasToken")) {
+                                       
                                         // return true.
                                         box.setValue(IntConstant.v(1));
                                     } else if(r.getMethod().getName().equals("hasRoom")) {
                                         // return true.
                                         box.setValue(IntConstant.v(1));
                                     } else if(r.getMethod().getName().equals("getWidth")) {
-                                       // reflect and invoke the same method on our token
+                                        // reflect and invoke the same method on our token
                                         Constant constant = SootUtilities.reflectAndInvokeMethod(
                                                 port, r.getMethod(), argValues);
                                         // System.out.println("method result  = " + constant);
@@ -328,102 +329,21 @@ public class InlinePortTransformer extends SceneTransformer {
                                         // or get that takes a channel and a count and returns
                                         // an array of tokens.          
                                         // In either case, replace the get with circular array ref.
-                                        
-                                        SootField indexArrayField = 
-                                            entityClass.getFieldByName("_index_" + port.getName());
-                                                      
-                                        // Load the array of indexes.
-                                        body.getUnits().insertBefore(
-                                                Jimple.v().newAssignStmt(indexArrayLocal,
-                                                        Jimple.v().newInstanceFieldRef(
-                                                                body.getThisLocal(),
-                                                                indexArrayField)), 
-                                                unit);
                                         Value channelValue = r.getArg(0);
-                                        // Load the correct index into indexLocal
-                                        body.getUnits().insertBefore(
-                                                Jimple.v().newAssignStmt(indexLocal,
-                                                        Jimple.v().newArrayRef(
-                                                                indexArrayLocal, 
-                                                                channelValue)),
-                                                unit); 
-                                        
-                                        Value bufferSizeValue = null;
-                                        // Now get the appropriate buffer
-                                        if(constantArgCount > 0) {
-                                            // If we know the channel, then refer directly to the buffer in the 
-                                            // model
-                                            int argChannel = ((IntConstant)argValues[0]).value;
-                                            int channel = 0;
-                                            boolean found = false;
-                                            for(Iterator relations = port.linkedRelationList().iterator();
-                                                !found && relations.hasNext();) {
-                                                IORelation relation = (IORelation)relations.next();
-                                                
-                                                for(int i = 0; 
-                                                    !found && i < relation.getWidth();
-                                                    i++, channel++) {
-                                                    if(channel == argChannel) {
-                                                        found = true;
-                                                        SootField arrayField = 
-                                                            Scene.v().getMainClass().getFieldByName(
-                                                                    "_" + relation.getName() + "_" + i);
-                                                        
-                                                        // load the buffer array.
-                                                        body.getUnits().insertBefore(
-                                                                Jimple.v().newAssignStmt(bufferLocal,
-                                                                        Jimple.v().newStaticFieldRef(arrayField)),
-                                                                unit);
-                                                        int bufferSize;
-                                                        try {
-                                                            Variable bufferSizeVariable = 
-                                                                (Variable)relation.getAttribute("bufferSize");
-                                                            bufferSize = 
-                                                                ((IntToken)bufferSizeVariable.getToken()).intValue();
-                                                        } catch (Exception ex) {
-                                                            System.out.println("No BufferSize parameter for " + 
-                                                                    relation);
-                                                            continue;
-                                                        } 
-                                                        // remember the size of the buffer.
-                                                        bufferSizeValue = IntConstant.v(bufferSize); 
-                                                    }
-                                                }
-                                            }
-                                            if(!found) {
-                                                throw new RuntimeException("Constant channel not found!");
-                                            }
-                                        } else {
-                                            // If we don't know the channel, then use the port indexes.
-                                            SootField arrayField = 
-                                                entityClass.getFieldByName("_portbuffer_" + port.getName());
-                                      
-                                            // Load the array of port channels.
-                                            body.getUnits().insertBefore(
-                                                    Jimple.v().newAssignStmt(bufferArrayLocal,
-                                                            Jimple.v().newInstanceFieldRef(
-                                                                    body.getThisLocal(),
-                                                                    arrayField)),
-                                                    unit);
-                                            // Load the buffer array.
-                                            body.getUnits().insertBefore(
-                                                    Jimple.v().newAssignStmt(bufferLocal,
-                                                            Jimple.v().newArrayRef(bufferArrayLocal, r.getArg(0))),
-                                                    unit);
-                                            // get the length of the buffer
-                                            body.getUnits().insertBefore(
-                                                    Jimple.v().newAssignStmt(
-                                                            bufferSizeLocal,
-                                                            Jimple.v().newLengthExpr(bufferLocal)),
-                                                    unit);
-                                            bufferSizeValue = bufferSizeLocal;
-                                        
-                                        }
+                                       
+                                        Value bufferSizeValue = _getBufferAndSize(entityClass, body, 
+                                                unit, port, channelValue, bufferLocal);
+                                    
+                                        _getCorrectIndex(entityClass, body, 
+                                                unit, port, indexLocal, indexArrayLocal, 
+                                                channelValue, bufferSizeValue);
+                                       
                                         // If we are calling with just a channel, then read the value.
                                         if(r.getArgCount() == 1) {
-                                            body.getUnits().insertAfter(createIndexUpdateInstructions( 
+                                            body.getUnits().insertAfter(_createIndexUpdateInstructions( 
                                                     indexLocal, indexArrayLocal, channelValue, bufferSizeValue),
                                                     unit);
+                                        
                                            
                                             // We may be calling get without setting the return value to anything.
                                             if(unit instanceof DefinitionStmt) {
@@ -440,7 +360,7 @@ public class InlinePortTransformer extends SceneTransformer {
                                                     Jimple.v().newAssignStmt(
                                                             returnArrayLocal, 
                                                             Jimple.v().newNewArrayExpr(
-                                                                    tokenType, r.getArg(1))),
+                                                                    PtolemyUtilities.tokenType, r.getArg(1))),
                                                     unit);
                                             // If the count is specified statically
                                             // FIXME: constant loop unroller should take care of this.
@@ -463,7 +383,7 @@ public class InlinePortTransformer extends SceneTransformer {
                                                             unit);
                                                     // increment the position in the buffer.
                                                     body.getUnits().insertBefore(
-                                                            createIndexUpdateInstructions( 
+                                                            _createIndexUpdateInstructions( 
                                                                     indexLocal, indexArrayLocal, 
                                                                     channelValue, bufferSizeValue),
                                                             unit);
@@ -502,20 +422,22 @@ public class InlinePortTransformer extends SceneTransformer {
                                                                         returnArrayLocal,
                                                                         counterLocal),
                                                                 returnLocal));
-                                                // increment the position.
-                                                bodyList.add(
-                                                        Jimple.v().newAssignStmt(
-                                                                indexLocal,
-                                                                Jimple.v().newAddExpr(
-                                                                        indexLocal,
-                                                                        IntConstant.v(1))));
-                                                // wrap around.
-                                                bodyList.add(
-                                                        Jimple.v().newAssignStmt(
-                                                                indexLocal,
-                                                                Jimple.v().newRemExpr(
-                                                                        indexLocal,
-                                                                        bufferSizeValue)));
+                                                if(!bufferSizeValue.equals(IntConstant.v(1))) {
+                                                    // increment the position.
+                                                    bodyList.add(
+                                                            Jimple.v().newAssignStmt(
+                                                                    indexLocal,
+                                                                    Jimple.v().newAddExpr(
+                                                                            indexLocal,
+                                                                            IntConstant.v(1))));
+                                                    // wrap around.
+                                                    bodyList.add(
+                                                            Jimple.v().newAssignStmt(
+                                                                    indexLocal,
+                                                                    Jimple.v().newRemExpr(
+                                                                            indexLocal,
+                                                                            bufferSizeValue)));
+                                                }
                                                 // Increment the counter.
                                                 bodyList.add(
                                                         Jimple.v().newAssignStmt(
@@ -535,13 +457,15 @@ public class InlinePortTransformer extends SceneTransformer {
                                                         conditionalExpr);
                                                 body.getUnits().insertBefore(loop, unit);
 
-                                                // store back.
-                                                body.getUnits().insertBefore(
-                                                        Jimple.v().newAssignStmt(
-                                                                Jimple.v().newArrayRef(indexArrayLocal, 
-                                                                        channelValue),
-                                                                indexLocal),
-                                                        unit);
+                                                if(!bufferSizeValue.equals(IntConstant.v(1))) {
+                                                    // store back.
+                                                    body.getUnits().insertBefore(
+                                                            Jimple.v().newAssignStmt(
+                                                                    Jimple.v().newArrayRef(indexArrayLocal, 
+                                                                            channelValue),
+                                                                    indexLocal),
+                                                            unit);
+                                                }
                                                 // Replace the get() call.
                                                 box.setValue(returnArrayLocal);
                                             }
@@ -550,103 +474,20 @@ public class InlinePortTransformer extends SceneTransformer {
                                         // Could be send that takes a channel and returns a token,
                                         // or send that takes a channel and an array of tokens.          
                                         // In either case, replace the send with circular array ref.
-                                        
-                                        SootField indexArrayField = 
-                                            entityClass.getFieldByName("_index_" + port.getName());
-                                                      
-                                        // Load the array of indexes.
-                                        body.getUnits().insertBefore(
-                                                Jimple.v().newAssignStmt(indexArrayLocal,
-                                                        Jimple.v().newInstanceFieldRef(
-                                                                body.getThisLocal(),
-                                                                indexArrayField)), 
-                                                unit);
                                         Value channelValue = r.getArg(0);
 
-                                        // Load the correct index into indexLocal
-                                        body.getUnits().insertBefore(
-                                                Jimple.v().newAssignStmt(indexLocal,
-                                                        Jimple.v().newArrayRef(
-                                                                indexArrayLocal, 
-                                                                channelValue)),
-                                                unit); 
+                                        Value bufferSizeValue = _getBufferAndSize(entityClass, body, 
+                                                unit, port, channelValue, bufferLocal);
                                         
-                                        Value bufferSizeValue = null;
-                                        // Now get the appropriate buffer
-                                        if(constantArgCount > 0) {
-                                            // If we know the channel, then refer directly to the buffer in the 
-                                            // model
-                                            int argChannel = ((IntConstant)argValues[0]).value;
-                                            int channel = 0;
-                                            boolean found = false;
-                                            for(Iterator relations = port.linkedRelationList().iterator();
-                                                !found && relations.hasNext();) {
-                                                IORelation relation = (IORelation)relations.next();
-                                                
-                                                for(int i = 0; 
-                                                    !found && i < relation.getWidth();
-                                                    i++, channel++) {
-                                                    if(channel == argChannel) {
-                                                        found = true;
-                                                        SootField arrayField = 
-                                                            Scene.v().getMainClass().getFieldByName(
-                                                                    "_" + relation.getName() + "_" + i);
-                                                        
-                                                        // load the buffer array.
-                                                        body.getUnits().insertBefore(
-                                                                Jimple.v().newAssignStmt(bufferLocal,
-                                                                        Jimple.v().newStaticFieldRef(arrayField)),
-                                                                unit);
-                                                        int bufferSize;
-                                                        try {
-                                                            Variable bufferSizeVariable = 
-                                                                (Variable)relation.getAttribute("bufferSize");
-                                                            bufferSize = 
-                                                                ((IntToken)bufferSizeVariable.getToken()).intValue();
-                                                        } catch (Exception ex) {
-                                                            System.out.println("No BufferSize parameter for " + 
-                                                                    relation);
-                                                            continue;
-                                                        } 
-                                                        // remember the size of the buffer.
-                                                        bufferSizeValue = IntConstant.v(bufferSize); 
-                                                    }
-                                                }
-                                            }
-                                            if(!found) {
-                                                throw new RuntimeException("Constant channel not found!");
-                                            }
-                                        } else {
-                                            // If we don't know the channel, then use the port indexes.
-                                            SootField arrayField = 
-                                                entityClass.getFieldByName("_portbuffer_" + port.getName());
-                                      
-                                            // Load the array of port channels.
-                                            body.getUnits().insertBefore(
-                                                    Jimple.v().newAssignStmt(bufferArrayLocal,
-                                                            Jimple.v().newInstanceFieldRef(
-                                                                    body.getThisLocal(),
-                                                                    arrayField)),
-                                                    unit);
-                                            // Load the buffer array.
-                                            body.getUnits().insertBefore(
-                                                    Jimple.v().newAssignStmt(bufferLocal,
-                                                            Jimple.v().newArrayRef(bufferArrayLocal, r.getArg(0))),
-                                                    unit);
-                                            // get the length of the buffer
-                                            body.getUnits().insertBefore(
-                                                    Jimple.v().newAssignStmt(
-                                                            bufferSizeLocal,
-                                                            Jimple.v().newLengthExpr(bufferLocal)),
-                                                    unit);
-                                            bufferSizeValue = bufferSizeLocal;
+                                        _getCorrectIndex(entityClass, body, 
+                                                unit, port, indexLocal, indexArrayLocal, 
+                                                channelValue, bufferSizeValue);
                                         
-                                        }
                                         // If we are calling with just a channel, then read the value.
                                         if(r.getArgCount() == 2) {
                                             // increment the position in the buffer.
                                             body.getUnits().insertAfter(
-                                                    createIndexUpdateInstructions( 
+                                                    _createIndexUpdateInstructions( 
                                                             indexLocal, indexArrayLocal, 
                                                             channelValue, bufferSizeValue),
                                                     unit);
@@ -683,7 +524,7 @@ public class InlinePortTransformer extends SceneTransformer {
                                                             unit);
                                                     // increment the position in the buffer.
                                                     body.getUnits().insertBefore(
-                                                            createIndexUpdateInstructions( 
+                                                            _createIndexUpdateInstructions( 
                                                                     indexLocal, indexArrayLocal, 
                                                                     channelValue, bufferSizeValue),
                                                             unit);
@@ -709,33 +550,31 @@ public class InlinePortTransformer extends SceneTransformer {
                                                 // The list of body instructions.
                                                 List bodyList = new LinkedList();
                                                 // Get the value.
-                                                body.getUnits().insertBefore(
-                                                        Jimple.v().newAssignStmt(
+                                                bodyList.add(Jimple.v().newAssignStmt(
                                                                 returnLocal,
                                                                 Jimple.v().newArrayRef(returnArrayLocal,
-                                                                        counterLocal)),
-                                                        unit);
+                                                                        counterLocal)));
+                                                       
                                                 // Store in the buffer array.
-                                                body.getUnits().insertBefore(
-                                                        Jimple.v().newAssignStmt(
+                                                bodyList.add(Jimple.v().newAssignStmt(
                                                                 Jimple.v().newArrayRef(bufferLocal,
                                                                         indexLocal),
-                                                                returnLocal),
-                                                        unit); 
-                                                // increment the position.
-                                                bodyList.add(
-                                                        Jimple.v().newAssignStmt(
-                                                                indexLocal,
-                                                                Jimple.v().newAddExpr(
-                                                                        indexLocal,
-                                                                        IntConstant.v(1))));
-                                                // wrap around.
-                                                bodyList.add(
-                                                        Jimple.v().newAssignStmt(
+                                                                returnLocal)); 
+                                                if(!bufferSizeValue.equals(IntConstant.v(1))) {
+                                                    // increment the position.
+                                                    bodyList.add(Jimple.v().newAssignStmt(
+                                                                    indexLocal,
+                                                                    Jimple.v().newAddExpr(
+                                                                            indexLocal,
+                                                                            IntConstant.v(1))));
+                                                    // wrap around.
+                                                    bodyList.add(
+                                                            Jimple.v().newAssignStmt(
                                                                 indexLocal,
                                                                 Jimple.v().newRemExpr(
                                                                         indexLocal,
                                                                         bufferSizeValue)));
+                                                }
                                                 // Increment the counter.
                                                 bodyList.add(
                                                         Jimple.v().newAssignStmt(
@@ -747,7 +586,7 @@ public class InlinePortTransformer extends SceneTransformer {
                                                 Expr conditionalExpr = 
                                                     Jimple.v().newLtExpr(
                                                             counterLocal,
-                                                            r.getArg(1));
+                                                            r.getArg(2));
                                                 List loop = SootUtilities.createForLoopBefore(body,
                                                         unit,
                                                         initializerList,
@@ -755,13 +594,15 @@ public class InlinePortTransformer extends SceneTransformer {
                                                         conditionalExpr);
                                                 body.getUnits().insertBefore(loop, unit);
 
-                                                // store back.
-                                                body.getUnits().insertBefore(
-                                                        Jimple.v().newAssignStmt(
-                                                                Jimple.v().newArrayRef(indexArrayLocal, 
-                                                                        channelValue),
-                                                                indexLocal),
-                                                        unit);
+                                                if(!bufferSizeValue.equals(IntConstant.v(1))) {
+                                                    // store back.
+                                                    body.getUnits().insertBefore(
+                                                            Jimple.v().newAssignStmt(
+                                                                    Jimple.v().newArrayRef(indexArrayLocal, 
+                                                                            channelValue),
+                                                                    indexLocal),
+                                                            unit);
+                                                }
                                                 // blow away the send.
                                                 body.getUnits().remove(unit);
                                             }
@@ -811,152 +652,150 @@ public class InlinePortTransformer extends SceneTransformer {
                                                 
                                                 // Load the correct index into indexLocal
                                                 body.getUnits().insertBefore(
-                                                            Jimple.v().newAssignStmt(indexLocal,
-                                                                    Jimple.v().newArrayRef(
-                                                                            indexArrayLocal, 
-                                                                            channelValue)),
-                                                            unit); 
+                                                        Jimple.v().newAssignStmt(indexLocal,
+                                                                Jimple.v().newArrayRef(
+                                                                        indexArrayLocal, 
+                                                                        channelValue)),
+                                                        unit); 
                                                         
-                                                    SootField arrayField = 
-                                                        Scene.v().getMainClass().getFieldByName(
-                                                                "_" + relation.getName() + "_" + i);
+                                                SootField arrayField = 
+                                                    Scene.v().getMainClass().getFieldByName(
+                                                            "_" + relation.getName() + "_" + i);
                                                         
-                                                    // load the buffer array.
-                                                    body.getUnits().insertBefore(
-                                                            Jimple.v().newAssignStmt(bufferLocal,
-                                                                    Jimple.v().newStaticFieldRef(arrayField)),
-                                                            unit);
+                                                // load the buffer array.
+                                                body.getUnits().insertBefore(
+                                                        Jimple.v().newAssignStmt(bufferLocal,
+                                                                Jimple.v().newStaticFieldRef(arrayField)),
+                                                        unit);
 
-                                                    // If we are calling with just a token, then send the token.
-                                                    if(r.getArgCount() == 1) {
-                                                        // Write to the buffer.
-                                                        body.getUnits().insertBefore(
-                                                                Jimple.v().newAssignStmt(
-                                                                        Jimple.v().newArrayRef(bufferLocal, 
-                                                                                indexLocal), r.getArg(0)),
-                                                                unit); 
-                                                        // increment the position in the buffer.
-                                                        body.getUnits().insertBefore(
-                                                                createIndexUpdateInstructions( 
-                                                                        indexLocal, indexArrayLocal, 
-                                                                        channelValue, bufferSizeValue),
-                                                                unit);
+                                                // If we are calling with just a token, then send the token.
+                                                if(r.getArgCount() == 1) {
+                                                    // Write to the buffer.
+                                                    body.getUnits().insertBefore(
+                                                            Jimple.v().newAssignStmt(
+                                                                    Jimple.v().newArrayRef(bufferLocal, 
+                                                                            indexLocal), r.getArg(0)),
+                                                            unit); 
+                                                    // increment the position in the buffer.
+                                                    body.getUnits().insertBefore(
+                                                            _createIndexUpdateInstructions( 
+                                                                    indexLocal, indexArrayLocal, 
+                                                                    channelValue, bufferSizeValue),
+                                                            unit);
+                                                    // blow away the send.
+                                                    body.getUnits().remove(unit);
+                                                } else {
+                                                    // We must send an array of tokens.
+                                                    body.getUnits().insertBefore(
+                                                            Jimple.v().newAssignStmt(
+                                                                    returnArrayLocal, 
+                                                                    r.getArg(0)),
+                                                            unit);
+                                                    // If the count is specified statically
+                                                    if(Evaluator.isValueConstantValued(r.getArg(1))) {
+                                                        int argCount =
+                                                            ((IntConstant)Evaluator.getConstantValueOf(
+                                                                    r.getArg(1))).value;
+                                                        for(int k = 0; k < argCount; k++) {
+                                                            // Get the value.
+                                                            body.getUnits().insertBefore(
+                                                                    Jimple.v().newAssignStmt(
+                                                                            returnLocal,
+                                                                            Jimple.v().newArrayRef(returnArrayLocal,
+                                                                                    IntConstant.v(k))),
+                                                                    unit);
+                                                            // Store in the buffer array.
+                                                            body.getUnits().insertBefore(
+                                                                    Jimple.v().newAssignStmt(
+                                                                            Jimple.v().newArrayRef(bufferLocal,
+                                                                                    indexLocal),
+                                                                            returnLocal),
+                                                                    unit);
+                                                            // increment the position in the buffer.
+                                                            body.getUnits().insertBefore(
+                                                                    _createIndexUpdateInstructions( 
+                                                                            indexLocal, indexArrayLocal, 
+                                                                            channelValue, bufferSizeValue),
+                                                                    unit);
+                                                        }
                                                         // blow away the send.
                                                         body.getUnits().remove(unit);
                                                     } else {
-                                                        // We must send an array of tokens.
-                                                        body.getUnits().insertBefore(
-                                                                Jimple.v().newAssignStmt(
-                                                                        returnArrayLocal, 
-                                                                        r.getArg(0)),
-                                                                unit);
-                                                        // If the count is specified statically
-                                                        if(Evaluator.isValueConstantValued(r.getArg(1))) {
-                                                            int argCount =
-                                                                ((IntConstant)Evaluator.getConstantValueOf(
-                                                                        r.getArg(1))).value;
-                                                            for(int k = 0; k < argCount; k++) {
-                                                                // Get the value.
-                                                                body.getUnits().insertBefore(
-                                                                        Jimple.v().newAssignStmt(
-                                                                                returnLocal,
-                                                                                Jimple.v().newArrayRef(returnArrayLocal,
-                                                                                        IntConstant.v(k))),
-                                                                        unit);
-                                                                // Store in the buffer array.
-                                                                body.getUnits().insertBefore(
-                                                                        Jimple.v().newAssignStmt(
-                                                                                Jimple.v().newArrayRef(bufferLocal,
-                                                                                        indexLocal),
-                                                                                returnLocal),
-                                                                        unit);
-                                                                // increment the position in the buffer.
-                                                                body.getUnits().insertBefore(
-                                                                        createIndexUpdateInstructions( 
-                                                                                indexLocal, indexArrayLocal, 
-                                                                                channelValue, bufferSizeValue),
-                                                                        unit);
-                                                            }
-                                                            // blow away the send.
-                                                            body.getUnits().remove(unit);
-                                                        } else {
-                                                            // we don't know the size beforehand,
-                                                            // so build a loop into the code.
-                                                            // The loop counter
-                                                            Local counterLocal = 
-                                                                Jimple.v().newLocal("counter", 
-                                                                        IntType.v());
-                                                            body.getLocals().add(counterLocal);
+                                                        // we don't know the size beforehand,
+                                                        // so build a loop into the code.
+                                                        // The loop counter
+                                                        Local counterLocal = 
+                                                            Jimple.v().newLocal("counter", 
+                                                                    IntType.v());
+                                                        body.getLocals().add(counterLocal);
                                                             
                                                                 // The list of initializer instructions.
-                                                                List initializerList = new LinkedList();
-                                                                initializerList.add(
-                                                                        Jimple.v().newAssignStmt(
-                                                                                counterLocal,
-                                                                                IntConstant.v(0)));
+                                                        List initializerList = new LinkedList();
+                                                        initializerList.add(
+                                                                Jimple.v().newAssignStmt(
+                                                                        counterLocal,
+                                                                        IntConstant.v(0)));
                                                                 
-                                                                // The list of body instructions.
-                                                                List bodyList = new LinkedList();
-                                                                // Get the value.
-                                                                body.getUnits().insertBefore(
-                                                                        Jimple.v().newAssignStmt(
-                                                                                returnLocal,
-                                                                                Jimple.v().newArrayRef(returnArrayLocal,
-                                                                                        counterLocal)),
-                                                                        unit);
-                                                                // Store in the buffer array.
-                                                                body.getUnits().insertBefore(
-                                                                        Jimple.v().newAssignStmt(
-                                                                                Jimple.v().newArrayRef(bufferLocal,
-                                                                                        indexLocal),
-                                                                                returnLocal),
-                                                                        unit); 
-                                                                // increment the position.
-                                                                bodyList.add(
-                                                                        Jimple.v().newAssignStmt(
+                                                        // The list of body instructions.
+                                                        List bodyList = new LinkedList();
+                                                        // Get the value.
+                                                        body.getUnits().insertBefore(
+                                                                Jimple.v().newAssignStmt(
+                                                                        returnLocal,
+                                                                        Jimple.v().newArrayRef(returnArrayLocal,
+                                                                                counterLocal)),
+                                                                unit);
+                                                        // Store in the buffer array.
+                                                        body.getUnits().insertBefore(
+                                                                Jimple.v().newAssignStmt(
+                                                                        Jimple.v().newArrayRef(bufferLocal,
+                                                                                indexLocal),
+                                                                        returnLocal),
+                                                                unit); 
+                                                        // increment the position.
+                                                        bodyList.add(
+                                                                Jimple.v().newAssignStmt(
+                                                                        indexLocal,
+                                                                        Jimple.v().newAddExpr(
                                                                                 indexLocal,
-                                                                                Jimple.v().newAddExpr(
-                                                                                        indexLocal,
-                                                                                        IntConstant.v(1))));
-                                                                // wrap around.
-                                                                bodyList.add(
-                                                                        Jimple.v().newAssignStmt(
+                                                                                IntConstant.v(1))));
+                                                        // wrap around.
+                                                        bodyList.add(
+                                                                Jimple.v().newAssignStmt(
+                                                                        indexLocal,
+                                                                        Jimple.v().newRemExpr(
                                                                                 indexLocal,
-                                                                                Jimple.v().newRemExpr(
-                                                                                        indexLocal,
-                                                                                        bufferSizeValue)));
-                                                                // Increment the counter.
-                                                                bodyList.add(
-                                                                        Jimple.v().newAssignStmt(
+                                                                                bufferSizeValue)));
+                                                        // Increment the counter.
+                                                        bodyList.add(
+                                                                Jimple.v().newAssignStmt(
+                                                                        counterLocal,
+                                                                        Jimple.v().newAddExpr(
                                                                                 counterLocal,
-                                                                                Jimple.v().newAddExpr(
-                                                                                        counterLocal,
-                                                                                        IntConstant.v(1))));
+                                                                                IntConstant.v(1))));
                                                                 
-                                                                Expr conditionalExpr = 
-                                                                    Jimple.v().newLtExpr(
-                                                                            counterLocal,
-                                                                            r.getArg(1));
-                                                                List loop = SootUtilities.createForLoopBefore(body,
-                                                                        unit,
-                                                                        initializerList,
-                                                                        bodyList, 
-                                                                        conditionalExpr);
-                                                                body.getUnits().insertBefore(loop, unit);
+                                                        Expr conditionalExpr = 
+                                                            Jimple.v().newLtExpr(
+                                                                    counterLocal,
+                                                                    r.getArg(1));
+                                                        List loop = SootUtilities.createForLoopBefore(body,
+                                                                unit,
+                                                                initializerList,
+                                                                bodyList, 
+                                                                conditionalExpr);
+                                                        body.getUnits().insertBefore(loop, unit);
                                                                 
                                                                 // store back.
-                                                                body.getUnits().insertBefore(
-                                                                        Jimple.v().newAssignStmt(
-                                                                                Jimple.v().newArrayRef(indexArrayLocal, 
-                                                                                        channelValue),
-                                                                                indexLocal),
-                                                                        unit);
-                                                                // blow away the send.
-                                                                body.getUnits().remove(unit);
-                                                            }
-                                                       
+                                                        body.getUnits().insertBefore(
+                                                                Jimple.v().newAssignStmt(
+                                                                        Jimple.v().newArrayRef(indexArrayLocal, 
+                                                                                channelValue),
+                                                                        indexLocal),
+                                                                unit);
+                                                        // blow away the send.
+                                                        body.getUnits().remove(unit);
                                                     }
-                                                
+                                                }
                                             }
                                         }
                                     }
@@ -974,18 +813,44 @@ public class InlinePortTransformer extends SceneTransformer {
      *  try to symbolically evaluate the value of the variable. If the value can be determined, 
      *  then return it, otherwise return null.
      */ 
-    public static Port getPortValue(Entity entity, Local local, Unit location, LocalDefs localDefs) {
+    public static Port getPortValue(Local local, 
+            Unit location, LocalDefs localDefs, LocalUses localUses) {
         List definitionList = localDefs.getDefsOfAt(local, location);
         if(definitionList.size() == 1) {
             DefinitionStmt stmt = (DefinitionStmt)definitionList.get(0);
             Value value = (Value)stmt.getRightOp();
             if(value instanceof CastExpr) {
-                return getPortValue(entity, (Local)((CastExpr)value).getOp(), stmt, localDefs);
+                return getPortValue((Local)((CastExpr)value).getOp(), stmt, localDefs, localUses);
             } else if(value instanceof FieldRef) {
-                String name = ((FieldRef)value).getField().getName();
-                return (Port)entity.getPort(name);
+                SootField field = ((FieldRef)value).getField();
+                ValueTag tag = (ValueTag)field.getTag("_CGValue");
+                if(tag == null) {
+                    return null;
+                } else {
+                    return (Port)tag.getObject();
+                }
+           
+            } else if(value instanceof NewExpr) {
+                // If we get to an object creation, then try
+                // to figure out where the variable is stored into a field.
+                Iterator pairs = localUses.getUsesOf(stmt).iterator();
+                while(pairs.hasNext()) {
+                    UnitValueBoxPair pair = (UnitValueBoxPair)pairs.next();
+                    if(pair.getUnit() instanceof DefinitionStmt) {
+                        DefinitionStmt useStmt = (DefinitionStmt)pair.getUnit();
+                        if(useStmt.getLeftOp() instanceof FieldRef) {
+                            SootField field = ((FieldRef)useStmt.getLeftOp()).getField();
+                            ValueTag tag = (ValueTag)field.getTag("_CGValue");
+                            if(tag == null) {
+                                return null;
+                            } else {
+                                return (Port)tag.getObject();
+                            }
+                        }
+                    }
+                }
             } else {
-                //    System.out.println("unknown value = " + value);
+                System.out.println("unknown value = " + value);
             }
         } else {
             System.out.println("more than one definition of = " + local);
@@ -997,15 +862,15 @@ public class InlinePortTransformer extends SceneTransformer {
         return null;
     }
 
-    public List createIndexUpdateInstructions(
+    private List _createIndexUpdateInstructions(
             Local indexLocal, Local indexArrayLocal, Value channelValue, 
             Value bufferSizeValue) {
         // Now update the index into the buffer.
         List list = new LinkedList();
-        // No update is necessary if the index is one.
-        if(bufferSizeValue.equals(IntConstant.v(1)))
+        // If the buffer is size one, then the below code is a noop.
+        if(bufferSizeValue.equals(IntConstant.v(1))) {
             return list;
-
+        }
         // increment the position.
         list.add(Jimple.v().newAssignStmt(
                         indexLocal,
@@ -1026,6 +891,130 @@ public class InlinePortTransformer extends SceneTransformer {
                                 channelValue),
                         indexLocal));
         return list;
+    }
+
+    /** Insert code into the given body before the given unit that will retrieve
+     *  the communication buffer associated with the given channel of the given 
+     *  port.  The given local variable will refer to the buffer.  A value
+     *  containing the size of the given buffer will be returned.
+     */
+    private Value _getBufferAndSize(SootClass entityClass, JimpleBody body, 
+            Unit unit, Port port, Value channelValue, Local bufferLocal) {
+        
+        Value bufferSizeValue = null;
+        // Now get the appropriate buffer
+        if(Evaluator.isValueConstantValued(channelValue)) {
+            // If we know the channel, then refer directly to the buffer in the 
+            // model
+            int argChannel = ((IntConstant)Evaluator.getConstantValueOf(channelValue)).value;
+            int channel = 0;
+            boolean found = false;
+            for(Iterator relations = port.linkedRelationList().iterator();
+                !found && relations.hasNext();) {
+                IORelation relation = (IORelation)relations.next();
+                
+                for(int i = 0; 
+                    !found && i < relation.getWidth();
+                    i++, channel++) {
+                    if(channel == argChannel) {
+                        found = true;
+                        SootField arrayField = 
+                            Scene.v().getMainClass().getFieldByName(
+                                    "_" + relation.getName() + "_" + i);
+                                                        
+                        // load the buffer array.
+                        body.getUnits().insertBefore(
+                                Jimple.v().newAssignStmt(bufferLocal,
+                                        Jimple.v().newStaticFieldRef(arrayField)),
+                                unit);
+                        int bufferSize;
+                        try {
+                            Variable bufferSizeVariable = 
+                                (Variable)relation.getAttribute("bufferSize");
+                            bufferSize = 
+                                ((IntToken)bufferSizeVariable.getToken()).intValue();
+                        } catch (Exception ex) {
+                            System.out.println("No BufferSize parameter for " + 
+                                    relation);
+                            continue;
+                        } 
+                        // remember the size of the buffer.
+                        bufferSizeValue = IntConstant.v(bufferSize); 
+                    }
+                }
+            }
+            if(!found) {
+                throw new RuntimeException("Constant channel not found!");
+            }
+        } else {
+            // If we don't know the channel, then use the port indexes.
+            SootField arrayField = 
+                entityClass.getFieldByName("_portbuffer_" + port.getName());
+            Local bufferArrayLocal = 
+                Jimple.v().newLocal("bufferArray", 
+                        ArrayType.v(PtolemyUtilities.tokenType, 2));
+            body.getLocals().add(bufferArrayLocal);            
+            Local bufferSizeLocal = 
+                Jimple.v().newLocal("bufferSize", 
+                        IntType.v());
+            body.getLocals().add(bufferSizeLocal);
+            // Load the array of port channels.
+            body.getUnits().insertBefore(
+                    Jimple.v().newAssignStmt(bufferArrayLocal,
+                            Jimple.v().newInstanceFieldRef(
+                                    body.getThisLocal(),
+                                    arrayField)),
+                    unit);
+            // Load the buffer array.
+            body.getUnits().insertBefore(
+                    Jimple.v().newAssignStmt(bufferLocal,
+                            Jimple.v().newArrayRef(
+                                    bufferArrayLocal,
+                                    channelValue)),
+                    unit);
+            // get the length of the buffer
+            body.getUnits().insertBefore(
+                    Jimple.v().newAssignStmt(
+                            bufferSizeLocal,
+                            Jimple.v().newLengthExpr(bufferLocal)),
+                    unit);
+            bufferSizeValue = bufferSizeLocal;
+                                        
+        }
+        return bufferSizeValue;
+    }
+
+    /** Retrieve the correct index into the given channel of the given port into the 
+     *  given local variable.  
+     */
+    private static void _getCorrectIndex(SootClass entityClass, JimpleBody body, Unit unit, 
+            TypedIOPort port, Local indexLocal, Local indexArrayLocal, Value channelValue, Value bufferSizeValue) {
+   
+        if(bufferSizeValue.equals(IntConstant.v(1))) {
+            // Load the correct index into indexLocal
+            body.getUnits().insertBefore(
+                    Jimple.v().newAssignStmt(indexLocal,
+                            IntConstant.v(0)),
+                    unit); 
+        } else {             
+            SootField indexArrayField = 
+                entityClass.getFieldByName("_index_" + port.getName());
+            
+            // Load the array of indexes.
+            body.getUnits().insertBefore(
+                    Jimple.v().newAssignStmt(indexArrayLocal,
+                            Jimple.v().newInstanceFieldRef(
+                                    body.getThisLocal(),
+                                    indexArrayField)), 
+                    unit);
+            // Load the correct index into indexLocal
+            body.getUnits().insertBefore(
+                    Jimple.v().newAssignStmt(indexLocal,
+                            Jimple.v().newArrayRef(
+                                    indexArrayLocal, 
+                                    channelValue)),
+                    unit); 
+        }
     }
 
     private CompositeActor _model;

@@ -43,6 +43,7 @@ import ptolemy.kernel.util.*;
 // FIXME: bad dependencies.
 import ptolemy.copernicus.java.EntitySootClass;
 import ptolemy.copernicus.java.ModelTransformer;
+import ptolemy.copernicus.java.PtolemyUtilities;
 
 import soot.util.Chain;
 
@@ -55,10 +56,16 @@ import soot.SceneTransformer;
 import soot.SootClass;
 import soot.SootMethod;
 import soot.Type;
+import soot.Unit;
+import soot.Value;
+import soot.ValueBox;
+import soot.VoidType;
 
+import soot.jimple.IntConstant;
 import soot.jimple.Jimple;
 import soot.jimple.JimpleBody;
 import soot.jimple.StringConstant;
+import soot.jimple.SpecialInvokeExpr;
 
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -191,7 +198,8 @@ public class ActorTransformer extends SceneTransformer {
                 superClass = theClass.getSuperclass();
             }
 
-            // replace the previous dummy body with a new one.
+            // replace the previous dummy body
+            // for the initialization method with a new one.
             body = Jimple.v().newBody(initMethod);
             initMethod.setActiveBody(body);
             body.insertIdentityStmts();
@@ -210,7 +218,11 @@ public class ActorTransformer extends SceneTransformer {
             
             // return void
             units.add(Jimple.v().newReturnVoidStmt());
-            
+
+            // Remove super calls to the executable interface.
+            // FIXME: This would be nice to do by inlining instead of
+            // special casing.
+            _implementExecutableInterface(entityInstanceClass);            
         }
     }
 
@@ -279,6 +291,53 @@ public class ActorTransformer extends SceneTransformer {
                             setExpressionMethod,
                             StringConstant.v(((Settable)attribute)
                                     .getExpression()))));
+        }
+    }
+
+    private static void _implementExecutableInterface(SootClass theClass) {
+        System.out.println("theClass " + theClass);
+        
+        // Loop through all the methods and remove calls to super.
+        for(Iterator methods = theClass.getMethods().iterator();
+            methods.hasNext();) {
+            SootMethod method = (SootMethod)methods.next();
+             System.out.println("method " + method);
+             JimpleBody body = (JimpleBody)method.retrieveActiveBody();
+             for(Iterator units = body.getUnits().snapshotIterator();
+                units.hasNext();) {
+                Unit unit = (Unit)units.next();
+                Iterator boxes = unit.getUseBoxes().iterator();
+                while(boxes.hasNext()) {
+                    ValueBox box = (ValueBox)boxes.next();
+                    Value value = box.getValue();
+                    if(value instanceof SpecialInvokeExpr) {
+                        SpecialInvokeExpr r = (SpecialInvokeExpr)value;
+                        if(PtolemyUtilities.executableInterface.declaresMethod(
+                                r.getMethod().getSubSignature())) {
+                            if(r.getMethod().getName().equals("prefire") ||
+                               r.getMethod().getName().equals("postfire")) {
+                                box.setValue(IntConstant.v(1));
+                            } else {
+                                body.getUnits().remove(unit);
+                                System.out.println("removing " + r);
+                            }
+                        } else if(!r.getMethod().getName().equals("<init>")) {
+                            System.out.println("superCall:" + r);
+                        }
+                    }
+                }
+            }
+        }
+
+        // FIXME: what about the other methods?
+        if(!theClass.declaresMethodByName("initialize")) {
+            SootMethod method = new SootMethod("initialize",
+                    new LinkedList(), VoidType.v(), Modifier.PUBLIC);
+            theClass.addMethod(method);
+            JimpleBody body = Jimple.v().newBody(method);
+            method.setActiveBody(body);
+            body.insertIdentityStmts();
+            body.getUnits().add(Jimple.v().newReturnVoidStmt());            
         }
     }
 
