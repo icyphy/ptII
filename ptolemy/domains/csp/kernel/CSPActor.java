@@ -210,7 +210,7 @@ public class CSPActor extends AtomicActor {
                 int num = _threadList.size();
 
                 if (num == 0) {
-                    // The guards preceeding all the conditional
+                    // The guards preceding all the conditional
                     // communications were false, so no branches to create.
                     return _successfulBranch; // will be -1
                 } else if (num == 1) {
