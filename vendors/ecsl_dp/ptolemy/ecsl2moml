@@ -84,10 +84,28 @@ awk ' {
                break;
            }
        }
+       lastNameField = f[nf]
+
+       # Get the value of the position field
+       position=""
+       nf = split($0, f, "\"")   
+       for (i = 1; i <= nf; i++) {
+           if ( f[i] ~ /osition=$/) {
+               position = f[i+1]
+               break;
+           }
+       }
+       split(position, p, ",")
+       x = substr(p[1], 2, length(p[1])) / 4
+       y = substr(p[2], 1, length(p[2]) - 1) / 4
+
        indent = substr($0, 0, index($0,"<") - 1)  
        # Sometimes we have <System ... />
-       print indent "<entity name=\"" name "\" class=\"ptolemy.actor.TypedCompositeActor\"" f[nf]
+       print indent "<entity name=\"" name "\" class=\"ptolemy.actor.TypedCompositeActor\"" lastNameField
        
+       print indent "    <property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"[" x ", " y "]\">"
+       print indent "     </property>"
+
        if (sawFirstEntity == 0) {
            sawFirstEntity = 1
            # Add the director
@@ -140,6 +158,19 @@ awk ' {
                break;
            }
        }
+       # Get the value of the position field
+       position=""
+       nf = split($0, f, "\"")   
+       for (i = 1; i <= nf; i++) {
+           if ( f[i] ~ /osition=$/) {
+               position = f[i+1]
+               break;
+           }
+       }
+       split(position, p, ",")
+       x = substr(p[1], 2, length(p[1])) / 4
+       y = substr(p[2], 1, length(p[2]) - 1) / 4
+
        if (length(text) > 0) {
            indent = substr($0, 0, index($0,"<") - 1)  
            annotationCount++
@@ -160,7 +191,7 @@ awk ' {
            print indent "    </property>"
            print indent "    <property name=\"_editorFactory\" class=\"ptolemy.vergil.toolbox.AnnotationEditorFactory\">"
            print indent "    </property>"
-           print indent "    <property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"15.0, 275.0\">"
+           print indent "    <property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"[" x ", " y "]\">"
            print indent "    </property>"
            print indent "    <property name=\"_icon\" class=\"ptolemy.vergil.icon.XMLIcon\">"
            print indent "    </property>"
