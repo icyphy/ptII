@@ -1,6 +1,9 @@
 // TimerDemo.java: demonstration application showing time elapsed for parse.
 // NO WARRANTY! See README, and copyright below.
 // $Id$
+// Modified 11/8/98 to add package statement.
+
+package com.microstar.xml.demo;
 
 import com.microstar.xml.XmlParser;
 import java.net.URL;

@@ -1,6 +1,9 @@
 // XmlApp.java: base class for Ælfred demos.
 // NO WARRANTY! See README, and copyright below.
 // $Id$
+// Modified 11/8/98 to add package statement.
+
+package com.microstar.xml.demo;
 
 import com.microstar.xml.XmlHandler;
 import com.microstar.xml.XmlParser;
