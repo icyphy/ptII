@@ -468,11 +468,13 @@ public class TypedIOPort extends IOPort implements Typeable {
                         cloneNotSupported.getMessage());
             }
 
-            if (!_resolvedType.isEqualTo(_declaredType)) {
-                _notifyTypeListener(_resolvedType, _declaredType);
-            }
+            // Note: we are careful here to set the type before notifying
+            // type listeners.
+            Type oldType = _resolvedType;
             _resolvedType = _declaredType;
-
+            if (!oldType.isEqualTo(_declaredType)) {
+                _notifyTypeListener(oldType, _declaredType);
+            }
         } finally {
             _workspace.doneWriting();
         }
