@@ -30,11 +30,14 @@ package ptolemy.domains.pn.demo;
 import java.applet.Applet;
 import java.awt.*;
 import java.awt.event.*;
+import java.net.*;
+import java.io.*;
 import ptolemy.media.Picture;
 
 import ptolemy.domains.pn.kernel.*;
 import ptolemy.domains.pn.lib.*;
 import ptolemy.actor.*;
+import ptolemy.actor.util.PtolemyApplet;
 import ptolemy.data.*;
 import ptolemy.data.expr.*;
 import ptolemy.kernel.*;
@@ -49,39 +52,45 @@ example.
 @version $Id$
 */
 
-public class RLEncodingApplet extends Applet implements Runnable {
+public class RLEncodingApplet extends PtolemyApplet implements Runnable {
 
+
+    /** Describe the applet parameters.
+     *  @return An array describing the applet parameters.
+     */
+    public String[][] getParameterInfo() {
+        String pinfo[][] = {
+            {"background",    "#RRGGBB",    "color of the background"},
+            {"imageurl", "url", "the URL of the ppm image to process"}
+        };
+        return pinfo;
+    }
 
     /** Initialize the applet.
      */
     public void init() {
 
         // Process the background parameter.
-        Color background = Color.white;
-        try {
-            String colorspec = getParameter("background");
-            if (colorspec != null) {
-                background = Color.decode(colorspec);
-            }
-        } catch (Exception ex) {}
-        setBackground(background);
+        super.init();
+
+
 
         // Initialization
         _goButton = new Button("Go");
         // The applet has two panels, stacked vertically
         setLayout(new BorderLayout());
-        Panel appletPanel = new Panel();
-        appletPanel.setLayout(new GridLayout(1,2));
-        add(appletPanel, "Center");
+        //Panel appletPanel = new Panel();
+        //appletPanel.setLayout(new GridLayout(1,2));
+        //add(appletPanel, "Center");
 
-        _imgin = new Picture(_SIZE,_SIZE);
-        appletPanel.add(_imgin, "Center");
-        _imgout = new Picture(_SIZE,_SIZE);
-        appletPanel.add(_imgout, "West");
+        //_imgin = new Picture(_SIZE,_SIZE);
+        //appletPanel.add(_imgin, "Center");
+        //_imgout = new Picture(_SIZE,_SIZE);
+        //appletPanel.add(_imgout, "West");
 
         // Adding a control panel in the applet panel.
         Panel controlPanel = new Panel();
-        add(controlPanel, "South");
+        add(controlPanel, "Center");
         // Done adding a control panel.
 
         // Adding go button in the control panel.
@@ -94,24 +103,28 @@ public class RLEncodingApplet extends Applet implements Runnable {
             _manager = new Manager();
             c1.setManager(_manager);
             BasePNDirector local = new BasePNDirector("Local");
-            local.addProcessListener(new DefaultPNListener());
+            //local.addProcessListener(new DefaultPNListener());
             c1.setDirector(local);
             
             PNImageSource a1 = new PNImageSource(c1, "A1");
-            Parameter p1 = (Parameter)a1.getAttribute("Image_file");
-            p1.setToken(new StringToken("/users/ptII/ptolemy/domains/pn/lib/test/ptII.pbm"));
+            //Parameter p1 = (Parameter)a1.getAttribute("Image_file");
+            //p1.setToken(new StringToken("ptolemy/domains/pn/lib/test/ptII.pbm"));
             MatrixUnpacker a2 = new MatrixUnpacker(c1, "A2");
             RLEncoder a3 = new RLEncoder(c1, "A3");
             RLDecoder a4 = new RLDecoder(c1, "A4");
             MatrixPacker a5 = new MatrixPacker(c1, "A5");
-            PNImageSink a6 = new PNImageSink(c1, "A6");
-            p1 = (Parameter)a6.getAttribute("Output_file");
-            p1.setToken(new StringToken("/tmp/image.pbm"));
-            //ImageDisplay a7 = new ImageDisplay(c1, "dispin");
-            //ImageDisplay a8 = new ImageDisplay(c1, "dispout");
+            //PNImageSink a6 = new PNImageSink(c1, "A6");
+            //p1 = (Parameter)a6.getAttribute("Output_file");
+            //p1.setToken(new StringToken("image.pbm"));
+            ImageDisplay a7 = new ImageDisplay(c1, "dispin");
+            ImageDisplay a8 = new ImageDisplay(c1, "dispout");
             
-            ImageDisplay a7 = new ImageDisplay(c1, "dispin", _imgin);
-            ImageDisplay a8 = new ImageDisplay(c1, "dispout", _imgout);
+            //ImageDisplay a7 = new ImageDisplay(c1, "dispin", _imgin);
+            Parameter p1 = (Parameter)a7.getAttribute("FrameName");
+            p1.setToken(new StringToken("InputImage"));
+            //ImageDisplay a8 = new ImageDisplay(c1, "dispout", _imgout);
+            p1 = (Parameter)a8.getAttribute("FrameName");
+            p1.setToken(new StringToken("OutputImage"));
             
             IOPort portin = (IOPort)a1.getPort("output");
             IOPort portout = (IOPort)a2.getPort("input");
@@ -143,14 +156,30 @@ public class RLEncodingApplet extends Applet implements Runnable {
             c1.connect(portin, portout);
             
             portin = (IOPort)a5.getPort("output");
-            portout = (IOPort)a6.getPort("input");
+            portout = (IOPort)a8.getPort("image");
             rel = c1.connect(portin, portout);        
-            (a8.getPort("image")).link(rel);
+            //(a8.getPort("image")).link(rel);
 
             System.out.println("Connections made");
             Parameter p = (Parameter)local.getAttribute("Initial_queue_capacity");
             p.setToken(new IntToken(500));     
 
+            String dataurlspec = getParameter("imageurl");
+            if (dataurlspec != null) {
+                try {
+                    showStatus("Reading data");
+                    URL dataurl = new URL(getDocumentBase(), dataurlspec);
+                    a1.read(dataurl.openStream());
+                    showStatus("Done");
+                } catch (MalformedURLException e) {
+                    System.err.println(e.toString());
+                } catch (FileNotFoundException e) {
+                    System.err.println("RLEncodingApplet: file not found: " +e);
+                } catch (IOException e) {
+                    System.err.println("RLEncodingApplet: error reading"+
+                            " input file: " +e);
+                }
+            }
         } catch (Exception ex) {
             System.err.println("Setup failed: " + ex.getMessage());
             ex.printStackTrace();
