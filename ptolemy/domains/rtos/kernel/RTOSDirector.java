@@ -37,6 +37,7 @@ import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.util.CalendarQueue;
+import ptolemy.actor.gui.ModelFrame;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.type.BaseType;
@@ -45,12 +46,15 @@ import ptolemy.domains.de.kernel.DECQEventQueue;
 import ptolemy.domains.de.kernel.DEEvent;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
-
+import java.util.LinkedList;
 import java.util.Iterator;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.HashSet;
 import java.util.Set;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import java.awt.BorderLayout;
 
 //////////////////////////////////////////////////////////////////////////
 //// RTOSDirector
@@ -198,9 +202,29 @@ public class RTOSDirector extends Director {
      */
     public Parameter synchronizeToRealTime;
 
+    /**
+
+    */
+    public Parameter displaySchedule;
+
     ///////////////////////////////////////////////////////////////////
     ////                       public methods                      ////
     
+    /** Append a listener to the current set of schedule listeners.
+     *  If the listener is already in the set, do not add it again.
+     *  @param listener The listener to which to send scheduling messages.
+     */
+    public synchronized void addScheduleListener(ScheduleListener listener) {
+        if (_scheduleListeners == null) {
+            _scheduleListeners = new LinkedList();
+        } else {
+            if (_scheduleListeners.contains(listener)) {
+                return;
+            }
+        }
+        _scheduleListeners.add(listener);
+    }
+
     /** Update the director parameters when the attributes are changed.
      *  If the change is <i>stopTime</i>, or <i>defaultTaskExecutionTime</i>,
      *  then check whether its value is less than zero. If so, throw an 
@@ -230,6 +254,22 @@ public class RTOSDirector extends Director {
             _synchronizeToRealTime =
                 ((BooleanToken)synchronizeToRealTime.getToken()).
                 booleanValue();
+        } else if (attribute == displaySchedule) {
+	    if (_scheduleDisplay == null) {
+                _scheduleDisplay = new JFrame("RTOS Schedule");
+	        SchedulePlotter schedulePlotter = new SchedulePlotter();
+	        JPanel pane = new JPanel();
+		pane.add(schedulePlotter.plot);
+		addScheduleListener(schedulePlotter);
+		_scheduleDisplay.getContentPane().
+		  add(pane, BorderLayout.CENTER);
+	        _scheduleDisplay.pack();
+	    }
+	    if (((BooleanToken)displaySchedule.getToken()). booleanValue()) {
+	       _scheduleDisplay.setVisible(true);
+	    } else {
+	       _scheduleDisplay.setVisible(false);
+	    }
         } else {
             super.attributeChanged(attribute);
         }
@@ -252,7 +292,7 @@ public class RTOSDirector extends Director {
     public void fire() throws IllegalActionException {
         _nextIterationTime = ((DoubleToken)stopTime.getToken()).
                 doubleValue();
-        
+
         // First look at interrupt events.
         while (!_interruptQueue.isEmpty()) {
             DEEvent interruptEvent = (DEEvent)_interruptQueue.get();
@@ -265,9 +305,7 @@ public class RTOSDirector extends Director {
                 _interruptQueue.take();
                 Actor actor = interruptEvent.actor();
                 if (actor != null) {
-                    // ATTN: Received an interrupt
                     if (actor.prefire()) {
-                        // ATTN: Produce interrupt event.
                         actor.fire();
                         if(!actor.postfire()) {
                             _disableActor(actor);
@@ -308,14 +346,10 @@ public class RTOSDirector extends Director {
                     // If the actor is the container of this director,
                     // then the event is at the output boundary.
                     // Remove the event and look at the next event.
-                    // ATTN: For the prefire(), the task is triggered
-                    // but not ready.
                     _eventQueue.take();
                     event = null;
                     // Return to the while loop.
                 } else {
-                    // ATTN: The task is triggered and ready to run.
-                    // ATTN: produce task start event.
                     // Determine the processing time.
                     double processingTime = ((DoubleToken)
                             defaultTaskExecutionTime.getToken()).doubleValue();
@@ -328,6 +362,8 @@ public class RTOSDirector extends Director {
                         Parameter executionTime = (Parameter)
                             ((IOPort)event.receiver().getContainer()).
                             getAttribute("executionTime");
+                        // Actor starts to execute
+
                         if (executionTime == null) {
                             executionTime = (Parameter)((NamedObj)actor).
                                 getAttribute("executionTime");
@@ -342,8 +378,9 @@ public class RTOSDirector extends Director {
                                 " has processing time 0, so processed.");
                         // This event  can be processed immediately.
                         _eventQueue.take();
-                        //ATTN: The task is finished immediately.
+
                         actor.fire();
+
                         if (!actor.postfire()) {
                             _disableActor(actor);
                         }
@@ -368,6 +405,7 @@ public class RTOSDirector extends Director {
                         }
                         if (_debugging) _debug("Start processing ", 
                                 event.toString());
+			_displaySchedule();
                         // Start one real time task a time.
                         break;
                     }
@@ -419,7 +457,6 @@ public class RTOSDirector extends Director {
         if (time <= ((DoubleToken)stopTime.getToken()).doubleValue()) {
             // create an interrupt event.
             DEEvent interruptEvent = new DEEvent(actor, time, 0, 0);
-            //ATTN: request an interrupt in the future.
             _interruptQueue.put(interruptEvent);
         }
     }
@@ -461,6 +498,7 @@ public class RTOSDirector extends Director {
                 ((DEEvent)_interruptQueue.get()).timeStamp();
             _requestFiringAt(nextPureEventTime);
         }
+	_displaySchedule("", 0.0, SchedulePlotter.RESET_DISPLAY);
     }
 
     /** Return a new RTOSReceiver.
@@ -496,34 +534,7 @@ public class RTOSDirector extends Director {
         }
         if (_debugging) _debug("Prefire: outside time = " + _outsideTime,
                 " current time = " + getCurrentTime());
-        if (!_eventQueue.isEmpty()) {
-            RTOSEvent event = (RTOSEvent)_eventQueue.get();
-            if (event.hasStarted()) {
-                if (_debugging) _debug("deduct "+ 
-                        (_outsideTime - getCurrentTime()), 
-                        " from processing time of event",
-                        event.toString());
-                //ATTN: Reduce the processing time of the actor by
-                // the time progressed.
-                event.timeProgress(_outsideTime - getCurrentTime());
-                // Finish the tasks if it ends at this time.
-                // We do it here to ensure that it is done before
-                // the transfer input from composite actors.
-                if (Math.abs(event.processingTime()) < 1e-10) {
-                    if(_debugging) _debug(getName(),
-                            "finish processing ", event.toString());
-                    //ATTN: Finished a task.
-                    _eventQueue.take();
-                    Actor actor = event.actor();
-                    actor.fire();
-                    // Should handle dead actors.
-                    if (!actor.postfire()) {
-                        _disableActor(actor);
-                    }
-                }
-            }
-        }
-        if (!_isEmbedded() && _synchronizeToRealTime) {
+	if (!_isEmbedded() && _synchronizeToRealTime) {
             // Wait for real time to cache up.
             long elapsedTime = System.currentTimeMillis()
                         - _realStartTime;
@@ -546,7 +557,38 @@ public class RTOSDirector extends Director {
                 }
             }
         }
-        setCurrentTime(_outsideTime);
+        if (!_eventQueue.isEmpty()) {
+            RTOSEvent event = (RTOSEvent)_eventQueue.get();
+            if (event.hasStarted()) {
+                if (_debugging) _debug("deduct "+ 
+                        (_outsideTime - getCurrentTime()), 
+                        " from processing time of event",
+                        event.toString());
+                event.timeProgress(_outsideTime - getCurrentTime());
+                // Finish the tasks if it ends at this time.
+                // We do it here to ensure that it is done before
+                // the transfer input from composite actors.
+		setCurrentTime(_outsideTime);
+                if (Math.abs(event.processingTime()) < 1e-10) {
+                    if(_debugging) _debug(getName(),
+                            "finish processing ", event.toString());
+                    _eventQueue.take();
+                    Actor actor = event.actor();
+                    actor.fire();
+		    // Actor stops executing, ie finishing
+		    _displaySchedule(((Nameable)actor).getName(),
+				     getCurrentTime(),
+				     SchedulePlotter.TASK_SLEEPING);
+		    _displaySchedule();
+                    // Should handle dead actors.
+                    if (!actor.postfire()) {
+                        _disableActor(actor);
+                    }
+                }
+            }
+        }
+	setCurrentTime(_outsideTime);
+        
         return true;
     }
 
@@ -656,9 +698,13 @@ public class RTOSDirector extends Director {
             defaultTaskExecutionTime.setTypeEquals(BaseType.DOUBLE);
             
             synchronizeToRealTime = new Parameter(this, 
-                    "synchronizeToRealTime",
-                    new BooleanToken(false));
+						  "synchronizeToRealTime",
+						  new BooleanToken(false));
             synchronizeToRealTime.setTypeEquals(BaseType.BOOLEAN);
+
+            displaySchedule = new Parameter(this, "displaySchedule",
+					    new BooleanToken(false));
+            displaySchedule.setTypeEquals(BaseType.BOOLEAN);
 
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(getName() +
@@ -687,7 +733,56 @@ public class RTOSDirector extends Director {
         ((CompositeActor)getContainer()).getExecutiveDirector().fireAt(
                 (Actor)getContainer(), time);
     }
+
+    /** Send the status of the current RTOS scheduling to all debug 
+     *  listeners that have registered.
+     *  By convention, messages should not include a newline at the end.
+     *  The newline will be added by the listener, if appropriate.
+     *  @param message The message.
+     */
+    protected final void _displaySchedule() {
+      if(_eventQueue != null) {
+	Object[] events = _eventQueue.toArray();
+//	System.out.println("REPORT SCHEDULE @ " + getCurrentTime());
+	for (int i = events.length-1; i >= 0; i-- ) {
+	  String actorName = ((Nameable)((RTOSEvent)events[i]).actor()).getName();
+	  double time = getCurrentTime();
+	  int scheduleEvent = SchedulePlotter.TASK_BLOCKED;
+	  if (i == 0) {
+	    scheduleEvent = SchedulePlotter.TASK_RUNNING;
+	  }
+//	  System.out.println("EVENT: " + actorName + ", " + 
+//                           time + ", " + scheduleEvent); 
+	  _displaySchedule(actorName, time, scheduleEvent);
+	}
+      }
+    }
+	  
     
+    /** Send a debug message to all debug listeners that have registered.
+     *  By convention, messages should not include a newline at the end.
+     *  The newline will be added by the listener, if appropriate.
+     *  @param message The message.
+     */
+    protected final void _displaySchedule(String actorName, 
+					  double time, int scheduleEvent) {
+        synchronized(this) {
+	    if (_scheduleDisplay != null) {
+                Iterator listeners = _scheduleListeners.iterator();
+                while (listeners.hasNext()) {
+                    ((ScheduleListener)listeners.next()).
+		       event(actorName, time, scheduleEvent);
+                }  
+            }
+        }
+    }
+  
+
+    ////////////////////////////////////////////////////////////////////////
+    ////                    private variables                           ////
+
+    /** @serial The list of schedule listeners registered with this object. */
+        protected LinkedList _scheduleListeners = null;
 
     ////////////////////////////////////////////////////////////////////////
     ////                    private variables                           ////
@@ -717,4 +812,16 @@ public class RTOSDirector extends Director {
 
     // The real start time in milliseconds count.
     private long _realStartTime;
+
+    // The real start time in milliseconds count.
+    private JFrame _scheduleDisplay = null;
 }
+
+
+
+
+
+
+
+
+

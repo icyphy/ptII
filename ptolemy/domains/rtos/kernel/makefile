@@ -53,7 +53,9 @@ JSRCS = \
 	RTOSDirector.java \
 	RTOSEvent.java \
 	RTOSEventComparator.java \
-	RTOSReceiver.java
+	RTOSReceiver.java \
+	SchedulePlotter.java \
+	ScheduleListener.java
 
 EXTRA_SRCS =	$(JSRCS)
 
