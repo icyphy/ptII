@@ -41,7 +41,7 @@ import java.awt.datatransfer.*;
 Graphics class supporting EPS export from plots.
 
 @author Edward A. Lee
-@version %W%	%G%
+@version $Id$
 */
 
 public class EPSGraphics extends Graphics {
@@ -180,7 +180,7 @@ public class EPSGraphics extends Graphics {
     }
 
     public void drawRect(int x, int y, int width, int height) {
-        Point start = _convert(x,y);
+        Point start = _convert(x, y);
         _buffer.append("newpath " + start.x + " " + start.y + " moveto\n");
         _buffer.append("0 " + (-height) + " rlineto\n");
         _buffer.append("" + width + " 0 rlineto\n");
@@ -247,7 +247,7 @@ public class EPSGraphics extends Graphics {
      *  @param height The height of the rectangle.
      */
     public void fillRect(int x, int y, int width, int height) {
-        Point start = _convert(x,y);
+        Point start = _convert(x, y);
         _fillPattern();
         _buffer.append("newpath " + start.x + " " + start.y + " moveto\n");
         _buffer.append("0 " + (-height) + " rlineto\n");
@@ -357,11 +357,11 @@ public class EPSGraphics extends Graphics {
         } else {
             // Write to clipboard instead
             // FIXME: This doesn't work with jdk 1.1.4.
-            //             if (_clipboard == null) {
-            //                 _clipboard = new Clipboard("UCB Plot");
-            //             }
-            //             StringSelection sel = new StringSelection(_buffer.toString());
-            //             _clipboard.setContents(sel, sel);
+            // if (_clipboard == null) {
+            //     _clipboard = new Clipboard("UCB Plot");
+            // }
+            // StringSelection sel = new StringSelection(_buffer.toString());
+            // _clipboard.setContents(sel, sel);
             System.out.println(_buffer);
         }
     }
@@ -382,9 +382,9 @@ public class EPSGraphics extends Graphics {
     private boolean _polygon(int xPoints[], int yPoints[], int nPoints) {
         if (nPoints < 3 || xPoints.length < nPoints
                 || yPoints.length < nPoints) return false;
-        Point start = _convert(xPoints[0],yPoints[0]);
+        Point start = _convert(xPoints[0], yPoints[0]);
         _buffer.append("newpath " + start.x + " " + start.y + " moveto\n");
-        for (int i=1; i < nPoints; i++) {
+        for (int i = 1; i < nPoints; i++) {
             Point vertex = _convert(xPoints[i], yPoints[i]);
             _buffer.append("" + vertex.x + " " + vertex.y + " lineto\n");
         }
