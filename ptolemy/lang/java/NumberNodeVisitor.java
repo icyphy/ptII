@@ -1,6 +1,6 @@
 /* 
-Number the nodes uniquely, numbering ancestors before their children,
-and numbering children from left to right.
+Number the nodes in the AST uniquely, numbering ancestors before their 
+children, and numbering children from left to right.
 
 Copyright (c) 1998-2000 The Regents of the University of California.
 All rights reserved.
@@ -41,26 +41,27 @@ import java.util.HashSet;
 
 import ptolemy.lang.*;
 
-/** A visitor that numbers declarations uniquely.
+/** A visitor that numbers nodes in the AST uniquely, numbering ancestors before 
+ *  their children, and numbering children from left to right.
  * 
- *  @author ctsay@eecs.berkeley.edu
+ *  @author Jeff Tsay
  */
 public class NumberNodeVisitor extends JavaVisitor {
     public NumberNodeVisitor() {
         this(new HashSet());
     }
 
-    public NumberNodeVisitor(HashSet declSet) {
+    public NumberNodeVisitor(HashSet nodeSet) {
         super(TM_SELF_FIRST);
         
-        _declSet = declSet;
+        _nodeSet = nodeSet;
     }
 
     /** The default visit method. */
     protected Object _defaultVisit(TreeNode node, LinkedList args) {
         if (!node.hasProperty(PropertyMap.NUMBER_KEY)) {
-           node.setProperty(PropertyMap.NUMBER_KEY, new Integer(_declSet.size()));        
-           _declSet.add(node);
+           node.setProperty(PropertyMap.NUMBER_KEY, new Integer(_nodeSet.size()));        
+           _nodeSet.add(node);
         }
         
         return null;
@@ -68,7 +69,7 @@ public class NumberNodeVisitor extends JavaVisitor {
     
     /** Given a list of TreeNode's, number all TreeNode's in the list uniquely,
      *  including descendents of individual TreeNode's. 
-     *  Return the Set of all declarations.
+     *  Return the Set of all nodes.
      */
     public static HashSet numberNodes(List list) {
         HashSet set = new HashSet();
@@ -84,5 +85,5 @@ public class NumberNodeVisitor extends JavaVisitor {
         return set;                
     }
              
-    protected final HashSet _declSet;
+    protected final HashSet _nodeSet;
 }

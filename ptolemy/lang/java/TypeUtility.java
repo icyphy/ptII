@@ -38,7 +38,7 @@ import java.util.LinkedList;
 import java.util.Iterator;
 import ptolemy.lang.*;
 
-public class TypeUtility {
+public class TypeUtility implements JavaStaticSemanticConstants {
 
     /** Public constructor allows inheritence of methods although this class has no
      *  instance members.
@@ -75,12 +75,12 @@ public class TypeUtility {
     }
 
     public static TypeNameNode accessedObjectType(ThisFieldAccessNode node)  {
-        return (TypeNameNode) node.getDefinedProperty("theClass");
+        return (TypeNameNode) node.getDefinedProperty(THIS_CLASS_KEY);
     }
 
     public static TypeNameNode accessedObjectType(SuperFieldAccessNode node) {    
         ClassDecl myClass = (ClassDecl) JavaDecl.getDecl(
-         (NamedNode) node.getDefinedProperty("theClass"));
+         (NamedNode) node.getDefinedProperty(THIS_CLASS_KEY));
         ClassDecl sclass = myClass.getSuperClass();
         
         return sclass.getDefType();
@@ -319,27 +319,27 @@ public class TypeUtility {
     }   
 
     public static int kind(TypeNode type) {
+    
+       switch (type.classID()) {
+       
+         // null type
+         case NullTypeNode.NULLTYPENODE_ID:     return TYPE_KIND_NULL;              
 
-       // null type
-       if (type == NullTypeNode.instance)   return TYPE_KIND_NULL;
-
-       // primitive types
-       if (type == BoolTypeNode.instance)   return TYPE_KIND_BOOL; 
-       if (type == CharTypeNode.instance)   return TYPE_KIND_CHAR; 
-       if (type == ByteTypeNode.instance)   return TYPE_KIND_BYTE; 
-       if (type == ShortTypeNode.instance)  return TYPE_KIND_SHORT; 
-       if (type == IntTypeNode.instance)    return TYPE_KIND_INT; 
-       if (type == LongTypeNode.instance)   return TYPE_KIND_LONG; 
-       if (type == FloatTypeNode.instance)  return TYPE_KIND_FLOAT; 
-       if (type == DoubleTypeNode.instance) return TYPE_KIND_DOUBLE;                  
-
-       // otherwise, not a primitive type
-       if (type instanceof TypeNameNode) {
-          return kind((TypeNameNode) type);
-       }
-
-       if (type instanceof ArrayTypeNode) {
-          return TYPE_KIND_CLASS; // arrays derive from Object     
+          // primitive types          
+         case BoolTypeNode.BOOLTYPENODE_ID:     return TYPE_KIND_BOOL;          
+         case CharTypeNode.CHARTYPENODE_ID:     return TYPE_KIND_CHAR; 
+         case ByteTypeNode.BYTETYPENODE_ID:     return TYPE_KIND_BYTE; 
+         case ShortTypeNode.SHORTTYPENODE_ID:   return TYPE_KIND_SHORT; 
+         case IntTypeNode.INTTYPENODE_ID:       return TYPE_KIND_INT; 
+         case LongTypeNode.LONGTYPENODE_ID:     return TYPE_KIND_LONG; 
+         case FloatTypeNode.FLOATTYPENODE_ID:   return TYPE_KIND_FLOAT; 
+         case DoubleTypeNode.DOUBLETYPENODE_ID: return TYPE_KIND_DOUBLE;                  
+         
+         // class or interface
+         case TypeNameNode.TYPENAMENODE_ID:     return kind((TypeNameNode) type);
+         
+         // array types (derive from Object)
+         case ArrayTypeNode.ARRAYTYPENODE_ID:   return TYPE_KIND_CLASS;
        }
 
        ApplicationUtility.error("unknown type encountered : " + type);
@@ -350,7 +350,7 @@ public class TypeUtility {
        Decl d = JavaDecl.getDecl((NamedNode) type);
 
        if (d != null) {
-          if (d.category == JavaDecl.CG_INTERFACE) {
+          if (d.category == CG_INTERFACE) {
              return TYPE_KIND_INTERFACE;
           } 
        }    
@@ -369,7 +369,7 @@ public class TypeUtility {
        return _PRIMITIVE_KIND_TO_TYPE[kind];                    
     }         
              
-    public static final TypeNode type(ExprNode expr) {
+    public static final TypeNode type(final ExprNode expr) {
        return (TypeNode) expr.accept(new TypeVisitor(), null);       
     }         
 
@@ -377,7 +377,7 @@ public class TypeUtility {
        int d1cat = decl1.category;
        int d2cat = decl2.category;
 
-       if ((d1cat != JavaDecl.CG_CLASS) || (d2cat != JavaDecl.CG_CLASS)) {
+       if ((d1cat != CG_CLASS) || (d2cat != CG_CLASS)) {
           return false;
        }
 

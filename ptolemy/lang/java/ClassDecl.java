@@ -35,7 +35,8 @@ import java.util.LinkedList;
 
 import ptolemy.lang.*;
 
-public class ClassDecl extends TypeDecl {
+public class ClassDecl extends TypeDecl 
+       implements JavaStaticSemanticConstants {
 
     public ClassDecl(String name, JavaDecl container) {
         this(name, CG_CLASS, null, 0, null, container);
@@ -43,7 +44,8 @@ public class ClassDecl extends TypeDecl {
         _defType = _invalidType(this, name);
     }
 
-    public ClassDecl(String name, int category0, TypeNameNode defType, int modifiers, TreeNode source, JavaDecl container) {
+    public ClassDecl(String name, int category0, TypeNameNode defType, 
+                     int modifiers, TreeNode source, JavaDecl container) {
         super(name, category0, defType);
         _modifiers = modifiers;
         _source = source;
@@ -145,7 +147,7 @@ public class ClassDecl extends TypeDecl {
         loadSource();
 
         // builds environments for all recently loaded classes, including this one
-        StaticResolution.buildEnvironments();
+        // StaticResolution.buildEnvironments();
 
         // If class didn't load, give it a dummy environment, etc
         if (_environ == null) {
@@ -157,7 +159,7 @@ public class ClassDecl extends TypeDecl {
 
     protected static TypeNameNode _invalidType(ClassDecl self, String name) {
         NameNode nameNode = new NameNode(AbsentTreeNode.instance, name);
-        nameNode.setProperty("decl", self);
+        nameNode.setProperty(DECL_KEY, self);
 
         return new TypeNameNode(nameNode);
     }

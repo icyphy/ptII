@@ -3,7 +3,7 @@ package ptolemy.lang.java;
 import ptolemy.lang.*;
 import java.util.LinkedList;
 
-public class TypeVisitor extends JavaVisitor {
+public class TypeVisitor extends JavaVisitor implements JavaStaticSemanticConstants {
     public TypeVisitor() {
         super(TM_CUSTOM);
     }
@@ -32,11 +32,8 @@ public class TypeVisitor extends JavaVisitor {
         return _setType(node, CharTypeNode.instance);
     }
 
-    public Object visitStringLitNode(StringLitNode node, LinkedList args) {
-        // FIXME
-        node.setProperty("type",
-         new TypeNameNode(new NameNode(AbsentTreeNode.instance, "String")));
-        return null;
+    public Object visitStringLitNode(StringLitNode node, LinkedList args) {         
+        return _setType(node, StaticResolution.STRING_TYPE);
     }
      
     public Object visitArrayInitNode(ArrayInitNode node, LinkedList args) {
@@ -48,7 +45,7 @@ public class TypeVisitor extends JavaVisitor {
     }
     
     public Object visitThisNode(ThisNode node, LinkedList args) {
-        TypeNameNode type = (TypeNameNode) node.getDefinedProperty("theClass");
+        TypeNameNode type = (TypeNameNode) node.getDefinedProperty(THIS_CLASS_KEY);
                 
         return _setType(node, type);
     }
@@ -79,9 +76,8 @@ public class TypeVisitor extends JavaVisitor {
         return _visitFieldAccessNode(node);
     }
 
-    public Object visitTypeClassAccessNode(TypeClassAccessNode node, LinkedList args) {
-        // FIXME
-        return _defaultVisit(node, args);
+    public Object visitTypeClassAccessNode(TypeClassAccessNode node, LinkedList args) {   
+        return _setType(node, StaticResolution.CLASS_TYPE);
     }
 
     public Object visitOuterThisAccessNode(OuterThisAccessNode node, LinkedList args) {
@@ -89,7 +85,8 @@ public class TypeVisitor extends JavaVisitor {
     }
 
     public Object visitOuterSuperAccessNode(OuterSuperAccessNode node, LinkedList args) {
-        ClassDecl thisDecl = (ClassDecl) node.getType().getName().getDefinedProperty("decl");           
+        ClassDecl thisDecl = (ClassDecl) node.getType().getName().
+         getDefinedProperty(DECL_KEY);           
         return _setType(node, thisDecl.getSuperClass().getDefType());
     }
 
@@ -159,9 +156,19 @@ public class TypeVisitor extends JavaVisitor {
     }
 
     public Object visitPlusNode(PlusNode node, LinkedList args) {
-        // FIXME : support string concatenations
-               
-        return _visitBinaryArithNode(node);
+        TypeNode type1 = type(node.getExpr1());
+        
+        if (TypeUtility.compareTypes(type1, StaticResolution.STRING_TYPE)) {
+           return _setType(node, StaticResolution.STRING_TYPE);
+        } 
+
+        TypeNode type2 = type(node.getExpr2());
+        
+        if (TypeUtility.compareTypes(type2, StaticResolution.STRING_TYPE)) {
+           return _setType(node, StaticResolution.STRING_TYPE);
+        } 
+                                             
+        return _setType(node, TypeUtility.arithPromoteType(type1, type2));
     }
 
     public Object visitMinusNode(MinusNode node, LinkedList args) {
@@ -352,7 +359,7 @@ public class TypeVisitor extends JavaVisitor {
 
     /** Memoize the type, and return it. */
     protected TypeNode _setType(ExprNode expr, TypeNode type) {
-        expr.setProperty("type", type);
+        expr.setProperty(TYPE_KEY, type);
         return type;            
     }
 
@@ -362,8 +369,8 @@ public class TypeVisitor extends JavaVisitor {
      *  or else an infinite recursion will occur.
      */
     public TypeNode type(ExprNode node) {
-        if (node.hasProperty("type")) {
-           return (TypeNode) node.getDefinedProperty("type"); 
+        if (node.hasProperty(TYPE_KEY)) {
+           return (TypeNode) node.getDefinedProperty(TYPE_KEY); 
         }
         return (TypeNode) node.accept(this, null); 
     }

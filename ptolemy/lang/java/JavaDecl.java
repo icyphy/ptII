@@ -96,7 +96,7 @@ import ptolemy.lang.*;
  *
  *  @author ctsay@eecs.berkeley.edu
  */
-public abstract class JavaDecl extends Decl {
+public abstract class JavaDecl extends Decl implements JavaStaticSemanticConstants {
 
   protected JavaDecl(String name, int category0) {
     super(name, category0);
@@ -247,14 +247,14 @@ public abstract class JavaDecl extends Decl {
        return getDecl((NamedNode) node);
     } 
     
-    return (JavaDecl) node.getProperty("decl");
+    return (JavaDecl) node.getProperty(DECL_KEY);
   }
 
   /** Return the Decl associated with the named node. Return null if the
    *  Decl is not found.
    */
   public static final JavaDecl getDecl(NamedNode node) {
-    return (JavaDecl) node.getName().getProperty("decl");
+    return (JavaDecl) node.getName().getProperty(DECL_KEY);
   }
 
   /** Set the Decl associated with the node. 
@@ -267,46 +267,11 @@ public abstract class JavaDecl extends Decl {
        return;
     } 
     
-    node.setProperty("decl", decl);
+    node.setProperty(DECL_KEY, decl);
   }
 
   /** Set the Decl associated with the named node. */
   public static final void setDecl(NamedNode node, JavaDecl decl) {
-      node.getName().setProperty("decl", decl);
+      node.getName().setProperty(DECL_KEY, decl);
   }
-
-  /** Type ClassDecl representing a class. */
-  public static final int CG_CLASS = 1;
-
-  /** Type ClassDecl representing an interface. */
-  public static final int CG_INTERFACE = 2;
-
-  /** Type FieldDecl */
-  public static final int CG_FIELD = 4;
-
-  /** Type MethodDecl representing a method. */
-  public static final int CG_METHOD = 8;
-
-  /** Type MethodDecl representing a constructor. */
-  public static final int CG_CONSTRUCTOR = 16;
-
-  /** Type LocalVarDecl. */
-  public static final int CG_LOCALVAR = 32;
-
-  /** Type FormalParameterDecl. */
-  public static final int CG_FORMAL = 64;
-
-  /** Type PackageDecl. */
-  public static final int CG_PACKAGE = 128;
-
-  /** Type StmtLblDecl. */
-  public static final int CG_STMTLABEL = 256;
-
-  //public static final int CG_PRIMITIVE = 512;  // Type PrimitiveDecl.
-
-  /** A constant used to search for either a class or interface. */
-  public static final int CG_USERTYPE = CG_CLASS | CG_INTERFACE;
-
-  /** A constant used to search for either a method or constructor. */
-  public static final int CG_INVOKABLE = CG_METHOD | CG_CONSTRUCTOR;
 }

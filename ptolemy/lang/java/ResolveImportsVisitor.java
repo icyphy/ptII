@@ -36,14 +36,15 @@ package ptolemy.lang.java;
 import ptolemy.lang.*;
 import java.util.LinkedList;
 
-public class ResolveImportsVisitor extends JavaVisitor {
+public class ResolveImportsVisitor extends JavaVisitor 
+       implements JavaStaticSemanticConstants {
     ResolveImportsVisitor() {
         super(TM_CUSTOM);
     }
 
     public Object visitCompileUnitNode(CompileUnitNode node, LinkedList args) {
         _compileUnit = node; 
-        _fileEnv = (Environ) node.getDefinedProperty(StaticResolution.ENVIRON_KEY); // file environment
+        _fileEnv = (Environ) node.getDefinedProperty(ENVIRON_KEY); // file environment
 
         TNLManip.traverseList(this, node, null, node.getImports());
 
@@ -59,7 +60,7 @@ public class ResolveImportsVisitor extends JavaVisitor {
          JavaDecl.CG_USERTYPE);
 
         JavaDecl old = (JavaDecl) _fileEnv.lookupProper(name.getIdent());
-        JavaDecl current = (JavaDecl) name.getProperty("decl");
+        JavaDecl current = (JavaDecl) name.getProperty(DECL_KEY);
 
         if ((old != null) && (old != current)) {
   	        if (old != current) {
@@ -69,7 +70,7 @@ public class ResolveImportsVisitor extends JavaVisitor {
   	    }
 	     
 	      // add to the import environment, which is 2 levels above the file environment
-        _fileEnv.parent().parent().add((ClassDecl) name.getDefinedProperty("decl"));
+        _fileEnv.parent().parent().add((ClassDecl) name.getDefinedProperty(DECL_KEY));
 
         return null;
     }
@@ -82,7 +83,7 @@ public class ResolveImportsVisitor extends JavaVisitor {
          StaticResolution.SYSTEM_PACKAGE.getEnviron(), null,  null, 
          JavaDecl.CG_PACKAGE);
 
-        PackageDecl decl = (PackageDecl) name.getDefinedProperty("decl");
+        PackageDecl decl = (PackageDecl) name.getDefinedProperty(DECL_KEY);
 
         StaticResolution.importOnDemand(_compileUnit, decl);
         return null;

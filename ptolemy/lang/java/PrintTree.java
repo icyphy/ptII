@@ -58,7 +58,7 @@ public class PrintTree {
     ApplicationUtility.enableTrace = debug;
 
     for (int f = 0; f < files; f++) {
-        parser p = new parser();
+        JavaParser p = new JavaParser();
 
         try {
           p.init(args[f + fileStart]);

@@ -40,7 +40,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.LinkedList;
 
-public class ResolvePackageVisitor extends ResolveVisitorBase {
+public class ResolvePackageVisitor extends ResolveVisitorBase 
+       implements JavaStaticSemanticConstants {
 
     ResolvePackageVisitor() {
         super();
@@ -48,11 +49,11 @@ public class ResolvePackageVisitor extends ResolveVisitorBase {
 
     public Object visitCompileUnitNode(CompileUnitNode node, LinkedList args) {
         //System.out.println("resolve package visitor (CUN)" + 
-        // node.getDefinedProperty(StaticResolution.IDENT_KEY));
+        // node.getDefinedProperty(IDENT_KEY));
     
-        _pkgDecl = (PackageDecl) node.getDefinedProperty("thePackage");
+        _pkgDecl = (PackageDecl) node.getDefinedProperty(PACKAGE_KEY);
 
-        Environ environ = (Environ) node.getDefinedProperty(StaticResolution.ENVIRON_KEY);
+        Environ environ = (Environ) node.getDefinedProperty(ENVIRON_KEY);
 
         _pkgEnv  = (Environ) environ.parent();
 
@@ -131,11 +132,11 @@ public class ResolvePackageVisitor extends ResolveVisitorBase {
         decl.setEnviron(env);
         
         NameNode typeName = new NameNode(AbsentTreeNode.instance, "<anon>");
-        typeName.setProperty("decl", decl);
+        typeName.setProperty(DECL_KEY, decl);
         
-        node.setProperty("type", new TypeNameNode(typeName));
+        node.setProperty(TYPE_KEY, new TypeNameNode(typeName));
         
-        node.setProperty("decl", decl);
+        node.setProperty(DECL_KEY, decl);
 
         LinkedList listArgs = new LinkedList();
         listArgs.addLast(env);                  // last environment
@@ -187,7 +188,7 @@ public class ResolvePackageVisitor extends ResolveVisitorBase {
 
            // fix category if this is an interface
            if (!isClass) {
-              ocl.category = JavaDecl.CG_INTERFACE;
+              ocl.category = CG_INTERFACE;
            }           
 
         } else {
@@ -214,7 +215,7 @@ public class ResolvePackageVisitor extends ResolveVisitorBase {
            }
 
            ClassDecl cl = new ClassDecl(className,
-            isClass ? JavaDecl.CG_CLASS : JavaDecl.CG_INTERFACE,
+            isClass ? CG_CLASS : CG_INTERFACE,
             null, node.getModifiers(), node, encDecl);
 
            if (ocl != null)  { // Redefinition in same package.
@@ -231,12 +232,12 @@ public class ResolvePackageVisitor extends ResolveVisitorBase {
         }
 
         Environ env = new Environ(encEnv);
-        node.setProperty(StaticResolution.ENVIRON_KEY, env);
+        node.setProperty(ENVIRON_KEY, env);
 
         ocl.setEnviron(env);
         encEnv.add(ocl);
 
-        node.getName().setProperty("decl", ocl);
+        node.getName().setProperty(DECL_KEY, ocl);
 
         LinkedList memberArgs = new LinkedList();
         memberArgs.addLast(env);                  // environment for this class
@@ -251,7 +252,7 @@ public class ResolvePackageVisitor extends ResolveVisitorBase {
         Environ encEnv = (Environ) args.get(0);
 
         Environ env = new Environ(encEnv);
-        node.setProperty(StaticResolution.ENVIRON_KEY, env);
+        node.setProperty(ENVIRON_KEY, env);
 
         return env;
     }
@@ -266,7 +267,7 @@ public class ResolvePackageVisitor extends ResolveVisitorBase {
 
     protected void _visitList(LinkedList nodeList, Environ env) {
         LinkedList listArgs = new LinkedList();
-        listArgs.addLast(env);                  // last environment
+        listArgs.addLast(env);                  // last environments
         listArgs.addLast(Boolean.TRUE);         // inner class = true
         listArgs.addLast(NullValue.instance);   // no enclosing decl
         TNLManip.traverseList(this, null, listArgs, nodeList);

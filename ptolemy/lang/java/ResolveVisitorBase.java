@@ -54,7 +54,8 @@ import ptolemy.lang.*;
  *
  *  @author ctsay@eecs.berkeley.edu
  */
-public abstract class ResolveVisitorBase extends JavaVisitor {
+public abstract class ResolveVisitorBase extends JavaVisitor 
+       implements JavaStaticSemanticConstants {
     public ResolveVisitorBase() {
         super(TM_CUSTOM);
     }
@@ -152,12 +153,9 @@ public abstract class ResolveVisitorBase extends JavaVisitor {
         return null;
     }
 
-    public Object visitClassDeclNode(ClassDeclNode node, LinkedList args) {
-        if (_isSkippable(node)) return null;
-
-        return _defaultVisit(node, args);
-    }
-
+    // In general, classes cannot be resolved lazily because public classes
+    // may inherit from them.
+    
     public Object visitFieldDeclNode(FieldDeclNode node, LinkedList args) {
         if (_isSkippable(node)) return null;
 
@@ -169,13 +167,13 @@ public abstract class ResolveVisitorBase extends JavaVisitor {
     }
 
     public Object visitMethodDeclNode(MethodDeclNode node, LinkedList args) {
-        if (_isSkippable(node)) return null;
+        if (_isSkippable(node)) return null;        
 
         return _defaultVisit(node, args);
     }
 
     public Object visitConstructorDeclNode(ConstructorDeclNode node, LinkedList args) {
-        if (_isSkippable(node)) return null;
+        if (_isSkippable(node)) return null;        
 
         return _defaultVisit(node, args);
     }
@@ -196,12 +194,9 @@ public abstract class ResolveVisitorBase extends JavaVisitor {
         return _defaultVisit(node, args);
     }
 
-    public Object visitInterfaceDeclNode(InterfaceDeclNode node, LinkedList args) {
-        if (_isSkippable(node)) return null;
-
-        return _defaultVisit(node, args);
-    }
-
+    // In general, interfaces may not be resolved lazily because public
+    // classes or interfaces might implement them.
+   
     public Object visitParameterNode(ParameterNode node, LinkedList args) {
         return _defaultVisit(node, args);
     }
@@ -230,10 +225,6 @@ public abstract class ResolveVisitorBase extends JavaVisitor {
         return null;
     }
 
-    public Object visitArrayAccessNode(ArrayAccessNode node, LinkedList args) {
-        return _defaultVisit(node, args);
-    }
-
     public Object visitObjectNode(ObjectNode node, LinkedList args) {
         return null;
     }
@@ -248,8 +239,8 @@ public abstract class ResolveVisitorBase extends JavaVisitor {
 
     /** Initialize the lazy flag. */
     protected boolean _initLazyFlag(CompileUnitNode node) {
-        if (node.hasProperty("fullResolve")) {
-           _lazy = !(((Boolean) node.getDefinedProperty("fullResolve")).
+        if (node.hasProperty(FULL_RESOLVE_KEY)) {
+           _lazy = !(((Boolean) node.getDefinedProperty(FULL_RESOLVE_KEY)).
                      booleanValue());
         } else {
            _lazy = false;

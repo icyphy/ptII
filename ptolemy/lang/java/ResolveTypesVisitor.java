@@ -35,7 +35,8 @@ package ptolemy.lang.java;
 import ptolemy.lang.*;
 import java.util.LinkedList;
 
-public class ResolveTypesVisitor extends ResolveVisitorBase {
+public class ResolveTypesVisitor extends ResolveVisitorBase 
+       implements JavaStaticSemanticConstants {
 
     /** Create a ResolveTypesVisitor. */
     ResolveTypesVisitor() {
@@ -50,7 +51,7 @@ public class ResolveTypesVisitor extends ResolveVisitorBase {
         NameNode name = node.getName();
 
         NameNode newName = (NameNode) StaticResolution.resolveAName(
-         name, env, null, _currentPackage, JavaDecl.CG_USERTYPE);
+         name, env, null, _currentPackage, CG_USERTYPE);
 
         // this is not necessary, but by convention ...
         node.setName(newName);
@@ -63,10 +64,10 @@ public class ResolveTypesVisitor extends ResolveVisitorBase {
 
         _initLazyFlag(node);
 
-        _currentPackage = (PackageDecl) node.getDefinedProperty("thePackage");
+        _currentPackage = (PackageDecl) node.getDefinedProperty(PACKAGE_KEY);
 
         LinkedList childArgs = new LinkedList();
-        childArgs.add(node.getDefinedProperty(StaticResolution.ENVIRON_KEY)); // file environment
+        childArgs.add(node.getDefinedProperty(ENVIRON_KEY)); // file environment
 
         TNLManip.traverseList(this, node, childArgs, node.getDefTypes());
 
@@ -90,14 +91,14 @@ public class ResolveTypesVisitor extends ResolveVisitorBase {
     public Object visitMethodDeclNode(MethodDeclNode node, LinkedList args) {
 
         if (_lazy) {
-           if ((node.getModifiers() & Modifier.PRIVATE_MOD) != 0) {
+           if ((node.getModifiers() & PRIVATE_MOD) != 0) {
               // don't resolve anything if it's a private method
               return null;
            }
 
            // get the environment of this node
            LinkedList childArgs = new LinkedList();
-           childArgs.addLast(node.getDefinedProperty(StaticResolution.ENVIRON_KEY));
+           childArgs.addLast(node.getDefinedProperty(ENVIRON_KEY));
 
            // resolve only the return type, parameters and exceptions thrown
            node.getReturnType().accept(this, childArgs);
@@ -110,13 +111,13 @@ public class ResolveTypesVisitor extends ResolveVisitorBase {
 
     public Object visitConstructorDeclNode(ConstructorDeclNode node, LinkedList args) {
         if (_lazy) {
-           if ((node.getModifiers() & Modifier.PRIVATE_MOD) != 0) {
+           if ((node.getModifiers() & PRIVATE_MOD) != 0) {
               // don't resolve anything if it's a private constructor
               return null;
            }
 
            // the environment of this node is the argument for the children
-           LinkedList childArgs = TNLManip.cons(node.getDefinedProperty(StaticResolution.ENVIRON_KEY));
+           LinkedList childArgs = TNLManip.cons(node.getDefinedProperty(ENVIRON_KEY));
            
            // resolve only the parameters and exceptions thrown
            TNLManip.traverseList(this, node, childArgs, node.getParams());
@@ -153,7 +154,7 @@ public class ResolveTypesVisitor extends ResolveVisitorBase {
     protected Object _visitNodeWithEnviron(TreeNode node) {
 
         // environment for this class is argument for children
-        LinkedList childArgs = TNLManip.cons(node.getDefinedProperty(StaticResolution.ENVIRON_KEY));
+        LinkedList childArgs = TNLManip.cons(node.getDefinedProperty(ENVIRON_KEY));
         
         TNLManip.traverseList(this, node, childArgs, node.children());
 
@@ -168,7 +169,7 @@ public class ResolveTypesVisitor extends ResolveVisitorBase {
         }
 
         // environment for this class is argument for children
-        LinkedList childArgs = TNLManip.cons(node.getDefinedProperty(StaticResolution.ENVIRON_KEY));
+        LinkedList childArgs = TNLManip.cons(node.getDefinedProperty(ENVIRON_KEY));
         
         TNLManip.traverseList(this, node, childArgs, node.getInterfaces());
         TNLManip.traverseList(this, node, childArgs, node.getMembers());

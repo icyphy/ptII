@@ -183,7 +183,7 @@ ObjectNode C ExprNode i NamedNode i k 0 NameNode name k
 ObjectFieldAccessNode C FieldAccessNode i NamedNode i k 0 TreeNode object NameNode name k
 SuperFieldAccessNode C FieldAccessNode i NamedNode i k 0 NameNode name k
 TypeFieldAccessNode C FieldAccessNode i NamedNode i k 0 TypeNameNode fType NameNode name k
-ThisFieldAccessNode C FieldAccessNode i NamedNode i k 0 {p}TypeNameNode theClass NameNode name k
+ThisFieldAccessNode C FieldAccessNode i NamedNode i k 0 NameNode name k
 TypeClassAccessNode C ExprNode k 0 TypeNode fType k
 OuterThisAccessNode C OuterClassAccessNode c 1 TypeNameNode type c
 OuterSuperAccessNode C OuterClassAccessNode c 1 TypeNameNode type c

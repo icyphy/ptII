@@ -42,7 +42,6 @@ public class TNLManip {
 
     public static final LinkedList traverseList(IVisitor v, TreeNode parent,
      LinkedList args, List childList) {
-       boolean anyNonNullRetval = false;
        Object retval;
        LinkedList retList = new LinkedList();
 

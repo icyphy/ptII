@@ -163,8 +163,7 @@ public class GenerateVisitor {
        endHeader = ((_lastLine == null) || _lastLine.equals(endTag));
 
        if (!endHeader) {
-          sb.append(_lastLine);
-          sb.append('\n');
+          sb.append(_lastLine + "\n");
        }
     } while (!endHeader);
 
@@ -229,16 +228,35 @@ public class GenerateVisitor {
 
     sb.append(" {\n");
 
-    String idString = null;
     if (concreteClass) { 
        // add a static integer representing the class id
-       idString = typeName.toUpperCase() + "_ID";
+       String idString = typeName.toUpperCase() + "_ID";
     
        methodList.add(new ClassField("int", idString, "public static final", 
         Integer.toString(_classCount)));
-       
+        
+       // add a method to return the class id
+       methodList.add(new MethodSignature("public final", "int", "classID", 
+        new LinkedList(), new LinkedList(), "return " + idString + ";"));  
+              
        _classCount++;
     } 
+
+    if (isSingleton) {
+    
+       // add the instance of the singleton
+       ClassField cf  = new ClassField(typeName, "instance",
+        "public static final", "new " + typeName + "()");
+       methodList.addLast(cf);
+
+       // add the constructor of the singleton
+       MethodSignature ms = new MethodSignature(typeName);
+       methodList.addLast(ms);
+       
+       // add a isSingleton() method
+       methodList.add(new MethodSignature("public final", "boolean", "isSingleton",
+        new LinkedList(), new LinkedList(), "return true;"));
+    }
 
     // do methods first
     Iterator methodItr = methodList.listIterator();
@@ -247,8 +265,7 @@ public class GenerateVisitor {
       Object o = methodItr.next();
 
       if (o instanceof MethodSignature) {
-         sb.append(o.toString());
-         sb.append('\n');
+         sb.append(o.toString() + "\n");
       }
     }
 
@@ -259,18 +276,10 @@ public class GenerateVisitor {
       Object o = methodItr.next();
 
       if (o instanceof ClassField) {
-         sb.append(o.toString());
-         sb.append('\n');
+         sb.append(o.toString() + "\n");
       }
     }
           
-    if (concreteClass) {
-       // set the class id number in a static initializer
-       sb.append("\n    static {\n        classID = ");
-       sb.append(idString);     
-       sb.append(";\n    }\n");       
-    }
-
     sb.append("}\n");
 
     fw.write(sb.toString());
@@ -340,17 +349,6 @@ public class GenerateVisitor {
          LinkedList methodList = new LinkedList();
          LinkedList implList   = new LinkedList();
 
-         if (isSingleton) {
-            ClassField cf  = new ClassField(className, "instance",
-             "public static final", "new " + className + "()");
-
-            methodList.addLast(cf);
-
-            MethodSignature ms = new MethodSignature(className);
-
-            methodList.addLast(ms);
-         }
-
          while (strTokenizer.hasMoreTokens()) {
            marker = strTokenizer.nextToken();
            char markChar = marker.charAt(0);
@@ -412,14 +410,21 @@ public class GenerateVisitor {
   public static class MethodSignature {
     public MethodSignature() {}
 
+    public MethodSignature(String modifiers, String returnType, String name, 
+                           LinkedList paramTypes, LinkedList paramNames, 
+                           String methodBody) {
+      _modifiers = modifiers;
+      _returnType = returnType;
+      _name       = name;      
+      _paramTypes = paramTypes;
+      _paramNames = paramNames;
+      _methodBody = methodBody;    
+    }
+
     /** a singleton constructor */
     public MethodSignature(String className) {
-      _defConstruct = false;
-      _construct = true;
-      _isSingleton = true;
-      _isInterface = false;
+      _modifiers = "private";
       _name = className;
-      _returnType = "";
     }
 
     /** a constructor or method */
@@ -429,10 +434,10 @@ public class GenerateVisitor {
 
       _isInterface = isInterface;
 
-      ApplicationUtility.trace("method sig constructor begin");
-
       _defConstruct = (sigType == 'k');
       _construct = (sigType == 'c') || _defConstruct;
+
+      _modifiers = "public";
 
       if (_construct) { // constructor
          _name = className;
@@ -442,8 +447,10 @@ public class GenerateVisitor {
 
       } else if (sigType == 'm') { // method
          _superParams = 0;
-
-         _returnType = strToken.nextToken();
+          
+         if (!isInterface) _modifiers += " final";
+         
+         _returnType = strToken.nextToken() + " ";
 
          _name = strToken.nextToken();
       } else {
@@ -452,8 +459,6 @@ public class GenerateVisitor {
       }
 
       String s = strToken.nextToken();
-
-      ApplicationUtility.trace("first s : " + s);
 
       while (!(s.equals("c") || s.equals("m") || s.equals("k"))) {
          if (s.charAt(0) == '{') {
@@ -505,14 +510,80 @@ public class GenerateVisitor {
          }
 
          s = strToken.nextToken();
-
-         ApplicationUtility.trace("next s : " + s);
       }
+    }
 
-      ApplicationUtility.trace("method sig constructor end");
+    /** A getter or a setter method for a child in the list. The childIndex parameter
+     *  is necessary to differentiate ithis constructor from the following constructor.
+     */
+    public MethodSignature(String returnType, String name, int childIndex, boolean setter) {
+      _modifiers = "public final";
+
+      Character firstLetter = new Character(Character.toUpperCase(name.charAt(0)));
+
+      String partName = firstLetter.toString() + name.substring(1);
+
+      if (setter) {
+        _returnType = "void";
+        _name = "set" + partName;
+
+        _paramTypes.addLast(returnType);
+        _paramNames.addLast(name);
+
+        _methodBody = "_childList.set(CHILD_INDEX_" + name.toUpperCase() + ", " + name + ");";
+
+      } else {
+        _returnType = returnType;
+        _name = "get" + partName;
+
+
+        _methodBody = "return (" + _returnType + ") _childList.get(CHILD_INDEX_" + 
+                      name.toUpperCase() + ");";
+      }
+    }
+
+    /** A getter or a setter method for data not in the list. */
+    public MethodSignature(String returnType, String name, boolean setter) {
+      _modifiers = "public final";
+    
+      Character firstLetter = new Character(Character.toUpperCase(name.charAt(0)));
+
+      String partName = firstLetter.toString() + name.substring(1);
+
+      if (setter) {
+         _returnType = "void";
+         _name = "set" + partName;
+
+        _paramTypes.addLast(returnType);
+        _paramNames.addLast(name);
+
+        _methodBody = "_" + name + " = " + name + ";";
+      } else {
+        _returnType = returnType;
+        _name = "get" + partName;
+
+        _methodBody = "return _" + name + ";";
+      }
+    }
+
+    /** A hasX() method that returns true. */
+    public MethodSignature(String name, int dummy) {
+      _modifiers = "public final";
+    
+      Character firstLetter = new Character(Character.toUpperCase(name.charAt(0)));
+
+      String partName = firstLetter.toString() + name.substring(1);
+
+      _name = "has" + partName;
+      _returnType = "boolean";
+      _methodBody = "return true;";
     }
 
     public String methodBody() {
+    
+      if (_methodBody != null) {
+         return ident + ident + _methodBody;
+      }
 
       if (_construct) {
 
@@ -522,8 +593,7 @@ public class GenerateVisitor {
 
            Iterator argsItr = _superArgs.listIterator();
 
-           sb.append(ident);
-           sb.append(ident);
+           sb.append(ident + ident);
            sb.append("super(");
 
            for (int i = 0; i < _superParams; i++) {
@@ -558,26 +628,17 @@ public class GenerateVisitor {
                  switch (placement) {
 
                  case 'l':
-                 sb.append("_childList.addLast(");
-                 sb.append(nameStr);
-                 sb.append(");");
+                 sb.append("_childList.addLast(" + nameStr + ");");
                  break;
 
                  case 'm':
                  case 'h':
-                 sb.append('_');
-                 sb.append(nameStr);
-                 sb.append(" = ");
-                 sb.append(nameStr);
-                 sb.append(';');
+                 sb.append("_" + nameStr + " = " + nameStr + ";");
                  break;
 
                  case 'p':
-                 sb.append("setProperty(\"");
-                 sb.append(nameStr);
-                 sb.append("\", ");
-                 sb.append(_wrapPrimitive(typeStr, nameStr));
-                 sb.append(");");
+                 sb.append("setProperty(" + nameStr + ", " + 
+                  _wrapPrimitive(typeStr, nameStr) + ");");
                  break;
 
                  case 'n':
@@ -598,10 +659,6 @@ public class GenerateVisitor {
         }
         return sb.toString();
       } // if _construct
-
-      if (_methodBody != null) {
-         return ident + ident + _methodBody;
-      }
 
       if (_returnType.equals("void") || _returnType.equals("")) {
          return "";
@@ -637,16 +694,13 @@ public class GenerateVisitor {
 
     public String toString() {
       StringBuffer sb = new StringBuffer(ident);
+      
+      if (!_modifiers.equals("")) {                  
+         sb.append(_modifiers + " ");
+      }
 
-      sb.append(_isSingleton ? "private " : "public ");
-
-      if (!_construct) { // if !constructor
-
-         if (!_isInterface) {
-            sb.append("final ");
-         }
-         sb.append(_returnType);
-         sb.append(" ");
+      if (!_returnType.equals("")) {
+         sb.append(_returnType + " ");
       }
 
       sb.append(_name);
@@ -678,75 +732,10 @@ public class GenerateVisitor {
       if (_isInterface) {
          sb.append(";");
       } else {
-         sb.append(" {\n");
-         sb.append(methodBody());
-         sb.append('\n');
-         sb.append(ident);
-         sb.append("}\n");
+         sb.append(" {\n" + methodBody() + "\n" + ident + "}\n");
       }
 
       return sb.toString();
-    }
-
-    /** A getter or a setter method for a child in the list. The childIndex parameter
-     *  is necessary to differentiate ithis constructor from the following constructor.
-     */
-    public MethodSignature(String returnType, String name, int childIndex, boolean setter) {
-
-      Character firstLetter = new Character(Character.toUpperCase(name.charAt(0)));
-
-      String partName = firstLetter.toString() + name.substring(1);
-
-      if (setter) {
-        _returnType = "void";
-        _name = "set" + partName;
-
-        _paramTypes.addLast(returnType);
-        _paramNames.addLast(name);
-
-        _methodBody = "_childList.set(CHILD_INDEX_" + name.toUpperCase() + ", " + name + ");";
-
-      } else {
-        _returnType = returnType;
-        _name = "get" + partName;
-
-
-        _methodBody = "return (" + _returnType + ") _childList.get(CHILD_INDEX_" + 
-                      name.toUpperCase() + ");";
-      }
-    }
-
-    /** A getter or a setter method for data not in the list. */
-    public MethodSignature(String returnType, String name, boolean setter) {
-      Character firstLetter = new Character(Character.toUpperCase(name.charAt(0)));
-
-      String partName = firstLetter.toString() + name.substring(1);
-
-      if (setter) {
-         _returnType = "void";
-         _name = "set" + partName;
-
-        _paramTypes.addLast(returnType);
-        _paramNames.addLast(name);
-
-        _methodBody = "_" + name + " = " + name + ";";
-      } else {
-        _returnType = returnType;
-        _name = "get" + partName;
-
-        _methodBody = "return _" + name + ";";
-      }
-    }
-
-    // a hasX() method that returns true
-    public MethodSignature(String name, int dummy) {
-      Character firstLetter = new Character(Character.toUpperCase(name.charAt(0)));
-
-      String partName = firstLetter.toString() + name.substring(1);
-
-      _name = "has" + partName;
-      _returnType = "boolean";
-      _methodBody = "return true;";
     }
 
     public LinkedList accessors() {
@@ -846,7 +835,8 @@ public class GenerateVisitor {
       }
     }
 
-    protected String _returnType;
+    protected String _modifiers = "public ";
+    protected String _returnType = "";
     protected String _name;
 
     protected LinkedList _paramTypes = new LinkedList();
@@ -858,7 +848,6 @@ public class GenerateVisitor {
 
     protected String _methodBody = null;
 
-    protected boolean _isSingleton = false;
     protected boolean _construct = false;
     protected boolean _isInterface = false;
     protected boolean _defConstruct = false;
@@ -891,8 +880,7 @@ public class GenerateVisitor {
       sb.append(_name);
 
       if (_init != null) {
-         sb.append(" = ");
-         sb.append(_init);
+         sb.append(" = " + _init);
       }
 
       sb.append(';');

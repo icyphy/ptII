@@ -40,7 +40,7 @@ import java.util.LinkedList;
 import java.util.Iterator;
 
 
-public class StaticResolution {
+public class StaticResolution implements JavaStaticSemanticConstants {
 
   /** Returns a String representation of node, with qualifiers separated by periods,
    *  if node is a NameNode. If node is AbsentTreeNode.instance, return "absent name".
@@ -128,7 +128,7 @@ public class StaticResolution {
     }
 
     JavaDecl d = (JavaDecl) possibles.head();
-    name.setProperty("decl", d);
+    name.setProperty(DECL_KEY, d);
 
     ApplicationUtility.trace("findPossibles for " + nameString(name) + " ok");
 
@@ -141,7 +141,7 @@ public class StaticResolution {
 
     ApplicationUtility.trace("resolveAName : " + nameString(name));
 
-    if (name.hasProperty("decl")) {
+    if (name.hasProperty(DECL_KEY)) {
        ApplicationUtility.trace("decl already defined");
        return name;
     }
@@ -153,7 +153,7 @@ public class StaticResolution {
        throw new RuntimeException("ambiguous reference to " + name.getIdent());
     }
 
-    JavaDecl d = (JavaDecl) name.getDefinedProperty("decl");
+    JavaDecl d = (JavaDecl) name.getDefinedProperty(DECL_KEY);
 
     switch (d.category) {
 
@@ -195,8 +195,11 @@ public class StaticResolution {
       if (qualifier == AbsentTreeNode.instance) {
          if ((md.getModifiers() & Modifier.STATIC_MOD) != 0) {
             res = new TypeFieldAccessNode(currentClass, name);
+            // FIXME should currentClass be a property?
          } else {
-            res = new ThisFieldAccessNode(currentClass, name);
+            res = new ThisFieldAccessNode(name);
+            res.setProperty(THIS_CLASS_KEY, currentClass);
+            // FIXME what's wrong with a normal constructor
          }
       } else if ((JavaDecl.getDecl(qualifier).category & JavaDecl.CG_USERTYPE) != 0) {      
          res = new TypeFieldAccessNode(
@@ -286,7 +289,7 @@ public class StaticResolution {
      importedPackage.toString());
      
     LinkedList importedPackages =
-     (LinkedList) node.getDefinedProperty("importedPackages");
+     (LinkedList) node.getDefinedProperty(IMPORTED_PACKAGES_KEY);
 
     // ignore duplicate imports
     if (importedPackages.contains(importedPackage)) {
@@ -326,7 +329,7 @@ public class StaticResolution {
     resolveAName(name, SYSTEM_PACKAGE.getEnviron(), null, null,
      JavaDecl.CG_PACKAGE);
 
-    importOnDemand(node, (PackageDecl) name.getDefinedProperty("decl"));
+    importOnDemand(node, (PackageDecl) name.getDefinedProperty(DECL_KEY));
   }
 
   public static final TreeNode makeNameNode(String[] qualName) {
@@ -361,7 +364,7 @@ public class StaticResolution {
 
   public static CompileUnitNode parse(File file) {
 
-    parser p = new parser();
+    JavaParser p = new JavaParser();
 
     try {
       p.init(file.toString());
@@ -450,15 +453,15 @@ public class StaticResolution {
     }
 
     loadedAST.setProperty(IDENT_KEY, name);
-    loadedAST.setProperty("fullResolve", new Boolean(primary));
-    //loadedAST.setProperty("fullResolve", new Boolean(true));
+    loadedAST.setProperty(FULL_RESOLVE_KEY, new Boolean(primary));
+    //loadedAST.setProperty(FULL_RESOLVE_KEY, new Boolean(true));
 
     // run package resolution here for now
     loadedAST.accept(new PackageResolutionVisitor(), null);    
     loadedAST.accept(new ResolveClassVisitor(), null);
     loadedAST.accept(new ResolveInheritanceVisitor(), null);
 
- 	 allFiles.addLast(loadedAST);
+    allFiles.addLast(loadedAST);
 
     recentFiles.addLast(loadedAST);
     
@@ -498,12 +501,12 @@ public class StaticResolution {
     }
   }
 
-  protected static final void _importPackage(Environ env, NameNode name) {
+  public static final void importPackage(Environ env, NameNode name) {
 
     resolveAName(name, SYSTEM_PACKAGE.getEnviron(), null, null,
      JavaDecl.CG_PACKAGE);
 
-    PackageDecl decl = (PackageDecl) name.getDefinedProperty("decl");
+    PackageDecl decl = (PackageDecl) name.getDefinedProperty(DECL_KEY);
 
     Environ packageEnv = decl.getEnviron();
 
@@ -517,7 +520,7 @@ public class StaticResolution {
     }
   }
 
-  protected static final ClassDecl _requireClass(Environ env, String name) {
+  public static final ClassDecl _requireClass(Environ env, String name) {
     Decl decl = env.lookup(name);
 
     if (decl == null) {
@@ -543,7 +546,11 @@ public class StaticResolution {
   public static final ClassDecl OBJECT_DECL;
   public static final ClassDecl STRING_DECL;
   public static final ClassDecl CLASS_DECL;
- 
+  
+  public static final TypeNameNode OBJECT_TYPE;
+  public static final TypeNameNode STRING_TYPE;
+  public static final TypeNameNode CLASS_TYPE;
+     
   public static final LinkedList allFiles = new LinkedList();
   public static final LinkedList recentFiles = new LinkedList();
   public static final LinkedList unresolvedFiles = new LinkedList();
@@ -551,12 +558,6 @@ public class StaticResolution {
   public static final LinkedList lazilyResolvedFiles = new LinkedList();
   public static final LinkedList fullyResolvedFiles = new LinkedList();
 
-  //public static CompileUnitNode loadedAST = null;
-
-  // keys for property map
-  public static final Integer IDENT_KEY = new Integer(0);
-
-  public static final Integer ENVIRON_KEY = new Integer(2);
     
   static {
     SYSTEM_PACKAGE  = new PackageDecl("", null);
@@ -565,13 +566,18 @@ public class StaticResolution {
 
     Environ env = new Environ();
 
-    _importPackage(env,
+    importPackage(env,
      new NameNode(new NameNode(AbsentTreeNode.instance, "java"), "lang"));
 
     OBJECT_DECL = _requireClass(env, "Object");
-    STRING_DECL = _requireClass(env, "String");    
-    CLASS_DECL  = _requireClass(env, "Class");
+    OBJECT_TYPE = OBJECT_DECL.getDefType();
     
+    STRING_DECL = _requireClass(env, "String");    
+    STRING_TYPE = STRING_DECL.getDefType();
+    
+    CLASS_DECL  = _requireClass(env, "Class");
+    CLASS_TYPE  = CLASS_DECL.getDefType();
+               
     //buildEnvironments();
   }
 }

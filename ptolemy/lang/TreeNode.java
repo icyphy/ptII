@@ -34,11 +34,14 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.lang;
 
 import java.util.LinkedList;
-import java.util.ListIterator;
+import java.util.Iterator;
 import java.lang.reflect.Method;
 import java.lang.reflect.InvocationTargetException;
 
 public abstract class TreeNode extends PropertyMap {
+
+    /** A class ID number, which is unique for each sub-type. */    
+    public abstract int classID();
 
     /** Re-override equals() from Decl so that equality is defined as being the
      *  same object. This is necessary to ensure that a Decl named z for x.y.z
@@ -50,77 +53,77 @@ public abstract class TreeNode extends PropertyMap {
 
     public String toString(String indent) {
 
-      StringBuffer sb = new StringBuffer();
+        StringBuffer sb = new StringBuffer();
 
-      Class c = getClass();
-      String className = _unqualifiedNameString(c.getName());
+        Class c = getClass();
+        String className = _unqualifiedNameString(c.getName());
 
-      sb.append(className);
+        sb.append(className);
       
-      // If property "n" is defined, print the number.
-      if (hasProperty(NUMBER_KEY)) {
-         sb.append(" (" + getDefinedProperty(NUMBER_KEY) + ")");
-      }
+        // If property "n" is defined, print the number.
+        if (hasProperty(NUMBER_KEY)) {
+           sb.append(" (" + getDefinedProperty(NUMBER_KEY) + ")");
+        }
            
-      Method[] methodArr = c.getMethods();
+        Method[] methodArr = c.getMethods();
           
-      String nextIndent = indent + " ";        
+        String nextIndent = indent + " ";        
       
-      int matchingMethods = 0;
+        int matchingMethods = 0;
 
-      for (int i = 0; i < methodArr.length; i++) {
-          Method method = methodArr[i];
+        for (int i = 0; i < methodArr.length; i++) {
+            Method method = methodArr[i];
 
-          String methodName = method.getName();
+            String methodName = method.getName();
           
-          if (methodName.startsWith("get") &&
-              (method.getParameterTypes().length == 0) &&
-              !methodName.equals("getClass")) {
+            if (methodName.startsWith("get") &&
+                (method.getParameterTypes().length == 0) &&
+                !methodName.equals("getClass")) {
               
-             matchingMethods++; 
-             if (matchingMethods == 1) {
-                sb.append('\n'); 
-             } 
+               matchingMethods++; 
+               if (matchingMethods == 1) {
+                  sb.append('\n'); 
+               } 
               
-             String methodLabel = methodName.substring(3);
+               String methodLabel = methodName.substring(3);
           
-             String totalIndent = nextIndent + _makeSpaceString(methodLabel.length()) + "  ";
+               String totalIndent = nextIndent + _makeSpaceString(methodLabel.length()) + "  ";
                        
-             sb.append(nextIndent);             
-             sb.append(methodLabel);
-             sb.append(": ");
+               sb.append(nextIndent);             
+               sb.append(methodLabel);
+               sb.append(": ");
 
-             Object retval = null;
-             try {
-                retval = method.invoke(this, null);
-             } catch (Exception e) {
-                throw new RuntimeException("Error invoking method " + methodName);
-             }
+               Object retval = null;
+               try {
+                  retval = method.invoke(this, null);
+               } catch (Exception e) {
+                  throw new RuntimeException("Error invoking method " + methodName);
+               }
 
-             if (retval instanceof TreeNode) {
-                TreeNode node = (TreeNode) retval;
-                sb.append(node.toString(totalIndent));
-             } else if (retval instanceof LinkedList) {
-                sb.append(TNLManip.toString((LinkedList) retval, nextIndent));
-             } else {
-                sb.append(retval.toString());
-                sb.append('\n');
-             }
+               if (retval instanceof TreeNode) {
+                  TreeNode node = (TreeNode) retval;
+                  sb.append(node.toString(totalIndent));
+               } else if (retval instanceof LinkedList) {
+                  sb.append(TNLManip.toString((LinkedList) retval, nextIndent));
+               } else {
+                  sb.append(retval.toString());
+                  sb.append('\n');
+               }
              
-          } // if (methodName.startsWith("get") ...
-      } // for 
+            } // if (methodName.startsWith("get") ...
+        } // for 
                       
-      if (matchingMethods < 1) {
-         sb.append(" (leaf)"); // Node has no children
-      } else {
-         sb.append(indent);
-         sb.append("END ");
-         sb.append(className);           
-      }      
+        if (matchingMethods < 1) {
+           sb.append(" (leaf)"); // Node has no children
+        } else {
+           sb.append(indent);
+           sb.append("END ");
+           sb.append(className);           
+        }      
       
-      sb.append('\n');
+        sb.append('\n');
 
-      return sb.toString();
+        return sb.toString();
     }
 
     public String toString() {
@@ -137,45 +140,44 @@ public abstract class TreeNode extends PropertyMap {
 
       switch (v.traversalMethod()) {
 
-      case IVisitor.TM_CHILDREN_FIRST:
-      {
+        case IVisitor.TM_CHILDREN_FIRST:
+        {
         // Traverse the children first
         traverseChildren(v, visitorArgs);
         retval = acceptHere(v, visitorArgs);
 
         // remove the children return values to prevent exponential usage
         // of memory
-        removeProperty("childReturnValues");
-      }
-      break;
+        removeProperty(CHILD_RETURN_VALUES_KEY);
+        }
+        break;
 
-      case IVisitor.TM_SELF_FIRST:
-      {
+        case IVisitor.TM_SELF_FIRST:
+        {
         // Visit myself first
         retval = acceptHere(v, visitorArgs);
         traverseChildren(v, visitorArgs);
-      }
-      break;
+        }
+        break;
 
-      case IVisitor.TM_CUSTOM:
-      {
-         // Let visitor do custom traversal
-         retval = acceptHere(v, visitorArgs);
-      }
-      break;
+        case IVisitor.TM_CUSTOM:
+        {
+        // Let visitor do custom traversal
+        retval = acceptHere(v, visitorArgs);
+        }
+        break;
 
-      default:
-      {
-         throw new RuntimeException("Unknown traversal method for visitor");
-      }
+        default:
+        throw new RuntimeException("Unknown traversal method for visitor");
       } // end switch
+      
       return retval;
     }
 
     public void traverseChildren(IVisitor v, LinkedList args) {
         LinkedList retList = TNLManip.traverseList(v, this, args, _childList);
 
-        setProperty("childReturnValues", retList);
+        setProperty(CHILD_RETURN_VALUES_KEY, retList);
     }
 
     public Object getChild(int index) {
@@ -192,8 +194,7 @@ public abstract class TreeNode extends PropertyMap {
         _childList = childList;
     }
 
-    protected Object acceptHere(IVisitor v, LinkedList visitArgs) {
-      
+    protected Object acceptHere(IVisitor v, LinkedList visitArgs) {      
         if (_myClass == null) {
            _myClass = getClass();
 
@@ -231,47 +232,48 @@ public abstract class TreeNode extends PropertyMap {
     }
 
     public Object childReturnValueAt(int index) {
-        LinkedList retList = (LinkedList) getDefinedProperty("childReturnValues");
+        LinkedList retList = (LinkedList) getDefinedProperty(CHILD_RETURN_VALUES_KEY);
         return retList.get(index);
     }
 
     public Object childReturnValueFor(Object child) {
-      ListIterator itr = _childList.listIterator();
-      int index = 0;
+        Iterator itr = _childList.iterator();
+        int index = 0;
 
-      while (itr.hasNext()) {
-        if (child == itr.next()) {
-           return childReturnValueAt(index);
+        while (itr.hasNext()) {
+          if (child == itr.next()) {
+             return childReturnValueAt(index);
+          }
+          index++;
         }
-        index++;
-      }
-      ApplicationUtility.error("Child not found");
-      return null;
+        ApplicationUtility.error("Child not found");
+        return null;
     }
 
+    /** Return true iff this sub-class of TreeNode is a singleton, i.e. there exists only
+     *  one object of the sub-class. 
+     */
+    public boolean isSingleton() { return false; }
+
     protected static String _unqualifiedNameString(String s) {
-      return s.substring(s.lastIndexOf('.') + 1);  
+        return s.substring(s.lastIndexOf('.') + 1);  
     }
   
     // protected methods
   
     protected static String _makeSpaceString(int spaces) {
-      StringBuffer sb = new StringBuffer();
+        StringBuffer sb = new StringBuffer();
     
-      for (int i = 0; i < spaces; i++) {
-          sb.append(' ');
-      }
+        for (int i = 0; i < spaces; i++) {
+            sb.append(' ');
+        }
   
-      return sb.toString();
+        return sb.toString();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                          public variables                 ////
     
-    /** A class ID number, which is unique for each sub-type. This should be
-     *  set by the static initializer of non-abstract subclasses. */    
-    public static int classID;
-
     ///////////////////////////////////////////////////////////////////
     ////                        protected variables                ////
 

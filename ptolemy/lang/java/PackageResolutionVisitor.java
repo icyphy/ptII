@@ -3,7 +3,8 @@ package ptolemy.lang.java;
 import ptolemy.lang.*;
 import java.util.LinkedList;
 
-public class PackageResolutionVisitor extends JavaVisitor {
+public class PackageResolutionVisitor extends JavaVisitor 
+       implements JavaStaticSemanticConstants {
 
     public PackageResolutionVisitor() {
         super(TM_CUSTOM);
@@ -12,8 +13,8 @@ public class PackageResolutionVisitor extends JavaVisitor {
     public Object visitCompileUnitNode(CompileUnitNode node, LinkedList args) {
 
         // initialize importedPackages property
-        if (!node.hasProperty("importedPackages")) {
-           node.setProperty("importedPackages", new LinkedList());
+        if (!node.hasProperty(IMPORTED_PACKAGES_KEY)) {
+           node.setProperty(IMPORTED_PACKAGES_KEY, new LinkedList());
         }
 
         PackageDecl thePkgDecl;
@@ -24,11 +25,11 @@ public class PackageResolutionVisitor extends JavaVisitor {
         } else {
            NameNode name = (NameNode) StaticResolution.resolveAName(
             (NameNode) pkgDeclNode,
-            StaticResolution.SYSTEM_PACKAGE.getEnviron(), null, null, JavaDecl.CG_PACKAGE);
-           thePkgDecl = (PackageDecl) name.getProperty("decl");
+            StaticResolution.SYSTEM_PACKAGE.getEnviron(), null, null, CG_PACKAGE);
+           thePkgDecl = (PackageDecl) name.getProperty(DECL_KEY);
         }
 
-        node.setProperty("thePackage", thePkgDecl);
+        node.setProperty(PACKAGE_KEY, thePkgDecl);
 
         // build environment for this file
         Environ importOnDemandEnv = new Environ(
@@ -40,7 +41,7 @@ public class PackageResolutionVisitor extends JavaVisitor {
 
         Environ environ = new Environ(pkgEnv); // the file level environment
 
-        node.setProperty(StaticResolution.ENVIRON_KEY, environ);
+        node.setProperty(ENVIRON_KEY, environ);
 
         StaticResolution.importOnDemand(node, new String[] { "java", "lang" });
 

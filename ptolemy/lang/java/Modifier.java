@@ -1,20 +1,6 @@
 package ptolemy.lang.java;
 
-public class Modifier {
-
-  public static final int NO_MOD           = 0;
-
-  public static final int PUBLIC_MOD       = 0x1;
-  public static final int PROTECTED_MOD    = 0x2;
-  public static final int PRIVATE_MOD      = 0x4;
-  public static final int ABSTRACT_MOD     = 0x8;
-  public static final int FINAL_MOD        = 0x10;
-  public static final int NATIVE_MOD       = 0x20;
-  public static final int SYNCHRONIZED_MOD = 0x40;
-  public static final int TRANSIENT_MOD    = 0x80;
-  public static final int VOLATILE_MOD     = 0x100;
-  public static final int STATIC_MOD       = 0x200;
-  public static final int STRICTFP_MOD     = 0x400;
+public class Modifier implements JavaStaticSemanticConstants {
 
   public static final String toString(final int modifier) {
     StringBuffer modString = new StringBuffer();

@@ -61,13 +61,13 @@ public class PropertyMap implements Cloneable {
         
 
     /** Define a property. Return false if the property is already defined. */
-    public boolean defineProperty(Object property) {
+    public boolean defineProperty(Integer property) {
         Object obj = setProperty(property, NullValue.instance);
         return (obj == null);
     }
 
     /** Get a property. Throw a RuntimeException if the property in not defined. */
-    public Object getDefinedProperty(Object property) {
+    public Object getDefinedProperty(Integer property) {
       Object retval = _propertyMap.get(property);
       if (retval == null) {
          throw new RuntimeException("Property " + property + " not defined");
@@ -76,12 +76,12 @@ public class PropertyMap implements Cloneable {
     }
 
     /** Get a property. If the property is not defined, returned null. */
-    public Object getProperty(Object property) {
+    public Object getProperty(Integer property) {
       return _propertyMap.get(property);
     }
     
     /** Set a property. Throw a RuntimeException if the property in not defined. */
-    public Object setDefinedProperty(Object property, Object obj) {
+    public Object setDefinedProperty(Integer property, Object obj) {
         if (obj == null) {
            obj = NullValue.instance;
         }
@@ -99,9 +99,8 @@ public class PropertyMap implements Cloneable {
         return _propertyMap.keySet();
     }
    
-
     /** Set a property. The property may or may not have been defined already. */
-    public Object setProperty(Object property, Object obj) {
+    public Object setProperty(Integer property, Object obj) {
         if (obj == null) {
            obj = NullValue.instance;
         }
@@ -111,12 +110,12 @@ public class PropertyMap implements Cloneable {
     /** Remove a property, returning the value of the property if the property is
      *  defined. If the property is not defined, return null.
      */
-    public Object removeProperty(Object property) {
+    public Object removeProperty(Integer property) {
         return _propertyMap.remove(property);
     }
 
     /** Return true iff this instance has the specified property. */
-    public boolean hasProperty(Object property) {
+    public boolean hasProperty(Integer property) {
         return _propertyMap.containsKey(property);
     }
 
@@ -130,7 +129,13 @@ public class PropertyMap implements Cloneable {
   
     // reserved properties
     
-    /** The property indicating a numbering. */  
+    /** The key that retrieves the List of return values of the child
+     *  nodes, after accept() is called on all of them by 
+     *  TNLManip.traverseList().
+     */
+    public static final Integer CHILD_RETURN_VALUES_KEY = new Integer(-2); 
+    
+    /** The key that retrieves indicating a numbering. */  
     public static final Integer NUMBER_KEY = new Integer(-1);
 
 
