@@ -106,21 +106,6 @@ public class BusAssembler extends TypedAtomicActor {
         }
     }
 
-    /** Makes sure that there is only one relation connected to the
-        output port and recalculates its width. */
-    public void preinitialize() throws IllegalActionException {
-        if (outputPortList().size() > 1) {
-            throw new IllegalActionException
-                (this, "can have only one output port.");
-        }
-        if (output.linkedRelationList().size() > 1) {
-            throw new IllegalActionException
-                (this, "can have only one output relation linked.");
-        }
-        _recalculateOutputWidth();
-        super.preinitialize();
-    }
-
     /** Iterate through input ports and transfer data sequentially from
         input channels to output channels, maintaining input to output
         channel mapping */
@@ -144,6 +129,21 @@ public class BusAssembler extends TypedAtomicActor {
                 i = 0;
             }
         }
+    }
+
+    /** Makes sure that there is only one relation connected to the
+        output port and recalculates its width. */
+    public void preinitialize() throws IllegalActionException {
+        if (outputPortList().size() > 1) {
+            throw new IllegalActionException
+                (this, "can have only one output port.");
+        }
+        if (output.linkedRelationList().size() > 1) {
+            throw new IllegalActionException
+                (this, "can have only one output relation linked.");
+        }
+        _recalculateOutputWidth();
+        super.preinitialize();
     }
 
     ///////////////////////////////////////////////////////////////////

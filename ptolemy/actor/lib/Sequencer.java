@@ -126,19 +126,6 @@ public class Sequencer extends Transformer implements SequenceActor {
             ((IntToken)startingSequenceNumber.getToken()).intValue();
     }
 
-    /** Return false if either the <i>input</i> port or the
-     *  <i>sequenceNumber</i> port lacks an input token.
-     *  Otherwise, return whatever the superclass returns.
-     *  @return False if there are not enough tokens to fire.
-     *  @exception IllegalActionException If there is no director.
-     */
-    public boolean prefire() throws IllegalActionException {
-        _fireProducedOutput = false;
-        if (!sequenceNumber.hasToken(0)) return false;
-        if (!input.hasToken(0)) return false;
-        return super.prefire();
-    }
-
     /** If the fire() method produced the input token then check to
      *  whether any pending tokens have subsequent sequence numbers.
      *  @exception IllegalActionException If there is no director.
@@ -163,6 +150,19 @@ public class Sequencer extends Transformer implements SequenceActor {
             _pending.put(new Integer(_sequenceNumberOfInput), _nextToken);
         }
         return super.postfire();
+    }
+
+    /** Return false if either the <i>input</i> port or the
+     *  <i>sequenceNumber</i> port lacks an input token.
+     *  Otherwise, return whatever the superclass returns.
+     *  @return False if there are not enough tokens to fire.
+     *  @exception IllegalActionException If there is no director.
+     */
+    public boolean prefire() throws IllegalActionException {
+        _fireProducedOutput = false;
+        if (!sequenceNumber.hasToken(0)) return false;
+        if (!input.hasToken(0)) return false;
+        return super.prefire();
     }
 
     ///////////////////////////////////////////////////////////////////
