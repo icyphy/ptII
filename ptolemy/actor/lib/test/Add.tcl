@@ -61,20 +61,21 @@ test Add-1.1 {use default value} {
 
     #create ramp
     set ramp [java::new ptolemy.actor.lib.Ramp $e0 Ramp]
-    set rampOut [$ramp getPort Output]
+    set rampOut [java::cast ptolemy.actor.TypedIOPort [$ramp getPort Output]]
 
     #create const
     set const [java::new ptolemy.actor.lib.Const $e0 Const]
-    set constOut [$const getPort Output]
+    set constOut [java::cast ptolemy.actor.TypedIOPort [$const getPort Output]]
+
 
     #create adder
     set adder [java::new ptolemy.actor.lib.Add $e0 Adder]
-    set adderIn [$adder getPort Input]
-    set adderOut [$adder getPort Output]
+    set adderIn [java::cast ptolemy.actor.TypedIOPort [$adder getPort Input]]
+    set adderOut [java::cast ptolemy.actor.TypedIOPort [$adder getPort Output]]
 
     #create sink
     set sink [java::new ptolemy.actor.lib.test.TestSink $e0 Sink]
-    set sinkIn [$sink getPort Input]
+    set sinkIn [java::cast ptolemy.actor.TypedIOPort [$sink getPort Input]]
 
     #make connections
     set r1 [java::new ptolemy.actor.TypedIORelation $e0 R1]
@@ -131,7 +132,8 @@ test Add-1.3 {fire once more} {
 ####
 #
 test Add-2.1 {change Ramp init value type to double} {
-    set initVal [$ramp getAttribute Value]
+    set initVal [java::cast ptolemy.data.expr.Parameter \
+	    [$ramp getAttribute Value]]
     set dToken [java::new {ptolemy.data.DoubleToken double} 0.5]
     $initVal setType [$dToken getClass]
     $initVal setToken $dToken
@@ -172,7 +174,8 @@ test Add-2.2 {fire twice} {
 test Add-3.1 {Add another source that generates type conflict} {
     #create another source
     set source [java::new ptolemy.actor.lib.test.TestSource $e0 Source]
-    set sourceOut [$source getPort Output]
+    set sourceOut [java::cast ptolemy.actor.TypedIOPort \
+	    [$source getPort Output]]
 
     #make connections
     set rs [java::new ptolemy.actor.TypedIORelation $e0 RS]
@@ -192,7 +195,8 @@ test Add-3.1 {Add another source that generates type conflict} {
 #
 test Add-3.2 {fix above by changing source type to Complex} {
     set com [java::new {ptolemy.math.Complex double double} 2.2 8.8]
-    set cToken [java::new {ptolemy.data.ComplexToken ptolemy.math.Complex} $com]
+    set cToken [java::new {ptolemy.data.ComplexToken ptolemy.math.Complex} \
+	    $com]
     $source setToken $cToken
 
     $manager resolveTypes
