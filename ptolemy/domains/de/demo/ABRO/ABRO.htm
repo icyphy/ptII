@@ -8,18 +8,49 @@
 <body>
 <H1>Discrete Event Threaded Actor Demonstration</H1>
 
-<CENTER>
-<APPLET name="ABROApplet"
-   archive="
-	ptolemy/domains/de/de.jar,
-	ptolemy/ptsupport.jar"
-   code=ptolemy.domains.de.demo.ABROABROApplet.class
-   codebase=../../../..
-   width=600 height=400>
-<param name="background" value="#faf0e6">
-<BR><I>If you were able to run applets, you would have a threaded demo
-here.</I>
-</APPLET></CENTER>
+<P>
+ <!-- All of the controls of the applet should be visible when the
+applet is displayed on a XGA screen-->
+<center>
+<!-- The HTML below is for the Java Plugin.  The first 
+     section is for IE, the second is for Netscape
+ -->
+<OBJECT classid="clsid:8AD9C840-044E-11D1-B3E9-00805F499D93"
+ width=600 height=400
+ name="ABROApplet"
+ codebase="http://java.sun.com/products/plugin/1.2/jinstall-12-win32.cab#Version=1,2,0,0">
+<PARAM NAME=CODE VALUE=ptolemy.domains.de.demo.ABRO.ABROApplet.class>
+<PARAM NAME=CODEBASE VALUE=../../../../..>
+<PARAM NAME=ARCHIVE VALUE="
+	ptolemy/domains/de/demo/ABRO/ABRO.jar,
+	lib/diva.jar,
+	ptolemy/ptsupport.jar,
+	ptolemy/domains/de/de.jar"
+<PARAM NAME=NAME VALUE="ABROApplet">
+<PARAM NAME="type" VALUE="application/x-java-applet;version=1.2">
+<PARAM NAME="background" VALUE="#faf0e6">
+<COMMENT>
+<EMBED type="application/x-java-applet;version=1.2"
+ code=ptolemy.domains.de.demo.ABRO.ABROApplet
+ codebase=../../../../..
+ archive="
+	ptolemy/ptsupport.jar,
+	ptolemy/domains/de/de.jar"
+
+ java_CODE=ptolemy.domains.de.demo.ABRO.ABROApplet.class
+ java_CODEBASE=../../../../..
+ java_ARCHIVE="
+	ptolemy/ptsupport.jar,
+	ptolemy/domains/de/de.jar"
+ name="ABROApplet"
+ width=600 height=400
+ background="#faf0e6"
+ pluginspage="http://java.sun.com/products/plugin/1.2/plugin-install.html">
+<NOEMBED></COMMENT>
+<I>If you were able to run applets, you would have a demo here.</I>
+</NOEMBED></EMBED>
+</OBJECT>
+</center>
 
 This applet demonstrates the design of a threaded actor in the Ptolemy
 II DE domain. The demo is taken from the ABRO specification described in
