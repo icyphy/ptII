@@ -112,14 +112,15 @@ public class ODFSourceActor extends ODFActor {
                       + "are prohibited.");
 	}
         Token token = new Token();
+	// System.out.println(getName()+": reinvokedAfterDelay() with delay = "+delay);
         _reinvokeOutPort.send( 0, token, delay );
     }
     
     ///////////////////////////////////////////////////////////////////
     ////                        private variables                  ////
     
-    private ODFIOPort _reinvokeInPort;
-    private ODFIOPort _reinvokeOutPort;
+    public ODFIOPort _reinvokeInPort;
+    public ODFIOPort _reinvokeOutPort;
     private IORelation _reinvokeRelation;
 
 }
