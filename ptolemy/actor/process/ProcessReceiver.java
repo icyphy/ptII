@@ -41,8 +41,7 @@ import ptolemy.data.*;
 /**
 Interface for receivers in the process oriented domains.
 It adds methods to the Receiver interface for setting flags that
-indicate whether a pause, resume or termination of the simulation has
-been requested.
+indicate whether a termination of the simulation has been requested.
 
 In process oriented domains, simulations are normally ended on the
 detection of a deadlock. During a deadlock, processes or the
@@ -63,27 +62,6 @@ public synchronized void requestFinish() {
 </code>
 <p>
 
-Similarly, in process oriented domains, a simulation can be paused,
-safely, only when the processes try to communicate with some other
-process by calling methods on the receiver. For this, a requestPause()
-method is defined. This method will set a local flag in the receiver
-which indicates that a pause has been requested. When a process next
-calls any of the methods in the receiver to read or write a token,
-it will be paused. To resume the simulation, the method will be called
-with false as an argument. This method will then reset the local flag
-and resume the paused processes.
-A sample implementation is: <BR>
-<code>
-public synchronized void requestPause(boolean pause) {
-    if (pause) {
-        _pause = true;
-    } else {
-        _pause = false;
-	notifyAll();
-    }
-}
-</code>
-
 @author Neil Smyth, Mudit Goel, John S. Davis II
 @version $Id$
 
@@ -98,12 +76,6 @@ public interface ProcessReceiver extends Receiver {
      *  restarting execution.
      */
     public void reset();
-
-    /** Set a local flag that requests that the simulation be paused
-     *  or resumed.
-     *  @param value The flag indicating a requested pause or resume.
-     */
-    public void requestPause(boolean value);
 
     /** Set a local flag requesting that the simulation be finished.
      */
