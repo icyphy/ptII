@@ -309,6 +309,34 @@ public class FIR extends SDFTransformer {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    // Reinitialize local variables in response to changes in attributes.
+    protected void _reinitialize() throws IllegalActionException {
+        if (_decPhase >= _dec) {
+            throw new IllegalActionException(this,
+                    "Invalid decimationPhase: " + _decPhase
+                    + ". Must be less than decimation: " + _dec + ".");
+        }
+
+        _phaseLength = (int)(_taps.length / _interp);
+        if ((_taps.length % _interp) != 0) _phaseLength++;
+
+        // Create new data array and initialize index into it.
+        // Avoid losing the data if possible.
+        // FIXME: data is thrown away if the filter length increases.  This
+        // is not necessary.
+        if (_data == null || _data.length != _phaseLength) {
+            _data = new Token[_phaseLength];
+            for(int i = 0; i < _phaseLength; i++ ) {
+                _data[i] = _zero;
+            }
+            _mostRecent = _phaseLength;
+        }
+        _reinitializeNeeded = false;
+    }
+
+    ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
     /** The delay line. */
@@ -335,34 +363,6 @@ public class FIR extends SDFTransformer {
 
     /** Local cache of the zero token. */
     protected Token _zero;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    // Reinitialize local variables in response to changes in attributes.
-    private void _reinitialize() throws IllegalActionException {
-        if (_decPhase >= _dec) {
-            throw new IllegalActionException(this,
-                    "Invalid decimationPhase: " + _decPhase
-                    + ". Must be less than decimation: " + _dec + ".");
-        }
-
-        _phaseLength = (int)(_taps.length / _interp);
-        if ((_taps.length % _interp) != 0) _phaseLength++;
-
-        // Create new data array and initialize index into it.
-        // Avoid losing the data if possible.
-        // FIXME: data is thrown away if the filter length increases.  This
-        // is not necessary.
-        if (_data == null || _data.length != _phaseLength) {
-            _data = new Token[_phaseLength];
-            for(int i = 0; i < _phaseLength; i++ ) {
-                _data[i] = _zero;
-            }
-            _mostRecent = _phaseLength;
-        }
-        _reinitializeNeeded = false;
-    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
