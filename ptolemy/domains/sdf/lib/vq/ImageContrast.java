@@ -153,7 +153,7 @@ public final class ImageContrast extends SDFAtomicActor {
             colorHistogram[i] = colorHistogram[i-1] + colorHistogram[i];
 
         // Search each pixel in the image and re-map it to a new
-        // color number to make a new relatively even color distrubution
+        // color number to make a new relatively even color distribution
         // image.
 
         int distributionConstant = xframesize*yframesize/255;
