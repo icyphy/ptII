@@ -628,7 +628,7 @@ public class TypedIOPort extends IOPort implements Typeable {
             return false;
         }
 
-        /** Set the type of this port if it is not set throught
+        /** Set the type of this port if it is not set through
 	 *  setTypeEquals().
          *  @exception IllegalActionException If the type is already set
 	 *   through setTypeEquals().
