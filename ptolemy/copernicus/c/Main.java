@@ -167,7 +167,17 @@ public class Main extends KernelMain {
     }
     
     
-    /** Read in a MoML model, generate .class files for use with C
+    /** Read in a MoML model, generate .class files for use with C.
+     *  Arguments are passed on to soot, except for special non-Soot 
+     *  arguments that are used to configure the overall code generation
+     *  process. Presently, two non-Soot argument are recognized:
+     *  "-clooped," which indicates that schedule loops should be translated
+     *  into loops in the generated code (FIXME: this is not supported yet);
+     *  and "-cdebug" which turns on debugging output for c code generation.
+     *  The first argument specifies the MoML model. This is followed
+     *  by zero or more non-Soot arguments, after which the Soot arguments
+     *  are listed.
+     *  @param Code generation arguments.
      *  @exception IllegalActionException If the model cannot be parsed.
      *  @exception NameDuplicationException If the name of the
      *  model cannot be changed to a Java identifier String.
@@ -181,6 +191,45 @@ public class Main extends KernelMain {
 	    // Parse the model.
 	    CompositeActor toplevel = main.readInModel(args[0]);
 
+        // Set of argument indices to skip when constructing the argument
+        // list for Soot.
+        int skipCount = 0;
+        boolean[] skipArgument = new boolean[args.length];
+        for (int i = 0; i < args.length; i++) {
+            skipArgument[i] = false;
+        }
+        
+        // Extract non-Soot arguments.
+        int index = 1;    // Index into original argument array.
+        boolean done = false; // Finished looking for non-Soot arguments.
+        while (!done) {
+            if (args.length <= index) {
+                done = true;
+            } else if (args[index].equals("-clooped")) {
+                 _generateLoopedSchedule = true;
+                 skipArgument[index++] = true;
+                 skipCount++;
+            } else if (args[index].equals("-cdebug")) {
+                 _debug = true;
+                 skipArgument[index++] = true;
+                 skipCount++;
+            } else {
+                done = true;
+            }  
+        }
+
+        // Filter out arguments not meant for Soot.
+        if (skipCount >= args.length) {
+            throw new RuntimeException("Too many non-Soot arguments.");
+        }
+        String [] sootArguments = new String[args.length - skipCount];
+        int sootIndex = 0;
+        for (int i = 0; i < args.length; i++) {
+            if (!skipArgument[i]) {
+                sootArguments[sootIndex++] = args[i];
+            }    
+        }
+
 	    // Create instance classes for the actors.
 	    main.initialize(toplevel);
 
@@ -190,7 +239,7 @@ public class Main extends KernelMain {
         // Ignore exceptions that pertain to writing unnecessary class files
         // after code generation is complete.
 	    try {
-            main.generateCode(args);
+            main.generateCode(sootArguments);
         } catch (RuntimeException exception) {
             // Under debug mode, soot throws a RuntimeException if it
             // can't generate a class file. We wan't to generate (and
@@ -201,7 +250,7 @@ public class Main extends KernelMain {
                 throw new RuntimeException(exception.getMessage()
                         + exception.getClass().getName());
             } else if (_debug) {
-                System.err.println("Warning: caught an after code generation"
+                System.err.println("Warning: exception after code generation"
                         + " completed.\n" + exception + "\n");
                 exception.printStackTrace(); 
             }
@@ -209,11 +258,11 @@ public class Main extends KernelMain {
     }
 
     // Local debugging flag.
-    private static boolean _debug = true;
+    private static boolean _debug = false;
 
     // Flags to control what gets generated.
     private boolean _generateJimple = false;
-    private boolean _generateLoopedSchedule = false;
+    private static boolean _generateLoopedSchedule = false;
 
     // The CWriter instance used to generate code.
     private static CWriter _writer = null;
