@@ -138,9 +138,9 @@ public class LocatableNodeController extends NodeController {
      */
     public void locateFigure(Object n) {
 	Figure nf = getController().getFigure(n);
-        if(hasLocation(n)) {
-            double[] location = getLocation(n);
-            CanvasUtilities.translateTo(nf, location[0], location[1]);
+	if(hasLocation(n)) {
+	    double[] location = getLocation(n);
+	    CanvasUtilities.translateTo(nf, location[0], location[1]);
         }
     }
 }
