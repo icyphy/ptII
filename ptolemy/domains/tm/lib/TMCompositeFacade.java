@@ -182,7 +182,6 @@ public class TMCompositeFacade extends TypedCompositeActor
 
     protected synchronized void _transferOutputs()
             throws IllegalActionException {
-        Iterator inputPorts = inputPortList().iterator();
         // Use the executive director to transfer outputs.
         Director executiveDirector = getExecutiveDirector();
         if (executiveDirector != null) {
