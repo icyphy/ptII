@@ -516,6 +516,8 @@ fixtmpdist:
 	echo 'See <a href="http://ptolemy.eecs.berkeley.edu/java/ptplot" target="_top"><code>http://ptolemy.eecs.berkeley.edu/java/ptplot</code></a>' >> $(PTTMPME)/doc/download/index.htm
 	echo "</body>" >> $(PTTMPME)/doc/download/index.htm
 	echo "</html>" >> $(PTTMPME)/doc/download/index.htm
+	chmod -R a+r $(PTTMPME)
+
 
 isj:
 	echo "Setting up for installshield"
@@ -544,3 +546,15 @@ isj:
 	@echo "Cleanup META-INF dirs etc"
 	(cd $(PTTMPDIR)/installshield/; \
 		find . \( -name "META-INF" -name "#*" -o -name CVS \) -print -exec rm -rf {} \;
+
+
+# Update the ftp site
+# Update a location with the files necessary to download
+DIST_BASE = /vol/ptolemy/pt0/ptweb/java
+DIST_DIR = $(DIST_BASE)/$(PTDIST)
+
+
+update_ftp:
+	rm -rf $(DIST_DIR)
+	cat $(PTDIST).tar.gz | (cd $(DIST_BASE); tar -zxf -)
+	cp -r $(DIST_BASE)/$(PTDIST)_tmp/* $(DIST_DIR)/ptolemy/plot/doc/download
