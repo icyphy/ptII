@@ -2665,7 +2665,8 @@ public class PlotBox extends Panel {
     // seems to be no other way to ensure that the generated data exactly
     // matches the DTD.
     private static final String _DTD =
-    "<!-- PlotML DTD, created by Edward A. Lee, eal@eecs.berkeley.edu. -->"
+    "<!-- PlotML DTD, created by Edward A. Lee, eal@eecs.berkeley.edu.\n"
+    + "   See http://ptolemy.eecs.berkeley.edu/java/ptplot -->\n"
     + "<!ELEMENT plot (barGraph | bin | dataset | default | noColor | \n"
     + "	noGrid | title | wrap | xLabel | xLog | xRange | xTicks | yLabel | \n"
     + " yLog | yRange | yTicks)*>\n"
