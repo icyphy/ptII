@@ -104,8 +104,9 @@ public class PTMLParser extends HandlerBase{
      */
     public void endElement(String name) throws Exception {
         XMLElement parent= current.getParent();
-        if(parent instanceof IconLibrary) {
-            if(current instanceof Icon) {
+        if(parent!=null)
+            parent.applySemanticsToChild(current);
+        /*            if(current instanceof Icon) {
                 ((IconLibrary) parent).icons.putAt(
                         ((Icon) current).getEntityType(),
                         current);
@@ -113,7 +114,7 @@ public class PTMLParser extends HandlerBase{
                 String file = current.getAttribute("file");
                 ((IconLibrary) parent).sublibraries.putAt(file,current);
             }
-        }
+            */
         current = parent;
     }
 
@@ -190,14 +191,11 @@ public class PTMLParser extends HandlerBase{
     public void startElement(String name) {
         XMLElement e;
  
-        if(name.equals("description")) {
-            e=new XMLElement(name,attributes);
+        if(name.equals("entity")) {
+            e=new SchematicEntity(attributes);
         }
         else if(name.equals("entitytype")) {
             e=new EntityType(attributes);
-        }
-        else if(name.equals("graphic")) {
-            e=new XMLElement(name,attributes);
         }
         else if(name.equals("icon")) {
             e=new Icon(attributes);
@@ -206,15 +204,18 @@ public class PTMLParser extends HandlerBase{
             e=new IconLibrary(attributes);
         }
         else if(name.equals("parameter")) {
-            e=new XMLElement(name,attributes);
+            e=new SchematicParameter(attributes);
         }
         else if(name.equals("port")) {
-            e=new XMLElement(name,attributes);
+            e=new SchematicPort(attributes);
         }
-        else if(name.equals("sublibrary")) {
-            e=new XMLElement(name,attributes);
+        else if(name.equals("relation")) {
+            e=new SchematicRelation(attributes);
         }
-        else {
+        else if(name.equals("schematic")) {
+            e=new Schematic(attributes);
+        }
+         else {
             e=new XMLElement(name,attributes);
         }
         e.setParent(current);
