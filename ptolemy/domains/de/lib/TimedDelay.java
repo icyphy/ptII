@@ -34,7 +34,6 @@ import ptolemy.data.DoubleToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.domains.de.kernel.DEEvent;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -94,8 +93,7 @@ public class TimedDelay extends DETransformer {
     public TimedDelay(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-        delay = new Parameter(this, "delay", new DoubleToken(1.0));
-        delay.setTypeEquals(BaseType.DOUBLE);
+        _init();
         
         _attachText("_iconDescription", "<svg>\n" +
                 "<rect x=\"0\" y=\"0\" "
@@ -124,12 +122,17 @@ public class TimedDelay extends DETransformer {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == delay) {
-            if (((DoubleToken)(delay.getToken())).doubleValue() < 0.0) {
+            double newDelay = ((DoubleToken)(delay.getToken())).doubleValue();
+            if (newDelay < 0.0) {
                 throw new IllegalActionException(this,
                         "Cannot have negative delay: "
-                        + ((DoubleToken)(delay.getToken())));
+                        + newDelay);
             } else {
-                _delay = ((DoubleToken)delay.getToken()).doubleValue();
+                // NOTE: the newDelay may be 0.0, which may change
+                // the causality property of the model. 
+                // We leave the model designers to decide whether the
+                // zero delay is really what they want. 
+                _delay = newDelay;
             }
         } else {
             super.attributeChanged(attribute);
@@ -161,16 +164,20 @@ public class TimedDelay extends DETransformer {
             _currentInput = null;
         }
         double currentTime = getDirector().getCurrentTime();
-        _eventToBeRemoved = null;
-        if (_delayedEvents.size() > 0) {
+        _currentOutput = null;
+        if (_delayedTokens.size() > 0) {
             Double timeDouble = new Double(currentTime);
-            _eventToBeRemoved = (DEEvent)_delayedEvents.get(timeDouble);
-            if (_eventToBeRemoved != null) {
-                output.send(0, _eventToBeRemoved.token());
+            _currentOutput = (Token)_delayedTokens.get(timeDouble);
+            if (_currentOutput != null) {
+                output.send(0, _currentOutput);
+                return;
+            } else {
+                // no tokens to be produced in the current time.
             }
         }
-        if (_delay == 0) {
+        if (_delay == 0 && _currentInput != null) {
             output.send(0, _currentInput);
+            _currentInput = null;
         }
     }
 
@@ -180,9 +187,9 @@ public class TimedDelay extends DETransformer {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        _delay = ((DoubleToken)delay.getToken()).doubleValue();
-        _eventToBeRemoved = null;
-        _delayedEvents = new HashMap();
+        _currentInput = null;
+        _currentOutput = null;
+        _delayedTokens = new HashMap();
     }
 
     /** Produce token that was read in the fire() method, if there
@@ -193,15 +200,19 @@ public class TimedDelay extends DETransformer {
      */
     public boolean postfire() throws IllegalActionException {
         double currentTime = getDirector().getCurrentTime();
-        if (_delayedEvents.size() > 0 && 
-            _eventToBeRemoved != null) {
-            _delayedEvents.remove(new Double(currentTime));
+        double delayToTime = currentTime + _delay;
+        // Remove the token that is scheduled to be sent 
+        // at the current time.
+        if (_delayedTokens.size() > 0 && 
+            _currentOutput != null) {
+            _delayedTokens.remove(new Double(currentTime));
         }
-        if (_currentInput != null && _delay > 0) {
-            Double timeDouble = new Double(_delay + currentTime);
-            _delayedEvents.put(timeDouble, 
-                new DEEvent(this, _currentInput, _delay + currentTime));
-            getDirector().fireAt(this, _delay + currentTime);
+        // Store the not handled token that is scheduled to 
+        // be sent in future.
+        if (_currentInput != null) {
+            Double timeDouble = new Double(delayToTime);
+            _delayedTokens.put(timeDouble, _currentInput);
+            getDirector().fireAt(this, delayToTime);
         }
         return super.postfire();
     }
@@ -216,16 +227,33 @@ public class TimedDelay extends DETransformer {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                       protected method                    ////
+
+    // Initialize the value for parameter.
+    protected void _init() 
+        throws NameDuplicationException, IllegalActionException  {
+        delay = new Parameter(this, "delay", new DoubleToken(1.0));
+        delay.setTypeEquals(BaseType.DOUBLE);
+        _delay = ((DoubleToken)delay.getToken()).doubleValue();
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                       protected variables                 ////
+
+    // The amount of delay.
+    protected double _delay;
+
+    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     // Current input.
     // FIXME: this private variable is not necessary.
     private Token _currentInput;
     
-    // A new DEFIFOEventQueue may be constructed for this purpose.
-    private DEEvent _eventToBeRemoved;
-    private HashMap _delayedEvents;
+    // Current output.
+    private Token _currentOutput;
     
-    // delay value;
-    private double _delay;
+    // A hash map to store the delayed tokens.
+    private HashMap _delayedTokens;
+    
 }
