@@ -248,12 +248,30 @@ public class MoMLParser extends HandlerBase {
         }
     }
 
-    /** End the document.  In this implementation, do nothing.
-     *  &AElig;lfred will call this method once, when it has
-     *  finished parsing the XML document.
-     *  It is guaranteed that this will be the last method called.
+    /** End the document. The MoMLParser calls this method once, when
+     *  it has finished parsing the complete XML document. It is
+     *  guaranteed that this will be the last method called in the XML
+     *  parsing process. As a consequence, it is guaranteed that all
+     *  dependencies between parameters used in the XML description
+     *  are resolved. This fact is used in the place method, allow the
+     *  use of parameter values to change the visual rendition of an
+     *  placeable object.
+     *  @exception Exception is not thrown here.
      */
     public void endDocument() throws Exception {
+        if ( _toplevel instanceof CompositeEntity) {
+            CompositeEntity container = (CompositeEntity)_toplevel;
+            // Get the list of all actors for this model
+            List actorList = container.deepEntityList();
+            Iterator entities = actorList.iterator();        
+            // Walk through the model
+            while(entities.hasNext()) {
+                Object a = entities.next();
+                if ( a instanceof Placeable && _panel != null) {
+                    ((Placeable)a).place(_panel);
+                }
+            }
+        }
     }
 
     /** End an element. This method pops the current container from
@@ -678,9 +696,6 @@ public class MoMLParser extends HandlerBase {
                 String entityName = (String)_attributes.get("name");
                 _checkForNull(entityName, "No name for element \"entity\"");
                 NamedObj newEntity = _createEntity(className, entityName);
-                if (_panel != null && newEntity instanceof Placeable) {
-                    ((Placeable)newEntity).place(_panel);
-                }
                 // NOTE: We tolerate entities at the top level, even
                 // though this is not proper MoML.
                 if (_current != null) {
