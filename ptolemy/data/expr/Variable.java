@@ -476,7 +476,7 @@ public class Variable extends Attribute implements Typeable, Settable {
      */
     public InequalityTerm getTypeTerm() {
         if (_typeTerm == null) {
-	    _typeTerm = new TypeTerm(this);
+	    _typeTerm = new TypeTerm();
 	}
         return _typeTerm;
     }
@@ -1440,12 +1440,6 @@ public class Variable extends Attribute implements Typeable, Settable {
 
     private class TypeTerm implements InequalityTerm {
 
-	// Pass the variable reference in the constructor so it can be
-	// returned by getAssociatedObject().
-	private TypeTerm(Variable var) {
-	    _variable = var;
-	}
-
 	///////////////////////////////////////////////////////////////
 	////                       public inner methods            ////
 
@@ -1453,7 +1447,7 @@ public class Variable extends Attribute implements Typeable, Settable {
 	 *  @return A Variable.
 	 */
 	public Object getAssociatedObject() {
-	    return _variable;
+	    return Variable.this;
 	}
 
 	/** Return the type of this Variable.
@@ -1541,7 +1535,7 @@ public class Variable extends Attribute implements Typeable, Settable {
 	    	throw new IllegalActionException("Variable$TypeTerm.setValue: "
 		        + "Cannot update the type of this variable to the "
 			+ "new type."
-			+ " Variable: " + _variable.getFullName()
+			+ " Variable: " + Variable.this.getFullName()
 			+ ", Variable type: " + _declaredType.toString()
 			+ ", New type: " + e.toString());
 	    }
@@ -1559,13 +1553,8 @@ public class Variable extends Attribute implements Typeable, Settable {
          *  @return A description of the variable and its type.
          */
         public String toString() {
-            return "(" + _variable.toString() + ", " + getType() + ")";
+            return "(" + Variable.this.toString() + ", " + getType() + ")";
         }
-
-        ///////////////////////////////////////////////////////////////
-        ////                       private inner variable          ////
-
-        private Variable _variable = null;
     }
 }
 

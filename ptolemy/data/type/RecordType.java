@@ -75,7 +75,7 @@ public class RecordType extends StructuredType {
         }
 
         for (int i=0; i<labels.length; i++) {
-            FieldType fieldType = new FieldType(this, types[i]);
+            FieldType fieldType = new FieldType(types[i]);
             _fields.put(labels[i], fieldType);
         }
     }
@@ -584,11 +584,9 @@ public class RecordType extends StructuredType {
     // field and implements the InequalityTerm interface.
     private class FieldType implements InequalityTerm {
 
-        // Pass the RecordType reference in the constructor so it can be
-        // returned by getAssociatedObject().
-        private FieldType(RecordType recordType, Type declaredType) {
+        // Construct an instance of FieldType.
+        private FieldType(Type declaredType) {
             try {
-                _recordType = recordType;
                 _declaredType = (Type)declaredType.clone();
                 _resolvedType = _declaredType;
             } catch (CloneNotSupportedException cnse) {
@@ -604,7 +602,7 @@ public class RecordType extends StructuredType {
          *  @return a RecordType.
          */
         public Object getAssociatedObject() {
-            return _recordType;
+            return RecordType.this;
         }
 
         /** Return the resolved type.
@@ -711,7 +709,6 @@ public class RecordType extends StructuredType {
         ///////////////////////////////////////////////////////////////
         ////                  private inner variables              ////
 
-        private RecordType _recordType = null;
         private Type _declaredType = null;
         private Type _resolvedType = null;
     }

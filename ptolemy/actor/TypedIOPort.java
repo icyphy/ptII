@@ -436,7 +436,7 @@ public class TypedIOPort extends IOPort implements Typeable {
      */
     public InequalityTerm getTypeTerm() {
         if (_typeTerm == null) {
-            _typeTerm = new TypeTerm(this);
+            _typeTerm = new TypeTerm();
         }
         return _typeTerm;
     }
@@ -948,12 +948,6 @@ public class TypedIOPort extends IOPort implements Typeable {
 
     private class TypeTerm implements InequalityTerm {
 
-        // pass the port reference in the constructor so it can be
-        // returned by getAssociatedObject().
-        private TypeTerm(TypedIOPort port) {
-            _port = port;
-        }
-
         ///////////////////////////////////////////////////////////////
         ////                       public inner methods            ////
 
@@ -961,7 +955,7 @@ public class TypedIOPort extends IOPort implements Typeable {
          *  @return A TypedIOPort.
          */
         public Object getAssociatedObject() {
-            return _port;
+            return TypedIOPort.this;
         }
 
         /** Return the type of this TypedIOPort.
@@ -1036,7 +1030,7 @@ public class TypedIOPort extends IOPort implements Typeable {
                 return true;
             }
             // For a disconnected port, any type is acceptable.
-            if (_port.numLinks() == 0) {
+            if (TypedIOPort.this.numLinks() == 0) {
                 return true;
             }
             return false;
@@ -1056,7 +1050,8 @@ public class TypedIOPort extends IOPort implements Typeable {
 
             if ( !_declaredType.isSubstitutionInstance((Type)type)) {
                 throw new IllegalActionException(
-                        "Type conflict on port " + _port.getFullName() + ".\n"
+                        "Type conflict on port "
+			+ TypedIOPort.this.getFullName() + ".\n"
 			+ "Declared type is " + _declaredType.toString()
 			+ ".\n"
                         + "The connection or type constraints, however, "
@@ -1082,12 +1077,7 @@ public class TypedIOPort extends IOPort implements Typeable {
          *  @return A description of the port and its type.
          */
         public String toString() {
-            return "(" + _port.toString() + ", " + getType() + ")";
+            return "(" + TypedIOPort.this.toString() + ", " + getType() + ")";
         }
-
-        ///////////////////////////////////////////////////////////////
-        ////                       private inner variable          ////
-
-        private TypedIOPort _port = null;
     }
 }
