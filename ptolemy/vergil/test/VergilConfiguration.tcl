@@ -105,9 +105,9 @@ test VergilConfiguration-1.3 {make sure that everything inside the Full configur
     set loader [[$parser getClass] getClassLoader]
 
     set URL [$loader getResource "ptolemy/configs/vergilConfiguration.xml"]
-    #puts "URL of vergilConfiguration.xml: [$URL toString]"
-    set inFile [string range [$URL getPath] 1 end]
-    #puts "file name vergilConfiguration.xml: $inFile"
+    puts "URL of vergilConfiguration.xml: [$URL toString]"
+    set inFile [$URL getPath]
+    puts "file name vergilConfiguration.xml: $inFile"
 
     set infd [open $inFile]
     set outfd [open vergilConfigurationNoMatlab.xml "w"]
