@@ -130,11 +130,6 @@ public class NamedObj implements
                           Changeable, Cloneable, Debuggable,
                           DebugListener, Derivable, Serializable {
 
-    // FIXME: Accepted rating was green, but
-    // FIXME: Need review of methods from Derivable and Changeable interfaces,
-    // FIXME: and also containedObjectsIterator()
-    // FIXME: and also the private method _getHeritageObject().
-
     // Note that Nameable extends ModelErrorHandler, so this class
     // need not declare that it directly implements ModelErrorHandler.
 
@@ -948,7 +943,7 @@ public class NamedObj implements
      *  All objects in the returned list are of the same
      *  class as this object.
      *  @return A list of derived objects of the same class as this object.
-     *  @see #getShadowedDerivedList()
+     *  @see #getShadowedDerivedList(List)
      */
     public List getDerivedList() {
         return _getDerivedList(null, false, this, 0, null, null);
@@ -1321,8 +1316,8 @@ public class NamedObj implements
      *  @param isDerived True to mark this object as a derived object.
      *  @see #isDerived()
      */
-    public final void setDerived(boolean inherited) {
-        _isDerived = inherited;
+    public final void setDerived(boolean isDerived) {
+        _isDerived = isDerived;
         _overrideDepth = -1;
     }
 
@@ -2078,7 +2073,7 @@ public class NamedObj implements
      *  @return A list of instances of the same class as this object
      *   which are derived from
      *   this object. The list is empty in this base class, but
-     *   subclasses that override _getHeritageObject() can
+     *   subclasses that override _getContainedObject() can
      *   return non-empty lists.
      */
     private List _getDerivedList(

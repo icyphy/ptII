@@ -210,7 +210,7 @@ public class Attribute extends NamedObj {
      *  @exception InternalErrorException If the object does not exist
      *   or has the wrong class.
      */
-    protected NamedObj _getHeritageObject(String relativeName,
+    protected NamedObj _getContainedObject(String relativeName,
             NamedObj container)
             throws InternalErrorException {
         Attribute candidate = container.getAttribute(relativeName);

@@ -69,7 +69,7 @@ public interface Derivable extends Nameable {
      *  @return A list of objects of the same class as the object on
      *   which this is called.
      *  @see #getOverrideDepth()
-     *  @see #getShadowedDerivedList()
+     *  @see #getShadowedDerivedList(List)
      */
     public List getDerivedList();
 

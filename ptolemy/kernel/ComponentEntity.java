@@ -425,7 +425,7 @@ public class ComponentEntity extends Entity {
      *   or has the wrong class, or if the specified container is not
      *   an instance of CompositeEntity.
      */
-    protected NamedObj _getHeritageObject(String relativeName,
+    protected NamedObj _getContainedObject(String relativeName,
             NamedObj container)
             throws InternalErrorException {
         if (!(container instanceof CompositeEntity)) {
