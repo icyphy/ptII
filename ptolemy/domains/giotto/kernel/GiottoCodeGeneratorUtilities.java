@@ -221,17 +221,17 @@ public class GiottoCodeGeneratorUtilities {
             TypedIOPort port = (TypedIOPort)inPorts.next();
             // Ignore unconnected ports
             if (port.getWidthInside() > 0) {
-            	// FIXME: Assuming ports are either
-            	// input or output and not both.
-            	// FIXME: May want the driver name
-            	// specified by a port parameter.
-            	// FIXME: Use a real type.
-            	String portID = port.getName();
-            	String portTypeID = _getTypeString(port);
-            	String actuatorDriverName = port.getName() + "_device_driver";
+                    // FIXME: Assuming ports are either
+                    // input or output and not both.
+                    // FIXME: May want the driver name
+                    // specified by a port parameter.
+                    // FIXME: Use a real type.
+                    String portID = port.getName();
+                    String portTypeID = _getTypeString(port);
+                    String actuatorDriverName = port.getName() + "_device_driver";
                 _checkGiottoID(portID);
-            	code.append("  " + portTypeID + " " + portID
-                	+ " uses " + actuatorDriverName	+ ";\n");
+                    code.append("  " + portTypeID + " " + portID
+                        + " uses " + actuatorDriverName        + ";\n");
             }
         }
 
@@ -257,14 +257,14 @@ public class GiottoCodeGeneratorUtilities {
             // Ignore unconnected ports
             if (port.getWidthInside() > 0) {
                 // FIXME: Assuming ports are either
-    	        // input or output and not both.
+                    // input or output and not both.
                 // FIXME: May want the driver name
-            	// specified by a port parameter.
+                    // specified by a port parameter.
                 // FIXME: Use a real type.
-    	        String portID = port.getName();
+                    String portID = port.getName();
                 String portTypeID = _getTypeString(port);
-            	String actuatorDriverName = port.getName() + "_device_driver";
-            	_checkGiottoID(portID);
+                    String actuatorDriverName = port.getName() + "_device_driver";
+                    _checkGiottoID(portID);
                 code.append("  " + portTypeID + " " + portID
                         + " uses " + actuatorDriverName + ";\n");
             }
@@ -316,9 +316,9 @@ public class GiottoCodeGeneratorUtilities {
                     String portID = StringUtilities.sanitizeName(
                             port.getName(model));
                     String portTypeID = _getTypeString(port);
-    	            String portInitialValue = "CGinit_" + portID;
+                        String portInitialValue = "CGinit_" + portID;
                     _checkGiottoID(portID);
-            	    code.append("  " + portTypeID + " " + portID
+                        code.append("  " + portTypeID + " " + portID
                             + " := " + portInitialValue + ";\n");
                 }
             }
@@ -357,11 +357,11 @@ public class GiottoCodeGeneratorUtilities {
                 } else {
                     inputPorts += ", ";
                     code.append(", ");
-            	}
+                    }
                 String portID = StringUtilities.sanitizeName(
-    	                port.getName(model));
+                            port.getName(model));
                 String portTypeID = _getTypeString(port);
-	
+        
                 code.append(portTypeID + " " + portID);
                 inputPorts += portID;
             }
@@ -383,12 +383,12 @@ public class GiottoCodeGeneratorUtilities {
                 } else {
                     code.append(", ");
                     outputPorts += ", ";
-            	}
-    	        String portID = StringUtilities.sanitizeName(
+                    }
+                    String portID = StringUtilities.sanitizeName(
                         port.getName(model));
-            	code.append(portID);
+                    code.append(portID);
                 outputPorts += portID;
-    	    }
+                }
         }
         code.append(")\n"
                 + "        state (" + stateParas + ")\n"
@@ -478,12 +478,12 @@ public class GiottoCodeGeneratorUtilities {
             // Ignore unconnected ports
             if (port.getWidth()>0) {
                 if (first) {
-    	            first = false;
+                        first = false;
                 } else {
-            	    code.append(", ");
+                        code.append(", ");
                 }
                 String portID = StringUtilities.sanitizeName(
-            	        port.getName(model));
+                            port.getName(model));
                 String portTypeID = _getTypeString(port);
                 code.append(portTypeID + " " + portID);
             }
@@ -547,26 +547,26 @@ public class GiottoCodeGeneratorUtilities {
             // Ignore unconnected ports
             if (port.getWidth()>0) {
                 String portTypeID = _getTypeString(port);
-    	        String portID = StringUtilities.sanitizeName(port.
+                    String portID = StringUtilities.sanitizeName(port.
                         getName());
-            	code.append("\ndriver " + portID + "_driver (");
+                    code.append("\ndriver " + portID + "_driver (");
 
                 Iterator portConnected = port.insidePortList().iterator();
-    	        while (portConnected.hasNext()) {
+                    while (portConnected.hasNext()) {
                     IOPort outPort = (IOPort)portConnected.next();
-            	    String sanitizedPortName = StringUtilities.sanitizeName(
+                        String sanitizedPortName = StringUtilities.sanitizeName(
                             outPort.getName(model));
                     if (outPort.isOutput()) {
-    	                if (driverParas.length()==0) {
+                            if (driverParas.length()==0) {
                             driverParas +=  sanitizedPortName;
-            	        } else {
+                            } else {
                             driverParas += ", " + sanitizedPortName;
                         }
-    	            }
+                        }
                 }
-                code.append(driverParas	+ ")\n"
+                code.append(driverParas        + ")\n"
                         + "        output ("
-        	        + portTypeID + " " + portID + "_output)\n"
+                        + portTypeID + " " + portID + "_output)\n"
                         + "{\n"
                         + "  if c_true() then " + portID + "_input_driver( "
                         + driverParas + ", " + portID
@@ -608,27 +608,27 @@ public class GiottoCodeGeneratorUtilities {
             // Ignore unconnected ports
             if (port.getWidth()>0) {
                 outputName = StringUtilities.sanitizeName(port.
-    	                getName(model));
+                            getName(model));
                 if (port.insidePortList().size() != 0) {
-            	    Iterator portConnected = port.
+                        Iterator portConnected = port.
                         insidePortList().iterator();
                     while (portConnected.hasNext()) {
-    	                TypedIOPort outPort =
+                            TypedIOPort outPort =
                             (TypedIOPort) portConnected.next();
-            	        if (!outPort.isOutput()) {
+                            if (!outPort.isOutput()) {
                             continue;
-                    	}
+                            }
                         Nameable actor = outPort.getContainer();
-    	                if (actor instanceof Actor) {
+                            if (actor instanceof Actor) {
                             Parameter actorFreqPara = (Parameter)
-            	                ((NamedObj)actor).
+                                    ((NamedObj)actor).
                                 getAttribute("frequency");
-                    	    if (actorFreqPara == null) {
+                                if (actorFreqPara == null) {
                                 actorFreq = 1;
                             } else {
-    	                        actorFreq = ((IntToken) actorFreqPara.
+                                    actorFreq = ((IntToken) actorFreqPara.
                                         getToken()).intValue();
-            	            }
+                                }
                         }
                         code.append( "    actfreq " + actorFreq
                                 + " do " + outputName + " ("
