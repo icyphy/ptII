@@ -72,6 +72,7 @@ import ptolemy.domains.pn.kernel.*;
 import ptolemy.domains.de.kernel.*;
 import ptolemy.domains.dde.kernel.*;
 import ptolemy.domains.csp.kernel.*;
+import ptolemy.domains.fsm.kernel.FSMDirector;
 
 /**
  * A module that can be plugged into Vergil that adds support for
@@ -242,6 +243,7 @@ public class PtolemyPackage implements Module {
 	_directorModel.addElement(new DEDirector());
 	_directorModel.addElement(new CSPDirector());
 	_directorModel.addElement(new DDEDirector());
+	_directorModel.addElement(new FSMDirector());
 	//FIXME find these names somehow.
 	_directorComboBox = new JComboBox(_directorModel);
 	_directorComboBox.setRenderer(new NamedObjCellRenderer());
@@ -285,7 +287,12 @@ public class PtolemyPackage implements Module {
 		    _directorModel.setSelectedItem(null);
 		    return;
 		}
-		CompositeActor actor = (CompositeActor)d.getModel();
+                CompositeEntity entity = d.getModel();
+                if(!(entity instanceof CompositeActor)) {
+                    _directorModel.setSelectedItem(null);
+                    return;
+                }
+		CompositeActor actor = (CompositeActor)entity;
 		Director director = actor.getDirector();
 		if(director == null) {
 		    _directorModel.setSelectedItem(null);
@@ -309,6 +316,7 @@ public class PtolemyPackage implements Module {
 	};
 	application.addDocumentListener(ldl);
         application.addDocumentFactory(new PtolemyDocument.Factory());
+        application.addDocumentFactory(new PtolemyDocument.FSMFactory());
 
 	SwingUtilities.invokeLater(new PaletteInitializer());
 
@@ -466,7 +474,10 @@ public class PtolemyPackage implements Module {
 	public Component getListCellRendererComponent(
 	    JList list, Object value, int index,
 	    boolean isSelected, boolean cellHasFocus) {
-	    setText(((NamedObj)value).getClass().getName());
+            if(value == null) 
+                setText("");
+            else 
+                setText(((NamedObj)value).getClass().getName());
 	    setBackground(isSelected ? Color.blue : Color.white);
 	    setForeground(isSelected ? Color.white : Color.black);
 	    return this;

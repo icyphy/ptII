@@ -1,7 +1,6 @@
 BUGS:
 Fix layering of nodes and edges
 The TreePane should have the first level expanded by default.
-Layout breaks when toolbar gets dragged to the bottom.
 When a graph with no graphical information is loaded, then layout should be triggered.
 If an executed model refs other files, then those files should be relative to the model, not to the cwd of the editor.
 
@@ -15,6 +14,11 @@ Better layout for Palette.
 Icon drawing app.
 Better parameter configuration.
 Cut and Paste.
+Printing.
 
 DONE:
 Direct connections from Ports to Ports.
+Layout breaks when toolbar gets dragged to the bottom.
+Manhattan Routing.
+Multiple Document Factories.
+Visual Notations for Ptolemy Package.

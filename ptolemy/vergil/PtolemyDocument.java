@@ -251,6 +251,30 @@ public class PtolemyDocument extends AbstractDocument
 	}
     }
 
+    /**
+     * The factory for Ptolemy FSM documents.
+     */
+    public static class FSMFactory extends Factory {
+        /** Create a document with an empty FSMActor for
+         * its model.
+         */
+        public Document createDocument(Application app) {
+            PtolemyDocument d = new PtolemyDocument(app);
+	    CompositeEntity toplevel =
+                new ptolemy.domains.fsm.kernel.FSMActor();
+            d.setModel(toplevel);
+            return d;
+        }
+
+	/** Return a string which is the name associated with this document
+	 * factory.
+         * @returns The string "Ptolemy II FSM".
+	 */
+	public String getName() {
+	    return "Ptolemy II FSM";
+	}
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

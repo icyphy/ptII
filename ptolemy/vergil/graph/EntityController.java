@@ -90,25 +90,6 @@ public class EntityController extends LocatableNodeController {
 	interactor.addInteractor(_menuCreator);
     }
 
-    /** Create a new node with the given semantic object and
-     *  add it to the graph.  Draw the node at the given location.
-     
-    public Node addNode(Object semanticObject, double x, double y) {
-        GraphController controller = getController();
-        Node node = controller.getGraphImpl().createCompositeNode(
-                semanticObject);
-
-        // Add to the graph
-        controller.getGraphImpl().addNode(node, controller.getGraph());
-        Figure nf = drawNode(node);
-	CanvasUtilities.translateTo(nf, x, y);
-        double location[] = new double[2];
-        location[0] = x;
-        location[1] = y;
-        setLocation(node, location);
-        return node;
-    }
-    */
     /** 
      * Create a node with the given semantic object.  Get the graph 
      * implementation and ask it to create a composite node.
@@ -182,7 +163,6 @@ public class EntityController extends LocatableNodeController {
 	}
 	Object nodes[] = nodeList.toArray();
 	for(int i = 0; i < nodes.length; i++) {
-	    System.out.println("nodes" + nodes);
 	    _portController.removeNode((Node)(nodes[i]));
 	}
 	super.removeNode(node);

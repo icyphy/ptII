@@ -89,8 +89,10 @@ public class RelationController extends LocatableNodeController {
     public class RelationContextMenuFactory extends MenuFactory {
 	public JPopupMenu create(Figure source) {
 	    Node sourcenode = (Node) source.getUserObject();
-	    NamedObj object = (NamedObj) sourcenode.getSemanticObject();
-	    return new Menu(object);
+	    Vertex vertex = (Vertex) sourcenode.getSemanticObject();
+            ComponentRelation relation = 
+               (ComponentRelation)vertex.getContainer();
+	    return new Menu(relation);
 	}
 
 	public class Menu extends BasicContextMenu {
