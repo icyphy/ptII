@@ -41,7 +41,7 @@ import ptolemy.math.*;
 
 <p>
 @author  William Wu (wbwu@eecs.berkeley.edu), David Teng(davteng@hkn.eecs.berkeley.edu)
-@version %W%	%G%
+@version: $Id$
 */
 
 public class RealZFactor extends RealFactor{
@@ -211,7 +211,8 @@ public class RealZFactor extends RealFactor{
              Complex[] roots = new Complex[2];
              double a = _numerator[0];
              double b = _numerator[1];
-             boolean conjugate = MathWizard.realquadraticRoots(0.0,a,b,roots);
+             boolean conjugate = 
+                 MathWizard.realquadraticRoots(0.0, a, b, roots);
              if (roots[0] != null) {
                  pole = new Complex(0);
                  singlepole.addElement(pole);
@@ -274,7 +275,8 @@ public class RealZFactor extends RealFactor{
              Complex[] roots = new Complex[2];
              double a = _denominator[0];
              double b = _denominator[1];
-             boolean conjugate = MathWizard.realquadraticRoots(0.0,a,b,roots);
+             boolean conjugate =
+                 MathWizard.realquadraticRoots(0.0, a, b, roots);
              if (roots[0] != null) {
                  zero = new Complex(0);
                  singlezero.addElement(zero);
