@@ -77,23 +77,30 @@ proc speedComparison  {xmlFile \
     set shallowElapsedTime [expr {int([lindex $shallowElapsed 0] /1000.0)}]
     set interpretedElapsedTime [expr {int([lindex $interpretedElapsed 0] /1000.0)}]
 
-    set elapsedRatio [expr { \
-	    int(
-	    (([lindex $shallowElapsed 0] + 0.0) \
-	    / \
-	    ([lindex $interpretedElapsed 0] + 0.0)) * 100)}]
-
+    if {[lindex $interpretedElapsed 0] == 0} {
+	set elapsedRatio 0
+    } else {
+	set elapsedRatio [expr { \
+		int(
+	(([lindex $shallowElapsed 0] + 0.0) \
+		/ \
+		([lindex $interpretedElapsed 0] + 0.0)) * 100)}]
+    }
 
     set shallowExecElapsedTime \
 	    [expr {int([lindex $shallowExecElapsed 0] /1000.0)}]
     set interpretedExecElapsedTime \
 	    [expr {int([lindex $interpretedExecElapsed 0] /1000.0)}]
 
-    set execElapsedRatio [expr { \
-	    int(
-	    (([lindex $shallowExecElapsed 0] + 0.0) \
-	    / \
-	    ([lindex $interpretedExecElapsed 0] + 0.0)) * 100)}]
+    if {[lindex $interpretedExecElapsed 0] == 0} { 
+	set execElapsedRatio 0
+    } else {
+	set execElapsedRatio [expr { \
+		int(
+	(([lindex $shallowExecElapsed 0] + 0.0) \
+		/ \
+		([lindex $interpretedExecElapsed 0] + 0.0)) * 100)}]
+    }
 
     puts "$modelName $repeat builtin runs: Interp/Shallow: \
 	    $interpretedElapsedTime/$shallowElapsedTime \
@@ -168,13 +175,15 @@ proc sootCodeGeneration {modelPath {codeGenType Shallow}} {
 
     set results ""
     # make -C is a GNU make extension that changes to a directory
-    set results ""
+#    set results ""
     set command compile${codeGenType}Demo
-    if [catch {set results [exec make -C .. MODEL=$model SOURCECLASS=$modelPath $command]]} errMsg] {
-	puts $results
-	puts $errMsg
-    }
-    puts $results
+    exec make -C .. MODEL=$model SOURCECLASS=$modelPath $command
+
+#    if [catch {set results [exec make -C .. MODEL=$model SOURCECLASS=$modelPath $command]]} errMsg] {
+#	puts $results
+#	puts $errMsg
+#    }
+#    puts $results
     # If the model has a different name than the file name, we
     # handle it here.
     set command run${codeGenType}Demo
