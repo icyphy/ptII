@@ -156,21 +156,21 @@ public class Constants {
         _table.put("true", BooleanToken.TRUE);
         _table.put("false", BooleanToken.FALSE);
 
+        // This variable is used as a tag by the FileParameter
+        // class to represent a search in the classpath.  This is a hack,
+        // but it deals with the fact that Java is not symmetric in how it
+        // deals with getting files from the classpath (using getResource)
+        // and getting files from the file system.
+        _table.put("CLASSPATH",
+                new StringToken("xxxxxxCLASSPATHxxxxxx"));
+        
         try {
-            // This variable is used as a tag by the FileParameter
-            // class to represent a search in the classpath.  This is a hack,
-            // but it deals with the fact that Java is not symmetric in how it
-            // deals with getting files from the classpath (using getResource)
-            // and getting files from the file system.
-            _table.put("CLASSPATH",
-                    new StringToken("xxxxxxCLASSPATHxxxxxx"));
-
             // StringToken.getProperty() specially handles user.dir.
             _table.put("CWD",
                     new StringToken(StringUtilities.getProperty("user.dir")));
             _table.put("HOME",
                     new StringToken(StringUtilities.getProperty("user.home")));
-
+            
             // When Vergil is started up, java is called with
             // -Dptolemy.ptII.dir=${PTII} and 
             // StringUtilities.getProperty() does some special munging 
@@ -186,7 +186,9 @@ public class Constants {
             _table.put("TMPDIR",
                     new StringToken(
                             StringUtilities.getProperty("java.io.tmpdir")));
-        } catch (Exception e) {}
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
 
         // Infinities and NaN
         _table.put("NaN", new DoubleToken(Double.NaN));
