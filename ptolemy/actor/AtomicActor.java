@@ -180,20 +180,18 @@ public class AtomicActor extends ComponentEntity implements Actor {
         return getDirector();
     }
 
-    /** Return the FunctionDependency object associated with this
-     *  atomic actor.
-     *  @return the FunctionDependency object.
-     *  @see FunctionDependency
+    /** Return a representation of the function dependencies that output
+     *  ports have on input ports.
+     *  @return A representation of the function dependencies of the
+     *   ports of this actor.
+     *  @see ptolemy.actor.util.FunctionDependency
      */
-    public FunctionDependency getFunctionDependencies() {
+    public FunctionDependency getFunctionDependency() {
         // If the _functionDependency object is not constructed,
         // construct a FunctionDependencyOfAtomicActor object.
         if (_functionDependency == null) {
             _functionDependency = new FunctionDependencyOfAtomicActor(this);
         }
-        // Note, we don't guarantee the validity of this
-        // _functionDependency in this method. Any further access of
-        // the _functionDependency will check the validity.
         return _functionDependency;
     }
 
@@ -427,22 +425,33 @@ public class AtomicActor extends ComponentEntity implements Actor {
 
     }
 
-    /** Explicitly declare which inputs and outputs are not dependent.
-     *  In this base class, this method does nothing. Subclasses should
-     *  implement the details.
-     *  <p>
-     *  To declare a pair, input and output, independent, use the <i>
-     *  removeDependency(IOPort IOPort)</i> method.
-     *
+    /** Prune the dependency declarations, which by default state
+     *  that each output port depends on all input ports in a firing.
+     *  This base class does no pruning, but subclasses that have
+     *  output ports that do not depend on input ports should override
+     *  this method to prune the dependencies.  To declare that an
+     *  output port does not depend on an input port, subclasses
+     *  should call removeDependency(input, output).
      *  @see ptolemy.domains.de.lib.TimedDelay
      *  @see #removeDependency(IOPort, IOPort)
+     *  @see ptolemy.actor.util.FunctionDependencyOfAtomicActor
      */
-    public void removeDependencies() {
+    public void pruneDependencies() {
     }
 
-    /** Explicitly declare a pair, input and output, are independent.
-     *  @param input the input port
-     *  @param output the output port
+    /** Remove the dependency that the specified output port has,
+     *  by default, on the specified input port. By default, each
+     *  output port is assumed to have a dependency on all input
+     *  ports. Subclasses should
+     *  call this method inside their override of the
+     *  {@link #pruneDependencies()} method if a particular output
+     *  port does not depend on data from a particular input port
+     *  in a firing. There should be one such call for each
+     *  input, output pair that does not have a dependency.
+     *  @param input The input port.
+     *  @param output The output port that does not depend on the
+     *   input port.
+     *  @see ptolemy.actor.util.FunctionDependencyOfAtomicActor
      */
     public void removeDependency(IOPort input, IOPort output) {
         _functionDependency.removeDependency(input, output);

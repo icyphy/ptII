@@ -44,7 +44,6 @@ import java.util.List;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.util.FunctionDependency;
 import ptolemy.actor.util.FunctionDependencyOfCompositeActor;
-import ptolemy.actor.util.HasFunctionDependencies;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.ComponentRelation;
@@ -120,7 +119,7 @@ import ptolemy.kernel.util.Workspace;
    @see ptolemy.actor.Manager
 */
 public class CompositeActor extends CompositeEntity
-    implements Actor, HasFunctionDependencies {
+    implements Actor {
 
     /** Construct a CompositeActor in the default workspace with no container
      *  and an empty string as its name. Add the actor to the workspace
@@ -365,20 +364,18 @@ public class CompositeActor extends CompositeEntity
         }
     }
 
-    /** Return the FunctionDependency object associated with this
-     *  composite actor.
-     *  @return the FunctionDependency object.
-     *  @see FunctionDependency
+    /** Return a representation of the function dependencies that output
+     *  ports have on input ports.
+     *  @return A representation of the function dependencies of the
+     *   ports of this actor.
+     *  @see ptolemy.actor.util.FunctionDependency
      */
-    public FunctionDependency getFunctionDependencies() {
+    public FunctionDependency getFunctionDependency() {
         // If the _functionDependency object is not constructed,
-        // construct a FunctionDependencyOfAtomicActor object.
+        // construct a FunctionDependencyOfCompositeActor object.
         if (_functionDependency == null) {
             _functionDependency = new FunctionDependencyOfCompositeActor(this);
         }
-        // Note, we don't guarantee the validity of this
-        // _functionDependency in this method. Any further access of
-        // the _functionDependency will check the validity.
         return _functionDependency;
     }
 
