@@ -96,7 +96,7 @@ public class CorbaActorClient extends TypedAtomicActor {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-        ORBInitProperties  = new Parameter(this, "nameServer");
+        ORBInitProperties  = new Parameter(this, "ORBInit");
         ORBInitProperties.setToken(new StringToken(""));
         remoteActorName = new Parameter(this, "RemoteActorName");
         remoteActorName.setToken(new StringToken(""));
@@ -191,12 +191,14 @@ public class CorbaActorClient extends TypedAtomicActor {
         String[] args = new String[st.countTokens()];
         int i = 0;
         while (st.hasMoreTokens()) {
-              args[i] = st.nextToken();
+            args[i] = st.nextToken();
+            i++;
         }
         try {
             try {
             // start the ORB
             ORB orb = ORB.init(args, null);
+            _debug(getName(), "ORB initialized");
             //get the root naming context
             org.omg.CORBA.Object objRef = orb.resolve_initial_references(
                     "NameService");
@@ -204,12 +206,15 @@ public class CorbaActorClient extends TypedAtomicActor {
             //resolve the remote actor reference in Naming
             NameComponent namecomp = new NameComponent(
                     (remoteActorName.getToken()).stringValue(), "");
+            _debug(getName(), " looking for name: ", 
+                    (remoteActorName.getToken()).stringValue());
             NameComponent path[] = {namecomp};
             // locate the remote actor
             _remoteActor = 
                 ptolemy.actor.corba.util.CorbaActorHelper.narrow(
                         ncRef.resolve(path));
             } catch (UserException ex) {
+                _debug(getName(), " initialize ORB failed.");
                 throw new IllegalActionException(this,
                         " initialize ORB failed." + ex.getMessage());
             }
@@ -217,15 +222,20 @@ public class CorbaActorClient extends TypedAtomicActor {
             Enumeration atts = getAttributes();
             while (atts.hasMoreElements()) {
                 Attribute att = (Attribute)atts.nextElement();
-                if (!_remoteActor.hasParameter(att.getName())) {
-                    throw new IllegalActionException(this,
-                            "Parameter: " + att.getName() +
-                            " not found on the remote side.");
+                if((att != ORBInitProperties) && (att != remoteActorName)) {
+                    _debug(getName(), 
+                            " check remote parameter: ", att.getName());
+                    if (!_remoteActor.hasParameter(att.getName())) {
+                        throw new IllegalActionException(this,
+                                "Parameter: " + att.getName() +
+                                " not found on the remote side.");
+                    }
                 }
             }
             Enumeration ports = getPorts();
             while (ports.hasMoreElements()) {
                 IOPort p = (IOPort)ports.nextElement();
+                _debug(getName(), " check remote port: ", p.getName());
                 if (!_remoteActor.hasPort(p.getName(),
                         p.isInput(), p.isOutput(), p.isMultiport())) {
                     throw new IllegalActionException(this,
@@ -244,6 +254,7 @@ public class CorbaActorClient extends TypedAtomicActor {
                     
             }         
         } catch (SystemException ex) {
+            _debug(getName(), " CORBA init failed ", ex.getMessage());
             throw new IllegalActionException(this,
                     "CORBA set up faliar"+ex.getMessage());
         }
