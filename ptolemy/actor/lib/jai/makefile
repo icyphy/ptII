@@ -49,6 +49,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = JAIAffineTransform.java \
+	JAIBandCombine.java \
 	JAIBandSelect.java \
 	JAIBoxFilter.java \
 	JAIBMPWriter.java \
