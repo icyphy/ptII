@@ -3,20 +3,23 @@
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
 <title>Ptolemy II Banner Page</title>
 </head>
-<body bgcolor=#000000>
-<Table width="100%" ALIGN="center" CELLPADDING=0 BORDER=0>
-<TR VALIGN="top">
-<TD width="120" ALIGN="center">
-<img src="img/ptIIplanetIcon.gif" border=0>
-</TD>
-<TD ALIGN="center">
-<img src="img/banner.gif" alt="Ptolemy II" border=0>
-</TD>
-<TD width="120" ALIGN="right">
-<img src="img/PtolemyIIIcon.gif" border=0>
-</TD>
-</TR>
-</Table>
-</center>
-</body>
+<frameset cols="150,*" border=0 frameborder="no">
+    <frame name="contentsheader"
+	scrolling="no"
+	target="mainheader"
+	noresize 
+	src="contentsheader.html"
+	marginwidth=0>
+    <frame name="mainheader"
+	scrolling="no"
+	target="contentsheader"
+	noresize 
+	src="mainheader.html"
+	marginwidth=0>
+<noframes>
+  <body>
+  <p>This page uses frames, but your browser doesn't support them.</p>
+  </body>
+  </noframes>
+</frameset>
 </html>
