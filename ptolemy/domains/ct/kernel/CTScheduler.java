@@ -219,6 +219,10 @@ public class CTScheduler extends Scheduler {
             while(outPorts.hasNext()) {
                 IOPort outPort = (IOPort)outPorts.next();
                 Actor pre = (Actor)outPort.getContainer();
+                // NOTE: This could be done by using
+                // NamedObj.depthInHierarchy() instead of comparing the
+                // executive directors, but its tested this way, so we
+                // leave it alone.
                 if ((actor.getExecutiveDirector() 
                         == pre.getExecutiveDirector()) &&
                         !predecessors.contains(pre)) {
@@ -247,6 +251,10 @@ public class CTScheduler extends Scheduler {
             while(inPorts.hasNext()) {
                 IOPort inPort = (IOPort)inPorts.next();
                 Actor post = (Actor)inPort.getContainer();
+                // NOTE: This could be done by using
+                // NamedObj.depthInHierarchy() instead of comparing the
+                // executive directors, but its tested this way, so we
+                // leave it alone.
                 if ((actor.getExecutiveDirector() 
                         == post.getExecutiveDirector()) &&
                         !successors.contains(post)) {
@@ -801,7 +809,7 @@ public class CTScheduler extends Scheduler {
             }
         }
 
-        // Set the type of all the connected input port equal to the
+        // Set the type of all the connected input ports equal to the
         // type of the specified port. The caller must make sure that 
         // the type of argument has already been set. Otherwise an
         // InternalErrorException will be thrown.
@@ -814,16 +822,26 @@ public class CTScheduler extends Scheduler {
                 throw new InternalErrorException(port.getFullName()
                         + " type unknown.");
             }
+            // Iterate over all ports that can receive data from this one.
+            // This includes input ports lower in the hierarchy or output
+            // ports higher in the hierarchy.
+            int referenceDepth = port.depthInHierarchy();
             Iterator connectedPorts = 
-                port.deepConnectedInPortList().iterator();
+                   port.deepConnectedPortList().iterator();
             while(connectedPorts.hasNext()) {
                 IOPort nextPort = (IOPort)connectedPorts.next();
-                if (!_map.containsKey(nextPort)) {
-                    setType(nextPort, getType(port));
-                } else if (!getType(port).equals(getType(nextPort))) {
-                    throw new NotSchedulableException("Signal type conflict: "
-                            + port.getFullName() + " and " 
-                            + nextPort.getFullName());
+                if ((nextPort.isInput() && nextPort.depthInHierarchy()
+                        >= referenceDepth)
+                        || (nextPort.isOutput() && nextPort.depthInHierarchy()
+                        < referenceDepth)) {
+                    if (!_map.containsKey(nextPort)) {
+                        setType(nextPort, getType(port));
+                    } else if (!getType(port).equals(getType(nextPort))) {
+                        throw new NotSchedulableException(
+                                "Signal type conflict: "
+                                + port.getFullName() + " and " 
+                                + nextPort.getFullName());
+                    }
                 }
             }
         }
@@ -837,10 +855,4 @@ public class CTScheduler extends Scheduler {
         
         private LinkedList _discreteActors;
     }
-
 }
-
-
-
-
-
