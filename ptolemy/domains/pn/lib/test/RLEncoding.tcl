@@ -103,28 +103,4 @@ test RLEndocding-2.1 {Constructor tests} {
     $manager run
 } {}
 
-######################################################################
-####
-#
-test PNImageSource-3.1 {Test fire} {
-    # NOTE: Uses the setup above
-    set p1 [$a1 getAttribute "Image_file"]
-    $p1 setToken [java::new ptolemy.data.StringToken ptII.pbm]
-    $a1 initialize
-    $a1 fire
-} {}
-
-######################################################################
-####
-#
-test PNImageSource-4.1 {Test application} {
-    set a2 [java::new ptolemy.domains.pn.lib.PNImageSink $c1 "A2"]
-    set r1 [$a1 getPort "output"]
-    set r2 [$a2 getPort "input"]
-    $c1 connect $r1 $r2
-    $c1 setManager $manager
-    set d1 [java::new ptolemy.domains.pn.kernel.BasePNDirector D1]
-    $c1 setDirector $d1
-    $manager run
-} {}
 
