@@ -155,14 +155,20 @@ public class ClassDefinitionController extends ActorController {
      */
     protected Figure _renderNode(Object node) {
         Figure nf = super._renderNode(node);
-        // This cast should be safe...
-        CompositeFigure cf = (CompositeFigure)nf;
-        BasicFigure bf =
-            new BasicFigure(cf.getBackgroundFigure().getBounds(), 4.0f);
-        bf.setStrokePaint(_HIGHLIGHT_COLOR);
-        cf.add(bf);
-
-        return cf;
+        if(nf instanceof CompositeFigure) {
+            // This cast should be safe...
+            CompositeFigure cf = (CompositeFigure)nf;
+            Figure backgroundFigure = cf.getBackgroundFigure();
+            // This might be null because the node is hidden.
+            if(backgroundFigure != null) {
+                BasicFigure bf =
+                    new BasicFigure(backgroundFigure.getBounds(), 4.0f);
+                bf.setStrokePaint(_HIGHLIGHT_COLOR);
+                cf.add(bf);
+            }
+            return cf;
+        }
+        return nf;
     }
 
     ///////////////////////////////////////////////////////////////////

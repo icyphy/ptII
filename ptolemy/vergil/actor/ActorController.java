@@ -480,9 +480,9 @@ public abstract class ActorController extends AttributeController {
                         }
                     } else if (port.isOutput()) {
                         rateParameter = 
-                            (Variable)port.getAttribute("tokenConsumptionRate");
+                            (Variable)port.getAttribute("tokenProductionRate");
                         if (rateParameter == null) {
-                            String altName = "_tokenConsumptionRate";
+                            String altName = "_tokenProductionRate";
                             rateParameter = (Variable)port.getAttribute(altName);
                         }  
                     } 
