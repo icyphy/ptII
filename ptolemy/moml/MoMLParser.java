@@ -1453,7 +1453,7 @@ public class MoMLParser extends HandlerBase {
                 Object[] arguments = new Object[2];
                 arguments[0] = _current;
                 arguments[1] = dirName;
-                NamedObj container = _current;
+                // NamedObj container = _current;
                 _pushContext();
                 Class newClass = Class.forName(className, true, _classLoader);
                 _current = _createInstance(newClass, arguments);
@@ -2253,7 +2253,6 @@ public class MoMLParser extends HandlerBase {
                 ComponentPort port = _getPort(portName, context);
 
                 // Get relation if given
-                CompositeEntity container = (CompositeEntity)_current;
                 if (relationName != null) {
                     Relation tmpRelation = context.getRelation(relationName);
                     _checkForNull(tmpRelation, "No relation named \"" +
@@ -3773,9 +3772,6 @@ public class MoMLParser extends HandlerBase {
 
     // The current character data for the current element.
     private StringBuffer _currentCharData;
-
-    // The relation for the currently active connection.
-    private ComponentRelation _currentConnection;
 
     // The name of the currently active doc element.
     private String _currentDocName;

@@ -92,7 +92,7 @@ public class GraphicalMessageHandler extends MessageHandler {
         Object[] options = {"Dismiss"};
 
         // Show the MODAL dialog
-        int selected = JOptionPane.showOptionDialog(
+        JOptionPane.showOptionDialog(
                 _context,
                 message,
                 "Error",
@@ -157,7 +157,7 @@ public class GraphicalMessageHandler extends MessageHandler {
         Object[] options = {"OK"};
 
         // Show the MODAL dialog
-        int selected = JOptionPane.showOptionDialog(
+        JOptionPane.showOptionDialog(
                 _context,
                 message,
                 "Message",
