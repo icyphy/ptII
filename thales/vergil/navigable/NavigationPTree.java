@@ -104,7 +104,7 @@ public class NavigationPTree extends PTree {
                     }
             }
         }
-    };
+    }
 
     /**
      * This expandListener inform all other Tree of the Path expanded or collapse so that all Tree
