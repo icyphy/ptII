@@ -50,7 +50,7 @@ import ptolemy.moml.MoMLParser;
 import com.microstar.xml.XmlException;
 
 //////////////////////////////////////////////////////////////////////////
-//// PtolemyApplication
+//// MoMLApplication
 /**
 This application creates a Ptolemy II model given a MoML file name on the
 command line, and then executes that model.  The specified file should
