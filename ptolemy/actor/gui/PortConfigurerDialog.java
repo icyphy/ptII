@@ -2012,7 +2012,7 @@ public class PortConfigurerDialog extends PtolemyDialog
     private ArrayList _columnNames;
 
     /** When you click on the "Hide" column header, toggle this value.
-     * @see toggleHidePorts()
+     * @see ptolemy.actor.gui.PortConfigurerDialog.PortTableModel#toggleHidePorts()
      */
     private boolean _hideAllPorts = false;
 
@@ -2031,7 +2031,7 @@ public class PortConfigurerDialog extends PtolemyDialog
     private static String _SINGLETON_PARAMETER = "ptolemy.data.expr.SingletonParameter";
 
     /** When you click on the "Show Name" column header, toggle this value.
-     * @see #PortTableModel.toggleShowAllNames()
+     * @see ptolemy.actor.gui.PortConfigurerDialog.PortTableModel#toggleShowAllNames()
      */
     private boolean _showAllNames = false;
     private static String _STRING_ATTRIBUTE = "ptolemy.kernel.util.StringAttribute";
