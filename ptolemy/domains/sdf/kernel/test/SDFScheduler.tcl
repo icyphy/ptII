@@ -1385,6 +1385,91 @@ test SDFScheduler-13.3 {_debugging code coverage} {
     list $sched1 $sched2
 } {{{Ramp Cont Consumer}} Delay}
 
+test SDFScheduler-13.4 {Error message for transparent hierarchy multiport disconnected} {
+    set manager [java::new ptolemy.actor.Manager $w Manager]
+    set toplevel [java::new ptolemy.actor.TypedCompositeActor $w]
+    set director [java::new ptolemy.domains.sdf.kernel.SDFDirector $toplevel Director]
+    $toplevel setName Toplevel
+    $toplevel setManager $manager
+    $toplevel setDirector $director
+    set scheduler [java::cast ptolemy.domains.sdf.kernel.SDFScheduler [$director getScheduler]]
+
+    set a1 [java::new ptolemy.domains.sdf.kernel.test.SDFTestRamp $toplevel Ramp1]
+ 
+    set c1 [java::new ptolemy.actor.TypedCompositeActor $toplevel Cont]
+    set p1 [java::new ptolemy.actor.TypedIOPort $c1 p1]
+    $p1 setInput 1
+    $p1 setMultiport true
+ 
+    set a3 [java::new ptolemy.domains.sdf.kernel.test.SDFTestConsumer $c1 Consumer]
+    set a3input [java::field $a3 input]
+    set a4 [java::new ptolemy.domains.sdf.kernel.test.SDFTestConsumer $c1 Consumer2]
+    set a4input [java::field $a4 input]
+
+    $toplevel connect [java::field $a1 output] $p1 R1
+
+    $c1 connect $p1 $a3input R3
+    $c1 connect $p1 $a4input R4
+
+    $scheduler setValid false
+  
+    catch {
+       _initialize $toplevel
+	set sched1 [_getSchedule $scheduler]
+    } err
+
+    list $sched1 $err
+} {{{Ramp Cont Consumer}} {ptolemy.kernel.util.IllegalActionException: Failed to compute schedule:
+  in .Toplevel.Director
+Because:
+Actors remain that cannot be scheduled!
+Scheduled actors:
+.Toplevel.Ramp1
+.Toplevel.Cont.Consumer
+Unscheduled actors:
+.Toplevel.Cont.Consumer2
+}}
+
+test SDFScheduler-13.5 {Error message for opaque hierarchy multiport disconnected} {
+    set manager [java::new ptolemy.actor.Manager $w Manager]
+    set toplevel [java::new ptolemy.actor.TypedCompositeActor $w]
+    set director [java::new ptolemy.domains.sdf.kernel.SDFDirector $toplevel Director]
+    $toplevel setName Toplevel
+    $toplevel setManager $manager
+    $toplevel setDirector $director
+    set scheduler [java::cast ptolemy.domains.sdf.kernel.SDFScheduler [$director getScheduler]]
+
+    set a1 [java::new ptolemy.domains.sdf.kernel.test.SDFTestRamp $toplevel Ramp1]
+ 
+    set c1 [java::new ptolemy.actor.TypedCompositeActor $toplevel Cont]
+    set director2 [java::new ptolemy.domains.sdf.kernel.SDFDirector $c1 Director2]
+    set scheduler2 [java::cast ptolemy.domains.sdf.kernel.SDFScheduler [$director2 getScheduler]]
+    set p1 [java::new ptolemy.actor.TypedIOPort $c1 p1]
+    $p1 setInput 1
+    $p1 setMultiport true
+ 
+    set a3 [java::new ptolemy.domains.sdf.kernel.test.SDFTestConsumer $c1 Consumer]
+    set a3input [java::field $a3 input]
+    set a4 [java::new ptolemy.domains.sdf.kernel.test.SDFTestConsumer $c1 Consumer2]
+    set a4input [java::field $a4 input]
+
+    $toplevel connect [java::field $a1 output] $p1 R1
+
+    $c1 connect $p1 $a3input R3
+    $c1 connect $p1 $a4input R4
+
+    $scheduler setValid false
+  
+    set sched1 ""
+    set err ""
+ #   catch {
+       _initialize $toplevel
+	set sched1 [_getSchedule $scheduler]
+	set sched2 [_getSchedule $scheduler2]
+  #  } err
+   
+    list $sched1 $sched2 $err
+} {{{Ramp1 Cont}} {{Consumer2 Consumer}} {}}
 
 ######################################################################
 ####
