@@ -60,24 +60,46 @@ proc sootShallowCodeGeneration {modelPath} {
     }
 
     if { ! [file exists $modelPath ] } {
-	error "'$modelPath does not exist"
+	error "'$modelPath' does not exist"
     }
+
+    # Some models do not have names that match their file extensions
+    # For example ptolemy/domains/dt/kernel/test/auto/Chain3.xml defines
+    # a system called TestChain3
+    set parser [java::new ptolemy.moml.MoMLParser]
+    set toplevel [$parser parseFile $modelPath]
+    # Strip off the leading .
+    set modelName [string range [$toplevel getFullName] 1 end]
+
+    if {"$model" != "$modelName"} {
+	puts stderr "WARNING: model name and file name do not match\n\
+		'$modelPath'\n defines a model named\n\
+		'$modelName', yet the file is called '$model'"
+    }
+
     if {[string range $modelPath 0 2] == "../"} {
 	# Ugh.  Strip off the first ../ because we are cd'ing up one level.
 	set modelPath [string range $modelPath 3 end]
     }
 
+
     puts "adjusted modelPath: $modelPath"
+    puts "modelName: $modelName"
     puts "Now running make, this could take 60 seconds or so"
 
     set results ""
     # make -C is a GNU make extension that changes to a directory
+    # We run jsCompileShallowDemo so that we can compile under
+    # JavaScope
     if [catch {set results [exec make -C .. MODEL=$model \
 	    SOURCECLASS=$modelPath compileShallowDemo]} errMsg] {
 	puts $results
 	error $errMsg
     }
-    set results [exec make -C .. MODEL=$model \
+	puts $results
+    # If the model has a different name than the file name, we
+    # handle it here.
+    set results [exec make -C .. MODEL=$modelName \
 	    SOURCECLASS=$modelPath runShallowDemo]
     puts $results
 }
