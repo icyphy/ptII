@@ -168,7 +168,7 @@ test SearchPath-4.1 {PtolemyCoreClasses} {
 	    [expr {[$ptolemyCoreClassSet size] > 100}] \
 	    [$ptolemyCoreClassSet contains $namedObjString] \
 	    [$ptolemyCoreClassSet contains $notAClassString]
-} {1 0 0}
+} {1 1 0}
 
 ######################################################################
 ####
