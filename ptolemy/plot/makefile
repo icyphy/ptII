@@ -54,7 +54,7 @@ JARFILE = 	$(TYPACKAGE).jar
 # Classes that are included in the jar file as Java Bean.
 JBEANCLASSES =	ptolemy/plot/Plot.class ptolemy/plot/PlotLive.class
 
-SRCDIRS = 	demo #apps
+SRCDIRS = 	demo apps
 DIRS = 		$(SRCDIRS) doc test
 
 # Java Sources
