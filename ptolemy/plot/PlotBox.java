@@ -408,10 +408,10 @@ public class PlotBox extends JPanel implements Printable {
             // be performed in the event dispatch thread.
             if (!_actionsDeferred) {
                 Runnable doActions = new Runnable() {
-                    public void run() {
-                        _executeDeferredActions();
-                    }
-                };
+                        public void run() {
+                            _executeDeferredActions();
+                        }
+                    };
                 try {
                     // NOTE: Using invokeAndWait() here risks causing
                     // deadlock.  Don't do it!
@@ -470,9 +470,9 @@ public class PlotBox extends JPanel implements Printable {
         Rectangle rectangle = new Rectangle(_preferredWidth, _preferredHeight);
         return exportImage(
                 new BufferedImage(
-                    rectangle.width,
-                    rectangle.height,
-                    BufferedImage.TYPE_INT_ARGB),
+                        rectangle.width,
+                        rectangle.height,
+                        BufferedImage.TYPE_INT_ARGB),
                 rectangle,
                 _defaultImageRenderingHints(),
                 false);
@@ -489,9 +489,9 @@ public class PlotBox extends JPanel implements Printable {
     public synchronized BufferedImage exportImage(Rectangle rectangle) {
         return exportImage(
                 new BufferedImage(
-                    rectangle.width,
-                    rectangle.height,
-                    BufferedImage.TYPE_INT_ARGB),
+                        rectangle.width,
+                        rectangle.height,
+                        BufferedImage.TYPE_INT_ARGB),
                 rectangle,
                 _defaultImageRenderingHints(),
                 false);
@@ -541,8 +541,8 @@ public class PlotBox extends JPanel implements Printable {
         return exportImage(
                 bufferedImage,
                 new Rectangle(
-                    bufferedImage.getWidth(),
-                    bufferedImage.getHeight()),
+                        bufferedImage.getWidth(),
+                        bufferedImage.getHeight()),
                 _defaultImageRenderingHints(),
                 true);
     }
@@ -578,7 +578,7 @@ public class PlotBox extends JPanel implements Printable {
      *  @return Array of colors
      *  @see #setColors(Color[])
      */
-     public Color[] getColors() {
+    public Color[] getColors() {
         return _colors;
     }
 
@@ -706,7 +706,7 @@ public class PlotBox extends JPanel implements Printable {
      *  @see #setPlotRectangle(Rectangle)
      */
     public Rectangle getPlotRectangle() {
-      return new Rectangle(_ulx, _uly, _lrx-_ulx, _lry-_uly);
+        return new Rectangle(_ulx, _uly, _lrx-_ulx, _lry-_uly);
     }
 
     /** Get the preferred size of this component.
@@ -735,10 +735,10 @@ public class PlotBox extends JPanel implements Printable {
      *  @see #getXRange()
      */
     public synchronized double[] getXAutoRange() {
-      double[] result = new double[2];
-      result[0] = _xBottom;
-      result[1] = _xTop;
-      return result;
+        double[] result = new double[2];
+        result[0] = _xBottom;
+        result[1] = _xTop;
+        return result;
     }
 
     /** Get the label for the X (horizontal) axis, or null if none has
@@ -801,10 +801,10 @@ public class PlotBox extends JPanel implements Printable {
      *  @see #getYRange()
      */
     public synchronized double[] getYAutoRange() {
-      double[] result = new double[2];
-      result[0] = _yBottom;
-      result[1] = _yTop;
-      return result;
+        double[] result = new double[2];
+        result[0] = _yBottom;
+        result[1] = _yTop;
+        return result;
     }
 
     /** Get the label for the Y (vertical) axis, or null if none has
@@ -877,8 +877,8 @@ public class PlotBox extends JPanel implements Printable {
      *  @param graphics The graphics context.
      */
     public synchronized void paintComponent(Graphics graphics) {
-       //  super.paintComponent(graphics);
-//         _drawPlot(graphics, true);
+        //  super.paintComponent(graphics);
+        //         _drawPlot(graphics, true);
         BufferedImage newPlotImage = _plotImage;
         if(newPlotImage == null) {
             Rectangle bounds = getBounds();
@@ -1001,15 +1001,15 @@ public class PlotBox extends JPanel implements Printable {
         if (index >= 1) {
             return Printable.NO_SUCH_PAGE;
         }
-         Graphics2D graphics2D = (Graphics2D) graphics;
-         // Scale the printout to fit the pages.
-         // Contributed by Laurent ETUR, Schlumberger Riboud Product Center
-         double scalex = format.getImageableWidth() / (double) getWidth();
-         double scaley = format.getImageableHeight() / (double) getHeight();
-         double scale = Math.min(scalex, scaley);
-         graphics2D.translate((int)format.getImageableX(),
-                 (int)format.getImageableY());
-         graphics2D.scale(scale, scale);
+        Graphics2D graphics2D = (Graphics2D) graphics;
+        // Scale the printout to fit the pages.
+        // Contributed by Laurent ETUR, Schlumberger Riboud Product Center
+        double scalex = format.getImageableWidth() / (double) getWidth();
+        double scaley = format.getImageableHeight() / (double) getHeight();
+        double scale = Math.min(scalex, scaley);
+        graphics2D.translate((int)format.getImageableX(),
+                (int)format.getImageableY());
+        graphics2D.scale(scale, scale);
         _drawPlot(graphics, true);
         return Printable.PAGE_EXISTS;
     }
@@ -2227,7 +2227,7 @@ public class PlotBox extends JPanel implements Printable {
                 if (labxpos > preLength) {
                     // calculate the length of the label
                     preLength = xCoord1
-                            + _labelFontMetrics.stringWidth(label)/2 + 10;
+                        + _labelFontMetrics.stringWidth(label)/2 + 10;
 
                     // Draw the label.
                     // NOTE: 3 pixel spacing between axis and labels.
@@ -2273,9 +2273,9 @@ public class PlotBox extends JPanel implements Printable {
             int yl = _ylabel.length();
             if (graphics instanceof Graphics2D) {
                 int starty = _uly
-                        + (_lry-_uly)/2
-                        + _labelFontMetrics.stringWidth(_ylabel)/2
-                        - charwidth;
+                    + (_lry-_uly)/2
+                    + _labelFontMetrics.stringWidth(_ylabel)/2
+                    - charwidth;
                 Graphics2D g2d = (Graphics2D)graphics;
                 // NOTE: Fudge factor so label doesn't touch axis labels.
                 int startx = charcenter + halflabelheight - 2;
@@ -2286,7 +2286,7 @@ public class PlotBox extends JPanel implements Printable {
                 // Not graphics 2D, no support for rotation.
                 // Vertical label is fairly complex to draw.
                 int starty = _uly
-                        + (_lry-_uly)/2 - yl*halflabelheight + labelheight;
+                    + (_lry-_uly)/2 - yl*halflabelheight + labelheight;
                 for (int i = 0; i < yl; i++) {
                     String nchar = _ylabel.substring(i, i+1);
                     int cwidth = _labelFontMetrics.stringWidth(nchar);
@@ -2971,8 +2971,8 @@ public class PlotBox extends JPanel implements Printable {
         double x = pos - Math.floor(pos);
         int i;
         for (i = 0; i < grid.size() &&
-                x >= ((Double)grid.elementAt(i)).doubleValue();
-            i++){}
+                 x >= ((Double)grid.elementAt(i)).doubleValue();
+             i++){}
         if (i >= grid.size())
             return pos;
         else
@@ -3627,8 +3627,8 @@ public class PlotBox extends JPanel implements Printable {
                     } catch (Exception ex) {
                         Component ancestor = getTopLevelAncestor();
                         JOptionPane.showMessageDialog(ancestor,
-                        "Printing failed:\n" + ex.toString(),
-                        "Print Error", JOptionPane.WARNING_MESSAGE);
+                                "Printing failed:\n" + ex.toString(),
+                                "Print Error", JOptionPane.WARNING_MESSAGE);
                     }
                 }
             } else if (event.getSource() == _resetButton) {
