@@ -2,10 +2,6 @@ dnl	This file is an input file used by the GNU "autoconf" program to
 dnl	generate the file "configure", which is run to configure the
 dnl	Makefile in this directory.
 
-dnl Don't look for ptolemy/kernel/util/NamedObj.java here, or
-dnl else we won't be able to rebuild after make extraclean.
-AC_INIT(mk/ptII.mk.in)
-
 # Version: $Id$
 # Copyright (c) 1997-1998 The Regents of the University of California.
 # All rights reserved.
@@ -33,34 +29,64 @@ AC_INIT(mk/ptII.mk.in)
 # 						COPYRIGHTENDKEY
 
 
+dnl Don't look for ptolemy/kernel/util/NamedObj.java here, or
+dnl else we won't be able to rebuild after make extraclean.
+AC_INIT(mk/ptII.mk.in)
+
+# We must have PTII set before running configure.
+if test -z "$PTII"; then
+    echo "You must set the PTII environment variable before running configure"
+    exit 3	
+fi 
+
+if test  ! -d "$PTII"; then
+    echo "\$PTII is set to '$PTII', but it does not exist"
+    exit 3	
+fi 
+
+if test  ! -w "$PTII"; then
+    echo "\$PTII is set to '$PTII', but it is not writable by you"
+    exit 3	
+fi 
+
+# The default value of prefix
+AC_PREFIX_DEFAULT($PTII)
+
+
 #--------------------------------------------------------------------
 #	See if there was a command-line option for where Java is;  if
-#	not, check to see if the JAVA_HOME environment variable is set;
+#	not, check to see if the PTJAVA_DIR environment variable is set;
 #       if it is not, look for javac on the path.
 #--------------------------------------------------------------------
 
-AC_ARG_WITH(java, [  --with-java=DIR           use Java binaries from DIR, defaults to the value of the JAVA_HOME environment variable],
-    JAVA_DIR=$withval, JAVA_DIR=$JAVA_HOME)
+AC_ARG_WITH(java, [  --with-java=DIR           use Java binaries from DIR, defaults to the value of the PTJAVA_DIR environment variable],
+    PTJAVA_DIR=$withval)
 
-if test ! -d "$JAVA_DIR"; then
-    AC_MSG_WARN([JAVA_DIR environment variable is set to
-  '${JAVA_DIR}', which is not a directory,
-  so we search for the java compiler.])
+if test ! -d "$PTJAVA_DIR"; then
+    if test -z "$PTJAVA_DIR"; then
+	AC_MSG_WARN([PTJAVA_DIR environment variable was not set,
+so we search for the java compiler.])
+
+    else
+	AC_MSG_WARN([PTJAVA_DIR environment variable is set to
+'${PTJAVA_DIR}', which is not a directory,
+so we search for the java compiler.])
+    fi 
     AC_PATH_PROG(JAVAC, javac)
     if test -x "$JAVAC"; then	
 	JAVABIN=`dirname $JAVAC`
-	JAVA_DIR=`dirname $JAVABIN`
+	PTJAVA_DIR=`dirname $JAVABIN`
     else
         AC_MSG_WARN([ Failed to find javac, perhaps Java is not installed?])
     fi
 
     # The default location that we look for the JDK.  This should probably
     # be a list that includes /usr/local/jdk and /opt/jdk
-    DEFAULT_JDK=/opt/jdk1.1.4
-    if test ! -d "$JAVA_DIR"; then
-	AC_MSG_WARN(['${JAVA_DIR}' is not a directory, using the default '${DEFAULT_JDK}'])
+    DEFAULT_JDK=/opt/jdk1.1.6
+    if test ! -d "$PTJAVA_DIR"; then
+	AC_MSG_WARN(['${PTJAVA_DIR}' is not a directory, using the default '${DEFAULT_JDK}'])
 	if test -d "$DEFAULT_JDK"; then
-	    JAVA_DIR=`cd $DEFAULT_JDK; pwd`	
+	    PTJAVA_DIR=`cd $DEFAULT_JDK; pwd`	
 	else
 			    AC_MSG_ERROR([
 Java directory $DEFAULT_JDK doesn't exist.
@@ -70,47 +96,47 @@ Try --with-java=DIR, or set the JAVA_HOME environment variable.])
 fi
 
 #
-# Check that we have the javac that corresponds with JAVA_DIR in our path
+# Check that we have the javac that corresponds with PTJAVA_DIR in our path
 #
-AC_MSG_CHECKING([for the java runtime in $JAVA_DIR/bin])
-if test -f $JAVA_DIR/bin/java; then
-    AC_MSG_RESULT($JAVA_DIR/bin/java)
+AC_MSG_CHECKING([for the java runtime in $PTJAVA_DIR/bin])
+if test -f $PTJAVA_DIR/bin/java; then
+    AC_MSG_RESULT($PTJAVA_DIR/bin/java)
     AC_MSG_CHECKING([that you have the right java in your path.])
     AC_PATH_PROG(JAVA, java)
-    if test "$JAVA_DIR/bin/java" = "$JAVA"; then
-	AC_MSG_RESULT([  You have the right java in your path, $JAVA_DIR/bin/java = $JAVA])
+    if test "$PTJAVA_DIR/bin/java" = "$JAVA"; then
+	AC_MSG_RESULT([  You have the right java in your path, $PTJAVA_DIR/bin/java = $JAVA])
     else
-	AC_MSG_WARN([$JAVA_DIR/bin/java is not the same as $JAVA.
+	AC_MSG_WARN([$PTJAVA_DIR/bin/java is not the same as $JAVA.
 Be sure that you don't have a mismatch in JDK versions.])
-	JAVA=$JAVA_DIR/bin/java
+	JAVA=$PTJAVA_DIR/bin/java
     fi
 else
     AC_MSG_ERROR([
-  Cannot find $JAVA_DIR/bin/java.
+  Cannot find $PTJAVA_DIR/bin/java.
   Try --with-java=DIR, or set the JAVA_HOME environment variable.]) 
 fi
 
 
 #
-# Check that we have the javac that corresponds with JAVA_DIR in our path
+# Check that we have the javac that corresponds with PTJAVA_DIR in our path
 #
-AC_MSG_CHECKING([for the java compiler in $JAVA_DIR/bin])
-if test -f $JAVA_DIR/bin/javac; then
-    AC_MSG_RESULT($JAVA_DIR/bin/javac)
+AC_MSG_CHECKING([for the java compiler in $PTJAVA_DIR/bin])
+if test -f $PTJAVA_DIR/bin/javac; then
+    AC_MSG_RESULT($PTJAVA_DIR/bin/javac)
     AC_MSG_CHECKING([that you have the right javac in your path.])
     AC_PATH_PROG(JAVAC, javac)
-    if test "$JAVA_DIR/bin/javac" = "$JAVAC"; then
-        AC_MSG_RESULT([  You have the right javac in your path, $JAVA_DIR/bin/javac = $JAVAC])
+    if test "$PTJAVA_DIR/bin/javac" = "$JAVAC"; then
+        AC_MSG_RESULT([  You have the right javac in your path, $PTJAVA_DIR/bin/javac = $JAVAC])
     else
-        AC_MSG_WARN([$JAVA_DIR/bin/javac is not the same as $JAVAC.
+        AC_MSG_WARN([$PTJAVA_DIR/bin/javac is not the same as $JAVAC.
 Be sure that you don't have a mismatch in JDK versions.])
-	JAVAC=$JAVA_DIR/bin/javac
+	JAVAC=$PTJAVA_DIR/bin/javac
     fi
 else
     AC_MSG_ERROR([
-  Cannot find $JAVA_DIR/bin/javac.
+  Cannot find $PTJAVA_DIR/bin/javac.
   Try --with-java=DIR, or set the JAVA_HOME environment variable.])
 fi
 
-AC_SUBST(JAVA_DIR)
-AC_OUTPUT(mk/ptII.mk)
+AC_SUBST(PTJAVA_DIR)
+AC_OUTPUT(mk/ptII.mk ptolemy/plot/ptplot)
