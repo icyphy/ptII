@@ -2110,8 +2110,25 @@ test MoMLParser-5.1 {Test property deletion} {
 ######################################################################
 ####
 #
-test MoMLParser-5.2 {Test property deletion} {
+test MoMLParser-5.2 {Test property deletion using absolute names} {
     $parser parse {<entity name=".top"><deleteProperty name="foo"/></entity>}
+    $toplevel exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="top" class="ptolemy.actor.TypedCompositeActor">
+</entity>
+}
+
+######################################################################
+####
+#
+test MoMLParser-5.2.1 {Test property deletion} {
+    # Add the property back in
+    $parser parse {<entity name=".top"><property name="foo"/></entity>}
+
+    # Then delete it
+    $parser parse {<entity name=".top"><deleteProperty name=".top.foo"/></entity>}
     $toplevel exportMoML
 } {<?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
