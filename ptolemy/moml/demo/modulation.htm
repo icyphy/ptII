@@ -22,6 +22,9 @@ dialect for specifying component-based models.
     codebase="http://java.sun.com/products/plugin/1.2/jinstall-12-win32.cab#Version=1,2,0,0">
 <PARAM NAME = CODE VALUE = ptolemy.actor.gui.MoMLApplet>
 <PARAM NAME = CODEBASE VALUE = ../../..>
+<PARAM NAME=ARCHIVE VALUE="
+	ptolemy/ptsupport.jar,
+	ptolemy/domains/sdf/sdf.jar">
 <PARAM NAME = NAME VALUE = "MoML" >
 <PARAM NAME = "type" VALUE="application/x-java-applet;version=1.2">
 <PARAM NAME = "background" VALUE = "#faf0e6">
@@ -30,6 +33,9 @@ dialect for specifying component-based models.
 <EMBED type="application/x-java-applet;version=1.2"
  code="ptolemy.actor.gui.MoMLApplet"
  codebase=../../..
+ archive="
+	ptolemy/ptsupport.jar,
+	ptolemy/domains/sdf/sdf.jar"
  NAME = "MoML"
  WIDTH = 680
  HEIGHT = 300
@@ -42,8 +48,8 @@ dialect for specifying component-based models.
 </NOEMBED></EMBED>
 </OBJECT>
 </CENTER>
-See the <a href="modulation.xml">MoML file</a> specifying this model,
-and the <a href="sinewave.xml">MoML file</a> defining a class used
+See the <a href="modulationShow.htm">MoML file</a> specifying this model,
+and the <a href="sinewaveShow.htm">MoML file</a> defining a class used
 in this model.
 </BODY>
 </HTML>
