@@ -35,8 +35,7 @@ ME =		ptolemy/moml/test
 # Root of the Ptolemy II directory
 ROOT =		../../..
 
-# MoMLWriterTiming needs to include diva because we are looking at the configs
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
@@ -60,9 +59,7 @@ JSIMPLE_TESTS = \
 	MoMLParser.tcl \
 	StreamErrorHandler.tcl \
 	URLAttribute.tcl \
-	Vertex.tcl \
-	MoMLWriter.tcl \
-	MoMLWriterTiming.tcl
+	Vertex.tcl
 
 # Graphical Java tests that use Tcl.
 # If there are no tests, we use a dummy file so that the script that builds
