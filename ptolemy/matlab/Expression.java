@@ -163,20 +163,20 @@ public class Expression extends TypedAtomicActor {
         // _time is not needed, fire() sets a matlab variable directly
         _iteration = new Variable(this, "iteration", new IntToken(1));
 
-	try {
-	    matlabEngine = new Engine();
-	} catch (LinkageError err) {
-	    throw new IllegalActionException(this, err,
-	         "There was a problem invoking the Ptolemy II Matlab interface"
+        try {
+            matlabEngine = new Engine();
+        } catch (LinkageError err) {
+            throw new IllegalActionException(this, err,
+                 "There was a problem invoking the Ptolemy II Matlab interface"
                  + ".\nThe interface only works under Windows, and requires\n"
                  + "that Matlab be installed on the local machine, and that\n"
                  + "ptmatlab.dll be in the user's path.\n"
-	         + "ptmatlab.dll can be found in $PTII/bin\n"
-	         + "libeng.dll must also bin the the user's path.\n"
-	         + "libeng.dll is part of Matlab, and is found in\n"
-	         + "the bin/win32 directory under the Matlab directory."
-					     );
-	}
+                 + "ptmatlab.dll can be found in $PTII/bin\n"
+                 + "libeng.dll must also bin the the user's path.\n"
+                 + "libeng.dll is part of Matlab, and is found in\n"
+                 + "the bin/win32 directory under the Matlab directory."
+                                             );
+        }
 
     }
 
@@ -214,7 +214,7 @@ public class Expression extends TypedAtomicActor {
      */
 
     public Object clone(Workspace workspace)
- 	    throws CloneNotSupportedException {
+             throws CloneNotSupportedException {
         Expression newObject = (Expression)super.clone(workspace);
         newObject._iteration =
             (Variable)newObject.getAttribute("iteration");
