@@ -40,6 +40,7 @@ import java.awt.Toolkit;
 import java.io.IOException;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.lib.Source;
 import ptolemy.data.StringToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
@@ -49,25 +50,21 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// SystemClipboard
 /**
-This actor copies, to the system clipboard, the contents of any token
-received at its <i>input</i> port.  It pastes, from the system
-clipboard to the <i>output</i> port, whenever it receives a token at
-the <i>trigger</i>.  If both inputs receive tokens during the same
-firing, the paste is done before the copy.  This ordering insures that
-the contents of the clipboard are not lost in the event of a
-simultaneous copy-paste operation.
-
-<p> NOTE: This actor has been tested only with an 8-bit character set
-as the Java default character set.  Results are not known for systems
-configured for 16-bit Unicode characters.
+When this actor fires, it copies to the system clipboard the contents
+of any token received at its <i>input</i> port, and if there is a token
+on the <i>trigger</i> input, it also pastes the contents of the system
+clipboard to the <i>output</i> port. The paste is done before the copy.
 
 @author Winthrop Williams
 @version $Id$
 @since Ptolemy II 2.0
 */
 
-public class SystemClipboard extends TypedAtomicActor
-        implements ClipboardOwner {
+public class SystemClipboard extends Source implements ClipboardOwner {
+
+    // NOTE: This actor has been tested only with an 8-bit character
+    // set as the Java default character set. Results are not known for
+    // systems configured for 16-bit Unicode characters.
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -81,32 +78,20 @@ public class SystemClipboard extends TypedAtomicActor
         throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
-        // Inputs
+        // Input port.
         input = new TypedIOPort(this, "input");
         input.setTypeEquals(BaseType.STRING);
         input.setInput(true);
 
-        trigger = new TypedIOPort(this, "trigger");
-        trigger.setTypeEquals(BaseType.GENERAL);
-        trigger.setInput(true);
-
         // Output
-        output = new TypedIOPort(this, "output");
         output.setTypeEquals(BaseType.STRING);
-        output.setOutput(true);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** Input port, which has type StringToken. */
+    /** Input port, which has type string. */
     public TypedIOPort input;
-
-    /** Input port, which has type Token. */
-    public TypedIOPort trigger;
-
-    /** Output port, which has type StringToken. */
-    public TypedIOPort output;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -117,37 +102,41 @@ public class SystemClipboard extends TypedAtomicActor
      *  inputs are present.
      */
     public void fire() throws IllegalActionException {
-        if (_debugging) _debug("fire has been called");
-
-        // Paste
-        if (trigger.getWidth() > 0 && trigger.hasToken(0)) {
-            trigger.get(0);
-            Clipboard clipboard = Toolkit.getDefaultToolkit()
-                    .getSystemClipboard();
+        // Do not call super.fire(), because we need to know whether
+        // inputs are present.
+        // Paste first.
+        boolean triggerPresent = false;
+        for (int i = 0; i < trigger.getWidth(); i++) {
+            if (trigger.hasToken(i)) {
+                triggerPresent = true;
+                trigger.get(i);
+            }
+        }
+        if (triggerPresent) {
+            Clipboard clipboard
+                    = Toolkit.getDefaultToolkit().getSystemClipboard();
             Transferable transferable = clipboard.getContents(this);
             try{
                 output.broadcast(new StringToken( (String)transferable
                         .getTransferData(DataFlavor.stringFlavor) ));
-            // NullPointerException also possible //
+                // FIXME: NullPointerException also possible
                 // Ignore this for now, allowing exception to go uncaught.
             } catch (IOException ex) {
-                throw new IllegalActionException(this,
-                        " Failed to paste (IO Exception): " + ex);
+                throw new IllegalActionException(this, ex,
+                        "Failed to paste.");
             } catch (UnsupportedFlavorException ex) {
-                throw new IllegalActionException(this,
-                        " Failed to paste: (Flavor Exception)" + ex);
+                throw new IllegalActionException(this, ex,
+                        "Failed to paste.");
             }
         }
 
-        // Copy
-        if (input.getWidth()>0 && input.hasToken(0)) {
-            Clipboard clipboard = Toolkit.getDefaultToolkit()
-                    .getSystemClipboard();
+        // Copy next.
+        if (input.getWidth() > 0 && input.hasToken(0)) {
+            Clipboard clipboard
+                    = Toolkit.getDefaultToolkit().getSystemClipboard();
             String myString = ((StringToken)(input.get(0))).stringValue();
             clipboard.setContents(new StringSelection(myString), this);
         }
-
-        if (_debugging) _debug("fire has completed");
     }
 
     /** Comply with the ClipboardOwner interface.  It requires a
@@ -159,15 +148,4 @@ public class SystemClipboard extends TypedAtomicActor
     public void lostOwnership(Clipboard clipboard, Transferable contents) {
         // In case of lost ownership, do nothing.
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables
-
-    // No private variables.
 }
-
-
-
-
-
-
