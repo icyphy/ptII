@@ -645,7 +645,24 @@ public class IntegerArrayMath {
         return sum;
     }
 
+    /** Return a new array that is formed by converting the integers in
+     *  the argument array to complex numbers. Each complex number has
+     *  real part equal to the value in the argument matrix and a zero
+     *  imaginary part.
+     *
+     *  @param array An array of integers.
+     *  @return A new array of complex numbers.
+     */
+    public static final Complex[] toComplexArray(final int[] array) {
+        int length = array.length;
+        Complex[] returnValue = new Complex[length];
 
+        for (int i = 0; i < length; i++) {
+            returnValue[i] = new Complex((double)array[i], 0.0);
+        }
+        return returnValue;
+
+    }
 
     /** Return a new array that is formed by converting the ints in
      *  the argument array to doubles.  If the length of the argument
