@@ -72,6 +72,17 @@ public class TimedQueueReceiver {
         super();
     }
 
+    /** Construct an empty queue with the specified IOPort container
+     *  and priority.
+     * @param container The IOPort that contains this receiver.
+     * @param priority The priority of this receiver.
+     */
+    public TimedQueueReceiver(IOPort container, int priority) {
+        super();
+	_container = container;
+	setPriority(priority);
+    }
+
     /** Construct an empty queue with the specified IOPort container.
      * @param container The IOPort that contains this receiver.
      */
@@ -116,7 +127,8 @@ public class TimedQueueReceiver {
 	    // the triple is no longer in front.
 	    if( thread instanceof DDEThread ) {
 		TimeKeeper timeKeeper = ((DDEThread)thread).getTimeKeeper();
-	        timeKeeper.updateRcvrList( this, _rcvrTime, _priority );
+	        // timeKeeper.updateRcvrList( this, _rcvrTime, _priority );
+	        timeKeeper.updateRcvrList(this);
 	    }
 	}
         return token;
