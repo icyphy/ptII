@@ -202,6 +202,12 @@ public class RecordType extends StructuredType {
         return (InequalityTerm)_fields.get(label);
     }
 
+    /** Return a hash code value for this object. 
+     */
+    public int hashCode() {
+        return _fields.keySet().hashCode() + 2917;
+    }
+
     /** Test if the argument token is compatible with this type.
      *  If this type is a constant, the argument is compatible if it can be
      *  converted losslessly to a token of this type; If this type is a

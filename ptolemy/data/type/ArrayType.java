@@ -140,12 +140,14 @@ public class ArrayType extends StructuredType {
      *  @see ptolemy.graph.InequalityTerm
      */
     public InequalityTerm getElementTypeTerm() {
-        if (_elemTypeTerm == null) {
-            _elemTypeTerm = new ElementTypeTerm(this);
-        }
         return _elemTypeTerm;
     }
 
+    /** Return a hash code value for this object. 
+     */
+    public int hashCode() {
+        return _elementType.hashCode() + 2917;
+    }
 
     /** Set the elements that have declared type BaseType.UNKNOWN (the leaf
      *  type variable) to the specified type.
@@ -358,7 +360,7 @@ public class ArrayType extends StructuredType {
     private Type _declaredElementType;
     private Type _elementType;
 
-    private ElementTypeTerm _elemTypeTerm = null;
+    private ElementTypeTerm _elemTypeTerm = new ElementTypeTerm();
 
     private static ArrayType _representative = new ArrayType(BaseType.UNKNOWN);
 
@@ -367,12 +369,6 @@ public class ArrayType extends StructuredType {
 
     private class ElementTypeTerm implements InequalityTerm {
 
-        // Pass the ArrayType reference in the constructor so it can be
-        // returned by getAssociatedObject().
-        private ElementTypeTerm(ArrayType type) {
-            _arrayType = type;
-        }
-
         ///////////////////////////////////////////////////////////////
         ////                   public inner methods                ////
 
@@ -380,7 +376,7 @@ public class ArrayType extends StructuredType {
          *  @return an ArrayType.
          */
         public Object getAssociatedObject() {
-            return _arrayType;
+            return ArrayType.this;
         }
 
         /** Return the element type.
@@ -490,11 +486,6 @@ public class ArrayType extends StructuredType {
             return "{ArrayElementType(" + getAssociatedObject() 
                 + "), " + getValue() + ")";
         }
-
-        ///////////////////////////////////////////////////////////////
-        ////                  private inner variables              ////
-
-        private ArrayType _arrayType = null;
     }
 }
 

@@ -105,7 +105,13 @@ public abstract class BaseType implements Type, Serializable {
     public Class getTokenClass() {
         return _tokenClass;
     }
-    
+ 
+    /** Return a hash code value for this object. 
+     */
+    public int hashCode() {
+        return super.hashCode();
+    }
+   
     /** Test if the argument token is compatible with this type. The method
      *  returns true if this type is UNKNOWN, since any type is a substitution
      *  instance of it. If this type is not UNKNOWN, this method returns true
