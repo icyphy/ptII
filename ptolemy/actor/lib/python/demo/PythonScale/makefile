@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/actor/lib/python/PythonScale
+ME =		ptolemy/actor/lib/python/demo/PythonScale
 
 # Root of the Java directory
 ROOT =		../../../../../..
@@ -49,6 +49,7 @@ JSRCS =
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
 	PythonScale.xml \
+	Butterfly.xml \
 	JavaScale.xml
 
 EXTRA_SRCS = \
