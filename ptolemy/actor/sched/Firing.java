@@ -24,19 +24,21 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (vogel@eecs.berkeley.edu)
+@ProposedRating Green (vogel@eecs.berkeley.edu)
 @AcceptedRating Yellow (chf@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.sched;
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
-import ptolemy.actor.*;
 
 import ptolemy.actor.*;
+import ptolemy.kernel.*;
+import ptolemy.kernel.util.*;
+
 import java.util.List;
 import java.util.LinkedList;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
+import java.util.ConcurrentModificationException;
 
 //////////////////////////////////////////////////////////////////////////
 //// Firing
@@ -44,9 +46,9 @@ import java.util.Iterator;
 This class is a schedule element that contains a reference to an actor.
 This class is used together with Schedule to construct a static schedule.
 This class contains a reference to an actor, and is used to represent an
-actor term
-of a schedule loop. The setActor() method is used to create the reference
-to an actor. The getActor() method will return a reference to this actor.
+actor term of a schedule loop. The setActor() method is used to create 
+the reference to an actor. The getActor() method will return a reference
+to this actor.
 
 @author Brian K. Vogel
 @version $Id$
@@ -55,8 +57,8 @@ to an actor. The getActor() method will return a reference to this actor.
 */
 
 public class Firing extends ScheduleElement {
-    /** Construct a firing with a default iteration count equal to one.
-     *
+    /** Construct a firing with a default iteration count equal to one
+     *  and with no parent schedule.
      */
     public Firing() {
 	super();
@@ -74,16 +76,17 @@ public class Firing extends ScheduleElement {
      *  schedule is not valid, then the returned iterator will contain
      *  null elements.
      *  <p>
-     *  Note that the behavior of an iterator is unspecified if the
+     *  A runtime exception is thrown if the
      *  underlying schedule structure is modified while the iterator
      *  is active.
      *
-     * @return An iterator over a sequence of actors.
+     *  @return An iterator over a sequence of actors.
+     *  @exception ConcurrentModificationException If the
+     *   underlying schedule structure is modified while the iterator
+     *   is active.
      */
     public Iterator actorIterator() {
-	// Update the list of actors, if necessary.
-	_updateActorInvocations();
-	return _actorInvocations.iterator();
+	return new ActorIterator();
     }
 
     /** Return the actor invocation sequence in the form
@@ -91,11 +94,14 @@ public class Firing extends ScheduleElement {
      *  Since this ScheduleElement is a Firing, the
      *  iterator returned will contain exactly one Firing (this Firing).
      *  <p>
-     *  Note that the behavior of an iterator is unspecified if the
+     *  A runtime exception is thrown if the
      *  underlying schedule structure is modified while the iterator
      *  is active.
      *
      *  @return An iterator over a sequence of firings.
+     *  @exception ConcurrentModificationException If the
+     *   underlying schedule structure is modified while the iterator
+     *   is active.
      */
     public Iterator firingIterator() {
 	return _firing.iterator();
@@ -107,7 +113,7 @@ public class Firing extends ScheduleElement {
      *
      * @return The actor associated with this Firing.
      */
-    public Executable getActor() {
+    public Actor getActor() {
 	return _actor;
     }
 
@@ -116,47 +122,85 @@ public class Firing extends ScheduleElement {
      *  firing already contains a reference to an actor, then the
      *  reference will overwritten.
      *
-     * @param actor The actor to associate with this firing.
+     *  @param actor The actor to associate with this firing.
      */
-    public void setActor(Executable actor) {
+    public void setActor(Actor actor) {
+	_incrementVersion();
 	_actor  = actor;
 	_actorInvocationsValid = false;
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods               ////
-
-    /** Update the list of actor invocations, if necessary. The list
-     *  needs to be updated when setActor() has been invoked since
-     *  the last invocation of actorIterator().
-     *
+    ////                         inner classes                     ////
+ 
+    /** An adapter class for iterating over the elements of this
+     *  schedule. An exception is thrown if the schedule structure
+     *  changes while this iterator is active.
      */
-    private void _updateActorInvocations() {
-	if (_actorInvocationsValid == false) {
-	    // Need to update the list.
-	    // Remove all actors from the list
-	    while (_actorInvocations.isEmpty() == false) {
-		_actorInvocations.remove(0);
-	    }
-	    // Add the new actors to the list.
-	    for (int i = 0; i < getIterationCount(); i++) {
-		_actorInvocations.add(getActor());
+    private class ActorIterator implements Iterator {
+	/** Construct a ScheduleIterator.
+	 */
+	public ActorIterator() {
+	    _startingVersion = _getVersion();
+	    _currentElement = 0;
+	}
+
+	/** Return true if the iteration has more elements.
+	 *
+	 *  @exception ConcurrentModificationException If the schedule
+	 *   data structure has changed since this iterator
+	 *   was created.
+	 *  @return true if the iterator has more elements.
+	 */
+	public boolean hasNext() {
+	    if (_startingVersion != _getVersion()) {
+		throw new ConcurrentModificationException(
+                        "Schedule structure changed while iterator is active.");
+	    } else {
+		return(_currentElement <= getIterationCount());
 	    }
 	}
+
+	/** Return the next object in the iteration.
+	 *
+	 *  @exception InvalidStateException If the schedule
+	 *   data structure has changed since this iterator
+	 *   was created.
+	 *  @return the next object in the iteration.
+	 */
+	public Object next() throws NoSuchElementException {
+	    if (!hasNext()) {
+		throw new NoSuchElementException("No element to return.");
+	    } else if (_startingVersion != _getVersion()) {
+		throw new ConcurrentModificationException(
+                        "Schedule structure changed while iterator is active.");
+	    } else {
+		_currentElement++;
+		return getActor();
+	    }
+	}
+
+	/** Throw an exception, since removal is not allowed. It really
+	 *  dosn't make sense to remove an actor from an actor invocation
+	 *  sequence anyway.
+	 */
+	public void remove() {
+	    throw new UnsupportedOperationException();
+	}
+
+	private long _startingVersion;
+	private int _currentElement;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables               ////
 
     // The actor associated with this firing.
-    private Executable _actor;
-
+    private Actor _actor;
     // The list containing this firing as the only element.
     private List _firing;
-
     // The list containing the actor invocation sequence corresponding
     // to this firing.
     private List _actorInvocations;
-
     private boolean _actorInvocationsValid = false;
 }
