@@ -280,7 +280,7 @@ public final class CrossRefList {
                     _ref = _headNode;
                     return _ref._farOwner();
                 } else { // List is empty, throw exception.
-                    throw new NoSuchElementException("List is empty.\n");
+                    throw new NoSuchElementException("List is empty.");
                 }
             } else { // If not at beginning of list.
                 if (_ref != _lastNode) { // If not at end of list.
