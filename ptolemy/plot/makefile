@@ -108,7 +108,15 @@ OPTIONAL_FILES = \
 	'Pxgraph$$AboutButtonListener.class' \
 	'Pxgraph$$ExitButtonListener.class' \
 	'Pxgraph$$HTMLButtonListener.class' \
-	'Pxgraph$$PrintButtonListener.class'
+	'Pxgraph$$PrintButtonListener.class' \
+	'LogicAnalyzerFrame$$FileMenuListener.class' \
+	'LogicAnalyzerFrame$$PlotFilenameFilter.class' \
+	'LogicAnalyzerFrame$$SpecialMenuListener.class' \
+	'Plot$$Format.class' \
+	'PlotApplication$$1.class' \
+	'PlotFrame$$FileMenuListener.class' \
+	'PlotFrame$$PlotFilenameFilter.class' \
+	'PlotFrame$$SpecialMenuListener.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
