@@ -153,6 +153,7 @@ MISC_FILES =	$(DIRS)
 OPTIONAL_FILES = \
 	doc \
 	javasound \
+	jspaces \
 	'AbsoluteValue$$1.class' \
 	'AbsoluteValue$$FunctionTerm.class'
 
