@@ -1997,7 +1997,7 @@ public class PlotBox extends Panel {
                     else addYTick(label, idx);
                 } catch (NumberFormatException e) {
                     System.err.println("Warning from PlotBox: " +
-                    "Unable to parse ticks: " + e.getMessage());
+                            "Unable to parse ticks: " + e.getMessage());
                     // ignore if format is bogus.
                 }
             }
@@ -2400,8 +2400,8 @@ public class PlotBox extends Panel {
                     // The "null" sends the output to the clipboard.
                     export(null);
                     Message message = new Message(
-                    "Encapsulated PostScript (EPS) exported to clipboard.",
-                    null, null, 1, 60, TextArea.SCROLLBARS_NONE);
+                            "Encapsulated PostScript (EPS) exported to clipboard.",
+                            null, null, 1, 60, TextArea.SCROLLBARS_NONE);
                     message.setTitle("Ptolemy Plot Message");
                 }
                 break;
@@ -2409,8 +2409,8 @@ public class PlotBox extends Panel {
                 if (!_control && _shift) {
                     write(System.out);
                     Message message = new Message(
-                    "Plot data sent to standard out.",
-                    null, null, 1, 40, TextArea.SCROLLBARS_NONE);
+                            "Plot data sent to standard out.",
+                            null, null, 1, 40, TextArea.SCROLLBARS_NONE);
                     message.setTitle("Ptolemy Plot Message");
                 }
                 if (_control) {
@@ -2422,8 +2422,8 @@ public class PlotBox extends Panel {
                 if (!_control && _shift) {
                     export(System.out);
                     Message message = new Message(
-                    "Encapsulated PostScript (EPS) exported to standard out.",
-                    null, null, 1, 60, TextArea.SCROLLBARS_NONE);
+                            "Encapsulated PostScript (EPS) exported to standard out.",
+                            null, null, 1, 60, TextArea.SCROLLBARS_NONE);
                     message.setTitle("Ptolemy Plot Message");
                 }
                 break;
