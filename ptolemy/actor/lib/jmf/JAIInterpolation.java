@@ -1,5 +1,5 @@
-/* Load a sequence of binary images from files.
-
+/* An actor that scales a javax.media.jai.RenderedOp
+   
 @Copyright (c) 1998-2002 The Regents of the University of California.
 All rights reserved.
 
@@ -42,59 +42,110 @@ import javax.media.jai.Interpolation;
 import javax.media.jai.JAI;
 import javax.media.jai.RenderedOp;
 
+//////////////////////////////////////////////////////////////////////////
+//// JAIInterpolation
+/**
+Scale a RenderedOp using the javax.media.jai.JAI class.
+
+
+@author James Yeh
+@version $Id$
+*/
+
 public class JAIInterpolation extends Transformer {
     
+    /** Construct an actor with the given container and name.
+     *  @param container The container.
+     *  @param name The name of this actor.
+     *  @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
+     */    
     public JAIInterpolation(CompositeEntity container, String name)
 	    throws IllegalActionException, NameDuplicationException {
 	super(container, name);
 	input.setTypeEquals(BaseType.OBJECT);
         output.setTypeEquals(BaseType.OBJECT); 
-
+        
 	xScaleFactor =
-	    new Parameter(this, "xScaleFactor", new DoubleToken("2.0F"));
+	    new Parameter(this, "xScaleFactor", new DoubleToken("1.0F"));
 	yScaleFactor =
-	    new Parameter(this, "yScaleFactor", new DoubleToken("2.0F"));
-	xTranslate = 
-	    new Parameter(this, "xTranslate", new DoubleToken("0.0F"));
-	yTranslate = 
-	    new Parameter(this, "yTranslate", new DoubleToken("0.0F"));
+	    new Parameter(this, "yScaleFactor", new DoubleToken("1.0F"));
     }
     
+    ///////////////////////////////////////////////////////////////////
+    ////                     ports and parameters                  ////
+
+    /** The scaling factor in the horizontal direction.  The default 
+     *  value of this parameter is the double value 1.0
+     */
     public Parameter xScaleFactor;
+    
+    /** The scaling factor in the vertical direction.  The default 
+     *  value of this parameter is the double value 1.0
+     */
     public Parameter yScaleFactor;
-    public Parameter xTranslate;
-    public Parameter yTranslate;
-   
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+    
+    /** Fire this actor.
+     *  Consume an IntMatrixToken from the input port.  If the image is
+     *  not the same size as the previous image, or this is the first
+     *  image, then create a new Picture object to represent the image,
+     *  and put it in the appropriate container (either the container
+     *  set using place, or the frame created during the initialize
+     *  phase).
+     *  Convert the pixels from greyscale to RGBA triples (setting the
+     *  image to be opaque) and update the picture.
+     *  @exception IllegalActionException If a contained method throws it,
+     *   or if a token is received that contains a null image.
+     */    
+    public void fire() throws IllegalActionException {
+	super.fire();
+	_parameters = new ParameterBlock();
+	ObjectToken objectToken = (ObjectToken) input.get(0);
+	RenderedOp oldImage = (RenderedOp) objectToken.getValue();
+	_parameters.addSource(oldImage);
+	_parameters.add((float)_xScaleFactor);
+	_parameters.add((float)_yScaleFactor);
+	_parameters.add(0.0F);
+	_parameters.add(0.0F);
+	_parameters.add(_interp);
+	RenderedOp newImage = JAI.create("scale", _parameters);
+	output.send(0, new ObjectToken(newImage));
+    }
+    
+    /** Set the scaling values equal to the values of the parameters.
+     *  @exception IllegalActionException If a contained method throws it.
+     */
     public void initialize() throws IllegalActionException {
 	super.initialize();
 	_xScaleFactor = ((DoubleToken)xScaleFactor.getToken()).doubleValue();
-	_yScaleFactor = ((DoubleToken)yScaleFactor.getToken()).doubleValue();
-	_xTranslate = ((DoubleToken)xTranslate.getToken()).doubleValue();
-	_yTranslate = ((DoubleToken)yTranslate.getToken()).doubleValue();
-
-	interp = Interpolation.getInstance(
-		      Interpolation.INTERP_BILINEAR);
+	_yScaleFactor = ((DoubleToken)yScaleFactor.getToken()).doubleValue();        
+	_interp = Interpolation.getInstance(
+                Interpolation.INTERP_BILINEAR);
     }
     
-    public void fire() throws IllegalActionException {
-	super.fire();
-	parameters = new ParameterBlock();
-	ObjectToken objectToken = (ObjectToken) input.get(0);
-	RenderedOp oldImage = (RenderedOp) objectToken.getValue();
-	parameters.addSource(oldImage);
-	parameters.add((float)_xScaleFactor);
-	parameters.add((float)_yScaleFactor);
-	parameters.add((float)_xTranslate);
-	parameters.add((float)_yTranslate);
-	parameters.add(interp);
-	RenderedOp newImage = JAI.create("scale", parameters);
-	output.send(0, new ObjectToken(newImage));
-    }
-
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+    
+    /** The horizontal scaling factor. */
     private double _xScaleFactor;
+    
+    /** The vertical scaling factor. */
     private double _yScaleFactor;
-    private double _xTranslate;
-    private double _yTranslate;
-    private ParameterBlock parameters;
-    private Interpolation interp;
+
+    /** The block that holds the horizontal and vertical scaling
+     *  factor, the horizontal and vertical translation factor
+     * (unused),  and the type of interpolation being used.
+     */
+    private ParameterBlock _parameters;
+    
+    /** The type of Interpolation being used is specified using this
+     *  variable.
+     */
+    private Interpolation _interp;
 }

@@ -15,6 +15,9 @@
 	
 	<entity name="GreenFinder" class="ptolemy.actor.lib.jmf.GreenFinder">
 	</entity>
+
+	<entity name="ImageToJAI" class="ptolemy.actor.lib.jmf.ImageToJAI">
+	</entity>
 	
 	<entity name="JAIIDCT" class="ptolemy.actor.lib.jmf.JAIIDCT">
 	</entity>
