@@ -76,6 +76,38 @@ public class Ramp extends TypedAtomicActor {
         input.setDeclaredType(Token.class);
     }
 
+    /** Construct a Ramp with the specified container, name, initial
+     *  value and step size. The initial value and step size are
+     *  represented by String expressions which will be evaluated
+     *  by the corresponding Parameters.
+     *  @param container The container.
+     *  @param name The name of this actor.
+     *  @param value The expression for the initial output event value.
+     *  @param step The expression for the step size by which to
+     *   increase the output event values.
+     *
+     *  @exception IllegalActionException If the entity cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
+     */
+    public Ramp(TypedCompositeActor container, String name,
+            String value, String step)
+            throws NameDuplicationException, IllegalActionException  {
+        super(container, name);
+        // set the parameters.
+        _value = new Parameter(this, "value");
+	_value.setExpression(value);
+        _step = new Parameter(this, "step");
+	_step.setExpression(step);
+        // create an output port
+        output = new TypedIOPort(this, "output", false, true);
+        output.setMultiport(true);
+        // create an input port
+        input = new TypedIOPort(this, "input", true, false);
+        input.setDeclaredType(Token.class);
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -84,7 +116,8 @@ public class Ramp extends TypedAtomicActor {
     public void initialize() throws IllegalActionException {
 
         Class valueClass = _value.getToken().getClass();
-        Class stepClass = _value.getToken().getClass();
+        Class stepClass = _step.getToken().getClass();
+
         int compare = TypeLattice.compare(valueClass, stepClass);
         // FIXME: this might not work if user change the parameter during
         // simulation.
