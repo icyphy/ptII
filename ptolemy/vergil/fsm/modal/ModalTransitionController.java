@@ -37,6 +37,7 @@ import diva.graph.GraphController;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedActor;
 import ptolemy.domains.fsm.kernel.Transition;
+import ptolemy.domains.fsm.kernel.State;
 import ptolemy.gui.ComponentDialog;
 import ptolemy.gui.MessageHandler;
 import ptolemy.gui.Query;
@@ -306,7 +307,8 @@ public class ModalTransitionController extends TransitionController {
             }
             // Check to see whether any other transition has
             // this refinment, and if not, remove it from its container.
-            Iterator transitions = immediateContainer.entityList().iterator();
+            Iterator transitions =
+                    immediateContainer.relationList().iterator();
             boolean foundOne = false;
             while (transitions.hasNext()) {
                 NamedObj other = (NamedObj)transitions.next();
@@ -323,6 +325,27 @@ public class ModalTransitionController extends TransitionController {
                         }
                     }
                     if (foundOne) break;
+                }
+            }
+            if (!foundOne) {
+                Iterator states =
+                        immediateContainer.entityList().iterator();
+                while (states.hasNext()) {
+                    NamedObj other = (NamedObj)states.next();
+                    if (other instanceof State) {
+                        String refinementList = ((State)other)
+                                .refinementName.getExpression();
+                        if (refinementList == null) continue;
+                        tokenizer = new StringTokenizer(refinementList, ",");
+                        while (tokenizer.hasMoreTokens()) {
+                            String token = tokenizer.nextToken();
+                            if (token.equals(refinementName)) {
+                                foundOne = true;
+                                break;
+                            }
+                        }
+                        if (foundOne) break;
+                    }
                 }
             }
             String removal = "";

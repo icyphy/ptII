@@ -34,6 +34,7 @@ import diva.graph.GraphController;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedActor;
 import ptolemy.domains.fsm.kernel.State;
+import ptolemy.domains.fsm.kernel.Transition;
 import ptolemy.gui.ComponentDialog;
 import ptolemy.gui.MessageHandler;
 import ptolemy.gui.Query;
@@ -316,7 +317,7 @@ public class HierarchicalStateController extends StateController {
                     newRefinements.append(token.trim());
                 }
             }
-            // Check to see whether any other state has
+            // Check to see whether any other state or transition has
             // this refinment, and if not, remove it from its container.
             Iterator states = immediateContainer.entityList().iterator();
             boolean foundOne = false;
@@ -335,6 +336,27 @@ public class HierarchicalStateController extends StateController {
                         }
                     }
                     if (foundOne) break;
+                }
+            }
+            if (!foundOne) {
+                Iterator transitions =
+                        immediateContainer.relationList().iterator();
+                while (transitions.hasNext()) {
+                    NamedObj other = (NamedObj)transitions.next();
+                    if (other instanceof Transition) {
+                        String refinementList = ((Transition)other)
+                                .refinementName.getExpression();
+                        if (refinementList == null) continue;
+                        tokenizer = new StringTokenizer(refinementList, ",");
+                        while (tokenizer.hasMoreTokens()) {
+                            String token = tokenizer.nextToken();
+                            if (token.equals(refinementName)) {
+                                foundOne = true;
+                                break;
+                            }
+                        }
+                        if (foundOne) break;
+                    }
                 }
             }
             String removal = "";
