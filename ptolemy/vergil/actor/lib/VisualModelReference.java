@@ -41,7 +41,7 @@ import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TableauFrame;
-import ptolemy.actor.hoc.ModelReference;
+import ptolemy.actor.lib.hoc.ModelReference;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.gui.Top;
 import ptolemy.kernel.CompositeEntity;
