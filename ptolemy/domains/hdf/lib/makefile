@@ -48,7 +48,9 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
-	ConstVariableRate.java
+	    ConstVariableRate.java \
+	    HDFActor.java \
+        HDFDownSample.java
 
 EXTRA_SRCS =	$(JSRCS)
 
