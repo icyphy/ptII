@@ -49,7 +49,7 @@ in MoML.
 */
 
 public class TransientSingletonConfigurableAttribute
-        extends ConfigurableAttribute {
+    extends ConfigurableAttribute {
 
     // NOTE: This class does not extend SingletonConfigurableAttribute
     // even though the setContainer() method is identical.  The reason

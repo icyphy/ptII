@@ -708,7 +708,7 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
             // No container, and this is a top level moml element.
             // Generate header information.
             if (momlElement.equals("class")
-                || momlElement.equals("entity")) {
+                    || momlElement.equals("entity")) {
                 output.write("<?xml version=\"1.0\" standalone=\"no\"?>\n"
                         + "<!DOCTYPE " + momlElement + " PUBLIC "
                         + "\"-//UC Berkeley//DTD MoML 1//EN\"\n"
@@ -1064,7 +1064,7 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
      *  @param change The requested change.
      */
     public void requestChange(ChangeRequest change) {
-          NamedObj container = (NamedObj) getContainer();
+        NamedObj container = (NamedObj) getContainer();
         if (container == null) {
             // Make sure the list of listeners is not being concurrently
             // modified by making this synchronized.

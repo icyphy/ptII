@@ -51,7 +51,7 @@ getVisibility() method.
 @since Ptolemy II 2.1
 */
 public class Location extends SingletonAttribute
-         implements Settable, Locatable {
+    implements Settable, Locatable {
 
     /** Construct an attribute in the specified workspace with an empty
      *  string as a name.

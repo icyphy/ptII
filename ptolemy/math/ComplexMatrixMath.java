@@ -1112,13 +1112,13 @@ public class ComplexMatrixMath {
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
 
-            double realDifference = matrix1[i][j].real - matrix2[i][j].real;
-            double imagDifference = matrix1[i][j].imag - matrix2[i][j].imag;
+                double realDifference = matrix1[i][j].real - matrix2[i][j].real;
+                double imagDifference = matrix1[i][j].imag - matrix2[i][j].imag;
 
-            if (realDifference*realDifference + imagDifference*imagDifference
-                   > maxError*maxError) {
-                return false;
-            }
+                if (realDifference*realDifference + imagDifference*imagDifference
+                        > maxError*maxError) {
+                    return false;
+                }
             }
         }
         return true;
@@ -1142,7 +1142,7 @@ public class ComplexMatrixMath {
 
         _checkSameDimension("within", matrix1, matrix2);
 
-             int rows = _rows (matrix1);
+        int rows = _rows (matrix1);
         int columns = _columns (matrix1);
 
         for (int i = 0; i < rows; i++) {
@@ -1150,17 +1150,17 @@ public class ComplexMatrixMath {
 
                 if (maxError[i][j] < 0) {
                     throw new IllegalArgumentException(
-                         "ComplexMatrixMath.within requires that the "
-                         + "third argument be non-negative.");
-            }
+                            "ComplexMatrixMath.within requires that the "
+                            + "third argument be non-negative.");
+                }
 
-            double realDifference = matrix1[i][j].real - matrix2[i][j].real;
-            double imagDifference = matrix1[i][j].imag - matrix2[i][j].imag;
+                double realDifference = matrix1[i][j].real - matrix2[i][j].real;
+                double imagDifference = matrix1[i][j].imag - matrix2[i][j].imag;
 
-            if (realDifference*realDifference + imagDifference*imagDifference
-                   > maxError[i][j]*maxError[i][j]) {
-                return false;
-            }
+                if (realDifference*realDifference + imagDifference*imagDifference
+                        > maxError[i][j]*maxError[i][j]) {
+                    return false;
+                }
             }
         }
         return true;
@@ -1333,7 +1333,7 @@ public class ComplexMatrixMath {
 
                 rowArray = ComplexArrayMath.subtract(rowArray,
                         ComplexArrayMath.scale(orthogonalMatrix[j],
-                        dotProduct.multiply(oneOverNormSquaredArray[j])));
+                                dotProduct.multiply(oneOverNormSquaredArray[j])));
             }
 
             // Compute the dot product between the input and output vector
@@ -1378,7 +1378,7 @@ public class ComplexMatrixMath {
             dotProductMatrix,
             oneOverNormSquaredArray,
             new Integer(nullity)
-        };
+                };
     }
 
     /** Return the number of rows of a matrix.

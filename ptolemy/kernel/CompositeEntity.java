@@ -1096,23 +1096,23 @@ public class CompositeEntity extends ComponentEntity {
             if ( getAttribute("_createdBy") == null) {
                 // If there is no _createdBy attribute, then add one.
                 output.write(_getIndentPrefix(depth+1)
-                             + "<property name=\"_createdBy\" "
-                             + "class=\"ptolemy.kernel.util.VersionAttribute\" "
-                             + "value=\""
-                             + VersionAttribute.CURRENT_VERSION.getExpression()
-                             + "\">\n");
+                        + "<property name=\"_createdBy\" "
+                        + "class=\"ptolemy.kernel.util.VersionAttribute\" "
+                        + "value=\""
+                        + VersionAttribute.CURRENT_VERSION.getExpression()
+                        + "\">\n");
                 output.write(_getIndentPrefix(depth+1) + "</property>\n");
             } else if (getAttribute("_createdBy") != null) {
                 try {
                     ((VersionAttribute)getAttribute("_createdBy"))
                         .setExpression(VersionAttribute
-                                       .CURRENT_VERSION.getExpression());
+                                .CURRENT_VERSION.getExpression());
                 } catch (IllegalActionException ex) {
                     throw new InternalErrorException(this, ex,
                             "Failed to update _createdBy");
                 }
             }
-          }
+        }
 
         Iterator entities = entityList().iterator();
         while (entities.hasNext()) {

@@ -149,7 +149,7 @@ public class ComplexArrayMath {
      *  (op.operate(z, array[i])).
      */
     public static final Complex[] applyBinaryOperation(
-             ComplexBinaryOperation op, final Complex z,
+            ComplexBinaryOperation op, final Complex z,
             final Complex[] array) {
         int length = array.length;
         Complex[] returnValue = new Complex[length];
@@ -949,7 +949,7 @@ public class ComplexArrayMath {
             double realDifference = array1[i].real - array2[i].real;
             double imagDifference = array1[i].imag - array2[i].imag;
             if (realDifference*realDifference + imagDifference*imagDifference
-                   > maxError*maxError) {
+                    > maxError*maxError) {
                 return false;
             }
         }
@@ -981,14 +981,14 @@ public class ComplexArrayMath {
 
             if (maxError[i] < 0) {
                 throw new IllegalArgumentException(
-                         "ComplexArrayMath.within requires that the third "
-                          + "argument be non-negative.");
+                        "ComplexArrayMath.within requires that the third "
+                        + "argument be non-negative.");
             }
 
             double realDifference = array1[i].real - array2[i].real;
             double imagDifference = array1[i].imag - array2[i].imag;
             if (realDifference*realDifference + imagDifference*imagDifference
-                   > maxError[i]*maxError[i]) {
+                    > maxError[i]*maxError[i]) {
                 return false;
             }
         }

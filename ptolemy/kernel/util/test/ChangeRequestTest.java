@@ -124,22 +124,22 @@ public class ChangeRequestTest implements ChangeListener {
     public void insertFeedback() {
         // Create an anonymous inner class
         ChangeRequest change = new ChangeRequest(this, "test2") {
-            protected void _execute() throws Exception {
-                _const.output.unlinkAll();
-                _rec.input.unlinkAll();
-                AddSubtract add = new AddSubtract(_top, "add");
-                SampleDelay sampleDelay = new SampleDelay(_top, "sampleDelay");
-                sampleDelay.initialOutputs.setExpression("{4, 5}");
-                _top.connect(_const.output, add.plus);
-                ComponentRelation relation =
-                    _top.connect(add.output, sampleDelay.input);
-                _rec.input.link(relation);
-                // Any pre-existing input port whose connections
-                // are modified needs to have this method called.
-                _rec.input.createReceivers();
-                _top.connect(sampleDelay.output, add.plus);
-            }
-        };
+                protected void _execute() throws Exception {
+                    _const.output.unlinkAll();
+                    _rec.input.unlinkAll();
+                    AddSubtract add = new AddSubtract(_top, "add");
+                    SampleDelay sampleDelay = new SampleDelay(_top, "sampleDelay");
+                    sampleDelay.initialOutputs.setExpression("{4, 5}");
+                    _top.connect(_const.output, add.plus);
+                    ComponentRelation relation =
+                        _top.connect(add.output, sampleDelay.input);
+                    _rec.input.link(relation);
+                    // Any pre-existing input port whose connections
+                    // are modified needs to have this method called.
+                    _rec.input.createReceivers();
+                    _top.connect(sampleDelay.output, add.plus);
+                }
+            };
         _top.requestChange(change);
     }
 
@@ -155,18 +155,18 @@ public class ChangeRequestTest implements ChangeListener {
     public void waitForCompletionTask() {
         Thread waitForCompletionThread =
             new /*Ptolemy*/Thread ( new Runnable() {
-                public void run() {
-                    System.out.println(Thread.currentThread().getName()
-                            + " About to wait for completion");
-                    try {
-                        _changeRequest.waitForCompletion();
-                    } catch (Exception ex) {
-                        System.out.println(ex);
+                    public void run() {
+                        System.out.println(Thread.currentThread().getName()
+                                + " About to wait for completion");
+                        try {
+                            _changeRequest.waitForCompletion();
+                        } catch (Exception ex) {
+                            System.out.println(ex);
+                        }
+                        System.out.println(Thread.currentThread().getName()
+                                + " Done waiting for completion");
                     }
-                    System.out.println(Thread.currentThread().getName()
-                            + " Done waiting for completion");
-                }
-            });
+                });
 
         waitForCompletionThread.setName("waitForCompletionThread");
         waitForCompletionThread.start();
@@ -178,13 +178,13 @@ public class ChangeRequestTest implements ChangeListener {
         _changeRequest = new ChangeRequest(this,
                 "Change request that always throws an Exception") {
 
-            protected void _execute() throws Exception {
-                if (1 == 1) {
-                    throw new Exception("Always Thrown Exception");
+                protected void _execute() throws Exception {
+                    if (1 == 1) {
+                        throw new Exception("Always Thrown Exception");
+                    }
                 }
-            }
 
-        };
+            };
         return _changeRequest;
     }
 
@@ -193,10 +193,10 @@ public class ChangeRequestTest implements ChangeListener {
     public ChangeRequest mutateConst2ChangeRequest() {
         // Create an anonymous inner class
         _changeRequest = new ChangeRequest(this, "Changing Const to 2.0") {
-            protected void _execute() throws Exception {
-                _const.value.setToken(new DoubleToken(2.0));
-            }
-        };
+                protected void _execute() throws Exception {
+                    _const.value.setToken(new DoubleToken(2.0));
+                }
+            };
         return _changeRequest;
     }
 

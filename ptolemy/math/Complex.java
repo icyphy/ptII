@@ -226,7 +226,7 @@ public class Complex implements Cloneable, Serializable {
         return z.asin();
     }
 
-     /** Return the principal hyperbolic arc sine of this
+    /** Return the principal hyperbolic arc sine of this
      *  complex number.  This is defined by:
      *  <pre>
      *   asinh(z) = log(z + sqrt(z*z + 1))
@@ -473,7 +473,7 @@ public class Complex implements Cloneable, Serializable {
         return z.csc();
     }
 
-     /** Divide this complex number by the argument, and return the result
+    /** Divide this complex number by the argument, and return the result
      *  in a new Complex object.
      *
      *  @param divisor The denominator in the division.

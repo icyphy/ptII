@@ -125,7 +125,7 @@ public class TestPtolemyThread extends PtolemyThread {
      *  @param event The event.
      */
     public void debug(DebugEvent event) {
-       _debug(event);
+        _debug(event);
     }
 
     /** Send a debug message to all debug listeners that have registered.

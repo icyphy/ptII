@@ -183,7 +183,7 @@ public class KernelException extends Exception {
                         KernelException.getFullName((Nameable)object));
             } else {
                 prefixBuffer.append(
-                    "<Object of class " + object.getClass().getName() + ">");
+                        "<Object of class " + object.getClass().getName() + ">");
             }
             if (objectIterator.hasNext()) {
                 prefixBuffer.append(", ");
@@ -221,9 +221,9 @@ public class KernelException extends Exception {
         // and complex if/else tree or else the creation of a bunch
         // of temporary strings with a smaller if/else tree.
         boolean whereNullOrEmpty
-                = (whereString == null || whereString.equals(""));
+            = (whereString == null || whereString.equals(""));
         boolean detailNullOrEmpty
-                = (detail == null || detail.equals(""));
+            = (detail == null || detail.equals(""));
         return
             // Do we print the detail?
             (detailNullOrEmpty ?
