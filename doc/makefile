@@ -54,7 +54,8 @@ DIRS =		 internals #usersGuides
 ALLJSRCS = 	pn/*/*.java tcl/*.java tycho/*.java \
 			tycho/Cool_Beans/util/*.java \
 			ptplot/*.java \
-			pt/kernel/*.java pt/kernel/test/*.java \
+			pt/kernel/*.java pt/kernel/test/*.java
+
 all: codeDoc/tree.html
 
 codeDoc/tree.html: ../pn/*/*.java ../tcl/*.java ../tycho/*.java \
