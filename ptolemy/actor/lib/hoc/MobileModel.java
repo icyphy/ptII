@@ -1,4 +1,4 @@
-/* A composite actor that apply models dynamically.
+/* A composite actor that applies models dynamically.
 
 Copyright (c) 2003-2004 The Regents of the University of California.
 All rights reserved.
@@ -49,6 +49,7 @@ import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLChangeRequest;
@@ -58,8 +59,8 @@ import ptolemy.moml.filter.BackwardCompatibility;
 //////////////////////////////////////////////////////////////////////////
 //// MobileModel
 /**
-   This actor extends the TypedCompositeActor. It contains another model
-   that is defined as a Ptolemy composite actor to its inputs. Rather than
+   This is a composite actor with an input port that accepts MoML descriptions
+   of changes that are applied to the contents. Rather than
    specified before executing, the inside model can be dynamically changed
    either locally or remotely. Currently, the model that dynamically applied
    to this actor is specified by a moml string from the <i>modelString</i>
@@ -81,35 +82,13 @@ public class MobileModel extends TypedCompositeActor {
      *  the name with setName(). If the workspace argument is null, then
      *  use the default workspace.
      *  @param workspace The workspace that will list the actor.
+     *  @throws IllegalActionException If populating the actor with
+     *   ports and parameters fails.
      */
     public MobileModel(Workspace workspace)
-            throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException {
         super(workspace);
-        input = new TypedIOPort(this, "input", true, false);
-        modelString = new TypedIOPort(this, "modelString", true, false);
-        modelString.setTypeEquals(BaseType.STRING);
-        defaultValue = new Parameter(this, "defaultValue",
-                new IntToken(0));
-        output = new TypedIOPort(this, "output", false, true);
-        output.setTypeAtLeast(defaultValue);
-        refresh = new Parameter(this, "refresh", new BooleanToken(true));
-        refresh.setTypeEquals(BaseType.BOOLEAN);
-        connectPorts = new Parameter(this, "connectPorts", new BooleanToken(true));
-        connectPorts.setTypeEquals(BaseType.BOOLEAN);
-        // create a defaultDirector. Without this director, it may get
-        // an infinite loop when preinitialize, etc. is called in case the
-        // specified director is not successfully constructed. Even when the
-        // specified director is construced successfully, it cannot be removed
-        // in wrapup() without this default director.
-
-        //The default director may not work when we need multi tokens to fire
-        //the inside model because the receiver it creates is an instance of
-        //Mailbox, which can only hold one token. In this case, specify a proper
-        //director using the <i>director<i> parameter.
-        new Director(this, "defaultDirector");
-        director = new Parameter(this, "director",
-                new StringToken("ptolemy.actor.Director"));
-        setClassName("ptolemy.actor.lib.hoc.MobileModel");
+        _init();
     }
 
     /** Construct an actor with a name and a container.
@@ -118,37 +97,20 @@ public class MobileModel extends TypedCompositeActor {
      *  @param container The container.
      *  @param name The name of this actor.
      *  @exception IllegalActionException If the container is incompatible
-     *   with this actor.
+     *   with this actor or if populating the actor with
+     *   ports and parameters fails.
      *  @exception NameDuplicationException If the name coincides with
      *   an actor already in the container.
      */
     public MobileModel(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        input = new TypedIOPort(this, "input", true, false);
-        modelString = new TypedIOPort(this, "modelString", true, false);
-        modelString.setTypeEquals(BaseType.STRING);
-        defaultValue = new Parameter(this, "defaultValue",
-                new IntToken(0));
-        output = new TypedIOPort(this, "output", false, true);
-        output.setTypeAtLeast(defaultValue);
-        connectPorts = new Parameter(this, "connectPorts", new BooleanToken(true));
-        connectPorts.setTypeEquals(BaseType.BOOLEAN);
-        refresh = new Parameter(this, "refresh", new BooleanToken(true));
-        refresh.setTypeEquals(BaseType.BOOLEAN);
-        // create a defaultDirector. Without this director, it may get
-        // an infinite loop when preinitialize, etc. is called in case the
-        // specified director is not successfully constructed. Even when the
-        // specified director is construced successfully, it cannot be removed
-        // in wrapup() without this default director.
-        new Director(this, "defaultDirector");
-        director = new Parameter(this, "director",
-                new StringToken("ptolemy.actor.Director"));
-        setClassName("ptolemy.actor.lib.hoc.MobileModel");
+        _init();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
+    
     /** The input port for incoming data to the inside model.
      */
     public TypedIOPort input;
@@ -165,7 +127,6 @@ public class MobileModel extends TypedCompositeActor {
     public TypedIOPort output;
 
     /** The inside Director for executing the inside model.
-     *
      */
     public Parameter director;
 
@@ -189,23 +150,7 @@ public class MobileModel extends TypedCompositeActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    /** If the attribute is <i>refresh</i> update the local
-     *  cache of the parameter value, otherwise pass the call to
-     *  the super class.
-     *  @param attribute The attribute that changed.
-     *  @exception IllegalActionException Not thrown in this base class.
-     */
-    public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
-        if (attribute == refresh) {
-            _refresh = ((BooleanToken)refresh.getToken()).booleanValue();
-        } else if (attribute == connectPorts) {
-            _connectPorts = ((BooleanToken)connectPorts.getToken()).booleanValue();
-        } else {
-            super.attributeChanged(attribute);
-        }
-    }
-
+    
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then sets the value public variable in the new
      *  object to equal the cloned parameter in that new object.
@@ -237,9 +182,9 @@ public class MobileModel extends TypedCompositeActor {
             StringToken str = null;
             try {
                 str = (StringToken) modelString.get(0);
-                //if (_refresh) {
+                
                 _parser.reset();
-                //}
+
                 CompositeActor model = (CompositeActor) _parser.parse(str.stringValue());
                 StringWriter writer = new StringWriter();
                 try {
@@ -249,7 +194,7 @@ public class MobileModel extends TypedCompositeActor {
                 }
 
                 String modelMoML =  writer.toString();
-                if (_connectPorts) {
+                if (((BooleanToken)connectPorts.getToken()).booleanValue()) {
                     _moml = "<group>\n" + modelMoML + "<relation name=\"newR1\" "
                         + "class=\"ptolemy.actor.TypedIORelation\">\n"
                         + "</relation>\n"
@@ -277,36 +222,6 @@ public class MobileModel extends TypedCompositeActor {
         super.fire();
     }
 
-    /** Initialize this actor. create a new moml parser for passing
-     *  the applied model to it.
-     *  @exception IllegalActionException If there is no director, or
-     *  if the director's initialize() method throws it, or if the
-     *  actor is not opaque.
-     */
-    public void initialize() throws IllegalActionException {
-        if (_debugging) {
-            _debug("Invoking init");
-        }
-        //        _moml = null;
-        //        try {
-        //            _parser = new MoMLParser();
-        //            _parser.setMoMLFilters(BackwardCompatibility.allFilters());
-        //
-        //            // When no model applied, output the default value.
-        //            if (_connectPorts) {
-        //                Const constActor = new Const(this, "Const");
-        //                constActor.value.setExpression(defaultValue.getToken().toString());
-        //                connect(input, constActor.trigger);
-        //                connect(constActor.output, output);
-        //            } //otherwise, do nothing.
-        //
-        //        } catch (Exception ex) {
-        //            throw new IllegalActionException(this, ex, "initialize() failed");
-        //        }
-        //        //connect(input, output);
-        super.initialize();
-    }
-
     /** Return true.
      */
     public boolean isOpaque() {
@@ -321,7 +236,7 @@ public class MobileModel extends TypedCompositeActor {
     public boolean postfire() throws IllegalActionException {
         if (!_stopRequested && _moml != null) {
             //remove the old model inside first, if there is one.
-            if (_refresh) {
+            if (((BooleanToken)refresh.getToken()).booleanValue()) {
                 String delete = _requestToRemoveAll(this);
                 MoMLChangeRequest removeRequest = new MoMLChangeRequest(
                         this,            // originator
@@ -344,19 +259,6 @@ public class MobileModel extends TypedCompositeActor {
 
             // the model topology changes,
             _modelChanged = true;
-
-            //By calling fireAt to register an event at the current time, so that the outside
-            // time won't advance. This is necessary to allow the newly instantiated sub-model
-            // to register event that should happen before the next outside event.
-
-            // FIXME: No, this won't work. Because this model is a composite actor,
-            // if it has no inputs at the boundary, the prefire method returns false,
-            // and it won't be fired.
-            try {
-                getDirector().fireAtCurrentTime(this);
-            } catch (IllegalActionException ex) {
-                throw new IllegalActionException("failed in dealing with director.");
-            }
         }
         return super.postfire();
     }
@@ -402,7 +304,7 @@ public class MobileModel extends TypedCompositeActor {
             _parser.setMoMLFilters(BackwardCompatibility.allFilters());
 
             // When no model applied, output the default value.
-            if (_connectPorts) {
+            if (((BooleanToken)connectPorts.getToken()).booleanValue()) {
                 Const constActor = new Const(this, "Const");
                 constActor.value.setExpression(defaultValue.getToken().toString());
                 connect(input, constActor.trigger);
@@ -436,8 +338,7 @@ public class MobileModel extends TypedCompositeActor {
             try {
                 _director.setContainer(null);
             } catch (NameDuplicationException ex) {
-                throw new IllegalActionException("get an exception" +
-                        "when delete the director" + ex);
+                throw new InternalErrorException(ex);
             }
         }
     }
@@ -463,7 +364,8 @@ public class MobileModel extends TypedCompositeActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                 ////
+    ////                         private methods                   ////
+    
     /** create the inside director of this composite actor according
      * to the <i>director<i> parameter.
      * @exception IllegalActionException If cannot find the director
@@ -474,7 +376,6 @@ public class MobileModel extends TypedCompositeActor {
         try {
             String directorName =((StringToken) director.getToken()).stringValue();
             Class directorClass = Class.forName(directorName);
-            //System.out.println("find the class for the specified director.");
             Class[] argClasses = new Class[2];
             argClasses[0] = CompositeEntity.class;
             argClasses[1] = String.class;
@@ -494,6 +395,42 @@ public class MobileModel extends TypedCompositeActor {
         } catch (Exception ex) {
             throw new IllegalActionException("get an illegal action exception" +
                     "when create director" + ex);
+        }
+    }
+    
+    /** Create the parameters and ports. This method is called by the constructors.
+     *  @throws IllegalActionException
+     */
+    private void _init() throws IllegalActionException {
+        try {
+            input = new TypedIOPort(this, "input", true, false);
+            modelString = new TypedIOPort(this, "modelString", true, false);
+            modelString.setTypeEquals(BaseType.STRING);
+            defaultValue = new Parameter(this, "defaultValue",
+                    new IntToken(0));
+            output = new TypedIOPort(this, "output", false, true);
+            output.setTypeAtLeast(defaultValue);
+            refresh = new Parameter(this, "refresh", new BooleanToken(true));
+            refresh.setTypeEquals(BaseType.BOOLEAN);
+            connectPorts = new Parameter(this, "connectPorts", new BooleanToken(true));
+            connectPorts.setTypeEquals(BaseType.BOOLEAN);
+            // create a defaultDirector. Without this director, it may get
+            // an infinite loop when preinitialize, etc. is called in case the
+            // specified director is not successfully constructed. Even when the
+            // specified director is construced successfully, it cannot be removed
+            // in wrapup() without this default director.
+            
+            //The default director may not work when we need multi tokens to fire
+            //the inside model because the receiver it creates is an instance of
+            //Mailbox, which can only hold one token. In this case, specify a proper
+            //director using the <i>director<i> parameter.
+            new Director(this, "defaultDirector");
+            director = new Parameter(this, "director",
+                    new StringToken("ptolemy.actor.Director"));
+            setClassName("ptolemy.actor.lib.hoc.MobileModel");
+        } catch (NameDuplicationException e) {
+            // This should not be thrown.
+            throw new InternalErrorException(e);
         }
     }
 
@@ -526,20 +463,10 @@ public class MobileModel extends TypedCompositeActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    /**the inside director.
-     *
+    
+    /** The inside director.
      */
     private Director _director;
-
-    /** the local cache of the <i>refresh<i> Parameter value
-     *
-     */
-    private boolean _refresh;
-
-    /** the local cache of the <i>connectPorts<i> Parameter value
-     *
-     */
-    private boolean _connectPorts;
 
     /** The moml string for the inside model that contained by this actor.
      *
