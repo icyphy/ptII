@@ -638,10 +638,11 @@ public class SDFScheduler extends Scheduler {
             while(ainputports.hasMoreElements()) {
                 IOPort ainputport = (IOPort) ainputports.nextElement();
                 // Initialize the waitingTokens at all the inputports to zero
-                waitingTokens.putAt(ainputport,new Integer(0));
+                waitingTokens.putAt(ainputport, new Integer(0));
 
                 Enumeration cports = ainputport.deepConnectedOutPorts();
 
+                // Add the tokens from init production.
                 while(cports.hasMoreElements()) {
                     IOPort cport = (IOPort) cports.nextElement();
                     ComponentEntity cactor
@@ -651,7 +652,7 @@ public class SDFScheduler extends Scheduler {
                         int tokens = ((Integer) waitingTokens.at(ainputport))
                             .intValue();
                         waitingTokens.putAt(ainputport,
-                            new Integer(tokens +rate));
+                            new Integer(tokens + rate));
                     }
                 }
             }
