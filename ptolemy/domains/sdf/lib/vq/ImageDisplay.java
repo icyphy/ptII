@@ -47,7 +47,9 @@ import java.awt.BorderLayout;
 import java.awt.event.*;
 import java.awt.image.*;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.JWindow;
+import java.awt.Dimension;
 
 //////////////////////////////////////////////////////////////////////////
 //// ImageDisplay
@@ -127,7 +129,7 @@ public final class ImageDisplay extends SDFAtomicActor implements Placeable {
         _oldysize = 0;
         if(_container == null) {
             _frame = new _PictureFrame("ImageDisplay");
-            _container = _frame.getContainer();
+            _container = _frame.getContentPane();
         } else {
             _frame = null;
         }
@@ -159,13 +161,14 @@ public final class ImageDisplay extends SDFAtomicActor implements Placeable {
             _RGBbuffer = new int[xsize*ysize];
             if(_container == null) {
                 _frame = new _PictureFrame("ImageDisplay");
-                _container = _frame.getContainer();
+                _container = _frame.getContentPane();
             } else {
                 _frame = null;
             }
             if(_picture != null)
                 _container.remove(_picture);
             _container.setSize(xsize, ysize);
+	  
             _picture = new Picture(xsize, ysize);
             _picture.setImage(_RGBbuffer);
             _container.add("Center", _picture);
@@ -219,17 +222,11 @@ public final class ImageDisplay extends SDFAtomicActor implements Placeable {
     private class _PictureFrame extends JFrame {
         public _PictureFrame(String title) {
             super(title);
-            this.setLayout(new BorderLayout(15, 15));
+            this.getContentPane().setLayout(new BorderLayout(15, 15));
             this.show();
-            _container = new Container();
-            this.add("Center", _container);
-            this.pack();
+	    this.pack();
             this.validate();
         }
-        public Container getContainer() {
-            return _container;
-        }
-        private Container _container;
     }
 
     private Picture _picture;
