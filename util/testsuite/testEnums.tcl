@@ -75,8 +75,11 @@ proc _testEnums {enummethod args} {
 		    {$enum != [java::null] && \
 		    [$enum hasMoreElements] == 1} \
 		    {} {
-		set enumelement [$enum nextElement]
+                set enumelement [$enum nextElement]
 		if [ java::instanceof $enumelement ptolemy.kernel.util.NamedObj] {
+                         set enumelement \
+                                 [java::cast ptolemy.kernel.util.NamedObj \
+                                 $enumelement]
 		    lappend lresults [$enumelement getName]
 		} else {
 		    lappend lresults $enumElement

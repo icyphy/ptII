@@ -128,7 +128,8 @@ proc objectsToNames {objlist} {
     set results {}
     foreach obj $objlist {
         if [ java::instanceof $obj ptolemy.kernel.util.Nameable] {
-            lappend results [$obj getName]
+            lappend results [[java::cast ptolemy.kernel.util.Nameable \
+                    $obj] getName]
         } else {
             lappend results NOT_NAMEABLE.
         }
@@ -148,7 +149,8 @@ proc objectsToFullNames {objlist} {
     set results {}
     foreach obj $objlist {
         if [ java::instanceof $obj ptolemy.kernel.util.Nameable] {
-            lappend results [$obj getFullName]
+            lappend results [[java::cast ptolemy.kernel.util.Nameable $obj] \
+                    getFullName]
         } else {
             lappend results NOT_NAMEABLE.
         }
