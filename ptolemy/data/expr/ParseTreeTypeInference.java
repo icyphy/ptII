@@ -77,8 +77,8 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
 
         Type[] childTypes = _getChildTypes(node);
 
-        _setType(node,
-                new ArrayType((Type)TypeLattice.lattice().leastUpperBound(childTypes)));
+        _setType(node, new ArrayType((Type)
+                         TypeLattice.lattice().leastUpperBound(childTypes)));
     }
 
     public void visitBitwiseNode(ASTPtBitwiseNode node)
@@ -141,11 +141,26 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
                     + "when referencing " + node.getFunctionName());
         }
 
-        // temporary hack for casts.
+        // Psuedo-temporary hack for casts....
         if (functionName.compareTo("cast") == 0 && argCount == 2) {
-            _setType(node, 
-                    ((ASTPtRootNode) node.jjtGetChild(0 + 1)).getType());
+            ASTPtRootNode castTypeNode =
+                ((ASTPtRootNode)node.jjtGetChild(0 + 1));
+            ParseTreeEvaluator parseTreeEvaluator = new ParseTreeEvaluator();
+            try {
+                castTypeNode.visit(parseTreeEvaluator);
+                ptolemy.data.Token t = castTypeNode.getToken();
+                _setType(node, t.getType());
+            } catch (IllegalActionException ex) {
+                _setType(node, castTypeNode.getType());
+            }
             return;
+
+            // Note: We used to just do this, but in some case is it
+            // useful to have functions which are type constructors...
+            // Hence the above code.
+            //  _setType(node, 
+            //     ((ASTPtRootNode) node.jjtGetChild(0 + 1)).getType());
+            //  return;
         }
         
         if (functionName.compareTo("eval") == 0) {
