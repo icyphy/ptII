@@ -108,6 +108,8 @@ public abstract class Element {
      *  caution since it may make the element incompatible with graphs that
      *  already contain it.
      *  @param weight The new weight.
+     *  @exception IllegalArgumentException If the object that is passed as
+     *   argument is null.
      *  @see Graph#validEdgeWeight(Object)
      *  @see Graph#validNodeWeight(Object)
      *  @see Graph#validateWeight(Node)
