@@ -70,27 +70,27 @@ test CompositeEntity-1.1 {Get information about an instance \
     l.Port} {addRelation pt.kernel.ComponentRelation} {allo
     wLevelCrossingConnect boolean} {connect pt.kernel.Compo
     nentPort pt.kernel.ComponentPort} {connect pt.kernel.Co
-    mponentPort pt.kernel.ComponentPort java.lang.String} {
-    deepContains pt.kernel.ComponentEntity} deepGetEntities
-     {description int} {equals java.lang.Object} getClass g
-    etConnectedPorts getContainer getEntities {getEntity ja
-    va.lang.String} getFullName getLinkedRelations getName 
-    {getPort java.lang.String} getPorts {getRelation java.l
-    ang.String} getRelations hashCode isAtomic {newPort jav
-    a.lang.String} {newRelation java.lang.String} notify no
-    tifyAll numEntities numRelations removeAllEntities remo
-    veAllPorts removeAllRelations {removeEntity pt.kernel.C
-    omponentEntity} {removePort pt.kernel.Port} {removeRela
-    tion pt.kernel.ComponentRelation} {setContainer pt.kern
-    el.CompositeEntity} {setName java.lang.String} toString
-     wait {wait long} {wait long int} workspace
+    mponentPort pt.kernel.ComponentPort java.lang.String} c
+    onnectedPorts {deepContains pt.kernel.ComponentEntity} 
+    deepGetEntities {description int} {equals java.lang.Obj
+    ect} getClass getContainer getEntities {getEntity java.
+    lang.String} getFullName getName {getPort java.lang.Str
+    ing} getPorts {getRelation java.lang.String} getRelatio
+    ns hashCode isAtomic linkedRelations {newPort java.lang
+    .String} {newRelation java.lang.String} notify notifyAl
+    l numEntities numRelations removeAllEntities removeAllP
+    orts removeAllRelations {removeEntity pt.kernel.Compone
+    ntEntity} {removePort pt.kernel.Port} {removeRelation p
+    t.kernel.ComponentRelation} {setContainer pt.kernel.Com
+    positeEntity} {setName java.lang.String} toString wait 
+    {wait long} {wait long int} workspace
     
   constructors:  pt.kernel.CompositeEntity {pt.kernel.CompositeEntity pt
     .kernel.CompositeEntity java.lang.String} {pt.kernel.Co
     mpositeEntity pt.kernel.Workspace}
     
-  properties:    atomic class connectedPorts container entities fullName
-     linkedRelations name ports relations
+  properties:    atomic class container entities fullName name ports rel
+    ations
     
   superclass:    pt.kernel.ComponentEntity
     
@@ -410,8 +410,8 @@ test CompositeEntity-9.1 {Test transparent port} {
     set p2 [java::new pt.kernel.ComponentPort $b P2]
     $a connect $p2 $p1
     set result {}
-    foreach ar [enumToObjects [$p1 getInsideRelations]] {
-        lappend result [enumToFullNames [$ar getLinkedPortsExcept $p1]]
+    foreach ar [enumToObjects [$p1 insideRelations]] {
+        lappend result [enumToFullNames [$ar linkedPortsExcept $p1]]
     }
     list $result
 } {.A.B.P2}
@@ -532,31 +532,31 @@ test CompositeEntity-11.1 {Test deepGetLinkedEntities on component relations} {
     set r12 [$e10 connect $p14 $p13 R12]
     $p11 link $r7
 
-    enumMethodToNames deepGetLinkedPorts $r1 $r2 $r3 $r4 $r5 $r6 $r7 $r8 $r9 \
+    enumMethodToNames deepLinkedPorts $r1 $r2 $r3 $r4 $r5 $r6 $r7 $r8 $r9 \
             $r10 $r11 $r12
 } {P1 {P1 P9 P14 P10 P5 P3} {P1 P2} {P1 P3 P9 P14 P10} {P1 P3 P5} {P3 P6} {P1 P3 P9 P14 P10} {P9 P1 P3 P10} {P10 P1 P3 P9 P14} {P9 P1 P3 P10} {P9 P1 P3 P10} {P14 P1 P3 P10}}
 
 ######################################################################
 ####
 # NOTE:  Uses the setup constructed in 11.1.
-test CompositeEntity-11.2 {Test getLinkedPorts on relations} {
-    enumMethodToNames getLinkedPorts $r1 $r2 $r3 $r4 $r5 $r6 $r7 $r8 $r9 \
+test CompositeEntity-11.2 {Test linkedPorts on relations} {
+    enumMethodToNames linkedPorts $r1 $r2 $r3 $r4 $r5 $r6 $r7 $r8 $r9 \
             $r10 $r11 $r12
 } {{P1 P0} {P1 P4 P3} {P1 P2} {P4 P7} {P4 P5} {P3 P6} {P7 P13 P11} {P9 P8} {P10 P11} {P8 P12} {P12 P13} {P14 P13}}
 
 ######################################################################
 ####
 # NOTE:  Uses the setup constructed in 11.1.
-test CompositeEntity-11.3 {Test deepGetConnectedPorts on ports} {
-    enumMethodToNames deepGetConnectedPorts $p0 $p1 $p2 $p3 $p4 $p5 $p6 \
+test CompositeEntity-11.3 {Test deepConnectedPorts on ports} {
+    enumMethodToNames deepConnectedPorts $p0 $p1 $p2 $p3 $p4 $p5 $p6 \
             $p7 $p8 $p9 $p10 $p11 $p12 $p13 $p14
 } {{} {P9 P14 P10 P5 P3 P2} P1 {P1 P9 P14 P10 P5 P6} {P9 P14 P10 P5} {P1 P3} P3 {P9 P14 P10} {P1 P3 P10} {P1 P3 P10} {P1 P3 P9 P14} {P1 P3 P9 P14} P9 {P1 P3 P10} {P1 P3 P10}}
 
 ######################################################################
 ####
 # NOTE:  Uses the setup constructed in 11.1.
-test CompositeEntity-11.4 {Test getConnectedPorts on ports} {
-    enumMethodToNames getConnectedPorts $p0 $p1 $p2 $p3 $p4 $p5 $p6 \
+test CompositeEntity-11.4 {Test connectedPorts on ports} {
+    enumMethodToNames connectedPorts $p0 $p1 $p2 $p3 $p4 $p5 $p6 \
             $p7 $p8 $p9 $p10 $p11 $p12 $p13 $p14
 } {{} {P0 P4 P3 P2} P1 {P1 P4 P6} {P7 P5} P4 P3 {P13 P11} P12 P8 P11 {P7 P13} P8 {P7 P11} P13}
 
@@ -746,7 +746,7 @@ test CompositeEntity-12.1 {Test connect} {
     set p1 [java::new pt.kernel.ComponentPort $e1 P1]
     set p2 [java::new pt.kernel.ComponentPort $e2 P2]
     set r1 [$e0 connect $p1 $p2]
-    enumToNames [$r1 getLinkedPorts]
+    enumToNames [$r1 linkedPorts]
 } {P1 P2}
 
 ######################################################################
@@ -760,6 +760,6 @@ test CompositeEntity-12.2 {Test connect} {
     set p1 [java::new pt.kernel.ComponentPort $e1 P1]
     set p2 [java::new pt.kernel.ComponentPort $e2 P2]
     set r1 [$e0 connect $p1 $p2 R1]
-    enumToNames [[$e0 getRelation R1] getLinkedPorts ]
+    enumToNames [[$e0 getRelation R1] linkedPorts ]
 } {P1 P2}
 

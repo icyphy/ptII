@@ -62,21 +62,20 @@ test ComponentEntity-1.1 {Get information about an instance of ComponentEntity} 
 } {{
   class:         pt.kernel.ComponentEntity
   fields:        
-  methods:       {addPort pt.kernel.Port} {description int} {equals java
-    .lang.Object} getClass getConnectedPorts getContainer g
-    etFullName getLinkedRelations getName {getPort java.lan
-    g.String} getPorts hashCode isAtomic {newPort java.lang
-    .String} notify notifyAll removeAllPorts {removePort pt
-    .kernel.Port} {setContainer pt.kernel.CompositeEntity} 
-    {setName java.lang.String} toString wait {wait long} {w
-    ait long int} workspace
+  methods:       {addPort pt.kernel.Port} connectedPorts {description in
+    t} {equals java.lang.Object} getClass getContainer getF
+    ullName getName {getPort java.lang.String} getPorts has
+    hCode isAtomic linkedRelations {newPort java.lang.Strin
+    g} notify notifyAll removeAllPorts {removePort pt.kerne
+    l.Port} {setContainer pt.kernel.CompositeEntity} {setNa
+    me java.lang.String} toString wait {wait long} {wait lo
+    ng int} workspace
     
   constructors:  pt.kernel.ComponentEntity {pt.kernel.ComponentEntity pt
     .kernel.CompositeEntity java.lang.String} {pt.kernel.Co
     mponentEntity pt.kernel.Workspace}
     
-  properties:    atomic class connectedPorts container fullName linkedRe
-    lations name ports
+  properties:    atomic class container fullName name ports
     
   superclass:    pt.kernel.Entity
     

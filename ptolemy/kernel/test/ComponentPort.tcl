@@ -67,22 +67,21 @@ test ComponentPort-1.1 {Get information about an instance of ComponentPort} {
   class:         pt.kernel.ComponentPort
   fields:        
   methods:       {_checkRelation pt.kernel.Relation} {_outside pt.kernel
-    .Nameable} deepGetConnectedPorts deepGetInsidePorts {de
-    scription int} {equals java.lang.Object} getClass getCo
-    nnectedPorts getContainer getFullName getInsidePorts ge
-    tInsideRelations getLinkedRelations getName hashCode {l
-    iberalLink pt.kernel.Relation} {link pt.kernel.Relation
-    } notify notifyAll numInsideLinks numLinks {setContaine
-    r pt.kernel.Entity} {setName java.lang.String} toString
-     {unlink pt.kernel.Relation} unlinkAll wait {wait long}
-     {wait long int} workspace
+    .Nameable} connectedPorts deepConnectedPorts deepInside
+    Ports {description int} {equals java.lang.Object} getCl
+    ass getContainer getFullName getName hashCode insidePor
+    ts insideRelations {isDeeplyConnected pt.kernel.Compone
+    ntPort} {liberalLink pt.kernel.Relation} {link pt.kerne
+    l.Relation} linkedRelations notify notifyAll numInsideL
+    inks numLinks {setContainer pt.kernel.Entity} {setName 
+    java.lang.String} toString {unlink pt.kernel.Relation} 
+    unlinkAll wait {wait long} {wait long int} workspace
     
   constructors:  pt.kernel.ComponentPort {pt.kernel.ComponentPort pt.ker
     nel.ComponentEntity java.lang.String} {pt.kernel.Compon
     entPort pt.kernel.Workspace}
     
-  properties:    class connectedPorts container fullName insidePorts ins
-    ideRelations linkedRelations name
+  properties:    class container fullName name
     
   superclass:    pt.kernel.Port
     
@@ -116,17 +115,17 @@ test ComponentPort-2.3 {Check getInsidePorts on opaque ports} {
     set e1 [java::new pt.kernel.ComponentEntity]
     $e1 setName E1
     set p1 [java::new pt.kernel.ComponentPort $e1 P1]
-    enumToFullNames [$p1 getInsidePorts]
+    enumToFullNames [$p1 insidePorts]
 } {}
 
 ######################################################################
 ####
 # 
-test ComponentPort-2.3 {Check deepGetInsidePorts on opaque ports} {
+test ComponentPort-2.3 {Check deepInsidePorts on opaque ports} {
     set e1 [java::new pt.kernel.ComponentEntity]
     $e1 setName E1
     set p1 [java::new pt.kernel.ComponentPort $e1 P1]
-    enumToFullNames [$p1 deepGetInsidePorts]
+    enumToFullNames [$p1 deepInsidePorts]
 } {.E1.P1}
 
 ######################################################################
@@ -141,13 +140,13 @@ test ComponentPort-3.1 {Make transparent port} {
     set a1 [java::new pt.kernel.ComponentRelation $e1 A1]
     $p2 link $a1
     $p1 link $a1
-    enumToFullNames [$a1 getLinkedPorts]
+    enumToFullNames [$a1 linkedPorts]
 } {.E1.E2.P2 .E1.P1}
 
 ######################################################################
 ####
 # 
-test ComponentPort-3.2 {Make multiple aliases and test deepGetInsidePorts} {
+test ComponentPort-3.2 {Make multiple aliases and test deepInsidePorts} {
     set e1 [java::new pt.kernel.CompositeEntity]
     $e1 setName E1
     set e2 [java::new pt.kernel.ComponentEntity $e1 E2]
@@ -158,14 +157,14 @@ test ComponentPort-3.2 {Make multiple aliases and test deepGetInsidePorts} {
     $p1 link $a1
     $p2 link $a1
     $p3 link $a1
-    list [enumToFullNames [$p3 deepGetInsidePorts]] \
-            [enumToFullNames [$p3 getInsidePorts]]
+    list [enumToFullNames [$p3 deepInsidePorts]] \
+            [enumToFullNames [$p3 insidePorts]]
 } {{.E1.E2.P1 .E1.E2.P2} {.E1.E2.P1 .E1.E2.P2}}
 
 ######################################################################
 ####
 # 
-test ComponentPort-3.3 {test getConnectedPorts} {
+test ComponentPort-3.3 {test connectedPorts} {
     set e1 [java::new pt.kernel.CompositeEntity]
     $e1 setName E1
     set e2 [java::new pt.kernel.ComponentEntity $e1 E2]
@@ -176,9 +175,9 @@ test ComponentPort-3.3 {test getConnectedPorts} {
     $p1 link $a1
     $p2 link $a1
     $p3 link $a1
-    list [enumToNames [$p3 getConnectedPorts]] \
-            [enumToNames [$p2 getConnectedPorts]] \
-            [enumToNames [$p1 getConnectedPorts]]
+    list [enumToNames [$p3 connectedPorts]] \
+            [enumToNames [$p2 connectedPorts]] \
+            [enumToNames [$p1 connectedPorts]]
 } {{} {P1 P3} {P2 P3}}
 
 ######################################################################
@@ -206,7 +205,7 @@ test ComponentPort-3.5 {Level-crossing link} {
     set p2 [java::new pt.kernel.ComponentPort $e2 P2]
     set a1 [java::new pt.kernel.ComponentRelation $e2 A1]
     $p1 liberalLink $a1
-    enumToNames [$a1 getLinkedPorts]
+    enumToNames [$a1 linkedPorts]
 } {P1}
 
 ######################################################################
@@ -233,10 +232,10 @@ test ComponentPort-3.6 {Construct aliases, then modify them} {
 
     set result {}
     foreach obj [list $p1 $p2 $p3 $p4] {
-        lappend result [enumToNames [$obj getInsidePorts]]
+        lappend result [enumToNames [$obj insidePorts]]
     }
     foreach obj [list $a1 $a2] {
-        lappend result [enumToNames [$obj getLinkedPorts]]
+        lappend result [enumToNames [$obj linkedPorts]]
     }
 
     # Now the modification
@@ -245,10 +244,10 @@ test ComponentPort-3.6 {Construct aliases, then modify them} {
     $p3 link $a1
 
     foreach obj [list $p1 $p2 $p3 $p4] {
-        lappend result [enumToNames [$obj getInsidePorts]]
+        lappend result [enumToNames [$obj insidePorts]]
     }
     foreach obj [list $a1 $a2] {
-        lappend result [enumToNames [$obj getLinkedPorts]]
+        lappend result [enumToNames [$obj linkedPorts]]
     }
     list $result
 } {{P2 {} P4 {} {P2 P1} {P4 P3} {P2 P3} {} {P2 P2 P1} {} {P2 P1 P3} {P3 P2}}}
@@ -271,8 +270,8 @@ test ComponentPort-4.1 {Cross Level Link} {
     $p1 liberalLink $r1
     $p2 link $r1
 
-    list [enumToNames [$p1 getLinkedRelations]] \
-            [enumToNames [$p2 getLinkedRelations]]
+    list [enumToNames [$p1 linkedRelations]] \
+            [enumToNames [$p2 linkedRelations]]
 } {R1 R1}
 
 ######################################################################
@@ -304,11 +303,11 @@ test ComponentPort-5.1 {Transparent entity} {
     $p4 link $r3
     $p5 link $r3
 
-    list [enumToNames [$p1 deepGetConnectedPorts]] \
-            [enumToNames [$p2 deepGetConnectedPorts]] \
-            [enumToNames [$p3 deepGetConnectedPorts]] \
-            [enumToNames [$p4 deepGetConnectedPorts]] \
-            [enumToNames [$p5 deepGetConnectedPorts]]
+    list [enumToNames [$p1 deepConnectedPorts]] \
+            [enumToNames [$p2 deepConnectedPorts]] \
+            [enumToNames [$p3 deepConnectedPorts]] \
+            [enumToNames [$p4 deepConnectedPorts]] \
+            [enumToNames [$p5 deepConnectedPorts]]
 } {{P3 P5} P1 {P1 P5} P5 {P1 P3}}
 
 ######################################################################
@@ -327,9 +326,9 @@ test ComponentPort-5.2 {numInsideLinks} {
 # NOTE: Uses topology built in 5.1
 test ComponentPort-5.3 {unlinkAll} {
     $p2 unlinkAll
-    list [enumToNames [$p1 deepGetConnectedPorts]] \
-            [enumToNames [$p2 deepGetConnectedPorts]] \
-            [enumToNames [$p3 deepGetConnectedPorts]] \
-            [enumToNames [$p4 deepGetConnectedPorts]] \
-            [enumToNames [$p5 deepGetConnectedPorts]]
+    list [enumToNames [$p1 deepConnectedPorts]] \
+            [enumToNames [$p2 deepConnectedPorts]] \
+            [enumToNames [$p3 deepConnectedPorts]] \
+            [enumToNames [$p4 deepConnectedPorts]] \
+            [enumToNames [$p5 deepConnectedPorts]]
 } {{} {} P5 P5 P3}

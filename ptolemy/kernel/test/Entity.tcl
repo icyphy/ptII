@@ -38,7 +38,7 @@ if {[string compare test [info procs test]] == 1} then {
 } {}
 
 # Load up Tcl procs to print out enums
-if {[info procs _testEntityGetLinkedRelations] == "" } then { 
+if {[info procs _testEntityLinkedRelations] == "" } then { 
     source testEnums.tcl
 }
 
@@ -63,19 +63,18 @@ test Entity-1.1 {Get information about an instance of Entity} {
 } {{
   class:         pt.kernel.Entity
   fields:        
-  methods:       {addPort pt.kernel.Port} {description int} {equals java
-    .lang.Object} getClass getConnectedPorts getContainer g
-    etFullName getLinkedRelations getName {getPort java.lan
-    g.String} getPorts hashCode {newPort java.lang.String} 
-    notify notifyAll removeAllPorts {removePort pt.kernel.P
-    ort} {setName java.lang.String} toString wait {wait lon
-    g} {wait long int} workspace
+  methods:       {addPort pt.kernel.Port} connectedPorts {description in
+    t} {equals java.lang.Object} getClass getContainer getF
+    ullName getName {getPort java.lang.String} getPorts has
+    hCode linkedRelations {newPort java.lang.String} notify
+     notifyAll removeAllPorts {removePort pt.kernel.Port} {
+    setName java.lang.String} toString wait {wait long} {wa
+    it long int} workspace
     
   constructors:  pt.kernel.Entity {pt.kernel.Entity java.lang.String} {p
     t.kernel.Entity pt.kernel.Workspace java.lang.String}
     
-  properties:    class connectedPorts container fullName linkedRelations
-     name ports
+  properties:    class container fullName name ports
     
   superclass:    pt.kernel.NamedObj
     
@@ -115,7 +114,7 @@ test Entity-4.0 {Connect Entities} {
     $out link $arc
     $in link $arc
 
-    _testEntityGetLinkedRelations $ramp
+    _testEntityLinkedRelations $ramp
 } {Arc}
 
 ######################################################################
@@ -335,8 +334,8 @@ test Entity-7.0 {Connect Entities, then remove a port} {
     # Remove a port
     $ramp removePort [$ramp getPort "Ramp out"]
 
-    list [_testEntityGetLinkedRelations $ramp] \
-            [_testRelationGetLinkedPorts $arc]
+    list [_testEntityLinkedRelations $ramp] \
+            [_testRelationLinkedPorts $arc]
 } {{{}} {{{Print in}}}}
 
 ######################################################################

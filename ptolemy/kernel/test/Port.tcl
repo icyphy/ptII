@@ -67,19 +67,17 @@ test Port-1.1 {Get information about an instance of Port} {
 } {{
   class:         pt.kernel.Port
   fields:        
-  methods:       {description int} {equals java.lang.Object} getClass ge
-    tConnectedPorts getContainer getFullName getLinkedRelat
-    ions getName hashCode {link pt.kernel.Relation} notify 
-    notifyAll numLinks {setContainer pt.kernel.Entity} {set
-    Name java.lang.String} toString {unlink pt.kernel.Relat
-    ion} unlinkAll wait {wait long} {wait long int} workspa
-    ce
+  methods:       connectedPorts {description int} {equals java.lang.Obje
+    ct} getClass getContainer getFullName getName hashCode 
+    {link pt.kernel.Relation} linkedRelations notify notify
+    All numLinks {setContainer pt.kernel.Entity} {setName j
+    ava.lang.String} toString {unlink pt.kernel.Relation} u
+    nlinkAll wait {wait long} {wait long int} workspace
     
   constructors:  pt.kernel.Port {pt.kernel.Port pt.kernel.Entity java.la
     ng.String} {pt.kernel.Port pt.kernel.Workspace}
     
-  properties:    class connectedPorts container fullName linkedRelations
-     name
+  properties:    class container fullName name
     
   superclass:    pt.kernel.NamedObj
     
@@ -106,8 +104,8 @@ test Port-3.1 {Test link with one port, one relation} {
     $p1 setName P1
     set r1 [java::new pt.kernel.Relation R1]
     $p1 link $r1
-    list [enumToNames [$p1 getLinkedRelations]] \
-            [enumToNames [$p1 getConnectedPorts]]
+    list [enumToNames [$p1 linkedRelations]] \
+            [enumToNames [$p1 connectedPorts]]
 } {R1 {}}
 
 ######################################################################
@@ -120,8 +118,8 @@ test Port-3.1.1 {Test link with one port, one relation twice} {
     set r1 [java::new pt.kernel.Relation R1]
     $p1 link $r1
     $p1 link $r1
-    list [enumToNames [$p1 getLinkedRelations]] \
-            [enumToNames [$p1 getConnectedPorts]]
+    list [enumToNames [$p1 linkedRelations]] \
+            [enumToNames [$p1 connectedPorts]]
 } {{R1 R1} {}}
 
 ######################################################################
@@ -130,8 +128,8 @@ test Port-3.1.1 {Test link with one port, one relation twice} {
 test Port-3.1.2 {Test link with one port to a null relation} {
     set p1 [java::new pt.kernel.Port]
     $p1 link [java::null]
-    list [enumToNames [$p1 getLinkedRelations]] \
-            [enumToNames [$p1 getConnectedPorts]]
+    list [enumToNames [$p1 linkedRelations]] \
+            [enumToNames [$p1 connectedPorts]]
 } {{} {}}
 
 ######################################################################
@@ -145,8 +143,8 @@ test Port-3.2 {Test link with one port, two relations} {
     set r2 [java::new pt.kernel.Relation R2]
     $p1 link $r1
     $p1 link $r2
-    list [enumToNames [$p1 getLinkedRelations]] \
-            [enumToNames [$p1 getConnectedPorts]]
+    list [enumToNames [$p1 linkedRelations]] \
+            [enumToNames [$p1 connectedPorts]]
 } {{R1 R2} {}}
 
 ######################################################################
@@ -159,8 +157,8 @@ test Port-3.3 {Test link with two ports, one relation} {
     set r1 [java::new pt.kernel.Relation R1]
     $p1 link $r1
     $p2 link $r1
-    list [enumToNames [$p1 getLinkedRelations]] \
-            [enumToNames [$p1 getConnectedPorts]]
+    list [enumToNames [$p1 linkedRelations]] \
+            [enumToNames [$p1 connectedPorts]]
 } {R1 P2}
 
 ######################################################################
@@ -176,10 +174,10 @@ test Port-3.4 {Test link with two ports, two relations} {
     $p2 link $r1
     $p1 link $r2
     $p2 link $r2
-    list [enumToNames [$p1 getLinkedRelations]] \
-            [enumToNames [$p1 getConnectedPorts]] \
-            [enumToNames [$p2 getLinkedRelations]] \
-            [enumToNames [$p2 getConnectedPorts]] \
+    list [enumToNames [$p1 linkedRelations]] \
+            [enumToNames [$p1 connectedPorts]] \
+            [enumToNames [$p2 linkedRelations]] \
+            [enumToNames [$p2 connectedPorts]] \
 	    [$p1 numLinks] \
 	    [$p2 numLinks]
 } {{R1 R2} {P2 P2} {R1 R2} {P1 P1} 2 2}
@@ -199,13 +197,13 @@ test Port-4.1 {Test unlinkAll} {
     $p1 link $r2
     $p2 link $r2
     $p1 unlinkAll
-    set result1 [_testPortGetLinkedRelations $p1 $p2]
+    set result1 [_testPortLinkedRelations $p1 $p2]
     # We call this twice to make sure that if there are no relations,
     # we don't cause an error.
     $p1 unlinkAll
-    set result2 [_testPortGetLinkedRelations $p1 $p2]
+    set result2 [_testPortLinkedRelations $p1 $p2]
     $p2 unlinkAll 
-    set result3 [_testPortGetLinkedRelations $p1 $p2]
+    set result3 [_testPortLinkedRelations $p1 $p2]
    list "$result1\n$result2\n$result3"
 } {{{} {relation1 relation2}
 {} {relation1 relation2}
@@ -231,18 +229,18 @@ test Port-5.1 {Test unlink} {
     $p1 link $r2
     $p3 link $r2
     $p1 unlink $r1
-    set result1 [_testPortGetLinkedRelations $p1 $p3]
+    set result1 [_testPortLinkedRelations $p1 $p3]
     $p3 unlink $r2
-    set result2 [_testPortGetLinkedRelations $p1 $p3]
+    set result2 [_testPortLinkedRelations $p1 $p3]
     $p3 unlink $r1
-    set result3 [_testPortGetLinkedRelations $p1 $p3]
+    set result3 [_testPortLinkedRelations $p1 $p3]
 
     # Call unlink on a relation that has already been disconnected.
     $p3 unlink $r1
-    set result4 [expr {$result3 == [_testPortGetLinkedRelations $p1 $p3]}]
+    set result4 [expr {$result3 == [_testPortLinkedRelations $p1 $p3]}]
 
     $p1 unlink $r2
-    set result5 [_testPortGetLinkedRelations $p1 $p3]
+    set result5 [_testPortLinkedRelations $p1 $p3]
 
    list "$result1\n$result2\n$result3\n$result4\n$result5"
 } {{relation2 {relation1 relation2}
@@ -262,15 +260,15 @@ test Port-5.2 {Test unlink on a relation we are not connected to} {
     set r2 [java::new pt.kernel.Relation "relation2"]
     $p1 link $r1
     $p1 unlink $r2
-    list [_testPortGetLinkedRelations $p1]
+    list [_testPortLinkedRelations $p1]
 } {relation1}
 
 ######################################################################
 ####
 # 
-test Port-6.1 {Test getLinkedRElations} {
+test Port-6.1 {Test linkedRelations} {
     set p1 [java::new pt.kernel.Port]
-    set enum [$p1 getLinkedRelations]
+    set enum [$p1 linkedRelations]
     catch {$enum nextElement} errmsg
     list $errmsg [$enum hasMoreElements]
 } {{java.util.NoSuchElementException: exhausted enumeration} 0}
@@ -309,7 +307,7 @@ test Port-8.1 {Build a topology consiting of a Ramp and a Print Entity} {
     $in link $arc
 
     # Note that we are not getting all the information we could
-    list [_testPortGetLinkedRelations $out $in] \
+    list [_testPortLinkedRelations $out $in] \
             [_testEntityGetPorts $ramp] \
             [_testEntityGetPorts $print]
 } {{Arc Arc} {{{Ramp out}}} {{{Print in}}}}
@@ -332,7 +330,7 @@ test Port-9.1 {Remove a port from its container} {
     $out setContainer [java::null]
 
     # Note that we are not getting all the information we could
-    list [_testPortGetLinkedRelations $out $in] \
+    list [_testPortLinkedRelations $out $in] \
             [_testEntityGetPorts $ramp] \
             [_testEntityGetPorts $print]
 } {{{} Arc} {{}} {{{Print in}}}}
@@ -355,7 +353,7 @@ test Port-10.1 {Reassign a port to a new container} {
     $out setContainer $print
 
     # Note that we are not getting all the information we could
-    list [_testPortGetLinkedRelations $out $in] \
+    list [_testPortLinkedRelations $out $in] \
             [_testEntityGetPorts $ramp] \
             [_testEntityGetPorts $print]
 } {{Arc Arc} {{}} {{{Print in} {Ramp out}}}}
