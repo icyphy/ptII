@@ -153,25 +153,24 @@ test JavaCodeGenerator-3.2 {Generate code java.lang.Object using reflection} {
     set javaCodeGenerator \
 	    [java::new ptolemy.lang.java.JavaCodeGenerator] 
     set run1 [$compileUnitNode accept $javaCodeGenerator]
-} {package java.lang;
-
-public class java.lang.Object {
+    # Use lsort to handle platform dependencies
+    list [lrange $run1 0 4] [lsort $run1]
+} {{package {java.lang;} public class java.lang.Object} {{
 public Object() {
 super();
 }
 
-public native int hashCode();
-protected void finalize() throws java.lang.Throwable;
-public final void wait() throws java.lang.InterruptedException;
-public final void wait(public abstract final long , public abstract final int ) throws java.lang.InterruptedException;
-public final native void wait(public abstract final long ) throws java.lang.InterruptedException;
-private native static void registerNatives();
-public final native java.lang.Class getClass();
-public boolean equals(public java.lang.Object );
 protected native java.lang.Object clone() throws java.lang.CloneNotSupportedException;
-public java.lang.String toString();
+public boolean equals(public java.lang.Object );
+protected void finalize() throws java.lang.Throwable;
+public final native java.lang.Class getClass();
+public native int hashCode();
 public final native void notify();
 public final native void notifyAll();
-}
+private native static void registerNatives();
+public java.lang.String toString();
+public final void wait() throws java.lang.InterruptedException;
+public final native void wait(public abstract final long ) throws java.lang.InterruptedException;
+public final void wait(public abstract final long , public abstract final int ) throws java.lang.InterruptedException;
+} class java.lang.Object {java.lang;} package public}}
 
-}
