@@ -110,7 +110,7 @@ public abstract class AbstractGraphController implements GraphController {
     }
 
     /**
-     * Add the node to this graph editor and place it whereever convenient.
+     * Add the node to this graph editor and place it wherever convenient.
      */
     public void addNode(Object node) {
         NodeController nc = getNodeController(node);
