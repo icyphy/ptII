@@ -76,6 +76,7 @@ public class BoxedValueIcon extends AttributeValueIcon {
     public Figure createBackgroundFigure() {
         String displayString = _displayString();
         double width = 60;
+        double heigth = 30;
         if (displayString != null) {
             // Measure width of the text.  Unfortunately, this
             // requires generating a label figure that we will not use.
@@ -84,8 +85,9 @@ public class BoxedValueIcon extends AttributeValueIcon {
             Rectangle2D stringBounds = label.getBounds();
             // NOTE: Padding of 20.
             width = stringBounds.getWidth() + 20;
+            heigth = stringBounds.getHeight() + 10;
         }
-        _background = new BasicRectangle(0, 0, width, 30, Color.white, 1);
+        _background = new BasicRectangle(0, 0, width, heigth, Color.white, 1);
         return _background;
     }
 }
