@@ -54,7 +54,7 @@ public class ASTNodeRenderer extends DefaultTreeCellRenderer {
 
     /** Return a label for the given value.  Currently, the label
      *  contains only the classname.
-     *  @returns A component to put into the JTree.
+     *  @return A component to put into the JTree.
      */
     public Component getTreeCellRendererComponent(JTree tree, Object value,
             boolean selected, boolean expanded, boolean leaf,
