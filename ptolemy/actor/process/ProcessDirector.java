@@ -56,7 +56,7 @@ director to control and respond when deadlock is detected (no processes
 can make progress), or to respond to requests from higher in the hierarchy.
 <p>
 The methods that control how the director detects and responds to deadlocks
-are _isDeadlocked() and _handleDeadlock(). These methods should be
+are _areActorsDeadlocked() and _handleDeadlock(). These methods should be
 overridden in derived classes to get domain-specific behaviour. The
 implementations given here are trivial and suffice only to illustrate
 the approach that should be followed.
@@ -103,11 +103,6 @@ public class ProcessDirector extends Director {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /**
-    public void _branchBlocked(boolean isInput) {
-    }
-     */
-
     /** Clone the director into the specified workspace. The new object is
      *  <i>not</i> added to the directory of that workspace (It must be added
      *  by the user if he wants it to be there).
@@ -123,8 +118,8 @@ public class ProcessDirector extends Director {
         ProcessDirector newobj = (ProcessDirector)super.clone(ws);
         newobj._actorsActive = 0;
         newobj._notDone = true;
-        newobj._threadList = new LinkedList();
-	newobj._threadsStopped = 0;
+        newobj._actorThreadList = new LinkedList();
+	newobj._actorsStopped = 0;
         return newobj;
     }
 
@@ -136,10 +131,10 @@ public class ProcessDirector extends Director {
     public void fire() throws IllegalActionException {
 	Workspace workspace = workspace();
         synchronized (this) {
-            while( !_areAllThreadsStopped() && !_isDeadlocked() ) {
+            while( !_areActorsStopped() && !_areActorsDeadlocked() ) {
 		workspace.wait(this);
             }
-            if( _isDeadlocked() ) {
+            if( _areActorsDeadlocked() ) {
                 _notDone = _resolveDeadlock();
             } else {
 		_notDone = true;
@@ -160,9 +155,9 @@ public class ProcessDirector extends Director {
     public void initialize() throws IllegalActionException {
 	_notDone = true;
 	_actorsActive = 0;
-	_threadsStopped = 0;
-	_threadList = new LinkedList();
-	_newthreads = new LinkedList();
+	_actorsStopped = 0;
+	_actorThreadList = new LinkedList();
+	_newActorThreadList = new LinkedList();
         CompositeActor container = ((CompositeActor)getContainer());
         if (container!= null) {
             /*
@@ -184,6 +179,9 @@ public class ProcessDirector extends Director {
                 actor.initialize();
             }
         }
+        
+        _inputBranchController = new BranchController(container);
+        _outputBranchController = new BranchController(container);
 
 	// Instantiate Input/Output Branch Controllers
 	if( container != null ) {
@@ -219,8 +217,8 @@ public class ProcessDirector extends Director {
 
         // Initialize threads
         ProcessThread processThread = _getProcessThread(actor, this);
-        _threadList.addFirst(processThread);
-        _newthreads.addFirst(processThread);
+        _actorThreadList.addFirst(processThread);
+        _newActorThreadList.addFirst(processThread);
     }
 
     /** Return false if the model has reached a deadlock and can
@@ -243,46 +241,42 @@ public class ProcessDirector extends Director {
      */
     public boolean prefire() throws IllegalActionException  {
         // (Re)Start Actor Threads
-        Iterator threads = _newthreads.iterator();
+        Iterator threads = _newActorThreadList.iterator();
         ProcessThread procThread = null;
-	if( _areAllThreadsStopped() ) {
-	    threads = _threadList.iterator();
+	if( _areActorsStopped() ) {
+	    threads = _actorThreadList.iterator();
 	    while( threads.hasNext() ) {
 		procThread = (ProcessThread)threads.next();
 		procThread.restartThread();
 		synchronized(procThread) {
 		    procThread.notifyAll();
 		}
-		if( _threadsStopped > 0 ) {
-		    _threadsStopped--;
+		if( _actorsStopped > 0 ) {
+		    _actorsStopped--;
 		}
 	    }
 	} else {
-            threads = _newthreads.iterator();
+            threads = _newActorThreadList.iterator();
             while (threads.hasNext()) {
                 procThread = (ProcessThread)threads.next();
 		procThread.start();
 	    }
-	    _newthreads.clear();
+	    _newActorThreadList.clear();
         }
         
         // (Re)Start BranchControllers 
         Thread thread = null;
-        if( _areBranchControllersStopped() ) {
-            Iterator controllers = _branchControllers.iterator();
-            BranchController controller = null;
-            while( controllers.hasNext() ) {
-                controller = (BranchController)controllers.next();
-                controller.reset();
-            }
-        } else {
-            Iterator controllers = _branchControllers.iterator();
-            BranchController controller = null;
-            while( controllers.hasNext() ) {
-                controller = (BranchController)controllers.next();
-                thread = new Thread(controller);
-                thread.start();
-            }
+        if( _inputBranchController.isStopped() ) {
+            _inputBranchController.restart();
+        } else if( _inputBranchController.hasBranches() ) {
+            thread = new Thread(_inputBranchController);
+            thread.start();
+        }
+        if( _outputBranchController.isStopped() ) {
+            _outputBranchController.restart();
+        } else if( _outputBranchController.hasBranches() ) {
+            thread = new Thread(_outputBranchController);
+            thread.start();
         }
         
         return true;
@@ -292,7 +286,7 @@ public class ProcessDirector extends Director {
      *  has been stopped.
      */
     public synchronized void registerStoppedThread() {
- 	_threadsStopped++;
+ 	_actorsStopped++;
  	notifyAll();
     }
 
@@ -304,7 +298,7 @@ public class ProcessDirector extends Director {
      *  is guaranteed to return in finite time.
      */
     public void stopFire() {
- 	Iterator threads = _threadList.iterator();
+ 	Iterator threads = _actorThreadList.iterator();
  	while( threads.hasNext() ) {
  	    ProcessThread thread = (ProcessThread)threads.next();
 
@@ -319,8 +313,8 @@ public class ProcessDirector extends Director {
      *  @return True if data are transferred.
      */
     public boolean transferInputs(IOPort port) throws IllegalActionException {
-        throw new IllegalActionException(this, "transferInputs(IOPort) "
-                + "is an invalid command for ProcessDirector."); 
+        // Do nothing
+        return true;
     }
     
     /**
@@ -328,8 +322,8 @@ public class ProcessDirector extends Director {
      *  @return True if data are transferred.
      */
     public boolean transferOutputs(IOPort port) throws IllegalActionException {
-        throw new IllegalActionException(this, "transferOutputs(IOPort) "
-                + "is an invalid command for ProcessDirector."); 
+        // Do nothing
+        return true;
     }
     
     /**
@@ -339,6 +333,7 @@ public class ProcessDirector extends Director {
     public void createBranchController(Iterator ports) 
     	    throws IllegalActionException {
             
+        /*
         if( !ports.hasNext() ) {
             return;
         }
@@ -351,6 +346,7 @@ public class ProcessDirector extends Director {
         }
         MultiBranchActor mCont = (MultiBranchActor)cont;
         // BranchController cntlr = new BranchController(mCont);
+        */
         
         
         // Create Branches in the BranchController
@@ -363,16 +359,10 @@ public class ProcessDirector extends Director {
                     "input port.");
             }
 	    if( port.isInput() ) {
-		if( _inputBranchController == null ) {
-		    _inputBranchController = new BranchController(mCont);
-		}
-		_inputBranchController.createBranches(port);
+		_inputBranchController.addBranches(port);
 	    }
 	    if( port.isOutput() ) {
-		if( _outputBranchController == null ) {
-		    _outputBranchController = new BranchController(mCont);
-		}
-		_outputBranchController.createBranches(port);
+		_outputBranchController.addBranches(port);
 	    }
         }
     }
@@ -390,13 +380,15 @@ public class ProcessDirector extends Director {
         */
     }
 
-    /**
+    /** Stop the input branch controller of this director by 
+     *  ending the current iteration of the controller.
      */
     public void  stopInputBranchController() {
         _inputBranchController.endIteration();
     }
     
-    /**
+    /** Stop the output branch controller of this director by 
+     *  ending the current iteration of the controller.
      */
     public void  stopOutputBranchController() {
         _inputBranchController.endIteration();
@@ -415,8 +407,8 @@ public class ProcessDirector extends Director {
         super.terminate();
         // Now stop any threads created by this director.
 	LinkedList list = new LinkedList();
-	list.addAll(_threadList);
-	_threadList.clear();
+	list.addAll(_actorThreadList);
+	_actorThreadList.clear();
         Iterator threads = list.iterator();
         while (threads.hasNext()) {
 	    ((Thread)threads.next()).stop();
@@ -438,21 +430,16 @@ public class ProcessDirector extends Director {
      */
     public void wrapup() throws IllegalActionException {
         // Kill all branch controllers
-        Iterator controllers = _branchControllers.iterator();
-        BranchController controller = null;
-        while( controllers.hasNext() ) {
-            controller = (BranchController)controllers.next();
-            controller.setActive(false);
-            controller.reset();
-        }
+        _inputBranchController.deactivateBranches();
+        _outputBranchController.deactivateBranches();
         
 	// Wake up threads if they are stopped.
         ProcessThread thread = null;
-	if( _areAllThreadsStopped() ) {
-	    Iterator threads = _threadList.iterator();
+	if( _areActorsStopped() ) {
+	    Iterator threads = _actorThreadList.iterator();
 	    while( threads.hasNext() ) {
-		if( _threadsStopped > 0 ) {
-		    _threadsStopped--;
+		if( _actorsStopped > 0 ) {
+		    _actorsStopped--;
 		}
 		thread = (ProcessThread)threads.next();
 		thread.restartThread();
@@ -514,98 +501,22 @@ public class ProcessDirector extends Director {
      *  @param thr The newly created thread
      */
     protected synchronized void _addNewThread(ProcessThread thr) {
-	_threadList.addFirst(thr);
+	_actorThreadList.addFirst(thr);
     }
 
-    /**
-     */
-    protected synchronized boolean _areInputBranchControllersStopped() {
-        Iterator controllers = _branchControllers.iterator();
-        BranchController controller = null;
-        while( controllers.hasNext() ) {
-            controller = (BranchController)controllers.next();
-	    if( controller.hasInputPorts() ) {
-		if( !controller.isIterationOver() ) {
-		    return false;
-		}
-	    }
-        }
-        return true;
-    }
-
-    /**
-     */
-    protected synchronized boolean _areOutputBranchControllersStopped() {
-        Iterator controllers = _branchControllers.iterator();
-        BranchController controller = null;
-        while( controllers.hasNext() ) {
-            controller = (BranchController)controllers.next();
-	    if( controller.hasOutputPorts() ) {
-		if( !controller.isIterationOver() ) {
-		    return false;
-		}
-	    }
-        }
-        return true;
-    }
-
-    /**
-     */
-    protected synchronized void _stopInputBranchControllers() {
-        Iterator controllers = _branchControllers.iterator();
-        BranchController controller = null;
-        while( controllers.hasNext() ) {
-            controller = (BranchController)controllers.next();
-	    if( controller.hasInputPorts() ) {
-		controller.endIteration();
-	    }
-        }
-    }
-
-    /**
-     */
-    protected synchronized void _stopOutputBranchControllers() {
-        Iterator controllers = _branchControllers.iterator();
-        BranchController controller = null;
-        while( controllers.hasNext() ) {
-            controller = (BranchController)controllers.next();
-	    if( controller.hasOutputPorts() ) {
-		controller.endIteration();
-	    }
-        }
-    }
-
-    /**
-     */
-    protected synchronized boolean _areBranchControllersStopped() {
-        if( _branchControllersBlocked == 0 ) {
-            // We haven't started yet.
-            return false;
-        }
-        Iterator controllers = _branchControllers.iterator();
-        BranchController controller = null;
-        while( controllers.hasNext() ) {
-            controller = (BranchController)controllers.next();
-            if( !controller.isIterationOver() ) {
-            	return false;
-            }
-        }
-        return true;
-    }
-    
-    /** Determine if all of the threads containing actors controlled
-     *  by this director have stopped due to a call of stopFire().
-     *  Override this method in subclasses to account for possible
-     *  deadlock situations due to additional flags that are not
-     *  present in this base class.
-     * @return True if all active threads containing actors controlled
-     *  by this thread have stopped; otherwise return false.
-     */
-    protected synchronized boolean _areAllThreadsStopped() {
-	// All threads are stopped due to stopFire()
-	if( _isDeadlocked() ) {
+    /** Return true if all of the threads containing actors 
+     *  controlled by this director have stopped due to a call
+     *  of stopFire(). Return true if this director controls
+     *  no actors. Override this method in subclasses to account
+     *  for possible deadlock situations due to additional flags
+     *  that are not present in this base class.
+     * @return True if all actors controlled by this thread 
+     *  have stopped; otherwise return false.
+     */   
+    protected synchronized boolean _areActorsStopped() {
+	if( _actorsActive == 0 ) {
 	    return true;
-	} else if( _threadsStopped > 0 && _threadsStopped 
+	} else if( _actorsStopped > 0 && _actorsStopped 
 		>= _actorsActive ) {
 	    return true;
 	}
@@ -631,7 +542,7 @@ public class ProcessDirector extends Director {
      */
     protected synchronized void _decreaseActiveCount() {
 	_actorsActive--;
-	if (_isDeadlocked()) {
+	if (_areActorsDeadlocked()) {
 	    //Wake up the director waiting for a deadlock
 	    notifyAll();
 	}
@@ -643,22 +554,6 @@ public class ProcessDirector extends Director {
      */
     protected synchronized long _getActiveActorsCount() {
 	return _actorsActive;
-    }
-
-    /** Return the number of active processes under the control of this
-     *  director.
-     * @return The number of active actors.
-     */
-    protected synchronized long _getActiveBranchControllersCount() {
-	return _branchControllersActive;
-    }
-
-    /** Return the number of active processes under the control of this
-     *  director.
-     * @return The number of active actors.
-     */
-    protected synchronized long _getBlockedBranchControllersCount() {
-	return _branchControllersBlocked;
     }
 
     /** Create a new ProcessThread for controlling the actor that
@@ -682,7 +577,7 @@ public class ProcessDirector extends Director {
      * @return The number of stopped processes.
      */
     protected synchronized long _getStoppedProcessesCount() {
-	return _threadsStopped;
+	return _actorsStopped;
     }
 
     /** Return true.
@@ -715,7 +610,7 @@ public class ProcessDirector extends Director {
      *  return true to any other forms of deadlocks that they might introduce.
      * @return true if there are no active processes in the container.
      */
-    protected synchronized boolean _isDeadlocked() {
+    protected synchronized boolean _areActorsDeadlocked() {
         return (_actorsActive == 0);
     }
 
@@ -741,7 +636,7 @@ public class ProcessDirector extends Director {
     /** Implementations of this method must be synchronized.
      * @param internal True if internal read block.
      */
-    protected synchronized void _actorBlocked(Iterator rcvrs) {
+    protected synchronized void _actorBlocked(LinkedList rcvrs) {
     }
 
     /** Implementations of this method must be synchronized.
@@ -750,16 +645,58 @@ public class ProcessDirector extends Director {
     protected synchronized void _actorUnBlocked(ProcessReceiver rcvr) {
     }
 
-    /** 
+    /** Implementations of this method must be synchronized.
+     * @param internal True if internal read block.
      */
-    protected synchronized void _branchCntlrBlocked() {
-    	_branchControllersBlocked++;
+    protected synchronized void _actorUnBlocked(LinkedList rcvrs) {
     }
 
     /** 
      */
-    protected synchronized void _branchCntlrUnBlocked() {
-    	_branchControllersBlocked--;
+    protected synchronized void _controllerStopped(BranchController cntlr) {
+        if( cntlr.isStopped() ) {
+            notifyAll();
+        }
+    }
+
+    /** 
+     */
+    protected synchronized boolean _isInputControllerStopped() {
+        return _inputBranchController.isStopped(); 
+    }
+
+    /** 
+     */
+    protected synchronized boolean _isOutputControllerStopped() {
+        return _outputBranchController.isStopped(); 
+    }
+
+    /** 
+     */
+    protected synchronized void _controllerBlocked(BranchController cntlr) {
+        if( cntlr.isBlocked() ) {
+            notifyAll();
+        }
+    }
+
+    /** 
+     */
+    protected synchronized void _controllerUnBlocked(BranchController cntlr) {
+        if( !cntlr.isBlocked() ) {
+            notifyAll();
+        }
+    }
+
+    /** 
+     */
+    protected synchronized boolean _isInputControllerBlocked() {
+        return _inputBranchController.isBlocked(); 
+    }
+
+    /** 
+     */
+    protected synchronized boolean _isOutputControllerBlocked() {
+        return _outputBranchController.isBlocked(); 
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -776,21 +713,18 @@ public class ProcessDirector extends Director {
     private long _actorsActive;
 
     // The threads started by this director.
-    private LinkedList _threadList;
+    private LinkedList _actorThreadList;
 
     //A copy of threads started since the last invocation of prefire().
-    private LinkedList _newthreads;
+    private LinkedList _newActorThreadList;
 
-    // A count of the active threads controlled by this director that
-    // have been stopped
-    private int _threadsStopped = 0;
+    // A count of the active actors controlled by
+    // this director that have been stopped
+    private int _actorsStopped = 0;
     
     // The Branch Controllers of this director
     private LinkedList _branchControllers = new LinkedList();
     private BranchController _inputBranchController;
     private BranchController _outputBranchController;
-
-    private int _branchControllersBlocked = 0;
-    private int _branchControllersActive = 0;
-
+    
 }
