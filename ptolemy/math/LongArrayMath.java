@@ -82,7 +82,7 @@ public class LongArrayMath {
 
 
     /** Return a new array that is a copy of the array argument.
-     *  @param matrix An array of ints.
+     *  @param array An array of ints.
      *  @return A new array of ints.
      */
     public static final long[] allocCopy(final long[] array) {
@@ -653,7 +653,7 @@ public class LongArrayMath {
 
     /** Return a new array that is formed by converting the long numbers in
      *  the argument array to complex numbers. Each complex number has
-     *  real part equal to the value in the argument matrix and a zero
+     *  real part equal to the value in the argument array and a zero
      *  imaginary part.
      *
      *  @param array An array of long numbers.

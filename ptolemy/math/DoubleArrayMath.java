@@ -85,7 +85,7 @@ public class DoubleArrayMath {
 
 
     /** Return a new array that is a copy of the array argument.
-     *  @param matrix An array of ints.
+     *  @param array An array of ints.
      *  @return A new array of ints.
      */
     public static final double[] allocCopy(final double[] array) {
@@ -517,7 +517,7 @@ public class DoubleArrayMath {
 
     /** Return a new array that is formed by converting the doubles in
      *  the argument array to complex numbers. Each complex number has
-     *  real part equal to the value in the argument matrix and a zero
+     *  real part equal to the value in the argument array and a zero
      *  imaginary part.
      *
      *  @param array An array of double.
