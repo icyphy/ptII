@@ -101,6 +101,29 @@ DSP_JNLP_JARS =	\
 
 
 #######
+# HybridSystems - HybridSystenms
+#
+# Jar files that will appear in a HybridSystems only JNLP Ptolemy II Runtime.
+HYBRID_SYSTEMS_ONLY_JNLP_JARS = \
+	ptolemy/domains/ct/ct.jar \
+	ptolemy/domains/fsm/fsm.jar \
+
+HYBRID_SYSTEMS_MAIN_JAR = \
+	ptolemy/actor/gui/jnlp/HybridSystemsApplication.jar
+
+HYBRID_SYSTEMS_JNLP_JARS =	\
+	$(HYBRID_SYSTEMS_MAIN_JAR) \
+	$(HYBRID_SYSTEMS_ONLY_JAR) \
+	doc/docConfig.jar \
+	lib/diva.jar \
+	ptolemy/domains/ct/demo/demo.jar \
+	ptolemy/ptsupport.jar \
+	ptolemy/vergil/vergil.jar \
+	ptolemy/actor/lib/javasound/javasound.jar \
+	ptolemy/media/javasound/javasound.jar \
+	$(DOC_CODEDOC_JAR)
+
+#######
 # Ptiny
 #
 # Jar files that will appear in a smaller (Ptiny) JNLP Ptolemy II Runtime.
@@ -175,6 +198,7 @@ FULL_JNLP_JARS = \
 	$(FULL_MAIN_JAR) \
 	$(CORE_JNLP_JARS) \
 	$(DSP_ONLY_JNLP_JARS) \
+	$(HYBRID_SYSTEMS_ONLY_JNLP_JARS) \
 	$(PTINY_ONLY_JNLP_JARS) \
 	$(FULL_ONLY_JNLP_JARS)
 
@@ -186,6 +210,7 @@ ALL_NON_APPLICATION_JNLP_JARS = \
 	$(NATIVE_SIGNED_LIB_JARS) \
 	$(CORE_JNLP_JARS) \
 	$(FULL_ONLY_JNLP_JARS) \
+	$(HYBRID_SYSTEMS_ONLY_JNLP_JARS) \
 	$(PTINY_ONLY_JNLP_JARS) \
 	$(DSP_ONLY_JNLP_JARS)
 
@@ -194,6 +219,8 @@ ALL_NON_APPLICATION_JNLP_JARS = \
 ALL_JNLP_JARS = \
 	$(ALL_NON_APPLICATION_JNLP_JARS) \
 	$(DSP_MAIN_JAR) \
+	$(HYBRID_SYSTEMS_JNLP_JARS) \
+	$(PTINY_MAIN_JAR) \
 	$(PTINY_MAIN_JAR) \
 	$(PTINY_SANDBOX_MAIN_JAR) \
 	$(FULL_MAIN_JAR)
@@ -216,7 +243,8 @@ KEYTOOL = $(PTJAVA_DIR)/bin/keytool
 MKJNLP =		$(PTII)/bin/mkjnlp
 
 # JNLP files that do the actual installation
-JNLPS =	vergilDSP.jnlp vergilPtiny.jnlp  vergilPtinySandbox.jnlp vergil.jnlp 
+JNLPS =	vergilDSP.jnlp vergilHybridSystems.jnlp \
+	vergilPtiny.jnlp  vergilPtinySandbox.jnlp vergil.jnlp 
 
 jnlp_all: $(KEYSTORE) $(SIGNED_LIB_JARS) jnlp_sign $(JNLPS) 
 jnlps: $(SIGNED_LIB_JARS) $(JNLPS)
@@ -245,7 +273,7 @@ $(KEYSTORE):
 		-keystore $(KEYSTORE) \
 		$(STOREPASSWORD)
 
-# vergil*.jnlp is for Web Start.  For jar signing to work with Web Start,
+
 # Web Start: DSP version of Vergil - No sources or build env.
 # In the sed statement, we use # instead of % as a delimiter in case
 # PTII_LOCALURL has spaces in it that get converted to %20
@@ -273,6 +301,35 @@ vergilDSP.jnlp: vergilDSP.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 		-keystore $(KEYSTORE) \
 		$(STOREPASSWORD) \
 		$(SIGNED_DIR)/$(DSP_MAIN_JAR) $(KEYALIAS)
+
+
+# Web Start: HybridSystems version of Vergil - No sources or build env.
+# In the sed statement, we use # instead of % as a delimiter in case
+# PTII_LOCALURL has spaces in it that get converted to %20
+vergilHybridSystems.jnlp: vergilHybridSystems.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
+	sed 	-e 's#@PTII_LOCALURL@#$(PTII_LOCALURL)#' \
+		-e 's#@PTVERSION@#$(PTVERSION)#' \
+			$< > $@
+	@echo "# Adding jar files to $@"
+	-chmod a+x "$(MKJNLP)"
+	"$(MKJNLP)" $@ \
+		$(NUMBER_OF_JARS_TO_LOAD_EAGERLY) \
+		$(SIGNED_DIR) \
+		$(HYBRID_SYSTEMS_MAIN_JAR) \
+		$(HYBRID_SYSTEMS_JNLP_JARS)
+	@echo "# Updating JNLP-INF/APPLICATION.JNLP with $@"
+	rm -rf JNLP-INF
+	mkdir JNLP-INF
+	cp $@ JNLP-INF/APPLICATION.JNLP
+	@echo "# $(HYBRID_SYSTEMS_MAIN_JAR) contains the main class"
+	"$(JAR)" -uf $(HYBRID_SYSTEMS_MAIN_JAR) JNLP-INF/APPLICATION.JNLP
+	rm -rf JNLP-INF
+	mkdir -p $(SIGNED_DIR)/`dirname $(HYBRID_SYSTEMS_MAIN_JAR)`; \
+	cp -p $(HYBRID_SYSTEMS_MAIN_JAR) `dirname $(SIGNED_DIR)/$(HYBRID_SYSTEMS_MAIN_JAR)`; \
+	"$(PTJAVA_DIR)/bin/jarsigner" \
+		-keystore $(KEYSTORE) \
+		$(STOREPASSWORD) \
+		$(SIGNED_DIR)/$(HYBRID_SYSTEMS_MAIN_JAR) $(KEYALIAS)
 
 # Web Start: Ptiny version of Vergil - No sources or build env.
 vergilPtiny.jnlp: vergilPtiny.jnlp.in $(SIGNED_DIR) $(KEYSTORE)

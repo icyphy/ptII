@@ -92,6 +92,7 @@ EXTRA_SRCS = \
 	configure \
 	vergil.jnlp.in \
 	vergilDSP.jnlp.in \
+	vergilHybridSystems.jnlp.in \
 	vergilPtiny.jnlp.in \
 	vergilPtinySandbox.jnlp.in
 
@@ -121,6 +122,7 @@ OPTIONAL_FILES = \
 KRUFT = \
 	vergil.jnlp \
 	vergilDSP.jnlp \
+	vergilHybridSystems.jnlp.in \
 	vergilPtiny.jnlp \
 	vergilPtinySandbox.jnlp
 
