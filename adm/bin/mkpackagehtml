@@ -18,6 +18,9 @@ do
 	  echo "$0: $packagefile exists, skipping"
       else 
 	  since=`grep -h @since *.java | sort | uniq | head -1`
+	  if [ "$since" = "" ]; then 
+	      since=`grep -h @since */*.java | sort | uniq | head -1`
+	  fi    
 cat > $packagefile << EoF
 <!-- \$Id\$ -->
 <html>
@@ -34,6 +37,8 @@ EoF
 
 
          echo "$packagefile"
+	 cvs add $packagefile
+	 cvs commit -m "Added package.html" $packagefile
       fi 
   fi
 done
