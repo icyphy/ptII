@@ -203,6 +203,7 @@ public class TransitionController extends BasicEdgeController {
             Object node = (f == null) ? null : f.getUserObject();
             FSMGraphModel model =
 		(FSMGraphModel) getController().getGraphModel();
+
 	    switch (evt.getEnd()) {
 	    case ConnectorEvent.HEAD_END:
 		model.getArcModel().setHead(edge, node);
@@ -211,22 +212,25 @@ public class TransitionController extends BasicEdgeController {
 		model.getArcModel().setTail(edge, node);
 		break;
 	    case ConnectorEvent.MIDPOINT:
-                Arc arc = (Arc) edge;
-                Transition transition = (Transition)arc.getRelation();
-                if(transition != null && c instanceof ArcConnector) {
-                    // Set the new exitAngle parameter value based
-                    // on the current arc.
-                    String moml = "<property name=\"exitAngle\" value=\""
-                        + ((ArcConnector)c).getAngle()
-                            + "\"/>";
-                        MoMLChangeRequest request = new MoMLChangeRequest(
-                                this, transition, moml);
-                        transition.requestChange(request);
-                }
 		break;
 	    default:
 		throw new IllegalStateException(
                         "Cannot handle both ends of an edge being dragged.");
+	    }
+	    // Make the arc rerender itself so that geometry is preserved
+	    Arc arc = (Arc) edge;
+	    Transition transition = (Transition)arc.getRelation();
+	    if(transition != null && c instanceof ArcConnector) {
+		double angle = ((ArcConnector)c).getAngle();
+		double gamma = ((ArcConnector)c).getGamma();
+		// Set the new exitAngle and gamma parameter values based
+		// on the current arc.
+		String moml = "<group><property name=\"exitAngle\" value=\""
+		    + angle + "\"/>" +
+		    "<property name=\"gamma\" value=\"" + gamma + "\"/></group>";
+		MoMLChangeRequest request = new MoMLChangeRequest(
+								  this, transition, moml);
+		transition.requestChange(request);
 	    }
             // rerender the edge.  This is necessary for several reasons.
             // First, the edge is only associated with a relation after it
@@ -273,6 +277,12 @@ public class TransitionController extends BasicEdgeController {
                         }
                     }
                     c.setAngle(exitAngle);
+
+		    // Set the gamma angle
+                    double gamma = ((DoubleToken)(transition.gamma
+                            .getToken())).doubleValue();
+                    c.setGamma(gamma);
+
                 } catch (IllegalActionException ex) {
                     // Ignore, accepting the default.
                     // This exception should not occur.
