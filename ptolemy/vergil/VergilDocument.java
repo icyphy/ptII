@@ -79,7 +79,7 @@ public class VergilDocument extends AbstractDocument {
     /** Close the document. This method doesn't do anything, as
      * graph data doesn't change.
      */
-    public void close () throws Exception {
+    public void close() throws Exception {
         // Do nothing
     }
 
@@ -93,7 +93,7 @@ public class VergilDocument extends AbstractDocument {
      *
      * @throws Exception  If there is no file, or if the I/O operation failed.
      */
-    public void open () throws Exception {
+    public void open() throws Exception {
         if (getFile() == null) {
             throw new IllegalStateException(
                     "VergilDocument " + getTitle() + " has no current file");
@@ -111,7 +111,7 @@ public class VergilDocument extends AbstractDocument {
      *
      * @throws Exception  If there is no file, or if the I/O operation failed.
      */
-    public void save () throws Exception {
+    public void save() throws Exception {
         if (getFile() == null) {
             throw new IllegalStateException(
                     "VergilDocument " + getTitle() + " has no current file");
@@ -124,7 +124,7 @@ public class VergilDocument extends AbstractDocument {
      *
      * @throws Exception  If the I/O operation failed.
      */
-    public void saveAs (File file) throws Exception {
+    public void saveAs(File file) throws Exception {
         String filename = file.getName();
         FileWriter writer = new FileWriter(file);
         _graph.exportMoML(writer);
@@ -136,7 +136,7 @@ public class VergilDocument extends AbstractDocument {
      * @throws UnsupportedOperationException always, as the save to
      * URL operation is not supported.
      */
-    public void saveAs (URL url) {
+    public void saveAs(URL url) {
         throw new UnsupportedOperationException(
                 "VergilDocument " + getTitle() + ": save to URL not supported");
     }
@@ -147,7 +147,7 @@ public class VergilDocument extends AbstractDocument {
 
     /** Print information about the graph document
      */
-    public String toString () {
+    public String toString() {
         return
             getClass().getName() + "["
             + "title = " + getTitle()
@@ -162,7 +162,7 @@ public class VergilDocument extends AbstractDocument {
     public static class Factory implements DocumentFactory {
         /** Create an empty graph document
          */
-        public Document createDocument (Application app) {
+        public Document createDocument(Application app) {
             VergilDocument d = new VergilDocument(app);
             //
             TypedCompositeActor toplevel = new TypedCompositeActor();
@@ -173,14 +173,14 @@ public class VergilDocument extends AbstractDocument {
 
         /** Throw an exception, as URLs are not supported.
          */
-        public Document createDocument (Application app, URL url) {
+        public Document createDocument(Application app, URL url) {
             throw new UnsupportedOperationException(
                     "Graph documents cannot yet be loaded from a URL");
         }
 
         /** Create a new graph that contains the given file path.
          */
-        public Document createDocument (Application app, File file) {
+        public Document createDocument(Application app, File file) {
             VergilDocument d = new VergilDocument(app);
             d.setFile(file);
             return d;

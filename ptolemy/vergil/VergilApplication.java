@@ -92,7 +92,7 @@ public class VergilApplication extends MDIApplication {
         DefaultStoragePolicy storage = new DefaultStoragePolicy();
         setStoragePolicy(storage);
 	FileFilter ff = new FileFilter() {
-	    public boolean accept (File file) {
+	    public boolean accept(File file) {
 		if(file.isDirectory()) {
 		    return true;
 		}
@@ -101,7 +101,7 @@ public class VergilApplication extends MDIApplication {
                     toLowerCase().equals("xml");
 		}
 	    }
-	    public String getDescription () {
+	    public String getDescription() {
 		return "XML files";
 	    }
 	};
