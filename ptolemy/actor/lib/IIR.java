@@ -50,13 +50,27 @@ This filter has a transfer function given by:
       ------------------------
        1 - a<sub>1</sub>z<sup>-1</sup> - ... - a<sub>N</sub>z<sup>-N</sup>
 </pre>
-The constant terms of the numerator polynomial are specified by the <i>numerator</i> parameter and the constant terms of the denominator polynomial are specified by the <i>denominator</i> parameter.
+
+The constant terms of the numerator polynomial are specified by the
+<i>numerator</i> parameter and the constant terms of the denominator
+polynomial are specified by the <i>denominator</i> parameter.
 <p>
-The <i>numerator</i> parameter represents the numerator coefficients as a row vector of a token of type DoubleMatrixToken. The format is {{b<sub>0</sub>, b<sub>1</sub>, ..., b<sub>M</sub>}}. The default value of this parameter is {{1.0}}.
+The <i>numerator</i> parameter represents the numerator coefficients
+as a row vector of a token of type DoubleMatrixToken. The format is
+{{b<sub>0</sub>, b<sub>1</sub>, ..., b<sub>M</sub>}}. The default
+value of this parameter is {{1.0}}.
 <p>
-The <i>denominator</i> parameter represents the denominator coefficients as a row vector of a token of type DoubleMatrixToken. The format is {{a<sub>0</sub>, a<sub>1</sub>, ..., a<sub>N</sub>}}. Note that the value of a<sub>0</sub> is constrained to be 1. This implementation will silently ignore whatever value the user enters for as the first element of <i>denominator</i>, and will use 1.0 instead.  The default value of this parameter is {{1.0}}.
+The <i>denominator</i> parameter represents the denominator
+coefficients as a row vector of a token of type DoubleMatrixToken. The
+format is {{a<sub>0</sub>, a<sub>1</sub>, ..., a<sub>N</sub>}}. Note
+that the value of a<sub>0</sub> is constrained to be 1. This
+implementation will silently ignore whatever value the user enters for
+as the first element of <i>denominator</i>, and will use 1.0 instead.
+The default value of this parameter is {{1.0}}.
 <p>
-The default values therefore correspond to a filter with a transfer function of 1.
+The default values therefore correspond to a filter with a transfer
+function of 1.
+
 <h4>References</h4>
 <p>
 [1]
@@ -124,14 +138,15 @@ public class IIR extends Transformer {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-	//System.out.println("attributeChanged(): invoked on " +
-	//   attribute.getName());
         if (attribute == numerator) {
-	    _numerator =  (((DoubleMatrixToken)numerator.getToken()).doubleMatrix())[0];
+	    _numerator =
+                (((DoubleMatrixToken)numerator.getToken()).doubleMatrix())[0];
 	} else if (attribute == denominator) {
-	    _denominator = (((DoubleMatrixToken)denominator.getToken()).doubleMatrix())[0];
-	    // Note: a<sub>0</sub> must always be 1, so ignore whatever the user
-	    // entered and just use 1.
+	    _denominator =
+                (((DoubleMatrixToken)denominator.
+                        getToken()).doubleMatrix())[0];
+	    // Note: a<sub>0</sub> must always be 1, so ignore whatever the
+            // user entered and just use 1.
 	    _denominator[0] = 1.0;
 	} else {
 	    super.attributeChanged(attribute);
@@ -145,7 +160,7 @@ public class IIR extends Transformer {
     }
 
     /** Consume an input token and compute a single output token.
-     *  @exception IllegalActionException Not thrown
+     *  @exception IllegalActionException Not thrown in this base class
      */
     public void fire() throws IllegalActionException {
 	// NOTE: iterate() should never return STOP_ITERATING, so
@@ -184,7 +199,6 @@ public class IIR extends Transformer {
      *  performed.
      */
     public int iterate(int count) throws IllegalActionException {
-	//System.out.println("iterate() invoked........");
 	// Check if we need to reallocate the output token array.
 	if (count > _resultArray.length) {
 	    _resultArray = new DoubleToken[count];
@@ -202,32 +216,22 @@ public class IIR extends Transformer {
 		xCur = ((DoubleToken)(inArray[i])).doubleValue();
 
 		wn = xCur;
-		//System.out.println("_curTap = " + _curTap);
-		//System.out.println(" _denominator.length = " +  _denominator.length);
 		for (int j = 1; j < _denominator.length; j++) {
 		    wn +=
 			_denominator[j]*_stateVector[(_curTap + j) %
 						     _stateVector.length];
-		    // System.out.println("j = " + j + ", _stateVector val = " +
-		    //_stateVector[(_curTap + j+1) %  _stateVector.length] +
-		    //" index = " + (_curTap + j+1) %  _stateVector.length);
 		}
 		_stateVector[_curTap] = wn;
 		yCur = 0;
-		//System.out.println("_numerator.length = " +  _numerator.length);
 		for (int k = 0; k < _numerator.length; k++) {
 		    yCur +=
 			_numerator[k]*_stateVector[(_curTap +k) %
 						   _stateVector.length];
-		    // System.out.println("k = " + k + ",  _stateVector val = " +
-		    //_stateVector[(_curTap +k) %   _stateVector.length] +
-		    //" index = " + (_curTap +k) %   _stateVector.length);
 		}
 		_resultArray[i] = new DoubleToken(yCur);
 		// Update the state vector pointer.
 		if (--_curTap < 0) _curTap = _stateVector.length - 1;
 	    }
-	    //System.out.println("output = " + _resultArray[0]);
             output.send(0, _resultArray, count);
             return COMPLETED;
         } else {
