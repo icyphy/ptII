@@ -263,7 +263,8 @@ public class FSMGraphController extends FSMViewerController {
     
     protected class StateCreator extends ActionInteractor {
 	public StateCreator() {
-	    super(_newStateAction);
+	    super();
+            setAction(_newStateAction);
 	}
     }
 

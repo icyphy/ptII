@@ -610,7 +610,8 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
 	    Iterator links = _linkSet.iterator();
 	    while(links.hasNext()) {
 		Arc link = (Arc)links.next();
-		Object head = link.getHead();
+		NamedObj head = (NamedObj)link.getHead();
+              
 		if(head != null && head.equals(icon)) {
 		    stateLinkList.add(link);
 		}
@@ -763,7 +764,7 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
 	Arc link;
 	try {
 	    link = new Arc();
-	} 
+        } 
 	catch (Exception e) {
 	    throw new InternalErrorException(
 		"Failed to create " +
@@ -779,6 +780,7 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
 	    link.setHead(location2);
 	    link.setTail(location1);
 	}
+        _linkSet.add(link);
     }
 
     // Return the location contained in the given object, or

@@ -116,11 +116,6 @@ public class EditorGraphController extends ViewerGraphController {
         _relationCreator.setMouseFilter(_controlFilter);
         pane.getBackgroundEventLayer().addInteractor(_relationCreator);
 
-        // Create a listener that creates new terminals
-	//_portCreator = new PortCreator();
-        //_portCreator.setMouseFilter(_controlFilter);
-        //pane.getBackgroundEventLayer().addInteractor(_portCreator);
-
         // Create the interactor that drags new edges.
 	_linkCreator = new LinkCreator();
 	_linkCreator.setMouseFilter(_controlFilter);
@@ -157,7 +152,7 @@ public class EditorGraphController extends ViewerGraphController {
 	    FigureIcon icon = new FigureIcon(figure, 25, 25, 1, true);
 	    putValue(diva.gui.GUIUtilities.LARGE_ICON, icon);
 	    putValue("tooltip", "Create a New External Port");
-	    putValue(Action.ACCELERATOR_KEY, 
+	    putValue(diva.gui.GUIUtilities.ACCELERATOR_KEY, 
 		     KeyStroke.getKeyStroke(KeyEvent.VK_E, 
 					    java.awt.Event.CTRL_MASK));
 	    putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
@@ -310,24 +305,14 @@ public class EditorGraphController extends ViewerGraphController {
     }
  
     ///////////////////////////////////////////////////////////////
-    //// PortCreator
-    
-    /** An interactor for creating ports.  (This is currently not used.)
-     */
-    protected class PortCreator extends ActionInteractor {
-	public PortCreator() {
-	    super(_newPortAction);
-	}
-    }
-
-    ///////////////////////////////////////////////////////////////
     //// RelationCreator
     
-    /** An interactor for creating ports.  (This is currently not used.)
+    /** An interactor for creating ports.
      */
     protected class RelationCreator extends ActionInteractor {
 	public RelationCreator() {
-	    super(_newRelationAction);
+	    super();
+            setAction(_newRelationAction);
 	}
     }
 	
@@ -396,10 +381,6 @@ public class EditorGraphController extends ViewerGraphController {
     /** The interactor for creating new relations
      */
     private RelationCreator _relationCreator;
-
-    /** The interactor for creating new terminals
-     */
-    private PortCreator _portCreator;
 
     /** The interactor for creating context sensitive menus.
      */

@@ -527,6 +527,25 @@ public abstract class GraphFrame extends PtolemyFrame
         }
     }
 
+    /** Get the File that was the last directory accessed by this window.
+     *  This is necessary because we wish to have this accessed by inner
+     *  classes, and there is a bug in jdk1.2.2 where inner classes cannot
+     *  access protected static members.
+     *  @return The file.
+     */
+    protected File _getDirectory() {
+        return _directory;
+    }
+
+    /** Set the File that was the last directory accessed by this window.
+     *  This is necessary because we wish to have this accessed by inner
+     *  classes, and there is a bug in jdk1.2.2 where inner classes cannot
+     *  access protected static members.
+     */
+    protected void _setDirectory(File file) {
+        _directory = file;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -617,7 +636,7 @@ public abstract class GraphFrame extends PtolemyFrame
 	public LayoutAction() {
 	    super("Automatic Layout");
 	    putValue("tooltip", "Layout the Graph");
-	    putValue(Action.ACCELERATOR_KEY, 
+	    putValue(diva.gui.GUIUtilities.ACCELERATOR_KEY, 
 		     KeyStroke.getKeyStroke(KeyEvent.VK_L, 
 					    java.awt.Event.CTRL_MASK));
 	    putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
@@ -697,7 +716,7 @@ public abstract class GraphFrame extends PtolemyFrame
 	public ExecuteSystemAction() {
 	    super("Go");
 	    putValue("tooltip", "Execute The Model");
-	    putValue(Action.ACCELERATOR_KEY, 
+	    putValue(diva.gui.GUIUtilities.ACCELERATOR_KEY, 
 		     KeyStroke.getKeyStroke(KeyEvent.VK_G, 
 					    java.awt.Event.CTRL_MASK));
 	    putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
@@ -740,7 +759,7 @@ public abstract class GraphFrame extends PtolemyFrame
 	}
     };
         
-    private class ImportLibraryAction extends AbstractAction {
+    public class ImportLibraryAction extends AbstractAction {
 	public ImportLibraryAction() {
 	    super("Import Library");
 	    putValue("tooltip", "Import a libarary into the Palette");
@@ -753,8 +772,8 @@ public abstract class GraphFrame extends PtolemyFrame
 	    JFileChooser chooser = new JFileChooser();
 	    chooser.setDialogTitle("Select a library");
 	    
-	    if (_directory != null) {
-		chooser.setCurrentDirectory(_directory);
+	    if (_getDirectory() != null) {
+		chooser.setCurrentDirectory(_getDirectory());
 	    } else {
 		// The default on Windows is to open at user.home, which is
 		// typically an absurd directory inside the O/S installation.
@@ -790,6 +809,7 @@ public abstract class GraphFrame extends PtolemyFrame
 					      buffer.toString(),
 					      file.toURL()); 
 		    library.requestChange(request);
+                    _setDirectory(chooser.getCurrentDirectory());
 		} catch (Exception ex) {
 		    MessageHandler.error("Library import failed.", ex);
 		}
