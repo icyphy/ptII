@@ -705,14 +705,24 @@ public class Variable extends Attribute implements Typeable {
         // Create an instance of the declared type, to be used to invoke
         // the convert() method.
         if (_token != null) {
-            int typeInfo = TypeLattice.compare(_token.getType(), type);
-            if ((typeInfo == CPO.HIGHER)
-            || (typeInfo == CPO.INCOMPARABLE)) {
-                throw new IllegalActionException(this, "setTypeEquals(): "
-                + "the currently contained token " + _token.toString()
-                + " cannot be losslessly converted to the desired type "
-                + type.toString());
-            }
+	    if (type.isConstant()) {
+                int typeInfo = TypeLattice.compare(_token.getType(), type);
+                if ((typeInfo == CPO.HIGHER)
+                			|| (typeInfo == CPO.INCOMPARABLE)) {
+                    throw new IllegalActionException(this, "setTypeEquals(): "
+                        + "the currently contained token " + _token.toString()
+                        + " cannot be losslessly converted to the desired "
+			+ "type " + type.toString());
+                }
+	    } else {
+		// argument is a variable
+		if ( !type.isSubstitutionInstance(_token.getType())) {
+                    throw new IllegalActionException(this, "setTypeEquals(): "
+                        + "the currently contained token " + _token.toString()
+                        + " is not a substitution instance of the desired "
+			+ "type " + type.toString());
+		}
+	    }
             _token = type.convert(_token);
         }
 
@@ -1084,7 +1094,13 @@ public class Variable extends Attribute implements Typeable {
             } else {
 		// _declaredType is a variable.
 		if (_declaredType.isSubstitutionInstance(tokenType)) {
-		    _varType = tokenType;
+		    if (_declaredType == BaseType.NAT) {
+		        _varType = tokenType;
+		    } else {
+			// _declaredType is a structured type
+			((StructuredType)_varType).updateType(
+						(StructuredType)tokenType);
+		    }
 		} else {
                         throw new IllegalActionException(this,
                         "Cannot store a token of type "
