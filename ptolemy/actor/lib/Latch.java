@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (pwhitake@eecs.berkeley.edu)
-@AcceptedRating Red (pwhitake@eecs.berkeley.edu)
+@ProposedRating Yellow (cxh@eecs.berkeley.edu)
+@AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib;
@@ -44,7 +44,14 @@ on the input port is sent to the output port immediately, and also every time
 the actor is fired until a new token is received.  No tokens are output until
 the first token is received at the input.
 
-@author Paul Whitaker
+<p>Note that this actor is not really a latch in the classical sense
+of the term since it is missing a trigger.  This actor will not 
+be of much use in the DE domain, see the DE Sampler actor for
+an alternative.  This actor is useful in domains with non-strict semantics
+like SR and Giotto.
+
+@see ptolemy.domains.de.lib.Sampler
+@author Paul Whitaker, Christopher Hylands
 @version $Id$
 */
 
@@ -74,11 +81,11 @@ public class Latch extends Transformer {
      */
     public void fire() throws IllegalActionException {
         if (input.hasToken(0)) {
-            _currentToken = input.get(0);
+            _lastInputs = input.get(0);
         }
 
-        if (_currentToken != null) {
-            output.send(0, _currentToken);
+        if (_lastInputs != null) {
+            output.send(0, _lastInputs);
         }
     }
 
@@ -86,7 +93,7 @@ public class Latch extends Transformer {
      *  @exception IllegalActionException If there is no director.
      */
     public void initialize() throws IllegalActionException {
-        _currentToken = null;
+        _lastInputs = null;
         super.initialize();
     }
 
@@ -94,9 +101,5 @@ public class Latch extends Transformer {
     ////                         private variables                 ////
 
     // The most recent token received.
-    private Token _currentToken;
-
+    private Token _lastInputs;
 }
-
-
-
