@@ -44,7 +44,6 @@ that will generate .class files for non-hierarchical SDF models
 	<li> parameters
 	</menu>
 
-
 <li> visuals
 	<menu>
 	<li>  snap to grid
@@ -53,7 +52,6 @@ that will generate .class files for non-hierarchical SDF models
 	<li> animation
 	<li> better icons
 	</menu>
-
 
 <li> set data types of ports
 
@@ -148,7 +146,7 @@ platform that has JDK1.3
 
  <p>We developed Ptolemy II 2.0 under Solaris 8 and Windows 2000 sr2
 and with JDK1.3.1 and JDK1.4beta.  Note that code generation 
-only works under JDK1.3.0 or 1.3.1 because of limitations in soot.
+only works under JDK1.3.0 or 1.3.1 because of limitations in Soot.
 
 Ptolemy II 2.0 will not compile under JDK1.2.2.
 
@@ -387,17 +385,6 @@ will only work under Windows.
 
 </menu>
 
-<h3>Limitations in the FSM Domain</h3>
-
-<h3>Limitations in the GR Domain</h3>
-The demos do not work under JDK1.4, the workaround is to use JDK1.3
-
-You may see a message like:
-<pre>
-Fail to create back buffer - DDERR_INALIDPARAM
-</pre>
-
-
 <h3>Limitations in the PN Domain</h3>
 The PN domain documents that it locally handles mutations.  However, this
 is currently not true in the implementation.  For the basic PN model, this
@@ -409,22 +396,16 @@ lost, since timed PN models can locally execute mutations deterministically.
 
 <h3>Limitations in the User Interface</h3>
 
-Version 2.0 of Ptolemy II includes the Vergil, a graphical user
-interface for Ptolemy II.  This UI is still preliminary, and is made
-up mostly of code that is rated "red", meaning that both the APIs
-and the implementations are likely to change.
+Below are some of the limitations of Vergil, the Ptolemy II Graphical
+User Interface.
 
- <br>There are quite a few limitations.
 <menu>
-
-
 <li> You should not change the names of built in ports - The port
 mechanism should disallow port name changes on ports that are
 named in Java.  The UI could recognize this.  The UI should
 not allow the user to remove built in Java defined ports.
 	<li> Query needs to be put into a scroll pane
-<li> If I right click on a port and select Customize Name and then select
-Show Name, the name appears twice.
+
 <li> Manually setting of the types of actors like ArrayToSequence that
 have constraints on their element types can cause problems.
 <li>No undo mechanism.
@@ -440,12 +421,8 @@ have constraints on their element types can cause problems.
 </menu>
 
 <h3>Code Generation Limitations</h3>
-<menu>
-<li> This release includes a limited prototype of our code generation facility
-that will generate .class files for non-hierarchical SDF models
-
-<li> The code generator uses Soot, which requires JDK1.3.x.
-Soot will not work with JDK1.4
+Code Generation limitations are covered on the
+<a href="codegen.htm#limitations">Code Generation</a> page. 
 
 </menu>
 
