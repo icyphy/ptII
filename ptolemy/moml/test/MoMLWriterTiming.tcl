@@ -116,16 +116,24 @@ proc compareMoMLWriter {configuration {repeatCount 3}} {
 ######################################################################
 ####
 #
-test MoMLWriterTiming-1.1 {Try the DSP only configuration} {
-    compareMoMLWriter "ptolemy/configs/vergilConfigurationDSP.xml"
-    list 0
-} {0}
+set FSMGraphTableau [file join $PTII ptolemy vergil fsm FSMGraphTableau.class]
+if [ file exists $FSMGraphTableau ] {
+    test MoMLWriterTiming-1.1 {Try the DSP only configuration} {
+	compareMoMLWriter "ptolemy/configs/vergilConfigurationDSP.xml"
+	list 0
+    } {0}
 
-######################################################################
-####
-#
-test MoMLWriterTiming-1.2 {Try the Ptiny only configuration} {
-    compareMoMLWriter "ptolemy/configs/vergilConfigurationPtiny.xml"
-    list 0
-} {0}
 
+    test MoMLWriterTiming-1.2 {Try the Ptiny only configuration} {
+	compareMoMLWriter "ptolemy/configs/vergilConfigurationPtiny.xml"
+	list 0
+    } {0}
+
+} else {
+    test MoMLWriterTiming-1.3 {Try the Ptiny only configuration} {
+	error "$FSMGraphTableau does not exist. \
+		This happens in the nightly build when we run tests in \
+		moml/test without building in vergil first"
+    } {0} KNOWN_FAILURE
+
+}
