@@ -80,20 +80,18 @@ UDP makes no such attempts, it never hangs and does not need to be timed out.
 (DE) and Synchronous Data Flow (SDF) domains.  Use elsewhere with
 caution.
 
-<p>
-<p>The simplest scenario has the thread constantly stalled awaiting a
-packet.  When a packet arrives, the thread quickly queues it in one of
-the actor's buffers, calls the getDirector().fireAtCurrentTime(), and then
-stalls again awaiting the next packet.  By stalling again and again,
-the thread keeps the actor aware at all times of incoming packets.
-This is particularly important if packets come in more quickly than
-the model can process them.  Depending on the domain (e.g. DE) in
-which this actor is used, the director may respond to the
-thread's fireAtCurrentTime()
-call by calling the actor's fire() method.
-In this case, fire() then broadcasts the data
-received, along with the return address and return socket number from
-which the datagram originated.
+<p> <p>The simplest scenario has the thread constantly stalled
+awaiting a packet.  When a packet arrives, the thread quickly queues
+it in one of the buffers of the actor, calls the
+getDirector().fireAtCurrentTime(), and then stalls again awaiting the
+next packet.  By stalling again and again, the thread keeps the actor
+aware at all times of incoming packets.  This is particularly
+important if packets come in more quickly than the model can process
+them.  Depending on the domain (e.g. DE) in which this actor is used,
+the director may respond to the thread's fireAtCurrentTime() call by
+calling the actor's fire() method.  In this case, fire() then
+broadcasts the data received, along with the return address and return
+socket number from which the datagram originated.
 
 <p>The data portion of the packet is broadcast at the <i>output</i> port.
 The <i>encoding</i> parameter determines how the bytes received are
@@ -311,7 +309,7 @@ public class DatagramReader extends TypedAtomicActor {
         // <i>_decodeWithPtolemyParser</i> etc. to be congruent
         // with the setting of <i>encoding</i>.
 
-   }
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
@@ -485,7 +483,7 @@ public class DatagramReader extends TypedAtomicActor {
         // a datagram is parsed with the Ptolemy parser.
         if (attribute != _evalVar) {
             if (_debugging) _debug("AtCh"
-            //System.out.println("AtCh"
+                    //System.out.println("AtCh"
                     + attribute.toString().substring(28));
         }
 
@@ -561,23 +559,23 @@ public class DatagramReader extends TypedAtomicActor {
 
             } // Close if (_encoding != encoding)
 
-        // In the case of default outputs, synchronize in ensure
-        // atomic copy from the parameter to the private variable.
+            // In the case of default outputs, synchronize in ensure
+            // atomic copy from the parameter to the private variable.
 
         } else if (attribute == defaultReturnAddress) {
-             synchronized(_syncDefaultOutputs) {
+            synchronized(_syncDefaultOutputs) {
                 _defaultReturnAddress = ((StringToken)
                         defaultReturnAddress.getToken()).stringValue();
             }
 
-         } else if (attribute == defaultReturnSocketNumber) {
-             synchronized(_syncDefaultOutputs) {
+        } else if (attribute == defaultReturnSocketNumber) {
+            synchronized(_syncDefaultOutputs) {
                 _defaultReturnSocketNumber = ((IntToken)
                         defaultReturnSocketNumber.getToken()).intValue();
             }
 
         } else if (attribute == defaultOutput) {
-             synchronized(_syncDefaultOutputs) {
+            synchronized(_syncDefaultOutputs) {
                 _defaultOutputToken = defaultOutput.getToken();
                 // _defaultOutputToken==null when user enters blank parameter!
                 if (false) System.out.println(_defaultOutputToken==null);
@@ -590,11 +588,11 @@ public class DatagramReader extends TypedAtomicActor {
             }
 
 
-        // In the case of <i>blockAwaitingDatagram</i> or <i>overwrite</i>,
-        // notify potentially waiting fire() or thread respectively
-        // that it might no longer need to wait.  Each will recheck its
-        // conditions when notified, so extra notifications merely
-        // waste a little CPU.
+            // In the case of <i>blockAwaitingDatagram</i> or <i>overwrite</i>,
+            // notify potentially waiting fire() or thread respectively
+            // that it might no longer need to wait.  Each will recheck its
+            // conditions when notified, so extra notifications merely
+            // waste a little CPU.
 
         } else if (attribute == overwrite) {
             _overwrite = ((BooleanToken)
@@ -614,91 +612,91 @@ public class DatagramReader extends TypedAtomicActor {
                 }
             }
 
-        // In the case of <i>localSocketNumber</i> it is necessary to
-        // disturb the thread if it is in the call to
-        // socket.receive().  This is rather disruptive, so I choose
-        // to act on these attribute change requests only if the value
-        // of this parameter has actually changed.  Furthermore, when
-        // receive() is busy, wait 444mS (an arbitrary choice) to
-        // see if receive will return on its own.  Close and
-        // re-create the socket when either the time expires or
-        // the receive() call returns, whichever comes first.
-        //
-        // Point of interest:  The behavior of a datagram socket
-        // upon close() by one thread while another thread is
-        // stalled in receive() on the same socket is given in
-        // page 3 of  file:///D%7C/Depot/j2sdk-1_3_1-doc/
-        // docs/guide/misc/threadPrimitiveDeprecation.html
-        // "What if a thread doesn't respond to Thread.interrupt?"
+            // In the case of <i>localSocketNumber</i> it is necessary to
+            // disturb the thread if it is in the call to
+            // socket.receive().  This is rather disruptive, so I choose
+            // to act on these attribute change requests only if the value
+            // of this parameter has actually changed.  Furthermore, when
+            // receive() is busy, wait 444mS (an arbitrary choice) to
+            // see if receive will return on its own.  Close and
+            // re-create the socket when either the time expires or
+            // the receive() call returns, whichever comes first.
+            //
+            // Point of interest:  The behavior of a datagram socket
+            // upon close() by one thread while another thread is
+            // stalled in receive() on the same socket is given in
+            // page 3 of  file:///D%7C/Depot/j2sdk-1_3_1-doc/
+            // docs/guide/misc/threadPrimitiveDeprecation.html
+            // "What if a thread doesn't respond to Thread.interrupt?"
 
         } else if (attribute == localSocketNumber) {
-           // FIXME-- Try again w/o sync(this):
-           // Unlike other attributes, concurrent calls here
-           // (each with attribute == localSocketNumber have
-           // caused an exception to be thrown.  (Or, was it that
-           // socket so recently closed had not fully released
-           // that socket number!)
-           synchronized(this) {
-               if (_socket != null) {
-                   // Verify presence & health of the thread.
-                   if (_socketReadingThread == null) {
-                       throw new IllegalActionException(this, "thread==null");
-                   } else if (!_socketReadingThread.isAlive()){
-                       throw new IllegalActionException(this, "thread !Alive");
-                   }
-                   int newSktNum = ((IntToken)
-                           (localSocketNumber.getToken())).intValue();
-                   if (newSktNum != _socket.getLocalPort()) {
-                       synchronized(_syncSocket) {
-                           if (_inReceive) {
-                               // Wait for receive to finish, if it
-                               // does not take very long that is.
-                               try {
-                                   _syncSocket.wait((long)444);
-                               } catch (InterruptedException ex) {
-                                   System.out.println("---!!!---");
-                                   throw new IllegalActionException(this,
-                                           "Interrupted while waiting");
-                               }
-                               // Either I've been notified that receive()
-                               // has completed, or the timeout has occurred.
-                               // It does not matter which.  Either way I am
-                               // now ready to close and re-open the socket.
-                           }
-                           _socket.close();
-                           try {
-                               _socket = new DatagramSocket(newSktNum);
-                           }
-                           catch (SocketException ex) {
-                               System.out.println("couldn't open new socket");
-                               throw new InternalErrorException(
-                                       KernelException.stackTraceToString(ex));
-                           }
-                       } // Sync(_syncSocket)
-                   }
-               }
-           } // Sync(this)
+            // FIXME-- Try again w/o sync(this):
+            // Unlike other attributes, concurrent calls here
+            // (each with attribute == localSocketNumber have
+            // caused an exception to be thrown.  (Or, was it that
+            // socket so recently closed had not fully released
+            // that socket number!)
+            synchronized(this) {
+                if (_socket != null) {
+                    // Verify presence & health of the thread.
+                    if (_socketReadingThread == null) {
+                        throw new IllegalActionException(this, "thread==null");
+                    } else if (!_socketReadingThread.isAlive()){
+                        throw new IllegalActionException(this, "thread !Alive");
+                    }
+                    int newSktNum = ((IntToken)
+                            (localSocketNumber.getToken())).intValue();
+                    if (newSktNum != _socket.getLocalPort()) {
+                        synchronized(_syncSocket) {
+                            if (_inReceive) {
+                                // Wait for receive to finish, if it
+                                // does not take very long that is.
+                                try {
+                                    _syncSocket.wait((long)444);
+                                } catch (InterruptedException ex) {
+                                    System.out.println("---!!!---");
+                                    throw new IllegalActionException(this,
+                                            "Interrupted while waiting");
+                                }
+                                // Either I've been notified that receive()
+                                // has completed, or the timeout has occurred.
+                                // It does not matter which.  Either way I am
+                                // now ready to close and re-open the socket.
+                            }
+                            _socket.close();
+                            try {
+                                _socket = new DatagramSocket(newSktNum);
+                            }
+                            catch (SocketException ex) {
+                                System.out.println("couldn't open new socket");
+                                throw new InternalErrorException(
+                                        KernelException.stackTraceToString(ex));
+                            }
+                        } // Sync(_syncSocket)
+                    }
+                }
+            } // Sync(this)
 
-        // In the case of <i>actorBufferLength</i>, simply cache the parameter.
-        // The thread used this value to set the size of a buffer prior
-        // to the socket.receive() call.  The thread only resizes a buffer
-        // when it is about to call receive on it and this parameter has
-        // changed from the value last used for that specific buffer.
-        // Synchronization ensures that the thread's test for a change in
-        // this value and its use of the value access the same thing.
+            // In the case of <i>actorBufferLength</i>, simply cache the parameter.
+            // The thread used this value to set the size of a buffer prior
+            // to the socket.receive() call.  The thread only resizes a buffer
+            // when it is about to call receive on it and this parameter has
+            // changed from the value last used for that specific buffer.
+            // Synchronization ensures that the thread's test for a change in
+            // this value and its use of the value access the same thing.
 
         } else if (attribute == actorBufferLength) {
             synchronized(_syncBufferLength) {
                 _actorBufferLength = ((IntToken)
-                       (actorBufferLength.getToken())).intValue();
+                        (actorBufferLength.getToken())).intValue();
             }
 
 
-        // Just increment a flag here, so that before the next receive() call
-        // the new buffer size will be set.  Setting buffer here did not
-        // work because the calls to set the size and get the existing
-        // size both block if the socket is being received on.
-        // This flag is set to 1 in [pre]initialize().
+            // Just increment a flag here, so that before the next receive() call
+            // the new buffer size will be set.  Setting buffer here did not
+            // work because the calls to set the size and get the existing
+            // size both block if the socket is being received on.
+            // This flag is set to 1 in [pre]initialize().
         } else if (attribute == platformBufferLength && _socket != null) {
             synchronized(_syncBufferLength) {
                 _ChangeRequestedToPlatformBufferLength++;
@@ -711,7 +709,7 @@ public class DatagramReader extends TypedAtomicActor {
         if (attribute != _evalVar) {
             if (_debugging) _debug(this + "attributeChanged() done");
             if (_debugging) _debug("---"
-            //System.out.println("---"
+                    //System.out.println("---"
                     + attribute.toString().substring(28));
         }
 
@@ -779,7 +777,7 @@ public class DatagramReader extends TypedAtomicActor {
                 bytesAvailable = _broadcastPacket.getLength();
                 dataBytes = _broadcastPacket.getData();//The buffer, not copy.
                 _returnAddress = _broadcastPacket
-                        .getAddress().getHostAddress();
+                    .getAddress().getHostAddress();
                 _returnSocketNumber = _broadcastPacket.getPort();
                 _packetsAlreadyAwaitingFire--;
             } else {
@@ -856,7 +854,7 @@ public class DatagramReader extends TypedAtomicActor {
                     // No other cases implemented yet.
                     if (true) System.out.println(
                             "Broadcast token not being set");
-                     throw new IllegalActionException(this,
+                    throw new IllegalActionException(this,
                             "Unrecognized encoding selection " + _encoding);
                 }
             }
@@ -1119,9 +1117,9 @@ public class DatagramReader extends TypedAtomicActor {
 
         //System.err.println("wrapup() has been called in " + this);
         //e.printStackTrace();
-              // FIXME cxh's java checker recommends
-              // KernelException.stackTraceToString(ex)
-              // instead of printStackTrace() above.  Try it.
+        // FIXME cxh's java checker recommends
+        // KernelException.stackTraceToString(ex)
+        // instead of printStackTrace() above.  Try it.
         //throw new RuntimeException("Manager: " + e.getMessage());
 
         //throw new IllegalActionException(this,
@@ -1330,31 +1328,31 @@ public class DatagramReader extends TypedAtomicActor {
 
                 // Transfer received the datagram to fire() for broadcast.
 
-                    // There are 2 datagram packet buffers.
+                // There are 2 datagram packet buffers.
 
-                    // If no data is already in the actor awaiting
-                    // fire, then swap the buffers, increment the
-                    // awaiting count, and either notify fire() if it
-                    // is waiting, or call the director's
-                    // fireAtCurrentTime() method to schedule a
-                    // firing if fire() is not waiting.
+                // If no data is already in the actor awaiting
+                // fire, then swap the buffers, increment the
+                // awaiting count, and either notify fire() if it
+                // is waiting, or call the director's
+                // fireAtCurrentTime() method to schedule a
+                // firing if fire() is not waiting.
 
-                    // Else, data is already waiting.  I this case
-                    // look to the overwrite parameter for guidance.
-                    // If <i>overwrite</i> is true, then go ahead and
-                    // swap anyway but do not increment the count and
-                    // do not call fireAtCurrentTime() again.
+                // Else, data is already waiting.  I this case
+                // look to the overwrite parameter for guidance.
+                // If <i>overwrite</i> is true, then go ahead and
+                // swap anyway but do not increment the count and
+                // do not call fireAtCurrentTime() again.
 
-                    // In either of the two cases above, receive()
-                    // gets called again promptly.  However, if data
-                    // is waiting AND <i>overwrite</i> is false, then
-                    // instead wait() here in the synchronized section
-                    // to block awaiting a call to fire() and entry of
-                    // its synched section.  When it exits its synched
-                    // section, then complete this synched section
-                    // which swaps buffers, increments the count, and
-                    // calls fireAtCurrentTime().  Then go back around
-                    // finally to the socket.receive() call.
+                // In either of the two cases above, receive()
+                // gets called again promptly.  However, if data
+                // is waiting AND <i>overwrite</i> is false, then
+                // instead wait() here in the synchronized section
+                // to block awaiting a call to fire() and entry of
+                // its synched section.  When it exits its synched
+                // section, then complete this synched section
+                // which swaps buffers, increments the count, and
+                // calls fireAtCurrentTime().  Then go back around
+                // finally to the socket.receive() call.
 
                 // Sync to avoid executing concurrently with actor's fire().
                 boolean fireAtWillBeCalled;
