@@ -78,7 +78,8 @@ public class RLEDiva extends PNApplet implements Runnable {
 
     /** The window to display in
      */
-    private TutorialWindow window;
+    //private TutorialWindow window;
+    private JGraph window;
 
     /* The actors
      */
@@ -116,20 +117,8 @@ public class RLEDiva extends PNApplet implements Runnable {
         GraphModel model = constructThreadGraph();
 
         // Display the model in the window
-        //try {
 	callInvoke(model);
-	//SwingUtilities.invokeAndWait(new Runnable (final GraphModel model){
-	//private mod = model;
-	//public void run () {
-	//displayGraph(jgraph, mod);
-	//}
-	//});
-        //}
-        //catch(Exception ex) {
-	//ex.printStackTrace();
-	//System.exit(0);
-        //}
-	
+
         // Add the process state listener
         //BasePNDirector dir = (BasePNDirector) compositeActor.getDirector();
         _director.addProcessListener(new StateListener(
@@ -143,6 +132,7 @@ public class RLEDiva extends PNApplet implements Runnable {
 	return;
     }
 
+    
     private void callInvoke(final GraphModel mod) {
 	try {
 	    SwingUtilities.invokeAndWait(new Runnable (){
@@ -290,28 +280,32 @@ public class RLEDiva extends PNApplet implements Runnable {
      * and then set the model once the window is showing.
      */
     public void displayGraph(JGraph g, GraphModel model) {
-        window = new TutorialWindow("PN Thread Demo");
-        
-        // Display the window
-        window.getContentPane().add("Center", g);
-        window.setSize(800, 300);
-        window.setLocation(100, 100);
-        window.setVisible(true);
+	add("North", g);
+	g.setPreferredSize(new Dimension(800, 300));
 
         // Make sure we have the right renders and then
         // display the graph
-        GraphPane gp = (GraphPane) g.getCanvasPane();
-        GraphView gv = gp.getGraphView();
+        final GraphPane gp = (GraphPane) g.getCanvasPane();
+        final GraphView gv = gp.getGraphView();
         gv.setNodeRenderer(new ThreadRenderer());
         g.setGraphModel(model);
-
+	
         // Do the layout
-        LevelLayout staticLayout = new LevelLayout();
-        staticLayout.setOrientation(LevelLayout.HORIZONTAL);
-        staticLayout.layout(gv, model.getGraph());
-        gp.repaint();
+	final GraphModel m = model;
+	try {
+	    SwingUtilities.invokeLater(new Runnable() {
+		public void run () {
+		    LevelLayout staticLayout = new LevelLayout();
+		    staticLayout.setOrientation(LevelLayout.HORIZONTAL);
+		    staticLayout.layout(gv, m.getGraph());
+		    gp.repaint();
+		}
+	    });
+	} catch (Exception e) {
+	    System.out.println(e);
+	}
     }
-
+    
     ///////////////////////////////////////////////////////////////////
     //// StateListener
 
