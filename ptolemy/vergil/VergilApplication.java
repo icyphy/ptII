@@ -149,6 +149,7 @@ public class VergilApplication extends MDIApplication {
 
         context.setFrameIcon(icon);
 	context.setIconImage(iconImage);
+	context.setTitle(getTitle());
 
         setCurrentDocument(null);
 
