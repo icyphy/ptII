@@ -7,7 +7,10 @@
 <h1>Plot using Error Bars</h1>
 <hr>
 The plot below shows error bars for some of the data points.
-The error bars are specified in the <a href="errorbars.plt">data file</a>
+ <P>Error bars can be specified from within the data file or programmatically
+by calling Java methods.
+ <P>
+The error bars below are specified in the <a href="errorbars.plt">data file</a>
 with a 4 number line:
 <pre>
 <i>x</i>,<i>y</i>,<i>ylow</i>,<i>yhigh</i>
@@ -25,6 +28,14 @@ The numbers can be separated by white space or commas.
     you would see an applet here.<hr>
 </applet>
 <p>
+<p>From within Java, error bars can be added by calling
+the <CODE>addPointWithErrorBars()</CODE> method in the
+<A HREF="../doc/codeDoc/ptplot.Plot.html">Plot</A> class.
+The error bars can be erased by calling the <CODE>erasePoint()</CODE>
+Plot class method.
+ <P>The error bar data is stored inside the
+<A HREF="../doc/codeDoc/ptplot.PlotPoint.html">PlotPoint</A> class.
+
 <HR>
 <A HREF="index.html">Up</A> to the Example index -
 <A HREF="Ptplot.html">Back</A> to a JavaScript Interface to Ptplot -
