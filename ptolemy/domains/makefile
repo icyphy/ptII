@@ -58,6 +58,7 @@ PTAUXALLJARS = \
                 dt/dt.jar \
 		giotto/giotto.jar \
 		gr/gr.jar \
+		pn/pn.jar \
 		rtos/rtos.jar \
 		rtp/rtp.jar \
 		sr/sr.jar
@@ -77,7 +78,6 @@ PTCLASSALLJARS = \
 		ct/ct.jar \
 		de/de.jar \
 		fsm/fsm.jar \
-		pn/pn.jar \
 		sdf/sdf.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
