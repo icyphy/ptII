@@ -44,7 +44,13 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	lib
-PTCLASSJAR =	$(PTPACKAGE).jar
+PTCLASSJAR =
+
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+		network/network.jar
+
+PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
     CollisionDetector.java \
