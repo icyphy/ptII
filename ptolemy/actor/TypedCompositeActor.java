@@ -536,7 +536,8 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
 	    Type srcDeclared = sourcePort.getType();
 	    Iterator destinationPorts = destinationPortList.iterator();
 	    while (destinationPorts.hasNext()) {
-            	TypedIOPort destinationPort = (TypedIOPort)destinationPorts.next();
+            	TypedIOPort destinationPort = 
+                    (TypedIOPort)destinationPorts.next();
 		isUndeclared = destinationPort.getTypeTerm().isSettable();
 
 	    	if (!isUndeclared) {
