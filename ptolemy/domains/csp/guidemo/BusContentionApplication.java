@@ -26,6 +26,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import java.util.*;
+import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
@@ -50,7 +51,8 @@ public class BusContentionApplication implements ActionListener {
 
     public static void main(String argv[]) {
         BusContentionApplication app = new BusContentionApplication();
-	app.initializeDemo();
+	Panel nullAppletPanel = null;
+	app.initializeDemo(nullAppletPanel);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -197,7 +199,6 @@ public class BusContentionApplication implements ActionListener {
      * showing. Add control buttons to the _window.
      */
     public void displayGraph(JGraph g, GraphModel model) {
-        _window = new BasicWindow("Basic Window"); 
 	Panel controlPanel = new Panel(); 
 
 	Button startButton = new Button("START"); 
@@ -209,13 +210,21 @@ public class BusContentionApplication implements ActionListener {
 	controlPanel.add(quitButton, BorderLayout.EAST); 
 
 	controlPanel.setVisible(true); 
-	_window.getContentPane().add(controlPanel, BorderLayout.NORTH); 
 
-	_window.getContentPane().add(g, BorderLayout.CENTER); 
-
-	_window.setSize(500, 600); 
-	_window.setLocation(100, 100); 
-	_window.setVisible(true);
+	if( _appletPanel == null ) {
+            _window = new BasicWindow("Basic Window"); 
+	    _window.getContentPane().add(controlPanel, BorderLayout.NORTH); 
+	    _window.getContentPane().add(g, BorderLayout.CENTER); 
+	    _window.setSize(500, 600); 
+	    _window.setLocation(100, 100); 
+	    _window.setVisible(true);
+	} else {
+	    _appletPanel.add(controlPanel, BorderLayout.NORTH);
+	    _appletPanel.add(g, BorderLayout.CENTER);
+	    _appletPanel.setSize(500, 600); 
+	    _appletPanel.setLocation(100, 100); 
+	    _appletPanel.setVisible(true);
+	}
 
         // Make sure we have the right renderers and then display the graph
         GraphPane gp = (GraphPane) g.getCanvasPane();
@@ -233,9 +242,10 @@ public class BusContentionApplication implements ActionListener {
 
     /**
      */
-    public void initializeDemo() {
+    public void initializeDemo(Panel appletPanel) {
         _nodeMap = new HashMap();
         _jgraph = new JGraph();
+	_appletPanel = appletPanel;
 
         // Construct the Ptolemy kernel topology
         _topLevelActor = constructPtolemyModel();
@@ -261,14 +271,13 @@ public class BusContentionApplication implements ActionListener {
 	_processActor1.addListeners(listener);
 	_processActor2.addListeners(listener);
 	_processActor3.addListeners(listener);
-	System.out.println("Listeners set");
+	// System.out.println("Listeners set");
 
         // Run the model
  	Manager manager = _topLevelActor.getManager();
 
 	// I'm not sure why but "manager.run()" doesn't seem to work.
 	manager.startRun();
-        System.out.println("Goodbye.\n");
 	return;
     }
 
@@ -277,9 +286,14 @@ public class BusContentionApplication implements ActionListener {
     public void shutDown() {
         Manager manager = _topLevelActor.getManager(); 
 	manager.terminate(); 
-	_window.setVisible(false); 
-	// FIXME:  _window.displose(); 
-	_window =  null;
+	if( _appletPanel == null ) {
+	    _window.setVisible(false); 
+	    // FIXME: _window.displose(); 
+	    _window =  null;
+	    // This call to System.exit will not kill browser
+	    // windows because of security permission.
+	    System.exit(0);
+	}
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -294,8 +308,11 @@ public class BusContentionApplication implements ActionListener {
     // The Diva graph model
     private GraphModel _model;
 
-    // The window to display in
+    // The BasicWindow to display in if this is an Application
     private BasicWindow _window;
+
+    // The Panel to display in if this is an Applet
+    private Panel _appletPanel;
 
     // The Actors
     CSPController _contentionActor;
