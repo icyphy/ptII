@@ -14,6 +14,17 @@ PtolemyII *charts Domain Demo</H1></CENTER>
 Protocol Modeling with Hierarchical FSM's and Discrete Event Model</H1></CENTER>
 
 <HR>
+<P><Center><APPLET name="ABPApplet"
+   bgcolor=#FAF0E6
+   archive="ptolemy/domains/sc/demo/ABP/ABP.jar"
+   code=ptolemy.domains.sc.demo.ABP.ABPApplet.class
+   codebase=../../../../..
+   width=600 height=400>
+<param name="background" value="#faf0e6">
+<BR><I>If you were able to run applets, you would have a waveform demo
+here.</I>
+<BR></APPLET></CENTER>
+
 <H1>
 Introduction</H1>
 The discrete event (DE) model of computation is very popular in modeling
@@ -56,12 +67,7 @@ switching network. It queues the input packets, drops and delays the packets
 randomly. A channel has three parameters: <I>DropRate</I>, <I>MinDelay</I>
 and <I>MaxDelay</I>. <I>DropRate</I> is the probability that an input packet
 gets dropped. Packet delay in the channel is uniformly distributed between
-<I>MinDelay</I> and <I>MaxDelay</I>. In this demo, the forward channel
-is configured as
-<CENTER>
-<P><I>DropRate = 0.3; MaxDelay = 5.0; MinDelay = 0.5</I>.</CENTER>
-The backward channel is configured as
-<CENTER><I>DropRate = 0.2; MaxDelay = 2.0; MinDelay = 0.2</I>.</CENTER>
+<I>MinDelay</I> and <I>MaxDelay</I>.
 
 <P><B>Plot. </B>The plot shows the result of data transmission. In the
 plot, the red data gives the sequence number of the messages coming out
@@ -77,18 +83,26 @@ a hierarchical FSM as shown below.
 <CENTER>
 <P><IMG SRC="img/Receiver.gif" ></CENTER>
 
-<H1>Run the Demo</H1>
-<pre>
+<H1>Run the Demo as a Java Application</H1>
+<p>You can run the demo as a standalone Java application by executing the following sequence of commands:
+<pre><code>
 cd $PTII/ptolemy/domains/sc/demo/ABP
 setenv CLASSPATH $PTII
 java ptolemy.domains.sc.demo.ABP.ABP
+</code>
 </pre>
 
-<H1>
-Sample Result</H1>
 A sample result of running the demo is shown below.
 <CENTER>
 <P><IMG SRC="img/Sample.gif" ></CENTER>
+
+The parameter setting is:
+<CENTER>
+<p>
+Forward channel:
+<I>DropRate = 0.3; MaxDelay = 5.0; MinDelay = 0.5</I>.
+<p>Backward channel:
+<I>DropRate = 0.2; MaxDelay = 2.0; MinDelay = 0.2</I>.</CENTER>
 
 <H1>
 Discussion</H1>
