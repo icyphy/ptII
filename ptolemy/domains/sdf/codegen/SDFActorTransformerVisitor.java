@@ -86,12 +86,59 @@ public class SDFActorTransformerVisitor extends ActorTransformerVisitor {
     }    
                 
     protected Object _portFieldDeclNode(FieldDeclNode node, LinkedList args) {
-        // replace the port with an array of offsets into the buffer
-        return new FieldDeclNode(PROTECTED_MOD,
-         TypeUtility.makeArrayType(IntTypeNode.instance, 1),
-         new NameNode(AbsentTreeNode.instance, 
-          "_cg_" + node.getName().getIdent() + "_offset"),
-         AbsentTreeNode.instance);                     
+        LinkedList retval = new LinkedList();
+        String varName = node.getName().getIdent();
+
+        TypedIOPort port = (TypedIOPort) _actorInfo.portNameToPortMap.get(varName);
+        
+        if (port.getWidth() > 1) {        
+
+           ExprNode widthExprNode = new IntLitNode(String.valueOf(port.getWidth()));
+        
+           // an array of offsets into the buffer for each channel                
+
+           retval.addLast(new FieldDeclNode(PROTECTED_MOD,
+            TypeUtility.makeArrayType(IntTypeNode.instance, 1),
+            new NameNode(AbsentTreeNode.instance, 
+             "_cg_" + varName + "_offset"),
+            new AllocateArrayNode(IntTypeNode.instance, TNLManip.cons(widthExprNode),
+             0, AbsentTreeNode.instance)));                     
+            
+           if (port.isInput()) {
+              // an array of buffers associated with the input channels
+
+              String[] bufferNames = (String[]) _sdfActorInfo.inputInfoMap.get(port);
+              
+              LinkedList arrayInitList = new LinkedList();
+              
+              for (int i = 0; i < bufferNames.length; i++) {
+                  arrayInitList.addLast(new ObjectNode((NameNode)
+                   StaticResolution.makeNameNode("CG_Main." + bufferNames[i])));
+              }
+                            
+              TypeNameNode portTypeNode = _typeID.typeNodeForTokenType(port.getType());
+              TypeNode bufferArrayTypeNode = TypeUtility.makeArrayType(
+               (TypeNode) portTypeNode.accept(this, args), 2);
+           
+              retval.addLast(new FieldDeclNode(PROTECTED_MOD,
+               bufferArrayTypeNode, new NameNode(AbsentTreeNode.instance,
+                "_cg_" + varName + "_chan_buffer"),
+               new ArrayInitNode(arrayInitList)));
+                            
+           }             
+                        
+        } else {
+        
+           // an offset into the buffer               
+        
+           retval.addLast(new FieldDeclNode(PROTECTED_MOD,
+            IntTypeNode.instance,
+            new NameNode(AbsentTreeNode.instance, 
+             "_cg_" + varName + "_offset"),
+            new IntLitNode("0")));                             
+        }
+        
+        return retval;
     }
        
     protected Object _portMethodCallNode(MethodCallNode node, LinkedList args) {
@@ -127,14 +174,14 @@ public class SDFActorTransformerVisitor extends ActorTransformerVisitor {
         if (methodName.equals("get")) {
            String[] bufferArray = (String[]) _sdfActorInfo.inputInfoMap.get(port);
                   
-           if (bufferArray == null) {
+           if ((bufferArray == null) || (bufferArray.length < 1)) {
               // port is not connected, return 0 since Token is resolved to int
               return new IntLitNode("0");
            }
                   
            int channel = -1;
                   
-           if (!port.isMultiport()) {
+           if (port.getWidth() <= 1) {
               channel = 0;                  
            } else if (firstArg instanceof IntLitNode) { 
               // found a constant port number (it would help if constant folding
@@ -164,10 +211,20 @@ public class SDFActorTransformerVisitor extends ActorTransformerVisitor {
                   
            } else {
               String bufferName = bufferArray[channel];
-              PostIncrNode offsetIncrNode = new PostIncrNode(
-               new ArrayAccessNode(new ObjectNode(
-                new NameNode(AbsentTreeNode.instance, "_cg_" + varName + "_offset")),
-               firstArg));
+              
+              ExprNode offsetIncrTargetNode = null;
+              
+              if (port.getWidth() > 1) {
+                 offsetIncrTargetNode = new ArrayAccessNode(
+                  new ObjectNode(new NameNode(AbsentTreeNode.instance, 
+                   "_cg_" + varName + "_offset")), firstArg);
+              } else {
+                 offsetIncrTargetNode = new ObjectNode(
+                   new NameNode(AbsentTreeNode.instance, 
+                   "_cg_" + varName + "_offset"));
+              }
+
+              PostIncrNode offsetIncrNode = new PostIncrNode(offsetIncrTargetNode);
                      
               return new ArrayAccessNode(new ObjectNode(
                (NameNode) StaticResolution.makeNameNode("CG_Main." + bufferName)),
@@ -196,7 +253,7 @@ public class SDFActorTransformerVisitor extends ActorTransformerVisitor {
               return NullValue.instance;
            }
                               
-           if (port.isMultiport()) {
+           if (port.getWidth() > 1) {
               // assign the channel to a dummy variable to avoid side effects
               AssignNode chanAssignNode = new AssignNode(new ObjectNode(
                new NameNode(AbsentTreeNode.instance, "_cg_chan_temp_w")),
@@ -226,9 +283,8 @@ public class SDFActorTransformerVisitor extends ActorTransformerVisitor {
                 "CG_Main." + bufferInfo.codeGenName));
                      
               PostIncrNode offsetIncrNode = new PostIncrNode(
-               new ArrayAccessNode(new ObjectNode(
-                new NameNode(AbsentTreeNode.instance, "_cg_" + varName + "_offset")),
-                new IntLitNode("0")));
+               new ObjectNode(new NameNode(AbsentTreeNode.instance, 
+                "_cg_" + varName + "_offset")));
                      
               return new AssignNode(
                new ArrayAccessNode(bufferObjectNode, offsetIncrNode),
