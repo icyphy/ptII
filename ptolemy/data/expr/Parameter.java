@@ -45,10 +45,9 @@ import java.io.Writer;
 /**
 Parameter is almost identical to Variable, its base class, with the
 only difference being the MoML representation, and the fact that it
-is fully visible in a user interface.  The base class has no MoML
+is fully visible in a user interface.  The base class by default has no MoML
 representation, and therefore is not a persistent object.  This class
-has one. Thus, parameters, but not variables, are exported to MoML when
-the container object is exported.
+has one by default.
 <p>
 By convention, an instance of NamedObj has a set of attributes,
 some of which are visible to users and some of which are not.
@@ -77,6 +76,7 @@ public class Parameter extends Variable {
     public Parameter() {
         super();
         setVisibility(Settable.FULL);
+        setPersistent(true);
     }
 
     /** Construct a parameter in the specified workspace with an empty
@@ -89,6 +89,7 @@ public class Parameter extends Variable {
     public Parameter(Workspace workspace) {
         super(workspace);
         setVisibility(Settable.FULL);
+        setPersistent(true);
     }
 
     /** Construct a parameter with the given name contained by the specified
@@ -110,6 +111,7 @@ public class Parameter extends Variable {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         setVisibility(Settable.FULL);
+        setPersistent(true);
     }
 
     /** Construct a Parameter with the given container, name, and Token.
@@ -134,13 +136,14 @@ public class Parameter extends Variable {
             throws IllegalActionException, NameDuplicationException {
         super(container, name, token);
         setVisibility(Settable.FULL);
+        setPersistent(true);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Write a MoML description of this object.
-     *  MoML is an XML modeling markup language.
+    /** Write a MoML description of this object, unless this object is
+     *  not persistent. MoML is an XML modeling markup language.
      *  In this class, the object is identified by the "property"
      *  element, with "name" and "class" (XML) attributes.
      *  The body of the element, between the "&lt;property&gt;"
@@ -155,9 +158,13 @@ public class Parameter extends Variable {
      *  @param depth The depth in the hierarchy, to determine indenting.
      *  @param name The name to use instead of the current name.
      *  @exception IOException If an I/O error occurs.
+     *  @see #isPersistent()
      */
     public void exportMoML(Writer output, int depth, String name)
             throws IOException {
+        if (!isPersistent()) {
+            return;
+        }
         String value = getExpression();
         String valueTerm = "";
         if (value != null && !value.equals("")) {

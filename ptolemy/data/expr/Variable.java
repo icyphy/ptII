@@ -172,11 +172,12 @@ of the token that was inserted via setToken().  It might be a distinct
 type if the token given by setToken() can be converted losslessly into one
 of the type given by setTypeEquals().
 <p>
-A variable has no MoML description (MoML is an XML modeling markup
+A variable by default has no MoML description (MoML is an XML modeling markup
 language).  Thus, a variable contained by a named object is not
 persistent, in that if the object is exported to a MoML file, the
 variable will not be represented.  If you prefer that the variable
-be represented, then you should use the derived class Parameter instead.
+be represented, then you should use the derived class Parameter instead
+or call setPersistent(true).
 <p>
 A variable is also normally not settable by casual users from the user
 interface.  This is because, by default, getVisibility() returns EXPERT.
@@ -190,6 +191,7 @@ The derived class Parameter is fully visible by default.
 @see ptolemy.data.expr.PtParser
 @see ptolemy.data.expr.Parameter
 @see ScopeExtendingAttribute
+@see #setPersistent(boolean)
 */
 
 public class Variable extends Attribute
@@ -201,6 +203,7 @@ public class Variable extends Attribute
      */
     public Variable() {
         super();
+        setPersistent(false);
     }
 
     /** Construct a variable in the specified workspace with an empty
@@ -212,6 +215,7 @@ public class Variable extends Attribute
      */
     public Variable(Workspace workspace) {
         super(workspace);
+        setPersistent(false);
     }
 
     /** Construct a variable with the given name as an attribute of the
@@ -230,6 +234,7 @@ public class Variable extends Attribute
     public Variable(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+        setPersistent(false);
     }
 
     /** Construct a variable with the given container, name, and token.
@@ -252,6 +257,7 @@ public class Variable extends Attribute
         // Notification is important here so that the attributeChanged()
         // method of the container is called.
         _setToken(token);
+        setPersistent(false);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -313,17 +319,6 @@ public class Variable extends Attribute
         newObject._constraints = new LinkedList();
         newObject._typeTerm = null;
         return newObject;
-    }
-
-    /** Write a MoML description of this object, which in this case is
-     *  empty.  Nothing is written.
-     *  MoML is an XML modeling markup language.
-     *  @param output The output stream to write to.
-     *  @param depth The depth in the hierarchy, to determine indenting.
-     *  @param name The name to use instead of the current name.
-     */
-    public void exportMoML(Writer output, int depth, String name)
-            throws IOException {
     }
 
     /** If setTypeEquals() has been called, then return the type specified
