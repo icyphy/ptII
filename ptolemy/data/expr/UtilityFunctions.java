@@ -73,6 +73,14 @@ public class UtilityFunctions {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Convert the second token to the type of the first.
+     *  @exception IllegalActionException If the token cannot be converted.
+     */
+    public static Token cast(Token token1, Token token2) 
+            throws IllegalActionException {
+        return token1.getType().convert(token2);
+    }
+
     /** Return a StringToken that contains the names of all the
      *  constants and their values.
      *  @return A token containing the names of all the constants

@@ -445,7 +445,7 @@ public class ParseTreeEvaluator implements ParseTreeVisitor {
 
         boolean value = ((BooleanToken)test).booleanValue();
 
-             // Choose the correct sub-expression to evaluate,
+        // Choose the correct sub-expression to evaluate,
         // and type check the other.
         if(_typeInference == null) {
             _typeInference = new ParseTreeTypeInference();

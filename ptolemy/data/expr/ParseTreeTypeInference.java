@@ -95,18 +95,18 @@ public class ParseTreeTypeInference implements ParseTreeVisitor {
     public void visitFunctionNode(ASTPtFunctionNode node)
             throws IllegalActionException {
         int argCount = node.jjtGetNumChildren() - 1;
-                String functionName = node.getFunctionName();
-                if(functionName == null) {
-                        _visitChild(node, 0);
-                }
-                for(int i = 0; i < argCount; ++i) {
-                        _visitChild(node, i + 1);
-                }
-
-                if(functionName == null) {
-                        throw new IllegalActionException(
+        String functionName = node.getFunctionName();
+        if(functionName == null) {
+            _visitChild(node, 0);
+        }
+        for(int i = 0; i < argCount; ++i) {
+            _visitChild(node, i + 1);
+        }
+        
+        if(functionName == null) {
+            throw new IllegalActionException(
                     "unimplemented case");
-                }
+        }
 
         if(_isValidName(functionName)) {
             // Handle as an array or matrix index into a named
@@ -134,10 +134,16 @@ public class ParseTreeTypeInference implements ParseTreeVisitor {
             throw new IllegalActionException("Wrong number of indices "
                     + "when referencing " + node.getFunctionName());
         }
+        // temporary hack for casts.
+        if (functionName.compareTo("cast") == 0 && argCount == 2) {
+            _setType(node, 
+                    ((ASTPtRootNode) node.jjtGetChild(0 + 1)).getType());
+            return;
+        }
 
         if (functionName.compareTo("eval") == 0) {
-            throw new IllegalActionException(
-                    "unimplemented case");
+            _setType(node, BaseType.GENERAL);
+            return;
         }
 
         if (functionName.compareTo("matlab") == 0) {
@@ -147,7 +153,7 @@ public class ParseTreeTypeInference implements ParseTreeVisitor {
 
         // Otherwise, try to reflect the method name.
         //Type[] childTypes = _getChildTypes(node);
-                Type[] childTypes = new Type[argCount];
+        Type[] childTypes = new Type[argCount];
         for (int i = 0; i < argCount; i++) {
             childTypes[i] =  ((ASTPtRootNode) node.jjtGetChild(i + 1)).getType();
             if(childTypes[i] == null) {

@@ -606,7 +606,7 @@ test ParseTreeTypeInference-13.0 {Test array reference.} {
     set root1 [ $p1 generateParseTree "v1(0+1,2)+v1(0, v2-1)"]
     set res1 [ [ $evaluator evaluateParseTree $root1 $scope] getType ]
     set type1 [inferTypesScope $root1 $scope]
-    set root2 [ $p1 generateParseTree "v1(0+1,2)+v1(0, v2-1).add(v2)"]
+    set root2 [ $p1 generateParseTree "cast(complex,v1(0+1,2)+v1(0, v2-1).add(v2))"]
     set res2 [ [ $evaluator evaluateParseTree $root2 $scope] getType ]
     set type2 [inferTypesScope $root2 $scope]
     list [$res1 equals $type1] [$res2 equals $type2]
@@ -616,11 +616,11 @@ test ParseTreeTypeInference-13.1 {Test array method calls.} {
     set p1 [java::new ptolemy.data.expr.PtParser]    
     set evaluator [java::new ptolemy.data.expr.ParseTreeEvaluator]
 
-    set root [ $p1 generateParseTree "{1, 2, 3}.getElement(1)"]
+    set root [ $p1 generateParseTree "cast(int, {1, 2, 3}.getElement(1))"]
     set res [ [ $evaluator evaluateParseTree $root] getType]
     set type [inferTypes $root]
     list [$res equals $type]
-} {1} {method calls are not properly typed}
+} {1}
 
 
 # Test record construction,
@@ -641,19 +641,19 @@ test ParseTreeTypeInference-16.0 {Test method calls on arrays, matrices, etc.} {
     set evaluator [java::new ptolemy.data.expr.ParseTreeEvaluator]
 
     set p1 [java::new ptolemy.data.expr.PtParser]
-    set root [ $p1 {generateParseTree String} "{1,2,3}.add({3,4,5})"]
+    set root [ $p1 {generateParseTree String} "cast({int},{1,2,3}.add({3,4,5}))"]
     set res1  [[ $evaluator evaluateParseTree $root] getType]
     set type1 [inferTypes $root]
 
-    set root [ $p1 {generateParseTree String} "{{a=1,b=2},{a=3,b=4},{a=5,b=6}}.get(\"a\")"]
+    set root [ $p1 {generateParseTree String} "cast({int},{{a=1,b=2},{a=3,b=4},{a=5,b=6}}.get(\"a\"))"]
     set res2  [[ $evaluator evaluateParseTree $root] getType]
     set type2 [inferTypes $root]
     
-    set root [ $p1 {generateParseTree String} "create({1,2,3,4,5,6},2,3)"]
+    set root [ $p1 {generateParseTree String} "cast(\[int\],create({1,2,3,4,5,6},2,3))"]
     set res3 [[ $evaluator evaluateParseTree $root] getType]
     set type3 [inferTypes $root]
     
-    set root [ $p1 {generateParseTree String} "{1,1,1,1}.leftShift({1,2,3,4})"]
+    set root [ $p1 {generateParseTree String} "cast({int},{1,1,1,1}.leftShift({1,2,3,4}))"]
     set res4 [[ $evaluator evaluateParseTree $root] getType]
     set type4 [inferTypes $root]
 
