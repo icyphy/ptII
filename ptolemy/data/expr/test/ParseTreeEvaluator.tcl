@@ -712,13 +712,22 @@ test ParseTreeEvaluator-23.18 {Test various function calls} {
 	{[1.09868411346781 + 0.45508986056222733i, 1.09868411346781 - 0.45508986056222733i]}]
 } {1 1 1}
 
- test ParseTreeEvaluator-23.19 {Test various function calls} {
+ test ParseTreeEvaluator-23.19 {Test various function calls: sum is defined in DoubleArrayMath} {
+    list [theTest {sum({0.1,0.2,0.3})}]
+ } {0.6}
+
+ test ParseTreeEvaluator-23.20 {Test various function calls: sumOfSquares is defined in DoubleArrayMath} {
+    list [theTest {sumOfSquares({1.0,2.0,3.0})}]
+ } {14.0}
+ 
+
+ test ParseTreeEvaluator-23.20 {Test various function calls} {
     list [theTest {tan(1+i)}] \
          [theTest {tan({1+i, 1-i})}] \
          [theTest {tan([1+i, 1-i])}]
  } {{0.27175258531951163 + 1.0839233273386946i} {{0.27175258531951163 + 1.0839233273386946i, 0.27175258531951163 - 1.0839233273386946i}} {[0.27175258531951163 + 1.0839233273386946i, 0.27175258531951163 - 1.0839233273386946i]}}
 
- test ParseTreeEvaluator-23.20 {Test various function calls} {
+ test ParseTreeEvaluator-23.21 {Test various function calls} {
     list [theTest {tanh(1+i)}] \
          [theTest {tanh({1+i, 1-i})}] \
          [theTest {tanh([1+i, 1-i])}]
