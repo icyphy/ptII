@@ -36,6 +36,10 @@ import ptolemy.kernel.util.*;
 import ptolemy.graph.*;
 import ptolemy.data.type.Typeable;
 
+import java.util.Iterator;
+
+import java.util.Iterator;
+
 import java.util.Enumeration;
 import collections.LinkedList;
 
@@ -213,15 +217,15 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
 	    }
 
 	    // collect constraints from contained Typeables
-	    Enumeration ports = getPorts();
-	    while (ports.hasMoreElements()) {
-		Typeable port = (Typeable)ports.nextElement();
+	    Iterator ports = portList().iterator();
+	    while (ports.hasNext()) {
+		Typeable port = (Typeable)ports.next();
 		result.appendElements(port.typeConstraints());
 	    }
 
-	    Enumeration attrib = getAttributes();
-	    while (attrib.hasMoreElements()) {
-		Attribute att = (Attribute)attrib.nextElement();
+	    Iterator attributes = attributeList().iterator();
+	    while (attributes.hasNext()) {
+		Attribute att = (Attribute)attributes.next();
 		if (att instanceof Typeable) {
 		    result.appendElements(((Typeable)att).typeConstraints());
 		}
