@@ -95,29 +95,36 @@ foreach i $configs {
     } {1}
 
     test "$i-2.1" "Test to see if $i contains any actors whose type constraints don't clone" {
+	set cloneConfiguration [java::cast ptolemy.kernel.CompositeEntity [$configuration clone]]
+
 	set entityList [$configuration allAtomicEntityList]
 	set results {}
 	for {set iterator [$entityList iterator]} {[$iterator hasNext] == 1} {} {
 	    set entity [$iterator next]
 	    if [java::instanceof $entity ptolemy.actor.TypedAtomicActor] {
 		set actor [java::cast ptolemy.actor.TypedAtomicActor $entity]
-		set clone [java::cast ptolemy.actor.TypedAtomicActor [$actor clone]]
-		set constraints [$actor typeConstraintList]
-		set cloneConstraints [$clone typeConstraintList]
-		set size [$constraints size]
-		set cloneSize [$cloneConstraints size]
-		if {$size != $cloneSize} {
-		    set msg "\n\n[$actor getFullName]\n\
-			    \thas $size constraints, \
-			    whereas its clone \
-			    has $cloneSize constraints."
-
-  		    set c [join [jdkPrintArray \
-  			    [$constraints toArray] "\n" ] "\n"]
-  		    set cc [join [jdkPrintArray \
-  			    [$cloneConstraints toArray] "\n" ] "\n"]
-  		    lappend results "$msg\n\tActor Constraints:\n$c\
-			    \tClone constraints:\n$cc"
+		set fullName [$actor getName $configuration]
+		set clone [java::cast ptolemy.actor.TypedAtomicActor [$cloneConfiguration getEntity $fullName]]
+		if [java::isnull $clone] {
+		    lappend results "\n\tActor $fullName was not cloned!"
+		} {
+		    set constraints [$actor typeConstraintList]
+		    set cloneConstraints [$clone typeConstraintList]
+		    set size [$constraints size]
+		    set cloneSize [$cloneConstraints size]
+		    if {$size != $cloneSize} {
+			set msg "\n\n[$actor getFullName]\n\
+				\thas $size constraints, \
+				whereas its clone \
+				has $cloneSize constraints."
+			
+			set c [join [jdkPrintArray \
+				[$constraints toArray] "\n" ] "\n"]
+			set cc [join [jdkPrintArray \
+				[$cloneConstraints toArray] "\n" ] "\n"]
+			lappend results "$msg\n\tActor Constraints:\n$c\
+				\tClone constraints:\n$cc"
+		    }
 		}
 	    } 
 	}
