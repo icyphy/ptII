@@ -139,11 +139,11 @@ public class Publisher extends Sink {
      */
     public void preinitialize() throws IllegalActionException {
 	super.preinitialize();
-	String name = ((StringToken)jspaceName.getToken()).toString();
+	String name = ((StringToken)jspaceName.getToken()).stringValue();
 	_space = SpaceFinder.getSpace(name);
 	_currentSerialNumber =
 		((LongToken)startingSerialNumber.getToken()).longValue();
-        String entryname = ((StringToken)entryName.getToken()).toString();
+        String entryname = ((StringToken)entryName.getToken()).stringValue();
         try {
             IndexEntry minimum = new IndexEntry(
                     entryname, "minimum", new Long(_currentSerialNumber));
@@ -168,7 +168,7 @@ public class Publisher extends Sink {
      */
     public void fire() throws IllegalActionException {
 	try {
-	    String name = ((StringToken)entryName.getToken()).toString();
+	    String name = ((StringToken)entryName.getToken()).stringValue();
 	    long time = ((LongToken)leaseTime.getToken()).longValue();
             IndexEntry maxtemp= new IndexEntry(
                     name, "maximum", null);
