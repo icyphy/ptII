@@ -77,37 +77,13 @@ public class CTAssertion extends Assertion implements CTStepSizeControlActor {
     public CTAssertion(CompositeEntity container, String name)
 	throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-
-	// threshold is used for adjust integrator step size only
-	threshold = new Parameter(this, "threshold",
-				  new DoubleToken(0.0));
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The parameter that is to adjust the step size of integrator.
-     *  Typically, this parameter contains a DoubleToken with the value as
-     *  the limit of the assertion.
-     */
-    public Parameter threshold;
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-    /** Update the attribute if it has been changed. If the attribute
-     *  is <i>threshold<i> then update the local cache.
-     *  @param attribute The attribute that has changed.
-     *  @exception IllegalActionException If the attribute change failed.
-     */
-    public void attributeTypeChanged(Attribute attribute)
-	throws IllegalActionException {
-	super.attributeTypeChanged(attribute);
-        if (attribute == threshold) {
-	    double p = ((DoubleToken)threshold.getToken()).doubleValue();
-	    _threshold = p;
-	}
-    }
 
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then creates new ports and parameters.
@@ -123,7 +99,7 @@ public class CTAssertion extends Assertion implements CTStepSizeControlActor {
         return newObject;
     }
 
-    /** Consume one input token.
+    /** Consume input tokens.
      *  @exception IllegalActionException If the get() method of IOport
      *  or getToken() method of Variable throws it.
      */
@@ -135,11 +111,10 @@ public class CTAssertion extends Assertion implements CTStepSizeControlActor {
 	// FIXME: handle multiports.
 
 	TypedIOPort input = (TypedIOPort) inputPortList().get(0);
-	_thisInput = ((DoubleToken) input.get(0)).doubleValue();
-        _threshold = ((DoubleToken) threshold.getToken()).doubleValue();
+	_input = ((DoubleToken) input.get(0)).doubleValue();
 		
 	if (_debugging)
-	    _debug(getFullName() + " consuming input Token" + _thisInput);
+	    _debug(getFullName() + " consuming input Token" + _input);
     }
 
     /** Initialize the iteration count to 1.
@@ -148,72 +123,54 @@ public class CTAssertion extends Assertion implements CTStepSizeControlActor {
     public void initialize() throws IllegalActionException {
         super.initialize();
         _eventMissed = false;
-	_lastInput = 0;
     }
     
-    /** Return true if this step does not cross the threshold.
-     *  The current trigger
-     *  token will be compared to the previous trigger token. If they
-     *  cross the level threshold, this step is not accurate.
-     *  A special case is taken care so that if the previous trigger
-     *  and the current trigger both equal to the level value,
-     *  then no new event is
-     *  detected. If this step crosses the level threshold,
-     *  then the refined integration
-     *  step size is computed by linear interpolation.
-     *  If this is the first iteration after initialize() is called,
-     *  then always return false, since there is no history to compare with.
-     *  @return True if the trigger input in this integration step
-     *          does not cross the level threshold.
+    /** Return true if this step does not violate the assertion.
+     *  If the assertion does not hold, reduce the step size half and
+     *  return false, otherwise, return true.
+     *  @return True if the assertion holds.
      */
     public boolean isThisStepAccurate() {
-        // FIXME: Handle multiports
-        // It needs a list of cached of last inputs.
 
-	if (_first) {
-            _first = false;
-            return true;
-        }
         if (_debugging) {
-            _debug(this.getFullName() + " This input " + _thisInput);
-            _debug(this.getFullName() + " The last input " + _lastInput);
+            _debug(this.getFullName() + " This input " + _input);
         }
-        if (Math.abs(_thisInput - _threshold) < _errorTolerance) {
-            if (_enabled) {
-                _enabled = false;
-            }
-            _eventMissed = false;
-            return true;
-        } else {
-            if (!_enabled) {  // if last step is a level, always accurate.
-                _enabled = true;
-            } else {
-                if ((_lastInput - _threshold) * (_thisInput - _threshold)
-		    < 0.0) {
 
-                    CTDirector dir = (CTDirector)getDirector();
-                    _eventMissed = true;
-                    // The refined step size is a linear interpolation.
-                    _refineStep = (Math.abs(_lastInput - _threshold)
-				   *dir.getCurrentStepSize())
-                        /Math.abs(_thisInput-_lastInput);
-                    if (_debugging) _debug(getFullName() +
-					   " Refined step at" +  _refineStep);
-                    return false;
-                }
-            }
-            _eventMissed = false;
-            return true;
-        }
+	try {
+	    BooleanToken result = (BooleanToken) assertion.getToken();
+	    
+	    if (!result.booleanValue()) {
+		
+		if (_debugging) {
+		    _debug(this.getFullName() + " adjusts the step size");
+		}
+		
+		CTDirector dir = (CTDirector)getDirector();
+		_eventMissed = true;
+		// The refined step size is half of former one.
+		_refineStep = 0.5*dir.getCurrentStepSize();
+		if (_debugging) _debug(getFullName() +
+				       " Former stepsize as " + dir.getCurrentStepSize() + "\nRefined step at" +  _refineStep);
+		return false;
+	    }
+	    else {
+		if (_debugging) {
+		    _debug(this.getFullName() + " need not adjust the step size");
+		}
+	    }		    
+	} catch (IllegalActionException e) {
+	    // which should not happen
+	    return false;
+	}
+	
+	_eventMissed = false;
+	return true;
     }
 
     /** Evaluate the assertion and increment the iteration count.
      *  @exception IllegalActionException If the super class throws it.
      */
     public boolean postfire() throws IllegalActionException {
-
-	_lastInput = _thisInput;
-
 	return super.postfire();
     }
 
@@ -239,16 +196,10 @@ public class CTAssertion extends Assertion implements CTStepSizeControlActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private double _thisInput;
-    private double _lastInput;
-
-    private double _threshold;
+    private double _input;
 
     // flag indicating if the event detection is enable for this step
     private boolean _enabled;
-
-    // flag indicating if this is the first iteration in the execution,
-    private boolean _first = true;
 
     // flag for indicating a missed event
     private boolean _eventMissed = false;
