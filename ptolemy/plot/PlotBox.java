@@ -1145,6 +1145,8 @@ public class PlotBox extends JPanel implements Printable {
 
         if (index != -1) {
             _legendStrings.setElementAt(newName, index);
+            // Changing legend means we need to repaint the offscreen buffer.
+            _plotImage = null;
         }
     }
 
