@@ -680,9 +680,11 @@ public class Plot extends PlotBox {
             int barrx = (int)(barlx + _barwidth * _xscale);
             if (barlx < _ulx) barlx = _ulx;
             if (barrx > _lrx) barrx = _lrx;
-            if (_debug > 20)
+            if (_debug > 20) {
             System.out.println("Plot:_drawPoint bar "+barlx+" "+ypos+" "+
-                                barrx + " " + barlx + " " + _lry);
+                    barrx + " " + barlx + " " + _lry + " xpos="+ xpos +
+                    " " + _barwidth+" "+_xscale+" "+_currentdataset );
+            }
             graphics.fillRect(barlx, (int)ypos,
                     barrx - barlx, _lry - (int)ypos);
         }
