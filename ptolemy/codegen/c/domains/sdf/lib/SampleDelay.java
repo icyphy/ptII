@@ -71,6 +71,7 @@ public class SampleDelay extends CodeGeneratorHelper {
     /**  
      */
     public String generateInitializeCode() throws IllegalActionException {
+        super.generateInitializeCode();
         StringBuffer code = new StringBuffer();
         ptolemy.domains.sdf.lib.SampleDelay actor =
             (ptolemy.domains.sdf.lib.SampleDelay) getComponent();

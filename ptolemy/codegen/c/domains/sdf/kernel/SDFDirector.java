@@ -122,14 +122,15 @@ public class SDFDirector extends Director {
                     Iterator inputAndOutputPorts = inputAndOutputPortsSet.iterator();
                     while (inputAndOutputPorts.hasNext()) {
                         IOPort port = (IOPort) inputAndOutputPorts.next();
-                        int offset = ((CodeGeneratorHelper) helperObject)
-                                .getOffset(port);
-                        // FIXME: temporarily we don't consider cyclic buffer.
-                        //offset = offset + DFUtilities.getRate(inputPort);
-                        offset = (offset + DFUtilities.getRate(port))
-                                % ((CodeGeneratorHelper) helperObject).getBufferSize(port);
-                        ((CodeGeneratorHelper) helperObject)
-                                .setOffset(port, offset);
+                        for (int j = 0; j < port.getWidth(); j ++) {
+                            //Channel channel = helperObject.getChannel(port, j);
+                            int offset = helperObject.getOffset(port, j);
+                            // FIXME: temporarily we don't consider cyclic buffer.
+                            //offset = offset + DFUtilities.getRate(inputPort);
+                            offset = (offset + DFUtilities.getRate(port))
+                                % helperObject.getBufferSize(port);
+                            helperObject.setOffset(port, j, offset);
+                        }
                     }
                 }
             }
@@ -162,9 +163,13 @@ public class SDFDirector extends Director {
                         = actorHelper.getSinkChannels(
                         ((SampleDelay) actor).output, 0).iterator();
                 while (sinkChannels.hasNext()) {
-                    Channel channel = (Channel) sinkChannels.next();
-                    IOPort port = (IOPort) channel.port;
-                    actorHelper.setOffset(port, NumberOfInitialTokens);
+                    Channel sinkChannel = (Channel) sinkChannels.next();
+                    Actor sinkActor = (Actor) sinkChannel.port.getContainer();
+                    CodeGeneratorHelper sinkActorHelper
+                            = (CodeGeneratorHelper) _getHelper
+                            ((NamedObj) sinkActor);
+                    sinkActorHelper.setOffset(sinkChannel.port,
+                            sinkChannel.channelNumber, NumberOfInitialTokens);
                 }
             }
         }
