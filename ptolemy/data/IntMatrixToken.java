@@ -499,7 +499,7 @@ public class IntMatrixToken extends MatrixToken {
     public final Token one() {
 	try {
             return new IntMatrixToken(IntegerMatrixMath.identity(_rowCount),
-	                          DO_NOT_COPY);
+                    DO_NOT_COPY);
 	} catch (IllegalActionException illegalAction) {
 	    // should not happen
 	    throw new InternalErrorException("IntMatrixToken.one: "
@@ -517,7 +517,7 @@ public class IntMatrixToken extends MatrixToken {
     public final Token oneRight() {
 	try {
             return new IntMatrixToken(IntegerMatrixMath.identity(_columnCount),
-	                          DO_NOT_COPY);
+                    DO_NOT_COPY);
 	} catch (IllegalActionException illegalAction) {
 	    // should not happen
 	    throw new InternalErrorException("IntMatrixToken.oneRight: "
@@ -604,7 +604,7 @@ public class IntMatrixToken extends MatrixToken {
     public final Token zero() {
 	try {
             return new IntMatrixToken(new int[_rowCount][_columnCount],
-			          DO_NOT_COPY);
+                    DO_NOT_COPY);
 	} catch (IllegalActionException illegalAction) {
 	    // should not happen
 	    throw new InternalErrorException("IntMatrixToken.zero: "

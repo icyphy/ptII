@@ -106,9 +106,9 @@ public class IntToken extends ScalarToken {
         if (typeInfo == CPO.HIGHER || typeInfo == CPO.SAME) {
             IntToken intToken;
             if (typeInfo == CPO.HIGHER) {
-               intToken = (IntToken)IntToken.convert(rightArgument);
+                intToken = (IntToken)IntToken.convert(rightArgument);
             } else {
-               intToken = (IntToken)rightArgument;
+                intToken = (IntToken)rightArgument;
             }
             int sum = _value + intToken.intValue();
             IntToken result = new IntToken(sum);
@@ -207,15 +207,15 @@ public class IntToken extends ScalarToken {
         if (typeInfo == CPO.HIGHER || typeInfo == CPO.SAME) {
             IntToken intToken;
             if (typeInfo == CPO.HIGHER) {
-               intToken = (IntToken)IntToken.convert(divisor);
+                intToken = (IntToken)IntToken.convert(divisor);
             } else {
-               intToken = (IntToken)divisor;
+                intToken = (IntToken)divisor;
             }
             int quotient = _value / intToken.intValue();
             IntToken result = new IntToken(quotient);
             // compute units
             result._unitCategoryExponents =
-                            _subtractCategoryExponents(intToken);
+                _subtractCategoryExponents(intToken);
             return result;
         } else if (typeInfo == CPO.LOWER) {
             return divisor.divideReverse(this);
@@ -244,7 +244,7 @@ public class IntToken extends ScalarToken {
 
         // compute units
         result._unitCategoryExponents =
-                        intToken._subtractCategoryExponents(this);
+            intToken._subtractCategoryExponents(this);
         return result;
     }
 
@@ -304,13 +304,13 @@ public class IntToken extends ScalarToken {
         if (typeInfo == CPO.HIGHER || typeInfo == CPO.SAME) {
             IntToken intToken;
             if (typeInfo == CPO.HIGHER) {
-               intToken = (IntToken)IntToken.convert(token);
+                intToken = (IntToken)IntToken.convert(token);
             } else {
-               intToken = (IntToken)token;
+                intToken = (IntToken)token;
             }
 
             if (_value == intToken.intValue()
-                && _areUnitsEqual(intToken)) {
+                    && _areUnitsEqual(intToken)) {
                 return new BooleanToken(true);
             } else {
                 return new BooleanToken(false);
@@ -343,9 +343,9 @@ public class IntToken extends ScalarToken {
         if (typeInfo == CPO.HIGHER || typeInfo == CPO.SAME) {
             IntToken intToken;
             if (typeInfo == CPO.HIGHER) {
-               intToken = (IntToken)IntToken.convert(token);
+                intToken = (IntToken)IntToken.convert(token);
             } else {
-               intToken = (IntToken)token;
+                intToken = (IntToken)token;
             }
             if ( !_areUnitsEqual(intToken)) {
                 throw new IllegalActionException("IntToken.isLessThan: "
@@ -402,9 +402,9 @@ public class IntToken extends ScalarToken {
         if (typeInfo == CPO.HIGHER || typeInfo == CPO.SAME) {
             IntToken intToken;
             if (typeInfo == CPO.HIGHER) {
-               intToken = (IntToken)IntToken.convert(rightArgument);
+                intToken = (IntToken)IntToken.convert(rightArgument);
             } else {
-               intToken = (IntToken)rightArgument;
+                intToken = (IntToken)rightArgument;
             }
             int remainder = _value % intToken.intValue();
             IntToken result = new IntToken(remainder);
@@ -443,7 +443,7 @@ public class IntToken extends ScalarToken {
     public Token moduloReverse(Token leftArgument)
             throws IllegalActionException {
         IntToken intToken =
-                (IntToken)IntToken.convert(leftArgument);
+            (IntToken)IntToken.convert(leftArgument);
 
         int remainder = intToken.intValue() % _value;
         IntToken result = new IntToken(remainder);
@@ -471,9 +471,9 @@ public class IntToken extends ScalarToken {
         if (typeInfo == CPO.HIGHER || typeInfo == CPO.SAME) {
             IntToken intToken;
             if (typeInfo == CPO.HIGHER) {
-               intToken = (IntToken)IntToken.convert(rightFactor);
+                intToken = (IntToken)IntToken.convert(rightFactor);
             } else {
-               intToken = (IntToken)rightFactor;
+                intToken = (IntToken)rightFactor;
             }
             int product = _value * intToken.intValue();
             IntToken result = new IntToken(product);
@@ -529,9 +529,9 @@ public class IntToken extends ScalarToken {
         if (typeInfo == CPO.HIGHER || typeInfo == CPO.SAME) {
             IntToken intToken;
             if (typeInfo == CPO.HIGHER) {
-               intToken = (IntToken)IntToken.convert(rightArgument);
+                intToken = (IntToken)IntToken.convert(rightArgument);
             } else {
-               intToken = (IntToken)rightArgument;
+                intToken = (IntToken)rightArgument;
             }
             int difference = _value - intToken.intValue();
             IntToken result = new IntToken(difference);

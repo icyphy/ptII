@@ -60,13 +60,13 @@ public class ParseException extends Exception {
             int[][] expectedTokenSequencesVal,
             String[] tokenImageVal
                           )
-        {
-            super("");
-            specialConstructor = true;
-            currentToken = currentTokenVal;
-            expectedTokenSequences = expectedTokenSequencesVal;
-            tokenImage = tokenImageVal;
-        }
+    {
+        super("");
+        specialConstructor = true;
+        currentToken = currentTokenVal;
+        expectedTokenSequences = expectedTokenSequencesVal;
+        tokenImage = tokenImageVal;
+    }
 
     /**
      * The following constructors are for use by you for whatever

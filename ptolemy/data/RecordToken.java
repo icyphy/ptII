@@ -271,8 +271,8 @@ public class RecordToken extends Token {
      *   not of a type that can be compared with this token.
      */
     public BooleanToken isCloseTo(Token token,
-				  double epsilon)
-	throws IllegalActionException {
+            double epsilon)
+            throws IllegalActionException {
         if ( !(token instanceof RecordToken)) {
             throw new IllegalActionException("RecordToken.isEqualTo: The " +
                     "argument is not a RecordToken.");

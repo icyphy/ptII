@@ -61,7 +61,7 @@ public class CachedMethod {
 
     /** Construct a new CachedMethod and compute its hashcode. */
     public CachedMethod(String funcName, Class[] argTypes,
-                        Method method, int type) {
+            Method method, int type) {
         _funcName = funcName;
         _method = method;
         _type = type;
@@ -125,7 +125,7 @@ public class CachedMethod {
 
     /** Create and add a CachedMethod to the cache. */
     public static void add(String funcName, Class[] argTypes, Method method,
-                           int type) {
+            int type) {
         CachedMethod cachedMethod = new CachedMethod
             (funcName, argTypes, method, type);
         _cachedMethods.put(cachedMethod, cachedMethod);

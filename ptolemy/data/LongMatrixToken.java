@@ -459,7 +459,7 @@ public class LongMatrixToken extends MatrixToken {
         }
     }
 
-   /** Return a new Token representing the left multiplicative
+    /** Return a new Token representing the left multiplicative
      *  identity. The returned token contains an identity matrix
      *  whose dimensions are the same as the number of rows of
      *  the matrix contained in this token.
@@ -576,7 +576,7 @@ public class LongMatrixToken extends MatrixToken {
         // add the argument Token to the negative of this Token
         LongMatrixToken negativeToken =
             new LongMatrixToken(LongMatrixMath.negative(_value),
-	                          DO_NOT_COPY);
+                    DO_NOT_COPY);
         return negativeToken.add(token);
     }
 
@@ -603,7 +603,7 @@ public class LongMatrixToken extends MatrixToken {
 	}
     }
 
-   ///////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ////                      protected methods                    ////
 
     /** Return a reference to the internal 2-D matrix of longs that
@@ -623,7 +623,7 @@ public class LongMatrixToken extends MatrixToken {
     private void _initialize(long[][] value, int copy) {
 	_rowCount = value.length;
 	_columnCount = value[0].length;
-	  if (copy == DO_NOT_COPY) {
+        if (copy == DO_NOT_COPY) {
             _value = value;
         } else {
             _value = LongMatrixMath.allocCopy(value);

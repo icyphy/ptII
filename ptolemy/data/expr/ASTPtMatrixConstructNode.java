@@ -130,53 +130,53 @@ public class ASTPtMatrixConstructNode extends ASTPtRootNode {
             } else if (_childTokens[0] instanceof ArrayToken) {
                 // Convert an ArrayToken to a MatrixToken
                 if (((ArrayToken)_childTokens[0]).getElement(0)
-                    instanceof IntToken) {
+                        instanceof IntToken) {
 
                     int[][] array = new int[nChildren]
                         [((ArrayToken)_childTokens[0]).length()];
                     for (int k = 0; k < array.length; k++) {
                         for (int j = 0; j < array[k].length; j++) {
                             array[k][j] = ((IntToken)((ArrayToken)_childTokens[k])
-                                           .getElement(j)).intValue();
+                                    .getElement(j)).intValue();
                         }
                     }
                     _ptToken = new IntMatrixToken(array);
                 } else if (((ArrayToken)_childTokens[0]).getElement(0)
-                    instanceof DoubleToken) {
+                        instanceof DoubleToken) {
                     double[][] array = new double[nChildren]
                         [((ArrayToken)_childTokens[0]).length()];
                     for (int k = 0; k < array.length; k++) {
                         for (int j = 0; j < array[k].length; j++) {
                             array[k][j] = ((DoubleToken)((ArrayToken)_childTokens[k])
-                                           .getElement(j)).doubleValue();
+                                    .getElement(j)).doubleValue();
                         }
                     }
                     _ptToken = new DoubleMatrixToken(array);
                 } else if (((ArrayToken)_childTokens[0]).getElement(0)
-                    instanceof ComplexToken) {
+                        instanceof ComplexToken) {
                     Complex[][] array = new Complex[nChildren]
                         [((ArrayToken)_childTokens[0]).length()];
                     for (int k = 0; k < array.length; k++) {
                         for (int j = 0; j < array[k].length; j++) {
                             array[k][j] = ((ComplexToken)((ArrayToken)_childTokens[k])
-                                        .getElement(j)).complexValue();
+                                    .getElement(j)).complexValue();
                         }
                     }
                     _ptToken = new ComplexMatrixToken(array);
 		} else if (((ArrayToken)_childTokens[0]).getElement(0)
-			   instanceof FixToken) {
+                        instanceof FixToken) {
 		    FixPoint[][] array = new FixPoint[nChildren]
                         [((ArrayToken)_childTokens[0]).length()];
                     for (int k = 0; k < array.length; k++) {
                         for (int j = 0; j < array[k].length; j++) {
                             array[k][j] = ((FixToken)((ArrayToken)_childTokens[k])
-                                           .getElement(j)).fixValue();
+                                    .getElement(j)).fixValue();
                         }
                     }
 		    _ptToken = new FixMatrixToken(array);
                 } else {
                     throw new IllegalActionException("Creating a matrix from "
-                        +_childTokens[0].toString()+" not implemented!");
+                            +_childTokens[0].toString()+" not implemented!");
                 }
             } else if (_nRows == 1) {
 		// Create an ArrayToken from the parsed elements.

@@ -253,17 +253,17 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
                     if (packageDirectories != null) {
                         StringTokenizer dirs = new
                             StringTokenizer((String)
-                                        ((StringToken)packageDirectories
-                                         .getToken()).stringValue(),",");
+                                    ((StringToken)packageDirectories
+                                            .getToken()).stringValue(),",");
                         StringBuffer cellFormat = new StringBuffer(512);
                         cellFormat.append("{");
                         if (dirs.hasMoreTokens()) {
                             cellFormat.append("'" + UtilityFunctions
-				      .findFile(dirs.nextToken()) + "'");
+                                    .findFile(dirs.nextToken()) + "'");
                         }
                         while (dirs.hasMoreTokens()) {
                             cellFormat.append(",'" + UtilityFunctions
-				      .findFile(dirs.nextToken()) + "'");
+                                    .findFile(dirs.nextToken()) + "'");
                         }
                         cellFormat.append("}");
 
@@ -465,8 +465,8 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
             } else {
                 throw new IllegalActionException
                     ("FunctionNode: result of function " + _funcName +
-                     " is "+result.getClass()+" and is not supported by"+
-                     " FunctionNode. See the java class documentation."
+                            " is "+result.getClass()+" and is not supported by"+
+                            " FunctionNode. See the java class documentation."
                      );
             }
             if (debug) System.out.println("result:  "+retval);
@@ -496,10 +496,10 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
     ////                         private methods                   ////
 
     private Object FindAndRunMethod
-        (String funcName,
-         Class[] argTypes,
-         Object[] argValues
-         ) throws IllegalActionException {
+    (String funcName,
+            Class[] argTypes,
+            Object[] argValues
+     ) throws IllegalActionException {
 
 	// First try to find the method in the cache...
 
@@ -523,7 +523,7 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
                     ex.getTargetException().printStackTrace();
                     throw new IllegalActionException
                         ("Error invoking function " + funcName + "\n" +
-                         ex.getTargetException().getMessage());
+                                ex.getTargetException().getMessage());
                 } catch (Exception ex)  {
                     throw new IllegalActionException(ex.getMessage());
                 }
@@ -561,18 +561,18 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
                         exception.getTargetException().printStackTrace();
                         throw new IllegalActionException
                             ("Error invoking function " + funcName + "\n" +
-                             exception.getTargetException().getMessage());
+                                    exception.getTargetException().getMessage());
                     } catch (Exception exception)  {
                         throw new IllegalActionException
                             (null, exception, "Error invoking function " +
-                             funcName + " on " + nextClass);
+                                    funcName + " on " + nextClass);
                     }
                 } catch (InvocationTargetException ex) {
                     // get the exception produced by the invoked function
                     ex.getTargetException().printStackTrace();
                     throw new IllegalActionException
                         ("Error invoking function " + funcName + "\n" +
-                         ex.getTargetException().getMessage());
+                                ex.getTargetException().getMessage());
                 } catch (Exception ex)  {
                     throw new IllegalActionException(ex.getMessage());
                 }
@@ -637,12 +637,12 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
                 if (result != null) {
                     // Add newly found "constructed" method to the cache
                     CachedMethod.add(funcName, argTypes, method,
-                                     CachedMethod.CONSTRUCTED);
+                            CachedMethod.CONSTRUCTED);
                 } else {
                     // Add missing method to cache so we don't search for it
                     // again
                     CachedMethod.add(funcName, argTypes, method,
-                                     CachedMethod.MISSING);
+                            CachedMethod.MISSING);
                 }
             }
 	} else if (cachedMethod == null) {

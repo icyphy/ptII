@@ -67,7 +67,7 @@ public class ASTPtSumNode extends ASTPtRootNode {
         String op = "";
         for (int i = 1; i < num; i++) {
             Token x = (Token)_lexicalTokens.get(i - 1);
-              op = x.image;
+            op = x.image;
             if (op.compareTo("+") == 0) {
                 result = result.add(_childTokens[i]);
             } else if (op.compareTo("-") == 0) {

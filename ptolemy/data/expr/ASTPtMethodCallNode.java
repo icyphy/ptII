@@ -134,8 +134,8 @@ public class ASTPtMethodCallNode extends ASTPtRootNode {
             Class destTokenClass = _childTokens[0].getClass();
 	    Method m = null;
             Method mBase = null;        // Base class for corresponding Token
-                                        // (e.g. ptolemy.math.Complex for
-                                        // ComplexToken)
+            // (e.g. ptolemy.math.Complex for
+            // ComplexToken)
             Object mInstance = null;    // Base class instance to invoke method on.
 
 	    // first try to find a method whose arguments are all of type
@@ -150,19 +150,19 @@ public class ASTPtMethodCallNode extends ASTPtRootNode {
 		    ptolemy.data.Token child = _childTokens[i + 1];
 		    if (child instanceof DoubleToken) {
 			argValues[i] =
-			        new Double(((DoubleToken)child).doubleValue());
+                            new Double(((DoubleToken)child).doubleValue());
 			argTypes[i] = Double.TYPE;
 		    } else if (child instanceof IntToken) {
 			argValues[i] =
-			        new Integer(((IntToken)child).intValue());
+                            new Integer(((IntToken)child).intValue());
 			argTypes[i] = Integer.TYPE;
 		    } else if (child instanceof LongToken) {
 			argValues[i] =
-			        new Long(((LongToken)child).longValue());
+                            new Long(((LongToken)child).longValue());
 			argTypes[i] = Long.TYPE;
 		    } else if (child instanceof StringToken) {
 			argValues[i] =
-			        new String(((StringToken)child).stringValue());
+                            new String(((StringToken)child).stringValue());
 			argTypes[i] = argValues[i].getClass();
 		    } else if (child instanceof BooleanToken) {
 			argValues[i] =

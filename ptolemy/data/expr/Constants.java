@@ -118,9 +118,9 @@ public class Constants {
             // When Vergil is started up, java is called with
             // -Dptolemy.ptII.dir=${PTII}.
             _table.put("PTII",
-                new StringToken(System.getProperty("ptolemy.ptII.dir")));
+                    new StringToken(System.getProperty("ptolemy.ptII.dir")));
             _table.put("HOME",
-                new StringToken(System.getProperty("user.dir")));
+                    new StringToken(System.getProperty("user.dir")));
         } catch (Exception e) {}
 
         // Type constants.

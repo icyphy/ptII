@@ -175,7 +175,7 @@ public abstract class MatrixToken extends Token {
 	    // Cannot happen, since the elements of MatrixToken always
 	    // have the same type.
 	    throw new InternalErrorException("MatrixToken.toArray: Cannot "
-	        + "construct ArrayToken. " + illegalAction.getMessage());
+                    + "construct ArrayToken. " + illegalAction.getMessage());
 	}
         return result;
     }

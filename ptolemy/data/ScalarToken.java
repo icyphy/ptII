@@ -77,7 +77,7 @@ public abstract class ScalarToken extends Token {
      */
     public Complex complexValue() throws IllegalActionException {
         throw new IllegalActionException("Cannot convert the value in " +
-                    getClass().getName() + " to a Complex losslessly.");
+                getClass().getName() + " to a Complex losslessly.");
     }
 
     /** Return the value of this token as a double.
@@ -87,7 +87,7 @@ public abstract class ScalarToken extends Token {
      */
     public double doubleValue() throws IllegalActionException {
         throw new IllegalActionException("Cannot convert the value in " +
-                    getClass().getName() + " to a double losslessly.");
+                getClass().getName() + " to a double losslessly.");
     }
 
     /** Return the type of this token.
@@ -114,7 +114,7 @@ public abstract class ScalarToken extends Token {
      */
     public int intValue() throws IllegalActionException {
         throw new IllegalActionException("Cannot convert the value in " +
-                    getClass().getName() + " to an int losslessly.");
+                getClass().getName() + " to an int losslessly.");
     }
 
     /** Check whether the value of this token is strictly less than that of the
@@ -155,7 +155,7 @@ public abstract class ScalarToken extends Token {
      */
     public long longValue() throws IllegalActionException {
         throw new IllegalActionException("Cannot convert the value in " +
-                    getClass().getName() + " to a long losslessly.");
+                getClass().getName() + " to a long losslessly.");
     }
 
     /** Set the unit category this token belongs to.
@@ -191,8 +191,8 @@ public abstract class ScalarToken extends Token {
             int exponent = _unitCategoryExponents[i];
             if (exponent != 0) {
                 String baseString = null;
-                   baseString = UnitSystem.getBaseUnitName(i);
-                   if (exponent > 0) {
+                baseString = UnitSystem.getBaseUnitName(i);
+                if (exponent > 0) {
                     for (int j=0; j<exponent; j++) {
                         if (positiveUnits.equals("")) {
                             positiveUnits = baseString;
@@ -273,7 +273,7 @@ public abstract class ScalarToken extends Token {
     protected boolean _areUnitsEqual(ScalarToken scalarToken) {
         boolean isThisUnitless = _isUnitless(this._unitCategoryExponents);
         boolean isArgumentUnitless =
-                _isUnitless(scalarToken._unitCategoryExponents);
+            _isUnitless(scalarToken._unitCategoryExponents);
 
         // Either this token, or the argument token, or both have non null
         // exponent arrays.
@@ -287,10 +287,10 @@ public abstract class ScalarToken extends Token {
             int thisLength = _unitCategoryExponents.length;
             int argumentLength = scalarToken._unitCategoryExponents.length;
             int shorterLength = (thisLength <= argumentLength) ? thisLength :
-                                argumentLength;
+                argumentLength;
             for (int i=0; i<shorterLength; i++) {
                 if (_unitCategoryExponents[i] !=
-                    scalarToken._unitCategoryExponents[i]) {
+                        scalarToken._unitCategoryExponents[i]) {
                     return false;
                 }
             }

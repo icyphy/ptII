@@ -86,9 +86,9 @@ public class Token {
      * Returns the image.
      */
     public final String toString()
-        {
-            return image;
-        }
+    {
+        return image;
+    }
 
     /**
      * Returns a new Token object, by default. However, if you want, you
@@ -103,11 +103,11 @@ public class Token {
      * variable to the appropriate type and use it in your lexical actions.
      */
     public static final Token newToken(int ofKind)
-        {
-            switch(ofKind)
-                {
-                default : return new Token();
-                }
-        }
+    {
+        switch(ofKind)
+            {
+            default : return new Token();
+            }
+    }
 
 }
