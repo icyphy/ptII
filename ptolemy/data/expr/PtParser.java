@@ -1655,7 +1655,10 @@ String tidied, x;
     default:
       jj_la1[29] = jj_gen;
         ASTPtLeafNode node = new ASTPtLeafNode(JJTPTLEAFNODE);
-        node._name = "unknown";
+        node._name = "general";
+        node._ptToken = new GeneralToken();
+        node._ptType = ptolemy.data.type.BaseType.GENERAL;
+        node._isConstant = true;
         jjtree.pushNode(node);
     }
   }

@@ -60,6 +60,12 @@ proc inferTypesScope {root scope} {
     $typeInference inferTypes $root $scope
 }
 
+proc theTest {expression} {
+    set p1 [java::new ptolemy.data.expr.PtParser]
+    set root [ $p1 {generateParseTree String} $expression]
+    [inferTypes $root] toString
+}
+
 ######################################################################
 ####
 # 
@@ -670,7 +676,7 @@ test ParseTreeTypeInference-16.0 {Test method calls on arrays, matrices, etc.} {
     list [$res1 equals $type1] [$res2 equals $type2] [$res3 equals $type3] [$res4 equals $type4] 
 } {1 1 1 1}
 
-test PtParser-16.2 {Test record indexing} {
+test ParseTreeTypeInference-16.2 {Test record indexing} {
     set evaluator [java::new ptolemy.data.expr.ParseTreeEvaluator]
 
     set p [java::new ptolemy.data.expr.PtParser]
@@ -684,7 +690,7 @@ test PtParser-16.2 {Test record indexing} {
     list [$res1 equals $type1] [$res2 equals $type2]
 } {1 1}
 
-test PtParser-16.3 {Test property} {
+test ParseTreeTypeInference-16.3 {Test property} {
     set evaluator [java::new ptolemy.data.expr.ParseTreeEvaluator]
 
     set p [java::new ptolemy.data.expr.PtParser]
@@ -697,4 +703,16 @@ test PtParser-16.3 {Test property} {
     set type2 [inferTypes $root]
     list [$res1 equals $type1]  [$res2 equals $type2]
 } {1 1}
+
+
+####################################################################
+
+test ParseTreeTypeInference-17.1 {Test correct scoping in function definitions.} {
+    list [theTest "function(x) x + 3.0"] [theTest "function(x:int) x + 3.0"]
+} {{(general) -> general} {(int) -> double}}
+
+test ParseTreeTypeInference-17.2 {Test nested function definitions.} {
+    list [theTest "function (y) function(x) x + y + 3"] [theTest "function (y:int) function(x) x + y + 3"] [theTest "function (y) function(x:int) x + y + 3"] [theTest "function (y:double) function(x:long) x + y + 3"] 
+} {{(general) -> (general) -> general} {(int) -> (general) -> general} {(general) -> (int) -> general} {(double) -> (long) -> scalar}}
+
 

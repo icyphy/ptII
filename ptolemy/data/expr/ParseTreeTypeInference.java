@@ -196,13 +196,39 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
     }
     public void visitFunctionDefinitionNode(ASTPtFunctionDefinitionNode node)
             throws IllegalActionException {
-        //FIXME
+        final Map map = new HashMap();
         Type[] argTypes = new Type[node.getArgumentNameList().size()];
         for(int i = 0; i < argTypes.length; i++) {
-            argTypes[i] = BaseType.UNKNOWN;
+            _visitChild(node, i);
+            Type type = ((ASTPtRootNode)node.jjtGetChild(i)).getType();
+            argTypes[i] = type;
+            map.put(node.getArgumentNameList().get(i), type);
         }
-        FunctionType type = new FunctionType(argTypes, BaseType.UNKNOWN);
+        // Push the current scope.
+        final ParserScope currentScope = _scope;
+        ParserScope functionScope = new ParserScope() {
+                public ptolemy.data.Token get(String name) {
+                    return null;
+                }
+                public Type getType(String name) 
+                        throws IllegalActionException {
+                    Type type = (Type)map.get(name);
+                    if(type == null) {
+                        return currentScope.getType(name);
+                    } else {
+                        return type;
+                    }
+                }
+                public NamedList variableList() {
+                    return null;
+                }
+            };
+        _scope = functionScope;
+        node.getExpressionTree().visit(this);
+        Type returnType = node.getExpressionTree().getType();
+        FunctionType type = new FunctionType(argTypes, returnType);
         _setType(node, type);
+        _scope = currentScope;
         return;
     }
     public void visitFunctionalIfNode(ASTPtFunctionalIfNode node)
