@@ -158,7 +158,6 @@ public class Query extends JPanel {
         _entryScrollPane.setBorder(BorderFactory.createEmptyBorder());
         _entryScrollPane.getViewport().setBackground(null);
         _entryScrollPane.setBackground(null);
-        _entryScrollPane.setAlignmentY(Component.CENTER_ALIGNMENT);
         add(_entryScrollPane);
 
         // Setting the background to null allegedly means it inherits the
@@ -1127,7 +1126,8 @@ public class Query extends JPanel {
         preferredSize.width += 25;
 
         // Applets seem to need this, see CT/SigmaDelta
-        _widgetsHeight += widget.getPreferredSize().height + 10;
+        // If you adjust this, try the GR/Pendulum demo
+        _widgetsHeight += widget.getPreferredSize().height + 20;
         preferredSize.height = _widgetsHeight;
 
         Toolkit tk = Toolkit.getDefaultToolkit();
