@@ -68,7 +68,7 @@ assumed to be the one to read.
 it never discards input tokens.  Tokens on channels that are not
 selected are not consumed.
 
-@author Steve Neuendorffer
+@author Steve Neuendorffer, Adam Cataldo
 @version $Id$
 @since Ptolemy II 2.0
 */
@@ -88,6 +88,8 @@ public class BooleanSelect extends TypedAtomicActor {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
+        StringAttribute controlCardinal;
+
         trueInput = new TypedIOPort(this, "trueInput", true, false);
         falseInput = new TypedIOPort(this, "falseInput", true, false);
         control = new TypedIOPort(this, "control", true, false);
@@ -95,6 +97,31 @@ public class BooleanSelect extends TypedAtomicActor {
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeAtLeast(trueInput);
         output.setTypeAtLeast(falseInput);
+
+        // Put the control input on the bottom of the actor.
+        controlCardinal = new StringAttribute(control, "_cardinal");
+        controlCardinal.setExpression("SOUTH");
+
+        /** Make the icon show T, F, and C for trueInput, falseInput
+         *  and control.
+         */
+        _attachText("_iconDescription", "<svg>\n" +
+                "<rect x=\"-20\" y=\"-20\" "
+                + "width=\"40\" height=\"40\" "
+                + "style=\"fill:white\"/>\n"
+                + "<text x=\"-17\" y=\"-3\" "
+                + "style=\"font-size:14\">\n"
+                + "T \n"
+                + "</text>\n"
+                + "<text x=\"-17\" y=\"15\" "
+                + "style=\"font-size:14\">\n"
+                + "F \n"
+                + "</text>\n"
+                + "<text x=\"-5\" y=\"16\" "
+                + "style=\"font-size:14\">\n"
+                + "C \n"
+                + "</text>\n"
+                + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
