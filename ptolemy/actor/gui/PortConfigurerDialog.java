@@ -46,6 +46,7 @@ import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
+import java.util.TreeMap;
 import java.util.Vector;
 
 import javax.swing.AbstractCellEditor;
@@ -72,9 +73,13 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.TypeAttribute;
 import ptolemy.actor.TypedActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.DoubleMatrixToken;
+import ptolemy.data.RecordToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.ASTPtRootNode;
+import ptolemy.data.expr.Constants;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.ParseTreeEvaluator;
 import ptolemy.data.expr.PtParser;
@@ -727,14 +732,20 @@ public class PortConfigurerDialog extends PtolemyDialog
         _buttons.add(_removeButton);
     }
 
+    /** Return a URL that points to the help page.
+     *  @return A URL that points to the help page
+     */   
     protected URL _getHelpURL() {
         URL helpURL = getClass().getClassLoader().getResource("ptolemy/actor/gui/doc/portConfigurerDialog.htm");
         return helpURL;
     }
 
-    // The button semantics are
-    // Add - Add a new port.
+    /** Process a button press.
+     *  @param button The button.
+     */
     protected void _processButtonPress(String button) {
+        // The button semantics are
+        // Add - Add a new port.
         if (button.equals("Apply")) {
             _apply();
         } else if (button.equals("Commit")) {
@@ -755,13 +766,15 @@ public class PortConfigurerDialog extends PtolemyDialog
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
-    // The table model for the table.
+    /** The table model for the table. */
     class PortTableModel extends AbstractTableModel {
-        // Populates the _ports Vector. Each element of _ports is a
-        // Hashtable that represents a Port on the Entity that is
-        // having its ports configured.  If the Port exists on the
-        // Entity, a reference to it is stored in the Hashtable with
-        // key = ColumnNames.COL_ACTUAL_PORT.
+        /** Populates the _ports Vector. Each element of _ports is a
+         * Hashtable that represents a Port on the Entity that is
+         * having its ports configured.  If the Port exists on the
+         * Entity, a reference to it is stored in the Hashtable with
+         * key = ColumnNames.COL_ACTUAL_PORT.
+         * @param portList The list of ports.
+         */
         public PortTableModel(List portList) {
             Iterator ports = portList.iterator();
             _ports = new Vector();
@@ -1097,8 +1110,8 @@ public class PortConfigurerDialog extends PtolemyDialog
         }
     }
 
+    /** Validate a cell. */
     abstract class CellValidator {
-        String _message = null;
 
         public abstract boolean isValid(String value);
 
@@ -1109,25 +1122,21 @@ public class PortConfigurerDialog extends PtolemyDialog
         public String getMessage() {
             return _message;
         }
+
+        String _message = null;
     }
 
     /** Editor for a table cell that takes a string.
      */
     class StringCellEditor extends AbstractCellEditor implements TableCellEditor,
                                                                  ActionListener {
-        String currentLabel;
-        JButton button;
-        JDialog dialog = null;
-        JTable _jTable;
-        JOptionPane pane = null;
-        CellValidator _validator;
-        JTextField valueText = null;
-
+        /** Construct a String cell editor. */
         public StringCellEditor() {
             button = new JButton();
             button.setActionCommand("edit");
             button.addActionListener(this);
         }
+
 
         public Object getCellEditorValue() {
             return currentLabel;
@@ -1157,12 +1166,13 @@ public class PortConfigurerDialog extends PtolemyDialog
                 options[0].addActionListener(this);
                 options[1] = new JButton("Cancel");
                 options[1].addActionListener(this);
-                valueText = new JTextField(currentLabel);
-                valueText.setOpaque(true);
-                valueText.setBackground(Color.white);
-                valueText.setEnabled(true);
-
-                Object[] msg = { null, valueText };
+//              valueText = new JTextField(currentLabel);
+//              valueText.setOpaque(true);
+//              valueText.setBackground(Color.white);
+//              valueText.setEnabled(true);
+//              Object[] msg = { null, valueText };
+               
+                Object[] msg = { null, _setMessage()};
                 pane.setMessage(msg);
                 pane.setMessageType(JOptionPane.QUESTION_MESSAGE);
 
@@ -1180,7 +1190,7 @@ public class PortConfigurerDialog extends PtolemyDialog
                 dialog.setLocation(p);
                 dialog.show();
             } else if (command.equals("OK")) {
-                String nv = valueText.getText();
+                String nv = _getMessage();
                 boolean valid = true;
 
                 if (_validator != null) {
@@ -1204,15 +1214,76 @@ public class PortConfigurerDialog extends PtolemyDialog
             }
         }
 
+        /** Return the message from the widget.
+         *  In this base class, the message is the text value of
+         *  the JTextField.
+         *  @return the message
+         */ 
+        protected String _getMessage() {
+            return valueText.getText();
+        }
+
+        /** Get the current label.
+         *  @return The label.
+         */
         protected String _getText() {
             return currentLabel;
         }
+
+        /** Set the message.
+         *  @return an Object suitable as an element in the
+         *  Object array that is passed JOptionPane.setMessage(Object[])
+         */ 
+        protected Object _setMessage() {
+            valueText = new JTextField(currentLabel);
+            valueText.setOpaque(true);
+            valueText.setBackground(Color.white);
+            valueText.setEnabled(true);
+            return valueText;
+        }
+
+        String currentLabel;
+        JButton button;
+        JDialog dialog = null;
+        JTable _jTable;
+        JOptionPane pane = null;
+        CellValidator _validator;
+        JTextField valueText = null;
+
+    }
+
+   
+    class TypeCellEditor extends StringCellEditor implements TableCellEditor,
+                                                                 ActionListener {
+        public TypeCellEditor() {
+            super();
+            typeCombo = _createPortTypeComboBox();
+        }
+
+        /** Return the message from the widget.
+         *  In this base class, the message is the text value of
+         *  the JTextField.
+         *  @return the message
+         */ 
+        protected String _getMessage() {
+            return (String)(typeCombo.getSelectedItem());
+        }
+
+        /** Set the message.
+         *  @return an Object suitable as an element in the
+         *  Object array that is passed JOptionPane.setMessage(Object[])
+         */ 
+        protected Object _setMessage() {
+            return typeCombo;
+        }
+
+        JComboBox typeCombo;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    // Create the MoML expression that represents the update.
+    /** Create the MoML expression that represents the update. */
     private String _createMoMLUpdate(Hashtable updates, Hashtable portInfo,
             String currentPortName, String newPortName) {
         StringBuffer momlUpdate = new StringBuffer("<port name=\""
@@ -1375,6 +1446,27 @@ public class PortConfigurerDialog extends PtolemyDialog
 
         momlUpdate.append("</port>");
         return momlUpdate.toString();
+    }
+
+    /** Generate a combo box based on the type names. */
+    private JComboBox _createPortTypeComboBox () {
+        JComboBox jComboBox = new JComboBox();
+        jComboBox.setEditable(true); 
+        TreeMap typeMap = Constants.types();
+        try {
+            typeMap.put("{int}", new ArrayToken("{0}"));
+            typeMap.put("[double]", new DoubleMatrixToken("[0.0]"));
+            typeMap.put("{x=double, y=double}", new RecordToken("{x=0.0, y=0.0}"));
+        } catch (IllegalActionException ex) {
+            throw new InternalErrorException(ex);
+        }
+
+        Iterator types = typeMap.keySet().iterator();
+        while (types.hasNext()) {
+            String type = (String) (types.next());
+            jComboBox.addItem(type);
+        }
+        return jComboBox;
     }
 
     private void _enableApplyButton(boolean e) {
@@ -1624,7 +1716,7 @@ public class PortConfigurerDialog extends PtolemyDialog
             TableColumn _portTypeColumn = ((TableColumn) (_portTable.getColumnModel()
                                                    .getColumn(col)));
 
-            final StringCellEditor portTypeEditor = new StringCellEditor();
+           final TypeCellEditor portTypeEditor = new TypeCellEditor();
             _portTypeColumn.setCellEditor(portTypeEditor);
             portTypeEditor.setValidator(new CellValidator() {
                     /////////////////////////////////////////
@@ -1687,9 +1779,6 @@ public class PortConfigurerDialog extends PtolemyDialog
 
     /** The combination box used to select the location of a port. */
     private JComboBox _portLocationComboBox;
-
-    /** The combination box used to select the type of a port. */
-    private JComboBox _typeComboBox;
 
     JTable _portTable;
     PortTableModel _portTableModel = null;
