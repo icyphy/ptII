@@ -50,8 +50,14 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 # Keep this list alphabetized.
 JSRCS = \
 	BufferToImageConversion.java\
+	ColorFinder.java\
 	GreenFinder.java\
 	ImageDisplay.java\
+	JAIIDCT.java\
+	JAIDCT.java\
+	JAIImageReader.java\
+	JAIInterpolation.java\
+	JAIToImage.java\
 	VideoCamera.java
 
 OTHER_FILES_TO_BE_JARED = \

@@ -16,6 +16,7 @@ import ptolemy.data.Token;
 import ptolemy.data.StringToken;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.DoubleToken;
+import ptolemy.data.IntToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
 
@@ -29,8 +30,8 @@ import javax.swing.ImageIcon;
 import java.util.Iterator;
 import java.util.Vector;
 
-public class GreenFinder extends TypedAtomicActor {
-    public GreenFinder(CompositeEntity container, String name)
+public class ColorFinder extends TypedAtomicActor {
+    public ColorFinder(CompositeEntity container, String name)
 	    throws IllegalActionException, NameDuplicationException {
 	super(container, name);
 	input = new TypedIOPort(this, "input", true, false);
@@ -39,10 +40,25 @@ public class GreenFinder extends TypedAtomicActor {
 	input.setTypeEquals(BaseType.OBJECT);
 	outputX.setTypeEquals(BaseType.DOUBLE);
 	outputY.setTypeEquals(BaseType.DOUBLE);
+	
+	yLowValue = new Parameter(this, "yLowValue", new IntToken("110"));
+	yHighValue = new Parameter(this, "yHighValue", new IntToken("210"));
+	uLowValue = new Parameter(this, "uLowValue", new IntToken("85"));
+	uHighValue = new Parameter(this, "uHighValue", new IntToken("110"));
+	vLowValue = new Parameter(this, "vLowValue", new IntToken("120"));
+	vHighValue = new Parameter(this, "vHighValue", new IntToken("130"));	
 
 
     }
 
+    public Parameter yLowValue;
+    public Parameter yHighValue;
+    public Parameter uLowValue;
+    public Parameter uHighValue;
+    public Parameter vLowValue;
+    public Parameter vHighValue;
+
+    
     /* convert a byte into an unsigned int */
     public int bts(byte b) {
         return (int)b & 0xFF;
@@ -50,6 +66,13 @@ public class GreenFinder extends TypedAtomicActor {
     
     public void initialize() throws IllegalActionException {
 	super.initialize();
+	yLow = ((IntToken)yLowValue.getToken()).intValue();
+	yHigh = ((IntToken)yHighValue.getToken()).intValue();
+	uLow = ((IntToken)uLowValue.getToken()).intValue();
+	uHigh = ((IntToken)uHighValue.getToken()).intValue();
+	vLow = ((IntToken)vLowValue.getToken()).intValue();
+	vHigh = ((IntToken)vHighValue.getToken()).intValue();
+
 	for (int i = 0; i < histSize; i += 1) {
 	    if (i > yLow && i < yHigh) {
 		yClass[i] = 1; }
@@ -160,12 +183,12 @@ public class GreenFinder extends TypedAtomicActor {
     //FIXME again, following numbers should be parameters
     //the following is for green
 
-    int yLow = 110; 
-    int yHigh = 210; 
-    int uLow = 85; 
-    int uHigh = 110; 
-    int vLow = 120; 
-    int vHigh = 130;
+    int yLow; 
+    int yHigh; 
+    int uLow; 
+    int uHigh; 
+    int vLow; 
+    int vHigh;
     
     public TypedIOPort input;;
     public TypedIOPort outputX;

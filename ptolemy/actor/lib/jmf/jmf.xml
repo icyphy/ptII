@@ -9,13 +9,31 @@
 	
 	<entity name="BufferToImageConversion" class="ptolemy.actor.lib.jmf.BufferToImageConversion">
 	</entity>
+
+	<entity name="ColorFinder" class="ptolemy.actor.lib.jmf.ColorFinder">
+	</entity>
 	
 	<entity name="GreenFinder" class="ptolemy.actor.lib.jmf.GreenFinder">
 	</entity>
 	
 	<entity name="ImageDisplay" class="ptolemy.actor.lib.jmf.ImageDisplay">
 	</entity>
+
+	<entity name="JAIIDCT" class="ptolemy.actor.lib.jmf.JAIImageReader">
+	</entity>
 	
+	<entity name="JAIDCT" class="ptolemy.actor.lib.jmf.JAIDCT">
+	</entity>
+	
+	<entity name="JAIImageReader" class="ptolemy.actor.lib.jmf.JAIImageReader">
+	</entity>
+	
+	<entity name="JAIInterpolation" class="ptolemy.actor.lib.jmf.JAIInterpolation">
+	</entity>
+	
+	<entity name="JAIToImage" class="ptolemy.actor.lib.jmf.JAIToImage">
+	</entity>
+
 	<entity name="VideoCamera" class="ptolemy.actor.lib.jmf.VideoCamera">
 	</entity>
 
