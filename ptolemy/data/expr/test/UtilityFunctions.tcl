@@ -59,10 +59,14 @@ test UtilityFunctions-1.0 {Check readFile method} {
     #$tree displayParseTree " "
     set res [$tree evaluateParseTree]
 
-    set value [$res toString]
+    # This hack is necessary because of problems with crnl under windows
+    regsub -all [java::call System getProperty "line.separator"] \
+                [$res toString] "\n" output
 
-    list $value
-} {Greetings...}
+    list $output
+} {{Greetings...
+}}
+
 ######################################################################
 ####
 # result is 50 as the string for the re-invoked parser is 3+43+4 !
