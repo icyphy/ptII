@@ -35,6 +35,8 @@ import ptolemy.copernicus.kernel.MakefileWriter;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+import soot.Pack;
+import soot.PackManager;
 import soot.Scene;
 import soot.Transform;
 
@@ -70,13 +72,23 @@ public class Main extends KernelMain {
     public void addTransforms() {
         super.addTransforms();
 
+        Pack pack = PackManager.v().getPack("wjtp");
+
         // Generate the makefile files in outDir
-        Scene.v().getPack("wjtp").add(new Transform("wjtp.makefileWriter",
-                MakefileWriter.v(_toplevel)));
+        //Scene.v().getPack("wjtp").add(new Transform("wjtp.makefileWriter",
+        //        MakefileWriter.v(_toplevel)));
+
+        addTransform(pack, "wjtp.makefileWriter",
+                MakefileWriter.v(_toplevel));
+
 
         // Generate the applet files in outDir
-        Scene.v().getPack("wjtp").add(new Transform("wjtp.appletWriter",
-                AppletWriter.v(_toplevel)));
+        //Scene.v().getPack("wjtp").add(new Transform("wjtp.appletWriter",
+        //        AppletWriter.v(_toplevel)));
+
+        addTransform(pack, "wjtp.appletWriter",
+                AppletWriter.v(_toplevel));
+
     }
 
     /** Read in a MoML model, generate java files
