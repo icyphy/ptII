@@ -86,7 +86,7 @@ public class PNRamp extends PNActor {
             if (name.equals("seed")) {
                 _seed = (int) value;
             } else {
-                throw new IllegalActionException("foo " + name);
+                throw new IllegalActionException("Unknown parameter: " + name);
             }
     }
     

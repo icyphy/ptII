@@ -117,7 +117,7 @@ public class PNSieve extends PNActor {
         if (name.equals("prime")) {
             _prime = (int) value;
         } else {
-            throw new IllegalActionException("foo " + name);
+            throw new IllegalActionException("Unknown parameter: " + name);
         }
     }
 
