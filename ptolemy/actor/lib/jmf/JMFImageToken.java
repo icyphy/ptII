@@ -47,6 +47,7 @@ import ptolemy.graph.CPO;
 
    @author James Yeh
    @version $Id$
+   @since Ptolemy II 3.0
  */
 public class JMFImageToken extends ImageToken {
 

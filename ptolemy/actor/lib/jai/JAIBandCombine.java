@@ -57,6 +57,7 @@ import javax.media.jai.RenderedOp;
    @see BandSelect
    @author James Yeh
    @version $Id$
+   @since Ptolemy II 3.0
  */
 
 public class JAIBandCombine extends Transformer {

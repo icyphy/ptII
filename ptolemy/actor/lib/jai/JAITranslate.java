@@ -60,6 +60,7 @@ import javax.media.jai.RenderedOp;
    @see ImageDisplay
    @author James Yeh
    @version $Id$
+   @since Ptolemy II 3.0
  */
 
 public class JAITranslate extends Transformer {

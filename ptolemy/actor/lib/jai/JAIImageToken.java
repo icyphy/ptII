@@ -51,6 +51,7 @@ import ptolemy.kernel.util.IllegalActionException;
  processing tools by simply calling asAWTImage().
  @author James Yeh
  @version $Id$
+ @since Ptolemy II 3.0
  */
 public class JAIImageToken extends ImageToken {
 

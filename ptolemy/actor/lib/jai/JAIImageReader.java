@@ -56,6 +56,7 @@ GIF, JPEG, PNG, PBM, PGM, PPM, and TIFF file formats.
 
 @author James Yeh, Steve Neuendorffer
 @version $Id$
+@since Ptolemy II 3.0
 */
 
 public class JAIImageReader extends Source {

@@ -72,6 +72,7 @@ import ptolemy.gui.MessageHandler;
    @see FileAttribute
    @author James Yeh
    @version $Id$
+   @since Ptolemy II 3.0
  */
 
 public class JAIPNMWriter extends Sink {

@@ -48,6 +48,7 @@ import ptolemy.kernel.util.*;
 
    @author Paul Yang, David Lee, James Yeh
    @version $Id$
+   @since Ptolemy II 3.0
  */
 
 public class ColorFinder extends TypedAtomicActor {

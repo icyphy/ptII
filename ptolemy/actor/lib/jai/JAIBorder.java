@@ -69,6 +69,7 @@ import javax.media.jai.BorderExtenderConstant;
 
    @author James Yeh
    @version $Id$
+   @since Ptolemy II 3.0
  */
 
 public class JAIBorder extends Transformer {
