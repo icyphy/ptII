@@ -61,6 +61,7 @@ public class FunctionDependencyOfModalModel
 
     /** Construct a FunctionDependency in the given actor.
      *  @param compositeActor The associated actor.
+     *  @param name The name of the FunctionDependency.
      *  @exception NameDuplicationException If the container already contains 
      *  an entity with the specified name.
      *  @exception IllegalActionException If the name has a period in it, or 
