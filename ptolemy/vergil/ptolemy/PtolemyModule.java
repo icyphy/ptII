@@ -169,6 +169,9 @@ public class PtolemyModule implements Module {
 	GUIUtilities.addToolBarButton(tb, action,
 				      "New External Port", icon);
 
+	action = new getDocumentationAction();
+	_application.addAction(action);
+
 	action = new editIconAction();
 	_application.addAction(action);
 
@@ -422,6 +425,26 @@ public class PtolemyModule implements Module {
 	    }	    
 	}
     }
+    
+    public class getDocumentationAction extends FigureAction {
+	public getDocumentationAction() {
+	    super("Get Documentation");
+	}
+	public void actionPerformed(ActionEvent e) {	    
+	    // Create a dialog for configuring the object.
+	    // FIXME this should probably be one frame for each class.
+	    super.actionPerformed(e);		
+	    NamedObj target = getTarget();
+	    DocumentationViewer viewer = 
+		new DocumentationViewer(target);	
+	    JFrame frame = new JFrame();
+	    frame.getContentPane().add(viewer);
+	    frame.setTitle(target.getClass().getName());
+	    frame.show();
+	    frame.toFront();
+	    frame.pack();
+	}
+    };
     
     private class layoutAction extends AbstractAction {
 	public layoutAction() {
