@@ -2,11 +2,11 @@
 <html>
 <head>
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
-<title>Ptolemy II 3.0.1 Release Notes</title>
+<title>Ptolemy II 3.0.2 Release Notes</title>
 <link href="default.css" rel="stylesheet" type="text/css">
 </head>
 <body bgcolor="#faf0e6">
-<h1>Ptolemy II 3.0.1 Release Notes</h1>
+<h1>Ptolemy II 3.0.2 Release Notes</h1>
 
 Ptolemy II is a set of Java packages supporting heterogeneous,
 concurrent modeling and design.  Its <code>kernel</code> package
@@ -85,17 +85,17 @@ to the newsgroups etc.  See also main.htm
 
 <h2>Platforms</h2>
 
-The core of Ptolemy II 3.0.1 is 100% Java, so it should work on any
+The core of Ptolemy II 3.0.2 is 100% Java, so it should work on any
 platform that has JDK1.4 or later
 
- <p>We developed Ptolemy II 3.0.1 under Solaris 8 and Windows XP sp1 
+ <p>We developed Ptolemy II 3.0.2 under Solaris 8 and Windows XP sp1 
 and with JDK1.4.1_02. 
 
-Ptolemy II 3.0.1 will not compile under Java 1.3 because we use the
+Ptolemy II 3.0.2 will not compile under Java 1.3 because we use the
 java.lang.URI class, which is present only in Java 1.4 and later
 
 <!--whatsnew-->
-<h2>Major Features that are new in Ptolemy 3.0.1 </h2>
+<h2>Major Features that are new in Ptolemy 3.0.2 </h2>
 <menu>
 
 <li> Continuous Time (CT) domain rework for improved mixed signal and
@@ -182,7 +182,7 @@ This uses
 a Java implementation of Python.
 </menu>
 
-<h2>Other Features that are new in Ptolemy II 3.0.1</h2>
+<h2>Other Features that are new in Ptolemy II 3.0.2</h2>
 
 <ul>
 
@@ -291,7 +291,7 @@ down slightly.
 <li> <a href="../ptolemy/domains/de/doc/body.htm" target="body">DE</a>:
 	 Discrete Event
  <menu>
- <li> <a href="../ptolemy/actor/hoc/demo/HocDE/HocDE.xml">HOC DE</a>  (New in Ptolemy II 3.0.1)
+ <li> <a href="../ptolemy/actor/hoc/demo/HocDE/HocDE.xml">HOC DE</a>  (New in Ptolemy II 3.0.2)
  </menu>
 
 
@@ -321,6 +321,16 @@ down slightly.
 
 <dl>
 
+<dt> <a href="codeDoc/ptolemy/actor/lib/ArrayMaximum.html"><code>ArrayMaximum</code></a>
+<dd> (Mark Oliver)
+Extract maximum element from an array.
+
+<dt> <a href="codeDoc/ptolemy/actor/lib/ArrayMinimum.html"><code>ArrayMinimum</code></a>
+<dd> (Mark Oliver, Edward A. Lee)
+Extract minimum element from an array.
+
+
+
 <dt> <a href="codeDoc/ptolemy/actor/lib/BusAssembler.html"><code>BusAssembler</code></a>
 <dd> (Zoltan Kemenczy, Research in Motion Limited)
 Assemble input port channels into output bus.
@@ -328,7 +338,6 @@ Assemble input port channels into output bus.
 <dt> <a href="codeDoc/ptolemy/actor/lib/BusDisassembler.html"><code>BusDisassembler</code></a>
 <dd> (Zoltan Kemenczy, Research in Motion Limited)
 split input bus channels onto output port channels.
-
 
 <dt> <a href="codeDoc/ptolemy/actor/lib/Rician.html"><code>Rician</code></a>
 <dd> (Rachel Zhou)
@@ -408,7 +417,7 @@ Actors that use the Java Media Framework
 <h2>Backward compatibility issues</h2>
 
 Most models developed under Ptolemy II 1.0.1 or
-2.0.1 or HyVisual 2.2-beta should run under Ptolemy II 3.0.1.
+2.0.1 or HyVisual 2.2-beta should run under Ptolemy II 3.0.2.
 The MoMLParser includes a list of backward
 compatibility filters that make certain changes on models
 when read, handling such issues as actors being moved or renamed
@@ -572,7 +581,7 @@ and the new classname:
 <!--vergilDocs-->
 <h2><a name="limitations">Limitations</a>
 </h2>
-Version 3.0.1 has the following limitations:
+Version 3.0.2 has the following limitations:
 
 <h3>Release Limitations</h3>
 <ul>
@@ -705,7 +714,7 @@ Attempted to find as a moml class, but got:
 	not on the local file system, so we get a SecurityException.
 	 <br>The workaround is to run the applet by downloading it
 	from the Ptolemy Website:
-<a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII3.0/ptII3.0.1/ptolemy/moml/demo/Networked/Networked.htm"><CODE>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII3.0/ptII3.0.1/ptolemy/moml/demo/Networked/Networked.htm</CODE></a>
+<a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII3.0/ptII3.0.2/ptolemy/moml/demo/Networked/Networked.htm"><CODE>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII3.0/ptII3.0.2/ptolemy/moml/demo/Networked/Networked.htm</CODE></a>
 	</ul>
 
 <li> Windows Installer Issues:
@@ -724,19 +733,24 @@ Attempted to find as a moml class, but got:
 	<br><b>Workaround #2</b>:
         We believe that the problem has to do with loading the Direct
 	Draw library.
-<a href="http://developer.java.sun.com/developer/bugParade/bugs/4838939.html" target="_top"><code>http://developer.java.sun.com/developer/bugParade/bugs/4838939.html</code>
+<a href="http://developer.java.sun.com/developer/bugParade/bugs/4838939.html#in_browser" target="_top"><code>http://developer.java.sun.com/developer/bugParade/bugs/4838939.html</code></a>
         suggests invoking java with <code>-Dsun.java2d.noddraw=true</code>.
 	<br>The way to do this is to edit <code>vergil-full.<b>lax</b></code>
 	and add the line
 	<pre>
 lax.nl.java.option.additional=-Dsun.java2d.noddraw=true	
 </pre>
+        which we went ahead and did.  Note that because of problems
+	with Radeon displays, setting noddraw to true is not such
+	a bad idea.  See above for details.
         <br>The way to check if this argument is being used is to
 	hold down the Control key and double click on the
 	<code>vergil-full.<b>exe</b></code> icon.
 	<br>You should see something like:
 	<pre>	
-c:\j2sdk1.4.2\bin\java.exe -Dsun.java2d.noddraw=true com.zerog.lax.LAX C:\\Ptolemy\\Ptolemy_II_3.0.1ptiny\\vergil-ptiny.lax C:\\DOCUME~1\\cxh\\LOCALS~1\\Temp\\env.prop
+c:\j2sdk1.4.2\bin\java.exe -Dsun.java2d.noddraw=true com.zerog.lax.LAX C:\\Ptol
+emy\\Ptolemy_II_3.0.2ptiny\\vergil-ptiny.lax C:\\DOCUME~1\\cxh\\LOCALS~1\\Temp
+\\env.prop
 executing java...
         </pre>
 	Note that to debug the binary, you would use the following line:

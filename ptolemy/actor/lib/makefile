@@ -94,6 +94,8 @@ JSRCS = \
 	ArrayElement.java \
 	ArrayExtract.java \
 	ArrayLength.java \
+	ArrayMaximum.java \
+	ArrayMinimum.java \
 	Average.java \
 	Bernoulli.java \
 	BooleanMultiplexor.java \

@@ -51,7 +51,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// ArrayMinimum
 /**
 Extract the minimum element from an array.  This actor reads an array
-from the <i>input</i> port and sends the smallest of its elements to the
+from the <i>input</i> port and sends the largest of its elements to the
 <i>output</i> port.  The index of the smallest element (closest to minus
 infinity) is sent to the <i>index</i> output port. If there is more than
 one entry in the array with the minimum value, then the index of the
@@ -102,17 +102,17 @@ public class ArrayMinimum extends Transformer {
         int indexValue = 0;
         if (input.hasToken(0)) {
             ArrayToken token = (ArrayToken)input.get(0);
-            ScalarToken currentMin = (ScalarToken)token.getElement(indexValue);
+            ScalarToken currentMax = (ScalarToken)token.getElement(indexValue);
             ScalarToken temp = null;
             int i;
             for (i = indexValue+1; i < token.length(); i++) {
                 temp = (ScalarToken)token.getElement(i);
-                if (currentMin.isGreaterThan(temp).booleanValue() == true) {
+                if (currentMax.isLessThan(temp).booleanValue() == true) {
                     indexValue = i;
-                    currentMin = temp;
+                    currentMax = temp;
                 }
             }
-            output.send(0, currentMin);
+            output.send(0, currentMax);
             index.broadcast(new IntToken(indexValue));
         }
     }
