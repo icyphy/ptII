@@ -58,7 +58,7 @@ communication, the buffer uses a CDO, in the CSP domain.
 @version $Id$
 */
 public class MM1 {
-    /** Create an instance for excuoing the M/M/1 demo.
+    /** Create an instance for executing the M/M/1 demo.
      * */
     public MM1() {}
 
