@@ -71,6 +71,16 @@ public class Constants {
         _table.put(name, value);
     }
 
+    /** Return a String representation of the constants.
+     *  @return name The names of the constants and their values.
+     *  @since Ptolemy II 2.1
+     */
+    public static String constants() {
+        // This should be called toString(), but we cannot have a static
+        // toString() because Object.toString() is not static.
+        return _table.toString();
+    }
+
     /** Look up the value of the constant with the given name.
      *  @param name The name of the constant.
      *  @return The value of the constant, wrapped in a data token, or null

@@ -70,6 +70,16 @@ public class UtilityFunctions {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Return a StringToken that contains the names of all the
+     *  constants and their values.
+     *  @return A token containing the names of all the constants
+     *  and their values.
+     *  @since Ptolemy II 2.1
+     */
+    public static StringToken constants() {
+        return new StringToken(Constants.constants());
+    }
+
     /** Return a Gaussian random number.
      *  @param mean The mean.
      *  @param standardDeviation The standard deviation.
@@ -107,6 +117,39 @@ public class UtilityFunctions {
 		    + "Cannot create the DoubleMatrixToken that contains "
 		    + "Gaussian random numbers.");
 	}
+    }
+
+    /** Find a file. Uses the supplied name and if it does not exist as is,
+     * searches the user directory followed by the current system
+     * java.class.path list and returns the first match or name unchanged.
+     * @param name Relative pathname of file/directory to find.
+     * @return Canonical absolute path if file/directory was found, otherwise
+     * returns unchanged name. */
+    public static String findFile(String name) {
+        File file = new File(name);
+        if (!file.exists()) {
+            String curDir = System.getProperty("user.dir");
+            file = new File(curDir, name);
+        }
+        if (!file.exists()) {
+            String cp = System.getProperty("java.class.path");
+            StringTokenizer tokens = new StringTokenizer(cp,
+                    System.getProperty("path.separator"));
+            while (tokens.hasMoreTokens()) {
+                String token = tokens.nextToken();
+                file = new File(token, name);
+                if (file.exists()) break;
+            }
+        }
+        if (file.exists()) {
+            try {
+                return file.getCanonicalPath();
+            } catch (java.io.IOException ex) {
+                return file.getAbsolutePath();
+            }
+        }
+        else
+            return name;
     }
 
     /** Return the approximate number of bytes available for future
@@ -446,39 +489,6 @@ public class UtilityFunctions {
      */
     public static LongToken totalMemory() {
 	return new LongToken(Runtime.getRuntime().totalMemory());
-    }
-
-    /** Find a file. Uses the supplied name and if it does not exist as is,
-     * searches the user directory followed by the current system
-     * java.class.path list and returns the first match or name unchanged.
-     * @param name Relative pathname of file/directory to find.
-     * @return Canonical absolute path if file/directory was found, otherwise
-     * returns unchanged name. */
-    public static String findFile(String name) {
-        File file = new File(name);
-        if (!file.exists()) {
-            String curDir = System.getProperty("user.dir");
-            file = new File(curDir, name);
-        }
-        if (!file.exists()) {
-            String cp = System.getProperty("java.class.path");
-            StringTokenizer tokens = new StringTokenizer(cp,
-                    System.getProperty("path.separator"));
-            while (tokens.hasMoreTokens()) {
-                String token = tokens.nextToken();
-                file = new File(token, name);
-                if (file.exists()) break;
-            }
-        }
-        if (file.exists()) {
-            try {
-                return file.getCanonicalPath();
-            } catch (java.io.IOException ex) {
-                return file.getAbsolutePath();
-            }
-        }
-        else
-            return name;
     }
 
     ///////////////////////////////////////////////////////////////////
