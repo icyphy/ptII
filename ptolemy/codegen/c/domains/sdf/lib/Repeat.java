@@ -65,7 +65,7 @@ public class Repeat extends CCodeGeneratorHelper {
         // consume rate to be 1.
         for (int i = 0; i < 
                ((IntToken)actor.numberOfTimes.getToken()).intValue(); i++) {
-            code.append("$ref(output%" + i + ") = ");
+            code.append("$ref(output," + i + ") = ");
         }
         code.append("$ref(input);\n");
         _codeBlock = code.toString();  
