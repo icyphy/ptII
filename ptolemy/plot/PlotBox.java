@@ -1480,8 +1480,8 @@ public class PlotBox extends JPanel implements Printable {
      */
     public synchronized void zoom(double lowx, double lowy,
             double highx, double highy) {
-        _setXRange(lowx, highx);
-        _setYRange(lowy, highy);
+        setXRange(lowx, highx);
+        setYRange(lowy, highy);
         repaint();
     }
 
@@ -3090,13 +3090,7 @@ public class PlotBox extends JPanel implements Printable {
             // NOTE: To limit zooming out to the fill area, uncomment this...
             // if (newy1 > _yTop) newy1 = _yTop;
             // if (newy2 < _yBottom) newy2 = _yBottom;
-
-            // If we call zoom() here, then zoom out does not work
-            // so instead we do something similar to what we do in
-            // when zooming in.  Should zoom() be modified? -cxh 10/16/02
-            //zoom(newx2, newy2, newx1, newy1);
-            setXRange(newx2, newx1);
-            setYRange(newy2, newy1);
+            zoom(newx2, newy2, newx1, newy1);
             repaint();
 
             handled = true;
