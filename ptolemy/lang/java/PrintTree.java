@@ -63,20 +63,21 @@ public class PrintTree {
         }
 
         for (int f = fileStart; f < files; f++) {
-            JavaParser p = new JavaParser();
+            JavaParser javaParser = new JavaParser();
 
             String filename = args[f];
             try {
-                p.init(args[f]);
+                javaParser.init(args[f]);
 
             } catch (Exception e) {
                 System.err.println("error opening input file " + filename);
                 System.err.println(e.toString());
             }
 
-            p.yyparse();
+            javaParser.yydebug = debug;
+            javaParser.yyparse();
 
-            CompileUnitNode ast = p.getAST();
+            CompileUnitNode ast = javaParser.getAST();
 
             System.out.println("File : " + filename);
             System.out.println(ast.toString());
