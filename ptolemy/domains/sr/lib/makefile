@@ -51,6 +51,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = \
 	Delay.java \
 	Latch.java \
+	NonStrictActor.java \
 	SequenceTest.java \
 	SingleTokenDistributor.java \
 	TriggeredTime.java
