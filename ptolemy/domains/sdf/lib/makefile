@@ -82,7 +82,10 @@ JSRCS = \
 	VariableRecursiveLattice.java
 
 OTHER_FILES_TO_BE_JARED = \
+	MaximumEntropySpectrum.xml \
+	SmoothedSpectrum.xml \
 	Spectrum.xml \
+	SpectrumPlot.xml \
 	sdfentities.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
@@ -95,7 +98,9 @@ MISC_FILES = 	$(DIRS)
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
-	index.xml
+	index.xml \
+	'Autocorrelation$$1.class' \
+	'Autocorrelation$$FunctionTerm.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
