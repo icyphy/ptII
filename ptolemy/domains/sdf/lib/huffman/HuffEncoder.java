@@ -108,7 +108,7 @@ public class HuffEncoder extends TypedAtomicActor {
         newobj.codeBookInput = (TypedIOPort)newobj.getPort("codeInput");
         newobj.output = (TypedIOPort)newobj.getPort("output");
         return newobj;
-     }
+    }
 
     /**
      * Initialize this actor

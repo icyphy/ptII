@@ -95,7 +95,7 @@ public class AudioSource extends SDFAtomicActor {
 	output.setTokenProductionRate(productionRate);
 	output.setMultiport(true); // ???
 	pathName = new Parameter(this, "pathName",
-		     new StringToken("http://localhost/soundFile.au"));
+                new StringToken("http://localhost/soundFile.au"));
 	isURL = new Parameter(this, "isURL", new BooleanToken(true));
 	isURL.setTypeEquals(BaseType.BOOLEAN);
 
@@ -150,18 +150,18 @@ public class AudioSource extends SDFAtomicActor {
      *  @return A new actor.
      */
     public Object clone(Workspace ws) {
-	 try {
-	     AudioSource newobj = (AudioSource)super.clone(ws);
-	     newobj.isURL = (Parameter)newobj.getAttribute("isURL");
-	     newobj.pathName = (Parameter)newobj.getAttribute("pathName");
-	     newobj.output = (SDFIOPort)newobj.getPort("output");
-	     // set the type constraints.
-	     return newobj;
-	 } catch (CloneNotSupportedException ex) {
-	     // Errors should not occur here...
-	     throw new InternalErrorException(
-			 "Clone failed: " + ex.getMessage());
-	 }
+        try {
+            AudioSource newobj = (AudioSource)super.clone(ws);
+            newobj.isURL = (Parameter)newobj.getAttribute("isURL");
+            newobj.pathName = (Parameter)newobj.getAttribute("pathName");
+            newobj.output = (SDFIOPort)newobj.getPort("output");
+            // set the type constraints.
+            return newobj;
+        } catch (CloneNotSupportedException ex) {
+            // Errors should not occur here...
+            throw new InternalErrorException(
+                    "Clone failed: " + ex.getMessage());
+        }
     }
 
     /** Output the sample value of the sound file corresponding to the
@@ -174,53 +174,53 @@ public class AudioSource extends SDFAtomicActor {
 	    int numBytesRead;
 
 
-		// Read some audio into data[].
+            // Read some audio into data[].
             numBytesRead =
-		     properFormatAudioInputStream.read(data);
-		if (numBytesRead == -1) {
-		    // Ran out of samples to play. This generally means
-		    // that the end of the sound file has been reached.
-		    // Output productionRate many zeros.
-		    audioTokenArray = new DoubleToken[productionRate];
-		    // Convert to DoubleToken[].
-		    // FIXME: I don't think this is very efficient. Currently
-		    // creating a new token for each sample!
-		    for (i = 0; i < productionRate; i++) {
-			audioTokenArray[i] = new DoubleToken(0);
-		    }
-
-		    output.sendArray(0, audioTokenArray);
-		    return false;
-		} else if (numBytesRead != data.length) {
-                    // Read fewer samples than productionRate many samples.
-
-		    // Ran out of samples to play. This generally means
-		    // that the end of the sound file has been reached.
-		    // Output productionRate many zeros.
-		    audioTokenArray = new DoubleToken[productionRate];
-		    // Convert to DoubleToken[].
-		    // FIXME: I don't think this is very efficient. Currently
-		    // creating a new token for each sample!
-		    for (i = 0; i < productionRate; i++) {
-			audioTokenArray[i] = new DoubleToken(0);
-		    }
-
-		    output.sendArray(0, audioTokenArray);
-		    return false;
+                properFormatAudioInputStream.read(data);
+            if (numBytesRead == -1) {
+                // Ran out of samples to play. This generally means
+                // that the end of the sound file has been reached.
+                // Output productionRate many zeros.
+                audioTokenArray = new DoubleToken[productionRate];
+                // Convert to DoubleToken[].
+                // FIXME: I don't think this is very efficient. Currently
+                // creating a new token for each sample!
+                for (i = 0; i < productionRate; i++) {
+                    audioTokenArray[i] = new DoubleToken(0);
                 }
 
+                output.sendArray(0, audioTokenArray);
+                return false;
+            } else if (numBytesRead != data.length) {
+                // Read fewer samples than productionRate many samples.
 
-		// Convert byte array to double array.
-		audioInDoubleArray = _byteArrayToDoubleArray(data, frameSizeInBytes);
-
-
-
+                // Ran out of samples to play. This generally means
+                // that the end of the sound file has been reached.
+                // Output productionRate many zeros.
                 audioTokenArray = new DoubleToken[productionRate];
-		// Convert to DoubleToken[].
-		// FIXME: I don't think this is very efficient. Currently
-		// creating a new token for each sample!
-		for (i = 0; i < productionRate; i++) {
-                    audioTokenArray[i] = new DoubleToken(audioInDoubleArray[i]);
+                // Convert to DoubleToken[].
+                // FIXME: I don't think this is very efficient. Currently
+                // creating a new token for each sample!
+                for (i = 0; i < productionRate; i++) {
+                    audioTokenArray[i] = new DoubleToken(0);
+                }
+
+                output.sendArray(0, audioTokenArray);
+                return false;
+            }
+
+
+            // Convert byte array to double array.
+            audioInDoubleArray = _byteArrayToDoubleArray(data, frameSizeInBytes);
+
+
+
+            audioTokenArray = new DoubleToken[productionRate];
+            // Convert to DoubleToken[].
+            // FIXME: I don't think this is very efficient. Currently
+            // creating a new token for each sample!
+            for (i = 0; i < productionRate; i++) {
+                audioTokenArray[i] = new DoubleToken(audioInDoubleArray[i]);
 	    }
 
 
@@ -292,8 +292,8 @@ public class AudioSource extends SDFAtomicActor {
 		boolean signed = true;
 		boolean bigEndian = true;
 		AudioFormat format = new AudioFormat(sampleRate,
-					  sampleSizeInBits, channels,
-						     signed, bigEndian);
+                        sampleSizeInBits, channels,
+                        signed, bigEndian);
 		//System.out.println("Converted format: " + format.toString());
 
 		properFormatAudioInputStream =
@@ -315,7 +315,7 @@ public class AudioSource extends SDFAtomicActor {
 	    System.err.println(e.toString());
 	} catch (IOException e) {
 	    System.err.println("AudioSource: error reading"+
-			       " input file: " +e);
+                    " input file: " +e);
 	}
 
     }
@@ -346,8 +346,8 @@ public class AudioSource extends SDFAtomicActor {
 	    for (int i = 0; i < _bytesPerSample; i += 1)
 		result = (result << 8) + (b[i] & 0xff);
 	    doubleArray[currSamp] = ((double) result/
-				     (mathDotPow));
-		}
+                    (mathDotPow));
+        }
 	//System.out.println("a value " + doubleArray[34]);
 	return doubleArray;
     }

@@ -46,8 +46,8 @@ import java.lang.Math;
 //// HuffLeaf --- A tree class derived from HuffTree class which represents
 //                the leaf class of huffman tree.
 /**
-@author Michael Leung
-@version $Id$
+   @author Michael Leung
+   @version $Id$
 */
 
 public class HuffLeaf extends ptolemy.domains.sdf.lib.huffman.HuffTree {
@@ -71,7 +71,7 @@ public class HuffLeaf extends ptolemy.domains.sdf.lib.huffman.HuffTree {
 
     // Set the value of probability
     public void setProb(double p) {
-         _prob = p;
+        _prob = p;
     }
 
     // set the data

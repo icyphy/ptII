@@ -182,9 +182,9 @@ public class Type extends SDFApplet implements ChangeListener {
             _plotDisplay.setAlignmentY(0);
             _plotDisplay.setPreferredSize(new Dimension(400, 250));
             _plotDisplay.addTab("Plotter", null, _plotPanel,
-                   "Display is plotter");
+                    "Display is plotter");
             _plotDisplay.addTab("Text Display", null, _printPanel,
-                   "Display text");
+                    "Display text");
             _plotDisplay.addChangeListener(this);
             _plotPanel.setBackground(getBackground());
             _plotPanel.setBorder(new LineBorder(Color.black));
@@ -342,14 +342,14 @@ public class Type extends SDFApplet implements ChangeListener {
         impl.addNode(nLong, graph);
 
         /*
-           nodeMap.put(a1, nNaT);
-           nodeMap.put(a2, nInt);
-           nodeMap.put(a3, nDouble);
-           nodeMap.put(a4, nComplex);
-           nodeMap.put(a5, nString);
-           nodeMap.put(a6, nGeneral);
-           nodeMap.put(a7, nBoolean);
-           nodeMap.put(a8, nObject);
+          nodeMap.put(a1, nNaT);
+          nodeMap.put(a2, nInt);
+          nodeMap.put(a3, nDouble);
+          nodeMap.put(a4, nComplex);
+          nodeMap.put(a5, nString);
+          nodeMap.put(a6, nGeneral);
+          nodeMap.put(a7, nBoolean);
+          nodeMap.put(a8, nObject);
         */
 
         // Edges
@@ -780,9 +780,9 @@ public class Type extends SDFApplet implements ChangeListener {
 	    // Create and set up the selection dragger
 	    _selectionDragger = new SelectionDragger(pane);
 	    _selectionDragger.addSelectionInteractor(
-		(SelectionInteractor)getEdgeController().getEdgeInteractor());
+                    (SelectionInteractor)getEdgeController().getEdgeInteractor());
 	    _selectionDragger.addSelectionInteractor(
-                (SelectionInteractor)getNodeController().getNodeInteractor());
+                    (SelectionInteractor)getNodeController().getNodeInteractor());
         }
     }
 
@@ -921,7 +921,7 @@ public class Type extends SDFApplet implements ChangeListener {
 
                         // Get the trace and element figure
                         TraceModel model =
-                                _tracePane.getTraceView().getTraceModel();
+                            _tracePane.getTraceView().getTraceModel();
                         TraceModel.Trace trace = model.getTrace(id);
 
                         // Create the new element
@@ -931,8 +931,8 @@ public class Type extends SDFApplet implements ChangeListener {
                         // Make the elements look large in case they're the
                         // last one
                         TraceModel.Element element =
-                                new TraceModel.Element(
-                                currentTime, currentTime+1, color);
+                            new TraceModel.Element(
+                                    currentTime, currentTime+1, color);
                         element.closure = TraceModel.Element.OPEN_END;
                         trace.add(element);
 
@@ -942,7 +942,7 @@ public class Type extends SDFApplet implements ChangeListener {
                         // Update all elements
                         int msize = model.size();
                         TraceModel.Element temp[] =
-                                new TraceModel.Element[msize];
+                            new TraceModel.Element[msize];
                         for (int i = 0; i < msize; i++) {
                             _currentElement[i].stopTime = currentTime+1;
                             temp[i] = _currentElement[i];

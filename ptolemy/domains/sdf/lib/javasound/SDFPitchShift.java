@@ -74,8 +74,8 @@ public class SDFPitchShift extends SDFAtomicActor {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 	consumptionProductionRate = new Parameter(this,
-					"consumptionProductionRate",
-						 new IntToken(512));
+                "consumptionProductionRate",
+                new IntToken(512));
 	consumptionProductionRate.setTypeEquals(BaseType.INT);
 	consumptionRate =
 	    ((IntToken)consumptionProductionRate.getToken()).intValue();
@@ -98,7 +98,7 @@ public class SDFPitchShift extends SDFAtomicActor {
 	pitchIn.setTokenConsumptionRate(consumptionRate);
 
 	sampleRate = new Parameter(this, "sampleRate",
-				     new DoubleToken(22050));
+                new DoubleToken(22050));
         sampleRate.setTypeEquals(BaseType.DOUBLE);
 
 
@@ -113,14 +113,14 @@ public class SDFPitchShift extends SDFAtomicActor {
     /** The pitch value input port. */
     public SDFIOPort pitchIn;
 
-     /** The pitch scale factor input port. */
+    /** The pitch scale factor input port. */
     public SDFIOPort scaleFactor;
 
     /** The output port. */
     public SDFIOPort output;
 
-     /** The sampling rate to use, in Hz. The default vaule is
-      * 22050.
+    /** The sampling rate to use, in Hz. The default vaule is
+     * 22050.
      */
     public Parameter sampleRate;
 
@@ -155,21 +155,21 @@ public class SDFPitchShift extends SDFAtomicActor {
      *  @return A new actor.
      */
     public Object clone(Workspace ws) {
-	 try {
-	     SDFPitchShift newobj = (SDFPitchShift)super.clone(ws);
-	     newobj.output = (SDFIOPort)newobj.getPort("output");
-	     newobj.input = (SDFIOPort)newobj.getPort("input");
-	     newobj.scaleFactor = (SDFIOPort)newobj.getPort("scaleFactor");
-	     newobj.pitchIn = (SDFIOPort)newobj.getPort("pitchIn");
-	     newobj.sampleRate = (Parameter)newobj.getAttribute("sampleRate");
-	     newobj.consumptionProductionRate = (Parameter)newobj.getAttribute("consumptionProductionRate");
-	     // set the type constraints.
-	     return newobj;
-	 } catch (CloneNotSupportedException ex) {
-	     // Errors should not occur here...
-	     throw new InternalErrorException(
-			 "Clone failed: " + ex.getMessage());
-	 }
+        try {
+            SDFPitchShift newobj = (SDFPitchShift)super.clone(ws);
+            newobj.output = (SDFIOPort)newobj.getPort("output");
+            newobj.input = (SDFIOPort)newobj.getPort("input");
+            newobj.scaleFactor = (SDFIOPort)newobj.getPort("scaleFactor");
+            newobj.pitchIn = (SDFIOPort)newobj.getPort("pitchIn");
+            newobj.sampleRate = (Parameter)newobj.getAttribute("sampleRate");
+            newobj.consumptionProductionRate = (Parameter)newobj.getAttribute("consumptionProductionRate");
+            // set the type constraints.
+            return newobj;
+        } catch (CloneNotSupportedException ex) {
+            // Errors should not occur here...
+            throw new InternalErrorException(
+                    "Clone failed: " + ex.getMessage());
+        }
     }
 
     /** Output the sample value of the sound file corresponding to the
@@ -193,14 +193,14 @@ public class SDFPitchShift extends SDFAtomicActor {
 	// FIXME: May want to eventually make scaleFactorDoubleArray,
 	// scaleFactorTokenArray be length consumptionRate to have
 	// finer granularity pitch scale control.
-	 scaleFactorDoubleArray[0] = scaleFactorTokenArray[0].doubleValue();
+        scaleFactorDoubleArray[0] = scaleFactorTokenArray[0].doubleValue();
 	// FIXME: Should pass scaleFactorDoubleArray[] to
 	// performPitchShift(), not just the first element.
 	double pitchScaleIn = scaleFactorDoubleArray[0];
 
 
 	audioOutDoubleArray = ps.performPitchShift(audioInDoubleArray,
-				      pitchInDoubleArray, pitchScaleIn);
+                pitchInDoubleArray, pitchScaleIn);
 
 	// Convert to DoubleToken[].
 	for (i = 0; i < productionRate; i++) {

@@ -96,7 +96,7 @@ public final class VQDecode extends SDFAtomicActor {
     /** The output port. */
     public SDFIOPort output;
 
-     /** A Parameter of type String, giving the location of the codebook data
+    /** A Parameter of type String, giving the location of the codebook data
      *  file relative to the root classpath.
      */
     public Parameter codeBook;
@@ -189,7 +189,7 @@ public final class VQDecode extends SDFAtomicActor {
         _blocks = new IntMatrixToken[_blockCount];
 
         String filename = ((StringToken)codeBook.getToken()).toString();
-         try {
+        try {
             if (filename != null) {
                 if(_baseurl != null) {
                     try {

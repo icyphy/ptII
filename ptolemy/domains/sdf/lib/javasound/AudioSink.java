@@ -161,16 +161,16 @@ public class AudioSink extends SDFAtomicActor {
      *  @exception IllegalActionException If there is no director.
      */
     public boolean postfire() throws IllegalActionException {
-      // FIXME: This currently ignores the width (reads only from input channel 0).
-      //int width = input.getWidth();
+        // FIXME: This currently ignores the width (reads only from input channel 0).
+        //int width = input.getWidth();
 	/*
-        for (int i = 0; i < width; i++) {
-            if (input.hasToken(i)) {
-                Token token = input.get(i);
-                String value = token.stringValue();
-                System.out.println(value + "\n");
-            }
-        }
+          for (int i = 0; i < width; i++) {
+          if (input.hasToken(i)) {
+          Token token = input.get(i);
+          String value = token.stringValue();
+          System.out.println(value + "\n");
+          }
+          }
 	*/
         DoubleToken[] audioTokenArray = new DoubleToken[consumptionRate];
         input.getArray(0, audioTokenArray);
@@ -182,7 +182,7 @@ public class AudioSink extends SDFAtomicActor {
         }
         // Now write the array to output device/file.
         audioOutByteArray = _doubleArrayToByteArray(audioInDoubleArray,
-						       frameSizeInBytes);
+                frameSizeInBytes);
 
         sourceLine.write(audioOutByteArray, 0, consumptionRate);
 
@@ -204,14 +204,14 @@ public class AudioSink extends SDFAtomicActor {
         boolean bigEndian = true;
 
         AudioFormat format = new AudioFormat((float)samplingRate,
-					      sampleSizeInBitsInt,
-					      channels, signed, bigEndian);
+                sampleSizeInBitsInt,
+                channels, signed, bigEndian);
         frameSizeInBytes = format.getFrameSize();
 
         DataLine.Info sourceInfo = new DataLine.Info(SourceDataLine.class,
-					 null, null,
-					 new Class[0], format,
-					 AudioSystem.NOT_SPECIFIED);
+                null, null,
+                new Class[0], format,
+                AudioSystem.NOT_SPECIFIED);
 
         // get and open the source data line for playback.
 	try {
@@ -230,64 +230,64 @@ public class AudioSink extends SDFAtomicActor {
     }
 
 
-  /** Close the specified file, if any.
-   */
-  public void wrapup() throws IllegalActionException {
+    /** Close the specified file, if any.
+     */
+    public void wrapup() throws IllegalActionException {
 
 
-      sourceLine.stop();
-      sourceLine.close();
-      sourceLine = null;
+        sourceLine.stop();
+        sourceLine.close();
+        sourceLine = null;
 
-      /*
-  	try {
+        /*
+          try {
 	  String fileToSave = ((StringToken)fileName.getToken()).stringValue();
 
           if (((BooleanToken)saveAudio.getToken()).booleanValue()) {
-              // Save the file in the appropriate format determined by
-              // the file extension.
-              // Separate the extension from the file using a period.
-              StringTokenizer st = new StringTokenizer(fileToSave, ".");
+          // Save the file in the appropriate format determined by
+          // the file extension.
+          // Separate the extension from the file using a period.
+          StringTokenizer st = new StringTokenizer(fileToSave, ".");
 
-              // Do error checking:
-              if (st.countTokens() != 2) {
-                  System.err.println("Error: Incorrect file name format. Format: filname.extension");
-              }
+          // Do error checking:
+          if (st.countTokens() != 2) {
+          System.err.println("Error: Incorrect file name format. Format: filname.extension");
+          }
 
-              st.nextToken(); // Advance to the file extension.
+          st.nextToken(); // Advance to the file extension.
 
-              String fileExtension = st.nextToken();
+          String fileExtension = st.nextToken();
 
-              if (fileExtension.equalsIgnoreCase("au")) {
-                  na.saveAs(fileToSave, FileStream.FileType.AU);  // Save the file.
-              } else if (fileExtension.equalsIgnoreCase("aiff")) {
-                  na.saveAs(fileToSave, FileStream.FileType.AIFF);  // Save the file.
-              } else if (fileExtension.equalsIgnoreCase("wave")) {
-                  na.saveAs(fileToSave, FileStream.FileType.WAVE);  // Save the file.
-              } else if (fileExtension.equalsIgnoreCase("wav")) {
-                  na.saveAs(fileToSave, FileStream.FileType.WAVE);  // Save the file.
-              } else if (fileExtension.equalsIgnoreCase("aifc")) {
-                  na.saveAs(fileToSave, FileStream.FileType.AIFC);  // Save the file.
-              } else {
-                  System.err.println("Error saving file: Unknown file format: " + fileExtension);
-              }
+          if (fileExtension.equalsIgnoreCase("au")) {
+          na.saveAs(fileToSave, FileStream.FileType.AU);  // Save the file.
+          } else if (fileExtension.equalsIgnoreCase("aiff")) {
+          na.saveAs(fileToSave, FileStream.FileType.AIFF);  // Save the file.
+          } else if (fileExtension.equalsIgnoreCase("wave")) {
+          na.saveAs(fileToSave, FileStream.FileType.WAVE);  // Save the file.
+          } else if (fileExtension.equalsIgnoreCase("wav")) {
+          na.saveAs(fileToSave, FileStream.FileType.WAVE);  // Save the file.
+          } else if (fileExtension.equalsIgnoreCase("aifc")) {
+          na.saveAs(fileToSave, FileStream.FileType.AIFC);  // Save the file.
+          } else {
+          System.err.println("Error saving file: Unknown file format: " + fileExtension);
+          }
 
 
 
-              na.saveAs(fileToSave, FileStream.FileType.AU);  // Save the file.
+          na.saveAs(fileToSave, FileStream.FileType.AU);  // Save the file.
           }
           if (((BooleanToken)playAudio.getToken()).booleanValue()) {
-              na.startPlayback();  // Play the audio data.
+          na.startPlayback();  // Play the audio data.
           }
 
-	} catch (IOException e) {
+          } catch (IOException e) {
 	  System.err.println("AudioSink: error saving" +
-			     " file: " + e);
-	} catch (AudioUnavailableException e) {
-	    System.err.println("Audio is Unavailable" + e);
-	}
-      */
-  }
+          " file: " + e);
+          } catch (AudioUnavailableException e) {
+          System.err.println("Audio is Unavailable" + e);
+          }
+        */
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methodes                  ////
@@ -297,7 +297,7 @@ public class AudioSink extends SDFAtomicActor {
      * FIXME: This method only works for mono (single channel) audio.
      */
     private byte[] _doubleArrayToByteArray(double[] doubleArray,
-					   int _bytesPerSample) {
+            int _bytesPerSample) {
 
 	//System.out.println("_bytesPerSample = " + _bytesPerSample);
 	int lengthInSamples = doubleArray.length;
@@ -310,8 +310,8 @@ public class AudioSink extends SDFAtomicActor {
 		b[_bytesPerSample - i - 1] = (byte) l;
 	    for (int i = 0; i < _bytesPerSample; i += 1) {
 		//if (_isBigEndian)
-		     byteArray[currSamp*_bytesPerSample + i] = b[i];
-	    //else put(b[_bytesPerSample - i - 1]);
+                byteArray[currSamp*_bytesPerSample + i] = b[i];
+                //else put(b[_bytesPerSample - i - 1]);
 	    }
 	}
 	return byteArray;

@@ -111,12 +111,12 @@ public class BinaryTree extends java.lang.Object {
     public void addRight(BinaryTree child)
             throws IllegalActionException {
         if (child._parent != null)
-                throw new IllegalActionException("BinaryTree: " +
-                        "Cannot add the tree " + child +
-                        " to the right branch because " + child +
-                        " has a parent already.");
-            _right = child;
-            child._parent = this;
+            throw new IllegalActionException("BinaryTree: " +
+                    "Cannot add the tree " + child +
+                    " to the right branch because " + child +
+                    " has a parent already.");
+        _right = child;
+        child._parent = this;
     }
 
     /* Set the parent of this obj to be myParent.
@@ -172,7 +172,7 @@ public class BinaryTree extends java.lang.Object {
      */
 
     public void merge (BinaryTree leftTree, BinaryTree rightTree)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if ((leftTree._parent != null) || (rightTree._parent != null)) {
             throw new IllegalActionException("BinaryTree: "+
                     "Cannot megre because either left or right" +

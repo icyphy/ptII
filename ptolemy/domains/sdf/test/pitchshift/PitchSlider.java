@@ -98,20 +98,20 @@ public class PitchSlider extends JFrame {
 	sliderModel = new ConverterRangeModel();
         textField.setValue(0.001*sliderModel.getDoubleValue());
         textField.addActionListener(new ActionListener() {
-		public void actionPerformed(ActionEvent e) {
-		    sliderModel.setDoubleValue(1000*textField.getValue());
+            public void actionPerformed(ActionEvent e) {
+                sliderModel.setDoubleValue(1000*textField.getValue());
 
-		}
-		});
+            }
+        });
 
         JSlider pitchSlider = new JSlider(sliderModel);
         pitchSlider.addChangeListener(new SliderListener());
 	sliderModel.addChangeListener(new ChangeListener() {
-		public void stateChanged(ChangeEvent e) {
-		    //textField.setValue(sliderModel.getDoubleValue());
-		    textField.setValue(0.001*sliderModel.getDoubleValue());
-		}
-	    });
+            public void stateChanged(ChangeEvent e) {
+                //textField.setValue(sliderModel.getDoubleValue());
+                textField.setValue(0.001*sliderModel.getDoubleValue());
+            }
+        });
 
         //Turn on labels at major tick marks.
         pitchSlider.setPaintTicks(false);
@@ -145,22 +145,22 @@ public class PitchSlider extends JFrame {
     class SliderListener implements ChangeListener {
         public void stateChanged(ChangeEvent e) {
             JSlider source = (JSlider)e.getSource();
-	     int fps = (int)source.getValue();
-	     // Update pitch while user is sliding the slider.
-	     processAudio.updatePitchScaleFactor((double)fps/(double)1000);
+            int fps = (int)source.getValue();
+            // Update pitch while user is sliding the slider.
+            processAudio.updatePitchScaleFactor((double)fps/(double)1000);
 
         }
     }
 
     public void startPitchShifting(double sampRate) {
-	   processAudio = new ProcessAudio();
-	   processAudio.setSamplingRate(sampRate);
-	   processAudio.start();
-	   frozen = false;
-       }
+        processAudio = new ProcessAudio();
+        processAudio.setSamplingRate(sampRate);
+        processAudio.start();
+        frozen = false;
+    }
 
     public void stopPitchShifting() {
-       frozen = true;
+        frozen = true;
     }
 
 

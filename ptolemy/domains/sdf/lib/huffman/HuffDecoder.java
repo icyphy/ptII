@@ -107,7 +107,7 @@ public class HuffDecoder extends TypedAtomicActor {
         newobj.bitInput = (TypedIOPort)newobj.getPort("bitInput");
         newobj.output = (TypedIOPort)newobj.getPort("output");
         return newobj;
-     }
+    }
 
     /**
      * Initialize this actor

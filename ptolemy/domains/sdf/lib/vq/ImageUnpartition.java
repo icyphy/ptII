@@ -158,7 +158,7 @@ public class ImageUnpartition extends SDFAtomicActor {
 
         image = new int[_imageRows * _imageColumns];
         int partitionCount = _imageColumns * _imageRows
-                / _partitionColumns / _partitionRows;
+            / _partitionColumns / _partitionRows;
         partitions = new IntMatrixToken[partitionCount];
         input.setTokenConsumptionRate(partitionCount);
     }

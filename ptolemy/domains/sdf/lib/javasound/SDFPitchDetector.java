@@ -75,8 +75,8 @@ public class SDFPitchDetector extends SDFAtomicActor {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 	consumptionProductionRate = new Parameter(this,
-					"consumptionProductionRate",
-						 new IntToken(512));
+                "consumptionProductionRate",
+                new IntToken(512));
 	consumptionProductionRate.setTypeEquals(BaseType.INT);
 	consumptionRate =
 	    ((IntToken)consumptionProductionRate.getToken()).intValue();
@@ -91,14 +91,14 @@ public class SDFPitchDetector extends SDFAtomicActor {
 	input.setTokenConsumptionRate(consumptionRate);
 
 	sampleRate = new Parameter(this, "sampleRate",
-				     new DoubleToken(22050));
+                new DoubleToken(22050));
         sampleRate.setTypeEquals(BaseType.DOUBLE);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-     /** The input port. */
+    /** The input port. */
     public SDFIOPort input;
 
     /** The output port. */
@@ -140,19 +140,19 @@ public class SDFPitchDetector extends SDFAtomicActor {
      *  @return A new actor.
      */
     public Object clone(Workspace ws) {
-	 try {
-	     SDFPitchDetector newobj = (SDFPitchDetector)super.clone(ws);
-	     newobj.output = (SDFIOPort)newobj.getPort("output");
-	     newobj.input = (SDFIOPort)newobj.getPort("input");
-	     newobj.sampleRate = (Parameter)newobj.getAttribute("sampleRate");
-	     newobj.consumptionProductionRate = (Parameter)newobj.getAttribute("consumptionProductionRate");
-	     // set the type constraints.
-	     return newobj;
-	 } catch (CloneNotSupportedException ex) {
-	     // Errors should not occur here...
-	     throw new InternalErrorException(
-			 "Clone failed: " + ex.getMessage());
-	 }
+        try {
+            SDFPitchDetector newobj = (SDFPitchDetector)super.clone(ws);
+            newobj.output = (SDFIOPort)newobj.getPort("output");
+            newobj.input = (SDFIOPort)newobj.getPort("input");
+            newobj.sampleRate = (Parameter)newobj.getAttribute("sampleRate");
+            newobj.consumptionProductionRate = (Parameter)newobj.getAttribute("consumptionProductionRate");
+            // set the type constraints.
+            return newobj;
+        } catch (CloneNotSupportedException ex) {
+            // Errors should not occur here...
+            throw new InternalErrorException(
+                    "Clone failed: " + ex.getMessage());
+        }
     }
 
     /** Output the sample value of the sound file corresponding to the
@@ -191,7 +191,7 @@ public class SDFPitchDetector extends SDFAtomicActor {
 	sampRate = ((DoubleToken)sampleRate.getToken()).doubleValue();
 
 	pd = new PitchDetector(productionRate,
-			       (int)sampRate);
+                (int)sampRate);
 
 	audioTokenArray = new DoubleToken[consumptionRate];
 	audioInDoubleArray = new double[consumptionRate];

@@ -89,7 +89,7 @@ public class RateSelector extends SDFAtomicActor {
     /** The data port. */
     public SDFIOPort data;
 
-     /** The rate port. */
+    /** The rate port. */
     public SDFIOPort rate;
 
     /** The output port. */
@@ -156,7 +156,7 @@ public class RateSelector extends SDFAtomicActor {
         int width = data.getWidth();
 	if(data.getWidth() != rate.getWidth()) {
             throw new IllegalActionException("Widths of input ports must " +
-					     "be the same.");
+                    "be the same.");
         }
         IntMatrixToken _data[][] = new IntMatrixToken[width][_blocks];
 	IntToken _rate[][] = new IntToken[width][_blocks];

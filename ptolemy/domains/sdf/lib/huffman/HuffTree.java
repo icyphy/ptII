@@ -71,7 +71,7 @@ public class HuffTree extends ptolemy.domains.sdf.lib.huffman.BinaryTree {
         else {
             if (getLeft() != null) {
                 _prob = ((HuffTree) getLeft()).getProb();
-                }
+            }
             if (getRight() != null) {
                 _prob = _prob + ((HuffTree) getRight()).getProb();
             }
@@ -96,7 +96,7 @@ public class HuffTree extends ptolemy.domains.sdf.lib.huffman.BinaryTree {
      */
 
     public void addLeft(BinaryTree child)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (!(child instanceof HuffTree)) {
             throw new IllegalActionException("HuffTree: "+
                     "Cannot add other tree type to the left "+
@@ -116,9 +116,9 @@ public class HuffTree extends ptolemy.domains.sdf.lib.huffman.BinaryTree {
      * left of the HuffTree.
      */
 
-     public void addRight(BinaryTree child)
+    public void addRight(BinaryTree child)
             throws IllegalActionException {
-         if (!(child instanceof HuffTree))
+        if (!(child instanceof HuffTree))
             throw new IllegalActionException("HuffTree: "+
                     "Cannot add other tree type to the right "+
                     "of this huffman tree.");
@@ -176,7 +176,7 @@ public class HuffTree extends ptolemy.domains.sdf.lib.huffman.BinaryTree {
      */
     public void fill(HashMap map) {
         if (this == null)
-             return;
+            return;
         else if (this.isLeaf())
             map.put(((HuffLeaf) this ).getData(), this );
         else {

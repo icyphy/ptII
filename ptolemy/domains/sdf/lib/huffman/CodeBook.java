@@ -51,8 +51,8 @@ import java.util.Vector;
 //
 /**
 
-@author Michael Leung
-@version $Id$
+   @author Michael Leung
+   @version $Id$
 */
 
 public class CodeBook extends TypedAtomicActor {
@@ -79,13 +79,13 @@ public class CodeBook extends TypedAtomicActor {
         output.setTypeEquals(ObjectToken.class);
 
         /*
-        output = (TypedIOPort) newPort("output");
-        output.setOutput(true);
-        output.setTypeEquals(ObjectToken.class);
+          output = (TypedIOPort) newPort("output");
+          output.setOutput(true);
+          output.setTypeEquals(ObjectToken.class);
 
-        input = (TypedIOPort) newPort("input");
-        input.setInput(true);
-        input.setTypeEquals(Token.class);
+          input = (TypedIOPort) newPort("input");
+          input.setInput(true);
+          input.setTypeEquals(Token.class);
         */
     }
 
@@ -112,7 +112,7 @@ public class CodeBook extends TypedAtomicActor {
         newobj.input = (TypedIOPort)newobj.getPort("input");
         newobj.output = (TypedIOPort)newobj.getPort("output");
         return newobj;
-     }
+    }
 
     /**
      * Initialize this actor
@@ -197,41 +197,41 @@ public class CodeBook extends TypedAtomicActor {
 
             for (int i = 0; i < currentSize; i++) {
                 double currentProb = huffArray[i].getProb();
-                 if (currentProb < minimum1) {
-                     minimum1 = currentProb;
-                     first = i;
-                     _debug("current first is " + first);
-                 }
+                if (currentProb < minimum1) {
+                    minimum1 = currentProb;
+                    first = i;
+                    _debug("current first is " + first);
+                }
 
-             }
-             for (int j = 0; j < currentSize; j++) {
-                 double currentProb = huffArray[j].getProb();
-                 if ((currentProb < minimum2) && (j != first)) {
-                     minimum2 = currentProb;
-                     _debug("current second is " + second);
-                     second = j;
-                 }
-             }
+            }
+            for (int j = 0; j < currentSize; j++) {
+                double currentProb = huffArray[j].getProb();
+                if ((currentProb < minimum2) && (j != first)) {
+                    minimum2 = currentProb;
+                    _debug("current second is " + second);
+                    second = j;
+                }
+            }
 
-             _debug("first= " + first);
-             _debug("second= " + second);
+            _debug("first= " + first);
+            _debug("second= " + second);
 
-             HuffTree tree = new HuffTree();
-             tree.addLeft(huffArray[first]);
-             tree.addRight(huffArray[second]);
+            HuffTree tree = new HuffTree();
+            tree.addLeft(huffArray[first]);
+            tree.addRight(huffArray[second]);
 
-             huffArray[first] = tree;
-             huffArray[second] = huffArray[currentSize - 1];
-             currentSize --;
-         }
+            huffArray[first] = tree;
+            huffArray[second] = huffArray[currentSize - 1];
+            currentSize --;
+        }
 
 
-         //debugging line to print out the huffman tree in order
-         System.out.println(huffArray[0].printPreOrder());
+        //debugging line to print out the huffman tree in order
+        System.out.println(huffArray[0].printPreOrder());
 
-         ObjectToken token = new ObjectToken(huffArray[0]);
-         output.send(0,token);
-         //output.broadcast(token);
+        ObjectToken token = new ObjectToken(huffArray[0]);
+        output.send(0,token);
+        //output.broadcast(token);
     }
 
     /* Postfire method make sure that the fire method only

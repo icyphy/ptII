@@ -78,7 +78,7 @@ public class ProcessAudioHarmonizer implements Runnable {
     // Set the default sample rate.
     double sampleRate = 22050;
 
-     // Default pitch scale factor(s).
+    // Default pitch scale factor(s).
     double pitchScaleIn1 = 1.0;
     double pitchScaleIn2 = 1.0;
     double pitchScaleIn3 = 1.0;
@@ -118,7 +118,7 @@ public class ProcessAudioHarmonizer implements Runnable {
 	this.pitchScaleIn2 = pitchScaleIn;
     }
 
-   // Update the pitch scale factor.
+    // Update the pitch scale factor.
     public void updatePitchScaleFactor3(double pitchScaleIn) {
 	this.pitchScaleIn3 = pitchScaleIn;
     }
@@ -146,54 +146,54 @@ public class ProcessAudioHarmonizer implements Runnable {
 	TargetDataLine targetLine;
 
 
-	 int sampleSizeInBitsInt = 16;
-	 int channels = 1; // If change this, then need to change
-         //frameSizeInBits and frameRate accordingly.
-	 int frameSizeInBits = sampleSizeInBitsInt;
-	 double frameRate = sampleRate;
-	 boolean signed = true;
-	 boolean bigEndian = true;
+        int sampleSizeInBitsInt = 16;
+        int channels = 1; // If change this, then need to change
+        //frameSizeInBits and frameRate accordingly.
+        int frameSizeInBits = sampleSizeInBitsInt;
+        double frameRate = sampleRate;
+        boolean signed = true;
+        boolean bigEndian = true;
 
 
 
-	 AudioFormat format = new AudioFormat((float)sampleRate,
-		     sampleSizeInBitsInt, channels, signed, bigEndian);
+        AudioFormat format = new AudioFormat((float)sampleRate,
+                sampleSizeInBitsInt, channels, signed, bigEndian);
 
-	  int frameSizeInBytes = format.getFrameSize();
+        int frameSizeInBytes = format.getFrameSize();
 
 
 	DataLine.Info targetInfo = new DataLine.Info(TargetDataLine.class,
-             null, null, new Class[0], format, AudioSystem.NOT_SPECIFIED);
+                null, null, new Class[0], format, AudioSystem.NOT_SPECIFIED);
 
 
-            if (!AudioSystem.isSupportedLine(targetInfo)) {
-                shutDown("Line matching " + targetInfo + " not supported.");
-                return;
-            }
+        if (!AudioSystem.isSupportedLine(targetInfo)) {
+            shutDown("Line matching " + targetInfo + " not supported.");
+            return;
+        }
 
-	    try {
-                targetLine = (TargetDataLine) AudioSystem.getLine(targetInfo);
-                targetLine.open(format, readWriteDataSizeInFrames*jsBufferSizeOverReadWriteSize);
-            } catch (LineUnavailableException ex) {
-                shutDown("Unable to open the line: " + ex);
-                return;
-            }
-
-
+        try {
+            targetLine = (TargetDataLine) AudioSystem.getLine(targetInfo);
+            targetLine.open(format, readWriteDataSizeInFrames*jsBufferSizeOverReadWriteSize);
+        } catch (LineUnavailableException ex) {
+            shutDown("Unable to open the line: " + ex);
+            return;
+        }
 
 
-	    System.out.println("JavaSound target (microphone/line in) " +
-	 "line buffer size in sample frames = " + targetLine.getBufferSize());
 
-	    int targetBufferLengthInBytes = readWriteDataSizeInFrames *
-		frameSizeInBytes;
-	    byte[] targetData = new byte[targetBufferLengthInBytes];
 
-	    int numFramesRead;
+        System.out.println("JavaSound target (microphone/line in) " +
+                "line buffer size in sample frames = " + targetLine.getBufferSize());
+
+        int targetBufferLengthInBytes = readWriteDataSizeInFrames *
+            frameSizeInBytes;
+        byte[] targetData = new byte[targetBufferLengthInBytes];
+
+        int numFramesRead;
 
 	// uses 32768 sample frames for buffer length no matter what
 	// I request! :(
-	    DataLine.Info sourceInfo = new DataLine.Info(SourceDataLine.class,
+        DataLine.Info sourceInfo = new DataLine.Info(SourceDataLine.class,
                 null, null, new Class[0], format, AudioSystem.NOT_SPECIFIED);
 
 
@@ -215,7 +215,7 @@ public class ProcessAudioHarmonizer implements Runnable {
 
 
 	System.out.println("JavaSound source (audio out/speaker) " +
-         "line buffer size in sample frames  = " + sourceLine.getBufferSize());
+                "line buffer size in sample frames  = " + sourceLine.getBufferSize());
 
 	// Array of audio samples in double format.
 	double[] audioInDoubleArray;
@@ -236,7 +236,7 @@ public class ProcessAudioHarmonizer implements Runnable {
 
 	// Initialize the pitch detector.
 	PitchDetector pd = new PitchDetector(readWriteDataSizeInFrames,
-					     (int)sampleRate);
+                (int)sampleRate);
 	// Initialize the pitch shifter.
 	PitchShift ps = new PitchShift((float)sampleRate);
 	// Initialize the 2nd pitch shifter.
@@ -265,14 +265,14 @@ public class ProcessAudioHarmonizer implements Runnable {
 
 		// Read some audio into data[].
 		if ((numFramesRead = targetLine.read(targetData, 0,
-				   readWriteDataSizeInFrames)) == -1) {
-		  break;
+                        readWriteDataSizeInFrames)) == -1) {
+                    break;
 		}
 
 
 
 		audioInDoubleArray = _byteArrayToDoubleArray(targetData,
-							     frameSizeInBytes);
+                        frameSizeInBytes);
 
 		///////////////////////////////////////////////////////////
 		//////   Do processing on audioInDoubleArray here     /////
@@ -280,22 +280,22 @@ public class ProcessAudioHarmonizer implements Runnable {
 		currPitchArray = pd.performPitchDetect(audioInDoubleArray);
 
 		psArray1 = ps.performPitchShift(audioInDoubleArray,
-			    currPitchArray, pitchScaleIn1);
+                        currPitchArray, pitchScaleIn1);
 		psArray2 = ps2.performPitchShift(audioInDoubleArray,
-                            currPitchArray, pitchScaleIn2);
+                        currPitchArray, pitchScaleIn2);
 		psArray3 = ps3.performPitchShift(audioInDoubleArray,
-                            currPitchArray, pitchScaleIn3);
+                        currPitchArray, pitchScaleIn3);
 
 		for (int ind3 = 0; ind3 < audioInDoubleArray.length; ind3++) {
 
 		    audioInDoubleArray[ind3] = (psArray1[ind3] +
-						psArray2[ind3] +
-						psArray3[ind3])*0.35;
+                            psArray2[ind3] +
+                            psArray3[ind3])*0.35;
 		}
 
 
 		audioOutByteArray = _doubleArrayToByteArray(audioInDoubleArray,
-							    frameSizeInBytes);
+                        frameSizeInBytes);
 
 		int numFramesRemaining = numFramesRead;
 
@@ -305,8 +305,8 @@ public class ProcessAudioHarmonizer implements Runnable {
 		while (numFramesRemaining > 0) {
 		    // Write the data to the output device.
 		    numFramesRemaining -= sourceLine.write(audioOutByteArray,
-							   0,
-							   numFramesRemaining);
+                            0,
+                            numFramesRemaining);
 		}
 	    } catch (Exception e) {
 		shutDown("Error during playback: " + e);
@@ -336,7 +336,7 @@ public class ProcessAudioHarmonizer implements Runnable {
      * FIXME: This method only works for mono (single channel) audio.
      */
     private double[] _byteArrayToDoubleArray(byte[] byteArray,
-					     int _bytesPerSample) {
+            int _bytesPerSample) {
 
 	//System.out.println("_bytesPerSample = " + _bytesPerSample);
 	//System.out.println("byteArray length = " + byteArray.length);
@@ -355,8 +355,8 @@ public class ProcessAudioHarmonizer implements Runnable {
 	    for (int i = 0; i < _bytesPerSample; i += 1)
 		result = (result << 8) + (b[i] & 0xff);
 	    doubleArray[currSamp] = ((double) result/
-				     (mathDotPow));
-		}
+                    (mathDotPow));
+        }
 	//System.out.println("a value " + doubleArray[34]);
 	return doubleArray;
     }
@@ -366,7 +366,7 @@ public class ProcessAudioHarmonizer implements Runnable {
      * FIXME: This method only works for mono (single channel) audio.
      */
     private byte[] _doubleArrayToByteArray(double[] doubleArray,
-					   int _bytesPerSample) {
+            int _bytesPerSample) {
 
 	//System.out.println("_bytesPerSample = " + _bytesPerSample);
 	int lengthInSamples = doubleArray.length;
@@ -379,8 +379,8 @@ public class ProcessAudioHarmonizer implements Runnable {
 		b[_bytesPerSample - i - 1] = (byte) l;
 	    for (int i = 0; i < _bytesPerSample; i += 1) {
 		//if (_isBigEndian)
-		     byteArray[currSamp*_bytesPerSample + i] = b[i];
-	    //else put(b[_bytesPerSample - i - 1]);
+                byteArray[currSamp*_bytesPerSample + i] = b[i];
+                //else put(b[_bytesPerSample - i - 1]);
 	    }
 	}
 	return byteArray;

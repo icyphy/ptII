@@ -161,7 +161,7 @@ public class ImagePartition extends SDFAtomicActor {
 
         part = new int[_partitionColumns * _partitionRows];
         int partitionCount = _imageColumns * _imageRows
-                / _partitionColumns / _partitionRows;
+            / _partitionColumns / _partitionRows;
         partitions = new IntMatrixToken[partitionCount];
         output.setTokenProductionRate(partitionCount);
     }
