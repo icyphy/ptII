@@ -77,7 +77,7 @@ FIXME: add more documentation.
 
 
 @author Yang Zhao, Xiaojun Liu, Edward Lee
-@version $Id$
+@version $$
 */
 public class CollisionDetector extends TypedAtomicActor {
 
@@ -154,7 +154,8 @@ public class CollisionDetector extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     
-    /** If the specified attribute is <i>propagationSpeed</i>, then
+    /** If the specified attribute is <i>signalToInterferenceRatio</i>,
+     *  or<i> powerDensityThreshold<i> then
      *  check that a positive number is given. Otherwise,
      *  defer to the base class.
      *  @param attribute The attribute that changed.
@@ -188,9 +189,13 @@ public class CollisionDetector extends TypedAtomicActor {
         }
     }
     
-    /** If the current time matches one of the times that we have previously
-     *  recorded as the reception time for a transmission, then deliver
-     *  the token to the receiver.
+    /** When receives a new message, records it in the hash table indexed 
+     *  with the time that the message shall be finished, and loop through
+     *  the hash table to check whether there is collision. If the current
+     *  time matches one of the times that we have previously
+     *  recorded as the completion time for a transmission, then output the 
+     *  received message to the <i>received<i> output port if it is not
+     *  corrupted; otherwise, output it to the <i>corrupted<i> output port.
      *  @exception IllegalActionException If the token cannot be converted
      *   or if the token argument is null and the destination receiver
      *   does not support clear.
@@ -290,13 +295,14 @@ public class CollisionDetector extends TypedAtomicActor {
     private double _powerDensityThreshold;
     private double _signalToInterferenceRatio;
     private double _totalPowerDensity;
-    // Record of scheduled receptions, indexed by time.
+    // Record messages received but haven't complete transmission.
     private Hashtable _receptions;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
     private class Reception {
+        //the message token.
         public Token data;
         public double duration;
         public double arrivalTime;
