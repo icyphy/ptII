@@ -33,7 +33,7 @@ package ptolemy.domains.ct.demo.StickyMasses;
 import java.awt.BorderLayout;
 import java.awt.event.*;
 
-import ptolemy.domains.hs.kernel.*;
+import ptolemy.domains.fsm.kernel.*;
 import ptolemy.domains.ct.kernel.*;
 import ptolemy.domains.ct.gui.CTApplet;
 import ptolemy.domains.ct.lib.*;
@@ -125,31 +125,86 @@ public class StickyMassesApplet extends CTApplet {
             hsout2.setTypeEquals(BaseType.DOUBLE);
 
             //System.out.println("Building the FSM controller.");
-            HSController ctrl = new HSController(hs, "Controller");
-            FSMState ctrlInc = new FSMState(ctrl, "Separate");
-            FSMState ctrlDec = new FSMState(ctrl, "Together");
-            ctrl.setInitialState(ctrlInc);
-            FSMTransition ctrlTr1 =
-                ctrl.createTransition(ctrlInc, ctrlDec);
-            ctrlTr1.setTriggerEvent("touched");
+            FSMActor ctrl = new FSMActor(hs, "Controller");
+            State ctrlInc = new State(ctrl, "Separate");
+            State ctrlDec = new State(ctrl, "Together");
+            ctrl.initialStateName.setToken(new StringToken("Separate"));
+            TypedIOPort ctrlInV1 = new TypedIOPort(ctrl, "V1");
+            ctrlInV1.setInput(true);
+            ctrlInV1.setTypeEquals(BaseType.DOUBLE);
+            TypedIOPort ctrlInV2 = new TypedIOPort(ctrl, "V2");
+            ctrlInV2.setInput(true);
+            ctrlInV2.setTypeEquals(BaseType.DOUBLE);
+            TypedIOPort ctrlInP1 = new TypedIOPort(ctrl, "P1");
+            ctrlInP1.setInput(true);
+            ctrlInP1.setTypeEquals(BaseType.DOUBLE);
+            TypedIOPort ctrlInF = new TypedIOPort(ctrl, "F");
+            ctrlInF.setInput(true);
+            ctrlInF.setTypeEquals(BaseType.DOUBLE);
+            TypedIOPort ctrlInSTI = new TypedIOPort(ctrl, "STI");
+            ctrlInSTI.setInput(true);
+            ctrlInSTI.setTypeEquals(BaseType.DOUBLE);
+            TypedIOPort ctrlInT = new TypedIOPort(ctrl, "touched");
+            ctrlInT.setInput(true);
+            ctrlInT.setTypeEquals(BaseType.DOUBLE);
+            Transition ctrlTr1 = new Transition(ctrl, "Tr1");
+            ctrlInc.outgoingPort.link(ctrlTr1);
+            ctrlDec.incomingPort.link(ctrlTr1);
+            ctrlTr1.setGuardExpression("touched_S");
             // ctrlTr1.setInitEntry(true);
-            HSInit hsinit1 = new HSInit(ctrlTr1, "P1", "P1");
-            HSInit hsinit4 = new HSInit(ctrlTr1, "V1", "(V1*1.0+V2*1.0)/2.0");
-            // FIXME: the initial sticking force.
-            HSInit hsinit0 = new HSInit(ctrlTr1, "STI", "10.0");
-            FSMTransition ctrlTr2 =
-                ctrl.createTransition(ctrlDec, ctrlInc);
-            ctrlTr2.setTriggerCondition("F > STI || F < -STI");
+            // HSInit hsinit1 = new HSInit(ctrlTr1, "P1", "P1");
+            SetRefinementVariable hsinit1 =
+                    new SetRefinementVariable(ctrlTr1, "act1");
+            hsinit1.variableName.setToken(new StringToken("P1.InitialState"));
+            hsinit1.expression.setToken(new StringToken("P1_V"));
+            // HSInit hsinit4 = new HSInit(ctrlTr1, "V1", "(V1*1.0+V2*1.0)/2.0");
+            SetRefinementVariable hsinit4 =
+                    new SetRefinementVariable(ctrlTr1, "act4");
+            hsinit4.variableName.setToken(new StringToken("V1.InitialState"));
+            hsinit4.expression.setToken(new StringToken("(V1_V*1.0+V2_V*1.0)/2.0"));
+            // HSInit hsinit0 = new HSInit(ctrlTr1, "STI", "10.0");
+            SetRefinementVariable hsinit0 =
+                    new SetRefinementVariable(ctrlTr1, "act0");
+            hsinit0.variableName.setToken(new StringToken("STI.InitialState"));
+            hsinit0.expression.setToken(new StringToken("10.0"));
+            ResetRefinement reset1 = new ResetRefinement(ctrlTr1, "reset1");
+
+            Transition ctrlTr2 = new Transition(ctrl, "Tr2");
+            ctrlDec.outgoingPort.link(ctrlTr2);
+            ctrlInc.incomingPort.link(ctrlTr2);
+            ctrlTr2.setGuardExpression("F_V > STI_V || F_V < -STI_V");
             //ctrlTr2.setInitEntry(true);
-            HSInit hsinit2 = new HSInit(ctrlTr2, "P1", "P1");
-            HSInit hsinit3 = new HSInit(ctrlTr2, "P2", "P1");
-            HSInit hsinit5 = new HSInit(ctrlTr2, "V1", "V1");
-            HSInit hsinit6 = new HSInit(ctrlTr2, "V2", "V1");
+            // HSInit hsinit2 = new HSInit(ctrlTr2, "P1", "P1");
+            SetRefinementVariable hsinit2 =
+                    new SetRefinementVariable(ctrlTr2, "act2");
+            hsinit2.variableName.setToken(new StringToken("P1.InitialState"));
+            hsinit2.expression.setToken(new StringToken("P1_V"));
+            // HSInit hsinit3 = new HSInit(ctrlTr2, "P2", "P1");
+            SetRefinementVariable hsinit3 =
+                    new SetRefinementVariable(ctrlTr2, "act3");
+            hsinit3.variableName.setToken(new StringToken("P2.InitialState"));
+            hsinit3.expression.setToken(new StringToken("P1_V"));
+            // HSInit hsinit5 = new HSInit(ctrlTr2, "V1", "V1");
+            SetRefinementVariable hsinit5 =
+                    new SetRefinementVariable(ctrlTr2, "act5");
+            hsinit5.variableName.setToken(new StringToken("V1.InitialState"));
+            hsinit5.expression.setToken(new StringToken("V1_V"));
+            // HSInit hsinit6 = new HSInit(ctrlTr2, "V2", "V1");
+            SetRefinementVariable hsinit6 =
+                    new SetRefinementVariable(ctrlTr2, "act6");
+            hsinit6.variableName.setToken(new StringToken("V2.InitialState"));
+            hsinit6.expression.setToken(new StringToken("V1_V"));
+            ResetRefinement reset2 = new ResetRefinement(ctrlTr2, "reset2");
 
             // the hybrid system director
             HSDirector hsdir = new HSDirector(hs, "HSDirector");
             //hs.setDirector(hsdir);
-            hsdir.setController(ctrl);
+            //hsdir.setController(ctrl);
+            hsdir.controllerName.setToken(new StringToken("Controller"));
+
+            //StreamListener dbl = new StreamListener();
+            //hsdir.addDebugListener(dbl);
+            //ctrl.addDebugListener(dbl);
 
             //System.out.println("Building the dynamics of "
             //        + "two separate balls.");
@@ -315,26 +370,32 @@ public class StickyMassesApplet extends CTApplet {
             //ctDecDir.addDebugListener(new StreamListener());
 
             // connect the hybrid system
-            ctrlInc.setRefinement(ctInc);
-            ctrlDec.setRefinement(ctDec);
+            ctrlInc.refinementName.setToken(new StringToken("Separate"));
+            ctrlDec.refinementName.setToken(new StringToken("Together"));
             hs.connect(hsin1, ctIncF1);
             hs.connect(hsin2, ctIncF2);
             Relation hsR1 = hs.connect(ctIncOP1, ctDecOP1);
+            ctrlInP1.link(hsR1);
             Relation hsR2 = hs.connect(ctIncOP2, ctDecOP2);
             TypedIORelation hsV1 = new TypedIORelation(hs, "HSV1");
             TypedIORelation hsV2 = new TypedIORelation(hs, "HSV2");
             TypedIORelation hsTch = new TypedIORelation(hs, "HSTouched");
             ctIncTouched.link(hsTch);
+            ctrlInT.link(hsTch);
             ctIncOV1.link(hsV1);
+            ctrlInV1.link(hsV1);
             ctIncOV2.link(hsV2);
+            ctrlInV2.link(hsV2);
             ctDecOV1.link(hsV1);
             hsout1.link(hsR1);
             hsout2.link(hsR2);
 
             TypedIORelation hsF = new TypedIORelation(hs, "HSF");
             ctDecOF.link(hsF);
+            ctrlInF.link(hsF);
             TypedIORelation hsSTI = new TypedIORelation(hs, "HSSTI");
             ctDecOSTI.link(hsSTI);
+            ctrlInSTI.link(hsSTI);
 
             // connect the top-level system
             _toplevel.connect(source1.output, hsin1);
