@@ -1171,7 +1171,7 @@ public class PlotBox extends JPanel implements Printable {
             output.println(
                     "<!DOCTYPE plot PUBLIC \"-//UC Berkeley//DTD PlotML 1//EN\"");
             output.println(
-                    "    \"http://ptolemy.eecs.berkeley.edu/archive/plotml.dtd\">");
+                    "    \"http://ptolemy.eecs.berkeley.edu/xml/dtd/plotml.dtd\">");
         } else {
             output.println("<?xml version=\"1.0\" standalone=\"no\"?>");
             output.println("<!DOCTYPE plot SYSTEM \"" + dtd + "\">");
