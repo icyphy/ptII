@@ -59,6 +59,7 @@ EXTRA_SRCS = \
 	help.htm \
 	index.htm \
 	install.htm \
+	javahtml.awk \
 	main.htm \
 	mainheader.htm \
 	ptII1.0.release.htm \
