@@ -303,8 +303,7 @@ public class Plot extends PlotBox {
 
         String arg;
 	String unsupportedOptions[] = {
-	    "-bd", "-brb", "-bw", "-gw", "-lf", "-lw",
-	    "-tf", "-zg", "-zw"
+	    "-bd", "-brb", "-bw", "-gw", "-lw", "-zg", "-zw"
 	};
 	String unsupportedFlags[] = {
 	    "-bb", "-lnx", "-lny"
@@ -351,6 +350,10 @@ public class Plot extends PlotBox {
 			    CmdLineArgException("Failed to parse `"+arg+"'");
 		    }
 		    continue;
+		} else if (arg.equals("-lf")) {
+		    // -lf <labelfont>
+		    setLabelFont(args[i++]);
+		    continue;
 		} else if (arg.equals("-lx")) {
 		    // -lx <xl,xh> XLowLimit, XHighLimit  XRange: 
 		    if (!_parseLine("XRange: " + args[i++])) {
@@ -368,6 +371,10 @@ public class Plot extends PlotBox {
 		} else if (arg.equals("-t")) {
 		    // -t <title> TitleText "An X Graph"
 		    title =  args[i++];
+		    continue;
+		} else if (arg.equals("-tf")) {
+		    // -tf <titlefont>
+		    setTitleFont(args[i++]);
 		    continue;
 		} else if (arg.equals("-x")) {
 		    // -x <unitName> XUnitText XLabel:
