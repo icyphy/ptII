@@ -68,11 +68,18 @@ test ProcessThread-2.1 {Constructor tests} {
     list [$p1 getName] [$p2 getName] 
 } {P1 P2}
 
+######################################################################
+####
+#
+test ProcessThread-3.1 {Test state methods} {
+    set a3 [$p1 getActor] 
+    $a3 getFullName
+} {.E0.A1}
 
 ######################################################################
 ####
 #
-test ProcessThread-5.1 {Test action methods} {
+test ProcessThread-3.2 {Test action methods} {
     set manager [java::new ptolemy.actor.Manager manager]
     set e0 [java::new ptolemy.actor.CompositeActor]
     set d1 [java::new ptolemy.actor.ProcessDirector director]
