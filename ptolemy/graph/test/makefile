@@ -57,6 +57,7 @@ JSIMPLE_TESTS = \
     Edge.tcl \
 	Graph.tcl \
 	GraphListener.tcl \
+    Graphs.tcl \
 	InequalitySolver.tcl \
 	InequalityTerm.tcl \
     LabeledList.tcl \
