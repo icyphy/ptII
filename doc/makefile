@@ -214,6 +214,7 @@ ALLPACKAGES =		$(COMMPACKAGES) \
 			ptolemy.matlab \
 			ptolemy.media \
 			ptolemy.moml \
+			ptolemy.moml.filter \
 			ptolemy.vergil \
 			ptolemy.vergil.actor \
 			ptolemy.vergil.basic \
@@ -328,6 +329,7 @@ codeDoc/tree.html:	../ptolemy/plot/*.java \
 			../ptolemy/matlab/*.java \
 			../ptolemy/media/*.java \
 			../ptolemy/moml/*.java \
+			../ptolemy/moml/filter/*.java \
 			../ptolemy/vergil/*.java \
 			../ptolemy/vergil/actor/*.java \
 			../ptolemy/vergil/basic/*.java \
