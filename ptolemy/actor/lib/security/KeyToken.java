@@ -80,7 +80,8 @@ public class KeyToken extends Token {
      *  that name their corresponding algorithms and formats are the same
      *  and the byte arrays that contain the encoding have the same contents.
      *  Consult the java.security.Key documentation for the meaning of these
-     *  terms.
+     *  terms.  If the value of this token or the value of the rightArgument
+     *  token is null, then we return False.
      *
      *  @param rightArgument The Token to test against.
      *  @exception IllegalActionException Not thrown in this base class.
@@ -91,6 +92,10 @@ public class KeyToken extends Token {
             throws IllegalActionException {
         java.security.Key rightKey = ((KeyToken)rightArgument).getValue();
         java.security.Key leftKey = getValue();
+
+        if (rightKey == null || leftKey == null) {
+            return BooleanToken.FALSE;
+        }
 
         if (!rightKey.getAlgorithm().equals(leftKey.getAlgorithm())) {
             return BooleanToken.FALSE;
