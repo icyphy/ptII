@@ -287,6 +287,7 @@ public class PlotFrame extends JFrame {
      */
     protected void _export() {
         JFileChooser fileDialog = new JFileChooser();
+        fileDialog.addChoosableFileFilter(new EPSFileFilter());
         fileDialog.setDialogTitle("Export EPS to...");
         if (_directory != null) {
             fileDialog.setCurrentDirectory(_directory);
@@ -299,9 +300,10 @@ public class PlotFrame extends JFrame {
                 fileDialog.setCurrentDirectory(new File(cwd));
             }
         }
-        // FIXME: Can't seem to suggest a filename... Following fails
-        // compile:
-        // fileDialog.setSelectedFile("plot.eps");
+
+        fileDialog.setSelectedFile(new File(fileDialog.getCurrentDirectory(),
+                                            "plot.eps"));
+
         int returnVal = fileDialog.showDialog(this, "Export");
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = fileDialog.getSelectedFile();
@@ -537,12 +539,49 @@ public class PlotFrame extends JFrame {
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
+    /** Display only .eps files */
+    class EPSFileFilter extends FileFilter {
+
+        /** Accept only .eps files.
+         *  @param file The file to be checked.
+         *  @return true if the file is a directory, a .eps file
+         */
+        public boolean accept(File fileOrDirectory) {
+            if (fileOrDirectory.isDirectory()) {
+                return true;
+            }
+
+            String fileOrDirectoryName = fileOrDirectory.getName();
+            int dotIndex = fileOrDirectoryName.lastIndexOf('.');
+            if (dotIndex == -1) {
+                return false;
+            }
+            String extension =
+                fileOrDirectoryName
+                .substring(dotIndex);
+
+            if (extension != null) {
+                if (extension.equalsIgnoreCase(".eps")) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+            return false;
+        }
+
+        /**  The description of this filter */
+        public String getDescription() {
+            return "Encapsulated PostScript (.eps) files";
+        }
+    }
+
     /** Display only .plt and .xml files */
     class PLTOrXMLFileFilter extends FileFilter {
 
         /** Accept only .plt or .xml files.
          *  @param file The file to be checked.
-         *  @return true if the file is a directory, a .xml or a .moml file.
+         *  @return true if the file is a directory, a .plt or a .xml.
          */
         public boolean accept(File fileOrDirectory) {
             if (fileOrDirectory.isDirectory()) {
