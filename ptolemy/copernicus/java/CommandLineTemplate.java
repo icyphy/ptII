@@ -157,9 +157,12 @@ public class CommandLineTemplate {
             // Print out the standard stats at the end
             // so as not to break too many scripts
 
-            // FIXME: Need to have newline here so that we don't
-            // optimize the printlnt
-            System.out.println("\n" + buffer2.toString());
+            System.out.println(buffer2.toString());
+
+            // FIXME: Oddly, we need to have another statement here
+            // or else the println above gets optimized away if it
+
+            System.out.flush();
         }
     }
 
