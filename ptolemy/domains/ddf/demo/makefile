@@ -31,8 +31,8 @@
 ME =		ptolemy/domains/ddf/demo
 
 # Keep these alphabetical please.
-DIRS = 		DDFOrderedMerge Eratosthenes Factorial IfThenElse \
-		Loop RijndaelEncryption
+DIRS = 		Eratosthenes Factorial HanoiTower IfThenElse \
+		Loop OrderedMerge RijndaelEncryption
 
 # Root of Ptolemy II directory
 ROOT =		../../../..
@@ -47,11 +47,12 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-	DDFOrderedMerge/DDFOrderedMerge.jar \
 	Eratosthenes/Eratosthenes.jar \
 	Factorial/Factorial.jar \
+	HanoiTower/HanoiTower.jar \
 	IfThenElse/IfThenElse.jar \
 	Loop/Loop.jar \
+	OrderedMerge/OrderedMerge.jar \
 	RijndaelEncryption/RijndaelEncryption.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
