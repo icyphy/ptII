@@ -9,7 +9,7 @@
         </property>
         <property name="period" class="ptolemy.data.expr.Parameter" value="5.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="480.0, 345.0">
+        <property name="_location" class="ptolemy.moml.Location" value="97.0, 34.0">
         </property>
     </property>
     <entity name="Ramp1" class="ptolemy.actor.lib.Ramp">
@@ -20,7 +20,7 @@
         <property name="step" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="120.0, 225.0">
+        <property name="_location" class="ptolemy.moml.Location" value="81.0, 131.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -34,21 +34,31 @@
         <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="[0.0,1.0,2.0,3.0]">
         </property>
         <doc>The sdf delay actor, which behaves as an initial token on an arc.</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="360.0, 135.0">
+        <property name="_location" class="ptolemy.moml.Location" value="275.0, 131.0">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
+        <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
             <property name="input"/>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
         </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
+        <port name="output" class="ptolemy.domains.sdf.kernel.SDFIOPort">
             <property name="output"/>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
             <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="4">
+            </property>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
             </property>
         </port>
     </entity>
     <entity name="CurrentTime11" class="ptolemy.actor.lib.CurrentTime">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="360.0, 315.0">
+        <property name="_location" class="ptolemy.moml.Location" value="284.0, 261.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -63,7 +73,7 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="479.99998474121094, 105.0">
+        <property name="_location" class="ptolemy.moml.Location" value="435.99998474121094, 132.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -75,7 +85,7 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="479.99998474121094, 225.0">
+        <property name="_location" class="ptolemy.moml.Location" value="426.99998474121094, 261.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -83,7 +93,7 @@
         </port>
     </entity>
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="240.0, 225.0">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="189.0, 137.0">
         </vertex>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
