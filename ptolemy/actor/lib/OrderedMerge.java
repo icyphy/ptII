@@ -30,6 +30,7 @@ package ptolemy.actor.lib;
 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.ScalarToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
@@ -49,6 +50,10 @@ import ptolemy.kernel.util.Workspace;
    records the larger token.  On each subsequent firing, it reads a token
    from the input port that did not provide the recorded token, and produces
    at the output the smaller of the recorded token and the one just read.
+   Each time it produces an output token, it also produces
+   <i>true</i> on the <i>selectedA</i> output
+   if the output token came from <i>inputA</i>, and <i>false</i>
+   if it came from <i>inputB</i>.
    <p>
    If both input sequences are nondecreasing, then the output sequence
    will be nondecreasing.
@@ -84,7 +89,10 @@ public class OrderedMerge extends TypedAtomicActor {
 
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeSameAs(inputA);
-    }
+
+        selectedA = new TypedIOPort(this, "selectedA", false, true);
+        selectedA.setTypeEquals(BaseType.BOOLEAN);
+}
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
@@ -99,6 +107,11 @@ public class OrderedMerge extends TypedAtomicActor {
 
     /** The output port, which has the same type as the input ports. */
     public TypedIOPort output;
+    
+    /** Output port indicating whether the output token came from
+     *  <i>inputA</i>.
+     */
+    public TypedIOPort selectedA;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -123,7 +136,10 @@ public class OrderedMerge extends TypedAtomicActor {
      *  token (or <i>inputA</i>, on the first firing), and output the
      *  smaller of the recorded token or the newly read token.
      *  If there is no token on the port to be read, then do nothing
-     *  and return.
+     *  and return. If an output token is produced, then also produce
+     *  <i>true</i> on the <i>selectedA</i> output
+     *  if the output token came from <i>inputA</i>, and <i>false</i>
+     *  if it came from <i>inputB</i>.
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
@@ -132,15 +148,28 @@ public class OrderedMerge extends TypedAtomicActor {
             if (_recordedToken == null) {
                 // First firing.  Just record the token.
                 _tentativeRecordedToken = readToken;
+                _tentativeReadFromA = true;
                 _tentativeNextPort = inputB;
             } else {
                 if ((readToken.isLessThan(_recordedToken)).booleanValue()) {
                     // Produce the smaller output.
                     output.send(0, readToken);
+                    // Token was just read from _nextPort.
+                    if (_nextPort == inputA) {
+                    	selectedA.send(0, BooleanToken.TRUE);
+                    } else {
+                        selectedA.send(0, BooleanToken.FALSE);
+                    }
                 } else {
                     // Produce the smaller output.
                     output.send(0, _recordedToken);
+                    if (_readFromA) {
+                        selectedA.send(0, BooleanToken.TRUE);
+                    } else {
+                        selectedA.send(0, BooleanToken.FALSE);
+                    }
                     _tentativeRecordedToken = readToken;
+                    _tentativeReadFromA = (_nextPort == inputA);
 
                     // Swap ports.
                     if (_nextPort == inputA) {
@@ -168,6 +197,7 @@ public class OrderedMerge extends TypedAtomicActor {
      */
     public boolean postfire() throws IllegalActionException {
         _recordedToken = _tentativeRecordedToken;
+        _readFromA = _tentativeReadFromA;
         _nextPort = _tentativeNextPort;
         return super.postfire();
     }
@@ -194,6 +224,12 @@ public class OrderedMerge extends TypedAtomicActor {
 
     /** The port from which to read next. */
     private TypedIOPort _nextPort = null;
+    
+    /** Indicator of whether the _recordedToken was read from A. */
+    private boolean _readFromA;
+    
+    /** Tentative indicator of having read from A. */
+    private boolean _tentativeReadFromA;
 
     /** The tentative recorded token. */
     private ScalarToken _tentativeRecordedToken = null;
