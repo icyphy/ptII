@@ -260,14 +260,26 @@ public class CSPDirector extends ProcessDirector {
     public synchronized void wrapup() throws IllegalActionException {
         System.out.println(Thread.currentThread().getName() +
                 ": CSPDirector: about to end the model");
-        if ((_actorsDelayed !=0) || _topologyChangesPending
-                || (_actorsPaused != 0)){
+        //FIXME FIXME FIXME 
+        if ((_actorsDelayed !=0) || _topologyChangesPending ) {
+            //                || (_actorsPaused != 0)){
             /*throw new InvalidStateException( "CSPDirector wrapping up " +
                     "when there are actors delayed or paused, or when " +
                     "topology changes are pending.");*/
         }
         super.wrapup();
     }
+
+
+    //FIXME FIXME FIXME
+    public void setResumeRequested() {
+        //resume();
+    }
+
+    public void setPauseRequested() {
+        //pause();
+    }
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -312,30 +324,35 @@ public class CSPDirector extends ProcessDirector {
      *  If so, then wake up the director so that it can handle
      *  the deadlock.
      */
-    protected synchronized void _checkForDeadlock() {
-        System.out.println(Thread.currentThread().getName() +
-                ": _checkForDeadlock: Active = " +
-                _actorsActive + ", blocked = " + _actorsBlocked +
-                ", delayed = " + _actorsDelayed );
-        if (_actorsActive == (_actorsBlocked + _actorsDelayed)) {
-            this.notifyAll();
-        } else if (_pauseRequested) {
-            _checkForPause();
-        }
+    //FIXME FIXME FIXME: Made return type boolean
+    protected synchronized boolean _checkForDeadlock() {
+        // System.out.println(Thread.currentThread().getName() +
+//                 ": _checkForDeadlock: Active = " +
+//                 _actorsActive + ", blocked = " + _actorsBlocked +
+//                 ", delayed = " + _actorsDelayed );
+//         if (_actorsActive == (_actorsBlocked + _actorsDelayed)) {
+//             this.notifyAll();
+//         } else if (_pauseRequested) {
+//             _checkForPause();
+//         }
+        //FIXME FIXME FIXME
+        return false;
     }
 
     /** Check if all active processes are either blocked, delayed or
      *  paused. If so, then all of the processes cannot make any progress 
      *  and the model has been paused.
      */
-    protected synchronized void _checkForPause() {
-        if (_actorsBlocked + _actorsPaused + _actorsDelayed == _actorsActive) {
-            _paused = true;
-            System.out.println("CSPDirector: model successfully paused!");
-            // FIXME should throw a pauseEvent here
+    //FIXME FIXME FIXME 
+    protected synchronized boolean _checkForPause() {
+//         if (_actorsBlocked + _actorsPaused + _actorsDelayed == _actorsActive) {
+//             _paused = true;
+//             System.out.println("CSPDirector: model successfully paused!");
+//             // FIXME should throw a pauseEvent here
 
-        }
-        return;
+//         }
+        //FIXME FIXME FIXME
+        return false;
     }
 
     /** Determines how the director responds when a deadlock is
@@ -371,7 +388,9 @@ public class CSPDirector extends ProcessDirector {
      */
     protected synchronized boolean _handleDeadlock() {
         try {
-            if (_actorsActive == (_actorsBlocked + _actorsDelayed)) {
+            //FIXME FIXME FIXME
+            //if (_actorsActive == (_actorsBlocked + _actorsDelayed)) {
+              if (true) {
                 if (_topologyChangesPending) {
                     System.out.println("TOPOLOGY CHANGES PENDING!!");
                     _processTopologyRequests();
@@ -381,12 +400,16 @@ public class CSPDirector extends ProcessDirector {
                         Actor actor = (Actor)newActors.nextElement();
                         System.out.println("Adding and starting new actor; " +
                                 ((Nameable)actor).getName() + "\n");
-                        increaseActiveCount();
+                        //FIXME FIXME FIXME
+                        //increaseActiveCount();
                         actor.createReceivers();
                         actor.initialize();
                         String name = ((Nameable)actor).getName();
+                        //FIXME FIXME FIXME
+                        //ProcessThread pnt = new ProcessThread(actor,
+                                //        this, name);
                         ProcessThread pnt = new ProcessThread(actor,
-                                this, name);
+                                     this);
                         newThreads.insertFirst(pnt);
                     }
                     // Note we only start the threads after they have
@@ -396,7 +419,8 @@ public class CSPDirector extends ProcessDirector {
                             ProcessThread p =
                                 (ProcessThread)allThreads.nextElement();
                             p.start();
-                            _threadList.insertFirst(p);
+                            //FIXME FIXME FIXME 
+                            //_threadList.insertFirst(p);
                     }
                     _topologyChangesPending = false;
 
