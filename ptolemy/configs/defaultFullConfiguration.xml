@@ -42,10 +42,10 @@
     <input source="ptolemy/configs/fsmTableauFactory.xml"/>
     <input source="ptolemy/configs/graphTableauFactory.xml"/>
     <!-- Add the code generator to the full configuration. -->
-    <property name="factory2" class="ptolemy.actor.gui.PtolemyTableauFactory">
-       <property name="Code Generator"
-             class="ptolemy.copernicus.gui.GeneratorTableau$Factory"/>
-    </property>
+    <!-- property name="factory2" class="ptolemy.actor.gui.PtolemyTableauFactory"-->
+       <!--property name="Code Generator"
+             class="ptolemy.copernicus.gui.GeneratorTableau$Factory"/-->
+    <!--/property-->
     <input source="ptolemy/configs/extendedTableauFactories.xml"/>
   </property>
 
@@ -89,7 +89,7 @@
 	    <input source="ptolemy/actor/lib/jai/jai.xml"/>
             <input source="ptolemy/actor/lib/jmf/jmf.xml"/>
 	    <!-- Joystick actors depend on the Joystick interface being present  -->
-            <input source="ptolemy/actor/lib/joystick/joystick.xml"/>
+            <input source="ptolemy/actor/lib/joystick/jstick.xml"/>
             <input source="ptolemy/actor/lib/jxta/jxta.xml"/>
 	    <!-- matlab depends on Matlab being present -->
             <input source="ptolemy/matlab/matlab.xml"/>
