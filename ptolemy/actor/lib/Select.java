@@ -1,0 +1,146 @@
+/* A polymorphic select, which routes specified input channels to the output.
+
+ Copyright (c) 1997-2000 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
+
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
+
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
+
+                                        PT_COPYRIGHT_VERSION_2
+                                        COPYRIGHTENDKEY
+
+@ProposedRating Yellow (eal@eecs.berkeley.edu)
+@AcceptedRating Red (chf@eecs.berkeley.edu)
+*/
+
+package ptolemy.actor.lib;
+
+import ptolemy.actor.TypedIOPort;
+import ptolemy.data.IntToken;
+import ptolemy.data.Token;
+import ptolemy.data.type.BaseType;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.*;
+
+//////////////////////////////////////////////////////////////////////////
+//// Select
+/**
+A polymorphic select, which routes specified input channels to the output.
+This actor has two input ports, the <i>input</i> port for data,
+and the <i>control</i> port to select which input channel to read.
+In an iteration, if an input token is available at the <i>control</i>
+input, that token is read, and its value is noted.  Its value specifies
+the input channel that should be read next. If an input
+token is available on the specified channel of the <i>input</i> port,
+then that token is read and sent to the output.
+<p>
+The actor indicates a willingness to fire in its prefire() method
+if there is an input available on the channel specified by the most
+recently seen token on the <i>control</i> port.
+If no token has ever been received on the <i>control</i> port,
+then channel zero is assumed to be the one to read.
+If the value of the most recently received token
+on the <i>control</i> port is out of range (less than zero,
+or greater than or equal to the width of the input), then the actor
+will not fire() (although it will continue to consume tokens on
+the <i>control</i> port in its prefire() method).
+<p>
+In the DE domain, where this actor is commonly used, note
+that if a new value is given to the <i>control</i> port, then
+all previously unread input tokens on the specified input port
+will be read at the same firing time, in the order in which
+they arrived.  Thus, no input tokens are lost.
+
+@author Edward A. Lee
+*/
+
+public class Select extends Transformer {
+
+    /** Construct an actor in the specified container with the specified
+     *  name.
+     *  @param container The container.
+     *  @param name The name of this actor within the container.
+     *  @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the name coincides with
+     *   an actor already in the container.
+     */
+    public Select(CompositeEntity container, String name)
+            throws IllegalActionException, NameDuplicationException {
+        super(container, name);
+
+        input.setMultiport(true);
+        output.setTypeSameAs(input);
+
+        control = new TypedIOPort(this, "control", true, false);
+        control.setTypeEquals(BaseType.INT);
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     ports and parameters                  ////
+
+    /** Input port for control tokens, which specify the output channel
+     *  to produce data on.  The type is int. */
+    public TypedIOPort control;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** Read an input token from the specified input channel and produce
+     *  it on the output.
+     *  @exception IllegalActionException If there is no director.
+     */
+    public void fire() throws IllegalActionException {
+        // NOTE: We have probably read the token in prefire(), but we
+        // check anyway in case there is an iteration to a fixed point
+        // going on.
+        if (control.hasToken(0)) {
+            _control = ((IntToken)control.get(0)).intValue();
+        }
+        // Redo this check in case the control has changed since prefire().
+        if (input.hasToken(_control)) {
+            output.send(0, input.get(_control));
+        }
+    }
+
+    /** Read a control token, if there is one, and check to see
+     *  whether an input is available on the input channel specified by
+     *  the most recent control token, if it is in range.
+     *  Return false if there is no input token to read.
+     *  Otherwise, return whatever the superclass returns.
+     *  @return True if the actor is ready to fire.
+     *  @exception IllegalActionException If there is no director.
+     */
+    public boolean prefire() throws IllegalActionException {
+        if (control.hasToken(0)) {
+            _control = ((IntToken)control.get(0)).intValue();
+        }
+        if (_control < 0
+                || _control > input.getWidth()
+                || !input.hasToken(_control)) {
+            return false;
+        }
+        return super.prefire();
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    // The most recently read control token.
+    private int _control = 0;
+}

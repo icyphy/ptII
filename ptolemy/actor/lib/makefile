@@ -102,15 +102,18 @@ JSRCS = \
 	Sequencer.java \
 	SequenceSource.java \
 	Scale.java \
+	Select.java \
 	Sink.java \
 	Source.java \
 	SquareRoot.java \
+	Switch.java \
 	Synchronizer.java \
 	Test.java \
 	TimedActor.java \
 	TimedSource.java \
 	Transformer.java \
 	TrigFunction.java \
+	Uniform.java \
 	VariableClock.java \
 	Writer.java
 

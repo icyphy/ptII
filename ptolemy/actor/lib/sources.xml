@@ -47,6 +47,10 @@
 <doc>Create values from a sketch on the screen</doc>
 </entity>
 
+<entity name="Uniform" class="ptolemy.actor.lib.Uniform">
+<doc>Create a sequence of uniformly distributed random numbers</doc>
+</entity>
+
 <entity name="VariableClock" class="ptolemy.actor.lib.VariableClock">
 <doc>Create a sequence of tokens with increasing value</doc>
 </entity>
