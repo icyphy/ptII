@@ -32,7 +32,7 @@
 ME =		ptolemy/actor/lib/hoc/demo/HocDE
 
 # Root of the Java directory
-ROOT =		../../../../..
+ROOT =		../../../../../..
 
 CLASSPATH =	$(ROOT)
 
