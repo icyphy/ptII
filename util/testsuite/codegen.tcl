@@ -307,7 +307,7 @@ proc sootCodeGeneration {modelPath {codeGenType Shallow} \
 #    puts $results
     # If the model has a different name than the file name, we
     # handle it here.
-    set command runDemoTest
+    set command runDemo
     set results [exec make -C .. MODEL=$modelName \
 	    SOURCECLASS=$modelPath $command]
     puts $results
