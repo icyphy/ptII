@@ -83,7 +83,7 @@ test VersionAttribute-2.0 {compareTo} {
 		[$CURRENT_VERSION compareTo $v]]
     }
     list $results
-} {{{1.0 2.0-beta -1 1} {1.0.0 2.0-beta -1 1} {1.0-beta 2.0-beta -1 1} {2.0 2.0-beta -1 1} {2.0-devel 2.0-beta 1 -1} {2.0.alpha 2.0-beta -1 1} {2.0_beta 2.0-beta 0 0} {2.0-build003 2.0-beta 1 -1} {2.0-release-1 2.0-beta 1 -1} {3.0 2.0-beta 1 -1} {2.0-beta 2.0-beta 0 0}}}
+} {{{1.0 2.0.1 -1 1} {1.0.0 2.0.1 -1 1} {1.0-beta 2.0.1 -1 1} {2.0 2.0.1 -1 1} {2.0-devel 2.0.1 1 -1} {2.0.alpha 2.0.1 1 -1} {2.0_beta 2.0.1 1 -1} {2.0-build003 2.0.1 1 -1} {2.0-release-1 2.0.1 1 -1} {3.0 2.0.1 1 -1} {2.0.1 2.0.1 0 0}}}
 
 
 test VersionAttribute-3.0 {clone: This used to throw an exception because of NamedObj.clone() was not checking for final fields.} {
