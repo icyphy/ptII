@@ -105,7 +105,7 @@ No configuration will be created and no models will be opened.
 Derived classes can specify a configuration that opens some
 welcome window, or a blank editor.
 
-@author Edward A. Lee and Steve Neuendorffer
+@author Edward A. Lee and Steve Neuendorffer, Contributor: Christopher Hylands
 @version $Id$
 @since Ptolemy II 0.4
 @see Configuration
@@ -255,41 +255,6 @@ public class MoMLApplication {
         }
     }
 
-    /** Given a jar url of the format jar:<url>!/{entry}, return
-     *  the resource, if any of the {entry}.
-     *  If the string does not contain <code>!/</code>, then return null.
-
-     *  @param spec The string containing the jar url.
-     *  @exception IOException If it cannot convert the specification to
-     *   a URL.
-     *  @see java.net.JarURLConnection
-     */
-    public static URL jarURLEntryResource(String spec) throws IOException {
-	// At first glance, it would appear that this method could appear
-	// in specToURL(), but the problem is that specToURL() creates
-	// a new URL with the spec, so it only does further checks if
-	// the URL is malformed.  Unfortunately, in Web Start applications
-	// the URL will often refer to a resource in another jar file,
-	// which means that the jar url is not malformed, but there is
-	// no resource by that name.  Probably specToURL() should return
-	// the resource after calling new URL().
-	int jarEntry = spec.indexOf("!/");
-	if (jarEntry == -1) {
-	    return null;
-	} else {
-	    try {
-		// !/ means that this could be in a jar file.
-		String entry = spec.substring(jarEntry + 2);
-		Class refClass = Class.forName("ptolemy.kernel.util.NamedObj");
-		URL entryURL = refClass.getClassLoader().getResource(entry);
-		return entryURL;
-	    } catch (Exception ex) {
-                throw new IOException("File not found: " + spec + ": "
-                        + ex);
-	    }
-	}
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -407,11 +372,13 @@ public class MoMLApplication {
 
                         String key = inURL.toExternalForm();
 
-			long startTime = (new Date()).getTime();
+			//long startTime = (new Date()).getTime();
+
                         // Now defer to the model reader.
                         _config.openModel(base, inURL, key);
-			System.out.println("Model open done: " +
-					   Manager.timeAndMemory(startTime));
+
+			//System.out.println("Model open done: " +
+			//		   Manager.timeAndMemory(startTime));
 
                     } else {
                         // No configuration has been encountered.

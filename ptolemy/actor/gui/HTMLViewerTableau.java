@@ -176,7 +176,7 @@ public class HTMLViewerTableau extends Tableau {
 		    // we try again.
 		    String urlString = effigy.url.getURL().toString();
 		    URL anotherURL =
-			MoMLApplication.jarURLEntryResource(urlString);
+			JNLPUtilities.jarURLEntryResource(urlString);
 		    if (anotherURL == null) {
 			throw io;
 		    }
