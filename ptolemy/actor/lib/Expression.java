@@ -160,11 +160,13 @@ public class Expression extends TypedAtomicActor {
         while(inputPorts.hasNext()) {
             IOPort port = (IOPort)(inputPorts.next());
             // FIXME: Handle multiports
-            if(port.hasToken(0)) {
-                Token inputToken = port.get(0);
-                Variable var =
-                    (Variable)(getAttribute(port.getName()));
-                var.setToken(inputToken);
+            if (port.getWidth()>0) {
+                if(port.hasToken(0)) {
+                    Token inputToken = port.get(0);
+                    Variable var =
+                        (Variable)(getAttribute(port.getName()));
+                    var.setToken(inputToken);
+                }
             }
         }
         Token result = expression.getToken();
