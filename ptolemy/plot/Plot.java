@@ -214,7 +214,10 @@ public class Plot extends PlotBox {
      *  plot.  Data set indices begin with zero.  If the data set
      *  does not exist, create it.  The fourth argument indicates
      *  whether the point should be connected by a line to the previous
-     *  point.  The new point will be made visible if the plot is visible
+     *  point.  Regardless of the value of this argument, a line will not
+     *  drawn if either there has been no previous point for this dataset
+     *  or setConnected() has been called with a false argument.
+     *  The new point will be made visible if the plot is visible
      *  on the screen.  Otherwise, it will be drawn the next time the plot
      *  is drawn on the screen.
      *  @param dataset The data set index.
@@ -1947,6 +1950,8 @@ public class Plot extends PlotBox {
         }
 
         Vector pts = (Vector)_points.elementAt(dataset);
+        // If this is the first point in the dataset, clear the connected bit.
+        if (pts.size() == 0) pt.connected = false;
         pts.addElement(pt);
         if (_pointsPersistence > 0) {
             if (pts.size() > _pointsPersistence)
@@ -1988,8 +1993,10 @@ public class Plot extends PlotBox {
         // Draw the line to the previous point.
         long prevx = ((Long)_prevx.elementAt(dataset)).longValue();
         long prevy = ((Long)_prevy.elementAt(dataset)).longValue();
-        if (pt.connected) _drawLine(graphics, dataset, xpos, ypos,
-                prevx, prevy, true);
+        // MIN_VALUE is a flag that there has been no previous x or y.
+        if (pt.connected) {
+            _drawLine(graphics, dataset, xpos, ypos, prevx, prevy, true);
+        }
 
         // Save the current point as the "previous" point for future
         // line drawing.
