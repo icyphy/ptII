@@ -71,9 +71,10 @@ test Expression-2.1 {run with default empty expression} {
             [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
     set m [$e0 getManager]
     catch {$m execute} msg
-    list $msg
-} {{ptolemy.kernel.util.IllegalActionException: Expression yields a null result: 
-  in .top.expr}}
+    list [string range $msg 0 135]
+} {{ptolemy.kernel.util.IllegalActionException: Error parsing expression "":
+Encountered "<EOF>" at line 0, column 0.
+Was expecting one of:}}
 
 test Expression-3.1 {run with a simple expression} {
     set expression [java::field $expr expression]
