@@ -458,8 +458,8 @@ public class HDFDirector extends SDFDirector {
         //Director director = container.getDirector();
         Director exeDirector = container.getExecutiveDirector();
         if (exeDirector == null
-            || ! (exeDirector instanceof HDFDirector)
-            || ! (exeDirector instanceof HDFFSMDirector)
+            //|| (! (exeDirector instanceof HDFDirector))
+            //|| (! (exeDirector instanceof HDFFSMDirector))
             ) {
             //System.out.println(this.getFullName() 
             //    + " top director is rescheduling.");
