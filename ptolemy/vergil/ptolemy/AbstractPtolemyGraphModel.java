@@ -77,7 +77,8 @@ public abstract class AbstractPtolemyGraphModel extends ModularGraphModel {
     public AbstractPtolemyGraphModel(CompositeEntity composite) {
 	super(composite);
 	_composite = composite;
-        composite.addChangeListener(new GraphChangeListener());
+        _graphChangeListener = new GraphChangeListener();
+        composite.addChangeListener(_graphChangeListener);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -216,6 +217,13 @@ public abstract class AbstractPtolemyGraphModel extends ModularGraphModel {
                 " to be changed");
     }
 
+    /** Remove any listeners we have created. The frame displaying this
+     *  graph model should call this function when the frame is closed.
+     */
+    public void removeListeners() {
+        _composite.removeChangeListener(_graphChangeListener);
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -280,6 +288,9 @@ public abstract class AbstractPtolemyGraphModel extends ModularGraphModel {
 
     // The model for composite entities.
     private CompositeEntityModel _compositeModel = new CompositeEntityModel();
+
+    // Our change listener on _composite.
+    private GraphChangeListener _graphChangeListener;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////

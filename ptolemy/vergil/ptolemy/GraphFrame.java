@@ -841,6 +841,19 @@ public abstract class GraphFrame extends PtolemyFrame
         }
     }
 
+    /** Remove the listeners we have created when the frame closes.
+     *  Remove our panner-updating listener from the entity.
+     *  Also remove the listeners our graph model has created.
+     */
+    protected boolean _close() {
+        getModel().removeChangeListener(this);
+        GraphModel gm = _jgraph.getGraphPane().getGraphModel();
+        if (gm instanceof AbstractPtolemyGraphModel) {
+            ((AbstractPtolemyGraphModel)gm).removeListeners();
+        }
+        return super._close();
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
