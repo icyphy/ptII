@@ -265,6 +265,11 @@ public class GeneratorTableau extends Tableau {
 							       + directoryName
 							       );
                             }
+			    // True if we should run jode, jad or javap
+			    boolean disassemble = false;
+			    boolean show =
+				((BooleanToken)options.show.getToken())
+				.booleanValue();
 			    boolean run =
 				((BooleanToken)options.run.getToken())
 				.booleanValue();
@@ -292,9 +297,7 @@ public class GeneratorTableau extends Tableau {
 				exec.updateStatusBar("Code generation "
 						     + "complete.");
 
-				// FIXME: we should run javap or jode if
-				// show is selected
-
+				disassemble = true;
 			    } else if (((BooleanToken)options
 				 .generateC.getToken())
 				.booleanValue()) {
@@ -308,9 +311,7 @@ public class GeneratorTableau extends Tableau {
 						   directoryName);
 				exec.updateStatusBar("Code generation "
 						     + "complete.");
-				// FIXME: we should run javap or jode if
-				// show is selected
-
+				disassemble = true;
 			    } else if (((BooleanToken)options
 				   .ssbShallow.getToken())
 				   .booleanValue()) {
@@ -330,9 +331,6 @@ public class GeneratorTableau extends Tableau {
 				exec.updateStatusBar("Code generation "
 						     + "complete.");
 				// Handle the show checkbox.
-				boolean show =
-				    ((BooleanToken)options.show.getToken())
-				    .booleanValue();
 				if (show) {
 				    URL codeFile = destination.toURL();
 				    Configuration config =
@@ -360,7 +358,6 @@ public class GeneratorTableau extends Tableau {
 						     + ".java");
 				}
 			    } else if (((BooleanToken)options
-
 				   .jhdl.getToken())
 				       .booleanValue()) {
 				// FIXME: we should disable the compile
@@ -373,22 +370,30 @@ public class GeneratorTableau extends Tableau {
 						   directoryName);
 				exec.updateStatusBar("Code generation "
 						     + "complete.");
-				// FIXME: we should run javap or jode if
-				// show is selected
 			    }
 
+			    String className = options
+				.packageName.getExpression();
+			    if (className.length() > 0
+				&& ! className.endsWith(".") ) {
+				className = className + '.'
+				    + model.getName();
+			    } else {
+				className = model.getName();
+			    }
+
+			    String runOptions = options
+				.runOptions.getExpression();
+
+			    if (show && disassemble) {
+				// FIXME: we should allow the user
+				// to select between jode, jad and javap.
+				execCommands.add("javap "
+						 + runOptions
+						 + " "
+						 + className);
+			    }
                             if (run) {
-                                String runOptions = options
-                                    .runOptions.getExpression();
-                                String className = options
-                                    .packageName.getExpression();
-                                if (className.length() > 0
-                                        && ! className.endsWith(".") ) {
-                                    className = className + '.'
-					+ model.getName();
-                                } else {
-                                    className = model.getName();
-                                }
                                 execCommands.add("java "
                                         + runOptions
                                         + " ptolemy.actor.gui"
