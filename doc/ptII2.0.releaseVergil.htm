@@ -3,7 +3,7 @@
 <html>
 <head>
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
-<title>Ptolemy II 2.0-beta Release Notes</title>
+<title>Ptolemy II 2.0.1 Release Notes</title>
 <link href="default.css" rel="stylesheet" type="text/css">
 </head>
 <body>
@@ -21,14 +21,6 @@ than 100 characters.  If you do not have GNU tar, you can obtain
 source and selected binaries from 
 ftp://ptolemy.eecs.berkeley.edu/pub/gnu.
 
-<li> The Ptolemy II 2.0-beta release does not include the design
-document.  We will include an updated version of the design document
-in the full release.  The Ptolemy II 1.0 design document can be found
-in:
-
-<a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/designdoc.htm#in_browser">Ptolemy Web Site</a>
-
-
 <li> Instructions for adding an actor may be found at
 <a href="http://ptolemy.eecs.berkeley.edu/~cxh/ptpub/addinganactor.htm"><CODE>http://ptolemy.eecs.berkeley.edu/~cxh/ptpub/addinganactor.htm</CODE></a>
 
@@ -41,9 +33,6 @@ the internal hyperlinks refer to usingVergil.html instead of index.htm
 included in the release.
 
 
-<li> Ptolemy II will not configure and build properly if the pathname leading 
-up to the Ptolemy II directory contains a space. 
-
 <li> Applet issues:
 	<ul>
 	<li>   Look inside on a composite actor fails :
@@ -55,8 +44,6 @@ up to the Ptolemy II directory contains a space.
 		<li> SDF Expression, FixPoint, LMSAdaptive, MaximumEntropy
 		</ul>
 
-
-	<li> SDF Spectrum plot is not filled at the end
 
 <li> The DDE Zeno demo produces an error message in the Java Plug-in console
 window:
@@ -104,7 +91,6 @@ not on the local file system, so we get a SecurityException.
 
 <li> Web Start issues:
 	<ul>
-	<li> Applet generation still does not work in the Web Edition
 	<li> Invoking a pdf file or the code generator brings up a blank
 	 window.
 	<li> Web Start is limited to about 65Mb of memory
@@ -169,6 +155,10 @@ Below are some of the limitations of Vergil, the Ptolemy II Graphical
 User Interface.
 
 <ul>
+
+<li> Under JDK1.3.1_03, the tool tips do not work.  They work under
+JDK1.3.1_02.
+
 <li> You should not change the names of built in ports - The port
 mechanism should disallow port name changes on ports that are
 named in Java.  The UI could recognize this.  The UI should
@@ -180,9 +170,6 @@ have constraints on their element types can cause problems.
 
 <li> HTVQ demo is badly laid out when run under vergil
 	
-<li> The Vergil HTML Viewer does not correctly handle internal hyperlinks.
-The codegen page is especially difficult to use because of this.
-
 <li>No undo mechanism.
 <li>Weak support for multiports in the graph editor.
 <li>It is difficult to control wire routing.
