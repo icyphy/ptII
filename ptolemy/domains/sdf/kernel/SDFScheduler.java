@@ -418,6 +418,90 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
         _firingVectorValid = true;
     }
 
+    /** Normalize fractional firing ratios into a firing vector that
+     *  corresponds to a single SDF iteration. Multiply all of the
+     *  fractions by the least common multiple (LCM) of their
+     *  denominators and by the given vectorizationFactor.  This factor
+     *  is normally the integer value of the vectorizationFactor 
+     *  parameter of the director.  Also multiply the production and
+     *  consumption rates of the external ports of the model by the 
+     *  same amount.
+     *
+     *  @param vectorizationFactor An integer scaling factor to multiply
+     *  the firing vector by.
+     *  @param entityToFiringsPerIteration 
+     *  Map of firing ratios to be normalized.
+     *  @param externalRates Map of token production rates that will
+     *  be scaled along with the entityToFiringsPerIteration map.
+     *  @exception InternalErrorException If the calculated LCM does not
+     *  normalize all of the fractions.
+     */
+    protected void _normalizeFirings(int vectorizationFactor,
+            Map entityToFiringsPerIteration, Map externalRates) {
+        int lcm = 1;
+
+        if (_debugging && VERBOSE) {
+            _debug("Normalizing Firings");
+            _debug("vectorizationFactor = " + vectorizationFactor);
+        }
+
+        // First find the lcm of all the denominators of all the
+        // computed firingsPerIteration.
+        for (Iterator unnormalizedFirings = 
+                 entityToFiringsPerIteration.values().iterator();
+             unnormalizedFirings.hasNext();) {
+            Fraction fraction = (Fraction)unnormalizedFirings.next();
+            int denominator = fraction.getDenominator();
+            lcm = Fraction.lcm(lcm, denominator);
+        }
+
+        if (_debugging && VERBOSE) {
+            _debug("lcm = " + (new Integer(lcm)).toString());
+        }
+
+        Fraction lcmFraction = new Fraction(lcm * vectorizationFactor);
+
+        // Go back through and multiply by the lcm we just found, which
+        // should normalize all the fractions to integers.
+        for (Iterator actors = entityToFiringsPerIteration.keySet().iterator();
+             actors.hasNext();) {
+            Object actor = actors.next();
+            if (_debugging && VERBOSE) {
+                _debug("Normalizing Actor " +
+                        ((ComponentEntity) actor).getName());
+            }
+            Fraction repetitions = 
+                (Fraction)entityToFiringsPerIteration.get(actor);
+            repetitions = repetitions.multiply(lcmFraction);
+            if (repetitions.getDenominator() != 1) {
+                throw new InternalErrorException(
+                        "Failed to properly perform " +
+                        "fraction normalization");
+            }
+            entityToFiringsPerIteration.put(actor, 
+                    new Integer(repetitions.getNumerator()));
+        }
+
+        // Go through the ports and normalize the external production
+        // and consumption rates by the same factor.
+        for (Iterator ports = externalRates.keySet().iterator();
+             ports.hasNext();) {
+            Object port = ports.next();
+            if (_debugging && VERBOSE) {
+                _debug("Normalizing Rate for " +
+                        ((ComponentPort) port).getName());
+            }
+            Fraction rate = (Fraction) externalRates.get(port);
+            rate = rate.multiply(lcmFraction);
+            if (rate.getDenominator() != 1) {
+                throw new InternalErrorException(
+                        "Failed to properly perform " +
+                        "fraction normalization");
+            }
+            externalRates.put(port, new Integer(rate.getNumerator()));
+        }
+    }
+
     /** Solve the balance equations for the list of connected Actors.
      *  For each actor, determine the ratio that determines the rate at
      *  which it should fire relative to the other actors for the graph to
@@ -776,90 +860,6 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
      */
     private int _getFiringCount(Entity entity) {
         return ((Integer) _firingVector.get(entity)).intValue();
-    }
-
-    /** Normalize fractional firing ratios into a firing vector that
-     *  corresponds to a single SDF iteration.   Multiply all of the
-     *  fractions by the least common multiple (LCM)
-     *  of their denominators and by the given
-     *  vectorizationFactor.  This factor is normally the
-     *  integer value of the vectorizationFactor parameter of the
-     *  director.  Also multiply the production and consumption rates
-     *  of the external ports of the model by the same amount.
-     *
-     *  @param vectorizationFactor An integer scaling factor to multiply
-     *  the firing vector by.
-     *  @param entityToFiringsPerIteration 
-     *  Map of firing ratios to be normalized.
-     *  @param externalRates Map of token production rates that will
-     *  be scaled along with the entityToFiringsPerIteration map.
-     *  @exception InternalErrorException If the calculated LCM does not
-     *  normalize all of the fractions.
-     */
-    private void _normalizeFirings(int vectorizationFactor,
-            Map entityToFiringsPerIteration, Map externalRates) {
-        int lcm = 1;
-
-        if (_debugging && VERBOSE) {
-            _debug("Normalizing Firings");
-            _debug("vectorizationFactor = " + vectorizationFactor);
-        }
-
-        // First find the lcm of all the denominators of all the
-        // computed firingsPerIteration.
-        for (Iterator unnormalizedFirings = 
-                 entityToFiringsPerIteration.values().iterator();
-             unnormalizedFirings.hasNext();) {
-            Fraction fraction = (Fraction)unnormalizedFirings.next();
-            int denominator = fraction.getDenominator();
-            lcm = Fraction.lcm(lcm, denominator);
-        }
-
-        if (_debugging && VERBOSE) {
-            _debug("lcm = " + (new Integer(lcm)).toString());
-        }
-
-        Fraction lcmFraction = new Fraction(lcm * vectorizationFactor);
-
-        // Go back through and multiply by the lcm we just found, which
-        // should normalize all the fractions to integers.
-        for (Iterator actors = entityToFiringsPerIteration.keySet().iterator();
-             actors.hasNext();) {
-            Object actor = actors.next();
-            if (_debugging && VERBOSE) {
-                _debug("Normalizing Actor " +
-                        ((ComponentEntity) actor).getName());
-            }
-            Fraction repetitions = 
-                (Fraction)entityToFiringsPerIteration.get(actor);
-            repetitions = repetitions.multiply(lcmFraction);
-            if (repetitions.getDenominator() != 1) {
-                throw new InternalErrorException(
-                        "Failed to properly perform " +
-                        "fraction normalization");
-            }
-            entityToFiringsPerIteration.put(actor, 
-                    new Integer(repetitions.getNumerator()));
-        }
-
-        // Go through the ports and normalize the external production
-        // and consumption rates by the same factor.
-        for (Iterator ports = externalRates.keySet().iterator();
-             ports.hasNext();) {
-            Object port = ports.next();
-            if (_debugging && VERBOSE) {
-                _debug("Normalizing Rate for " +
-                        ((ComponentPort) port).getName());
-            }
-            Fraction rate = (Fraction) externalRates.get(port);
-            rate = rate.multiply(lcmFraction);
-            if (rate.getDenominator() != 1) {
-                throw new InternalErrorException(
-                        "Failed to properly perform " +
-                        "fraction normalization");
-            }
-            externalRates.put(port, new Integer(rate.getNumerator()));
-        }
     }
 
     /** Search the given list of actors for one that contains at least
