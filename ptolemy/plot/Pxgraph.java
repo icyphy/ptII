@@ -144,7 +144,7 @@ grid lines (see <code>-tk</code>).
 <b>In the Java version, this argument takes hexadecimal color values 
 (<code>fffff</code>), not color names.</b>
 
-<dt><code>-binary</code>
+<dt><a name="-binary flag"><code>-binary</code></a>
 <dd>Data files are in binary format.  The <code>-binary</code>
 argument is the primary difference between <code>xgraph</code>
 and <code>pxgraph</code>.  The 
