@@ -49,29 +49,6 @@ provide additional information about the error).
 */
 public class NameDuplicationException extends KernelException {
 
-    /** Given containee only.
-     *  @param wouldBeContainee The would be containee.
-     */
-    public NameDuplicationException(Nameable wouldBeContainee) {
-        _setMessage("Attempt to insert object named \"" +
-                _getName(wouldBeContainee) +
-                "\" into a container that already contains" +
-                " an object with that name.");
-    }
-
-    /** Given containee and string.
-     *  @param wouldBeContainee The would be containee.
-     *  @param moreInfo A message.
-     */
-    public NameDuplicationException(Nameable wouldBeContainee,
-            String moreInfo) {
-        _setMessage("Attempt to insert object named \"" +
-                _getName(wouldBeContainee) +
-                "\" into a container that already contains" +
-                " an object with that name. " +
-                moreInfo);
-    }
-
     /** Given container and containee.
      *  @param wouldBeContainee The would be containee.
      *  @param container The would be container.
