@@ -193,6 +193,7 @@ public class HDFFSMDirector extends FSMDirector {
             // FIXME
             //ref.fire();
             ref[0].fire();
+            //ref[0].postfire();
             _setInputsFromRefinement();
         }
         if (_firingsSoFar == _firingsPerIteration - 1) {
@@ -217,7 +218,7 @@ public class HDFFSMDirector extends FSMDirector {
 
     /** If this method is called immediately after preinitialze(),
      *  initialize the mode controller and all the refinements.
-     *  If this is a reinitialization, which typically means this
+     *  If this is a reinitialization, it typically means this
      *  is a sub-layer HDFFSMDirector and a "reset" has been called
      *  at the upper-level HDFFSMDirector. This method will then
      *  reinitialize all the refinements in the sub-layer, recompute
@@ -243,9 +244,9 @@ public class HDFFSMDirector extends FSMDirector {
                 // FIXME
                 //(TypedCompositeActor)initialState.getRefinement();
                 (TypedCompositeActor)(initialState.getRefinement())[0];
-            _setCurrentConnectionMap();
-            _currentLocalReceiverMap =
-                (Map)_localReceiverMaps.get(initialState);
+            //_setCurrentConnectionMap();
+            //_currentLocalReceiverMap =
+            //    (Map)_localReceiverMaps.get(initialState);
             if (curRefinement != null) {
                 Director refinementDir = curRefinement.getDirector();
                 if (refinementDir instanceof HDFFSMDirector) {
@@ -259,7 +260,7 @@ public class HDFFSMDirector extends FSMDirector {
                 } else if (refinementDir instanceof SDFDirector) {
                     Scheduler refinmentSched = ((StaticSchedulingDirector)
                         refinementDir).getScheduler();
-                    refinmentSched.setValid(false);
+                    refinmentSched.setValid(true);
                     ((SDFScheduler)refinmentSched).getSchedule();
                 } else {
                     // Invalid director.
@@ -356,9 +357,9 @@ public class HDFFSMDirector extends FSMDirector {
                 superPostfire = super.postfire();
                 curState = newState;
                 // Set up the new connection map and receivers.
-                _setCurrentConnectionMap();
-                _currentLocalReceiverMap =
-                    (Map)_localReceiverMaps.get(ctrl.currentState());
+                //_setCurrentConnectionMap();
+                //_currentLocalReceiverMap =
+                  //  (Map)_localReceiverMaps.get(ctrl.currentState());
 
                 // Get the new current refinement actor.
                 // FIXME
@@ -428,7 +429,7 @@ public class HDFFSMDirector extends FSMDirector {
 
         FSMActor ctrl = getController();
         State initialState = ctrl.getInitialState();
-
+        _setCurrentState(initialState);
         // Get the current refinement.
         TypedCompositeActor curRefinement =
             // FIXME
@@ -605,42 +606,39 @@ public class HDFFSMDirector extends FSMDirector {
      *  @param directorFiringsPerIteration Number of firings per global
      *  iteration of the current director. It is also the number of
      *  firings per global iteration of the current refinement.
-     *  @param preinitializeFlag A flag indicating whether this method
-     *  is called in the preinitialize method.
      *  @exception IllegalActionException If no controller or current
      *  refinement can be found, or if the HDFDirector
      *  updateFiringsPerIteration method throws it.
      */
-    public void updateFiringsPerIteration
-            (int directorFiringsPerIteration, boolean preinitializeFlag)
+    public void updateFiringsPerIteration (int directorFiringsPerIteration)
             throws IllegalActionException {
         FSMActor ctrl = getController();
         State currentState;
 
         TypedCompositeActor currentRefinement;
         // Get the current refinement.
-        if (preinitializeFlag) {
-            currentState = ctrl.getInitialState();
-            currentRefinement =
-                (TypedCompositeActor)(currentState.getRefinement())[0];
-        } else {
-            currentState = ctrl.currentState();
-            currentRefinement =
-                 // FIXME
-                 //(TypedCompositeActor)initialState.getRefinement();
-                (TypedCompositeActor)(currentState.getRefinement())[0];
-        }
+        //if (preinitializeFlag) {
+        //    currentState = ctrl.getInitialState();
+        //    currentRefinement =
+        //        (TypedCompositeActor)(currentState.getRefinement())[0];
+        //} else {
+        currentState = ctrl.currentState();
+        currentRefinement =
+            // FIXME
+            //(TypedCompositeActor)currentState.getRefinement();
+            (TypedCompositeActor)(currentState.getRefinement())[0];
+        //}
         if (currentRefinement != null) {
             Director refinementDir = currentRefinement.getDirector();
             if (refinementDir instanceof HDFFSMDirector) {
                 ((HDFFSMDirector)refinementDir).updateFiringsPerIteration(
-                    directorFiringsPerIteration, preinitializeFlag);
+                    directorFiringsPerIteration);
             } else if (refinementDir instanceof HDFDirector) {
                 ((HDFDirector)refinementDir).
                     setDirectorFiringsPerIteration(
                     directorFiringsPerIteration);
                 ((HDFDirector)refinementDir).updateFiringsPerIteration(
-                    directorFiringsPerIteration, preinitializeFlag);
+                    directorFiringsPerIteration);
             }
         }
     }

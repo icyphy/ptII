@@ -313,7 +313,7 @@ public class HDFDirector extends SDFDirector {
                && (! (exeDirector instanceof HDFDirector)))) {
             //getSchedule();
             _directorFiringsPerIteration = 1;
-            updateFiringsPerIteration(1, false);
+            updateFiringsPerIteration(1);
         }
         return super.postfire();
     }
@@ -337,7 +337,7 @@ public class HDFDirector extends SDFDirector {
         Director exeDirector = container.getExecutiveDirector();
         if (exeDirector == null) {
             _directorFiringsPerIteration = 1;
-            updateFiringsPerIteration(1, true);
+            updateFiringsPerIteration(1);
         }
     }
 
@@ -355,14 +355,11 @@ public class HDFDirector extends SDFDirector {
      *  @param directorFiringsPerIteration The number of firings
      *  per global iteration of the container that contains this
      *  director.
-     *  @param preinitializeFlag Flag indicating whether this
-     *  method is called in the preinitialize() method.
      *  @exception IllegalActionException If no schedule can be found,
      *  or if the updateFiringsPerIteration method in HDFFSMDirector
      *  throws it.
      */
-    public void updateFiringsPerIteration
-        (int directorFiringsPerIteration, boolean preinitializeFlag)
+    public void updateFiringsPerIteration (int directorFiringsPerIteration)
             throws IllegalActionException {
         CompositeActor container = (CompositeActor)getContainer();
         Scheduler scheduler = ((SDFDirector)this).getScheduler();
@@ -378,15 +375,15 @@ public class HDFDirector extends SDFDirector {
                         firingCount * directorFiringsPerIteration;
                     ((HDFFSMDirector)director)
                         .setFiringsPerIteration(firingCount);
-                    ((HDFFSMDirector)director).updateFiringsPerIteration(
-                        firingCount, preinitializeFlag);
+                    ((HDFFSMDirector)director).
+                        updateFiringsPerIteration(firingCount);
                 } else if (director instanceof HDFDirector) {
                     firingCount =
                         firingCount * directorFiringsPerIteration;
                     ((HDFDirector)director)
                         .setDirectorFiringsPerIteration(firingCount);
-                    ((HDFDirector)director).updateFiringsPerIteration(
-                        firingCount, preinitializeFlag);
+                    ((HDFDirector)director).
+                        updateFiringsPerIteration(firingCount);
                 }
             }
         }
