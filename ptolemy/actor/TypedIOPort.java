@@ -297,18 +297,19 @@ public class TypedIOPort extends IOPort implements Typeable {
         Token token = null;
         try {
             _workspace.getReadAccess();
-            // Only do type checking on the 1st token for
-            // performance reasons.
-            token = tokenArray[0];
-            int compare = TypeLattice.compare(token.getType(),
-                    _resolvedType);
-            if (compare == CPO.HIGHER || compare == CPO.INCOMPARABLE) {
-                throw new IllegalActionException(
-                        "Run-time type checking failed. Token type: "
-                        + token.getType().toString() + ", port: "
-                        + getFullName() + ", port type: "
-                        + getType().toString());
-            }
+	    // check types
+	    for (int i=0; i<tokenArray.length; i++) {
+                token = tokenArray[i];
+                int compare = TypeLattice.compare(token.getType(),
+                                                  _resolvedType);
+                if (compare == CPO.HIGHER || compare == CPO.INCOMPARABLE) {
+                    throw new IllegalActionException(
+                            "Run-time type checking failed. Token type: "
+                            + token.getType().toString() + ", port: "
+                            + getFullName() + ", port type: "
+                            + getType().toString());
+                }
+	    }
             farReceivers = getRemoteReceivers();
             if (farReceivers == null) {
                 return;
@@ -326,7 +327,15 @@ public class TypedIOPort extends IOPort implements Typeable {
                     TypedIOPort port =
                         (TypedIOPort)farReceivers[i][j].getContainer();
                     Type farType = port.getType();
-                    if (farType.equals(token.getType())) {
+
+		    boolean needConversion = false;
+		    for (int k=0; k<tokenArray.length; k++) {
+                        if ( !farType.equals(tokenArray[k].getType())) {
+			    needConversion = true;
+			}
+		    }
+
+		    if (!needConversion) {
                         // Good, no conversion necessary.
                         farReceivers[i][j].putArray(tokenArray, vectorLength);
                     } else {
@@ -595,18 +604,19 @@ public class TypedIOPort extends IOPort implements Typeable {
         try {
             try {
                 _workspace.getReadAccess();
-                // Only do type checking on the 1st token for
-                // performance reasons.
-                token = tokenArray[0];
-                int compare = TypeLattice.compare(token.getType(),
-                        _resolvedType);
-                if (compare == CPO.HIGHER || compare == CPO.INCOMPARABLE) {
-                    throw new IllegalActionException(
-                            "Run-time type checking failed. Token type: "
-                            + token.getType().toString() + ", port: "
-                            + getFullName() + ", port type: "
-                            + getType().toString());
-                }
+		// check types
+		for (int i=0; i<tokenArray.length; i++) {
+                    token = tokenArray[i];
+                    int compare = TypeLattice.compare(token.getType(),
+                                                      _resolvedType);
+                    if (compare == CPO.HIGHER || compare == CPO.INCOMPARABLE) {
+                        throw new IllegalActionException(
+                                "Run-time type checking failed. Token type: "
+                                + token.getType().toString() + ", port: "
+                                + getFullName() + ", port type: "
+                                + getType().toString());
+                    }
+		}
                 // Note that the getRemoteReceivers() method doesn't throw
                 // any non-runtime exception.
                 farReceivers = getRemoteReceivers();
@@ -622,7 +632,15 @@ public class TypedIOPort extends IOPort implements Typeable {
                 TypedIOPort port =
                     (TypedIOPort)farReceivers[channelIndex][j].getContainer();
                 Type farType = port.getType();
-                if (farType.equals(token.getType())) {
+
+		boolean needConversion = false;
+		for (int k=0; k<tokenArray.length; k++) {
+                    if ( !farType.equals(tokenArray[k].getType())) {
+		        needConversion = true;
+		    }
+		}
+
+                if ( !needConversion) {
                     // Good, no conversion necessary.
                     farReceivers[channelIndex][j].putArray(tokenArray,
                             vectorLength);
