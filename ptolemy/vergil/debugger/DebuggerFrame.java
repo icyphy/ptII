@@ -97,8 +97,6 @@ import ptolemy.vergil.ptolemy.*;
    also implemented;
 @author SUPELEC team
 @version $Id$
-@see DebuggerUI
-@see ptolemy.vergil.debugger.MMI.DebuggerUI
 */
 public class DebuggerFrame extends PtolemyFrame
     implements ActionListener, ItemListener {
