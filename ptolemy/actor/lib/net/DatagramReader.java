@@ -187,9 +187,10 @@ import java.net.UnknownHostException;
    (Based on TiltSensor actor written
    by Chamberlain Fong, Xiaojun Liu, Edward Lee)
    @version $Id$
-   @since Ptolemy II 2.0 */
+   @since Ptolemy II 2.0
    @Pt.ProposedRating Yellow (winthrop@robotics.eecs.berkeley.edu)
    @Pt.AcceptedRating Yellow (winthrop@robotics.eecs.berkeley.edu)
+*/
 public class DatagramReader extends TypedAtomicActor {
 
     /** Construct an actor with the given container and name.
