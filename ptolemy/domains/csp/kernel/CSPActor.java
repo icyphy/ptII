@@ -574,7 +574,7 @@ public class CSPActor extends AtomicActor {
 
     // Contains the number of conditional branches that are still
     // active.
-    private int _branchesActive= 0;
+    private int _branchesActive = 0;
 
     // Contains the number of conditional branches that are blocked
     // trying to rendezvous.
