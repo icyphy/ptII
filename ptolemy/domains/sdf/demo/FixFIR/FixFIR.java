@@ -210,7 +210,7 @@ public class FixFIR extends SDFApplet implements QueryListener {
             // Go from Rectangular coordinates to Polar coordinates
             _rtop = new RectangularToPolar(_transform,"RecToPolar");
 
-            // Go from Real to Decible
+            // Go from Real to Decibel
             _rtod = new dB(_transform, "dB");
 
             // Connect the actors inside the FFT transform
