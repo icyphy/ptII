@@ -69,10 +69,10 @@ public class PNSink extends PNActor{
                     data = (Token)readFrom(_input, outport);
                 }
             }
-            System.out.println("Terminating at al "+this.getName());
+            // System.out.println("Terminating at al "+this.getName());
             ((PNDirector)getDirector()).processStopped();
         } catch (NoSuchElementException e) {
-	    System.out.println("Terminating "+this.getName());
+	    // System.out.println("Terminating "+this.getName());
             return;
         }
     }
