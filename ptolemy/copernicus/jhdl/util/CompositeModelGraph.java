@@ -81,7 +81,7 @@ public class CompositeModelGraph extends ModelGraph {
 		entityWeight = new CompositeModelGraph((CompositeActor) entity,_options);
 	    else if (entity instanceof AtomicActor)
 		entityWeight = new ActorModelGraph((AtomicActor) entity,
-						   _options);
+                        _options);
 	    else
 		entityWeight = new ModelGraph(entity);
 

@@ -61,7 +61,7 @@ public class JHDLTestbench extends Logic implements TestBench{
     }
 
     public JHDLTestbench(HWSystem parent, String testbenchname, 
-			 String cellname) {
+            String cellname) {
 	super(parent,testbenchname);
 	_inputWires = new Vector();
 	_outputWires = new Vector();
