@@ -175,6 +175,9 @@ JDOCMEMORY =	-J-Xmx132m
 # Diva uses @rating
 JDOCTAG = 	-tag rating -tag Pt.AcceptedRating -tag Pt.ProposedRating
 
+# Javadoc taglet
+JDOCTAGLET =	-tagletpath $PTII -taglet doc.doclets.RatingTaglet
+
 # Doccheck is a doclet that checks for bugs
 # Location of the doccheck jar file, available from
 # http://java.sun.com/developer/earlyAccess/doccheck/
@@ -190,7 +193,7 @@ JDOCSOURCEFLAGS = -source 1.4
 JDOCCHECKFLAGS = $(JDOCBREAKITERATOR) $(JDOCMEMORY) $(JDOCSOURCEFLAGS)
 
 # Flags to pass to javadoc.
-JDOCFLAGS = 	-author -version $(JDOCCHECKFLAGS) $(JDOCTAG)
+JDOCFLAGS = 	-author -version $(JDOCCHECKFLAGS) $(JDOCTAG) $(JDOCTAGLET)
 
 # The jar command, used to produce jar files, which are similar to tar files
 JAR =		$(PTJAVA_DIR)/bin/jar

@@ -27,7 +27,7 @@ COPYRIGHTENDKEY
 */
 
 
-package ptolemy.util;
+package doc.doclets;
 
 import com.sun.tools.doclets.Taglet;
 import com.sun.javadoc.*;
