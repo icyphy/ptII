@@ -32,7 +32,8 @@
 ME =		ptII/doc/design
 
 # Sub directories to run make in.
-DIRS =		src
+# Don't include src directory, since we don't ship it with the release
+DIRS =		#src
 
 # Root of Ptolemy II directory
 ROOT =		../..
