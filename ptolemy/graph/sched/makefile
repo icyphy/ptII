@@ -45,12 +45,7 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE =     sched
-PTCLASSJAR =
-
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-
-PTCLASSALLJAR = $(PTPACKAGE).jar
+PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS = \
         Firing.java\
