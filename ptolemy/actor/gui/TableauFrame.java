@@ -56,6 +56,7 @@ import ptolemy.kernel.util.Instantiable;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.moml.MoMLParser;
 import ptolemy.util.MessageHandler;
 
 //////////////////////////////////////////////////////////////////////////
@@ -396,7 +397,7 @@ public class TableauFrame extends Top {
 
     /** Close the window.  Derived classes should override this to
      *  release any resources or remove any listeners.  In this class,
-     *  if the data associated with this window has been modified,
+     *  if the data associated with this window have been modified,
      *  and there are no other tableaux in the parent effigy or
      *  any effigy that contains it,
      *  then ask the user whether to save the data before closing.
@@ -408,21 +409,21 @@ public class TableauFrame extends Top {
             return super._close();
         }
 
-        // NOTE: We use dispose() here rather than just hiding the
-        // window.  This ensures that derived classes can react to
-        // windowClosed events rather than overriding the
-        // windowClosing behavior given here.
-        Effigy topEffigy = getEffigy().topEffigy();
+        Effigy masterEffigy = getEffigy().masterEffigy();
         // If the top-level effigy has any open tableau that
         // is not this one, and this one is not a master,
         // then simply close.  No need to prompt
         // for save, as that will be done when that tableau is closed.
         if (!_tableau.isMaster()) {
-            List tableaux = topEffigy.entityList(Tableau.class);
+            List tableaux = masterEffigy.entityList(Tableau.class);
             Iterator tableauxIterator = tableaux.iterator();
             while (tableauxIterator.hasNext()) {
                 Tableau tableau = (Tableau) tableauxIterator.next();
                 if (!(tableau instanceof DialogTableau) && (tableau != _tableau)) {
+                    // NOTE: We use dispose() here rather than just hiding the
+                    // window.  This ensures that derived classes can react to
+                    // windowClosed events rather than overriding the
+                    // windowClosing behavior given here.
                     dispose();
                     return true;
                 }
@@ -446,9 +447,25 @@ public class TableauFrame extends Top {
                     return false;
                 }
             }
-            if (reply == _SAVED || reply == _DISCARDED) {
+            if (reply == _SAVED) {
                 dispose();
                 return true;
+            } else if (reply == _DISCARDED) {
+                dispose();
+                // If the changes were discarded, then we want
+                // to mark the model unmodified, so we don't get
+                // asked again if somehow the model is re-opened.
+                setModified(false);
+                
+                // Purge any record of the model, since we have
+                // chosen to not save the changes, so the next time
+                // this is opened, it should be read again from the file.
+                try {
+					MoMLParser.purgeModelRecord(masterEffigy.uri.getURL());
+				} catch (MalformedURLException e) {
+					// Ignore... Hopefully will be harmless.
+				}
+            	return true;
             }
             return false;
         } else {

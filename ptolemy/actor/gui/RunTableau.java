@@ -281,7 +281,7 @@ public class RunTableau extends Tableau {
 
         /** Create a tableau to run the model associated with the specified
          *  effigy.  The top-level effigy, as returned by
-         *  {@link Effigy#topEffigy()}, is the one that is run.
+         *  {@link Effigy#masterEffigy()}, is the one that is run.
          *  If that effigy already contains a tableau named
          *  "runTableau", then return that tableau; otherwise, create
          *  a new instance of RunTableau for the top effigy, and
@@ -297,7 +297,7 @@ public class RunTableau extends Tableau {
          *   tableau for the effigy, but something goes wrong.
          */
         public Tableau createTableau(Effigy effigy) throws Exception {
-            return super.createTableau(effigy.topEffigy());
+            return super.createTableau(effigy.masterEffigy());
         }
     }
 }

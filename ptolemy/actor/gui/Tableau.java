@@ -202,7 +202,9 @@ public class Tableau extends CompositeEntity {
 
     /** Return true if this tableau is a master, which means that
      *  if that if its window is closed, then all other windows associated
-     *  with the model are also closed.
+     *  with the model are also closed. A tableau is a master if its
+     *  container effigy is a master (its masterEffigy() method returns
+     *  itself).
      *  @return True if the tableau is a master.
      */
     public boolean isMaster() {

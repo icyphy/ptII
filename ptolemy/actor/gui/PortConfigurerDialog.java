@@ -177,8 +177,8 @@ public class PortConfigurerDialog
                 if ((VergilUtilities.macOSLookAndFeel()
                     && (mouseEvent.isPopupTrigger() 
                     	|| (mouseEvent.getButton() == MouseEvent.BUTTON1 
-                    	    && ((mouseEvent.getModifiersEx() | java.awt.event.InputEvent.CTRL_DOWN_MASK)
-                    	       == java.awt.event.InputEvent.CTRL_DOWN_MASK))
+                    	    && ((mouseEvent.getModifiersEx() | java.awt.event.InputEvent.CTRL_MASK)
+                    	       == java.awt.event.InputEvent.CTRL_MASK))
                     	       ))
                     || (!VergilUtilities.macOSLookAndFeel()
                         && mouseEvent.getButton() == MouseEvent.BUTTON3)) {

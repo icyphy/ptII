@@ -333,11 +333,7 @@ public abstract class PtolemyFrame extends TableauFrame {
                 } else if (_query == null
                         || (_model.getContainer() != null
                         && !_query.getBooleanValue("submodel"))) {
-                    NamedObj toplevel = _model.toplevel();
-                    Effigy effigyForToplevel = Configuration.findEffigy(toplevel);
-                    if (effigyForToplevel != null) {
-                        effigy = effigyForToplevel;
-                    }
+                    effigy = effigy.masterEffigy();
                 }
                 effigy.writeFile(file);
                 return;

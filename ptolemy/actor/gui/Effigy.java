@@ -72,11 +72,17 @@ import ptolemy.moml.MoMLParser;
    a typical choice is the URI of the parent effigy, a pound sign "#",
    and a name.
    <p>
-   An effigy may contain other effigies.  The top effigy
-   in such a containment hierarchy is associated with a URI or file.
+   An effigy may contain other effigies.  The master effigy
+   in such a containment hierarchy is typically associated with a
+   URI or file.
    Contained effigies are associated with the same file, and represent
    structured data within the top-level representation in the file.
-   The topEffigy() method returns that top effigy.
+   The masterEffigy() method returns that master effigy.
+   The topEffigy() method in this base class returns the same
+   master effigy. However, in derived classes, a master effigy
+   may be contained by another effigy, so the top effigy is not
+   the same as the master effigy. The top effigy is directly contained
+   by the ModelDirectory in the Configuration.
    <p>
    NOTE: It might seem more natural for the identifier to match the name
    of the effigy rather than recording the identifier in a string attribute.
@@ -235,33 +241,34 @@ public class Effigy extends CompositeEntity {
         return result;
     }
 
-    /** Return whether the model data is modifiable.  In this case,
-     *  this is determined by checking whether
-     *  the URI associated with this effigy can be written
-     *  to.  This will return false if either there is no URI associated
-     *  with this effigy, or the URI is not a file, or the file is not
-     *  writable or does not exist, or setModifiable() has been called
-     *  with a false argument.
+    /** Return whether the model data is modifiable.  This is delegated
+     *  to the effigy returned by masterEffigy().  If this is the master
+     *  effigy, then whether the data is modifiable depends on whether
+     *  setModifiable() has been called, and if not, on whether there
+     *  is a URI associated with this effigy and whether that URI is
+     *  writable.
+     *  @see #masterEffigy()
      *  @return False to indicate that the model is not modifiable.
      */
     public boolean isModifiable() {
-        if (!_modifiable) return false;
-        else return _modifiableURI;
+        Effigy master = masterEffigy();
+        if (!master._modifiable) return false;
+        else return master._modifiableURI;
     }
 
-    /** Return the value set by setModified(), or false if setModified()
-     *  has not been called on this effigy or any effigy contained by
-     *  the same top effigy (returned by topEffigy()).
+    /** Return the data associated with the master effigy (as
+     *  returned by masterEffigy()) has been modified.
      *  This method is intended to be used to
      *  keep track of whether the data in the file or URI associated
      *  with this data has been modified.  The method is called by
      *  an instance of TableauFrame to determine whether it is safe
      *  to close.
+     *  @see #masterEffigy()
      *  @see #setModifiable(boolean)
      *  @return True if the data has been modified.
      */
     public boolean isModified() {
-        return topEffigy()._modified;
+        return masterEffigy()._modified;
     }
 
     /** Return whether this effigy is a system effigy.  System effigies
@@ -270,6 +277,17 @@ public class Effigy extends CompositeEntity {
      */
     public boolean isSystemEffigy() {
         return _isSystemEffigy;
+    }
+    
+    /** Return the effigy that is "in charge" of this effigy.
+     *  In this base class, this is the same as calling topEffigy().
+     *  But in derived classes, particularly PtolemyEffigy, it will
+     *  be different.
+     *  @see #topEffigy()
+     *  @return The effigy in charge of this effigy.
+     */
+    public Effigy masterEffigy() {
+    	return topEffigy();
     }
 
     /** Return the total number of open tableau for this effigy
@@ -334,17 +352,22 @@ public class Effigy extends CompositeEntity {
 
     /** If the argument is false, the specify that that the model is not
      *  modifiable, even if the URI associated with this effigy is writable.
+     *  This always sets a flag in the master effigy (as returned by
+     *  masterEffigy()).
      *  If the argument is true, or if this method is never called,
      *  then whether the model is modifiable is determined by whether
      *  the URI can be written to.
      *  Notice that this does not automatically result in any tableaux
      *  that are contained switching to being uneditable.  But it will
      *  prevent them from writing to the URI.
+     *  @see #masterEffigy()
      *  @see #isModifiable()
+     *  @see #isModified()
+     *  @see #setModified(boolean)
      *  @param flag False to prevent writing to the URI.
      */
     public void setModifiable(boolean flag) {
-        _modifiable = flag;
+        masterEffigy()._modifiable = flag;
     }
 
     /** Record whether the data associated with this effigy has been
@@ -353,13 +376,19 @@ public class Effigy extends CompositeEntity {
      *  will return true.  This is used by instances of TableauFrame.
      *  This is recorded in the entity returned by topEntity(), which
      *  is the one associated with a file.
+     *  This always sets a flag in the master effigy (as returned by
+     *  masterEffigy()).
+     *  @see #masterEffigy()
+     *  @see #isModifiable()
+     *  @see #isModified()
+     *  @see #setModifiable()
      *  @param modified True if the data has been modified.
      */
     public void setModified(boolean modified) {
         // NOTE: To see who is setting this true, uncomment this:
         // if (modified == true) (new Exception()).printStackTrace();
 
-        topEffigy()._modified = modified;
+        masterEffigy()._modified = modified;
     }
 
     /** Set the effigy to be a system effigy if the given flag is true.
@@ -480,12 +509,12 @@ public class Effigy extends CompositeEntity {
     // Indicator that the effigy is a system effigy.
     private boolean _isSystemEffigy = false;
 
-    // Indicator that the URI must not be written to (if false).
+    /** Indicator that the data represented in the window has been modified. */
+    private boolean _modified = false;
+
+    /** Indicator that the URI must not be written to (if false). */
     private boolean _modifiable = true;
 
-    // Indicator that the URI can be written to.
+    /** Indicator that the URI can be written to. */
     private boolean _modifiableURI = true;
-
-    // Indicator that the data represented in the window has been modified.
-    private boolean _modified = false;
 }

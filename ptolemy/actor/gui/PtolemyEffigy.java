@@ -150,6 +150,28 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
         return _model;
     }
 
+    /** Return the effigy that is "in charge" of this effigy.
+     *  In this base class, this returns the effigy associated
+     *  with the top-level of the associated model. If there is
+     *  no model, or it has no effigy, then delegate to the base
+     *  class.
+     *  @return The effigy associated with the top-level of the
+     *   model.
+     */
+    public Effigy masterEffigy() {
+        if (_model != null) {
+            NamedObj toplevel = _model.toplevel();
+            if (toplevel == _model) {
+            	return this;
+            }
+            Effigy effigyForToplevel = Configuration.findEffigy(toplevel);
+            if (effigyForToplevel != null) {
+                return effigyForToplevel;
+            }
+        }
+        return super.masterEffigy();
+    }
+
     /** Set the ptolemy model that this is an effigy of.
      *  Register with that model as a change listener.
      *  @param model The model.
