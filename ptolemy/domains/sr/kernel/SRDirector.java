@@ -546,8 +546,6 @@ public class SRDirector extends StaticSchedulingDirector {
                     String.valueOf(previousNumOfKnownReceivers));
             _debug("  currentNumOfKnownReceivers is",
                     String.valueOf(currentNumOfKnownReceivers));
-            _debug("  total number of receivers is",
-                    String.valueOf(_receivers.size()));
         }
 
         // Update the previous values for use the next time this method
