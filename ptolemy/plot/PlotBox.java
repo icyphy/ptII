@@ -888,6 +888,27 @@ public class PlotBox extends JPanel implements Printable {
         _parseLine(command);
     }
 
+   /** Remove the legend (displayed at the upper right) for the specified
+    *  data set. If the dataset is not found, nothing will occur.
+    *  The PlotBox must be repainted in order for this to take effect.
+    *  @param dataset The dataset index.
+    */
+    public synchronized void removeLegend(int dataset) {
+      final int len = _legendDatasets.size();
+      int foundIndex = -1;
+      boolean found = false;
+      for (int i = 0; i < len && !found; ++i) {
+         if (((Integer)_legendDatasets.get(i)).intValue() == dataset) {
+            foundIndex = i;
+            found = true;
+         }
+      }
+      if (found) {
+         _legendDatasets.remove(foundIndex);
+         _legendStrings.remove(foundIndex);
+      }
+   }
+
     /** Reset the X and Y axes to the ranges that were first specified
      *  using setXRange() and setYRange(). If these methods have not been
      *  called, then reset to the default ranges.
