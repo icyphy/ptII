@@ -52,6 +52,15 @@ import ptolemy.util.FileUtilities;
    using the syntax $ID, ${ID} or $(ID). The value returned by getToken()
    is name of the file with such references resolved.
    <p>
+   If this attribute contains a parameter named <i>allowFiles</i> with
+   value false, then when a file browser is used to select a file,
+   that file browser will be set to not show files (only directories
+   will be shown).  If this attribute contains a parameter named
+   <i>allowDirectories</i> with value true, then the file browser
+   will permit the user to select directories (the default behavior
+   is that when a directory is selected, that directory is opened
+   and its contained files and directories are listed).
+   <p>
    If the model containing this
    attribute has been saved to a MoML file, then the file name can be
    given relative to the directory containing that MoML file.
