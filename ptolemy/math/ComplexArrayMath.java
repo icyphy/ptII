@@ -1,4 +1,4 @@
-/* A library for mathematical operations on arrays of doubles.
+/* A library for mathematical operations on arrays of Complex's.
 
 Copyright (c) 1998 The Regents of the University of California.
 All rights reserved.

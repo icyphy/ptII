@@ -40,7 +40,7 @@ import java.util.*;
 /**
  * This class provides signal processing functions.
  *
- * @author Albert Chen, William Wu, Edward A. Lee
+ * @author Albert Chen, William Wu, Edward A. Lee, Jeff Tsay
  * @version $Id$
  */
 
@@ -61,6 +61,130 @@ public final class SignalProcessing {
         return (diff < epsilon && diff > -epsilon);
     }
 
+    /** Return a new array that is the convolution of the two argument arrays.
+     *  The length of the new array is equal to the sum of the lengths of the
+     *  two argument arrays minus one.  Note that convolution is the same
+     *  as polynomial multiplication.  If the two argument arrays represent
+     *  the coefficients of two polynomials, then the resulting array
+     *  represents the coefficients of the product polynomial.
+     *  @param array1 The first array.
+     *  @param array2 The second array.
+     *  @return A new array.
+     */
+    public static double[] convolve(double[] array1, double[] array2) {
+        double[] result;
+        int resultsize = array1.length+array2.length-1;
+
+        if (resultsize < 0) {
+            // If we attempt to convolve two zero length arrays, return
+            // a zero length array.
+            result = new double[0];
+            return result;
+        }
+
+        result = new double[resultsize];
+
+        // The result is assumed initialized to zero (in the Java spec).
+        for (int i = 0; i<array1.length; i++) {
+            for (int j = 0; j<array2.length; j++) {
+                result[i+j] += array1[i]*array2[j];
+            }
+        }
+        return result;
+    }
+
+    /** Return a new array that is the convolution of two complex arrays.
+     *  The length of the new array is equal to the sum of the lengths of the
+     *  two argument arrays minus one.  Note that some authors define
+     *  complex convolution slightly differently as the convolution of the
+     *  first array with the <em>conjugate</em> of the second.  If you need
+     *  to use that definition, then conjugate the second array before
+     *  calling this method. Convolution defined as we do here is the
+     *  same as polynomial multiplication.  If the two argument arrays
+     *  represent the coefficients of two polynomials, then the resulting
+     *  array represents the coefficients of the product polynomial.
+     *  @param array1 The first array.
+     *  @param array2 The second array.
+     *  @return A new array.
+     */
+    public static Complex[] convolve(Complex[] array1, Complex[] array2) {
+        Complex[] result;
+        int resultsize = array1.length+array2.length-1;
+        if (resultsize < 0) {
+            // If we attempt to convolve two zero length arrays, return
+            // a zero length array.
+            result = new Complex[0];
+            return result;
+        }
+
+        double[] reals = new double[resultsize];
+        double[] imags = new double[resultsize];
+        for (int i = 0; i<array1.length; i++) {
+            for (int j = 0; j<array2.length; j++) {
+                reals[i+j] += array1[i].real*array2[j].real
+                        - array1[i].imag*array2[j].imag;
+                imags[i+j] += array1[i].imag*array2[j].real
+                        + array1[i].real*array2[j].imag;
+            }
+        }
+
+        result = new Complex[resultsize];
+        for (int i = 0; i<result.length; i++) {
+            result[i] = new Complex(reals[i], imags[i]);
+        }
+        return result;
+    }
+
+    /** Return a new array of doubles that is the forward, normalized
+     *  DCT of the input array of doubles.
+     *  This method automatically computes the order of the transform
+     *  based on the length of the input array.
+     *  @param x An array of doubles.
+     *  @retval A new array of doubles.
+     */
+    public static double[] DCT(double[] x) {
+        return DCT(x, order(x.length), DCT_TYPE_NORMALIZED);
+    }
+
+    /** Return a new array of doubles that is the forward DCT of the 
+     *  input array of doubles.
+     *  See the DCT_TYPE_XXX constants for documentation of the
+     *  exact formula, which depends on the type.
+     *  @param x An array of doubles.
+     *  @param order The base-2 logarithm of the size of the transform.
+     *  @param type An integer specifying which type of DCT.
+     *  @retval A new array of doubles.
+     */
+    public static double[] DCT(double[] x, int order, int type) {
+        // check if order > 31
+
+        if (type >= DCT_TYPES) {
+          throw new IllegalArgumentException("DCT() : Bad DCT type");
+        }
+
+        int size = 1 << order;
+
+        // Make sure the tables have enough entries for the DCT computation
+        if (order >  _FFCTGenLimit)
+           _FFCTTableGen(order);
+
+        double[] retval =  _DCT(x, size, order);
+       
+        switch (type) {
+   
+          case DCT_TYPE_ORTHONORMAL:
+          double factor = Math.sqrt(2.0 / size);
+          retval = DoubleArrayMath.scale(retval, factor);
+          // no break here
+
+          case DCT_TYPE_NORMALIZED:
+          retval[0] *= _ONEOVERROOT2;
+          break;
+        }
+       
+        return retval;
+    }
+
     /** Return the value of the argument <em>z</em>
      *  in decibels, which is defined to be 20*log<sub>10</sub>(<em>z</em>).
      *  Note that if the input represents power, which is proportional to a
@@ -73,7 +197,7 @@ public final class SignalProcessing {
 
     /** Return a new array the value of the argument array
      *  in decibels, using the previous decibel() method.
-     *  You may wish to combine this with ArrayMath.limit()
+     *  You may wish to combine this with DoubleArrayMath.limit()
      */
     public static double[] decibel(double[] values) {
         double[] result = new double[values.length];
@@ -83,317 +207,419 @@ public final class SignalProcessing {
         return result;
     }
 
-    /** Return the discrete Fourier transform of the specified complex array.
-     *  This is computed by the radix-two FFT algorithm with the size being
-     *  the next power of two larger than or equal to the length of the
-     *  array argument. The data are zero filled if necessary.
-     *  If any element
-     *  of the data array is null, it is assumed to have value zero.
-     *
-     *  @param x The data to transform
-     *  @exception IllegalArgumentException If the array argument is empty
-     *   or null. This is a runtime exception, so it need
-     *   not be declared by the caller explicitly.
+    /** Return a new array of doubles that is the inverse, normalized
+     *  DCT of the input array of doubles.
+     *  This method automatically computes the order of the transform
+     *  based on the length of the input array, and calls :
+     *  IDCT(x, order, DCT_TYPE_NORMALIZED)
+     *  @param x An array of doubles.
+     *  @retval A new array of doubles.
      */
-    public static Complex[] fft(Complex[] x) {
-        if (x == null || x.length == 0) {
-            throw new IllegalArgumentException(
-                "SignalProcessing.fft: empty array argument.");
-        }
-        // Calculate the order of the FFT.
-        double m = Math.log(x.length)*_LOG2SCALE;
-        double exp = Math.ceil(m);
-        return fft(x, (int)exp);
+    public static double[] IDCT(double[] x) {
+        return IDCT(x, order(x.length), DCT_TYPE_NORMALIZED);
+    } 
+
+    /** Return a new array of doubles that is the inverse DCT of the 
+     *  input array of doubles.
+     *  See the DCT_TYPE_XXX constants for documentation of the
+     *  exact formula, which depends on the type.
+     *  @param x An array of doubles.
+     *  @param order The base-2 logarithm of the size of the transform.
+     *  @param type An integer specifying which type of IDCT.
+     *  @retval A new array of doubles.
+     */
+    public static double[] IDCT(double[] x, int order, int type) {
+       // check if order > 31
+
+       if (type >= DCT_TYPES) {
+          throw new IllegalArgumentException("IDCT() : Bad DCT type");
+       }
+
+       int size    = 1 << order;
+       int twoSize = 2 << order;      
+
+       // Generate scalefactors if necessary
+       if (_IDCTfactors[type][order] == null) {
+          _IDCTfactors[type][order] = new Complex[twoSize];
+          
+          double oneOverTwoSize = 1.0 / (double) twoSize;
+
+          double factor = 1.0;
+          double oneOverE0 = 2.0;
+
+          switch (type) {
+            case DCT_TYPE_NORMALIZED:
+            factor = 2.0;
+            oneOverE0 = _ROOT2;
+            break; 
+
+            case DCT_TYPE_ORTHONORMAL:
+            factor = Math.sqrt(16.0 * oneOverTwoSize); // == 2 * sqrt(2/N)
+            oneOverE0 = _ROOT2;
+            break;
+   
+            case DCT_TYPE_UNNORMALIZED:
+            factor = 2.0;
+            oneOverE0 = 1.0;     
+            break; 
+          }
+    
+          _IDCTfactors[type][order][0] = new Complex(oneOverE0 * factor, 0.0);
+
+          for (int k = 1; k < twoSize; k++) {
+              Complex c = new Complex(0, k * Math.PI * oneOverTwoSize);
+              _IDCTfactors[type][order][k] = c.exp().scale(factor);
+          }
+       }
+
+       Complex[] evenX = new Complex[twoSize];
+       Complex[] myFactors = _IDCTfactors[type][order];
+
+       // Convert to Complex, while multiplying by scalefactors
+
+       evenX[0] = myFactors[0].scale(x[0]);
+       for (int k = 1; k < size; k++) {
+           evenX[k] = myFactors[k].scale(x[k]);
+           evenX[twoSize - k] = myFactors[twoSize - k].scale(-x[k]); 
+       }
+       evenX[size] = new Complex(0.0, 0.0);
+
+       double[] longOutput = IFFTRealOut(evenX, order + 1);
+
+       // Truncate result
+       return DoubleArrayMath.truncate(longOutput, size);
     }
 
-    /** Return the discrete Fourier transform of the specified complex array.
-     *  This is computed by the radix-two FFT algorithm.
-     *  The size of the FFT is
-     *  <i>size</i> = 2<sup><i>order</i></sup>.
-     *  If <i>size</i> is less than the length of <i>x</i>,
-     *  then only the first <i>size</i> elements of <i>x</i> are used.
-     *  If <i>size</i> is greater than the length of <i>x</i>,
-     *  then the data is implicitly zero-filled (i.e. it is assumed that
-     *  missing data have value zero).
-     *  If any element
-     *  of the data array is null, it is assumed to have value zero.
-     *
-     *  @param x The data to transform
-     *  @param order The order of the FFT
-     *  @exception IllegalArgumentException If the data array is empty
-     *   (or null), or the order is not positive.
-     *   This is a runtime exception, so it need
-     *   not be declared by the caller explicitly.
+    /** Return a new array of Complex's which is the inverse FFT
+     *  of an input array of Complex's.
+     *  This method automatically computes the order of the transform
+     *  based on the length of the input array.
+     *  @param x An array of Complex's.
+     *  @retval A new array of Complex's.
      */
-    public static Complex[] fft(Complex[] x, int order) {
-        if (x == null || x.length == 0) {
-            throw new IllegalArgumentException(
-                "SignalProcessing.fft: empty array argument.");
-        }
-        if (order <= 0) {
-            throw new IllegalArgumentException(
-                "SignalProcessing.fft: order argument must be positive.");
-        }
-        // size = 2**order
+    public static Complex[] IFFTComplexOut(Complex[] x) {
+        return IFFTComplexOut(x, order(x.length));
+    }
+
+    /** Return a new array of Complex's which is the forward FFT
+     *  of an input array of Complex's.
+     *  @param x An array of Complex's.
+     *  @param order The base-2 logarithm of the size of the transform.
+     *  @retval A new array of Complex's.
+     */
+    public static Complex[] IFFTComplexOut(Complex[] x, int order) {
+        Complex[] conjX = ComplexArrayMath.conjugate(x);
+        Complex[] yConj = FFTComplexOut(conjX, order);
+        Complex[] y = ComplexArrayMath.conjugate(yConj);
+
+        // scale by 1/N
+        double oneOverN = 1.0 / (double) (1 << order);
+        return ComplexArrayMath.scale(y, oneOverN);
+    }
+
+    /** Return a new array of double's which is the real part of the inverse 
+     *  FFT of an input array of Complex's.
+     *  This is less than half as expensive as computing both the real and
+     *  imaginary parts. It is especially useful when it is known that the
+     *  output is purely real.
+     *  This method automatically computes the order of the transform
+     *  based on the length of the input array, and calls :
+     *  IFFTRealOut(x, order)
+     *  @param x An array of Complex's.
+     *  @retval A new array of doubles.
+     */
+    public static double[] IFFTRealOut(Complex[] x) {
+        return IFFTRealOut(x, order(x.length));
+    }
+
+    /** Return a new array of double's which is the real part of the inverse 
+     *  FFT of an input array of Complex's.
+     *  This method is less than half as expensive as computing both the 
+     *  real and imaginary parts of an IFFT of an array of Complex's. It is 
+     *  especially useful when it is known that the output is purely real.
+     *  @param x An array of Complex's.
+     *  @retval A new array of double's.
+     */
+    public static double[] IFFTRealOut(Complex[] x, int order) {
+        double[] realx = ComplexArrayMath.realParts(x);
+        double[] realrealX = FFTRealOut(realx, order);
+
+        double[] imagx = ComplexArrayMath.imagParts(x);
+        double[] imagimagX = FFTImagOut(imagx, order);
+
+        realrealX = DoubleArrayMath.add(realrealX, imagimagX); 
+
+        // scale by 1/N
+        double oneOverN = 1.0 / (double) (1 << order);
+        return DoubleArrayMath.scale(realrealX, oneOverN);
+    }
+
+    /** Return a new array of double's which is the real part of the inverse 
+     *  FFT of an input array of doubles. 
+     *  This method automatically computes the order of the transform
+     *  based on the length of the input array, and calls :
+     *  IFFTRealOut(x, order)
+     *  @param x An array of doubles.
+     *  @retval A new array of doubles.
+     */  
+    public static double[] IFFTRealOut(double[] x) {
+        return IFFTRealOut(x, order(x.length));
+    }
+
+    /** Return a new array of double's which is the real part of the inverse 
+     *  FFT of an input array of doubles. This method is less than half
+     *  as expensive as computing the real part of an IFFT of an array of
+     *  Complex's. It is especially useful when both the input and output
+     *  are known to be purely real.
+     *  @param x An array of doubles.
+     *  @param order The base-2 logarithm of the size of the transform.
+     *  @retval A new array of doubles.
+     */  
+    public static double[] IFFTRealOut(double[] x, int order) {
+        double[] y = FFTRealOut(x, order);
+
+        // scale by 1/N
+        double oneOverN = 1.0 / (double) (1 << order);
+        return DoubleArrayMath.scale(y, oneOverN);
+    }
+
+    /** Return a new array of Complex's which is the forward FFT
+     *  of an input array of Complex's.
+     *  This method automatically computes the order of the transform
+     *  based on the length of the input array, and calls
+     *  FFTComplexOut(x, order).
+     *  @param x An array of Complex's.
+     *  @retval A new array of Complex's.
+     */
+    public static Complex[] FFTComplexOut(Complex[] x) {
+        return FFTComplexOut(x, order(x.length));
+    }
+
+    /** Return a new array of Complex's which is the forward FFT
+     *  of an input array of Complex's.
+     *  @param x An array of Complex's.
+     *  @param order The base-2 logarithm of the size of the transform.
+     *  @retval A new array of Complex's.
+     */
+    public static Complex[] FFTComplexOut(Complex[] x, int order) {
+        // check if order > 31
+
+        double[] realx = ComplexArrayMath.realParts(x);
+        double[] realrealX = FFTRealOut(realx, order);
+        double[] imagrealX = FFTImagOut(realx, order);
+
+        double[] imagx = ComplexArrayMath.imagParts(x);
+        double[] realimagX = FFTRealOut(imagx, order);
+        double[] imagimagX = FFTImagOut(imagx, order);
+
+        realrealX = DoubleArrayMath.subtract(realrealX, imagimagX);
+        imagrealX = DoubleArrayMath.add(imagrealX, realimagX);
+
+        return ComplexArrayMath.formArray(realrealX, imagrealX);
+    }
+
+    /** Return a new array of Complex's which is the forward FFT
+     *  of a real input array of doubles.
+     *  This method automatically computes the order of the transform
+     *  based on the length of the input array, and calls
+     *  FFTComplexOut(x, order).
+     *  @param x An array of doubles.
+     *  @retval A new array of Complex's.
+     */
+    public static Complex[] FFTComplexOut(double[] x) {
+        return FFTComplexOut(x, order(x.length));
+    }
+
+    /** Return a new array of Complex's which is the forward FFT
+     *  of a real input array of doubles.
+     *  This method is half as expensive as computing the FFT of a
+     *  Complex array.
+     *  @param x An array of doubles.
+     *  @param order The base-2 logarithm of the size of the transform.
+     *  @retval A new array of Complex's.
+     */
+    public static Complex[] FFTComplexOut(double[] x, int order) {
+        // check if order > 31
+
+        double[] realPart = FFTRealOut(x, order);
+        double[] imagPart = FFTImagOut(x, order);
+
+        return ComplexArrayMath.formArray(realPart, imagPart);
+    }
+
+    /** Return a new array of doubles which is the imaginary part of the
+     *  FFT of an input array of Complex's.
+     *  This method automatically computes the order of the transform
+     *  based on the length of the input array, and calls
+     *  FFTImagOut(x, order).
+     *  @param x An array of Complex's.
+     *  @retval A new array of doubles.
+     */
+    public static double[] FFTImagOut(Complex[] x) {
+        return FFTImagOut(x, order(x.length));
+    }
+
+    /** Return a new array of doubles which is the imaginary part of the
+     *  FFT of an input array of Complex's.
+     *  This method is half as expensive as computing both the real and
+     *  imaginary parts of an FFT on a array of Complex's. It is especially 
+     *  useful when the output is known to be purely imaginary.
+     *  @param x An array of Complex's.
+     *  @param order The base-2 logarithm of the size of the transform.
+     *  @retval A new array of doubles.
+     */
+    public static double[] FFTImagOut(Complex[] x, int order) {
+        // check if order > 31
+
+        double[] realx = ComplexArrayMath.realParts(x);
+        double[] imagrealX = FFTImagOut(realx, order);
+
+        double[] imagx = ComplexArrayMath.imagParts(x);
+        double[] realimagX = FFTRealOut(imagx, order);
+
+        return DoubleArrayMath.add(imagrealX, realimagX);
+    }
+
+    /** Return a new array of doubles that is the imaginary part of the FFT
+     *  of the real input array of doubles.
+     *  This method is half as expensive as computing both the real and
+     *  imaginary parts of a FFT on a real array. It is especially useful when
+     *  the output is known to be purely imaginary (input is odd).
+     *  This method automatically computes the order of the transform
+     *  based on the length of the input array, and calls:
+     *  FFTImagOut(x, order)
+     *  @param x An array of doubles.
+     *  @retval A new array of doubles.
+     */
+    public static double[] FFTImagOut(double[] x) {
+        return FFTImagOut(x, order(x.length));
+    }
+
+    /** Return a new array of doubles that is the imaginary part of the FFT
+     *  of the real input array of doubles.
+     *  This method is half as expensive as computing both the real and
+     *  imaginary parts of a FFT on a real array. It is especially useful when
+     *  the output is known to be purely imaginary (input is odd).
+     *  @param x An array of doubles.
+     *  @param order The base-2 logarithm of the size of the transform.
+     *  @retval A new array of doubles.
+     */
+    public static double[] FFTImagOut(double[] x, int order) {
+        // check if order > 31
+
         int size = 1 << order;
-        double[] reals = new double[size];
-        double[] imags = new double[size];
-        // Copy the array.  Zero filling is implicit because Java
-        // always initializes arrays.
-        // If the input array is larger than size, just copy the first
-        // size elements.
-        for (int i = 0; i < ((x.length < size)? x.length : size) ; i++) {
-            if (x[i] != null) {
-                reals[i] = x[i].real;
-                imags[i] = x[i].imag;
-            }
+        int halfN = size >> 1;
+
+        // Make sure the tables have enough entries for the DCT computation
+        // at size N/4
+        if ((order - 2) >  _FFCTGenLimit) {
+           _FFCTTableGen(order - 2);
         }
-        _fft(reals, imags, order, false);
-        Complex[] result = new Complex[size];
-        for (int i = 0; i < size; i++) {
-            result[i] = new Complex(reals[i], imags[i]);
+
+        double[] imagPart = _sinDFT(x, size, order);
+
+        double[] retval = new double[size];
+
+        // Don't bother to look at the array for element 0
+        // retval[0] = 0.0; // not necessary in Java
+
+        for (int k = 1; k < halfN; k++) {
+            retval[k] = -imagPart[k];
+            retval[size - k] = imagPart[k];
         }
-        return result;
+
+        // retval[halfN] = 0.0; // not necessary in Java
+
+        return retval;
     }
 
-    /** Return the discrete Fourier transform of an array of doubles.
-     *  This is computed by the radix-two FFT algorithm with the size being
-     *  the next power of two larger than or equal to the length of the
-     *  array argument.  The data are zero filled if necessary.
-     *
-     *  @param x The data to transform
-     *  @return The DFT of the data
-     *  @exception IllegalArgumentException If the argument is an empty
-     *   array (or null).  This is a runtime exception, so it need
-     *   not be declared by the caller explicitly.
+    /** Return a new array of doubles which is the real part of the 
+     *  forward FFT of an input array of Complex's.
+     *  This method automatically computes the order of the transform
+     *  based on the length of the input array, and calls :
+     *  FFTRealOut(x, order)
+     *  @param x An array of Complex's.
+     *  @retval A new array of doubles.
      */
-    public static Complex[] fft(double[] x) {
-        if (x == null || x.length == 0) {
-            throw new IllegalArgumentException(
-                "SignalProcessing.fft: empty array argument.");
-        }
-        // Calculate the order of the FFT.
-        double m = Math.log(x.length)*_LOG2SCALE;
-        double exp = Math.ceil(m);
-        return fft(x, (int)exp);
+    public static double[] FFTRealOut(Complex[] x) {
+        return FFTRealOut(x, order(x.length));
     }
 
-    /** Return the discrete Fourier transform of an array of doubles.
-     *  This is computed by the radix-two FFT algorithm.
-     *  The size of the FFT is
-     *  <i>size</i> = 2<sup><i>order</i></sup>.
-     *  If <i>size</i> is less than the length of <i>x</i>,
-     *  then only the first <i>size</i> elements of <i>x</i> are used.
-     *  If <i>size</i> is greater than the length of <i>x</i>,
-     *  then the data is implicitly zero-filled (i.e. it is assumed that
-     *  missing data have value zero).
-     *
-     *  @param x The data to transform
-     *  @param order The order of the FFT
-     *  @return The DFT of the data
-     *  @exception IllegalArgumentException If the data array is empty
-     *   (or null), or the order is not positive.
-     *   This is a runtime exception, so it need
-     *   not be declared by the caller explicitly.
+    /** Return a new array of doubles which is the real part of the 
+     *  forward FFT of an input array of Complex's.
+     *  This method is half as expensive as computing both the real and
+     *  imaginary parts of an FFT on a array of Complex's. It is especially 
+     *  useful when the output is known to be purely real.
+     *  @param x An array of Complex's.
+     *  @param order The base-2 logarithm of the size of the transform.
+     *  @retval A new array of doubles.
      */
-    public static Complex[] fft(double[] x, int order) {
-        // NOTE: This could instead use the slightly more efficient
-        // FFT that is possible when the data is real.
-        if (x == null || x.length == 0) {
-            throw new IllegalArgumentException(
-                "SignalProcessing.fft: empty array argument.");
-        }
-        if (order <= 0) {
-            throw new IllegalArgumentException(
-                "SignalProcessing.fft: order argument must be positive.");
-        }
-        // size = 2**order
+    public static double[] FFTRealOut(Complex[] x, int order) {
+        // check if order > 31
+
+        double[] realx = ComplexArrayMath.realParts(x);
+        double[] realrealX = FFTRealOut(realx, order);
+
+        double[] imagx = ComplexArrayMath.imagParts(x);
+        double[] imagimagX = FFTImagOut(imagx, order);
+
+        return DoubleArrayMath.subtract(realrealX, imagimagX);
+    }
+
+    /** Return a new array of doubles that is the real part of the FFT of
+     *  the real input array of doubles.
+     *  This method automatically computes the order of the transform
+     *  based on the length of the input array, and calls :
+     *  FFTRealOut(x, order).
+     *  @param x An array of doubles.
+     *  @retval A new array of doubles.
+     */
+    public static double[] FFTRealOut(double[] x) {
+        return FFTRealOut(x, order(x.length));
+    }
+
+    /** Return a new array of doubles that is the real part of the FFT of
+     *  the real input array of doubles.
+     *  This method is half as expensive as computing both the real and
+     *  imaginary parts of an FFT on a real array. It is especially useful 
+     *  when the output is known to be purely real (input is even).
+     *  @param x An array of doubles.
+     *  @param order The base-2 logarithm of the size of the transform     
+     *  @retval A new array of doubles.
+     */
+    public static double[] FFTRealOut(double[] x, int order) {
+        // check if order > 31
+
         int size = 1 << order;
-        double[] reals = new double[size];
-        double[] imags = new double[size];
-        // Copy the array.  Zero filling is implicit because Java
-        // always initializes arrays.
-        int length = x.length;
-        if (reals.length < length) length = reals.length;
-        System.arraycopy(x, 0, reals, 0, length);
-        _fft(reals, imags, order, false);
-        Complex[] result = new Complex[size];
-        for (int i = 0; i < size; i++) {
-            result[i] = new Complex(reals[i], imags[i]);
+        int halfN = size >> 1;
+        double[] retval = new double[size];
+
+        // Make sure the tables have enough entries for the DCT computation
+        // at size N/4
+        if ((order - 2) >  _FFCTGenLimit) {
+           _FFCTTableGen(order - 2);
         }
-        return result;
+
+        double[] realPart = _cosDFT(x, size, order);
+
+        System.arraycopy(realPart, 0, retval, 0, halfN + 1);
+
+        for (int k = halfN + 1; k < size; k++) {
+            retval[k] = realPart[size - k];
+        }
+
+        return retval;
     }
-
-    /** Return the discrete Fourier transform of the specified
-     *  data array, given as an array containing the real parts and an array
-     *  containing the imaginary parts.
-     *  This is computed by the radix-two FFT algorithm.
-     *  The size of the array arguments must be a power of two or an
-     *  exception is thrown.
-     *
-     *  @param reals The real part of the data to transform
-     *  @param imags The imaginary part of the data to transform
-     *  @exception IllegalArgumentException If the array argument has length
-     *   that is not a power of two. This is a runtime exception, so it need
-     *   not be declared by the caller explicitly.
+    
+    /** Return the "order" of a transform size, i.e. the base-2 logarithm
+     *  of the size.
+     *  @param size The size of the transform.
+     *  @retval The order of the transform.
      */
-    public static void fftInPlace(double[] reals, double[] imags) {
-        if (reals == null || reals.length == 0 ||
-                imags == null || imags.length == 0) {
-            throw new IllegalArgumentException(
-                "SignalProcessing.fftInPlace: empty array argument.");
-        }
-        if (reals.length != imags.length) {
-            throw new IllegalArgumentException(
-                "SignalProcessing.fftInPlace: arrays have different length.");
-        }
-
-        // Calculate the order of the FFT.
-        double m = Math.log(reals.length)*_LOG2SCALE;
-        double exp = Math.ceil(m);
-        int order = (int) exp;
-        // size = 2**order
-        int size = 1 << order;
-        if (size != reals.length) {
-            throw new IllegalArgumentException("SignalProcessing.fftInPlace: "
-                    + "In-place fft requires an array argument with length "
-                    + "that is a power of two. Got length: " + reals.length);
-        }
-
-        _fft(reals, imags, order, false);
-    }
-
-    /** Return the inverse discrete Fourier transform of the specified
-     *  data array, given as an array containing the real parts and an array
-     *  containing the imaginary parts.
-     *  This is computed by the radix-two FFT algorithm.
-     *  The size of the array arguments must be a power of two or an
-     *  exception is thrown.
-     *
-     *  @param reals The real part of the data to transform
-     *  @param imags The imaginary part of the data to transform
-     *  @exception IllegalArgumentException If the array argument has length
-     *   that is not a power of two. This is a runtime exception, so it need
-     *   not be declared by the caller explicitly.
-     */
-    public static void fftInPlaceInverse(double[] reals, double[] imags) {
-        if (reals == null || reals.length == 0 ||
-                imags == null || imags.length == 0) {
-            throw new IllegalArgumentException(
-                "SignalProcessing.fftInPlaceInverse: empty array argument.");
-        }
-        if (reals.length != imags.length) {
-            throw new IllegalArgumentException(
-                "SignalProcessing.fftInPlaceInverse: arrays have different "
-                + "length.");
-        }
-
-        // Calculate the order of the FFT.
-        double m = Math.log(reals.length)*_LOG2SCALE;
-        double exp = Math.ceil(m);
-        int order = (int) exp;
-        // size = 2**order
-        int size = 1 << order;
-        if (size != reals.length) {
-            throw new IllegalArgumentException(
-                    "SignalProcessing.fftInPlaceInverse: "
-                    + "In-place fft requires an array argument with length "
-                    + "that is a power of two. Got length: " + reals.length);
-        }
-
-        _fft(reals, imags, order, true);
-    }
-
-    /** Return the inverse discrete Fourier transform
-     *  of the argument <i>x</i>.  This is
-     *  computed by the radix-two FFT algorithm with order being the next
-     *  power of two larger than the length of the argument.
-     *  The data are zero filled if necessary.
-     *  Zero filling is done in the middle of the argument array
-     *  (which corresponds to high frequencies).  If there is an odd number
-     *  of elements in the argument array, then half the middle element is
-     *  replicated on either side of the zero fill.  Also, if any element
-     *  of the data array is null, it is assumed to have value zero.
-     *
-     *  @param x The data to transform
-     *  @param order The log (base 2) of the size of the FFT
-     *  @return The inverse DFT of the data
-     *  @exception IllegalArgumentException If the argument is an empty
-     *   array (or null), or if the order is not a positive
-     *   integer.  This is a runtime exception, so it need
-     *   not be declared by the caller explicitly.
-     */
-    public static Complex[] fftInverse(Complex[] x) {
-
-        if (x == null || x.length == 0) {
-            throw new IllegalArgumentException(
-                "SignalProcessing.fftInverse: empty array argument.");
-        }
-        // Calculate the order of the FFT.
-        double m = Math.log(x.length)*_LOG2SCALE;
-        double exp = Math.ceil(m);
-        return fftInverse(x, (int)exp);
-    }
-
-    /** Return the inverse discrete Fourier transform
-     *  of the first argument <i>x</i>.  This is
-     *  computed by the radix-two FFT algorithm with order given by the
-     *  second argument.  The size of the FFT is
-     *  <i>size</i> = 2<sup><i>order</i></sup>.
-     *  The data are zero filled if necessary.
-     *  Zero filling is done in the middle of the argument array
-     *  (which corresponds to high frequencies).  If there is an odd number
-     *  of elements in the argument array, then half the middle element is
-     *  replicated on either side of the zero fill.  Also, if any element
-     *  of the data array is null, it is assumed to have value zero.
-     *
-     *  @param x The data to transform
-     *  @param order The log (base 2) of the size of the FFT
-     *  @return The inverse DFT of the data
-     *  @exception IllegalArgumentException If the argument is an empty
-     *   array (or null), or if the order is not a positive
-     *   integer.  This is a runtime exception, so it need
-     *   not be declared by the caller explicitly.
-     */
-    public static Complex[] fftInverse(Complex[] x, int order) {
-
-        if (x == null || x.length == 0) {
-            throw new IllegalArgumentException(
-                "SignalProcessing.fftInverse: empty array argument.");
-        }
-        if (order <= 0) {
-            throw new IllegalArgumentException(
-                "SignalProcessing.fftInverse: order must be positive.");
-        }
-        // size = 2**order
-        int size = 1 << order;
-        // Copy the array, zero filling if necessary.
-        double[] reals = new double[size];
-        double[] imags = new double[size];
-        // Copy the array.  Zero filling is implicit because Java
-        // always initializes arrays.
-        // For the inverse FFT, need to zero-fill in the middle
-        // (high frequencies).
-        for (int i = 0; i < x.length/2; i++) {
-            int k = x.length-i-1;
-            if (k != i) {
-                reals[i] = x[i].real;
-                imags[i] = x[i].imag;
-                reals[size-i-1] = x[k].real;
-                imags[size-i-1] = x[k].imag;
-            } else {
-                reals[i] = x[i].real/2.0;
-                imags[i] = x[i].imag/2.0;
-                reals[size-i-1] = x[k].real/2.0;
-                imags[size-i-1] = x[k].imag/2.0;
-            }
-        }
-        _fft(reals, imags, order, true);
-        Complex[] result = new Complex[size];
-        for (int i = 0; i < size; i++) {
-            result[i] = new Complex(reals[i], imags[i]);
-        }
-        return result;
+    public static int order(int size) {
+       double m = Math.log(size)*_LOG2SCALE;
+       double exp = Math.ceil(m);
+       return (int) exp;
     }
 
     /** Given an array of pole locations, an array of zero locations, and a
@@ -420,12 +646,12 @@ public final class SignalProcessing {
             Complex zeroscontrib = new Complex(1);
             Complex ejw = new Complex(Math.cos(angle), Math.sin(angle));
             if (poles.length > 0) {
-                Complex[] diffpoles = ArrayMath.subtract(poles, ejw);
-                polescontrib = ArrayMath.product(diffpoles);
+                Complex[] diffpoles = ComplexArrayMath.subtract(poles, ejw);
+                polescontrib = ComplexArrayMath.product(diffpoles);
             }
             if (zeros.length > 0) {
-                Complex[] diffzeros = ArrayMath.subtract(zeros, ejw);
-                zeroscontrib = ArrayMath.product(diffzeros);
+                Complex[] diffzeros = ComplexArrayMath.subtract(zeros, ejw);
+                zeroscontrib = ComplexArrayMath.product(diffzeros);
             }
             freq[index] = zeroscontrib.divide(polescontrib);
             freq[index] = freq[index].multiply(gain);
@@ -538,7 +764,7 @@ public final class SignalProcessing {
      *  @param period The period of the sawtooth wave.
      *  @param phase The phase of the sawtooth wave.
      *  @param time The time of the sample.
-     *  @return A number in the range -1.0 to +1.0.
+     *  @return A double in the range -1.0 to +1.0.
      */
     public static double sawtooth(double period, double phase, double time) {
         double point = ((time/period)+phase+0.5)%1.0;
@@ -709,149 +935,210 @@ public final class SignalProcessing {
      */
     public static double epsilon = 1.0e-9;
 
+    // Scalefactor types for the DCT/IDCT
+    /* To select the forward transform :
+     *              N - 1
+     *  X(k) = e(k)  sum  x[n] * cos ((2n + 1)k * PI / 2N)
+     *              n = 0
+     * and the inverse transform :
+     *             N - 1
+     *  x(n) =(2/N) sum  e(k) X[k] * cos ((2n + 1)k * PI / 2N)
+     *             k = 0
+     * with
+     *  e(0) = 1/sqrt(2); e(k) = 1 for k != 0
+     * use the following DCT type.
+     */
+    public static final int DCT_TYPE_NORMALIZED   = 0;
+
+    /* To select the forward transform :
+     *        N - 1
+     *  X(k) = sum  x[n] * cos ((2n + 1)k * PI / 2N)
+     *        n = 0
+     * and the inverse transform :
+     *        N - 1
+     *  x(n) = sum  X[k] * cos ((2n + 1)k * PI / 2N)
+     *        k = 0
+     * use the following DCT type.
+     */
+    public static final int DCT_TYPE_UNNORMALIZED = 1;
+
+    /* To select the forward transform :
+     *                        N - 1
+     *  X(k) = sqrt(2/N) e(k)  sum  x[n] * cos ((2n + 1)k * PI / 2N)
+     *                        n = 0
+     * and the inverse transform :
+     *                 N - 1
+     *  x(n) =sqrt(2/N) sum  e(k) X[k] * cos ((2n + 1)k * PI / 2N)
+     *                 k = 0
+     * with
+     *  e(0) = 1/sqrt(2); e(k) = 1 for k != 0
+     * use the following DCT type.
+     */
+    public static final int DCT_TYPE_ORTHONORMAL  = 2;
+    public static final int DCT_TYPES             = 3; 
+
     /////////////////////////////////////////////////////////////////////////
     ////                         private methods                         ////
-
-    // Replace the specified arrays with the discrete Fourier transform
-    // or the inverse DFT of its value.  This is computed by the in-place
-    // radix-two FFT algorithm with order given by the second argument.
-    // The size of the FFT is <i>size</i> = 2<sup><i>order</i></sup>,
-    // which must be equal to the length of the array argument (this is
-    // not checked, so the caller should ensure it).
-    // This is adapted from "C Language Algorithms for Digital
-    // Signal Processing," Paul M. Embree and Bruce Kimble, Prentice-Hall,
-    // 1991, P.258.
-    // @param reals The real values of the data to transform
-    // @param imags The imaginary values of the data to transform
-    // @param order The log (base 2) of the size of the FFT
-    // @param inverse If true, compute the inverse DFT
-    // @exception IllegalArgumentException If the order is not a positive
-    //  integer, or if the length of the array argument is not a power of two.
-    //  This is a runtime exception, so it need
-    //  not be declared by the caller explicitly.
-    private static void _fft(double[] reals, double[] imags,
-            int order, boolean inverse) {
-        if (order <= 0) {
-            throw new IllegalArgumentException(
-                "SignalProcessing.fft: Invalid order argument: " + order);
-        }
-        // size = 2**order
-        int size = 1 << order;
-
-        // Begin by computing the twiddle factors if they have not been already.
-        if (_twiddleReals == null) {
-            _twiddleReals = new Vector();
-            _twiddleImags = new Vector();
-        }
-        if (order > _twiddleReals.size()) {
-            _twiddleReals.setSize(order);
-            _twiddleImags.setSize(order);
-        }
-        double[] twReals = (double[])_twiddleReals.elementAt(order-1);
-        double[] twImags;
-        if (twReals == null) {
-            // FIXME: How to synchronize this??
-            // synchronized(this) {
-                // Need to compute the twiddle factors.
-                // First, allocate the memory.
-                int le = size/2;
-                twReals = new double[le];
-                twImags = new double[le];
-                _twiddleReals.setElementAt(twReals, order-1);
-                _twiddleImags.setElementAt(twImags, order-1);
-
-                // Next, the angle increment.
-                double arg = 2.0*Math.PI/size;
-                // Then the corresponding vector
-                double rotationReal = Math.cos(arg);
-                double rotationImag = Math.sin(arg);
-                // Then the starting twiddle factor
-                double wrecurReal = rotationReal;
-                double wrecurImag = rotationImag;
-                int index;
-                for (index = 0; index < le - 1; index++) {
-                    twReals[index] = wrecurReal;
-                    twImags[index] = wrecurImag;
-                    double temp = wrecurReal*rotationReal -
-                        wrecurImag*rotationImag;
-                    wrecurImag = wrecurReal*rotationImag +
-                        wrecurImag*rotationReal;
-                    wrecurReal = temp;
-                }
-                twReals[index] = wrecurReal;
-                twImags[index] = wrecurImag;
-            // }
-        } else {
-            twImags = (double[])_twiddleImags.elementAt(order-1);
+    
+    // Returns an array with half the size + 1 because of the symmetry
+    // of the cosDFT function.
+    private static double[] _cosDFT(double[] x, int size, int order) {
+        if (size == 4) {
+           double[] retval = new double[3];
+           retval[0] = x[0] + x[1] + x[2] + x[3];
+           retval[1] = x[0] - x[2];
+           retval[2] = x[0] - x[1] + x[2] - x[3];
+           return retval;
         }
 
-        int le = size;
-        int windex = 1;
-        for (int index = 0; index<order; index++){
-            le = le >> 1;
+        int halfN = size >> 1;
+        int quarterN = size >> 2;
 
-            // first iteration has no multiplies
-            for (int i = 0; i < size; i += 2*le) {
-                int k = i+le;
-                double tempR = reals[i];
-                double tempI = imags[i];
-                reals[i] = tempR+reals[k];
-                imags[i] = tempI+imags[k];
-                reals[k] = tempR-reals[k];
-                imags[k] = tempI-imags[k];
+        double[] x1 = new double[halfN];
+        for (int k = 0; k < halfN; k++) {
+            x1[k] = x[k << 1];
+        }
+
+        double[] x2 = new double[quarterN];
+        for (int k = 0; k < quarterN; k++) {
+            int twoIp = (k << 1) + 1;
+            x2[k] = x[twoIp] + x[size - twoIp];
+        }
+
+        double[] halfCosDFT = _cosDFT(x1, halfN, order - 1);
+        double[] quarterDCT = _DCT(x2, quarterN, order - 2);
+
+        double[] retval = new double[halfN + 1];
+        for (int k = 0; k < quarterN; k++) {
+            retval[k] = halfCosDFT[k] + quarterDCT[k];
+        }
+
+        retval[quarterN] = halfCosDFT[quarterN];
+
+        for (int k = quarterN + 1; k <= halfN; k++) {
+            int idx = halfN - k;
+            retval[k] = halfCosDFT[idx] - quarterDCT[idx];
+        }
+
+        return retval;
+    }
+
+    // Returns an array with half the size because of the symmetry
+    // of the sinDFT function.
+    private static double[] _sinDFT(double[] x, int size, int order) {
+        if (size == 4) {
+           double[] retval = new double[2];
+
+           // retval[0] = 0.0; // not necessary for Java,
+                               // also not read
+
+           retval[1] = x[1] - x[3];
+
+           return retval;
+        }
+
+        int halfN = size >> 1;
+        int quarterN = size >> 2;
+
+        double[] x1 = new double[halfN];
+        for (int k = 0; k < halfN; k++) {
+            x1[k] = x[k << 1];
+        }
+
+        double[] x3 = new double[quarterN];
+        for (int k = 0; k < quarterN; k++) {
+            int twoIp = (k << 1) + 1;
+            x3[k] = ((k & 1) == 1) ? (x[size - twoIp] - x[twoIp]) :
+                    (x[twoIp] - x[size - twoIp]);
+        }
+
+        double[] halfSinDFT = _sinDFT(x1, halfN, order - 1);
+        double[] quarterDCT = _DCT(x3, quarterN, order - 2);
+
+        double[] retval = new double[halfN];
+
+        // retval[0] = 0.0; // not necessary in Java
+
+        for (int k = 1; k < quarterN; k++) {
+            retval[k] = halfSinDFT[k] + quarterDCT[quarterN - k];
+        }
+
+        retval[quarterN] = quarterDCT[0];
+
+        for (int k = quarterN + 1; k < halfN; k++) {
+            retval[k] = quarterDCT[k - quarterN] - halfSinDFT[halfN - k];
+        }
+
+        return retval;
+    }
+
+    private static double[] _DCT(double[] x, int size, int order) {
+
+        double[] retval;
+
+        if (size == 2) {
+           retval = new double[2];
+           retval[0] = x[0] + x[1];
+           retval[1] = _ONEOVERROOT2 * (x[0] - x[1]);
+           return retval;
+        }
+
+        int halfN = size >> 1;
+
+        double[] x4 = new double[size];
+
+        for (int n = 0; n < halfN; n++) {
+            int twoN = n << 1;
+            x4[n] = x[twoN];
+            x4[size - n - 1] = x[twoN + 1];
+        }
+
+        double[] cosDFTarray = _cosDFT(x4, size, order);
+        double[] sinDFTarray = _sinDFT(x4, size, order);
+
+        double[] p1tab = _P1Table[order];
+        double[] p2tab = _P2Table[order];
+        double[] ctab  = _CTable[order];
+
+        retval = new double[size];
+
+        retval[0] = cosDFTarray[0];
+
+        for (int k = 1; k < halfN; k++) {
+            double m1 = (cosDFTarray[k] + sinDFTarray[k]) * ctab[k];
+            double m2 = sinDFTarray[k] * p1tab[k];
+            double m3 = cosDFTarray[k] * p2tab[k];
+            retval[k] = m1 - m2;
+            retval[size - k] = m1 + m3;
+        }
+
+        retval[halfN] = _ONEOVERROOT2 * cosDFTarray[halfN];
+
+        return retval;
+    }
+
+    private synchronized static void _FFCTTableGen(int limit) {
+
+        for (int i = _FFCTGenLimit; i <= limit; i++) {
+            int N = 1 << i; // Watch out for this if i ever becomes > 31
+            _P1Table[i] = new double[N];
+            _P2Table[i] = new double[N];
+            _CTable[i]  = new double[N];
+
+            double p1t[] = _P1Table[i];
+            double p2t[] = _P2Table[i];
+            double ct[]  = _CTable[i];
+
+            for (int k = 0; k < N; k++) {
+                double arg = Math.PI * k / (2.0 * N);
+                double c = Math.cos(arg);
+                double s = Math.sin(arg);
+                p1t[k] = c + s;
+                p2t[k] = s - c;
+                ct[k]  = c;
             }
-
-            // remaining iterations use twiddle factors
-            int ii = windex-1;
-            for (int j = 1; j < le; j++){
-                double wReal = twReals[ii];
-                double wImag = twImags[ii];
-                if (inverse) {
-                    wImag = -wImag;
-                }
-                for (int i = j; i < size; i = i+2*le) {
-                    int k = i+le;
-                    double tempR = reals[i];
-                    double tempI = imags[i];
-                    reals[i] = tempR + reals[k];
-                    imags[i] = tempI + imags[k];
-                    double diffR = tempR - reals[k];
-                    double diffI = tempI - imags[k];
-                    reals[k] = diffR*wReal - diffI*wImag;
-                    imags[k] = diffR*wImag + diffI*wReal;
-                }
-                ii = ii + windex;
-            }
-            windex = windex << 1;
         }
-
-        // rearrange data by bit reversing
-        int j = 0;
-        for (int i = 1;i<(size-1);i++){
-            int k = size/2;
-            while(k <= j){
-                j = j - k;
-                k = k/2;
-            }
-            j = j+k;
-            if (i<j){
-                double tempR = reals[j];
-                double tempI = imags[j];
-                reals[j] = reals[i];
-                imags[j] = imags[i];
-                reals[i] = tempR;
-                imags[i] = tempI;
-            }
-        }
-
-        // scale all result by 1/size if we are performing the inverse fft
-        if (inverse) {
-            double scale = 1.0/size;
-            for (int i = 0; i < size; i++){
-                reals[i] *= scale;
-                imags[i] *= scale;
-            }
-        }
+        _FFCTGenLimit = Math.max(_FFCTGenLimit, limit);
     }
 
     // Return a two-element array with the roots of the quadratic
@@ -882,12 +1169,23 @@ public final class SignalProcessing {
     /////////////////////////////////////////////////////////////////////////
     ////                         private members                         ////
 
-    private static final double _LOG10SCALE = 1/Math.log(10);
-    private static final double _LOG2SCALE = 1/Math.log(2);
+    // Tables needed for the FFCT algorithm. We assume no one will attempt
+    // to do a transform of size greater than 2^31.
+    private static final double _P1Table[][] = new double[32][];
+    private static final double _P2Table[][] = new double[32][];
+    private static final double _CTable[][]  = new double[32][];
+    private static int _FFCTGenLimit = 0;
 
-    // A vector of twiddle factors for FFTs of various orders, so they
-    // don't have to be recomputed each time.
-    private static Vector _twiddleReals;
-    private static Vector _twiddleImags;
+    // Table of scalefactors for the IDCT.
+    private static final Complex _IDCTfactors[][][] = 
+     new Complex[DCT_TYPES][32][];
+    
+    // Various constants
+    private static final double _LOG10SCALE = 1.0 / Math.log(10.0);
+    private static final double _LOG2SCALE  = 1.0 / Math.log(2.0);
+
+    private static final double _ROOT2 = Math.sqrt(2.0);
+    private static final double _ONEOVERROOT2 = 1.0 / _ROOT2;
 }
+
 

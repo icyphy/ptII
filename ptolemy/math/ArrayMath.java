@@ -29,6 +29,12 @@ ENHANCEMENTS, OR MODIFICATIONS.
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
+/*
+ *  This class is now deprecated. Use the DoubleArrayMath and
+ *  ComplexArrayMath classes instead.
+ */
+
+
 package ptolemy.math;
 
 import java.lang.*;
@@ -64,6 +70,7 @@ public final class ArrayMath {
      *  @param array An array of complex numbers.
      *  @param z The complex number to add.
      *  @return A new array of complex numbers.
+     *  @deprecated
      */
     public static Complex[] add(Complex[] array, Complex z) {
         Complex[] result = new Complex[array.length];
@@ -76,6 +83,7 @@ public final class ArrayMath {
     /** Return a new array that is the complex-conjugate of the argument.
      *  @param array An array of complex numbers.
      *  @return A new array of complex numbers.
+     *  @deprecated
      */
     public static Complex[] conjugate(Complex[] array) {
         Complex[] result = new Complex[array.length];
@@ -98,6 +106,7 @@ public final class ArrayMath {
      *  @param array1 The first array.
      *  @param array2 The second array.
      *  @return A new array.
+     *  @deprecated     
      */
     public static Complex[] convolve(Complex[] array1, Complex[] array2) {
         Complex[] result;
@@ -136,6 +145,7 @@ public final class ArrayMath {
      *  @param array1 The first array.
      *  @param array2 The second array.
      *  @return A new array.
+     *  @deprecated
      */
     public static double[] convolve(double[] array1, double[] array2) {
         double[] result;
@@ -170,6 +180,7 @@ public final class ArrayMath {
      *  @param top The top limit.
      *  @return A new array with values in the range [bottom, top].
      *  @see Double
+     *  @deprecated
      */
     public static double[] limit(double[] array, double bottom, double top) {
         double[] result = new double[array.length];
@@ -193,6 +204,7 @@ public final class ArrayMath {
      *  of the specified complex array.
      *  @param array A complex array.
      *  @return An array of angles in the range of <em>-pi</em> to <em>pi</em>.
+     *  @deprecated
      */
     public static double[] mag(Complex[] array) {
         double[] mags = new double[array.length];
@@ -206,6 +218,7 @@ public final class ArrayMath {
      *  specified complex array.
      *  @param array A complex array.
      *  @return An array of angles in the range of <em>-pi</em> to <em>pi</em>.
+     *  @deprecated
      */
     public static double[] phase(Complex[] array) {
         double[] angles = new double[array.length];
@@ -234,6 +247,7 @@ public final class ArrayMath {
      *  @param roots An array of roots of a polynomial.
      *  @return A new array representing a monic polynomial with the given
      *   roots.
+     *  @deprecated
      */
     public static Complex[] polynomial(Complex[] roots) {
         if (roots.length <= 1) {
@@ -261,6 +275,7 @@ public final class ArrayMath {
      *  If there are no elements in the array, return zero.
      *  @param array A complex array.
      *  @return A new complex number.
+     *  @deprecated
      */
     public static Complex product(Complex[] array) {
         if (array.length == 0) return new Complex();
@@ -279,6 +294,7 @@ public final class ArrayMath {
      *  @param array An array of complex numbers.
      *  @param z The complex number to subtract.
      *  @return A new array of complex numbers.
+     *  @deprecated
      */
     public static Complex[] subtract(Complex[] array, Complex z) {
         Complex[] result = new Complex[array.length];

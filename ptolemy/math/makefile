@@ -52,7 +52,10 @@ JSRCS = \
 	Complex.java \
 	ExtendedMath.java \
 	Fraction.java \
-	SignalProcessing.java
+	SignalProcessing.java \
+        DoubleArrayMath.java \
+        ComplexArrayMath.java \
+        DoubleArrayStat.java
 
 EXTRA_SRCS =	$(JSRCS)
 
