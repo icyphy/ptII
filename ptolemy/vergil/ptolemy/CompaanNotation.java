@@ -167,41 +167,17 @@ public class CompaanNotation extends Attribute implements VisualNotation {
 	    Rectangle2D bounds = figure.getBounds();
 	    Entity entity = (Entity)icon.getContainer();
 
-	    // Insert code to find color here.
-            /*
-              List variables = entity.attributeList();
-              Iterator i = variables.iterator();
-              while( i.hasNext() ) {
-              String ns = ((Attribute)i.next()).toString();
-              System.out.println(" Attribute: " + ns );
-              } 
-            */
-
             Variable f = (Variable)entity.getAttribute("fire");
-            if ( f != null ) {
-                System.out.println(" ********* Attribute: " + f.toString() );
-                try {
-                    //if ( !f.toString().startsWith("ptolemy") ) {
-                    if ( f.getToken() != null ) {
-                        int t = ((IntToken)f.getToken()).intValue();
-                        int j = t%255;
-                        int k = (int) (Math.log(j)/Math.log(1.5));
-
-                        System.out.println(" *** Token: " + t  + " : " + j + " : " + k);                     
-
-
-                        Color h = (Color) colorMap.get(new Integer(j));
-
-                        figure.setBackgroundFigure(new BasicRectangle(0, 0, 
-                                bounds.getWidth(), bounds.getHeight(), h ));
-                    } 
-                } catch (IllegalActionException e) { }                    
-            }
+            Color c = _getColor( f );
+            figure.setBackgroundFigure(new BasicRectangle(0, 0, 
+                    bounds.getWidth(), bounds.getHeight(), c ));
+            
             
             Variable p = (Variable)entity.getAttribute("ehrhart");
             if (p != null) {
                 try {
                     String s = p.getToken().toString();
+                    _getColor( p );
                     Figure background = figure.getBackgroundFigure();
                     Rectangle2D backBounds = background.getBounds();
                     LabelFigure label = new LabelFigure("erhart: " + s);
@@ -209,13 +185,14 @@ public class CompaanNotation extends Attribute implements VisualNotation {
                     label.setPadding(1);
                     // Attach the label at the upper left corner.
                     label.setAnchor(SwingConstants.NORTH_WEST);
-                    // Put the label's upper left corner at the lower right
+                     // Put the label's upper left corner at the lower right
                     // corner of rht efigure.
                     label.translateTo(backBounds.getX(), 
                             backBounds.getY() + backBounds.getHeight());
                     figure.add(label);
                 } catch (IllegalActionException e) { }  
             }
+
 	    return figure;
 	}
     }
@@ -236,7 +213,9 @@ public class CompaanNotation extends Attribute implements VisualNotation {
         public void executionError(Manager manager, Exception exception) {
         }
 
+        /** */
         public void executionFinished(Manager manager) {
+            _getGlobalPerformanceMetrics(manager);
             SwingUtilities.invokeLater(
                     new Runnable() {
                 public void run() {
@@ -251,38 +230,115 @@ public class CompaanNotation extends Attribute implements VisualNotation {
         private GraphController _controller;
     }
 
+    /** */
+    private Color _getColor( Variable a ) {
+        int c = 0;
+        if ( a != null ) {
+            if ( _min != Integer.MAX_VALUE ) {
+                try {
+                    Token t = a.getToken();
+                    double l = 0;
+                    if ( t instanceof IntToken ) {
+                        l = ((IntToken)t).intValue();
+                    }
+                    if ( t instanceof DoubleToken ) {
+                        l = ((DoubleToken)t).doubleValue();
+                    }                     
+
+                    // Determine the color....
+                    c = (int) Math.floor( (double)(l - _min) /(double)_bin);
+                    
+                    //System.out.println(" GC fire: " + l );
+                    //System.out.println(" GC color: " + c );
+
+                } catch (IllegalActionException e) { }  
+                return (Color)colorList.get(new Integer(c));
+            } else {
+                return Color.yellow;
+            }             
+        } else {
+            return Color.pink;
+        }
+    }
+
+    /** Extract global Performance information from a model. This is
+        done by traversing all the actors in the model in a recursive
+        way. At each actor, a number of Variable values is check
+        (e.g. fire). On the basis of these variable values, a global
+        value like max and min are set. This is done before the model
+        is rerendered by Vergil.
+        @param manager The manager of the model.
+    */
+    private void _getGlobalPerformanceMetrics(Manager manager) {
+        //System.out.println(" &&&&& RERENDER &&&& ");
+
+        // A linked list containing all the actors
+        LinkedList AllActors = new LinkedList();
+        Iterator entities = ((CompositeActor)manager.getContainer())
+            .deepEntityList().iterator();
+            
+
+        // Initialize the value
+        _max = 0;
+        _min = Integer.MAX_VALUE;
+
+        // Walk through the model
+        while(entities.hasNext()) {
+            ComponentEntity a = (ComponentEntity)entities.next();
+            if(a instanceof Actor) {
+                Variable f = (Variable)a.getAttribute("fire");
+                try {
+                    Token t = f.getToken();
+                    double l = 0;
+                    if ( t instanceof IntToken ) {
+                        l = ((IntToken)t).intValue();
+                    }
+                    if ( t instanceof DoubleToken ) {
+                        l = ((DoubleToken)t).doubleValue();
+                    }                      
+                    //System.out.println(" fire: " + l );
+                    if ( l > _max ) {
+                        _max = (int)l;
+                    }
+                    if ( l < _min ) {
+                        _min = (int)l;
+                    }
+                } catch (IllegalActionException e) { }  
+            }
+        }
+        _bin = (_max - _min)/(colorList.size()-1);
+
+        System.out.print("\n\n Global Info: max firings: " + _max );
+        System.out.print(" min firings: " + _min );        
+        System.out.print(" bin size: " + _bin + "\n\n");
+
+        //System.out.println(" &&&&& RERENDER DONE &&&& ");
+
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     private CompaanListener _listener;
 
-    private static Map colorMap = new HashMap();
+    private static Map colorList = new HashMap();
+
+    private int _max = 0;
+    private int _min = Integer.MAX_VALUE;
+    private int _bin = 1;
 
     ///////////////////////////////////////////////////////////////////
     ////                         static functions                  ////
 
     static {
-        Map colorList = new HashMap();
         colorList.put(new Integer(0), Color.blue );
         colorList.put(new Integer(1), Color.cyan );
-        colorList.put(new Integer(2), Color.green);
-        colorList.put(new Integer(3), Color.yellow);
+        colorList.put(new Integer(2), Color.green );
+        colorList.put(new Integer(3), Color.yellow );
         colorList.put(new Integer(4), Color.pink );
         colorList.put(new Integer(5), Color.orange );
-        colorList.put(new Integer(6), Color.red );
-        colorList.put(new Integer(7), Color.white );
-
-        for (int i=0; i<=7; i++ ) {
-
-            // get a color from the list
-            colorMap.put(new Integer(10*i), colorList.get(new Integer(i)));
-
-            for (int j=1; j<10; j++ ) {
-                colorMap.put(new Integer(10*i+j), 
-                        ((Color)colorList.get(new Integer(i))).darker());
-            }
-        }
-
+        colorList.put(new Integer(6), Color.red );        
     }
+
 
 }
