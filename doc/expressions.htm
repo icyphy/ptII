@@ -443,15 +443,16 @@ fix(5.375, 8, 3)<a name="171779"> </a>
   <li><a name="171806"> </a>To create a single FixPoint Token using the expression language:
 
 <pre>
-fix(5.34, 10, 4)<a name="171807"> </a>
+fix(5.34, 10, 4)
+</pre>
 <a name="175175"> </a>This will create a FixToken.
 In this case, we try to fit the number 5.34 into a 10 bit representation with 4 bits used in the integer part. This may lead to quantization errors. By default the round quantizer is used. 
-</pre>
+
 
   <li><a name="175176"> </a>To create a Matrix with FixPoint values using the expression language:
 
 <pre>
-fix([ -.040609, -.001628, .17853 ], 10,  2) <a name="175177"> </a>
+fix([ -.040609, -.001628, .17853 ], 10,  2)
 </pre>
 This will create a FixMatrixToken with 1 row and 3 columns, in which each element is a Fix-Point value with precision(10/2). The resulting FixMatrixToken will try to fit each element of the given double matrix into a 10 bit representation with 2 bits used for the integer part. By default the round quantizer is used.<a name="175181"> </a>
 
