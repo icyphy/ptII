@@ -653,7 +653,7 @@ public class GRDirector extends StaticSchedulingDirector {
         try {
             GRScheduler scheduler = new GRScheduler(workspace());
             setScheduler(scheduler);
-        } catch (IllegalActionException e) {
+        } catch (Exception e) {
             // if setScheduler fails, then we should just set it to Null.
             // this should never happen because we don't override
             // setScheduler() to do sanity checks.
