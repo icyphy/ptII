@@ -311,7 +311,9 @@ public class StringUtilities {
             }
 
             // Convert %20 to spaces
-            home = StringUtilities.substitute(home, "%20", " ");
+            if (home != null) {
+                home = StringUtilities.substitute(home, "%20", " ");
+            }
 
             if (home == null) {
                 throw new RuntimeException(
