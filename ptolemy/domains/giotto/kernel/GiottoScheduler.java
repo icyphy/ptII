@@ -137,8 +137,7 @@ public class GiottoScheduler extends Scheduler {
         }
     }
 
-    // FIXME: temporarily I put the method here.
-    // it may be put into protected method aera...
+    // FIXME: Perhaps this method should be protected?
     public double getMinTimeStep(double period) {
         return period/_lcm;
     }
