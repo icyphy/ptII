@@ -244,12 +244,13 @@ public class DERealTimeSubscriber extends DEActor
                     _event.getID() == _eventReg.getID() && 
                     _event.getSequenceNumber() > _notificationSeq) {
                 // grab a lock and read new entry.
+                // System.out.println(_container.getName() + " notified.");
                 TokenEntry entryTemplate = new TokenEntry(_entryName, 
                         null, null);
                 synchronized(_tokenList) {
                     TokenEntry entry;
                     try {
-                        entry = (TokenEntry)_space.takeIfExists(
+                        entry = (TokenEntry)_space.readIfExists(
                                 entryTemplate, null, 1000);
                     } catch (Exception e) {
                         throw new InvalidStateException(_container,
