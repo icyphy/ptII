@@ -68,9 +68,11 @@ really a big deal.
 @since Ptolemy II 2.0
 */
 // FIXME: This is currently unsafe, because method bodies
-// for context classes don't exist in the metho call graph.
+// for context classes don't exist in the method call graph.
 // We need a lightweight way of getting the method call graph for
 // these methods without creating a JimpleBody which is expensive.
+// FIXME: This also doesn't work because it doesn't take interfaces
+// into account.
 public class UnreachableMethodRemover extends SceneTransformer {
     /** Construct a new transformer
      */
@@ -102,10 +104,42 @@ public class UnreachableMethodRemover extends SceneTransformer {
         InvokeGraph invokeGraph =
             ClassHierarchyAnalysis.newInvokeGraph();
 
+        // Temporary hack to deal with interfaces...  assume that methods of 
+        // interfaces are automatically reachable.
+        HashSet interfaceMethodSet= new HashSet();
+        // Loop over all the classes...
+        for (Iterator i = Scene.v().getApplicationClasses().iterator();
+             i.hasNext();) {
+            SootClass theClass = (SootClass)i.next();
+            
+            // Assume that any method that is part of an interface that this
+            // object implements, is reachable.
+            for (Iterator interfaces = theClass.getInterfaces().iterator();
+                 interfaces.hasNext();) {
+                SootClass theInterface = (SootClass)interfaces.next();
+                if (theInterface.getName().equals(
+                            "ptolemy.graph.InequalityTerm")) {
+                    continue;
+                }
+                for (Iterator methods =
+                         theInterface.getMethods().snapshotIterator();
+                     methods.hasNext();) {
+                    SootMethod method = (SootMethod)methods.next();
+                    SootMethod aMethod = theClass.getMethod(
+                            method.getSubSignature());
+                    if(aMethod != null) {
+                        System.out.println("Assuming interface method " +
+                                aMethod + " is reachable");
+                        interfaceMethodSet.add(aMethod);
+                    }
+                }
+            }
+        }
+
         // Construct the graph of methods that are directly reachable
         // from any method.
         MethodCallGraph methodCallGraph =
-            (MethodCallGraph)invokeGraph.newMethodGraph();
+            (MethodCallGraph)invokeGraph.newMethodGraph(interfaceMethodSet);
 
         // Compute the transitive closure of the method call graph,
         // starting from main(), finalize(), etc..
@@ -131,9 +165,9 @@ public class UnreachableMethodRemover extends SceneTransformer {
         }
     }
 
-    private static UnreachableMethodRemover instance = new UnreachableMethodRemover();
+    private static UnreachableMethodRemover instance =
+    new UnreachableMethodRemover();
 }
-
 
 
 
