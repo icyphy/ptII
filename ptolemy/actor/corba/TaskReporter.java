@@ -1,4 +1,4 @@
-/* An actor that receives data from a remote supplier.
+/* An actor that send data to a remote coordiantor.
 
  Copyright (c) 1998-2003 The Regents of the University of California.
  All rights reserved.
@@ -51,8 +51,8 @@ import org.omg.CosNaming.NamingContextHelper;
 //////////////////////////////////////////////////////////////////////////
 //// TaskReporter
 /**
- An actor that register itself to a romote data provide that implements the
- Coordinator inteface and receives data from it.
+ An actor that sends data to a remote coordinator that implements the 
+ Coordinator inteface defined in Coordinator.idl.
 
  Specify the ORB initial property with the<i>ORBInitProperties<i>
  paremerter, for example:
@@ -116,8 +116,8 @@ public class TaskReporter extends Sink {
     ////                         public methods                    ////
 
     /** Setup the link to the remote coordinator. This includes creating
-     *  the ORB, initializing the naming service, locating the
-     *  remote coordinator and registering this with it.
+     *  the ORB, initializing the naming service and locating the
+     *  remote coordinator.
      *  @exception IllegalActionException If any of the above actions
      *  failted.
      */
@@ -142,9 +142,7 @@ public class TaskReporter extends Sink {
     }
 
 
-    /** in block mode, wait until receives data from the coordinator
-     *  then call fireAt on director to send the data out. In on blocking
-     *  //FIXME: no implementation currently for non-blocking mode.
+    /** send data to the remote coordinator.
      *  @exception IllegalActionException If the publication
      *  action fails due to network problems, transaction errors,
      *  or any remote exceptions.
@@ -173,7 +171,7 @@ public class TaskReporter extends Sink {
                     }
                 }
             } catch (CorbaIllegalActionException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
                 throw new IllegalActionException(this,
                           " failed to send result back because: " + e.getMessage());
             }
@@ -208,9 +206,13 @@ public class TaskReporter extends Sink {
                    ptolemy.actor.corba.CoordinatorUtil.CoordinatorHelper
                    .narrow(ncRef.resolve(path));
         } catch (UserException ex) {
-            ex.printStackTrace();
+            //ex.printStackTrace();
             throw new IllegalActionException(this,
-                    " initialize ORB failed." + ex.getMessage());
+                    " initialize ORB failed. Please make sure the " +
+                    "naming server has already started and the " +
+                    "ORBInitProperty parameter and look up names are " +
+                    "configured correctly. " +
+                    "the error message is: " + ex.getMessage());
         }
 
     }
@@ -219,7 +221,11 @@ public class TaskReporter extends Sink {
     ////                         private methods                   ////
 
     private ORB _orb;
+    
+    //the proxy object of the Coordiantor.
     private Coordinator _coordinator;
+    
+    //the name of the client application that this actor belongs to.
     private String _clientName;
 
 }

@@ -55,6 +55,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 /**
  An actor that coordiantor a set of clients connecting to it to work together
  to finish some tasks.
+ 
+ It has an inner class that implements the Coordinator interface defined in
+ Coordinator.idl. The clients connect to this need to implement the Client 
+ interface defined in Coordinator.idl also.
 
  Specify the ORB initial property with the<i>ORBInitProperties<i>
  paremerter, for example:
@@ -243,9 +247,12 @@ public class TaskCoordinator extends Transformer {
             _orb.connect(_coordinator);
             ncRef.rebind(path, _coordinator);
         } catch (UserException ex) {
-            ex.printStackTrace();
+            //ex.printStackTrace();
             throw new IllegalActionException(this,
-                    " initialize ORB failed." + ex.getMessage());
+                    " initialize ORB failed. Please make sure the " +
+                    "naming server has already started and the " +
+                    "ORBInitProperty parameter is configured correctly. " +
+                    "the error message is: " + ex.getMessage());
         }
 
     }

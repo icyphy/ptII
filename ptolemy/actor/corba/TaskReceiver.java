@@ -1,4 +1,4 @@
-/* An actor that receive data from a remote publisher.
+/* An actor that receives data from a remote coordinator.
 
  Copyright (c) 1998-2003 The Regents of the University of California.
  All rights reserved.
@@ -49,29 +49,34 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
-//// PushConsumer
+//// TaskReceiver
 /**
- An actor that receives data from a remote publisher.
+ An actor that register itself to a romote data provide that implements the
+ Coordinator inteface and receives data from it.
+ 
  Specify the ORB initial property with the<i>ORBInitProperties<i>
  paremerter, for example:
  "-ORBInitialHost xyz.eecs.berkeley.edu -ORBInitialPort 1050"
  where "xyz.eecs.berkeley.edu" is the machine runing name server, and
  "1050" is the port for name service.
 
- Specify the name of the consumer with <i>ConsumerName<i>, which is
+ Specify the name of the coordiantor with <i>coordinatorName<i>, which is
  registed on the name server.
+ 
+ Specify whether the actor blocks when it haven't receive data with 
+ the <i>blocking<i> parameter.
 
- If the <i>blocking<i> paremerter is true, then wait until there is
- token received, otherwise, send a default value specified by the
- <i>defaultToken<i> paremerter. Notice that the type of the output port
- is determined by the type of this parameter.
+ Specify the name of this client with <i>thisClientName<i>.
+ 
+ See TaskCoordinator.java for the implementation of the coordinator.
 
 @author Yang Zhao
-@version $Id$
-@since Ptolemy II 1.0
+@version $$
+@since Ptolemy II 3.0
 */
 
 public class TaskReceiver extends Source {
@@ -110,7 +115,7 @@ public class TaskReceiver extends Source {
      */
     public Parameter ORBInitProperties;
 
-    /** The name of the consumer. The type of the Parameter
+    /** The name of the coordinator. The type of the Parameter
      *  is StringToken.
      */
     public Parameter coordinatorName;
@@ -142,8 +147,10 @@ public class TaskReceiver extends Source {
     ////                         public methods                    ////
 
      /** If the attribute is <i>blocking</i> update the local
-     *  cache of the parameter value, otherwise pass the call to
-     *  the super class.
+     *  cache of the parameter value, else if the attribute is
+     *  <i>defaultToken<i> update the type of the output token to
+     *  the be the same type of defaultToken, otherwise pass the 
+     *  call to the super class.
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException Not thrown in this base class.
      */
@@ -159,9 +166,9 @@ public class TaskReceiver extends Source {
         }
     }
 
-    /** Setup the link to the remote consumer. This includes creating
-     *  the ORB, initializing the naming service, and register the
-     *  consumer.
+    /** Setup the link to the remote coordinator. This includes creating
+     *  the ORB, initializing the naming service, and resolve the 
+     *  coordinator from the naming context.
      *  @exception IllegalActionException If any of the above actions
      *  failted.
      */
@@ -235,19 +242,25 @@ public class TaskReceiver extends Source {
     }
 
     /** Request that execution of the current iteration stop as soon
-     *  as possible. Wake up the waiting if there is any.
+     *  as possible. Wake up the waiting if there is any and unregister
+     *  the Client object from the coordinator.
      */
      public void stop() {
         if (_coordinator!= null) {
             try {
                 _coordinator.unregister(((StringToken)thisClientName.getToken()).
                         stringValue());
-            } catch (CorbaIllegalActionException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+            } catch (CorbaIllegalActionException ex) {
+                //e.printStackTrace();
+                throw new KernelRuntimeException(this,
+                        " failed to unregister itself from the remote " +
+                        " TaskCoordinator. " +
+                        " the error message is: " + ex.getMessage());                
             } catch (IllegalActionException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                throw new KernelRuntimeException(this,
+                        " gets an error when it tries to get the string value" +
+                        " from the thisClientName parameter. " +
+                        " the error message is: " + e.getMessage());                
             }  
         }
         if (_fireIsWaiting) {
@@ -294,7 +307,11 @@ public class TaskReceiver extends Source {
             //registe the consumer with the given name
         } catch (UserException ex) {
             throw new IllegalActionException(this,
-                    " initialize ORB failed." + ex.getMessage());
+                    " Initialize ORB failed. Please make sure the " +
+                    "naming server has already started and the " +
+                    "ORBInitProperty parameter and look up names are" +
+                    " configured correctly. " +
+                    "the error message is: " + ex.getMessage());
         }
     }
 
@@ -305,8 +322,10 @@ public class TaskReceiver extends Source {
 
     private ORB _orb;
     
+    // the Client objecte to commute with the remote Coordinator object.
     private Client _client;
     
+    // the proxy object of the Coordiantor.
     private Coordinator _coordinator;
 
     // Cached value of whether blocks when no data.
@@ -318,7 +337,7 @@ public class TaskReceiver extends Source {
     //The indicator for the default Token.
     private Token _defaultToken;
 
-    // The lock that monitors the reading thread and the fire() thread.
+    // The lock that monitors the push() method and the fire() method.
     private Object _lock = new Object();
 
     //The flag indicates wheather the fire() method is waiting.
@@ -329,6 +348,9 @@ public class TaskReceiver extends Source {
     ///////////////////////////////////////////////////////////////////
     ////                         inner class                ////
 
+    /** this inner class implements the Client interface defined in 
+     * Coordinator.idl.
+     */ 
     private class Client extends _ClientImplBase{
         /**
          * Construct a pushConsumer.
@@ -338,7 +360,7 @@ public class TaskReceiver extends Source {
         }
 
         /**
-         * Implement the push() method defined in the pushConsumer intefece.
+         * Implement the push() method defined in the Client intefece.
          * When the stub method is called, the call is trasfered by ORB to here,
          * and the data is saved in <i>_lastReadToken<i>. If fire() is waiting
          * for new data, then wake up fire(), otherwise call fireAt.
@@ -355,14 +377,7 @@ public class TaskReceiver extends Source {
                     if (_debugging) {
                         _debug("got pushed data:\n" + data.extract_string());
                     }
-                    //FIXME: This was designed to be able to receive
-                    //differnt kinds of tokens. But after some change was
-                    //made in StringUtil, the string seems not substituted
-                    //properly, and it gets error when call variable.getToken.
-                    //So I modified it here to only deal with sting tokens
-                    //and use it to receive moml strings for the mobile model.
-
-                    //variable.setExpression( data.extract_string());
+                   // variable.setExpression( data.extract_string());
                    ////String string = variable.getExpression();
                    //_lastReadToken = variable.getToken();
                     _lastReadToken = new StringToken(data.extract_string());
