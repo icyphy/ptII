@@ -86,7 +86,8 @@ public class PreemptableTask extends DETransformer {
         super(container, name);
         interrupt = new TypedIOPort(this, "interrupt", true, false);
         interrupt.setTypeEquals(BaseType.BOOLEAN);
-        executionTime = new Parameter(this, "executionTime", new DoubleToken(1.0));
+        executionTime =
+            new Parameter(this, "executionTime", new DoubleToken(1.0));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -156,13 +157,15 @@ public class PreemptableTask extends DETransformer {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-        double curr_time = ((DEDirector)getDirector()).getCurrentTime();
+        double currentTime = ((DEDirector)getDirector()).getCurrentTime();
         DEDirector director = (DEDirector)getDirector();
 
-        // If there is an input and actor is in a non-executing and non-interrupted state.
+        // If there is an input and actor is in a non-executing and
+        // non-interrupted state.
         if (_tokenList.size() > 0 && !_executing && !_interrupted) {
             _executing = true;
-            _outputTime = curr_time + ((DoubleToken)(executionTime.getToken())).doubleValue();
+            _outputTime = currentTime
+                + ((DoubleToken)(executionTime.getToken())).doubleValue();
             director.fireAt(this, _outputTime);
         }
 
@@ -170,12 +173,12 @@ public class PreemptableTask extends DETransformer {
         if (interrupt.hasToken(0)) {
             boolean intr = ((BooleanToken)interrupt.get(0)).booleanValue();
             if (intr) {
-                _interruptTime = curr_time;
+                _interruptTime = currentTime;
                 _interrupted = true;
             } else {
                 _interrupted = false;
                 if (_executing) {
-                    double delay_time = curr_time - _interruptTime;
+                    double delay_time = currentTime - _interruptTime;
                     _outputTime += delay_time;
                     director.fireAt(this, _outputTime);
                 }
@@ -204,7 +207,7 @@ public class PreemptableTask extends DETransformer {
      */
     public boolean prefire() throws IllegalActionException {
         DEDirector director = (DEDirector)getDirector();
-        double curr_time = director.getCurrentTime();
+        double currentTime = director.getCurrentTime();
 
         if (input.hasToken(0)) {
             _tokenList.add(input.get(0));
@@ -220,10 +223,10 @@ public class PreemptableTask extends DETransformer {
      */
     public boolean postfire() throws IllegalActionException {
         DEDirector director = (DEDirector)getDirector();
-        double curr_time = director.getCurrentTime();
+        double currentTime = director.getCurrentTime();
 
         if (_executing && !_interrupted) {
-            if (curr_time >= _outputTime) {
+            if (currentTime >= _outputTime) {
                 output.send(0, (Token)_tokenList.removeFirst());
                 _executing = false;
             }
@@ -234,7 +237,7 @@ public class PreemptableTask extends DETransformer {
         // interrupted state.
         if (!_executing && !_interrupted) {
             if (_tokenList.size() > 0) {
-                director.fireAt(this, curr_time);
+                director.fireAt(this, currentTime);
             }
         }
         return super.postfire();
