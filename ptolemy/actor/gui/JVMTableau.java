@@ -205,6 +205,7 @@ public class JVMTableau extends Tableau {
         Runtime runtime = Runtime.getRuntime();
         long totalMemory = runtime.totalMemory()/1024;
         long freeMemory = runtime.freeMemory()/1024;
+        long maxMemory = runtime.maxMemory()/1024;
 
         textArea.setText("Memory: "
                 + totalMemory + "K Free: "
@@ -212,6 +213,12 @@ public class JVMTableau extends Tableau {
                 + Math.round( (((double)freeMemory)/
                         ((double)totalMemory))
                         * 100.0)
+                + "%) Max: " 
+                + maxMemory + "K ("
+                + Math.round( (((double)totalMemory)/
+                        ((double)maxMemory))
+                        * 100.0)
                 + "%)");
+
     }
 }
