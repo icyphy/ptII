@@ -19,6 +19,7 @@
         <property name="_library" class="ptolemy.moml.LibraryAttribute">
           <configure>
             <entity name="state library" class="ptolemy.kernel.CompositeEntity">
+              <input source="../configs/annotation.xml"/>
               <entity name="state" class="ptolemy.domains.fsm.kernel.State"/>
             </entity>
           </configure>
@@ -78,19 +79,7 @@
       <configure>
         <?moml
           <group>
-    <property name="annotation" class="ptolemy.kernel.util.Attribute">
-        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-           <svg>
-           <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">Double click to edit text.</text>
-           </svg>
-           </configure>
-        </property>
-	<!-- The following attribute makes the right editor open -->
-	<property name="_controllerFactory" class="ptolemy.vergil.ptolemy.kernel.NodeControllerFactory"/>
-	<property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory"/>
-    </property>
-
+            <input source="../configs/annotation.xml"/>
     <!-- Blank composite actor. -->
     <entity name="typed composite actor" class="ptolemy.actor.TypedCompositeActor"/>
     <entity name="continuous time composite actor" class="ptolemy.domains.ct.kernel.CTCompositeActor"/>
@@ -98,6 +87,7 @@
         <property name="_library" class="ptolemy.moml.LibraryAttribute">
           <configure>
             <entity name="state library" class="ptolemy.kernel.CompositeEntity">
+              <input source="../configs/annotation.xml"/>
               <entity name="state" class="ptolemy.domains.fsm.kernel.State"/>
             </entity>
           </configure>
@@ -107,6 +97,7 @@
         <property name="_library" class="ptolemy.moml.LibraryAttribute">
           <configure>
             <entity name="state library" class="ptolemy.kernel.CompositeEntity">
+              <input source="../configs/annotation.xml"/>
               <entity name="state" class="ptolemy.domains.fsm.kernel.State"/>
             </entity>
           </configure>
