@@ -241,123 +241,9 @@ public class CompositeEntity extends ComponentEntity {
      */
     public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
-        CompositeEntity newEntity = (CompositeEntity)super.clone(workspace);
-
-        newEntity._containedEntities = new NamedList(newEntity);
-        newEntity._containedRelations = new NamedList(newEntity);
-
-        // Clone the contained relations.
-        Iterator relations = relationList().iterator();
-        while (relations.hasNext()) {
-            ComponentRelation relation =
-                (ComponentRelation)relations.next();
-            ComponentRelation newRelation =
-                (ComponentRelation)relation.clone(workspace);
-            // Assume that since we are dealing with clones,
-            // exceptions won't occur normally.  If they do, throw a
-            // CloneNotSupportedException.
-            try {
-                newRelation.setContainer(newEntity);
-            } catch (KernelException ex) {
-                throw new CloneNotSupportedException(
-                        "Failed to clone a CompositeEntity: " +
-                        ex.getMessage());
-            }
-        }
-        
-        // Clone the contained classes.
-        Iterator classes = classDefinitionList().iterator();
-        while (classes.hasNext()) {
-            ComponentEntity classDefinition
-                    = (ComponentEntity)classes.next();
-            ComponentEntity newSubentity = (ComponentEntity)classDefinition
-                    .clone(workspace);
-            // Assume that since we are dealing with clones,
-            // exceptions won't occur normally.  If they do, throw a
-            // CloneNotSupportedException.
-            try {
-                newSubentity.setContainer(newEntity);
-            } catch (KernelException ex) {
-                throw new CloneNotSupportedException(
-                        "Failed to clone a CompositeEntity: " +
-                        KernelException.stackTraceToString(ex));
-            }
-        }
-
-        // Clone the contained entities.
-        Iterator entities = entityList().iterator();
-        while (entities.hasNext()) {
-            ComponentEntity entity
-                    = (ComponentEntity)entities.next();
-            ComponentEntity newSubentity = (ComponentEntity)entity
-                .clone(workspace);
-            // Assume that since we are dealing with clones,
-            // exceptions won't occur normally.  If they do, throw a
-            // CloneNotSupportedException.
-            try {
-                newSubentity.setContainer(newEntity);
-            } catch (KernelException ex) {
-                throw new CloneNotSupportedException(
-                        "Failed to clone a CompositeEntity: " +
-                        KernelException.stackTraceToString(ex));
-            }
-
-            // Clone the links of the ports of the cloned entities.
-            Iterator ports = entity.portList().iterator();
-            while (ports.hasNext()) {
-                ComponentPort port = (ComponentPort)ports.next();
-                Enumeration linkedRelations = port.linkedRelations();
-                while (linkedRelations.hasMoreElements()) {
-                    ComponentRelation rel =
-                        (ComponentRelation)linkedRelations.nextElement();
-                    // A null link (supported since indexed links) might
-                    // yield a null relation here. EAL 7/19/00.
-                    if (rel != null) {
-                        if (rel.getContainer() != this) {
-                            throw new CloneNotSupportedException(
-                                    "Cannot clone a CompositeEntity with " +
-                                    "level crossing transitions.");
-                        }
-                        ComponentRelation newRelation =
-                            newEntity.getRelation(rel.getName());
-                        Port newPort =
-                            newSubentity.getPort(port.getName());
-                        try {
-                            newPort.link(newRelation);
-                        } catch (IllegalActionException ex) {
-                            throw new CloneNotSupportedException(
-                                    "Failed to clone a CompositeEntity: " +
-                                    ex.getMessage());
-                        }
-                    }
-                }
-            }
-        }
-
-        // Clone the inside links from the ports of this entity.
-        Iterator ports = portList().iterator();
-        while (ports.hasNext()) {
-            ComponentPort port = (ComponentPort)ports.next();
-            relations = port.insideRelationList().iterator();
-            while (relations.hasNext()) {
-                Relation relation = (Relation)relations.next();
-                ComponentRelation newRelation =
-                    newEntity.getRelation(relation.getName());
-                Port newPort =
-                    newEntity.getPort(port.getName());
-                try {
-                    newPort.link(newRelation);
-                } catch (IllegalActionException ex) {
-                    throw new CloneNotSupportedException(
-                            "Failed to clone a CompositeEntity: " +
-                            ex.getMessage());
-                }
-            }
-        }
-
-        return newEntity;
+        return _clone(workspace, null);
     }
-
+    
     /** Create a new relation and use it to connect two ports.
      *  It creates a new relation using newRelation() with an automatically
      *  generated name and uses it to link the specified ports.
@@ -1157,6 +1043,150 @@ public class CompositeEntity extends ComponentEntity {
     protected void _addRelation(ComponentRelation relation)
             throws IllegalActionException, NameDuplicationException {
         _containedRelations.append(relation);
+    }
+
+    /** Clone the object into the specified workspace. The new object is
+     *  <i>not</i> added to the directory of that workspace (you must do this
+     *  yourself if you want it there).
+     *  NOTE: This will not work if there are level-crossing transitions.
+     *  The result is an entity with clones of the ports of the original
+     *  entity, the contained entities, and the contained relations.
+     *  The ports of the returned entity are not connected to anything.
+     *  The connections of the relations are duplicated in the new entity,
+     *  unless they cross levels, in which case an exception is thrown.
+     *  @param workspace The workspace for the cloned object.
+     *  @param toplevel The top level entity being cloned (or null
+     *   if this is not inside an entity being cloned)
+     *  @exception CloneNotSupportedException If the entity contains
+     *   level crossing transitions so that its connections cannot be cloned,
+     *   or if one of the attributes cannot be cloned.
+     *  @return A new CompositeEntity.
+     */
+    protected Object _clone(Workspace workspace, CompositeEntity toplevel)
+            throws CloneNotSupportedException {
+        CompositeEntity newEntity = (CompositeEntity)super._clone(
+                workspace, toplevel);
+        
+        // When cloning the contained objects, we need an
+        // indication of the top level of the clone so that
+        // deferTo links can be fixed.
+        if (toplevel == null) {
+            toplevel = this;
+        }
+
+        newEntity._containedEntities = new NamedList(newEntity);
+        newEntity._containedRelations = new NamedList(newEntity);
+
+        // Clone the contained relations.
+        Iterator relations = relationList().iterator();
+        while (relations.hasNext()) {
+            ComponentRelation relation =
+                (ComponentRelation)relations.next();
+            ComponentRelation newRelation =
+                (ComponentRelation)relation.clone(workspace);
+            // Assume that since we are dealing with clones,
+            // exceptions won't occur normally.  If they do, throw a
+            // CloneNotSupportedException.
+            try {
+                newRelation.setContainer(newEntity);
+            } catch (KernelException ex) {
+                throw new CloneNotSupportedException(
+                        "Failed to clone a CompositeEntity: " +
+                        ex.getMessage());
+            }
+        }
+        
+        // Clone the contained classes.
+        Iterator classes = classDefinitionList().iterator();
+        while (classes.hasNext()) {
+            ComponentEntity classDefinition
+                    = (ComponentEntity)classes.next();
+            ComponentEntity newSubentity = (ComponentEntity)classDefinition
+                    ._clone(workspace, toplevel);
+            // Assume that since we are dealing with clones,
+            // exceptions won't occur normally.  If they do, throw a
+            // CloneNotSupportedException.
+            try {
+                newSubentity.setContainer(newEntity);
+            } catch (KernelException ex) {
+                throw new CloneNotSupportedException(
+                        "Failed to clone a CompositeEntity: " +
+                        KernelException.stackTraceToString(ex));
+            }
+        }
+
+        // Clone the contained entities.
+        Iterator entities = entityList().iterator();
+        while (entities.hasNext()) {
+            ComponentEntity entity
+                    = (ComponentEntity)entities.next();
+            ComponentEntity newSubentity = (ComponentEntity)entity
+                ._clone(workspace, toplevel);
+            // Assume that since we are dealing with clones,
+            // exceptions won't occur normally.  If they do, throw a
+            // CloneNotSupportedException.
+            try {
+                newSubentity.setContainer(newEntity);
+            } catch (KernelException ex) {
+                throw new CloneNotSupportedException(
+                        "Failed to clone a CompositeEntity: " +
+                        KernelException.stackTraceToString(ex));
+            }
+
+            // Clone the links of the ports of the cloned entities.
+            Iterator ports = entity.portList().iterator();
+            while (ports.hasNext()) {
+                ComponentPort port = (ComponentPort)ports.next();
+                Enumeration linkedRelations = port.linkedRelations();
+                while (linkedRelations.hasMoreElements()) {
+                    ComponentRelation rel =
+                        (ComponentRelation)linkedRelations.nextElement();
+                    // A null link (supported since indexed links) might
+                    // yield a null relation here. EAL 7/19/00.
+                    if (rel != null) {
+                        if (rel.getContainer() != this) {
+                            throw new CloneNotSupportedException(
+                                    "Cannot clone a CompositeEntity with " +
+                                    "level crossing transitions.");
+                        }
+                        ComponentRelation newRelation =
+                            newEntity.getRelation(rel.getName());
+                        Port newPort =
+                            newSubentity.getPort(port.getName());
+                        try {
+                            newPort.link(newRelation);
+                        } catch (IllegalActionException ex) {
+                            throw new CloneNotSupportedException(
+                                    "Failed to clone a CompositeEntity: " +
+                                    ex.getMessage());
+                        }
+                    }
+                }
+            }
+        }
+
+        // Clone the inside links from the ports of this entity.
+        Iterator ports = portList().iterator();
+        while (ports.hasNext()) {
+            ComponentPort port = (ComponentPort)ports.next();
+            relations = port.insideRelationList().iterator();
+            while (relations.hasNext()) {
+                Relation relation = (Relation)relations.next();
+                ComponentRelation newRelation =
+                    newEntity.getRelation(relation.getName());
+                Port newPort =
+                    newEntity.getPort(port.getName());
+                try {
+                    newPort.link(newRelation);
+                } catch (IllegalActionException ex) {
+                    throw new CloneNotSupportedException(
+                            "Failed to clone a CompositeEntity: " +
+                            ex.getMessage());
+                }
+            }
+        }
+
+        return newEntity;
     }
 
     /** Return a description of the object.  The level of detail depends

@@ -45,6 +45,8 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Set;
 
+import com.sun.rsasign.t;
+
 import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////////
@@ -455,19 +457,14 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
                 // The new object does not have any other objects deferring
                 // their MoML definitions to it, so we have to reset this.
                 newObject._MoMLInfo.deferredFrom = null;
-
-                // If the master defers its MoML definition to
-                // another object, then so will the clone.
-                // So we have to add the clone to the list of objects
-                // in the object deferred to.
-                // FIXME: This is only correct if the defered to object
-                // is referenced absolutely.  If it's a relative reference,
-                // then the deferral should might be to a new object.
-                if (_MoMLInfo.deferTo != null) {
-                    newObject._MoMLInfo.deferTo = _MoMLInfo.deferTo;
-                    _MoMLInfo.deferTo._MoMLInfo.getDeferredFrom().add(
-                            new WeakReference(newObject));
-                }
+                
+                // The deferTo field has to be set in subclasses
+                // because if a hierarchical object is cloned, then
+                // only the top-level of the clone should copy it.
+                // Currently, this field is only used by entities,
+                // which are the only objects that can be classes,
+                // so it is handled in ComponentEntity and CompositeEntity.
+                newObject._MoMLInfo.deferTo = null;
 
                 // NOTE: The value for the classname and superclass isn't
                 // correct if this cloning operation is meant to create
@@ -1335,9 +1332,18 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
             if (getMoMLInfo().deferTo != null) {
                 // NOTE: Referring directly to _MoMLInfo is safe here
                 // because getMoMLInfo() above ensures this is non-null.
-                if (_MoMLInfo.deferTo.getMoMLInfo().deferredFrom != null) {
+                List deferredFromList = _MoMLInfo.deferTo.getMoMLInfo().deferredFrom;
+                if (deferredFromList != null) {
                     // Removing a previous reference.
-                    _MoMLInfo.deferTo._MoMLInfo.deferredFrom.remove(this);
+                    // Note that this is a list of weak references, so
+                    // it is not sufficient to just remove this!
+                    ListIterator references = deferredFromList.listIterator();
+                    while (references.hasNext()) {
+                        WeakReference reference = (WeakReference)references.next();
+                        if (reference == null || reference.get() == this) {
+                            references.remove();
+                        }
+                    }
                 }
             }
             _MoMLInfo.deferTo = deferTo;

@@ -35,6 +35,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.Workspace;
 
+import java.lang.ref.WeakReference;
 import java.util.Iterator;
 
 
@@ -120,9 +121,7 @@ public class ComponentEntity extends Entity {
      */
     public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
-        ComponentEntity newObject = (ComponentEntity)super.clone(workspace);
-        newObject._container = null;
-        return newObject;
+        return _clone(workspace, null);
     }
 
     /** Get the container entity.
@@ -329,6 +328,35 @@ public class ComponentEntity extends Entity {
     protected void _checkContainer(CompositeEntity container)
             throws IllegalActionException {}
 
+    /** Clone the object into the specified workspace. The new object is
+     *  <i>not</i> added to the directory of that workspace (you must do this
+     *  yourself if you want it there).
+     *  The result is a new entity with the same ports as the original, but
+     *  no connections.
+     *  @param workspace The workspace for the cloned object.
+     *  @param toplevel The top level entity being cloned (or null
+     *   if this is not inside an entity being cloned)
+     *  @exception CloneNotSupportedException If cloned ports cannot have
+     *   as their container the cloned entity (this should not occur), or
+     *   if one of the attributes cannot be cloned.
+     *  @return A new ComponentEntity.
+     */
+    protected Object _clone(Workspace workspace, CompositeEntity toplevel)
+            throws CloneNotSupportedException {
+        ComponentEntity newObject = (ComponentEntity)super.clone(workspace);
+        newObject._container = null;
+        
+        // If this is the top level of a clone, then duplicate the
+        // deferTo relationship in the cloned object.
+        if (toplevel == null) {
+            MoMLInfo info = getMoMLInfo();
+            if (info.deferTo != null) {
+                newObject.setDeferMoMLDefinitionTo(info.deferTo);
+            }
+        }
+        return newObject;
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
