@@ -88,7 +88,7 @@ test OrderedMerge-2.1 {Two ramps with an OrderedMerge } {
 
     [java::field [java::cast ptolemy.actor.lib.Source $ramp] output] link $r1
     [java::field [java::cast ptolemy.actor.lib.Source $ramp2] output] link $r3
-    [java::field [java::cast ptolemy.actor.lib.Transformer $test2] input] \
+    [java::field [java::cast ptolemy.actor.lib.Sink $test2] input] \
 	link $r4
 
     [$e0 getManager] execute
