@@ -287,7 +287,7 @@ public final class SignalProcessing {
        double[] longOutput = IFFTRealOut(evenX, order + 1);
 
        // Truncate result
-       return DoubleArrayMath.truncate(longOutput, size);
+       return DoubleArrayMath.resize(longOutput, size);
     }
 
     /** Return a new array of Complex's which is the inverse FFT
@@ -402,7 +402,7 @@ public final class SignalProcessing {
      *  @retval A new array of Complex's.
      */
     public static Complex[] FFTComplexOut(Complex[] x, int order) {
-        // check if order > 31
+        x = _checkTransformArgs(x, order);
 
         double[] realx = ComplexArrayMath.realParts(x);
         double[] realrealX = FFTRealOut(realx, order);
@@ -439,7 +439,7 @@ public final class SignalProcessing {
      *  @retval A new array of Complex's.
      */
     public static Complex[] FFTComplexOut(double[] x, int order) {
-        // check if order > 31
+        // Argmument checking is done inside FFTRealOut() and FFTImagOut()  
 
         double[] realPart = FFTRealOut(x, order);
         double[] imagPart = FFTImagOut(x, order);
@@ -469,7 +469,7 @@ public final class SignalProcessing {
      *  @retval A new array of doubles.
      */
     public static double[] FFTImagOut(Complex[] x, int order) {
-        // check if order > 31
+        x = _checkTransformArgs(x, order);
 
         double[] realx = ComplexArrayMath.realParts(x);
         double[] imagrealX = FFTImagOut(realx, order);
@@ -505,11 +505,11 @@ public final class SignalProcessing {
      *  @retval A new array of doubles.
      */
     public static double[] FFTImagOut(double[] x, int order) {
-        // check if order > 31
+        x = _checkTransformArgs(x, order);
 
         int size = 1 << order;
         int halfN = size >> 1;
-
+        
         // Make sure the tables have enough entries for the DCT computation
         // at size N/4
         if ((order - 2) >  _FFCTGenLimit) {
@@ -555,7 +555,7 @@ public final class SignalProcessing {
      *  @retval A new array of doubles.
      */
     public static double[] FFTRealOut(Complex[] x, int order) {
-        // check if order > 31
+        x = _checkTransformArgs(x, order);
 
         double[] realx = ComplexArrayMath.realParts(x);
         double[] realrealX = FFTRealOut(realx, order);
@@ -592,15 +592,19 @@ public final class SignalProcessing {
 
         int size = 1 << order;
         int halfN = size >> 1;
-        double[] retval = new double[size];
-
+        
+        if (x.length < size) {
+           x = DoubleArrayMath.resize(x, size);
+        }
+        
         // Make sure the tables have enough entries for the DCT computation
         // at size N/4
         if ((order - 2) >  _FFCTGenLimit) {
            _FFCTTableGen(order - 2);
         }
-
+     
         double[] realPart = _cosDFT(x, size, order);
+        double[] retval = new double[size];
 
         System.arraycopy(realPart, 0, retval, 0, halfN + 1);
 
@@ -612,7 +616,7 @@ public final class SignalProcessing {
     }
     
     /** Return the "order" of a transform size, i.e. the base-2 logarithm
-     *  of the size.
+     *  of the size. The order will be rounded up to the nearest integer.
      *  @param size The size of the transform.
      *  @retval The order of the transform.
      */
@@ -979,6 +983,84 @@ public final class SignalProcessing {
 
     /////////////////////////////////////////////////////////////////////////
     ////                         private methods                         ////
+
+    // Check the input array for a transform. Throw an exception if the 
+    // array is null or of zero length.
+    private static void _checkTransformInput(Complex[] x) {
+        if (x == null) {
+           throw new IllegalArgumentException(
+            "ptolemy.math.SignalProcessing : null array passed to " +
+            "transform method.");           
+        }
+  
+        if (x.length <= 0) {
+           throw new IllegalArgumentException(
+            "ptolemy.math.SignalProcessing : empty array passed to " +
+            "transform method.");
+        }
+    }
+
+    // Check the input array for a transform. Throw an exception if the 
+    // array is null or of zero length.
+    private static void _checkTransformInput(double[] x) {
+        if (x == null) {
+           throw new IllegalArgumentException(
+            "ptolemy.math.SignalProcessing : null array passed to " +
+            "transform method.");           
+        }
+  
+        if (x.length <= 0) {
+           throw new IllegalArgumentException(
+            "ptolemy.math.SignalProcessing : empty array passed to " +
+            "transform method.");
+        }
+    }
+
+    // Check that the order of a transform is between 1 and 31, inclusive.
+    // Throw an exception otherwise.
+    private static void _checkTransformOrder(int order) {
+        if (order < 1) {
+           throw new IllegalArgumentException( 
+            "ptolemy.math.SignalProcessing : order of transform must be "+
+            " positive.");
+        } else if (order > 31) {
+           throw new IllegalArgumentException(
+            "ptolemy.math.SignalProcessing : order of transform must be "+
+            " less than 32.");
+        }
+    }
+
+    // Check the arguments for a transform on an array of doubles, using
+    // _checkTransformInput() and _checkTransformOrder(). Return an 
+    // appropriately padded array on which to perform the transform.    
+    private static double[] _checkTransformArgs(double[] x, int order) {
+        _checkTransformInput(x);
+        _checkTransformOrder(order);
+
+        int size = 1 << order;
+
+        // Zero pad the array if necessary
+        if (x.length < size) {
+           x = DoubleArrayMath.resize(x, size);
+        } 
+        return x;
+    }
+   
+    // Check the arguments for a transform on an array of Complex's, using
+    // _checkTransformInput() and _checkTransformOrder(). Return an 
+    // appropriately padded array on which to perform the transform.    
+    private static Complex[] _checkTransformArgs(Complex[] x, int order) {
+        _checkTransformInput(x);
+        _checkTransformOrder(order);
+
+        int size = 1 << order;
+
+        // Zero pad the array if necessary
+        if (x.length < size) {
+           x = ComplexArrayMath.resize(x, size);
+        } 
+        return x;
+    }
     
     // Returns an array with half the size + 1 because of the symmetry
     // of the cosDFT function.
@@ -987,7 +1069,7 @@ public final class SignalProcessing {
         switch (size) {
           // Base cases for lower orders
           case 0:
-          return new double[0];
+            return null; // should never be used
        
           case 1:
             {
@@ -1066,7 +1148,7 @@ public final class SignalProcessing {
                                  // also not read
 
              retval[1] = x[1] - x[3];
-
+             return retval;
             }
         }
 
@@ -1172,31 +1254,6 @@ public final class SignalProcessing {
             }
         }
         _FFCTGenLimit = Math.max(_FFCTGenLimit, limit);
-    }
-
-    // Return a two-element array with the roots of the quadratic
-    // <em>ax</em><sup>2</sup> + <em>bx</em> + <em>c</em>
-    // (i.e., the values of x that make this zero).
-    // This is private because it temporarily substitutes
-    // for a more general root-finding algorithm.
-    // FiXME: This is not used anywhere.  Delete.
-    private static Complex[] _rootsQuadratic(double a, double b, double c) {
-        Complex[] roots = new Complex[2];
-
-        double discrim = b*b-4.0*a*c;
-
-        if (discrim < 0) {
-            roots[0] = new Complex(-b/(2*a), Math.pow(-discrim, 0.5)/(2*a));
-            roots[1] = new Complex(-b/(2*a), -Math.pow(-discrim, 0.5)/(2*a));
-        } else {
-            // Adapted from "Numerical Recipes in C: The Art of Scientific
-            // Computing" (ISBN 0-521-43108-5), pgs 183-84
-            double q = -0.5*(b+ExtendedMath.sgn(b)*Math.sqrt(discrim));
-            roots[0] = new Complex(q/a);
-            roots[1] = new Complex(c/q);
-        }
-
-        return roots;
     }
 
     /////////////////////////////////////////////////////////////////////////

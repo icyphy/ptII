@@ -56,7 +56,7 @@ import  java.io.Serializable;
  *       suite, and influenced some of the method name choices.
  *  </ul>
  *
- *  @author Edward A. Lee
+ *  @author Edward A. Lee, Jeff Tsay
  *  @version $Id$
  */
 public final class Complex implements Cloneable, Serializable {

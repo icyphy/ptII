@@ -111,26 +111,50 @@ public class DoubleArrayMath {
         return retval;
     }
 
-    public final static double[] truncate(double[] array, int newLength) {
-        return truncate(array,  newLength, 0);
+    /** Return a new array of length newLength that is formed by
+     *  either truncating or padding the input array. 
+     *  This method simply calls :
+     *  resize(array, newLength, 0)
+     *  @param array An array of doubles.
+     *  @param newLength The desired size of the output array.
+     */
+    public final static double[] resize(double[] array, int newLength) {
+        return resize(array,  newLength, 0);
     }
 
-    /** Return a new array that is formed by newLength elements of
-     *  array1, starting from array[startIdx].
+    /** Return a new array of length newLength that is formed by
+     *  either truncating or padding the input array. 
+     *  Elements from the input array are copied to the output array,
+     *  starting from array[startIdx] until one of the following conditions 
+     *  is met :
+     *  1) The input array has no more elements to copy.
+     *  2) The output array has been completely filled.
+     *  startIdx must index a valid entry in array unless the input array
+     *  is of zero length or the output array is of zero length.
+     *  If case 1) is met, the remainder of the output array is filled with
+     *  zero's, implicitly by Java (padding). 
      *  @param array An array of doubles.
-     *  @param newLength The number of elements to copy.
-     *  @param startIdx The starting index for array.
+     *  @param newLength The desired size of the output array.
+     *  @param startIdx The starting index for the input array.
      */
-    public final static double[] truncate(double[] array, int newLength, 
+    public final static double[] resize(double[] array, int newLength, 
      int startIdx) {
+        
         double[] retval = new double[newLength];
+        int copySize = Math.min(newLength, array.length - startIdx);
 
-        System.arraycopy(array, startIdx, retval, 0, newLength);
+        if ((startIdx >= array.length) && (copySize >= 0)) {
+           throw new IllegalArgumentException(
+            "resize() :  input array size is less than the start index");
+        }
+        
+        if (copySize > 0) {
+           System.arraycopy(array, startIdx, retval, 0, copySize);
+        }
    
         return retval;
     } 
     
-
     /** Return a new array that is the element-by-element difference of the 
      *  two input arrays, i.e. the first array minus the second array.
      *  @param array1 The first array of doubles.

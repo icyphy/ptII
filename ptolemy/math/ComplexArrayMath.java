@@ -371,6 +371,58 @@ public final class ComplexArrayMath {
         }
         return true;
     }
+
+    /** Return a new array of length newLength that is formed by
+     *  either truncating or padding the input array. 
+     *  This method simply calls :
+     *  resize(array, newLength, 0)
+     *  @param array An array of Complex's.
+     *  @param newLength The desired size of the output array.
+     */
+    public final static Complex[] resize(Complex[] array, int newLength) {
+        return resize(array,  newLength, 0);
+    }
+
+    /** Return a new array of length newLength that is formed by
+     *  either truncating or padding the input array. 
+     *  Elements from the input array are copied to the output array,
+     *  starting from array[startIdx] until one of the following conditions 
+     *  is met :
+     *  1) The input array has no more elements to copy.
+     *  2) The output array has been completely filled.
+     *  startIdx must index a valid entry in array unless the input array
+     *  is of zero length or the output array is of zero length.
+     *  If case 1) is met, the remainder of the output array is filled with
+     *  new Complex's with value 0.
+     *  Copying here means shallow copying, i.e. pointers to Complex objects
+     *  are copied instead of allocation of new copies. This works because
+     *  Complex objects are immutable.
+     *  @param array An array of Complex's.
+     *  @param newLength The desired size of the output array.
+     *  @param startIdx The starting index for the input array.
+     */
+    public final static Complex[] resize(Complex[] array, int newLength, 
+     int startIdx) {
+        
+        Complex[] retval = new Complex[newLength];
+        int copySize = Math.min(newLength, array.length - startIdx);
+
+        if ((startIdx >= array.length) && (copySize >= 0)) {
+           throw new IllegalArgumentException(
+            "resize() :  input array size is less than the start index");
+        }
+        
+        if (copySize > 0) {
+           System.arraycopy(array, startIdx, retval, 0, copySize);
+        }
+    
+        for (int i = copySize; i < newLength; i++) {
+            retval[i] = new Complex(0.0, 0.0);
+        }
+                         
+        return retval;
+    }  
+
                 
     /** Return a new array that is constructed from the argument by
      *  scaling each element in the array by the second argument.
