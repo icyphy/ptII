@@ -155,11 +155,11 @@ public class CommitActionsAttribute
                         Token token = variable.getToken();
                         if (channel != null) {
                             if (token == null) {
-                                destination.sendAbsent(channel.intValue());
+                                destination.sendClear(channel.intValue());
                                 if (_debugging)
                                     _debug(getFullName()+" port: "+
                                            destination.getName()+" channel: "+
-                                           channel.intValue()+", Absent!");
+                                           channel.intValue()+", Clear!");
                             } else {
                                 destination.send(channel.intValue(), token);
                                 if (_debugging)
@@ -169,10 +169,10 @@ public class CommitActionsAttribute
                             }
                         } else {
                             if (token == null) {
-                                destination.broadcastAbsent();
+                                destination.broadcastClear();
                                 if (_debugging)
                                     _debug(getFullName()+" port: "+
-                                           destination.getName()+" broadcast Absent!");
+                                           destination.getName()+" broadcast Clear!");
                             } else {
                                 destination.broadcast(token);
                                 if (_debugging)
