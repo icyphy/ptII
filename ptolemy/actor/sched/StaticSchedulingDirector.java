@@ -63,6 +63,7 @@ or invalidate the schedule when needed.
 @see Scheduler
 */
 public class StaticSchedulingDirector extends Director {
+
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
@@ -96,7 +97,6 @@ public class StaticSchedulingDirector extends Director {
             throws IllegalActionException {
         super(container, name);
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
