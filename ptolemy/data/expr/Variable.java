@@ -1201,7 +1201,9 @@ public class Variable extends Attribute implements Typeable, Settable {
                     "Error evaluating expression \""
                     + _currentExpression
                     + "\":\n"
-                    + KernelException.stackTraceToString(ex));
+                    // Unfortunately, printing the complete stack trace
+                    // breaks the regression tests.
+                    /*+ KernelException.stackTraceToString(ex)*/ + ex);
         } finally {
 	    _dependencyLoop = false;
 	    workspace().doneReading();
