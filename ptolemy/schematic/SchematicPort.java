@@ -40,6 +40,14 @@ import collections.HashedMap;
 A schematic port represents a port of an entity in a PtolemyII
 schematic. Currently, it is not clear exactly how much
 information is in this object...
+<!-- port elements will be parsed into class SchematicPort -->
+<!ELEMENT port EMPTY>
+<!ATTLIST port
+name ID #REQUIRED
+input (true|false) "false"
+output (true|false) "false"
+multiport (true|false) "false"
+type (string|double|doubleArray) #REQUIRED>
 
 @author Steve Neuendorffer, John Reekie
 @version $Id$
@@ -49,8 +57,12 @@ public class SchematicPort extends SchematicElement {
     /** 
      * Create a new SchematicPort object, with no attributes.
      */
-    SchematicPort () {
+    public SchematicPort () {
         super("port");
+        setInput(false);
+        setOutput(false);
+        setMultiport(false);
+        setType("undeclared");
     }
 
     /** 
@@ -58,12 +70,18 @@ public class SchematicPort extends SchematicElement {
      * @param attributes a HashedMap from a String specifying the name of
      * an attribute to a String specifying the attribute's value.
      */
-    SchematicPort (HashedMap attributes) {
+    public SchematicPort (HashedMap attributes) {
         super("port", attributes);
+        if(!hasAttribute("input")) setInput(false);
+        if(!hasAttribute("output")) setOutput(false);
+        if(!hasAttribute("multiport")) setMultiport(false);
+        if(!hasAttribute("type")) setType("undeclared");
     }
 
     /** 
-     * Return a string that represents the type of this port.
+     * Return a string that represents the type of this port.  If the type
+     * is not specified and should be determined at runtime, then 
+     * the type returned will be "undeclared".
      */
     public String getType() {
         return getAttribute("type");
@@ -115,7 +133,8 @@ public class SchematicPort extends SchematicElement {
     }
 
     /**
-     * Set the type of this port
+     * Set the type of this port.   If the type is to be dynamically 
+     * determined, then set the type to "undeclared".
      *
      * @param a String representing the type of this port.
      */
