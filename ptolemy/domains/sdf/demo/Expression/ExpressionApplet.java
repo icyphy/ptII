@@ -73,7 +73,7 @@ public class ExpressionApplet extends SDFApplet {
         super.init();
         try {
             JPanel controlpanel = new JPanel();
-            controlpanel.setBackground(_getBackground());
+            controlpanel.setBackground(getBackground());
 
             controlpanel.setLayout(new BorderLayout());
             getContentPane().add(controlpanel, BorderLayout.SOUTH);
@@ -83,7 +83,7 @@ public class ExpressionApplet extends SDFApplet {
             _query.setTextWidth(30);
             _query.addLine("expr", "Expression", "cos(slow) + cos(fast)");
             _query.addQueryListener(new ParameterListener());
-            _query.setBackground(_getBackground());
+            _query.setBackground(getBackground());
 
             // Create a "Go" button.
             controlpanel.add(_createRunControls(1), BorderLayout.WEST);
@@ -110,7 +110,7 @@ public class ExpressionApplet extends SDFApplet {
             // the available space.
             plotter.place(getContentPane());
 
-            plotter.plot.setBackground(_getBackground());
+            plotter.plot.setBackground(getBackground());
             plotter.plot.setGrid(false);
             plotter.plot.setXRange(0.0, 200.0);
             plotter.plot.setYRange(-2.0, 2.0);

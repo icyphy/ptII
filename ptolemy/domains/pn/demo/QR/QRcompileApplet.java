@@ -75,7 +75,7 @@ public class QRcompileApplet extends PNApplet implements QueryListener {
                     new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 
 	    _query = new Query();
-            _query.setBackground(_getBackground());
+            _query.setBackground(getBackground());
             _query.addQueryListener(this);
             _query.addLine("K", "Number of QR update iterations", "10");
             _query.addLine("N", "Number of Antenna's", "6");
@@ -84,7 +84,7 @@ public class QRcompileApplet extends PNApplet implements QueryListener {
 
 	    _eventplot = new SequencePlotter(_toplevel, "plot");
             _eventplot.place(getContentPane());
-            _eventplot.plot.setBackground(_getBackground());
+            _eventplot.plot.setBackground(getBackground());
 	    _eventplot.plot.setGrid(false);
 	    _eventplot.plot.setTitle("Matrix R");
 	    _eventplot.plot.addLegend(0, "Matrix R");

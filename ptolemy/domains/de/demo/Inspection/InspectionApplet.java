@@ -134,7 +134,7 @@ public class InspectionApplet extends DEApplet implements QueryListener {
                     new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 
             _query = new Query();
-            _query.setBackground(_getBackground());
+            _query.setBackground(getBackground());
             _query.addLine("busmean", "Bus mean interarrival time", "1.0");
             _query.addLine("passmean",
                     "Passenger mean interarrival time", "1.0");
@@ -183,7 +183,7 @@ public class InspectionApplet extends DEApplet implements QueryListener {
             // Create and configure plotter
             _eventplot = new TimedPlotter(_toplevel, "plot");
             _eventplot.place(getContentPane());
-            _eventplot.plot.setBackground(_getBackground());
+            _eventplot.plot.setBackground(getBackground());
             _eventplot.plot.setGrid(false);
             _eventplot.plot.setTitle("Events");
             _eventplot.plot.addLegend(0, "Bus");
@@ -200,7 +200,7 @@ public class InspectionApplet extends DEApplet implements QueryListener {
             // Create and configure histogram
             _histplot = new HistogramPlotter(_toplevel, "histplot");
             _histplot.place(getContentPane());
-            _histplot.histogram.setBackground(_getBackground());
+            _histplot.histogram.setBackground(getBackground());
             _histplot.histogram.setGrid(false);
             _histplot.histogram.setTitle("Histogram of Waiting Times");
             _histplot.histogram.setXLabel("Waiting Time");

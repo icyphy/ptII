@@ -73,7 +73,7 @@ public class LorenzApplet extends CTApplet {
         super.init();
         JPanel controlpanel = new JPanel();
         controlpanel.setLayout(new BorderLayout());
-        controlpanel.setBackground(_getBackground());
+        controlpanel.setBackground(getBackground());
         getContentPane().add(controlpanel, BorderLayout.NORTH);
 
         _query = new Query();
@@ -83,7 +83,7 @@ public class LorenzApplet extends CTApplet {
         _query.addLine("sigma", "Sigma", "10.0");
         _query.addLine("lambda", "Lambda", "25.0");
         _query.addLine("b", "b", "2.0");
-        _query.setBackground(_getBackground());
+        _query.setBackground(getBackground());
 
         controlpanel.add(_createRunControls(2), BorderLayout.EAST);
 
@@ -123,7 +123,7 @@ public class LorenzApplet extends CTApplet {
 
             XYPlotter myplot = new XYPlotter(_toplevel, "CTXYPlot");
             myplot.place(getContentPane());
-            myplot.plot.setBackground(_getBackground());
+            myplot.plot.setBackground(getBackground());
             myplot.plot.setGrid(true);
             myplot.plot.setXRange(-25.0, 25.0);
             myplot.plot.setYRange(-25.0, 25.0);

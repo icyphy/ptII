@@ -67,11 +67,11 @@ public class SquareWaveResponse extends CTApplet {
         super.init();
         JPanel controlpanel = new JPanel();
         controlpanel.setLayout(new BorderLayout());
-        controlpanel.setBackground(_getBackground());
+        controlpanel.setBackground(getBackground());
         getContentPane().add(controlpanel, BorderLayout.NORTH);
 
         _query = new Query();
-        _query.setBackground(_getBackground());
+        _query.setBackground(getBackground());
         //_query.addQueryListener(new ParameterListener());
         controlpanel.add(_query, BorderLayout.WEST);
         _query.addLine("stopT", "Stop Time", "6.0");
@@ -98,7 +98,7 @@ public class SquareWaveResponse extends CTApplet {
             Scale gain3 = new Scale( _toplevel, "Gain3");
             TimedPlotter responsePlot = new TimedPlotter( _toplevel, "Sink");
             responsePlot.place(getContentPane());
-            responsePlot.plot.setBackground(_getBackground());
+            responsePlot.plot.setBackground(getBackground());
             responsePlot.plot.setGrid(true);
             responsePlot.plot.setXRange(0.0, 6.0);
             responsePlot.plot.setYRange(-2.0, 2.0);

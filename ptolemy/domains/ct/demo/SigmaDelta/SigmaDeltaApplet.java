@@ -85,7 +85,7 @@ public class SigmaDeltaApplet extends CTApplet {
 
         JPanel controlpanel = new JPanel();
         controlpanel.setLayout(new BorderLayout());
-        controlpanel.setBackground(_getBackground());
+        controlpanel.setBackground(getBackground());
         getContentPane().add(controlpanel);
 
         _query = new Query();
@@ -94,7 +94,7 @@ public class SigmaDeltaApplet extends CTApplet {
         _query.addLine("stopT", "Stop Time", "15.0");
         _query.addLine("sample", "Sample Rate", "0.02");
         _query.addLine("feedback", "Feedback Gain", "-20.0");
-        _query.setBackground(_getBackground());
+        _query.setBackground(getBackground());
 
         controlpanel.add(_createRunControls(2), BorderLayout.EAST);
 
@@ -139,7 +139,7 @@ public class SigmaDeltaApplet extends CTApplet {
 
             _ctPlot = new TimedPlotter(ctsub, "CTPlot");
             _ctPlot.place(getContentPane());
-            _ctPlot.plot.setBackground(_getBackground());
+            _ctPlot.plot.setBackground(getBackground());
             _ctPlot.plot.setGrid(true);
             _ctPlot.plot.setYRange(-1.0, 1.0);
             _ctPlot.plot.setSize(500, 180);
@@ -190,7 +190,7 @@ public class SigmaDeltaApplet extends CTApplet {
             
             _dePlot = new TimedPlotter(_toplevel, "DEPlot");
             _dePlot.place(getContentPane());
-            _dePlot.plot.setBackground(_getBackground());
+            _dePlot.plot.setBackground(getBackground());
             _dePlot.plot.setGrid(true);
             _dePlot.plot.setYRange(-1.0, 1.0);
             _dePlot.plot.setSize(500, 180);

@@ -69,7 +69,7 @@ public class HelicopterApplet extends CTApplet {
 
         super.init();
         JPanel controlpanel = new JPanel();
-        controlpanel.setBackground(_getBackground());
+        controlpanel.setBackground(getBackground());
         getContentPane().add(controlpanel, BorderLayout.NORTH);
 
         // JPanel progresspanel = new JPanel();
@@ -79,12 +79,12 @@ public class HelicopterApplet extends CTApplet {
         // controlpanel.add(_currentTimeCanvas);
 
         _query = new Query();
-        _query.setBackground(_getBackground());
+        _query.setBackground(getBackground());
         //_query.addQueryListener(new ParameterListener());
         controlpanel.add(_query, BorderLayout.WEST);
         _query.addLine("stopT", "Stop Time", "70.0");
         JPanel runcontrols = new JPanel();
-        runcontrols.setBackground(_getBackground());
+        runcontrols.setBackground(getBackground());
         runcontrols.setLayout(new GridLayout(1, 3));
         controlpanel.add(runcontrols, BorderLayout.EAST);
         runcontrols.add(_createRunControls(1));
@@ -94,7 +94,7 @@ public class HelicopterApplet extends CTApplet {
 
         JPanel plotPanel = new JPanel();
         plotPanel.setLayout(new GridLayout(2, 2));
-        plotPanel.setBackground(_getBackground());
+        plotPanel.setBackground(getBackground());
         getContentPane().add(plotPanel);
 
         try {
@@ -316,7 +316,7 @@ public class HelicopterApplet extends CTApplet {
             //CTPlot ctPlot = new CTPlot(_toplevel, "CTPlot", ctPanel);
             XYPlotter xzPlot = new XYPlotter(_toplevel, "Helicopter Position");
             xzPlot.place(plotPanel);
-            xzPlot.plot.setBackground(_getBackground());
+            xzPlot.plot.setBackground(getBackground());
             xzPlot.plot.setTitle("Helicopter Position");
             xzPlot.plot.setButtons(false);
             xzPlot.plot.setGrid(true);
@@ -328,7 +328,7 @@ public class HelicopterApplet extends CTApplet {
             TimedPlotter vxPlot = new TimedPlotter(_toplevel,
                     "Horizontal Speed");
             vxPlot.place(plotPanel);
-            vxPlot.plot.setBackground(_getBackground());
+            vxPlot.plot.setBackground(getBackground());
             vxPlot.plot.setTitle("Horizontal Speed");
             vxPlot.plot.setButtons(false);
             vxPlot.plot.setGrid(true);
@@ -340,7 +340,7 @@ public class HelicopterApplet extends CTApplet {
             TimedPlotter pzPlot = new TimedPlotter(_toplevel,
                     "Vertical Position");
             pzPlot.place(plotPanel);
-            pzPlot.plot.setBackground(_getBackground());
+            pzPlot.plot.setBackground(getBackground());
             pzPlot.plot.setTitle("Vertical Position");
             pzPlot.plot.setButtons(false);
             pzPlot.plot.setGrid(true);
@@ -352,7 +352,7 @@ public class HelicopterApplet extends CTApplet {
             TimedPlotter thPlot = new TimedPlotter(_toplevel,
                     "Pitch Angle");
             thPlot.place(plotPanel);
-            thPlot.plot.setBackground(_getBackground());
+            thPlot.plot.setBackground(getBackground());
             thPlot.plot.setTitle("Pitch Angle");
             thPlot.plot.setButtons(false);
             thPlot.plot.setGrid(true);

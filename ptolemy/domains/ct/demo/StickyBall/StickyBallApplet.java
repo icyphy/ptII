@@ -69,7 +69,7 @@ public class StickyBallApplet extends CTApplet {
         _query = new Query();
         _query.addQueryListener(new ParameterListener());
         _query.addLine("sticky", "Stickiness Decay", "-1.0");
-        _query.setBackground(_getBackground());
+        _query.setBackground(getBackground());
         getContentPane().add(_query, BorderLayout.NORTH);
         try {
             // The 2 argument requests a go and stop button.
@@ -92,7 +92,7 @@ public class StickyBallApplet extends CTApplet {
             // FIXME: adjust configuration.
             TimedPlotter responsePlot = new TimedPlotter(_toplevel, "plot");
             responsePlot.place(getContentPane());
-            responsePlot.plot.setBackground(_getBackground());
+            responsePlot.plot.setBackground(getBackground());
             responsePlot.plot.setGrid(true);
             responsePlot.plot.setTitle("Sticky Masses");
             responsePlot.plot.addLegend(0, "Mass 1 Position");

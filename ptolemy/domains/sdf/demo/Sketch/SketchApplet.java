@@ -112,7 +112,7 @@ public class SketchApplet extends SDFApplet implements EditListener {
             plot.setYRange(-1, 1);
             plot.setXRange(0, iterations);
             plot.setButtons(true);
-            plot.setBackground(_getBackground());
+            plot.setBackground(getBackground());
             getContentPane().add(plot);
             plotter.place(plot);
             source.place(plot);

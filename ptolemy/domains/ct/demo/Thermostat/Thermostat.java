@@ -102,7 +102,7 @@ public class Thermostat extends CTApplet {
              // the plot
              TimedPlotter responsePlot = new TimedPlotter(_toplevel, "plot");
              responsePlot.place(getContentPane());
-             responsePlot.plot.setBackground(_getBackground());
+             responsePlot.plot.setBackground(getBackground());
              responsePlot.plot.setGrid(true);
              responsePlot.plot.setTitle("Thermostat");
              responsePlot.plot.addLegend(0, "Temperature");

@@ -68,11 +68,11 @@ public class NonlinearClient extends CTApplet{
         super.init();
         JPanel controlpanel = new JPanel();
         controlpanel.setLayout(new BorderLayout());
-        controlpanel.setBackground(_getBackground());
+        controlpanel.setBackground(getBackground());
         getContentPane().add(controlpanel, BorderLayout.NORTH);
 
         _query = new Query();
-        _query.setBackground(_getBackground());
+        _query.setBackground(getBackground());
         //_query.addQueryListener(new ParameterListener());
         controlpanel.add(_query, BorderLayout.WEST);
         _query.addLine("stopT", "Stop Time", "6.0");
@@ -101,7 +101,7 @@ public class NonlinearClient extends CTApplet{
             TypedIOPort cout = new TypedIOPort(_client, "output", false, true);
             TimedPlotter myplot = new TimedPlotter( _toplevel, "Sink");
             myplot.place(getContentPane());
-            myplot.plot.setBackground(_getBackground());
+            myplot.plot.setBackground(getBackground());
             myplot.plot.setGrid(true);
             myplot.plot.setXRange(0.0, 6.0);
             myplot.plot.setYRange(-2.0, 2.0);
