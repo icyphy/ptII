@@ -170,8 +170,10 @@ public class ThalesGraphFrame extends BasicGraphFrame {
         _controller.getEntityController()
             .addMenuItemFactory(new ArgumentDialogFactory());
 
+        // NOTE: The cast is safe because the constructor
+        // accepts on CompositeEntity.
         final ActorGraphModel graphModel = new ActorGraphModel(
-                getModel());
+                (CompositeEntity)getModel());
         return new GraphPane(_controller, graphModel);
     }
 
@@ -204,7 +206,9 @@ public class ThalesGraphFrame extends BasicGraphFrame {
             String actionCommand = target.getActionCommand();
             try {
                 if (actionCommand.equals("Generate C Interface")) {
-                    if (!JNIUtilities.generateJNI(getModel())) {
+                    // NOTE: The cast is safe because the constructor
+                    // accepts only CompositeEntity.
+                    if (!JNIUtilities.generateJNI((CompositeEntity)getModel())) {
                         MessageHandler.error("No JNIActor to interface to!");
                     }
                 }

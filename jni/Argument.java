@@ -89,7 +89,7 @@ public class Argument extends Attribute implements Settable {
      */
     public void exportMoML(Writer output, int depth, String name)
             throws IOException {
-        if (!isPersistent() || isClassElement()) {
+        if (!isPersistent()) {
             return;
         }
         String value = getExpression();
@@ -445,7 +445,7 @@ public class Argument extends Attribute implements Settable {
                     + getName(), e);
         }
         // Make sure the new value is exported in MoML.  EAL 12/03.
-        setClassElement(false);
+        setPersistent(true);
     }
 
     /** Set the expression of the argument from its attributes
