@@ -154,28 +154,6 @@ public class Poisson extends TimedSource {
         }
     }
 
-    /** If the parameter being changed is <i>values</i>,
-     *  notify the director that type resolution may be invalid.
-     *  This will cause type resolution to be redone when it is next needed.
-     *  It is assumed that type changes in the parameters are implemented
-     *  by the director's change request mechanism, so they are implemented
-     *  when it is safe to redo type resolution.
-     *  If there is no director, then do nothing.
-     *  @param attribute The attribute whose type changed.
-     *  @exception IllegalActionException If the parent class throws it.
-     */
-    public void attributeTypeChanged(Attribute attribute)
-            throws IllegalActionException {
-        if (attribute == values) {
-            Director director = getDirector();
-            if (director != null) {
-                director.invalidateResolvedTypes();
-            }
-        } else {
-            super.attributeTypeChanged(attribute);
-        }
-    }
-
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then sets the parameter public members to refer
      *  to the parameters of the new actor.

@@ -206,28 +206,6 @@ public class Clock extends TimedSource {
         }
     }
 
-    /** Notify the director that a type change has occurred that may
-     *  affect the type of the output.
-     *  This will cause type resolution to be redone when it is next needed.
-     *  It is assumed that type changes in the parameters are implemented
-     *  by the director's change request mechanism, so they are implemented
-     *  when it is safe to redo type resolution.
-     *  If there is no director, then do nothing.
-     *  @exception IllegalActionException If the new values array has no
-     *   elements in it.
-     */
-    public void attributeTypeChanged(Attribute attribute)
-            throws IllegalActionException {
-        if (attribute == values) {
-            Director director = getDirector();
-            if (director != null) {
-                director.invalidateResolvedTypes();
-            }
-        } else {
-	    super.attributeTypeChanged(attribute);
-	}
-    }
-
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then sets the parameter public members to refer
      *  to the parameters of the new actor.

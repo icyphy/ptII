@@ -135,14 +135,6 @@ public class Expression extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Override the base class to allow arbitrary type changes
-     *  for the variables and parameters.
-     */
-    public void attributeTypeChanged(Attribute attribute) {
-        Director director = getDirector();
-        if (director != null) director.invalidateResolvedTypes();
-    }
-
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then creates new ports and parameters.
      *  @param workspace The workspace for the new object.

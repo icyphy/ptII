@@ -162,32 +162,7 @@ public class Pulse extends SequenceSource {
                 }
                 previous = idx[0][j];
             }
-        } else {
-            if (attribute == repeat) {
-                _repeatFlag = ((BooleanToken)repeat.getToken()).booleanValue();
-            } else {
-                super.attributeChanged(attribute);
-            }
-        }
-    }
-
-    /** Notify the director that a type change has occurred that may
-     *  affect the type of the output.
-     *  This will cause type resolution to be redone at the next opportunity.
-     *  It is assumed that type changes in the parameters are implemented
-     *  by the director's change request mechanism, so they are implemented
-     *  when it is safe to redo type resolution.
-     *  If there is no director, then do nothing.
-     *  @exception IllegalActionException If the new values array has no
-     *   elements in it.
-     */
-    public void attributeTypeChanged(Attribute attribute)
-            throws IllegalActionException {
-        if (attribute == values) {
-            Director director = getDirector();
-            if (director != null) {
-                director.invalidateResolvedTypes();
-            }
+        } else if (attribute == values) {
             try {
                 ArrayToken valuesArray = (ArrayToken)values.getToken();
                 Token prototype = valuesArray.getElement(0);
@@ -200,8 +175,10 @@ public class Pulse extends SequenceSource {
                         "Cannot set values to something that is not an array: "
                         + values.getToken());
             }
+        } else if (attribute == repeat) {
+            _repeatFlag = ((BooleanToken)repeat.getToken()).booleanValue();
         } else {
-            super.attributeTypeChanged(attribute);
+            super.attributeChanged(attribute);
         }
     }
 

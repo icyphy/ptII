@@ -84,20 +84,6 @@ public class Scale extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Notify the director when a type change in the parameter occurs.
-     *  This will cause type resolution to be redone at the next opportunity.
-     *  It is assumed that type changes in the parameter are implemented
-     *  by the director's change request mechanism, so they are implemented
-     *  when it is safe to redo type resolution.
-     *  If there is no director, then do nothing.
-     */
-    public void attributeTypeChanged(Attribute attribute) {
-        Director director = getDirector();
-        if (director != null) {
-            director.invalidateResolvedTypes();
-        }
-    }
-
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then sets the type constraints.
      *  @param workspace The workspace for the new object.

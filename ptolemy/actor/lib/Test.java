@@ -137,24 +137,6 @@ public class Test extends Sink {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Override the base class to allow type changes to the
-     *  <i>correctValues</i> parameter.
-     *  @exception IllegalActionException If the new parameter value
-     *   is not an array.
-     */
-    public void attributeTypeChanged(Attribute attribute)
-            throws IllegalActionException {
-        if (attribute == correctValues) {
-            if (!(correctValues.getToken() instanceof ArrayToken)) {
-                throw new IllegalActionException(this,
-                        "correctValues parameter is required to have an " +
-                        "array value.");
-            }
-        } else {
-            super.attributeTypeChanged(attribute);
-        }
-    }
-
     /** Override the base class to set the iteration counter to zero.
      *  @exception IllegalActionException If the base class throws it.
      */
