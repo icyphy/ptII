@@ -178,11 +178,15 @@ public class LogicFunction extends Transformer {
         for (int i = 0; i < input.getWidth(); i++) {
             if (input.hasToken(i)) {
                 in = (BooleanToken)(input.get(i));
-                if (in != null) value = _updateFunction(in, value);
+                if (in != null) {
+                    value = _updateFunction(in, value);
+                }
             }
         }
         if (value != null) {
-            if (_negate) value = value.not();
+            if (_negate) {
+                value = value.not();
+            }
             output.send(0, (BooleanToken)value);
         }
     }
