@@ -114,6 +114,36 @@ public class Port extends NamedObj {
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
 
+    /** Return a description of the object
+     *  @param verbose The level of verbosity.
+     */
+    public String description(int verbose){
+        String closingCurly = "}";
+        switch (verbose) {
+        case pt.kernel.Nameable.PRETTYPRINT:
+            closingCurly = "}\n";
+        case pt.kernel.Nameable.VERBOSE:
+        case pt.kernel.Nameable.NAMES:
+            Enumeration enum = getLinkedRelations();
+            String results = new String("{" + toString() );
+            boolean sawFirstOutput = false;
+            while (enum.hasMoreElements()) {
+                Relation relation = (Relation)enum.nextElement();
+                if (sawFirstOutput) {
+                    results = results.concat(" " +
+                            relation.description(verbose));
+                } else {
+                    sawFirstOutput = true;
+                    results = results.concat(relation.description(verbose));
+                }
+            }
+            return results + closingCurly;
+        case pt.kernel.Nameable.QUIET:
+        default:
+            return toString();
+        }
+    }
+
     /** Enumerate the connected ports.
      *  This method is synchronized on the workspace.
      *  @return An enumeration of Port objects. 

@@ -128,6 +128,35 @@ public class Entity extends NamedObj {
         }
     }
 
+    /** Return a description of the object
+     *  @param verbose The level of verbosity.
+     */
+    public String description(int verbose){
+        String closingCurly = "}";
+        switch (verbose) {
+        case pt.kernel.Nameable.PRETTYPRINT:
+            closingCurly = "}\n";
+        case pt.kernel.Nameable.VERBOSE:
+        case pt.kernel.Nameable.NAMES:
+            Enumeration enum = getPorts();
+            String results = new String("{" + toString() );
+            boolean sawFirstOutput = false;
+            while (enum.hasMoreElements()) {
+                Port port = (Port)enum.nextElement();
+                if (sawFirstOutput) {
+                    results = results.concat(" " + port.description(verbose));
+                } else {
+                    sawFirstOutput = true;
+                    results = results.concat(port.description(verbose));
+                }
+            }
+            return results + closingCurly;
+        case pt.kernel.Nameable.QUIET:
+        default:
+            return toString();
+        }
+    }
+
     /** Enumerate all connected ports.
      *  Ports in this entity is not included unless there is a loopback, 
      *  meaning that two distinct ports of this entity are linked to the same

@@ -93,4 +93,11 @@ public interface Nameable {
      * object that is sufficient to recontruct the object.
      */ 
     public static final int VERBOSE = 2;
+
+    /**
+     * The description() method returns a complete description of the
+     * object that is sufficient to recontruct the object in a format
+     * that has newlines.
+     */ 
+    public static final int PRETTYPRINT = 3;
 }

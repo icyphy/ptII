@@ -130,10 +130,10 @@ public class NamedObj implements Nameable, Serializable {
         switch (verbose) {
         case pt.kernel.Nameable.VERBOSE:
         case pt.kernel.Nameable.NAMES:
-            return toString() + _workspace.toString();
+            return "{"+toString() + " {"+_workspace.toString()+"}}";
         case pt.kernel.Nameable.QUIET:
         default:
-            return toString();
+            return "{"+toString()+"}";
         }
     }
 
@@ -209,9 +209,9 @@ public class NamedObj implements Nameable, Serializable {
     /** Return a concise description of the object. */ 
     public String toString() {
         try {
-            return "pt.kernel.NamedObj `" + getFullName()+ "'";
+            return getClass().getName() + " {" + getFullName()+ "}";
         } catch (InvalidStateException e) {
-            return "pt.kernel.NamedObj `" + _name + "'";
+            return getClass().getName() + " {" + _name + "}";
         }
     }
 

@@ -1,6 +1,6 @@
 /* A CompositeEntity is a non-atomic vertex in a hierarchical graph.
 
- Copyright (c) 1997 The Regents of the University of California.
+ Copyright (c) 1997- The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -316,6 +316,36 @@ public class CompositeEntity extends ComponentEntity {
                 }
             }
             return result.elements();
+        }
+    }
+
+    /** Return a description of the object
+     *  @param verbose The level of verbosity.
+     */
+    public String description(int verbose){
+        String closingCurly = "}";
+        switch (verbose) {
+        case pt.kernel.Nameable.PRETTYPRINT:
+            closingCurly = "}\n";
+        case pt.kernel.Nameable.VERBOSE:
+        case pt.kernel.Nameable.NAMES:
+            String results = new String("{" + toString());
+            Enumeration enum = getEntities();
+            boolean sawFirstOutput = false;
+            while (enum.hasMoreElements()) {
+                ComponentEntity entity = (ComponentEntity)enum.nextElement();
+                if (sawFirstOutput) {
+                    results = results.concat(" " +
+                            entity.description(verbose));
+                } else {
+                    sawFirstOutput = true;
+                    results = results.concat(entity.description(verbose));
+                }
+            }
+            return results + closingCurly;
+        case pt.kernel.Nameable.QUIET:
+        default:
+            return toString();
         }
     }
 

@@ -101,10 +101,9 @@ public class Workspace implements Nameable, Serializable {
         switch (verbose) {
         case pt.kernel.Nameable.VERBOSE:
         case pt.kernel.Nameable.NAMES:
-            return toString();
         case pt.kernel.Nameable.QUIET:
         default:
-            return toString();
+            return "{" + toString() + "}";
         }
     }
 
@@ -186,7 +185,7 @@ public class Workspace implements Nameable, Serializable {
 
     /** Return a concise description of the object. */ 
     public String toString() {
-        return "pt.kernel.Workspace `" + getFullName()+ "'";
+        return "pt.kernel.Workspace {" + getFullName()+ "}";
     }
 
     //////////////////////////////////////////////////////////////////////////
