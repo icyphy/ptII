@@ -3,25 +3,30 @@
 for file in $@
 do
     echo $file
-    awk '$0 ~ /@AcceptedRating/ {
+    awk '{ if ($0 ~ /@AcceptedRating/) {
              acceptedRating=$2
              for(i = 3; i<=NF; i++) {
-                acceptedRating=acceptedRating, $i
+                acceptedRating=acceptedRating " " $i
              }
-         }
-         $0 ~ /@ProposedRating/ {
+         } else if ($0 ~ /@ProposedRating/) {
              proposedRating=$2
              for(i = 3; i<=NF; i++) {
-                proposedRating=proposedRating, $i
+                proposedRating=proposedRating " " $i
              }
-         $0 ~ /@since/ {
+         } else if ($0 ~ /@since/) {
              print $0
-             print "@Pt.ProposedRating", proposedRating
-             print "@Pt.AcceptedRating", acceptedRating
-         }
-        $file > /tmp/mvratings.tmp
-    diff $file /tmp/mvratings.tmp
-    cp /tmp/mvratings.tmp $file 
+	     start = index($0, "@since") -1
+	     blanks="         "
+	     indent=substr(blanks, 1, start)
+	     print indent "@Pt.ProposedRating", proposedRating
+             print indent "@Pt.AcceptedRating", acceptedRating
+         } else {
+	    print $0
+	 }
+        }
+        ' $file > /tmp/mvratings.tmp
+    diff -c $file /tmp/mvratings.tmp
+    #cp /tmp/mvratings.tmp $file 
 
 done
 
