@@ -939,14 +939,21 @@ LocalVariableDeclarationStatement :
 
 Statement :
     EmptyStatement
+    { $$ = $1; }
   | LabeledStatement
+    { $$ = $1; }  
   | ExpressionStatement ';'
     { $$ = new ExprStmtNode((ExprNode) $1); }
   | SelectionStatement
+    { $$ = $1; }  
   | IterationStatement
+    { $$ = $1; }  
   | JumpStatement
+    { $$ = $1; }  
   | GuardingStatement
+    { $$ = $1; }
   | Block
+    { $$ = $1; }  
   ;
 
 /* Section 8.4 */
@@ -1047,17 +1054,19 @@ ForInit :
     ExpressionStatementsOpt ';'
     { $$ = $1; }
   | LocalVariableDeclarationStatement
-   { $$ = $1; }
+    { $$ = $1; }
   ;
 
 ForUpdateOpt :
-    ExpressionStatements   { }
+    ExpressionStatements   
+    { $$ = $1; }
   | empty
     { $$ = new LinkedList(); }
   ;
 
 ExpressionStatementsOpt :
-    ExpressionStatements   { }
+    ExpressionStatements   
+    { $$ = $1; }
   | empty
     { $$ = new LinkedList(); }
   ;
@@ -1526,7 +1535,7 @@ protected static final List append(List list, Object obj)
 }
 
 
-protected static final Object appendLists(List list1, List list2)
+protected static final List appendLists(List list1, List list2)
 {
   list1.addAll(list2);
   return list1;

@@ -443,8 +443,7 @@ public class JavaCodeGenerator extends JavaVisitor implements JavaStaticSemantic
     }
 
     public Object visitForNode(ForNode node, LinkedList args) {
-        // FIX ME
-        return "for (" + _commaList((List) node.childReturnValueAt(node.CHILD_INDEX_INIT)) +
+        return "for (" + _forInitString(node.getInit()) +
                "; " + (String) node.childReturnValueAt(node.CHILD_INDEX_TEST) + "; " +
                _commaList((List) node.childReturnValueAt(node.CHILD_INDEX_UPDATE)) + ") " +
                (String) node.childReturnValueAt(node.CHILD_INDEX_STMT) + '\n';
@@ -883,6 +882,46 @@ public class JavaCodeGenerator extends JavaVisitor implements JavaStaticSemantic
         }
 
         return sb.toString();
+    }
+
+    protected String _forInitString(List list) {
+        int length = list.size();
+        
+        if (length <= 0) return "";
+        
+        TreeNode firstNode = (TreeNode) list.get(0);
+        
+        if (firstNode.classID() == LOCALVARDECLNODE_ID) {
+           // a list of local variables, with the same type and modifier
+           LocalVarDeclNode varDeclNode = (LocalVarDeclNode) firstNode;
+           StringBuffer sb = new StringBuffer();
+           
+           sb.append(Modifier.toString(varDeclNode.getModifiers()));
+           
+           sb.append((String) varDeclNode.getDefType().accept(this, null) + ' ');
+           
+           Iterator declNodeItr = list.iterator();
+           
+           while (declNodeItr.hasNext()) {
+              LocalVarDeclNode declNode = (LocalVarDeclNode) declNodeItr.next();
+              sb.append(declNode.getName().getIdent());
+              
+              TreeNode initExpr = declNode.getInitExpr();
+              if (initExpr != AbsentTreeNode.instance) {
+                 sb.append(" = " + (String) initExpr.accept(this, null));
+              }
+              
+              if (declNodeItr.hasNext()) {
+                 sb.append(", ");
+              }                        
+           }
+                      
+           return sb.toString();
+                  
+        } else {
+           // a list of expression statements
+           return _commaList(TNLManip.traverseList(this, null, null, list));  
+        }    
     }
         
     protected String _parenExpr(TreeNode expr, String exprStr) {
