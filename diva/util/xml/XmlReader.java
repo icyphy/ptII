@@ -395,7 +395,7 @@ public class XmlReader extends LoggableOp {
             }
             if (pubID != null && !pubID.equals("")) {
                 /* To find the DTD from the public ID, create a DefaultBundle
-                 * and look up the ID in that. If it is not nulll, then it
+                 * and look up the ID in that. If it is not null, then it
                  * is an input stream that the parser can use.
                  */
                 DefaultBundle resources = new DefaultBundle();
