@@ -1469,10 +1469,10 @@ public class MoMLParser extends HandlerBase {
                     // NOTE: Java sometimes throws ClassNotFoundException
                     // and sometimes NullPointerException when the class
                     // does not exist.  Hence the broad catch here.
-                    _attemptToFindMoMLClass(className, source);
+                    reference = _attemptToFindMoMLClass(className, source);
                 } catch (Error error) {
                     // Java might throw a ClassFormatError.
-                    _attemptToFindMoMLClass(className, source);
+                    reference = _attemptToFindMoMLClass(className, source);
                 }
             }
         }
@@ -1578,8 +1578,8 @@ public class MoMLParser extends HandlerBase {
 
     // Attempt to find a MoML class.
     // If there is no source defined, then use the classpath.
-    private void _attemptToFindMoMLClass(String className, String source)
-            throws Exception {
+    private ComponentEntity _attemptToFindMoMLClass(
+            String className, String source) throws Exception {
         String classAsFile = null;
         String altClassAsFile = null;
         ComponentEntity reference = null;
@@ -1672,6 +1672,7 @@ public class MoMLParser extends HandlerBase {
             _imports = new LinkedList();
         }
         _imports.add(0, reference);
+        return reference;
     }
 
     // Create an instance of the specified class name by finding a
