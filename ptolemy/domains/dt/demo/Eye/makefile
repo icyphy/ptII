@@ -40,6 +40,10 @@ CLASSPATH =	$(ROOT)
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
+# Used to build jar files
+PTPACKAGE = 	Eye
+PTCLASSJAR = 	$(PTPACKAGE).jar
+
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
