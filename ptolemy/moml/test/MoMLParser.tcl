@@ -2377,7 +2377,7 @@ test MoMLParser-12.1 {test rename} {
 }
 
 #----------------------------------------------------------------------
-test MoMLParser-13.1{test parse moml of ConfigurableAttribute} {
+test MoMLParser-13.1 {test parse moml of ConfigurableAttribute} {
     set moml_1 "$header
 <entity name=\"top\" class=\"ptolemy.kernel.CompositeEntity\">
 </entity>
