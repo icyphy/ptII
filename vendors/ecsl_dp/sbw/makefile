@@ -74,7 +74,12 @@ install: jclass jars
 
 ##################################################
 # Steer By Wire (sbw) demo
-demo: all sbw_ECSL.moml
+demo: 
+	@echo "Run 'make demo_dataflow' or 'make demo_components'"
+
+##################################################
+# Steer By Wire (sbw) demo using MDL2XML and XML2ECSL
+demo_dataflow: all sbw_ECSL.moml
 	@echo "# Double Click on the Generate Giotto Icon and "
 	@echo "# save the Giotto file as $(PTPACKAGE).giotto"
 	@echo "# Exit vergil, then run \"make demo_gdk\""
@@ -89,18 +94,37 @@ sbw_ECSL.xml: sbw_data_flow_12_1.xml
 	../XML2ECSL/bin/Xml2Ecsl_d $< $@
 
 sbw_data_flow_12_1.xml: sbw_data_flow_12_1.mdl
-	../MDL2XML/bin/MDL2XMLd $<
+	../MDL2XML/bin/MDL2XML $<
+
+##################################################
+# Steer By Wire (sbw) demo using xml file generated
+# by GME
+demo_components: sbw_components.moml
+	@echo "# Double Click on the Generate Giotto Icon and "
+	@echo "# save the Giotto file as $(PTPACKAGE).giotto"
+	@echo "# Exit vergil, then run \"make demo_gdk\""
+	$(PTII)/bin/vergil $<
+
+
+sbw_components.moml: sbw_components.xml $(ECSL2MOML)
+	$(ECSL2MOML) $<
+
+# UDM_PATH should be set when UDM is installed
+# Usually, UDM_PATH is something like C:\Program Files\ISIS\UDM\
+#
+ECSL_DP.xsd:
+	"$(UDM_PATH)/bin/udm.exe" ECSL_DP.xml
+
+sbw_components.xml: ECSL_DP.xsd
+	@echo "If this fails, make sure the current directory is in the path"
+	"$(UDM_PATH)/bin/udmcopy" sbw.mga sbw_components.xml ECSL_DP.xml
+
+
 
 # Get the rules for codegen.  Run "make demo_gdk" to run Giotto.
 include $(ROOT)/ptolemy/domains/giotto/kernel/giotto.mk
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
-
-
-
-
-
-
 
 
