@@ -113,7 +113,7 @@ public class ActorController extends AttributeController {
      *  @param access The access level.
      */
     public ActorController(GraphController controller, Access access) {
-	super(controller, access);
+        super(controller, access);
 
         // "Configure Ports"
         if (access == FULL) {
@@ -141,25 +141,25 @@ public class ActorController extends AttributeController {
             _menuFactory.addMenuItemFactory(_breakpointDialogFactory);
         }
         
-	// The filter for the layout algorithm of the ports within this
-	// entity. This returns true only if the argument is a Port
+        // The filter for the layout algorithm of the ports within this
+        // entity. This returns true only if the argument is a Port
         // and the parent is an instance of Location.
-	Filter portFilter = new Filter() {
-	    public boolean accept(Object candidate) {
-		GraphModel model = getController().getGraphModel();
-		if (candidate instanceof Port &&
+        Filter portFilter = new Filter() {
+            public boolean accept(Object candidate) {
+                GraphModel model = getController().getGraphModel();
+                if (candidate instanceof Port &&
                         model.getParent(candidate) instanceof Location) {
-		    return true;
-		} else {
-		    return false;
-		}
-	    }
-	};
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        };
 
-	// Anytime we add a port to an entity, we want to layout all the
-	// ports within that entity.
-	GlobalLayout layout = new EntityLayout();
-	controller.addGraphViewListener(new IncrementalLayoutListener(
+        // Anytime we add a port to an entity, we want to layout all the
+        // ports within that entity.
+        GlobalLayout layout = new EntityLayout();
+        controller.addGraphViewListener(new IncrementalLayoutListener(
                 new IncrLayoutAdapter(layout), portFilter));
     }
 
@@ -194,9 +194,9 @@ public class ActorController extends AttributeController {
     public class EntityLayout extends AbstractGlobalLayout {
 
         /** Create a new layout manager. */
-	public EntityLayout() {
-	    super(new BasicLayoutTarget(getController()));
-	}
+        public EntityLayout() {
+            super(new BasicLayoutTarget(getController()));
+        }
 
         ///////////////////////////////////////////////////////////////
         ////                     public methods                    ////
@@ -204,73 +204,73 @@ public class ActorController extends AttributeController {
         /** Layout the ports of the specified node.
          *  @param node The node, which is assumed to be an entity.
          */
-	public void layout(Object node) {
-	    GraphModel model = getController().getGraphModel();
-	    Iterator nodes = model.nodes(node);
-	    LinkedList inputs = new LinkedList();
-	    LinkedList outputs = new LinkedList();
-	    LinkedList inputOutputs = new LinkedList();
-	    int inCount = 0;
-	    int outCount = 0;
-	    int inputOutputCount = 0;
+        public void layout(Object node) {
+            GraphModel model = getController().getGraphModel();
+            Iterator nodes = model.nodes(node);
+            LinkedList inputs = new LinkedList();
+            LinkedList outputs = new LinkedList();
+            LinkedList inputOutputs = new LinkedList();
+            int inCount = 0;
+            int outCount = 0;
+            int inputOutputCount = 0;
 
-	    while (nodes.hasNext()) {
-		Port port = (Port) nodes.next();
-		if (!(port instanceof IOPort)) {
-		    inputOutputCount++;
-		    inputOutputs.addLast(port);
-		} else {
-		    IOPort ioport = (IOPort) port;
-		    if (ioport.isInput() && ioport.isOutput()) {
-			inputOutputCount++;
-			inputOutputs.addLast(port);
-		    } else if (ioport.isInput()) {
-			inCount++;
-			inputs.addLast(port);
-		    } else if (ioport.isOutput()) {
-			outCount++;
-			outputs.addLast(port);
-		    } else {
+            while (nodes.hasNext()) {
+                Port port = (Port) nodes.next();
+                if (!(port instanceof IOPort)) {
+                    inputOutputCount++;
+                    inputOutputs.addLast(port);
+                } else {
+                    IOPort ioport = (IOPort) port;
+                    if (ioport.isInput() && ioport.isOutput()) {
                         inputOutputCount++;
-			inputOutputs.addLast(port);
-		    } 
-		}
-	    }
-	    CompositeFigure figure =
-		(CompositeFigure)getLayoutTarget().getVisualObject(node);
+                        inputOutputs.addLast(port);
+                    } else if (ioport.isInput()) {
+                        inCount++;
+                        inputs.addLast(port);
+                    } else if (ioport.isOutput()) {
+                        outCount++;
+                        outputs.addLast(port);
+                    } else {
+                        inputOutputCount++;
+                        inputOutputs.addLast(port);
+                    } 
+                }
+            }
+            CompositeFigure figure =
+                (CompositeFigure)getLayoutTarget().getVisualObject(node);
 
-	    _placePortFigures(figure, inputs, inCount,
+            _placePortFigures(figure, inputs, inCount,
                     SwingConstants.WEST);
-	    _placePortFigures(figure, outputs, outCount,
+            _placePortFigures(figure, outputs, outCount,
                     SwingConstants.EAST);
-	    _placePortFigures(figure, inputOutputs, inputOutputCount,
+            _placePortFigures(figure, inputOutputs, inputOutputCount,
                     SwingConstants.SOUTH);
-	}
+        }
 
         ///////////////////////////////////////////////////////////////
         ////                     private methods                   ////
 
         // Place the ports.
-	private void _placePortFigures(
+        private void _placePortFigures(
                 CompositeFigure figure,
                 List portList,
                 int count,
                 int direction) {
-	    Iterator ports = portList.iterator();
-	    int number = 0;
-	    while (ports.hasNext()) {
-		IOPort port = (IOPort)ports.next();
-		Figure portFigure = getController().getFigure(port);
-		// If there is no figure, then ignore this port.  This may
-		// happen if the port hasn't been rendered yet.
-		if (portFigure == null) continue;
+            Iterator ports = portList.iterator();
+            int number = 0;
+            while (ports.hasNext()) {
+                IOPort port = (IOPort)ports.next();
+                Figure portFigure = getController().getFigure(port);
+                // If there is no figure, then ignore this port.  This may
+                // happen if the port hasn't been rendered yet.
+                if (portFigure == null) continue;
                 Rectangle2D portBounds = portFigure.getShape().getBounds2D();
-		PortSite site = new PortSite(
+                PortSite site = new PortSite(
                         figure.getBackgroundFigure(),
                         port,
                         number,
                         count);
-		number ++;
+                number ++;
                 // NOTE: previous expression for port location was:
                 //    100.0 * number / (count+1)
                 // But this leads to squished ports with uneven spacing.
@@ -323,18 +323,18 @@ public class ActorController extends AttributeController {
                     }
                     figure.add(label);
                 }
-	    }
-	}
+            }
+        }
     }
 
     // An action to look inside a composite.
     // NOTE: This requires that the configuration be non null, or it
     // will report an error with a fairly cryptic message.
     private class LookInsideAction extends FigureAction {
-	public LookInsideAction() {
-	    super("Look Inside");
-	}
-	public void actionPerformed(ActionEvent e) {
+        public LookInsideAction() {
+            super("Look Inside");
+        }
+        public void actionPerformed(ActionEvent e) {
 
             if (_configuration == null) {
                 MessageHandler.error(
@@ -342,10 +342,10 @@ public class ActorController extends AttributeController {
                 return;
             }
 
-	    // Figure out what entity.
-	    super.actionPerformed(e);
-	    NamedObj object = getTarget();
-	    if (!(object instanceof CompositeEntity)) {
+            // Figure out what entity.
+            super.actionPerformed(e);
+            NamedObj object = getTarget();
+            if (!(object instanceof CompositeEntity)) {
                 // Open the source code, if possible.
                 String filename = object.getClass()
                         .getName().replace('.', '/') + ".java";
@@ -363,24 +363,24 @@ public class ActorController extends AttributeController {
                 }
                 return;
             }
-	    CompositeEntity entity = (CompositeEntity)object;
+            CompositeEntity entity = (CompositeEntity)object;
 
             try {
                 _configuration.openModel(entity);
             } catch (Exception ex) {
                 MessageHandler.error("Look inside failed: ", ex);
             }
-	}
+        }
     }
     
     // An action to listen to debug messages in the actor.
     // NOTE: This requires that the configuration be non null, or it
     // will report an error with a fairly cryptic message.
     private class ListenToActorAction extends FigureAction {
-	public ListenToActorAction() {
-	    super("Listen to Actor");
-	}
-	public void actionPerformed(ActionEvent e) {
+        public ListenToActorAction() {
+            super("Listen to Actor");
+        }
+        public void actionPerformed(ActionEvent e) {
 
             if (_configuration == null) {
                 MessageHandler.error(
@@ -388,8 +388,8 @@ public class ActorController extends AttributeController {
                 return;
             }
 
-	    // Figure out what entity.
-	    super.actionPerformed(e);
+            // Figure out what entity.
+            super.actionPerformed(e);
             try {
                 NamedObj object = getTarget();
                 
@@ -414,6 +414,6 @@ public class ActorController extends AttributeController {
                             "Failed to create debug listener: " + ex);
                 } catch (CancelException exception) {}
             }
-	}
+        }
     }
 }

@@ -72,10 +72,10 @@ public class BreakpointConfigurer extends Query implements QueryListener {
      */
     public BreakpointConfigurer(Entity object, BasicGraphController graphController) {
         super();
-	this.addQueryListener(this);
+        this.addQueryListener(this);
 
-	setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-	setTextWidth(15);
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        setTextWidth(15);
 
         _object = object;
         _graphController = graphController;
