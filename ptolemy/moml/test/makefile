@@ -88,12 +88,31 @@ tests:: $(EXTRA_SRCS) jclass test_java test_jsimple
 
 test_java: jclass
 
+# Location of the old tree that we harvest auto/*.xml
+# files from old release trees and copy them into compat and run them
+OLDTREE = $(ROOT)/adm/dists/ptII1.0.1
+
+# Directory that contains models to check for compatibility
+# We could check these into the tree, but it is about 1mb of files
+compat:
+	@if [ ! -d $(OLDTREE) ]; then \
+		echo "$(OLDTREE) does not exist"; \
+		echo "skipping compatibility tests"; \
+	fi
+	@echo "Generating auto/ from $(OLDTREE)"
+	cd $(OLDTREE); \
+		find . -name "*.xml" -print | \
+		grep auto | \
+		awk '{print "$(OLDTREE)/" $$1}' > /tmp/oldxmls
+	mkdir compat
+	cp `cat /tmp/oldxmls` compat
+
 # PtolemyII-wide test definitions.
 KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
 
 # These tests do not require a graphics terminal, but do use Jacl and Java
-test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl
-	$(JTCLSH) alljtests.tcl
+test_jsimple: $(EXTRA_SRCS) jclass compat $(KERNEL_TESTDEFS) alljtests.tcl
+	$(JTCLSH) alljtests.tcl 
 
 
 # Get the rest of the rules
