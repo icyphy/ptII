@@ -42,6 +42,7 @@ import ptolemy.copernicus.kernel.GeneratorAttribute;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.data.expr.Variable;
 import ptolemy.gui.JTextAreaExec;
 import ptolemy.gui.MessageHandler;
@@ -301,20 +302,33 @@ public class GeneratorTableau extends Tableau {
                             // True if we should run jode, jad or javap.
                             boolean decompile = false;
                             boolean compile =
-                                ((BooleanToken)
-                                        ((Parameter)options.getAttribute("compile"))
-                                        .getToken())
-                                .booleanValue();
+                                ((StringParameter)options
+                                        .getAttribute("compile"))
+                                .getExpression().equals("true");
                             boolean show =
-                                ((BooleanToken)
-                                        ((Parameter)options.getAttribute("show"))
-                                        .getToken())
-                                .booleanValue();
+                                ((StringParameter)options
+                                        .getAttribute("show"))
+                                .getExpression().equals("true");
                             boolean run =
-                                ((BooleanToken)
-                                        ((Parameter)options.getAttribute("run"))
-                                        .getToken())
-                                .booleanValue();
+                                ((StringParameter)options
+                                        .getAttribute("run"))
+                                .getExpression().equals("true");
+
+//                             boolean compile =
+//                                 ((BooleanToken)
+//                                         ((Parameter)options.getAttribute("compile"))
+//                                         .getToken())
+//                                 .booleanValue();
+//                             boolean show =
+//                                 ((BooleanToken)
+//                                         ((Parameter)options.getAttribute("show"))
+//                                         .getToken())
+//                                 .booleanValue();
+//                             boolean run =
+//                                 ((BooleanToken)
+//                                         ((Parameter)options.getAttribute("run"))
+//                                         .getToken())
+//                                .booleanValue();
 
                             // The code generator to run.  The value of this
                             // parameter should name a subdirectory of
@@ -506,9 +520,13 @@ public class GeneratorTableau extends Tableau {
                                 String classPath =
                                     getStringToken(options, "classPath");
 
+                                String classPathSeparator =
+                                    getStringToken(options, "classPathSeparator");
+
                                 execCommands.add("javap "
                                         + "-classpath \""
-                                        + ptIIUserDirectory
+                                        + classPath + classPathSeparator
+                                        + ptIIUserDirectory + "/" + targetPath
                                         + "\" "
                                         + className);
                             }
@@ -599,8 +617,8 @@ public class GeneratorTableau extends Tableau {
         generatorAttribute.sanityCheckAndUpdateParameters(null);
 
         Parameter codeGenerator =
-            (Parameter)generatorAttribute.getAttribute("codeGenerator");
-        codeGenerator.setExpression("\"" + copernicusSubdirectory + "\"");
+            (StringParameter)generatorAttribute.getAttribute("codeGenerator");
+        codeGenerator.setExpression(copernicusSubdirectory );
 
         List results = new LinkedList();
         try {
@@ -624,7 +642,7 @@ public class GeneratorTableau extends Tableau {
                 // Already have a Parameter by that name, so we
                 // set its value.
                 generatorAttributeFileNameParameter
-                    .setExpression("\"" + generatorAttributeFileName + "\"");
+                    .setExpression(generatorAttributeFileName);
             }
 
             results.add(Copernicus.commandToCompile(generatorAttribute));
