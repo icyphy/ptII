@@ -155,11 +155,24 @@ foreach i $configs {
 			    } else {
 				set sanitizedName [java::call ptolemy.util.StringUtilities sanitizeName $dottedName]
 				if {"$sanitizedName" != "$field"} {
-				    set msg "\n\nIn '$className'\n\
+				    if { "${sanitizedName}Port" == "$field"} {
+					# FileReader needs this:
+					puts "\nWarning: In '$className'\n \
+					    The getName() method returns\n  \
+					    '[$fieldObj getName]' but the \
+					    field is named\n   '$field'\n  \
+					    This is technically a violation \
+					    of the coding standard,\n  \
+					    but permissible because the name \
+					    ends in 'Port'"
+
+				    } else {
+					set msg "\n\nIn '$className'\n\
 					    The getName() method returns\n \
 					    '[$fieldObj getName]' but the \
 					    field is named\n  '$field'"
-				    lappend results $msg
+					lappend results $msg
+				    }
 				}
 			    }
 			}
