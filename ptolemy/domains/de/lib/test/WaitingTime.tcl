@@ -1,4 +1,4 @@
-# Tests for the DEWaitingTime class
+# Tests for the WaitingTime class
 #
 # @Author: Christopher Hylands
 #
@@ -47,5 +47,5 @@ if {[info procs enumToObjects] == "" } then {
 ######################################################################
 ####
 #
-test DEWaitingTime-1.1 {} {
+test WaitingTime-1.1 {} {
 } {}

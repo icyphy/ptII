@@ -35,7 +35,7 @@ import ptolemy.data.*;
 import java.util.Vector;
 
 //////////////////////////////////////////////////////////////////////////
-//// DESampler
+//// WaitingTime
 /**
 This actor measures the time that events at one input have to wait for
 events at another.  Specifically, there will be one output event for
@@ -50,7 +50,7 @@ is always a DoubleToken.
 @author Lukito Muliadi, Edward A Lee
 @version $Id$
 */
-public class DEWaitingTime extends DEActor {
+public class WaitingTime extends DEActor {
 
     /** Construct an actor with the specified container and name.
      *  @param container The container.
@@ -61,7 +61,7 @@ public class DEWaitingTime extends DEActor {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public DEWaitingTime(TypedCompositeActor container, String name)
+    public WaitingTime(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         // create the ports
@@ -75,6 +75,25 @@ public class DEWaitingTime extends DEActor {
         waiter.before(waitee);
         waitee.triggers(output);
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                       ports and parameters                ////
+
+    /** The output, which is always a DoubleToken representing the
+     *  that a waiter waited for an input at the <i>waitee</i> input.
+     */
+    public DEIOPort output;
+
+    /** An input event here waits for the next event at the <i>waitee</i>
+     *  input.  The type of this port is Token, so any input is acceptable.
+     */
+    public DEIOPort waiter;
+
+    /** An input event here triggers an output event for each <i>waiter</i>
+     *  input that arrived since the last input here.  The type of this
+     *  port is Token, so any input is acceptable.
+     */
+    public DEIOPort waitee;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -120,15 +139,6 @@ public class DEWaitingTime extends DEActor {
         }
         _waiting.removeAllElements();
     }
-
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public variables                  ////
-
-    // the ports.
-    public DEIOPort output;
-    public DEIOPort waiter;
-    public DEIOPort waitee;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

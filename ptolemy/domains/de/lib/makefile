@@ -49,7 +49,7 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
-	DEWaitingTime.java
+	WaitingTime.java
 
 EXTRA_SRCS =	$(JSRCS)
 
