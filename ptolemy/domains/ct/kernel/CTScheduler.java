@@ -211,7 +211,7 @@ public class CTScheduler extends Scheduler{
             workspace().doneReading();
         }
     }
-
+   
     /** Return an enumeration of step size control actors.
      *  This enumeration is locally
      *  cached. If workspace version equals to the cached version,
@@ -275,6 +275,28 @@ public class CTScheduler extends Scheduler{
                 _dynamicversion = workspace().getVersion();
             }
             return _evgen.elements();
+        } finally {
+            workspace().doneReading();
+        }
+    }
+
+    /** Return an enumeration of event interpreters.
+     *  This enumeration is locally
+     *  cached. If workspace version equals to the cached version,
+     *  then it returns the cached enumeration.
+     *  Otherwise, it reconstructs the enumeration, and save
+     *  the new version.
+     *  This method read-synchronizes on the workspace.
+     *  @return An enumeration of event interpreters.
+     */
+    public Enumeration eventInterpreters() {
+        try {
+	    workspace().getReadAccess();
+            if(_dynamicversion != workspace().getVersion()) {
+                _classifyActors();
+                _dynamicversion = workspace().getVersion();
+            }
+            return _evint.elements();
         } finally {
             workspace().doneReading();
         }
@@ -471,6 +493,7 @@ public class CTScheduler extends Scheduler{
             _memaris = new LinkedList();
             _ssctrl = new LinkedList(); 
             _evgen = new LinkedList(); 
+            _evint = new LinkedList(); 
             _stateful = new LinkedList(); 
         }else {
             _sink.clear();
@@ -481,6 +504,7 @@ public class CTScheduler extends Scheduler{
             _memaris.clear();
             _ssctrl.clear();
             _evgen.clear();
+            _evint.clear();
             _stateful.clear();
         }
 
@@ -503,10 +527,14 @@ public class CTScheduler extends Scheduler{
             if (a instanceof CTEventGenerator) {
                 _evgen.insertLast(a);
             }
+            if (a instanceof CTEventInterpreter) {
+                _evint.insertLast(a);
+            }
             if (a instanceof CTStepSizeControlActor) {
                 _ssctrl.insertLast(a);
             }
-            if (!((a.outputPorts()).hasMoreElements())) {
+            if (!(_successors(a).hasMoreElements())) {
+                // previously !((a.outputPorts()).hasMoreElements())) {
                 _sink.insertLast(a);
             }
             if (a instanceof CTDynamicActor) {
@@ -514,6 +542,13 @@ public class CTScheduler extends Scheduler{
             } else {
                 _arith.insertLast(a);
             }
+            //FIXME: Sould also do the following checks:
+            // For each eventGenerator, its successors should either
+            // be eventInterpreters or "Discrete (composite) actors."
+            // For each "discrete (composite) actor," its predecessors
+            // should be eventGenerators, and its successors should be
+            // eventInterpreters. Waiting for the interface for
+            // "discrete (composite) actor."
         }
     }
 
@@ -566,7 +601,7 @@ public class CTScheduler extends Scheduler{
         _stateschedule = new LinkedList();
         _transitionschedule = new LinkedList();
         _outputschedule = new LinkedList();
-        _eventschedule = new LinkedList();
+        // _eventschedule = new LinkedList(); //deprecated
         LinkedList _scheList = new LinkedList();
 
         DirectedAcyclicGraph g =  _toGraph(ca.deepGetEntities());
@@ -621,7 +656,7 @@ public class CTScheduler extends Scheduler{
             _scheList.insertLast(_outputschedule);
         }
 
-        // construct an array of event detectors.
+        /* construct an array of event detectors.
         int numofevdct = _evdct.size();
  
         if(numofevdct > 0) {
@@ -640,6 +675,7 @@ public class CTScheduler extends Scheduler{
             _eventschedule.appendElements(_evdct.elements());
             _scheList.insertLast(_outputschedule);
         }
+        */
         return _scheList.elements();
     }
 
@@ -742,6 +778,8 @@ public class CTScheduler extends Scheduler{
     private transient LinkedList _ssctrl;
     // A linkedLost of event generators.
     private transient LinkedList _evgen;
+    // A linkedLost of event interpreters.
+    private transient LinkedList _evint;
     // A linkedLost of stateful actors.
     private transient LinkedList _stateful;
 
