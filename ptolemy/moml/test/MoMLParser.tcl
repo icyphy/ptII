@@ -1653,6 +1653,33 @@ test MoMLParser-2.8.1 {Test incremental parsing: remove a port using entity attr
 ######################################################################
 ####
 #
+test MoMLParser-2.8.2 {Test incremental parsing: remove a port using 
+		entity attribute, check exception is thrown if port name 
+		not immediate} {
+    # First add the port back in
+    set incMoml_2_8_2_a {<entity name=".top">
+    <entity name="inside">
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+        </port>
+    </entity>
+</entity>}
+    # Test using a new parser.
+    set parser [java::new ptolemy.moml.MoMLParser]
+    $parser setToplevel $toplevel
+    $parser parse $incMoml_2_8_2_a
+
+    # Then delete it
+    set incMoml_2_8_2_b {<entity name=".top">
+    <deletePort name="inside.input" entity="inside"/>
+</entity>}
+    catch {$parser parse $incMoml_2_8_2_b} msg
+    string range $msg 0 51
+} {com.microstar.xml.XmlException: Invalid port name: i}
+
+
+######################################################################
+####
+#
 test MoMLParser-2.9 {Test link with insertAt attribute, inside links} {
     $parser reset
     set toplevel [$parser parse {
