@@ -1,6 +1,6 @@
 /* Director for the Giotto model of computation.
 
- Copyright (c) 1997-2000 The Regents of the University of California.
+ Copyright (c) 2000-2001 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -58,18 +58,17 @@ import java.util.List;
 //////////////////////////////////////////////////////////////////////////
 //// GiottoDirector
 /**
-
 This class implements a director for the Giotto model of computation
 without Giotto modes. Schedules are generated according to the Giotto
-semantics.  The GiottoScheduler class contains methods to compute the
-schedules.  The GiottoReceiver class implements the data flow between
+semantics. The GiottoScheduler class contains methods to compute the
+schedules. The GiottoReceiver class implements the data flow between
 actors using double-buffering.
 
+@author  Christoph Meyer Kirsch and Edward A. Lee
+@version $Id$
 @see GiottoScheduler
 @see GiottoReceiver
-
-@author  Christoph Meyer Kirsch and Edward A. Lee
-@version $Id$ */
+*/
 public class GiottoDirector extends StaticSchedulingDirector {
 
     /** Construct a director in the default workspace with an empty string
@@ -81,7 +80,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
         _init();
     }
 
-    /** Construct a director in the  workspace with an empty name.
+    /** Construct a director in the given workspace with an empty name.
      *  The director is added to the list of objects in the workspace.
      *  Increment the version number of the workspace.
      *  @param workspace The workspace for this object.
@@ -115,14 +114,16 @@ public class GiottoDirector extends StaticSchedulingDirector {
     ////                         parameters                        ////
 
     /** The number of times that postfire may be called before it
-     *  returns false.  If the value is less than or equal to zero,
+     *  returns false. If the value is less than or equal to zero,
      *  then the execution will never return false in postfire,
      *  and thus the execution can continue forever.
      *  The default value is an IntToken with the value zero.
      */
     public Parameter iterations;
 
-    /** The period of an iteration.  This is a double that defaults to 0.1. */
+    /** The period of an iteration. This is a double that defaults to
+     *  <I>0.1</I>.
+     */
     public Parameter period;
 
     ///////////////////////////////////////////////////////////////////
@@ -151,9 +152,10 @@ public class GiottoDirector extends StaticSchedulingDirector {
     }
 
     /** Return the real-time at which the fire method of this director
-     * has been called.
+     *  has been called.
      *  @return The real start time in terms of milliseconds counting
-     * from 1/1/1970.  */
+     *  from 1/1/1970.
+     */
     public long getRealStartTime() {
         return _realStartTime;
     }
@@ -187,9 +189,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
      */
     public Receiver newReceiver() {
         Receiver receiver = new GiottoReceiver();
-
         _receivers.add(receiver);
-
         return receiver;
     }
 
@@ -208,7 +208,6 @@ public class GiottoDirector extends StaticSchedulingDirector {
 
 	while(receivers.hasNext()) {
 	    GiottoReceiver receiver = (GiottoReceiver) receivers.next();
-	    
 	    receiver.reset();
 	}
     }
@@ -237,18 +236,17 @@ public class GiottoDirector extends StaticSchedulingDirector {
         return _postFireReturns;
     }
 
-    /** Return true if it transfers data from an input port of the
-     *  container to the ports it is connected to on the inside.
-     *  The port argument must  be an opaque input port.  If any
-     *  channel of the input port has no data, then that channel is
-     *  ignored. This method will transfer exactly one token on
-     *  each input channel that has at least one token available.
-     *  Update all receivers to which token is transferred.
+    /** Transfer data from an input port of the container to the ports
+     *  it is connected to on the inside. The port argument must be an
+     *  opaque input port. If any channel of the input port has no data,
+     *  then that channel is ignored. This method will transfer exactly
+     *  one token on each input channel that has at least one token
+     *  available. Update all receivers to which a token is transferred.
      *
      *  @exception IllegalActionException If the port is not an opaque
      *   input port.
      *  @param port The port to transfer tokens from.
-     *  @return True if data are transferred.
+     *  @return True if at least one data token is transferred.
      */
     public boolean transferInputs(IOPort port) throws IllegalActionException {
         if (!port.isInput() || !port.isOpaque()) {
@@ -286,7 +284,8 @@ public class GiottoDirector extends StaticSchedulingDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
-    // The static default Giotto period is 100ms.
+    /** The static default Giotto period is 100ms.
+     */
     protected static double _DEFAULT_GIOTTO_PERIOD = 0.1;
 
     ///////////////////////////////////////////////////////////////////
@@ -303,9 +302,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** Initialize the director by creating a scheduler and iterations
-     *  parameter.
-     */
+    // Initialize the director by creating a scheduler and parameters.
     private void _init() {
 	try {
 	    GiottoScheduler scheduler = new GiottoScheduler(workspace());
@@ -321,11 +318,10 @@ public class GiottoDirector extends StaticSchedulingDirector {
 	}
     }
 
-    /** Iterate actors according to the schedule.
-     *
-     * @param schedule of all actors represented as a tree.
-     * @see ptolemy.domains.giotto.kernel.GiottoScheduler
-     * @return true iff all actors postfire method returned true.
+    /*  Iterate actors according to the schedule.
+     *  @param schedule of all actors represented as a tree.
+     *  @see GiottoScheduler
+     *  @return true iff all actors postfire method returned true.
      */
     private boolean _fire(Enumeration schedule)
             throws IllegalActionException {
@@ -487,4 +483,5 @@ public class GiottoDirector extends StaticSchedulingDirector {
 
     // List of all receivers this director has created.
     private LinkedList _receivers = new LinkedList();
+
 }

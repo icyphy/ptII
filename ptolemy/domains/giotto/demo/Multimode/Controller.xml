@@ -1,12 +1,12 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<class name="ctrl" extends="ptolemy.domains.fsm.kernel.FSMActor">
-    <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="State0">
+<class name="Controller" extends="ptolemy.domains.fsm.kernel.FSMActor">
+    <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="Init">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[601, 192]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[601, 350]">
     </property>
-    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[133, 242]">
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 168]">
     </property>
     <port name="in" class="ptolemy.actor.TypedIOPort">
         <property name="input"/>
@@ -28,10 +28,20 @@
         <property name="_location" class="ptolemy.moml.Location" value="522.0, 92.0">
         </property>
     </port>
+    <entity name="Init" class="ptolemy.domains.fsm.kernel.State">
+        <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="152.0, 42.5">
+        </property>
+        <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
+        </port>
+        <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
+        </port>
+    </entity>
     <entity name="State0" class="ptolemy.domains.fsm.kernel.State">
         <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="mode0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="423.0, 95.0">
+        <property name="_location" class="ptolemy.moml.Location" value="243.0, 60.0">
         </property>
         <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
         </port>
@@ -41,15 +51,39 @@
     <entity name="State1" class="ptolemy.domains.fsm.kernel.State">
         <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="mode1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="183.0, 95.0">
+        <property name="_location" class="ptolemy.moml.Location" value="462.0, 124.0">
         </property>
         <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
         </port>
         <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
         </port>
     </entity>
+    <relation name="t0" class="ptolemy.domains.fsm.kernel.Transition">
+        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
+        </property>
+        <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+        <property name="actions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
+        </property>
+        <property name="act1" class="ptolemy.domains.fsm.kernel.SetRefinementVariable">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="0">
+            </property>
+            <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="ramp1.init">
+            </property>
+        </property>
+        <property name="act2" class="ptolemy.domains.fsm.kernel.SetRefinementVariable">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="0">
+            </property>
+            <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="ramp2.init">
+            </property>
+        </property>
+        <property name="act4" class="ptolemy.domains.fsm.kernel.ResetRefinement">
+        </property>
+    </relation>
     <relation name="t1" class="ptolemy.domains.fsm.kernel.Transition">
-        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="(in_isPresent ? in : 1) % 4 == 0">
+        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="in_isPresent &amp;&amp; (in % 4 == 0)">
         </property>
         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -79,7 +113,7 @@
         </property>
     </relation>
     <relation name="t2" class="ptolemy.domains.fsm.kernel.Transition">
-        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="(in_isPresent ? in : 1) % 4 == 0">
+        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="in_isPresent &amp;&amp; (in % 4 == 0)">
         </property>
         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -108,6 +142,8 @@
         <property name="act4" class="ptolemy.domains.fsm.kernel.ResetRefinement">
         </property>
     </relation>
+    <link port="Init.outgoingPort" relation="t0"/>
+    <link port="State0.incomingPort" relation="t0"/>
     <link port="State0.incomingPort" relation="t2"/>
     <link port="State0.outgoingPort" relation="t1"/>
     <link port="State1.incomingPort" relation="t1"/>

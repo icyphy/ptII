@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<class name="one_mode" extends="ptolemy.actor.TypedCompositeActor">
+<class name="OneMode" extends="ptolemy.actor.TypedCompositeActor">
     <property name="giotto" class="ptolemy.domains.giotto.kernel.GiottoDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
         </property>

@@ -1,6 +1,6 @@
 /* The scheduler for the Giotto domain.
 
- Copyright (c) 1998-2000 The Regents of the University of California.
+ Copyright (c) 2000-2001 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -46,14 +46,14 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.LinkedList;
 import java.util.ListIterator;
-
 import java.util.Comparator;
 
 //////////////////////////////////////////////////////////////////////////
 //// GiottoScheduler
 /**
-This class generates schedules for the actors of a CompositeActor
+This class generates schedules for the actors in a CompositeActor
 according to the Giotto semantics.
+<p>
 A schedule is represented by a tree. Consider the following CompositeActor:
 <pre>
               +-----------------------+
@@ -66,8 +66,8 @@ A schedule is represented by a tree. Consider the following CompositeActor:
               |    C    |   |    C    |
               +---------+   +---------+
 </pre>
-There are three actors A, B, and C where C runs twice as often as A and B.
-The tree for this CompositeActor looks as follows:
+There are three actors A, B, and C, where C runs twice as often as A and B.
+The tree representing the schedule for this CompositeActor looks as follows:
 <pre>
 +-------+               +-------+
 | | | ----------------->| | |nil|
@@ -93,9 +93,9 @@ Note that repeated parts of the tree are shared, no deep cloning!
 @author Christoph Meyer Kirsch
 @version $Id$
 */
-
 public class GiottoScheduler extends Scheduler {
-    /** Construct a Giotto scheduler with no container(director)
+
+    /** Construct a Giotto scheduler with no container (director)
      *  in the default workspace.
      */
     public GiottoScheduler() {
@@ -115,6 +115,13 @@ public class GiottoScheduler extends Scheduler {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Return the frequency of the given actor. If the actor has a
+     *  <I>frequency</I> parameter with a valid integer value, return
+     *  that value. For actors without a <I>frequency</I> parameter,
+     *  their frequency is DEFAULT_GIOTTO_FREQUENCY.
+     *  @param actor An actor.
+     *  @return The frequency of the actor.
+     */
     public static int getFrequency(Actor actor) {
         try {
             Parameter parameter = (Parameter)
@@ -125,33 +132,35 @@ public class GiottoScheduler extends Scheduler {
 
                 return intToken.intValue();
             } else
-                return _DEFAULT_GIOTTO_FREQUENCY;
+                return DEFAULT_GIOTTO_FREQUENCY;
         } catch (ClassCastException ex) {
-            return _DEFAULT_GIOTTO_FREQUENCY;
+            return DEFAULT_GIOTTO_FREQUENCY;
         } catch (IllegalActionException ex) {
-            return _DEFAULT_GIOTTO_FREQUENCY;
+            return DEFAULT_GIOTTO_FREQUENCY;
         }
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
+    ////                         public variables                  ////
 
-    // The static default Giotto frequency.
-    protected static int _DEFAULT_GIOTTO_FREQUENCY = 1;
+    /** The default Giotto frequency. Actors without a <I>frequency</I>
+     *  parameter will execute with this frequency.
+     */
+    public static int DEFAULT_GIOTTO_FREQUENCY = 1;
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
     /** Return the scheduling sequence.
-     *  Overrides _schedule() method in base class.
+     *  Overrides _schedule() method in the base class.
      *
      *  This method should not be called directly, rather the schedule()
      *  method will call it when the schedule is invalid. So it is not
      *  synchronized on the workspace.
      *
-     * @return an Enumeration of the scheduling sequence.
-     * @exception NotSchedulableException If the CompositeActor is not
-     *  schedulable.
+     *  @return An enumeration of the scheduling sequence.
+     *  @exception NotSchedulableException If the CompositeActor is not
+     *   schedulable.
      */
     protected Enumeration _schedule() throws NotSchedulableException {
         StaticSchedulingDirector director =
@@ -181,7 +190,7 @@ public class GiottoScheduler extends Scheduler {
 
 	    // Compute schedule represented by a tree.
 	    List scheduleList = _treeSchedule(actorList.listIterator(),
-					      _DEFAULT_GIOTTO_FREQUENCY,
+					      DEFAULT_GIOTTO_FREQUENCY,
 					      frequency);
 
 	    // Return a shallow enumeration over the top list.
@@ -190,54 +199,17 @@ public class GiottoScheduler extends Scheduler {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    ///////////////////////////////////////////////////////////////////
-    //// GiottoActor
-    /**
-       This class implements the Comparator interface for Actors
-       based on a "frequency" attribute of the actors.
-       The frequency of an actor which does not have a "frequency" attribute
-       is _DEFAULT_GIOTTO_FREQUENCY.
-       <p>
-       Given two actors A1 and A2, compare(A1, A2) is -1 (A1 < A2) if A1's
-       frequency is strictly less than A2's frequency, or compare(A1, A2) is 0
-       (A1 == A2) if A1's frequency is equal to A2's frequency, or
-       compare(A1, A2) is 1 (A1 > A2) if A1's frequency is strictly greater than
-       A2's frequency.
-    */
-    private class GiottoActorComparator implements Comparator {
-	///////////////////////////////////////////////////////////////////
-	////                         public methods                    ////
-	public int compare(Object object1, Object object2) {
-	    if (((object1 != null) && Actor.class.isInstance(object1)) &&
-                ((object2 != null) && Actor.class.isInstance(object2))) {
-		Actor actor1 = (Actor) object1;
-		Actor actor2 = (Actor) object2;
-
-		if (getFrequency(actor1) < getFrequency(actor2))
-		    return -1;
-		else if (getFrequency(actor1) == getFrequency(actor2))
-		    return 0;
-		else
-		    return 1;
-	    } else
-		throw new ClassCastException();
-	}
-    }
-
-    /** Returns a schedule for a CompositeActor represented by a tree,
-     * see comment at top of file.
+    /** Return a schedule for a CompositeActor represented by a tree,
+     *  see comment at top of file.
      *
-     * @param iterator over all actors of CompositeActor.
-     * @param lastFrequency of the previous call to this method.
-     * @param frequency of the first actor in iterator.
-     * @return a shallow Enumeration of the scheduling tree.
-     * @exception NotSchedulableException If the CompositeActor is not
-     *  schedulable.
+     *  @param iterator over all actors of CompositeActor.
+     *  @param lastFrequency of the previous call to this method.
+     *  @param frequency of the first actor in iterator.
+     *  @return a shallow Enumeration of the scheduling tree.
+     *  @exception NotSchedulableException If the CompositeActor is not
+     *   schedulable.
      */
     private List _treeSchedule(ListIterator iterator,
 			       int lastFrequency, int frequency)
@@ -298,4 +270,54 @@ public class GiottoScheduler extends Scheduler {
 
 	return scheduleList;
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+
+    ///////////////////////////////////////////////////////////////////
+    //// GiottoActorComparator
+    /* This class implements the Comparator interface for actors
+       based on the <I>frequency</I> parameter of the actors.
+       The frequency of an actor which does not have a <I>frequency</I>
+       parameter is DEFAULT_GIOTTO_FREQUENCY.
+       Given two actors A1 and A2, compare(A1, A2) is -1 (A1 < A2) if A1's
+       frequency is strictly less than A2's frequency, or compare(A1, A2) is 0
+       (A1 == A2) if A1's frequency is equal to A2's frequency, or
+       compare(A1, A2) is 1 (A1 > A2) if A1's frequency is strictly greater
+       than A2's frequency.
+    */
+    private class GiottoActorComparator implements Comparator {
+
+	///////////////////////////////////////////////////////////////////
+	////                         public methods                    ////
+
+	/** Compare two actors based on their <I>frequency</I> parameter.
+	 *  The frequency of an actor that does not have a <I>frequency</I>
+         *  parameter is DEFAULT_GIOTTO_FREQUENCY.
+	 *
+	 *  @param actor1 The first actor to be compared.
+	 *  @param actor2 The second actor to be compared.
+	 *  @return -1 if the frequency of the first actor is strictly less
+	 *   than that of the second actor, 0 if the frequencies are equal,
+	 *   1 otherwise.
+	 *  @exception ClassCastException If an argument is null or not an
+	 *   instance of Actor.
+	 */
+	public int compare(Object actor1, Object actor2) {
+	    if (actor1 != null && actor1 instanceof Actor &&
+                actor2 != null && actor2 instanceof Actor) {
+
+		if (getFrequency((Actor)actor1)
+		        < getFrequency((Actor)actor2))
+		    return -1;
+		else if (getFrequency((Actor)actor1)
+			== getFrequency((Actor)actor2))
+		    return 0;
+		else
+		    return 1;
+	    } else
+		throw new ClassCastException();
+	}
+    }
+
 }
