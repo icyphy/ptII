@@ -426,6 +426,11 @@ jstest_jgraphical:
 	@echo "To get a summary, run jssummary or jssummary -HTML"
 	@echo "Note that output sometimes ends up in ~/jsreport"
 
+# Run the test_auto rule with the proper classpath
+jstest_jauto:
+	$(MAKE) AUXCLASSPATH="$(CLASSPATHSEPARATOR)$(JSCLASSPATH)" \
+		test_auto
+
 # If necessary, instrument the classes, then rebuild, then run the tests
 jsall: jsoriginal
 	$(MAKE) clean
