@@ -117,14 +117,14 @@ public class CSPReceiver implements ProcessReceiver {
                 }
 
                 
+        	_checkFlags();
                 _getDirector()._actorReadBlocked(true);
-                // _registerBlocked();
                 blocked = true;
                 while (_isGetWaiting()) {
                     _checkFlagsAndWait();
                 }
+        	_checkFlags();
                 _getDirector()._actorReadUnBlocked(true);
-                // _registerUnblocked();
                 blocked = false;
                 tmp = _token;
                 _setRendezvousComplete(true);
@@ -357,14 +357,14 @@ public class CSPReceiver implements ProcessReceiver {
                     _checkFlagsAndWait();
                 }
 
+        	_checkFlags();
                 _getDirector()._actorWriteBlocked();
-                // _registerBlocked();
                 blocked = true;
                 while(_isPutWaiting()) {
                     _checkFlagsAndWait();
                 }
+        	_checkFlags();
                 _getDirector()._actorWriteUnBlocked();
-                // _registerUnblocked();
                 blocked = false;
                 _setRendezvousComplete(true);
                 notifyAll();
@@ -606,26 +606,6 @@ public class CSPReceiver implements ProcessReceiver {
     private boolean _isRendezvousComplete() {
         return _rendezvousComplete;
     }
-
-    /* Register with the director that an actor has blocked while
-     * trying to rendezvous at this receiver.
-     *  @exception InterruptedException If the thread is
-     *   interrupted while waiting.
-    private void _registerBlocked() throws InterruptedException {
-        _checkFlags();
-        _getDirector()._actorBlocked();
-    }
-     */
-
-    /* Register with the director that an actor has unblocked after
-     * rendezvousing at this receiver.
-     *  @exception InterruptedException If the thread is
-     *   interrupted while waiting.
-    private void _registerUnblocked() throws InterruptedException {
-        _checkFlags();
-        _getDirector()._actorUnblocked();
-    }
-     */
 
     /* Called only by the get and put methods of this class to indicate
      * that a get is waiting(value is true) or that the corresponding

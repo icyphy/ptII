@@ -213,21 +213,6 @@ public abstract class ConditionalBranch {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Called by subclasses to wait. Register with the containing actor
-     *  that a conditional branch has blocked and then wait to be notified.
-     *  Wrap the wait() call (on the receiver associated with this branch)
-     *  between checks on the state of the receiver. After awaking from
-     *  waiting, register with the containing actor that this conditional
-     *  branch is no longer blocked.
-     * @exception InterruptedException If this method is interrupted
-     *  while waiting.
-    protected void _registerBlockAndWait() throws InterruptedException {
-        // getController()._branchBlocked();
-        getReceiver()._checkFlagsAndWait();
-        // getController()._branchUnblocked();
-    }
-     */
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables                 ////
 

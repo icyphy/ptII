@@ -255,7 +255,6 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
         getController()._writeBranchBlocked();
         getReceiver()._checkFlagsAndWait();
         getController()._writeBranchUnblocked();
-        // _registerBlockAndWait();
         return true;
     }
 
@@ -282,7 +281,6 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
         	getController()._writeBranchBlocked();
         	getReceiver()._checkFlagsAndWait();
         	getController()._writeBranchUnblocked();
-                // _registerBlockAndWait();
             }
             if (!isAlive()) {
                 controller._branchFailed(getID());
@@ -307,7 +305,6 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
         getController()._writeBranchBlocked();
         getReceiver()._checkFlagsAndWait();
         getController()._writeBranchUnblocked();
-        // _registerBlockAndWait();
         while (true) {
             if (!isAlive()) {
                 // reset state of receiver controlling
@@ -332,7 +329,6 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
             getController()._writeBranchBlocked();
             getReceiver()._checkFlagsAndWait();
             getController()._writeBranchUnblocked();
-            // _registerBlockAndWait();
         }
     }
 }

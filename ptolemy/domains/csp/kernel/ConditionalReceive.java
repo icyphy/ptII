@@ -252,7 +252,6 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
         getController()._readBranchBlocked(true);
         getReceiver()._checkFlagsAndWait();
         getController()._readBranchUnblocked(true);
-        // _registerBlockAndWait();
         return true;
     }
 
@@ -277,7 +276,6 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
             getController()._readBranchBlocked(true);
             getReceiver()._checkFlagsAndWait();
             getController()._readBranchUnblocked(true);
-            // _registerBlockAndWait();
             if (!isAlive()) {
                 controller._branchFailed(getID());
                 return;
@@ -300,7 +298,6 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
         getController()._readBranchBlocked(true);
         getReceiver()._checkFlagsAndWait();
         getController()._readBranchUnblocked(true);
-        // _registerBlockAndWait();
         while (true) {
             if (!isAlive()) {
                 // reset state of receiver
@@ -326,7 +323,6 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
             getController()._readBranchBlocked(true);
             getReceiver()._checkFlagsAndWait();
             getController()._readBranchUnblocked(true);
-            // _registerBlockAndWait();
         }
     }
 }
