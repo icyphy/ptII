@@ -318,10 +318,12 @@ public abstract class BasicGraphFrame extends PtolemyFrame
      */
     public void changeExecuted(ChangeRequest change) {
         boolean persistent = true;
+        // If the change is null, do not mark the model modified,
+        // but do update the graph panner.
         if (change != null) {
             persistent = change.isPersistent();
+            setModified(persistent);
         }
-        setModified(persistent);
         _graphPanner.repaint();
     }
 
