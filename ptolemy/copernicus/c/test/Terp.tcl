@@ -123,5 +123,5 @@ test Terp-1.1 {Generate all required files for Terp.java} {
     regsub -all [java::call System getProperty "line.separator"] \
 	    $results "\n" results2
     list $results2
-} {Fear the Turtle!!!}
+} {{Fear the Turtle!!!}}
 
