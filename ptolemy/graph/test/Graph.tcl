@@ -1,7 +1,7 @@
 # Tests for the Graph class
 #
 # @Author: Shuvra S. Bhattacharyya, Yuhong Xiong, Ming-Yung Ko, Fuat Keceli,
-# Shahrooz Shahparnia
+# Mainak Sen, Shahrooz Shahparnia
 #
 # $Id$
 #
@@ -785,7 +785,6 @@ test Graph-10.3 {checking restoration of an edge whose one node is deleted} {
     set node1 [$oneg addNodeWeight $n1]
     set node2 [$oneg addNodeWeight $n2]
     set edge [$oneg addEdge $node1 $node2]
-    #set edge [[$newEdges iterator] next]
     $oneg hideEdge $edge
     $oneg removeNode $node1
     catch {$oneg {restoreEdge ptolemy.graph.Edge} $edge} msg
@@ -804,3 +803,28 @@ Edge Set:
 }
 
 }}
+
+######################################################################
+####
+#
+test Graph-10.4 {checking hiddenEdges() and edgeCount() and hiddenEdgeCount()} {
+    set oneg [java::new ptolemy.graph.Graph]
+    set n1  [java::new {java.lang.String String} node1]
+    set n2  [java::new {java.lang.String String} node2]
+    set n3  [java::new {java.lang.String String} node3]
+    set node1 [$oneg addNodeWeight $n1]
+    set node2 [$oneg addNodeWeight $n2]
+    set node3 [$oneg addNodeWeight $n3]
+    set edge1 [$oneg addEdge $node1 $node2]
+    set edge2 [$oneg addEdge $node2 $node3]
+    set edge3 [$oneg addEdge $node3 $node2]
+    set edge4 [$oneg addEdge $node2 $node1]
+    $oneg hideEdge $edge3
+    $oneg hideEdge $edge4
+    set result1 [[java::new java.util.Vector [$oneg hiddenEdges]] toString]
+    set result2 [$oneg edgeCount]
+    set result3 [$oneg hiddenEdgeCount]
+    list $result1 $result2 $result3
+} {{[(node2, node1), (node3, node2)]} 2 2}
+
+
