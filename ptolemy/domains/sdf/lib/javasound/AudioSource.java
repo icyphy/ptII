@@ -34,15 +34,16 @@ import ptolemy.actor.*;
 import ptolemy.actor.lib.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
+import ptolemy.data.Token;
+import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
 import ptolemy.graph.Inequality;
 
 import java.io.*;
 import java.net.*;
 import java.util.Enumeration;
-import collections.LinkedList;
+//import collections.LinkedList;
 
-//import ptolemy.media.*;
 import javax.media.sound.sampled.*;
 
 import ptolemy.domains.sdf.kernel.*;
@@ -88,7 +89,7 @@ public class AudioSource extends SDFAtomicActor {
         super(container, name);
 
 	output = new SDFIOPort(this, "output", false, true);
-        output.setTypeEquals(DoubleToken.class);
+        output.setTypeEquals(BaseType.DOUBLE);
 	// FIXME: Allow this to be set as parameter.
 	productionRate = 512;
 	output.setTokenProductionRate(productionRate);
@@ -96,7 +97,7 @@ public class AudioSource extends SDFAtomicActor {
 	pathName = new Parameter(this, "pathName",
 		     new StringToken("http://localhost/soundFile.au"));
 	isURL = new Parameter(this, "isURL", new BooleanToken(true));
-	isURL.setTypeEquals(BooleanToken.class);
+	isURL.setTypeEquals(BaseType.BOOLEAN);
 	
     }
 
@@ -258,12 +259,12 @@ public class AudioSource extends SDFAtomicActor {
 		// Load audio from a URL.
 		// Create a URL corresponing to the sound file location.
 		URL soundURL =
-		    new URL(((StringToken)pathName.getToken()).stringValue());
+		    new URL(((StringToken)pathName.getToken()).toString());
                 //		sound.load(soundURL);
 	    } else {
 		// Load audio from a file.
 		File soundFile =
-		    new File(((StringToken)pathName.getToken()).stringValue());
+		    new File(((StringToken)pathName.getToken()).toString());
 		//sound.load(soundFile);
 		if (soundFile != null && soundFile.isFile()) {
 		    
