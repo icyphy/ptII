@@ -611,7 +611,7 @@ public final class FixPoint implements Cloneable, Serializable {
  	    return new Fixvalue(result, _error);
 	}
 
-	/** Return the absoluate value of this Fixvalue. Uses the absolute
+	/** Return the absolute value of this Fixvalue. Uses the absolute
 	 *  method of BigInteger.
 	 *  @return A new Fixvalue.
 	 */
