@@ -60,11 +60,11 @@ the queue.  This output, also, is constrained to be at least that of
 <i>input</i> <p>
 
 @author Winthrop Williams (based closely on Queue by Steve Neuendorffer)
-@version $Id$ */
+@version $Id$
 @since Ptolemy II 2.0
-
-//FIXME: make this consistent with the queue from ptolemy classic
+*/
 public class QueueWithNextOut extends DETransformer {
+    //FIXME: make this consistent with the queue from ptolemy classic
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
