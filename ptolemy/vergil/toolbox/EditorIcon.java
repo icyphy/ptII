@@ -112,7 +112,8 @@ public class EditorIcon extends Attribute {
         Figure figure = new CompositeFigure(background);
         Nameable container = getContainer();
         // FIXME this is a bad way to do this.  
-        if(!(container instanceof Attribute) || container instanceof ptolemy.actor.Director) {
+        if(!(container instanceof Attribute) || 
+                container instanceof ptolemy.actor.Director) {
             LabelFigure label = new LabelFigure(container.getName());
             label.setFont(new Font("SansSerif", Font.PLAIN, 12));
             label.setPadding(1);
