@@ -51,12 +51,15 @@ import javax.swing.*;
 //////////////////////////////////////////////////////////////////////////
 //// DTReceiver
 /**
-A first-in, first-out (FIFO) queue receiver with variable capacity. Tokens
-are put into the receiver with the put() method, and removed from the
-receiver with the get() method. The token removed is the oldest one in
-the receiver.  Time is incremented by a fixed amount <i>delta time</i> everytime
-the get() method is called. Each receiver has its own value of delta time.
-We calculate delta time as "period / (rate * repetitions)" where:
+
+A first-in, first-out (FIFO) queue receiver with variable
+capacity. Tokens are put into the receiver with the put() method, and
+removed from the receiver with the get() method. The token removed is
+the oldest one in the receiver.  Time is incremented by a fixed amount
+<i>delta time</i> every time the get() method is called. Each receiver
+has its own value of delta time.  We calculate delta time as "period /
+(rate * repetitions)" where:
+
 <UL>
     <LI> period is the execution time of the director per iteration
     <LI> rate   is the rate of the port that holds this receiver
@@ -139,14 +142,14 @@ public class DTReceiver extends SDFReceiver {
             }
 
             if ((isCompositeContainer) && (_toPort.isOutput())) {
-                _inrate = 1;
+                _inRate = 1;
             } else {
                 param =
                     (Parameter) _toPort.getAttribute("tokenConsumptionRate");
     	        if(param == null) {
-                    _inrate = 1;
+                    _inRate = 1;
                 } else {
-                    _inrate = ((IntToken)param.getToken()).intValue();
+                    _inRate = ((IntToken)param.getToken()).intValue();
                 }
             }
 
@@ -170,7 +173,7 @@ public class DTReceiver extends SDFReceiver {
                 _deltaTime = periodValue / _tokenFlowRate;
             } else {
                 repeats = localDirector._getRepetitions(_to);
-                _tokenFlowRate = repeats * _inrate;
+                _tokenFlowRate = repeats * _inRate;
             	_deltaTime = periodValue / _tokenFlowRate;
 
             }
@@ -214,7 +217,7 @@ public class DTReceiver extends SDFReceiver {
                             _fromPort = connectedPort;
                             if (_fromPort == null) {
                                 throw new InternalErrorException(
-                                   "DT error:Receiver with null source");
+                                   "DT error: Receiver with null source");
                             }
                             break foundReceiver;
                         }
@@ -258,7 +261,7 @@ public class DTReceiver extends SDFReceiver {
         Director director =  ((Actor) actor).getDirector();
 
         // FIXME: need to consider different cases for
-        // TypedComposositeActor ports
+        // TypedCompositeActor ports.
         if (director instanceof DTDirector ) {
             DTDirector dtDirector = (DTDirector) director;
             dtDirector.setActorLocalTime(_localTime, actor);
@@ -413,7 +416,7 @@ public class DTReceiver extends SDFReceiver {
     private IOPort _fromPort;
 
     // The cached value of the destination token consumption rate
-    private int _inrate;
+    private int _inRate;
 
     // The director that directs this receiver; should be a DTDirector
     private DTDirector _localDirector;

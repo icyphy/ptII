@@ -59,7 +59,7 @@ constraints on initial tokens.  <p>
 
 <h1>Local and Global Time</h1>
 
-Because of the inherent concurrency occuring within SDF models, there
+Because of the inherent concurrency occurring within SDF models, there
 are two notions of time in DT -- global time and local time.  Global
 time increases steadily as execution progresses.  Moreover, global
 time increases by fixed discrete amounts given by the <i>period</i>
@@ -135,16 +135,8 @@ getCurrentTime(channel_number) for every
 get(channel_number). Moreover, the call sequence should be ordered as
 follows: getCurrentTime(channel_number) before get(channel_number).
 
-@see ptolemy.domains.dt.kernel.DTReceiver
-@see ptolemy.domains.sdf.kernel.SDFDirector
-@see ptolemy.domains.sdf.kernel.SDFReceiver
-@see ptolemy.domains.sdf.kernel.SDFScheduler
-
-
- @author C. Fong
- @version $Id$
-*/
-/* Fixme (known bugs)
+Known bugs:
+<pre>
  1.) Put more tests on this case: when events come in faster than the period
      of a DT composite actor (e.g clock feeding DT)
  2.) Put more tests on this case: when DT composite actor doesn't fire because
@@ -158,7 +150,16 @@ follows: getCurrentTime(channel_number) before get(channel_number).
      PoissonClock - under investigation
      Clock        - under investigation
      Expression   - under investigation
- */
+</pre>
+
+@see ptolemy.domains.dt.kernel.DTReceiver
+@see ptolemy.domains.sdf.kernel.SDFDirector
+@see ptolemy.domains.sdf.kernel.SDFReceiver
+@see ptolemy.domains.sdf.kernel.SDFScheduler
+
+ @author C. Fong
+ @version $Id$
+*/
 public class DTDirector extends SDFDirector {
 
     /** Construct a director in the default workspace with an empty string
@@ -261,7 +262,7 @@ public class DTDirector extends SDFDirector {
 
         // FIXME: this portion of code is currently commented out
         // because super.fire() is called. However, there are problems
-        // with prefire return false in SDFDirector:fire()
+        // with prefire return false in SDFDirector.fire()
         /*
         _debugViewSchedule();
 
@@ -274,10 +275,10 @@ public class DTDirector extends SDFDirector {
             if (scheduler == null)
                 throw new IllegalActionException("Attempted to fire " +
                         "DT system with no scheduler");
-            Enumeration allactors = scheduler.schedule();
-            while (allactors.hasMoreElements()) {
+            Enumeration allActors = scheduler.schedule();
+            while (allActors.hasMoreElements()) {
 
-                Actor actor = (Actor)allactors.nextElement();
+                Actor actor = (Actor)allActors.nextElement();
 
                 boolean isFiringNonDTCompositeActor = false;
 
@@ -308,8 +309,8 @@ public class DTDirector extends SDFDirector {
 
                 actor.fire();
 
-                // note: short circuit evaulation here
-                _postfirereturns = actor.postfire() && _postfirereturns;
+                // note: short circuit evaluation here
+                _postFireReturns = actor.postfire() && _postFireReturns;
 
                 if (isFiringNonDTCompositeActor) {
 		            _pseudoTimeEnabled = false;
@@ -641,14 +642,14 @@ public class DTDirector extends SDFDirector {
                     "an opaque output port.");
         }
         boolean returnValue = false;
-        Receiver[][] insiderecs = port.getInsideReceivers();
-        if (insiderecs != null) {
-            for (int i = 0; i < insiderecs.length; i++) {
-                if (insiderecs[i] != null) {
-                    for (int j = 0; j < insiderecs[i].length; j++) {
-			            while (insiderecs[i][j].hasToken()) {
+        Receiver[][] insideReceivers = port.getInsideReceivers();
+        if (insideReceivers != null) {
+            for (int i = 0; i < insideReceivers.length; i++) {
+                if (insideReceivers[i] != null) {
+                    for (int j = 0; j < insideReceivers[i].length; j++) {
+			            while (insideReceivers[i][j].hasToken()) {
                             try {
-                                ptolemy.data.Token t = insiderecs[i][j].get();
+                                ptolemy.data.Token t = insideReceivers[i][j].get();
                                 port.send(i, t);
                                 returnValue = true;
                             } catch (NoTokenException ex) {
@@ -907,9 +908,9 @@ public class DTDirector extends SDFDirector {
             _isFiringAllowed = false;
             while(outputPorts.hasNext()) {
                 Receiver[][] insideReceivers;
-                DTIOPort dtport = (DTIOPort) outputPorts.next();
+                DTIOPort dtPort = (DTIOPort) outputPorts.next();
 
-                insideReceivers = dtport._port.getInsideReceivers();
+                insideReceivers = dtPort._port.getInsideReceivers();
                 double deltaTime =
                     ((DTReceiver)insideReceivers[0][0]).getDeltaTime();
                 double ratio = timeElapsed / deltaTime;
@@ -918,13 +919,13 @@ public class DTDirector extends SDFDirector {
                     // firing at a time when transferOutputs should be called
                     debug.println("*************** fractional fire ratio "
                                    + ratio + " should transferOutputs");
-                    dtport._shouldTransferOutputs = true;
+                    dtPort._shouldTransferOutputs = true;
                     _isFiringAllowed = false;
                     _shouldDoInternalTransferOutputs = true;
                 } else {
                 // firing at a time when transferOutputs should not be called
 
-                	for(int i = 0; i < dtport._port.getWidth(); i++) {
+                	for(int i = 0; i < dtPort._port.getWidth(); i++) {
                 	    for(int j = 0;
                                 j < insideReceivers[i].length; j++) {
                 	        DTReceiver receiver;
@@ -934,7 +935,7 @@ public class DTDirector extends SDFDirector {
             	    }
                     debug.println("******* nonfractional fire ratio "
                                   + ratio + " don't transferOutputs");
-                    dtport._shouldTransferOutputs = false;
+                    dtPort._shouldTransferOutputs = false;
                 }
             }
         } else if (_inputTokensAvailable)  {
@@ -1142,16 +1143,16 @@ public class DTDirector extends SDFDirector {
     /** Convenience method for getting the token consumption rate of a
      *  specified port. If the port does not have the attribute
      *  "tokenConsumptionRate" then return a rate of 1.
-     *  @param ioport The port to be queried
+     *  @param ioPort The port to be queried
      *  @return The token consumption rate of the port.
      *  @exception IllegalActionException If getting an attribute from
      *  this port fails.
      */
-    private int _getTokenConsumptionRate(IOPort ioport)
+    private int _getTokenConsumptionRate(IOPort ioPort)
             throws IllegalActionException {
         int rate;
         Parameter param
-            = (Parameter) ioport.getAttribute("tokenConsumptionRate");
+            = (Parameter) ioPort.getAttribute("tokenConsumptionRate");
     	if (param != null) {
             rate = ((IntToken)param.getToken()).intValue();
         } else rate = 1;
@@ -1192,10 +1193,10 @@ public class DTDirector extends SDFDirector {
 
         Iterator outputPorts = _outputPortTable.iterator();
         while(outputPorts.hasNext()) {
-            DTIOPort dtport = (DTIOPort) outputPorts.next();
+            DTIOPort dtPort = (DTIOPort) outputPorts.next();
 
-            if (dtport._shouldTransferOutputs) {
-                outsideDirector.transferOutputs(dtport._port);
+            if (dtPort._shouldTransferOutputs) {
+                outsideDirector.transferOutputs(dtPort._port);
             }
         }
     }
@@ -1222,7 +1223,7 @@ public class DTDirector extends SDFDirector {
     }
 
 
-    /** Disble the hasToken() method in the output ports of the
+    /** Disable the hasToken() method in the output ports of the
      *  TypedCompositeActor directed by this director.  This is
      *  used in composing DT with DE and CT.
      */
