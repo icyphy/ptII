@@ -238,13 +238,13 @@ The default is <code>helvetica-PLAIN-12</code>.
 
 <dt><code>-lnx</code> <dd>
 Specifies a logarithmic X axis. Grid labels represent
-powers of ten.
-<b>Unsupported in the Java version.</b>
+powers of ten.  If <code>-lnx</code> is present, then 
+x values must be greater than zero.
 
 <dt><code>-lny</code> <dd>
 Specifies a logarithmic Y axis. Grid labels represent
-powers of ten.
-<b>Unsupported in the Java version.</b>
+powers of ten.   If <code>-lny</code> is present, then 
+y values must be greater than zero.
 
 <dt><code>-lw</code> <code><i>width</i></code> <dd>
 Specifies the width of the data lines in pixels. The
@@ -573,8 +573,8 @@ public class Pxgraph extends Frame {
             {"-help", "Help",  ""},
             // -impulses is not in the original X11 pxgraph.
             {"-impulses", "Impulses",  ""},
-            {"-lnx", "LogX",  "(Unsupported)"},
-            {"-lny", "LogY",  "(Unsupported)"},
+            {"-lnx", "XLog",  ""},
+            {"-lny", "YLog",  ""},
             {"-m", "Markers",  ""},
             {"-M", "StyleMarkers",  ""},
             {"-nl", "NoLines",  ""},
