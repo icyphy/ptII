@@ -134,6 +134,30 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
             return result;
         }
     }
+    
+    /** Remove and return the oldest token from the FIFO queue contained
+     *  in the receiver. Terminate the calling process by throwing a
+     *  TerminateProcessException if requested.
+     *  Otherwise, if the FIFO queue is empty, then suspend the calling
+     *  process and inform the director of the same.
+     *  If a new token becomes available to the FIFO queue, then resume the
+     *  suspended process.
+     *  If the queue was not empty, or on availability of a new token (calling
+     *  process was suspended), take the oldest token from the FIFO queue.
+     *  Check if any process is blocked on a write to this
+     *  receiver. If a process is indeed blocked, then unblock the
+     *  process, and inform the director of the same. 
+     *  Otherwise return.
+     *  @return The oldest Token read from the queue
+     */
+    public Token get(Branch branch) {
+        if( isInsideBoundary() ) {
+            return insideBoundaryGet(branch);
+        } else if( isOutsideBoundary() ) {
+            return outsideBoundaryGet(branch);
+        }
+        return get();
+    }
 
     /** Return true since a channel in the Kahn process networks
      *  model of computation is of infinite capacity and always has room.
@@ -149,6 +173,51 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      */
     public boolean hasToken() {
 	return true;
+    }
+
+    /** Remove and return the oldest token from the FIFO queue contained
+     *  in the receiver. Terminate the calling process by throwing a
+     *  TerminateProcessException if requested.
+     *  Otherwise, if the FIFO queue is empty, then suspend the calling
+     *  process and inform the director of the same.
+     *  If a new token becomes available to the FIFO queue, then resume the
+     *  suspended process.
+     *  If the queue was not empty, or on availability of a new token (calling
+     *  process was suspended), take the oldest token from the FIFO queue.
+     *  Check if any process is blocked on a write to this
+     *  receiver. If a process is indeed blocked, then unblock the
+     *  process, and inform the director of the same. 
+     *  Otherwise return.
+     *  @return The oldest Token read from the queue
+     */
+    public Token insideBoundaryGet(Branch branch) {
+	Workspace workspace = getContainer().workspace();
+	BasePNDirector director = ((BasePNDirector)
+                ((Actor)(getContainer().getContainer())).getDirector());
+        Token result = null;
+        synchronized (this) {
+            while (!_terminate && !super.hasToken()) {
+                branch.registerRcvrBlocked();
+                // director._actorReadBlocked(true);
+                _readpending = true;
+                while (_readpending && !_terminate) {
+                    workspace.wait(this);
+                }
+            }
+            if (_terminate) {
+                throw new TerminateProcessException("");
+            } else {
+                result = super.get();
+                //Check if pending write to the Queue;
+                if (_writepending) {
+                    branch.registerRcvrUnBlocked();
+                    // director._informOfWriteUnblock(this);
+                    _writepending = false;
+                    notifyAll(); // Wake up threads waiting on a write;
+                }
+            }
+            return result;
+        }
     }
 
     /** Return true if this receiver is connected to the inside of a
@@ -318,6 +387,71 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
 	return _writepending;
     }
 
+    /** Remove and return the oldest token from the FIFO queue contained
+     *  in the receiver. Terminate the calling process by throwing a
+     *  TerminateProcessException if requested.
+     *  Otherwise, if the FIFO queue is empty, then suspend the calling
+     *  process and inform the director of the same.
+     *  If a new token becomes available to the FIFO queue, then resume the
+     *  suspended process.
+     *  If the queue was not empty, or on availability of a new token (calling
+     *  process was suspended), take the oldest token from the FIFO queue.
+     *  Check if any process is blocked on a write to this
+     *  receiver. If a process is indeed blocked, then unblock the
+     *  process, and inform the director of the same. 
+     *  Otherwise return.
+     *  @return The oldest Token read from the queue
+     */
+    public Token outsideBoundaryGet(Branch branch) {
+	Workspace workspace = getContainer().workspace();
+	BasePNDirector director = ((BasePNDirector)
+                ((Actor)(getContainer().getContainer())).getDirector());
+        Token result = null;
+        synchronized (this) {
+            while (!_terminate && !super.hasToken()) {
+                branch.registerRcvrBlocked();
+                // director._actorReadBlocked(true);
+                _readpending = true;
+                while (_readpending && !_terminate) {
+                    workspace.wait(this);
+                }
+            }
+            if (_terminate) {
+                throw new TerminateProcessException("");
+            } else {
+                result = super.get();
+                //Check if pending write to the Queue;
+                if (_writepending) {
+                    branch.registerRcvrUnBlocked();
+                    // director._informOfWriteUnblock(this);
+                    _writepending = false;
+                    // Wake up threads waiting on a write;
+                    notifyAll(); 
+                }
+            }
+            return result;
+        }
+    }
+
+    /** Put a token on the queue contained in this receiver.
+     *  If the queue is full, then suspend the calling process (blocking
+     *  write) and inform the director of the same. Resume the process on
+     *  detecting room in the queue.
+     *  If a termination is requested, then initiate the termination of the
+     *  calling process by throwing a TerminateProcessException.
+     *  On detecting a room in the queue, put a token in the queue.
+     *  Check whether any process is blocked
+     *  on a read from this receiver. If a process is indeed blocked, then
+     *  unblock the process, and inform the director of the same.
+     *  @param token The token to be put in the receiver.
+     */
+    public void put(Token token, Branch branch) {
+    	if( isOutsideBoundary() ) {
+        } else if( isConnectedToBoundary() ) {
+        }
+        put(token);
+    }
+    
     /** Put a token on the queue contained in this receiver.
      *  If the queue is full, then suspend the calling process (blocking
      *  write) and inform the director of the same. Resume the process on
@@ -418,4 +552,72 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
 
     private boolean _connectedBoundaryCacheIsOn = false;
     private boolean _isConnectedBoundaryValue = false;
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                           inner class                     ////
+    
+    /*
+    private boolean superHasToken() {
+        return super.hasToken();
+    }
+    
+    private Token superGet() {
+        return super.get();
+    }
+    
+    private void informOfWriteUnblock() {
+	BasePNDirector director = ((BasePNDirector)((Actor)
+                (getContainer().getContainer())).getDirector());
+        director._informOfWriteUnblock(this);
+    }
+    
+    private class NonBoundaryAccessor {
+    
+        public Token get() {
+	    Workspace workspace = getContainer().workspace();
+	    BasePNDirector director = ((BasePNDirector)((Actor)
+                    (getContainer().getContainer())).getDirector());
+            Token result = null;
+            synchronized (this) {
+                while (!_terminate && !superHasToken()) {
+                    director._actorReadBlocked(true);
+                    _readpending = true;
+                    while (_readpending && !_terminate) {
+                        workspace.wait(this);
+                    }
+                }
+                if (_terminate) {
+                    throw new TerminateProcessException("");
+                } else {
+                    result = superGet();
+                    //Check if pending write to the Queue;
+                    if (_writepending) {
+                        informOfWriteUnblock();
+                        // director._informOfWriteUnblock(this);
+                        _writepending = false;
+                        // Wake up threads waiting for write;
+                        notifyAll(); 
+                    }
+                }
+                return result;
+            }
+            // return new Token();
+        }
+        
+        public void put(Token token) {
+        }
+        
+    }
+    
+    public class BoundaryAccessor {
+    
+    	public Token get() {
+            return new Token();
+        }
+        
+        public void put(Token token) {
+        }
+    }
+    */
+
 }
