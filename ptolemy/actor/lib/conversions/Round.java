@@ -30,13 +30,14 @@
 
 package ptolemy.actor.lib.conversions;
 
-import ptolemy.actor.*;
-import ptolemy.actor.lib.*;
+import ptolemy.actor.lib.Transformer;
+import ptolemy.data.DoubleToken;
+import ptolemy.data.IntToken;
+import ptolemy.data.Token;
+import ptolemy.data.type.BaseType;
+import ptolemy.data.type.Type;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
-import ptolemy.data.*;
-import ptolemy.data.type.BaseType;
-import ptolemy.data.expr.Parameter;
 
 // NOTE: If you update the list of functions, then you will want
 // to update the list in actor/lib/math.xml.

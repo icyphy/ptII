@@ -30,14 +30,16 @@
 
 package ptolemy.actor.lib.conversions;
 
-import ptolemy.actor.*;
-import ptolemy.actor.lib.*;
-import ptolemy.data.*;
+import ptolemy.actor.AtomicActor;
+import ptolemy.actor.IOPort;
+import ptolemy.actor.TypedAtomicActor;
+import ptolemy.actor.TypedIOPort;
+import ptolemy.data.DoubleToken;
+import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
-import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.Type;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
-
 
 ///////////////////////////////////////////////////////////////
 /// CartesianToPolar
