@@ -53,50 +53,6 @@ condition, and a set of trigger actions.
 */
 public class FSMTransition extends ComponentRelation {
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    /** @serial List trigger event and trigger condition. */
-    protected VariableList _trigger = null;
-
-    /** @serial Trigger event variable. */
-    protected Variable _te;
-
-    /** @serial Trigger condition variable. */
-    protected Variable _tc;
-
-    /** @serial List trigger actions. */
-    protected VariableList _actions = null;
-
-    /** @serial List local variable updates. */
-    protected VariableList _localVarUpdates = null;
-
-    /** @serial If true, this transition is preemptive. */
-    protected boolean _preemptive = false;
-
-    /** @serial If true, the destination state's subsystem will be initialized
-     * each time this transition is taken.
-     */
-    protected boolean _initEntry = false;
-
-    /** @serial Source state. */
-    protected FSMState _source = null;
-
-    /** @serial Destination state. */
-    protected FSMState _dest = null;
-
-    /** @serial Version of source/dest states. */
-    protected long _stateVersion = -1;
-
-    /** @serial Trigger event set. */
-    protected boolean _teSet = false;
-
-    /** @serial Trigger condition set. */
-    protected boolean _tcSet = false;
-
-    /** @serial List of transition actions. */
-    protected LinkedList _transActions = null;
-
     public void addTransitionAction(TransitionAction act) {
         if (act == null) {
             return;
@@ -117,6 +73,9 @@ public class FSMTransition extends ComponentRelation {
             ta.execute();
         }
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
 
     protected void _createVarLists() {
         try {
@@ -187,10 +146,14 @@ public class FSMTransition extends ComponentRelation {
         newobj._stateVersion = -1;
         if (_trigger != null) {
             newobj._trigger = (VariableList)newobj.getAttribute("Trigger");
-            newobj._te = (Variable)newobj._trigger.getAttribute("TriggerEvent");
-            newobj._tc = (Variable)newobj._trigger.getAttribute("TriggerCondition");
-            newobj._actions = (VariableList)newobj.getAttribute("Actions");
-            newobj._localVarUpdates = (VariableList)newobj.getAttribute("LocalVarUpdates");
+            newobj._te =
+                (Variable)newobj._trigger.getAttribute("TriggerEvent");
+            newobj._tc =
+                (Variable)newobj._trigger.getAttribute("TriggerCondition");
+            newobj._actions =
+                (VariableList)newobj.getAttribute("Actions");
+            newobj._localVarUpdates =
+                (VariableList)newobj.getAttribute("LocalVarUpdates");
         }
         return newobj;
     }
@@ -241,30 +204,6 @@ public class FSMTransition extends ComponentRelation {
         return _dest;
     }
 
-    /** Get the source/destination states of this transition.
-     */
-    private void _getStates() {
-        try {
-            workspace().getReadAccess();
-            Enumeration ports = linkedPorts();
-            Port p;
-            _source = null;
-            _dest = null;
-            while (ports.hasMoreElements()) {
-                p = (Port)ports.nextElement();
-                if (p.getName().compareTo(FSMState.INCOMING_PORT) == 0) {
-                    _dest = (FSMState)p.getContainer();
-                }
-                if (p.getName().compareTo(FSMState.OUTGOING_PORT) == 0) {
-                    _source = (FSMState)p.getContainer();
-                }
-            }
-            _stateVersion = workspace().getVersion();
-        } finally {
-            workspace().doneReading();
-        }
-    }
-
     /** Set the trigger event of this transition.
      */
     public void setTriggerEvent(String te) {
@@ -288,12 +227,15 @@ public class FSMTransition extends ComponentRelation {
     /** Setup the scope of trigger event, trigger condition, and trigger
      *  actions.
      */
-    public void setupScope() throws NameDuplicationException, IllegalActionException {
+    public void setupScope()
+            throws NameDuplicationException, IllegalActionException {
         FSMState src = sourceState();
         VariableList localInputVarS =
-            (VariableList)src.getAttribute(FSMState.LOCAL_INPUT_STATUS_VAR_LIST);
+            (VariableList)src.getAttribute(
+                    FSMState.LOCAL_INPUT_STATUS_VAR_LIST);
         VariableList localInputVarV =
-            (VariableList)src.getAttribute(FSMState.LOCAL_INPUT_VALUE_VAR_LIST);
+            (VariableList)src.getAttribute(
+                    FSMState.LOCAL_INPUT_VALUE_VAR_LIST);
 
 
         VariableList inputVarS = null;
@@ -301,9 +243,12 @@ public class FSMTransition extends ComponentRelation {
         VariableList localVars = null;
         FSMController ctrl = (FSMController)getContainer();
         if (ctrl != null) {
-            inputVarS = (VariableList)ctrl.getAttribute(FSMController.INPUT_STATUS_VAR_LIST);
-            inputVarV = (VariableList)ctrl.getAttribute(FSMController.INPUT_VALUE_VAR_LIST);
-            localVars = (VariableList)ctrl.getAttribute(FSMController.LOCAL_VARIABLE_LIST);
+            inputVarS = (VariableList)ctrl.getAttribute(
+                    FSMController.INPUT_STATUS_VAR_LIST);
+            inputVarV = (VariableList)ctrl.getAttribute(
+                    FSMController.INPUT_VALUE_VAR_LIST);
+            localVars = (VariableList)ctrl.getAttribute(
+                    FSMController.LOCAL_VARIABLE_LIST);
         }
 
         if (inputVarS != null) {
@@ -416,7 +361,8 @@ public class FSMTransition extends ComponentRelation {
 
         if (_teSet) {
 
-            //System.out.println("Testing trigger event of " + this.getFullName());
+            //System.out.println("Testing trigger event of " +
+            //     this.getFullName());
 
             _te.getToken();
             if (((BooleanToken)_te.getToken()).booleanValue() == false) {
@@ -456,5 +402,76 @@ public class FSMTransition extends ComponentRelation {
                     "FSMTransition can only have one source/destination.");
         }
         return;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    /** @serial List trigger event and trigger condition. */
+    protected VariableList _trigger = null;
+
+    /** @serial Trigger event variable. */
+    protected Variable _te;
+
+    /** @serial Trigger condition variable. */
+    protected Variable _tc;
+
+    /** @serial List trigger actions. */
+    protected VariableList _actions = null;
+
+    /** @serial List local variable updates. */
+    protected VariableList _localVarUpdates = null;
+
+    /** @serial If true, this transition is preemptive. */
+    protected boolean _preemptive = false;
+
+    /** @serial If true, the destination state's subsystem will be initialized
+     * each time this transition is taken.
+     */
+    protected boolean _initEntry = false;
+
+    /** @serial Source state. */
+    protected FSMState _source = null;
+
+    /** @serial Destination state. */
+    protected FSMState _dest = null;
+
+    /** @serial Version of source/dest states. */
+    protected long _stateVersion = -1;
+
+    /** @serial Trigger event set. */
+    protected boolean _teSet = false;
+
+    /** @serial Trigger condition set. */
+    protected boolean _tcSet = false;
+
+    /** @serial List of transition actions. */
+    protected LinkedList _transActions = null;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    /** Get the source/destination states of this transition.
+     */
+    private void _getStates() {
+        try {
+            workspace().getReadAccess();
+            Enumeration ports = linkedPorts();
+            Port p;
+            _source = null;
+            _dest = null;
+            while (ports.hasMoreElements()) {
+                p = (Port)ports.nextElement();
+                if (p.getName().compareTo(FSMState.INCOMING_PORT) == 0) {
+                    _dest = (FSMState)p.getContainer();
+                }
+                if (p.getName().compareTo(FSMState.OUTGOING_PORT) == 0) {
+                    _source = (FSMState)p.getContainer();
+                }
+            }
+            _stateVersion = workspace().getVersion();
+        } finally {
+            workspace().doneReading();
+        }
     }
 }
