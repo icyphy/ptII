@@ -1,2 +1,2 @@
-java -Dptolemy.ptII.dir=${PTII} -classpath "${PTII};${PTII}/lib/diva.jar;${PTII}/lib/SingleWindow.jar;${PTII}/lib/xml-apis.jar;${PTII}/lib/xercesImpl.jar" thales.vergil.SingleWindowApplication 
+java -Dptolemy.ptII.dir=${PTII} -classpath "${PTII};${PTII}/lib/diva.jar;${PTII}/lib/SingleWindow.jar;${PTII}/lib/xml-apis.jar;${PTII}/lib/xercesImpl.jar" thales.vergil.SingleWindowApplication $@
 
