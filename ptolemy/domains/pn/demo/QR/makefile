@@ -40,9 +40,6 @@ CLASSPATH =	$(ROOT)
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-TCL_SRCS = 
-
-JFLAGS= -g # -deprecation
 JSRCS = \
 	QRcompileApplet.java \
 	StreamToMatrix.java \
@@ -54,7 +51,12 @@ JSRCS = \
 	ND_66.java \
 	ND_86.java
 
-EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS)
+EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) \
+	QRcompileApplet.html \
+	QRvr.gif \
+	SourceMatrix1.java \
+	dg.gif \
+	qr.xml
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
