@@ -23,6 +23,12 @@ remains the same)
    you will get a NullPointerException because a debug() call
    dereferences yyrule[], which is null. (cxh)
 
+5) New instances of parserval are created for the return value of",
+   each rule, so that assignments to the fields of parserval do not",
+   corrupt previous data.",
+
+(If you modify the sources, be sure to update skeleton.c)
+
 The BYACC/J page can be found at:
 
 http://www.lincom-asg.com/~rjamison/byacc/
