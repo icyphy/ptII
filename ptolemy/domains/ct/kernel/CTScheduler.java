@@ -339,7 +339,7 @@ public class CTScheduler extends Scheduler{
 
     /** Return an enumeration of step size control (SSC) actors in the output
      *  schedule. These are the step size control actors in the
-     *  y = g(x,u,t) equations.
+     *  y = g(x, u, t) equations.
      *  This enumeration is locally
      *  cached. If workspace version equals to the cached version,
      *  then it returns the cached enumeration.
@@ -438,7 +438,7 @@ public class CTScheduler extends Scheduler{
 
     /** Return an enumeration of step size control (SSC) actors in the
      *  state and state transition schedule. These are the step size
-     *  control actors in the dx/dt=f(x,u,t) equations.
+     *  control actors in the dx/dt = f(x, u, t) equations.
      *  This enumeration is locally
      *  cached. If workspace version equals to the cached version,
      *  then it returns the cached enumeration.
@@ -586,7 +586,7 @@ public class CTScheduler extends Scheduler{
      * is wrong or arithmetic loop exists.
      */
     protected Enumeration _schedule() throws NotSchedulableException {
-        CTDirector dir =(CTDirector)getContainer();
+        CTDirector dir = (CTDirector)getContainer();
         if(dir == null) {
             return null;
         }
@@ -619,7 +619,7 @@ public class CTScheduler extends Scheduler{
 
             // Dynamic actors are reverse ordered.
             Object[] xsort = gd.topologicalSort(dynactors);
-            for(int i=0; i < xsort.length; i++) {
+            for(int i = 0; i < xsort.length; i++) {
                 Actor a = (Actor)xsort[i];
                 _stateschedule.insertFirst(a);
                 if (a instanceof CTStepSizeControlActor) {
@@ -633,7 +633,7 @@ public class CTScheduler extends Scheduler{
             // State transition map
             Object[] fx = g.backwardReachableNodes(dynactors);
             Object[] fxsort = g.topologicalSort(fx);
-            for(int i=0; i < fxsort.length; i++) {
+            for(int i = 0; i < fxsort.length; i++) {
                 Actor a = (Actor)fxsort[i];
                 _transitionschedule.insertLast(a);
                 if (a instanceof CTStepSizeControlActor) {
@@ -664,7 +664,7 @@ public class CTScheduler extends Scheduler{
             //Output map.
             Object[] gx = g.backwardReachableNodes(sinkactors);
             Object[] gxsort = g.topologicalSort(gx);
-            for(int i=0; i < gxsort.length; i++) {
+            for(int i = 0; i < gxsort.length; i++) {
                 Actor a = (Actor)gxsort[i];
                 _outputschedule.insertLast(a);
                 if (a instanceof CTStepSizeControlActor) {
@@ -720,7 +720,7 @@ public class CTScheduler extends Scheduler{
      *  @return A graph representation of the actors.
      */
     protected DirectedAcyclicGraph _toArithGraph(Enumeration actors) {
-        CTDirector dir =(CTDirector)getContainer();
+        CTDirector dir = (CTDirector)getContainer();
         CompositeActor ca = (CompositeActor)(dir.getContainer());
 
         DirectedAcyclicGraph g = new DirectedAcyclicGraph();
@@ -766,7 +766,7 @@ public class CTScheduler extends Scheduler{
      *  @return A graph representation of the actors.
      */
     protected DirectedAcyclicGraph _toGraph(Enumeration actors) {
-        CTDirector dir =(CTDirector)getContainer();
+        CTDirector dir = (CTDirector)getContainer();
         CompositeActor ca = (CompositeActor)(dir.getContainer());
 
         DirectedAcyclicGraph g = new DirectedAcyclicGraph();
