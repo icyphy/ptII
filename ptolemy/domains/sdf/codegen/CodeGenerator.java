@@ -112,16 +112,32 @@ public class CodeGenerator extends CompositeActorApplication {
         
         Iterator entityItr = _entitySet.iterator();
         
+        ActorCodeGenerator actorCodeGen = new ActorCodeGenerator();        
+        LinkedList renamedSourceList = new LinkedList();
+        
         while (entityItr.hasNext()) {
              Entity entity = (Entity) entityItr.next();  
              PerActorCodeGeneratorInfo actorInfo = 
               (PerActorCodeGeneratorInfo) _entityInfoMap.get(entity);        
                           
              _makeInputInfo(entity, actorInfo);
-             
-             ActorCodeGenerator actorCodeGen = new ActorCodeGenerator();
-             actorCodeGen.generateCode(actorInfo);
+                          
+             String renamedSource = actorCodeGen.generateCode(actorInfo);
+             renamedSourceList.addLast(renamedSource);
         }                                                           
+        
+        entityItr = _entitySet.iterator();
+        Iterator renamedSourceItr = renamedSourceList.iterator();
+        
+        while (entityItr.hasNext()) {
+             Entity entity = (Entity) entityItr.next();  
+             PerActorCodeGeneratorInfo actorInfo = 
+              (PerActorCodeGeneratorInfo) _entityInfoMap.get(entity);        
+              
+             String renamedSource = (String) renamedSourceItr.next(); 
+                                                   
+             actorCodeGen.pass2(renamedSource, actorInfo);
+        }                
     }
 
     /** Figure out which buffers are connected to each input port of a given 

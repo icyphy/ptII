@@ -178,7 +178,12 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
               return node;                              
            }
         } else if (_typeVisitor.isSupportedPortKind(kind)) {
-           return NullValue.instance; // must be removed later        
+           // replace the port with an array of offsets into the buffer
+           return new FieldDeclNode(PROTECTED_MOD,
+           TypeUtility.makeArrayType(IntTypeNode.instance, 1),
+            new NameNode(AbsentTreeNode.instance, 
+             "_cg_" + node.getName().getIdent() + "_offset"),
+            AbsentTreeNode.instance);                     
         }               
         
         node.setDefType((TypeNode) type.accept(this, null));
@@ -503,8 +508,41 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
                String varName = typedDecl.getName();
                 
                TypedIOPort port = (TypedIOPort) _actorInfo.portNameToPortMap.get(varName);                 
-                
-               if (methodName.equals("getWidth")) {                                                   
+               
+               if (methodName.equals("get")) {
+                  String[] bufferArray = (String[]) _actorInfo.inputInfoMap.get(port);
+                  
+                  if (bufferArray == null) {
+                     // port is not connected, return 0 since Token is resolved to int
+                     return new IntLitNode("0");
+                  }
+                  
+                  int channel = -1;
+                  
+                  if (!port.isMultiport()) {
+                     channel = 0;                  
+                  } else if (firstArg instanceof IntLitNode) { 
+                     // found a constant port number
+                     channel = Integer.parseInt(((IntLitNode) firstArg).getLiteral());
+                  }
+                  
+                  if (channel == -1) {
+                     // need to do a lookup of buffer for the port
+                  
+                  } else {
+                     String bufferName = bufferArray[channel];
+                     PostIncrNode offsetIncrNode = new PostIncrNode(
+                      new ArrayAccessNode(
+                       new ObjectNode(
+                        new NameNode(AbsentTreeNode.instance, "_cg_" + varName + "_offset")),
+                       firstArg));
+                     
+                     return new ArrayAccessNode(new ObjectNode(
+                      (NameNode) StaticResolution.makeNameNode("CG_Main." + bufferName)),
+                      offsetIncrNode);                  
+                  }
+                  
+               } else if (methodName.equals("getWidth")) {                                                   
                   return new IntLitNode(String.valueOf(port.getWidth()));
                } else if (methodName.equals("hasRoom")) {                                                   
                   if ((port.getWidth() > 0) && port.isOutput()) {
@@ -1007,53 +1045,15 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
         ApplicationUtility.error("unexpected type for dummy() : " + type);        
         return null;        
     }       
-    
-    /** Return a list of all fields, methods, and inner classes that a class
-     *  has inherits from superclasses and interfaces. Do not add constructors.
-     */
-    protected List _flattenedMembers(ClassDeclNode node) {
-        LinkedList retval = new LinkedList();
-    
-        ClassDecl classDecl = (ClassDecl) JavaDecl.getDecl((NamedNode) node);
-                
-        Iterator envItr = classDecl.getEnviron().allProperDecls();
-        
-        while (envItr.hasNext()) {
-            MemberDecl decl = (MemberDecl) envItr.next();
-            
-            if (decl.category != CG_CONSTRUCTOR) {
-               // add the member, as long as it's not part of SDFAtomicActor,
-               // or its subclasses
-            
-               JavaDecl container = decl.getContainer(); 
-               if ((container != classDecl) &&
-                   (container != _NAMED_OBJ_DECL) &&               
-                   (container != _ENTITY_DECL) &&               
-                   (container != _COMPONENT_ENTITY_DECL) &&
-                   (container != _ATOMIC_ACTOR_DECL) &&               
-                   (container != _TYPED_ATOMIC_ACTOR_DECL) &&
-                   (container != _SDF_ATOMIC_ACTOR_DECL) &&
-                   (container != StaticResolution.OBJECT_DECL)) {                                     
-                  retval.addLast(decl.getSource().clone());
-               }                              
-            }        
-        }         
-        
-        return retval;
-    }
-    
+       
     protected PerActorCodeGeneratorInfo _actorInfo = null;    
     protected PtolemyTypeVisitor _typeVisitor = null;
 
-    protected static final ClassDecl _NAMED_OBJ_DECL;
-    protected static final ClassDecl _ENTITY_DECL;
-    protected static final ClassDecl _COMPONENT_ENTITY_DECL;
-    protected static final ClassDecl _ATOMIC_ACTOR_DECL;    
     public static final ClassDecl _TYPED_ATOMIC_ACTOR_DECL;
     public static final ClassDecl _SDF_ATOMIC_ACTOR_DECL;
         
     static {
-
+        /*
         CompileUnitNode namedObjUnit = StaticResolution.load(
          SearchPath.NAMED_PATH.openSource("ptolemy.kernel.util.NamedObj", true), 1);
          
@@ -1062,6 +1062,7 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
     
         CompileUnitNode entityUnit = StaticResolution.load(
          SearchPath.NAMED_PATH.openSource("ptolemy.kernel.Entity", true), 1);
+         
          
         _ENTITY_DECL = (ClassDecl) StaticResolution.findDecl(
          entityUnit, "Entity", CG_CLASS, null, null);        
@@ -1077,6 +1078,7 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
          
         _ATOMIC_ACTOR_DECL = (ClassDecl) StaticResolution.findDecl(
          atomicActorUnit, "AtomicActor", CG_CLASS, null, null);             
+        */
     
         CompileUnitNode typedAtomicActorUnit = StaticResolution.load(
          SearchPath.NAMED_PATH.openSource("ptolemy.actor.TypedAtomicActor", true), 1);

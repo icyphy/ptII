@@ -54,12 +54,13 @@ import ptolemy.lang.java.nodetypes.*;
  *  @author Jeff Tsay
  */
 public class ActorCodeGenerator implements JavaStaticSemanticConstants {
+
     public ActorCodeGenerator() {
     }
     
-    public void generateCode(PerActorCodeGeneratorInfo actorInfo) {
+    public static String generateCode(PerActorCodeGeneratorInfo actorInfo) {
      
-        _entity = actorInfo.actor;
+        Entity entity = actorInfo.actor;
         
         // finish filling in fields of actorInfo
         
@@ -68,14 +69,14 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
         
         // get the location of the source code for this actor                       
         
-        Class actorClass = _entity.getClass();
+        Class actorClass = entity.getClass();
                                 
         File sourceFile = SearchPath.NAMED_PATH.openSource(
          actorClass.getName());                
          
         if (sourceFile == null) {
            ApplicationUtility.error("source code not found for " +
-            "entity " + _entity);
+            "entity " + entity);
         }
         
         String filename = sourceFile.toString();
@@ -84,7 +85,7 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
         
         // parse each occurence of a file, because the AST will be modified below
         
-        String actorName = _entity.getName();
+        String actorName = entity.getName();
         
         // make a list of the compile unit node and compile unit nodes that 
         // contain superclasses
@@ -108,21 +109,27 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
         
         _rewriteSources(unitList, renamedClassNameList);
         
-        sourceFile = SearchPath.NAMED_PATH.openSource(
-         "codegen." + (String) renamedClassNameList.get(0));
+        return "codegen." + (String) renamedClassNameList.get(0);    
+    }
+    
+    public static void pass2(String sourceName, PerActorCodeGeneratorInfo actorInfo) {
+
+        File sourceFile = SearchPath.NAMED_PATH.openSource(sourceName);
          
         if (sourceFile == null) {
            ApplicationUtility.error("regenerated source code not found for " +
-            "entity " + _entity + " in source file " + sourceFile);
+            "entity " + actorInfo.actor + " in source file " + sourceFile);
         }
 
-        filename = sourceFile.toString();
+        String filename = sourceFile.toString();
         
-        listArray = _makeUnitList(filename, (String) renamedClassNameList.get(0));
+        List[] listArray = _makeUnitList(filename, sourceName);
        
-        unitList = listArray[0];
+        List unitList = listArray[0];
                                                                                         
         Iterator unitItr = unitList.iterator();
+        
+        CompileUnitNode unitNode;
                                                                                                                                 
         while (unitItr.hasNext()) {                        
            
@@ -153,12 +160,12 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
             new JavaCodeGenerator(), null);
          
            System.out.println(modifiedSourceCode);  
-        }
+        }        
     }
     
-    protected void _makePortNameToPortMap(PerActorCodeGeneratorInfo actorInfo) {
+    protected static void _makePortNameToPortMap(PerActorCodeGeneratorInfo actorInfo) {
 
-        Iterator portItr = _entity.portList().iterator();
+        Iterator portItr = actorInfo.actor.portList().iterator();
            
         while (portItr.hasNext()) {              
            TypedIOPort port = (TypedIOPort) portItr.next();
@@ -169,8 +176,8 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
         }
     }
     
-    protected void _makeParameterNameToTokenMap(PerActorCodeGeneratorInfo actorInfo) {
-        Iterator attributeItr = _entity.attributeList().iterator();
+    protected static void _makeParameterNameToTokenMap(PerActorCodeGeneratorInfo actorInfo) {
+        Iterator attributeItr = actorInfo.actor.attributeList().iterator();
     
         while (attributeItr.hasNext()) {
            Object attributeObj = attributeItr.next();
@@ -209,7 +216,7 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
      *  SDFAtomicActor. The CompileUnitNodes are cloned from those
      *  returned by StaticResolution so that they may be modified.
      */     
-    protected List[] _makeUnitList(String fileName, String className) {
+    protected static List[] _makeUnitList(String fileName, String className) {
         LinkedList retval = new LinkedList();
                     
         CompileUnitNode unitNode = 
@@ -248,7 +255,7 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
         return new List[] { retval, classNameList };
     }
     
-    protected void _movePackage(List unitList) {
+    protected static void _movePackage(List unitList) {
         Iterator unitItr = unitList.iterator();
         
         while (unitItr.hasNext()) {
@@ -270,7 +277,7 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
         }    
     }
     
-    protected List _renameUnitList(List unitList, List classNameList, String actorName) {
+    protected static List _renameUnitList(List unitList, List classNameList, String actorName) {
         
         HashMap renameMap = new HashMap();
         Iterator classNameItr = classNameList.iterator();
@@ -304,7 +311,7 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
         return renamedClassNameList;
     }
     
-    protected void _rewriteSources(List unitList, List classNameList) {
+    protected static void _rewriteSources(List unitList, List classNameList) {
         System.out.println("classNameList = " + classNameList);
     
         Iterator unitItr = unitList.iterator();
@@ -335,7 +342,7 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
      *  given type. The AST must have already gone through pass 1
      *  static resolution.
      */
-    protected class FindSuperClassDecl extends JavaVisitor {
+    protected static class FindSuperClassDecl extends JavaVisitor {
         public FindSuperClassDecl(String className) {
             super(TM_CUSTOM);
             _className = className;           
@@ -366,8 +373,5 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
         }
         
         protected String _className;
-    }
-                         
-    protected Entity _entity;       
-    protected CompileUnitNode unitNode;
+    }                         
 }
