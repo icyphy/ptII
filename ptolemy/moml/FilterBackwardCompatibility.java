@@ -103,8 +103,8 @@ public class FilterBackwardCompatibility implements MoMLFilter {
 
 		// Save the container.newPort name for later use.
 		_containerPortMap.put(containerName + "." + attributeValue,
-                    containerName + "." + newPort
-				  );
+                        containerName + "." + newPort
+                                      );
 		MoMLParser.setModified(true);
 		return newPort;
             } else if (_currentlyProcessingActorWithPropertyClassChanges) {
@@ -153,7 +153,7 @@ public class FilterBackwardCompatibility implements MoMLFilter {
 	    // that contains the names of all of the actors that require
 	    // updating.
 	    if (_currentlyProcessingActorThatRequiresUpdating
-		|| _actorsThatRequireUpdating.contains(attributeValue)) {
+                    || _actorsThatRequireUpdating.contains(attributeValue)) {
 		if (_actorsWithPortNameChanges.containsKey(attributeValue)) {
 		    // We found a class with a port name change.
 		    _currentlyProcessingActorThatRequiresUpdating = true;
@@ -163,7 +163,7 @@ public class FilterBackwardCompatibility implements MoMLFilter {
 			+ "." + _lastNameSeen;
 		    _portMap = (HashMap) _actorsWithPortNameChanges.get(attributeValue);
 		} else if (_actorsWithPropertyClassChanges
-			   .containsKey(attributeValue)) {
+                        .containsKey(attributeValue)) {
 		    // We found a class with a property class change.
 		    _currentlyProcessingActorThatRequiresUpdating = true;
 		    _currentlyProcessingActorWithPropertyClassChanges = true;
@@ -174,7 +174,7 @@ public class FilterBackwardCompatibility implements MoMLFilter {
 			(HashMap) _actorsWithPropertyClassChanges
 			.get(attributeValue);
 		} else if (_actorsThatShouldHaveIcons
-			   .containsKey(attributeValue)) {
+                        .containsKey(attributeValue)) {
 		    // We found a class that needs an icon
 		    _currentlyProcessingActorThatRequiresUpdating = true;
 		    _currentlyProcessingActorThatMayNeedAnIcon = true;
@@ -188,7 +188,7 @@ public class FilterBackwardCompatibility implements MoMLFilter {
 			.get(attributeValue);
 
 		} else if (_currentlyProcessingActorWithPropertyClassChanges
-			   && _newClass != null) {
+                        && _newClass != null) {
 
 		    // We found a property class to change, and now we
 		    // found the class itself that needs changing.
@@ -202,13 +202,13 @@ public class FilterBackwardCompatibility implements MoMLFilter {
 		    MoMLParser.setModified(true);
 		    return temporaryNewClass;
 		} else if ( (_currentlyProcessingActorWithPortNameChanges
-			     || _currentlyProcessingActorWithPropertyClassChanges
-			     || _currentlyProcessingActorThatMayNeedAnIcon)
-			    && container != null
-			    && !container.getFullName()
-			    .equals(_currentActorFullName)
-			    && !container.getFullName()
-			    .startsWith(_currentActorFullName)) {
+                        || _currentlyProcessingActorWithPropertyClassChanges
+                        || _currentlyProcessingActorThatMayNeedAnIcon)
+                        && container != null
+                        && !container.getFullName()
+                        .equals(_currentActorFullName)
+                        && !container.getFullName()
+                        .startsWith(_currentActorFullName)) {
 
 		    // We found another class in a different container
 		    // while handling a class with port name changes, so
@@ -225,26 +225,26 @@ public class FilterBackwardCompatibility implements MoMLFilter {
                 }
             }
         } else if (_doneProcessingActorWithPortNameChanges
-		       && attributeName.equals("port")
-		       && _containerPortMap.containsKey(container.getFullName()
-                               + "." + attributeValue)) {
-		// We are processing actors that have port names.
-		// Now map the old port to the new port.
-		String newPort = (String)_containerPortMap
-		    .get(container.getFullName() + "." + attributeValue);
+                && attributeName.equals("port")
+                && _containerPortMap.containsKey(container.getFullName()
+                        + "." + attributeValue)) {
+            // We are processing actors that have port names.
+            // Now map the old port to the new port.
+            String newPort = (String)_containerPortMap
+                .get(container.getFullName() + "." + attributeValue);
 
-		// Extreme chaos here because sometimes
-		// container.getFullName() will be ".transform_2.transform" and
-		// attributeValue will be "ComplexToCartesian.real"
-		// and sometimes container.getFullName() will be
-		// ".transform_2.transform.ComplexToCartesian"
-		// and attributeValue will be "real"
+            // Extreme chaos here because sometimes
+            // container.getFullName() will be ".transform_2.transform" and
+            // attributeValue will be "ComplexToCartesian.real"
+            // and sometimes container.getFullName() will be
+            // ".transform_2.transform.ComplexToCartesian"
+            // and attributeValue will be "real"
 
-		newPort =
-		    newPort.substring(container.getFullName().length() + 1);
+            newPort =
+                newPort.substring(container.getFullName().length() + 1);
 
-		MoMLParser.setModified(true);
-		return newPort;
+            MoMLParser.setModified(true);
+            return newPort;
 	}
 	return attributeValue;
     }
@@ -264,8 +264,8 @@ public class FilterBackwardCompatibility implements MoMLFilter {
 	}
 
 	if ( _currentlyProcessingActorThatMayNeedAnIcon
-	     && container != null
-	     && container.getFullName().equals(_currentActorFullName)) {
+                && container != null
+                && container.getFullName().equals(_currentActorFullName)) {
 
 	    _currentlyProcessingActorThatMayNeedAnIcon = false;
 
@@ -280,7 +280,7 @@ public class FilterBackwardCompatibility implements MoMLFilter {
 		MoMLParser.setModified(true);
 	    } catch (Exception ex) {
 		throw new IllegalActionException(null, ex, "Failed to parse\n"
-						 + _iconMoML);
+                        + _iconMoML);
 	    }
 	}
 	return elementName;
@@ -349,7 +349,7 @@ public class FilterBackwardCompatibility implements MoMLFilter {
     // that requires processing. Set to false once we are
     // done processing that actor.  This is done for performance reasons.
     private static boolean _currentlyProcessingActorThatRequiresUpdating =
-	false;
+    false;
 
     static {
 	///////////////////////////////////////////////////////////
@@ -422,10 +422,10 @@ public class FilterBackwardCompatibility implements MoMLFilter {
 
 	// In alphabetic order by actor class name.
 	_actorsThatShouldHaveIcons.put("ptolemy.actor.lib.Const",
-				       "<property name=\"_icon\" class=\"ptolemy.vergil.icon.BoxedValueIcon\">\n"
-				       + "<property name=\"attributeName\" value=\"value\"/>\n"
-				       + "<property name=\"displayWidth\" value=\"40\"/>\n"
-				       + "</property>\n");
+                "<property name=\"_icon\" class=\"ptolemy.vergil.icon.BoxedValueIcon\">\n"
+                + "<property name=\"attributeName\" value=\"value\"/>\n"
+                + "<property name=\"displayWidth\" value=\"40\"/>\n"
+                + "</property>\n");
 
 	String functionIcon =
 	    "<property name=\"_icon\" class=\"ptolemy.vergil.icon.AttributeValueIcon\">\n"
@@ -433,15 +433,15 @@ public class FilterBackwardCompatibility implements MoMLFilter {
 	    + "</property>\n";
 
 	_actorsThatShouldHaveIcons.put("ptolemy.actor.lib.MathFunction",
-				       functionIcon);
+                functionIcon);
 
 	_actorsThatShouldHaveIcons.put("ptolemy.actor.lib.Scale",
-				       "<property name=\"_icon\" class=\"ptolemy.vergil.icon.AttributeValueIcon\">\n"
-				       + "<property name=\"attributeName\" value=\"factor\"/>\n"
-				       + "</property>\n");
+                "<property name=\"_icon\" class=\"ptolemy.vergil.icon.AttributeValueIcon\">\n"
+                + "<property name=\"attributeName\" value=\"factor\"/>\n"
+                + "</property>\n");
 
 	_actorsThatShouldHaveIcons.put("ptolemy.actor.lib.TrigFunction",
-				       functionIcon);
+                functionIcon);
 
 	///////////////////////////////////////////////////////////
 	// We put all the actors that require updating so that we can
