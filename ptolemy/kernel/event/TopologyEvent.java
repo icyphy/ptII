@@ -102,7 +102,7 @@ public class TopologyEvent extends java.util.EventObject {
     /** A port has been removed from an entity. The fields
      * <b>_entity</b> and <b>_port</b> are valid.
      */
-    public static final int PORT_REMOVED = PORT_ADDED + 1;;
+    public static final int PORT_REMOVED = PORT_ADDED + 1;
 
     /** A port has been linked to a relation. The fields
      * <b>_relation</b> and <b>_port</b> are valid.
