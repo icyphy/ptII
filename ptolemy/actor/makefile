@@ -47,7 +47,7 @@ ME =		java/pt/actors
 # Get configuration info
 CONFIG =	$(ROOT)/mk/tycho.mk
 include $(CONFIG)
-JAVAHOME = 	$(LATEST_JAVAHOME)
+#JAVAHOME = 	$(LATEST_JAVAHOME)
 DIRS = 		test #doc
 
 CLASSPATH = ../..
@@ -70,11 +70,11 @@ JSRCS = \
 	Director.java \
 	Executable.java \
 	FIFOQueue.java \
+	FlowFifoQ.java \
 	IOPort.java \
 	IORelation.java \
 	Mailbox.java \
 	MailboxPort.java \
-	NoTokenAvailableException.java \
 	Receptionist.java \
 	TokenHolderFullException.java \
 	TransparentIOPort.java
