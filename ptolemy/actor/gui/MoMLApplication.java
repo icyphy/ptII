@@ -389,7 +389,8 @@ public class MoMLApplication {
                         _parser.reset();
 
                         try {
-                            NamedObj toplevel = _parser.parse(base, inURL.openStream());
+                            NamedObj toplevel =
+                                _parser.parse(base, inURL.openStream());
                             if (toplevel instanceof Configuration) {
                                 _config = (Configuration)toplevel;
                             }
@@ -563,7 +564,8 @@ public class MoMLApplication {
      */
     protected String _usage() {
         // Call the static method that generates the usage strings.
-        return StringUtilities.usageString(_commandTemplate, _commandOptions, _commandFlags);
+        return StringUtilities.usageString(_commandTemplate,
+                _commandOptions, _commandFlags);
     }
 
     ///////////////////////////////////////////////////////////////////
