@@ -299,28 +299,15 @@ test CTMultiSolverDirector-3.1 {register a breakpoint} {
     set starttime [$bptable first]
     $bptable removeFirst
     set first [$bptable first]
+    set firstAgain [$bptable first]
     $bptable removeFirst
     set second [$bptable first]
-    set secondAgain [$bptable first]
     $bptable removeFirst
     set third [$bptable first]
     $bptable removeFirst
-    set fourth [$bptable first]
-    $bptable removeFirst
-    set fifth [$bptable first]
-    $bptable removeFirst
-    set sixth [$bptable first]
-    $bptable removeFirst
-    set seventh [$bptable first]
-    $bptable removeFirst
-    set eighth [$bptable first]
-    $bptable removeFirst
-    set ninth [$bptable first]
-    $bptable removeFirst
     set stoptime [$bptable first]
-    list $starttime $first $second $secondAgain $third $fourth \
-            $fifth $sixth $seventh $eighth $ninth $stoptime
-} {0.0 0.09999 0.1 0.1 0.10001 0.19999 0.2 0.20001 0.39999 0.4 0.40001 1.0}
+    list $starttime $first $firstAgain $second $third $stoptime
+} {0.0 0.1 0.1 0.2 0.4 1.0}
 
 test CTMultiSolverDirector-3.2 {access empty breakpoint table} {     
     #Note: use above set up.
