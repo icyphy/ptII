@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="OrderedMerge" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.0-alpha">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[809, 541]">
     </property>
@@ -21,8 +21,7 @@
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This model, whose structure is due to Kahn and MacQueen, calculates
-all integers less than 1000000 whose prime factors are
-only 2, 3, and 5, with no redundancies.
+integers whose prime factors are only 2, 3, and 5, with no redundancies.
 It uses the OrderedMerge actor, which takes two monotonically increasing
 input sequences and merges them into one monotonically increasing output sequence.</text></svg></configure>
         </property>
@@ -37,7 +36,7 @@ input sequences and merges them into one monotonically increasing output sequenc
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="110.0, -5.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 5.0]">
         </property>
     </property>
     <property name="annotation2" class="ptolemy.kernel.util.Attribute">
@@ -144,7 +143,7 @@ computation, and produces outputs.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="175.0, 487.5">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-3, 0, 1024, 657}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {-3, 0, 1024, 657}, maximized = false}">
     </property>
     <property name="annotation5" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -170,6 +169,10 @@ stopping the execution.</text></svg></configure>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="595.0, 110.0">
         </property>
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{404.5, 270.5}">
     </property>
     <entity name="OrderedMerge" class="ptolemy.actor.lib.OrderedMerge">
         <property name="_location" class="ptolemy.kernel.util.Location" value="355.0, 282.5">
@@ -232,7 +235,7 @@ stopping the execution.</text></svg></configure>
         </property>
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={655, 509, 292, 222}}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {655, 509, 292, 229}, maximized = false}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="450.0, 472.5">
         </property>
@@ -273,15 +276,22 @@ stopping the execution.</text></svg></configure>
         </property>
     </entity>
     <entity name="BooleanSwitch" class="ptolemy.actor.lib.BooleanSwitch">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="545.0, 150.0">
+        <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
         </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 140.0]">
+        </property>
+        <port name="control" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
+            </property>
+        </port>
     </entity>
     <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
         <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
         </property>
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={655, 509, 292, 222}}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {655, 509, 292, 229}, maximized = false}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="585.0, 267.5">
         </property>
