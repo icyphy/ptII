@@ -380,7 +380,7 @@ public class ComponentPort extends Port {
         if (relation == null) return;
         if (!(relation instanceof ComponentRelation)) {
             throw new IllegalActionException(this, relation,
-            "ComponentPort can only link to instances of ComponentRelation.");
+                    "ComponentPort can only link to instances of ComponentRelation.");
         }
         if (workspace() != relation.workspace()) {
             throw new IllegalActionException(this, relation,
@@ -423,7 +423,7 @@ public class ComponentPort extends Port {
             throws IllegalActionException, NameDuplicationException {
         if (!(container instanceof ComponentEntity)) {
             throw new IllegalActionException(container, this,
-            "ComponentPort can only be contained by ComponentEntity");
+                    "ComponentPort can only be contained by ComponentEntity");
         }
         super.setContainer(container);
     }
@@ -483,7 +483,7 @@ public class ComponentPort extends Port {
             throws IllegalActionException {
         if (!(relation instanceof ComponentRelation)) {
             throw new IllegalActionException(this,
-            "Attempt to link to an incompatible relation.");
+                    "Attempt to link to an incompatible relation.");
         }
         super._link(relation);
     }
@@ -507,11 +507,11 @@ public class ComponentPort extends Port {
         synchronized(workspace()) {
             if (!(relation instanceof ComponentRelation)) {
                 throw new IllegalActionException(this,
-                "Attempt to link to an incompatible relation.");
+                        "Attempt to link to an incompatible relation.");
             }
             if (getContainer() == null) {
                 throw new IllegalActionException(this, relation,
-                "Port must have a container to establish a link.");
+                        "Port must have a container to establish a link.");
             }
             // Throw an exception if this port is not of an acceptable
             // class for the relation.

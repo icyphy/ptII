@@ -133,8 +133,8 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
         synchronized(workspace()) {
             if (((NamedObj)p.getContainer()) != this) {
                 throw new IllegalActionException(
-                "Attempt to attach a parameter to a namedObj " +
-                "that is not its container");
+                        "Attempt to attach a parameter to a namedObj " +
+                        "that is not its container");
             }
             try {
                 if (_params == null) {
@@ -157,17 +157,17 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
      *  references that should not be in the clone.
      *  @exception CloneNotSupportedException Thrown only in derived classes.
      */
-     public Object clone() throws CloneNotSupportedException {
-         NamedObj result = (NamedObj)super.clone();
-         result._clear();
-         try {
-             workspace().add(result);
-         } catch (IllegalActionException ex) {
-             // Ignore.  Can't occur.
-         }
-         // FIXME: Clone the parameter list.
-         return result;
-     }
+    public Object clone() throws CloneNotSupportedException {
+        NamedObj result = (NamedObj)super.clone();
+        result._clear();
+        try {
+            workspace().add(result);
+        } catch (IllegalActionException ex) {
+            // Ignore.  Can't occur.
+        }
+        // FIXME: Clone the parameter list.
+        return result;
+    }
 
     /** Return a description of the object.  The level of detail depends
      *  on the argument, which is an or-ing of the static final constants
@@ -185,7 +185,7 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
                 if((verbosity & NAME) != 0) {
                     result += " ";
                 }
-           }
+            }
             if((verbosity & NAME) != 0) {
                 result = result + "{" + getFullName() + "}";
             }

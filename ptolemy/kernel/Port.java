@@ -122,12 +122,12 @@ public class Port extends NamedObj {
      *  is registered with the workspace.
      *  @exception CloneNotSupportedException Thrown only in derived classes.
      */
-     public Object clone() throws CloneNotSupportedException {
-         // NOTE: It is not actually necessary to override the base class
-         // method, but we do it anyway so that the exact behavior of this
-         // method is documented with the class.
-         return super.clone();
-     }
+    public Object clone() throws CloneNotSupportedException {
+        // NOTE: It is not actually necessary to override the base class
+        // method, but we do it anyway so that the exact behavior of this
+        // method is documented with the class.
+        return super.clone();
+    }
 
     /** Enumerate the connected ports.
      *  This method is synchronized on the workspace.

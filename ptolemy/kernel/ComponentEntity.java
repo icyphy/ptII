@@ -238,7 +238,7 @@ public class ComponentEntity extends Entity {
             throws IllegalActionException, NameDuplicationException {
         if (!(port instanceof ComponentPort)) {
             throw new IllegalActionException(this, port,
-            "Incompatible port class for this entity.");
+                    "Incompatible port class for this entity.");
         }
         super._addPort(port);
     }

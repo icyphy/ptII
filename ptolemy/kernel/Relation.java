@@ -100,12 +100,12 @@ public class Relation extends NamedObj {
      *  is registered with the workspace.
      *  @exception CloneNotSupportedException Thrown only in derived classes.
      */
-     public Object clone() throws CloneNotSupportedException {
-         // NOTE: It is not actually necessary to override the base class
-         // method, but we do it anyway so that the exact behavior of this
-         // method is documented with the class.
-         return super.clone();
-     }
+    public Object clone() throws CloneNotSupportedException {
+        // NOTE: It is not actually necessary to override the base class
+        // method, but we do it anyway so that the exact behavior of this
+        // method is documented with the class.
+        return super.clone();
+    }
 
     /** Return a description of the object.  The level of detail depends
      *  on the argument, which is an or-ing of the static final constants

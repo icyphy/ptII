@@ -130,7 +130,7 @@ public class ComponentRelation extends Relation {
                     } else {
                         // Port is transparent.  See through it.
                         _deeplinkedports.appendElements(
-                            port.deepConnectedPorts());
+                                port.deepConnectedPorts());
                     }
                 } else {
                     // Port below me in the hierarchy.
