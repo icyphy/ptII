@@ -238,51 +238,44 @@ public class PtolemyQuery extends Query
                 if (parent == null) {
                     parent = (NamedObj)castAttribute.getContainer();
                 }
-                try {
-                    String moml = "<property name=\""
-                        + castAttribute.getName(parent) 
-                        + "\" value=\""
-                        + stringValue(name)
-                        + "\"/>";
-                   // FIXME: In order for undo to work, the PtolemyQuery
-                   // needs to have a MoMLParser given to it rather than
-                   // creating a new one.  This will need to be passed to
-                   // the MoMLChangeRequest.
-                   request = new MoMLChangeRequest(
-                        this,         // originator
-                        null,         // parser  -- FIXME: see above.
-                        parent,       // context
+		String moml = "<property name=\""
+		    + castAttribute.getName(parent) 
+		    + "\" value=\""
+		    + stringValue(name)
+		    + "\"/>";
+		// FIXME: In order for undo to work, the PtolemyQuery
+		// needs to have a MoMLParser given to it rather than
+		// creating a new one.  This will need to be passed to
+		// the MoMLChangeRequest.
+		request = new MoMLChangeRequest(
+		        this,         // originator
+		        null,         // parser  -- FIXME: see above.
+		        parent,       // context
                         moml,         // MoML code
                         null);        // base
-                } catch (IllegalActionException ex) {
-                    // This should only occur if the parent doesn't contain
-                    // the attribute, which shouldn't happen.
-                    throw new InternalErrorException("Parent returned by "
-                    + "MoMLChangeRequest.getDeferringParent() appears to not "
-                    + "be a parent.");
-                }
-            } else {
-                // If the attribute is not a NamedObj, then we
-                // set its value directly.
-                request = new ChangeRequest(this, name) {
-                    protected void _execute() throws IllegalActionException {
-                        attribute.setExpression(stringValue(name));
-
-                        // Here, we need to handle instances of Variable
-                        // specially.  This is too bad...
-                        if (attribute instanceof Variable) {
-                            // Retrieve the token to force evaluation, so as to
-                            // check the validity of the new value.
-                            ((Variable)attribute).getToken();
-                        }
-                    }
-                };
-            }
-            if(_handler != null) {
-                _handler.requestChange(request);
-            } else {
-                request.execute();
-            }
+                
+	    } else {
+		// If the attribute is not a NamedObj, then we
+		// set its value directly.
+		request = new ChangeRequest(this, name) {
+		    protected void _execute() throws IllegalActionException {
+			attribute.setExpression(stringValue(name));
+			
+			// Here, we need to handle instances of Variable
+			// specially.  This is too bad...
+			if (attribute instanceof Variable) {
+			    // Retrieve the token to force evaluation, so as to
+			    // check the validity of the new value.
+			    ((Variable)attribute).getToken();
+			}
+		    }
+		};
+	    }
+	    if(_handler != null) {
+		_handler.requestChange(request);
+	    } else {
+		request.execute();
+	    }
 	}
     }
 
