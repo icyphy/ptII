@@ -118,19 +118,16 @@ WATCH_DOG_TIMEOUT = 	100000
 # change this rule, be sure to run make tests
 compileDemo: $(JCLASS)
 	@echo "generate an applet for '$(MODELPATH)'"
-	"$(JAVA)" \
-		-classpath "$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)" \
-		ptolemy.copernicus.kernel.Copernicus \
+	$(PTII)/bin/copernicus \
 		-verbose \
 		-codeGenerator   "applet" \
 		-compile	 true \
 		-java            "`echo "$(JAVA)" | sed 's@/cygdrive/\([a-z]\)@\1:@'`" \
-		-modelPath       $(MODELPATH) \
 		-run		 false \
 		-ptIIUserDirectory  "`echo "$(PTII)" | sed 's@\\\@/@g'`" \
 		-targetPackage   "$(TARGETPACKAGE)" \
-		-targetPath      "$(TARGETPATH)"
-
+		-targetPath      "$(TARGETPATH)" \
+		$(MODELPATH)
 
 # Run the OrthoComm demo
 ORTHOCOMMTARGETDIRECTORY = $(TARGETPATH)/ToplevelModel
