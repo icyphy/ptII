@@ -124,13 +124,13 @@ if [ "$windows" = "yes" ]; then
     # chdir prints the current directory in DOS format.
     # The tr command deletes the \r at the end
     WINPTII=`(cd $PTII; cmd /c chdir) | tr -d '\r'`
-    $JAVAHOME/bin/java $JACL_JFLAG -classpath $WINPTII\;$JAVAHOME\\lib\\classes.zip\;$PTJACL_JAR $javastartupclass ${1+"$@"}
+    $JAVAHOME/bin/java $JACL_JFLAG -classpath $WINPTII\;$JAVAHOME\\lib\\classes.zip\;$PTJACL_JAR\;$CLASSPATH $javastartupclass ${1+"$@"}
 elif [ "$PTARCH" = "alpha4" ]; then
-    CLASSPATH=$PTII
+    CLASSPATH=$PTII:$PTJACL_JAR:$CLASSPATH
     export CLASSPATH
     java $javastartupclass ${1+"$@"}
 else
-    CLASSPATH=$PTII:$PTJACL_JAR
+    CLASSPATH=$PTII:$PTJACL_JAR:$CLASSPATH
     export CLASSPATH
     $JAVAHOME/bin/java $JACL_JFLAG $javastartupclass ${1+"$@"}
 fi
