@@ -107,12 +107,6 @@ public class TestApplication implements ChangeListener {
                     + url
                     + "'");
 
-            // Reset the timers, no need to penalize the test because
-            // the URL was wrong.
-            startTime = System.currentTimeMillis();
-            totalMemory1 = runtime.totalMemory()/1024;
-            freeMemory1 = runtime.freeMemory()/1024;
-
             toplevel = (CompositeActor) parser.parse(null, url);
         }
 
