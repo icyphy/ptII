@@ -18,6 +18,7 @@ Contents
 <li> <a href="#applets">Troubleshooting Applets</a>
 	<menu>
 	<li> <a href="#jdk">Java version</a>
+	<li> <a href="#plugin">The Java Plugin</a>
 	<li> <a href="#Diagnosing problems">Diagnosing problems</a>
 	<li> <a href="#CLASSPATH">CLASSPATH variable</a>
 	<li> <a href="#appletviewer">Appletviewer</a>
@@ -52,50 +53,41 @@ problems. Please send email to
 <A HREF="mailto:ptII@eecs.berkeley.edu">ptII@eecs.berkeley.edu</A> if you
 find errors or can suggest additions to this page.
 
-<H3>General assumptions</H3>
-We assume that you are running under a standard browser with Java applets
-enabled, and that your computer has sound capability supported by Java.
-Most modern PCs and workstations with reasonably recent versions of the
-standard browsers (Netscape and Internet Explorer) meet these requirements.
-
 <H3><A NAME="jdk">Java version</A></H3>
-Most of the applets on these pages require JDK 1.1 (JDK stands for the
-Java Development Kit). JDK 1.1 is supported by Netscape 4.06 and higher,
-and Internet Explorer 4.0 and higher.
+The applets on these pages require JDK 1.2 (JDK stands for the
+Java Development Kit). 
 
-<P>If your browser does not support JDK 1.1, you might see the following
-message in your Java console window (which you can open under Netscape's
-"Communicator" menu):
-<PRE># Applet exception: error: java.lang.NoSuchMethodError:
-&nbsp;&nbsp; java.awt.TextArea: method &lt;init> (Ljava/lang/String;III)V not found</PRE>
-To get JDK 1.1 to work with Netscape 4.03
-- 4.05, you need to download a patch. The patch can be found at <A HREF="http://developer.netscape.com/software/jdk/download.html" target="_top">the <CODE>developer.netscape.com</CODE> download page</A>.
-
-<h3><a name="plugin">JDK1.2 Plugin</a></h3>
- <p>The applets that use Diva require JDK1.2.  Currently, the
+<h3><a name="plugin">The Java Plugin</a></h3>
+The 
 <a href="http://www.javasoft.com/products/plugin/" target="_top">Javasoft Java Plugin</a>
 provides support for JDK1.2 under Netscape Communicator 4.5 and Internet
 Explorer 4.0.
 
+ <p>Under Windows, the JDK1.2 plugin is automatically installed
+when JRE 1.2 is installed (JRE stands for Java Runtime Environment).
+JRE 1.2 is available as a standalone install from Sun.  JRE 1.2
+is also optionally installed when JDK1.2 is installed.
+The JRE does not include the Java compiler (<CODE>javac</CODE>), so
+if you are planning on doing any development, you should install
+the JDK, not the JRE.  See the
+<a href="install.htm">Ptolemy II Installation</a> page for
+installation instructions.
+	
+ <p>Under Solaris 2.6 and 2.7, the plugin is available as a separate
+download (which we have not tested).
 
- <p>Under Start->Programs, you should have 'Java Plugin Control Panel' 
-listed in the upper section near the Accessories section
-
- <p>In Netscape, go to help->About plugins, or type in
-<a href="about:plugins"><CODE>about:plugins </CODE></a>
-into the Location entry widget.
-The JDK1.2 plugin should be listed
+ <p>If you are on a platform where the browser does not have
+the JDK1.2 plugin, then you can still run the demos with the
+JDK <a href="#appletviewer">Appletviewer</a>
 
 <H3><a name="Diagnosing problems">Diagnosing problems</a></H3>
-Under Netscape, under the Communicator menu, there is an item called "Java
-Console." Select that to read error messages that occur while an attempt
-is being made to run an applet.
 
- <p>To turn on the console under Internet Explorer 4, go to View-&gt;Internet Options-&gt;Advanced, and then click <CODE>Java console enabled</CODE> and restart
-
-<P>Unfortunately, the Java virtual machine often produces some pretty useless
-error messages. For example, "class not found" could mean almost anything.
-It roughly translates as "something went wrong."
+The Java plugin includes a console window which can be enabled by going
+to the <CODE>Start</CODE> menu -&gt; <CODE>Program</CODE> -&gt;
+ <CODE>Java Plugin Control Panel</CODE>
+and selecting <CODE>Show Java Console</CODE>.  Then restart the browser.
+ <p>Note that the JDK1.2 Plugin console is different than
+the native Java Browser console
 
 <H3><a name="CLASSPATH">CLASSPATH variable</a></H3>
 Java supports an environment variable called CLASSPATH that tells the Java
@@ -112,15 +104,36 @@ it (you may want to save its value, since it may be needed by some other
 program). You then probably have to restart your browser.
 
 <h3><a name="appletviewer">Appletviewer</a></h3>
+
 If you are having problems running an applet with a browser, and the
 applet is on the local machine and you have a JDK installed, you may
 want to try using the JDK <CODE>appletviewer</CODE> program instead
 of the browser. 
- <p>For example, to view an applet contained in the file myapplet.html
+ <p>For example, to view an applet contained in the file
+<CODE>myapplet.htm</CODE>
 <pre>
 setenv CLASSPATH $PTII
-appletviewer myapplet.html
+appletviewer myapplet.htm
 </pre>
+ <p>Each Ptolemy II demo has a makefile with a <CODE>demo</CODE>
+rule that will run the appletviewer for that demo.  For example,
+to run the <CODE>Inspection</CODE> demo:
+<pre>
+cd $PTII/ptolemy/domains/de/demo/Inspection
+make demo
+</pre>
+The directory above each individual demo also has a <CODE>demo</CODE>
+rule that will run all the individual demos
+<pre>
+cd $PTII/ptolemy/domains/de/demo
+make demo
+</pre>
+To run all the demos:
+<pre>
+cd $PTII
+make demo
+</pre>
+
  <p>The Solaris <CODE>appletviewer</CODE> can also take command line
 arguments that are passed to the underlying Java engine.  For example,
 to turn on verbose class messages:
@@ -145,16 +158,32 @@ the <CODE>Reload</CODE> button will reload any Java
 
 <li> Restart your browser.
 
-<li> Look for an error message in the Java console.
+ <li>Verify that the Plugin Control Panel menu choice is present
+ <br>Under Start->Programs, you should have 'Java Plugin Control Panel' 
+listed in the upper section near the Accessories section.
+  <br>If the 'Java Plugin Control Panel' menu choice is not present, then
+you may need to install or reinstall the Java plugin.
+
+ <li> Look for an error message in the Java console.
 See <a href="#Diagnosing problems">Diagnosing problems</a> above.
+
+ <li> Verify that the browser sees the plugin
+ <br>In Netscape, go to help->About plugins, or type in
+<a href="about:plugins"><CODE>about:plugins </CODE></a>
+into the Location entry widget.
+The JDK1.2 plugin should be listed.  If it is not reinstall the plugin.
+If the plugin is not listed after reinstalling, then remove and reinstall
+Netscape.
+
 
 <li> Verify that your <CODE>CLASSPATH</CODE> variable is not set.
 See the <a href="#CLASSPATH">CLASSPATH variable</a> instructions above.
 
 <li> Verify that you are running a recent version of the browser
 
-<li> Go to the
-<a href="http://www.javasoft.com/docs/books/tutorial/applet/index.html" target="_top">JavaSoft Applet Tutorial</a> and verify that you can run those applets  
+<dt> Try out a non-Ptolemy JDK1.2 applet
+<dd> If are having problems with the plugin you may want to try
+<a href="http://www.javasoft.com/products/plugin/1.2/demos/applets.html">Java Plugin 1.2 Demonstration Applets</a> page has a few sample JDK1.2 applets.
 
 <li> Try opening the applets on the
 <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII" target="_top">Ptolemy II Website</a>
@@ -169,6 +198,28 @@ See the <a href="#CLASSPATH">CLASSPATH variable</a> instructions above.
 <li> Try running the applets from a different machine or as a different
 user.
 
+
+<li> Uninstall and reinstall browser and the JDK
+
+<br> The most drastic step is to uninstall the browser and JDK.
+Unfortunately, this is likely to require that you reinstall any other
+plugins, such as Adobe Acrobat.
+<ol>
+  <li> Uninstall the browser
+
+  <li> Uninstall JDK
+
+  <li> (optional) If deinstallation does not remove the directories where
+the browser and the JDK were installed, then remove them by hand.
+
+  <li> Reboot
+
+  <li> Install the browser
+
+  <li> Install JDK
+
+  <li> Try the steps above again.
+ </ol>
 
 <li> If you are still having problems,
 send email to:
@@ -188,12 +239,21 @@ with the following information:
 <h3><a name="Other Applet Resources">Other Applet Resources</a></h3>
 
 <menu>
-<li> <A HREF="http://ptolemy.eecs.berkeley.edu/java/jdkbrowsers.htm" target="_top">More information about JDK 1.1 compatible browsers.</A>
-<li> <A HREF="http://sunsite.unc.edu/javafaq/javafaq.html" target="_top">Java FAQ</A>.
+
+<li> <a href="http://www.javasoft.com/products/plugin/" target="_top">Javasoft Java Plugin</a> -
+<a href="http://java.sun.com/products/plugin/1.2/docs/index.docs.html" target="_top">Plugin Documentation</a>
+<li> <A HREF="http://sunsite.unc.edu/javafaq/javafaq.html" target="_top">Java FAQ</A>
 <li> <a href="http://java.sun.com/docs/books/tutorial/applet/index.html" target="_top">JavaSoft Applet Tutorial</a>
 
+</menu>
+
+<h3>JDK1.1 Applet information</h3>
+
+<menu>
+
+
+<li> <A HREF="http://ptolemy.eecs.berkeley.edu/java/jdkbrowsers.htm" target="_top">More information about JDK 1.1 compatible browsers.</A>
 <LI> <A HREF="http://developer.netscape.com/software/jdk/download.html" target="_top">Netscape 4.0 JDK1.1 support page</A>
-<LI> <a href="http://www.javasoft.com/products/plugin/" target="_top">Javasoft Java Plugin</a>
 
 <li> Microsoft Java links
  <menu>
