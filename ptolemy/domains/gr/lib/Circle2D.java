@@ -1,6 +1,6 @@
 /* An abstract base class for shaded GR Actors
 
- Copyright (c) 1998-2003 The Regents of the University of California.
+ Copyright (c) 2003 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -41,7 +41,7 @@ import java.awt.geom.Ellipse2D;
 
 @author Steve Neuendorffer
 @version $Id$
-@since Ptolemy II 1.0
+@since Ptolemy II 3.1
 */
 public class Circle2D extends GRShape2D {
 
