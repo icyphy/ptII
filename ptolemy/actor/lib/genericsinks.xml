@@ -19,7 +19,6 @@
    </property>
 </entity>
 <entity name="Recorder" class="ptolemy.actor.lib.Recorder"/>
-<entity name="SetVariable" class="ptolemy.actor.lib.SetVariable"/>
 <entity name="XYPlotter" class="ptolemy.actor.lib.gui.XYPlotter"/>
 <entity name="XYScope" class="ptolemy.actor.lib.gui.XYScope"/>
       </group>
