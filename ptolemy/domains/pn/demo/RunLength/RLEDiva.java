@@ -52,7 +52,7 @@ import ptolemy.domains.pn.kernel.*;
 import ptolemy.domains.pn.kernel.event.*;
 import ptolemy.domains.pn.lib.*;
 import ptolemy.actor.*;
-import ptolemy.actor.util.PtolemyApplet;
+import ptolemy.actor.gui.PtolemyApplet;
 import ptolemy.data.*;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.*;
