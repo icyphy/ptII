@@ -139,8 +139,8 @@ public class PlotLiveDemoApplet extends PlotApplet implements Runnable {
 //         super.update(graphics);
 //     }
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         private variables                        ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     // The Plot component we are running.
     private PlotLiveDemo _myPlotLiveDemo;

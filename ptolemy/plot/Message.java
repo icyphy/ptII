@@ -86,8 +86,8 @@ public class Message extends Frame {
         return true;
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         private variables                        ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     private TextArea _txtarea;
     private boolean _inapplet = true;

@@ -65,8 +65,8 @@ import java.util.*;
  */
 public abstract class PlotLive extends Plot implements Runnable {
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         public methods                           ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /**
      * Handle button presses to enable or disable plotting.
@@ -182,8 +182,8 @@ public abstract class PlotLive extends Plot implements Runnable {
     }
 
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                       private variables                          ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     private Thread _plotLiveThread;
 

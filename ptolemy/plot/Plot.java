@@ -170,8 +170,8 @@ import java.util.*;
  */
 public class Plot extends PlotBox {
 
-    /////////////////////////////////////////////////////////////////////////
-    ////                         public methods                          ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /**
      * In the specified data set, add the specified x, y point to the
@@ -861,8 +861,8 @@ public class Plot extends PlotBox {
     public void stop () {
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                          protected methods                       ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
 
     /**
@@ -1579,8 +1579,8 @@ public class Plot extends PlotBox {
         return false;
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                       protected variables                        ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
 
     // The current dataset.
     protected int _currentdataset = -1;
@@ -1597,8 +1597,8 @@ public class Plot extends PlotBox {
 
     protected int _numsets = _MAX_DATASETS;
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                       private methods                            ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
 
     /* Add a legend if necessary, return the value of the connected flag.
      */
@@ -1796,8 +1796,8 @@ public class Plot extends PlotBox {
         pts.removeElementAt(index);
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                       private variables                          ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     private int _pointsPersistence = 0;
     private int _sweepsPersistence = 0;

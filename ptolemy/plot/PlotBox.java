@@ -130,8 +130,8 @@ import java.lang.*;
  */
 public class PlotBox extends Panel {
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         public methods                           ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /**
      * Handle button presses to fill the plot.  This rescales so that
@@ -1416,8 +1416,8 @@ public class PlotBox extends Panel {
         _setYRange(min, max);
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         protected methods                        ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     /**
      * Put a mark corresponding to the specified dataset at the
@@ -1570,8 +1570,8 @@ public class PlotBox extends Panel {
         }
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                           protected variables                    ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
 
     // If non-zero, print out debugging messages.  Use setDebug() to set this.
     protected int _debug = 0;
@@ -1649,8 +1649,8 @@ public class PlotBox extends Panel {
     // Width and height of component in pixels.
     protected int _width = 400, _height = 400;
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         private methods                          ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
 
     /**
      * Draw the legend in the upper right corner and return the width
@@ -2153,8 +2153,8 @@ public class PlotBox extends Panel {
         }
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         private variables                        ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     // The URL to be opened.
     private String _dataurl = null;

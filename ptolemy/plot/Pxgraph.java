@@ -556,8 +556,8 @@ public class Pxgraph extends Frame {
         }
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         private methods                          ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
 
 
     /* Bring up a dialog box with version information.
@@ -963,8 +963,8 @@ public class Pxgraph extends Frame {
         }
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         private variables                        ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     private Button _exitButton, _printButton, _htmlButton, _aboutButton;
 

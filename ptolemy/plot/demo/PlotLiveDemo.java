@@ -42,8 +42,8 @@ import java.applet.Applet;
  */
 public class PlotLiveDemo extends PlotLive {
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         public methods                           ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Add points to the plot.  This is called by the base class
      * <code>run()</code> method while live plotting is enabled.
@@ -120,8 +120,8 @@ java -classpath ../../..:/opt/jdk1.1.4/lib/classes.zip ptolemy.plot.demo.PlotLiv
          pld.start();
      }
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                       private variables                          ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     private boolean _first = true;
     private double _count = 0.0;

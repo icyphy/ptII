@@ -272,7 +272,7 @@ public class DirectedGraph extends Graph {
     protected boolean[][] _tranClosure;
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                      ////    
+    ////                         private variables                 ////
 
     private boolean _isAcyclic;
     private boolean _tranClosureValid = false;

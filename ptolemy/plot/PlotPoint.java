@@ -39,8 +39,8 @@ package ptolemy.plot;
  */
 public class PlotPoint {
 
-    /////////////////////////////////////////////////////////////////////////
-    ////                         public variables                        ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
 
     public double x, y;
 

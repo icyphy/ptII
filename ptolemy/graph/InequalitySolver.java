@@ -334,7 +334,7 @@ public class InequalitySolver {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                          inner class                           ////
+    ////                         inner class                       ////
 
     // Each instance of this class is an entry in _Ilist.
     private class Info {

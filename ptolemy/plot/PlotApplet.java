@@ -196,15 +196,15 @@ public class PlotApplet extends Applet implements Runnable {
         _plotThread.stop();
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         protected variables                      ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
 
     // If non-zero, print out debugging messages.
     // See also the _debug declared in PlotBox.
     protected int _debug = 0;
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         private variables                        ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     // Thread for this applet.
     private Thread _plotThread;
