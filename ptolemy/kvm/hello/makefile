@@ -66,12 +66,15 @@ OPTIONAL_FILES = \
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-all: jclass Hello.prc
+BINNAME =	Hello
+
+all: jclass $(BINNAME).prc
 
 install: jclass subinstall $(PTCLASSJAR)
+	cp $(BINNAME).prc $(PALM_ADD_ON_DIR)
 
 Hello.prc: Hello.class
-	CLASSPATH=$(CLASSPATH) java palm.database.MakePalmApp -classpath $(ROOT) ptolemy.kvm.hello.Hello
+	CLASSPATH="$(CLASSPATH)" java palm.database.MakePalmApp -classpath $(ROOT) ptolemy.kvm.hello.Hello
 
 depend:
 	@echo "no dependencies in this directory"
