@@ -1,0 +1,133 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="ElectronicUnitBase" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel"/>
+    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 639]">
+    </property>
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[-4, -4]">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+        </property>
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="65.0, 30.0">
+        </property>
+    </property>
+    <property name="ElectronicUnitBase" class="ptolemy.data.unit.UnitSystem">
+        <property name="volt" class="ptolemy.data.unit.BaseUnit" value="1.0">
+            <property name="electricPotential" class="ptolemy.data.unit.UnitCategory">
+            </property>
+        </property>
+        <property name="ampere" class="ptolemy.data.unit.BaseUnit" value="1.0">
+            <property name="electricCurrent" class="ptolemy.data.unit.UnitCategory">
+            </property>
+        </property>
+        <property name="second" class="ptolemy.data.unit.BaseUnit" value="1.0">
+            <property name="Time" class="ptolemy.data.unit.UnitCategory">
+            </property>
+        </property>
+        <property name="meter" class="ptolemy.data.expr.Parameter" value="1E+7*ampere*second/volt/(299792458.0^2)">
+        </property>
+        <property name="kilogram" class="ptolemy.data.expr.Parameter" value="ampere*volt*(second^3)/(meter^2)">
+        </property>
+        <property name="kelvin" class="ptolemy.data.expr.Parameter" value="1.38065E-23*kilogram*(meter^2)/(second^2)">
+        </property>
+        <property name="mole" class="ptolemy.data.expr.Parameter" value="6.022142E+23">
+        </property>
+        <property name="candela" class="ptolemy.data.expr.Parameter" value="kilogram*(meter^2)/(second^3)/683">
+        </property>
+        <property name="ohm" class="ptolemy.data.expr.Parameter" value="volt/ampere">
+        </property>
+        <property name="mho" class="ptolemy.data.expr.Parameter" value="ampere/volt">
+        </property>
+        <property name="coulomb" class="ptolemy.data.expr.Parameter" value="ampere*second">
+        </property>
+        <property name="esu" class="ptolemy.data.expr.Parameter" value="coulomb/(299792458.0*10)">
+        </property>
+        <property name="statvolt" class="ptolemy.data.expr.Parameter" value="299.792458*volt">
+        </property>
+        <property name="gauss" class="ptolemy.data.expr.Parameter" value="statvolt/(meter/100)">
+        </property>
+        <property name="electronCharge" class="ptolemy.data.expr.Parameter" value="1.6021765E-19*coulomb">
+        </property>
+        <property name="farad" class="ptolemy.data.expr.Parameter" value="ampere*second/volt">
+        </property>
+        <property name="henry" class="ptolemy.data.expr.Parameter" value="volt*second/ampere">
+        </property>
+        <property name="kg" class="ptolemy.data.expr.Parameter" value="kilogram">
+        </property>
+        <property name="gram" class="ptolemy.data.expr.Parameter" value="kilogram/1000">
+        </property>
+        <property name="cm" class="ptolemy.data.expr.Parameter" value="meter/100">
+        </property>
+        <property name="amp" class="ptolemy.data.expr.Parameter" value="ampere">
+        </property>
+        <property name="planckConstant" class="ptolemy.data.expr.Parameter" value="hBar*2*pi">
+        </property>
+        <property name="planckConstantReduced" class="ptolemy.data.expr.Parameter" value="1.0545716E-34*joule*second">
+        </property>
+        <property name="hBar" class="ptolemy.data.expr.Parameter" value="planckConstantReduced">
+        </property>
+        <property name="lightSpeed" class="ptolemy.data.expr.Parameter" value="299792458.0*meter/second">
+        </property>
+        <property name="dyne" class="ptolemy.data.expr.Parameter" value="gram*cm/second^2">
+        </property>
+        <property name="newton" class="ptolemy.data.expr.Parameter" value="kilogram*meter/second^2">
+        </property>
+        <property name="joule" class="ptolemy.data.expr.Parameter" value="newton*meter">
+        </property>
+        <property name="erg" class="ptolemy.data.expr.Parameter" value="dyne*cm">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <rect x="-30" y="-15" width="60" height="30" style="fill:grey"></rect>
+      </svg>
+    </configure>
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="45.0, 80.0">
+        </property>
+    </property>
+    <entity name="Const" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="volt*volt*farad/joule">
+        </property>
+        <doc>Create a constant sequence</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="170.0, 120.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="285.0, 120.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Const.output" relation="relation"/>
+    <link port="Test.input" relation="relation"/>
+</entity>
