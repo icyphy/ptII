@@ -84,7 +84,7 @@ test ProcessDirector-4.1 {Test _makeDirectorOf} {
     $e0 setManager $manager
     set d3 [java::new ptolemy.actor.process.ProcessDirector $e0 D3]
     list [$d3 getFullName] [$d4 getFullName] [enumToFullNames [$w directory]]
-} {W.E0.D3 W.D4 {W. W.E0}
+} {W.E0.D3 W.D4 {W. W.E0}}
 
 ######################################################################
 ####
