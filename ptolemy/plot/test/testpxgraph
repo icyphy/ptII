@@ -60,11 +60,11 @@ $pxgraph -test -tk $tmpfile
 $pxgraph -test -v $tmpfile
 
 # Test out Options in order
-$pxgraph -test -bd Blue $tmpfile
-$pxgraph -test -bg Green $tmpfile
+$pxgraph -test -bd blue $tmpfile
+$pxgraph -test -bg red $tmpfile
 $pxgraph -test -brb 1.0 -bar $tmpfile
 $pxgraph -test -brw 0.8 -bar $tmpfile
-$pxgraph -test -fg Pink $tmpfile
+$pxgraph -test -fg green $tmpfile
 $pxgraph -test -gw 10 $tmpfile
 $pxgraph -test -lf 9x15 $tmpfile
 $pxgraph -test -lx 0.5,1.5 $tmpfile
