@@ -52,6 +52,7 @@ import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
+import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -63,6 +64,7 @@ import ptolemy.kernel.util.StreamListener;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 
+import java.util.Hashtable;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -341,6 +343,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
      *  @exception IllegalActionException If a derived class throws it.
      */
     public void initialize() throws IllegalActionException {
+        //System.out.println(this.getName() + "reset to initial state");
         reset();
     }
 
@@ -461,7 +464,11 @@ public class FSMActor extends CompositeEntity implements TypedActor {
             throws IllegalActionException, NameDuplicationException {
         try {
             workspace().getWriteAccess();
+            Director director = getDirector();
             Transition tr = new Transition(this, name);
+            if (director instanceof HDFFSMDirector){
+                (tr.preemptive).setVisibility(Settable.NONE);
+            }
             return tr;
         } finally {
             workspace().doneWriting();
@@ -524,6 +531,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
         _stopRequested = false;
         _reachedFinalState = false;
         _createReceivers();
+        _hdfArrays = new Hashtable();
 
         // NOTE: We used to have a strategy of removing the input
         // variables and then recreating them here.  But this is a
@@ -780,6 +788,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
         while (actions.hasNext() && !_stopRequested) {
             Action action = (Action)actions.next();
             action.execute();
+            //System.out.println("execute action in guard.");
         }
         if (_lastChosenTransition.destinationState() == null) {
             throw new IllegalActionException(this, _lastChosenTransition,
@@ -803,6 +812,8 @@ public class FSMActor extends CompositeEntity implements TypedActor {
                     if (_debugging)
                         _debug(getFullName()+" initialize refinement: "+
                                 ((NamedObj)actors[i]).getName());
+                    //System.out.println(this.getName() + 
+                    //    " FSMActor initialize actor");
                     actors[i].initialize();
                 }
             }
@@ -864,10 +875,11 @@ public class FSMActor extends CompositeEntity implements TypedActor {
         if (width == 0) {
             return;
         }
+        
         // Array in which to store the shadow variables.
         //Variable[][] shadowVariables = new Variable[width][2];
         Variable[][] shadowVariables = new Variable[width][3];
-
+        
         String portName = port.getName();
         for (int channelIndex = 0; channelIndex < width; ++channelIndex) {
             // NOTE: The following check results in a bug because the
@@ -1034,6 +1046,8 @@ public class FSMActor extends CompositeEntity implements TypedActor {
             _firingsSoFar = ((HDFFSMDirector)director).getFiringsSoFar();
             _firingsPerScheduleIteration = 
                 ((HDFFSMDirector)director).getFiringsPerScheduleIteration();
+            //System.out.println("firingPerSchedulerIteration = " +
+            //    _firingsPerScheduleIteration);
         }
         //System.out.println("firings = " + _firingsSoFar);
         //System.out.println("firingsPerIteration = " + _firingsPerScheduleIteration);
@@ -1078,10 +1092,12 @@ public class FSMActor extends CompositeEntity implements TypedActor {
         if (port.isKnown(channel)) {
             int portRate = SDFScheduler.getTokenConsumptionRate(port);
             if (_debug_info) {
-                System.out.println(port.getName() + " port rate = " + portRate);
+                System.out.println(port.getFullName() + " port rate = " + portRate);
             }
-            if (_firingsSoFar == 0) {
-                _hdfArray = new Token[portRate * _firingsPerScheduleIteration];
+            if (_firingsSoFar == 0 && channel == 0) {
+                Token[][] a_of_p = new Token[width][portRate * _firingsPerScheduleIteration];
+                _hdfArrays.put(port, a_of_p);
+                //_hdfArray = new Token[portRate * _firingsPerScheduleIteration];
             }
             int index = portRate * _firingsSoFar;
             // Update the value variable if there is/are token(s) in the channel.
@@ -1098,10 +1114,12 @@ public class FSMActor extends CompositeEntity implements TypedActor {
                     }
                     // Set the value of tokens here.
                     //shadowVariables[channel][1].setToken(token);
-                    _hdfArray[index] = token;
+                    Token[][] a_of_p = (Token[][])_hdfArrays.get(port);
+                    a_of_p[channel][index] = token;
+                    //                    _hdfArray[index] = token;
                     if (_debug_info) {
                         System.out.println("hdfArray index = " + index + 
-                            " value = " + _hdfArray[index].toString());
+                            " value = " + a_of_p[channel][index].toString());
                     }
                     index ++;
                 }
@@ -1111,16 +1129,23 @@ public class FSMActor extends CompositeEntity implements TypedActor {
                     + port.getFullName() + "  "+ flag);
             }
             
+            //System.out.println("portRate * _firingsPerScheduleIteration = " +
+            //    portRate * _firingsPerScheduleIteration);
             // The "portName_isPresent" is true only if there are 
             // enough tokens. FIXME.
-            if (index == portRate * _firingsPerScheduleIteration) {
+            if (index == portRate * _firingsPerScheduleIteration && index > 0) {
+                //for (int i = 0; i < portRate*_firingsPerScheduleIteration; i++ ) {
+                //    System.out.println("hdfArray i = " + i + 
+                //        " value = " + a_of_p[channel][i].toString());
+                //}
+                Token[][] a_of_p = (Token[][])_hdfArrays.get(port);
                 shadowVariables[channel][0].setToken(BooleanToken.TRUE);
-                shadowVariables[channel][1].setToken(_hdfArray[index - 1]);
-                shadowVariables[channel][2].setToken(new ArrayToken(_hdfArray));
-                if (_debug_info){
-                    System.out.println("shadowVariables[channel][1] = " 
-                        + _hdfArray[index -1].toString());
-                }
+                shadowVariables[channel][1].setToken(a_of_p[channel][index - 1]);
+                //if (!_debug_info){
+                //    System.out.println("shadowVariables[channel][1] = " 
+                //        + _hdfArray[index -1].toString());
+                //}
+                shadowVariables[channel][2].setToken(new ArrayToken(a_of_p[channel]));
             } else {
                 shadowVariables[channel][0].setToken(BooleanToken.FALSE);
                 if (_debugging) {
@@ -1391,8 +1416,14 @@ public class FSMActor extends CompositeEntity implements TypedActor {
     // and _firingsSoFar will always be 0.
     private int _firingsSoFar = 0;
     private int _firingsPerScheduleIteration = 1;
+    //private int _hdfFiringsPerScheduleIteration = 1;
+    
     
     // "portNameArray" for HDF/SDF.
-    private Token[] _hdfArray;
+    //private Token[] _hdfArray;
     
+    private Hashtable _hdfArrays;
+    // for each port p, 
+    // a_of_p = new Token[p.getWidth][port_rate];
+    // _hdfArrays.put(p, a_of_p);
 }
