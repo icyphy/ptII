@@ -136,24 +136,23 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
     }
 
     /** Write the model associated with the top effigy (returned by
-     *  topEffigy()) to the specified file in MoML format. If the top-level
-     *  of the model has no name (its name is an empty string), then
-     *  change the name to match the file name, up to its first period.
+     *  topEffigy()) to the specified file in MoML format.
+     *  Change the name to match the file name, up to its first period.
      *  @param file The file to write to.
      *  @exception IOException If the write fails.
      */
     public void writeFile(File file) throws IOException {
         java.io.FileWriter fout = new java.io.FileWriter(file);
         String name = getModel().getName();
-        if (name.equals("")) {
-            String filename = file.getName();
-            int period = filename.indexOf(".");
-            if (period > 0) {
-                name = filename.substring(0, period);
-            } else {
-                name = filename;
-            }
+
+        String filename = file.getName();
+        int period = filename.indexOf(".");
+        if (period > 0) {
+            name = filename.substring(0, period);
+        } else {
+            name = filename;
         }
+
         // NOTE: The following cast is safe because of the check
         // in _checkContainer().
         ((PtolemyEffigy)topEffigy()).getModel().exportMoML(fout, 0, name);
