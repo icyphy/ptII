@@ -90,6 +90,12 @@ public class SequenceToArray extends SDFTransformer {
         // Set parameters.
         arrayLength = new Parameter(this, "arrayLength");
         arrayLength.setExpression("1");
+
+        // Set the icon.
+        _attachText("_iconDescription", "<svg>\n" +
+                "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
+                + "style=\"fill:white\"/>\n" +
+                "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////

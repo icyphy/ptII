@@ -95,6 +95,13 @@ public class ArrayToSequence extends SDFTransformer {
         arrayLength.setExpression("1");
         enforceArrayLength = new Parameter(this, "enforceArrayLength");
         enforceArrayLength.setExpression("true");
+        enforceArrayLength.setTypeEquals(BaseType.BOOLEAN);
+
+        // Set the icon.
+        _attachText("_iconDescription", "<svg>\n" +
+                "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
+                + "style=\"fill:white\"/>\n" +
+                "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
