@@ -42,11 +42,11 @@ import ptolemy.actor.TypedIOPort;
 //////////////////////////////////////////////////////////////////////////
 //// VariableDelay
 /**
-This actor works exactly as the ptolemy.domains.de.lib.Delay actor,
+This actor works exactly as the ptolemy.domains.de.lib.TimedDelay actor,
 except that the amount of time delayed is specified by a incoming
 token throught the delay port, in stead of a parameter
 
-@see ptolemy.domains.de.lib.Delay
+@see ptolemy.domains.de.lib.TimedDelay
 @author Jie Liu
 @version $Id$
 */
