@@ -48,14 +48,14 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
-	ArrayMath.java \
 	Complex.java \
 	ExtendedMath.java \
 	Fraction.java \
 	SignalProcessing.java \
         DoubleArrayMath.java \
         ComplexArrayMath.java \
-        DoubleArrayStat.java
+        DoubleArrayStat.java \
+        MatrixMath.java
 
 EXTRA_SRCS =	$(JSRCS)
 

@@ -159,7 +159,8 @@ public final class SignalProcessing {
         // check if order > 31
 
         if (type >= DCT_TYPES) {
-          throw new IllegalArgumentException("DCT() : Bad DCT type");
+          throw new IllegalArgumentException("ptolemy.math.SignalProcessing." +
+           "DCT() : Bad DCT type");
         }
 
         int size = 1 << order;
@@ -232,7 +233,8 @@ public final class SignalProcessing {
        // check if order > 31
 
        if (type >= DCT_TYPES) {
-          throw new IllegalArgumentException("IDCT() : Bad DCT type");
+          throw new IllegalArgumentException("ptolemy.math.SignalProcessing." +
+           "IDCT() : Bad DCT type");
        }
 
        int size    = 1 << order;
@@ -308,6 +310,9 @@ public final class SignalProcessing {
      *  @retval A new array of Complex's.
      */
     public static Complex[] IFFTComplexOut(Complex[] x, int order) {
+
+        x = _checkTransformArgs(x, order);
+
         Complex[] conjX = ComplexArrayMath.conjugate(x);
         Complex[] yConj = FFTComplexOut(conjX, order);
         Complex[] y = ComplexArrayMath.conjugate(yConj);
@@ -341,6 +346,9 @@ public final class SignalProcessing {
      *  @retval A new array of double's.
      */
     public static double[] IFFTRealOut(Complex[] x, int order) {
+        
+        x = _checkTransformArgs(x, order);
+
         double[] realx = ComplexArrayMath.realParts(x);
         double[] realrealX = FFTRealOut(realx, order);
 
@@ -588,8 +596,8 @@ public final class SignalProcessing {
      *  @retval A new array of doubles.
      */
     public static double[] FFTRealOut(double[] x, int order) {
-        // check if order > 31
-
+        x = _checkTransformArgs(x, order);
+        
         int size = 1 << order;
         int halfN = size >> 1;
         

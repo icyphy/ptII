@@ -37,7 +37,7 @@ import java.util.*;
 //////////////////////////////////////////////////////////////////////////
 //// DoubleArrayStat
 /**
- * This class provides library for statistical operations on double arrays.
+ * This class provides a library for statistical operations on double arrays.
  * <p>
  * @author Jeff Tsay
  * @version $Id$
@@ -51,7 +51,8 @@ public class DoubleArrayStat extends DoubleArrayMath {
     /////////////////////////////////////////////////////////////////////////
     ////                         Public methods                          ////
 
-     /** Return the sum of all of the elements in the array.
+    /** Return the sum of all of the elements in the array.
+     *  Return 0.0 of the size of the array is 0.
      *  @param array An array of doubles.
      *  @return A double.
      */
@@ -64,6 +65,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
     }
 
     /** Return the product of all of the elements in the array.
+     *  Return 1.0 if the size of the array is 0.
      *  @param array An array of doubles.
      *  @return A double.
      */
@@ -76,6 +78,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
     }
 
     /** Return the sum of the squares of all of the elements in the array.
+     *  Return 0.0 if the size of the array is 0.
      *  @param array An array of doubles.
      *  @return A double.
      */
@@ -92,22 +95,28 @@ public class DoubleArrayStat extends DoubleArrayMath {
      *  @return A double.
      */
     public static final double mean(double[] array) {
+        _nonZeroLength(array, "mean");
         return sumOfElements(array) / (double) array.length;
     }
 
     /** Return the geometric mean of the elements in the array.
+     *  Return 1.0 if the size of the array is 0.
      *  @param array An array of doubles.
-     *  @return A double.
+     *  @return A double. 
+     */
     public static final double geometricMean(double[] array) {
-        return Math.pow(productOfElements(array, 1.0 / array.length));
+        return Math.pow(productOfElements(array), 1.0 / array.length);
     }
 
     /** Return the maximum value in the array.
+     *  Throw an exception if the length of the array is 0.
      *  @param array An array of doubles.
      *  @return A double.
      */
     public static final double max(double[] array) {
-        int length = array.length;
+
+        int length = _nonZeroLength(array, "DoubleArrayStat.max");
+ 
         double maxElement = array[0];
         
         for (int i = 1; i < length; i++) {
@@ -117,11 +126,15 @@ public class DoubleArrayStat extends DoubleArrayMath {
     }
 
     /** Return the minimum value in the array.
+     *  Throw an exception if the length of the array is 0.
+     *  @param array An array of doubles.  
      *  @param array An array of doubles.
      *  @return A double.
      */
     public static final double min(double[] array) {
-        int length = array.length;
+
+        int length = _nonZeroLength(array, "DoubleArrayStat.min");
+
         double minElement = array[0];
         
         for (int i = 1; i < length; i++) {
@@ -131,6 +144,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
     }
 
     /** Return the variance of the elements in the array.
+     *  Return 0.0 if the size of the array is 0.
      *  @param array An array of doubles.
      *  @return A double.
      */
@@ -149,6 +163,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
 
     
     /** Return the standard deviation of the elements in the array.
+     *  Return 0.0 if the size of the array is 0.
      *  @param array An array of doubles.
      *  @return A double.
      */
@@ -298,13 +313,17 @@ public class DoubleArrayStat extends DoubleArrayMath {
 
     /** Given an array of probabilities, treated as a probability mass 
      *  function (pmf), calculate the entropy (in bits). 
+     *  Throw an IllegalArgumentException if the size of the array is 0.
      *  @param p An array of doubles representing the pmf.
      *  @return A double.
      */
     public final static double entropy(double[] p) {
+
+        int length = _nonZeroLength(p, "DoubleArrayStat.entropy");
+
         double h = 0.0;
 
-        for (int i = 0; i < p.length; i++) {
+        for (int i = 0; i < length; i++) {
             if (p[i] < 0.0) {
                throw new IllegalArgumentException(
                 "ptolemy.math.DoubleArrayStat.entropy() : " +
@@ -320,18 +339,24 @@ public class DoubleArrayStat extends DoubleArrayMath {
 
     /** Given two array's of probabilities, calculate the relative entropy 
      *  aka Kullback Leibler distance, D(p || q), (in bits) between the 
-     *  two probability mass functions. The result will be infinite if
+     *  two probability mass functions. The result will be POSITIVE_INFINITY if
      *  q has a zero probabability for a symbol for which p has a non-zero
      *  probability.
+     *  Throw an IllegalArgumentException if either array has length 0. 
+     *  If the two arrays do not have the same length, throw an 
+     *  IllegalArgumentException.
      *  @param p An array of doubles representing the first pmf.
      *  @param q An array of doubles representing the second pmf.
      *  @return A double representing the relative entropy of the 
      *  random variable.
      */
     public final static double relativeEntropy(double[] p, double[] q) {
+
+        int length = _commonLength(p, q, "DoubleArrayStat.relativeEntropy");
+
         double d = 0.0;
   
-        for (int i = 0; i < p.length; i++) {
+        for (int i = 0; i < length; i++) {
             if ((p[i] < 0.0) || (q[i] < 0.0)) {
                throw new IllegalArgumentException(
                 "ptolemy.math.DoubleArrayStat.relativeEntropy() : " +

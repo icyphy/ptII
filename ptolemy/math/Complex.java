@@ -208,7 +208,7 @@ public final class Complex implements Cloneable, Serializable {
      */
     public Complex conjugate() {
         // Avoid negative zero.
-        if (imag != 0.0) return  new Complex(real, -imag);
+        if (imag != 0.0) return new Complex(real, -imag);
         else return new Complex(real, imag);
     }
 
@@ -387,7 +387,24 @@ public final class Complex implements Cloneable, Serializable {
 
     /** Return a new complex number with value <em>z<sup>y</sup></em>
      *  where <em>z</em> is this complex number and <em>y</em> is the
-     *  argument.
+     *  argument, a double.
+     *  @param y A double.
+     *  @return A new complex number.
+     */
+    public Complex pow(double y) {
+        // This formula follows from expanding the input form
+        //     (rho e^(j theta))^(c + dj)
+        // to something of the form ae^jb.
+
+        double lnrho =  Math.log(mag());
+        double magnitude = Math.exp(lnrho * y);
+        double angle =  angle() * y;
+        return polarToComplex(magnitude, angle);
+    }
+
+    /** Return a new complex number with value <em>z<sup>y</sup></em>
+     *  where <em>z</em> is this complex number and <em>y</em> is the
+     *  argument, a Complex.
      *  @param y A complex number.
      *  @return A new complex number.
      */
