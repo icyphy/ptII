@@ -293,13 +293,15 @@ public final class ASTReflect {
 	return interfaceDeclNode;
     }
 
-    /** Given a CompileUnitNode, return the complete package name.
+    /** Given a CompileUnitNode, return the fully-qualified name
+     *  of the class being declared --- that is, the complete package name,
+     *  followed by the class name (with a dot as a separator).
      *  If no package name is associated with the CompileUnitNode,
-     *  then return the default package name for code generation. 
+     *  then use the default package name for code generation. 
      *  @param loadedAST The CompileUnitNode of the class
-     *  @return The full package name of the class
+     *  @return The fully qualified name of the class being declared. 
      */
-    public static String getPackageName(CompileUnitNode loadedAST) {
+    public static String getFullyQualifiedName(CompileUnitNode loadedAST) {
 	    // FIXME: This get(0) worries me.
         StringBuffer packageBuffer =
 	    new StringBuffer(((UserTypeDeclNode) loadedAST.
@@ -307,7 +309,8 @@ public final class ASTReflect {
 
         Object packageReturnValue = loadedAST.getPkg();
         if (!(packageReturnValue instanceof NameNode))
-            return (JavaStaticSemanticConstants.DEFAULT_PACKAGE_NAME);
+            packageBuffer.insert(0, 
+                    JavaStaticSemanticConstants.DEFAULT_PACKAGE_NAME + '.');
         else {
 	        NameNode packageNode = (NameNode) packageReturnValue;
 	        while (packageNode.getQualifier() != AbsentTreeNode.instance) {
@@ -315,8 +318,8 @@ public final class ASTReflect {
 	            packageNode = (NameNode) packageNode.getQualifier();
 	        }
 	        packageBuffer.insert(0, packageNode.getIdent() + '.');
-	        return packageBuffer.toString();
         }
+	    return packageBuffer.toString();
     }
 
 

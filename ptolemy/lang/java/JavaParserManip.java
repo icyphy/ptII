@@ -85,6 +85,7 @@ public class JavaParserManip implements JavaStaticSemanticConstants {
     public static CompileUnitNode parseCanonicalFileName(String filename,
             boolean debug) {
         CompileUnitNode loadedAST = null;
+        boolean ssbdebug = true;   // FIXME: remove all instances
 
         loadedAST = (CompileUnitNode) allParsedMap.get(filename);
 
@@ -110,6 +111,15 @@ public class JavaParserManip implements JavaStaticSemanticConstants {
 
 	loadedAST = p.getAST();
 
+    if (ssbdebug) {
+       System.out.println("Inside parseCanonicalFileName() on " + filename); 
+       System.out.println("Here is the AST:"); 
+       if (loadedAST != null) System.out.println(loadedAST.toString());
+       else System.out.println("The AST is null."); 
+       System.out.println("End of AST from parseCanonicalFileName()."); 
+ 
+    }
+
 	if (loadedAST==null) {
 	    File javaFile = new File(filename);
 	    throw new NullPointerException("JavaParserManip." +
@@ -125,7 +135,7 @@ public class JavaParserManip implements JavaStaticSemanticConstants {
         //loadedAST.setProperty(IDENT_KEY, filename);
         //allParsedMap.put(filename, loadedAST);
 
-	String packageName = ASTReflect.getPackageName(loadedAST);
+	String packageName = ASTReflect.getFullyQualifiedName(loadedAST);
 	//System.out.println("JavaParserManip.parseCanonicalFileName: "+
 	//		   " parsed " + filename + " found " + packageName);
 
