@@ -481,8 +481,8 @@
     <link port="venus.sceneGraphOut" relation="relation30"/>
     <link port="Translate2.sceneGraphIn" relation="relation30"/>
     <link port="Translate2.sceneGraphOut" relation="relation47"/>
-    <link port="Translate2.xtranslate" relation="relation80"/>
-    <link port="Translate2.ztranslate" relation="relation86"/>
+    <link port="Translate2.xTranslate" relation="relation80"/>
+    <link port="Translate2.zTranslate" relation="relation86"/>
     <link port="Ramp31.output" relation="relation52"/>
     <link port="Sine.input" relation="relation52"/>
     <link port="Sine.output" relation="relation78"/>

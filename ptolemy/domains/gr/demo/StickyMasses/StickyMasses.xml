@@ -811,7 +811,7 @@
             <link port="Translate3D9.sceneGraphIn" relation="relation20"/>
             <link port="Translate3D9.sceneGraphIn" relation="relation15"/>
             <link port="Translate3D9.sceneGraphOut" relation="relation2"/>
-            <link port="Translate3D9.ytranslate" relation="relation33"/>
+            <link port="Translate3D9.yTranslate" relation="relation33"/>
             <link port="Rotate3D10.sceneGraphIn" relation="relation24"/>
             <link port="Rotate3D10.sceneGraphOut" relation="relation"/>
             <link port="Rotate3D10.angle" relation="relation1"/>
@@ -827,7 +827,7 @@
             <link port="Translate3D10.sceneGraphIn" relation="relation13"/>
             <link port="Translate3D10.sceneGraphIn" relation="relation32"/>
             <link port="Translate3D10.sceneGraphOut" relation="relation15"/>
-            <link port="Translate3D10.ytranslate" relation="relation33"/>
+            <link port="Translate3D10.yTranslate" relation="relation33"/>
             <link port="Torus3D16.sceneGraphOut" relation="relation19"/>
             <link port="Rotate3D17.sceneGraphIn" relation="relation19"/>
             <link port="Rotate3D17.sceneGraphOut" relation="relation23"/>
@@ -837,7 +837,7 @@
             <link port="Translate3D24.sceneGraphIn" relation="relation26"/>
             <link port="Translate3D24.sceneGraphIn" relation="relation37"/>
             <link port="Translate3D24.sceneGraphOut" relation="relation32"/>
-            <link port="Translate3D24.ytranslate" relation="relation33"/>
+            <link port="Translate3D24.yTranslate" relation="relation33"/>
             <link port="Torus3D27.sceneGraphOut" relation="relation30"/>
             <link port="Rotate3D28.sceneGraphIn" relation="relation30"/>
             <link port="Rotate3D28.sceneGraphOut" relation="relation35"/>
@@ -845,7 +845,7 @@
             <link port="Translate3D33.sceneGraphIn" relation="relation35"/>
             <link port="Translate3D33.sceneGraphIn" relation="relation58"/>
             <link port="Translate3D33.sceneGraphOut" relation="relation37"/>
-            <link port="Translate3D33.ytranslate" relation="relation33"/>
+            <link port="Translate3D33.yTranslate" relation="relation33"/>
             <link port="Torus3D38.sceneGraphOut" relation="relation47"/>
             <link port="Torus3D39.sceneGraphOut" relation="relation45"/>
             <link port="Rotate3D40.sceneGraphIn" relation="relation47"/>
@@ -856,14 +856,14 @@
             <link port="Translate3D42.sceneGraphIn" relation="relation51"/>
             <link port="Translate3D42.sceneGraphIn" relation="relation56"/>
             <link port="Translate3D42.sceneGraphOut" relation="relation58"/>
-            <link port="Translate3D42.ytranslate" relation="relation33"/>
+            <link port="Translate3D42.yTranslate" relation="relation33"/>
             <link port="Rotate3D43.sceneGraphIn" relation="relation45"/>
             <link port="Rotate3D43.sceneGraphOut" relation="relation54"/>
             <link port="Rotate3D43.angle" relation="relation1"/>
             <link port="Translate3D52.sceneGraphIn" relation="relation54"/>
             <link port="Translate3D52.sceneGraphIn" relation="relation10"/>
             <link port="Translate3D52.sceneGraphOut" relation="relation56"/>
-            <link port="Translate3D52.ytranslate" relation="relation33"/>
+            <link port="Translate3D52.yTranslate" relation="relation33"/>
             <link port="Scale2.input" relation="relation1"/>
             <link port="Scale2.output" relation="relation11"/>
             <link port="Sphere3D1.sceneGraphOut" relation="relation8"/>
@@ -1853,7 +1853,7 @@
             <link port="Translate3D9.sceneGraphIn" relation="relation20"/>
             <link port="Translate3D9.sceneGraphIn" relation="relation15"/>
             <link port="Translate3D9.sceneGraphOut" relation="relation2"/>
-            <link port="Translate3D9.ytranslate" relation="relation33"/>
+            <link port="Translate3D9.yTranslate" relation="relation33"/>
             <link port="Rotate3D10.sceneGraphIn" relation="relation24"/>
             <link port="Rotate3D10.sceneGraphOut" relation="relation"/>
             <link port="Rotate3D10.angle" relation="relation1"/>
@@ -1869,7 +1869,7 @@
             <link port="Translate3D10.sceneGraphIn" relation="relation13"/>
             <link port="Translate3D10.sceneGraphIn" relation="relation32"/>
             <link port="Translate3D10.sceneGraphOut" relation="relation15"/>
-            <link port="Translate3D10.ytranslate" relation="relation33"/>
+            <link port="Translate3D10.yTranslate" relation="relation33"/>
             <link port="Torus3D16.sceneGraphOut" relation="relation19"/>
             <link port="Rotate3D17.sceneGraphIn" relation="relation19"/>
             <link port="Rotate3D17.sceneGraphOut" relation="relation23"/>
@@ -1879,7 +1879,7 @@
             <link port="Translate3D24.sceneGraphIn" relation="relation26"/>
             <link port="Translate3D24.sceneGraphIn" relation="relation37"/>
             <link port="Translate3D24.sceneGraphOut" relation="relation32"/>
-            <link port="Translate3D24.ytranslate" relation="relation33"/>
+            <link port="Translate3D24.yTranslate" relation="relation33"/>
             <link port="Torus3D27.sceneGraphOut" relation="relation30"/>
             <link port="Rotate3D28.sceneGraphIn" relation="relation30"/>
             <link port="Rotate3D28.sceneGraphOut" relation="relation35"/>
@@ -1887,7 +1887,7 @@
             <link port="Translate3D33.sceneGraphIn" relation="relation35"/>
             <link port="Translate3D33.sceneGraphIn" relation="relation58"/>
             <link port="Translate3D33.sceneGraphOut" relation="relation37"/>
-            <link port="Translate3D33.ytranslate" relation="relation33"/>
+            <link port="Translate3D33.yTranslate" relation="relation33"/>
             <link port="Torus3D38.sceneGraphOut" relation="relation47"/>
             <link port="Torus3D39.sceneGraphOut" relation="relation45"/>
             <link port="Rotate3D40.sceneGraphIn" relation="relation47"/>
@@ -1898,14 +1898,14 @@
             <link port="Translate3D42.sceneGraphIn" relation="relation51"/>
             <link port="Translate3D42.sceneGraphIn" relation="relation56"/>
             <link port="Translate3D42.sceneGraphOut" relation="relation58"/>
-            <link port="Translate3D42.ytranslate" relation="relation33"/>
+            <link port="Translate3D42.yTranslate" relation="relation33"/>
             <link port="Rotate3D43.sceneGraphIn" relation="relation45"/>
             <link port="Rotate3D43.sceneGraphOut" relation="relation54"/>
             <link port="Rotate3D43.angle" relation="relation1"/>
             <link port="Translate3D52.sceneGraphIn" relation="relation54"/>
             <link port="Translate3D52.sceneGraphIn" relation="relation10"/>
             <link port="Translate3D52.sceneGraphOut" relation="relation56"/>
-            <link port="Translate3D52.ytranslate" relation="relation33"/>
+            <link port="Translate3D52.yTranslate" relation="relation33"/>
             <link port="Scale2.input" relation="relation1"/>
             <link port="Scale2.output" relation="relation11"/>
             <link port="Sphere3D1.sceneGraphOut" relation="relation8"/>
