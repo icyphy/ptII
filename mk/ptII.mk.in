@@ -124,7 +124,12 @@ JINI_LIB =	$(JINI_DIR)/lib
 
 JINI_JARS =     $(JINI_LIB)/jini-core.jar$(CLASSPATHSEPARATOR)$(JINI_LIB)/jini-jspaces.jar$(CLASSPATHSEPARATOR)
 
+# Set to jspaces and used in $PTII/ptolemy/actor/lib/makefile if jini
+# was found
+PTJSPACES_DIR =	@PTJSPACES_DIR@
+
 # JavaCC is the Java Compiler Compiler which is used by ptolemy.data.expr
+
 # The default location is $(PTII)/vendors/sun/JavaCC
 JAVACC_DIR =	@JAVACC_DIR@
 # Under Unix:
