@@ -41,7 +41,7 @@ JPACKAGE_DIR = 	ptplot
 JVERSION =	1.2
 JDIST =		$(JPACKAGE)$(JVERSION)
 JZIP =		$(JPACKAGE_DIR)/$(JPACKAGE).zip
-JARFILE = 	$(JPACKAGE_DIR)/$(JPACKAGE).jar
+JARFILE = 	$(JPACKAGE).jar
 # Classes that are included in the jar file as Java Beand.
 JBEANCLASSES =	ptplot/Plot.class ptplot/PlotLive.class
 
@@ -76,9 +76,9 @@ JCLASS1_1 = $(JSRCS1_1:%.java=%.class)
 
 JCLASS = $(JCLASS1_0) $(JCLASS1_1)
 
-all: sources jclass #$(JZIP)
+all: sources jclass suball #$(JZIP)
 	chmod a+x pxgraph testpxgraph
-install: sources jclass javadocs $(JARFILE) #$(JZIP) 
+install: sources jclass javadocs subinstall $(JARFILE) #$(JZIP) 
 	chmod a+x pxgraph testpxgraph
 docs: javadocs
 
