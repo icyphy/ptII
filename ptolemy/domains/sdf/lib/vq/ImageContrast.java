@@ -125,10 +125,10 @@ public final class ImageContrast extends SDFAtomicActor {
         message = (IntMatrixToken) inputport.get(0);
         frame = message.intArray();
 
-        //Constract a color distribution histogram for the input image:
-        //Assuming the color bound for the input 0 and 255. If color detected
-        //that has color either bigger than 255 OR small than 0, then throw an
-        //illegal action exception.
+        // Construct a color distribution histogram for the input image:
+        // Assuming the color bound for the input 0 and 255. If color detected
+        // that has color either bigger than 255 OR small than 0, then throw an
+        // illegal action exception.
 
         for(i = 0; i < 256; i ++)
             colorHistogram[i] = 0;
