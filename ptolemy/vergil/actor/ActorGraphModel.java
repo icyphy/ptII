@@ -240,7 +240,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
         model.removeNode(eventSource, node);
     }
 
-    // FIXME: The following methods are probably innappropriate.
+    // FIXME: The following methods are probably inappropriate.
     // They make it impossible to have customized models for
     // particular links or icons. getLinkModel() and
     // getNodeModel() should be sufficient.
