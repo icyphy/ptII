@@ -58,6 +58,11 @@ fix this until we can create an empty record token. yang
 
 public class WirelessReceiver extends DEReceiver {
 
+    /** Construct an empty WirelessReceiver with no container.
+     */
+    public WirelessReceiver() {
+        super();
+    }
     /** Construct an empty WirelessReceiver with the specified container.
      *  @param container The container.
      *  @exception IllegalActionException If the container does
