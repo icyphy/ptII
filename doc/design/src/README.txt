@@ -46,3 +46,9 @@ http://ptolemy/~cxh/sa/quadralay.html covers the details, but basically
    then click Set.  Then open up each file and save it with the new fonts.
 
 4. start wpublish, then open up design.wdt.     
+
+
+Visio
+-----
+      + No private fields, no methods from parent classes
+      + When all done, generate wmf files, Don't import by reference.
