@@ -33,7 +33,6 @@ package ptolemy.graph;
 
 import ptolemy.kernel.util.InvalidStateException;
 import java.util.*;
-import collections.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// DirectedAcyclicGraph.java
@@ -539,14 +538,8 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
                     candidate = ids[i];
                 } else if (result == INCOMPARABLE) {
 
-		    // FIXME: restore the following 2 lines when
-		    // moving to jdk1.2
-                    //        incompList.addLast(new Integer(candidate));
-                    //        incompList.addLast(new Integer(ids[i]));
-
-		    // FIXME: remove the following 2 lines when moving to jdk1.2
-		    incompList.insertLast(new Integer(candidate));
-		    incompList.insertLast(new Integer(ids[i]));
+                    incompList.addLast(new Integer(candidate));
+                    incompList.addLast(new Integer(ids[i]));
 
                     candidate = -1;
                 }
@@ -555,52 +548,24 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
 		// flag indicating if the current element should be discarded
                 boolean discard = false;
 
-		// FIXME: restore the following for loop when moving to jdk1.2
-                //                for (ListIterator iter = incompList.listIterator(0);
-                //                                               iter.hasNext() ;) {
-                //                    int listValue = ((Integer)iter.next()).intValue();
-                //                    int result = _compareNodeId(ids[i], listValue);
-                //                    if (result == LOWER) {
-                //                        iter.remove();
-                //                    } else if (result == HIGHER || result == SAME) {
-                //                        discard = true;
-                //                        break;
-                //                    }
-                //                }
-
-		// FIXME: remove the following code when moving to jdk1.2
-		LinkedList newList = new LinkedList();
-                for (Enumeration e = incompList.elements();
-                     e.hasMoreElements() ;) {
-		    Integer node = (Integer)e.nextElement();
-                    int listValue = node.intValue();
+                for (ListIterator iter = incompList.listIterator(0);
+                     iter.hasNext() ;) {
+                    int listValue = ((Integer)iter.next()).intValue();
                     int result = _compareNodeId(ids[i], listValue);
                     if (result == LOWER) {
+                        iter.remove();
                     } else if (result == HIGHER || result == SAME) {
                         discard = true;
-			newList = incompList;
                         break;
-                    } else {
-			// incomparable
-			newList.insertLast(node);
-		    }
+                    }
                 }
-		incompList = newList;
-		// end last FIXME
 
 
                 if (incompList.size() == 0) {
                     candidate = ids[i];
                 } else if ( !discard) {
 
-		    // FIXME: restore the following line when moving
-		    // to jdk1.2
-                    //      incompList.addLast(new Integer(ids[i]));
-
-		    // FIXME: remove the following line when moving
-		    // to jdk1.2
-                    incompList.insertLast(new Integer(ids[i]));
-
+                    incompList.addLast(new Integer(ids[i]));
 
                 }
             } else {
@@ -745,16 +710,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
             }
         }
 
-	// FIXME: restore the following line when moving to jdk1.2
-        //      return upset.toArray();
-
-	// FIXME: remove the following lines when moving to jdk1.2
-	Object[] arr = new Object[upset.size()];
-	for (int i = 0; i < upset.size(); i++) {
-	    arr[i] = upset.elementAt(i);
-	}
-	return arr;
-
+        return upset.toArray();
     }
 
     ///////////////////////////////////////////////////////////////////

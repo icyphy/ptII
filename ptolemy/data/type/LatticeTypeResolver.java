@@ -34,6 +34,7 @@ package ptolemy.data.type;
 import ptolemy.graph.*;
 import ptolemy.kernel.util.IllegalActionException;
 import java.util.Enumeration;
+import java.util.Iterator;
 import collections.*;
 
 //////////////////////////////////////////////////////////////////////////
@@ -81,10 +82,10 @@ public class LatticeTypeResolver {
             boolean resolved = solver.solveLeast();
             
             if (!resolved) {
-                Enumeration unsatisfied = solver.unsatisfiedInequalities();
-                while (unsatisfied.hasMoreElements()) {
+                Iterator unsatisfied = solver.unsatisfiedInequalities();
+                while (unsatisfied.hasNext()) {
                     Inequality ineq =
-                        (Inequality)unsatisfied.nextElement();
+                        (Inequality)unsatisfied.next();
                     InequalityTerm term =
                         (InequalityTerm)ineq.getLesserTerm();
                     Object typeObj = term.getAssociatedObject();

@@ -210,16 +210,7 @@ public class Graph {
      *  @return an Object array
      */
     public Object[] getNodes() {
-
-	// FIXME: restore this line for jdk1.2
-        //	return _nodeObject.toArray();
-
-	// FIXME: delete the following code for jdk1.2
-	Object[] arr = new Object[getNodeCount()];
-	for (int i = 0; i < getNodeCount(); i++) {
-	    arr[i] = _nodeObject.elementAt(i);
-	}
-	return arr;
+        return _nodeObject.toArray();
     }
 
     ///////////////////////////////////////////////////////////////////

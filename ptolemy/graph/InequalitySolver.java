@@ -30,7 +30,6 @@
 */
 
 package ptolemy.graph;
-import collections.LinkedList;
 import java.util.*;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InvalidStateException;
@@ -100,7 +99,7 @@ public class InequalitySolver {
      *  @exception InvalidStateException If the underlying CPO does not
      *   have a bottom element.
      */
-    public Enumeration bottomVariables() {
+    public Iterator bottomVariables() {
 	Object bottom = _cpo.bottom();
 	if (bottom == null) {
 	    throw new InvalidStateException("InequalitySolver.bottomVariables:"
@@ -112,10 +111,10 @@ public class InequalitySolver {
 	for (Enumeration e = _Clist.keys(); e.hasMoreElements() ;) {
 	    InequalityTerm variable = (InequalityTerm)e.nextElement();
 	    if (variable.getValue().equals(bottom)) {
-		result.insertLast(variable);
+		result.addLast(variable);
 	    }
 	}
-	return result.elements();
+	return result.iterator();
     }
 
     /** Solve the set of inequalities for the least solution.
@@ -192,7 +191,7 @@ public class InequalitySolver {
      *  @exception InvalidStateException If the underlying CPO does not
      *   have a top element.
      */
-    public Enumeration topVariables() {
+    public Iterator topVariables() {
 	Object top = _cpo.top();
 	if (top == null) {
 	    throw new InvalidStateException("InequalitySolver.topVariables:"
@@ -203,10 +202,10 @@ public class InequalitySolver {
 	for (Enumeration e = _Clist.keys(); e.hasMoreElements() ;) {
 	    InequalityTerm variable = (InequalityTerm)e.nextElement();
 	    if (variable.getValue().equals(top)) {
-		result.insertLast(variable);
+		result.addLast(variable);
 	    }
 	}
-	return result.elements();
+	return result.iterator();
     }
 
     /** Return an <code>Enumeration</code> of <code>Inequalities</code>
@@ -215,16 +214,16 @@ public class InequalitySolver {
      *  <code>Enumeration</code> is returned.
      *  @return an Enumeration of Inequalities
      */
-    public Enumeration unsatisfiedInequalities() {
+    public Iterator unsatisfiedInequalities() {
 	LinkedList result = new LinkedList();
 
         for (int i = 0; i < _Ilist.size(); i++) {
 	    Info info = (Info)_Ilist.elementAt(i);
             if ( !info._ineq.isSatisfied(_cpo)) {
-                result.insertLast(info._ineq);
+                result.addLast(info._ineq);
 	    }
         }
-	return result.elements();
+	return result.iterator();
     }
 
     /** Return an <code>Enumeration</code> of all the variables in the
@@ -324,12 +323,7 @@ public class InequalitySolver {
 	    	if (info._ineq.isSatisfied(_cpo)) {
 		    info._inserted = false;
 		} else { 	// insert to _NS
-		    // FIXME: restore this line for jdk1.2
-                    //                  _NS.addLast(new Integer(i));
-
-		    // FIXME: delete this line for jdk1.2
-                    _NS.insertLast(new Integer(i));
-
+                    _NS.addLast(new Integer(i));
 		    info._inserted = true;
 		}
 	    }
@@ -338,13 +332,7 @@ public class InequalitySolver {
 	// solve the inequalities
         while (_NS.size() > 0) {
 
-	    // FIXME: restore this line for jdk1.2
-            //          int index = ((Integer)(_NS.removeFirst())).intValue();
-
-	    // FIXME: delete the following 2 lines for jdk1.2
-            int index = ((Integer)(_NS.first())).intValue();
-            _NS.removeFirst();
-	    // end last FIXME
+            int index = ((Integer)(_NS.removeFirst())).intValue();
 
             Info info = (Info)(_Ilist.elementAt(index));
             info._inserted = false;
@@ -383,23 +371,11 @@ public class InequalitySolver {
                 if (index1 != index && affectedInfo._inCvar) {
                     if (affectedInfo._ineq.isSatisfied(_cpo)) {    // drop
                         if (affectedInfo._inserted) {
-
-			    // FIXME: restore this line for jdk1.2
-                            //                            _NS.remove(index1Wrap);
-
-			    // FIXME: delete this line for jdk1.2
-                            _NS.removeOneOf(index1Wrap);
-
+                            _NS.remove(index1Wrap);
                         }
                     } else {                        // insert
                         if ( !affectedInfo._inserted) {
-
-			    // FIXME: restore this line for jdk1.2
-                            //                _NS.addFirst(index1Wrap);
-
-			    // FIXME: delete this line for jdk1.2
-                            _NS.insertFirst(index1Wrap);
-
+                            _NS.addFirst(index1Wrap);
                         }
                     }
                 }

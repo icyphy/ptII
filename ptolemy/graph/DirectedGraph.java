@@ -141,15 +141,7 @@ public class DirectedGraph extends Graph {
 	    }
 	}
 
-        // FIXME: restore the following line when moving to jdk1.2
-        //	return nodes.toArray();
-
-        // FIXME: remove the following lines when moving to jdk1.2
-        Object[] arr = new Object[nodes.size()];
-        for (int i = 0; i < nodes.size(); i++) {
-            arr[i] = nodes.elementAt(i);
-        }
-        return arr;
+        return nodes.toArray();
     }
 
     /** Find all the nodes that can be reached backward from the
@@ -187,15 +179,7 @@ public class DirectedGraph extends Graph {
 	    }
 	}
 
-        // FIXME: restore the following line when moving to jdk1.2
-        //	return nodes.toArray();
-
-        // FIXME: remove the following lines when moving to jdk1.2
-        Object[] arr = new Object[nodes.size()];
-        for (int i = 0; i < nodes.size(); i++) {
-            arr[i] = nodes.elementAt(i);
-        }
-        return arr;
+        return nodes.toArray();
     }
 
     /** Test if this graph is acyclic (is a DAG).
@@ -238,15 +222,7 @@ public class DirectedGraph extends Graph {
 	    }
 	}
 
-        // FIXME: restore the following line when moving to jdk1.2
-        //	return nodes.toArray();
-
-        // FIXME: remove the following lines when moving to jdk1.2
-        Object[] arr = new Object[nodes.size()];
-        for (int i = 0; i < nodes.size(); i++) {
-            arr[i] = nodes.elementAt(i);
-        }
-        return arr;
+        return nodes.toArray();
     }
 
     /** Find all the nodes that can be reached from the specified nodes.
@@ -282,15 +258,7 @@ public class DirectedGraph extends Graph {
 		nodes.addElement(_getNodeObject(i));
 	    }
 	}
-        // FIXME: restore the following line when moving to jdk1.2
-        //	return nodes.toArray();
-
-        // FIXME: remove the following lines when moving to jdk1.2
-        Object[] arr = new Object[nodes.size()];
-        for (int i = 0; i < nodes.size(); i++) {
-            arr[i] = nodes.elementAt(i);
-        }
-        return arr;
+        return nodes.toArray();
     }
 
     ///////////////////////////////////////////////////////////////////

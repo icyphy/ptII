@@ -38,6 +38,7 @@ import ptolemy.data.*;
 import collections.LinkedList;
 import collections.HashedSet;
 import java.util.Enumeration;
+import java.util.Iterator;
 import java.lang.reflect.*;
 
 import java.util.Date;			// For timing measurements
@@ -415,10 +416,10 @@ public final class Manager extends NamedObj implements Runnable {
                 // find the least solution (most specific types)
                 boolean resolved = solver.solveLeast();
                 if ( !resolved) {
-		    Enumeration unsatisfied = solver.unsatisfiedInequalities();
-		    while (unsatisfied.hasMoreElements()) {
+		    Iterator unsatisfied = solver.unsatisfiedInequalities();
+		    while (unsatisfied.hasNext()) {
 		        Inequality ineq =
-                            (Inequality)unsatisfied.nextElement();
+                            (Inequality)unsatisfied.next();
 		        InequalityTerm term =
 					(InequalityTerm)ineq.getLesserTerm();
 		        Object typeObj = term.getAssociatedObject();

@@ -82,6 +82,38 @@ proc enumToInfo {enum} {
     return $result
 }
 
+######################################################################
+#### iterToInfo
+# Convert an Iterator to a list. If the Iterator contains
+# InequalityTerms, the list contains the information returned by
+# getInfo() of the terms; if the Iterator contains Inequalities,
+# the list contains pairs of information for the lesser and greater
+# terms of the Inequality.
+#
+proc iterToInfo {iter} {
+    set result {}
+    if {$iter != [java::null]} {
+        while {[$iter hasNext] == 1} {
+            set elem [$iter next]
+	    if [ java::instanceof $elem ptolemy.graph.InequalityTerm] {
+		lappend result [termToInfo $elem]
+	    } else {
+		if [ java::instanceof $elem ptolemy.graph.Inequality] {
+		    set ineqelem [java::cast ptolemy.graph.Inequality $elem]
+		    set lesser [$ineqelem getLesserTerm]
+		    set greater [$ineqelem getGreaterTerm]
+		    set ineq {}
+		    lappend ineq [termToInfo $lesser]
+		    lappend ineq [termToInfo $greater]
+		    lappend result $ineq
+		}
+	    }
+
+        }
+    }
+    return $result
+}
+
 proc termToInfo {term} {
     if [ java::instanceof $term ptolemy.graph.test.TestConstant] {
 	set cterm [java::cast ptolemy.graph.test.TestConstant $term]
@@ -153,10 +185,10 @@ test InequalitySolver-2.3 {solver for the least solution} {
 
     # using lsort to order some enumerations
     list $sat [$ta getValue] [$tb getValue] \
-	 [lsort [enumToInfo [$s bottomVariables]]] \
-	 [enumToInfo [$s topVariables]] \
+	 [lsort [iterToInfo [$s bottomVariables]]] \
+	 [iterToInfo [$s topVariables]] \
 	 [lsort [enumToInfo [$s variables]]] \
-	 [enumToInfo [$s unsatisfiedInequalities]]
+	 [iterToInfo [$s unsatisfiedInequalities]]
 } {1 z z {A(variable)_z B(variable)_z} {} {A(variable)_z B(variable)_z} {}}
 
 ######################################################################
@@ -165,9 +197,9 @@ test InequalitySolver-2.3 {solver for the least solution} {
 test InequalitySolver-2.4 {solver for the greatest solution} {
     set sat [$s solveGreatest]
     list $sat [$ta getValue] [$tb getValue] \
-	 [enumToInfo [$s bottomVariables]] [enumToInfo [$s topVariables]] \
+	 [iterToInfo [$s bottomVariables]] [iterToInfo [$s topVariables]] \
          [lsort [enumToInfo [$s variables]]] \
-	 [enumToInfo [$s unsatisfiedInequalities]]
+	 [iterToInfo [$s unsatisfiedInequalities]]
 } {1 x x {} {} {A(variable)_x B(variable)_x} {}}
 
 ######################################################################
@@ -192,8 +224,8 @@ test InequalitySolver-2.5 {constraints with no solution} {
 
     set sat [$s1 solveLeast]
     list $sat [$ta getValue] [$tb getValue] \
-	 [enumToInfo [$s1 bottomVariables]] [enumToInfo [$s1 topVariables]] \
-	 [enumToInfo [$s1 unsatisfiedInequalities]]
+	 [iterToInfo [$s1 bottomVariables]] [iterToInfo [$s1 topVariables]] \
+	 [iterToInfo [$s1 unsatisfiedInequalities]]
 } {0 w y {} A(variable)_w {{B(variable)_y Z(constant)_z}}}
 
 ######################################################################
@@ -202,8 +234,8 @@ test InequalitySolver-2.5 {constraints with no solution} {
 test InequalitySolver-2.6 {solve for greatest solutino for above} {
     set sat [$s1 solveGreatest]
     list $sat [$ta getValue] [$tb getValue] \
-         [enumToInfo [$s1 bottomVariables]] [enumToInfo [$s1 topVariables]] \
-         [enumToInfo [$s1 unsatisfiedInequalities]]
+         [iterToInfo [$s1 bottomVariables]] [iterToInfo [$s1 topVariables]] \
+         [iterToInfo [$s1 unsatisfiedInequalities]]
 } {0 w z B(variable)_z A(variable)_w {{Y(constant)_y B(variable)_z}}}
 
 ######################################################################
