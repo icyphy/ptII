@@ -75,7 +75,6 @@ OTHER_FILES_TO_BE_JARED = \
 	graphTableauFactory.xml \
 	iaEffigyFactory.xml \
 	iaTableauFactory.xml \
-	intro.htm \
 	ptIIplanet.gif \
 	runConfiguration.xml \
 	runPanelConfiguration.xml \
