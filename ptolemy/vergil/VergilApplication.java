@@ -167,8 +167,8 @@ public class VergilApplication extends MDIApplication {
 	JPanel toolBarPane = context.getToolBarPane();
 	toolBarPane.setLayout(new FlowLayout(FlowLayout.LEFT, 2, 2));
 
-        Icon icon = getResources().getImageIcon("GraphIconImage");
-        Image iconImage = getResources().getImage("GraphIconImage");
+	Icon icon = getVergilResources().getImageIcon("frameImage");
+	Image iconImage = getVergilResources().getImage("frameImage");
 
         context.setFrameIcon(icon);
 	context.setIconImage(iconImage);
@@ -176,8 +176,11 @@ public class VergilApplication extends MDIApplication {
 
         setCurrentDocument(null);
 
-	//	classLoadingService = new ClassLoadingService();
-	//addService(classLoadingService);
+	// Generic services.
+	classReloadingService = new ClassReloadingService(this);
+	addService(classReloadingService);
+
+	// Instantiate the modules.
 	// FIXME read this out of resources somehow.	
 	new ptolemy.vergil.ptolemy.PtolemyModule(this);
         new ptolemy.vergil.debugger.DebuggerModule(this);
@@ -233,7 +236,7 @@ public class VergilApplication extends MDIApplication {
 	timer.start();
     }
 
-    //  public ClassLoadingService classLoadingService;
+    public ClassReloadingService classReloadingService;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -347,6 +350,12 @@ public class VergilApplication extends MDIApplication {
     public static VergilApplication getInstance() {
 	return _instance;
     }
+
+    /** Get the resources object that is specific to this application.
+     */
+    public RelativeBundle getVergilResources () {
+        return _vergilResources;
+    }    
 
     /** 
      * Get the title of this application.  This class returns
@@ -641,6 +650,73 @@ public class VergilApplication extends MDIApplication {
         }
     }
     
+    /** 
+     * This service is capable of managing the dynamic loading and
+     * reloading of classes.  This service is associated with a dynamic
+     * class path that is specified in the resource "dynamicClassPath".
+     * Any classes in that class path should be loaded only through the 
+     * class loader that this service returns.  When the class loader is
+     * reset, a new class loader is created that will load those classes
+     * freshly when they are used through that class loader.  So, to allow
+     * a class to be dynamically reloaded, simply place it within the
+     * dynamic class path, at its appropriate place.   For instance, if
+     * the dynamic class path property is set to "/dynamic/" and you 
+     * wish to allow everything in actor/lib to be reloaded, then move
+     * the ptII/ptolemy/actor/lib director to ptII/dynamic/ptolemy/actor/lib.
+     * <p> Note that 
+     * there are several limitations to this.  First of all, classes that
+     * were loaded previously still exist within the JVM.  The old Class
+     * objects and instances of the old classes are still present (until
+     * they are garbage collected), but are distinct from the new versions.
+     * This is true even if the class itself has not changed.  Existing
+     * objects are NOT automatically replaced with instances of the new
+     * class.   Users of this service are responsible for reinstantiating 
+     * any classes that my be dynamically reloaded.
+     */
+    public class ClassReloadingService extends AbstractService {
+	// FIXME notification when reloading happens?
+	/** 
+	 * Create a new service that maintains a class loader for
+	 * reloading classes.
+	 */
+	public ClassReloadingService(VergilApplication application) {
+	    _setApplication(application);
+	    resetClassLoader();
+	}
+	
+	/**
+	 * Return the class loader.
+	 */
+	public ClassLoader getClassLoader() {
+	    return _classLoader;
+	}
+	
+	/**
+	 * Reset the class loader.  When the class loader is asked to load a 
+	 * class, the class will be loaded from the system again and instances
+	 * of the new classes will have no correspondence to any previously 
+	 * instantiated classes.
+	 */
+	public void resetClassLoader() {
+	    String classpath = 
+		getVergilResources().getString("dynamicClassPath");
+	    String separator = ":"; //System.getProperty("path.separator");
+	    StringTokenizer paths = new StringTokenizer(classpath, separator);
+	    URL urls[] = new URL[paths.countTokens()];
+	    int count = 0;
+	    while(paths.hasMoreTokens()) {
+		String path = paths.nextToken();
+		urls[count] = getClass().getResource(path);
+		System.out.println("URL = " + urls[count]);
+		count++;
+	    }
+	    _classLoader =
+		new URLClassLoader(urls, getClass().getClassLoader());
+	}
+	
+	// The class loader that this service uses.
+	private ClassLoader _classLoader; 
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         package variables                 ////
@@ -676,6 +752,12 @@ public class VergilApplication extends MDIApplication {
     // The title changer used by this application.  This listener will
     // be attached to all documents.
     private TitleChanger _titleChanger = new TitleChanger();
+
+    // The resources object.
+    private RelativeBundle _vergilResources = 
+	new RelativeBundle("ptolemy.vergil.Vergil", 
+			   getClass(), 
+			   null);
 }
 
 

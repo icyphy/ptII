@@ -260,7 +260,12 @@ public class PtolemyDocument extends AbstractDocument
             throw new IllegalStateException(
 	        "PtolemyDocument " + getTitle() + " has no current file");
         }
-	MoMLParser parser = new MoMLParser(new Workspace(), null);
+	VergilApplication.ClassReloadingService service = 
+	    VergilApplication.getInstance().classReloadingService;
+	service.resetClassLoader();
+	System.out.println(service.getClassLoader());
+	MoMLParser parser = new MoMLParser(new Workspace(), null, 
+					   service.getClassLoader());
 	CompositeEntity toplevel =
 	    (CompositeEntity) parser.parse(getFile().toURL(),
                     new FileInputStream(getFile()));
