@@ -172,6 +172,9 @@ public class DifferentialSystem extends TypedCompositeActor {
             // The initialStates parameter should be a row vector.
             DoubleMatrixToken token =
                 (DoubleMatrixToken)initialStates.getToken();
+            if (token == null) {
+                return;
+            }
             if (token.getRowCount() != 1 || token.getColumnCount() < 1) {
                 throw new IllegalActionException(this,
                         "The initialStates must be a row vector.");
