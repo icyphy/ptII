@@ -31,7 +31,7 @@
 
 ME =            ptolemy/domains/fsm/lib
 
-DIRS = 		#test doc
+DIRS = 		test
 
 # Root of the ptII directory
 ROOT =		../../../..
@@ -65,7 +65,8 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	doc
+	doc \
+	$(PTCLASSJAR)
 
 JCLASS = $(JSRCS:%.java=%.class)
 
