@@ -1437,6 +1437,18 @@ public class CTMultiSolverDirector extends CTDirector {
         // states and outputs are inaccurate.
         while (!_stopRequested) {
             while (!_stopRequested) {
+                // Restore the saved state of the stateful actors.
+                CTSchedule schedule = (CTSchedule)getScheduler().getSchedule();
+                Iterator actors = schedule.get(
+                        CTSchedule.STATEFUL_ACTORS).actorIterator();
+                while (actors.hasNext()) {
+                    CTStatefulActor actor = (CTStatefulActor)actors.next();
+                    if (_debugging) {
+                        _debug("Restore states " + (Nameable)actor);
+                    }
+                    actor.goToMarkedState();
+                }
+
                 // Reset the round counts and the convergencies to false.
                 // NOTE: some solvers have their convergencies depending on
                 // the round counts. For example, it takes 3 rounds for a
