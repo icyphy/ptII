@@ -107,21 +107,11 @@ public class TypeSpecializerAnalysis {
         try {
             succeeded = _solver.solveLeast();
         } catch (Exception ex) {
-            System.out.println("Type Assignment:");
-            Iterator variables = _solver.variables();
-            while (variables.hasNext()) {
-                System.out.println("InequalityTerm: "
-                        + variables.next().toString());
-            }
+            _printSolverVariables();
             throw new RuntimeException(ex.getMessage());
         }
         if (_debug) {
-            System.out.println("Type Assignment:");
-            Iterator variables = _solver.variables();
-            while (variables.hasNext()) {
-                System.out.println("InequalityTerm: "
-                        + variables.next().toString());
-            }
+            _printSolverVariables();
         }
         if(succeeded) {
             if(_debug) System.out.println("solution FOUND!");
@@ -170,21 +160,11 @@ public class TypeSpecializerAnalysis {
         try {
             succeeded = _solver.solveLeast();
         } catch (Exception ex) {
-            System.out.println("Type Assignment:");
-            Iterator variables = _solver.variables();
-            while (variables.hasNext()) {
-                System.out.println("InequalityTerm: "
-                        + variables.next().toString());
-            }
+            _printSolverVariables();
             throw new RuntimeException(ex.getMessage());
         }
         if (_debug) {
-            System.out.println("Type Assignment:");
-            Iterator variables = _solver.variables();
-            while (variables.hasNext()) {
-                System.out.println("InequalityTerm: "
-                        + variables.next().toString());
-            }
+            _printSolverVariables();
         }
         if(succeeded) {
             if(_debug) System.out.println("solution FOUND!");
@@ -830,6 +810,19 @@ public class TypeSpecializerAnalysis {
                     PtolemyUtilities.getTokenTypeForSootType(tokenType),
                     object);
             objectToInequalityTerm.put(object, term);
+        }
+    }
+
+    private void _printSolverVariables() {
+        System.out.println("Type Assignment:");
+        try {
+            Iterator variables = _solver.variables();
+            while (variables.hasNext()) {
+                System.out.println("InequalityTerm: "
+                        + variables.next().toString());
+            }
+        } catch (IllegalActionException ex) {
+            ex.printStackTrace();
         }
     }
 
