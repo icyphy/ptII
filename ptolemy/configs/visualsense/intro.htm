@@ -1,0 +1,90 @@
+<html>
+<head>
+<!-- $Id$ -->
+</head>
+<body>
+<table>
+<tr>
+<td>
+<img vspace="6" align="left" src="visualsense.gif" alt="VisualSense">
+</td>
+<td>
+<h1>
+VisualSense 3.1-devel - Modeling of Wireless Sensor Networks
+</h1>
+<i>Visual editor and simulator for wireless sensor network systems</i>.
+<ul>
+<li><a href="docs.htm" target="_blank">Documentation</a></li>
+<li><a href="about:copyright" target="_blank">Copyright</a></li>
+</ul>
+To start immediately by creating a wireless sensor networks model, select File, New,
+Graph Editor from the menu bar.  Select Help from the Help menu for
+instructions on creating a model.
+</td>
+</tr>
+</table>
+Modeling of wireless sensor networks requires sophisticated modeling
+of communication channels, sensor channels, ad-hoc networking protocols,
+localization strategies,
+media access control protocols, energy consumption in sensor nodes, etc.
+This modeling framework is designed to support a component-based
+construction of such models.  It is intended to enable the research
+community to share models of disjoint aspects of the sensor nets
+problem and to build models that include sophisticated elements from
+several aspects.
+<p>
+Below are simple demonstrations of this modeler:
+<ul>
+<li><a href="../../domains/wireless/demo/WirelessSoundDetection/WirelessSoundDetection.xml">
+Wireless Sound Detection</a>.
+<br> This example models a sound localization problem. A single sound source
+moves through a field of sound sensors. The sound sensors detect the sound
+and communicate via a radio channel to a sensor fusion component that
+localizes the sound by triangulation.
+<li><a href="../../domains/wireless/demo/SmallWorld/SmallWorld.xml">
+Small World</a>.
+<br> This example illustrates a phenomenon where ad hoc networks achieve
+connectivity with fewer hops on average with a network that is less reliable
+but where ranges are larger than with a network that is more reliable but
+ranges are shorter.
+<li><a href="../../domains/wireless/demo/EvaderAndPursuer/EvaderAndPursuer.xml">
+Evader and Pursuer</a>.
+<br> This model shows an "evader"
+and a "pursuer" moving through
+a sensor network. The "evader"
+emits sounds that are detected
+by the sensor nodes, and the
+sensor nodes relay information
+to the pursuer. Running the
+model shows the evader moving
+at random and the pursuer
+seeking to track it based
+on the information from the
+sensors.
+</li><li><a href="../../domains/wireless/demo/CircularRange/CircularRange.xml">
+Circular Range Channel</a>.
+<br> This simple example illustrates a transmitter with a battery model, where
+its transmission range decreases (randomly) over time. In this case, a simple
+channel model with a circular range is used, and the receiver passes in and
+out of range.
+</li>
+</li><li><a href="../../domains/wireless/demo/PowerVariability/PowerVariability.xml">
+Power Loss Channel</a>.
+<br>
+This model shows a transmitter and a receiver
+where the receiver moves as the model executes and the receive
+power density is plotted over time.
+The channel is a PowerLossChannel with a limited range. When the
+receiver is in range, the power depends on the distance to the
+transmitter, according to a formula that is a parameter in the model.
+</li>
+</ul>
+<p>
+This wireless sensor network modeler is built using Ptolemy II, which is a software
+framework developed as part of the Ptolemy project at the University of
+California at Berkeley. See the
+<a href="http://ptolemy.eecs.berkeley.edu/#in_browser">Ptolemy Project web
+page</a> for more information.
+
+</body>
+</html>
