@@ -32,6 +32,8 @@
 
 ME =		ptolemy/copernicus/c
 
+DIRS =		test runtime
+
 # Root of the Java directory
 ROOT =		../../..
 
@@ -45,9 +47,13 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	c
-PTCLASSJAR = 	$(PTPACKAGE).jar
+PTCLASSJAR =
 
-DIRS =		test runtime
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+	runtime/runtime.jar
+
+PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
@@ -57,6 +63,7 @@ JSRCS = \
 	Context.java \
 	CSwitch.java \
 	ExceptionTracker.java \
+	FileHandler.java \
 	HeaderFileGenerator.java \
 	InterfaceFileGenerator.java \
 	JavaToC.java \
@@ -75,14 +82,14 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	doc \
+	doc
 
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
 	@echo "To run the demo, cd to the 'test/FIR' directory, and run 'runme'"
 
-install: all
+install: all jars
 
 depend:
 	@echo "no dependencies in this directory"
