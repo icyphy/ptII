@@ -53,7 +53,9 @@ public class LongToken extends ScalarToken {
     }
 
     /** Construct a token from the given String.
-
+     *  @exception IllegalArgumentException If the Token could not
+     *   be created with the given String.
+     */
     public LongToken(String init) throws IllegalArgumentException {
         try {
 	    _value = (Long.valueOf(init)).longValue();
@@ -61,7 +63,6 @@ public class LongToken extends ScalarToken {
 	    throw new IllegalArgumentException(e.getMessage());
 	}
     }
-*/
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -92,10 +93,9 @@ public class LongToken extends ScalarToken {
                 throw new Exception();
             }
         } catch (Exception ex) {
-            String str = "add method not supported between";
-            str = str + this.getClass().getName() + " and ";
-            str = str + token.getClass().getName();
-            throw new IllegalActionException(str + ": " + ex.getMessage());
+            throw new IllegalActionException("LongToken: add method not " +
+                   "supported between " + getClass().getName() + " and "
+                   + token.getClass().getName());
         }
     }
 

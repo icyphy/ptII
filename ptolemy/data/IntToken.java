@@ -56,6 +56,7 @@ public class IntToken extends ScalarToken {
     /** Construct an IntToken from the specified string.
      *  @exception IllegalArgumentException If the Token could not
      *   be created with the given String.
+     */
     public IntToken(String init) throws IllegalArgumentException {
 	try {
 	    _value = (Integer.valueOf(init)).intValue();
@@ -63,7 +64,7 @@ public class IntToken extends ScalarToken {
 	    throw new IllegalArgumentException(e.getMessage());
 	}
     }
-    */
+    
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////

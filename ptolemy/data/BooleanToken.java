@@ -54,13 +54,38 @@ public class BooleanToken extends Token {
     }
 
     /** Construct a token with the specified string.
-
-    public void fromString(String init) throws IllegalArgumentException {
+     *  @exception IllegalArgumentException If the Token could not
+     *   be created with the given String.
+     */
+    public BooleanToken(String init) throws IllegalArgumentException {
         _value = (Boolean.valueOf(init)).booleanValue();
     }
-    */
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Return a new token whose value is the sum of this token
+     *  and the argument. A BooleanToken can only have a StringToken 
+     *  added to it. Note that this means adding two BooleanTokens
+     *  will trigger an exception.
+     *  @exception IllegalActionException If the passed token
+     *   is not a StringToken.
+     *  @return A new Token containing the result.
+     */
+    public Token add(ptolemy.data.Token tok) throws IllegalActionException {
+        int typeInfo = TypeCPO.compare(this, tok);
+        try {
+            if (typeInfo == CPO.LOWER) {
+                return tok.addR(this);
+            } else {
+                throw new Exception();
+            }
+        } catch (Exception ex) {
+            throw new IllegalActionException("BooleanToken: Add method not " +
+                    "supported between " + getClass().getName() + " and " + 
+                    tok.getClass().getName() + ": " + ex.getMessage());
+        }
+    }
 
     /** Convert the specified token into an instance of BooleanToken.
      *  This method does lossly conversion.
@@ -128,6 +153,13 @@ public class BooleanToken extends Token {
     */
     public BooleanToken negate() {
         return new BooleanToken(!getValue());
+    }
+
+    /** Get the value contained in this Token as a String.
+     *  @return The value contained in this token as a String.
+     */
+    public String stringValue() {
+        return (new Boolean(_value)).toString();
     }
 
     /** Create a string representation of the value in the token.
