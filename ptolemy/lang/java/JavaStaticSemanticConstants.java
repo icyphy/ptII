@@ -171,4 +171,12 @@ public interface JavaStaticSemanticConstants extends NodeClassID {
      *  This number can be used to start numbering extended properties.
      */
     public static final int RESERVED_JAVA_PROPERTIES = TYPE_KEY.intValue() + 1;
+
+
+    // Miscellaneous constants related to code generation
+
+    /** The package name to assign to compile units that do not have
+     *  package names specified explicitly.
+     */
+    public static final String DEFAULT_PACKAGE_NAME = "ptolemy.codegen.default";
 }
