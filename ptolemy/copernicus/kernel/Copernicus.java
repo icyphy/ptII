@@ -34,10 +34,12 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.net.*;
@@ -170,6 +172,18 @@ public class Copernicus {
         // For example, if the user changes ptIIUserDirectory, then
         // we need to change ptIIUserDirectoryAsURL.
         _generatorAttribute.sanityCheckAndUpdateParameters(_modelPath);
+        
+        // See if we are redirecting the output.
+        StringParameter output = (StringParameter)
+            _generatorAttribute.getAttribute("output");
+        if (output != null && output.getToken() != null) {
+            String fileName = output.stringValue();
+            if(!fileName.equals("")) {
+                File outputFile = new File(fileName);
+                OutputStream outputStream = new FileOutputStream(outputFile);
+                System.setOut(new PrintStream(outputStream));
+            }
+        }
 
         if (_verbose) {
             System.out.println(_generatorAttribute.toString());

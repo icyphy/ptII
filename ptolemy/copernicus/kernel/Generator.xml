@@ -268,4 +268,11 @@ $Id$
 	       <doc>The number of milliseconds that code generation will run for. Defaults to 720000, which is 12 minutes.</doc>
      </property>
 
+     <property name="output" 
+               class="ptolemy.data.expr.StringParameter"
+	       value=""
+	       >
+	       <doc>The filename to redirect the standard output stream of the code generator to.  This is used, for example, in the nightly build to provide easily parseable error messages.  If the value is not set, then the output will not be redirected. </doc>
+     </property>
+
 </group>
