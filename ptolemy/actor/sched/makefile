@@ -29,25 +29,21 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
+ME = 		ptolemy/actor/sched
+
+DIRS = 		test # doc
+
 # Root of the Ptolemy II directory
 ROOT =		../../..
 
-
+CLASSPATH =	$(ROOT)
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-DIRS = 		test # doc
-
-CLASSPATH = 	../../..
-
-# Used to build zip files
-PTPACKAGE = 	ptolemy.actor.sched
-PTPACKAGE_ROOTDIR = $(CLASSPATH)
-PTPACKAGE_DIR = ptolemy/actor/sched
-PTVERSION =	1.0
+# Used to build jar files
+PTPACKAGE = 	sched
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSZIP =		$(PTPACKAGE_DIR)/$(PTPACKAGE).zip
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 

@@ -29,29 +29,24 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-# Note that the Java classes contained in this directory were written
-# by Sun.  These classes came from tcljava, see license.terms for more info.
+ME =		ptolemy/math/filter
+
+DIRS = 		test #doc demo
 
 # Root of the Java directory
 ROOT =		../../..
 
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-DIRS = 		test #doc demo
 
-CLASSPATH = ../../..
-
-# Used to build zip files
-TYPACKAGE = 	ptolemy.math
-TYPACKAGE_ROOTDIR = $(CLASSPATH)
-TYPACKAGE_DIR = ptolemy/math
-TYVERSION =	1.0
-TYDIST =	$(TYPACKAGE)$(TYVERSION)
-TYZIP =		$(TYPACKAGE_DIR)/$(TYPACKAGE).zip
-JARFILE = 	$(TYPACKAGE).jar
+# Used to build jar files
+PTPACKAGE = 	filter
+PTDIST =	$(PTPACKAGE)$(PTVERSION)
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
 	ConjugateComplex.java \

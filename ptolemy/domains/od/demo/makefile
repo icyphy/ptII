@@ -1,4 +1,4 @@
-# Makefile for the Java classes used to implement the Ptolemy OD domain kernel
+# Makefile for Ptolemy II OD domain demos
 #
 # @Authors: Mudit Goel, Christopher Hylands, based on a file by Thomas M. Parks
 #
@@ -29,28 +29,25 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
+ME =		ptolemy/domains/od/demo
+
+DIRS = 		test #doc
+
 # Root of the Java directory
 ROOT =		../../../..
 
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
+
 # Flags to pass to javadoc. (Override value in ptII.mk)
 JDOCFLAGS = 	-author -version -public
 
-
-DIRS = 		test #doc
-
-CLASSPATH = ../../../..
-
-# Used to build zip files
-PTPACKAGE = 	ptolemy.domains.od.demo
-PTPACKAGE_ROOTDIR = $(CLASSPATH)
-PTPACKAGE_DIR = ptolemy/domains/od/demo
-PTVERSION =	1.0
+# Used to build jar files
+PTPACKAGE = 	demo
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSZIP =		$(PTPACKAGE_DIR)/$(PTPACKAGE).zip
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \

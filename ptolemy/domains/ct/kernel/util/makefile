@@ -1,4 +1,4 @@
-# Makefile for the Continuous Time domain kernel
+# Makefile for the Continuous Time domain kernel util package
 #
 # @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
@@ -29,25 +29,22 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
+ME =		ptolemy/domains/ct/kernel/util
+
+DIRS = 		test #demo #doc
+
 # Root of the Java directory
 ROOT =		../../../../..
 
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-DIRS = 		test #demo #doc
-
-CLASSPATH =	../../../../..
-
-# Used to build zip files
-PTPACKAGE = 	ptolemy.domains.ct.kernel.util
-PTPACKAGE_ROOTDIR = $(CLASSPATH)
-PTPACKAGE_DIR = ptolemy/domains/ct/kernel/util
-PTVERSION =	1.0
+# Used to build jar files
+PTPACKAGE = 	util
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSZIP =		$(PTPACKAGE_DIR)/$(PTPACKAGE).zip
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \

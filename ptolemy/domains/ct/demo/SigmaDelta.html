@@ -50,7 +50,10 @@ To run the simulation, click <B>Go</B>
 <P>
 <P><APPLET name="SigmaDeltaApplet"
    bgcolor=#FAF0E6
-   archive="ptolemy/domains/ct/demo/ctdemo.jar"
+   archive="ptolemy/domains/ct/demo/SigmaDelta.jar,
+	ptolemy/domains/ct/ct.jar,
+	ptolemy/domains/de/de.jar,
+	ptolemy/ptsupport.jar"
    code=ptolemy.domains.ct.demo.SigmaDeltaApplet.class
    codebase=../../../..
    width=600 height=600>
@@ -59,7 +62,7 @@ To run the simulation, click <B>Go</B>
 here.</I>
 <BR></APPLET></CENTER>
 <p>
-Or, for a tclBlend demo, invoke:
+Or, for a Tcl Blend demo, invoke:
 <pre>
 cd  $PTII/ptolemy/domains/ct/demo
 setenv CLASSPATH $PTII

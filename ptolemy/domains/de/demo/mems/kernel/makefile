@@ -28,25 +28,22 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-# Root of the Java directory
+ME =		ptolemy/domains/de/demo/mems/kernel
+
+DIRS = 		test #demo #doc
+
+# Root of the Ptolemy II directory
 ROOT =		../../../../../..
 
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-DIRS = 		test #demo #doc
-
-CLASSPATH =	../../../../../..
-
-# Used to build zip files
-PTPACKAGE = 	ptolemy.domains.de.demo.mems.kernel
-PTPACKAGE_ROOTDIR = $(CLASSPATH)
-PTPACKAGE_DIR = ptolemy/domains/de/demo/mems/kernel
-PTVERSION =	1.0
+# Used to build jar files
+PTPACKAGE = 	kernel
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSZIP =		$(PTPACKAGE_DIR)/$(PTPACKAGE).zip
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \

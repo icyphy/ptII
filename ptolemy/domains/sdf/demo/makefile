@@ -29,19 +29,16 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-# Note that the Java classes contained in this directory were written
-# by Sun.  These classes came from tcljava, see license.terms for more info.
+ME =		ptolemy/domains/sdf/demo
 
 # Root of the Java directory
 ROOT =		../../../..
 
-ME =		ptolemy/domains/sdf/demo
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
-
-CLASSPATH = ../../../..
 
 TCL_SRCS = \
 	RampSystem.tcl \
@@ -52,8 +49,6 @@ JSRCS = \
 	SDFdemo.java \
 	SDFdemo2.java \
 	SDFdemo3.java 
-
-
 
 EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JGRAPHICAL_TESTS) #$(JSIMPLE_TESTS)
 
@@ -79,13 +74,13 @@ VideoDemo: ../lib/vq/*.class ../kernel/*.class
 	jtclsh VideoDemo.tcl
 
 demo: $(JSRCS)
-	java ptolemy.domains.sdf.demo.SDFdemo
+	CLASSPATH=$(CLASSPATH) $(JAVA) ptolemy.domains.sdf.demo.SDFdemo
 
 demo2: $(JSRCS)
-	java ptolemy.domains.sdf.demo.SDFdemo2
+	CLASSPATH=$(CLASSPATH) $(JAVA) ptolemy.domains.sdf.demo.SDFdemo2
 
 demo3: $(JSRCS)
-	java ptolemy.domains.sdf.demo.SDFdemo3
+	CLASSPATH=$(CLASSPATH) $(JAVA) ptolemy.domains.sdf.demo.SDFdemo3
 
 docs: javadocs
 

@@ -1,4 +1,4 @@
-# Makefile for the Java classes used to test the Ptolemy kernel
+# Makefile for the Ptolemy II OD domain test directory
 #
 # @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
@@ -29,18 +29,16 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-# Note that the Java classes contained in this directory were written
-# by Sun.  These classes came from tcljava, see license.terms for more info.
+ME =		ptolemy/domains/od/kernel/test
 
 # Root of the Ptolemy II directory
 ROOT =		../../../../..
 
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
-
-CLASSPATH = ../../../../..
 
 TCL_SRCS = \
 	testDefs.tcl

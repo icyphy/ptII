@@ -39,7 +39,7 @@ include $(CONFIG)
 
 DIRS = 		#test doc
 
-# Used to build zip files
+# Used to build jar files
 JPACKAGE = 	ptolemy.domains.pn.kernel.demo
 JPACKAGE_DIR = 	ptolemy/domains/pn/kernel/demo
 JVERSION =	1.0

@@ -29,6 +29,8 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
+ME =		ptolemy/plot/doc/internals
+
 # Root of Ptolemy II directory
 ROOT =		../../../..
 

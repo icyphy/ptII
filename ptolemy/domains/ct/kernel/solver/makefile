@@ -1,4 +1,4 @@
-# Makefile for the Continuous Time domain kernel
+# Makefile for the Continuous Time domain kernel solver package
 #
 # @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
@@ -29,9 +29,12 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-# Root of the Java directory
+ME =		ptolemy/domains/ct/kernel/solver
+
+# Root of the Ptolemy II directory
 ROOT =		../../../../..
 
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
@@ -39,15 +42,9 @@ include $(CONFIG)
 
 DIRS = 		test #demo #doc
 
-CLASSPATH =	../../../../..
-
-# Used to build zip files
-PTPACKAGE = 	ptolemy.domains.ct.kernel.solver
-PTPACKAGE_ROOTDIR = $(CLASSPATH)
-PTPACKAGE_DIR = ptolemy/domains/ct/kernel/solver
-PTVERSION =	1.0
+# Used to build jar files
+PTPACKAGE = 	solver
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSZIP =		$(PTPACKAGE_DIR)/$(PTPACKAGE).zip
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \

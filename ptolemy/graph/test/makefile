@@ -29,18 +29,16 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-# Note that the Java classes contained in this directory were written
-# by Sun.  These classes came from tcljava, see license.terms for more info.
+ME =		ptolemy/graph/test
 
 # Root of the Java directory
 ROOT =		../../..
 
+CLASSPATH = 	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
-
-CLASSPATH = ../../..
 
 TCL_SRCS = \
 	testDefs.tcl

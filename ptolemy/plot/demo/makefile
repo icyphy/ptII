@@ -29,36 +29,29 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
+ME =		ptolemy/plot/demo
+
 # Root of the Ptolemy II directory
 ROOT =		../../..
+
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-CLASSPATH =	../../..
-
-PTPACKAGE = 	ptolemy.plot.demo
-PTPACKAGE_ROOTDIR = $(CLASSPATH)
-PTPACKAGE_DIR =	ptolemy/plot/demo
+PTPACKAGE = 	demo
 PTVERSION =	2.0
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSZIP =		$(PTPACKAGE_DIR)/$(PTPACKAGE).zip
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 DIRS = 		#doc test
 
 # Order matters here.
-JSRCS1_0 = \
+JSRCS = \
 	PlotDemo.java \
 	PlotFourierSeries.java \
 	PlotLiveDemo.java \
 	PlotLiveDemoApplet.java \
-
-# Sources that require JDK1.1 and later.
-JSRCS1_1 = \
-
-JSRCS = $(JSRCS1_0) $(JSRCS1_1)
 
 EXTRA_SRCS = $(JSRCS) \
 	BarGraph.html \
@@ -84,10 +77,7 @@ EXTRA_SRCS = $(JSRCS) \
 # into sccs.
 MISC_FILES = data $(DIRS) doc #test
 
-JCLASS1_0 = $(JSRCS1_0:%.java=%.class)
-JCLASS1_1 = $(JSRCS1_1:%.java=%.class)
-
-JCLASS = $(JCLASS1_0) $(JCLASS1_1)
+JCLASS = $(JSRCS:%.java=%.class)
 
 all: sources jclass suball #$(JZIP)
 install: sources jclass javadocs subinstall #$(JZIP)

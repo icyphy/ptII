@@ -29,28 +29,25 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-# Root of the Java directory
+ME =		ptolemy/domains/od/lib/demo
+
+DIRS = 		#test #doc
+
+# Root of the Ptolemy II directory
 ROOT =		../../../../..
 
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
+
 # Flags to pass to javadoc. (Override value in ptII.mk)
 JDOCFLAGS = 	-author -version -public
 
-
-DIRS = 		#test #doc
-
-CLASSPATH = ../../../..
-
-# Used to build zip files
-PTPACKAGE = 	ptolemy.domains.od.lib.demo
-PTPACKAGE_ROOTDIR = $(CLASSPATH)
-PTPACKAGE_DIR = ptolemy/domains/od/lib/demo
-PTVERSION =	1.0
+# Used to build jar files
+PTPACKAGE = 	demo
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSZIP =		$(PTPACKAGE_DIR)/$(PTPACKAGE).zip
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = 

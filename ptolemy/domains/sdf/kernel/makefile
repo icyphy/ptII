@@ -1,6 +1,6 @@
 # Makefile for the SDF domain kernel
 #
-# @Authors: Christopher Hylands Smyth
+# @Authors: Christopher Hylands
 #
 # @Version: $Id$
 #
@@ -29,27 +29,26 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
+ME =		ptolemy/domains/sdf/kernel
+
+DIRS = 		#test  #doc
+
 # Root of the Java directory
 ROOT =		../../../..
 
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
+# FIXME: overriding JFLAGS will cause problems when we ship
 JFLAGS =
 
-DIRS = 		#test  #doc
 
-CLASSPATH =	../../../..
-
-# Used to build zip files
-PTPACKAGE = 	ptolemy.domains.sdf.kernel
-PTPACKAGE_ROOTDIR = $(CLASSPATH)
-PTPACKAGE_DIR = ptolemy/domains/sdf/kernel
-PTVERSION =	1.0
+# Used to build jar files
+PTPACKAGE = 	kernel
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSZIP =		$(PTPACKAGE_DIR)/$(PTPACKAGE).zip
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \

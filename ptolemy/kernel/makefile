@@ -29,9 +29,15 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-# Root of the Java directory
+ME =		ptolemy/kernel
+
+# Order matters here, go into util first, since mutation depends on it
+DIRS = 		util event test
+
+# Root of the Ptolemy II directory
 ROOT =		../..
 
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
@@ -40,19 +46,17 @@ include $(CONFIG)
 # Flags to pass to javadoc. (Override value in ptII.mk)
 JDOCFLAGS = 	-author -version -public
 
-# Order matters here, go into util first, since mutation depends on it
-DIRS = 		util event demo test
-
-CLASSPATH = ../..
-
-# Used to build zip files
+# Used to build jar files
 PTPACKAGE = 	ptolemy.kernel
-PTPACKAGE_ROOTDIR = $(CLASSPATH)
-PTPACKAGE_DIR = ptolemy/kernel
-PTVERSION =	1.0
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSZIP =		$(PTPACKAGE_DIR)/$(PTPACKAGE).zip
-PTCLASSJAR = 	$(PTPACKAGE).jar
+PTCLASSJAR =
+
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+		event/event.jar \
+		util/util.jar
+
+PTCLASSALLJAR = kernel.jar
 
 JSRCS = \
 	ComponentEntity.java \
@@ -72,13 +76,13 @@ MISC_FILES =	$(DIRS) doc
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	$(PTCLASSJAR)
+	$(PTCLASSJAR) \
+	$(PTCLASSALLJAR)
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-
 all: jclass
-install: jclass javadocs $(PTCLASSJAR)
+install: jclass javadocs jars
 docs: javadocs
 
 depend:
@@ -86,6 +90,3 @@ depend:
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
-
-
-

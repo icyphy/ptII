@@ -29,30 +29,31 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
+ME =		ptolemy/plot
+
+DIRS = 		$(SRCDIRS) doc test
+SRCDIRS = 	demo
+
 # Root of the Ptolemy II directory
 ROOT =		../..
+
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Variables and rules used to create source file distributions
-PTPACKAGE = 	ptolemy.plot
-PTPACKAGE_ROOTDIR = $(CLASSPATH)
-PTPACKAGE_DIR = ptolemy/plot
+PTPACKAGE = 	plot
 # If you change PTVERSION, modify the version numbers in:
 #    Pxgraph.java, index.html, doc/internals/changes.html
 PTVERSION =	2.1
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTZIP =		$(PTPACKAGE_DIR)/$(PTPACKAGE).zip
 PTCLASSJAR = 	$(PTPACKAGE).jar
-PTCLASSZIP = 	$(PTPACKAGE).zip
 
-CLASSPATH =	../..
-
-SRCDIRS = 	demo
-
-DIRS = 		$(SRCDIRS) doc test
+# Jar file consisting of classes used by an applet.  Basically,
+# everything but PlotApplication and Pxgraph.
+PTAUXJAR = plotapplet.jar
 
 # Java Sources, keep these alphabetical,
 JSRCS = \
@@ -91,11 +92,11 @@ OPTIONAL_FILES = \
 	$(DIRS) \
 	adm \
 	manifest.tmp \
-	ptolemy.plot.jar \
-	ptolemy.plot.zip \
+	$(PTCLASSJAR) \
+	$(PTCLASSZIP)\
 	ptolemy.plot$(JVERSION).tar.gz \
 	ptolemy.plot$(JVERSION).zip \
-	ptolemy.plotapplet.jar \
+	$(PTAUXJAR) \
 	PtolemyGraphics.java \
 	'Message$$1.class' \
 	'Message$$2.class' \
@@ -121,12 +122,11 @@ OPTIONAL_FILES = \
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-all: sources jclass $(PTCLASSZIP) $(PTCLASSJAR) ptolemy.plotapplet.jar
+all: sources jclass $(PTCLASSZIP) $(PTCLASSJAR) $(PTAUXJAR)
 	-chmod a+x ptplot
 	rm -f pxgraph
 	ln -s ptplot pxgraph
-install: sources jclass javadocs subinstall \
-		$(PTCLASSJAR) ptolemy.plotapplet.jar bin_install_dir
+install: sources jclass javadocs subinstall jars bin_install_dir
 	-chmod a+x ptplot
 	rm -f pxgraph
 	ln -s ptplot pxgraph
@@ -196,30 +196,28 @@ ptplot: ptplot.in ../../config.status
 ../../config.status: ../../configure
 	(cd ../..; ./configure)
 
-# Jar file consisting of classes used by an applet.  Basically,
-# everything but PlotApplication and Pxgraph.
-ptolemy.plotapplet.jar: $(JSRCS) $(JCLASS)
-	rm -f ptolemy.plotapplet.jar
-	(cd $(CLASSPATH); $(JAR) cf $(PTPACKAGE_DIR)/ptolemy.plotapplet.jar \
-		$(PTPACKAGE_DIR)/CmdLineArgException.class \
-		$(PTPACKAGE_DIR)/EPSGraphics.class \
-		$(PTPACKAGE_DIR)/Message.class \
-		$(PTPACKAGE_DIR)/Plot.class \
-		$(PTPACKAGE_DIR)/PlotApplet.class \
-		$(PTPACKAGE_DIR)/PlotBox.class \
-		$(PTPACKAGE_DIR)/PlotDataException.class \
-		$(PTPACKAGE_DIR)/PlotLive.class \
-		$(PTPACKAGE_DIR)/PlotLiveApplet.class \
-		$(PTPACKAGE_DIR)/PlotPoint.class \
-		$(PTPACKAGE_DIR)/PtolemyGraphics.class \
-		'$(PTPACKAGE_DIR)/Plot$$Format.class' \
-		'$(PTPACKAGE_DIR)/Plot$$Format.class' \
-		'$(PTPACKAGE_DIR)/PlotBox$$CommandListener.class' \
-		'$(PTPACKAGE_DIR)/PlotBox$$DragListener.class' \
-		'$(PTPACKAGE_DIR)/PlotBox$$FillButtonListener.class' \
-		'$(PTPACKAGE_DIR)/PlotBox$$ZoomListener.class' \
-		'$(PTPACKAGE_DIR)/PlotLive$$StartButtonListener.class' \
-		'$(PTPACKAGE_DIR)/PlotLive$$StopButtonListener.class' \
+$(PTAUXJAR): $(JSRCS) $(JCLASS)
+	rm -f $@
+	(cd $(ROOT); $(JAR) cf $(ME)/$@ \
+		$(ME)/CmdLineArgException.class \
+		$(ME)/EPSGraphics.class \
+		$(ME)/Message.class \
+		$(ME)/Plot.class \
+		$(ME)/PlotApplet.class \
+		$(ME)/PlotBox.class \
+		$(ME)/PlotDataException.class \
+		$(ME)/PlotLive.class \
+		$(ME)/PlotLiveApplet.class \
+		$(ME)/PlotPoint.class \
+		$(ME)/PtolemyGraphics.class \
+		'$(ME)/Plot$$Format.class' \
+		'$(ME)/Plot$$Format.class' \
+		'$(ME)/PlotBox$$CommandListener.class' \
+		'$(ME)/PlotBox$$DragListener.class' \
+		'$(ME)/PlotBox$$FillButtonListener.class' \
+		'$(ME)/PlotBox$$ZoomListener.class' \
+		'$(ME)/PlotLive$$StartButtonListener.class' \
+		'$(ME)/PlotLive$$StopButtonListener.class' \
             )
 
 docs: javadocs

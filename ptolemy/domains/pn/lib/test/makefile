@@ -29,26 +29,25 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
+ME =		ptolemy/domains/pn/lib/test
+
 # Root of the Ptolemy II directory
 ROOT =		../../../../..
 
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-CLASSPATH = ../../../../..
-
 TCL_SRCS = testDefs.tcl
 
+JSRCS =
 
-JSRCS = \
-	
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
 		PNImageSource.tcl \
 		MatrixPacker.tcl 
-
 
 # Graphical Java tests that use Tcl.
 # Since there are no tests, we use a dummy file so that the script that builds
@@ -82,14 +81,6 @@ KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
 # These tests do not require a graphics terminal, but do use TclBlend and Java
 test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl
 	CLASSPATH=$(CLASSPATH)$(AUXCLASSPATH) $(JTCLSH) alljtests.tcl
-
-# To profile the tests using jacl, run
-# make JACLPROFILE=-prof test_simple_jacl
-# then look in java.prof
-
-# These tests do not require a graphics terminal, but do use Jacl and Java
-test_jsimple_jacl: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl
-	CLASSPATH=$(CLASSPATH)$(AUXCLASSPATH) jacl $(JACLPROFILE) alljtests.tcl
 
 docs: javadocs
 

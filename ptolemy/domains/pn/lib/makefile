@@ -29,25 +29,23 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
+ME =		ptolemy/domains/pn/lib
+
+DIRS = 		#demo #test doc
+
 # Root of the Java directory
 ROOT =		../../../..
 
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-DIRS = 		#demo #test doc
-
-# Used to build zip files
-JPACKAGE = 	ptolemy.domains.pn.lib
-JPACKAGE_DIR = 	ptolemy/domains/pn/lib
-JVERSION =	1.0
-JDIST =		$(JPACKAGE)$(JVERSION)
-JZIP =		$(JPACKAGE_DIR)/$(JPACKAGE).zip
-PTCLASSJAR = 	$(JPACKAGE).jar
-
-CLASSPATH = ../../../..
+# Used to build jar files
+PTPACKAGE = 	lib
+PTDIST =	$(PTPACKAGE)$(PTVERSION)
+PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS = \
 	PNAlternate.java \
@@ -92,8 +90,7 @@ OPTIONAL_FILES = \
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
-
-install: jclass javadocs
+install: jclass javadocs $(PTCLASSJAR) 	$(PTCLASSALLJAR)
 docs: javadocs
 
 depend:

@@ -29,12 +29,14 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-# Note that the Java classes contained in this directory were written
-# by Sun.  These classes came from tcljava, see license.terms for more info.
+ME = 		ptolemy/kernel/util
+
+DIRS = 		test #doc
 
 # Root of the Ptolemy II directory
 ROOT =		../../..
 
+CLASSPATH = 	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
@@ -43,17 +45,9 @@ include $(CONFIG)
 # Flags to pass to javadoc. (Override value in ptII.mk)
 JDOCFLAGS = 	-author -version -public
 
-DIRS = 		test #doc
-
-CLASSPATH = 	../../..
-
-# Used to build zip files
-PTPACKAGE = 	ptolemy.kernel.util
-PTPACKAGE_ROOTDIR = $(CLASSPATH)
-PTPACKAGE_DIR = ptolemy/kernel/util
-PTVERSION =	1.0
+# Used to build jar files
+PTPACKAGE = 	util
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSZIP =		$(PTPACKAGE_DIR)/$(PTPACKAGE).zip
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
@@ -88,7 +82,6 @@ OPTIONAL_FILES = \
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-
 all: jclass
 install: jclass javadocs $(PTCLASSJAR)
 docs: javadocs
@@ -98,6 +91,3 @@ depend:
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
-
-
-

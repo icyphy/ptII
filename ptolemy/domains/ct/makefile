@@ -29,20 +29,32 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-DIRS = kernel lib demo
-
-# Root of Tycho directory
-ROOT =		../../..
-
-# $(ME) is used in ptdir.mk
 ME =		ptolemy/domains/ct
 
-# True source directory
-VPATH =		$(ROOT)/$(ME)
+DIRS = kernel lib demo
+
+# Root of Ptolemy II directory
+ROOT =		../../..
+
+CLASSPATH =	$(ROOT) 
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-# Include rules for directories that contain only subdirectories.
-include $(ROOT)/mk/ptdir.mk
+# Used to build jar files
+PTPACKAGE = 	ct
+PTDIST =	$(PTPACKAGE)$(PTVERSION)
+PTCLASSJAR =
+
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+		kernel/kernel.jar \
+		lib/lib.jar
+
+PTCLASSALLJAR = $(PTPACKAGE).jar
+
+install: jars
+
+# Get the rest of the rules
+include $(ROOT)/mk/ptcommon.mk

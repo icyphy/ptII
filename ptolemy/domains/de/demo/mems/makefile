@@ -27,18 +27,13 @@
 # 
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
-##########################################################################
 
-DIRS = demo gui kernel lib
-
-# Root of Tycho directory
-ROOT =		../../../../..
-
-# $(ME) is used in tydir.mk
 ME =		ptolemy/domains/de/demo/mems
 
-# True source directory
-VPATH =		$(ROOT)/$(ME)
+DIRS =		demo gui kernel lib
+
+# Root of Ptolemy II directory
+ROOT =		../../../../..
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk

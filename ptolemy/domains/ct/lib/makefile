@@ -1,4 +1,4 @@
-# Makefile for the Java classes used to implement the Ptolemy kernel
+# Makefile for Ptolemy II Continuous Time Actors
 #
 # @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
@@ -29,29 +29,23 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-# Note that the Java classes contained in this directory were written
-# by Sun.  These classes came from tcljava, see license.terms for more info.
+ME =		ptolemy/domains/ct/lib
 
-# Root of the Java directory
+DIRS = 		#doc
+
+# Root of the Ptolemy II directory
 ROOT =		../../../..
 
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-DIRS = 		#doc
-
-# Used to build zip files
-PTPACKAGE = 	ptolemy.domains.ct.lib
-PTPACKAGE_ROOTDIR = $(CLASSPATH)
-PTPACKAGE_DIR = ptolemy/domains/ct/lib
-PTVERSION =	1.0
+# Used to build jar files
+PTPACKAGE = 	lib
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSZIP =		$(PTPACKAGE_DIR)/$(PTPACKAGE).zip
 PTCLASSJAR = 	$(PTPACKAGE).jar
-
-CLASSPATH = ../../../..
 
 JSRCS = \
 	CTAdd.java \

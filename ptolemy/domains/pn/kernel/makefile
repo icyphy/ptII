@@ -29,28 +29,22 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
+ME =		ptolemy/domains/pn/kernel
+
 # Root of the Java directory
 ROOT =		../../../..
 
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
-# Flags to pass to javadoc. (Override value in ptII.mk)
-#JDOCFLAGS = 	-author -version -public
-
 
 DIRS = 		test #doc
 
-CLASSPATH = ../../../..
-
-# Used to build zip files
-PTPACKAGE = 	ptolemy.domains.pn.kernel
-PTPACKAGE_ROOTDIR = $(CLASSPATH)
-PTPACKAGE_DIR = ptolemy/domains/pn/kernel
-PTVERSION =	1.0
+# Used to build jar files
+PTPACKAGE = 	kernel
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSZIP =		$(PTPACKAGE_DIR)/$(PTPACKAGE).zip
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = BasePNDirector.java \

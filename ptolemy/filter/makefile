@@ -27,19 +27,15 @@
 #
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
-# $Id$
-##########################################################################
 
-DIRS = filtermodel view controller applet
-
-# Root of Tycho directory
-ROOT =		../..
 
 # $(ME) is used in ptdir.mk
 ME =		ptolemy/filter
 
-# True source directory
-VPATH =		$(ROOT)/$(ME)
+DIRS = filtermodel view controller applet
+
+# Root of Ptolemy II directory
+ROOT =		../..
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk

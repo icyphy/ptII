@@ -29,18 +29,16 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-# Note that the Java classes contained in this directory were written
-# by Sun.  These classes came from tcljava, see license.terms for more info.
+ME =		ptolemy/domains/ct/demo
 
 # Root of the Java directory
 ROOT =		../../../..
 
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
-
-CLASSPATH = ../../../..
 
 TCL_SRCS = \
 	ExpoBE.tcl \
@@ -65,17 +63,7 @@ JSRCS = \
 	WaveBERK23.java \
 	SigmaDeltaApplet.java
 
-# Non-graphical Java demos written in Tcl
-# Since there are no demos, we use a dummy file so that the script that builds
-# alljtests.tcl works.  If you add a demo, be sure to add
-# $(JSIMPLE_TESTS) to EXTRA_SRCS
-JSIMPLE_TESTS = \
-	dummy.tcl
-
-# Graphical Java demos that use Tcl.
-JGRAPHICAL_TESTS = \
-
-EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JGRAPHICAL_TESTS) #$(JSIMPLE_TESTS)
+EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -83,28 +71,33 @@ MISC_FILES =	doc
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES =	#codeDoc
+OPTIONAL_FILES =
 
 JCLASS = $(JSRCS:%.java=%.class)
 
 # Don't include all or install rules here, we want the user
 # to run 'make demos' to run the tests.
-all: jclass
+all: jclass SigmaDelta.jar
 	@echo "To run all the demos, run 'make demo'"
 
 install: all
 
-demo: demo_jgraphical
+PTAUXJAR = SigmaDelta.jar
 
-# These demos do not require a graphics terminal, but do use TclBlend and Java
-demo_jgraphical: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl
-	CLASSPATH=$(CLASSPATH)$(AUXCLASSPATH) $(JTCLSH) alljtests.tcl
-
-# This is a graphical test
-Exponential: $(EXTRA_SRCS) jclass Exponential.tcl
-	CLASSPATH=$(CLASSPATH)$(AUXCLASSPATH) $(JTCLSH) Exponential.tcl
+demo: SigmaDelta.jar
+	CLASSPATH=$(CLASSPATH) appletviewer SigmaDelta.html
 
 docs: javadocs
+
+# 'make clean' removes everything in KRUFT
+KRUFT = SigmaDelta.jar
+
+# Jar file for the Sigma Delta Applet
+SigmaDelta.jar: $(JSRCS) $(JCLASS) makefile
+	(cd $(ROOT); \
+		$(JAR) cf \
+		$(ME)/$@ \
+		$(ME)/*.class)
 
 depend:
 	@echo "no dependencies in this directory"

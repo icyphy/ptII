@@ -34,25 +34,23 @@
 # tree of Node objects. The node classes used by PtrParser when generating
 # the tree are the ASTPt*.java files.
 
+ME =		ptolemy/data/expr
+
+DIRS = 		test
+
 # Root of the Ptolemy II directory
 ROOT =		../../..
 
+CLASSPATH = 	$(ROOT)$(CLASSPATHSEPARATOR)$(JAVACC_DIR)/JavaCC.zip
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-DIRS = 		test # doc
 
-CLASSPATH = ../../..$(CLASSPATHSEPARATOR)$(JAVACC_DIR)/JavaCC.zip
-
-# Used to build zip files
-PTPACKAGE = 	ptolemy.data.expr
-PTPACKAGE_ROOTDIR = $(CLASSPATH)
-PTPACKAGE_DIR = ptolemy/data/expr
-PTVERSION =	1.0
+# Used to build jar files
+PTPACKAGE = 	expr
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSZIP =		$(PTPACKAGE_DIR)/$(PTPACKAGE).zip
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \

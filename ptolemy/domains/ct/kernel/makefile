@@ -29,26 +29,30 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
+ME =		ptolemy/domains/ct/kernel
+
+DIRS = 		util solver test #demo doc
+
 # Root of the Java directory
 ROOT =		../../../..
 
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-DIRS = 		util solver test #demo #doc
-
-CLASSPATH =	../../../..
-
-# Used to build zip files
-PTPACKAGE = 	ptolemy.domains.ct.kernel
-PTPACKAGE_ROOTDIR = $(CLASSPATH)
-PTPACKAGE_DIR = ptolemy/domains/ct/kernel
-PTVERSION =	1.0
+# Used to build jar files
+PTPACKAGE = 	kernel
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSZIP =		$(PTPACKAGE_DIR)/$(PTPACKAGE).zip
-PTCLASSJAR = 	$(PTPACKAGE).jar
+PTCLASSJAR =
+
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+		solver/solver.jar \
+		util/util.jar
+
+PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
 	CTActor.java \

@@ -29,21 +29,38 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-# Domains
-DIRS = 	de sdf ct pn sc csp od
-
-# Root of Tycho directory
-ROOT =		../..
-
-# $(ME) is used in ptdir.mk
 ME =		ptolemy/domains
 
-# True source directory
-VPATH =		$(ROOT)/$(ME)
+# Domains, in alphabetical order
+DIRS =		csp ct de od pn sc sdf
+
+# Root of Ptolemy II directory
+ROOT =		../..
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-# Include rules for directories that contain only subdirectories.
-include $(ROOT)/mk/ptdir.mk
+# Used to build jar files
+PTPACKAGE = 	domains
+PTDIST =	$(PTPACKAGE)$(PTVERSION)
+PTCLASSJAR =
+
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+		csp/csp.jar \
+		ct/ct.jar \
+		de/de.jar \
+		od/od.jar \
+		pn/pn.jar \
+		sc/sc.jar \
+		sdf/sdf.jar
+
+PTCLASSALLJAR = $(PTPACKAGE).jar
+
+all: jclass
+install: jclass javadocs jars
+docs: javadocs
+
+# Get the rest of the rules
+include $(ROOT)/mk/ptcommon.mk

@@ -29,15 +29,16 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
+ME =		ptolemy/plot/test
+
 # Root of the Ptolemy II directory
 ROOT =		../../..
 
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
-
-CLASSPATH = ../../..
 
 TCL_SRCS = \
 	testDefs.tcl

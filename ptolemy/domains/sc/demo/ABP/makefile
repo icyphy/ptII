@@ -29,6 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
+ME =		ptolemy/domains/sc/demo/ABP
 # Root of the Ptolemy II directory
 ROOT =		../../../../..
 
@@ -44,13 +45,9 @@ DIRS = 		#test doc
 
 CLASSPATH = 	../../../../..
 
-# Used to build zip files
-PTPACKAGE = 	ptolemy.domains.sc.demo.ABP
-PTPACKAGE_ROOTDIR = $(CLASSPATH)
-PTPACKAGE_DIR = ptolemy/domains/sc/demo/ABP
-PTVERSION =	1.0
+# Used to build jar files
+PTPACKAGE = 	ABP
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSZIP =		$(PTPACKAGE_DIR)/$(PTPACKAGE).zip
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \

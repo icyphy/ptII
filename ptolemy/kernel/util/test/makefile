@@ -1,4 +1,4 @@
-# Makefile for the Java classes used to test the Ptolemy kernel utils package
+# Makefile for the Java classes used to test the Ptolemy kernel util package
 #
 # @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
@@ -29,15 +29,16 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
+ME =		ptolemy/kernel/util/test
+
 # Root of the Ptolemy II directory
 ROOT =		../../../..
 
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
-
-CLASSPATH = ../../../..
 
 TCL_SRCS = \
 	testDefs.tcl

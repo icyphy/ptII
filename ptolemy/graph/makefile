@@ -29,12 +29,14 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-# Note that the Java classes contained in this directory were written
-# by Sun.  These classes came from tcljava, see license.terms for more info.
+ME =		ptolemy/graph
+
+DIRS = 		test demo #doc
 
 # Root of the Java directory
 ROOT =		../..
 
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
@@ -43,19 +45,10 @@ include $(CONFIG)
 # Flags to pass to javadoc. (Override value in ptII.mk)
 JDOCFLAGS = 	-author -version -public
 
-DIRS = 		test demo #doc
-
-CLASSPATH = ../..
-
-# Used to build zip files
-PTPACKAGE = 	ptolemy.graph
-PTPACKAGE_ROOTDIR = $(CLASSPATH)
-PTPACKAGE_DIR = ptolemy/graph
-PTVERSION =	1.0
+# Used to build jar files
+PTPACKAGE = 	graph
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSZIP =		$(PTPACKAGE_DIR)/$(PTPACKAGE).zip
 PTCLASSJAR = 	$(PTPACKAGE).jar
-
 
 JSRCS = \
 	CPO.java \

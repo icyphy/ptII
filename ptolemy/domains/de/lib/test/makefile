@@ -1,4 +1,4 @@
-# Makefile for the Java classes used to test the Ptolemy actors
+# Makefile for the Ptolemy II DE domain lib tests
 #
 # @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
@@ -29,23 +29,19 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-# Note that the Java classes contained in this directory were written
-# by Sun.  These classes came from tcljava, see license.terms for more info.
+ME =		ptolemy/domains/de/lib/test
 
 # Root of the Java directory
 ROOT =		../../../../..
 
-ME =		ptolemy/domains/de/lib/test
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-CLASSPATH = ../../../../..
-
 TCL_SRCS = \
 	testDefs.tcl
-
 
 JSRCS =
 

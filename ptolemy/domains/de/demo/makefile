@@ -1,6 +1,6 @@
 # Makefile for Ptolemy II Discrete Event domain demos
 #
-# @Authors: Christopher Hylands, based on a file by Thomas M. Parks
+# @Authors: Christopher Hylands, based on a file by Thomas M. Parks,
 #
 # @Version: $Id$
 #
@@ -29,24 +29,16 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-# Note that the Java classes contained in this directory were written
-# by Sun.  These classes came from tcljava, see license.terms for more info.
+ME =		ptolemy/domains/de/demo
 
 # Root of the Java directory
 ROOT =		../../../..
 
-ME =		ptolemy/domains/de/demo
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
-
-CLASSPATH = ../../../..
-
-JAVA_HOME_ENV = /usr/tools/pure/jdk1.1.6
-QUANTIFY_JAVA_HOME_ENV = /usr/tools/pure/quantify-4.2-solaris2
-
-PTPACKAGE_DIR = ptolemy/domains/de/demo
 
 JSRCS = \
 	ABROApplet.java \
@@ -86,168 +78,43 @@ MISC_FILES =	#doc
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	clockapplet.jar
+	demo.jar
 
 JCLASS = $(JSRCS:%.java=%.class)
 
 # Don't include all or install rules here, we want the user
 # to run 'make demos' to run the tests.
-all: jclass clockapplet.jar
+all: jclass demo.jar
 	@echo "To run all the demos, run 'make demo'"
 
 install: all
 
-demo: demo_jgraphical
+demo:
+	CLASSPATH=$(CLASSPATH) appletviewer ABRO.html
+	CLASSPATH=$(CLASSPATH) appletviewer Adder.html
+	CLASSPATH=$(CLASSPATH) appletviewer Hierarchy.html
+	CLASSPATH=$(CLASSPATH) appletviewer Histogram.html
+	CLASSPATH=$(CLASSPATH) appletviewer Interrupt.html
+	CLASSPATH=$(CLASSPATH) appletviewer Queue.html
+	CLASSPATH=$(CLASSPATH) appletviewer SigmaDelta.html
+	CLASSPATH=$(CLASSPATH) appletviewer index.html
 
-# These demos do not require a graphics terminal, but do use TclBlend and Java
-demo_jgraphical: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl
-	CLASSPATH=$(CLASSPATH)$(AUXCLASSPATH) $(JTCLSH) alljtests.tcl
-
-# This is a graphical test
-Exponential: $(EXTRA_SRCS) jclass Exponential.tcl
-	CLASSPATH=$(CLASSPATH)$(AUXCLASSPATH) $(JTCLSH) Exponential.tcl
-
-docs: javadocs
-
-# Classfiles used by the ClockApplet demo
-CLOCK_CLASSFILES = \
-	collections/Assertable.class \
-	collections/CEImpl.class \
-	collections/Cell.class \
-	collections/Collection.class \
-	collections/CollectionEnumeration.class \
-	collections/Comparator.class \
-	collections/CorruptedEnumerationException.class \
-	collections/HashedMap.class \
-	collections/IllegalElementException.class \
-	collections/ImplementationCheckable.class \
-	collections/LLCell.class \
-	collections/LLCellEnumeration.class \
-	collections/LinkedList.class \
-	collections/Predicate.class \
-	collections/Seq.class \
-	collections/SortableCollection.class \
-	collections/UpdatableCollection.class \
-	collections/UpdatableImpl.class \
-	collections/UpdatableMap.class \
-	collections/UpdatableMapImpl.class \
-	collections/UpdatableSeq.class \
-	collections/UpdatableSeqImpl.class \
-	ptolemy/actor/Actor.class \
-	ptolemy/actor/AtomicActor.class \
-	ptolemy/actor/CompositeActor.class \
-	ptolemy/actor/Director.class \
-	ptolemy/actor/Executable.class \
-	ptolemy/actor/IOPort.class \
-	ptolemy/actor/IORelation.class \
-	ptolemy/actor/Manager.class \
-	ptolemy/actor/NoRoomException.class \
-	ptolemy/actor/NoTokenException.class \
-	ptolemy/actor/Receiver.class \
-	ptolemy/actor/TypedActor.class \
-	ptolemy/actor/TypedAtomicActor.class \
-	ptolemy/actor/TypedCompositeActor.class \
-	ptolemy/actor/TypeConflictException.class \
-	ptolemy/actor/TypedIOPort.class \
-	ptolemy/actor/TypedIORelation.class \
-	ptolemy/actor/util/CQComparator.class \
-	'ptolemy/actor/util/CalendarQueue$$CQEntry.class' \
-	'ptolemy/actor/util/CalendarQueue$$CQLinkedList.class' \
-	ptolemy/actor/util/CalendarQueue.class \
-	ptolemy/actor/util/FIFOQueue.class \
-	ptolemy/data/BooleanMatrixToken.class \
-	ptolemy/data/BooleanToken.class \
-	ptolemy/data/ComplexToken.class \
-	ptolemy/data/ComplexMatrixToken.class \
-	ptolemy/data/DoubleToken.class \
-	ptolemy/data/DoubleMatrixToken.class \
-	ptolemy/data/IntMatrixToken.class \
-	ptolemy/data/IntToken.class \
-	ptolemy/data/LongMatrixToken.class \
-	ptolemy/data/LongToken.class \
-	ptolemy/data/MatrixToken.class \
-	ptolemy/data/Numerical.class \
-	ptolemy/data/ObjectToken.class \
-	ptolemy/data/ScalarToken.class \
-	ptolemy/data/StringToken.class \
-	ptolemy/data/Token.class \
-	ptolemy/data/TypeLattice.class \
-	ptolemy/data/expr/Parameter.class \
-	ptolemy/data/expr/ParameterListener.class \
-	'ptolemy/domains/de/demo/ClockApplet$$GoButtonListener.class' \
-	'ptolemy/domains/de/demo/ClockApplet$$StopTimeListener.class' \
-	ptolemy/domains/de/demo/ClockApplet.class \
-	'ptolemy/domains/de/demo/HistogramApplet$$CurrentTimeThread.class' \
-	'ptolemy/domains/de/demo/HistogramApplet$$GoButtonListener.class' \
-	'ptolemy/domains/de/demo/HistogramApplet$$IntervalSbListener.class' \
-	ptolemy/domains/de/demo/HistogramApplet.class \
-	ptolemy/domains/de/kernel/DEActor.class \
-	ptolemy/domains/de/kernel/DECQeventQueue.class \
-	ptolemy/domains/de/kernel/DEDirector.class \
-	ptolemy/domains/de/kernel/DEEventQueue.class \
-	ptolemy/domains/de/kernel/DEEventTag.class \
-	ptolemy/domains/de/kernel/DEIOPort.class \
-	ptolemy/domains/de/kernel/DEReceiver.class \
-	ptolemy/domains/de/lib/DEClock.class \
-	ptolemy/domains/de/lib/DEPlot.class \
-	ptolemy/domains/de/lib/DEPoisson.class \
-	ptolemy/domains/de/lib/DEStatistics.class \
-	ptolemy/domains/de/lib/DEWaitingTime.class \
-	ptolemy/graph/CPO.class \
-	ptolemy/graph/DirectedGraph.class \
-	ptolemy/graph/DirectedAcyclicGraph.class \
-	ptolemy/graph/Graph.class \
-	ptolemy/graph/InequalitySolver.class \
-	ptolemy/graph/InequalitySolver$$Info.class \
-	ptolemy/graph/InequalityTerm.class \
-	ptolemy/kernel/ComponentEntity.class \
-	ptolemy/kernel/ComponentPort.class \
-	ptolemy/kernel/ComponentRelation.class \
-	ptolemy/kernel/CompositeEntity.class \
-	ptolemy/kernel/Entity.class \
-	ptolemy/kernel/Port.class \
-	ptolemy/kernel/Relation.class \
-	ptolemy/kernel/util/Attribute.class \
-	'ptolemy/kernel/util/CrossRefList$$CrossRef.class' \
-	'ptolemy/kernel/util/CrossRefList$$CrossRefEnumeration.class' \
-	ptolemy/kernel/util/CrossRefList.class \
-	ptolemy/kernel/util/IllegalActionException.class \
-	ptolemy/kernel/util/InternalErrorException.class \
-	ptolemy/kernel/util/InvalidStateException.class \
-	ptolemy/kernel/util/KernelException.class \
-	ptolemy/kernel/util/NameDuplicationException.class \
-	ptolemy/kernel/util/Nameable.class \
-	ptolemy/kernel/util/NamedList.class \
-	ptolemy/kernel/util/NamedObj.class \
-	ptolemy/kernel/util/NoSuchItemException.class \
-	ptolemy/kernel/util/PtolemyThread.class \
-	'ptolemy/kernel/util/Workspace$$ReadDepth.class' \
-	ptolemy/kernel/util/Workspace.class \
-	ptolemy/math/Complex.class \
-	ptolemy/plot/CmdLineArgException.class \
-	ptolemy/plot/Plot.class \
-	'ptolemy/plot/Plot$$Format.class' \
-	'ptolemy/plot/PlotBox$$DragListener.class' \
-	'ptolemy/plot/PlotBox$$FillButtonListener.class' \
-	'ptolemy/plot/PlotBox$$ZoomListener.class' \
-	ptolemy/plot/PlotBox.class \
-	ptolemy/plot/PlotPoint.class \
-	ptolemy/plot/Message.class \
+PTAUXJAR = demo.jar
 
 # 'make clean' removes everything in KRUFT
-KRUFT = clockapplet.jar
+KRUFT = demo.jar
 
-# Jar file consisting of classes used by an applet.  Basically,
-# everything but Message and Pxgraph.
-clockapplet.jar: $(JSRCS) $(JCLASS)
-	(cd $(CLASSPATH); \
+demo.jar: $(JSRCS) $(JCLASS)
+	(cd $(ROOT); \
 		$(JAR) cf \
-		$(PTPACKAGE_DIR)/clockapplet.jar \
-		$(CLOCK_CLASSFILES))
+		$(ME)/$@ \
+		$(ME)/*.class)
 depend:
 	@echo "no dependencies in this directory"
 
 # Profiling stuff
+JAVA_HOME_ENV = /usr/tools/pure/jdk1.1.6
+QUANTIFY_JAVA_HOME_ENV = /usr/tools/pure/quantify-4.2-solaris2
 
 #java.prof: QueueApp.class
 #	CLASSPATH="$(CLASSPATH)$(CLASSPATHSEPARATOR)$(COLLECTIONS)$(CLASSPATHSEPARATOR)$(PROFILEVIEWER)" java -prof ptolemy.domains.de.demo.QueueApp

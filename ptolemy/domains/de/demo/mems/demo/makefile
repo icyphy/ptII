@@ -28,7 +28,9 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-# Root of the Java directory
+ME =		ptolemy/domains/de/mems/demo
+
+# Root of the Ptolemy II directory
 ROOT =		../../../../../..
 
 
@@ -40,13 +42,9 @@ DIRS = 		#test #demo #doc
 
 CLASSPATH =	../../../../../..
 
-# Used to build zip files
-PTPACKAGE = 	ptolemy.domains.de.demo.mems.demo
-PTPACKAGE_ROOTDIR = $(CLASSPATH)
-PTPACKAGE_DIR = ptolemy/domains/de/demo/mems/demo
-PTVERSION =	1.0
+# Used to build jar files
+PTPACKAGE = 	demo
 PTDIST =	$(TYPACKAGE)$(TYVERSION)
-PTCLASSZIP =		$(TYPACKAGE_DIR)/$(TYPACKAGE).zip
 PTCLASSJAR = 	$(TYPACKAGE).jar
 
 JSRCS = \
@@ -64,9 +62,6 @@ MISC_FILES =	#doc test
 OPTIONAL_FILES =	
 
 JCLASS = $(JSRCS:%.java=%.class)
-
-# Needed for compiling under Cygwin on NT
-LIB = dummylib
 
 all: jclass
 install: jclass javadocs $(JARFILE)

@@ -29,26 +29,23 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
+ME =		ptolemy/domains/sc/lib
+
+DIRS = 		#test doc
+
 # Root of the ptII directory
 ROOT =		../../../..
 
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-DIRS = 		#test #doc
-
-# Used to build zip files
-PTPACKAGE = 	ptolemy.domains.sc.lib
-PTPACKAGE_ROOTDIR = $(CLASSPATH)
-PTPACKAGE_DIR = ptolemy/domains/sc/lib
-PTVERSION =	1.0
+# Used to build jar files
+PTPACKAGE = 	lib
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSZIP =	$(PTPACKAGE_DIR)/$(PTPACKAGE).zip
 PTCLASSJAR = 	$(PTPACKAGE).jar
-
-CLASSPATH = ../../../..
 
 JSRCS = \
 	DEFSMActor.java \

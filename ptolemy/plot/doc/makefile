@@ -1,4 +1,4 @@
-# Makefile for Ptolemy Tycho system, java/doc
+# Makefile for the Ptolemy II plotter documentation
 #
 # Version: $Id$
 # Makefile Author: Christopher Hylands
@@ -28,6 +28,8 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 ##########################################################################
+
+ME = 		ptolemy/plot/doc
 
 # Root of Ptolemy II directory
 ROOT =		../../..

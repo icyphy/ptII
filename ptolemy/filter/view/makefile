@@ -1,4 +1,4 @@
-# Makefile for the Java classes used to implement the Ptolemy PN domain kernel
+# Makefile for the Ptolemy II Filter view
 #
 # @Authors: William Wu, Christopher Hylands, based on a file by Thomas M. Parks
 #
@@ -29,27 +29,25 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
+ME =		ptolemy/filter/view
+
+DIRS =
+
 # Root of the Java directory
 ROOT =		../../..
 
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
+
 # Flags to pass to javadoc. (Override value in ptII.mk)
 JDOCFLAGS = 	-author -version -public
 
-DIRS =
-
-CLASSPATH = ../../..
-
-# Used to build zip files
-PTPACKAGE = 	ptolemy.filter.view
-PTPACKAGE_ROOTDIR = $(CLASSPATH)
-PTPACKAGE_DIR = ptolemy/filter/view
-PTVERSION =	1.0
+# Used to build jar files
+PTPACKAGE = 	view
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSZIP =		$(PTPACKAGE_DIR)/$(PTPACKAGE).zip
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \

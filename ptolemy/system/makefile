@@ -1,4 +1,4 @@
-# Makefile for the Java classes used to implement the Ptolemy kernel
+# Makefile for the Ptolemy II system directory
 #
 # @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
@@ -29,12 +29,14 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-# Note that the Java classes contained in this directory were written
-# by Sun.  These classes came from tcljava, see license.terms for more info.
+ME =		ptolemy/system
+
+DIRS =
 
 # Root of the Java directory
 ROOT =		../..
 
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
@@ -43,18 +45,9 @@ include $(CONFIG)
 # Flags to pass to javadoc. (Override value in ptII.mk)
 JDOCFLAGS = 	-author -version -public
 
-# Order matters here, go into util first, since mutation depends on it
-DIRS =
-
-CLASSPATH = ../..
-
-# Used to build zip files
-PTPACKAGE = 	ptolemy.system
-PTPACKAGE_ROOTDIR = $(CLASSPATH)
-PTPACKAGE_DIR = ptolemy/system
-PTVERSION =	1.0
+# Used to build jar files
+PTPACKAGE = 	system
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSZIP =		$(PTPACKAGE_DIR)/$(PTPACKAGE).zip
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \

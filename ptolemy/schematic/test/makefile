@@ -1,4 +1,4 @@
-# Makefile for the Java classes used to test the Ptolemy actors
+# Makefile for the Java classes used to test the Ptolemy schematics
 #
 # @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
@@ -29,19 +29,19 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
+ME =		ptolemy/schematic/test
+
 # Root of the Ptolemy II directory
 ROOT =		../../..
 
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-CLASSPATH = ../../..
-
 TCL_SRCS = \
 	testDefs.tcl
-
 
 JSRCS =
 

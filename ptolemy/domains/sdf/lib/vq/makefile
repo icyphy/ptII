@@ -1,4 +1,4 @@
-# Makefile for SDF domain actors library
+# Makefile for SDF domain VQ actors library
 #
 # @Authors: Christopher Hylands
 #
@@ -29,27 +29,23 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
+ME =		ptolemy/domains/sdf/lib/vq
+
+DIRS = 		#doc
+
 # Root of the Java directory
 ROOT =		../../../../..
 
-ME =		ptolemy/domains/sdf/lib/vq
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-DIRS = 		#doc
-
-# Used to build zip files
-PTPACKAGE = 	ptolemy.domains.sdf.lib
-PTPACKAGE_ROOTDIR = $(CLASSPATH)
-PTPACKAGE_DIR = ptolemy/domains/sdf/lib
-PTVERSION =	1.0
+# Used to build jar files
+PTPACKAGE = 	vq
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSZIP =		$(PTPACKAGE_DIR)/$(TYPACKAGE).zip
 PTCLASSJAR = 	$(PTPACKAGE).jar
-
-CLASSPATH = ../../../../..
 
 JSRCS = \
 	HTVQEncode.java \

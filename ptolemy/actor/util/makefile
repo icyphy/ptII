@@ -39,9 +39,12 @@
 #  Universe
 # Note that none of these classes would be relevant to FSMs, for example.
 
+ME =		ptolemy/actor/util
+
 # Root of the Java directory
 ROOT =		../../..
 
+CLASSPATH = 	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
@@ -49,15 +52,9 @@ include $(CONFIG)
 #JAVAHOME =   $(LATEST_JAVAHOME)
 DIRS = 		test #doc
 
-CLASSPATH = ../../..
-
-# Used to build zip files
-PTPACKAGE = 	ptolemy.actor.util
-PTPACKAGE_ROOTDIR = $(CLASSPATH)
-PTPACKAGE_DIR = ptolemy/actor/util
-PTVERSION =	1.0
+# Used to build jar files
+PTPACKAGE = 	util
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSZIP =		$(PTPACKAGE_DIR)/$(PTPACKAGE).zip
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 
@@ -87,7 +84,7 @@ JCLASS = $(JSRCS:%.java=%.class)
 
 
 all: jclass
-install: jclass javadocs $(PTCLASSJAR)
+install: jclass javadocs subinstall $(PTCLASSJAR)
 docs: javadocs
 
 depend:

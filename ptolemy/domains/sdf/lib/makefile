@@ -29,29 +29,32 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
+ME =		ptolemy/domains/sdf/lib
+
+DIRS = 		vq #doc
+
 # Root of the Java directory
 ROOT =		../../../..
 
-ME =		ptolemy/domains/sdf/lib
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
+# FIXME: overriding JFLAGS will cause problems when we ship
 JFLAGS =
 
-DIRS = 		vq #doc
-
-# Used to build zip files
-PTPACKAGE = 	ptolemy.domains.sdf.lib
-PTPACKAGE_ROOTDIR = $(CLASSPATH)
-PTPACKAGE_DIR = ptolemy/domains/sdf/lib
-PTVERSION =	1.0
+# Used to build jar files
+PTPACKAGE = 	lib
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSZIP =		$(PTPACKAGE_DIR)/$(PTPACKAGE).zip
-PTCLASSJAR = 	$(PTPACKAGE).jar
+PTCLASSJAR =
 
-CLASSPATH = ../../../..
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+		vq/vq.jar
+
+PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
 	Delay.java \
@@ -78,7 +81,7 @@ JCLASS = $(JSRCS:%.java=%.class)
 
 
 all: jclass
-install: jclass javadocs $(PTCLASSJAR)
+install: jclass javadocs jars
 docs: javadocs
 
 depend:

@@ -29,9 +29,14 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
+ME =		ptolemy/kernel/event
+
+DIRS = 		test #doc
+
 # Root of the Ptolemy II directory
 ROOT =		../../..
 
+CLASSPATH = 	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
@@ -40,17 +45,9 @@ include $(CONFIG)
 # Flags to pass to javadoc. (Override value in ptII.mk)
 JDOCFLAGS = 	-author -version -public
 
-DIRS = 		test #doc
-
-CLASSPATH = 	../../..
-
-# Used to build zip files
-PTPACKAGE = 	ptolemy.kernel.event
-PTPACKAGE_ROOTDIR = $(CLASSPATH)
-PTPACKAGE_DIR = ptolemy/kernel/event
-PTVERSION =	1.0
+# Used to build jar files
+PTPACKAGE = 	event
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSZIP =		$(PTPACKAGE_DIR)/$(PTPACKAGE).zip
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \

@@ -29,12 +29,14 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-# Note that the Java classes contained in this directory were written
-# by Sun.  These classes came from tcljava, see license.terms for more info.
+ME =		ptolemy/automata/util
+
+DIRS = 		test #doc
 
 # Root of the Ptolemy II directory
 ROOT =		../../..
 
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
@@ -43,14 +45,10 @@ include $(CONFIG)
 # Flags to pass to javadoc. (Override value in ptII.mk)
 JDOCFLAGS = 	-author -version -public
 
-DIRS = 		test #doc
-
-CLASSPATH = 	../../..
-
-# Used to build zip files
-TYPACKAGE = 	ptolemy.automata.util
+# Used to build jar files
+TYPACKAGE = 	util
 TYPACKAGE_ROOTDIR = $(CLASSPATH)
-TYPACKAGE_DIR = ptolemy/automata/util
+TYPACKAGE_DIR = $(ME)
 TYVERSION =	1.0
 TYDIST =	$(TYPACKAGE)$(TYVERSION)
 TYZIP =		$(TYPACKAGE_DIR)/$(TYPACKAGE).zip

@@ -1,4 +1,4 @@
-# Makefile for the Mems lib
+# Makefile for the Mems gui
 #
 # @Version: $Id$
 # @Authors:
@@ -28,25 +28,22 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-# Root of the Java directory
-ROOT =		../../../../../..
 ME =            ptolemy/domains/de/demo/mems/gui
+
+DIRS = 		test #demo #doc
+
+# Root of the Ptolemy II directory
+ROOT =		../../../../../..
+
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-DIRS = 		test #demo #doc
-
-CLASSPATH =	../../../../../..
-
-# Used to build zip files
-PTPACKAGE = 	ptolemy.domains.de.demo.mems.gui
-PTPACKAGE_ROOTDIR = $(CLASSPATH)
-PTPACKAGE_DIR = ptolemy/domains/de/demo/mems/gui
-PTVERSION =	1.0
+# Used to build jar files
+PTPACKAGE = 	gui
 PTDIST =	$(TYPACKAGE)$(TYVERSION)
-PTCLASSZIP =		$(TYPACKAGE_DIR)/$(TYPACKAGE).zip
 PTCLASSJAR = 	$(TYPACKAGE).jar
 
 JSRCS = \

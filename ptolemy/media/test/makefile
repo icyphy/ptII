@@ -29,18 +29,16 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-# Note that the Java classes contained in this directory were written
-# by Sun.  These classes came from tcljava, see license.terms for more info.
+ME =		ptolemy/media/test
 
 # Root of the Ptolemy II directory
 ROOT =		../../..
 
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
-
-CLASSPATH = ../../..
 
 TCL_SRCS = \
 	testDefs.tcl
@@ -48,19 +46,15 @@ TCL_SRCS = \
 JSRCS =
 
 # Non-graphical Java tests written in Tcl
-# Since there are no tests, we use a dummy file so that the script that builds
-# alljtests.tcl works.  If you add a test, be sure to add
-# $(JSIMPLE_TESTS) to EXTRA_SRCS
 JSIMPLE_TESTS = \
-	dummy.tcl
+	Audio.tcl
 
 # Graphical Java tests that use Tcl.
 JGRAPHICAL_TESTS = \
-	Audio.tcl \
 	AudioViewer.tcl \
 	Picture.tcl \
 
-EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JGRAPHICAL_TESTS) #$(JSIMPLE_TESTS) 
+EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) $(JGRAPHICAL_TESTS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.

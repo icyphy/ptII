@@ -29,24 +29,21 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
+ME =		ptolemy/automata
+
+DIRS = 		util #test doc demo
+
 # Root of the Java directory
 ROOT =		../..
 
+CLASSPATH =	$(ROOT)
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-DIRS = 		util #test doc demo
-
-CLASSPATH = 	../..
-
-# Used to build zip files
-PTPACKAGE = 	ptolemy.automata
-PTPACKAGE_ROOTDIR = $(CLASSPATH)
-PTPACKAGE_DIR = ptolemy/automata
-PTVERSION =	1.0
+# Used to build jar files
+PTPACKAGE = 	automata
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSZIP =	$(PTPACKAGE_DIR)/$(PTPACKAGE).zip
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \

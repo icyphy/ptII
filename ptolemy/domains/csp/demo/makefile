@@ -29,24 +29,16 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-# Note that the Java classes contained in this directory were written
-# by Sun.  These classes came from tcljava, see license.terms for more info.
+ME =		ptolemy/domains/csp/demo
 
 # Root of the Java directory
 ROOT =		../../../..
 
-ME =		ptolemy/domains/csp/demo
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
-
-CLASSPATH = ../../../..
-
-JAVA_HOME_ENV = /usr/tools/pure/jdk1.1.6
-QUANTIFY_JAVA_HOME_ENV = /usr/tools/pure/quantify-4.2-solaris2
-
-PTPACKAGE_DIR = ptolemy/domains/csp/demo
 
 JSRCS = \
 	BasicDemo.java \
@@ -58,26 +50,15 @@ JSRCS = \
 	MM1.java \
 	PausingMM1.java \
 	PhilosopherListener.java \
-	TablePanel.java \
+	TablePanel.java
 
-# Non-graphical Java demos written in Tcl
-# Since there are no demos, we use a dummy file so that the script that builds
-# alljtests.tcl works.  If you add a demo, be sure to add
-# $(JSIMPLE_TESTS) to EXTRA_SRCS
-JSIMPLE_TESTS = \
-	dummy.tcl
-
-# Graphical Java demos that use Tcl.
-JGRAPHICAL_TESTS = \
-	BasicDemo.tcl
-
-
-EXTRA_SRCS =	index.html $(TCL_SRCS) $(JSRCS) $(JGRAPHICAL_TESTS) \
-		#$(JSIMPLE_TESTS)
+EXTRA_SRCS =	index.html $(TCL_SRCS) $(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 MISC_FILES =	doc
+
+PTAUXJAR = diningapplet.jar
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
@@ -88,91 +69,28 @@ JCLASS = $(JSRCS:%.java=%.class)
 
 # Don't include all or install rules here, we want the user
 # to run 'make demos' to run the tests.
-all: jclass
+all: jclass diningapplet.jar
 	@echo "To run all the demos, run 'make demo'"
 
 install: all
 
-demo: demo_jgraphical
-
-bus: 
+demo: 
+	CLASSPATH=$(CLASSPATH) appletviewer index.html
 	CLASSPATH=$(CLASSPATH) $(PTJAVA_DIR)/bin/java ptolemy.domains.csp.demo.BusContentionDemo
 
-# These demos do not require a graphics terminal, but do use TclBlend and Java
-demo_jgraphical: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl
-	CLASSPATH=$(CLASSPATH)$(AUXCLASSPATH) $(JTCLSH) alljtests.tcl
-
-# This is a graphical test
-Exponential: $(EXTRA_SRCS) jclass Exponential.tcl
-	CLASSPATH=$(CLASSPATH)$(AUXCLASSPATH) $(JTCLSH) Exponential.tcl
 
 docs: javadocs
-
-
-# Classfiles used by the DiningApplet demo
-DINING_CLASSFILES = \
-	ptolemy/actor/Actor.class \
-	ptolemy/actor/AtomicActor.class \
-	ptolemy/actor/CompositeActor.class \
-	ptolemy/actor/Director.class \
-	ptolemy/actor/Executable.class \
-	ptolemy/actor/IOPort.class \
-	ptolemy/actor/IORelation.class \
-	ptolemy/actor/Manager.class \
-	ptolemy/actor/process/ProcessDirector.class \
-	ptolemy/data/DoubleToken.class \
-	ptolemy/data/ScalarToken.class \
-	ptolemy/data/Token.class \
-	ptolemy/data/expr/Parameter.class \
-	ptolemy/data/expr/ParameterListener.class \
-	ptolemy/domains/csp/demo/Coordinate.class \
-	ptolemy/domains/csp/demo/PhilosopherListener.class \
-	'ptolemy/domains/csp/demo/TablePanel$$ChopstickCoords.class' \
-	'ptolemy/domains/csp/demo/TablePanel$$PhilosopherCoords.class' \
-	ptolemy/domains/csp/demo/TablePanel.class \
-	ptolemy/domains/csp/kernel/CSPActor.class \
-	ptolemy/domains/csp/kernel/CSPDirector.class \
-	ptolemy/domains/csp/kernel/CSPReceiver.class \
-	ptolemy/domains/csp/kernel/ConditionalBranch.class \
-	ptolemy/domains/csp/kernel/ConditionalReceive.class \
-	ptolemy/domains/csp/kernel/ConditionalSend.class \
-	ptolemy/domains/csp/lib/CSPChopstick.class \
-	ptolemy/domains/csp/lib/CSPPhilosopher.class \
-	ptolemy/kernel/ComponentEntity.class \
-	ptolemy/kernel/ComponentPort.class \
-	ptolemy/kernel/ComponentRelation.class \
-	ptolemy/kernel/CompositeEntity.class \
-	ptolemy/kernel/Entity.class \
-	ptolemy/kernel/Port.class \
-	ptolemy/kernel/Relation.class \
-	ptolemy/kernel/util/Attribute.class \
-	'ptolemy/kernel/util/CrossRefList$$CrossRef.class' \
-	'ptolemy/kernel/util/CrossRefList$$CrossRefEnumeration.class' \
-	ptolemy/kernel/util/CrossRefList.class \
-	ptolemy/kernel/util/IllegalActionException.class \
-	ptolemy/kernel/util/InternalErrorException.class \
-	ptolemy/kernel/util/InvalidStateException.class \
-	ptolemy/kernel/util/KernelException.class \
-	ptolemy/kernel/util/NameDuplicationException.class \
-	ptolemy/kernel/util/Nameable.class \
-	ptolemy/kernel/util/NamedList.class \
-	ptolemy/kernel/util/NamedObj.class \
-	ptolemy/kernel/util/NoSuchItemException.class \
-	ptolemy/kernel/util/PtolemyThread.class \
-	'ptolemy/kernel/util/Workspace$$ReadDepth.class' \
-	ptolemy/kernel/util/Workspace.class \
-	
 
 # 'make clean' removes everything in KRUFT
 KRUFT = diningapplet.jar
 
-# Jar file consisting of classes used by an applet.  Basically,
-# everything but Message and Pxgraph.
-diningapplet.jar: $(JSRCS) $(JCLASS)
-	(cd $(CLASSPATH); \
+# Jar file for the Dining Philosophers applet
+diningapplet.jar: $(JSRCS) $(JCLASS) makefile
+	(cd $(ROOT); \
 		$(JAR) cf \
-		$(PTPACKAGE_DIR)/diningapplet.jar \
-		$(DINING_CLASSFILES))
+		$(ME)/$@ \
+		$(ME)/*.class)
+
 
 depend:
 	@echo "no dependencies in this directory"

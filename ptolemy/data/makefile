@@ -29,36 +29,28 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-# This directory contains classes used for dataflow and pn channels that
-# should _not_ go into the kernel so that we can keep the kernel free
-# of the notion of dataflow.  These classes are concurrent functional
-# classes:
-#  FIFOQueue
-#  Star
-#  Galaxy
-#  Universe
-# Note that none of these classes would be relevant to FSMs, for example.
+ME =		ptolemy/data
+
+DIRS = 		expr test # doc
 
 # Root of the Ptolemy II directory
 ROOT =		../..
 
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-DIRS = 		expr test # doc
-
-CLASSPATH = ../..
-
-# Used to build zip files
-PTPACKAGE = 	ptolemy.data
-PTPACKAGE_ROOTDIR = $(CLASSPATH)
-PTPACKAGE_DIR = ptolemy/data
-PTVERSION =	1.0
+# Used to build jar files
+PTPACKAGE = 	data
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSZIP =		$(PTPACKAGE_DIR)/$(PTPACKAGE).zip
-PTCLASSJAR = 	$(PTPACKAGE).jar
+
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+		expr/expr.jar \
+
+PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
 	BooleanMatrixToken.java \
