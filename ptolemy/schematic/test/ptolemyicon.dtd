@@ -54,7 +54,7 @@ iconlibrary CDATA #REQUIRED>
 name ID #REQUIRED>
 
 <!-- icon elements will be parsed into class Icon -->
-<!ELEMENT icon (description, entitytype, graphic*, parameter*, port*)>
+<!ELEMENT icon (description, entitytype, graphic*, port*)>
 <!ATTLIST icon
 name ID #REQUIRED>
 
@@ -62,14 +62,7 @@ name ID #REQUIRED>
 <!ELEMENT iconlibrary (header, icon*)>
 <!ATTLIST iconlibrary
 name ID #REQUIRED
-version CDATA #REQUIRED
-path CDATA #REQUIRED>
-
-<!-- link elements will be parsed into class SchematicLink -->
-<!ELEMENT link EMPTY>
-<!ATTLIST link
-entity IDREF #REQUIRED
-port CDATA #REQUIRED>
+version CDATA #REQUIRED>
 
 <!-- parameter elements will be parsed into class SchematicParameter -->
 <!ELEMENT parameter EMPTY>
@@ -84,9 +77,10 @@ type (string|double|doubleArray) #REQUIRED>
 name ID #REQUIRED
 input (true|false) "false"
 output (true|false) "false"
+multiport (true|false) "false"
 type (string|double|doubleArray) #REQUIRED>
 
-<!-- schematic relations will be parsed into class SchamticRelation -->
+<!-- schematic relations will be parsed into class SchematicRelation -->
 <!ELEMENT relation (link)*>
 <!ATTLIST relation
 name ID #REQUIRED>
@@ -107,12 +101,13 @@ version CDATA #REQUIRED>
 format (xml|tcl) #REQUIRED>
 <!ELEMENT image EMPTY>
 <!ELEMENT line EMPTY>
+<!ELEMENT link EMPTY>
+<!ATTLIST link
+name CDATA #REQUIRED>
 <!ELEMENT polygon EMPTY>
 <!ELEMENT rect EMPTY>
 <!ELEMENT tclscript (#PCDATA)>
-<!ELEMENT sublibrary EMPTY>
-<!ATTLIST sublibrary 
-file CDATA #REQUIRED>
+<!ELEMENT sublibrary (#PCDATA)>
 <!ELEMENT textline (#PCDATA)>
 <!ELEMENT textbox (#PCDATA)>
 
