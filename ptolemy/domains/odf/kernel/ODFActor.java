@@ -103,7 +103,9 @@ public class ODFActor extends AtomicActor {
 	Thread thread = Thread.currentThread();
 	TimeKeeper timeKeeper = ((ODFThread)thread).getTimeKeeper();
 	*/
-	_currentTime = _timeKeeper.getCurrentTime();
+	if( _timeKeeper != null ) {
+	    _currentTime = _timeKeeper.getCurrentTime();
+	}
 	/*
 	if( thread instanceof ODFThread ) {
 	    _currentTime = ((ODFThread)thread).getCurrentTime();
@@ -111,6 +113,16 @@ public class ODFActor extends AtomicActor {
 	}
 	*/
 	return _currentTime;
+    }
+
+    /** Return the last port through which a token was consumed by 
+     *  this actor. If no tokens have ever been consumed through any 
+     *  ports of this actr, then return null.
+     * @return IOPort The last port through which a token was 
+     *  consumed by this actor. 
+     */
+    public IOPort getLastPort() {
+	return _lastPort;
     }
 
     /** Return a non-NullToken from the receiver that has the minimum,
@@ -132,31 +144,27 @@ public class ODFActor extends AtomicActor {
         return token;
     }
 
-    /** Prepare to cease iterations of this actor. Notify actors which
-     *  are connected downstream of this actor's cessation. Return false
-     *  to indicate that future execution can not occur.
-     * @return False to indicate that future execution can not occur.
-     * @exception IllegalActionException Not thrown in this class. May be
-     *  thrown in derived classes.
-     */
-    public boolean postfire() throws IllegalActionException {
-        return false;
-    }
-
-    /**
+    /** Return the TimeKeeper of this actor. If this actor does 
+     *  not contain any receivers, then return null.
+     * @return TimeKeeper The TimeKeeper of this actor.
      */
     public TimeKeeper getTimeKeeper() {
 	return _timeKeeper;
     }
 
-    /**
+    /** Set the TimeKeeper of this actor to be equivalent to the 
+     *  TimeKeeper of the receivers that this actor contains. If
+     *  this actor contains no receivers, then set the TimeKeeper 
+     *  to be null.
+     * @exception IllegalActionException If there is an error 
+     *  while retrieving the receivers contained by this actor.
      */
     public void initialize() throws IllegalActionException {
 	Enumeration enum = inputPorts();
 	ODFReceiver rcvr = null;
 	boolean rcvrSet = false;
 
-	while( enum.hasMoreElements() ) {
+	while( enum.hasMoreElements() && !rcvrSet ) {
 	    IOPort port = (IOPort)enum.nextElement();
 	    Receiver[][] rcvrs = port.getReceivers();
             for (int i = 0; i < rcvrs.length; i++) {
@@ -169,6 +177,17 @@ public class ODFActor extends AtomicActor {
 		}
 	    }
 	}
+    }
+
+    /** Prepare to cease iterations of this actor. Notify actors which
+     *  are connected downstream of this actor's cessation. Return false
+     *  to indicate that future execution can not occur.
+     * @return False to indicate that future execution can not occur.
+     * @exception IllegalActionException Not thrown in this class. May be
+     *  thrown in derived classes.
+     */
+    public boolean postfire() throws IllegalActionException {
+        return false;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -193,6 +212,7 @@ public class ODFActor extends AtomicActor {
     private Token _getNextInput() throws IllegalActionException {
         ODFReceiver lowestRcvr = getTimeKeeper().getFirstRcvr();
 	if( lowestRcvr.hasToken() ) {
+	    _lastPort = (IOPort)lowestRcvr.getContainer();
 	    return lowestRcvr.get();
 	} else {
 	    return _getNextInput();
@@ -202,11 +222,11 @@ public class ODFActor extends AtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                        private variables                  ////
 
-    // The currentTime of this actor is equivalent to the minimum
-    // positive rcvrTime of each input receiver.
     private double _currentTime = 0.0;
 
-    private TimeKeeper _timeKeeper;
+    private TimeKeeper _timeKeeper = null;
+    
+    private IOPort _lastPort = null;
 
 }
 
