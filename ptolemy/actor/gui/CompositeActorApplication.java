@@ -236,7 +236,8 @@ public class CompositeActorApplication {
                 // Model is already running.  Ignore.
             }
         } else {
-            report("Model " + model.getFullName() + " is not executable.");
+            report("Model " + model.getFullName() + " cannot be executed " 
+                    + "because it does not have a manager.");
         }
     }
 
