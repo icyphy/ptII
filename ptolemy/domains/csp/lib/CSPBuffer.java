@@ -80,35 +80,39 @@ public class CSPBuffer extends CSPActor {
     public void fire() {
         try {
             int count = 0;
-            int size = 0;
             ConditionalBranch[] branches = new ConditionalBranch[2];
             while (true) {
-                if (size < _depth) {
+                
+                if (_size < _depth) {
                     branches[0] = new ConditionalReceive(input, 0, 0);
-                }
-                if (size > 0) {
-                    branches[1] = new ConditionalSend(output, 1, 1, 
+                } else {
+                    branches[0] = null;
+                } 
+                if (_size > 0) {
+                    branches[1] = new ConditionalSend(output, 0, 1, 
                             _buffer[_readFrom]);
+                } else {
+                    branches[1] = null;
                 }
                 int successfulBranch = chooseBranch(branches);
 
                 if (successfulBranch == 0) {
-                    size++;
+                    _size++;
                     _buffer[_writeTo] = getToken();
-                    _writeTo++;
+                    _writeTo = ++_writeTo % _depth;
                     System.out.println(getName() + " got Token: " + 
                             getToken().toString() + ", size is: " + _size);
                 } else {
                     // successful branch = 1
                     _size--;
-                    _readFrom--;
+                    _readFrom = ++_readFrom % _depth;
                     System.out.println(getName() + " sent Token: " + 
                             getToken().toString() + ", size is: " + _size);
                 }
                 count++;
             }
         } catch (IllegalActionException ex) {
-            System.out.println("CSPBuffer: IllegalActionException, exiting");
+            System.out.println("CSPBuffer: IllegalActionException, exitingy" + ex.getMessage());
         } catch (NoTokenException ex) {
             System.out.println("CSPBuffer: cannot get token.");
         } finally {
