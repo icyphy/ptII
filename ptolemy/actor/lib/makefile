@@ -98,14 +98,6 @@ JSRCS = \
 	RecordAssembler.java \
 	RecordDisassembler.java \
 	Recorder.java \
-
-
-
-
-
-
-
-
 	Remainder.java \
 	SequenceActor.java \
 	Sequencer.java \
