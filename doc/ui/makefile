@@ -43,6 +43,7 @@ include $(CONFIG)
 EXTRA_SRCS = \
 	body.htm \
 	buttons.htm \
+	diva.htm \
 	index.htm \
 	main.htm \
 	toc.htm \
