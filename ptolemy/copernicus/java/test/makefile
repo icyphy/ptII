@@ -50,8 +50,8 @@ JSRCS = \
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
-	Deep.tcl
-# Shallow.tcl
+	Deep.tcl \
+	Shallow.tcl
 
 # Graphical Java tests that use Tcl.
 # If there are no tests, we use a dummy file so that the script that builds
@@ -139,7 +139,3 @@ disassembleShallowDemo:
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
-
-
-
-
