@@ -106,7 +106,6 @@ JSRCS = \
 	Clock.java \
 	Commutator.java \
 	Const.java \
-	ContinuousClock.java \
 	Counter.java \
 	CurrentTime.java \
 	Differential.java \
@@ -168,7 +167,6 @@ JSRCS = \
 	Transformer.java \
 	TrigFunction.java \
 	TriggeredClock.java\
-        TriggeredContinuousClock.java \
 	TrigFunction.java \
 	TypeTest.java \
 	Uniform.java \

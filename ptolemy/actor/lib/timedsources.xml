@@ -11,10 +11,6 @@
 <doc>Create a set of pulses</doc>
 </entity>
 
-<entity name="ContinuousClock" class="ptolemy.actor.lib.ContinuousClock">
-<doc>Create a generalized square wave</doc>
-</entity>
-
 <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
 <doc>Output the current time.</doc>
 </entity>
@@ -26,9 +22,6 @@
 <entity name="TriggeredClock"
 class="ptolemy.actor.lib.TriggeredClock">
 <doc>Create a generalized square wave, with start and stop ports</doc>
-</entity>
-<entity name="TriggeredContinuousClock" class="ptolemy.actor.lib.TriggeredContinuousClock">
-<doc>Create a continuous square wave, with start and stop ports</doc>
 </entity>
 <entity name="VariableClock" class="ptolemy.actor.lib.VariableClock">
 <doc>Create a sequence of tokens with increasing value</doc>
