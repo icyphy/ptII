@@ -581,7 +581,8 @@ i	$(REMOTE1PTIIDIST)/ptolemy/domains/pn/kernel/event \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/sdf \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/tm \
 	$(REMOTE1PTIIDIST)/ptolemy/gui \
-	$(REMOTE1PTIIDIST)/ptolemy/configs
+	$(REMOTE1PTIIDIST)/jni \
+	$(REMOTE1PTIIDIST)/ptolemy/configs 
 
 
 # Directories we run make in before running make in the NONJSALLDIRS
