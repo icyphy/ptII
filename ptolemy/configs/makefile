@@ -46,7 +46,7 @@ JSRCS =
 
 EXTRA_SRCS =	$(JSRCS) \
 	intro.htm \
-	introPtiny.htm
+	introPtiny.htm \
 	runWelcomeWindow.xml \
 	runConfiguration.xml \
 	runPanelConfiguration.xml \
