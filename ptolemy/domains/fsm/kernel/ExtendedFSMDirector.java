@@ -151,7 +151,7 @@ public class ExtendedFSMDirector extends FSMDirector {
     /** Given a state, get a list of referred input ports in the guard
      *  expressions of all the transitions that go out from this state.
      * @param currentState The given state.
-     * @throws IllegalActionException If there is no controller or if
+     * @exception IllegalActionException If there is no controller or if
      *  the guard expression is illegal.
      */
     public void getGuardReferredInputPorts(State currentState)
@@ -183,7 +183,7 @@ public class ExtendedFSMDirector extends FSMDirector {
     /** Given a transition, get a list of referred input ports in the
      *  outputActions of that transition.
      * @param currentState The given state.
-     * @throws IllegalActionException If there is no controller or if
+     * @exception IllegalActionException If there is no controller or if
      *  the outputActions is illegal.
      */
     public void getOutputActionsReferredInputPorts(Transition transition)
