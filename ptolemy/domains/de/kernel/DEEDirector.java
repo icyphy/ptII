@@ -41,6 +41,7 @@ import java.util.Set;
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
+import ptolemy.actor.Receiver;
 import ptolemy.actor.util.FunctionDependency;
 import ptolemy.actor.util.FunctionDependencyOfCompositeActor;
 import ptolemy.data.Token;
@@ -307,7 +308,7 @@ public class DEEDirector extends DEDirector {
 
                 // Transfer the event to the receiver and keep track
                 // of which receiver is filled.
-                DEReceiver receiver = currentEvent.receiver();
+                DEReceiver receiver = (DEReceiver) currentEvent.receiver();
 
                 // If receiver is null, then it's a 'pure event', and there's
                 // no need to put event into receiver.
@@ -328,14 +329,14 @@ public class DEEDirector extends DEDirector {
                 // Consider the multi-input atomic actors, e.g. the
                 // BooleanSelect and Inhibit.
                 if ((nextEvent.timeStamp() == Double.NEGATIVE_INFINITY ||
-                            nextEvent.isSimultaneousWith(currentEvent))
+                            nextEvent.hasTheSameTagAndDepthAs(currentEvent))
                         && nextEvent.actor() == currentEvent.actor()) {
                     // Consume the event from the queue.
 
                     _eventQueue.take();
 
                     // Transfer the event into the receiver.
-                    DEReceiver receiver = nextEvent.receiver();
+                    DEReceiver receiver = (DEReceiver)nextEvent.receiver();
                     // If receiver is null, then it's a 'pure event' and
                     // there's no need to put event into receiver.
                     if (receiver != null) {
@@ -386,12 +387,31 @@ public class DEEDirector extends DEDirector {
         // If the actor has different depths because of
         // multiple inputs?
 
-        // Or, we constrain that there is only one input for
-        // each actor to accept the inputs, and a Merge actor
-        // is necessary to sort the multiple inputs?
-
         //int depth = _getDepth(actor);
         int depth = 0;
+        
+//        Iterator outputs = actor.outputPortList().iterator();
+//        while (outputs.hasNext()) {
+//            IOPort outPort = (IOPort) outputs.next();
+//            Receiver[][] receivers = outPort.getRemoteReceivers();
+//            for (int i = 0; i < receivers.length; i++) {
+//                // FIXME: For ParameterPort, it is possible that
+//                // the downstream receivers are null. It is a
+//                // unresolved issue about the semantics of Parameter
+//                // Port considering the lazy evaluation of variables.
+//                if (receivers[i] != null) {
+//                    for (int j = 0; j < receivers[i].length; j++) {
+//                        IOPort ioPort =
+//                            receivers[i][j].getContainer();
+//                        Actor successor = (Actor) ioPort.getContainer();
+//                        int successorDepth = _getDepth(successor);
+//                        if (successorDepth < depth) {
+//                            depth = successorDepth;
+//                        }
+//                    }
+//                }
+//            }            
+//        }
 
         if (_debugging) _debug("FIXME: possible issues may arise here. "
                 + "enqueue a pure event: " 
@@ -582,7 +602,6 @@ public class DEEDirector extends DEDirector {
                 continue;
             }
             // we skip the ports of the container.
-            // we add them into the portToDepth hashtable.
             Nameable portContainer = ioPort.getContainer();
             if (portContainer.equals(getContainer())) {
                 continue;
