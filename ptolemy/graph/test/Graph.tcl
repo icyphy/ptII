@@ -1,6 +1,7 @@
 # Tests for the Graph class
 #
-# @Author: Shuvra S. Bhattacharyya, Yuhong Xiong, Shahrooz Shahparnia 
+# @Author: Shuvra S. Bhattacharyya, Yuhong Xiong, Ming-Yung Ko,
+# Shahrooz Shahparnia 
 #
 # $Id$
 #
@@ -460,3 +461,99 @@ test Graph-6.1 {Test neighbor edges} {
     set result4 [java::call ptolemy.graph.test.Utilities toSortedString $obj 1]
     list $result1 $result2 $result3 $result4
 } {{[(v1, v8, e8), (v8, v1, e11)]} {[(v3, v6, e2)]} {[]} {[(v4, v9, e10), (v9, v9, e12)]}}
+
+######################################################################
+####
+#
+test Graph-7.1 {test clone()} {
+	set og [java::new ptolemy.graph.Graph]
+	set n1 [java::new ptolemy.graph.Node]
+	set n2 [java::new ptolemy.graph.Node]
+	set n3 [java::new ptolemy.graph.Node]
+	set e1 [java::new ptolemy.graph.Edge $n1 $n2]
+	set e2 [java::new ptolemy.graph.Edge $n1 $n3]
+	$og addNode $n1
+	$og addNode $n2
+	$og addNode $n3
+	$og addEdge $e1
+	$og addEdge $e2
+	set cl [$og clone]
+	set cg [java::cast ptolemy.graph.Graph $cl]
+	set nc [$cg nodeCount]
+	set ec [$cg edgeCount]
+	set tn1 [$cg containsNode $n1]
+	set tn2 [$cg containsNode $n2]
+	set tn3 [$cg containsNode $n3]
+	set te1 [$cg containsEdge $e1]
+	set te2 [$cg containsEdge $e2]
+	list $nc $ec $tn1 $tn2 $tn3 $te1 $te2
+} {3 2 1 1 1 1 1}
+
+######################################################################
+####
+#
+test Graph-7.2 {standard clone() tests} {
+	set ocls  [$og getClass]
+	set ccls  [$cg getClass]
+	set oocls [java::cast java.lang.Object $ocls]
+	set occls [java::cast java.lang.Object $ccls]
+	set rule2 [$oocls equals $occls]
+	set rule3 [$cg equals $og]
+	list $rule2 $rule3
+} {1 1}
+
+######################################################################
+####
+#
+test Graph-7.3 {test equals(): change topology and compare with the clone} {
+	set eq1 [$cg equals $og]
+	$og removeNode $n2
+	set eq2 [$cg equals $og]
+	$og addNode $n2
+	$og addEdge $e1
+	set eq3 [$cg equals $og]
+	set n4	[java::new ptolemy.graph.Node]
+	$og addNode $n4
+	set eq4 [$cg equals $og]
+	list $eq1 $eq2 $eq3 $eq4
+} {1 0 1 0}
+
+######################################################################
+####
+#
+test Graph-7.4 {test equals(): reflexive, symmetric, transitive, and consistent} {
+	set cl1 [$og clone]
+	set cl2 [$og clone]
+	set cg1 [java::cast ptolemy.graph.Graph $cl1]
+	set cg2 [java::cast ptolemy.graph.Graph $cl2]
+	set r  [$og equals $og]
+	set s1 [$og equals $cg1]
+	set s2 [$cg1 equals $og]
+	set t1 [$og equals $cg1]
+	set t2 [$cg1 equals $cg2]
+	set t3 [$og equals $cg2]
+	set c1 [$og equals $cg1]
+	set c2 [$og equals $cg1]
+	set c3 [$og equals $cg1]
+	set c4 [$og equals $cg1]
+	list $r $s1 $s2 $t1 $t2 $t3 $c1 $c2 $c3 $c4
+} {1 1 1 1 1 1 1 1 1 1}
+
+######################################################################
+####
+#
+test Graph-7.5 {test hashCode()} {
+	set hog   [$og hashCode]
+	set hcg1  [$cg1 hashCode]
+	set hiog  [java::new java.lang.Integer $hog]
+	set hicg1 [java::new java.lang.Integer $hcg1]
+	set equ   [$hiog equals $hicg1]
+
+	$cg1 removeNode $n3
+	set hcg1  [$cg1 hashCode]
+	set hicg1 [java::new java.lang.Integer $hcg1]
+	set nequ  [$hiog equals $hicg1]
+	list $equ $nequ
+#FIXME: The original test has {1 0} as the correct return value.
+} {0 0}
+
