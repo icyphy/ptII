@@ -329,7 +329,7 @@ public class CTScheduler extends Scheduler {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Return the CTSchedule. Cacheing of the schedule is done
+    /** Return the CTSchedule. Caching of the schedule is done
      *  in the director class, so this method does not test
      *  for the validation of the schedule.
      */
