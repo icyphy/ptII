@@ -147,7 +147,7 @@ public class ImageDisplay extends Sink implements Placeable {
 
                 if (_picture != null)
                     _container.remove(_picture);
-                
+
                 _picture = new Picture(xsize, ysize);
                 _picture.setImage(image);
                 _picture.setBackground(null);
@@ -161,7 +161,7 @@ public class ImageDisplay extends Sink implements Placeable {
                     c.invalidate();
                     c.validate();
                     c = c.getParent();
-            
+
                 }
                 if (_frame != null) {
                     _frame.pack();

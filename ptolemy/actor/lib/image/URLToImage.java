@@ -49,7 +49,7 @@ import javax.swing.ImageIcon;
 //////////////////////////////////////////////////////////////////////////
 //// ImageReader
 /**
-An actor that reads a String input token naming a URL and outputs an 
+An actor that reads a String input token naming a URL and outputs an
 Object Token that contains a java.awt.Image
 
 <p>It is possible to load a file
@@ -90,7 +90,7 @@ public class URLToImage extends Transformer {
     ////                         public methods                    ////
 
     /** Read on StringToken from the input, and output an ObjectToken
-     *  that contains a java.awt.Image object to the output port.        
+     *  that contains a java.awt.Image object to the output port.
      *  @exception IllegalActionException If there's no director.
      */
     public void fire() throws IllegalActionException {
