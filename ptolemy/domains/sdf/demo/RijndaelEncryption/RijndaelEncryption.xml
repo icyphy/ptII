@@ -327,7 +327,7 @@ internal models.
             </property>
         </port>
         <class name="Sbox" extends="ptolemy.actor.lib.LookupTable">
-            <property name="table" class="ptolemy.data.expr.Parameter" value="eval(readFile(&quot;sbox.txt&quot;))">
+            <property name="table" class="ptolemy.data.expr.Parameter" value="eval(readFile(&quot;ptolemy/domains/sdf/demo/RijndaelEncryption/sbox.txt&quot;))">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 115.0]">
             </property>
