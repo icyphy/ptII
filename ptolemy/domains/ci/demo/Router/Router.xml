@@ -2,9 +2,9 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Router" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.0-beta">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[718, 570]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[655, 502]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[44, -14]">
     </property>
@@ -49,7 +49,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="395.0, 175.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="390.0, 175.0">
         </property>
     </property>
     <property name="3:2:1:annotation" class="ptolemy.kernel.util.Attribute">
@@ -69,7 +69,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="395.0, 315.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="395.0, 295.0">
         </property>
     </property>
     <property name="4:1:annotation" class="ptolemy.kernel.util.Attribute">
@@ -89,10 +89,10 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="520.0, 195.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="505.0, 195.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={45, 19, 933, 679}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={43, 60, 870, 620}}">
     </property>
     <property name="1:annotation2" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -131,7 +131,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="465.0, 215.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="440.0, 220.0">
         </property>
     </property>
     <property name="1:annotation4" class="ptolemy.kernel.util.Attribute">
@@ -151,7 +151,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="480.0, 365.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="440.0, 355.0">
         </property>
     </property>
     <property name="1:annotation5" class="ptolemy.kernel.util.Attribute">
@@ -171,7 +171,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="270.0, 200.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="245.0, 170.0">
         </property>
     </property>
     <property name="1:annotation6" class="ptolemy.kernel.util.Attribute">
@@ -191,7 +191,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="310.0, 240.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="280.0, 235.0">
         </property>
     </property>
     <property name="1:annotation7" class="ptolemy.kernel.util.Attribute">
@@ -211,7 +211,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="275.0, 305.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="250.0, 340.0">
         </property>
     </property>
     <property name="4:1:annotation3" class="ptolemy.kernel.util.Attribute">
@@ -231,7 +231,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="530.0, 340.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="510.0, 330.0">
         </property>
     </property>
     <property name="4:1:annotation2" class="ptolemy.kernel.util.Attribute">
@@ -251,7 +251,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="355.0, 130.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="230.0, 115.0">
         </property>
     </property>
     <property name="4:1:annotation4" class="ptolemy.kernel.util.Attribute">
@@ -271,7 +271,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="410.0, 365.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="345.0, 395.0">
         </property>
     </property>
     <property name="annotation" class="ptolemy.kernel.util.Attribute">
@@ -291,7 +291,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="0.0, 525.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="0.0, 465.0">
         </property>
     </property>
     <property name="annotation2" class="ptolemy.kernel.util.Attribute">
@@ -316,11 +316,11 @@ help it make decisions.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="400.0, 20.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="325.0, 15.0">
         </property>
     </property>
     <entity name="channel1" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="665.0, 200.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="600.0, 200.0">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
@@ -382,7 +382,7 @@ help it make decisions.</text></svg></configure>
             </property>
             <property name="title" class="ptolemy.kernel.util.StringAttribute" value="Packets from the Fast Interface">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={9, 11, 292, 222}}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={725, 119, 290, 227}}">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="455.0, 180.0">
             </property>
@@ -408,7 +408,7 @@ help it make decisions.</text></svg></configure>
         <link port="Display.input" relation="relation3"/>
     </entity>
     <entity name="channel2" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="670.0, 345.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="600.0, 330.0">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
@@ -470,7 +470,7 @@ help it make decisions.</text></svg></configure>
             </property>
             <property name="title" class="ptolemy.kernel.util.StringAttribute" value="Packets from the Slow Interface">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={9, 232, 292, 222}}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={725, 489, 290, 227}}">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="455.0, 180.0">
             </property>
@@ -503,7 +503,7 @@ help it make decisions.</text></svg></configure>
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, 265.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 265.0">
         </property>
         <property name="period" class="ptolemy.data.expr.Parameter" value="200">
         </property>
@@ -525,25 +525,6 @@ help it make decisions.</text></svg></configure>
         </port>
     </entity>
     <entity name="MonitorValue - q1 length" class="ptolemy.actor.lib.MonitorValue">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="8">
-        </property>
-        <doc>Monitor and display values</doc>
-        <property name="_icon" class="ptolemy.vergil.icon.UpdatedValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="10">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="305.0, 80.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="push" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-        </port>
-    </entity>
-    <entity name="MonitorValue - q2 length" class="ptolemy.actor.lib.MonitorValue">
         <property name="value" class="ptolemy.data.expr.Parameter" value="7">
         </property>
         <doc>Monitor and display values</doc>
@@ -553,7 +534,26 @@ help it make decisions.</text></svg></configure>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="10">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="310.0, 445.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="230.0, 80.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="push" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+        </port>
+    </entity>
+    <entity name="MonitorValue - q2 length" class="ptolemy.actor.lib.MonitorValue">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="8">
+        </property>
+        <doc>Monitor and display values</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.UpdatedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="225.0, 435.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -569,9 +569,9 @@ help it make decisions.</text></svg></configure>
         </property>
         <property name="title" class="ptolemy.kernel.util.StringAttribute" value="Dropped Packets">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={8, 454, 292, 222}}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={30, 481, 290, 223}}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="405.0, 285.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="365.0, 265.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -585,7 +585,7 @@ help it make decisions.</text></svg></configure>
         </property>
         <property name="maxMark" class="ptolemy.data.expr.Parameter" value="20">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="270.0, 265.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="205.0, 265.0">
         </property>
         <port name="q1Length" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -609,7 +609,7 @@ help it make decisions.</text></svg></configure>
         </port>
     </entity>
     <entity name="Interface - fast" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="505.0, 200.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="475.0, 200.0">
         </property>
         <property name="period" class="ptolemy.data.expr.Parameter" value="250">
         </property>
@@ -671,7 +671,7 @@ help it make decisions.</text></svg></configure>
         <link port="Sleep.output" relation="relation2"/>
     </entity>
     <entity name="Interface - slow" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="515.0, 345.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="475.0, 330.0">
         </property>
         <property name="period" class="ptolemy.data.expr.Parameter" value="1000">
         </property>
@@ -733,7 +733,7 @@ help it make decisions.</text></svg></configure>
         <link port="Sleep.output" relation="relation2"/>
     </entity>
     <entity name="Queue1" class="ptolemy.domains.ci.lib.Queue">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="370.0, 200.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="335.0, 200.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -750,7 +750,7 @@ help it make decisions.</text></svg></configure>
         </port>
     </entity>
     <entity name="Queue2" class="ptolemy.domains.ci.lib.Queue">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="380.0, 355.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="350.0, 340.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -765,7 +765,7 @@ help it make decisions.</text></svg></configure>
         </port>
     </entity>
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="220.0, 395.0">
+        <vertex name="vertex1" value="165.0, 395.0">
         </vertex>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
@@ -777,7 +777,7 @@ help it make decisions.</text></svg></configure>
     <relation name="relation13" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation14" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="225.0, 115.0">
+        <vertex name="vertex1" value="165.0, 115.0">
         </vertex>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
