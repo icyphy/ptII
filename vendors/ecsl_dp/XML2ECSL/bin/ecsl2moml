@@ -164,7 +164,7 @@ awk 'BEGIN {
     map["Goto"] = "ptolemy.actor.lib.Stop"
     map["Ground"] = "ptolemy.actor.lib.Discard"
     map["Integrator"] = "ptolemy.domains.ct.lib.Integrator"
-    map["Logic"] = "ptolemy.actor.lib.Logic"
+    map["Logic"] = "ptolemy.actor.lib.logic.LogicFunction"
     map["Merge"] = "ptolemy.domains.de.lib.Merge"
     # FIXME: should be Minimum or Maximum 
     map["MinMax"] = "ptolemy.actor.lib.Maximum"
@@ -272,10 +272,16 @@ $1 ~ /<entity/ {
        indent = substr($0, 0, index($0,"<") - 1)  
 
        print indent "<port name=\"" name "\" class=\"ptolemy.actor.TypedIOPort\">"
+       if ($1 ~ /<OutputPort/) {
+           print "<property name=\"output\"/>"
+       } else if ($1 ~ /<InputPort/) {
+           print "<property name=\"input\"/>"
+       }  
        if (index(relation, " ") != 0) {
            # The relation name has spaces in it, so this is a multiport
            print indent "    <property name=\"multiport\"/>"
        }
+
        print indent "</port>"
 
  
