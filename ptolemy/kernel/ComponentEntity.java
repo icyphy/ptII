@@ -248,6 +248,8 @@ public class ComponentEntity extends Entity {
                     Port port = (Port)ports.next();
                     port.unlinkAll();
                 }
+            } else {
+                container._finishedAddEntity(this);
             }
             // Validate all deeply contained settables, since
             // they may no longer be valid in the new context.
