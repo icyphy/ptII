@@ -49,7 +49,7 @@ import javax.swing.JPanel;
 //// SquareWaveResponse
 /**
 The square wave response of a second order CT system. This simple
-CT system demonstrate the use of ODE solvers and domain polymorephic
+CT system demonstrate the use of ODE solvers and domain polymorphic
 actors in the CT domain.
 The solvers are not allowed to change during the execution.
 It is also useful for correctness and performance testing.
