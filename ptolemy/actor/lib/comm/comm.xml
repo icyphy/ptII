@@ -1,17 +1,19 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="comm" class="ptolemy.moml.EntityLibrary">
+<entity name="communications" class="ptolemy.moml.EntityLibrary">
   <configure>
     <?moml
       <group>
-<doc>Communcation Actors</doc>
 
-<!-- entity name="SerialComm"
-        class="ptolemy.actor.lib.comm.SerialComm" -->
-<!-- /entity -->
+<entity name="HadamardCode" class="ptolemy.actor.lib.comm.HadamardCode"/>
+<entity name="LineCoder" class="ptolemy.domains.sdf.lib.LineCoder"/>
+<entity name="LMSAdaptive" class="ptolemy.domains.sdf.lib.LMSAdaptive"/>
+<entity name="RaisedCosine" class="ptolemy.domains.sdf.lib.RaisedCosine"/>
 
       </group>
     ?>
   </configure>
 </entity>
+
+
