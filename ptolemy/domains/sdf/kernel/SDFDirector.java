@@ -396,6 +396,22 @@ public class SDFDirector extends StaticSchedulingDirector {
         return super.postfire();
     }
 
+    /** (non-Javadoc)
+     *  @see ptolemy.actor.Director#suggestedModalModelDirectors()
+     */
+    public String[] suggestedModalModelDirectors() {
+        // This method does not call the method defined in the super class,
+        // because this method provides complete new information. 
+        // Default is a NonStrictFSMDirector, while FSMDirector is also 
+        // in the array.
+        String[] defaultSuggestions = 
+            {"ptolemy.domains.hdf.kernel.HDFFSMDirector"};
+        defaultSuggestions[1] = "ptolemy.domains.fsm.kernel.FSMDirector";
+        defaultSuggestions[2] = 
+            "ptolemy.domains.fsm.kernel.MultirateFSMDirector";
+        return defaultSuggestions;
+    }
+    
     /** Override the base class method to transfer enough tokens to
      *  complete an internal iteration.  If there are not enough tokens,
      *  then throw an exception.  If the port is not connected on the

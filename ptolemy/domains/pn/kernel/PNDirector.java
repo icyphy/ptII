@@ -292,6 +292,20 @@ public class PNDirector extends CompositeProcessDirector {
         _processListeners.remove(listener);
     }
 
+    /** (non-Javadoc)
+     *  @see ptolemy.actor.Director#suggestedModalModelDirectors()
+     */
+    public String[] suggestedModalModelDirectors() {
+        // This method does not call the method defined in the super class,
+        // because this method provides complete new information. 
+        // Default is a NonStrictFSMDirector, while FSMDirector is also 
+        // in the array.
+        String[] defaultSuggestions = 
+            {"ptolemy.domains.fsm.kernel.MultirateFSMDirector"};
+        defaultSuggestions[1] = "ptolemy.domains.fsm.kernel.FSMDirector";
+        return defaultSuggestions;
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 

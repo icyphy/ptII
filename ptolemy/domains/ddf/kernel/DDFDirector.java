@@ -510,6 +510,22 @@ public class DDFDirector extends Director {
         _isTypeResolutionDisabled = flag;
     }
 
+    /** (non-Javadoc)
+     *  @see ptolemy.actor.Director#suggestedModalModelDirectors()
+     */
+    public String[] suggestedModalModelDirectors() {
+        // This method does not call the method defined in the super class,
+        // because this method provides complete new information. 
+        // Default is a NonStrictFSMDirector, while FSMDirector is also 
+        // in the array.
+        String[] defaultSuggestions = 
+            {"ptolemy.domains.fsm.kernel.MultirateFSMDirector"};
+        defaultSuggestions[1] = "ptolemy.domains.fsm.kernel.FSMDirector";
+        defaultSuggestions[2] = 
+            "ptolemy.domains.hdf.kernel.HDFFSMDirector";
+        return defaultSuggestions;
+    }
+    
     /** Override the base class method to transfer enough tokens manually
      *  specified in the tokenConsumptionRate parameter of the port (the
      *  default is 1) to complete an internal iteration.  If there are not

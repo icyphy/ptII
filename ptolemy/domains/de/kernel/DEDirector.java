@@ -1039,6 +1039,21 @@ public class DEDirector extends Director implements TimedDirector {
         super.stopFire();
     }
 
+    /** (non-Javadoc)
+     *  @see ptolemy.actor.Director#suggestedModalModelDirectors()
+     */
+    public String[] suggestedModalModelDirectors() {
+        // This method does not call the method defined in the super class,
+        // because this method provides complete new information. 
+        // Default is a NonStrictFSMDirector, while FSMDirector is also 
+        // in the array.
+        String[] defaultSuggestions = 
+            {"ptolemy.domains.fsm.kernel.FSMDirector"};
+        defaultSuggestions[1] = 
+            "ptolemy.domains.fsm.kernel.MultirateFSMDirector";
+        return defaultSuggestions;
+    }
+    
     // FIXME: Why do we need an overridden transferOutputs method?
     // transfer all tokens at boundaries of hierarchies.
     // Do we need an overridden transferInputs method?

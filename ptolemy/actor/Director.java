@@ -1056,6 +1056,17 @@ public class Director extends Attribute implements Executable {
         }
     }
 
+    /** Return an array of suggested directors to use with
+     *  ModalModel. Each director is specified by its full class
+     *  name.  The first director in the array will be the default
+     *  director used by a modal model.
+     */
+    public String[] suggestedModalModelDirectors() {
+       // Default is just one suggestion.
+       String[] defaultSuggestions = {"ptolemy.domains.fsm.kernel.FSMDirector"};
+       return defaultSuggestions;
+    }
+
     /** Terminate any currently executing model with extreme prejudice.
      *  This method is not intended to be used as a normal route of
      *  stopping execution. To normally stop execution, call the finish()
@@ -1241,7 +1252,7 @@ public class Director extends Attribute implements Executable {
 
     /** Indicator that a stop has been requested by a call to stop(). */
     protected boolean _stopRequested = false;
-
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -1270,5 +1281,4 @@ public class Director extends Attribute implements Executable {
                 "Cannot set parameter:\n" + e.getMessage());
         }
     }
-
 }
