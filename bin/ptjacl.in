@@ -31,7 +31,7 @@
 
 # If this script is named 'ptjacl' or 'ptjaclapp' don't edit it!
 # instead, edit ptjacl.in and run configure
-# 
+#
 # configure substitutes in variables that are surrounded with @,
 #
 

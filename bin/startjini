@@ -69,11 +69,11 @@ else
 		if [ -d $TMP_DIR ]; then
 		    echo "TMP_DIR = '$TMP_DIR'"
 		    break
-		fi	
-    	    done	
+		fi
+    	    done
 	    ;;
 	*)
-	    TMP_DIR="/tmp/"  
+	    TMP_DIR="/tmp/"
 	    ;;
 	esac
 fi

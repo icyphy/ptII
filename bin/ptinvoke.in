@@ -30,7 +30,7 @@
 
 # If this script is named 'ptolemy', 'ptplot', or 'vergil', don't edit it!
 # instead, edit ptinvoke.in and run configure
-# 
+#
 # configure substitutes in variables that are surrounded with @,
 #
 
@@ -48,20 +48,20 @@ if [ -z "$PTII" ]; then
     if [ ! -d "$PTII/$javasourcedir" ]; then
 	echo "$0: Could not find '$PTII/$javasourcedir'.  Perhaps your PTII"
 	echo " variable is not set properly?"
-    fi	
+    fi
 fi
 
 # Default JDK Home
 PTJAVA_DIR="@PTJAVA_DIR@"
 
 # Java CLASSPATH separator
-# For Unix, this would be : 
+# For Unix, this would be :
 # For Cygwin, this would be ;
 CLASSPATHSEPARATOR="@CLASSPATHSEPARATOR@"
 
 #### Jini stuff.
 # Jini directory
-JINI_DIR=@JINI_DIR@ 
+JINI_DIR=@JINI_DIR@
 
 # Jini lib directory
 JINI_LIB_DIR=$JINI_DIR/lib
@@ -83,7 +83,7 @@ PTJACL_JAR=@PTJACL_JAR@
 PTJACL_JFLAG=@PTJACL_JFLAG@
 
 #### Serial port stuff
-# Directory that contains the Java Serial Comm API, see 
+# Directory that contains the Java Serial Comm API, see
 # http://java.sun.com/products/javacomm/
 COMMAPI_DIR=@COMMAPI_DIR@
 
@@ -92,7 +92,7 @@ COMMAPI_PRESENT=@COMMAPI_PRESENT@
 
 # The location of comm.jar
 COMMAPI_JAR=""
-if [ "$COMMAPI_PRESENT" ]; then 
+if [ "$COMMAPI_PRESENT" ]; then
     COMMAPI_JAR="${CLASSPATHSEPARATOR}${COMMAPI_DIR}/comm.jar"
 fi
 
@@ -172,7 +172,7 @@ case "`basename $0`" in
 	;;
     ptstartjini)
 	# Ptolemy II Application that starts up Jini
-	javastartupclass=com.sun.jini.example.service.StartService 
+	javastartupclass=com.sun.jini.example.service.StartService
 	javasourcedir=ptolemy/actor/gui
 	jarfile=$JINI_LIB_DIR/jini-examples.jar
 	case "${OSTYPE-no}" in
@@ -180,7 +180,7 @@ case "`basename $0`" in
 		JINI_ROOT_DIR=`echo $JINI_DIR | sed 's@/@\\\\@g' | sed 's/jini1_0_1//'`
 		javaflag="-Dcom.sun.jini.example.service.rootDir=$JINI_ROOT_DIR"
 	    ;;
-	    *)    
+	    *)
 		JINI_ROOT_DIR=`echo $JINI_DIR | sed 's/jini1_0_1//'`
 		javaflag="-Dcom.sun.jini.example.service.rootDir=$JINI_ROOT_DIR"
 	    ;;
