@@ -236,7 +236,8 @@ public class Graph {
         Integer v = (Integer)(_nodeIdTable.get(o));
         if (v == null) {
             throw new IllegalArgumentException("Graph._getNodeId: " +
-                    "the specified Object is not a node in this graph.");
+                    "the object \"" + o.toString() +
+                    "\" is not a node in this graph.");
         }
 
         return v.intValue();
