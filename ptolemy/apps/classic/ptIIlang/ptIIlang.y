@@ -1150,7 +1150,7 @@ void genPort ()
 		/* NOTREACHED */
 		break;
 	}
-	sprintf (str2, "        %s = new TypedIOPort(this, \"%s\", %s);\n", portName, portName, str1);
+	sprintf (str2, "        %s = new ClassicPortPort(this, \"%s\", %s);\n", portName, portName, str1);
 	strcat (javaConsStuff, str2);
 
 	if (portMulti) {
@@ -1186,7 +1186,7 @@ void genPort ()
         }
 	sprintf (str2, "     */\n"); 
 	strcat (javaPortsAndParameters, str2);
-	sprintf (str2, "    public TypedIOPort %s;\n", portName); 
+	sprintf (str2, "    public ClassicPort %s;\n", portName); 
 	strcat (javaPortsAndParameters, str2);
 
 	if (portAttrib) {
@@ -1579,6 +1579,24 @@ void convertConstCharToString( src_in)
     }
 }
 
+// rename methods
+void renameMethod( src_in, dst_in)
+    char *src_in, *dst_in;
+{
+    // FIXME: make this be table driven
+    if (strcmp(src_in, "go") == 0) {
+        strcpy(dst_in, "generateFireCode");
+        return;
+    } else if (strcmp(src_in, "initCode") == 0) {
+        strcpy(dst_in, "generatePreinitializeCode");
+        return;
+    } else if (strcmp(src_in, "setup") == 0) {
+	strcpy(dst_in, "generateInitializeCode");
+        return;
+    }
+    strcpy(dst_in, src_in);
+}
+
 void genMethod( fp, src)
     FILE *fp;
     char *src;
@@ -1961,10 +1979,10 @@ void genDef ()
 	//fprintf (fp, "#include \"%s.h\"\n", fullClass);
 	// FIXME: The package hardwired in
 	fprintf (fp, "package ptolemy.domains.sdf.cgc.lib;\n\n");
-	fprintf (fp, "import ptolemy.actor.TypedAtomicActor;\n");
-	fprintf (fp, "import ptolemy.actor.TypedIOPort;\n");
 	fprintf (fp, "import ptolemy.data.expr.Parameter;\n");
 	fprintf (fp, "import ptolemy.data.type.BaseType;\n");
+	fprintf (fp, "import ptolemy.codegen.kernel.ClassicCGCActor;\n");
+	fprintf (fp, "import ptolemy.codegen.kernel.ClassicPort;\n");
 	fprintf (fp, "import ptolemy.kernel.CompositeEntity;\n");
 	fprintf (fp, "import ptolemy.kernel.util.IllegalActionException;\n");
 	fprintf (fp, "import ptolemy.kernel.util.NameDuplicationException;\n");
@@ -2032,7 +2050,7 @@ void genDef ()
 	//	fullClass, fullClass);
 	//fprintf (fp, "\nISA_FUNC(%s,%s);\n",fullClass,baseClass);
 
-	fprintf(fp, "public class %s extends TypedAtomicActor {\n", fullClass);
+	fprintf(fp, "public class %s extends ClassicCGCActor {\n", fullClass);
 	fprintf(fp, "    /** Construct an actor in the specified container with the specified\n");
 	fprintf(fp, "     *  name.\n");
 	fprintf(fp, "     *  @param container The container.\n");
@@ -2112,8 +2130,9 @@ void genDef ()
 		    fprintf (fp, "     */\n");
 		    strcpy (str1, codeType[i]);
 		    convertConstCharToString(str1);
+		    renameMethod(codeFuncName[i], str2);
 		    fprintf (fp, "    public %s %s() {\n    %s\n",
-		      str1, codeFuncName[i], dst2);
+		      str1, str2, dst2);
 		    if (strncmp(codeType[i], "void", 4) != 0) { 
 			    fprintf (fp, "        // Dummy return value.\n");
 			    char returnValue[SMALLBUFSIZE];
