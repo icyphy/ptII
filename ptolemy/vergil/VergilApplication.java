@@ -105,7 +105,6 @@ public class VergilApplication extends MoMLApplication {
      */
     public VergilApplication(String args[]) throws Exception {
 	super(args);
-
         // Create register an error handler with the parser so that
         // MoML errors are tolerated more than the default.
         _parser.setErrorHandler(new VergilErrorHandler());
@@ -123,6 +122,9 @@ public class VergilApplication extends MoMLApplication {
 	    new VergilApplication(args);
         } catch (Exception ex) {
             MessageHandler.error("Command failed", ex);
+            System.exit(0);
+        } catch (Error ex2) {
+            MessageHandler.error("Command failed" + ex2.toString());
             System.exit(0);
         }
 
@@ -235,8 +237,17 @@ public class VergilApplication extends MoMLApplication {
         //
         // Use StringUtilities.getProperty() so we get the proper
         // canonical path
+
+	// FIXME: If the name is something like
+	// "vergilUserLibrary.xml" then when we save an actor in the
+	// library and then save the window that comes up the name of
+	// entity gets set to vergilUserLibrary instead of the value
+	// of VERGIL_USER_LIBRARY_NAME.  This causes problems when we
+	// try to save another file.  The name of the entity gets
+	// changed by the saveAs code.
+
         String libraryName = StringUtilities.preferencesDirectory()
-            + "vergilUserLibrary.xml";
+	    + BasicGraphFrame.VERGIL_USER_LIBRARY_NAME + ".xml";
         System.out.print("Opening user library " + libraryName + "...");
         File file = new File(libraryName);
         if(!file.isFile() || !file.exists()) {
