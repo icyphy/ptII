@@ -63,20 +63,21 @@ import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// GiottoCodeGenerator
-/* The Giotto Code Generator has been changed from the earlier generator
- * implemented by Haiyang and Steve in the following respect :-
- * 
- *  Any and all unconnected ports are ignored. This includes :
- *   a. Removal of its mention in the output drivers
- *   b. Removal of its mention in task (...) output (...)
- *   c. Removal of driver code for tasks without inputs
- */
-
 /**
    This attribute is a visible attribute that when configured (by double
    clicking on it or by invoking Configure in the context menu) it generates
    Giotto code and displays it a text editor.  It is up to the user to save
    the Giotto code in an appropriate file, if necessary.
+
+   <p>The Giotto Code Generator has been changed from the earlier generator
+  implemented by Haiyang and Steve in the following respect :-
+
+   <p>Any and all unconnected ports are ignored. This includes :
+   <ol>
+   <li> Removal of its mention in the output drivers
+   <li> Removal of its mention in task (...) output (...)
+   <li> Removal of driver code for tasks without inputs
+   </ol>
 
    @author Edward A. Lee, Steve Neuendorffer, Haiyang Zheng
    @version $Id$
@@ -84,7 +85,6 @@ import ptolemy.util.StringUtilities;
    @Pt.ProposedRating Red (eal)
    @Pt.AcceptedRating Red (johnr)
 */
-
 public class GiottoCodeGenerator extends Attribute {
 
     /** Construct a factory with the default workspace and "" as name.
