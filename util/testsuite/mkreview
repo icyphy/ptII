@@ -105,7 +105,7 @@ fi
 cd ..
 
 # Generate PostScript of the code
-enscript -G2rp - $shortfiles > javafiles.ps
+enscript -Grp - $shortfiles > javafilesup.ps
 psnup -n 2 < javafiles.ps > javafiles2up.ps
 
 # Generate PDF
