@@ -40,7 +40,7 @@ import ptolemy.actor.gui.PtolemyFrame;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TableauFactory;
 import ptolemy.gui.MessageHandler;
-import ptolemy.kernel.util.KernelException;
+import ptolemy.kernel.util.KernelRuntimeException;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -171,16 +171,16 @@ public class TclShellTableau extends Tableau {
 				      "TclShellTableau");
 		    } catch (NoClassDefFoundError noClassDefFoundError) {
 			// Catch the error here.
-			RuntimeException runtimeException =
-			    new RuntimeException(KernelException
-                                    .stackTraceToString(noClassDefFoundError));
+			KernelRuntimeException kernelRuntimeException =
+			    new KernelRuntimeException(this, null,
+                                    noClassDefFoundError, null);
 			// MessageHandler.error() does not take an Error
 			// argument as the second argument, so we create
-			// a RuntimeException.
+			// a KernelRuntimeException.
                         MessageHandler.error("Cannot create TclShellTableau. "
 					     + "Perhaps $PTII/lib/ptjacl.jar "
 					     + "is not in your path?: ",
-					     runtimeException);
+					     kernelRuntimeException);
 
 		    }
                 }
