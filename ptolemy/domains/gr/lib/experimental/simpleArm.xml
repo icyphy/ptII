@@ -7,8 +7,8 @@
         </property>
         <property name="iteration time upper bound" class="ptolemy.data.expr.Parameter" value="33">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
-        </rendition>
+        <property name="_location" class="ptolemy.moml.Location" value="492.0, 315.0">
+        </property>
     </property>
     <entity name="ViewScreen2" class="ptolemy.domains.gr.lib.ViewScreen">
         <property name="horizontal resolution" class="ptolemy.data.expr.Parameter" value="600">
@@ -33,19 +33,17 @@
             <property name="style0" class="ptolemy.actor.gui.style.CheckBoxStyle">
             </property>
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="517.0, 101.0"/>
-        </rendition>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
+        <property name="_location" class="ptolemy.moml.Location" value="480.99998474121094, 65.0">
+        </property>
+        <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
         </port>
     </entity>
     <entity name="KeyInput0" class="ptolemy.domains.gr.lib.experimental.KeyInput">
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="63.0, 106.0"/>
-        </rendition>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
+        <property name="_location" class="ptolemy.moml.Location" value="89.0, 71.0">
+        </property>
+        <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
         <port name="keycode" class="ptolemy.actor.TypedIOPort">
@@ -68,58 +66,52 @@
             </property>
             <property name="binCountFactor" class="ptolemy.data.expr.Parameter" value="2">
             </property>
+            <property name="_location" class="ptolemy.moml.Location" value="92.71429443359375, 28.0">
+            </property>
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
-            <location value="241.0, 201.0"/>
-        </rendition>
+        <property name="_location" class="ptolemy.moml.Location" value="234.0, 128.0">
+        </property>
         <port name="port17" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location0" class="ptolemy.moml.Location">
-                <location value="528.0, 149.0"/>
+            <property name="_location0" class="ptolemy.moml.Location" value="505.7142791748047, 75.00000190734863">
             </property>
         </port>
         <port name="port0" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location0" class="ptolemy.moml.Location">
-                <location value="538.0, 264.0"/>
+            <property name="_location0" class="ptolemy.moml.Location" value="505.7142791748047, 135.00000381469727">
             </property>
         </port>
         <port name="port1" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location0" class="ptolemy.moml.Location">
-                <location value="533.0, 200.0"/>
+            <property name="_location0" class="ptolemy.moml.Location" value="505.7142791748047, 195.0">
             </property>
         </port>
         <port name="port2" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location0" class="ptolemy.moml.Location">
-                <location value="536.0, 322.0"/>
+            <property name="_location0" class="ptolemy.moml.Location" value="505.7142791748047, 255.00000762939453">
             </property>
         </port>
         <port name="port3" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location0" class="ptolemy.moml.Location">
-                <location value="530.0, 380.0"/>
+            <property name="_location0" class="ptolemy.moml.Location" value="505.7142791748047, 315.00001525878906">
             </property>
         </port>
         <port name="port4" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location0" class="ptolemy.moml.Location">
-                <location value="21.0, 37.0"/>
+            <property name="_location0" class="ptolemy.moml.Location" value="55.28571701049805, 149.0">
             </property>
         </port>
         <entity name="LookUpTable0" class="ptolemy.domains.gr.lib.experimental.LookUpTable">
             <property name="indexes" class="ptolemy.data.expr.Parameter" value="[97,100,101,102,103,113,114,115,116,119]">
             </property>
-            <property name="values" class="ptolemy.data.expr.Parameter" value="[0.0,2.0,2.0,3.0,4.0,0.0,3.0,1.0,4.0,1.0]">
+            <property name="values" class="ptolemy.data.expr.Parameter" value="[0.0,1.0,1.0,3.0,4.0,0.0,3.0,2.0,4.0,2.0]">
             </property>
             <property name="order" class="ptolemy.data.expr.Parameter" value="0">
             </property>
             <property name="interpolate values" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="201.0, 324.0"/>
-            </rendition>
+            <property name="_location" class="ptolemy.moml.Location" value="298.0, 242.0">
+            </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
@@ -128,9 +120,8 @@
             </port>
         </entity>
         <entity name="Switch0" class="ptolemy.domains.gr.lib.experimental.Switch">
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="428.0, 242.0"/>
-            </rendition>
+            <property name="_location" class="ptolemy.moml.Location" value="437.1428527832031, 225.0">
+            </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
@@ -143,9 +134,8 @@
             </port>
         </entity>
         <entity name="Select1" class="ptolemy.domains.gr.lib.experimental.Select">
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="342.0, 194.0"/>
-            </rendition>
+            <property name="_location" class="ptolemy.moml.Location" value="433.5714416503906, 120.0">
+            </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
@@ -166,9 +156,8 @@
             </property>
             <property name="interpolate values" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="201.0, 250.0"/>
-            </rendition>
+            <property name="_location" class="ptolemy.moml.Location" value="292.0, 162.0">
+            </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
@@ -179,10 +168,9 @@
         <entity name="Const30" class="ptolemy.actor.lib.Const">
             <property name="value" class="ptolemy.data.expr.Parameter" value="PI/171">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="194.0, 126.0"/>
-            </rendition>
             <doc>Create a constant sequence</doc>
+            <property name="_location" class="ptolemy.moml.Location" value="296.0, 86.0">
+            </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
@@ -194,10 +182,9 @@
         <entity name="Const31" class="ptolemy.actor.lib.Const">
             <property name="value" class="ptolemy.data.expr.Parameter" value="-PI/171">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="194.0, 185.0"/>
-            </rendition>
             <doc>Create a constant sequence</doc>
+            <property name="_location" class="ptolemy.moml.Location" value="295.0, 35.0">
+            </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
@@ -207,9 +194,8 @@
             </port>
         </entity>
         <entity name="AddSubtract1" class="ptolemy.actor.lib.AddSubtract">
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="71.0, 83.0"/>
-            </rendition>
+            <property name="_location" class="ptolemy.moml.Location" value="128.8571434020996, 151.0">
+            </property>
             <port name="plus" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
@@ -223,15 +209,13 @@
             </port>
         </entity>
         <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex0" class="ptolemy.moml.Vertex">
-                <location value="110.0, 168.0"/>
+            <vertex name="vertex0" class="ptolemy.moml.Vertex" value="199.42857360839844, 156.0">
             </vertex>
         </relation>
         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation21" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex0" class="ptolemy.moml.Vertex">
-                <location value="342.0, 300.0"/>
+            <vertex name="vertex0" class="ptolemy.moml.Vertex" value="360.5714416503906, 248.0">
             </vertex>
         </relation>
         <relation name="relation29" class="ptolemy.actor.TypedIORelation">
@@ -281,22 +265,11 @@
         <link port="AddSubtract1.output" relation="relation9"/>
     </class>
     <class name="robot arm" extends="ptolemy.actor.TypedCompositeActor">
-        <property name="GR" class="ptolemy.domains.gr.kernel.GRDirector">
-            <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="iteration time upper bound" class="ptolemy.data.expr.Parameter" value="33">
-            </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
-                <location value="548.0, 30.25"/>
-            </rendition>
+        <property name="_location" class="ptolemy.moml.Location" value="350.0000009536743, 128.75">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
-            <location value="379.0000009536743, 200.75"/>
-        </rendition>
         <port name="out" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location0" class="ptolemy.moml.Location">
-                <location value="532.0, 103.0"/>
+            <property name="location1" class="ptolemy.moml.Location" value="532.0, 103.0">
             </property>
             <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
             </property>
@@ -305,8 +278,7 @@
         </port>
         <port name="baseAngle" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location0" class="ptolemy.moml.Location">
-                <location value="22.0, 131.0"/>
+            <property name="location1" class="ptolemy.moml.Location" value="22.0, 131.0">
             </property>
             <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
             </property>
@@ -315,8 +287,7 @@
         </port>
         <port name="lowerAngle" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location0" class="ptolemy.moml.Location">
-                <location value="25.0, 207.0"/>
+            <property name="location1" class="ptolemy.moml.Location" value="25.0, 207.0">
             </property>
             <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
             </property>
@@ -325,8 +296,7 @@
         </port>
         <port name="upperAngle" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location0" class="ptolemy.moml.Location">
-                <location value="23.0, 274.0"/>
+            <property name="location1" class="ptolemy.moml.Location" value="23.0, 274.0">
             </property>
             <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
             </property>
@@ -335,8 +305,7 @@
         </port>
         <port name="wristAngle" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location0" class="ptolemy.moml.Location">
-                <location value="26.0, 361.0"/>
+            <property name="location1" class="ptolemy.moml.Location" value="26.0, 361.0">
             </property>
             <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
             </property>
@@ -354,14 +323,13 @@
             </property>
             <property name="zScale" class="ptolemy.data.expr.Parameter" value="1.0">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="417.0, 43.0"/>
-            </rendition>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="_location" class="ptolemy.moml.Location" value="417.0, 43.0">
+            </property>
+            <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
             </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
+            <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
             <port name="scale input" class="ptolemy.actor.TypedIOPort">
@@ -369,23 +337,11 @@
             </port>
         </entity>
         <class name="lower limb12" extends="ptolemy.actor.TypedCompositeActor">
-            <property name="DD3D" class="ptolemy.domains.gr.kernel.GRDirector">
-                <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-                <property name="iteration time upper bound" class="ptolemy.data.expr.Parameter" value="33">
-                </property>
-                <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
-                </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
-                </rendition>
+            <property name="_location" class="ptolemy.moml.Location" value="100.0, 166.0">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
-                <location value="100.0, 166.0"/>
-            </rendition>
             <port name="port10" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="_location0" class="ptolemy.moml.Location">
-                    <location value="555.0, 154.0"/>
+                <property name="location1" class="ptolemy.moml.Location" value="555.0, 154.0">
                 </property>
                 <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
@@ -407,9 +363,11 @@
                 </property>
                 <property name="slices" class="ptolemy.data.expr.Parameter" value="32">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="72.0, 33.0"/>
-                </rendition>
+                <property name="_location" class="ptolemy.moml.Location" value="72.0, 30.0">
+                </property>
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
@@ -427,9 +385,11 @@
                 </property>
                 <property name="slices" class="ptolemy.data.expr.Parameter" value="32">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="71.0, 87.0"/>
-                </rendition>
+                <property name="_location" class="ptolemy.moml.Location" value="72.0, 84.0">
+                </property>
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
@@ -443,18 +403,24 @@
                 </property>
                 <property name="pivot location" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="145.0, 89.0"/>
-                </rendition>
+                <property name="_location" class="ptolemy.moml.Location" value="145.0, 89.0">
+                </property>
+                <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="multiport"/>
+                </port>
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+                <port name="angle" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
                 </port>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
-                </port>
-                <port name="angle" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
                 </port>
             </entity>
             <entity name="Box6" class="ptolemy.domains.gr.lib.Box3D">
@@ -470,9 +436,11 @@
                 </property>
                 <property name="zWidth" class="ptolemy.data.expr.Parameter" value="3.625">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="63.0, 135.0"/>
-                </rendition>
+                <property name="_location" class="ptolemy.moml.Location" value="60.0, 141.0">
+                </property>
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
@@ -486,24 +454,29 @@
                 </property>
                 <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="-3.625">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="234.0, 100.0"/>
-                </rendition>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="234.0, 94.0">
+                </property>
+                <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
                 </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
                 <port name="xtranslate" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
+                    <property name="sceneGraphIn" class="ptolemy.kernel.util.Attribute">
+                    </property>
                 </port>
                 <port name="ytranslate" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
+                    <property name="sceneGraphIn" class="ptolemy.kernel.util.Attribute">
+                    </property>
                 </port>
                 <port name="ztranslate" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
+                    <property name="sceneGraphIn" class="ptolemy.kernel.util.Attribute">
+                    </property>
                 </port>
             </entity>
             <entity name="Translate3D14" class="ptolemy.domains.gr.lib.Translate3D">
@@ -515,14 +488,13 @@
                 </property>
                 <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="-1.8125">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="156.0, 147.0"/>
-                </rendition>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="156.0, 147.0">
+                </property>
+                <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
                 </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
                 <port name="xtranslate" class="ptolemy.actor.TypedIOPort">
@@ -548,10 +520,9 @@
                 </property>
                 <property name="slices" class="ptolemy.data.expr.Parameter" value="32">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="73.0, 191.0"/>
-                </rendition>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="73.0, 191.0">
+                </property>
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
             </entity>
@@ -568,10 +539,9 @@
                 </property>
                 <property name="slices" class="ptolemy.data.expr.Parameter" value="32">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="70.0, 245.0"/>
-                </rendition>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="70.0, 245.0">
+                </property>
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
             </entity>
@@ -588,10 +558,9 @@
                 </property>
                 <property name="zWidth" class="ptolemy.data.expr.Parameter" value="3.625">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="62.0, 298.0"/>
-                </rendition>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="62.0, 296.0">
+                </property>
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
             </entity>
@@ -604,14 +573,13 @@
                 </property>
                 <property name="pivot location" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="145.0, 253.0"/>
-                </rendition>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="145.0, 253.0">
+                </property>
+                <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
                 </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
                 <port name="angle" class="ptolemy.actor.TypedIOPort">
@@ -627,14 +595,13 @@
                 </property>
                 <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="-3.625">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="231.0, 266.0"/>
-                </rendition>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="231.0, 266.0">
+                </property>
+                <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
                 </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
                 <port name="xtranslate" class="ptolemy.actor.TypedIOPort">
@@ -656,14 +623,13 @@
                 </property>
                 <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="-1.8125">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="146.0, 309.0"/>
-                </rendition>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="146.0, 309.0">
+                </property>
+                <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
                 </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
                 <port name="xtranslate" class="ptolemy.actor.TypedIOPort">
@@ -685,14 +651,13 @@
                 </property>
                 <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="244.0, 192.0"/>
-                </rendition>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="244.0, 192.0">
+                </property>
+                <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
                 </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
                 <port name="xtranslate" class="ptolemy.actor.TypedIOPort">
@@ -718,10 +683,9 @@
                 </property>
                 <property name="zWidth" class="ptolemy.data.expr.Parameter" value="0.1">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="66.0, 347.0"/>
-                </rendition>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="66.0, 345.0">
+                </property>
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
             </entity>
@@ -738,10 +702,9 @@
                 </property>
                 <property name="zWidth" class="ptolemy.data.expr.Parameter" value="0.1">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="67.0, 396.0"/>
-                </rendition>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="68.0, 395.0">
+                </property>
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
             </entity>
@@ -758,10 +721,9 @@
                 </property>
                 <property name="zWidth" class="ptolemy.data.expr.Parameter" value="0.1">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="67.0, 446.0"/>
-                </rendition>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="67.0, 446.0">
+                </property>
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
             </entity>
@@ -778,10 +740,9 @@
                 </property>
                 <property name="zWidth" class="ptolemy.data.expr.Parameter" value="0.1">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="67.0, 499.0"/>
-                </rendition>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="67.0, 499.0">
+                </property>
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
             </entity>
@@ -794,14 +755,13 @@
                 </property>
                 <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="-1.25">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="149.0, 358.0"/>
-                </rendition>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="149.0, 358.0">
+                </property>
+                <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
                 </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
                 <port name="xtranslate" class="ptolemy.actor.TypedIOPort">
@@ -823,14 +783,13 @@
                 </property>
                 <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="-1.8">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="152.0, 408.0"/>
-                </rendition>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="152.0, 408.0">
+                </property>
+                <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
                 </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
                 <port name="xtranslate" class="ptolemy.actor.TypedIOPort">
@@ -852,14 +811,13 @@
                 </property>
                 <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="-1.8">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="153.0, 459.0"/>
-                </rendition>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="153.0, 459.0">
+                </property>
+                <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
                 </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
                 <port name="xtranslate" class="ptolemy.actor.TypedIOPort">
@@ -881,14 +839,13 @@
                 </property>
                 <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="-2.5">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="151.0, 512.0"/>
-                </rendition>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="151.0, 512.0">
+                </property>
+                <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
                 </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
                 <port name="xtranslate" class="ptolemy.actor.TypedIOPort">
@@ -910,14 +867,13 @@
                 </property>
                 <property name="pivot location" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="321.0, 36.0"/>
-                </rendition>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="353.0, 31.0">
+                </property>
+                <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
                 </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
                 <port name="angle" class="ptolemy.actor.TypedIOPort">
@@ -933,14 +889,13 @@
                 </property>
                 <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="1.0">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="494.0, 61.0"/>
-                </rendition>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="494.0, 61.0">
+                </property>
+                <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
                 </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
                 <port name="xtranslate" class="ptolemy.actor.TypedIOPort">
@@ -979,13 +934,8 @@
             </relation>
             <relation name="relation21" class="ptolemy.actor.TypedIORelation">
             </relation>
-            <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex0" class="ptolemy.moml.Vertex">
-                </vertex>
-            </relation>
             <relation name="relation0" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex0" class="ptolemy.moml.Vertex">
-                    <location value="496.0, 152.0"/>
+                <vertex name="vertex0" class="ptolemy.moml.Vertex" value="542.0, 73.0">
                 </vertex>
             </relation>
             <relation name="relation1" class="ptolemy.actor.TypedIORelation">
@@ -1007,51 +957,51 @@
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
             </relation>
             <link port="port10" relation="relation0"/>
-            <link port="CircularSweep3D0.output" relation="relation1"/>
-            <link port="CircularSweep3D1.output" relation="relation4"/>
-            <link port="Rotate2.input" relation="relation4"/>
-            <link port="Rotate2.output" relation="relation11"/>
-            <link port="Box6.output" relation="relation5"/>
-            <link port="Translate3D9.input" relation="relation11"/>
-            <link port="Translate3D9.output" relation="relation3"/>
-            <link port="Translate3D14.input" relation="relation5"/>
-            <link port="Translate3D14.output" relation="relation30"/>
-            <link port="CircularSweep3D6.output" relation="relation9"/>
-            <link port="CircularSweep3D2.output" relation="relation12"/>
-            <link port="Box3.output" relation="relation16"/>
-            <link port="Rotate4.input" relation="relation12"/>
-            <link port="Rotate4.output" relation="relation14"/>
-            <link port="Translate3D5.input" relation="relation14"/>
-            <link port="Translate3D5.output" relation="relation20"/>
-            <link port="Translate3D6.input" relation="relation16"/>
-            <link port="Translate3D6.output" relation="relation18"/>
-            <link port="Translate3D7.input" relation="relation9"/>
-            <link port="Translate3D7.input" relation="relation18"/>
-            <link port="Translate3D7.input" relation="relation20"/>
-            <link port="Translate3D7.output" relation="relation7"/>
-            <link port="Box0.output" relation="relation15"/>
-            <link port="Box1.output" relation="relation17"/>
-            <link port="Box2.output" relation="relation19"/>
-            <link port="Box4.output" relation="relation21"/>
-            <link port="Translate3D8.input" relation="relation15"/>
-            <link port="Translate3D8.output" relation="relation24"/>
-            <link port="Translate3D10.input" relation="relation17"/>
-            <link port="Translate3D10.output" relation="relation22"/>
-            <link port="Translate3D11.input" relation="relation19"/>
-            <link port="Translate3D11.output" relation="relation13"/>
-            <link port="Translate3D12.input" relation="relation21"/>
-            <link port="Translate3D12.output" relation="relation10"/>
-            <link port="Rotate0.input" relation="relation1"/>
-            <link port="Rotate0.input" relation="relation3"/>
-            <link port="Rotate0.input" relation="relation7"/>
-            <link port="Rotate0.input" relation="relation10"/>
-            <link port="Rotate0.input" relation="relation13"/>
-            <link port="Rotate0.input" relation="relation22"/>
-            <link port="Rotate0.input" relation="relation24"/>
-            <link port="Rotate0.input" relation="relation30"/>
-            <link port="Rotate0.output" relation="relation2"/>
-            <link port="Translate3D0.input" relation="relation2"/>
-            <link port="Translate3D0.output" relation="relation0"/>
+            <link port="CircularSweep3D0.sceneGraphOut" relation="relation1"/>
+            <link port="CircularSweep3D1.sceneGraphOut" relation="relation4"/>
+            <link port="Rotate2.sceneGraphIn" relation="relation4"/>
+            <link port="Rotate2.sceneGraphOut" relation="relation11"/>
+            <link port="Box6.sceneGraphOut" relation="relation5"/>
+            <link port="Translate3D9.sceneGraphIn" relation="relation11"/>
+            <link port="Translate3D9.sceneGraphOut" relation="relation3"/>
+            <link port="Translate3D14.sceneGraphIn" relation="relation5"/>
+            <link port="Translate3D14.sceneGraphOut" relation="relation30"/>
+            <link port="CircularSweep3D6.sceneGraphOut" relation="relation9"/>
+            <link port="CircularSweep3D2.sceneGraphOut" relation="relation12"/>
+            <link port="Box3.sceneGraphOut" relation="relation16"/>
+            <link port="Rotate4.sceneGraphIn" relation="relation12"/>
+            <link port="Rotate4.sceneGraphOut" relation="relation14"/>
+            <link port="Translate3D5.sceneGraphIn" relation="relation14"/>
+            <link port="Translate3D5.sceneGraphOut" relation="relation20"/>
+            <link port="Translate3D6.sceneGraphIn" relation="relation16"/>
+            <link port="Translate3D6.sceneGraphOut" relation="relation18"/>
+            <link port="Translate3D7.sceneGraphIn" relation="relation9"/>
+            <link port="Translate3D7.sceneGraphIn" relation="relation18"/>
+            <link port="Translate3D7.sceneGraphIn" relation="relation20"/>
+            <link port="Translate3D7.sceneGraphOut" relation="relation7"/>
+            <link port="Box0.sceneGraphOut" relation="relation15"/>
+            <link port="Box1.sceneGraphOut" relation="relation17"/>
+            <link port="Box2.sceneGraphOut" relation="relation19"/>
+            <link port="Box4.sceneGraphOut" relation="relation21"/>
+            <link port="Translate3D8.sceneGraphIn" relation="relation15"/>
+            <link port="Translate3D8.sceneGraphOut" relation="relation24"/>
+            <link port="Translate3D10.sceneGraphIn" relation="relation17"/>
+            <link port="Translate3D10.sceneGraphOut" relation="relation22"/>
+            <link port="Translate3D11.sceneGraphIn" relation="relation19"/>
+            <link port="Translate3D11.sceneGraphOut" relation="relation13"/>
+            <link port="Translate3D12.sceneGraphIn" relation="relation21"/>
+            <link port="Translate3D12.sceneGraphOut" relation="relation10"/>
+            <link port="Rotate0.sceneGraphIn" relation="relation1"/>
+            <link port="Rotate0.sceneGraphIn" relation="relation3"/>
+            <link port="Rotate0.sceneGraphIn" relation="relation7"/>
+            <link port="Rotate0.sceneGraphIn" relation="relation10"/>
+            <link port="Rotate0.sceneGraphIn" relation="relation13"/>
+            <link port="Rotate0.sceneGraphIn" relation="relation22"/>
+            <link port="Rotate0.sceneGraphIn" relation="relation24"/>
+            <link port="Rotate0.sceneGraphIn" relation="relation30"/>
+            <link port="Rotate0.sceneGraphOut" relation="relation2"/>
+            <link port="Translate3D0.sceneGraphIn" relation="relation2"/>
+            <link port="Translate3D0.sceneGraphOut" relation="relation0"/>
         </class>
         <entity name="Translate3D0" class="ptolemy.domains.gr.lib.Translate3D">
             <property name="accumulate" class="ptolemy.data.expr.Parameter" value="false">
@@ -1062,14 +1012,13 @@
             </property>
             <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="189.0, 178.0"/>
-            </rendition>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="_location" class="ptolemy.moml.Location" value="189.0, 178.0">
+            </property>
+            <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
             </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
+            <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
             <port name="xtranslate" class="ptolemy.actor.TypedIOPort">
@@ -1091,14 +1040,13 @@
             </property>
             <property name="pivot location" class="ptolemy.data.expr.Parameter" value="[0.0, 0.8, 0.0]">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="326.0, 166.0"/>
-            </rendition>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="_location" class="ptolemy.moml.Location" value="326.0, 166.0">
+            </property>
+            <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
             </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
+            <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
             <port name="angle" class="ptolemy.actor.TypedIOPort">
@@ -1106,23 +1054,11 @@
             </port>
         </entity>
         <class name="upper limb0" extends="ptolemy.actor.TypedCompositeActor">
-            <property name="DD3D" class="ptolemy.domains.gr.kernel.GRDirector">
-                <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-                <property name="iteration time upper bound" class="ptolemy.data.expr.Parameter" value="33">
-                </property>
-                <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
-                </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
-                </rendition>
+            <property name="_location" class="ptolemy.moml.Location" value="97.0, 239.0">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
-                <location value="97.0, 239.0"/>
-            </rendition>
             <port name="port0" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="_location0" class="ptolemy.moml.Location">
-                    <location value="591.0, 104.0"/>
+                <property name="location1" class="ptolemy.moml.Location" value="591.0, 102.0">
                 </property>
                 <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
@@ -1144,10 +1080,9 @@
                 </property>
                 <property name="zWidth" class="ptolemy.data.expr.Parameter" value="1.7">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="50.0, 32.0"/>
-                </rendition>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="50.0, 32.0">
+                </property>
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
             </entity>
@@ -1162,14 +1097,13 @@
                 </property>
                 <property name="zScale" class="ptolemy.data.expr.Parameter" value="1.0">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="489.0, 97.0"/>
-                </rendition>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="489.0, 97.0">
+                </property>
+                <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
                 </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
                 <port name="scale input" class="ptolemy.actor.TypedIOPort">
@@ -1189,10 +1123,9 @@
                 </property>
                 <property name="zWidth" class="ptolemy.data.expr.Parameter" value="1.7">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="62.0, 91.0"/>
-                </rendition>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="62.0, 91.0">
+                </property>
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
             </entity>
@@ -1205,14 +1138,13 @@
                 </property>
                 <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="181.0, 106.0"/>
-                </rendition>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="181.0, 106.0">
+                </property>
+                <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
                 </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
                 <port name="xtranslate" class="ptolemy.actor.TypedIOPort">
@@ -1238,10 +1170,9 @@
                 </property>
                 <property name="zWidth" class="ptolemy.data.expr.Parameter" value="0.125">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="54.0, 178.0"/>
-                </rendition>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="54.0, 178.0">
+                </property>
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
             </entity>
@@ -1258,10 +1189,9 @@
                 </property>
                 <property name="zWidth" class="ptolemy.data.expr.Parameter" value="0.125">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="56.0, 208.0"/>
-                </rendition>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="56.0, 208.0">
+                </property>
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
             </entity>
@@ -1274,14 +1204,13 @@
                 </property>
                 <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="-0.75">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="193.0, 192.0"/>
-                </rendition>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="193.0, 192.0">
+                </property>
+                <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
                 </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
                 <port name="xtranslate" class="ptolemy.actor.TypedIOPort">
@@ -1303,14 +1232,13 @@
                 </property>
                 <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="0.75">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="194.0, 231.0"/>
-                </rendition>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="194.0, 231.0">
+                </property>
+                <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
                 </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
                 <port name="xtranslate" class="ptolemy.actor.TypedIOPort">
@@ -1332,14 +1260,13 @@
                 </property>
                 <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="-0.75">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="194.0, 247.0"/>
-                </rendition>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="194.0, 247.0">
+                </property>
+                <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
                 </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
                 <port name="xtranslate" class="ptolemy.actor.TypedIOPort">
@@ -1365,10 +1292,9 @@
                 </property>
                 <property name="zWidth" class="ptolemy.data.expr.Parameter" value="0.125">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="55.0, 236.0"/>
-                </rendition>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="55.0, 236.0">
+                </property>
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
             </entity>
@@ -1385,10 +1311,9 @@
                 </property>
                 <property name="zWidth" class="ptolemy.data.expr.Parameter" value="0.125">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="54.0, 263.0"/>
-                </rendition>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="54.0, 263.0">
+                </property>
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
             </entity>
@@ -1405,10 +1330,9 @@
                 </property>
                 <property name="zWidth" class="ptolemy.data.expr.Parameter" value="0.125">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="57.0, 339.0"/>
-                </rendition>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="57.0, 339.0">
+                </property>
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
             </entity>
@@ -1421,14 +1345,13 @@
                 </property>
                 <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="0.75">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="197.0, 275.0"/>
-                </rendition>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="197.0, 275.0">
+                </property>
+                <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
                 </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
                 <port name="xtranslate" class="ptolemy.actor.TypedIOPort">
@@ -1450,14 +1373,13 @@
                 </property>
                 <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="-0.75">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="190.0, 353.0"/>
-                </rendition>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="190.0, 353.0">
+                </property>
+                <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
                 </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
                 <port name="xtranslate" class="ptolemy.actor.TypedIOPort">
@@ -1479,14 +1401,13 @@
                 </property>
                 <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="0.75">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="185.0, 396.0"/>
-                </rendition>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="185.0, 396.0">
+                </property>
+                <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
                 </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
                 <port name="xtranslate" class="ptolemy.actor.TypedIOPort">
@@ -1512,10 +1433,9 @@
                 </property>
                 <property name="zWidth" class="ptolemy.data.expr.Parameter" value="0.125">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="56.0, 383.0"/>
-                </rendition>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="56.0, 383.0">
+                </property>
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
             </entity>
@@ -1532,10 +1452,9 @@
                 </property>
                 <property name="zWidth" class="ptolemy.data.expr.Parameter" value="0.125">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="55.0, 428.0"/>
-                </rendition>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="55.0, 428.0">
+                </property>
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
             </entity>
@@ -1548,14 +1467,13 @@
                 </property>
                 <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="0.75">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="186.0, 441.0"/>
-                </rendition>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="186.0, 441.0">
+                </property>
+                <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
                 </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
                 <port name="xtranslate" class="ptolemy.actor.TypedIOPort">
@@ -1577,14 +1495,13 @@
                 </property>
                 <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="-0.75">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="184.0, 487.0"/>
-                </rendition>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="184.0, 487.0">
+                </property>
+                <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
                 </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
                 <port name="xtranslate" class="ptolemy.actor.TypedIOPort">
@@ -1610,10 +1527,9 @@
                 </property>
                 <property name="zWidth" class="ptolemy.data.expr.Parameter" value="0.125">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="58.0, 474.0"/>
-                </rendition>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="58.0, 474.0">
+                </property>
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
             </entity>
@@ -1630,10 +1546,9 @@
                 </property>
                 <property name="zWidth" class="ptolemy.data.expr.Parameter" value="1.25">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="368.0, 283.0"/>
-                </rendition>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="368.0, 283.0">
+                </property>
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
             </entity>
@@ -1650,10 +1565,9 @@
                 </property>
                 <property name="zWidth" class="ptolemy.data.expr.Parameter" value="1.25">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="402.0, 449.0"/>
-                </rendition>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="402.0, 449.0">
+                </property>
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
             </entity>
@@ -1666,14 +1580,13 @@
                 </property>
                 <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="499.0, 192.0"/>
-                </rendition>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="499.0, 192.0">
+                </property>
+                <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
                 </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
                 <port name="xtranslate" class="ptolemy.actor.TypedIOPort">
@@ -1695,14 +1608,13 @@
                 </property>
                 <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="535.0, 431.0"/>
-                </rendition>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="535.0, 431.0">
+                </property>
+                <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
                 </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
                 <port name="xtranslate" class="ptolemy.actor.TypedIOPort">
@@ -1726,10 +1638,9 @@
                 </property>
                 <property name="height" class="ptolemy.data.expr.Parameter" value="0.01">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="379.0, 351.0"/>
-                </rendition>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="379.0, 348.0">
+                </property>
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
             </entity>
@@ -1742,14 +1653,13 @@
                 </property>
                 <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="0.65">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="536.0, 314.0"/>
-                </rendition>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="536.0, 314.0">
+                </property>
+                <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
                 </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
                 <port name="xtranslate" class="ptolemy.actor.TypedIOPort">
@@ -1771,14 +1681,13 @@
                 </property>
                 <property name="pivot location" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="458.0, 356.0"/>
-                </rendition>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="458.0, 356.0">
+                </property>
+                <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
                 </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
                 <port name="angle" class="ptolemy.actor.TypedIOPort">
@@ -1840,59 +1749,59 @@
             <relation name="relation7" class="ptolemy.actor.TypedIORelation">
             </relation>
             <link port="port0" relation="relation7"/>
-            <link port="Box1.output" relation="relation3"/>
-            <link port="Scale3D0.input" relation="relation3"/>
-            <link port="Scale3D0.input" relation="relation4"/>
-            <link port="Scale3D0.input" relation="relation10"/>
-            <link port="Scale3D0.input" relation="relation12"/>
-            <link port="Scale3D0.input" relation="relation11"/>
-            <link port="Scale3D0.input" relation="relation19"/>
-            <link port="Scale3D0.input" relation="relation21"/>
-            <link port="Scale3D0.input" relation="relation27"/>
-            <link port="Scale3D0.input" relation="relation18"/>
-            <link port="Scale3D0.input" relation="relation20"/>
-            <link port="Scale3D0.input" relation="relation24"/>
-            <link port="Scale3D0.input" relation="relation26"/>
-            <link port="Scale3D0.output" relation="relation7"/>
-            <link port="Box4.output" relation="relation2"/>
-            <link port="Translate3D0.input" relation="relation2"/>
-            <link port="Translate3D0.output" relation="relation4"/>
-            <link port="Box0.output" relation="relation5"/>
-            <link port="Box2.output" relation="relation8"/>
-            <link port="Translate3D3.input" relation="relation5"/>
-            <link port="Translate3D3.output" relation="relation10"/>
-            <link port="Translate3D6.input" relation="relation8"/>
-            <link port="Translate3D6.output" relation="relation12"/>
-            <link port="Translate3D1.input" relation="relation9"/>
-            <link port="Translate3D1.output" relation="relation11"/>
-            <link port="Box3.output" relation="relation9"/>
-            <link port="Box5.output" relation="relation14"/>
-            <link port="Box6.output" relation="relation17"/>
-            <link port="Translate3D12.input" relation="relation14"/>
-            <link port="Translate3D12.output" relation="relation21"/>
-            <link port="Translate3D15.input" relation="relation17"/>
-            <link port="Translate3D15.output" relation="relation19"/>
-            <link port="Translate3D22.input" relation="relation25"/>
-            <link port="Translate3D22.output" relation="relation27"/>
-            <link port="Box23.output" relation="relation25"/>
-            <link port="Box7.output" relation="relation15"/>
-            <link port="Translate3D2.input" relation="relation15"/>
-            <link port="Translate3D2.output" relation="relation20"/>
-            <link port="Translate3D4.input" relation="relation13"/>
-            <link port="Translate3D4.output" relation="relation18"/>
-            <link port="Box8.output" relation="relation13"/>
-            <link port="Box9.output" relation="relation16"/>
-            <link port="Box10.output" relation="relation22"/>
-            <link port="Translate3D11.input" relation="relation16"/>
-            <link port="Translate3D11.input" relation="relation23"/>
-            <link port="Translate3D11.output" relation="relation24"/>
-            <link port="Translate3D13.input" relation="relation22"/>
-            <link port="Translate3D13.output" relation="relation26"/>
-            <link port="Cylinder0.output" relation="relation6"/>
-            <link port="Translate3D5.input" relation="relation28"/>
-            <link port="Translate3D5.output" relation="relation23"/>
-            <link port="Rotate24.input" relation="relation6"/>
-            <link port="Rotate24.output" relation="relation28"/>
+            <link port="Box1.sceneGraphOut" relation="relation3"/>
+            <link port="Scale3D0.sceneGraphIn" relation="relation3"/>
+            <link port="Scale3D0.sceneGraphIn" relation="relation4"/>
+            <link port="Scale3D0.sceneGraphIn" relation="relation10"/>
+            <link port="Scale3D0.sceneGraphIn" relation="relation12"/>
+            <link port="Scale3D0.sceneGraphIn" relation="relation11"/>
+            <link port="Scale3D0.sceneGraphIn" relation="relation19"/>
+            <link port="Scale3D0.sceneGraphIn" relation="relation21"/>
+            <link port="Scale3D0.sceneGraphIn" relation="relation27"/>
+            <link port="Scale3D0.sceneGraphIn" relation="relation18"/>
+            <link port="Scale3D0.sceneGraphIn" relation="relation20"/>
+            <link port="Scale3D0.sceneGraphIn" relation="relation24"/>
+            <link port="Scale3D0.sceneGraphIn" relation="relation26"/>
+            <link port="Scale3D0.sceneGraphOut" relation="relation7"/>
+            <link port="Box4.sceneGraphOut" relation="relation2"/>
+            <link port="Translate3D0.sceneGraphIn" relation="relation2"/>
+            <link port="Translate3D0.sceneGraphOut" relation="relation4"/>
+            <link port="Box0.sceneGraphOut" relation="relation5"/>
+            <link port="Box2.sceneGraphOut" relation="relation8"/>
+            <link port="Translate3D3.sceneGraphIn" relation="relation5"/>
+            <link port="Translate3D3.sceneGraphOut" relation="relation10"/>
+            <link port="Translate3D6.sceneGraphIn" relation="relation8"/>
+            <link port="Translate3D6.sceneGraphOut" relation="relation12"/>
+            <link port="Translate3D1.sceneGraphIn" relation="relation9"/>
+            <link port="Translate3D1.sceneGraphOut" relation="relation11"/>
+            <link port="Box3.sceneGraphOut" relation="relation9"/>
+            <link port="Box5.sceneGraphOut" relation="relation14"/>
+            <link port="Box6.sceneGraphOut" relation="relation17"/>
+            <link port="Translate3D12.sceneGraphIn" relation="relation14"/>
+            <link port="Translate3D12.sceneGraphOut" relation="relation21"/>
+            <link port="Translate3D15.sceneGraphIn" relation="relation17"/>
+            <link port="Translate3D15.sceneGraphOut" relation="relation19"/>
+            <link port="Translate3D22.sceneGraphIn" relation="relation25"/>
+            <link port="Translate3D22.sceneGraphOut" relation="relation27"/>
+            <link port="Box23.sceneGraphOut" relation="relation25"/>
+            <link port="Box7.sceneGraphOut" relation="relation15"/>
+            <link port="Translate3D2.sceneGraphIn" relation="relation15"/>
+            <link port="Translate3D2.sceneGraphOut" relation="relation20"/>
+            <link port="Translate3D4.sceneGraphIn" relation="relation13"/>
+            <link port="Translate3D4.sceneGraphOut" relation="relation18"/>
+            <link port="Box8.sceneGraphOut" relation="relation13"/>
+            <link port="Box9.sceneGraphOut" relation="relation16"/>
+            <link port="Box10.sceneGraphOut" relation="relation22"/>
+            <link port="Translate3D11.sceneGraphIn" relation="relation16"/>
+            <link port="Translate3D11.sceneGraphIn" relation="relation23"/>
+            <link port="Translate3D11.sceneGraphOut" relation="relation24"/>
+            <link port="Translate3D13.sceneGraphIn" relation="relation22"/>
+            <link port="Translate3D13.sceneGraphOut" relation="relation26"/>
+            <link port="Cylinder0.sceneGraphOut" relation="relation6"/>
+            <link port="Translate3D5.sceneGraphIn" relation="relation28"/>
+            <link port="Translate3D5.sceneGraphOut" relation="relation23"/>
+            <link port="Rotate24.sceneGraphIn" relation="relation6"/>
+            <link port="Rotate24.sceneGraphOut" relation="relation28"/>
         </class>
         <entity name="Translate3D1" class="ptolemy.domains.gr.lib.Translate3D">
             <property name="accumulate" class="ptolemy.data.expr.Parameter" value="false">
@@ -1903,14 +1812,13 @@
             </property>
             <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="199.0, 252.0"/>
-            </rendition>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="_location" class="ptolemy.moml.Location" value="199.0, 252.0">
+            </property>
+            <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
             </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
+            <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
             <port name="xtranslate" class="ptolemy.actor.TypedIOPort">
@@ -1932,14 +1840,13 @@
             </property>
             <property name="pivot location" class="ptolemy.data.expr.Parameter" value="[0.0, 4.5, 0.0]">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="328.0, 250.0"/>
-            </rendition>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="_location" class="ptolemy.moml.Location" value="328.0, 250.0">
+            </property>
+            <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
             </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
+            <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
             <port name="angle" class="ptolemy.actor.TypedIOPort">
@@ -1955,14 +1862,13 @@
             </property>
             <property name="pivot location" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="352.0, 103.0"/>
-            </rendition>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="_location" class="ptolemy.moml.Location" value="352.0, 103.0">
+            </property>
+            <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
             </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
+            <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
             <port name="angle" class="ptolemy.actor.TypedIOPort">
@@ -1978,14 +1884,13 @@
             </property>
             <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="197.0, 319.0"/>
-            </rendition>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="_location" class="ptolemy.moml.Location" value="197.0, 319.0">
+            </property>
+            <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
             </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
+            <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
             <port name="xtranslate" class="ptolemy.actor.TypedIOPort">
@@ -2007,14 +1912,13 @@
             </property>
             <property name="pivot location" class="ptolemy.data.expr.Parameter" value="[-4.0, 4.5, 0.0]">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="320.0, 326.0"/>
-            </rendition>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="_location" class="ptolemy.moml.Location" value="320.0, 326.0">
+            </property>
+            <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
             </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
+            <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
             <port name="angle" class="ptolemy.actor.TypedIOPort">
@@ -2022,23 +1926,11 @@
             </port>
         </entity>
         <class name="wrist0" extends="ptolemy.actor.TypedCompositeActor">
-            <property name="DD3D" class="ptolemy.domains.gr.kernel.GRDirector">
-                <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-                <property name="iteration time upper bound" class="ptolemy.data.expr.Parameter" value="33">
-                </property>
-                <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
-                </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
-                </rendition>
+            <property name="_location" class="ptolemy.moml.Location" value="97.0, 308.0">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
-                <location value="97.0, 308.0"/>
-            </rendition>
             <port name="port0" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="_location0" class="ptolemy.moml.Location">
-                    <location value="540.0, 123.0"/>
+                <property name="location1" class="ptolemy.moml.Location" value="540.0, 123.0">
                 </property>
                 <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
@@ -2060,10 +1952,9 @@
                 </property>
                 <property name="slices" class="ptolemy.data.expr.Parameter" value="32">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="88.0, 82.0"/>
-                </rendition>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="88.0, 82.0">
+                </property>
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
             </entity>
@@ -2078,10 +1969,9 @@
                 </property>
                 <property name="thickness" class="ptolemy.data.expr.Parameter" value="0.125">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="71.0, 148.0"/>
-                </rendition>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="71.0, 148.0">
+                </property>
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
             </entity>
@@ -2094,14 +1984,13 @@
                 </property>
                 <property name="pivot location" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="154.0, 155.0"/>
-                </rendition>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="154.0, 155.0">
+                </property>
+                <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
                 </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
                 <port name="angle" class="ptolemy.actor.TypedIOPort">
@@ -2117,14 +2006,13 @@
                 </property>
                 <property name="pivot location" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="235.0, 161.0"/>
-                </rendition>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="235.0, 161.0">
+                </property>
+                <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
                 </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
                 <port name="angle" class="ptolemy.actor.TypedIOPort">
@@ -2140,14 +2028,13 @@
                 </property>
                 <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="0.101">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="322.0, 176.0"/>
-                </rendition>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="322.0, 176.0">
+                </property>
+                <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
                 </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
                 <port name="xtranslate" class="ptolemy.actor.TypedIOPort">
@@ -2169,14 +2056,13 @@
                 </property>
                 <property name="pivot location" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="206.0, 90.0"/>
-                </rendition>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="206.0, 90.0">
+                </property>
+                <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
                 </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
                 <port name="angle" class="ptolemy.actor.TypedIOPort">
@@ -2196,10 +2082,9 @@
                 </property>
                 <property name="slices" class="ptolemy.data.expr.Parameter" value="32">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="79.0, 230.0"/>
-                </rendition>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="79.0, 230.0">
+                </property>
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
             </entity>
@@ -2212,14 +2097,13 @@
                 </property>
                 <property name="pivot location" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="169.0, 234.0"/>
-                </rendition>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="143.0, 233.0">
+                </property>
+                <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
                 </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
                 <port name="angle" class="ptolemy.actor.TypedIOPort">
@@ -2237,14 +2121,13 @@
                 </property>
                 <property name="zScale" class="ptolemy.data.expr.Parameter" value="1.0">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="307.0, 246.0"/>
-                </rendition>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="236.0, 233.0">
+                </property>
+                <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
                 </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
                 <port name="scale input" class="ptolemy.actor.TypedIOPort">
@@ -2262,10 +2145,9 @@
                 </property>
                 <property name="thickness" class="ptolemy.data.expr.Parameter" value="0.125">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="80.0, 293.0"/>
-                </rendition>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="79.0, 303.0">
+                </property>
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
             </entity>
@@ -2278,14 +2160,13 @@
                 </property>
                 <property name="pivot location" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="157.0, 302.0"/>
-                </rendition>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="144.0, 303.0">
+                </property>
+                <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
                 </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
                 <port name="angle" class="ptolemy.actor.TypedIOPort">
@@ -2301,14 +2182,13 @@
                 </property>
                 <property name="pivot location" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="234.0, 297.0"/>
-                </rendition>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="234.0, 297.0">
+                </property>
+                <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
                 </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
                 <port name="angle" class="ptolemy.actor.TypedIOPort">
@@ -2324,14 +2204,13 @@
                 </property>
                 <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="0.101">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="320.0, 312.0"/>
-                </rendition>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="320.0, 312.0">
+                </property>
+                <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
                 </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
                 <port name="xtranslate" class="ptolemy.actor.TypedIOPort">
@@ -2353,14 +2232,13 @@
                 </property>
                 <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="425.0, 274.0"/>
-                </rendition>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="425.0, 274.0">
+                </property>
+                <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
                 </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
                 <port name="xtranslate" class="ptolemy.actor.TypedIOPort">
@@ -2386,10 +2264,9 @@
                 </property>
                 <property name="zWidth" class="ptolemy.data.expr.Parameter" value="0.125">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="76.0, 358.0"/>
-                </rendition>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="76.0, 358.0">
+                </property>
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
             </entity>
@@ -2406,10 +2283,9 @@
                 </property>
                 <property name="zWidth" class="ptolemy.data.expr.Parameter" value="0.125">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="79.0, 416.0"/>
-                </rendition>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="79.0, 416.0">
+                </property>
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
             </entity>
@@ -2422,14 +2298,13 @@
                 </property>
                 <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="-1.6">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="320.0, 373.0"/>
-                </rendition>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="320.0, 373.0">
+                </property>
+                <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
                 </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
                 <port name="xtranslate" class="ptolemy.actor.TypedIOPort">
@@ -2451,14 +2326,13 @@
                 </property>
                 <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="-1.35">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="320.0, 431.0"/>
-                </rendition>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="320.0, 431.0">
+                </property>
+                <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
                 </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
                 <port name="xtranslate" class="ptolemy.actor.TypedIOPort">
@@ -2480,14 +2354,13 @@
                 </property>
                 <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="1.0">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="543.0, 424.0"/>
-                </rendition>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="543.0, 424.0">
+                </property>
+                <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
                 </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
                 <port name="xtranslate" class="ptolemy.actor.TypedIOPort">
@@ -2509,14 +2382,13 @@
                 </property>
                 <property name="pivot location" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="417.0, 96.0"/>
-                </rendition>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="417.0, 96.0">
+                </property>
+                <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
                 </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
                 <port name="angle" class="ptolemy.actor.TypedIOPort">
@@ -2532,14 +2404,13 @@
                 </property>
                 <property name="pivot location" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="455.0, 411.0"/>
-                </rendition>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="455.0, 411.0">
+                </property>
+                <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
                 </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
                 <port name="angle" class="ptolemy.actor.TypedIOPort">
@@ -2557,14 +2428,13 @@
                 </property>
                 <property name="zScale" class="ptolemy.data.expr.Parameter" value="1.0">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="528.0, 337.0"/>
-                </rendition>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="528.0, 337.0">
+                </property>
+                <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
                 </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
                 <port name="scale input" class="ptolemy.actor.TypedIOPort">
@@ -2582,10 +2452,9 @@
                 </property>
                 <property name="thickness" class="ptolemy.data.expr.Parameter" value="0.125">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="83.0, 472.0"/>
-                </rendition>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="83.0, 472.0">
+                </property>
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
             </entity>
@@ -2598,14 +2467,13 @@
                 </property>
                 <property name="pivot location" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="168.0, 480.0"/>
-                </rendition>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="168.0, 480.0">
+                </property>
+                <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
                 </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
                 <port name="angle" class="ptolemy.actor.TypedIOPort">
@@ -2621,14 +2489,13 @@
                 </property>
                 <property name="pivot location" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="265.0, 487.0"/>
-                </rendition>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="265.0, 487.0">
+                </property>
+                <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
                 </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
                 <port name="angle" class="ptolemy.actor.TypedIOPort">
@@ -2644,14 +2511,13 @@
                 </property>
                 <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="351.0, 486.0"/>
-                </rendition>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="351.0, 486.0">
+                </property>
+                <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
                 </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
                 <port name="xtranslate" class="ptolemy.actor.TypedIOPort">
@@ -2691,8 +2557,7 @@
             <relation name="relation13" class="ptolemy.actor.TypedIORelation">
             </relation>
             <relation name="relation0" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex0" class="ptolemy.moml.Vertex">
-                    <location value="501.0, 224.0"/>
+                <vertex name="vertex0" class="ptolemy.moml.Vertex" value="497.0, 171.0">
                 </vertex>
             </relation>
             <relation name="relation6" class="ptolemy.actor.TypedIORelation">
@@ -2720,76 +2585,64 @@
             <relation name="relation24" class="ptolemy.actor.TypedIORelation">
             </relation>
             <link port="port0" relation="relation0"/>
-            <link port="CircularSweep3D0.output" relation="relation2"/>
-            <link port="PolyCyl.output" relation="relation3"/>
-            <link port="Rotate2.input" relation="relation3"/>
-            <link port="Rotate2.output" relation="relation1"/>
-            <link port="Rotate4.input" relation="relation1"/>
-            <link port="Rotate4.output" relation="relation5"/>
-            <link port="Translate3D2.input" relation="relation5"/>
-            <link port="Translate3D2.output" relation="relation20"/>
-            <link port="Rotate8.input" relation="relation2"/>
-            <link port="Rotate8.output" relation="relation4"/>
-            <link port="CircularSweep3D1.output" relation="relation10"/>
-            <link port="Rotate3.input" relation="relation10"/>
-            <link port="Rotate3.output" relation="relation8"/>
-            <link port="Scale3D4.input" relation="relation8"/>
-            <link port="Scale3D4.output" relation="relation17"/>
-            <link port="PolyCylinder3D11.output" relation="relation23"/>
-            <link port="Rotate12.input" relation="relation23"/>
-            <link port="Rotate12.output" relation="relation25"/>
-            <link port="Rotate13.input" relation="relation25"/>
-            <link port="Rotate13.output" relation="relation27"/>
-            <link port="Translate3D14.input" relation="relation27"/>
-            <link port="Translate3D14.output" relation="relation19"/>
-            <link port="Translate3D15.input" relation="relation17"/>
-            <link port="Translate3D15.input" relation="relation19"/>
-            <link port="Translate3D15.output" relation="relation18"/>
-            <link port="Box28.output" relation="relation9"/>
-            <link port="Box0.output" relation="relation13"/>
-            <link port="Translate3D1.input" relation="relation9"/>
-            <link port="Translate3D1.output" relation="relation15"/>
-            <link port="Translate3D3.input" relation="relation13"/>
-            <link port="Translate3D3.output" relation="relation12"/>
-            <link port="Translate3D4.input" relation="relation6"/>
-            <link port="Translate3D4.output" relation="relation16"/>
-            <link port="Rotate9.input" relation="relation4"/>
-            <link port="Rotate9.input" relation="relation12"/>
-            <link port="Rotate9.input" relation="relation15"/>
-            <link port="Rotate9.input" relation="relation18"/>
-            <link port="Rotate9.input" relation="relation20"/>
-            <link port="Rotate9.output" relation="relation14"/>
-            <link port="Rotate10.input" relation="relation14"/>
-            <link port="Rotate10.output" relation="relation6"/>
-            <link port="Scale3D15.input" relation="relation16"/>
-            <link port="Scale3D15.input" relation="relation24"/>
-            <link port="Scale3D15.output" relation="relation0"/>
-            <link port="PolyCylinder3D0.output" relation="relation11"/>
-            <link port="Rotate27.input" relation="relation11"/>
-            <link port="Rotate27.output" relation="relation7"/>
-            <link port="Rotate0.input" relation="relation7"/>
-            <link port="Rotate0.output" relation="relation21"/>
-            <link port="Translate3D22.input" relation="relation21"/>
-            <link port="Translate3D22.output" relation="relation24"/>
+            <link port="CircularSweep3D0.sceneGraphOut" relation="relation2"/>
+            <link port="PolyCyl.sceneGraphOut" relation="relation3"/>
+            <link port="Rotate2.sceneGraphIn" relation="relation3"/>
+            <link port="Rotate2.sceneGraphOut" relation="relation1"/>
+            <link port="Rotate4.sceneGraphIn" relation="relation1"/>
+            <link port="Rotate4.sceneGraphOut" relation="relation5"/>
+            <link port="Translate3D2.sceneGraphIn" relation="relation5"/>
+            <link port="Translate3D2.sceneGraphOut" relation="relation20"/>
+            <link port="Rotate8.sceneGraphIn" relation="relation2"/>
+            <link port="Rotate8.sceneGraphOut" relation="relation4"/>
+            <link port="CircularSweep3D1.sceneGraphOut" relation="relation10"/>
+            <link port="Rotate3.sceneGraphIn" relation="relation10"/>
+            <link port="Rotate3.sceneGraphOut" relation="relation8"/>
+            <link port="Scale3D4.sceneGraphIn" relation="relation8"/>
+            <link port="Scale3D4.sceneGraphOut" relation="relation17"/>
+            <link port="PolyCylinder3D11.sceneGraphOut" relation="relation23"/>
+            <link port="Rotate12.sceneGraphIn" relation="relation23"/>
+            <link port="Rotate12.sceneGraphOut" relation="relation25"/>
+            <link port="Rotate13.sceneGraphIn" relation="relation25"/>
+            <link port="Rotate13.sceneGraphOut" relation="relation27"/>
+            <link port="Translate3D14.sceneGraphIn" relation="relation27"/>
+            <link port="Translate3D14.sceneGraphOut" relation="relation19"/>
+            <link port="Translate3D15.sceneGraphIn" relation="relation17"/>
+            <link port="Translate3D15.sceneGraphIn" relation="relation19"/>
+            <link port="Translate3D15.sceneGraphOut" relation="relation18"/>
+            <link port="Box28.sceneGraphOut" relation="relation9"/>
+            <link port="Box0.sceneGraphOut" relation="relation13"/>
+            <link port="Translate3D1.sceneGraphIn" relation="relation9"/>
+            <link port="Translate3D1.sceneGraphOut" relation="relation15"/>
+            <link port="Translate3D3.sceneGraphIn" relation="relation13"/>
+            <link port="Translate3D3.sceneGraphOut" relation="relation12"/>
+            <link port="Translate3D4.sceneGraphIn" relation="relation6"/>
+            <link port="Translate3D4.sceneGraphOut" relation="relation16"/>
+            <link port="Rotate9.sceneGraphIn" relation="relation4"/>
+            <link port="Rotate9.sceneGraphIn" relation="relation12"/>
+            <link port="Rotate9.sceneGraphIn" relation="relation15"/>
+            <link port="Rotate9.sceneGraphIn" relation="relation18"/>
+            <link port="Rotate9.sceneGraphIn" relation="relation20"/>
+            <link port="Rotate9.sceneGraphOut" relation="relation14"/>
+            <link port="Rotate10.sceneGraphIn" relation="relation14"/>
+            <link port="Rotate10.sceneGraphOut" relation="relation6"/>
+            <link port="Scale3D15.sceneGraphIn" relation="relation16"/>
+            <link port="Scale3D15.sceneGraphIn" relation="relation24"/>
+            <link port="Scale3D15.sceneGraphOut" relation="relation0"/>
+            <link port="PolyCylinder3D0.sceneGraphOut" relation="relation11"/>
+            <link port="Rotate27.sceneGraphIn" relation="relation11"/>
+            <link port="Rotate27.sceneGraphOut" relation="relation7"/>
+            <link port="Rotate0.sceneGraphIn" relation="relation7"/>
+            <link port="Rotate0.sceneGraphOut" relation="relation21"/>
+            <link port="Translate3D22.sceneGraphIn" relation="relation21"/>
+            <link port="Translate3D22.sceneGraphOut" relation="relation24"/>
         </class>
         <class name="gripper0" extends="ptolemy.actor.TypedCompositeActor">
-            <property name="DD3D" class="ptolemy.domains.gr.kernel.GRDirector">
-                <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-                <property name="iteration time upper bound" class="ptolemy.data.expr.Parameter" value="33">
-                </property>
-                <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
-                </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
-                </rendition>
+            <property name="_location" class="ptolemy.moml.Location" value="94.0, 387.0">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
-                <location value="94.0, 387.0"/>
-            </rendition>
             <port name="port1" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="_location0" class="ptolemy.moml.Location">
-                    <location value="547.0, 284.0"/>
+                <property name="location1" class="ptolemy.moml.Location" value="547.0, 284.0">
                 </property>
                 <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
@@ -2809,10 +2662,9 @@
                 </property>
                 <property name="thickness" class="ptolemy.data.expr.Parameter" value="0.125">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="53.0, 139.0"/>
-                </rendition>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="53.0, 139.0">
+                </property>
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
             </entity>
@@ -2827,10 +2679,9 @@
                 </property>
                 <property name="thickness" class="ptolemy.data.expr.Parameter" value="0.125">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="54.0, 424.0"/>
-                </rendition>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="54.0, 424.0">
+                </property>
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
             </entity>
@@ -2843,14 +2694,13 @@
                 </property>
                 <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="-0.125">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="298.0, 434.0"/>
-                </rendition>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="298.0, 434.0">
+                </property>
+                <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
                 </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
                 <port name="xtranslate" class="ptolemy.actor.TypedIOPort">
@@ -2872,14 +2722,13 @@
                 </property>
                 <property name="pivot location" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="213.0, 145.0"/>
-                </rendition>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="213.0, 145.0">
+                </property>
+                <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
                 </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
                 <port name="angle" class="ptolemy.actor.TypedIOPort">
@@ -2895,14 +2744,13 @@
                 </property>
                 <property name="pivot location" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="131.0, 429.0"/>
-                </rendition>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="131.0, 429.0">
+                </property>
+                <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
                 </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
                 <port name="angle" class="ptolemy.actor.TypedIOPort">
@@ -2918,14 +2766,13 @@
                 </property>
                 <property name="pivot location" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="213.0, 431.0"/>
-                </rendition>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="213.0, 431.0">
+                </property>
+                <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
                 </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
                 <port name="angle" class="ptolemy.actor.TypedIOPort">
@@ -2945,10 +2792,9 @@
                 </property>
                 <property name="zWidth" class="ptolemy.data.expr.Parameter" value="0.125">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="49.0, 29.0"/>
-                </rendition>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="49.0, 29.0">
+                </property>
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
             </entity>
@@ -2961,14 +2807,13 @@
                 </property>
                 <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="0.085">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="133.0, 42.0"/>
-                </rendition>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="133.0, 42.0">
+                </property>
+                <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
                 </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
                 <port name="xtranslate" class="ptolemy.actor.TypedIOPort">
@@ -2990,14 +2835,13 @@
                 </property>
                 <property name="pivot location" class="ptolemy.data.expr.Parameter" value="[0.0, 0.3, 0.0]">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="219.0, 45.0"/>
-                </rendition>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="219.0, 45.0">
+                </property>
+                <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
                 </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
                 <port name="angle" class="ptolemy.actor.TypedIOPort">
@@ -3017,10 +2861,9 @@
                 </property>
                 <property name="zWidth" class="ptolemy.data.expr.Parameter" value="0.125">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="50.0, 84.0"/>
-                </rendition>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="50.0, 84.0">
+                </property>
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
             </entity>
@@ -3033,14 +2876,13 @@
                 </property>
                 <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="-0.3">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="131.0, 98.0"/>
-                </rendition>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="131.0, 98.0">
+                </property>
+                <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
                 </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
                 <port name="xtranslate" class="ptolemy.actor.TypedIOPort">
@@ -3066,10 +2908,9 @@
                 </property>
                 <property name="zWidth" class="ptolemy.data.expr.Parameter" value="0.125">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="50.0, 309.0"/>
-                </rendition>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="50.0, 309.0">
+                </property>
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
             </entity>
@@ -3086,10 +2927,9 @@
                 </property>
                 <property name="zWidth" class="ptolemy.data.expr.Parameter" value="0.125">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="51.0, 360.0"/>
-                </rendition>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="51.0, 360.0">
+                </property>
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
             </entity>
@@ -3102,14 +2942,13 @@
                 </property>
                 <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="0.085">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="131.0, 306.0"/>
-                </rendition>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="131.0, 306.0">
+                </property>
+                <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
                 </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
                 <port name="xtranslate" class="ptolemy.actor.TypedIOPort">
@@ -3131,14 +2970,13 @@
                 </property>
                 <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="-0.3">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="129.0, 372.0"/>
-                </rendition>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="129.0, 372.0">
+                </property>
+                <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
                 </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
                 <port name="xtranslate" class="ptolemy.actor.TypedIOPort">
@@ -3160,14 +2998,13 @@
                 </property>
                 <property name="pivot location" class="ptolemy.data.expr.Parameter" value="[0.0, 0.3, 0.0]">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="210.0, 319.0"/>
-                </rendition>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="210.0, 319.0">
+                </property>
+                <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
                 </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
                 <port name="angle" class="ptolemy.actor.TypedIOPort">
@@ -3185,10 +3022,9 @@
                 </property>
                 <property name="thickness" class="ptolemy.data.expr.Parameter" value="0.125">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="50.0, 193.0"/>
-                </rendition>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="50.0, 193.0">
+                </property>
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
             </entity>
@@ -3201,14 +3037,13 @@
                 </property>
                 <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="0.15">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="135.0, 196.0"/>
-                </rendition>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="135.0, 196.0">
+                </property>
+                <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
                 </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
                 <port name="xtranslate" class="ptolemy.actor.TypedIOPort">
@@ -3230,14 +3065,13 @@
                 </property>
                 <property name="pivot location" class="ptolemy.data.expr.Parameter" value="[-0.7, 0.15, 0.0]">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="213.0, 202.0"/>
-                </rendition>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="213.0, 202.0">
+                </property>
+                <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
                 </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
                 <port name="angle" class="ptolemy.actor.TypedIOPort">
@@ -3255,10 +3089,9 @@
                 </property>
                 <property name="thickness" class="ptolemy.data.expr.Parameter" value="0.125">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="52.0, 242.0"/>
-                </rendition>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="52.0, 242.0">
+                </property>
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
             </entity>
@@ -3271,14 +3104,13 @@
                 </property>
                 <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="-0.30">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="134.0, 250.0"/>
-                </rendition>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="134.0, 250.0">
+                </property>
+                <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
                 </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
                 <port name="xtranslate" class="ptolemy.actor.TypedIOPort">
@@ -3302,10 +3134,9 @@
                 </property>
                 <property name="thickness" class="ptolemy.data.expr.Parameter" value="0.125">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="62.0, 484.0"/>
-                </rendition>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="62.0, 484.0">
+                </property>
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
             </entity>
@@ -3318,14 +3149,13 @@
                 </property>
                 <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="0.15">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="142.0, 486.0"/>
-                </rendition>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="142.0, 486.0">
+                </property>
+                <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
                 </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
                 <port name="xtranslate" class="ptolemy.actor.TypedIOPort">
@@ -3347,14 +3177,13 @@
                 </property>
                 <property name="pivot location" class="ptolemy.data.expr.Parameter" value="[-0.7, 0.15, 0.0]">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="233.0, 493.0"/>
-                </rendition>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="233.0, 493.0">
+                </property>
+                <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
                 </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
                 <port name="angle" class="ptolemy.actor.TypedIOPort">
@@ -3372,10 +3201,9 @@
                 </property>
                 <property name="thickness" class="ptolemy.data.expr.Parameter" value="0.125">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="65.0, 547.0"/>
-                </rendition>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="65.0, 547.0">
+                </property>
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
             </entity>
@@ -3388,14 +3216,13 @@
                 </property>
                 <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="-0.3">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="150.0, 547.0"/>
-                </rendition>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="150.0, 547.0">
+                </property>
+                <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
                 </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
                 <port name="xtranslate" class="ptolemy.actor.TypedIOPort">
@@ -3417,14 +3244,13 @@
                 </property>
                 <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="327.0, 294.0"/>
-                </rendition>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="327.0, 294.0">
+                </property>
+                <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
                 </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
                 <port name="xtranslate" class="ptolemy.actor.TypedIOPort">
@@ -3446,14 +3272,13 @@
                 </property>
                 <property name="pivot location" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="414.0, 301.0"/>
-                </rendition>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="414.0, 301.0">
+                </property>
+                <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
                 </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
                 <port name="angle" class="ptolemy.actor.TypedIOPort">
@@ -3469,14 +3294,13 @@
                 </property>
                 <property name="pivot location" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="361.0, 217.0"/>
-                </rendition>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="361.0, 217.0">
+                </property>
+                <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
                 </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
                 <port name="angle" class="ptolemy.actor.TypedIOPort">
@@ -3540,68 +3364,67 @@
             <relation name="relation32" class="ptolemy.actor.TypedIORelation">
             </relation>
             <relation name="relation33" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex0" class="ptolemy.moml.Vertex">
-                    <location value="524.0, 193.0"/>
+                <vertex name="vertex0" class="ptolemy.moml.Vertex" value="491.00000047683716, 230.0">
                 </vertex>
             </relation>
             <link port="port1" relation="relation33"/>
-            <link port="PolyCylinder3D0.output" relation="relation3"/>
-            <link port="PolyCyl.output" relation="relation8"/>
-            <link port="Translate3D0.input" relation="relation6"/>
-            <link port="Translate3D0.output" relation="relation5"/>
-            <link port="Rotate1.input" relation="relation3"/>
-            <link port="Rotate1.input" relation="relation9"/>
-            <link port="Rotate1.input" relation="relation17"/>
-            <link port="Rotate1.output" relation="relation12"/>
-            <link port="Rotate6.input" relation="relation8"/>
-            <link port="Rotate6.input" relation="relation22"/>
-            <link port="Rotate6.input" relation="relation24"/>
-            <link port="Rotate6.output" relation="relation1"/>
-            <link port="Rotate13.input" relation="relation1"/>
-            <link port="Rotate13.output" relation="relation6"/>
-            <link port="Box7.output" relation="relation2"/>
-            <link port="Translate3D10.input" relation="relation2"/>
-            <link port="Translate3D10.input" relation="relation13"/>
-            <link port="Translate3D10.output" relation="relation7"/>
-            <link port="Rotate3.input" relation="relation7"/>
-            <link port="Rotate3.output" relation="relation9"/>
-            <link port="Box10.output" relation="relation11"/>
-            <link port="Translate3D1.input" relation="relation11"/>
-            <link port="Translate3D1.output" relation="relation13"/>
-            <link port="Box14.output" relation="relation18"/>
-            <link port="Box0.output" relation="relation20"/>
-            <link port="Translate3D2.input" relation="relation16"/>
-            <link port="Translate3D2.input" relation="relation18"/>
-            <link port="Translate3D2.output" relation="relation14"/>
-            <link port="Translate3D3.input" relation="relation20"/>
-            <link port="Translate3D3.output" relation="relation16"/>
-            <link port="Rotate4.input" relation="relation14"/>
-            <link port="Rotate4.output" relation="relation22"/>
-            <link port="PolyCylinder3D1.output" relation="relation15"/>
-            <link port="Translate3D4.input" relation="relation15"/>
-            <link port="Translate3D4.input" relation="relation23"/>
-            <link port="Translate3D4.output" relation="relation10"/>
-            <link port="Rotate5.input" relation="relation10"/>
-            <link port="Rotate5.output" relation="relation17"/>
-            <link port="PolyCylinder3D2.output" relation="relation19"/>
-            <link port="Translate3D5.input" relation="relation19"/>
-            <link port="Translate3D5.output" relation="relation23"/>
-            <link port="PolyCylinder3D24.output" relation="relation26"/>
-            <link port="Translate3D6.input" relation="relation26"/>
-            <link port="Translate3D6.input" relation="relation27"/>
-            <link port="Translate3D6.output" relation="relation21"/>
-            <link port="Rotate7.input" relation="relation21"/>
-            <link port="Rotate7.output" relation="relation24"/>
-            <link port="PolyCylinder3D27.output" relation="relation25"/>
-            <link port="Translate3D7.input" relation="relation25"/>
-            <link port="Translate3D7.output" relation="relation27"/>
-            <link port="Translate3D28.input" relation="relation5"/>
-            <link port="Translate3D28.input" relation="relation12"/>
-            <link port="Translate3D28.output" relation="relation28"/>
-            <link port="Rotate14.input" relation="relation28"/>
-            <link port="Rotate14.output" relation="relation32"/>
-            <link port="Rotate30.input" relation="relation32"/>
-            <link port="Rotate30.output" relation="relation33"/>
+            <link port="PolyCylinder3D0.sceneGraphOut" relation="relation3"/>
+            <link port="PolyCyl.sceneGraphOut" relation="relation8"/>
+            <link port="Translate3D0.sceneGraphIn" relation="relation6"/>
+            <link port="Translate3D0.sceneGraphOut" relation="relation5"/>
+            <link port="Rotate1.sceneGraphIn" relation="relation3"/>
+            <link port="Rotate1.sceneGraphIn" relation="relation9"/>
+            <link port="Rotate1.sceneGraphIn" relation="relation17"/>
+            <link port="Rotate1.sceneGraphOut" relation="relation12"/>
+            <link port="Rotate6.sceneGraphIn" relation="relation8"/>
+            <link port="Rotate6.sceneGraphIn" relation="relation22"/>
+            <link port="Rotate6.sceneGraphIn" relation="relation24"/>
+            <link port="Rotate6.sceneGraphOut" relation="relation1"/>
+            <link port="Rotate13.sceneGraphIn" relation="relation1"/>
+            <link port="Rotate13.sceneGraphOut" relation="relation6"/>
+            <link port="Box7.sceneGraphOut" relation="relation2"/>
+            <link port="Translate3D10.sceneGraphIn" relation="relation2"/>
+            <link port="Translate3D10.sceneGraphIn" relation="relation13"/>
+            <link port="Translate3D10.sceneGraphOut" relation="relation7"/>
+            <link port="Rotate3.sceneGraphIn" relation="relation7"/>
+            <link port="Rotate3.sceneGraphOut" relation="relation9"/>
+            <link port="Box10.sceneGraphOut" relation="relation11"/>
+            <link port="Translate3D1.sceneGraphIn" relation="relation11"/>
+            <link port="Translate3D1.sceneGraphOut" relation="relation13"/>
+            <link port="Box14.sceneGraphOut" relation="relation18"/>
+            <link port="Box0.sceneGraphOut" relation="relation20"/>
+            <link port="Translate3D2.sceneGraphIn" relation="relation16"/>
+            <link port="Translate3D2.sceneGraphIn" relation="relation18"/>
+            <link port="Translate3D2.sceneGraphOut" relation="relation14"/>
+            <link port="Translate3D3.sceneGraphIn" relation="relation20"/>
+            <link port="Translate3D3.sceneGraphOut" relation="relation16"/>
+            <link port="Rotate4.sceneGraphIn" relation="relation14"/>
+            <link port="Rotate4.sceneGraphOut" relation="relation22"/>
+            <link port="PolyCylinder3D1.sceneGraphOut" relation="relation15"/>
+            <link port="Translate3D4.sceneGraphIn" relation="relation15"/>
+            <link port="Translate3D4.sceneGraphIn" relation="relation23"/>
+            <link port="Translate3D4.sceneGraphOut" relation="relation10"/>
+            <link port="Rotate5.sceneGraphIn" relation="relation10"/>
+            <link port="Rotate5.sceneGraphOut" relation="relation17"/>
+            <link port="PolyCylinder3D2.sceneGraphOut" relation="relation19"/>
+            <link port="Translate3D5.sceneGraphIn" relation="relation19"/>
+            <link port="Translate3D5.sceneGraphOut" relation="relation23"/>
+            <link port="PolyCylinder3D24.sceneGraphOut" relation="relation26"/>
+            <link port="Translate3D6.sceneGraphIn" relation="relation26"/>
+            <link port="Translate3D6.sceneGraphIn" relation="relation27"/>
+            <link port="Translate3D6.sceneGraphOut" relation="relation21"/>
+            <link port="Rotate7.sceneGraphIn" relation="relation21"/>
+            <link port="Rotate7.sceneGraphOut" relation="relation24"/>
+            <link port="PolyCylinder3D27.sceneGraphOut" relation="relation25"/>
+            <link port="Translate3D7.sceneGraphIn" relation="relation25"/>
+            <link port="Translate3D7.sceneGraphOut" relation="relation27"/>
+            <link port="Translate3D28.sceneGraphIn" relation="relation5"/>
+            <link port="Translate3D28.sceneGraphIn" relation="relation12"/>
+            <link port="Translate3D28.sceneGraphOut" relation="relation28"/>
+            <link port="Rotate14.sceneGraphIn" relation="relation28"/>
+            <link port="Rotate14.sceneGraphOut" relation="relation32"/>
+            <link port="Rotate30.sceneGraphIn" relation="relation32"/>
+            <link port="Rotate30.sceneGraphOut" relation="relation33"/>
         </class>
         <entity name="Translate3D3" class="ptolemy.domains.gr.lib.Translate3D">
             <property name="accumulate" class="ptolemy.data.expr.Parameter" value="false">
@@ -3612,14 +3435,13 @@
             </property>
             <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="193.0, 400.0"/>
-            </rendition>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="_location" class="ptolemy.moml.Location" value="193.0, 400.0">
+            </property>
+            <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
             </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
+            <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
             <port name="xtranslate" class="ptolemy.actor.TypedIOPort">
@@ -3633,23 +3455,11 @@
             </port>
         </entity>
         <class name="stand0" extends="ptolemy.actor.TypedCompositeActor">
-            <property name="DD3D" class="ptolemy.domains.gr.kernel.GRDirector">
-                <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-                <property name="iteration time upper bound" class="ptolemy.data.expr.Parameter" value="33">
-                </property>
-                <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
-                </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
-                </rendition>
+            <property name="_location" class="ptolemy.moml.Location" value="95.0, 36.0">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
-                <location value="95.0, 36.0"/>
-            </rendition>
             <port name="port7" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="_location0" class="ptolemy.moml.Location">
-                    <location value="565.0, 208.0"/>
+                <property name="location1" class="ptolemy.moml.Location" value="565.0, 208.0">
                 </property>
                 <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
@@ -3667,10 +3477,9 @@
                 </property>
                 <property name="thickness" class="ptolemy.data.expr.Parameter" value="0.75">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="74.0, 99.0"/>
-                </rendition>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="75.0, 101.0">
+                </property>
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
             </entity>
@@ -3685,10 +3494,9 @@
                 </property>
                 <property name="thickness" class="ptolemy.data.expr.Parameter" value="0.75">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="68.0, 183.0"/>
-                </rendition>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="68.0, 185.0">
+                </property>
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
             </entity>
@@ -3701,14 +3509,13 @@
                 </property>
                 <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="-3.3">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="184.0, 199.0"/>
-                </rendition>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="184.0, 199.0">
+                </property>
+                <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
                 </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
                 <port name="xtranslate" class="ptolemy.actor.TypedIOPort">
@@ -3734,10 +3541,9 @@
                 </property>
                 <property name="zWidth" class="ptolemy.data.expr.Parameter" value="3.5">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="55.0, 250.0"/>
-                </rendition>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="55.0, 250.0">
+                </property>
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
             </entity>
@@ -3750,14 +3556,13 @@
                 </property>
                 <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="-2.0">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="181.0, 264.0"/>
-                </rendition>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="181.0, 264.0">
+                </property>
+                <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
                 </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
                 <port name="xtranslate" class="ptolemy.actor.TypedIOPort">
@@ -3779,14 +3584,13 @@
                 </property>
                 <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="2.0">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="293.0, 115.0"/>
-                </rendition>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="293.0, 115.0">
+                </property>
+                <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
                 </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
                 <port name="xtranslate" class="ptolemy.actor.TypedIOPort">
@@ -3812,10 +3616,9 @@
                 </property>
                 <property name="zWidth" class="ptolemy.data.expr.Parameter" value="0.75">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="57.0, 350.0"/>
-                </rendition>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="58.0, 352.0">
+                </property>
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
             </entity>
@@ -3828,14 +3631,13 @@
                 </property>
                 <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="-2.0">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="180.0, 366.0"/>
-                </rendition>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="180.0, 366.0">
+                </property>
+                <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
                 </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
                 <port name="xtranslate" class="ptolemy.actor.TypedIOPort">
@@ -3865,41 +3667,28 @@
             <relation name="relation1" class="ptolemy.actor.TypedIORelation">
             </relation>
             <link port="port7" relation="relation1"/>
-            <link port="PolyCylinder3D0.output" relation="relation8"/>
-            <link port="PolyCylinder3D4.output" relation="relation2"/>
-            <link port="Translate3D0.input" relation="relation2"/>
-            <link port="Translate3D0.output" relation="relation10"/>
-            <link port="Box5.output" relation="relation5"/>
-            <link port="Translate3D6.input" relation="relation5"/>
-            <link port="Translate3D6.output" relation="relation12"/>
-            <link port="Translate3D8.input" relation="relation8"/>
-            <link port="Translate3D8.input" relation="relation10"/>
-            <link port="Translate3D8.input" relation="relation12"/>
-            <link port="Translate3D8.input" relation="relation7"/>
-            <link port="Translate3D8.output" relation="relation1"/>
-            <link port="Box0.output" relation="relation3"/>
-            <link port="Translate3D1.input" relation="relation3"/>
-            <link port="Translate3D1.output" relation="relation7"/>
+            <link port="PolyCylinder3D0.sceneGraphOut" relation="relation8"/>
+            <link port="PolyCylinder3D4.sceneGraphOut" relation="relation2"/>
+            <link port="Translate3D0.sceneGraphIn" relation="relation2"/>
+            <link port="Translate3D0.sceneGraphOut" relation="relation10"/>
+            <link port="Box5.sceneGraphOut" relation="relation5"/>
+            <link port="Translate3D6.sceneGraphIn" relation="relation5"/>
+            <link port="Translate3D6.sceneGraphOut" relation="relation12"/>
+            <link port="Translate3D8.sceneGraphIn" relation="relation8"/>
+            <link port="Translate3D8.sceneGraphIn" relation="relation10"/>
+            <link port="Translate3D8.sceneGraphIn" relation="relation12"/>
+            <link port="Translate3D8.sceneGraphIn" relation="relation7"/>
+            <link port="Translate3D8.sceneGraphOut" relation="relation1"/>
+            <link port="Box0.sceneGraphOut" relation="relation3"/>
+            <link port="Translate3D1.sceneGraphIn" relation="relation3"/>
+            <link port="Translate3D1.sceneGraphOut" relation="relation7"/>
         </class>
         <class name="shoulder base0" extends="ptolemy.actor.TypedCompositeActor">
-            <property name="DD3D" class="ptolemy.domains.gr.kernel.GRDirector">
-                <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-                <property name="iteration time upper bound" class="ptolemy.data.expr.Parameter" value="33">
-                </property>
-                <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
-                </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
-                    <location value="26.0, 7.25"/>
-                </rendition>
+            <property name="_location" class="ptolemy.moml.Location" value="106.0, 97.0">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
-                <location value="106.0, 97.0"/>
-            </rendition>
             <port name="port0" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="_location0" class="ptolemy.moml.Location">
-                    <location value="536.0, 338.0"/>
+                <property name="location1" class="ptolemy.moml.Location" value="536.0, 338.0">
                 </property>
                 <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
@@ -3917,10 +3706,9 @@
                 </property>
                 <property name="thickness" class="ptolemy.data.expr.Parameter" value="0.125">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="72.0, 67.0"/>
-                </rendition>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="72.0, 66.0">
+                </property>
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
             </entity>
@@ -3933,14 +3721,13 @@
                 </property>
                 <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="157.0, 80.0"/>
-                </rendition>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="157.0, 80.0">
+                </property>
+                <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
                 </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
                 <port name="xtranslate" class="ptolemy.actor.TypedIOPort">
@@ -3962,14 +3749,13 @@
                 </property>
                 <property name="pivot location" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="149.0, 191.0"/>
-                </rendition>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="149.0, 189.0">
+                </property>
+                <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
                 </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
                 <port name="angle" class="ptolemy.actor.TypedIOPort">
@@ -3987,14 +3773,13 @@
                 </property>
                 <property name="zScale" class="ptolemy.data.expr.Parameter" value="1.0">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="64.0, 185.0"/>
-                </rendition>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="64.0, 182.0">
+                </property>
+                <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
                 </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
                 <port name="scale input" class="ptolemy.actor.TypedIOPort">
@@ -4010,14 +3795,13 @@
                 </property>
                 <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="239.0, 203.0"/>
-                </rendition>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="239.0, 203.0">
+                </property>
+                <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
                 </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
                 <port name="xtranslate" class="ptolemy.actor.TypedIOPort">
@@ -4039,14 +3823,13 @@
                 </property>
                 <property name="pivot location" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="318.0, 209.0"/>
-                </rendition>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="318.0, 210.0">
+                </property>
+                <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
                 </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
                 <port name="angle" class="ptolemy.actor.TypedIOPort">
@@ -4064,14 +3847,13 @@
                 </property>
                 <property name="zScale" class="ptolemy.data.expr.Parameter" value="1.0">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="462.0, 261.0"/>
-                </rendition>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="462.0, 261.0">
+                </property>
+                <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
                 </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
                 <port name="scale input" class="ptolemy.actor.TypedIOPort">
@@ -4091,10 +3873,9 @@
                 </property>
                 <property name="zWidth" class="ptolemy.data.expr.Parameter" value="01.25">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="66.0, 274.0"/>
-                </rendition>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="66.0, 275.0">
+                </property>
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
             </entity>
@@ -4111,10 +3892,9 @@
                 </property>
                 <property name="zWidth" class="ptolemy.data.expr.Parameter" value="1.25">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="66.0, 348.0"/>
-                </rendition>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="67.0, 349.0">
+                </property>
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
             </entity>
@@ -4131,10 +3911,9 @@
                 </property>
                 <property name="zWidth" class="ptolemy.data.expr.Parameter" value="1.25">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="63.0, 420.0"/>
-                </rendition>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="64.0, 422.0">
+                </property>
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
             </entity>
@@ -4147,14 +3926,13 @@
                 </property>
                 <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="-2.0">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="284.0, 289.0"/>
-                </rendition>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="284.0, 289.0">
+                </property>
+                <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
                 </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
                 <port name="xtranslate" class="ptolemy.actor.TypedIOPort">
@@ -4176,14 +3954,13 @@
                 </property>
                 <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="192.0, 363.0"/>
-                </rendition>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="192.0, 363.0">
+                </property>
+                <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
                 </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
                 <port name="xtranslate" class="ptolemy.actor.TypedIOPort">
@@ -4205,14 +3982,13 @@
                 </property>
                 <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="189.0, 435.0"/>
-                </rendition>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="189.0, 435.0">
+                </property>
+                <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
                 </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
                 <port name="xtranslate" class="ptolemy.actor.TypedIOPort">
@@ -4238,11 +4014,9 @@
                 </property>
                 <property name="zWidth" class="ptolemy.data.expr.Parameter" value="1.5">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="283.0, 129.0"/>
-                    <configure>generic.source</configure>
-                </rendition>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="283.0, 129.0">
+                </property>
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
             </entity>
@@ -4255,15 +4029,13 @@
                 </property>
                 <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="-0.5">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                    <location value="384.0, 142.0"/>
-                    <configure>generic.source</configure>
-                </rendition>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="_location" class="ptolemy.moml.Location" value="384.0, 142.0">
+                </property>
+                <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
                 </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
                 <port name="xtranslate" class="ptolemy.actor.TypedIOPort">
@@ -4307,35 +4079,35 @@
             <relation name="relation11" class="ptolemy.actor.TypedIORelation">
             </relation>
             <link port="port0" relation="relation3"/>
-            <link port="PolyCylinder3D13.output" relation="relation4"/>
-            <link port="Translate3D1.input" relation="relation4"/>
-            <link port="Translate3D1.output" relation="relation1"/>
-            <link port="Rotate0.input" relation="relation7"/>
-            <link port="Rotate0.output" relation="relation14"/>
-            <link port="Scale3D10.input" relation="relation1"/>
-            <link port="Scale3D10.output" relation="relation7"/>
-            <link port="Translate3D12.input" relation="relation14"/>
-            <link port="Translate3D12.output" relation="relation9"/>
-            <link port="Rotate17.input" relation="relation9"/>
-            <link port="Rotate17.output" relation="relation2"/>
-            <link port="Scale3D0.input" relation="relation2"/>
-            <link port="Scale3D0.input" relation="relation17"/>
-            <link port="Scale3D0.input" relation="relation19"/>
-            <link port="Scale3D0.input" relation="relation11"/>
-            <link port="Scale3D0.output" relation="relation3"/>
-            <link port="Box6.output" relation="relation6"/>
-            <link port="Box0.output" relation="relation10"/>
-            <link port="Box1.output" relation="relation13"/>
-            <link port="Translate3D2.input" relation="relation6"/>
-            <link port="Translate3D2.input" relation="relation15"/>
-            <link port="Translate3D2.output" relation="relation17"/>
-            <link port="Translate3D7.input" relation="relation10"/>
-            <link port="Translate3D7.output" relation="relation15"/>
-            <link port="Translate3D11.input" relation="relation13"/>
-            <link port="Translate3D11.output" relation="relation19"/>
-            <link port="Box3D0.output" relation="relation8"/>
-            <link port="Translate3D6.input" relation="relation8"/>
-            <link port="Translate3D6.output" relation="relation11"/>
+            <link port="PolyCylinder3D13.sceneGraphOut" relation="relation4"/>
+            <link port="Translate3D1.sceneGraphIn" relation="relation4"/>
+            <link port="Translate3D1.sceneGraphOut" relation="relation1"/>
+            <link port="Rotate0.sceneGraphIn" relation="relation7"/>
+            <link port="Rotate0.sceneGraphOut" relation="relation14"/>
+            <link port="Scale3D10.sceneGraphIn" relation="relation1"/>
+            <link port="Scale3D10.sceneGraphOut" relation="relation7"/>
+            <link port="Translate3D12.sceneGraphIn" relation="relation14"/>
+            <link port="Translate3D12.sceneGraphOut" relation="relation9"/>
+            <link port="Rotate17.sceneGraphIn" relation="relation9"/>
+            <link port="Rotate17.sceneGraphOut" relation="relation2"/>
+            <link port="Scale3D0.sceneGraphIn" relation="relation2"/>
+            <link port="Scale3D0.sceneGraphIn" relation="relation17"/>
+            <link port="Scale3D0.sceneGraphIn" relation="relation19"/>
+            <link port="Scale3D0.sceneGraphIn" relation="relation11"/>
+            <link port="Scale3D0.sceneGraphOut" relation="relation3"/>
+            <link port="Box6.sceneGraphOut" relation="relation6"/>
+            <link port="Box0.sceneGraphOut" relation="relation10"/>
+            <link port="Box1.sceneGraphOut" relation="relation13"/>
+            <link port="Translate3D2.sceneGraphIn" relation="relation6"/>
+            <link port="Translate3D2.sceneGraphIn" relation="relation15"/>
+            <link port="Translate3D2.sceneGraphOut" relation="relation17"/>
+            <link port="Translate3D7.sceneGraphIn" relation="relation10"/>
+            <link port="Translate3D7.sceneGraphOut" relation="relation15"/>
+            <link port="Translate3D11.sceneGraphIn" relation="relation13"/>
+            <link port="Translate3D11.sceneGraphOut" relation="relation19"/>
+            <link port="Box3D0.sceneGraphOut" relation="relation8"/>
+            <link port="Translate3D6.sceneGraphIn" relation="relation8"/>
+            <link port="Translate3D6.sceneGraphOut" relation="relation11"/>
         </class>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         </relation>
@@ -4380,69 +4152,68 @@
         <link port="lowerAngle" relation="relation14"/>
         <link port="upperAngle" relation="relation18"/>
         <link port="wristAngle" relation="relation20"/>
-        <link port="Scale3D5.input" relation="relation3"/>
-        <link port="Scale3D5.input" relation="relation9"/>
-        <link port="Scale3D5.output" relation="relation1"/>
+        <link port="Scale3D5.sceneGraphIn" relation="relation3"/>
+        <link port="Scale3D5.sceneGraphIn" relation="relation9"/>
+        <link port="Scale3D5.sceneGraphOut" relation="relation1"/>
         <link port="lower limb12.port10" relation="relation2"/>
-        <link port="Translate3D0.input" relation="relation2"/>
-        <link port="Translate3D0.output" relation="relation5"/>
-        <link port="Rotate3.input" relation="relation5"/>
-        <link port="Rotate3.input" relation="relation8"/>
-        <link port="Rotate3.output" relation="relation10"/>
+        <link port="Translate3D0.sceneGraphIn" relation="relation2"/>
+        <link port="Translate3D0.sceneGraphOut" relation="relation5"/>
+        <link port="Rotate3.sceneGraphIn" relation="relation5"/>
+        <link port="Rotate3.sceneGraphIn" relation="relation8"/>
+        <link port="Rotate3.sceneGraphOut" relation="relation10"/>
         <link port="Rotate3.angle" relation="relation14"/>
         <link port="upper limb0.port0" relation="relation6"/>
-        <link port="Translate3D1.input" relation="relation6"/>
-        <link port="Translate3D1.output" relation="relation4"/>
-        <link port="Rotate2.input" relation="relation4"/>
-        <link port="Rotate2.input" relation="relation16"/>
-        <link port="Rotate2.output" relation="relation8"/>
+        <link port="Translate3D1.sceneGraphIn" relation="relation6"/>
+        <link port="Translate3D1.sceneGraphOut" relation="relation4"/>
+        <link port="Rotate2.sceneGraphIn" relation="relation4"/>
+        <link port="Rotate2.sceneGraphIn" relation="relation16"/>
+        <link port="Rotate2.sceneGraphOut" relation="relation8"/>
         <link port="Rotate2.angle" relation="relation18"/>
-        <link port="Rotate0.input" relation="relation10"/>
-        <link port="Rotate0.input" relation="relation21"/>
-        <link port="Rotate0.output" relation="relation3"/>
+        <link port="Rotate0.sceneGraphIn" relation="relation10"/>
+        <link port="Rotate0.sceneGraphIn" relation="relation21"/>
+        <link port="Rotate0.sceneGraphOut" relation="relation3"/>
         <link port="Rotate0.angle" relation="relation7"/>
-        <link port="Translate3D2.input" relation="relation12"/>
-        <link port="Translate3D2.input" relation="relation17"/>
-        <link port="Translate3D2.output" relation="relation11"/>
-        <link port="Rotate4.input" relation="relation11"/>
-        <link port="Rotate4.output" relation="relation16"/>
+        <link port="Translate3D2.sceneGraphIn" relation="relation12"/>
+        <link port="Translate3D2.sceneGraphIn" relation="relation17"/>
+        <link port="Translate3D2.sceneGraphOut" relation="relation11"/>
+        <link port="Rotate4.sceneGraphIn" relation="relation11"/>
+        <link port="Rotate4.sceneGraphOut" relation="relation16"/>
         <link port="Rotate4.angle" relation="relation20"/>
         <link port="wrist0.port0" relation="relation12"/>
         <link port="gripper0.port1" relation="relation13"/>
-        <link port="Translate3D3.input" relation="relation13"/>
-        <link port="Translate3D3.output" relation="relation17"/>
+        <link port="Translate3D3.sceneGraphIn" relation="relation13"/>
+        <link port="Translate3D3.sceneGraphOut" relation="relation17"/>
         <link port="stand0.port7" relation="relation9"/>
         <link port="shoulder base0.port0" relation="relation21"/>
     </class>
-    <relation name="relation14" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation0" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex0" class="ptolemy.moml.Vertex">
-            <location value="107.0, 208.0"/>
+        <vertex name="vertex0" class="ptolemy.moml.Vertex" value="165.0, 134.0">
         </vertex>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation1" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <link port="ViewScreen2.input" relation="relation14"/>
-    <link port="ViewScreen2.input" relation="relation10"/>
-    <link port="KeyInput0.output" relation="relation14"/>
+    <link port="ViewScreen2.sceneGraphIn" relation="relation2"/>
+    <link port="ViewScreen2.sceneGraphIn" relation="relation6"/>
+    <link port="KeyInput0.sceneGraphOut" relation="relation2"/>
     <link port="KeyInput0.keycode" relation="relation0"/>
-    <link port="keycontrol0.port17" relation="relation2"/>
-    <link port="keycontrol0.port0" relation="relation4"/>
-    <link port="keycontrol0.port1" relation="relation6"/>
-    <link port="keycontrol0.port2" relation="relation8"/>
+    <link port="keycontrol0.port17" relation="relation1"/>
+    <link port="keycontrol0.port0" relation="relation3"/>
+    <link port="keycontrol0.port1" relation="relation4"/>
+    <link port="keycontrol0.port2" relation="relation5"/>
     <link port="keycontrol0.port4" relation="relation0"/>
-    <link port="robot arm.out" relation="relation10"/>
-    <link port="robot arm.baseAngle" relation="relation2"/>
-    <link port="robot arm.lowerAngle" relation="relation4"/>
-    <link port="robot arm.upperAngle" relation="relation6"/>
-    <link port="robot arm.wristAngle" relation="relation8"/>
+    <link port="robot arm.out" relation="relation6"/>
+    <link port="robot arm.baseAngle" relation="relation1"/>
+    <link port="robot arm.lowerAngle" relation="relation3"/>
+    <link port="robot arm.upperAngle" relation="relation4"/>
+    <link port="robot arm.wristAngle" relation="relation5"/>
 </entity>
