@@ -27,7 +27,8 @@ class Constant implements InequalityTerm {
 
     // Initialize the value of this term to the specified CPO element.
     public void initialize(Object object) throws IllegalActionException {
-        setValue(object);
+		throw new IllegalActionException("Constant inequality term cannot be "
+                + "initialized. Its value is set in the constructor.");
     }
 
 	// Constant terms are not settable.
