@@ -135,6 +135,13 @@ public interface Receiver {
      */
     public boolean hasToken(int numberOfTokens);
 
+    /** Return true if this receiver has known state, that is, the tokens in 
+     *  this receiver are known or if this receiver is known not to contain
+     *  any tokens.
+     *  @return True if this receiver has known state.
+     */
+    public boolean isKnown();
+
     /** Put the specified token into this receiver.
      *  @param token The token to put into the receiver.
      *  @exception NoRoomException If there is no room in the receiver.

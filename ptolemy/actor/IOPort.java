@@ -27,8 +27,9 @@
 @ProposedRating Green (eal@eecs.berkeley.edu)
 @AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
 Review vectorized methods.
-Review broadcast/get/send/hasRoom/hasToken
+Review broadcast/get/send/hasRoom/hasToken.
 Review setInput/setOutput/setMultiport.
+Review isKnown.
 */
 
 package ptolemy.actor;
@@ -1315,6 +1316,68 @@ public class IOPort extends ComponentPort {
             }
         }
         return _isInput;
+    }
+
+    /** Return true if all channels of this port have known state, that is, 
+     *  the tokens on each channel are known or each channel is known not to 
+     *  have any tokens.
+     *  <p>
+     *  Note that this does not report any tokens in inside receivers
+     *  of an output port. Those are accessible only through
+     *  getInsideReceivers().
+     *
+     *  @return True if it is known whether there is a token in each channel.
+     *  @exception IllegalActionException If the receivers do not support
+     *   this query, if there is no director, and hence no receivers,
+     *   if the port is not an input port, or if the channel index is out
+     *   of range.
+     */
+    public boolean isKnown() throws IllegalActionException {
+        for (int j = 0; j < getWidth(); j++) {
+            if (!isKnown(j)) return false;
+        }
+        return true;
+    }
+
+    /** Return true if the specified channel has known state, that is, the
+     *  tokens on this channel are known or this channel is known not to 
+     *  have any tokens.  If the channel index is out of range, then throw 
+     *  an exception.
+     *  <p>
+     *  Note that this does not report any tokens in inside receivers
+     *  of an output port. Those are accessible only through
+     *  getInsideReceivers().
+     *
+     *  @param channelIndex The channel index.
+     *  @return True if it is known whether there is a token in the channel.
+     *  @exception IllegalActionException If the receivers do not support
+     *   this query, if there is no director, and hence no receivers,
+     *   if the port is not an input port, or if the channel index is out
+     *   of range.
+     */
+    public boolean isKnown(int channelIndex) throws IllegalActionException {
+        try {
+            if (isInput()) {
+                Receiver[][] receivers = getReceivers();
+                if (receivers != null && receivers[channelIndex] != null) {
+                    for (int j = 0; j < receivers[channelIndex].length; j++) {
+                        if (receivers[channelIndex][j].isKnown()) return true;
+                    }
+                }
+            }
+            if (isOutput()) {
+                Receiver[][] receivers = getRemoteReceivers();
+                if (receivers != null && receivers[channelIndex] != null) {
+                    for (int j = 0; j < receivers[channelIndex].length; j++) {
+                        if (receivers[channelIndex][j].isKnown()) return true;
+                    }
+                }
+            }
+        } catch (ArrayIndexOutOfBoundsException ex) {
+            throw new IllegalActionException(this,
+                    "isKnown: channel index is out of range.");
+        }
+        return false;
     }
 
     /** Return true if the port is a multiport.  The port is a multiport
