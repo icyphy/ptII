@@ -152,15 +152,15 @@ public final class VQDecode extends SDFAtomicActor {
     public void fire() throws IllegalActionException {
         int j;
         int stage = _stages(_blockWidth * _blockHeight);
-        input.getArray(0, _codewords);
+        _codewords = input.get(0, _blockCount);
 
         for(j = 0; j < _blockCount; j++) {
             _blocks[j] =
-                new IntMatrixToken(_codebook[stage][_codewords[j].intValue()],
+                new IntMatrixToken(_codebook[stage][((IntToken)_codewords[j]).intValue()],
                         _blockHeight, _blockWidth);
         }
 
-        output.sendArray(0, _blocks);
+        output.send(0, _blocks, _blocks.length);
     }
 
     /**
@@ -182,7 +182,7 @@ public final class VQDecode extends SDFAtomicActor {
         _blockWidth = ((IntToken)blockWidth.getToken()).intValue();
         _blockHeight = ((IntToken)blockHeight.getToken()).intValue();
 
-        _codewords =  new IntToken[_blockCount];
+        _codewords =  new ptolemy.data.Token[_blockCount];
         _blocks = new IntMatrixToken[_blockCount];
 
         String filename = ((StringToken)codeBook.getToken()).stringValue();
@@ -289,7 +289,7 @@ public final class VQDecode extends SDFAtomicActor {
     }
 
     private int _codebook[][][] = new int[6][256][];
-    private IntToken _codewords[];
+    private ptolemy.data.Token _codewords[];
     private IntMatrixToken _blocks[];
 
     private int _blockCount;
