@@ -80,7 +80,7 @@ public class CSPReceiver implements ProcessReceiver {
      *  put is reached.
      *  It is assumed that at most one process is trying to receive
      *  from and send to the channel associated with this receiver.
-     *  @return The Token transferred by the rendezvous.
+     *  @return The token transferred by the rendezvous.
      */
     public synchronized Token get() {
         Token tmp = null;
@@ -268,10 +268,15 @@ public class CSPReceiver implements ProcessReceiver {
     }
 
     /** The parent CSPActor of the conditional branch to reach the
-     *  rendezvous point first. It is needed if both attempts to
-     *  rendezvous at this receiver come from conditional branches.
-     *  It is used to check if both conditional branches are the first
-     *  to attempt to rendezvous.
+     *  rendezvous point first. For a rendezvous to occur when both 
+     *  communications at the receiver are from conditional branches, 
+     *  then the rendezvous can only proceed if <I>both</I> the branches 
+     *  are the first branches to be ready to succeed for their 
+     *  respective parents. This is checked by the second branch to 
+     *  arrive at the rendezvous point, for which it requires the actor 
+     *  that created the other branch. Thus the first branch to arrive 
+     *  stores its parent in the receiver when it is setting the 
+     *  appropriate flag, which is what is returned by this method.
      *  @return The parent actor which created the first conditional
      *   branch to arrive.
      */
@@ -305,7 +310,7 @@ public class CSPReceiver implements ProcessReceiver {
         return _getWaiting;
     }
 
-    /** Flag indicating whether or not a pu()t is waiting to rendezvous
+    /** Flag indicating whether or not a put() is waiting to rendezvous
      *  at this receiver.
      *  @return Flag indicating if a put() is waiting to rendezvous.
      */
