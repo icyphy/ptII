@@ -55,6 +55,7 @@ JSIMPLE_TESTS = \
 	BoundaryDetector.tcl \
 	Branch.tcl \
 	BranchController.tcl \
+	MailboxBoundaryReceiver.tcl \
 	ProcessDirector.tcl \
 	ProcessThread.tcl 
 	
