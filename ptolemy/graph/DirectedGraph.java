@@ -254,6 +254,21 @@ public class DirectedGraph extends Graph {
         return nodes.toArray();
     }
 
+    /** Test if an edge exists from the first node to the second node.
+     *  @return true if the graph includes an edge from the first node to
+     *   the second node.
+     */
+    public boolean edgeExists(Object node1, Object node2) {
+
+        Object[] successors = successorSet(node1);
+        for (int i = 0; i < successors.length; i++) {
+            if (successors[i] == node2)
+                return true;
+        }
+
+        return false;
+    }
+
     /** Test if this graph is acyclic (is a DAG).
      *  The implementation computes the transitive closure of the
      *  graph, if it is not already computed after the last change to
