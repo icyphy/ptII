@@ -58,7 +58,7 @@ It is also useful for correctness and performance testing.
 @author  Jie Liu
 @version $Id$
 */
-public class SquareWaveResponse extends CTApplet {
+public class SquareWaveResponse extends TypedCompositeActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -143,7 +143,7 @@ public class SquareWaveResponse extends CTApplet {
             gain2.factor.setToken(new DoubleToken(-10.0));
 
             gain3.factor.setToken(new DoubleToken(-1000.0));
-
+            System.out.println(_toplevel.exportMoML());
         } catch (NameDuplicationException ex) {
             throw new InternalErrorException("NameDuplication");
         } catch (IllegalActionException ex) {
