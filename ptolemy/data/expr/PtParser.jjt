@@ -45,6 +45,8 @@ package ptolemy.data.expr;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
+import java.util.Hashtable;
+import collections.LinkedList;
 
 import java.io.*;
 
@@ -111,28 +113,22 @@ please consult the Ptolemy II design document (or contact nsmyth@eecs)
 @see ptolemy.data.Token 
 */
 public class PtParser {
-    /** Stores the parameters to which the input expression can reference
-     */
-    private NamedList _scope;
-
-    /** The Parameter (or other ParameterListener) creating the parser. 
-     *  Each time another parameter is referenced in the input expression, 
-     *  this Parameter is registered as a listener of that parameter. 
-     *  If null, then no dependency is registered.
-     */
-    private ParameterListener _listener;
+    
 
     boolean debug = false;
     
     public PtParser(ParameterListener parameter) {
         this(new ByteArrayInputStream("a hack!!".getBytes()));
+        _initialize();
         _listener = parameter;
     }
 
     public PtParser() {
         this(new ByteArrayInputStream("a hack!!".getBytes()));
+        _initialize();
     }
 
+   
     /** Generates a parse tree from the given String. The root node is 
      *  returned. To evaluate the parse tree, the method evaluateParseTree()
      *  should be called on the rootNode
@@ -140,7 +136,8 @@ public class PtParser {
      *  @exception IllegalArgumentException Thrown if the parse failed.
      *  @return The root node of the parse tree.
      */
-    public ASTPtRootNode  generateParseTree(String stringIn) throws IllegalArgumentException {
+    public ASTPtRootNode generateParseTree(String stringIn)
+            throws IllegalArgumentException {
         InputStream stream = new ByteArrayInputStream(stringIn.getBytes());
         this.ReInit(stream);
         //debug = true;
@@ -168,7 +165,8 @@ public class PtParser {
      *  @exception IllegalArgumentException Thrown if the parse failed.
      *  @return The root node of the parse tree.
      */
-    public ASTPtRootNode generateParseTree(String stringIn, NamedList scope) throws IllegalArgumentException {
+    public ASTPtRootNode generateParseTree(String stringIn, NamedList scope) 
+            throws IllegalArgumentException {
         _scope = scope;
         ASTPtRootNode rootNode;
         try {
@@ -181,7 +179,135 @@ public class PtParser {
         } 
         return rootNode;
     }
-}
+               
+    /** Return the list of classes the parser searches 
+     *  when a function call is encountered. 
+     *  It is a static method. It stores the classes in a LinkedList. The 
+     *  classes are searched in the same order that they were registered 
+     *  with the parser, so the classes that are most likely to be 
+     *  searched should be registered first.
+     */
+    public static LinkedList getRegisteredClasses() {
+        if (_classesSearched == null) {
+            _classesSearched = new LinkedList();
+        }
+        return _classesSearched;
+    }
+    
+
+    /** Add a constant to the list of constants that the parser recognizes.
+     *  It is a static method. It stores the constant in a Hashtable, with 
+     *  the corresponding entry for each name being a ptolemy.data.Token 
+     *  of the appropraite type. The value for the constant can be given
+     *  in a ptolemy.data.Token or in one of the data wrapper classes 
+     *  in java.lang.
+     *  @param name The string name that the parser will recognize.
+     *  @param value An Object conraining the value associated with 
+     *   the constant.
+     *  @exception IllegalArgumentException If the constant could not 
+     *   be registered with the parser.
+     */
+    public static void registerConstant(String name, Object value) 
+            throws IllegalArgumentException {
+        if ( (value == null) || (name == null)) {
+            throw new IllegalArgumentException("PtParser: cannot register " +
+                    "a constant if either the name or value object is null.");
+        }
+        if (_constantsRecognized == null) {
+            _constantsRecognized = new Hashtable();
+        }
+        ptolemy.data.Token tmp;
+        if  (value instanceof ptolemy.data.Token) {
+            tmp = (ptolemy.data.Token)value;
+        } else if (value instanceof Integer) {
+            tmp = new IntToken(((Integer)value).intValue());
+        } else if (value instanceof Double) {
+            tmp = new DoubleToken(((Double)value).doubleValue());   
+        } else if (value instanceof Long) {
+            tmp = new LongToken(((Long)value).longValue());   
+        } else if (value instanceof String) {
+            tmp = new StringToken((String)value);   
+        } else if (value instanceof Boolean) {
+            tmp = new BooleanToken(((Boolean)value).booleanValue());
+        } else {
+            throw new IllegalArgumentException("PtParser: cannot register " +
+                    name + "  as a constant of the parser.");
+        }
+        _constantsRecognized.put(name, tmp); 
+        return;
+    }
+      
+    /** Add a class to the list of classes that the parser searches 
+     *  when a function call is encountered. 
+     *  It is a static method. It stores the classes in a LinkedList. The 
+     *  classes are searched in the same order that they were registered 
+     *  with the parser, so the classes that are most likely to be 
+     *  searched should be registered first.
+     *  @param newClassName The fully qualified name of the Class to 
+     *   be added to the search path for functions.
+     *  @exception IllegalArgumentException If the Class named by the 
+     *   argument could not be found.
+     */
+    public static void registerClass(String newClassName)
+            throws IllegalArgumentException {
+        if (_classesSearched == null) {
+            _classesSearched = new LinkedList();
+        }
+        try {
+            Class newClass = Class.forName(newClassName);
+            _classesSearched.insertLast(newClass);
+        } catch (ClassNotFoundException ex) {
+                throw new IllegalArgumentException("PtParser.registerClass: " +
+                        "Could not find " + newClassName + ".");
+        }
+    }
+
+    /** Initialize the static variables containing the constants 
+     *  recognized by the Parser and the classes searched by the parser 
+     *  upon encountering a function call.
+     */
+    private void _initialize() {
+        if (!_alreadyInitialized) {
+            //System.out.println("Initializing...");
+            _alreadyInitialized = true;
+            registerConstant("PI", new DoubleToken(java.lang.Math.PI));
+            registerConstant("E", new DoubleToken(java.lang.Math.E));
+            registerClass("java.lang.Math");
+            //registerClass("ptolemy.data.expr.UnilityFunctions");
+        }
+    }
+    
+    /* Flag indicating if the default constants and classes searched 
+     * by the parser have already been loaded.
+     */
+    private static boolean _alreadyInitialized = false;
+
+    /** Stores the classes that are searched by the parser when a 
+     *  function call is parsed. It is static, and by default only 
+     *  contains the java.lang.Math class.
+     */
+    private static LinkedList _classesSearched;
+
+    /** Stores the Tokens corresponding to constants that the parser
+     *  recognizes. It stores them by name, with each name corresponding
+     *  to a ptolemy.data.Token. It is static, and by default only 
+     *  contains the java.lang.Math PI and E constants.
+     */
+    private static Hashtable _constantsRecognized;
+
+    /** The Parameter (or other ParameterListener) creating the parser. 
+     *  Each time another parameter is referenced in the input expression, 
+     *  this Parameter is registered as a listener of that parameter. 
+     *  If null, then no dependency is registered.
+     */
+    private ParameterListener _listener;
+
+    /** Stores the parameters to which the input expression can reference
+     */
+    private NamedList _scope;
+
+    
+    }
 
 PARSER_END(PtParser)
 
@@ -552,13 +678,15 @@ String tidied, x;
            if (_listener != null) {
         	referedParam.registerListener(_listener);
             }
-        } else if (token.image.equalsIgnoreCase("PI")) {
-            jjtThis._ptToken = new ptolemy.data.DoubleToken(Math.PI);
-        } else if (token.image.equalsIgnoreCase("E")) {
-            jjtThis._ptToken = new ptolemy.data.DoubleToken(Math.E);
+        } else if (_constantsRecognized.containsKey(token.image)) {
+            // constant is registered with the parser.
+            Object tmp = _constantsRecognized.get(token.image);
+            jjtThis._ptToken = (ptolemy.data.Token)tmp;
         } else {
-            String str = " Parameter" + token.image + " not visible in ";
-            throw new ParseException(str + "current scope");
+            throw new ParseException("PtParser: parsed an ID, " + 
+                    token.image + ", which is neither a Parameter visible " +
+                    "in the current scope, nor a constant registered with " +
+                    "the parser.");
         }
     }
    ) #PtLeafNode
