@@ -27,6 +27,8 @@
 
 package pt.kernel.demo;
 import pt.kernel.*;
+import pt.kernel.util.*;
+
 import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
@@ -81,8 +83,8 @@ public class ExampleSystemApplet extends ExampleApplet
 
     /** Create and Example System window standalone application. */
     public static void main(String args[])
-            throws pt.kernel.NameDuplicationException,
-            pt.kernel.IllegalActionException {
+            throws NameDuplicationException,
+            IllegalActionException {
         ExampleSystemApplet exsys = new ExampleSystemApplet();
         ExampleFrame f = new ExampleFrame();
         f.setResizable(true);

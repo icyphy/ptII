@@ -26,7 +26,10 @@
 */
 
 package pt.kernel.demo;
+
 import pt.kernel.*;
+import pt.kernel.util.*;
+
 import java.io.*;
 
 //////////////////////////////////////////////////////////////////////////
@@ -45,8 +48,7 @@ public class ExampleSerializable {
         
     /** Create an Example System, then print it out. */
     public static void main(String args[]) 
-            throws pt.kernel.NameDuplicationException,
-            pt.kernel.IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         ExampleSystem exsys = new ExampleSystem();
         String filename = new String("ExampleSerializable.data");
 

@@ -27,6 +27,8 @@
 
 package pt.kernel.demo;
 import pt.kernel.*;
+import pt.kernel.util.*;
+
 import java.io.Serializable;
 import java.util.Enumeration;
 
@@ -245,8 +247,7 @@ public class ExampleSystem implements Serializable {
         
     /** Create an Example System, then print it out. */
     public static void main(String args[]) 
-            throws pt.kernel.NameDuplicationException,
-            pt.kernel.IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         ExampleSystem exsys = new ExampleSystem();
         System.out.println(exsys.toString());
     }
