@@ -38,7 +38,7 @@ import ptolemy.data.*;
 /**
 A NullToken is a marker class used to break deadlock in certain
 topologies of DDE models. A NullToken object does not represent 
-modelled computation but serves as an indicator that an actor in 
+modeled computation but serves as an indicator that an actor in 
 an DDE model can safely advance time to be equal to the time stamp
 associated with the NullToken.
 
