@@ -482,7 +482,7 @@ test PtParser-10.2 {Test for reasonable error messages on type problems} {
     $v1 setExpression "cos(1)"
     catch {$v1 getToken} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: Function cos(1) cannot be executed with given arguments.}}
+} {{ptolemy.kernel.util.IllegalActionException: ASTFunction Function cos( 1 ) cannot be executed with given arguments.}}
 
 ######################################################################
 ####
