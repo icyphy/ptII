@@ -165,7 +165,7 @@ public class Reader extends Source {
         try {
             newobj.attributeChanged(newobj.sourceURL);
         } catch (IllegalActionException ex) {
-            throw new CloneNotSupportedException(ex.getMessage());
+            throw new InternalErrorException(ex.getMessage());
         }
         return newobj;
     }
