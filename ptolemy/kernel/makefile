@@ -83,6 +83,7 @@ JSRCS = \
 	Particle.java \
 	POElement.java \
 	Port.java \
+	PortList.java \
 	PtolemyException.java \
 	Relation.java \
 	Star.java \
