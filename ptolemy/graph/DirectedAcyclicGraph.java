@@ -331,7 +331,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
     }
 
     /** Topological sort the whole graph.
-     *  The implementation uses the method of A.B. Kahn: ``Topological
+     *  The implementation uses the method of A.B. Kahn: "Topological
      *  Sorting of Large Networks", Communications of the ACM,
      *  Vol. 5, 558-562, 1962.
      *  It has complexity O(|N|+|E|), where N for nodes and E for edges.

@@ -93,18 +93,18 @@ public class InequalitySolver {
     }
 
     /** Return an <code>Enumeration</code> of the variables whose current
-     *  values are the bottom of the underline CPO. If none of the
+     *  values are the bottom of the underlying CPO. If none of the
      *  variables have its current value set to the bottom, an empty
      *  <code>Enumeration</code> is returned.
      *  @return an Enumeration of InequalityTerms
-     *  @exception InvalidStateException If the underline CPO does not
+     *  @exception InvalidStateException If the underlying CPO does not
      *   have a bottom element.
      */
     public Enumeration bottomVariables() {
 	Object bottom = _cpo.bottom();
 	if (bottom == null) {
 	    throw new InvalidStateException("InequalitySolver.bottomVariables:"
-                    + " The underline CPO does not have a bottom"
+                    + " The underlying CPO does not have a bottom"
                     + " element.");
 	}
 
@@ -145,7 +145,7 @@ public class InequalitySolver {
      *  @IllegalArgumentException the value of some of the terms in the
      *   inequalities is not a CPO element.
      *  @exception InvalidStateException If the LUB of some elements does
-     *   not exist in the underline CPO.
+     *   not exist in the underlying CPO.
      */
     public boolean solveLeast() {
 	return _solve(true);
@@ -178,25 +178,25 @@ public class InequalitySolver {
      *  @IllegalArgumentException the value of some of the terms in the
      *   inequalities is not a CPO element.
      *  @exception InvalidStateException If the GLB of some elements does
-     *   not exist in the underline CPO.
+     *   not exist in the underlying CPO.
      */
     public boolean solveGreatest() {
 	return _solve(false);
     }
 
     /** Return an <code>Enumeration</code> of the variables whose current
-     *  values are the top of the underline CPO. If none of the
+     *  values are the top of the underlying CPO. If none of the
      *  variables have the current value set to the top, an empty
      *  <code>Enumeration</code> is returned.
      *  @return an Enumeration of InequalityTerms
-     *  @exception InvalidStateException If the underline CPO does not
+     *  @exception InvalidStateException If the underlying CPO does not
      *   have a top element.
      */
     public Enumeration topVariables() {
 	Object top = _cpo.top();
 	if (top == null) {
 	    throw new InvalidStateException("InequalitySolver.topVariables:"
-                    + " The underline CPO does not have a top element.");
+                    + " The underlying CPO does not have a top element.");
 	}
 
 	LinkedList result = new LinkedList();
@@ -268,8 +268,8 @@ public class InequalitySolver {
         for (int i = 0; i < variables.length; i++) {
 	    if ( !variables[i].isSettable()) {
 		throw new InvalidStateException(
-                        "InequalitySolver._addToClist: An InequalityTerm returns "
-                        + "a variable that is not settable.");
+                        "InequalitySolver._addToClist: variable in an"
+			+ "InequalityTerm is not settable.");
 	    }
 
             Vector entry = (Vector)(_Clist.get(variables[i]));
@@ -291,7 +291,7 @@ public class InequalitySolver {
 	Object init = least ? _cpo.bottom() : _cpo.top();
 	if (init == null) {
 	    throw new InvalidStateException("InequalitySolver.solve: " +
-                    "The underline CPO is not a lattice.");
+                    "The underlying CPO is not a lattice.");
 	}
 
 	for (Enumeration e = _Clist.keys(); e.hasMoreElements() ;) {

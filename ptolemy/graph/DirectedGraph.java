@@ -40,7 +40,6 @@ import java.util.*;
 //// DirectedGraph
 /**
 A directed graph and some graph algorithms.
-This class is evolved from the StaticGraph class written by Jie Liu.
 <p>
 NOTE: This class is a starting point for implementing graph algorithms,
 more methods will be added.

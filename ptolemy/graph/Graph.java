@@ -36,7 +36,6 @@ import java.util.*;
 //// Graph
 /**
 A basic graph.
-This class is evolved from the staticGraph class written by Jie Liu.
 Each node in the graph is represented by an Object. To construct a graph,
 use <code>add</code> to add nodes and <code>addEdge</code> to add
 edges between nodes.
@@ -276,7 +275,7 @@ public class Graph {
     protected Vector _graph;
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
+    ////                          private variables                ////
 
     // number of edges in this graph
     private int _edgeCount = 0;
