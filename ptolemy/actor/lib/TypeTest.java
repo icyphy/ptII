@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Red (eal)
-@AcceptedRating Red (ssachs)
 */
 
 package ptolemy.actor.lib;
@@ -85,6 +83,9 @@ import java.util.List;
    @author Steve Neuendorffer
    @version $Id$
    @see ptolemy.actor.lib.Test
+   @since Ptolemy II 3.0
+   @Pt.ProposedRating Red (eal)
+   @Pt.AcceptedRating Red (ssachs)
 */
 
 public class TypeTest extends Discard {
