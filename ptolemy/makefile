@@ -93,7 +93,7 @@ EXTRA_SRCS =
 # want make checkjunk to barf on them.
 MISC_FILES = util kernel plot graph moml data actor gui math media	\
 	$(PTCOPERNICUS_DIR) \
-	$(PTMATLAB_DIR)	domains vergil configs
+	$(PTMATLAB_DIR)	domains vergil hsif configs
 
 OPTIONAL_FILES = apps matlab
 
