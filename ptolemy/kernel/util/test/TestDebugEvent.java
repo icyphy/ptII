@@ -38,7 +38,7 @@ import ptolemy.kernel.util.NamedObj;
 /**
 Class used to test DebugEvent
 
-@author  Chrisotpher Hylands
+@author  Christopher Hylands
 @version $Id$
 */
 public class TestDebugEvent implements DebugEvent {

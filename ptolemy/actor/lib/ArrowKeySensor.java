@@ -92,7 +92,8 @@ tokens from one or both outputs depending on which keystroke(s) have
 occured since the actor was last fired.  <p>
 
 @author Winthrop Williams
-@version $Id$ */
+@version $Id$
+*/
 public class ArrowKeySensor extends TypedAtomicActor {
 
     public ArrowKeySensor(CompositeEntity container, String name)
@@ -296,7 +297,7 @@ public class ArrowKeySensor extends TypedAtomicActor {
 	    // As of jdk1.4, the .registerKeyboardAction() method below is
             // considered obsolete.  Docs recommend using these two methods:
 	    //  .getInputMap().put(aKeyStroke, aCommand);
-	    //  .getActionMap().put(aCommmand, anAction);
+	    //  .getActionMap().put(aCommand, anAction);
 	    // with the String aCommand inserted to link them together.
 	    // See javax.swing.Jcomponent.registerKeyboardAction().
 
