@@ -137,7 +137,7 @@ public class DDEIOPort extends TypedIOPort {
      */
     public void broadcast(Token token, double sendTime)
             throws IllegalActionException, NoRoomException {
-        // FIXME: Now that TypedIOPort has 
+        // FIXME: Now that TypedIOPort has
         // broadcast(Token[] tokenArray, int vectorLength)
 	// we should add a similar method to DDEIOPort.
         try {
