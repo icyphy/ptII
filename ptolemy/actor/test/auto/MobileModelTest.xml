@@ -4,9 +4,9 @@
 <entity name="MobileModelTest" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={82, 37, 896, 731}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={78, 31, 896, 653}}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[681, 622]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[681, 544]">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -114,38 +114,8 @@ to this actor over the network. </text></svg></configure>
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="legend" class="ptolemy.kernel.util.StringAttribute">
-        </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={386, 338, 508, 348}}">
-        </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
-        </property>
-        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="570.0, 220.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <configure>
-<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
-"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
-<plot>
-<title>TimedPlotter</title>
-<xLabel></xLabel>
-<yLabel></yLabel>
-<xRange min="0.0" max="100.0"/>
-<yRange min="0.0" max="150.0"/>
-<default connected="no" marks="points" stems="yes"/>
-</plot>?>
-        </configure>
-    </entity>
     <entity name="SingleEvent" class="ptolemy.domains.de.lib.SingleEvent">
-        <property name="time" class="ptolemy.data.expr.Parameter" value="10.0">
+        <property name="time" class="ptolemy.data.expr.Parameter" value="4.0">
         </property>
         <property name="value" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -156,7 +126,7 @@ to this actor over the network. </text></svg></configure>
         </port>
     </entity>
     <entity name="MobileModel2" class="ptolemy.actor.MobileModel">
-        <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
+        <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
         <property name="defaultDirector" class="ptolemy.actor.Director">
             <property name="_location" class="ptolemy.kernel.util.Location" value="135.0, 60.0">
@@ -209,7 +179,7 @@ to this actor over the network. </text></svg></configure>
         </port>
     </entity>
     <entity name="SingleEvent2" class="ptolemy.domains.de.lib.SingleEvent">
-        <property name="time" class="ptolemy.data.expr.Parameter" value="50.0">
+        <property name="time" class="ptolemy.data.expr.Parameter" value="6.0">
         </property>
         <property name="value" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -232,11 +202,26 @@ to this actor over the network. </text></svg></configure>
             <property name="output"/>
         </port>
     </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0, 0.0, 1.5, 12.0}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        </property>
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="555.0, 220.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
@@ -248,10 +233,11 @@ to this actor over the network. </text></svg></configure>
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="Ramp.output" relation="relation5"/>
     <link port="Ramp.trigger" relation="relation"/>
     <link port="Clock.output" relation="relation"/>
-    <link port="TimedPlotter.input" relation="relation2"/>
     <link port="SingleEvent.output" relation="relation3"/>
     <link port="MobileModel2.input" relation="relation5"/>
     <link port="MobileModel2.modelString" relation="relation6"/>
@@ -264,4 +250,5 @@ to this actor over the network. </text></svg></configure>
     <link port="SingleEvent2.output" relation="relation7"/>
     <link port="FileReader2.trigger" relation="relation7"/>
     <link port="FileReader2.output" relation="relation8"/>
+    <link port="Test.input" relation="relation2"/>
 </entity>

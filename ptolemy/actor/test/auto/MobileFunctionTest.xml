@@ -7,7 +7,7 @@
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="100">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="6.0">
         </property>
         <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -112,38 +112,8 @@ this actor MobileFunction.
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="legend" class="ptolemy.kernel.util.StringAttribute">
-        </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={246, 366, 508, 348}}">
-        </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
-        </property>
-        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="495.0, 150.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <configure>
-<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
-"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
-<plot>
-<title>TimedPlotter</title>
-<xLabel></xLabel>
-<yLabel></yLabel>
-<xRange min="0.0" max="100.0"/>
-<yRange min="0.0" max="25.0"/>
-<default connected="no" marks="points" stems="yes"/>
-</plot>?>
-        </configure>
-    </entity>
     <entity name="Expression2" class="ptolemy.actor.lib.Expression">
-        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="function(x) x*x*0.01">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="function(x) x*x">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
@@ -161,7 +131,7 @@ this actor MobileFunction.
         </port>
     </entity>
     <entity name="SingleEvent" class="ptolemy.domains.de.lib.SingleEvent">
-        <property name="time" class="ptolemy.data.expr.Parameter" value="50.0">
+        <property name="time" class="ptolemy.data.expr.Parameter" value="5.0">
         </property>
         <property name="value" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -171,15 +141,32 @@ this actor MobileFunction.
             <property name="output"/>
         </port>
     </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 1.0, 2.0, 9.0}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        </property>
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="465.0, 150.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="MobileFunction.input" relation="relation2"/>
     <link port="MobileFunction.function" relation="relation"/>
@@ -187,8 +174,8 @@ this actor MobileFunction.
     <link port="Ramp.output" relation="relation2"/>
     <link port="Ramp.trigger" relation="relation6"/>
     <link port="Clock.output" relation="relation6"/>
-    <link port="TimedPlotter.input" relation="relation4"/>
     <link port="Expression2.output" relation="relation"/>
     <link port="Expression2.in" relation="relation3"/>
     <link port="SingleEvent.output" relation="relation3"/>
+    <link port="Test.input" relation="relation4"/>
 </entity>
