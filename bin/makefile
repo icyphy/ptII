@@ -56,6 +56,7 @@ SHELL_FILES = \
 	ptstartjini \
 	ptolemy \
 	pxgraph \
+	soot \
 	startjini.gui \
 	vergil
 
@@ -109,6 +110,8 @@ all: ptinvoke
 	ln -s ptinvoke ptplot
 	rm -f pxgraph
 	ln -s ptinvoke pxgraph
+	rm -f soot
+	ln -s ptinvoke soot
 	rm -f vergil
 	ln -s ptinvoke vergil
 

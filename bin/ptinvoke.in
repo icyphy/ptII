@@ -108,6 +108,12 @@ JODE_JAR="@JODE_CLASSES@"
 
 JODE_JFLAG=
 
+#### Soot..  Java compiler and optimizer package.  Jasmin: a java assembler.
+# The soot and jasmin jar files.
+SOOT_JAR="@SOOT_CLASSES@"
+
+SOOT_JFLAG=
+
 #### All the jar files.  Useful for Vergil and ptolemy rules which must load
 # arbitrary files
 ALL_JAR="${DIVA_JAR}${CLASSPATHSEPARATOR}${JINI_JARS}${COMMAPI_JAR}"
@@ -228,6 +234,13 @@ case `basename "$0"` in
 	# Plotter compatible with old X11 pxgraph
 	javastartupclass=ptolemy.plot.compat.PxgraphApplication
 	javasourcedir=ptolemy/plot/compat
+	;;
+    soot)
+	# Soot optimizer
+	javastartupclass=soot.Main
+	javasourcedir=
+	jarfile="$SOOT_JAR"
+	javaflag="$SOOT_JFLAG"
 	;;
     vergil)
 	# Ptolemy II UI
