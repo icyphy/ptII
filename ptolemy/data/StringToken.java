@@ -66,95 +66,92 @@ public class StringToken extends ObjectToken {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Add the value of the argument Token to this Token. The value of
-     *  the argument token is converted to a String and concatenated
-     *  with the value stored in this token. Type resolution
-     *  also occurs here, with the returned Token type chosen to achieve
-     *  a lossless conversion.
-     *  @param tok The token to add to this Token
-     *  @exception IllegalActionException Thrown if the passed token is
-     *  not of a type that can be added to this Tokens value in a
-     *  lossless fashion.
+    /** Return a new StringToken whose value is the string value 
+     *  of the argument token appended to the String contained in 
+     *  this Ttoken.
+     *  @param token The token to add to this Token
+     *  @exception IllegalActionException If the passed token is
+     *   not of a type that can be added to this Tokens value in a
+     *   lossless fashion.
+     *  @return A new StringToken containing the result.
      */
-    public Token add(Token tok) throws IllegalActionException {
-        int typeInfo = TypeCPO.compare(this, tok);
+    public Token add(Token token) throws IllegalActionException {
+        int typeInfo = TypeCPO.compare(this, token);
         try {
             if (typeInfo == CPO.HIGHER) {
-                StringToken tmp = (StringToken)this.convert(tok);
+                StringToken tmp = (StringToken)this.convert(token);
                 String result = _value + tmp.getValue();
                 return new StringToken(result);
-            } else if (tok instanceof StringToken) {
-                String result = _value + ((StringToken)tok).getValue();
+            } else if (token instanceof StringToken) {
+                String result = _value + ((StringToken)token).getValue();
                 return new StringToken(result);
             } else if (typeInfo == CPO.LOWER) {
-                return tok.addR(this);
+                return token.addR(this);
             } else {
                 throw new Exception();
             }
         } catch (Exception ex) {
             String str = "add method not supported between";
             str = str + this.getClass().getName() + " and ";
-            str = str + tok.getClass().getName();
+            str = str + token.getClass().getName();
             throw new IllegalActionException(str + ": " + ex.getMessage());
         }
     }
 
-    /** Add the value of this Token to the argument Token. The value of
-     *  the argument token is converted to a String and concatenated
-     *  with the value stored in this token. Type resolution
-     *  also occurs here, with the returned Token type chosen to achieve
-     *  a lossless conversion.
-     *  @param tok The token to concatenate this Token to.
-     *  @exception IllegalActionException Thrown if the passed token
+    /** Return a new StringToken whose value is the string value 
+     *  of the argument token prepended to the String contained in 
+     *  this Ttoken.
+     *  @param token The token to concatenate this Token to.
+     *  @exception IllegalActionException If the passed token
      *   is not of a type that can be added to this Tokens value in
      *   a lossless fashion.
+     *  @return A new StringToken containing the result.
      */
-    public Token addR(ptolemy.data.Token tok) throws IllegalActionException {
-        StringToken tmp = (StringToken)this.convert(tok);
+    public Token addR(ptolemy.data.Token token) throws IllegalActionException {
+        StringToken tmp = (StringToken)this.convert(token);
         String result = tmp.getValue() + _value;
         return new StringToken(result);
     }
 
     /** Used to convert Token types further down the type hierarchy to
      *  the a StringToken.
-     *  @param tok The token to be converted to a StringToken.
-     *  @exception IllegalActionException Thrown if the conversion
+     *  @param token The token to be converted to a StringToken.
+     *  @exception IllegalActionException If the conversion
      *  cannot be carried out in a lossless fashion.
-     *  FIXME: does not currently support the lossless hierarchy fully
-     *  as do not currently have LongMatrix, CompleMatrix or ComplexToken
-     *  classes. It skips down to the DoubleToken part of the lossless
-     *  type hierarchy.
+     *  @return A new Token containing the argument Token converted 
+     *   to the type of this Token, if possible.
      */
-    public Token convert(Token tok) throws IllegalActionException{
-        if (tok instanceof BooleanToken) {
-            String result = ((BooleanToken)tok).stringValue();
+    public Token convert(Token token) throws IllegalActionException{
+        if (token instanceof BooleanToken) {
+            String result = ((BooleanToken)token).stringValue();
             return new StringToken(result);
-        } else if (tok instanceof DoubleToken) {
-            String result = ((DoubleToken)tok).stringValue();
+        } else if (token instanceof DoubleToken) {
+            String result = ((DoubleToken)token).stringValue();
             return new StringToken(result);
         } else {
             try {
-                DoubleToken res = (DoubleToken)(new DoubleToken()).convert(tok);
-                return convert(res);
+                Token tmp = (new DoubleToken()).convert(token);
+                return convert((DoubleToken)tmp);
             } catch (Exception ex) {
                 String str = "cannot convert from token type: ";
-                str = str + tok.getClass().getName() + " to a ";
+                str = str + token.getClass().getName() + " to a ";
                 throw new IllegalActionException(str + "DoubleToken");
             }
         }
     }
 
     /** Lexicographically test the values of this Token and the
-     *  argument Token for equality.
-     *  @param a The token to lexicographically compare the value this
+     *  argument Token for equality. Return a new BooleanToken containing 
+     *  the result.
+     *  @param token The token to lexicographically compare the value this
      *  Token with.
      *  @return BooleanToken indicating result of comparision.
      *  @exception IllegalActionException Thrown if the passed token
      *  is not of a type that can be compared this Tokens value.
      */
-    public BooleanToken equality(Token a) throws IllegalActionException {
-        if (a instanceof StringToken) {
-            if ( _value.compareTo(a.stringValue()) == 0) {
+    public BooleanToken equals(Token token) throws IllegalActionException {
+        if (token instanceof StringToken) {
+            if ( _value.compareTo(token.stringValue()) == 0) {
                 return new BooleanToken(true);
             } else {
                 return new BooleanToken(false);
@@ -162,22 +159,8 @@ public class StringToken extends ObjectToken {
         } else {
             String str = "equality method not supported between ";
             str = str + this.getClass().getName();
-            str = str + " and " + a.getClass().getName();
+            str = str + " and " + token.getClass().getName();
             throw new IllegalActionException(str);
-        }
-    }
-
-
-    /** Set the value of the token to the specified string.
-     *  If the argument is null, then the value is set to an empty string
-     *  rather than null.
-     *  @param init The String to be stored in this token.
-     */
-    public void fromString(String init) {
-        if (init != null) {
-            _value = init;
-        } else {
-            _value = new String("");
         }
     }
 
@@ -188,26 +171,12 @@ public class StringToken extends ObjectToken {
         return _value;
     }
 
-
-    /** Set the value of the token to be a reference to the specified string.
-     *  If the argument is null, then the value is set to an empty string
-     *  rather than null.
-     *  @param value The String to store in this token.
-     */
-    public void setValue(String value) {
-        if (value != null) {
-            _value = value;
-        } else {
-            _value = new String("");
-        }
-    }
-
-    /** Return the value of this Token as a String
+    /** Return the value of this Token as a String.
+     *  @return The value of this Token as a String.
      */
     public String stringValue() {
         return _value;
     }
-
 
     /** Return the string description of the object.  If there is no such
      *  object, then return a description of the token.
