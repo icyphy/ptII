@@ -7,7 +7,7 @@
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
     </property>
     <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
-        <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="3">
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
@@ -16,8 +16,6 @@
     </property>
     <entity name="DelayLine" class="ptolemy.domains.sdf.lib.DelayLine">
         <property name="initialValues" class="ptolemy.data.expr.Parameter" value="{0,0,0,0}">
-        </property>
-        <property name="initialValuess" class="ptolemy.data.expr.Parameter" value="{0,0,0,0}">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="196.0, 195.0">
         </property>
@@ -58,20 +56,6 @@
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
-        </property>
-        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
-        </property>
-        <property name="title" class="ptolemy.kernel.util.StringAttribute">
-        </property>
-        <property name="_location" class="ptolemy.moml.Location" value="409.0, 195.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-    </entity>
     <entity name="ArrayToSequence" class="ptolemy.domains.sdf.lib.ArrayToSequence">
         <property name="_location" class="ptolemy.moml.Location" value="310.0, 195.0">
         </property>
@@ -94,16 +78,30 @@
             </property>
         </port>
     </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0,0,0,0,1,0,0,0,2,1,0,0}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="446.0, 199.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="373.0, 202.0">
+        </vertex>
     </relation>
     <link port="DelayLine.input" relation="relation"/>
     <link port="DelayLine.output" relation="relation3"/>
     <link port="Ramp.output" relation="relation"/>
-    <link port="Display.input" relation="relation4"/>
     <link port="ArrayToSequence.input" relation="relation3"/>
-    <link port="ArrayToSequence.output" relation="relation4"/>
+    <link port="ArrayToSequence.output" relation="relation6"/>
+    <link port="Test.input" relation="relation6"/>
 </entity>
