@@ -72,19 +72,7 @@ import javax.swing.filechooser.FileFilter;
  * @author Steve Neuendorffer, John Reekie 
  * @version $Id$
  */
-public class GraphEditor extends AbstractApplication {
-
-    /** The frame we live in
-     */
-    private DesktopFrame _applicationFrame;
-
-    /** The factory that creates graph documents
-     */
-    private DocumentFactory _documentFactory;
-
-    /** Our storage policy
-     */
-    private DefaultStoragePolicy _storagePolicy;
+public class GraphEditor extends MDIApplication {
 
     /** A mapping from documents to content panes
      */
@@ -116,52 +104,52 @@ public class GraphEditor extends AbstractApplication {
 
         // Create local objects
 	JTreePane treepane = new JTreePane("");	
-        _applicationFrame = new DesktopFrame(this, treepane);
-        _documentFactory = new GraphDocument.Factory();
-        // _incrementalLayout = new LevelLayout();
+        DesktopFrame frame = new DesktopFrame(this, treepane);
+        setApplicationFrame(frame);
 
-        // Initialize the menubar, toolbar, and palettes
-        initializeMenuBar(_applicationFrame.getJMenuBar());
-        initializeToolBar(_applicationFrame.getJToolBar());
-        initializePalette();     
-	
-        Icon icon = getApplicationResources().getImageIcon("GraphIcon");
-        Image iconImage = getApplicationResources().getImage("GraphIcon");
-        // Image iconImg = getApplicationResources().getImageIcon("GraphIcon");
-	
-        _applicationFrame.setFrameIcon(icon);
-        _applicationFrame.setIconImage(iconImage);
-	
         // Create and initialize the storage policy
-	_storagePolicy = new DefaultStoragePolicy();
-	JFileChooser fc = _storagePolicy.getFileChooser();
+        DefaultStoragePolicy storage = new DefaultStoragePolicy();
+        setStoragePolicy(storage);
 	FileFilter ff = new FileFilter() {
 	    public boolean accept (File file) {
 		return GUIUtilities.getFileExtension(file).
-                    toLowerCase().equals("ptml");
+                    toLowerCase().equals("xml");
 	    }
 	    public String getDescription () {
-		return "PTML files";
+		return "XML files";
 	    }
 	};
-	fc.addChoosableFileFilter(ff);
-	fc.setFileFilter(ff);
+        JFileChooser fc;      
+        fc = storage.getOpenFileChooser();
+        fc.addChoosableFileFilter(ff);
+        fc.setFileFilter(ff);
+
+        fc = storage.getSaveFileChooser();
+        fc.addChoosableFileFilter(ff);
+        fc.setFileFilter(ff);
+
+        setDocumentFactory(new GraphDocument.Factory());
+        // _incrementalLayout = new LevelLayout();
+
+        // Initialize the menubar, toolbar, and palettes
+        initializeMenuBar(frame.getJMenuBar());
+        initializeToolBar(frame.getJToolBar());
+        initializePalette();     
 	
+        Icon icon = getResources().getImageIcon("GraphIconImage");
+        Image iconImage = getResources().getImage("GraphIconImage");
+	
+        frame.setFrameIcon(icon);
+        frame.setIconImage(iconImage);
+		
         // Experimental -- doesn't work... open a file
         // getAction("open").actionPerformed(null);
     }
 
-    /** Get the frame that this application draws itself in.
+    /** Given a document, create a new view which displays that
+     * document. This class creates a JGraph.
      */
-    public ApplicationFrame getApplicationFrame () {
-        return _applicationFrame;
-    }
-
-    /** Display the given document. The document should already be
-     * added to the application. After calling this method, most
-     * callers should set this document to be the current document.
-     */
-    public void displayDocument (Document d) {
+    public JComponent createView (Document d) {
 	GraphPane pane = new GraphPane(new EditorGraphController(), 
 				       new EditorGraphImpl());
 	JGraph jgraph = new JGraph(pane);
@@ -176,60 +164,20 @@ public class GraphEditor extends AbstractApplication {
         // Set and draw the new graph
         controller.setGraph(graph);
 
-        // Add the JGraph to the application frame
-        _applicationFrame.addContentPane(d.getTitle(), jgraph);
+        return jgraph;
 
-        // Yuk we need hash tables to map jgraphs to documents ek
-        _contentPanes.put(d, jgraph);
-        _documents.put(jgraph, d);
+    }
 
-        // If the pane gets the focus, make the document the current
-        // document. This is a neat trick to avoid using hashes, actually...
-        final Document fd = d;
-        final JComponent jc = jgraph;
-        _applicationFrame.addViewListener(new ViewAdapter() {
-            public void viewSelected(ViewEvent e) {
-                JComponent view = e.getView();
-                // Check this is the right one
-                if (view == jc) {
-                    // FIXME: for some reason, closing
-                    //        a view also causes that view
-                    //        to be selected after it is
-                    //        closed?
-                    if(indexOf(fd) != -1) {
-                        // Prevent recursion
-                        if (getCurrentDocument() != fd) {
-                            setCurrentDocument(fd);
-                        }
-                    }
-                }
-            }
-            public void viewClosing(ViewEvent e) {
-                JComponent view = e.getView();
-                if (view == jc) {
-                    // FIXME: avoid circular loop with the
-                    // removeDocument method (if the
-                    // file is closed from the menu,
-                    // rather than by clicking the X in
-                    // the internal pane
-                    if(indexOf(fd) != -1) {
-                        removeDocument(fd);
-                        setCurrentDocument(getCurrentDocument());
-                    }
-                }
-            }
-        });
-
-        // Perform the layout
+    /** Redisplay a document after it appears on the screen. This method
+     * should be overridden by applications that need to perform some
+     * form of update when the component appears on the screen.
+     * This class executes a graph layout algorithm on the document
+     */
+    public void redisplay (Document d, JComponent c) {
+        JGraph jgraph = (JGraph) c;
         redoLayout(jgraph, (String) _layoutComboBox.getSelectedItem());
     }
-
-    /** Get the graph document factory
-     */
-    public DocumentFactory getDocumentFactory () {
-        return _documentFactory;
-    }
-    
+   
     /** Return the entity library associated with this GraphEditor
      */
     public CompositeEntity getEntityLibrary () {
@@ -242,12 +190,6 @@ public class GraphEditor extends AbstractApplication {
 	return _iconLibrary;
     }
 
-    /** Get the storage policy of this application.
-     */
-    public StoragePolicy getStoragePolicy () {
-        return _storagePolicy;
-    }
-
     /** Get the title of this application
      */
     public String getTitle() {
@@ -257,46 +199,22 @@ public class GraphEditor extends AbstractApplication {
     /** Initialize the palette in the.
      */
     public void initializePalette () {
-        JTreePane pane = (JTreePane)_applicationFrame.getPalettePane();
+        DesktopFrame frame = ((DesktopFrame) getApplicationFrame());
+        JTreePane pane = (JTreePane)frame.getPalettePane();
 
         parseLibraries();
 	//System.out.println("Icons = " + _iconLibrary.description());
-        //        JTabbedPane pane = createPaneFromEntityLibrary(_entityLibrary);
-        // FIXME Get the right library.
-        CompositeEntity lib = getEntityLibrary();
-        /*
-	// This is a bunch of test code in case XML loding breaks.
-        CompositeEntity lib = new CompositeEntity();
-        try {
-        
-        lib.setName("root");
-        ComponentEntity e;
-        Port p;
-	Parameter pa;
-        //	LocationAttribute l;
-	EditorIcon i;
-        e = new ComponentEntity(lib, "E1");
-	p = e.newPort("P1");
-        //	l = new LocationAttribute(p, 20, 0);
-	p = e.newPort("P2");
-	pa = new Parameter(e, "Param1");
-	pa.setExpression("7.0");
-        //	l = new LocationAttribute(p, -20, 0);
-        i = new EditorIcon(e);
-        e = new ComponentEntity(lib, "E2");
-        i = new EditorIcon(e);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException(e.getMessage());
-        }
-        */
 
+        CompositeEntity lib = getEntityLibrary();
+ 
 	// We have "" because that is the name that was given in the
 	// treepane constructor.
         createTreeNodes(pane, "", lib);	
-	// FIXME proportion is broken.
+	
+        // FIXME This should be setDividerLocation(double), but this 
+        // appears to be broken in jdk1.2.2.   
 	pane.setDividerLocation(150);
-	JSplitPane splitPane = _applicationFrame.getSplitPane();
+	JSplitPane splitPane = frame.getSplitPane();
 	splitPane.setDividerLocation(150);
     }
     
@@ -323,38 +241,6 @@ public class GraphEditor extends AbstractApplication {
 	//palette.triggerLayout();
     }
 
-    /*
-    public JTabbedPane createPaneFromComposite(CompositeEntity library) {
-        Enumeration enum;
-        JTabbedPane pane = new JTabbedPane();
-        enum = library.getEntities();
-        while(enum.hasMoreElements()) {
-            Entity entity = 
-                (Entity) enum.nextElement();
-            if(entity instanceof CompositeEntity) {
-                pane.addTab(entity.getName(), 
-                        createPaneFromComposite((CompositeEntity)entity));
-            }
-        }
-
-        enum = library.getEntities();
-        if(enum.hasMoreElements()) {
-            SchematicPalette palette = new SchematicPalette();
-            int i = 0;
-            while(enum.hasMoreElements()) {
-                Entity entity = 
-                    (Entity) enum.nextElement();
-                if(!(entity instanceof CompositeEntity)) {
-                    palette.addEntity(entity, 
-                        60, 50 + (i++) * 50);     
-                }       
-            }
-            if(i > 0)
-                pane.addTab("entities", palette);
-        }
-        return pane;
-    }
-    */
     /** Initialize the given menubar. Currently, all strings are
      * hard-wired, but maybe we should be getting them out of the
      * ApplicationResources.
@@ -522,14 +408,13 @@ public class GraphEditor extends AbstractApplication {
 	//FIXME find these names somehow.
 	_directorComboBox = new JComboBox();
 	dflt = "sdf.director";
-        _directorComboBox.addItem(dflt);
-        _directorComboBox.addItem("de.director");
+        _directorComboBox.addItem(dflt);        
         _directorComboBox.setSelectedItem(dflt);
         _directorComboBox.setMaximumSize(_directorComboBox.getMinimumSize());
         _directorComboBox.addItemListener(new ItemListener() {
             public void itemStateChanged (ItemEvent e) {
                 if (e.getStateChange() == ItemEvent.SELECTED) {
-                    setDirectorOfCurrentDocument((String)e.getItem());
+                    // FIXME do something.
                 }
             }
         });
@@ -604,68 +489,6 @@ public class GraphEditor extends AbstractApplication {
         jgraph.repaint();
     }
 
-    /** Set the given document to be the current document, and raise
-     * the internal window that corresponds to that component.
-     */
-    public void removeDocument (Document d) {
-        super.removeDocument(d);
-        JComponent pane = (JComponent) _contentPanes.get(d);
-        _contentPanes.remove(d);
-        _documents.remove(pane);
-
-        //FIXME do this last, to avoid circular loop
-        //      with the viewClosing callback
-        _applicationFrame.removeContentPane(pane);
-    }
-    
-    /** Set the given document to be the current document, and raise
-     * the internal window that corresponds to that component.
-     */
-    public void setCurrentDocument (Document d) {
-        super.setCurrentDocument(d);
-        if(d != null) {
-            JComponent pane = (JComponent) _contentPanes.get(d);
-            _applicationFrame.setCurrentContentPane(pane);
-        }
-        //        setDirectorOfCurrentDocument((String) _directorComboBox.getSelectedItem());
-    }
-    
-    /** Set the director of the current document to the director in
-     * the entity library with the given name
-     */
-    public void setDirectorOfCurrentDocument(String name) {
-        GraphDocument d = (GraphDocument) getCurrentDocument();
-        //        if(d == null) return;
-        //Schematic schematic = 
-        //   (Schematic) d.getCurrentSheet().getModel();
-        //SchematicDirector director = 
-        //    _entityLibrary.findDirector(name);
-        //schematic.setDirector(director);
-    }
-
-    /** Show an error that occurred in this class.
-     */
-    public void showError(String op, Exception e) {
-        // Show the stack trace in a scrollable text area.
-        StringWriter sw = new StringWriter();
-        PrintWriter pw = new PrintWriter(sw);
-        e.printStackTrace(pw);
-        JTextArea text = new JTextArea(sw.toString(), 8, 60);
-        JScrollPane stext = new JScrollPane(text);
-
-        // We want to stack the text area with another message
-        Object[] message = new Object[2];
-        message[0] = "Error in GraphEditor: " + op + " failed.\n"
-            + "Please submit a bug report.";
-        message[1] = stext;
-
-        // Show the MODAL dialog
-        JOptionPane.showMessageDialog(
-                getApplicationFrame(),
-                message,
-                "We can't program for nuts",
-                JOptionPane.WARNING_MESSAGE);
-    }
     IconLibrary _iconLibrary;
     CompositeEntity _entityLibrary;
 }
