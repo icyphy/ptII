@@ -116,8 +116,6 @@ public class ModelDirectory {
      *  @param model The model.
      */
     public static void put(Object key, CompositeActor model) {
-// FIXME
-System.out.println("**** putting in directory: " + key);
         _directory.put(key, model);
     }
 
