@@ -70,7 +70,10 @@ OPTIONAL_FILES = \
 	usingVergil.pdf
 
 all: suball
-install: all jars
+install: all jars hyvisual.jar
+
+hyvisual.jar: hyvisual.pdf
+	(cd $(ROOT); "$(JAR)" -cvf $(ME)/$@ $(ME)/hyvisual.pdf)
 
 # We don't include common.mk since we don't use the compiler here
 include $(ROOT)/mk/ptno-compile.mk
