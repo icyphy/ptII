@@ -116,9 +116,10 @@ public class TclShellTableau extends Tableau {
 	protected void _help() {
 	    try {
 		URL doc = getClass().getClassLoader().getResource(
-								  "$PTII/doc/coding/tcljava.htm");
+								  "doc/coding/tcljava.htm");
 		getConfiguration().openModel(null, doc, doc.toExternalForm());
 	    } catch (Exception ex) {
+		System.out.println("TclShellTableau._help(): " + ex);
 		_about();
 	    }
 	}
