@@ -123,7 +123,7 @@ public class GUIStringUtilities {
 	}
 	if (propertyName.equals("user.dir")) {
             try {
-                File userDirFile = new File(propertyName);
+                File userDirFile = new File(property);
                 return userDirFile.getCanonicalPath();
             } catch (IOException ex) {
                 return property;
