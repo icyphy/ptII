@@ -48,7 +48,8 @@
 # (3) Run-time type conversion. The IntToken from Ramp2 is converted
 #     to DoubleToken before sent to the Adder. (This is not shown by
 #     a print message in the demo.)
-# (4) The use of the "pure signal" type Token. The output of the clock and
+# (4) The adder in the polymorphic actor library works in the DE domain.
+# (5) The use of the "pure signal" type Token. The output of the clock and
 #     the trigger input of Ramp have type General (Token).
 # 
 # See HierAdderDemo.tcl for a similar demo with hierarchy.

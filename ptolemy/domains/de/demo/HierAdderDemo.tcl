@@ -63,7 +63,8 @@
 #     a print message in the demo.)
 # (4) Type resolution works across transparent and opaque composite
 #     actors.
-# (5) The use of the "pure signal" type Token. The output of the clock and
+# (5) The adder in the polymorphic actor library works in the DE domain.
+# (6) The use of the "pure signal" type Token. The output of the clock and
 #     the trigger input of Ramp have type General (Token). 
 
 proc printPortType {port} {
