@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (eal@eecs.berkeley.edu)
+@AcceptedRating Yellow (eal@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.de.kernel;
@@ -395,7 +395,7 @@ public class DEDirector extends Director {
             return nextTime;
         } catch (IllegalActionException e) {
             // The queue is empty.
-            System.out.println(e.getMessage());
+            //System.out.println(e.getMessage());
             return getStopTime();
         }
     }
