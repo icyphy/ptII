@@ -1089,6 +1089,28 @@ test Function-transpose {Test transpose} {
 ####################################################################
 
 ####################################################################
+# eval
+
+test Function-eval {Test eval} {
+    list [evaluate {eval("1+2")}] \
+     } {3}
+
+####################################################################
+# parseInt
+
+test Function-parseInt {Test parseInt} {
+    list [evaluate {parseInt("42")}] \
+	 [evaluate {parseInt("12", 4)}] \
+     } {42 6}
+
+####################################################################
+# parseLong
+
+test Function-parseLong {Test parseLong} {
+    list [evaluate {parseLong("42")}] \
+     } {42L}
+
+####################################################################
 # set
 
 test Function-set {Test set} {
@@ -1096,6 +1118,27 @@ test Function-set {Test set} {
          [evaluate {foo*10}] \
      } {10 100}
 
+####################################################################
+# toBinaryString
+
+test Function-toBinaryString {Test toBinaryString} {
+    list [evaluate {toBinaryString(73)}] \
+    } {{"1001001"}}
+
+####################################################################
+# toOctalString
+
+test Function-toOctalString {Test toOctalString} {
+    list [evaluate {toOctalString(10)}] \
+    } {{"12"}}
+
+####################################################################
+# toString
+
+test Function-toString {Test toString} {
+    list [evaluate {toString(73)}] \
+	 [evaluate {toString(8, 7)}] \
+    } {{"73"} {"11"}}
 
 ####################################################################
 ####################################################################
