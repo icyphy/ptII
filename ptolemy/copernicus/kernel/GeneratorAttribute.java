@@ -317,22 +317,14 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
 
         ((Variable)getAttribute("ptIIUserDirectoryAsURL"))
             .setExpression("\"" +  ptIIUserDirectoryAsURL + "\"");
-
-        // targetPath depends on the value of targetPackage
-        // FIXME: Variables should be visible in the UI, but not editable.
-        String targetPackage =
-            ((StringToken)
-                    ((Parameter)getAttribute("targetPackage"))
-                    .getToken()).stringValue();
-
-        String targetPath = StringUtilities.substitute(targetPackage,
-                ".", "/");
-
-        ((Variable)getAttribute("targetPath"))
-            .setExpression("\"" + targetPath + "\"");
+        
+        String targetPath = ((StringToken)
+                ((Parameter)getAttribute("targetPath"))
+                .getToken()).stringValue();
 
         // Check that ptIIUserDirectory + targetPath is writable.
-        // targetPath depends on ptIIUserDirectory, so we should mess with ptIIUserDirectory first.
+        // targetPath depends on ptIIUserDirectory, so we should mess
+        // with ptIIUserDirectory first.
 
         File targetPathFile = new File(ptIIUserDirectory, targetPath);
         if (!targetPathFile.isDirectory()

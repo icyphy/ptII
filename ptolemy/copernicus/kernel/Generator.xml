@@ -89,9 +89,9 @@ $Id$
 
      <property name="targetPackage" 
                class="ptolemy.data.expr.Parameter"
-	       value="&quot;ptolemy.copernicus.&quot; + codeGenerator + &quot;.cg.&quot; + modelName"
+	       value="modelName"
 	       >
-	       <doc>The package to generate code in with the model name appended. Defaults to "ptolemy.copernicus." + codeGenerator + ".cg." + modelName</doc>
+	       <doc>The package to generate code in with the model name appended. Defaults to the modelName</doc>
      </property>
 
      <property name="targetPath" 

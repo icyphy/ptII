@@ -37,6 +37,8 @@ import soot.SootMethod;
 import soot.jimple.JimpleBody;
 
 import java.util.Iterator;
+import java.util.List;
+import java.util.LinkedList;
 import java.util.Map;
 
 
@@ -49,7 +51,15 @@ public class TransformerAdapter extends SceneTransformer {
     /** Construct a new transformer
      */
     public TransformerAdapter(BodyTransformer transformer) {
-        _transformer = transformer;
+        _transformers = new LinkedList();
+        _transformers.add(transformer);
+    }
+
+    /** Construct a new transformer that executes the list of body
+     * transformers
+     */
+    public TransformerAdapter(List transformers) {
+        _transformers = transformers;
     }
 
     protected void internalTransform(String phaseName, Map options) {
@@ -68,11 +78,16 @@ public class TransformerAdapter extends SceneTransformer {
 
                     JimpleBody body = (JimpleBody) method.retrieveActiveBody();
 
-                    // FIXME: pass in the options.
-                    // Currently this is not possible because the
-                    // internalTransform method is protected.
-                    _transformer.transform(body, phaseName);
-
+                    for(Iterator transformers = _transformers.iterator();
+                        transformers.hasNext();) {
+                        BodyTransformer transformer = (BodyTransformer)
+                            transformers.next();
+                        
+                        // FIXME: pass in the options.
+                        // Currently this is not possible because the
+                        // internalTransform method is protected.
+                        transformer.transform(body, phaseName);
+                    }
                 } catch (RuntimeException ex) {
                     System.err.println("Exception occured while processing "
                             + method);
@@ -82,7 +97,7 @@ public class TransformerAdapter extends SceneTransformer {
         }
     }
 
-    private BodyTransformer _transformer;
+    private List _transformers;
 }
 
 
