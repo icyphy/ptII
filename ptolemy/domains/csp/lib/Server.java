@@ -48,7 +48,7 @@ import java.util.Random;
 Model of a server in a M/M/1 queue. It serves customers with times
 that are exponentially distributed. It is parameterized by the
 Parameter "serviceRate". The default service rate is 1. The process
-continues executing until a TerminateProcesException is thrown.
+continues executing until a TerminateProcessException is thrown.
 <p>
 @author Neil Smyth
 @version $Id$
