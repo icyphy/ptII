@@ -43,7 +43,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 PTPACKAGE = 	design
-PTCLASSALLJAR = $(PTPACKAGE).jar
+PTCLASSJAR = $(PTPACKAGE).jar
 
 OTHER_FILES_TO_BE_JARED = \
 	design.pdf
