@@ -74,6 +74,7 @@ proc expandConfiguration {configuration} {
     set inputFileNamesToSkip [java::new java.util.LinkedList]
     # Alphabetical please
     $inputFileNamesToSkip add "/apps/apps.xml"
+    $inputFileNamesToSkip add "/configs/ellipse.xml"
     $inputFileNamesToSkip add "io/comm/comm.xml"
     $inputFileNamesToSkip add "/image.xml"
     $inputFileNamesToSkip add "/experimentalDirectors.xml"
