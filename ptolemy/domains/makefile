@@ -63,12 +63,16 @@ PTCLASSJAR =
 
 # Include these jars in PTAUXALLJAR
 # Don't include rtp/rtp.jar, it is not being shipped
+
+# PTGRDOMAIN_JAR is the name of the jar file that includes the GR
+# domain if Java 3D was found.  PTGRDOMAIN_JAR is set by configure.
+
 PTAUXALLJARS = \
 		ci/ci.jar \
 		dde/dde.jar \
                 dt/dt.jar \
 		giotto/giotto.jar \
-		gr/gr.jar \
+		$(PTGRDOMAIN_JAR) \
 		petrinet/petrinet.jar \
 		tm/tm.jar \
 		sr/sr.jar
