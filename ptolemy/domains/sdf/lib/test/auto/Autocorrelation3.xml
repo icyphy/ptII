@@ -61,12 +61,12 @@
             </property>
             <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
             </property>
-            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="5">
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
             </property>
         </port>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0, 0.2, 0.0, 0.0}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{{0.0, 0.0, 0.2, 0.0, 0.0}}}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
@@ -78,7 +78,7 @@
         </port>
     </entity>
     <entity name="Copy3:Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0, 0.2, 0.0, 0.0}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{{0.0, 0.0, 0.2, 0.0, 0.0}}}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>

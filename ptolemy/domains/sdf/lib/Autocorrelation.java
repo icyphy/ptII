@@ -31,16 +31,22 @@
 package ptolemy.domains.sdf.lib;
 
 import ptolemy.actor.Director;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.*;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.graph.InequalityTerm;
+import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
+import ptolemy.graph.InequalityTerm;
+import ptolemy.graph.Inequality;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.*;
+
+import java.util.LinkedList;
+import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 //// Autocorrelation
@@ -54,22 +60,23 @@ However, since integer division will lose the fractional portion of the
 result, type resolution will resolve the input type to double or double
 matrix if the input port is connected to an integer or int matrix source,
 respectively.
-Both biased and unbiased autocorrelation estimates are supported.
 <p>
+Both biased and unbiased autocorrelation estimates are supported.
 If the parameter <i>biased</i> is true, then
 the autocorrelation estimate is
 <a name="unbiased autocorrelation"></a>
 <pre>
          N-1-k
        1  ---
-r(k) = -  \    x(n)x(n+k)
+r(k) = -  \    x<sup>*</sup>(n)x(n+k)
        N  /
           ---
           n=0
 </pre>
 for <i>k </i>=0<i>, ... , p</i>, where <i>N</i> is the number of
-inputs to average (<i>numberOfInputs</i>) and <i>p</i> is the number of
-lags to estimate (<i>numberOfLags</i>).
+inputs to average (<i>numberOfInputs</i>), <i>p</i> is the number of
+lags to estimate (<i>numberOfLags</i>), and x<sup>*</sup> is the
+conjugate of the input (if it is complex).
 This estimate is biased because the outermost lags have fewer than <i>N</i>
 <a name="biased autocorrelation"></a>
 terms in the summation, and yet the summation is still normalized by <i>N</i>.
@@ -89,13 +96,19 @@ a positive definite sequence, so a power spectral estimate based on this
 autocorrelation estimate may have negative components.
 <a name="spectral estimation"></a>
 <p>
-If the parameter <i>symmetricOutput</i> is true, then the output
-will be symmetric and contain a number of samples equal to twice
+The output will be an array of tokens whose type is at least that
+of the input. If the parameter <i>symmetricOutput</i> is true,
+then the output will be symmetric and have length equal to twice
 the number of lags requested plus one.  Otherwise, the output
-will be twice the number of lags requested, which will be almost
-symmetric (discard the last sample to get a perfectly symmetric output).
+will have length equal to twice the number of lags requested,
+which will be almost symmetric (insert the last
+sample into the first position to get the symmetric output that you
+would get with the <i>symmetricOutput</i> being true).
+<p>
+FIXME: At this time, this actor does not correctly handle
+complex inputs.
 
-@author Edward A. Lee
+@author Edward A. Lee and Yuhong Xiong
 @version $Id$
 */
 
@@ -123,10 +136,12 @@ public class Autocorrelation extends SDFTransformer {
                 "symmetricOutput", new BooleanToken(false));
 
         input.setTypeAtLeast(new FunctionTerm(input));
-	output.setTypeAtLeast(input);
+
+	// Set the output type to be an ArrayType.
+        // This is refined further by the typeConstraintList method.
+	output.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
 
         attributeChanged(numberOfInputs);
-
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -187,14 +202,13 @@ public class Autocorrelation extends SDFTransformer {
             }
 
             if (_symmetricOutput) {
-                _numberOfOutputs = 2*_numberOfLags + 1;
+                _lengthOfOutput = 2*_numberOfLags + 1;
             } else {
-                _numberOfOutputs = 2*_numberOfLags;
+                _lengthOfOutput = 2*_numberOfLags;
             }
             input.setTokenConsumptionRate(_numberOfInputs);
-            output.setTokenProductionRate(_numberOfOutputs);
-            if (_outputs == null || _numberOfOutputs > _outputs.length) {
-                _outputs = new Token[_numberOfOutputs];
+            if (_outputs == null || _lengthOfOutput != _outputs.length) {
+                _outputs = new Token[_lengthOfOutput];
             }
 
             Director dir = getDirector();
@@ -232,8 +246,6 @@ public class Autocorrelation extends SDFTransformer {
             for(int j = 0; j < _numberOfInputs - i; j++) {
                 sum = sum.add(inputValues[j].multiply(inputValues[j + i]));
             }
-            // FIXME: The following might be integer division, which
-            // will yield weird results.
             if (biasedValue) {
                 _outputs[i + _numberOfLags - notsymmetric]
                          = sum.divide(numberOfInputs.getToken());
@@ -247,7 +259,7 @@ public class Autocorrelation extends SDFTransformer {
         for(int i = _numberOfLags - 1 - notsymmetric; i >= 0; i--) {
             _outputs[i] = _outputs[2 * (_numberOfLags - notsymmetric) - i];
         }
-        output.broadcast(_outputs, _numberOfOutputs);
+        output.broadcast(new ArrayToken(_outputs));
     }
 
     /** If there are not sufficient inputs, then return false.
@@ -260,12 +272,29 @@ public class Autocorrelation extends SDFTransformer {
         return super.prefire();
     }
 
+    /** Return the type constraint that the type of the elements of the
+     *  output array is no less than the type of the input port.
+     *  @return A list of inequalities.
+     */
+    public List typeConstraintList() {
+        List result = super.typeConstraintList();
+        if (result == null) {
+            result = new LinkedList();
+        }
+	ArrayType outArrType = (ArrayType)output.getType();
+	InequalityTerm elemTerm = outArrType.getElementTypeTerm();
+	Inequality ineq = new Inequality(input.getTypeTerm(), elemTerm);
+
+	result.add(ineq);
+	return result;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     private int _numberOfInputs;
     private int _numberOfLags;
-    private int _numberOfOutputs;
+    private int _lengthOfOutput;
     private boolean _symmetricOutput;
     private Token[] _outputs;
 
