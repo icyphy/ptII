@@ -318,7 +318,7 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
 	    // Don't use reflection here, we want to read the file back in,
             // it probably is not yet compiled.
             unitNode =
-		StaticResolution.loadFile(file, 2);
+		StaticResolution.loadFile(file, 2, className);
 
             // a new visitor must be created for each CompileUnitNode
             // to clear the usage maps
@@ -424,7 +424,8 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
         LinkedList nodeList = new LinkedList();
 
         CompileUnitNode unitNode =
-            (CompileUnitNode) StaticResolution.loadFileName(fileName, 2).clone();
+            (CompileUnitNode) StaticResolution.loadFileName(fileName, 2,
+                    className).clone();
 
         nodeList.addFirst(unitNode);
 
@@ -476,9 +477,14 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
                 }
 
 
+                if (StaticResolution.traceLoading) 
+                    System.out.println("_makeUnitList: loading " + fileName
+                            + "\nAST loading status follows.\n"  
+                            + ASTReflect.getLoadingStatus(true, false)); 
+
                 unitNode =
                     (CompileUnitNode) StaticResolution.loadFile(file,
-                            2).clone();
+                            2, superDecl.fullName()).clone();
 
                 nodeList.addFirst(unitNode);
 
