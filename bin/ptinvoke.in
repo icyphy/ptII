@@ -60,40 +60,50 @@ javaflag=
 # Keep these alphabetical
 case "`basename $0`" in
     histogram)
-    javastartupclass=ptolemy.plot.plotml.HistogramMLApplication
-    javasourcedir=ptolemy/plot/plotml
-    ;;
-    ptolemy)
-    javastartupclass=ptolemy.actor.gui.PtolemyApplication
-    javasourcedir=ptolemy/actor/gui
-    ;;
+	# Histogram Plotter
+	javastartupclass=ptolemy.plot.plotml.HistogramMLApplication
+	javasourcedir=ptolemy/plot/plotml
+	;;
+    ptinvoke)
+	# Invoke the class named by the first argument
+	javastartupclass=$1
+	javasourcedir=
+	;;
     ptjacl)
-    # tcl.lang.Shell brings up the Jacl prompt in the current window
-    javastartupclass=tcl.lang.Shell
-    javasourcedir=
-    jarfile=$PTJACL_JAR
-    javaflag=$PTJACL_FLAG
-    ;;
+	# tcl.lang.Shell brings up the Jacl prompt in the current window
+	javastartupclass=tcl.lang.Shell
+	javasourcedir=
+	jarfile=$PTJACL_JAR
+	javaflag=$PTJACL_FLAG
+	;;
     ptjaclapp)
-    # tcl.lang.PanelShellApp brings up Jacl in a separate window
-    javastartupclass=tcl.lang.PanelShellApp
-    javasourcedir=
-    jarfile=$PTJACL_JAR
-    javaflag=$PTJACL_FLAG
-    ;;
+	# tcl.lang.PanelShellApp brings up Jacl in a separate window
+	javastartupclass=tcl.lang.PanelShellApp
+	javasourcedir=
+	jarfile=$PTJACL_JAR
+	javaflag=$PTJACL_FLAG
+	;;
+    ptolemy)
+	# Ptolemy II Application
+	javastartupclass=ptolemy.actor.gui.PtolemyApplication
+	javasourcedir=ptolemy/actor/gui
+	;;
     ptplot)
-    javastartupclass=ptolemy.plot.plotml.EditablePlotMLApplication
-    javasourcedir=ptolemy/plot/plotml
-    ;;
+	# Signal Plotter
+	javastartupclass=ptolemy.plot.plotml.EditablePlotMLApplication
+	javasourcedir=ptolemy/plot/plotml
+	;;
     pxgraph)
-    javastartupclass=ptolemy.plot.compat.PxgraphApplication
-    javasourcedir=ptolemy/plot/compat
-    ;;
+	# Plotter compatible with old X11 pxgraph
+	javastartupclass=ptolemy.plot.compat.PxgraphApplication
+	javasourcedir=ptolemy/plot/compat
+	;;
     vergil)
-    javastartupclass=ptolemy.vergil.VergilApplication
-    javasourcedir=ptolemy/vergil
-    jarfile=$PTII/lib/diva.jar
-    ;;
+	# Ptolemy II UI
+	javastartupclass=ptolemy.vergil.VergilApplication
+	javasourcedir=ptolemy/vergil
+	jarfile=$PTII/lib/diva.jar
+	;;
 esac
 
 # Special check for Jacl with a better error message
