@@ -56,7 +56,7 @@ import javax.swing.JComboBox;
 //// PortLocationConfigurer
 /**
 This class is an editor to configure the port locations of an object.
-It supports setting their ordinal and cardinal positions
+It supports setting their cardinal positions
 
 Only ports that extend the TypedIOPort class are listed, since more
 primitive ports cannot be configured in this way.
@@ -82,9 +82,9 @@ public class PortLocationConfigurer extends Query implements QueryListener {
       setColumns(2);
 
       _object = object;
-      StringAttribute ordinal = null;
+      //      StringAttribute ordinal = null;
       StringAttribute cardinal = null;
-      String ordinalValue = null;
+      //String ordinalValue = null;
       String cardinalValue = null;
       int i = 0;
       Iterator ports = _object.portList().iterator();
@@ -94,63 +94,63 @@ public class PortLocationConfigurer extends Query implements QueryListener {
          if (candidate instanceof TypedIOPort) {
             TypedIOPort port = (TypedIOPort)candidate;
             cardinal = (StringAttribute)port.getAttribute("_cardinal");
-            if (cardinal != null) {
-              cardinalValue = cardinal.getExpression().toUpperCase();
-              if (cardinalValue.equals("WEST")){
-                 _portsWest.add(port.getName());
-                 _numWest++;
-              } else if (cardinalValue.equals("EAST")){
-                 _portsEast.add(port.getName());
-                 _numEast++;
-              } else if (cardinalValue.equals("NORTH")){
-                 _portsNorth.add(port.getName());
-                 _numNorth++;
-              } else {
-                 _portsSouth.add(port.getName());
-                 _numSouth++;
-              }
-            } else if (port.isInput() && !port.isOutput()) {
-               _portsWest.add(port.getName());
-               _numWest++;
-            } else if (port.isOutput() && !port.isInput()) {
-               _portsEast.add(port.getName());
-               _numEast++;
-            } else {
-               _portsSouth.add(port.getName());
-               _numSouth++;
-            }
+//             if (cardinal != null) {
+//               cardinalValue = cardinal.getExpression().toUpperCase();
+//               if (cardinalValue.equals("WEST")){
+//                  _portsWest.add(port.getName());
+//                  _numWest++;
+//               } else if (cardinalValue.equals("EAST")){
+//                  _portsEast.add(port.getName());
+//                  _numEast++;
+//               } else if (cardinalValue.equals("NORTH")){
+//                  _portsNorth.add(port.getName());
+//                  _numNorth++;
+//               } else {
+//                  _portsSouth.add(port.getName());
+//                  _numSouth++;
+//               }
+//             } else if (port.isInput() && !port.isOutput()) {
+//                _portsWest.add(port.getName());
+//                _numWest++;
+//             } else if (port.isOutput() && !port.isInput()) {
+//                _portsEast.add(port.getName());
+//                _numEast++;
+//             } else {
+//                _portsSouth.add(port.getName());
+//                _numSouth++;
+//             }
 
             cardinalValue = null;
          }
       }
 
-      if (_numWest > 0) {
-         _ordinalsWest = new String[_numWest];
-         for (i = 0; i < _numWest; i++) {
-            _ordinalsWest[i] = Integer.toString(i);
-         }
-      }
+//       if (_numWest > 0) {
+//          _ordinalsWest = new String[_numWest];
+//          for (i = 0; i < _numWest; i++) {
+//             _ordinalsWest[i] = Integer.toString(i);
+//          }
+//       }
 
-      if (_numEast > 0) {
-         _ordinalsEast = new String[_numEast];
-         for (i = 0; i < _numEast; i++) {
-            _ordinalsEast[i] = Integer.toString(i);
-         }
-      }
+//       if (_numEast > 0) {
+//          _ordinalsEast = new String[_numEast];
+//          for (i = 0; i < _numEast; i++) {
+//             _ordinalsEast[i] = Integer.toString(i);
+//          }
+//       }
 
-      if (_numNorth > 0) {
-         _ordinalsNorth = new String[_numNorth];
-         for (i = 0; i < _numNorth; i++) {
-            _ordinalsNorth[i] = Integer.toString(i);
-         }
-      }
+//       if (_numNorth > 0) {
+//          _ordinalsNorth = new String[_numNorth];
+//          for (i = 0; i < _numNorth; i++) {
+//             _ordinalsNorth[i] = Integer.toString(i);
+//          }
+//       }
 
-      if (_numSouth > 0) {
-         _ordinalsSouth = new String[_numSouth];
-         for (i = 0; i < _numSouth; i++) {
-            _ordinalsSouth[i] = Integer.toString(i);
-         }
-      }
+//       if (_numSouth > 0) {
+//          _ordinalsSouth = new String[_numSouth];
+//          for (i = 0; i < _numSouth; i++) {
+//             _ordinalsSouth[i] = Integer.toString(i);
+//          }
+//       }
       // Add the drop-down boxes.
       ports = _object.portList().iterator();
       i = 0;
@@ -158,56 +158,57 @@ public class PortLocationConfigurer extends Query implements QueryListener {
             Object candidate = ports.next();
             if (candidate instanceof TypedIOPort) {
                 TypedIOPort port = (TypedIOPort)candidate;
-                ordinal = (StringAttribute)port.getAttribute("_ordinal");
+//                 ordinal = (StringAttribute)port.getAttribute("_ordinal");
 
-                if (ordinal != null) {
-                    ordinalValue = ordinal.getExpression();
-                } else {
-                    ordinalValue = Integer.toString(i);
-                }
+//                 if (ordinal != null) {
+//                     ordinalValue = ordinal.getExpression();
+//                 } else {
+//                     ordinalValue = Integer.toString(i);
+//                 }
                 cardinal = (StringAttribute)port.getAttribute("_cardinal");
 
                 if (cardinal != null) {
                    cardinalValue = cardinal.getExpression().toUpperCase();
-                   if (cardinalValue.equals("WEST")) {
-                       addChoice("ordinal" + port.getName(),
-                               port.getName() + ": ordinal",
-                               _ordinalsWest, ordinalValue);
-                   } else if (cardinalValue.equals("EAST")) {
-                       addChoice("ordinal" + port.getName(),
-                               port.getName() + ": ordinal",
-                               _ordinalsEast, ordinalValue);
-                   } else if (cardinalValue.equals("NORTH")) {
-                      addChoice("ordinal" + port.getName(),
-                              port.getName() + ": ordinal",
-                              _ordinalsNorth, ordinalValue);
-                   } else {
-                      addChoice("ordinal" + port.getName(),
-                              port.getName() + ": ordinal",
-                              _ordinalsSouth, ordinalValue);
-                   }
+//                    if (cardinalValue.equals("WEST")) {
+//                        addChoice("ordinal" + port.getName(),
+//                                port.getName() + ": ordinal",
+//                                _ordinalsWest, ordinalValue);
+//                    } else if (cardinalValue.equals("EAST")) {
+//                        addChoice("ordinal" + port.getName(),
+//                                port.getName() + ": ordinal",
+//                                _ordinalsEast, ordinalValue);
+//                    } else if (cardinalValue.equals("NORTH")) {
+//                       addChoice("ordinal" + port.getName(),
+//                               port.getName() + ": ordinal",
+//                               _ordinalsNorth, ordinalValue);
+//                    } else {
+//                       addChoice("ordinal" + port.getName(),
+//                               port.getName() + ": ordinal",
+//                               _ordinalsSouth, ordinalValue);
+//                    }
                 } else if (port.isInput() && !port.isOutput()) {
                    cardinalValue = "WEST";
-                   addChoice("ordinal" + port.getName(),
-                           port.getName() + ": ordinal",
-                           _ordinalsWest, ordinalValue);
+//                    addChoice("ordinal" + port.getName(),
+//                            port.getName() + ": ordinal",
+//                            _ordinalsWest, ordinalValue);
                 } else if (port.isOutput() && !port.isInput()) {
                    cardinalValue = "EAST";
-                   addChoice("ordinal" + port.getName(),
-                           port.getName() + ": ordinal",
-                           _ordinalsEast, ordinalValue);
+//                    addChoice("ordinal" + port.getName(),
+//                            port.getName() + ": ordinal",
+//                            _ordinalsEast, ordinalValue);
                 } else {
                    cardinalValue = "SOUTH";
-                   addChoice("ordinal" + port.getName(),
-                           port.getName() + ": ordinal",
-                           _ordinalsSouth, ordinalValue);
+//                    addChoice("ordinal" + port.getName(),
+//                            port.getName() + ": ordinal",
+//                            _ordinalsSouth, ordinalValue);
                 }
 
-                addChoice("cardinal" + port.getName(), "cardinal",
+                addChoice("cardinal" + port.getName(),
+                        port.getName() + ": cardinal direction",
                         _cardinals, cardinalValue);
 
-                ordinal = null;
-                ordinalValue = null;
+//                 ordinal = null;
+//                 ordinalValue = null;
                 cardinalValue = null;
                 cardinal = null;
             }
@@ -259,16 +260,16 @@ public class PortLocationConfigurer extends Query implements QueryListener {
                             + cardinalVal
                             + "\"/>");
                 }
-                if (_changed.contains(nameOrdinal)) {
-                    // Type designation has changed.
-                    String ordinalVal = stringValue(nameOrdinal);
-                    moml.append(
-                            "<property name=\"_ordinal\" "
-                            + "class = \"ptolemy.kernel.util.StringAttribute\" "
-                            + "value = \""
-                            + ordinalVal
-                            + "\"/>");
-                }
+//                 if (_changed.contains(nameOrdinal)) {
+//                     // Type designation has changed.
+//                     String ordinalVal = stringValue(nameOrdinal);
+//                     moml.append(
+//                             "<property name=\"_ordinal\" "
+//                             + "class = \"ptolemy.kernel.util.StringAttribute\" "
+//                             + "value = \""
+//                             + ordinalVal
+//                             + "\"/>");
+//                 }
                 moml.append("</port>");
             }
         }
@@ -295,61 +296,61 @@ public class PortLocationConfigurer extends Query implements QueryListener {
      *  @param name The name of the entry that changed.
      */
     public void changed(String name) {
-        String portName;
-        if (name.startsWith("cardinal")){
-           portName = name.substring(8);
-           try {
-              String oldCardinal = previousCachedStringValue(name);
-              String newCardinal = stringValue(name);
-              System.out.println("PortLocationConfigurer: changed("
-                      + name + ") oldCardinal: " + oldCardinal
-                      + " newCardinal: " + newCardinal);
+//         String portName;
+//         if (name.startsWith("cardinal")){
+//            portName = name.substring(8);
+//            try {
+//               String oldCardinal = previousCachedStringValue(name);
+//               String newCardinal = stringValue(name);
+//               System.out.println("PortLocationConfigurer: changed("
+//                       + name + ") oldCardinal: " + oldCardinal
+//                       + " newCardinal: " + newCardinal);
 
-              //_updatePrevious(name, newCardinal);
-              if (oldCardinal.equals("WEST")) {
-                    _numWest--;
-                    _portsWest.remove(portName);
-                    _adjustOrdinals(_portsWest.iterator(), _numWest);
-              } else if (oldCardinal.equals("EAST")){
-                    _numEast--;
-                    _portsEast.remove(portName);
-                    _adjustOrdinals(_portsEast.iterator(), _numEast);
-              } else if (oldCardinal.equals("NORTH")){
-                    _numNorth--;
-                    _portsNorth.remove(portName);
-                    _adjustOrdinals(_portsNorth.iterator(), _numNorth);
-              } else {
-                    _numSouth--;
-                    _portsSouth.remove(portName);
-                    _adjustOrdinals(_portsSouth.iterator(), _numSouth);
+//               //_updatePrevious(name, newCardinal);
+//               if (oldCardinal.equals("WEST")) {
+//                     _numWest--;
+//                     _portsWest.remove(portName);
+//                     _adjustOrdinals(_portsWest.iterator(), _numWest);
+//               } else if (oldCardinal.equals("EAST")){
+//                     _numEast--;
+//                     _portsEast.remove(portName);
+//                     _adjustOrdinals(_portsEast.iterator(), _numEast);
+//               } else if (oldCardinal.equals("NORTH")){
+//                     _numNorth--;
+//                     _portsNorth.remove(portName);
+//                     _adjustOrdinals(_portsNorth.iterator(), _numNorth);
+//               } else {
+//                     _numSouth--;
+//                     _portsSouth.remove(portName);
+//                     _adjustOrdinals(_portsSouth.iterator(), _numSouth);
 
-              }
-              if (newCardinal.equals("WEST")) {
-                    _numWest++;
-                    _portsWest.add(portName);
-                    _adjustOrdinals(_portsWest.iterator(), _numWest);
-              } else if (newCardinal.equals("EAST")) {
-                    _numEast++;
-                    _portsEast.add(portName);
-                    _adjustOrdinals(_portsEast.iterator(), _numEast);
-              } else if (newCardinal.equals("NORTH")) {
-                    _numNorth++;
-                    _portsNorth.add(portName);
-                    _adjustOrdinals(_portsNorth.iterator(), _numNorth);
-              } else {
-                    _numSouth++;
-                    _portsSouth.add(portName);
-                    _adjustOrdinals(_portsSouth.iterator(), _numSouth);
-             }
-           } catch (Exception e) {
-           }
-        } else if (name.startsWith("ordinal")){
-           portName = name.substring(7);
-           String oldOrdinal = previousCachedStringValue(name);
-           String newOrdinal = stringValue(name);
-           String cardinal = stringValue("cardinal" + portName);
-           //_updatePrevious(name , newOrdinal);
-        }
+//               }
+//               if (newCardinal.equals("WEST")) {
+//                     _numWest++;
+//                     _portsWest.add(portName);
+//                     _adjustOrdinals(_portsWest.iterator(), _numWest);
+//               } else if (newCardinal.equals("EAST")) {
+//                     _numEast++;
+//                     _portsEast.add(portName);
+//                     _adjustOrdinals(_portsEast.iterator(), _numEast);
+//               } else if (newCardinal.equals("NORTH")) {
+//                     _numNorth++;
+//                     _portsNorth.add(portName);
+//                     _adjustOrdinals(_portsNorth.iterator(), _numNorth);
+//               } else {
+//                     _numSouth++;
+//                     _portsSouth.add(portName);
+//                     _adjustOrdinals(_portsSouth.iterator(), _numSouth);
+//              }
+//            } catch (Exception e) {
+//            }
+//         } else if (name.startsWith("ordinal")){
+//            portName = name.substring(7);
+//            String oldOrdinal = previousCachedStringValue(name);
+//            String newOrdinal = stringValue(name);
+//            String cardinal = stringValue("cardinal" + portName);
+//            //_updatePrevious(name , newOrdinal);
+//         }
 
         _changed.add(name);
         apply();
@@ -367,35 +368,35 @@ public class PortLocationConfigurer extends Query implements QueryListener {
      * @param ports An iterator over ports on a side.
      * @param count The number of ports on the side.
      */
-    private
-    void _adjustOrdinals(Iterator ports, int count) {
-       if (ports != null) {
-          while (ports.hasNext()) {
-             String name = (String)ports.next();
-             JComboBox combo = (JComboBox)
-                               getComponent("ordinal" + name);
-             int itemCount = combo.getItemCount();
-             int ordinal = Integer.parseInt((String)combo.getSelectedItem());
-             if (count > itemCount) {
-                for (; itemCount < count; itemCount++) {
-                   combo.addItem(Integer.toString(itemCount));
-                }
-             } else if (count < itemCount) {
-                for (; count < itemCount && itemCount > 1; itemCount--) {
-                   combo.removeItemAt(itemCount-1);
-                }
-             }
-             // If the selected item was the last item before we
-             // removed an item then make the new selected item
-             // be the last item
-             itemCount = combo.getItemCount();
-             if (ordinal >= (itemCount-1)) {
-                combo.setSelectedItem(Integer.toString(itemCount-2));
-                _changed.add("ordinal" + name);
-             }
-          }
-       }
-    }
+//     private
+//     void _adjustOrdinals(Iterator ports, int count) {
+//        if (ports != null) {
+//           while (ports.hasNext()) {
+//              String name = (String)ports.next();
+//              JComboBox combo = (JComboBox)
+//                                getComponent("ordinal" + name);
+//              int itemCount = combo.getItemCount();
+//              int ordinal = Integer.parseInt((String)combo.getSelectedItem());
+//              if (count > itemCount) {
+//                 for (; itemCount < count; itemCount++) {
+//                    combo.addItem(Integer.toString(itemCount));
+//                 }
+//              } else if (count < itemCount) {
+//                 for (; count < itemCount && itemCount > 1; itemCount--) {
+//                    combo.removeItemAt(itemCount-1);
+//                 }
+//              }
+//              // If the selected item was the last item before we
+//              // removed an item then make the new selected item
+//              // be the last item
+//              itemCount = combo.getItemCount();
+//              if (ordinal >= (itemCount-1)) {
+//                 combo.setSelectedItem(Integer.toString(itemCount-2));
+//                 _changed.add("ordinal" + name);
+//              }
+//           }
+//        }
+//     }
 
 
     ///////////////////////////////////////////////////////////////////
@@ -412,19 +413,19 @@ public class PortLocationConfigurer extends Query implements QueryListener {
     // The object that this configurer configures.
     private Entity _object;
 
-    // The number of ports on the WEST
-    private int _numWest = 0;
-    // The number of ports on the EAST
-    private int _numEast = 0;
-    // The number of ports on the NORTH
-    private int _numNorth = 0;
-    // The number of ports on the SOUTH
-    private int _numSouth = 0;
+//     // The number of ports on the WEST
+//     private int _numWest = 0;
+//     // The number of ports on the EAST
+//     private int _numEast = 0;
+//     // The number of ports on the NORTH
+//     private int _numNorth = 0;
+//     // The number of ports on the SOUTH
+//     private int _numSouth = 0;
 
     // The possible configurations for a port.
     private String[] _cardinals = {"NORTH", "SOUTH", "EAST", "WEST" };
-    private String[] _ordinalsWest;
-    private String[] _ordinalsEast;
-    private String[] _ordinalsNorth;
-    private String[] _ordinalsSouth;
+//     private String[] _ordinalsWest;
+//     private String[] _ordinalsEast;
+//     private String[] _ordinalsNorth;
+//     private String[] _ordinalsSouth;
 }
