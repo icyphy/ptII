@@ -33,9 +33,9 @@ package pt.kernel;
 /** NameDuplicationException is thrown in response to attempts to store 
 objects with identical names in the same container object.
 @author John S. Davis, II
-@version @(#)NameDuplicationException.java	$Revision$	$Date$
+@version $Id$
 */
-public class NameDuplicationException extends GraphException {
+public class NameDuplicationException extends PtolemyException {
     /** 
      */	
     public NameDuplicationException() {
