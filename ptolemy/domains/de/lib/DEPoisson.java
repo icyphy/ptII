@@ -132,7 +132,7 @@ public class DEPoisson extends DEActor {
 	}
 	LinkedList result = new LinkedList();
 	Class paramType = outputvalue.getToken().getClass();
-        Inequality ineq = new Inequality(new TypeTerm(paramType),
+        Inequality ineq = new Inequality(new TypeConstant(paramType),
                 output.getTypeTerm());
 	result.insertLast(ineq);
 	return result.elements();
