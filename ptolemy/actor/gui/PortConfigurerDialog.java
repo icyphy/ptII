@@ -85,6 +85,7 @@ import ptolemy.kernel.util.StringAttribute;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
+import ptolemy.vergil.basic.LocatableNodeController;
 
 //////////////////////////////////////////////////////////////////////////
 //// PortConfigurerDialog
@@ -144,6 +145,15 @@ public class PortConfigurerDialog
         // port name associated with the row.
         ListSelectionModel rowSM = _portTable.getSelectionModel();
         rowSM.addListSelectionListener(_rowSelectionListener);
+        _portTable.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent me) {
+                if (me.getButton() == MouseEvent.BUTTON3) {
+                    Point point = me.getPoint();
+                    int row = _portTable.rowAtPoint(point);
+                    _setSelectedRow(row);
+                }
+            }
+        });
         // Create the TableModel and set certain cell editors and renderers
         _setupTableModel();
         _initColumnSizes();
@@ -153,7 +163,6 @@ public class PortConfigurerDialog
         // all change.
         _jth = _portTable.getTableHeader();
         _jth.addMouseListener(new MouseAdapter() {
-
             public void mouseClicked(MouseEvent me) {
                 Rectangle headerShowNameRect =
                     _jth.getHeaderRect(PortTableModel.COL_SHOW_NAME);
@@ -266,6 +275,8 @@ public class PortConfigurerDialog
             // gone so that it can update itself.
             _ports.remove(_selectedRow);
             fireTableRowsDeleted(_selectedRow, _selectedRow);
+            _enableApplyButton(true);
+            _setDirty(true);
         }
 
         /**
@@ -407,7 +418,8 @@ public class PortConfigurerDialog
             }
             setHorizontalAlignment(SwingConstants.CENTER);
             if (!table.isCellEditable(row, col))
-                setBackground(_CLASS_ELEMENT_HIGHLIGHT_COLOR);
+                setBackground(
+                    LocatableNodeController.CLASS_ELEMENT_HIGHLIGHT_COLOR);
             else
                 setBackground(Color.white);
             return this;
@@ -429,7 +441,8 @@ public class PortConfigurerDialog
             setOpaque(true);
             setText((String) value);
             if (!table.isCellEditable(row, col))
-                setBackground(_CLASS_ELEMENT_HIGHLIGHT_COLOR);
+                setBackground(
+                    LocatableNodeController.CLASS_ELEMENT_HIGHLIGHT_COLOR);
             else
                 setBackground(Color.white);
             return this;
@@ -877,6 +890,7 @@ public class PortConfigurerDialog
             (button.length() > 5)
                 && (button.substring(0, 6).equals("Remove"))) {
             _portTableModel.removePort();
+            _setSelectedRow(-1);
         } else {
             super._processButtonPress(button);
         }
@@ -1005,21 +1019,10 @@ public class PortConfigurerDialog
             //Ignore extra messages.
             ListSelectionModel lsm = (ListSelectionModel) e.getSource();
             if (lsm.isSelectionEmpty()) {
-                _removeButton.setText("Remove");
-                _removeButton.setEnabled(false);
-                _selectedRow = -1;
+                _setSelectedRow(-1);
             } else {
                 _selectedRow = lsm.getMinSelectionIndex();
-                String portName =
-                    ((String) ((Object[]) (_ports.elementAt(_selectedRow)))[0]);
-                if (portName.length() < 10) {
-                    portName += "          ";
-                    portName = portName.substring(0, 9);
-                } else if (portName.length() > 10) {
-                    portName = portName.substring(0, 7) + "...";
-                }
-                _removeButton.setText("Remove " + portName);
-                _removeButton.setEnabled(true);
+                _setSelectedRow(_selectedRow);
             }
         }
     };
@@ -1068,6 +1071,25 @@ public class PortConfigurerDialog
             if (!foundActualPort) {
                 // TODO throw an exception here
             }
+        }
+    }
+
+    private void _setSelectedRow(int row) {
+        _selectedRow = row;
+        if (row < 0) {
+            _removeButton.setText("Remove");
+            _removeButton.setEnabled(false);
+        } else {
+            String portName =
+                ((String) ((Object[]) (_ports.elementAt(row)))[0]);
+            if (portName.length() < 10) {
+                portName += "          ";
+                portName = portName.substring(0, 9);
+            } else if (portName.length() > 10) {
+                portName = portName.substring(0, 7) + "...";
+            }
+            _removeButton.setText("Remove " + portName);
+            _removeButton.setEnabled(true);
         }
     }
 
@@ -1134,10 +1156,7 @@ public class PortConfigurerDialog
     }
     ///////////////////////////////////////////////////////////////////
     //// private variables ////
-    // Fourth argument makes this highlight transluscent, which enables
-    // combination with other highlights.
-    private static Color _CLASS_ELEMENT_HIGHLIGHT_COLOR =
-        new Color(255, 0, 0, 64);
+
     private boolean _hideAllPorts = false;
     // Following is true if we have full units capability.
     private boolean _units = true;
