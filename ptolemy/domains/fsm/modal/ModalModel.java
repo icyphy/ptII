@@ -32,8 +32,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Iterator;
 
 import ptolemy.actor.Director;
+import ptolemy.actor.gui.style.ChoiceStyle;
 import ptolemy.actor.util.FunctionDependency;
-import ptolemy.data.expr.StringParameter;
 import ptolemy.domains.ct.kernel.CTCompositeActor;
 import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.domains.fsm.kernel.FSMDirector;
@@ -44,6 +44,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
@@ -148,8 +149,9 @@ public class ModalModel extends CTCompositeActor {
      *  method of the executive director.  If there is no executive
      *  director, then the default is "ptolemy.domains.fsm.kernel.FSMDirector".
      */
-    public StringParameter directorClass;
-
+//    public StringParameter directorClass;
+    public StringAttribute directorClass;
+    
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -158,7 +160,8 @@ public class ModalModel extends CTCompositeActor {
             throws IllegalActionException {
         if (attribute == directorClass) {
             Class newDirectorClass = null;
-            String newDirectorClassName = directorClass.stringValue();
+//            String newDirectorClassName = directorClass.stringValue();
+            String newDirectorClassName = directorClass.getExpression();
             try {
                 Director director = getDirector();
                 if (director != null && director.getContainer() == this) {
@@ -342,8 +345,12 @@ public class ModalModel extends CTCompositeActor {
         _controller = new ModalController(this, "_Controller");
 
         // configure the directorClass parameter
-        directorClass = new StringParameter(this, "directorClass");
-        
+//        directorClass = new StringParameter(this, "directorClass");
+        directorClass = new StringAttribute(this, "directorClass");
+
+        ChoiceStyle style = new ChoiceStyle(directorClass, "style");
+        StringAttribute a;
+
         // NOTE: If there is a container for this ModalModel, and it
         // has a director, then we get the default value from that
         // director, and also get a list of suggested values.
@@ -352,7 +359,13 @@ public class ModalModel extends CTCompositeActor {
             String[] suggestions = 
                 executiveDirector.suggestedModalModelDirectors();
             for (int i = 0; i < suggestions.length; i++) {
-                directorClass.addChoice(suggestions[i]); 
+//                directorClass.addChoice(suggestions[i]); 
+//                if (i == 0) {
+//                    directorClass.setExpression(suggestions[i]);
+//                }
+                a = new StringAttribute(style, "style"+i);
+                a.setExpression(suggestions[i]);
+
                 if (i == 0) {
                     directorClass.setExpression(suggestions[i]);
                 }
