@@ -215,7 +215,7 @@ proc doneTests {args} {
 
     # Attempt to flush the javascope database.  The alternative is
     # to run jsinstr with JSINTRFLAGS=-IFLUSHCLASS=true 
-    java::call COM.sun.suntest.javascope.database.js\$ flush
+    catch {java::call COM.sun.suntest.javascope.database.js\$ flush}
 
     puts "Total Tests: [expr $PASSED + $FAILED + $KNOWN_FAILED] \
 	    ((Passed: $PASSED, Newly Passed: $NEWLY_PASSED) \
