@@ -40,9 +40,10 @@ import ptolemy.kernel.util.Workspace;
 //////////////////////////////////////////////////////////////////////////
 //// VariableDelay
 /**
-   This actor works exactly as the ptolemy.domains.de.lib.TimedDelay actor,
-   except that the amount of time delayed is specified by an incoming
-   token through the delay port parameter.
+   This actor extends from the ptolemy.domains.de.lib.TimedDelay actor.
+   It works in a similar way as the TimedDelay actor except that the 
+   amount of time delayed is specified by an incoming token through 
+   the delay port parameter.
 
    @see ptolemy.actor.util.FunctionDependency
    @see ptolemy.domains.de.lib.TimedDelay
@@ -54,7 +55,7 @@ import ptolemy.kernel.util.Workspace;
    @Pt.ProposedRating Red (liuj)
    @Pt.AcceptedRating Red (liuj)
 */
-public class VariableDelay extends DETransformer {
+public class VariableDelay extends TimedDelay {
 
     /** Construct an actor with the specified container and name.
      *  Specify the IODependence attribute of the input and output ports.
@@ -68,13 +69,7 @@ public class VariableDelay extends DETransformer {
     public VariableDelay(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-
-        delay = new PortParameter(this, "delay");
-        delay.setExpression("1.0");
-        delay.setTypeEquals(BaseType.DOUBLE);
-        
-        output.setTypeSameAs(input);
-
+ 
         _attachText("_iconDescription", "<svg>\n" +
                 "<rect x=\"0\" y=\"0\" "
                 + "width=\"60\" height=\"20\" "
@@ -115,25 +110,11 @@ public class VariableDelay extends DETransformer {
     public void fire() throws IllegalActionException {
         delay.update();
         _delay = ((DoubleToken)delay.getToken()).doubleValue();
-
-        if (input.hasToken(0)) {
-            _currentInput = input.get(0);
-        } else {
-            _currentInput = null;
-        }
-    }
-
-    /** Produce token that was read in the fire() method, if there
-     *  was one.
-     *  The output is produced with a time offset equal to the value
-     *  of the delay parameter.
-     *  @exception IllegalActionException If there is no director.
-     */
-    public boolean postfire() throws IllegalActionException {
-        if (_currentInput != null) {
-            output.send(0, _currentInput, _delay);
-        }
-        return super.postfire();
+        // NOTE: the newDelay may be 0.0, which may change
+        // the causality property of the model. 
+        // We leave the model designers to decide whether the
+        // zero delay is really what they want. 
+        super.fire();
     }
 
     /** Override the base class to declare that the <i>output</i>
@@ -142,16 +123,18 @@ public class VariableDelay extends DETransformer {
      */
     public void pruneDependencies() {
         super.pruneDependencies();
-        removeDependency(input, output);
-        removeDependency(delay.getPort(), output);
+         removeDependency(delay.getPort(), output);
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+    ////                       protected method                    ////
 
-    // Current inputs.
-    private Token _currentInput;
-
-    // delay value;
-    private double _delay;
+    // Initialize the value for parameter.
+    protected void _init() 
+        throws NameDuplicationException, IllegalActionException  {
+        delay = new PortParameter(this, "delay");
+        delay.setExpression("1.0");
+        delay.setTypeEquals(BaseType.DOUBLE);
+        output.setTypeSameAs(input);
+    }
 }
