@@ -51,12 +51,15 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
-	TopologyAdapter.java \
-	TopologyChangeFailedException.java \
-	TopologyChangeRequest.java \
-	TopologyEvent.java \
-	TopologyListener.java \
-	TopologyMulticaster.java
+	AddEntity.java \
+	ChangeFailedException.java \
+	ChangeList.java \
+	ChangeListener.java \
+	ChangeRequest.java \
+	Connect.java \
+	InitializeActor.java \
+	SetParameter.java \
+	StandardOutChangeListener.java
 
 EXTRA_SRCS =	$(JSRCS)
 
