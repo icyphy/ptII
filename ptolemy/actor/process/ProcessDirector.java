@@ -173,6 +173,8 @@ public class ProcessDirector extends Director {
                 ProcessThread pnt = new ProcessThread(actor, this);
                 _threadList.insertFirst(pnt);
 		_newthreads.insertFirst(pnt);
+                //actors should be initialized after creating receivers so that
+                //they can transmit data in their initialize method.
                 actor.createReceivers();
                 actor.initialize();
             }
