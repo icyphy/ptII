@@ -108,7 +108,7 @@ OPTIONAL_FILES = \
 	'ParameterizedNodeController$$1.class' \
 	'RunnableGraphController$$PauseModelAction.class' \
 	'RunnableGraphController$$RunModelAction.class' \
-	'RunnableGraphController$$StopModelAction.class
+	'RunnableGraphController$$StopModelAction.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

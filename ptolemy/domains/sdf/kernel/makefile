@@ -66,7 +66,7 @@ MISC_FILES =	$(DIRS)
 OPTIONAL_FILES = \
 	doc \
 	'SDFScheduler$$1.class' \
-	'SDFScheduler$$NamedObjComparator.class'
+	'SDFScheduler$$NamedObjComparator.class' \
 	'UnsafeSDFScheduler$$1.class' \
 	'UnsafeSDFScheduler$$NamedObjComparator.class'
 
