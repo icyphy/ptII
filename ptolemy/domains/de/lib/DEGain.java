@@ -57,7 +57,7 @@ public class DEGain extends TypedAtomicActor {
      */
     public DEGain(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {
-        this(container, name,0.1);
+        this(container, name, 0.1);
     }
 
     /** Construct a DEGain with the specified gain value.
