@@ -141,9 +141,6 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
         Field fields[] = myClass.getFields();
         for(int i = 0; i < fields.length; i++) {
             try {
-                // We can't use instanceof here because we don't actually
-                // have an instance of the object to call instanceof on.
-                // getType() returns a Class.
                 if (fields[i].get(newObject) instanceof TypedIOPort) {
                         fields[i].set(newObject,
                                 newObject.getPort(fields[i].getName()));
