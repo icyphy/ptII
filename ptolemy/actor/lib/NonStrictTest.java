@@ -31,8 +31,12 @@
 package ptolemy.actor.lib;
 
 import ptolemy.data.ArrayToken;
+import ptolemy.data.BooleanToken;
+import ptolemy.data.DoubleToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.ArrayType;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 
@@ -67,14 +71,16 @@ input data type is undeclared, so it can resolve to anything.
 @since Ptolemy II 2.0
 */
 
-public class NonStrictTest extends Test {
+public class NonStrictTest extends Transformer {
 
     // The Test actor could be extended so that Strictness was a parameter,
     // but that would require some slightly tricky code to handle
     // multiports in a non-strict fashion.  The problem is that if
     // we have more than one input channel, and we want to handle
     // non-strict inputs, then we need to keep track of number of
-    // tokens we have seen on each channel.
+    // tokens we have seen on each channel. Also, this actor does
+    // not read inputs until postfire(), which is too late to produce
+    // an output, as done by Test.
 
     /** Construct an actor with an input multiport.
      *  @param container The container.
@@ -87,16 +93,54 @@ public class NonStrictTest extends Test {
     public NonStrictTest(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
+
+        Token[] defaultEntries = new Token[1];
+        defaultEntries[0] = new BooleanToken(true);
+        ArrayToken defaultArray = new ArrayToken(defaultEntries);
+        correctValues = new Parameter(this, "correctValues", defaultArray);
+        correctValues.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
+
+        tolerance = new Parameter(this, "tolerance", new DoubleToken(1e-9));
+        tolerance.setTypeEquals(BaseType.DOUBLE);
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                     ports and parameters                  ////
+
+    /** A matrix specifying what the input should be.
+     *  This defaults to a one-by-one array containing a boolean true.
+     */
+    public Parameter correctValues;
+
+    /** A double specifying how close the input has to be to the value
+     *  given by <i>correctValues</i>.  This is a DoubleToken, with default
+     *  value 10<sup>-9</sup>.
+     */
+    public Parameter tolerance;
+
+    ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** If the attribute being changed is <i>tolerance</i>, then check
+     *  that it is increasing and nonnegative.
+     *  @exception IllegalActionException If the indexes vector is not
+     *  increasing and nonnegative, or the indexes is not a row vector.
+     */
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        if (attribute == tolerance) {
+            _tolerance = ((DoubleToken)(tolerance.getToken())).doubleValue();
+        } else {
+            super.attributeChanged(attribute);
+        }
+    }
 
     /** Override the base class to set the iteration counter to zero.
      *  @exception IllegalActionException If the base class throws it.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
+        _numberOfInputTokensSeen = 0;
         _iteration = 0;
     }
 
@@ -151,8 +195,18 @@ public class NonStrictTest extends Test {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+    ////                         protected variables               ////
 
-    // Count of iterations.
-    private int _iteration;
+    /** Number of input tokens seen by this actor in the fire method.*/
+    protected int _numberOfInputTokensSeen = 0;
+
+    /** A double that is read from the <i>tolerance</i> parameter
+     *        specifying how close the input has to be to the value
+     *  given by <i>correctValues</i>.  This is a double, with default
+     *  value 10<sup>-9</sup>.
+     */
+    protected double _tolerance;
+
+    /** Count of iterations. */
+    protected int _iteration;
 }
