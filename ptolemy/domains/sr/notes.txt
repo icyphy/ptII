@@ -25,6 +25,7 @@ test fix where IOPorts transfer known absent inputs/outputs
 7 run ptolemy classic SR
 
 5 write
+refer to budapest paper regarding choosing the best MoC
 
 -------------------------------------------------------------------------------
 
