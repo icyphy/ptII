@@ -332,7 +332,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
      *  @param category The category of the declaration to look for,
      *   either CG_CLASS, CG_INTERFACE, or CG_FIELD.
      *  @return The declaration that was searched for.
-     *  @throws NoSuchElementException if the declaration cannot be found.
+     *  @exception NoSuchElementException if the declaration cannot be found.
      */
     public static JavaDecl findDecl(CompileUnitNode compileUnit,
             String qualifiedName, int category) {
@@ -365,7 +365,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
      *   method or constructor.
      *  @param typeVisitor The TypeVisitor to use to get type information.
      *  @return The declaration that was searched for.
-     *  @throws NoSuchElementException if the declaration cannot be found.
+     *  @exception NoSuchElementException if the declaration cannot be found.
      */
     public static MemberDecl findInvokableDecl(CompileUnitNode compileUnit,
             String qualifiedName, int category, List methodArgs,
