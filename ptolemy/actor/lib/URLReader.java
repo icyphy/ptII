@@ -201,7 +201,7 @@ public abstract class URLReader extends Source {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                ///// 
+    ////                         protected methods                /////
 
     /** Set the reader.  If there was a previous reader, close it.
      *  To set standard input, call this method with argument null.

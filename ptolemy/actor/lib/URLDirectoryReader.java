@@ -1,4 +1,4 @@
-/* An actor that reads a URL naming a directory and outputs each 
+/* An actor that reads a URL naming a directory and outputs each
 element of the directory one at a time.
 
 @Copyright (c) 1998-2001 The Regents of the University of California.
@@ -55,7 +55,7 @@ import java.util.StringTokenizer;
 //// URLDirectoryReader
 /**
 This actor reads a URL and if the URL names a directory, it outputs
-the name of each file or subdirectory contained in the directory. 
+the name of each file or subdirectory contained in the directory.
 If the URL names a file, then it outputs the name of that file.
 
 <p>If the <i>repeat</i> flag is true, then the sequence of file
@@ -194,14 +194,14 @@ public class URLDirectoryReader extends URLReader {
      *  URL
      */
     private String [] _list(String source) throws IllegalActionException {
-	if (source.startsWith("file:")) { 
+	if (source.startsWith("file:")) {
 	    return _listFile(source);
 	} else {
 	    try {
 		return _listFileOrURL(source);
 	    } catch (Exception ex) {
 		throw new IllegalActionException("Could not open '" + source
-						 + ": " 
+						 + ": "
 						 + KernelException
 						 .stackTraceToString(ex));
 						 }
@@ -212,7 +212,7 @@ public class URLDirectoryReader extends URLReader {
      *  The source url must be a String using the "file:" protocol.
      *  @return An array containing the files and subdirectories in
      *  the source URL.
-     *  @exception IllegalActionException If the source does not have 
+     *  @exception IllegalActionException If the source does not have
      *  the file: protocol, or if the source is neither a file
      *  nor a directory, or if there is some other problem.
      */
@@ -223,7 +223,7 @@ public class URLDirectoryReader extends URLReader {
 	    if (sourceURL.getProtocol().equals("file")) {
 		// First, try opening the source as a file.
 		File file = new File(sourceURL.getFile());
-		if (file.isDirectory()) { 
+		if (file.isDirectory()) {
 		    String [] shortFiles = file.list();
 		    String [] longFiles = new String[shortFiles.length];
 		    if (!source.endsWith("/")) {
@@ -232,7 +232,7 @@ public class URLDirectoryReader extends URLReader {
 		    }
 		    for (int i = 0; i < shortFiles.length; i++) {
 			longFiles[i] = source + shortFiles[i];
-		    } 
+		    }
 		    return longFiles;
 		} else if (file.isFile()) {
 		    return new String[] {file.toString()};
@@ -258,12 +258,12 @@ public class URLDirectoryReader extends URLReader {
      *  uses the http: protocol, then the remote webserver
      *  configuration determines whether it is possible to read the
      *  contents of a directory.  Usually, the server has to have
-     *  directory listing enabled, and the default html file 
+     *  directory listing enabled, and the default html file
      *  (index.htm, index.html, default.htm etc. ) must not be present.
      *
      *  @return An array containing the files and subdirectories in
      *  the source URL.
-     *  @exception IllegalActionException If the source does not have 
+     *  @exception IllegalActionException If the source does not have
      *  the file: protocol, or if the source is neither a file
      *  nor a directory, or if there is some other problem.  */
     private static String [] _listFileOrURL(String source)
@@ -271,13 +271,13 @@ public class URLDirectoryReader extends URLReader {
 	URL url = new URL(source);
 	URLConnection urlConnection = url.openConnection();
 	String contentType = urlConnection.getContentType();
-	if (!contentType.startsWith("text/html") 
+	if (!contentType.startsWith("text/html")
 	    && !contentType.startsWith("text/plain") ) {
 	    throw new RuntimeException("Could not parse '" + source
 				       + "', it is not \"text/html\", "
 				       + "or \"text/plain\", it is: "
 				       + urlConnection.getContentType());
-	} 
+	}
 	BufferedReader in =
 	    new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
 	if (!contentType.startsWith("text/plain")
