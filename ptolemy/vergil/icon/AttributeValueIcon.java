@@ -116,9 +116,6 @@ public class AttributeValueIcon extends XMLIcon {
         _label = new LabelFigure(truncated,
                _labelFont, 1.0, SwingConstants.CENTER);
         Rectangle2D backBounds = _background.getBounds();
-// FIXME:
-System.out.println("*** center: " + backBounds.getCenterX() + ", " + backBounds.getCenterY());
-System.out.println(Thread.currentThread());
         _label.translateTo(backBounds.getCenterX(), backBounds.getCenterY());
         result.add(_label);
         return result;
