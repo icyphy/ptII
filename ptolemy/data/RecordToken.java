@@ -427,19 +427,20 @@ public class RecordToken extends AbstractNotConvertibleToken {
         return new RecordToken(newLabels, newValues);
     }
 
-	/** Test whether the value of this token is close to the first argument,
-	 *  where "close" means that the distance between them is less than
-	 *  or equal to the second argument.  This method only makes sense
-	 *  for tokens where the distance between them is reasonably
-	 *  represented as a double. It is assumed that the argument is
-	 * 	an RecordToken, and the isCloseTo() method of the fields is
-	 * 	is used.  If the fields do not match, then the return value is
-	 * 	false.
-	 *  @param token The token to compare to this token.
-	 *  @exception IllegalActionException If the elements do not support
-	 *   this comparison.
-	 *  @return A true-valued token if the first argument is close to this token.
-	 */
+    /** Test whether the value of this token is close to the first argument,
+     *  where "close" means that the distance between them is less than
+     *  or equal to the second argument.  This method only makes sense
+     *  for tokens where the distance between them is reasonably
+     *  represented as a double. It is assumed that the argument is
+     * 	an RecordToken, and the isCloseTo() method of the fields is
+     * 	is used.  If the fields do not match, then the return value is
+     * 	false.
+     *  @param rightArgument The token to compare to this token.
+     *  @param epsilon The value that we use to determine whether two
+     *   tokens are close.
+     *  @return A token containing true if the value of the first
+     *   argument is close to the value of this token.
+     */
     protected BooleanToken _isCloseTo(Token rightArgument, double epsilon)
             throws IllegalActionException {
         RecordToken recordToken = (RecordToken)rightArgument;

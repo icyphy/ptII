@@ -1206,16 +1206,17 @@ public abstract class ScalarToken extends Token
     protected abstract ScalarToken _divide(ScalarToken rightArgument)
             throws IllegalActionException;
 
-	/** Test whether the value of this token is close to the first argument,
-	 *  where "close" means that the distance between them is less than
-	 *  or equal to the second argument.  This method only makes sense
-	 *  for tokens where the distance between them is reasonably
-	 *  represented as a double.
-	 *  @param token The token to compare to this token.
-	 *  @exception IllegalActionException If the token does not support
-	 *   this comparison.
-	 *  @return A true-valued token if the first argument is close to this token.
-	 */
+    /** Test whether the value of this token is close to the first argument,
+     *  where "close" means that the distance between them is less than
+     *  or equal to the second argument.  This method only makes sense
+     *  for tokens where the distance between them is reasonably
+     *  represented as a double.
+     *  @param rightArgument The token to compare to this token.
+     *  @param epsilon The value that we use to determine whether two
+     *   tokens are close.
+     *  @return A token containing true if the value of the first
+     *   argument is close to the value of this token.
+     */
     protected abstract BooleanToken _isCloseTo(
             ScalarToken rightArgument, double epsilon)
             throws IllegalActionException;
