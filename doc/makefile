@@ -181,6 +181,7 @@ ALLPACKAGES =		$(COMMPACKAGES) \
 			ptolemy.kernel.util \
 			ptolemy.actor \
 			ptolemy.actor.gui \
+			ptolemy.actor.gui.style \
 			ptolemy.actor.process \
 			ptolemy.actor.lib.net \
 			ptolemy.actor.sched \
@@ -254,6 +255,7 @@ codeDoc/tree.html:	../ptolemy/plot/*.java \
 			../ptolemy/kernel/util/*.java \
 			../ptolemy/actor/*.java \
 			../ptolemy/actor/gui/*.java \
+			../ptolemy/actor/gui/style/*.java \
 			../ptolemy/actor/lib/*.java \
 			../ptolemy/actor/lib/conversions/*.java \
 			../ptolemy/actor/lib/net/*.java \
