@@ -19,18 +19,22 @@
     </doc>
     <parameter name="step" value="0.1"/>
     <!-- hints for a GUI... -->
-    <icon xpos="100" ypos="100"
-           modifiers="$CLASSPATH/ptolemy/actor/lib/icons/Ramp.icon"/>
+    <icon xpos="100" ypos="100">
+       <configure src="$CLASSPATH/ptolemy/actor/lib/icons/Ramp.icon"/>
+    </icon>
   </actor>
   <actor name="display" class="ptolemy.actor.gui.SequencePlotter">
-    <!-- reference to a "plotML" file for configuration information -->
-    <!-- FIXME parameter name="configuration" value="display.pml" /-->
-    <icon xpos="200" ypos="100"
-          modifiers="$CLASSPATH/ptolemy/actor/gui/icons/TimedPlotter.icon"/>
+    <!-- Reference to a "plotML" file for configuration information. -->
+    <!-- The actor must implement Configurable for this to work.     -->
+    <configure src="display.pml">
+    <icon xpos="200" ypos="100">
+       <configure src="$CLASSPATH/ptolemy/actor/gui/icons/TimedPlotter.icon"/>
+    </icon>
   </actor>
   <actor name="recorder" class="ptolemy.actor.lib.Recorder">
-    <icon xpos="200" ypos="200"
-          modifiers="$CLASSPATH/ptolemy/actor/lib/icons/Recorder.icon"/>
+    <icon xpos="200" ypos="200">
+       <configure src="$CLASSPATH/ptolemy/actor/lib/icons/Recorder.icon"/>
+    </icon>
   </actor>
   <!-- To do: Link parameters with on-screen controls here. -->
 

@@ -86,12 +86,6 @@ public class MoMLParser extends HandlerBase {
      */
     public void attribute(String name, String value, boolean specified)
             throws XmlException {
-        if(DEBUG) {
-            System.out.println(
-                    "Attribute name = " + name + 
-                    ", value = " + value + 
-                    ", specified = " + specified);
-        }
         if(name == null) throw new XmlException("Attribute has no name",
                 _currentExternalEntity(),
                 _parser.getLineNumber(),
@@ -121,7 +115,6 @@ public class MoMLParser extends HandlerBase {
      *  It is guaranteed that this will be the last method called.
      */
     public void endDocument() throws Exception {
-// FIXME: System.out.println(_toplevel.description());
     }
 
     /** End an element. This method pops the current container from
@@ -132,52 +125,48 @@ public class MoMLParser extends HandlerBase {
      *  @param elementName The element type name.
      */
     public void endElement(String elementName) throws Exception {
-        if(DEBUG) System.out.println("Ending Element:" + elementName);
         if (elementName.equals("doc")) {
             // Use the special attribute name "_doc" to contain the text.
             // If the attribute already exists, remove it firts.
+            _checkClass(_current, NamedObj.class,
+                    "Element \"doc\" found inside an element that "
+                    + "is not a NamedObj.");
             DocAttribute doc
-                    = new DocAttribute(_current, _currentCharData.toString());
+                    = new DocAttribute((NamedObj)_current,
+                    _currentCharData.toString());
+        // FIXME: icon should be included.
         } else if (elementName.equals("director")
                 || elementName.equals("actor")
                 || elementName.equals("parameter")
                 || elementName.equals("port")
                 || elementName.equals("clone")) {
-            _current = (NamedObj)_containers.pop();
+            _current = _containers.pop();
         } else if (elementName.equals("connection")) {
             _currentConnection = null;
         }
     }
 
-    /**
-     * Implement com.microstr.xml.XMLHandler.endExternalEntity
-     * move up one leve in the entity tree.
+    /** Handle the end of an external entity.  This pops the stack so
+     *  that error reporting correctly reports the external entity that
+     *  causes the error.
+     *  @param systemId The URI for the external entity.
      */
-    public void endExternalEntity(String URI) throws Exception {
-        String current = _currentExternalEntity();
-        if(DEBUG)
-            System.out.println("endExternalEntity: URI=\"" + URI + "\"\n");
-/* FIXME
-        if(!current.equals(URI))
-            throw new XmlException("Entities out of order",
-                    _currentExternalEntity(),
-                    _parser.getLineNumber(),
-                    _parser.getColumnNumber());
-        sysids.removeFirst();
-*/
+    public void endExternalEntity (String systemId) {
+        _externalEntities.pop();
     }
 
-    /**
-     * Implement com.microstar.xml.XMLHandler.error
-     * @throws XmlException if called.
+    /** Indicate a fatal XML parsing error.
+     *  &AElig;lfred will call this method whenever it encounters
+     *  a serious error.  This method simply throws an XmlException.
+     *  @param message The error message.
+     *  @param systemId The URI of the tntity that caused the error.
+     *  @param line The approximate line number of the error.
+     *  @param column The approximate column number of the error.
+     *  @exception XmlException If called.
      */
     public void error(String message, String sysid,
             int line, int column) throws XmlException {
-        if (DEBUG) {
-            System.out.println("XML error at line " + line + ", column "
-            + column + " of " + sysid);
-        }
-        throw new XmlException(message, sysid, line, column);
+        throw new XmlException(message, _currentExternalEntity(), line, column);
     }
 
     /** Parse the given stream, using the specified url as the base
@@ -215,61 +204,18 @@ public class MoMLParser extends HandlerBase {
         return _toplevel;
     }
 
-    /**
-     * Implement com.microstar.xml.XMLHandler.resolveEntity
-     * If no public ID is given, then return the system ID.
-     * Otherwise, construct a local absolute URL by appending the
-     * public ID to the location of the XML files.
+    /** Resolve an external entity.  This method returns null,
+     *  which has the effect of defering to &AElig;lfred for
+     *  resolution of the URI.  Derived classes may return a
+     *  a modified URI (a string), an InputStream, or a Reader.
+     *  In the latter two cases, the input character stream is
+     *  provided.
+     *  @param publicId The public identifier, or null if none was supplied.
+     *  @param systemId The system identifier.
+     *  @return Null, indicating to use the default system identifier.
      */
-    public Object resolveEntity(String pubID, String sysID)
-            throws Exception {
-        if (DEBUG) {
-            System.out.println("resolveEntity: " + pubID + " : " + sysID);
-        }
-        String result;
-        StringBuffer dtdPath = new StringBuffer();
-        // Use System ID if the public one is unknown.
-        if(pubID == null) {
-            result = sysID;
-        } else {
-
-            // Construct the path to the DTD file. The PTII root MUST be
-            // defined as a system property (this can be done by using
-            // the -D option to java.
-            dtdPath = new StringBuffer(System.getProperty("PTII"));
-            System.out.println("dtdPath = " + dtdPath);
-            
-            //// FIXME FIXME
-            //// StringBuffer dtdPath = new StringBuffer(DomainLibrary.getPTIIRoot());
-            // StringBuffer dtdPath = new StringBuffer("/users/ptII");
-            
-            // Use System ID if there's no PTII environment variable
-            if(dtdPath.toString().equals("UNKNOWN")) {
-                result = sysID;
-            } else {
-
-                // Always use slashes as file separator, since this is a URL
-                //String fileSep = java.lang.System.getProperty("file.separator");
-                String fileSep = "/";
-                
-                // Construct the URL
-                int last = dtdPath.length()-1;
-                if (dtdPath.charAt(last) != fileSep.charAt(0)) {
-                    dtdPath.append(fileSep);
-                }
-                dtdPath.append("ptolemy" + fileSep + "schematic" + fileSep);
-                dtdPath.append("lib" + fileSep + pubID);
-                
-                // Windows is special. Very special.
-                if (System.getProperty("os.name").equals("Windows NT")) {
-                    result = "file:/" + dtdPath;
-                } else {
-                    result = "file:" + dtdPath;
-                }
-            }
-        }
-        if (DEBUG) System.out.println("resolveEntity result: " + dtdPath);
-        return result;
+    public Object resolveEntity(String publicID, String systemID) {
+        return null;
     }
 
     /** Start a document.  This method is called just before the parser
@@ -277,7 +223,6 @@ public class MoMLParser extends HandlerBase {
      *  It is guaranteed that this will be the first method called.
      */
     public void startDocument() {
-        if(DEBUG) System.out.println("-- Starting Document.");
         _attributes = new HashMap();
         _toplevel = null;
     }
@@ -292,7 +237,6 @@ public class MoMLParser extends HandlerBase {
      *   in constructing the model.
      */
     public void startElement(String elementName) throws XmlException {
-        if(DEBUG) System.out.println("Starting Element:" + elementName);
         try {
             // NOTE: The elements are alphabetical below...
             if (elementName.equals("actor")) {
@@ -317,7 +261,7 @@ public class MoMLParser extends HandlerBase {
                 arguments[0] = (TypedCompositeActor)_current;
                 arguments[1] = actorName;
                 _containers.push(_current);
-                _current = (NamedObj)actorConstructor.newInstance(arguments);
+                _current = actorConstructor.newInstance(arguments);
 
             } else if (elementName.equals("clone")) {
                 String cloneName = (String)_attributes.get("name");
@@ -351,6 +295,16 @@ public class MoMLParser extends HandlerBase {
                 // Make the clone the current context.
                 _containers.push(_current);
                 _current = newActor;
+
+            } else if (elementName.equals("configure")) {
+                String src = (String)_attributes.get("src");
+                _checkForNull(src, "No src for element \"configure\"");
+                _checkClass(_current, Configurable.class,
+                        "Element \"configure\" found inside an element that "
+                        + "does not implement Configurable.");
+                URL xmlFile = new URL(_base, src);
+                InputStream stream = xmlFile.openStream();
+                ((Configurable)_current).configure(_base, stream);
 
             } else if (elementName.equals("connection")) {
                 String port1Name = (String)_attributes.get("port1");
@@ -386,10 +340,13 @@ public class MoMLParser extends HandlerBase {
                 Constructor dirConstructor
                         = dirClass.getConstructor(argTypes);
                 Object[] arguments = new Object[2];
+                _checkClass(_current, CompositeActor.class,
+                        "Element \"director\" found inside an element that "
+                        + "is not a CompositeActor.");
                 arguments[0] = _current;
                 arguments[1] = dirName;
                 _containers.push(_current);
-                _current = (NamedObj)dirConstructor.newInstance(arguments);
+                _current = dirConstructor.newInstance(arguments);
 
             } else if (elementName.equals("doc")) {
                 _currentCharData = new StringBuffer();
@@ -454,6 +411,9 @@ public class MoMLParser extends HandlerBase {
 
                 // Invoke the constructor.
                 Object[] arguments = new Object[2];
+                _checkClass(_current, NamedObj.class,
+                        "Element \"parameter\" found inside an element that "
+                        + "is not a NamedObj.");
                 arguments[0] = _current;
                 arguments[1] = paramName;
                 _containers.push(_current);
@@ -490,7 +450,7 @@ public class MoMLParser extends HandlerBase {
                 arguments[1] = portName;
                 _containers.push(_current);
                 IOPort port = (IOPort)portConstructor.newInstance(arguments);
-                _current = (NamedObj)port;
+                _current = port;
 
                 // FIXME: this should be an enumeration in the dtd.
                 String direction = (String)_attributes.get("direction");
@@ -507,8 +467,11 @@ public class MoMLParser extends HandlerBase {
                 String paramValue = (String)_attributes.get("value");
                 _checkForNull(paramValue,
                         "No value for element \"setParameter\"");
-                Attribute attribute
-                        = (Attribute)_current.getAttribute(paramName);
+                _checkClass(_current, NamedObj.class,
+                        "Element \"setParameter\" found inside an element "
+                        + "that is not a NamedObj.");
+                Attribute attribute = (Attribute)
+                        ((NamedObj)_current).getAttribute(paramName);
                 _checkForNull(attribute, "No such parameter: \"" + paramName
                         + "\" in class: " + _current.getClass().toString());
                 _checkClass(attribute, Variable.class,
@@ -530,7 +493,6 @@ public class MoMLParser extends HandlerBase {
         } catch (Exception ex) {
             if (ex instanceof XmlException) {
                 throw (XmlException)ex;
-                // throw (XmlException)ex.fillInStackTrace();
             } else {
                 String msg = "XML element \"" + elementName
                         + "\" triggers exception:\n  " + ex.toString();
@@ -543,21 +505,24 @@ public class MoMLParser extends HandlerBase {
         _attributes.clear();
     }
 
-    /**
-     * implement com.microstar.xml.XMLHandler.startExternalEntity
-     * move down one level in the entity tree.
+    /** Handle the start of an external entity.  This pushes the stack so
+     *  that error reporting correctly reports the external entity that
+     *  causes the error.
+     *  @param systemId The URI for the external entity.
      */
-    public void startExternalEntity(String URI) throws Exception {
-        if(DEBUG)
-            System.out.println("startExternalEntity: URI=\"" + URI + "\"\n");
-        sysids.addFirst(URI);
+    public void startExternalEntity (String systemId) {
+        _externalEntities.push(systemId);
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Get the the URI for the current external entity.
+     *  @return A string giving the URI of the external entity being read,
+     *   or null if none.
+     */
     protected String _currentExternalEntity() {
-        if(DEBUG)
-            System.out.println("currentExternalEntity: URI=\"" +
-                    (String)sysids.getFirst() + "\"\n");
-        return (String)sysids.getFirst();
+        return (String)_externalEntities.peek();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -636,7 +601,7 @@ public class MoMLParser extends HandlerBase {
     Stack _containers = new Stack();
 
     // The current object in the hierarchy.
-    NamedObj _current;
+    Object _current;
 
     // The current character data for the current element.
     StringBuffer _currentCharData;
@@ -654,15 +619,8 @@ public class MoMLParser extends HandlerBase {
     private TypedCompositeActor _toplevel = null;
 
     // The workspace for this model.
-    Workspace _workspace;
+    private Workspace _workspace;
 
-// FIXME...
-
-    /* this linkedlist contains the current path in the tree of
-     * entities being parsed.  The leaf is first in the list.
-     */
-    private LinkedList sysids = new LinkedList();
-
-    private static final boolean DEBUG = false;
-    private String _dtdlocation = null;
+    // The external entities being parsed.
+    private Stack _externalEntities = new Stack();
 }

@@ -43,7 +43,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	math
+PTPACKAGE = 	moml
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
@@ -61,7 +61,6 @@ MISC_FILES =	$(DIRS)
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
-	filter \
 	$(PTCLASSJAR)
 
 JCLASS = $(JSRCS:%.java=%.class)

@@ -21,7 +21,9 @@
   </clone>
 
   <actor name="mult" class="ptolemy.actor.lib.MultiplyDivide"></actor>
-  <actor name="display" class="ptolemy.actor.gui.SequencePlotter"></actor>
+  <actor name="display" class="ptolemy.actor.gui.SequencePlotter">
+    <configure src="plotConfigure.xml"/>
+  </actor>
 
   <!-- Make the connections -->
   <connection port1="carrier.output" port2="mult.multiply"></connection>

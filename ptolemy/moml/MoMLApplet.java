@@ -42,8 +42,23 @@ import ptolemy.actor.gui.PtolemyApplet;
 //////////////////////////////////////////////////////////////////////////
 //// MoMLApplet
 /**
-Basic applet that constructs a Ptolemy II model from a MoML file.
-The MoML file is given as a URL via the applet parameter <i>model</i>.
+This is an applet that constructs a Ptolemy II model from a MoML file.
+"MoML" stands for "Modeling Markup Language." It is an XML language for
+contructing Ptolemy II models.
+The applet parameters are:
+<ul>
+<li><i>background</i>: The background color, typically given as a hex
+number of the form "#<i>rrggbb</i>" where <i>rr</i> gives the red
+component, <i>gg</i> gives the green component, and <i>bb</i> gives
+the blue component.
+<li><i>model</i>: The name of a URI (or URL) containing the
+MoML file that defines the model.
+<li><i>runControls</i>: The number of run controls to put on the screen.
+The value must be an integer.
+If the value is greater than zero, then a "Go" button
+created.  If the value is greater than one, then a "Stop" button
+is also created.
+</ul>
 
 @author  Edward A. Lee
 @version $Id$
@@ -77,7 +92,8 @@ public class MoMLApplet extends PtolemyApplet {
      */
     public String[][] getParameterInfo() {
         String newinfo[][] = {
-            {"model", "", "URL for the MoML file"}
+            {"model", "", "URL for the MoML file"},
+            {"runControls", "", "Number of run controls to put on the screen"}
         };
         return _concatStringArrays(super.getParameterInfo(), newinfo);
     }
@@ -98,6 +114,22 @@ public class MoMLApplet extends PtolemyApplet {
         }
         setBackground(_background);
 
+        // Process the runControls parameter.
+        try {
+            String runControlsSpec = getParameter("runControls");
+            if (runControlsSpec != null) {
+                try {
+                    int numRunControls = Integer.parseInt(runControlsSpec);
+                    add(_createRunControls(numRunControls));
+                } catch (NumberFormatException ex) {
+                    report("Warning: runControls parameter failed: ", ex);
+                }
+            }
+        } catch (Exception ex) {
+            report("Warning: runControls parameter failed: ", ex);
+        }
+        setBackground(_background);
+
         try {
             String modelURL = getParameter("model");
             if (modelURL == null) {
@@ -114,12 +146,10 @@ public class MoMLApplet extends PtolemyApplet {
         } catch (Exception ex) {
             if (ex instanceof XmlException) {
                 XmlException xmlEx = (XmlException)ex;
-                // FIXME: Unfortunately, the line and column information
-                // reported by the microstar parser are wrong, so the
-                // following information is misleading at best.
+                // FIXME: The file reported below is wrong... Why?
                 report("MoML exception on line " + xmlEx.getLine()
-                + ", column " + xmlEx.getColumn()
-                + ", of file:\n" + xmlEx.getSystemId(), ex);
+                + ", column " + xmlEx.getColumn() + ", in entity:\n"
+                + xmlEx.getSystemId(), ex);
             } else {
                 report("MoML applet failed:\n", ex);
             }
