@@ -462,7 +462,10 @@ public class NamedObj implements
             newObject._elementName = _elementName;
             newObject._source = _source;
             
-            newObject._override = null;
+            // NOTE: It's not clear that this is the right thing to do
+            // here, having the same override properties as the original
+            // seems reasonable, so we leave this be.
+            // newObject._override = null;
 
             // NOTE: The value for the classname and superclass isn't
             // correct if this cloning operation is meant to create
@@ -1222,11 +1225,11 @@ public class NamedObj implements
      *  @throws IllegalActionException If propagation fails.
      */
     public List propagateValue() throws IllegalActionException {
-        List override = new LinkedList();
-        override.add(new Integer(0));
         // Mark this object as having been modified directly.
-        _override = override;
-        return _getDerivedList(null, true, false, this, 0, override, null);
+        _override = new LinkedList();
+        _override.add(new Integer(0));
+        
+        return _getDerivedList(null, true, false, this, 0, _override, null);
     }
 
     /** If this object has a value that has been set directly,
@@ -2209,7 +2212,7 @@ public class NamedObj implements
      *  is used to indicate that no persistence has been specified.
      */
     protected Boolean _isPersistent = null;
-
+    
     /** The workspace for this object.
      *  This should be set by the constructor and never changed.
      */
@@ -2283,7 +2286,7 @@ public class NamedObj implements
                 }
             }
             visited.add(context);
-            
+                        
             // Need to do deepest propagations
             // (those closest to the root of the tree) first.
             NamedObj container = context.getContainer();
