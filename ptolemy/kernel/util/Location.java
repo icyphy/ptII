@@ -44,7 +44,9 @@ import java.util.StringTokenizer;
 This attribute represents a location of a node in a schematic.
 By default, an instance of this class is not visible in a user interface.
 This is indicated to the user interface by returning NONE to the
-getVisibility() method.
+getVisibility() method.  The location is specified by calling
+setExpression() with a string that has the form "x,y" or "[x,y]"
+or "{x,y}", where x and y can be parsed into doubles.
 
 @author Steve Neuendorffer and Edward A. Lee
 @version $Id$
@@ -305,8 +307,9 @@ public class Location extends SingletonAttribute
             location[0] = 0.0;
             location[1] = 0.0;
         } else {
-            // Parse the specification: a comma specified list of doubles.
-            StringTokenizer tokenizer = new StringTokenizer(_expression, ",");
+            // Parse the specification: a comma specified list of doubles,
+            // optionally surrounded by square or curley brackets.
+            StringTokenizer tokenizer = new StringTokenizer(_expression, ",[]{}");
             location = new double[tokenizer.countTokens()];
             int count = tokenizer.countTokens();
             for (int i = 0; i < count; i++) {
