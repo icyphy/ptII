@@ -129,10 +129,13 @@ OPTIONAL_FILES =	\
 	uml
 
 # Java packages for copernicus 
+# Javadoc can't deal with packages that end with 'java', see
+# http://developer.java.sun.com/developer/bugParade/bugs/4507380.html
+# So, we expand the ptolemy.copernicus.java package
 COPERNICUSPACKAGES = \
 			ptolemy.copernicus.kernel \
 			ptolemy.copernicus.c \
-			ptolemy.copernicus.java \
+			ptolemy/copernicus/java/*.java \
 			ptolemy.copernicus.jhdl
 
 PTINYPACKAGES = \
