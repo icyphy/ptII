@@ -37,8 +37,7 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.FiringEvent;
-import ptolemy.actor.IODependence;
-import ptolemy.actor.IODependenceOfCompositeActor;
+import ptolemy.actor.IODependency;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
 import ptolemy.data.BooleanToken;
@@ -1367,33 +1366,19 @@ public class DEDirector extends Director {
 
         // Get the IODependence attribute of the container of this 
         // director. If there is no such attribute, construct one.
-        // The NameDuplicationException shouldn't happen, and is 
-        // discarded.
-        IODependence ioDependence = (IODependence) castContainer.getAttribute(
-            "_IODependence", IODependence.class);
-        try {
-            // When this method _constructDirectedGraph is called, 
-            // the ioDependence is either created or updated.
-            if (ioDependence == null) {
-                ioDependence = 
-                    new IODependenceOfCompositeActor(
-                        castContainer, "_IODependence");
-            } 
-        }catch (NameDuplicationException e) {
-            throw new InternalErrorException(e.getMessage());
-        }
+        IODependency ioDependency = castContainer.getIODependencies();
          
         // The IODependence attribute is used to construct
         // the schedule. If the schedule needs recalculation,
         // the IODependence also needs recalculation.
-        ioDependence.invalidate();
-        
+        ioDependency.invalidate();
+      
         // FIXME: The following may be a very costly test. 
         // -- from the comments of former implementation. 
         // If the port based data flow graph contains directed
         // loops, the model is invalid. An IllegalActionException
         // is thrown with the names of the actors in the loop.
-        Object[] cycleNodes = ioDependence.getCycleNodes();
+        Object[] cycleNodes = ioDependency.getCycleNodes();
         if (cycleNodes.length != 0) {
             StringBuffer names = new StringBuffer();
             for (int i = 0; i < cycleNodes.length; i++) {
@@ -1411,10 +1396,6 @@ public class DEDirector extends Director {
         // get all the contained actors.
         Iterator actors = castContainer.deepEntityList().iterator();
         while (actors.hasNext()) {
-            // 'add' replaced with 'addNodeWeight' since the former
-            // has been deprecated.  The change here should have no
-            // effect since .add had already been defined as a call
-            // to .addNodeWeight -winthrop
             dag.addNodeWeight(actors.next());
         }
 
@@ -1423,12 +1404,11 @@ public class DEDirector extends Director {
         while (actors.hasNext()) {
             Actor actor = (Actor)actors.next();
             // Get the IODependence attribute of current actor.
-            ioDependence = (IODependence) ((NamedObj)actor).getAttribute(
-                "_IODependence", IODependence.class);
+            ioDependency = actor.getIODependencies();
             // The following check may not be necessary since the IODependence
             // attribute is constructed before. However, we check
             // it anyway. 
-            if (ioDependence == null) {
+            if (ioDependency == null) {
                 throw new IllegalActionException(this, "doesn't " +
                         "contain a valid IODependence attribute.");
             }
@@ -1438,19 +1418,11 @@ public class DEDirector extends Director {
             while (inputPorts.hasNext()) {
                 IOPort inputPort = (IOPort)inputPorts.next();
 
-                Set notDirectlyDependentPorts = 
-                    ioDependence.getNotDirectlyDependentPorts(inputPort);
-
                 // get all the output ports of the current actor.
                 Iterator outputPorts = actor.outputPortList().iterator();
                 while (outputPorts.hasNext()) {
                     IOPort outputPort = (IOPort) outputPorts.next();
 
-                    if (notDirectlyDependentPorts != null && 
-                        notDirectlyDependentPorts.contains(outputPort)) {
-                        // Skip the port without direct dependence.
-                        continue;
-                    }
                     // find the inside input ports connected to outputPort
                     Iterator inPortIterator =
                         outputPort.deepConnectedInPortList().iterator();
