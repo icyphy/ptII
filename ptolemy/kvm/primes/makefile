@@ -56,6 +56,7 @@ JSRCS = \
 	OutputChannel.java \
 	Primes.java \
 	PrimesText.java \
+	PrimesTextField.java \
 	Ramp.java \
 	Sift.java
 
@@ -80,12 +81,15 @@ JCLASS = $(JSRCS:%.java=%.class)
 # the Palm running KVM
 #JFLAGS = -bootclasspath $(KVM_CLASSES)
 
-all: jclass Primes.prc
+all: jclass Primes.prc PrimesTextField.prc
 
 install: jclass subinstall $(PTCLASSJAR)
 
 Primes.prc: $(JCLASS)
 	CLASSPATH="$(CLASSPATH)" java palm.database.MakePalmApp -classpath $(ROOT) ptolemy.kvm.primes.Primes
+
+PrimesTextField.prc: $(JCLASS)
+	CLASSPATH="$(CLASSPATH)" java palm.database.MakePalmApp -classpath $(ROOT) ptolemy.kvm.primes.PrimesTextField
 
 demo: jclass
 	CLASSPATH=$(CLASSPATH) $(JAVA) ptolemy.kvm.primes.PrimesText
