@@ -303,7 +303,7 @@ do
 	fi
 
         # 19) Warn if there is no trailing newline
-	results=`tail -1 $file | awk '{print substr($0,length($0),1)}' | od -b | head -1 | grep '012$'`
+	results=`tail -1 $file | od -bv | tail -2 |head -1 | grep '012$'`
 	if [ "x$results" = "x" ]; then
 		echo "$file: does not have a trailing newline"
 	fi
