@@ -62,7 +62,7 @@ A specific strategy may be chosen dynamically by invoking forName() or
 getName() with one of the above strategy names. Alternatively a strategy
 may be selected by using one of the static singletons.
 <p>
-The active class functionaliy is provided by the quantize method which is
+The active class functionality is provided by the quantize method which is
 normally invoked from Quantization.quantize.
 <p>
 Division by zero can trigger the use of the plusInfinity or minusInfinity

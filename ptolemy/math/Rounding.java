@@ -82,7 +82,7 @@ The <i>truncate</i> and <i>nearest</i> strategies should be preferred since they
 correspond to capabilities available on many processors. Other
 rounding strategies may require costly code on practical hardware.
 <p>
-The active class functionaliy is provided by the quantize method which is
+The active class functionality is provided by the quantize method which is
 normally invoked from Quantization.quantize.
 
 @author Ed Willink
