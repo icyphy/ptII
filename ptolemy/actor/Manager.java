@@ -78,7 +78,7 @@ default, will not 'agree' to have the workspace write-protected. To override
 the default behaviour, override the Director._writeAccessPreference() method.
 
 @author Steve Neuendorffer, Lukito Muliadi
-// Contributors: Mudit Goel, Edward A. Lee
+// Contributors: Mudit Goel, Edward A. Lee, John S. Davis II
 @version $Id$
 */
 
@@ -132,19 +132,18 @@ public final class Manager extends NamedObj implements Runnable {
         _ExecutionListeners.include((Object) el);
     }
 
-    /**
-     * Set a flag to request that the thread in which execution is running
-     * stop execution and exit gracefully.    The next time that execution
-     * control is returned to the manager, the manager will act as if the
-     * toplevel composite actor returned false in postfire.
-     * Execution can be stopped immediately by calling the terminate() method.
-     * This thread is synchronized so that it runs atomically with respect to
-     * other methods in Manager that control the simulation thread.
-     * This method is non-blocking.
+    /** Set a flag to request that the thread in which execution is running
+     *  stop execution and exit gracefully. Call finish() on the top level
+     *  CompositeActor. This thread is synchronized so that it runs atomically 
+     *  with respect to other methods in Manager that control the simulation 
+     *  thread. This method is non-blocking.
+     * @exception IllegalActionException if the top level CompositeActor
+     *  throws an IllegalActionException while calling finish().
      */
-    public synchronized void finish() {
+    public synchronized void finish() throws IllegalActionException {
         _keepIterating = false;
         _isPaused = false;
+	getToplevel().finish();
         if(_simulationThread != null) {
             synchronized(_simulationThread) {
                 _simulationThread.notify();
