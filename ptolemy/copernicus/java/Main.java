@@ -140,7 +140,7 @@ public class Main extends KernelMain {
                 new Transform("wjtp.snapshot1", JimpleWriter.v()));
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.snapshot1", ClassWriter.v()));
-                
+               
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.ffet",
                          FieldsForEntitiesTransformer.v(_toplevel)));

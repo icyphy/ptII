@@ -41,6 +41,7 @@ import soot.jimple.toolkits.scalar.DeadAssignmentEliminator;
 import soot.jimple.toolkits.scalar.UnreachableCodeEliminator;
 import soot.jimple.toolkits.scalar.Evaluator;
 import soot.jimple.toolkits.scalar.LocalNameStandardizer;
+import soot.jimple.toolkits.typing.TypeAssigner;
 
 import soot.toolkits.graph.*;
 import soot.toolkits.scalar.*;
@@ -151,6 +152,8 @@ public class InlineParameterTransformer extends SceneTransformer {
                 
                 boolean moreToDo = true;
                 while (moreToDo) {
+                    TypeAssigner.v().transform(body, 
+                            _phaseName + ".ta");
                     moreToDo = _inlineMethodCalls(theClass, method, body,
                             attributeToValueFieldMap, debug);
                     LocalNameStandardizer.v().transform(body,
@@ -163,45 +166,47 @@ public class InlineParameterTransformer extends SceneTransformer {
         //        _model, attributeToValueFieldMap, debug);
     }
 
-    private void _replaceGetTokenCalls(SootClass actorClass, 
-            ComponentEntity actor, Map attributeToValueFieldMap, boolean debug) {
-        // inline calls to parameter.getToken and getExpression
-        for (Iterator methods = actorClass.getMethods().iterator();
-             methods.hasNext();) {
-            SootMethod method = (SootMethod)methods.next();
+//     private void _replaceGetTokenCalls(SootClass actorClass, 
+//             ComponentEntity actor, Map attributeToValueFieldMap, boolean debug) {
+//         // inline calls to parameter.getToken and getExpression
+//         for (Iterator methods = actorClass.getMethods().iterator();
+//              methods.hasNext();) {
+//             SootMethod method = (SootMethod)methods.next();
 
-            // What about static methods?  They don't have a this
-            // local
-            if (method.isStatic()) {
-                continue;
-            }
-            JimpleBody body = (JimpleBody)method.retrieveActiveBody();
+//             // What about static methods?  They don't have a this
+//             // local
+//             if (method.isStatic()) {
+//                 continue;
+//             }
+//             JimpleBody body = (JimpleBody)method.retrieveActiveBody();
             
-            if (debug) System.out.println("method = " + method);
+//             if (debug) System.out.println("method = " + method);
             
-            boolean moreToDo = true;
-            while (moreToDo) {
-                moreToDo = _inlineMethodCalls(actorClass, method, body,
-                        attributeToValueFieldMap, debug);
-                LocalNameStandardizer.v().transform(body,
-                        _phaseName + ".lns");
-            }
-        }        
-        if(actor instanceof CompositeActor && !(actor instanceof FSMActor)) {
-            CompositeActor model = (CompositeActor)actor;
-            for (Iterator entities = model.deepEntityList().iterator();
-                 entities.hasNext();) {
-                ComponentEntity entity = (ComponentEntity)entities.next();
-                String className =
-                    ActorTransformer.getInstanceClassName(entity, _options);
-                SootClass theClass =
-                    Scene.v().loadClassAndSupport(className);
-                _replaceGetTokenCalls(theClass, entity,
-                        attributeToValueFieldMap, debug);
+//             boolean moreToDo = true;
+//             while (moreToDo) {
+ //                TypeAssigner.v().transform(body, 
+//                         _phaseName + ".ta");
+//                 moreToDo = _inlineMethodCalls(actorClass, method, body,
+//                         attributeToValueFieldMap, debug);
+//                 LocalNameStandardizer.v().transform(body,
+//                         _phaseName + ".lns");
+//             }
+//         }        
+//         if(actor instanceof CompositeActor && !(actor instanceof FSMActor)) {
+//             CompositeActor model = (CompositeActor)actor;
+//             for (Iterator entities = model.deepEntityList().iterator();
+//                  entities.hasNext();) {
+//                 ComponentEntity entity = (ComponentEntity)entities.next();
+//                 String className =
+//                     ActorTransformer.getInstanceClassName(entity, _options);
+//                 SootClass theClass =
+//                     Scene.v().loadClassAndSupport(className);
+//                 _replaceGetTokenCalls(theClass, entity,
+//                         attributeToValueFieldMap, debug);
                 
-            }
-        }
-    }
+//             }
+//         }
+//     }
 
     private boolean _inlineMethodCalls(SootClass theClass,
             SootMethod method,
@@ -228,12 +233,13 @@ public class InlineParameterTransformer extends SceneTransformer {
                 if (debug) System.out.println("invoking = " + r.getMethod());
                 if (r.getBase().getType() instanceof RefType) {
                     RefType type = (RefType)r.getBase().getType();
+                    if(debug) System.out.println("baseType = " + type);
                     // Remove calls to validate().
                     if (r.getMethod().equals(PtolemyUtilities.validateMethod)) {
                         body.getUnits().remove(stmt);
-                    }
+                    } else
                     // Inline calls to attribute changed.
-                    if (r.getMethod().equals(PtolemyUtilities.attributeChangedMethod)) {
+                    if (r.getMethod().getSubSignature().equals(PtolemyUtilities.attributeChangedMethod.getSubSignature())) {
                         // If we are calling attribute changed on
                         // one of the classes we are generating
                         // code for, then inline it.
@@ -452,9 +458,9 @@ public class InlineParameterTransformer extends SceneTransformer {
                                             stmt);
                                     Entity container = (Entity) FieldsForEntitiesTransformer.
                                         getEntityContainerOfObject(attribute);
+                             
                                     StaticFieldRef containerFieldRef = FieldsForEntitiesTransformer.
                                         getFieldRefForEntity(container);
-                                    
                                     Local containerLocal = Jimple.v().newLocal("container",
                                             RefType.v(PtolemyUtilities.entityClass));
                                     body.getLocals().add(containerLocal);

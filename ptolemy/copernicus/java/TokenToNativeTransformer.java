@@ -922,8 +922,12 @@ public class TokenToNativeTransformer extends SceneTransformer {
             // Create a boolean value that tells us whether or
             // not the token is null.  Initialize it to true.
             // FIXME: what about the elements of arrays?
+            Type isNotNullType = 
+                SootUtilities.createIsomorphicType(field.getType(),
+                        BooleanType.v());
+
             SootField isNotNullField = new SootField(
-                    "_CG_" + field.getName() + "_isNotNull", BooleanType.v(),
+                    "_CG_" + field.getName() + "_isNotNull", isNotNullType,
                     field.getModifiers());
             entityClass.addField(isNotNullField);
             entityFieldToIsNotNullField.put(field, isNotNullField);
@@ -1030,10 +1034,13 @@ public class TokenToNativeTransformer extends SceneTransformer {
                 // We are going to make a modification
                 doneSomething = true;
 
+                Type isNotNullType = 
+                    SootUtilities.createIsomorphicType(localType,
+                            BooleanType.v());
                 // Create a boolean value that tells us whether or
                 // not the token is null.  Initialize it to true.
                 Local isNotNullLocal = Jimple.v().newLocal(
-                        local.getName() + "_isNotNull", BooleanType.v());
+                        local.getName() + "_isNotNull", isNotNullType);
                 body.getLocals().add(isNotNullLocal);
                 localToIsNotNullLocal.put(local, isNotNullLocal);
                 // Note: default initialization is to false..
@@ -1121,8 +1128,18 @@ public class TokenToNativeTransformer extends SceneTransformer {
                         if (fieldToReplacementArrayLocal != null) {
                             doneSomething = true;
                             // Get the length of a random one of the replacement fields.
+                            List replacementList = new ArrayList(
+                                    fieldToReplacementArrayLocal.keySet());
+                            Collections.sort(replacementList,
+                                    new Comparator() {
+                                        public int compare(Object o1, Object o2) {
+                                            SootField f1 = (SootField)o1;
+                                            SootField f2 = (SootField)o2;
+                                            return f1.getName().compareTo(f2.getName());
+                                        }
+                                    });
                             SootField field = (SootField)
-                                fieldToReplacementArrayLocal.keySet().iterator().next();
+                                replacementList.get(replacementList.size() - 1);
                             if (debug) System.out.println("replace with  " +
                                     fieldToReplacementArrayLocal.get(field));
                             lengthExpr.setOp((Local)
@@ -1419,7 +1436,9 @@ public class TokenToNativeTransformer extends SceneTransformer {
                                 doneSomething = true;
                                 body.getUnits().insertBefore(
                                         Jimple.v().newAssignStmt(
-                                                (Local)localToIsNotNullLocal.get(baseLocal),
+                                                Jimple.v().newArrayRef(
+                                                        (Local)localToIsNotNullLocal.get(baseLocal),
+                                                        arrayRef.getIndex()),
                                                 (Local)localToIsNotNullLocal.get(stmt.getRightOp())),
                                         unit);
                                 if (debug) System.out.println("local = " + stmt.getLeftOp());
@@ -1462,7 +1481,9 @@ public class TokenToNativeTransformer extends SceneTransformer {
                                 body.getUnits().insertBefore(
                                         Jimple.v().newAssignStmt(
                                                 (Local)localToIsNotNullLocal.get(stmt.getLeftOp()),
-                                                (Local)localToIsNotNullLocal.get(baseLocal)),
+                                                Jimple.v().newArrayRef(
+                                                        (Local)localToIsNotNullLocal.get(baseLocal),
+                                                        arrayRef.getIndex())),
                                         unit);
                                 if (debug) System.out.println("local = " + stmt.getLeftOp());
                                 for (Iterator tokenFields = fieldToReplacementLocal.keySet().iterator();
@@ -1496,12 +1517,17 @@ public class TokenToNativeTransformer extends SceneTransformer {
                             if (map != null) {
                                 doneSomething = true;
 
+                                Type isNotNullType =
+                                    SootUtilities.createIsomorphicType(newExpr.getBaseType(),
+                                            BooleanType.v());
                                 Local isNotNullLocal = (Local)
                                     localToIsNotNullLocal.get(stmt.getLeftOp());
                                 body.getUnits().insertBefore(
                                         Jimple.v().newAssignStmt(
                                                 isNotNullLocal,
-                                                IntConstant.v(1)),
+                                                Jimple.v().newNewArrayExpr(
+                                                        isNotNullType,
+                                                        newExpr.getSize())),
                                         unit);
                                 for (Iterator tokenFields = map.keySet().iterator();
                                      tokenFields.hasNext();) {
@@ -1612,15 +1638,23 @@ public class TokenToNativeTransformer extends SceneTransformer {
                                 localToIsNotNullLocal.get(expr.getOp1());
                             if(isNotNullLocal != null) {
                                 if(debug) System.out.println("replacing binary expression " + expr);
+                                Value nullValue;
+                                if(isNotNullLocal.getType().equals(BooleanType.v())) {
+                                    // If the isNotNullLocal is for a regular Object.
+                                    nullValue = IntConstant.v(0);
+                                } else {
+                                    // If the isNotNullLocal is for an Array Object.
+                                    nullValue = NullConstant.v();
+                                }
 
                                 if (expr instanceof EqExpr) {
                                     box.setValue(Jimple.v().newEqExpr(
                                                          isNotNullLocal,
-                                                         IntConstant.v(0)));
+                                                         nullValue));
                                 } else if (expr instanceof NeExpr) {
-                                    box.setValue(Jimple.v().newEqExpr(
+                                    box.setValue(Jimple.v().newNeExpr(
                                                          isNotNullLocal,
-                                                         IntConstant.v(1)));
+                                                         nullValue));
                                 }
                             }
                         } else if (op2IsToken && expr.getOp1().getType().equals(NullType.v())) {
@@ -1629,14 +1663,23 @@ public class TokenToNativeTransformer extends SceneTransformer {
                             Local isNotNullLocal = (Local)
                                 localToIsNotNullLocal.get(expr.getOp2());
                             if(isNotNullLocal != null) {
+                                Value nullValue;
+                                if(isNotNullLocal.getType().equals(BooleanType.v())) {
+                                    // If the isNotNullLocal is for a regular Object.
+                                    nullValue = IntConstant.v(0);
+                                } else {
+                                    // If the isNotNullLocal is for an Array Object.
+                                    nullValue = NullConstant.v();
+                                }
+
                                 if (expr instanceof EqExpr) {
                                     box.setValue(Jimple.v().newEqExpr(
                                                          isNotNullLocal,
-                                                         IntConstant.v(0)));
+                                                         nullValue));
                                 } else if (expr instanceof NeExpr) {
-                                    box.setValue(Jimple.v().newEqExpr(
+                                    box.setValue(Jimple.v().newNeExpr(
                                                          isNotNullLocal,
-                                                         IntConstant.v(1)));
+                                                         nullValue));
                                 }
                             }
                         }
@@ -1785,10 +1828,11 @@ public class TokenToNativeTransformer extends SceneTransformer {
         if (rightValue instanceof NullConstant) {
             if (fieldToReplacementLeftLocal != null) {
                 doneSomething = true;
+                Local replacementIsNotNullLocal = (Local)localToIsNotNullLocal.get(leftValue);
                 body.getUnits().insertBefore(
                         Jimple.v().newAssignStmt(
-                                (Local)localToIsNotNullLocal.get(leftValue),
-                                IntConstant.v(0)),
+                                replacementIsNotNullLocal,
+                                _getNullValueForType(replacementIsNotNullLocal.getType())),
                         stmt);
                 for (Iterator tokenFields = fieldToReplacementLeftLocal.keySet().iterator();
                      tokenFields.hasNext();) {

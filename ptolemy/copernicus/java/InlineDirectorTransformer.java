@@ -212,14 +212,11 @@ public class InlineDirectorTransformer extends SceneTransformer {
         // Inline the director
         {
             // populate the preinitialize method
-            SootMethod classMethod = new SootMethod("preinitialize",
-                    Collections.EMPTY_LIST, VoidType.v(),
-                    Modifier.PUBLIC);
-            modelClass.addMethod(classMethod);
-            JimpleBody body = Jimple.v().newBody(classMethod);
-            //DavaBody body = Dava.v().newBody(classMethod);
-            classMethod.setActiveBody(body);
-            body.insertIdentityStmts();
+            SootMethod classMethod =
+                modelClass.getMethodByName("preinitialize");
+            JimpleBody body = (JimpleBody)classMethod.getActiveBody();
+            Stmt insertPoint = body.getFirstNonIdentityStmt();
+
             Chain units = body.getUnits();
             Local thisLocal = body.getThisLocal();
 
@@ -239,24 +236,25 @@ public class InlineDirectorTransformer extends SceneTransformer {
                         RefType.v(theClass));
                 body.getLocals().add(actorLocal);
                 // Get the field.
-                units.add(Jimple.v().newAssignStmt(actorLocal,
-                        Jimple.v().newInstanceFieldRef(thisLocal, field)));
-                units.add(Jimple.v().newInvokeStmt(
-                        Jimple.v().newVirtualInvokeExpr(actorLocal,
-                                preinitializeMethod)));
+                units.insertBefore(Jimple.v().newAssignStmt(actorLocal,
+                        Jimple.v().newInstanceFieldRef(thisLocal, field)),
+                        insertPoint);
+                units.insertBefore(
+                        Jimple.v().newInvokeStmt(
+                                Jimple.v().newVirtualInvokeExpr(actorLocal,
+                                        preinitializeMethod)),
+                        insertPoint);
             }
-            units.add(Jimple.v().newReturnVoidStmt());
+            //           units.add(Jimple.v().newReturnVoidStmt());
         }
 
         {
             // populate the initialize method
-            SootMethod classMethod = new SootMethod("initialize",
-                    Collections.EMPTY_LIST, VoidType.v(),
-                    Modifier.PUBLIC);
-            modelClass.addMethod(classMethod);
-            JimpleBody body = Jimple.v().newBody(classMethod);
-            classMethod.setActiveBody(body);
-            body.insertIdentityStmts();
+            SootMethod classMethod =
+                modelClass.getMethodByName("initialize");
+            JimpleBody body = (JimpleBody)classMethod.getActiveBody();
+            Stmt insertPoint = body.getFirstNonIdentityStmt();
+
             Chain units = body.getUnits();
             Local thisLocal = body.getThisLocal();
 
@@ -275,24 +273,24 @@ public class InlineDirectorTransformer extends SceneTransformer {
                     SootUtilities.searchForMethodByName(
                             theClass, "initialize");
                 // Set the field.
-                units.add(Jimple.v().newAssignStmt(actorLocal,
-                        Jimple.v().newInstanceFieldRef(thisLocal, field)));
-                units.add(Jimple.v().newInvokeStmt(
+                units.insertBefore(Jimple.v().newAssignStmt(actorLocal,
+                        Jimple.v().newInstanceFieldRef(thisLocal, field)),
+                        insertPoint);
+                units.insertBefore(Jimple.v().newInvokeStmt(
                         Jimple.v().newVirtualInvokeExpr(actorLocal,
-                                initializeMethod)));
+                                initializeMethod)),
+                        insertPoint);
             }
-            units.add(Jimple.v().newReturnVoidStmt());
+            //           units.add(Jimple.v().newReturnVoidStmt());
         }
 
         {
             // populate the prefire method
-            SootMethod classMethod = new SootMethod("prefire",
-                    Collections.EMPTY_LIST, BooleanType.v(),
-                    Modifier.PUBLIC);
-            modelClass.addMethod(classMethod);
-            JimpleBody body = Jimple.v().newBody(classMethod);
-            classMethod.setActiveBody(body);
-            body.insertIdentityStmts();
+            SootMethod classMethod =
+                modelClass.getMethodByName("prefire");
+            JimpleBody body = (JimpleBody)classMethod.getActiveBody();
+            Stmt insertPoint = body.getFirstNonIdentityStmt();
+
             Chain units = body.getUnits();
             Local thisLocal = body.getThisLocal();
 
@@ -312,13 +310,16 @@ public class InlineDirectorTransformer extends SceneTransformer {
                 SootUtilities.searchForMethodByName(
                         theClass, "prefire");
             
-            units.add(Jimple.v().newAssignStmt(actorLocal,
-                    Jimple.v().newInstanceFieldRef(thisLocal, field)));
-            units.add(Jimple.v().newAssignStmt(prefireReturnsLocal,
+            units.insertBefore(Jimple.v().newAssignStmt(actorLocal,
+                    Jimple.v().newInstanceFieldRef(thisLocal, field)),
+                    insertPoint);
+            units.insertBefore(Jimple.v().newAssignStmt(prefireReturnsLocal,
                               Jimple.v().newVirtualInvokeExpr(actorLocal,
-                                      actorPrefireMethod)));
+                                      actorPrefireMethod)),
+                    insertPoint);
             
-            units.add(Jimple.v().newReturnStmt(prefireReturnsLocal));
+            units.insertBefore(Jimple.v().newReturnStmt(prefireReturnsLocal),
+                    insertPoint);
 
             LocalSplitter.v().transform(body, phaseName + ".lns");
             LocalNameStandardizer.v().transform(body, phaseName + ".lns");
@@ -327,13 +328,11 @@ public class InlineDirectorTransformer extends SceneTransformer {
 
         {
             // populate the fire method
-            SootMethod classMethod = new SootMethod("fire",
-                    Collections.EMPTY_LIST, VoidType.v(),
-                    Modifier.PUBLIC);
-            modelClass.addMethod(classMethod);
-            JimpleBody body = Jimple.v().newBody(classMethod);
-            classMethod.setActiveBody(body);
-            body.insertIdentityStmts();
+            SootMethod classMethod =
+                modelClass.getMethodByName("fire");
+            JimpleBody body = (JimpleBody)classMethod.getActiveBody();
+            Stmt insertPoint = body.getFirstNonIdentityStmt();
+
             Chain units = body.getUnits();
             Local thisLocal = body.getThisLocal();
 
@@ -360,15 +359,17 @@ public class InlineDirectorTransformer extends SceneTransformer {
                 Local tempPortLocal = Jimple.v().newLocal("tempPort",
                         PtolemyUtilities.ioportType);
                 body.getLocals().add(tempPortLocal);
-                units.add(
+                units.insertBefore(
                         Jimple.v().newAssignStmt(tempPortLocal,
                                 Jimple.v().newInstanceFieldRef(
-                                        thisLocal, field)));
-                units.add(
+                                        thisLocal, field)),
+                        insertPoint);
+                units.insertBefore(
                         Jimple.v().newAssignStmt(portLocal,
                                 Jimple.v().newCastExpr(
                                         tempPortLocal,
-                                        PtolemyUtilities.ioportType)));
+                                        PtolemyUtilities.ioportType)),
+                        insertPoint);
             
 
                 for (int i = 0; i < port.getWidth(); i++) {
@@ -410,10 +411,8 @@ public class InlineDirectorTransformer extends SceneTransformer {
                                 indexLocal,
                                 IntConstant.v(rate));
                     
-                    Stmt stmt = Jimple.v().newNopStmt();
-                    units.add(stmt);
                     SootUtilities.createForLoopBefore(body,
-                            stmt,
+                            insertPoint,
                             initializerList,
                             bodyList,
                             conditionalExpr);
@@ -434,11 +433,15 @@ public class InlineDirectorTransformer extends SceneTransformer {
                     SootUtilities.searchForMethodByName(
                             theClass, "fire");
                 
-                units.add(Jimple.v().newAssignStmt(actorLocal,
-                                  Jimple.v().newInstanceFieldRef(thisLocal, field)));
-                units.add(Jimple.v().newInvokeStmt(
-                                  Jimple.v().newVirtualInvokeExpr(actorLocal,
-                                          actorFireMethod)));
+                units.insertBefore(
+                        Jimple.v().newAssignStmt(actorLocal,
+                                Jimple.v().newInstanceFieldRef(thisLocal, field)),
+                        insertPoint);
+                units.insertBefore(
+                        Jimple.v().newInvokeStmt(
+                                Jimple.v().newVirtualInvokeExpr(actorLocal,
+                                        actorFireMethod)),
+                        insertPoint);
             }
 
             // Transfer outputs from output ports
@@ -463,15 +466,17 @@ public class InlineDirectorTransformer extends SceneTransformer {
                 Local tempPortLocal = Jimple.v().newLocal("tempPort",
                         PtolemyUtilities.ioportType);
                 body.getLocals().add(tempPortLocal);
-                units.add(
+                units.insertBefore(
                         Jimple.v().newAssignStmt(tempPortLocal,
                                 Jimple.v().newInstanceFieldRef(
-                                        thisLocal, field)));
-                units.add(
+                                        thisLocal, field)),
+                        insertPoint);
+                units.insertBefore(
                         Jimple.v().newAssignStmt(portLocal,
                                 Jimple.v().newCastExpr(
                                         tempPortLocal,
-                                        PtolemyUtilities.ioportType)));
+                                        PtolemyUtilities.ioportType)),
+                        insertPoint);
             
 
                 for (int i = 0; i < port.getWidth(); i++) {
@@ -514,10 +519,8 @@ public class InlineDirectorTransformer extends SceneTransformer {
                                 indexLocal,
                                 IntConstant.v(rate));
                     
-                    Stmt stmt = Jimple.v().newNopStmt();
-                    units.add(stmt);
                     SootUtilities.createForLoopBefore(body,
-                            stmt,
+                            insertPoint,
                             initializerList,
                             bodyList,
                             conditionalExpr);
@@ -525,7 +528,7 @@ public class InlineDirectorTransformer extends SceneTransformer {
             }
 
             // Return.
-            units.add(Jimple.v().newReturnVoidStmt());
+            //            units.add(Jimple.v().newReturnVoidStmt());
             LocalSplitter.v().transform(body, phaseName + ".lns");
             LocalNameStandardizer.v().transform(body, phaseName + ".lns");
             TypeResolver.resolve(body, Scene.v());
@@ -533,13 +536,11 @@ public class InlineDirectorTransformer extends SceneTransformer {
 
         {
             // populate the postfire method
-            SootMethod classMethod = new SootMethod("postfire",
-                    Collections.EMPTY_LIST, BooleanType.v(),
-                    Modifier.PUBLIC);
-            modelClass.addMethod(classMethod);
-            JimpleBody body = Jimple.v().newBody(classMethod);
-            classMethod.setActiveBody(body);
-            body.insertIdentityStmts();
+            SootMethod classMethod =
+                modelClass.getMethodByName("postfire");
+            JimpleBody body = (JimpleBody)classMethod.getActiveBody();
+            Stmt insertPoint = body.getFirstNonIdentityStmt();
+
             Chain units = body.getUnits();
             Local thisLocal = body.getThisLocal();
 
@@ -560,13 +561,16 @@ public class InlineDirectorTransformer extends SceneTransformer {
                 SootUtilities.searchForMethodByName(
                         theClass, "postfire");
             
-            units.add(Jimple.v().newAssignStmt(actorLocal,
-                    Jimple.v().newInstanceFieldRef(thisLocal, field)));
-            units.add(Jimple.v().newAssignStmt(postfireReturnsLocal,
+            units.insertBefore(Jimple.v().newAssignStmt(actorLocal,
+                    Jimple.v().newInstanceFieldRef(thisLocal, field)),
+                    insertPoint);
+            units.insertBefore(Jimple.v().newAssignStmt(postfireReturnsLocal,
                               Jimple.v().newVirtualInvokeExpr(actorLocal,
-                                      actorPostfireMethod)));
+                                      actorPostfireMethod)),
+                    insertPoint);
 
-            units.add(Jimple.v().newReturnStmt(postfireReturnsLocal));
+            units.insertBefore(Jimple.v().newReturnStmt(postfireReturnsLocal),
+                    insertPoint);
             LocalSplitter.v().transform(body, phaseName + ".lns");
             LocalNameStandardizer.v().transform(body, phaseName + ".lns");
             TypeResolver.resolve(body, Scene.v());
@@ -574,13 +578,11 @@ public class InlineDirectorTransformer extends SceneTransformer {
 
         {
             // populate the wrapup method
-            SootMethod classMethod = new SootMethod("wrapup",
-                    Collections.EMPTY_LIST, VoidType.v(),
-                    Modifier.PUBLIC);
-            modelClass.addMethod(classMethod);
-            JimpleBody body = Jimple.v().newBody(classMethod);
-            classMethod.setActiveBody(body);
-            body.insertIdentityStmts();
+            SootMethod classMethod =
+                modelClass.getMethodByName("wrapup");
+            JimpleBody body = (JimpleBody)classMethod.getActiveBody();
+            Stmt insertPoint = body.getFirstNonIdentityStmt();
+
             Chain units = body.getUnits();
             Local thisLocal = body.getThisLocal();
 
@@ -599,13 +601,16 @@ public class InlineDirectorTransformer extends SceneTransformer {
                     SootUtilities.searchForMethodByName(
                             theClass, "wrapup");
                 // Set the field.
-                units.add(Jimple.v().newAssignStmt(actorLocal,
-                        Jimple.v().newInstanceFieldRef(thisLocal, field)));
-                units.add(Jimple.v().newInvokeStmt(
+                units.insertBefore(Jimple.v().newAssignStmt(actorLocal,
+                        Jimple.v().newInstanceFieldRef(thisLocal, field)),
+                        insertPoint);
+                units.insertBefore(Jimple.v().newInvokeStmt(
                         Jimple.v().newVirtualInvokeExpr(actorLocal,
-                                wrapupMethod)));
+                                wrapupMethod)),
+                        insertPoint);
             }
-            units.add(Jimple.v().newReturnVoidStmt());
+            //           units.insertBefore(Jimple.v().newReturnVoidStmt(),
+            //                   insertPoint);
         }
         Scene.v().setActiveHierarchy(new Hierarchy());
     }
@@ -622,14 +627,11 @@ public class InlineDirectorTransformer extends SceneTransformer {
         // Inline the director
         {
             // populate the preinitialize method
-            SootMethod classMethod = new SootMethod("preinitialize",
-                    Collections.EMPTY_LIST, VoidType.v(),
-                    Modifier.PUBLIC);
-            modelClass.addMethod(classMethod);
-            JimpleBody body = Jimple.v().newBody(classMethod);
-            //DavaBody body = Dava.v().newBody(classMethod);
-            classMethod.setActiveBody(body);
-            body.insertIdentityStmts();
+            SootMethod classMethod =
+                modelClass.getMethodByName("preinitialize");
+            JimpleBody body = (JimpleBody)classMethod.getActiveBody();
+            Stmt insertPoint = body.getFirstNonIdentityStmt();
+
             Chain units = body.getUnits();
             Local thisLocal = body.getThisLocal();
 
@@ -637,11 +639,13 @@ public class InlineDirectorTransformer extends SceneTransformer {
             body.getLocals().add(postfireReturnsLocal);
             
             // Initialize the postfire flag.
-            units.add(Jimple.v().newAssignStmt(postfireReturnsLocal,
-                                       IntConstant.v(1)));
-            units.add(Jimple.v().newAssignStmt(
+            units.insertBefore(Jimple.v().newAssignStmt(postfireReturnsLocal,
+                                       IntConstant.v(1)),
+                    insertPoint);
+            units.insertBefore(Jimple.v().newAssignStmt(
                               Jimple.v().newInstanceFieldRef(thisLocal, postfireReturnsField),
-                              postfireReturnsLocal));
+                              postfireReturnsLocal),
+                    insertPoint);
 
             for (Iterator entities = model.deepEntityList().iterator();
                  entities.hasNext();) {
@@ -659,24 +663,25 @@ public class InlineDirectorTransformer extends SceneTransformer {
                         RefType.v(theClass));
                 body.getLocals().add(actorLocal);
                 // Get the field.
-                units.add(Jimple.v().newAssignStmt(actorLocal,
-                        Jimple.v().newInstanceFieldRef(thisLocal, field)));
-                units.add(Jimple.v().newInvokeStmt(
+                units.insertBefore(Jimple.v().newAssignStmt(actorLocal,
+                        Jimple.v().newInstanceFieldRef(thisLocal, field)),
+                        insertPoint);
+                units.insertBefore(Jimple.v().newInvokeStmt(
                         Jimple.v().newVirtualInvokeExpr(actorLocal,
-                                preinitializeMethod)));
+                                preinitializeMethod)),
+                        insertPoint);
             }
-            units.add(Jimple.v().newReturnVoidStmt());
+            //            units.insertBefore(Jimple.v().newReturnVoidStmt(),
+                    //                   insertPoint);
         }
 
         {
             // populate the initialize method
-            SootMethod classMethod = new SootMethod("initialize",
-                    Collections.EMPTY_LIST, VoidType.v(),
-                    Modifier.PUBLIC);
-            modelClass.addMethod(classMethod);
-            JimpleBody body = Jimple.v().newBody(classMethod);
-            classMethod.setActiveBody(body);
-            body.insertIdentityStmts();
+            SootMethod classMethod =
+                modelClass.getMethodByName("initialize");
+            JimpleBody body = (JimpleBody)classMethod.getActiveBody();
+            Stmt insertPoint = body.getFirstNonIdentityStmt();
+
             Chain units = body.getUnits();
             Local thisLocal = body.getThisLocal();
 
@@ -695,32 +700,34 @@ public class InlineDirectorTransformer extends SceneTransformer {
                     SootUtilities.searchForMethodByName(
                             theClass, "initialize");
                 // Set the field.
-                units.add(Jimple.v().newAssignStmt(actorLocal,
-                        Jimple.v().newInstanceFieldRef(thisLocal, field)));
-                units.add(Jimple.v().newInvokeStmt(
+                units.insertBefore(Jimple.v().newAssignStmt(actorLocal,
+                        Jimple.v().newInstanceFieldRef(thisLocal, field)),
+                        insertPoint);
+                units.insertBefore(Jimple.v().newInvokeStmt(
                         Jimple.v().newVirtualInvokeExpr(actorLocal,
-                                initializeMethod)));
+                                initializeMethod)),
+                        insertPoint);
             }
-            units.add(Jimple.v().newReturnVoidStmt());
+            //            units.insertBefore(Jimple.v().newReturnVoidStmt(),insertPoint);
         }
 
         {
             // populate the postfire method
-            SootMethod classMethod = new SootMethod("prefire",
-                    Collections.EMPTY_LIST, BooleanType.v(),
-                    Modifier.PUBLIC);
-            modelClass.addMethod(classMethod);
-            JimpleBody body = Jimple.v().newBody(classMethod);
-            classMethod.setActiveBody(body);
-            body.insertIdentityStmts();
+            SootMethod classMethod =
+                modelClass.getMethodByName("prefire");
+            JimpleBody body = (JimpleBody)classMethod.getActiveBody();
+            Stmt insertPoint = body.getFirstNonIdentityStmt();
+
             Chain units = body.getUnits();
             Local thisLocal = body.getThisLocal();
 
             Local prefireReturnsLocal = Jimple.v().newLocal("preReturns", BooleanType.v());
             body.getLocals().add(prefireReturnsLocal);
-            units.add(Jimple.v().newAssignStmt(prefireReturnsLocal,
-                              IntConstant.v(1)));
-            units.add(Jimple.v().newReturnStmt(prefireReturnsLocal));
+            units.insertBefore(Jimple.v().newAssignStmt(prefireReturnsLocal,
+                              IntConstant.v(1)),
+                    insertPoint);
+            units.insertBefore(Jimple.v().newReturnStmt(prefireReturnsLocal),
+                    insertPoint);
 
             LocalSplitter.v().transform(body, phaseName + ".lns");
             LocalNameStandardizer.v().transform(body, phaseName + ".lns");
@@ -729,13 +736,11 @@ public class InlineDirectorTransformer extends SceneTransformer {
 
         {
             // populate the fire method
-            SootMethod classMethod = new SootMethod("fire",
-                    Collections.EMPTY_LIST, VoidType.v(),
-                    Modifier.PUBLIC);
-            modelClass.addMethod(classMethod);
-            JimpleBody body = Jimple.v().newBody(classMethod);
-            classMethod.setActiveBody(body);
-            body.insertIdentityStmts();
+            SootMethod classMethod =
+                modelClass.getMethodByName("fire");
+            JimpleBody body = (JimpleBody)classMethod.getActiveBody();
+            Stmt insertPoint = body.getFirstNonIdentityStmt();
+
             Chain units = body.getUnits();
             Local thisLocal = body.getThisLocal();
 
@@ -773,15 +778,17 @@ public class InlineDirectorTransformer extends SceneTransformer {
                 Local tempPortLocal = Jimple.v().newLocal("tempPort",
                         PtolemyUtilities.ioportType);
                 body.getLocals().add(tempPortLocal);
-                units.add(
+                units.insertBefore(
                         Jimple.v().newAssignStmt(tempPortLocal,
                                 Jimple.v().newInstanceFieldRef(
-                                        thisLocal, field)));
-                units.add(
+                                        thisLocal, field)),
+                        insertPoint);
+                units.insertBefore(
                         Jimple.v().newAssignStmt(portLocal,
                                 Jimple.v().newCastExpr(
                                         tempPortLocal,
-                                        PtolemyUtilities.ioportType)));
+                                        PtolemyUtilities.ioportType)),
+                        insertPoint);
             
 
                 for (int i = 0; i < port.getWidth(); i++) {
@@ -823,10 +830,8 @@ public class InlineDirectorTransformer extends SceneTransformer {
                                 indexLocal,
                                 IntConstant.v(rate));
                     
-                    Stmt stmt = Jimple.v().newNopStmt();
-                    units.add(stmt);
                     SootUtilities.createForLoopBefore(body,
-                            stmt,
+                            insertPoint,
                             initializerList,
                             bodyList,
                             conditionalExpr);
@@ -838,9 +843,10 @@ public class InlineDirectorTransformer extends SceneTransformer {
                 Jimple.v().newLocal("localPostfireReturns", BooleanType.v());
             body.getLocals().add(localPostfireReturnsLocal);
 
-            units.add(Jimple.v().newAssignStmt(postfireReturnsLocal,
+            units.insertBefore(Jimple.v().newAssignStmt(postfireReturnsLocal,
                               Jimple.v().newInstanceFieldRef(thisLocal, 
-                                      postfireReturnsField)));
+                                      postfireReturnsField)),
+                    insertPoint);
          
             // Execute the schedule
             SDFDirector director = (SDFDirector)model.getDirector();
@@ -874,8 +880,9 @@ public class InlineDirectorTransformer extends SceneTransformer {
                             theClass, "postfire");
                  
                 // Set the field.
-                units.add(Jimple.v().newAssignStmt(actorLocal,
-                        Jimple.v().newInstanceFieldRef(thisLocal, field)));
+                units.insertBefore(Jimple.v().newAssignStmt(actorLocal,
+                        Jimple.v().newInstanceFieldRef(thisLocal, field)),
+                        insertPoint);
                 
                 // The threshold at which it is better to generate loops,
                 // than to inline code.  A threshold of 2 means that loops will
@@ -885,19 +892,23 @@ public class InlineDirectorTransformer extends SceneTransformer {
                 
                 if(firingCount < threshold) {
                     for(int i = 0; i < firingCount; i++) {
-                        units.add(Jimple.v().newInvokeStmt(
+                        units.insertBefore(Jimple.v().newInvokeStmt(
                                           Jimple.v().newVirtualInvokeExpr(actorLocal,
-                                                  actorPrefireMethod)));
-                        units.add(Jimple.v().newInvokeStmt(
+                                                  actorPrefireMethod)),
+                                insertPoint);
+                        units.insertBefore(Jimple.v().newInvokeStmt(
                                           Jimple.v().newVirtualInvokeExpr(actorLocal,
-                                                  actorFireMethod)));
-                        units.add(Jimple.v().newAssignStmt(
+                                                  actorFireMethod)),
+                                insertPoint);
+                        units.insertBefore(Jimple.v().newAssignStmt(
                                           localPostfireReturnsLocal,
                                           Jimple.v().newVirtualInvokeExpr(actorLocal,
-                                                  actorPostfireMethod)));
-                        units.add(Jimple.v().newAssignStmt(postfireReturnsLocal,
+                                                  actorPostfireMethod)),
+                                insertPoint);
+                        units.insertBefore(Jimple.v().newAssignStmt(postfireReturnsLocal,
                                           Jimple.v().newAndExpr(postfireReturnsLocal,
-                                                  localPostfireReturnsLocal)));
+                                                  localPostfireReturnsLocal)),
+                                insertPoint);
               
              
                     }
@@ -938,10 +949,8 @@ public class InlineDirectorTransformer extends SceneTransformer {
                                 indexLocal,
                                 IntConstant.v(firingCount));
                     
-                    Stmt stmt = Jimple.v().newNopStmt();
-                    units.add(stmt);
                     SootUtilities.createForLoopBefore(body,
-                            stmt,
+                            insertPoint,
                             initializerList,
                             bodyList,
                             conditionalExpr);
@@ -970,15 +979,17 @@ public class InlineDirectorTransformer extends SceneTransformer {
                 Local tempPortLocal = Jimple.v().newLocal("tempPort",
                         PtolemyUtilities.ioportType);
                 body.getLocals().add(tempPortLocal);
-                units.add(
+                units.insertBefore(
                         Jimple.v().newAssignStmt(tempPortLocal,
                                 Jimple.v().newInstanceFieldRef(
-                                        thisLocal, field)));
-                units.add(
+                                        thisLocal, field)),
+                        insertPoint);
+                units.insertBefore(
                         Jimple.v().newAssignStmt(portLocal,
                                 Jimple.v().newCastExpr(
                                         tempPortLocal,
-                                        PtolemyUtilities.ioportType)));
+                                        PtolemyUtilities.ioportType)),
+                        insertPoint);
             
 
                 for (int i = 0; i < port.getWidth(); i++) {
@@ -1021,10 +1032,8 @@ public class InlineDirectorTransformer extends SceneTransformer {
                                 indexLocal,
                                 IntConstant.v(rate));
                     
-                    Stmt stmt = Jimple.v().newNopStmt();
-                    units.add(stmt);
                     SootUtilities.createForLoopBefore(body,
-                            stmt,
+                            insertPoint,
                             initializerList,
                             bodyList,
                             conditionalExpr);
@@ -1032,11 +1041,13 @@ public class InlineDirectorTransformer extends SceneTransformer {
             }
 
             // Return.
-            units.add(Jimple.v().newAssignStmt(
+            units.insertBefore(Jimple.v().newAssignStmt(
                               Jimple.v().newInstanceFieldRef(thisLocal, 
                                       postfireReturnsField),
-                              postfireReturnsLocal));
-            units.add(Jimple.v().newReturnVoidStmt());
+                              postfireReturnsLocal),
+                    insertPoint);
+            //       units.insertBefore(Jimple.v().newReturnVoidStmt(),
+            //              insertPoint);
             LocalSplitter.v().transform(body, phaseName + ".lns");
             LocalNameStandardizer.v().transform(body, phaseName + ".lns");
             TypeResolver.resolve(body, Scene.v());
@@ -1044,22 +1055,23 @@ public class InlineDirectorTransformer extends SceneTransformer {
 
         {
             // populate the postfire method
-            SootMethod classMethod = new SootMethod("postfire",
-                    Collections.EMPTY_LIST, BooleanType.v(),
-                    Modifier.PUBLIC);
-            modelClass.addMethod(classMethod);
-            JimpleBody body = Jimple.v().newBody(classMethod);
-            classMethod.setActiveBody(body);
-            body.insertIdentityStmts();
+            SootMethod classMethod =
+                modelClass.getMethodByName("postfire");
+            JimpleBody body = (JimpleBody)classMethod.getActiveBody();
+            Stmt insertPoint = body.getFirstNonIdentityStmt();
+
             Chain units = body.getUnits();
             Local thisLocal = body.getThisLocal();
 
-            Local postfireReturnsLocal = Jimple.v().newLocal("postfireReturns", BooleanType.v());
+            Local postfireReturnsLocal =
+                Jimple.v().newLocal("postfireReturns", BooleanType.v());
             body.getLocals().add(postfireReturnsLocal);
-                units.add(Jimple.v().newAssignStmt(postfireReturnsLocal,
-                                  Jimple.v().newInstanceFieldRef(thisLocal, 
-                                          postfireReturnsField)));
-            units.add(Jimple.v().newReturnStmt(postfireReturnsLocal));
+            units.insertBefore(Jimple.v().newAssignStmt(postfireReturnsLocal,
+                              Jimple.v().newInstanceFieldRef(thisLocal, 
+                                      postfireReturnsField)),
+                    insertPoint);
+            units.insertBefore(Jimple.v().newReturnStmt(postfireReturnsLocal),
+                    insertPoint);
             LocalSplitter.v().transform(body, phaseName + ".lns");
             LocalNameStandardizer.v().transform(body, phaseName + ".lns");
             TypeResolver.resolve(body, Scene.v());
@@ -1067,13 +1079,11 @@ public class InlineDirectorTransformer extends SceneTransformer {
 
         {
             // populate the wrapup method
-            SootMethod classMethod = new SootMethod("wrapup",
-                    Collections.EMPTY_LIST, VoidType.v(),
-                    Modifier.PUBLIC);
-            modelClass.addMethod(classMethod);
-            JimpleBody body = Jimple.v().newBody(classMethod);
-            classMethod.setActiveBody(body);
-            body.insertIdentityStmts();
+            SootMethod classMethod =
+                modelClass.getMethodByName("wrapup");
+            JimpleBody body = (JimpleBody)classMethod.getActiveBody();
+            Stmt insertPoint = body.getFirstNonIdentityStmt();
+
             Chain units = body.getUnits();
             Local thisLocal = body.getThisLocal();
 
@@ -1092,13 +1102,16 @@ public class InlineDirectorTransformer extends SceneTransformer {
                     SootUtilities.searchForMethodByName(
                             theClass, "wrapup");
                 // Set the field.
-                units.add(Jimple.v().newAssignStmt(actorLocal,
-                        Jimple.v().newInstanceFieldRef(thisLocal, field)));
-                units.add(Jimple.v().newInvokeStmt(
+                units.insertBefore(Jimple.v().newAssignStmt(actorLocal,
+                        Jimple.v().newInstanceFieldRef(thisLocal, field)),
+                        insertPoint);
+                units.insertBefore(Jimple.v().newInvokeStmt(
                         Jimple.v().newVirtualInvokeExpr(actorLocal,
-                                wrapupMethod)));
+                                wrapupMethod)),
+                        insertPoint);
             }
-            units.add(Jimple.v().newReturnVoidStmt());
+            //       units.insertBefore(Jimple.v().newReturnVoidStmt(),
+            //               insertPoint);
         }
         Scene.v().setActiveHierarchy(new Hierarchy());
     }

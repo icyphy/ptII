@@ -247,12 +247,12 @@ public class ModelTransformer extends SceneTransformer {
             CompositeActor composite, EntitySootClass modelClass,
             HashSet createdSet, Map options) {
         //  System.out.println("composite = " + composite.getFullName());
-        ActorTransformer.createActorsIn(composite, createdSet,
-                "modelTransformer", _constAnalysis, options);
+//         ActorTransformer.createActorsIn(composite, createdSet,
+//                 "modelTransformer", _constAnalysis, options);
 
         // create fields for attributes.
-        createFieldsForAttributes(body, container, containerLocal,
-                composite, thisLocal, modelClass, createdSet);
+   //      createFieldsForAttributes(body, container, containerLocal,
+//                 composite, thisLocal, modelClass, createdSet);
         _ports(body, containerLocal, container,
                 thisLocal, composite, modelClass, createdSet);
         _entities(body, containerLocal, container,
@@ -374,7 +374,7 @@ public class ModelTransformer extends SceneTransformer {
         for (Iterator attributes = namedObj.attributeList().iterator();
              attributes.hasNext();) {
 	    Attribute attribute = (Attribute)attributes.next();
-
+            
             if(ActorTransformer._isIgnorableAttribute(attribute)) {
                 continue;
             }
@@ -421,7 +421,7 @@ public class ModelTransformer extends SceneTransformer {
                 updateCreatedSet(namedObj.getFullName() + "."
                         + attribute.getName(),
                         classAttribute, classAttribute, createdSet);
-
+          
                 // Initialize the newly created variable.
                 if (attribute instanceof Variable) {
                     // If the attribute is a parameter, then set its
@@ -432,9 +432,9 @@ public class ModelTransformer extends SceneTransformer {
                             Jimple.v().newCastExpr(
                                     local,
                                     variableType));
-                               
+                    
                     body.getUnits().add(assignStmt);
-                
+                    
                     Token token = null;
                     try {
                         token = ((Variable)attribute).getToken();
@@ -502,7 +502,7 @@ public class ModelTransformer extends SceneTransformer {
             createFieldsForAttributes(body, context, contextLocal,
                     attribute, local, theClass, createdSet);
 	}
-    }
+}
 
     private static void _atomic(JimpleBody body, Local containerLocal,
             CompositeActor container, Local entityLocal,
@@ -1080,7 +1080,7 @@ public class ModelTransformer extends SceneTransformer {
     // The model we are generating code for.
     public CompositeActor _model;
 
-    private static ConstVariableModelAnalysis _constAnalysis;
+    public static ConstVariableModelAnalysis _constAnalysis;
 
     private static SootClass _modelClass = null;
     private static Object[] _reflectionArguments = new Object[1];

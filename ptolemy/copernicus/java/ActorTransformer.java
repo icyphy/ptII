@@ -50,6 +50,7 @@ import ptolemy.copernicus.gui.GeneratorTableauAttribute;
 import ptolemy.data.Token;
 import ptolemy.data.expr.*;
 import ptolemy.kernel.*;
+import ptolemy.kernel.attributes.*;
 import ptolemy.kernel.util.*;
 
 import soot.*;
@@ -481,20 +482,47 @@ public class ActorTransformer extends SceneTransformer {
         // Record everything that the class creates.
         HashSet tempCreatedSet = new HashSet();
         
-        // create a new body for the initialization method.
-        SootMethod initMethod = entityInstanceClass.getInitMethod();
-        JimpleBody body = Jimple.v().newBody(initMethod);
-        initMethod.setActiveBody(body);
-        body.insertIdentityStmts();
-        Chain units = body.getUnits();
-        Local thisLocal = body.getThisLocal();
+        {
+            // create a new body for the initialization method.
+            SootMethod initMethod = entityInstanceClass.getInitMethod();
+            JimpleBody body = Jimple.v().newBody(initMethod);
+            initMethod.setActiveBody(body);
+            body.insertIdentityStmts();
+            Chain units = body.getUnits();
+            Local thisLocal = body.getThisLocal();
+           
+            createActorsIn(entity, tempCreatedSet,
+                    "modelTransformer", 
+                    ModelTransformer._constAnalysis, options);
+            
+            _createAttributes(body, entity, thisLocal,
+                    entity, thisLocal, entityInstanceClass, tempCreatedSet);
+            
+            ModelTransformer._composite(body,
+                    thisLocal, entity, thisLocal, entity,
+                    entityInstanceClass, tempCreatedSet, options);
+            // return void
+            units.add(Jimple.v().newReturnVoidStmt());
+        }        
+
+        _implementExecutableInterface(entityInstanceClass);
         
-        ModelTransformer._composite(body,
-                thisLocal, entity, thisLocal, entity,
-                entityInstanceClass, tempCreatedSet, options);
-        // return void
-        units.add(Jimple.v().newReturnVoidStmt());
-        
+        {
+            // Add code to the beginning of the preinitialize method that
+            // initializes the attributes.
+            
+            SootMethod method =
+                entityInstanceClass.getMethodByName("preinitialize");
+            JimpleBody body = (JimpleBody)method.getActiveBody();
+            Stmt insertPoint = body.getFirstNonIdentityStmt();
+            _initializeAttributesBefore(body, insertPoint, 
+                    entity, body.getThisLocal(),
+                    entity, body.getThisLocal(), 
+                    entityInstanceClass);
+            LocalNameStandardizer.v().transform(body, "at.lns");
+            LocalSplitter.v().transform(body, "at.ls");
+        }
+
         // Reinitialize the hierarchy, since we've added classes.
         Scene.v().setActiveHierarchy(new Hierarchy());
         
@@ -1782,9 +1810,6 @@ public class ActorTransformer extends SceneTransformer {
 	Local settableLocal = Jimple.v().newLocal("settable",
                 PtolemyUtilities.settableType);
 	body.getLocals().add(settableLocal);
-	Local variableLocal = Jimple.v().newLocal("variable",
-                variableType);
-	body.getLocals().add(variableLocal);
  
         // A list of locals that we will validate.
         List validateLocalsList = new LinkedList();
@@ -1836,6 +1861,10 @@ public class ActorTransformer extends SceneTransformer {
                 Local tokenLocal = 
                     PtolemyUtilities.buildConstantTokenLocal(body,
                         insertPoint, token, "token");
+ 
+                Local variableLocal = Jimple.v().newLocal("variable",
+                        variableType);
+                body.getLocals().add(variableLocal);
                         
 		// cast to Variable.
                 body.getUnits().insertBefore(
@@ -1868,10 +1897,12 @@ public class ActorTransformer extends SceneTransformer {
 		body.getUnits().insertBefore(
                         Jimple.v().newAssignStmt(
                                 settableLocal,
-                                Jimple.v().newCastExpr(
-                                        local,
-                                        PtolemyUtilities.settableType)),
+                                local),
                         insertPoint);
+    //                             Jimple.v().newCastExpr(
+//                                         local,
+//                                         PtolemyUtilities.settableType)),
+//                         insertPoint);
                 String expression = ((Settable)attribute).getExpression();
 
 		// call setExpression.
@@ -2143,6 +2174,7 @@ public class ActorTransformer extends SceneTransformer {
         if (attribute instanceof SizeAttribute ||
                 attribute instanceof LocationAttribute ||
                 attribute instanceof LibraryAttribute ||
+                attribute instanceof VersionAttribute ||
                 attribute instanceof TableauFactory ||
                 attribute instanceof EditorFactory ||
                 attribute instanceof Location ||
