@@ -1,4 +1,4 @@
-/* A factory for making instances of classes for code generation in a 
+/* A factory for making instances of classes for code generation in a
    given domain.
 
  Copyright (c) 2000 The Regents of the University of California.
@@ -33,13 +33,13 @@ package ptolemy.codegen;
 
 import ptolemy.lang.java.*;
 
-/** A factory for making instances of classes for code generation in a 
+/** A factory for making instances of classes for code generation in a
  *  given domain.
  *
  *  @author Jeff Tsay
  */
 public class CodeGeneratorClassFactory {
-    
+
     protected CodeGeneratorClassFactory() {}
 
     public ActorCodeGeneratorInfo createActorCodeGeneratorInfo() {
@@ -49,7 +49,7 @@ public class CodeGeneratorClassFactory {
     public ActorTransformerVisitor createActorTransformerVisitor(
      ActorCodeGeneratorInfo actorInfo) {
        return new ActorTransformerVisitor(actorInfo,
-        createPtolemyTypeVisitor(actorInfo));    
+        createPtolemyTypeVisitor(actorInfo));
     }
 
     public PtolemyTypeIdentifier createPtolemyTypeIdentifier() {
@@ -63,14 +63,13 @@ public class CodeGeneratorClassFactory {
     public PtolemyTypeVisitor createPtolemyTypeVisitor(ActorCodeGeneratorInfo actorInfo) {
        return new PtolemyTypeVisitor(actorInfo, createPtolemyTypePolicy());
     }
-    
+
     public static CodeGeneratorClassFactory getInstance() {
         if (_instance == null) {
            _instance = new CodeGeneratorClassFactory();
         }
         return _instance;
     }
-    
-    
+
+
     protected static CodeGeneratorClassFactory _instance = null;
-}

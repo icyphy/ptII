@@ -1,4 +1,4 @@
-/* An object that hold information used as an argument to a 
+/* An object that hold information used as an argument to a
    code generator that operates on the actor level.
 
  Copyright (c) 1999-2000 The Regents of the University of California.
@@ -42,14 +42,13 @@ public class ActorCodeGeneratorInfo {
 
     /** The actor itself. */
     public TypedAtomicActor actor = null;
-            
+
     /** A map containing instances of TypedIOPort (or its subclasses) which uses
      *  port names as keys.
      */
     public final Map portNameToPortMap = new HashMap();
-    
+
     /** A map containing instances of Tokens, corresponding to the value
      *  of Parameters, whose names are keys.
      */
     public final Map parameterNameToTokenMap = new HashMap();
-}
