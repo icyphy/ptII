@@ -92,15 +92,16 @@ public class ProcessThread extends PtolemyThread {
     public void run() {
 	try {
 	    while (_iterate());		   
-	    //System.out.println(((Entity)_actor).getName()+" finished iterations");
-	    //_actor.wrapup();
+	    // System.out.println(((Entity)_actor).getName()+" finished iterations");	    
 	} catch (TerminateProcessException e) {
-	} catch (IllegalActionException e) {
+        } catch (IllegalActionException e) {
             ((CompositeActor)_director.getContainer()).getManager().fireExecutionError(e);
-	} catch (NameDuplicationException e) {
+        } catch (NameDuplicationException e) {
             ((CompositeActor)_director.getContainer()).getManager().fireExecutionError(e);
-	} finally {
-	    _director.decreaseActiveCount();
+        } finally {
+	    _actor.wrapup();
+            _director.decreaseActiveCount();
+            System.out.println(getName() + ": DDYYYYYEEEEIIINNNGGGGG....");
 	}
     }
 
@@ -111,8 +112,9 @@ public class ProcessThread extends PtolemyThread {
     private boolean _iterate() 
 	    throws NameDuplicationException, IllegalActionException {
 	if (((Entity)_actor).getContainer()!=null && _actor.prefire()) {
-	    //System.out.println(((Entity)_actor).getName()+" firing");
+	    System.out.println(((Entity)_actor).getName()+" firing");
 	    _actor.fire();
+            System.out.println(((Nameable)_actor).getName() + ": xxxxx about to postfire.");
 	    return _actor.postfire();
 	}
 	return false;
