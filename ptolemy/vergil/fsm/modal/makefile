@@ -67,6 +67,9 @@ OPTIONAL_FILES = \
 	'HierarchicalStateController$$1.class' \
 	'HierarchicalStateController$$AddRefinementAction.class' \
 	'HierarchicalStateController$$RemoveRefinementAction.class'
+	'ModalTransitionController$$1.class' \
+	'ModalTransitionController$$AddRefinementAction.class' \
+	'ModalTransitionController$$RemoveRefinementAction.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

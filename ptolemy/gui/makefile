@@ -80,8 +80,13 @@ OPTIONAL_FILES = \
 	doc \
 	'ComponentDialog$$1.class' \
 	'ComponentDialog$$2.class' \
-	'JTextAreaExec$$1.class' \
+	'GraphicalMessageHandler$$1.class' \
+	'GraphicalMessageHandler$$2.class' \
+	'GraphicalMessageHandler$$3.class' \
+	'GraphicalMessageHandler$$4.class' \
+	'GraphicalMessageHandler$$5.class' \
 	'JTextAreaExec$$10.class' \
+	'JTextAreaExec$$1.class' \
 	'JTextAreaExec$$2.class' \
 	'JTextAreaExec$$3.class' \
 	'JTextAreaExec$$4.class' \
@@ -93,18 +98,35 @@ OPTIONAL_FILES = \
 	'JTextAreaExec$$_StreamReaderThread.class' \
 	'Message$$1.class' \
 	'Message$$2.class' \
+	'Query$$1.class' \
 	'Query$$CheckBoxListener.class' \
 	'Query$$LineListener.class' \
 	'Query$$QueryActionListener.class' \
+	'Query$$QueryColorChooser.class' \
 	'Query$$QueryFileChooser.class' \
 	'Query$$QueryFocusListener.class' \
 	'Query$$QueryItemListener.class' \
 	'Query$$QueryScrollPane.class' \
 	'Query$$SliderListener.class' \
+	'ShellTextArea$$1.class' \
+	'ShellTextArea$$2.class' \
+	'ShellTextArea$$3.class' \
+	'ShellTextArea$$4.class' \
+	'ShellTextArea$$5.class' \
+	'ShellTextArea$$ShellKeyListener.class' \
+	'StreamExec$$_StreamReaderThread.class' \
 	'SwingWorker$$1.class' \
 	'SwingWorker$$2.class' \
 	'SwingWorker$$ThreadVar.class' \
 	'Top$$1.class' \
+	'Top$$2.class' \
+	'Top$$3.class' \
+	'Top$$4.class' \
+	'Top$$5.class' \
+	'Top$$6.class' \
+	'Top$$7.class' \
+	'Top$$8.class' \
+	'Top$$9.class' \
 	'Top$$FileMenuListener.class' \
 	'Top$$HelpMenuListener.class'
 

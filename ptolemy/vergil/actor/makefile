@@ -83,20 +83,35 @@ OPTIONAL_FILES = \
 	'ActorController$$EntityLayout.class' \
 	'ActorController$$ListenToActorAction.class' \
 	'ActorController$$LookInsideAction.class' \
+	'ActorController$$SaveInLibraryAction.class' \
 	'ActorEditorGraphController$$1.class' \
 	'ActorEditorGraphController$$LinkCreator.class' \
+	'ActorEditorGraphController$$ListenToActorFactory.class' \
 	'ActorEditorGraphController$$NewRelationAction.class' \
 	'ActorEditorGraphController$$RelationCreator.class' \
+	'ActorGraphFrame$$CreateHierarchyAction.class' \
 	'ActorGraphFrame$$DebugMenuListener.class' \
+	'ActorGraphFrame$$ImportLibraryAction.class' \
+	'ActorGraphFrame$$InstantiateEntityAction.class' \
+	'ActorGraphFrame$$LayoutAction.class' \
+	'ActorGraphFrame$$SaveInLibraryAction.class' \
 	'ActorGraphModel$$1.class' \
 	'ActorGraphModel$$2.class' \
 	'ActorGraphModel$$ExternalPortModel.class' \
 	'ActorGraphModel$$IconModel.class' \
-	'ActorGraphModel$$LinkModel$$LinkChangeListener.class' \
 	'ActorGraphModel$$LinkModel.class' \
+	'ActorGraphModel$$LinkModel$$LinkChangeListener.class' \
 	'ActorGraphModel$$PortModel.class' \
 	'ActorGraphModel$$VertexModel.class' \
 	'ActorGraphTableau$$Factory.class' \
+	'ActorInstanceController$$1.class' \
+	'ActorInstanceController$$2.class' \
+	'ActorInstanceController$$ConvertToClassAction.class' \
+	'ClassDefinitionController$$1.class' \
+	'ClassDefinitionController$$2.class' \
+	'ClassDefinitionController$$ConvertToInstanceAction.class' \
+	'ClassDefinitionController$$CreateInstanceAction.class' \
+	'ClassDefinitionController$$CreateSubclassAction.class' \
 	'ExternalIOPortController$$1.class' \
 	'ExternalIOPortController$$NameWrapper.class' \
 	'ExternalIOPortController$$PortRenderer.class' \

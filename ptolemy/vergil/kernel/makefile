@@ -78,6 +78,7 @@ OPTIONAL_FILES = \
 	'AnimationRenderer$$2.class' \
 	'AttributeController$$Access.class' \
 	'PortDialogFactory$$1.class' \
+	'PortDialogFactory$$2.class' \
 	'RelationController$$RelationRenderer.class' \
 	'RenameDialogFactory$$1.class'
 

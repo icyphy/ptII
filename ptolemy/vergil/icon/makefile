@@ -80,6 +80,8 @@ OPTIONAL_FILES = \
 	test \
 	gifs \
 	$(PTCLASSJAR) \
+	'DynamicEditorIcon$$1.class' \
+	'EditIconTableau$$Factory.class' \
 	'IconEditor$$1.class' \
 	'IconEditor$$10.class' \
 	'IconEditor$$11.class' \
@@ -108,6 +110,18 @@ OPTIONAL_FILES = \
 	'IconEditor$$8.class' \
 	'IconEditor$$9.class' \
 	'IconEditor$$BlockIcon.class' \
+	'ImageIcon$$1.class' \
+	'ImageIcon$$2.class' \
+	'ImageIcon$$3.class' \
+	'ResizableAttributeControllerFactory$$ResizeAttributeController.class' \
+	'ShapeIcon$$1.class' \
+	'ShapeIcon$$2.class' \
+	'ShapeIcon$$3.class' \
+	'ShapeIcon$$4.class' \
+	'ShapeIcon$$5.class' \
+	'TextIcon$$1.class' \
+	'TextIcon$$2.class' \
+	'TextIcon$$3.class' \
 	'UpdatedValueIcon$$1.class'
 
 JCLASS = $(JSRCS:%.java=%.class)

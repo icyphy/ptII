@@ -89,6 +89,10 @@ OPTIONAL_FILES = \
 	demo \
 	test \
 	$(PTCLASSJAR) \
+	'MoMLParser$$1.class' \
+	'MoMLParser$$DeleteRequest.class' \
+	'MoMLParser$$LinkRequest.class' \
+	'MoMLParser$$UnlinkRequest.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

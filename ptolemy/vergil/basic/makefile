@@ -99,17 +99,28 @@ OPTIONAL_FILES = \
 	'BasicGraphFrame$$ZoomInAction.class' \
 	'BasicGraphFrame$$ZoomOutAction.class' \
 	'BasicGraphFrame$$ZoomResetAction.class' \
+	'BasicGraphController$$OpenBaseClassAction.class' \
+	'BasicGraphController$$UnitSolverDialogAction.class' \
+	'BasicGraphFrame$$2.class' \
+	'BasicGraphFrame$$3.class' \
+	'BasicGraphFrame$$OpenLibraryMenuItemFactory.class' \
+	'BasicGraphFrame$$RedoAction.class' \
+	'BasicGraphFrame$$UndoAction.class' \
 	'EditorDropTarget$$1.class' \
 	'EditorDropTarget$$2.class' \
 	'EditorDropTarget$$3.class' \
 	'EditorDropTarget$$4.class' \
 	'EditorDropTarget$$DTListener.class' \
+	'ExtendedGraphFrame$$FullScreenAction.class' \
+	'IconController$$1.class' \
 	'IconController$$IconRenderer.class' \
 	'NamedObjController$$GetDocumentationAction.class' \
 	'ParameterizedNodeController$$1.class' \
 	'RunnableGraphController$$PauseModelAction.class' \
 	'RunnableGraphController$$RunModelAction.class' \
-	'RunnableGraphController$$StopModelAction.class
+	'RunnableGraphController$$StopModelAction.class' \
+	'WithIconGraphController$$1.class' \
+	'WithIconGraphController$$NewPortAction.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

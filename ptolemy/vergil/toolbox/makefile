@@ -81,6 +81,8 @@ MISC_FILES =	$(DIRS)
 OPTIONAL_FILES = \
 	$(PTCLASSJAR) \
 	'AnnotationEditorFactory$$AnnotationTextEditor.class' \
+	'AttributeBoundsManipulator$$Resizer.class' \
+	'EditIconAction$$1.class' \
 	'EditParameterStylesFactory$$1.class' \
 	'EditParametersFactory$$1.class' \
 	'FigureAction$$1.class' \

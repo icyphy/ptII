@@ -64,6 +64,9 @@ MISC_FILES =    test
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
+	'Firing$$FiringElementIterator.class' \
+	'Schedule$$FiringElementIterator.class' \
+	'Schedule$$FiringIterator.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
