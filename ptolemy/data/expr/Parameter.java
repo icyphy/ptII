@@ -153,7 +153,7 @@ public class Parameter extends Attribute implements ParameterListener {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Register a Parameter:istener with this Parameter.
+    /** Register a ParameterListener with this Parameter.
      *  @param newListener The ParameterListener that is will be notified
      *   whenever the value of this Parameter changes.
      */
