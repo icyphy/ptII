@@ -45,7 +45,6 @@ import diva.canvas.interactor.PathManipulator;
 import diva.canvas.interactor.SelectionDragger;
 import diva.canvas.interactor.SelectionInteractor;
 import diva.canvas.interactor.SelectionModel;
-import diva.canvas.toolbox.VersatileFigure;
 import diva.util.java2d.PaintedObject;
 import diva.util.java2d.Polygon2D;
 

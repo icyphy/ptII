@@ -56,7 +56,8 @@ JSRCS = \
 	IconEditorPane.java \
 	SimpleSelection.java \
 	XMLIcon.java \
-	ValueIcon.java
+	ValueIcon.java \
+	VersatileFigure.java
 
 EXTRA_SRCS =	$(JSRCS)
 

@@ -31,7 +31,6 @@
 package ptolemy.vergil.icon;
 
 // Diva imports.
-import diva.canvas.toolbox.VersatileFigure;
 import diva.gui.AppContext;
 import diva.gui.BasicFrame;
 import diva.gui.ExtensionFileFilter;
