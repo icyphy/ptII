@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="yes"?>
 <!DOCTYPE plot SYSTEM "../plotml/plotml.dtd">
 <plot>
-<!-- Ptolemy plot, version 3.0, PlotML format. -->
+<!-- Ptolemy plot, version 3.1, PlotML format. -->
 <title>Histogram Demo</title>
 <xLabel>amplitude</xLabel>
 <yLabel>count</yLabel>

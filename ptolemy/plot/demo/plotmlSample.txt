@@ -1,6 +1,6 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE plot SYSTEM "../plotml/plotml.dtd">
-<!-- Ptolemy plot, version 3.0, PlotML format. -->
+<!-- Ptolemy plot, version 3.1, PlotML format. -->
 
 <plot>
 <title>A Plot</title>
