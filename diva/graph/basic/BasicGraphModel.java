@@ -189,11 +189,11 @@ public class BasicGraphModel extends BasicModularGraphModel {
         }
 
         public void setParent(Graph parent) {
-            if(_parent != null) {
+            if (_parent != null) {
                 ((BasicCompositeNode)_parent).remove(this);
             }
             _parent = (BasicCompositeNode)parent;
-            if(_parent != null) {
+            if (_parent != null) {
                 ((BasicCompositeNode)_parent).add(this);
             }
         }
@@ -330,21 +330,21 @@ public class BasicGraphModel extends BasicModularGraphModel {
         }
 
         public void setHead(Node n) {
-            if(_head != null) {
+            if (_head != null) {
                 ((BasicNode)_head).removeInEdge(this);
             }
             _head = n;
-            if(_head != null) {
+            if (_head != null) {
                 ((BasicNode)_head).addInEdge(this);
             }
         }
 
         public void setTail(Node n) {
-            if(_tail != null) {
+            if (_tail != null) {
                 ((BasicNode)_tail).removeOutEdge(this);
             }
             _tail = n;
-            if(_tail != null) {
+            if (_tail != null) {
                 ((BasicNode)_tail).addOutEdge(this);
             }
         }

@@ -47,10 +47,10 @@ public class BasicPropertyContainer implements PropertyContainer {
      */
     public Object getProperty(String key) {
         Object o = null;
-        if(_mapping != null) {
+        if (_mapping != null) {
             o = _mapping.get(key);
         }
-        if(o == null && _defaults != null) {
+        if (o == null && _defaults != null) {
             return _defaults.getProperty(key);
         }
         return o;
@@ -61,7 +61,7 @@ public class BasicPropertyContainer implements PropertyContainer {
      * the given key.
      */
     public void setProperty(String key, Object value) {
-        if(_mapping == null) {
+        if (_mapping == null) {
             _mapping = new HashMap();
         }
         _mapping.put(key, value);
@@ -69,18 +69,18 @@ public class BasicPropertyContainer implements PropertyContainer {
 
     //XXX remove property
     //added by Heloise
-    public void removeAllProperties(){
+    public void removeAllProperties() {
         _mapping.clear();
     }
 
     //added by Heloise
-    public Iterator properties(){
+    public Iterator properties() {
         return _mapping.values().iterator();
     }
 
     /** Return an iteration of the names of the properties
      */
-    public Iterator propertyNames(){
+    public Iterator propertyNames() {
         return _mapping.keySet().iterator();
     }
 }

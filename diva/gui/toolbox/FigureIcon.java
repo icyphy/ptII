@@ -46,7 +46,7 @@ public class FigureIcon extends ImageIcon {
      */
     public FigureIcon(Figure figure, boolean antialias) {
         super();
-        if(figure instanceof ImageFigure) {
+        if (figure instanceof ImageFigure) {
             ImageFigure imageFigure = (ImageFigure)figure;
             setImage(imageFigure.getImage());
         } else {
@@ -55,7 +55,7 @@ public class FigureIcon extends ImageIcon {
                     (int)bounds.getHeight(),
                     BufferedImage.TYPE_INT_RGB);
             Graphics2D graphics = image.createGraphics();
-            if(antialias) {
+            if (antialias) {
                 graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                         RenderingHints.VALUE_ANTIALIAS_ON);
             } else {
@@ -90,7 +90,7 @@ public class FigureIcon extends ImageIcon {
     public FigureIcon(Figure figure, int x, int y,
             int border, boolean antialias) {
         super();
-        if(figure instanceof ImageFigure && border == 0) {
+        if (figure instanceof ImageFigure && border == 0) {
             ImageFigure imageFigure = (ImageFigure)figure;
             Image image = imageFigure.getImage();
             image = image.getScaledInstance(x, y, Image.SCALE_DEFAULT);
@@ -106,7 +106,7 @@ public class FigureIcon extends ImageIcon {
             BufferedImage image =
                 new BufferedImage(x, y, BufferedImage.TYPE_4BYTE_ABGR);
             Graphics2D graphics = image.createGraphics();
-            if(antialias) {
+            if (antialias) {
                 graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                         RenderingHints.VALUE_ANTIALIAS_ON);
             } else {

@@ -27,15 +27,15 @@ public final class LayoutUtilities {
         GraphModel model = target.getGraphModel();
         placeNoReroute(target, node, x, y);
 
-        for(Iterator i = model.inEdges(node); i.hasNext(); ) {
+        for (Iterator i = model.inEdges(node); i.hasNext(); ) {
             Object edge = i.next();
-            if(target.isEdgeVisible(edge)) {
+            if (target.isEdgeVisible(edge)) {
                 target.route(edge); //XXX reroute
             }
         }
-        for(Iterator i = model.outEdges(node); i.hasNext(); ) {
+        for (Iterator i = model.outEdges(node); i.hasNext(); ) {
             Object edge = i.next();
-            if(target.isEdgeVisible(edge)) {
+            if (target.isEdgeVisible(edge)) {
                 target.route(edge); //XXX reroute
             }
         }
@@ -60,7 +60,7 @@ public final class LayoutUtilities {
      */
     public static final boolean checkConsistency(Object composite,
             GraphModel model) {
-        if(!GraphUtilities.checkConsistency(composite, model)) {
+        if (!GraphUtilities.checkConsistency(composite, model)) {
             return false;
         }
         return checkCommon(composite, model);
@@ -72,7 +72,7 @@ public final class LayoutUtilities {
      */
     public static final boolean checkContainment(Object composite,
             GraphModel model) {
-        if(!GraphUtilities.checkContainment(composite, model)) {
+        if (!GraphUtilities.checkContainment(composite, model)) {
             return false;
         }
         return checkCommon(composite, model);
@@ -86,22 +86,22 @@ public final class LayoutUtilities {
     private static final boolean checkCommon(Object composite,
             GraphModel model) {
         /*
-          for(Iterator i = g.nodes(); i.hasNext(); ) {
+          for (Iterator i = g.nodes(); i.hasNext(); ) {
           Node n = (Node)i.next();
-          if(target.getLayoutNode(n) == null) {
+          if (target.getLayoutNode(n) == null) {
           return false;
           }
 
-          for(Iterator j = n.outEdges(); j.hasNext(); ) {
+          for (Iterator j = n.outEdges(); j.hasNext(); ) {
           Edge e = (Edge)j.next();
-          if((target.getLayoutEdge(e) == null) ||
+          if ((target.getLayoutEdge(e) == null) ||
           (target.getLayoutNode(e.getHead()) == null)) {
           return false;
           }
           }
-          for(Iterator j = n.inEdges(); j.hasNext(); ) {
+          for (Iterator j = n.inEdges(); j.hasNext(); ) {
           Edge e = (Edge)j.next();
-          if((target.getLayoutEdge(e) == null) ||
+          if ((target.getLayoutEdge(e) == null) ||
           (target.getLayoutNode(e.getTail()) == null)) {
           return false;
           }
@@ -119,10 +119,10 @@ public final class LayoutUtilities {
      */
     public static final void routeVisibleEdges(Object composite,
             LayoutTarget target) {
-        for(Iterator i = GraphUtilities.localEdges(composite,
+        for (Iterator i = GraphUtilities.localEdges(composite,
                 target.getGraphModel()); i.hasNext();) {
             Object edge = i.next();
-            if(target.isEdgeVisible(edge)) {
+            if (target.isEdgeVisible(edge)) {
                 target.route(edge);
             }
         }

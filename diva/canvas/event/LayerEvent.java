@@ -254,7 +254,7 @@ public class LayerEvent extends MouseEvent {
      * transform.
      */
     public void transform (AffineTransform at) {
-        if(at.isIdentity())
+        if (at.isIdentity())
             return;
         Point2D p = new Point2D.Double(_layerX, _layerY);
         at.transform(p, p);

@@ -109,7 +109,7 @@ public class BasicLayoutTarget implements LayoutTarget {
      */
     public Rectangle2D getViewport(Object composite) {
         GraphModel model = _controller.getGraphModel();
-        if(composite == getRootGraph()) {
+        if (composite == getRootGraph()) {
             Point2D p = getGraphicsPane().getSize();
 
             double borderPercentage = (1-getLayoutPercentage())/2;
@@ -119,9 +119,9 @@ public class BasicLayoutTarget implements LayoutTarget {
             double h = getLayoutPercentage()*p.getY();
             return new Rectangle2D.Double(x, y, w, h);
         }
-        else if(model.isComposite(composite)) {
+        else if (model.isComposite(composite)) {
             CompositeFigure cf = (CompositeFigure)_controller.getFigure(composite);
-            if(cf != null) {
+            if (cf != null) {
                 return cf.getShape().getBounds2D();
             }
         }
@@ -220,7 +220,7 @@ public class BasicLayoutTarget implements LayoutTarget {
      * @see #getVieport(Graph)
      */
     public void setLayoutPercentage(double d) {
-        if((d <= 0) || d > 1) {
+        if ((d <= 0) || d > 1) {
             String err = "Layout percentage must be between 0 and 1";
             throw new IllegalArgumentException(err);
         }

@@ -145,7 +145,7 @@ public class BasicNodeController implements NodeController {
 
         // Infer the location for the new node.
         Point2D center;
-        if(oldFigure != null) {
+        if (oldFigure != null) {
             center = oldFigure.getOrigin();
             clearNode(node);
         } else {
@@ -160,7 +160,7 @@ public class BasicNodeController implements NodeController {
         // Now draw the contained nodes, letting them go where they want to.
         _drawChildren(node);
 
-        if(center != null) {
+        if (center != null) {
             // place the new figure where the old one was, if there
             // was an old figure.
             CanvasUtilities.translateTo(newFigure,
@@ -223,8 +223,8 @@ public class BasicNodeController implements NodeController {
             (MutableGraphModel) _controller.getGraphModel();
         // clearing the nodes is responsible for clearing any edges that are
         // connected
-        if(model.isComposite(node)) {
-            for(Iterator i = model.nodes(node); i.hasNext(); ) {
+        if (model.isComposite(node)) {
+            for (Iterator i = model.nodes(node); i.hasNext(); ) {
                 Object insideNode = i.next();
                 _controller.clearNode(insideNode);
             }
@@ -267,9 +267,9 @@ public class BasicNodeController implements NodeController {
      */
     protected void _drawChildren(Object node) {
         GraphModel model = getController().getGraphModel();
-        if(model.isComposite(node)) {
+        if (model.isComposite(node)) {
             Iterator children = model.nodes(node);
-            while(children.hasNext()) {
+            while (children.hasNext()) {
                 Object child = children.next();
                 _controller.drawNode(child, node);
             }

@@ -33,25 +33,25 @@ public class LayerMouseAdapter implements LayerListener, LayerMotionListener {
     }
 
     public void mouseClicked(LayerEvent e) {
-        if(_filter.accept(e)) {
+        if (_filter.accept(e)) {
             _ml.mouseClicked(e);
         }
     }
 
     public void mousePressed(LayerEvent e) {
-        if(_filter.accept(e)) {
+        if (_filter.accept(e)) {
             _ml.mousePressed(e);
         }
     }
 
     public void mouseDragged(LayerEvent e) {
-        if(_filter.accept(e)) {
+        if (_filter.accept(e)) {
             _mml.mouseDragged(e);
         }
     }
 
     public void mouseMoved(LayerEvent e) {
-        if(_filter.accept(e)) {
+        if (_filter.accept(e)) {
             _mml.mouseMoved(e);
         }
     }
@@ -61,7 +61,7 @@ public class LayerMouseAdapter implements LayerListener, LayerMotionListener {
     }
 
     public void mouseReleased(LayerEvent e) {
-        if(_filter.accept(e)) {
+        if (_filter.accept(e)) {
             _ml.mouseReleased(e);
         }
     }

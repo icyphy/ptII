@@ -293,7 +293,7 @@ public class XmlElement {
     public void writeXML(Writer out, String prefix) throws IOException {
         out.write(prefix + "<" + getType());
         Iterator attrs = attributeNames();
-        while(attrs.hasNext()) {
+        while (attrs.hasNext()) {
             String name = (String) attrs.next();
             String value = getAttribute(name);
             out.write(" " + name + "=\"" + value + "\"");

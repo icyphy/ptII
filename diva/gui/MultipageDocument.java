@@ -87,7 +87,7 @@ public abstract class MultipageDocument extends AbstractDocument {
 
     /** Return the title of this documen
      */
-    public String getTitle(){
+    public String getTitle() {
         return _title;
     }
 

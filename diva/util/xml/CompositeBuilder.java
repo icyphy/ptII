@@ -73,10 +73,10 @@ public class CompositeBuilder extends AbstractXmlBuilder {
         doc.setDTD(DTD_1);
         XmlReader reader = new XmlReader();
         reader.parse(doc, in);
-        if(reader.getErrorCount() > 0) {
+        if (reader.getErrorCount() > 0) {
             throw new Exception("errors encountered during parsing");
         }
-        for(Iterator i = doc.getRoot().elements(); i.hasNext(); ) {
+        for (Iterator i = doc.getRoot().elements(); i.hasNext(); ) {
             XmlElement builder = (XmlElement)i.next();
             String[] val = new String[2];
             val[0] = builder.getAttribute(CLASS_TAG);
@@ -97,8 +97,8 @@ public class CompositeBuilder extends AbstractXmlBuilder {
      */
     public Object build(XmlElement elt, String type) throws Exception {
         String[] val = (String[])_builders.get(type);
-        if(val == null) {
-            if(getDelegate() == null) {
+        if (val == null) {
+            if (getDelegate() == null) {
                 String err = "Unknown type: " + type;
                 throw new Exception(err);
             }
@@ -115,8 +115,8 @@ public class CompositeBuilder extends AbstractXmlBuilder {
      */
     public XmlElement generate(Object in) throws Exception {
         String[] val = (String[])_builders.get(in.getClass().getName());
-        if(val == null) {
-            if(getDelegate() == null) {
+        if (val == null) {
+            if (getDelegate() == null) {
                 String err = "Unknown type: " + in.getClass().getName();
                 throw new Exception(err);
             }

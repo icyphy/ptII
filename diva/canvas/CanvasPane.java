@@ -116,7 +116,7 @@ public abstract class CanvasPane implements EventAcceptor, CanvasComponent {
             // pass the event to that layer
             event.setLayerSource(layer);
             String tip = layer.getToolTipText(event);
-            if(tip != null) {
+            if (tip != null) {
                 return tip;
             }
         }
@@ -180,7 +180,7 @@ public abstract class CanvasPane implements EventAcceptor, CanvasComponent {
     public void paint (Graphics2D g) {
         _transformContext.push(g);
 
-        if(isAntialiasing()) {
+        if (isAntialiasing()) {
             g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                     RenderingHints.VALUE_ANTIALIAS_ON);
         }
@@ -206,7 +206,7 @@ public abstract class CanvasPane implements EventAcceptor, CanvasComponent {
     public void paint (Graphics2D g, Rectangle2D region) {
         _transformContext.push(g);
 
-        if(isAntialiasing()) {
+        if (isAntialiasing()) {
             g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                     RenderingHints.VALUE_ANTIALIAS_ON);
         }

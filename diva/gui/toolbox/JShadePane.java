@@ -175,7 +175,7 @@ public class JShadePane extends JPanel {
      * Returns the index of the shade with the given title.
      */
     public int indexOfShade (String title) {
-        for(int i = 0; i < getShadeCount(); i++) {
+        for (int i = 0; i < getShadeCount(); i++) {
             if (getTitleAt(i).equals(title == null? "" : title)) {
                 return i;
             }
@@ -212,7 +212,7 @@ public class JShadePane extends JPanel {
         //create its visual representation.
         _shades.add(index, new Shade(this, button, component));
 
-        if(_shades.size() == 1) {
+        if (_shades.size() == 1) {
             _selectedIndex = 0;
         }
         refresh();
@@ -232,13 +232,13 @@ public class JShadePane extends JPanel {
         gbc.weighty = 0.0;
         gbc.gridwidth = GridBagConstraints.REMAINDER;
 
-        for(int i = 0; i <= _selectedIndex; i++) {
+        for (int i = 0; i <= _selectedIndex; i++) {
             Shade p = (Shade)_shades.get(i);
             gbl.setConstraints(p._button, gbc);
             add(p._button);
         }
 
-        if(_selectedIndex >= 0) {
+        if (_selectedIndex >= 0) {
             gbc.fill = GridBagConstraints.BOTH;
             gbc.weightx = 1.0;
             gbc.weighty = 1.0;
@@ -251,7 +251,7 @@ public class JShadePane extends JPanel {
         gbc.weightx = 0.0;
         gbc.weighty = 0.0;
 
-        for(int i = _selectedIndex+1; i < getShadeCount(); i++) {
+        for (int i = _selectedIndex+1; i < getShadeCount(); i++) {
             Shade p = (Shade)_shades.get(i);
             gbl.setConstraints(p._button, gbc);
             add(p._button);
@@ -345,7 +345,7 @@ public class JShadePane extends JPanel {
      * description: The shadepane's selected tab index.
      */
     public void setSelectedIndex (int index) {
-        if(index != _selectedIndex) {  //(index >= 0) &&
+        if (index != _selectedIndex) {  //(index >= 0) &&
             System.out.println("SELECTING: " + _selectedIndex);
             _selectedIndex = index;
         }
@@ -571,7 +571,7 @@ public class JShadePane extends JPanel {
         b1.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     int i = sp.getSelectedIndex();
-                    if(i >= 0) {
+                    if (i >= 0) {
                         sp.removeShadeAt(i);
                     }
                 }
@@ -582,7 +582,7 @@ public class JShadePane extends JPanel {
         b2.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     int i = sp.getSelectedIndex()-1;
-                    if(i >= 0) {
+                    if (i >= 0) {
                         sp.removeShadeAt(i);
                     }
                 }
@@ -593,7 +593,7 @@ public class JShadePane extends JPanel {
         b3.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     int i = sp.getSelectedIndex() + 1;
-                    if(i >= 1 && i < sp.getShadeCount()) {
+                    if (i >= 1 && i < sp.getShadeCount()) {
                         sp.removeShadeAt(i);
                     }
                 }
@@ -612,7 +612,7 @@ public class JShadePane extends JPanel {
         b5.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     int i = sp.getSelectedIndex();
-                    if(i >= 0) {
+                    if (i >= 0) {
                         boolean en = sp.isEnabledAt(i);
                         sp.setEnabledAt(i, !en);
                     }
@@ -624,7 +624,7 @@ public class JShadePane extends JPanel {
         b6.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     int i = sp.getSelectedIndex()-1;
-                    if(i >= 0) {
+                    if (i >= 0) {
                         boolean en = sp.isEnabledAt(i);
                         sp.setEnabledAt(i, !en);
                     }

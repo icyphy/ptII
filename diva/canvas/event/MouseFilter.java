@@ -143,7 +143,7 @@ public class MouseFilter {
      * Test whether the given MouseEvent passes the filter.
      */
     public boolean accept (MouseEvent event) {
-        if(_pressNumber != -1 &&
+        if (_pressNumber != -1 &&
                 event.getClickCount() != _pressNumber) return false;
         int m = event.getModifiers();
         boolean val = (m & _buttonMask) != 0 &&

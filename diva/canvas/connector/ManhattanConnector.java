@@ -80,7 +80,7 @@ public class ManhattanConnector extends AbstractConnector {
     /** Tell the connector to reposition the text label.
      */
     public void repositionLabel () {
-        if(_labelLocation == null) {
+        if (_labelLocation == null) {
             route();
             // route will call this method recursively.
             return;
@@ -100,7 +100,7 @@ public class ManhattanConnector extends AbstractConnector {
         repaint();
         Polyline2D poly = (Polyline2D)_router.route(this);
         int count = poly.getVertexCount();
-        if(count > 1) {
+        if (count > 1) {
             // pick a location for the label in the middle of the connector.
             _labelLocation = new Point2D.Double(
                     (poly.getX(count/2) + poly.getX(count/2-1))/2,
@@ -111,7 +111,7 @@ public class ManhattanConnector extends AbstractConnector {
                 new Point2D.Double(poly.getX(0), poly.getY(0));
         }
 
-        if(_bendRadius == 0) {
+        if (_bendRadius == 0) {
             setShape(poly);
         }
         else {
@@ -119,7 +119,7 @@ public class ManhattanConnector extends AbstractConnector {
             path.moveTo((float)poly.getX(0), (float)poly.getY(0));
             double prevX = poly.getX(0);
             double prevY = poly.getY(0);
-            for(int i = 2; i < poly.getVertexCount(); i++) {
+            for (int i = 2; i < poly.getVertexCount(); i++) {
                 //consider triplets of coordinates
                 double x0 = prevX;//poly.getX(i-2);
                 double y0 = prevY;//poly.getY(i-2);
@@ -142,7 +142,7 @@ public class ManhattanConnector extends AbstractConnector {
                 r = Math.min(r, d1);
 
                 // The degenerate case of a direct line.
-                if((d0 == 0.0) || (d1 == 0.0)) {
+                if ((d0 == 0.0) || (d1 == 0.0)) {
                     path.lineTo((float)x1, (float)y1);
                 } else {
                     //next calculate the intermediate points
@@ -186,7 +186,7 @@ public class ManhattanConnector extends AbstractConnector {
      * @see #getBendRadius()
      */
     public void setBendRadius(double r) {
-        if(r < 0) {
+        if (r < 0) {
             throw new IllegalArgumentException("Illegal radius: " + r);
         }
         _bendRadius = r;

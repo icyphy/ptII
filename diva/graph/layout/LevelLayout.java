@@ -121,9 +121,9 @@ public class LevelLayout extends AbstractGlobalLayout {
         Object copyComposite = _local.createComposite(null);
         HashMap map = new HashMap();
 
-        for(Iterator i = model.nodes(origComposite); i.hasNext(); ) {
+        for (Iterator i = model.nodes(origComposite); i.hasNext(); ) {
             Object origNode = i.next();
-            if(getLayoutTarget().isNodeVisible(origNode)) {
+            if (getLayoutTarget().isNodeVisible(origNode)) {
                 Rectangle2D r = getLayoutTarget().getBounds(origNode);
                 LevelInfo inf = new LevelInfo();
                 inf.origNode = origNode;
@@ -137,16 +137,16 @@ public class LevelLayout extends AbstractGlobalLayout {
             }
         }
 
-        for(Iterator i = model.nodes(origComposite); i.hasNext(); ) {
+        for (Iterator i = model.nodes(origComposite); i.hasNext(); ) {
             Object origTail = i.next();
-            for(Iterator j = model.outEdges(origTail); j.hasNext(); ) {
+            for (Iterator j = model.outEdges(origTail); j.hasNext(); ) {
                 Object origEdge = j.next();
                 Object origHead = model.getHead(origEdge);
 
-                if(origHead != null) {
+                if (origHead != null) {
                     Object copyTail = map.get(origTail);
                     Object copyHead = map.get(origHead);
-                    if(copyHead != null && copyTail != null) {
+                    if (copyHead != null && copyTail != null) {
                         Object copyEdge = _local.createEdge(origEdge);
                         _local.setEdgeTail(this, copyEdge, copyTail);
                         _local.setEdgeHead(this, copyEdge, copyHead);
@@ -165,11 +165,11 @@ public class LevelLayout extends AbstractGlobalLayout {
      */
     protected void copyLayout(Object origComposite, Object copyComposite) {
         GraphModel model = getLayoutTarget().getGraphModel();
-        for(Iterator ns = _local.nodes(copyComposite); ns.hasNext(); ) {
+        for (Iterator ns = _local.nodes(copyComposite); ns.hasNext(); ) {
             Object copyNode = ns.next();
             LevelInfo inf = getLevelInfo(copyNode);
             ASSERT(inf != null, "null inf");
-            if(inf.origNode != null) {
+            if (inf.origNode != null) {
                 Rectangle2D r = getLayoutTarget().getBounds(inf.origNode);
                 ASSERT(r != null, "null rect");
                 getLayoutTarget().translate(inf.origNode, inf.x-r.getX(), inf.y-r.getY());
@@ -208,17 +208,17 @@ public class LevelLayout extends AbstractGlobalLayout {
      */
     public void layout(Object composite) {
         LevelData levelData = calculateLayout(composite);
-        if(levelData != null){
+        if (levelData != null) {
             applyLayout(levelData, composite);
         }
         /*
           _origComposite = g;
           _target = t;
 
-          if(g.getNodeCount() > 0) {
+          if (g.getNodeCount() > 0) {
           _levelData._copyGraph = copyComposite(g, t);
 
-          //              if(isCyclic(_copyGraph)) {
+          //              if (isCyclic(_copyGraph)) {
           //                  String err = "Unable to perform levelizing layout on cyclic composites";
           //                  throw new IllegalArgumentException(err);
           //              }
@@ -251,9 +251,9 @@ public class LevelLayout extends AbstractGlobalLayout {
      * To apply this layout to the target environment, call applyLayout
      * with the returned LevelData.
      */
-    public LevelData calculateLayout(Object composite){
+    public LevelData calculateLayout(Object composite) {
         GraphModel model = getLayoutTarget().getGraphModel();
-        if(model.getNodeCount(composite) > 0) {
+        if (model.getNodeCount(composite) > 0) {
             LevelData levelData = new LevelData(getLayoutTarget(), composite);
             levelData._copyGraph = copyComposite(composite);
             breakCycles(levelData._copyGraph, _local);
@@ -262,11 +262,11 @@ public class LevelLayout extends AbstractGlobalLayout {
 
             //POST all nodes have level greater than
             //     their incoming nodes
-            for(Iterator i = _local.nodes(levelData._copyGraph);
+            for (Iterator i = _local.nodes(levelData._copyGraph);
                 i.hasNext(); ) {
                 Object node = i.next();
                 int lvl = getLevel(node);
-                for(Iterator j = GraphUtilities.inNodes(node, _local); j.hasNext(); ) {
+                for (Iterator j = GraphUtilities.inNodes(node, _local); j.hasNext(); ) {
                     Object n2 = j.next();
                     int lvl2 = getLevel(n2);
                     ASSERT(lvl2 < lvl, "Level order error " + node + ", " + n2);
@@ -283,21 +283,21 @@ public class LevelLayout extends AbstractGlobalLayout {
             //     than their incoming nodes
             //POST all dummy nodes have one in-edge and
             //     one out-edge
-            for(Iterator i = _local.nodes(levelData._copyGraph);
+            for (Iterator i = _local.nodes(levelData._copyGraph);
                 i.hasNext(); ) {
                 Object node = i.next();
                 int lvl = getLevel(node);
-                for(Iterator j = GraphUtilities.inNodes(node, _local);
+                for (Iterator j = GraphUtilities.inNodes(node, _local);
                     j.hasNext(); ) {
                     Object n2 = j.next();
                     int lvl2 = getLevel(n2);
                     ASSERT((lvl2 == lvl-1), "Level equality error " + node + ", " + n2);
                 }
             }
-            for(Iterator i = _local.nodes(levelData._copyGraph);
+            for (Iterator i = _local.nodes(levelData._copyGraph);
                 i.hasNext(); ) {
                 Object node = i.next();
-                if(isDummy(node)) {
+                if (isDummy(node)) {
                     Iterator outs = _local.outEdges(node);
                     ASSERT(outs.hasNext(), "Dummy w/ no out-edges");
                     outs.next();
@@ -318,7 +318,7 @@ public class LevelLayout extends AbstractGlobalLayout {
 
             //POST no levels are empty, and for each
             //     node in a level it's level is appropriate
-            for(int i  = 1; i < levelData._levels.length; i++) {
+            for (int i  = 1; i < levelData._levels.length; i++) {
                 ArrayList nodes = levelData._levels[i];
                 ASSERT((nodes.size() != 0), "Empty level " + i);
             }
@@ -338,7 +338,7 @@ public class LevelLayout extends AbstractGlobalLayout {
      * This method should be called after calculateLayout(t, g)
      * which returns the levelData used by this method.
      */
-    public void applyLayout(LevelData levelData, Object g){
+    public void applyLayout(LevelData levelData, Object g) {
         applyLayout(levelData, g, true);
         /*
           Rectangle2D r = t.getViewport(g);
@@ -359,7 +359,7 @@ public class LevelLayout extends AbstractGlobalLayout {
      * which returns the levelData used by this method.
      */
     public void applyLayout(LevelData levelData, Object g,
-            boolean useDummies){
+            boolean useDummies) {
         Rectangle2D r = getLayoutTarget().getViewport(g);
         placeNodes(levelData, r, useDummies);
         copyLayout(levelData._origGraph, levelData._copyGraph);
@@ -370,7 +370,7 @@ public class LevelLayout extends AbstractGlobalLayout {
      * either VERTICAL or HORIZONTAL.
      */
     public void setOrientation(int o) {
-        if((o != VERTICAL) && (o != HORIZONTAL)) {
+        if ((o != VERTICAL) && (o != HORIZONTAL)) {
             String err = "Orientation must be either VERTICAL or HORIZONTAL";
             throw new IllegalArgumentException(err);
         }
@@ -427,12 +427,12 @@ public class LevelLayout extends AbstractGlobalLayout {
          */
         protected Object _meta = null;
 
-        public LevelData(LayoutTarget t, Object composite){
+        public LevelData(LayoutTarget t, Object composite) {
             _target = t;
             _origGraph = composite;
         }
 
-        public int getLevelCount(){
+        public int getLevelCount() {
             return _levels.length;
         }
 
@@ -444,24 +444,24 @@ public class LevelLayout extends AbstractGlobalLayout {
          * dummy nodes in a level.  Otherwise, the method
          * returns the most number of real nodes in a level.
          */
-        public int getMaxLevelWidth(boolean withDummy){
+        public int getMaxLevelWidth(boolean withDummy) {
             int max = -1;
-            if(withDummy){
-                for(int i=0; i< getLevelCount(); i++){
+            if (withDummy) {
+                for (int i=0; i< getLevelCount(); i++) {
                     ArrayList list = _levels[i];
-                    if(list.size() > max){
+                    if (list.size() > max) {
                         max = list.size();
                     }
                 }
             }
             else {
-                for(int i=0; i< getLevelCount(); i++){
+                for (int i=0; i< getLevelCount(); i++) {
                     ArrayList list = _levels[i];
-                    if(list.size() > max){
+                    if (list.size() > max) {
                         int ct = 0;
-                        for(Iterator iter = list.iterator(); iter.hasNext();){
+                        for (Iterator iter = list.iterator(); iter.hasNext();) {
                             Object n = iter.next();
-                            if(!isDummy(n)){
+                            if (!isDummy(n)) {
                                 ct++;
                             }
                         }
@@ -482,7 +482,7 @@ public class LevelLayout extends AbstractGlobalLayout {
      * the given string if the assertion fails.
      */
     private void ASSERT(boolean b, String err) throws RuntimeException {
-        if(!b) {
+        if (!b) {
             throw new RuntimeException(err);
         }
     }
@@ -498,10 +498,10 @@ public class LevelLayout extends AbstractGlobalLayout {
 
       //POST all nodes have level greater than
       //     their incoming nodes
-      for(Iterator i = _levelData._copyGraph.nodes(); i.hasNext(); ) {
+      for (Iterator i = _levelData._copyGraph.nodes(); i.hasNext(); ) {
       Node n = (Node)i.next();
       int lvl = getLevel(n);
-      for(Iterator j = GraphUtilities.inNodes(n); j.hasNext(); ) {
+      for (Iterator j = GraphUtilities.inNodes(n); j.hasNext(); ) {
       Node n2 = (Node)j.next();
       int lvl2 = getLevel(n2);
       ASSERT(lvl2 < lvl, "Level order error " + n + ", " + n2);
@@ -518,18 +518,18 @@ public class LevelLayout extends AbstractGlobalLayout {
       //     than their incoming nodes
       //POST all dummy nodes have one in-edge and
       //     one out-edge
-      for(Iterator i = _levelData._copyGraph.nodes(); i.hasNext(); ) {
+      for (Iterator i = _levelData._copyGraph.nodes(); i.hasNext(); ) {
       Node n = (Node)i.next();
       int lvl = getLevel(n);
-      for(Iterator j = GraphUtilities.inNodes(n); j.hasNext(); ) {
+      for (Iterator j = GraphUtilities.inNodes(n); j.hasNext(); ) {
       Node n2 = (Node)j.next();
       int lvl2 = getLevel(n2);
       ASSERT((lvl2 == lvl-1), "Level equality error " + n + ", " + n2);
       }
       }
-      for(Iterator i = _levelData._copyGraph.nodes(); i.hasNext(); ) {
+      for (Iterator i = _levelData._copyGraph.nodes(); i.hasNext(); ) {
       Node n = (Node)i.next();
-      if(isDummy(n)) {
+      if (isDummy(n)) {
       Iterator outs = n.outEdges();
       ASSERT(outs.hasNext(), "Dummy w/ no out-edges");
       outs.next();
@@ -550,7 +550,7 @@ public class LevelLayout extends AbstractGlobalLayout {
 
       //POST no levels are empty, and for each
       //     node in a level it's level is appropriate
-      for(int i  = 1; i < _levelData._levels.length; i++) {
+      for (int i  = 1; i < _levelData._levels.length; i++) {
       ArrayList nodes = _levelData._levels[i];
       ASSERT((nodes.size() != 0), "Empty level " + i);
       }
@@ -572,10 +572,10 @@ public class LevelLayout extends AbstractGlobalLayout {
      * Inefficient check for cycles in a graph.
      *
      private boolean isCyclic(Graph g) {
-     for(Iterator i = g.nodes(); i.hasNext(); ) {
+     for (Iterator i = g.nodes(); i.hasNext(); ) {
      Node root = (Node)i.next();
      setAllVisited(g, false);
-     if(checkCyclic(root)) {
+     if (checkCyclic(root)) {
      return true;
      }
      }
@@ -590,12 +590,12 @@ public class LevelLayout extends AbstractGlobalLayout {
     private void breakCycles(Object composite, GraphModel model) {
         boolean hasCycles = true;
 
-        while(hasCycles) {
+        while (hasCycles) {
             hasCycles = false;
-            for(Iterator i = model.nodes(composite); i.hasNext(); ) {
+            for (Iterator i = model.nodes(composite); i.hasNext(); ) {
                 Object root = i.next();
                 setAllVisited(composite, false);
-                if(checkAndBreak(null, root)) {
+                if (checkAndBreak(null, root)) {
                     hasCycles = true;
                     break;
                 }
@@ -609,12 +609,12 @@ public class LevelLayout extends AbstractGlobalLayout {
     private boolean checkAndBreak(Object edge, Object node) {
         ASSERT(node != null, "null tail: " + node);
 
-        if(isVisited(node)) {
+        if (isVisited(node)) {
             ASSERT(edge != null, "null incoming edge: " + node);
             //debug("BROKEN CYCLE AT: " + n);
             Object head = _local.getHead(edge);
             Object tail = _local.getTail(edge);
-            if(head == tail) {
+            if (head == tail) {
                 // destroy the self loop.
                 _local.setEdgeHead(this, edge, null);
                 _local.setEdgeTail(this, edge, null);
@@ -627,11 +627,11 @@ public class LevelLayout extends AbstractGlobalLayout {
         }
 
         setVisited(node,true);
-        for(Iterator i = _local.outEdges(node); i.hasNext(); ) {
+        for (Iterator i = _local.outEdges(node); i.hasNext(); ) {
             Object outEdge = i.next();
             Object outNode = _local.getHead(outEdge);
             ASSERT(outNode != null, "null head: " + edge);
-            if(checkAndBreak(outEdge, outNode)) {
+            if (checkAndBreak(outEdge, outNode)) {
                 return true;
             }
         }
@@ -648,16 +648,16 @@ public class LevelLayout extends AbstractGlobalLayout {
      private boolean checkCyclic(Object node) {
      ASSERT(n != null, "null tail: " + n);
 
-     if(n.isVisited()) {
+     if (n.isVisited()) {
      //          debug("CYCLE AT: " + n);
      return true;
      }
      n.setVisited(true);
-     for(Iterator i = n.outEdges(); i.hasNext(); ) {
+     for (Iterator i = n.outEdges(); i.hasNext(); ) {
      Edge e = (Edge)i.next();
      Node out = e.getHead();
      ASSERT(out != null, "null head: " + e);
-     if(checkCyclic(out)) {
+     if (checkCyclic(out)) {
      return true;
      }
      }
@@ -684,16 +684,16 @@ public class LevelLayout extends AbstractGlobalLayout {
      */
     private void addDummies(LevelData levelData) {
         ArrayList dummies = new ArrayList();
-        for(Iterator nodes = _local.nodes(levelData._copyGraph);
+        for (Iterator nodes = _local.nodes(levelData._copyGraph);
             nodes.hasNext();) {
             Object to = nodes.next();
-            if(isDummy(to)) { continue; }
+            if (isDummy(to)) { continue; }
             LevelInfo nlinfo = getLevelInfo(to);
 
-            for(Iterator in = _local.inEdges(to); in.hasNext();) {
+            for (Iterator in = _local.inEdges(to); in.hasNext();) {
                 Object edge = in.next();
-                if(isDummy(_local.getTail(edge))) { continue; }
-                while(getLevel(to) > getLevel(_local.getTail(edge))+1 ) {
+                if (isDummy(_local.getTail(edge))) { continue; }
+                while (getLevel(to) > getLevel(_local.getTail(edge))+1 ) {
                     //                    debug("Creating dummy between " + e.getTail() + " & " + e.getHead());
 
                     //dummy gets stuck between e.tail and e.head
@@ -714,7 +714,7 @@ public class LevelLayout extends AbstractGlobalLayout {
         }
 
         //avoid concurrent modification exception...
-        for(Iterator i = dummies.iterator(); i.hasNext(); ) {
+        for (Iterator i = dummies.iterator(); i.hasNext(); ) {
             _local.addNode(this, i.next(), levelData._copyGraph);
         }
     }
@@ -737,9 +737,9 @@ public class LevelLayout extends AbstractGlobalLayout {
         int level;
 
         //find the topmost node
-        for(Iterator i = _local.nodes(levelData._copyGraph); i.hasNext();) {
+        for (Iterator i = _local.nodes(levelData._copyGraph); i.hasNext();) {
             Object node = i.next();
-            if((level = getLevel(node)) > levelData._maxLevel) {
+            if ((level = getLevel(node)) > levelData._maxLevel) {
                 levelData._maxLevel = level;
                 maxNode = node;
             }
@@ -749,7 +749,7 @@ public class LevelLayout extends AbstractGlobalLayout {
 
         //create some buckets to store the nodes
         levelData._levels = new ArrayList[levelData._maxLevel+1];
-        for(int i = 0; i < levelData._maxLevel+1; i++) {
+        for (int i = 0; i < levelData._maxLevel+1; i++) {
             levelData._levels[i] = new ArrayList();
         }
 
@@ -759,7 +759,7 @@ public class LevelLayout extends AbstractGlobalLayout {
         initialOrderNodes(levelData, maxNode);
 
         //debug
-        //          for(int i = 0; i < _levelData._levels.length; i++) {
+        //          for (int i = 0; i < _levelData._levels.length; i++) {
         //              ArrayList l = _levelData._levels[i];
         //              IteratorUtil.printElements("Level " + i + ":", l.iterator());
         //          }
@@ -774,9 +774,9 @@ public class LevelLayout extends AbstractGlobalLayout {
     private void initialOrderNodes(LevelData levelData, Object maxNode) {
         addSubGraphReverseDFS(levelData, maxNode);
 
-        for(Iterator i = _local.nodes(levelData._copyGraph); i.hasNext();) {
+        for (Iterator i = _local.nodes(levelData._copyGraph); i.hasNext();) {
             Object node = i.next();
-            if(!isVisited(node)) { /**FIXXX**/
+            if (!isVisited(node)) { /**FIXXX**/
                 addSubGraphReverseDFS(levelData, node);
             }
         }
@@ -789,10 +789,10 @@ public class LevelLayout extends AbstractGlobalLayout {
      */
     private void addSubGraphReverseDFS(LevelData levelData, Object node) {
         setVisited(node, true);
-        for(Iterator ins = GraphUtilities.inNodes(node, _local); ins.hasNext();) {
+        for (Iterator ins = GraphUtilities.inNodes(node, _local); ins.hasNext();) {
             Object in = ins.next();
             ASSERT((in != null), "NULL found, n = " + node);
-            if(!isVisited(in)) {
+            if (!isVisited(in)) {
                 addSubGraphReverseDFS(levelData, in);
             }
         }
@@ -815,30 +815,30 @@ public class LevelLayout extends AbstractGlobalLayout {
         //    really should be no empty levels.
         //    fix is elsewhere...
         int nonEmptyLevels = 0;
-        for(Iterator i = new ArrayIterator(levelData._levels); i.hasNext(); ) {
+        for (Iterator i = new ArrayIterator(levelData._levels); i.hasNext(); ) {
             ArrayList nodes = (ArrayList)i.next();
-            if(nodes.size()>0) nonEmptyLevels++;
+            if (nodes.size()>0) nonEmptyLevels++;
         }
         nonEmptyLevels = (int)Math.max(1, nonEmptyLevels);
 
-        if(getOrientation() == VERTICAL) {
+        if (getOrientation() == VERTICAL) {
             double ystep, y;
             ystep = vp.getHeight() / nonEmptyLevels;
             y = vp.getY() + ystep / 2;
             //            int lnum=0;
-            for(Iterator i = new ArrayIterator(levelData._levels); i.hasNext(); ) {
+            for (Iterator i = new ArrayIterator(levelData._levels); i.hasNext(); ) {
                 ArrayList nodes = (ArrayList)i.next();
                 int levelWidth;
-                if(useDummies){
+                if (useDummies) {
                     levelWidth = nodes.size();
                 }
                 else{
                     // HH, use the number of real nodes (no dummies) to
                     // determine the step size in the x direction.
                     levelWidth = 0;
-                    for(Iterator j = nodes.iterator(); j.hasNext();){
+                    for (Iterator j = nodes.iterator(); j.hasNext();) {
                         Object n = j.next();
-                        if(!isDummy(n)){
+                        if (!isDummy(n)) {
                             levelWidth++;
                         }
                     }
@@ -849,13 +849,13 @@ public class LevelLayout extends AbstractGlobalLayout {
                 xstep = vp.getWidth() / levelWidth;
 
                 x = vp.getX() + xstep / 2;
-                if(nodes.size() == 0) {
+                if (nodes.size() == 0) {
                     continue;  //XXX why do we have an empty level???
                 }
 
-                for(Iterator ns = nodes.iterator(); ns.hasNext();) {
+                for (Iterator ns = nodes.iterator(); ns.hasNext();) {
                     Object node = ns.next();
-                    if(!isDummy(node)) {
+                    if (!isDummy(node)) {
                         placeNode(node, x, y);
                     }
                     x += xstep;
@@ -868,19 +868,19 @@ public class LevelLayout extends AbstractGlobalLayout {
             xstep = vp.getWidth() / nonEmptyLevels;
             x = vp.getX() + xstep / 2;
 
-            for(Iterator i = new ArrayIterator(levelData._levels); i.hasNext(); ) {
+            for (Iterator i = new ArrayIterator(levelData._levels); i.hasNext(); ) {
                 ArrayList nodes = (ArrayList)i.next();
                 int levelWidth;
-                if(useDummies){
+                if (useDummies) {
                     levelWidth = nodes.size();
                 }
                 else{
                     // HH, use the number of real nodes (no dummies) to
                     // determine the step size in the x direction.
                     levelWidth = 0;
-                    for(Iterator j = nodes.iterator(); j.hasNext();){
+                    for (Iterator j = nodes.iterator(); j.hasNext();) {
                         Object n = j.next();
-                        if(!isDummy(n)){
+                        if (!isDummy(n)) {
                             levelWidth++;
                         }
                     }
@@ -890,13 +890,13 @@ public class LevelLayout extends AbstractGlobalLayout {
                 double ystep, y;
                 ystep = vp.getHeight() / levelWidth;
                 y = vp.getY() + ystep / 2;
-                if(nodes.size() == 0) {
+                if (nodes.size() == 0) {
                     continue;  //XXX why do we have an empty level???
                 }
 
-                for(Iterator ns = nodes.iterator(); ns.hasNext();) {
+                for (Iterator ns = nodes.iterator(); ns.hasNext();) {
                     Object node = ns.next();
-                    if(!isDummy(node)) {
+                    if (!isDummy(node)) {
                         LevelInfo inf = getLevelInfo(node);
                         placeNode(node, x, y);
                     }
@@ -911,7 +911,7 @@ public class LevelLayout extends AbstractGlobalLayout {
     private void placeNode(Object node, double x, double y) {
         LevelInfo inf = getLevelInfo(node);
         //       debug("placing: " + inf.origNode + "(" + x + ", " + y + ")");
-        if(_randomizedPlacement) {
+        if (_randomizedPlacement) {
             x += Math.random()*.25*inf.width;
             y += Math.random()*.25*inf.height;
         }
@@ -981,9 +981,9 @@ public class LevelLayout extends AbstractGlobalLayout {
      */
     private void topoSort(Object node, ArrayList topo) {
         setVisited(node, true);
-        for(Iterator i = GraphUtilities.inNodes(node, _local); i.hasNext();) {
+        for (Iterator i = GraphUtilities.inNodes(node, _local); i.hasNext();) {
             Object n2 = i.next();
-            if(!isVisited(n2)) {
+            if (!isVisited(n2)) {
                 topoSort(n2, topo);
             }
         }
@@ -997,7 +997,7 @@ public class LevelLayout extends AbstractGlobalLayout {
     private void makeMeta(LevelData levelData) {
         levelData._meta = _local.createNode(new LevelInfo());
 
-        for(Iterator ns = _local.nodes(levelData._copyGraph); ns.hasNext(); ) {
+        for (Iterator ns = _local.nodes(levelData._copyGraph); ns.hasNext(); ) {
             Object node = ns.next();
             Object edge = _local.createEdge(null);
             _local.setEdgeTail(this, edge, node);
@@ -1042,7 +1042,7 @@ public class LevelLayout extends AbstractGlobalLayout {
     }
 
     public void setAllVisited(Object composite, boolean val) {
-        for(Iterator i = _local.nodes(composite); i.hasNext(); ) {
+        for (Iterator i = _local.nodes(composite); i.hasNext(); ) {
             setVisited(i.next(), val);
         }
     }
@@ -1079,15 +1079,15 @@ public class LevelLayout extends AbstractGlobalLayout {
          *       meta
          */
         int maxLevel = 0;
-        for(Iterator i = topo.iterator(); i.hasNext();) {
+        for (Iterator i = topo.iterator(); i.hasNext();) {
             int level = 0;
             Object node = i.next();
-            for(Iterator ins = GraphUtilities.inNodes(node, _local); ins.hasNext();) {
+            for (Iterator ins = GraphUtilities.inNodes(node, _local); ins.hasNext();) {
                 Object in = ins.next();
                 level = Math.max(level, getLevel(in)+1);
             }
             //            debug("INITIAL: " + getLevelInfo(n).origNode + ", " + level);
-            //              for(Iterator ins = GraphUtilities.inNodes(n); ins.hasNext();) {
+            //              for (Iterator ins = GraphUtilities.inNodes(n); ins.hasNext();) {
             //                  Node in = (Node)ins.next();
             //                  debug("\tin: " + getLevelInfo(in).origNode + ", " + getLevel(in));
             //              }
@@ -1106,14 +1106,14 @@ public class LevelLayout extends AbstractGlobalLayout {
          *       \ | /
          *       meta
          */
-        for(int i = topo.size()-1; i >= 0; i--) {
+        for (int i = topo.size()-1; i >= 0; i--) {
             Object node = (topo.get(i));
             int usage = maxLevel;
 
-            if(!_local.outEdges(node).hasNext()) {
+            if (!_local.outEdges(node).hasNext()) {
                 usage = getLevel(node);
             }
-            for(Iterator outs = GraphUtilities.outNodes(node, _local); outs.hasNext(); ) {
+            for (Iterator outs = GraphUtilities.outNodes(node, _local); outs.hasNext(); ) {
                 //there was an XXX here?
                 Object out = outs.next();
                 usage = Math.min(usage, getUsage(out)-1);
@@ -1123,7 +1123,7 @@ public class LevelLayout extends AbstractGlobalLayout {
 
 
         // Assign level number based on usage.
-        for(Iterator i = topo.iterator(); i.hasNext();) {
+        for (Iterator i = topo.iterator(); i.hasNext();) {
             Object node = i.next();
             setLevel(node, getUsage(node));
             //debug("LEVEL: " + getLevelInfo(n).origNode + ", " + getUsage(n));
@@ -1163,19 +1163,19 @@ public class LevelLayout extends AbstractGlobalLayout {
    Object []ns = nodes.toArray();
    Arrays.sort(ns, new BarycentricComparator());
    nodes.clear();
-   for(Iterator i = new ArrayIterator(ns); i.hasNext(); ) {
+   for (Iterator i = new ArrayIterator(ns); i.hasNext(); ) {
    nodes.add(i.next());
    }
 
    /*
      int len = nodes.size();
-     for(int i = 1; i < len; i++) {
+     for (int i = 1; i < len; i++) {
      Node n1 = (Node) nodes.get(i);
      double bc = barycenter(n1);
      int j;
-     for(j = i; j > 0; j--) {
+     for (j = i; j > 0; j--) {
      Node n2 = (Node)nodes.get(j-1);
-     if( bc >= getBarycenter(n2)) break;
+     if (bc >= getBarycenter(n2)) break;
      nodes.add(j, n2);
      }
      nodes.add(j, n1);
@@ -1186,7 +1186,7 @@ public class LevelLayout extends AbstractGlobalLayout {
      private final void orderLevel( ArrayList nodes, double l, double y,
      boolean doin, boolean doout ) {
      int levelcnt = nodes.size();
-     for(Iterator e = nodes.iterator(); e.hasNext();) {
+     for (Iterator e = nodes.iterator(); e.hasNext();) {
      Node n = (Node) e.next();
      computeBarycenter(n, doin, doout);
      }
@@ -1200,9 +1200,9 @@ public class LevelLayout extends AbstractGlobalLayout {
      boolean doin = (op > 5 || !doup);
      boolean doout = (op > 5 || doup);
      double ystep = (_maxLevel>0) ? (_target.getViewport(_origGraph).getHeight()/_maxLevel) : 0.0;
-     if( doup ) {
+     if (doup ) {
      double y = 0.0;
-     for( int i = 0; i <= _maxLevel; ++i ) {                // Going upwards
+     for ( int i = 0; i <= _maxLevel; ++i ) {                // Going upwards
      ArrayList nodes = _levels[i];
      orderLevel( nodes, l, y, doin, doout );
      y += ystep;
@@ -1210,7 +1210,7 @@ public class LevelLayout extends AbstractGlobalLayout {
      }
      else {
      double y = l;
-     for( int i = _maxLevel; i >= 0; --i ) {                // Going downwards
+     for ( int i = _maxLevel; i >= 0; --i ) {                // Going downwards
      ArrayList nodes = _levels[i];
      orderLevel( nodes, l, y, doin, doout );
      y -= ystep;
@@ -1229,22 +1229,22 @@ public class LevelLayout extends AbstractGlobalLayout {
      protected synchronized final void straightenLayout( double l ) {
      double ystep = l/(_maxLevel+1);
      double y = 0.0;
-     for(int i = 0; i <= _maxLevel; i++) {
+     for (int i = 0; i <= _maxLevel; i++) {
      ArrayList nodes = _levels[i];
-     for(Iterator e = nodes.iterator(); e.hasNext(); ) {
+     for (Iterator e = nodes.iterator(); e.hasNext(); ) {
      Node n = (Node)e.next();
-     if(n instanceof DummyNode) {
+     if (n instanceof DummyNode) {
      straightenDummy(n);
      }
      }
 
-     for(int j = 1; j < nodes.size(); j++) {
+     for (int j = 1; j < nodes.size(); j++) {
      Node n = (Node)nodes.get(j);
      Node prev = (Node)nodes.get( j-1 );
      double prevright = prev.getX() + prev.getW()/2 + xmarginSize;
      double thisleft =  n.getX() - n.getW()/2 - xmarginSize;
      double overlap = prevright - thisleft;
-     if( overlap > 0 ) {
+     if (overlap > 0 ) {
      prev.setX(prev.getX() - overlap/2);
      n.setX(n.getX() + overlap/2);
      }
@@ -1261,7 +1261,7 @@ public class LevelLayout extends AbstractGlobalLayout {
      private final void Embed() {
      double L = _bb.globals.L();
      _bb.setArea( 0, 0, L, L );
-     if( _operation < _Order ) {
+     if (_operation < _Order ) {
      orderNodes( L, _operation );
      }
      else {
@@ -1278,36 +1278,36 @@ public class LevelLayout extends AbstractGlobalLayout {
      int insize = 0;
      int outsize = 0;
 
-     if(doin) {
-     for(Iterator e = GraphUtilities.inNodes(n); e.hasNext();) {
+     if (doin) {
+     for (Iterator e = GraphUtilities.inNodes(n); e.hasNext();) {
      insize++;
      insum += getX((Node)e.next());
      }
-     if(insize == 0) {
+     if (insize == 0) {
      insize = 1;
      insum = getX(n);
      }
      }
 
-     if( doout ) {
-     for(Iterator e = GraphUtilities.outNodes(n); e.hasNext();) {
+     if (doout ) {
+     for (Iterator e = GraphUtilities.outNodes(n); e.hasNext();) {
      outsize++;
      outsum += getX(n);
      }
-     if(outsize == 0) {
+     if (outsize == 0) {
      outsize = 1;
      outsum = getX(n);
      }
      }
 
      double barycenter;
-     if( doin && doout ) {
+     if (doin && doout ) {
      barycenter = (insum+outsum)/(insize+outsize);
      }
-     else if(doin) {
+     else if (doin) {
      barycenter = insum/insize;
      }
-     else if(doout) {
+     else if (doout) {
      barycenter = outsum/outsize;
      }
      else {
@@ -1327,7 +1327,7 @@ public class LevelLayout extends AbstractGlobalLayout {
 
      private Filter _defaultIgnoreFilter = new Filter() {
      public boolean accept(Object o) {
-     if(o instanceof Node) {
+     if (o instanceof Node) {
      Node n = (Node)o;
      return (n == null) || !_target.isNodeVisible(n);
      }
@@ -1338,7 +1338,7 @@ public class LevelLayout extends AbstractGlobalLayout {
      private Filter _ignoreFilter = _defaultIgnoreFilter;
 
      public void setIgnoreFilter(Filter f) {
-     if(f == null) {
+     if (f == null) {
      _ignoreFilter = _defaultIgnoreFilter;
      }
      _ignoreFilter = new OrFilter(f, _defaultIgnoreFilter);

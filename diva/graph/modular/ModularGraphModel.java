@@ -80,7 +80,7 @@ public abstract class ModularGraphModel extends AbstractGraphModel {
      * null if there is no parent.
      */
     public Object getParent(Object node) {
-        if(node == _root) {
+        if (node == _root) {
             return null;
         } else {
             return getNodeModel(node).getParent(node);

@@ -105,16 +105,16 @@ public class JPanner extends JPanel {
         y = (int)(y / forward.getScaleY()) - extentSize.height/2;
 
         int max;
-        if(x < 0)
+        if (x < 0)
             x = 0;
         max = viewSize.width - extentSize.width;
-        if(x > max)
+        if (x > max)
             x = max;
 
-        if(y < 0)
+        if (y < 0)
             y = 0;
         max = viewSize.height - extentSize.height;
-        if(y > max)
+        if (y > max)
             y = max;
 
         _target.setViewPosition(new Point(x, y));
@@ -125,17 +125,17 @@ public class JPanner extends JPanel {
      * wrapped.
      */
     public void setViewport(JViewport target) {
-        if(_target != null) {
+        if (_target != null) {
             _target.removeChangeListener(_listener);
-            if(_target.getView() instanceof JCanvas) {
+            if (_target.getView() instanceof JCanvas) {
                 removeMouseListener(_scaleMouseListener);
                 removeMouseMotionListener(_scaleMouseListener);
             }
         }
         _target = target;
-        if(_target != null) {
+        if (_target != null) {
             _target.addChangeListener(_listener);
-            if(_target.getView() instanceof JCanvas) {
+            if (_target.getView() instanceof JCanvas) {
                 addMouseListener(_scaleMouseListener);
                 addMouseMotionListener(_scaleMouseListener);
             }
@@ -152,7 +152,7 @@ public class JPanner extends JPanel {
     }
 
     public void paintComponent(Graphics g) {
-        if(_target != null) {
+        if (_target != null) {
             JCanvas canvas = (JCanvas)_target.getView();
             Dimension viewSize = canvas.getSize();
             Rectangle viewRect =
@@ -170,7 +170,7 @@ public class JPanner extends JPanel {
                 inverse = forward.createInverse();
                 inverse.concatenate(current.createInverse());
             }
-            catch(NoninvertibleTransformException e) {
+            catch (NoninvertibleTransformException e) {
                 throw new RuntimeException(e.toString());
             }
 
@@ -220,7 +220,7 @@ public class JPanner extends JPanel {
         implements MouseMotionListener {
 
         public void mousePressed(MouseEvent evt) {
-            if(_target != null &&
+            if (_target != null &&
                     (evt.getModifiers() & MouseEvent.BUTTON1_MASK) != 0) {
                 setPosition(evt.getX(), evt.getY());
             }
@@ -228,7 +228,7 @@ public class JPanner extends JPanel {
         public void mouseMoved(MouseEvent evt) {
         }
         public void mouseDragged(MouseEvent evt) {
-            if(_target != null &&
+            if (_target != null &&
                     (evt.getModifiers() & MouseEvent.BUTTON1_MASK) != 0) {
                 setPosition(evt.getX(), evt.getY());
             }
@@ -244,14 +244,14 @@ public class JPanner extends JPanel {
             double scale;
             // The 5.0 and 1.3 below were determined by trial and error
             // tuning.
-            if(x > origin.getX() && y > origin.getY()) {
-                if(x - origin.getX() > y - origin.getY()) {
+            if (x > origin.getX() && y > origin.getY()) {
+                if (x - origin.getX() > y - origin.getY()) {
                     scale = (y - origin.getY()) / 5.0;
                 } else {
                     scale = (x - origin.getX()) / 5.0;
                 }
-            } else if(x < origin.getX() && y < origin.getY()) {
-                if(origin.getX() - x > origin.getY() - y) {
+            } else if (x < origin.getX() && y < origin.getY()) {
+                if (origin.getX() - x > origin.getY() - y) {
                     scale = (y - origin.getY()) / 5.0;
                 } else {
                     scale = (x - origin.getX()) / 5.0;
@@ -272,7 +272,7 @@ public class JPanner extends JPanel {
         }
 
         public void mousePressed(MouseEvent evt) {
-            if(_target != null &&
+            if (_target != null &&
                     (evt.getModifiers() & MouseEvent.BUTTON3_MASK) != 0) {
                 setPosition(evt.getX(), evt.getY());
                 origin = evt.getPoint();
@@ -312,7 +312,7 @@ public class JPanner extends JPanel {
         public void mouseMoved(MouseEvent evt) {
         }
         public void mouseDragged(MouseEvent evt) {
-            if(_target != null &&
+            if (_target != null &&
                     (evt.getModifiers() & MouseEvent.BUTTON3_MASK) != 0) {
                 setScale(evt.getX(), evt.getY());
             }

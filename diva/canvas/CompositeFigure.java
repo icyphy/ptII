@@ -243,7 +243,7 @@ public class CompositeFigure extends AbstractFigureContainer {
         return result;
     }
 
-    protected void invalidateCachedBounds(){
+    protected void invalidateCachedBounds() {
         _cachedBounds = null;
     }
 
@@ -364,7 +364,7 @@ public class CompositeFigure extends AbstractFigureContainer {
         // Check to make sure that this repaint isn't being triggered
         // by something below in the hierarchy that has moved in such
         // a way as to modify the bounding box.
-        if(_cachedBounds != null && !_cachedBounds.contains(d.getBounds())) {
+        if (_cachedBounds != null && !_cachedBounds.contains(d.getBounds())) {
             _cachedBounds = null;
         }
         super.repaint(d);
@@ -409,7 +409,7 @@ public class CompositeFigure extends AbstractFigureContainer {
         s += ":Background=" + getBackgroundFigure();
         s += ":others={";
         Iterator i = figuresFromFront();
-        while(i.hasNext()) {
+        while (i.hasNext()) {
             Figure f = (Figure)i.next();
             s += "," + f;
         }

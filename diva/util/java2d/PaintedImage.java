@@ -59,7 +59,7 @@ public class PaintedImage implements PaintedObject, ImageObserver {
      */
     public boolean imageUpdate(Image image, int flags,
             int x, int y, int w, int h) {
-        if((flags & (ImageObserver.ABORT | ImageObserver.ERROR)) == 0) {
+        if ((flags & (ImageObserver.ABORT | ImageObserver.ERROR)) == 0) {
             _transform = CanvasUtilities.computeTransform(
                     new Rectangle2D.Double(0, 0,
                             image.getWidth(this), image.getHeight(this))

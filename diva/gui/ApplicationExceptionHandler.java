@@ -20,7 +20,7 @@ public class ApplicationExceptionHandler {
     static Application _application = null;
 
     public void handle(Throwable t) {
-        if(t instanceof Exception) {
+        if (t instanceof Exception) {
             _application.showError("Exception Caught", (Exception)t);
         }
     }

@@ -200,7 +200,7 @@ public class DesktopContext extends AppContextDelegate implements MDIContext {
             new DesktopInternalFrame(title, true, true, true, true);
 
         Icon icon = getFrameIcon();
-        if(icon != null) {
+        if (icon != null) {
             iframe.setFrameIcon(icon);
         }
 
@@ -317,7 +317,7 @@ public class DesktopContext extends AppContextDelegate implements MDIContext {
      */
     public void removeContentPane (JComponent pane) {
         // Watch out if we are removing the pane that is currently maximized.
-        if(pane == _currentPane) {
+        if (pane == _currentPane) {
             _pseudoFrame.hideFrame();
         }
         JInternalFrame iframe = (JInternalFrame)_frames.remove(pane);
@@ -474,7 +474,7 @@ public class DesktopContext extends AppContextDelegate implements MDIContext {
             // To close the pseudoFrame, we don't call hideFrame. This confuses
             // the maximizeMode.  Instead rely on removeContentPane to hide
             // the frame if the close actually succeeds.
-            if(flag) {
+            if (flag) {
                 DesktopInternalFrame frame =
                     (DesktopInternalFrame)
                     getInternalFrame(getCurrentContentPane());
@@ -484,7 +484,7 @@ public class DesktopContext extends AppContextDelegate implements MDIContext {
         public void setIcon (boolean flag) throws PropertyVetoException {
             // to iconify, unset the maximize mode, instead of just
             // hiding the frame.
-            if(flag) {
+            if (flag) {
                 JInternalFrame frame =
                     getInternalFrame(getCurrentContentPane());
                 setMaximizeMode(false);
@@ -560,9 +560,9 @@ public class DesktopContext extends AppContextDelegate implements MDIContext {
         private void fire (AWTEvent e, int id) {
             JInternalFrame f =  (JInternalFrame) e.getSource();
             JComponent c;
-            if(f.getContentPane().getComponentCount() == 1) {
+            if (f.getContentPane().getComponentCount() == 1) {
                 c = (JComponent) f.getContentPane().getComponent(0);
-            } else if(f.getContentPane().getComponentCount() == 0 &&
+            } else if (f.getContentPane().getComponentCount() == 0 &&
                     isMaximizeMode()) {
                 c = getCurrentContentPane();
             } else {
@@ -571,8 +571,8 @@ public class DesktopContext extends AppContextDelegate implements MDIContext {
             }
             ViewEvent event = new ViewEvent(c, id);
             Object[] listeners = _listeners.getListenerList();
-            for (int i = listeners.length -2; i >=0; i -= 2){
-                if (listeners[i] == ViewListener.class){
+            for (int i = listeners.length -2; i >=0; i -= 2) {
+                if (listeners[i] == ViewListener.class) {
                     switch(id) {
                     case ViewEvent.VIEW_CLOSED:
                         ((ViewListener)listeners[i+1]).viewClosed(event);

@@ -52,10 +52,10 @@ public class MenuCreator extends AbstractInteractor {
      * null, then ignore the event and do not consume it.
      */
     public void mouseReleased(LayerEvent e) {
-        if(_factory != null) {
+        if (_factory != null) {
             Figure source = e.getFigureSource();
             JPopupMenu menu = _factory.create(source);
-            if(menu == null) return;
+            if (menu == null) return;
             menu.show(e.getComponent(), e.getX(), e.getY());
             e.consume();
         }

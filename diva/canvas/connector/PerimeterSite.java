@@ -111,13 +111,13 @@ public class PerimeterSite extends AbstractSite {
             xout = x + rx + dx;
             yout = y + ry + dy;
 
-        } else if(shape instanceof Polygon2D) {
+        } else if (shape instanceof Polygon2D) {
             Polygon2D polygon = (Polygon2D) shape;
             double pointx = xCenter;
             double pointy = yCenter;
             double max_r = 0;
             int vertexes = polygon.getVertexCount();
-            if(vertexes > 1) {
+            if (vertexes > 1) {
                 // compute the intersection of the line segment passing through
                 // (x0,y0) and (x1,y1) with the ray passing through
                 // (xCenter, yCenter) and (px,py)
@@ -128,7 +128,7 @@ public class PerimeterSite extends AbstractSite {
                 // first
                 x1 = polygon.getX(vertexes-1);
                 y1 = polygon.getY(vertexes-1);
-                for(int vertexPair = 0; vertexPair < vertexes; vertexPair++) {
+                for (int vertexPair = 0; vertexPair < vertexes; vertexPair++) {
                     x0 = x1;
                     y0 = y1;
                     x1 = polygon.getX(vertexPair);
@@ -138,7 +138,7 @@ public class PerimeterSite extends AbstractSite {
                     double B = (y1-y0)*(px-xCenter) - (x1-x0)*(py-yCenter);
                     double t = A/B;
                     // Must be between (x0,y0) and (x1,y1)
-                    if(0 <= t && t <= 1) {
+                    if (0 <= t && t <= 1) {
                         double tx = x0 + (x1-x0)*t;
                         double ty = y0 + (y1-y0)*t;
                         boolean xGood = (tx >= xCenter && px >= xCenter)||
@@ -146,10 +146,10 @@ public class PerimeterSite extends AbstractSite {
                         boolean yGood = (ty >= yCenter && py >= yCenter)||
                             (ty < yCenter && py < yCenter);
                         // Must be on (px,py) side of (xCenter, yCenter)
-                        if(xGood && yGood) {
+                        if (xGood && yGood) {
                             double r = (tx-xCenter)*(tx-xCenter) +
                                 (ty-yCenter)*(ty-yCenter);
-                            if(r > max_r) {
+                            if (r > max_r) {
                                 pointx = tx;
                                 pointy = ty;
                                 max_r = r;

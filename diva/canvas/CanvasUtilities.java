@@ -210,14 +210,14 @@ public final class CanvasUtilities {
      */
     public static int getDirection(double angle) {
         angle = moduloAngle(angle);
-        if(angle < -Math.PI*7/8) return SwingConstants.WEST;
-        else if(angle < -Math.PI*5/8) return SwingConstants.NORTH_WEST;
-        else if(angle < -Math.PI*3/8) return SwingConstants.NORTH;
-        else if(angle < -Math.PI*1/8) return SwingConstants.NORTH_EAST;
-        else if(angle < Math.PI*1/8) return SwingConstants.EAST;
-        else if(angle < Math.PI*3/8) return SwingConstants.SOUTH_EAST;
-        else if(angle < Math.PI*5/8) return SwingConstants.SOUTH;
-        else if(angle < Math.PI*7/8) return SwingConstants.SOUTH_WEST;
+        if (angle < -Math.PI*7/8) return SwingConstants.WEST;
+        else if (angle < -Math.PI*5/8) return SwingConstants.NORTH_WEST;
+        else if (angle < -Math.PI*3/8) return SwingConstants.NORTH;
+        else if (angle < -Math.PI*1/8) return SwingConstants.NORTH_EAST;
+        else if (angle < Math.PI*1/8) return SwingConstants.EAST;
+        else if (angle < Math.PI*3/8) return SwingConstants.SOUTH_EAST;
+        else if (angle < Math.PI*5/8) return SwingConstants.SOUTH;
+        else if (angle < Math.PI*7/8) return SwingConstants.SOUTH_WEST;
         else return SwingConstants.WEST;
     }
 
@@ -226,14 +226,14 @@ public final class CanvasUtilities {
      *  is between -PI and PI as per the normalizeAngle method.
      */
     public static double getNormal(int direction) {
-        if(direction == SwingConstants.EAST) return EAST;
-        if(direction == SwingConstants.NORTH) return NORTH;
-        if(direction == SwingConstants.WEST) return WEST;
-        if(direction == SwingConstants.SOUTH) return SOUTH;
-        if(direction == SwingConstants.NORTH_EAST) return NORTHEAST;
-        if(direction == SwingConstants.NORTH_WEST) return NORTHWEST;
-        if(direction == SwingConstants.SOUTH_EAST) return SOUTHEAST;
-        if(direction == SwingConstants.SOUTH_WEST) return SOUTHWEST;
+        if (direction == SwingConstants.EAST) return EAST;
+        if (direction == SwingConstants.NORTH) return NORTH;
+        if (direction == SwingConstants.WEST) return WEST;
+        if (direction == SwingConstants.SOUTH) return SOUTH;
+        if (direction == SwingConstants.NORTH_EAST) return NORTHEAST;
+        if (direction == SwingConstants.NORTH_WEST) return NORTHWEST;
+        if (direction == SwingConstants.SOUTH_EAST) return SOUTHEAST;
+        if (direction == SwingConstants.SOUTH_WEST) return SOUTHWEST;
         throw new RuntimeException("Unknown Direction");
     }
 
@@ -375,13 +375,13 @@ public final class CanvasUtilities {
 
         while (i.hasNext()) {
             f = (Figure) i.next();
-            if(f instanceof FigureContainer) {
+            if (f instanceof FigureContainer) {
                 picked = ((FigureContainer) f).pick(region, filter);
                 if (picked != null) {
                     return picked;
                 }
             }
-            if(f.hit(region) && filter.accept(f)) {
+            if (f.hit(region) && filter.accept(f)) {
                 return f;
             }
         }
@@ -551,7 +551,7 @@ public final class CanvasUtilities {
     public static Point2D transformInto (Point2D p, TransformContext local,
             TransformContext root) {
         Point2D p2 = p;
-        while(local != root) {
+        while (local != root) {
             p2 = local.getTransform().transform(p, null);
             local = local.getParent();
         }

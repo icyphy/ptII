@@ -109,7 +109,7 @@ public class PaintedString implements PaintedObject {
      * Get the bounds of this string
      */
     public Rectangle2D getBounds () {
-        if(_bounds == null) {
+        if (_bounds == null) {
             _update();
         }
         return _bounds;
@@ -159,7 +159,7 @@ public class PaintedString implements PaintedObject {
      * filled pixel).
      */
     public Shape getShape () {
-        if(_bounds == null) {
+        if (_bounds == null) {
             _update();
         }
         return _bounds;
@@ -176,13 +176,13 @@ public class PaintedString implements PaintedObject {
      * Paint the label.
      */
     public void paint(Graphics2D g) {
-        if(_bounds == null) {
+        if (_bounds == null) {
             _update();
         }
-        if(getString() != null) {
+        if (getString() != null) {
             g.setPaint(_fillPaint);
             Iterator i = _shapes.iterator();
-            while(i.hasNext()) {
+            while (i.hasNext()) {
                 Shape shape = (Shape) i.next();
                 g.fill(shape);
             }
@@ -293,7 +293,7 @@ public class PaintedString implements PaintedObject {
         _shapes.clear();
         while (lines.hasMoreElements()) {
             String line = lines.nextToken();
-            if(line.equals("\n")) {
+            if (line.equals("\n")) {
                 // Note that leading or trailing newlines are ignored.
                 y += dy;
             } else {
@@ -304,7 +304,7 @@ public class PaintedString implements PaintedObject {
                 Rectangle2D b;
                 s = _transform.createTransformedShape(s);
                 b = s.getBounds2D();
-                if(_bounds == null) {
+                if (_bounds == null) {
                     // implicit translate by (0,0)
                     _bounds = b;
                     _shapes.add(s);

@@ -60,7 +60,7 @@ public class SelectionEvent extends java.util.EventObject {
      * added to the selection model.
      */
     public Iterator getSelectionAdditions() {
-        if(_added == null) {
+        if (_added == null) {
             return new NullIterator();
         }
         else {
@@ -81,7 +81,7 @@ public class SelectionEvent extends java.util.EventObject {
      * removed from the selection model.
      */
     public Iterator getSelectionRemovals() {
-        if(_removed == null) {
+        if (_removed == null) {
             return new NullIterator();
         }
         else {

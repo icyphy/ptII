@@ -45,13 +45,13 @@ public class MultipageWriter {
         out.write(multipage.getTitle());
         out.write("\">\n");
         int ct=0;
-        for(Iterator iter = multipage.pages(); iter.hasNext();){
+        for (Iterator iter = multipage.pages(); iter.hasNext();) {
             Page s = (Page)iter.next();
             Object model = s.getModel();
             String label = s.getTitle();
 
             out.write("<" + MultipageParser.PAGE_TAG);
-            if(label != null){
+            if (label != null) {
                 out.write(" " + MultipageParser.PAGE_TITLE_TAG + "=\"");
                 out.write(label);
                 out.write("\"");

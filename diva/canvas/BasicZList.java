@@ -48,7 +48,7 @@ public class BasicZList implements ZList {
 
     /** Removes all of the figures from this list.
      */
-    public void clear(){
+    public void clear() {
         _elements.clear();
     }
 

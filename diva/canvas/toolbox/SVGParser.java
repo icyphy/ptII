@@ -169,7 +169,7 @@ public class SVGParser {
             // First try as a system resource.
             URL url = ClassLoader.getSystemResource(link);
             try {
-                if(url == null) {
+                if (url == null) {
                     // Web Start needs this.
                     if (_refClass == null) {
                         try {
@@ -184,7 +184,7 @@ public class SVGParser {
                 }
 
                 // Try as a regular URL.
-                if(url == null) {
+                if (url == null) {
                     url = new URL(link);
                 }
                 Toolkit tk = Toolkit.getDefaultToolkit();
@@ -192,14 +192,14 @@ public class SVGParser {
                 PaintedImage image = new PaintedImage(img, bounds);
                 // Wait until the image has been completely loaded,
                 // unless an error occurred.
-                while(true) {
-                    if(tk.prepareImage(img, -1, -1, image)) {
+                while (true) {
+                    if (tk.prepareImage(img, -1, -1, image)) {
                         // The image was fully prepared, so return the
                         // created image.
                         break;
                     }
                     int bitflags = tk.checkImage(img, -1, -1, image);
-                    if((bitflags &
+                    if ((bitflags &
                             (ImageObserver.ABORT | ImageObserver.ERROR)) != 0) {
                         // There was an error if either flag is set,
                         // so return null.
@@ -335,7 +335,7 @@ public class SVGParser {
         while (t.hasMoreTokens()) {
             String string = t.nextToken();
             // Ignore consecutive delimiters.
-            if(string != "") {
+            if (string != "") {
                 result[i++] = Double.parseDouble(string);
                 if (i == result.length) {
                     double temp[] = new double[2*result.length];
@@ -358,14 +358,14 @@ public class SVGParser {
     private static void processPaintedShapeAttributes (
             PaintedShape ps, Map attributes) {
         String style = (String) attributes.get("style");
-        if(style != null) {
+        if (style != null) {
             StringTokenizer t = new StringTokenizer(style, ";");
             while (t.hasMoreTokens()) {
                 String string = t.nextToken().trim();
                 int index = string.indexOf(":");
                 String name = string.substring(0, index);
                 String value = string.substring(index + 1);
-                if(name.equals("fill")) {
+                if (name.equals("fill")) {
                     ps.fillPaint = lookupColor(value);
                 } else if (name.equals("stroke")) {
                     ps.strokePaint = lookupColor(value);
@@ -381,7 +381,7 @@ public class SVGParser {
     private static void processPaintedPathAttributes (
             PaintedPath pp, Map attributes) {
         String style = (String) attributes.get("style");
-        if(style != null) {
+        if (style != null) {
             StringTokenizer t = new StringTokenizer(style, ";");
             while (t.hasMoreTokens()) {
                 String string = t.nextToken().trim();
@@ -402,7 +402,7 @@ public class SVGParser {
     private static void processPaintedStringAttributes (
             PaintedString pp, Map attributes) {
         String style = (String) attributes.get("style");
-        if(style != null) {
+        if (style != null) {
             StringTokenizer t = new StringTokenizer(style, ";");
             while (t.hasMoreTokens()) {
                 String string = t.nextToken().trim();
@@ -423,18 +423,18 @@ public class SVGParser {
     public static PaintedList createPaintedList(XmlElement root) {
         PaintedList list = new PaintedList();
         String name = root.getType();
-        if(!name.equals("svg"))
+        if (!name.equals("svg"))
             throw new IllegalArgumentException("Input XML has a root" +
                     "name which is '" + name + "' instead of 'svg':" +
                     root);
         Iterator children = root.elements();
-        while(children.hasNext()) {
+        while (children.hasNext()) {
             XmlElement child = (XmlElement)children.next();
             PaintedObject object = createPaintedObject(
                     child.getType(),
                     child.getAttributeMap(),
                     child.getPCData());
-            if(object != null) {
+            if (object != null) {
                 list.add(object);
             }
         }
@@ -442,7 +442,7 @@ public class SVGParser {
     }
 
     private static double _getDouble(Map map, String name, double def) {
-        if(map.containsKey(name)) {
+        if (map.containsKey(name)) {
             return Double.parseDouble((String)map.get(name));
         } else {
             return def;

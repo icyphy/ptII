@@ -229,7 +229,7 @@ public class XmlReader extends LoggableOp {
          */
         public void attribute(String name, String value, boolean specified)
                 throws Exception {
-            if(isVerbose()) {
+            if (isVerbose()) {
                 logInfo("attr", name + "=\"" + value + "\" (" + specified + ")");
             }
             if (name == null) {
@@ -291,7 +291,7 @@ public class XmlReader extends LoggableOp {
          * Move up one level in the parse tree.
          */
         public void endElement(String name) throws Exception {
-            if(isVerbose()) {
+            if (isVerbose()) {
                 unindent();
                 logInfo("end", "</" + name + ">");
             }
@@ -306,13 +306,13 @@ public class XmlReader extends LoggableOp {
          * based on the external entity tree.
          */
         public void endExternalEntity(String URI) throws Exception {
-            if(isVerbose()) {
+            if (isVerbose()) {
                 logInfo("end ext", URI);
             }
             // The doesn't work because of a bug in Aelfred that
             // appears if you resolve the external entity to an input stream
             //String _currentElement = _currentExternalEntity();
-            //if(!_currentElement.equals(URI)) {
+            //if (!_currentElement.equals(URI)) {
             //    logError("Entities out of order in " + _currentElement);
             //}
             _externalEntities.remove(0);
@@ -370,7 +370,7 @@ public class XmlReader extends LoggableOp {
             Object result = sysID;
             if (pubID != null && pubID.equals(_document.getDTDPublicID())) {
                 String dtd = _document.getDTD();
-                if(dtd != null) {
+                if (dtd != null) {
                     return new java.io.StringReader(dtd);
                 }
             }
@@ -402,7 +402,7 @@ public class XmlReader extends LoggableOp {
          * Initialize the parse tree to contain no elements.
          */
         public void startDocument() {
-            if(isVerbose()) {
+            if (isVerbose()) {
                 logInfo("start", "");
                 indent();
             }
@@ -427,13 +427,13 @@ public class XmlReader extends LoggableOp {
          * @param name the element type of the element that is beginning.
          */
         public void startElement(String name) {
-            if(isVerbose()) {
+            if (isVerbose()) {
                 logInfo("start", "<" + name + "> (" + printEntityType(name) + ")");
                 indent();
             }
             XmlElement e = new XmlElement(name, _attributes);
             e.setParent(_currentElement);
-            if(_currentElement == null)
+            if (_currentElement == null)
                 _root = e;
             else
                 _currentElement.addElement(e);
@@ -445,14 +445,14 @@ public class XmlReader extends LoggableOp {
          * Move down one level in the entity tree.
          */
         public void startExternalEntity(String URI) throws Exception {
-            if(isVerbose()) {
+            if (isVerbose()) {
                 logInfo("start ext", URI);
             }
             _externalEntities.add(0, URI);
         }
 
         protected String _currentExternalEntity() {
-            //if(isVerbose())
+            //if (isVerbose())
             //    System.out.println("currentExternalEntity: URI=\"" +
             //            (String)_externalEntities.get(0) + "\"\n");
             return (String)_externalEntities.get(0);

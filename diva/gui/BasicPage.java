@@ -86,7 +86,7 @@ public class BasicPage implements Page {
     /**
      * Set the title of the page.
      */
-    public void setTitle(String title){
+    public void setTitle(String title) {
         _title = title;
     }
 }

@@ -152,7 +152,7 @@ public final class ShapeUtilities {
     /** Compute the bounds of a shape when stroked with the given stroke.
      */
     public static Rectangle2D computeStrokedBounds (Shape shape, Stroke stroke) {
-        if(stroke instanceof BasicStroke) {
+        if (stroke instanceof BasicStroke) {
             // For some reason (antialiasing?) the bounds returned by
             // BasicStroke is off by one.  This code works around it.
             // if all we want is the bounds, then we don't need to actually
@@ -215,16 +215,16 @@ public final class ShapeUtilities {
         double points[] = new double[6];
         double lastX = 0, lastY = 0;
         double firstX = 0, firstY = 0;
-        while(!i.isDone()) {
+        while (!i.isDone()) {
             int type = i.currentSegment(points);
-            if(type == PathIterator.SEG_MOVETO) {
+            if (type == PathIterator.SEG_MOVETO) {
                 firstX = points[0];
                 firstY = points[1];
-            } else if(type == PathIterator.SEG_LINETO) {
-                if(r.intersectsLine(lastX, lastY, points[0], points[1]))
+            } else if (type == PathIterator.SEG_LINETO) {
+                if (r.intersectsLine(lastX, lastY, points[0], points[1]))
                     return true;
-            } else if(type == PathIterator.SEG_CLOSE) {
-                if(r.intersectsLine(lastX, lastY, firstX, firstY))
+            } else if (type == PathIterator.SEG_CLOSE) {
+                if (r.intersectsLine(lastX, lastY, firstX, firstY))
                     return true;
             }
             lastX = points[0];
@@ -362,7 +362,7 @@ public final class ShapeUtilities {
      */
     public static void transformModifyRect (
             RectangularShape s, AffineTransform at) {
-        if(at.isIdentity()) {
+        if (at.isIdentity()) {
             return;
         }
         if (!isOrthogonal(at)) {

@@ -81,7 +81,7 @@ public class XmlWriter extends LoggableOp {
 
         if (pubid == null) {
             if (sysid == null) {
-                if(document.getDTD() != null) {
+                if (document.getDTD() != null) {
                     out.write(" [\n" + document.getDTD() + "\n]");
                 } else {
                     // No DTD specification

@@ -85,19 +85,19 @@ public class JCanvasPanner extends JPanel {
      */
     public Rectangle2D getViewSize() {
         Rectangle2D viewRect = null;
-        for(Iterator layers = _target.getCanvasPane().layers();
+        for (Iterator layers = _target.getCanvasPane().layers();
             layers.hasNext();) {
             CanvasLayer layer = (CanvasLayer)layers.next();
             Rectangle2D rect = layer.getLayerBounds();
-            if(!rect.isEmpty()) {
-                if(viewRect == null) {
+            if (!rect.isEmpty()) {
+                if (viewRect == null) {
                     viewRect = rect;
                 } else {
                     viewRect.add(rect);
                 }
             }
         }
-        if(viewRect == null) {
+        if (viewRect == null) {
             // We can't actually return an empty rectangle, because then
             // we get a bad transform.
             return getVisibleSize();
@@ -116,7 +116,7 @@ public class JCanvasPanner extends JPanel {
         try {
             inverse = current.createInverse();
         }
-        catch(NoninvertibleTransformException e) {
+        catch (NoninvertibleTransformException e) {
             throw new RuntimeException(e.toString());
         }
         Dimension size = _target.getSize();
@@ -146,7 +146,7 @@ public class JCanvasPanner extends JPanel {
         try {
             inverse = forward.createInverse();
         }
-        catch(NoninvertibleTransformException e) {
+        catch (NoninvertibleTransformException e) {
             throw new RuntimeException(e.toString());
         }
 
@@ -170,13 +170,13 @@ public class JCanvasPanner extends JPanel {
      * Set the target component that is being wrapped.
      */
     public void setCanvas(JCanvas target) {
-        if(_target != null) {
+        if (_target != null) {
             // _target.removeChangeListener(_listener);
             //         removeMouseListener(_scaleMouseListener);
             //removeMouseMotionListener(_scaleMouseListener);
         }
         _target = target;
-        if(_target != null) {
+        if (_target != null) {
             //  _target.addChangeListener(_listener);
             //addMouseListener(_scaleMouseListener);
             //addMouseMotionListener(_scaleMouseListener);
@@ -192,7 +192,7 @@ public class JCanvasPanner extends JPanel {
     }
 
     public void paintComponent(Graphics g) {
-        if(_target != null) {
+        if (_target != null) {
             JCanvas canvas = _target;
             Rectangle2D viewRect = getViewSize();
             //  System.out.println("viewRect = " + viewRect);
@@ -210,7 +210,7 @@ public class JCanvasPanner extends JPanel {
                 forward.concatenate(current.createInverse());
                 inverse = forward.createInverse();
             }
-            catch(NoninvertibleTransformException e) {
+            catch (NoninvertibleTransformException e) {
                 throw new RuntimeException(e.toString());
             }
 
@@ -261,7 +261,7 @@ public class JCanvasPanner extends JPanel {
         implements MouseMotionListener {
 
         public void mousePressed(MouseEvent evt) {
-            if(_target != null &&
+            if (_target != null &&
                     (evt.getModifiers() & MouseEvent.BUTTON1_MASK) != 0) {
                 setPosition(evt.getX(), evt.getY());
             }
@@ -269,7 +269,7 @@ public class JCanvasPanner extends JPanel {
         public void mouseMoved(MouseEvent evt) {
         }
         public void mouseDragged(MouseEvent evt) {
-            if(_target != null &&
+            if (_target != null &&
                     (evt.getModifiers() & MouseEvent.BUTTON1_MASK) != 0) {
                 setPosition(evt.getX(), evt.getY());
             }
@@ -286,14 +286,14 @@ public class JCanvasPanner extends JPanel {
       double scale;
       // The 5.0 and 1.3 below were determined by trial and error
       // tuning.
-      if(x > origin.getX() && y > origin.getY()) {
-      if(x - origin.getX() > y - origin.getY()) {
+      if (x > origin.getX() && y > origin.getY()) {
+      if (x - origin.getX() > y - origin.getY()) {
       scale = (y - origin.getY()) / 5.0;
       } else {
       scale = (x - origin.getX()) / 5.0;
       }
-      } else if(x < origin.getX() && y < origin.getY()) {
-      if(origin.getX() - x > origin.getY() - y) {
+      } else if (x < origin.getX() && y < origin.getY()) {
+      if (origin.getX() - x > origin.getY() - y) {
       scale = (y - origin.getY()) / 5.0;
       } else {
       scale = (x - origin.getX()) / 5.0;
@@ -314,7 +314,7 @@ public class JCanvasPanner extends JPanel {
       }
 
       public void mousePressed(MouseEvent evt) {
-      if(_target != null &&
+      if (_target != null &&
       (evt.getModifiers() & MouseEvent.BUTTON3_MASK) != 0) {
       setPosition(evt.getX(), evt.getY());
       origin = evt.getPoint();
@@ -354,7 +354,7 @@ public class JCanvasPanner extends JPanel {
       public void mouseMoved(MouseEvent evt) {
       }
       public void mouseDragged(MouseEvent evt) {
-      if(_target != null &&
+      if (_target != null &&
       (evt.getModifiers() & MouseEvent.BUTTON3_MASK) != 0) {
       setScale(evt.getX(), evt.getY());
       }

@@ -137,12 +137,12 @@ public class ExtensionFileFilter extends FileFilter {
      * @see FileFilter#accept(Object)
      */
     public boolean accept(File f) {
-        if(f != null) {
-            if(f.isDirectory()) {
+        if (f != null) {
+            if (f.isDirectory()) {
                 return true;
             }
             String extension = getExtension(f);
-            if(extension != null && filters.get(getExtension(f)) != null) {
+            if (extension != null && filters.get(getExtension(f)) != null) {
                 return true;
             };
         }
@@ -156,7 +156,7 @@ public class ExtensionFileFilter extends FileFilter {
      * Added by Heloise Hse
      */
     public String getDefaultExtension() {
-        if(filters.size()==1){
+        if (filters.size()==1) {
             return (String)filters.keys().nextElement();
         }
         else {
@@ -168,10 +168,10 @@ public class ExtensionFileFilter extends FileFilter {
      * Return the extension portion of the file's name .
      */
     public String getExtension(File f) {
-        if(f != null) {
+        if (f != null) {
             String filename = f.getName();
             int i = filename.lastIndexOf('.');
-            if(i>0 && i<filename.length()-1) {
+            if (i>0 && i<filename.length()-1) {
                 return filename.substring(i+1).toLowerCase();
             };
         }
@@ -191,7 +191,7 @@ public class ExtensionFileFilter extends FileFilter {
      * Note that the "." before the extension is not needed and will be ignored.
      */
     public void addExtension(String extension) {
-        if(filters == null) {
+        if (filters == null) {
             filters = new Hashtable(5);
         }
         filters.put(extension.toLowerCase(), this);
@@ -209,15 +209,15 @@ public class ExtensionFileFilter extends FileFilter {
      * @see FileFilter#getDescription
      */
     public String getDescription() {
-        if(fullDescription == null) {
-            if(description == null || isExtensionListInDescription()) {
-                if(description != null) {
+        if (fullDescription == null) {
+            if (description == null || isExtensionListInDescription()) {
+                if (description != null) {
                     fullDescription = description;
                 }
                 fullDescription += " (";
                 // build the description from the extension list
                 Enumeration extensions = filters.keys();
-                if(extensions != null) {
+                if (extensions != null) {
                     fullDescription += "." + (String) extensions.nextElement();
                     while (extensions.hasMoreElements()) {
                         fullDescription += ", " + (String) extensions.nextElement();
@@ -277,7 +277,7 @@ public class ExtensionFileFilter extends FileFilter {
      *
      * @see #getDescription()
      */
-    public String toString(){
+    public String toString() {
         return getDescription();
     }
 }

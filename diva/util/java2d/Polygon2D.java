@@ -201,17 +201,17 @@ public abstract class Polygon2D implements Shape {
 
         // If the bounds don't intersect, then return false.
         Rectangle2D rect = new Rectangle2D.Double(x1, y1, w, h);
-        if(!getBounds().intersects(rect))
+        if (!getBounds().intersects(rect))
             return false;
 
         // return true if the polygon contains any vertex of the rectangle.
-        if(contains(x1, y1) || contains(x1,y2) ||
+        if (contains(x1, y1) || contains(x1,y2) ||
                 contains(x2, y1) || contains(x2,y2))
             return true;
 
         // return true if the rectangle contains any vertex of the polygon
         for (int i = 0; i < getVertexCount(); i++) {
-            if(rect.contains(getX(i), getY(i)))
+            if (rect.contains(getX(i), getY(i)))
                 return true;
         }
 
@@ -290,7 +290,7 @@ public abstract class Polygon2D implements Shape {
      */
     public String toString() {
         String out = getClass().getName() + "[\n";
-        for(int i = 0; i < getVertexCount(); i++) {
+        for (int i = 0; i < getVertexCount(); i++) {
             out = out + "\t" + getX(i) + ", " + getY(i) + "\n";
         }
         out = out + "]";

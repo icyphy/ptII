@@ -47,7 +47,7 @@ public class DefaultActions {
                 public void actionPerformed(ActionEvent e) {
                     View view = app.getCurrentView();
                     Clipboard c = app.getClipboard();
-                    if(view != null && c != null) {
+                    if (view != null && c != null) {
                         view.copy(c);
                     }
                 }
@@ -75,7 +75,7 @@ public class DefaultActions {
                 public void actionPerformed(ActionEvent e) {
                     View view = app.getCurrentView();
                     Clipboard c = app.getClipboard();
-                    if(view != null && c != null) {
+                    if (view != null && c != null) {
                         view.cut(c);
                     }
                 }
@@ -92,11 +92,11 @@ public class DefaultActions {
                 public void actionPerformed(ActionEvent e) {
                     Iterator docs = app.documentList().iterator();
                     boolean succeeded = true;
-                    while(docs.hasNext() && succeeded) {
+                    while (docs.hasNext() && succeeded) {
                         Document d = (Document)docs.next();
                         succeeded &= app.closeDocument(d);
                     }
-                    if(succeeded) {
+                    if (succeeded) {
                         System.exit(0);
                     }
                 }
@@ -126,7 +126,7 @@ public class DefaultActions {
                 public void actionPerformed(ActionEvent e) {
                     Document doc = app.getStoragePolicy().open(app);
                     //FIXME: should this check be done in the app instead?
-                    if(doc != null) {
+                    if (doc != null) {
                         app.addDocument(doc);
                         View v = app.createView(doc);
                         app.addView(v);
@@ -145,7 +145,7 @@ public class DefaultActions {
         return new AbstractAction (PRINT) {
                 public void actionPerformed(ActionEvent e) {
                     View view = app.getCurrentView();
-                    if(view != null && view instanceof Printable) {
+                    if (view != null && view instanceof Printable) {
                         PrinterJob job = PrinterJob.getPrinterJob();
                         PageFormat format = job.pageDialog(job.defaultPage());
                         job.setPrintable((Printable)view, format);
@@ -157,7 +157,7 @@ public class DefaultActions {
                             }
                         }
                     }
-                    else if(view != null && view instanceof Pageable) {
+                    else if (view != null && view instanceof Pageable) {
                         PrinterJob job = PrinterJob.getPrinterJob();
                         PageFormat format = job.pageDialog(job.defaultPage());
                         job.setPageable((Pageable)view);
@@ -183,7 +183,7 @@ public class DefaultActions {
                 public void actionPerformed(ActionEvent e) {
                     View view = app.getCurrentView();
                     Clipboard c = app.getClipboard();
-                    if(view != null && c != null) {
+                    if (view != null && c != null) {
                         view.paste(c);
                     }
                 }

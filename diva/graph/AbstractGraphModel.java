@@ -48,8 +48,8 @@ public abstract class AbstractGraphModel implements GraphModel {
      * @see setDispatchEnabled(boolean)
      */
     public void dispatchGraphEvent(final GraphEvent e) {
-        if(_dispatch) {
-            if(SwingUtilities.isEventDispatchThread()) {
+        if (_dispatch) {
+            if (SwingUtilities.isEventDispatchThread()) {
                 _graphListeners.dispatchEvent(e);
             } else {
                 SwingUtilities.invokeLater(new Runnable() {

@@ -65,7 +65,7 @@ public class ApplicationContext extends JFrame implements AppContext {
         // hook the exit action into the window closing.
         addWindowListener(new WindowAdapter () {
                 public void windowClosing(WindowEvent e) {
-                    if(_exitAction != null) {
+                    if (_exitAction != null) {
                         _exitAction.actionPerformed(null);
                     }
                 }

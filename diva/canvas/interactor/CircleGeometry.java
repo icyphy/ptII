@@ -271,10 +271,10 @@ public class CircleGeometry implements Geometry {
          * containing pane.
          */
         public void translate (double dx, double dy) {
-            if(Math.abs(_offX+dx) > _minSize) {
+            if (Math.abs(_offX+dx) > _minSize) {
                 _offX = _offX+dx;
             }
-            if(Math.abs(_offY+dy) > _minSize) {
+            if (Math.abs(_offY+dy) > _minSize) {
                 _offY = _offY+dy;
             }
 
@@ -283,7 +283,7 @@ public class CircleGeometry implements Geometry {
             double r = Math.sqrt(_offX*_offX
                     + _offY*_offY);
             double theta = Math.atan(_offY/_offX);
-            if(_offX < 0) {
+            if (_offX < 0) {
                 theta = theta + Math.PI;
             }
             _normal = theta;

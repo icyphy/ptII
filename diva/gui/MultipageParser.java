@@ -132,11 +132,11 @@ public class MultipageParser extends HandlerBase {
      * the current page to the document.
      */
     public void endElement(String name) throws Exception {
-        if(name.equalsIgnoreCase(PAGE_TAG)) {
+        if (name.equalsIgnoreCase(PAGE_TAG)) {
             _multi.addPage(_currentPage);
             _currentPage = null;
         }
-        else if(name.equalsIgnoreCase(MULTIPAGE_TAG)) {
+        else if (name.equalsIgnoreCase(MULTIPAGE_TAG)) {
         }
         else {
             String err = "Error: unknown end element \"" + name + "\"";
@@ -152,9 +152,9 @@ public class MultipageParser extends HandlerBase {
      */
     public void startElement(String name)
             throws Exception {
-        if(name.equalsIgnoreCase(MULTIPAGE_TAG)) {
+        if (name.equalsIgnoreCase(MULTIPAGE_TAG)) {
         }
-        else if(name.equalsIgnoreCase(PAGE_TAG)) {
+        else if (name.equalsIgnoreCase(PAGE_TAG)) {
             String label = (String)_currentAttributes.get(PAGE_TITLE_TAG);
             //page number is currently ignored.
             String numstring = (String)_currentAttributes.get(PAGE_NUM_TAG);

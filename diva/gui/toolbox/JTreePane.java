@@ -221,7 +221,7 @@ public class JTreePane extends JSplitPane {
         DefaultMutableTreeNode newNode = new DefaultMutableTreeNode();
         newNode.setUserObject(new Entry(this, icon, title, component));
         DefaultMutableTreeNode parentNode = _findNode(parent);
-        if(parentNode == null) {
+        if (parentNode == null) {
             System.out.println("parent == null");
             throw new RuntimeException("Parent not found!");
         }
@@ -238,11 +238,11 @@ public class JTreePane extends JSplitPane {
         _scrollPane.setPreferredSize(_scrollPaneSize);
         System.out.println("title = " + _selectedTitle + " size = " + _scrollPaneSize);
         Entry entry = _findEntry(_selectedTitle);
-        if(entry == null || entry._component == null) {
+        if (entry == null || entry._component == null) {
             setBottomComponent(_defaultPanel);
         } else {
             setBottomComponent(entry._component);
-            if(entry._component != null) {
+            if (entry._component != null) {
                 entry._component.validate();
             }
         }
@@ -306,7 +306,7 @@ public class JTreePane extends JSplitPane {
      * description: The entrypane's selected tab index.
      */
     public void setSelectedTitle (String title) {
-        if(title != _selectedTitle) {  //(index >= 0) &&
+        if (title != _selectedTitle) {  //(index >= 0) &&
             _selectedTitle = title;
             System.out.println("SELECTING: " + _selectedTitle);
             DefaultMutableTreeNode node = _findNode(title);
@@ -330,7 +330,7 @@ public class JTreePane extends JSplitPane {
      */
     private Entry _findEntry(String title) {
         DefaultMutableTreeNode node = _findNode(title);
-        if(node == null)
+        if (node == null)
             return null;
         else
             return (Entry)(_findNode(title).getUserObject());
@@ -342,14 +342,14 @@ public class JTreePane extends JSplitPane {
     private DefaultMutableTreeNode _findNode(String title) {
         DefaultTreeModel model = (DefaultTreeModel)_tree.getModel();
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
-        if(title == null)
+        if (title == null)
             return root;
         Enumeration nodes = root.preorderEnumeration();
-        while(nodes.hasMoreElements()) {
+        while (nodes.hasMoreElements()) {
             DefaultMutableTreeNode node =
                 (DefaultMutableTreeNode) nodes.nextElement();
             Entry entry = (Entry)node.getUserObject();
-            if((entry != null)&&(entry._title.equals(title)))
+            if ((entry != null)&&(entry._title.equals(title)))
                 return node;
         }
         return null;

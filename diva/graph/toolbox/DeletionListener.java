@@ -42,22 +42,22 @@ public class DeletionListener implements ActionListener {
         Object selection[] = model.getSelectionAsArray();
         Object userObjects[] = new Object[selection.length];
         // First remove the selection.
-        for(int i = 0; i < selection.length; i++) {
+        for (int i = 0; i < selection.length; i++) {
             userObjects[i] = ((Figure)selection[i]).getUserObject();
             model.removeSelection(selection[i]);
         }
 
         // Remove all the edges first, since if we remove the nodes first,
         // then removing the nodes might remove some of the edges.
-        for(int i = 0; i < userObjects.length; i++) {
+        for (int i = 0; i < userObjects.length; i++) {
             Object userObject = userObjects[i];
-            if(graphModel.isEdge(userObject)) {
+            if (graphModel.isEdge(userObject)) {
                 controller.removeEdge(userObject);
             }
         }
-        for(int i = 0; i < selection.length; i++) {
+        for (int i = 0; i < selection.length; i++) {
             Object userObject = userObjects[i];
-            if(graphModel.isNode(userObject)) {
+            if (graphModel.isNode(userObject)) {
                 controller.removeNode(userObject);
             }
         }

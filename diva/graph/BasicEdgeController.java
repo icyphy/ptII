@@ -113,7 +113,7 @@ public class BasicEdgeController implements EdgeController {
                  *  site of the terminal instead of a new perimeter site.
                  */
                 public Site getHeadSite(Figure f, double x, double y) {
-                    if(f instanceof Terminal) {
+                    if (f instanceof Terminal) {
                         Site site = ((Terminal)f).getConnectSite();
                         return site;
                     } else {
@@ -153,7 +153,7 @@ public class BasicEdgeController implements EdgeController {
             //Attach the appropriate end of the edge to the node.
             if (end == ConnectorEvent.TAIL_END) {
                 tailSite = getConnectorTarget().getTailSite(c, nf, x, y);
-                if(tailSite == null) {
+                if (tailSite == null) {
                     throw new RuntimeException("Invalid connector target: " +
                             "no valid site found for tail of new connector.");
                 }
@@ -161,7 +161,7 @@ public class BasicEdgeController implements EdgeController {
                 c.setTailSite(tailSite);
             } else {
                 headSite = getConnectorTarget().getHeadSite(c, nf, x, y);
-                if(headSite == null) {
+                if (headSite == null) {
                     throw new RuntimeException("Invalid connector target: " +
                             "no valid site found for head of new connector.");
                 }
@@ -195,13 +195,13 @@ public class BasicEdgeController implements EdgeController {
      */
     public void clearEdge(Object edge) {
         Figure f = _controller.getFigure(edge);
-        if(f != null) {
+        if (f != null) {
             CanvasComponent container = f.getParent();
             f.setUserObject(null);
             _controller.setFigure(edge, null);
-            if(container instanceof FigureLayer) {
+            if (container instanceof FigureLayer) {
                 ((FigureLayer)container).remove(f);
-            } else if(container instanceof CompositeFigure) {
+            } else if (container instanceof CompositeFigure) {
                 ((CompositeFigure)container).remove(f);
             }
         }
@@ -227,9 +227,9 @@ public class BasicEdgeController implements EdgeController {
         Site tailSite;
         Site headSite;
         // If the tail is not attached,
-        if(tailFigure == null) {
+        if (tailFigure == null) {
             // Then try to find the old tail site.
-            if(connector != null) {
+            if (connector != null) {
                 tailSite = connector.getTailSite();
             } else {
                 // FIXME try to manufacture a site.
@@ -245,9 +245,9 @@ public class BasicEdgeController implements EdgeController {
         }
 
         // If the head is not attached,
-        if(headFigure == null) {
+        if (headFigure == null) {
             // Then try to find the old head site.
-            if(connector != null) {
+            if (connector != null) {
                 headSite = connector.getHeadSite();
             } else {
                 // FIXME try to manufacture a site.
@@ -263,7 +263,7 @@ public class BasicEdgeController implements EdgeController {
         }
 
         // If we did have an old figure, throw it away.
-        if(connector != null) {
+        if (connector != null) {
             clearEdge(edge);
         }
 
@@ -394,7 +394,7 @@ public class BasicEdgeController implements EdgeController {
                 SelectionModel selectionModel =
                     _controller.getSelectionModel();
                 // If it is illegal then blow away the edge.
-                if(selectionModel.containsSelection(c)) {
+                if (selectionModel.containsSelection(c)) {
                     selectionModel.removeSelection(c);
                 }
                 removeEdge(edge);

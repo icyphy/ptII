@@ -144,7 +144,7 @@ public class JCanvas extends JComponent implements Printable {
         // whole canvas or not...
         Rectangle clip = g.getClipBounds();
         Dimension d = getSize();
-        if(clip == null) {
+        if (clip == null) {
             // This may happen if the component is not visible, for
             // instance if we are manually calling the paint method
             // to print.

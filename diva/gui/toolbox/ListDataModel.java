@@ -35,7 +35,7 @@ public class ListDataModel extends DefaultComboBoxModel {
      */
     public List getList() {
         ArrayList list = new ArrayList(getSize());
-        for(int i = 0; i < getSize(); i++) {
+        for (int i = 0; i < getSize(); i++) {
             list.add(getElementAt(i));
         }
         return list;
@@ -51,9 +51,9 @@ public class ListDataModel extends DefaultComboBoxModel {
      * by the model
      */
     public boolean contains(Object o) {
-        for(int i = 0; i < getSize(); i++) {
+        for (int i = 0; i < getSize(); i++) {
             Object o2 = getElementAt(i);
-            if(o.equals(o2)) {
+            if (o.equals(o2)) {
                 return true;
             }
         }

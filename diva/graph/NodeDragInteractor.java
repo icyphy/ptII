@@ -78,17 +78,17 @@ public class NodeDragInteractor extends DragInteractor {
         //             if (model.isNode(t.getUserObject())) {
         //                 Iterator j;
         //                 j = model.inEdges(t.getUserObject());
-        //                 while(j.hasNext()) {
+        //                 while (j.hasNext()) {
         //                     edgeSet.add(j.next());
         //                 }
         //                 j = model.outEdges(t.getUserObject());
-        //                 while(j.hasNext()) {
+        //                 while (j.hasNext()) {
         //                     edgeSet.add(j.next());
         //                 }
-        //                 if(model.isComposite(t.getUserObject())) {
+        //                 if (model.isComposite(t.getUserObject())) {
         //                     j = GraphUtilities.partiallyContainedEdges(t.getUserObject(),
         //                                                                model);
-        //                     while(j.hasNext()) {
+        //                     while (j.hasNext()) {
         //                         edgeSet.add(j.next());
         //                     }
         //                 }
@@ -127,7 +127,7 @@ public class NodeDragInteractor extends DragInteractor {
      c.reroute();
      }
      }
-     if(model.isComposite(node)) {
+     if (model.isComposite(node)) {
      for (Iterator contained = model.nodes(node);
      contained.hasNext(); ) {
      routeAttachedEdges(contained.next(), x, y);

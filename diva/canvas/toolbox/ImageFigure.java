@@ -77,7 +77,7 @@ public class ImageFigure extends AbstractFigure
      * rendered.
      */
     public Shape getShape() {
-        if(_image != null) {
+        if (_image != null) {
             int w = _image.getWidth(this);
             int h = _image.getHeight(this);
             Rectangle2D r = new Rectangle2D.Double(0, 0, w, h);
@@ -122,7 +122,7 @@ public class ImageFigure extends AbstractFigure
      * Paint the figure's image.
      */
     public void paint(Graphics2D g) {
-        if(_image != null) {
+        if (_image != null) {
             // The image may not be ready to be painted, so we pass this
             // as an argument to ensure that imageUpdate() is called
             // when the image is ready.

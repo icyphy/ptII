@@ -137,13 +137,13 @@ public class TransformContext {
      */
     public AffineTransform getTransform (TransformContext context) {
 
-        if(context == this) {
+        if (context == this) {
             return new AffineTransform();
         } else {
             TransformContext parentContext =
                 _component.getParent().getTransformContext();
             AffineTransform transform = _transform;
-            if(parentContext == context) {
+            if (parentContext == context) {
                 transform = new AffineTransform(transform);
                 transform.preConcatenate(parentContext.getTransform(context));
             }

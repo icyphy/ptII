@@ -160,7 +160,7 @@ public abstract class AbstractDocument implements Document {
     /** Test the "dirty" flag.  If changes made to a document
      * haven't been saved, this flag is set to true.
      */
-    public boolean isDirty(){
+    public boolean isDirty() {
         return _dirty;
     }
 

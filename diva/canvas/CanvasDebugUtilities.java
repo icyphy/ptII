@@ -26,7 +26,7 @@ public final class CanvasDebugUtilities {
         String out = "LAYER:";
         TransformContext rootContext = rootLayer.getTransformContext();
         out = out + rootContext + "\n";
-        for(Iterator i = rootLayer.figures(); i.hasNext(); ) {
+        for (Iterator i = rootLayer.figures(); i.hasNext(); ) {
             Figure root = (Figure)i.next();
             out = out + printHelper(root, "  ", rootContext);
         }
@@ -36,12 +36,12 @@ public final class CanvasDebugUtilities {
     private static String printHelper(Figure root, String prefix,
             TransformContext parent) {
         String out = "";
-        if(root.getTransformContext() != parent) {
+        if (root.getTransformContext() != parent) {
             out = out + prefix + root + root.getTransformContext() + "\n";
         }
-        if(root instanceof FigureSet) {
+        if (root instanceof FigureSet) {
             FigureSet fs = (FigureSet)root;
-            for(Iterator i = fs.figures(); i.hasNext(); ) {
+            for (Iterator i = fs.figures(); i.hasNext(); ) {
                 Figure f = (Figure)i.next();
                 out = out + printHelper(f, prefix+"  ", parent);
             }

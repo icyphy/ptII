@@ -74,12 +74,12 @@ public class BasicSelectionModel implements SelectionModel {
         Object []additions = null;
         Object []removals = null;
 
-        if(getSelectionMode() == SINGLE_SELECTION) {
+        if (getSelectionMode() == SINGLE_SELECTION) {
             removals = _selection.toArray();
             clearSelection();
         }
 
-        if(sel == null) {
+        if (sel == null) {
             additions = new Object[0];
         } else {
             _selection.add(sel);
@@ -96,12 +96,12 @@ public class BasicSelectionModel implements SelectionModel {
      * highlight the selected objects.
      */
     public void addSelections(Object[] sels) {
-        if(getSelectionMode() == SINGLE_SELECTION) {
+        if (getSelectionMode() == SINGLE_SELECTION) {
             //only add the last selection
             addSelection(sels[sels.length-1]);
         }
         else {
-            for(int i = 0; i < sels.length; i++) {
+            for (int i = 0; i < sels.length; i++) {
                 _selection.add(sels[i]);
                 renderSelected(sels[i]);
             }
@@ -136,7 +136,7 @@ public class BasicSelectionModel implements SelectionModel {
     public void dispatchSelectionEvent(SelectionEvent e) {
         Object[] listeners = _listeners.getListenerList();
         for (int i = listeners.length-2; i>=0; i-=2) {
-            if(listeners[i] == SelectionListener.class) {
+            if (listeners[i] == SelectionListener.class) {
                 ((SelectionListener)listeners[i+1]).selectionChanged(e);
             }
         }
@@ -146,7 +146,7 @@ public class BasicSelectionModel implements SelectionModel {
      * Return the first selection in the list.
      */
     public Object getFirstSelection() {
-        if(_selection.size() == 0) {
+        if (_selection.size() == 0) {
             return null;
         }
         return _selection.get(0);
@@ -156,7 +156,7 @@ public class BasicSelectionModel implements SelectionModel {
      * Return the last selection in the list.
      */
     public Object getLastSelection() {
-        if(_selection.size() == 0) {
+        if (_selection.size() == 0) {
             return null;
         }
         return _selection.get(_selection.size()-1);

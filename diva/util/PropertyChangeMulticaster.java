@@ -49,7 +49,7 @@ public class PropertyChangeMulticaster implements PropertyChangeListener {
     }
 
     public void propertyChange(PropertyChangeEvent evt) {
-        for(Iterator i = listeners(); i.hasNext(); ) {
+        for (Iterator i = listeners(); i.hasNext(); ) {
             PropertyChangeListener l = (PropertyChangeListener)i.next();
             l.propertyChange(evt);
         }

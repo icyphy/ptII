@@ -73,7 +73,7 @@ public class JPalette extends JPanel {
                     //intersection of the users selected action, and the
                     //source and target actions
                     int myaction = dsde.getDropAction();
-                    if( (myaction & DnDConstants.ACTION_COPY) != 0) {
+                    if ((myaction & DnDConstants.ACTION_COPY) != 0) {
                         context.setCursor(DragSource.DefaultCopyDrop);
                     } else {
                         context.setCursor(DragSource.DefaultCopyNoDrop);
@@ -90,7 +90,7 @@ public class JPalette extends JPanel {
                         Transferable transferable = new StringSelection(dataHandle);
                         //initial cursor, transferable, dsource listener
                         e.startDrag(DragSource.DefaultCopyNoDrop, transferable, dsl);
-                    }catch( InvalidDnDOperationException idoe ) {
+                    } catch ( InvalidDnDOperationException idoe ) {
                         System.err.println( idoe );
                     }
                 }

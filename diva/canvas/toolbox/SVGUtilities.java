@@ -115,7 +115,7 @@ public class SVGUtilities {
         while (t.hasMoreTokens()) {
             String string = t.nextToken();
             // Ignore consecutive delimiters.
-            if(string != "") {
+            if (string != "") {
                 result[i++] = Double.parseDouble(string);
                 if (i == result.length) {
                     double temp[] = new double[2*result.length];

@@ -150,8 +150,8 @@ public class GridAnnealingLayout extends AbstractGlobalLayout {
         double prob = 1.0;
         snapMin();
 
-        for(int i = 0; i < _numIters; i++) {
-            for(int j = 0; j < _numMoves; j++) {
+        for (int i = 0; i < _numIters; i++) {
+            for (int j = 0; j < _numMoves; j++) {
                 prob *= _cool;
 
                 int x1 = (int)(_random.nextDouble()*_gw);
@@ -161,12 +161,12 @@ public class GridAnnealingLayout extends AbstractGlobalLayout {
                 Object node1 = _grid[x1][y1];
                 Object node2 = _grid[x2][y2];
 
-                if(node1 != node2) {
+                if (node1 != node2) {
                     double startCost = nodeCost(node1) + nodeCost(node2);
-                    if(node1 == null) {
+                    if (node1 == null) {
                         setXY(node2, x1, y1);
                     }
-                    else if(node2 == null) {
+                    else if (node2 == null) {
                         setXY(node1, x2, y2);
                     }
                     else {
@@ -179,19 +179,19 @@ public class GridAnnealingLayout extends AbstractGlobalLayout {
 
                     //   debug(">>> DELTA: " + deltaCost);
 
-                    if(curCost < _minCost) {
+                    if (curCost < _minCost) {
                         _minCost = curCost;
                         snapMin();
                     }
 
                     // see if we should put the nodes back
                     // in their previous positions
-                    if(deltaCost > 0 && _random.nextDouble() > prob) {
+                    if (deltaCost > 0 && _random.nextDouble() > prob) {
                         curCost -= deltaCost;
-                        if(node1 == null) {
+                        if (node1 == null) {
                             setXY(node2, x2, y2);
                         }
-                        else if(node2 == null) {
+                        else if (node2 == null) {
                             setXY(node1, x1, y1);
                         }
                         else {
@@ -209,7 +209,7 @@ public class GridAnnealingLayout extends AbstractGlobalLayout {
      * the given string if the assertion fails.
      */
     private final void ASSERT(boolean b, String err) throws RuntimeException {
-        if(!b) { throw new RuntimeException(err); }
+        if (!b) { throw new RuntimeException(err); }
     }
 
     /**
@@ -223,18 +223,18 @@ public class GridAnnealingLayout extends AbstractGlobalLayout {
         //debug("gh=" + _gh);
 
         double[] placeX = new double[_gw];
-        for(int x = 0; x < _gw; x++) {
+        for (int x = 0; x < _gw; x++) {
             placeX[x] =(0.5+x)*dim.getWidth()/_gw + dim.getX();
         }
         double[] placeY = new double[_gh];
-        for(int y = 0; y < _gh; y++) {
+        for (int y = 0; y < _gh; y++) {
             placeY[y] = (0.5+y)*dim.getHeight()/_gh + dim.getY();
         }
-        for(int i = 0; i < _gw; i++) {
-            for(int j = 0; j < _gh; j++) {
+        for (int i = 0; i < _gw; i++) {
+            for (int j = 0; j < _gh; j++) {
                 ASSERT(_minGrid != null, "Null min grid!");
                 Object node = _minGrid[i][j];
-                if(node != null) {
+                if (node != null) {
                     double x, y;
                     x = placeX[i];
                     y = placeY[j];
@@ -291,7 +291,7 @@ public class GridAnnealingLayout extends AbstractGlobalLayout {
         head = _getParentInGraph(head);
         tail = _getParentInGraph(tail);
 
-        if(head == null || tail == null) {
+        if (head == null || tail == null) {
             return 0;
         }
 
@@ -365,7 +365,7 @@ public class GridAnnealingLayout extends AbstractGlobalLayout {
     protected void initGrid() {
         GraphModel model = getLayoutTarget().getGraphModel();
         int nodeCount = model.getNodeCount(_graph);
-        if(nodeCount > 0) {
+        if (nodeCount > 0) {
             Rectangle2D dim = getLayoutTarget().getViewport(_graph);
             double aspect = dim.getHeight()/dim.getWidth();
             double gh = Math.sqrt(nodeCount*aspect)*_sparseness;
@@ -375,15 +375,15 @@ public class GridAnnealingLayout extends AbstractGlobalLayout {
             _gh = (int)Math.ceil(gh);
             // Infer the number of horizontal nodes.
             _gw = nodeCount/_gh;
-            while(_gh*_gw<nodeCount)
+            while (_gh*_gw<nodeCount)
                 _gw++;
 
             _grid = new Object[_gw][_gh];
 
             Iterator nodes = model.nodes(_graph);
-            for(int x = 0; x < _gw; x++) {
-                for(int y = 0; y < _gh; y++) {
-                    if(!nodes.hasNext()) { break; }
+            for (int x = 0; x < _gw; x++) {
+                for (int y = 0; y < _gh; y++) {
+                    if (!nodes.hasNext()) { break; }
                     setXY(nodes.next(), x, y);
                 }
             }
@@ -399,10 +399,10 @@ public class GridAnnealingLayout extends AbstractGlobalLayout {
         _graph = composite;
         _map = new HashMap();
 
-        if(target.getGraphModel().getNodeCount(_graph) > 0) {
+        if (target.getGraphModel().getNodeCount(_graph) > 0) {
             initGrid();
             // Avoid exceptions if the graph is not visible.
-            if(_gh == 0 || _gw == 0)
+            if (_gh == 0 || _gw == 0)
                 return;
             anneal();
             assignLayout();
@@ -422,15 +422,15 @@ public class GridAnnealingLayout extends AbstractGlobalLayout {
     protected double nodeCost(Object node) {
         LayoutTarget target = getLayoutTarget();
         GraphModel model = target.getGraphModel();
-        if(node == null) {
+        if (node == null) {
             return 0;
         }
 
         int cost = 0;
-        for(Iterator i = model.inEdges(node); i.hasNext(); ) {
+        for (Iterator i = model.inEdges(node); i.hasNext(); ) {
             cost += edgeCost(i.next());
         }
-        for(Iterator i = model.outEdges(node); i.hasNext(); ) {
+        for (Iterator i = model.outEdges(node); i.hasNext(); ) {
             cost += edgeCost(i.next());
         }
         double teeCost = numTees(_graph) * TEE_PENALTY;
@@ -451,20 +451,20 @@ public class GridAnnealingLayout extends AbstractGlobalLayout {
 
         inHead = _getParentInGraph(inHead);
         inTail = _getParentInGraph(inTail);
-        if(inHead == null || inTail == null) {
+        if (inHead == null || inTail == null) {
             return 0;
         }
 
         int[] inTailPt = getXY(inTail);
         int[] inHeadPt = getXY(inHead);
 
-        for(Iterator i = model.nodes(composite); i.hasNext(); ) {
+        for (Iterator i = model.nodes(composite); i.hasNext(); ) {
             Object node = i.next();
-            for(Iterator j = model.outEdges(node); j.hasNext(); ) {
+            for (Iterator j = model.outEdges(node); j.hasNext(); ) {
                 Object edge = j.next();
                 Object tail = model.getTail(edge);
                 Object head = model.getHead(edge);
-                if(tail == null || head == null ||
+                if (tail == null || head == null ||
                         tail == inTail || tail == inHead ||
                         head == inTail || head == inHead) {
                     //these cannot cross
@@ -473,7 +473,7 @@ public class GridAnnealingLayout extends AbstractGlobalLayout {
                 int[] tailPt = getXY(tail);
                 int[] headPt = getXY(head);
 
-                if(Line2D.linesIntersect(inTailPt[0], inTailPt[1],
+                if (Line2D.linesIntersect(inTailPt[0], inTailPt[1],
                         inHeadPt[0], inHeadPt[1],
                         tailPt[0], tailPt[1],
                         headPt[0], headPt[1])) {
@@ -506,27 +506,27 @@ public class GridAnnealingLayout extends AbstractGlobalLayout {
 
         inHead = _getParentInGraph(inHead);
         inTail = _getParentInGraph(inTail);
-        if(inHead == null || inTail == null) {
+        if (inHead == null || inTail == null) {
             return 0;
         }
 
         int[] inTailPt = getXY(inTail);
         int[] inHeadPt = getXY(inHead);
 
-        for(int which = 0; which < 2; which++) {
-            if(inTailPt[which] == inHeadPt[which]) {
-                for(Iterator i = model.nodes(composite); i.hasNext(); ) {
+        for (int which = 0; which < 2; which++) {
+            if (inTailPt[which] == inHeadPt[which]) {
+                for (Iterator i = model.nodes(composite); i.hasNext(); ) {
                     Object node = i.next();
-                    for(Iterator j = model.outEdges(node); j.hasNext(); ) {
+                    for (Iterator j = model.outEdges(node); j.hasNext(); ) {
                         Object edge = j.next();
                         Object tail = model.getTail(edge);
                         Object head = model.getHead(edge);
                         head = _getParentInGraph(head);
                         tail = _getParentInGraph(tail);
-                        if(head != null && tail != null) {
+                        if (head != null && tail != null) {
                             int[] tailPt = getXY(tail);
                             int[] headPt = getXY(head);
-                            if(tailPt[which] == headPt[which] &&
+                            if (tailPt[which] == headPt[which] &&
                                     tailPt[which] == inTailPt[which]) {
                                 int other = which+1 % 2;
                                 // test to see if the "other" coordinate is
@@ -550,7 +550,7 @@ public class GridAnnealingLayout extends AbstractGlobalLayout {
      * annealing settles.  The Default value is .95.
      */
     public void setCoolingFactor(double val) {
-        if(val <= 0 || val > 1) {
+        if (val <= 0 || val > 1) {
             String err = "Cooling factor must be greater than 0 and less or equal to 1: " + val;
             throw new IllegalArgumentException(err);
         }
@@ -577,7 +577,7 @@ public class GridAnnealingLayout extends AbstractGlobalLayout {
      * decreases linearly with the SPARSENESS value.
      */
     public void setSparseness(double val) {
-        if(val < 1.0) {
+        if (val < 1.0) {
             String err = "Illegal sparseness value: " + val;
             throw new IllegalArgumentException(err);
         }
@@ -590,7 +590,7 @@ public class GridAnnealingLayout extends AbstractGlobalLayout {
      */
     protected void setXY(Object node, int x, int y) {
         int[] pos = (int[])_map.get(node);
-        if(pos == null) {
+        if (pos == null) {
             pos = new int[2];
             _map.put(node, pos);
         }
@@ -605,11 +605,11 @@ public class GridAnnealingLayout extends AbstractGlobalLayout {
      * so that we can backtrack to it later.
      */
     private void snapMin() {
-        if(_minGrid == null) {
+        if (_minGrid == null) {
             _minGrid = new Object[_gw][_gh];
         }
-        for(int x = 0; x < _gw; x++) {
-            for(int y = 0; y < _gh; y++) {
+        for (int x = 0; x < _gw; x++) {
+            for (int y = 0; y < _gh; y++) {
                 _minGrid[x][y] = _grid[x][y];
             }
         }
@@ -636,9 +636,9 @@ public class GridAnnealingLayout extends AbstractGlobalLayout {
     // cost of that instead.
     private Object _getParentInGraph(Object node) {
         GraphModel model = getLayoutTarget().getGraphModel();
-        while(node != null && !model.containsNode(_graph, node)) {
+        while (node != null && !model.containsNode(_graph, node)) {
             Object parent = model.getParent(node);
-            if(model.isNode(parent)) {
+            if (model.isNode(parent)) {
                 node = parent;
             } else {
                 node = null;

@@ -73,7 +73,7 @@ public class GUIUtilities {
         } else {
             action.putValue(ACCELERATOR_KEY, key);
         }
-        if(key != null)
+        if (key != null)
             pane.registerKeyboardAction(action, name,
                     key, pane.WHEN_IN_FOCUSED_WINDOW);
     }
@@ -153,7 +153,7 @@ public class GUIUtilities {
     public static JButton addToolBarButton (JToolBar toolbar, Action action) {
         Icon icon = (Icon)action.getValue(LARGE_ICON);
         String label = null;
-        if(icon == null) {
+        if (icon == null) {
             label = (String)action.getValue(action.NAME);
         }
         return addToolBarButton(toolbar, action, null, icon, label, true);
@@ -166,7 +166,7 @@ public class GUIUtilities {
      * (no text) and is enabled by default.
      */
     public static JButton addToolBarButton (JToolBar toolbar, Action action,
-            String tooltip, Icon icon){
+            String tooltip, Icon icon) {
         return addToolBarButton(toolbar, action, tooltip, icon, null, true);
     }
 
@@ -177,7 +177,7 @@ public class GUIUtilities {
      * (no text) and is enabled by default.
      */
     public static JButton addToolBarButton (JToolBar toolbar, Action action,
-            String tooltip, Icon icon, boolean isEnabled){
+            String tooltip, Icon icon, boolean isEnabled) {
         return addToolBarButton(toolbar, action, tooltip, icon,
                 null, isEnabled);
     }
@@ -189,7 +189,7 @@ public class GUIUtilities {
      * (no icon) and is enabled by default.
      */
     public static JButton addToolBarButton (JToolBar toolbar, Action action,
-            String tooltip, String lbl){
+            String tooltip, String lbl) {
         return addToolBarButton(toolbar, action, tooltip, null, lbl, true);
     }
 
@@ -198,7 +198,7 @@ public class GUIUtilities {
      * default.
      */
     public static JButton addToolBarButton (JToolBar toolbar, Action action,
-            String tooltip, Icon icon, String lbl){
+            String tooltip, Icon icon, String lbl) {
         return addToolBarButton(toolbar, action, tooltip, icon, lbl, true);
     }
 
@@ -235,7 +235,7 @@ public class GUIUtilities {
      * will be appended to the end of the string
      */
     public static String ellipsis(String string, int length) {
-        if(string.length() > length) {
+        if (string.length() > length) {
             return string.substring(0, length-3) + "...";
         }
         return string;
@@ -247,7 +247,7 @@ public class GUIUtilities {
     public static String getFileExtension(File file) {
         String str = file.getName();
         int i = str.lastIndexOf('.');
-        if(i > 0) {
+        if (i > 0) {
             return str.substring(i+1);
         } else {
             return "";
@@ -261,27 +261,27 @@ public class GUIUtilities {
     public static String keyStrokeToString(KeyStroke key) {
         int modifiers = key.getModifiers();
         StringBuffer buffer = new StringBuffer();
-        if((modifiers & Event.SHIFT_MASK) == Event.SHIFT_MASK) {
+        if ((modifiers & Event.SHIFT_MASK) == Event.SHIFT_MASK) {
             buffer.append("(Shift-");
             buffer.append(KeyEvent.getKeyText(key.getKeyCode()));
             buffer.append(")");
         }
-        if((modifiers & Event.CTRL_MASK) == Event.CTRL_MASK) {
+        if ((modifiers & Event.CTRL_MASK) == Event.CTRL_MASK) {
             buffer.append("(Ctrl-");
             buffer.append(KeyEvent.getKeyText(key.getKeyCode()));
             buffer.append(")");
         }
-        if((modifiers & Event.META_MASK) == Event.META_MASK) {
+        if ((modifiers & Event.META_MASK) == Event.META_MASK) {
             buffer.append("(Meta-");
             buffer.append(KeyEvent.getKeyText(key.getKeyCode()));
             buffer.append(")");
         }
-        if((modifiers & Event.ALT_MASK) == Event.ALT_MASK) {
+        if ((modifiers & Event.ALT_MASK) == Event.ALT_MASK) {
             buffer.append("(Alt-");
             buffer.append(KeyEvent.getKeyText(key.getKeyCode()));
             buffer.append(")");
         }
-        if(modifiers == 0) {
+        if (modifiers == 0) {
             buffer.append("(");
             buffer.append(KeyEvent.getKeyText(key.getKeyCode()));
             buffer.append(")");
@@ -297,7 +297,7 @@ public class GUIUtilities {
             Exception e, String info) {
         Object[] message = new Object[1];
         String string;
-        if(info != null) {
+        if (info != null) {
             string = info + "\n" + e.getMessage();
         } else {
             string = e.getMessage();
@@ -316,7 +316,7 @@ public class GUIUtilities {
                 null,
                 options, options[0]);
 
-        if(selected == 1)
+        if (selected == 1)
             showStackTrace(parent, e, info);
 
     }
@@ -348,7 +348,7 @@ public class GUIUtilities {
         // We want to stack the text area with another message
         Object[] message = new Object[2];
         String string;
-        if(info != null) {
+        if (info != null) {
             string = info + "\n" + e.getMessage();
         } else {
             string = e.getMessage();

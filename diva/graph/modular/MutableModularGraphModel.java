@@ -94,13 +94,13 @@ public abstract class MutableModularGraphModel extends ModularGraphModel
         Object tail = model.getTail(edge);
         model.setTail(edge, null);
         model.setHead(edge, null);
-        if(head != null) {
+        if (head != null) {
             GraphEvent e = new GraphEvent(eventSource,
                     GraphEvent.EDGE_HEAD_CHANGED,
                     edge, head);
             dispatchGraphEvent(e);
         }
-        if(tail != null) {
+        if (tail != null) {
             GraphEvent e = new GraphEvent(eventSource,
                     GraphEvent.EDGE_TAIL_CHANGED,
                     edge, tail);
@@ -135,19 +135,19 @@ public abstract class MutableModularGraphModel extends ModularGraphModel
     public void removeNode(Object eventSource, Object node) {
         // Remove the edges.
         Iterator i = GraphUtilities.partiallyContainedEdges(node, this);
-        while(i.hasNext()) {
+        while (i.hasNext()) {
             Object edge = i.next();
             disconnectEdge(eventSource, edge);
         }
 
         i = outEdges(node);
-        while(i.hasNext()) {
+        while (i.hasNext()) {
             Object edge = i.next();
             disconnectEdge(eventSource, edge);
         }
 
         i = inEdges(node);
-        while(i.hasNext()) {
+        while (i.hasNext()) {
             Object edge = i.next();
             disconnectEdge(eventSource, edge);
         }

@@ -73,7 +73,7 @@ public class MoveHandle extends BasicRectangle implements GrabHandle {
         // FIXME.  OK, we hacked it, but what about nested panes?
         /*
           TransformContext tc = getTransformContext();
-          while(tc.getParent() != null) {
+          while (tc.getParent() != null) {
           tc = tc.getParent(); //hack hack hack
           }
           Point2D p = _site.getPoint(tc);

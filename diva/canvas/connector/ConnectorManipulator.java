@@ -256,7 +256,7 @@ public class ConnectorManipulator extends Manipulator {
         public void mouseEntered(LayerEvent e) {
             Figure f = e.getFigureSource();
             _parent = (FigureContainer)f.getParent();
-            if(_parent != null) {
+            if (_parent != null) {
                 _high = new BasicHighlighter(java.awt.Color.red, 2.0f);
                 _parent.decorate(f,_high);
             }

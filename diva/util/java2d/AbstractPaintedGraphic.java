@@ -51,7 +51,7 @@ public abstract class AbstractPaintedGraphic implements PaintedGraphic {
         // painful because of the public members.
         if (stroke == null) {
             return shape.getBounds2D();
-        } else if(stroke instanceof BasicStroke) {
+        } else if (stroke instanceof BasicStroke) {
             // For some reason (antialiasing?) the bounds returned by
             // BasicStroke is off by one.  This code works around it.
             // if all we want is the bounds, then we don't need to actually

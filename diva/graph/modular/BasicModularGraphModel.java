@@ -44,7 +44,7 @@ public class BasicModularGraphModel extends MutableModularGraphModel {
      * then return null.
      */
     public CompositeModel getCompositeModel(Object composite) {
-        if(composite instanceof Graph) {
+        if (composite instanceof Graph) {
             return _nodeModel;
         } else {
             return null;
@@ -56,7 +56,7 @@ public class BasicModularGraphModel extends MutableModularGraphModel {
      * an edge, then return null.
      */
     public EdgeModel getEdgeModel(Object edge) {
-        if(edge instanceof Edge) {
+        if (edge instanceof Edge) {
             return _edgeModel;
         } else {
             return null;
@@ -68,7 +68,7 @@ public class BasicModularGraphModel extends MutableModularGraphModel {
      * a node, then return null.
      */
     public NodeModel getNodeModel(Object node) {
-        if(node instanceof Node) {
+        if (node instanceof Node) {
             return _nodeModel;
         } else {
             return null;

@@ -265,10 +265,10 @@ public class LabelFigure extends AbstractFigure {
         if (!isVisible()) {
             return;
         }
-        if(_cachedBounds == null) {
+        if (_cachedBounds == null) {
             getBounds();
         }
-        if(_string != null) {
+        if (_string != null) {
             // Push the context
             _transformContext.push(g);
 
@@ -455,7 +455,7 @@ public class LabelFigure extends AbstractFigure {
 
             while (lines.hasMoreTokens()) {
                 String line = lines.nextToken();
-                if(line.equals("\n")) {
+                if (line.equals("\n")) {
                     // Note that leading or trailing newlines are ignored.
                     count++;
                 } else if (!line.trim().equals("")) {

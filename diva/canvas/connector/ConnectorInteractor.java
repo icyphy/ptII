@@ -242,7 +242,7 @@ public class ConnectorInteractor extends DragInteractor {
                     return true;
                 }
             });
-        if(figure != null) {
+        if (figure != null) {
             Site snap = findSite(figure, hitRect.getCenterX(), hitRect.getCenterY());
             if (snap != null) {
                 _target = figure;

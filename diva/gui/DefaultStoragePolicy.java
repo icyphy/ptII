@@ -44,7 +44,7 @@ public class DefaultStoragePolicy extends AbstractStoragePolicy {
         if (d != null) {
             try {
                 d.close();
-                if(d.isDirty()){
+                if (d.isDirty()) {
                     // ask if the user wants to save
                     Component parent =
                         d.getApplication().getAppContext().makeComponent();
@@ -55,15 +55,15 @@ public class DefaultStoragePolicy extends AbstractStoragePolicy {
                         JOptionPane.showConfirmDialog(parent, message, title,
                                 JOptionPane.YES_NO_CANCEL_OPTION,
                                 JOptionPane.WARNING_MESSAGE);
-                    if(val == JOptionPane.YES_OPTION){
-                        if(save(d)) {
+                    if (val == JOptionPane.YES_OPTION) {
+                        if (save(d)) {
                             // If we successfully saved,
                             // then remove the document
                             d.getApplication().removeDocument(d);
                         } else {
                             return false;
                         }
-                    } else if(val == JOptionPane.NO_OPTION){
+                    } else if (val == JOptionPane.NO_OPTION) {
                         d.getApplication().removeDocument(d);
                     } else {
                         // cancel and do nothing
@@ -168,7 +168,7 @@ public class DefaultStoragePolicy extends AbstractStoragePolicy {
      */
     public boolean save (Document d) {
         if (d != null) {
-            if(d.getFile() == null) {
+            if (d.getFile() == null) {
                 return saveAs(d);
             }
             else {

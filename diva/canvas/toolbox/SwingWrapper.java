@@ -73,7 +73,7 @@ public class SwingWrapper extends AbstractFigure {
      * Ask the wrapped component to paint itself.
      */
     public void paint (Graphics2D g) {
-        if(isVisible()) {
+        if (isVisible()) {
             //Rectangle2D bounds = getBounds();
             //System.out.println("Painting component: " + bounds); //DEBUG
             //Graphics cg = g.create((int)bounds.getX(), (int)bounds.getY(),

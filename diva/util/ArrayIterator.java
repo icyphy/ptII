@@ -24,7 +24,7 @@ public class ArrayIterator extends IteratorAdapter {
     }
 
     public boolean hasNext() {
-        if(_array == null) {
+        if (_array == null) {
             return false;
         }
         else {
@@ -33,7 +33,7 @@ public class ArrayIterator extends IteratorAdapter {
     }
 
     public Object next() {
-        if(hasNext()) {
+        if (hasNext()) {
             return _array[_i++];
         }
         else {

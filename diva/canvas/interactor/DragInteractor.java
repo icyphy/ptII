@@ -151,7 +151,7 @@ public class DragInteractor extends AbstractInteractor {
                 || (_selectiveEnabled && !SelectionInteractor.isSelected(e))) {
             return;
         }
-        if(getMouseFilter() == null || getMouseFilter().accept(e)) {
+        if (getMouseFilter() == null || getMouseFilter().accept(e)) {
 
             // Constrain the point
             Point2D p = e.getLayerPoint();
@@ -188,7 +188,7 @@ public class DragInteractor extends AbstractInteractor {
                 || (_selectiveEnabled && !SelectionInteractor.isSelected(e))) {
             return;
         }
-        if(getMouseFilter() == null || getMouseFilter().accept(e)) {
+        if (getMouseFilter() == null || getMouseFilter().accept(e)) {
             // Set up the target array if it hasn't already been
             if (_targetArray == null) {
                 _targetArray = new Object[1];
@@ -224,7 +224,7 @@ public class DragInteractor extends AbstractInteractor {
                 || (_selectiveEnabled && !SelectionInteractor.isSelected(e))) {
             return;
         }
-        if(getMouseFilter() == null || getMouseFilter().accept(e)) {
+        if (getMouseFilter() == null || getMouseFilter().accept(e)) {
             fireLayerEvent(e);
             _targetArray = null;
 

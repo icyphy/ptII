@@ -27,15 +27,15 @@ public abstract class AbstractStoragePolicy implements StoragePolicy {
      */
     public String getDirectory() {
         String dir = "";
-        if(_directory != null) {
+        if (_directory != null) {
             dir = _directory;
         } else {
             String cwd = System.getProperty("user.dir");
-            if(cwd != null) {
+            if (cwd != null) {
                 dir = cwd;
             } else {
                 String home = System.getProperty("user.home");
-                if(home != null)
+                if (home != null)
                     dir = home;
             }
         }
@@ -45,9 +45,9 @@ public abstract class AbstractStoragePolicy implements StoragePolicy {
     /** Set the current browsed directory to that given in the file.
      */
     public void setDirectory(File file) {
-        if(file.exists() && file.isDirectory()) {
+        if (file.exists() && file.isDirectory()) {
             _directory = file.getAbsolutePath();
-        } else if(file.exists() && file.isFile()) {
+        } else if (file.exists() && file.isFile()) {
             _directory = file.getParentFile().getAbsolutePath();
         }
     }

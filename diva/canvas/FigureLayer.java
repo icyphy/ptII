@@ -130,7 +130,7 @@ public class FigureLayer extends CanvasLayer implements FigureContainer, EventAc
 
     /** Removes all of the figures from this layer.
      */
-    public void clear(){
+    public void clear() {
         _zlist.clear();
         repaint();
     }
@@ -308,7 +308,7 @@ public class FigureLayer extends CanvasLayer implements FigureContainer, EventAc
         Figure f = _pointerOver;
         while (f != null) {
             tip = f.getToolTipText();
-            if(tip != null) break;
+            if (tip != null) break;
 
             // Move up to the parent
             CanvasComponent p = f.getParent();
@@ -713,10 +713,10 @@ public class FigureLayer extends CanvasLayer implements FigureContainer, EventAc
         int id = e.getID();
         e.setLayerSource(this);
 
-        if(id == MouseEvent.MOUSE_EXITED) {
+        if (id == MouseEvent.MOUSE_EXITED) {
             dispatchMotionEventUpTree(_pointerOver, e);
             _pointerOver = null;
-        } else if(id == MouseEvent.MOUSE_ENTERED) {
+        } else if (id == MouseEvent.MOUSE_ENTERED) {
             // Get the figure that the mouse hit, if any
             double wh = _pickHalo * 2;
             Rectangle2D region = new Rectangle2D.Double (
@@ -725,7 +725,7 @@ public class FigureLayer extends CanvasLayer implements FigureContainer, EventAc
                     wh, wh);
             _pointerOver = pick(region);
             dispatchMotionEventUpTree(_pointerOver, e);
-        } else if(id == MouseEvent.MOUSE_MOVED) {
+        } else if (id == MouseEvent.MOUSE_MOVED) {
             // Get the figure that the mouse hit, if any
             double wh = _pickHalo * 2;
             Rectangle2D region = new Rectangle2D.Double (
@@ -733,7 +733,7 @@ public class FigureLayer extends CanvasLayer implements FigureContainer, EventAc
                     e.getLayerY() - _pickHalo,
                     wh, wh);
             Figure figure = pick(region);
-            if(figure != _pointerOver) {
+            if (figure != _pointerOver) {
                 LayerEvent event;
                 event = new LayerEvent(e,
                         MouseEvent.MOUSE_EXITED);

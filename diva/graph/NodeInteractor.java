@@ -54,7 +54,7 @@ public class NodeInteractor extends SelectionInteractor {
 
     /** Return the graph controller that manages this interactor.
      */
-    public GraphController getGraphController(){
+    public GraphController getGraphController() {
         return _controller;
     }
 

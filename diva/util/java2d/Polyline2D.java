@@ -164,7 +164,7 @@ public abstract class Polyline2D implements Shape {
      */
     public String toString() {
         String string = super.toString();
-        for(int i = 0; i < this.getVertexCount(); i++) {
+        for (int i = 0; i < this.getVertexCount(); i++) {
             string += "(" + getX(i) + "," + getY(i) + "),";
         }
         return string;
@@ -207,13 +207,13 @@ public abstract class Polyline2D implements Shape {
         public Float (Polyline2D in) {
             _coordCount = in._coordCount;
             _coords = new float[in._coordCount];
-            if(in instanceof Float) {
+            if (in instanceof Float) {
                 Float floatIn = (Float)in;
                 System.arraycopy(floatIn._coords, 0, _coords, 0, _coordCount);
             }
             else {
                 Double doubleIn = (Double)in;
-                for(int i = 0; i < _coordCount; i++) {
+                for (int i = 0; i < _coordCount; i++) {
                     _coords[i] = (float)doubleIn._coords[i];
                 }
             }
@@ -262,7 +262,7 @@ public abstract class Polyline2D implements Shape {
          * @throws IndexOutOfBoundsException The index is out of bounds.
          */
         public double getX (int index) {
-            if(index < 0 || index >= this.getVertexCount()){
+            if (index < 0 || index >= this.getVertexCount()) {
                 throw new IndexOutOfBoundsException("Index: " + index +", Size: " + this.getVertexCount());
             }
             return _coords[index*2];
@@ -273,7 +273,7 @@ public abstract class Polyline2D implements Shape {
          * @throws IndexOutOfBoundsException The index is out of bounds.
          */
         public double getY (int index) {
-            if(index < 0 || index >= this.getVertexCount()){
+            if (index < 0 || index >= this.getVertexCount()) {
                 throw new IndexOutOfBoundsException("Index: " + index +", Size: " + this.getVertexCount());
             }
             return _coords[index*2+1];
@@ -311,7 +311,7 @@ public abstract class Polyline2D implements Shape {
          * @throws IndexOutOfBoundsException The index is out of bounds.
          */
         public void setX (int index, double x) {
-            if(index < 0 || index >= this.getVertexCount()){
+            if (index < 0 || index >= this.getVertexCount()) {
                 throw new IndexOutOfBoundsException("Index: " + index +", Size: " + this.getVertexCount());
             }
             _coords[index*2] = (float) x;
@@ -322,7 +322,7 @@ public abstract class Polyline2D implements Shape {
          * @throws IndexOutOfBoundsException The index is out of bounds.
          */
         public void setY (int index, double y) {
-            if(index < 0 || index >= this.getVertexCount()){
+            if (index < 0 || index >= this.getVertexCount()) {
                 throw new IndexOutOfBoundsException("Index: " + index +", Size: " + this.getVertexCount());
             }
             _coords[index*2+1] = (float) y;
@@ -386,13 +386,13 @@ public abstract class Polyline2D implements Shape {
         public Double (Polyline2D in) {
             _coordCount = in._coordCount;
             _coords = new double[in._coordCount];
-            if(in instanceof Double) {
+            if (in instanceof Double) {
                 Double doubleIn = (Double)in;
                 System.arraycopy(doubleIn._coords, 0, _coords, 0, _coordCount);
             }
             else {
                 Float floatIn = (Float)in;
-                for(int i = 0; i < _coordCount; i++) {
+                for (int i = 0; i < _coordCount; i++) {
                     _coords[i] = floatIn._coords[i];
                 }
             }
@@ -430,7 +430,7 @@ public abstract class Polyline2D implements Shape {
          * @throws IndexOutOfBoundsException The index is out of bounds.
          */
         public double getX (int index) {
-            if(index < 0 || index >= this.getVertexCount()){
+            if (index < 0 || index >= this.getVertexCount()) {
                 throw new IndexOutOfBoundsException("Index: " + index +", Size: " + this.getVertexCount());
             }
             return _coords[index*2];
@@ -441,7 +441,7 @@ public abstract class Polyline2D implements Shape {
          * @throws IndexOutOfBoundsException The index is out of bounds.
          */
         public double getY (int index) {
-            if(index < 0 || index >= this.getVertexCount()){
+            if (index < 0 || index >= this.getVertexCount()) {
                 throw new IndexOutOfBoundsException("Index: " + index +", Size: " + this.getVertexCount());
             }
             return _coords[index*2+1];
@@ -479,7 +479,7 @@ public abstract class Polyline2D implements Shape {
          * @throws IndexOutOfBoundsException The index is out of bounds.
          */
         public void setX (int index, double x) {
-            if(index < 0 || index >= this.getVertexCount()){
+            if (index < 0 || index >= this.getVertexCount()) {
                 throw new IndexOutOfBoundsException("Index: " + index +", Size: " + this.getVertexCount());
             }
             _coords[index*2] = x;
@@ -490,7 +490,7 @@ public abstract class Polyline2D implements Shape {
          * @throws IndexOutOfBoundsException The index is out of bounds.
          */
         public void setY (int index, double y) {
-            if(index < 0 || index >= this.getVertexCount()){
+            if (index < 0 || index >= this.getVertexCount()) {
                 throw new IndexOutOfBoundsException("Index: " + index +", Size: " + this.getVertexCount());
             }
             _coords[index*2+1] = y;
