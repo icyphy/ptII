@@ -35,18 +35,9 @@ import ptolemy.kernel.*;
 import ptolemy.actor.*;
 import ptolemy.moml.*;
 
-import diva.graph.*;
-import diva.graph.model.*;
-import diva.graph.toolbox.GraphParser;
-import diva.graph.toolbox.GraphWriter;
-
 import diva.canvas.interactor.SelectionModel;
 import diva.canvas.Figure;
 import diva.graph.*;
-import diva.graph.editor.*;
-import diva.graph.layout.*;
-import diva.graph.model.*;
-import diva.graph.toolbox.*;
 import diva.gui.*;
 import diva.gui.toolbox.*;
 
@@ -74,7 +65,7 @@ public class DeletionListener implements ActionListener {
 	GraphPane graphPane = jgraph.getGraphPane();
 	GraphController controller =
 	    (GraphController)graphPane.getGraphController();
-	GraphImpl impl = controller.getGraphImpl();
+	GraphModel graphModel = controller.getGraphModel();
 	SelectionModel model = controller.getSelectionModel();
 	Object selection[] = model.getSelectionAsArray();
 	// Remove all the edges first, since if we remove the nodes first,
@@ -83,10 +74,9 @@ public class DeletionListener implements ActionListener {
 	    if(selection[i] instanceof Figure) {
 		Object userObject =
 		    ((Figure)selection[i]).getUserObject();
-		if(userObject instanceof Edge) {
+		if(graphModel.isEdge(userObject)) {
 		    model.removeSelection(selection[i]);
-		    Edge edge = (Edge) userObject;
-		    controller.removeEdge(edge);
+		    controller.removeEdge(userObject);
 		}
 	    }
 	}
@@ -94,10 +84,9 @@ public class DeletionListener implements ActionListener {
 	    if(selection[i] instanceof Figure) {
 		Object userObject =
 		    ((Figure)selection[i]).getUserObject();
-		if(userObject instanceof Node) {
+		if(graphModel.isNode(userObject)) {
 		    model.removeSelection(selection[i]);
-		    Node node = (Node) userObject;
-		    controller.removeNode(node);
+		    controller.removeNode(userObject);
 		}
 	    }
 	}

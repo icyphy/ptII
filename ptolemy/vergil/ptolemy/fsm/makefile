@@ -48,8 +48,9 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
+	Arc.java \
 	FSMGraphController.java \
-	FSMGraphImpl.java \
+	FSMGraphModel.java \
 	FSMStateController.java \
 	FSMTransitionController.java \
 	FSMViewerController.java \

@@ -31,7 +31,6 @@
 package ptolemy.vergil.graph;
 
 import diva.graph.*;
-import diva.graph.model.*;
 import java.awt.dnd.*;
 import java.awt.datatransfer.*;
 import java.awt.Point;
@@ -137,12 +136,12 @@ public class EditorDropTarget extends DropTarget {
 		    ((JGraph)getComponent()).getGraphPane().getGraphController();
 		// Figure out where this is going, so we can clone into
 		// the right workspace.
-		Graph graph = gc.getGraph();
-		NamedObj container = (NamedObj) graph.getSemanticObject();
+		GraphModel model = gc.getGraphModel();
+		NamedObj container = (NamedObj) model.getRoot();
                 while(iterator.hasNext()) {
                     data = (NamedObj) iterator.next();
                     try {
-                        Node newNode = null;
+                        NamedObj newObject = null;
                         if(data instanceof Entity) {
                             NamedObj sourceEntity = 
                                 (NamedObj) data;
@@ -160,21 +159,19 @@ public class EditorDropTarget extends DropTarget {
                             // not editor specific.
                             entity.setName(container.uniqueName(
                                     sourceEntity.getName()));  
-                            newNode = 
-                                gc.getGraphImpl().createCompositeNode(icon);
+                            newObject = icon;
                         } else if(data instanceof Port) {
                             Port sourcePort = (Port) data;
                             Port port = 
                                 (Port)sourcePort.clone(container.workspace());
                             port.setName(container.uniqueName(
                                     sourcePort.getName()));
-                            newNode =
-                                gc.getGraphImpl().createNode(port);
+                            newObject = port;
                         } else {
                             throw new RuntimeException("Drop target doesn't " + 
                                     "recognize data");
                         }
-                        gc.addNode(newNode, ((int)p.x), ((int)p.y));
+                        gc.addNode(newObject, ((int)p.x), ((int)p.y));
                     }
                     catch (Exception ex) {
                         ex.printStackTrace();

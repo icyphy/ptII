@@ -52,12 +52,14 @@ JSRCS = \
 	EditorGraphController.java \
 	EntityController.java \
 	EntityPortController.java \
+	FigureAttribute.java \
+	Link.java \
 	LinkController.java \
 	LocatableNodeController.java \
 	LocatableNodeDragInteractor.java \
 	PortController.java \
+	PtolemyGraphModel.java \
 	RelationController.java \
-	VergilGraphImpl.java \
 	ViewerGraphController.java
 
 EXTRA_SRCS =	$(JSRCS)

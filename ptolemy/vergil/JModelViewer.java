@@ -33,7 +33,6 @@ package ptolemy.vergil;
 import ptolemy.vergil.graph.*;
 import ptolemy.kernel.*;
 import diva.graph.*;
-import diva.graph.model.*;
 import diva.gui.*;
 
 //////////////////////////////////////////////////////////////////////////
@@ -51,17 +50,7 @@ public class JModelViewer extends JGraph {
     /** Construct a view on the given Ptolemy II entity.
      */
     public JModelViewer(CompositeEntity entity) {
-        super();
-	GraphPane pane = new GraphPane(new ViewerGraphController(),
-                new VergilGraphImpl());
-        setGraphPane(pane);
-        GraphController controller =
-	    pane.getGraphController();
-
-	GraphImpl impl = controller.getGraphImpl();
-	Graph graph = impl.createGraph(entity);
-
-        // Set and draw the new graph
-        controller.setGraph(graph);
+        super(new GraphPane(new ViewerGraphController(),
+                new PtolemyGraphModel(entity)));
     }
 }

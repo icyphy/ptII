@@ -40,6 +40,7 @@ import diva.util.*;
 import diva.canvas.*;
 import diva.canvas.toolbox.*;
 import diva.gui.toolbox.*;
+import diva.graph.GraphController;
 import javax.swing.SwingConstants;
 
 //////////////////////////////////////////////////////////////////////////
@@ -62,8 +63,9 @@ public class PtolemyMenuFactory extends MenuFactory {
     
     /** Create a new menu factory that contains no menu item factories.
      */
-    public PtolemyMenuFactory() {
+    public PtolemyMenuFactory(GraphController controller) {
 	_factoryList = new LinkedList();
+	_controller = controller;
     }
 
     /** Add a menu item factory to this creator.
@@ -77,6 +79,7 @@ public class PtolemyMenuFactory extends MenuFactory {
      */
     public JContextMenu create(Figure figure) {
 	NamedObj object = _getObjectFromFigure(figure);
+	if(object == null) return null;
 	JContextMenu menu = new JContextMenu(object, object.getFullName());
 	Iterator i = menuItemFactoryList().iterator();
 	while(i.hasNext()) {
@@ -85,7 +88,13 @@ public class PtolemyMenuFactory extends MenuFactory {
 	}
 	return menu;
     }
-    
+
+    /** Return the graph controller that created this menu factory.
+     */
+    public GraphController getController() {
+	return _controller;
+    }
+
     /** Return the list of menu item factories.
      * @return An unmodifiable list.
      */
@@ -106,13 +115,15 @@ public class PtolemyMenuFactory extends MenuFactory {
      *  and you will have to override this function.
      */
     protected NamedObj _getObjectFromFigure(Figure figure) {
-	SemanticObjectContainer graphObject = 
-	    (SemanticObjectContainer)figure.getUserObject();
-	NamedObj object = (NamedObj)graphObject.getSemanticObject();
-	return object;
+	Object object = figure.getUserObject();
+	return (NamedObj)_controller.getGraphModel().getSemanticObject(object);
     }
     
     /** The menu item factories.
      */
     private List _factoryList;
+
+    /** The graph controller.
+     */
+    private GraphController _controller;
 }

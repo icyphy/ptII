@@ -41,7 +41,6 @@ import ptolemy.moml.*;
 import diva.gui.*;
 import diva.gui.toolbox.*;
 import diva.graph.*;
-import diva.graph.model.*;
 import diva.canvas.*;
 import diva.canvas.connector.*;
 import diva.canvas.event.*;
@@ -87,35 +86,22 @@ public class FSMStateController extends LocatableNodeController {
             (SelectionInteractor) getNodeInteractor();
 	interactor.setSelectionModel(sm);
 
-	_menuCreator = new MenuCreator(new EntityController.EntityContextMenuFactory());
+	_menuCreator = new MenuCreator(
+	    new EntityController.EntityContextMenuFactory(controller));
 	interactor.addInteractor(_menuCreator);
     }
 
-    /** 
-     * Create a node with the given semantic object.  Get the graph 
-     * implementation and ask it to create a composite node.
-     */
-    public Node createNode(Object semanticObject) {
-        Node n = getController().getGraphImpl().createCompositeNode(
-                semanticObject); 
-        return n;
-    }
-
-    /**
-     * Remove all the ports in this entity, all the edges connected to those
-     * ports and this node.
-     */
-    public void removeNode(Node node) {
-	super.removeNode(node);
-    }
-
     public class EntityRenderer implements NodeRenderer {
-	public Figure render(Node n) {
+	public Figure render(Object n) {
 	    Figure figure;
-	    EditorIcon icon = (EditorIcon)n.getSemanticObject();
+	    EditorIcon icon = (EditorIcon)n;
 	    return icon.createFigure();
 	}
     }
 
     private MenuCreator _menuCreator;
 }
+
+
+
+

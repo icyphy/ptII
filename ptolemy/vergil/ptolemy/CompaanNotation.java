@@ -49,7 +49,6 @@ import diva.canvas.*;
 import diva.canvas.toolbox.*;
 import diva.gui.*;
 import diva.graph.*;
-import diva.graph.model.*;
 
 import java.awt.Font;
 import javax.swing.SwingUtilities;
@@ -133,18 +132,18 @@ public class CompaanNotation extends Attribute implements VisualNotation {
 
 	//controller.getLinkController().setEdgeRenderer(new CompaanLinkRenderer());        
         // Basically, make sure all Node references should become links.
+	CompositeActor toplevel = (CompositeActor)d.getModel();
+	PtolemyGraphModel model = 
+	    new PtolemyGraphModel(toplevel);
+	GraphPane pane = new GraphPane(controller, model);
 
-	GraphImpl impl = new VergilGraphImpl();
-
-	GraphPane pane = new GraphPane(controller, impl);
-	CompositeActor entity = (CompositeActor) d.getModel();
-        Manager manager = entity.getManager();
+        Manager manager = toplevel.getManager();
         if(manager == null) {
             try {
                 // FIXME manager creation sucks.
                 manager =
-                    new Manager(entity.workspace(), "Manager");
-                entity.setManager(manager);
+                    new Manager(toplevel.workspace(), "Manager");
+                toplevel.setManager(manager);
                 manager.addExecutionListener(
                         new PtolemyModule.VergilExecutionListener(
                                 d.getApplication())); 
@@ -157,16 +156,14 @@ public class CompaanNotation extends Attribute implements VisualNotation {
         _listener = new CompaanListener(controller);
         manager.addExecutionListener(_listener);
 
-	Graph graph = impl.createGraph(entity);
-	controller.setGraph(graph);
 	return pane;
     }
 
     public class CompaanEntityRenderer implements NodeRenderer {
-	public Figure render(Node n) {
+	public Figure render(Object n) {
 
 	    CompositeFigure figure;
-	    EditorIcon icon = (EditorIcon)n.getSemanticObject();
+	    EditorIcon icon = (EditorIcon)n;
 	    figure = (CompositeFigure)icon.createFigure();
 	    Rectangle2D bounds = figure.getBounds();
 	    Entity entity = (Entity)icon.getContainer();

@@ -53,7 +53,6 @@ JSRCS = \
 	EditParameterStylesFactory.java \
 	FigureAction.java \
 	GraphicElement.java \
-	GraphPalette.java \
 	JDesignTree.java \
 	LibraryIcon.java \
 	MenuActionFactory.java \

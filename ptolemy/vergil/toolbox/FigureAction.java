@@ -38,7 +38,6 @@ import javax.swing.event.*;
 import diva.canvas.*;
 import diva.canvas.event.*;
 import diva.graph.*;
-import diva.graph.model.*;
 import diva.gui.toolbox.*;
 import ptolemy.kernel.util.*;
 import ptolemy.moml.*;
@@ -69,8 +68,7 @@ public class FigureAction extends AbstractAction {
 	    // Action activated using an ActionInteractor.
 	    LayerEvent event = (LayerEvent) source;
 	    Figure figure = (Figure) event.getFigureSource();
-	    Node node = (Node) figure.getUserObject();
-	    Icon icon = (Icon) node.getSemanticObject();
+	    Icon icon = (Icon) figure.getUserObject();
 	    _target = (NamedObj) icon.getContainer();
 	    _x = event.getX();
 	    _y = event.getY();

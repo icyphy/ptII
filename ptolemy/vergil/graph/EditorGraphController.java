@@ -40,7 +40,6 @@ import ptolemy.moml.*;
 import diva.gui.*;
 import diva.gui.toolbox.*;
 import diva.graph.*;
-import diva.graph.model.*;
 import diva.canvas.*;
 import diva.canvas.connector.*;
 import diva.canvas.event.*;
@@ -133,9 +132,9 @@ public class EditorGraphController extends ViewerGraphController {
     protected class PortCreator extends AbstractInteractor {
         public void mousePressed(LayerEvent e) {
             System.out.println("Port Creator");
-	    Graph graph = getGraph();
+	    GraphModel model = getGraphModel();
 	    CompositeEntity toplevel =
-		(CompositeEntity)graph.getSemanticObject();
+		(CompositeEntity)model.getRoot();
 	    Port port;
 	    if(toplevel == null)
 		port = new Port();
@@ -149,8 +148,7 @@ public class EditorGraphController extends ViewerGraphController {
 		    return;
 		}
 	    }
-            Node node = getPortController().createNode(port);
-            getPortController().addNode(node, e.getLayerX(), e.getLayerY());
+	    getPortController().addNode(port, e.getLayerX(), e.getLayerY());
         }
     }
 
@@ -163,9 +161,9 @@ public class EditorGraphController extends ViewerGraphController {
      */
     protected class RelationCreator extends AbstractInteractor {
         public void mousePressed(LayerEvent e) {
-	    Graph graph = getGraph();
+	    GraphModel model = getGraphModel();
 	    CompositeEntity toplevel =
-		(CompositeEntity)graph.getSemanticObject();
+		(CompositeEntity)model.getRoot();
 	    Relation relation = null;
             Vertex vertex = null;
             try {
@@ -179,9 +177,8 @@ public class EditorGraphController extends ViewerGraphController {
 		    "Create relation failed:", ex);
 		return;
 	    }
-            Node node = getRelationController().createNode(vertex);
             getRelationController().addNode(
-                    node, e.getLayerX(), e.getLayerY());
+                    vertex, e.getLayerX(), e.getLayerY());
         }
     }
 
@@ -194,25 +191,33 @@ public class EditorGraphController extends ViewerGraphController {
     protected class LinkCreator extends AbstractInteractor {
         public void mousePressed(LayerEvent e) {
             Figure source = e.getFigureSource();
-	    Node sourcenode = (Node) source.getUserObject();
-	    NamedObj sourceObject = (NamedObj) sourcenode.getSemanticObject();
-
+	    NamedObj sourceObject = (NamedObj) source.getUserObject();
+	
 	    FigureLayer layer = (FigureLayer) e.getLayerSource();
 
 	    // Create a new edge
-	    CompositeEntity container =
-		(CompositeEntity)getGraph().getSemanticObject();
+	    CompositeEntity container = 
+		(CompositeEntity)getGraphModel().getRoot();
 
+	    Link link;
+	    try {
+                link = new Link(container, container.uniqueName("link"));
+            }
+            catch (Exception ex) {
+		VergilApplication.getInstance().showError(
+		    "Create relation failed:", ex);
+		return;
+	    }
 	    // Add it to the editor
-	    Edge edge = getLinkController().addEdge(null,
-                    sourcenode,
+	    getLinkController().addEdge(link,
+                    sourceObject,
                     ConnectorEvent.TAIL_END,
                     e.getLayerX(),
                     e.getLayerY());
 
 	    // Add it to the selection so it gets a manipulator, and
 	    // make events go to the grab-handle under the mouse
-	    Figure ef = (Figure) edge.getVisualObject();
+	    Figure ef = (Figure) getGraphModel().getVisualObject(link);
 	    getSelectionModel().addSelection(ef);
 	    ConnectorManipulator cm =
 		(ConnectorManipulator) ef.getParent();
@@ -225,7 +230,7 @@ public class EditorGraphController extends ViewerGraphController {
 
     /** An interactor that creates a new Vertex that is connected to a vertex
      *  in a relation
-     */
+     
     protected class ConnectedVertexCreator extends AbstractInteractor {
 	public void mousePressed(LayerEvent e) {
 	    FigureLayer layer = (FigureLayer) e.getLayerSource();
@@ -263,8 +268,9 @@ public class EditorGraphController extends ViewerGraphController {
 		layer.grabPointer(e, nf);
 	    }
 	}
+    
     }
-
+    */
     /** The interactor for creating new relations
      */
     private RelationCreator _relationCreator;
@@ -272,7 +278,7 @@ public class EditorGraphController extends ViewerGraphController {
     /** The interactor for creating new vertecies connected
      *  to an existing relation
      */
-    private ConnectedVertexCreator _connectedVertexCreator;
+    //   private ConnectedVertexCreator _connectedVertexCreator;
 
     /** The interactor for creating new terminals
      */

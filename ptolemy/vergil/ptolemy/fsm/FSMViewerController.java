@@ -35,13 +35,13 @@ import ptolemy.actor.gui.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.vergil.*;
+import ptolemy.vergil.graph.*;
 import ptolemy.vergil.toolbox.*;
 import ptolemy.gui.*;
 import ptolemy.moml.*;
 import diva.gui.*;
 import diva.gui.toolbox.*;
 import diva.graph.*;
-import diva.graph.model.*;
 import diva.canvas.*;
 import diva.canvas.connector.*;
 import diva.canvas.event.*;
@@ -117,8 +117,8 @@ public class FSMViewerController extends CompositeGraphController {
 	_selectionDragger.addSelectionInteractor(
                 (SelectionInteractor)_linkController.getEdgeInteractor());
 
-        // MenuCreator
-        _menuCreator = new MenuCreator(new SchematicContextMenuFactory());
+        MenuCreator _menuCreator = new MenuCreator(
+	    new ViewerGraphController.SchematicContextMenuFactory(this));
 	pane.getBackgroundEventLayer().addInteractor(_menuCreator);
 
 	pane.getBackgroundEventLayer().setConsuming(false);
@@ -127,19 +127,14 @@ public class FSMViewerController extends CompositeGraphController {
     /**
      * Return the node controller appropriate for the given node.
      */
-    public NodeController getNodeController(Node node) {
-        Object object = node.getSemanticObject();
-        if(object instanceof Icon) {
-            return _entityController;
-        } else 
-            throw new RuntimeException(
-                    "Node with unknown semantic object: " + object);
+    public NodeController getNodeController(Object node) {
+	return _entityController;
     }
 
     /**
      * Return the edge controller appropriate for the given node.
      */
-    public EdgeController getEdgeController(Edge edge) {
+    public EdgeController getEdgeController(Object edge) {
         return _linkController;
     }
 
@@ -158,20 +153,7 @@ public class FSMViewerController extends CompositeGraphController {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public inner classes                  ////
-
-    public class SchematicContextMenuFactory extends PtolemyMenuFactory {
-	public SchematicContextMenuFactory() {
-	    super();
-	    addMenuItemFactory(new EditParametersFactory());
-	    addMenuItemFactory(new EditParameterStylesFactory());
-	}
-    }
-
-    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    // The graph that is being displayed.
-    private Graph _graph;
 
     // The selection interactor for drag-selecting nodes
     private SelectionDragger _selectionDragger;

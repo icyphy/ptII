@@ -33,11 +33,6 @@ package ptolemy.vergil.graph;
 import ptolemy.moml.*;
 
 import diva.graph.*;
-import diva.graph.model.Edge;
-import diva.graph.model.Graph;
-import diva.graph.model.Node;
-import diva.graph.model.CompositeNode;
-
 import diva.canvas.Figure;
 import diva.canvas.TransformContext;
 import diva.canvas.connector.Connector;
@@ -64,7 +59,8 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
     /** Create a new interactor contained within the given controller.
      */
     public LocatableNodeDragInteractor(LocatableNodeController controller) {
-        _controller = controller;
+	super(controller.getController());
+	_controller = controller;
     }
 
     /** Drag all selected nodes and move any attached edges.
@@ -79,9 +75,8 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
         Iterator targets = targets();
         while (targets.hasNext()) {
             Figure figure = (Figure) targets.next();
-            Object object = figure.getUserObject();
-            if(object instanceof Node) {
-                Node node = (Node) object;
+            Object node = figure.getUserObject();
+	    if(_controller.getController().getGraphModel().isNode(node)) {
 		if(_controller.hasLocation(node)) {
 		    double[] location = _controller.getLocation(node);
 		    location[0] += x;
@@ -93,7 +88,7 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
 		    location[1] = figure.getBounds().getCenterY();
 		    _controller.setLocation(node, location);
 		}
-            }
+	    }
         }
     }
 

@@ -35,7 +35,6 @@ import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import diva.gui.*;
 import diva.graph.*;
-import diva.graph.model.*;
 import ptolemy.vergil.graph.*;
 
 /**
@@ -64,12 +63,9 @@ public class PtolemyNotation extends Attribute implements VisualNotation {
     public GraphPane createView(PtolemyDocument d) {
 	// These two things control the view of a ptolemy model.
 	GraphController controller = new EditorGraphController();
-	GraphImpl impl = new VergilGraphImpl();
-
-	GraphPane pane = new GraphPane(controller, impl);
-	CompositeEntity entity = (CompositeEntity) d.getModel();
-	Graph graph = impl.createGraph(entity);
-	controller.setGraph(graph);
+	PtolemyGraphModel model = 
+	    new PtolemyGraphModel((CompositeEntity)d.getModel());
+	GraphPane pane = new GraphPane(controller, model);
 	return pane;
     }
 }

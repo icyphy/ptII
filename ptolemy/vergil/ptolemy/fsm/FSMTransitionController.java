@@ -42,7 +42,6 @@ import ptolemy.vergil.toolbox.*;
 import diva.gui.*;
 import diva.gui.toolbox.*;
 import diva.graph.*;
-import diva.graph.model.*;
 import diva.canvas.*;
 import diva.canvas.connector.*;
 import diva.canvas.event.*;
@@ -81,67 +80,44 @@ public class FSMTransitionController extends EdgeController {
 	setConnectorTarget(ct);
 	setEdgeRenderer(new LinkRenderer());
 
-	// Create and set up the manipulator for connectors
-	EdgeInteractor interactor = (EdgeInteractor)getEdgeInteractor();
-	BasicSelectionRenderer selectionRenderer = (BasicSelectionRenderer)
-	    interactor.getSelectionRenderer();
-	ConnectorManipulator manipulator = (ConnectorManipulator)
-	    selectionRenderer.getDecorator();
-	manipulator.setConnectorTarget(ct);
-	//	    manipulator.addConnectorListener(new EdgeDropper());
-	//getEdgeInteractor().setPrototypeDecorator(manipulator);
+	SelectionModel sm = controller.getSelectionModel();
+	SelectionInteractor interactor =
+            (SelectionInteractor) getEdgeInteractor();
+	interactor.setSelectionModel(sm);
 
 	//    MouseFilter handleFilter = new MouseFilter(1, 0, 0);
 	//manipulator.setHandleFilter(handleFilter);
 
-	_menuCreator = new MenuCreator(new LinkContextMenuFactory());
+	_menuCreator = new MenuCreator(
+	    new RelationController.RelationContextMenuFactory(controller));
 	interactor.addInteractor(_menuCreator);
     }
 
     public class LinkTarget extends PerimeterTarget {
         public boolean accept(Figure f) {
             Object object = f.getUserObject();
-            if(object instanceof Node) {
-                Node node = (Node) object;
-                object = node.getSemanticObject();
-                if(object instanceof Icon) return true;
-            }
-            return false;
+	    if(object instanceof Icon) return true;
+	    return false;
         }
 
         public Site getHeadSite(Connector c, Figure f, double x, double y) {
             Object object = f.getUserObject();
-            if(object instanceof Node) {
-		Site site = new PerimeterSite(f, 0);
-		return site;
-            } else {
-		throw new RuntimeException("unknown figure: " + f);
-	    }
-        }  
+	    Site site = new PerimeterSite(f, 0);
+	    return site;
+	}  
         
         public Site getTailSite(Connector c, Figure f, double x, double y) {
             Object object = f.getUserObject();
-            if(object instanceof Node) {
-		Site site = new PerimeterSite(f, 0);
-		return site;
-            } else {
-		throw new RuntimeException("unknown figure: " + f);
-	    }
-        }
-    }
-
-    /**
-     * The factory for creating context menus on relations
-     */
-    public static class LinkContextMenuFactory 
-	extends RelationController.RelationContextMenuFactory {
+	    Site site = new PerimeterSite(f, 0);
+	    return site;
+	}
     }
 
     public class LinkRenderer implements EdgeRenderer {
 	/**
          * Render a visual representation of the given edge.
          */
-        public Connector render(Edge edge, Site tailSite, Site headSite) {
+        public Connector render(Object edge, Site tailSite, Site headSite) {
             AbstractConnector c = new ArcConnector(tailSite, headSite);
             c.setHeadEnd(new Arrowhead());
             c.setLineWidth((float)2.0);

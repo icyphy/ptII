@@ -41,7 +41,6 @@ import ptolemy.moml.*;
 import diva.gui.*;
 import diva.gui.toolbox.*;
 import diva.graph.*;
-import diva.graph.model.*;
 import diva.canvas.*;
 import diva.canvas.connector.*;
 import diva.canvas.event.*;
@@ -81,7 +80,8 @@ public class RelationController extends LocatableNodeController {
 	SelectionInteractor interactor =
             (SelectionInteractor) getNodeInteractor();
 	interactor.setSelectionModel(sm);
-	_menuCreator = new MenuCreator(new RelationContextMenuFactory());
+	_menuCreator = 
+	    new MenuCreator(new RelationContextMenuFactory(controller));
 	interactor.addInteractor(_menuCreator);
     }
 
@@ -89,15 +89,10 @@ public class RelationController extends LocatableNodeController {
      * The factory for creating context menus on relations.
      */
     public static class RelationContextMenuFactory extends PtolemyMenuFactory {
-	public RelationContextMenuFactory() {
-	    super();
+	public RelationContextMenuFactory(GraphController controller) {
+	    super(controller);
 	    addMenuItemFactory(new EditParametersFactory());
 	    addMenuItemFactory(new EditParameterStylesFactory());
-	}
-
-	public NamedObj _getObjectFromFigure(Figure source) {
-	    Vertex vertex = (Vertex)super._getObjectFromFigure(source);
-	    return(NamedObj) vertex.getContainer();
 	}
     }
 
@@ -106,7 +101,7 @@ public class RelationController extends LocatableNodeController {
      * looks like a black diamond.
      */
     public static class RelationRenderer implements NodeRenderer {
-	public Figure render(Node n) {
+	public Figure render(Object n) {
 	    double h = 12.0;
 	    double w = 12.0;
 
@@ -118,7 +113,7 @@ public class RelationController extends LocatableNodeController {
 	    polygon.closePath();
 	    Figure figure = new BasicFigure(polygon, Color.black);
 	    if(n != null) {
-		Vertex vertex = (Vertex)n.getSemanticObject();
+		Vertex vertex = (Vertex)n;
 		Relation relation = (Relation) vertex.getContainer();
 		figure.setToolTipText(relation.getName());
 	    }

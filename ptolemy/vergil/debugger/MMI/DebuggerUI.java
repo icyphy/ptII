@@ -52,12 +52,8 @@ import javax.swing.tree.*;
 import diva.canvas.*;
 import diva.canvas.connector.*;
 import diva.canvas.interactor.*;
-import diva.graph.model.*;
 import diva.graph.*;
 import diva.graph.layout.*;
-import diva.graph.model.*;
-import diva.graph.toolbox.GraphParser;
-import diva.graph.toolbox.GraphWriter;
 import diva.gui.*;
 import diva.gui.toolbox.*;
 import diva.resource.RelativeBundle;
@@ -602,11 +598,13 @@ public class DebuggerUI extends JFrame
 	    if (selection.length == 1) {
 		if (selection[0] instanceof Figure) {
 		    Object obj = ((Figure)selection[0]).getUserObject(); 
-		    if (obj instanceof Node) {
-			NamedObj userobj = (NamedObj)((Node)obj).getSemanticObject();
+		    if (obj instanceof NamedObj) {
+			NamedObj userobj = (NamedObj)obj;
 			if (userobj instanceof ptolemy.moml.Icon) {
-			    ptolemy.moml.Icon icon = (ptolemy.moml.Icon)userobj;
-			    ComponentEntity entity = (ComponentEntity)icon.getContainer();
+			    ptolemy.moml.Icon icon = 
+				(ptolemy.moml.Icon)userobj;
+			    ComponentEntity entity = 
+				(ComponentEntity)icon.getContainer();
 			    NamedObj actor = (NamedObj)entity;
 			    selectedActor = actor;
 			} else {

@@ -42,7 +42,6 @@ import ptolemy.moml.*;
 import diva.gui.*;
 import diva.gui.toolbox.*;
 import diva.graph.*;
-import diva.graph.model.*;
 import diva.canvas.*;
 import diva.canvas.connector.*;
 import diva.canvas.event.*;
@@ -137,7 +136,7 @@ public class ViewerGraphController extends CompositeGraphController {
                 (SelectionInteractor)_linkController.getEdgeInteractor());
 
         // MenuCreator
-        _menuCreator = new MenuCreator(new SchematicContextMenuFactory());
+	_menuCreator = new MenuCreator(new SchematicContextMenuFactory(this));
 	pane.getBackgroundEventLayer().addInteractor(_menuCreator);
 
 	pane.getBackgroundEventLayer().setConsuming(false);
@@ -146,8 +145,7 @@ public class ViewerGraphController extends CompositeGraphController {
     /**
      * Return the node controller appropriate for the given node.
      */
-    public NodeController getNodeController(Node node) {
-        Object object = node.getSemanticObject();
+    public NodeController getNodeController(Object object) {
         if(object instanceof Vertex) {
             return _relationController;
         } else if(object instanceof ptolemy.moml.Icon) {
@@ -162,7 +160,7 @@ public class ViewerGraphController extends CompositeGraphController {
     /**
      * Return the edge controller appropriate for the given node.
      */
-    public EdgeController getEdgeController(Edge edge) {
+    public EdgeController getEdgeController(Object object) {
         return _linkController;
     }
 
@@ -196,8 +194,6 @@ public class ViewerGraphController extends CompositeGraphController {
 
     ///////////////////////////////////////////////////////////////////
     ////                        public variables                   ////
-    // The graph that is being displayed.
-    private Graph _graph;
 
     // The selection interactor for drag-selecting nodes
     private SelectionDragger _selectionDragger;
@@ -215,9 +211,10 @@ public class ViewerGraphController extends CompositeGraphController {
 
     ///////////////////////////////////////////////////////////////////
     ////                          inner classes                    ////
-    public class SchematicContextMenuFactory extends PtolemyMenuFactory {
-	public SchematicContextMenuFactory() {
-	    super();
+    public static class SchematicContextMenuFactory 
+	extends PtolemyMenuFactory {
+	public SchematicContextMenuFactory(GraphController controller) {
+	    super(controller);
 	    addMenuItemFactory(new EditParametersFactory());
 	    addMenuItemFactory(new EditParameterStylesFactory());
 	    addMenuItemFactory(new EditDirectorParametersFactory());
@@ -225,21 +222,19 @@ public class ViewerGraphController extends CompositeGraphController {
 	}	
 	
 	public NamedObj _getObjectFromFigure(Figure source) {
-	    PtolemyDocument d = 
-		(PtolemyDocument) VergilApplication.getInstance().getCurrentDocument();
-	    return d.getModel();
+	    return (NamedObj)getController().getGraphModel().getRoot();
 	}
-    };
+    }
 
-    public class EditDirectorParametersFactory 
+    public static class EditDirectorParametersFactory 
 	extends EditParametersFactory {
 	protected String _getName() {
 	    return "Edit Director Parameters";
 	}
 
 	protected NamedObj _getItemTargetFromMenuTarget(NamedObj object) {
-	    if(object instanceof CompositeActor) {
-		return ((CompositeActor)object).getDirector();
+	    if(object instanceof Actor) {
+		return ((Actor)object).getDirector();
 	    } else {
 		throw new InternalErrorException("Object " + 
 		    object.getFullName() + "is not a director.");
@@ -247,15 +242,15 @@ public class ViewerGraphController extends CompositeGraphController {
 	}	
     }
 
-    public class EditDirectorParameterStylesFactory 
+    public static class EditDirectorParameterStylesFactory 
 	extends EditParameterStylesFactory {
 	protected String _getName() {
 	    return "Edit Director Parameter Styles";
 	}
 
 	protected NamedObj _getItemTargetFromMenuTarget(NamedObj object) {
-	    if(object instanceof CompositeActor) {
-		return ((CompositeActor)object).getDirector();
+	    if(object instanceof Actor) {
+		return ((Actor)object).getDirector();
 	    } else {
 		throw new InternalErrorException("Object " + 
 		    object.getFullName() + "is not a director.");
@@ -263,3 +258,8 @@ public class ViewerGraphController extends CompositeGraphController {
 	}	
     }
 }
+
+
+
+
+

@@ -46,10 +46,8 @@ import ptolemy.vergil.toolbox.*;
 import diva.canvas.*;
 import diva.canvas.connector.*;
 import diva.graph.*;
+import diva.graph.basic.BasicLayoutTarget;
 import diva.graph.layout.*;
-import diva.graph.model.*;
-import diva.graph.toolbox.GraphParser;
-import diva.graph.toolbox.GraphWriter;
 import diva.gui.*;
 import diva.gui.toolbox.*;
 import diva.resource.RelativeBundle;
@@ -144,7 +142,7 @@ public class PtolemyModule implements Module {
 	GUIUtilities.addMenuItem(menuDevel, action, 'I',
 				 "Print current document info");
 
-        action = new executeSystemAction();
+	action = new executeSystemAction();
 	_application.addAction(action);
 	GUIUtilities.addMenuItem(menuDevel, action, 'E', "Execute System");
 
@@ -171,7 +169,7 @@ public class PtolemyModule implements Module {
 	icon = new FigureIcon(figure, 20, 20);
 	GUIUtilities.addToolBarButton(tb, new newRelationAction(), 
 				      "New Relation", icon);
-
+   
 	//figure = EditorIcon._createDefaultBackgroundFigure();
 	//icon = new FigureIcon(figure, 20, 20);
 	//GUIUtilities.addToolBarButton(tb, new newCompositeAction(), 
@@ -278,7 +276,7 @@ public class PtolemyModule implements Module {
 	};
 	application.addDocumentListener(ldl);
         application.addDocumentFactory(new PtolemyDocument.Factory());
-        application.addDocumentFactory(new PtolemyDocument.FSMFactory());
+	application.addDocumentFactory(new PtolemyDocument.FSMFactory());
 
 	SwingUtilities.invokeLater(new PaletteInitializer());
 
@@ -405,6 +403,7 @@ public class PtolemyModule implements Module {
 		    toplevel.setManager(manager);
 		    manager.addExecutionListener(
 		       new VergilExecutionListener(_application));
+		    manager.addExecutionListener(new StreamExecutionListener());
 		}
 		
 		// We can't reuse the execution frame, since some 
@@ -468,7 +467,7 @@ public class PtolemyModule implements Module {
 	    _redoLayout(jg);
 	}
     }
-
+    
     // An action to look inside a composite.
     private class lookInsideAction extends FigureAction {
 	public lookInsideAction() {
@@ -488,7 +487,7 @@ public class PtolemyModule implements Module {
 	    app.setCurrentDocument(doc);
 	}
     }
-
+   
     // An action to create a new port.
     private class newPortAction extends AbstractAction {
 	public newPortAction() {
@@ -507,9 +506,9 @@ public class PtolemyModule implements Module {
 	    double y = point.getY()/2;
 	    EditorGraphController controller = 
 		(EditorGraphController)pane.getGraphController();
-	    Graph graph = controller.getGraph();
+	    GraphModel model = controller.getGraphModel();
 	    CompositeEntity toplevel =
-	    (CompositeEntity)graph.getSemanticObject();
+		(CompositeEntity)model.getRoot();
 	    Port port = null;
 	    if(toplevel == null)
 		return;
@@ -522,8 +521,7 @@ public class PtolemyModule implements Module {
 		    return;
 		}
 	    }
-	    Node node = controller.getPortController().createNode(port);
-	    controller.getPortController().addNode(node, x, y);
+	    controller.getPortController().addNode(port, x, y);
 	}
     }
     
@@ -545,9 +543,9 @@ public class PtolemyModule implements Module {
 	    double y = point.getY()/2;
 	    EditorGraphController controller = 
 		(EditorGraphController)pane.getGraphController();
-	    Graph graph = controller.getGraph();
+	    GraphModel model = controller.getGraphModel();
 	    CompositeEntity toplevel =
-	    (CompositeEntity)graph.getSemanticObject();
+		(CompositeEntity)model.getRoot();
 	    Relation relation = null;
 	    Vertex vertex = null;
 	    if(toplevel == null)
@@ -564,9 +562,7 @@ public class PtolemyModule implements Module {
 		    return;
 		}
 	    }
-	    Node node = 
-		controller.getRelationController().createNode(vertex);
-	    controller.getRelationController().addNode(node, x, y);
+	    controller.getRelationController().addNode(vertex, x, y);
 	}
     }
     
@@ -633,38 +629,24 @@ public class PtolemyModule implements Module {
 	}
         private Application _application;
     }
-
+    
     // A class for properly doing the layout of the graphs we have
     private class PtolemyLayout extends LevelLayout {
-	/**
-	 * Construct a new levelizing layout with a horizontal orientation.
-	 */
-	public PtolemyLayout() {
-	    super();
-	    setOrientation(LevelLayout.HORIZONTAL);
-	}
-	
-	/**
-	 * Construct a new levelizing layout with a vertical orientation
-	 * which uses the given graph implementation on which to perform
-	 * its layout, create dummy nodes, etc.
-	 */
-	public PtolemyLayout(GraphImpl impl) {
-	    super(impl);
-	}
 	
 	/**
 	 * Copy the given graph and make the nodes/edges in the copied
 	 * graph point to the nodes/edges in the original.
-	 */
-	protected Graph copyGraph(Graph origGraph, LayoutTarget target) {
-	    GraphImpl impl = getGraphImpl();
-	    Graph copyGraph = impl.createGraph(null);
-	    Hashtable map = new Hashtable();
+	 */ 
+	protected Object copyComposite(Object origComposite, 
+				       LayoutTarget target) {
+	    GraphModel model = target.getGraphModel();
+	    diva.graph.basic.BasicGraphModel local = getLocalGraphModel();
+	    Object copyComposite = local.createComposite(null);
+	    HashMap map = new HashMap();
 	    
 	    // Copy all the nodes for the graph.
-	    for(Iterator i = origGraph.nodes(); i.hasNext(); ) {
-		Node origNode = (Node)i.next();
+	    for(Iterator i = model.nodes(origComposite); i.hasNext(); ) {
+		Object origNode = i.next();
 		if(target.isNodeVisible(origNode)) {
 		    Rectangle2D r = target.getBounds(origNode);
 		    LevelInfo inf = new LevelInfo();
@@ -673,21 +655,23 @@ public class PtolemyModule implements Module {
 		    inf.y = r.getY();
 		    inf.width = r.getWidth();
 		    inf.height = r.getHeight();
-		    Node copyNode = impl.createNode(inf);
-		    impl.addNode(copyNode, copyGraph);
+		    Object copyNode = local.createNode(inf);
+		    local.addNode(copyNode, copyComposite);
 		    map.put(origNode, copyNode);
 		}
 	    }
 	    
 	    // Add all the edges.
-	    for(Iterator i = GraphUtilities.localEdges(origGraph); 
-		i.hasNext(); ) {
-		Edge origEdge = (Edge)i.next();
-		Node origTail = origEdge.getTail();
-		Node origHead = origEdge.getHead();
+	    Iterator i = GraphUtilities.localEdges(origComposite, model); 
+	    while(i.hasNext()) {
+		Object origEdge = i.next();
+		Object origTail = model.getTail(origEdge);
+		Object origHead = model.getHead(origEdge);
 		if(origHead != null && origTail != null) {
-		    Figure tailFigure = (Figure)origTail.getVisualObject();
-		    Figure headFigure = (Figure)origHead.getVisualObject();
+		    Figure tailFigure = 
+			(Figure)model.getVisualObject(origTail);
+		    Figure headFigure = 
+			(Figure)model.getVisualObject(origHead);
 		    // Swap the head and the tail if it will improve the 
 		    // layout, since LevelLayout only uses directed edges.
 		    if(tailFigure instanceof Terminal) {
@@ -698,7 +682,7 @@ public class PtolemyModule implements Module {
 			    int direction = 
 				CanvasUtilities.getDirection(normal);
 			    if(direction == SwingUtilities.WEST) {
-				Node temp = origTail;
+				Object temp = origTail;
 				origTail = origHead;
 				origHead = temp;
 			    }
@@ -711,36 +695,41 @@ public class PtolemyModule implements Module {
 			    int direction = 
 				CanvasUtilities.getDirection(normal);
 			    if(direction == SwingUtilities.EAST) {
-				Node temp = origTail;
+				Object temp = origTail;
 				origTail = origHead;
 				origHead = temp;
 			    }
 			}
 		    }
 
-		    origTail = _getParentInGraph(origGraph, origTail);
-		    origHead = _getParentInGraph(origGraph, origHead);
-		    Node copyTail = (Node)map.get(origTail);
-		    Node copyHead = (Node)map.get(origHead);
+		    origTail =
+			_getParentInGraph(model, origComposite, origTail);
+		    origHead = 
+			_getParentInGraph(model, origComposite, origHead);
+		    Object copyTail = map.get(origTail);
+		    Object copyHead = map.get(origHead);
+
 		    if(copyHead != null && copyTail != null) {
-			Edge copyEdge = impl.createEdge(origEdge);
-			impl.setEdgeTail(copyEdge, copyTail);
-			impl.setEdgeHead(copyEdge, copyHead);
-		    }
+                        Object copyEdge = local.createEdge(origEdge);
+                        local.setEdgeTail(copyEdge, copyTail);
+                        local.setEdgeHead(copyEdge, copyHead);
+ 		    }
 		}
 	    }
-	    return copyGraph;
+	    
+	    return copyComposite;
 	}
 
 	// Unfortunately, the head and/or tail of the edge may not 
 	// be directly contained in the graph.  In this case, we need to
 	// figure out which of their parents IS in the graph 
 	// and calculate the cost of that instead.
-	private Node _getParentInGraph(Graph graph, Node node) {
-	    while(node != null && !graph.contains(node)) {
-		Graph parent = node.getParent();
-		if(parent instanceof Node) {
-		    node = (Node)parent;
+	private Object _getParentInGraph(GraphModel model, 
+					 Object graph, Object node) {
+	    while(node != null && !model.containsNode(graph, node)) {
+		Object parent = model.getParent(node);
+		if(model.isNode(parent)) {
+		    node = parent;
 		} else {
 		    node = null;
 		}
@@ -748,7 +737,7 @@ public class PtolemyModule implements Module {
 	    return node;
 	}
     }
-
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -786,19 +775,19 @@ public class PtolemyModule implements Module {
 	GraphController controller = 
 	    jgraph.getGraphPane().getGraphController();
         LayoutTarget target = new BasicLayoutTarget(controller);
-        Graph graph = controller.getGraph();
+        GraphModel model = controller.getGraphModel();
         PtolemyLayout layout = new PtolemyLayout();
 	layout.setOrientation(LevelLayout.HORIZONTAL);
 	layout.setRandomizedPlacement(false);
         // Perform the layout and repaint
         try {
-            layout.layout(target, graph);
+            layout.layout(target, model.getRoot());
         } catch (Exception e) {
             getApplication().showError("Layout failed", e);
         }
         jgraph.repaint();
     }
-
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

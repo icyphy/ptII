@@ -41,7 +41,6 @@ import ptolemy.moml.*;
 import diva.gui.*;
 import diva.gui.toolbox.*;
 import diva.graph.*;
-import diva.graph.model.*;
 import diva.canvas.*;
 import diva.canvas.connector.*;
 import diva.canvas.event.*;
@@ -53,6 +52,7 @@ import java.awt.event.InputEvent;
 import java.awt.event.ActionEvent;
 import java.util.*;
 import java.net.URL;
+import javax.swing.JMenuItem;
 import javax.swing.Action;
 import javax.swing.AbstractAction;
 import javax.swing.JPopupMenu;
@@ -91,35 +91,26 @@ public class EntityController extends LocatableNodeController {
 	interactor.setSelectionModel(sm);
 
 
-	Action action = 
-	    VergilApplication.getInstance().getAction("Look Inside");
-	ActionInteractor actionInteractor = new ActionInteractor(action);
-	actionInteractor.setConsuming(false);
-	actionInteractor.setMouseFilter(new MouseFilter(1, 0, 0, 2));
-	interactor.addInteractor(actionInteractor);
+	//	Action action = 
+	//    VergilApplication.getInstance().getAction("Look Inside");
+	//ActionInteractor actionInteractor = new ActionInteractor(action);
+	//actionInteractor.setConsuming(false);
+	//actionInteractor.setMouseFilter(new MouseFilter(1, 0, 0, 2));
+	//interactor.addInteractor(actionInteractor);
 
 	// FIXME this is a horrible dance so that the actioninteractor gets
 	// the events before the drag interactor.
-	interactor.setDragInteractor(interactor.getDragInteractor());
+	//interactor.setDragInteractor(interactor.getDragInteractor());
 
         // Initialize the menu creator. 
-	_menuCreator = new MenuCreator(new EntityContextMenuFactory());
+	_menuCreator = 
+	    new MenuCreator(new EntityContextMenuFactory(controller));
 	interactor.addInteractor(_menuCreator);
-    }
-
-    /** 
-     * Create a node with the given semantic object.  Get the graph 
-     * implementation and ask it to create a composite node.
-     */
-    public Node createNode(Object semanticObject) {
-        Node n = getController().getGraphImpl().createCompositeNode(
-                semanticObject); 
-        return n;
     }
 
     /** Draw the node and all the ports contained within the node.
      */
-    public Figure drawNode(Node n) {
+    public Figure drawNode(Object n) {
         Figure nf = super.drawNode(n);
 	LinkedList inputs = new LinkedList();
 	LinkedList outputs = new LinkedList();
@@ -128,35 +119,34 @@ public class EntityController extends LocatableNodeController {
 	int outCount = 0;
 	int inOutCount = 0;
 
-	Iterator nodes = ((CompositeNode) n).nodes();
+	Iterator nodes = getController().getGraphModel().nodes(n);
 	while(nodes.hasNext()) {
-	    Node portNode = (Node) nodes.next();
-	    Port port = (Port) portNode.getSemanticObject();
+	    Port port = (Port) nodes.next();
 	    if(!(port instanceof IOPort)) {
 		inOutCount++;
-		inouts.addLast(portNode);
+		inouts.addLast(port);
 	    } else {
 		IOPort ioport = (IOPort) port;
 		if(ioport.isInput() && ioport.isOutput()) {
 		    inOutCount++;
-		    inouts.addLast(portNode);
+		    inouts.addLast(port);
 		} else if(ioport.isInput()) {
 		    inCount++;
-		    inputs.addLast(portNode);
+		    inputs.addLast(port);
 		} else if(ioport.isOutput()) {
 		    outCount++;
-		    outputs.addLast(portNode);
+		    outputs.addLast(port);
 		}
 	    }
 	}
 
 	int nodeNumber = 0;
 
-	_createPortFigures((CompositeNode)n, inputs, inCount,
+	_createPortFigures((Icon)n, inputs, inCount,
                 SwingConstants.WEST);
-	_createPortFigures((CompositeNode)n, outputs, outCount,
+	_createPortFigures((Icon)n, outputs, outCount,
                 SwingConstants.EAST);
-	_createPortFigures((CompositeNode)n, inouts, inOutCount,
+	_createPortFigures((Icon)n, inouts, inOutCount,
                 SwingConstants.SOUTH);
         return nf;
     }
@@ -178,16 +168,16 @@ public class EntityController extends LocatableNodeController {
      * Remove all the ports in this entity, all the edges connected to those
      * ports and this node.
      */
-    public void removeNode(Node node) {
+    public void removeNode(Object node) {
 	// This code sucks because we need a list iterator.
-	CompositeNode composite = (CompositeNode) node;
 	List nodeList = new LinkedList();
-	for(Iterator i = composite.nodes(); i.hasNext(); ) {
+	Iterator i = getController().getGraphModel().nodes(node);
+	while(i.hasNext()) {
 	    nodeList.add(i.next());
 	}
 	Object nodes[] = nodeList.toArray();
-	for(int i = 0; i < nodes.length; i++) {
-	    _portController.removeNode((Node)(nodes[i]));
+	for(int j = 0; j < nodes.length; j++) {
+	    _portController.removeNode(nodes[j]);
 	}
 	super.removeNode(node);
     }
@@ -208,15 +198,15 @@ public class EntityController extends LocatableNodeController {
      * side of the composite given by direction.
      * Count must be the number of nodes in the list.
      */
-    protected void _createPortFigures(CompositeNode node,
+    protected void _createPortFigures(Icon container,
             LinkedList nodeList, int count,
             int direction) {
 	int nodeNumber = 0;
 	Iterator nodes = nodeList.iterator();
 	while(nodes.hasNext()) {
 	    nodeNumber ++;
-	    Node portNode = (Node) nodes.next();
-	    _portController.drawNode(portNode, node, direction,
+	    Port port = (Port) nodes.next();
+	    _portController.drawNode(port, container, direction,
                     100.0*nodeNumber/(count+1));
 	}
     }
@@ -225,23 +215,18 @@ public class EntityController extends LocatableNodeController {
      * The factory for creating context menus on entities.
      */
     public static class EntityContextMenuFactory extends PtolemyMenuFactory {
-	public EntityContextMenuFactory() {
-	    super();
+	public EntityContextMenuFactory(GraphController controller) {
+	    super(controller);
 	    addMenuItemFactory(new EditParametersFactory());
 	    addMenuItemFactory(new EditParameterStylesFactory());
 	    addMenuItemFactory(new MenuActionFactory(VergilApplication.getInstance().getAction("Look Inside")));
 	}
-
-	public NamedObj _getObjectFromFigure(Figure source) {
-	    Icon icon = (Icon)super._getObjectFromFigure(source);
-	    return(NamedObj) icon.getContainer();
-	}
     }
-
+    
     public static class EntityRenderer implements NodeRenderer {
-	public Figure render(Node n) {
+	public Figure render(Object n) {
 	    Figure figure;
-	    EditorIcon icon = (EditorIcon)n.getSemanticObject();
+	    EditorIcon icon = (EditorIcon)n;
 	    figure = icon.createFigure();
             NamedObj object = (NamedObj) icon.getContainer();
             figure.setToolTipText(object.getName());

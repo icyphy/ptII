@@ -38,7 +38,6 @@ import ptolemy.moml.*;
 import diva.gui.*;
 import diva.gui.toolbox.*;
 import diva.graph.*;
-import diva.graph.model.*;
 import diva.canvas.*;
 import diva.canvas.connector.*;
 import diva.canvas.event.*;
@@ -76,15 +75,15 @@ public class PortController extends NodeController {
 	super(controller);
 	setNodeRenderer(new PortRenderer());
 	SelectionModel sm = controller.getSelectionModel();
-	NodeInteractor interactor = new NodeInteractor(sm);
+	NodeInteractor interactor = new NodeInteractor(controller, sm);
 	setNodeInteractor(interactor);
 	_menuCreator = new MenuCreator(
-	    new EntityPortController.PortContextMenuFactory());
+	    new EntityPortController.PortContextMenuFactory(controller));
 	interactor.addInteractor(_menuCreator);
     }
 
     public static class PortRenderer implements NodeRenderer {
-	public Figure render(Node n) {
+	public Figure render(Object n) {
 	    Polygon2D.Double polygon = new Polygon2D.Double();
 	    polygon.moveTo(-6, 6);
 	    polygon.lineTo(0, 6);
@@ -98,7 +97,7 @@ public class PortController extends NodeController {
 	    // set when a port is in an entity.
 	    int direction = SwingConstants.NORTH;	    
 	    if(n != null) {
-		Port port = (Port) n.getSemanticObject();
+		Port port = (Port) n;
 		if(port instanceof IOPort) {
 		    IOPort ioport = (IOPort) port;
 		    if(ioport.isInput()) direction = SwingConstants.EAST;

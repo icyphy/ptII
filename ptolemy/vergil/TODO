@@ -22,6 +22,9 @@ Multiple vertexes per Relation.
 Changes to ptolemy model should be mutations and a changeListener should
 set the dirty flag on the document.
 Manager creation needs to get handled in one place.
+Libraries shouldn't all be loaded at startup.
+User addable libraries.
+Need more control points for arcs in FSMNotation.
 
 DONE:
 Direct connections from Ports to Ports.

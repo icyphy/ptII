@@ -38,7 +38,6 @@ import ptolemy.moml.*;
 import diva.gui.*;
 import diva.gui.toolbox.*;
 import diva.graph.*;
-import diva.graph.model.*;
 import diva.canvas.*;
 import diva.canvas.connector.*;
 import diva.canvas.event.*;
@@ -84,7 +83,7 @@ public class LocatableNodeController extends NodeController {
     /** Add a node to this graph editor and render it
      * at the given location.
      */
-    public void addNode(Node node, double x, double y) {
+    public void addNode(Object node, double x, double y) {
         super.addNode(node, x, y);
         double location[] = new double[2];
         location[0] = x;
@@ -94,7 +93,7 @@ public class LocatableNodeController extends NodeController {
 
     /** Draw the node at it's location.
      */
-    public Figure drawNode(Node n) {
+    public Figure drawNode(Object n) {
         Figure nf = super.drawNode(n);
         locateFigure(n);
         return nf;
@@ -104,9 +103,9 @@ public class LocatableNodeController extends NodeController {
      *  In this base class, return true if the the node's semantic object is
      *  an instance of Locatable.
      */
-    public boolean hasLocation(Node n) {
-        if(n.getSemanticObject() instanceof Locatable) {
-            Locatable object = (Locatable) n.getSemanticObject();
+    public boolean hasLocation(Object n) {
+        if(n instanceof Locatable) {
+            Locatable object = (Locatable) n;
             double[] location = object.getLocation();
             if(location != null) return true;
         }
@@ -116,22 +115,20 @@ public class LocatableNodeController extends NodeController {
     /** Return the desired location of this node.  Throw an exception if the
      *  node does not have a desired location.
      */
-    public double[] getLocation(Node n) {
-        Object object = n.getSemanticObject();
+    public double[] getLocation(Object n) {
         if(hasLocation(n)) {
-            return ((Locatable) object).getLocation();
-        } else throw new GraphException("The node " + n +
+            return ((Locatable) n).getLocation();
+        } else throw new RuntimeException("The node " + n +
                 "does not have a desired location");
     }
 
     /** Set the desired location of this node.  Throw an exception if the
      *  node can not be given a desired location.
      */
-    public void setLocation(Node n, double[] location) {
-        Object object = n.getSemanticObject();
-        if(object instanceof Locatable) {
-            ((Locatable)object).setLocation(location);
-        } else throw new GraphException("The node " + n +
+    public void setLocation(Object n, double[] location) {
+	if(n instanceof Locatable) {
+            ((Locatable)n).setLocation(location);
+        } else throw new RuntimeException("The node " + n +
                 "can not have a desired location");
     }
 
@@ -139,8 +136,8 @@ public class LocatableNodeController extends NodeController {
      *  semantic object, if that object is an instance of Locatable.
      *  If the semantic object is not locatable, then do nothing.
      */
-    public void locateFigure(Node n) {
-        Figure nf = (Figure)n.getVisualObject();
+    public void locateFigure(Object n) {
+        Figure nf = (Figure)getController().getGraphModel().getVisualObject(n);
         if(hasLocation(n)) {
             double[] location = getLocation(n);
             CanvasUtilities.translateTo(nf, location[0], location[1]);

@@ -34,6 +34,7 @@ import ptolemy.actor.*;
 import ptolemy.actor.gui.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
+import ptolemy.vergil.*;
 import ptolemy.vergil.graph.*;
 import ptolemy.vergil.toolbox.*;
 import ptolemy.gui.*;
@@ -41,7 +42,6 @@ import ptolemy.moml.*;
 import diva.gui.*;
 import diva.gui.toolbox.*;
 import diva.graph.*;
-import diva.graph.model.*;
 import diva.canvas.*;
 import diva.canvas.connector.*;
 import diva.canvas.event.*;
@@ -107,25 +107,33 @@ public class FSMGraphController extends FSMViewerController {
     protected class LinkCreator extends AbstractInteractor {
         public void mousePressed(LayerEvent e) {
             Figure source = e.getFigureSource();
-	    Node sourcenode = (Node) source.getUserObject();
-	    NamedObj sourceObject = (NamedObj) sourcenode.getSemanticObject();
+	    NamedObj object = (NamedObj) source.getUserObject();
 
 	    FigureLayer layer = (FigureLayer) e.getLayerSource();
 
 	    // Create a new edge
-	    CompositeEntity container =
-		(CompositeEntity)getGraph().getSemanticObject();
+	    CompositeEntity container = 
+		(CompositeEntity)getGraphModel().getRoot();
 
+	    Arc link;
+	    try {
+                link = new Arc(container, container.uniqueName("link"));
+            }
+            catch (Exception ex) {
+		VergilApplication.getInstance().showError(
+		    "Create relation failed:", ex);
+		return;
+	    }
 	    // Add it to the editor
-	    Edge edge = getLinkController().addEdge(null,
-                    sourcenode,
+	    getLinkController().addEdge(link,
+                    object,
                     ConnectorEvent.TAIL_END,
                     e.getLayerX(),
                     e.getLayerY());
 
 	    // Add it to the selection so it gets a manipulator, and
 	    // make events go to the grab-handle under the mouse
-	    Figure ef = (Figure) edge.getVisualObject();
+	    Figure ef = (Figure) getGraphModel().getVisualObject(link);
 	    getSelectionModel().addSelection(ef);
 	    ConnectorManipulator cm =
 		(ConnectorManipulator) ef.getParent();
@@ -133,10 +141,6 @@ public class FSMGraphController extends FSMViewerController {
 	    layer.grabPointer(e, gh);
 	}
     }
-
-    /** The interactor for creating context sensitive menus.
-     */
-    private MenuCreator _menuCreator;
 
     /** The interactor that interactively creates edges
      */

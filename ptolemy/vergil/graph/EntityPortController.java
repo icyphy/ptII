@@ -40,7 +40,6 @@ import ptolemy.moml.*;
 import diva.gui.*;
 import diva.gui.toolbox.*;
 import diva.graph.*;
-import diva.graph.model.*;
 import diva.canvas.*;
 import diva.canvas.connector.*;
 import diva.canvas.event.*;
@@ -56,7 +55,7 @@ import java.util.HashMap;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.net.URL;
-import javax.swing.*;
+import javax.swing.JMenuItem;
 import javax.swing.event.*;
 
 //////////////////////////////////////////////////////////////////////////
@@ -79,7 +78,7 @@ public class EntityPortController extends NodeController {
 	// If this is allowed, then the port can be deleted.
 	CompositeInteractor interactor = new CompositeInteractor();
  	setNodeInteractor(interactor);
-	_menuCreator = new MenuCreator(new PortContextMenuFactory());
+	_menuCreator = new MenuCreator(new PortContextMenuFactory(controller));
 	interactor.addInteractor(_menuCreator);
     }
 
@@ -88,11 +87,14 @@ public class EntityPortController extends NodeController {
 
     /** Given a node, add it to the given parent.
      */
-    public void drawNode(Node node, CompositeNode parentNode, int direction,
+    public void drawNode(Port port, Icon parent, int direction,
             double fraction) {
+
+	GraphModel model = getController().getGraphModel();
+
         // Create a figure for it
 	//System.out.println("adding port");
-	Figure figure = getNodeRenderer().render(node);
+	Figure figure = getNodeRenderer().render(port);
 	double normal = CanvasUtilities.getNormal(direction);
 	
 	Site tsite = new PerimeterSite(figure, 0);
@@ -101,10 +103,10 @@ public class EntityPortController extends NodeController {
 	figure = new TerminalFigure(figure, tsite);
 
         figure.setInteractor(getNodeInteractor());
-        figure.setUserObject(node);
-        node.setVisualObject(figure);
+        figure.setUserObject(port);
+        model.setVisualObject(port, figure);
         CompositeFigure parentFigure =
-	    (CompositeFigure)parentNode.getVisualObject();
+	    (CompositeFigure)model.getVisualObject(parent);
 	BoundsSite site =
 	    new BoundsSite(parentFigure.getBackgroundFigure(), 0,
                     direction, fraction);
@@ -118,14 +120,14 @@ public class EntityPortController extends NodeController {
     }
 
     public static class EntityPortRenderer implements NodeRenderer {
-	public Figure render(Node n) {
+	public Figure render(Object n) {
 	    Polygon2D.Double polygon = new Polygon2D.Double();
 	    polygon.moveTo(-4, 4);
 	    polygon.lineTo(4, 0);
 	    polygon.lineTo(-4, -4);
 	    polygon.closePath();
 	    Figure figure = new BasicFigure(polygon, Color.black);
-	    Port port = (Port)n.getSemanticObject();
+	    Port port = (Port)n;
 	    figure.setToolTipText(port.getName());
 	    return figure;
 	}
@@ -135,8 +137,8 @@ public class EntityPortController extends NodeController {
      * The factory for creating context menus on entities.
      */
     public static class PortContextMenuFactory extends PtolemyMenuFactory {
-	public PortContextMenuFactory() {
-	    super();
+	public PortContextMenuFactory(GraphController controller) {
+	    super(controller);
 	    addMenuItemFactory(new EditParametersFactory());
 	    addMenuItemFactory(new EditParameterStylesFactory());
 	    addMenuItemFactory(new PortDescriptionFactory());

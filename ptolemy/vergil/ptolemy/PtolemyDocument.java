@@ -39,12 +39,8 @@ import ptolemy.actor.*;
 import ptolemy.moml.*;
 
 import diva.graph.*;
-import diva.graph.editor.*;
 import diva.graph.layout.*;
-import diva.graph.model.*;
 import diva.graph.toolbox.*;
-import diva.graph.toolbox.GraphParser;
-import diva.graph.toolbox.GraphWriter;
 import diva.canvas.interactor.SelectionModel;
 import diva.canvas.Figure;
 import diva.gui.*;
@@ -113,15 +109,14 @@ public class PtolemyDocument extends AbstractDocument
 	GraphPane graphPane = jgraph.getGraphPane();
 	GraphController controller =
 	    (GraphController)graphPane.getGraphController();
-	GraphImpl impl = controller.getGraphImpl();
+	GraphModel graphModel = controller.getGraphModel();
 	SelectionModel model = controller.getSelectionModel();
 	Object selection[] = model.getSelectionAsArray();
 	PtolemyTransferable transferable = new PtolemyTransferable();
 	for(int i = 0; i < selection.length; i++) {
 	    if(selection[i] instanceof Figure) {
-		SemanticObjectContainer userObject = (SemanticObjectContainer)
-		    ((Figure)selection[i]).getUserObject();
-		NamedObj object = (NamedObj)userObject.getSemanticObject();
+		Object userObject = ((Figure)selection[i]).getUserObject();
+		NamedObj object = (NamedObj)userObject;
 		if(object instanceof Icon) {
 		    NamedObj actual = (NamedObj)object.getContainer();
 		    try {
@@ -129,7 +124,7 @@ public class PtolemyDocument extends AbstractDocument
 			System.out.println("adding " + actual);
 			transferable.add(clone);
 		    } catch (CloneNotSupportedException ex) {
-			throw new GraphException(ex.getMessage());
+			throw new RuntimeException(ex.getMessage());
 		    }		
 		} else if(object instanceof Vertex) {
 		    NamedObj actual = (NamedObj)object.getContainer();
@@ -138,7 +133,7 @@ public class PtolemyDocument extends AbstractDocument
 			System.out.println("adding " + actual);
 			transferable.add(actual);
 		    } catch (CloneNotSupportedException ex) {
-			throw new GraphException(ex.getMessage());
+			throw new RuntimeException(ex.getMessage());
 		    }
 		}  
 	    }
@@ -244,13 +239,13 @@ public class PtolemyDocument extends AbstractDocument
      * for copying the data.
      */
     public void paste (Clipboard c) {
-	System.out.println("paste");
+	/*	System.out.println("paste");
 	Transferable transferable = c.getContents(this);
 	JGraph jgraph = getView();
 	GraphPane graphPane = jgraph.getGraphPane();
 	GraphController controller =
 	    (GraphController)graphPane.getGraphController();
-	GraphImpl impl = controller.getGraphImpl();
+	GraphModel model = controller.getGraphModel();
 	if(transferable == null) 
 	    return;
 	try {
@@ -270,15 +265,14 @@ public class PtolemyDocument extends AbstractDocument
 			clone.setName(name);
 			clone.setContainer(_model);
 			Icon icon = (Icon)clone.getAttribute("_icon");
-			Node node = impl.createCompositeNode(icon);
-			impl.addNode(node, controller.getGraph());
+			impl.addNode(icon, controller.getGraph());
 			controller.drawNode(node);
 		    } catch (CloneNotSupportedException ex) {
-			throw new GraphException(ex.getMessage());
+			throw new RuntimeException(ex.getMessage());
 		    } catch (IllegalActionException ex) {
-			throw new GraphException(ex.getMessage());
+			throw new RuntimeException(ex.getMessage());
 		    } catch (NameDuplicationException ex) {
-			throw new GraphException(ex.getMessage());
+			throw new RuntimeException(ex.getMessage());
 		    }
 		} /*else if(object instanceof ComponentRelation) {
 		    try {
@@ -291,19 +285,19 @@ public class PtolemyDocument extends AbstractDocument
 			impl.addNode(node, controller.getGraph());
 			controller.drawNode(node);
 		    } catch (CloneNotSupportedException ex) {
-			throw new GraphException(ex.getMessage());
+			throw new RuntimeException(ex.getMessage());
 		    } catch (IllegalActionException ex) {
-			throw new GraphException(ex.getMessage());
+			throw new RuntimeException(ex.getMessage());
 		    } catch (NameDuplicationException ex) {
- 			throw new GraphException(ex.getMessage());
+ 			throw new RuntimeException(ex.getMessage());
 		    }
-		    }*/
+		    }
 	    }
 	} catch (UnsupportedFlavorException ex) {
 	    System.out.println("no flavor");
 	} catch (IOException ex) {
 	    System.out.println("io error");
-	}
+	}*/
     }
 
     /** Print the document to a printer, represented by the specified graphics
@@ -374,7 +368,7 @@ public class PtolemyDocument extends AbstractDocument
             + "title = " + getTitle()
             + ", file = " + getFile()
             + ", url = " + getURL()
-            + "]\n" + _model.exportMoML();
+            + "]\n" + _model.exportMoML() + "\n" + _model.description();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -455,7 +449,7 @@ public class PtolemyDocument extends AbstractDocument
 	    return "Ptolemy II FSM";
 	}
     }
-
+       
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

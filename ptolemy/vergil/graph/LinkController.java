@@ -41,7 +41,6 @@ import ptolemy.vergil.toolbox.*;
 import diva.gui.*;
 import diva.gui.toolbox.*;
 import diva.graph.*;
-import diva.graph.model.*;
 import diva.canvas.*;
 import diva.canvas.connector.*;
 import diva.canvas.event.*;
@@ -80,39 +79,28 @@ public class LinkController extends EdgeController {
 	setConnectorTarget(ct);
 	setEdgeRenderer(new LinkRenderer());
 
-	// Create and set up the manipulator for connectors
-	EdgeInteractor interactor = (EdgeInteractor)getEdgeInteractor();
-	BasicSelectionRenderer selectionRenderer = (BasicSelectionRenderer)
-	    interactor.getSelectionRenderer();
-	ConnectorManipulator manipulator = (ConnectorManipulator)
-	    selectionRenderer.getDecorator();
-	manipulator.setConnectorTarget(ct);
-		
-	_menuCreator = new MenuCreator(new LinkContextMenuFactory());
+	SelectionModel sm = controller.getSelectionModel();
+	SelectionInteractor interactor =
+            (SelectionInteractor) getEdgeInteractor();
+	interactor.setSelectionModel(sm);
+
+	_menuCreator = new MenuCreator(new RelationController.RelationContextMenuFactory(controller));
 	interactor.addInteractor(_menuCreator);
     }
 
     public class LinkTarget extends PerimeterTarget {
         public boolean acceptHead(Connector c, Figure f) {
             Object object = f.getUserObject();
-            if(object instanceof Node) {
-                Node node = (Node) object;
-                object = node.getSemanticObject();
-                if(object instanceof Port) return super.acceptHead(c, f);
-                if(object instanceof Vertex) return super.acceptHead(c, f);
-            }
-            return false;
+	    if(object instanceof Port) return super.acceptHead(c, f);
+	    if(object instanceof Vertex) return super.acceptHead(c, f);
+	    return false;
         }
 
         public boolean acceptTail(Connector c, Figure f) {
             Object object = f.getUserObject();
-            if(object instanceof Node) {
-                Node node = (Node) object;
-                object = node.getSemanticObject();
-                if(object instanceof Port) return super.acceptTail(c, f);
-                if(object instanceof Vertex) return super.acceptTail(c, f);
-            }
-            return false;
+	    if(object instanceof Port) return super.acceptTail(c, f);
+	    if(object instanceof Vertex) return super.acceptTail(c, f);
+	    return false;
         }
 
         public Site getHeadSite(Figure f, double x, double y) {
@@ -128,12 +116,13 @@ public class LinkController extends EdgeController {
     /**
      * The factory for creating context menus on relations
      */
+    /*
     public static class LinkContextMenuFactory 
 	extends RelationController.RelationContextMenuFactory {
 	
 	public NamedObj _getObjectFromFigure(Figure source) {
-	    Edge edge = (Edge) source.getUserObject();
-	    Relation relation = (Relation)edge.getSemanticObject();
+	    Relation relation = (Relation)source.getUserObject();
+	    GraphModel model = getController().getGraphModel();
 	    if(relation == null) {
 		Node node = edge.getHead();
 		Object object = node.getSemanticObject();
@@ -149,38 +138,21 @@ public class LinkController extends EdgeController {
 	    return relation;
 	}
     }
-
+    */
     public class LinkRenderer implements EdgeRenderer {
 	/**
          * Render a visual representation of the given edge.
          */
-        public Connector render(Edge edge, Site tailSite, Site headSite) {
+        public Connector render(Object edge, Site tailSite, Site headSite) {
             AbstractConnector c = new ManhattanConnector(tailSite, headSite);
             c.setLineWidth((float)2.0);
             c.setUserObject(edge);
 	    
-	    Relation relation = (Relation)edge.getSemanticObject();
-	    if(relation == null) {
-		Node node = edge.getHead();
-		Object object = null;
-		if(node != null) {
-		    node.getSemanticObject();
-		    if(!(object instanceof Vertex)) {
-			node = edge.getTail();
-			if(node != null) 
-			    object = node.getSemanticObject();
-		    }
-		}
-		
-		if(object != null && object instanceof Vertex) {
-		    Vertex vertex = (Vertex) object;
-		    relation = (Relation)vertex.getContainer();
-		}
-	    }
+	    Link link = (Link)edge;
+	    Relation relation = link.getRelation();
 	    if(relation != null) {
 		c.setToolTipText(relation.getName());
 	    }
-
             return c;
         }
     }

@@ -35,7 +35,6 @@ import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import diva.gui.*;
 import diva.graph.*;
-import diva.graph.model.*;
 import ptolemy.vergil.graph.*;
 import ptolemy.vergil.*;
 
@@ -98,15 +97,12 @@ public class PtolemyFSMNotation extends Attribute implements VisualNotation {
 		"compatible with Ptolemy documents.");
 	}
 
+	PtolemyDocument document = (PtolemyDocument)d;
 	// These two things control the view of a ptolemy model.
 	GraphController controller = new FSMGraphController();
-	GraphImpl impl = new FSMGraphImpl();
-
-	GraphPane pane = new GraphPane(controller, impl);
-	CompositeEntity entity =
-	    (CompositeEntity) ((PtolemyDocument)d).getModel();
-	Graph graph = impl.createGraph(entity);
-	controller.setGraph(graph);
+	MutableGraphModel model = 
+	    new FSMGraphModel((CompositeEntity)document.getModel());
+	GraphPane pane = new GraphPane(controller, model);
 	return pane;
     }
 }
