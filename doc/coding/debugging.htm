@@ -209,8 +209,12 @@ with Emacs
 </ol>
 
 <h3>-debug</h3>
+The <CODE>-debug</CODE> option is more commonly used than <CODE>-jdb</CODE>
+because with <CODE>-debug</CODE>, you can attach the debugger at any
+point during the run.  
 
-Just start your vergil from an Emacs shell like:
+To use <CODE>-debug</CODE>, just start your vergil from a bash or Emacs shell
+with:
 
 <pre>
 vergil -debug &
@@ -263,8 +267,9 @@ that
 <CODE>-jdb</CODE> can be used to debug initialization code that would
 have already been run by the time the application comes up.
 
- <p>You can start ptolemy -jdb from a bash shell within Emacs, but
-that doesn't get you into GUD mode. 
+ <p>You can start <CODE>ptolemy -jdb</CODE>
+ from a bash shell within Emacs, but that doesn't get you into GUD
+mode, which allows for easy breakpoint setting etc.
 
  <p>To start vergil or ptolemy (or other) with jdb instead of java, enter
 start jdb from Emacs by:
