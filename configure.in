@@ -862,6 +862,7 @@ else
 	    AC_MSG_RESULT([ok])
 	    PTGMP_INCLUDE="-I$PTII/mescal/include"
 	    PTGMP_LIB="-L$PTII/mescal/lib"
+	    PTGMP_LD_FLAGS="-Wl,-R$PTII/mescal/lib"
 	    PTGMP=yes
         else
 	    AC_MSG_RESULT([not found, keep looking])
@@ -874,6 +875,7 @@ else
             AC_MSG_RESULT([ok])
 	    PTGMP_INCLUDE=-I/usr/local/include
 	    PTGMP_LIB=-L/usr/local/lib
+	    PTGMP_LD_FLAGS="-Wl,-R/usr/local/lib"
 	    PTGMP=yes
         else
 	    AC_MSG_RESULT([not found, keep looking])
@@ -901,11 +903,11 @@ else
 	startdir=`pwd`
         cd "$srcdir/config"
         AC_MSG_CHECKING([gmp by compiling a C small program])
-	if "$PTCC" gmpTest.c $PTGMP_INCLUDE -o gmpTest $PTGMP_LIB -lgmp ; then
+	if "$PTCC" gmpTest.c $PTGMP_INCLUDE -o gmpTest $PTGMP_LD_FLAGS $PTGMP_LIB -lgmp ; then
 	    ./gmpTest
 	    AC_MSG_RESULT([ok])
 	else    
-	    RESULTS=`"$PTCC" gmpTest.c $PTGMP_INCLUDE -o gmpTest $PTGMP_LIB -lgmp`
+	    RESULTS=`"$PTCC" gmpTest.c $PTGMP_INCLUDE -o gmpTest $PTGMP_LD_FLAGS$PTGMP_LIB -lgmp`
 	    AC_MSG_WARN([Failed to compile config/gmpTest.c, 
     "$PTCC" gmpTest.c $PTGMP_INCLUDE -o gmpTest $PTGMP_LIB -lgmp
     $RESULTS])
@@ -913,13 +915,13 @@ else
 
         AC_MSG_CHECKING([gmp by compiling a C++ small program])
 	AC_PROG_CXX
-	if "$CXX" gmpTest2.cc $PTGMP_INCLUDE -o gmpTest2 $PTGMP_LIB -lgmpxx -lgmp ; then
+	if "$CXX" gmpTest2.cc $PTGMP_INCLUDE -o gmpTest2 $PTGMP_LD_FLAGS $PTGMP_LIB -lgmpxx -lgmp ; then
 	    ./gmpTest2
 	    AC_MSG_RESULT([ok])
 	else    
-	    RESULTS=`"$CXX" gmpTest2.cc $PTGMP_INCLUDE -o gmpTest2 $PTGMP_LIB -lgmpcxx -lgmp`
+	    RESULTS=`"$CXX" gmpTest2.cc $PTGMP_INCLUDE -o gmpTest2 $PTGMP_LD_FLAGS $PTGMP_LIB -lgmpcxx -lgmp`
 	    AC_MSG_WARN([Failed to compile config/gmpTest2.cc, 
-    "$CXX" gmpTest2.cc $PTGMP_INCLUDE -o gmpTest2 $PTGMP_LIB -lgmpxx -lgmp
+    "$CXX" gmpTest2.cc $PTGMP_INCLUDE -o gmpTest2 $PTGMP_LD_FLAG $PTGMP_LIB -lgmpxx -lgmp
     $RESULTS
     Under Cygwin, perhaps you need to add $PTII/bin/mescal to your PATH,
     Under Linux, perhaps you need to add $PTII/bin/mescal to
@@ -2483,7 +2485,11 @@ AC_SUBST(PTCHIC_DIR)
 # and used in $PTII/mescal/relsat
 AC_SUBST(PTGMP_INCLUDE)
 
-# Set to -L$PTII/lib or -L/usr/local/lib if the gmp libraries are found
+# Set to -Wl,-R$PTII/mescal/lib or -Wl,-R/usr/local/lib if the gmp
+# libraries are found and used in $PTII/mescal/relsat
+AC_SUBST(PTGMP_LD_FLAGS)
+
+# Set to -L$PTII/mescal/lib or -L/usr/local/lib if the gmp libraries are found
 # and used in $PTII/mescal/relsat
 AC_SUBST(PTGMP_LIB)
 
