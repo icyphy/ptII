@@ -491,8 +491,6 @@ public class ComplexMatrixToken extends MatrixToken {
 
     /** Return a new token whose value is the value of this token
      *  multiplied by the value of the argument token.
-     *  This method should be overridden in derived
-     *  classes to provide type specific actions for multiply.
      *  @param rightArgument The token to multiply this token by.
      *  @exception IllegalActionException If this method is not
      *   supported by the derived class.

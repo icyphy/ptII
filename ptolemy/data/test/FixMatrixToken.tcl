@@ -1,6 +1,6 @@
 # Tests for the FixMatrixToken class
 #
-# @Author: Yuhong Xiong
+# @Author: Yuhong Xiong, Elaine Cheong
 #
 # @Version $Id$
 #
@@ -101,8 +101,8 @@ test FixMatrixToken-3.3 {Test adding FixMatrixToken to FixMatrixToken.} {
     set res2 [$p addReverse $q]
     set res3 [$q add $p]
     set res4 [$q addReverse $p]
-    list [$res1 toString] [$res2 toString] [$res3 toString] [$res toString]
-} {{[fix(2.0,8,4), fix(3.0,8,4); fix(6.0,8,4), fix(8.0,8,4)]} {[fix(2.0,8,4), fix(3.0,8,4); fix(6.0,8,4), fix(8.0,8,4)]} {[fix(2.0,8,4), fix(3.0,8,4); fix(6.0,8,4), fix(8.0,8,4)]} {3.3 + 0.0i}}
+    list [$res1 toString] [$res2 toString] [$res3 toString] [$res4 toString]
+} {{[fix(2.0,8,4), fix(3.0,8,4); fix(6.0,8,4), fix(8.0,8,4)]} {[fix(2.0,8,4), fix(3.0,8,4); fix(6.0,8,4), fix(8.0,8,4)]} {[fix(2.0,8,4), fix(3.0,8,4); fix(6.0,8,4), fix(8.0,8,4)]} {[fix(2.0,8,4), fix(3.0,8,4); fix(6.0,8,4), fix(8.0,8,4)]}}
 
 test FixMatrixToken-3.7 {Test adding FixMatrixToken to FixToken.} {
     set r [java::new {ptolemy.data.FixToken String} "fix(2.0, 8, 4)"]
@@ -125,7 +125,7 @@ test FixMatrixToken-7.3 {Test multiplying FixMatrixToken to FixMatrixToken.} {
     set res4 [$q multiplyReverse $p]
 
     list [$res1 toString] [$res2 toString] [$res3 toString] [$res4 toString] 
-} {} {KNOWN_FAILED}
+} {}
 
 test FixMatrixToken-7.3.1 {Test multiply operator between FixMatrixToken and FixMatrixToken of different dimensions} {
     set q [java::new {ptolemy.data.FixMatrixToken String} "fix(\[2.0, 1.0, 3.0; 3.0, 1.0, 6.0\], 8, 4)"]

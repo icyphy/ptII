@@ -456,6 +456,29 @@ public class FixMatrixToken extends MatrixToken {
         return BooleanToken.TRUE;
     }
 
+    /** Return a new token whose value is the value of this token
+     *  multiplied by the value of the argument token.  It is assumed
+     *  that the type of the argument is FixMatrixToken.
+     *  @param rightArgument The token to multiply this token by.
+     *  @exception IllegalActionException If the units are not
+     *  compatible, or this operation is not supported by the derived
+     *  class.
+     *  @return A new FixMatrixToken containing the result.
+     */
+    protected MatrixToken _multiply(MatrixToken rightArgument)
+            throws IllegalActionException {
+        FixMatrixToken convertedArgument = (FixMatrixToken)rightArgument;
+        FixPoint[][] result = convertedArgument.fixMatrix();
+        
+        for (int i = 0; i < _rowCount; i++) {
+            for (int j = 0; j < _columnCount; j++) {
+                result[i][j] = result[i][j].multiply(_value[i][j]);
+            }
+        }
+        
+        return new FixMatrixToken(result);
+    }    
+
     /** Return a new token whose value is the value of the argument
      *  Token multiplyed from the value of each element of this Token. It is
      *  assumed that the type of the argument is the same as the type
