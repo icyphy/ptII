@@ -204,6 +204,10 @@ public class TypeTest extends Discard {
             if(NonStrictTest.isRunningNightlyBuild()) {
                 throw new IllegalActionException(this,
                         NonStrictTest.TRAINING_MODE_ERROR_MESSAGE);
+            } else {
+                System.err.println("Warning: '" + this.getFullName()
+                    + "' is in training mode, set the trainingMode "
+                    + "parameter to false before checking in");
             }
             portTypes.setToken(actualPortTypes);
             parameterTypes.setToken(actualParameterTypes);

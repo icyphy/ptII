@@ -173,7 +173,11 @@ public class NonStrictTest extends Transformer {
                 isRunningNightlyBuild()) {
             throw new IllegalActionException(this,
                     TRAINING_MODE_ERROR_MESSAGE);
-        } 
+        } else {
+            System.err.println("Warning: '" + this.getFullName()
+                    + "' is in training mode, set the trainingMode "
+                    + "parameter to false before checking in");
+        }
     }
 
     /** If the trainingMode parameter is true and the
