@@ -90,9 +90,8 @@ public class EntityController extends LocatableNodeController {
             (NodeInteractor) getNodeInteractor();
 	interactor.setSelectionModel(sm);
 
-
-	Action action = 
-	    VergilApplication.getInstance().getAction("Look Inside");
+	VergilApplication application = VergilApplication.getInstance();
+	Action action = application.getAction("Look Inside");
 	ActionInteractor actionInteractor = new ActionInteractor(action);
 	actionInteractor.setConsuming(false);
 	actionInteractor.setMouseFilter(new MouseFilter(1, 0, 0, 2));

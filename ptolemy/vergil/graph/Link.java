@@ -228,12 +228,9 @@ public class Link extends Attribute {
     // If the container has a director, then invalidate its schedule and
     // rerun type resolution
     private void _checkSchedule(CompositeEntity container) {
-	System.out.println("container = " + container);
 	if (container instanceof Actor) {
-	    System.out.println("actor = " + container);
 	    Director director = ((Actor)container).getDirector();
 	    if (director != null) {
-		System.out.println("director = " + director);
 		director.invalidateSchedule();
 		director.invalidateResolvedTypes();
 	    }

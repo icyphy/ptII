@@ -49,6 +49,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
 	CompaanNotation.java \
+	FrameAttribute.java \
 	PtolemyDocument.java \
 	PtolemyNotation.java \
 	PtolemyModule.java

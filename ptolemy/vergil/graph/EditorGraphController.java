@@ -125,63 +125,22 @@ public class EditorGraphController extends ViewerGraphController {
     ///////////////////////////////////////////////////////////////
     //// PortCreator
 
-    /** An inner class that places a terminal at the clicked-on point
-     * on the screen, if control-clicked with mouse button 1. This
-     * needs to be made more customizable.
-     */
-    protected class PortCreator extends AbstractInteractor {
-        public void mousePressed(LayerEvent e) {
-            System.out.println("Port Creator");
-	    GraphModel model = getGraphModel();
-	    CompositeEntity toplevel =
-		(CompositeEntity)model.getRoot();
-	    Port port;
-	    if(toplevel == null)
-		port = new Port();
-	    else {
-		try {
-		    port = toplevel.newPort(toplevel.uniqueName("port"));
-		}
-		catch (Exception ex) {
-		    VergilApplication.getInstance().showError(
-		        "Create relation failed:", ex);
-		    return;
-		}
-	    }
-	    getPortController().addNode(port, e.getLayerX(), e.getLayerY());
-        }
+    protected class PortCreator extends ActionInteractor {
+	public PortCreator() {
+	    super(VergilApplication.getInstance().getAction("New External Port"));
+	}
     }
 
     ///////////////////////////////////////////////////////////////
     //// RelationCreator
 
-    /** An inner class that places a relation at the clicked-on point
-     * on the screen, if shift-clicked with mouse button 1. This
-     * needs to be made more customizable.
-     */
-    protected class RelationCreator extends AbstractInteractor {
-        public void mousePressed(LayerEvent e) {
-	    GraphModel model = getGraphModel();
-	    CompositeEntity toplevel =
-		(CompositeEntity)model.getRoot();
-	    Relation relation = null;
-            Vertex vertex = null;
-            try {
-                relation =
-                    toplevel.newRelation(toplevel.uniqueName("relation"));
-                vertex = new Vertex(relation,
-                        relation.uniqueName("vertex"));
-            }
-            catch (Exception ex) {
-		VergilApplication.getInstance().showError(
-		    "Create relation failed:", ex);
-		return;
-	    }
-            getRelationController().addNode(
-                    vertex, e.getLayerX(), e.getLayerY());
-        }
+    protected class RelationCreator extends ActionInteractor {
+	public RelationCreator() {
+	    // FIXME don't ref VergilApplication.
+	    super(VergilApplication.getInstance().getAction("New Relation"));
+	}
     }
-
+	
     ///////////////////////////////////////////////////////////////
     //// LinkCreator
 

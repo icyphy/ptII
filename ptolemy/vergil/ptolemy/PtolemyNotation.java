@@ -65,6 +65,7 @@ public class PtolemyNotation extends Attribute implements VisualNotation {
 	GraphController controller = new EditorGraphController();
 	PtolemyGraphModel model = 
 	    new PtolemyGraphModel((CompositeEntity)d.getModel());
+	
 	GraphPane pane = new GraphPane(controller, model);
 	return pane;
     }

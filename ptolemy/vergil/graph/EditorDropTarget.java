@@ -42,6 +42,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 import ptolemy.kernel.util.*;
+import ptolemy.kernel.event.*;
 import ptolemy.kernel.*;
 import ptolemy.moml.Icon;
 import ptolemy.vergil.toolbox.*;
@@ -109,80 +110,92 @@ public class EditorDropTarget extends DropTarget {
          * graph editor.
          */
         public void drop(DropTargetDropEvent dtde) {
-            NamedObj data = null;
-            Iterator iterator = null;
+	    Iterator iterator = null;
             if(dtde.isDataFlavorSupported(PtolemyTransferable.namedObjFlavor)) {
-                try {
+		try {
 		    // System.out.println(PtolemyTransferable.namedObjFlavor);
                     dtde.acceptDrop(DnDConstants.ACTION_COPY_OR_MOVE);
 		    iterator = (Iterator)dtde.getTransferable().
 			getTransferData(PtolemyTransferable.namedObjFlavor);
 		    // System.out.println("Data is [" + data + "]");//DEBUG
-                }
+		}
                 catch(Exception e) {
-                    System.out.println(e);//DEBUG
-                    e.printStackTrace();
-                }
-            }
-            else {
+		    _application.showError("Couldn't find a supported " + 
+					   "data flavor in " + dtde, e);
+		}
+            } else {
                 dtde.rejectDrop();
             }
 
             if(iterator == null) {
-                System.out.println("Drop failure"); //DEBUG
-                dtde.dropComplete(false); //failure!
+		// Nothing to drop!
+		return;
             }
-            else {
-                Point p = dtde.getLocation();
-                GraphController gc =
-		    ((JGraph)getComponent()).getGraphPane().getGraphController();
-		// Figure out where this is going, so we can clone into
-		// the right workspace.
-		GraphModel model = gc.getGraphModel();
-		NamedObj container = (NamedObj) model.getRoot();
-                while(iterator.hasNext()) {
-                    data = (NamedObj) iterator.next();
-                    try {
-                        NamedObj newObject = null;
-                        if(data instanceof Entity) {
-                            NamedObj sourceEntity = 
-                                (NamedObj) data;
-                            // Create the new node
-                            NamedObj entity = (NamedObj) sourceEntity.clone(
-                                    container.workspace());
-                            // FIXME get by class.
-                            Icon icon = (Icon) entity.getAttribute("_icon");
-                            // If there is no icon, then manufacture one.
-                            if(icon == null) {
-                                icon = new EditorIcon(entity, "_icon");
-                            }
-                            
-                            // FIXME it would be nice if this was 
-                            // not editor specific.
-                            entity.setName(container.uniqueName(
-                                    sourceEntity.getName()));  
-                            newObject = icon;
-                        } else if(data instanceof Port) {
-                            Port sourcePort = (Port) data;
-                            Port port = 
-                                (Port)sourcePort.clone(container.workspace());
-                            port.setName(container.uniqueName(
-                                    sourcePort.getName()));
-                            newObject = port;
-                        } else {
-                            throw new RuntimeException("Drop target doesn't " + 
-                                    "recognize data");
-                        }
-                        gc.addNode(newObject, ((int)p.x), ((int)p.y));
-                    }
-                    catch (Exception ex) {
-                        _application.showError("Drop of " + data.getFullName()
-                                + " failed.", ex);
-                    }
-                }
-		dtde.dropComplete(true); //success!
-            }
-        }
+
+	    final Point p = dtde.getLocation();
+	    final GraphController gc =
+		((JGraph)getComponent()).getGraphPane().getGraphController();
+	    // Figure out where this is going, so we can clone into
+	    // the right workspace.
+	    GraphModel model = gc.getGraphModel();
+	    final CompositeEntity container = (CompositeEntity)model.getRoot();
+	    while(iterator.hasNext()) {
+		final NamedObj data = (NamedObj) iterator.next();	
+		try {
+		container.requestChange(new ChangeRequest(container, 
+							  "drop entity") {
+		    public void execute() throws ChangeFailedException {
+			try {
+			    NamedObj newObject = null;
+			    if(data instanceof Entity) {
+				NamedObj sourceEntity = (NamedObj) data;
+				// Create the new node
+				NamedObj entity = (NamedObj) sourceEntity.clone(
+										container.workspace());
+				// FIXME get by class.
+				Icon icon = (Icon) entity.getAttribute("_icon");
+				// If there is no icon, then manufacture one.
+				if(icon == null) {
+				    icon = new EditorIcon(entity, "_icon");
+				}
+				
+				// FIXME it would be nice if this was 
+				// not editor specific.
+				entity.setName(container.uniqueName(
+								    sourceEntity.getName()));  
+				newObject = icon;
+			    } /*else if(data instanceof Port) {
+				Port sourcePort = (Port) data;
+				Port port = 
+				    (Port)sourcePort.clone(container.workspace());
+				port.setName(container.uniqueName(
+								  sourcePort.getName()));
+				newObject = port;
+				}*/ else {
+				throw new ChangeFailedException(this, "Drop target doesn't " + 
+							   "recognize data");
+			    }
+			    gc.addNode(newObject, ((int)p.x), ((int)p.y));
+			}
+			catch (ChangeFailedException ex) {
+			    throw ex;
+			}
+			catch (Exception ex) {
+			    ex.printStackTrace();
+			    throw new ChangeFailedException(this, "Drop of " + 
+							    data.getFullName()
+							    + " failed." + 
+							    ex.getMessage());
+			}
+		    }
+		});
+		} catch (Exception ex) {
+		    _application.showError("Drop of " + data.getFullName()
+					   + " failed.", ex);
+		}
+	    }
+	    dtde.dropComplete(true); //success!
+	}
 
         /**
          * Accept the event if the data is a known key.

@@ -189,6 +189,7 @@ public class VergilApplication extends MDIApplication {
                 setCurrentDocument(doc);
             }
         };
+	// FIXME: shortcuts?
 	_fileNewMenu.add(action);
     }
 
@@ -399,7 +400,8 @@ public class VergilApplication extends MDIApplication {
 				   "addDocumentFactory instead.");
     }
 
-   /** Show the error without the stack trace by default.
+    /** 
+     * Show the error without the stack trace by default.
      */
     public void showError(String op, Exception e) {
 	GUIUtilities.showException(getAppContext().makeComponent(), e, op);

@@ -137,7 +137,7 @@ public class LocatableNodeController extends NodeController {
      *  If the semantic object is not locatable, then do nothing.
      */
     public void locateFigure(Object n) {
-        Figure nf = (Figure)getController().getGraphModel().getVisualObject(n);
+	Figure nf = (Figure)getController().getGraphModel().getVisualObject(n);
         if(hasLocation(n)) {
             double[] location = getLocation(n);
             CanvasUtilities.translateTo(nf, location[0], location[1]);

@@ -68,6 +68,7 @@ import java.io.IOException;
 import java.net.URL;
 
 import javax.swing.JComponent;
+import javax.swing.JFrame;
 import javax.swing.KeyStroke;
 
 /**
@@ -94,10 +95,35 @@ public class PtolemyDocument extends AbstractDocument
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Close the document. In this class, do nothing.
+    /** Close the document. In this class, kill the model if it is being
+     *  executed.
      */
     public void close() throws Exception {
-        // Do nothing
+	JFrame frame;
+	// First see if we've created a frame previously.
+	List list = _model.attributeList(FrameAttribute.class);
+	if(list.size() == 0) {
+	    return;
+	} else if(list.size() == 1) {
+	    FrameAttribute attrib = (FrameAttribute)list.get(0);
+	    frame = attrib.getFrame();	    
+	    frame.hide();
+	    frame.dispose();
+	    // ARGH.. this doesn't trigger WINDOW_CLOSING.  We have to go in
+	    // and kill the manager manually.
+	    if(_model instanceof Actor) {
+		Manager manager = ((Actor)_model).getManager();
+		if(manager != null) {
+		    manager.finish();
+		}
+	    }
+	} else {
+	    // this should never happen since FrameAttribute
+	    // disallows it.
+	    throw new InvalidStateException("Composite Actor can " + 
+					    "only contain one " + 
+					    "execution pane.");
+	}
     }
 
     /** Get the currently selected objects from this document, if any,
@@ -235,7 +261,8 @@ public class PtolemyDocument extends AbstractDocument
 			      Transferable transferable) {
     }
 
-    /** Open the document from its current file.
+    /** 
+     * Open the document from its current file.
      *
      * @exception Exception If there is no file, 
      * or if the I/O operation failed.
@@ -385,27 +412,7 @@ public class PtolemyDocument extends AbstractDocument
     public void setModel(CompositeEntity toplevel) {
 	_model = toplevel;
 
-	// Create a manager.
-	// Attaching these listeners is a nasty business...
-	// All Managers are not created equal, since some have
-	// listeners attached.
-	if(toplevel instanceof Actor) {
-	    CompositeActor actor = (CompositeActor)toplevel;
-	    Manager manager = actor.getManager();
-	    if(manager == null) {
-		try {
-		    manager =
-			new Manager(toplevel.workspace(), "Manager");
-		    actor.setManager(manager);
-		    manager.addExecutionListener(new PtolemyModule.VergilExecutionListener(getApplication()));
-		    manager.addExecutionListener(new StreamExecutionListener());
-		    manager.addChangeListener(new IsDirtyListener());
-		} catch (IllegalActionException ex) {
-		    // This should never happen.
-		    throw new InternalErrorException(ex.getMessage());
-		}
-	    }
-	}
+	toplevel.addChangeListener(new IsDirtyListener());
     }
 
     /** Print information about the graph document.

@@ -1,3 +1,32 @@
+/* A graph model for basic ptolemy models.
+
+ Copyright (c) 1999-2000 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
+
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
+
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
+
+                                        PT_COPYRIGHT_VERSION_2
+                                        COPYRIGHTENDKEY
+
+@ProposedRating Red (eal@eecs.berkeley.edu)
+@AcceptedRating Red (johnr@eecs.berkeley.edu)
+*/
 
 package ptolemy.vergil.graph;
 
@@ -13,6 +42,29 @@ import diva.graph.toolbox.*;
 import diva.util.*;
 import java.util.*;
 
+//////////////////////////////////////////////////////////////////////////
+//// PtolemyGraphModel
+/**
+A graph for basic Ptolemy II models.  This model is useful for visual notations
+which expose all of the kernel objects (ports, relations, links and entities).
+
+This graph model represents ports, entities and relations as nodes.  Entities
+are proxied in the model by the icon that represents them.  Relations are
+proxied in the model by its vertecies (which generally exist in different
+places!)  Ports represent themselves in the model.  
+
+Edges may be connected between a port and a vertex, or between a port and
+another port.  For visual simplicity, both types of edges are represented by
+an instance of the Link class.  If an edge is placed between a port 
+and a vertex
+then the Link represents a proxy for a single link between the port and the 
+vertex's Relation.  However, if an edge is placed between two ports, then 
+it proxies a Relation (with no vertex) and links from the relation to each 
+port.
+
+@author Steve Neuendorffer
+@version $Id$
+ */
 public class PtolemyGraphModel extends AbstractGraphModel 
     implements MutableGraphModel {
     
@@ -26,12 +78,17 @@ public class PtolemyGraphModel extends AbstractGraphModel
 
     /**
      * Construct a new graph model whose root is the given composite entity.
-     * Create graphical representations of objects in the entity, if 
-     * necessary.
+     * If an entity exists in the given composite that does not have an 
+     * icon, then create a default icon for it.  If a relation exists in the
+     * given composite that does not have a vertex and it is connected to 
+     * exactly two ports, then create a link to represent the relation.
+     * otherwise if a Relation exists without a vertex, create a Vertex to 
+     * represent it.
      */
     public PtolemyGraphModel(CompositeEntity toplevel) {
 	_root = toplevel;
 
+	// First create icons for entities that don't have one.
 	Iterator entities = toplevel.entityList().iterator();
 	while(entities.hasNext()) {
 	    Entity entity = (Entity)entities.next();
@@ -49,6 +106,7 @@ public class PtolemyGraphModel extends AbstractGraphModel
 	    }
 	}
 	
+	// Create Links or Vertexes for relations that don't have them.
 	Iterator relations = toplevel.relationList().iterator();
 	while(relations.hasNext()) {
 	    ComponentRelation relation = (ComponentRelation)relations.next();
@@ -128,6 +186,29 @@ public class PtolemyGraphModel extends AbstractGraphModel
 	}
     }
     	
+    /**
+     * Return true if the head of the given edge can be attached to the
+     * given node.
+     */
+    public boolean acceptHead(Object edge, Object node) {
+	if (node instanceof Port ||
+	    node instanceof Vertex) {
+	    return true;
+	} else
+	    return false;
+    }
+
+    /**
+     * Return true if the tail of the given edge can be attached to the
+     * given node.
+     */
+    public boolean acceptTail(Object edge, Object node) {
+	if (node instanceof Port ||
+	    node instanceof Vertex) {
+	    return true;
+	} else
+	    return false;
+    }
     /**
      * Add a node to the given graph and notify listeners with a
      * NODE_ADDED event. <p>
@@ -893,19 +974,11 @@ public class PtolemyGraphModel extends AbstractGraphModel
                 " setting semantic objects.");
     }
 
-    // Perform the desired change request.  If a director can be found, then 
-    // use that director to queue the change request and wait until the 
-    // change completes.   If a director cannot be found, then execute the
-    // request immediately.
+    // Perform the desired change request.  Queue the request with the
+    // root entity.  If the change fails, then throw a graph exception. 
     public void _doChangeRequest(ChangeRequest request) {
 	try {
-	    Manager manager = null;
-	    if(_root instanceof CompositeActor) 
-		manager = ((CompositeActor)_root).getManager();
-	    if(manager != null) 
-		manager.requestChange(request);
-	    else 
-		request.execute();
+	    _root.requestChange(request);
 	} 
 	catch (Exception ex) {
 	    ex.printStackTrace();

@@ -28,6 +28,7 @@ improve ptolemy query/ parameter styles.
 Libraries shouldn't all be loaded at startup.
 User addable libraries.
 Need more control points for arcs in FSMNotation.
+NoStoragePolicy for Applet
 
 DONE:
 Direct connections from Ports to Ports.

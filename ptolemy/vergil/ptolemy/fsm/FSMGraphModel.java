@@ -103,6 +103,30 @@ public class FSMGraphModel extends AbstractGraphModel
     }
     	
     /**
+     * Return true if the head of the given edge can be attached to the
+     * given node.
+     */
+    public boolean acceptHead(Object edge, Object node) {
+	if (edge instanceof Arc &&
+	    node instanceof Icon) {
+	    return true;
+	} else
+	    return false;
+    }
+
+    /**
+     * Return true if the tail of the given edge can be attached to the
+     * given node.
+     */
+    public boolean acceptTail(Object edge, Object node) {
+	if (edge instanceof Arc &&
+	    node instanceof Icon) {
+	    return true;
+	} else
+	    return false;
+    }
+
+    /**
      * Add a node to the given graph and notify listeners with a
      * NODE_ADDED event. <p>
      */

@@ -32,6 +32,7 @@ package ptolemy.vergil.ptolemy;
 
 import ptolemy.actor.*;
 import ptolemy.actor.gui.*;
+import ptolemy.kernel.event.*;
 import ptolemy.kernel.util.*;
 import ptolemy.kernel.*;
 import ptolemy.data.expr.Parameter;
@@ -119,6 +120,10 @@ public class PtolemyModule implements Module {
      */
     public PtolemyModule(VergilApplication application) {
 	_application = application;
+
+	_statusListener = new VergilExecutionListener(getApplication());
+	_streamListener = new StreamExecutionListener();
+
 	Action action;
 	// First add the the generic actions.
 
@@ -148,7 +153,8 @@ public class PtolemyModule implements Module {
 	GUIUtilities.addMenuItem(menuDevel, action, 'E', "Execute System");
 
 	action = new layoutAction();
-        GUIUtilities.addMenuItem(menuDevel, action, 'L', 
+        _application.addAction(action);
+	GUIUtilities.addMenuItem(menuDevel, action, 'L', 
 				 "Automatically layout the model");
 	
 	JToolBar tb = new JToolBar();
@@ -161,13 +167,17 @@ public class PtolemyModule implements Module {
 	NodeRenderer renderer = new PortController.PortRenderer();
 	Figure figure = renderer.render(null);
 	Icon icon = 
-	    new FigureIcon(figure, 25, 25);
-	GUIUtilities.addToolBarButton(tb, new newPortAction(), 
+	    new FigureIcon(figure, 25, 25, 1, true);
+	action = new newPortAction();
+	_application.addAction(action);
+	GUIUtilities.addToolBarButton(tb, action,
 				      "New External Port", icon);
 
 	renderer = new RelationController.RelationRenderer();
 	figure = renderer.render(null);
-	icon = new FigureIcon(figure, 25, 25);
+	icon = new FigureIcon(figure, 25, 25, 1, true);
+	action = new newRelationAction();
+	_application.addAction(action);
 	GUIUtilities.addToolBarButton(tb, new newRelationAction(), 
 				      "New Relation", icon);
    
@@ -410,22 +420,56 @@ public class PtolemyModule implements Module {
 	    try {
 		CompositeActor toplevel =
 		    (CompositeActor) d.getModel();
+		Manager manager = toplevel.getManager();
 		
 		// FIXME there is alot of code in here that is similar
 		// to code in MoMLApplet and MoMLApplication.  I think
 		// this should all be in ModelPane.
 				
-		Manager manager = toplevel.getManager();
+		// Create a manager.
+		// Attaching these listeners is a nasty business...
+		// All Managers are not created equal, since some have
+		// listeners attached.
 		if(manager == null) {
-		    throw new IllegalActionException("No Manager exists!");
+		    manager =
+			new Manager(toplevel.workspace(), "Manager");
+		    toplevel.setManager(manager);
+		    manager.addExecutionListener(_statusListener);
+		    manager.addExecutionListener(_streamListener);
+		}
+		
+		// Get a frame to execute in.
+                JFrame frame;
+		// First see if we've created a frame previously.
+		List list = toplevel.attributeList(FrameAttribute.class);
+		if(list.size() == 0) {
+		    // If we don't have a frame, create a new one.
+		    frame = new JFrame();
+		    FrameAttribute attrib = 
+			new FrameAttribute(toplevel, toplevel.getName());
+		    attrib.setFrame(frame);	
+
+		    // hook into the window closing action to stop the model.
+		    final Manager finalManager = manager;
+		    frame.addWindowListener(new WindowAdapter () {
+			public void windowClosing(WindowEvent e) {
+			    finalManager.finish();
+			}
+		    });    
+		} else if(list.size() == 1) {
+		    // if we DO have a frame, then use it.
+		    FrameAttribute attrib = (FrameAttribute)list.get(0);
+		    frame = attrib.getFrame();
+		    frame.getContentPane().removeAll();
+		} else {		
+		    // this should never happen since FrameAttribute
+		    // disallows it.
+		    throw new InvalidStateException("Composite Actor can " + 
+						    "only contain one " + 
+						    "execution pane.");
 		}
 
-		// We can't reuse the execution frame, since some 
-		// window systems don't properly dispose the frame when
-		// it is closed.
-                JFrame frame;
-		frame = new JFrame();
-		
+		// Now that we have a frame, create a modelpane to put in it.
 		ModelPane modelPane = new ModelPane(toplevel);
 		frame.getContentPane().add(modelPane, BorderLayout.NORTH);
 
@@ -445,9 +489,15 @@ public class PtolemyModule implements Module {
 		}
 		
 		if(frame != null) {
+		    // Show the frame, even if it is currently iconified.
 		    frame.setVisible(true);
+		    frame.setState(frame.NORMAL);
+		    frame.show();
+		    frame.toFront();
 		}
 		
+		// Pack the frame, which has to happen AFTER it appears..
+		// This is a horrible horrible hack.
 		final JFrame packframe = frame;
 		Action packer = new AbstractAction() {
 		    public void actionPerformed(ActionEvent event) {
@@ -499,80 +549,104 @@ public class PtolemyModule implements Module {
     }
    
     // An action to create a new port.
-    private class newPortAction extends AbstractAction {
+    public class newPortAction extends FigureAction {
 	public newPortAction() {
 	    super("New External Port");
 	}
 
 	public void actionPerformed(ActionEvent e) {
+	    super.actionPerformed(e);
 	    Document doc = getApplication().getCurrentDocument();
 	    // Only create ports for ptolemy documents.
 	    if(!(doc instanceof PtolemyDocument)) return;
 	    PtolemyDocument ptolemyDocument = (PtolemyDocument)doc;
 	    JGraph jgraph = ptolemyDocument.getView();
 	    GraphPane pane = jgraph.getGraphPane();
-	    Point2D point = pane.getSize();
-	    double x = point.getX()/2;
-	    double y = point.getY()/2;
-	    EditorGraphController controller = 
+	    // Get the location
+	    double x;
+	    double y;
+	    if(getSourceType() == TOOLBAR_TYPE ||
+	       getSourceType() == MENUBAR_TYPE) {	
+		// no location in the action, so make something up.
+		Point2D point = pane.getSize();    
+		x = point.getX()/2;
+		y = point.getY()/2;
+	    } else {
+		x = getX();
+		y = getY();
+	    }
+	    
+	    final double finalX = x;
+	    final double finalY = y;
+	    final EditorGraphController controller = 
 		(EditorGraphController)pane.getGraphController();
 	    GraphModel model = controller.getGraphModel();
-	    CompositeEntity toplevel =
+	    final CompositeEntity toplevel =
 		(CompositeEntity)model.getRoot();
-	    Port port = null;
-	    if(toplevel == null)
-		return;
-	    else {
-		try {
-		    port = toplevel.newPort(toplevel.uniqueName("port"));
+	    _doChangeRequest(toplevel, new ChangeRequest(toplevel, 
+		"Creating new Port in " + toplevel.getFullName()) {
+		public void execute() throws ChangeFailedException {
+		    try {
+			Port port = 
+			    toplevel.newPort(toplevel.uniqueName("port"));
+			controller.addNode(port, finalX, finalY);
+		    } catch (Exception ex) {
+			throw new ChangeFailedException(this, ex.getMessage());
+		    }
 		}
-		catch (Exception ex) {
-		    getApplication().showError("Create port failed:", ex);
-		    return;
-		}
-	    }
-	    controller.getPortController().addNode(port, x, y);
+	    });
 	}
     }
     
     // An action to create a new relation.
-    private class newRelationAction extends AbstractAction {
+    public class newRelationAction extends FigureAction {
 	public newRelationAction() {
 	    super("New Relation");
 	}
 
 	public void actionPerformed(ActionEvent e) {
+	    super.actionPerformed(e);
 	    Document doc = getApplication().getCurrentDocument();
 	    // Only create ports for ptolemy documents.
 	    if(!(doc instanceof PtolemyDocument)) return;
 	    PtolemyDocument ptolemyDocument = (PtolemyDocument)doc;
 	    JGraph jgraph = ptolemyDocument.getView();
 	    GraphPane pane = jgraph.getGraphPane();
-	    Point2D point = pane.getSize();
-	    double x = point.getX()/2;
-	    double y = point.getY()/2;
-	    EditorGraphController controller = 
-		(EditorGraphController)pane.getGraphController();
-	    GraphModel model = controller.getGraphModel();
-	    CompositeEntity toplevel =
-		(CompositeEntity)model.getRoot();
-	    Relation relation = null;
-	    Vertex vertex = null;
-	    if(toplevel == null)
-		return;
-	    else {
-		try {
-		    relation = 
-			toplevel.newRelation(toplevel.uniqueName("relation"));
-		    vertex = new Vertex(relation,
-                        relation.uniqueName("vertex"));
-		}
-		catch (Exception ex) {
-		    getApplication().showError("Create relation failed:", ex);
-		    return;
-		}
+	    // Get the location
+	    double x;
+	    double y;
+	    if(getSourceType() == TOOLBAR_TYPE ||
+	       getSourceType() == MENUBAR_TYPE) {	
+		// no location in the action, so make something up.
+		Point2D point = pane.getSize();    
+		x = point.getX()/2;
+		y = point.getY()/2;
+	    } else {
+		x = getX();
+		y = getY();
 	    }
-	    controller.getRelationController().addNode(vertex, x, y);
+	    
+	    final double finalX = x;
+	    final double finalY = y;
+	    final EditorGraphController controller = 
+		(EditorGraphController)pane.getGraphController();
+	    final GraphModel model = controller.getGraphModel();
+	    final CompositeEntity toplevel =
+		(CompositeEntity)model.getRoot();
+	    _doChangeRequest(toplevel, new ChangeRequest(toplevel, 
+		"Creating new Relation in " + toplevel.getFullName()) {
+		public void execute() throws ChangeFailedException {
+		    try {
+			Relation relation = 
+			    toplevel.newRelation(toplevel.uniqueName("relation"));
+			Vertex vertex = new Vertex(relation,
+						   relation.uniqueName("vertex"));
+			controller.addNode(vertex, finalX, finalY);
+		    } catch (Exception ex) {
+			throw new ChangeFailedException(this, ex.getMessage());
+		    }
+		}
+	    });
 	}
     }
     
@@ -781,6 +855,18 @@ public class PtolemyModule implements Module {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
+    // Queue the change request with the given entity.  show any exceptions
+    // that occur in the user interface.
+    private void _doChangeRequest(CompositeEntity entity, 
+				 ChangeRequest request) {
+	try {
+	    entity.requestChange(request);
+	} 
+	catch (ChangeFailedException ex) {
+	    getApplication().showError("Create relation failed:", ex);
+	}
+    }
+    
     // Parse the entity and icon XML libraries.  Set the entity and icon
     // libraries for this application.
     private void _parseLibraries() {
@@ -862,4 +948,10 @@ public class PtolemyModule implements Module {
     // The resources for this module.
     private RelativeBundle _moduleResources =
 	new RelativeBundle("ptolemy.vergil.ptolemy.Ptolemy", getClass(), null);
+    
+    // A listener for setting the status line.
+    final private ExecutionListener _statusListener;
+	
+    // A listener for getting debug information.
+    final private ExecutionListener _streamListener;
 }
