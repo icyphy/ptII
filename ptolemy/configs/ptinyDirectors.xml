@@ -45,5 +45,8 @@
          </property>
       </property>
 
+      <property name="Director" class="ptolemy.actor.Director">
+         <doc>Simple director that executes actors in the order in which they were created.</doc>
+      </property>
       </group>
 
