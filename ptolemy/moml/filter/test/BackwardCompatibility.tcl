@@ -675,57 +675,59 @@ add a VisibleParameterEditorFactory named _editorFactory.
 } {ptolemy.moml.filter.AddIcon: Add specialized icons that display the value
 of one of the parameters.
 The affected actors are:
-	ptolemy.actor.lib.Scale
 	ptolemy.actor.lib.Const
-	ptolemy.actor.lib.TrigFunction
 	ptolemy.actor.lib.MathFunction
+	ptolemy.actor.lib.TrigFunction
+	ptolemy.actor.lib.Scale
 	ptolemy.actor.lib.Expression
 } {ptolemy.moml.filter.ClassChanges: change any class names that have been renamed
 Below are original class names followed by the new class names.
-	ptolemy.moml.Location	 -> ptolemy.kernel.util.Location} {ptolemy.moml.filter.HideAnnotationNames: If an annotation name ends with
+	ptolemy.kernel.util.VersionAttribute	 -> ptolemy.kernel.attributes.VersionAttribute
+	ptolemy.moml.Location	 -> ptolemy.kernel.util.Location
+} {ptolemy.moml.filter.HideAnnotationNames: If an annotation name ends with
 'annotation1', then add _hideName if necessary.
 } {ptolemy.moml.filter.PortNameChanges: Update any actor port names that have been
 renamed.
 Below are the actors that are affected, along
-with the old port name and the new port name:	ptolemy.actor.lib.Sleep
-		delay	 -> sleepTime
-	ptolemy.actor.lib.conversions.ComplexToCartesian
+with the old port name and the new port name:	ptolemy.actor.lib.conversions.CartesianToComplex
 		imag	 -> y
 		real	 -> x
-	ptolemy.actor.lib.conversions.CartesianToComplex
+	ptolemy.actor.lib.Sleep
+		delay	 -> sleepTime
+	ptolemy.actor.lib.conversions.ComplexToCartesian
 		imag	 -> y
 		real	 -> x
 } {ptolemy.moml.filter.PropertyClassChanges: Update any actor port class names
 that have been renamed.
 Below are the actors that are affected, alongwith the port name
-and the new classname:	ptolemy.domains.sdf.lib.vq.ImageUnpartition
-		output	 -> ptolemy.actor.TypedIOPort
+and the new classname:	ptolemy.domains.sdf.lib.vq.HTVQEncode
 		input	 -> ptolemy.actor.TypedIOPort
+		output	 -> ptolemy.actor.TypedIOPort
+	ptolemy.domains.sdf.lib.vq.VQDecode
+		input	 -> ptolemy.actor.TypedIOPort
+		output	 -> ptolemy.actor.TypedIOPort
+	ptolemy.domains.sdf.lib.vq.ImagePartition
+		input	 -> ptolemy.actor.TypedIOPort
+		output	 -> ptolemy.actor.TypedIOPort
 	ptolemy.actor.lib.javasound.AudioReader
 		sourceURL	 -> ptolemy.data.expr.Parameter
+	ptolemy.domains.sdf.lib.vq.ImageUnpartition
+		input	 -> ptolemy.actor.TypedIOPort
+		output	 -> ptolemy.actor.TypedIOPort
 	ptolemy.actor.lib.Expression
 		expression	 -> ptolemy.kernel.util.StringAttribute
-	ptolemy.domains.sdf.lib.vq.VQDecode
-		output	 -> ptolemy.actor.TypedIOPort
-		input	 -> ptolemy.actor.TypedIOPort
-	ptolemy.domains.sdf.lib.vq.HTVQEncode
-		output	 -> ptolemy.actor.TypedIOPort
-		input	 -> ptolemy.actor.TypedIOPort
-	ptolemy.domains.sdf.lib.vq.ImagePartition
-		output	 -> ptolemy.actor.TypedIOPort
-		input	 -> ptolemy.actor.TypedIOPort
 } {ptolemy.moml.filter.RemoveGraphicalClasses: Remove or replace classes that are graphical.
 This filter is used by the nightly build, and
 can be used to run applets so that files like
 diva.jar do not need to be downloaded.
 The following actors are affected:
-ptolemy.vergil.toolbox.AnnotationEditorFactorywill be removed
-ptolemy.vergil.basic.NodeControllerFactorywill be removed
+ptolemy.vergil.icon.AttributeValueIconwill be removed
+ptolemy.vergil.icon.ValueIconwill be replaced by ptolemy.kernel.util.Attribute
 ptolemy.vergil.icon.UpdatedValueIconwill be removed
 ptolemy.vergil.toolbox.VisibleParameterEditorFactorywill be replaced by ptolemy.kernel.util.Attribute
-ptolemy.vergil.icon.AttributeValueIconwill be removed
 ptolemy.vergil.icon.BoxedValueIconwill be removed
-ptolemy.vergil.icon.ValueIconwill be replaced by ptolemy.kernel.util.Attribute
+ptolemy.vergil.basic.NodeControllerFactorywill be removed
+ptolemy.vergil.toolbox.AnnotationEditorFactorywill be removed
 }}
 
 test BackwardCompatiblity-11.2 {Call BackwardCompatibility.toString} {
@@ -745,49 +747,51 @@ add a VisibleParameterEditorFactory named _editorFactory.
 ptolemy.moml.filter.AddIcon: Add specialized icons that display the value
 of one of the parameters.
 The affected actors are:
-	ptolemy.actor.lib.Scale
 	ptolemy.actor.lib.Const
-	ptolemy.actor.lib.TrigFunction
 	ptolemy.actor.lib.MathFunction
+	ptolemy.actor.lib.TrigFunction
+	ptolemy.actor.lib.Scale
 	ptolemy.actor.lib.Expression
 
 ptolemy.moml.filter.ClassChanges: change any class names that have been renamed
 Below are original class names followed by the new class names.
+	ptolemy.kernel.util.VersionAttribute	 -> ptolemy.kernel.attributes.VersionAttribute
 	ptolemy.moml.Location	 -> ptolemy.kernel.util.Location
+
 ptolemy.moml.filter.HideAnnotationNames: If an annotation name ends with
 'annotation1', then add _hideName if necessary.
 
 ptolemy.moml.filter.PortNameChanges: Update any actor port names that have been
 renamed.
 Below are the actors that are affected, along
-with the old port name and the new port name:	ptolemy.actor.lib.Sleep
-		delay	 -> sleepTime
-	ptolemy.actor.lib.conversions.ComplexToCartesian
+with the old port name and the new port name:	ptolemy.actor.lib.conversions.CartesianToComplex
 		imag	 -> y
 		real	 -> x
-	ptolemy.actor.lib.conversions.CartesianToComplex
+	ptolemy.actor.lib.Sleep
+		delay	 -> sleepTime
+	ptolemy.actor.lib.conversions.ComplexToCartesian
 		imag	 -> y
 		real	 -> x
 
 ptolemy.moml.filter.PropertyClassChanges: Update any actor port class names
 that have been renamed.
 Below are the actors that are affected, alongwith the port name
-and the new classname:	ptolemy.domains.sdf.lib.vq.ImageUnpartition
-		output	 -> ptolemy.actor.TypedIOPort
+and the new classname:	ptolemy.domains.sdf.lib.vq.HTVQEncode
 		input	 -> ptolemy.actor.TypedIOPort
+		output	 -> ptolemy.actor.TypedIOPort
+	ptolemy.domains.sdf.lib.vq.VQDecode
+		input	 -> ptolemy.actor.TypedIOPort
+		output	 -> ptolemy.actor.TypedIOPort
+	ptolemy.domains.sdf.lib.vq.ImagePartition
+		input	 -> ptolemy.actor.TypedIOPort
+		output	 -> ptolemy.actor.TypedIOPort
 	ptolemy.actor.lib.javasound.AudioReader
 		sourceURL	 -> ptolemy.data.expr.Parameter
+	ptolemy.domains.sdf.lib.vq.ImageUnpartition
+		input	 -> ptolemy.actor.TypedIOPort
+		output	 -> ptolemy.actor.TypedIOPort
 	ptolemy.actor.lib.Expression
 		expression	 -> ptolemy.kernel.util.StringAttribute
-	ptolemy.domains.sdf.lib.vq.VQDecode
-		output	 -> ptolemy.actor.TypedIOPort
-		input	 -> ptolemy.actor.TypedIOPort
-	ptolemy.domains.sdf.lib.vq.HTVQEncode
-		output	 -> ptolemy.actor.TypedIOPort
-		input	 -> ptolemy.actor.TypedIOPort
-	ptolemy.domains.sdf.lib.vq.ImagePartition
-		output	 -> ptolemy.actor.TypedIOPort
-		input	 -> ptolemy.actor.TypedIOPort
 
 }
 
