@@ -1,0 +1,180 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="memory" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[603, 454]">
+    </property>
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[76, 72]">
+    </property>
+    <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="10000">
+        </property>
+        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="80.0, 46.0">
+        </property>
+    </property>
+    <property name="interval" class="ptolemy.data.expr.Parameter" value="100">
+    </property>
+    <entity name="Total Expression" class="ptolemy.actor.lib.Expression">
+        <property name="expression" class="ptolemy.data.expr.Parameter" value="input + totalMemory()">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="225.0, 169.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+    </entity>
+    <entity name="Total Ramp" class="ptolemy.actor.lib.Ramp">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="init" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="step" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.moml.Location" value="70.0, 169.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="Free Expression" class="ptolemy.actor.lib.Expression">
+        <property name="expression" class="ptolemy.data.expr.Parameter" value="input + freeMemory()">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="226.0, 274.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+    </entity>
+    <entity name="LongToDouble" class="ptolemy.actor.lib.conversions.LongToDouble">
+        <property name="_location" class="ptolemy.moml.Location" value="329.0, 274.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="Free Ramp" class="ptolemy.actor.lib.Ramp">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="init" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="step" class="ptolemy.data.expr.Parameter" value="0L">
+        </property>
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.moml.Location" value="71.0, 274.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="Sleep" class="ptolemy.actor.lib.Sleep">
+        <property name="delay" class="ptolemy.data.expr.Parameter" value="interval">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="410.0, 169.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="Sleep2" class="ptolemy.actor.lib.Sleep">
+        <property name="delay" class="ptolemy.data.expr.Parameter" value="interval">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="417.0, 274.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="SequenceScope" class="ptolemy.actor.lib.gui.SequenceScope">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="legend" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="xInit" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="xUnit" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1000">
+        </property>
+        <property name="persistence" class="ptolemy.data.expr.Parameter" value="900">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="550.0, 214.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <configure><?plotml
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>JVM Memory Usage</title>
+<xLabel>Time (ms.)</xLabel>
+<yLabel>Bytes</yLabel>
+<xRange min="0.0" max="424.0"/>
+<yRange min="4006712.0" max="2.4948736E7"/>
+<wrap/>
+<default marks="points"/>
+</plot>?>
+        </configure>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation13" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation16" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation17" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Total Expression.output" relation="relation13"/>
+    <link port="Total Expression.input" relation="relation"/>
+    <link port="Total Ramp.output" relation="relation"/>
+    <link port="Free Expression.output" relation="relation5"/>
+    <link port="Free Expression.input" relation="relation6"/>
+    <link port="LongToDouble.input" relation="relation5"/>
+    <link port="LongToDouble.output" relation="relation10"/>
+    <link port="Free Ramp.output" relation="relation6"/>
+    <link port="Sleep.input" relation="relation13"/>
+    <link port="Sleep.output" relation="relation16"/>
+    <link port="Sleep2.input" relation="relation10"/>
+    <link port="Sleep2.output" relation="relation17"/>
+    <link port="SequenceScope.input" relation="relation16"/>
+    <link port="SequenceScope.input" relation="relation17"/>
+</entity>
