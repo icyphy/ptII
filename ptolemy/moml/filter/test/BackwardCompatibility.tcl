@@ -117,7 +117,7 @@ test BackwardCompatibility-3.1 {MathFunction} {
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
     </property>
     <entity name="MathFunction" class="ptolemy.actor.lib.MathFunction">
-        <property name="function" class="ptolemy.kernel.util.StringAttribute" value="exp">
+        <property name="function" class="ptolemy.data.expr.StringParameter" value="exp">
         </property>
         <port name="firstOperand" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -190,7 +190,7 @@ test BackwardCompatibility-5.1 {TrigFunction} {
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
     </property>
     <entity name="TrigFunction" class="ptolemy.actor.lib.TrigFunction">
-        <property name="function" class="ptolemy.kernel.util.StringAttribute" value="sin">
+        <property name="function" class="ptolemy.data.expr.StringParameter" value="sin">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -466,6 +466,8 @@ test BackwardCompatibility-7.2 {Expression: Property Class Change} {
         <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
         </property>
         <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="allowRateChanges" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="5">
         </property>
