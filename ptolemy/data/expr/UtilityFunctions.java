@@ -373,8 +373,11 @@ public class UtilityFunctions {
      */
     public static void loadLibrary(String library) {
         try {
-            if (library.indexOf(File.separator) == -1) {
+            if (library.indexOf("/") == -1
+                    && library.indexOf("\\") == -1) {
                 // loadLibrary does not work if the library has a \ or / in it.
+                // Unfortunately, pathnames tend to get specified with
+                // a forward slash, even under windows
                 System.loadLibrary(library);
             } else {
                 // load() does not work with relative paths.
@@ -431,45 +434,49 @@ public class UtilityFunctions {
                     // that is specially marked.  Matlab under Web Start
                     // requires this.
                     System.loadLibrary(shortLibraryName);
+                    return;
                 } catch (UnsatisfiedLinkError ex2) {
-                    // Ignore this, report the original error.
-                } 
+                    // We ignore ex2 and report the original error.
 
-                // UnsatisfiedLinkError does not have a (String, Throwable)
-                // constructor, so we call initCause().
+                    // UnsatisfiedLinkError does not have a (String, Throwable)
+                    // constructor, so we call initCause().
 
-                String userDir = "<<user.dir unknown>>";
-                try {
-                    userDir = System.getProperty("user.dir");
-                } catch (Throwable throwable) {
-                    // Ignore.
+                    String userDir = "<<user.dir unknown>>";
+                    try {
+                        userDir = System.getProperty("user.dir");
+                    } catch (Throwable throwable) {
+                        // Ignore.
+                    }
+
+                    String userHome = "<<user.home unknown>>";
+                    try {
+                        userHome = System.getProperty("user.home");
+                    } catch (Throwable throwable) {
+                        // Ignore.
+                    }
+                    
+                    String classpath = "<<classpath unknown>>";
+                    try {
+                        classpath = System.getProperty("java.class.path");
+                    } catch (Throwable throwable) {
+                        // Ignore.
+                    }
+                    Error error =
+                        new UnsatisfiedLinkError("Did not find '"+ library
+                                + "' in path, searched "
+                                + "user.home (" + userDir
+                                + ") user.dir (" + userHome
+                                + ") and the classpath for '"
+                                + libraryPath + "', but that "
+                                + "was not found either.\n"
+                                + "classpath was: "
+                                + classpath
+                                + " Also tried loadLibrary(\""
+                                + shortLibraryName + "\"");
+
+                    error.initCause(ex);
+                    throw error;
                 }
-
-                String userHome = "<<user.home unknown>>";
-                try {
-                    userHome = System.getProperty("user.home");
-                } catch (Throwable throwable) {
-                    // Ignore.
-                }
-
-                String classpath = "<<classpath unknown>>";
-                try {
-                    classpath = System.getProperty("java.class.path");
-                } catch (Throwable throwable) {
-                    // Ignore.
-                }
-                Error error =
-                    new UnsatisfiedLinkError("Did not find '"+ library
-                            + "' in path, searched "
-                            + "user.home (" + userDir
-                            + ") user.dir (" + userHome
-                            + ") and the classpath for '"
-                            + libraryPath + "', but that "
-                            + "was not found either.\n"
-                            + "classpath was: "
-                            + classpath);
-                error.initCause(ex);
-                throw error;
             }
 
             // System.loadLibrary() does not handle pathnames with separators.
