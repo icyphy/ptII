@@ -90,7 +90,7 @@ public class GenerateCopyrights {
         // Add the classnames and copyrights.
         // Alphabetical by className.
         _addIfPresent(copyrightsMap, "ptolemy.backtrack.ast.TypeAnalyzer",
-                "ptolemy/backtrack/ast/jrefactory-copyright.htm");
+                "ptolemy/backtrack/ast/eclipse-copyright.htm");
 
         _addIfPresent(copyrightsMap, "caltrop.ptolemy.actors.CalInterpreter",
                 "ptolemy/cal/saxon-copyright.htm");
