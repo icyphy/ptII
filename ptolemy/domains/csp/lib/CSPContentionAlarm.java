@@ -79,7 +79,8 @@ public class CSPContentionAlarm extends CSPActor {
             
             // State 2
             waitForDeadlock();
-            _output.send(0, null);
+	    System.out.println(getName() + " has ended timed deadlock");
+            _output.send(0, new Token());
         }
     }
     
