@@ -48,13 +48,13 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
-	BouncingBall.xml
+	BouncingBall.xml \
+	BouncingBallWithoutGR.xml 
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \
 	BouncingBall.htm \
-	BouncingBallVergil.htm \
-	BouncingBallWithoutGR.xml 
+	BouncingBallVergil.htm
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
