@@ -224,7 +224,9 @@ OPTIONAL_FILES = \
 	comm \
 	doc \
 	javasound \
+	joystick \
 	jspaces \
+	jxta \
 	'AbsoluteValue$$1.class' \
 	'AbsoluteValue$$FunctionTerm.class' \
 	'Expression$$1.class' \
