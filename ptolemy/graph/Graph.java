@@ -50,36 +50,31 @@ A graph with optionally-weighted edges and nodes.
 The nodes (edges) in a graph are always distinct, but their weights
 need not be.
 
+<p>Each node (edge) has a unique, integer label associated with it.
+These labels can be used, for example, to index arrays and matrixes
+whose rows/columns correspond to nodes (edges). See #nodeLabel(Node)
+(#edgeLabel(Edge)) for details.
+
 <p>Both directed and undirected graphs can be implemented using this
-class.  In directed graphs, the order of nodes specified to
-<code>addEdge</code> is relevant, whereas in undirected graphs, the
+class. In directed graphs, the order of nodes specified to the
+<code>addEdge</code> method is relevant, whereas in undirected graphs, the
 order is unimportant. Support for both undirected and directed graphs
 follows from the combined support for these in the underlying {@link
-Node} and {@link Edge} classes.
-
-<p>If a class <code>XXXGraph</code> extends {@link Graph}, and another
-class <code>YYYGraph</code> extends <code>XXXGraph</code>, then the
-node (edge) weight type used in <code>YYYGraph</code> must be the same
-as or must extend the node (edge) weight type used in
-<code>XXXGraph</code>. The node weight type used in {@link Graph} is
-Object, and the edge weight type used in {@link Graph} is also
-Object. These are the types of the objects that maintain the weights
-of the {@link Node}s and {@link Edge}s, respectively.
+Node} and {@link Edge} classes. For more thorough support for directed
+graphs, see {@link DirectedGraph}.
 
 <p>The same node can exist in multiple graphs, but any given graph can contain
 only one instance of the node. Node labels, however, are local to individual
-graphs. Thus, a node may have different labels in different graphs. Furthermore
-the label assigned in a given graph to a node may change over time (if the set
-of nodes in the graph changes). The weight of a node is identical for all
-instances of the node in multiple graphs.  All of this holds for edges all
-well. The same weight may be shared among multiple nodes and edges.
+graphs. Thus, the same node may have different labels in different graphs.
+Furthermore, the label assigned in a given graph to a node may change over time
+(if the set of nodes in the graph changes). The weight of a node is identical
+for all instances of the node in multiple graphs.  All of this holds for edges
+all well. The same weight may be shared among multiple nodes and edges.
 
 <p>Once assigned, node and edge weights should not be changed in ways that
 affect comparison under the <code>equals</code> method (this restriction allows
 us to efficiently map weights into their associated nodes and edges).
-Otherwise, unpredictable behavior may result. In the future, we may enforce
-this by defining a base class for weights (rather than allowing arbitrary
-objects); we refrain from doing so now for reasons of backward compatibility.
+Otherwise, unpredictable behavior may result.
 
 @author Shuvra S. Bhattacharyya, Yuhong Xiong, Jie Liu
 @version $Id$
@@ -530,7 +525,7 @@ public class Graph {
 
     /** Return the edge label of the specified edge.
      *  The edge label is a unique integer from 0 through
-     *  <em>N</em>-1, where <em>N</em> is the number of edges
+     *  <em>E</em>-1, where <em>E</em> is the number of edges
      *  currently in the graph. Edge labels maintain their
      *  consistency (remain constant) during periods when
      *  no edges are removed from the graph. When edges are removed;
@@ -929,7 +924,7 @@ public class Graph {
         return result.toString();
     }
 
-    /* Given a collection of graph elements (nodes and edges), return an array
+    /** Given a collection of graph elements (nodes and edges), return an array
      * of weights associated with these elements.
      * If a weight is common across multiple elements in
      * the collection, it will appear multiple times in the array.
@@ -1034,8 +1029,8 @@ public class Graph {
         }
     }
 
-    /* Disconnect an edge from a node that it is incident to.
-     * Do nothing if the edge is not incident to the node.
+    /** Disconnect an edge from a node that it is incident to.
+     *  Do nothing if the edge is not incident to the node.
      *  @param edge The edge.
      *  @param node The node.
      */
