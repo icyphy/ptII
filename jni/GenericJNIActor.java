@@ -368,8 +368,8 @@ public class GenericJNIActor extends TypedAtomicActor {
         }
     }
 
-    /** remove an argumentto this entity
-     * @exception IllegalActionException If an error occurs
+    /** Remove an argument from this entity.
+     * @exception IllegalActionException If an error occurs.
      */
     protected void _removeArgument(Argument arg)
             throws IllegalActionException {
@@ -444,7 +444,7 @@ public class GenericJNIActor extends TypedAtomicActor {
                                              + tab[0]);
         }
 
-        // FIXME: This adds to the path everytime the actor is initialized
+        // FIXME: This adds to the path every time the actor is initialized
         // FIXME: This does not work for me anyway.  I think the
         // java.library.path needs to be set by the environment before
         // the java process starts or else it needs to be set with
@@ -562,7 +562,7 @@ public class GenericJNIActor extends TypedAtomicActor {
                 obj = _class.newInstance();
             } catch (Error error) {
                 // Using JNI to link in a native library
-                // can result in a java.lang.UnsatistifiedLineError
+                // can result in a java.lang.UnsatisfiedLinkError
                 // which extends Error, not Exception.
                 // FIXME: Rethrow the error as an exception
                 String libraryPath =

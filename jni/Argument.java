@@ -225,7 +225,7 @@ public class Argument extends Attribute implements Settable {
             returnJNIType = "void" + returnJNIType;
         } else {
             MessageHandler.error(
-                    "JNIType unavailble for '"
+                    "JNIType unavailable for '"
                     + _cType + "': not convertible JNI type");
             returnJNIType = "void";
         }
