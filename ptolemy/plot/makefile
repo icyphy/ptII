@@ -51,18 +51,14 @@ TYVERSION =	2.0
 TYDIST =	$(TYPACKAGE)$(TYVERSION)
 TYZIP =		$(TYPACKAGE_DIR)/$(TYPACKAGE).zip
 JARFILE = 	$(TYPACKAGE).jar
-# Classes that are included in the jar file as Java Beand.
+# Classes that are included in the jar file as Java Bean.
 JBEANCLASSES =	ptolemy/plot/Plot.class ptolemy/plot/PlotLive.class
 
 SRCDIRS = 	demo #apps
 DIRS = 		$(SRCDIRS) doc #test
 
-# Sources that compile under JDK1.0.2 and later
-JSRCS1_0 = \
-
-
-# Sources that require JDK1.1 and later.
-JSRCS1_1 = \
+# Java Sources
+JSRCS = \
 	CmdLineArgException.java \
 	PlotBox.java \
 	Plot.java \
@@ -73,8 +69,6 @@ JSRCS1_1 = \
 	PlotPoint.java \
 	Message.java \
 	Pxgraph.java
-
-JSRCS = $(JSRCS1_0) $(JSRCS1_1)
 
 # Files that are not compiled, such as .tcl and .itcl files.
 EXTRA_SRCS = $(JSRCS) pxgraph pxgraph.bat testpxgraph ptplot2mif.tcl index.html
@@ -105,10 +99,7 @@ OPTIONAL_FILES = \
 # Files to be removed by 'make realclean'
 REALCLEAN_STUFF =
 
-JCLASS1_0 = $(JSRCS1_0:%.java=%.class)
-JCLASS1_1 = $(JSRCS1_1:%.java=%.class)
-
-JCLASS = $(JCLASS1_0) $(JCLASS1_1)
+JCLASS = $(JSRCS:%.java=%.class)
 
 all: sources jclass suball $(TYZIP) $(JARFILE) ptolemy.plotapplet.jar
 	-chmod a+x pxgraph testpxgraph
