@@ -97,7 +97,7 @@ OTHER_DEMO = 	EPtolemyB
 jxtaclean:
 	rm -rf .jxta ../$(OTHER_DEMO)/.jxta
 
-demo: Average.class EPtolemy.properties
+demo: EPtolemy.properties
 	@echo "See $(PTPACKAGE).htm for instructions"
 	@echo "Don't forget to run "
 	@echo "   cd ../$(OTHER_DEMO); make demo"
