@@ -4,9 +4,9 @@
 <entity name="SOC_Sobel_FSM_HDE" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 435]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 536]">
     </property>
-    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[159, 113]">
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 59]">
     </property>
     <property name="HDE Director" class="ptolemy.domains.hde.kernel.HDEDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -128,12 +128,12 @@ And Control Network Data Transfer</text></svg></configure>
         </property>
         <port name="clk" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.moml.Location" value="515.0, 100.0">
+            <property name="_location" class="ptolemy.moml.Location" value="520.0, 95.0">
             </property>
         </port>
         <port name="start" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.moml.Location" value="50.0, 235.0">
+            <property name="_location" class="ptolemy.moml.Location" value="30.0, 210.0">
             </property>
         </port>
         <port name="stop" class="ptolemy.actor.TypedIOPort">
@@ -144,7 +144,7 @@ And Control Network Data Transfer</text></svg></configure>
         <entity name="TimedDelay" class="ptolemy.domains.de.lib.TimedDelay">
             <property name="delay" class="ptolemy.data.expr.Parameter" value="one_half_per">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="475.0, 255.0">
+            <property name="_location" class="ptolemy.moml.Location" value="415.0, 220.0">
             </property>
             <port name="input" class="ptolemy.domains.de.kernel.DEIOPort">
                 <property name="input"/>
@@ -156,7 +156,7 @@ And Control Network Data Transfer</text></svg></configure>
             </port>
         </entity>
         <entity name="LogicalNot" class="ptolemy.actor.lib.logic.LogicalNot">
-            <property name="_location" class="ptolemy.moml.Location" value="265.0, 35.0">
+            <property name="_location" class="ptolemy.moml.Location" value="330.0, 70.0">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -175,7 +175,7 @@ And Control Network Data Transfer</text></svg></configure>
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="65.0, 85.0">
+            <property name="_location" class="ptolemy.moml.Location" value="140.0, 145.0">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -186,7 +186,7 @@ And Control Network Data Transfer</text></svg></configure>
             </port>
         </entity>
         <entity name="BooleanSelect" class="ptolemy.actor.lib.BooleanSelect">
-            <property name="_location" class="ptolemy.moml.Location" value="230.0, 140.0">
+            <property name="_location" class="ptolemy.moml.Location" value="225.0, 155.0">
             </property>
             <port name="trueInput" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -202,7 +202,7 @@ And Control Network Data Transfer</text></svg></configure>
             </port>
         </entity>
         <entity name="1:BooleanSelect" class="ptolemy.actor.lib.BooleanSelect">
-            <property name="_location" class="ptolemy.moml.Location" value="370.0, 220.0">
+            <property name="_location" class="ptolemy.moml.Location" value="310.0, 220.0">
             </property>
             <port name="trueInput" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -227,7 +227,7 @@ And Control Network Data Transfer</text></svg></configure>
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="195.0, 215.0">
+            <property name="_location" class="ptolemy.moml.Location" value="140.0, 210.0">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -235,20 +235,6 @@ And Control Network Data Transfer</text></svg></configure>
             <port name="trigger" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
-            </port>
-        </entity>
-        <entity name="BooleanToAnything" class="ptolemy.actor.lib.conversions.BooleanToAnything">
-            <property name="falseValue" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="trueValue" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
-            <property name="_location" class="ptolemy.moml.Location" value="415.0, 40.0">
-            </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
             </port>
         </entity>
         <entity name="TriggeredClock" class="ptolemy.actor.lib.TriggeredClock">
@@ -262,7 +248,7 @@ And Control Network Data Transfer</text></svg></configure>
             </property>
             <property name="values" class="ptolemy.data.expr.Parameter" value="{true, false}">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="190.0, 285.0">
+            <property name="_location" class="ptolemy.moml.Location" value="140.0, 270.0">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -274,15 +260,7 @@ And Control Network Data Transfer</text></svg></configure>
             </port>
         </entity>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="410.0, 95.0">
-            </vertex>
-        </relation>
-        <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="310.0, 280.0">
-            </vertex>
-        </relation>
-        <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="340.0, 145.0">
+            <vertex name="vertex1" value="455.0, 95.0">
             </vertex>
         </relation>
         <relation name="relation16" class="ptolemy.actor.TypedIORelation">
@@ -291,20 +269,22 @@ And Control Network Data Transfer</text></svg></configure>
         </relation>
         <relation name="relation8" class="ptolemy.actor.TypedIORelation">
         </relation>
-        <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="385.0, 270.0">
-            </vertex>
-        </relation>
         <relation name="relation10" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="95.0, 185.0">
+            <vertex name="vertex1" value="95.0, 210.0">
             </vertex>
         </relation>
         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        </relation>
         <link port="clk" relation="relation"/>
         <link port="start" relation="relation10"/>
         <link port="stop" relation="relation3"/>
-        <link port="TimedDelay.input" relation="relation9"/>
+        <link port="TimedDelay.input" relation="relation5"/>
         <link port="TimedDelay.output" relation="relation"/>
         <link port="LogicalNot.input" relation="relation"/>
         <link port="LogicalNot.output" relation="relation17"/>
@@ -313,15 +293,14 @@ And Control Network Data Transfer</text></svg></configure>
         <link port="BooleanSelect.trueInput" relation="relation16"/>
         <link port="BooleanSelect.falseInput" relation="relation17"/>
         <link port="BooleanSelect.control" relation="relation3"/>
-        <link port="BooleanSelect.output" relation="relation7"/>
+        <link port="BooleanSelect.output" relation="relation4"/>
         <link port="1:BooleanSelect.trueInput" relation="relation8"/>
-        <link port="1:BooleanSelect.falseInput" relation="relation7"/>
-        <link port="1:BooleanSelect.control" relation="relation6"/>
-        <link port="1:BooleanSelect.output" relation="relation9"/>
+        <link port="1:BooleanSelect.falseInput" relation="relation4"/>
+        <link port="1:BooleanSelect.control" relation="relation2"/>
+        <link port="1:BooleanSelect.output" relation="relation5"/>
         <link port="2:Const.output" relation="relation8"/>
         <link port="2:Const.trigger" relation="relation10"/>
-        <link port="BooleanToAnything.input" relation="relation"/>
-        <link port="TriggeredClock.output" relation="relation6"/>
+        <link port="TriggeredClock.output" relation="relation2"/>
         <link port="TriggeredClock.trigger" relation="relation10"/>
     </entity>
     <entity name="cluster1_Calc" class="ptolemy.actor.TypedCompositeActor">
@@ -329,28 +308,28 @@ And Control Network Data Transfer</text></svg></configure>
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[821, 368]">
         </property>
-        <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[230, 186]">
+        <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[166, 196]">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="260.0, 180.0">
         </property>
         <port name="par_out" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.moml.Location" value="715.0, 150.0">
+            <property name="_location" class="ptolemy.moml.Location" value="720.0, 425.0">
             </property>
         </port>
         <port name="start" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.moml.Location" value="-410.0, 360.0">
+            <property name="_location" class="ptolemy.moml.Location" value="-395.0, 375.0">
             </property>
         </port>
         <port name="clk" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.moml.Location" value="-440.0, 490.0">
+            <property name="_location" class="ptolemy.moml.Location" value="-400.0, 500.0">
             </property>
         </port>
         <port name="done" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.moml.Location" value="540.0, 615.0">
+            <property name="_location" class="ptolemy.moml.Location" value="695.0, 560.0">
             </property>
         </port>
         <entity name="1:BooleanToAnything" class="ptolemy.actor.lib.conversions.BooleanToAnything">
@@ -358,7 +337,9 @@ And Control Network Data Transfer</text></svg></configure>
             </property>
             <property name="trueValue" class="ptolemy.data.expr.Parameter" value="1">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="175.0, 395.0">
+            <property name="_location" class="ptolemy.moml.Location" value="230.0, 385.0">
+            </property>
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -377,7 +358,7 @@ And Control Network Data Transfer</text></svg></configure>
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="100.0, 285.0">
+            <property name="_location" class="ptolemy.moml.Location" value="90.0, 340.0">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -388,7 +369,7 @@ And Control Network Data Transfer</text></svg></configure>
             </port>
         </entity>
         <entity name="1:Multiplexor" class="ptolemy.actor.lib.Multiplexor">
-            <property name="_location" class="ptolemy.moml.Location" value="285.0, 225.0">
+            <property name="_location" class="ptolemy.moml.Location" value="405.0, 360.0">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -404,7 +385,7 @@ And Control Network Data Transfer</text></svg></configure>
         <entity name="1:ArrayMemory" class="ptolemy.domains.hde.lib.ArrayMemory">
             <property name="length" class="ptolemy.data.expr.Parameter" value="25">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="460.0, 275.0">
+            <property name="_location" class="ptolemy.moml.Location" value="650.0, 440.0">
             </property>
             <port name="index" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -436,8 +417,11 @@ And Control Network Data Transfer</text></svg></configure>
             <port name="write" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
+            <port name="indexPort" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
         </entity>
-        <entity name="1:Expression" class="ptolemy.actor.lib.Expression">
+        <entity name="Zero These Locations" class="ptolemy.actor.lib.Expression">
             <property name="expression" class="ptolemy.data.expr.Parameter" value="(in&lt;5)||(in&gt;20)||(in%5==0)||(in%5==4)">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -446,7 +430,7 @@ And Control Network Data Transfer</text></svg></configure>
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="-240.0, 245.0">
+            <property name="_location" class="ptolemy.moml.Location" value="60.0, 385.0">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -457,7 +441,7 @@ And Control Network Data Transfer</text></svg></configure>
                 <property name="input"/>
             </port>
         </entity>
-        <entity name="5:Const" class="ptolemy.actor.lib.Const">
+        <entity name="Input Array" class="ptolemy.actor.lib.Const">
             <property name="value" class="ptolemy.data.expr.Parameter" value="{120,120,120,120,120,120,240,250,230,120,120,210,245,245,120,120,251,210,252,120,120,120,120,120,120}">
             </property>
             <doc>Create a constant sequence</doc>
@@ -467,7 +451,7 @@ And Control Network Data Transfer</text></svg></configure>
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="-245.0, 90.0">
+            <property name="_location" class="ptolemy.moml.Location" value="-215.0, 305.0">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -480,7 +464,11 @@ And Control Network Data Transfer</text></svg></configure>
             </port>
         </entity>
         <entity name="ArrayElementI" class="ptolemy.actor.lib.ArrayElementI">
-            <property name="_location" class="ptolemy.moml.Location" value="145.0, 145.0">
+            <property name="index" class="ptolemy.data.expr.Parameter" value="24">
+            </property>
+            <property name="indexPort" class="ptolemy.data.expr.Parameter" value="24">
+            </property>
+            <property name="_location" class="ptolemy.moml.Location" value="235.0, 300.0">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -488,11 +476,11 @@ And Control Network Data Transfer</text></svg></configure>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
-            <port name="index" class="ptolemy.actor.TypedIOPort">
+            <port name="indexPort" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
         </entity>
-        <entity name="1:Ramp" class="ptolemy.actor.lib.Ramp">
+        <entity name="Array_Index" class="ptolemy.actor.lib.Ramp">
             <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="25">
             </property>
             <property name="init" class="ptolemy.data.expr.Parameter" value="0">
@@ -500,7 +488,7 @@ And Control Network Data Transfer</text></svg></configure>
             <property name="step" class="ptolemy.data.expr.Parameter" value="1">
             </property>
             <doc>Create a sequence of tokens with increasing value</doc>
-            <property name="_location" class="ptolemy.moml.Location" value="-65.0, 485.0">
+            <property name="_location" class="ptolemy.moml.Location" value="-320.0, 450.0">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -510,7 +498,7 @@ And Control Network Data Transfer</text></svg></configure>
                 <property name="multiport"/>
             </port>
         </entity>
-        <entity name="3:1:Ramp" class="ptolemy.actor.lib.Ramp">
+        <entity name="BitTime" class="ptolemy.actor.lib.Ramp">
             <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="30">
             </property>
             <property name="init" class="ptolemy.data.expr.Parameter" value="0">
@@ -518,7 +506,7 @@ And Control Network Data Transfer</text></svg></configure>
             <property name="step" class="ptolemy.data.expr.Parameter" value="1">
             </property>
             <doc>Create a sequence of tokens with increasing value</doc>
-            <property name="_location" class="ptolemy.moml.Location" value="-100.0, 610.0">
+            <property name="_location" class="ptolemy.moml.Location" value="-155.0, 500.0">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -528,7 +516,7 @@ And Control Network Data Transfer</text></svg></configure>
                 <property name="multiport"/>
             </port>
         </entity>
-        <entity name="Expression" class="ptolemy.actor.lib.Expression">
+        <entity name="Write Serial" class="ptolemy.actor.lib.Expression">
             <property name="expression" class="ptolemy.data.expr.Parameter" value="(in&lt;25)">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -537,7 +525,7 @@ And Control Network Data Transfer</text></svg></configure>
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="-60.0, 705.0">
+            <property name="_location" class="ptolemy.moml.Location" value="75.0, 535.0">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -548,7 +536,7 @@ And Control Network Data Transfer</text></svg></configure>
                 <property name="input"/>
             </port>
         </entity>
-        <entity name="4:Expression" class="ptolemy.actor.lib.Expression">
+        <entity name="Read Parallel" class="ptolemy.actor.lib.Expression">
             <property name="expression" class="ptolemy.data.expr.Parameter" value="(in==27)">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -557,7 +545,7 @@ And Control Network Data Transfer</text></svg></configure>
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="70.0, 525.0">
+            <property name="_location" class="ptolemy.moml.Location" value="70.0, 485.0">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -568,7 +556,7 @@ And Control Network Data Transfer</text></svg></configure>
                 <property name="input"/>
             </port>
         </entity>
-        <entity name="1:4:Expression" class="ptolemy.actor.lib.Expression">
+        <entity name="Output Done" class="ptolemy.actor.lib.Expression">
             <property name="expression" class="ptolemy.data.expr.Parameter" value="(in==28)">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -577,7 +565,7 @@ And Control Network Data Transfer</text></svg></configure>
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="410.0, 620.0">
+            <property name="_location" class="ptolemy.moml.Location" value="555.0, 560.0">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -589,37 +577,21 @@ And Control Network Data Transfer</text></svg></configure>
             </port>
         </entity>
         <relation name="1:relation6" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="415.0, 480.0">
-            </vertex>
-        </relation>
-        <relation name="1:relation20" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="340.0, 260.0">
+            <vertex name="vertex1" value="475.0, 470.0">
             </vertex>
         </relation>
         <relation name="1:relation32" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex" class="ptolemy.moml.Vertex" value="-100.0, 165.0">
-            </vertex>
-        </relation>
-        <relation name="1:relation16" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="340.0, 425.0">
+            <vertex name="vertex" value="-260.0, 450.0">
             </vertex>
         </relation>
         <relation name="1:relation18" class="ptolemy.actor.TypedIORelation">
         </relation>
-        <relation name="1:relation19" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="235.0, 315.0">
-            </vertex>
-        </relation>
         <relation name="1:relation" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="30.0, 25.0">
-            </vertex>
-        </relation>
-        <relation name="relation" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="650.0, 155.0">
+            <vertex name="vertex1" value="35.0, 240.0">
             </vertex>
         </relation>
         <relation name="relation14" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="-215.0, 390.0">
+            <vertex name="vertex1" value="-200.0, 340.0">
             </vertex>
         </relation>
         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
@@ -627,51 +599,60 @@ And Control Network Data Transfer</text></svg></configure>
         <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="1:relation5" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="-360.0, 500.0">
+            <vertex name="vertex1" value="-360.0, 500.0">
             </vertex>
         </relation>
         <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="-50.0, 585.0">
+            <vertex name="vertex1" value="-30.0, 560.0">
             </vertex>
         </relation>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation7" class="ptolemy.actor.TypedIORelation">
         </relation>
         <link port="par_out" relation="relation"/>
         <link port="start" relation="relation14"/>
         <link port="clk" relation="1:relation5"/>
         <link port="done" relation="relation2"/>
         <link port="1:BooleanToAnything.input" relation="1:relation18"/>
-        <link port="1:BooleanToAnything.output" relation="1:relation19"/>
+        <link port="1:BooleanToAnything.output" relation="relation7"/>
         <link port="1:Const13.output" relation="relation4"/>
         <link port="1:Const13.trigger" relation="relation14"/>
         <link port="1:Multiplexor.input" relation="relation3"/>
         <link port="1:Multiplexor.input" relation="relation4"/>
-        <link port="1:Multiplexor.output" relation="1:relation20"/>
-        <link port="1:Multiplexor.select" relation="1:relation19"/>
+        <link port="1:Multiplexor.output" relation="relation6"/>
+        <link port="1:Multiplexor.select" relation="relation7"/>
         <link port="1:ArrayMemory.index" relation="1:relation32"/>
         <link port="1:ArrayMemory.dataInParallel" relation="1:relation"/>
         <link port="1:ArrayMemory.dataOutParallel" relation="relation"/>
-        <link port="1:ArrayMemory.dataInSerial" relation="1:relation20"/>
+        <link port="1:ArrayMemory.dataInSerial" relation="relation6"/>
         <link port="1:ArrayMemory.serialOrParallel" relation="1:relation6"/>
-        <link port="1:ArrayMemory.read" relation="1:relation16"/>
+        <link port="1:ArrayMemory.read" relation="relation5"/>
         <link port="1:ArrayMemory.write" relation="1:relation6"/>
-        <link port="1:Expression.output" relation="1:relation18"/>
-        <link port="1:Expression.in" relation="1:relation32"/>
-        <link port="5:Const.output" relation="1:relation"/>
-        <link port="5:Const.trigger" relation="relation14"/>
+        <link port="1:ArrayMemory.indexPort" relation="1:relation32"/>
+        <link port="Zero These Locations.output" relation="1:relation18"/>
+        <link port="Zero These Locations.in" relation="1:relation32"/>
+        <link port="Input Array.output" relation="1:relation"/>
+        <link port="Input Array.trigger" relation="relation14"/>
         <link port="ArrayElementI.input" relation="1:relation"/>
         <link port="ArrayElementI.output" relation="relation3"/>
-        <link port="ArrayElementI.index" relation="1:relation32"/>
-        <link port="1:Ramp.output" relation="1:relation32"/>
-        <link port="1:Ramp.trigger" relation="1:relation5"/>
-        <link port="3:1:Ramp.output" relation="relation8"/>
-        <link port="3:1:Ramp.trigger" relation="1:relation5"/>
-        <link port="Expression.output" relation="1:relation6"/>
-        <link port="Expression.in" relation="relation8"/>
-        <link port="4:Expression.output" relation="1:relation16"/>
-        <link port="4:Expression.in" relation="relation8"/>
-        <link port="1:4:Expression.output" relation="relation2"/>
-        <link port="1:4:Expression.in" relation="relation8"/>
+        <link port="ArrayElementI.indexPort" relation="1:relation32"/>
+        <link port="Array_Index.output" relation="1:relation32"/>
+        <link port="Array_Index.trigger" relation="1:relation5"/>
+        <link port="BitTime.output" relation="relation8"/>
+        <link port="BitTime.trigger" relation="1:relation5"/>
+        <link port="Write Serial.output" relation="1:relation6"/>
+        <link port="Write Serial.in" relation="relation8"/>
+        <link port="Read Parallel.output" relation="relation5"/>
+        <link port="Read Parallel.in" relation="relation8"/>
+        <link port="Output Done.output" relation="relation2"/>
+        <link port="Output Done.in" relation="relation8"/>
     </entity>
     <entity name="start" class="ptolemy.domains.de.lib.SingleEvent">
         <property name="time" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -1378,120 +1359,94 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
         </property>
         <port name="start" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.moml.Location" value="-290.0, 665.0">
+            <property name="_location" class="ptolemy.moml.Location" value="-180.0, -15.0">
             </property>
         </port>
         <port name="clock" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.moml.Location" value="-550.0, 440.0">
+            <property name="_location" class="ptolemy.moml.Location" value="-160.0, 180.0">
             </property>
         </port>
         <port name="done" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.moml.Location" value="-305.0, 570.0">
+            <property name="_location" class="ptolemy.moml.Location" value="740.0, 210.0">
             </property>
         </port>
         <port name="par_sobel_result" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.moml.Location" value="945.0, 330.0">
+            <property name="_location" class="ptolemy.moml.Location" value="735.0, 100.0">
             </property>
         </port>
         <port name="in_array" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.moml.Location" value="-20.0, 225.0">
+            <property name="_location" class="ptolemy.moml.Location" value="-170.0, 280.0">
             </property>
         </port>
-        <entity name="neighbor_array_4_so" class="ptolemy.actor.TypedCompositeActor">
+        <entity name="Four Array Storage" class="ptolemy.actor.TypedCompositeActor">
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 350]">
             </property>
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[111, 42]">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="505.0, 20.0">
-            </property>
-            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            <property name="_location" class="ptolemy.moml.Location" value="325.0, -55.0">
             </property>
             <port name="write" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.moml.Location" value="-60.0, 315.0">
                 </property>
-                <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
-                </property>
             </port>
             <port name="ser_par" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="-65.0, 25.0">
-                </property>
-                <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
+                <property name="_location" class="ptolemy.moml.Location" value="-125.0, 10.0">
                 </property>
             </port>
             <port name="read" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.moml.Location" value="-80.0, 150.0">
                 </property>
-                <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
-                </property>
             </port>
             <port name="i0" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="-60.0, 65.0">
-                </property>
-                <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
+                <property name="_location" class="ptolemy.moml.Location" value="-135.0, 55.0">
                 </property>
             </port>
             <port name="i1" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="-190.0, 80.0">
-                </property>
-                <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
+                <property name="_location" class="ptolemy.moml.Location" value="-85.0, 110.0">
                 </property>
             </port>
             <port name="i2" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.moml.Location" value="-65.0, 245.0">
                 </property>
-                <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
-                </property>
             </port>
             <port name="par_dat" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.moml.Location" value="-75.0, -35.0">
-                </property>
-                <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
             </port>
             <port name="d0" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.moml.Location" value="1060.0, 10.0">
                 </property>
-                <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
-                </property>
             </port>
             <port name="d1" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.moml.Location" value="945.0, 140.0">
-                </property>
-                <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
             </port>
             <port name="d2" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.moml.Location" value="880.0, 255.0">
                 </property>
-                <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
-                </property>
             </port>
             <port name="d3" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.moml.Location" value="990.0, 350.0">
                 </property>
-                <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
-                </property>
             </port>
             <port name="i3" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.moml.Location" value="-45.0, 375.0">
-                </property>
-                <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
             </port>
             <entity name="4:ArrayMemory" class="ptolemy.domains.hde.lib.ArrayMemory">
@@ -1535,7 +1490,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
             <entity name="5:ArrayMemory" class="ptolemy.domains.hde.lib.ArrayMemory">
                 <property name="length" class="ptolemy.data.expr.Parameter" value="25">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="725.0, 180.0">
+                <property name="_location" class="ptolemy.moml.Location" value="720.0, 170.0">
                 </property>
                 <port name="index" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -1681,25 +1636,25 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                 </port>
             </entity>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex1" class="ptolemy.moml.Vertex" value="100.0, 320.0">
+                <vertex name="vertex1" value="100.0, 320.0">
                 </vertex>
             </relation>
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex1" class="ptolemy.moml.Vertex" value="95.0, 40.0">
+                <vertex name="vertex1" value="95.0, 40.0">
                 </vertex>
             </relation>
             <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex1" class="ptolemy.moml.Vertex" value="340.0, 25.0">
+                <vertex name="vertex1" value="340.0, 25.0">
                 </vertex>
             </relation>
             <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex1" class="ptolemy.moml.Vertex" value="35.0, 170.0">
+                <vertex name="vertex1" value="35.0, 170.0">
                 </vertex>
             </relation>
             <relation name="relation8" class="ptolemy.actor.TypedIORelation">
             </relation>
             <relation name="1:relation9" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex1" class="ptolemy.moml.Vertex" value="565.0, 475.0">
+                <vertex name="vertex1" value="565.0, 475.0">
                 </vertex>
             </relation>
             <relation name="relation3" class="ptolemy.actor.TypedIORelation">
@@ -1762,97 +1717,71 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
             <link port="Const.output" relation="1:relation9"/>
             <link port="Const.trigger" relation="relation8"/>
         </entity>
-        <entity name="neighbor_array_4_so2" class="ptolemy.actor.TypedCompositeActor">
+        <entity name="Four_Array Storage" class="ptolemy.actor.TypedCompositeActor">
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 350]">
             </property>
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[111, 42]">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="510.0, 145.0">
-            </property>
-            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            <property name="_location" class="ptolemy.moml.Location" value="330.0, 40.0">
             </property>
             <port name="write" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.moml.Location" value="-60.0, 315.0">
-                </property>
-                <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
             </port>
             <port name="ser_par" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.moml.Location" value="-65.0, 25.0">
                 </property>
-                <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
-                </property>
             </port>
             <port name="read" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.moml.Location" value="-80.0, 150.0">
-                </property>
-                <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
             </port>
             <port name="i0" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.moml.Location" value="-60.0, 65.0">
                 </property>
-                <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
-                </property>
             </port>
             <port name="i1" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="-190.0, 80.0">
-                </property>
-                <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
+                <property name="_location" class="ptolemy.moml.Location" value="-105.0, 95.0">
                 </property>
             </port>
             <port name="i2" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.moml.Location" value="-65.0, 245.0">
                 </property>
-                <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
-                </property>
             </port>
             <port name="par_dat" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.moml.Location" value="-75.0, -35.0">
-                </property>
-                <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
             </port>
             <port name="d0" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.moml.Location" value="1060.0, 10.0">
                 </property>
-                <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
-                </property>
             </port>
             <port name="d1" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.moml.Location" value="945.0, 140.0">
-                </property>
-                <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
             </port>
             <port name="d2" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.moml.Location" value="880.0, 255.0">
                 </property>
-                <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
-                </property>
             </port>
             <port name="d3" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.moml.Location" value="990.0, 350.0">
                 </property>
-                <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
-                </property>
             </port>
             <port name="i3" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.moml.Location" value="-45.0, 375.0">
-                </property>
-                <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
             </port>
             <entity name="4:ArrayMemory" class="ptolemy.domains.hde.lib.ArrayMemory">
@@ -2042,25 +1971,25 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                 </port>
             </entity>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex1" class="ptolemy.moml.Vertex" value="100.0, 320.0">
+                <vertex name="vertex1" value="100.0, 320.0">
                 </vertex>
             </relation>
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex1" class="ptolemy.moml.Vertex" value="95.0, 40.0">
+                <vertex name="vertex1" value="95.0, 40.0">
                 </vertex>
             </relation>
             <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex1" class="ptolemy.moml.Vertex" value="340.0, 25.0">
+                <vertex name="vertex1" value="340.0, 25.0">
                 </vertex>
             </relation>
             <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex1" class="ptolemy.moml.Vertex" value="35.0, 170.0">
+                <vertex name="vertex1" value="35.0, 170.0">
                 </vertex>
             </relation>
             <relation name="relation8" class="ptolemy.actor.TypedIORelation">
             </relation>
             <relation name="1:relation9" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex1" class="ptolemy.moml.Vertex" value="565.0, 475.0">
+                <vertex name="vertex1" value="565.0, 475.0">
                 </vertex>
             </relation>
             <relation name="relation3" class="ptolemy.actor.TypedIORelation">
@@ -2128,14 +2057,12 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
             </property>
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 127]">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="0.0, -215.0">
+            <property name="_location" class="ptolemy.moml.Location" value="115.0, -5.0">
             </property>
             <port name="i_alg" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
                 <property name="_location" class="ptolemy.moml.Location" value="55.0, 135.0">
-                </property>
-                <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
                 </property>
@@ -2145,15 +2072,11 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                 <property name="multiport"/>
                 <property name="_location" class="ptolemy.moml.Location" value="420.0, 80.0">
                 </property>
-                <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
-                </property>
             </port>
             <port name="e" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
                 <property name="multiport"/>
                 <property name="_location" class="ptolemy.moml.Location" value="420.0, 35.0">
-                </property>
-                <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
             </port>
             <port name="ne" class="ptolemy.actor.TypedIOPort">
@@ -2161,15 +2084,11 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                 <property name="multiport"/>
                 <property name="_location" class="ptolemy.moml.Location" value="420.0, 120.0">
                 </property>
-                <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
-                </property>
             </port>
             <port name="se" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
                 <property name="multiport"/>
                 <property name="_location" class="ptolemy.moml.Location" value="420.0, 165.0">
-                </property>
-                <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
             </port>
             <port name="s" class="ptolemy.actor.TypedIOPort">
@@ -2177,15 +2096,11 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                 <property name="multiport"/>
                 <property name="_location" class="ptolemy.moml.Location" value="420.0, 210.0">
                 </property>
-                <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
-                </property>
             </port>
             <port name="n" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
                 <property name="multiport"/>
                 <property name="_location" class="ptolemy.moml.Location" value="420.0, 250.0">
-                </property>
-                <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
             </port>
             <port name="sw" class="ptolemy.actor.TypedIOPort">
@@ -2193,15 +2108,11 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                 <property name="multiport"/>
                 <property name="_location" class="ptolemy.moml.Location" value="430.0, 295.0">
                 </property>
-                <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
-                </property>
             </port>
             <port name="nw" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
                 <property name="multiport"/>
                 <property name="_location" class="ptolemy.moml.Location" value="425.0, 350.0">
-                </property>
-                <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
             </port>
             <entity name="Expression" class="ptolemy.actor.lib.Expression">
@@ -2365,7 +2276,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                 </port>
             </entity>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex1" class="ptolemy.moml.Vertex" value="120.0, 145.0">
+                <vertex name="vertex1" value="120.0, 145.0">
                 </vertex>
             </relation>
             <relation name="relation8" class="ptolemy.actor.TypedIORelation">
@@ -2413,7 +2324,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
         <entity name="ArrayMemory" class="ptolemy.domains.hde.lib.ArrayMemory">
             <property name="length" class="ptolemy.data.expr.Parameter" value="25">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="720.0, 360.0">
+            <property name="_location" class="ptolemy.moml.Location" value="645.0, 110.0">
             </property>
             <port name="index" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -2440,74 +2351,56 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                 <property name="input"/>
             </port>
         </entity>
-        <entity name="newwithops" class="ptolemy.actor.TypedCompositeActor">
+        <entity name="Gradients" class="ptolemy.actor.TypedCompositeActor">
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 127]">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="890.0, 60.0">
+            <property name="_location" class="ptolemy.moml.Location" value="500.0, -10.0">
             </property>
             <port name="1:s" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.moml.Location" value="80.0, 85.0">
-                </property>
-                <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
             </port>
             <port name="1:ne" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.moml.Location" value="80.0, 250.0">
                 </property>
-                <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
-                </property>
             </port>
             <port name="1:se" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.moml.Location" value="80.0, 290.0">
-                </property>
-                <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
             </port>
             <port name="1:w" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.moml.Location" value="80.0, 165.0">
                 </property>
-                <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
-                </property>
             </port>
             <port name="1:sw" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.moml.Location" value="80.0, 335.0">
-                </property>
-                <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
             </port>
             <port name="1:n" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.moml.Location" value="75.0, 40.0">
                 </property>
-                <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
-                </property>
             </port>
             <port name="1:nw" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.moml.Location" value="80.0, 200.0">
-                </property>
-                <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
             </port>
             <port name="1:e" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.moml.Location" value="80.0, 125.0">
                 </property>
-                <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
-                </property>
             </port>
             <port name="1:nij" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.moml.Location" value="555.0, 295.0">
-                </property>
-                <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
             </port>
             <entity name="1:AbsoluteValue" class="ptolemy.actor.lib.AbsoluteValue">
@@ -2598,7 +2491,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                 </port>
             </entity>
             <relation name="1:relation17" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex1" class="ptolemy.moml.Vertex" value="150.0, 255.0">
+                <vertex name="vertex1" value="150.0, 255.0">
                 </vertex>
             </relation>
             <relation name="1:relation2" class="ptolemy.actor.TypedIORelation">
@@ -2608,17 +2501,17 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
             <relation name="1:relation10" class="ptolemy.actor.TypedIORelation">
             </relation>
             <relation name="1:relation" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex1" class="ptolemy.moml.Vertex" value="145.0, 205.0">
+                <vertex name="vertex1" value="145.0, 205.0">
                 </vertex>
             </relation>
             <relation name="1:relation19" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex1" class="ptolemy.moml.Vertex" value="145.0, 325.0">
+                <vertex name="vertex1" value="145.0, 325.0">
                 </vertex>
             </relation>
             <relation name="1:relation9" class="ptolemy.actor.TypedIORelation">
             </relation>
             <relation name="1:relation18" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex1" class="ptolemy.moml.Vertex" value="145.0, 285.0">
+                <vertex name="vertex1" value="145.0, 285.0">
                 </vertex>
             </relation>
             <relation name="1:relation5" class="ptolemy.actor.TypedIORelation">
@@ -2666,126 +2559,8 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
             <link port="1:Expression.output" relation="relation2"/>
             <link port="1:Expression.in" relation="relation"/>
         </entity>
-        <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
-            <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="20">
-            </property>
-            <property name="init" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="step" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
-            <doc>Create a sequence of tokens with increasing value</doc>
-            <property name="_location" class="ptolemy.moml.Location" value="-395.0, 280.0">
-            </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
-        </entity>
-        <entity name="1:Expression" class="ptolemy.actor.lib.Expression">
-            <property name="expression" class="ptolemy.data.expr.Parameter" value="(in==0)">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
-                </property>
-                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-                </property>
-            </property>
-            <property name="_location" class="ptolemy.moml.Location" value="-15.0, 145.0">
-            </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-                <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
-                </property>
-            </port>
-            <port name="in" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-            </port>
-        </entity>
-        <entity name="2:1:Expression" class="ptolemy.actor.lib.Expression">
-            <property name="expression" class="ptolemy.data.expr.Parameter" value="(in&gt;=2)">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
-                </property>
-                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-                </property>
-            </property>
-            <property name="_location" class="ptolemy.moml.Location" value="55.0, 80.0">
-            </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-                <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
-                </property>
-            </port>
-            <port name="in" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-            </port>
-        </entity>
-        <entity name="3:1:Expression" class="ptolemy.actor.lib.Expression">
-            <property name="expression" class="ptolemy.data.expr.Parameter" value="(in==0)||(in==6)||(in==7)||(in==8)||(in==11)||(in==12)||(in==13)||(in==16)||(in==17)||(in==18)">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
-                </property>
-                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-                </property>
-            </property>
-            <property name="_location" class="ptolemy.moml.Location" value="-255.0, 30.0">
-            </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-                <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
-                </property>
-            </port>
-            <port name="in" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-            </port>
-        </entity>
-        <entity name="4:1:Expression" class="ptolemy.actor.lib.Expression">
-            <property name="expression" class="ptolemy.data.expr.Parameter" value="(in==19)">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
-                </property>
-                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-                </property>
-            </property>
-            <property name="_location" class="ptolemy.moml.Location" value="440.0, 305.0">
-            </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-                <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
-                </property>
-            </port>
-            <port name="in" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-            </port>
-        </entity>
-        <entity name="5:4:1:Expression" class="ptolemy.actor.lib.Expression">
-            <property name="expression" class="ptolemy.data.expr.Parameter" value="!((in==0)||(in&gt;18))">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
-                </property>
-                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-                </property>
-            </property>
-            <property name="_location" class="ptolemy.moml.Location" value="460.0, 450.0">
-            </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-                <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
-                </property>
-            </port>
-            <port name="in" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-            </port>
-        </entity>
         <entity name="BooleanSelect" class="ptolemy.actor.lib.BooleanSelect">
-            <property name="_location" class="ptolemy.moml.Location" value="-50.0, -130.0">
+            <property name="_location" class="ptolemy.moml.Location" value="10.0, -5.0">
             </property>
             <port name="trueInput" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -2800,26 +2575,6 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                 <property name="output"/>
             </port>
         </entity>
-        <entity name="6:2:1:Expression" class="ptolemy.actor.lib.Expression">
-            <property name="expression" class="ptolemy.data.expr.Parameter" value="(in&lt;6)||(in&gt;18)">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
-                </property>
-                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-                </property>
-            </property>
-            <property name="_location" class="ptolemy.moml.Location" value="-435.0, -205.0">
-            </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-                <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
-                </property>
-            </port>
-            <port name="in" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-            </port>
-        </entity>
         <entity name="Const31" class="ptolemy.actor.lib.Const">
             <property name="value" class="ptolemy.data.expr.Parameter" value="6">
             </property>
@@ -2830,7 +2585,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="-145.0, -10.0">
+            <property name="_location" class="ptolemy.moml.Location" value="-70.0, -15.0">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -2840,40 +2595,272 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                 <property name="multiport"/>
             </port>
         </entity>
-        <entity name="1:1:Expression" class="ptolemy.actor.lib.Expression">
-            <property name="expression" class="ptolemy.data.expr.Parameter" value="(in==20)">
+        <entity name="1:Control" class="ptolemy.actor.TypedCompositeActor">
+            <property name="_location" class="ptolemy.moml.Location" value="50.0, 180.0">
             </property>
-            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
-                </property>
-                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-                </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="-420.0, 570.0">
+            <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute">
             </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-                <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
-                </property>
-            </port>
-            <port name="in" class="ptolemy.actor.TypedIOPort">
+            <port name="Clk" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
+                <property name="_location" class="ptolemy.moml.Location" value="-485.0, 315.0">
+                </property>
             </port>
+            <port name="SOPI" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.moml.Location" value="-5.0, 220.0">
+                </property>
+            </port>
+            <port name="AB" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.moml.Location" value="10.0, 290.0">
+                </property>
+            </port>
+            <port name="WPAI" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.moml.Location" value="5.0, 350.0">
+                </property>
+            </port>
+            <port name="CSFTL" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.moml.Location" value="15.0, 135.0">
+                </property>
+            </port>
+            <port name="RPAO" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.moml.Location" value="15.0, 395.0">
+                </property>
+            </port>
+            <port name="SPSO" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.moml.Location" value="15.0, 460.0">
+                </property>
+            </port>
+            <port name="DO" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.moml.Location" value="-55.0, 495.0">
+                </property>
+            </port>
+            <port name="Ramp" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.moml.Location" value="-45.0, 560.0">
+                </property>
+            </port>
+            <entity name="1:Ramp" class="ptolemy.actor.lib.Ramp">
+                <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="20">
+                </property>
+                <property name="init" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="step" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+                <doc>Create a sequence of tokens with increasing value</doc>
+                <property name="_location" class="ptolemy.moml.Location" value="-540.0, 465.0">
+                </property>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+                <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="multiport"/>
+                </port>
+            </entity>
+            <entity name="1:Serial Or Parallel Select Out" class="ptolemy.actor.lib.Expression">
+                <property name="expression" class="ptolemy.data.expr.Parameter" value="!((in==0)||(in&gt;18))">
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.moml.Location" value="-275.0, 425.0">
+                </property>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                    <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
+                    </property>
+                </port>
+                <port name="in" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+            </entity>
+            <entity name="1:Read Parallel Array Out" class="ptolemy.actor.lib.Expression">
+                <property name="expression" class="ptolemy.data.expr.Parameter" value="(in==19)">
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.moml.Location" value="-180.0, 395.0">
+                </property>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                    <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
+                    </property>
+                </port>
+                <port name="in" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+            </entity>
+            <entity name="1:Compute Sobel For These Locations" class="ptolemy.actor.lib.Expression">
+                <property name="expression" class="ptolemy.data.expr.Parameter" value="(in==0)||(in==6)||(in==7)||(in==8)||(in==11)||(in==12)||(in==13)||(in==16)||(in==17)||(in==18)">
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.moml.Location" value="-505.0, 165.0">
+                </property>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                    <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
+                    </property>
+                </port>
+                <port name="in" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+            </entity>
+            <entity name="1:Serial Or Parallel Select In" class="ptolemy.actor.lib.Expression">
+                <property name="expression" class="ptolemy.data.expr.Parameter" value="(in&gt;=2)">
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.moml.Location" value="-385.0, 245.0">
+                </property>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                    <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
+                    </property>
+                </port>
+                <port name="in" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+            </entity>
+            <entity name="1:Algorithm Boundaries" class="ptolemy.actor.lib.Expression">
+                <property name="expression" class="ptolemy.data.expr.Parameter" value="(in&lt;6)||(in&gt;18)">
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.moml.Location" value="-270.0, 295.0">
+                </property>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                    <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
+                    </property>
+                </port>
+                <port name="in" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+            </entity>
+            <entity name="1:Write Parallel Array In" class="ptolemy.actor.lib.Expression">
+                <property name="expression" class="ptolemy.data.expr.Parameter" value="(in==0)">
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.moml.Location" value="-205.0, 335.0">
+                </property>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                    <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
+                    </property>
+                </port>
+                <port name="in" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+            </entity>
+            <entity name="1:Done Output" class="ptolemy.actor.lib.Expression">
+                <property name="expression" class="ptolemy.data.expr.Parameter" value="(in==20)">
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.moml.Location" value="-260.0, 470.0">
+                </property>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                    <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
+                    </property>
+                </port>
+                <port name="in" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+            </entity>
+            <relation name="1:relation" class="ptolemy.actor.TypedIORelation">
+                <vertex name="vertex1" value="-430.0, 400.0">
+                </vertex>
+            </relation>
+            <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <link port="Clk" relation="relation"/>
+            <link port="SOPI" relation="relation11"/>
+            <link port="AB" relation="relation10"/>
+            <link port="WPAI" relation="relation9"/>
+            <link port="CSFTL" relation="relation12"/>
+            <link port="RPAO" relation="relation8"/>
+            <link port="SPSO" relation="relation7"/>
+            <link port="DO" relation="relation4"/>
+            <link port="Ramp" relation="1:relation"/>
+            <link port="1:Ramp.output" relation="1:relation"/>
+            <link port="1:Ramp.trigger" relation="relation"/>
+            <link port="1:Serial Or Parallel Select Out.output" relation="relation7"/>
+            <link port="1:Serial Or Parallel Select Out.in" relation="1:relation"/>
+            <link port="1:Read Parallel Array Out.output" relation="relation8"/>
+            <link port="1:Read Parallel Array Out.in" relation="1:relation"/>
+            <link port="1:Compute Sobel For These Locations.output" relation="relation12"/>
+            <link port="1:Compute Sobel For These Locations.in" relation="1:relation"/>
+            <link port="1:Serial Or Parallel Select In.output" relation="relation11"/>
+            <link port="1:Serial Or Parallel Select In.in" relation="1:relation"/>
+            <link port="1:Algorithm Boundaries.output" relation="relation10"/>
+            <link port="1:Algorithm Boundaries.in" relation="1:relation"/>
+            <link port="1:Write Parallel Array In.output" relation="relation9"/>
+            <link port="1:Write Parallel Array In.in" relation="1:relation"/>
+            <link port="1:Done Output.output" relation="relation4"/>
+            <link port="1:Done Output.in" relation="1:relation"/>
         </entity>
-        <relation name="relation" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="-325.0, 390.0">
-            </vertex>
-        </relation>
         <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="220.0, 160.0">
+            <vertex name="vertex1" value="220.0, 160.0">
             </vertex>
         </relation>
         <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="205.0, 185.0">
+            <vertex name="vertex1" value="155.0, 195.0">
             </vertex>
         </relation>
         <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="115.0, 675.0">
+            <vertex name="vertex1" value="155.0, 220.0">
             </vertex>
         </relation>
         <relation name="relation7" class="ptolemy.actor.TypedIORelation">
@@ -2904,75 +2891,69 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
         </relation>
         <relation name="relation19" class="ptolemy.actor.TypedIORelation">
         </relation>
-        <relation name="relation24" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="865.0, 490.0">
-            </vertex>
-        </relation>
-        <relation name="relation27" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="565.0, 210.0">
-            </vertex>
-        </relation>
         <relation name="relation28" class="ptolemy.actor.TypedIORelation">
         </relation>
-        <relation name="relation38" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="465.0, 270.0">
-            </vertex>
-        </relation>
         <relation name="relation42" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="550.0, 420.0">
-            </vertex>
-        </relation>
-        <relation name="relation21" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="790.0, 335.0">
-            </vertex>
-        </relation>
-        <relation name="relation22" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="-210.0, 480.0">
+            <vertex name="vertex1" value="300.0, 145.0">
             </vertex>
         </relation>
         <relation name="relation26" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="475.0, 240.0">
+            <vertex name="vertex1" value="470.0, 165.0">
             </vertex>
-        </relation>
-        <relation name="relation29" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation30" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation32" class="ptolemy.actor.TypedIORelation">
         </relation>
-        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <relation name="relation25" class="ptolemy.actor.TypedIORelation">
         </relation>
-        <relation name="relation20" class="ptolemy.actor.TypedIORelation">
+        <relation name="relation31" class="ptolemy.actor.TypedIORelation">
         </relation>
-        <link port="start" relation="relation22"/>
-        <link port="clock" relation="relation2"/>
-        <link port="done" relation="relation20"/>
-        <link port="par_sobel_result" relation="relation21"/>
+        <relation name="relation35" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex1" value="425.0, 120.0">
+            </vertex>
+        </relation>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation36" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation37" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation39" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation40" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation41" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="start" relation="relation41"/>
+        <link port="clock" relation="relation"/>
+        <link port="done" relation="relation25"/>
+        <link port="par_sobel_result" relation="relation36"/>
         <link port="in_array" relation="relation26"/>
-        <link port="neighbor_array_4_so.write" relation="relation4"/>
-        <link port="neighbor_array_4_so.ser_par" relation="relation5"/>
-        <link port="neighbor_array_4_so.read" relation="relation6"/>
-        <link port="neighbor_array_4_so.i0" relation="relation7"/>
-        <link port="neighbor_array_4_so.i1" relation="relation28"/>
-        <link port="neighbor_array_4_so.i2" relation="relation8"/>
-        <link port="neighbor_array_4_so.par_dat" relation="relation26"/>
-        <link port="neighbor_array_4_so.d0" relation="relation3"/>
-        <link port="neighbor_array_4_so.d1" relation="relation14"/>
-        <link port="neighbor_array_4_so.d2" relation="relation15"/>
-        <link port="neighbor_array_4_so.d3" relation="relation16"/>
-        <link port="neighbor_array_4_so.i3" relation="relation9"/>
-        <link port="neighbor_array_4_so2.write" relation="relation4"/>
-        <link port="neighbor_array_4_so2.ser_par" relation="relation5"/>
-        <link port="neighbor_array_4_so2.read" relation="relation6"/>
-        <link port="neighbor_array_4_so2.i0" relation="relation10"/>
-        <link port="neighbor_array_4_so2.i1" relation="relation11"/>
-        <link port="neighbor_array_4_so2.i2" relation="relation12"/>
-        <link port="neighbor_array_4_so2.par_dat" relation="relation26"/>
-        <link port="neighbor_array_4_so2.d0" relation="relation17"/>
-        <link port="neighbor_array_4_so2.d1" relation="relation18"/>
-        <link port="neighbor_array_4_so2.d2" relation="relation19"/>
-        <link port="neighbor_array_4_so2.d3" relation="relation27"/>
-        <link port="neighbor_array_4_so2.i3" relation="relation13"/>
+        <link port="Four Array Storage.write" relation="relation4"/>
+        <link port="Four Array Storage.ser_par" relation="relation5"/>
+        <link port="Four Array Storage.read" relation="relation6"/>
+        <link port="Four Array Storage.i0" relation="relation7"/>
+        <link port="Four Array Storage.i1" relation="relation28"/>
+        <link port="Four Array Storage.i2" relation="relation8"/>
+        <link port="Four Array Storage.par_dat" relation="relation26"/>
+        <link port="Four Array Storage.d0" relation="relation3"/>
+        <link port="Four Array Storage.d1" relation="relation14"/>
+        <link port="Four Array Storage.d2" relation="relation15"/>
+        <link port="Four Array Storage.d3" relation="relation16"/>
+        <link port="Four Array Storage.i3" relation="relation9"/>
+        <link port="Four_Array Storage.write" relation="relation4"/>
+        <link port="Four_Array Storage.ser_par" relation="relation5"/>
+        <link port="Four_Array Storage.read" relation="relation6"/>
+        <link port="Four_Array Storage.i0" relation="relation10"/>
+        <link port="Four_Array Storage.i1" relation="relation11"/>
+        <link port="Four_Array Storage.i2" relation="relation12"/>
+        <link port="Four_Array Storage.par_dat" relation="relation26"/>
+        <link port="Four_Array Storage.d0" relation="relation17"/>
+        <link port="Four_Array Storage.d1" relation="relation18"/>
+        <link port="Four_Array Storage.d2" relation="relation19"/>
+        <link port="Four_Array Storage.d3" relation="relation39"/>
+        <link port="Four_Array Storage.i3" relation="relation13"/>
         <link port="neighbors.i_alg" relation="relation30"/>
         <link port="neighbors.w" relation="relation7"/>
         <link port="neighbors.e" relation="relation28"/>
@@ -2982,44 +2963,37 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
         <link port="neighbors.n" relation="relation11"/>
         <link port="neighbors.sw" relation="relation12"/>
         <link port="neighbors.nw" relation="relation13"/>
-        <link port="ArrayMemory.index" relation="relation"/>
+        <link port="ArrayMemory.index" relation="relation35"/>
         <link port="ArrayMemory.dataInParallel" relation="relation26"/>
-        <link port="ArrayMemory.dataOutParallel" relation="relation21"/>
-        <link port="ArrayMemory.dataInSerial" relation="relation24"/>
+        <link port="ArrayMemory.dataOutParallel" relation="relation36"/>
+        <link port="ArrayMemory.dataInSerial" relation="relation37"/>
         <link port="ArrayMemory.serialOrParallel" relation="relation42"/>
-        <link port="ArrayMemory.read" relation="relation38"/>
+        <link port="ArrayMemory.read" relation="relation40"/>
         <link port="ArrayMemory.write" relation="relation6"/>
-        <link port="newwithops.1:s" relation="relation17"/>
-        <link port="newwithops.1:ne" relation="relation15"/>
-        <link port="newwithops.1:se" relation="relation16"/>
-        <link port="newwithops.1:w" relation="relation3"/>
-        <link port="newwithops.1:sw" relation="relation19"/>
-        <link port="newwithops.1:n" relation="relation18"/>
-        <link port="newwithops.1:nw" relation="relation27"/>
-        <link port="newwithops.1:e" relation="relation14"/>
-        <link port="newwithops.1:nij" relation="relation24"/>
-        <link port="Ramp.output" relation="relation"/>
-        <link port="Ramp.trigger" relation="relation2"/>
-        <link port="1:Expression.output" relation="relation4"/>
-        <link port="1:Expression.in" relation="relation"/>
-        <link port="2:1:Expression.output" relation="relation5"/>
-        <link port="2:1:Expression.in" relation="relation"/>
-        <link port="3:1:Expression.output" relation="relation6"/>
-        <link port="3:1:Expression.in" relation="relation"/>
-        <link port="4:1:Expression.output" relation="relation38"/>
-        <link port="4:1:Expression.in" relation="relation"/>
-        <link port="5:4:1:Expression.output" relation="relation42"/>
-        <link port="5:4:1:Expression.in" relation="relation"/>
+        <link port="Gradients.1:s" relation="relation17"/>
+        <link port="Gradients.1:ne" relation="relation15"/>
+        <link port="Gradients.1:se" relation="relation16"/>
+        <link port="Gradients.1:w" relation="relation3"/>
+        <link port="Gradients.1:sw" relation="relation19"/>
+        <link port="Gradients.1:n" relation="relation18"/>
+        <link port="Gradients.1:nw" relation="relation39"/>
+        <link port="Gradients.1:e" relation="relation14"/>
+        <link port="Gradients.1:nij" relation="relation37"/>
         <link port="BooleanSelect.trueInput" relation="relation32"/>
-        <link port="BooleanSelect.falseInput" relation="relation"/>
-        <link port="BooleanSelect.control" relation="relation29"/>
+        <link port="BooleanSelect.falseInput" relation="relation35"/>
+        <link port="BooleanSelect.control" relation="relation31"/>
         <link port="BooleanSelect.output" relation="relation30"/>
-        <link port="6:2:1:Expression.output" relation="relation29"/>
-        <link port="6:2:1:Expression.in" relation="relation"/>
         <link port="Const31.output" relation="relation32"/>
-        <link port="Const31.trigger" relation="relation22"/>
-        <link port="1:1:Expression.output" relation="relation20"/>
-        <link port="1:1:Expression.in" relation="relation"/>
+        <link port="Const31.trigger" relation="relation41"/>
+        <link port="1:Control.Clk" relation="relation"/>
+        <link port="1:Control.SOPI" relation="relation5"/>
+        <link port="1:Control.AB" relation="relation31"/>
+        <link port="1:Control.WPAI" relation="relation4"/>
+        <link port="1:Control.CSFTL" relation="relation6"/>
+        <link port="1:Control.RPAO" relation="relation40"/>
+        <link port="1:Control.SPSO" relation="relation42"/>
+        <link port="1:Control.DO" relation="relation25"/>
+        <link port="1:Control.Ramp" relation="relation35"/>
     </entity>
     <entity name="zero_delay" class="ptolemy.domains.de.lib.TimedDelay">
         <property name="delay" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -3054,7 +3028,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
         </property>
         <property name="one_half_per" class="ptolemy.data.expr.Parameter" value=".5">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="540.0, 265.0">
+        <property name="_location" class="ptolemy.moml.Location" value="535.0, 285.0">
         </property>
         <port name="clk" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -3190,15 +3164,15 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
             </port>
         </entity>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="410.0, 95.0">
+            <vertex name="vertex1" value="410.0, 95.0">
             </vertex>
         </relation>
         <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="310.0, 280.0">
+            <vertex name="vertex1" value="310.0, 280.0">
             </vertex>
         </relation>
         <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="340.0, 145.0">
+            <vertex name="vertex1" value="340.0, 145.0">
             </vertex>
         </relation>
         <relation name="relation16" class="ptolemy.actor.TypedIORelation">
@@ -3208,11 +3182,11 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
         <relation name="relation8" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="385.0, 270.0">
+            <vertex name="vertex1" value="385.0, 270.0">
             </vertex>
         </relation>
         <relation name="relation10" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="95.0, 185.0">
+            <vertex name="vertex1" value="95.0, 185.0">
             </vertex>
         </relation>
         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
@@ -3250,6 +3224,9 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
             <property name="input"/>
             <property name="multiport"/>
         </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
     </entity>
     <entity name="Test2" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{{0, 0, 0, 0, 0, 0, 255, 255, 255, 0, 0, 255, 31, 255, 0, 0, 255, 255, 255, 0, 0, 0, 0, 0, 0}}}">
@@ -3262,15 +3239,18 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
             <property name="input"/>
             <property name="multiport"/>
         </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="170.0, 25.0">
+        <vertex name="vertex1" value="170.0, 25.0">
         </vertex>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="415.0, 210.0">
+        <vertex name="vertex1" value="415.0, 210.0">
         </vertex>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
@@ -3278,11 +3258,11 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation13" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="390.0, 85.0">
+        <vertex name="vertex1" value="390.0, 85.0">
         </vertex>
     </relation>
     <relation name="relation14" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="635.0, 165.0">
+        <vertex name="vertex1" value="635.0, 165.0">
         </vertex>
     </relation>
     <relation name="relation16" class="ptolemy.actor.TypedIORelation">
@@ -3292,15 +3272,15 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
     <relation name="relation20" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation22" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="515.0, 245.0">
+        <vertex name="vertex1" value="515.0, 245.0">
         </vertex>
     </relation>
     <relation name="relation28" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="520.0, 90.0">
+        <vertex name="vertex1" value="520.0, 90.0">
         </vertex>
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="225.0, 325.0">
+        <vertex name="vertex1" value="225.0, 325.0">
         </vertex>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
