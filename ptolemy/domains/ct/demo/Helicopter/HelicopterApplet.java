@@ -66,57 +66,458 @@ public class HelicopterApplet extends CTApplet {
      */
     public void init() {
 
-    super.init();
-    Panel controlpanel = new Panel();
-    controlpanel.setLayout(new BorderLayout());
-    add(controlpanel);
-    Panel progresspanel = new Panel();
-    //progresspanel.setLayout(new BorderLayout());
-    add(progresspanel);        
-    _currentTimeCanvas = new ProgressBar();
-    controlpanel.add(_currentTimeCanvas);
+        super.init();
+        Panel controlpanel = new Panel();
+        controlpanel.setLayout(new BorderLayout());
+        add(controlpanel);
+        Panel progresspanel = new Panel();
+        //progresspanel.setLayout(new BorderLayout());
+        add(progresspanel);        
+        _currentTimeCanvas = new ProgressBar();
+        controlpanel.add(_currentTimeCanvas);
 
 
-    _query = new Query();
-    //_query.addQueryListener(new ParameterListener());
-    controlpanel.add("West", _query);
-    _query.addLine("stopT", "Stop Time", "70.0");
-    Panel runcontrols = new Panel();
-    runcontrols.setLayout(new GridLayout(1,3));
-    controlpanel.add("East",runcontrols);
-    runcontrols.add(_createRunControls(1));
-    _actionButton = new Button("Climb");
-    _actionButton.addActionListener(new ActionButtonListener());
-    runcontrols.add(_actionButton);
+        _query = new Query();
+        //_query.addQueryListener(new ParameterListener());
+        controlpanel.add("West", _query);
+        _query.addLine("stopT", "Stop Time", "70.0");
+        Panel runcontrols = new Panel();
+        runcontrols.setLayout(new GridLayout(1,3));
+        controlpanel.add("East",runcontrols);
+        runcontrols.add(_createRunControls(1));
+        _actionButton = new Button("Climb");
+        _actionButton.addActionListener(new ActionButtonListener());
+        runcontrols.add(_actionButton);
  
 
-    Panel plotpanel = new Panel();
-    plotpanel.setLayout(new GridLayout(2, 2));
-    add(plotpanel, "Center");
-    Panel xzPanel = new Panel();
-    Panel vxPanel = new Panel();
-    Panel pzPanel = new Panel();
-    Panel thPanel = new Panel();
-    plotpanel.add(xzPanel);
-    plotpanel.add(vxPanel);
-    plotpanel.add(pzPanel);
-    plotpanel.add(thPanel);
+        Panel plotpanel = new Panel();
+        plotpanel.setLayout(new GridLayout(2, 2));
+        add(plotpanel, "Center");
+        Panel xzPanel = new Panel();
+        Panel vxPanel = new Panel();
+        Panel pzPanel = new Panel();
+        Panel thPanel = new Panel();
+        plotpanel.add(xzPanel);
+        plotpanel.add(vxPanel);
+        plotpanel.add(pzPanel);
+        plotpanel.add(thPanel);
 
-    try {
-        // Set up the top level composite actor, director and manager
-        _toplevel.setName("HelicopterSystem");
-        _dir = new CTMultiSolverDirector(_toplevel, "OuterDirector");
-        _thisManager = _manager;
-        //_dir.setVERBOSE(true);
-        //_dir.setDEBUG(true);
+        try {
+            // Set up the top level composite actor, director and manager
+            _toplevel.setName("HelicopterSystem");
+            _dir = new CTMultiSolverDirector(_toplevel, "OuterDirector");
+            _thisManager = _manager;
+            //_dir.setVERBOSE(true);
+            //_dir.setDEBUG(true);
 
-        // ---------------------------------
-        // Create the composite actors.
-        // ---------------------------------
+            // ---------------------------------
+            // Create the composite actors.
+            // ---------------------------------
 
-        CTCompositeActor sub = new CTCompositeActor(_toplevel, 
-                "Controllers");
-        _hsdir = new HSDirector(sub, "HSDirector");
+            CTCompositeActor sub = new CTCompositeActor(_toplevel, 
+                    "Controllers");
+            _hsdir = new HSDirector(sub, "HSDirector");
+
+            TypedIOPort subinPx = new TypedIOPort(sub, "inputPx");
+            subinPx.setInput(true);
+            subinPx.setOutput(false);
+            TypedIOPort subinDPx = new TypedIOPort(sub, "inputDPx");
+            subinDPx.setInput(true);
+            subinDPx.setOutput(false);
+            TypedIOPort subinDDPx = new TypedIOPort(sub, "inputDDPx");
+            subinDDPx.setInput(true);
+            subinDDPx.setOutput(false);
+            TypedIOPort subinD3Px = new TypedIOPort(sub, "inputD3Px");
+            subinD3Px.setInput(true);
+            subinD3Px.setOutput(false);
+            TypedIOPort subinD4Px = new TypedIOPort(sub, "inputD4Px");
+            subinD4Px.setInput(true);
+            subinD4Px.setOutput(false);
+            
+            TypedIOPort subinPz = new TypedIOPort(sub, "inputPz");
+            subinPz.setInput(true);
+            subinPz.setOutput(false);
+            TypedIOPort subinDPz = new TypedIOPort(sub, "inputDPz");
+            subinDPz.setInput(true);
+            subinDPz.setOutput(false);
+            TypedIOPort subinDDPz = new TypedIOPort(sub, "inputDDPz");
+            subinDDPz.setInput(true);
+            subinDDPz.setOutput(false);
+            TypedIOPort subinD3Pz = new TypedIOPort(sub, "inputD3Pz");
+            subinD3Pz.setInput(true);
+            subinD3Pz.setOutput(false);
+            TypedIOPort subinD4Pz = new TypedIOPort(sub, "inputD4Pz");
+            subinD4Pz.setInput(true);
+            subinD4Pz.setOutput(false);
+
+            TypedIOPort subinAction = new TypedIOPort(sub, "inputAction");
+            subinAction.setInput(true);
+            subinAction.setOutput(false);
+            
+            TypedIOPort suboutVx = new TypedIOPort(sub, "outputVx");
+            suboutVx.setInput(false);
+            suboutVx.setOutput(true);
+            TypedIOPort suboutVz = new TypedIOPort(sub, "outputVz");
+            suboutVz.setInput(false);
+            suboutVz.setOutput(true);
+            
+            HSController hsctrl = new HSController(sub, "HSController");
+            _hsdir.setController(hsctrl);
+
+            TypedIOPort hscInAct = new TypedIOPort(hsctrl, "inputAction");
+            hscInAct.setInput(true);
+            hscInAct.setOutput(false);
+            TypedIOPort hscInPz = new TypedIOPort(hsctrl, "inputPz");
+            hscInPz.setInput(true);
+            hscInPz.setOutput(false);
+
+            FSMState hoverState = new FSMState(hsctrl, "HoverState");
+            FSMState accelState = new FSMState(hsctrl, "AccelState");
+            FSMState cruise1State = new FSMState(hsctrl, "Cruise1State");
+            FSMState climbState = new FSMState(hsctrl, "ClimbState");
+            FSMState cruise2State = new FSMState(hsctrl, "Cruise2State");
+            hsctrl.setInitialState(hoverState);
+            CTCompositeActor linHover = _createLinearizer(sub, 0);
+            CTCompositeActor linAccel = _createLinearizer(sub, 1);
+            CTCompositeActor linCruise1 = _createLinearizer(sub, 2);
+            CTCompositeActor linClimb = _createLinearizer(sub, 3);
+            CTCompositeActor linCruise2 = _createLinearizer(sub, 4);
+            hoverState.setRefinement(linHover);
+            accelState.setRefinement(linAccel);
+            cruise1State.setRefinement(linCruise1);
+            climbState.setRefinement(linClimb);
+            cruise2State.setRefinement(linCruise2);
+            FSMTransition tr1 = hsctrl.createTransition(hoverState, accelState);
+            tr1.setTriggerCondition("inputAction");
+            FSMTransition tr2 = hsctrl.createTransition(accelState, cruise1State);
+            tr2.setTriggerCondition("(outputV >= 5.0) && (inputPz > -2.05) && (inputPz < -1.95)");
+            FSMTransition tr3 = hsctrl.createTransition(cruise1State, climbState);
+            tr3.setTriggerCondition("(outputV > 4.9) && (outputV < 5.1) && (outputR > -0.01) && (outputR < 0.01)");
+            FSMTransition tr4 = hsctrl.createTransition(climbState, cruise2State);
+            tr4.setTriggerCondition("(outputV > 4.9) && (outputV < 5.1) && (inputPz > -10.05) && (inputPz < -9.95)");
+
+            TypedIORelation rSubPx = new TypedIORelation(sub, "rSubPx");
+            TypedIORelation rSubDPx = new TypedIORelation(sub, "rSubDPx");
+            TypedIORelation rSubDDPx = new TypedIORelation(sub, "rSubDDPx");
+            TypedIORelation rSubD3Px = new TypedIORelation(sub, "rSubD3Px");
+            TypedIORelation rSubD4Px = new TypedIORelation(sub, "rSubD4Px");
+            TypedIORelation rSubPz = new TypedIORelation(sub, "rSubPz");
+            TypedIORelation rSubDPz = new TypedIORelation(sub, "rSubDPz");
+            TypedIORelation rSubDDPz = new TypedIORelation(sub, "rSubDDPz");
+            TypedIORelation rSubD3Pz = new TypedIORelation(sub, "rSubD3Pz");
+            TypedIORelation rSubD4Pz = new TypedIORelation(sub, "rSubD4Pz");
+            TypedIORelation rSubOutVx = new TypedIORelation(sub, "rSubOutVx");
+            TypedIORelation rSubOutVz = new TypedIORelation(sub, "rSubOutVz");
+            TypedIORelation rSubOutV = new TypedIORelation(sub, "rSubOutV");
+            TypedIORelation rSubOutR = new TypedIORelation(sub, "rSubOutR");
+
+            subinPx.link(rSubPx);
+            subinDPx.link(rSubDPx);
+            subinDDPx.link(rSubDDPx);
+            subinD3Px.link(rSubD3Px);
+            subinD4Px.link(rSubD4Px);
+            subinPz.link(rSubPz);
+            subinDPz.link(rSubDPz);
+            subinDDPz.link(rSubDDPz);
+            subinD3Pz.link(rSubD3Pz);
+            subinD4Pz.link(rSubD4Pz);
+            suboutVx.link(rSubOutVx);
+            suboutVz.link(rSubOutVz);
+
+            sub.connect(subinAction, hscInAct);
+            hscInPz.link(rSubPz);
+            Enumeration entities = sub.getEntities();
+            while(entities.hasMoreElements()) {
+                Entity ent = (Entity)entities.nextElement();
+                Port p = ent.getPort("inputPx");
+                if (p != null) {
+                    p.link(rSubPx);
+                }
+                p = ent.getPort("inputDPx");
+                if (p != null) {
+                    p.link(rSubDPx);
+                }
+                p = ent.getPort("inputDDPx");
+                if (p != null) {
+                    p.link(rSubDDPx);
+                }
+                p = ent.getPort("inputD3Px");
+                if (p != null) {
+                    p.link(rSubD3Px);
+                }
+                p = ent.getPort("inputD4Px");
+                if (p != null) {
+                    p.link(rSubD4Px);
+                }
+                p = ent.getPort("inputPz");
+                if (p != null) {
+                    p.link(rSubPz);
+                }
+                p = ent.getPort("inputDPz");
+                if (p != null) {
+                    p.link(rSubDPz);
+                }
+                p = ent.getPort("inputDDPz");
+                if (p != null) {
+                    p.link(rSubDDPz);
+                }
+                p = ent.getPort("inputD3Pz");
+                if (p != null) {
+                    p.link(rSubD3Pz);
+                }
+                p = ent.getPort("inputD4Pz");
+                if (p != null) {
+                    p.link(rSubD4Pz);
+                }
+                p = ent.getPort("outputVx");
+                if (p != null) {
+                    p.link(rSubOutVx);
+                }
+                p = ent.getPort("outputVz");
+                if (p != null) {
+                    p.link(rSubOutVz);
+                }
+                p = ent.getPort("outputV");
+                if (p != null) {
+                    p.link(rSubOutV);
+                }
+                p = ent.getPort("outputR");
+                if (p != null) {
+                    p.link(rSubOutR);
+                }
+            }
+            // CTActors
+
+            _button = new CTButtonEvent(_toplevel, "Button");
+            _toplevel.connect(_button.output, subinAction);
+
+            HelicopterActor heli = new HelicopterActor(_toplevel, "Helicopter");
+            ControllerActor ctrl = new ControllerActor(_toplevel, "Controller");
+            XZHigherDerivatives higher = new XZHigherDerivatives(_toplevel, 
+                    "XZHigherDerivatives");     
+            
+            CTIntegrator Px = new CTIntegrator(_toplevel, "IntegratorPx");
+            CTIntegrator DPx = new CTIntegrator(_toplevel, "IntegratorDPx");
+
+            CTIntegrator Pz = new CTIntegrator(_toplevel, "IntegratorPz");
+            CTIntegrator DPz = new CTIntegrator(_toplevel, "IntegratorDPz");
+
+            CTIntegrator Th = new CTIntegrator(_toplevel, "IntegratorTh");
+            CTIntegrator DTh = new CTIntegrator(_toplevel, "IntegratorDTh");
+
+            CTIntegrator Tm = new CTIntegrator(_toplevel, "IntegratorTm");
+            CTIntegrator DTm = new CTIntegrator(_toplevel, "IntegratorDTm");
+            CTIntegrator DDTm = new CTIntegrator(_toplevel, "IntegratorDDTm");
+
+            CTIntegrator A = new CTIntegrator(_toplevel, "IntegratorA");
+
+            Scale MINUS = new Scale(_toplevel, "MINUS");
+            //CTPlot ctPlot = new CTPlot(_toplevel, "CTPlot", ctPanel);
+            XYPlotter xzPlot = new XYPlotter(_toplevel, "Helicopter Position");
+            xzPlot.setPanel(xzPanel);
+            xzPlot.plot.setGrid(true);
+            xzPlot.plot.setXRange(-1.0, 100.0);
+            xzPlot.plot.setYRange(1.0, 12.0);
+            xzPlot.plot.setSize(200, 200);
+            xzPlot.plot.addLegend(0,"(Px,Pz)");
+
+            TimedPlotter vxPlot = new TimedPlotter(_toplevel, 
+                    "Horizontal Speed");
+            vxPlot.setPanel(vxPanel);
+            vxPlot.plot.setGrid(true);
+            vxPlot.plot.setXRange(0.0, 70.0);
+            vxPlot.plot.setYRange(0.0, 6.0);
+            vxPlot.plot.setSize(200, 200);
+            vxPlot.plot.addLegend(0,"Vx");
+
+            TimedPlotter pzPlot = new TimedPlotter(_toplevel, 
+                    "Vertival Position");
+            pzPlot.setPanel(pzPanel);
+            pzPlot.plot.setGrid(true);
+            pzPlot.plot.setXRange(0.0, 70.0);
+            pzPlot.plot.setYRange(0.0, 12.0);
+            pzPlot.plot.setSize(200, 200);
+            pzPlot.plot.addLegend(0,"Pz");
+
+            TimedPlotter thPlot = new TimedPlotter(_toplevel, 
+                    "Pitch Angle");
+            thPlot.setPanel(thPanel);
+            thPlot.plot.setGrid(true);
+            thPlot.plot.setXRange(0.0, 70.0);
+            thPlot.plot.setYRange(-0.05, 0.05);
+            thPlot.plot.setSize(200, 200);
+            thPlot.plot.addLegend(0,"Th");
+                
+            // CTConnections
+            TypedIORelation rPx = new TypedIORelation(_toplevel, "rPx");
+            TypedIORelation rDPx = new TypedIORelation(_toplevel, "rDPx");
+            TypedIORelation rDDPx = new TypedIORelation(_toplevel, "rDDPx");
+            TypedIORelation rD3Px = new TypedIORelation(_toplevel, "rD3Px");
+            TypedIORelation rD4Px = new TypedIORelation(_toplevel, "rD4Px");
+
+            TypedIORelation rPz = new TypedIORelation(_toplevel, "rPz");
+            TypedIORelation rDPz = new TypedIORelation(_toplevel, "rDPz");
+            TypedIORelation rDDPz = new TypedIORelation(_toplevel, "rDDPz");
+            TypedIORelation rD3Pz = new TypedIORelation(_toplevel, "rD3Pz");
+            TypedIORelation rD4Pz = new TypedIORelation(_toplevel, "rD4Pz");
+
+            TypedIORelation rTh = new TypedIORelation(_toplevel, "rTh");
+            TypedIORelation rDTh = new TypedIORelation(_toplevel, "rDTh");
+            TypedIORelation rDDTh = new TypedIORelation(_toplevel, "rDDTh");
+
+            TypedIORelation rTm = new TypedIORelation(_toplevel, "rTm");
+            TypedIORelation rDTm = new TypedIORelation(_toplevel, "rDTm");
+            TypedIORelation rDDTm = new TypedIORelation(_toplevel, "rDDTm");
+
+            TypedIORelation rA = new TypedIORelation(_toplevel, "rA");
+            TypedIORelation rVx = new TypedIORelation(_toplevel, "rVx");
+            TypedIORelation rVz = new TypedIORelation(_toplevel, "rVz");
+
+            sub.getPort("outputVx").link(rVx);
+            sub.getPort("outputVz").link(rVz);
+            sub.getPort("inputPx").link(rPx);
+            sub.getPort("inputDPx").link(rDPx);
+            sub.getPort("inputDDPx").link(rDDPx);
+            sub.getPort("inputD3Px").link(rD3Px);
+            sub.getPort("inputD4Px").link(rD4Px);
+            
+            sub.getPort("inputPz").link(rPz);
+            sub.getPort("inputDPz").link(rDPz);
+            sub.getPort("inputDDPz").link(rDDPz);
+            sub.getPort("inputD3Pz").link(rD3Pz);
+            sub.getPort("inputD4Pz").link(rD4Pz);
+
+            Px.output.link(rPx);
+            DPx.output.link(rDPx);
+            heli.outputDDPx.link(rDDPx);
+            higher.outputD3Px.link(rD3Px);
+            higher.outputD4Px.link(rD4Px);
+
+            Pz.output.link(rPz);
+            DPz.output.link(rDPz);
+            heli.outputDDPz.link(rDDPz);
+            higher.outputD3Pz.link(rD3Pz);
+            higher.outputD4Pz.link(rD4Pz);
+            
+            Th.output.link(rTh);
+            DTh.output.link(rDTh);
+            heli.outputDDTh.link(rDDTh);
+
+            Tm.output.link(rTm);
+            DTm.output.link(rDTm);
+            DDTm.output.link(rDDTm);
+            A.output.link(rA);
+       
+            // Connect integrators
+            Px.input.link(rDPx);
+            DPx.input.link(rDDPx);
+            Pz.input.link(rDPz);
+            DPz.input.link(rDDPz);
+            Th.input.link(rDTh);
+            DTh.input.link(rDDTh);
+            _toplevel.connect(ctrl.outputDDDTm, DDTm.input);
+            _toplevel.connect(ctrl.outputDA, A.input);
+            DTm.input.link(rDDTm);
+            Tm.input.link(rDTm);
+
+            // Connect Helicopter
+            heli.inputTm.link(rTm);
+            heli.inputA.link(rA);
+            heli.inputTh.link(rTh);
+
+            // Connect Controller
+            ctrl.inputTm.link(rTm);
+            ctrl.inputDTm.link(rDTm);
+            ctrl.inputDDTm.link(rDDTm);
+            ctrl.inputA.link(rA);
+            ctrl.inputTh.link(rTh);
+            ctrl.inputDTh.link(rTh);
+            ctrl.inputTm.link(rTm);
+            ctrl.inputTm.link(rTm);
+            ctrl.inputVx.link(rVx);
+            ctrl.inputVz.link(rVz);
+
+            // Connect XZHigherDerivatives
+            higher.inputTm.link(rTm);
+            higher.inputDTm.link(rDTm);
+            higher.inputDDTm.link(rDDTm);
+            higher.inputTh.link(rTh);
+            higher.inputDTh.link(rDTh);
+            higher.inputA.link(rA);
+
+            // Connect HoverLinearizer
+            
+            TypedIORelation rmPz = new TypedIORelation(_toplevel, "RMPz");
+            MINUS.input.link(rPz);
+            MINUS.output.link(rmPz);
+            xzPlot.inputX.link(rPx);
+            xzPlot.inputY.link(rmPz);
+            //ctPlot.input.link(rPz);
+            vxPlot.input.link(rDPx);
+            pzPlot.input.link(rmPz);
+            thPlot.input.link(rTh);
+
+            //_debug("Set parameters");
+            // CT Director parameters
+            //Parameter initstep = 
+            //   (Parameter)_dir.getAttribute("InitialStepSize");
+            _dir.InitStepSize.setToken(new DoubleToken(0.01));
+
+            //Parameter minstep =
+            //    (Parameter)_dir.getAttribute("MinimumStepSize");
+            _dir.MinStepSize.setToken(new DoubleToken(1e-6));
+            
+            //Parameter maxstep =
+            //    (Parameter)_dir.getAttribute("MaximumStepSize");
+            _dir.MaxStepSize.setToken(new DoubleToken(0.5));
+
+            //Parameter solver1 =
+            //    (Parameter)_dir.getAttribute("BreakpointODESolver");
+            StringToken token1 = new StringToken(
+                    "ptolemy.domains.ct.kernel.solver.BackwardEulerSolver");
+            _dir.BreakpointODESolver.setToken(token1);
+           
+            //Parameter solver2 =
+            //    (Parameter)_dir.getAttribute("ODESolver");
+            StringToken token2 = new StringToken(
+                    "ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver");
+            _dir.ODESolver.setToken(token2);
+
+           
+            // CTActorParameters
+            //Parameter Pxi = (Parameter)Px.getAttribute("InitialState");
+            Px.InitialState.setToken(new DoubleToken(0.0));
+
+            //Parameter Pzi = (Parameter)Pz.getAttribute("InitialState");
+            Pz.InitialState.setToken(new DoubleToken(-1.5));
+
+            //Parameter Tmi = (Parameter)Tm.getAttribute("InitialState");
+            Tm.InitialState.setToken(new DoubleToken(48.02));            
+            
+            MINUS.gain.setToken(new DoubleToken(-1.0));
+            
+            //_paramButton = (Parameter)button.getAttribute("ButtonClicked");
+            // System.out.println(_toplevel.description());
+            // System.out.println(_dir.getScheduler().description());
+            // System.out.println(subdir.getScheduler().description());
+            // System.out.println(_dir.getScheduler().description());
+            // System.out.println(((CTDirector)sub.getDirector()).
+            // getScheduler().description());
+
+        } catch (Exception ex) {
+            report("Setup failed: ", ex);
+            ex.printStackTrace();
+        }
+    }
+    ////////////////////////////////////////////////////////////////////////
+    ////                         private methods                        ////
+
+    CTCompositeActor _createLinearizer(TypedCompositeActor container, 
+            int code)
+            throws NameDuplicationException, IllegalActionException {
+        CTCompositeActor sub = new CTCompositeActor(container, "dummy");
+        CTEmbeddedNRDirector subdir = 
+            new CTEmbeddedNRDirector(sub, "CTInnerDirector");
 
         TypedIOPort subinPx = new TypedIOPort(sub, "inputPx");
         subinPx.setInput(true);
@@ -149,10 +550,6 @@ public class HelicopterApplet extends CTApplet {
         TypedIOPort subinD4Pz = new TypedIOPort(sub, "inputD4Pz");
         subinD4Pz.setInput(true);
         subinD4Pz.setOutput(false);
-
-        TypedIOPort subinAction = new TypedIOPort(sub, "inputAction");
-        subinAction.setInput(true);
-        subinAction.setOutput(false);
             
         TypedIOPort suboutVx = new TypedIOPort(sub, "outputVx");
         suboutVx.setInput(false);
@@ -160,554 +557,157 @@ public class HelicopterApplet extends CTApplet {
         TypedIOPort suboutVz = new TypedIOPort(sub, "outputVz");
         suboutVz.setInput(false);
         suboutVz.setOutput(true);
-            
-        HSController hsctrl = new HSController(sub, "HSController");
-        _hsdir.setController(hsctrl);
 
-        TypedIOPort hscInAct = new TypedIOPort(hsctrl, "inputAction");
-        hscInAct.setInput(true);
-        hscInAct.setOutput(false);
-        TypedIOPort hscInPz = new TypedIOPort(hsctrl, "inputPz");
-        hscInPz.setInput(true);
-        hscInPz.setOutput(false);
+        TypedIOPort suboutV = new TypedIOPort(sub, "outputV");
+        suboutV.setInput(false);
+        suboutV.setOutput(true);
+        TypedIOPort suboutR = new TypedIOPort(sub, "outputR");
+        suboutR.setInput(false);
+        suboutR.setOutput(true);
 
-        FSMState hoverState = new FSMState(hsctrl, "HoverState");
-        FSMState accelState = new FSMState(hsctrl, "AccelState");
-        FSMState cruise1State = new FSMState(hsctrl, "Cruise1State");
-        FSMState climbState = new FSMState(hsctrl, "ClimbState");
-        FSMState cruise2State = new FSMState(hsctrl, "Cruise2State");
-        hsctrl.setInitialState(hoverState);
-        CTCompositeActor linHover = _createLinearizer(sub, 0);
-        CTCompositeActor linAccel = _createLinearizer(sub, 1);
-        CTCompositeActor linCruise1 = _createLinearizer(sub, 2);
-        CTCompositeActor linClimb = _createLinearizer(sub, 3);
-        CTCompositeActor linCruise2 = _createLinearizer(sub, 4);
-        hoverState.setRefinement(linHover);
-        accelState.setRefinement(linAccel);
-        cruise1State.setRefinement(linCruise1);
-        climbState.setRefinement(linClimb);
-        cruise2State.setRefinement(linCruise2);
-        FSMTransition tr1 = hsctrl.createTransition(hoverState, accelState);
-        tr1.setTriggerCondition("inputAction");
-        FSMTransition tr2 = hsctrl.createTransition(accelState, cruise1State);
-        tr2.setTriggerCondition("(outputV >= 5.0) && (inputPz > -2.05) && (inputPz < -1.95)");
-        FSMTransition tr3 = hsctrl.createTransition(cruise1State, climbState);
-        tr3.setTriggerCondition("(outputV > 4.9) && (outputV < 5.1) && (outputR > -0.01) && (outputR < 0.01)");
-        FSMTransition tr4 = hsctrl.createTransition(climbState, cruise2State);
-        tr4.setTriggerCondition("(outputV > 4.9) && (outputV < 5.1) && (inputPz > -10.05) && (inputPz < -9.95)");
+        // ---------------------------------
+        // Create the actors.
+        // ---------------------------------
 
-        TypedIORelation rSubPx = new TypedIORelation(sub, "rSubPx");
-        TypedIORelation rSubDPx = new TypedIORelation(sub, "rSubDPx");
-        TypedIORelation rSubDDPx = new TypedIORelation(sub, "rSubDDPx");
-        TypedIORelation rSubD3Px = new TypedIORelation(sub, "rSubD3Px");
-        TypedIORelation rSubD4Px = new TypedIORelation(sub, "rSubD4Px");
-        TypedIORelation rSubPz = new TypedIORelation(sub, "rSubPz");
-        TypedIORelation rSubDPz = new TypedIORelation(sub, "rSubDPz");
-        TypedIORelation rSubDDPz = new TypedIORelation(sub, "rSubDDPz");
-        TypedIORelation rSubD3Pz = new TypedIORelation(sub, "rSubD3Pz");
-        TypedIORelation rSubD4Pz = new TypedIORelation(sub, "rSubD4Pz");
-        TypedIORelation rSubOutVx = new TypedIORelation(sub, "rSubOutVx");
-        TypedIORelation rSubOutVz = new TypedIORelation(sub, "rSubOutVz");
-        TypedIORelation rSubOutV = new TypedIORelation(sub, "rSubOutV");
-        TypedIORelation rSubOutR = new TypedIORelation(sub, "rSubOutR");
-
-        subinPx.link(rSubPx);
-        subinDPx.link(rSubDPx);
-        subinDDPx.link(rSubDDPx);
-        subinD3Px.link(rSubD3Px);
-        subinD4Px.link(rSubD4Px);
-        subinPz.link(rSubPz);
-        subinDPz.link(rSubDPz);
-        subinDDPz.link(rSubDDPz);
-        subinD3Pz.link(rSubD3Pz);
-        subinD4Pz.link(rSubD4Pz);
-        suboutVx.link(rSubOutVx);
-        suboutVz.link(rSubOutVz);
-
-        sub.connect(subinAction, hscInAct);
-        hscInPz.link(rSubPz);
-        Enumeration entities = sub.getEntities();
-        while(entities.hasMoreElements()) {
-            Entity ent = (Entity)entities.nextElement();
-            Port p = ent.getPort("inputPx");
-            if (p != null) {
-                p.link(rSubPx);
-            }
-            p = ent.getPort("inputDPx");
-            if (p != null) {
-                p.link(rSubDPx);
-            }
-            p = ent.getPort("inputDDPx");
-            if (p != null) {
-                p.link(rSubDDPx);
-            }
-            p = ent.getPort("inputD3Px");
-            if (p != null) {
-                p.link(rSubD3Px);
-            }
-            p = ent.getPort("inputD4Px");
-            if (p != null) {
-                p.link(rSubD4Px);
-            }
-            p = ent.getPort("inputPz");
-            if (p != null) {
-                p.link(rSubPz);
-            }
-            p = ent.getPort("inputDPz");
-            if (p != null) {
-                p.link(rSubDPz);
-            }
-            p = ent.getPort("inputDDPz");
-            if (p != null) {
-                p.link(rSubDDPz);
-            }
-            p = ent.getPort("inputD3Pz");
-            if (p != null) {
-                p.link(rSubD3Pz);
-            }
-            p = ent.getPort("inputD4Pz");
-            if (p != null) {
-                p.link(rSubD4Pz);
-            }
-            p = ent.getPort("outputVx");
-            if (p != null) {
-                p.link(rSubOutVx);
-            }
-            p = ent.getPort("outputVz");
-            if (p != null) {
-                p.link(rSubOutVz);
-            }
-            p = ent.getPort("outputV");
-            if (p != null) {
-                p.link(rSubOutV);
-            }
-            p = ent.getPort("outputR");
-            if (p != null) {
-                p.link(rSubOutR);
-            }
+        CTActor lin = null;
+        CTThresholdMonitor mon1 = null;
+        CTThresholdMonitor mon2 = null;
+        switch (code) {
+        case 0: // hover state
+            sub.setName("HoverCTSub");
+            lin = new HoverLinearizer(sub, "Hover");
+            break;
+        case 1: // acc state
+            sub.setName("AccelCTSub");
+            lin = new AccelerLinearizer(sub, "Accel");
+            mon1 = new CTThresholdMonitor(sub, "Mon1");
+            break;
+        case 2: // first cruise state
+            sub.setName("Cruise1CTSub");
+            lin = new CruiseLinearizer(sub, "Cruise1");
+            mon1 = new CTThresholdMonitor(sub, "Mon1");
+            mon2 = new CTThresholdMonitor(sub, "Mon2");
+            break;
+        case 3: // climb state
+            sub.setName("ClimbCTSub");
+            lin = new ClimbLinearizer(sub, "Climb");
+            mon1 = new CTThresholdMonitor(sub, "Mon1");
+            mon2 = new CTThresholdMonitor(sub, "Mon2");
+            break;
+        case 4: // second cruise state
+            sub.setName("Cruise2CTSub");
+            lin = new CruiseLinearizer(sub, "Cruise2");
+            Parameter param = (Parameter)lin.getAttribute("CPz");
+            param.setToken(new DoubleToken(-10.0));
+            param = (Parameter)lin.getAttribute("CVx");
+            param.setToken(new DoubleToken(5.0));
+            break;
+        default:
+            break;
         }
-        // CTActors
-
-        _button = new CTButtonEvent(_toplevel, "Button");
-        _toplevel.connect(_button.output, subinAction);
-
-        HelicopterActor heli = new HelicopterActor(_toplevel, "Helicopter");
-        ControllerActor ctrl = new ControllerActor(_toplevel, "Controller");
-        XZHigherDerivatives higher = new XZHigherDerivatives(_toplevel, 
-                "XZHigherDerivatives");     
+    
+        CTZeroOrderHold hPx = new CTZeroOrderHold(sub, "HPx");
+        CTZeroOrderHold hDPx = new CTZeroOrderHold(sub, "HDPx");
+        CTZeroOrderHold hDDPx = new CTZeroOrderHold(sub, "HDDPx");
+        CTZeroOrderHold hD3Px = new CTZeroOrderHold(sub, "HD3Px");
+        CTZeroOrderHold hD4Px = new CTZeroOrderHold(sub, "HD4Px");
+        CTZeroOrderHold hPz = new CTZeroOrderHold(sub, "HPz");
+        CTZeroOrderHold hDPz = new CTZeroOrderHold(sub, "HDPz");
+        CTZeroOrderHold hDDPz = new CTZeroOrderHold(sub, "HDDPz");
+        CTZeroOrderHold hD3Pz = new CTZeroOrderHold(sub, "HD3Pz");
+        CTZeroOrderHold hD4Pz = new CTZeroOrderHold(sub, "HD4Pz");
             
-        CTIntegrator Px = new CTIntegrator(_toplevel, "IntegratorPx");
-        CTIntegrator DPx = new CTIntegrator(_toplevel, "IntegratorDPx");
-
-        CTIntegrator Pz = new CTIntegrator(_toplevel, "IntegratorPz");
-        CTIntegrator DPz = new CTIntegrator(_toplevel, "IntegratorDPz");
-
-        CTIntegrator Th = new CTIntegrator(_toplevel, "IntegratorTh");
-        CTIntegrator DTh = new CTIntegrator(_toplevel, "IntegratorDTh");
-
-        CTIntegrator Tm = new CTIntegrator(_toplevel, "IntegratorTm");
-        CTIntegrator DTm = new CTIntegrator(_toplevel, "IntegratorDTm");
-        CTIntegrator DDTm = new CTIntegrator(_toplevel, "IntegratorDDTm");
-
-        CTIntegrator A = new CTIntegrator(_toplevel, "IntegratorA");
-
-        Scale MINUS = new Scale(_toplevel, "MINUS");
-        //CTPlot ctPlot = new CTPlot(_toplevel, "CTPlot", ctPanel);
-        XYPlotter xzPlot = new XYPlotter(_toplevel, "Helicopter Position");
-        xzPlot.setPanel(xzPanel);
-        xzPlot.plot.setGrid(true);
-        xzPlot.plot.setXRange(-1.0, 100.0);
-        xzPlot.plot.setYRange(1.0, 12.0);
-        xzPlot.plot.setSize(200, 200);
-        xzPlot.plot.addLegend(0,"(Px,Pz)");
-
-        TimedPlotter vxPlot = new TimedPlotter(_toplevel, 
-                "Horizontal Speed");
-        vxPlot.setPanel(vxPanel);
-        vxPlot.plot.setGrid(true);
-        vxPlot.plot.setXRange(0.0, 70.0);
-        vxPlot.plot.setYRange(0.0, 6.0);
-        vxPlot.plot.setSize(200, 200);
-        vxPlot.plot.addLegend(0,"Vx");
-
-        TimedPlotter pzPlot = new TimedPlotter(_toplevel, 
-                "Vertival Position");
-        pzPlot.setPanel(pzPanel);
-        pzPlot.plot.setGrid(true);
-        pzPlot.plot.setXRange(0.0, 70.0);
-        pzPlot.plot.setYRange(0.0, 12.0);
-        pzPlot.plot.setSize(200, 200);
-        pzPlot.plot.addLegend(0,"Pz");
-
-        TimedPlotter thPlot = new TimedPlotter(_toplevel, 
-                "Pitch Angle");
-        thPlot.setPanel(thPanel);
-        thPlot.plot.setGrid(true);
-        thPlot.plot.setXRange(0.0, 70.0);
-        thPlot.plot.setYRange(-0.05, 0.05);
-        thPlot.plot.setSize(200, 200);
-        thPlot.plot.addLegend(0,"Th");
-                
-        // CTConnections
-        TypedIORelation rPx = new TypedIORelation(_toplevel, "rPx");
-        TypedIORelation rDPx = new TypedIORelation(_toplevel, "rDPx");
-        TypedIORelation rDDPx = new TypedIORelation(_toplevel, "rDDPx");
-        TypedIORelation rD3Px = new TypedIORelation(_toplevel, "rD3Px");
-        TypedIORelation rD4Px = new TypedIORelation(_toplevel, "rD4Px");
-
-        TypedIORelation rPz = new TypedIORelation(_toplevel, "rPz");
-        TypedIORelation rDPz = new TypedIORelation(_toplevel, "rDPz");
-        TypedIORelation rDDPz = new TypedIORelation(_toplevel, "rDDPz");
-        TypedIORelation rD3Pz = new TypedIORelation(_toplevel, "rD3Pz");
-        TypedIORelation rD4Pz = new TypedIORelation(_toplevel, "rD4Pz");
-
-        TypedIORelation rTh = new TypedIORelation(_toplevel, "rTh");
-        TypedIORelation rDTh = new TypedIORelation(_toplevel, "rDTh");
-        TypedIORelation rDDTh = new TypedIORelation(_toplevel, "rDDTh");
-
-        TypedIORelation rTm = new TypedIORelation(_toplevel, "rTm");
-        TypedIORelation rDTm = new TypedIORelation(_toplevel, "rDTm");
-        TypedIORelation rDDTm = new TypedIORelation(_toplevel, "rDDTm");
-
-        TypedIORelation rA = new TypedIORelation(_toplevel, "rA");
-        TypedIORelation rVx = new TypedIORelation(_toplevel, "rVx");
-        TypedIORelation rVz = new TypedIORelation(_toplevel, "rVz");
-
-        sub.getPort("outputVx").link(rVx);
-        sub.getPort("outputVz").link(rVz);
-        sub.getPort("inputPx").link(rPx);
-        sub.getPort("inputDPx").link(rDPx);
-        sub.getPort("inputDDPx").link(rDDPx);
-        sub.getPort("inputD3Px").link(rD3Px);
-        sub.getPort("inputD4Px").link(rD4Px);
+        sub.connect(hPx.input, subinPx);
+        sub.connect(hDPx.input, subinDPx);
+        sub.connect(hDDPx.input, subinDDPx);
+        sub.connect(hD3Px.input, subinD3Px);
+        sub.connect(hD4Px.input, subinD4Px);
             
-        sub.getPort("inputPz").link(rPz);
-        sub.getPort("inputDPz").link(rDPz);
-        sub.getPort("inputDDPz").link(rDDPz);
-        sub.getPort("inputD3Pz").link(rD3Pz);
-        sub.getPort("inputD4Pz").link(rD4Pz);
+        Relation rInPz = sub.connect(hPz.input, subinPz);
+        sub.connect(hDPz.input, subinDPz);
+        sub.connect(hDDPz.input, subinDDPz);
+        sub.connect(hD3Pz.input, subinD3Pz);
+        sub.connect(hD4Pz.input, subinD4Pz);
 
-        Px.output.link(rPx);
-        DPx.output.link(rDPx);
-        heli.outputDDPx.link(rDDPx);
-        higher.outputD3Px.link(rD3Px);
-        higher.outputD4Px.link(rD4Px);
-
-        Pz.output.link(rPz);
-        DPz.output.link(rDPz);
-        heli.outputDDPz.link(rDDPz);
-        higher.outputD3Pz.link(rD3Pz);
-        higher.outputD4Pz.link(rD4Pz);
+        sub.connect(hPx.output, (ComponentPort)lin.getPort("inputPx"));
+        sub.connect(hDPx.output, (ComponentPort)lin.getPort("inputDPx"));
+        sub.connect(hDDPx.output, (ComponentPort)lin.getPort("inputDDPx"));
+        sub.connect(hD3Px.output, (ComponentPort)lin.getPort("inputD3Px"));
+        sub.connect(hD4Px.output, (ComponentPort)lin.getPort("inputD4Px"));
             
-        Th.output.link(rTh);
-        DTh.output.link(rDTh);
-        heli.outputDDTh.link(rDDTh);
+        sub.connect(hPz.output, (ComponentPort)lin.getPort("inputPz"));
+        sub.connect(hDPz.output, (ComponentPort)lin.getPort("inputDPz"));
+        sub.connect(hDDPz.output, (ComponentPort)lin.getPort("inputDDPz"));
+        sub.connect(hD3Pz.output, (ComponentPort)lin.getPort("inputD3Pz"));
+        sub.connect(hD4Pz.output, (ComponentPort)lin.getPort("inputD4Pz"));
 
-        Tm.output.link(rTm);
-        DTm.output.link(rDTm);
-        DDTm.output.link(rDDTm);
-        A.output.link(rA);
-       
-        // Connect integrators
-        Px.input.link(rDPx);
-        DPx.input.link(rDDPx);
-        Pz.input.link(rDPz);
-        DPz.input.link(rDDPz);
-        Th.input.link(rDTh);
-        DTh.input.link(rDDTh);
-        _toplevel.connect(ctrl.outputDDDTm, DDTm.input);
-        _toplevel.connect(ctrl.outputDA, A.input);
-        DTm.input.link(rDDTm);
-        Tm.input.link(rDTm);
+        sub.connect(suboutVx, (ComponentPort)lin.getPort("outputVx"));
+        sub.connect(suboutVz, (ComponentPort)lin.getPort("outputVz"));
 
-        // Connect Helicopter
-        heli.inputTm.link(rTm);
-        heli.inputA.link(rA);
-        heli.inputTh.link(rTh);
+        Relation rV = sub.connect(suboutV, (ComponentPort)lin.getPort("outputV"));
+        Relation rR = sub.connect(suboutR, (ComponentPort)lin.getPort("outputR"));
 
-        // Connect Controller
-        ctrl.inputTm.link(rTm);
-        ctrl.inputDTm.link(rDTm);
-        ctrl.inputDDTm.link(rDDTm);
-        ctrl.inputA.link(rA);
-        ctrl.inputTh.link(rTh);
-        ctrl.inputDTh.link(rTh);
-        ctrl.inputTm.link(rTm);
-        ctrl.inputTm.link(rTm);
-        ctrl.inputVx.link(rVx);
-        ctrl.inputVz.link(rVz);
+        // connect and set the monitors
+        Parameter p = null;
+        switch (code) {
+        case 1: // accel state
+            mon1.input.link(rInPz);
+            p = (Parameter)mon1.getAttribute("ThresholdWidth");
+            p.setToken(new DoubleToken(0.1));
+            p = (Parameter)mon1.getAttribute("ThresholdCenter");
+            p.setToken(new DoubleToken(-2.0));
+            break;
+        case 2: // first cruise state
+            mon1.input.link(rV);
+            p = (Parameter)mon1.getAttribute("ThresholdWidth");
+            p.setToken(new DoubleToken(0.2));
+            p = (Parameter)mon1.getAttribute("ThresholdCenter");
+            p.setToken(new DoubleToken(5.0));
+            mon2.input.link(rR);
+            p = (Parameter)mon2.getAttribute("ThresholdWidth");
+            p.setToken(new DoubleToken(0.02));
+            p = (Parameter)mon2.getAttribute("ThresholdCenter");
+            p.setToken(new DoubleToken(0.0));
+            break;
+        case 3: // climb state
+            mon1.input.link(rInPz);
+            p = (Parameter)mon1.getAttribute("ThresholdWidth");
+            p.setToken(new DoubleToken(0.1));
+            p = (Parameter)mon1.getAttribute("ThresholdCenter");
+            p.setToken(new DoubleToken(-10.0));
+            mon2.input.link(rV);
+            p = (Parameter)mon2.getAttribute("ThresholdWidth");
+            p.setToken(new DoubleToken(0.2));
+            p = (Parameter)mon2.getAttribute("ThresholdCenter");
+            p.setToken(new DoubleToken(5.0));
+            break;
+        default:
+            break;
+        }
 
-        // Connect XZHigherDerivatives
-        higher.inputTm.link(rTm);
-        higher.inputDTm.link(rDTm);
-        higher.inputDDTm.link(rDDTm);
-        higher.inputTh.link(rTh);
-        higher.inputDTh.link(rDTh);
-        higher.inputA.link(rA);
-
-        // Connect HoverLinearizer
-            
-        TypedIORelation rmPz = new TypedIORelation(_toplevel, "RMPz");
-        MINUS.input.link(rPz);
-        MINUS.output.link(rmPz);
-        xzPlot.inputX.link(rPx);
-        xzPlot.inputY.link(rmPz);
-        //ctPlot.input.link(rPz);
-        vxPlot.input.link(rDPx);
-        pzPlot.input.link(rmPz);
-        thPlot.input.link(rTh);
-
-        //_debug("Set parameters");
-        // CT Director parameters
+        // sub dir parameters
         //Parameter initstep = 
-        //   (Parameter)_dir.getAttribute("InitialStepSize");
-        _dir.InitStepSize.setToken(new DoubleToken(0.01));
+        //        (Parameter)subdir.getAttribute("InitialStepSize");
+        subdir.InitStepSize.setToken(new DoubleToken(0.01));
 
         //Parameter minstep =
-        //    (Parameter)_dir.getAttribute("MinimumStepSize");
-        _dir.MinStepSize.setToken(new DoubleToken(1e-6));
+        //        (Parameter)subdir.getAttribute("MinimumStepSize");
+        subdir.MinStepSize.setToken(new DoubleToken(1e-6));
             
-        //Parameter maxstep =
-        //    (Parameter)_dir.getAttribute("MaximumStepSize");
-        _dir.MaxStepSize.setToken(new DoubleToken(0.5));
-
         //Parameter solver1 =
-        //    (Parameter)_dir.getAttribute("BreakpointODESolver");
-        StringToken token1 = new StringToken(
+        //        (Parameter)subdir.getAttribute("BreakpointODESolver");
+        Token token1 = new StringToken(
                 "ptolemy.domains.ct.kernel.solver.BackwardEulerSolver");
-        _dir.BreakpointODESolver.setToken(token1);
-           
-        //Parameter solver2 =
-        //    (Parameter)_dir.getAttribute("ODESolver");
-        StringToken token2 = new StringToken(
-                "ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver");
-        _dir.ODESolver.setToken(token2);
-
-           
-        // CTActorParameters
-        //Parameter Pxi = (Parameter)Px.getAttribute("InitialState");
-        Px.InitialState.setToken(new DoubleToken(0.0));
-
-        //Parameter Pzi = (Parameter)Pz.getAttribute("InitialState");
-        Pz.InitialState.setToken(new DoubleToken(-1.5));
-
-        //Parameter Tmi = (Parameter)Tm.getAttribute("InitialState");
-        Tm.InitialState.setToken(new DoubleToken(48.02));            
-            
-        MINUS.gain.setToken(new DoubleToken(-1.0));
-            
-        //_paramButton = (Parameter)button.getAttribute("ButtonClicked");
-        // System.out.println(_toplevel.description());
-        // System.out.println(_dir.getScheduler().description());
-        // System.out.println(subdir.getScheduler().description());
-        // System.out.println(_dir.getScheduler().description());
-        // System.out.println(((CTDirector)sub.getDirector()).
-        // getScheduler().description());
-
-    } catch (Exception ex) {
-        report("Setup failed: ", ex);
-        ex.printStackTrace();
-    }
-}
-    ////////////////////////////////////////////////////////////////////////
-////                         private methods                        ////
-
-CTCompositeActor _createLinearizer(TypedCompositeActor container, 
-        int code)
-        throws NameDuplicationException, IllegalActionException {
-    CTCompositeActor sub = new CTCompositeActor(container, "dummy");
-    CTEmbeddedNRDirector subdir = 
-        new CTEmbeddedNRDirector(sub, "CTInnerDirector");
-
-    TypedIOPort subinPx = new TypedIOPort(sub, "inputPx");
-    subinPx.setInput(true);
-    subinPx.setOutput(false);
-    TypedIOPort subinDPx = new TypedIOPort(sub, "inputDPx");
-    subinDPx.setInput(true);
-    subinDPx.setOutput(false);
-    TypedIOPort subinDDPx = new TypedIOPort(sub, "inputDDPx");
-    subinDDPx.setInput(true);
-    subinDDPx.setOutput(false);
-    TypedIOPort subinD3Px = new TypedIOPort(sub, "inputD3Px");
-    subinD3Px.setInput(true);
-    subinD3Px.setOutput(false);
-    TypedIOPort subinD4Px = new TypedIOPort(sub, "inputD4Px");
-    subinD4Px.setInput(true);
-    subinD4Px.setOutput(false);
-            
-    TypedIOPort subinPz = new TypedIOPort(sub, "inputPz");
-    subinPz.setInput(true);
-    subinPz.setOutput(false);
-    TypedIOPort subinDPz = new TypedIOPort(sub, "inputDPz");
-    subinDPz.setInput(true);
-    subinDPz.setOutput(false);
-    TypedIOPort subinDDPz = new TypedIOPort(sub, "inputDDPz");
-    subinDDPz.setInput(true);
-    subinDDPz.setOutput(false);
-    TypedIOPort subinD3Pz = new TypedIOPort(sub, "inputD3Pz");
-    subinD3Pz.setInput(true);
-    subinD3Pz.setOutput(false);
-    TypedIOPort subinD4Pz = new TypedIOPort(sub, "inputD4Pz");
-    subinD4Pz.setInput(true);
-    subinD4Pz.setOutput(false);
-            
-    TypedIOPort suboutVx = new TypedIOPort(sub, "outputVx");
-    suboutVx.setInput(false);
-    suboutVx.setOutput(true);
-    TypedIOPort suboutVz = new TypedIOPort(sub, "outputVz");
-    suboutVz.setInput(false);
-    suboutVz.setOutput(true);
-
-    TypedIOPort suboutV = new TypedIOPort(sub, "outputV");
-    suboutV.setInput(false);
-    suboutV.setOutput(true);
-    TypedIOPort suboutR = new TypedIOPort(sub, "outputR");
-    suboutR.setInput(false);
-    suboutR.setOutput(true);
-
-    // ---------------------------------
-    // Create the actors.
-    // ---------------------------------
-
-    CTActor lin = null;
-    CTThresholdMonitor mon1 = null;
-    CTThresholdMonitor mon2 = null;
-    switch (code) {
-    case 0: // hover state
-        sub.setName("HoverCTSub");
-        lin = new HoverLinearizer(sub, "Hover");
-        break;
-    case 1: // acc state
-        sub.setName("AccelCTSub");
-        lin = new AccelerLinearizer(sub, "Accel");
-        mon1 = new CTThresholdMonitor(sub, "Mon1");
-        break;
-    case 2: // first cruise state
-        sub.setName("Cruise1CTSub");
-        lin = new CruiseLinearizer(sub, "Cruise1");
-        mon1 = new CTThresholdMonitor(sub, "Mon1");
-        mon2 = new CTThresholdMonitor(sub, "Mon2");
-        break;
-    case 3: // climb state
-        sub.setName("ClimbCTSub");
-        lin = new ClimbLinearizer(sub, "Climb");
-        mon1 = new CTThresholdMonitor(sub, "Mon1");
-        mon2 = new CTThresholdMonitor(sub, "Mon2");
-        break;
-    case 4: // second cruise state
-        sub.setName("Cruise2CTSub");
-        lin = new CruiseLinearizer(sub, "Cruise2");
-        Parameter param = (Parameter)lin.getAttribute("CPz");
-        param.setToken(new DoubleToken(-10.0));
-        param = (Parameter)lin.getAttribute("CVx");
-        param.setToken(new DoubleToken(5.0));
-        break;
-    default:
-        break;
-    }
-    
-    CTZeroOrderHold hPx = new CTZeroOrderHold(sub, "HPx");
-    CTZeroOrderHold hDPx = new CTZeroOrderHold(sub, "HDPx");
-    CTZeroOrderHold hDDPx = new CTZeroOrderHold(sub, "HDDPx");
-    CTZeroOrderHold hD3Px = new CTZeroOrderHold(sub, "HD3Px");
-    CTZeroOrderHold hD4Px = new CTZeroOrderHold(sub, "HD4Px");
-    CTZeroOrderHold hPz = new CTZeroOrderHold(sub, "HPz");
-    CTZeroOrderHold hDPz = new CTZeroOrderHold(sub, "HDPz");
-    CTZeroOrderHold hDDPz = new CTZeroOrderHold(sub, "HDDPz");
-    CTZeroOrderHold hD3Pz = new CTZeroOrderHold(sub, "HD3Pz");
-    CTZeroOrderHold hD4Pz = new CTZeroOrderHold(sub, "HD4Pz");
-            
-    sub.connect(hPx.input, subinPx);
-    sub.connect(hDPx.input, subinDPx);
-    sub.connect(hDDPx.input, subinDDPx);
-    sub.connect(hD3Px.input, subinD3Px);
-    sub.connect(hD4Px.input, subinD4Px);
-            
-    Relation rInPz = sub.connect(hPz.input, subinPz);
-    sub.connect(hDPz.input, subinDPz);
-    sub.connect(hDDPz.input, subinDDPz);
-    sub.connect(hD3Pz.input, subinD3Pz);
-    sub.connect(hD4Pz.input, subinD4Pz);
-
-    sub.connect(hPx.output, (ComponentPort)lin.getPort("inputPx"));
-    sub.connect(hDPx.output, (ComponentPort)lin.getPort("inputDPx"));
-    sub.connect(hDDPx.output, (ComponentPort)lin.getPort("inputDDPx"));
-    sub.connect(hD3Px.output, (ComponentPort)lin.getPort("inputD3Px"));
-    sub.connect(hD4Px.output, (ComponentPort)lin.getPort("inputD4Px"));
-            
-    sub.connect(hPz.output, (ComponentPort)lin.getPort("inputPz"));
-    sub.connect(hDPz.output, (ComponentPort)lin.getPort("inputDPz"));
-    sub.connect(hDDPz.output, (ComponentPort)lin.getPort("inputDDPz"));
-    sub.connect(hD3Pz.output, (ComponentPort)lin.getPort("inputD3Pz"));
-    sub.connect(hD4Pz.output, (ComponentPort)lin.getPort("inputD4Pz"));
-
-    sub.connect(suboutVx, (ComponentPort)lin.getPort("outputVx"));
-    sub.connect(suboutVz, (ComponentPort)lin.getPort("outputVz"));
-
-    Relation rV = sub.connect(suboutV, (ComponentPort)lin.getPort("outputV"));
-    Relation rR = sub.connect(suboutR, (ComponentPort)lin.getPort("outputR"));
-
-    // connect and set the monitors
-    Parameter p = null;
-    switch (code) {
-    case 1: // accel state
-        mon1.input.link(rInPz);
-        p = (Parameter)mon1.getAttribute("ThresholdWidth");
-        p.setToken(new DoubleToken(0.1));
-        p = (Parameter)mon1.getAttribute("ThresholdCenter");
-        p.setToken(new DoubleToken(-2.0));
-        break;
-    case 2: // first cruise state
-        mon1.input.link(rV);
-        p = (Parameter)mon1.getAttribute("ThresholdWidth");
-        p.setToken(new DoubleToken(0.2));
-        p = (Parameter)mon1.getAttribute("ThresholdCenter");
-        p.setToken(new DoubleToken(5.0));
-        mon2.input.link(rR);
-        p = (Parameter)mon2.getAttribute("ThresholdWidth");
-        p.setToken(new DoubleToken(0.02));
-        p = (Parameter)mon2.getAttribute("ThresholdCenter");
-        p.setToken(new DoubleToken(0.0));
-        break;
-    case 3: // climb state
-        mon1.input.link(rInPz);
-        p = (Parameter)mon1.getAttribute("ThresholdWidth");
-        p.setToken(new DoubleToken(0.1));
-        p = (Parameter)mon1.getAttribute("ThresholdCenter");
-        p.setToken(new DoubleToken(-10.0));
-        mon2.input.link(rV);
-        p = (Parameter)mon2.getAttribute("ThresholdWidth");
-        p.setToken(new DoubleToken(0.2));
-        p = (Parameter)mon2.getAttribute("ThresholdCenter");
-        p.setToken(new DoubleToken(5.0));
-        break;
-    default:
-        break;
-    }
-
-    // sub dir parameters
-    //Parameter initstep = 
-    //        (Parameter)subdir.getAttribute("InitialStepSize");
-    subdir.InitStepSize.setToken(new DoubleToken(0.01));
-
-    //Parameter minstep =
-    //        (Parameter)subdir.getAttribute("MinimumStepSize");
-    subdir.MinStepSize.setToken(new DoubleToken(1e-6));
-            
-    //Parameter solver1 =
-    //        (Parameter)subdir.getAttribute("BreakpointODESolver");
-    Token token1 = new StringToken(
-            "ptolemy.domains.ct.kernel.solver.BackwardEulerSolver");
-    subdir.BreakpointODESolver.setToken(token1);
+        subdir.BreakpointODESolver.setToken(token1);
                       
-    //Parameter solver2 =
-    //        (Parameter)subdir.getAttribute("ODESolver");
-    Token token2 = new StringToken(
-            "ptolemy.domains.ct.kernel.solver.ForwardEulerSolver");
-    subdir.ODESolver.setToken(token2);
+        //Parameter solver2 =
+        //        (Parameter)subdir.getAttribute("ODESolver");
+        Token token2 = new StringToken(
+                "ptolemy.domains.ct.kernel.solver.ForwardEulerSolver");
+        subdir.ODESolver.setToken(token2);
 
-    return sub;
-}
+        return sub;
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -731,10 +731,10 @@ CTCompositeActor _createLinearizer(TypedCompositeActor container,
 
 
     ////////////////////////////////////////////////////////////////////////
-        ////                         private variables                      ////
+            ////                         private variables                      ////
 
-        // FIXME: Under jdk 1.2, the following can (and should) be private
-        private CTMultiSolverDirector _dir;
+            // FIXME: Under jdk 1.2, the following can (and should) be private
+            private CTMultiSolverDirector _dir;
     private HSDirector _hsdir;
     private int _currentState;
     private int[] _switchTime = new int[5];

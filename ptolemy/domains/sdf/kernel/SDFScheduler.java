@@ -403,22 +403,22 @@ public class SDFScheduler extends Scheduler {
         }
     }
 
-                             /** Propagate the number of fractional firing decided for this actor
-                                 *  through the specified output port.   Set or verify the fractional
-                                 *  firing for each Actor that is connected through this output port.
-                                 *  Any actors that we calculate their firing vector for the first time
-                                 *  are moved from remainingActors to pendingActors.
-                                 *
-                                 *  @param currentPort The port that we are propagating from.
-                                 *  @param firings The current LLMap of fractional firings for each
-                                 *  Actor.
-                                 *  @param remainingActors The set of actors that have not had their
-                                 *  fractional firing set.
-                                 *  @param pendingActors The set of actors that have had their rate
-                                 *  set, but have not been propagated onwards.
-                                 *  @exception NotSchedulableException If the CompositeActor is not
-                                 *  schedulable. 
-                                 */
+    /** Propagate the number of fractional firing decided for this actor
+     *  through the specified output port.   Set or verify the fractional
+     *  firing for each Actor that is connected through this output port.
+     *  Any actors that we calculate their firing vector for the first time
+     *  are moved from remainingActors to pendingActors.
+     *
+     *  @param currentPort The port that we are propagating from.
+     *  @param firings The current LLMap of fractional firings for each
+     *  Actor.
+     *  @param remainingActors The set of actors that have not had their
+     *  fractional firing set.
+     *  @param pendingActors The set of actors that have had their rate
+     *  set, but have not been propagated onwards.
+     *  @exception NotSchedulableException If the CompositeActor is not
+     *  schedulable. 
+     */
     private void _propagateOutputPort(IOPort currentPort,
             LLMap firings,
             CircularList remainingActors,
@@ -514,21 +514,21 @@ public class SDFScheduler extends Scheduler {
         }
     }
 
-                             /** Return the scheduling sequence.  An exception will be thrown if the
-                                 *  graph is not schedulable.  This occurs in the following circumstances:
-                                 *  <ul>
-                                 *  <li>The graph is not a connected graph.
-                                 *  <li>No integer solution exists for the balance equations.
-                                 *  <li>The graph contains cycles without delays (deadlock).
-                                 *  <li>Multiple output ports are connected to the same broadcast 
-                                 *  relation. (equivalent to a non-deterministic merge)
-                                 *  </ul>
-                                 *
-                                 * @return An Enumeration of the deeply contained opaque entities
-                                 *  in the firing order.
-                                 * @exception NotSchedulableException If the CompositeActor is not
-                                 *  schedulable. 
-                                 */
+    /** Return the scheduling sequence.  An exception will be thrown if the
+     *  graph is not schedulable.  This occurs in the following circumstances:
+     *  <ul>
+     *  <li>The graph is not a connected graph.
+     *  <li>No integer solution exists for the balance equations.
+     *  <li>The graph contains cycles without delays (deadlock).
+     *  <li>Multiple output ports are connected to the same broadcast 
+     *  relation. (equivalent to a non-deterministic merge)
+     *  </ul>
+     *
+     * @return An Enumeration of the deeply contained opaque entities
+     *  in the firing order.
+     * @exception NotSchedulableException If the CompositeActor is not
+     *  schedulable. 
+     */
 
     protected Enumeration _schedule() throws NotSchedulableException {
         StaticSchedulingDirector dir =
@@ -588,21 +588,21 @@ public class SDFScheduler extends Scheduler {
         return result.elements();
     }
 
-                             /** Create a schedule for a set of UnscheduledActors.  Given a valid
-                                 *  firing vector, simulate the scheduling of the actors until the
-                                 *  end of one synchronous dataflow iteration.
-                                 *  Each actor will appear in the schedule exactly the number of times that
-                                 *  minimally solves the balance equations and in an order where each
-                                 *  actor has sufficient tokens on its inputs to fire.   Note that no
-                                 *  claim is made that this is an optimal solution in any other sense.
-                                 *  FIXME: This method destroys the firing vector.  This is not nice.
-                                 *
-                                 *  @param UnscheduledActors The Actors that need to be scheduled.
-                                 *  @return A CircularList of the Actors in the order they should fire.
-                                 *  @exception InvalidStateException If the algorithm encounters an SDF
-                                 *  graph that is not consistent with the firing vector, or detects an
-                                 *  inconsistent internal state.
-                                 */
+    /** Create a schedule for a set of UnscheduledActors.  Given a valid
+     *  firing vector, simulate the scheduling of the actors until the
+     *  end of one synchronous dataflow iteration.
+     *  Each actor will appear in the schedule exactly the number of times that
+     *  minimally solves the balance equations and in an order where each
+     *  actor has sufficient tokens on its inputs to fire.   Note that no
+     *  claim is made that this is an optimal solution in any other sense.
+     *  FIXME: This method destroys the firing vector.  This is not nice.
+     *
+     *  @param UnscheduledActors The Actors that need to be scheduled.
+     *  @return A CircularList of the Actors in the order they should fire.
+     *  @exception InvalidStateException If the algorithm encounters an SDF
+     *  graph that is not consistent with the firing vector, or detects an
+     *  inconsistent internal state.
+     */
 
     private CircularList _scheduleConnectedActors(
             CircularList UnscheduledActors) {
@@ -831,10 +831,10 @@ public class SDFScheduler extends Scheduler {
         return newSchedule;
     }
 
-                             /** Push the rates calculated for this system up to the contained Actor.
-                                 *  This allows the container to be properly scheduled if it is
-                                 *  in a hierarchical system
-                                 */
+    /** Push the rates calculated for this system up to the contained Actor.
+     *  This allows the container to be properly scheduled if it is
+     *  in a hierarchical system
+     */
     private void _setContainerRates() 
             throws NotSchedulableException {
         Director director = (Director) getContainer();
@@ -982,23 +982,23 @@ public class SDFScheduler extends Scheduler {
         }            
     }
 
-                             /** Set the number of firings associated with the Actor.   This is
-                                 *  equivalent to changing the entry in the FiringVector associated with
-                                 *  with the entity to have a value count.
-                                 */
+    /** Set the number of firings associated with the Actor.   This is
+     *  equivalent to changing the entry in the FiringVector associated with
+     *  with the entity to have a value count.
+     */
     private void _setFiringCount(Entity entity, int count) {
         _firingvector = (LLMap)
             _firingvector.puttingAt(entity, new Integer(count));
     }
 
-                             /** Set the firing vector, which is a LLMap associating an Actor
-                                 *  with the number of times that it will fire during an SDF iteration.
-                                 *  Every object that this Scheduler is responsible for should have an
-                                 *  entry, even if it is zero indicating that the Actor has not yet had
-                                 *  its firings determined.
-                                 *
-                                 *  @param newfiringvector A LLMap from ComponentEntity to Integer.
-                                 */
+    /** Set the firing vector, which is a LLMap associating an Actor
+     *  with the number of times that it will fire during an SDF iteration.
+     *  Every object that this Scheduler is responsible for should have an
+     *  entry, even if it is zero indicating that the Actor has not yet had
+     *  its firings determined.
+     *
+     *  @param newfiringvector A LLMap from ComponentEntity to Integer.
+     */
     private void _setFiringVector(LLMap newfiringvector) {
         _firingvector = newfiringvector;
         _firingvectorvalid = true;
@@ -1091,19 +1091,19 @@ public class SDFScheduler extends Scheduler {
         }
     }   
 
-                             /** Simulate the consumption of tokens by the actor during an execution.
-                                 *  The entries in LLMap will be modified to reflect the number of
-                                 *  tokens still waiting after the actor has consumed tokens for a firing.
-                                 *  Also determine if enough tokens still remain at the inputs of the actor
-                                 *  for it to fire again immediately.
-                                 *
-                                 *  @param currentActor The actor that is being simulated.
-                                 *  @param waitingTokens A Map between each input IOPort and the number of
-                                 *  tokens in the queue for that port.
-                                 *  @return boolean Whether or not the actor can fire again right away
-                                 *  after it has consumed tokens.
-                                 *  @exception IllegalActionException if any called method throws it.
-                                 */
+    /** Simulate the consumption of tokens by the actor during an execution.
+     *  The entries in LLMap will be modified to reflect the number of
+     *  tokens still waiting after the actor has consumed tokens for a firing.
+     *  Also determine if enough tokens still remain at the inputs of the actor
+     *  for it to fire again immediately.
+     *
+     *  @param currentActor The actor that is being simulated.
+     *  @param waitingTokens A Map between each input IOPort and the number of
+     *  tokens in the queue for that port.
+     *  @return boolean Whether or not the actor can fire again right away
+     *  after it has consumed tokens.
+     *  @exception IllegalActionException if any called method throws it.
+     */
     private boolean _simulateInputConsumption(ComponentEntity currentActor,
             LLMap waitingTokens)
             throws IllegalActionException {
@@ -1131,18 +1131,18 @@ public class SDFScheduler extends Scheduler {
     }
 
     /** Solve the Balance Equations for the list of connected Actors.
-                                 *  For each actor, determine the ratio that determines the rate at
-                                 *  which it should fire relative to the other actors for the graph to
-                                 *  be live and operate within bounded memory.   This ratio is known as the
-                                 *  fractional firing of the actor.
-                                 *
-                                 *  @param Actors The actors that we are interested in.
-                                 *  @return A LLMap that associates each actor with its fractional
-                                 *  firing.
-                                 *  @exception NotSchedulableException If the graph is not consistent
-                                 *  under the synchronous dataflow model.
-                                 *  @exception NotSchedulableException If the graph is not connected.
-                                 */
+     *  For each actor, determine the ratio that determines the rate at
+     *  which it should fire relative to the other actors for the graph to
+     *  be live and operate within bounded memory.   This ratio is known as the
+     *  fractional firing of the actor.
+     *
+     *  @param Actors The actors that we are interested in.
+     *  @return A LLMap that associates each actor with its fractional
+     *  firing.
+     *  @exception NotSchedulableException If the graph is not consistent
+     *  under the synchronous dataflow model.
+     *  @exception NotSchedulableException If the graph is not connected.
+     */
     private LLMap _solveBalanceEquations(Enumeration Actors)
             throws NotSchedulableException {
 
