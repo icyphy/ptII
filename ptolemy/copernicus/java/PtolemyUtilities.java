@@ -105,6 +105,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import java.lang.reflect.Method;
 
@@ -115,6 +116,7 @@ import ptolemy.data.DoubleToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.type.Typeable;
+import ptolemy.data.type.TypeLattice;
 import ptolemy.data.expr.Variable;
 
 import ptolemy.kernel.util.*;
@@ -408,6 +410,21 @@ public class PtolemyUtilities {
         }
     }
 
+    public static void inlineTypeLatticeMethods(JimpleBody body,
+            Unit unit, ValueBox box, StaticInvokeExpr expr, Map objectToTokenType) {
+        SootMethod tokenCompareMethod = PtolemyUtilities.typeLatticeClass.getMethod(
+                "int compare(ptolemy.data.Token,ptolemy.data.Token)");
+        if(expr.getMethod().equals(tokenCompareMethod)) {
+            Local tokenLocal1 = (Local)expr.getArg(0);
+            Local tokenLocal2 = (Local)expr.getArg(1);
+            ptolemy.data.type.Type type1 = (ptolemy.data.type.Type)objectToTokenType.get(tokenLocal1);
+            ptolemy.data.type.Type type2 = (ptolemy.data.type.Type)objectToTokenType.get(tokenLocal2);
+            box.setValue(IntConstant.v(TypeLattice.compare(type1, type2)));
+        } else {
+            throw new RuntimeException("attempt to inline unhandled typeLattice method: " + unit);
+        }
+    }
+    
     /** Inline the given invocation expression, given knowledge that the
      *  method was invoked on the given Typeable object, and that the 
      *  typeable object has a final resolved type.  The getType method
@@ -476,10 +493,10 @@ public class PtolemyUtilities {
     public static Type actorType;
 
     // Soot class representing the ptolemy.data.ArrayToken class.
-    SootClass arrayTokenClass =
+    public static SootClass arrayTokenClass;
 
     // Soot Method representing the ArrayToken(Token[]) constructor.
-    SootMethod arrayTokenConstructor =
+    public static SootMethod arrayTokenConstructor;
 
     // Soot Method representing NamedObj.attributeChanged().
     public static SootMethod attributeChangedMethod;
@@ -534,6 +551,8 @@ public class PtolemyUtilities {
     public static SootMethod toStringMethod;
 
     public static SootClass typeClass;
+
+    public static SootClass typeLatticeClass;
  
     static {
         SootClass objectClass =
@@ -587,5 +606,8 @@ public class PtolemyUtilities {
 
         typeClass =
             Scene.v().loadClassAndSupport("ptolemy.data.type.Type");
+
+        typeLatticeClass =
+            Scene.v().loadClassAndSupport("ptolemy.data.type.TypeLattice");
     }
 }

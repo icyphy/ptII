@@ -45,6 +45,7 @@ DIRS =
 # Keep this list alphabetized.
 JSRCS = \
 	ActorTransformer.java \
+	CastAndInstanceofEliminator.java \
 	ImprovedDeadAssignmentEliminator.java \
 	InstanceEqualityEliminator.java \
 	KernelMain.java \

@@ -57,6 +57,7 @@ JSRCS = \
 	Main.java \
 	ModelTransformer.java \
 	PtolemyUtilities.java \
+	TokenToNativeTransformer.java \
 	TypeSpecializer.java \
 	ConstantLoopUnroller.java \
 	ValueTag.java	
@@ -88,8 +89,8 @@ shallowDemo: compileShallowDemo runShallowDemo
 deepDemo: compileDeepDemo runDeepDemo
 
 SOURCEPACKAGE = ptolemy.domains.sdf.demo.OrthogonalCom
-MODEL = OrthogonalCom 
-#MODEL = test
+#MODEL = OrthogonalCom 
+MODEL = test
 SOURCECLASS = $(SOURCEPACKAGE).$(MODEL)
 
 DEEPTARGETPACKAGE = ptolemy.copernicus.java.cg.deep
@@ -103,7 +104,7 @@ JVM_SIZE = -Xmx132m
 
 # Soot command line arguments for the user.  To list all the arguments, use
 # make SOOT_USER_ARGS=-h
-SOOT_USER_ARGS = -O
+SOOT_USER_ARGS = -O --jimple
 
 compileShallowDemo: $(JCLASS)
 	@echo "generate shallow code for $(SOURCEPACKAGE)"
@@ -139,6 +140,7 @@ compileDeepDemo: $(JCLASS)
 		-p wjtp.iat deep,targetPackage:$(DEEPTARGETPACKAGE) \
 		-p wjtp.ipt deep,targetPackage:$(DEEPTARGETPACKAGE) \
 		-p wjtp.itt deep,targetPackage:$(DEEPTARGETPACKAGE) \
+		-p wjtp.ttn deep,targetPackage:$(DEEPTARGETPACKAGE) \
 		$(SOOT_USER_ARGS)
 	@echo "Here is that javap output"
 	javap -verbose -l -s -classpath $(ROOT) $(DEEPTARGETCLASS)

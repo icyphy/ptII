@@ -422,7 +422,17 @@ public class SootUtilities {
 
             Body newBody = newMethod.retrieveActiveBody();
 
-            Iterator j =  newBody.getUnits().iterator();
+            for(Iterator locals = newBody.getLocals().iterator();
+                locals.hasNext();) {
+                Local local = (Local)locals.next();
+                Type type = local.getType();
+                if(type instanceof RefType &&
+                        ((RefType)type).getSootClass() == oldClass) {
+                    local.setType(RefType.v(newClass));
+                }
+            }
+
+            Iterator j = newBody.getUnits().iterator();
             while(j.hasNext()) {
                 Unit unit = (Unit)j.next();
                 Iterator boxes = unit.getUseAndDefBoxes().iterator();

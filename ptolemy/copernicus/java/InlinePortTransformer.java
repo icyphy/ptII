@@ -305,7 +305,11 @@ public class InlinePortTransformer extends SceneTransformer {
                                                 port.getFullName() + "!");
                                         body.getUnits().insertBefore(Jimple.v().newThrowStmt(local),
                                                 unit);
-                                        body.getUnits().remove(unit);
+                                        if(unit instanceof DefinitionStmt) {
+                                            box.setValue(NullConstant.v());
+                                        } else {
+                                            body.getUnits().remove(unit);
+                                        }
                                         continue;
                                     }
                                                                             

@@ -32,7 +32,6 @@ package ptolemy.copernicus.java;
 import ptolemy.actor.CompositeActor;
 import ptolemy.copernicus.kernel.ActorTransformer;
 import ptolemy.copernicus.kernel.KernelMain;
-import ptolemy.copernicus.kernel.ImprovedConstantPropagatorAndFolder;
 import ptolemy.copernicus.kernel.ImprovedDeadAssignmentEliminator;
 import ptolemy.copernicus.kernel.InstanceEqualityEliminator;
 import ptolemy.copernicus.kernel.TransformerAdapter;
@@ -148,6 +147,9 @@ public class Main extends KernelMain {
         // references that were created.
         Scene.v().getPack("wjtp").add(new Transform("wjtp.itt",
                 InlineTokenTransformer.v(_toplevel)));
+
+        //Scene.v().getPack("wjtp").add(new Transform("wjtp.ttn",
+        //        TokenToNativeTransformer.v(_toplevel)));
 
         // Scene.v().getPack("wjtp").add(new Transform("wjtp.ibg",
         //        InvokeGraphBuilder.v()));
