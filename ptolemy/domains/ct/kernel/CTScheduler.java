@@ -561,12 +561,12 @@ public class CTScheduler extends Scheduler{
             return null;
         }
         LinkedList pre = new LinkedList();
-        Enumeration inports = actor.inputPorts();
-        while(inports.hasMoreElements()) {
-            IOPort inp = (IOPort) inports.nextElement();
-            Enumeration outports = inp.deepConnectedOutPorts();
-            while(outports.hasMoreElements()) {
-                IOPort outp = (IOPort) outports.nextElement();
+        Iterator inports = actor.inputPortList().iterator();
+        while(inports.hasNext()) {
+            IOPort inp = (IOPort) inports.next();
+            Iterator outports = inp.deepConnectedOutPortList().iterator();
+            while(outports.hasNext()) {
+                IOPort outp = (IOPort) outports.next();
                 ComponentEntity act = (ComponentEntity)outp.getContainer();
                 if(!pre.includes(act)) {
                     pre.insertLast(act);
@@ -694,12 +694,12 @@ public class CTScheduler extends Scheduler{
             return null;
         }
         LinkedList post = new LinkedList();
-        Enumeration outports = actor.outputPorts();
-        while(outports.hasMoreElements()) {
-            IOPort outp = (IOPort) outports.nextElement();
-            Enumeration inports = outp.deepConnectedInPorts();
-            while(inports.hasMoreElements()) {
-                IOPort inp = (IOPort)inports.nextElement();
+        Iterator outports = actor.outputPortList().iterator();
+        while(outports.hasNext()) {
+            IOPort outp = (IOPort) outports.next();
+            Iterator inports = outp.deepConnectedInPortList().iterator();
+            while(inports.hasNext()) {
+                IOPort inp = (IOPort)inports.next();
                 ComponentEntity act = (ComponentEntity)inp.getContainer();
                 if(!post.includes(act)) {
                     post.insertLast(act);
