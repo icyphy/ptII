@@ -67,7 +67,8 @@ public class Main extends KernelMain {
                 "_generatorAttributeFileName:" + _generatorAttributeFileName +
                 " targetPackage:" + _targetPackage + 
                 " templateDirectory:" + _templateDirectory +
-                " outDir:" + _outputDirectory);
+                " outDir:" + _outputDirectory +
+                " overwrite:false"); 
 
         // Generate the applet files in outDir
         addTransform(pack, "wjtp.appletWriter",
