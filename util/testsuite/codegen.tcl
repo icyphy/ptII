@@ -49,7 +49,7 @@ proc speedComparison  {xmlFile \
     if { $modelName == "" } {
 	set parser [java::new ptolemy.moml.MoMLParser]
 
-`       # The list of filters is static, so we reset it in case there
+        # The list of filters is static, so we reset it in case there
         # filters were already added.
         $parser setMoMLFilters [java::null]
         $parser addMoMLFilters \
@@ -197,11 +197,11 @@ proc speedComparison  {xmlFile \
 # The command to run after generating code is given by the 
 # runCommand parameter.
 #
-proc sootCodeGeneration {modelPath {codeGenType Shallow} \
-	{defaultIterations {}} \
-        {statsOnly 0} \
-	{speedComparison 0} \
-	{runCommand "longTest"}} {
+proc sootCodeGeneration {{PTII} modelPath {codeGenType Shallow} \
+			     {defaultIterations {}} \
+			     {statsOnly 0} \
+			     {speedComparison 0} \
+			     {runCommand "longTest"}} {
     global relativePathToPTII
 
     if {[file extension $modelPath] == ""} {
@@ -376,25 +376,23 @@ proc sootCodeGeneration {modelPath {codeGenType Shallow} \
 	# make -C is a GNU make extension that changes to a directory
 	#set results [exec make -C .. MODEL=$model SOURCECLASS=$modelPath ITERATIONS_PARAMETER=$iterationsParameter $command]
 
+	if { ${codeGenType} == "Deep" } {
+	    set codeGenerator "java"
+	} else {
+	    set codeGenerator "shallow"
+	}
+	set args [list $modelPath \
+		      "-iterationsParameter" $iterationsParameter \
+		      "-codeGenerator" $codeGenerator \
+		      "-compile" "true"]
+	set javaCommand [list java -Dptolemy.ptII.dir=$PTII ptolemy.copernicus.kernel.Copernicus]
 
-
-      if { ${codeGenType} == "Deep" } {
-	  set codeGenerator "java"
-      } else {
-	 set codeGenerator "shallow"
-      }
-      set args [java::new {String[]} 7 \
-  	      [list \
-  	      $modelPath \
-	      "-iterationsParameter" $iterationsParameter \
-	      "-codeGenerator" $codeGenerator \
-              "-compile" "true" ]]
-
-        puts "Running Copernicus: [$args getrange]"
-	java::new ptolemy.copernicus.kernel.Copernicus $args
-
-	#set results [exec $relativePathToPTII/bin/copernicus $modelPath -iterations $iterationsValue]
-	#puts $results
+	set execCommand [concat $javaCommand $args]
+        puts "Running Copernicus: $execCommand"
+	#    	java::new ptolemy.copernicus.kernel.Copernicus $args
+	
+	set results [exec $execCommand]
+	puts $results
 
 	#    if [catch {set results [exec make -C .. MODEL=$model SOURCECLASS=$modelPath $command]]} errMsg] {
 	#	puts $results
