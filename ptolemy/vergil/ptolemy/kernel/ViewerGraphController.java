@@ -156,6 +156,8 @@ public class ViewerGraphController extends GraphController {
                 (SelectionInteractor)_portController.getNodeInteractor());
 	_selectionDragger.addSelectionInteractor(
                 (SelectionInteractor)_linkController.getEdgeInteractor());
+	_selectionDragger.addSelectionInteractor(
+                (SelectionInteractor)_attributeController.getNodeInteractor());
 
         // MenuCreator
 	_menuCreator = new MenuCreator(new SchematicContextMenuFactory(this));
