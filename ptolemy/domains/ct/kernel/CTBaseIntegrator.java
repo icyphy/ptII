@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating red (liuj@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+@ProposedRating Yellow (liuj@eecs.berkeley.edu)
+@AcceptedRating Yellow (johnr@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.ct.kernel;
@@ -59,14 +59,22 @@ differential equation dx/dt = f(x,t) can be represented by:
 <P>
 An integrator
 is a dynamic actor that emit a token (internal state) at the beginning
-of the simulation. An integrator is an error control actor that can control
+of the simulation. An integrator is an step size actor that can control
 the accuracy of the ODE solution by adjusting step sizes. An integrator has
 one memory, which is its state. 
 <P>
+To help resolving the new state, a set of variables are used:<BR>
+state: This is the new state at a time point, which has beed confirmed
+by all the step size control actors.
+tetative state: This is the resolved state which has not been confirmed.
+It is a starting point for other actor to control the successfulness 
+of this integration step.
+history: The previous stats, which may be used by some integration method. 
+<P>
 For different ODE solving methods, the functionality
 of a integrator could be different. This class provide a basic
-implementation of the integrator, in which some solver-dependent method
-are hooked to the current ODE solver.
+implementation of the integrator, so some solver-dependent methods are
+delegated to the current ODE solver.
 <P>
 An integrator has one parameter: <code>initialState</code>. At the 
 initialization stage of the simulation, the state of the integrator is 
@@ -76,8 +84,8 @@ An integrator can possibly have several auxiliary variables--
 <code>_auxVariables</code>. The number of <code>_auxVariabless</code> is get
 from the ODE solver. 
 <P>
-The integrator has a history array, which remembered the states and 
-their derivative for the past several steps. The history is used for
+The integrator remembers the histoty states and 
+their derivatives for the past several steps. The history is used for
 multistep methods.
 
 @author Jie Liu
@@ -235,14 +243,13 @@ public class CTBaseIntegrator extends CTActor
         return _initState;
     }
 
-    /** Returns the potential state.
+    /** Returns the tentative state.
      *
-     *  @return the potential state.
+     *  @return the tentative state.
      */
     public double getTentativeState() {
         return _tentativeState;
     }
-
 
     /** Return the state of the integrator.
      *
@@ -253,7 +260,7 @@ public class CTBaseIntegrator extends CTActor
     }
 
     /** Update initial state parameter. Set the initial state to
-     *  the potential state.
+     *  the tentative state.
      *
      *  @exception IllegalActionException If there's no director or
      *       the director has no ODE solver, or thrown by the
@@ -308,7 +315,8 @@ public class CTBaseIntegrator extends CTActor
         return solver.integratorPredictedStepSize(this);
     }
 
-    /** Prefire method in the execution sequence. This method checks
+    /** Setup the actor to operate with the current ODE solver.
+     *  This method checks
      *  if there enough auxVariables in the integrator given the
      *  current ODE solver. If not, create more auxVariables.
      *  @return True always.
@@ -384,7 +392,8 @@ public class CTBaseIntegrator extends CTActor
         }
     }
 
-    /** Set history capacity. If the argument is less than 0,
+    /** Set history capacity. This will typically be set by the ODE sovlers
+     *  that uses the history. If the argument is less than 0,
      *  the capacity is set to 0.
      *  @param cap The capacity.
      */
@@ -392,7 +401,7 @@ public class CTBaseIntegrator extends CTActor
     public final void setHistoryCapacity(int cap) {
     }
 
-    /** Set the potential state. Tentative state is the state that
+    /** Set the tentative state. Tentative state is the state that
      *  the ODE solver think to be the new state for the integrator.
      *  It may not
      *  be the final state due to the event detection.
@@ -402,7 +411,7 @@ public class CTBaseIntegrator extends CTActor
          _tentativeState = value;
      }
 
-    /** Set the potential derivative dx/dt. Tentative derivative
+    /** Set the tentative derivative dx/dt. Tentative derivative
      *  is the derivative of the state that
      *  the ODE solver think to be at the fixed point. This may not
      *  be the final derivative due to the event detection.
@@ -456,7 +465,7 @@ public class CTBaseIntegrator extends CTActor
     private double[] _auxVariables;
     // State.
     private double _state;
-    // potential state;
+    // tentative state;
     private double _tentativeState;
     // Tentative derivative;
     private double _tentativeDerivative;

@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating red (liuj@eecs.berkeley.edu)
+@ProposedRating Yellow (liuj@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
@@ -35,16 +35,15 @@ import ptolemy.actor.*;
 import ptolemy.data.expr.*;
 import java.util.Enumeration;
 
-// FIXME: This class is not needed...
+// FIXME: This class is not needed...soon...
 
 //////////////////////////////////////////////////////////////////////////
 //// CTActor
 /**
+Note: This class will be removed soon.
 CTActor is the base class for continuous time actors.
 <P>
-CTActors can have parameters attached. The parameters can be set by the
-setParam() method at any time, but the parameter will not be used
-immediately until it is updated by the updateParams() method. When a
+When a
 parameter is changed, the <code>paramChanged</code> flag is set.
 The parameter will be updated in the updateParams() method, if the
 <code>paramChanged</code> flag is set.  In this base class,
@@ -53,7 +52,7 @@ stage of the iteration, so that the parameters are keep consistent
 during the iteration. 
 @author Jie Liu
 @version $Id$
-@see ptolemy.actor.AtomicActor
+@see ptolemy.actor.TypedAtomicActor
 */
 public class CTActor extends TypedAtomicActor {
     /** Construct a CTActor in the default workspace with an empty string

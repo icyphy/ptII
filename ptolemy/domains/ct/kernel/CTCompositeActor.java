@@ -42,6 +42,8 @@ and implements the CTStepSizeControlActor interface. If the director of
 this composite actor is an instance of CTEmbeddedDirector, then the 
 CTStepSizeControlActor calls will be delegated to its local director.
 Otherwise, it returns defaullt values. 
+<P>
+Note: This class is still under development.
 @author  Jie Liu
 @version $Id$
 */

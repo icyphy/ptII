@@ -43,6 +43,8 @@ import collections.LinkedList;
 //// CTEmbeddedNRDirector
 /**
 Don't need to run ahead of time and don't need to rollback.
+Note: This class is under significant redesign, please do not use it
+if possible.
 @author  liuj
 @version $Id$
 */
