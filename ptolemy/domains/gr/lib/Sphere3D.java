@@ -53,6 +53,7 @@ graph. This actor may be used along with the Scale3D transformer to produce
 ellipsoid shapes. This actor will only have meaning in the GR domain.
 
 @author C. Fong
+@version $Id$
 */
 public class Sphere3D extends GRShadedShape {
 
@@ -98,7 +99,7 @@ public class Sphere3D extends GRShadedShape {
         super.attributeChanged(attribute);
     }
 
-    
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -120,7 +121,7 @@ public class Sphere3D extends GRShadedShape {
         _scaler.setTransform(scaleTransform);
         _scaler.addChild(_containedNode);
     }
-    
+
     /** Return the encapsulated Java3D node of this 3D actor. The encapsulated
      *  node for this actor is a Java3D sphere.
      *

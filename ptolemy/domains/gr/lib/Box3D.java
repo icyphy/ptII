@@ -94,9 +94,6 @@ public class Box3D extends GRShadedShape {
 
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-
-    ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
     /** Create the shape and appearance of the encapsulated box
@@ -105,10 +102,10 @@ public class Box3D extends GRShadedShape {
      */
     protected void _createModel() throws IllegalActionException {
         super._createModel();
-        _containedNode = new Box((float)_getLength(),(float) _getHeight(),
+        _containedNode = new Box((float)_getLength(), (float) _getHeight(),
                 (float) _getWidth(), Box.GENERATE_NORMALS,_appearance);
     }
-    
+
     /** Return the encapsulated Java3D node of this 3D actor. The encapsulated
      *  node for this actor is a Java3D box.
      *  @return the Java3D box.
@@ -117,7 +114,10 @@ public class Box3D extends GRShadedShape {
         return (Node) _containedNode;
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
 
+    protected Box _containedNode;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -131,7 +131,6 @@ public class Box3D extends GRShadedShape {
         double value = ((DoubleToken) xLength.getToken()).doubleValue();
         return value / 2.0;
     }
-
 
     /** Return the value of the width parameter
      *  @return the width of the box
@@ -152,9 +151,4 @@ public class Box3D extends GRShadedShape {
         double value = ((DoubleToken) yHeight.getToken()).doubleValue();
         return value / 2.0;
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    protected Box _containedNode;
 }

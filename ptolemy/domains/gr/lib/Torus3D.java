@@ -191,7 +191,7 @@ public class Torus3D extends GRShadedShape {
         _containedNode.setAppearance(_appearance);
         _containedNode.setGeometry(gi.getGeometryArray());
     }
-    
+
     /** Return the encapsulated Java3D node of this 3D actor. The encapsulated
      *  node for this actor is a customized torus.
      *

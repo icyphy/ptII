@@ -56,8 +56,8 @@ in the X-Y plane to specify the polygonal shape for the base. The parameter
 <i>thickness</i> determines the thickness of the generalized cylinder
 
 @author C. Fong
+@version $Id$
 */
-
 public class PolyCylinder3D extends GRShadedShape {
 
     /** Construct an actor with the given container and name.
@@ -75,8 +75,8 @@ public class PolyCylinder3D extends GRShadedShape {
         polygon = new Parameter(this, "polygon",
                    new DoubleMatrixToken(
                    new double[][] {{0.0, 0.5,
-                                   -0.433,-0.25,
-                                    0.433,-0.25}}));
+                                   -0.433, -0.25,
+                                    0.433, -0.25}}));
         thickness = new Parameter(this, "thickness", new DoubleToken(0.3));
     }
 
@@ -97,18 +97,14 @@ public class PolyCylinder3D extends GRShadedShape {
      */
     public Parameter thickness;
 
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-
-
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Create the shape and appearance of the encapsulated generalized cylinder
+    /** Create the shape and appearance of the encapsulated
+     *   generalized cylinder.
+     *
      *  @exception IllegalActionException If the value of some parameters can't
-     *   be obtained
+     *   be obtained.
      */
     protected void _createModel() throws IllegalActionException {
 
@@ -120,11 +116,11 @@ public class PolyCylinder3D extends GRShadedShape {
         stripCount[0] = numberOfVertices;
         stripCount[1] = numberOfVertices;
         int i;
-        for(i=2; i < 2+numberOfVertices; i++) {
+        for(i = 2; i < 2+numberOfVertices; i++) {
             stripCount[i] = 4;
         }
-        int j=0;
-        int k=0;
+        int j = 0;
+        int k = 0;
         float thickness = (float) _getThickness();
 
         data[numberOfVertices*3] = data[0];
@@ -189,7 +185,7 @@ public class PolyCylinder3D extends GRShadedShape {
         _containedNode.setAppearance(_appearance);
         _containedNode.setGeometry(gi.getGeometryArray());
     }
-    
+
     /** Return the encapsulated Java3D node of this 3D actor. The encapsulated
      *  node for this actor is a generalized polygonal cylinder.
      *
@@ -205,7 +201,8 @@ public class PolyCylinder3D extends GRShadedShape {
 
     /** Get the array that contains the 2D polygonal representation
      *  of the base of this cylinder
-     *  @return the float[] array that contains the 2D polygonal vertex coordinates
+     *  @return the float[] array that contains the
+     *  2D polygonal vertex coordinates.
      *  @exception IllegalActionException If the value of some parameters can't
      *   be obtained
      */
@@ -236,7 +233,8 @@ public class PolyCylinder3D extends GRShadedShape {
         return ((DoubleToken) thickness.getToken()).doubleValue();
     }
 
-    /** Get the number of vertices in the 2D polygonal base of this generalized cylinder
+    /** Get the number of vertices in the 2D polygonal base of this
+     *  generalized cylinder.
      *  @return the number of vertices in the base polygon
      *  @exception IllegalActionException If the value of some parameters can't
      *   be obtained

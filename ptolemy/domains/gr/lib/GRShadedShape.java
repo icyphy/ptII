@@ -53,6 +53,7 @@ properties. The parameters <i>redComponent</i>, <i>greenComponent</i>,
 the shininess of the object.
 
 @author C. Fong
+@version $Id$
 */
 abstract public class GRShadedShape extends GRActor {
 
@@ -75,13 +76,13 @@ abstract public class GRShadedShape extends GRActor {
                    new DoubleMatrixToken(new double[][] {{ 0.7, 0.7, 0.7}} ));
 
         shininess = new Parameter(this,"shininess",new DoubleToken(0.0));
-        _color = new Color3f(1.0f,1.0f,1.0f);
+        _color = new Color3f(1.0f, 1.0f, 1.0f);
     }
-    
+
     /** Return false if the scene graph is already initialized.
      *
      *  @return false if the scene graph is already initialized.
-     *  @exception IllegalActionException will not be thrown..
+     *  @exception IllegalActionException Not thrown in this base class
      */
     public boolean prefire() throws IllegalActionException {
         // -prefire-
@@ -102,7 +103,7 @@ abstract public class GRShadedShape extends GRActor {
      *  the scene graph
      */
     public TypedIOPort sceneGraphOut;
-    
+
 
     /** The red, green, and blue color components of the 3D shape
      */
@@ -116,17 +117,17 @@ abstract public class GRShadedShape extends GRActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /*  Create the Java3D geometry and appearance for this GR actors
      *
-     *  @exception IllegalActionException if the current director
-     *    is not a GRDirector
+     *  @exception IllegalActionException If the current director
+     *  is not a GRDirector.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
         _createModel();
     }
-    
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -150,20 +151,20 @@ abstract public class GRShadedShape extends GRActor {
 
     /** Create the color of this shaded GR actor
      *
-     *  @exception IllegalActionException if unable to setup the color
+     *  @exception IllegalActionException If unable to setup the color.
      */
     protected void _createModel() throws IllegalActionException {
 
         DoubleMatrixToken color = (DoubleMatrixToken) rgbColor.getToken();
 
-        _color.x = (float) color.getElementAt(0,0);
-        _color.y = (float) color.getElementAt(0,1);
-        _color.z = (float) color.getElementAt(0,2);
+        _color.x = (float) color.getElementAt(0, 0);
+        _color.y = (float) color.getElementAt(0, 1);
+        _color.z = (float) color.getElementAt(0, 2);
         _shine = (float) ((DoubleToken) shininess.getToken()).doubleValue();
 
         _createAppearance();
     }
-    
+
     protected void _makeSceneGraphConnection() throws IllegalActionException {
         sceneGraphOut.send(0,new ObjectToken(_getNodeObject()));
     }
@@ -177,8 +178,8 @@ abstract public class GRShadedShape extends GRActor {
     protected Appearance _appearance;
     protected Material _material;
     protected float _shine;
-    
 
-    protected static final Color3f whiteColor = new Color3f(1.0f,1.0f,1.0f);
-    protected static final Color3f blueColor = new Color3f(0.0f,0.0f,1.0f);
+
+    protected static final Color3f whiteColor = new Color3f(1.0f, 1.0f, 1.0f);
+    protected static final Color3f blueColor = new Color3f(0.0f, 0.0f, 1.0f);
 }

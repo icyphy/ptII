@@ -52,6 +52,7 @@ The parameter <i>accumulate</i> determines whether transformations are
 accumulated or reset during firing.
 
 @author C. Fong
+@version $Id$
 */
 abstract public class GRTransform extends GRActor {
 
@@ -98,7 +99,7 @@ abstract public class GRTransform extends GRActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Setup the transform object
      */
     public void initialize() throws IllegalActionException {
@@ -120,13 +121,13 @@ abstract public class GRTransform extends GRActor {
 
     protected void _makeSceneGraphConnection() throws IllegalActionException {
         int width = sceneGraphIn.getWidth();
-        for(int i=0;i<width;i++) {
+        for(int i = 0; i < width; i++) {
             if (sceneGraphIn.hasToken(i)) {
-                ObjectToken o = (ObjectToken) sceneGraphIn.get(i);
-                Node n = (Node) o.getValue();
-                _addChild(n);
+                ObjectToken objectToken = (ObjectToken) sceneGraphIn.get(i);
+                Node node = (Node) objectToken.getValue();
+                _addChild(node);
             }
         }
-        sceneGraphOut.send(0,new ObjectToken(_getNodeObject()));
+        sceneGraphOut.send(0, new ObjectToken(_getNodeObject()));
     }
 }

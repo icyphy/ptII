@@ -54,7 +54,7 @@ import java.awt.Font;
 @version $Id$
 */
 public class TextString3D extends GRShadedShape {
-    
+
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -77,7 +77,7 @@ public class TextString3D extends GRShadedShape {
 
     /** Create the shape and appearance of the encapsulated text
      *
-     *  @exception IllegalActionException If the value of some parameters 
+     *  @exception IllegalActionException If the value of some parameters
      *  can't be obtained
      */
     protected void _createModel() throws IllegalActionException {

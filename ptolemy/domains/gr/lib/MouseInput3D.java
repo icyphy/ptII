@@ -81,14 +81,14 @@ public class MouseInput3D extends GRActor {
             x.send(0, new IntToken(_xClicked));
             y.send(0, new IntToken(_yClicked));
             _hasData = false;
-            // FIXME: for debugging, uncomment
-            //System.out.println("clicked location -> "+_xClicked+" "+_yClicked);
+            //System.out.println("clicked location -> " + _xClicked
+            // + " " + _yClicked);
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-    
+
     public Node _getNodeObject() {
         return (Node) _containedNode;
     }
@@ -117,7 +117,7 @@ public class MouseInput3D extends GRActor {
             while (criteria.hasMoreElements()) {
                 wakeup = (WakeupCriterion) criteria.nextElement();
                 event = ((WakeupOnAWTEvent)wakeup).getAWTEvent();
-              	for (int i=0; i<event.length; i++) {
+              	for (int i = 0; i < event.length; i++) {
                     eventId = event[i].getID();
                     if (eventId == MouseEvent.MOUSE_PRESSED) {
             	        _xClicked = ((MouseEvent)event[i]).getX();
@@ -131,7 +131,7 @@ public class MouseInput3D extends GRActor {
     }
 
     protected BranchGroup _containedNode;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

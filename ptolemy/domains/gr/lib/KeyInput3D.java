@@ -44,7 +44,11 @@ import java.util.*;
 import javax.media.j3d.*;
 import javax.vecmath.*;
 
-
+/**
+An actor that listens for keys pressed on the viewscreen.
+@author C. Fong
+@version $Id$
+*/
 public class KeyInput3D extends GRActor {
 
     public KeyInput3D(CompositeEntity container, String name)
@@ -76,15 +80,15 @@ public class KeyInput3D extends GRActor {
             _hasData = false;
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    
+
     protected Node _getNodeObject() {
         return (Node) userInputNode;
     }
-    
+
     protected void _makeSceneGraphConnection() throws IllegalActionException {
         if (_root == null) {
             throw new IllegalActionException(
@@ -112,7 +116,7 @@ public class KeyInput3D extends GRActor {
             while (criteria.hasMoreElements()) {
                 wakeup = (WakeupCriterion) criteria.nextElement();
                 event = ((WakeupOnAWTEvent)wakeup).getAWTEvent();
-              	for (int i=0; i<event.length; i++) {
+              	for (int i = 0; i < event.length; i++) {
                     eventId = event[i].getID();
                     if (eventId == KeyEvent.KEY_PRESSED) {
                         _keycode = ((KeyEvent) event[i]).getKeyChar();
@@ -125,7 +129,7 @@ public class KeyInput3D extends GRActor {
     }
 
     protected BranchGroup userInputNode;
-        
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private React _react;

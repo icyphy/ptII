@@ -45,14 +45,14 @@ import javax.vecmath.*;
 //////////////////////////////////////////////////////////////////////////
 //// Rotate3D
 
-/** Conceptually, this actor takes 3D geometry in its input and produces 
-a rotated version in its output. In reality, this actor encapsulates a 
-Java3D TransformGroup which is converted into a node in the resulting 
+/** Conceptually, this actor takes 3D geometry in its input and produces
+a rotated version in its output. In reality, this actor encapsulates a
+Java3D TransformGroup which is converted into a node in the resulting
 Java3D scene graph. This actor will only have meaning in the GR domain.
 
-The parameters <i>axisDirectionX</i>,<i>axisDirectionY</i>, and 
+The parameters <i>axisDirectionX</i>,<i>axisDirectionY</i>, and
 <i>axisDirectionZ</i> determine the direction of the axis of rotation.
-The parameters <i>baseX</i>, <i>baseY</i>, and <i>baseZ</i> determine 
+The parameters <i>baseX</i>, <i>baseY</i>, and <i>baseZ</i> determine
 the pivot point for axis of the rotation. The parameter <i>initialAngle</i>
 determines the initial angle of rotation.
 @author C. Fong
@@ -72,10 +72,10 @@ public class Rotate3D extends GRTransform {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        angle = new TypedIOPort(this, "angle",true,false);
+        angle = new TypedIOPort(this, "angle", true, false);
 
         angle.setTypeEquals(BaseType.DOUBLE);
-        initialAngle = new Parameter(this, "initialAngle", 
+        initialAngle = new Parameter(this, "initialAngle",
                        new DoubleToken(0.0));
 
         axisDirection = new Parameter(this, "axisDirection",
@@ -130,7 +130,7 @@ public class Rotate3D extends GRTransform {
     /** Change the rotation angle depending on the value given in the
      *  input port.
      *
-     *  @exception IllegalActionException If the value of some parameters 
+     *  @exception IllegalActionException If the value of some parameters
      *  can't be obtained.
      */
     public void fire() throws IllegalActionException {
@@ -138,20 +138,20 @@ public class Rotate3D extends GRTransform {
         if (angle.getWidth() != 0) {
             if (angle.hasToken(0)) {
                 double in = ((DoubleToken)angle.get(0)).doubleValue();
-                double originalAngle = ((DoubleToken) 
+                double originalAngle = ((DoubleToken)
                                       initialAngle.getToken()).doubleValue();
 
-                DoubleMatrixToken axis = (DoubleMatrixToken) 
+                DoubleMatrixToken axis = (DoubleMatrixToken)
                                           axisDirection.getToken();
 
-                _xAxis = (float) axis.getElementAt(0,0);
-                _yAxis = (float) axis.getElementAt(0,1);
-                _zAxis = (float) axis.getElementAt(0,2);
+                _xAxis = (float) axis.getElementAt(0, 0);
+                _yAxis = (float) axis.getElementAt(0, 1);
+                _zAxis = (float) axis.getElementAt(0, 2);
 
                 Quat4d quat = new Quat4d();
                 if (_isAccumulating()) {
                     _accumulatedAngle = in + _accumulatedAngle;
-                    quat.set(new AxisAngle4d(_xAxis,_yAxis,_zAxis,
+                    quat.set(new AxisAngle4d(_xAxis, _yAxis, _zAxis,
                                              _accumulatedAngle));
                 } else {
                     quat.set(new AxisAngle4d(_xAxis,_yAxis,_zAxis,
@@ -181,18 +181,18 @@ public class Rotate3D extends GRTransform {
 
         DoubleMatrixToken axis = (DoubleMatrixToken) axisDirection.getToken();
 
-        _xAxis = (float) axis.getElementAt(0,0);
-        _yAxis = (float) axis.getElementAt(0,1);
-        _zAxis = (float) axis.getElementAt(0,2);
+        _xAxis = (float) axis.getElementAt(0, 0);
+        _yAxis = (float) axis.getElementAt(0, 1);
+        _zAxis = (float) axis.getElementAt(0, 2);
 
         DoubleMatrixToken pivot = (DoubleMatrixToken) pivotLocation.getToken();
 
 
-        _baseX = (float) pivot.getElementAt(0,0);
-        _baseY = (float) pivot.getElementAt(0,1);
-        _baseZ = (float) pivot.getElementAt(0,2);
+        _baseX = (float) pivot.getElementAt(0, 0);
+        _baseY = (float) pivot.getElementAt(0, 1);
+        _baseZ = (float) pivot.getElementAt(0, 2);
 
-        double originalAngle = ((DoubleToken) 
+        double originalAngle = ((DoubleToken)
                                  initialAngle.getToken()).doubleValue();
 
         _accumulatedAngle = originalAngle;
@@ -212,16 +212,17 @@ public class Rotate3D extends GRTransform {
 
 
         Transform3D topTransform = new Transform3D();
-        topTransform.setTranslation(new Vector3d(_baseX,_baseY,_baseZ));
+        topTransform.setTranslation(new Vector3d(_baseX, _baseY, _baseZ));
         _topTranslate.setTransform(topTransform);
 
         Quat4d quaternion = new Quat4d();
-        quaternion.set(new AxisAngle4d(_xAxis,_yAxis,_zAxis,originalAngle));
+        quaternion.set(new AxisAngle4d(_xAxis, _yAxis, _zAxis, originalAngle));
         _rotation.set(quaternion);
         _middleRotate.setTransform(_rotation);
 
         Transform3D bottomTransform = new Transform3D();
-        bottomTransform.setTranslation(new Vector3d(-_baseX,-_baseY,-_baseZ));
+        bottomTransform.setTranslation(new Vector3d(-_baseX,
+                -_baseY, -_baseZ));
         _bottomTranslate.setTransform(bottomTransform);
         _topTranslate.addChild(_middleRotate);
         _middleRotate.addChild(_bottomTranslate);

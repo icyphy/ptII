@@ -94,9 +94,9 @@ public class ViewScreen extends GRActor implements Placeable {
                                "horizontalResolution",new IntToken(400));
         verticalResolution = new Parameter(this,
                              "verticalResolution",new IntToken(400));
-        rotatable = new Parameter(this, 
+        rotatable = new Parameter(this,
                     "rotatable",new BooleanToken(true));
-        scalable = new Parameter(this, 
+        scalable = new Parameter(this,
                    "scalable",new BooleanToken(false));
         translatable = new Parameter(this,
                        "translatable",new BooleanToken(false));
@@ -110,13 +110,13 @@ public class ViewScreen extends GRActor implements Placeable {
     }
 
     public TypedIOPort sceneGraphIn;
-    
+
     /** The horizontal resolution of the display screen
      *  This parameter should contain a IntToken.
      *  The default value of this parameter is the IntToken 400
      */
     public Parameter horizontalResolution;
-    
+
     /** Boolean variable that determines whether the user is allowed to
      *   rotate the model
      *  This parameter should contain a BooleanToken
@@ -130,14 +130,14 @@ public class ViewScreen extends GRActor implements Placeable {
      *  The default value of this parameter is BooleanToken false
      */
     public Parameter scalable;
-    
+
     public Parameter showAxes;
-    
+
     /*  Boolean variable that determines whether screen update is done
      *   once per iteration
-     *  This parameter should contain a BooleanToken 
+     *  This parameter should contain a BooleanToken
      *  The default value of this parameter is BooleanToken false
-     */    
+     */
     public Parameter iterationSynchronized;
 
     /** Boolean variable that determines whether the user is allowed to
@@ -146,7 +146,7 @@ public class ViewScreen extends GRActor implements Placeable {
      *  The default value of this parameter is BooleanToken false
      */
     public Parameter translatable;
-    
+
     /** The vertical resolution of the display screen
      *  This parameter should contain a IntToken.
      *  The default value of this parameter is IntToken 400
@@ -182,7 +182,7 @@ public class ViewScreen extends GRActor implements Placeable {
             _canvas.setSize(new Dimension(horizontalDimension,verticalDimension));
             if (simpleUniverse == null) simpleUniverse = new SimpleUniverse(_canvas);
             simpleUniverse.getViewingPlatform().setNominalViewingTransform();
-            
+
             /* FIXME: experimental code for changing views
             TransformGroup VPTG = new TransformGroup();
             VPTG = simpleUniverse.getViewingPlatform().getMultiTransformGroup().getTransformGroup(0);
@@ -192,13 +192,13 @@ public class ViewScreen extends GRActor implements Placeable {
             //VPT3D.rotX(Math.PI/2.0);
             VPT3D.rotX(Math.PI/2);
             VPT3D.setTranslation(new Vector3f(0.0f,-10.0f,0.0f));
-            
+
             VPTG.setTransform(VPT3D);
             */
         }
     }
 
-    
+
     /*
      */
     public void fire() throws IllegalActionException {
@@ -209,11 +209,11 @@ public class ViewScreen extends GRActor implements Placeable {
             _canvas.stopRenderer();
         }
     }
-    
+
     public Canvas3D getCanvas() {
         return _canvas;
     }
-    
+
     public BranchGroup getBranchGroup() {
         return branchRoot;
     }
@@ -269,7 +269,7 @@ public class ViewScreen extends GRActor implements Placeable {
     	    _userTransformation.addChild(mouseTranslate);
             mouseTranslate.setSchedulingBounds(bounds);
         }
-        
+
         // FIXME: should implement this so that user can dynamically
         // modify this value during design-time and run-time
         // right now this is only user-changable during initialization
@@ -323,13 +323,13 @@ public class ViewScreen extends GRActor implements Placeable {
 
         simpleUniverse.getViewer().getView().setLocalEyeLightingEnable(true);
         simpleUniverse.addBranchGraph(lightRoot);
-        
+
         if (_iterationSynchronized) {
             if (_canvas != null) _canvas.stopRenderer();
         }
     }
 
-    
+
     public void wrapup() throws IllegalActionException {
         super.wrapup();
         _userTransformation.getTransform(_lastTransform);
@@ -342,11 +342,11 @@ public class ViewScreen extends GRActor implements Placeable {
         _isSceneGraphInitialized = false;
     }
 
-    
+
     public void addChild(Node node) {
         _userTransformation.addChild(node);
     }
- 
+
     ///////////////////////////////////////////////////////////////////
     ////                       protected methods                   ////
 
@@ -355,7 +355,7 @@ public class ViewScreen extends GRActor implements Placeable {
     protected void _addChild(Node node) {
         _userTransformation.addChild(node);
     }
-    
+
 
     /** The ViewScreen does not have an associated Java3D node
      *
@@ -364,7 +364,7 @@ public class ViewScreen extends GRActor implements Placeable {
     protected Node _getNodeObject() {
         return null;
     }
-    
+
     /**
      */
     protected void _makeSceneGraphConnection() throws IllegalActionException {
@@ -395,7 +395,7 @@ public class ViewScreen extends GRActor implements Placeable {
             _canvas.stopRenderer();
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
     private int _getHorizontalResolution() throws IllegalActionException {
@@ -417,13 +417,13 @@ public class ViewScreen extends GRActor implements Placeable {
     private boolean _isTranslatable() throws IllegalActionException  {
         return ((BooleanToken) translatable.getToken()).booleanValue();
     }
-    
+
     private boolean _isIterationSynchronized() throws IllegalActionException {
-        return ((BooleanToken) 
+        return ((BooleanToken)
                  iterationSynchronized.getToken()).booleanValue();
     }
-    
-    
+
+
 
     private boolean _shouldShowAxes() throws IllegalActionException {
         return ((BooleanToken) showAxes.getToken()).booleanValue();
@@ -434,38 +434,38 @@ public class ViewScreen extends GRActor implements Placeable {
             super();
             _viewContainer = viewContainer;
         }
-        
+
         public void processStimulus(java.util.Enumeration criteria) {
             if (stopped !=true) {
                 _viewContainer.startRenderer();
-                    
+
             }
             /* FIXME: experimental code for changing xforms
             double[] db = new double[16];
-            
+
             db[0]=1.0;db[1]=db[2]=db[3]=0.0;
             db[4]=0.0;db[5]=1.0;db[6]=db[7]=0.0;
             db[8]=db[9]=0.0;db[10]=1.0;db[11]=0.0;
             db[12]=db[13]=db[14]=0.0;db[15]=1.0;
             currXform.set(db);
             */
-            
+
             super.processStimulus(criteria);
-            
-            
+
+
             if (stopped !=true ) {
                 _viewContainer.stopRenderer();
             }
         }
-        
+
         public void stopped() {
             stopped = true;
         }
-        
+
         /* FIXME experimental code for changing xforms
         public void transformChanged(Transform3D transform) {
             double[] db = new double[16];
-            
+
             transform.get(db);
             for(int i=0;i<16;i++) {
                 if (i%4 ==0) {
@@ -483,7 +483,7 @@ public class ViewScreen extends GRActor implements Placeable {
             td.set(db);
             //currXform.set(db);
         }*/
-        
+
         boolean stopped = false;
         ViewScreen _viewContainer;
     }
@@ -492,7 +492,7 @@ public class ViewScreen extends GRActor implements Placeable {
     private Canvas3D _canvas;
     private SimpleUniverse simpleUniverse;
     private boolean _iterationSynchronized = false;
-    // The main connection branch that connects to the universe 
+    // The main connection branch that connects to the universe
     private BranchGroup branchRoot;
     private Transform3D _lastTransform = new Transform3D();
     private TransformGroup _userTransformation = new TransformGroup();
