@@ -165,7 +165,7 @@ public class JavaConverter implements JavaStaticSemanticConstants {
                     System.out.println("The allParsedMap size is" +
                             JavaParserManip.allParsedMap.size());
                     System.out.println("AST Loading status:\n" + 
-                            ASTReflect.getLoadingStatus(false));
+                            ASTReflect.getLoadingStatus(true, false));
                 }
 
                 // Pre-process all instantiated abstract syntax trees prior 
