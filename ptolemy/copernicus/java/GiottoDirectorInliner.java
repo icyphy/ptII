@@ -31,7 +31,6 @@
 package ptolemy.copernicus.java;
 
 import java.io.FileWriter;
-
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -42,25 +41,17 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
-
 import ptolemy.copernicus.kernel.MakefileWriter;
 import ptolemy.copernicus.kernel.PtolemyUtilities;
 import ptolemy.copernicus.kernel.SootUtilities;
-
-import ptolemy.data.*;
-
-import ptolemy.data.expr.*;
-
+import ptolemy.data.expr.Parameter;
+import ptolemy.domains.giotto.kernel.GiottoCodeGenerator;
 import ptolemy.domains.giotto.kernel.GiottoDirector;
-
 import ptolemy.domains.sdf.kernel.SDFUtilities;
-
 import ptolemy.kernel.Entity;
-
-import ptolemy.kernel.util.*;
-
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.StringUtilities;
-
 import soot.ArrayType;
 import soot.BooleanType;
 import soot.IntType;
@@ -73,20 +64,15 @@ import soot.SootClass;
 import soot.SootField;
 import soot.SootMethod;
 import soot.Type;
-
 import soot.jimple.Expr;
 import soot.jimple.IntConstant;
 import soot.jimple.Jimple;
 import soot.jimple.JimpleBody;
 import soot.jimple.Stmt;
 import soot.jimple.StringConstant;
-
 import soot.jimple.toolkits.scalar.LocalNameStandardizer;
-
 import soot.jimple.toolkits.typing.TypeResolver;
-
 import soot.toolkits.scalar.LocalSplitter;
-
 import soot.util.Chain;
 
 //////////////////////////////////////////////////////////////////////////
@@ -125,8 +111,9 @@ public class GiottoDirectorInliner implements DirectorInliner {
         // First, write out Giotto Code for the model.
         String directory = PhaseOptions.getString(options, "outDir");
         try {
+            GiottoCodeGenerator giottoCodeGenerator = new GiottoCodeGenerator();
             String giottoCode =
-                ptolemy.domains.giotto.kernel.GiottoCodeGenerator.generateCode(
+                    giottoCodeGenerator.generateGiottoCode(
                         (TypedCompositeActor)model);
             FileWriter writer = new FileWriter(
                     directory + "/" + model.getName() + ".giotto");
