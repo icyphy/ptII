@@ -7,7 +7,10 @@
       <group>
 <doc>softwalls</doc>
 <entity name="ImplicitSurface" class="ptolemy.apps.softwalls.ImplicitSurface">
-<doc>A view screen with a mountain backdrop.</doc>
+<doc>Calculates the reachable set implicit surface function.</doc>
+</entity>
+<entity name="AngleProcessor" class="ptolemy.apps.softwalls.AngleProcessor">
+<doc>Limits the range of an angular value.</doc>
 </entity>
 
       </group>

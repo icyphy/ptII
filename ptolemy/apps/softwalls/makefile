@@ -57,7 +57,8 @@ include $(CONFIG)
 
 JSRCS = \
 	ThreeDFunction.java \
-	ImplicitSurface.java
+	ImplicitSurface.java \
+	AngleProcessor.java
 
 EXTRA_SRCS =	$(JSRCS)
 
