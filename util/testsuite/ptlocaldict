@@ -105,6 +105,7 @@ Kobe
 Koo
 Korn
 Kupferman
+Lego
 Lemkin
 Lenzmann
 Levitan
@@ -114,6 +115,7 @@ Lotos
 Lukito
 Lustre
 MAKEARCH
+MINDSTORM
 Majordomo
 Makefiles
 Manda
@@ -126,6 +128,7 @@ Miniconference
 Misra
 Misra's
 Mogensen
+Mozilla
 Mudit
 Muliadi
 Nagal
@@ -239,12 +242,14 @@ checkbox
 checkjunk
 chown
 classname
+classpath
 cloneable
 codebase
 codebook
 codesign
 colspan
 combobox
+commapi
 containees
 cshrc
 csp
@@ -322,7 +327,7 @@ java
 java,v
 javac
 javacc
-java
+javacomm
 javadoc
 javadocs
 javafaq
@@ -338,6 +343,8 @@ kienhuis
 kindof
 lang
 laptop
+lego
+legomindstorms
 linux
 liuj
 liuxj
