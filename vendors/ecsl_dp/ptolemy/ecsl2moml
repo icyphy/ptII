@@ -259,31 +259,32 @@ awk ' {
            }
        }
        indent = substr($0, 0, index($0,"<") - 1)  
-       print indent "<relation name=\"" id "\" class=\"ptolemy.actor.TypedIORelation\"/>"
 
-#        if ($0 ~ /dstLine_end_/) {
-#            # Get the value of the dstLine_end_ field
-#            dstLine_end_=""
+#        if ($0 ~ /dstSignal_end_/) {
+#            # Get the value of the dstSignal_end_ field
+#            dstSignal_end_=""
 #            nf = split($0, f, "\"")   
 #            for (i = 1; i <= nf; i++) {
-#                if ( f[i] ~ /dstLine_end_=$/) {
-#                    dstLine_end_ = f[i+1]
+#                if ( f[i] ~ /dstSignal_end_=$/) {
+#                    dstSignal_end_ = f[i+1]
 #                    break;
 #                }
 #            }
-#            #print indent "<!--bar--><link port=\"" dstLine_end_ "\" relation=\"" id "\"/>" 
-#
-#            # Get the value of the srcLine_end_ field
-#            srcLine_end_=""
+#            print indent "<!--dstSignal_end--><link port=\"" dstSignal_end_ "\" relation=\"" id "\"/>" 
+
+#            # Get the value of the srcSignal_end_ field
+#            srcSignal_end_=""
 #            nf = split($0, f, "\"")   
 #            for (i = 1; i <= nf; i++) {
-#                if ( f[i] ~ /srcLine_end_=$/) {
-#                    srcLine_end_ = f[i+1]
+#                if ( f[i] ~ /srcSignal_end_=$/) {
+#                    srcSignal_end_ = f[i+1]
 #                    break;
 #                }
 #            }
-#           #print indent "<link port=\"" srcLine_end_ "\" relation=\"" id "\"/>" 
-#        }
+#           print indent "<link port=\"" srcSignal_end_ "\" relation=\"" id "\"/>" 
+#        } else {
+           print indent "<relation name=\"" id "\" class=\"ptolemy.actor.TypedIORelation\"/>"
+#       }
 
     } else { # bar
         print $0
@@ -517,14 +518,11 @@ $0 ~ /<entity/ {
        y = substr(p[2], 1, length(p[2]) - 1) / scale
 
        location="[" x "," y "]"
-       relationLocationMap[dstLine] = location
-       relationPortMap[dstLine] = name
+       #print "<!--", position , x, y, p[1], p[2], location, "relation =", relation, $0, "-->"
+       relationLocationMap[relation] = location
+       relationPortMap[relation] = name
 
        indent = substr($0, 0, index($0,"<") - 1)  
-       #print indent "<!-- relationLocationMap " dstLine, "[" x "," y "] -->" 
-
-
-
 
        print indent "<port name=\"" name "\" class=\"ptolemy.actor.TypedIOPort\">"
        if ($1 ~ /<OutputPort/ || $1 ~ /<COutPort/ ) {
