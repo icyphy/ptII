@@ -280,14 +280,6 @@ public class CTMultiSolverDirector extends CTDirector {
             _debug(getName(), " fire: <<< ");
         }
 
-        // set the start time of the current iteration
-        // The begin time of an iteration can be changed only by directors.
-        // On the other hand, the model time may be changed by ODE solvers. 
-        // The reason is that when the CurrentTime actor is involved in a 
-        // multi-step integration, it needs to report the current time at the
-        // intermediate steps. The CurrentTime actor reports the model time.
-        _setIterationBeginTime(getModelTime());
-        
         // discrete phase of execution to resolve the final states at the 
         // current time by processing discrete events according to the SR
         // semantics.
@@ -560,8 +552,15 @@ public class CTMultiSolverDirector extends CTDirector {
      *  created or the super class throws it.
      */
     public boolean prefire() throws IllegalActionException {
-        // FIXME: if nothing interesting happens here, delete this method.
-        return super.prefire();
+        boolean prefireReturns =  super.prefire();
+        // set the start time of the current iteration
+        // The begin time of an iteration can be changed only by directors.
+        // On the other hand, the model time may be changed by ODE solvers. 
+        // The reason is that when the CurrentTime actor is involved in a 
+        // multi-step integration, it needs to report the current time at the
+        // intermediate steps. The CurrentTime actor reports the model time.
+        _setIterationBeginTime(getModelTime());
+        return prefireReturns;
     }
 
     /** Fire all the actors in the output schedule.  
@@ -794,9 +793,12 @@ public class CTMultiSolverDirector extends CTDirector {
             _debug("\n !!! discrete phase execution at " + getModelTime());
         }
 
-        // Choose a suggested step size
-        setCurrentStepSize(getSuggestedNextStepSize());
-
+        // FIXME: this should happen at the beginning of the discrete phase
+        // of execution.
+        // configure step sizes 
+        setCurrentStepSize(0.0);
+        setSuggestedNextStepSize(getInitialStepSize());
+        
         CTSchedule schedule = (CTSchedule)getScheduler().getSchedule();
 
         boolean fixedPointReached = false;
@@ -1317,12 +1319,6 @@ public class CTMultiSolverDirector extends CTDirector {
                     // Check whether this step is acceptable
                     if (!_isStateAccurate()) {
                         setCurrentStepSize(_refinedStepWRTState());
-                        if (_debugging && _verbose) {
-                            _debug("Execute the system from "
-                                    + getModelTime()
-                                    + " with a smaller step size" +
-                                    getCurrentStepSize());
-                        }
                     } else {
                         // states are resolved sucessfully.
                         break;
@@ -1334,17 +1330,17 @@ public class CTMultiSolverDirector extends CTDirector {
                         throw new IllegalActionException(this,
                                 "Cannot resolve new states even using "+
                                 "the minimum step size, at time "+
-                        getModelTime());
+                                getModelTime());
                     }
                     setCurrentStepSize(0.5*getCurrentStepSize());
-                    if (_debugging && _verbose) {
-                        _debug("Execute the system from "
-                                + getModelTime()
-                                + " with a smaller step size" +
-                                getCurrentStepSize());
-                    }
                 }
                 setModelTime(getIterationBeginTime());
+                if (_debugging && _verbose) {
+                    _debug("Execute the system from "
+                            + getModelTime()
+                            + " with a smaller step size" +
+                            getCurrentStepSize());
+                }
             }
     
             // States have be resolved. Note that the current

@@ -197,7 +197,6 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
             return;
         }
         
-        _setIterationBeginTime(getModelTime());
         // Guarantee to stop at the iteration end time.
         fireAt((CompositeActor)getContainer(), getIterationEndTime());
 
@@ -446,51 +445,6 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
         }
     }
 
-    /** Call the super class method. After that, check whether any events
-     *  are produced at the end of this iteration. If so, ask the upper 
-     *  level to schedule a firing to react the events generated as this 
-     *  level. 
-     */
-    protected void _resolveInitialStates() throws IllegalActionException {
-        super._resolveInitialStates();
-        if (_isTopLevel()) {
-            return;
-        }
-        // TESTIT: A CT subsystem containing a level crossing detector that
-        // drives a (Discrete) timed plotter in the upper DE level.  
-        // Check whether the iteration is interrupted by event.
-//        // If so, ask the upper level to schedule a firing to react to the
-//        // events generated at this level.
-//        Time localTime = getModelTime();
-//        CompositeActor container = (CompositeActor) getContainer();
-//        Director executiveDirector = container.getExecutiveDirector();
-//        if (_isStoppedByEvent()) {
-//            if (_debugging) {
-//                _debug("Fire stopped by event."
-//                        + " at " + localTime
-//                        + "; request refiring at "
-//                        + localTime
-//                        + "; set Event phase to TRUE");
-//            }
-//            _hasDiscreteEvents = true;
-//            //hold Outputs;
-//        } else if (localTime.equals(getIterationEndTime())) {
-//            if (_debugging) {
-//                _debug("Fire stopped normally."
-//                        + " at " + localTime
-//                        + "; request refiring at "
-//                        + getIterationEndTime()
-//                        + "; set Event phase to FALSE");
-//            }
-//            _hasDiscreteEvents = false;
-//        }
-//        // FIXME: why do we need to refire the container? 
-//        // should this go to the postfire method? 
-//        // This is related to the FIXME in the postfire method.
-//        executiveDirector.fireAt(container, localTime);
-//        return;
-    }
-    
     /** Initialize parameters in addition to the parameters inherited
      *  from CTMultiSolverDirector. In this class the additional
      *  parameter is the maximum run ahead time length

@@ -153,12 +153,6 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
         // This process can not be performed inside prefire method since 
         // this reset is necessary if the current step size is not accurate.
         
-        // FIXME: The real problem is that the current design relies on ODE 
-        // solvers to advance time, which is incorrect. Time should only be 
-        // advanced by director, which allows the prefire method to be called 
-        // any times during an iteration (therefore, actors can be iterated).
-        _setIterationBeginTime(getIterationBeginTime());
-        
         CTSchedule schedule = (CTSchedule)getScheduler().getSchedule();
         // The execution phase is the execution phase of the top-level director.
         // All directors at different levels of hierarchy must be synchronized
@@ -195,20 +189,20 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
             super._iterateEventGenerators(schedule);
         } else if (executionPhase 
             == CTExecutionPhase.GENERATING_WAVEFORMS_PHASE) {
-            // NOTE: the time a discrete phase execution (waveform phase) 
-            // starts is the same time the iteration time starts.
-            // NOTE: A ct composite actor is also a waveform generator.
-                
-            // FIXME: why update here? should this go to the prefire method?
-            // The time update only happens once!
-            // FIXME: how to make prefire method more useful? do stuff 
-            // as change ODE solver and update time.
-            CompositeActor container = (CompositeActor)getContainer();
-            Director exe = container.getExecutiveDirector();
-            Time time = exe.getModelTime();
-            setModelTime(exe.getModelTime());
-            _setIterationBeginTime(exe.getModelTime());
-                
+//            // NOTE: the time a discrete phase execution (waveform phase) 
+//            // starts is the same time the iteration time starts.
+//            // NOTE: A ct composite actor is also a waveform generator.
+//                
+//            // FIXME: why update here? should this go to the prefire method?
+//            // The time update only happens once!
+//            // FIXME: how to make prefire method more useful? do stuff 
+//            // as change ODE solver and update time.
+//            CompositeActor container = (CompositeActor)getContainer();
+//            Director exe = container.getExecutiveDirector();
+//            Time time = exe.getModelTime();
+//            setModelTime(exe.getModelTime());
+//            _setIterationBeginTime(exe.getModelTime());
+//                
             super._iterateWaveformGenerators(schedule);
         } else if (executionPhase 
             == CTExecutionPhase.PREFIRING_DYNAMIC_ACTORS_PHASE) {
