@@ -1570,7 +1570,7 @@ public class IOPort extends ComponentPort {
         if (!isMultiport()) {
             if (index > 0) {
                 throw new IllegalActionException(this,
-                        "Cannot insert link at an index greater than"
+                        "Cannot insert link at an index greater than "
                         + "zero in a port that is not a multiport.");
             } else if (numLinks() > 0) {
                 throw new IllegalActionException(this,
