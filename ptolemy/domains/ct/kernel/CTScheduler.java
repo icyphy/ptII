@@ -183,6 +183,7 @@ public class CTScheduler extends Scheduler{
             if(!valid()) {
                 schedule();
             }
+            _dynamicversion = workspace().getVersion();
             return _stateschedule.elements();
         } finally {
             workspace().doneReading();
@@ -198,7 +199,7 @@ public class CTScheduler extends Scheduler{
      *  @return An enumeration of error control actors.
      *  FIXME: Deprecated!
      *  @deprecated Use stepSizeControlActors instead.
-     */
+     *
     public Enumeration errorControlActors() {
         try {
 	    workspace().getReadAccess();
@@ -211,7 +212,7 @@ public class CTScheduler extends Scheduler{
             workspace().doneReading();
         }
     }
-   
+    */
     /** Return an enumeration of step size control (SSC) actors in the 
      *  state and state transiotion schedule. These are the step size
      *  control actors in the dx/dt=f(x,u,t) equations.
@@ -231,6 +232,7 @@ public class CTScheduler extends Scheduler{
             if(!valid()) {
                 schedule();
             }
+            _dynamicversion = workspace().getVersion();
             return _statessc.elements();
         } finally {
             workspace().doneReading();
@@ -255,6 +257,7 @@ public class CTScheduler extends Scheduler{
             if(!valid()) {
                 schedule();
             }
+            _dynamicversion = workspace().getVersion();
             return _outputssc.elements();
         } finally {
             workspace().doneReading();
@@ -271,7 +274,7 @@ public class CTScheduler extends Scheduler{
      *  @return An enumeration of event generator.
      *  FIXME: deprecated.
      *  @deprecated Use eventGenerators
-     */
+     *
     public Enumeration eventGenerateActors() {
         try {
 	    workspace().getReadAccess();
@@ -284,7 +287,7 @@ public class CTScheduler extends Scheduler{
             workspace().doneReading();
         }
     }
-
+    */
     /** Return an enumeration of event generators.
      *  This enumeration is locally
      *  cached. If workspace version equals to the cached version,
@@ -352,6 +355,7 @@ public class CTScheduler extends Scheduler{
             if(!valid()) {
                 schedule();
             }
+            _dynamicversion = workspace().getVersion();
             return _eventschedule.elements();
         } finally {
             workspace().doneReading();
@@ -370,7 +374,7 @@ public class CTScheduler extends Scheduler{
      *  @exception IllegalActionException If the scheduler has no container,
      *      or the container has no container.
      *  @exception NotSchedulableException If the system is not schedulable.
-     */
+     *
     public Enumeration eventGeneratingSchedule()
             throws NotSchedulableException, IllegalActionException {
         try {
@@ -383,7 +387,7 @@ public class CTScheduler extends Scheduler{
             workspace().doneReading();
         }
     }
-
+    */
     /** Return an enumeration of Memaris actors.
      *  This enumeration is locally
      *  cached. If workspace version equals to the cached version,
@@ -393,7 +397,7 @@ public class CTScheduler extends Scheduler{
      *  @return An enumeration of Memaris actors.
      *  FIXME: Deprecated!
      *  @deprecated Use statefulActors() in stead.
-     */
+     
     public Enumeration memarisActors() {
         try {
 	    workspace().getReadAccess();
@@ -406,7 +410,7 @@ public class CTScheduler extends Scheduler{
             workspace().doneReading();
         }
     }
- 
+    */
     /** Return an enumeration of stateful actors.
      *  This enumeration is locally
      *  cached. If workspace version equals to the cached version,
@@ -450,6 +454,7 @@ public class CTScheduler extends Scheduler{
             if(!valid()) {
                 schedule();
             }
+            _dynamicversion = workspace().getVersion();
             return _outputschedule.elements();
         } finally {
             workspace().doneReading();
@@ -515,11 +520,9 @@ public class CTScheduler extends Scheduler{
             _sink = new LinkedList();
             _dynam = new LinkedList();
             _arith = new LinkedList();
-            _ectrl = new LinkedList();  //deprecated.
-            _evdct = new LinkedList();
-            _memaris = new LinkedList();
-            _statessc = new LinkedList();
-            _outputssc = new LinkedList();
+            //_ectrl = new LinkedList();  //deprecated.
+            //_evdct = new LinkedList();
+            //_memaris = new LinkedList();
             //_ssctrl = new LinkedList(); 
             _evgen = new LinkedList(); 
             _evint = new LinkedList(); 
@@ -528,11 +531,9 @@ public class CTScheduler extends Scheduler{
             _sink.clear();
             _dynam.clear();
             _arith.clear();
-            _ectrl.clear();  // deprecated.
-            _evdct.clear();
-            _memaris.clear();
-            _statessc.clear();
-            _outputssc.clear();
+            //_ectrl.clear();  // deprecated.
+            //_evdct.clear();
+            //_memaris.clear();
             _evgen.clear();
             _evint.clear();
             _stateful.clear();
@@ -542,7 +543,7 @@ public class CTScheduler extends Scheduler{
         Enumeration actors = ca.deepGetEntities();
         while(actors.hasMoreElements()) {
             Actor a = (Actor) actors.nextElement();
-            if (a instanceof CTErrorControlActor) {   //deprecated
+            /*if (a instanceof CTErrorControlActor) {   //deprecated
                 _ectrl.insertLast(a);
             }
             if (a instanceof CTEventGenerateActor) {   //deprecated
@@ -550,7 +551,7 @@ public class CTScheduler extends Scheduler{
             }
             if (a instanceof CTMemarisActor) {  //deprecated.
                 _memaris.insertLast(a);
-            }
+                } */
             if (a instanceof CTStatefulActor) {
                 _stateful.insertLast(a);
             }
@@ -635,6 +636,8 @@ public class CTScheduler extends Scheduler{
         _stateschedule = new LinkedList();
         _transitionschedule = new LinkedList();
         _outputschedule = new LinkedList();
+        _statessc = new LinkedList();
+        _outputssc = new LinkedList();
         // _eventschedule = new LinkedList(); //deprecated
         LinkedList _scheList = new LinkedList();
 
@@ -821,11 +824,11 @@ public class CTScheduler extends Scheduler{
     // A LikedList of the arithmetic (Nondynamic) actors.
     private transient LinkedList _arith;
     // A linkedList of the error control actors.
-    private transient LinkedList _ectrl;
+    //private transient LinkedList _ectrl;
     // A linkedList of event detector.
-    private transient LinkedList _evdct;
+    //private transient LinkedList _evdct;
     // A linkedLost of memaris actors.
-    private transient LinkedList _memaris;
+    //private transient LinkedList _memaris;
     // A linkedLost of SSC actors in the state and transition schedule.
     private transient LinkedList _statessc;
     // A linkedLost of SSC actors in the state and transition schedule.
