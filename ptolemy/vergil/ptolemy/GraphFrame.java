@@ -59,7 +59,6 @@ import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.style.EditableChoiceStyle;
 import ptolemy.moml.EntityLibrary;
 import ptolemy.moml.LibraryAttribute;
-import ptolemy.moml.Locatable;
 import ptolemy.moml.Location;
 import ptolemy.moml.MoMLParser;
 import ptolemy.moml.MoMLChangeRequest;
@@ -996,8 +995,8 @@ public abstract class GraphFrame extends PtolemyFrame
 	public void translate(Object node, double dx, double dy) {
 	    super.translate(node, dx, dy);
 	    // FIXME: this is a bad way to handle locatables.
-	    if(node instanceof Locatable) {
-		double location[] = ((Locatable)node).getLocation();
+	    if(node instanceof Location) {
+		double location[] = ((Location)node).getLocation();
 		if(location == null) {
 		    location = new double[2];
 		    Figure figure = getController().getFigure(node);
@@ -1008,7 +1007,7 @@ public abstract class GraphFrame extends PtolemyFrame
 		    location[1] += dy;
 		}
                 try {
-                    ((Locatable)node).setLocation(location);
+                    ((Location)node).setLocation(location);
                 } catch (IllegalActionException ex) {
                     throw new InternalErrorException(ex.getMessage());
                 }

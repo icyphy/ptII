@@ -72,7 +72,7 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
     public void translate(LayerEvent e, double x, double y) {
         super.translate(e, x, y);
         //FIXME this works only because all the nodes that allow
-        //dragging are locatable nodes.  If nodes can be dragged that
+        //dragging are location nodes.  If nodes can be dragged that
         //aren't locatable nodes, then they shouldn't be able to be
         //selected at the same time as a locatable node.
         try {

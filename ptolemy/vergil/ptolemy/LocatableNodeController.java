@@ -65,14 +65,13 @@ import javax.swing.event.*;
 //// LocatableNodeController
 /**
 This node controller provides interaction techniques for nodes that are
-associated with locatable objects.   This is common when the node has some
+locations.   This is common when the node has some
 concept of its graphical location, but does not know about the figure that it
 is associated with.  This class provides the connection between the
 figure's notion of location and the node's concept of location.
 <p>
 When nodes are drawn, they are automatically placed at the
-coordinate given by the Locatable interface, if that interface is
-implemented by the object attached to the node.  A LocatableNodeDragInteractor
+coordinate given by the Location.  A LocatableNodeDragInteractor
 is used to update the location of the node as the figure moves.
 
 @author Steve Neuendorffer
@@ -103,11 +102,11 @@ public class LocatableNodeController extends NodeController {
 
     /** Return true if the node is associated with a desired location.
      *  In this base class, return true if the the node's semantic object is
-     *  an instance of Locatable.
+     *  an instance of Location.
      */
     public boolean hasLocation(Object n) {
-        if(n instanceof Locatable) {
-            Locatable object = (Locatable) n;
+        if(n instanceof Location) {
+            Location object = (Location) n;
             double[] location = object.getLocation();
             if(location != null) return true;
         }
@@ -119,7 +118,7 @@ public class LocatableNodeController extends NodeController {
      */
     public double[] getLocation(Object n) {
         if(hasLocation(n)) {
-            return ((Locatable) n).getLocation();
+            return ((Location) n).getLocation();
         } else throw new RuntimeException("The node " + n +
                 "does not have a desired location");
     }
@@ -129,15 +128,15 @@ public class LocatableNodeController extends NodeController {
      */
     public void setLocation(Object n, double[] location)
             throws IllegalActionException {
-	if(n instanceof Locatable) {
-            ((Locatable)n).setLocation(location);
+	if(n instanceof Location) {
+            ((Location)n).setLocation(location);
         } else throw new RuntimeException("The node " + n +
                 "can not have a desired location");
     }
 
     /** Move the node's figure to the location specified in the node's
-     *  semantic object, if that object is an instance of Locatable.
-     *  If the semantic object is not locatable, then do nothing.
+     *  semantic object, if that object is an instance of Location.
+     *  If the semantic object is not a location, then do nothing.
      */
     public void locateFigure(Object n) {
 	Figure nf = getController().getFigure(n);
