@@ -35,8 +35,9 @@ ME =		ptolemy
 # so that when we compile in a directory we should have already compiled
 # any classes in other directories that we depend on.
 # Note that data.expr uses moml
+# PTKVM_DIR is set to kvm by configure if the kvm runtime was found
 DIRS = kernel plot graph moml data actor gui math media	\
-	lang codegen domains vergil apps
+	lang codegen domains vergil apps $(PTKVM_DIR) 
 
 # Root of Ptolemy II directory
 ROOT =		..

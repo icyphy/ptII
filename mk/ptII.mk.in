@@ -128,6 +128,9 @@ JINI_JARS =     $(JINI_LIB)/jini-core.jar$(CLASSPATHSEPARATOR)$(JINI_LIB)/jini-j
 # was found
 PTJSPACES_DIR =	@PTJSPACES_DIR@
 
+# Set to kvm and used in $PTII/ptolemy/makefile if the PalmOS KVM was found
+PTKVM_DIR =	@PTKVM_DIR@
+
 # JavaCC is the Java Compiler Compiler which is used by ptolemy.data.expr
 
 # The default location is $(PTII)/vendors/sun/JavaCC
