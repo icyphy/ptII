@@ -108,10 +108,10 @@
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
-        <port name="real" class="ptolemy.actor.TypedIOPort">
+        <port name="x" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
-        <port name="imag" class="ptolemy.actor.TypedIOPort">
+        <port name="y" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
     </entity>
