@@ -103,7 +103,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
     /** Return true if the current integration step is successful.
      *  @return True if the current step is successful.
      */
-    public boolean isThisStepSuccessful() {
+    public boolean isThisStepAccurate() {
         Actor ref = null;
         try {
             ref = getController().currentState().getRefinement();
@@ -113,7 +113,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
 
         boolean result = true;
         if (ref instanceof CTStepSizeControlActor) {
-            result = ((CTStepSizeControlActor)ref).isThisStepSuccessful();
+            result = ((CTStepSizeControlActor)ref).isThisStepAccurate();
         }
         return result;
     }
