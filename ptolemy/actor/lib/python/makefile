@@ -44,7 +44,7 @@ CONFIG =        $(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE =     pythonScript
+PTPACKAGE =     python
 PTDIST =        $(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
@@ -52,7 +52,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = PythonScript.java
 
 OTHER_FILES_TO_BE_JARED = \
-	script.xml
+	python.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
