@@ -47,119 +47,23 @@ if {[info procs sootCodeGeneration] == "" } then {
 # Uncomment this to get a full report, or set in your Tcl shell window.
 # set VERBOSE 1
 
-# Generate code for all the xml files in a directory.
-proc autoAppletCG {autoDirectory} {
-    global KNOWN_FAILED	
-    foreach file [glob $autoDirectory/*.xml] {
-	if { [string last FileWriter2.xml $file] != -1 \
-		|| [string last Legiotto.xml $file] != -1 \
-		|| [string last ReadFile2.xml $file] != -1 } {
-	    # Skip known failures
-	    puts "Skipping Known Failure: $file"
-	    incr KNOWN_FAILED
-	    continue
-	}
-	puts "---- testing $file"
-	test "Auto" "Automatic test in file $file" {
-	    set elapsedTime [time {sootCodeGeneration $file Applet 1000}]
-	    puts "soot took [expr {[lindex $elapsedTime 0] / 1000000.0}] seconds"
-	    list {}
-	} {{}}
-	java::call System gc
-    }
-}
-
-# Generate code all the demos where a demo model has the name 
-# demo/Foo/Foo.xml thus avoiding running scripts like demo/Foo/xxx.xml
-proc autoAppletDemoCG {autoDirectory} {
-    global KNOWN_FAILED	
-    set i 0
-    foreach directory [glob $autoDirectory/*/demo/*] {
-	set base [file tail $directory]
-	set file [file join $directory $base.xml]
-	if { [string last FileWriter2.xml $file] != -1 \
-		|| [string last Legiotto.xml $file] != -1 \
-		|| [string last ReadFile2.xml $file] != -1 } {
-	    # Skip known failures
-	    puts "Skipping Known Demo Failure: $file"
-	    incr KNOWN_FAILED
-	    continue
-	}
-	if [ file exists $file ] {
-	    incr i
-	    puts "---- $i testing $file"
-	    test "Auto-$i" "Automatic test in file $file" {
-	        set elapsedTime [time {sootCodeGeneration $file Applet 1000}]
-	        puts "soot took [expr {[lindex $elapsedTime 0] / 1000000.0}] seconds"
-	        list {}
-	    } {{}}
-	    java::call System gc
-       }
-    }
-}
-
 ######################################################################
 ####
 #
 
-#test Applet-1.1 {Compile and run the Orthocomm test} {
-#    set result [sootAppletCodeGeneration \
-#  	    [file join $relativePathToPTII ptolemy actor lib test auto \
-#	    RecordUpdater.xml]]
-#ptolemy.domains.sdf.demo.OrthogonalCom.OrthogonalCom]
-#    lrange $result 0 9
-#} {2 4 6 8 10 12 14 16 18 20}
-
-
-# Do a SDF and a DE test just be sure things are working
-test Applet-1.2 {Compile and run the SDF IIR test} {
+test Applet-1.1 {Compile and run the SDF IIR test} {
     set result [sootCodeGeneration   [file join $relativePathToPTII ptolemy actor lib test auto IIR.xml] Applet] 
     puts $result
     list {}
 } {{}}
 
-
-test Applet-1.3 {Compile and run the DE Counter test} {
+test Applet-1.2 {Compile a graphical demo} {
     set result [sootCodeGeneration \
-	    [file join $relativePathToPTII ptolemy actor lib test auto \
-		 Counter.xml] Applet]
-    puts $result
-    list {}
-} {{}}
- 
-test Applet-1.3 {Compile and run the MathFunction test, which tends to hang} {
-    set result [sootCodeGeneration \
-	    [file join $relativePathToPTII ptolemy actor lib test auto \
-	    MathFunction.xml] Applet] 
+	    [file join $relativePathToPTII ptolemy domains fsm demo \
+		MultipleRuns MultipleRuns.xml] Applet] 
     puts $result
     list {}
 } {{}}
 
-
-# Generate applets for all the domain demos
-autoAppletDemoCG [file join $relativePathToPTII ptolemy domains]
-
-
-# Now try to generate code for all the tests in the auto directories.
-autoAppletCG [file join $relativePathToPTII ptolemy actor lib test auto]
-autoAppletCG [file join $relativePathToPTII ptolemy actor lib conversions test auto]
-autoAppletCG [file join $relativePathToPTII ptolemy actor lib javasound test auto]
-autoAppletCG [file join $relativePathToPTII ptolemy domains ct lib test auto]
-autoAppletCG [file join $relativePathToPTII ptolemy domains de lib test auto]
-autoAppletCG [file join $relativePathToPTII ptolemy domains dt kernel test auto]
-autoAppletCG [file join $relativePathToPTII ptolemy domains fsm kernel test auto]
-autoAppletCG [file join $relativePathToPTII ptolemy domains fsm test auto]
-autoAppletCG [file join $relativePathToPTII ptolemy domains giotto kernel test auto]
-#autoAppletCG [file join $relativePathToPTII ptolemy domains hdf kernel test auto]
-autoAppletCG [file join $relativePathToPTII ptolemy domains sdf kernel test auto]
-autoAppletCG [file join $relativePathToPTII ptolemy domains sdf lib test auto]
-autoAppletCG [file join $relativePathToPTII ptolemy domains sdf lib vq test auto]
-autoAppletCG [file join $relativePathToPTII ptolemy domains sr kernel test auto]
-autoAppletCG [file join $relativePathToPTII ptolemy domains sr lib test auto]
-
-autoAppletCG [file join $relativePathToPTII ptolemy domains ct lib test auto]
-
-# Print out stats
-#doneTests
 
 

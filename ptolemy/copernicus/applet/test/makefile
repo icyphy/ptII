@@ -64,7 +64,8 @@ EXTRA_SRCS = \
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	alljtests.tcl
+MISC_FILES =	alljtests.tcl \
+	AllApplets.tcl
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
@@ -86,7 +87,11 @@ KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
 JAVAFLAGS = -Xms228m -Xmx228m
 # These tests do not require a graphics terminal, but do use Jacl and Java
 test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl
+	@echo "Run 'make test_long' to create applets on all the demos and tests"
 	$(JTCLSH) alljtests.tcl
+
+test_long: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl
+	$(JTCLSH) AllApplets.tcl
 
 # 'make ptjacl' will start up jacl with the proper classpath
 ptjacl:
