@@ -53,9 +53,17 @@ set constMoml  "$header
   </entity>
 </entity>"
 
-test FilterBackwardCompatibility-1.1 {Const} { 
+######################################################################
+####
+#
+test FilterBackwardCompatibility-1.1 {Const: added an _icon} { 
+    # This test is sort of pointless, since we add the Const _icon
+    # and then remove it.  If we don't remove, this test will not run under
+    # the nightly build
+    
     set parser [java::new ptolemy.moml.MoMLParser]
     $parser addMoMLFilter [java::new ptolemy.moml.FilterBackwardCompatibility]
+
     $parser addMoMLFilter [java::new ptolemy.moml.FilterOutGraphicalClasses]
     set toplevel [$parser parse $constMoml]
     set newMoML [$toplevel exportMoML]
@@ -67,12 +75,6 @@ test FilterBackwardCompatibility-1.1 {Const} {
     <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel"/>
     <entity name="Const" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
-            </property>
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -92,6 +94,9 @@ set mathFunctionMoml  "$header
 </entity>"
 
 test FilterBackwardCompatibility-3.1 {MathFunction} { 
+    # This test is sort of pointless, since we add the _icon
+    # and then remove it.  If we don't remove, this test will not run under
+    # the nightly build
     set parser [java::new ptolemy.moml.MoMLParser]
     # Note that 1.1 added the filter for all the parsers
     set toplevel [$parser parse $mathFunctionMoml]
@@ -104,12 +109,6 @@ test FilterBackwardCompatibility-3.1 {MathFunction} {
     <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel"/>
     <entity name="MathFunction" class="ptolemy.actor.lib.MathFunction">
         <property name="function" class="ptolemy.kernel.util.StringAttribute" value="exp">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
-            </property>
         </property>
         <port name="firstOperand" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -129,6 +128,10 @@ set scaleMoml  "$header
 </entity>"
 
 test FilterBackwardCompatibility-4.1 {Scale} { 
+    # This test is sort of pointless, since we add the _icon
+    # and then remove it.  If we don't remove, this test will not run under
+    # the nightly build
+
     set parser [java::new ptolemy.moml.MoMLParser]
     # Note that 1.1 added the filter for all the parsers
     set toplevel [$parser parse $scaleMoml]
@@ -143,12 +146,6 @@ test FilterBackwardCompatibility-4.1 {Scale} {
         <property name="factor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
-            </property>
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -167,6 +164,10 @@ set trigFunctionMoml  "$header
 </entity>"
 
 test FilterBackwardCompatibility-5.1 {TrigFunction} { 
+    # This test is sort of pointless, since we add the _icon
+    # and then remove it.  If we don't remove, this test will not run under
+    # the nightly build
+
     set parser [java::new ptolemy.moml.MoMLParser]
     # Note that 1.1 added the filter for all the parsers
     set toplevel [$parser parse $trigFunctionMoml]
@@ -180,12 +181,6 @@ test FilterBackwardCompatibility-5.1 {TrigFunction} {
     <entity name="TrigFunction" class="ptolemy.actor.lib.TrigFunction">
         <property name="function" class="ptolemy.kernel.util.StringAttribute" value="sin">
         </property>
-        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
-            </property>
-        </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
@@ -195,6 +190,157 @@ test FilterBackwardCompatibility-5.1 {TrigFunction} {
     </entity>
 </entity>
 }}
+
+
+######################################################################
+####
+#
+
+set complexToCartesianMoml  "$header 
+<entity name=\"FilterBackwardCompatibilityComplextToCartesian\" class=\"ptolemy.actor.TypedCompositeActor\">
+    <entity name=\"ComplexToCartesian1\" class=\"ptolemy.actor.lib.conversions.ComplexToCartesian\">
+        <port name=\"input\" class=\"ptolemy.actor.TypedIOPort\">
+            <property name=\"input\"/>
+        </port>
+        <port name=\"real\" class=\"ptolemy.actor.TypedIOPort\">
+            <property name=\"output\"/>
+        </port>
+        <port name=\"imag\" class=\"ptolemy.actor.TypedIOPort\">
+            <property name=\"output\"/>
+        </port>
+    </entity>
+    <entity name=\"CartesianToComplex2\" class=\"ptolemy.actor.lib.conversions.CartesianToComplex\">
+        <port name=\"real\" class=\"ptolemy.actor.TypedIOPort\">
+            <property name=\"input\"/>
+        </port>
+        <port name=\"imag\" class=\"ptolemy.actor.TypedIOPort\">
+            <property name=\"input\"/>
+        </port>
+        <port name=\"output\" class=\"ptolemy.actor.TypedIOPort\">
+            <property name=\"output\"/>
+        </port>
+    </entity>
+</entity>"
+
+test FilterBackwardCompatibility-6.1 {ComplexToCartesian: port name change} { 
+    set parser [java::new ptolemy.moml.MoMLParser]
+    # Note that 1.1 added the filter for all the parsers
+    set toplevel [$parser parse $complexToCartesianMoml]
+    set newMoML [$toplevel exportMoML]
+    list $newMoML
+} {{<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="FilterBackwardCompatibilityComplextToCartesian" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel"/>
+    <entity name="ComplexToCartesian1" class="ptolemy.actor.lib.conversions.ComplexToCartesian">
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="x" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="y" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="CartesianToComplex2" class="ptolemy.actor.lib.conversions.CartesianToComplex">
+        <port name="x" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="y" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+</entity>
+}}
+
+
+######################################################################
+####
+#
+
+set htvqEncodeMoml  "$header 
+<entity name=\"FilterBackwardCompatibilityComplextToCartesian\" class=\"ptolemy.actor.TypedCompositeActor\">
+    <entity name=\"HTVQEncode1\" class=\"ptolemy.domains.sdf.lib.vq.HTVQEncode\">
+        <property name=\"codeBook\" class=\"ptolemy.data.expr.Parameter\" value=\"&quot;/ptolemy/domains/sdf/lib/vq/data/usc_hvq_s5.dat&quot;\">
+        </property>
+        <property name=\"blockCount\" class=\"ptolemy.data.expr.Parameter\" value=\"1\">
+        </property>
+        <property name=\"blockWidth\" class=\"ptolemy.data.expr.Parameter\" value=\"4\">
+        </property>
+        <property name=\"blockHeight\" class=\"ptolemy.data.expr.Parameter\" value=\"2\">
+        </property>
+        <property name=\"_location\" class=\"ptolemy.moml.Location\" value=\"244.0, 124.0\">
+        </property>
+        <port name=\"input\" class=\"ptolemy.domains.sdf.kernel.SDFIOPort\">
+            <property name=\"input\"/>
+            <property name=\"tokenConsumptionRate\" class=\"ptolemy.data.expr.Parameter\" value=\"1\">
+            </property>
+            <property name=\"tokenInitProduction\" class=\"ptolemy.data.expr.Parameter\" value=\"0\">
+            </property>
+            <property name=\"tokenProductionRate\" class=\"ptolemy.data.expr.Parameter\" value=\"0\">
+            </property>
+        </port>
+        <port name=\"output\" class=\"ptolemy.domains.sdf.kernel.SDFIOPort\">
+            <property name=\"output\"/>
+            <property name=\"tokenConsumptionRate\" class=\"ptolemy.data.expr.Parameter\" value=\"0\">
+            </property>
+            <property name=\"tokenInitProduction\" class=\"ptolemy.data.expr.Parameter\" value=\"0\">
+            </property>
+            <property name=\"tokenProductionRate\" class=\"ptolemy.data.expr.Parameter\" value=\"1\">
+            </property>
+        </port>
+    </entity>
+</entity>"
+
+test FilterBackwardCompatibility-7.1 {HTVQEncode: Property Class Change} { 
+    set parser [java::new ptolemy.moml.MoMLParser]
+    # Note that 1.1 added the filter for all the parsers
+    set toplevel [$parser parse $htvqEncodeMoml]
+    set newMoML [$toplevel exportMoML]
+    list $newMoML
+} {{<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="FilterBackwardCompatibilityComplextToCartesian" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel"/>
+    <entity name="HTVQEncode1" class="ptolemy.domains.sdf.lib.vq.HTVQEncode">
+        <property name="codeBook" class="ptolemy.data.expr.Parameter" value="&quot;/ptolemy/domains/sdf/lib/vq/data/usc_hvq_s5.dat&quot;">
+        </property>
+        <property name="blockCount" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="blockWidth" class="ptolemy.data.expr.Parameter" value="4">
+        </property>
+        <property name="blockHeight" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="244.0, 124.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+        </port>
+    </entity>
+</entity>
+}}
+
 
 
 test FilterBackwardCompatiblity-10.1 {Try running old models, first check that the makefile created the compat/ directory} { 
