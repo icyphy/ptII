@@ -332,7 +332,9 @@ platform from
 Pxgraph works best under JDK1.1.4.  Under JDK1.0.2,
 the <CODE>Print</CODE> and <CODE>About</CODE> buttons will not work.
 
-<li> Obtain the Ptplot tar file from <A HREF="http://ptolemy.eecs.berkeley.edu/java/ptplot"><CODE>http://ptolemy.eecs.berkeley.edu/java/ptplot</CODE></A>.
+<li> Obtain the Ptplot tar file from
+<A HREF="http://ptolemy.eecs.berkeley.edu/java/ptplot"><CODE>http://ptolemy.eecs.berkeley.edu/java/ptplot</CODE></A>.
+
 <li> <CODE>cd</CODE> to <CODE>$PTOLEMY/tycho/java</CODE> and ungzip and
 untar the tar file:
 <PRE>
