@@ -63,6 +63,8 @@ public class RenameConfigurer extends Query
 	setTextWidth(25);
         _object = object;
         addLine("New name", "New name", object.getName());
+        boolean nameShowing = _object.getAttribute("_suppressName") == null;
+        addCheckBox("Show name", "Show name", nameShowing);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -99,7 +101,18 @@ public class RenameConfigurer extends Query
             moml.append(oldName);
             moml.append("\"><rename name=\"");
             moml.append(newName);
-            moml.append("\"/></");
+            moml.append("\"/>");
+            // Remove or show name.
+            boolean showName = booleanValue("Show name");
+            if (showName) {
+                if (_object.getAttribute("_suppressName") != null) {
+                    moml.append("<deleteProperty name=\"_suppressName\"/>");
+                }
+            } else {
+                moml.append("<property name=\"_suppressName\" "
+                        + "class=\"ptolemy.kernel.util.SingletonAttribute\"/>");
+            }
+            moml.append("</");
             moml.append(elementName);
             moml.append(">");
 
