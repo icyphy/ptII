@@ -1,6 +1,6 @@
 /* An audio queue that can be initialized with an array of bytes.
 
-Copyright (c) 1999 The Regents of the University of California.
+Copyright (c) 1998-1999 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -29,9 +29,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 @AcceptedRating Red (srao@eecs.berkeley.edu)
 */
 
-package ptolemy.media.javasound;
-
-import ptolemy.media.javasound.AudioQueue;
+package ptolemy.media;
 
 import javax.media.sound.sampled.AudioFormat;
 
@@ -39,25 +37,26 @@ import javax.media.sound.sampled.AudioFormat;
 //////////////////////////////////////////////////////////////////////////
 //// ByteArrayAudioQueue
 /** Instances of this class represent audio queues that are initialized
- *  with a <code>byte</code> array buffer.
+ *  with a byte array buffer.
  */
 public class ByteArrayAudioQueue extends AudioQueue {
   
-    /** Create an audio queue initialized with the given <code>byte</code>
+    /** Create an audio queue initialized with the given byte
      *  array buffer.
-     *  @param b the <code>byte</code> array buffer used to 
+     *  @param b the byte array buffer used to 
      *   initialize the queue.
-     *  @param af the <code>AudioFormat</code> of this 
-     *   <code>AudioQueue</code>.
-     *  @throw NullPointerException if a <code>null</code> array was passed as 
-     *   the <code>byte</code> array buffer.
+     *  @param isBigEndian true if the data is to be stored in Big-Endian
+     *         (most significant first) byte order, and false otherwise.
+     *  @param bytesPerSample the number of bytes per sample stored in the
+     *         queue
+     *  @param sampleRate the sample rate (in samples per second)
+     *  @param af the AudioFormat of this 
+     *   AudioQueue.
      */
-    public ByteArrayAudioQueue(byte[] b, AudioFormat af) {
-        super(af);
-        if (b == null)
-	    throw new NullPointerException 
-	        ("passed null buffer in ByteArrayAudioQueue");
-	_buffer = b;
+    public ByteArrayAudioQueue(byte[] data, boolean isBigEndian,
+            int bytesPerSample, double sampleRate) {
+        super(isBigEndian, bytesPerSample, sampleRate);
+	_buffer = data;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -67,7 +66,7 @@ public class ByteArrayAudioQueue extends AudioQueue {
      *  @return the oldest byte stored in the queue.
      *  @throws NoSuchElementException if the queue is empty.
      */
-    public byte getByte() {
+    synchronized public byte getByte() {
 	if (_index == _buffer.length)
 	    return super.getByte();
 	_index += 1;
@@ -77,9 +76,17 @@ public class ByteArrayAudioQueue extends AudioQueue {
     /** Return the number of bytes currently stored in the queue.
      *  @return the number of bytes currently stored in the queue.
      */
-    public int numBytes() {
-        return (_buffer.length - _index + super.numBytes());
+    synchronized public int getByteCount() {
+        return (_buffer.length - _index + super.getByteCount());
     }
+
+    /** Empty the contents of the AudioQueue.
+     */
+    synchronized public void clearSamples() {
+        super.clearSamples();
+        _buffer = new byte[0];
+    }
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////

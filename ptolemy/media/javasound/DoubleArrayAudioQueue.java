@@ -1,6 +1,6 @@
 /* An audio queue that is initialized with an array of doubles.
 
-Copyright (c) 1999 The Regents of the University of California.
+Copyright (c) 1998-1999 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -29,34 +29,32 @@ ENHANCEMENTS, OR MODIFICATIONS.
 @AcceptedRating Red (srao@eecs.berkeley.edu)
 */
 
-package ptolemy.media.javasound;
+package ptolemy.media;
 
 import javax.media.sound.sampled.AudioFormat;
 
 //////////////////////////////////////////////////////////////////////////
 //// DoubleArrayAudioQueue
 /** Instances of this class represent audio queues that are initialized
- *  with a <code>double</code> array buffer.
+ *  with a double array buffer.
  */
 public class DoubleArrayAudioQueue extends AudioQueue {
 
-    /** Create an audio queue initialized with the given <code>double</code>
+    /** Create an audio queue initialized with the given double
      *  array buffer.
-     *  @param b the <code>double</code> array buffer used to 
-     *   initialize the queue.
-     *  @param af the <code>AudioFormat</code> of this 
-     *   <code>AudioQueue</code>.
-     *  @throw NullPointerException if a <code>null</code> array was passed as 
-     *   the <code>byte</code> array buffer.
+     *  @param d the double array buffer used to initialize the queue.
+     *  @param isBigEndian true if the data is to be stored in Big-Endian
+     *         (most significant first) byte order, and false otherwise.
+     *  @param bytesPerSample the number of bytes per sample stored in the
+     *         queue
+     *  @param sampleRate the sample rate (in samples per second)
      */
-    public DoubleArrayAudioQueue(double[] d, AudioFormat af) {
-        super(af);
-	if (d == null)
-	    throw new NullPointerException
-	        ("passed null buffer in DoubleArrayAudioQueue");
+    public DoubleArrayAudioQueue(double[] d, boolean isBigEndian,
+            int bytesPerSample, double sampleRate) {
+        super(isBigEndian, bytesPerSample, sampleRate);
 	_buffer = d;
-	_front = new AudioQueue(af);
-	_bytesPerSample = af.getSampleSizeInBits() / 8;
+	_front = new AudioQueue(isBigEndian, bytesPerSample, sampleRate);
+	_bytesPerSample = bytesPerSample;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -66,7 +64,7 @@ public class DoubleArrayAudioQueue extends AudioQueue {
      *  @return the oldest byte stored in the queue.
      *  @throws NoSuchElementException if the queue is empty.
      */
-    public byte getByte() {
+    synchronized public byte getByte() {
         if (!_front.isEmpty())
 	    return _front.getByte();
 	if (_index == _buffer.length)
@@ -79,15 +77,23 @@ public class DoubleArrayAudioQueue extends AudioQueue {
     /** Return the number of bytes currently stored in the queue.
      *  @return the number of bytes currently stored in the queue.
      */
-    public int numBytes() {
-	return (_buffer.length - _index) * _bytesPerSample + super.numBytes();
+    synchronized public int getByteCount() {
+	return (_buffer.length - _index) * _bytesPerSample + super.getByteCount();
     }
 
     /** Return the number of bytes currently stored in the queue.
      *  @return the number of bytes currently stored in the queue.
      */
-    public int numSamples() {
-        return (_buffer.length - _index) + super.numSamples();
+    synchronized public int getSampleCount() {
+        return (_buffer.length - _index) + super.getSampleCount();
+    }
+
+    /** Empty the contents of the AudioQueue.
+     */
+    synchronized public void clearSamples() {
+        super.clearSamples();
+        _front.clearSamples();
+        _buffer = new double[0];
     }
 
     ///////////////////////////////////////////////////////////////////
