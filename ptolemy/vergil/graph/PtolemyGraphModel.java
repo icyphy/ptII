@@ -223,7 +223,7 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	    // are up to date.
 	    // FIXME inefficient if we are conneted to the same relation more
 	    // than once.
-	    List relationList = port.linkedRelationList();
+	    List relationList = port.insideRelationList();
 	    Iterator relations = relationList.iterator();
 	    while(relations.hasNext()) {
 		ComponentRelation relation = 
@@ -265,7 +265,7 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	    // are up to date.
 	    // FIXME inefficient if we are conneted to the same relation more
 	    // than once.
-	    List relationList = port.linkedRelationList();
+	    List relationList = port.insideRelationList();
 	    Iterator relations = relationList.iterator();
 	    while(relations.hasNext()) {
 		ComponentRelation relation = 
@@ -535,7 +535,6 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 		    portLinkList.add(link);
 		}
 	    }
-	    
 	    return portLinkList.iterator();
 	}
 	
@@ -576,7 +575,6 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 		    portLinkList.add(link);
 		}
 	    }
-	    
 	    return portLinkList.iterator();
 	}
 	
@@ -593,7 +591,6 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	    } catch (Exception ex) {
 		throw new GraphException(ex);
 	    }
-
 	}	
     }
 
@@ -740,7 +737,6 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 		    vertexLinkList.add(link);
 		}
 	    }
-	    
 	    return vertexLinkList.iterator();
 	}
 	
@@ -773,7 +769,6 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 		    vertexLinkList.add(link);
 		}
 	    }
-	    
 	    return vertexLinkList.iterator();
 	}
 	
@@ -855,16 +850,17 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	// create a link without a vertex for the relation.
 	if(rootVertex == null && allPortCount == 2 && unlinkedPortCount == 2) {
 	    Port port1 = (Port)linkedPortList.get(0);
+	    Port port2 = (Port)linkedPortList.get(1);
 	    Object head = null;
+	    Object tail = null;
+
 	    if(port1.getContainer().equals(getRoot())) {
 		head = _getLocation(port1);
 	    } else {
 		head = port1;
 	    }
 		
-	    Port port2 = (Port)linkedPortList.get(1);
-	    Object tail = null;
-	    if(port1.getContainer().equals(getRoot())) {
+	    if(port2.getContainer().equals(getRoot())) {
 		tail = _getLocation(port2);
 	    } else {
 		tail = port2;
