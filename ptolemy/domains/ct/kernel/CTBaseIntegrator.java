@@ -40,6 +40,7 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.NameDuplicationException;
 
@@ -308,9 +309,23 @@ public class CTBaseIntegrator extends TypedAtomicActor
      *  This method delegates to the integratorIsAccurate() method of
      *  the current ODE solver.
      *  Throw a NullPointerException, if there's no ODE solver.
+     *  If the input is not available, or the input is a result of
+     *  divide by zero, an InternalErrorException is thrown.
      *  @return True if the last integration step is accurate.
      */
     public boolean isThisStepAccurate() {
+        try {
+            // We check the validity of the input
+            // If it is NaN, or Infinity, an exception is thrown.
+            double f_dot = ((DoubleToken)input.get(0)).doubleValue();
+            if (Double.isNaN(f_dot) || Double.isInfinite(f_dot)) {
+                throw new InternalErrorException(" Input is not valid because" +
+                    " it is a result of divide-by-zero.");
+            }
+        } catch (IllegalActionException e) {        
+            throw new InternalErrorException(getName() +
+                    " can't read input." + e.getMessage());
+        }
         ODESolver solver = ((CTDirector)getDirector()).getCurrentODESolver();
         _successful = solver.integratorIsAccurate(this);
         return _successful;
