@@ -93,6 +93,12 @@ public class TimedDelay extends DETransformer {
         super(container, name);
         delay = new Parameter(this, "delay", new DoubleToken(1.0));
         delay.setTypeEquals(BaseType.DOUBLE);
+
+        _attachText("_iconDescription", "<svg>\n" +
+                "<rect x=\"0\" y=\"0\" "
+                + "width=\"60\" height=\"20\" "
+                + "style=\"fill:white\"/>\n" +
+                "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
