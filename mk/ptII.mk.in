@@ -278,6 +278,10 @@ PTJNI_SHAREDLIBRARY_SUFFIX =	@PTJNI_SHAREDLIBRARY_SUFFIX@
 # Set to joystick if Joystick.jar was found.
 PTJOYSTICK_DIR =     @PTJOYSTICK_DIR@
 
+# PTJYTHON_DIR is set to python (FIXME: should be jython) and used in
+# $PTII/ptolemy/actor/lib/makefile if Jython was found.
+PTJYTHON_DIR=	@PTJYTHON_DIR@
+
 # Set to jxta and used in
 # $PTII/actor/lib/makefile if jxta.jar was found
 PTJXTA_DIR =	@PTJXTA_DIR@
