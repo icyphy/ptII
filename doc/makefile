@@ -65,7 +65,7 @@ ALLJSRCS = 		ptolemy.plot \
 			ptolemy.domains.csp.kernel \
 			ptolemy.domains.csp.lib \
 			ptolemy.domains.ct.kernel \
-			ptolemy.domains.ct.kernel/util \
+			ptolemy.domains.ct.kernel.util \
 			ptolemy.domains.ct.lib \
 			ptolemy.domains.de.kernel \
 			ptolemy.domains.de.lib \
