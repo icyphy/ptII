@@ -198,24 +198,24 @@ test Director-8.1 {Test type checking} {
     set e1 [java::new ptolemy.actor.TypedAtomicActor $e0 E1]
     set p1 [java::new ptolemy.actor.TypedIOPort $e1 P1]
     $p1 makeOutput true
-    set t1 [java::new ptolemy.data.IntToken]
+    set t1 [[java::new ptolemy.data.IntToken] getClass]
     $p1 setDeclaredType $t1
 
     #create e2
     set e2 [java::new ptolemy.actor.TypedAtomicActor $e0 E2]
     set p2 [java::new ptolemy.actor.TypedIOPort $e2 P2]
     $p2 makeInput true
-    set t2 [java::new ptolemy.data.DoubleToken]
+    set t2 [[java::new ptolemy.data.DoubleToken] getClass]
     $p2 setDeclaredType $t2
 
     #link up p1, p2
-    set r1 [java::new ptolemy.actor.IORelation $e0 R1]
+    set r1 [java::new ptolemy.actor.TypedIORelation $e0 R1]
     $p1 link $r1
     $p2 link $r1
 
     $director resolveTypes
-    set rt1 [[[$p1 resolvedType] getClass] getName]
-    set rt2 [[[$p2 resolvedType] getClass] getName]
+    set rt1 [[$p1 getResolvedType] getName]
+    set rt2 [[$p2 getResolvedType] getName]
     list $rt1 $rt2
 } {ptolemy.data.IntToken ptolemy.data.DoubleToken}
 
@@ -227,8 +227,8 @@ test Director-8.2 {Test type resolution} {
     $p1 setDeclaredType [java::null]
 
     $director resolveTypes
-    set rt1 [[[$p1 resolvedType] getClass] getName]
-    set rt2 [[[$p2 resolvedType] getClass] getName]
+    set rt1 [[$p1 getResolvedType] getName]
+    set rt2 [[$p2 getResolvedType] getName]
     list $rt1 $rt2
 } {ptolemy.data.DoubleToken ptolemy.data.DoubleToken}
 
@@ -241,8 +241,8 @@ test Director-8.3 {Test type resolution} {
     $p2 setDeclaredType [java::null]
 
     $director resolveTypes
-    set rt1 [[[$p1 resolvedType] getClass] getName]
-    set rt2 [[[$p2 resolvedType] getClass] getName]
+    set rt1 [[$p1 getResolvedType] getName]
+    set rt2 [[$p2 getResolvedType] getName]
     list $rt1 $rt2
 } {ptolemy.data.IntToken ptolemy.data.StringToken}
 
@@ -259,7 +259,7 @@ test Director-8.4 {Test type resolution} {
     set e1 [java::new ptolemy.actor.TypedAtomicActor $e0 E1]
     set p1 [java::new ptolemy.actor.TypedIOPort $e1 P1]
     $p1 makeOutput true
-    set tDouble [java::new ptolemy.data.DoubleToken]
+    set tDouble [[java::new ptolemy.data.DoubleToken] getClass]
     $p1 setDeclaredType $tDouble
 
     #create e2, a fork
@@ -283,25 +283,25 @@ test Director-8.4 {Test type resolution} {
     $p4 setDeclaredType $tDouble
 
     #link up p1-p21, p22-p3, p23-p4
-    set r12 [java::new ptolemy.actor.IORelation $e0 R12]
+    set r12 [java::new ptolemy.actor.TypedIORelation $e0 R12]
     $p1 link $r12
     $p21 link $r12
 
-    set r23 [java::new ptolemy.actor.IORelation $e0 R23]
+    set r23 [java::new ptolemy.actor.TypedIORelation $e0 R23]
     $p22 link $r23
     $p3 link $r23
 
-    set r24 [java::new ptolemy.actor.IORelation $e0 R24]
+    set r24 [java::new ptolemy.actor.TypedIORelation $e0 R24]
     $p23 link $r24
     $p4 link $r24
 
     $director resolveTypes
-    set rt1 [[[$p1 resolvedType] getClass] getName]
-    set rt21 [[[$p21 resolvedType] getClass] getName]
-    set rt22 [[[$p22 resolvedType] getClass] getName]
-    set rt23 [[[$p23 resolvedType] getClass] getName]
-    set rt3 [[[$p3 resolvedType] getClass] getName]
-    set rt4 [[[$p4 resolvedType] getClass] getName]
+    set rt1 [[$p1 getResolvedType] getName]
+    set rt21 [[$p21 getResolvedType] getName]
+    set rt22 [[$p22 getResolvedType] getName]
+    set rt23 [[$p23 getResolvedType] getName]
+    set rt3 [[$p3 getResolvedType] getName]
+    set rt4 [[$p4 getResolvedType] getName]
 
     list $rt1 $rt21 $rt22 $rt23 $rt3 $rt4
 } {ptolemy.data.DoubleToken ptolemy.data.DoubleToken ptolemy.data.StringToken\
@@ -312,11 +312,11 @@ ptolemy.data.DoubleToken ptolemy.data.StringToken ptolemy.data.DoubleToken}
 #
 test Director-8.5 {Test type resolution} {
     # use the setup above
-    set tInt [java::new ptolemy.data.IntToken]
+    set tInt [[java::new ptolemy.data.IntToken] getClass]
     $p1 setDeclaredType $tDouble
     $p4 setDeclaredType $tInt
 
     catch {$director resolveTypes} msg
     list $msg
-} {{ptolemy.kernel.util.InvalidStateException: Type Conflict.}}
+} {{ptolemy.actor.TypeConflictException: .E0.E1.P1 and .E0.E2.P21: cannot satisfy constraint.}}
 

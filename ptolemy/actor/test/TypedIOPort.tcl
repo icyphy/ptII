@@ -89,15 +89,18 @@ test TypedIOPort-3.1 {set declared/resolved types} {
     $e0 setExecutiveDirector $director
     set e1 [java::new ptolemy.actor.TypedAtomicActor $e0 E1]
     set p1 [java::new ptolemy.actor.TypedIOPort $e1 P2]
-    set tDouble [java::new ptolemy.data.DoubleToken]
+    set tDouble [[java::new ptolemy.data.DoubleToken] getClass]
     $p1 setDeclaredType $tDouble
 
-    set dt1 [[[$p1 declaredType] getClass] getName]
-    set rt1 [[[$p1 resolvedType] getClass] getName]
+    set dt1 [[$p1 getDeclaredType] getName]
+    set rt1 [[$p1 getResolvedType] getName]
 
     list $dt1 $rt1
 } {ptolemy.data.DoubleToken ptolemy.data.DoubleToken}
 
+######################################################################
+####
+#
 test TypedIOPort-3.2 {set resolved types} {
     set e0 [java::new ptolemy.actor.TypedCompositeActor]
     $e0 setExecutiveDirector $director
@@ -106,9 +109,9 @@ test TypedIOPort-3.2 {set resolved types} {
     set tDouble [java::new ptolemy.data.DoubleToken]
     $p1 setValue [$tDouble getClass]
 
-    set rt1 [[[$p1 resolvedType] getClass] getName]
+    set rt1 [[$p1 getResolvedType] getName]
 
-    list [expr {[$p1 declaredType] == [java::null]}] $rt1
+    list [expr {[$p1 getDeclaredType] == [java::null]}] $rt1
 } {1 ptolemy.data.DoubleToken}
 
 
@@ -116,6 +119,9 @@ test TypedIOPort-3.2 {set resolved types} {
 ####
 #   TEST description().
 
+######################################################################
+####
+#
 # Set bits to give class, name, receivers, and remotereceivers only
 set detail [expr [java::field ptolemy.kernel.util.NamedObj CLASSNAME]|[java::field ptolemy.kernel.util.NamedObj FULLNAME]|[java::field ptolemy.actor.TypedIOPort TYPE]]
 
@@ -126,12 +132,15 @@ test TypedIOPort-4.1 {Check description on a new TypedIOPort} {
     $p0 description $detail
 } {ptolemy.actor.TypedIOPort {.} type {declared null resolved null}}
 
+######################################################################
+####
+#
 test TypedIOPort-4.2 {test description} {
     set e0 [java::new ptolemy.actor.TypedCompositeActor]
     $e0 setExecutiveDirector $director
     set e1 [java::new ptolemy.actor.TypedAtomicActor $e0 E1]
     set p1 [java::new ptolemy.actor.TypedIOPort $e1 P1]
-    set tDouble [java::new ptolemy.data.DoubleToken]
+    set tDouble [[java::new ptolemy.data.DoubleToken] getClass]
     $p1 setDeclaredType $tDouble
 
     $p1 description $detail
