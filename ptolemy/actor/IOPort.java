@@ -45,10 +45,11 @@ This class defines the interface for exchanging data between entities.
 It implements sending of data (the output mechanism), but not receiving
 of data (the input mechanism).  The input mechanism is implemented in
 derived classes in various ways that support distinct communication
-styles.  Sending data is accomplished via the
-put() method, which simply invokes the receive() method of all ports
-that are connected to this port and that identify themselves as input
-ports.  A port identifies itself as an input port by returning true
+styles.  Sending data is accomplished via the broadcast() method, which 
+simply invokes the put() method of all ports that are connected to this 
+port and that identify themselves as input ports.  Sending data to a 
+specific port is accomplished by directly calling the put() method of the
+port. A port identifies itself as an input port by returning true
 in its isInput() method.  When sending data, if more than one input
 port is found, then the token being sent is cloned so that each
 recipient gets a distinct copy of the token.
@@ -207,7 +208,7 @@ public abstract class IOPort extends ComponentPort {
     }
 
     /** Send a token to all connected ports that identify themselves as
-     *  input ports.  The transfer is accomplished by calling the receive()
+     *  input ports.  The transfer is accomplished by calling the put()
      *  method of the destination ports.  If there is more than one
      *  destination port, then clone the token so that each destination
      *  receives a distinct instance of the token.  The first recipient
@@ -217,7 +218,7 @@ public abstract class IOPort extends ComponentPort {
      *   and there is more than one destination.
      *  @exception IllegalActionException The port is not an output port.
      */	
-    public void put(Token token) throws 
+    public void broadcast(Token token) throws 
 	    CloneNotSupportedException, IllegalActionException {
         if (!isOutput()) {
             throw new IllegalActionException(this,
@@ -228,78 +229,23 @@ public abstract class IOPort extends ComponentPort {
         while( ports.hasMoreElements() ) {
             IOPort port = (IOPort)ports.nextElement();
             if (first) {
-                port.receive(token, this);
+                port.put(token, this);
                 first = false;
             } else {
-                port.receive((Token)(token.clone()), this);
+                port.put((Token)(token.clone()), this);
             }
         }
     }
 
-    /** Send a token to a connected input port.
-     *  The transfer is accomplished by calling the receive() method of
-     *  the destination port.
-     *  @param token The token to send
-     *  @exception IllegalActionException This port is not an output port, 
-     *             or the desination port is not an input port.
+    /** Receive a token from another port and put it in the input port.  
+     *  The mechanism would be specified in domain specific implementations.
+     *  Different implementations of this method will react differently if, 
+     *  for example, there is no room for the token, or the owning entity 
+     *  is not ready to receive a token.  Implementations should throw an 
+     *  exception if the port is not an input port.
+     * @exception IllegalActionException Port is not an input.
      */	
-    public void put(Token token, IOPort toport) throws 
-	    IllegalActionException {
-        if (!isOutput()) {
-            throw new IllegalActionException(this,
-                   "Attempt to send data from a port that is not an output.");
-        }
-        if (!isDeeplyConnected(toport)) {
-            throw new IllegalActionException(this,
-                   "Attempt to send data to a port that is not an input.");
-        }
-        toport.receive(token, this);
-    }
-
-    /** FIXME: Do we need this?
-     *  Send a token to all ports connected through the specified relation
-     *  that identify themselves as input ports.  
-     *  The transfer is accomplished by calling the receive()
-     *  method of the destination ports.  If there is more than one
-     *  destination port, then clone the token so that each destination
-     *  receives a distinct instance of the token.  The first recipient
-     *  will receive the instance that is passed as an argument here.
-     *  @param token The token to send
-     *  @param relation The ports connected only through this relation are 
-     *  considered.
-     *  @exception CloneNotSupportedException The token cannot be cloned
-     *   and there is more than one destination.
-     *  @exception IllegalActionException The port is not an output port.
-     */	
-    public void put(Token token, IORelation relation) throws 
-	    CloneNotSupportedException, IllegalActionException {
-        if (!isOutput()) {
-            throw new IllegalActionException(this,
-                   "Attempt to send data from a port that is not an output.");
-        }
-        Enumeration ports = relation.deepLinkedPorts();
-        boolean first = true;
-        while( ports.hasMoreElements() ) {
-            IOPort port = (IOPort)ports.nextElement();
-            if (port.isInput()) {
-                if (first) {
-                    port.receive(token, this);
-                    first = false;
-                } else {
-                    port.receive((Token)(token.clone()), this);
-                }
-            }
-        }
-    }    
-
-    /** Receive a token from another port.  Different implementations
-     *  of this method will react differently if, for example, there
-     *  is no room for the token, or the owning entity is not ready
-     *  to receive a token.  Implementations should throw an exception
-     *  if the port is not an input port.
-     *  @exception IllegalActionException Port is not an input.
-     */	
-    public abstract void receive(Token token, IOPort fromport)
+    public abstract void put(Token token, IOPort sendport)
                     throws IllegalActionException;
 
     //////////////////////////////////////////////////////////////////////////
@@ -331,3 +277,8 @@ public abstract class IOPort extends ComponentPort {
     private transient LinkedList _deepConnectedOutputPorts;
     private long _deepConnectedOutputPortsVersion = -1;
 }
+
+
+
+
+
