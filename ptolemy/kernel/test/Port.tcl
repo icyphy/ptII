@@ -436,7 +436,9 @@ test Port-15.1 {Test for NameDuplicationException on constructor} {
     catch {[java::new ptolemy.kernel.Port $a B]} msg
     list $msg
 } {{ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "B" into container named ".A", which already contains an object with that name.}}
-
+######################################################################
+####
+#
 test Port-15.2 {Test for NameDuplicationException on setName} {
     set a [java::new ptolemy.kernel.Entity]
     $a setName A
@@ -445,4 +447,13 @@ test Port-15.2 {Test for NameDuplicationException on setName} {
     catch {$p2 setName P1} msg
     list $msg
 } {{ptolemy.kernel.util.NameDuplicationException: .A: already contains a port with the name P1.}}
-
+######################################################################
+####
+#
+test Port-15.3 {Test for setting name back} {
+    set a [java::new ptolemy.kernel.Entity]
+    $a setName A
+    set p1 [java::new ptolemy.kernel.Port $a P1]
+    $p1 setName P1
+    $p1 getFullName
+} {.A.P1}
