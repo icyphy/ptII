@@ -114,10 +114,18 @@ public class Stop extends Sink {
                 + "STOP</text>\n"
                 + "</svg>\n");
         // Hide the name because the name is in the icon.
-        SingletonParameter hide = new SingletonParameter(this, "_hideName");
-        hide.setToken(BooleanToken.TRUE);
-        hide.setVisibility(Settable.EXPERT);
+        _hideName = new SingletonParameter(this, "_hideName");
+        _hideName.setToken(BooleanToken.TRUE);
+        _hideName.setVisibility(Settable.EXPERT);
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     ports and parameters                  ////
+
+    /** The parameter that hides the name of the actor.  The default
+     * value is true.
+     */
+    public SingletonParameter _hideName;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
