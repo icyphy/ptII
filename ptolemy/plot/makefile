@@ -362,6 +362,18 @@ fixtmpdist:
 		$(PTTMPDIR)/$(PTDIST)/README
 	echo "For more information, see ptolemy/plot/doc/index.htm" >> \
 		$(PTTMPDIR)/$(PTDIST)/README
+	echo "" >> $(PTTMPDIR)/$(PTDIST)/README
+	echo "Installer notes " >> $(PTTMPDIR)/$(PTDIST)/README
+	echo "If you are using the auto installer, then note that" >> \
+		$(PTTMPDIR)/$(PTDIST)/README
+	echo "under Windows, the Ptplot programs will be added to" >> \
+		$(PTTMPDIR)/$(PTDIST)/README
+	echo "your start menu under Ptolemy -> Ptplot.  Note further" >> \
+		$(PTTMPDIR)/$(PTDIST)/README
+	echo "that directory names with spaces do not work very well" >> \
+		$(PTTMPDIR)/$(PTDIST)/README
+	echo " because of limitations in the InstallShield tool." >> \
+		$(PTTMPDIR)/$(PTDIST)/README
 	@echo "Remove LogicAnalyzer from makefile"
 	grep -v LogicAnalyzer \
 		$(PTTMPME)/makefile > /tmp/ptplotfix
