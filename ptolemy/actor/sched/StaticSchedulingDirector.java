@@ -156,11 +156,10 @@ public class StaticSchedulingDirector extends Director {
 
             if (_debugging) {
                 _debug(new FiringEvent(this, actor,
-                        FiringEvent.BEFORE_ITERATE));
+                        FiringEvent.BEFORE_ITERATE, iterationCount));
             }
 
-            int returnValue =
-                actor.iterate(iterationCount);
+            int returnValue = actor.iterate(iterationCount);
             if (returnValue == STOP_ITERATING) {
                 _postfireReturns = false;
             } else if (returnValue == NOT_READY) {
@@ -170,7 +169,7 @@ public class StaticSchedulingDirector extends Director {
             }
             if (_debugging) {
                 _debug(new FiringEvent(this, actor,
-                        FiringEvent.AFTER_ITERATE));
+                        FiringEvent.AFTER_ITERATE, iterationCount));
             }
         }
     }
