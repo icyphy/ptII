@@ -8,14 +8,6 @@
 	Instead of using 'input', 'controlled', 'observable', the roles of ports have
 	only two types: input and output.
 
-	Also, the channels are localized as input or output ports into different HA
-	according their roles in transitions.
-
-	Two things need discussions:
-	1. Several HA may have the same global variable as output.
-	   Then, multi input ports may be necessary for the HA as receivers.
-	2. If HA has a global variable as both input and output, it should be regarded as
-	   output only.
 -->
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 xmlns:xalan="http://xml.apache.org/xslt" version="1.0">
@@ -160,23 +152,6 @@ xmlns:xalan="http://xml.apache.org/xslt" version="1.0">
                         </xsl:copy>
                     </xsl:if>
                 </xsl:for-each>
-            </xsl:for-each>
-
-            <xsl:for-each select="../Channel">
-                <xsl:variable name="triggerId" select="@_id"/>
-                <xsl:variable name="name" select="@name"/>
-                <xsl:variable name="triggerOutputs" select="count(//DNHA/HybridAutomaton[@name=$HAID]/descendant::SendAction[@dst=$triggerId])"/>
-                <xsl:variable name="triggerInputs" select="count(//DNHA/HybridAutomaton[@name=$HAID]/descendant::Transition[@trigger=$triggerId])"/>
-                <xsl:if test="$triggerOutputs!=0">
-                    <triggerOutput type="output">
-                        <xsl:attribute name="name"><xsl:value-of select="concat($name, 'Output')"/></xsl:attribute>
-                    </triggerOutput>
-                </xsl:if>
-                <xsl:if test="$triggerInputs!=0">
-                    <triggerInput type="input">
-                        <xsl:attribute name="name"><xsl:value-of select="concat($name, 'Input')"/></xsl:attribute>
-                    </triggerInput>
-                </xsl:if>
             </xsl:for-each>
 
             <xsl:apply-templates select="*" mode="general"/>
