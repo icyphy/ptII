@@ -33,6 +33,7 @@ package ptolemy.domains.fsm.kernel;
 import ptolemy.domains.ct.kernel.CTTransparentDirector;
 
 import ptolemy.domains.ct.kernel.CTDirector;
+import ptolemy.domains.ct.kernel.CTReceiver;
 import ptolemy.domains.ct.kernel.CTStepSizeControlActor;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Workspace;
@@ -216,7 +217,9 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
      *  @return a new CTReceiver.
      */
     public Receiver newReceiver() {
-        return new ptolemy.domains.ct.kernel.CTReceiver();
+        CTReceiver receiver = new CTReceiver();
+        receiver.setSignalType(CTReceiver.DISCRETE);
+        return receiver;
     }
 
     /** Return the smallest next step size predicted by the all the
