@@ -403,7 +403,7 @@ public class PtolemyApplet extends BasicJApplet
         // If an exception occurred during init, do not execute.
         if (!_setupOK) return;
         // Only try to start if there is no execution currently running.
-        if (_manager.getState() == _manager.IDLE)
+        if (_manager.getState() == Manager.IDLE)
             _manager.startRun();
 
     }

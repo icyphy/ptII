@@ -191,7 +191,7 @@ public class VideoCamera extends Source implements ControllerListener {
         // FIXME: Format should be a parameter?
         // FIXME: This one too (look below)
         VideoFormat format = new YUVFormat();
-        Vector deviceList = captureManager.getDeviceList(format);
+        Vector deviceList = CaptureDeviceManager.getDeviceList(format);
         // FIXME: Devicelist should be a static private member
 
 
@@ -225,7 +225,7 @@ public class VideoCamera extends Source implements ControllerListener {
 
         // Put the Processor into configured state.
         _processor.configure();
-        if (!_waitForState(_processor.Configured)) {
+        if (!_waitForState(Processor.Configured)) {
             throw new IllegalActionException(
                     "Failed to configure the processor.");
         }
@@ -275,7 +275,7 @@ public class VideoCamera extends Source implements ControllerListener {
         // After this is called, cannot make modifications to the processor,
         // such as format changes?
         _processor.prefetch();
-        if (!_waitForState(_processor.Prefetched)) {
+        if (!_waitForState(Processor.Prefetched)) {
             throw new IllegalActionException(
                     "Failed to realize the processor.");
         }

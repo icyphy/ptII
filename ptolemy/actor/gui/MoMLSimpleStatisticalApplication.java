@@ -73,7 +73,7 @@ public class MoMLSimpleStatisticalApplication extends MoMLSimpleApplication {
     public MoMLSimpleStatisticalApplication(String args[]) throws Exception {
         _parser = new MoMLParser();
 
-        _parser.setErrorHandler(new StreamErrorHandler());
+        MoMLParser.setErrorHandler(new StreamErrorHandler());
 
         // First, we gc and then print the memory stats
         // BTW to get more info about gc,

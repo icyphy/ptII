@@ -49,7 +49,6 @@ import ptolemy.moml.MoMLParser;
 import java.awt.Color;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.lang.System;
 import java.lang.reflect.Constructor;
 import java.util.Collections;
 import java.util.Iterator;
@@ -119,7 +118,7 @@ public class CompositeActorApplication {
         // If the -test arg was set, then exit after 2 seconds.
         if (_test) {
             try {
-                Thread.currentThread().sleep(2000);
+                Thread.sleep(2000);
             } catch (InterruptedException e) {
             }
             System.exit(0);

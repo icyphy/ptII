@@ -127,7 +127,7 @@ public class TclShellTableau extends Tableau
      *  @return True if the command is complete.
      */
     public boolean isCommandComplete(String command) {
-        return _tclInterp.commandComplete(command);
+        return Interp.commandComplete(command);
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -53,8 +53,8 @@ public class PitchDetector {
      *  @param sampleRate The sample rate to use, in Hz. 22050 or
      *   44100 is recomended.
      */
-    public PitchDetector(int vectorSize,int sampleRate) {
-        this._sampleRate = sampleRate;
+    public PitchDetector(int vectorSize, int sampleRate) {
+        PitchDetector._sampleRate = sampleRate;
         this._minAutoCorInd = (int)((double)_sampleRate/_maxAllowablePitch);
         this._maxAutoCorInd = (int)(1.1*(double)_sampleRate/_minAllowablePitch);
         // FIXME: Should force _recentInputArraySize to be a power of 2.
@@ -157,7 +157,7 @@ public class PitchDetector {
                     int maxInd = 0;
                     if (firstZzeroIndex > 0) {
                         for (int m = firstZzeroIndex; m <
-                                 _maxAutoCorInd; m++) {
+                                _maxAutoCorInd; m++) {
                             if (_autocorEst[m] > maxv) {
                                 maxv = _autocorEst[m];
                                 maxInd = m;
