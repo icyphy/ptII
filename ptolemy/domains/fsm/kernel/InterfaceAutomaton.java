@@ -299,9 +299,15 @@ public class InterfaceAutomaton extends FSMActor {
      *  the sub automaton.
      *  @param subAutomaton An interface automaton.
      *  @return A set representing the alternating simulation.
+     *  @exception IllegalActionException If this automaton or the specified
+     *   one is not consistent. For example, missing ports.
      *  @see StatePair
      */
-    public Set computeAlternatingSimulation(InterfaceAutomaton subAutomaton) {
+    public Set computeAlternatingSimulation(InterfaceAutomaton subAutomaton)
+            throws IllegalActionException {
+        this._check();
+        subAutomaton._check();
+
         Set simulation = new HashSet();
 
         // Initialize simulation. Use condition 1 in Definitino 14 to
@@ -724,7 +730,7 @@ public class InterfaceAutomaton extends FSMActor {
             // through Iterator
             Iterator iterator = frontier.iterator();
             StatePair currentPair = (StatePair)iterator.next();
-	    frontier.remove(currentPair);
+            frontier.remove(currentPair);
 
             State superState = currentPair.first();
             State subState = currentPair.second();
