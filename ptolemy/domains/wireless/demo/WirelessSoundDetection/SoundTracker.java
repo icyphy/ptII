@@ -28,7 +28,7 @@
 @AcceptedRating Red (ptolemy@ptolemy.eecs.berkeley.edu)
 */
 
-package ptolemy.domains.sensor.demo.WirelessSoundDetection;
+package ptolemy.domains.wireless.demo.WirelessSoundDetection;
 
 
 import ptolemy.actor.TypedAtomicActor;

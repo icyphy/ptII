@@ -35,7 +35,7 @@ import java.util.List;
 
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
-import ptolemy.actor.TypedIORelation;
+import ptolemy.actor.TypedAtomicActor;
 import ptolemy.data.Token;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
@@ -74,7 +74,7 @@ or the transmit() public method.
 @version $Id$
 @since Ptolemy II 2.1
 */
-public class WirelessChannel extends TypedIORelation {
+public class WirelessChannel extends TypedAtomicActor {
 
     /** Construct a relation with the given name contained by the specified
      *  entity. The container argument must not be null, or a
@@ -92,28 +92,34 @@ public class WirelessChannel extends TypedIORelation {
     public WirelessChannel(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+        
+        _attachText("_iconDescription", "<svg>\n" +
+                "<polygon points=\"-25,0 8,-8 2,2 25,0 -8,8 -2,-2 -25,0\" " +
+                "style=\"fill:red\"/>\n" +
+                "</svg>\n");        
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     
-    /** Transmit the specified token from the specified port at the specified
-     *  power.  All ports that are in range will receive the token.
+    /** Transmit the specified token from the specified port with the
+     *  specified properties.  All ports that are in range will receive the token.
      *  Note that in this base class, a port is in range if it refers to
      *  this channel by name and is at the right place in the hierarchy.
-     *  This base class makes no use of the power argument.
-     *  But derived classes may limit the range using the power argument.
+     *  This base class makes no use of the properties argument.
+     *  But derived classes may limit the range or otherwise change
+     *  transmission properties using this argument.
      *  @param token The token to transmit.
      *  @param port The port from which this is being transmitted.
-     *  @param power The transmit power.
+     *  @param properties The transmit properties (ignored in this base class).
      *  @exception IllegalActionException If a location cannot be evaluated
      *   for a port, or if a type conflict occurs.
      */
-    public void transmit(Token token, WirelessIOPort port, double power)
+    public void transmit(Token token, WirelessIOPort port, Token properties)
             throws IllegalActionException {
         try {
             workspace().getReadAccess();
-            Iterator receivers = _receiversInRange(port, power).iterator();
+            Iterator receivers = _receiversInRange(port, properties).iterator();
             while (receivers.hasNext()) {
                 Receiver receiver = (Receiver)receivers.next();
                 // FIXME: Check types?
@@ -146,8 +152,8 @@ public class WirelessChannel extends TypedIORelation {
     }
     
     /** Return true if the specified port is in range of the
-     *  specified source port, assuming the source port transmits at
-     *  the specified power.  In this base class, this method returns
+     *  specified source port, assuming the source port transmits with
+     *  the specified properties.  In this base class, this method returns
      *  true always.  The method assumes that the two ports are
      *  communicating on the same channel, but it does not check
      *  this.  This should be checked by the calling method.
@@ -156,14 +162,14 @@ public class WirelessChannel extends TypedIORelation {
      *  are in range.
      *  @param source The source port.
      *  @param destination The destination port.
-     *  @param power The transmit power.
+     *  @param properties The transmit properties (ignored in this base class).
      *  @return True if the destination is in range of the source.
      *  @throws IllegalActionException If it cannot be determined
      *   whether the destination is in range (not thrown in this base
      *   class).
      */
     protected boolean _isInRange(
-            WirelessIOPort source, WirelessIOPort destination, double power)
+            WirelessIOPort source, WirelessIOPort destination, Token properties)
             throws IllegalActionException {
         return true;
     }
@@ -199,7 +205,7 @@ public class WirelessChannel extends TypedIORelation {
     }
     
     /** Return the list of receivers that can receive from the specified
-     *  port at the specified transmit power. Ports that are contained
+     *  port with the specified transmit properties. Ports that are contained
      *  by the same container as the specified <i>sourcePort</i> are
      *  not included.  Note that this method does
      *  not guarantee that those receivers will receive.  That is determined
@@ -207,13 +213,13 @@ public class WirelessChannel extends TypedIORelation {
      *  example, introduce probabilitic message losses.
      *  The calling method is expected to have read access on the workspace.
      *  @param sourcePort The sending port.
-     *  @param power The transmit power.
+     *  @param properties The transmit properties (ignored in this base class).
      *  @return A list of objects implementing the Receiver interface.
      *  @exception IllegalActionException If a location of a port cannot be
      *   evaluated.
      */
     protected List _receiversInRange(
-            WirelessIOPort sourcePort, double power)
+            WirelessIOPort sourcePort, Token properties)
             throws IllegalActionException {
         if (workspace().getVersion() == _receiversInRangeListVersion) {
             return _receiversInRangeList;
@@ -226,7 +232,7 @@ public class WirelessChannel extends TypedIORelation {
             // Skip ports contained by the same container as the source.
             if (port.getContainer() == sourcePort.getContainer()) continue;
             
-            if (_isInRange(sourcePort, port, power)) {
+            if (_isInRange(sourcePort, port, properties)) {
                 Receiver[][] receivers = port.getReceivers();
                 for (int i = 0; i < receivers.length; i++) {
                     for (int j = 0; j < receivers[i].length; j++) {
@@ -239,7 +245,7 @@ public class WirelessChannel extends TypedIORelation {
         while (ports.hasNext()) {
             WirelessIOPort port = (WirelessIOPort)ports.next();
                         
-            if (_isInRange(sourcePort, port, power)) {
+            if (_isInRange(sourcePort, port, properties)) {
                 Receiver[][] receivers = port.getInsideReceivers();
                 for (int i = 0; i < receivers.length; i++) {
                     for (int j = 0; j < receivers[i].length; j++) {

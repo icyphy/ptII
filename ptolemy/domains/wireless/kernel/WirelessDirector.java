@@ -1,4 +1,4 @@
-/* The sensor director.
+/* The wireless director.
 
  Copyright (c) 1998-2002 The Regents of the University of California.
  All rights reserved.

@@ -28,7 +28,7 @@
 @AcceptedRating Red (pjb2e@eecs.berkeley.edu)
 */
 
-package ptolemy.domains.sensor.demo.WirelessSoundDetection;
+package ptolemy.domains.wireless.demo.WirelessSoundDetection;
 
 import java.awt.Polygon;
 import java.awt.Shape;
@@ -42,7 +42,7 @@ import ptolemy.data.RecordToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.domains.sensor.kernel.SensorIOPort;
+import ptolemy.domains.wireless.kernel.WirelessIOPort;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -94,14 +94,20 @@ public class SoundSensor extends TypedAtomicActor {
         // types of parameters and ports.
        
        	wirelessOPort = new WirelessIOPort(this, "wirelessOPort", false, true);
+        wirelessOPort.outsideChannel.setExpression("RadioChannel");
+        wirelessOPort.outsideTransmitProperties.setExpression("signalRadius");
         TypeAttribute portType = new TypeAttribute(wirelessOPort, "type");
         portType.setExpression("{location=[double], time=double}");
         wirelessIPort = new WirelessIOPort(this, "wirelessIPort", true, false);
+        wirelessIPort.outsideChannel.setExpression("RadioChannel");
         //wirelessIPort.setTypeEquals(BaseType.GENERAL);
         
         soundIPort = new WirelessIOPort(this, "soundIPort", true, false);
+        soundIPort.outsideChannel.setExpression("SoundChannel");
         soundIPort.setTypeEquals(BaseType.DOUBLE);
         soundOPort = new WirelessIOPort(this, "soundOPort", false, true);
+        soundOPort.outsideChannel.setExpression("SoundChannel");
+        soundOPort.outsideTransmitProperties.setExpression("soundRange");
         soundOPort.setTypeEquals(BaseType.DOUBLE);
         
         // Hide the ports in Vergil.
