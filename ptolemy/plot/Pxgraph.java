@@ -105,52 +105,43 @@ can be used to display the file with applet <code>Plot</code> classes
 <p>
 <I>pxgraph</I> accepts a large number of commmand line options.
 A list of these options is given below.
-<code>=WxH+X+Y</code> <br>
+<p>
 
-Specifies the initial size and location of the xgraph
-window. <code>-<i>&lt;digit&gt; &lt;name&gt;</i></code>
- These options specify the data
+<dl>
+<dt><code>=<i>W</i>x<i>H</i>+<i>X</i>+<i>Y</i></code>
+<dd>Specifies the initial size and location of the pxgraph
+window.
+
+<dt> <code>-<i>&lt;digit&gt; &lt;name&gt;</i></code>
+<dd> These options specify the data
 set name for the corresponding data set. The digit
 should be in the range `0' to `63'. This name will be
 used in the legend.
-<p>
-<dl>
-<dt><code>-bar</code> <dd>
-Specifies that vertical bars should be drawn from the
+
+<dt><code>-bar</code>
+<dd>Specifies that vertical bars should be drawn from the
 data points to a base point which can be specified with
 <code>-brb</code>.
 Usually, the <code>-nl</code> flag is used with this option.
 The point itself is located at the center of the bar.
-<p>
-</dd>
-</dl>
-<dl>
-<dt><code>-bb</code> <dd>
-Draw a bounding box around the data region. This is
+
+<dt><code>-bb</code>
+<dd>Draw a bounding box around the data region. This is
 very useful if you prefer to see tick marks rather than
 grid lines (see <code>-tk</code>).
 <b>Unsupported in the Java version.</b>
-<p>
-</dd>
-</dl>
-<dl>
-<dt><code>-bd</code> <code><i>&lt;color&gt;</i></code> <dd>
-This specifies the border color of the <code>pxgraph</code> window.
+
+<dt><code>-bd</code> <code><i>&lt;color&gt;</i></code>
+<dd>This specifies the border color of the <code>pxgraph</code> window.
 <b>Unsupported in the Java version.</b>
-<p>
-</dd>
-</dl>
-<dl>
-<dt><code>-bg</code> <code><i>&lt;color&gt;</i></code> <dd>
-Background color of the <code>pxgraph</code> window.
+
+<dt><code>-bg</code> <code><i>&lt;color&gt;</i></code>
+<dd>Background color of the <code>pxgraph</code> window.
 <b>In the Java version, this argument takes hexadecimal color values 
 (<code>fffff</code>), not color names</b>
-<p>
-</dd>
-</dl>
-<dl>
-<dt><code>-binary</code><dd>
-Data files are in binary format.  The <code>-binary</code>
+
+<dt><code>-binary</code>
+<dd>Data files are in binary format.  The <code>-binary</code>
 argument is the primary difference between <code>xgraph</code>
 and <code>pxgraph</code>.  The 
 <A HREF="http://ptolemy.eecs.berkeley.edu">Ptolemy Project</A> software
@@ -158,16 +149,16 @@ makes extensive use of <code>-binary</code>.
 <br>The plot commands are encoded as single characters, and the numeric data 
 is a 4 byte float.  
  <br>The commands are encoded as follows:
-<dl>
-<dt> <code>d <I>&lt;4byte float&gt; &lt;4byte float&gt;</I></code>
-<dd> Draw a X,Y point
-<dt> <code>e</code>
-<dd> End of dataset
-<dt> <code>n <I>&lt;dataset name&gt;</I>&#92n</code>
-<dd> New dataset name, ends in <code>&#92n</code>
-<dt> <code>m <I>&lt;4byte float&gt; &lt;4byte float&gt;</I></code>
-<dd> Move to a X,Y point.
-</dl>
+  <dl>
+  <dt> <code>d <I>&lt;4byte float&gt; &lt;4byte float&gt;</I></code>
+  <dd> Draw a X,Y point
+  <dt> <code>e</code>
+  <dd> End of dataset
+  <dt> <code>n <I>&lt;dataset name&gt;</I>&#92n</code>
+  <dd> New dataset name, ends in <code>&#92n</code>
+  <dt> <code>m <I>&lt;4byte float&gt; &lt;4byte float&gt;</I></code>
+  <dd> Move to a X,Y point.
+  </dl>
  <br>To view a binary plot file under unix, we can use the 
 <code>od</code> command.  Note that the first character is a <code>d</code>
 followed by eight bytes of data consisting of two floats of four bytes.
@@ -178,72 +169,46 @@ cxh@carson 324% od -c data/integrator1.plt
 
 </pre>
 
-<p>
-</dd>
-</dl>
-
-<dl>
-<dt><code>-brb</code> <code><i>&lt;base&gt;</i></code> <dd>
-This specifies the base for a bar graph. By default,
+<dt><code>-brb</code> <code><i>&lt;base&gt;</i></code>
+<dd>This specifies the base for a bar graph. By default,
 the base is zero.
 <b>Unsupported in the Java version.</b>
-<p>
-</dd>
-</dl>
+
 <dl>
-<dt><code>-brw</code> <code><i>&lt;width&gt;</i></code> <dd>
-This specifies the width of bars in a bar graph. The
+<dt><code>-brw</code> <code><i>&lt;width&gt;</i></code>
+<dd>This specifies the width of bars in a bar graph. The
 amount is specified in the user's units. By default,
 a bar one pixel wide is drawn.
-<p>
-</dd>
-</dl>
-<dl>
-<dt><code>-bw</code> <code><i>&lt;size&gt;</i></code> <dd>
-Border width (in pixels) of the <code>pxgraph</code> window.
+
+<dt><code>-bw</code> <code><i>&lt;size&gt;</i></code>
+<dd>Border width (in pixels) of the <code>pxgraph</code> window.
 <b>Unsupported in the Java version.</b>
-<p>
-</dd>
-</dl>
-<dl>
-<dt><code>-db</code> <dd>
-Causes xgraph to run in synchronous mode and prints out
+
+<dt><code>-db</code>
+<dd>Causes xgraph to run in synchronous mode and prints out
 the values of all known defaults.
 <p>
-</dd>
-</dl>
-<dl>
-<dt><code>-fg</code> <code><i>&lt;color&gt;</i></code> <dd>
-Foreground color. This color is used to draw all text
+
+<dt><code>-fg</code> <code><i>&lt;color&gt;</i></code>
+<dd>Foreground color. This color is used to draw all text
 and the normal grid lines in the window.
 <b>In the Java version, this argument takes hexadecimal color values 
 (<code>fffff</code>), not color names</b>
-</dd>
-</dl>
-<dl>
+
 <dt><code>-gw</code> <dd>
 Width, in pixels, of normal grid lines.
 <b>Unsupported in the Java version.</b>
-<p>
-</dd>
-</dl>
-<dl>
+
 <dt><code>-gs</code> <dd>
 Line style pattern of normal grid lines.
-<p>
-</dd>
-</dl>
-<dl>
+
 <dt><code>-impulses</code> <dd>
 Draw a line from any plotted point down to the x axis.
 (This argument is not present in the X11 <code>pxgraph</code>,
 but it is similar to <code>-nl -bar</code>).
-<p>
-</dd>
-</dl>
-<dl>
-<dt><code>-lf</code> <code><i>&lt;fontname&gt;</i></code> <dd>
-Label font. All axis labels and grid labels are drawn
+
+<dt><code>-lf</code> <code><i>&lt;fontname&gt;</i></code>
+<dd>Label font. All axis labels and grid labels are drawn
 using this font. 
 <b>Note that the Java version does not use X11 style font specification.</b>
 In the Java version, fonts may be specified as
@@ -262,149 +227,94 @@ In the Java version, fonts may be specified as
 <code><i>size</i></code> is an integer font size in points.
 </menu>
 The default is <code>helvetica-PLAIN-12</code>.
-<p>
-</dd>
-</dl>
-<dl>
+
 <dt><code>-lnx</code> <dd>
 Specifies a logarithmic X axis. Grid labels represent
 powers of ten.
 <b>Unsupported in the Java version.</b>
-<p>
-</dd>
-</dl>
-<dl>
+
 <dt><code>-lny</code> <dd>
 Specifies a logarithmic Y axis. Grid labels represent
 powers of ten.
 <b>Unsupported in the Java version.</b>
-<p>
-</dd>
-</dl>
-<dl>
+
 <dt><code>-lw</code> <code><i>width</i></code> <dd>
 Specifies the width of the data lines in pixels. The
 default is zero.
 <b>Unsupported in the Java version.</b>
-<p>
-</dd>
-</dl>
-<dl>
+
 <dt><code>-lx</code> <code><i>&lt;xl,xh&gt;</i></code> <dd>
 This option limits the range of the X axis to the
 specified interval. This (along with -ly) can be used
 to &quot;zoom in&quot; on a particularly interesting portion of a
 larger graph.
-<p>
-</dd>
-</dl>
-<dl>
+
 <dt><code>-ly</code> <code><i>&lt;yl,yh&gt;</i></code> <dd>
 This option limits the range of the Y axis to the
 specified interval.
-<p>
-</dd>
-</dl>
-<dl>
+
 <dt><code>-m</code> <dd>
 Mark each data point with a distinctive marker. There
 are eight distinctive markers used by xgraph. These
 markers are assigned uniquely to each different line
 style on black and white machines and varies with each
 color on color machines.
-<p>
-</dd>
-</dl>
-<dl>
+
 <dt><code>-M</code> <dd>
 Similar to -m but markers are assigned uniquely to each
 eight consecutive data sets (this corresponds to each
 different line style on color machines).
-<p>
-</dd>
-</dl>
-<dl>
+
 <dt><code>-nl</code> <dd>
 Turn off drawing lines. When used with -m, -M, -p, or
 -P this can be used to produce scatter plots. When
 used with -bar, it can be used to produce standard bar
 graphs.
-<p>
-</dd>
-</dl>
-<dl>
+
 <dt><code>-p</code> <dd>
 Marks each data point with a small marker (pixel
 sized). This is usually used with the -nl option for
 scatter plots.
-<p>
-</dd>
-</dl>
-<dl>
+
 <dt><code>-P</code> <dd>
 Similar to -p but marks each pixel with a large dot.
-<p>
-</dd>
-</dl>
-<dl>
+
 <dt><code>-rv</code> <dd>
 Reverse video. On black and white displays, this will
 invert the foreground and background colors. The
 behaviour on color displays is undefined.
-<p>
-</dd>
-</dl>
-<dl>
+
 <dt><code>-t</code> <code><i>&lt;string&gt;</i></code> <dd>
 Title of the plot. This string is centered at the top
 of the graph.
-<p>
-</dd>
-</dl>
-<dl>
+
 <dt><code>-tf</code> <code><i>&lt;fontname&gt;</i></code> <dd>
 Title font. This is the name of the font to use for
 the graph title.  See the <code>-lf</code> description above
 for how to specify fonts.
 The default is <code>helvetica-BOLD-14</code>
-<p>
-</dd>
-</dl>
-<dl>
+
 <dt><code>-tk</code> <dd>
 This option causes <code>pxgraph</code> to draw tick marks rather
 than full grid lines. The -bb option is also useful
 when viewing graphs with tick marks only.
-<p>
-</dd>
-</dl>
-<dl>
+
 <dt><code>-x</code>  <code><i>&lt;unitname&gt;</i></code> <dd>
 This is the unit name for the X axis. Its default is
 &quot;X".
 <p>
-</dd>
-</dl>
-<dl>
+
 <dt><code>-y</code> <code><i>&lt;unitname&gt;</i></code> <dd>
 This is the unit name for the Y axis. Its default is
 &quot;Y".
-<p>
-</dd>
-</dl>
-<dl>
+
 <dt><code>-zg</code> <code><i>&lt;color&gt;</i></code> <dd>
 This is the color used to draw the zero grid line.
 <b>Unsupported in the Java version.</b>
-<p>
-</dd>
-</dl>
-<dl>
+
 <dt><code>-zw</code> <code><i>&lt;width&gt;</i></code> <dd>
 This is the width of the zero grid line in pixels.
 <b>Unsupported in the Java version.</b>
-<p>
-</dd>
 </dl>
 
 <h2> Compatibility Issues </h2>
@@ -454,6 +364,9 @@ public class Pxgraph extends Frame {
             return true;
         } else if (target == _htmlButton) {
             _html();
+            return true;
+        } else if (target == _pxgraphX11Button) {
+            _pxgraphX11();
             return true;
         } else if (target == _aboutButton) {
             _about();
@@ -692,6 +605,7 @@ public class Pxgraph extends Frame {
             // 1.0.2 for netscape3.x compatibilty.
             _printButton.show(); // FIXME: show() deprecated, but . . .
             _htmlButton.show(); // FIXME: show() deprecated, but . . .
+            _pxgraphX11Button.show(); // FIXME: show() deprecated, but . . .
             _aboutButton.show(); // FIXME: show() deprecated, but . . .
         } else {
             _exitButton.hide(); // FIXME: hide() is
@@ -699,6 +613,7 @@ public class Pxgraph extends Frame {
             // 1.0.2 for netscape3.x compatibilty.
             _printButton.hide(); // FIXME: hide() deprecated, but . . .
             _htmlButton.hide(); // FIXME: hide() deprecated, but . . .
+            _pxgraphX11Button.hide(); // FIXME: show() deprecated, but . . .
             _aboutButton.hide(); // FIXME: hide() deprecated, but . . .
         }
     }
@@ -718,6 +633,11 @@ public class Pxgraph extends Frame {
 
         _htmlButton = new Button("HTML");
         panel.add(_htmlButton);
+
+        if (_debug > 4) {
+            _pxgraphX11Button = new Button("pxgraph.x11");
+            panel.add(_pxgraphX11Button);
+        }
 
         _aboutButton = new Button("About");
         panel.add(_aboutButton);
@@ -740,12 +660,10 @@ public class Pxgraph extends Frame {
         _cmdLineArgs = new String[args.length];
         try {
             System.arraycopy(args,0,_cmdLineArgs,0,args.length);
-        } catch (ArrayIndexOutOfBoundsException e) {
-        } catch (ArrayStoreException e) {
-        }
+        } catch (ArrayIndexOutOfBoundsException e) {}
+        catch (ArrayStoreException e) {}
 
-        while (i < args.length && (args[i].startsWith("-") || 
-            args[i].startsWith("=")) ) {
+        while (i < args.length) {
             arg = args[i++];
             if (_debug > 2) System.out.print("Pxgraph: arg = " + arg + "\n");
 
@@ -777,8 +695,7 @@ public class Pxgraph extends Frame {
                 int xscreen = 1, yscreen = 1;
                 boolean screenlocationgiven = false;
                 StringTokenizer stoken =
-                    new StringTokenizer(arg.substring(1,arg.length()),
-                                        "x-+");
+                    new StringTokenizer(arg.substring(1,arg.length()), "=x-+");
                 if (stoken.hasMoreTokens()) {
                     width = (int)Integer.valueOf(stoken.nextToken()).
                         intValue();
@@ -874,10 +791,37 @@ public class Pxgraph extends Frame {
         }
     }
 
+    /* Run the X11 pxgraph binary.  This function is only used for
+     * checking backward compatibility with the X11 pxgraph binary.
+     */ 
+    private void _pxgraphX11() {
+ 	try {
+            String command[] = new String[_cmdLineArgs.length +1];
+            command[0] = new String("pxgraph.x11");
+            try {
+            System.arraycopy(_cmdLineArgs, 0,
+                    command, 1 ,_cmdLineArgs.length);
+            } catch (ArrayIndexOutOfBoundsException e) {}
+            catch (ArrayStoreException e) {}
+
+ 	    Runtime runtime = Runtime.getRuntime();
+ 	    Process browser = runtime.exec(command);
+ 	} catch (SecurityException e) {
+            System.out.println("Pxgraph: _pxgraphX11: "+e);
+        }
+        catch (IOException e) {
+            System.out.println("Pxgraph: _pxgraphX11: "+e);
+        }
+    }
+
     //////////////////////////////////////////////////////////////////////////
     ////                         private variables                        ////
 
     private Button _exitButton, _printButton, _htmlButton, _aboutButton;
+
+    // This button is only present if this class was compiled with _debug
+    // set to 5 or greater.  Setting the -debug flag has no effect.
+    private Button _pxgraphX11Button;
 
     //  Command line args pxgraph was called with.
     private String _cmdLineArgs[];
