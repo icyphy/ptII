@@ -110,8 +110,8 @@ public abstract class ConditionalBranch {
      *   try an communicate through.
      *  @param branch The identification number assigned to this branch
      *   upon creation by the CSPActor.
-     *  @exception IllegalActionException If the channel has more
-     *   than one receiver or if the receiver is not of type CSPReceiver.
+     *  @exception IllegalActionException If the actor that contains 
+     *   the port is not of type CSPActor.
      */
     public ConditionalBranch(boolean guard, IOPort port, int branchID)
             throws IllegalActionException {
@@ -130,7 +130,7 @@ public abstract class ConditionalBranch {
 
     /** Returns the guard for this guarded communication statement.
      *  If it is true the branch is said to be enabled.
-     *  @return Is guard enabled.
+     *  @return True if the branch is  enabled.
      */
     public boolean getGuard() {
         return _guard;
@@ -163,7 +163,7 @@ public abstract class ConditionalBranch {
      *  it is set upon creation, and set to null after the rendezvous.
      *  For a ConditionalReceive it is set after the rendezvous has
      *  occurred, and is null before that.
-     *  @return The Token contained by this branch.
+     *  @return The token contained by this branch.
      */
     public Token getToken() {
         return _token;
@@ -174,7 +174,7 @@ public abstract class ConditionalBranch {
      *  this branch, and this branch should stop trying to rendezvous with
      *  its receiver and terminate. If it is true, the branch should 
      *  continue trying to rendezvous.
-     *  @return Boolean indicating if this branch is still alive.
+     *  @return True if this branch is still alive.
      */
     public boolean isAlive() {
         return _alive;
@@ -199,7 +199,7 @@ public abstract class ConditionalBranch {
      *  it is set upon creation, and set to null after the rendezvous.
      *  For a ConditionalReceive it is set after the rendezvous has
      *  occurred, and is null before that.
-     *  @param token The Token to be contained by this branch.
+     *  @param token The token to be contained by this branch.
      */
     public void setToken(Token token) {
         _token = token;
@@ -230,7 +230,7 @@ public abstract class ConditionalBranch {
     // Has another branch successfully rendezvoused?
     private boolean _alive = true;
 
-    // the guard for this guarded communication statement.
+    // The guard for this guarded communication statement.
     protected boolean _guard;
 
     // The parent this thread is trying to perform a conditional

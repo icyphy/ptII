@@ -201,14 +201,14 @@ public class CSPReceiver implements ProcessReceiver {
     }
 
     /** True if a get is waiting to rendezvous.
-     *  @return Whether or not a get is waiting to rendezvous.
+     *  @return True if a get is waiting to rendezvous.
      */
     public synchronized boolean hasRoom() {
         return _isGetWaiting();
     }
 
     /** True if a put is waiting to rendezvous.
-     *  @return Whether or not a put is waiting to rendezvous.
+     *  @return True if a put is waiting to rendezvous.
      */
     public synchronized boolean hasToken() {
         return _isPutWaiting();
@@ -286,8 +286,8 @@ public class CSPReceiver implements ProcessReceiver {
 
     /** Flag indicating whether or not a ConditionalReceive is trying
      *  to rendezvous with this receiver.
-     *  @return Flag indicating if a ConditionalReceive branch is
-     *   trying to rendezvous with this receiver.
+     *  @return True if a ConditionalReceive branch is trying to 
+     *   rendezvous with this receiver.
      */
     protected boolean _isConditionalReceiveWaiting() {
         return _conditionalReceiveWaiting;
@@ -295,8 +295,8 @@ public class CSPReceiver implements ProcessReceiver {
 
     /** Flag indicating whether or not a ConditionalSend is trying
      *  to rendezvous with this receiver.
-     *  @return Flag indicating if a ConditionalSend branch is
-     *   trying to rendezvous with this receiver.
+     *  @return True if a ConditionalSend branch is trying to 
+     *   rendezvous with this receiver.
      */
     protected boolean _isConditionalSendWaiting() {
         return _conditionalSendWaiting;
@@ -304,7 +304,7 @@ public class CSPReceiver implements ProcessReceiver {
 
     /** Flag indicating whether or not a get() is waiting to rendezvous
      *  at this receiver.
-     *  @return Flag indicating if a get() is waiting to rendezvous.
+     *  @return True if a get() is waiting to rendezvous.
      */
     protected boolean _isGetWaiting() {
         return _getWaiting;
@@ -312,7 +312,7 @@ public class CSPReceiver implements ProcessReceiver {
 
     /** Flag indicating whether or not a put() is waiting to rendezvous
      *  at this receiver.
-     *  @return Flag indicating if a put() is waiting to rendezvous.
+     *  @return True if a put() is waiting to rendezvous.
      */
     protected boolean _isPutWaiting() {
         return _putWaiting;
@@ -404,10 +404,10 @@ public class CSPReceiver implements ProcessReceiver {
 	}
     }
 
-    /* Flag indicating the state of the rendezvous. It returns false if
+    /*  Flag indicating the state of the rendezvous. It returns false if
      *  one side has tried to rendezvous and the second side has not.
      *  Otherwise it returns true.
-     *  @return Flag indicating the state of the rendezvous.
+     *  @return True if the rendezvous is complete.
      */
     private boolean _isRendezvousComplete() {
         return _rendezvousComplete;

@@ -345,7 +345,7 @@ public class CSPActor extends AtomicActor {
 
     /** Return false. If an actor wishes to continue for more than 
      *  one iteration it should override this method to return true.
-     *  @return Boolean indicating if another iteration can occur.
+     *  @return True if another iteration can occur.
      */
     public boolean postfire() {
         return false;
@@ -407,8 +407,8 @@ public class CSPActor extends AtomicActor {
      *  are not first.
      *  @param branchNumber The ID assigned to the calling branch
      *   upon creation.
-     *  @return Boolean indicating whether or not the calling branch is the
-     *   first branch to try to rendezvous.
+     *  @return True if the calling branch is the first branch to try 
+     *   to rendezvous, otherwise false.
      */
     protected boolean _isBranchFirst(int branchNumber) {
         synchronized(_getInternalLock()) {
