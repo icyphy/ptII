@@ -682,30 +682,28 @@ public class CCodeGenerator extends JavaVisitor implements CCodeGeneratorConstan
      */
     public Object visitMethodCallNode(MethodCallNode node, LinkedList args) {
         List argsList = (List) node.childReturnValueAt(node.CHILD_INDEX_ARGS);
+        LinkedList retList = new LinkedList();
 
-        // Object methodName = node.childReturnValueAt(node.CHILD_INDEX_METHOD);
-        // System.out.println("------------- debug -----------------");
-        // System.out.println(methodName.getClass().getName());
-        // System.out.println(methodName.toString());
-        // System.out.println("------------- debug -----------------");
- 
-        System.out.println("------------- debug -----------------");
         ExprNode methodExpr = node.getMethod();
-        System.out.println("Method node is of type " + 
-                           methodExpr.getClass().getName());  
-        // System.out.println("Java Decl: " + decl.getClass().getName());
-        JavaDecl decl = JavaDecl.getDecl((TreeNode)methodExpr);
-        if (decl == null) System.out.println("null decl");
-        else { 
-            System.out.println("nonnull decl");
-            System.out.println(decl.getClass().getName());
+        JavaDecl declaration = JavaDecl.getDecl((TreeNode)methodExpr);
+        TreeNode declarationNode = declaration.getSource();
+        if ((declarationNode == null) ||
+            !(declarationNode instanceof MethodDeclNode)) {
+            throw new RuntimeException("Could not resolve method call."
+                    + " A dump of the offending AST node follows.\n"
+                    + node.toString());
+            
         }
+        String methodName = (String)(declarationNode.getProperty(C_NAME_KEY));
 
-        // JavaDecl decl = JavaDecl.getDecl((TreeNode)methodExpr).getContainer().getSource();
+        // FIXME: currently, we are assuming that this is a 
+        // call to a member method of the enclosing object.
+        retList.addLast(_indent(node) + methodName + "(this");
+        if (!argsList.isEmpty()) 
+                retList.addLast(", " + _stringListToString(_commaList(argsList)));
+        retList.addLast(")");
 
-        return TNLManip.arrayToList(new Object[] {
-            node.childReturnValueAt(node.CHILD_INDEX_METHOD), "(",
-                _commaList(argsList), ")"});
+        return retList;
     }
 
 
