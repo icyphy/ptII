@@ -67,7 +67,7 @@ import ptolemy.plot.*;
 /**
 An applet that demonstrates the Ptolemy II type system.  This applet
 connects two ramps to two inputs of an expression actor, and connects
-the output of the expression actor to either a printer or a plotter.
+the output of the expression actor to either a display or a plotter.
 It displays a Diva animation of the type resolution process.
 
 @author Yuhong Xiong, John Reekie
@@ -79,15 +79,15 @@ public class Type extends SDFApplet implements ChangeListener {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** React to a change in the selection of plotter or printer.
+    /** React to a change in the selection of plotter or display.
      *  @param event The tabbed pane event.
      */
     public void stateChanged(ChangeEvent event) {
         try {
-            int display = _plotPrint.getSelectedIndex();
+            int display = _plotDisplay.getSelectedIndex();
 
-            if (display == 0 && _previousDisplayPrinter) { // plotter selected
-                _previousDisplayPrinter = false;
+            if (display == 0 && _previousWasDisplay) { // plotter selected
+                _previousWasDisplay = false;
                 _plotter.plot.setGrid(true);
                 _plotter.plot.setXRange(0.0, 10.0);
                 _plotter.plot.setYRange(0.0, 20.0);
@@ -96,18 +96,18 @@ public class Type extends SDFApplet implements ChangeListener {
                 _plotter.plot.setMarksStyle("dots");
                 
                 _expr.output.unlinkAll();
-                _printer.setContainer(null);
+                _display.setContainer(null);
                 _plotter.setContainer(_toplevel);
                 
                 _toplevel.connect(_expr.output, _plotter.input);
                 _director.setScheduleValid(false);
                 
-            } else if (display == 1 && !_previousDisplayPrinter) {
-                _previousDisplayPrinter = true;
+            } else if (display == 1 && !_previousWasDisplay) {
+                _previousWasDisplay = true;
                 _expr.output.unlinkAll();
                 _plotter.setContainer(null);
-                _printer.setContainer(_toplevel);
-                _toplevel.connect(_expr.output, _printer.input);
+                _display.setContainer(_toplevel);
+                _toplevel.connect(_expr.output, _display.input);
                 _director.setScheduleValid(false);
             } else {
                 return;
@@ -129,8 +129,8 @@ public class Type extends SDFApplet implements ChangeListener {
 	    //         controlPanel
 	    //		   runControlPanel (go Button)
 	    //		   paramPanel (parameters,
-	    //			       plotter/printer selection)
-	    //	       _plotPrint panel (a TabbedPane)
+	    //			       plotter/display selection)
+	    //	       _plotDisplay panel (a TabbedPane)
 	    //     _schemPanel (schematics with type annotation)
 
 
@@ -178,19 +178,19 @@ public class Type extends SDFApplet implements ChangeListener {
 
             getContentPane().setBackground(getBackground());
 
-            // Define the tabbed pane for the plotter and printer.
-            _plotPrint.setAlignmentY(0);
-            _plotPrint.setPreferredSize(new Dimension(400, 250));
-            _plotPrint.addTab("Plotter", null, _plotPanel,
+            // Define the tabbed pane for the plotter and display.
+            _plotDisplay.setAlignmentY(0);
+            _plotDisplay.setPreferredSize(new Dimension(400, 250));
+            _plotDisplay.addTab("Plotter", null, _plotPanel,
                    "Display is plotter");
-            _plotPrint.addTab("Printer", null, _printPanel,
-                   "Display is printer");
-            _plotPrint.addChangeListener(this);
+            _plotDisplay.addTab("Text Display", null, _printPanel,
+                   "Display text");
+            _plotDisplay.addChangeListener(this);
             _plotPanel.setBackground(getBackground());
             _plotPanel.setBorder(new LineBorder(Color.black));
             _printPanel.setBackground(getBackground());
             _printPanel.setBorder(new LineBorder(Color.black));
-            _ioPanel.add(_plotPrint);
+            _ioPanel.add(_plotDisplay);
 
             // Construct the Ptolemy type lattice model
             final Graph graph = _constructLattice();
@@ -269,7 +269,7 @@ public class Type extends SDFApplet implements ChangeListener {
 	_exprInput2.addTypeListener(typeListener);
 	_expr.output.addTypeListener(typeListener);
 	_plotter.input.addTypeListener(typeListener);
-	_printer.input.addTypeListener(typeListener);
+	_display.input.addTypeListener(typeListener);
     }
 
     private void _buildModel()
@@ -297,16 +297,16 @@ public class Type extends SDFApplet implements ChangeListener {
 	_plotter.plot.setImpulses(true);
 	_plotter.plot.setMarksStyle("dots");
 
-	// Create printer. Can't use null in constructor, thus
+	// Create display. Can't use null in constructor, thus
 	// set the container to null after construction.
-        // NOTE: We used to place only the plotter OR the printer,
+        // NOTE: We used to place only the plotter OR the display,
         // but the Container.remove() method does not work in swing,
         // so we can't do that anymore.
-	_printer = new Print(_toplevel, "print");
-        _printer.place(_printPanel);
-        _printer.textArea.setRows(10);
-        _printer.textArea.setColumns(30);
-	_printer.setContainer(null);
+	_display = new Display(_toplevel, "display");
+        _display.place(_printPanel);
+        _display.textArea.setRows(10);
+        _display.textArea.setColumns(30);
+	_display.setContainer(null);
 
         _toplevel.connect(_ramp1.output, _exprInput1);
         _toplevel.connect(_ramp2.output, _exprInput2);
@@ -463,8 +463,8 @@ public class Type extends SDFApplet implements ChangeListener {
         model.addTrace(_plotter.input, t);
 
         t = new TraceModel.Trace();
-        t.setUserObject("printer.input");
-        model.addTrace(_printer.input, t);
+        t.setUserObject("display.input");
+        model.addTrace(_display.input, t);
     }
 
     // Initialize the trace view.
@@ -524,7 +524,7 @@ public class Type extends SDFApplet implements ChangeListener {
     private Expression _expr;
     private Ramp _ramp1, _ramp2;
     private SequencePlotter _plotter;
-    private Print _printer;
+    private Display _display;
 
     private Query _query = new Query();
 
@@ -534,7 +534,7 @@ public class Type extends SDFApplet implements ChangeListener {
     private String _exprIn2Type = "NaT";
     private String _exprOutType = "NaT";
     private String _plotterType = "Double";
-    private String _printerType = "String";
+    private String _displayType = "String";
 
     private JPanel _ioPanel = new JPanel();
     private JPanel _plotPanel = new JPanel();
@@ -558,13 +558,13 @@ public class Type extends SDFApplet implements ChangeListener {
     private TraceModel.Element _currentElement[];
 
     // Indication of the previous display;
-    private boolean _previousDisplayPrinter = false;
+    private boolean _previousWasDisplay = false;
 
     // Ports of expression actor.
     private TypedIOPort _exprInput1, _exprInput2;
 
-    // Plot/Print display
-    private JTabbedPane _plotPrint = new JTabbedPane();
+    // Plot/Display
+    private JTabbedPane _plotDisplay = new JTabbedPane();
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner class                       ////
@@ -681,7 +681,7 @@ public class Type extends SDFApplet implements ChangeListener {
 	    graphics.fillRect(PLOT_X+10, PLOT_Y+10,
                     ACTOR_WIDTH-20, ACTOR_HEIGHT-20);
 	    graphics.setColor(Color.black);
-            int display = _plotPrint.getSelectedIndex();
+            int display = _plotDisplay.getSelectedIndex();
 	    if (display == 0) {  // plotter selected
 		// draw the axis
 		graphics.drawLine(PLOT_X+20, PLOT_Y+ACTOR_HEIGHT-20,
@@ -697,8 +697,8 @@ public class Type extends SDFApplet implements ChangeListener {
 		graphics.drawLine(x1, y1, x2, y2);
 		graphics.drawLine(x2, y2, x3, y3);
 		graphics.drawLine(x3, y3, x4, y4);
-	    } else {  // printer selected
-		// draw printer text
+	    } else {  // display selected
+		// draw display text
 	    	graphics.setFont(new Font("ScanSerif", Font.BOLD, 12));
 		graphics.drawString("x", PLOT_X+20, PLOT_Y+20);
 		graphics.drawString("xx", PLOT_X+20, PLOT_Y+30);
@@ -743,8 +743,8 @@ public class Type extends SDFApplet implements ChangeListener {
 
 	    if (display == 0) { // plotter selected
 		graphics.drawString(_plotterType, PLOT_TYPE_X, PLOT_TYPE_Y);
-	    } else {  // printer selected
-		graphics.drawString(_printerType, PLOT_TYPE_X, PLOT_TYPE_Y);
+	    } else {  // display selected
+		graphics.drawString(_displayType, PLOT_TYPE_X, PLOT_TYPE_Y);
 	    }
     	}
     }
@@ -888,8 +888,8 @@ public class Type extends SDFApplet implements ChangeListener {
                         } else if (port == _plotter.input) {
                             _plotterType = typeString;
                             id = 5;
-                        } else if (port == _printer.input) {
-                            _printerType = typeString;
+                        } else if (port == _display.input) {
+                            _displayType = typeString;
                             id = 6;
                         }
 
