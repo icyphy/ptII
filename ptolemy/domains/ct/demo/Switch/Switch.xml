@@ -62,7 +62,7 @@
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This model shows how to handle hybrid systems with both continuous
 and discrete inputs (and outputs). The EventSource actor generates
-a seqeunce of discrete events which trigger the transition of the 
+a sequence of discrete events which trigger the transition of the 
 FSM inside the continuous time composite actor. The FSM routes one
 of the two continuous time input signals to the output.
 
