@@ -131,9 +131,36 @@ install: sources jclass javadocs subinstall $(PTCLASSJAR) ptolemy.plotapplet.jar
 	ln -s ptplot pxgraph
 
 # FIXME: this is ugly, dangerous, and unportable.
+#
+# There are two files:
+# PtolemyGraphics1_1.java and PtolemyGraphics1_2.java
+# 
+# PtolemyGraphics1_2.java extends Graphics, and has a method body
+# for the new bogus method Sun introduced into the Graphics class in JDK 1.2
+#
+# PtolemyGraphics1_1.java extends Graphics, and has no methods
+# 
+# $PTII/conf/confTest.java is a small Java application that simply
+# prints the value of the java.version property.
+#
+# When configure is run, $PTII/conf/confTest is compiled and run, and
+# the value of the JVERSION variable in $PTII/mk/ptII.mk is set. 
+#
+# The ptolemy/plot makefile checks the JVERSION variable and copies the
+# appropriate file to PtolemyGraphics.java.  
+#
+# I modified EPSGraphics.java so that it extends PtolemyGraphics instead
+# of directly extending Graphics.
+#
+# We will have problems if other JDK 1.2 implementation return different
+# values for JDK 1.2.  Also, this will break when JDK1.2 is upgraded to
+# JDK1.2.1 etc.  I'll work on a fix to this.
+#
+# See the class comment in PtolemyGraphics1_2 for the complete story
+#
 # Don't use GNU make only directives here, since that will make the problem
 # even  worse.
-# See the class comment in PtolemyGraphics1_2 for the complete story
+#
 PtolemyGraphics.java: PtolemyGraphics1_1.java PtolemyGraphics1_2.java \
 				$(ROOT)/mk/ptII.mk
 	@if [ "$(JVERSION)" = "1.2 " ]; then \
