@@ -224,7 +224,7 @@ public class CollisionDetector extends TypedAtomicActor {
     public TypedIOPort duration;
 
     /** The output port that produces messages that do not
-     *  encounter a collison. This has the same type as the message input.
+     *  encounter a collision. This has the same type as the message input.
      */
     public TypedIOPort received;
 
@@ -370,7 +370,7 @@ public class CollisionDetector extends TypedAtomicActor {
             }
         }
         // Loop through the prior receptions (and the new one)
-        // to mark whether a message is collided acording to the new total
+        // to mark whether a message is collided according to the new total
         // power density. Also, any prior receptions that are now
         // expiring are sent to one of the two outputs.
         Iterator priorReceptions = _receptions.listIterator();

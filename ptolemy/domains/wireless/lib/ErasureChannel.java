@@ -53,7 +53,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 Model of a wireless channel with a specified loss probability. If the
 loss probability is greater than zero then on each
 call to the transmit() method, for each receiver in range,
-with the specified probability, the tranmission to that
+with the specified probability, the transmission to that
 receiver will not occur.  Whether a transmission occurs to a particular
 receiver is independent of whether it occurs to any other receiver.
 <p>

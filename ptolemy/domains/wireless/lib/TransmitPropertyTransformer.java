@@ -67,18 +67,19 @@ output port with the channel that the wireless output port uses.
 The channel will call its transformProperties() method for each
 transmission from the registed output port.
 
-//FIXME: this is going to be changed to work like RunCompositActor.
-This actor has a <i>modelFileOrURL<i> parameter that specify a model used
-to calculate the properties. When transforeProperties() is called, it calles the
-ModelUtilities.executeModel() method to execute the specified model and
-return the (possibly) modified property to the channel.
+<p>FIXME: this is going to be changed to work like RunCompositeActor.
+This actor has a <i>modelFileOrURL<i> parameter that specify a model
+used to calculate the properties. When transformProperties() is
+called, it calls the ModelUtilities.executeModel() method to execute
+the specified model and return the (possibly) modified property to the
+channel.
 
-The specified model should claculate/modify the propertis based on the sender's
-location and the receiver's location. It should contains attributes of
-"SenderLocation", "ReceiverLocation" and "Properties". This actor will use
-this attributes to pass the sender and receriver's location and the current
-properties information to the specified model and get the new properties back
-from it.
+<p>The specified model should calculate/modify the properties based on
+the sender's location and the receiver's location. It should contains
+attributes of "SenderLocation", "ReceiverLocation" and
+"Properties". This actor will use this attributes to pass the sender
+and receiver's location and the current properties information to the
+specified model and get the new properties back from it.
 
 @author Yang Zhao, Edward Lee
 @version $Id$
@@ -184,7 +185,7 @@ public class TransmitPropertyTransformer extends RunCompositeActor
         }
     }
 
-    /** Register itself with the channel as a PropertyTranformer
+    /** Register itself with the channel as a PropertyTransformer
      *  for its connected wireless output port.
      *  @exception IllegalActionException Not thrown in this base class,
      *  but declared so the subclasses can throw it.

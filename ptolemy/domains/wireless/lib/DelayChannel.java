@@ -58,12 +58,12 @@ the neither the transmitter nor the receiver move during the
 transmission. In a more questionable assumption, it also assumes that
 the receiver does not move during propagation. I.e., it assume that
 the location of the receiver when it receives the message is the same
-as when the tranmitter sent it.
+as when the transmitter sent it.
 <p>
 A speed equal to Infinity (the default) results in no
 propagation delay. If the loss probability is greater than zero then on each
 call to the transmit() method, for each receiver in range,
-with the specified probability, the tranmission to that
+with the specified probability, the transmission to that
 receiver will not occur.  Whether a transmission occurs to a particular
 receiver is independent of whether it occurs to any other receiver.
 

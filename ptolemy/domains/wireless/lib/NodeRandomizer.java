@@ -84,7 +84,7 @@ uniformly distributed between <i>y1</i> and <i>y2</i>.
 */
 public class NodeRandomizer extends TypedAtomicActor {
 
-    /** Construct an acgtor in the given container with the given name.
+    /** Construct an actor in the given container with the given name.
      *  The container argument must not be null, or a
      *  NullPointerException will be thrown.
      *  If the name argument is null, then the name is set to the

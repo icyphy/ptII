@@ -122,7 +122,7 @@ public class TerrainProperty extends TypedAtomicActor
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     /** Override the base class to parse the model specified if the
-     *  attribue is modelFileOrURL.
+     *  attribute is modelFileOrURL.
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the change is not acceptable
      *   to this container (not thrown in this base class).
@@ -147,7 +147,7 @@ public class TerrainProperty extends TypedAtomicActor
                             getElement(1)).intValue();
                 }
                 _number++;
-                //set the width different to trigget the shape change...
+                //set the width different to trigger the shape change...
                 _terrain.width.setToken(new IntToken(_number));
 
             } else {
@@ -191,7 +191,7 @@ public class TerrainProperty extends TypedAtomicActor
     }
 
     /** Check whether the path between the sender and receiver is
-     *  intersected with the terrain shape. If yes, set the "power" feild
+     *  intersected with the terrain shape. If yes, set the "power" field
      *  in the property to be zero, otherwise, do nothing.
      *  FIXME: should the terrain property affect the power value
      *  or should it affect the receivers in range?

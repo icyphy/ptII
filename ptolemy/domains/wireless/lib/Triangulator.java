@@ -92,7 +92,7 @@ must be within the value of <i>timeWindow</i>, or no output will
 be produced. The output is an array of doubles, which in this
 implementation represent the X and Y locations of the event.
 
-@author Xioajun Liu, Edward A. Lee
+@author Xiaojun Liu, Edward A. Lee
 @version $Id$
 */
 
@@ -232,7 +232,7 @@ public class Triangulator extends TypedAtomicActor {
             // Next check whether we have three observations within
             // the specified time window.  Since the time entries are
             // all initialized to negative infinity, the time span
-            // will be infinity if we have not seen three obsersations
+            // will be infinity if we have not seen three observations
             // from three distinct locations.
             double timeSpan = newestTime - oldestTime;
             double timeWindowValue
