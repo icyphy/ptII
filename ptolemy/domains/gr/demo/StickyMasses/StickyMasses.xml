@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="Together" class="ptolemy.actor.TypedCompositeActor">
+<entity name="StickyMasses" class="ptolemy.actor.TypedCompositeActor">
     <property name="position1" class="ptolemy.data.expr.Parameter" value="0.0">
     </property>
     <property name="velocity1" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -55,11 +55,36 @@
         </property>
         <property name="runAheadLength" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
+        <property name="CTScheduler" class="ptolemy.domains.ct.kernel.CTScheduler">
+        </property>
         <property name="_location" class="ptolemy.moml.Location" value="86.0, 43.0">
+        </property>
+    </property>
+    <property name="annotation" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This version of the CT Sticky Masses simulation
+uses the GR domain to render the results</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="349.5, 56.0">
         </property>
     </property>
     <entity name="viewer" class="ptolemy.actor.TypedCompositeActor">
         <property name="GR0" class="ptolemy.domains.gr.kernel.GRDirector">
+            <property name="GRScheduler" class="ptolemy.domains.gr.kernel.GRScheduler">
+            </property>
             <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
             </property>
             <property name="iteration time lower bound" class="ptolemy.data.expr.Parameter" value="150">
@@ -662,6 +687,8 @@
             </entity>
             <entity name="Scale2" class="ptolemy.actor.lib.Scale">
                 <property name="factor" class="ptolemy.data.expr.Parameter" value="-1">
+                </property>
+                <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
                 <property name="_location" class="ptolemy.moml.Location" value="145.0, 454.0">
                 </property>
@@ -1705,6 +1732,8 @@
             <entity name="Scale2" class="ptolemy.actor.lib.Scale">
                 <property name="factor" class="ptolemy.data.expr.Parameter" value="-1">
                 </property>
+                <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
                 <property name="_location" class="ptolemy.moml.Location" value="149.0, 476.0">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -1981,6 +2010,8 @@
         <entity name="Scale" class="ptolemy.actor.lib.Scale">
             <property name="factor" class="ptolemy.data.expr.Parameter" value="0.5">
             </property>
+            <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
             <property name="_location" class="ptolemy.moml.Location" value="93.0, 240.0">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -1992,6 +2023,8 @@
         </entity>
         <entity name="Scale6" class="ptolemy.actor.lib.Scale">
             <property name="factor" class="ptolemy.data.expr.Parameter" value="0.5">
+            </property>
+            <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
             </property>
             <property name="_location" class="ptolemy.moml.Location" value="82.0, 460.0">
             </property>
@@ -2227,6 +2260,8 @@
         <entity name="Controller" class="ptolemy.domains.fsm.kernel.FSMActor">
             <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="init">
             </property>
+            <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
+            </property>
             <property name="_location" class="ptolemy.moml.Location" value="468.99998474121094, 157.0">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[760, 287]">
@@ -2308,6 +2343,8 @@
                 </property>
                 <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="Together.p = P1; Together.v = (V1+V2)/2.0; Together.stickiness = 10.0">
                 </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="PI/5.0">
+                </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
@@ -2322,6 +2359,8 @@
                 </property>
                 <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="Separate.p1 = P1; Separate.p2 = P1; Separate.v1 = V1; Separate.v2 = V1">
                 </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="PI/5.0">
+                </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
@@ -2335,6 +2374,8 @@
                 <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
                 </property>
                 <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="PI/5.0">
                 </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
@@ -2375,6 +2416,8 @@
                 <property name="ODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;">
                 </property>
                 <property name="breakpointODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.BackwardEulerSolver&quot;">
+                </property>
+                <property name="CTScheduler" class="ptolemy.domains.ct.kernel.CTScheduler">
                 </property>
                 <property name="_location" class="ptolemy.moml.Location" value="70.0, 46.5">
                 </property>
@@ -2425,9 +2468,13 @@
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
+                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                    </property>
                 </port>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
+                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                    </property>
                 </port>
             </entity>
             <entity name="P1" class="ptolemy.domains.ct.lib.Integrator">
@@ -2437,9 +2484,13 @@
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
+                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                    </property>
                 </port>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
+                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                    </property>
                 </port>
             </entity>
             <entity name="E1" class="ptolemy.actor.lib.Expression">
@@ -2461,9 +2512,13 @@
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
+                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                    </property>
                 </port>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
+                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                    </property>
                 </port>
             </entity>
             <entity name="P2" class="ptolemy.domains.ct.lib.Integrator">
@@ -2473,9 +2528,13 @@
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
+                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                    </property>
                 </port>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
+                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                    </property>
                 </port>
             </entity>
             <entity name="E2" class="ptolemy.actor.lib.Expression">
@@ -2512,12 +2571,18 @@
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
+                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                    </property>
                 </port>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
+                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
+                    </property>
                 </port>
                 <port name="trigger" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
+                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                    </property>
                 </port>
             </entity>
             <relation name="_R1" class="ptolemy.actor.TypedIORelation">
@@ -2594,6 +2659,8 @@
                 </property>
                 <property name="breakpointODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.BackwardEulerSolver&quot;">
                 </property>
+                <property name="CTScheduler" class="ptolemy.domains.ct.kernel.CTScheduler">
+                </property>
                 <property name="_location" class="ptolemy.moml.Location" value="74.0, 39.5">
                 </property>
             </property>
@@ -2641,9 +2708,13 @@
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
+                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                    </property>
                 </port>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
+                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                    </property>
                 </port>
             </entity>
             <entity name="P1" class="ptolemy.domains.ct.lib.Integrator">
@@ -2653,9 +2724,13 @@
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
+                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                    </property>
                 </port>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
+                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                    </property>
                 </port>
             </entity>
             <entity name="STI" class="ptolemy.domains.ct.lib.Integrator">
@@ -2665,13 +2740,19 @@
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
+                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                    </property>
                 </port>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
+                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                    </property>
                 </port>
             </entity>
             <entity name="Gain" class="ptolemy.actor.lib.Scale">
                 <property name="factor" class="ptolemy.data.expr.Parameter" value="-0.3">
+                </property>
+                <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
                 <property name="_location" class="ptolemy.moml.Location" value="499.0, 62.5">
                 </property>
@@ -2793,10 +2874,14 @@
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
+            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+            </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="multiport"/>
+            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
+            </property>
         </port>
     </entity>
     <entity name="PeriodicSampler2" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
@@ -2807,10 +2892,14 @@
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
+            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+            </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="multiport"/>
+            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
+            </property>
         </port>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
