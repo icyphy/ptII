@@ -74,6 +74,8 @@ are feeded back. The accumulation of the quantized values is the digital output.
             </property>
             <property name="runAheadLength" class="ptolemy.data.expr.Parameter" value="0.1">
             </property>
+            <property name="CTScheduler" class="ptolemy.domains.ct.kernel.CTScheduler">
+            </property>
             <property name="_location" class="ptolemy.moml.Location" value="71.0, 27.0">
             </property>
         </property>
@@ -109,7 +111,7 @@ are feeded back. The accumulation of the quantized values is the digital output.
         <entity name="Sin" class="ptolemy.actor.lib.TrigFunction">
             <property name="function" class="ptolemy.kernel.util.StringAttribute" value="sin">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="91.0, 208.0">
+            <property name="_location" class="ptolemy.moml.Location" value="78.0, 240.0">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -119,7 +121,9 @@ are feeded back. The accumulation of the quantized values is the digital output.
             </port>
         </entity>
         <entity name="ZeroOrderHold" class="ptolemy.domains.ct.lib.ZeroOrderHold">
-            <property name="_location" class="ptolemy.moml.Location" value="95.0, 152.0">
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="_location" class="ptolemy.moml.Location" value="89.0, 152.0">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -129,7 +133,7 @@ are feeded back. The accumulation of the quantized values is the digital output.
             </port>
         </entity>
         <entity name="Add1" class="ptolemy.actor.lib.AddSubtract">
-            <property name="_location" class="ptolemy.moml.Location" value="290.0, 118.0">
+            <property name="_location" class="ptolemy.moml.Location" value="289.0, 118.0">
             </property>
             <port name="plus" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -170,7 +174,7 @@ are feeded back. The accumulation of the quantized values is the digital output.
         <entity name="Scale0" class="ptolemy.actor.lib.Scale">
             <property name="factor" class="ptolemy.data.expr.Parameter" value="50.0">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="201.0, 208.0">
+            <property name="_location" class="ptolemy.moml.Location" value="197.0, 208.0">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -182,7 +186,7 @@ are feeded back. The accumulation of the quantized values is the digital output.
         <entity name="Scale1" class="ptolemy.actor.lib.Scale">
             <property name="factor" class="ptolemy.data.expr.Parameter" value="-2.5">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="282.0, 37.0">
+            <property name="_location" class="ptolemy.moml.Location" value="323.0, 38.0">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -206,7 +210,7 @@ are feeded back. The accumulation of the quantized values is the digital output.
         <entity name="Scale3" class="ptolemy.actor.lib.Scale">
             <property name="factor" class="ptolemy.data.expr.Parameter" value="0.5">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="179.0, 311.0">
+            <property name="_location" class="ptolemy.moml.Location" value="164.0, 311.0">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -247,7 +251,7 @@ are feeded back. The accumulation of the quantized values is the digital output.
 <xRange min="0.0" max="15.0"/>
 <yRange min="-1.0" max="1.0"/>
 </plot>?>
-                                    </configure>        </entity>
+                                                </configure>        </entity>
         <entity name="PeriodicSampler" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
             <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="samplePeriod">
             </property>
@@ -436,7 +440,7 @@ are feeded back. The accumulation of the quantized values is the digital output.
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="555.3333282470703, 260.0">
+        <property name="_location" class="ptolemy.moml.Location" value="564.3333282470703, 269.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -450,7 +454,7 @@ are feeded back. The accumulation of the quantized values is the digital output.
 <yRange min="-1.0" max="1.0"/>
 <default connected="no" marks="dots" stems="yes"/>
 </plot>?>
-                        </configure>    </entity>
+                                </configure>    </entity>
     <entity name="Moving Average" class="ptolemy.domains.sdf.lib.FIR">
         <property name="decimation" class="ptolemy.data.expr.Parameter" value="1">
         </property>
@@ -488,7 +492,7 @@ are feeded back. The accumulation of the quantized values is the digital output.
     <relation name="_R2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="_R3" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex" class="ptolemy.moml.Vertex" value="221.0, 265.0">
+        <vertex name="vertex" class="ptolemy.moml.Vertex" value="217.0, 274.0">
         </vertex>
     </relation>
     <relation name="_R4" class="ptolemy.actor.TypedIORelation">

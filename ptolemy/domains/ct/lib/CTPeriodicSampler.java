@@ -74,9 +74,12 @@ public class CTPeriodicSampler extends Transformer
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input.setMultiport(true);
+        Parameter inputType = new Parameter(input, "signalType",
+                new StringToken("CONTINUOUS"));
         output.setMultiport(true);
         output.setTypeAtLeast(input);
-
+        Parameter outputType = new Parameter(output, "signalType",
+                new StringToken("DISCRETE"));
         _samplePeriod = (double)0.1;
         samplePeriod = new Parameter(this,
                 "samplePeriod", new DoubleToken(_samplePeriod));
@@ -117,8 +120,9 @@ public class CTPeriodicSampler extends Transformer
      *  is the sample of the input signal.
      *  @exception IllegalActionException If the transfer of tokens failed.
      */
-    public void emitCurrentEvents() throws IllegalActionException {
-        if(_hasCurrentEvent) {
+    public void fire() throws IllegalActionException {
+        CTDirector director = (CTDirector)getDirector();
+        if (director.isDiscretePhase() && _hasCurrentEvent) {
             for (int i = 0;
                  i < Math.min(input.getWidth(), output.getWidth());
                  i++) {
@@ -136,7 +140,7 @@ public class CTPeriodicSampler extends Transformer
     /** Check the current time of the director and determine
      *  whether there is an event to be emitted.
      *  @exception IllegalActionException Never thrown.
-     */
+     *
     public void fire() throws IllegalActionException {
         CTDirector dir = (CTDirector)getDirector();
         double now = dir.getCurrentTime();
@@ -144,12 +148,19 @@ public class CTPeriodicSampler extends Transformer
         if(Math.abs(now - _nextSamplingTime)<dir.getTimeResolution()) {
             _hasCurrentEvent = true;
         }
-    }
+        }*/
 
     /** Return true if there is a current event.
      *  @return If there is a discrete event to emit.
      */
     public boolean hasCurrentEvent() {
+        CTDirector director = (CTDirector)getDirector();
+        if(Math.abs(director.getCurrentTime() - _nextSamplingTime)
+                < director.getTimeResolution()) {
+            _hasCurrentEvent = true;
+        } else {
+            _hasCurrentEvent = false;
+        }
         return _hasCurrentEvent;
     }
 

@@ -200,13 +200,18 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
         CompositeActor container = (CompositeActor) getContainer();
         Director exe = container.getExecutiveDirector();
         // Allow waveform generators to consume events if there is any.
+        _setDiscretePhase(true);
         Iterator waveGenerators = getScheduler().getSchedule().get(
                 CTSchedule.WAVEFORM_GENERATORS).actorIterator();
         while(waveGenerators.hasNext()) {
             CTWaveformGenerator generator =
                 (CTWaveformGenerator) waveGenerators.next();
-            generator.consumeCurrentEvents();
+            if(generator.prefire()) {
+                generator.fire();
+                generator.postfire();
+            }
         }
+        _setDiscretePhase(false);
         while(true) {
             if(isBreakpointIteration()) {
                 // Just after a breakpoint iteration. This is the known

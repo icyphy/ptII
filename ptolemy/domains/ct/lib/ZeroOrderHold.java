@@ -73,6 +73,10 @@ public class ZeroOrderHold extends Transformer
                 new IntToken(0));
         output.setTypeAtLeast(input);
 	output.setTypeAtLeast(defaultValue);
+        Parameter inputType = new Parameter(input, "signalType",
+                new StringToken("DISCRETE"));
+        Parameter outputType = new Parameter(output, "signalType",
+                new StringToken("CONTINUOUS"));
     }
 
     ////////////////////////////////////////////////////////////////////////
@@ -105,7 +109,7 @@ public class ZeroOrderHold extends Transformer
      *  hold for further firings until this method is called again.
      *  If there is no input event, do nothing and
      *  the old token will be held.
-     */
+     *
     public void consumeCurrentEvents() throws IllegalActionException{
         if(input.hasToken(0)) {
             _lastToken = input.get(0);
@@ -114,20 +118,30 @@ public class ZeroOrderHold extends Transformer
                     dir.getCurrentTime() +
                     " with token " + _lastToken.toString());
         }
-    }
+        }*/
 
     /** FIXME: This may not be the right way to use Waveform Generators.
      *  This implements the emitTentativeOutput.
-     */
-  public void emitTentativeOutputs() throws IllegalActionException {
-    output.send(0, _lastToken);
- }
+     *
+    public void emitTentativeOutputs() throws IllegalActionException {
+        output.send(0, _lastToken);
+        }*/
 
     /** Output the latest token consumed from the consumeCurrentEvents()
      *  call.
      *  @exception IllegalActionException If the token cannot be sent.
      */
     public void fire() throws IllegalActionException{
+        CTDirector director = (CTDirector)getDirector();
+        if (director.isDiscretePhase()) {
+            if(input.hasToken(0)) {
+                _lastToken = input.get(0);
+                CTDirector dir = (CTDirector) getDirector();
+                _debug(getFullName() + " receives an event at: " +
+                        dir.getCurrentTime() +
+                        " with token " + _lastToken.toString());
+            }
+        }
         output.send(0, _lastToken);
     }
 

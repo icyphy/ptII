@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (liuj@eecs.berkeley.edu)
+@ProposedRating Yellow (liuj@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
@@ -71,10 +71,16 @@ public class ZeroCrossingDetector extends Transformer
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input.setTypeEquals(BaseType.DOUBLE);
+        Parameter inputType = new Parameter(input, "signalType",
+                new StringToken("CONTINUOUS"));
         output.setTypeEquals(BaseType.DOUBLE);
+        Parameter outputType = new Parameter(output, "signalType",
+                new StringToken("DISCRETE"));
         trigger = new TypedIOPort(this, "trigger", true, false);
         trigger.setMultiport(false);
         trigger.setTypeEquals(BaseType.DOUBLE);
+        Parameter triggerType = new Parameter(trigger, "signalType",
+                new StringToken("CONTINUOUS"));
         _errorTolerance = (double)1e-4;
         errorTolerance = new Parameter(this, "errorTolerance",
                 new DoubleToken(_errorTolerance));
@@ -120,7 +126,7 @@ public class ZeroCrossingDetector extends Transformer
      *  current event after emitting it. If there is no current event,
      *  do nothing.
      *  @exception IllegalActionException If the event cannot be broadcasted.
-     */
+     *
     public void emitCurrentEvents() throws IllegalActionException{
         if(_debugging)
             _debug(this.getFullName() + " checking for current event...");
@@ -128,10 +134,14 @@ public class ZeroCrossingDetector extends Transformer
         if(_eventNow) {
             if(_debugging) _debug(getFullName() + " Emitting event: " +
                     _inputToken.toString());
-            output.broadcast(_inputToken);
+            if (input.getWidth() != 0) {
+                output.broadcast(_inputToken);
+            } else {
+                output.broadcast(new DoubleToken(0.0));
+            }
             _eventNow = false;
         }
-    }
+        }*/
 
     /** Consume the input token and the trigger token. The trigger token
      *  will be used for finding the zero crossing in the isThisStepAccurate()
@@ -142,10 +152,31 @@ public class ZeroCrossingDetector extends Transformer
      *  @exception IllegalActionException If no token is available.
      */
     public void fire() throws IllegalActionException {
-        _thisTrigger = ((DoubleToken) trigger.get(0)).doubleValue();
-        if(_debugging)
-            _debug(getFullName() + " consuming trigger Token" +  _thisTrigger);
-        _inputToken = input.get(0);
+        CTDirector director = (CTDirector)getDirector();
+        if (director.isDiscretePhase()) {
+            if (hasCurrentEvent()) {
+                // Emit event.
+                if(_debugging) _debug(getFullName() + " Emitting event: " +
+                        _inputToken.toString());
+                if (_inputToken != null) {
+                    output.broadcast(_inputToken);
+                } else {
+                    output.broadcast(new DoubleToken(0.0));
+                }
+                _eventNow = false;
+            }
+        } else {
+            //consume the input.
+            _thisTrigger = ((DoubleToken) trigger.get(0)).doubleValue();
+            if(_debugging)
+                _debug(getFullName() + " consuming trigger Token" +  
+                        _thisTrigger);
+            if((input.getWidth() != 0) && input.hasToken(0)) {
+                _inputToken = input.get(0);
+            } else {
+                _inputToken = null;
+            }
+        }
     }
 
     /** Return true if there is an event at the current time.
@@ -161,7 +192,7 @@ public class ZeroCrossingDetector extends Transformer
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        _first = true;
+        //_first = true;
         if(_debugging) _debug(getFullName() + "initialize");
     }
 
@@ -178,10 +209,11 @@ public class ZeroCrossingDetector extends Transformer
      *          does not cross zero.
      */
     public boolean isThisStepAccurate() {
-        if (_first) {
-            _first = false;
-            return true;
-        }
+        //if (_first) {
+        //    _first = false;
+        //    _eventMissed = false;
+        //    return true;
+        //}
         if(_debugging) {
             _debug(this.getFullName() + " This trigger " + _thisTrigger);
             _debug(this.getFullName() + " The last trigger " + _lastTrigger);
@@ -221,9 +253,8 @@ public class ZeroCrossingDetector extends Transformer
      *  @return True always.
      */
     public boolean postfire() {
-        if(!_eventMissed) {
-            _lastTrigger = _thisTrigger;
-        }
+        _lastTrigger = _thisTrigger;
+        
         return true;
     }
 

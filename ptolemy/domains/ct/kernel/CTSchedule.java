@@ -164,10 +164,17 @@ public class CTSchedule extends Schedule {
         String result = new String();
         Iterator iterator;
         result += "CTSchedule {\n";
+        result += "    continuousActors {\n";
+        Schedule continuous = (Schedule)get(CONTINUOUS_ACTORS);
+        iterator = continuous.actorIterator();
+        while(iterator.hasNext()) {
+            result = result + 
+                "\t" + ((NamedObj)iterator.next()).getFullName() + "\n";
+        }
+        result += "    }\n";
         result += "    discreteActors {\n";
         Schedule discrete = (Schedule)get(DISCRETE_ACTORS);
         iterator = discrete.actorIterator();
-        int i = 0;
         while(iterator.hasNext()) {
             result = result + 
                 "\t" + ((NamedObj)iterator.next()).getFullName() + "\n";

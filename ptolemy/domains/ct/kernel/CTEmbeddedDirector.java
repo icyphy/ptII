@@ -176,14 +176,16 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
         if(_debugging) _debug(getName(), "at" + getCurrentTime(),
                 " step size is " + getCurrentStepSize(),
                 "breakpoint table contains " + getBreakPoints().toString());
-
+        
+        _setDiscretePhase(true);
         Iterator waveGenerators = getScheduler().getSchedule().get(
                 CTSchedule.WAVEFORM_GENERATORS).actorIterator();
         while(waveGenerators.hasNext()) {
             CTWaveformGenerator generator =
                 (CTWaveformGenerator) waveGenerators.next();
-            generator.consumeCurrentEvents();
+            generator.fire();
         }
+        _setDiscretePhase(false);
         // continuous phase;
         if(_debugging) _debug("execute the system from "+
                 getCurrentTime() + " step size" + getCurrentStepSize()

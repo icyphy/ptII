@@ -534,8 +534,8 @@ public abstract class CTDirector extends StaticSchedulingDirector {
         return _breakpointIteration;
     }
     
-    /** Return true if this is at the discrete phase execution.
-     *  @return True if this is at the discrete phase execution.
+    /** Return true if this is the discrete phase execution.
+     *  @return True if this is the discrete phase execution.
      */
     public final boolean isDiscretePhase() {
         return _discretePhase;

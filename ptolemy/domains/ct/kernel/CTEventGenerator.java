@@ -53,9 +53,10 @@ public interface CTEventGenerator extends Actor{
      *  the discrete event that happens at the current time. If there
      *  is no such events, do nothing.
      *  @exception IllegalActionException If the event cannot be sent.
-     */
+     *
     public void emitCurrentEvents() throws IllegalActionException;
-
+    */
+    
     /** Imeplementations of this method should return
      *  true if there is an event at the current time.
      *  @return True if there is an event to emit now.

@@ -32,7 +32,9 @@ package ptolemy.domains.ct.lib;
 import ptolemy.domains.ct.kernel.*;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
-import ptolemy.actor.*;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.StringToken;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// Integrator
@@ -109,6 +111,10 @@ public class Integrator extends CTBaseIntegrator {
     public Integrator(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
+        Parameter inputType = new Parameter(input, "signalType",
+                new StringToken("CONTINUOUS"));
+        Parameter outputType = new Parameter(output, "signalType",
+                new StringToken("CONTINUOUS"));
 	_attachText("_iconDescription", "<svg>\n" +
                 "<rect x=\"0\" y=\"0\" "
                 + "width=\"60\" height=\"40\" "

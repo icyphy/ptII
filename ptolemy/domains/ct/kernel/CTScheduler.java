@@ -36,6 +36,9 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Nameable;
+import ptolemy.kernel.Entity;
+import ptolemy.data.StringToken;
+import ptolemy.data.expr.Parameter;
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedCompositeActor;
@@ -44,7 +47,6 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.sched.NotSchedulableException;
 import ptolemy.actor.sched.Scheduler;
 import ptolemy.actor.sched.Schedule;
-
 import ptolemy.actor.sched.Firing;
 import ptolemy.actor.sched.StaticSchedulingDirector;
 import ptolemy.actor.lib.SequenceActor;
@@ -56,6 +58,7 @@ import java.util.LinkedList;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Enumeration;
+import java.util.HashMap;
 
 //////////////////////////////////////////////////////////////////////////
 //// CTScheduler
@@ -164,10 +167,23 @@ public class CTScheduler extends Scheduler {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                       public variables                    ////
+       
+    // Signal type: continuous
+    public static Integer CONTINUOUS = new Integer(1);
+    
+    // Signal type: discrete
+    public static Integer DISCRETE = new Integer(-1);
+    
+    // Signal type: unknown
+    public static Integer UNKNOWN = new Integer(0);
+    
+    ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
 
-    /** Return the predecessors of the given actor in the topology.
+    /** Return the predecessors of the given actor in the topology within
+     *  this opaque composite actor.
      *  If the argument is null, returns null.
      *  If the actor is a source, returns an empty list.
      *  @param The specified actor.
@@ -185,7 +201,9 @@ public class CTScheduler extends Scheduler {
             while(outPorts.hasNext()) {
                 IOPort outPort = (IOPort)outPorts.next();
                 Actor pre = (Actor)outPort.getContainer();
-                if(!predecessors.contains(pre)) {
+                if ((actor.getExecutiveDirector() 
+                        == pre.getExecutiveDirector()) &&
+                        !predecessors.contains(pre)) {
                     predecessors.addLast(pre);
                 }
             }
@@ -211,7 +229,9 @@ public class CTScheduler extends Scheduler {
             while(inPorts.hasNext()) {
                 IOPort inPort = (IOPort)inPorts.next();
                 Actor post = (Actor)inPort.getContainer();
-                if(!successors.contains(post)) {
+                if ((actor.getExecutiveDirector() 
+                        == post.getExecutiveDirector()) &&
+                        !successors.contains(post)) {
                     successors.addLast(post);
                 }
             }
@@ -223,11 +243,7 @@ public class CTScheduler extends Scheduler {
      *  @return All the schedules.
      */
     public String toString() {
-        try {
-            return getSchedule().toString();
-        } catch (IllegalActionException ex) {
-            throw new InvalidStateException(ex.getMessage());
-        }
+        return getFullName();
     }
    
     ///////////////////////////////////////////////////////////////////
@@ -237,11 +253,14 @@ public class CTScheduler extends Scheduler {
      *  in the director class, so this method does not test
      *  for the validation of the schedule.
      */
-    protected Schedule _getSchedule() throws NotSchedulableException {
+    protected Schedule _getSchedule() throws NotSchedulableException,
+            IllegalActionException {
         // This implementation creates new Lists every time,
         // If this hurts performance a lot, consider reuse old lists.
         // That requires Schedule class to implement clear().
         CTSchedule ctSchedule = new CTSchedule();
+
+        SignalTypes signalTypes = new SignalTypes();
 
         LinkedList sinkActors = new LinkedList();
         LinkedList dynamicActors = new LinkedList();
@@ -265,7 +284,7 @@ public class CTScheduler extends Scheduler {
         // classify actors and fill in unordered schedules.
         CompositeActor container =
             (CompositeActor)getContainer().getContainer();
-
+        
         // We clone the list of all actors and will remove discrete actors
         // from them.
         continuousActors = (LinkedList)
@@ -275,6 +294,7 @@ public class CTScheduler extends Scheduler {
         while(allActors.hasNext()) {
             Actor a = (Actor) allActors.next();
 
+            // Now classify actors by their interfaces.
             // Event generators are treated as sinks, and
             // waveform genterators are treated as sources.
             // Note that this breaks some causality loops.
@@ -287,32 +307,97 @@ public class CTScheduler extends Scheduler {
             }
             if (a instanceof CTEventGenerator) {
                 eventGenerators.add(a);
-                // Event generators are also considered sinks.
-                // This is be dealt later.
-            }else if (successorList(a).isEmpty() && 
-                    (!(a instanceof CTDynamicActor))) {
-                // We only add continuous sink actors that are not
-                // dynamic actors here.
-                sinkActors.add(a);
             }
+
             if (a instanceof CTDynamicActor) {
                 dynamicActors.addLast(a);
             }else if (!(a instanceof CTWaveformGenerator)) {
                 arithmeticActors.add(a);
             }
 
+            // New resolve signal types to find the continuous and 
+            // discrete cluster.
+            if (a instanceof SequenceActor) {
+                if (predecessorList(a).isEmpty()) {
+                    throw new NotSchedulableException(((Nameable)a).getName()
+                            + " is a SequenceActor, which cannot be a"
+                            + " source actor in the CT domain.");
+                }
+                Iterator ports = ((Entity)a).portList().iterator();
+                while(ports.hasNext()) {
+                    IOPort port = (IOPort)ports.next();
+                    signalTypes.setType(port, DISCRETE);
+                    if (port.isOutput()) {
+                        signalTypes.propagateType(port);
+                    }
+                }
+            } else if ((a instanceof TypedCompositeActor) && 
+                    !(a instanceof CTCompositeActor)) {
+                // Opaque composite actors that are not CTComposite actors
+                // are treated as DISCRETE actors.
+                Iterator ports = ((Entity)a).portList().iterator();
+                while(ports.hasNext()) {
+                    IOPort port = (IOPort)ports.next();
+                    signalTypes.setType(port, DISCRETE);
+                    if (port.isOutput()) {
+                        signalTypes.propagateType(port);
+                    }
+                }
+            } else {
+                // Other signal types are obtained from parameters on ports.
+                Iterator ports = ((Entity)a).portList().iterator();
+                while(ports.hasNext()) {
+                    IOPort port = (IOPort)ports.next();
+                    Parameter signalType = 
+                        (Parameter)port.getAttribute("signalType");
+                    if (signalType != null) {
+                        String type = ((StringToken)signalType.getToken()).
+                            stringValue();
+                        type = type.trim().toUpperCase();
+                        if (type.equals("CONTINUOUS")) {
+                            signalTypes.setType(port, CONTINUOUS);
+                            if (port.isOutput()) {
+                                signalTypes.propagateType(port);
+                            }
+                        } else if (type.equals("DISCRETE")) {
+                            signalTypes.setType(port, DISCRETE);
+                            if (port.isOutput()) {
+                                signalTypes.propagateType(port);
+                            }
+                        } else {
+                            throw new InvalidStateException(port,
+                                    " signalType not understandable.");
+                        }
+                    } else if (a instanceof CTCompositeActor) {
+                        // Assume all it ports to be continuous unless
+                        // otherwise specified.
+                        signalTypes.setType(port, CONTINUOUS);
+                        if (port.isOutput()) {
+                            signalTypes.propagateType(port);
+                        }
+                    }
+                }
+                // If it is a domain polymorphic source, then treat
+                // it outputs as CONTINUOUS, unless otherwise specified.
+                if (predecessorList(a).isEmpty()) {
+                    ports = ((Entity)a).portList().iterator();
+                    while(ports.hasNext()) {
+                         IOPort port = (IOPort)ports.next();
+                         if (signalTypes.getType(port).equals(UNKNOWN)) {
+                             signalTypes.setType(port, CONTINUOUS);
+                             if (port.isOutput()) {
+                                 signalTypes.propagateType(port);
+                             }
+                         }
+                    }
+                }
+            }
+        }
 
-	    // A typed composite actor (but not a CTCompositeActor)
-            // which has no predecessors is treated as a discrete actor.
-	    if ((a instanceof TypedCompositeActor) && 
-		!(a instanceof CTCompositeActor) &&
-		(predecessorList(a).isEmpty())) {
-                // Add it to discrete actor list.
-		discreteActors.addLast(a);
-                // Remove it from continuous actor list.
-                continuousActors.remove(a);
-	    }
-	}
+        // Done with all actor classification and known port signal 
+        // type assignment.
+
+        // Now we propagate the signal types by topological sort.
         // First make sure that there is no causality loop of arithmetic
         // actor. This makes other graph reachability algorithms terminate.
         DirectedAcyclicGraph arithmeticGraph = _toGraph(arithmeticActors);
@@ -328,91 +413,82 @@ public class CTScheduler extends Scheduler {
                     "Scale actor with factor 1.");
         }
         
-        
+        // Find the continuous and discrete clusters by propagating signal 
+        // type constrains.
+        // Notice that signal types of dynamic actors and source actors
+        // and waveform generators has already propagated by one step.
+        // So, we can start with the arithmetic actors only.
 
-        // Find the discrete actor cluster by looking at the successors
-        // of event generators recursively.
-        Iterator generators = eventGenerators.iterator();
-        while(generators.hasNext()) {
-            Actor generator = (Actor) generators.next();
-            Iterator successors = successorList(generator).iterator();
-            while(successors.hasNext()) {
-                Actor successor = (Actor)successors.next();
-                // We know signals here are discrete, so it should not
-                // feed into a dynamic actor.
-                if (successor instanceof CTDynamicActor) {
-                    throw new NotSchedulableException(
-                            ((Nameable)generator).getName() 
-                            + " has discrete outputs, which cannot be"
-                            + " connected to the input of "
-                            + ((Nameable)successor).getName() 
-                            + ", which requires a continuous signal.");
+        Object[] sortedArithmeticActors = arithmeticGraph.topologicalSort();
+        // Examine and propagete signal types.
+        for (int i = 0; i < sortedArithmeticActors.length; i++ ) {
+            Actor actor = (Actor)sortedArithmeticActors[i];
+            // Note that the signal type of the input ports should be set
+            // already. If all input ports are CONTINUOUS, and the 
+            // output ports are UNKNOWN, then all output ports should be
+            // CONTINUOUS. If all input ports are DISCRETE, and the 
+            // output ports are UNKNOWN, then all output ports should be
+            // DISCRETE. If some input ports are continuous and some 
+            // input ports are discrete, then the output port type must
+            // be set manually, which mean they have been resolved by now.
+            Iterator inputPorts = actor.inputPortList().iterator();
+            Integer knownType = UNKNOWN;
+            boolean needManuallySetType = true;
+            while (inputPorts.hasNext()) {
+                IOPort port = (IOPort)inputPorts.next();
+                if (port.getWidth() != 0) {
+                    Integer type = signalTypes.getType(port);           
+                    if (type.equals(UNKNOWN)) {
+                        throw new NotSchedulableException("Cannot resolve "
+                                + "signal type for port " 
+                                + port.getFullName());
+                    } else if (knownType == UNKNOWN) {
+                        knownType = type;
+                        needManuallySetType = false;
+                    } else if (!knownType.equals(type)) {
+                        needManuallySetType = true;
+                        break;
+                    } 
                 }
-                if (!(successor instanceof CTEventGenerator) &&
-                        !(successor instanceof CTWaveformGenerator) &&
-                        !(discreteActors.contains(successor))) {
-                    // Then the successor must be a discrete actor.
-                    discreteActors.addLast(successor);
-                    // Remove it from the continuousActors list.
-                    continuousActors.remove(successor);
-                    // Remove it from sink, if it is there.
-                    sinkActors.remove(successor);
+            }
+            Iterator outputPorts = actor.outputPortList().iterator();
+            while (outputPorts.hasNext()) {
+                IOPort port = (IOPort) outputPorts.next();
+                Integer type = signalTypes.getType(port);
+                if (type.equals(UNKNOWN)) {
+                    if (needManuallySetType) {
+                        throw new NotSchedulableException("Cannot resolve "
+                                + "signal type for port " + port.getFullName());
+                    } else {
+                        signalTypes.setType(port, knownType);
+                    }
                 }
+                // If there's any inconsistency in the signal type,
+                // then this method will throw exception.
+                signalTypes.propagateType(port);
             }
         }
-        if (!discreteActors.isEmpty()) {
-            // Now we have a first layer of discete actors. Their successors
-            // must be discrete actors, too. So we find the closure.
-            for (int i = 0; i < discreteActors.size(); i++) {
-                // Note that we will extend the length of the linked list.
-                Actor discrete = (Actor)discreteActors.get(i);
-                Iterator successors = successorList(discrete).iterator();
-                while(successors.hasNext()) {
-                    Actor successor = (Actor)successors.next();
-                    // Again, the successor cannot be a dynamic actor.
-                    if (successor instanceof CTDynamicActor) {
-                        throw new NotSchedulableException(
-                                ((Nameable)discrete).getName() 
-                                + " has discrete outputs, which cannot be"
-                                + " connected to the input of "
-                                + ((Nameable)successor).getName() 
-                                + ", which requires a continuous signal.");
-                    }
-                    // The successor of a discrete actor cannot be 
-                    // an event generator either.
-                    if (successor instanceof CTEventGenerator) {
-                        throw new NotSchedulableException(
-                                ((Nameable)discrete).getName() 
-                                + " has discrete outputs, which cannot be"
-                                + " connected to the input of "
-                                + ((Nameable)successor).getName() 
-                                + ", which requires a continuous signal.");
-                    }
-                    // Otherwise, we treat the successor as a discrete actor,
-                    // if it is not a waveform generator.
-                    if (!(successor instanceof CTWaveformGenerator) &&
-                        !discreteActors.contains(successor)) {
-                        discreteActors.addLast(successor);
-                        // Remove it from the continuousActors list.
-                        continuousActors.remove(successor);
-                        // Remove it from sink, if it is there.
-                        sinkActors.remove(successor);
-                    }
-                }
-            }
-            // Notice that by now, we have all the discrete actors, but
-            // they are not necessarily in the topological order.
-            // Now create the discrete schedule.
-            DirectedAcyclicGraph discreteGraph = _toGraph(discreteActors);
-            Object[] discreteSorted = discreteGraph.topologicalSort();
-            for (int i = 0; i < discreteSorted.length; i++) {
-                discreteActorSchedule.add(new 
-                        Firing((Actor)discreteSorted[i]));
-            }
+        
+        // Now all ports are in the SignalTypes table. We classify 
+        // continuous and discrete actors. 
+        // Note that an actor is continuous if it has continuous ports;
+        // an actor is discrete if it has discrete ports. So under this
+        // rule, continuous actor set and discrete actor set may overlap.
+        discreteActors = signalTypes.getDiscreteActors();
+        continuousActors = signalTypes.getContinuousActors();
+        
+        // Notice that by now, we have all the discrete actors, but
+        // they are not  in the topological order.
+        // Now create the discrete schedule.
+        DirectedAcyclicGraph discreteGraph = _toGraph(discreteActors);
+        Object[] discreteSorted = discreteGraph.topologicalSort();
+        for (int i = 0; i < discreteSorted.length; i++) {
+            discreteActorSchedule.add(new 
+                    Firing((Actor)discreteSorted[i]));
         }
 
         // Actors remain in the continuousActors list are real continuous
-        // actor.The normal (CT) scheduling should only apply to them.
+        // actor. The normal (CT) scheduling should only apply to them.
 
         // Now we check whether there are any sequence actors or discrete
         // composite actors in the continuous part of the system.
@@ -428,42 +504,53 @@ public class CTScheduler extends Scheduler {
                         + "sequence or discrete actor.");
             }
             continuousActorSchedule.add(new Firing(actor));
-        }
-                 
-        // Check that waveform generators are sources in the continuous 
-        // actor list. And because of that, waveform generators can be
-        // arbitrarily ordered.
-        generators = waveformGenerators.iterator();
-        while(generators.hasNext()) {
-            Actor generator = (Actor)generators.next();
-            Iterator predecessors = predecessorList(generator).iterator();
-            while(predecessors.hasNext()) {
-                Actor predecessor = (Actor)predecessors.next();
-                if(!discreteActors.contains(predecessor) && 
-                   !eventGenerators.contains(predecessor)) {
-                    throw new NotSchedulableException("Waveform generator "
-                            + ((Nameable)generator).getName() 
-                            + " must have a discrete input. But the output of "
-                            + ((Nameable)predecessor).getName() 
-                            + " is discrete.");
+            // We test for sinks in the continuous cluster. These actors
+            // are used to generate the output schedule.
+            List successorList = successorList(actor);
+            if(successorList.isEmpty()) {
+                sinkActors.add(actor);
+            } else {
+                Iterator successors = successorList.iterator();
+                boolean isSink = true;
+                while (successors.hasNext()) {
+                    Actor successor = (Actor)successors.next();
+                    if (continuousActors.contains(successor)) {
+                        isSink = false;
+                        break;
+                    }
+                }
+                if (isSink) {
+                    sinkActors.add(actor);
                 }
             }
+
+        }
+  
+        // Create waveformGeneratorSchedule.
+        Iterator generators = waveformGenerators.iterator();
+        while(generators.hasNext()) {
+            Actor generator = (Actor)generators.next();
             waveformGeneratorSchedule.add(new Firing(generator));
         }
 
         // Schedule event generators so that they are executed topologically.
+        // And treat them as sinks.
         if (!eventGenerators.isEmpty()) {
             DirectedAcyclicGraph eventGraph = _toGraph(eventGenerators);
             Object[] eventSorted = eventGraph.topologicalSort();
             for (int i = 0; i < eventSorted.length; i++) {
                 eventGeneratorSchedule.add(new Firing((Actor)eventSorted[i]));
-                // Also add them to the sink actor list in topological order.
-                sinkActors.addLast(eventSorted[i]);
+                //if (continuousActors.contains(eventSorted[i])) {
+                    // Also add them to the sink actor list in 
+                    // topological order.
+                //  sinkActors.addLast(eventSorted[i]);
+                //}
             }
         }
 
         // Now schedule dynamic actors and state transtion actors.
-        // Manipulate on the arithmeticGraph and the dynamicGraph.        
+        // Manipulate on the arithmeticGraph and the dynamicGraph within
+        // the continuous actors.
        
         arithmeticGraph = _toArithmeticGraph(continuousActors);
         if(!dynamicActors.isEmpty()) {
@@ -616,6 +703,114 @@ public class CTScheduler extends Scheduler {
 
     // The static name of the scheduler.
     private static final String _STATIC_NAME = "CTScheduler";
+
+
+    ////////////////////////////////////////////////////////////////////
+    ////                        inner class                         ////
+
+    // Inner class for signal type table. This wraps a HashMap, but
+    // the put() method will check for conflicts. That is, if there
+    // exist a map port --> CONTINUOUS, but a nother map port --> DISCRETE
+    // is trying to be inserted, then a NotSchedulableException will be
+    // thrown.
+    
+    private class SignalTypes {
+
+        public SignalTypes() {
+            _map = new HashMap();
+            _continuousActors = new LinkedList();
+            _discreteActors = new LinkedList();
+        }     
+        
+        /////////////////////////////////////////////////////////////////
+        ////                     public methods                      ////
+        
+        // Return the list of actors with continuos ports.
+        public LinkedList getContinuousActors() {
+            return _continuousActors;
+        }
+
+        // Return the list of actors with discrete ports.
+        public LinkedList getDiscreteActors() {
+            return _discreteActors;
+        }
+
+
+        // Return the sigal type of the specified port. 
+        // @return CONTINUOUS, DISCRETE, or UNKNOWN
+
+        public Integer getType(IOPort port)
+                throws NotSchedulableException {
+            if (!_map.containsKey(port)) {
+                return UNKNOWN;
+            } else {
+                return (Integer)_map.get(port);
+            }
+        }
+        
+        // Check for consistency and set a port to the specific type.
+        // the map.
+        public void setType(IOPort port, Integer type) 
+                throws NotSchedulableException {
+            if (!_map.containsKey(port)) {
+                _map.put(port, type);
+                Entity actor = (Entity)port.getContainer();
+                if (type.equals(CONTINUOUS) && 
+                        !_continuousActors.contains(actor)) {
+                    //System.out.println(actor.getName() + " is CONTINUOUS.");
+                    _continuousActors.add(actor);
+                }
+                if (type.equals(DISCRETE) &&
+                        !_discreteActors.contains(actor)) {
+                    //System.out.println(actor.getName() + " is DISCRETE.");
+                    _discreteActors.add(actor);
+                }
+            } else {
+               Integer previousType = (Integer)_map.get(port);
+               if (!previousType.equals(type)) {
+                   throw new NotSchedulableException(port.getFullName()
+                           + " has a signal type conflict.");
+               }
+            }
+        }
+
+        // Set the type of all the connected input port equal to the
+        // type of the specified port. The caller must make sure that 
+        // the type of argument has already been set. Otherwise an
+        // InternalErrorException will be thrown.
+        // If any connected port already has a type and 
+        // it is not the same as the type to be set, then throw
+        // a NonSchedulableException.
+        public void propagateType(IOPort port) 
+                throws NotSchedulableException {
+            if (!_map.containsKey(port)) {
+                throw new InternalErrorException(port.getFullName()
+                        + " type unknown.");
+            }
+            Iterator connectedPorts = 
+                port.deepConnectedInPortList().iterator();
+            while(connectedPorts.hasNext()) {
+                IOPort nextPort = (IOPort)connectedPorts.next();
+                if (!_map.containsKey(nextPort)) {
+                    setType(nextPort, getType(port));
+                } else if (!getType(port).equals(getType(nextPort))) {
+                    throw new NotSchedulableException("Signal type conflict: "
+                            + port.getFullName() + " and " 
+                            + nextPort.getFullName());
+                }
+            }
+        }
+                        
+        /////////////////////////////////////////////////////////////////
+        ////                     private variables                   ////
+        // The HashMap.
+        private HashMap _map;
+
+        private LinkedList _continuousActors;
+        
+        private LinkedList _discreteActors;
+    }
+
 }
 
 

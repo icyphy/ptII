@@ -51,8 +51,8 @@ JSRCS = \
 	CTPeriodicSampler.java \
 	CTRateLimiter.java \
 	CTTriggeredSampler.java \
+	EventSource.java \
 	Integrator.java \
-	IPCInterface.java \
 	ThresholdMonitor.java \
 	ZeroCrossingDetector.java \
 	ZeroOrderHold.java \

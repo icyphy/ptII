@@ -244,7 +244,9 @@ public class CTMultiSolverDirector extends CTDirector {
      *  @exception IllegalActionException If thrown by the ODE solver.
      */
     public void fire() throws IllegalActionException {
+        /*
         if (_first) {
+            
             CTSchedule schedule = (CTSchedule)getScheduler().getSchedule();
             Iterator integrators =
                 schedule.get(CTSchedule.DYNAMIC_ACTORS).actorIterator();
@@ -265,17 +267,22 @@ public class CTMultiSolverDirector extends CTDirector {
                     actor.postfire();
                 }
             }
+            
             _first = false;
         } else {
+        */
             // Allow waveform generators to consume events if there is any.
-            // FIXME: Shall we simply use the fire() method?
-            Iterator waveGenerators = getScheduler().getSchedule().get(
-                    CTSchedule.WAVEFORM_GENERATORS).actorIterator();
-            while(waveGenerators.hasNext()) {
-                CTWaveformGenerator generator =
-                    (CTWaveformGenerator) waveGenerators.next();
-                generator.consumeCurrentEvents();
-            }
+            // FIXME: Since this director will always be at the top-level
+            // we don't need to consumre events.
+            //_setDiscretePhase(true);
+            //Iterator waveGenerators = getScheduler().getSchedule().get(
+            //        CTSchedule.WAVEFORM_GENERATORS).actorIterator();
+            //while(waveGenerators.hasNext()) {
+            //    CTWaveformGenerator generator =
+            //        (CTWaveformGenerator) waveGenerators.next();
+            //    generator.fire();
+            //}
+            //_setDiscretePhase(false);
             // continuous phase;
             _setIterationBeginTime(getCurrentTime());
             setCurrentStepSize(getSuggestedNextStepSize());
@@ -284,9 +291,10 @@ public class CTMultiSolverDirector extends CTDirector {
                     getCurrentTime() + " step size" + getCurrentStepSize()
                     + " using solver " + getCurrentODESolver().getName());
             _fireOneIteration();
-        }
-        // Process discrete events.
-        _discretePhaseExecution();
+        
+            // Process discrete events.
+            _discretePhaseExecution();
+            //}
     }
 
     /** Return the ODE solver.
@@ -411,6 +419,8 @@ public class CTMultiSolverDirector extends CTDirector {
      *     or discrete actors throws it.
      */
     protected void _discretePhaseExecution() throws IllegalActionException {
+        if(_debugging) _debug(getName(), ": discrete phase execution at "
+                + getCurrentTime());
         CTSchedule schedule = (CTSchedule)getScheduler().getSchedule();
         Iterator eventGenerators = 
             schedule.get(CTSchedule.EVENT_GENERATORS).actorIterator();
@@ -420,7 +430,7 @@ public class CTMultiSolverDirector extends CTDirector {
                 (CTEventGenerator) eventGenerators.next();
             if(generator.hasCurrentEvent()) {
                 hasDiscreteEvents = true;
-                generator.emitCurrentEvents();
+                break;
             }
         }
         // Also check breakpoint table for explicit requests from discrete
@@ -432,7 +442,7 @@ public class CTMultiSolverDirector extends CTDirector {
         // if there are events happening.
         if (hasDiscreteEvents) {
             getBreakPoints().insert(new Double(getCurrentTime()));
-            if(_debugging) _debug(getName(), "has discrete events at time"+
+            if(_debugging) _debug(getName(), "has discrete events at time "+
                     getCurrentTime());
             _setDiscretePhase(true);
             Iterator discrete = 
@@ -624,7 +634,7 @@ public class CTMultiSolverDirector extends CTDirector {
                 // The step size in the breakpoint iteration is controlled
                 // by the breakpoint ODE solver.
                 if(_debugging) _debug(getFullName(),
-                        "in BREAKPOINT iteration.");
+                        "first step after a BREAKPOINT.");
             }else {
                 // Adjust step size so that the first breakpoint is
                 // not in the middle of this step.

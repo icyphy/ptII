@@ -97,8 +97,13 @@ test CTScheduler-2.1 {schedule a chain of actors} {
     set p3i [$a3 getPort input]
     set r1 [$ca connect $p1o $p2i R1]
     set r2 [$ca connect $p2o $p3i R2]
-    list [$sch toString]
+    list [[$sch getSchedule] toString]
 } {{CTSchedule {
+    continuousActors {
+	.CA.A1
+	.CA.A2
+	.CA.A3
+    }
     discreteActors {
     }
     dynamicActors {
@@ -132,8 +137,14 @@ test CTScheduler-2.2 {has one dynamic actor} {
     $r2 setContainer [java::null]
     set r2 [$ca connect $p2o $pd1i R2]
     set r3 [$ca connect $pd1o $p3i R3]
-    list [$sch toString]
+    list [[$sch getSchedule] toString]
 } {{CTSchedule {
+    continuousActors {
+	.CA.A1
+	.CA.A2
+	.CA.Dyn
+	.CA.A3
+    }
     discreteActors {
     }
     dynamicActors {
@@ -167,8 +178,15 @@ test CTScheduler-2.3 {with one actor in a feedback} {
     set p4o [$a4 getPort output]
     $p4i link $r3
     set r4 [$ca connect $p2i $p4o R4]
-    list [$sch toString]
+    list [[$sch getSchedule] toString]
 } {{CTSchedule {
+    continuousActors {
+	.CA.A1
+	.CA.A2
+	.CA.Dyn
+	.CA.A3
+	.CA.A4
+    }
     discreteActors {
     }
     dynamicActors {
@@ -204,8 +222,16 @@ test CTScheduler-2.4 {chain of dynamic actors with feedback} {
     set pd2o [$d2 getPort output]
     set rd [$ca connect $pd1o $pd2i RD]
     $pd2o link $r3
-    list [$sch toString]
+    list [[$sch getSchedule] toString]
 } {{CTSchedule {
+    continuousActors {
+	.CA.A1
+	.CA.A2
+	.CA.Dyn
+	.CA.D2
+	.CA.A3
+	.CA.A4
+    }
     discreteActors {
     }
     dynamicActors {
@@ -242,8 +268,17 @@ test CTScheduler-2.5 { longer chain of dynamic actors with feedback} {
     set pd3o [$d3 getPort output]
     set rd2 [$ca connect $pd1o $pd3i RD2]
     $pd3o link $rd
-    list [$sch toString]
+    list [[$sch getSchedule] toString]
 } {{CTSchedule {
+    continuousActors {
+	.CA.A1
+	.CA.A2
+	.CA.Dyn
+	.CA.D3
+	.CA.D2
+	.CA.A3
+	.CA.A4
+    }
     discreteActors {
     }
     dynamicActors {
@@ -295,9 +330,24 @@ test CTScheduler-2.6 {event generators and event interpreters} {
     set rg [$ca connect $pego $peii RG]
     set ri [$ca connect $peio $psci RI]
     set r5 [$ca connect $psco $p5i R5]
-    list [$sch toString]
+    list [[$sch getSchedule] toString]
 } {{CTSchedule {
+    continuousActors {
+	.CA.A1
+	.CA.A2
+	.CA.Dyn
+	.CA.D3
+	.CA.D2
+	.CA.A3
+	.CA.A4
+	.CA.EG
+	.CA.EI
+	.CA.SSC
+	.CA.A5
+    }
     discreteActors {
+	.CA.EG
+	.CA.EI
     }
     dynamicActors {
 	.CA.D2
@@ -366,9 +416,28 @@ test CTScheduler-2.7 {contained in a composite actor} {
     set rdc [java::new ptolemy.actor.TypedIORelation $ca RDC]
     $pedo link $rdc
     $pco2 link $rdc
-    list [$sch toString]
+    list [[$sch getSchedule] toString]
 } {{CTSchedule {
+    continuousActors {
+	.CA.A1
+	.CA.A2
+	.CA.Dyn
+	.CA.D3
+	.CA.D2
+	.CA.A3
+	.CA.A4
+	.CA.EG
+	.CA.ED
+	.CA.A6S
+	.CA.EI
+	.CA.SSC
+	.CA.A7S
+	.CA.A5
+    }
     discreteActors {
+	.CA.EG
+	.CA.EI
+	.CA.ED
     }
     dynamicActors {
 	.CA.D2
@@ -423,9 +492,29 @@ test CTScheduler-2.8 {get the schedule again} {
     set r8oc [java::new ptolemy.actor.TypedIORelation $ca R8OC]
     $p8o link $r8oc
     $pco3 link $r8oc
-    list [$sch toString]
+    list [[$sch getSchedule] toString]
 } {{CTSchedule {
+    continuousActors {
+	.CA.A1
+	.CA.A2
+	.CA.Dyn
+	.CA.D3
+	.CA.D2
+	.CA.A3
+	.CA.A4
+	.CA.EG
+	.CA.ED
+	.CA.A6S
+	.CA.EI
+	.CA.SSC
+	.CA.A7S
+	.CA.A8
+	.CA.A5
+    }
     discreteActors {
+	.CA.EG
+	.CA.EI
+	.CA.ED
     }
     dynamicActors {
 	.CA.D2
@@ -473,45 +562,4 @@ test CTScheduler-2.8 {get the schedule again} {
 test CTScheduler-3.1 {get the description} {
     #Note: use above set up.
     list [$sch toString]
-} {{CTSchedule {
-    discreteActors {
-    }
-    dynamicActors {
-	.CA.D2
-	.CA.D3
-	.CA.Dyn
-    }
-    stateStepSizeControlActors {
-    }
-    outputStepSizeControlActors {
-	.CA.SSC
-    }
-    eventGenerators {
-	.CA.EG
-	.CA.ED
-    }
-    waveformGenerators {
-	.CA.EI
-    }
-    statefulActors {
-	.CA.A6S
-	.CA.A7S
-    }
-    stateTransitionActors {
-	.CA.A1
-	.CA.A4
-	.CA.A7S
-	.CA.A2
-    }
-    outputActors {
-	.CA.EI
-	.CA.SSC
-	.CA.A3
-	.CA.A5
-	.CA.A6S
-	.CA.A8
-	.CA.EG
-	.CA.ED
-    }
-}
-}}
+} {.CA.Dir.CTScheduler}

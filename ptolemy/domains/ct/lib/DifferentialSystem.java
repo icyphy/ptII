@@ -283,6 +283,12 @@ public class DifferentialSystem extends TypedCompositeActor {
             // the port and corresponding relations should not be
             // created. Otherwise, there could be unnecessary algebraic
             // loops.
+            // Suggested FIX: 
+            // The policy now is that the output should never directly
+            // depend on the input. The output Expression actors will no 
+            // longer have input ports that represent the input of this
+            // composite actor.
+            
             for(int l = 0; l < r; l++) {
                 // One port for each state variable.
                 for(int k = 0; k < n; k++) {
@@ -298,7 +304,7 @@ public class DifferentialSystem extends TypedCompositeActor {
                     port.setTypeEquals(BaseType.DOUBLE);
                     port.link(inputRelations[k]);
                 }
-            }
+                }
             _opaque = false;
             _workspace.incrVersion();
             System.out.println("Finish creating the model.");

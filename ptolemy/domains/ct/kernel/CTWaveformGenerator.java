@@ -52,7 +52,7 @@ public interface CTWaveformGenerator extends Actor{
      *  event that happens at the current time.
      *  If there are no such events, do nothing.
      *  @exception IllegalActionException If the action failed.
-     */
+     *
     public void consumeCurrentEvents() throws IllegalActionException;
-
+    */
 }

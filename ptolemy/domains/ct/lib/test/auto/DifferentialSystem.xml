@@ -43,15 +43,21 @@
         </property>
         <property name="runAheadLength" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
+        <property name="CTScheduler" class="ptolemy.domains.ct.kernel.CTScheduler">
+        </property>
         <property name="_location" class="ptolemy.moml.Location" value="96.0, 43.0">
         </property>
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
+    </property>
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
     </property>
     <entity name="DifferentialSystem0" class="ptolemy.domains.ct.lib.DifferentialSystem">
         <property name="stateVariableNames" class="ptolemy.data.expr.Parameter" value="[&quot;x1&quot;, &quot;x2&quot;]">
         </property>
         <property name="initialStates" class="ptolemy.data.expr.Parameter" value="[0.0, 1.0]">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="256.0, 168.0">
+        <property name="_location" class="ptolemy.moml.Location" value="257.0, 188.0">
         </property>
         <property name="x1_dot" class="ptolemy.data.expr.Parameter" value="&quot;sin(x2+x1)+u&quot;">
         </property>
@@ -65,6 +71,112 @@
         <port name="y" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
+        <entity name="x1" class="ptolemy.domains.ct.lib.Integrator">
+            <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                </property>
+            </port>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                </property>
+            </port>
+        </entity>
+        <entity name="x1_dot" class="ptolemy.actor.lib.Expression">
+            <property name="expression" class="ptolemy.data.expr.Parameter" value="sin(x2+x1)+u">
+            </property>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
+            <port name="x1" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="x2" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="u" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+        </entity>
+        <entity name="x2" class="ptolemy.domains.ct.lib.Integrator">
+            <property name="initialState" class="ptolemy.data.expr.Parameter" value="1.0">
+            </property>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                </property>
+            </port>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                </property>
+            </port>
+        </entity>
+        <entity name="x2_dot" class="ptolemy.actor.lib.Expression">
+            <property name="expression" class="ptolemy.data.expr.Parameter" value="u-1.0">
+            </property>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
+            <port name="x1" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="x2" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="u" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+        </entity>
+        <entity name="output_y" class="ptolemy.actor.lib.Expression">
+            <property name="expression" class="ptolemy.data.expr.Parameter" value="x1+x2">
+            </property>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
+            <port name="x1" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="x2" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="u" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+        </entity>
+        <relation name="relation_x1" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="_R" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation_x2" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="_R4" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation_u" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="_R5" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="u" relation="relation_u"/>
+        <link port="y" relation="_R5"/>
+        <link port="x1.input" relation="_R"/>
+        <link port="x1.output" relation="relation_x1"/>
+        <link port="x1_dot.output" relation="_R"/>
+        <link port="x1_dot.x1" relation="relation_x1"/>
+        <link port="x1_dot.x2" relation="relation_x2"/>
+        <link port="x1_dot.u" relation="relation_u"/>
+        <link port="x2.input" relation="_R4"/>
+        <link port="x2.output" relation="relation_x2"/>
+        <link port="x2_dot.output" relation="_R4"/>
+        <link port="x2_dot.x1" relation="relation_x1"/>
+        <link port="x2_dot.x2" relation="relation_x2"/>
+        <link port="x2_dot.u" relation="relation_u"/>
+        <link port="output_y.output" relation="_R5"/>
+        <link port="output_y.x1" relation="relation_x1"/>
+        <link port="output_y.x2" relation="relation_x2"/>
+        <link port="output_y.u" relation="relation_u"/>
     </entity>
     <entity name="Clock1" class="ptolemy.actor.lib.Clock">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -86,12 +198,14 @@
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="Test2" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0, 1.1886983,1.3768637,1.5537528,1.7245374,1.8926281,2.0606199,2.2312549,2.4085155,2.6005658,2.7040121,2.753334,2.7774008,2.7892869,2.7951932,2.7981372,2.7996069,2.8003412,2.8010751}">
+    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
         </property>
-        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-5">
+        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="431.0, 155.0">
+        <property name="title" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="425.0, 137.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -100,10 +214,10 @@
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="DifferentialSystem0.u" relation="relation2"/>
-    <link port="DifferentialSystem0.y" relation="relation3"/>
+    <link port="DifferentialSystem0.y" relation="relation"/>
     <link port="Clock1.output" relation="relation2"/>
-    <link port="Test2.input" relation="relation3"/>
+    <link port="Display.input" relation="relation"/>
 </entity>

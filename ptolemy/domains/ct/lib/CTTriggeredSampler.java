@@ -70,10 +70,16 @@ public class CTTriggeredSampler extends Transformer
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input.setMultiport(true);
+        Parameter inputType = new Parameter(input, "signalType",
+                new StringToken("CONTINUOUS"));
         output.setMultiport(true);
         output.setTypeAtLeast(input);
+        Parameter outputType = new Parameter(output, "signalType",
+                new StringToken("DISCRETE"));
         trigger = new TypedIOPort(this, "trigger", true, false);
         trigger.setMultiport(false);
+        Parameter triggerType = new Parameter(trigger, "signalType",
+                new StringToken("DISCRETE"));
         // The trigger input has a generic type.
     }
 
@@ -110,8 +116,9 @@ public class CTTriggeredSampler extends Transformer
      *  @exception IllegalActionException If the hasToken() query failed
      *  or tokens cannot be sent from the output.
      */
-    public void emitCurrentEvents() throws IllegalActionException {
-        if (trigger.hasToken(0)) {
+    public void fire() throws IllegalActionException {
+        CTDirector director = (CTDirector)getDirector();
+        if (director.isDiscretePhase() && trigger.hasToken(0)) {
             trigger.get(0);
             for (int i = 0;
                  i < Math.min(input.getWidth(), output.getWidth());
