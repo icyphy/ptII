@@ -51,6 +51,7 @@ JSRCS = \
 	Anon.java \
 	ArrayLength.java \
 	CharTest.java \
+	Child.java \
 	ClassAccess.java \
 	ExceptionTest.java \
 	Fields.java \
@@ -96,6 +97,10 @@ MISC_FILES =	alljtests.tcl
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
+	'Anon$$1.class' \
+	'InnerClass$$InnerInnerClass.class' \
+	'InnerIFace$$IFace.class' \
+	'ReflectTest$$innerPublicClass.class' \
 	$(PTCLASSJAR)
 
 JCLASS = $(JSRCS:%.java=%.class)
