@@ -570,12 +570,14 @@ public class RTOSDirector extends Director {
         if(_debugging) _debug("Finish one iteration at time:" + 
                 getCurrentTime(),
                 " Next iteration time = " + _nextIterationTime);
-        if (getCurrentTime() >= ((DoubleToken)stopTime.getToken()).
-                doubleValue()) {
-            return false;
-        }
-        if (_eventQueue.isEmpty() && _interruptQueue.isEmpty()) {
-            return false;
+        if (!_isEmbedded()) {
+            if (getCurrentTime() >= ((DoubleToken)stopTime.getToken()).
+                    doubleValue()) {
+                return false;
+            }
+            if (_eventQueue.isEmpty() && _interruptQueue.isEmpty()) {
+                return false;
+            }
         }
         return true;
 
