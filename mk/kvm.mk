@@ -138,7 +138,7 @@ compile_kvm:
 # and generate .class files in $(PTII)/$(OUTPKG)/output/$(OUTPKG_DIR)
 preverify:
 	@echo "###################################"
-	@echo "# preverifying in $PTII/$(OUTPKG), creating new .class files"
+	@echo "# preverifying in $(PTII)/$(OUTPKG_DIR), creating new .class files"
 	@echo "###################################"
 	(cd $(ROOT)/$(OUTPKG_DIR); \
 	for class in *.class; do \
@@ -159,7 +159,7 @@ preverify:
 build_prc: $(KVM_DIR)/tools/palm/src/palm/database/MakePalmApp.class
 	@echo "###################################"
 	@echo "# Creating Palm executable from classes in"
-	@echo "# $(PTII)/$(OUTPKG_DIR)/output/$(OUTPKG_DIR)"
+	@echo "# $(PTII)/$(OUTPKG_DIR)
 	@echo "###################################"
 	(cd $(ROOT)/$(OUTPKG_DIR); \
 	$(JAVA) -classpath $(KVM_DIR)/tools/palm/src \
