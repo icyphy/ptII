@@ -12,10 +12,8 @@
 </entity>
 <entity name="CTTriggeredSampler" class="ptolemy.domains.ct.lib.CTTriggeredSampler">
 </entity>
-<!--
-<entity name="IPCInterface" class="ptolemy.domains.ct.lib.IPCInterface">
+<entity name="ContinuousFransferFunction" class="ptolemy.domains.ct.lib.ContinuousTransferFunction">
 </entity>
--->
 <entity name="Integrator" class="ptolemy.domains.ct.lib.Integrator">
 </entity>
 
