@@ -57,7 +57,6 @@ JSIMPLE_TESTS = \
 	CompositeEntity.tcl \
 	CrossRefList.tcl \
 	Entity.tcl \
-	FIFOQueue.tcl \
 	IllegalActionException.tcl \
 	InvalidStateException.tcl \
 	KernelException.tcl \
