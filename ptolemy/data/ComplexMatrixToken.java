@@ -198,7 +198,7 @@ public class ComplexMatrixToken extends MatrixToken {
     public static Token convert(Token token)
 	    throws IllegalActionException {
 
-	int compare = TypeLattice.compare(this, token);
+	int compare = TypeLattice.compare(new ComplexMatrixToken(), token);
 	if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
 	    throw new IllegalActionException("ComplexMatrixToken.convert: " +
                     "type of argument: " + token.getClass().getName() +
