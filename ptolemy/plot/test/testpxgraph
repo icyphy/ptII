@@ -1,4 +1,8 @@
 #! /bin/sh -x
+# Test script for Java implementation of pxgraph
+# @Author: Christopher Hylands
+# @Version: $Id$
+
 pxgraph=./pxgraph
 
 # Create a small test file
