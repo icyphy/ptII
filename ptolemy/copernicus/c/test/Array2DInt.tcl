@@ -129,7 +129,7 @@ test Array2DInt-1.1 {Generate all required files for Array2DInt.java} {
     cd $outputDir
     # The nightly build does not have . in the path, so we use ./ here.
     set exeFile ".[java::call System getProperty file.separator]$exeFile"
-    set output [exec $exeFile]
+    set output [exec $exeFile "0 1 10 11"]
     
     # Turn newlines into spaces.
     regsub -all "\n" $output " " output
