@@ -1,21 +1,21 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="NonStrictFSM" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
+<entity name="NonStrictFSM_FeedbackLoop" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-alpha">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 1032, 746}, maximized=true}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={120, 61, 833, 675}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 628]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[618, 557]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{408.5, 314.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{309.0, 278.5}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The modal model above consumes one token from input1 and thereafter consumes tokens from input2.&#10;There is no deadlock as input2 does not require token in the first firing.&#10;The result should be an infinite sequence of copies of the first token consumed from input1.&#10;The &quot;firingCountLimit&quot; parameter is used to limit the firing count of the modal model.&#10;To get infinite sequence of output, set &quot;firingCountLimit&quot; to be less or equal to zero.&#10;Note this model does not work in DDF or SR.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model tests the NonStrictFSMDirector.The modal model above consumes one token&#10;from input1 and thereafter consumes tokens from input2. There is no deadlock as&#10;input2 does not require token in the first firing. The result should be an infinite&#10;sequence of copies of the first token consumed from input1.&#10;&#10;The &quot;firingCountLimit&quot; parameter is used to limit the firing count of the modal model.&#10;To get infinite sequence of output, set &quot;firingCountLimit&quot; to be less or equal to zero.&#10;&#10;Note this model does not work in DDF or SR. For DDF, this is possibly because&#10;NonstrictFSMDirector does not declare consumption rate.&#10;&#10;Author: Rachel Zhou">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 310.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 270.0]">
         </property>
     </property>
     <property name="PN Director" class="ptolemy.domains.pn.kernel.PNDirector">
@@ -42,11 +42,7 @@
         </property>
     </property>
     <entity name="ModalModel" class="ptolemy.domains.fsm.modal.ModalModel">
-        <property name="directorClass" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.NonStrictFSMDirector">
-        </property>
-        <property name="_Director" class="ptolemy.domains.fsm.kernel.NonStrictFSMDirector">
-            <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="_Controller">
-            </property>
+        <property name="directorClass" class="ptolemy.data.expr.StringParameter" value="ptolemy.domains.fsm.kernel.NonStrictFSMDirector">
         </property>
         <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
         </property>
