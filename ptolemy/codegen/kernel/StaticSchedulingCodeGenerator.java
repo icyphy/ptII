@@ -180,7 +180,10 @@ public class StaticSchedulingCodeGenerator
         int bufferCapacity = 1;
         Variable firings = 
             (Variable)port.getContainer().getAttribute("firingsPerIteration");
-        int firingsPerIteration = ((IntToken)firings.getToken()).intValue();
+        int firingsPerIteration = 1;
+        if (firings != null) {
+            firingsPerIteration = ((IntToken)firings.getToken()).intValue();
+        }
         if (port.isInput()) {
             bufferCapacity = firingsPerIteration
                 * DFUtilities.getTokenConsumptionRate(port);

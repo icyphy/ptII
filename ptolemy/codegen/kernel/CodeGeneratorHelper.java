@@ -35,6 +35,7 @@ import java.util.StringTokenizer;
 import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
+import ptolemy.actor.util.DFUtilities;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
@@ -190,10 +191,10 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                 }
                 if (channelAndOffset[1] >= 0) {
                     int offset = channelAndOffset[1] + 
-                        _firingCount * port.getReceivers()[0].length;
+                        _firingCount * DFUtilities.getRate(port);
                     result.append("[" + channelAndOffset[1] + "]");
                 } else if (_firingsPerIteration > 1) {
-                    // Did not specify offset, so the receiver length is 1.
+                    // Did not specify offset, so the receiver buffer size is 1.
                     // This is multiple firing.
                     result.append("[" + _firingCount + "]");
                 }
@@ -224,7 +225,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                 if (channelAndOffset[1] >= 0) {
                     result.append("[" + channelAndOffset[1] + "]");
                 } else if (_firingsPerIteration > 1) {
-                    // Did not specify offset, so the receiver length is 1.
+                    // Did not specify offset, so the receiver buffer size is 1.
                     // This is multiple firing.
                     result.append("[" + _firingCount + "]");
                 }
@@ -315,11 +316,11 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         return result.toString();
     }
     
-    /** Get the size of a parameter or port. The size of a parameter
+    /** Get the size of a parameter. The size of a parameter
      *  is the length of its array if the parameter's type is array,
-     *  and 1 otherwise. The size of a port is its receiver length.
-     * @param name The name of the port or parameter.
-     * @return The size of a parameter or port.
+     *  and 1 otherwise.
+     * @param name The name of the parameter.
+     * @return The size of a parameter.
      * @throws IllegalActionException If no port or parameter of
      *  the given name is found.
      */
@@ -337,24 +338,6 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                 }
                 return 1;
             } 
-        }
-        // try if the name is a port.
-        Actor actor = (Actor)_component;
-        Iterator inputPorts = actor.inputPortList().iterator();
-        while (inputPorts.hasNext()) {
-            IOPort port = (IOPort) inputPorts.next();
-            if (port.getName().equals(name)) {
-                return port.getReceivers()[0].length;
-            }
-        }
-        Iterator outputPorts = actor.outputPortList().iterator();
-        while (outputPorts.hasNext()) {
-            IOPort port  = (IOPort) inputPorts.next();
-            if (port.getName().equals(name)) {
-                // FIXME: We assume the length of each channel of the 
-                // port is same.
-                return port.getRemoteReceivers()[0].length;
-            }
         }
         throw new IllegalActionException(_component,
                 "Attribute not found: " + name);

@@ -38,6 +38,7 @@ import java.util.StringTokenizer;
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.util.DFUtilities;
 import ptolemy.codegen.gui.CodeGeneratorGUIFactory;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.FileParameter;
@@ -281,18 +282,14 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     }
     
     /** Return the buffer capacity of the given port. This method always
-     *  return the receiver length, or 1 if the port does not have a receiver.
+     *  return 1. Subclasses may override this method.
      * @param port The given port.
      * @return The buffer capacity of the given port.
      * @exception IllegalActionException Subclasses may throw it.
      */
     public int getBufferCapacity(TypedIOPort port) 
             throws IllegalActionException {
-        int bufferCapacity = port.getReceivers()[0].length;
-        if (bufferCapacity == 0) {
-            bufferCapacity = 1;
-        }
-        return bufferCapacity;
+        return DFUtilities.getRate(port);
     }
     
     /** Set the container of this object to be the given container.
