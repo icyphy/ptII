@@ -194,8 +194,6 @@ public class TypeLattice {
         /** Return the greatest lower bound of a subset.
          *  @param subset an array of Types.
 	 *  @return an instance of Type.
-	 *  @exception If one or more elements of the specified array is not
-	 *   an instance of Type.
          */
 	public Object greatestLowerBound(Object[] subset) {
 	    if (subset.length == 0) {
@@ -277,8 +275,6 @@ public class TypeLattice {
          *  @param t1 an instance of Type.
          *  @param t2 an instance of Type.
 	 *  @return an instance of Type.
-	 *  @exception If one or both of the specified arguments are
-	 *   instances of Type.
          */
         public Object leastUpperBound(Object t1, Object t2) {
 	    if ( !(t1 instanceof Type) || !(t2 instanceof Type)) {
@@ -319,8 +315,6 @@ public class TypeLattice {
         /** Return the least upper bound of a subset.
          *  @param subset an array of Types.
 	 *  @return an instance of Type.
-	 *  @exception If one or more elements of the specified array is not
-	 *   an instance of Type.
          */
 	public Object leastUpperBound(Object[] subset) {
 	    if (subset.length == 0) {
