@@ -168,6 +168,12 @@ public class Render extends PlotBox {
 		    setYIncrement(400.0);
 		    setYOffset(0.0);
 
+		    _xTop = _imageData.size() * getXIncrement();
+		    _xBottom = getXOffset();
+		    _yTop = ((int[])_imageData.getFirst()).length *
+			getYIncrement();
+		    _yBottom = getYOffset();
+
 		    // Set the x and y ranges according to the data.  The
 		    // x-range start value is getXOffset().  Similarly for the
 		    // y-range start value.  To calculate the high end of the 
@@ -353,7 +359,7 @@ public class Render extends PlotBox {
              _drawPatch(graphics, (int)x, (int)y1, (int)width,
 			(int)y2 - (int)y1, stripe[i]);
 
-             // Increment the y value so the next patch is printed in the
+             // Increment the y values so the next patch is printed in the
              // right place.
              y1 = y2;
 	     y2 = y1 + height;
