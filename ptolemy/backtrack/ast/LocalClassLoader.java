@@ -545,6 +545,7 @@ public class LocalClassLoader extends URLClassLoader {
                 _loadedClasses.put(className, classLoaded);
                 return classLoaded;
             } catch (ClassNotFoundException e) {
+            } catch (NoClassDefFoundError e) {
             } finally {
                 dollarName.delete(0, c.getName().length() + 1);
             }
