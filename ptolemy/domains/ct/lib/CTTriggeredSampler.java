@@ -37,7 +37,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.*;
 import ptolemy.actor.*;
 import ptolemy.actor.lib.TimedActor;
-
+import ptolemy.actor.lib.Transformer;
 
 //////////////////////////////////////////////////////////////////////////
 //// CTTriggeredSampler
@@ -50,7 +50,7 @@ channel.
 @author Jie Liu
 @version $Id$
 */
-public class CTTriggeredSampler extends TypedAtomicActor
+public class CTTriggeredSampler extends Transformer
     implements CTEventGenerator, TimedActor {
 
     /** Construct an actor in the specified container with the specified
@@ -71,12 +71,9 @@ public class CTTriggeredSampler extends TypedAtomicActor
     public CTTriggeredSampler(TypedCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        input = new TypedIOPort(this, "input", true, false);
         input.setMultiport(true);
-        input.setTypeEquals(BaseType.DOUBLE);
-        output = new TypedIOPort(this, "output", false, true);
         output.setMultiport(true);
-        output.setTypeEquals(BaseType.DOUBLE);
+        output.setTypeAtLeast(input);
         trigger = new TypedIOPort(this, "trigger", true, false);
         trigger.setMultiport(false);
         // The trigger input has a generic type.
@@ -86,14 +83,6 @@ public class CTTriggeredSampler extends TypedAtomicActor
     ////////////////////////////////////////////////////////////////////////
     ////                         public variables                       ////
 
-    /** The multi-input port with type double.
-     */
-    public TypedIOPort input;
-
-    /** The multi-output port with type double.
-     */
-    public TypedIOPort output;
-
     /** The input port for triggering.
      */
     public TypedIOPort trigger;
@@ -101,6 +90,23 @@ public class CTTriggeredSampler extends TypedAtomicActor
 
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
+
+    /** Clone the actor into the specified workspace. This calls the
+     *  base class and then sets the ports.
+     *  @param ws The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class has
+     *   an attribute that cannot be cloned.
+     */
+     public Object clone(Workspace ws)
+	    throws CloneNotSupportedException {
+        CTTriggeredSampler newobj = (CTTriggeredSampler)super.clone(ws);
+        newobj.input.setMultiport(true);
+        newobj.output.setMultiport(true);
+        newobj.output.setTypeAtLeast(newobj.input);
+        newobj.trigger = (TypedIOPort)newobj.getPort("trigger");
+        return newobj;
+    }
 
     /** Emit the current event, which has the token of the latest input
      *  token.
