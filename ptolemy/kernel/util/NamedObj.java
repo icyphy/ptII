@@ -25,6 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Green (eal@eecs.berkeley.edu)
+@AcceptedRating Green (johnr@eecs.berkeley.edu)
 */
 
 package pt.kernel.util;

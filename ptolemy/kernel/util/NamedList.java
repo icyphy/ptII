@@ -25,6 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Green (eal@eecs.berkeley.edu)
+@AcceptedRating Green (johnr@eecs.berkeley.edu)
 
 NOTE: This class could leverage better
 the underlying LinkedList class. E.g., it could be
