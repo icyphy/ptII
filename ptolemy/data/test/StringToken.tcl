@@ -288,3 +288,9 @@ test StringToken-13.7 {Test convert from StringToken} {
     list $msg
 } {{"One"}}
     
+
+test StringToken-14.1 {Test embedded double quotes} {
+    set tok1 [java::new {ptolemy.data.StringToken} {has embedded "}]
+    set tok2 [java::new {ptolemy.data.StringToken} "has embedded \""]
+    list [$tok1 toString] [$tok1 toString]  
+} {{"has embedded \""} {"has embedded \""}}
