@@ -66,8 +66,8 @@ public class CWriter extends SceneTransformer {
         // return super.getDeclaredOptions() + " debug outDir";
         // The debug option suppresses exceptions, which in turn forces
         // repeated attempts to generate class files.
-        System.out.println("Options: " + super.getDeclaredOptions());
-        return super.getDeclaredOptions() + " outDir targetPackage";
+        //System.out.println("Options: + outDir targetPackage";
+        return "outDir targetPackage";
     }
 
 
@@ -87,9 +87,8 @@ public class CWriter extends SceneTransformer {
 
         // We use soot.Options to avoid confusion with
         // copernicus.c.options.
-        String outDir = soot.Options.getString(options, "outDir");
-        String mainFile = soot.Options
-            .getString(options, "targetPackage")
+        String outDir = soot.PhaseOptions.getString(options, "outDir");
+        String mainFile = soot.PhaseOptions.getString(options, "targetPackage")
             + ".Main";
 
         // Initialize generation of overridden methods.
