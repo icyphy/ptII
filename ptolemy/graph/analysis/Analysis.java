@@ -105,7 +105,7 @@ abstract public class Analysis {
      *  interfaces, the satisfaction of certain graph properties, etc.
      *  This method always returns true since there is no issue of 
      *  incompatibility with an abstract analysis. It should be overridden in
-     *  derived classes in which issues of incompatability may arise.
+     *  derived classes in which issues of incompatibility may arise.
      *
      *  @param graph The given graph.
      *  @return True if the analysis is compatible with the given graph.
