@@ -86,6 +86,7 @@ public class SigmaDeltaApplet extends CTApplet {
         _query.addLine("stopT", "Stop Time", "15.0");
         _query.addLine("sample", "Sample Rate", "0.02");
         _query.addLine("feedback", "Feedback Gain", "-20.0");
+        _query.setBackground(_getBackground());
 
         Panel runcontrols = new Panel();
         controlpanel.add("East",runcontrols);
