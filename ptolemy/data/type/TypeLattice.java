@@ -135,6 +135,18 @@ public class TypeLattice {
 
 	    Type t1Rep = _toRepresentative(ct1);
 	    Type t2Rep = _toRepresentative(ct2);
+
+	    if ( !_basicLattice.contains(t1Rep) ||
+	         !_basicLattice.contains(t2Rep)) {
+                // one or both arguments are user defined
+		if (t1Rep == t2Rep) {
+		    return SAME;
+		} else {
+		    return INCOMPARABLE;
+		}
+	    }
+
+            // types are in _basicLattice.
 	    if (t1Rep == t2Rep) {
 	        // t1 and t2 are of the same structured type
 	        return ((StructuredType)t1)._compare((StructuredType)ct2);
@@ -443,13 +455,15 @@ public class TypeLattice {
         ///////////////////////////////////////////////////////////////
         ////                      private methods                  ////
 
-    	// If the argument is a base type, return it directly; otherwise,
-        // return the representative of the structured type of the argument.
+    	// If the argument is a structured type, return its representative;
+	// otherwise, return the argument. In the latter case, the argument
+	// is either a base type or a user defined type that is not a
+	// structured type.
         private Type _toRepresentative(Type t) {
-	    if (t instanceof BaseType) {
-	        return t;
-	    } else {
+	    if (t instanceof StructuredType) {
 	        return ((StructuredType)t)._getRepresentative();
+	    } else {
+	        return t;
 	    }
         }
 
