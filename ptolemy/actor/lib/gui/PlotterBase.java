@@ -361,7 +361,7 @@ public class PlotterBase extends TypedAtomicActor
             throws IllegalActionException, NameDuplicationException {
         Nameable previousContainer = getContainer();
         super.setContainer(container);
-        if (container != previousContainer) {
+        if (container != previousContainer && previousContainer != null) {
             _remove();
         }
     }

@@ -75,6 +75,12 @@ generate arbitrary textual output, at one token per line.
 Tokens are read from the input only in
 the postfire() method, to allow them to settle in domains where they
 converge to a fixed point.
+<p>
+Note that because of complexities in Swing, if you resize the display
+window, then, unlike the plotters, the new size will not be persistent.
+That is, if you save the model and then re-open it, the new size is
+forgotten.  To control the size, you should set the <i>rowsDisplayed</i>
+and <i>columnsDisplayed</i> parameters.
 
 @author  Yuhong Xiong, Edward A. Lee
 @version $Id$
@@ -254,13 +260,17 @@ public class Display extends Sink implements Placeable {
                     ((IntToken)columnsDisplayed.getToken()).intValue();
             textArea.setColumns(numColumns);
             _windowProperties.setProperties(_frame);
+            _frame.show();
         } else {
             // Erase previous text.
             textArea.setText(null);
         }
+        /** NOTE: This causes a bug where manual placement
+         *  gets overridden on re-run.
         if (_frame != null) {
             _frame.show();
         }
+        */
         /*
           int tab = ((IntToken)tabSize.getToken()).intValue();
           // NOTE: As of jdk 1.3beta the following is ignored.
@@ -390,7 +400,7 @@ public class Display extends Sink implements Placeable {
             throws IllegalActionException, NameDuplicationException {
         Nameable previousContainer = getContainer();
         super.setContainer(container);
-        if (container != previousContainer) {
+        if (container != previousContainer && previousContainer != null) {
             _remove();
         }
     }
