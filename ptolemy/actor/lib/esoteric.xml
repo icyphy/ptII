@@ -4,6 +4,8 @@
 <entity name="esoteric actors" class="ptolemy.moml.EntityLibrary">
 	<configure>
 		<?moml <group>
+			<entity name="Exec" class="ptolemy.actor.lib.Exec"/>
+
 			<entity name="OrderedMerge" class="ptolemy.actor.lib.OrderedMerge"/>
 			<entity name="CalInterpreter" class="ptolemy.caltrop.actors.CalInterpreter">
     			<property name="_editorFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
