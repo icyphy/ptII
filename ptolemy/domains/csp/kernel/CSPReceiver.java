@@ -253,7 +253,7 @@ public class CSPReceiver implements Receiver {
      *  FIXME: should this method be write synchronized on the workspace?
      *  FIXME: a null argument should remove it from the IOPort it
      *  currently belongs to.
-     *  @exception IllegalActionException Thrown if this receiver has
+     *  @exception IllegalActionException If this receiver has
      *   already been placed into an IOPort. A receiver can only ever
      *   be contained by ne IOPort during its life.
      *  @param parent The IOPort this receiver is to be contained by.
@@ -331,10 +331,10 @@ public class CSPReceiver implements Receiver {
      *  the lock on this receiver.
      *  <p>
      *  FIXME: will duplication always be needed below?
-     *  @exception TerminateProcessException Thrown if the actor to
+     *  @exception TerminateProcessException If the actor to
      *   which this receiver belongs has been terminated while still
      *   running i.e it was not allowed to run to completion.
-     *  @exception InterruptedException Thrown if the actor is
+     *  @exception InterruptedException If the actor is
      *   interrupted while waiting.
      */
     protected synchronized void _checkAndWait() throws
@@ -353,7 +353,7 @@ public class CSPReceiver implements Receiver {
 
     /** Return the director that is controlling this simulation.
      *  The director is cached as it is accessed often.
-     *  @exception NoSuchItemException Thrown if this receiver does
+     *  @exception NoSuchItemException If this receiver does
      *   not have a container. In order to get or put to a CSPReceiver,
      *   it must have a container. If it does not it indicates that
      *   either the receiver was removed (container set to null) or
