@@ -436,8 +436,16 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
             // to access the directory are synchronized.
             newObject._attributes = null;
 
-            // Make sure the new object is not marked derived.
-            newObject._derivedLevel = Integer.MAX_VALUE;
+            // NOTE: As of version 5.0, clones inherit the derived
+            // level of the object from which they are cloned.
+            // This is somewhat risky, but since cloning is usually
+            // used for instantiation, and instantiation fixes up
+            // the derived level, this creates no problems there.
+            // In the rare cases when clone is actually used directly
+            // (mainly in tests), it is appropriate for the clone
+            // to be indentical in this regard to the object from
+            // which it is cloned.  EAL 3/3/05
+            // newObject._derivedLevel = Integer.MAX_VALUE;
 
             if (workspace == null) {
                 newObject._workspace = _DEFAULT_WORKSPACE;
