@@ -209,16 +209,13 @@ public class LogicFunction extends Transformer {
         } else {
             switch(_function) {
             case _AND:
-                result = old.multiply(in);
+                result = old.and(in);
                 break;
             case _OR:
-                // By DeMorgan's Law:
-                BooleanToken negatedResult =
-                    (BooleanToken)((old.not()).multiply(in.not()));
-                result = negatedResult.not();
+                result = old.or(in);
                 break;
             case _XOR:
-                result = old.add(in);
+                result = old.xor(in);
                 break;
             default:
                 throw new InternalErrorException(

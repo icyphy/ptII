@@ -85,6 +85,19 @@ public class BooleanToken extends AbstractConvertibleToken
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Return a new token whose value is the logical AND of the value of this token
+     *  and the the value of the argument token.
+     *  @param rightArgument The BooleanToken to OR with this one.
+     *  @return A new BooleanToken containing the result.
+     */
+    public BooleanToken and(BooleanToken rightArgument) {
+        if (_value && rightArgument.booleanValue()) {
+            return TRUE;
+        } else {
+            return FALSE;
+        }
+    }
+
     /** Return the value as a boolean.
      *  @return The value.
      */
@@ -186,6 +199,19 @@ public class BooleanToken extends AbstractConvertibleToken
         return TRUE;
     }
 
+    /** Return a new token whose value is the logical OR of the value of this token
+     *  and the the value of the argument token.
+     *  @param rightArgument The BooleanToken to OR with this one.
+     *  @return A new BooleanToken containing the result.
+     */
+    public BooleanToken or(BooleanToken rightArgument) {
+        if (_value || rightArgument.booleanValue()) {
+            return TRUE;
+        } else {
+            return FALSE;
+        }
+    }
+
     /** Returns a token representing the bitwise AND of this token and
      *  the given token.
      *  @return The boolean AND.
@@ -253,6 +279,19 @@ public class BooleanToken extends AbstractConvertibleToken
         }
     }
 
+    /** Return a new token whose value is the logical XOR of the value of this token
+     *  and the the value of the argument token.
+     *  @param rightArgument The BooleanToken to XOR with this one.
+     *  @return A new BooleanToken containing the result.
+     */
+    public BooleanToken xor(BooleanToken rightArgument) {
+        if (_value ^ rightArgument.booleanValue()) {
+            return TRUE;
+        } else {
+            return FALSE;
+        }
+    }
+
     /** Returns a token representing the additive identity.
      *  @return FALSE.
      */
@@ -270,11 +309,7 @@ public class BooleanToken extends AbstractConvertibleToken
      *  @return A new BooleanToken containing the result.
      */
     protected Token _add(Token rightArgument) {
-        if (_value || ((BooleanToken)rightArgument).booleanValue()) {
-            return TRUE;
-        } else {
-            return FALSE;
-        }
+        return this.or((BooleanToken)rightArgument);
     }
 
     /** Return a new token whose value is the value of the argument
@@ -359,11 +394,7 @@ public class BooleanToken extends AbstractConvertibleToken
      */
     protected Token _multiply(Token rightArgument)
             throws IllegalActionException {
-        if (_value && ((BooleanToken)rightArgument).booleanValue()) {
-            return TRUE;
-        } else {
-            return FALSE;
-        }
+        return this.and((BooleanToken)rightArgument);
     }
 
     /** Return a new token whose value is the value of the argument token
@@ -379,8 +410,10 @@ public class BooleanToken extends AbstractConvertibleToken
      *  @param rightArgument The token to subtract from this token.
      *  @return A new BooleanToken containing the result.
      */
-    protected Token _subtract(Token rightArgument) {
-        return _add(rightArgument);
+    protected Token _subtract(Token rightArgument)
+            throws IllegalActionException {
+        throw new IllegalActionException(
+                notSupportedMessage("subtract", this, rightArgument));
     }
 
     ///////////////////////////////////////////////////////////////////
