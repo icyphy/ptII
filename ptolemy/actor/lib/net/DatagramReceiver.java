@@ -160,19 +160,36 @@ public class DatagramReceiver extends TypedAtomicActor {
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
+	// ports - Ordering here sets the order they show up in vergil
         output = new TypedIOPort(this, "output");
         output.setOutput(true);
 
+        trigger = new TypedIOPort(this, "trigger", true, false);
+        trigger.setTypeEquals(BaseType.GENERAL);
+        trigger.setMultiport(true);
+
+	// parameters - Ordering here sets the order they show up in vergil
         localSocketNumber = new Parameter(this, "localSocketNumber");
         localSocketNumber.setTypeEquals(BaseType.INT);
         localSocketNumber.setToken(new IntToken(-1));
 
+        bufferLength = new Parameter(this, "bufferLength");
+        bufferLength.setTypeEquals(BaseType.INT);
+        bufferLength.setToken(new IntToken(440));
+
         overwrite = new Parameter(this, "overwrite", new BooleanToken(true));
         overwrite.setTypeEquals(BaseType.BOOLEAN);
 
-          trigger = new TypedIOPort(this, "trigger", true, false);
-        trigger.setTypeEquals(BaseType.GENERAL);
-        trigger.setMultiport(true);
+        blockAwaitingDatagram = new Parameter(this, "blockAwaitingDatagram");
+        blockAwaitingDatagram.setTypeEquals(BaseType.BOOLEAN);
+        blockAwaitingDatagram.setExpression("true");
+
+        defaultOutput = new Parameter(this, "defaultOutput");
+        defaultOutput.setTypeEquals(BaseType.GENERAL);
+        defaultOutput.setExpression("0");
+
+        //repeat = new Parameter(this, "repeat", new BooleanToken(false));
+        //repeat.setTypeEquals(BaseType.BOOLEAN);
 
         /** When decodeWithPtolemyParser is true, fire() applies
          *  <i>toString().getBytes()</i> to the <i>data</i> token
@@ -186,17 +203,6 @@ public class DatagramReceiver extends TypedAtomicActor {
                 new Parameter(this, "decodeWithPtolemyParser");
         decodeWithPtolemyParser.setTypeEquals(BaseType.BOOLEAN);
         decodeWithPtolemyParser.setExpression("true");
-
-        blockAwaitingDatagram = new Parameter(this, "blockAwaitingDatagram");
-        blockAwaitingDatagram.setTypeEquals(BaseType.BOOLEAN);
-        blockAwaitingDatagram.setExpression("true");
-
-        defaultOutput = new Parameter(this, "defaultOutput");
-        defaultOutput.setTypeEquals(BaseType.GENERAL);
-        defaultOutput.setExpression("0");
-
-        //repeat = new Parameter(this, "repeat", new BooleanToken(false));
-        //repeat.setTypeEquals(BaseType.BOOLEAN);
    }
 
     ///////////////////////////////////////////////////////////////////
@@ -238,11 +244,16 @@ public class DatagramReceiver extends TypedAtomicActor {
      */
     public Parameter overwrite;
 
-    /** Parameter directing whether to use the Ptolemy parser
-     * to interpret the datagram contents or whether to copy
-     * the raw data to an output data type (or use 'serialize'?)
+    /** Length (in bytes) of each of the two packet buffers for
+     * receiving a datagram.  There is also a buffer somewhere in the
+     * Java Virtual Machine or in the underlying firmware.  The size
+     * of this buffer is not controlled by this actor, but it could
+     * be.  Its length is accessable via the getReceiveBufferSize and
+     * setReceiveBufferSize methods of java.net.DatagramSocket.
+     * Caution - The set is only a suggestion.  Must call get to
+     * see what you actually got.
      */
-    //public Parameter ...;
+    public Parameter bufferLength;
 
     ///////////////////////////////////////////////////////////////////
     ////                     public methods                        ////
@@ -264,6 +275,26 @@ public class DatagramReceiver extends TypedAtomicActor {
         //Otherwise add synchronized(_broadcastPacket){...}
         if (attribute == overwrite) {
             _overwrite = ((BooleanToken)(overwrite.getToken())).booleanValue();
+	} else if (attribute == blockAwaitingDatagram) {
+	    if (((BooleanToken)(blockAwaitingDatagram.getToken()))
+		    .booleanValue()) {
+		_blockAwaitingDatagram = true;
+	    } else {
+		synchronized(_syncFireAndThread) {
+		    _blockAwaitingDatagram = false;
+		    // Notify fire() to stop blocking
+		    _syncFireAndThread.notifyAll();
+		}
+	    }
+	} else if (attribute == defaultOutput) {
+ 	    synchronized(_syncDefaultOutput) {
+		// Private variable is named _defaultOutputToken 
+		// instead of _defaultOutput because it is being 
+		// kept in token form (allowing any type) vs the 
+		// value form typically used for private copies 
+		// of parameters.
+		_defaultOutputToken = defaultOutput.getToken();
+	    }
         } else if (attribute == localSocketNumber) {
             // Sync handles concurrent calls by director.
             // FIXME Why does the director do that?
@@ -318,98 +349,122 @@ public class DatagramReceiver extends TypedAtomicActor {
         //String _address = __address.getHostAddress();
 
         //NOTE: Avoid executing concurrently with thread's run()'s sync block.
+	boolean freshDataIsAvailable;
+	int bytesAvailable = 0;
+	byte[] dataBytes = new byte[0];
         synchronized(_syncFireAndThread) {
 
             if (false) System.out.println(this + " fire() sync beginsOOO");
 
-            if (((BooleanToken)(blockAwaitingDatagram
-                    .getToken())).booleanValue()) {
+	    // If requested, block awaiting a packet (useful in SDF).
+	    // Actually <u>while</u> requested, not if, in case the 
+	    // attribute is changed while waiting.
+	    // Has no effect in DE, since fire() is only called by
+	    // the director in responce to this actor's thread
+	    // calling the director's fireAtCurrentTime() method.
+	    // In the latter case, there is always a packet waiting.
+	    // An exception to this is if the trigger input is
+	    // connected.  Then, even in DE, this takes effect.
+	    while (_blockAwaitingDatagram && 
+		    _packetsAlreadyAwaitingFire == 0) {
+		try {
 
-                if (false) System.out.println(this + " fire() block=trueOOO");
-
-                // Block awaiting a packet (useful in SDF).
-                // Has no effect in DE, since fire() is only called by
-                // the director in responce to this actor's thread
-                // calling the director's fireAtCurrentTime() method.
-                // In the latter case, there is always a packet waiting.
-                // An exception to this is if the trigger input is
-                // connected.  Then, even in DE, this takes effect.
-                while (_packetsAlreadyAwaitingFire == 0) {
-                    try {
-
-                        if (false) System.out.println(this 
-                                + " fire() wait beginsOOO");
+		    if (false) System.out.println(this 
+                            + " fire() wait beginsOOO");
                         
-                        _syncFireAndThread.wait();
+		    _syncFireAndThread.wait();
 
-                        if (false) System.out.println(this 
-                                + " fire() wait endsOOO");
+		    if (false) System.out.println(this 
+                            + " fire() wait endsOOO");
                         
-                    } catch (InterruptedException ex) {
+		} catch (InterruptedException ex) {
 
-                        if (false) System.out.println(this 
-                                + " fire() wait's catchOOO");
+		    if (false) System.out.println(this 
+                            + " fire() wait's catchOOO");
 
-                    }
-                }
-            } else {
-
-                if (false) System.out.println(this + " fire() block=falseOOO");
-
-            }
+		}
+	    }
 
             if (false) System.out.println(this 
                     + " fire() skipped or done blockingOOO");
 
-            if (_packetsAlreadyAwaitingFire != 0) {
-
-            if (false) System.out.println(this 
-                    + " fire() packets are waiting OOO");
-
-                boolean forParser = ((BooleanToken)(
-                        decodeWithPtolemyParser.getToken())).booleanValue();
-                if (forParser) {
-                    // Get the data out of the packet as a
-                    // string of data's length
-                    _length = _broadcastPacket.getLength();
-                    _dataStr = new String(_broadcastPacket.getData(),
-                            0, _length);
-                    // Parse this data string to a Ptolemy II data object
-                    _evalVar.setExpression(_dataStr);
-                    // Stack dump calling getToken() in line below
-                    // may indicate type of data received does not
-                    // match type of <i>output</i> port.
-                    // Please configure port to match type being sent.
-                    _outputToken = _evalVar.getToken();
-                } else {
-                    int bytesAvailable = _broadcastPacket.getLength();
-                    Token[] dataIntTokens = new Token[bytesAvailable];
-                    byte[] dataBytes = _broadcastPacket.getData();
-                    for (int j = 0; j < bytesAvailable; j++) {
-                        dataIntTokens[j] = new IntToken(dataBytes[j]);
-                    }
-                    _outputToken = new ArrayToken(dataIntTokens);
-                }
+	    if (_packetsAlreadyAwaitingFire != 0) {
+		freshDataIsAvailable = true;
+		bytesAvailable = _broadcastPacket.getLength();
+		dataBytes = _broadcastPacket.getData();
                 _packetsAlreadyAwaitingFire--;
-                _syncFireAndThread.notifyAll();
-            } else {
+	    } else {
+		freshDataIsAvailable = false;
+	    }
+            _syncFireAndThread.notifyAll();
+
+	} // sync
+        if (false) System.out.println(this + " fire() sync endsOOO");
+
+	if (freshDataIsAvailable) {
+
+	    if (false) System.out.println(this 
+		    + " fire() fresh packet(s) are waiting OOO");
+
+	    boolean forParser = ((BooleanToken)(
+                    decodeWithPtolemyParser.getToken())).booleanValue();
+	    if (forParser) {
+		// Make the data into a string.
+		_dataStr = new String(dataBytes, 0, bytesAvailable);
+		// Parse this data string to a Ptolemy II data object
+		_evalVar.setExpression(_dataStr);
+		// Stack dump calling getToken() in line below
+		// may indicate type of data received does not
+		// match type of <i>output</i> port.
+		// Please configure port to match type being sent.
+		_outputToken = _evalVar.getToken();
+	    } else {
+		// Make an array of tokens.
+		Token[] dataIntTokens = new Token[bytesAvailable];
+		// Fill each token with one byte.
+		for (int j = 0; j < bytesAvailable; j++) {
+		    dataIntTokens[j] = new IntToken(dataBytes[j]);
+		}
+		// Assemble these into an array-token of tokens
+		_outputToken = new ArrayToken(dataIntTokens);
+	    }
+
+	    output.broadcast(_outputToken);
+
+	    if (false) System.out.println(this 
+	            + " fire() fresh data was broadcastOOO");
+
+	} else {
+
+	    if (false) System.out.println(this 
+                    + " fire() fresh packets not waiting OOO");
+
+	    // No fresh data, so use the default output.
+	    // (If repeat parameter were implemented, 
+	    //  would test it here and, if true, would 
+	    //  repeat the most recent output instead 
+	    //  of outputting the default, provided 
+	    //  there is a previous output to repeat.)
+
+	    // Ensure that any change to the default output parameter 
+	    // occurs atomically with respect to its use here.
+ 	    synchronized (_syncDefaultOutput) {
+                output.broadcast(_defaultOutputToken);
+	    }
 
             if (false) System.out.println(this 
-                    + " fire() packets not waiting OOO");
+		    + " fire() default output was broadcastOOO");
 
-                _outputToken = defaultOutput.getToken();
-            }
+	}
                 
-            if (false) System.out.println(this 
-                    + " fire() _outputToken createdOOO");
-            if (false) System.out.println(this + " fire() _outputToken = " 
-                    +  _outputToken.toString());
+	    //if (false) System.out.println(this 
+	    //     + " fire() _outputToken createdOOO");
+	//if (false) System.out.println(this + " fire() _outputToken = " 
+        //        +  _outputToken.toString());
                     
-            output.broadcast(_outputToken);
 
-            if (false) System.out.println(this + "fire() method endsOOO");
+    if (false) System.out.println(this + "fire() method endsOOO");
 
-        }
     }
 
     /** Preinitialize this actor.  Create a new datagram socket and
@@ -524,6 +579,9 @@ public class DatagramReceiver extends TypedAtomicActor {
     private int _length;
     private Token _outputToken;
     private String _syncFireAndThread = "Y"; // Used only as a sync object.
+    private String _syncDefaultOutput = "Y"; // Used only as a sync object.
+    private Token _defaultOutputToken;
+    private boolean _blockAwaitingDatagram;
 
     ///////////////////////////////////////////////////////////////////
     ////                        private inner class                ////
@@ -537,6 +595,18 @@ public class DatagramReceiver extends TypedAtomicActor {
 
         public void run() {
             while (true) {
+		// FIXME This test shouldn't be necessary, but 
+		// may save time.  Make sure, though, that if 
+		// the interrupt arrives after this test but 
+		// before the socket.receive call, that the call
+		// gets preempted by the interrupt, just as if 
+		// it arrived while stalled inside the call.
+		// It would also be okay if it was preempted 
+		// only if stalling was called for and not 
+		// preempted if a datagram ready to receive.
+		// In the later case, consider whether to add 
+		// a test like this one below socket.receive 
+		// as well.
                 if (this.interrupted()) {
                     return;
                 }
@@ -565,6 +635,7 @@ public class DatagramReceiver extends TypedAtomicActor {
                 }
 
                 // NOTE: Avoid executing concurrently with actor's fire().
+		boolean dataWasOverwritten;
                 synchronized(_syncFireAndThread) {
 
                     if (false) System.out.println(this 
@@ -592,15 +663,17 @@ public class DatagramReceiver extends TypedAtomicActor {
                     // increments the count, and calls fireAt().  Then
                     // go back around finally to the socket.receive call.
 
-                    if(_packetsAlreadyAwaitingFire != 0 && !_overwrite) {
+                    while (_packetsAlreadyAwaitingFire != 0 && !_overwrite) {
                         try {
                             _syncFireAndThread.wait();
                         } catch (InterruptedException ex) {
-                            //I'm here because I've been asked to not
-                            //lose packets.  So, if interrupted in here
-                            //I'd like to be able to still wait.
-                            //FIXME - how to still wait while socket
-                            //number attribute is being changed?
+                            // I'm here because I've been asked to not
+                            // lose packets.  So, if interrupted in here
+                            // I'd like to be able to still wait.
+                            // FIXME - how to still wait while socket
+                            // number attribute (or bufferLength)
+			    // is being changed?
+			    //
                             if (false) System.out.println(this
                                     + "InterruptedException in wait()");
                         }
@@ -611,35 +684,41 @@ public class DatagramReceiver extends TypedAtomicActor {
                     _broadcastPacket = _receivePacket;
                     _receivePacket = tmp;
 
-                    if(_packetsAlreadyAwaitingFire == 0) {
-                        // Increment count & call fireAt()
+		    if (_packetsAlreadyAwaitingFire != 0) {
+			dataWasOverwritten = true;
+		    } else {
+			dataWasOverwritten = false;
                         _packetsAlreadyAwaitingFire++;
-                        try {
-
-                            if (false) System.out.println(this
-		                    + " thread try fireAtCurrentTimeooo");
-
-                            getDirector().fireAtCurrentTime(
-                                    DatagramReceiver.this);
-
-                            if (false) System.out.println(this 
-		                    + " thread done fireAtCurrentTimeooo");
-
-                        } catch (IllegalActionException ex) {
-
-                            if (false) System.out.println(this 
-		                    + " thread catch fireAtCurrentTimeooo");
-
-                            if(false&&_debugging) _debug("IAE 0!!");
-                        }
-                    }
-
+		    }
                     _syncFireAndThread.notifyAll();
 
-                    if (false) System.out.println(this 
-                            + " thread sync endsooo");
-   
                 } // Close the Synchronized block
+
+
+		if(dataWasOverwritten == false) {
+		    try {
+
+			if (false) System.out.println(this
+		                + " thread try fireAtCurrentTimeooo");
+
+			getDirector().fireAtCurrentTime(
+                                DatagramReceiver.this);
+
+			if (false) System.out.println(this 
+		                + " thread done fireAtCurrentTimeooo");
+
+		    } catch (IllegalActionException ex) {
+
+			if (false) System.out.println(this 
+		                + " thread catch fireAtCurrentTimeooo");
+
+			if(false&&_debugging) _debug("IAE 0!!");
+		    }
+		}
+
+		if (false) System.out.println(this 
+                        + " thread sync endsooo");
+   
             } // Close the While
         }
     }
