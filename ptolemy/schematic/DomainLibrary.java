@@ -129,7 +129,7 @@ public class DomainLibrary extends XMLElement{
      * in the returned enumeration is the name of a domain contained
      * in this domainlibrary.
      *
-     *  @return An Enumaration of String
+     *  @return An Enumeration of String
      */
     public Enumeration domains() {
         return _domains.keys();

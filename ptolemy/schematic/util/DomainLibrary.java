@@ -1,4 +1,4 @@
-/* This class manages the Ptoelmy II domains and actor packages .
+/* This class manages the Ptoelmy II domains and actor packages.
 
  Copyright (c) 1998-1999 The Regents of the University of California.
  All rights reserved.
@@ -131,7 +131,7 @@ public class DomainLibrary extends XMLElement{
      * in the returned enumeration is the name of a domain contained
      * in this domainlibrary.
      *
-     *  @return An Enumaration of String
+     *  @return An Enumeration of String
      */
     public Enumeration domains() {
         return _domains.keys();
