@@ -680,9 +680,10 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 
 	/** Append moml to the given buffer that connects a link with the
 	 *  given head, tail, and relation.  Names in the returned moml will be
-         *  relative to the iven container.  This may require adding an
+         *  relative to the given container.  This may require adding an
 	 *  anonymous relation to the ptolemy model.  If this is required,
-	 *  the name of the relation is returned.
+	 *  the name of the relation <b>relative to the toplevel object
+         *  of this graph model</b> is returned.
 	 *  If no relation need be added, then
 	 *  null is returned.
 	 */
@@ -701,31 +702,46 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 		    ComponentPort tailPort = (ComponentPort)tail;
 		    // Linking two ports with a new relation.
 		    String relationName =
-			container.uniqueName("relation");
-		    // Note that we use no class so that we use the container's
+			getToplevel().uniqueName("relation");
+                    // If the context is not the entity that we're editing,
+                    // then we need to set the context correctly.
+                    if(getToplevel() != container) {
+                        String contextString = "<entity name=\"" + 
+                            getToplevel().getName(container) + 
+                            "\">\n";
+                        moml.append(contextString);
+                        failmoml.append(contextString);
+                    }
+                    // Note that we use no class so that we use the container's
 		    // factory method when this gets parsed
-		    moml.append("<relation name=\"" + relationName + "\"/>\n");
+                    moml.append("<relation name=\"" + relationName + "\"/>\n");
 		    moml.append("<link port=\"" +
-				headPort.getName(container) +
-				"\" relation=\"" + relationName +
-				"\"/>\n");
+                            headPort.getName(getToplevel()) +
+                            "\" relation=\"" + relationName +
+                            "\"/>\n");
 		    moml.append("<link port=\"" +
-				tailPort.getName(container) +
-				"\" relation=\"" + relationName +
-				"\"/>\n");
+                            tailPort.getName(getToplevel()) +
+                            "\" relation=\"" + relationName +
+                            "\"/>\n");
+ 
 		    // Record moml so that we can blow away these
 		    // links in case we can't create them
                     failmoml.append("<unlink port=\"" +
-                    headPort.getName(container) +
-				"\" relation=\"" + relationName +
-				"\"/>\n");
+                            headPort.getName(getToplevel()) +
+                            "\" relation=\"" + relationName +
+                            "\"/>\n");
 		    failmoml.append("<unlink port=\"" +
-				tailPort.getName(container) +
-				"\" relation=\"" + relationName +
-				"\"/>\n");
+                            tailPort.getName(getToplevel()) +
+                            "\" relation=\"" + relationName +
+                            "\"/>\n");
 		    failmoml.append("<deleteRelation name=\"" +
-				relationName +
-				"\"/>\n");
+                            relationName + "\"/>\n");
+                    // close the context
+                    if(getToplevel() != container) {
+                        moml.append("</entity>");
+                        failmoml.append("</entity>");
+                    }
+
 		    return relationName;
 		} else if(head instanceof ComponentPort &&
 			  linkTail instanceof Vertex) {
@@ -774,7 +790,7 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	    moml.append("<group>\n");
 	    failmoml.append("<group>\n");
             // Make the request in the context of the container.
-            final CompositeEntity container = 
+            final CompositeEntity container =
                 (CompositeEntity)getChangeRequestParent(getToplevel());
 
 	    String relationName = "";
@@ -811,7 +827,7 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 			link.setHead(newLinkHead);
 			if(relationNameToAdd != null) {
                             ComponentRelation relation =
-			    (ComponentRelation)container.getRelation(
+			    (ComponentRelation)getToplevel().getRelation(
                                     relationNameToAdd);
 			    link.setRelation(relation);
 			} else {
@@ -884,7 +900,7 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	    failmoml.append("<group>\n");
 
             // Make the request in the context of the container.
-            final CompositeEntity container = 
+            final CompositeEntity container =
                 (CompositeEntity)getChangeRequestParent(getToplevel());
 
 	    String relationName = "";
@@ -920,7 +936,7 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 		       super._execute();
 		       link.setTail(newLinkTail);
 		       if(relationNameToAdd != null) {
-                           link.setRelation(container.getRelation(
+                           link.setRelation(getToplevel().getRelation(
                                    relationNameToAdd));
 		       } else {
 			   link.setRelation(null);
