@@ -28,8 +28,6 @@
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
-
-
 // do we want to make this a token class?
 // upside: consistent interface, might be useful for domains.
 // downside: work
@@ -41,14 +39,18 @@ import ptolemy.kernel.util.*;
 //////////////////////////////////////////////////////////////////////////
 //// Fraction
 /**
-A fraction class.  Fractions are immutable and maintained in lowest terms, 
-with a positive denominator.
+A class for representing fractions.  Fractions are immutable and
+maintained in lowest terms, with a positive denominator.   Thus,
+1/2 and 2/4 are interpreted as different names for the same number.  
+Any fraction with the value zero is expressed as 0/1 in lowest terms. 
+<p>This class only represents fractions with a determined value,
+so fractions with a zero in the denominator are not allowed (including 0/0).
 
 @author Stephen Neuendorffer
 @version $Id$
 */
-public class Fraction {
-    /** Create a new fraction with the value zero.
+public class Fraction extends Object {
+    /** Create a new fraction with the value zero (0/1).
      */
     public Fraction() {
         _num = 0;
@@ -56,7 +58,7 @@ public class Fraction {
 	_simplify();
     }
 
-    /** Create a new fraction with the value i/1
+    /** Create a new fraction with the value i/1.
      */
     public Fraction(int i) {
         _num = i;
@@ -64,12 +66,16 @@ public class Fraction {
 	_simplify();
     }
 
-    /** Create a new fraction with the value Numerator/Denominator
+    /** 
+     * Create a new fraction in lowest terms
+     * with the value Numerator/Denominator.
+     * @exception ArithmeticException If the denominator is specified to be
+     * zero.
      */
     public Fraction(int Numerator, int Denominator) {
                 if(Denominator == 0)
                     throw new ArithmeticException("Illegal Fraction: " +
-                            "cannot Divide by zero");
+                            "cannot have denominator of zero.");
 
         _num = Numerator;
         _den = Denominator;
@@ -81,29 +87,19 @@ public class Fraction {
     public Fraction(Fraction f) {
         _num = f._num;
         _den = f._den;
-	_simplify();
     }
+
+    /* It is arguable as to whether or not this is needed.  It may 
+     * reduce the number of object creations, and increase speed,
+     * depending how often a zero fraction is needed.  This may become
+     * useful when this class is made into a Token.
+     */
+    public static Fraction ZERO = new Fraction(0, 1);
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Multiply this fraction by the given fraction.
-     *  @return The answer as another fraction in lowest terms.
-     */
-    public Fraction multiply(Fraction b) {
-        Fraction f = new Fraction(_num * b._num, _den * b._den);
-        return f;
-    }
-
-    /** Divide this fraction by the given fraction.
-     *  @return The answer as another fraction in lowest terms.
-     */
-    public Fraction divide(Fraction b) {
-        Fraction f = new Fraction(_num * b._den, _den * b._num);
-	return f;
-    }
-
-    /** Add this fraction to the given fractions.
+    /** Add this fraction to the given fraction.
      *  @return The answer as another fraction in lowest terms.
      */
     public Fraction add(Fraction b) {
@@ -112,49 +108,49 @@ public class Fraction {
         return f;
     }
 
-    /** Subtract the given fraction from this fraction.
-     *  @return The answer as another fraction in lowest terms
+    /** Divide this fraction by the given fraction.
+     *  @return The answer as another fraction in lowest terms.
+     *  @exception ArithmeticException If the fraction in the divisor has
+     *  a value of zero.
      */
-    public Fraction subtract(Fraction b) {
-       Fraction f = new Fraction(
-               _num * b._den - _den * b._num, _den * b._den);
-        return f;
+    public Fraction divide(Fraction b) {
+        if(b.equals(ZERO)) throw new ArithmeticException(
+                "Division by zero!");
+        Fraction f = new Fraction(_num * b._den, _den * b._num);
+	return f;
     }
 
-    /** Find the additive inverse of this fraction.
-     *  @return The answer as another fraction in lowest terms
+    /** Compare this fraction with the given object.
+     *  @return True if the given object is a fraction
+     *  and equal to this fraction.
      */
-    public Fraction negate() {
-        Fraction f = new Fraction(-_num, _den);
-        return f;
-    }
-
-    /** Find the multiplicative inverse of this fraction.
-     *  @return The answer as another fraction in lowest terms
-     */
-    public Fraction inverse() {
-        Fraction f = new Fraction(_den, _num);
-        return f;
-    }
-
-    /** Compare this fraction with the given fraction
-     *  @return True if the fractions are equal.
-     */
-    public boolean equals(Fraction b) {
+    public boolean equals(Object b) {
         // The Fractions are already in lowest terms, so we just compare the
         // numerator and denominator
-        return ((_num == b._num) && (_den == b._den));
+        if(b instanceof Fraction) 
+            return ((_num == ((Fraction) b)._num) && 
+                    (_den == ((Fraction) b)._den));
+        else 
+            return false;
     }
-
-    /** Convert the fraction to a readable string.
+    
+    /** Implement Euclid's method for finding the Greatest Common Divisor
+     * (GCD) of
+     *  two numbers.  If the numbers are negative, then we compute the
+     *  GCD of their absolute values.
      */
-    public String toString() {
-        StringBuffer s = new StringBuffer();
-	_simplify();
-        s.append(_num);
-        s.append('/');
-        s.append(_den);
-        return s.toString();
+    //FIXME: should this go someplace better?
+    public static int gcd(int u, int v) {
+        int t;
+        if(u < 0) u = -u;
+        if(v < 0) v = -v;
+        while(u > 0) {
+            if(u < v) 
+                { t = u; u = v; v = t; }
+            else
+                { u = u % v; }
+        }
+        return v;
     }
 
     /** Return the numerator of this fraction.
@@ -169,40 +165,71 @@ public class Fraction {
         return _den;
     }
 
-    public static Fraction ZERO = new Fraction(0, 1);
-
-    /** Implement Euclid's method for finding the Greatest Common Divisor of
-     *  two numbers.  If the numbers are negative, then we compute the
-     *  GCD of their absolute values.
+    /** Find the multiplicative inverse of this fraction.
+     *  @return The answer as another fraction in lowest terms
+     *  @exception ArithmeticException If this fraction has a value of zero,
+     *  in which case the multiplicative inverse cannot be represented.
      */
-    //FIXME: should these go someplace better?
-    public static int gcd(int u, int v) {
-        int t;
-        if(u < 0) u = -u;
-        if(v < 0) v = -v;
-        while(u > 0) {
-            if(u < v) { t = u; u = v; v = t; }
-            u = u - v;
-        }
-        return v;
+    public Fraction inverse() {
+        if(equals(ZERO)) throw new ArithmeticException(
+                "Inverse of zero is undefined!");
+        Fraction f = new Fraction(_den, _num);
+        return f;
     }
 
-    /** Finds the least common multiple of two integers. 
+    /** Finds the least common multiple(LCM) of two integers. 
      *  If one of the numbers is negative, then the LCM is negative.
      *  If both of the numbers are negative, then the LCM is positive.
      *  the LCM is least in terms of absolute value.
      */
+    //FIXME: should this go someplace better?
     public static int lcm(int u, int v) {
         int gcd = gcd(u, v);
         int result = u * v / gcd;
         return result;
     }
 
+    /** Multiply this fraction by the given fraction.
+     *  @return The answer as another fraction in lowest terms.
+     */
+    public Fraction multiply(Fraction b) {
+        Fraction f = new Fraction(_num * b._num, _den * b._den);
+        return f;
+    }
+
+    /** Find the additive inverse of this fraction.
+     *  @return The answer as another fraction in lowest terms
+     */
+    public Fraction negate() {
+        Fraction f = new Fraction(-_num, _den);
+        return f;
+    }
+
+    /** Subtract the given fraction from this fraction.
+     *  @return The answer as another fraction in lowest terms
+     */
+    public Fraction subtract(Fraction b) {
+       Fraction f = new Fraction(
+               _num * b._den - _den * b._num, _den * b._den);
+        return f;
+    }
+
+    /** Convert the fraction to a readable string.
+     */
+    public String toString() {
+        StringBuffer s = new StringBuffer();
+	_simplify();
+        s.append(_num);
+        s.append('/');
+        s.append(_den);
+        return s.toString();
+    }
+
    /** Reduce the fraction to lowest terms by dividing the Numerator and
      *  Denominator by their Greatest Common Divisor.  In addition the 
      *  fraction is put in standard form (denominator greater than zero).
      */
-    private void _simplify() {
+    protected void _simplify() {
         int factor = gcd(_num, _den);
         _num = _num / factor;
         _den = _den / factor;
