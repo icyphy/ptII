@@ -1083,7 +1083,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
     /** Get the name. If no name has been given, or null has been given,
      *  then return an empty string, "".
      *  @return The name of the object.
-     *  @see #setName(name)
+     *  @see #setName(String)
      */
     public String getName() {
         return _name;
