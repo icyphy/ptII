@@ -92,6 +92,7 @@ public class JAIPNGWriter extends Sink {
         input.setTypeEquals(BaseType.OBJECT);
 
         fileName = new FileParameter(this, "fileName");
+        fileName.setExpression("image.png");
 
         confirmOverwrite = new Parameter(this, "confirmOverwrite");
         confirmOverwrite.setTypeEquals(BaseType.BOOLEAN);
@@ -121,7 +122,8 @@ public class JAIPNGWriter extends Sink {
     ////                     ports and parameters                  ////
 
     /** The file name to which to write.  This is a string with
-     *  any form accepted by FileParameter.
+     *  any form accepted by FileParameter.  The initial default value is
+     *  "image.png".
      *  @see FileParameter
      */
     public FileParameter fileName;
