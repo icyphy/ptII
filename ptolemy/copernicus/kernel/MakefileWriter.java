@@ -79,13 +79,14 @@ public class MakefileWriter extends SceneTransformer implements HasPhaseOptions 
     }
 
     public String getDefaultOptions() {
-        return "templateDirectory:" +
-            TEMPLATE_DIRECTORY_DEFAULT;
+        return "templateDirectory:"
+            + TEMPLATE_DIRECTORY_DEFAULT
+            + " overwrite:true";
     }
 
     public String getDeclaredOptions() {
         return 
-          "_generatorAttributeFileName outDir targetPackage templateDirectory";
+          "_generatorAttributeFileName outDir overwrite targetPackage templateDirectory";
     }
 
     /** Add a makefile substitution from the given name to the given value.
@@ -195,6 +196,9 @@ public class MakefileWriter extends SceneTransformer implements HasPhaseOptions 
      *  <dd>The absolute path to the directory where the generated code
      *  will reside, for example:
      *  <code>c:/ptII/ptolemy/copernicus/applet/cg/Butterfly</code>
+     *  <dt>overwrite
+     *  <dd>Determines whether we overwrite a preexisting makefile.
+     *  The default is to overwrite.  T 
      *  <dt>targetPackage
      *  <dd>The package where the generated code will reside, for example:
      *  <code>ptolemy.copernicus.applet.cg.Butterfly</code>
@@ -215,6 +219,8 @@ public class MakefileWriter extends SceneTransformer implements HasPhaseOptions 
         // Note that this option has a leading _
         _generatorAttributeFileName = PhaseOptions.getString(options,
                 "_generatorAttributeFileName");
+
+        boolean overwrite = PhaseOptions.getBoolean(options, "overwrite");
 
         if (_generatorAttributeFileName.length() == 0) {
             throw new InternalErrorException("Could not find "
@@ -311,21 +317,28 @@ public class MakefileWriter extends SceneTransformer implements HasPhaseOptions 
                     + generatorAttribute);
         }
 
-        try {
-            System.out.println("MakefileWriter: reading '"
-                    + _templateDirectory + "makefile.in'\n\t writing '"
-                    + _outputDirectory + "makefile'");
+        if (overwrite 
+                || !(new File(_outputDirectory + "makefile")).isFile()) {
+            try {
+                System.out.println("MakefileWriter: reading '"
+                        + _templateDirectory + "makefile.in'\n\t writing '"
+                        + _outputDirectory + "makefile'");
 
-            Copernicus.substitute(_templateDirectory + "makefile.in",
-                    substituteMap,
-                    _outputDirectory + "makefile");
-        } catch (Exception ex) {
-            // This exception tends to get eaten by soot, so we print as well.
-            System.err.println("Problem writing makefile:" + ex);
-            ex.printStackTrace();
-            throw new InternalErrorException(_model, ex,
-                    "Problem writing the makefile");
+                Copernicus.substitute(_templateDirectory + "makefile.in",
+                        substituteMap,
+                        _outputDirectory + "makefile");
+            } catch (Exception ex) {
+                // This exception tends to get eaten by soot, so we print as well.
+                System.err.println("Problem writing makefile:" + ex);
+                ex.printStackTrace();
+                throw new InternalErrorException(_model, ex,
+                        "Problem writing the makefile");
+            }
+        } else {
+            System.out.println("MakefileWriter: not overwriting '"
+                    + _outputDirectory + "makefile'");
         }
+
 
         // Obfuscation script is optional
         BufferedReader inputFile = null;
