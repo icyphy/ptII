@@ -81,7 +81,9 @@ proc sootCodeGeneration {modelPath {codeGenType Shallow}} {
 
     puts "adjusted modelPath: $modelPath"
     puts "modelName: $modelName"
-    puts "Now running make, this could take 60 seconds or so"
+    set command compile${codeGenType}Demo
+
+    puts "Now running 'make ... $command', this could take 60 seconds or so"
 
     set results ""
     # make -C is a GNU make extension that changes to a directory
