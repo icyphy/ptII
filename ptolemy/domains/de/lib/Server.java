@@ -132,20 +132,6 @@ public class Server extends DETransformer {
         }
     }
 
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and then sets the parameter.
-     *  @param ws The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class has
-     *   has an attribute that cannot be cloned.
-     */
-    public Object clone(Workspace ws) throws CloneNotSupportedException {
-        Server newobj = (Server)super.clone(ws);
-        newobj.serviceTime = (Parameter)newobj.getAttribute("serviceTime");
-        newobj.newServiceTime = (DEIOPort)newobj.getPort("newServiceTime");
-        return newobj;
-    }
-
     /** If there is an input token, read it to begin servicing it.
      *  Note that service actually begins in the postfire() method,
      *  which will produce the token that is read on the output.

@@ -120,11 +120,7 @@ public class VariableDelay extends DETransformer {
      */
     public Object clone(Workspace ws) throws CloneNotSupportedException {
         VariableDelay newobj = (VariableDelay)super.clone(ws);
-        newobj.defaultDelay = (Parameter)newobj.getAttribute("defaultDelay");
-        newobj.delay = (TypedIOPort)newobj.getPort("delay");
         try {
-            newobj.defaultDelay.setTypeEquals(BaseType.DOUBLE);
-            newobj.delay.setTypeEquals(BaseType.DOUBLE);
             newobj.input.delayTo(newobj.output);
         } catch (IllegalActionException ex) {
             throw new InternalErrorException("Clone failed.");

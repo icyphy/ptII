@@ -126,7 +126,6 @@ public class Delay extends DETransformer {
      */
     public Object clone(Workspace ws) throws CloneNotSupportedException {
         Delay newobj = (Delay)super.clone(ws);
-        newobj.delay = (Parameter)newobj.getAttribute("delay");
         try {
             newobj.input.delayTo(newobj.output);
         } catch (IllegalActionException ex) {

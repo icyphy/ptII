@@ -110,8 +110,6 @@ public class Sampler extends DETransformer {
     public Object clone(Workspace ws) throws CloneNotSupportedException {
         Sampler newobj = (Sampler)super.clone(ws);
         newobj.output.setTypeAtLeast(newobj.input);
-        newobj.trigger = (TypedIOPort)newobj.getPort("trigger");
-        newobj.trigger.setTypeEquals(BaseType.GENERAL);
         return newobj;
     }
 

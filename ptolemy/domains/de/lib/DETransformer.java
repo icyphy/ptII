@@ -80,21 +80,4 @@ public abstract class DETransformer extends DEActor {
      *  to be at least that of the input.
      */
     public DEIOPort output;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and then sets the ports.
-     *  @param ws The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class has
-     *   has an attribute that cannot be cloned.
-     */
-    public Object clone(Workspace ws) throws CloneNotSupportedException {
-        DETransformer newobj = (DETransformer)super.clone(ws);
-        newobj.input = (DEIOPort)newobj.getPort("input");
-        newobj.output = (DEIOPort)newobj.getPort("output");
-        return newobj;
-    }
 }
