@@ -65,7 +65,7 @@ PTII_FTP = /vol/ptolemy/pt0/ptweb/ptolemyII/ptII2.0
 # Versions later than 1.13 can be found at ftp://alpha.gnu.org/gnu/tar/
 # 1.12 can be found at ftp://gatekeeper.dec.com/pub/GNU/tar/
 # make USER=cxh PTIIHOME=/cygdrive/c/users/cxh/ptII COMPRESS=gzip TAR=/usr/local/bin/tar 
-# make USER=cxh PTIIHOME=/cygdrive/d/tmp/ptII COMPRESS=gzip TAR=/usr/local/bin/tar
+# make USER=cxh PTIIHOME=/cygdrive/d/tmp/ptII2.0-beta COMPRESS=gzip TAR=/usr/local/bin/tar
 # make USER=cxh PTIIHOME=/home/eecs/cxh/ptII/adm/trees/ptII2.0alpha PTIIADM=/home/eecs/cxh/ptII/adm TAR=/usr/local/bin/tar
 # make USER=cxh PTIIHOME=/vol/maury/maury2/cxh/ptII2.0beta PTIIADM=/vol/maury/maury2/cxh/ptII2.0beta/adm TAR=/usr/local/bin/tar
 # Run this command on a JDK1.3 machine so we get javasound documentation
@@ -73,6 +73,12 @@ PTII_FTP = /vol/ptolemy/pt0/ptweb/ptolemyII/ptII2.0
 
 USER =		ptII
 PTIIHOME =	/users/ptII
+PTIIADM =	$(PTIIHOME)/adm
+
+USER =		cxh
+PTIIHOME =	/cygdrive/d/tmp/ptII2.0-beta
+TAR =		/usr/local/bin/tar
+COMPRESS =	gzip
 PTIIADM =	$(PTIIHOME)/adm
 
 # Should be this directory
@@ -377,6 +383,7 @@ JSOUTDIR=$(JSHOME)/public_html/nightly/js
 remote1: remote1coverage
 remote1coverage: $(PTII_FULL) $(GENLOGDIR)
 	@echo "#"
+	@echo "# "
 	@echo "# Now building on $(REMOTE1HOST) for code coverage"
 	@echo "#"
 	@echo "$@ `date`"
@@ -413,12 +420,12 @@ remote1nuke:
 
 # untarthe remote dist.  Usually this is run on the remote machine
 remote1ptiidist: $(REMOTE1PTIIDIST)
-$(REMOTE1PTIIDIST): $(PTII_FULL)
+$(REMOTE1PTIIDIST): $(PTII_SRC)
 	@echo "#"
 	@echo "# Now untaring on `hostname`"
 	@echo "#"
 	@echo "$@ `date`"
-	(cd $(REMOTE1HOME); $(TAR) -zxf $(PTII_FULL) )
+	(cd $(REMOTE1HOME); $(TAR) -zxf $(PTII_SRC) )
 
 remote1configure:
 	@echo "#"
@@ -677,7 +684,7 @@ REMOTE2PTIIDIST = $(REMOTE2HOME)/ptII$(VERSION)
 REMOTE2LOG = $(GENLOGDIR)/remote2.out
 
 remote2: remote2jdk1.4
-remote2jdk1.4:  $(PTII_FULL) $(GENLOGDIR)
+remote2jdk1.4:  $(PTII_SRC) $(GENLOGDIR)
 	@echo "#"
 	@echo "# Now building on $(REMOTE2HOST) with JDK1.4 "
 	@echo "#"
@@ -697,12 +704,12 @@ remote2nuke:
 
 #Untar the remote dist.  Usually this is run on the remote machine
 remote2ptiidist: $(REMOTE2PTIIDIST)
-$(REMOTE2PTIIDIST): $(PTII_FULL)
+$(REMOTE2PTIIDIST): $(PTII_SRC)
 	@echo "#"
 	@echo "# Now untaring on `hostname`"
 	@echo "#"
 	@echo "$@ `date`"
-	(cd $(REMOTE2HOME); $(TAR) -zxf $(PTII_FULL))
+	(cd $(REMOTE2HOME); $(TAR) -zxf $(PTII_SRC))
 
 
 # clean the remote tree
@@ -723,7 +730,7 @@ remote2distjdk1.4:
 	@echo "#"
 	@echo "$@ `date`"
 	-(cd $(REMOTE2PTIIDIST); rm -f config.status config.cache; \
-		PATH=/usr/local/j2se/bin:$$PATH ./configure; $(MAKE) -k JFLAGS=)
+		PATH="/cygdrive/d/j2se1.4.0;$$PATH" ./configure; $(MAKE) -k JFLAGS=)
 	@echo "$@ `date`"
 
 # Test with JDK1.4
@@ -1075,6 +1082,80 @@ remote5shallowtest:
 
 
 
+#####################################################################
+# Build under cygwin using JDK1.4
+
+# Directory to place test distribution in
+REMOTE7HOME = /cygdrive/d/tmp/ptest
+
+# Actual ptII directory
+REMOTE7PTIIDIST = $(REMOTE7HOME)/ptII$(VERSION)
+
+# Log file to save the results in
+REMOTE7LOG = $(GENLOGDIR)/remote7.out
+
+remote7: remote7jdk1.4
+remote7jdk1.4:  $(PTII_FULL) $(GENLOGDIR)
+	@echo "#"
+	@echo "# Now building on $(REMOTE7HOST) with JDK1.4 "
+	@echo "#"
+	@echo "$@ `date`"
+	$(MAKE) -k EMAILTO=$(EMAILTO) \
+		USER=$(USER) \
+		PTIIHOME=$(PTIIHOME) \
+		PTIIADM=$(PTIIADM) \
+		remote7nuke remote7ptiidist remote7distclean \
+		remote7distjdk1.4 remote7distjdk1.4test remote7done
+
+
+# Remove the remote dist
+# $(REMOTE7DONEFILE) is used to signal when everything is done
+remote7nuke:
+	rm -rf $(REMOTE7PTIIDIST) $(REMOTE7DONEFILE)
+
+#Untar the remote dist.  Usually this is run on the remote machine
+remote7ptiidist: $(REMOTE7PTIIDIST)
+$(REMOTE7PTIIDIST): $(PTII_FULL)
+	@echo "#"
+	@echo "# Now untaring on `hostname`"
+	@echo "#"
+	@echo "$@ `date`"
+	(cd $(REMOTE7HOME); $(TAR) -zxf $(PTII_SRC))
+
+
+# clean the remote tree
+remote7distclean:
+	@echo "#"
+	@echo "# Now running make clean in $(REMOTE7PTIIDIST) on `hostname`"
+	@echo "#"
+	@echo "$@ `date`"
+	(cd $(REMOTE7PTIIDIST); \
+		$(OTHERMAKE) clean; \
+		find . -name codeDoc -exec rm -rf {} \;)
+
+
+# Compile with JDK1.4
+remote7distjdk1.4:
+	@echo "#"
+	@echo "# Now building with JDK1.4"
+	@echo "#"
+	@echo "$@ `date`"
+	-(cd $(REMOTE7PTIIDIST); rm -f config.status config.cache; \
+		PATH="/cygdrive/d/j2se1.4.0;$$PATH" ./configure; $(MAKE) -k JFLAGS=)
+	@echo "$@ `date`"
+
+remote7distjdk1.4test: $(REMOTE7PTJACL_JAR)
+	@echo "#"
+	@echo "# Now testing with JDK1.4"
+	@echo "#"
+	@echo "$@ `date`"
+	-(cd $(REMOTE7PTIIDIST); \
+		PATH=/usr/local/j2se/bin:$$PATH \
+		$(MAKE) -k JFLAGS= tests)
+	@echo "$@ `date`"
+
+
+
 ###########################################################################
 # Rules for cleaning up the distribution
 SPELLEXCLUDEDIRS = 'filter|collections|microstar'
@@ -1110,132 +1191,132 @@ indent_all:
 
 ###########################################################################
 # Rules to build and install shield version
-INSTALLSHIELD_SRC=installshield
-INSTALLSHIELD_APP=$(INSTALLSHIELD_SRC)/app
+INSTALLER_SRC=installer
+INSTALLER_APP=$(INSTALLER_SRC)/app
 # Contains the application only files in ptolemy/config
-INSTALLSHIELD_APP_ONLY=$(INSTALLSHIELD_SRC)/app_only
-INSTALLSHIELD_PTINY=$(INSTALLSHIELD_SRC)/ptiny
+INSTALLER_APP_ONLY=$(INSTALLER_SRC)/app_only
+INSTALLER_PTINY=$(INSTALLER_SRC)/ptiny
 # Contains the application only files in ptolemy/config and doc/codeDoc
-INSTALLSHIELD_PTINY_ONLY=$(INSTALLSHIELD_SRC)/ptiny_only
-INSTALLSHIELD_CODEDOC=$(INSTALLSHIELD_SRC)/codeDoc
-INSTALLSHIELD_DESIGNDOC=$(INSTALLSHIELD_SRC)/designdoc
-INSTALLSHIELD_DOC=$(INSTALLSHIELD_SRC)/doc
-INSTALLSHIELD_EXPERIMENTAL=$(INSTALLSHIELD_SRC)/experimental
+INSTALLER_PTINY_ONLY=$(INSTALLER_SRC)/ptiny_only
+INSTALLER_CODEDOC=$(INSTALLER_SRC)/codeDoc
+INSTALLER_DESIGNDOC=$(INSTALLER_SRC)/designdoc
+INSTALLER_DOC=$(INSTALLER_SRC)/doc
+INSTALLER_EXPERIMENTAL=$(INSTALLER_SRC)/experimental
 
 # DOC is last so that we can get the bits and piecs out of app/doc
 # APP_ONLY is generated by PTINY_ONLY
 # Run with:
-# make USER=cxh PTIIHOME=/home/eecs/cxh/ptII/adm/trees/ptII1.0beta PTIIADM=/home/eecs/cxh/ptII/adm installshield_app
-installshield_app: installshield $(INSTALLSHIELD_APP) \
-			$(INSTALLSHIELD_CODEDOC) \
-			$(INSTALLSHIELD_DESIGNDOC) \
-			$(INSTALLSHIELD_EXPERIMENTAL) \
-			$(INSTALLSHIELD_PTINY) \
-			$(INSTALLSHIELD_PTINY_ONLY) \
-			$(INSTALLSHIELD_DOC)
+# make USER=cxh PTIIHOME=/home/eecs/cxh/ptII/adm/trees/ptII1.0beta PTIIADM=/home/eecs/cxh/ptII/adm installer_app
+installer_app: installer $(INSTALLER_APP) \
+			$(INSTALLER_CODEDOC) \
+			$(INSTALLER_DESIGNDOC) \
+			$(INSTALLER_EXPERIMENTAL) \
+			$(INSTALLER_PTINY) \
+			$(INSTALLER_PTINY_ONLY) \
+			$(INSTALLER_DOC)
 
-installshield:
+installer:
 	if [ ! -d $@ ]; then \
 		echo "Making $@ directory"; \
 		mkdir -p $@; \
 	fi
 
-clean_installshield:
-	rm -rf $(INSTALLSHIELD_APP) \
-	$(INSTALLSHIELD_APPONLY) \
-	$(INSTALLSHIELD_CODEDOC) \
-	$(INSTALLSHIELD_DESIGNDOC) \
-	$(INSTALLSHIELD_DOC) \
-	$(INSTALLSHIELD_EXPERIMENTAL) \
-	$(INSTALLSHIELD_PTINY) \
-	$(INSTALLSHIELD_PTINY_ONLY)
+clean_installer:
+	rm -rf $(INSTALLER_APP) \
+	$(INSTALLER_APPONLY) \
+	$(INSTALLER_CODEDOC) \
+	$(INSTALLER_DESIGNDOC) \
+	$(INSTALLER_DOC) \
+	$(INSTALLER_EXPERIMENTAL) \
+	$(INSTALLER_PTINY) \
+	$(INSTALLER_PTINY_ONLY)
 
-$(INSTALLSHIELD_APP): $(PTII_FULL)
+$(INSTALLER_APP): $(PTII_FULL)
 	@echo "#"
 	@echo "# Building $@"
 	@echo "#"
-	(cd $(INSTALLSHIELD_SRC); \
+	(cd $(INSTALLER_SRC); \
 	$(TAR) -xzf ../ptII$(VERSION).tar.gz; \
 	 mv ptII$(VERSION) `basename $@`)
 
-INSTALLSHIELD_PTINY_DOMAINS=ct de fsm pn sdf
-installshield_ptiny: $(INSTALLSHIELD_PTINY)
-$(INSTALLSHIELD_PTINY):
+INSTALLER_PTINY_DOMAINS=ct de fsm pn sdf
+installer_ptiny: $(INSTALLER_PTINY)
+$(INSTALLER_PTINY):
 	@echo "#"
 	@echo "# Building $@"
 	 mkdir -p $@ $@/lib $@/ptolemy/vergil
 	 mkdir -p $@/doc/img $@/doc/design
 	 #-ls -l $@/ptolemy/actor/lib/javasound/javasound.jar \
 	 #	$@/ptolemy/media/javasound/javasound.jar
-	 -mv $(INSTALLSHIELD_APP)/copyright.txt $@
-	 -mv $(INSTALLSHIELD_APP)/doc/*Vergil.htm \
-		$(INSTALLSHIELD_APP)/doc/acks.htm \
-		$(INSTALLSHIELD_APP)/doc/authors.htm \
-		$(INSTALLSHIELD_APP)/doc/default.css \
+	 -mv $(INSTALLER_APP)/copyright.txt $@
+	 -mv $(INSTALLER_APP)/doc/*Vergil.htm \
+		$(INSTALLER_APP)/doc/acks.htm \
+		$(INSTALLER_APP)/doc/authors.htm \
+		$(INSTALLER_APP)/doc/default.css \
 		$@/doc
-	 -mv $(INSTALLSHIELD_APP)/doc/img/ptIIplanet.gif \
-		$(INSTALLSHIELD_APP)/doc/img/PtolemyIISmall.gif \
+	 -mv $(INSTALLER_APP)/doc/img/ptIIplanet.gif \
+		$(INSTALLER_APP)/doc/img/PtolemyIISmall.gif \
 		$@/doc/img
 	 # FIXME: ideally, we should include a pdf viewer or the html version
-	 -mv $(INSTALLSHIELD_APP)/doc/design/usingVergil.pdf \
+	 -mv $(INSTALLER_APP)/doc/design/usingVergil.pdf \
 		$@/doc/design/
-	 -mv $(INSTALLSHIELD_APP)/doc/design/usingVergil \
+	 -mv $(INSTALLER_APP)/doc/design/usingVergil \
 		$@/doc/design/
-	 -mv $(INSTALLSHIELD_APP)/lib/diva.jar $@/lib
+	 -mv $(INSTALLER_APP)/lib/diva.jar $@/lib
 	 # We adjust the config directory later in ptiny_only
-	 -mv $(INSTALLSHIELD_APP)/ptolemy/ptolemy.jar \
-		$(INSTALLSHIELD_APP)/ptolemy/configs/ \
+	 -mv $(INSTALLER_APP)/ptolemy/ptolemy.jar \
+		$(INSTALLER_APP)/ptolemy/configs/ \
 		$@/ptolemy
-	 -mv $(INSTALLSHIELD_APP)/ptolemy/vergil/vergil.jar $@/ptolemy/vergil
-	 -for domain in $(INSTALLSHIELD_PTINY_DOMAINS); do \
+	 -mv $(INSTALLER_APP)/ptolemy/vergil/vergil.jar $@/ptolemy/vergil
+	 -for domain in $(INSTALLER_PTINY_DOMAINS); do \
 	   mkdir -p $@/ptolemy/domains/$$domain \
 		$@/ptolemy/domains/$$domain/lib; \
-	   mv $(INSTALLSHIELD_APP)/ptolemy/domains/$$domain/demo/ \
+	   mv $(INSTALLER_APP)/ptolemy/domains/$$domain/demo/ \
 		$@/ptolemy/domains/$$domain; \
-	   mv $(INSTALLSHIELD_APP)/ptolemy/domains/$$domain/lib/$${domain}entities.xml \
+	   mv $(INSTALLER_APP)/ptolemy/domains/$$domain/lib/$${domain}entities.xml \
 		$@/ptolemy/domains/$$domain/lib; \
 	 done
 	 # Empty directory created by the for loop above.
 	 rmdir $@/ptolemy/domains/pn/lib
 	# FIXME: we should find this in the jar file?
-	 mv $(INSTALLSHIELD_APP)/ptolemy/domains/sdf/lib/*Spectrum*.xml \
+	 mv $(INSTALLER_APP)/ptolemy/domains/sdf/lib/*Spectrum*.xml \
 		$@/ptolemy/domains/sdf/lib 
-	 mv $(INSTALLSHIELD_APP)/ptolemy/domains/ct/lib/*generators.xml \
+	 mv $(INSTALLER_APP)/ptolemy/domains/ct/lib/*generators.xml \
 		$@/ptolemy/domains/ct/lib 
 	 # Set up for a few javasound
 	 -mkdir -p $@/ptolemy/actor/lib/javasound/demo
-	 -mv $(INSTALLSHIELD_APP)/ptolemy/actor/lib/javasound/javasound.xml \
-	     $(INSTALLSHIELD_APP)/ptolemy/actor/lib/javasound/javasound.jar \
+	 -mv $(INSTALLER_APP)/ptolemy/actor/lib/javasound/javasound.xml \
+	     $(INSTALLER_APP)/ptolemy/actor/lib/javasound/javasound.jar \
 		$@/ptolemy/actor/lib/javasound/
 	 -mkdir -p $@/ptolemy/media/javasound
-	 -mv $(INSTALLSHIELD_APP)/ptolemy/media/javasound/javasound.jar \
+	 -mv $(INSTALLER_APP)/ptolemy/media/javasound/javasound.jar \
 		$@/ptolemy/media/javasound/
-	 -mv $(INSTALLSHIELD_APP)/ptolemy/actor/lib/javasound/demo/KarplusStrong \
+	 -mv $(INSTALLER_APP)/ptolemy/actor/lib/javasound/demo/KarplusStrong \
 		$@/ptolemy/actor/lib/javasound/demo/
 	 # Set up for other demos
 	 -mkdir -p $@/ptolemy/moml/demo
-	 -mv $(INSTALLSHIELD_APP)/ptolemy/moml/demo/Networked \
+	 -mv $(INSTALLER_APP)/ptolemy/moml/demo/Networked \
 		$@/ptolemy/moml/demo/
 	 -mkdir -p $@/ptolemy/data/type/demo
-	 -mv $(INSTALLSHIELD_APP)/ptolemy/data/type/demo/Router \
+	 -mv $(INSTALLER_APP)/ptolemy/data/type/demo/Router \
 		$@/ptolemy/data/type/demo
 	 # FIXME: vergil looks for ../actor/lib/logic/logic.xml, so
 	 # we don't find it in the jar file
 	 -mkdir -p $@/ptolemy/actor/lib/logic
-	 -mv $(INSTALLSHIELD_APP)/ptolemy/actor/lib/logic/logic.xml \
+	 -mv $(INSTALLER_APP)/ptolemy/actor/lib/logic/logic.xml \
 		$@/ptolemy/actor/lib/logic
 	 -mkdir -p $@/ptolemy/actor/lib/conversions
-	 -mv $(INSTALLSHIELD_APP)/ptolemy/actor/lib/conversions/conversions.xml \
+	 -mv $(INSTALLER_APP)/ptolemy/actor/lib/conversions/conversions.xml \
 		$@/ptolemy/actor/lib/conversions/
-	 -mv $(INSTALLSHIELD_APP)/ptolemy/actor/lib/*.xml \
+	 -mv $(INSTALLER_APP)/ptolemy/actor/lib/*.xml \
 		$@/ptolemy/actor/lib/
 	 -mkdir $@/ptolemy/plot
-	 -mv $(INSTALLSHIELD_APP)/ptolemy/plot/plotapplication.jar \
+	 -mv $(INSTALLER_APP)/ptolemy/plot/plotapplication.jar \
 		$@/ptolemy/plot
 
 
-installshield_ptiny_only: $(INSTALLSHIELD_PTINY_ONLY)
-$(INSTALLSHIELD_PTINY_ONLY): $(PTIIHOME)/doc/codeDocPtiny/tree.html
+installer_ptiny_only: $(INSTALLER_PTINY_ONLY)
+$(INSTALLER_PTINY_ONLY): $(PTIIHOME)/doc/codeDocPtiny/tree.html
 	@echo "#"
 	@echo "# Building $@"
 	mkdir -p $@/doc/codeDoc $@/ptolemy/configs
@@ -1243,20 +1324,20 @@ $(INSTALLSHIELD_PTINY_ONLY): $(PTIIHOME)/doc/codeDocPtiny/tree.html
 	 	 $@/doc/codeDoc
 	# Big hack here.  We need to include intro.htm in ptiny_only, so
 	# we move it back
-	-mkdir	-p $(INSTALLSHIELD_APP_ONLY)/ptolemy/configs/
+	-mkdir	-p $(INSTALLER_APP_ONLY)/ptolemy/configs/
 	# Move intro.htm into app_only
-	-mv $(INSTALLSHIELD_PTINY)/ptolemy/configs/intro.htm \
-	 	$(INSTALLSHIELD_APP_ONLY)/ptolemy/configs/
+	-mv $(INSTALLER_PTINY)/ptolemy/configs/intro.htm \
+	 	$(INSTALLER_APP_ONLY)/ptolemy/configs/
 	# Move vergilConfiguration.xml into app
-	-mv $(INSTALLSHIELD_PTINY)/ptolemy/configs/vergilConfiguration.xml \
-	 	$(INSTALLSHIELD_APP_ONLY)/ptolemy/configs/
+	-mv $(INSTALLER_PTINY)/ptolemy/configs/vergilConfiguration.xml \
+	 	$(INSTALLER_APP_ONLY)/ptolemy/configs/
 	# We then copy introPtiny.htm so as to get doc/demoPtiny.htm
 	# instead of doc/demo.htm
-	 -cp $(INSTALLSHIELD_PTINY)/ptolemy/configs/introPtiny.htm \
+	 -cp $(INSTALLER_PTINY)/ptolemy/configs/introPtiny.htm \
 		$@/ptolemy/configs/intro.htm 
 	# Copy vergilConfigurationPtiny.xml so that we get the right 
 	# directors
-	-cp $(INSTALLSHIELD_PTINY)/ptolemy/configs/vergilConfigurationPtiny.xml \
+	-cp $(INSTALLER_PTINY)/ptolemy/configs/vergilConfigurationPtiny.xml \
 		$@/ptolemy/configs/vergilConfiguration.xml
 
 $(PTIIHOME)/doc/codeDocPtiny/tree.html:
@@ -1265,103 +1346,103 @@ $(PTIIHOME)/doc/codeDocPtiny/tree.html:
 	@echo "#"
 	cd $(PTIIHOME)/doc; make codeDocPtiny/tree.html
 
-#configsPtiny.jar: $(INSTALLSHIELD_PTINY)/ptolemy/configs/configsPtiny.jar
-#$(INSTALLSHIELD_PTINY)/ptolemy/configs/configsPtiny.jar: \
-#	$(INSTALLSHIELD_PTINY)/ptolemy/configs
-#	(cd $(INSTALLSHIELD_PTINY); \
+#configsPtiny.jar: $(INSTALLER_PTINY)/ptolemy/configs/configsPtiny.jar
+#$(INSTALLER_PTINY)/ptolemy/configs/configsPtiny.jar: \
+#	$(INSTALLER_PTINY)/ptolemy/configs
+#	(cd $(INSTALLER_PTINY); \
 #		jar -cf ptolemy/configs/configsPtiny.jar \
 #			ptolemy/configs)
 
-#$(INSTALLSHIELD_PTINY)/ptolemy/configs:
-#	mkdir $(INSTALLSHIELD_PTINY)/ptolemy/configs
-#	mkdir $(INSTALLSHIELD_PTINY)/ptolemy/configs/doc
-#	mv $(INSTALLSHIELD_APP)/ptolemy/configs/introPtiny.htm $@/intro.htm
-#	mv $(INSTALLSHIELD_APP)/ptolemy/configs/vergilConfigurationPtiny.xml \
+#$(INSTALLER_PTINY)/ptolemy/configs:
+#	mkdir $(INSTALLER_PTINY)/ptolemy/configs
+#	mkdir $(INSTALLER_PTINY)/ptolemy/configs/doc
+#	mv $(INSTALLER_APP)/ptolemy/configs/introPtiny.htm $@/intro.htm
+#	mv $(INSTALLER_APP)/ptolemy/configs/vergilConfigurationPtiny.xml \
 #		$@/vergilConfiguration.xml
-#	mv $(INSTALLSHIELD_APP)/ptolemy/configs/doc/demosPtiny.htm \
+#	mv $(INSTALLER_APP)/ptolemy/configs/doc/demosPtiny.htm \
 #		$@/doc/demos.htm
 
-installshield_designdoc: $(INSTALLSHIELD_DESIGNDOC)
-$(INSTALLSHIELD_DESIGNDOC):
+installer_designdoc: $(INSTALLER_DESIGNDOC)
+$(INSTALLER_DESIGNDOC):
 	@echo "#"
 	@echo "# Building $@"
 	mkdir -p $@/doc/design
-	if [ -f $(INSTALLSHIELD_APP)/doc/design/design.pdf ]; then \
-		mv $(INSTALLSHIELD_APP)/doc/design/design.pdf $@/doc/design/; \
+	if [ -f $(INSTALLER_APP)/doc/design/design.pdf ]; then \
+		mv $(INSTALLER_APP)/doc/design/design.pdf $@/doc/design/; \
 	else \
-		echo "WARNING: *** $(INSTALLSHIELD_APP)/doc/design/design.pdf does not exist"; \
+		echo "WARNING: *** $(INSTALLER_APP)/doc/design/design.pdf does not exist"; \
 		echo "no design doc yet" > $@/doc/design/design.pdf; \
 	fi
 
-$(INSTALLSHIELD_CODEDOC):
+$(INSTALLER_CODEDOC):
 	@echo "#"
 	@echo "# Building $@"
 	 mkdir -p $@/doc
-	 mv $(INSTALLSHIELD_APP)/doc/codeDoc $@/doc
+	 mv $(INSTALLER_APP)/doc/codeDoc $@/doc
 
-$(INSTALLSHIELD_DOC):
+$(INSTALLER_DOC):
 	@echo "#"
 	@echo "# Building $@"
 	 mkdir -p $@
-	 mv $(INSTALLSHIELD_APP)/doc $@/doc
+	 mv $(INSTALLER_APP)/doc $@/doc
 
-$(INSTALLSHIELD_EXPERIMENTAL):
+$(INSTALLER_EXPERIMENTAL):
 	@echo "#"
 	@echo "# Building $@"
 	 mkdir -p $@/ptolemy/domains
-	 mv $(INSTALLSHIELD_APP)/ptolemy/domains/dde $@/ptolemy/domains
-	 mv $(INSTALLSHIELD_APP)/ptolemy/domains/dt $@/ptolemy/domains
-	 mv $(INSTALLSHIELD_APP)/ptolemy/domains/giotto $@/ptolemy/domains
-	 mv $(INSTALLSHIELD_APP)/ptolemy/domains/gr $@/ptolemy/domains
+	 mv $(INSTALLER_APP)/ptolemy/domains/dde $@/ptolemy/domains
+	 mv $(INSTALLER_APP)/ptolemy/domains/dt $@/ptolemy/domains
+	 mv $(INSTALLER_APP)/ptolemy/domains/giotto $@/ptolemy/domains
+	 mv $(INSTALLER_APP)/ptolemy/domains/gr $@/ptolemy/domains
 
-ISPMP_LIB=/users/ptII/vendors/installshield/ispmp40/lib/
+ISPMP_LIB=/users/ptII/vendors/installer/ispmp40/lib/
 
-ISPMP_DEBUG_CLASSPATH=/vol/maury/maury1/ptII/vendors/installshield/ispmp40/lib/classes/src: 
+ISPMP_DEBUG_CLASSPATH=/vol/maury/maury1/ptII/vendors/installer/ispmp40/lib/classes/src: 
 
-ISPMP_CLASSPATH=/vol/maury/maury1/ptII/vendors/installshield/ispmp40:/vol/maury/maury1/ptII/vendors/installshield/ispmp40/lib/help.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp40/lib/icebrowserbean.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp40/lib/icebrowserlitebean.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp40/lib/ide.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp40/lib/jhall.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp40/lib/parser.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp40/lib/product.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp40/lib/swing.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp40/lib/wizard.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp40/lib/xt.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp40/ppk/win32ppk.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp40/ppk/solarisppk.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp40/ppk/webppk.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp40/ppk/linuxppk.jar
+ISPMP_CLASSPATH=/vol/maury/maury1/ptII/vendors/installer/ispmp40:/vol/maury/maury1/ptII/vendors/installer/ispmp40/lib/help.jar:/vol/maury/maury1/ptII/vendors/installer/ispmp40/lib/icebrowserbean.jar:/vol/maury/maury1/ptII/vendors/installer/ispmp40/lib/icebrowserlitebean.jar:/vol/maury/maury1/ptII/vendors/installer/ispmp40/lib/ide.jar:/vol/maury/maury1/ptII/vendors/installer/ispmp40/lib/jhall.jar:/vol/maury/maury1/ptII/vendors/installer/ispmp40/lib/parser.jar:/vol/maury/maury1/ptII/vendors/installer/ispmp40/lib/product.jar:/vol/maury/maury1/ptII/vendors/installer/ispmp40/lib/swing.jar:/vol/maury/maury1/ptII/vendors/installer/ispmp40/lib/wizard.jar:/vol/maury/maury1/ptII/vendors/installer/ispmp40/lib/xt.jar:/vol/maury/maury1/ptII/vendors/installer/ispmp40/ppk/win32ppk.jar:/vol/maury/maury1/ptII/vendors/installer/ispmp40/ppk/solarisppk.jar:/vol/maury/maury1/ptII/vendors/installer/ispmp40/ppk/webppk.jar:/vol/maury/maury1/ptII/vendors/installer/ispmp40/ppk/linuxppk.jar
 
 ptiny.xml: ptII.xml ptiny.xsl
 	java -classpath $(ISPMP_CLASSPATH) \
-		com.installshield.isje.ISJE ptII.xml \
+		com.installer.isje.ISJE ptII.xml \
 		-xsl ptiny.xsl \
 		-saveas $@
 
 # Run this on doppler with:
 # rm unixPtiny.xml; make PTIIHOME=/home/eecs/cxh/ptII build_unixPtiny
 unixPtiny.xml: ptiny.xml
-	sed -e 's@[cC]:\\users\\cxh\\ptII\\adm\\gen-1.0\\installshield\\@$(GENDIR)/installshield/@' \
+	sed -e 's@[cC]:\\users\\cxh\\ptII\\adm\\gen-1.0\\installer\\@$(GENDIR)/installer/@' \
 	    -e 's@designdoc\\doc\\design\\@designdoc/doc/design/@' \
-	    -e 's@C:\\Program Files\\InstallShield\\ISMPP40\\jvms\\win32\\@/vol/maury/maury1/ptII/vendors/installshield/ispmp40/jvms/win32/@' \
-	    -e 's@C:\\Program Files\\InstallShield\\ISMPP40\\jvms\\solaris\\@/vol/maury/maury1/ptII/vendors/installshield/ispmp40/jvms/solaris/@' \
-	    -e 's@C:\\Program Files\\InstallShield\\ISMPP40\\jvms\\linux\\@/vol/maury/maury1/ptII/vendors/installshield/ispmp40/jvms/linux/@' \
-	    -e 's@C:\\Program Files\\InstallShield\\ISMPP40\\images\\InstallShield Images\\@/vol/maury/maury1/ptII/vendors/installshield/ispmp40/images/InstallShield Images/@' \
-	    -e 's@<property name="outputDirectory">default</property>@<property name="outputDirectory">$(GENDIR)/installshield</property>@' \
+	    -e 's@C:\\Program Files\\Installer\\ISMPP40\\jvms\\win32\\@/vol/maury/maury1/ptII/vendors/installer/ispmp40/jvms/win32/@' \
+	    -e 's@C:\\Program Files\\Installer\\ISMPP40\\jvms\\solaris\\@/vol/maury/maury1/ptII/vendors/installer/ispmp40/jvms/solaris/@' \
+	    -e 's@C:\\Program Files\\Installer\\ISMPP40\\jvms\\linux\\@/vol/maury/maury1/ptII/vendors/installer/ispmp40/jvms/linux/@' \
+	    -e 's@C:\\Program Files\\Installer\\ISMPP40\\images\\Installer Images\\@/vol/maury/maury1/ptII/vendors/installer/ispmp40/images/Installer Images/@' \
+	    -e 's@<property name="outputDirectory">default</property>@<property name="outputDirectory">$(GENDIR)/installer</property>@' \
 	    -e 's@ptiny\\copyright@ptiny/copyright@' \
 		 $< > $@
 
 build_unixPtiny: unixPtiny.xml
 	java -classpath $(ISPMP_CLASSPATH) \
 		-Dis.debug=12 \
-		com.installshield.isje.ISJE $< \
+		com.installer.isje.ISJE $< \
 		-build
 
 # Run this on doppler with:
 # rm unixPtII.xml; make PTIIHOME=/home/eecs/cxh/ptII build_unixPtII
 unixPtII.xml: ptII.xml
-	sed -e 's@[cC]:\\users\\cxh\\ptII\\adm\\gen-1.0\\installshield\\@$(GENDIR)/installshield/@' \
+	sed -e 's@[cC]:\\users\\cxh\\ptII\\adm\\gen-1.0\\installer\\@$(GENDIR)/installer/@' \
 	    -e 's@designdoc\\doc\\design\\@designdoc/doc/design/@' \
-	    -e 's@C:\\Program Files\\InstallShield\\ISMPP40\\jvms\\win32\\@/vol/maury/maury1/ptII/vendors/installshield/ispmp40/jvms/win32/@' \
-	    -e 's@C:\\Program Files\\InstallShield\\ISMPP40\\jvms\\solaris\\@/vol/maury/maury1/ptII/vendors/installshield/ispmp40/jvms/solaris/@' \
-	    -e 's@C:\\Program Files\\InstallShield\\ISMPP40\\jvms\\linux\\@/vol/maury/maury1/ptII/vendors/installshield/ispmp40/jvms/linux/@' \
-	    -e 's@C:\\Program Files\\InstallShield\\ISMPP40\\images\\InstallShield Images\\@/vol/maury/maury1/ptII/vendors/installshield/ispmp40/images/InstallShield Images/@' \
-	    -e 's@<property name="outputDirectory">default</property>@<property name="outputDirectory">$(GENDIR)/installshield</property>@' \
+	    -e 's@C:\\Program Files\\Installer\\ISMPP40\\jvms\\win32\\@/vol/maury/maury1/ptII/vendors/installer/ispmp40/jvms/win32/@' \
+	    -e 's@C:\\Program Files\\Installer\\ISMPP40\\jvms\\solaris\\@/vol/maury/maury1/ptII/vendors/installer/ispmp40/jvms/solaris/@' \
+	    -e 's@C:\\Program Files\\Installer\\ISMPP40\\jvms\\linux\\@/vol/maury/maury1/ptII/vendors/installer/ispmp40/jvms/linux/@' \
+	    -e 's@C:\\Program Files\\Installer\\ISMPP40\\images\\Installer Images\\@/vol/maury/maury1/ptII/vendors/installer/ispmp40/images/Installer Images/@' \
+	    -e 's@<property name="outputDirectory">default</property>@<property name="outputDirectory">$(GENDIR)/installer</property>@' \
 	    -e 's@ptiny\\copyright@ptiny/copyright@' \
 		 $< > $@
 
 build_unixPtII: unixPtII.xml
 	java -classpath $(ISPMP_CLASSPATH) \
 		-Dis.debug=12 \
-		com.installshield.isje.ISJE $< \
+		com.installer.isje.ISJE $< \
 		-build
 
 

@@ -204,6 +204,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame
             }
             location.setLocation(this);
         } catch (Exception ex) {
+            System.out.println("Warning, failed to set _vergilSize and/or "
+                    + "_vergilLocation:" + ex);
             // Ignore problems here.  Errors simply result in a default
             // size and location.
         }

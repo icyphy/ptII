@@ -5,10 +5,13 @@
 <html>
 <head>
 <!-- $Id$ -->
-<!-- demosPtiny.htm is derived from this file. 
-This file contains text that is not present in demosPtiny.htm.
-A makefile rule uses $PTII/doc/javahtml.awk to read in this
-file and generate demosPtiny.html
+<!--
+
+demosPtiny.htm is derived from this file by including
+anything between the tags vergilDoc and /vergilDoc.
+The vergilDoc tags are used by $PTII/doc/javahtml.awk
+to generate demosPtiny.htm.
+
 
 -->
 </head>
@@ -20,115 +23,108 @@ Quick Tour
 
 <!--
 Note:  demos should go with in the directory of their respective
-domains.
-demo xml files should usually be upper case, and have the
-same name as the directory they reside in, so we should
+domains. Demo xml files should usually be upper case, and have the
+same name as the directory they reside in; so we should
 have sdf/demo/Foo/Foo.xml.
 The reason that the xml files are upcased is so that if
 we do codegen, we get Foo.java instead of foo.java
-
-These demos should be in the same order as the ones listed in
-     ptII/doc/tour/toc.htm
 -->
 
+The following links open models that highlight the
+key features of Ptolemy II. To run the models,
+follow the link, then select "Run Window" from the "View" menu. The
+diagrams are fully editable, so feel free to explore. The top-level
+parameters are the model are shown in the run window. Edit these to
+explore the models. They can be edited while the models are running.
+You can also access the <a href="completeDemos.htm">complete
+list of demos</a>.
 
-The following links open Ptolemy models in Vergil.
-To run the models, follow the link, then select "Run Window"
-from the "View" menu.
-The diagrams are fully editable, so feel free to explore.
-The top-level parameters are the model are shown in the run window.
-Edit these to explore the models.  They can be edited while the
-models are running.
 <ul>
-<li> <a href="../../domains/de/demo/ModalModel/ModalModel.xml">Modal Models</a>
-(New in Ptolemy II 2.0)
-.
- <br>A model model is one whose behavior depends on its "mode"
-of operation. A modal model in Ptolemy II is an FSM (finite state machine)
-combined hierarchically with other models. A state in the FSM represents
-a mode of operation, and can have a refinement that gives the behavior
-in that model.
-The refinement can be another FSM or some other model using some other
-Ptolemy domain. This example combines DE, FSM, and SDF to model a
-system where regularly sampled signals are purturbed by irregular
-events in time.
-</li>
-
-<!--vergilDocs-->
-
-<li>
-<a href="../../data/unit/demo/Units/Units.xml">Units</a>
-(New in Ptolemy II 2.0)
-.
-<br>
-This model illustrates the unit sytem.
-
-
-<br>A major source of errors in embedded software is incorrect application
-of units. Yuhong Xiong and Xiaojun Liu have created a unit system for
-Ptolemy II that is quite clever. A suite of constants are defined, with
-names such as "meter", "cm", "feet", "miles", "seconds", "hours", and
-"days". In each unit category ("length" or "time" for example), there
-is a primary unit with respect to which all the others are specified.
-Thus, for example, if the primary unit of length is meters, then the
-expression "1.0 * cm" will have an internal value of 0.01 * meters.
-Compound units are specified by just multiplying and dividing, as in
-for example "1.0 * cm/second".
-
-<br>The way this is realized is that these unit constants are tokens just
-like other Ptolemy II data, and multiplication and division are
-overloaded in the base classes for numeric valued tokens.
-
-</li>
-
-<!--Models that are new in 2.0 go above here.-->
-
-
 <li><a href="../../domains/sdf/demo/Spectrum/Spectrum.xml">
-Spectrum of a modulated sine wave</a>.
+Simple Signal Processing</a>.
 <br> This example shows simple spectral estimation of the product
-of two sinusoids in noise.  It illustrates hierarchical models,
+of two sinusoids in noise.  It illustrates models for signal
+processing, hierarchical models,
 the Expression actor, and the FFT actor.
-The Sinewave actors with the red outline are hierarchical.
-Right click on them and select "look inside" to see their refinement.
 This model is build using the <i>synchronous dataflow</i> (SDF) domain,
 which statically schedules the firing of the actors.
 </br></li>
 
-<!--vergilDocs-->
-<li><a href="../../domains/ct/demo/Lorenz/Lorenz.xml">Lorenz attractor chaotic system</a>.
-<br> This example shows a nonlinear feedback system that exhibits
-chaotic behavior.  It illustrates the continuous-time (CT) domain,
-which uses an underlying solver for ordinary differential equations,
-the Expression actor, and the X-Y plotter.
+<li><a href="../../domains/ct/demo/Lorenz/Lorenz.xml">
+Continuous-Time Modeling</a>.
+<br> This example shows a continuous-time
+nonlinear feedback system that exhibits
+chaotic behavior (this system is called a Lorenz attractor).
+It illustrates the <i>continuous-time</i> (CT) domain,
+which uses an underlying solver for ordinary differential equations.
 </br></li>
 
-<li><a href="../../domains/de/demo/Inspection/Inspection.xml">Inspection paradox</a>.
+<li><a href="../../domains/de/demo/Inspection/Inspection.xml">
+Discrete-Event Modeling</a>.
 <br> This example shows
 a famous paradox in probability called the inspection paradox.
-It illustrates use of the discrete-event (DE) domain, where random
-data stimulates a model and statics are collected and reported
-in various ways.  Note the way that the final waiting time averages
-are reported.  This technique heavily uses Ptolemy II's polymorphic
-type system to do string manipulation.
+It illustrates use of the <i>discrete-event</i> (DE) domain, where
+events occur on a time line and are processed chronologically.
+In this example, random
+data stimulates a model and statistics are collected and reported
+in various ways.
 </br></li>
 
-<li><a href="../../domains/ct/demo/StickyMasses/StickyMasses.xml">Hybrid system model</a>.
-<br> This example illustrates the use of the finite-state-machine (FSM)
-domain together with another domain to get a <i>modal model</i>.
-A special case of modal models are <i>hybrid systems</i>, where FSM
-is combined with CT, as in this example.
+<li> <a href="../../domains/de/demo/ModalModel/ModalModel.xml">
+Modal Models</a> (New in Ptolemy II 2.0).
+<br>A modal model is one whose behavior depends on its "mode"
+of operation. A modal model in Ptolemy II uses the
+<i>finite state machine</i> (FSM) domain
+combined hierarchically with other models. A state in the FSM represents
+a mode of operation, and can have a refinement that gives the behavior
+in that mode.
+The refinement can be another FSM or some other model using some other
+Ptolemy domain. This example combines DE, FSM, and SDF to model a
+system where regularly sampled signals are perturbed by irregular
+events in time.
+</li>
+
+<li><a href="../../domains/ct/demo/StickyMasses/StickyMasses.xml">
+Hybrid Systems</a> (Modal version is new in Ptolemy II 2.0).
+<br> <i>Hybrid systems</i> are a special case of modal models
+where the FSM domain is combined with the CT domain
+to get mixed continuous-time and discrete-event models.
+This example models a physical system consisting of two point masses
+on springs that stick together when they collide.
 </br></li>
 
-<!--vergilDocs-->
-<li><a href="../../actor/lib/javasound/demo/KarplusStrong/KarplusStrong.xml">Karplus-Strong Algorithm</a>.<br>
-This example shows the Karplus-Strong algorithm, which synthesizes
-a musical sound that closely resembles a plucked string instrument.
-It illustrates the audio capabilities of Ptolemy II, which require
-version 1.3 of Java, and a reasonable capable computer.
-</br></li>
+<li><a href="../../data/type/demo/Router/Router.xml">
+The Type System</a>.<br>
+This model illustrates the very sophisticated type system
+of Ptolemy II, where type constraints propagate transparently,
+actors are polymorphic, and composite types such as records and
+arrays are supported.
+This example illustrates composite types, where records are
+constructed out of tokens with various types. Here, a record
+models a packet in a packet-switched network, where variable
+delays may result in out-of-order arrival of packets.
+</li>
 
-<li><a href="../../moml/demo/Networked/Networked.xml">Network Integration</a>.<br>
+<li>
+<a href="../../data/unit/demo/Units/Units.xml">
+Unit Systems</a> (New in Ptolemy II 2.0).
+<br>
+This model illustrates the use of Ptolemy II unit sytems. A unit system
+defines a set of interrelated dimensions and measures. For example, in
+the time dimension, we might have seconds, minutes, hours, days, weeks,
+and fortnights. The Ptolemy II unit system allows us to express
+quantities equivalently with different units, and keeps track of the
+units through mathematical operations. For example, one centimeter
+divided by one millisecond is equal to 10 meters/second. This is
+expressed in the expression language as "1*cm/ms" or "10 m/second",
+where "cm", "ms", "m", and "second" are defined in the unit system. A
+unit system is a modular component that one drags into a model.
+</li>
+
+<li><a href="../../moml/demo/Networked/Networked.xml">
+Network Integration</a>.<br>
+This example illustrates that models may be defined in a networked,
+distributed fashion.
 This model contains a component that is defined on the Ptolemy project
 website.  When you open the model, you will be alerted to the fact
 that it requires loading a model definition from a remote source.
@@ -138,106 +134,28 @@ defined component.  The component itself is at
 http://ptolemy.eecs.berkeley.edu/xml/models/Waveform.xml</a>.
 You can open that definition by clicking on the hyperlink, or by
 using the "Open URL" command in the File menu.
-</br></li>
-
-<li><a href="../../data/type/demo/Router/Router.xml">Record Types and Type Propagation</a>.<br>
-This model illustrates the very sophisticated type system
-in Ptolemy II, where type constraints propagate transparently.
-This example illustrates composite types, where records are
-constructed out of tokens with various types. Here, a record
-models a packet in a packet-switched network, where variable
-delays may result in out-of-order arrival of packets.
 </li>
 
 </ul>
 
-
-<h2>Demonstrations listed by domain</h2>
-The list below is organized by domains and includes the demonstrations above.
-
-<!--csp -->
-
-<h3>Continuous Time</h3>
+<!--vergilDocs-->
+<h1>Experimental Facilities</h1>
+<p>
+Ptolemy II has a number of less well-developed experimental
+capabilities that may continue to evolve over time.
+These are illustrated in the following examples.
 
 <ul>
-<!-- Please keep the demos alphabetical -->
-<!-- Agilent -->
 <!--vergilDocs-->
-
-<li> <a href="../../domains/ct/demo/CarTracking/CarTracking.xml">Car Tracking</a> (New in Ptolemy II 2.0)
-<!-- Corba -->
-<li> <a href="../../domains/ct/demo/Helicopter/Helicopter.xml">Helicopter Control</a>
-<li> <a href="../../domains/ct/demo/Lorenz/Lorenz.xml">Lorenz Attractors</a>
-<!-- Saber -->
-<li> <a href="../../domains/ct/demo/SigmaDelta/SigmaDelta.xml">Sigma-Delta A/D Conversion</a>
-<li> <a href="../../domains/ct/demo/SquareWave/SquareWave.xml">Square Wave Response</a>
-<li> <a href="../../domains/ct/demo/StickyMasses/StickyMasses.xml">Sticky Point Masses</a>
-<li> <a href="../../domains/ct/demo/Switch/Switch.xml">Switching Continuous Signals using Modal Models</a> (New in Ptolemy II 2.0)
-<li> <a href="../../domains/ct/demo/Thermostat/Thermostat.xml">Thermostat</a> (Modal version new in Ptolemy II 2.0)
-<li>
-<a href="../../data/unit/demo/Units/Units.xml">Units</a> (New in PtolemyII 2.0)
-<!-- jspaces -->
+<li><a href="../../actor/lib/javasound/demo/KarplusStrong/KarplusStrong.xml">
+Audio</a>.<br>
+This example shows the Karplus-Strong algorithm, which synthesizes
+a musical sound that closely resembles a plucked string instrument.
+It illustrates the audio capabilities of Ptolemy II, which require
+version 1.3 of Java, and a reasonably capable computer.
+</br></li>
+<!--vergilDocs-->
 </ul>
-
-<!--dde domain -->
-
-<h3>Discrete Event</h3>
-<ul>
-<li><a href="../../domains/de/demo/Inspection/Inspection.xml">Inspection</a>
-<li><a href="../../data/type/demo/Router/Router.xml">Router</a>
-</ul>
-
-<!--vergilDocs-->
-
-<!--dde -->
-
-<h3>Finite State Machine</h3>
-<ul>
-<li> <a href="../../domains/fsm/demo/ABP/ABP.xml">Alternating&nbsp;Bit</a>
-<li> <a href="../../domains/fsm/demo/Blending/Blending.xml">Blending</a> (New in Ptolemy II 2.0)
-<li> <a href="../../domains/fsm/demo/MultipleRuns/MultipleRuns.xml">Multiple&nbsp;Runs</a> (New in Ptolemy II 2.0)
-<!-- systemLevelTypes-->
-</ul>
-
-<!--vergilDocs-->
-
-<!-- hdf -->
-
-<!--vergilDocs-->
-<h3>Synchronous Data Flow</h3>
-<ul>
-<!-- Please keep the demos alphabetical -->
-<li><a href="../../domains/sdf/demo/Butterfly/Butterfly.xml">Butterfly</a>
-<li><a href="../../domains/sdf/demo/Expression/Expression.xml">Expression</a>
-<li><a href="../../domains/sdf/demo/Eye/Eye.xml">Eye</a>
-<li><a href="../../domains/sdf/demo/FixFIR/FixFIR.xml">FixFIR</a>
-<li><a href="../../domains/sdf/demo/FixPoint/FixPoint.xml">FixPoint</a>
-<!--vergilDocs-->
-<li><a href="../../actor/lib/javasound/demo/KarplusStrong/KarplusStrong.xml">Karplus-Strong</a>
-<li><a href="../../domains/sdf/demo/LMSAdaptive/LMSAdaptive.xml">LMSAdaptive</a> (New in Ptolemy II 2.0)
-<li><a href="../../domains/sdf/demo/OrthogonalCom/OrthogonalCom.xml">OrthogonalCom</a> (New in Ptolemy II 2.0)
-<li><a href="../../domains/sdf/demo/MaximumEntropySpectrum/MaximumEntropySpectrum.xml">MaximumEntropySpectrum</a> (New in Ptolemy II 2.0)
-
-<li><a href="../../matlab/demo/MatlabExpression/MatlabExpression.xml">Matlab</a>
-Windows only, requires that Matlab be installed locally
-(New in Ptolemy II 2.0)
-
-<!--OrthogonalCom - Used by codegen -->
-
-<li><a href="../../moml/demo/Networked/Networked.xml">Network Integration</a>
-
- <!-- Known bug: the two graphs are not on top of each other
-      ../../domains/sdf/demo/Sketch/Sketch.xml Sketch
- -->
-<li><a href="../../domains/sdf/demo/Spectrum/Spectrum.xml">Spectrum</a>
-
- <!-- Known bug: the types do not update
-      ../../domains/sdf/demo/Type/Type.xml Type&nbsp;system
- -->
-
-</ul>
-
-<!--vergilDocs-->
 </body>
 </html>
 </body>
