@@ -519,6 +519,7 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
 				       + "SpecializedTokenVisitor"
 				       + ".specializeTokens(): "
 				       + "found 3 argument send call. "
+                            /*
 				       + " We are ignoring the 3rd arg (count)"
 				       + " Node was: "
 				       + node
@@ -532,6 +533,7 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
 				       + "\n argTerms.get(1) = "
 				       + (( argTerms == null) ?
 					  "null" : argTerms.get(1))
+                            */
 				       );
                     // Second argument is a token, constrain it.
 		    if (argTerms.get(1) == ptolemy.lang.NullValue.instance) {
@@ -540,8 +542,10 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
 					   + "visitMethodCallNode(): "
 					   + " argTerms.get(1) == NullValue"
 					   + "\n methodName = " + methodName
+                                /*
 					   + "\n this = " + this
 					   + "\n node = " + node
+                                */
 					   );
 		    } else {
 			// Second arg is a Token[]
@@ -662,6 +666,9 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
 			       + "\n decl: " + decl);
 	}
         if (!_typeID.isSupportedTokenKind(kind)) {
+            if (! _useArrays) { 
+                return null;
+            }
 	    // FIXME: What about Matrices?
 	    // type.classID() will return an integer from nodetypes.NodeClassID.
 	    if (type.classID() != ARRAYTYPENODE_ID || 
@@ -688,7 +695,6 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
 		}
 		type = tmpType;
 	    }
-		
 	}
 
 	if (_debug) {
@@ -710,7 +716,12 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
         if (!_typeID.isSupportedTokenKind(kind)) {
 	    // FIXME: What about Matrices?
 	    // type.classID() will return an integer from nodetypes.NodeClassID.
+            if (! _useArrays) { 
+                return null;
+            }
 	    if (type.classID() != ARRAYTYPENODE_ID ||
+
+
 		!((NameNode)(((ArrayTypeNode)type).getBaseType().getChild(0))).getIdent().equals("Token")) {
 		System.err.println("SpecializedTokenVisitor._makeConstantTerm("
 			       + "type= " + type
@@ -1036,5 +1047,12 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
         }
     }
 
-    protected static final boolean _debug = false;
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    // Set to true to turn on debugging messages.
+    private static final boolean _debug = false;
+
+    // Set to true if we want to try out INT_ARRAY etc.
+    private static final boolean _useArrays = false;
 }
