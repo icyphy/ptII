@@ -84,9 +84,6 @@ public class PeriodicTrigger extends TypedAtomicActor {
     public Object clone(Workspace ws)
 	    throws CloneNotSupportedException {
         PeriodicTrigger newobj = (PeriodicTrigger)super.clone(ws);
-        newobj.output = (TypedIOPort)newobj.getPort("output");
-        newobj.output.setTypeEquals(BaseType.GENERAL);
-        newobj.frequency = (Parameter)newobj.getAttribute("frequency");
         try {
             newobj.frequency.setTypeEquals(BaseType.DOUBLE);
         } catch (IllegalActionException ex) {
