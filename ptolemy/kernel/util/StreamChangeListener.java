@@ -87,7 +87,8 @@ public class StreamChangeListener implements ChangeListener {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+    ////                         protected variables               ////
 
-    private PrintStream _output;
+    /** The PrintStream that we direct the output to. */
+    protected PrintStream _output;
 }
