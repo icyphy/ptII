@@ -39,13 +39,8 @@ specialized to point-to-point connections.
 during transit. Unlike Entities, Relations can not contain ports but they 
 do have port references. Relations come in two types as follows: 
 <UL>
-<LI>
-<EM>Source Relations</EM>: A one-to-many topology
-</LI>
-<LI>
-<BR>
-<EM>Destination Relations</EM> facilitate many-to-one topologies.
-</LI>
+<LI><EM>Source Relations</EM>: Facilitate a one-to-many topology.</LI>
+<LI><EM>Destination Relations</EM>: Facilitate a many-to-one topology.</LI>
 </UL>
 @author John S. Davis, II
 @version $Id$
