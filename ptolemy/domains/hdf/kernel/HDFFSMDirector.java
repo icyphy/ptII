@@ -176,7 +176,13 @@ public class HDFFSMDirector extends FSMDirector {
 
         Transition tr =
             _chooseTransition(st.nonpreemptiveTransitionList());
+
         if (tr != null) {
+            //TypedCompositeActor trRefinement =
+                //(TypedCompositeActor)(tr.getRefinement())[0];
+            //TypedActor[] trRefinements = tr.getRefinement();
+            //TypedCompositeActor trRefinement =
+              //  (TypedCompositeActor)(trRefinements[0]);
             Actor[] actors = tr.getRefinement();
             if (actors != null) {
                 for (int i = 0; i < actors.length; ++i) {
@@ -372,10 +378,6 @@ public class HDFFSMDirector extends FSMDirector {
             // No transition enabled. Remain in the current state.
             // FIXME
             //actor = (TypedCompositeActor)curState.getRefinement();
-            if (_debugInfo) {
-                System.out.println("transition back to current state "
-                + curState.getFullName());
-            }
             actor = (TypedCompositeActor)(curState.getRefinement())[0];
             refinementDir = actor.getDirector();
             superPostfire = super.postfire();
@@ -386,10 +388,6 @@ public class HDFFSMDirector extends FSMDirector {
 
             superPostfire = super.postfire();
             curState = newState;
-            if (_debugInfo) {
-                System.out.println("transition to new state "
-                            + curState.getFullName());
-            }
             // Get the new current refinement actor.
             // FIXME
             // actor = (TypedCompositeActor)curState.getRefinement();
@@ -624,10 +622,6 @@ public class HDFFSMDirector extends FSMDirector {
                             try {
                                 ptolemy.data.Token t =
                                     insideReceivers[i][j].get();
-                                if (_debugInfo) {
-                                    System.out.println("output port" + port.getFullName() +
-                                    "transfer token " + t.toString());
-                                }
                                 port.send(i, t);
                                 trans = true;
                             } catch (NoTokenException ex) {
@@ -695,7 +689,6 @@ public class HDFFSMDirector extends FSMDirector {
         }
         return true;
     }
-       
 
     /** If the container of this director does not have an
      *  HDFFSMDirector as its executive director, then return it.
@@ -752,6 +745,12 @@ public class HDFFSMDirector extends FSMDirector {
         // Get the current refinement's container.
         CompositeActor refineInPortContainer =
             (CompositeActor) actor.getContainer();
+        Transition lastChosenTr = _getLastChosenTransition();
+        if (lastChosenTr != null) {
+            //trRefinement =
+              //  (TypedCompositeActor)(lastChosenTr.getRefinement())[0];
+        }
+        
         // Get all of the input ports of the container of this director.
         List containerPortList = refineInPortContainer.inputPortList();
         // Set all of the port rates to zero.
@@ -782,12 +781,14 @@ public class HDFFSMDirector extends FSMDirector {
             while (inPortsOutside.hasNext()) {
                 IOPort inputPortOutside =
                     (IOPort)inPortsOutside.next();
+
                 // Check if the current port is contained by the
                 // container of the current refinement.
                 ComponentEntity thisPortContainer =
                     (ComponentEntity)inputPortOutside.getContainer();
                 String temp = refineInPortContainer.getFullName()
                     + "._Controller";
+                
                 if (thisPortContainer.getFullName() ==
                         refineInPortContainer.getFullName() ||
                         temp.equals(thisPortContainer.getFullName())) {
@@ -795,13 +796,24 @@ public class HDFFSMDirector extends FSMDirector {
                     // of the refinement.
                     int portRateToSet = SDFUtilities
                         .getTokenConsumptionRate(refineInPort);
-                    if (_debugInfo) {
-                        System.out.println("Update port "
-                        + refineInPort.getFullName() + "consumption rate = "
-                        + portRateToSet);
-                    }
                     SDFUtilities.setTokenConsumptionRate
                         (inputPortOutside, portRateToSet);
+                } else {
+                    /*if (lastChosenTr != null) { 
+                        TypedCompositeActor trRefinement =
+                            // FIXME
+                            (TypedCompositeActor)(lastChosenTr.getRefinement())[0];
+                        //TypedActor trRefinement = (lastChosenTr.getRefinement())[0];
+                        if (trRefinement != null){
+                            String trRefinementName = trRefinement.getFullName();
+                            if (thisPortContainer.getFullName() == trRefinementName) {
+                                int portRateToSet = SDFUtilities
+                                    .getTokenConsumptionRate(refineInPort);
+                                SDFUtilities.setTokenConsumptionRate
+                                    (inputPortOutside, portRateToSet);   
+                            }
+                        }    
+                    }*/
                 }
             }
         }
@@ -873,11 +885,6 @@ public class HDFFSMDirector extends FSMDirector {
                     // the refinement.
                     int portRateToSet = SDFUtilities
                         .getTokenProductionRate(refineOutPort);
-                    if (_debugInfo) {
-                        System.out.println("Update port "
-                        + refineOutPort.getFullName() + "producation rate = "
-                        + portRateToSet);
-                    }
                     SDFUtilities.setTokenConsumptionRate
                         (outputPortOutside, portRateToSet);
                 }
@@ -896,8 +903,6 @@ public class HDFFSMDirector extends FSMDirector {
     // FIXME: It should function as a flag indicating whether
     // state transition can be made between arbitrary firings.
     private boolean _embeddedInSDF = false;
-    
-    private boolean _debugInfo = false;
     
     // A flag indicating whether the initialize method is
     // called due to reinitialization.
