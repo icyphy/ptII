@@ -685,7 +685,7 @@ else
 fi
 
 if test -z "$PTCALTROP_DIR"; then
-   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/caltrop"
+   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/caltrop/"
 else
    # Note that jasminclasses.jar in soot also includes java_cup
    ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
@@ -734,16 +734,69 @@ else
     If it is not present, you will not be able to use the Chic facilities
     or run the demonstrations in ptolemy/chic.])
 	# Note that we don't substitute in the ${PTII} here
-	CHIC_DIR='${PTII}/lib/'
+	CHIC_DIR='${PTII}/lib'
     fi
 fi
 
 if test -z "$PTCHIC_DIR"; then
-   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/chic"
+   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/chic/"
 else
    ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-	<classpathentry kind=\"lib\" path=\"lib/chic.jar\"/> "
+	<classpathentry kind=\"lib\" path=\"$CHIC_DIR/chic.jar\"/> "
 fi 
+
+#--------------------------------------------------------------------
+#       COLT is a 
+#       "Open Source Libraries for High Performance Scientific and Technical
+#       Computing in Java"
+#	For more information, see
+#       http://hoschek.home.cern.ch/hoschek/colt/
+#--------------------------------------------------------------------
+
+# PTCOLT_DIR is set to colt and used in
+# $PTII/ptolemy/actor/lib/makefile if Colt was found.
+PTCOLT_DIR=
+
+# Directory that contains the colt jar file
+COLT_DIR='${PTII}/vendors/misc/colt'
+
+# We only need to look for if $PTII/ptolemy/actor/lib/colt exists
+COLT_USER_DIR="$PTII/ptolemy/actor/lib/colt"
+if test ! -d "$COLT_USER_DIR"; then
+    AC_MSG_RESULT([$COLT_USER_DIR is not present,
+    so we need not find Colt, the 
+    Open Source Libraries for High Performance Scientific and Technical
+    Computing in Java.])
+else
+    AC_MSG_CHECKING([for Colt, the scientific computing lib])
+    AC_ARG_WITH(COLT_DIR, [  --with-colt=DIR       use colt.jar from DIR,
+                          defaults to \$PTII/vendors/misc/colt],
+	COLT_DIR=$withval,
+	COLT_DIR=$PTII/vendors/misc/colt)
+
+    if test -f "$COLT_DIR/colt.jar"; then
+	AC_MSG_RESULT([$COLT_DIR])
+	# We found colt
+	PTCOLT_DIR=colt
+    else  
+        AC_MSG_WARN([Failed to find $COLT_DIR/colt.jar
+    Colt is the 'Open Source Libraries for High Performance
+    Scientific and Technical Computing in Java'
+    For more information, see http://hoschek.home.cern.ch/hoschek/colt/
+    If it is not present, you will not be able to use the Colt facilities
+    or run the demonstrations in ptolemy/actor/lib/colt.])
+	# Note that we don't substitute in the ${PTII} here
+	COLT_DIR='${PTII}/vendors/misc/colt'
+    fi
+fi
+
+if test -z "$PTCOLT_DIR"; then
+   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/actor/lib/colt/"
+else
+   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+	<classpathentry kind=\"lib\" path=\"$PTCOLT_DIR/colt.jar\"/> "
+fi 
+
 
 #--------------------------------------------------------------------
 #       commapi is the Java serial interface, see
@@ -2148,7 +2201,7 @@ else
 fi
 
 if test -z "$PTPSDF_DIR"; then
-   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/domains/psdf"
+   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/domains/psdf/"
 else
    ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
     <classpathentry kind=\"lib\" path=\"$PSDF_DIR/mapss.jar\"/> "
@@ -2610,6 +2663,11 @@ AC_SUBST(CHIC_DIR)
 # Separator in CLASSPATH,  For Unix, this should be :, for Cygwin use ;
 AC_SUBST(CLASSPATHSEPARATOR)
 
+# Directory that contains colt.jar
+# Colt is a "Open Source Libraries for High Performance Scientific
+# and Technical Computing in Java" used in bin/ptinvoke.in
+AC_SUBST(COLT_JAR)
+
 # Directory that contains the CaffeineMark Java Benchmark kit
 # used by C code generation in copernicus/c
 AC_SUBST(CMKIT_DIR)
@@ -2750,6 +2808,9 @@ AC_SUBST(PTCOMM_PACKAGES)
 
 # Set to chic and used in $PTII/ptolemy/makefile if chic was found.
 AC_SUBST(PTCHIC_DIR)
+
+# Set to colt and used in $PTII/ptolemy/actor/lib/makefile if colt was found.
+AC_SUBST(PTCOLT_DIR)
 
 # PTDOCLETS_DIR is set to doclets and used in 
 # $PTII/doc if tools.jar can be found.
