@@ -31,7 +31,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="538.0, 26.0">
+        <property name="_location" class="ptolemy.moml.Location" value="10.0, 390.0">
         </property>
     </property>
     <entity name="ViewScreen" class="ptolemy.domains.gr.lib.ViewScreen">
@@ -76,7 +76,7 @@
         </property>
         <property name="radius" class="ptolemy.data.expr.Parameter" value="0.15">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="269.0, 40.0">
+        <property name="_location" class="ptolemy.moml.Location" value="255.0, 30.0">
         </property>
         <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -152,7 +152,7 @@
         <property name="step" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="354.0, 111.0">
+        <property name="_location" class="ptolemy.moml.Location" value="365.0, 155.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -211,7 +211,7 @@
         <property name="step" class="ptolemy.data.expr.Parameter" value="0.08">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="54.0, 257.0">
+        <property name="_location" class="ptolemy.moml.Location" value="55.0, 270.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -238,7 +238,7 @@
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="195.0, 258.0">
+        <property name="_location" class="ptolemy.moml.Location" value="190.0, 270.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -288,7 +288,7 @@
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="196.0, 323.0">
+        <property name="_location" class="ptolemy.moml.Location" value="195.0, 340.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -340,7 +340,7 @@
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="176.0, 118.0">
+        <property name="_location" class="ptolemy.moml.Location" value="175.0, 120.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -357,7 +357,7 @@
         <property name="step" class="ptolemy.data.expr.Parameter" value="0.4">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="51.0, 118.0">
+        <property name="_location" class="ptolemy.moml.Location" value="50.0, 120.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -414,7 +414,7 @@
         </port>
     </entity>
     <entity name="AddSubtract81" class="ptolemy.actor.lib.AddSubtract">
-        <property name="_location" class="ptolemy.moml.Location" value="346.0, 352.0">
+        <property name="_location" class="ptolemy.moml.Location" value="350.0, 350.0">
         </property>
         <port name="plus" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -467,11 +467,11 @@
     <relation name="relation49" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation52" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="125.0, 263.0">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="125.0, 270.0">
         </vertex>
     </relation>
     <relation name="relation65" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="106.0, 124.0">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="120.0, 120.0">
         </vertex>
     </relation>
     <relation name="relation72" class="ptolemy.actor.TypedIORelation">

@@ -27,7 +27,7 @@
         </property>
     </property>
     <property name="0:annotation1" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.moml.Location" value="382.0, 335.0">
+        <property name="_location" class="ptolemy.moml.Location" value="30.0, 295.0">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -56,7 +56,7 @@ preemptive parameter to true or false.
         <property name="values" class="ptolemy.data.expr.Parameter" value="{1}">
         </property>
         <doc>Create a generalized square wave</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="104.0, 132.0">
+        <property name="_location" class="ptolemy.moml.Location" value="80.0, 140.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -76,7 +76,7 @@ preemptive parameter to true or false.
         <property name="values" class="ptolemy.data.expr.Parameter" value="{-1}">
         </property>
         <doc>Create a generalized square wave</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="106.0, 196.0">
+        <property name="_location" class="ptolemy.moml.Location" value="80.0, 205.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -90,7 +90,7 @@ preemptive parameter to true or false.
         <property name="value" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <doc>Create a constant sequence</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="278.0, 84.0">
+        <property name="_location" class="ptolemy.moml.Location" value="225.0, 70.0">
         </property>
         <property name="priority" class="ptolemy.data.expr.Parameter" value="2">
         </property>
@@ -108,7 +108,7 @@ preemptive parameter to true or false.
         <property name="value" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
         <doc>Create a constant sequence</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="269.0, 247.0">
+        <property name="_location" class="ptolemy.moml.Location" value="220.0, 255.0">
         </property>
         <property name="priority" class="ptolemy.data.expr.Parameter" value="10">
         </property>
@@ -129,7 +129,7 @@ preemptive parameter to true or false.
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="500.0, 163.0">
+        <property name="_location" class="ptolemy.moml.Location" value="450.0, 160.0">
         </property>
         <property name="priority" class="ptolemy.data.expr.Parameter" value="1">
         </property>
@@ -137,7 +137,8 @@ preemptive parameter to true or false.
             <property name="input"/>
             <property name="multiport"/>
         </port>
-        <configure><?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+        <configure><?plotml
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>TimedPlotter: (p = high, t = 0)</title>
@@ -147,13 +148,14 @@ preemptive parameter to true or false.
 <yRange min="-1.0" max="1.0"/>
 <default connected="no" marks="points" stems="yes"/>
 </plot>?>
-                                        </configure>    </entity>
+        </configure>
+    </entity>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="172.0, 138.0">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="170.0, 140.0">
         </vertex>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="173.0, 202.0">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="170.0, 205.0">
         </vertex>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">

@@ -52,7 +52,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="368.0, 27.0">
+        <property name="_location" class="ptolemy.moml.Location" value="140.0, 35.0">
         </property>
     </property>
     <entity name="ViewScreen2" class="ptolemy.domains.gr.lib.ViewScreen">
@@ -88,7 +88,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
         </port>
     </entity>
     <entity name="Keyboard Input" class="ptolemy.domains.gr.lib.KeyInput3D">
-        <property name="_location" class="ptolemy.moml.Location" value="92.0, 170.0">
+        <property name="_location" class="ptolemy.moml.Location" value="90.0, 170.0">
         </property>
         <port name="keycode" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -4598,7 +4598,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
         <link port="shoulder base.port0" relation="relation21"/>
     </class>
     <relation name="relation0" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex0" class="ptolemy.moml.Vertex" value="159.0, 176.0">
+        <vertex name="vertex0" class="ptolemy.moml.Vertex" value="160.0, 170.0">
         </vertex>
     </relation>
     <relation name="relation1" class="ptolemy.actor.TypedIORelation">

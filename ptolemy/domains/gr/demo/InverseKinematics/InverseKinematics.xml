@@ -9,7 +9,7 @@
         </property>
         <property name="iteration time lower bound" class="ptolemy.data.expr.Parameter" value="33">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="542.6600000000001, 26.69999999999999">
+        <property name="_location" class="ptolemy.moml.Location" value="70.0, 45.0">
         </property>
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 390]">
@@ -34,7 +34,7 @@ inverse kinematics algorithm</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="249.0, 37.0">
+        <property name="_location" class="ptolemy.moml.Location" value="105.0, 65.0">
         </property>
     </property>
     <property name="annotation3" class="ptolemy.kernel.util.Attribute">
@@ -55,7 +55,7 @@ ViewScreen to direct the robotic arm motion.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="184.5, 306.0">
+        <property name="_location" class="ptolemy.moml.Location" value="110.0, 300.0">
         </property>
     </property>
     <property name="_generator" class="ptolemy.copernicus.gui.GeneratorTableauAttribute">
@@ -117,7 +117,7 @@ ViewScreen to direct the robotic arm motion.</text></svg></configure>
         </property>
         <property name="iterationSynchronized" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="530.6600152587891, 185.29999999999998">
+        <property name="_location" class="ptolemy.moml.Location" value="535.0, 235.0">
         </property>
         <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -135,7 +135,7 @@ ViewScreen to direct the robotic arm motion.</text></svg></configure>
         </property>
         <property name="zWidth" class="ptolemy.data.expr.Parameter" value="10.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="180.41999999999996, 239.29999999999995">
+        <property name="_location" class="ptolemy.moml.Location" value="170.0, 235.0">
         </property>
         <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -150,7 +150,7 @@ ViewScreen to direct the robotic arm motion.</text></svg></configure>
         </property>
         <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="281.5, 252.29999999999995">
+        <property name="_location" class="ptolemy.moml.Location" value="280.0, 255.0">
         </property>
         <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -178,7 +178,7 @@ ViewScreen to direct the robotic arm motion.</text></svg></configure>
         </property>
         <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="425.58000000000004, 185.29999999999998">
+        <property name="_location" class="ptolemy.moml.Location" value="430.0, 235.0">
         </property>
         <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>

@@ -1,19 +1,25 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="dualMode" class="ptolemy.actor.TypedCompositeActor">
+<entity name="Multimode" class="ptolemy.actor.TypedCompositeActor">
     <doc>This model demonstrates the hierarchical composition of the
 FSM and Giotto domains.</doc>
     <property name="giotto" class="ptolemy.domains.giotto.kernel.GiottoDirector">
+        <property name="Scheduler" class="ptolemy.domains.giotto.kernel.GiottoScheduler">
+        </property>
         <property name="period" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="20">
             <doc>Number of iterations in an execution.</doc>
         </property>
+        <property name="filename" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.giotto&quot;">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
         <property name="_location" class="ptolemy.moml.Location" value="68.0, 37.0">
         </property>
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[491, 169]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[491, 350]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[159, 152]">
     </property>
@@ -54,7 +60,7 @@ FSM and Giotto domains.</doc>
         </port>
         <port name="mode" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.moml.Location" value="460.0, 168.0">
+            <property name="_location" class="ptolemy.moml.Location" value="455.0, 165.0">
             </property>
         </port>
         <port name="output1" class="ptolemy.actor.TypedIOPort">
@@ -64,24 +70,32 @@ FSM and Giotto domains.</doc>
         </port>
         <port name="output2" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.moml.Location" value="378.0, 280.0">
+            <property name="_location" class="ptolemy.moml.Location" value="450.0, 280.0">
             </property>
         </port>
         <entity name="controller" class="ptolemy.domains.giotto.demo.Multimode.Controller">
             <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="Init">
             </property>
+            <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
+            </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[628, 205]">
             </property>
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 116]">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="361.0, 164.0">
+            <property name="_location" class="ptolemy.moml.Location" value="360.0, 165.0">
             </property>
         </entity>
         <entity name="mode0" class="ptolemy.domains.giotto.demo.Multimode.OneMode">
             <property name="giotto" class="ptolemy.domains.giotto.kernel.GiottoDirector">
+                <property name="Scheduler" class="ptolemy.domains.giotto.kernel.GiottoScheduler">
+                </property>
                 <property name="period" class="ptolemy.data.expr.Parameter" value="0.1">
                 </property>
                 <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="filename" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.giotto&quot;">
+                </property>
+                <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="_location" class="ptolemy.moml.Location" value="74.0, 34.0">
                 </property>
@@ -92,14 +106,20 @@ FSM and Giotto domains.</doc>
             </property>
             <property name="ramp2Frequency" class="ptolemy.data.expr.Parameter" value="1">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="138.0, 239.0">
+            <property name="_location" class="ptolemy.moml.Location" value="120.0, 230.0">
             </property>
         </entity>
         <entity name="mode1" class="ptolemy.domains.giotto.demo.Multimode.OneMode">
             <property name="giotto" class="ptolemy.domains.giotto.kernel.GiottoDirector">
+                <property name="Scheduler" class="ptolemy.domains.giotto.kernel.GiottoScheduler">
+                </property>
                 <property name="period" class="ptolemy.data.expr.Parameter" value="0.1">
                 </property>
                 <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="filename" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.giotto&quot;">
+                </property>
+                <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="_location" class="ptolemy.moml.Location" value="74.0, 34.0">
                 </property>
@@ -118,7 +138,7 @@ FSM and Giotto domains.</doc>
         <relation name="r2" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="r3" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex0" class="ptolemy.moml.Vertex" value="203.0, 224.0">
+            <vertex name="vertex0" class="ptolemy.moml.Vertex" value="200.0, 220.0">
             </vertex>
         </relation>
         <relation name="r4" class="ptolemy.actor.TypedIORelation">
@@ -166,7 +186,7 @@ FSM and Giotto domains.</doc>
 <noGrid/>
 <default connected="no" marks="dots" stems="yes"/>
 </plot>?>
-                </configure>    </entity>
+                        </configure>    </entity>
     <relation name="r1" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="r2" class="ptolemy.actor.TypedIORelation">

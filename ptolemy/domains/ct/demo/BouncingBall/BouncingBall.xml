@@ -74,7 +74,7 @@ and the GR domain to simulate a bouncing ball.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="330.0, 40.0">
+        <property name="_location" class="ptolemy.moml.Location" value="145.0, 10.0">
         </property>
     </property>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
@@ -84,24 +84,26 @@ and the GR domain to simulate a bouncing ball.</text></svg></configure>
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="188.0, 128.0">
+        <property name="_location" class="ptolemy.moml.Location" value="190.0, 130.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
         </port>
-        <configure><?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+        <configure><?plotml
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>Position</title>
 <xLabel>time (sec)</xLabel>
 <yLabel>height meters</yLabel>
-<xRange min="0.0" max="8.105999999999984"/>
+<xRange min="0.0" max="26.264020509825656"/>
 <yRange min="9.027550412032514E-8" max="10.0"/>
 </plot>?>
-                </configure>    </entity>
+        </configure>
+    </entity>
     <entity name="Animate Ball" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.moml.Location" value="407.5, 209.5">
+        <property name="_location" class="ptolemy.moml.Location" value="410.0, 205.0">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
         </property>
@@ -167,7 +169,7 @@ and the GR domain to simulate a bouncing ball.</text></svg></configure>
             </property>
             <property name="radius" class="ptolemy.data.expr.Parameter" value="0.1">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="129.0, 112.0">
+            <property name="_location" class="ptolemy.moml.Location" value="125.0, 110.0">
             </property>
             <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -188,7 +190,7 @@ and the GR domain to simulate a bouncing ball.</text></svg></configure>
             </property>
             <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="1.0">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="331.0, 131.5">
+            <property name="_location" class="ptolemy.moml.Location" value="330.0, 150.0">
             </property>
             <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -226,7 +228,7 @@ and the GR domain to simulate a bouncing ball.</text></svg></configure>
             <property name="value" class="ptolemy.data.expr.Parameter" value="0.5">
             </property>
             <doc>Create a constant sequence</doc>
-            <property name="_location" class="ptolemy.moml.Location" value="57.0, 278.0">
+            <property name="_location" class="ptolemy.moml.Location" value="15.0, 180.0">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -247,7 +249,7 @@ and the GR domain to simulate a bouncing ball.</text></svg></configure>
             </property>
             <property name="zWidth" class="ptolemy.data.expr.Parameter" value="0.5">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="183.0, 265.0">
+            <property name="_location" class="ptolemy.moml.Location" value="200.0, 290.0">
             </property>
             <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -268,7 +270,7 @@ and the GR domain to simulate a bouncing ball.</text></svg></configure>
             </property>
             <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="338.0, 310.0">
+            <property name="_location" class="ptolemy.moml.Location" value="330.0, 310.0">
             </property>
             <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -291,7 +293,7 @@ and the GR domain to simulate a bouncing ball.</text></svg></configure>
             <property name="value" class="ptolemy.data.expr.Parameter" value="-0.65">
             </property>
             <doc>Create a constant sequence</doc>
-            <property name="_location" class="ptolemy.moml.Location" value="183.0, 343.5">
+            <property name="_location" class="ptolemy.moml.Location" value="170.0, 345.0">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -308,7 +310,7 @@ and the GR domain to simulate a bouncing ball.</text></svg></configure>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="114.0, 250.0">
+            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="95.0, 190.0">
             </vertex>
         </relation>
         <relation name="relation11" class="ptolemy.actor.TypedIORelation">
@@ -316,7 +318,7 @@ and the GR domain to simulate a bouncing ball.</text></svg></configure>
         <relation name="relation12" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="200.0, 160.0">
+            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="225.0, 160.0">
             </vertex>
         </relation>
         <relation name="relation4" class="ptolemy.actor.TypedIORelation">
@@ -341,7 +343,7 @@ and the GR domain to simulate a bouncing ball.</text></svg></configure>
     <entity name="PeriodicSampler" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
         <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="198.5, 208.5">
+        <property name="_location" class="ptolemy.moml.Location" value="195.0, 205.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -359,7 +361,9 @@ and the GR domain to simulate a bouncing ball.</text></svg></configure>
     <entity name="Scale" class="ptolemy.actor.lib.Scale">
         <property name="factor" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="295.0, 209.5">
+        <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="300.0, 205.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -375,7 +379,7 @@ and the GR domain to simulate a bouncing ball.</text></svg></configure>
         </property>
         <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalModel$ModalTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="60.5, 134.5">
+        <property name="_location" class="ptolemy.moml.Location" value="55.0, 140.0">
         </property>
         <port name="position" class="ptolemy.vergil.fsm.modal.ModalPort">
             <property name="output"/>
@@ -514,11 +518,11 @@ and the GR domain to simulate a bouncing ball.</text></svg></configure>
         <entity name="free" class="ptolemy.vergil.fsm.modal.Refinement">
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 450]">
             </property>
-            <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[50, 232]">
+            <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 102]">
             </property>
-            <property name="initialPosition" class="ptolemy.data.expr.Parameter" value="9.027550412032514E-8">
+            <property name="initialPosition" class="ptolemy.data.expr.Parameter" value="2.079773116361069E-5">
             </property>
-            <property name="initialVelocity" class="ptolemy.data.expr.Parameter" value="10.3096313572466">
+            <property name="initialVelocity" class="ptolemy.data.expr.Parameter" value="0.3184938024781">
             </property>
             <property name="CTEmbedded Director" class="ptolemy.domains.ct.kernel.CTEmbeddedDirector">
                 <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -582,30 +586,30 @@ falling in a gravitational field.</text></svg></configure>
                 </property>
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="126.5, 231.0">
+                <property name="_location" class="ptolemy.moml.Location" value="155.0, 5.0">
                 </property>
             </property>
             <port name="position" class="ptolemy.vergil.fsm.modal.RefinementPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="413.5, 204.0">
+                <property name="_location" class="ptolemy.moml.Location" value="500.0, 170.0">
                 </property>
                 <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
             </port>
             <port name="bump" class="ptolemy.vergil.fsm.modal.RefinementPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="447.0, 134.0">
+                <property name="_location" class="ptolemy.moml.Location" value="500.0, 125.0">
                 </property>
             </port>
             <port name="velocity" class="ptolemy.vergil.fsm.modal.RefinementPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="243.0, 64.0">
+                <property name="_location" class="ptolemy.moml.Location" value="500.0, 60.0">
                 </property>
             </port>
             <entity name="ZeroCrossingDetector" class="ptolemy.domains.ct.lib.ZeroCrossingDetector">
                 <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1e-4">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="383.5, 118.5">
+                <property name="_location" class="ptolemy.moml.Location" value="385.0, 125.0">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -642,7 +646,7 @@ falling in a gravitational field.</text></svg></configure>
             <entity name="Velocity" class="ptolemy.domains.ct.lib.Integrator">
                 <property name="initialState" class="ptolemy.data.expr.Parameter" value="initialVelocity">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="140.0, 108.5">
+                <property name="_location" class="ptolemy.moml.Location" value="145.0, 115.0">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -665,7 +669,7 @@ falling in a gravitational field.</text></svg></configure>
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
                     </property>
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="50.0, 109.5">
+                <property name="_location" class="ptolemy.moml.Location" value="35.0, 105.0">
                 </property>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -718,7 +722,7 @@ falling in a gravitational field.</text></svg></configure>
         <link port="free.velocity" relation="velocityRelation"/>
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="123.0, 150.0">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="120.0, 130.0">
         </vertex>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">

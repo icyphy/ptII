@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="router" class="ptolemy.actor.TypedCompositeActor">
+<entity name="Router" class="ptolemy.actor.TypedCompositeActor">
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
@@ -25,7 +25,7 @@
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
     </property>
     <property name="0:0:annotation1" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.moml.Location" value="381.5, 101.0">
+        <property name="_location" class="ptolemy.moml.Location" value="180.0, 0.0">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -48,7 +48,7 @@ decomposition.</text>
         </property>
     </property>
     <property name="1:0:0:0:annotation1" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.moml.Location" value="328.0, 404.0">
+        <property name="_location" class="ptolemy.moml.Location" value="230.0, 375.0">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -64,7 +64,7 @@ Rayleigh distribution.</text>
         </property>
     </property>
     <entity name="Record Assembler" class="ptolemy.actor.lib.RecordAssembler">
-        <property name="_location" class="ptolemy.moml.Location" value="280.0, 263.0">
+        <property name="_location" class="ptolemy.moml.Location" value="240.0, 260.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -84,7 +84,7 @@ Rayleigh distribution.</text>
         <property name="step" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="161.0, 294.0">
+        <property name="_location" class="ptolemy.moml.Location" value="150.0, 290.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -97,7 +97,7 @@ Rayleigh distribution.</text>
     <entity name="Channel Model" class="ptolemy.domains.de.lib.VariableDelay">
         <property name="defaultDelay" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="311.0, 297.0">
+        <property name="_location" class="ptolemy.moml.Location" value="315.0, 270.0">
         </property>
         <port name="input" class="ptolemy.domains.de.kernel.DEIOPort">
             <property name="input"/>
@@ -117,7 +117,7 @@ Rayleigh distribution.</text>
         <property name="standardDeviation" class="ptolemy.data.expr.Parameter" value="0.3">
         </property>
         <doc>Create a sequence of gaussian random variables</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="121.0, 355.0">
+        <property name="_location" class="ptolemy.moml.Location" value="90.0, 350.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -144,7 +144,7 @@ Rayleigh distribution.</text>
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="213.0, 354.0">
+        <property name="_location" class="ptolemy.moml.Location" value="200.0, 350.0">
         </property>
         <port name="firstOperand" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -163,7 +163,7 @@ Rayleigh distribution.</text>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{1, 0}">
         </property>
         <doc>Create a generalized square wave</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="49.0, 214.0">
+        <property name="_location" class="ptolemy.moml.Location" value="40.0, 230.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -182,7 +182,7 @@ Rayleigh distribution.</text>
         </property>
         <property name="repeat" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="164.0, 232.0">
+        <property name="_location" class="ptolemy.moml.Location" value="150.0, 230.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -193,7 +193,7 @@ Rayleigh distribution.</text>
         </port>
     </entity>
     <entity name="Record Disassembler" class="ptolemy.actor.lib.RecordDisassembler">
-        <property name="_location" class="ptolemy.moml.Location" value="418.0, 297.0">
+        <property name="_location" class="ptolemy.moml.Location" value="385.0, 270.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -208,7 +208,7 @@ Rayleigh distribution.</text>
     <entity name="Sequencer" class="ptolemy.actor.lib.Sequencer">
         <property name="startingSequenceNumber" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="455.0, 366.0">
+        <property name="_location" class="ptolemy.moml.Location" value="465.0, 405.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -227,7 +227,7 @@ Rayleigh distribution.</text>
         </property>
         <property name="title" class="ptolemy.kernel.util.StringAttribute" value="As Received">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="506.0, 303.0">
+        <property name="_location" class="ptolemy.moml.Location" value="500.0, 270.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -241,7 +241,7 @@ Rayleigh distribution.</text>
         </property>
         <property name="title" class="ptolemy.kernel.util.StringAttribute" value="Resequenced">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="574.0, 373.0">
+        <property name="_location" class="ptolemy.moml.Location" value="500.0, 325.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -257,7 +257,7 @@ Rayleigh distribution.</text>
     <relation name="relation45" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="93.0, 238.0">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="95.0, 230.0">
         </vertex>
     </relation>
     <relation name="relation1" class="ptolemy.actor.TypedIORelation">
@@ -265,7 +265,7 @@ Rayleigh distribution.</text>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="410.0, 291.0">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="425.0, 260.0">
         </vertex>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">

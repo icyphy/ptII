@@ -49,7 +49,7 @@
         </property>
     </property>
     <property name="0:annotation1" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.moml.Location" value="426.0, 80.0">
+        <property name="_location" class="ptolemy.moml.Location" value="180.0, 15.0">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -69,7 +69,7 @@ model is known as a Lorenz attractor.</text>
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[608, 426]">
     </property>
-    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[45, 156]">
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[100, 114]">
     </property>
     <property name="sigma" class="ptolemy.data.expr.Parameter" value="10.0">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -83,7 +83,7 @@ model is known as a Lorenz attractor.</text>
       </svg>
     </configure>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="450.0, 170.0">
+        <property name="_location" class="ptolemy.moml.Location" value="440.0, 220.0">
         </property>
     </property>
     <property name="lambda" class="ptolemy.data.expr.Parameter" value="25.0">
@@ -98,7 +98,7 @@ model is known as a Lorenz attractor.</text>
       </svg>
     </configure>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="445.0, 190.0">
+        <property name="_location" class="ptolemy.moml.Location" value="430.0, 240.0">
         </property>
     </property>
     <property name="b" class="ptolemy.data.expr.Parameter" value="2.0">
@@ -113,7 +113,7 @@ model is known as a Lorenz attractor.</text>
       </svg>
     </configure>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="460.0, 210.0">
+        <property name="_location" class="ptolemy.moml.Location" value="465.0, 260.0">
         </property>
     </property>
     <property name="requireVersion" class="ptolemy.kernel.util.RequireVersion" value="2.0">
@@ -128,7 +128,7 @@ model is known as a Lorenz attractor.</text>
       </svg>
     </configure>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="490.0, 395.0">
+        <property name="_location" class="ptolemy.moml.Location" value="390.0, 285.0">
         </property>
     </property>
     <entity name="Integrator 1" class="ptolemy.domains.ct.lib.Integrator">
@@ -196,17 +196,19 @@ model is known as a Lorenz attractor.</text>
             <property name="input"/>
             <property name="multiport"/>
         </port>
-        <configure><?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+        <configure><?plotml
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>Strange Attractor</title>
 <xLabel>x1</xLabel>
 <yLabel>x2</yLabel>
-<xRange min="0.026805706031059806" max="3.496533044420371"/>
-<yRange min="0.5899307479224367" max="4.329408933518004"/>
+<xRange min="-16.66477224165551" max="17.59596919544863"/>
+<yRange min="-22.046363884800513" max="23.73924082335812"/>
 <noGrid/>
 </plot>?>
-                </configure>    </entity>
+        </configure>
+    </entity>
     <entity name="Expression 1" class="ptolemy.actor.lib.Expression">
         <property name="expression" class="ptolemy.data.expr.Parameter" value="sigma*(x2-x1)">
         </property>

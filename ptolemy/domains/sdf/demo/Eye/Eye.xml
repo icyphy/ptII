@@ -3,7 +3,7 @@
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Eye" class="ptolemy.actor.TypedCompositeActor">
     <property name="annotation1" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.moml.Location" value="376.0, 98.0">
+        <property name="_location" class="ptolemy.moml.Location" value="145.0, 0.0">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -26,7 +26,7 @@ filter. The output display is known as an "eye diagram."</text>
     <property name="noise_standard_deviation" class="ptolemy.data.expr.Parameter" value="0.1">
     </property>
     <property name="0:0:0:annotation1" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.moml.Location" value="75.0, 105.0">
+        <property name="_location" class="ptolemy.moml.Location" value="-5.0, 60.0">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -41,7 +41,7 @@ controls execution.</text>
         </property>
     </property>
     <property name="0:0:0:0:annotation1" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.moml.Location" value="111.0, 363.0">
+        <property name="_location" class="ptolemy.moml.Location" value="130.0, 335.0">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -56,7 +56,7 @@ an actor, right click and select
         </property>
     </property>
     <property name="4:0:0:0:0:annotation1" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.moml.Location" value="376.0, 366.0">
+        <property name="_location" class="ptolemy.moml.Location" value="355.0, 315.0">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -94,7 +94,7 @@ linger over the port.</text>
         </property>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{-1, 1}">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="88.0, 196.0">
+        <property name="_location" class="ptolemy.moml.Location" value="65.0, 225.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -121,7 +121,7 @@ linger over the port.</text>
         </property>
         <property name="symbolInterval" class="ptolemy.data.expr.Parameter" value="16">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="236.0, 223.0">
+        <property name="_location" class="ptolemy.moml.Location" value="240.0, 225.0">
         </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
             <property name="input"/>
@@ -143,7 +143,7 @@ linger over the port.</text>
         </port>
     </entity>
     <entity name="Adder" class="ptolemy.actor.lib.AddSubtract">
-        <property name="_location" class="ptolemy.moml.Location" value="279.0, 258.0">
+        <property name="_location" class="ptolemy.moml.Location" value="320.0, 275.0">
         </property>
         <port name="plus" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -165,7 +165,7 @@ linger over the port.</text>
         <property name="standardDeviation" class="ptolemy.data.expr.Parameter" value="noise_standard_deviation">
         </property>
         <doc>Create a sequence of gaussian random variables</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="88.0, 304.0">
+        <property name="_location" class="ptolemy.moml.Location" value="70.0, 300.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -192,7 +192,7 @@ linger over the port.</text>
         </property>
         <property name="symbolInterval" class="ptolemy.data.expr.Parameter" value="16">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="394.0, 273.0">
+        <property name="_location" class="ptolemy.moml.Location" value="405.0, 275.0">
         </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
             <property name="input"/>
@@ -228,7 +228,7 @@ linger over the port.</text>
         </property>
         <property name="persistence" class="ptolemy.data.expr.Parameter" value="512">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="509.0, 265.0">
+        <property name="_location" class="ptolemy.moml.Location" value="510.0, 275.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -242,7 +242,7 @@ linger over the port.</text>
 <xLabel></xLabel>
 <yLabel></yLabel>
 <xRange min="0.0" max="32.0"/>
-<yRange min="-1.3264260626967141" max="1.2280383698297221"/>
+<yRange min="-1.2046697748154416" max="1.2586709634515874"/>
 <noGrid/>
 <wrap/>
 <default marks="pixels"/>

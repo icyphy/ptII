@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="Separate" class="ptolemy.actor.TypedCompositeActor">
+<entity name="StickyMasses" class="ptolemy.actor.TypedCompositeActor">
     <property name="Continuous Time (CT) Director" class="ptolemy.domains.ct.kernel.CTMultiSolverDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
@@ -27,11 +27,11 @@
         </property>
         <property name="CTScheduler" class="ptolemy.domains.ct.kernel.CTScheduler">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="112.0, 192.0">
+        <property name="_location" class="ptolemy.moml.Location" value="75.0, 55.0">
         </property>
     </property>
     <property name="13:0:0:annotation1" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.moml.Location" value="267.0, 80.0">
+        <property name="_location" class="ptolemy.moml.Location" value="0.0, 80.0">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -68,23 +68,25 @@ each state refines to a continuous-time model of the dynamics in that mode.</tex
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="478.0, 194.0">
+        <property name="_location" class="ptolemy.moml.Location" value="410.0, 250.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
         </port>
-        <configure><?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+        <configure><?plotml
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>Displacement of Masses</title>
 <xLabel>time</xLabel>
 <yLabel></yLabel>
-<xRange min="0.02" max="50.0"/>
-<yRange min="-0.12474148181146817" max="2.99980004"/>
+<xRange min="0.01" max="50.0"/>
+<yRange min="-0.13549561735304153" max="2.999899955462229"/>
 <noGrid/>
 </plot>?>
-                        </configure>    </entity>
+        </configure>
+    </entity>
     <entity name="Hybrid System" class="ptolemy.domains.ct.kernel.CTCompositeActor">
         <property name="Hybrid System (HS) Director" class="ptolemy.domains.fsm.kernel.HSDirector">
             <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="Controller">
@@ -92,7 +94,7 @@ each state refines to a continuous-time model of the dynamics in that mode.</tex
             <property name="_location" class="ptolemy.moml.Location" value="104.0, 42.0">
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="315.0, 193.0">
+        <property name="_location" class="ptolemy.moml.Location" value="180.0, 250.0">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 350]">
         </property>
@@ -293,13 +295,13 @@ each state refines to a continuous-time model of the dynamics in that mode.</tex
             </property>
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 135]">
             </property>
-            <property name="p1" class="ptolemy.data.expr.Parameter" value="1.856771">
+            <property name="p1" class="ptolemy.data.expr.Parameter" value="1.8499961533587">
             </property>
-            <property name="v1" class="ptolemy.data.expr.Parameter" value="0.0721327">
+            <property name="v1" class="ptolemy.data.expr.Parameter" value="0.0924321178123">
             </property>
-            <property name="p2" class="ptolemy.data.expr.Parameter" value="1.856771">
+            <property name="p2" class="ptolemy.data.expr.Parameter" value="1.8499961533587">
             </property>
-            <property name="v2" class="ptolemy.data.expr.Parameter" value="0.0721327">
+            <property name="v2" class="ptolemy.data.expr.Parameter" value="0.0924321178123">
             </property>
             <port name="touched" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -535,9 +537,9 @@ each state refines to a continuous-time model of the dynamics in that mode.</tex
             </property>
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 142]">
             </property>
-            <property name="p" class="ptolemy.data.expr.Parameter" value="1.0">
+            <property name="p" class="ptolemy.data.expr.Parameter" value="1.4693179177411">
             </property>
-            <property name="v" class="ptolemy.data.expr.Parameter" value="0.0">
+            <property name="v" class="ptolemy.data.expr.Parameter" value="0.020325247703">
             </property>
             <property name="stickiness" class="ptolemy.data.expr.Parameter" value="10.0">
             </property>
@@ -616,6 +618,8 @@ each state refines to a continuous-time model of the dynamics in that mode.</tex
             </entity>
             <entity name="Gain" class="ptolemy.actor.lib.Scale">
                 <property name="factor" class="ptolemy.data.expr.Parameter" value="-1.0">
+                </property>
+                <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
                 <property name="_location" class="ptolemy.moml.Location" value="499.0, 62.5">
                 </property>

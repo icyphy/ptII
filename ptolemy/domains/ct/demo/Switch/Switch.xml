@@ -53,7 +53,7 @@
         </property>
     </property>
     <property name="0:annotation1" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.moml.Location" value="293.0, 341.0">
+        <property name="_location" class="ptolemy.moml.Location" value="35.0, 275.0">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -122,6 +122,8 @@ CTDirector to schedule and execute the model correctly.
     </entity>
     <entity name="Scale" class="ptolemy.actor.lib.Scale">
         <property name="factor" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="362.0, 192.0">
         </property>

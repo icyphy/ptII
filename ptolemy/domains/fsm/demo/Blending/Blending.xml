@@ -18,7 +18,6 @@
     </property>
     <property name="_generator" class="ptolemy.copernicus.gui.GeneratorTableauAttribute">
         <property name="codeGenerator" class="ptolemy.kernel.util.StringAttribute" value="applet">
-            <doc name="tooltip">Type of code generator to run.</doc>
             <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
                 <property name="sootDeep" class="ptolemy.kernel.util.StringAttribute" value="deep">
                 </property>
@@ -31,6 +30,7 @@
                 <property name="sootShallow" class="ptolemy.kernel.util.StringAttribute" value="shallow">
                 </property>
             </property>
+            <doc name="tooltip">Type of code generator to run.</doc>
         </property>
         <property name="show" class="ptolemy.data.expr.Parameter" value="true">
             <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
@@ -61,7 +61,7 @@
         </property>
     </property>
     <entity name="BlendingController" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.moml.Location" value="319.5, 128.5">
+        <property name="_location" class="ptolemy.moml.Location" value="315.0, 135.0">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
@@ -752,13 +752,15 @@
             </property>
         </property>
         <doc>This composite actor generates a sine wave.</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="65.0, 130.0">
+        <property name="_location" class="ptolemy.moml.Location" value="65.0, 135.0">
         </property>
     </entity>
     <entity name="Scale" class="ptolemy.actor.lib.Scale">
         <property name="factor" class="ptolemy.data.expr.Parameter" value="8.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="150.0, 129.5">
+        <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="155.0, 135.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -778,7 +780,7 @@
         </property>
         <property name="xUnit" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="476.0, 128.5">
+        <property name="_location" class="ptolemy.moml.Location" value="450.0, 135.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -794,7 +796,7 @@
 <yRange min="-1.0" max="1.0"/>
 <default connected="no" marks="various" stems="yes"/>
 </plot>?>
-                </configure>    </entity>
+                        </configure>    </entity>
     <entity name="Input - SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -806,7 +808,7 @@
         </property>
         <property name="xUnit" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="334.5, 228.5">
+        <property name="_location" class="ptolemy.moml.Location" value="305.0, 235.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -822,7 +824,7 @@
 <yRange min="-7.984213827426177" max="7.984213827426176"/>
 <default connected="no" marks="various" stems="yes"/>
 </plot>?>
-                </configure>    </entity>
+                        </configure>    </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">

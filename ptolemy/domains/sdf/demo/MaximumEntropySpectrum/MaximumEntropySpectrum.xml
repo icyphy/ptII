@@ -138,7 +138,7 @@
         <property name="standardDeviation" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
         <doc>Create a sequence of gaussian random variables</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="116.0, 303.0">
+        <property name="_location" class="ptolemy.moml.Location" value="120.0, 310.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -149,7 +149,7 @@
         </port>
     </entity>
     <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-        <property name="_location" class="ptolemy.moml.Location" value="259.0, 161.0">
+        <property name="_location" class="ptolemy.moml.Location" value="275.0, 190.0">
         </property>
         <port name="plus" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -194,7 +194,7 @@ radians per second, centered at zero frequency, in decibels (dB).</text>
         </property>
         <property name="log2resolution" class="ptolemy.data.expr.Parameter" value="8">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="411.0, 169.0">
+        <property name="_location" class="ptolemy.moml.Location" value="380.0, 190.0">
         </property>
     </entity>
     <entity name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
@@ -208,14 +208,13 @@ radians per second, centered at zero frequency, in decibels (dB).</text>
         </property>
         <property name="xUnit" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="484.0, 189.0">
+        <property name="_location" class="ptolemy.moml.Location" value="490.0, 210.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
         </port>
-        <configure><?plotml
-<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+        <configure><?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>Maximum Entropy Spectrum</title>
@@ -224,15 +223,14 @@ radians per second, centered at zero frequency, in decibels (dB).</text>
 <xRange min="0.0" max="255.0"/>
 <yRange min="-19.630156301539962" max="23.557790561310075"/>
 </plot>?>
-        </configure>
-    </entity>
+                </configure>    </entity>
     <entity name="IIR Coloring Filter" class="ptolemy.actor.lib.IIR">
         <property name="numerator" class="ptolemy.data.expr.Parameter" value="{1.0, -1.6, 1.28}">
         </property>
         <property name="denominator" class="ptolemy.data.expr.Parameter" value="{1.0, -0.9}">
         </property>
         <doc>IIR filter</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="248.0, 308.0">
+        <property name="_location" class="ptolemy.moml.Location" value="245.0, 310.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>

@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="Report Regular Average" class="ptolemy.actor.TypedCompositeActor">
+<entity name="Inspection" class="ptolemy.actor.TypedCompositeActor">
     <property name="Discrete Event (DE) Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
@@ -17,13 +17,13 @@
         </property>
         <property name="binCountFactor" class="ptolemy.data.expr.Parameter" value="2">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="91.0, 28.5">
+        <property name="_location" class="ptolemy.moml.Location" value="95.0, 35.0">
         </property>
     </property>
     <property name="executionTime" class="ptolemy.data.expr.Parameter" value="100.0">
     </property>
     <property name="0:0:annotation1" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.moml.Location" value="456.0, 114.5">
+        <property name="_location" class="ptolemy.moml.Location" value="335.0, 5.0">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -47,7 +47,7 @@ average arrival rate of busses is the same.</text>
         </property>
     </property>
     <property name="0:0:0:0:0:annotation1" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.moml.Location" value="110.5, 97.5">
+        <property name="_location" class="ptolemy.moml.Location" value="25.0, 55.0">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -65,7 +65,7 @@ order.</text>
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[665, 501]">
     </property>
-    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[83, 129]">
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[72, 77]">
     </property>
     <property name="regularBusArrivalRate" class="ptolemy.data.expr.Parameter" value="1.0">
     </property>
@@ -80,7 +80,7 @@ order.</text>
         </property>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{2}">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="65.0, 264.5">
+        <property name="_location" class="ptolemy.moml.Location" value="60.0, 265.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -97,7 +97,7 @@ order.</text>
         </property>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{1}">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="59.5, 333.5">
+        <property name="_location" class="ptolemy.moml.Location" value="60.0, 330.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -108,7 +108,7 @@ order.</text>
         </port>
     </entity>
     <entity name="Poisson Waiting Time" class="ptolemy.domains.de.lib.WaitingTime">
-        <property name="_location" class="ptolemy.moml.Location" value="243.5, 253.5">
+        <property name="_location" class="ptolemy.moml.Location" value="240.0, 255.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -127,7 +127,7 @@ order.</text>
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="260.00001525878906, 171.0">
+        <property name="_location" class="ptolemy.moml.Location" value="250.0, 170.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -140,11 +140,11 @@ order.</text>
 <xLabel>time</xLabel>
 <yLabel></yLabel>
 <xRange min="0.0" max="100.0"/>
-<yRange min="0.0" max="5.081139067519409"/>
+<yRange min="0.0" max="5.301875460070818"/>
 <noGrid/>
 <default connected="no" marks="dots" stems="yes"/>
 </plot>?>
-                        </configure>    </entity>
+                </configure>    </entity>
     <entity name="Histogram" class="ptolemy.actor.lib.gui.HistogramPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -154,7 +154,7 @@ order.</text>
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="Poisson, regular">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="416.5, 253.5">
+        <property name="_location" class="ptolemy.moml.Location" value="480.0, 275.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -166,13 +166,13 @@ order.</text>
 <title>Waiting Time Histogram</title>
 <xLabel>waiting times</xLabel>
 <yLabel>passengers</yLabel>
-<xRange min="0.1" max="5.199999999999999"/>
-<yRange min="0.0" max="33.0"/>
+<xRange min="0.1" max="5.3999999999999995"/>
+<yRange min="0.0" max="26.0"/>
 <noGrid/>
 <barGraph width="0.5" offset="0.15"/>
 <bin width="0.2" offset="0.1"/>
 </plot>?>
-                        </configure>    </entity>
+                </configure>    </entity>
     <entity name="Regular Bus Arrivals" class="ptolemy.actor.lib.Clock">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
@@ -183,7 +183,7 @@ order.</text>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{3.0}">
         </property>
         <doc>Create a generalized square wave</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="65.99999999999999, 193.0">
+        <property name="_location" class="ptolemy.moml.Location" value="60.0, 190.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -316,7 +316,7 @@ order.</text>
         <link port="Const7.trigger" relation="relation9"/>
     </entity>
     <entity name="Report Regular Average" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.moml.Location" value="400.0, 408.5">
+        <property name="_location" class="ptolemy.moml.Location" value="400.0, 410.0">
         </property>
         <property name="caption" class="ptolemy.data.expr.Parameter" value="&quot;Average waiting time (Regular busses): &quot;">
         </property>
@@ -443,14 +443,14 @@ order.</text>
         </property>
         <property name="value" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="213.0, 418.5">
+        <property name="_location" class="ptolemy.moml.Location" value="210.0, 420.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="162.0, 199.0">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="165.0, 190.0">
         </vertex>
     </relation>
     <relation name="relation26" class="ptolemy.actor.TypedIORelation">
@@ -458,23 +458,23 @@ order.</text>
     <relation name="relation27" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="275.0, 425.0">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="275.0, 420.0">
         </vertex>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="265.0, 325.0">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="330.0, 300.0">
         </vertex>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="145.0, 270.0">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="150.0, 265.0">
         </vertex>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="135.0, 315.0">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="135.0, 330.0">
         </vertex>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="285.0, 260.0">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="310.0, 255.0">
         </vertex>
     </relation>
     <link port="Poisson Bus Arrivals.output" relation="relation5"/>

@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="Sender" class="ptolemy.actor.TypedCompositeActor">
+<entity name="ABP" class="ptolemy.actor.TypedCompositeActor">
     <property name="DEDirector" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
@@ -33,7 +33,7 @@
     <entity name="MessageSource" class="ptolemy.domains.fsm.demo.ABP.DEMessageSource">
         <property name="maxDelay" class="ptolemy.data.expr.Parameter" value="0.5">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="100.0, 105.0">
+        <property name="_location" class="ptolemy.moml.Location" value="90.0, 110.0">
         </property>
         <port name="output" class="ptolemy.domains.de.kernel.DEIOPort">
             <property name="output"/>
@@ -46,7 +46,7 @@
         </port>
     </entity>
     <entity name="Timer" class="ptolemy.domains.fsm.demo.ABP.DETimer">
-        <property name="_location" class="ptolemy.moml.Location" value="60.0, 289.0">
+        <property name="_location" class="ptolemy.moml.Location" value="70.0, 265.0">
         </property>
         <port name="expired" class="ptolemy.domains.de.kernel.DEIOPort">
             <property name="output"/>
@@ -62,7 +62,7 @@
         </property>
         <property name="lossProbability" class="ptolemy.data.expr.Parameter" value="forwardLossRate">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="291.0, 121.0">
+        <property name="_location" class="ptolemy.moml.Location" value="285.0, 150.0">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
         </property>
@@ -132,7 +132,7 @@
             </port>
         </entity>
         <entity name="Server" class="ptolemy.domains.de.lib.Server">
-            <property name="serviceTime" class="ptolemy.data.expr.Parameter" value="3.2884555">
+            <property name="serviceTime" class="ptolemy.data.expr.Parameter" value="1.9026971045642">
             </property>
             <property name="_location" class="ptolemy.moml.Location" value="185.0, 229.0">
             </property>
@@ -180,7 +180,7 @@
         </property>
         <property name="lossProbability" class="ptolemy.data.expr.Parameter" value="backwardLossRate">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="348.0, 279.0">
+        <property name="_location" class="ptolemy.moml.Location" value="430.0, 300.0">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
         </property>
@@ -250,7 +250,7 @@
             </port>
         </entity>
         <entity name="Server" class="ptolemy.domains.de.lib.Server">
-            <property name="serviceTime" class="ptolemy.data.expr.Parameter" value="1.5638655">
+            <property name="serviceTime" class="ptolemy.data.expr.Parameter" value="0.9516100831876">
             </property>
             <property name="_location" class="ptolemy.moml.Location" value="206.0, 234.0">
             </property>
@@ -302,7 +302,7 @@
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="469.0, 63.0">
+        <property name="_location" class="ptolemy.moml.Location" value="470.0, 60.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -315,8 +315,8 @@
 <title>Events</title>
 <xLabel>Time</xLabel>
 <yLabel>Events</yLabel>
-<xRange min="11.532453010062133" max="98.02841197277658"/>
-<yRange min="0.0" max="13.0"/>
+<xRange min="5.207077438829934" max="99.66612070367567"/>
+<yRange min="0.0" max="10.0"/>
 <noGrid/>
 <default connected="no" marks="dots" stems="yes"/>
 </plot>?>
@@ -431,7 +431,7 @@
             </property>
             <property name="trying" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="msg" class="ptolemy.data.expr.Parameter" value="12">
+            <property name="msg" class="ptolemy.data.expr.Parameter" value="10">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
             </property>
@@ -501,7 +501,7 @@
         </property>
         <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="389.0, 155.0">
+        <property name="_location" class="ptolemy.moml.Location" value="375.0, 150.0">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
         </property>
@@ -511,7 +511,7 @@
     <relation name="request" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="msgIn" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex" class="ptolemy.moml.Vertex" value="32.0, 68.0">
+        <vertex name="vertex" class="ptolemy.moml.Vertex" value="30.0, 60.0">
         </vertex>
     </relation>
     <relation name="pktOut" class="ptolemy.actor.TypedIORelation">

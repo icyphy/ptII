@@ -39,7 +39,7 @@
     <port name="output" class="ptolemy.actor.TypedIOPort">
         <property name="output"/>
         <doc>Sinusoidal waveform output.</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="295.0, 109.0">
+        <property name="_location" class="ptolemy.moml.Location" value="290.0, 110.0">
         </property>
     </port>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
@@ -49,7 +49,7 @@
         </property>
         <property name="step" class="ptolemy.data.expr.Parameter" value="frequency*2*PI/samplingFrequency">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="80.0, 108.5">
+        <property name="_location" class="ptolemy.moml.Location" value="85.0, 110.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -82,7 +82,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="191.5, 99.5">
+        <property name="_location" class="ptolemy.moml.Location" value="195.0, 110.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>

@@ -5,7 +5,7 @@
     <property name="Process Network Director" class="ptolemy.domains.pn.kernel.BasePNDirector">
         <property name="Initial_queue_capacity" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="88.71429443359375, 327.0">
+        <property name="_location" class="ptolemy.moml.Location" value="75.0, 35.0">
         </property>
     </property>
     <property name="Antennas" class="ptolemy.data.expr.Parameter" value="6">
@@ -19,7 +19,7 @@
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[97, 100]">
     </property>
     <property name="annotation1" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.moml.Location" value="456.0, 81.0">
+        <property name="_location" class="ptolemy.moml.Location" value="310.0, 5.0">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -39,7 +39,7 @@ of samples need to be processed.</text>
         </property>
     </property>
     <property name="annotation3" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.moml.Location" value="104.0, 28.0">
+        <property name="_location" class="ptolemy.moml.Location" value="130.0, 300.0">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -54,7 +54,7 @@ with value zero.</text>
         </property>
     </property>
     <property name="annotation4" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.moml.Location" value="492.0, 345.0">
+        <property name="_location" class="ptolemy.moml.Location" value="375.0, 335.0">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -79,14 +79,13 @@ of antennas used.</text>
         </property>
         <property name="xUnit" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="530.7142944335938, 197.0">
+        <property name="_location" class="ptolemy.moml.Location" value="530.0, 190.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
         </port>
-        <configure><?plotml
-<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+        <configure><?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title></title>
@@ -97,14 +96,13 @@ of antennas used.</text>
 <noGrid/>
 <default connected="no" marks="dots" stems="yes"/>
 </plot>?>
-        </configure>
-    </entity>
+                </configure>    </entity>
     <entity name="Zeros" class="ptolemy.domains.pn.demo.QR.ND_1">
         <property name="N" class="ptolemy.data.expr.Parameter" value="Antennas">
         </property>
         <property name="K" class="ptolemy.data.expr.Parameter" value="Updates">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="55.28571701049805, 101.0">
+        <property name="_location" class="ptolemy.moml.Location" value="45.0, 95.0">
         </property>
         <port name="WP_2" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -118,7 +116,7 @@ of antennas used.</text>
         </property>
         <property name="K" class="ptolemy.data.expr.Parameter" value="Updates">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="57.28571701049805, 201.0">
+        <property name="_location" class="ptolemy.moml.Location" value="75.0, 210.0">
         </property>
         <port name="WP_4" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -132,7 +130,7 @@ of antennas used.</text>
         </property>
         <property name="K" class="ptolemy.data.expr.Parameter" value="Updates">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="210.4285659790039, 93.0">
+        <property name="_location" class="ptolemy.moml.Location" value="210.0, 95.0">
         </property>
         <port name="RP_1" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -161,7 +159,7 @@ of antennas used.</text>
         </property>
         <property name="K" class="ptolemy.data.expr.Parameter" value="Updates">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="211.8571434020996, 213.99999618530273">
+        <property name="_location" class="ptolemy.moml.Location" value="215.0, 210.0">
         </property>
         <port name="RP_5" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -202,7 +200,7 @@ of antennas used.</text>
         </property>
         <property name="K" class="ptolemy.data.expr.Parameter" value="Updates">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="346.0, 198.0">
+        <property name="_location" class="ptolemy.moml.Location" value="345.0, 190.0">
         </property>
         <port name="RP_11" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -255,13 +253,13 @@ of antennas used.</text>
     <relation name="_R9" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="_R12" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex0" class="ptolemy.moml.Vertex" value="432.5714285714285, 203.0">
+        <vertex name="vertex0" class="ptolemy.moml.Vertex" value="430.0, 190.0">
         </vertex>
     </relation>
     <relation name="_R13" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation0" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="156.0, 59.0">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="170.0, 35.0">
         </vertex>
     </relation>
     <relation name="relation1" class="ptolemy.actor.TypedIORelation">
@@ -273,7 +271,7 @@ of antennas used.</text>
         </vertex>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="156.0, 168.0">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="160.0, 135.0">
         </vertex>
     </relation>
     <link port="plot.input" relation="_R12"/>

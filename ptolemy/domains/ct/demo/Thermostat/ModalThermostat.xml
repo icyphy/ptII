@@ -4,7 +4,7 @@
 <entity name="ModalThermostat" class="ptolemy.actor.TypedCompositeActor">
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 450]">
     </property>
-    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[241, 9]">
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 102]">
     </property>
     <property name="CT" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -70,7 +70,7 @@ modes in the state machine are the same model.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="366.0, 55.0">
+        <property name="_location" class="ptolemy.moml.Location" value="190.0, 20.0">
         </property>
     </property>
     <entity name="modal model" class="ptolemy.vergil.fsm.modal.ModalModel">
@@ -376,6 +376,8 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
             <entity name="Scale" class="ptolemy.actor.lib.Scale">
                 <property name="factor" class="ptolemy.data.expr.Parameter" value="0.4">
                 </property>
+                <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
                 <property name="_location" class="ptolemy.moml.Location" value="380.0, 114.5">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -447,8 +449,7 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
             <property name="input"/>
             <property name="multiport"/>
         </port>
-        <configure><?plotml
-<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+        <configure><?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>Temperature</title>
@@ -457,8 +458,7 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
 <xRange min="0.0" max="20.0"/>
 <yRange min="65.0" max="80.0000824876088"/>
 </plot>?>
-        </configure>
-    </entity>
+                </configure>    </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="modal model.output" relation="relation"/>
