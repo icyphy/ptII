@@ -284,7 +284,7 @@ model (double click on that transition to see its actions).</text></svg></config
                 <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 10.0">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={232, 228, 815, 568}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={114, 89, 815, 568}, maximized=false}">
             </property>
             <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
             </property>
@@ -453,12 +453,12 @@ of the two masses.</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="340.0, 320.0">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 104, 815, 639}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={35, 2, 815, 639}, maximized=false}">
             </property>
             <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="There is no touch of masses, therefore no force.">
+                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The masses are not touching, therefore there is no force.">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 415.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 415.0]">
                 </property>
             </property>
             <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
@@ -466,9 +466,9 @@ of the two masses.</text></svg></configure>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 260.5}">
             </property>
             <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="There is no touch of masses, therefore no stickness.">
+                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The masses are not touching, therefore there is no stickness.">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 470.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 475.0]">
                 </property>
             </property>
             <property name="v2" class="ptolemy.data.expr.Parameter" value="-0.2854906488852">
@@ -754,7 +754,7 @@ of the two masses.</text></svg></configure>
             <link port="Const2.output" relation="relation3"/>
         </entity>
         <entity name="Together" class="ptolemy.domains.fsm.modal.Refinement">
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[820, 623]">
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[629, 449]">
             </property>
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[199, 1]">
             </property>
@@ -783,7 +783,7 @@ of the two masses.</text></svg></configure>
                 </property>
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 340.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 345.0]">
                 </property>
             </property>
             <property name="2:annotation" class="ptolemy.kernel.util.Attribute">
@@ -809,11 +809,11 @@ stickiness.</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="125.0, 0.0">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 104, 908, 568}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={85, 50, 844, 567}, maximized=false}">
             </property>
             <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
             </property>
-            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{410.0, 311.5}">
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{314.5, 224.5}">
             </property>
             <property name="CTEmbedded Director" class="ptolemy.domains.ct.kernel.CTEmbeddedDirector">
                 <property name="ODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;">
