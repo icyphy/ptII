@@ -49,6 +49,7 @@ JSRCS = \
 JSIMPLE_TESTS = \
 	ArrayMath.tcl \
 	Complex.tcl \
+        ComplexArrayMath.tcl \
 	ExtendedMath.tcl \
 	Fraction.tcl \
 	SignalProcessing.tcl
