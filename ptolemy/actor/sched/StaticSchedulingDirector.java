@@ -30,9 +30,14 @@ Scheduler is an Attribute,
 */
 package ptolemy.actor.sched;
 
-import ptolemy.kernel.*;
+import ptolemy.actor.Actor;
+import ptolemy.actor.FiringEvent;
+import ptolemy.actor.Director;
+import ptolemy.actor.TypedCompositeActor;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.util.*;
-import ptolemy.actor.*;
+
 
 import java.util.Iterator;
 
@@ -134,8 +139,8 @@ public class StaticSchedulingDirector extends Director {
             if (s == null)
                 throw new IllegalActionException("Attempted to fire " +
                         "system with no scheduler");
-	    Schedule sched = s.getSchedule();
-	    Iterator firings = sched.firingIterator();
+	    Schedule schedule = s.getSchedule();
+	    Iterator firings = schedule.firingIterator();
             while (firings.hasNext()) {
 		Firing firing = (Firing)firings.next();
 		Actor actor = (Actor)firing.getActor();
@@ -146,15 +151,15 @@ public class StaticSchedulingDirector extends Director {
                             FiringEvent.BEFORE_ITERATE));
 		}
 
-		int returnVal =
+		int returnValue =
                     actor.iterate(iterationCount);
-		if (returnVal == COMPLETED) {
+		if (returnValue == COMPLETED) {
 		    _postfireReturns = _postfireReturns && true;
-		} else if (returnVal == NOT_READY) {
+		} else if (returnValue == NOT_READY) {
 		    throw new IllegalActionException(this,
                             (ComponentEntity) actor, "Actor " +
                             "is not ready to fire.");
-		} else if (returnVal == STOP_ITERATING) {
+		} else if (returnValue == STOP_ITERATING) {
 		    _postfireReturns = false;
 		}
 		if(_debugging) {
@@ -254,9 +259,13 @@ public class StaticSchedulingDirector extends Director {
      *  @param true to set the schedule to be valid.
      *  @exception IllegalActionException If there's no scheduler.
      */
-    // FIXME: This should be protected.
     public void setScheduleValid(boolean valid)
             throws IllegalActionException {
+        // FIXME: This should be protected.  Edward Added this
+        // comment 5/99 r1.26
+        // The only other place it is called is CTEmbeddedDirector,
+        // which extends this class?
+
         if(_scheduler == null) {
             throw new IllegalActionException(this,
                     "has no scheduler.");

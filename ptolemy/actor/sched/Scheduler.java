@@ -9,7 +9,7 @@
  of this software.
 
  IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRCT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
  ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
  THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
  SUCH DAMAGE.
@@ -32,9 +32,11 @@ Caching should move into StaticSchedulingDirector.
 
 package ptolemy.actor.sched;
 
-import ptolemy.kernel.*;
+import ptolemy.actor.Actor;
+import ptolemy.actor.CompositeActor;
+import ptolemy.actor.Director;
 import ptolemy.kernel.util.*;
-import ptolemy.actor.*;
+
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -156,7 +158,7 @@ public class Scheduler extends Attribute {
      *  @return The Schedule returned by the _getSchedule() method.
      *  @exception IllegalActionException If the scheduler has no container
      *  (a director), or the director has no container (a CompositeActor),
-     *  or the scheduling alorithm throws it.
+     *  or the scheduling algorithm throws it.
      *  @exception NotSchedulableException If the _getSchedule() method
      *  throws it. Not thrown in this base class, but may be needed
      *  by the derived schedulers.
@@ -220,9 +222,9 @@ public class Scheduler extends Attribute {
             }
             if(!isValid() || _cachedSchedule == null) {
                 _cachedSchedule = new ArrayList();
-                Enumeration newSchedEnum = _schedule();
-                while (newSchedEnum.hasMoreElements()) {
-                    _cachedSchedule.add(newSchedEnum.nextElement());
+                Enumeration newScheduleEnumeration = _schedule();
+                while (newScheduleEnumeration.hasMoreElements()) {
+                    _cachedSchedule.add(newScheduleEnumeration.nextElement());
                 }
             }
             return Collections.enumeration(_cachedSchedule);
