@@ -46,6 +46,7 @@ EXTRA_SRCS = \
 	javalinks.html \
 	packages.html \
 	rating.html \
+	reviews.html \
 	style.html \
 	testing.html
 
