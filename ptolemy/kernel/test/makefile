@@ -50,6 +50,7 @@ JSRCS = \
 	SDFPlot.java \
 	SDFPrint.java\
 	SDFStar.java \
+	StatusArrayTest.java \
 	Sample.java \
 	SampleTarget.java \
 	SampleSDFExecutive.java
@@ -71,6 +72,9 @@ all: $(EXTRA_SRCS) jclass
 
 install: $(EXTRA_SRCS) jclass javadocs
 	chmod a+x ptjdriver
+
+test: jclass
+	$(JAVAHOME)/bin/java -classpath ../../..:$(JAVAHOME)/lib/classes.zip pt.kernel.test.StatusArrayTest
 
 docs: javadocs
 
