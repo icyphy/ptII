@@ -728,6 +728,28 @@ public class IntegerMatrixMath {
         return returnValue;
     }
 
+    /** Return a new matrix that is formed by converting the integers
+     *  in the argument matrix to complex numbers. Each complex number
+     *  has a real part equal to the value in the argument matrix and a
+     *  zero imaginary part.
+     *
+     *  @param array A matrix of integers.
+     *  @return A new matrix of complex numbers.
+     */
+    public static final Complex[][] toComplexMatrix(final int[][] matrix) {
+        int rows = _rows(matrix);
+        int columns = _columns(matrix);
+
+        Complex[][] returnValue = new Complex[rows][columns];
+
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                returnValue[i][j] = new Complex((double)matrix[i][j], 0.0);
+            }
+        }
+        return returnValue;
+    }
+
     /** Return a new matrix that is formed by converting the ints in
      *  the argument matrix to doubles.
      *  @param array An matrix of int.
