@@ -42,7 +42,7 @@ import java.util.*;
  * non-null.
  * <p>
  * @author Albert Chen, William Wu, Edward A. Lee, Jeff Tsay
- * @version @(#)DoubleArrayMath.java	1.0   09/25/98
+ * @version $Id$
  */
 
 public class DoubleArrayMath {

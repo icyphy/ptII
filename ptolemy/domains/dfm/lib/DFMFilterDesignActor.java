@@ -64,7 +64,7 @@ import ptolemy.math.*;
   Sample frequency is at 1.0.
  
 @author  William Wu (wbwu@eecs.berkeley.edu) 
-@version $id$ 
+@version $Id$ 
 @see ptolemy.math.filter.DigitalFilter;
 @see ptolemy.math.filter.Filter;
  

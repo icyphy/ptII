@@ -41,7 +41,7 @@ import ptolemy.kernel.util.*;
  in at constructor function.
    
 @author  William Wu (wbwu@eecs.berkeley.edu) 
-@version $id$ 
+@version $Id$ 
 @see ptolemy.domains.dfm.kernel.DFMActor
  
 */

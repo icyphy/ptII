@@ -141,7 +141,7 @@ import java.lang.*;
  * it can only be viewed by a browser that supports JDK 1.1.
  *
  * @author Edward A. Lee, Christopher Hylands
- * @version @(#)PlotBox.java	1.109   10/12/98
+ * @version $Id$
  */
 public class PlotBox extends Panel {
 

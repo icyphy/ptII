@@ -190,7 +190,7 @@ import java.net.*;
  * </ul>
  *
  * @author Edward A. Lee, Christopher Hylands
- * @version @(#)Plot.java	1.118   10/12/98
+ * @version $Id$
  */
 public class Plot extends PlotBox {
 

@@ -44,7 +44,7 @@ import java.util.Observable;
  It contains a class that is derived from ptolemy.filter.view.IIRFiltSetView.
  <p> 
 @author William Wu (wbwu@eecs.berkeley.edu) 
-@version $id$ 
+@version $Id$ 
 @see ptolemy.filter.view.IIRFiltSetView 
 */
 public class DFMIIRParamActor extends DFMActor {

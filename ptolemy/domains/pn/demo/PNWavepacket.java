@@ -43,7 +43,7 @@ import java.util.Enumeration;
 This is currently a Universe containing some PN Actors. This might not support
 hierarchy currently.
 @author  Mudit Goel
-@version @(#)PNWavepacket.java	1.23 08/20/98
+@version $Id$
 */
 public class PNWavepacket {
 

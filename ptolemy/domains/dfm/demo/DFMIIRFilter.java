@@ -46,7 +46,7 @@ import java.util.Enumeration;
  DFMPoleZeroActor, DFMTransActor.
 
 @author  William Wu (wbwu@eecs.berkeley.edu) 
-@version $id$ 
+@version $Id$ 
 */
 public class DFMIIRFilter {
 

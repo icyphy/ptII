@@ -43,7 +43,7 @@ import java.awt.*;
 
 
 @author John S. Davis II
-@version @(#)DisplayBlock.java	1.1	11/12/98
+@version $Id$
 */
 public class DisplayBlock extends Canvas {
 

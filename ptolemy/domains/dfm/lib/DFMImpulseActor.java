@@ -45,7 +45,7 @@ import java.util.Observable;
  An inner class, DFMImpulseView, is derived from ptolemy.filter.view.ImpulseView.
  <p> 
 @author William Wu (wbwu@eecs.berkeley.edu) 
-@version $id$ 
+@version $Id$ 
 @see ptolemy.filter.view.ImpulseView 
 */
 public class DFMImpulseActor extends DFMActor {

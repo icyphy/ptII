@@ -46,7 +46,7 @@ import java.util.Observable;
  An inner class, DFMTransView, is derived from ptolemy.filter.view.TransFunctView.
  <p> 
 @author William Wu (wbwu@eecs.berkeley.edu) 
-@version $id$ 
+@version $Id$ 
 @see ptolemy.filter.view.TransFunctView 
 */
 public class DFMTransActor extends DFMActor {

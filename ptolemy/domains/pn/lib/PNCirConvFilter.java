@@ -39,7 +39,7 @@ import java.io.*;
 /** 
 
 @author Mudit Goel
-@version @(#)PNCirConvFilter.java	1.26 09/13/98
+@version $Id$
 */
 public class PNCirConvFilter extends AtomicActor{
  

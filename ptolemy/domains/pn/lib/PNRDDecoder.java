@@ -40,7 +40,7 @@ import java.lang.Math;
 //// PNRDDecoder
 /** 
 @author Mudit Goel
-@version @(#)PNRDDecoder.java	1.18 09/13/98
+@version $Id$
 */
 public class PNRDDecoder extends AtomicActor {
     

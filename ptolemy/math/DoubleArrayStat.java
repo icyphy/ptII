@@ -40,7 +40,7 @@ import java.util.*;
  * This class provides library for statistical operations on double arrays.
  * <p>
  * @author Jeff Tsay
- * @version @(#)DoubleArrayStat.java	1.0   09/25/98
+ * @version $Id$
  */
 
 public class DoubleArrayStat extends DoubleArrayMath {

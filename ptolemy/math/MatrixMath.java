@@ -48,7 +48,7 @@ package ptolemy.math;
  * rows of the matrix are expected to have the same number of columns.
  *
  * @author Jeff Tsay
- * @version @(#)MatrixMath.java	1.2   1/21/98
+ * @version $Id$
  */
 
 public class MatrixMath {

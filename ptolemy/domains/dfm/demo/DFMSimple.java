@@ -45,7 +45,7 @@ import java.util.Enumeration;
  A very simple demo of DFM domain.  It contains couple actors that does
  some floating number calculations with loops and conditions.
 @author  William Wu (wbwu@eecs.berkeley.edu) 
-@version $id$ 
+@version $Id$ 
 */
 public class DFMSimple {
 

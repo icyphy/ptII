@@ -42,7 +42,7 @@ import ptolemy.kernel.util.*;
  threshold.  In the future this should take advantage of the expression
  package. 
 @author  William Wu 
-@version $id$ 
+@version $Id$ 
 */
 
 public class DFMSelectOutputActor extends DFMActor {

@@ -42,7 +42,7 @@ import collections.LinkedList;
 
 
 @author John S. Davis II
-@version @(#)DDEInPunctuation.java	1.1	11/12/98
+@version $Id$
 */
 public class DDEInPunctuation extends DDEPunctuation {
 

@@ -40,7 +40,7 @@ import java.io.*;
 //// PNRDController
 /** 
 @author Mudit Goel
-@version @(#)PNRDController.java	1.32 09/13/98
+@version $Id$
 */
 public class PNRDController extends AtomicActor {
     

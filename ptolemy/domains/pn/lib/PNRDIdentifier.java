@@ -38,7 +38,7 @@ import java.lang.Math;
 //// PNRDIdentifier
 /** 
 @author Mudit Goel
-@version @(#)PNRDIdentifier.java	1.13 09/13/98
+@version $Id$
 */
 public class PNRDIdentifier extends AtomicActor {
     

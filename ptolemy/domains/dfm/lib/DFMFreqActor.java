@@ -51,7 +51,7 @@ import java.util.Observable;
  that is derived from ptolemy.filter.view.FreqView.
  <p> 
 @author William Wu (wbwu@eecs.berkeley.edu) 
-@version $id$ 
+@version $Id$ 
 @see ptolemy.filter.view.FreqView 
 */
 public class DFMFreqActor extends DFMActor {

@@ -35,7 +35,7 @@ package ptolemy.filter.view;
 /**
  * A simple structure for storing a plot point.
  * @author Edward A. Lee
- * @version @(#)PlotPoint.java	1.10    02/08/98
+ * @version $Id$
  */
 public class PlotPoint {
 

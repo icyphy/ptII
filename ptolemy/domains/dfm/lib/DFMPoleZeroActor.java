@@ -44,7 +44,7 @@ import java.util.Observable;
  An inner class, DFMPoleZeroView, is derived from ptolemy.filter.view.PoleZeroView.
  <p> 
 @author William Wu (wbwu@eecs.berkeley.edu) 
-@version $id$ 
+@version $Id$ 
 @see ptolemy.filter.view.PoleZeroView 
 */
 public class DFMPoleZeroActor extends DFMActor {

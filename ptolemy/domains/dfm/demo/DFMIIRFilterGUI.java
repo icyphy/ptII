@@ -48,7 +48,7 @@ import java.awt.event.*;
  DFMPoleZeroActor, DFMTransActor.
 
 @author  William Wu (wbwu@eecs.berkeley.edu) 
-@version $id$ 
+@version $Id$ 
 */
 public class DFMIIRFilterGUI implements ActionListener {
 

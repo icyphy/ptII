@@ -41,7 +41,7 @@ import ptolemy.kernel.util.*;
  then no-op token is produced.   Expression package should be used here also.
   
 @author  William Wu  wbwu@eecs.berkeley.edu
-@version $id$ 
+@version $Id$ 
 */
 
 public class DFMThresholdActor extends DFMActor {

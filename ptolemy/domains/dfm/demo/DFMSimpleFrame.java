@@ -45,7 +45,7 @@ import java.awt.event.*;
  couple actors that does
  some floating number calculations with loops and conditions.
 @author  William Wu (wbwu@eecs.berkeley.edu) 
-@version $id$ 
+@version $Id$ 
 */
 public class DFMSimpleFrame implements ActionListener {
 

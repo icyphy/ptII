@@ -43,7 +43,7 @@ import ptolemy.data.*;
 
 
 @author John S. Davis II
-@version @(#)BusContentionDemo.java	1.1	11/12/98
+@version $Id$
 */
 public class BusContentionDemo {
 

@@ -32,7 +32,7 @@ package ptolemy.filter.view;
  * problems with the data to be plotted.
  *
  * @author Christopher Hylands
- * @version @(#)CmdLineArgException.java	1.11    08/22/98
+ * @version $Id$
  */
 public class CmdLineArgException extends Throwable {
     public CmdLineArgException() { super(); }
