@@ -47,7 +47,7 @@ PCCG_ARRAY_INSTANCE_PTR pccg_array_allocate_list(
         va_list next_argument) {
     int first_dimension_size, first_element_size;
     // The parameters for calling this function recursively.
-    int new_dimensions_to_fill, new_empty_dimensions;
+    int new_empty_dimensions;
     int i;
     void* new_array;
     PCCG_ARRAY_INSTANCE *result;
@@ -79,7 +79,7 @@ PCCG_ARRAY_INSTANCE_PTR pccg_array_allocate_list(
         for (i = 0; i <= first_dimension_size; i++) {
             *((void**)new_array + i) =
                 pccg_array_allocate_list(element_class, element_size,
-                        new_dimensions_to_fill, new_empty_dimensions,
+                        dimensions_to_fill - 1, new_empty_dimensions,
                         next_argument);
         }
     }
