@@ -31,7 +31,7 @@
 
 ME =		ptolemy/domains/wireless/lib
 
-DIRS = 		test network
+DIRS = 		test network tinyOS
 
 # Root of the Java directory
 ROOT =		../../../..
@@ -48,7 +48,8 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-		network/network.jar
+		network/network.jar \
+		tinyOS/tinyOS.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
@@ -69,7 +70,8 @@ JSRCS = \
 	WirelessToWired.java
 
 OTHER_FILES_TO_BE_JARED = \
-	channels.xml
+	channels.xml \
+	actors.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
