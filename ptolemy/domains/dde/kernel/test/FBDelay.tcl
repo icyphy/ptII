@@ -207,8 +207,6 @@ test FBDelay-4.1 {Dual cycle with 0 delay in lower cycle with actor/lib/clock} {
     $stopTime setToken [java::new ptolemy.data.DoubleToken 27.0]
     
     set clockOut [java::cast ptolemy.actor.TypedIOPort [$clock getPort "output"]]
-    $clockOut setMultiport true
-
     set rcvr1 [java::new ptolemy.domains.dde.kernel.test.DDEGetNToken $toplevel "rcvr1" 3]
     set join1 [java::new ptolemy.domains.dde.kernel.test.FlowThrough $toplevel "join1"]
     set fork1 [java::new ptolemy.domains.dde.kernel.test.TwoPut $toplevel "fork1"]
@@ -239,9 +237,9 @@ test FBDelay-4.1 {Dual cycle with 0 delay in lower cycle with actor/lib/clock} {
     set fBack2In [$fBack2 getPort "input"]
     set fBack2Out [$fBack2 getPort "output"]
 
-    $toplevel connect $clockOut $join1In
-    $toplevel connect $clockOut $join2In
-
+    set clockRelation [$toplevel connect $clockOut $join1In]
+    $join2In link $clockRelation 
+    
     $toplevel connect $join1Out $fork1In
     $toplevel connect $fork1Out1 $rcvr1In 
     $toplevel connect $fBack1Out $join1In
@@ -304,8 +302,6 @@ test FBDelay-4.2 {Dual cycle with very small delay in lower cycle with actor/lib
     #$fBack2 setDelay 0.2
 
     set clockOut [java::cast ptolemy.actor.TypedIOPort [$clock getPort "output"]]
-    $clockOut setMultiport true
-
     set rcvr1In [$rcvr1 getPort "input"]
     set join1In [$join1 getPort "input"]
     set join1Out [$join1 getPort "output"]
@@ -324,9 +320,9 @@ test FBDelay-4.2 {Dual cycle with very small delay in lower cycle with actor/lib
     set fBack2In [$fBack2 getPort "input"]
     set fBack2Out [$fBack2 getPort "output"]
 
-    $toplevel connect $clockOut $join1In
-    $toplevel connect $clockOut $join2In
-
+    set clockRelation [$toplevel connect $clockOut $join1In]
+    $join2In link $clockRelation
+    
     $toplevel connect $join1Out $fork1In
     $toplevel connect $fork1Out1 $rcvr1In 
 
