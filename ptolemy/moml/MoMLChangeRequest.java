@@ -356,7 +356,7 @@ public class MoMLChangeRequest extends ChangeRequest {
     private URL _base;
     
     // Flag to print out information about what's being done.
-    private static boolean _DEBUG = true;
+    private static boolean _DEBUG = false;
     
     // Flag indicating whether propagation is enabled.
     private boolean _enablePropagation = true;
