@@ -1,0 +1,58 @@
+<!-- $Id$ -->
+<html>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<head>
+<title>Code Generation for throttle controllers</title>
+</head>
+<body>
+<dl>
+<dt> <a href="Controller.xml"><CODE>Controller.xml</CODE></a>
+<dd> Composite Actor written by Edward A. Lee
+Edward wrote:
+<BLOCKQUOTE>
+Attached is the model I started modifying.  It currently
+just outputs a sinewave, which is probably right...
+Without hooking it up to some sort of model of dynamics,
+we can't expect much more.  But code generating this would
+certainly be a good starting point, and make a decent demo.
+</BLOCKQUOTE>
+and
+<BLOCKQUOTE>
+Note:  Tunc's model is likely to be better, so if you have already
+made some sense of his, go with that...  But if you haven't started
+with his, this one will probably be more straightforward.
+</BLOCKQUOTE>
+
+<dt> <a href="sliding.xml"><CODE>sliding.xml</CODE></a>
+<dd> Portion of <CODE>tunc.xml</CODE>
+<dt> <a href="tunc.xml"><CODE>tunc.xml</CODE></a>
+<dd> 
+ Complete throttle body model from Tunc Simsek
+ <p>Tunc wrote
+<BLOCKQUOTE>
+here is the file without modifications.  
+to make it run using a single sdf controller
+you would need to do the following:
+
+ <p>replace "tunc.controller.sampled controller.real-time controller"
+with the refinement of the "driver" mode of
+ "tunc.controller.sampled controller.real-time controller.servo 
+controller.modal controller"
+
+ <p>And that should give you a purely SDF pedal tracking controller.
+
+ <p>  Best,
+ <br>   Tunc
+
+ <p>ps. the version of ptolemy i'm using is the one i checked out
+  and compiled on the 9th(or 10th) of January.
+</BLOCKQUOTE>
+
+</dl>
+
+<menu>
+
+</menu>
+
+</body>
+</html>
