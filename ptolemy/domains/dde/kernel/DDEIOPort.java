@@ -41,11 +41,12 @@ import ptolemy.data.*;
 /**
 A DDEIOPort is a timed input/output port used in the DDE domain.
 DDEIOPorts are used to send tokens between DDEActors, and in so
-doing, associate time with the tokens as they are placed in DDEReceivers.
+doing, associate time with the tokens as they are placed in 
+DDEReceivers.
 <P>
 DDEIOPorts are not necessary to facilitate communication between actors
 executing in a DDE model; standard TypedIOPorts are sufficient for most
-communication. DDEIOPorts become necessary when the time stamp to be
+communication. DDEIOPorts become useful when the time stamp to be
 associated with an outgoing token is greater than the current time of
 the sending actor.
 <P>
@@ -58,15 +59,6 @@ a time stamp that is greater than the current time but less then the
 previously produced time stamp. In such cases, an IllegalArgumentException
 will be thrown.
 <P>
-To prevent the runtime difficulties cited above, it is suggested that
-DDEIOPorts be avoided except when necessary. The kind of actors that
-require the use of DDEIOPorts are often referred to as <I>delay
-actors</I> to indicate the fact that a delay occurs between the time stamps
-of consumed tokens and their corresponding output-produced time stamps.
-As a general rule, it is suggested that in a DDE model, delay actors
-derive from DDEActors. Applying this rule means that polymorphic actors
-(those of the ptolemy.actor.lib package) should never require DDEIOPorts
-and should use TypedIOPorts instead.
 
 
 @author John S. Davis II
@@ -180,45 +172,16 @@ public class DDEIOPort extends TypedIOPort {
         if( sendTime < currentTime &&
 		sendTime != TimedQueueReceiver.IGNORE &&
 		sendTime != TimedQueueReceiver.INACTIVE ) {
-	    // FIXME: Am I sure about INACTIVE
             throw new IllegalActionException( this, "Time values in "
                     + "the past are not allowed.");
 	}
-        Receiver[][] farRec;
-        try {
-            workspace().getReadAccess();
-            if (!isOutput()) {
-                throw new IllegalActionException(this,
-                        "send: Tokens can only be sent from an "+
-                        "output port.");
-            }
-            if (chIndex >= getWidth() || chIndex < 0) {
-                throw new IllegalActionException(this,
-                        "send: channel index is out of range.");
-            }
-            // Note that the getRemoteReceivers() method doesn't throw
-            // any non-runtime exception.
-            farRec = getRemoteReceivers();
-            if (farRec.length == 0 || farRec[chIndex].length == 0) {
-                return;
-            }
-            for (int j = 0; j < farRec[chIndex].length; j++) {
-                ((DDEReceiver)farRec[chIndex][j]).put(token, sendTime);
-            }
-	} catch( IllegalArgumentException e ) {
-	    if( e.getMessage().indexOf("past") != -1 ) {
-		throw e;
-	    } else {
-	        String actorName = ((NamedObj)getContainer()).getName();
-	        throw new IllegalArgumentException(actorName + " "
-			+ "attempted to place an event into outgoing "
-			+ "channel " + chIndex + " of DDEIOPort '"
-			+ this.getName() + "' with a time stamp "
-			+ "earlier than that of previous events placed "
-			+ "into this channel.");
-	    }
-        } finally {
-            workspace().doneReading();
-	}
+        
+        if( thread instanceof DDEThread ) {
+            ddeThread = (DDEThread)thread;
+            TimeKeeper tKeeper = ddeThread.getTimeKeeper();
+            tKeeper.setOutputTime(sendTime);
+        }
+        
+        super.send( chIndex, token );
     }
 }
