@@ -128,9 +128,6 @@ public class ASTReflect {
      *  about the package.
      */
     public static CompileUnitNode ASTCompileUnitNode(Class myClass) {
-	if (_debug) {
-	    System.out.println("// " + myClass.toString());
-
             if (myClass.getPackage() == null ) {
                 // JDK1.2.2 getPackage returns null
                 System.out.println("// package null;");
@@ -171,36 +168,23 @@ public class ASTReflect {
                     /*imports*/ new LinkedList(),
                     TNLManip.cons(classDeclNode));
 
-	if (_debug) {
-	    System.out.println("}");
-	}
 	return compileUnitNode;
-
     }
 
     /** Return a list that contains an AST for the constructors. */
     public static List constructorsASTList(Class myClass) {
 	List constructorList = new LinkedList();
-        if (_debug) {
-	    System.out.println(_indent + "// Constructors");
-	}
 	Constructor constructors[] = myClass.getDeclaredConstructors();
 	Constructor constructor = null;
 	for(int i = 0; i < constructors.length; i++) {
 	    constructor = constructors[i];
-	    if (_debug) {
-		System.out.println(_indent +
-                        constructor.getName() + "{}");
-	    }
 	    int modifiers =
                 Modifier.convertModifiers(constructor.getModifiers());
-
 	    String fullConstructorName = constructor.getName();
 	    NameNode constructorName =
 		new NameNode(AbsentTreeNode.instance,
                         fullConstructorName.substring(1 +
                                 fullConstructorName.lastIndexOf('.')));
-
 	    List paramList = _paramList(constructor.getParameterTypes());
 
 	    // FIXME: call method.getExceptionTypes and convert it to a list.
@@ -226,14 +210,8 @@ public class ASTReflect {
      */
     public static List fieldsASTList(Class myClass) {
 	List fieldList = new LinkedList();
-	if (_debug) {
-	    System.out.println(_indent + "// Fields");
-	}
 	Field fields[] = myClass.getDeclaredFields();
 	for(int i = 0; i < fields.length; i++) {
-	    if (_debug) {
-		System.out.println(_indent + fields[i].toString() + ";");
-	    }
 	    int modifiers =
                 Modifier.convertModifiers(fields[i].getModifiers());
 	    TypeNode defType = _definedType(fields[i].getType());
@@ -261,9 +239,6 @@ public class ASTReflect {
 	List innerClassList = new LinkedList();
 	// Handle inner classes
 	Class classes[] = myClass.getClasses();
-	if (classes.length > 0 && _debug) {
-	    System.out.println(_indent + "// Inner classes");
-	}
 	for(int i = 0; i < classes.length; i++) {
 	    innerClassList.add(ASTClassDeclNode(classes[i]));
 	}
@@ -275,8 +250,6 @@ public class ASTReflect {
      */
     public static List methodsASTList(Class myClass) {
 	List methodList = new LinkedList();
-	if (_debug)
-	    System.out.println(_indent + "// Methods");
 	Method methods[] = myClass.getDeclaredMethods();
 	Method method = null;
 	for(int i = 0; i < methods.length; i++) {
@@ -286,9 +259,6 @@ public class ASTReflect {
 		// so we skip it
 		continue;
 	    }
-	    if (_debug)
-		System.out.println(_indent + method + "{}");
-
 	    // FIXME, we need to map java.lang.reflect.Modifier to
 	    // ptolemy.java.lang.Modifier.
 	    int modifiers =
@@ -466,7 +436,4 @@ public class ASTReflect {
 
     // String to indent printed output with.
     private final static String _indent = new String("    ");
-
-    // Set to true to turn on debugging messages
-    private final static boolean _debug = false;
 }
