@@ -46,9 +46,10 @@ Aliases can be chained to arbitrary depth.
 As with all classes that support hierarchical graphs,
 methods that read the graph structure come in two versions,
 shallow and deep.  The deep version flattens the hierarchy.
-For example, deepGetDownAlias() returns the port at the bottom
-of an alias chain, whereas getDownAlias() returns the port one
-level down in the alias chain.
+For example, deepGetLinkedRelations() enumerates the relations
+that are linked to this port or any of its up aliases, while
+getLinkedRelations() only enumerates the relations directly linked
+to this port, some of which may be alias relations.
 
 @author Edward A. Lee
 @version $Id$
@@ -78,19 +79,69 @@ public class ComponentPort extends Port {
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
 
-    /** Return the port at the bottom of the alias chain containing this
-     *  port, or this port if there is no such alias chain.
+    /** Enumerate the deep entities connected to this port and all of its
+     *  up aliases.  This is simply the containers of the ports returned
+     *  by deepGetConnectedPorts().  Note that a particular entity may be
+     *  listed more than once if there is more than one link to it.
+     *  If any port has no container then nothing is included for that
+     *  that port.
+     *  @return An enumeration of ComponentEntity objects.
      */	
-    public ComponentPort deepGetDownAlias() {
-        ComponentPort bottom = this;
-        AliasRelation downrelation = _downAlias;
-        while (downrelation != null) {
-            ComponentPort downport = downrelation.getDownAlias();
-            if (downport == null) break;
-            bottom = downport;
-            downrelation = downport.getDownAlias();
+    public Enumeration deepGetConnectedEntities() {
+        Enumeration ports = deepGetConnectedPorts();
+        LinkedList result = new LinkedList();
+        
+        while (ports.hasMoreElements()) {
+            ComponentPort port = (ComponentPort)ports.nextElement();
+            Nameable container = port.getContainer();
+            if (container != null) {
+                result.insertLast(container);
+            }
         }
-        return bottom;
+        return result.elements();
+    }
+
+    /** Enumerate the ports connected to this port followed by all the
+     *  ports connected to its up aliases.
+     *  If any ports are found that have down aliases, then the deep down
+     *  aliases of that port are the ones listed.
+     *  @return An enumeration of ComponentPort objects.
+     */	
+    public Enumeration deepGetConnectedPorts() {
+
+        Enumeration nearrelations = getLinkedRelations();
+        LinkedList result = new LinkedList();
+            
+        while( nearrelations.hasMoreElements() ) {
+            ComponentRelation relation =
+                 (ComponentRelation)nearrelations.nextElement();
+            result.appendElements(relation.deepGetLinkedPortsExcept(this));
+            if (relation.isAlias()) {
+                ComponentPort upport = ((AliasRelation)relation).getUpAlias();
+                if (upport != null) {
+                    result.appendElements(upport.deepGetConnectedPorts());
+                }
+            }
+        }
+        return result.elements();
+    }
+
+    /** Enumerate the ports at the bottom of the alias chains descending
+     *  from this port, or this port if there is no such alias chain.
+     *  @return An enumeration of ComponentPort objects.
+     */	
+    public Enumeration deepGetDownPorts() {
+        LinkedList result = new LinkedList();
+        if (_downAlias != null) {
+            Enumeration downports = _downAlias.getLinkedPorts();
+            while (downports.hasMoreElements()) {
+                ComponentPort downport = (ComponentPort)downports.nextElement();
+                result.appendElements(downport.deepGetDownPorts());
+            }
+        } else {
+            result.insertLast(this);
+        }
+        return result.elements();
     }
 
     /** Enumerate the relations linked to this port and all of its up aliases.
@@ -110,53 +161,6 @@ public class ComponentPort extends Port {
                 }
             } else {
                 result.insertLast(relation);
-            }
-        }
-        return result.elements();
-    }
-
-    /** Enumerate the deep entities linked to this port and all of its
-     *  up aliases.  This is simply the containers of the ports returned
-     *  by deepGetConnectedPorts().  Note that a particular entity may be
-     *  listed more than once if there is more than one link to it.
-     *  If any port has no container then nothing is included for that
-     *  that port.
-     *  @return An enumeration of ComponentEntity objects.
-     */	
-    public Enumeration deepGetLinkedEntities() {
-        Enumeration ports = deepGetConnectedPorts();
-        LinkedList result = new LinkedList();
-        
-        while (ports.hasMoreElements()) {
-            ComponentPort port = (ComponentPort)ports.nextElement();
-            Nameable container = port.getContainer();
-            if (container != null) {
-                result.insertLast(container);
-            }
-        }
-        return result.elements();
-    }
-
-    /** Enumerate the ports connected to this port and all of its up aliases.
-     *  If any ports are found that have down aliases, then the deep down
-     *  alias of that port is the one listed.
-     *  @return An enumeration of ComponentPort objects.
-     */	
-    public Enumeration deepGetConnectedPorts() {
-
-        Enumeration nearrelations = getLinkedRelations();
-        LinkedList result = new LinkedList();
-            
-        while( nearrelations.hasMoreElements() ) {
-            ComponentRelation relation =
-                 (ComponentRelation)nearrelations.nextElement();
-            if (relation.isAlias()) {
-                ComponentPort upport = ((AliasRelation)relation).getUpAlias();
-                if (upport != null) {
-                    result.appendElements(upport.deepGetConnectedPorts());
-                }
-            } else {
-                result.appendElements(relation.deepGetLinkedPortsExcept(this));
             }
         }
         return result.elements();

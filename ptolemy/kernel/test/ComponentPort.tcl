@@ -42,6 +42,10 @@ if {[info procs _testEnums] == "" } then {
     source testEnums.tcl
 }
 
+if {[info procs enumToFullNames] == "" } then { 
+    source enums.tcl
+}
+
 # Uncomment this to get a full report, or set in your Tcl shell window.
 # set VERBOSE 1
 
@@ -62,15 +66,15 @@ test ComponentPort-1.1 {Get information about an instance of ComponentPort} {
 } {{
   class:         pt.kernel.ComponentPort
   fields:        
-  methods:       {_checkRelation pt.kernel.Relation} deepGetConnectedPor
-    ts deepGetDownAlias deepGetLinkedEntities deepGetLinked
-    Relations {equals java.lang.Object} getClass getContain
-    er getDownAlias getFullName getLinkedRelations getName 
-    hashCode {link pt.kernel.Relation} notify notifyAll num
-    Links {setContainer pt.kernel.Entity} {setDownAlias pt.
-    kernel.AliasRelation} {setName java.lang.String} toStri
-    ng {unlink pt.kernel.Relation} unlinkAll wait {wait lon
-    g} {wait long int}
+  methods:       {_checkRelation pt.kernel.Relation} deepGetConnectedEnt
+    ities deepGetConnectedPorts deepGetDownPorts deepGetLin
+    kedRelations {equals java.lang.Object} getClass getCont
+    ainer getDownAlias getFullName getLinkedRelations getNa
+    me hashCode {link pt.kernel.Relation} notify notifyAll 
+    numLinks {setContainer pt.kernel.Entity} {setDownAlias 
+    pt.kernel.AliasRelation} {setName java.lang.String} toS
+    tring {unlink pt.kernel.Relation} unlinkAll wait {wait 
+    long} {wait long int}
     
   constructors:  pt.kernel.ComponentPort {pt.kernel.ComponentPort pt.ker
     nel.ComponentEntity java.lang.String}
@@ -111,28 +115,29 @@ test ComponentPort-3.1 {Construct aliases} {
     set p2 [java::new pt.kernel.ComponentPort $e2 P2]
     set a1 [java::new pt.kernel.AliasRelation $e1 A1]
     $p2 link $a1
-    set alias [$a1 getDownAlias]
-    $alias getFullName
+    enumToFullNames [$a1 getLinkedPorts]
 } {E1.E2.P2}
 
 ######################################################################
 ####
 # 
-test ComponentPort-3.2 {Make too many aliases} {
+test ComponentPort-3.2 {Make multiple aliases and test deepGetDownPorts} {
     set e1 [java::new pt.kernel.CompositeEntity E1]
     set e2 [java::new pt.kernel.ComponentEntity $e1 E2]
     set p1 [java::new pt.kernel.ComponentPort $e2 P1]
     set p2 [java::new pt.kernel.ComponentPort $e2 P2]
+    set p3 [java::new pt.kernel.ComponentPort $e1 P3]
     set a1 [java::new pt.kernel.AliasRelation $e1 A1]
     $p1 link $a1
-    catch {$p2 link $a1} msg
-    list $msg
-} {{pt.kernel.IllegalActionException: E1.A1 and E1.E2.P2: AliasRelation cannot support more than one link.}}
+    $p2 link $a1
+    $a1 setUpAlias $p3
+    enumToFullNames [$p3 deepGetDownPorts]
+} {E1.E2.P1 E1.E2.P2}
 
 ######################################################################
 ####
 # 
-test ComponentPort-3.3 {Make alias bridge between ports} {
+test ComponentPort-3.3 {test getDownAlias of port and getUpAlias of relation} {
     set e1 [java::new pt.kernel.CompositeEntity E1]
     set e2 [java::new pt.kernel.ComponentEntity $e1 E2]
     set p1 [java::new pt.kernel.ComponentPort $e1 P1]
@@ -140,8 +145,8 @@ test ComponentPort-3.3 {Make alias bridge between ports} {
     set a1 [java::new pt.kernel.AliasRelation $e1 A1]
     $p2 link $a1
     $a1 setUpAlias $p1
-    list [[$p1 getDownAlias] getFullName] [[$a1 getDownAlias] getFullName]
-} {E1.A1 E1.E2.P2}
+    list [[$p1 getDownAlias] getFullName] [[$a1 getUpAlias] getFullName]
+} {E1.A1 E1.P1}
 
 ######################################################################
 ####
@@ -190,7 +195,7 @@ test ComponentPort-3.6 {Construct aliases, then modify them} {
     $p3 setDownAlias $a2
 
     set result {}
-    foreach obj [list $p1 $p2 $p3 $p4 $a1 $a2] {
+    foreach obj [list $p1 $p2 $p3 $p4] {
         set dp [$obj getDownAlias]
         if {$dp != [java::null]} {
             lappend result [$dp getFullName]
@@ -198,19 +203,25 @@ test ComponentPort-3.6 {Construct aliases, then modify them} {
             lappend result {}
         }
     }
+    foreach obj [list $a1 $a2] {
+        lappend result [enumToFullNames [$obj getLinkedPorts]]
+    }
 
     # Now the modification
     $p4 unlink $a2
     $p2 link $a2
     $p3 setDownAlias $a1
 
-    foreach obj [list $p1 $p2 $p3 $p4 $a1 $a2] {
+    foreach obj [list $p1 $p2 $p3 $p4] {
         set dp [$obj getDownAlias]
         if {$dp != [java::null]} {
             lappend result [$dp getFullName]
         } else {
             lappend result {}
         }
+    }
+    foreach obj [list $a1 $a2] {
+        lappend result [enumToFullNames [$obj getLinkedPorts]]
     }
     list $result
 } {{E0.A1 {} E0.A2 {} E0.E2.P2 E0.E4.P4 {} {} E0.A1 {} E0.E2.P2 E0.E2.P2}}

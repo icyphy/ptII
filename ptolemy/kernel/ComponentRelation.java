@@ -79,11 +79,11 @@ public class ComponentRelation extends Relation {
 
     /** Enumerate the entities linked to this relation.  If any of the ports
      *  that are directly linked to this relation are aliases, then follow those
-     *  aliases down to the ports at the bottom of the alias chain, and include
-     *  the container entities of those ports in the enumeration.  Note that
-     *  if this is an alias relation, then only the bottom of the alias chain
-     *  will be listed.  Thus, this method is not all that useful for alias
-     *  relations.
+     *  aliases down to the ports at the bottom of the alias chains, and include
+     *  the container entities of those ports in the enumeration.  Any ports
+     *  that have no container are ignored.  Note that
+     *  if this is an alias relation, then only the entities at the 
+     *  bottom of the alias chains will be listed.
      *  @return An enumeration of ComponentEntities.
      */	
     public Enumeration deepGetLinkedEntities() {
@@ -92,11 +92,15 @@ public class ComponentRelation extends Relation {
         
         while( nearports.hasMoreElements() ) {
             ComponentPort port = (ComponentPort)nearports.nextElement();
-            ComponentPort bottom = port.deepGetDownAlias();
-            Entity parent = (Entity) bottom.getContainer();
-            // Ignore ports with no container.
-            if (parent != null) {
-                storedEntities.insertLast( parent );
+            Enumeration bottomports = port.deepGetDownPorts();
+            while (bottomports.hasMoreElements()) {
+                ComponentPort bottomport =
+                        (ComponentPort)bottomports.nextElement();
+                Entity parent = (Entity) bottomport.getContainer();
+                // Ignore ports with no container.
+                if (parent != null) {
+                    storedEntities.insertLast( parent );
+                }
             }
         }
         return storedEntities.elements();
@@ -106,9 +110,8 @@ public class ComponentRelation extends Relation {
      *  that are directly linked to this relation are aliases, then follow those
      *  aliases down to the ports at the bottom of the alias chain, and include
      *  those ports in the enumeration.  Note that
-     *  if this is an alias relation, then only the bottom of the alias chain
-     *  will be listed.  Thus, this method is not all that useful for alias
-     *  relations.
+     *  if this is an alias relation, then only the bottom of the alias chains
+     *  will be listed.
      *  @return An enumeration of ComponentPorts.
      */	
     public Enumeration deepGetLinkedPorts() {
@@ -117,8 +120,8 @@ public class ComponentRelation extends Relation {
         
         while( nearports.hasMoreElements() ) {
             ComponentPort port = (ComponentPort)nearports.nextElement();
-            ComponentPort bottom = port.deepGetDownAlias();
-            storedEntities.insertLast( bottom );
+            Enumeration bottomports = port.deepGetDownPorts();
+            storedEntities.appendElements( bottomports );
         }
         return storedEntities.elements();
     }
@@ -126,40 +129,31 @@ public class ComponentRelation extends Relation {
     /** Enumerate the ports linked to this relation, except the port given
      *  as an argument or any of its down aliases.  If any of the ports
      *  that are directly linked to this relation are aliases, then follow those
-     *  aliases down to the ports at the bottom of the alias chain, and include
+     *  aliases down to the ports at the bottom of the alias chains, and include
      *  those ports in the enumeration.  Note that
-     *  if this is an alias relation, then only the bottom of the alias chain
-     *  will be listed.  Thus, this method is not all that useful for alias
-     *  relations.
+     *  if this is an alias relation, then only the bottom of the alias chains
+     *  will be listed.
      *  @param exceptport The port to exclude.
      *  @return An enumeration of ComponentPorts.
      */	
     public Enumeration deepGetLinkedPortsExcept(ComponentPort exceptport) {
         Enumeration nearports = getLinkedPorts();
-        LinkedList storedEntities = new LinkedList();
+        LinkedList result = new LinkedList();
         
         while( nearports.hasMoreElements() ) {
             ComponentPort port = (ComponentPort)nearports.nextElement();
             if (port != exceptport) {
-                boolean include = true;
-                ComponentPort bottom = port;
-                AliasRelation downrelation = bottom.getDownAlias();
-                while (downrelation != null) {
-                    ComponentPort downport = downrelation.getDownAlias();
-                    if (downport == exceptport) {
-                        include = false;
-                        break;
-                    }
-                    if (downport == null) break;
-                    bottom = downport;
-                    downrelation = downport.getDownAlias();
-                }
-                if (include) {
-                    storedEntities.insertLast( bottom );
+                AliasRelation downrelation = port.getDownAlias();
+                if (downrelation == null) {
+                    // No down alias, just include the port.
+                    result.insertLast( port );
+                } else {
+                    result.appendElements
+                           (downrelation.deepGetLinkedPortsExcept(exceptport));
                 }
             }
         }
-        return storedEntities.elements();
+        return result.elements();
     }
 
     /** Set the container.  Unless the argument
