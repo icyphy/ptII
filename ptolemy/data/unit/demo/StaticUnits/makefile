@@ -49,14 +49,15 @@ JSRCS =
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
 	NonAppletStaticUnits.htm \
-	StaticUnits.xml
-
-EXTRA_SRCS = \
-	$(OTHER_FILES_TO_BE_JARED) \
-	StaticUnits.htm \
+	StaticUnits.xml \
 	StaticUnits1.gif \
 	StaticUnits2.gif \
 	StaticUnits3.gif
+
+EXTRA_SRCS = \
+	$(OTHER_FILES_TO_BE_JARED) \
+	StaticUnits.htm
+
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
