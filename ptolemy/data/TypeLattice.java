@@ -35,6 +35,7 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.graph.*;
 
 import java.lang.reflect.Modifier;
+import java.lang.Void;		/* Needed for javadoc */
 
 //////////////////////////////////////////////////////////////////////////
 //// TypeLattice
