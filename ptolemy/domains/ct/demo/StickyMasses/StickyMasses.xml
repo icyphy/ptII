@@ -29,8 +29,6 @@
         </property>
         <property name="breakpointODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.DerivativeResolver&quot;">
         </property>
-        <property name="CTScheduler" class="ptolemy.domains.ct.kernel.CTScheduler">
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 45.0">
         </property>
     </property>
@@ -91,14 +89,16 @@ to see the modal behavior.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="10.0, 285.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={67, 172, 819, 468}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={67, 172, 819, 468}, maximized=false}">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{302.0, 175.0}">
     </property>
     <entity name="Plot Positions vs Time" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="legend" class="ptolemy.kernel.util.StringAttribute">
-        </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={435, -10, 508, 530}}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={435, -10, 508, 530}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 475]">
         </property>
@@ -118,27 +118,17 @@ to see the modal behavior.</text></svg></configure>
 <xLabel>time</xLabel>
 <yLabel></yLabel>
 <xRange min="0.0" max="50.0"/>
-<yRange min="-0.13865137749523862" max="3.0"/>
+<yRange min="-0.13535801264417258" max="3.0"/>
 <noGrid/>
 </plot>?>
         </configure>
     </entity>
     <entity name="Sticky Mass model" class="ptolemy.domains.fsm.modal.ModalModel">
-        <property name="directorClass" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.HSDirector">
-            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
-                <property name="style0" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.HSDirector">
-                </property>
-                <property name="style1" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.FSMDirector">
-                </property>
-                <property name="style2" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.hdf.kernel.HDFFSMDirector">
-                </property>
-            </property>
-        </property>
-        <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
-        </property>
         <property name="_Director" class="ptolemy.domains.fsm.kernel.HSDirector">
             <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="_Controller">
             </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 265.0">
         </property>
@@ -174,11 +164,8 @@ to see the modal behavior.</text></svg></configure>
         <entity name="_Controller" class="ptolemy.domains.fsm.modal.ModalController">
             <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="init">
             </property>
-            <property name="finalStateNames" class="ptolemy.kernel.util.StringAttribute">
-            </property>
-            <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
+                <configure><entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property></entity></entity></configure>
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 450]">
             </property>
@@ -238,7 +225,7 @@ model (double click on that transition to see its actions).</text></svg></config
                 <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 10.0">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 104, 815, 559}}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={232, 228, 815, 568}, maximized=false}">
             </property>
             <port name="V1" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
@@ -283,18 +270,12 @@ model (double click on that transition to see its actions).</text></svg></config
                 </property>
             </port>
             <entity name="init" class="ptolemy.domains.fsm.kernel.State">
-                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
-                </property>
                 <property name="_centerName" class="ptolemy.kernel.util.Attribute">
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="110.0, 200.0">
                 </property>
-                <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
-                </port>
-                <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
-                </port>
             </entity>
             <entity name="Separate" class="ptolemy.domains.fsm.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="Separate">
@@ -305,10 +286,6 @@ model (double click on that transition to see its actions).</text></svg></config
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="275.0, 235.0">
                 </property>
-                <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
-                </port>
-                <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
-                </port>
             </entity>
             <entity name="Together" class="ptolemy.domains.fsm.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="Together">
@@ -319,29 +296,17 @@ model (double click on that transition to see its actions).</text></svg></config
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="515.0, 235.0">
                 </property>
-                <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
-                </port>
-                <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
-                </port>
             </entity>
             <relation name="relation" class="ptolemy.domains.fsm.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
                 </property>
                 <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="P1 = p1; P2 = p2">
                 </property>
-                <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
-                </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
-                </property>
-                <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
-                </property>
-                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
                 </property>
                 <property name="actions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="Separate.p1 = p1; Separate.p2 = p2; Separate.v1 = v1; Separate.v2 = v2">
                 </property>
@@ -349,41 +314,25 @@ model (double click on that transition to see its actions).</text></svg></config
             <relation name="relation2" class="ptolemy.domains.fsm.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="touched_isPresent &amp;&amp; (V1-V2) &gt; 0.0">
                 </property>
-                <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
-                </property>
                 <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="Together.p = P1; Together.v = (V1+V2)/2.0; Together.stickiness = 10.0">
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
                 </property>
-                <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
-                </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
-                </property>
-                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
                 </property>
             </relation>
             <relation name="relation3" class="ptolemy.domains.fsm.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="abs(Force) &gt; Stickiness">
                 </property>
-                <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
-                </property>
                 <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="Separate.p1 = P1; Separate.p2 = P1; Separate.v1 = V1; Separate.v2 = V1">
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
                 </property>
-                <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
-                </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
-                </property>
-                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
                 </property>
             </relation>
             <link port="init.outgoingPort" relation="relation"/>
@@ -439,18 +388,16 @@ model (double click on that transition to see its actions).</text></svg></config
                         </property>
                     </property>
                 </property>
-                <property name="CTScheduler" class="ptolemy.domains.ct.kernel.CTScheduler">
-                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 34.5">
                 </property>
             </property>
-            <property name="p1" class="ptolemy.data.expr.Parameter" value="1.593576252993">
+            <property name="p1" class="ptolemy.data.expr.Parameter" value="1.5936503408324">
             </property>
-            <property name="v1" class="ptolemy.data.expr.Parameter" value="-0.2844299004447">
+            <property name="v1" class="ptolemy.data.expr.Parameter" value="-0.2534835100114">
             </property>
-            <property name="p2" class="ptolemy.data.expr.Parameter" value="1.593576252993">
+            <property name="p2" class="ptolemy.data.expr.Parameter" value="1.5936503408324">
             </property>
-            <property name="v2" class="ptolemy.data.expr.Parameter" value="-0.2844299004447">
+            <property name="v2" class="ptolemy.data.expr.Parameter" value="-0.2534835100114">
             </property>
             <property name="annotation" class="ptolemy.kernel.util.Attribute">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -719,9 +666,9 @@ of the two masses.</text></svg></configure>
             </property>
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[199, 1]">
             </property>
-            <property name="p" class="ptolemy.data.expr.Parameter" value="1.8771643389718">
+            <property name="p" class="ptolemy.data.expr.Parameter" value="1.8488832907865">
             </property>
-            <property name="v" class="ptolemy.data.expr.Parameter" value="0.149908284649">
+            <property name="v" class="ptolemy.data.expr.Parameter" value="0.1498925148665">
             </property>
             <property name="stickiness" class="ptolemy.data.expr.Parameter" value="10.0">
             </property>
@@ -765,8 +712,6 @@ of the two masses.</text></svg></configure>
                         <property name="choice2" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ImpulseBESolver&quot;">
                         </property>
                     </property>
-                </property>
-                <property name="CTScheduler" class="ptolemy.domains.ct.kernel.CTScheduler">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 39.5">
                 </property>
@@ -930,14 +875,10 @@ stickiness.</text></svg></configure>
             <entity name="Gain" class="ptolemy.actor.lib.Scale">
                 <property name="factor" class="ptolemy.data.expr.Parameter" value="-1.0">
                 </property>
-                <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
-                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="255.0, 415.0">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
                     <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
-                    </property>
-                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
                     </property>
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
