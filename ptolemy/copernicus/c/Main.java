@@ -1,4 +1,4 @@
-/* Transform Actors using Soot and generate C
+/* Transform Actors using Soot and generate C code.
 
  Copyright (c) 2001-2002 The Regents of the University of California.
  All rights reserved.
@@ -29,12 +29,17 @@
 
 package ptolemy.copernicus.c;
 
+// FIXME: clean up import list.
 import ptolemy.actor.CompositeActor;
 import ptolemy.copernicus.java.ActorTransformer;
 import ptolemy.copernicus.kernel.KernelMain;
 import ptolemy.copernicus.kernel.SootUtilities;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.copernicus.kernel.WatchDogTimer;
+import ptolemy.copernicus.java.ModelTransformer;
+import ptolemy.copernicus.java.InlineDirectorTransformer;
+import ptolemy.copernicus.java.CommandLineTransformer;
 
 import soot.*;
 import soot.jimple.*;
@@ -60,13 +65,9 @@ import java.util.Map;
 Read in a MoML model, generate .c files with very few
 dependencies on Ptolemy II.
 
-FIXME: This is only a stub file, it does not implement
-C code generation yet.
-
-
-@author Michael Wirthlin, Stephen Neuendorffer, Edward A. Lee, Christopher Hylands
+@author Shuvra S. Bhattacharyya, Michael Wirthlin, Stephen Neuendorffer, 
+Edward A. Lee, Christopher Hylands
 @version $Id$
-@since Ptolemy II 2.0
 */
 
 public class Main extends KernelMain {
@@ -75,43 +76,90 @@ public class Main extends KernelMain {
      *  @param args An array of Strings that control the transformation
      */
     public Main(String [] args) throws IllegalActionException {
-	// args[0] contains the MoML class name.
-	super(args[0]);
+	    // args[0] contains the MoML class name.
+	    super(args[0]);
     }
 
     /** Add transforms to the Scene.
      */
     public void addTransforms() {
+
 	super.addTransforms();
 
-        // Add a transformer to convert each actor class to C
-        // "wjtp" means "whole java transformation package"
-        // This transformer is required to be a scene transformer,
-        // and it is applied before body transformers.
-        // "wjtp.c" is the name of the phase.
-        //Scene.v().getPack("wjtp").add(new Transform("wjtp.c",
-        //        CTransformer.v(_toplevel));
+        // Set up a watch dog timer to exit after a certain amount of time.
+        // For example, to time out after 5 minutes, or 300000 ms:
+	    // -p wjtp.watchDog time:30000
+        Scene.v().getPack("wjtp").add(new Transform("wjtp.watchDog",
+                WatchDogTimer.v()));
 
-        // Add transformers to do other passes.
-        // "jtp" mean "java transformation package.
-        // These transformers are required to be a body transformer,
-        // and are applied after scene transformers.
+        // Sanitize names of objects in the model.
+        // We change the names to all be valid java identifiers
+        // so that we can
+        //      Scene.v().getPack("wjtp").add(new Transform("wjtp.ns",
+        //         NameSanitizer.v(_toplevel)));
 
-        // First pass: "cpaf" = "constant propagator and folder"
-        Scene.v().getPack("jtp").add(new Transform("jtp.cpaf",
-                ConstantPropagatorAndFolder.v()));
-        Scene.v().getPack("jtp").add(new Transform("jtp.cbf",
-                ConditionalBranchFolder.v()));
-        Scene.v().getPack("jtp").add(new Transform("jtp.uce",
-                UnreachableCodeEliminator.v()));
-	Scene.v().getPack("jtp").add(new Transform("jtp.cp",
-                CopyPropagator.v()));
-        Scene.v().getPack("jtp").add(new Transform("jtp.dae",
-                DeadAssignmentEliminator.v()));
+        // Create instance classes for actors.
+	    // This transformer takes no input as far as soot is concerned
+	    // (i.e. no application classes) and creates application
+	    // classes from the model.
+        Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.at", ActorTransformer.v(_toplevel)));
+
+        // Create a class for the composite actor of the model
+        Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.mt", ModelTransformer.v(_toplevel)));
+
+        // Inline the director into the composite actor.
+        InlineDirectorTransformer directorTransformer = null;
+        if (_generateLoopedSchedule) {
+            directorTransformer = LoopedScheduleTransformer.v(_toplevel);
+        } else {
+            directorTransformer = InlineDirectorTransformer.v(_toplevel);
+        }
+        Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.idt", directorTransformer));
+
+        // Add a command line interface (i.e. Main)
+        Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.clt",
+                        CommandLineTransformer.v(_toplevel)));
+
+        // Generate C code
+        Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.snapshot1", CWriter.v()));
+
+        // FIXME: add optimizations
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+/** Call soot.Main.main(), which does command line argument
+ *  processing and then starts the transformation.  This method
+ *  should be called after calling initialize() and addTransforms().
+ *
+ *  @param args Soot command line arguments to be passed
+ *  to soot.Main.main().
+ */
+public void generateCode(String [] args) {
+    // This is rather ugly.  The moml Class is not a Java class, so
+    // soot won't recognize it.  However, if we give soot nothing, then
+    // it won't run.  Note that later we will call setLibraryClass() on
+    // this class so that we don't actually generate code for it.
+    args[0] = "java.lang.Object";
+
+    // Rather than calling soot.Main.main() here directly, which
+    // spawns a separate thread, we run this in the same thread
+    //soot.Main.main(args);
+    soot.Main.setReservedNames();
+    soot.Main.setCmdLineArgs(args);
+    soot.Main main = new soot.Main();
+    soot.ConsoleCompilationListener consoleCompilationListener =
+            new soot.ConsoleCompilationListener();
+    soot.Main.addCompilationListener(consoleCompilationListener);
+    main.run(false);
+}
+
 
     /** Read in a MoML model, generate .class files for use with C
      *  @exception IllegalActionException If the model cannot be parsed.
@@ -121,17 +169,20 @@ public class Main extends KernelMain {
     public static void main(String[] args)
             throws IllegalActionException, NameDuplicationException {
 
-	Main main = new Main(args);
+	    Main main = new Main(args);
 
-	// Parse the model.
-	CompositeActor toplevel = main.readInModel(args[0]);
+	    // Parse the model.
+	    CompositeActor toplevel = main.readInModel(args[0]);
 
-	// Create instance classes for the actors.
-	main.initialize(toplevel);
+	    // Create instance classes for the actors.
+	    main.initialize(toplevel);
 
-	// Add Transforms to the Scene.
-	main.addTransforms();
+	    // Add Transforms to the Scene.
+	    main.addTransforms();
 
-	main.generateCode(args);
+	    main.generateCode(args);
     }
+
+    private boolean _generateJimple = false;
+    private boolean _generateLoopedSchedule = false;
 }
