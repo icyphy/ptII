@@ -1,4 +1,4 @@
-<isjeProject name="Ptolemy II 1.0 beta2 (Ptiny Version)" class="com.installshield.isje.product.TypicalProductProject" framework="com.installshield.isje.product.ProductWizardFramework">
+<isjeProject name="Ptolemy II 1.0ptiny" class="com.installshield.isje.product.TypicalProductProject" framework="com.installshield.isje.product.ProductWizardFramework">
 <section name="projectProperties" class="com.installshield.isje.project.ProjectPropertiesSection">
     <property name="authorName" displayName="Author Name" category="Author Info">Ptolemy Project, UC Berkeley EECS Dept.</property>
     <property name="authorEmail" displayName="Author Email" category="Author Info">ptolemy@eecs.berkeley.edu</property>
@@ -7,7 +7,7 @@
 Berkeley, CA 94706</property>
     <property name="companyTelephone" displayName="Company Telephone" category="Company Info"></property>
     <property name="companyFax" displayName="Company Fax" category="Company Info"></property>
-    <property name="companyWebsite" displayName="Company Website" category="Company Info"></property>
+    <property name="companyWebsite" displayName="Company Website" category="Company Info">http://ptolemy.eecs.berkeley.edu/ptolemyII</property>
     <property name="comments" displayName="Comments" category="Comments" ui="10"></property>
 </section>
 <section name="Product" class="com.installshield.isje.product.ProductSection">
@@ -44,20 +44,80 @@ Berkeley, CA 94706</property>
         <property name="beanId">bean3</property>
         <extendedProperty name="win32ppk" type="com.installshield.wizard.platform.win32.Win32JVMResolutionExtra">
             <property name="bundledJVMResource"/>
-            <property name="useCurrentJVM">False</property>
+            <property name="useCurrentJVM">True</property>
             <property array="True" length="0" name="JVMFileResources" type="string"/>
-            <property array="True" length="2" name="JVMFileSources" type="com.installshield.util.jvm.JVMFile">
+            <property array="True" length="17" name="JVMFileSources" type="com.installshield.util.jvm.JVMFile">
                 <arrayItem type="com.installshield.util.jvm.JVMFile">
                     <property name="fullSearch">False</property>
-                    <property name="fileName">C:\Program Files\InstallShield\ISMPP40\jvms\win32\sun_win32_118.jvm</property>
+                    <property name="fileName">C:\Program Files\InstallShield\IPMP401\jvms\win32\sun_win32_131002.jvm</property>
                 </arrayItem>
                 <arrayItem type="com.installshield.util.jvm.JVMFile">
                     <property name="fullSearch">False</property>
-                    <property name="fileName">C:\Program Files\InstallShield\ISMPP40\jvms\win32\ibm_win32_118.jvm</property>
+                    <property name="fileName">C:\Program Files\InstallShield\IPMP401\jvms\win32\sun_win32_13102.jvm</property>
+                </arrayItem>
+                <arrayItem type="com.installshield.util.jvm.JVMFile">
+                    <property name="fullSearch">False</property>
+                    <property name="fileName">C:\Program Files\InstallShield\IPMP401\jvms\win32\sun_win32_131001.jvm</property>
+                </arrayItem>
+                <arrayItem type="com.installshield.util.jvm.JVMFile">
+                    <property name="fullSearch">False</property>
+                    <property name="fileName">C:\Program Files\InstallShield\IPMP401\jvms\win32\sun_win32_13101.jvm</property>
+                </arrayItem>
+                <arrayItem type="com.installshield.util.jvm.JVMFile">
+                    <property name="fullSearch">False</property>
+                    <property name="fileName">C:\Program Files\InstallShield\IPMP401\jvms\win32\sun_win32_131.jvm</property>
+                </arrayItem>
+                <arrayItem type="com.installshield.util.jvm.JVMFile">
+                    <property name="fullSearch">False</property>
+                    <property name="fileName">C:\Program Files\InstallShield\IPMP401\jvms\win32\sun_win32_131b.jvm</property>
+                </arrayItem>
+                <arrayItem type="com.installshield.util.jvm.JVMFile">
+                    <property name="fullSearch">False</property>
+                    <property name="fileName">C:\Program Files\InstallShield\IPMP401\jvms\win32\sun_win32_13003.jvm</property>
+                </arrayItem>
+                <arrayItem type="com.installshield.util.jvm.JVMFile">
+                    <property name="fullSearch">False</property>
+                    <property name="fileName">C:\Program Files\InstallShield\IPMP401\jvms\win32\sun_win32_13002.jvm</property>
+                </arrayItem>
+                <arrayItem type="com.installshield.util.jvm.JVMFile">
+                    <property name="fullSearch">False</property>
+                    <property name="fileName">C:\Program Files\InstallShield\IPMP401\jvms\win32\sun_win32_13001.jvm</property>
+                </arrayItem>
+                <arrayItem type="com.installshield.util.jvm.JVMFile">
+                    <property name="fullSearch">False</property>
+                    <property name="fileName">C:\Program Files\InstallShield\IPMP401\jvms\win32\sun_win32_13.jvm</property>
+                </arrayItem>
+                <arrayItem type="com.installshield.util.jvm.JVMFile">
+                    <property name="fullSearch">False</property>
+                    <property name="fileName">C:\Program Files\InstallShield\IPMP401\jvms\win32\ibm_win32_130.jvm</property>
+                </arrayItem>
+                <arrayItem type="com.installshield.util.jvm.JVMFile">
+                    <property name="fullSearch">False</property>
+                    <property name="fileName">C:\Program Files\InstallShield\IPMP401\jvms\win32\sun_win32_122.jvm</property>
+                </arrayItem>
+                <arrayItem type="com.installshield.util.jvm.JVMFile">
+                    <property name="fullSearch">False</property>
+                    <property name="fileName">C:\Program Files\InstallShield\IPMP401\jvms\win32\ibm_win32_122.jvm</property>
+                </arrayItem>
+                <arrayItem type="com.installshield.util.jvm.JVMFile">
+                    <property name="fullSearch">False</property>
+                    <property name="fileName">C:\Program Files\InstallShield\IPMP401\jvms\win32\sun_win32_118.jvm</property>
+                </arrayItem>
+                <arrayItem type="com.installshield.util.jvm.JVMFile">
+                    <property name="fullSearch">False</property>
+                    <property name="fileName">C:\Program Files\InstallShield\IPMP401\jvms\win32\ibm_win32_118.jvm</property>
+                </arrayItem>
+                <arrayItem type="com.installshield.util.jvm.JVMFile">
+                    <property name="fullSearch">False</property>
+                    <property name="fileName">C:\Program Files\InstallShield\IPMP401\jvms\win32\ibm_win32_117.jvm</property>
+                </arrayItem>
+                <arrayItem type="com.installshield.util.jvm.JVMFile">
+                    <property name="fullSearch">False</property>
+                    <property name="fileName">C:\Program Files\InstallShield\IPMP401\jvms\win32\ms_win32_jview4.jvm</property>
                 </arrayItem>
             </property>
             <property name="timeout">120</property>
-            <property name="JVMResolution">1</property>
+            <property name="JVMResolution">2</property>
             <property name="bundledJVMSource"/>
             <property name="bundledJVMArguments"/>
         </extendedProperty>
@@ -68,7 +128,7 @@ Berkeley, CA 94706</property>
             <property array="True" length="1" name="JVMFileSources" type="com.installshield.util.jvm.JVMFile">
                 <arrayItem type="com.installshield.util.jvm.JVMFile">
                     <property name="fullSearch">False</property>
-                    <property name="fileName">C:\Program Files\InstallShield\ISMPP40\jvms\solaris\sun.jre.1.1.x.solaris.jvm</property>
+                    <property name="fileName">C:\Program Files\InstallShield\IPMP401\jvms\solaris\sun.jre.1.1.x.solaris.jvm</property>
                 </arrayItem>
             </property>
             <property name="timeout">120</property>
@@ -86,11 +146,11 @@ Berkeley, CA 94706</property>
         </key>
         <built>19691131 160000.000-0800</built>
         <name>product1</name>
-        <displayName>Ptolemy II 1.0 beta2 (Ptiny version)</displayName>
-        <localizedDisplayName>Ptolemy II 1.0ptiny beta2</localizedDisplayName>
+        <displayName>Ptolemy II 1.0ptiny</displayName>
+        <localizedDisplayName>Ptolemy II 1.0ptiny</localizedDisplayName>
         <vendor>University of California EECS Dept.  Ptolemy Project</vendor>
         <website>http:/ptolemy.eecs.berkeley.edu/ptolemyII</website>
-        <number>1.0ptiny beta2</number>
+        <number>1.0</number>
         <location>$D(install)/Ptolemy/$P(displayName)</location>
         <shareable>false</shareable>
         <active>true</active>
@@ -133,6 +193,7 @@ Berkeley, CA 94706</property>
                     <property array="True" length="1" name="files" type="com.installshield.product.actions.SourceFile">
                         <arrayItem type="com.installshield.product.actions.SourceFile">
                             <property name="usingGNUPattern">False</property>
+                            <property name="resolveRuntimeFileName">False</property>
                             <property name="type">4</property>
                             <property name="pattern"/>
                             <property name="fileName">c:\users\cxh\ptII\adm\gen-1.0\installshield\ptiny</property>
@@ -149,23 +210,63 @@ Berkeley, CA 94706</property>
                         <property name="bundledJVMResource"/>
                         <property name="useCurrentJVM">False</property>
                         <property array="True" length="0" name="JVMFileResources" type="string"/>
-                        <property array="True" length="3" name="JVMFileSources" type="com.installshield.util.jvm.JVMFile">
+                        <property array="True" length="13" name="JVMFileSources" type="com.installshield.util.jvm.JVMFile">
                             <arrayItem type="com.installshield.util.jvm.JVMFile">
                                 <property name="fullSearch">False</property>
-                                <property name="fileName">C:\Program Files\InstallShield\ISMPP40\jvms\win32\sun_win32_13.jvm</property>
+                                <property name="fileName">C:\Program Files\InstallShield\IPMP401\jvms\win32\sun_win32_131002.jvm</property>
                             </arrayItem>
                             <arrayItem type="com.installshield.util.jvm.JVMFile">
                                 <property name="fullSearch">False</property>
-                                <property name="fileName">C:\Program Files\InstallShield\ISMPP40\jvms\win32\ibm_win32_130.jvm</property>
+                                <property name="fileName">C:\Program Files\InstallShield\IPMP401\jvms\win32\sun_win32_13102.jvm</property>
                             </arrayItem>
                             <arrayItem type="com.installshield.util.jvm.JVMFile">
-                                <property name="fullSearch">True</property>
-                                <property name="fileName">C:\Program Files\InstallShield\ISMPP40\jvms\win32\sun_win32_13001.jvm</property>
+                                <property name="fullSearch">False</property>
+                                <property name="fileName">C:\Program Files\InstallShield\IPMP401\jvms\win32\sun_win32_131001.jvm</property>
+                            </arrayItem>
+                            <arrayItem type="com.installshield.util.jvm.JVMFile">
+                                <property name="fullSearch">False</property>
+                                <property name="fileName">C:\Program Files\InstallShield\IPMP401\jvms\win32\sun_win32_13101.jvm</property>
+                            </arrayItem>
+                            <arrayItem type="com.installshield.util.jvm.JVMFile">
+                                <property name="fullSearch">False</property>
+                                <property name="fileName">C:\Program Files\InstallShield\IPMP401\jvms\win32\sun_win32_131.jvm</property>
+                            </arrayItem>
+                            <arrayItem type="com.installshield.util.jvm.JVMFile">
+                                <property name="fullSearch">False</property>
+                                <property name="fileName">C:\Program Files\InstallShield\IPMP401\jvms\win32\sun_win32_131b.jvm</property>
+                            </arrayItem>
+                            <arrayItem type="com.installshield.util.jvm.JVMFile">
+                                <property name="fullSearch">False</property>
+                                <property name="fileName">C:\Program Files\InstallShield\IPMP401\jvms\win32\sun_win32_13003.jvm</property>
+                            </arrayItem>
+                            <arrayItem type="com.installshield.util.jvm.JVMFile">
+                                <property name="fullSearch">False</property>
+                                <property name="fileName">C:\Program Files\InstallShield\IPMP401\jvms\win32\sun_win32_13002.jvm</property>
+                            </arrayItem>
+                            <arrayItem type="com.installshield.util.jvm.JVMFile">
+                                <property name="fullSearch">False</property>
+                                <property name="fileName">C:\Program Files\InstallShield\IPMP401\jvms\win32\sun_win32_13001.jvm</property>
+                            </arrayItem>
+                            <arrayItem type="com.installshield.util.jvm.JVMFile">
+                                <property name="fullSearch">False</property>
+                                <property name="fileName">C:\Program Files\InstallShield\IPMP401\jvms\win32\sun_win32_13.jvm</property>
+                            </arrayItem>
+                            <arrayItem type="com.installshield.util.jvm.JVMFile">
+                                <property name="fullSearch">False</property>
+                                <property name="fileName">C:\Program Files\InstallShield\IPMP401\jvms\win32\ibm_win32_130.jvm</property>
+                            </arrayItem>
+                            <arrayItem type="com.installshield.util.jvm.JVMFile">
+                                <property name="fullSearch">False</property>
+                                <property name="fileName">C:\Program Files\InstallShield\IPMP401\jvms\win32\sun_win32_122.jvm</property>
+                            </arrayItem>
+                            <arrayItem type="com.installshield.util.jvm.JVMFile">
+                                <property name="fullSearch">False</property>
+                                <property name="fileName">C:\Program Files\InstallShield\IPMP401\jvms\win32\ibm_win32_122.jvm</property>
                             </arrayItem>
                         </property>
-                        <property name="timeout">10</property>
+                        <property name="timeout">120</property>
                         <property name="JVMResolution">2</property>
-                        <property name="bundledJVMSource">C:\Program Files\InstallShield\ISMPP40\jvms\win32\sun_win32_13.jvm</property>
+                        <property name="bundledJVMSource">C:\Program Files\InstallShield\IPMP401\jvms\win32\sun_win32_13.jvm</property>
                         <property name="bundledJVMArguments"/>
                     </extendedProperty>
                     <extendedProperty name="solaris.jvm.resolution" type="com.installshield.wizard.platform.solaris.extra.SolarisJVMResolutionExtra">
@@ -175,54 +276,11 @@ Berkeley, CA 94706</property>
                         <property array="True" length="2" name="JVMFileSources" type="com.installshield.util.jvm.JVMFile">
                             <arrayItem type="com.installshield.util.jvm.JVMFile">
                                 <property name="fullSearch">False</property>
-                                <property name="fileName">C:\Program Files\InstallShield\ISMPP40\jvms\solaris\sun.jdk.1.3.solaris.jvm</property>
+                                <property name="fileName">C:\Program Files\InstallShield\IPMP401\jvms\solaris\sun.jdk.1.3.solaris.jvm</property>
                             </arrayItem>
                             <arrayItem type="com.installshield.util.jvm.JVMFile">
                                 <property name="fullSearch">False</property>
-                                <property name="fileName">C:\Program Files\InstallShield\ISMPP40\jvms\solaris\sun.jdk.1.2.2.solaris.jvm</property>
-                            </arrayItem>
-                        </property>
-                        <property name="timeout">120</property>
-                        <property name="JVMResolution">2</property>
-                        <property name="bundledJVMSource"/>
-                        <property name="bundledJVMArguments">-qq -o</property>
-                    </extendedProperty>
-                    <extendedProperty name="linux.jvm.resolution" type="com.ibm.wizard.platform.linux.LinuxJVMResolutionExtra">
-                        <property name="bundledJVMResource"/>
-                        <property name="useCurrentJVM">False</property>
-                        <property array="True" length="0" name="JVMFileResources" type="string"/>
-                        <property array="True" length="8" name="JVMFileSources" type="com.installshield.util.jvm.JVMFile">
-                            <arrayItem type="com.installshield.util.jvm.JVMFile">
-                                <property name="fullSearch">False</property>
-                                <property name="fileName">C:\Program Files\InstallShield\ISMPP40\jvms\linux\sunjdk13.jvm</property>
-                            </arrayItem>
-                            <arrayItem type="com.installshield.util.jvm.JVMFile">
-                                <property name="fullSearch">False</property>
-                                <property name="fileName">C:\Program Files\InstallShield\ISMPP40\jvms\linux\sunjre13.jvm</property>
-                            </arrayItem>
-                            <arrayItem type="com.installshield.util.jvm.JVMFile">
-                                <property name="fullSearch">False</property>
-                                <property name="fileName">C:\Program Files\InstallShield\ISMPP40\jvms\linux\ibmjdk13.jvm</property>
-                            </arrayItem>
-                            <arrayItem type="com.installshield.util.jvm.JVMFile">
-                                <property name="fullSearch">False</property>
-                                <property name="fileName">C:\Program Files\InstallShield\ISMPP40\jvms\linux\blackdownjdk13.jvm</property>
-                            </arrayItem>
-                            <arrayItem type="com.installshield.util.jvm.JVMFile">
-                                <property name="fullSearch">False</property>
-                                <property name="fileName">C:\Program Files\InstallShield\ISMPP40\jvms\linux\blackdownjre13.jvm</property>
-                            </arrayItem>
-                            <arrayItem type="com.installshield.util.jvm.JVMFile">
-                                <property name="fullSearch">False</property>
-                                <property name="fileName">C:\Program Files\InstallShield\ISMPP40\jvms\linux\sunjre122.jvm</property>
-                            </arrayItem>
-                            <arrayItem type="com.installshield.util.jvm.JVMFile">
-                                <property name="fullSearch">False</property>
-                                <property name="fileName">C:\Program Files\InstallShield\ISMPP40\jvms\linux\blackdownjre122.jvm</property>
-                            </arrayItem>
-                            <arrayItem type="com.installshield.util.jvm.JVMFile">
-                                <property name="fullSearch">False</property>
-                                <property name="fileName">C:\Program Files\InstallShield\ISMPP40\jvms\linux\blackdownjdk12.jvm</property>
+                                <property name="fileName">C:\Program Files\InstallShield\IPMP401\jvms\solaris\sun.jdk.1.2.2.solaris.jvm</property>
                             </arrayItem>
                         </property>
                         <property name="timeout">120</property>
@@ -240,7 +298,7 @@ Berkeley, CA 94706</property>
                     <active>true</active>
                     <extendedProperty name="win32ppk" type="com.installshield.wizard.platform.win32.Win32LauncherExtra">
                         <property name="showConsole">False</property>
-                        <property name="launcherUIDisplayTime">10</property>
+                        <property name="launcherUIDisplayTime">30</property>
                         <property name="fileName">vergil.exe</property>
                     </extendedProperty>
                     <property name="title">Vergil Launcher</property>
@@ -248,9 +306,9 @@ Berkeley, CA 94706</property>
                     <property name="mainClassArguments"/>
                     <property array="True" length="8" name="classPath" type="string">
                         <arrayItem>./</arrayItem>
-                        <arrayItem>./lib/user.jar</arrayItem>
                         <arrayItem>./ptolemy/vergil/vergil.jar</arrayItem>
                         <arrayItem>./ptolemy/ptolemy.jar</arrayItem>
+                        <arrayItem>./ptolemy/domains/experimentalDomains.jar</arrayItem>
                         <arrayItem>./ptolemy/actor/lib/javasound/javasound.jar</arrayItem>
                         <arrayItem>./ptolemy/media/javasound/javasound.jar</arrayItem>
                         <arrayItem>./lib/diva.jar</arrayItem>
@@ -265,15 +323,18 @@ Berkeley, CA 94706</property>
                     <active>true</active>
                     <extendedProperty name="win32ppk" type="com.installshield.wizard.platform.win32.Win32DesktopIconExtra">
                         <property name="iconFile">doc\img\ptIIplanet.ico</property>
-                        <property name="platformSpecificTarget"/>
-                        <property name="iconFileType">1</property>
                         <property name="folderContext">$AllUsersPrograms$</property>
+                        <property name="iconFileType">1</property>
+                        <property name="platformSpecificTarget"/>
+                        <property name="relativePlatformSpecificTarget">True</property>
                     </extendedProperty>
                     <property name="folder">Ptolemy/$P(productBean1.displayName)</property>
                     <property name="name">Vergil</property>
                     <property name="target">vergil.exe</property>
+                    <property name="relativeTarget">True</property>
                     <property name="args"/>
                     <property name="workingDirectory"/>
+                    <property name="workingDirectoryRelative">True</property>
                     <property name="itemOwner"/>
                     <property name="itemGroup"/>
                     <property name="folderOwner"/>
@@ -284,7 +345,7 @@ Berkeley, CA 94706</property>
                     <active>true</active>
                     <extendedProperty name="win32ppk" type="com.installshield.wizard.platform.win32.Win32LauncherExtra">
                         <property name="showConsole">False</property>
-                        <property name="launcherUIDisplayTime">5</property>
+                        <property name="launcherUIDisplayTime">30</property>
                         <property name="fileName">ptplot.exe</property>
                     </extendedProperty>
                     <property name="title">Ptplot Launcher</property>
@@ -294,7 +355,7 @@ Berkeley, CA 94706</property>
                         <arrayItem>./ptolemy/plot/plotapplication.jar</arrayItem>
                     </property>
                     <property array="True" length="0" name="systemProperties" type="string"/>
-                    <property name="javaArguments">-verbose:class</property>
+                    <property name="javaArguments"/>
                     <property name="JVMId">jvm</property>
                 </action>
                 <action class="com.installshield.product.actions.DesktopIcon" id="bean7">
@@ -302,26 +363,29 @@ Berkeley, CA 94706</property>
                     <active>true</active>
                     <extendedProperty name="win32ppk" type="com.installshield.wizard.platform.win32.Win32DesktopIconExtra">
                         <property name="iconFile">ptolemy\plot\doc\img\ptplot.ico</property>
-                        <property name="platformSpecificTarget">ptplot.exe</property>
-                        <property name="iconFileType">1</property>
                         <property name="folderContext">$AllUsersPrograms$</property>
+                        <property name="iconFileType">1</property>
+                        <property name="platformSpecificTarget">ptplot.exe</property>
+                        <property name="relativePlatformSpecificTarget">True</property>
                     </extendedProperty>
                     <property name="folder">Ptolemy/$P(productBean1.displayName)</property>
                     <property name="name">Ptplot</property>
                     <property name="target"/>
+                    <property name="relativeTarget">True</property>
                     <property name="args"/>
                     <property name="workingDirectory"/>
+                    <property name="workingDirectoryRelative">True</property>
                     <property name="itemOwner"/>
                     <property name="itemGroup"/>
                     <property name="folderOwner"/>
                     <property name="folderGroup"/>
                 </action>
-                <action class="com.installshield.product.actions.Launcher" id="bean8">
+                <action class="com.installshield.product.actions.Launcher" id="bean888">
                     <displayName>Vergil (DSP 0nly) Launcher</displayName>
                     <active>true</active>
                     <extendedProperty name="win32ppk" type="com.installshield.wizard.platform.win32.Win32LauncherExtra">
                         <property name="showConsole">False</property>
-                        <property name="launcherUIDisplayTime">10</property>
+                        <property name="launcherUIDisplayTime">30</property>
                         <property name="fileName">vergildsp.exe</property>
                     </extendedProperty>
                     <property name="title">Vergil (DSP Only) Launcher</property>
@@ -341,20 +405,23 @@ Berkeley, CA 94706</property>
                     <property name="javaArguments"/>
                     <property name="JVMId">jvm</property>
                 </action>
-                <action class="com.installshield.product.actions.DesktopIcon" id="bean9">
+                <action class="com.installshield.product.actions.DesktopIcon" id="bean889">
                     <displayName>Vergil (DSP Only)</displayName>
                     <active>true</active>
                     <extendedProperty name="win32ppk" type="com.installshield.wizard.platform.win32.Win32DesktopIconExtra">
                         <property name="iconFile">doc\img\ptIIplanet.ico</property>
-                        <property name="platformSpecificTarget"/>
-                        <property name="iconFileType">1</property>
                         <property name="folderContext">$AllUsersPrograms$</property>
+                        <property name="iconFileType">1</property>
+                        <property name="platformSpecificTarget"/>
+                        <property name="relativePlatformSpecificTarget">True</property>
                     </extendedProperty>
                     <property name="folder">Ptolemy/$P(productBean1.displayName)</property>
                     <property name="name">Vergil (DSP only)</property>
                     <property name="target">vergildsp.exe</property>
+                    <property name="relativeTarget">True</property>
                     <property name="args"/>
                     <property name="workingDirectory"/>
+                    <property name="workingDirectoryRelative">True</property>
                     <property name="itemOwner"/>
                     <property name="itemGroup"/>
                     <property name="folderOwner"/>
@@ -365,19 +432,54 @@ Berkeley, CA 94706</property>
                     <active>true</active>
                     <extendedProperty name="win32ppk" type="com.installshield.wizard.platform.win32.Win32DesktopIconExtra">
                         <property name="iconFile"/>
-                        <property name="platformSpecificTarget"/>
-                        <property name="iconFileType">1</property>
                         <property name="folderContext">$UserPrograms$</property>
+                        <property name="iconFileType">1</property>
+                        <property name="platformSpecificTarget"/>
+                        <property name="relativePlatformSpecificTarget">True</property>
                     </extendedProperty>
                     <property name="folder">Ptolemy/$P(productBean1.displayName)</property>
                     <property name="name">Vergil Documentation</property>
                     <property name="target">doc/design/usingVergil.pdf</property>
+                    <property name="relativeTarget">True</property>
                     <property name="args"/>
                     <property name="workingDirectory"/>
+                    <property name="workingDirectoryRelative">True</property>
                     <property name="itemOwner"/>
                     <property name="itemGroup"/>
                     <property name="folderOwner"/>
                     <property name="folderGroup"/>
+                </action>
+            </component>
+            <component id="bean614">
+                <key>
+                    <uid>99d5144aa359ee4518238fcda3dc8648</uid>
+                    <version/>
+                </key>
+                <built>19691131 160000.000-0800</built>
+                <name>component46</name>
+                <displayName>Ptiny Only Files</displayName>
+                <shareable>false</shareable>
+                <active>true</active>
+                <installStatus>0</installStatus>
+                <replaceOption>1</replaceOption>
+                <removeOption>1</removeOption>
+                <installFailureOption>3</installFailureOption>
+                <onFailSummaryMessage/>
+                <action class="com.installshield.product.actions.Files" id="bean615">
+                    <displayName>Files</displayName>
+                    <active>true</active>
+                    <property array="True" length="1" name="files" type="com.installshield.product.actions.SourceFile">
+                        <arrayItem type="com.installshield.product.actions.SourceFile">
+                            <property name="usingGNUPattern">False</property>
+                            <property name="resolveRuntimeFileName">False</property>
+                            <property name="type">4</property>
+                            <property name="pattern"/>
+                            <property name="fileName">C:\users\cxh\ptII\adm\gen-1.0\installshield\ptiny_only</property>
+                        </arrayItem>
+                    </property>
+                    <property name="totalBytes">-1</property>
+                    <property name="owner"/>
+                    <property name="group"/>
                 </action>
             </component>
         </feature>
@@ -392,12 +494,12 @@ Berkeley, CA 94706</property>
     <localeSelect>0</localeSelect>
     <interface class="com.installshield.wizard.awt.AWTWizardUI" name="awt">
         <property name="wizardImage"/>
-        <property name="wizardImageSource">C:\Program Files\InstallShield\ISMPP40\images\InstallShield Images\welcome.gif</property>
+        <property name="wizardImageSource">c:\users\cxh\ptII\adm\gen-1.0\installshield\ptiny\doc\img\PtolemyIISmall.gif</property>
         <property name="wizardImageOrientation">1</property>
         <property name="splashImageSource"/>
-        <property name="splashDuration">10</property>
+        <property name="splashDuration">30</property>
         <property name="wizardIcon"/>
-        <property name="wizardIconSource">C:\Program Files\InstallShield\ISMPP40\images\InstallShield Images\icon.gif</property>
+        <property name="wizardIconSource">c:\users\cxh\ptII\adm\gen-1.0\installshield\app\doc\img\PtolemyIISmallIcon.gif</property>
         <property name="width">640</property>
         <property name="height">420</property>
         <property name="defaultFont" type="com.installshield.util.FontDef">
@@ -443,6 +545,7 @@ Berkeley, CA 94706</property>
             <property name="fileName"/>
             <property name="includeLocalizedFiles">False</property>
             <property name="contentType">2</property>
+            <property name="showBorder">False</property>
         </wizardBean>
         <wizardBean class="com.installshield.product.wizardbeans.LicensePanel" id="bean2">
             <property name="displayName">License Panel</property>
@@ -455,6 +558,7 @@ Berkeley, CA 94706</property>
             <property name="fileName">c:\users\cxh\ptII\adm\gen-1.0\installshield\ptiny\copyright.txt</property>
             <property name="includeLocalizedFiles">False</property>
             <property name="contentType">1</property>
+            <property name="showBorder">True</property>
             <property name="approveCaption">$L(com.installshield.product.i18n.ProductResources, LicensePanel.approval)</property>
             <property name="disapproveCaption">$L(com.installshield.product.i18n.ProductResources, LicensePanel.disapproval)</property>
             <property name="selection">1</property>
@@ -470,24 +574,13 @@ Berkeley, CA 94706</property>
             <property name="description">$L(com.installshield.product.i18n.ProductResources, DestinationPanel.description, $P(displayName))</property>
             <property name="navigationOptions">0</property>
         </wizardBean>
-        <wizardBean class="com.installshield.product.wizardbeans.SetupTypeSequence" id="customize">
-            <property name="displayName">Customize Sequence</property>
-            <property name="setupTypePanel">setupTypes</property>
-            <property name="setupType">custom</property>
-            <wizardBean class="com.installshield.product.wizardbeans.FeaturePanel" id="features">
-                <property name="displayName">Features</property>
-                <property name="active">True</property>
-                <property name="title"/>
-                <property name="description">$L(com.installshield.product.i18n.ProductResources, FeaturePanel.description, $P(displayName))</property>
-                <property name="navigationOptions">0</property>
-            </wizardBean>
-        </wizardBean>
         <wizardBean class="com.installshield.product.wizardbeans.InstallCheckPanel" id="check">
             <property name="displayName">Install Check</property>
             <property name="active">True</property>
             <property name="title"/>
             <property name="description">$L(com.installshield.wizardx.i18n.WizardXResources, TextDisplayPanel.description)</property>
             <property name="includeLocalizedFiles">False</property>
+            <property name="showBorder">False</property>
             <property name="navigationOptions">0</property>
             <property name="text">$L(com.installshield.wizardx.i18n.WizardXResources, TextDisplayPanel.text)</property>
             <property name="textSource">1</property>
@@ -539,12 +632,12 @@ Berkeley, CA 94706</property>
     <localeSelect>0</localeSelect>
     <interface class="com.installshield.wizard.awt.AWTWizardUI" name="awt">
         <property name="wizardImage"/>
-        <property name="wizardImageSource">C:\Program Files\InstallShield\ISMPP40\images\InstallShield Images\welcome.gif</property>
+        <property name="wizardImageSource">C:\Program Files\InstallShield\IPMP401\images\InstallShield Images\welcome.gif</property>
         <property name="wizardImageOrientation">1</property>
         <property name="splashImageSource"/>
         <property name="splashDuration">0</property>
         <property name="wizardIcon"/>
-        <property name="wizardIconSource">C:\Program Files\InstallShield\ISMPP40\images\InstallShield Images\icon.gif</property>
+        <property name="wizardIconSource">C:\Program Files\InstallShield\IPMP401\images\InstallShield Images\icon.gif</property>
         <property name="width">640</property>
         <property name="height">420</property>
         <property name="defaultFont" type="com.installshield.util.FontDef">
@@ -590,6 +683,7 @@ Berkeley, CA 94706</property>
             <property name="fileName"/>
             <property name="includeLocalizedFiles">False</property>
             <property name="contentType">2</property>
+            <property name="showBorder">False</property>
         </wizardBean>
         <wizardBean class="com.installshield.product.wizardbeans.SummaryPanel" id="preview">
             <property name="displayName">Uninstall Preview</property>
@@ -616,17 +710,15 @@ Berkeley, CA 94706</property>
 </wizardTree>
 </section>
 <section name="Build" class="com.installshield.isje.build.BuildSection">
-<buildConfiguration>
+<buildConfiguration name="Default">
     <property name="name">Default</property>
     <property name="outputDirectory">default</property>
-    <property name="archiveName">ptII1_0ptinybeta2setup.jar</property>
+    <property name="archiveName">ptII1_0ptinysetup.jar</property>
     <property name="archiveType">1</property>
     <property array="True" length="3" name="support" type="com.installshield.isje.build.BuildConfigurationSupport">
         <arrayItem type="com.installshield.isje.wizard.PlatformSupport">
-            <property array="True" length="3" name="builders" type="com.installshield.isje.build.ExtendedWizardBuilder">
+            <property array="True" length="1" name="builders" type="com.installshield.isje.build.ExtendedWizardBuilder">
                 <arrayItem type="com.installshield.wizard.platform.win32.Win32Builder"/>
-                <arrayItem type="com.installshield.wizard.platform.solaris.SolarisBuilder"/>
-                <arrayItem type="com.ibm.wizard.platform.linux.LinuxBuilder"/>
             </property>
         </arrayItem>
         <arrayItem type="com.installshield.isje.build.LanguageSupport">
@@ -638,19 +730,59 @@ Berkeley, CA 94706</property>
             <property array="True" length="2" name="distributions" type="com.installshield.isje.build.Distribution">
                 <arrayItem type="com.installshield.wizard.platform.win32.Win32LauncherDistribution">
                     <property name="enabled">True</property>
-                    <property name="fileName">ptII1_0ptinybeta2setup.exe</property>
-                    <property array="True" length="3" name="JVMFileSources" type="com.installshield.util.jvm.JVMFile">
+                    <property name="fileName">ptII1_0ptinysetup.exe</property>
+                    <property array="True" length="13" name="JVMFileSources" type="com.installshield.util.jvm.JVMFile">
                         <arrayItem type="com.installshield.util.jvm.JVMFile">
                             <property name="fullSearch">False</property>
-                            <property name="fileName">C:\Program Files\InstallShield\ISMPP40\jvms\win32\sun_win32_13.jvm</property>
+                            <property name="fileName">C:\Program Files\InstallShield\IPMP401\jvms\win32\sun_win32_131002.jvm</property>
                         </arrayItem>
                         <arrayItem type="com.installshield.util.jvm.JVMFile">
                             <property name="fullSearch">False</property>
-                            <property name="fileName">C:\Program Files\InstallShield\ISMPP40\jvms\win32\ibm_win32_130.jvm</property>
+                            <property name="fileName">C:\Program Files\InstallShield\IPMP401\jvms\win32\sun_win32_13102.jvm</property>
                         </arrayItem>
                         <arrayItem type="com.installshield.util.jvm.JVMFile">
                             <property name="fullSearch">False</property>
-                            <property name="fileName">C:\Program Files\InstallShield\ISMPP40\jvms\win32\sun_win32_13001.jvm</property>
+                            <property name="fileName">C:\Program Files\InstallShield\IPMP401\jvms\win32\sun_win32_131001.jvm</property>
+                        </arrayItem>
+                        <arrayItem type="com.installshield.util.jvm.JVMFile">
+                            <property name="fullSearch">False</property>
+                            <property name="fileName">C:\Program Files\InstallShield\IPMP401\jvms\win32\sun_win32_13101.jvm</property>
+                        </arrayItem>
+                        <arrayItem type="com.installshield.util.jvm.JVMFile">
+                            <property name="fullSearch">False</property>
+                            <property name="fileName">C:\Program Files\InstallShield\IPMP401\jvms\win32\sun_win32_131.jvm</property>
+                        </arrayItem>
+                        <arrayItem type="com.installshield.util.jvm.JVMFile">
+                            <property name="fullSearch">False</property>
+                            <property name="fileName">C:\Program Files\InstallShield\IPMP401\jvms\win32\sun_win32_131b.jvm</property>
+                        </arrayItem>
+                        <arrayItem type="com.installshield.util.jvm.JVMFile">
+                            <property name="fullSearch">False</property>
+                            <property name="fileName">C:\Program Files\InstallShield\IPMP401\jvms\win32\sun_win32_13003.jvm</property>
+                        </arrayItem>
+                        <arrayItem type="com.installshield.util.jvm.JVMFile">
+                            <property name="fullSearch">False</property>
+                            <property name="fileName">C:\Program Files\InstallShield\IPMP401\jvms\win32\sun_win32_13002.jvm</property>
+                        </arrayItem>
+                        <arrayItem type="com.installshield.util.jvm.JVMFile">
+                            <property name="fullSearch">False</property>
+                            <property name="fileName">C:\Program Files\InstallShield\IPMP401\jvms\win32\sun_win32_13001.jvm</property>
+                        </arrayItem>
+                        <arrayItem type="com.installshield.util.jvm.JVMFile">
+                            <property name="fullSearch">False</property>
+                            <property name="fileName">C:\Program Files\InstallShield\IPMP401\jvms\win32\sun_win32_13.jvm</property>
+                        </arrayItem>
+                        <arrayItem type="com.installshield.util.jvm.JVMFile">
+                            <property name="fullSearch">False</property>
+                            <property name="fileName">C:\Program Files\InstallShield\IPMP401\jvms\win32\ibm_win32_130.jvm</property>
+                        </arrayItem>
+                        <arrayItem type="com.installshield.util.jvm.JVMFile">
+                            <property name="fullSearch">False</property>
+                            <property name="fileName">C:\Program Files\InstallShield\IPMP401\jvms\win32\sun_win32_122.jvm</property>
+                        </arrayItem>
+                        <arrayItem type="com.installshield.util.jvm.JVMFile">
+                            <property name="fullSearch">False</property>
+                            <property name="fileName">C:\Program Files\InstallShield\IPMP401\jvms\win32\ibm_win32_122.jvm</property>
                         </arrayItem>
                     </property>
                     <property name="bundledJVMSource"/>
@@ -658,7 +790,7 @@ Berkeley, CA 94706</property>
                     <property array="True" length="0" name="additionalClassPaths" type="string"/>
                     <property name="embedArchive">True</property>
                     <property name="externalArchivePath"/>
-                    <property name="launcherUIDisplayTime">0</property>
+                    <property name="launcherUIDisplayTime">30</property>
                     <property name="javaArguments"/>
                     <property name="wizardArguments"/>
                     <property array="True" length="0" name="systemProperties" type="string"/>
@@ -672,13 +804,15 @@ Berkeley, CA 94706</property>
                     <property name="pageFont">helvetica</property>
                     <property name="pageFontSize">12</property>
                     <property name="pageBackground">ffffff</property>
+                    <property name="appletWidth">250</property>
+                    <property name="appletHeight">250</property>
                     <property name="installAutomatically">1</property>
                     <property name="iconImage">wizard.gif</property>
                 </arrayItem>
             </property>
         </arrayItem>
     </property>
-    <property name="projectDirectory">C:\users\cxh\ptII\adm\gen-1.0\installshield</property>
+    <property name="projectDirectory">c:\users\cxh\ptII\adm\gen-1.0</property>
 </buildConfiguration>
 </section>
 </isjeProject>
