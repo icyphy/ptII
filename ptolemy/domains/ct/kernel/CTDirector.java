@@ -33,7 +33,6 @@ import java.util.Set;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
-import ptolemy.actor.Director;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TimedDirector;
 import ptolemy.actor.sched.StaticSchedulingDirector;
@@ -269,11 +268,11 @@ public abstract class CTDirector extends StaticSchedulingDirector
         if (attribute == startTime) {
             double startTimeValue = 
                 ((DoubleToken)startTime.getToken()).doubleValue();
-            //_startTime = new Time(this, startTimeValue);
+            _startTimeValue = startTimeValue;
         } else if (attribute == stopTime) {
             double stopTimeValue = 
                 ((DoubleToken)stopTime.getToken()).doubleValue();
-            //_stopTime = new Time(this, stopTimeValue);
+            _stopTimeValue = stopTimeValue;
         } else if (attribute == initStepSize) {
             double value = ((DoubleToken)initStepSize.getToken()).
                 doubleValue();
@@ -992,13 +991,8 @@ public abstract class CTDirector extends StaticSchedulingDirector
 
        _prefiredActors = new HashSet();
 
-       double startTimeValue = 
-           ((DoubleToken)startTime.getToken()).doubleValue();
-       _startTime = new Time(this, startTimeValue);
-
-       double stopTimeValue = 
-           ((DoubleToken)stopTime.getToken()).doubleValue();
-       _stopTime = new Time(this, stopTimeValue);
+       _startTime = new Time(this, _startTimeValue);
+       _stopTime = new Time(this, _stopTimeValue);
 
        _iterationBeginTime = _startTime;
        _iterationEndTime = _stopTime;
@@ -1071,7 +1065,9 @@ public abstract class CTDirector extends StaticSchedulingDirector
 
     // Local copies of parameters.
     private Time _startTime;
+    private double _startTimeValue;
     private Time _stopTime;
+    private double _stopTimeValue;
     private double _suggestedNextStepSize;
 
     private double _valueResolution;
