@@ -245,7 +245,7 @@ public class DEDirector extends Director {
     public Parameter startTime;
 
     /** The stop time of the model.  This parameter must contain a
-     *  DoubleToken.  The value defaults to Double.MAX_VALUE.
+     *  DoubleToken.  The value defaults to MaxDouble.
      */
     public Parameter stopTime;
 
@@ -1581,8 +1581,8 @@ public class DEDirector extends Director {
                     new DoubleToken(0.0));
             startTime.setTypeEquals(BaseType.DOUBLE);
 
-            stopTime = new Parameter(this, "stopTime",
-                    new DoubleToken(Double.MAX_VALUE));
+            stopTime = new Parameter(this, "stopTime");
+            stopTime.setExpression("MaxDouble");
             stopTime.setTypeEquals(BaseType.DOUBLE);
 
             stopWhenQueueIsEmpty = new Parameter(this, "stopWhenQueueIsEmpty",
