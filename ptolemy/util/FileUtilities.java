@@ -63,11 +63,17 @@ public class FileUtilities {
     /** Copy sourceURL to destinationFile without doing any byte conversion.
      *  @param sourceURL The source URL
      *  @param destinationFile The destination File.
+     *  @return true if the file was copied, false if the file was not
+     *  copied because the sourceURL and the destinationFile refer to the   
+     *  same file
      */
-    public static void binaryCopyURLToFile(URL sourceURL,
+    public boolean binaryCopyURLToFile(URL sourceURL,
             File destinationFile)
             throws IOException {
 
+        if (sourceURL.sameFile(destinationFile.getCanonicalFile().toURL())) {
+            return false;
+        }
         BufferedInputStream input = null;
         BufferedOutputStream output = null;
         try {
@@ -100,6 +106,7 @@ public class FileUtilities {
                 }
             }
         }
+        return true;
     }
 }
 
