@@ -106,22 +106,17 @@ public class NonlinearClientApplication {
 
             IORelation r1 = (IORelation)
                 _toplevel.connect(sqwv.output, gain1.input, "R1");
-            IORelation r2 = (IORelation)
-                _toplevel.connect(gain1.output, add1.plus, "R2");
-            IORelation r3 = (IORelation)
-                _toplevel.connect(add1.output, intgl1.input, "R3");
+            _toplevel.connect(gain1.output, add1.plus, "R2");
+            _toplevel.connect(add1.output, intgl1.input, "R3");
             IORelation r4 = (IORelation)
                 _toplevel.connect(intgl1.output, intgl2.input, "R4");
-            IORelation r5 = (IORelation)
-                _toplevel.connect(intgl2.output, cin, "R5");
+            _toplevel.connect(intgl2.output, cin, "R5");
             IORelation r5a = (IORelation)
                 _toplevel.connect(cout, myplot.input, "R5a");
             gain2.input.link(r4);
             gain3.input.link(r5a);
-            IORelation r6 = (IORelation)
-                _toplevel.connect(gain2.output, add1.plus, "R6");
-            IORelation r7 = (IORelation)
-                _toplevel.connect(gain3.output, add1.plus, "R7");
+            _toplevel.connect(gain2.output, add1.plus, "R6");
+            _toplevel.connect(gain3.output, add1.plus, "R7");
             myplot.input.link(r1);
 
             _dir.startTime.setToken(new DoubleToken(0.0));

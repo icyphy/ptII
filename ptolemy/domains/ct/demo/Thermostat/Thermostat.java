@@ -300,7 +300,7 @@ public class Thermostat extends TypedCompositeActor{
         StringToken tok = new StringToken(
                 "ptolemy.domains.ct.kernel.solver.DerivativeResolver");
         ctIncDir.breakpointODESolver.setToken(tok);
-        Parameter dfsol = (Parameter)ctIncDir.getAttribute("ODESolver");
+        // Parameter dfsol = (Parameter)ctIncDir.getAttribute("ODESolver");
         tok = new StringToken(
                 "ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver");
         ctIncDir.ODESolver.setToken(tok);

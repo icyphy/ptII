@@ -398,12 +398,12 @@ public class StickyMasses extends TypedCompositeActor {
         StringToken tok = new StringToken(
                 "ptolemy.domains.ct.kernel.solver.BackwardEulerSolver");
         ctIncDir.breakpointODESolver.setToken(tok);
-        Parameter dfsol = (Parameter)ctIncDir.getAttribute("ODESolver");
+        //Parameter dfsol = (Parameter)ctIncDir.getAttribute("ODESolver");
         tok = new StringToken(
                 "ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver");
         ctIncDir.ODESolver.setToken(tok);
 
-        // CT embedded director 2  parameters
+        // CT embedded director 2  parbmeters
         ctDecDir.initStepSize.setToken(new DoubleToken(0.01));
         ctDecDir.minStepSize.setToken(new DoubleToken(1e-5));
         tok = new StringToken(
