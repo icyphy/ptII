@@ -383,7 +383,11 @@ public class Configuration extends CompositeEntity {
 
     /** Open the specified Ptolemy II model. If a model already has
      *  open tableaux, then put those in the foreground and
-     *  return the first one.  Otherwise, create a new tableau.
+     *  return the first one.  Otherwise, create a new tableau and if
+     *  necessary, a new effigy.  Unless there is a more natural container
+     *  for the effigy (e.g. it is a hierarchical model), then if a new
+     *  effigy is created, it is put into the directory of the configuration.
+     *  Any new tableau created will be contained by that effigy.
      *  @param entity The model.
      *  @return The tableau that is created, or the first one found,
      *   or null if none is created or found.
@@ -393,6 +397,29 @@ public class Configuration extends CompositeEntity {
      *   should not be thrown).
      */
     public Tableau openModel(NamedObj entity)
+        throws IllegalActionException, NameDuplicationException {
+        
+        return openModel(entity, null);
+    }
+
+    /** Open the specified Ptolemy II model. If a model already has
+     *  open tableaux, then put those in the foreground and
+     *  return the first one.  Otherwise, create a new tableau and,
+     *  if necessary, a new effigy. Unless there is a more natural
+     *  place for the effigy (e.g. it is a hierarchical model), then if a new
+     *  effigy is created, it is put into the <i>container</i> argument,
+     *  or if that is null, into the directory of the configuration.
+     *  Any new tableau created will be contained by that effigy.
+     *  @param entity The model.
+     *  @param container The container for any new effigy.
+     *  @return The tableau that is created, or the first one found,
+     *   or null if none is created or found.
+     *  @exception IllegalActionException If constructing an effigy or tableau
+     *   fails.
+     *  @exception NameDuplicationException If a name conflict occurs (this
+     *   should not be thrown).
+     */
+    public Tableau openModel(NamedObj entity, CompositeEntity container)
         throws IllegalActionException, NameDuplicationException {
 
         // If the entity defers its MoML definition to another,
@@ -425,10 +452,15 @@ public class Configuration extends CompositeEntity {
                 effigy.uri.setURI(uri);
                 effigy.identifier.setExpression(uri.toString());
 
-                // Put the effigy into the directory
-                ModelDirectory directory = getDirectory();
-                effigy.setName(directory.uniqueName(entity.getName()));
-                effigy.setContainer(directory);
+                if (container == null) {
+                    // Put the effigy into the directory
+                    ModelDirectory directory = getDirectory();
+                    effigy.setName(directory.uniqueName(entity.getName()));
+                    effigy.setContainer(directory);
+                } else {
+                    effigy.setName(container.uniqueName(entity.getName()));
+                    effigy.setContainer(container);
+                }
 
                 // Create a default tableau.
                 return createPrimaryTableau(effigy);
@@ -482,11 +514,16 @@ public class Configuration extends CompositeEntity {
                 }
                 // If the above code did not find an effigy to put
                 // the new effigy within, then put it into the
-                // directory directly.
+                // directory directly or the specified container.
                 if (!isContainerSet) {
-                    CompositeEntity directory = getDirectory();
-                    effigy.setName(directory.uniqueName(entity.getName()));
-                    effigy.setContainer(directory);
+                    if (container == null) {
+                        CompositeEntity directory = getDirectory();
+                        effigy.setName(directory.uniqueName(entity.getName()));
+                        effigy.setContainer(directory);
+                    } else {
+                        effigy.setName(container.uniqueName(entity.getName()));
+                        effigy.setContainer(container);                        
+                    }
                     effigy.identifier.setExpression(entity.getFullName());
                 }
 
