@@ -172,7 +172,7 @@ public interface Seq extends Collection {
     /**
      * Construct a new Seq that is a clone of self except
      * that it does not contain the element at the indeicated index; all
-     * elements to its right are slided left by one.
+     * elements to its right are slid left by one.
      *
      * @param index the index at which to remove an element
      * @return new seq such that
