@@ -59,6 +59,31 @@ foreach i $configs {
     set parser [java::new ptolemy.moml.MoMLParser]
     set loader [[$parser getClass] getClassLoader]
     
+
+    if { "$i" == "vergilConfiguration.xml" } {
+	puts "Stripping matlab actor out of vergilConfiguration.xml"
+	set URL [$loader getResource "ptolemy/configs/vergilConfiguration.xml"]
+	#puts "URL of vergilConfiguration.xml: [$URL toString]"
+	if { "$tcl_platform(host_platform)" == "windows"} {
+	    set inFile [string range [$URL getPath] 1 end]
+	} else {
+	    set inFile [$URL getPath]
+	}
+
+	#puts "file name vergilConfiguration.xml: $inFile"
+
+	set infd [open $inFile]
+	set outfd [open vergilConfigurationNoMatlab.xml "w"]
+	while {![eof $infd]} {
+	    set linein [gets $infd]
+	    regsub -all {.*matlab.*} $linein {} lineout
+	    puts $outfd $lineout
+	}
+	close $infd
+	close $outfd
+	set i test/vergilConfigurationNoMatlab.xml
+    } 
+
     set URL [$loader getResource ptolemy/configs/$i]
     set object [$parser {parse java.net.URL java.net.URL} $URL $URL]
     # force everything to get expanded
@@ -82,11 +107,17 @@ foreach i $configs {
 		set size [$constraints size]
 		set cloneSize [$cloneConstraints size]
 		if {$size != $cloneSize} {
-		    set c [join [jdkPrintArray \
-			    [$constraints toArray] "\n" ] "\n"]
-		    set cc [join [jdkPrintArray \
-			    [$cloneConstraints toArray] "\n" ] "\n"]
-		    lappend results "Actor [$actor getFullName] has \n$c, while clone has\n$cc"
+		    set msg "\n\n[$actor getFullName]\n\
+			    \thas $size constraints, \
+			    whereas its clone \
+			    has $cloneSize constraints."
+
+  		    set c [join [jdkPrintArray \
+  			    [$constraints toArray] "\n" ] "\n"]
+  		    set cc [join [jdkPrintArray \
+  			    [$cloneConstraints toArray] "\n" ] "\n"]
+  		    lappend results "$msg\n\tActor Constraints:\n$c\
+			    \tClone constraints:\n$cc"
 		}
 	    } 
 	}
