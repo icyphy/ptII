@@ -32,7 +32,7 @@
 ME =		ptolemy/domains/ct/demo/CarTracking
 
 # Root of the Java directory
-ROOT =		../../../../../
+ROOT =		../../../../../..
 
 # JINI_JARS is defined in $PTII/mk/ptII.mk, which is created by $PTII/configure
 CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(JINI_JARS)
