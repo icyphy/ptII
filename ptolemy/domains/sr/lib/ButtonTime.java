@@ -57,12 +57,14 @@ import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.text.BadLocationException;
 
+//////////////////////////////////////////////////////////////////////////
+//// ButtonTime
 /**
 Output the current wall clock time in response to a click of a button.
 
 @author  Paul Whitaker
 @version $Id$
- */
+*/
 public class ButtonTime extends WallClockTime implements Placeable {
 
     /** Construct an actor with an input multiport of type GENERAL.
