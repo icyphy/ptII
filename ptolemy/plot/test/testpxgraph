@@ -1,0 +1,47 @@
+#! /bin/sh -x
+pxgraph=./pxgraph
+
+# Create a small test file
+
+tmpfile=/tmp/testpxgraph.$$
+cat > $tmpfile <<EOF
+DataSet: First dataset
+0,0
+1,1
+2,2
+0,1
+EOF
+
+# Test out Flags in order
+$pxgraph -test $tmpfile
+$pxgraph -test -bar $tmpfile
+$pxgraph -test -bb $tmpfile
+$pxgraph -test -binary bin.plt
+$pxgraph -test -db $tmpfile
+$pxgraph -test -help $tmpfile
+$pxgraph -test -lnx $tmpfile
+$pxgraph -test -lny $tmpfile
+$pxgraph -test -m $tmpfile
+$pxgraph -test -M $tmpfile
+$pxgraph -test -nl $tmpfile
+$pxgraph -test -p $tmpfile
+$pxgraph -test -p -nl $tmpfile
+$pxgraph -test -P $tmpfile
+$pxgraph -test -P -nl $tmpfile
+$pxgraph -test -rv $tmpfile
+$pxgraph -test -tk $tmpfile
+rm -f $tmpfile
+
+# Test out stdin
+cat demo/data.plt | $pxgraph -test
+
+# Test out title
+cat demo/bargraph.plt | $pxgraph -test -t "This is the Title"
+
+# Test out file args
+$pxgraph -test ./demo/bargraph.plt
+$pxgraph -test http://ptolemy.eecs.berkeley.edu/java/plot/demo/data.plt
+
+# Sample run from Ptolemy
+$pxgraph -test -t "Integer delays" -P -0 new -1 old =600x170+0+360 -binary bin.plt
+
