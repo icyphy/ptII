@@ -238,5 +238,8 @@ public class MultiportToSinglePort implements MoMLFilter {
         _actorsWithMultiPortToSinglePortChanges
             .put("ptolemy.domains.sdf.lib.Autocorrelation", "output");
 
+        _actorsWithMultiPortToSinglePortChanges
+            .put("ptolemy.actor.lib.NonStrictTest", "input");
+
     }
 }
