@@ -49,6 +49,8 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
 	ConditionalBranch.java \
+	ConditionalBranchActor.java \
+	ConditionalBranchController.java \
 	ConditionalReceive.java \
 	ConditionalSend.java \
 	CSPActor.java \

@@ -439,21 +439,21 @@ public class CSPReceiver implements ProcessReceiver {
         _checkFlags();
     }
 
-    /** The parent CSPActor of the conditional branch to reach the
+    /** The controller of the conditional branch to reach the
      *  rendezvous point first. For a rendezvous to occur when both
      *  communications at the receiver are from conditional branches,
      *  then the rendezvous can only proceed if <I>both</I> the branches
      *  are the first branches to be ready to succeed for their
-     *  respective parents. This is checked by the second branch to
+     *  respective controllers. This is checked by the second branch to
      *  arrive at the rendezvous point, for which it requires the actor
      *  that created the other branch. Thus the first branch to arrive
-     *  stores its parent in the receiver when it is setting the
+     *  stores its controller in the receiver when it is setting the
      *  appropriate flag, which is what is returned by this method.
-     *  @return The parent actor which created the first conditional
+     *  @return The controller which controls the first conditional
      *   branch to arrive.
      */
-    protected CSPActor _getOtherParent() {
-        return _otherParent;
+    protected ConditionalBranchController _getOtherController() {
+        return _otherController;
     }
 
     /** Flag indicating whether or not a ConditionalReceive is trying
@@ -500,9 +500,10 @@ public class CSPReceiver implements ProcessReceiver {
      *   check whether the ConditionalSend branch was the first
      *   branch of its conditional construct(CIF or CDO) to succeed.
      */
-    protected synchronized void _setConditionalSend(boolean v, CSPActor p) {
+    protected synchronized void _setConditionalSend(boolean v,
+	      ConditionalBranchController p) {
         _conditionalSendWaiting = v;
-	_otherParent = p;
+	_otherController = p;
     }
 
     /** Set a flag so that a ConditionalSend branch knows whether or
@@ -515,9 +516,10 @@ public class CSPReceiver implements ProcessReceiver {
      *   check whether the ConditionalReceive branch was the first
      *   branch of its conditional construct(CIF or CDO) to succeed.
      */
-    protected synchronized void _setConditionalReceive(boolean v, CSPActor p) {
+    protected synchronized void _setConditionalReceive(boolean v,
+	      ConditionalBranchController p) {
         _conditionalReceiveWaiting = v;
-	_otherParent = p;
+	_otherController = p;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -565,7 +567,11 @@ public class CSPReceiver implements ProcessReceiver {
     private CSPDirector _getDirector() {
         try {
             Actor cont = (Actor)getContainer().getContainer();
-            return  (CSPDirector)cont.getDirector();
+	    if (cont instanceof CompositeActor) {
+		return  (CSPDirector)cont.getExecutiveDirector();
+	    } else {
+		return  (CSPDirector)cont.getDirector();
+	    }
         } catch (NullPointerException ex) {
             // If a thread has a reference to a receiver with no director it
             // is an error so terminate the process.
@@ -646,7 +652,7 @@ public class CSPReceiver implements ProcessReceiver {
     private boolean _putWaiting = false;
 
     // obsolete when implement containment
-    private CSPActor _otherParent = null;
+    private ConditionalBranchController _otherController = null;
 
     // Flag indicating whether or not a conditional receive is waiting
     // to rendezvous.

@@ -87,10 +87,10 @@ synchronization point.
 <p>
 Conditional branches are designed to be used once. Upon instantiation,
 they are given the guard, the port and channel over which to communicate,
-and the identification number of the branch according to the parent.
+and the identification number of the branch according to the controller.
 The port and the channel together define the CSPReceiver with which to
-rendezvous. The CSPActor, executing a CIF or CDO that contains this branch, is
-assumed to be the container of the port.
+rendezvous. The ConditionalBranchController, that controls this branch,
+is assumed to be contained by the container of the port.
 <p>
 @author  Neil Smyth
 @version $Id$
@@ -115,13 +115,15 @@ public abstract class ConditionalBranch {
     public ConditionalBranch(boolean guard, IOPort port, int branchID)
             throws IllegalActionException {
         Nameable tmp = port.getContainer();
-        if (!(tmp instanceof CSPActor)) {
-            throw new IllegalActionException(port, "A conditional branch " +
-                    "can only be created with a port contained by CSPActor");
+        if (!(tmp instanceof ConditionalBranchActor)) {
+            throw new IllegalActionException(port,
+		    "A conditional branch can only be created" +
+		    "with a port contained by ConditionalBranchActor");
         }
         _branchID = branchID;
         _guard = guard;
-        _parent = (CSPActor)tmp;
+        _controller =
+	    ((ConditionalBranchActor)tmp).getConditionalBranchController();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -136,19 +138,20 @@ public abstract class ConditionalBranch {
     }
 
     /** Returns the identification number of this branch(according to its
-     *  parent).
+     *  controller).
      *  @return The identification number of this branch.
      */
     public int getID() {
         return _branchID;
     }
 
-    /** Return the CSPActor that created this branch when performing
-     *  a CIF or CDO.
-     *  @return The CSPActor that created this branch.
+    /** Return the controller that manges conditional rendezvous for this
+     *  branch when performing a CIF or CDO.
+     *  @return The controller that manages conditional rendezvous for
+     *  this branch.
      */
-    public CSPActor getParent() {
-        return _parent;
+    public ConditionalBranchController getController() {
+        return _controller;
     }
 
     /** Return the CSPReceiver this branch is trying to rendezvous with.
@@ -220,9 +223,9 @@ public abstract class ConditionalBranch {
      *  while waiting.
      */
     protected void _registerBlockAndWait() throws InterruptedException {
-        getParent()._branchBlocked();
+        getController()._branchBlocked();
         getReceiver()._checkFlagsAndWait();
-        getParent()._branchUnblocked();
+        getController()._branchUnblocked();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -234,7 +237,7 @@ public abstract class ConditionalBranch {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // The identification number of this branch (according to its parent)
+    // The identification number of this branch (according to its controller)
     private int _branchID;
 
     // Has another branch successfully rendezvoused? If so, then _alive
@@ -243,9 +246,9 @@ public abstract class ConditionalBranch {
     // for this branch to successfully rendezvous.
     private boolean _alive = true;
 
-    // The parent this thread is trying to perform a conditional
+    // The controller of this thread is trying to perform a conditional
     // rendezvous for.
-    private CSPActor _parent;
+    private ConditionalBranchController _controller;
 
     // The receiver this thread is trying to rendezvous with. It is immutable.
     private CSPReceiver _receiver;
