@@ -65,6 +65,7 @@ OPTIONAL_FILES = \
 	'Type$$MyTypeConflictListener.class' \
 	'Type$$MyTypeListener.class' \
 	'Type$$SchematicPanel.class' \
+	'Type$$TypeGraphController.class' \
 	'Type$$TypeRenderer.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
