@@ -503,8 +503,10 @@ public class ModelReference
                             // If running tried to load in some native code using JNI
                             // then we may get an Error here
                             _manager.notifyListenersOfThrowable(throwable);
-                        } finally {
-                            _manager.removeExecutionListener(ModelReference.this);
+                        // } finally {
+                            // NOTE: Race condition!  postfire() sets _manager to null.
+                            // So now we do this in postfire.
+                            // _manager.removeExecutionListener(ModelReference.this);
                         }
                     }
                 };
@@ -558,6 +560,9 @@ public class ModelReference
             }
             _manager.waitForCompletion();
         }
+        // If we specified to run in a new thread, then we are listening.
+        // If we didn't, this is harmless.
+        _manager.removeExecutionListener(ModelReference.this);
         _manager = null;
 
         return super.postfire();
