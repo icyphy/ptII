@@ -104,6 +104,17 @@ public class Attribute extends NamedObj {
         return newobj;
     }
 
+    /** Evaluate the attribute value, resolving any dependencies on other
+     *  attributes.  In this base class, no such dependencies can occur,
+     *  but in derived classes, they do occur.  This method is called by
+     *  the container of the attribute after its entire attribute list has
+     *  been cloned using the clone() method.  Thus, all other attributes
+     *  of the container have been created, so interdependencies can be
+     *  resolved.  In this base class, the method does nothing.
+     */
+    public void evaluate() {
+    }
+
     /** Get the NamedObj that this Attribute is attached to.
      *  @return The container, an instance of NamedObj.
      */
@@ -185,17 +196,6 @@ public class Attribute extends NamedObj {
                 "already contains an attribute with the name "+name+".");
         } 
         super.setName(name);
-    }
-
-    /** Update the attribute value, resolving any dependencies on other
-     *  attributes.  In this base class, no such dependencies can occur,
-     *  but in derived classes, they do occur.  This method is called by
-     *  the container of the attribute after its entire attribute list has
-     *  been cloned using the clone() method.  Thus, all other attributes
-     *  of the container have been created, so interdependencies can be
-     *  resolved.  In this base class, the method does nothing.
-     */
-    public void update() {
     }
 
     ///////////////////////////////////////////////////////////////////
