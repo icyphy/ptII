@@ -1,4 +1,4 @@
-# Tycho test suite definitions
+# Ptolemy II test suite definitions
 #
 # @Authors: Christopher Hylands
 #
@@ -99,7 +99,7 @@ proc print_verbose {test_name test_description contents_of_test code answer {tes
 	    incr FAILED
 	    if {$code == 1} {
 		puts "==== Test generated error:"
-		puts "$errorInfo"
+		jdkStackTrace
 	    } elseif {$code == 2} {
 		puts "==== Test generated return exception;  result was:"
 		puts $answer
@@ -115,7 +115,7 @@ proc print_verbose {test_name test_description contents_of_test code answer {tes
 	    incr KNOWN_FAILED
 	    if {$code == 1} {
 		puts ".... Test generated KNOWN error:"
-		puts "$errorInfo"
+		jdkStackTrace
 	    } elseif {$code == 2} {
 		puts ".... Test generated KNOWN return exception;  result was:"
 		puts $answer
@@ -203,7 +203,7 @@ proc dotests {file args} {
     doneTests
 }
 
-# Below here we have Tycho Specific extensions
+# Below here we have Ptolemy II Specific extensions
 
 ############################################################################
 #### doneTests
@@ -363,10 +363,35 @@ proc sleep {seconds} {
 # If it is not present, then create a dummy proc so the tests will work
 # under Tcl Blend 1.0
 #
-if {"[info command java::cast]" != "::java::cast"} {
+if {"[info command java::cast]" == ""} {
     proc java::cast {type object} {
         return $object
     }
 }
 
+# Print the most recent Java stack trace
+# Here's an example:
+# Create a String
+#   set s [java::new {String java.lang.String} "123"]
+# Try to get a character beyond the end of the array
+#   catch {$s charAt 4} err
+#   puts "The error was:\n$err"
+#   puts "The stack was:\n[jdkStackTrace]"
+proc jdkStackTrace {} {
+    global errorCode errorInfo
+    if { [string match {JAVA*} $errorCode] } {
+	set exception [lindex $errorCode 1]
+	set stream [java::new java.io.ByteArrayOutputStream]
+	set printWriter [java::new \
+		{java.io.PrintWriter java.io.OutputStream} $stream]
+	$exception {printStackTrace java.io.PrintWriter} $printWriter
+	$printWriter flush
+
+	puts "[$exception getMessage]"
+	puts "    while executing"
+	puts "[$stream toString]"
+	puts "    while executing"
+    }
+    puts $errorInfo
+}
 
