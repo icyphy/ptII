@@ -358,7 +358,8 @@ public class Autocorrelation extends SDFTransformer {
          */
         public void initialize(Object e)
 		throws IllegalActionException {
-	    throw new IllegalActionException("Autocorrelation$FunctionTerm." +
+	    throw new IllegalActionException(Autocorrelation.this,
+                    "Autocorrelation$FunctionTerm." +
                     "initialize: Cannot initialize a function term.");
         }
 
@@ -382,7 +383,7 @@ public class Autocorrelation extends SDFTransformer {
          */
         public void setValue(Object e)
 		throws IllegalActionException {
-	    throw new IllegalActionException(
+	    throw new IllegalActionException(Autocorrelation.this,
                     "Autocorrelation$FunctionTerm.setValue: The type is not " +
                     "settable.");
         }

@@ -101,7 +101,8 @@ public class FFT extends SDFTransformer {
             // Get the size of the FFT transform
             _orderValue = ((IntToken)order.getToken()).intValue();
             if(_orderValue <= 0) {
-                throw new IllegalActionException("Order was " + _orderValue
+                throw new IllegalActionException(this, 
+                        "Order was " + _orderValue
                         + " but must be greater than zero.");
             }
             _transformSize = (int)Math.pow(2, _orderValue );

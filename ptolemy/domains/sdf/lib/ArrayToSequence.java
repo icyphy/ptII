@@ -166,7 +166,7 @@ public class ArrayToSequence extends SDFTransformer {
 	boolean enforce = ((BooleanToken)enforceArrayLength.getToken())
                 .booleanValue();
 	if (enforce && token.length() != rate) {
-	    throw new IllegalActionException("ArrayToSequence.fire(): The " +
+	    throw new IllegalActionException(this, "The " +
                     "number of elements in the input ArrayToken (" +
                     token.length() + ") is not the same as the arrayLength " +
                     "parameter (" + rate + ").");
