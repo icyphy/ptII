@@ -45,7 +45,7 @@ import com.microstar.xml.*;
 */
 public class PTMLPrinter {
 
-    PTMLPrinter(String newurl,XMLElement e) {
+    public PTMLPrinter(String newurl,XMLElement e) {
         super();
         url = newurl;
         root=e;
@@ -58,7 +58,7 @@ public class PTMLPrinter {
         Writer out
             = new BufferedWriter(new OutputStreamWriter(os)); 
         out.write(xmlheader);
-        printXMLElement(out, root);
+        out.write(root.toString());
         out.flush();
     }
     

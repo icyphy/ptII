@@ -52,7 +52,7 @@ public class PTMLParser extends HandlerBase{
      * Create a PTMLParser that will operate relative to the url in the given 
      * string.
      */
-    PTMLParser(String s) {
+    public PTMLParser(String s) {
         super();
         url=s;
     } 

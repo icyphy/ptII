@@ -49,7 +49,7 @@ public class IconLibrary extends XMLElement{
      * with a URL and parsed before expecting valid results from the other 
      * methods
      */
-    IconLibrary() {
+    public IconLibrary() {
         super("iconlibrary");
         sublibraries = (HashedSet) new HashedSet();
         icons = (HashedMap) new HashedMap();
@@ -62,7 +62,7 @@ public class IconLibrary extends XMLElement{
      * with a URL and parsed before expecting valid results from the other 
      * methods
      */
-    IconLibrary(HashedMap attributes) {
+    public IconLibrary(HashedMap attributes) {
         super("iconlibrary", attributes);        
         sublibraries = (HashedSet) new HashedSet();
         icons = (HashedMap) new HashedMap();

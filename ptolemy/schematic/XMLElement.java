@@ -44,7 +44,7 @@ XML elements. It contains some basic support for accessing elements.
 @author Steve Neuendorffer, John Reekie
 @version $Id$
 */
-public class XMLElement {
+public class XMLElement extends Object {
     
     /** 
      * Create a new XMLElement with element type given by the string.
@@ -52,7 +52,7 @@ public class XMLElement {
      *
      * @param name The element type
      */
-    XMLElement(String type) {
+    public XMLElement(String type) {
         attributes = (HashedMap) new HashedMap();
         childelements = (HashedSet) new HashedSet();
         elementtype = type;
@@ -65,7 +65,7 @@ public class XMLElement {
      * @param name The element type
      * @param attribs The attributes of this XMLElement.
      */
-    XMLElement(String type, HashedMap attribs) {
+    public XMLElement(String type, HashedMap attribs) {
         attributes = attribs;
         elementtype = type;
         childelements = (HashedSet) new HashedSet();
@@ -173,6 +173,36 @@ public class XMLElement {
         pcdata = s;
     }
 
+    /**
+     * Convert this element to a string in XML
+     */
+    public String toString() {
+        String s = "";
+        s = s + "<";
+        s = s + getElementType();
+        s = s + "\n";
+        Enumeration attribs = attributeNames();
+        while(attribs.hasMoreElements()) {
+            String name = (String) attribs.nextElement();
+            String value = getAttribute(name);
+            s = s + "\t";
+            s = s + name;
+            s = s + "=\"";
+            s = s + value;
+            s = s + "\"\n";
+        }
+        s = s + ">";
+        Enumeration children = childElements();
+        while(children.hasMoreElements()) {
+            XMLElement child = (XMLElement) children.nextElement();
+            s = s + child.toString();
+        }
+        s = s + "</";
+        s = s + getElementType();
+        s = s + ">\n";
+        return s;
+    }  
+        
     /**
      * Add an attribute with the given name to this element.
      * This method is package-private, since only the XML
