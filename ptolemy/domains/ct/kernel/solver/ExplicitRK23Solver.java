@@ -125,12 +125,12 @@ public class ExplicitRK23Solver extends ODESolver{
             outvalue = xn + h * k0 *_B[0][0];
             break;
         case 1:
-            double k1= ((DoubleToken)integrator.input.get(0)).doubleValue();
+            double k1 = ((DoubleToken)integrator.input.get(0)).doubleValue();
             integrator.setAuxVariables(1, k1);
             outvalue = xn + h * (k[0]*_B[1][0] + k1 *_B[1][1]);
             break;
         case 2:
-            double k2= ((DoubleToken)integrator.input.get(0)).doubleValue();
+            double k2 = ((DoubleToken)integrator.input.get(0)).doubleValue();
             integrator.setAuxVariables(2, k2);
             outvalue = xn + h * (k[0]*_B[2][0] + k[1]*_B[2][1]
                     + k2*_B[2][2]);
@@ -148,7 +148,7 @@ public class ExplicitRK23Solver extends ODESolver{
      *  @param integrator The integrator of that calls this method.
      *  @return True if the intergrator report a success on the last step.
      */
-    public boolean integratorIsSuccessful(CTBaseIntegrator integrator){
+    public boolean integratorIsSuccessful(CTBaseIntegrator integrator) {
         try {
             CTDirector dir = (CTDirector)getContainer();
             double errtol = dir.getErrorTolerance();
