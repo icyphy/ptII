@@ -177,6 +177,13 @@ public class AtomicActor extends ComponentEntity implements Actor {
         return getDirector();
     }
 
+    /** Return the IODependence if there is one. 
+     *  return The IODependence attribute.
+     */
+    public IODependence getIODependence() {
+        return (IODependence) getAttribute("IODependence");
+    }
+
     /** Return the Manager responsible for execution of this actor,
      *  if there is one. Otherwise, return null.
      *  @return The manager.
@@ -395,6 +402,7 @@ public class AtomicActor extends ComponentEntity implements Actor {
         // in connectionChanged().  Perhaps this is here to ensure
         // that the receivers are reset?
         _createReceivers();
+
     }
 
     /** Override the base class to invalidate the schedule and
@@ -526,8 +534,12 @@ public class AtomicActor extends ComponentEntity implements Actor {
     /** Indicator that a stop has been requested by a call to stop(). */
     protected boolean _stopRequested = false;
 
+    // IODependence attribute
+    protected IODependence _IODependence;
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
 
     // Cached lists of input and output ports.
     private transient long _inputPortsVersion = -1;
