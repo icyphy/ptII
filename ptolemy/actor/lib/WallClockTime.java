@@ -30,7 +30,9 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.actor.lib;
 
+import ptolemy.actor.TypedIOPort;
 import ptolemy.data.DoubleToken;
+import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -42,6 +44,16 @@ since the invocation of its initialize() method.  The output type is double.
 The resolution of time depends on the implementation of the Java
 virtual machine, but with Sun's JDK 1.3 under Windows 2000, it is
 10 milliseconds.
+<p>
+Note that relying on the data produced by this actor is tricky
+in domains where you do not have precise control over the
+scheduling, since the output reflects the wall-clock time at
+which this actor is fired, which may or may not be indicative
+of the times at which other actors fire.  So that you can get
+more control over the schedule, the input provided at the
+<i>trigger</i> port is passed through to the <i>passThrough</i>
+output port.  This can be used to ensure that this actor
+fires before another downstream actor.
 
 @author  Edward A. Lee
 @version $Id$
@@ -62,8 +74,21 @@ public class WallClockTime extends Source {
         super(container, name);
 
         output.setTypeEquals(BaseType.DOUBLE);
+        
+        passThrough = new TypedIOPort(this, "passThrough", false, true);
+        passThrough.setTypeSameAs(trigger);
+        passThrough.setMultiport(true);
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                        ports and parameters               ////
+
+    /** The output port to which the <i>trigger</i> input is passed.
+     *  The type is the same as the type of the <i>trigger</i> port,
+     *  which is undeclared, meaning that it will resolve to any type.
+     */
+    public TypedIOPort passThrough;
+    
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -73,8 +98,20 @@ public class WallClockTime extends Source {
      *   if the base class throws it.
      */
     public void fire() throws IllegalActionException {
-        super.fire();
+        // NOTE: Do not call super.fire() because it reads the trigger
+        // input.
+        if (_debugging) {
+            _debug("Called fire()");
+        }
         output.broadcast(new DoubleToken(_getCurrentTime()));
+        for (int i = 0; i < trigger.getWidth(); i++) {
+            if (trigger.hasToken(i)) {
+                Token token = trigger.get(i);
+                if (i < passThrough.getWidth()) {
+                    passThrough.send(i, token);
+                }
+            }
+        }
     }
 
     /** Record the start time.
