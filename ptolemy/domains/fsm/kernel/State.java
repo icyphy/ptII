@@ -214,4 +214,4 @@ public class State extends ComponentEntity {
     // Version of cached transition lists.
     private long _transitionListVersion = -1;
 }
-    
+

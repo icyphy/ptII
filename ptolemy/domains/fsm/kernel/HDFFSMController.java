@@ -688,7 +688,7 @@ public class HDFFSMController  extends FSMController implements TypedActor {
      *  called exactly once to set the starting state.
      *  @param state The initial state, an instance of FSMState.
      *  @exception IllegalActionException If this method is called more
-     *  than once. 
+     *  than once.
      */
     public void setInitialState(FSMState initialState)
             throws IllegalActionException {
