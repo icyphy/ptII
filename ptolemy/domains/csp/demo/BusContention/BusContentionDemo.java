@@ -61,12 +61,12 @@ public class BusContentionDemo {
         _topLevelActor.setManager( _manager );
 
         // Set up next level actors
-        _controller = new CSPController( _topLevelActor, "controller" );
-        _alarm = new CSPContentionAlarm( _topLevelActor, "alarm" );
-        _memory = new CSPMemory( _topLevelActor, "memory" );
-        _proc1 = new CSPProcessor( _topLevelActor, "proc1", 1 );
-        _proc2 = new CSPProcessor( _topLevelActor, "proc2", 2 );
-        _proc3 = new CSPProcessor( _topLevelActor, "proc3", 3 );
+        _controller = new Controller( _topLevelActor, "controller" );
+        _alarm = new ContentionAlarm( _topLevelActor, "alarm" );
+        _memory = new Memory( _topLevelActor, "memory" );
+        _proc1 = new Processor( _topLevelActor, "proc1", 1 );
+        _proc2 = new Processor( _topLevelActor, "proc2", 2 );
+        _proc3 = new Processor( _topLevelActor, "proc3", 3 );
     }
 
     /**
@@ -188,12 +188,12 @@ public class BusContentionDemo {
     private TypedCompositeActor _topLevelActor;
     private Manager _manager;
     private CSPDirector _director;
-    private CSPController _controller;
-    private CSPContentionAlarm _alarm;
-    private CSPMemory _memory;
-    private CSPProcessor _proc1;
-    private CSPProcessor _proc2;
-    private CSPProcessor _proc3;
+    private Controller _controller;
+    private ContentionAlarm _alarm;
+    private Memory _memory;
+    private Processor _proc1;
+    private Processor _proc2;
+    private Processor _proc3;
 
 }
 
