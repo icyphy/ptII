@@ -99,7 +99,7 @@ test KernelRuntimeException-7.1 {Create a KernelRuntimeException with a Collecti
 	        [$stream toString] "\n" output
 
     list [$pe getMessage] [[$pe getCause] toString] "\n\n" \
-	    [string range $output 0 108]
+	    [string range $output 0 105]
 } {{Detail Message
   in .n1, .n2, .n3
 Because:
@@ -109,16 +109,16 @@ Cause Exception} {java.lang.Exception: Cause Exception} {
   in .n1, .n2, .n3
 Because:
 Cause Exception
-	at ja}}
+	at}}
 
 test KernelRuntimeException-8.0 {printStackTrace()} {
     set cause [java::new Exception "Cause Exception"]
     set pe [java::new ptolemy.kernel.util.KernelRuntimeException \
 	    $nameables $cause "Detail Message2"]
     jdkCaptureErr {$pe printStackTrace} errMsg
-    list [string range $errMsg 0 108]
+    list [string range $errMsg 0 106]
 } {{ptolemy.kernel.util.KernelRuntimeException: Detail Message2
   in .n1, .n2, .n3
 Because:
 Cause Exception
-	at j}}
+	at}}
