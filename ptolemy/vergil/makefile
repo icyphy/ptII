@@ -52,6 +52,7 @@ PTAUXALLJARS = \
 		actor/actor.jar \
 		basic/basic.jar \
 		fsm/fsm.jar \
+		icon/icon.jar \
 		kernel/kernel.jar \
 		toolbox/toolbox.jar
 
@@ -62,7 +63,7 @@ PTAUXALLJAR =	vergilApplet.jar
 PTCLASSALLJARS = \
 		$(PTAUXALLJARS) \
 		debugger/debugger.jar \
-		icon/icon.jar \
+		kernel/kernel.jar \
 		lib/lib.jar \
 		tree/tree.jar
 
