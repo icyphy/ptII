@@ -14,11 +14,19 @@ on the fly:
     archive="plot/plot.zip"
     alt="If you had a java-enabled browser, you would see an applet here."
 >
+<param name="background" value="faf0e6">
    <hr>If your browser recognized the applet tag,
     you would see an applet here.<hr>
 </applet>
 <p>
 Note that you can zoom in on any region of the graph by drawing a box.
+Start at the upper left corner of the region you wish to view in more
+detail, and drag downwards and to the right.
+Dragging upwards instead allows you to zoom out.  When zooming out,
+a reference box is drawn that will represent the current view, and
+dragging will cause a box to be displayed that represents the new
+view.  Zooming out will only go as far as the original scale.
+<p>
 The <a href="../PlotDemo.java">source code</a>
 defines a class <code>PlotDemo</code>
 derived from <code>Plot</code>.  This new class contains a sequence of Java
