@@ -100,6 +100,7 @@
             <input source="ptolemy/apps/superb/superb.xml"/>
             <input source="ptolemy/actor/lib/python/python.xml"/>
             <input source="ptolemy/actor/lib/test.xml"/>
+            <input source="ptolemy/domains/wireless/wireless.xml"/>
         <!-- x10 actors depend on the x10 library in vendor/misc/x10 -->
             <input source="ptolemy/actor/lib/x10/x10.xml"/>
             <input source="ptolemy/actor/lib/xslt/xslt.xml"/>
