@@ -188,72 +188,6 @@
             <property name="location1" class="ptolemy.moml.Location" value="771.998769402504, 190.9994239807129">
             </property>
         </port>
-        <entity name="Merge0" class="ptolemy.domains.de.lib.Merge">
-            <property name="_location" class="ptolemy.moml.Location" value="240.0, 148.0">
-            </property>
-            <port name="input" class="ptolemy.domains.de.kernel.DEIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
-            <port name="output" class="ptolemy.domains.de.kernel.DEIOPort">
-                <property name="output"/>
-            </port>
-        </entity>
-        <entity name="Merge1" class="ptolemy.domains.de.lib.Merge">
-            <property name="_location" class="ptolemy.moml.Location" value="242.0, 210.0">
-            </property>
-            <port name="input" class="ptolemy.domains.de.kernel.DEIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
-            <port name="output" class="ptolemy.domains.de.kernel.DEIOPort">
-                <property name="output"/>
-            </port>
-        </entity>
-        <entity name="Merge2" class="ptolemy.domains.de.lib.Merge">
-            <property name="_location" class="ptolemy.moml.Location" value="241.0, 272.0">
-            </property>
-            <port name="input" class="ptolemy.domains.de.kernel.DEIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
-            <port name="output" class="ptolemy.domains.de.kernel.DEIOPort">
-                <property name="output"/>
-            </port>
-        </entity>
-        <entity name="Merge3" class="ptolemy.domains.de.lib.Merge">
-            <property name="_location" class="ptolemy.moml.Location" value="242.0, 339.0">
-            </property>
-            <port name="input" class="ptolemy.domains.de.kernel.DEIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
-            <port name="output" class="ptolemy.domains.de.kernel.DEIOPort">
-                <property name="output"/>
-            </port>
-        </entity>
-        <entity name="Merge4" class="ptolemy.domains.de.lib.Merge">
-            <property name="_location" class="ptolemy.moml.Location" value="240.0, 403.0">
-            </property>
-            <port name="input" class="ptolemy.domains.de.kernel.DEIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
-            <port name="output" class="ptolemy.domains.de.kernel.DEIOPort">
-                <property name="output"/>
-            </port>
-        </entity>
-        <entity name="Merge5" class="ptolemy.domains.de.lib.Merge">
-            <property name="_location" class="ptolemy.moml.Location" value="242.0, 462.0">
-            </property>
-            <port name="input" class="ptolemy.domains.de.kernel.DEIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
-            <port name="output" class="ptolemy.domains.de.kernel.DEIOPort">
-                <property name="output"/>
-            </port>
-        </entity>
         <class name="applyshoulder" extends="ptolemy.actor.TypedCompositeActor">
             <property name="_location" class="ptolemy.moml.Location" value="483.3288879394531, 389.5547790527344">
             </property>
@@ -588,6 +522,8 @@
                 <entity name="AxBx_AyBy" class="ptolemy.actor.lib.Expression">
                     <property name="expression" class="ptolemy.data.expr.Parameter" value="(Ax*Bx+Ay*By)/(sqrtA*sqrtB)">
                     </property>
+                    <property name="inputPorts" class="ptolemy.kernel.util.StringAttribute">
+                    </property>
                     <property name="_location" class="ptolemy.moml.Location" value="314.0, 139.0">
                     </property>
                     <port name="output" class="ptolemy.actor.TypedIOPort">
@@ -706,6 +642,8 @@
                 </entity>
                 <entity name="AxBy-AyBx" class="ptolemy.actor.lib.Expression">
                     <property name="expression" class="ptolemy.data.expr.Parameter" value="-(Ax*By-Ay*Bx)">
+                    </property>
+                    <property name="inputPorts" class="ptolemy.kernel.util.StringAttribute">
                     </property>
                     <property name="_location" class="ptolemy.moml.Location" value="290.0, 308.0">
                     </property>
@@ -1018,6 +956,8 @@
                 <entity name="Expression15" class="ptolemy.actor.lib.Expression">
                     <property name="expression" class="ptolemy.data.expr.Parameter" value="pivotX+(x-pivotX)*cosine-(y-pivotY)*sine">
                     </property>
+                    <property name="inputPorts" class="ptolemy.kernel.util.StringAttribute">
+                    </property>
                     <property name="_location" class="ptolemy.moml.Location" value="367.0, 96.0">
                     </property>
                     <port name="output" class="ptolemy.actor.TypedIOPort">
@@ -1044,6 +984,8 @@
                 </entity>
                 <entity name="Expression16" class="ptolemy.actor.lib.Expression">
                     <property name="expression" class="ptolemy.data.expr.Parameter" value="pivotY+(x-pivotX)*sine+(y-pivotY)*cosine">
+                    </property>
+                    <property name="inputPorts" class="ptolemy.kernel.util.StringAttribute">
                     </property>
                     <property name="_location" class="ptolemy.moml.Location" value="360.0, 272.0">
                     </property>
@@ -1272,6 +1214,8 @@
                 <entity name="Expression15" class="ptolemy.actor.lib.Expression">
                     <property name="expression" class="ptolemy.data.expr.Parameter" value="pivotX+(x-pivotX)*cosine-(y-pivotY)*sine">
                     </property>
+                    <property name="inputPorts" class="ptolemy.kernel.util.StringAttribute">
+                    </property>
                     <property name="_location" class="ptolemy.moml.Location" value="367.0, 96.0">
                     </property>
                     <port name="output" class="ptolemy.actor.TypedIOPort">
@@ -1298,6 +1242,8 @@
                 </entity>
                 <entity name="Expression16" class="ptolemy.actor.lib.Expression">
                     <property name="expression" class="ptolemy.data.expr.Parameter" value="pivotY+(x-pivotX)*sine+(y-pivotY)*cosine">
+                    </property>
+                    <property name="inputPorts" class="ptolemy.kernel.util.StringAttribute">
                     </property>
                     <property name="_location" class="ptolemy.moml.Location" value="360.0, 272.0">
                     </property>
@@ -1565,6 +1511,8 @@
                 <entity name="Expression15" class="ptolemy.actor.lib.Expression">
                     <property name="expression" class="ptolemy.data.expr.Parameter" value="pivotX+(x-pivotX)*cosine-(y-pivotY)*sine">
                     </property>
+                    <property name="inputPorts" class="ptolemy.kernel.util.StringAttribute">
+                    </property>
                     <property name="_location" class="ptolemy.moml.Location" value="367.0, 96.0">
                     </property>
                     <port name="output" class="ptolemy.actor.TypedIOPort">
@@ -1591,6 +1539,8 @@
                 </entity>
                 <entity name="Expression16" class="ptolemy.actor.lib.Expression">
                     <property name="expression" class="ptolemy.data.expr.Parameter" value="pivotY+(x-pivotX)*sine+(y-pivotY)*cosine">
+                    </property>
+                    <property name="inputPorts" class="ptolemy.kernel.util.StringAttribute">
                     </property>
                     <property name="_location" class="ptolemy.moml.Location" value="360.0, 272.0">
                     </property>
@@ -2294,6 +2244,8 @@
                 <entity name="AxBx_AyBy" class="ptolemy.actor.lib.Expression">
                     <property name="expression" class="ptolemy.data.expr.Parameter" value="(Ax*Bx+Ay*By)/(sqrtA*sqrtB)">
                     </property>
+                    <property name="inputPorts" class="ptolemy.kernel.util.StringAttribute">
+                    </property>
                     <property name="_location" class="ptolemy.moml.Location" value="314.0, 139.0">
                     </property>
                     <port name="output" class="ptolemy.actor.TypedIOPort">
@@ -2412,6 +2364,8 @@
                 </entity>
                 <entity name="AxBy-AyBx" class="ptolemy.actor.lib.Expression">
                     <property name="expression" class="ptolemy.data.expr.Parameter" value="-(Ax*By-Ay*Bx)">
+                    </property>
+                    <property name="inputPorts" class="ptolemy.kernel.util.StringAttribute">
                     </property>
                     <property name="_location" class="ptolemy.moml.Location" value="290.0, 308.0">
                     </property>
@@ -2724,6 +2678,8 @@
                 <entity name="Expression15" class="ptolemy.actor.lib.Expression">
                     <property name="expression" class="ptolemy.data.expr.Parameter" value="pivotX+(x-pivotX)*cosine-(y-pivotY)*sine">
                     </property>
+                    <property name="inputPorts" class="ptolemy.kernel.util.StringAttribute">
+                    </property>
                     <property name="_location" class="ptolemy.moml.Location" value="367.0, 96.0">
                     </property>
                     <port name="output" class="ptolemy.actor.TypedIOPort">
@@ -2750,6 +2706,8 @@
                 </entity>
                 <entity name="Expression16" class="ptolemy.actor.lib.Expression">
                     <property name="expression" class="ptolemy.data.expr.Parameter" value="pivotY+(x-pivotX)*sine+(y-pivotY)*cosine">
+                    </property>
+                    <property name="inputPorts" class="ptolemy.kernel.util.StringAttribute">
                     </property>
                     <property name="_location" class="ptolemy.moml.Location" value="360.0, 272.0">
                     </property>
@@ -2978,6 +2936,8 @@
                 <entity name="Expression15" class="ptolemy.actor.lib.Expression">
                     <property name="expression" class="ptolemy.data.expr.Parameter" value="pivotX+(x-pivotX)*cosine-(y-pivotY)*sine">
                     </property>
+                    <property name="inputPorts" class="ptolemy.kernel.util.StringAttribute">
+                    </property>
                     <property name="_location" class="ptolemy.moml.Location" value="367.0, 96.0">
                     </property>
                     <port name="output" class="ptolemy.actor.TypedIOPort">
@@ -3004,6 +2964,8 @@
                 </entity>
                 <entity name="Expression16" class="ptolemy.actor.lib.Expression">
                     <property name="expression" class="ptolemy.data.expr.Parameter" value="pivotY+(x-pivotX)*sine+(y-pivotY)*cosine">
+                    </property>
+                    <property name="inputPorts" class="ptolemy.kernel.util.StringAttribute">
                     </property>
                     <property name="_location" class="ptolemy.moml.Location" value="360.0, 272.0">
                     </property>
@@ -3662,6 +3624,8 @@
                 <entity name="AxBx_AyBy" class="ptolemy.actor.lib.Expression">
                     <property name="expression" class="ptolemy.data.expr.Parameter" value="(Ax*Bx+Ay*By)/(sqrtA*sqrtB)">
                     </property>
+                    <property name="inputPorts" class="ptolemy.kernel.util.StringAttribute">
+                    </property>
                     <property name="_location" class="ptolemy.moml.Location" value="314.0, 139.0">
                     </property>
                     <port name="output" class="ptolemy.actor.TypedIOPort">
@@ -3780,6 +3744,8 @@
                 </entity>
                 <entity name="AxBy-AyBx" class="ptolemy.actor.lib.Expression">
                     <property name="expression" class="ptolemy.data.expr.Parameter" value="-(Ax*By-Ay*Bx)">
+                    </property>
+                    <property name="inputPorts" class="ptolemy.kernel.util.StringAttribute">
                     </property>
                     <property name="_location" class="ptolemy.moml.Location" value="290.0, 308.0">
                     </property>
@@ -4092,6 +4058,8 @@
                 <entity name="Expression15" class="ptolemy.actor.lib.Expression">
                     <property name="expression" class="ptolemy.data.expr.Parameter" value="pivotX+(x-pivotX)*cosine-(y-pivotY)*sine">
                     </property>
+                    <property name="inputPorts" class="ptolemy.kernel.util.StringAttribute">
+                    </property>
                     <property name="_location" class="ptolemy.moml.Location" value="367.0, 96.0">
                     </property>
                     <port name="output" class="ptolemy.actor.TypedIOPort">
@@ -4118,6 +4086,8 @@
                 </entity>
                 <entity name="Expression16" class="ptolemy.actor.lib.Expression">
                     <property name="expression" class="ptolemy.data.expr.Parameter" value="pivotY+(x-pivotX)*sine+(y-pivotY)*cosine">
+                    </property>
+                    <property name="inputPorts" class="ptolemy.kernel.util.StringAttribute">
                     </property>
                     <property name="_location" class="ptolemy.moml.Location" value="360.0, 272.0">
                     </property>
@@ -4914,18 +4884,6 @@
                 <property name="output"/>
             </port>
         </entity>
-        <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <relation name="relation10" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <relation name="relation12" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <relation name="relation14" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <relation name="relation16" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <relation name="relation18" class="ptolemy.actor.TypedIORelation">
-        </relation>
         <relation name="relation21" class="ptolemy.actor.TypedIORelation">
             <vertex name="vertex1" class="ptolemy.moml.Vertex" value="33.99999976158142, 101.99999976158142">
             </vertex>
@@ -4935,27 +4893,27 @@
             </vertex>
         </relation>
         <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="297.0, 154.0">
+            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="148.0, 176.0">
             </vertex>
         </relation>
         <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="294.0, 217.0">
+            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="151.0, 243.0">
             </vertex>
         </relation>
         <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="299.0, 278.0">
+            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="153.0, 297.0">
             </vertex>
         </relation>
         <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="317.0, 345.0">
+            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="151.0, 356.0">
             </vertex>
         </relation>
         <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="315.0, 409.0">
+            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="150.0, 427.0">
             </vertex>
         </relation>
         <relation name="relation11" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="296.0, 469.0">
+            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="148.0, 480.0">
             </vertex>
         </relation>
         <relation name="relation27" class="ptolemy.actor.TypedIORelation">
@@ -4994,18 +4952,6 @@
         </relation>
         <relation name="relation81" class="ptolemy.actor.TypedIORelation">
         </relation>
-        <relation name="relation83" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <relation name="relation85" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <relation name="relation87" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <relation name="relation89" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <relation name="relation91" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <relation name="relation93" class="ptolemy.actor.TypedIORelation">
-        </relation>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
             <vertex name="vertex1" class="ptolemy.moml.Vertex" value="383.0, 536.0">
             </vertex>
@@ -5037,24 +4983,6 @@
         <link port="out_shoulder" relation="relation17"/>
         <link port="out_elbow" relation="relation13"/>
         <link port="out_wrist" relation="relation3"/>
-        <link port="Merge0.input" relation="relation18"/>
-        <link port="Merge0.input" relation="relation83"/>
-        <link port="Merge0.output" relation="relation4"/>
-        <link port="Merge1.input" relation="relation16"/>
-        <link port="Merge1.input" relation="relation85"/>
-        <link port="Merge1.output" relation="relation5"/>
-        <link port="Merge2.input" relation="relation14"/>
-        <link port="Merge2.input" relation="relation87"/>
-        <link port="Merge2.output" relation="relation6"/>
-        <link port="Merge3.input" relation="relation12"/>
-        <link port="Merge3.input" relation="relation89"/>
-        <link port="Merge3.output" relation="relation7"/>
-        <link port="Merge4.input" relation="relation10"/>
-        <link port="Merge4.input" relation="relation91"/>
-        <link port="Merge4.output" relation="relation9"/>
-        <link port="Merge5.input" relation="relation8"/>
-        <link port="Merge5.input" relation="relation93"/>
-        <link port="Merge5.output" relation="relation11"/>
         <link port="applyshoulder.trigger" relation="relation22"/>
         <link port="applyshoulder.posttrigger" relation="relation2"/>
         <link port="applyshoulder.newendx" relation="relation53"/>
@@ -5098,17 +5026,17 @@
         <link port="applywrist.wristx" relation="relation6"/>
         <link port="applywrist.wristy" relation="relation7"/>
         <link port="applywrist.wristangle_" relation="relation3"/>
-        <link port="orig_endx.output" relation="relation18"/>
+        <link port="orig_endx.output" relation="relation4"/>
         <link port="orig_endx.trigger" relation="relation21"/>
-        <link port="orig_endy.output" relation="relation16"/>
+        <link port="orig_endy.output" relation="relation5"/>
         <link port="orig_endy.trigger" relation="relation21"/>
-        <link port="orig_wristx.output" relation="relation14"/>
+        <link port="orig_wristx.output" relation="relation6"/>
         <link port="orig_wristx.trigger" relation="relation21"/>
-        <link port="orig_wristy.output" relation="relation12"/>
+        <link port="orig_wristy.output" relation="relation7"/>
         <link port="orig_wristy.trigger" relation="relation21"/>
-        <link port="orig_elbowx.output" relation="relation10"/>
+        <link port="orig_elbowx.output" relation="relation9"/>
         <link port="orig_elbowx.trigger" relation="relation21"/>
-        <link port="orig_elbowy.output" relation="relation8"/>
+        <link port="orig_elbowy.output" relation="relation11"/>
         <link port="orig_elbowy.trigger" relation="relation21"/>
         <link port="Delay46.input" relation="relation53"/>
         <link port="Delay46.output" relation="relation71"/>
@@ -5123,22 +5051,22 @@
         <link port="Delay51.input" relation="relation63"/>
         <link port="Delay51.output" relation="relation81"/>
         <link port="Sampler64.input" relation="relation71"/>
-        <link port="Sampler64.output" relation="relation83"/>
+        <link port="Sampler64.output" relation="relation4"/>
         <link port="Sampler64.trigger" relation="relation2"/>
         <link port="Sampler65.input" relation="relation73"/>
-        <link port="Sampler65.output" relation="relation85"/>
+        <link port="Sampler65.output" relation="relation5"/>
         <link port="Sampler65.trigger" relation="relation2"/>
         <link port="Sampler66.input" relation="relation75"/>
-        <link port="Sampler66.output" relation="relation87"/>
+        <link port="Sampler66.output" relation="relation6"/>
         <link port="Sampler66.trigger" relation="relation2"/>
         <link port="Sampler67.input" relation="relation77"/>
-        <link port="Sampler67.output" relation="relation89"/>
+        <link port="Sampler67.output" relation="relation7"/>
         <link port="Sampler67.trigger" relation="relation2"/>
         <link port="Sampler68.input" relation="relation79"/>
-        <link port="Sampler68.output" relation="relation91"/>
+        <link port="Sampler68.output" relation="relation9"/>
         <link port="Sampler68.trigger" relation="relation2"/>
         <link port="Sampler69.input" relation="relation81"/>
-        <link port="Sampler69.output" relation="relation93"/>
+        <link port="Sampler69.output" relation="relation11"/>
         <link port="Sampler69.trigger" relation="relation2"/>
         <link port="countzero.port1" relation="relation22"/>
         <link port="countzero.port5" relation="relation2"/>
