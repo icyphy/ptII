@@ -203,6 +203,7 @@ public class ModelFrame extends PtolemyFrame implements ExecutionListener {
                 manager.removeExecutionListener(this);
             }
         }
+        modelPane().stopRun();
         return result;
     }
 
