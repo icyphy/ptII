@@ -295,7 +295,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      *  @param pause true if requesting a pause and false if requesting a 
      *  resumption of the paused thread.
      */
-    public synchronized void setPause(boolean pause) {
+    public synchronized void requestPause(boolean pause) {
 	if (pause) {
 	    _pause = true;
 	} else {
@@ -326,7 +326,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      *  This will result in termination of any process that is either blocked
      *  on the receiver or is trying to read from or write to it.
      */
-    public synchronized void setFinish() {
+    public synchronized void requestFinish() {
 	_terminate = true;
 	notifyAll();
     }
