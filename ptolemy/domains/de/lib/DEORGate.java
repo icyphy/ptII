@@ -58,7 +58,7 @@ public class DEORGate extends DEActor {
     public DEORGate(TypedCompositeActor container,
             String name)
             throws NameDuplicationException, IllegalActionException  {
-        this(container, name,0.1);
+        this(container, name, 0.1);
 
     }
 
@@ -112,7 +112,8 @@ public class DEORGate extends DEActor {
             outToken = new DoubleToken(0.0);
         }
 
-        output.broadcast(outToken, ((DoubleToken)_delay.getToken()).doubleValue());
+        output.broadcast(outToken,
+                ((DoubleToken)_delay.getToken()).doubleValue());
 
     }
 
