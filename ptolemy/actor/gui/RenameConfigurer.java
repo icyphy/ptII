@@ -30,15 +30,18 @@
 
 package ptolemy.actor.gui;
 
-import ptolemy.kernel.Port;
-import ptolemy.kernel.Relation;
-import ptolemy.kernel.util.*;
+import javax.swing.BoxLayout;
+
+import ptolemy.gui.MessageHandler;
 import ptolemy.gui.Query;
 import ptolemy.gui.QueryListener;
-import ptolemy.gui.MessageHandler;
+import ptolemy.kernel.Port;
+import ptolemy.kernel.Relation;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.ChangeListener;
+import ptolemy.kernel.util.ChangeRequest;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLChangeRequest;
-
-import javax.swing.BoxLayout;
 
 //////////////////////////////////////////////////////////////////////////
 //// RenameConfigurer
@@ -63,7 +66,17 @@ public class RenameConfigurer extends Query
 	setTextWidth(25);
         _object = object;
         addLine("New name", "New name", object.getName());
-        boolean nameShowing = _object.getAttribute("_suppressName") == null;
+        // By default, names are not shown for ports, and are shown
+        // for everything else.  Note that ports are a little confusing,
+        // because names are _always_ shown for external ports inside
+        // a composite actor.  This dialog determines whether they will
+        // be shown on the outside of the comnposite actor.
+        boolean nameShowing = false;
+        if (object instanceof Port) {
+            nameShowing = _object.getAttribute("_showName") != null;
+        } else {
+            nameShowing = _object.getAttribute("_hideName") == null;
+        }
         addCheckBox("Show name", "Show name", nameShowing);
     }
 
@@ -104,13 +117,24 @@ public class RenameConfigurer extends Query
             moml.append("\"/>");
             // Remove or show name.
             boolean showName = booleanValue("Show name");
-            if (showName) {
-                if (_object.getAttribute("_suppressName") != null) {
-                    moml.append("<deleteProperty name=\"_suppressName\"/>");
+            if (_object instanceof Port) {
+                if (showName) {
+                    moml.append("<property name=\"_showName\" "
+                    + "class=\"ptolemy.kernel.util.SingletonAttribute\"/>");
+                } else {
+                    if (_object.getAttribute("_showName") != null) {
+                        moml.append("<deleteProperty name=\"_showName\"/>");
+                    }
                 }
             } else {
-                moml.append("<property name=\"_suppressName\" "
-                        + "class=\"ptolemy.kernel.util.SingletonAttribute\"/>");
+                if (showName) {
+                    if (_object.getAttribute("_hideName") != null) {
+                        moml.append("<deleteProperty name=\"_hideName\"/>");
+                    }
+                } else {
+                    moml.append("<property name=\"_hideName\" "
+                    + "class=\"ptolemy.kernel.util.SingletonAttribute\"/>");
+                }
             }
             moml.append("</");
             moml.append(elementName);
