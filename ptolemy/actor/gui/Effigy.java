@@ -157,7 +157,14 @@ public class Effigy extends CompositeEntity {
                 } else {
                     String filename = u.getFile();
                     File file = new File(filename);
-                    _modifiableURL = file.canWrite();
+		    try {
+			_modifiableURL = file.canWrite();
+		    } catch (java.security.AccessControlException
+		       accessControl) {
+			// If we are running in a sandbox, then canWrite()
+			// may throw an AccessControlException.
+			_modifiableURL = false;
+		    }
                 }
             }
         } else {

@@ -298,9 +298,16 @@ public class Configuration extends CompositeEntity {
             if (in.getProtocol().equals("file")) {
                 String filename = in.getFile();
                 File file = new File(filename);
-                if (!file.canWrite()) {
-                    effigy.setModifiable(false);
-                }
+		try {
+		    if (!file.canWrite()) {
+			effigy.setModifiable(false);
+		    } 
+		} catch (java.security.AccessControlException
+			 accessControl) {
+		    // If we are running in a sandbox, then canWrite()
+		    // may throw an AccessControlException.
+		    effigy.setModifiable(false);
+		}
             } else {
                 effigy.setModifiable(false);
             }
