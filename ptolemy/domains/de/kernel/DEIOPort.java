@@ -70,6 +70,19 @@ public class DEIOPort extends TypedIOPort {
         super();
     }
 
+
+    /** Construct a port in the specified workspace with an empty
+     *  string as a name. You can then change the name with setName().
+     *  If the workspace argument
+     *  is null, then use the default workspace.
+     *  The object is added to the workspace directory.
+     *  Increment the version number of the workspace.
+     *  @param workspace The workspace that will list the port.
+     */
+    public DEIOPort(Workspace workspace) {
+	super(workspace);
+    }
+
     /** Construct a DEIOPort with the specified container and name
      *  that is neither an input nor an output.  The specified container
      *  must implement the Actor interface, or an exception will be thrown.
