@@ -76,8 +76,8 @@ EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	auto \
-				alljtests.tcl 
+MISC_FILES =	alljtests.tcl 
+
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
@@ -88,7 +88,9 @@ JCLASS =	$(JSRCS:%.java=%.class)
 # Don't include all or install rules here, we want the user
 # to run 'make tests' to run the tests.
 
-tests:: $(EXTRA_SRCS) jclass test_java test_auto test_jsimple
+# If you create an auto directory, be sure not to use any ct/lib 
+# actors or actors in other domains that are not yet built, such as fsm
+tests:: $(EXTRA_SRCS) jclass test_java test_jsimple #test_auto
 
 test_java: jclass
 
