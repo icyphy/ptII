@@ -37,18 +37,18 @@ import ptolemy.kernel.Port;
 ///////////////////////////////////////////////////////////////////////
 //// GraphReader
 /** This class provides methods for converting Ptolemy II models
- * into generic graph representations. Portions of
- * this code are based on examples from [1].
- * <p>
- * References<br>
- * [1] J. Davis et al., <em>Heterogeneous
- * concurrent modeling and design in Java</em>, Technical report,
- * Electronics Research Laboratory, University of California at Berkeley, March 2001.
+into generic graph representations. Portions of
+this code are based on examples from [1].
+<p>
+References<br>
+[1] J. Davis et al., <em>Heterogeneous
+concurrent modeling and design in Java</em>, Technical report,
+Electronics Research Laboratory, University of California at Berkeley,
+March 2001.
 
 @author Shuvra S. Bhattacharyya
 @version $Id$
- */
-
+*/
 public class GraphReader {
 
     /** Construct a new graph reader.
@@ -69,7 +69,7 @@ public class GraphReader {
      *  methods.
      *  @param compositeActor The composite actor to convert.
      *  @return the directed, weighted graph.
-     *  @exception RuntimeException if the deep entity list of the
+     *  @exception RuntimeException If the deep entity list of the
      *  composite actor contains an entry that is not an AtomicActor.
      */
     public Graph convert(CompositeActor compositeActor) {
@@ -179,8 +179,9 @@ public class GraphReader {
     /** Perform post-processing on the entire graph to complete the
      *  conversion. This method should be overridden by derived classes
      *  to implement specialized conversion aspects that operate
-     *  at a global level (i.e., beyond the level of individual nodes and edges).
-     * @param graph the graph.
+     *  at a global level (i.e., beyond the level of individual nodes and
+     *  edges).
+     *  @param graph the graph.
      */
     protected void _transformTopology(Graph graph) {
     }
