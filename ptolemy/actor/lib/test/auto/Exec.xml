@@ -4,7 +4,7 @@
 <entity name="Exec" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 129, 815, 509}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 129, 815, 509}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
@@ -13,6 +13,10 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="125.0, 50.0">
         </property>
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{300.0, 200.0}">
     </property>
     <entity name="Exec" class="ptolemy.actor.lib.Exec">
         <property name="command" class="ptolemy.actor.parameters.PortParameter" value="echo &quot;Hello World&quot;">
@@ -23,13 +27,11 @@
     <entity name="Test" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&quot;}">
         </property>
-        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="485.0, 165.0">
         </property>
     </entity>
     <entity name="Test2" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;Hello World&quot;}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;Hello World&#10;&quot;}">
         </property>
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>

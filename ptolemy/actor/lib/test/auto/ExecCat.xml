@@ -4,7 +4,7 @@
 <entity name="ExecCat" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={156, 221, 815, 509}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={156, 221, 815, 509}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
@@ -39,6 +39,10 @@ Notes:
         <property name="_location" class="ptolemy.kernel.util.Location" value="20.0, 260.0">
         </property>
     </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{300.0, 200.0}">
+    </property>
     <entity name="Exec" class="ptolemy.actor.lib.Exec">
         <property name="blocking" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -51,8 +55,6 @@ Notes:
     </entity>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
         <property name="init" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
-        <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="100.0, 145.0">
@@ -78,13 +80,11 @@ Notes:
     <entity name="Test - Standard Error" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&quot;, &quot;&quot;, &quot;&quot;}">
         </property>
-        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="420.0, 120.0">
         </property>
     </entity>
     <entity name="Test2 - Standard Output" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;1&quot;, &quot;2&quot;, &quot;3&quot;}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;1&#10;&quot;, &quot;2&#10;&quot;, &quot;3&#10;&quot;}">
         </property>
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
