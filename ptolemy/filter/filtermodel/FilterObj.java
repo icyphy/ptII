@@ -122,6 +122,40 @@ public class FilterObj extends Observable {
         return _filter.getFreqStep();
     }
 
+    public Complex [] getFamilyPoleWithPole(Complex pole){
+        if (_type != Filter.BLANK){
+           return ((RealDigitalFilter)_filter).getFactorWithPole(pole).getPoles();
+        } else {
+           return null;
+        } 
+        
+    }
+
+    public Complex [] getFamilyPoleWithZero(Complex zero){
+        if (_type != Filter.BLANK){
+           return ((RealDigitalFilter)_filter).getFactorWithZero(zero).getPoles();
+        } else {
+           return null;
+        } 
+    }
+
+    public Complex [] getFamilyZeroWithPole(Complex pole){
+        if (_type != Filter.BLANK){
+           return ((RealDigitalFilter)_filter).getFactorWithPole(pole).getZeroes();
+        } else {
+           return null;
+        } 
+    }
+
+    public Complex [] getFamilyZeroWithZero(Complex zero){
+        if (_type != Filter.BLANK){
+           return ((RealDigitalFilter)_filter).getFactorWithZero(zero).getZeroes();
+        } else {
+           return null;
+        } 
+    }
+
+
     /**
      * Returns the critical frequency values.
      * For lowpass/highpass filter, there are two critical frequencies that 
@@ -553,6 +587,7 @@ System.out.println("moving pole in filter object");
         notifyObservers("UpdatedFilter");
    }
 
+   
    /**  
     * Delte the factor that contains the given pole. Observers will be 
     * notified about the changed filter.
