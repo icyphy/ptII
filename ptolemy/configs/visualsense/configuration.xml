@@ -184,15 +184,26 @@ to another. Then delete this annotation.</text></svg></configure></property>
         <?moml
           <group>
 	    <!-- Javacomm serial actors depend on javacomm being present  -->
-            <input source="ptolemy/actor/lib/io/comm/comm.xml"/>
-            <input source="ptolemy/actor/corba/corba.xml"/>
-            <input source="ptolemy/actor/lib/esoteric.xml"/>
+            <!--input source="ptolemy/actor/lib/io/comm/comm.xml"/-->
+
+	    <!-- CORBA Actors are not ready for primetime -->
+            <!-- input source="ptolemy/actor/corba/corba.xml"/ -->
+
+	    <!-- esoteric includes caltrop -->	    
+            <!--input source="ptolemy/actor/lib/esoteric.xml"/-->
+
  	    <!-- GR depends on the 3D graphics package of Java being present-->
-            <input source="ptolemy/domains/gr/gr.xml"/>
-            <input source="ptolemy/actor/lib/hoc/hoc.xml"/>
+            <!-- input source="ptolemy/domains/gr/gr.xml"/ -->
+
+	    <!-- Higher Order Components are somewhat experimental -->
+            <!-- input source="ptolemy/actor/lib/hoc/hoc.xml"/-->
+
             <input source="ptolemy/actor/lib/image/image.xml"/>
             <input source="ptolemy/vergil/actor/lib/interactive.xml"/>
-	  		<input source="ptolemy/actor/lib/jai/jai.xml"/>
+
+	    <!-- JAI requires an additional download -->
+            <!-- input source="ptolemy/actor/lib/jai/jai.xml"/ -->
+
 	    <!-- matlab depends on Matlab being present -->
             <input source="ptolemy/matlab/matlab.xml"/>
             <input source="ptolemy/actor/lib/security/security.xml"/>
