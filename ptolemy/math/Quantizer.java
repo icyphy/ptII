@@ -64,8 +64,8 @@ public class Quantizer {
 	boolean overflow = false;
 
 	double x = value;
-	double maxValue = findMax(precision);
-	double minValue = findMin(precision);
+	double maxValue = precision.findMax();
+	double minValue = precision.findMin();
 
 	// check if 'x' falls within the range of this FixPoint with
 	// given precision
@@ -86,8 +86,8 @@ public class Quantizer {
         // Rounding is x - RESOLUTION ( x = negative  -0.9 - 0.25 > 1)
         // double resolution = Math.pow(2,-(precision.getFractionBitLength()+1));// 
 
-        int number = precision.getFractionBitLength();        
-        double resolution = Math.pow(2,-(number+1));       
+        int number = precision.getFractionBitLength();
+        double resolution = Math.pow(2,-(number+2));       
 
         BigDecimal multiplier;
         if ( x >= 0 ) {
@@ -95,14 +95,14 @@ public class Quantizer {
         } else {
             multiplier = new BigDecimal( x - resolution );
         }
-        BigDecimal kl = 
-            _twoRaisedTo[precision.getFractionBitLength()].multiply( multiplier );
-        
+        BigDecimal kl = _twoRaisedTo[number].multiply( multiplier );
+
         // By going from BigDecimal to BigInteger, remove the fraction
         // part introducing a quantization error.
-        fxvalue = new BigInteger( kl.toBigInteger().toByteArray() );
+        fxvalue = kl.toBigInteger();
 
         FixPoint fxp = new FixPoint( precision, fxvalue );
+        // FIXME:
         if ( overflow ) {
             // fxp.setError( FixPoint.OVERFLOW );
         }
@@ -125,8 +125,8 @@ public class Quantizer {
         BigInteger fxvalue;
 
         double x = value;
-        double maxValue = findMax(precision);
-        double minValue = findMin(precision);
+        double maxValue = precision.findMax();
+        double minValue = precision.findMin();
 
 	// check if 'x' falls within the range of this FixPoint with
 	// given precision
@@ -175,31 +175,6 @@ public class Quantizer {
         return fxp; 
     }
 
-    /** Returns the maximal obtainable value for the given precision 
-        @param p The precision
-        @return The maximal value obtainable for the given precision
-    */
-    public static double findMax(Precision p) 
-        {
-            int ln = p.getNumberOfBits();
-            int ib = p.getIntegerBitLength();
-            double tmp = Math.pow(2,ib-1) - 1.0 / Math.pow(2, (ln - ib));
-            return tmp;
-        }
-
-    /** Returns the minimal obtainable value for the given precision 
-        @param p The precision
-        @return The minimal value obtainable for the given precision
-    */
-    public static double findMin(Precision p)
-        {
-            int ib = p.getIntegerBitLength();
-            double tmp = -1*Math.pow(2,ib-1);
-            return tmp;
-        }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public variables                  ////
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

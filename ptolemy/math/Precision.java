@@ -214,8 +214,27 @@ public class Precision {
 	integer part of a Fixpoint.  
 	@return string representing the Precision */
     public String toString() { 
-	String x = "(" + _length + "/" + _intBits +")"; 
+	String x = "(" + _intBits + "." + (_length - _intBits) + ")"; 
 	return x; 
+    }
+
+    /** Returns the maximal obtainable value for the given precision 
+        @return The maximal value obtainable for the given precision
+    */
+    public double findMax() {
+        int ln = getNumberOfBits();
+        int ib = getIntegerBitLength();
+        double tmp = Math.pow(2,ib-1) - 1.0 / Math.pow(2, (ln - ib));
+        return tmp;
+    }
+
+    /** Returns the minimal obtainable value for the given precision 
+        @return The minimal value obtainable for the given precision
+    */
+    public double findMin() {
+        int ib = getIntegerBitLength();
+        double tmp = -1*Math.pow(2,ib-1);
+        return tmp;
     }
 
     ///////////////////////////////////////////////////////////////////
