@@ -80,23 +80,23 @@ test CTSingleSolverDirector-2.1 {Ramp with ForwardEulerSolver} {
     $sys setManager $man
     set dir [java::new ptolemy.domains.ct.kernel.CTSingleSolverDirector DIR]
     $sys setDirector $dir
-    $dir setVERBOSE 1
-    $dir setDEBUG 1
+    #$dir setVERBOSE 1
+    #$dir setDEBUG 1
     set const [java::new ptolemy.domains.ct.lib.CTConst $sys Const]
     set integral [java::new ptolemy.domains.ct.lib.CTIntegrator $sys Integ]
     set print [java::new ptolemy.domains.ct.kernel.test.CTTestValueSink\
 	    $sys Sink]
-    set sink [java::new ptolemy.domains.ct.lib.CTPrintln\
+    #set sink [java::new ptolemy.domains.ct.lib.CTPrintln\
 	    $sys pl]
     set constout [$const getPort output]
     set intglin [$integral getPort input]
     set intglout [$integral getPort output]
     set printin [$print getPort input]
-    set sinkin [$sink getPort input]
+    #set sinkin [$sink getPort input]
 
     set r1 [$sys connect $constout $intglin R1]
     set r2 [$sys connect $intglout $printin R2]
-    $sinkin link $r2
+    #$sinkin link $r2
 
     set starttime [$dir getAttribute StartTime]
     $starttime setExpression 0.0
