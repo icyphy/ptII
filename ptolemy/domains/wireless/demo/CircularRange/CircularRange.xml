@@ -440,7 +440,7 @@ require physical connectivity.</text></svg></configure>
             <property name="_location" class="ptolemy.kernel.util.Location" value="180.0, 305.0">
             </property>
         </entity>
-        <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
+        <entity name="SetVariable2" class="ptolemy.actor.lib.SetVariable">
             <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="range">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -472,7 +472,7 @@ require physical connectivity.</text></svg></configure>
         <link port="Ramp.trigger" relation="relation3"/>
         <link port="Ramp2.output" relation="relation"/>
         <link port="Ramp2.trigger" relation="relation4"/>
-        <link port="SetVariable.input" relation="relation"/>
+        <link port="SetVariable2.input" relation="relation"/>
         <link port="PoissonClock.output" relation="relation4"/>
     </entity>
     <entity name="LimitedRangeChannel" class="ptolemy.domains.wireless.lib.LimitedRangeChannel">

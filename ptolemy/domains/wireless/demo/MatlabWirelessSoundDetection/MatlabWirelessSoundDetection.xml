@@ -241,6 +241,16 @@ GraphicalLocator)</text></svg></configure>
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{408.5, 329.5}">
     </property>
+    <property name="annotation9" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model uses Matlab in a trivial&#10;fashion to show how Matlab can be integrated&#10;into a model.&#10;Right Click on the Triangulator icon and&#10;select &quot;Look Inside&quot; to see the Matlab &#10;Expression actor.">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 15.0]">
+        </property>
+    </property>
     <entity name="SoundSource" class="ptolemy.domains.wireless.kernel.WirelessComposite">
         <property name="_hideName" class="ptolemy.kernel.util.Attribute">
         </property>
@@ -491,7 +501,7 @@ GraphicalLocator)</text></svg></configure>
         </property>
         <property name="outputRange" class="ptolemy.data.expr.Parameter" value="150.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="430.0, 245.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 240.0]">
         </property>
         <port name="output" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
             <property name="output"/>
@@ -606,7 +616,7 @@ GraphicalLocator)</text></svg></configure>
             <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {70, -15, 815, 509}, maximized = false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {70, -15, 853, 543}, maximized = false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
@@ -616,7 +626,10 @@ GraphicalLocator)</text></svg></configure>
             <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                 <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Location coordinate system has
 Y increasing downwards, but plotter
-has Y increasing upwards.</text></svg></configure>
+has Y increasing upwards.
+We use the Matlab actor here, to illustrate
+that it can be made to work.  It would 
+be much simpler to use the Scale actor.</text></svg></configure>
             </property>
             <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                 <configure>
@@ -629,7 +642,7 @@ has Y increasing upwards.</text></svg></configure>
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="215.0, 300.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 295.0]">
             </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{485.0, 365.0}">
@@ -721,7 +734,7 @@ location can be found, then plot that location.</text></svg></configure>
             </property>
             <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="440.0, 205.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 110.0]">
             </property>
             <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
