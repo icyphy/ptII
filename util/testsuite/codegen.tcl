@@ -245,6 +245,13 @@ proc sootCodeGeneration {modelPath {codeGenType Shallow} \
 	    }
 
 	}
+
+	set portList [$compositeActor portList]
+	if {[$portList size] > 0} {
+	    puts "$modelPath:  Deep codegen does not work on models that have external ports"
+	    return
+	}
+	
 	puts "We can run Deep codegen on $modelName"
 
 	# speedComparison uses these
