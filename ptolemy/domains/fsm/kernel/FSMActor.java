@@ -456,9 +456,8 @@ public class FSMActor extends CompositeEntity
      *  @exception IllegalActionException If a derived class throws it.
      */
     public void initialize() throws IllegalActionException {
-        // FIXME: why reset happens here, and
-        // not in the preinitialize method?
-        // From Edward, if a reset transition is taken, only
+        // Question: why reset happens here, but not in the preinitialize method?
+        // Answer: If a reset transition is taken, only
         // the initialize method is called. So, reset must be
         // called here.
         reset();
