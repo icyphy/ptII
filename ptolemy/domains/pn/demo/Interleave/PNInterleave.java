@@ -67,8 +67,7 @@ public class PNInterleave extends AtomicActor{
 
     /** This reads tokens from each of its inputs in a circular fashion and
      *  redirects them each to the output
-     *  @exception IllegalActionException This can be thrown by a called
-     *  method
+     *  @exception IllegalActionException If throw by a called method.
      */
     public void fire() throws IllegalActionException {
         Token data;
