@@ -53,7 +53,8 @@ if {[string compare test [info procs test]] == 1} then {
 set globalEndTimeRcvr [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver]
 set globalEndTime [java::field $globalEndTimeRcvr INACTIVE]
 set globalIgnoreTimeRcvr [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver]
-set globalIgnoreTime [java::field $globalIgnoreTimeRcvr IGNORE]
+set globalIgnoreTime -1.0
+# set globalIgnoreTime [java::field $globalIgnoreTimeRcvr IGNORE]
 set globalNullTok [java::new ptolemy.domains.dde.kernel.NullToken]
 
 ######################################################################
