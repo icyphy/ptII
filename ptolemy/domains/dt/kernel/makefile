@@ -1,4 +1,4 @@
-# Makefile for the SDF domain kernel
+# Makefile for the DT domain kernel
 #
 # @Authors: Christopher Hylands
 #
