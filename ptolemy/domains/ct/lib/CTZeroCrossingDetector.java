@@ -135,7 +135,7 @@ public class CTZeroCrossingDetector extends CTActor
      */
     public void fire() throws IllegalActionException {
         _thisTrg = ((DoubleToken) trigger.get(0)).doubleValue();
-        _debug(getFullName() + "consumming trigger Token" +  _thisTrg);
+        _debug(getFullName() + "consuming trigger Token" +  _thisTrg);
         _inputToken = input.get(0);
     }
 
