@@ -149,7 +149,7 @@ public class StockPrice extends Source {
 		    throw new IllegalActionException(this, "StockPrice.fire:"
 			+ " bad ticker: " + tickerString);
 		}
-		if (st.sval.indexOf(_matchString + tickerString) != -1) {
+		if (st.sval.startsWith(_matchString + tickerString)) {
 		    // found the line
 		    st.nextToken();
 		    st.nextToken();
