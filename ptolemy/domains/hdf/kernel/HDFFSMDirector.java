@@ -167,12 +167,14 @@ public class HDFFSMDirector extends FSMDirector {
     /** Set the values of input variables in the mode controller.
      *  If the refinement of the current state of the mode controller
      *  is ready to fire, then fire the current refinement.
+     *  Choose a transition if this FSM is embedded in SDF, otherwise
+     *  request to choose a transition to the manager.
      *  @exception IllegalActionException If there is no controller.
      */
     public void fire() throws IllegalActionException {
         CompositeActor container = (CompositeActor)getContainer();
         FSMActor ctrl = getController();
-        ctrl.setFiringsSoFar(_firingsSoFar);
+        ctrl.setNewIteration(_sendRequest);
         //ctrl.setFiringsPerIteration(_firingsPerIteration);
         _setInputVariables();
         State st = ctrl.currentState();
@@ -203,10 +205,9 @@ public class HDFFSMDirector extends FSMDirector {
         if (_embeddedInSDF) {
             _chooseTransition(st.nonpreemptiveTransitionList());
         }
-        if (_firingsSoFar == 0 && !_embeddedInSDF) {
-            _firingsSoFar = 1;
+        if (_sendRequest && !_embeddedInSDF) {
             ChangeRequest request =
-                new ChangeRequest(this, "choose transition") {
+                new ChangeRequest(this, "make transition") {
                 protected void _execute() throws KernelException {
                     CompositeActor container = (CompositeActor)getContainer();
                     Director director = container.getDirector();
@@ -217,13 +218,8 @@ public class HDFFSMDirector extends FSMDirector {
                     FSMActor ctrl = getController();
                     State st = ctrl.currentState();
                     _chooseTransition(st.nonpreemptiveTransitionList());
-                    //System.out.println("request executed, firingSoFar = "
-                    //+ _firingsSoFar);  
-                    _firingsSoFar = 0;
-                    makeStateTransition();   
                 }
             };
-            //setDeferChangeRequests(true);
             request.setPersistent(false);
             container.requestChange(request);
         }
@@ -250,8 +246,10 @@ public class HDFFSMDirector extends FSMDirector {
             // Reinitialize all the refinements in the sub-layer
             // HDFFSMDirector and recompute the schedule.
             super.initialize();
-            _firingsSoFar = 0;
+            //_firingsSoFar = 0;
+            _sendRequest = true;
             FSMActor controller = getController();
+            controller.setNewIteration(_sendRequest);
             State initialState = controller.getInitialState();
             TypedCompositeActor curRefinement =
                 // FIXME
@@ -331,6 +329,14 @@ public class HDFFSMDirector extends FSMDirector {
         return list;
     }
     
+    /** Set up new state and connection map if exactly
+     *  one transition is enabled. Get the schedule of the current
+     *  refinement and propagate its port rates to the outside.
+     *  @return True if the super class method returns true.
+     *  @throws IllegalActionException If a refinement throws it,
+     *  if there is no controller, or if an inconsistency in port
+     *  rates is detected between refinement actors.
+     */
     public boolean makeStateTransition() throws IllegalActionException {
         FSMActor ctrl = getController();
         State curState = ctrl.currentState();
@@ -386,7 +392,7 @@ public class HDFFSMDirector extends FSMDirector {
                         refinementDir).getScheduler();
                 refinmentSched.setValid(true);
                 ((SDFScheduler)refinmentSched).getSchedule();
-            } else {
+            } else { //FIXME
                 throw new IllegalActionException(this,
                         "Only HDF, SDF, or HDFFSM director is "
                         + "allowed in the refinement.");
@@ -416,23 +422,14 @@ public class HDFFSMDirector extends FSMDirector {
         return new SDFReceiver();
     }
 
-    /** If a type B firing has not occurred (i.e., one global iteration
-     *  has not finished), return true if the postfire of the current
-     *  refinement returns true.
+    /** Make a state transition if this FSM is embedded in SDF.
+     *  Otherwise, request a change of state transition to the manager.
      *  <p>
-     *  Otherwise, if a type B firing has occured, a transition is
-     *  allowed to occur. Set up new state and connection map if exactly
-     *  one transition is enabled. Get the schedule of the current
-     *  refinement and propagate its port rates to the outside.
-     *  The upper-level director will be notified of the new connection
-     *  and new port rates from the refinement. Return true if the
-     *  super class method returns true.
-     *  @return True if a type B firings has occured and the super
-     *  class method returns true; or if a type B firing has not occured
-     *  and the postfire of current refinement returns true.
+     *  @return True if the FSM is inside SDF and the super class
+     *  method returns true; otherwise return true if the postfire of
+     *  the current state refinement returns true.
      *  @exception IllegalActionException If a refinement throws it,
-     *  if there is no controller, or if an inconsistency in port
-     *  rates is detected between refinement actors.
+     *  if there is no controller.
      */
     public boolean postfire() throws IllegalActionException {
         FSMActor ctrl = getController();
@@ -449,7 +446,7 @@ public class HDFFSMDirector extends FSMDirector {
         // FIXME
         //boolean postfireReturn = currentRefinement.postfire();
         boolean postfireReturn = currentRefinement[0].postfire();
-        boolean superPostfire;
+        //boolean superPostfire;
         //_firingsSoFar++;
         /*
         ChangeRequest request =
@@ -461,6 +458,19 @@ public class HDFFSMDirector extends FSMDirector {
         //container.requestChange(request);
         container.requestChange(request);
         */
+        if (_sendRequest && !_embeddedInSDF) {
+            _sendRequest = false;
+            ChangeRequest request =
+                new ChangeRequest(this, "make a transition") {
+                protected void _execute() throws KernelException {  
+                    _sendRequest = true;
+                    makeStateTransition();   
+                }
+            };
+            //setDeferChangeRequests(true);
+            request.setPersistent(false);
+            container.requestChange(request);
+        }
         if (_embeddedInSDF) {
             //_firingsSoFar = 0;
             makeStateTransition();
@@ -489,8 +499,9 @@ public class HDFFSMDirector extends FSMDirector {
      *  is no controller.
      */
     public void preinitialize() throws IllegalActionException {
-        _firingsPerIteration = 1;
-        _firingsSoFar = 0;
+        //_firingsPerIteration = 1;
+        //_firingsSoFar = 0;
+        _sendRequest = true;
         _reinitialize = false;
         _getHighestFSM();
         super.preinitialize();
@@ -509,6 +520,7 @@ public class HDFFSMDirector extends FSMDirector {
             if (!(refinementDir instanceof HDFFSMDirector)
                     && !(refinementDir instanceof SDFDirector)) {
                 // Invalid director.
+                // FIXME
                 throw new IllegalActionException(this,
                         "Only HDF, SDF, or HDFFSM director is "
                         + "allowed in the refinement.");
@@ -526,9 +538,10 @@ public class HDFFSMDirector extends FSMDirector {
     /** Set the number of firings per iteration of this director.
      *  @param firings Number of firings per iteration of this director.
      */
+    /*
     public void setFiringsPerIteration(int firings) {
         _firingsPerIteration = firings;
-    }
+    }*/
 
     /** Return true if data are transferred from the input port of
      *  the container to the connected ports of the controller and
@@ -644,6 +657,7 @@ public class HDFFSMDirector extends FSMDirector {
      *  refinement can be found, or if the HDFDirector
      *  updateFiringsPerIteration method throws it.
      */
+    /*
     public void updateFiringsPerIteration (int directorFiringsPerIteration)
             throws IllegalActionException {
         FSMActor ctrl = getController();
@@ -669,7 +683,7 @@ public class HDFFSMDirector extends FSMDirector {
                         directorFiringsPerIteration);
             }
         }
-    }
+    }*/
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -752,6 +766,9 @@ public class HDFFSMDirector extends FSMDirector {
                 foundValidDirector = true;
             } else if (director instanceof SDFDirector) {
                 foundValidDirector = true;
+                // FIXME
+                // THis flag actually should indicate any director
+                // that allows state transition between arbitrary firings.
                 _embeddedInSDF = true;
             } else {
                 // Move up another level in the hierarchy.
@@ -915,13 +932,21 @@ public class HDFFSMDirector extends FSMDirector {
 
     // The number of times fire() has been called in the global
     // iteration of the SDF graph containing this FSM.
-    private int _firingsSoFar;
-
+    //private int _firingsSoFar;
+    
+    // A flag indicating whether the FSM can send a change request.
+    // An FSM in HDF can only send one request per global iteration.
+    private boolean _sendRequest;
+    
     // The number of firings of this HDFFSM controller per
     // global iteration.
-    private int _firingsPerIteration = 1;
+    //private int _firingsPerIteration = 1;
 
+    // A flag indicatiing whether this FSM is embedded in SDF.
+    // FIXME: It should function as a flag indicating whether
+    // state transition can be made between arbitrary firings.
     private boolean _embeddedInSDF = false;
+    
     private boolean _debugInfo = false;
     
     // A flag indicating whether the initialize method is

@@ -281,13 +281,10 @@ public class HDFDirector extends SDFDirector {
         return schedule;
     }
 
-    /** Get the HDF schedule since schedule may change in the postfire.
-     *  If this director is at the top level, then update the number of
-     *  firings per global iteration for each actor from the top level
-     *  down to the bottom level.
-     *  @exception IllegalActionException If no schedule can be found, or
-     *  if the updateFiringsPerIteration method throws it, or if the super
-     *  class method throws it.
+    /** Request to get the HDF schedule to the manager, since schedule
+     *  may change when a state transition is made.
+     *  @exception IllegalActionException If no schedule can be found,
+     *  or if the super class method throws it.
      */
     public boolean postfire() throws IllegalActionException {
         // Get schedule here, no matter if it is the top level.
@@ -306,7 +303,7 @@ public class HDFDirector extends SDFDirector {
                     System.out.println(director.getFullName() +
                     " request exed: get new HDF schedule");
                 }
-                Director exeDirector = container.getExecutiveDirector();
+                //Director exeDirector = container.getExecutiveDirector();
             }
         };
         //setDeferChangeRequests(true);
@@ -344,10 +341,10 @@ public class HDFDirector extends SDFDirector {
         //_preinitializeFlag = true;
         CompositeActor container = (CompositeActor)getContainer();
         Director exeDirector = container.getExecutiveDirector();
-        if (exeDirector == null) {
+        /*if (exeDirector == null) {
             _directorFiringsPerIteration = 1;
             updateFiringsPerIteration(1);
-        }
+        }*/
     }
 
     /** Set the number of firings per global iteration of the
@@ -355,9 +352,10 @@ public class HDFDirector extends SDFDirector {
      *  @param firingsPerIteration Number of firings per global
      *  iteration of the current director to be set.
      */
+    /*
     public void setDirectorFiringsPerIteration(int firingsPerIteration) {
         _directorFiringsPerIteration = firingsPerIteration;
-    }
+    }*/
 
     /** Update the number of firings per global iteration of
      *  each actor in the current director.
@@ -368,6 +366,7 @@ public class HDFDirector extends SDFDirector {
      *  or if the updateFiringsPerIteration method in HDFFSMDirector
      *  throws it.
      */
+    /*
     public void updateFiringsPerIteration (int directorFiringsPerIteration)
             throws IllegalActionException {
         CompositeActor container = (CompositeActor)getContainer();
@@ -396,7 +395,7 @@ public class HDFDirector extends SDFDirector {
                 }
             }
         }
-    }
+    }*/
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
