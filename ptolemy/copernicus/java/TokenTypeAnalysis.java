@@ -56,8 +56,11 @@ import soot.jimple.FieldRef;
 import soot.jimple.InstanceInvokeExpr;
 import soot.jimple.IntConstant;
 import soot.jimple.InterfaceInvokeExpr;
+import soot.jimple.InvokeExpr;
+import soot.jimple.InvokeStmt;
 import soot.jimple.NewArrayExpr;
 import soot.jimple.NewExpr;
+import soot.jimple.SpecialInvokeExpr;
 import soot.jimple.StaticInvokeExpr;
 import soot.jimple.Stmt;
 import soot.toolkits.graph.CompleteUnitGraph;
@@ -194,7 +197,37 @@ public class TokenTypeAnalysis extends FastForwardFlowAnalysis {
         // By default, the out is equal to the in.
         copy(inValue, outValue);
 
-        if (stmt instanceof AssignStmt) {
+        if (stmt instanceof InvokeStmt) {
+            Value expr = ((InvokeStmt)stmt).getInvokeExpr() ;
+            if (expr instanceof SpecialInvokeExpr) {
+                SpecialInvokeExpr r = (SpecialInvokeExpr)expr;
+                String methodName = r.getMethod().getName();
+                
+                Type type = r.getBase().getType();
+                //   System.out.println("baseType = " + type);
+                //  System.out.println("methodName = " + methodName);
+                if (type instanceof NullType) {
+                    // Note: The control path that causes this to be
+                    // null should never occur in practice.
+                    return;
+                }
+                SootClass baseClass = ((RefType)type).getSootClass();
+                // FIXME: match better.
+                // If we are invoking a method on a token, then...
+                if (SootUtilities.derivesFrom(baseClass,
+                            PtolemyUtilities.tokenClass)) {
+                    if (r.getMethod().equals(
+                                PtolemyUtilities.arrayTokenConstructor)) {
+                        // The arrayToken constructor depends on the type
+                        // of its constructor argument.
+                        System.out.println("found array invoke: " + r);
+                        System.out.println("Argument type is : " + in.get(r.getArg(0)));
+                        out.put(r.getBase(), new ArrayType(
+                            (ptolemy.data.type.Type)in.get(r.getArg(0))));
+                    }
+                }
+            }
+        } else if (stmt instanceof AssignStmt) {
             Value leftOp = ((AssignStmt)stmt).getLeftOp();
             if (!_isTokenType(leftOp.getType())) {
                 //     System.out.println("type " + leftOp.getType()
@@ -214,7 +247,7 @@ public class TokenTypeAnalysis extends FastForwardFlowAnalysis {
                     rightOp instanceof InterfaceInvokeExpr) {
                 InstanceInvokeExpr r = (InstanceInvokeExpr)rightOp;
                 String methodName = r.getMethod().getName();
-                //System.out.println("invokeExpr = " + r);
+              
                 Type type = r.getBase().getType();
                 //   System.out.println("baseType = " + type);
                 //  System.out.println("methodName = " + methodName);
@@ -227,7 +260,7 @@ public class TokenTypeAnalysis extends FastForwardFlowAnalysis {
                 // FIXME: match better.
                 // If we are invoking a method on a token, then...
                 if (SootUtilities.derivesFrom(baseClass,
-                        PtolemyUtilities.tokenClass)) {
+                            PtolemyUtilities.tokenClass)) {
                     if (methodName.equals("one") ||
                             methodName.equals("zero") ||
                             methodName.equals("not") ||
