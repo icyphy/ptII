@@ -65,29 +65,29 @@ not implement version-strings.
 <p>
 @author Christopher Hylands
 @version $Id$ */
-public class VersionAttribute extends StringAttribute implements Settable, Comparable {
+public class VersionAttribute
+        extends StringAttribute implements Settable, Comparable {
     
-    /** Construct an object in the default workspace with the given name.
-     *  If the name argument is null, then the name is set to the empty
-     *  string. The object is added to the list of objects in the workspace.
-     *  Increment the version number of the workspace.
-     *  @param expression The initial expression.
-     *  @exception IllegalActionException If the expression is of the
-     *  incorrect format.
+    /** Construct an object in the default workspace with the empty string
+     *  as its name. The object is added to the list of objects in the
+     *  workspace. Increment the version number of the workspace.
+     *  @param expression The initial value of this parameter, set
+     *   using setExpression().
+     *  @exception IllegalActionException If the value is of the
+     *   incorrect format.
+     *  @see #setExpression(string)
      */
     public VersionAttribute(String expression) throws IllegalActionException {
 	super();
 	setExpression(expression);
     }
 
-    /** Construct an attribute with the given name contained by the specified
-     *  container. The container argument must not be null, or a
+    /** Construct an attribute with the given name contained by the
+     *  specified container. The container argument must not be null, or a
      *  NullPointerException will be thrown.  This attribute will use the
      *  workspace of the container for synchronization and version counts.
      *  If the name argument is null, then the name is set to the empty
-     *  string. The object is added to the directory of the workspace
-     *  if the container is null.
-     *  Increment the version of the workspace.
+     *  string. Increment the version of the workspace.
      *  @param container The container.
      *  @param name The name of this attribute.
      *  @exception IllegalActionException If the attribute is not of an
@@ -101,53 +101,29 @@ public class VersionAttribute extends StringAttribute implements Settable, Compa
         _tupleList = new LinkedList();
     }
 
-    /** Set the value of the string attribute and notify the container
-     *  of the value of this attribute by calling attributeChanged().
-     *  Notify any value listeners of this attribute.
-     *
-     *  @param expression The version string, consisting of 
-     *  version ID tuples separated by '.', '-' or '_', for example
-     *  "1.2", "1.2_beta-4".
-     *  @exception IllegalActionException If the argument contains a
-     *  space, which violates the JNLP Version format specification
-     */
-    public void setExpression(String expression)
-	throws IllegalActionException {
-	super.setExpression(expression);
-        if (expression.indexOf(' ') != -1 ) {
-            throw new IllegalActionException(this,
-					     "Versions cannot contain "
-					     + "spaces: '"
-					     + expression + "'");
-        }
-	_tupleList = new LinkedList();
-        StringTokenizer tokenizer = new StringTokenizer(expression, ".-_");
-        while (tokenizer.hasMoreTokens()) {
-            _tupleList.add(tokenizer.nextToken());
-        }
-        Iterator tuples = _tupleList.iterator();
-    }
-
     ///////////////////////////////////////////////////////////////
     ////                     public methods                    ////
 
     /** Compare the value of this VersionAttribute against the argument
-     *  according to the VersionAttribute syntax and padding rules.  
+     *  according to the VersionAttribute syntax and padding rules.  For
+     *  example:
      *  <p> "1.2.2-005" is greater than "1.2.2.4", 
      *  <br> "1.3.1" is an greater than "1.3"
-     *  Version-id contain one or more elements,
-     *  when two version-id's are compared, they are normalized by
-     *  padding the shortest version-id with additional elements containing
-     *  "0".
+     *  <br> "1.3-beta" is an greater than "1.3-alpha"
+     *  <b>
+     *  Version-id contain one or more elements. When two version-id's
+     *  are compared, they are normalized by padding the shortest
+     *  version-id with additional elements containing "0".
      *  During comparison, if both elements can be parsed as Java
-     *  <code>int</code>s, then they are compared integers.  If the
+     *  <code>int</code>s, then they are compared as integers.  If the
      *  elements cannot be parsed as integers, they are compared as Strings.
      *
      *  @param object The VersionAttribute to compare against. 
      *  @return 0 if the argument is an exact match according to the
-     *  Version syntax and padding rules, a number less than 0 if the
-     *  argument is less than this Version, a number greater than 0 if
-     *  the argument is greater than this Version */
+     *   version syntax and padding rules, a number less than 0 if the
+     *   argument is less than this version, a number greater than 0 if
+     *   the argument is greater than this version.
+     */
     public int compareTo(Object object) {
 	VersionAttribute version = (VersionAttribute) object;
         Iterator versionTuples = version.iterator();
@@ -195,8 +171,37 @@ public class VersionAttribute extends StringAttribute implements Settable, Compa
 	return 0;
     }
     
+    /** Return an iterator over the elements of the version,
+     *  each of which is a String.
+     *  @return An iterator over the elements of the version.
+     */
     public Iterator iterator() {
 	return _tupleList.iterator();
+    }
+
+    /** Set the value of the string attribute and notify the container
+     *  of the value of this attribute by calling attributeChanged().
+     *  Notify any value listeners of this attribute.
+     *  @param expression The version string, consisting of 
+     *   version ID tuples separated by '.', '-' or '_'. For example:
+     *   "1.2", "1.2_beta-4".
+     *  @exception IllegalActionException If the argument contains a
+     *   space, which violates the JNLP Version format specification
+     */
+    public void setExpression(String expression)
+	throws IllegalActionException {
+	super.setExpression(expression);
+        if (expression.indexOf(' ') != -1 ) {
+            throw new IllegalActionException(this,
+                    "Versions cannot contain spaces: '"
+                    + expression + "'");
+        }
+	_tupleList = new LinkedList();
+        StringTokenizer tokenizer = new StringTokenizer(expression, ".-_");
+        while (tokenizer.hasMoreTokens()) {
+            _tupleList.add(tokenizer.nextToken());
+        }
+        Iterator tuples = _tupleList.iterator();
     }
 
     ///////////////////////////////////////////////////////////////
@@ -204,24 +209,25 @@ public class VersionAttribute extends StringAttribute implements Settable, Compa
 
 
     /** The VersionAttribute that contains the version of the Ptolemy II
-     *  release.  This variable may be read to change the Ptolemy II
-     *  functionality depending on the version number:
+     *  release that is currently running.  This variable may be read
+     *  to change the Ptolemy II functionality depending on the
+     *  version number:
      *  <pre>
-     *  if (VersionAttribute.PTOLEMYII_VERSION.compareTo("2.0") >= 0 ) {
+     *  if (VersionAttribute.CURRENT_VERSION.compareTo("2.0") >= 0 ) {
      *      // Perform some operation if the current version is
      *      // Ptolemy II 2.0 or later.
      *  }
      *  </pre>
      */ 
-    public static final VersionAttribute PTOLEMYII_VERSION;
+    public static final VersionAttribute CURRENT_VERSION;
 
     static {
 	try {
-	    PTOLEMYII_VERSION = new VersionAttribute("2.0-devel");
+	    CURRENT_VERSION = new VersionAttribute("2.0-devel");
 
 	} catch (Exception ex) {
 	    throw new ExceptionInInitializerError("Failed to create "
-						  + "PTOLEMYII_VERSION: "
+						  + "CURRENT_VERSION: "
 						  + KernelException
 						  .stackTraceToString(ex));
 	}
