@@ -135,8 +135,7 @@ public class Expression extends TypedAtomicActor {
      *   actor with this name.
      */
     public Expression(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException, 
-            java.lang.Exception {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         output = new TypedIOPort(this, "output", false, true);
@@ -191,7 +190,7 @@ public class Expression extends TypedAtomicActor {
         return result;
     }
 
-    /** Open a matlab engine
+    /** Open a matlab engine.
      *  @exception IllegalActionException If matlab engine not found.
      */
     public void preinitialize() throws IllegalActionException {
@@ -369,7 +368,7 @@ public class Expression extends TypedAtomicActor {
         return true;
     }
 
-    /** Close matlab engine if it was open
+    /** Close matlab engine if it was open.
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public void wrapup() throws IllegalActionException {

@@ -180,7 +180,7 @@ public class Engine {
     /** Output buffer (allocated for each opened instance) size. */
     static int engOutputBufferSize = 2048;
 
-    /** Used for Synchronization */
+    /** Used for synchronization. */
     public static Integer semaphore = new Integer(0);
 
     // semaphore is public so that javadoc works.
@@ -218,6 +218,14 @@ public class Engine {
 
     /** Open a connection to the default matlab engine installed on
      * this host with its output buffered.
+     * @return long[2] retval engine handle; retval[0] is the real
+     * engine handle, retval[1] is a pointer to the engine output
+     * buffer; both should be preserved and passed to subsequent engine
+     * calls.
+     * @exception IllegalActionException If the matlab engine open is
+     * unsuccessful.  This will typically occur if ptmatlab (.dll)
+     * cannot be located or if the matlab bin directory is not in the
+     * path.
      * @see #open(String, boolean)
      */
     public long[] open() throws IllegalActionException {
@@ -230,6 +238,14 @@ public class Engine {
      * this host with specified output buffering.
      * @param needOutput selects whether the output should be buffered
      * or not.
+     * @return long[2] retval engine handle; retval[0] is the real
+     * engine handle, retval[1] is a pointer to the engine output
+     * buffer; both should be preserved and passed to subsequent engine
+     * calls.
+     * @exception IllegalActionException If the matlab engine open is
+     * unsuccessful.  This will typically occur if ptmatlab (.dll)
+     * cannot be located or if the matlab bin directory is not in the
+     * path.
      * @see #open(String, boolean)
      */
     public long[] open(boolean needOutput) throws IllegalActionException {
@@ -285,6 +301,11 @@ public class Engine {
      * user of the matlab engine.
      * <p>
      * For more information, see matlab engine API reference engClose()
+     * @param eng An array of longs with length 2. eng[0] is the real
+     * engine handle, eng[1] is a pointer to the engine output
+     * buffer.
+     * @return The value returned by calling engClose() in the
+     * Matlab interface.
      */
     public int close(long[] eng) {
         int retval = 0;
@@ -308,6 +329,9 @@ public class Engine {
     static String errNotOpened = "matlab engine not opened.";
 
     /** Send a string for evaluation to the matlab engine.
+     * @param eng An array of two longs; eng[0] is the real
+     * engine handle, eng[1] is a pointer to the engine output
+     * buffer.
      * @param evalStr string to evaluate.
      * @exception IllegalActionException If the matlab engine is not opened.
      */
@@ -334,6 +358,9 @@ public class Engine {
 
     /** Return a Token from the matlab engine using default
      * {@link Engine.ConversionParameters} values.
+     * @param eng An array of longs with length 2. eng[0] is the real
+     * engine handle, eng[1] is a pointer to the engine output
+     * buffer.
      * @param name Matlab variable name used to initialize the returned Token
      * @return PtolemyII Token.
      * @exception IllegalActionException If the matlab engine is not opened, or
@@ -347,7 +374,11 @@ public class Engine {
 
     /** Return a Token from the matlab engine using specified
      * {@link Engine.ConversionParameters} values.
+     * @param eng An array of longs with length 2. eng[0] is the real
+     * engine handle, eng[1] is a pointer to the engine output
+     * buffer.
      * @param name Matlab variable name used to initialize the returned Token
+     * @param par The ConversionParameter to use. 
      * @return PtolemyII Token.
      * @exception IllegalActionException If the matlab engine is not opened, or
      * if the matlab variable was not found in the engine. In this case, the
@@ -385,6 +416,9 @@ public class Engine {
     }
 
     /** Get last matlab stdout.
+     * @param eng An array of longs with length 2. eng[0] is the real
+     * engine handle, eng[1] is a pointer to the engine output
+     * buffer.
      * @return PtolemyII StringToken
      */
     public StringToken getOutput(long[] eng) {
@@ -400,8 +434,14 @@ public class Engine {
     }
 
     /** Create a matlab variable using name and a Token.
+     * @param eng An array of longs with length 2. eng[0] is the real
+     * engine handle, eng[1] is a pointer to the engine output
+     * buffer.
      * @param name matlab variable name.
      * @param t Token to provide value.
+     * @return The result of calling engPutArray() in the Matlab 
+     * C library.
+     * @exception IllegalActionException If the engine is not opened.
      * @see Engine
      */
     public int put(long[] eng, String name, Token t)
