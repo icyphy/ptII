@@ -1082,6 +1082,9 @@ public class NamedObj implements Nameable, Debuggable,
     /** @serial Flag that is true if there are debug listeners. */
     protected boolean _debugging = false;
 
+    /** @serial The list of DebugListeners registered with this object. */
+    protected LinkedList _debugListeners = null;
+
     /** An index that is incremented to expedite the search for a unique
      *  name by the uniqueName() method.
      */
@@ -1097,9 +1100,6 @@ public class NamedObj implements Nameable, Debuggable,
 
     /** @serial The Attributes attached to this object. */
     private NamedList _attributes;
-
-    /** @serial The list of DebugListeners registered with this object. */
-    private LinkedList _debugListeners = null;
 
     /** @serial Instance of a workspace that can be used if no other
      *  is specified.
