@@ -41,6 +41,7 @@ import ptolemy.data.*;
 import ptolemy.data.expr.*;
 import ptolemy.actor.*;
 import ptolemy.actor.lib.*;
+import ptolemy.actor.util.Query;
 import ptolemy.actor.util.PtolemyApplet;
 import ptolemy.domains.sdf.kernel.*;
 import ptolemy.domains.sdf.lib.*;
@@ -64,11 +65,22 @@ public class Pulses extends SDFApplet {
     public void init() {
         super.init();
         try {
+            _query = new Query();
+            _query.line("exbw", "Excess bandwidth (%)", "100");
+            _query.line("symint", "Symbol interval", "16");
+            _query.onoff("sqrt", "Square root pulse", false);
+            add(_query);
+
             // The 0 argument requests only a go button.
             _createRunControls(this, 0);
 
             // Create and configure impulse source
             Pulse impulse = new Pulse(_toplevel, "impulse");
+
+            // configurable pulse
+            _yours = new RaisedCosine(_toplevel, "yours");
+            _yours.interpolation.setToken(new IntToken(64));
+            _yours.root.setToken(new BooleanToken(false));
 
             // first filter
             RaisedCosine pulse1 = new RaisedCosine(_toplevel, "pulse1");
@@ -89,21 +101,16 @@ public class Pulses extends SDFApplet {
             pulse4.interpolation.setToken(new IntToken(64));
             pulse4.excessBW.setToken(new DoubleToken(0.0));
 
-            // square root pulse
-            RaisedCosine pulse5 = new RaisedCosine(_toplevel, "pulse5");
-            pulse5.interpolation.setToken(new IntToken(64));
-            pulse5.root.setToken(new BooleanToken(true));
-
             // Create and configure plotter
             TimePlot myplot = new TimePlot(_toplevel, "plot");
             myplot.setPanel(this);
             myplot.plot.setGrid(false);
             myplot.plot.setTitle("Transmit Pulse Shapes");
-            myplot.plot.addLegend(0, "100%");
-            myplot.plot.addLegend(1, "50%");
-            myplot.plot.addLegend(1, "25%");
-            myplot.plot.addLegend(1, "0%");
-            myplot.plot.addLegend(1, "Sqrt");
+            myplot.plot.addLegend(0, "Yours");
+            myplot.plot.addLegend(1, "100%");
+            myplot.plot.addLegend(2, "50%");
+            myplot.plot.addLegend(3, "25%");
+            myplot.plot.addLegend(4, "0%");
             myplot.plot.setXRange(0.0, 64.0);
             myplot.plot.setYRange(-0.3, 1.0);
             myplot.plot.setSize(500, 300);
@@ -114,12 +121,12 @@ public class Pulses extends SDFApplet {
             pulse2.input.link(r1);
             pulse3.input.link(r1);
             pulse4.input.link(r1);
-            pulse5.input.link(r1);
+            _yours.input.link(r1);
+            _toplevel.connect(_yours.output, myplot.input);
             _toplevel.connect(pulse1.output, myplot.input);
             _toplevel.connect(pulse2.output, myplot.input);
             _toplevel.connect(pulse3.output, myplot.input);
             _toplevel.connect(pulse4.output, myplot.input);
-            _toplevel.connect(pulse5.output, myplot.input);
 
             // Get one iteration right away.
             _manager.run();
@@ -127,4 +134,26 @@ public class Pulses extends SDFApplet {
             report("Setup failed:", ex);
         }
     }
+
+    ////////////////////////////////////////////////////////////////////////
+    ////                         protected methods                      ////
+
+    /** Execute the system.  This overrides the base class to read the
+     *  values in the query box first and set parameters.
+     */
+    protected void _go() {
+        _yours.excessBW.setToken
+                (new DoubleToken(((double)_query.intValue("exbw"))/100.0));
+        _yours.symbolInterval.setToken
+                (new IntToken(_query.intValue("symint")));
+        _yours.root.setToken
+                (new BooleanToken(_query.booleanValue("sqrt")));
+        super._go();
+    }
+
+    ////////////////////////////////////////////////////////////////////////
+    ////                         private variables                      ////
+
+    private Query _query;
+    RaisedCosine _yours;
 }

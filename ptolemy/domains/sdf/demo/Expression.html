@@ -8,17 +8,36 @@
 <BODY>
 
 <H1>Expression Evaluation</H1>
-
+The following applet evaluates the expression in the box, which is a function
+of two ramp signals, <i>slow</i> and <i>fast</i>.
 <CENTER>
 <P><APPLET name="Expression"
    code=ptolemy.domains.sdf.demo.ExpressionApplet.class
    codebase=../../../..
-   width=600 height=400>
+   width=800 height=350>
 <param name="background" value="#faf0e6">
 <param name="iterations" value="200">
 <BR><I>If you were able to run applets, you would have one here.</I>
 <BR>
 </APPLET>
 </CENTER>
+<P>
+The block diagram is as shown below, where the expression is a parameter
+of the Expression block:
+<P>
+<center>
+<img src="expression.gif">
+</center>
+<P>
+The <i>slow</i> signal is a ramp that starts at zero and increments by
+PI/100 on each firing. The <i>fast</i> signal is a ramp that starts
+at zero and increments by PI/10 on each firing.
+Try changing the expression in the box to "cos(slow)*cos(fast)"
+and clicking on the "Go" button.
+Other interesting alternatives include:
+<UL>
+<LI> "cos(fast*cos(slow))"
+<LI> "0.2*slow + cos(fast)"
+</UL>
 </BODY>
 </HTML>

@@ -3,14 +3,14 @@
 <HEAD>
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
 <link href="../../../../doc/default.css" rel="stylesheet" type="text/css">
-<TITLE>Communication System</TITLE>
+<TITLE>Communication Link - Physical Level</TITLE>
 </HEAD>
 <BODY>
 
-<H1>Communication System</H1>
+<H1>Communication Link - Physical Level</H1>
 
 The following plot shows the eye diagram for a received waveform
-for a real, baseband channel.
+for a baseband channel with additive Gaussian noise.
 <CENTER>
 <P><APPLET name="ComSystem"
    code=ptolemy.domains.sdf.demo.ComSystem.class
@@ -23,10 +23,20 @@ for a real, baseband channel.
 </APPLET>
 </CENTER>
 The assumptions are:
+<P>
 <UL>
 <LI> Additive Gaussian noise with standard deviation 0.1.
 <LI> 100 % excess bandwidth square-root raised-cosine pulse.
 <LI> Matched filter in the receiver.
 </UL>
+<P>
+The topology of the model is shown below:
+<P>
+<center>
+<img src="eye.gif" alt="topology">
+</center>
+<P>
+Here, the numbers adjacent to each port indicate the SDF parameters
+of the port, namely the number of tokens consumed and produced.
 </BODY>
 </HTML>

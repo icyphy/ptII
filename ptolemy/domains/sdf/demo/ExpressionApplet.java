@@ -69,13 +69,14 @@ public class ExpressionApplet extends SDFApplet {
             controlpanel.setLayout(new BorderLayout());
             add(controlpanel);
 
-            Panel runcontrols = new Panel();
-            controlpanel.add("North", runcontrols);
-            _createRunControls(runcontrols, 0);
-
             _query = new Query();
-            controlpanel.add("South", _query);
-            _query.line("expr", "Expression", "cos(slow) + cos(fast)");
+            controlpanel.add("West", _query);
+            _query.line("expr", "Expression", "cos(slow) + cos(fast)", 30);
+
+            // Create a "Go" button.
+            Panel runcontrols = new Panel();
+            controlpanel.add("East", runcontrols);
+            _createRunControls(runcontrols, 0);
 
             // Create and configure ramp1
             Ramp ramp1 = new Ramp(_toplevel, "ramp1");
@@ -117,7 +118,7 @@ public class ExpressionApplet extends SDFApplet {
      *  values in the query box first.
      */
     protected void _go() {
-        _expr.expression.setToken(new StringToken(_query.get("expr")));
+        _expr.expression.setToken(new StringToken(_query.stringValue("expr")));
         super._go();
     }
 
