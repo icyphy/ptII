@@ -132,7 +132,7 @@ PtParser.jj: $(EXTRA_SRCS)
 # For example:
 # cvs commit -m "Updated PtParser." `make echo_OPTIONAL_JSRCS`
 echo_OPTIONAL_JSRCS:
-	@echo $(OPTIONAL_JSRCS)
+	@echo $(OPTIONAL_JSRCS) PtParser.java PtParser.jj
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
