@@ -150,10 +150,15 @@ AC_MSG_CHECKING([the Java compiler with a simple compile])
 # We need to run javac in the mk directory so that javac from jdk1.1.6
 # under NT and cygwin works properly
 startdir=`pwd`
-cd $srcdir/mk
+cd $srcdir/config
 # Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
 if $JAVAC -d $startdir confTest.java ; then
     AC_MSG_RESULT(ok)
+
+    AC_MSG_CHECKING([the value of the java.version Property ])
+    JVERSION=`CLASSPATH=$PTII $JAVA confTest`	
+    AC_MSG_RESULT($JVERSION)
+
     JFLAGS="$JFLAGSINIT -depend"
     AC_MSG_CHECKING([javac $JFLAGS])
     if $JAVAC -d $startdir $JFLAGS confTest.java ; then
@@ -307,6 +312,9 @@ AC_SUBST(JTCLSH)
 
 # jtree binary
 AC_SUBST(JTREE)
+
+# JDK Version determined by running confTest.class and getting java.version
+AC_SUBST(JVERSION)
 
 # Location of the JDK
 AC_SUBST(PTJAVA_DIR)

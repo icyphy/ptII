@@ -744,20 +744,26 @@ echo "configure:744: checking the Java compiler with a simple compile" >&5
 # We need to run javac in the mk directory so that javac from jdk1.1.6
 # under NT and cygwin works properly
 startdir=`pwd`
-cd $srcdir/mk
+cd $srcdir/config
 # Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
 if $JAVAC -d $startdir confTest.java ; then
     echo "$ac_t""ok" 1>&6
+
+    echo $ac_n "checking the value of the java.version Property ""... $ac_c" 1>&6
+echo "configure:754: checking the value of the java.version Property " >&5
+    JVERSION=`CLASSPATH=$PTII $JAVA confTest`	
+    echo "$ac_t""$JVERSION" 1>&6
+
     JFLAGS="$JFLAGSINIT -depend"
     echo $ac_n "checking javac $JFLAGS""... $ac_c" 1>&6
-echo "configure:754: checking javac $JFLAGS" >&5
+echo "configure:760: checking javac $JFLAGS" >&5
     if $JAVAC -d $startdir $JFLAGS confTest.java ; then
 	echo "$ac_t""yes" 1>&6
     else
 	echo "$ac_t""no" 1>&6
 	JFLAGS="$JFLAGSINIT -Xdepend"
 	echo $ac_n "checking javac $JFLAGS""... $ac_c" 1>&6
-echo "configure:761: checking javac $JFLAGS" >&5
+echo "configure:767: checking javac $JFLAGS" >&5
 	if $JAVAC -d $startdir $JFLAGS confTest.java ; then
 	    echo "$ac_t""yes" 1>&6
 	else
@@ -784,7 +790,7 @@ cd $startdir
 #	So much for write once, run everywhere.
 #--------------------------------------------------------------------
 echo $ac_n "checking for the proper CLASSPATH separator""... $ac_c" 1>&6
-echo "configure:788: checking for the proper CLASSPATH separator" >&5
+echo "configure:794: checking for the proper CLASSPATH separator" >&5
 case "`uname -s`" in
     CYGWIN_NT-4.0) CLASSPATHSEPARATOR=";";;
     *) CLASSPATHSEPARATOR=":";;
@@ -798,7 +804,7 @@ echo "$ac_t""'$CLASSPATHSEPARATOR'" 1>&6
 #--------------------------------------------------------------------
 
 echo $ac_n "checking for JavaCC""... $ac_c" 1>&6
-echo "configure:802: checking for JavaCC" >&5
+echo "configure:808: checking for JavaCC" >&5
 # Check whether --with-javacc or --without-javacc was given.
 if test "${with_javacc+set}" = set; then
   withval="$with_javacc"
@@ -819,7 +825,7 @@ so we search for the jjtree command." 1>&2
 	# Extract the first word of "jjtree", so it can be a program name with args.
 set dummy jjtree; ac_word=$2
 echo $ac_n "checking for $ac_word""... $ac_c" 1>&6
-echo "configure:823: checking for $ac_word" >&5
+echo "configure:829: checking for $ac_word" >&5
 if eval "test \"`echo '$''{'ac_cv_path_JJTREE'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
@@ -858,7 +864,7 @@ fi
     if test -d "$JAVACC_DIR"; then
 	echo "$ac_t""$JAVACC_DIR" 1>&6
 	echo $ac_n "checking for jjtree""... $ac_c" 1>&6
-echo "configure:862: checking for jjtree" >&5
+echo "configure:868: checking for jjtree" >&5
  	if test -x "$JAVACC_DIR/bin/jjtree"; then
 	    # Note that we don't substitute in the $(JAVACC_DIR) here
 	    JJTREE='$(JAVACC_DIR)/bin/jjtree'
@@ -867,7 +873,7 @@ echo "configure:862: checking for jjtree" >&5
 	    echo "configure: warning: Failed to find jjtree in '$JAVACC_DIR/bin'" 1>&2;
 	fi    
 	echo $ac_n "checking for javacc""... $ac_c" 1>&6
-echo "configure:871: checking for javacc" >&5
+echo "configure:877: checking for javacc" >&5
  	if test -x "$JAVACC_DIR/bin/javacc"; then
 	    # Note that we don't substitute in the $(JAVACC_DIR) here
 	    JAVACC='$(JAVACC_DIR)/bin/javacc'
@@ -899,13 +905,13 @@ fi
 
 if test "$JTCLSH" != "jtclsh"; then
     echo $ac_n "checking for jtclsh""... $ac_c" 1>&6
-echo "configure:903: checking for jtclsh" >&5
+echo "configure:909: checking for jtclsh" >&5
     echo "$ac_t""$JTCLSH" 1>&6;
 else
     # Extract the first word of "jtclsh", so it can be a program name with args.
 set dummy jtclsh; ac_word=$2
 echo $ac_n "checking for $ac_word""... $ac_c" 1>&6
-echo "configure:909: checking for $ac_word" >&5
+echo "configure:915: checking for $ac_word" >&5
 if eval "test \"`echo '$''{'ac_cv_path_JTCLSH'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
@@ -952,7 +958,7 @@ do
 # Extract the first word of "$ac_prog", so it can be a program name with args.
 set dummy $ac_prog; ac_word=$2
 echo $ac_n "checking for $ac_word""... $ac_c" 1>&6
-echo "configure:956: checking for $ac_word" >&5
+echo "configure:962: checking for $ac_word" >&5
 if eval "test \"`echo '$''{'ac_cv_path_TCLSH'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
@@ -1012,6 +1018,9 @@ fi
 
 
 # jtree binary
+
+
+# JDK Version determined by running confTest.class and getting java.version
 
 
 # Location of the JDK
@@ -1173,6 +1182,7 @@ s%@JAVACC@%$JAVACC%g
 s%@JAVACC_DIR@%$JAVACC_DIR%g
 s%@JFLAGS@%$JFLAGS%g
 s%@JTREE@%$JTREE%g
+s%@JVERSION@%$JVERSION%g
 s%@PTJAVA_DIR@%$PTJAVA_DIR%g
 s%@PTII_DEFAULT@%$PTII_DEFAULT%g
 
