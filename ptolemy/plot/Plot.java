@@ -1904,9 +1904,11 @@ public class Plot extends PlotBox {
     /* Add a legend if necessary, return the value of the connected flag.
      */
     private boolean _addLegendIfNecessary(boolean connected) {
-        if (! _sawfirstdataset  || _currentdataset < 0) {
+        if ((! _sawfirstdataset  || _currentdataset < 0) &&
+	    ! _reusedatasets) {
             // We did not set a DataSet line, but
-            // we did get called with -<digit> args
+            // we did get called with -<digit> args and
+	    // we did not see reusedatasets: yes
             _sawfirstdataset = true;
             _currentdataset++;
         }
@@ -1918,7 +1920,7 @@ public class Plot extends PlotBox {
             addLegend(_currentdataset,
                     new String("Set "+ _currentdataset));
         }
-        if (_firstinset) {
+        if (_firstinset && ! _reusedatasets) {
             connected = false;
             _firstinset = false;
         }
