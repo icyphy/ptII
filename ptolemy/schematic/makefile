@@ -54,7 +54,6 @@ PTCLASSZIP =		$(PTPACKAGE_DIR)/$(PTPACKAGE).zip
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
-	Test.java \
 	Domain.java \
 	DomainLibrary.java \
 	EntityType.java \
