@@ -37,7 +37,6 @@ CONFIG =	$(ROOT)/mk/tycho.mk
 include $(CONFIG)
 
 EXTRA_SRCS =	\
-	PlotApplication.java \
 	changes.html \
 	index.html \
 	ptplotfaq.html \
