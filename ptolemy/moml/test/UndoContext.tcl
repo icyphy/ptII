@@ -112,21 +112,24 @@ test UndoContext-3.1 {applyRename with no undoMoML } {
     set undoContext [java::new ptolemy.moml.UndoContext true]
     catch {$undoContext applyRename foo} errMsg
     list $errMsg
-} {{java.lang.Exception: Cannot rename an element whose parent undo context does not have any undo MoML. Requested new name: foo}}
+} {{ptolemy.kernel.util.IllegalActionException: Failed to create undo entry:
+Cannot rename an element whose parent undo context does not have any undo MoML. Requested new name: foo}}
 
 test UndoContext-3.2 {applyRename with no "name=" in undoMoML } {
     set undoContext [java::new ptolemy.moml.UndoContext true]
     $undoContext appendUndoMoML "name = bar\n"
     catch {$undoContext applyRename foo} errMsg
     list $errMsg
-} {{java.lang.Exception: Cannot rename an element whose parent undo context does not have a name attribute in its undo MoML. Requested new name: foo}}
+} {{ptolemy.kernel.util.IllegalActionException: Failed to create undo entry:
+Cannot rename an element whose parent undo context does not have a name attribute in its undo MoML. Requested new name: foo}}
 
 test UndoContext-3.3 {applyRename with "name=", but no closing double quote in undoMoML } {
     set undoContext [java::new ptolemy.moml.UndoContext true]
     $undoContext appendUndoMoML "name=\"bar\n"
     catch {$undoContext applyRename foo} errMsg
     list $errMsg
-} {{java.lang.Exception: Cannot rename an element whose parent undo context does not have a valid name attribute in its undo MoML. Requested new name: foo}}
+} {{ptolemy.kernel.util.IllegalActionException: Failed to create undo entry:
+Cannot rename an element whose parent undo context does not have a valid name attribute in its undo MoML. Requested new name: foo}}
 
 test UndoContext-3.4 {applyRename} {
     set undoContext [java::new ptolemy.moml.UndoContext true]

@@ -1069,7 +1069,7 @@ public class MoMLParser extends HandlerBase {
                 // contains     <entity name="tmp2" class="tmp.tmp2">
                 // then we want to be sure that we set _xmlFile properly
 
-                // FIXME: I'm not sure if it is necessary to check to
+                // NOTE: I'm not sure if it is necessary to check to
                 // see if _xmlFile is null before hand, but it seems
                 // like it is safer to check before resetting it to null.
                 boolean xmlFileWasNull = false;
@@ -2215,22 +2215,15 @@ public class MoMLParser extends HandlerBase {
                         // I could see of doing the rename without having to
                         // change the semantics or location of the rename
                         // element
-                        try {
-                            UndoContext parentContext =
-                                (UndoContext)_undoContexts.peek();
-                            parentContext.applyRename(newName);
-                            // Simply create in the undo MoML another rename
-                            _undoContext.appendUndoMoML("<rename name=\"" +
-                                    oldName + "\" />\n");
-                            // Do not need to continue generating undo MoML
-                            // as rename does not have any child elements
-                            _undoContext.setChildrenUndoable(false);
-                        }
-                        catch (Exception e) {
-                            // FIXME: update to use a better exception
-                            // Do nothing, should mean that no undo for this
-                            // element is generated
-                        }
+                        UndoContext parentContext =
+                            (UndoContext)_undoContexts.peek();
+                        parentContext.applyRename(newName);
+                        // Simply create in the undo MoML another rename
+                        _undoContext.appendUndoMoML("<rename name=\"" +
+                                oldName + "\" />\n");
+                        // Do not need to continue generating undo MoML
+                        // as rename does not have any child elements
+                        _undoContext.setChildrenUndoable(false);
                     }
                     
                     // If _current is a class definition, then find
@@ -3195,7 +3188,7 @@ public class MoMLParser extends HandlerBase {
      *  which contains MoML, using the specified base to find the URL.
      *  If the URL has been previously parsed by this application,
      *  then return the instance that was the result of the previous
-     *  parse. FIXME: unless it has been modified since last loaded?
+     *  parse.
      *  If the URL cannot be found relative to this base, then it
      *  is searched for relative to the current working directory
      *  (if this is permitted with the current security restrictions),
@@ -3222,6 +3215,10 @@ public class MoMLParser extends HandlerBase {
         if (_imports != null) {
             NamedObj previous = (NamedObj)_imports.get(_xmlFile);
             if (previous != null) {
+                // NOTE: In theory, we should not even have to
+                // check whether the file has been updated, because
+                // if changes were made to model since it was loaded,
+                // they should have been propagated.
                 return previous;
             }
         }
@@ -3327,7 +3324,7 @@ public class MoMLParser extends HandlerBase {
         if (propertyName.equals("multiport") && isIOPort) {
             // Special properties that affect the behaviour of a port
         
-            // FIXME: UNDO: Consider refactoring these clauses
+            // NOTE: UNDO: Consider refactoring these clauses
             // to remove the duplicate values
             // The previous value is needed to generate undo MoML
         
@@ -3388,7 +3385,7 @@ public class MoMLParser extends HandlerBase {
         } else if (propertyName.equals("output") && isIOPort) {
             // Special properties that affect the behaviour of a port
         
-            // FIXME: UNDO: Consider refactoring these clauses
+            // NOTE: UNDO: Consider refactoring these clauses
             // to remove the duplicate values
             // The previous value is needed to generate undo MoML
         
@@ -3448,7 +3445,7 @@ public class MoMLParser extends HandlerBase {
         } else if (propertyName.equals("input") && isIOPort) {
             // Special properties that affect the behaviour of a port
         
-            // FIXME: UNDO: Consider refactoring these clauses
+            // NOTE: UNDO: Consider refactoring these clauses
             // to remove the duplicate values
             // The previous value is needed to generate undo MoML
         
@@ -3793,7 +3790,7 @@ public class MoMLParser extends HandlerBase {
         // Read the external file in the current context, but with
         // a new parser.  I'm not sure why the new parser is needed,
         // but the "input" element handler does the same thing.
-        // FIXME: Should we keep the parser to re-use?
+        // NOTE: Should we keep the parser to re-use?
         MoMLParser newParser = new MoMLParser(_workspace, _classLoader);
         newParser.setContext(context);
         newParser._propagator = _propagator;
@@ -4249,11 +4246,12 @@ public class MoMLParser extends HandlerBase {
      *  @param name The name of the class.
      *  @param source The source for the class.
      *  @return A class, if it exists.
-     *  @throws XmlException This should not be thrown.
+     *  @throws Exception If a source is specified and it cannot
+     *   be opened.
      */
     private ComponentEntity _searchForClassInContext(
             String name, String source) 
-            throws XmlException {
+            throws Exception {
         ComponentEntity candidate = _searchForEntity(name);
         // Search upwards in the hierarchy if necessary.
         NamedObj context = _current;
@@ -4267,15 +4265,18 @@ public class MoMLParser extends HandlerBase {
             // Check that it's a class.
             if (candidate.isClassDefinition()) {
                 // Check that its source matches.
-                // FIXME: This isn't right... Need to check that
-                // it's the same file, not that the string matches.
                 String candidateSource = candidate.getMoMLInfo().source;
 
                 if (source == null && candidateSource == null) {
                     return candidate;
-                } else if (source != null
-                        && source.equals(candidateSource)) {
-                    return candidate;
+                } else if (source != null && candidateSource != null) {
+                    // Have to convert to a URL to check whether the
+                    // same file is being specified.
+                    URL sourceURL = fileNameToURL(source, _base);
+                    URL candidateSourceURL = fileNameToURL(candidateSource, _base);
+                    if (sourceURL.equals(candidateSourceURL)) {
+                        return candidate;
+                    }
                 }
             }
         }
@@ -4345,20 +4346,8 @@ public class MoMLParser extends HandlerBase {
         } else {
             // Name is relative.
             if (_current instanceof CompositeEntity) {
-                ComponentEntity result =
-                    ((CompositeEntity)_current).getEntity(name);
-                if (result != null && !_current.deepContains(result)) {
-                    // FIXME: How can this exception possibly occur?
-                    // The result was obtained using getEntity!
-                    throw new XmlException(
-                            "Reference to an existing entity: "
-                            + result.getFullName()
-                            + " in an inappropriate context: "
-                            + _current.getFullName(),
-                            _currentExternalEntity(),
-                            _parser.getLineNumber(),
-                            _parser.getColumnNumber());
-                }
+                ComponentEntity result
+                        = ((CompositeEntity)_current).getEntity(name);
                 return result;
             }
             if (_current == null) {
