@@ -442,6 +442,10 @@ jsall: jsoriginal
 	   (cd test; $(MAKE) jstest_jsimple); \
 	fi
 
+# Run the tests in nightly mode so that the checks in NonStrictTest
+# and TypeTest work.
+nightly:
+	$(MAKE) JTCLSHFLAGS=-Dptolemy.ptII.isRunningNightlyBuild=true tests
 
 # Run all the tests
 tests:: makefile
