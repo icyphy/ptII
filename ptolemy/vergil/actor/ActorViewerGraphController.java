@@ -42,6 +42,7 @@ import ptolemy.kernel.util.Locatable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.Vertex;
 import ptolemy.vergil.basic.AbstractBasicGraphModel;
+import ptolemy.vergil.basic.LocatableNodeController;
 import ptolemy.vergil.basic.NamedObjController;
 import ptolemy.vergil.basic.RunnableGraphController;
 import ptolemy.vergil.kernel.AnimationRenderer;
@@ -85,6 +86,12 @@ public class ActorViewerGraphController extends RunnableGraphController {
      */
     public ActorViewerGraphController() {
         _createControllers();
+        
+        // The following is a fallback controller used when encountering
+        // instances of Locatable that have no container. Do not create
+        // this in _createControllers() because that is overridden by
+        // derived classes.
+        _locatableController = new LocatableNodeController(this);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -213,8 +220,7 @@ public class ActorViewerGraphController extends RunnableGraphController {
             } else if (semanticObject instanceof Port) {
                 return _portController;
             } else {
-                throw new RuntimeException(
-                        "Unrecognized object: " + semanticObject);
+                return _locatableController;
             }
         } else if (object instanceof Port) {
             return _entityPortController;
@@ -302,6 +308,11 @@ public class ActorViewerGraphController extends RunnableGraphController {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
+    /** The default controller, used only for instances of Locatable
+     *  that have no container.
+     */
+    private LocatableNodeController _locatableController;
 
     // The selection interactor for drag-selecting nodes
     private SelectionDragger _selectionDragger;

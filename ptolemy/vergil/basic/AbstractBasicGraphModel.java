@@ -192,6 +192,29 @@ public abstract class AbstractBasicGraphModel extends ModularGraphModel {
         return null;
     }
 
+    /** Return true if the given object is a
+     *  node in this model, which in this case means
+     *  that it is an instance of Locatable.
+     *  @param object The object to test for being a node
+     *   (vs. an edge).
+     */
+    public boolean isNode(Object object) {
+        Object nodeModel = getNodeModel(object);
+        if (nodeModel != null) {
+            return true;
+        }
+        // If the node model is null, then this could
+        // be a Locatable with no container, which we will
+        // assume is a node.
+        if (object instanceof Locatable) {
+            NamedObj container = ((Locatable)object).getContainer();
+            if (container == null) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     /** Delete a node from its parent graph and notify
      *  graph listeners with a NODE_REMOVED event.
      *  @param eventSource The source of the event that will be dispatched,
@@ -282,7 +305,9 @@ public abstract class AbstractBasicGraphModel extends ModularGraphModel {
     }
 
     /** Update the graph model.  This is called whenever a change request is
-     *  executed.  Subclasses will override this to update internal data
+     *  executed.  This base class checks each of the contained nodes, and
+     *  if any has a semantic object with no container, then that node
+     *  is removed. Subclasses will override this to update internal data
      *  structures that may be cached.
      *  @return True if the graph model changes (always true in this
      *   base class).
