@@ -6,6 +6,7 @@
         <property name="Initial_queue_capacity" class="ptolemy.data.expr.Parameter" value="1">
         </property>
     </director>
+
     <property name="Antennas" class="ptolemy.data.expr.Parameter" value="6">
         <doc>Number of Antenna's</doc>
     </property>
@@ -13,6 +14,7 @@
         <doc>The number of QR iterations.
       </doc>
     </property>
+
     <entity name="plot" class="ptolemy.actor.gui.SequencePlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -22,10 +24,9 @@
         </property>
         <property name="xUnit" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
-            <location x="590.1983947753906" y="62.4295654296875"/>
-        </rendition>
         <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
         </port>
     </entity>
     <entity name="ND_6" class="ptolemy.domains.pn.demo.QR.ND_6">
@@ -35,12 +36,11 @@
         </property>
         <property name="d" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
-            <location x="150.86882781982422" y="211.66555404663086"/>
-        </rendition>
         <port name="out0" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
         </port>
         <port name="out1" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
         </port>
     </entity>
     <entity name="ND_66" class="ptolemy.domains.pn.demo.QR.ND_66">
@@ -50,30 +50,38 @@
         </property>
         <property name="d" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
-            <location x="409.5470428466797" y="237.52100372314453"/>
-        </rendition>
         <port name="in0" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
         </port>
         <port name="in1" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
         </port>
         <port name="in2" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
         </port>
         <port name="in3" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
         </port>
         <port name="in4" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
         </port>
         <port name="in5" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
         </port>
         <port name="out0" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
         </port>
         <port name="out1" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
         </port>
         <port name="out2" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
         </port>
         <port name="out3" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
         </port>
         <port name="out4" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
         </port>
     </entity>
     <entity name="ND_14" class="ptolemy.domains.pn.demo.QR.ND_14">
@@ -83,12 +91,11 @@
         </property>
         <property name="d" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
-            <location x="146.15264892578125" y="157.75726318359375"/>
-        </rendition>
         <port name="out0" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
         </port>
         <port name="out1" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
         </port>
     </entity>
     <entity name="ND_36" class="ptolemy.domains.pn.demo.QR.ND_36">
@@ -98,22 +105,26 @@
         </property>
         <property name="d" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
-            <location x="239.25597381591797" y="297.0362091064453"/>
-        </rendition>
         <port name="in0" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
         </port>
         <port name="in1" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
         </port>
         <port name="in2" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
         </port>
         <port name="in3" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
         </port>
         <port name="out0" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
         </port>
         <port name="out1" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
         </port>
         <port name="out2" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
         </port>
     </entity>
     <entity name="ND_86" class="ptolemy.domains.pn.demo.QR.ND_86">
@@ -123,123 +134,61 @@
         </property>
         <property name="d" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
-            <location x="368.52191162109375" y="118.01425170898438"/>
-        </rendition>
         <port name="in0" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
         </port>
         <port name="in1" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
         </port>
         <port name="out0" class="ptolemy.actor.TypedIOPort">
-        </port>
-    </entity>
-    <entity name="Copy" class="ptolemy.actor.lib.Broadcast">
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
-            <location x="510.04205322265625" y="75.84783935546875"/>
-        </rendition>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
         </port>
     </entity>
     <entity name="StreamToMatrix" class="ptolemy.domains.pn.demo.QR.StreamToMatrix">
         <property name="dimension" class="ptolemy.data.expr.Parameter" value="Antennas">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
-            <location x="571.55712890625" y="113.27119445800781"/>
-        </rendition>
         <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
         </port>
     </entity>
     <entity name="MatrixViewer" class="ptolemy.actor.gui.MatrixViewer">
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
-            <location x="622.0100708007812" y="128.75302124023438"/>
-        </rendition>
         <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
         </port>
     </entity>
     <relation name="_R0" class="ptolemy.actor.TypedIORelation">
-        <vertex name="Vertex0" class="ptolemy.moml.Vertex">
-            <location x="189.35304540437676" y="242.95027317916865"/>
-        </vertex>
     </relation>
     <relation name="_R1" class="ptolemy.actor.TypedIORelation">
-        <vertex name="Vertex0" class="ptolemy.moml.Vertex">
-                    </vertex>
     </relation>
     <relation name="_R2" class="ptolemy.actor.TypedIORelation">
-        <vertex name="Vertex0" class="ptolemy.moml.Vertex">
-            <location x="95.4828164769059" y="266.6864317154338"/>
-        </vertex>
     </relation>
     <relation name="_R3" class="ptolemy.actor.TypedIORelation">
-        <vertex name="Vertex0" class="ptolemy.moml.Vertex">
-            <location x="220.10202008417855" y="176.49852081117717"/>
-        </vertex>
     </relation>
     <relation name="_R4" class="ptolemy.actor.TypedIORelation">
-        <vertex name="Vertex0" class="ptolemy.moml.Vertex">
-            <location x="260.8977575924606" y="219.43174799779013"/>
-        </vertex>
     </relation>
     <relation name="_R5" class="ptolemy.actor.TypedIORelation">
-        <vertex name="Vertex0" class="ptolemy.moml.Vertex">
-            <location x="330.8497275363427" y="259.19503667951295"/>
-        </vertex>
     </relation>
     <relation name="_R6" class="ptolemy.actor.TypedIORelation">
-        <vertex name="Vertex0" class="ptolemy.moml.Vertex">
-            <location x="293.7027728489078" y="250.84976252889572"/>
-        </vertex>
     </relation>
     <relation name="_R7" class="ptolemy.actor.TypedIORelation">
-        <vertex name="Vertex0" class="ptolemy.moml.Vertex">
-            <location x="400.78171914801464" y="191.7882509709488"/>
-        </vertex>
     </relation>
     <relation name="_R8" class="ptolemy.actor.TypedIORelation">
-        <vertex name="Vertex0" class="ptolemy.moml.Vertex">
-            <location x="373.68665542225403" y="202.83672505425324"/>
-        </vertex>
     </relation>
     <relation name="_R9" class="ptolemy.actor.TypedIORelation">
-        <vertex name="Vertex0" class="ptolemy.moml.Vertex">
-            <location x="366.49506575696273" y="271.5965122735004"/>
-        </vertex>
     </relation>
     <relation name="_R10" class="ptolemy.actor.TypedIORelation">
-        <vertex name="Vertex0" class="ptolemy.moml.Vertex">
-            <location x="434.8488954431531" y="204.4836492544491"/>
-        </vertex>
     </relation>
     <relation name="_R11" class="ptolemy.actor.TypedIORelation">
-        <vertex name="Vertex0" class="ptolemy.moml.Vertex">
-            <location x="352.54393304558744" y="203.58233638829577"/>
-        </vertex>
     </relation>
     <relation name="_R12" class="ptolemy.actor.TypedIORelation">
-        <vertex name="Vertex0" class="ptolemy.moml.Vertex">
-            <location x="419.15347853418234" y="114.91926018420918"/>
-        </vertex>
     </relation>
     <relation name="_R13" class="ptolemy.actor.TypedIORelation">
-        <vertex name="Vertex0" class="ptolemy.moml.Vertex">
-            <location x="555.4104926512141" y="70.04485444340652"/>
-        </vertex>
     </relation>
-    <relation name="_R14" class="ptolemy.actor.TypedIORelation">
-        <vertex name="Vertex0" class="ptolemy.moml.Vertex">
-            <location x="531.7532374214578" y="94.85091750278644"/>
-        </vertex>
-    </relation>
-    <relation name="_R15" class="ptolemy.actor.TypedIORelation">
-        <vertex name="Vertex0" class="ptolemy.moml.Vertex">
-            <location x="571.6371599439028" y="122.76293238164254"/>
-        </vertex>
-    </relation>
-    <link port="plot.input" relation="_R13"/>
+    <link port="plot.input" relation="_R12"/>
     <link port="ND_6.out0" relation="_R0"/>
     <link port="ND_6.out1" relation="_R1"/>
     <link port="ND_66.in0" relation="_R7"/>
@@ -265,10 +214,7 @@
     <link port="ND_86.in0" relation="_R5"/>
     <link port="ND_86.in1" relation="_R8"/>
     <link port="ND_86.out0" relation="_R12"/>
-    <link port="Copy.input" relation="_R12"/>
-    <link port="Copy.output" relation="_R13"/>
-    <link port="Copy.output" relation="_R14"/>
-    <link port="StreamToMatrix.input" relation="_R14"/>
-    <link port="StreamToMatrix.output" relation="_R15"/>
-    <link port="MatrixViewer.input" relation="_R15"/>
+    <link port="StreamToMatrix.input" relation="_R12"/>
+    <link port="StreamToMatrix.output" relation="_R13"/>
+    <link port="MatrixViewer.input" relation="_R13"/>
 </model>

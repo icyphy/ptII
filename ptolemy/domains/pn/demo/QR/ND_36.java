@@ -78,7 +78,7 @@ public class ND_36 extends TypedAtomicActor {
 
         out0 = new TypedIOPort(this, "out0", false, true);
         out1 = new TypedIOPort(this, "out1", false, true);
-        out2 = new TypedIOPort(this," out2", false, true);
+        out2 = new TypedIOPort(this, "out2", false, true);
 
 
         in0.setTypeEquals(BaseType.DOUBLE);

@@ -56,7 +56,7 @@ An applet that models the compiled QR algorithm.
 */
 public class QRcompileApplet extends PNApplet implements QueryListener {
 
-    ////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////
 ////                         public methods                         ////
 
 /** Initialize the applet.
@@ -193,7 +193,7 @@ public void init() {
             } else {
                 if ( name == "N" ) {
                     int n = (int)_query.intValue("N");
-                    if ( (1<n) && ( n<17) ) {
+                    if ( (0<n) && ( n<17) ) {
                         _s2m.dimension.
                             setToken(new IntToken(n));
                         _ND_6.parameter_N.
