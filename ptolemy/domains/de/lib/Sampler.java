@@ -92,6 +92,15 @@ public class Sampler extends DETransformer {
         output.setTypeAtLeast(input);
         trigger = new TypedIOPort(this, "trigger", true, false);
         trigger.setTypeEquals(BaseType.GENERAL);
+
+	_attachText("_iconDescription", "<svg>\n" +
+                "<rect x=\"-30\" y=\"-20\" "
+                + "width=\"60\" height=\"40\" "
+                + "style=\"fill:white\"/>\n"
+                + "<polyline points=\"-30,10 2,10 2,0\"/>\n"
+                + "<polyline points=\"-30,-10 -20,-10 -20,0 -10,0 10,-7\"/>\n"
+                + "<polyline points=\"10,0 30,0\"/>\n"
+                + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
