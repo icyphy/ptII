@@ -39,7 +39,7 @@ import java.util.Enumeration;
 /**
 A ComponentEntity is a component in a CompositeEntity.
 It might itself be composite, but in this base class it is assumed to
-be atomic (meaning that it contains no components).
+be atomic (meaning that it cannot contain components).
 <p>
 Derived classes may further constrain the container to be
 a subclass of CompositeEntity.  To do this, they should override
@@ -124,16 +124,27 @@ public class ComponentEntity extends Entity {
     }
 
     /** Return true if the entity is atomic.
-     *  An atomic entity is one that either has no components or hides
-     *  its components behind opaque ports.
-     *  Instances of this base class are always atomic, so return true.
+     *  An atomic entity is one that cannot have components.
+     *  Instances of this base class are always atomic.
      *  Derived classes that return false are assumed to be instances of
-     *  CompositeEntity or a class derived from that, although some
-     *  classes derived from CompositeEntity may also return true.
+     *  CompositeEntity or a class derived from that.
      *  @return True if the entity is atomic.
      *  @see pt.kernel.CompositeEntity
      */
     public boolean isAtomic() {
+	return true;
+    }
+
+    /** Return true if the entity is opaque.
+     *  An opaque entity is one that either is atomic or hides
+     *  its components behind opaque ports.
+     *  Instances of this base class are always opaque.
+     *  Derived classes may be transparent, in which case they return false
+     *  to this method and to isAtomic().
+     *  @return True if the entity is opaque.
+     *  @see pt.kernel.CompositeEntity
+     */
+    public boolean isOpaque() {
 	return true;
     }
 
