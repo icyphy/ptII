@@ -43,10 +43,80 @@ import ptolemy.domains.sdf.lib.Delay;
 
 import java.util.*;
 
-/*
- * has parameter period which has default value of 1.0
- * parameter period should only be changed when execution is stopped.
- */
+//////////////////////////////////////////////////////////////////////////
+//// DTDirector
+/**
+ 
+<h1>DT overview</h1>
+The Discrete Time (DT) domain is a timed extension of the Synchronous Dataflow 
+(SDF) domain.  Like the SDF, it has static scheduling of the dataflow graph 
+model. Likewise, DT requires that the rates on the ports of all actors be
+known before hand. It also requires that the rates on the ports not change
+during execution.  DT handles feedback systems in the same way as SDF does,
+but with additional constraints on initial tokens.
+
+<h1>DT Features</h1>
+The design of the DT domain is motivated by the following criteria:
+1.) Uniform Token Flow:  The time interval between tokens should be regular
+    and unchanging.  This conforms to the idea of having sampled systems 
+    with fixed rates. Although the tokens flowing in DT do not have a notion
+    of time stamps, each actor aware of time can query its director for the
+    current time.  Hence, each actor can get its own notion of current time
+    while executing. The current time is incremented everytime an actor 
+    calls the get() method to obtain a token.
+2.) Causality: Tokens produced that depend on other tokens should be issued
+    at latter time than when the other tokens were issued.  This makes sense
+    because we don't expect actors to produce tokens before they consume 
+    tokens and compute, e.g. if an actor needs three tokens A, B, and C to 
+    compute token D, then the time when tokens A, B, and C are consumed should
+    earlier than than or equal to the time when token D is produced.  Note, in
+    DT, computation does not have to take time.
+3.) SDF-style semantics: Ideally, we want DT to be a timed-superset of SDF with
+    compatible token flow and scheduling.  However, we can only approximate
+    this behavior. It is not possible to have uniform token flow, causality,
+    and SDF-style semantics at the same time.  Causality is broken for non-
+    homogeneous actors in a feedback system when fully-compatible SDF-style
+    semantics is adapted.  To remedy this situation, every actor in DT that 
+    has non-homogeneous input ports should produce initial tokens at each 
+    of its output ports.
+
+<h1>Class comments</h1>
+DTDirector is the class that controls execution of actors under the DT
+domain.  It follows the same execution semantics as SDF.  By default,
+actor scheduling is handled by the SDFScheduler class.  Furthermore,
+the newReceiver method creates receivers of type DTReceiver, which extends 
+SDFReceiver.
+
+<h1> Design Notes</h1>
+DT (Discrete Time) is a timed model of computation.  In order 
+to benefit from the internal time-keeping mechanism of DT, one should
+use actors aware of time. For example, one should use TimedPlotter or
+TimedScope instead of SequencePlotter or SequenceScope.
+  
+<h1> DT and Vergil </h1>
+Non-hierarchical DT has been tested to work with Vergil.  However,
+there is limited support for hierarchical DT at the moment.  It is
+possible to use hierarchical DT in Vergil by doing the following steps
+1.) Create and save the inside model in Vergil. 
+2.) Modify the inside model MOML file with the following modifications:
+    - change class= keyword to extends= ; 
+    - change <model> keyword to <class>;
+    - provide a name for the <class> which is "" (blank) by default;
+    - change the <port> to include <property name="output"/> 
+                                or <property name="input"/>
+3.) Modify the palette XML file to include the inside model
+     <import source="name.xml"/>
+     <entity name="name" class=".name">  
+
+@see ptolemy.domains.dt.kernel.DTReceiver
+@see ptolemy.domains.sdf.kernel.SDFDirector
+@see ptolemy.domains.sdf.kernel.SDFReceiver
+@see ptolemy.domains.sdf.kernel.SDFScheduler
+ 
+       
+ @author C. Fong
+ @version  
+*/
 public class DTDirector extends SDFDirector {
 
     /** Construct a director in the default workspace with an empty string
@@ -58,7 +128,7 @@ public class DTDirector extends SDFDirector {
         _init();
     }
 
-    /**  Construct a director in the  workspace with an empty name.
+    /** Construct a director in the  workspace with an empty name.
      *  The director is added to the list of objects in the workspace.
      *  Increment the version number of the workspace.
      *
@@ -70,10 +140,9 @@ public class DTDirector extends SDFDirector {
     }
 
     /** Construct a director in the given container with the given name.
-     *  If the container argument must not be null, or a
-     *  NullPointerException will be thrown.
-     *  If the name argument is null, then the name is set to the
-     *  empty string. Increment the version number of the workspace.
+     *  If the container argument is null, a NullPointerException will 
+     *  be thrown. If the name argument is null, then the name is set 
+     *  to the empty string. Increment the version number of the workspace.
      *
      *  @param container Container of the director.
      *  @param name Name of this director.
@@ -90,7 +159,16 @@ public class DTDirector extends SDFDirector {
     ////                         parameters                        ////
     
     /** The period of the model.  This parameter must contain a
-     *  DoubleToken.  Its value defaults to 1.0.
+     *  DoubleToken.  Its default value is 1.0 .
+     *  For homogeneous hierarchical DT (i.e. DT inside DT) , the period 
+     *  of the inside director cannot be set explicitly by the user. 
+     *  Instead, it will have a fixed value: "outsidePeriod / repeats ", 
+     *  where 'outsidePeriod' is the period of the outside director; and 
+     *  'repeats' is the firing count of the composite actor that contains
+     *  the inside director.
+     *  For heterogeneous hierarchical DT (i.e. DT inside DE or CT), the 
+     *  period parameter is used to determine how often the fireAt()
+     *  method is fired by the outside director. 
      */
     public Parameter period;
     
@@ -103,7 +181,7 @@ public class DTDirector extends SDFDirector {
      *  actor will have the same parameter values as the old.
      *  The period parameter is explicitly cloned in this method.
      *  @param ws The workspace for the new object.
-     *  @return A new actor.
+     *  @return A new object.
      *  @exception CloneNotSupportedException If one of the attributes
      *   cannot be cloned.
      */
@@ -113,200 +191,64 @@ public class DTDirector extends SDFDirector {
         newobj.period = (Parameter)newobj.getAttribute("period");
         return newobj;
     }
-
-    /** Go through the schedule and iterate every actor with calls to
-     *  prefire() , fire() , and postfire().
+    
+    /** Get the time increment per iteration for this director
+     *  This is a convenience method for getting the period parameter.
+     *  For hierarchical DT (DT inside DT), 
      *
+     *  @return The value of the period parameter.
+     *  @exception IllegalActionException If the period parameter is
+     *  is not of type DoubleToken or IntToken.
      */
-    public void fire() throws IllegalActionException {
-        
-        TypedCompositeActor container = ((TypedCompositeActor)getContainer());
-        if (container.getExecutiveDirector() == null) {
-            //debug.debug.prompt("toplevel");
-        } else {
-            // FIXME: resyncLocalTimes for receivers
-        }
-        debug.println("\nDTDirector "+this.getName()+" fire **************************************************");
-       
-
-	
-       if (container == null) {
-            throw new InvalidStateException("DTDirector " + getName() +
-                    " fired, but it has no container!");
-       } else {
-            
-            Scheduler s = getScheduler();
-            if (s == null)
-                throw new IllegalActionException("Attempted to fire " +
-                        "DT system with no scheduler");
-            Enumeration allactors = s.schedule();
-            int i=1;
-            while (allactors.hasMoreElements()) {
-            	i++;
-                
-                Actor actor = (Actor)allactors.nextElement();
-                debug.println("{ "+((Nameable)actor).getName()+" "+((Nameable)actor).getFullName()+" start fire--------------------");
-                if(!actor.prefire()) {
-                    throw new IllegalActionException(this,
-                            (ComponentEntity) actor, "Actor " +
-                            "is not ready to fire.");
-                }
-
-                if(_debugging)
-                    _debug("Firing " + ((Nameable)actor).getFullName());
-		
-		
-                actor.fire();
-                
-                _postfirereturns = _postfirereturns && actor.postfire();
-                debug.println("} "+"------------------- end fire--------------------");
-            }
-        }
-        debug.println("DTDirector "+this.getName()+" end fire ************************************************\n");
-        try {
-            //if (_debugOn) java.lang.Thread.sleep(1000);
-        } catch(Exception e) {}
-    }
-    
-
-    public boolean postfire() throws IllegalActionException {
-        boolean returnValue = super.postfire();
-        
-        double timeIncrement = getPeriod();
-        requestRefireAt(_lastPrefireTime + timeIncrement);
-        return returnValue;
-    }
-
-    /** Return a new receiver consistent with the DT domain.
-     *  @return A new DTReceiver.
-     */
-    public Receiver newReceiver() {
-    
-        DTReceiver currentReceiver = new DTReceiver();
-        receiverTable.add(currentReceiver);
-        // newReceiver is also called by Vergil during topology change
-        //debug.printStackTrace();
-        //debug.prompt("newReceiver "+currentReceiver.toString());
-        return currentReceiver;
-    }
-
-    
-    /** prefire() is currently under development to handle hierarchical
-     *  compositions of DT with other domains. Please ignore this method for now
-     *  @return 
-     *  @exception 
-     */
-    public boolean prefire() throws IllegalActionException {
-
-        // FIXME: This prefire() has bugs in DT inside DT and DE
-        boolean prefireReturnValue = true;
-        _postfirereturns = true;
-
+    public double getPeriod() throws IllegalActionException {
+        Token token;
+        double periodValue = 0.0;
+        Director outsideDirector; 
         TypedCompositeActor container = (TypedCompositeActor) getContainer();
-        Director outsideDirector = container.getExecutiveDirector();
         
-        if (outsideDirector != null) {
-            double currentTime = outsideDirector.getCurrentTime();
-            double currentPeriod = ((DoubleToken) period.getToken()).doubleValue();
-            if ((currentTime - _lastPrefireTime) < currentPeriod) {
-                debug.prompt(" prefire: should not fire");
-            }
-            _lastPrefireTime = currentTime;
+        outsideDirector = _getOutsideDirector();
+        if (outsideDirector instanceof DTDirector) {
+            DTDirector outsideDTDirector = (DTDirector) outsideDirector;
+            token = outsideDTDirector.period.getToken();
+            periodValue = 1.0/outsideDTDirector.getRepeats(container);
+        } else {	
+            token = period.getToken();
+            periodValue = 1.0;
         }
-        //debug.prompt("prefire "+_lastPrefireTime);
-        //TypedCompositeActor container = ((TypedCompositeActor)getContainer());
-	    Iterator inputPorts = container.inputPortList().iterator();
-	    int inputCount = 0;
-	    while(inputPorts.hasNext()) {
-	        IOPort inputPort = (IOPort) inputPorts.next();
-	        debug.println("IOPort "+inputPort);
-	        if (_debugging) _debug("checking input " +
-                    inputPort.getFullName());
-
-	        int threshold = SDFScheduler.getTokenConsumptionRate(inputPort);
-	        int mymy = getTokenConsumptionRate(inputPort);
-	        System.out.println("threshold "+threshold);
-	        System.out.println("mymy "+mymy);
-	        if (_debugging) _debug("Threshold = " + threshold);
-	        Receiver receivers[][] = inputPort.getReceivers();
-
-	        int channel;
-	        System.out.println("getWidth ->"+inputPort.getWidth());
-	        for(channel = 0; channel < inputPort.getWidth(); channel++) {
-		        if(!receivers[channel][0].hasToken(threshold)) {
-		            System.out.println(receivers[channel][0]+" "+(receivers[channel][0] instanceof SDFReceiver));
-		            if(_debugging) _debug("Channel " + channel + 
-					  " does not have enough tokens." +
-					  " Prefire returns false on " + 
-					  container.getFullName());
-		            prefireReturnValue = false;
-		            debug.prompt("prefire threshold "+prefireReturnValue+" "+threshold);
-                    return prefireReturnValue;
-		        } else {
-		            System.out.println(receivers[channel][0].hasToken(threshold));
-		        }
-	        }
-	    }
-	    if(_debugging) _debug("Prefire returns true on " + container.getFullName());
-	    prefireReturnValue = true;
-        //debug.prompt("prefire "+prefireReturnValue);
-        return prefireReturnValue;
-    }
-    
-    
-    /** Set current time to zero, invoke the preinitialize() methods of
-     *  all actors deeply contained by the container. 
-     *  <p>
-     *  This method should be invoked once per execution, before any
-     *  iteration; i.e. every time the GO button is pressed.
-     *  This method is <i>not</i> synchronized on the workspace, so the
-     *  caller should be.
-     *
-     *  @exception IllegalActionException if the preinitialize() method 
-     *   of the container or one of the deeply contained actors throws it.
-     */
-    public void preinitialize() throws IllegalActionException {
-        _currentTime = 0.0;
         
-        // FIXME:  creating a new ArrayList() may not be the way to go
-        //         for hierarchical topologies.  Maybe this should be 
-        //         moved to wrapup()
-        // FIXME:  receiverTable reset is currently put here because
-        //         Vergil calls newReceiver when you connect actors
-        receiverTable = new ArrayList();
-        super.preinitialize();
+        if (token instanceof DoubleToken) {
+            periodValue = periodValue * ((DoubleToken) token).doubleValue();
+        } else if (token instanceof IntToken) {
+            periodValue = periodValue * ((IntToken) token).intValue();
+        } else {
+            throw new IllegalActionException(
+                  "Illegal period parameter value");
+        }
+        return periodValue;
     }
     
     
-    
-
-    
-    /** Initialize the actors associated with this director.  Create a cached
-     *  table of all the actors associated with this director.  Determine which
-     *  actors need to generate initial tokens for DT causality. All actors with
-     *  nonhomogeneous input ports will need to generate initial tokens. For example,
-     *  if actor A has a nonhomogeneous input port and an output port with production
-     *  rate 'm' then actor A needs to produce 'm' initial tokens.
+    /** Initialize all the actors associated with this director by calling
+     *  super.initialize().  Create a cached table of all the actors 
+     *  associated with this director.  Determine which actors need to generate
+     *  initial tokens for DT causality. All actors with nonhomogeneous input 
+     *  ports will need to generate initial tokens. For example, if actor A has
+     *  a nonhomogeneous input port and an output port with production rate 'm'
+     *  then actor A needs to produce 'm' initial tokens.
+     *
      *  @exception IllegalActionException If the preinitialize() method of
      *  one of the associated actors throws it.
      */
     public void initialize() throws IllegalActionException {
 
-        requestRefireAt(0.0);
-    	debug.println("--> method:DTDirector initialize "+getName());
-    	
-        actorTable = new ArrayList();
-
-        allActorsTable = new Hashtable();
-        buildActorTable();
-        debug.println("---  Z INITIAL TOKENS ---");
-        if (getContainer().getContainer() == null) {
-            super.initialize();
-        }
-        debug.println("-------------------------\n\n");
+        _requestRefireAt(0.0);
+        _actorTable = new ArrayList();
+        _allActorsTable = new Hashtable();
+        _buildActorTable();
+        super.initialize();
         
         // This portion figures out which actors should generate initial tokens
-        ListIterator receiverIterator = receiverTable.listIterator();
+        ListIterator receiverIterator = _receiverTable.listIterator();
         while(receiverIterator.hasNext()) {
             DTReceiver currentReceiver = (DTReceiver) receiverIterator.next();
             
@@ -315,7 +257,7 @@ public class DTDirector extends SDFDirector {
             Actor actor = (Actor) currentPort.getContainer(); 
             String name = ((Nameable)actor).getFullName();
 
-            DTActor dtActor = (DTActor) allActorsTable.get(actor);
+            DTActor dtActor = (DTActor) _allActorsTable.get(actor);
             debug.println(dtActor);
             if (dtActor == null) {
                 throw new IllegalActionException(
@@ -327,36 +269,35 @@ public class DTDirector extends SDFDirector {
                rate = ((IntToken)param.getToken()).intValue();
                if (rate > 1) dtActor.shouldGenerateInitialTokens = true;
             }
-            
-            debug.println(" ~~~"+name+" potentially produce initial_token? "+dtActor.shouldGenerateInitialTokens);
     	}
-        displayActorTable();
-        displayArcReceiverTable();
-        
-        debug.println("--- NONHOMOGENEOUS INITIAL TOKENS ---");
+        _displayActorTable();
+        _displayArcReceiverTable();
         
         
         // This portion generates the initial tokens for actors with nonhomogeneous outputs
-        receiverIterator = receiverTable.listIterator();
+        receiverIterator = _receiverTable.listIterator();
         while(receiverIterator.hasNext()) {
             DTReceiver currentReceiver = (DTReceiver) receiverIterator.next();
 
             TypedIOPort currentPort = (TypedIOPort) currentReceiver.getContainer();
             Actor toActor = (Actor) currentPort.getContainer();
-            Actor fromActor = currentReceiver.from;
-            TypedIOPort fromPort = (TypedIOPort) currentReceiver.fromPort;
-            int outrate = currentReceiver.outrate;
+            TypedIOPort fromPort = currentReceiver.getSourcePort();
+            Actor fromActor = (Actor) fromPort.getContainer();
+            Parameter param = (Parameter) fromPort.getAttribute("tokenProductionRate");
+            int outrate = 0;
+            if ((param != null) && (fromPort.isOutput())) {
+                outrate = ((IntToken)param.getToken()).intValue();
+            }
             SDFScheduler currentScheduler = (SDFScheduler) getScheduler();
             
             String name = ((Nameable)fromActor).getFullName();
 
-            DTActor dtFromActor = (DTActor) allActorsTable.get(fromActor);
+            DTActor dtFromActor = (DTActor) _allActorsTable.get(fromActor);
             
             if (dtFromActor != null) {
                 if (dtFromActor.shouldGenerateInitialTokens) {
                     int numberInitialTokens = currentScheduler.getTokenInitProduction(currentPort);
-                    debug.println(currentPort.getType());
-                    debug.prompt(dtFromActor.actor+" # of init tokens "+ numberInitialTokens);
+                    debug.prompt("initial port "+currentPort.getType());
                     for(int j=0;j<outrate;j++) {
                         // FIXME:  should check what token basetype 
                         // for the port and generate such.
@@ -365,60 +306,141 @@ public class DTDirector extends SDFDirector {
                 }
             }
         }
-        debug.println("--------------END---------------------\n");
-    	debug.println("---->DTDirector end: initialize");
+        _displayActorTable();
+        _displayArcReceiverTable();
     }
     
-
-  
-    /** Set the current time of the model under this director.
-     *  It is okay to set the time back to past for DT.
+    
+    /** Reset the internal cache containing a list of actors and 
+     *  receivers directed by this director. 
+     */
+    public void invalidateSchedule() {
+        _receiverTable = new ArrayList();
+        super.invalidateSchedule();
+    }
+    
+    /** Return a new receiver consistent with the DT domain.
+     *  This function is called when a connection between an output port
+     *  of an actor and an input port of another actor is made in Vergil.
+     *  This function is also called during the preinitialize() stage of
+     *  a toplevel director.  This function may also be called prior to
+     *  the preinitialize() stage of a non-toplevel director.
+     *  
+     *  @return A new DTReceiver.
+     */
+    public Receiver newReceiver() {
+    
+        DTReceiver currentReceiver = new DTReceiver();
+        _receiverTable.add(currentReceiver);
+        return currentReceiver;
+    }
+    
+    
+    /** Set current time to zero, invoke the preinitialize() methods of
+     *  all actors deeply contained by the container. 
+     *  This method should be invoked once per execution, before any
+     *  iteration; i.e. every time the GO button is pressed.
+     *  This method is <i>not</i> synchronized on the workspace, so the
+     *  caller should be.
      *
-     *  @param newTime The new current simulation time.
+     *  @exception IllegalActionException if the preinitialize() method 
+     *   of the container or one of the deeply contained actors throws it.
+     */
+    public void preinitialize() throws IllegalActionException {
+        _currentTime = 0.0;
+        _lastPrefireTime = 0.0;
+        
+        // FIXME:  creating a new ArrayList() may not be the way to go
+        //         for hierarchical topologies.  Maybe this should be 
+        //         moved to wrapup()
+        // FIXME:  receiverTable reset is currently put here because
+        //         Vergil calls newReceiver() when you connect actors
+        super.preinitialize();
+    }
+    
+    
+    /** Request outside director to fire this director's container
+     *  again for the next period.  
+     * @return true if the Director wants to be fired again in the
+     *  future.
+     */
+    public boolean postfire() throws IllegalActionException {
+        boolean returnValue = super.postfire();
+        
+        double timeIncrement = getPeriod();
+        _requestRefireAt(_lastPrefireTime + timeIncrement);
+        return returnValue;
+    }
+
+      
+    /** Set the current time of the model under this director.
+     *  Setting the time back to the past is allowed in DT.
+=     *  @param newTime The new current simulation time.
      */
     public void setCurrentTime(double newTime) {
         _currentTime = newTime;
     }
     
+
     
-    /** 
-     *
-     *  @exception IllegalActionException
-     */
+   /** Clear-up cached tables in the DTDirector so that
+    *  next execution can start fresh.
+    *  @exception IllegalActionException
+    */
     public void wrapup() throws IllegalActionException {
         super.wrapup();
-        receiverTable = new ArrayList();
+        _receiverTable = new ArrayList();
     }
+
 
 
 
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-
-    /**
-     */
-    protected void requestRefireAt(double time) throws IllegalActionException {
-        TypedCompositeActor container = (TypedCompositeActor) getContainer();
-        Director outsideDirector = container.getExecutiveDirector();
-        
-        if (outsideDirector != null) {
-            outsideDirector.fireAt(container,time);   
-        }
-    }
-
-   
-
-    /** Initialize the object.   In this case, we give the SDFDirector a
-     *  default scheduler of the class SDFScheduler.
-     */
+    ////                        protected methods                  ////
     
+    /**
+     *
+     * @param a The actor whose firing count is needed
+     * @exception InternalErrorException If actor has zero firing count
+     *
+     *
+     */
+    protected final int getRepeats(Actor a) {
+        ListIterator actorIterator = _actorTable.listIterator();
+        int repeats = 0;
+        
+        foundRepeatValue:
+        while(actorIterator.hasNext()) {
+            DTActor currentActor = (DTActor) actorIterator.next();
+            if (a.equals(currentActor.actor)) {
+                repeats = currentActor.repeats;
+                break foundRepeatValue;
+            }
+        }
+        
+        if (repeats == 0) {
+            throw new InternalErrorException(
+                      "internal DT error: actor with zero firing count");
+        }
+    	return repeats;
+    }
+    
+
+    
+    
+
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+
     /** Create an actor table that caches all the actors directed by this
      *  director.  This method is called once at initialize();
      *  @exception IllegalActionException If the scheduler is null or if
      *  the methods invoked throw it.
      */
-    private void buildActorTable() throws IllegalActionException {
+    private void _buildActorTable() throws IllegalActionException {
         Scheduler currentScheduler = getScheduler();
         if (currentScheduler== null) 
             throw new IllegalActionException("Attempted to fire " +
@@ -426,17 +448,15 @@ public class DTDirector extends SDFDirector {
         Enumeration allActorsScheduled = currentScheduler.schedule();
         
         
-        debug.println("\nthis is the schedule");
         int actorsInSchedule = 0;                    
         while (allActorsScheduled.hasMoreElements()) {
             Actor actor = (Actor) allActorsScheduled.nextElement();
             String name = ((Nameable)actor).getFullName();
-            debug.println("~~~~~~~~~~~~~~~~~~~~~~~~~"+name);
-            DTActor dtActor = (DTActor) allActorsTable.get(actor);
+            DTActor dtActor = (DTActor) _allActorsTable.get(actor);
             if (dtActor==null) {
-              allActorsTable.put(actor, new DTActor(actor));
-              dtActor = (DTActor) allActorsTable.get(actor);
-              actorTable.add(dtActor);
+              _allActorsTable.put(actor, new DTActor(actor));
+              dtActor = (DTActor) _allActorsTable.get(actor);
+              _actorTable.add(dtActor);
             }
             dtActor.repeats++;
             actorsInSchedule++;
@@ -444,83 +464,30 @@ public class DTDirector extends SDFDirector {
         
         String name = getContainer().getFullName();
         Actor actor = (Actor) getContainer();
-        debug.println("Composite Container ~~~~~~~"+name);
-        debug.println("\n");
-        allActorsTable.put(actor, new DTActor((Actor)getContainer()));
-        DTActor  dtActor = (DTActor) allActorsTable.get(actor);
+        _allActorsTable.put(actor, new DTActor((Actor)getContainer()));
+        DTActor  dtActor = (DTActor) _allActorsTable.get(actor);
         dtActor.repeats = 1;
-        actorTable.add(dtActor);
+        _actorTable.add(dtActor);
         
-        displayActorTable();
-        ListIterator receiverIterator = receiverTable.listIterator();
+        _displayActorTable();
+        ListIterator receiverIterator = _receiverTable.listIterator();
         while(receiverIterator.hasNext()) {
             DTReceiver currentReceiver = (DTReceiver) receiverIterator.next();
-            currentReceiver.resyncLocalTime(getCurrentTime());
             currentReceiver.determineEnds(this);
         }
         
-        receiverIterator = receiverTable.listIterator();
+        receiverIterator = _receiverTable.listIterator();
         
         while(receiverIterator.hasNext()) {
     	   DTReceiver currentReceiver = (DTReceiver) receiverIterator.next();
-    	   currentReceiver.calculateArcSamplingRate();
+    	   currentReceiver.calculateDeltaT();
         }
         
         
-        debug.println("DTDirector schedule has "+actorsInSchedule+" entities");
-        displayActorTable();
-        displayArcReceiverTable();
-    }
-    
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-    
-    protected final int getRepeats(Actor a) {
-        ListIterator actorIterator = actorTable.listIterator();
-        
-        while(actorIterator.hasNext()) {
-            DTActor currentActor = (DTActor) actorIterator.next();
-            if (a.equals(currentActor.actor)) {
-                return currentActor.repeats;
-            }
-        }
-        
-        // fixme: this should be a throw an exception location, but for now I will
-        // use a pop-up window for debugging
-        debug.prompt("warning should not reach this in getRepeats():  actor name is "+a);
-    	return 0;
-    }
-    
-    
-    
-    /** Get the time increment per iteration.
-     *  This is a convenience method for getting the period parameter.
-     *
-     *  @return The value of the period parameter.
-     *  @exception IllegalActionException If the period parameter is
-     *  is not of type DoubleToken or IntToken.
-     */
-    public double getPeriod() throws IllegalActionException {
-        Token token;
-        	
-        token = period.getToken();
-        double periodValue = 0.0;
-        
-        if (token instanceof DoubleToken) {
-            periodValue = ((DoubleToken) token).doubleValue();
-        } else if (token instanceof IntToken) {
-            periodValue = (double) ((IntToken) token).intValue();
-        } else {
-            throw new IllegalActionException(
-                      "Illegal period parameter value");
-        }
-        
-        return periodValue;
+        _displayActorTable();
+        _displayArcReceiverTable();
     }
 
-    
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
 
     /** For debugging purposes.  Display the list of contained actors
      *  and other pertinent information about them.
@@ -528,18 +495,21 @@ public class DTDirector extends SDFDirector {
      *  @exception IllegalActionException if there is a problem in 
      *   obtaining the number of initial token for delay actors
      */
-    private void displayActorTable() throws IllegalActionException {
-         debug.println("\nACTOR TABLE with "+actorTable.size()+" unique actors");
+    private void _displayActorTable() throws IllegalActionException {
+         debug.println("\nACTOR TABLE with "+_actorTable.size()+" unique actors");
          debug.println("---------------------------------------");
-         ListIterator actorIterator = actorTable.listIterator();
+         ListIterator actorIterator = _actorTable.listIterator();
          while(actorIterator.hasNext()) {
             DTActor currentActor = (DTActor) actorIterator.next();
             String actorName = ((Nameable) currentActor.actor).getName();
             
-            debug.print(actorName+" repeats:"+currentActor.repeats+" initial_tokens? "+currentActor.shouldGenerateInitialTokens);
+            debug.print(actorName+" repeats:"+currentActor.repeats);
+            debug.print(" initial_tokens? "+currentActor.shouldGenerateInitialTokens);
             
             if (currentActor.actor instanceof Delay) {
-                int delayCount = ((MatrixToken)((Delay)currentActor.actor).initialOutputs.getToken()).getColumnCount();
+                Delay delay = (Delay) currentActor.actor;
+                MatrixToken initialTokens = (MatrixToken)delay.initialOutputs.getToken();
+                int delayCount = initialTokens.getColumnCount();
                 
                 debug.print(" **DELAY** with "+delayCount+" initial tokens");
             }
@@ -548,51 +518,102 @@ public class DTDirector extends SDFDirector {
                 debug.print(" **COMPOSITE** ");
             }
             debug.println(" ");
-            displayAttributesList((NamedObj)currentActor.actor);
          }
     }
     
     /** For debugging purposes.  Display the list of contained receivers
      *  and other pertinent information about them.
      */
-    private void displayArcReceiverTable() { 
-        System.out.println("\nARC RECEIVER table with "+receiverTable.size()+" unique receivers");
+    private void _displayArcReceiverTable() { 
+        debug.print("\nARC RECEIVER table with "+_receiverTable.size());
+        debug.println(" unique receivers");
         
-        ListIterator receiverIterator = receiverTable.listIterator();
+        ListIterator receiverIterator = _receiverTable.listIterator();
         
         while(receiverIterator.hasNext()) {
             DTReceiver currentReceiver = (DTReceiver) receiverIterator.next();
-        
-            String fromString;
-            String toString;
-          
-            //displayAttributesList(currentReceiver.getContainer());
-            if (currentReceiver.from==null) {
-                  fromString="0";
-            } else {
-                  fromString=((Nameable)currentReceiver.from).getName();
-            }
-          
-            if (currentReceiver.to==null) {
-                  toString="0";
-            } else {
-                  toString=((Nameable)currentReceiver.to).getName();
-            }
-          
-            System.out.println(fromString+" "+toString+" "+currentReceiver._deltaT);
-          //System.out.println("extra "+receiverTable[i].fromPort+" "+receiverTable[i].toPort);
+            currentReceiver.displayReceiverInfo();
         }
-        System.out.println("\n");
+        debug.println("\n");
+    }
+ 
+   /** For debugging purposes.  Display the list of attributes
+     *  inside a given named object
+     *  @param obj The named object that has a list of attributes
+     */
+    private void _displayAttributesList(NamedObj obj)
+    {
+    	List list = obj.attributeList();
+    	Iterator listIterator = list.iterator();
+    	
+    	debug.println("attribute List:");
+    	while(listIterator.hasNext()) {
+    	    Attribute attribute = (Attribute) listIterator.next();
+    	    debug.println(attribute);
+    	}
+    }
+ 
+ 
+    /** For debugging purposes.  Display the list of contained entities
+     *  inside the composite object
+     *  @param obj The composite entity with a list of contained entities.
+     */
+    private void _displayEntityList(CompositeEntity obj) {
+    
+        List list = obj.entityList();
+    	Iterator listIterator = list.iterator();
+    	
+    	debug.println("\nentity List:");
+    	while(listIterator.hasNext()) {
+    	    Entity entity = (Entity) listIterator.next();
+    	    debug.println(entity);
+    	}
+    	debug.println("\n");
+    }
+
+    
+    /** Convenience method for asking the executive director to fire this
+     *  director's container again at a specific time in the future.
+     *  @param time The time when this director's container should be fired
+     *  @exception IllegalActionException If getting the container or 
+     *  executive director fails
+     */
+    private void _requestRefireAt(double time) throws IllegalActionException {
+        TypedCompositeActor container = (TypedCompositeActor) getContainer();
+        Director outsideDirector = container.getExecutiveDirector();
+        
+        if (outsideDirector != null) {
+            outsideDirector.fireAt(container,time);   
+        }
     }
     
-    /** 
+    /** Convenience method for getting the director of container that 
+     *  contains this director.  If this director in the toplevel, then
+     *  returned value is null.
+     *  @returns The executive director
      */
-    private int getTokenConsumptionRate(IOPort ioport) throws IllegalActionException {
+    private Director _getOutsideDirector() {
+        TypedCompositeActor container = (TypedCompositeActor) getContainer();
+        Director outsideDirector = container.getExecutiveDirector();
+        
+        return outsideDirector;
+    }
+
+    
+    /** Convenience method for getting the token consumption rate of a 
+     *  specified port. If the port does not have the attribute 
+     *  "tokenConsumptionRate" then return a rate of 1.
+     *  @param ioport The port to be queried
+     *  @returns The token consumption rate of the port.
+     *  @exception IllegalActionException If getting an attribute from
+     *  this port fails.
+     */
+    private int _getTokenConsumptionRate(IOPort ioport) throws IllegalActionException {
         int rate;
         Parameter param = (Parameter) ioport.getAttribute("tokenConsumptionRate");
     	if (param != null) {
             rate = ((IntToken)param.getToken()).intValue();
-        } else rate = 0;
+        } else rate = 1;
         
         return rate;
     }
@@ -608,10 +629,10 @@ public class DTDirector extends SDFDirector {
     private void _init() {
     	try {
             period = new Parameter(this,"period",new DoubleToken(1.0));
-            actorTable = new ArrayList();
-            receiverTable = new ArrayList();
-            iterations.setToken(new IntToken(30000));
-            debug = new DTDebug(false);
+            _actorTable = new ArrayList();
+            _receiverTable = new ArrayList();
+            iterations.setToken(new IntToken(0));
+            debug = new DTDebug(true);
     	} catch (Exception e) {
     	    throw new InternalErrorException(
                     "unable to initialize DT Director:\n" +
@@ -619,37 +640,7 @@ public class DTDirector extends SDFDirector {
     	}
     }
     
-    /** For debugging purposes.  Display the list of contained entities
-     *  inside the composite object
-     */
-    private void displayEntityList(CompositeEntity obj) {
-    
-        List list = obj.entityList();
-    	Iterator listIterator = list.iterator();
-    	
-    	debug.println("\nentity List:");
-    	while(listIterator.hasNext()) {
-    	    Entity entity = (Entity) listIterator.next();
-    	    debug.println(entity);
-    	}
-    	debug.println("\n");
-    }
-
-    /** For debugging purposes.  Display the list of attributes
-     *  inside a given named object
-     */
-    private void displayAttributesList(NamedObj obj)
-    {
-    	List list = obj.attributeList();
-    	Iterator listIterator = list.iterator();
-    	
-    	debug.println("attribute List:");
-    	while(listIterator.hasNext()) {
-    	    Attribute attribute = (Attribute) listIterator.next();
-    	    debug.println(attribute);
-    	}
-    }
-    
+       
     
     
     
@@ -657,17 +648,23 @@ public class DTDirector extends SDFDirector {
     ////                         private variables                 ////
     
     // ArrayList to keep track of all actors scheduled by DTDirector
-    //   also used to keep track of the # of repetitions of each actor in the schedule
-    //   also used to keep track of which actor should generate initial tokens
-    private ArrayList actorTable;
+    //   also used to keep track of the firing count of each actor
+    //        in the schedule
+    //   also used to keep track of which actor should generate 
+    //        initial tokens
+    private ArrayList _actorTable;
     
     // ArrayList used to cache all receivers managed by DTDirector
-    private ArrayList receiverTable;
-    private Hashtable allActorsTable;
-    private double _lastPrefireTime;
-    private Director _executiveDirector;
-    private DTDebug debug;
+    private ArrayList _receiverTable;
     
+    // Hashtable for keeping track of actor information
+    private Hashtable _allActorsTable;
+    
+    // time since the last prefire() call
+    private double _lastPrefireTime;
+    
+    // display for debugging purposes
+    private DTDebug debug;
     
     
     ///////////////////////////////////////////////////////////////////
@@ -678,8 +675,9 @@ public class DTDirector extends SDFDirector {
     	private Actor    actor;
     	private int      repeats;
         private boolean  shouldGenerateInitialTokens;
-    	
+   
     	/* Construct the information on the contained Actor
+    	 * @param a The actor  
     	 */	
     	public DTActor(Actor a) {
     		actor = a;
@@ -687,5 +685,4 @@ public class DTDirector extends SDFDirector {
             shouldGenerateInitialTokens = false;
     	}
     }
-    
 }
