@@ -39,6 +39,7 @@ import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
+import ptolemy.util.StringUtilities;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -158,7 +159,10 @@ public class NonStrictTest extends Transformer {
     }
 
     /** Override the base class to set the iteration counter to zero.
-     *  @exception IllegalActionException If the base class throws it.
+     *  @exception IllegalActionException If the base class throws it or
+     *  if we are running under the test suite and the trainingMode
+     *  parameter is set to true.
+     *  @see #isRunningNightlyBuild()
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
@@ -166,12 +170,25 @@ public class NonStrictTest extends Transformer {
         _iteration = 0;
         _trainingTokens = null;
         if(((BooleanToken)trainingMode.getToken()).booleanValue() &&
-                NonStrictTest.IN_NIGHTLY_BUILD) {
+                isRunningNightlyBuild()) {
             throw new IllegalActionException(this,
-                    "Training Mode set for test actor.  This flag " +
-                    "should not be set in files that are checked into " +
-                    "the nightly build!");
+                    TRAINING_MODE_ERROR_MESSAGE);
+        } 
+    }
+
+    /** If the trainingMode parameter is true and the
+     *  model is being run as part of the test suite, then throw an exception.
+     *  This method merely checks to see if
+     *  "ptolemy.ptII.isRunningNightlyBuild" property exists and is not empty.
+
+     */   
+    public static boolean isRunningNightlyBuild() {
+        if (StringUtilities
+                .getProperty("ptolemy.ptII.isRunningNightlyBuild")
+                .length() > 0) {
+            return true;
         }
+        return false;
     }
 
     /** Read one token from each input channel and compare against
@@ -256,9 +273,14 @@ public class NonStrictTest extends Transformer {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                          public variables                 ////
+    ////                         public variables                  ////
 
-    public static boolean IN_NIGHTLY_BUILD = false;
+    public static String TRAINING_MODE_ERROR_MESSAGE =
+        "Training Mode set for test actor and isRunningNightlyBuild()\n"
+        + "  returned true, indicating that the\n" 
+        + "  ptolemy.ptII.isRunningNightlyBuild property is set.\n" 
+        + "  The trainingMode parameter should not be set in files\n"
+        + "  that are checked into the nightly build!";
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////

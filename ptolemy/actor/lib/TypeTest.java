@@ -199,12 +199,11 @@ public class TypeTest extends Discard {
                             new Token[parameterAssignments.size()]));
 
                 
+
         if(((BooleanToken)trainingMode.getToken()).booleanValue()) {
-            if(NonStrictTest.IN_NIGHTLY_BUILD) {
+            if(NonStrictTest.isRunningNightlyBuild()) {
                 throw new IllegalActionException(this,
-                        "Training Mode set for test actor.  This flag " +
-                        "should not be set in files that are checked into " +
-                        "the nightly build!");
+                        NonStrictTest.TRAINING_MODE_ERROR_MESSAGE);
             }
             portTypes.setToken(actualPortTypes);
             parameterTypes.setToken(actualParameterTypes);
