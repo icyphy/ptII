@@ -123,8 +123,8 @@ test FreeVariableModelAnalysis-1.4 {} {
     set analysis [java::new ptolemy.copernicus.java.FreeVariableModelAnalysis]
     set result [$analysis analyzeFreeVariables $e0]
     list [listToObjects $result] \
-	[listToObjects [$analysis getFreeVariables $ramp]]
-} {a {p1 p0}}
+	[lsort [listToObjects [$analysis getFreeVariables $ramp]]]
+} {a {p0 p1}}
 
 
 test FreeVariableModelAnalysis-1.5 {} {
@@ -141,9 +141,10 @@ test FreeVariableModelAnalysis-1.5 {} {
 
     set analysis [java::new ptolemy.copernicus.java.FreeVariableModelAnalysis]
     set result [$analysis analyzeFreeVariables $e0]
+    # use lsort so the test passes under both Solaris and Windows
     list [listToObjects $result] \
-	[listToObjects [$analysis getFreeVariables $ramp]]
-} {a {a p1 p0}}
+	[lsort [listToObjects [$analysis getFreeVariables $ramp]]]
+} {a {a p0 p1}}
 
 test FreeVariableModelAnalysis-1.6 {Note... not a correct model (circular dependancy)} {
     set e0 [java::new ptolemy.actor.TypedCompositeActor]
@@ -160,8 +161,8 @@ test FreeVariableModelAnalysis-1.6 {Note... not a correct model (circular depend
     set analysis [java::new ptolemy.copernicus.java.FreeVariableModelAnalysis]
     set result [$analysis analyzeFreeVariables $e0]
     list [listToObjects $result] \
-	[listToObjects [$analysis getFreeVariables $ramp]]
-} {a {a p1 p0}}
+	[lsort [listToObjects [$analysis getFreeVariables $ramp]]]
+} {a {a p0 p1}}
 
 test FreeVariableModelAnalysis-1.7 {} {
     set e0 [java::new ptolemy.actor.TypedCompositeActor]
@@ -177,6 +178,6 @@ test FreeVariableModelAnalysis-1.7 {} {
 
     set analysis [java::new ptolemy.copernicus.java.FreeVariableModelAnalysis]
     set result [$analysis analyzeFreeVariables $e0]
-    list [listToObjects $result] \
-	[listToObjects [$analysis getFreeVariables $ramp]]
-} {{a p1 p0} {a p1}}
+    list [lsort [listToObjects $result]] \
+	[lsort [listToObjects [$analysis getFreeVariables $ramp]]]
+} {{a p0 p1} {a p1}}
