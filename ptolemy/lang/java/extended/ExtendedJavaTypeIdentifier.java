@@ -176,7 +176,13 @@ public class ExtendedJavaTypeIdentifier extends TypeIdentifier {
     public static final TypeNameNode FIX_POINT_TYPE =
     PtolemyTypeIdentifier.FIX_POINT_TYPE;
 
-    static {
+     ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    // Set to true to turn on debugging messages.
+    protected final static boolean _debug = false;
+
+   static {
         if (_debug) {
             System.out.println("ExtendedJavaTypeIdentifier public static final fields");
             System.out.println("TYPE_KIND_COMPLEX: " + TYPE_KIND_COMPLEX);
@@ -215,10 +221,5 @@ public class ExtendedJavaTypeIdentifier extends TypeIdentifier {
             System.out.println("FIX_POINT_TYPE: " + FIX_POINT_TYPE);
         }
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-
-    // Set to true to turn on debugging messages.
-    protected final static boolean _debug = false;
 }
+
