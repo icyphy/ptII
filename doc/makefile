@@ -219,6 +219,8 @@ HYVISUALPACKAGES = \
 			ptolemy.vergil.fsm.modal
 
 
+
+
 # Currently, there are no .java files in fsm.lib
 #			ptolemy.domains.fsm.lib
 
@@ -238,6 +240,13 @@ THALESPACKAGES = \
 	thales.vergil \
 	thales.vergil.navigable
 
+# Packages used by VisualSense
+VISUALSENSEPACKAGES = \
+			ptolemy.domains.wireless.kernel \
+			ptolemy.domains.wireless.lib \
+			ptolemy.domains.wireless.lib.network \
+			ptolemy.domains.wireless.lib.network.mac
+
 ALLPACKAGES =		$(COMPACKAGES) \
 			$(COPERNICUSPACKAGES) \
 			$(DIVAPACKAGES) \
@@ -251,6 +260,7 @@ ALLPACKAGES =		$(COMPACKAGES) \
 			$(PTX10_PACKAGES) \
 			$(SUPERBPACKAGES) \
 			$(THALESPACKAGES) \
+			$(VISUALSENSEPACKAGES) \
 			jni \
 			ptolemy.plot \
 			ptolemy.plot.plotml \
@@ -294,10 +304,6 @@ ALLPACKAGES =		$(COMPACKAGES) \
 			ptolemy.domains.sr.lib \
 			ptolemy.domains.tm.kernel \
 			ptolemy.domains.tm.lib \
-			ptolemy.domains.wireless.kernel \
-			ptolemy.domains.wireless.lib \
-			ptolemy.domains.wireless.lib.network \
-			ptolemy.domains.wireless.lib.network.mac \
 			ptolemy.data \
 			ptolemy.data.expr \
 			ptolemy.data.type \
@@ -324,9 +330,10 @@ ALLPACKAGES =		$(COMPACKAGES) \
 			util.testsuite
 
 all: suball whatsnew.htm whatsnewVergil.htm \
-	codeDoc/tree.html codeDocHyVisual/doc/codeDoc/tree.html
+	codeDoc/tree.html codeDocHyVisual/doc/codeDoc/tree.html \
+	codeDocVisualSense/doc/codeDoc/tree.html
 
-install: all jars codeDoc.jar codeDocHyVisual.jar
+install: all jars codeDoc.jar codeDocHyVisual.jar codeDocVisualSense.jar
 
 codeDoc.jar:
 	"$(JAR)" -cvf $@ -C $(ROOT) doc/codeDoc
@@ -528,6 +535,26 @@ doccheck/index.html:
 			$(JDOCCHECKFLAGS) \
 			$(JDOCCHECKDOCLET) \
 			-d doc/doccheck $(ALLPACKAGES) )
+
+# Note that we change into the codeDocVisualSense directory
+
+# so that the jar file is created with a subset of the full set of docs
+# so that we can use this smaller jar file instead of the full codeDoc.jar
+codeDocVisualSense.jar: codeDocVisualSense/doc/codeDoc/tree.html
+	"$(JAR)" -cvf $@ -C $(ROOT)/doc/codeDocVisualSense doc/codeDoc
+
+# We do something crafty here and create a tree of html files
+# that we can substitute in for the usual doc/codeDoc tree in the
+# VisualSense webstart
+codeDocVisualSense/doc/codeDoc/tree.html:
+	if [ ! -d codeDocVisualSense ]; then mkdir -p codeDocVisualSense; fi
+	@echo "If this fails because of memory problems, try"
+	@echo 'make JDOCFLAGS="-author -version -J-Xmx132m"'
+	-(cd ..; CLASSPATH="$(CLASSPATH)" "$(JAVADOC)" $(JDOCFLAGS) -d doc/codeDocVisualSense/doc/codeDoc $(VISUALSENSEPACKAGES) $(PTINYPACKAGES))
+	@echo "Removing the asd lines so that they are not displayed by"
+	@echo " view documentation"
+	-chmod a+x removeasd
+	./removeasd codeDocVisualSense
 
 
 # We don't include common.mk since we don't use the compiler here
