@@ -68,7 +68,7 @@ and this class specializes the base class for Ptolemy II.
 @version $Id$
 @since Ptolemy II 1.0
 */
-public abstract class TableauFrame extends Top {
+public class TableauFrame extends Top {
 
     /** Construct an empty top-level frame.
      *  After constructing this, it is necessary
