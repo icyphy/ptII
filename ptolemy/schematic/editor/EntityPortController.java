@@ -82,10 +82,27 @@ public class EntityPortController extends NodeController {
 
     public class EntityPortRenderer implements NodeRenderer {
 	public Figure render(Node n) {
-	    StraightTerminal figure = new StraightTerminal();
-	    //figure.setEnd(new Blob());
+            Port port = (Port) n.getSemanticObject();
+            StraightTerminal figure = new StraightTerminal();
+            ConnectorEnd end = null;
+            if(port instanceof IOPort) {
+                IOPort ioport = (IOPort) port;
+                if(ioport.isInput() || ioport.isOutput()) {
+                    end = new Arrowhead();
+                    if(ioport.isOutput())
+                        ((Arrowhead)end).setFlipped(true);                
+                } else {
+                    // FIXME something else
+                    end = new Blob();
+                }
+            } else {                
+                end = new Blob();
+            }
+
+	    figure.setEnd(end);
 	    //Figure figure = new BasicRectangle(-2, -2, 4, 4, Color.black);
-	    figure.setUserObject(n);
+	    
+            figure.setUserObject(n);
 	    n.setVisualObject(figure);
 	    return figure;
 	}

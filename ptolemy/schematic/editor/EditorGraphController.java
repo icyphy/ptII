@@ -1,4 +1,4 @@
-/* The graph controller for the ptolemy schematic editor
+ /* The graph controller for the ptolemy schematic editor
 
  Copyright (c) 1998-1999 The Regents of the University of California.
  All rights reserved.
@@ -49,6 +49,7 @@ import diva.canvas.toolbox.*;
 import java.awt.geom.Rectangle2D;
 import diva.util.Filter;
 import java.awt.*;
+import diva.util.java2d.Polygon2D;
 import java.awt.event.InputEvent;
 import java.awt.event.ActionEvent;
 import java.util.HashMap;
@@ -563,37 +564,62 @@ public class EditorGraphController extends GraphController {
 
     public class RelationRenderer implements NodeRenderer {
 	public Figure render(Node n) {
-	    Figure figure = new BasicRectangle(-4, -4, 8, 8, Color.black);
-	    figure.setUserObject(n);
+            double h = 12.0;            
+            double w = 12.0;
+
+            Polygon2D.Double polygon = new Polygon2D.Double();
+            polygon.moveTo(w/2, 0);
+            polygon.lineTo(0, h/2);
+            polygon.lineTo(-w/2, 0);
+            polygon.lineTo(0, -h/2);
+            polygon.closePath();
+            //	    Figure figure = new BasicRectangle(-4, -4, 8, 8, Color.black);
+	    Figure figure = new BasicFigure(polygon, Color.black);
+            figure.setUserObject(n);
 	    n.setVisualObject(figure);
 	    return figure;
 	}
     }
-
+    
+    // FIXME this should be PerimeterTarget, but it doesn't support non-
+    // rectangular shapes yet.
+    public class LinkTarget extends CenterTarget {
+        public boolean accept (Figure f) {
+            Object object = f.getUserObject();
+            if(object instanceof Node) {
+                Node node = (Node) object;
+                object = node.getSemanticObject();
+                if(object instanceof Port) return true;
+                if(object instanceof Vertex) return true;
+            }
+            return false;
+        }
+        
+        public Site getHeadSite (Figure f, double x, double y) {
+            if(f instanceof Terminal) {
+                return ((Terminal)f).getConnectSite();
+            } else {
+                return super.getHeadSite(f, x, y);
+            }
+        }        
+        ConnectorTarget _vertexTarget;
+    }
+                
     public class LinkController extends EdgeController {
 	public LinkController(GraphController controller) {
 	    super(controller);
 	    // Create and set up the target for connectors
 	    // This is wierd...  we want 2 targets, one for head and port, 
 	    // one for tail and vertex.
-	    ConnectorTarget ct = new PerimeterTarget() {
-		public boolean accept (Figure f) {
-		    Object object = f.getUserObject();
-		    if(object instanceof Node) {
-			Node node = (Node) object;
-			object = node.getSemanticObject();
-			if(object instanceof Port) return true;
-			if(object instanceof Vertex) return true;
-		    }
-		    return false;
-		}
-	    };
-        
+	    ConnectorTarget ct = new LinkTarget();
+
+            setEdgeRenderer(new LinkRenderer());
+
 	    // Create and set up the manipulator for connectors
-	    BasicSelectionRenderer renderer = (BasicSelectionRenderer)
+	    BasicSelectionRenderer selectionRenderer = (BasicSelectionRenderer)
 		getEdgeInteractor().getSelectionRenderer();
 	    ConnectorManipulator manipulator = (ConnectorManipulator) 
-		renderer.getDecorator();
+		selectionRenderer.getDecorator();
 	    manipulator.setConnectorTarget(ct);
 	    //	    manipulator.addConnectorListener(new EdgeDropper());
 	    //getEdgeInteractor().setPrototypeDecorator(manipulator);
@@ -625,6 +651,23 @@ public class EditorGraphController extends GraphController {
 			  e.getX(), e.getY());
 	    }
 	}
+    }
+    
+    public class LinkRenderer implements EdgeRenderer {
+        /**
+         * Render a visual representation of the given edge.
+         */
+        public Connector render(Edge edge, Site tailSite, Site headSite) {
+            StraightConnector c = new StraightConnector(tailSite, headSite);
+            c.setUserObject(edge);
+            //            Arrowhead arrow = new Arrowhead(
+            //        headSite.getX(), headSite.getY(), headSite.getNormal());
+            //c.setHeadEnd(arrow);
+            // Add to the view and model
+            c.setUserObject(edge);
+            edge.setVisualObject(c);
+            return c;
+        }
     }
 
     public String createUniqueName(String root) {
