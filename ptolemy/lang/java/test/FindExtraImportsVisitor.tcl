@@ -67,8 +67,8 @@ test FindExtraImportsVisitor-1.1 {} {
 #	    [java::new ptolemy.lang.java.FindExtraImportsVisitor true]
 #    set iVisitor [java::cast ptolemy.lang.IVisitor $findExtraImportsVisitor]
 #    $ast accept $iVisitor [java::null]
-    list [$ast toString]
-} {{ {CompileUnitNode { 
+    lcompare [$ast toString] \
+{ {CompileUnitNode { 
   {DefTypes { 
    {ClassDeclNode { 
     {Interfaces  {}} 
@@ -143,4 +143,4 @@ test FindExtraImportsVisitor-1.1 {} {
                               }}} 
                   }}} 
       }}} 
-}}}}
+}   }   }   }  {1}
