@@ -224,7 +224,7 @@ public class SDFDirector extends StaticSchedulingDirector {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == allowDisconnectedGraphs
-            || attribute == vectorizationFactor ) {
+                || attribute == vectorizationFactor ) {
             invalidateSchedule();
         }
         super.attributeChanged(attribute);
@@ -246,7 +246,7 @@ public class SDFDirector extends StaticSchedulingDirector {
 
         CompositeActor container = (CompositeActor)getContainer();
         for (Iterator ports = container.outputPortList().iterator();
-            ports.hasNext();) {
+             ports.hasNext();) {
             IOPort port = (IOPort)ports.next();
 
             // Create external initial production.
@@ -411,17 +411,17 @@ public class SDFDirector extends StaticSchedulingDirector {
                         if (port.hasToken(i)) {
                             Token t = port.get(i);
                             if (_debugging) _debug(getName(),
-                                   "transferring input from "
-                                   + getName());
-                                   port.sendInside(i, t);
+                                    "transferring input from "
+                                    + getName());
+                            port.sendInside(i, t);
                             wasTransferred = true;
                         } else {
                             throw new IllegalActionException(this, port,
-                                   "Port should consume "
-                                   + rate
-                                   + " tokens, but there were only "
-                                   + k
-                                   + " tokens available.");
+                                    "Port should consume "
+                                    + rate
+                                    + " tokens, but there were only "
+                                    + k
+                                    + " tokens available.");
                         }
                     }
                 } else {
@@ -506,7 +506,7 @@ public class SDFDirector extends StaticSchedulingDirector {
     private void _init()
             throws IllegalActionException, NameDuplicationException {
         SDFScheduler scheduler =
-                new SDFScheduler(this, uniqueName("Scheduler"));
+            new SDFScheduler(this, uniqueName("Scheduler"));
 
         allowDisconnectedGraphs = new Parameter(this,
                 "allowDisconnectedGraphs", new BooleanToken(false));
@@ -515,7 +515,7 @@ public class SDFDirector extends StaticSchedulingDirector {
         iterations = new Parameter(this, "iterations", new IntToken(0));
         iterations.setTypeEquals(BaseType.INT);
         vectorizationFactor =
-                new Parameter(this, "vectorizationFactor", new IntToken(1));
+            new Parameter(this, "vectorizationFactor", new IntToken(1));
         vectorizationFactor.setTypeEquals(BaseType.INT);
     }
 

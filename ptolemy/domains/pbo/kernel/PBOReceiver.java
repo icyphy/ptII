@@ -73,7 +73,7 @@ public class PBOReceiver extends AbstractReceiver {
         return _token;
     }
 
-   /** Get an array of tokens from this receiver. The <i>numberOfTokens</i>
+    /** Get an array of tokens from this receiver. The <i>numberOfTokens</i>
      *  argument specifies the number of tokens to get. In an implementation,
      *  the length of the returned array is allowed to be greater than
      *  <i>numberOfTokens</i>, in which case, only the first

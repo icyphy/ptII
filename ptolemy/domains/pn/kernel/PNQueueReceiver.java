@@ -284,7 +284,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
         if ( isConnectedToBoundary() ) {
             return true;
         }
-            return false;
+        return false;
     }
 
     /** Return true if this receiver is contained on the inside of a
@@ -324,7 +324,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
         if ( isOutsideBoundary() || isInsideBoundary() ) {
             return true;
         }
-            return false;
+        return false;
     }
 
     /** Return a true or false to indicate whether there is a read block

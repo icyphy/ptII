@@ -274,7 +274,7 @@ public class PDFDirector extends Director {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public boolean postfire() throws IllegalActionException {
-       return _postfirereturns;
+        return _postfirereturns;
     }
 
     /** Override the base class method to transfer enough tokens to
@@ -366,7 +366,7 @@ public class PDFDirector extends Director {
                                 System.out.println("transferring");
                                 ptolemy.data.Token t = insiderecs[i][j].get();
                                 if (port.getContainer().equals(initEntity) &&
-                                    port.deepConnectedPortList().size() > 0) {
+                                        port.deepConnectedPortList().size() > 0) {
                                     System.out.println("Setting");
                                     Settable settable = (Settable)attribute;
                                     settable.setExpression(t.toString());

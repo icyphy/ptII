@@ -113,7 +113,7 @@ public class PNDirector extends CompositeProcessDirector {
             throws IllegalActionException, NameDuplicationException {
         super();
         initialQueueCapacity = new Parameter(this, "initialQueueCapacity",
-                    new IntToken(1));
+                new IntToken(1));
         initialQueueCapacity.setTypeEquals(BaseType.INT);
     }
 
@@ -129,7 +129,7 @@ public class PNDirector extends CompositeProcessDirector {
             throws IllegalActionException, NameDuplicationException {
         super(workspace);
         initialQueueCapacity = new Parameter(this, "initialQueueCapacity",
-                    new IntToken(1));
+                new IntToken(1));
         initialQueueCapacity.setTypeEquals(BaseType.INT);
     }
 

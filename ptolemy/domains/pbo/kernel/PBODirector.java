@@ -209,7 +209,7 @@ public class PBODirector extends Director {
         boolean postfireReturns;
         if (executingActor.prefire()) {
             _debug("Firing actor " + ((Entity) executingActor).getFullName() +
-                   " at " + firingTime);
+                    " at " + firingTime);
             executingActor.fire();
 
             // This is the time when the actor finishes.
@@ -301,7 +301,7 @@ public class PBODirector extends Director {
                 Actor actor = (Actor) allActors.next();
                 _deadlineQueue.put(new PBOEvent(actor,
                         _getExecutionTime(actor)));
-                    _requestQueue.put(new PBOEvent(actor,
+                _requestQueue.put(new PBOEvent(actor,
                         _getExecutionPeriod(actor)));
             }
         } else {
@@ -432,7 +432,7 @@ public class PBODirector extends Director {
             (Parameter)((ComponentEntity)a).getAttribute("executionPeriod");
         if (param == null) {
             throw new IllegalActionException("Actor does not have a " +
-                "executionPeriod parameter");
+                    "executionPeriod parameter");
         }
         return ((DoubleToken)param.getToken()).doubleValue();
     }
@@ -456,7 +456,7 @@ public class PBODirector extends Director {
             (Parameter)((ComponentEntity)a).getAttribute("executionTime");
         if (param == null) {
             throw new IllegalActionException("Actor does not have an " +
-                "executionTime parameter.");
+                    "executionTime parameter.");
         }
         return ((DoubleToken)param.getToken()).doubleValue();
     }

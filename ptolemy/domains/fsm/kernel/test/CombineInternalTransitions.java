@@ -69,7 +69,7 @@ public class CombineInternalTransitions {
         // called.
         MoMLParser parser = new MoMLParser();
         InterfaceAutomaton automaton =
-                    (InterfaceAutomaton)parser.parse(url, url);
+            (InterfaceAutomaton)parser.parse(url, url);
         automaton.addPorts();
 
         automaton.combineInternalTransitions();

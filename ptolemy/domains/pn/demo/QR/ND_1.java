@@ -68,24 +68,24 @@ public class ND_1 extends TypedAtomicActor {
      */
     public ND_1(CompositeEntity aContainer, String aName)
             throws IllegalActionException, NameDuplicationException
-        {
+    {
 
-            super(aContainer, aName);
+        super(aContainer, aName);
 
-            WP_2 = new TypedIOPort(this, "WP_2", false, true);
-            WP_6 = new TypedIOPort(this, "WP_6", false, true);
+        WP_2 = new TypedIOPort(this, "WP_2", false, true);
+        WP_6 = new TypedIOPort(this, "WP_6", false, true);
 
 
-            WP_2.setTypeEquals(BaseType.DOUBLE);
-            WP_6.setTypeEquals(BaseType.DOUBLE);
+        WP_2.setTypeEquals(BaseType.DOUBLE);
+        WP_6.setTypeEquals(BaseType.DOUBLE);
 
-            // The Type of these Parameters is set by the First
-            // Token placed in the parameters when created.
-            parameter_N = new Parameter(this, "N" , new IntToken(6));
-            parameter_K = new Parameter(this, "K" , new IntToken(6));
+        // The Type of these Parameters is set by the First
+        // Token placed in the parameters when created.
+        parameter_N = new Parameter(this, "N" , new IntToken(6));
+        parameter_K = new Parameter(this, "K" , new IntToken(6));
 
-            x_1.ReadMatrix( "Zeros_64x64" );
-        }
+        x_1.ReadMatrix( "Zeros_64x64" );
+    }
 
 
     ///////////////////////////////////////////////////////////////////

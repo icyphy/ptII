@@ -68,27 +68,27 @@ public class ND_5 extends TypedAtomicActor {
      */
     public ND_5(CompositeEntity aContainer, String aName)
             throws IllegalActionException, NameDuplicationException
-        {
+    {
 
-            super(aContainer, aName);
+        super(aContainer, aName);
 
-            RP_11 = new TypedIOPort(this, "RP_11", true, false);
-            RP_12 = new TypedIOPort(this, "RP_12", true, false);
+        RP_11 = new TypedIOPort(this, "RP_11", true, false);
+        RP_12 = new TypedIOPort(this, "RP_12", true, false);
 
-            // Manually added
-            out = new TypedIOPort(this, "out0", false, true);
+        // Manually added
+        out = new TypedIOPort(this, "out0", false, true);
 
-            RP_11.setTypeEquals(BaseType.DOUBLE);
-            RP_12.setTypeEquals(BaseType.DOUBLE);
+        RP_11.setTypeEquals(BaseType.DOUBLE);
+        RP_12.setTypeEquals(BaseType.DOUBLE);
 
-            out.setTypeEquals(BaseType.DOUBLE);
+        out.setTypeEquals(BaseType.DOUBLE);
 
-            // The Type of these Parameters is set by the First
-            // Token placed in the parameters when created.
-            parameter_N = new Parameter(this, "N" , new IntToken(6));
-            parameter_K = new Parameter(this, "K" , new IntToken(6));
+        // The Type of these Parameters is set by the First
+        // Token placed in the parameters when created.
+        parameter_N = new Parameter(this, "N" , new IntToken(6));
+        parameter_K = new Parameter(this, "K" , new IntToken(6));
 
-        }
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////

@@ -110,15 +110,15 @@ public class Cylinder3D extends GRShadedShape {
         double currentHeight = ((DoubleToken)height.getToken()).doubleValue();
 
         if (currentRadius > 0.5) {
-                xDivisions = 30 * (int)(currentRadius / 0.5);
+            xDivisions = 30 * (int)(currentRadius / 0.5);
         } else {
-                xDivisions = 30;
+            xDivisions = 30;
         }
 
         if (currentHeight > 0.7) {
-                yDivisions = 10 * (int)(currentHeight / 0.7);
+            yDivisions = 10 * (int)(currentHeight / 0.7);
         } else {
-                yDivisions = 10;
+            yDivisions = 10;
         }
 
         _containedNode = new Cylinder((float) _getRadius(),

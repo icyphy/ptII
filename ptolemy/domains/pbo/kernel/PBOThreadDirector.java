@@ -214,7 +214,7 @@ public class PBOThreadDirector extends Director {
      */
     public void fire() throws IllegalActionException {
         _scheduleNew();
-         Workspace workspace = workspace();
+        Workspace workspace = workspace();
         synchronized (this) {
             while (_areActorsWaiting) {
                 workspace.wait(this);
@@ -381,7 +381,7 @@ public class PBOThreadDirector extends Director {
                 _threadMap.put(actor, thread);
                 _deadlineQueue.put(new PBOEvent(actor,
                         _getExecutionTime(actor)));
-                    _requestQueue.put(new PBOEvent(actor,
+                _requestQueue.put(new PBOEvent(actor,
                         _getExecutionPeriod(actor)));
             }
         } else {

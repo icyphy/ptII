@@ -71,7 +71,7 @@ public class DeadlockStates {
         // called.
         MoMLParser parser = new MoMLParser();
         InterfaceAutomaton automaton =
-                (InterfaceAutomaton)parser.parse(url, url);
+            (InterfaceAutomaton)parser.parse(url, url);
         automaton.addPorts();
 
         System.out.println("Deadlock states:");

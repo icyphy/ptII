@@ -237,7 +237,7 @@ public class ViewScreen extends GRActor implements Placeable {
      */
     public void initialize() throws IllegalActionException {
 
-            boolean addLights = false;
+        boolean addLights = false;
 
         super.initialize();
         if (_canvas == null) {
@@ -257,7 +257,7 @@ public class ViewScreen extends GRActor implements Placeable {
             BranchGroup branchGroup = (BranchGroup) branches.nextElement();
             if (branchGroup.getCapability(BranchGroup.ALLOW_DETACH)) {
                 if (!(branchGroup instanceof
-                            com.sun.j3d.utils.universe.ViewingPlatform)) {
+                        com.sun.j3d.utils.universe.ViewingPlatform)) {
                     _simpleUniverse.getLocale().removeBranchGraph(branchGroup);
                 }
             }
@@ -276,9 +276,9 @@ public class ViewScreen extends GRActor implements Placeable {
 
         _bounds = new BoundingSphere(new Point3d(0.0, 0.0, 0.0), 100.0);
 
-                Background backg = _makeBackground();
-                backg.setApplicationBounds(_bounds);
-                _branchRoot.addChild(backg);
+        Background backg = _makeBackground();
+        backg.setApplicationBounds(_bounds);
+        _branchRoot.addChild(backg);
 
 
         if (_isRotatable()) {
@@ -296,9 +296,9 @@ public class ViewScreen extends GRActor implements Placeable {
         }
 
         if (_isTranslatable()) {
-                MouseTranslate mouseTranslate = new MouseTranslate();
+            MouseTranslate mouseTranslate = new MouseTranslate();
             mouseTranslate.setTransformGroup(_userTransformation);
-                _userTransformation.addChild(mouseTranslate);
+            _userTransformation.addChild(mouseTranslate);
             mouseTranslate.setSchedulingBounds(_bounds);
         }
 
@@ -339,26 +339,26 @@ public class ViewScreen extends GRActor implements Placeable {
 
         // Setup the lights, if needed.
         if (addLights) {
-                BranchGroup lightRoot = new BranchGroup();
+            BranchGroup lightRoot = new BranchGroup();
 
-                AmbientLight lightA
-                    = new AmbientLight(new Color3f(0.8f, 0.8f, 0.8f));
-                lightA.setInfluencingBounds(_bounds);
-                lightRoot.addChild(lightA);
+            AmbientLight lightA
+                = new AmbientLight(new Color3f(0.8f, 0.8f, 0.8f));
+            lightA.setInfluencingBounds(_bounds);
+            lightRoot.addChild(lightA);
 
-                DirectionalLight lightD1 = new DirectionalLight();
-                lightD1.setInfluencingBounds(_bounds);
-                Vector3f direction = new Vector3f(0.0f, -1.0f, -1.0f);
-                direction.normalize();
-                lightD1.setDirection(direction);
-                lightD1.setColor(new Color3f(1.0f, 1.0f, 1.0f));
-                lightRoot.addChild(lightD1);
+            DirectionalLight lightD1 = new DirectionalLight();
+            lightD1.setInfluencingBounds(_bounds);
+            Vector3f direction = new Vector3f(0.0f, -1.0f, -1.0f);
+            direction.normalize();
+            lightD1.setDirection(direction);
+            lightD1.setColor(new Color3f(1.0f, 1.0f, 1.0f));
+            lightRoot.addChild(lightD1);
 
-                _simpleUniverse.getViewer().getView()
-                    .setLocalEyeLightingEnable(true);
-                _simpleUniverse.addBranchGraph(lightRoot);
+            _simpleUniverse.getViewer().getView()
+                .setLocalEyeLightingEnable(true);
+            _simpleUniverse.addBranchGraph(lightRoot);
 
-            }
+        }
 
 
 
@@ -450,7 +450,7 @@ public class ViewScreen extends GRActor implements Placeable {
      *  @return null
      */
     protected Node _getNodeObject() {
-         return null;
+        return null;
     }
 
     /** Makes the background for the viewScreen
@@ -460,15 +460,15 @@ public class ViewScreen extends GRActor implements Placeable {
      * parameter.
      */
     protected Background _makeBackground() throws IllegalActionException {
-            DoubleMatrixToken colorVector =
-                    (DoubleMatrixToken) backgroundColor.getToken();
-            Color3f color = new Color3f();
+        DoubleMatrixToken colorVector =
+            (DoubleMatrixToken) backgroundColor.getToken();
+        Color3f color = new Color3f();
 
         color.x = (float) colorVector.getElementAt(0, 0);
         color.y = (float) colorVector.getElementAt(0, 1);
         color.z = (float) colorVector.getElementAt(0, 2);
 
-            return new Background(color);
+        return new Background(color);
     }
 
     /**

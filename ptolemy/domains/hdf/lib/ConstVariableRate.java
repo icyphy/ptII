@@ -70,7 +70,7 @@ public class ConstVariableRate extends Const {
         Parameter tokenProductionRate =
             new Parameter(output, "tokenProductionRate",
                     new IntToken(1));
-            rate = new Parameter(this, "rate", new IntToken(1));
+        rate = new Parameter(this, "rate", new IntToken(1));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -98,7 +98,7 @@ public class ConstVariableRate extends Const {
             _productionRate =
                 ((IntToken)rate.getToken()).intValue();
             if (_productionRate < 0) throw new IllegalActionException(
-                "Rate must be >= 0");
+                    "Rate must be >= 0");
             Parameter tokenProductionRate =
                 (Parameter)output.getAttribute("tokenProductionRate");
             tokenProductionRate.setToken(new IntToken(_productionRate));

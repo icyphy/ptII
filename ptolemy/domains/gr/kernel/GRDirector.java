@@ -226,19 +226,19 @@ public class GRDirector extends StaticSchedulingDirector {
                 }
                 if (_debugging) {
                     _debug(new FiringEvent(this, actor,
-                                   FiringEvent.BEFORE_FIRE, 1));
+                            FiringEvent.BEFORE_FIRE, 1));
                 }
                 actor.fire();
                 if (_debugging) {
                     _debug(new FiringEvent(this, actor,
-                                   FiringEvent.AFTER_FIRE, 1));
+                            FiringEvent.AFTER_FIRE, 1));
                     _debug(new FiringEvent(this, actor,
-                                   FiringEvent.BEFORE_POSTFIRE, 1));
+                            FiringEvent.BEFORE_POSTFIRE, 1));
                 }
                 actor.postfire();
                 if (_debugging) {
                     _debug(new FiringEvent(this, actor,
-                                   FiringEvent.AFTER_POSTFIRE, 1));
+                            FiringEvent.AFTER_POSTFIRE, 1));
                 }
                 // Make sure we reset the pseudotime flag.
                 _pseudoTimeEnabled = false;

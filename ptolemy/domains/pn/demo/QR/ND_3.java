@@ -69,33 +69,33 @@ public class ND_3 extends TypedAtomicActor {
      */
     public ND_3(CompositeEntity aContainer, String aName)
             throws IllegalActionException, NameDuplicationException
-        {
-            super(aContainer, aName);
+    {
+        super(aContainer, aName);
 
-            RP_1 = new TypedIOPort(this, "RP_1", true, false);
-            RP_2 = new TypedIOPort(this, "RP_2", true, false);
-            RP_3 = new TypedIOPort(this, "RP_3", true, false);
-            RP_4 = new TypedIOPort(this, "RP_4", true, false);
+        RP_1 = new TypedIOPort(this, "RP_1", true, false);
+        RP_2 = new TypedIOPort(this, "RP_2", true, false);
+        RP_3 = new TypedIOPort(this, "RP_3", true, false);
+        RP_4 = new TypedIOPort(this, "RP_4", true, false);
 
-            WP_1 = new TypedIOPort(this, "WP_1", false, true);
-            WP_11 = new TypedIOPort(this, "WP_11", false, true);
-            WP_10 = new TypedIOPort(this, "WP_10", false, true);
+        WP_1 = new TypedIOPort(this, "WP_1", false, true);
+        WP_11 = new TypedIOPort(this, "WP_11", false, true);
+        WP_10 = new TypedIOPort(this, "WP_10", false, true);
 
-            RP_1.setTypeEquals(BaseType.DOUBLE);
-            RP_2.setTypeEquals(BaseType.DOUBLE);
-            RP_3.setTypeEquals(BaseType.DOUBLE);
-            RP_4.setTypeEquals(BaseType.DOUBLE);
+        RP_1.setTypeEquals(BaseType.DOUBLE);
+        RP_2.setTypeEquals(BaseType.DOUBLE);
+        RP_3.setTypeEquals(BaseType.DOUBLE);
+        RP_4.setTypeEquals(BaseType.DOUBLE);
 
-            WP_1.setTypeEquals(BaseType.DOUBLE);
-            WP_11.setTypeEquals(BaseType.DOUBLE);
-            WP_10.setTypeEquals(BaseType.DOUBLE);
+        WP_1.setTypeEquals(BaseType.DOUBLE);
+        WP_11.setTypeEquals(BaseType.DOUBLE);
+        WP_10.setTypeEquals(BaseType.DOUBLE);
 
-            // The Type of these Parameters is set by the First
-            // Token placed in the parameters when created.
-            parameter_N = new Parameter(this, "N" , new IntToken(6));
-            parameter_K = new Parameter(this, "K" , new IntToken(6));
+        // The Type of these Parameters is set by the First
+        // Token placed in the parameters when created.
+        parameter_N = new Parameter(this, "N" , new IntToken(6));
+        parameter_K = new Parameter(this, "K" , new IntToken(6));
 
-        }
+    }
 
 
     ///////////////////////////////////////////////////////////////////

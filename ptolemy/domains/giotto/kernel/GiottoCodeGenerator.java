@@ -315,7 +315,7 @@ public class GiottoCodeGenerator extends Attribute {
             throws IllegalActionException {
         String codeString = "";
         boolean first;
-             String taskName = StringUtilities.sanitizeName(
+        String taskName = StringUtilities.sanitizeName(
                 ((NamedObj)actor).getName());
 
         codeString += "task "
@@ -329,7 +329,7 @@ public class GiottoCodeGenerator extends Attribute {
         first = true;
         String inputPorts = "";
         for (Iterator inPorts = actor.inputPortList().iterator();
-            inPorts.hasNext();) {
+             inPorts.hasNext();) {
             if (first) {
                 first = false;
             } else {
@@ -352,7 +352,7 @@ public class GiottoCodeGenerator extends Attribute {
         first = true;
         String outputPorts = "";
         for (Iterator outPorts = actor.outputPortList().iterator();
-            outPorts.hasNext();) {
+             outPorts.hasNext();) {
             if (first) {
                 first = false;
             } else {
@@ -428,7 +428,7 @@ public class GiottoCodeGenerator extends Attribute {
 
         Map driverIOMap = new LinkedHashMap();
         for (Iterator inPorts = actor.inputPortList().iterator();
-            inPorts.hasNext();) {
+             inPorts.hasNext();) {
             IOPort inPort = (IOPort) inPorts.next();
             String sanitizedPortName =
                 StringUtilities.sanitizeName(
@@ -459,7 +459,7 @@ public class GiottoCodeGenerator extends Attribute {
         // Write the input port specification of the task
         boolean first = true;
         for (Iterator inPorts = actor.inputPortList().iterator();
-            inPorts.hasNext();) {
+             inPorts.hasNext();) {
             if (first) {
                 first = false;
             } else {
@@ -476,7 +476,7 @@ public class GiottoCodeGenerator extends Attribute {
             + _endLine;
 
         for (Iterator sourceNames = driverIOMap.keySet().iterator();
-            sourceNames.hasNext();) {
+             sourceNames.hasNext();) {
             String sourceName = (String) sourceNames.next();
             String destName = (String) driverIOMap.get(sourceName);
             codeString +=
@@ -513,7 +513,7 @@ public class GiottoCodeGenerator extends Attribute {
         // FIXME: the giotto director should do some checking to
         // avoid several outputs of actors connect to the same output port?
         for (Iterator outPorts = model.outputPortList().iterator();
-            outPorts.hasNext();) {
+             outPorts.hasNext();) {
             String driverParas = "";
             TypedIOPort port = (TypedIOPort)outPorts.next();
             String portTypeID = _getTypeString(port);
@@ -605,7 +605,7 @@ public class GiottoCodeGenerator extends Attribute {
                     if (!outPort.isOutput()) {
                         continue;
                     }
-                       Nameable actor = outPort.getContainer();
+                    Nameable actor = outPort.getContainer();
                     if (actor instanceof Actor) {
                         Parameter actorFreqPara = (Parameter)
                             ((NamedObj)actor).

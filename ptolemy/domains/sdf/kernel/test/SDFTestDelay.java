@@ -85,7 +85,7 @@ public class SDFTestDelay extends TypedAtomicActor {
          */
         input_tokenConsumptionRate =
             new Parameter(input, "tokenConsumptionRate", new IntToken(1));
-       /* The getPort method (in ptolemy.kernel.Entity) finds a port by
+        /* The getPort method (in ptolemy.kernel.Entity) finds a port by
          * name.  It returns a Port object, but all the ports in the
          * actor package are of type TypedIOPort,
          * which extends Port.   So, we

@@ -71,7 +71,7 @@ public class Image3D extends GRPickActor {
         imageLength = new Parameter(this, "image length", new DoubleToken(0.5));
         imageHeight = new Parameter(this, "image height", new DoubleToken(0.5));
         filename = new Parameter(this, "filename",
-                                 new StringToken("stripe.gif"));
+                new StringToken("stripe.gif"));
 
     }
 
@@ -103,67 +103,67 @@ public class Image3D extends GRPickActor {
 
 
     protected void _createModel() throws IllegalActionException {
-         QuadArray plane = new QuadArray(4, GeometryArray.COORDINATES | QuadArray.NORMALS
-                                        | GeometryArray.TEXTURE_COORDINATE_2);
+        QuadArray plane = new QuadArray(4, GeometryArray.COORDINATES | QuadArray.NORMALS
+                | GeometryArray.TEXTURE_COORDINATE_2);
 
-      Point3f p = new Point3f(-1.0f,  1.0f,  0.0f);
-      plane.setCoordinate(0, p);
-      p.set(-1.0f, -1.0f,  0.0f);
-      plane.setCoordinate(1, p);
-      p.set(1.0f, -1.0f,  0.0f);
-      plane.setCoordinate(2, p);
-      p.set(1.0f,  1.0f,  0.0f);
-      plane.setCoordinate(3, p);
+        Point3f p = new Point3f(-1.0f,  1.0f,  0.0f);
+        plane.setCoordinate(0, p);
+        p.set(-1.0f, -1.0f,  0.0f);
+        plane.setCoordinate(1, p);
+        p.set(1.0f, -1.0f,  0.0f);
+        plane.setCoordinate(2, p);
+        p.set(1.0f,  1.0f,  0.0f);
+        plane.setCoordinate(3, p);
 
-      Point2f[] qq = new Point2f[4];
-      qq[0] = new Point2f(0.0f, 1.0f);
-      qq[1] = new Point2f(0.0f, 0.0f);
-      qq[2] = new Point2f(1.0f, 0.0f);
-      qq[3] = new Point2f(1.0f, 1.0f);
-      plane.setTextureCoordinate(0, 0, new TexCoord2f(qq[0]));
-      plane.setTextureCoordinate(0, 1, new TexCoord2f(qq[1]));
-      plane.setTextureCoordinate(0, 2, new TexCoord2f(qq[2]));
-      plane.setTextureCoordinate(0, 3, new TexCoord2f(qq[3]));
-
-
-      Appearance appear = new Appearance();
+        Point2f[] qq = new Point2f[4];
+        qq[0] = new Point2f(0.0f, 1.0f);
+        qq[1] = new Point2f(0.0f, 0.0f);
+        qq[2] = new Point2f(1.0f, 0.0f);
+        qq[3] = new Point2f(1.0f, 1.0f);
+        plane.setTextureCoordinate(0, 0, new TexCoord2f(qq[0]));
+        plane.setTextureCoordinate(0, 1, new TexCoord2f(qq[1]));
+        plane.setTextureCoordinate(0, 2, new TexCoord2f(qq[2]));
+        plane.setTextureCoordinate(0, 3, new TexCoord2f(qq[3]));
 
 
+        Appearance appear = new Appearance();
 
 
-      String fileName = (String) ((StringToken) filename.getToken()).stringValue();
 
 
-      TextureLoader loader = new TextureLoader(fileName, ((ViewScreen)_root).getCanvas());
-      ImageComponent2D image = loader.getImage();
-      System.out.println("image "+image);
+        String fileName = (String) ((StringToken) filename.getToken()).stringValue();
 
-      if (image == null) {
+
+        TextureLoader loader = new TextureLoader(fileName, ((ViewScreen)_root).getCanvas());
+        ImageComponent2D image = loader.getImage();
+        System.out.println("image "+image);
+
+        if (image == null) {
             System.out.println("load failed for texture: "+filename);
-      }
+        }
 
-      // can't use parameterless constuctor
-      Texture2D texture = new Texture2D(Texture.BASE_LEVEL, Texture.RGBA,
-                                        image.getWidth(), image.getHeight());
-      texture.setImage(0, image);
-      //texture.setEnable(false);
+        // can't use parameterless constuctor
+        Texture2D texture = new Texture2D(Texture.BASE_LEVEL, Texture.RGBA,
+                image.getWidth(), image.getHeight());
+        texture.setImage(0, image);
+        //texture.setEnable(false);
 
-      appear.setTexture(texture);
+        appear.setTexture(texture);
 
-      appear.setTransparencyAttributes(
-           new TransparencyAttributes(TransparencyAttributes.FASTEST, 0.1f));
-      top = new BranchGroup();
-      _containedNode = new Shape3D(plane, appear);
-      top.addChild(_containedNode);
+        appear.setTransparencyAttributes(
+                new TransparencyAttributes(TransparencyAttributes.FASTEST, 0.1f));
+        top = new BranchGroup();
+        _containedNode = new Shape3D(plane, appear);
+        top.addChild(_containedNode);
         //_containedNode = new Shape3D(cube);
-      }
+    }
     BranchGroup top = new BranchGroup();
 
 
     public void processCallback() {
         super.processCallback();
         try {
-        System.out.println("call "+((StringToken) filename.getToken()).stringValue());
+            System.out.println("call "+((StringToken) filename.getToken()).stringValue());
         } catch (Exception e) {
             System.out.println("process call back exception");
         }
@@ -215,9 +215,9 @@ public class Image3D extends GRPickActor {
     private Shape3D _containedNode;
 
     private static final float[] verts = {
-    // front face
-         1.0f, -1.0f,  1.0f,
-         1.0f,  1.0f,  1.0f,
+        // front face
+        1.0f, -1.0f,  1.0f,
+        1.0f,  1.0f,  1.0f,
         -1.0f,  1.0f,  1.0f,
         -1.0f, -1.0f,  1.0f
     };

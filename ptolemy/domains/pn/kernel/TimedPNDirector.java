@@ -113,7 +113,7 @@ public class TimedPNDirector extends PNDirector {
      */
     public TimedPNDirector()
             throws IllegalActionException, NameDuplicationException {
-         super();
+        super();
     }
 
     /**Construct a director in the  workspace with an empty name.
@@ -125,7 +125,7 @@ public class TimedPNDirector extends PNDirector {
      *  @param workspace The workspace of this object.
      */
     public TimedPNDirector(Workspace workspace)
-           throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(workspace);
     }
 

@@ -160,7 +160,7 @@ public class RTPReceiver extends AbstractReceiver implements ProcessReceiver {
                 }
                 if (_terminate) {
                     throw new
-                            TerminateProcessException("RTPReceiver stopped.");
+                        TerminateProcessException("RTPReceiver stopped.");
                 }
             }
             t = _token;
@@ -208,7 +208,7 @@ public class RTPReceiver extends AbstractReceiver implements ProcessReceiver {
     public void put(Token token) throws NoRoomException {
         if (_terminate) {
             throw new
-                    TerminateProcessException("RTPReceiver stopped.");
+                TerminateProcessException("RTPReceiver stopped.");
         }
         synchronized (_lock) {
             _token = token;

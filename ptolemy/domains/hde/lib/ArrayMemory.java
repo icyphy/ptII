@@ -77,7 +77,7 @@ public class ArrayMemory extends TypedAtomicActor {
      *   actor with this name.
      */
     public ArrayMemory(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException  {
+            throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
         // Set type constraints.
@@ -90,7 +90,7 @@ public class ArrayMemory extends TypedAtomicActor {
         InequalityTerm elementTerm = dataInParallelType.getElementTypeTerm();
 
         dataOutParallel =
-        new TypedIOPort(this, "dataOutParallel", false, true);
+            new TypedIOPort(this, "dataOutParallel", false, true);
         dataOutParallel.setTypeEquals(dataInParallelType);
 
 
@@ -102,7 +102,7 @@ public class ArrayMemory extends TypedAtomicActor {
         dataOutSerial.setTypeEquals(BaseType.INT);
 
         serialOrParallel =
-        new TypedIOPort(this, "serialOrParallel", true, false);
+            new TypedIOPort(this, "serialOrParallel", true, false);
         serialOrParallel.setTypeEquals(BaseType.BOOLEAN);
 
         read = new TypedIOPort(this, "read", true, false);
@@ -172,7 +172,7 @@ public class ArrayMemory extends TypedAtomicActor {
         /**Read the Serial/Parallel Control*/
         if (serialOrParallel.hasToken(0)){
             _serialOrParallel =
-            ((BooleanToken)serialOrParallel.get(0)).booleanValue();
+                ((BooleanToken)serialOrParallel.get(0)).booleanValue();
         }
 
         /** Read the Index*/
@@ -180,8 +180,8 @@ public class ArrayMemory extends TypedAtomicActor {
             _index = ((IntToken)index.get(0)).intValue();
             if ((_index < 0) || (_index >= _arrayLength)) {
                 throw new IllegalActionException(this,
-                 "index " + _index + " is out of range for the memory "
-                  + "array, which has length " + _arrayLength);
+                        "index " + _index + " is out of range for the memory "
+                        + "array, which has length " + _arrayLength);
             }
         }
 

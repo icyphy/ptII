@@ -133,10 +133,10 @@ public class MouseInput3D extends GRActor {
             while (criteria.hasMoreElements()) {
                 wakeup = (WakeupCriterion) criteria.nextElement();
                 event = ((WakeupOnAWTEvent)wakeup).getAWTEvent();
-                      for (int i = 0; i < event.length; i++) {
+                for (int i = 0; i < event.length; i++) {
                     eventId = event[i].getID();
                     if (eventId == MouseEvent.MOUSE_PRESSED) {
-                            _xClicked = ((MouseEvent)event[i]).getX();
+                        _xClicked = ((MouseEvent)event[i]).getX();
                         _yClicked = ((MouseEvent)event[i]).getY();
                         _hasData = true;
                     }

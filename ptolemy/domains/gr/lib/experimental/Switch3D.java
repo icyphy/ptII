@@ -64,7 +64,7 @@ public class Switch3D extends GRTransform {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-            sceneGraphOut.setMultiport(true);
+        sceneGraphOut.setMultiport(true);
 
         select = new TypedIOPort(this, "select");
         select.setInput(true);

@@ -111,7 +111,7 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
      *  @param errorTolerance The errorTolerance.
      */
     public ParseTreeEvaluatorForGuardExpression(
-        RelationList relationList, double errorTolerance) {
+            RelationList relationList, double errorTolerance) {
         if (relationList.isEmpty()) {
             _construction = true;
         } else {
@@ -147,7 +147,7 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
      */
 
     public void visitLeafNode(ASTPtLeafNode node)
-        throws IllegalActionException {
+            throws IllegalActionException {
 
         // FIXME: based on the *_isPresent variable, we figure out
         // the discrete variables and do not evaluate it when it is
@@ -163,7 +163,7 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
             int variableNameEndIndex = nodeName.indexOf("_isPresent");
             if (variableNameEndIndex != -1) {
                 discreteVariableName = nodeName.substring(0,
-                    variableNameEndIndex);
+                        variableNameEndIndex);
             }
         }
 
@@ -295,7 +295,7 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
      *  visitRelationNode throws the IllegalActionException.
      */
     public void visitRelationalNode(ASTPtRelationalNode node)
-        throws IllegalActionException {
+            throws IllegalActionException {
 
         if (node.isConstant() && node.isEvaluated()) {
             return;
@@ -340,7 +340,7 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
         // For equal or not equal comparison, the numerical error
         // has to be considered.
         if (operator.kind == PtParserConstants.EQUALS ||
-           operator.kind == PtParserConstants.NOTEQUALS) {
+                operator.kind == PtParserConstants.NOTEQUALS) {
             if (operator.kind == PtParserConstants.EQUALS) {
                 result = leftToken.isCloseTo(rightToken, _errorTolerance);
             } else {
@@ -358,7 +358,7 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
             } else {
                 // handle the relations like x == 2.0
                 ScalarToken difference = (ScalarToken) leftToken.subtract(
-                    rightToken);
+                        rightToken);
                 if ( ( (BooleanToken) result).booleanValue()) {
                     _relationType = 3;
                 }

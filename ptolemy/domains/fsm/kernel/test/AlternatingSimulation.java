@@ -69,14 +69,14 @@ public class AlternatingSimulation {
      *  @exception Exception If the specified automata cannot be constructed.
      */
     public AlternatingSimulation (String superMoML, String subMoML,
-                boolean onlyReacheable) throws Exception {
+            boolean onlyReacheable) throws Exception {
         // Construct the super automaton
         URL url = MoMLApplication.specToURL(superMoML);
         // following the comments in MoMLApplication, use the same URL for
         // the two arguments (base and URL) to parse().
         MoMLParser parser = new MoMLParser();
         InterfaceAutomaton superAutomaton =
-                                (InterfaceAutomaton)parser.parse(url, url);
+            (InterfaceAutomaton)parser.parse(url, url);
         superAutomaton.addPorts();
 
         // Construct the sub automaton
@@ -88,12 +88,12 @@ public class AlternatingSimulation {
         // called.
         parser = new MoMLParser();
         InterfaceAutomaton subAutomaton =
-                                (InterfaceAutomaton)parser.parse(url, url);
+            (InterfaceAutomaton)parser.parse(url, url);
         subAutomaton.addPorts();
 
         // Compute alternating simulation
         Set alternatingSimulation =
-                superAutomaton.computeAlternatingSimulation(subAutomaton);
+            superAutomaton.computeAlternatingSimulation(subAutomaton);
         if (onlyReacheable) {
             alternatingSimulation =
                 InterfaceAutomaton.reacheableAlternatingSimulation(
@@ -103,7 +103,7 @@ public class AlternatingSimulation {
         // Display result
         if (alternatingSimulation.isEmpty()) {
             System.out.println("No alternating simulation between the "
-                        + "specified automata.");
+                    + "specified automata.");
         } else {
             System.out.println("Alternating simulation (state_in_"
                     + superAutomaton.getName() + " - state_in_"

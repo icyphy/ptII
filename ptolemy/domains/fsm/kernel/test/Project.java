@@ -67,7 +67,7 @@ public class Project {
         // the two arguments (base and URL) to parse().
         MoMLParser parser = new MoMLParser();
         InterfaceAutomaton firstAutomaton =
-                                (InterfaceAutomaton)parser.parse(url, url);
+            (InterfaceAutomaton)parser.parse(url, url);
         firstAutomaton.addPorts();
 
         // Construct the second automaton
@@ -79,7 +79,7 @@ public class Project {
         // called.
         parser = new MoMLParser();
         InterfaceAutomaton secondAutomaton =
-                                (InterfaceAutomaton)parser.parse(url, url);
+            (InterfaceAutomaton)parser.parse(url, url);
         secondAutomaton.addPorts();
 
         // Compute the projection and write result
@@ -97,16 +97,16 @@ public class Project {
     public static void main (String[] args) {
         if (args.length != 2) {
             System.out.println("Usage: java ptolemy.domains.fsm.kernel."
-                + "test.Project <first_automaton.xml> <second_automaton.xml>");
+                    + "test.Project <first_automaton.xml> <second_automaton.xml>");
             System.out.println("This program computes the projection of the "
-                + "first automaton to the second one.");
+                    + "first automaton to the second one.");
             System.exit(1);
         } else {
             try {
                 new Project(args[0], args[1]);
             } catch (Exception exception) {
                 System.out.println(exception.getClass().getName() + ": "
-                    + exception.getMessage());
+                        + exception.getMessage());
                 exception.printStackTrace();
             }
         }

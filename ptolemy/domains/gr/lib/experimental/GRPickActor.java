@@ -146,11 +146,11 @@ abstract public class GRPickActor extends GRActor {
      *  @exception IllegalActionException if the current director
      *    is not a GRDirector
      */
-     /*
-    public void initialize() throws IllegalActionException {
-        super.initialize();
-        _createModel();
-    }*/
+    /*
+      public void initialize() throws IllegalActionException {
+      super.initialize();
+      _createModel();
+      }*/
 
 
 
@@ -160,14 +160,14 @@ abstract public class GRPickActor extends GRActor {
         _createModel();
         //bg = new BranchGroup();
         //bg.addChild(_containedNode);
-              BoundingSphere bounds =
+        BoundingSphere bounds =
             new BoundingSphere(new Point3d(0.0,0.0,0.0), 100.0);
-            Canvas3D canvas = ((ViewScreen) _root).getCanvas();
-            BranchGroup branchGroup = ((ViewScreen) _root).getBranchGroup();
-            branchGroup = _getBranchGroup();
-            System.out.println(" alert "+canvas+" "+branchGroup);
-            // FIXME: this is one big fat hack!
-            //if (pick!=null) pick.setEnable(false);
+        Canvas3D canvas = ((ViewScreen) _root).getCanvas();
+        BranchGroup branchGroup = ((ViewScreen) _root).getBranchGroup();
+        branchGroup = _getBranchGroup();
+        System.out.println(" alert "+canvas+" "+branchGroup);
+        // FIXME: this is one big fat hack!
+        //if (pick!=null) pick.setEnable(false);
         pick = new PickCallback(this,canvas,branchGroup,bounds);
     }
 
@@ -198,22 +198,22 @@ abstract public class GRPickActor extends GRActor {
         GRPickActor callbackActor;
 
         public PickCallback(GRPickActor pickableActor,Canvas3D canvas, BranchGroup root,
-                               Bounds bounds) {
-          super(canvas, root, bounds);
-          callbackActor = pickableActor;
-          this.setSchedulingBounds(bounds);
-          root.addChild(this);
-          /*Color3f white = new Color3f(1.0f, 1.0f, 1.0f);
-          Color3f black = new Color3f(0.0f, 0.0f, 0.0f);
-          Color3f highlightColor = new Color3f(0.0f, 1.0f, 0.0f);
-          Material highlightMaterial = new Material(highlightColor, black,
-                                                highlightColor, white, 80.0f);
-          highlightAppearance = new Appearance();
-          highlightAppearance.setMaterial(new Material(highlightColor, black,
-                                                   highlightColor, white,
-                                                   80.0f));*/
+                Bounds bounds) {
+            super(canvas, root, bounds);
+            callbackActor = pickableActor;
+            this.setSchedulingBounds(bounds);
+            root.addChild(this);
+            /*Color3f white = new Color3f(1.0f, 1.0f, 1.0f);
+              Color3f black = new Color3f(0.0f, 0.0f, 0.0f);
+              Color3f highlightColor = new Color3f(0.0f, 1.0f, 0.0f);
+              Material highlightMaterial = new Material(highlightColor, black,
+              highlightColor, white, 80.0f);
+              highlightAppearance = new Appearance();
+              highlightAppearance.setMaterial(new Material(highlightColor, black,
+              highlightColor, white,
+              80.0f));*/
 
-          pickCanvas.setMode(PickTool.BOUNDS);
+            pickCanvas.setMode(PickTool.BOUNDS);
         }
 
         public void updateScene(int xpos, int ypos) {
@@ -223,8 +223,8 @@ abstract public class GRPickActor extends GRActor {
             pickCanvas.setShapeLocation(xpos, ypos);
 
             pickResult = pickCanvas.pickClosest();
-                if (pickResult != null) {
-                    if (mevent.getModifiers() == 4) {
+            if (pickResult != null) {
+                if (mevent.getModifiers() == 4) {
                     shape = (Shape3D) pickResult.getNode(PickResult.SHAPE3D);
                     System.out.println("the result "+shape + " "+callbackActor);
                     callbackActor.processCallback();

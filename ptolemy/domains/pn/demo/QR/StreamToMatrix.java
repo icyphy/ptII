@@ -70,17 +70,17 @@ public class StreamToMatrix extends Transformer {
      */
     public StreamToMatrix(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException
-        {
-            super(container, name);
+    {
+        super(container, name);
 
-            input.setTypeEquals(BaseType.DOUBLE);
-            output.setTypeEquals(BaseType.DOUBLE_MATRIX);
-            dimension = new Parameter(this, "dimension", new IntToken( 6 ));
+        input.setTypeEquals(BaseType.DOUBLE);
+        output.setTypeEquals(BaseType.DOUBLE_MATRIX);
+        dimension = new Parameter(this, "dimension", new IntToken( 6 ));
 
-            // Initialize the dimension
-            attributeChanged( dimension );
+        // Initialize the dimension
+        attributeChanged( dimension );
 
-        }
+    }
 
     /** If the argument is the dimension parameter, update the
      *  the row and column values.

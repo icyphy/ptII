@@ -363,7 +363,7 @@ public final class ArrayFIFOQueue implements Cloneable {
                     "more elements than the proposed capacity.");
         }
         _queueMaxCapacity = capacity;
-         _resizeArray(capacity);
+        _resizeArray(capacity);
     }
 
     /** Set the container of the queue. The container is only used

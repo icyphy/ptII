@@ -83,8 +83,8 @@ public class Led extends Box3D {
 
     protected void _createAppearance() {
         super._createAppearance();
-         _material = new Material();
-         _material.setCapability(Material.ALLOW_COMPONENT_READ|Material.ALLOW_COMPONENT_WRITE);
+        _material = new Material();
+        _material.setCapability(Material.ALLOW_COMPONENT_READ|Material.ALLOW_COMPONENT_WRITE);
         _appearance = new Appearance();
         _appearance.setCapability(Appearance.ALLOW_MATERIAL_READ|Appearance.ALLOW_MATERIAL_WRITE);
 
@@ -96,24 +96,24 @@ public class Led extends Box3D {
             _material.setSpecularColor(_color);
         }
         /*
-        if (_transparency > 0.0f) {
-            TransparencyAttributes feature1 = new TransparencyAttributes();
-                    feature1.setTransparencyMode(feature1.BLENDED);
-                    feature1.setTransparency(_transparency);
-                    _appearance.setTransparencyAttributes(feature1);
+          if (_transparency > 0.0f) {
+          TransparencyAttributes feature1 = new TransparencyAttributes();
+          feature1.setTransparencyMode(feature1.BLENDED);
+          feature1.setTransparency(_transparency);
+          _appearance.setTransparencyAttributes(feature1);
 
-                    // Set up the polygon attributes
-                    PolygonAttributes feature2 = new PolygonAttributes();
-                    feature2.setCullFace(feature2.CULL_NONE);
-                    _appearance.setPolygonAttributes(feature2);
-        }*/
+          // Set up the polygon attributes
+          PolygonAttributes feature2 = new PolygonAttributes();
+          feature2.setCullFace(feature2.CULL_NONE);
+          _appearance.setPolygonAttributes(feature2);
+          }*/
         /*
-        if (_wireframeMode) {
-            PolygonAttributes feature1 = new PolygonAttributes();
-                    feature1.setPolygonMode(feature1.POLYGON_LINE);
-                    feature1.setCullFace(feature1.CULL_NONE);
-                    _appearance.setPolygonAttributes(feature1);
-        }*/
+          if (_wireframeMode) {
+          PolygonAttributes feature1 = new PolygonAttributes();
+          feature1.setPolygonMode(feature1.POLYGON_LINE);
+          feature1.setCullFace(feature1.CULL_NONE);
+          _appearance.setPolygonAttributes(feature1);
+          }*/
 
         //_material.setEmissiveColor(0.0f,0.9f,0.0f);
         _appearance.setMaterial(_material);
@@ -127,14 +127,14 @@ public class Led extends Box3D {
      *   be obtained
      */
     protected void _createModel() throws IllegalActionException {
-       super._createModel();
-       System.out.println("create model");
-       _containedNode.setCapability(Shape3D.ALLOW_APPEARANCE_READ|Shape3D.ALLOW_APPEARANCE_WRITE);
+        super._createModel();
+        System.out.println("create model");
+        _containedNode.setCapability(Shape3D.ALLOW_APPEARANCE_READ|Shape3D.ALLOW_APPEARANCE_WRITE);
 
     }
 
 
-     public boolean prefire() throws IllegalActionException {
+    public boolean prefire() throws IllegalActionException {
         boolean returnValue = super.prefire();
         returnValue = true;
         return returnValue;

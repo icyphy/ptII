@@ -198,10 +198,10 @@ public class GiottoDirector extends StaticSchedulingDirector {
      */
     public void fireAt(Actor actor, double time)
             throws IllegalActionException {
-//         if (_eventQueue == null) {
-//             throw new IllegalActionException(this,
-//                     "Calling fireAt() before preinitialize().");
-//         }
+        //         if (_eventQueue == null) {
+        //             throw new IllegalActionException(this,
+        //                     "Calling fireAt() before preinitialize().");
+        //         }
         if (_debugging) {
             _debug("fireAt() called by " + actor + " for time " + time);
         }
@@ -221,12 +221,12 @@ public class GiottoDirector extends StaticSchedulingDirector {
 
     public boolean prefire () throws IllegalActionException{
 
-         if (_isEmbedded()) {
+        if (_isEmbedded()) {
 
             // whatever, the currentTime should be updated by the
             // director of upper container.
             setCurrentTime ((((CompositeActor) getContainer()).getExecutiveDirector()).getCurrentTime());
-        _debug("Set current time as: " + getCurrentTime());
+            _debug("Set current time as: " + getCurrentTime());
         }
 
 
@@ -265,15 +265,15 @@ public class GiottoDirector extends StaticSchedulingDirector {
             if (_debugging) {
                 _debug("*** Prefire returned true.");
             }
-        // update the next expected iteration time as current time
-        // if it is the start of new run
-        if (_iterationCount == 0) {
-            if (_debugging) {
-                _debug("Updating the expected next iteration time as " +
-                       getCurrentTime());
+            // update the next expected iteration time as current time
+            // if it is the start of new run
+            if (_iterationCount == 0) {
+                if (_debugging) {
+                    _debug("Updating the expected next iteration time as " +
+                            getCurrentTime());
+                }
+                _expectedNextIterationTime = getCurrentTime();
             }
-            _expectedNextIterationTime = getCurrentTime();
-        }
             return true;
         }
     }

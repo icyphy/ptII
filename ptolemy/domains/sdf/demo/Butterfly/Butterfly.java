@@ -80,12 +80,12 @@ public class Butterfly extends TypedCompositeActor {
         TypedIOPort expInput = new TypedIOPort(expression, "ramp");
         expInput.setInput(true);
         expression.expression.setExpression("-2.0*cos(4.0*ramp) + "
-               + "exp(cos(ramp)) + (sin(ramp/12.0) * (sin(ramp/12.0))^4)");
+                + "exp(cos(ramp)) + (sin(ramp/12.0) * (sin(ramp/12.0))^4)");
 
         // Next, a conversion to use the ramp as an angle specifier,
         // and the output of the expression as the vector length.
         PolarToCartesian polarToCartesian =
-                new PolarToCartesian(this, "Polar to Cartesian");
+            new PolarToCartesian(this, "Polar to Cartesian");
 
         // Finally, the plotter.
         XYPlotter xyPlotter = new XYPlotter(this, "xyPlotter");

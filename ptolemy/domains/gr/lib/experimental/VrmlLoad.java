@@ -79,7 +79,7 @@ public class VrmlLoad extends GRPickActor {
 
         super(container, name);
         filename = new Parameter(this, "filename",
-                                 new StringToken("mwave.wrl"));
+                new StringToken("mwave.wrl"));
     }
 
     public Parameter filename;
@@ -96,44 +96,44 @@ public class VrmlLoad extends GRPickActor {
     protected void _createModel() throws IllegalActionException {
         String fileName = (String) ((StringToken) filename.getToken()).stringValue();
 
-            VrmlLoader loader = new VrmlLoader();
-            URL loadUrl = null;
-            String locString = StringUtilities.getProperty("user.dir") + "\\"+fileName;
+        VrmlLoader loader = new VrmlLoader();
+        URL loadUrl = null;
+        String locString = StringUtilities.getProperty("user.dir") + "\\"+fileName;
         System.out.println("location:-->  "+locString);
 
-            Scene scene = null;
-            try {
-                //loadUrl = new URL(fileName);
-                loadUrl = new URL(locString);
+        Scene scene = null;
+        try {
+            //loadUrl = new URL(fileName);
+            loadUrl = new URL(locString);
         } catch (MalformedURLException e) {
-                   System.err.println(e);
-                   System.out.println("bad URL damn "+locString);
-            }
-            try {
+            System.err.println(e);
+            System.out.println("bad URL damn "+locString);
+        }
+        try {
             //scene = loader.load(fileName);
             scene = loader.load(locString);
-                      //scene = loader.load(loadUrl);
-            }
+            //scene = loader.load(loadUrl);
+        }
         catch (FileNotFoundException e) {
             System.err.println(e);
             throw new IllegalActionException("File not found!");
         }
-            catch (ParsingErrorException e) {
+        catch (ParsingErrorException e) {
             System.err.println(e);
             throw new IllegalActionException("File is not a valid 3D OBJ file");
         }
-            catch (IncorrectFormatException e) {
+        catch (IncorrectFormatException e) {
             System.err.println(e);
             throw new IllegalActionException("File is not a valid 3D OBJ file");
         }
-            obj = scene;
-            branchGroup = obj.getSceneGroup();
+        obj = scene;
+        branchGroup = obj.getSceneGroup();
     }
 
     public void processCallback() {
         super.processCallback();
         try {
-        System.out.println("call "+((StringToken) filename.getToken()).stringValue());
+            System.out.println("call "+((StringToken) filename.getToken()).stringValue());
         } catch (Exception e) {
             System.out.println("process call back exception");
         }
