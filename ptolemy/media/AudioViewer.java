@@ -134,12 +134,12 @@ public class AudioViewer extends PlotApplication {
         if (_instream == null) {
             // Fill the iobuffer with audio data.
             ByteArrayOutputStream out =
-                    new ByteArrayOutputStream(_sound.size);
+                new ByteArrayOutputStream(_sound.size);
             try {
                 _sound.writeRaw(new DataOutputStream(out));
             } catch (IOException ex) {
                 throw new RuntimeException(
-                    "Failed to convert audio data to stream.");
+                        "Failed to convert audio data to stream.");
             }
             byte[] _iobuffer = out.toByteArray();
             _instream = new ByteArrayInputStream(_iobuffer);
@@ -168,10 +168,10 @@ public class AudioViewer extends PlotApplication {
     /** Return a string summarizing the command-line arguments.
      *  @return A usage string.
      */
-     protected String _usage() {
-         String result = "Usage: ptaudio file";
-         return result;
-     }
+    protected String _usage() {
+        String result = "Usage: ptaudio file";
+        return result;
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

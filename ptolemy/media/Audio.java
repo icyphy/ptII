@@ -143,16 +143,16 @@ public class Audio {
         if (magic[0] != 0x2E || magic[1] != 0x73 || magic[2] != 0x6E ||
                 magic[3] != 0x64) {
             throw new IllegalArgumentException(
-                "SignalProcessing.readAudio: bad magic number in "
-                + "stream header.  Not an audio file?");
+                    "SignalProcessing.readAudio: bad magic number in "
+                    + "stream header.  Not an audio file?");
         }
         if (format != 1) {
             throw new IllegalArgumentException("SignalProcessing.readAudio:"
-            + " Sorry, only 8-bit mu-law encoded data can be read.");
+                    + " Sorry, only 8-bit mu-law encoded data can be read.");
         }
         if (numChannels != 1) {
             throw new IllegalArgumentException("SignalProcessing.readAudio:"
-            + " Sorry, only one-channel audio data can be read.");
+                    + " Sorry, only one-channel audio data can be read.");
         }
 
         // Finally read the audio data.
@@ -369,12 +369,12 @@ public class Audio {
     /** Return a readable representation of the header data. */
     public String toString() {
         return "file ID tag = " + new String(magic) + "\n"
-        + "offset = " + offset + "\n"
-        + "size = " + size + "\n"
-        + "format code = " + format + "\n"
-        + "sampleRate = " + sampleRate + "\n"
-        + "number of channels = " + numChannels + "\n"
-        + "info field = " + new String(info);
+            + "offset = " + offset + "\n"
+            + "size = " + size + "\n"
+            + "format code = " + format + "\n"
+            + "sampleRate = " + sampleRate + "\n"
+            + "number of channels = " + numChannels + "\n"
+            + "info field = " + new String(info);
     }
 
     /** Write the audio data to an output stream in the Sun audio format.
@@ -451,19 +451,19 @@ public class Audio {
     private static final int CLIP =  32635;
     // lookup table for the exponent.
     private static final byte exp_lut[] = {0,0,1,1,2,2,2,2,3,3,3,3,3,3,3,3,
-    4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,
-    5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,
-    5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,
-    6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,
-    6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,
-    6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,
-    6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,
-    7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,
-    7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,
-    7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,
-    7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,
-    7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,
-    7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,
-    7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,
-    7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7};
+                                           4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,
+                                           5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,
+                                           5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,
+                                           6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,
+                                           6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,
+                                           6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,
+                                           6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,
+                                           7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,
+                                           7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,
+                                           7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,
+                                           7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,
+                                           7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,
+                                           7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,
+                                           7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,
+                                           7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7};
 }

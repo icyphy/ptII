@@ -70,7 +70,7 @@ public class Picture extends Component {
     public void displayImage() {
         if(_imagesource == null) {
             _imagesource = new MemoryImageSource(_width, _height,
-                _pix, 0, _width);
+                    _pix, 0, _width);
             _imagesource.setAnimated(true);
             _image = createImage(_imagesource);
         }
@@ -107,8 +107,8 @@ public class Picture extends Component {
     public void setImage(int[] pix) throws IllegalArgumentException {
         if (pix.length != _width*_height) {
             throw new IllegalArgumentException(
-            "setImage: Specified image size does not"
-            + "match that of the component.");
+                    "setImage: Specified image size does not"
+                    + "match that of the component.");
         }
         _pix = pix;
     }
@@ -130,7 +130,7 @@ public class Picture extends Component {
         else if (intensity > 255) intensity = 255;
         // Alpha, red, green, blue, where alpha controls transparency.
         _pix[(row*_width) + col] = (255 << 24) |
-                (intensity << 16) | (intensity << 8) | intensity;
+            (intensity << 16) | (intensity << 8) | intensity;
     }
 
     /** Set the specified pixel to the given color value, where each color
@@ -160,7 +160,7 @@ public class Picture extends Component {
 
         // Alpha, red, green, blue, where alpha controls transparency.
         _pix[(row*_width) + col]
-                = (255 << 24) | (red << 16) | (green << 8) | blue;
+            = (255 << 24) | (red << 16) | (green << 8) | blue;
     }
 
     /** Override the base class to prevent blanking, which causes flashing
