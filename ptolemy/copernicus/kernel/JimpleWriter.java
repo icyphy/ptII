@@ -100,7 +100,7 @@ public class JimpleWriter extends SceneTransformer {
                         new OutputStreamWriter(streamOut)));
                 theClass.printJimpleStyleTo(writerOut, 0);
             }
-            catch (IOException e) {
+            catch (Exception e) {
                 System.out.println("Failed to output jimple for file '"
                         + fileName + "':" + e);
             }

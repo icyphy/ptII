@@ -367,14 +367,28 @@ public class SootUtilities {
             SootField oldField = (SootField)fields.next();
             Type type = oldField.getType();
             //  System.out.println("field with type " + type);
-            if (type instanceof RefType &&
-                    ((RefType)type).getSootClass() == oldClass) {
-                oldField.setType(RefType.v(newClass));
-                // we have to do this seemingly useless
-                // thing, since the scene caches a pointer
-                // to the field based on it's parameter types.
-                theClass.removeField(oldField);
-                theClass.addField(oldField);
+            if (type instanceof RefType) {
+                SootClass refClass = ((RefType)type).getSootClass();
+                if(refClass == oldClass) {
+                    oldField.setType(RefType.v(newClass));
+                    // we have to do this seemingly useless
+                    // thing, since the scene caches a pointer
+                    // to the field based on it's parameter types.
+                    theClass.removeField(oldField);
+                    theClass.addField(oldField);
+                } else if (refClass.getName()
+                        .startsWith(oldClass.getName())) {
+                    SootClass changeClass =
+                        _getInnerClassCopy(oldClass,
+                                refClass,
+                                newClass);
+                    oldField.setType(RefType.v(changeClass));
+                    // we have to do this seemingly useless
+                    // thing, since the scene caches a pointer
+                    // to the field based on it's parameter types.
+                    theClass.removeField(oldField);
+                    theClass.addField(oldField);
+                }
             }
         }
     }
@@ -1109,6 +1123,7 @@ public class SootUtilities {
         }
 
         // And now replace any remaining references to the super class.
+        changeTypesOfFields(theClass, superClass, theClass);
         changeTypesInMethods(theClass, superClass, theClass);
 
         theClass.setSuperclass(superClass.getSuperclass());
