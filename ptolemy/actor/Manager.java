@@ -210,6 +210,11 @@ public class Manager extends NamedObj implements Runnable {
      */
     public final static State RESOLVING_TYPES = new State("resolving types");
 
+    /** Indicator that the execution is throwing a throwable.
+     */
+    public final static State THROWING_A_THROWABLE =
+         new State("throwing a throwable");
+
     /** Indicator that the execution is in the wrapup phase.
      */
     public final static State WRAPPING_UP = new State("wrapping up");
@@ -285,26 +290,40 @@ public class Manager extends NamedObj implements Runnable {
 
         boolean completedSuccessfully = false;
 
+        // If we throw an throwable, we save it until after the
+        // finally clauses.
+        Throwable initialThrowable = null;
         try {
-            initialize();
-            // Call iterate() until finish() is called or postfire()
-            // returns false.
-            _debug("-- Manager beginning to iterate.");
+            try {
+                initialize();
+                // Call iterate() until finish() is called or postfire()
+                // returns false.
+                _debug("-- Manager beginning to iterate.");
 
-            while (!_finishRequested) {
-                if (!iterate()) break;
-                if (_pauseRequested) {
-                    _setState(PAUSED);
-                    while (_pauseRequested && !_finishRequested) {
-                        try {
-                            wait();
-                        } catch (InterruptedException e) {
-                            // ignore.
+                while (!_finishRequested) {
+                    if (!iterate()) break;
+                    if (_pauseRequested) {
+                        _setState(PAUSED);
+                        while (_pauseRequested && !_finishRequested) {
+                            try {
+                                wait();
+                            } catch (InterruptedException e) {
+                                // ignore.
+                            }
                         }
                     }
                 }
+                completedSuccessfully = true;
+            } catch (Throwable throwable) {
+                // Catch anything that can be throw (Error, Exception etc.)
+                // Catching just KernelException will not work, since
+                // we want to be sure to rethrow things like LinkErrors.
+
+                // We use THROWING_A_THROWABLE in NonStrictTest.wrapup()
+                // so we be sure the actor fires and reads enough inputs.
+                _setState(THROWING_A_THROWABLE);
+                initialThrowable = throwable;
             }
-            completedSuccessfully = true;
         } finally {
             try {
                 wrapup();
@@ -321,6 +340,18 @@ public class Manager extends NamedObj implements Runnable {
                 _finishRequested = false;
                 if (completedSuccessfully) {
                     _notifyListenersOfCompletion();
+                }
+                if (initialThrowable != null) {
+                    if (initialThrowable instanceof KernelException) {
+                        // Since this class is declared to throw
+                        // KernelException, if we have one, we throw it.
+                        throw (KernelException)initialThrowable;
+                    } else {
+                        // Ok, it is not a KernelException, so we 
+                        // rethrow it as the cause of a KernelException
+                        throw new IllegalActionException(this, 
+                                initialThrowable, null);
+                    }
                 }
             }
         }
