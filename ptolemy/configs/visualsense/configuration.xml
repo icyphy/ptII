@@ -105,26 +105,18 @@ to another. Then delete this annotation.</text></svg></configure></property>
     <!-- Default utilities library. -->
     <input source="ptolemy/configs/utilitiesLibrary.xml"/>
 
-    <!-- Default director library. -->
-    <!-- This uses configure so that directors are not instantiated -->
-    <!-- until (and unless) the library is opened. -->
-    <entity name="director library" class="ptolemy.moml.EntityLibrary">
-      <configure>
-        <?moml
-          <group>
-            <input source="ptolemy/configs/basicDirectors.xml"/>
-          </group>
-        ?>
-      </configure>
-    </entity>
+    <!-- director library. -->
+    <input source="ptolemy/configs/visualsense/directors.xml"/>
 
-    <input source="ptolemy/domains/wireless/wireless.xml"/>
+    <!-- channels -->
+    <input source="ptolemy/domains/wireless/lib/channels.xml"/>
 
     <!-- Default actor library. -->
-    <entity name="actor library" class="ptolemy.moml.EntityLibrary">
+    <entity name="Actors" class="ptolemy.moml.EntityLibrary">
       <configure>
         <?moml
           <group>
+            <input source="ptolemy/domains/wireless/lib/wirelessentities.xml"/>
             <input source="ptolemy/configs/basicActorLibrary.xml"/>
           </group>
         ?>

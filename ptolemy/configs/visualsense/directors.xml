@@ -1,17 +1,22 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-   <group>
-      <doc>default director library</doc>
-      <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector"/>
+<entity name="Directors" class="ptolemy.moml.EntityLibrary">
+
+  <!-- Marker so that tree view expands the library. -->
+  <property name="_libraryMarker"
+            class="ptolemy.kernel.util.SingletonAttribute"/>
+
+  <property name="WirelessDirector" class="ptolemy.domains.wireless.kernel.WirelessDirector">
+  </property>
+  <entity name="Directors for Nodes" class="ptolemy.moml.EntityLibrary">
+    <configure>
+    <?moml
+      <group>
       <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector"/>
-      <!-- No DT -->
+      <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector"/>
       <property name="PN Director" class="ptolemy.domains.pn.kernel.PNDirector"/>
-      <property name="FSM Director" class="ptolemy.domains.fsm.kernel.FSMDirector"/>
-      <!-- No Giotto -->
-      <!-- No TM -->
       <property name="CSP Director" class="ptolemy.domains.csp.kernel.CSPDirector"/>
-      <!-- No DDE -->
       <property name="CT Director" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
          <property name="ODESolver">
             <property name="style" class="ptolemy.actor.gui.style.EditableChoiceStyle">
@@ -44,8 +49,12 @@
 	        </property>
          </property>
       </property>
+
       <property name="Director" class="ptolemy.actor.Director">
          <doc>Simple director that executes actors in the order in which they were created.</doc>
       </property>
-   </group>
-
+      </group>
+    ?>
+    </configure>
+  </entity>
+</entity>
