@@ -499,16 +499,16 @@ public class Histogram extends PlotBox {
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
-    // The current dataset.
+    /** @serial The current dataset. */
     protected int _currentdataset = -1;
 
-    // A vector of datasets.
+    /** @serial A vector of datasets. */
     protected Vector _points = new Vector();
 
-    // A vector of histogram data.
+    /** @serial A vector of histogram data. */
     protected Vector _histogram = new Vector();
 
-    // Indicate that painting is complete.
+    /** @serial  Indicate that painting is complete. */
     protected boolean _painted = false;
 
     ///////////////////////////////////////////////////////////////////
@@ -566,14 +566,21 @@ public class Histogram extends PlotBox {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    /** @serial The width of a bar. */
     private double _barwidth = 0.5;
+
+    /** @serial The offset between bars. */
     private double _baroffset = 0.15;
+
+    /** @serial The width of a bin. */
     private double _binWidth = 1.0;
+
+    /** @serial The offset between bins. */
     private double _binOffset = 0.5;
 
-    // Last filename seen in command-line arguments.
+    /** @serial Last filename seen in command-line arguments. */
     private String _filename = null;
 
-    // Set by _drawPlot(), and reset by clear()
+    /** @serial  Set by _drawPlot(), and reset by clear(). */
     private boolean _showing = false;
 }

@@ -85,6 +85,9 @@ public class PlotLiveDemo extends PlotLive {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    /** @serial True if this is the first time through. */
     private boolean _first = true;
+
+    /** @serial Value beig plotted */
     private double _count = 0.0;
 }

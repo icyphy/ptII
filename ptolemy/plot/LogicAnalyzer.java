@@ -195,8 +195,8 @@ public class LogicAnalyzer extends PlotBox {
     }
 
     /** Override the base class to indicate that a new data set is being read.
-     *  This method is deprecated.  Use read() or readPxgraph() instead.
-     *  @deprecated
+     *  @deprecated  This method is deprecated.  Use read() or
+     *  readPxgraph() instead.
      */
     public void parseFile(String filespec, URL documentBase) {
         _firstinset = true;
@@ -452,13 +452,13 @@ public class LogicAnalyzer extends PlotBox {
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
-    // The current dataset.
+    /** @serial The current dataset. */
     protected int _currentdataset = -1;
 
-    // A vector of datasets.
+    /** @serial A vector of datasets. */
     protected Vector _points = new Vector();
 
-    // Indicate that painting is complete.
+    /** @serial Indicate that painting is complete. */
     protected boolean _painted = false;
 
     ///////////////////////////////////////////////////////////////////
@@ -639,23 +639,27 @@ public class LogicAnalyzer extends PlotBox {
     ////                         private variables                 ////
 
 
-    // The highest data set used.
+    /** @serial The highest data set used. */
     private int _maxdataset = -1;
 
-    // True if we saw 'reusedatasets: on' in the file.
+    /** @serial True if we saw 'reusedatasets: on' in the file. */
     private boolean _reusedatasets = false;
 
-    // Is this the first datapoint in a set?
+    /** @serial Is this the first datapoint in a set? */
     private boolean _firstinset = true;
-    // Have we seen a DataSet line in the current data file?
+
+    /** @serial Have we seen a DataSet line in the current data file? */
     private boolean _sawfirstdataset = false;
 
-    // Give both radius and diameter of a point for efficiency.
+    /** @serial Give the radius of a point for efficiency. */
     private int _radius = 3;
+
+    /** @serial Give the diameter of a point for efficiency. */
     private int _diameter = 6;
 
-    // If _pxgraphBlankLineMode is true, then we have not yet seen
-    // a non-pxgraph file directive, so blank lines mean new datasets.
+    /** @serial If _pxgraphBlankLineMode is true, then we have not yet seen
+     * a non-pxgraph file directive, so blank lines mean new datasets.
+     */
     private boolean _pxgraphBlankLineMode = true;
 
     // Check the osarch and use the appropriate endian
@@ -665,10 +669,10 @@ public class LogicAnalyzer extends PlotBox {
     // Data is in little-endian
     private static final int _LITTLE_ENDIAN = 2;
 
-    // Format to read data in.
+    /** @serial Format to read data in. */
     private int _endian = _NATIVE_ENDIAN;
 
-    // Information about the previously plotted point.
+    /** @serial Information about the previously plotted point. */
     private Vector _prevx = new Vector(), _prevy = new Vector();
 
     // Half of the length of the error bar horizontal leg length;
@@ -679,13 +683,15 @@ public class LogicAnalyzer extends PlotBox {
     // marks, that makes 110 unique signal identities.
     private static final int _MAX_MARKS = 10;
 
-    // Flag indicating validity of _xBottom, _xTop, _yBottom, and _yTop.
+    /** @serial Flag indicating validity of _xBottom, _xTop,
+     *  _yBottom, and _yTop.
+     */
     private boolean _xyInvalid = false;
 
-    // Last filename seen in command-line arguments.
+    /** @serial Last filename seen in command-line arguments. */
     private String _filename = null;
 
-    // Set by _drawPlot(), and reset by clear()
+    /** @serial Set by _drawPlot(), and reset by clear() */
     private boolean _showing = false;
 
     // NOTE: This strategy fails due to a bug in jdk 1.1
@@ -694,8 +700,8 @@ public class LogicAnalyzer extends PlotBox {
     //     // FIXME: This has to be friendly or Netscape fails
     //     boolean _painting = false;
 
-    // the ratio between the height of the digital signal compared to the grid
-    // height.
+    /** @serial the ratio between the height of the digital signal
+     *  compared to the grid height.
+     */
     private double _heightRatio = 0.9;
-
 }

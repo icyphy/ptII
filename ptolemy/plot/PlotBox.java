@@ -434,8 +434,7 @@ public class PlotBox extends Panel {
     }
 
     /** Open up the input file, which could be stdin, a URL, or a file.
-     *  This method is deprecated.  Use read() instead.
-     *  @deprecated
+     *  @deprecated This method is deprecated.  Use read() instead.
      */
     public void parseFile(String filespec, URL documentBase) {
         DataInputStream in = null;
@@ -1563,40 +1562,62 @@ public class PlotBox extends Panel {
     protected transient boolean _yRangeGiven = false;
     protected transient boolean _rangesGivenByZooming = false;
 
-    // If they have been given the top and bottom of the x and y ranges.
-    // This is different from _xMin and _xMax, which actually represent
-    // the range of data that is plotted.  This represents the range
-    // specified (which may be different due to zooming).
-    /** @serial The given X and Y ranges. */
+    /** @serial The given X and Y ranges.
+     * If they have been given the top and bottom of the x and y ranges.
+     * This is different from _xMin and _xMax, which actually represent
+     * the range of data that is plotted.  This represents the range
+     * specified (which may be different due to zooming).
+     */
     protected double _xlowgiven, _xhighgiven, _ylowgiven, _yhighgiven;
 
-    // The minimum and maximum values registered so far, for auto ranging.
+    /** @serial The minimum X value registered so for, for auto ranging. */
     protected double _xBottom = Double.MAX_VALUE;
+
+    /** @serial The maximum X value registered so for, for auto ranging. */
     protected double _xTop = - Double.MAX_VALUE;
+
+    /** @serial The minimum Y value registered so for, for auto ranging. */
     protected double _yBottom = Double.MAX_VALUE;
+
+    /** @serial The maximum Y value registered so for, for auto ranging. */
     protected double _yTop = - Double.MAX_VALUE;
 
-    // Whether to draw the axes using a logarithmic scale.
+    /** @serial Whether to draw the axes using a logarithmic scale. */
     protected boolean _xlog = false, _ylog = false;
 
-    // For use in calculating log base 10.  A log times this is a log base 10.
+    // For use in calculating log base 10. A log times this is a log base 10.
     protected static final double _LOG10SCALE = 1/Math.log(10);
 
-    // Whether to draw a background grid.
+    /** @serial Whether to draw a background grid. */
     protected boolean _grid = true;
 
-    // Whether to wrap the X axis
+    /** @serial Whether to wrap the X axis. */
     protected boolean _wrap = false;
 
     /** @serial Color of the background, settable from HTML. */
     protected Color _background = Color.white;
+
     /** @serial Color of the foreground, settable from HTML. */
     protected Color _foreground = Color.black;
 
-    // Derived classes can increment these to make space around the plot.
+    /** @serial Top padding.
+     *  Derived classes can increment these to make space around the plot.
+     */
     protected int _topPadding = 10;
+
+    /** @serial Bottom padding.
+     *  Derived classes can increment these to make space around the plot.
+     */
     protected int _bottomPadding = 5;
+
+    /** @serial Right padding.
+     *  Derived classes can increment these to make space around the plot.
+     */
     protected int _rightPadding = 10;
+
+    /** @serial Left padding.
+     *  Derived classes can increment these to make space around the plot.
+     */
     protected int _leftPadding = 10;
 
     /** @serial The plot rectangle in pixels.
@@ -1608,7 +1629,7 @@ public class PlotBox extends Panel {
     /** @serial Scaling used in plotting points. */
     protected double _yscale = 1.0, _xscale = 1.0;
 
-    // Indicator whether to use _colors
+    /** @serial Indicator whether to use _colors. */
     protected boolean _usecolor = true;
 
     // Default _colors, by data set.
@@ -1629,14 +1650,15 @@ public class PlotBox extends Panel {
         new Color(0x14ff14),   // green-ish
     };
 
-    // Width and height of component in pixels.
+    /** @serial Width and height of component in pixels. */
     protected int _width = 400, _height = 400;
 
-    // The document base we use to find the _filespec.
-    // NOTE: Use of this variable is deprecated.  But it is made available
-    // to derived classes for backward compatibility.
-    // FIXME: Sun's appletviewer gives an exception if this is protected.
-    // Why?? So we make it temporarily public.
+    /** @serial The document base we use to find the _filespec.
+     * NOTE: Use of this variable is deprecated.  But it is made available
+     * to derived classes for backward compatibility.
+     * FIXME: Sun's appletviewer gives an exception if this is protected.
+     * Why?? So we make it temporarily public.
+     */
     public URL _documentBase = null;
 
 
@@ -2259,7 +2281,7 @@ public class PlotBox extends Panel {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // Image to draw onto to avoid flashing.
+    /** @serial Image to draw onto to avoid flashing. */
     private Image _buffer;
 
     /** @serial The file to be opened. */

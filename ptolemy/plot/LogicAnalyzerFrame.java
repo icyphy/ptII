@@ -133,17 +133,25 @@ public class LogicAnalyzerFrame extends Frame {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    /** The plot object held by this frame.
-     */
+    /** @serial The plot object held by this frame. */
     public LogicAnalyzer logicAnalyzer = new LogicAnalyzer();
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
+    /** @serial Menubar for this frame. */
     protected MenuBar _menubar = new MenuBar();
+
+    /** @serial File menu for this frame. */ 
     protected Menu _fileMenu = new Menu("File");
+
+    /** @serial Special menu for this frame. */ 
     protected Menu _specialMenu = new Menu("Special");
+
+    /** @serial directory that contains the input file. */ 
     protected String _directory = null;
+
+    /** @serial name of the input file. */
     protected String _filename = null;
 
     ///////////////////////////////////////////////////////////////////

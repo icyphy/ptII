@@ -166,19 +166,29 @@ public class PlotFrame extends Frame {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    /** The plot object held by this frame.
-     */
+    /** @serial The plot object held by this frame. */
     // FIXME: uncomment final when we upgrade to jdk1.2
     public /*final*/ PlotBox plot;
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
+    
+    /** @serial Menubar for this frame. */
     protected MenuBar _menubar = new MenuBar();
+
+    /** @serial File menu for this frame. */ 
     protected Menu _fileMenu = new Menu("File");
+
+    /** @serial Special menu for this frame. */ 
     protected Menu _specialMenu = new Menu("Special");
+
+    /** @serial directory that contains the input file. */ 
     protected String _directory = null;
+
+    /** @serial name of the input file. */
     protected String _filename = null;
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////

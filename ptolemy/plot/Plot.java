@@ -1870,16 +1870,18 @@ public class Plot extends PlotBox {
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
-    // The current dataset.
+    /** @serial The current dataset. */
     protected int _currentdataset = -1;
 
-    // A vector of datasets.
+    /** @serial A vector of datasets. */
     protected Vector _points = new Vector();
 
-    // An indicator of the marks style.  See _parseLine method for
-    // interpretation.
+    /** @serial An indicator of the marks style.  See _parseLine method for
+     * interpretation.
+     */
     protected int _marks;
-    // Indicate that painting is complete.
+
+    /** @serial Indicate that painting is complete. */
     protected boolean _painted = false;
 
     ///////////////////////////////////////////////////////////////////
@@ -2121,44 +2123,63 @@ public class Plot extends PlotBox {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    /** @serial Number of points to persist for. */
     private int _pointsPersistence = 0;
+
+    /** @serial Number of sweeps to persist for. */
     private int _sweepsPersistence = 0;
+
+    /** @serial True if this is a bar plot. */
     private boolean _bars = false;
+
+    /** @serial Width of a bar in x axis units. */
     private double _barwidth = 0.5;
+
+    /** @serial Offset per dataset in x axis units. */
     private double _baroffset = 0.05;
+
+    /** @serial True if the points are connected. */
     private boolean _connected = true;
+
+    /** @serial True if this is an impulse plot. */
     private boolean _impulses = false;
 
-    // The highest data set used.
+    /** @serial The highest data set used. */
     private int _maxdataset = -1;
 
-    // True if we saw 'reusedatasets: on' in the file.
+    /** @serial True if we saw 'reusedatasets: on' in the file. */
     private boolean _reusedatasets = false;
 
-    // Is this the first datapoint in a set?
+    /** @serial Is this the first datapoint in a set? */
     private boolean _firstinset = true;
-    // Have we seen a DataSet line in the current data file?
+
+    /** @serial Have we seen a DataSet line in the current data file? */
     private boolean _sawfirstdataset = false;
 
-    // Give both radius and diameter of a point for efficiency.
+    /** @serial Give the radius of a point for efficiency. */
     private int _radius = 3;
+
+    /** @serial Give the diameter of a point for efficiency. */
     private int _diameter = 6;
 
-    // If _pxgraphBlankLineMode is true, then we have not yet seen
-    // a non-pxgraph file directive, so blank lines mean new datasets.
+    /** @serial If _pxgraphBlankLineMode is true, then we have not yet seen
+     * a non-pxgraph file directive, so blank lines mean new datasets.
+     */
     private boolean _pxgraphBlankLineMode = true;
 
-    // Check the osarch and use the appropriate endian
+    // Check the osarch and use the appropriate endian.
     private static final int _NATIVE_ENDIAN = 0;
+
     // Data is in big-endian
     private static final int _BIG_ENDIAN = 1;
-    // Data is in little-endian
+
+    /// Data is in little-endian
     private static final int _LITTLE_ENDIAN = 2;
 
-    // Format to read data in.
+    /** @serial Format to read data in. */
     private int _endian = _NATIVE_ENDIAN;
 
-    // Information about the previously plotted point.
+    /** @serial Information about the previously plotted point. */
     private Vector _prevx = new Vector(), _prevy = new Vector();
 
     // Half of the length of the error bar horizontal leg length;
@@ -2169,16 +2190,18 @@ public class Plot extends PlotBox {
     // marks, that makes 110 unique signal identities.
     private static final int _MAX_MARKS = 10;
 
-    // Flag indicating validity of _xBottom, _xTop, _yBottom, and _yTop.
+    /** @serial Flag indicating validity of _xBottom, _xTop,
+     *  _yBottom, and _yTop.
+     */
     private boolean _xyInvalid = false;
 
-    // Last filename seen in command-line arguments.
+    /** @serial Last filename seen in command-line arguments. */
     private String _filename = null;
 
-    // Set by _drawPlot(), and reset by clear()
+    /** @serial Set by _drawPlot(), and reset by clear(). */
     private boolean _showing = false;
 
-    // Format information on a per data set basis.
+    /** @serial Format information on a per data set basis. */
     private Vector _formats = new Vector();
 
     ///////////////////////////////////////////////////////////////////
