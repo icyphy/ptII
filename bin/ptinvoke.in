@@ -946,7 +946,7 @@ if [ "$CLASSPATH" != "" ]; then
 	# $CLASSPATH may have double quotes in it.  Sadly, installing
 	# the Quicktime Java tool sets CLASSPATH to something like
         # .:"C:\Program Files\Java\j2re1.4.2_06\lib\ext\QTJava.zip"
-    CLASSPATH="$PTII_DIR${CLASSPATHSEPARATOR}$jarfile${CLASSPATHSEPARATOR}`echo "${CLASSPATH}" | sed 's/"/\\\\\"/g'`"
+    CLASSPATH="$PTII_DIR${CLASSPATHSEPARATOR}$jarfile${CLASSPATHSEPARATOR}`echo "${CLASSPATH}" | sed 's/"/\\\\"/g'`"
 else
     CLASSPATH="$PTII_DIR${CLASSPATHSEPARATOR}$jarfile"
 fi
