@@ -63,10 +63,13 @@ public class DESampler extends AtomicActor {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         // create an output port
-        output = new IOPort(this, "output", false, true);
+        output = new DEIOPort(this, "output", false, true);
         // create input ports
-        input = new IOPort(this, "data input", true, false);
-        clock = new IOPort(this, "clock input", true, false);
+        input = new DEIOPort(this, "data input", true, false);
+        clock = new DEIOPort(this, "clock input", true, false);
+        input.beforePort = clock;
+        clock.triggerList.addElement(output);
+        
     }
 
 
@@ -86,40 +89,46 @@ public class DESampler extends AtomicActor {
                            description(CLASSNAME|FULLNAME));
 
         // Get the receivers.
-        DECQReceiver clockR = (DECQReceiver)(clock.getReceivers())[0][0];
-        DECQReceiver inputR = (DECQReceiver)(input.getReceivers())[0][0];
+        DEReceiver clockR = (DEReceiver)(clock.getReceivers())[0][0];
+        DEReceiver inputR = (DEReceiver)(input.getReceivers())[0][0];
         
         // Check if there's an event in the clock input port.
         if (clockR.hasToken()) {
-            DEToken clockToken = null;
+            DoubleToken clockToken = null;
             try {
-                clockToken = (DEToken)(clock.get(0));
+                clockToken = (DoubleToken)(clock.get(0));
             } catch (NoSuchItemException e) {
                 // Can't occur
-                System.out.println("Check DESampler.fire() for bug.");
+                throw new InvalidStateException("Check DESampler.fire()"+
+                        " for bug.");
             }
             // If the input also has token then update _lastToken.
             if (inputR.hasToken()) {
                 try {
-                _lastToken=(DEToken)(input.get(0));
+                _lastToken=(DoubleToken)(input.get(0));
                 } catch (NoSuchItemException e) {
                     // Can't occur
-                    System.out.println("Check DESampler.fire() for bug2");
+                    throw new InvalidStateException("Check DESampler.fire()"+
+                            " for bug (2)");
                 }
             }
-            // produce the output token.
-            DETag b = (DETag)(clockToken.getTag());
-            DEToken outputToken = new DEToken(_lastToken.getValue(), b);
+                        
             // send the output token via the output port.
-            output.broadcast(outputToken);
-        } else {
+            output.broadcast(_lastToken, ((DECQDirector)getDirector()).currentTime());
+        } else if (inputR.hasToken()) {
             // Record the token from the input.
             try {
-                _lastToken = (DEToken)(input.get(0));
+                _lastToken = (DoubleToken)(input.get(0));
             } catch (NoSuchItemException e) {
-                throw new InvalidStateException("DESampler.fire(), "+
-                        "bad scheduling");
+                // Can't occur.
+                throw new IllegalStateException("Check DESampler.fire() "+
+                        "for bug (3)");
+             
             }
+        } else {
+            // if both inputs are empty, then the scheduler is wrong.
+            throw new InvalidStateException("DESampler.fire(), "+
+                    "bad scheduling");  
         }
     
     }
@@ -131,15 +140,15 @@ public class DESampler extends AtomicActor {
     // have regular C++ comments.
 
     // the intial token
-    private DEToken _zeroToken = new DEToken(0.0, new DETag(0.0,0));
+    private DoubleToken _zeroToken = new DoubleToken(0.0);
 
     // the last token seen in the input port.
-    private DEToken _lastToken = _zeroToken;
+    private DoubleToken _lastToken = _zeroToken;
     
     // the ports.
-    public IOPort output;
-    public IOPort input;
-    public IOPort clock;
+    public DEIOPort output;
+    public DEIOPort input;
+    public DEIOPort clock;
 }
 
 

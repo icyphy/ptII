@@ -111,11 +111,11 @@ public class DEPlot extends AtomicActor{
         
             try {
                 // the following statement might throw an exception.
-                DEToken curToken = (DEToken)_input.get(i);
+                DoubleToken curToken = (DoubleToken)_input.get(i);
                 
                 // if an exception is not thrown then continue below.
                 double curValue = curToken.doubleValue();
-                double curTime = ((DETag)curToken.getTag()).timeStamp();
+                double curTime = ((DECQDirector)getDirector()).currentTime();
                 
                 if (_firstPoint[i]) {
                     _frame.addPoint(i, curTime, curValue, false);

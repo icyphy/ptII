@@ -55,20 +55,25 @@ public class DEClock extends AtomicActor {
      * @exception NameDuplicationException Other star already had this name
      * @exception IllegalActionException internal problem
      */	
-    public DEClock(double interval, CompositeActor container, String name) 
+    public DEClock(double value, 
+            double interval, 
+            CompositeActor container, 
+            String name) 
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         // create an output port
-        output = new IOPort(this, "output", false, true);
+        output = new DEIOPort(this, "output", false, true);
         // create a self loop
-        _loopIn = new IOPort(this, "loop input" , true , false);
-        _loopOut = new IOPort(this, "loop output", false, true );
+        _loopIn = new DEIOPort(this, "loop input" , true , false);
+        _loopOut = new DEIOPort(this, "loop output", false, true );
         // now connect loopIn and loopOut
         _loopRelation = new IORelation(container, name+" loop relation");
         _loopIn.link(_loopRelation);
         _loopOut.link(_loopRelation);
         // set the interval between events.
         _interval = interval;
+        _value = value;
+        
     }
 
 
@@ -84,9 +89,9 @@ public class DEClock extends AtomicActor {
     public void initialize() 
             throws CloneNotSupportedException, IllegalActionException {
         // The initializer event is at _interval behind time zero.
-        DEToken initEvent = new DEToken(1.0, new DETag(0.0-_interval,0));
+        DoubleToken initEvent = new DoubleToken(_value);
         // Send out via the self loop output port.
-        _loopOut.send(0, initEvent);
+        _loopOut.send(0, initEvent, 0.0-_interval);
         
     }
 
@@ -98,22 +103,20 @@ public class DEClock extends AtomicActor {
     public void fire() throws CloneNotSupportedException, IllegalActionException{
         System.out.println("Firing DEClock");
         // get the input token from the self loop input port.
-        DEToken inputToken;
+        DoubleToken inputToken;
         try {
-            inputToken = (DEToken)(_loopIn.get(0));
+            inputToken = (DoubleToken)(_loopIn.get(0));
         } catch (NoSuchItemException e) {
             // this can't happen
             throw new InvalidStateException("Bug in DEClock.fire()");
         }
         
-        // produce the output token which is delayed by _interval.
-        double a = inputToken.getValue();
-        DETag b = (DETag)(inputToken.getTag());
-        DEToken outputToken = new DEToken(a, b.increment(_interval,0));
+        // obtain the time stamp of the input token.
+        double inputTime = ((DECQDirector)getDirector()).currentTime();
     
-        // send the output token via _loopOut and output IOPort.
-        _loopOut.send(0, outputToken);
-        output.broadcast((Token)outputToken.clone());
+        // send the delayed input token via _loopOut and output DEIOPort.
+        _loopOut.send(0, inputToken, inputTime + _interval);
+        output.broadcast((DoubleToken)inputToken.clone(), inputTime + _interval);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -121,10 +124,15 @@ public class DEClock extends AtomicActor {
 
     // the interval between events
     private double _interval;
+    // the output value.
+    private double _value;
 
     // the ports
-    public IOPort output;
-    private IOPort _loopIn;
-    private IOPort _loopOut;
+    public DEIOPort output;
+    private DEIOPort _loopIn;
+    private DEIOPort _loopOut;
     private IORelation _loopRelation;
 }
+
+
+

@@ -61,10 +61,10 @@ public class DEPoisson extends AtomicActor {
             String name) throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         // create an output port
-        output = new IOPort(this, "output", false, true);
+        output = new DEIOPort(this, "output", false, true);
         // create a self loop
         _loopIn = new IOPort(this, "loop input" , true , false);
-        _loopOut = new IOPort(this, "loop output", false, true );
+        _loopOut = new DEIOPort(this, "loop output", false, true );
         // now connect loopIn and loopOut
         _loopRelation = new IORelation(container, name+" loop relation");
         _loopIn.link(_loopRelation);
@@ -87,9 +87,9 @@ public class DEPoisson extends AtomicActor {
      */
     public void initialize() throws CloneNotSupportedException, IllegalActionException {
         // The initializer event is at time zero.
-        DEToken initEvent = new DEToken(_magnitude, new DETag(0.0,0));
+        DoubleToken initEvent = new DoubleToken(_magnitude);
         // Send out via the self loop output port.
-        _loopOut.send(0, initEvent);
+        _loopOut.send(0, initEvent, -1.0);
         
     }
 
@@ -102,31 +102,31 @@ public class DEPoisson extends AtomicActor {
     public void fire() throws CloneNotSupportedException, IllegalActionException{
         System.out.println("Firing DEPoisson");
         // get the input token from the self loop input port.
-        DEToken inputToken;
+        DoubleToken inputToken;
         try {
-            inputToken = (DEToken)(_loopIn.get(0));
+            inputToken = (DoubleToken)(_loopIn.get(0));
         } catch (NoSuchItemException e) {
             // this can't happen
             throw new InvalidStateException("Bug in DEPoisson.fire()");
         }
 
-        // compute T
+        // compute T, an exponential random variable.
         double T = -Math.log((1-Math.random()))*_lambda;
 
-        // produce the output token which is delayed by _interval.
-        
-        DETag b = (DETag)(inputToken.getTag());
-        DEToken outputToken;
+        // produce the output token which is delayed by T time unit.
+                        
+        double nextEventTime = 0.0;
         if (_firstTime) {
-            outputToken = new DEToken(_magnitude, b.increment(0,0));
+            nextEventTime = 0.0;
             _firstTime = false;
         } else {
-            outputToken = new DEToken(_magnitude, b.increment(T,0));
+            nextEventTime = T + ((DECQDirector)getDirector()).currentTime();
         }
     
         // send the output token via _loopOut and output IOPort.
-        _loopOut.send(0, outputToken);
-        output.broadcast((Token)outputToken.clone());
+        
+        _loopOut.send(0, inputToken, nextEventTime);
+        output.broadcast((Token)inputToken.clone(), nextEventTime);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -143,9 +143,9 @@ public class DEPoisson extends AtomicActor {
     private boolean _firstTime = true;
     
     // the ports.
-    public IOPort output;
+    public DEIOPort output;
     private IOPort _loopIn;
-    private IOPort _loopOut;
+    private DEIOPort _loopOut;
     private IORelation _loopRelation;
 }
 
