@@ -10,6 +10,7 @@
 <entity name="TMCompositeFacade" class="ptolemy.domains.tm.lib.TMCompositeFacade">
 </entity>
 
+	<property name="SchedulePlotter" class="ptolemy.domains.tm.kernel.SchedulePlotter"/>
       </group>
     ?>
   </configure>
