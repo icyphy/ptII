@@ -47,6 +47,7 @@ import ptolemy.actor.gui.JNLPUtilities;
 import ptolemy.actor.gui.MoMLApplication;
 import ptolemy.actor.gui.ModelDirectory;
 import ptolemy.actor.gui.PtolemyEffigy;
+import ptolemy.data.expr.Parameter;
 import ptolemy.gui.GraphicalMessageHandler;
 import ptolemy.gui.MessageHandler;
 import ptolemy.kernel.ComponentEntity;
@@ -253,6 +254,12 @@ public class VergilApplication extends MoMLApplication {
      *  is the MoML file full/configuration.xml under the _basePath
      *  directory, which is usually ptolemy/configs.
      *  using different command line arguments can change the value
+     *  Usually, we also open the user library, which is located
+     *  in the directory returned by
+     *  {@link ptolemy.util.StringUtilities#preferencesDirectory()}
+     *  If the configuration contains a top level Parameter named
+     *  _hideUserLibrary, then we do not open the user library. 
+     * 
      *  @return A default configuration.
      *  @exception Exception If the configuration cannot be opened.
      */
@@ -270,52 +277,61 @@ public class VergilApplication extends MoMLApplication {
                     + _configurationURL + "'", ex);
         }
 
-        // Read the user's vergilUserLibrary.xml file
-        //
-        // Use StringUtilities.getProperty() so we get the proper
-        // canonical path
+        Parameter hideUserLibraryAttribute =
+            (Parameter) configuration.getAttribute(
+                    "_hideUserLibrary",
+                    Parameter.class);
+        if (hideUserLibraryAttribute == null
+            || hideUserLibraryAttribute.getExpression().equals("false")) {
 
-        // FIXME: If the name is something like
-        // "vergilUserLibrary.xml" then when we save an actor in the
-        // library and then save the window that comes up the name of
-        // entity gets set to vergilUserLibrary instead of the value
-        // of VERGIL_USER_LIBRARY_NAME.  This causes problems when we
-        // try to save another file.  The name of the entity gets
-        // changed by the saveAs code.
+            // Read the user's vergilUserLibrary.xml file
+            //
+            // Use StringUtilities.getProperty() so we get the proper
+            // canonical path
 
-        String libraryName = null;
-        try {
-            libraryName = StringUtilities.preferencesDirectory()
-                + BasicGraphFrame.VERGIL_USER_LIBRARY_NAME + ".xml";
-        } catch (Exception ex) {
-            System.out.println("Warning: Failed to get the preferences "
-                    + "directory (-sandbox always causes this): " + ex);
-        }
-        if (libraryName != null) {
-            System.out.print("Opening user library " + libraryName + "...");
-            File file = new File(libraryName);
-            if (!file.isFile() || !file.exists()) {
-                try {
-                    file.createNewFile();
-                    FileWriter writer = new FileWriter(file);
-                    writer.write("<entity name=\""
-                            + BasicGraphFrame.VERGIL_USER_LIBRARY_NAME
-                            + "\" class=\"ptolemy.moml.EntityLibrary\"/>");
-                    writer.close();
-                } catch (Exception ex) {
-                    MessageHandler.error("Failed to create an empty user "
-                            + "library: "
-                            + libraryName, ex);
-                }
-            }
+            // FIXME: If the name is something like
+            // "vergilUserLibrary.xml" then when we save an actor in the
+            // library and then save the window that comes up the name of
+            // entity gets set to vergilUserLibrary instead of the value
+            // of VERGIL_USER_LIBRARY_NAME.  This causes problems when we
+            // try to save another file.  The name of the entity gets
+            // changed by the saveAs code.
 
-            // Load the user library.
+            String libraryName = null;
             try {
-                openLibrary(configuration, file);
-                System.out.println(" Done");
+                libraryName = StringUtilities.preferencesDirectory()
+                    + BasicGraphFrame.VERGIL_USER_LIBRARY_NAME + ".xml";
             } catch (Exception ex) {
-                MessageHandler.error("Failed to display user library.",
-                        ex);
+                System.out.println("Warning: Failed to get the preferences "
+                        + "directory (-sandbox always causes this): " + ex);
+            }
+            if (libraryName != null) {
+                System.out.print("Opening user library "
+                        + libraryName + "...");
+                File file = new File(libraryName);
+                if (!file.isFile() || !file.exists()) {
+                    try {
+                        file.createNewFile();
+                        FileWriter writer = new FileWriter(file);
+                        writer.write("<entity name=\""
+                                + BasicGraphFrame.VERGIL_USER_LIBRARY_NAME
+                                + "\" class=\"ptolemy.moml.EntityLibrary\"/>");
+                        writer.close();
+                    } catch (Exception ex) {
+                        MessageHandler.error("Failed to create an empty user "
+                                + "library: "
+                                + libraryName, ex);
+                    }
+                }
+
+                // Load the user library.
+                try {
+                    openLibrary(configuration, file);
+                    System.out.println(" Done");
+                } catch (Exception ex) {
+                    MessageHandler.error("Failed to display user library.",
+                            ex);
+                }
             }
         }
 
