@@ -279,6 +279,21 @@ public class TimedQueueReceiver {
         return _completionTime;
     }
 
+    /** Return true if this receiver has a NullToken at the front 
+     *  of the queue; return false otherwise.
+     * @return True if this receiver contains a NullToken in the
+     *  oldest queue position; return false otherwise.
+     */
+    synchronized boolean hasNullToken() {
+	if( _queue.size() <= 0 ) {
+	    return false;
+	} 
+	if( _queue.get(0) instanceof NullToken ) {
+	    return true;
+	} 
+        return false;
+    }
+
     /** Set the completion time of this receiver.
      * @param time The completion time of this receiver.
      */
