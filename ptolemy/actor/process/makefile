@@ -31,7 +31,7 @@
 
 ME =		ptolemy/actor/process
 
-DIRS = 		test
+DIRS = 		test 
 
 # Root of the Ptolemy II directory
 ROOT =		../../..
@@ -54,7 +54,11 @@ JSRCS = \
 	ProcessDirector.java \
 	ProcessReceiver.java \
 	ProcessThread.java \
-	TerminateProcessException.java
+	TerminateProcessException.java \
+	BoundaryReceiver.java \
+	Branch.java \
+	BranchController.java \
+	MultiBranchActor.java
 
 EXTRA_SRCS =	$(JSRCS)
 
