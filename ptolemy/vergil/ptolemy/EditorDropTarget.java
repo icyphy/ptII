@@ -40,6 +40,7 @@ import ptolemy.vergil.toolbox.PtolemyTransferable;
 
 import diva.graph.GraphController;
 import diva.graph.GraphModel;
+import diva.graph.GraphPane;
 import diva.graph.JGraph;
 import diva.gui.Application;
 
@@ -47,6 +48,7 @@ import diva.gui.Application;
 import java.awt.dnd.*;
 import java.awt.datatransfer.*;
 import java.awt.Point;
+import java.awt.geom.Point2D;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -150,9 +152,20 @@ public class EditorDropTarget extends DropTarget {
 		return;
             }
 
-	    final Point point = dtde.getLocation();
-	    final GraphController controller =
-		((JGraph)getComponent()).getGraphPane().getGraphController();
+	    Point originalPoint = dtde.getLocation();
+            GraphPane pane = ((JGraph)getComponent()).getGraphPane();
+            final Point2D point = new Point2D.Double();
+            // account for the scaling in the pane.
+            try {
+                pane.getTransformContext().getInverseTransform().transform(originalPoint, 
+                        point);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                return;
+            }
+
+
+	    final GraphController controller = pane.getGraphController();
 	    GraphModel model = controller.getGraphModel();
 	    final CompositeEntity container = (CompositeEntity)model.getRoot();
 	    while(iterator.hasNext()) {
@@ -262,7 +275,7 @@ public class EditorDropTarget extends DropTarget {
         // set its location to the specified point.
         // Note that this needs to be done after the change request
         // that creates the object has succeeded.
-        private void _setLocation(NamedObj newObject, Point point)
+        private void _setLocation(NamedObj newObject, Point2D point)
                 throws Exception {
             if (newObject == null) {
                 throw new InternalErrorException(
@@ -276,8 +289,8 @@ public class EditorDropTarget extends DropTarget {
             }
 
             double coords[] = new double[2];
-            coords[0] = ((int)point.x);
-            coords[1] = ((int)point.y);
+            coords[0] = ((int)point.getX());
+            coords[1] = ((int)point.getY());
             location.setLocation(coords);
         }
     }
