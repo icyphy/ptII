@@ -263,7 +263,6 @@ public class GenericJNIActor extends TypedAtomicActor {
     public void createPorts() throws IllegalActionException {
         Iterator arguments = this.argumentsList().iterator();
         TypedIOPort port;
-        boolean exist = false;
         while (arguments.hasNext()) {
             Argument argument = (Argument) arguments.next();
             port = (TypedIOPort) this.getPort(argument.getName());
@@ -542,7 +541,6 @@ public class GenericJNIActor extends TypedAtomicActor {
                     }
                 } else if (typ.equals("class [I")) {
                     try {
-                        int[] tab = (int[])field.get(obj);
                         Token[] toks =  new Token[((int[])field.get(obj))
                                 .length];
                         for (int j = 0; j<((int[])field.get(obj)).length ; j++)
@@ -554,7 +552,6 @@ public class GenericJNIActor extends TypedAtomicActor {
                     }
                 }  else if (typ.equals("class [D")) {
                     try {
-                        double[] tab = (double[])field.get(obj);
                         Token[] toks =  new Token[((double[])field.get(obj))
                                 .length];
                         for (int j = 0; j<((double[])field.get(obj)).length;
@@ -618,25 +615,6 @@ public class GenericJNIActor extends TypedAtomicActor {
     /** Load the generated class and search for its fire method.
      */
     public void initialize() throws IllegalActionException {
-        String nativeLibraryValue = "";
-        String libraryDirectoryValue = "";
-        try {
-            libraryDirectoryValue =
-                ((StringToken) ((Parameter) this
-                        .getAttribute("libraryDirectory"))
-                        .getToken())
-                .stringValue();
-
-            nativeLibraryValue =
-                ((StringToken) ((Parameter) this
-                        .getAttribute("nativeLibrary"))
-                        .getToken())
-                .toString();
-        } catch (Exception ex) {
-            throw new IllegalActionException(this, ex,
-                    "no libraryDirectory or "
-                    + "nativeLibrary Parameter");
-        }
 
         //         String interNativeLibraryValue =
         //             "jni" + nativeLibraryValue

@@ -106,7 +106,6 @@ public class ArgumentConfigurer extends Query implements QueryListener {
     public void apply() {
         boolean foundOne = false;
         Iterator arguments = _object.argumentsList().iterator();
-        NamedObj parent = null;
         while (arguments.hasNext()) {
             Object candidate = arguments.next();
             if (candidate instanceof Argument) {

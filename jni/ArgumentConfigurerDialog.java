@@ -199,9 +199,7 @@ public class ArgumentConfigurerDialog
             return;
         // Open a new dialog.
         try {
-
-            ArgumentConfigurerDialog dialog =
-                new ArgumentConfigurerDialog(_owner, _target, _configuration);
+            new ArgumentConfigurerDialog(_owner, _target, _configuration);
 
         } catch (Exception e) {
             MessageHandler.error("TRT error !", e);
