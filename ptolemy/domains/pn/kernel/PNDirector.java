@@ -128,7 +128,7 @@ public class PNDirector extends Director {
             _terminate = true;
             if (_debug > 7 )
                 System.out.println("PNExecutive: _(): setTerminate()");
-            workspace().notify();
+            workspace().notifyAll();
         }
     }
     
@@ -300,7 +300,7 @@ public class PNDirector extends Director {
                 if (_terminate) {
                     if (_debug > 6 ) System.out.println(
                             "PNExecutive: _handleDeadlock(): _terminate");
-                    //return true;
+                    return true;
                 }
                 // check if it's real
                 if (_writeBlockCount==0) {
@@ -309,7 +309,7 @@ public class PNDirector extends Director {
                 }
                 else {
                     // it's an artificial deadlock
-                    System.out.println("Artificial deadlock");
+                    //System.out.println("Artificial deadlock");
                     _deadlock = false;
                     // find the input port with lowest capacity queue 
                     // that is blocked on a write and increment it's capacity
