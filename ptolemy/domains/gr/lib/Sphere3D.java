@@ -81,17 +81,24 @@ public class Sphere3D extends GRShadedShape {
     public Parameter radius;
 
 
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return the encapsulated Java3D node of this 3D actor. The encapsulated
-     *  node for this actor is a Java3D sphere.
-     *
-     *  @return the Java3D Sphere
-     */
-    protected Node _getNodeObject() {
-        return (Node) _containedNode;
+
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        if (attribute == radius) {
+            if (scaleTransform != null) {
+                double scale = _getRadius();
+                scaleTransform.setScale(new Vector3d(scale,scale,scale));
+                _scaler.setTransform(scaleTransform);
+            }
+        }
+        super.attributeChanged(attribute);
     }
+
+    
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -102,7 +109,25 @@ public class Sphere3D extends GRShadedShape {
      */
     protected void _createModel() throws IllegalActionException {
         super._createModel();
-        _containedNode = new Sphere((float)_getRadius(),Sphere.GENERATE_NORMALS,_appearance);
+        _containedNode = new Sphere(1.0f,
+                             Sphere.GENERATE_NORMALS,_appearance);
+        //Shape3D sphereShape = _containedNode.getShape();
+        _scaler = new TransformGroup();
+        _scaler.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+        scaleTransform = new Transform3D();
+        double scale = _getRadius();
+        scaleTransform.setScale(new Vector3d(scale,scale,scale));
+        _scaler.setTransform(scaleTransform);
+        _scaler.addChild(_containedNode);
+    }
+    
+    /** Return the encapsulated Java3D node of this 3D actor. The encapsulated
+     *  node for this actor is a Java3D sphere.
+     *
+     *  @return the Java3D Sphere
+     */
+    protected Node _getNodeObject() {
+        return (Node) _scaler;
     }
 
 
@@ -120,6 +145,8 @@ public class Sphere3D extends GRShadedShape {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
+    private boolean _dirty;
+    private Transform3D scaleTransform;
+    private TransformGroup _scaler;
     private Sphere _containedNode;
 }
