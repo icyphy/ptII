@@ -68,10 +68,7 @@ JSRCS = \
 	WiredToWireless.java \
 	WirelessToWired.java
 
-
-
 OTHER_FILES_TO_BE_JARED = \
-	actors.xml \
 	channels.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
