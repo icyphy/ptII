@@ -61,7 +61,7 @@ public class PlotApplet extends Applet {
     /** Return a string describing this applet.
      */
     public String getAppletInfo() {
-        return "PlotApplet 1.2: A data plotter.\n" +
+        return "PlotApplet 2.0: A data plotter.\n" +
             "By: Edward A. Lee, eal@eecs.berkeley.edu and\n " +
             "Christopher Hylands, cxh@eecs.berkeley.edu\n" +
             "($Id$)";
