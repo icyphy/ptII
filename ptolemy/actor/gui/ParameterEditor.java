@@ -32,8 +32,6 @@ package ptolemy.actor.gui;
 
 import ptolemy.kernel.util.*;
 import ptolemy.data.expr.Parameter;
-import ptolemy.schematic.util.*;
-import ptolemy.schematic.xml.*;
 import ptolemy.gui.*;
 import java.awt.event.InputEvent;
 import java.awt.event.ActionEvent;
