@@ -83,10 +83,7 @@ public class ComplexMatrixToken extends MatrixToken {
         if (copy == DO_NOT_COPY) {
            _value = value;
         } else {
-           _value = new Complex[_rowCount][_columnCount];
-           for (int i = 0; i < _rowCount; i++) {
-               System.arraycopy(value[i], 0, _value, 0, _columnCount);
-           }
+           _value = ComplexMatrixMath.allocCopy(value);
         }
     } 
 
