@@ -150,7 +150,7 @@ public class InequalitySolver {
 	    info._inCvar = least ? info._ineq.greaterTerm().settable()
 				 : info._ineq.lesserTerm().settable();
 	    if (info._inCvar) {
-	    	if (info._ineq.satisfied()) {
+	    	if (info._ineq.satisfied(_cpo)) {
 		    info._inserted = false;
 		} else { 	// insert to _NS
 		    // FIXME: restore this line for jdk1.2
@@ -209,7 +209,7 @@ public class InequalitySolver {
                 int index1 = index1Wrap.intValue();
 		Info affectedInfo = (Info)_Ilist.elementAt(index1);
                 if (index1 != index && affectedInfo._inCvar) {
-                    if (info._ineq.satisfied()) {    // drop
+                    if (info._ineq.satisfied(_cpo)) {    // drop
                         if (info._inserted) {
 
 			    // FIXME: restore this line for jdk1.2
@@ -238,7 +238,7 @@ public class InequalitySolver {
         for (int i = 0; i < _Ilist.size(); i++) {
 	    Info info = (Info)_Ilist.elementAt(i);
 	    if ( !info._inCvar) {
-                if ( !info._ineq.satisfied()) {
+                if ( !info._ineq.satisfied(_cpo)) {
                     return false;
 		}
             }

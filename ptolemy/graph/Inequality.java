@@ -42,16 +42,13 @@ $Id$
 
 public class Inequality {
 
-    /** Constructs and initializes an inequality.
-     *  @param cpo a CPO over which this inequality is defined over.
+    /** Constructs an inequality.
      *  @param lesserTerm an <code>InequalityTerm</code> that is less than or
      *   equal to the <code>greaterTerm</code> term.
      *  @param greaterTerm an <code>InequalityTerm</code> that is greater than
      *   or equal to the <code>lesserTerm</code> term.
      */
-    public Inequality(CPO cpo, InequalityTerm lesserTerm,
-		      InequalityTerm greaterTerm) {
-        _cpo = cpo;
+    public Inequality(InequalityTerm lesserTerm, InequalityTerm greaterTerm) {
         _lesserTerm = lesserTerm;
         _greaterTerm = greaterTerm;
     }
@@ -75,18 +72,18 @@ public class Inequality {
 
     /** Tests if this inequality is satisfied with the current value
      *  of variables.
+     *  @param cpo a CPO over which this inequality is defined over.
      *  @return <code>true</code> if this inequality is satisfied;
      *   <code>false</code> otherwise.
      */
-    public boolean satisfied() {
-        int result = _cpo.compare(_lesserTerm.value(),
-				  _greaterTerm.value());
+    public boolean satisfied(CPO cpo) {
+        int result = cpo.compare(_lesserTerm.value(),
+				 _greaterTerm.value());
         return (result == CPO.STRICT_LESS || result == CPO.EQUAL);
     }
     
     ////////////////////////////////////////////////////////////////////////
     ////                       private variables                        ////
-    private CPO _cpo = null;
     private InequalityTerm _lesserTerm = null;
     private InequalityTerm _greaterTerm = null;
 }
