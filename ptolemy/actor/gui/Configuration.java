@@ -255,6 +255,28 @@ public class Configuration extends CompositeEntity {
      */
     public Tableau openModel(URL base, URL in, String identifier)
             throws Exception {
+        return openModel(base, in, identifier, null);
+    }
+
+    /** Open the specified URL using the specified effigy factory.
+     *  If a model with the specified identifier is present in the directory,
+     *  then find all the tableaux of that model and make them
+     *  visible; otherwise, read a model from the specified URL <i>in</i>
+     *  and create a default tableau for the model and add the tableau
+     *  to this directory.
+     *  @param base The base for relative file references, or null if
+     *   there are no relative file references.
+     *  @param in The input URL.
+     *  @param identifier The identifier that uniquely identifies the model.
+     *  @param factory The effigy factory to use.
+     *  @return The tableau that is created, or null if none.
+     *  @exception Exception If the URL cannot be read.
+     */
+    public Tableau openModel(URL base,
+            URL in,
+            String identifier,
+            EffigyFactory factory)
+            throws Exception {
         ModelDirectory directory = (ModelDirectory)getEntity(_DIRECTORY_NAME);
         if (directory == null) {
             throw new InternalErrorException("No model directory!");
@@ -264,7 +286,9 @@ public class Configuration extends CompositeEntity {
         if (effigy == null) {
             // No previous effigy exists that is identified by this URL.
             // Find an effigy factory to read it.
-            EffigyFactory factory = (EffigyFactory)getEntity("effigyFactory");
+            if (factory == null) {
+                factory = (EffigyFactory)getEntity("effigyFactory");
+            }
             if (factory == null) {
                 throw new InternalErrorException(
                         "No effigy factories in the configuration!");
@@ -290,7 +314,8 @@ public class Configuration extends CompositeEntity {
             effigy = factory.createEffigy(directory, base, in);
 
             if (effigy == null) {
-                MessageHandler.error("Unsupported file type: "
+                MessageHandler.error(
+                        "Unsupported file type or connection not available: "
                         + in.toExternalForm());
                 return null;
             }
