@@ -79,8 +79,8 @@ JCLASS1_1 = $(JSRCS1_1:%.java=%.class)
 
 JCLASS = $(JCLASS1_0) $(JCLASS1_1)
 
-all: sources jclass $(JZIP)
-install: sources jclass javadocs $(JZIP) 
+all: sources jclass #$(JZIP)
+install: sources jclass javadocs #$(JZIP) 
 docs: javadocs
 
 tests:: $(EXTRA_SRCS)
