@@ -1,6 +1,6 @@
 /* An actor that sorts the elements of an array.
 
- Copyright (c) 1998-2003 The Regents of the University of California.
+ Copyright (c) 2003 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -23,6 +23,8 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
+@ProposedRating Red (cxh@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib;
@@ -52,6 +54,7 @@ descending order. Duplicate entries can be optionally removed.
 
 @author Mark Oliver and Edward A. Lee
 @version $ID: ArraySort.java,v1.0 2003/07/09
+@since Ptolemy II 3.0.2
 */
 
 public class ArraySort extends Transformer {
