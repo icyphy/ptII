@@ -579,7 +579,7 @@ public class RecordType extends StructuredType {
     ///////////////////////////////////////////////////////////////////
     ////                           inner class                     ////
 
-    // A class that encapsulats the declared and resolved types of a
+    // A class that encapsulates the declared and resolved types of a
     // field and implements the InequalityTerm interface.
     private class FieldType implements InequalityTerm {
 
