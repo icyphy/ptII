@@ -398,7 +398,7 @@ public class LocalZenoApplet extends DDEApplet {
                         }
                     }
                 });
-            catch (Exception e) {
+            } catch (Exception e) {
 		e.printStackTrace();
             }
         }
