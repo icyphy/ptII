@@ -22,6 +22,7 @@ infrastructure.
 	<LI> <A HREF="#contact"><B>1.4 How do I contact the authors?</B></A>
 	<LI> <A HREF="#mailing list"><B>1.5 Is there a mailing list?</B></A>
 	<LI> <A HREF="#xgraph"><B>1.6 What is the relationship between xgraph and ptplot?</B></A>
+	<LI> <A HREF="#ptolemyII"><B>1.7 What is the relationship between ptplot and Ptolemy II?</B></A>
 	</MENU>
 
 <LI> <A HREF="#ptplot faq: installation"><B>2. Installation questions</B></A>
@@ -36,6 +37,7 @@ infrastructure.
 
 	<LI> <A HREF="#ptplot troubleshooting overview"><B>2.4	Troubleshooting</B></A>
 	<LI> <A HREF="#ptplot bug list"><B>2.5	Is there a bug list?</B></A>
+	<LI> <A HREF="#ptplot potential features"><B>2.6 What features might you someday implement?</B></A>
 	</MENU>
 
 <LI> <A HREF="#ptplot faq: How do I . . ."><B>3. How do I  . . .</B></A>
@@ -113,6 +115,13 @@ the Java <CODE>pxgraph</CODE> with.  This is one way of using
 the Java version most of the time, but still having access to the
 MIF output facilities in the X11 version.
 
+<DT> <A NAME="ptolemyII"><B>1.7 What is the relationship between ptplot and Ptolemy II?</B></A>
+<DD> 
+Ptolemy II is a set of Java packages supporting heterogeneous, concurrent modeling and design.  One of the packages that is shipped with Ptolemy II
+is Ptplot.  For more information about Ptolemy II, see
+<a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/"><CODE>http://ptolemy.eecs.berkeley.edu/ptolemyII/</CODE></a>.
+We usually do a release of Ptolemy II once a year.  As part of the Ptolemy II
+release process, we usually do a standalone Ptplot release.
 </DL>
  <HR>
 
@@ -175,6 +184,39 @@ Your mail should include:
  <LI>The Todo list is at the top of the
 <A HREF="../Plot.java"><CODE>Plot.java</CODE></A> file.
 </MENU>
+
+<DT> <A NAME="ptplot potential features"><B>2.6 What features might you some day implement?</B></A>
+<DD> Below is a list of frequently requested features that we might
+some day implement.  At this point, we have no plans to implement these
+features, but since the source code is available, anyone can
+go ahead and implement these features on their own
+
+<dl>
+
+<dt> Handling Dates
+<dd> It would be nice if Ptplot could properly display dates
+on the axes.
+It turns out that the code that labels the axes is fairly tricky
+to get right and have it look good.  
+
+<dt> Making the datapoints more interactive
+<dd> It would be nice if the user could mouse on the data points in
+the graph and various things would happen:
+	<menu>
+	<li> The values for the point would pop up as a tooltip
+	<li> The user could jump to a URL
+	</menu>	
+It would be nice if the points could have labels that
+are displayed in the graph.
+
+The way to implement these sorts of features would be to look at the
+zoom code and to add a point type that included a url field.
+
+<dt> Selecting data sets
+<dd> It would be nice if the user could select which datasets were displayed.
+
+</dl>
+
 
 </DL>
 
