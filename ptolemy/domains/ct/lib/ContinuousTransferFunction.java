@@ -219,7 +219,6 @@ public class ContinuousTransferFunction extends TypedCompositeActor {
      *  .
      */
     public void preinitialize() throws IllegalActionException {
-        System.out.println("preinitializing " + getName());
         // Construct local double[] and Check dimensions.
         ArrayToken bToken = (ArrayToken)numerator.getToken();
         int m = bToken.length();
@@ -299,7 +298,6 @@ public class ContinuousTransferFunction extends TypedCompositeActor {
             }
             _opaque = false;
             _workspace.incrVersion();
-            System.out.println("Finish creating the model.");
         } catch (NameDuplicationException ex) {
             // Should never happen.
             throw new InternalErrorException("Duplicated name when "
