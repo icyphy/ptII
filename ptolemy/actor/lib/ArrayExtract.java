@@ -102,7 +102,7 @@ public class ArrayExtract extends Transformer {
      */
     public Parameter sourcePosition;
 
-    /** The length of the segment of the input array that is copied 
+    /** The length of the segment of the input array that is copied
      *  to the output. This is a non-negative integer that defaults
      *  to 1. The sum of it and the <i>sourcePosition</i> is
      *  required to be less than or equal to the length of the input array.

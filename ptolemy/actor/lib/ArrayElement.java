@@ -52,7 +52,7 @@ import java.util.List;
 Extract an element from an array.  This actor reads an array from the
 <i>input</i> port and sends one of its elements to the <i>output</i>
 port.  The element that is extracted is determined by the
-<i>index</i> parameter.  It is required that 0 &lt;= <i>index</i> &lt; 
+<i>index</i> parameter.  It is required that 0 &lt;= <i>index</i> &lt;
 <i>N</i>, where <i>N</i> is the length of the input array, or
 an exception will be thrown by the fire() method.
 
