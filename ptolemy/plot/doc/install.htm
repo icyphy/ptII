@@ -7,22 +7,34 @@
 </head>
 <body>
 <h1>Installing Ptplot</h1>
-Ptplot 5.1 requires Swing, which is shipped as part of JDK 1.3 .
-(In theory, it is possible to install Swing with JDK1.1, but we have not
-tried it).  To run Ptplot 5.1 applets, you must install the version 1.3
+Ptplot 5.1 requires Java 1.2 or later.
+Java 1.3 is preferred.
+The Ptplot 5.1 Windows installers require Java 1.3.
+To run Ptplot, the Java runtime environment (JRE) is sufficient.
+To run the applets in a browser, the Java plug-in is required.
+The JRE is bundled with the plug-in, so downloading the plug-in
+is sufficient.  To extend Ptplot with your own
+Java code, the Java development kit (JDK)
+or an equivalent Java development environment is required.
+The JDK includes a Java compiler.
+
+<p>To run Ptplot 5.1 applets, you must install the version 1.3
 or later of the
-<a href="http://www.javasoft.com/products/plugin/" target="_top">Javasoft Java Plugin</a>.
+<a href="http://www.javasoft.com/products/plugin/" target="_top">Javasoft Java Plug-in</a>.
 In theory, it should be possible to run Ptplot using the JDK1.2 plugin,
 but we recommend upgrading to the JDK 1.3  plugin.
+
+<p> If you will be extending the Ptplot classes, then you
+should install the Java 1.3 Java Development Kit: 
+<a href="http://java.sun.com/j2se/1.3/" target="_top"><CODE>http://java.sun.com/j2se/1.3/</CODE></a>
 
 <p>If you do not want to require your users to install the JDK 1.3  plugin,
 then you should stick with Ptplot3.1, which does not use Swing.
 
 <p>Ptplot is distributed in several formats.
 <menu>
- <li>The usual <a href="#tarorzip">tar file and zip file format.</a>
- <li>The
-<a href="#installshield">Installshield Multiplatform installer.</a>
+ <li><a href="#tarorzip">Instructions for the usual tar file and zip file format.</a>
+ <li><a href="#installshield">Instructions for the Installshield Multiplatform installer.</a>
  <li>As part of the Ptolemy II distribution - This page covers the
  above two cases, for information about installing Ptolemy II
 see <code>$PTII/doc/index.htm</code>
@@ -93,31 +105,6 @@ Edition
  <p>Note that when you run the installer under Windows, Ptplot is
 added to your Start menu under Ptolemy -&gt; Ptplot.
 
-<h3>Installshield limitations</h3>
-The Installshield Installer has a number of bugs:
-<menu>
-<li> The word 'malformed' may appear in the initial installer window.
-(Installshield documents this bug in their 
-<a href="http://support.installshield.com/download/ipmprelnotes.asp" target="_top">Installshield Multi-platform Release Notes</a>.)
-<li> The file chooser dialog is very likely to bring up a dialog
-about not being able to access the A: drive.  The workaround is 
-to hit Cancel. (Documented in the Installshield Release notes)
-<li> By default, the Ptolemy II is installed in the All Users menu.
-Ideally, the user would be given a choice as to whether Ptolemy II
-was installed for the current user or in the All Users menu.
-<li> The user should be prompted for where in the Start menu 
-Ptolemy II is installed.
-<li> The size of the install may be reported as 0kb.
-<li> The percent completed bars may not work.
-<li> Installing a bundled JRE does not work well so we don't use it.
-Installshield Multiplatform edition can be configured to download a
-JVM, but the JVM gets installed in a _jvm directory and is not added
-to Add/Remove Programs and the browswers can't use the plugin.  
-
-<li> Installshield Multiplatform Edition can't update environment variables,
-so the user's path is not updated to include the directory where
-<CODE>vergil.exe</CODE> is located.
-</menu>
 
 <h2>Notes about building and installing</h2>
 <h3>How does configure work?</h3>

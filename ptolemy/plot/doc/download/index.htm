@@ -5,40 +5,141 @@
 </head>
 <body bgcolor="#faf0e6">
 <H1>Download Ptplot</A></H1>
+<h2>Downloads</h2>
 Ptplot is available for download in several format.
  <br>Each of the formats contains the same functionality.
 <menu>
 <li> Tar and Zip files: <a href="../install.htm#tarorzip">Instructions</a>
-<menu>
-<li> <A HREF="../../ptplot3.1.tar.gz">1.24Mb Gzipped Tar File</A>
-<li> <A HREF="../../ptplot3.1.zip">1.47Mb Compressed Zip File</A>
+  <menu>
+  <li> <A HREF="../../ptplot5.1.tar.gz">1.52Mb Gzipped Tar File</A>
+  <li> <A HREF="../../ptplot5.1.zip">1.95Mb Compressed Zip File</A>
+  </menu>
+<li> Windows only: <a href="setup.htm">Run the installer as an applet</a>.
+<li> Windows only: Download a <a href="ptplot5_1setup.exe">4.57Mb Windows executable</a>
 </menu>
+<h2>Instructions</h2>
 
-
-<li> Java Installer tool: <a href="../install.htm#installshield">Instructions</a>
- <br>Note that the Windows installer installs Ptplot in your Start menu
-under the Ptolemy-&gt;Ptplot menu choice.
-
-<menu>
-<li> <A HREF="ptplotinstall_local.htm">Install via an Applet</a>
-<li> <A HREF="ptplotinstall.class">1.51Mb Java installer(<code>.class</code>)</a>
- - To install download and then do
+<h3>1. Install Java, if necessary</h3>
+<p>
+Ptplot 5.1 requires Java 1.2 or later.
+Java 1.3 is preferred.
+The Ptplot 5.1 Windows installers require Java 1.3.
+To run Ptplot, the Java runtime environment (JRE) is sufficient.
+To run the applets in a browser, the Java plug-in is required.
+The JRE is bundled with the plug-in, so downloading the plug-in
+is sufficient.  To extend Ptplot with your own
+Java code, the Java development kit (JDK)
+or an equivalent Java development environment is required.
+The JDK includes a Java compiler.
+<p>
+One way to determine what version of Java (if any) is installed 
+is to run our
+<a href="JavaVersionApplet.htm">Java Version Applet </a>, which
+uses the Java 1.3 plug-in.
+Another way is to run the command below to see whether
+you have Java installed, and whether it is the proper version:
 <pre>
-	CLASSPATH=.
-	export CLASSPATH
-	java ptplotinstall
+java -version
 </pre>
-<li> <A HREF="ptplotinstall.exe">1.6Mb Windows Self Extracting Installer (<code>.exe</code>)</a>
-<li> <A HREF="ptplotinstall.sh">1.52Mb Unix Self Extracting Installer (<code>/bin/sh</code>)</a>
+If the command cannot be found, or the version that is printed is
+less than 1.3, you should install the plug-in, JRE 1.3, or JDK 1.3
+<p>
+Downloads:
+<menu>
+<li> Windows JRE: The Java runtime environment, JRE (no Java compiler): 
+<a href="j2re-1_3_0_01-win.exe"><CODE>j2re-1_3_0_01-win.exe</CODE></a> (5.1Mb)
+
+<li> Full JDK, or other Platforms:
+<a href="http://java.sun.com/j2se/1.3/" target="_top"><CODE>http://java.sun.com/j2se/1.3/</CODE></a>
+</menu>
+
+<h3>2. Install Ptplot</h3>
+
+<menu>
+
+<li> There are two ways to install Ptplot on Windows machines:
+ 
+<menu>
+<li> 
+<a href="setup.htm">Run the installer as an applet</a>.
+This applet, from
+InstallShield, will install Ptplot, from Berkeley, on your machine.
+</menu>
+ <B>or</B>
+<menu>
+<li> Download a 
+<a href="ptplot5_1setup.exe"> 4.57Mb Windows executable</a>, and execute it.
+</menu>
+If you are not planning on extending Ptplot, then you can run
+Ptplot via Start-&gt;Ptolemy-&gt;Ptplot 5.1
+
+<p> To extend Ptplot under Windows, you will also need the
+<a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII1.0/cygwin.htm">Cygwin toolkit</a>, and then
+follow the 
+<a href="../install.htm">Installation Instructions</a>
+to set up your build environment.  
+
+<p>
+<li> Other Platforms: 
+ <p>There are two installation methods available:
+<menu>
+<li> Standard tar file and configure method:
+  <ol>
+  <li> Download <a href="ptplot5.1.src.tar.gz"><CODE>ptplot5.1.src.tar.gz</CODE></a> (5.3Mb) 
+
+  <li> Follow the 
+<a href="../install.htm">Installation Instructions</a>
+  </ol>
+</menu>
+<B>or</B>
+<menu>
+<li> Installshield installer:
+<br>(Note that we have not tested this yet. Please let us know whether it
+works or not by sending email to ptolemy@ptolemy.eecs.berkeley.edu.)
+<ol>
+
+<li> Download <a href="ptplot5_1setup.jar.gz"><CODE>ptplot5_1setup.jar.gz</CODE></a> (4.21Mb)
+
+<li> Uncompress it with either <a href="http://www.winzip.com" target="_top">Winzip</a>
+or
+<a href="http://sources.redhat.com/cygwin/" target="_top">Cygwin</a>
+
+<li> Run on the command line:
+<code>
+java -jar ptplot5_1setup.jar
+</code>
+
+</ol>
+
+</menu>
 </menu>
 </menu>
 
+<h2><a name="installshield_bugs">Bugs</a></h2>
+The Installshield Installer has a number of bugs:
+<menu>
+<li> The word 'malformed' may appear in the initial installer window.
+(Installshield documents this bug in their 
+<a href="http://support.installshield.com/download/ipmprelnotes.asp" target="_top">Installshield Multi-platform Release Notes</a>.)
+<li> The file chooser dialog is very likely to bring up a dialog
+about not being able to access the A: drive.  The workaround is 
+to hit Cancel. (Documented in the Installshield Release notes)
+<li> By default, the Ptplot is installed in the All Users menu.
+Ideally, the user would be given a choice as to whether Ptplot
+was installed for the current user or in the All Users menu.
+<li> The user should be prompted for where in the Start menu 
+Ptplot II is installed.
+<li> The size of the install may be reported as 0kb.
+<li> The percent completed bars may not work.
+<li> Installing a bundled JRE does not work well so we don't use it.
+Installshield Multiplatform edition can be configured to download a
+JVM, but the JVM gets installed in a _jvm directory and is not added
+to Add/Remove Programs and the browswers can't use the plugin.  
 
-<hr>
-Copyright &#169 1997-2000 The Regents of the University of California.
-All rights reserved.
-<br>
-Last updated: $Date$,
-comments to: <author>cxh@eecs.berkeley.edu</author>
+<li> Installshield Multiplatform Edition can't update environment variables,
+so the user's path is not updated to include the directory where
+Ptplot is installed.
+</menu>
+
 </body>
 </html>
