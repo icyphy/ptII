@@ -54,12 +54,12 @@ therefore, is the last to be searched for a name.
 */
 
 public class Variable extends Parameter {
-    
+
     /** Construct a variable in the default workspace with an empty string
      *  as its name.
      *  The variable is added to the list of objects in the workspace.
      *  Increment the version number of the workspace.
-     */    
+     */
     public Variable() {
         super();
     }
@@ -76,7 +76,7 @@ public class Variable extends Parameter {
     }
 
     /** Construct a variable with the given name contained as an attribute
-     *  by the specified entity. The container argument must not be null, 
+     *  by the specified entity. The container argument must not be null,
      *  or a NullPointerException will be thrown. This variable will use the
      *  workspace of the container for synchronization and version counts.
      *  If the name argument is null, then the name is set to the empty string.
@@ -94,9 +94,9 @@ public class Variable extends Parameter {
     }
 
     /** Construct a variable with the given container, name, and token.
-     *  The container argument must not be null, or a NullPointerException 
-     *  will be thrown. This variable will use the workspace of the 
-     *  container for synchronization and version counts. If the name 
+     *  The container argument must not be null, or a NullPointerException
+     *  will be thrown. This variable will use the workspace of the
+     *  container for synchronization and version counts. If the name
      *  argument is null, then the name is set to the empty string.
      *  Increment the version of the workspace.
      *  @param container The container.
@@ -137,10 +137,10 @@ public class Variable extends Parameter {
     }
 
     /** Clone the variable.
-     *  The state of the cloned variable will be identical to this 
+     *  The state of the cloned variable will be identical to this
      *  variable, but without any of the added scope.
      *  @param ws The workspace in which to place the cloned variable.
-     *  @exception CloneNotSupportedException If this variable 
+     *  @exception CloneNotSupportedException If this variable
      *   cannot be cloned.
      *  @see ptolemy.data.expr.Parameter#clone()
      *  @return A clone of this Variable.
@@ -152,10 +152,10 @@ public class Variable extends Parameter {
         return newvar;
     }
 
-    /** Obtain a NamedList of parameters that the value 
+    /** Obtain a NamedList of parameters that the value
      *  of this variable can depend on. This includes those added
      *  by addToScope() as wells as parameters of the container and
-     *  the container's container. If there is a clash in the 
+     *  the container's container. If there is a clash in the
      *  names in these sets of parameters, then the most parameters
      *  most recently added to the scope will shadow those that were
      *  added before and those inherited from the container.
@@ -167,7 +167,7 @@ public class Variable extends Parameter {
             return _scope;
         }
         try {
-            workspace().getReadAccess();        
+            workspace().getReadAccess();
             // get the list of parameters visible to this variable
             NamedList paramlist = super.getScope();
             if (_addedVarLists == null) return paramlist;
@@ -190,7 +190,7 @@ public class Variable extends Parameter {
                         // added to this variable's scope, so param will be
                         // invisible to this variable
                     }
-                }              
+                }
             }
 
             Enumeration params = paramlist.elements();
@@ -218,7 +218,7 @@ public class Variable extends Parameter {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // Stores the VariableLists whose contained variables have been 
+    // Stores the VariableLists whose contained variables have been
     // added to the scope of this variable.
     private LinkedList _addedVarLists = null;
 }
