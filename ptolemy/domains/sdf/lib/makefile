@@ -68,21 +68,21 @@ JSRCS = \
 	FFT.java \
 	IFFT.java \
 	IntToBits.java \
-	LMSAdaptive.java \
 	LineCoder.java \
+	LMSAdaptive.java \
 	RaisedCosine.java \
 	Repeat.java \
-	SampleDelay.java \
 	SDFTransformer.java \
+	SampleDelay.java \
 	SequenceToArray.java \
         SequenceToDoubleMatrix.java \
 	UpSample.java \
-	VariableFIR.java
+	VariableFIR.java \
+	VariableLattice.java \
+	VariableRecursiveLattice.java
 
 OTHER_FILES_TO_BE_JARED = \
-	SmoothedSpectrum.xml \
 	Spectrum.xml \
-	SpectrumPlot.xml \
 	sdfentities.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
