@@ -51,7 +51,7 @@ which defines a function of one argument.
 
 FIXME: check argument name duplication
 
-@author Xiaojun Liu
+@author Xiaojun Liu, Steve Neuendorffer
 @version $Id$
 @since Ptolemy II 0.2
 @see ptolemy.data.expr.ASTPtRootNode
@@ -86,6 +86,13 @@ public class ASTPtFunctionDefinitionNode extends ASTPtRootNode {
      */
     public List getArgumentNameList() {
         return _argList;
+    }
+    
+    /** Return the list of argument types.
+     */
+    public ASTPtRootNode getExpressionTree() {
+        // The first children are the arguments.
+        return (ASTPtRootNode)jjtGetChild(jjtGetNumChildren() - 1);
     }
 
     /** Close this node.

@@ -122,7 +122,7 @@ public class ParseTreeWriter extends AbstractParseTreeVisitor {
             _writer.print((String)args.get(n - 1));
         }
         _writer.print(") ");
-        _printChildrenSeparated(node, ", ");
+        node.getExpressionTree().visit(this);
         _writer.print(")");
     }
     public void visitFunctionalIfNode(ASTPtFunctionalIfNode node)

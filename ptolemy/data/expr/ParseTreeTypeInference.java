@@ -77,7 +77,6 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
 
         Type[] childTypes = _getChildTypes(node);
 
-        // FIXME: not consistent with expression evaluator.
         _setType(node,
                 new ArrayType((Type)TypeLattice.lattice().leastUpperBound(childTypes)));
     }
@@ -101,6 +100,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
         }
         for(int i = 0; i < argCount; ++i) {
             _visitChild(node, i + 1);
+            
         }
         
         if(functionName == null) {
@@ -115,7 +115,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
                 ((ASTPtRootNode) node.jjtGetChild(i + 1)).getType();
             if(childTypes[i] == null) {
                 throw new RuntimeException("node " +
-                        node + " has null child.");
+                        node + " has null type.");
             }
         }
 
@@ -126,10 +126,8 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
             if(type instanceof FunctionType) {
                 // Hack?: unify the function type with argument types we have.
                 FunctionType functionType = (FunctionType)type;
-                FunctionType unifyType = 
-                    new FunctionType(childTypes, BaseType.UNKNOWN);
-                functionType.updateType(unifyType);
                 _setType(node, ((FunctionType)type).getReturnType());
+                return;
             } else if(argCount == 1) {
                 if(type instanceof ArrayType) {
                     _setType(node, ((ArrayType)type).getElementType());
@@ -175,7 +173,6 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
         CachedMethod cachedMethod =
             CachedMethod.findMethod(functionName,
                     childTypes, CachedMethod.FUNCTION);
-        // System.out.println("method = " + cachedMethod);
 
         if(!cachedMethod.isMissing()) {
             Class returnType = cachedMethod.getMethod().getReturnType();
@@ -199,9 +196,15 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
     }
     public void visitFunctionDefinitionNode(ASTPtFunctionDefinitionNode node)
             throws IllegalActionException {
-                //FIXME
-                return;
+        //FIXME
+        Type[] argTypes = new Type[node.getArgumentNameList().size()];
+        for(int i = 0; i < argTypes.length; i++) {
+            argTypes[i] = BaseType.UNKNOWN;
         }
+        FunctionType type = new FunctionType(argTypes, BaseType.UNKNOWN);
+        _setType(node, type);
+        return;
+    }
     public void visitFunctionalIfNode(ASTPtFunctionalIfNode node)
             throws IllegalActionException {
         _visitAllChildren(node);
@@ -228,7 +231,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
                     node.getToken().getType());
             return;
         }
-
+        
         _setType(node, _getTypeForName(node.getName()));
     }
 

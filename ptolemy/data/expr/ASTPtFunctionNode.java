@@ -509,7 +509,12 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
             if (tokenClass.equals(ptolemy.data.Token.class)) {
                 return BaseType.GENERAL;
             } else if (ptolemy.data.Token.class.isAssignableFrom(tokenClass)) {
-                return BaseType.forClassName(tokenClass.getName());
+                Type type = BaseType.forClassName(tokenClass.getName());
+                if(type == null) {
+                    throw new IllegalActionException(
+                            "Could not return type for class " + tokenClass);
+                }
+                return type;
             } else if (tokenClass.equals(Boolean.class) ||
                     tokenClass.equals(Boolean.TYPE)) {
                 return BaseType.BOOLEAN;

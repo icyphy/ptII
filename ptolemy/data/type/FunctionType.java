@@ -55,16 +55,11 @@ $Id$
 
 public class FunctionType extends StructuredType {
 
-    /** Construct a new FunctionType with the specified labels and
-     *  types, and the given return type.  To leave the types of some
-     *  fields undeclared, use BaseType.UNKNOWN.  The labels and the
-     *  types are specified in two arrays. These two arrays must have
-     *  the same length, and their elements have one to one
-     *  correspondence. That is, the i'th entry in the types array is
-     *  the type for the i'th label in the labels array. To construct
-     *  the type for a function of no arguments, set the length of the
-     *  argument arrays to 0.
-     *  @param labels An array of String.
+    /** Construct a new FunctionType with the specified argument types
+     *  and the given return type.  To leave the types of some fields
+     *  undeclared, use BaseType.UNKNOWN.  To construct the type for a
+     *  function of no arguments, set the length of the argument array
+     *  to 0.
      *  @param types An array of Type.
      *  @param returnType An type.
      *  @exception IllegalArgumentException If the labels and types do

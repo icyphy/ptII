@@ -1707,16 +1707,10 @@ void functionDefinition()                           :
   <FUNCTION>
   "("
   [
-    <ID> { jjtn000._argList.add(token.image); }
-    ("," <ID> { jjtn000._argList.add(token.image); } )*
+    <ID> { jjtn000._argList.add(token.image); } optTypeSpecifier()
+    ("," <ID> { jjtn000._argList.add(token.image); } optTypeSpecifier())*
   ]
-  ")"
-  (
-      LOOKAHEAD(<FUNCTION> "(")
-      functionDefinition()
-    |
-      funcIf()
-  )/*@bgen(jjtree)*/
+  ")" expression()/*@bgen(jjtree)*/
   } catch (Throwable jjte000) {
     if (jjtc000) {
       jjtree.clearNodeScope(jjtn000);
@@ -1739,6 +1733,15 @@ void functionDefinition()                           :
 /*@egen*/
 }
 
+void optTypeSpecifier()       :
+{}
+{    
+    (":" funcIf()) | {
+        ASTPtLeafNode node = new ASTPtLeafNode(JJTPTLEAFNODE);
+        node._name = "unknown";
+        jjtree.pushNode(node);
+    }
+}
 void function()                 :
 {/*@bgen(jjtree) PtFunctionNode */
   ASTPtFunctionNode jjtn000 = new ASTPtFunctionNode(JJTPTFUNCTIONNODE);
@@ -1928,24 +1931,8 @@ void recordConstruct()                        :
 {/*@bgen(jjtree) PtRecordConstructNode */
     try {
 /*@egen*/
-    "{"
-    ( x = <ID>
-      {
-        jjtn000._fieldNames.add(x.image);
-      }
-    )
-    "="
-    funcIf()
-    (
-      ","
-      ( x = <ID>
-        {
-          jjtn000._fieldNames.add(x.image);
-        }
-      )
-      "="
-      funcIf()
-    )*
+    "{" x = <ID> {jjtn000._fieldNames.add(x.image);} "=" funcIf() 
+        ("," x = <ID> {jjtn000._fieldNames.add(x.image);} "=" funcIf())*
     "}"/*@bgen(jjtree)*/
     } catch (Throwable jjte000) {
       if (jjtc000) {

@@ -392,7 +392,8 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
         // collect all free variables in the function definition
         ParseTreeFreeVariableCollector collector =
             new ParseTreeFreeVariableCollector();
-        Set freeVariableNames = collector.collectFreeVariables(node, _scope);
+        Set freeVariableNames = collector.collectFreeVariables(
+                node, _scope);
         // construct a NamedConstantsScope that maps the free variables to
         // their current value in the scope
         Map map = new HashMap();
@@ -412,7 +413,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
         NamedConstantsScope constantsScope = new NamedConstantsScope(map);
         ExpressionFunction definedFunction =
             new ExpressionFunction(node.getArgumentNameList(),
-                    (ASTPtRootNode)node.jjtGetChild(0), constantsScope);
+                    (ASTPtRootNode)node.getExpressionTree(), constantsScope);
         FunctionToken result = new FunctionToken(definedFunction);
         node.setToken(result);
         return;

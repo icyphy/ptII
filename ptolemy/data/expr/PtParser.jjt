@@ -1044,18 +1044,21 @@ void functionDefinition() #PtFunctionDefinitionNode :
   <FUNCTION>
   "("
   [
-    <ID> { jjtThis._argList.add(token.image); }
-    ("," <ID> { jjtThis._argList.add(token.image); } )*
+    <ID> { jjtThis._argList.add(token.image); } optTypeSpecifier()
+    ("," <ID> { jjtThis._argList.add(token.image); } optTypeSpecifier())*
   ]
-  ")"
-  (
-      LOOKAHEAD(<FUNCTION> "(")
-      functionDefinition()
-    |
-      funcIf()
-  )
+  ")" expression()
 }
 
+void optTypeSpecifier() #void :
+{}
+{    
+    (":" funcIf()) | {
+        ASTPtLeafNode node = new ASTPtLeafNode(JJTPTLEAFNODE);
+        node._name = "unknown";
+        jjtree.pushNode(node);
+    }
+}
 void function() #PtFunctionNode :
 {}
 {    
@@ -1143,24 +1146,8 @@ void recordConstruct() #PtRecordConstructNode :
   Token x = null;
 }
 {
-    "{"
-    ( x = <ID>
-      {
-        jjtThis._fieldNames.add(x.image);
-      }
-    )
-    "="
-    funcIf()
-    (
-      ","
-      ( x = <ID>
-        {
-          jjtThis._fieldNames.add(x.image);
-        }
-      )
-      "="
-      funcIf()
-    )*
+    "{" x = <ID> {jjtThis._fieldNames.add(x.image);} "=" funcIf() 
+        ("," x = <ID> {jjtThis._fieldNames.add(x.image);} "=" funcIf())*
     "}"
 }
 

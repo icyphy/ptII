@@ -58,6 +58,11 @@ public class TopMatrixType extends StructuredType
      *  matrix types.
      */
     private TopMatrixType() {
+        try {
+            BaseType._addType(this, "[general]", MatrixToken.class);
+        } catch (Exception ex) {
+            throw new RuntimeException(ex.getMessage());
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -896,8 +896,8 @@ test PtParser-17.1 {Test correct scoping in function definitions.} {
     $p3 setExpression "10 * 5"
     $p1 setExpression "function(x) x + p3"
     $p2 setExpression "4 + p1(6)"
-    list [[$p2 getToken] toString]
-} {60}
+    list [[$p1 getToken] toString] [[$p2 getToken] toString]
+} {{(function(x) (x+p3))} 60}
 
 test PtParser-17.2 {Test nested function definitions.} {
     set e [java::new ptolemy.kernel.Entity]

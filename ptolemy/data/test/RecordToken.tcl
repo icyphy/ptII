@@ -75,7 +75,15 @@ test RecordToken-1.1 {Create a non-empty instance} {
 ######################################################################
 ####
 # 
-test RecordToken-1.2 {Create a non-empty instance from string} {
+test RecordToken-1.2 {Create an empty instance from string} {
+    set r [java::new {ptolemy.data.RecordToken String} "{}"]
+    $r toString
+} {{}} {This is not possible because of ambiguities in the Expression language}
+
+#######################################################################
+####
+# 
+test RecordToken-1.3 {Create a non-empty instance from string} {
     set r [java::new {ptolemy.data.RecordToken String} "{name=\"bar\", value=6}"]
     $r toString
 } {{name="bar", value=6}}

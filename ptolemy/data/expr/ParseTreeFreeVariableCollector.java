@@ -105,7 +105,7 @@ public class ParseTreeFreeVariableCollector extends AbstractParseTreeVisitor {
     public void visitFunctionDefinitionNode(ASTPtFunctionDefinitionNode node)
             throws IllegalActionException {
         //        _functionArgumentListStack.push(node.getArgumentNameList());
-        _visitAllChildren(node);
+        node.getExpressionTree().visit(this);
         _set.removeAll(node.getArgumentNameList());
         //  _functionArgumentListStack.pop();
     }
