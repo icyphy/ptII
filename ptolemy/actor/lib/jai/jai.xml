@@ -26,6 +26,8 @@
 	</entity>
 	<entity name="JAIJPEGWriter" class="ptolemy.actor.lib.jai.JAIJPEGWriter">
 	</entity>
+	<entity name="JAIPNMWriter" class="ptolemy.actor.lib.jai.JAIPNMWriter">
+	</entity>
       </group>
     ?>
   </configure>
