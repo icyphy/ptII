@@ -304,7 +304,8 @@ test Function-ceil {Test ceil} {
          [evaluate {compare(1ub, 2ub)}] \
          [evaluate {compare({1, 2}, {3, 4})}] \
          [evaluate {compare([1, 2], [3, 4])}] \
-     } {-1 -1 -1 {{-1, -1}} {[-1, -1]}}
+         [evaluate {compare([1, 2], [1.0, 2.0])}] \
+     } {-1 -1 -1 {{-1, -1}} {[-1, -1]} {[0, 0]}}
 
 ####################################################################
 # conjugate
@@ -590,6 +591,121 @@ test Function-diag {Test diag} {
          [evaluate {diag({1L, 2L})}] \
 } {{[1, 0; 0, 2]} {[1.0, 0.0; 0.0, 2.0]} {[1.0 + 1.0i, 0.0 + 0.0i; 0.0 + 0.0i, 2.0 + 2.0i]} {[1L, 0L; 0L, 2L]}}
 
+####################################################################
+# divideElements
+
+test Function-divideElements {Test elementwise divide on matrices} {
+    list [evaluate {divideElements([1.0, 2.0], [2.0, 2.0])}] \
+         [evaluate {divideElements([1, 2], [2, 2])}] \
+         [evaluate {divideElements([i, 2], [2.0 + 0.0*i, 2])}]
+        } {{[0.5, 1.0]} {[0, 1]} {[0.0 + 0.5i, 1.0 + 0.0i]}}
+
+####################################################################
+# hilbert
+
+test Function-hilbert {Test hilbert} {
+    list [evaluate {abs(determinant(hilbert(3))) < 0.001}]
+} {true}
+
+####################################################################
+# identity
+
+test Function-identity {Test identity} {
+    list [evaluate {identityComplex(2)}] \
+         [evaluate {identityDouble(2)}] \
+         [evaluate {identityInt(2)}] \
+         [evaluate {identityLong(2)}]
+} {{[1.0 + 0.0i, 0.0 + 0.0i; 0.0 + 0.0i, 1.0 + 0.0i]} {[1.0, 0.0; 0.0, 1.0]} {[1, 0; 0, 1]} {[1L, 0L; 0L, 1L]}}
+
+####################################################################
+# inverse and within
+
+test Function-inverse {Test inverse} {
+    list [evaluate {within(inverse(hilbert(3))*hilbert(3), identityDouble(3), 1.0e-6)}]
+} {true}
+
+####################################################################
+# merge
+
+test Function-merge {Test merge of records} {
+    list [evaluate {merge({a=1, b=2}, {a=3, c=3})}] \
+        } {{{a=1, b=2, c=3}}}
+
+####################################################################
+# multiplyElements
+
+test Function-multiplyElements {Test elementwise multiply on matrices} {
+    list [evaluate {multiplyElements([1.0, 2.0], [2.0, 2.0])}] \
+         [evaluate {multiplyElements([1, 2], [2, 2])}] \
+         [evaluate {multiplyElements([i, 2], [2.0 + 0.0*i, 2])}]
+        } {{[2.0, 4.0]} {[2, 4]} {[0.0 + 2.0i, 4.0 + 0.0i]}}
+
+####################################################################
+# orthogonalizeColumns
+
+test Function-orthogonalizeColumns {Test orthogonalizeColumns} {
+    list [evaluate {within(orthogonalizeColumns(identityDouble(3)), identityDouble(3), 1.0e-6)}] \
+         [evaluate {within(orthogonalizeColumns(identityComplex(3)), identityComplex(3), 1.0e-6)}]
+        } {true true}
+
+####################################################################
+# orthogonalizeRows
+
+test Function-orthogonalizeRows {Test orthogonalizeRows} {
+    list [evaluate {within(orthogonalizeRows(identityDouble(3)), identityDouble(3), 1.0e-6)}] \
+         [evaluate {within(orthogonalizeRows(identityComplex(3)), identityComplex(3), 1.0e-6)}]
+        } {true true}
+
+####################################################################
+# orthonormalizeColumns
+
+test Function-orthonormalizeColumns {Test orthonormalizeColumns} {
+    list [evaluate {within(orthonormalizeColumns(identityDouble(3)), identityDouble(3), 1.0e-6)}] \
+         [evaluate {within(orthonormalizeColumns(identityComplex(3)), identityComplex(3), 1.0e-6)}]
+        } {true true}
+
+####################################################################
+# orthonormalizeRows
+
+test Function-orthonormalizeRows {Test orthonormalizeRows} {
+    list [evaluate {within(orthonormalizeRows(identityDouble(3)), identityDouble(3), 1.0e-6)}] \
+         [evaluate {within(orthonormalizeRows(identityComplex(3)), identityComplex(3), 1.0e-6)}]
+        } {true true}
+
+####################################################################
+# repeat
+
+test Function-repeat {Test repeat} {
+    list [evaluate {repeat(2, 1)}] \
+         [evaluate {repeat(2, 1.0)}] \
+         [evaluate {repeat(2, i)}] \
+         [evaluate {repeat(2, 1L)}] \
+         [evaluate {repeat(2, [1])}] \
+         [evaluate {repeat(2, {1})}] \
+        } {{{1, 1}} {{1.0, 1.0}} {{0.0 + 1.0i, 0.0 + 1.0i}} {{1L, 1L}} {{[1], [1]}} {{{1}, {1}}}}
+
+####################################################################
+# trace
+
+test Function-trace {Test trace} {
+    list [evaluate {trace(identityComplex(3))}] \
+         [evaluate {trace(identityDouble(3))}] \
+         [evaluate {trace(identityInt(3))}] \
+         [evaluate {trace(identityLong(3))}] \
+        } {{3.0 + 0.0i} 3.0 3 3L}
+
+####################################################################
+# transpose
+
+test Function-transpose {Test transpose} {
+    list [evaluate {identityComplex(3)==transpose(identityComplex(3))}] \
+         [evaluate {identityDouble(3)==transpose(identityDouble(3))}] \
+         [evaluate {identityInt(3)==transpose(identityInt(3))}] \
+         [evaluate {identityLong(3)==transpose(identityLong(3))}] \
+        } {true true true true}
+
+##### within is tested above.
+
 
 ####################################################################
 ####################################################################
@@ -598,12 +714,6 @@ test Function-diag {Test diag} {
 ####################################################################
 # FIXME: Organize the following
 
-####################################################################
-# merge
-
-test Function-merge {Test merge of records} {
-    list [evaluate {merge({a=1, b=2}, {a=3, c=3})}] \
-        } {{{a=1, b=2, c=3}}}
 
 
 
