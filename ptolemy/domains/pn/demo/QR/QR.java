@@ -45,6 +45,8 @@ import ptolemy.domains.pn.kernel.*;
 import ptolemy.domains.pn.demo.QR.*;
 import ptolemy.domains.pn.gui.PNApplet;
 
+import ptolemy.data.expr.Parameter;
+
 //////////////////////////////////////////////////////////////////////////
 ////  QR
 /**
@@ -103,14 +105,16 @@ public class QR extends PNApplet implements QueryListener {
 
             _s2m = new StreamToMatrix(_toplevel,"StreamToMatrix");
             _matrixViewer = new MatrixViewer(_toplevel,"MatrixViewer");
-            _matrixViewer.place(getContentPane());
-            _matrixViewer.setSize(1, 1);
+            _matrixViewer.height.setToken(new IntToken(10));
+            _matrixViewer.width.setToken(new IntToken(10));;
+            _matrixViewer.place(getContentPane());;
+
 
             // Connect the network
             _toplevel.connect(_ND_1.WP_2, _ND_3.RP_2);
             _toplevel.connect(_ND_1.WP_6, _ND_4.RP_6);
-
             _toplevel.connect(_ND_2.WP_4, _ND_3.RP_4);
+
             _toplevel.connect(_ND_2.WP_8, _ND_4.RP_8);
 
             _toplevel.connect(_ND_3.WP_1,  _ND_3.RP_1);
@@ -133,6 +137,8 @@ public class QR extends PNApplet implements QueryListener {
 	    changed("K");
 
             _initCompleted = true;
+
+            System.out.println(_toplevel.exportMoML());
 
             // The 2 argument requests a go and stop button.
             getContentPane().add(_createRunControls(2));

@@ -6,14 +6,14 @@
         <property name="Initial_queue_capacity" class="ptolemy.data.expr.Parameter" value="1">
         </property>
     </director>
-
-    <property name="Antennas" class="ptolemy.data.expr.Parameter" value="6">
-	<doc>The number of Antennas from which data is read.</doc>
-	</property>
-    <property name="Updates" class="ptolemy.data.expr.Parameter" value="10">
-	<doc>The number of QR opdates to perform on the antenna data.</doc>
-	</property>
-
+    <property name="notation" class="ptolemy.vergil.ptolemy.CompaanNotation">
+    </property>
+    <property name="Antennas" class="ptolemy.data.expr.Parameter" value="16">
+        <doc>The number of Antennas from which data is read.</doc>
+    </property>
+    <property name="Updates" class="ptolemy.data.expr.Parameter" value="100">
+        <doc>The number of QR opdates to perform on the antenna data.</doc>
+    </property>
     <entity name="plot" class="ptolemy.actor.lib.gui.SequencePlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -23,16 +23,29 @@
         </property>
         <property name="xUnit" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
+        <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
+            <location value="505.7142791748047, 277.8999938964844"/>
+        </rendition>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
         </port>
+        <configure><?plotml
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title></title>
+</plot>?>
+        </configure>
     </entity>
     <entity name="ND_1" class="ptolemy.domains.pn.demo.QR.ND_1">
         <property name="N" class="ptolemy.data.expr.Parameter" value="Antennas">
         </property>
         <property name="K" class="ptolemy.data.expr.Parameter" value="Updates">
         </property>
+        <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
+            <location value="94.28571701049805, 137.10000228881836"/>
+        </rendition>
         <port name="WP_2" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
@@ -45,6 +58,9 @@
         </property>
         <property name="K" class="ptolemy.data.expr.Parameter" value="Updates">
         </property>
+        <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
+            <location value="52.28571701049805, 325.8999938964844"/>
+        </rendition>
         <port name="WP_4" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
@@ -57,6 +73,9 @@
         </property>
         <property name="K" class="ptolemy.data.expr.Parameter" value="Updates">
         </property>
+        <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
+            <location value="224.4285659790039, 378.10000228881836"/>
+        </rendition>
         <port name="RP_1" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
@@ -84,6 +103,9 @@
         </property>
         <property name="K" class="ptolemy.data.expr.Parameter" value="Updates">
         </property>
+        <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
+            <location value="214.8571434020996, 66.63333129882812"/>
+        </rendition>
         <port name="RP_5" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
@@ -123,6 +145,9 @@
         </property>
         <property name="K" class="ptolemy.data.expr.Parameter" value="Updates">
         </property>
+        <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
+            <location value="342.0, 307.5"/>
+        </rendition>
         <port name="RP_11" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
@@ -136,6 +161,9 @@
     <entity name="StreamToMatrix" class="ptolemy.domains.pn.demo.QR.StreamToMatrix">
         <property name="dimension" class="ptolemy.data.expr.Parameter" value="Antennas">
         </property>
+        <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
+            <location value="349.1428527832031, 74.10000228881836"/>
+        </rendition>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
@@ -144,6 +172,13 @@
         </port>
     </entity>
     <entity name="MatrixViewer" class="ptolemy.actor.lib.gui.MatrixViewer">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="300">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="100">
+        </property>
+        <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
+            <location value="505.7142791748047, 137.10000228881836"/>
+        </rendition>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
@@ -174,6 +209,9 @@
     <relation name="_R11" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="_R12" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex0" class="ptolemy.moml.Vertex">
+            <location value="368.5714416503906, 228.5"/>
+        </vertex>
     </relation>
     <relation name="_R13" class="ptolemy.actor.TypedIORelation">
     </relation>
