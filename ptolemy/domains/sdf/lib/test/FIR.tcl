@@ -99,13 +99,13 @@ test FIR-2.1 {Test FIR type exeception} {
 
     # Note, this order of the error message might be platform dependent
     set containsException [regexp \
-	    {ptolemy.actor.TypeConflictException: Type conflicts occurred in .top on the following Typeables:} \
+	    {ptolemy.actor.TypeConflictException: Type conflicts occurred in .top on the following inequalities:} \
 	    $msg]
     set containsFIRclone [regexp \
-	    {.top.FIRclone.output: scalar} \
+	    {(ptolemy.domains.sdf.kernel.SDFIOPort {.top.FIRclone.output}, scalar)} \
 	    $msg]
     set containsRecInput [regexp \
-	    {.top.rec.input: scalar} \
+	    {(ptolemy.actor.TypedIOPort {.top.rec.input}, scalar)} \
 	    $msg]
     list $containsException $containsFIRclone $containsRecInput
 } {1 1 1}

@@ -102,13 +102,13 @@ test SampleDelay-2.5 {test with type change to error condition} {
     catch { [$e0 getManager] execute } msg
     # Note, this order of the error message might be platform dependent
     set containsException [regexp \
-	    {ptolemy.actor.TypeConflictException: Type conflicts occurred in .top on the following Typeables:} \
+	    {ptolemy.actor.TypeConflictException: Type conflicts occurred in .top on the following inequalities:} \
 	    $msg]
     set containsRecInput [regexp \
-	    {.top.rec.input: matrix} \
+	    {(ptolemy.actor.TypedIOPort {.top.rec.input}, matrix)} \
 	    $msg]
     set containsSampleDelayOutput [regexp \
-	    {.top.SampleDelay.output: matrix} \
+	    {(ptolemy.domains.sdf.kernel.SDFIOPort {.top.SampleDelay.output}, matrix)} \
 	    $msg]
     list $containsException $containsRecInput $containsSampleDelayOutput
 } {1 1 1}
