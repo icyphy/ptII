@@ -72,10 +72,7 @@ JSRCS = \
 	ObjectToken.java \
 	ScalarToken.java \
 	StringToken.java \
-	Token.java \
-	Typeable.java \
-	TypeConstant.java \
-	TypeLattice.java
+	Token.java
 
 EXTRA_SRCS =	$(JSRCS)
 

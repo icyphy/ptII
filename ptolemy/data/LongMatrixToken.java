@@ -30,8 +30,7 @@
 package ptolemy.data;
 import ptolemy.kernel.util.*;
 import ptolemy.graph.CPO;
-import ptolemy.data.type.Type;
-import ptolemy.data.type.BaseType;
+import ptolemy.data.type.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// LongMatrixToken
@@ -216,6 +215,13 @@ public class LongMatrixToken extends MatrixToken {
         throw new IllegalActionException("cannot convert from token " +
                 "type: " + token.getClass().getName() + " to a " +
 		"LongMatrixToken.");
+    }
+
+    /** Return the type of this token.
+     *  @return BaseType.LONG_MATRIX
+     */
+    public Type getType() {
+	return BaseType.LONG_MATRIX;
     }
 
     /** Test if the content of this token is equal to that of the specified

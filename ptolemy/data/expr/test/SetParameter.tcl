@@ -63,6 +63,7 @@ test SetParameter-1.0 {test set parameter without queueing} {
             [java::field [java::cast ptolemy.actor.lib.Source $const] output] \
             [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
     set m [$e0 getManager]
+
     $m initialize
     $m iterate
     set c [java::new ptolemy.data.expr.SetParameter $e0 $value 2]

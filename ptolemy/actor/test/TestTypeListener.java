@@ -28,6 +28,7 @@
 
 package ptolemy.actor.test;
 
+import ptolemy.data.type.Type;
 import ptolemy.actor.TypeEvent;
 import ptolemy.actor.TypeListener;
 
@@ -68,19 +69,11 @@ public class TestTypeListener implements TypeListener {
     public void typeChanged(TypeEvent event) {
 	_message = event.getPort().getFullName() + "/";
 
-	Class oldtype = event.getOldType();
-	if (oldtype == null) {
-	    _message += "null" + "/";
-	} else {
-	    _message += oldtype.getName() + "/";
-	}
+	Type oldtype = event.getOldType();
+	_message += oldtype.toString() + "/";
 
-	Class newtype = event.getNewType();
-	if (newtype == null) {
-	    _message += "null";
-	} else {
-	    _message += newtype.getName();
-	}
+	Type newtype = event.getNewType();
+	_message += newtype.toString();
     }
 
     ///////////////////////////////////////////////////////////////////

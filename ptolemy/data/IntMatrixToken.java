@@ -33,8 +33,7 @@ package ptolemy.data;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.graph.CPO;
 import ptolemy.math.Complex;
-import ptolemy.data.type.Type;
-import ptolemy.data.type.BaseType;
+import ptolemy.data.type.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// IntMatrixToken
@@ -264,6 +263,13 @@ public final class IntMatrixToken extends MatrixToken {
             }
         }
 	return array;
+    }
+
+    /** Return the type of this token.
+     *  @return BaseType.INT_MATRIX
+     */
+    public Type getType() {
+	return BaseType.INT_MATRIX;
     }
 
     /** Test if the content of this token is equal to that of the specified

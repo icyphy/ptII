@@ -31,8 +31,7 @@ package ptolemy.data;
 import ptolemy.kernel.util.*;
 import ptolemy.graph.CPO;
 import ptolemy.math.Complex;
-import ptolemy.data.type.Type;
-import ptolemy.data.type.BaseType;
+import ptolemy.data.type.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// ComplexMatrixToken

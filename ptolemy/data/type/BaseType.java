@@ -31,6 +31,7 @@
 package ptolemy.data.type;
 
 import java.lang.reflect.Modifier;
+import java.util.Hashtable;
 
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.data.*;
@@ -49,6 +50,25 @@ public class BaseType implements Type {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Return the BaseType corresponding to the specified Class object.
+     *  @param c A Class.
+     *  @return A BaseType.
+     *  @exception IllegalArgumentException If the specified class does not
+     *   corresponds to a BaseType.
+     *  @deprecated
+     */
+    public static BaseType classToBaseType(Class c)
+	    throws IllegalArgumentException {
+
+	BaseType type = (BaseType)_classToBaseType.get(c);
+	if (type == null) {
+	    throw new IllegalArgumentException("BaseType.classToBaseType: " +
+		"the specified class does not corresponds to a BaseType.");
+	}
+
+	return type;
+    }
 
     /** Convert the specified token to a token having the type
      *  represented by this object.
@@ -69,6 +89,13 @@ public class BaseType implements Type {
 //    public Class getTokenClass() {
 //	return _tokenClass;
 //    }
+
+    /** Test if this Type is NAT.
+     *  @return True if this Type is not NAT; false otherwise.
+     */
+    public boolean isConstant() {
+	return this != BaseType.NAT;
+    }
 
     /** Determine if the argument represents the same BaseType as this
      *  object.
@@ -276,15 +303,24 @@ public class BaseType implements Type {
 	_tokenClass = c;
 	_name = name;
 	_convertOp = op;
+
+	if (_classToBaseType == null) {
+	    _classToBaseType = new Hashtable();
+	}
+
+	_classToBaseType.put(_tokenClass, this);
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        private methods                    ////
+    ////                       private variables                   ////
 
     private Class _tokenClass;
     private String _name;
     private ConvertOperator _convertOp;
 
+    // Hashtable mapping a java.lang.Class to a BaseType. This is purely
+    // for backward compatibility in Typeable.setTypeEquals(Class).
+    private static Hashtable _classToBaseType;
 
     ///////////////////////////////////////////////////////////////////
     ////                      private interface                    ////

@@ -33,6 +33,7 @@ package ptolemy.actor.lib;
 import ptolemy.actor.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
+import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.Variable;
 
@@ -86,7 +87,7 @@ public class Pulse extends SequenceSource {
         super(container, name);
 
         indexes = new Parameter(this, "indexes", defaultIndexToken);
-        indexes.setTypeEquals(IntMatrixToken.class);
+        indexes.setTypeEquals(BaseType.INT_MATRIX);
         // Call this so that we don't have to copy its code here...
         attributeChanged(indexes);
         values = new Parameter(this, "values", _defaultValueToken);

@@ -33,6 +33,7 @@ package ptolemy.actor.gui;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
+import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.*;
 import ptolemy.actor.*;
 import ptolemy.actor.lib.TimedActor;
@@ -73,11 +74,11 @@ public class XYPlotter extends Plotter implements Placeable {
         // Create the input ports and make them single ports.
         inputX = new TypedIOPort(this, "inputX", true, false);
         inputX.setMultiport(true);
-        inputX.setTypeEquals(DoubleToken.class);
+        inputX.setTypeEquals(BaseType.DOUBLE);
 
         inputY = new TypedIOPort(this, "inputY", true, false);
         inputY.setMultiport(true);
-        inputY.setTypeEquals(DoubleToken.class);
+        inputY.setTypeEquals(BaseType.DOUBLE);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -103,10 +104,10 @@ public class XYPlotter extends Plotter implements Placeable {
         XYPlotter newobj = (XYPlotter)super.clone(ws);
         newobj.inputX = (TypedIOPort)newobj.getPort("inputX");
         newobj.inputX.setMultiport(true);
-        newobj.inputX.setTypeEquals(DoubleToken.class);
+        newobj.inputX.setTypeEquals(BaseType.DOUBLE);
         newobj.inputY = (TypedIOPort)newobj.getPort("inputY");
         newobj.inputY.setMultiport(true);
-        newobj.inputY.setTypeEquals(DoubleToken.class);
+        newobj.inputY.setTypeEquals(BaseType.DOUBLE);
         return newobj;
     }
 

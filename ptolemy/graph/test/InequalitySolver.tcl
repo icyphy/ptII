@@ -209,7 +209,7 @@ test InequalitySolver-2.6 {solve for greatest solutino for above} {
 # 
 test InequalitySolver-3.1 {solve constraints on TypeLattic} {
     # This comes from a real topology in DE SamplerSystem.
-    set tem [java::new ptolemy.data.TypeLattice]
+    set tem [java::new ptolemy.data.type.TypeLattice]
     set lattice [$tem lattice]
 
     # init. type terms
@@ -261,11 +261,11 @@ test InequalitySolver-3.1 {solve constraints on TypeLattic} {
 
     set sat [$s solveLeast]
     list $sat \
-	 [[$ps1c getType] getName] \
-	 [[$ps1d getType] getName] \
-	 [[$ps1o getType] getName] \
-	 [[$ps2c getType] getName] \
-	 [[$ps2d getType] getName] \
-	 [[$ps2o getType] getName]
-} {1 ptolemy.data.DoubleToken ptolemy.data.DoubleToken ptolemy.data.DoubleToken ptolemy.data.DoubleToken ptolemy.data.DoubleToken ptolemy.data.DoubleToken} 
+	 [[$ps1c getType] toString] \
+	 [[$ps1d getType] toString] \
+	 [[$ps1o getType] toString] \
+	 [[$ps2c getType] toString] \
+	 [[$ps2d getType] toString] \
+	 [[$ps2o getType] toString]
+} {1 double double double double double double} 
 

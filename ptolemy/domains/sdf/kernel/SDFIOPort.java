@@ -36,6 +36,7 @@ import ptolemy.actor.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
+import ptolemy.data.type.*;
 import ptolemy.data.expr.Parameter;
 import ptolemy.graph.*;
 
@@ -279,25 +280,25 @@ public final class SDFIOPort extends TypedIOPort {
             }
 	    
 	    // check the types for all of the tokens in the array.
-	    Class _resolvedType = getType();
-	    int compare = TypeLattice.compare(firstToken.getClass(),
+	    Type _resolvedType = getType();
+	    int compare = TypeLattice.compare(firstToken.getType(),
 					      _resolvedType);
 	    if (compare == CPO.HIGHER ||
                     compare == CPO.INCOMPARABLE) {
 		throw new IllegalArgumentException(
 		    "Run-time type checking for token 0 " +
-		    "failed. token: " + firstToken.getClass().getName() +
+		    "failed. token: " + firstToken.getType().toString() +
 		    ", port: " + getFullName() + ", port type: " +
-		    getType().getName());
+		    getType().toString());
 	    }
 	    
 	    for(int i = 1; i < tokens.length; i++) {
-		if(tokens[i].getClass() != firstToken.getClass()) 
+		if( !(tokens[i].getType().isEqualTo(firstToken.getType())))
 		    throw new IllegalArgumentException(
 			"Run-time type checking for token " + i +
-			"failed. token: " + tokens[i].getClass().getName() +
+			"failed. token: " + tokens[i].getType().toString() +
                         ", port: " + getFullName() + ", port type: " +
-                        getType().getName());
+                        getType().toString());
 	    }
 
             // Note that the getRemoteReceivers() method doesn't throw
@@ -308,33 +309,39 @@ public final class SDFIOPort extends TypedIOPort {
             workspace().doneReading();
         }
 
-	try {
+	// try {
 	    for (int j = 0; j < farRec[channelindex].length; j++) {
 		TypedIOPort port =
 		    (TypedIOPort)farRec[channelindex][j].getContainer();
 		
-		Class farType = port.getType();
+		Type farType = port.getType();
 		if((farRec[channelindex][j] instanceof SDFReceiver)&&
-		   (farType.isInstance(firstToken))) {
+		   (farType.isEqualTo(firstToken.getType()))) {
 		    ((SDFReceiver) farRec[channelindex][j]).putArray(tokens);
 		} else {
-		    Object[] arg = new Object[1];
-		    Method convert = _getConvertMethod(farType);
+		    // Object[] arg = new Object[1];
+		    // Method convert = _getConvertMethod(farType);
+		    // for (int i = 0; i < tokens.length; i++) {
+		    // 	arg[0] = tokens[i];
+		    //	ptolemy.data.Token newToken = 
+		    //	    (ptolemy.data.Token)convert.invoke(null, arg);
+		    //	farRec[channelindex][j].put(newToken);
+		    // }
+
 		    for (int i = 0; i < tokens.length; i++) {
-			arg[0] = tokens[i];
-			ptolemy.data.Token newToken = 
-			    (ptolemy.data.Token)convert.invoke(null, arg);
-			farRec[channelindex][j].put(newToken);
+		    	ptolemy.data.Token newToken = 
+		    	    farType.convert(tokens[i]);
+		    	farRec[channelindex][j].put(newToken);
 		    }
 		}
 	    }
-        } catch (IllegalAccessException iae) {
-	    throw new InternalErrorException("TypedIOPort.send: " +
-                    "IllegalAccessException: " + iae.getMessage());
-	} catch (InvocationTargetException ite) {
-            throw new InternalErrorException("TypedIOPort.send: " +
-                    "InvocationTargetException: " + ite.getMessage());
-        }
+        // } catch (IllegalAccessException iae) {
+	//     throw new InternalErrorException("TypedIOPort.send: " +
+        //             "IllegalAccessException: " + iae.getMessage());
+	// } catch (InvocationTargetException ite) {
+        //     throw new InternalErrorException("TypedIOPort.send: " +
+        //             "InvocationTargetException: " + ite.getMessage());
+        // }
     }
 
     /**

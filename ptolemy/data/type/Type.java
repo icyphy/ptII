@@ -56,6 +56,12 @@ public interface Type
      */
     public Token convert(Token t) throws IllegalActionException;
  
+    /** Test if this Type is a constant. A Type is a constant if it
+     *  does not contain BaseType.NAT in any level within it.
+     *  @return True if this type is a constant.
+     */
+    public boolean isConstant();
+
     /** Determine if the argument represents the same type as this object.
      *  @param t A Type.
      *  @return True if the argument represents the same type as this
@@ -69,5 +75,10 @@ public interface Type
      *   token class.
      */
     public boolean isInstantiable();
+
+    /** Return the string representation of this type.
+     *  @return A String.
+     */
+    public String toString();
 }
 

@@ -34,7 +34,7 @@ package ptolemy.actor;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.graph.*;
-import ptolemy.data.Typeable;
+import ptolemy.data.type.Typeable;
 
 import java.util.Enumeration;
 import collections.LinkedList;

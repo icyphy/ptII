@@ -33,6 +33,7 @@ package ptolemy.actor.lib;
 import ptolemy.actor.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
+import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
 
 //////////////////////////////////////////////////////////////////////////
@@ -80,8 +81,8 @@ public class Sine extends Transformer {
         phase = new Parameter(this, "phase", new DoubleToken(0.0));
 
 
-        input.setTypeEquals(DoubleToken.class);
-        output.setTypeEquals(DoubleToken.class);
+        input.setTypeEquals(BaseType.DOUBLE);
+        output.setTypeEquals(BaseType.DOUBLE);
     }
 
     ///////////////////////////////////////////////////////////////////

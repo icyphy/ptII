@@ -33,7 +33,7 @@ package ptolemy.actor;
 
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
-import ptolemy.data.*;
+import ptolemy.data.type.*;
 import ptolemy.graph.*;
 
 import java.util.Enumeration;
@@ -438,14 +438,14 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
 	boolean isUndeclared = srcport.getTypeTerm().isSettable();
 	if (!isUndeclared) {
 	    // srcport has a declared type.
-	    Class srcDeclared = srcport.getType();
+	    Type srcDeclared = srcport.getType();
 	    while (destPorts.hasMoreElements()) {
             	TypedIOPort destport = (TypedIOPort)destPorts.nextElement();
 		isUndeclared = destport.getTypeTerm().isSettable();
 
 	    	if (!isUndeclared) {
 	    	    // both source/destination ports are declared, check type
-	    	    Class destDeclared = destport.getType();
+	    	    Type destDeclared = destport.getType();
 		    int compare = TypeLattice.compare(srcDeclared,
                             destDeclared);
 		    if (compare == CPO.HIGHER || compare == CPO.INCOMPARABLE) {

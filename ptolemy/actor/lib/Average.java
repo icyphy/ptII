@@ -33,6 +33,7 @@ package ptolemy.actor.lib;
 import ptolemy.actor.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
+import ptolemy.data.type.BaseType;
 
 //////////////////////////////////////////////////////////////////////////
 //// Average
@@ -67,7 +68,7 @@ public class Average extends Transformer {
         super(container, name);
         output.setTypeSameAs(input);
         reset = new TypedIOPort(this, "reset", true, false);
-        reset.setTypeEquals(BooleanToken.class);
+        reset.setTypeEquals(BaseType.BOOLEAN);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -96,7 +97,7 @@ public class Average extends Transformer {
         newobj.reset = (TypedIOPort)newobj.getPort("reset");
         System.out.println(newobj.reset.getName());
         newobj.reset.setInput(true);
-        newobj.reset.setTypeEquals(BooleanToken.class);
+        newobj.reset.setTypeEquals(BaseType.BOOLEAN);
         return newobj;
     }
 

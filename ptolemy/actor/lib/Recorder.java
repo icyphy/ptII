@@ -35,6 +35,7 @@ import ptolemy.kernel.util.*;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.IntToken;
+import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
 
 import java.util.List;
@@ -80,10 +81,10 @@ public class Recorder extends Sink {
     public Recorder(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-        input.setTypeEquals(Token.class);
+        input.setTypeEquals(BaseType.GENERAL);
 
         capacity = new Parameter(this, "capacity", new IntToken(-1));
-        capacity.setTypeEquals(IntToken.class);
+        capacity.setTypeEquals(BaseType.INT);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -105,7 +106,7 @@ public class Recorder extends Sink {
      */
     public Object clone(Workspace ws) {
         Recorder newobj = (Recorder)super.clone(ws);
-        newobj.input.setTypeEquals(Token.class);
+        newobj.input.setTypeEquals(BaseType.GENERAL);
         newobj.capacity = (Parameter)newobj.getAttribute("capacity");
         return newobj;
     }

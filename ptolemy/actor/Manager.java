@@ -36,7 +36,7 @@ import ptolemy.kernel.util.*;
 import ptolemy.kernel.event.ChangeRequest;
 import ptolemy.kernel.event.ChangeListener;
 import ptolemy.kernel.event.ChangeFailedException;
-import ptolemy.data.TypeLattice;
+import ptolemy.data.type.TypeLattice;
 
 import java.util.Enumeration;
 import java.util.Collections;
@@ -565,6 +565,7 @@ public final class Manager extends NamedObj implements Runnable {
 			    // typeObj is a Typeable
 			    conflicts.add(typeObj);
 		        }
+
 		        term = (InequalityTerm)ineq.getGreaterTerm();
 		        typeObj = term.getAssociatedObject();
 		        if (typeObj != null) {

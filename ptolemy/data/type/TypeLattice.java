@@ -138,8 +138,8 @@ public class TypeLattice {
 	    return _basicLattice.compare(t1Rep, t2Rep);
         }
 
-	/** Throw an exception. Since the type lattice is infinite,
-	 *  this operation is not supported.
+	/** Throw an exception. This operation is not supported since the
+	 *  type lattice is infinite,
 	 *  @exception UnsupportedOperationException Always thrown.
 	 */
 	public Object[] downSet(Object e) {
@@ -152,8 +152,8 @@ public class TypeLattice {
          *  @param t1 an instance of Type.
          *  @param t2 an instance of Type.
 	 *  @return an instance of Type.
-	 *  @exception If one or both of the specified arguments are
-	 *   instances of Type.
+	 *  @exception IllegalArgumentException If one or both of the
+	 *   specified arguments are not instances of Type.
          */
         public Object greatestLowerBound(Object t1, Object t2) {
 	    if ( !(t1 instanceof Type) || !(t2 instanceof Type)) {
@@ -191,22 +191,52 @@ public class TypeLattice {
 	    }
 	}
 
-	/** Throw an exception.
-	 *  @exception UnsupportedOperationException Always thrown.
-	 */
+        /** Return the greatest lower bound of a subset.
+         *  @param subset an array of Types.
+	 *  @return an instance of Type.
+	 *  @exception If one or more elements of the specified array is not
+	 *   an instance of Type.
+         */
 	public Object greatestLowerBound(Object[] subset) {
-	    throw new UnsupportedOperationException(
-		"TheTypeLattice.greatestLowerbound(Object[]): " +
-		"operation not supported for the type lattice.");
+	    if (subset.length == 0) {
+		return BaseType.GENERAL;
+	    }
+
+	    Object glb = subset[0];
+
+	    // start looping from index 0 so that subset[0] is checked for
+	    // possible exception, in case the subset has only one element.
+	    for (int i = 0; i < subset.length; i++) {
+		glb = greatestLowerBound(glb, subset[i]);
+	    }
+	    return glb;
 	}
 
-	/** Throw an exception.
-	 *  @exception UnsupportedOperationException Always thrown.
+	/** Return the greatest type of a set of types, or null if the
+	 *  greatest one does not exist.
+	 *  @param subset an array of Types.
+	 *  @return A Type or null.
 	 */
 	public Object greatestElement(Object[] subset) {
-	    throw new UnsupportedOperationException(
-		"TheTypeLattice.greatestElement(): " +
-		"operation not supported for the type lattice.");
+	    // Compare each element with all of the other elements to search
+	    // for the greatest one. This is a simple, brute force algorithm,
+	    // but may be inefficient. A more efficient one is used in
+	    // the graph package, but more complex.
+	    for (int i = 0; i < subset.length; i++) {
+	    	boolean isGreatest = true;
+		for (int j = 0; j < subset.length; j++) {
+		    int result = compare(subset[i], subset[j]);
+		    if (result == CPO.LOWER || result == CPO.INCOMPARABLE) {
+			isGreatest = false;
+			break;
+		    }
+		}
+
+		if (isGreatest == true) {
+		    return subset[i];
+		}
+	    }
+	    return null;
 	}
 
 	/** Return true.
@@ -216,13 +246,31 @@ public class TypeLattice {
 	    return true;
 	}
 
-	/** Throw an exception.
-	 *  @exception UnsupportedOperationException Always thrown.
+	/** Return the least type of a set of types, or null if the
+	 *  least one does not exist.
+	 *  @param subset an array of Types.
+	 *  @return A Type or null.
 	 */
 	public Object leastElement(Object[] subset) {
-	    throw new UnsupportedOperationException(
-		"TheTypeLattice.leastElement(): " +
-		"operation not supported for the type lattice.");
+	    // Compare each element with all of the other elements to search
+	    // for the least one. This is a simple, brute force algorithm,
+	    // but may be inefficient. A more efficient one is used in
+	    // the graph package, but more complex.
+	    for (int i = 0; i < subset.length; i++) {
+	    	boolean isLeast = true;
+		for (int j = 0; j < subset.length; j++) {
+		    int result = compare(subset[i], subset[j]);
+		    if (result == CPO.HIGHER || result == CPO.INCOMPARABLE) {
+			isLeast = false;
+			break;
+		    }
+		}
+
+		if (isLeast == true) {
+		    return subset[i];
+		}
+	    }
+	    return null;
 	}
 
         /** Return the least upper bound of two types.
@@ -268,13 +316,25 @@ public class TypeLattice {
 	    }
 	}
 
-	/** Throw an exception.
-	 *  @exception UnsupportedOperationException Always thrown.
-	 */
+        /** Return the least upper bound of a subset.
+         *  @param subset an array of Types.
+	 *  @return an instance of Type.
+	 *  @exception If one or more elements of the specified array is not
+	 *   an instance of Type.
+         */
 	public Object leastUpperBound(Object[] subset) {
-	    throw new UnsupportedOperationException(
-		"TheTypeLattice.leastUpperBound(Object[]): " +
-		"operation not supported for the type lattice.");
+	    if (subset.length == 0) {
+		return BaseType.NAT;
+	    }
+
+	    Object lub = subset[0];
+
+	    // start looping from index 0 so that subset[0] is checked for
+	    // possible exception, in case the subset has only one element.
+	    for (int i = 0; i < subset.length; i++) {
+		lub = leastUpperBound(lub, subset[i]);
+	    }
+	    return lub;
 	}
 
         /** Return the top element of the type lattice, which is General.
@@ -284,7 +344,8 @@ public class TypeLattice {
 	    return _basicLattice.top();
         }
 
-	/** Throw an exception. Since the type lattice is infinite,
+	/** Throw an exception. This operation is not supported since the
+	 *  type lattice is infinite,
 	 *  this operation is not supported.
 	 *  @exception UnsupportedOperationException Always thrown.
 	 */

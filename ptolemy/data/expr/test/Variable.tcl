@@ -208,20 +208,20 @@ test Variable-5.0 {Check types} {
     $p1 setToken [java::new ptolemy.data.StringToken foo]
     set r5 [[$p1 getType] toString]
     list $r1 $r2 $r3 $r4 $r5
-} {{class ptolemy.data.DoubleToken} {class ptolemy.data.IntToken} {class ptolemy.data.ComplexToken} {class ptolemy.data.DoubleToken} {class ptolemy.data.StringToken}}
+} {double int complex double string}
 
 test Variable-5.1 {Set types without first clearing} {
     set double [java::new ptolemy.data.DoubleToken 0.0]
     set doubleClass [$double getClass]
     catch {$p1 setTypeEquals $doubleClass} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: .E.P1: setTypeEquals(): the currently contained token ptolemy.data.StringToken(foo) cannot be losslessly converted to the desired type class ptolemy.data.DoubleToken}}
+} {{ptolemy.kernel.util.IllegalActionException: .E.P1: setTypeEquals(): the currently contained token ptolemy.data.StringToken(foo) cannot be losslessly converted to the desired type double}}
 
 test Variable-5.2 {Set types with first clearing} {
     $p1 setToken [java::null]
     $p1 setTypeEquals $doubleClass
     [$p1 getType] toString
-} {class ptolemy.data.DoubleToken}
+} {double}
 
 test Variable-5.3 {Check return value is null} {
     string compare [$p1 getToken] [java::null]

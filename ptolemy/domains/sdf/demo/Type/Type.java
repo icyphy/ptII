@@ -49,6 +49,7 @@ import javax.swing.SwingUtilities;
 
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
+import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
 import ptolemy.actor.*;
 import ptolemy.actor.lib.*;
@@ -89,8 +90,6 @@ public class Type extends SDFApplet {
 	    //			       plotter/printer selection)
 	    //	       plot/print Panel
 	    //     _schemPanel (schematics with type annotation)
-
-	    _buildType2String();
 
 	    setLayout(new GridLayout(3, 1));
             _ioPanel.setLayout(new GridLayout(1, 2));
@@ -255,29 +254,6 @@ public class Type extends SDFApplet {
         _toplevel.connect(_ramp1.output, input1);
         _toplevel.connect(_ramp2.output, input2);
         _toplevel.connect(_expr.output, _plotter.input);
-    }
-
-    private void _buildType2String() {
-        _type2String.put(ptolemy.data.Token.class, "General");
-        _type2String.put(ObjectToken.class, "Object");
-        _type2String.put(StringToken.class, "String");
-
-        _type2String.put(Numerical.class, "Numerical");
-        _type2String.put(BooleanMatrixToken.class, "BooleanMatrix");
-        _type2String.put(LongMatrixToken.class, "LongMatrix");
-        _type2String.put(ComplexMatrixToken.class, "ComplexMatrix");
-        _type2String.put(DoubleMatrixToken.class, "DoubleMatrix");
-	_type2String.put(IntMatrixToken.class, "IntMatrix");
-
-	_type2String.put(BooleanToken.class, "Boolean");
-
-        _type2String.put(ScalarToken.class, "Scalar");
-	_type2String.put(LongToken.class, "Long");
-	_type2String.put(ComplexToken.class, "Complex");
-	_type2String.put(DoubleToken.class, "Double");
-	_type2String.put(IntToken.class, "Int");
-
-	_type2String.put(Void.TYPE, "NaT");
     }
 
     // Construct the graph representing the Ptolemy type lattice
@@ -509,8 +485,6 @@ public class Type extends SDFApplet {
     private String _exprOutType = "NaT";
     private String _plotterType = "Double";
     private String _printerType = "String";
-
-    private Hashtable _type2String = new Hashtable();
 
     private Checkbox _plotterBox, _printerBox;
     private Panel _ioPanel = new Panel();
@@ -788,9 +762,8 @@ public class Type extends SDFApplet {
     private class MyTypeListener implements TypeListener {
 
         public void typeChanged(TypeEvent event) {
-            Class newtype = event.getNewType();
-            String typeString = newtype == null ? "NaT" :
-                (String)_type2String.get(newtype);
+            ptolemy.data.type.Type newtype = event.getNewType();
+            String typeString = newtype.toString();
 
             TypedIOPort port = event.getPort();
             int id = 0;
@@ -820,28 +793,28 @@ public class Type extends SDFApplet {
             _schemPanel.repaint();
 
             // Figure out which color to draw
-            Class typeObj = newtype;
+            ptolemy.data.type.Type typeObj = newtype;
             int color = 7;
             String label = "UNKNOWN";
-            if (typeObj == null || typeObj == Void.TYPE) {
+            if (typeObj == BaseType.NAT) {
                 color = 7;
-            } else if (typeObj == IntToken.class) {
+            } else if (typeObj == BaseType.INT) {
                 color = 4;
-            } else if (typeObj == DoubleToken.class) {
+            } else if (typeObj == BaseType.DOUBLE) {
                 color = 8;
-            } else if (typeObj == ComplexToken.class) {
+            } else if (typeObj == BaseType.COMPLEX) {
                 color = 3;
-            } else if (typeObj == StringToken.class) {
+            } else if (typeObj == BaseType.STRING) {
                 color = 5;
-            } else if (typeObj == Token.class) {
+            } else if (typeObj == BaseType.GENERAL) {
                 color = 0;
-            } else if (typeObj == BooleanToken.class) {
+            } else if (typeObj == BaseType.BOOLEAN) {
                 color = 9;
-            } else if (typeObj == ObjectToken.class) {
+            } else if (typeObj == BaseType.OBJECT) {
                 color = 2;
-            } else if (typeObj == ScalarToken.class) {
+            } else if (typeObj == BaseType.SCALAR) {
                 color = 6;
-            } else if (typeObj == LongToken.class) {
+            } else if (typeObj == BaseType.LONG) {
                 color = 1;
             }
 

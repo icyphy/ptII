@@ -507,6 +507,7 @@ test PtParser-12.1 {Test basic matrix construction.} {
 
     list $col $row $value1 $value2
 } {3 3 1 9}
+
 # Test matrix construction, when term types are heterogeneous.
 test PtParser-12.2 {Test matrix construction.} {
     set p1 [java::new ptolemy.data.expr.PtParser]
@@ -563,6 +564,7 @@ test PtParser-12.5 {Test matrix construction.} {
 
     list $col $row
 } {0 1}
+
 # Test matrix construction, using regularly spaced vector as row.
 test PtParser-12.6 {Test matrix construction.} {
     set p1 [java::new ptolemy.data.expr.PtParser]
@@ -574,6 +576,7 @@ test PtParser-12.6 {Test matrix construction.} {
 
     list $col $row $v1
 } {2 2 1}
+
 # Test matrix construction, using regularly spaced vector as row.
 test PtParser-12.7 {Test matrix construction.} {
     set p1 [java::new ptolemy.data.expr.PtParser]
@@ -585,6 +588,7 @@ test PtParser-12.7 {Test matrix construction.} {
 
     list $col $row $v1
 } {3 2 1.0}
+
 # Test matrix construction, using regularly spaced vector as row.
 test PtParser-12.8 {Test matrix construction.} {
     set p1 [java::new ptolemy.data.expr.PtParser]
@@ -592,7 +596,8 @@ test PtParser-12.8 {Test matrix construction.} {
     catch {$root1 evaluateParseTree} msg
 
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: The LUB of the types of the terms of a regularly-spaced-vector matrix construction is not supported: class ptolemy.data.ComplexToken}}
+} {{ptolemy.kernel.util.IllegalActionException: The LUB of the types of the terms of a regularly-spaced-vector matrix construction is not supported: complex}}
+
 ######################################################################
 ####
 # Test array reference.

@@ -33,6 +33,7 @@ package ptolemy.actor.gui;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
+import ptolemy.data.type.*;
 import ptolemy.data.expr.*;
 import ptolemy.actor.*;
 import ptolemy.plot.*;
@@ -63,7 +64,7 @@ public class HistogramPlotter extends TypedAtomicActor implements Placeable {
         // create the input port and make it a multiport.
         input = new TypedIOPort(this, "input", true, false);
         input.setMultiport(true);
-        input.setTypeEquals(DoubleToken.class);
+        input.setTypeEquals(BaseType.DOUBLE);
         fillOnWrapup = new Parameter(this, "fillOnWrapup",
                 new BooleanToken(true));
     }
@@ -96,7 +97,7 @@ public class HistogramPlotter extends TypedAtomicActor implements Placeable {
                 (HistogramPlotter)super.clone(ws);
             newobj.input = (TypedIOPort)newobj.getPort("input");
             newobj.input.setMultiport(true);
-            newobj.input.setTypeEquals(DoubleToken.class);
+            newobj.input.setTypeEquals(BaseType.DOUBLE);
             newobj.fillOnWrapup
                 = (Parameter)newobj.getAttribute("fillOnWrapup");
             return newobj;

@@ -32,7 +32,7 @@ package ptolemy.actor.lib;
 
 import ptolemy.actor.*;
 import ptolemy.kernel.util.*;
-import ptolemy.data.Token;
+import ptolemy.data.type.BaseType;
 
 //////////////////////////////////////////////////////////////////////////
 //// Source
@@ -70,7 +70,7 @@ public abstract class Source extends TypedAtomicActor {
         super(container, name);
     	output = new TypedIOPort(this, "output", false, true);
     	trigger = new TypedIOPort(this, "trigger", true, false);
-        trigger.setTypeEquals(Token.class);
+        trigger.setTypeEquals(BaseType.GENERAL);
         trigger.setMultiport(true);
     }
 

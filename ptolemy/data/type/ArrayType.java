@@ -109,6 +109,22 @@ public class ArrayType extends StructuredType {
 	return _elemTypeTerm;
     }
 
+    /** Return the user of this StructuredType. If the user is not set,
+     *  return null.
+     *  @return An Object.
+     */
+    public Object getUser() {
+	return _user;
+    }
+
+    /** Test if this ArrayType is a constant. An ArrayType is a constant if
+     *  it does not contain BaseType.NAT in any level.
+     *  @return True if this type is a constant.
+     */
+    public boolean isConstant() {
+	return _declaredElementType.isConstant();
+    }
+
     /** Determine if the argument represents the same ArrayType as this
      *  object.
      *  @param t A Type.
@@ -131,6 +147,27 @@ public class ArrayType extends StructuredType {
 	return _elementType.isInstantiable();
     }
 
+    /** Set the user of this ArrayType. The user can only be set once,
+     *  otherwise an exception will be thrown.
+     *  @param Object The user.
+     *  @exception IllegalActionException If the user is already set, or
+     *   if the argument is null.
+     */
+    public void setUser(Object user)
+	    throws IllegalActionException {
+	if (_user != null) {
+	    throw new IllegalActionException("ArrayType._setUser: " +
+		"The user is already set.");
+	}
+
+	if (user == null) {
+	    throw new IllegalActionException("ArrayType._setUser" +
+		"The specified user is null.");
+	}
+
+	_user = user;
+    }
+
     /** Return the string representation of this type. The format is
      *  (<type>) array, where <type> is is the elemenet type.
      *  @return A String.
@@ -139,18 +176,16 @@ public class ArrayType extends StructuredType {
 	return "(" + _elementType.toString() + ") array";
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                       protected methods                   ////
-
-    /** Return a deep copy of this ArrayType. The returned copy does
+    /** Return a deep copy of this ArrayType if it is a variable, or
+     *  itself if it is a constant. The returned copy does
      *  not have the user set.
      *  @return An ArrayType.
      */
-    protected Object clone() {
+    public Object clone() {
 	ArrayType newObj = new ArrayType(_declaredElementType);
-	if ( !_isConstant()) {
+	if ( !isConstant()) {
 	    try {
-	        newObj._updateType(this);
+	        newObj.updateType(this);
 	    } catch (IllegalActionException ex) {
 		throw new InternalErrorException("ArrayType.clone: Cannot " +
 			"update new instance. " + ex.getMessage());
@@ -159,6 +194,42 @@ public class ArrayType extends StructuredType {
 
 	return newObj;
     }
+
+    /** Update this Type to the specified ArrayType. This Type must not
+     *  be a constant, otherwise an exception will be thrown. 
+     *  The specified type must have the same structure as this type.
+     *  This method will only update the component whose declared type is
+     *  BaseType.NAT, and leave the constant part of this type intact.
+     *  This method does not check for circular usage, the caller should.
+     *  @param st A StructuredType.
+     *  @exception IllegalActionException If this Type is a constant, or
+     *   the specified type has a different structure.
+     */
+    public void updateType(StructuredType newType)
+	    throws IllegalActionException {
+	if (isConstant()) {
+	    throw new IllegalActionException("ArrayType.updateType: " +
+		"Cannot update a constant type.");
+	}
+
+	if ( !(newType instanceof ArrayType)) {
+	    throw new IllegalActionException("ArrayType.updateType: " +
+		"The specified type is not an ArrayType.");
+	}
+
+	Type newElemType = ((ArrayType)newType).getElementType();
+	if (_declaredElementType == BaseType.NAT) {
+	    _setElementType(newElemType);
+	} else {
+	    // _declaredElementType is a StructuredType. _elementType
+	    // must also be.
+	    ((StructuredType)_elementType).updateType(
+						(StructuredType)newElemType);
+	}
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                       protected methods                   ////
 
     /** Compare this type with the specified type. The specified type
      *  must be an ArrayType, otherwise an exception will be thrown.
@@ -205,14 +276,6 @@ public class ArrayType extends StructuredType {
 	return _representative;
     }
 
-    /** Return the user of this StructuredType. If the user is not set,
-     *  return null.
-     *  @return An Object.
-     */
-    protected Object _getUser() {
-	return _user;
-    }
-
     /** Return the greatest lower bound of this type with the specified
      *  type. The specified type must be an ArrayType, otherwise an
      *  exception will be thrown.
@@ -251,72 +314,6 @@ public class ArrayType extends StructuredType {
 	return new ArrayType(elementLUB);
     }
 
-    /** Test if this ArrayType is a constant. An ArrayType is a constant if
-     *  it does not contain BaseType.NAT in any level.
-     *  @return True if this type is a constant.
-     */
-    protected boolean _isConstant() {
-	if (_declaredElementType instanceof BaseType) {
-	    return _declaredElementType != BaseType.NAT;
-	}
-
-	return ((StructuredType)_declaredElementType)._isConstant();
-    }
-
-    /** Update this Type to the specified ArrayType. This Type must not
-     *  be a constant, otherwise an exception will be thrown. 
-     *  The specified type must have the same structure as this type.
-     *  This method will only update the component type that is
-     *  BaseType.NAT, and leave the constant part of this type intact.
-     *  This method does not check for circular usage, the caller should.
-     *  @param st A StructuredType.
-     *  @exception IllegalActionException If this Type is a constant, or
-     *   the specified type has a different structure.
-     */
-    protected void _updateType(StructuredType newType)
-	    throws IllegalActionException {
-	if (_isConstant()) {
-	    throw new IllegalActionException("ArrayType._updateType: " +
-		"Cannot update a constant type.");
-	}
-
-	if ( !(newType instanceof ArrayType)) {
-	    throw new IllegalActionException("ArrayType._updateType: " +
-		"The specified type is not an ArrayType.");
-	}
-
-	Type newElemType = ((ArrayType)newType).getElementType();
-	if (_declaredElementType == BaseType.NAT) {
-	    _setElementType(newElemType);
-	} else {
-	    // _declaredElementType is a StructuredType. _elementType
-	    // must also be.
-	    ((StructuredType)_elementType)._updateType(
-						(StructuredType)newElemType);
-	}
-    }
-
-    /** Set the user of this ArrayType. The user can only be set once,
-     *  otherwise an exception will be thrown.
-     *  @param Object The user.
-     *  @exception IllegalActionException If the user is already set, or
-     *   if the argument is null.
-     */
-    protected void _setUser(Object user)
-	    throws IllegalActionException {
-	if (_user != null) {
-	    throw new IllegalActionException("ArrayType._setUser: " +
-		"The user is already set.");
-	}
-
-	if (user == null) {
-	    throw new IllegalActionException("ArrayType._setUser" +
-		"The specified user is null.");
-	}
-
-	_user = user;
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                        private methods                    ////
 
@@ -329,24 +326,25 @@ public class ArrayType extends StructuredType {
 	    // elementType is a StructuredType
 	    StructuredType elemTypeStruct = (StructuredType)elementType;
 
-	    if (elemTypeStruct._isConstant()) {
+	    if (elemTypeStruct.isConstant()) {
                 _elementType = elementType;
 	    } else {
 	        // elementType is a non-constant StructuredType
 		try {
-	            if (elemTypeStruct._getUser() == null) {
-		        elemTypeStruct._setUser(this);
+	            if (elemTypeStruct.getUser() == null) {
+		        elemTypeStruct.setUser(this);
                         _elementType = elementType;
 		    } else {
 		        // user already set, clone elementType
 		        StructuredType newElemType =
 				(StructuredType)elemTypeStruct.clone();
-		        newElemType._setUser(this);
+		        newElemType.setUser(this);
 		        _elementType = newElemType;
 		    }
 		} catch (IllegalActionException ex) {
 		    // since the user was null, this should never happen.
-		    throw new InternalErrorException("ArrayToken: " +
+		    throw new InternalErrorException(
+			"ArrayToken._setElementType: " +
 			" Cannot set user on the elementType. " +
 			ex.getMessage());
 		}
@@ -401,7 +399,7 @@ public class ArrayType extends StructuredType {
 	 *  @return An array of InequalityTerm.
 	 */
     	public InequalityTerm[] getVariables() {
-	    if ( !_isConstant()) {
+	    if ( !isConstant()) {
 		InequalityTerm[] variable = new InequalityTerm[1];
 		variable[0] = this;
 		return variable;
@@ -413,7 +411,7 @@ public class ArrayType extends StructuredType {
 	 *  @return True if the element type is a type variable.
      	 */
     	public boolean isSettable() {
-	    return !_isConstant();
+	    return !isConstant();
 	}
 
         /** Check whether the current element type is acceptable.
@@ -468,7 +466,7 @@ public class ArrayType extends StructuredType {
 		  	e.toString());
 
 		}
-	        ((StructuredType)_elementType)._updateType((StructuredType)e);
+	        ((StructuredType)_elementType).updateType((StructuredType)e);
 	    }
 	}
 

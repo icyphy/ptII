@@ -33,6 +33,7 @@ package ptolemy.actor.lib.conversions;
 import ptolemy.actor.*;
 import ptolemy.actor.lib.*;
 import ptolemy.data.*;
+import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.*;
 import ptolemy.math.Complex;
@@ -61,13 +62,13 @@ public class ComplexToReal extends TypedAtomicActor {
         super(container, name);
 
         input = new TypedIOPort(this, "input", true, false);
-        input.setTypeEquals(ComplexToken.class);
+        input.setTypeEquals(BaseType.COMPLEX);
 
         realOutput = new TypedIOPort(this, "realOutput", false, true);
-        realOutput.setTypeEquals(DoubleToken.class);
+        realOutput.setTypeEquals(BaseType.DOUBLE);
 
         imagOutput = new TypedIOPort(this, "imagOutput", false, true);
-        imagOutput.setTypeEquals(DoubleToken.class);
+        imagOutput.setTypeEquals(BaseType.DOUBLE);
 
     }
 

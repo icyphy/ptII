@@ -33,6 +33,7 @@ package ptolemy.actor.lib;
 import ptolemy.actor.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
+import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.Variable;
 
@@ -110,12 +111,12 @@ public class Clock extends TimedSource {
         super(container, name);
 
         period = new Parameter(this, "period", new DoubleToken(2.0));
-        period.setTypeEquals(DoubleToken.class);
+        period.setTypeEquals(BaseType.DOUBLE);
 
         double defaultOffsets[][] = {{0.0, 1.0}};
         offsets = new Parameter(this, "offsets",
                 new DoubleMatrixToken(defaultOffsets));
-        offsets.setTypeEquals(DoubleMatrixToken.class);
+        offsets.setTypeEquals(BaseType.DOUBLE_MATRIX);
         // Call this so that we don't have to copy its code here...
         attributeChanged(offsets);
 

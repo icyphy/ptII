@@ -29,9 +29,9 @@
 
 */
 
-package ptolemy.data;
+package ptolemy.data.type;
 import ptolemy.kernel.util.IllegalActionException;
-// import ptolemy.data.*;
+import ptolemy.data.type.Type;
 import ptolemy.graph.InequalityTerm;
 
 //////////////////////////////////////////////////////////////////////////
@@ -50,15 +50,9 @@ type resolution.
 public class TypeConstant implements InequalityTerm {
 
     /** Construct a TypeConstant.
-     *  @param type A Class representing a type in the type hierarchy.
-     *  @exception IllegalArgumentException If the specified type is not
-     *   a token type.
+     *  @param type An instance of Type. 
      */
-    public TypeConstant(Class type) {
-        if ( !TypeLattice.isAType(type)) {
-            throw new IllegalArgumentException("TypeConstant: argument is "
-                    + "not an acceptable type.");
-        }
+    public TypeConstant(Type type) {
 	_type = type;
     }
 
@@ -98,7 +92,7 @@ public class TypeConstant implements InequalityTerm {
      *  @return True if the current type is acceptable.
      */
     public boolean isValueAcceptable() {
-        if (TypeLattice.isInstantiableType(_type)) {
+        if (_type.isInstantiable()) {
             return true;
         }
         return false;
@@ -117,5 +111,5 @@ public class TypeConstant implements InequalityTerm {
     ///////////////////////////////////////////////////////////////////
     ////                         private variable                  ////
 
-    private Class _type = null;
+    private Type _type = null;
 }

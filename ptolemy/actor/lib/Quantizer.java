@@ -33,6 +33,7 @@ package ptolemy.actor.lib;
 import ptolemy.actor.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
+import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
 
 //////////////////////////////////////////////////////////////////////////
@@ -82,8 +83,8 @@ public class Quantizer extends Transformer {
         attributeChanged(levels);
 
 	// Set the type constraints.
-	input.setTypeEquals(DoubleToken.class);
-	output.setTypeEquals(DoubleToken.class);
+	input.setTypeEquals(BaseType.DOUBLE);
+	output.setTypeEquals(BaseType.DOUBLE);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -144,8 +145,8 @@ public class Quantizer extends Transformer {
         try {
             newobj.levels = (Parameter)newobj.getAttribute("levels");
             newobj.attributeChanged(newobj.levels);
-            newobj.input.setTypeEquals(DoubleToken.class);
-            newobj.output.setTypeEquals(DoubleToken.class);
+            newobj.input.setTypeEquals(BaseType.DOUBLE);
+            newobj.output.setTypeEquals(BaseType.DOUBLE);
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(ex.getMessage());
         }

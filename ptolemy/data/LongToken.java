@@ -33,8 +33,7 @@ package ptolemy.data;
 
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.graph.CPO;
-import ptolemy.data.type.Type;
-import ptolemy.data.type.BaseType;
+import ptolemy.data.type.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// LongToken
@@ -207,6 +206,13 @@ public class LongToken extends ScalarToken {
 	    throws IllegalActionException {
         LongToken tmp = (LongToken)this.convert(dividend);
 	return new LongToken(tmp.longValue() / _value);
+    }
+
+    /** Return the type of this token.
+     *  @return BaseType.LONG_MATRIX
+     */
+    public Type getType() {
+	return BaseType.LONG;
     }
 
     /** Test the values of this Token and the argument Token for equality.

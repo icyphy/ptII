@@ -63,6 +63,7 @@ test Manager-8.1 {Test type checking} {
     set e1 [java::new ptolemy.actor.TypedAtomicActor $e0 E1]
     set p1 [java::new ptolemy.actor.TypedIOPort $e1 P1]
     $p1 setOutput true
+    # set type using an instance of Class
     set t1 [[java::new ptolemy.data.IntToken] getClass]
     $p1 setTypeEquals $t1
 
@@ -70,8 +71,8 @@ test Manager-8.1 {Test type checking} {
     set e2 [java::new ptolemy.actor.TypedAtomicActor $e0 E2]
     set p2 [java::new ptolemy.actor.TypedIOPort $e2 P2]
     $p2 setInput true
-    set t2 [[java::new ptolemy.data.DoubleToken] getClass]
-    $p2 setTypeEquals $t2
+    # set type using an instance of Type
+    $p2 setTypeEquals [java::field ptolemy.data.type.BaseType DOUBLE]
 
     #link up p1, p2
     set r1 [java::new ptolemy.actor.TypedIORelation $e0 R1]
@@ -80,10 +81,10 @@ test Manager-8.1 {Test type checking} {
 
     $director preinitialize
     $manager resolveTypes
-    set rt1 [[$p1 getType] getName]
-    set rt2 [[$p2 getType] getName]
+    set rt1 [[$p1 getType] toString]
+    set rt2 [[$p2 getType] toString]
     list $rt1 $rt2
-} {ptolemy.data.IntToken ptolemy.data.DoubleToken}
+} {int double}
 
 ######################################################################
 ####
@@ -107,14 +108,14 @@ test Manager-8.3 {Test run-time type checking} {
     $director preinitialize
     catch {$p1 broadcast $token} msg
     list $msg
-} {{java.lang.IllegalArgumentException: Run-time type checking failed. token: ptolemy.data.DoubleToken, port: .E0.E1.P1, port type: ptolemy.data.IntToken}}
+} {{java.lang.IllegalArgumentException: Run-time type checking failed. token type: double, port: .E0.E1.P1, port type: int}}
 
 ######################################################################
 ####
 #
 test Manager-8.4 {Test type resolution} {
     # use the setup above
-    $p1 setTypeEquals [java::null]
+    $p1 setTypeEquals [java::field ptolemy.data.type.BaseType NAT]
 
     catch {$manager resolveTypes} msg
     list $msg
@@ -129,13 +130,13 @@ test Manager-8.5 {Test type resolution} {
     # use the setup above
     set tInt [[java::new ptolemy.data.IntToken] getClass]
     $p1 setTypeEquals $tInt
-    $p2 setTypeEquals [java::null]
+    $p2 setTypeEquals [java::field ptolemy.data.type.BaseType NAT]
 
     $manager resolveTypes
-    set rt1 [[$p1 getType] getName]
-    set rt2 [[$p2 getType] getName]
+    set rt1 [[$p1 getType] toString]
+    set rt2 [[$p2 getType] toString]
     list $rt1 $rt2
-} {ptolemy.data.IntToken ptolemy.data.IntToken}
+} {int int}
 
 ######################################################################
 ####
@@ -189,16 +190,15 @@ test Manager-8.6 {Test type resolution} {
 
     $director preinitialize
     $manager resolveTypes
-    set rt1 [[$p1 getType] getName]
-    set rt21 [[$p21 getType] getName]
-    set rt22 [[$p22 getType] getName]
-    set rt23 [[$p23 getType] getName]
-    set rt3 [[$p3 getType] getName]
-    set rt4 [[$p4 getType] getName]
+    set rt1 [[$p1 getType] toString]
+    set rt21 [[$p21 getType] toString]
+    set rt22 [[$p22 getType] toString]
+    set rt23 [[$p23 getType] toString]
+    set rt3 [[$p3 getType] toString]
+    set rt4 [[$p4 getType] toString]
 
     list $rt1 $rt21 $rt22 $rt23 $rt3 $rt4
-} {ptolemy.data.DoubleToken ptolemy.data.DoubleToken ptolemy.data.DoubleToken\
-ptolemy.data.DoubleToken ptolemy.data.DoubleToken ptolemy.data.DoubleToken}
+} {double double double double double double}
 
 ######################################################################
 ####
@@ -210,16 +210,15 @@ test Manager-8.7 {Test type resolution} {
     $p4 setTypeEquals $tDouble
 
     $manager resolveTypes
-    set rt1 [[$p1 getType] getName]
-    set rt21 [[$p21 getType] getName]
-    set rt22 [[$p22 getType] getName]
-    set rt23 [[$p23 getType] getName]
-    set rt3 [[$p3 getType] getName]
-    set rt4 [[$p4 getType] getName]
+    set rt1 [[$p1 getType] toString]
+    set rt21 [[$p21 getType] toString]
+    set rt22 [[$p22 getType] toString]
+    set rt23 [[$p23 getType] toString]
+    set rt3 [[$p3 getType] toString]
+    set rt4 [[$p4 getType] toString]
 
     list $rt1 $rt21 $rt22 $rt23 $rt3 $rt4
-} {ptolemy.data.IntToken ptolemy.data.IntToken ptolemy.data.IntToken\
-ptolemy.data.IntToken ptolemy.data.IntToken ptolemy.data.DoubleToken}
+} {int int int int int double}
 
 ######################################################################
 ####
@@ -233,8 +232,8 @@ test Manager-8.8 {Test type resolution} {
     catch {$manager resolveTypes} msg
     list $msg
 } {{ptolemy.actor.TypeConflictException: Type conflicts occurred in .E0 on the following Typeables:
-  .E0.E2.P23: ptolemy.data.DoubleToken
-  .E0.E4.P4: ptolemy.data.IntToken
+  .E0.E2.P23: double
+  .E0.E4.P4: int
 }}
 
 ######################################################################

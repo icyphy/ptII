@@ -32,8 +32,8 @@ package ptolemy.actor.lib;
 
 import ptolemy.actor.*;
 import ptolemy.kernel.util.*;
-import ptolemy.data.Token;
 import ptolemy.data.*;
+import ptolemy.data.type.BaseType;
 
 //////////////////////////////////////////////////////////////////////////
 //// VariableClock
@@ -79,7 +79,7 @@ public class VariableClock extends Clock {
         super(container, name);
 
         periodControl = new TypedIOPort(this, "periodControl", true, false);
-        periodControl.setTypeEquals(DoubleToken.class);
+        periodControl.setTypeEquals(BaseType.DOUBLE);
 
         // Change default values from the base class.
         double defaultOffsets[][] = {{0.0}};

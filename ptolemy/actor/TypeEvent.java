@@ -30,6 +30,7 @@
 
 package ptolemy.actor;
 
+import ptolemy.data.type.Type;
 import ptolemy.actor.TypedIOPort;
 
 //////////////////////////////////////////////////////////////////////////
@@ -55,7 +56,7 @@ public class TypeEvent {
      *  @param oldtype The type of the port before the change.
      *  @param newtype The type of the port after the change.
      */
-    public TypeEvent(TypedIOPort port, Class oldtype, Class newtype) {
+    public TypeEvent(TypedIOPort port, Type oldtype, Type newtype) {
         _port = port;
         _oldtype = oldtype;
         _newtype = newtype;
@@ -76,7 +77,7 @@ public class TypeEvent {
      *
      * @return The type of the port before the change.
      */
-    public Class getOldType() {
+    public Type getOldType() {
         return _oldtype;
     }
 
@@ -84,7 +85,7 @@ public class TypeEvent {
      *
      * @return The type of the port after the change.
      */
-    public Class getNewType() {
+    public Type getNewType() {
         return _newtype;
     }
 
@@ -92,6 +93,6 @@ public class TypeEvent {
     ////                       private fields                    ////
 
     private TypedIOPort _port = null;
-    private Class _oldtype = null;
-    private Class _newtype = null;
+    private Type _oldtype;
+    private Type _newtype;
 }

@@ -32,7 +32,7 @@
 package ptolemy.actor;
 
 import ptolemy.kernel.util.*;
-import ptolemy.data.Typeable;
+import ptolemy.data.type.*;
 import collections.LinkedList;
 import java.util.Enumeration;
 
@@ -115,11 +115,11 @@ public class TypeConflictException extends KernelException {
 	    } else {
 		result += "Unnamed Typeable: ";
 	    }
-	    Class type = typeable.getType();
+	    Type type = typeable.getType();
 	    if (type.equals(Void.TYPE)) {
 		result += "NaT\n";
 	    } else {
-		result += type.getName() + "\n";
+		result += type.toString() + "\n";
 	    }
 	}
 

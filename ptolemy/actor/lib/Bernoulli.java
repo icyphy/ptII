@@ -33,6 +33,7 @@ package ptolemy.actor.lib;
 import ptolemy.actor.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
+import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
 import java.util.Random;
 
@@ -65,7 +66,7 @@ public class Bernoulli extends RandomSource {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-        output.setTypeEquals(BooleanToken.class);
+        output.setTypeEquals(BaseType.BOOLEAN);
 
         trueProbability = new Parameter(this, "trueProbability",
                 new DoubleToken(0.5));

@@ -33,6 +33,7 @@ package ptolemy.actor.lib;
 import ptolemy.actor.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
+import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
 
 //////////////////////////////////////////////////////////////////////////
@@ -57,14 +58,14 @@ public class DoubleToFix extends Transformer {
     public DoubleToFix(TypedCompositeActor container, String name)
 	throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-        input.setTypeEquals(DoubleToken.class);
-	output.setTypeEquals(FixToken.class);
+        input.setTypeEquals(BaseType.DOUBLE);
+	output.setTypeEquals(BaseType.FIX);
    
 	precision = new Parameter(this, "precision", new StringToken(""));
-        precision.setTypeEquals(StringToken.class);      
+        precision.setTypeEquals(BaseType.STRING);
    
 	mode = new Parameter(this, "mode", new StringToken("SATURATE"));
-        mode.setTypeEquals(StringToken.class);      
+        mode.setTypeEquals(BaseType.STRING);
     }
 
     ///////////////////////////////////////////////////////////////////

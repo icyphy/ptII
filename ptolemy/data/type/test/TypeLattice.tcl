@@ -1,84 +1,59 @@
-# Makefile for Java Ptolemy type classes
+# Tests for TypeLattice
 #
-# @Authors: Christopher Hylands, Neil Smyth based on a file by Thomas M. Parks
+# @Author: Yuhong Xiong
 #
-# $Id$
+# @Version $Id$
 #
 # @Copyright (c) 1997-1999 The Regents of the University of California.
 # All rights reserved.
-#
+# 
 # Permission is hereby granted, without written agreement and without
 # license or royalty fees, to use, copy, modify, and distribute this
 # software and its documentation for any purpose, provided that the
 # above copyright notice and the following two paragraphs appear in all
 # copies of this software.
-#
+# 
 # IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
 # FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
 # ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
 # THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
-#
+# 
 # THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
 # INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 # MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
 # PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 # CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 # ENHANCEMENTS, OR MODIFICATIONS.
-#
+# 
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
+#######################################################################
 
-ME =		ptolemy/data/type
+# Tycho test bed, see $TYCHO/doc/coding/testing.html for more information.
 
-DIRS = 		test
+# Load up the test definitions.
+if {[string compare test [info procs test]] == 1} then { 
+    source testDefs.tcl
+} {}
 
-# Root of the Ptolemy II directory
-ROOT =		../../..
+# Uncomment this to get a full report, or set in your Tcl shell window.
+# set VERBOSE 1
 
-CLASSPATH =	$(ROOT)
+# If a file contains non-graphical tests, then it should be named .tcl
+# If a file contains graphical tests, then it should be called .itcl
+# 
+# It would be nice if the tests would work in a vanilla itkwish binary.
+# Check for necessary classes and adjust the auto_path accordingly.
+#
 
-# Get configuration info
-CONFIG =	$(ROOT)/mk/ptII.mk
-include $(CONFIG)
-
-# Used to build jar files
-PTPACKAGE = 	type
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR =	$(PTPACKAGE).jar
-
-JSRCS = \
-	ArrayType.java \
-	BaseType.java \
-	StructuredType.java \
-	Type.java \
-	Typeable.java \
-	TypeConstant.java \
-	TypeLattice.java
-
-EXTRA_SRCS =	$(JSRCS)
-
-# Sources that may or may not be present, but if they are present, we don't
-# want make checkjunk to barf on them.
-MISC_FILES =	$(DIRS)
-
-# make checkjunk will not report OPTIONAL_FILES as trash
-# make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	doc
-
-JCLASS = $(JSRCS:%.java=%.class)
-
-
-all: jclass
-install: jclass $(PTCLASSJAR)
-
-
-depend:
-	@echo "no dependencies in this directory"
-
-# Get the rest of the rules
-include $(ROOT)/mk/ptcommon.mk
-
-
+######################################################################
+####
+# 
+test TypeLattice-1.0 {compare} {
+    set tokInt [java::new ptolemy.data.IntToken]
+    set tokDou [java::new ptolemy.data.DoubleToken]
+    set lat [java::new ptolemy.data.type.TypeLattice]
+    list [$lat compare $tokInt $tokDou] [$lat compare $tokDou $tokInt]
+} {-1 1}
 

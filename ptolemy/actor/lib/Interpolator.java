@@ -33,6 +33,7 @@ package ptolemy.actor.lib;
 import ptolemy.actor.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
+import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.Variable;
 import ptolemy.math.*;
@@ -90,13 +91,13 @@ public class Interpolator extends SequenceSource {
          */
  
         indexes = new Parameter(this, "indexes", defaultIndexToken);
-        indexes.setTypeEquals(IntMatrixToken.class);
+        indexes.setTypeEquals(BaseType.INT_MATRIX);
         values = new Parameter(this, "values", defaultValueToken);
-        values.setTypeEquals(DoubleMatrixToken.class);
+        values.setTypeEquals(BaseType.DOUBLE_MATRIX);
         order = new Parameter(this, "order", defaultOrderToken);
-        order.setTypeEquals(IntToken.class);
+        order.setTypeEquals(BaseType.INT);
         attributeChanged(order);
-        output.setTypeEquals(DoubleToken.class);
+        output.setTypeEquals(BaseType.DOUBLE);
     }
     
     ///////////////////////////////////////////////////////////////////
@@ -212,11 +213,11 @@ public class Interpolator extends SequenceSource {
             newobj.indexes = (Parameter)newobj.getAttribute("indexes");
             newobj.values = (Parameter)newobj.getAttribute("values");
             newobj.order = (Parameter)newobj.getAttribute("order"); 
-            indexes.setTypeEquals(IntMatrixToken.class);
-            values.setTypeEquals(DoubleMatrixToken.class);
-            order.setTypeEquals(IntToken.class);
+            indexes.setTypeEquals(BaseType.INT_MATRIX);
+            values.setTypeEquals(BaseType.DOUBLE_MATRIX);
+            order.setTypeEquals(BaseType.INT);
             newobj.attributeChanged(order);
-            newobj.output.setTypeEquals(DoubleToken.class);
+            newobj.output.setTypeEquals(BaseType.DOUBLE);
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(ex.getMessage());
         }

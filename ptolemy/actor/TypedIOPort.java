@@ -33,6 +33,7 @@ package ptolemy.actor;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
+import ptolemy.data.type.*;
 import ptolemy.graph.*;
 
 import collections.LinkedList;
@@ -43,13 +44,12 @@ import java.util.Enumeration;
 //// TypedIOPort
 /**
 An IOPort with a type. This class implements the Typeable interface.
-The type is one of the token types in the data package. It can be declared
-by calling setTypeEquals() with an argument that is a Class object
-representing one of the token types. If this method is not called, or
-called with a null argument, the type of this port will be set by
-type resolution using the type constraints. The type constraints on
-this port can be specified using the methods defined in the Typeable
-interface.
+The type is represented by an intance of Type in data.type package.
+It can be declared by calling setTypeEquals(). If this method is not
+called, or called with a BaseType.NAT argument, the type of this port
+will be set by type resolution using the type constraints. The type
+constraints on this port can be specified using the methods defined in
+the Typeable interface.
 
 This class keeps a list of TypeListeners. Whenever the type
 changes, this class will generate an instance of TypeEvent and pass it
@@ -156,11 +156,11 @@ public class TypedIOPort extends IOPort implements Typeable {
      *  by an instance of Class associated with a token type.
      *  If the type is not set through setTypeEquals(), and this method
      *  is called before type resolution takes place, this method
-     *  returns null.
+     *  returns BaseType.NAT.
      *  This method is read-synchronized on the workspace.
-     *  @return a Class representing the type.
+     *  @return An instance of Type.
      */
-    public Class getType() {
+    public Type getType() {
 	try {
 	    workspace().getReadAccess();
 	    return _resolvedType;
@@ -234,13 +234,13 @@ public class TypedIOPort extends IOPort implements Typeable {
                 throw new NoRoomException(this,
                         "send: channel index is out of range.");
             }
-	    int compare = TypeLattice.compare(token.getClass(), _resolvedType);
+	    int compare = TypeLattice.compare(token.getType(), _resolvedType);
 	    if (compare == CPO.HIGHER ||
                     compare == CPO.INCOMPARABLE) {
 		throw new IllegalArgumentException("Run-time type checking " +
-                        "failed. token: " + token.getClass().getName() +
+                        "failed. token type: " + token.getType().toString() +
                         ", port: " + getFullName() + ", port type: " +
-                        getType().getName());
+                        getType().toString());
 	    }
 
 	    // Note that the getRemoteReceivers() method doesn't throw
@@ -253,32 +253,17 @@ public class TypedIOPort extends IOPort implements Typeable {
             workspace().doneReading();
         }
 
-	try {
-            for (int j = 0; j < farRec[channelindex].length; j++) {
-	        TypedIOPort port =
+        for (int j = 0; j < farRec[channelindex].length; j++) {
+	    TypedIOPort port =
                     (TypedIOPort)farRec[channelindex][j].getContainer();
-	        Class farType = port.getType();
+            Type farType = port.getType();
 
-		// farType might be "Token", since the base class Token
-		// does not have a convert method, the convert method
-		// should only be invoked if the token being transported
-		// is not an instance of farType.
-	        if (farType.isInstance(token)) {
-                    farRec[channelindex][j].put(token);
-                } else {
-		    Object[] arg = new Object[1];
-		    arg[0] = token;
-		    Method convert = port._getConvertMethod();
-		    Token newToken = (Token)convert.invoke(null, arg);
-                    farRec[channelindex][j].put(newToken);
-                }
+	    if (farType.isEqualTo(token.getType())) {
+                farRec[channelindex][j].put(token);
+            } else {
+                Token newToken = farType.convert(token);
+                farRec[channelindex][j].put(newToken);
             }
-        } catch (IllegalAccessException iae) {
-	    throw new InternalErrorException("TypedIOPort.send: " +
-                    "IllegalAccessException: " + iae.getMessage());
-	} catch (InvocationTargetException ite) {
-            throw new InternalErrorException("TypedIOPort.send: " +
-                    "InvocationTargetException: " + ite.getMessage());
         }
     }
 
@@ -318,39 +303,69 @@ public class TypedIOPort extends IOPort implements Typeable {
     /** Constrain that the type of this port to be equal to or less
      *  than the argument.
      */
-    public void setTypeAtMost(Class type) {
+    public void setTypeAtMost(Type type) {
 	Inequality ineq = new Inequality(this.getTypeTerm(),
                 new TypeConstant(type));
 	_constraints.insertLast(ineq);
     }
 
-    /** Set the type of this port. The type is represented
-     *  by an instance of Class associated with a non-abstract token type,
-     *  or null. If the type is null, the determination of the type is
-     *  left to type resolution.
+    /** Set the type of this port to the type corresponding to the specified
+     *  Class object.
      *  This method is write-synchronized on the workspace.
-     *  @param type an instance of a Class representing a token type.
-     *  @exception IllegalArgumentException If the specified type is not
-     *   a non-abstract token type, or null.
+     *  @param c A Class.
+     *  @exception IllegalArgumentException If the specified Class does not
+     *   corresponds to a BaseType.
+     *  @deprecated
      */
-    // FIXME: this method may want to inform its director about this
-    // change.
-    public void setTypeEquals(Class type) {
-	if (type != null && !(TypeLattice.isInstantiableType(type))) {
-	    throw new IllegalArgumentException(
-		    "TypedIOPort.setTypeEquals: argument is not " +
-		    "a non-abstract token type, or null.");
-	}
+    public void setTypeEquals(Class c) throws IllegalArgumentException {
+	BaseType type = BaseType.classToBaseType(c);
+	setTypeEquals(type);
+    }
 
+    /** Set the type of this port. The type is represented by an instance
+     *  of Type. If the type is BaseType.NaT, the determination of the type
+     *  is left to type resolution.
+     *  This method is write-synchronized on the workspace.
+     *  @param type A Type.
+     */
+    public void setTypeEquals(Type type) {
 	try {
 	    workspace().getWriteAccess();
-	    _declaredType = type;
 
-	    // also set the resolved type,  If _declaredType == null, i.e.,
-	    // undeclared, the type resolution algorithm will reset the
-	    // _resolvedType.
-	    _setResolvedType(_declaredType);
-	    _convertMethod = null;
+	    if (type instanceof BaseType) {
+	    	_declaredType = type;
+	    } else {
+		// new type is StructuredType
+		StructuredType typeStruct = (StructuredType)type;
+
+		if (typeStruct.isConstant()) {
+		    _declaredType = type;
+		} else {
+		    // new type is a variable StructuredType.
+		    try {
+			if (typeStruct.getUser() == null) {
+			    typeStruct.setUser(this);
+			    _declaredType = type;
+			} else {
+			    // new type already has user, clone it.
+			    StructuredType newType =
+				(StructuredType)typeStruct.clone();
+			    newType.setUser(this);
+			    _declaredType = newType;
+			}
+		    } catch (IllegalActionException ex) {
+			// since the user was null, this should never happen.
+			throw new InternalErrorException(
+			    "TypedIOPort.setTypeEquals: " + ex.getMessage());
+		    }
+		}
+	    }
+
+	    if (!_resolvedType.isEqualTo(_declaredType)) {
+		_notifyTypeListener(_resolvedType, _declaredType);
+	    }
+	    _resolvedType = _declaredType;
+
 	} finally {
 	    workspace().doneWriting();
 	}
@@ -404,8 +419,8 @@ public class TypedIOPort extends IOPort implements Typeable {
      *  TYPE, then append to the description a field of the form
      *  "type {declared <i>declaredType</i> resolved <i>resolvedType</i>}".
      *  The declared type is the type set through setTypeEquals(). If this
-     *  method is not called, the declared type is null. The resolved type
-     *  is the type of this port.  Both types are represented by the names
+     *  method is not called, the declared type is BaseType.NAT. The resolved
+     *  type is the type of this port.  Both types are represented by the names
      *  of the corresponding tokens.
      *  <p>
      *
@@ -430,17 +445,9 @@ public class TypedIOPort extends IOPort implements Typeable {
                     result += " ";
                 }
                 result += "type {declared ";
-		if (_declaredType == null) {
-		    result += "null";
-		} else {
-		    result += _declaredType.getName();
-		}
+		result += _declaredType.toString();
                 result += " resolved ";
-		if (getType() == null) {
-		    result += "null";
-		} else {
-		    result += getType().getName();
-		}
+		result += getType().toString();
 		result += "}";
             }
             if (bracket == 2) result += "}";
@@ -500,55 +507,26 @@ public class TypedIOPort extends IOPort implements Typeable {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    // Return the convert() Method for the resolved type of this port.
-    private Method _getConvertMethod() {
-	try {
-	    if (_convertMethod == null) {
-	    	Class[] formal = new Class[1];
-	    	formal[0] = Token.class;
-	    	_convertMethod = _resolvedType.getMethod("convert", formal);
+    // Notify the type listener about type change.
+
+    private void _notifyTypeListener(Type oldType, Type newType) {
+
+	if (_typeListeners.size() > 0) {
+	    TypeEvent event = new TypeEvent(this, oldType, newType);
+	    Enumeration listeners = _typeListeners.elements();
+	    while (listeners.hasMoreElements()) {
+		((TypeListener)listeners.nextElement()).typeChanged(event);
 	    }
-	    return _convertMethod;
-
-	} catch (NoSuchMethodException e) {
-            throw new InternalErrorException("TypedIOPort._getConvertMethod: "
-                    + "NoSuchMethodException: " + e.getMessage());
-        }
-    }
-
-    // Set the resolved type of this port.  The type is represented
-    // by an instance of Class that is an element in the type lattice.
-    // If the specified type is different from the old type, this
-    // method notifies the typelisteners registered on this port
-    // by calling their typeChanged() method.
-    // This method is write-synchronized on the workspace.
-    private void _setResolvedType(Class c) {
-	try {
-	    workspace().getWriteAccess();
-
-	    if (_resolvedType != c && _typeListeners.size() > 0) {
-		TypeEvent event = new TypeEvent(this, _resolvedType, c);
-		Enumeration listeners = _typeListeners.elements();
-		while (listeners.hasMoreElements()) {
-		    ((TypeListener)listeners.nextElement()).typeChanged(event);
-		}
-	    }
-
-	    _resolvedType = c;
-	    _convertMethod = null;
-	} finally {
-	    workspace().doneWriting();
 	}
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private Class _declaredType = null;
-    private Class _resolvedType = null;
+    private Type _declaredType = BaseType.NAT;
+    private Type _resolvedType = BaseType.NAT;
 
     private TypeTerm _typeTerm = null;
-    private Method _convertMethod = null;
 
     // Listeners for type change.
     private LinkedList _typeListeners = new LinkedList();
@@ -590,7 +568,7 @@ public class TypedIOPort extends IOPort implements Typeable {
 	 *  @return An array of InequalityTerm.
          */
         public InequalityTerm[] getVariables() {
-	    if (_declaredType == null) {
+	    if ( !_declaredType.isConstant()) {
 	    	InequalityTerm[] variable = new InequalityTerm[1];
 	    	variable[0] = this;
 	    	return variable;
@@ -600,12 +578,12 @@ public class TypedIOPort extends IOPort implements Typeable {
 
         /** Test if the type of this TypedIOPort can be changed.
 	 *  The type can be changed if setTypeEquals() is not called,
-	 *  or called with a null argument.
+	 *  or called with a BaseType.NAT argument.
          *  @return True if the type of this TypedIOPort can be changed;
 	 *   false otherwise.
          */
         public boolean isSettable() {
-	    if (_declaredType == null) {
+	    if ( !_declaredType.isConstant()) {
 		return true;
 	    }
 	    return false;
@@ -618,7 +596,7 @@ public class TypedIOPort extends IOPort implements Typeable {
          *  @return True if the current type is acceptable.
          */
         public boolean isValueAcceptable() {
-            if (TypeLattice.isInstantiableType(getType())) {
+            if (getType().isInstantiable()) {
                 return true;
             }
             // For a disconnected port, any type is acceptable.
@@ -628,14 +606,26 @@ public class TypedIOPort extends IOPort implements Typeable {
             return false;
         }
 
-        /** Set the type of this port if it is not set through
-	 *  setTypeEquals().
-         *  @exception IllegalActionException If the type is already set
-	 *   through setTypeEquals().
+        /** Set the type of this port.
+         *  @exception IllegalActionException If the type is set to a
+	 *   constant through setTypeEquals().
          */
         public void setValue(Object e) throws IllegalActionException {
-	    if (_declaredType == null) {
-		_setResolvedType((Class)e);
+	    if (isSettable()) {
+
+		Type oldType = _resolvedType;
+
+		if (_declaredType == BaseType.NAT) {
+		    _resolvedType = (Type)e;
+		} else {
+		    // _declaredType is a StructuredType
+		    ((StructuredType)_resolvedType).updateType(
+				(StructuredType)e);
+		}
+
+		if (!oldType.isEqualTo((Type)e)) {
+		    _notifyTypeListener(oldType, _resolvedType);
+		}
 		return;
 	    }
 
@@ -657,3 +647,4 @@ public class TypedIOPort extends IOPort implements Typeable {
         private TypedIOPort _port = null;
     }
 }
+

@@ -103,15 +103,15 @@ test Parameter-3.2 {Check that type changes with new Token type} {
 
     # Now put a new token into the Param
     set tok2 [java::new  {ptolemy.data.DoubleToken double} 7.3]
-    set type1 [[$param1 getType] getName]
+    set type1 [[$param1 getType] toString]
     $param1 setToken $tok2
-    set type2 [[$param1 getType] getName]
+    set type2 [[$param1 getType] toString]
 
     set name2 [$param1 getFullName]
     set value2 [[$param1 getToken] stringValue]
 
     list $name1 $value1 $type1 $type2
-} {.entity.id1 11 ptolemy.data.IntToken ptolemy.data.DoubleToken}
+} {.entity.id1 11 int double}
 
 #################################
 ####
@@ -146,7 +146,7 @@ test Parameter-3.5 {Check that we can't convert down} {
     set intClass [$int getClass]
     catch {$param1 setTypeEquals $intClass} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: .entity.id1: setTypeEquals(): the currently contained token ptolemy.data.DoubleToken(7.0) cannot be losslessly converted to the desired type class ptolemy.data.IntToken}}
+} {{ptolemy.kernel.util.IllegalActionException: .entity.id1: setTypeEquals(): the currently contained token ptolemy.data.DoubleToken(7.0) cannot be losslessly converted to the desired type int}}
 
 test Parameter-3.6 {Check that a new token is converted} {
     $param1 setToken $int

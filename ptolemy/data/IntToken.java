@@ -34,8 +34,7 @@ package ptolemy.data;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.graph.CPO;
 import ptolemy.math.Complex;
-import ptolemy.data.type.Type;
-import ptolemy.data.type.BaseType;
+import ptolemy.data.type.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// IntegerToken
@@ -218,6 +217,13 @@ public class IntToken extends ScalarToken {
      */
     public double doubleValue() {
         return (double)_value;
+    }
+
+    /** Return the type of this token.
+     *  @return BaseType.INT
+     */
+    public Type getType() {
+	return BaseType.INT;
     }
 
     /** Test the values of this Token and the argument Token for equality.

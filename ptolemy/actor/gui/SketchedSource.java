@@ -33,6 +33,7 @@ package ptolemy.actor.gui;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
+import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.*;
 import ptolemy.actor.*;
 import ptolemy.actor.lib.SequenceActor;
@@ -88,14 +89,14 @@ public class SketchedSource extends Source implements SequenceActor {
         super(container, name);
 
         // Set the type of the output port.
-        output.setTypeEquals(DoubleToken.class);
+        output.setTypeEquals(BaseType.DOUBLE);
 
         // Create the parameters.
         length = new Parameter(this, "length", new IntToken(100));
-        length.setTypeEquals(IntToken.class);
+        length.setTypeEquals(BaseType.INT);
 
         period = new Parameter(this, "period", new IntToken(0));
-        period.setTypeEquals(IntToken.class);
+        period.setTypeEquals(BaseType.INT);
 
         dataset = new Parameter(this, "dataset",
                 new IntToken(0));

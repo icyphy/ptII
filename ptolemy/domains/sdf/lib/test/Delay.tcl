@@ -60,7 +60,7 @@ test Delay-2.1 {test constructor and clone} {
     list {}
 } {{}}
 
-test Delay-2.1 {test with the default parameter values} {
+test Delay-2.2 {test with the default parameter values} {
     set ramp [java::new ptolemy.actor.lib.Ramp $e0 ramp]
     set init [getParameter $ramp init]
     set step [getParameter $ramp step]
@@ -78,25 +78,23 @@ test Delay-2.1 {test with the default parameter values} {
     enumToTokenValues [$rec getRecord 0]
 } {0 0 1 2 3}
 
-test Delay-2.2 {test with more than one output token} {
+test Delay-2.3 {test with more than one output token} {
     $initialOutputs setExpression {[5, 5]}
     [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
 } {5 5 0 1 2}
 
-test Delay-2.3 {test with type change} {
+test Delay-2.4 {test with type change} {
     $initialOutputs setExpression {[7.0, 4.0]}
     [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
 } {7.0 4.0 0 1 2}
 
-test Delay-2.4 {test with type change to error condition} {
+test Delay-2.5 {test with type change to error condition} {
     $initialOutputs setExpression {[true, false]}
-    catch {[$e0 getManager] execute} msg
-    list $msg
-} {{ptolemy.actor.TypeConflictException: Type conflicts occurred in .top on the following Typeables:
-  .top.delay.output: ptolemy.data.MatrixUpperBound
-}}
+    [$e0 getManager] execute
+    enumToTokenValues [$rec getRecord 0]
+} {true false 0 1 2}
 
 test Delay-3.0 {test in feedback loop} {
     $ramp setContainer [java::null]

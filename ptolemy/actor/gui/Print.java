@@ -32,6 +32,7 @@ package ptolemy.actor.gui;
 
 import ptolemy.kernel.util.*;
 import ptolemy.data.Token;
+import ptolemy.data.type.BaseType;
 import ptolemy.actor.*;
 import java.awt.*;
 
@@ -52,7 +53,7 @@ public class Print extends TypedAtomicActor implements Placeable {
         // create the input port and make it a multiport.
         input = new TypedIOPort(this, "input", true, false);
         input.setMultiport(true);
-        input.setTypeEquals(Token.class);
+        input.setTypeEquals(BaseType.GENERAL);
     }
 
     ///////////////////////////////////////////////////////////////////

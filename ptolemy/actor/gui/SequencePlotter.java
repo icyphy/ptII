@@ -33,6 +33,7 @@ package ptolemy.actor.gui;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
+import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.*;
 import ptolemy.actor.*;
 import ptolemy.actor.lib.SequenceActor;
@@ -65,7 +66,7 @@ public class SequencePlotter extends Plotter implements SequenceActor {
         // create the input port and make it a multiport.
         input = new TypedIOPort(this, "input", true, false);
         input.setMultiport(true);
-        input.setTypeEquals(DoubleToken.class);
+        input.setTypeEquals(BaseType.DOUBLE);
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -55,7 +55,7 @@ set manager [java::new ptolemy.actor.Manager]
 ######################################################################
 ####
 #
-test TypedIOPort-2.1 {Construct Ports} {
+test TypedIOPort-1.1 {Construct Ports} {
     set e0 [java::new ptolemy.actor.TypedCompositeActor]
     $e0 setDirector $director
     $e0 setManager $manager
@@ -65,7 +65,7 @@ test TypedIOPort-2.1 {Construct Ports} {
     list [$p1 getFullName] [$p2 getFullName]
 } {. ..E1.P2}
 
-test TypedIOPort-2.2 {Construct Ports} {
+test TypedIOPort-1.2 {Construct Ports} {
     set e0 [java::new ptolemy.actor.TypedCompositeActor]
     $e0 setDirector $director
     $e0 setManager $manager
@@ -75,7 +75,7 @@ test TypedIOPort-2.2 {Construct Ports} {
     list [$p1 getFullName] [$p2 getFullName]
 } {..E1.P1 ..E1.P2}
 
-test TypedIOPort-2.3 {Attempt to set erroneous container} {
+test TypedIOPort-1.3 {Attempt to set erroneous container} {
     set e0 [java::new ptolemy.actor.CompositeActor]
     $e0 setDirector $director
     $e0 setManager $manager
@@ -88,7 +88,7 @@ test TypedIOPort-2.3 {Attempt to set erroneous container} {
 ######################################################################
 ####
 #
-test TypedIOPort-3.1 {set declared/resolved types} {
+test TypedIOPort-2.1 {set declared/resolved types} {
     set e0 [java::new ptolemy.actor.TypedCompositeActor]
     $e0 setDirector $director
     $e0 setManager $manager
@@ -97,61 +97,59 @@ test TypedIOPort-3.1 {set declared/resolved types} {
     set tDouble [[java::new ptolemy.data.DoubleToken] getClass]
     $p1 setTypeEquals $tDouble
 
-    set rt1 [[$p1 getType] getName]
+    set rt1 [[$p1 getType] toString]
 
     list $rt1
-} {ptolemy.data.DoubleToken}
+} {double}
 
 ######################################################################
 ####
 #
-test TypedIOPort-3.2 {set resolved types} {
+test TypedIOPort-2.2 {set resolved types} {
     set e0 [java::new ptolemy.actor.TypedCompositeActor]
     $e0 setDirector $director
     $e0 setManager $manager
     set e1 [java::new ptolemy.actor.TypedAtomicActor $e0 E1]
     set p1 [java::new ptolemy.actor.TypedIOPort $e1 P1]
-    set tDouble [java::new ptolemy.data.DoubleToken]
     set tt [$p1 getTypeTerm]
-    $tt setValue [$tDouble getClass]
+    $tt setValue [java::field ptolemy.data.type.BaseType DOUBLE]
 
     set isUndec [[$p1 getTypeTerm] isSettable]
-    set rt1 [[$p1 getType] getName]
+    set rt1 [[$p1 getType] toString]
 
     list $isUndec $rt1
-} {1 ptolemy.data.DoubleToken}
+} {1 double}
 
 ######################################################################
 ####
 #
-test TypedIOPort-4.2 {test clone} {
+test TypedIOPort-3.1 {test clone} {
     # use set up above
     set p2 [_testClone $p1]
-    set rt2 [[$p2 getType] getName]
+    set rt2 [[$p2 getType] toString]
 
     set isUndec1 [[$p1 getTypeTerm] isSettable]
     set isUndec2 [[$p2 getTypeTerm] isSettable]
     list $isUndec $rt1 $isUndec2 $rt2
-} {1 ptolemy.data.DoubleToken 1 ptolemy.data.DoubleToken}
+} {1 double 1 double}
 
 ######################################################################
 ####
 #
-test TypedIOPort-4.3 {test clone} {
+test TypedIOPort-3.2 {test clone} {
     # use set up above
 
     set tInt [java::new ptolemy.data.IntToken]
-    set tString [java::new ptolemy.data.StringToken]
     $p1 setTypeEquals [$tInt getClass]
 
     set tt2 [$p2 getTypeTerm]
-    $tt2 setValue [$tString getClass]
+    $tt2 setValue [java::field ptolemy.data.type.BaseType STRING]
 
-    set rt1 [[$p1 getType] getName]
-    set rt2 [[$p2 getType] getName]
+    set rt1 [[$p1 getType] toString]
+    set rt2 [[$p2 getType] toString]
     set isUndec2 [[$p2 getTypeTerm] isSettable]
     list $rt1 $isUndec2 $rt2
-} {ptolemy.data.IntToken 1 ptolemy.data.StringToken}
+} {int 1 string}
 
 ######################################################################
 ####
@@ -168,7 +166,7 @@ test TypedIOPort-4.1 {Check description on a new TypedIOPort} {
 
     list [expr {$p0 == [java::null]}]
     $p0 description $detail
-} {ptolemy.actor.TypedIOPort {.} type {declared null resolved null}}
+} {ptolemy.actor.TypedIOPort {.} type {declared NaT resolved NaT}}
 
 ######################################################################
 ####
@@ -183,5 +181,5 @@ test TypedIOPort-4.2 {test description} {
     $p1 setTypeEquals $tDouble
 
     $p1 description $detail
-} {ptolemy.actor.TypedIOPort {..E1.P1} type {declared ptolemy.data.DoubleToken resolved ptolemy.data.DoubleToken}}
+} {ptolemy.actor.TypedIOPort {..E1.P1} type {declared double resolved double}}
 

@@ -65,7 +65,7 @@ test TypeEvent-1.1 {Test type event} {
     $p1 setTypeEquals $ti
 
     $listener getMessage
-} {.E1.P1/null/ptolemy.data.IntToken}
+} {.E1.P1/NaT/int}
 
 ######################################################################
 ####
@@ -87,5 +87,5 @@ test TypeEvent-1.3 {re-add listener} {
     $p1 setTypeEquals $ts
 
     $listener getMessage
-} {.E1.P1/ptolemy.data.DoubleToken/ptolemy.data.StringToken}
+} {.E1.P1/double/string}
 

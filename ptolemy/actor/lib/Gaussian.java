@@ -33,6 +33,7 @@ package ptolemy.actor.lib;
 import ptolemy.actor.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
+import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
 import java.util.Random;
 
@@ -64,7 +65,7 @@ public class Gaussian extends RandomSource {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-        output.setTypeEquals(DoubleToken.class);
+        output.setTypeEquals(BaseType.DOUBLE);
 
         mean = new Parameter(this, "mean", new DoubleToken(0.0));
         standardDeviation = new Parameter(this,
@@ -94,7 +95,7 @@ public class Gaussian extends RandomSource {
      */
     public Object clone(Workspace ws) {
         Gaussian newobj = (Gaussian)super.clone(ws);
-        newobj.output.setTypeEquals(DoubleToken.class);
+        newobj.output.setTypeEquals(BaseType.DOUBLE);
         newobj.mean = (Parameter)newobj.getAttribute("mean");
         newobj.standardDeviation = (Parameter)newobj.getAttribute(
                 "standardDeviation");

@@ -55,13 +55,27 @@ $Id$
 public abstract class StructuredType implements Type, Cloneable {
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected methods                   ////
+    ////                         public methods                    ////
+
+    /** Return the user of this StructuredType. If the user is not set,
+     *  return null.
+     *  @return An Object.
+     */
+    public abstract Object getUser();
+
+    /** Set the user of this StructuedType. The user can only be set once
+     *  Otherwise, an exception will be thrown.
+     *  @param Object The user.
+     *  @exception IllegalActionException If the user is already set, or
+     *   if the argument is null.
+     */
+    public abstract void setUser(Object user) throws IllegalActionException;
 
     /** Return a deep copy this StructuredType. The returned copy does
      *  not have the user set.
      *  @return A StructuredType.
      */
-    protected Object clone() {
+    public Object clone() {
 	try {
 	    return super.clone();
 	} catch (CloneNotSupportedException ex) {
@@ -69,6 +83,22 @@ public abstract class StructuredType implements Type, Cloneable {
 		ex.getMessage());
 	}
     }
+
+    /** Update this StructuredType to the specified Structured Type.
+     *  The specified StructuredType must not be a constant, otherwise an
+     *  exception will be thrown. The specified type must have the same
+     *  structure as this type. This method will only update the
+     *  component type that is BaseType.NAT, and leave the constant
+     *  part of this type intact.
+     *  @param st A StructuredType.
+     *  @exception IllegalActionException If this Structured type 
+     *   is a constant, or the specified type has a different structure.
+     */
+    public abstract void updateType(StructuredType st)
+	throws IllegalActionException;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                       protected methods                   ////
 
     /** Compare this type with the specified type. The specified type
      *  must be of the same structured type, otherwise an exception will
@@ -99,12 +129,6 @@ public abstract class StructuredType implements Type, Cloneable {
      */
     protected abstract StructuredType _getRepresentative();
 
-    /** Return the user of this StructuredType. If the user is not set,
-     *  return null.
-     *  @return An Object.
-     */
-    protected abstract Object _getUser();
-
     /** Return the greatest lower bound of this type with the specified
      *  type. The specified type must be of the same structured type,
      *  otherwise an exception will be thrown.
@@ -124,34 +148,6 @@ public abstract class StructuredType implements Type, Cloneable {
      *   not the same structured type as this one.
      */
     protected abstract StructuredType _leastUpperBound(StructuredType t);
-
-    /** Test if this StructuredType is a constant. A StructuredType is
-     *  a constant if it does not contain BaseType.NAT in any level within
-     *  it.
-     *  @return True if this type is a constant.
-     */
-    protected abstract boolean _isConstant();
-
-    /** Update this StructuredType to the specified Structured Type.
-     *  This StructuredType must not be a constant, otherwise an
-     *  exception will be thrown. The specified type must have the same
-     *  structure as this type. This method will only update the
-     *  component type that is BaseType.NAT, and leave the constant
-     *  part of this type intact.
-     *  @param st A StructuredType.
-     *  @exception IllegalActionException If this Structured type 
-     *   is a constant, or the specified type has a different structure.
-     */
-    protected abstract void _updateType(StructuredType st)
-	throws IllegalActionException;
-
-    /** Set the user of this StructuedType. The user can only be set once
-     *  Otherwise, an exception will be thrown.
-     *  @param Object The user.
-     *  @exception IllegalActionException If the user is already set, or
-     *   if the argument is null.
-     */
-    protected abstract void _setUser(Object user) throws IllegalActionException;
 
 }
 

@@ -33,6 +33,7 @@ package ptolemy.actor.lib;
 import ptolemy.actor.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
+import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.Variable;
 
@@ -110,7 +111,7 @@ public class Poisson extends TimedSource {
         super(container, name);
 
         meanTime = new Parameter(this, "meanTime", new DoubleToken(1.0));
-        meanTime.setTypeEquals(DoubleToken.class);
+        meanTime.setTypeEquals(BaseType.DOUBLE);
 
         int defaultValues[][] = {{1, 0}};
         IntMatrixToken defaultValueToken = new IntMatrixToken(defaultValues);

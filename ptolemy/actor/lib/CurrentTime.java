@@ -33,6 +33,7 @@ package ptolemy.actor.lib;
 import ptolemy.actor.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
+import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
 import ptolemy.graph.Inequality;
 
@@ -65,7 +66,7 @@ public class CurrentTime extends TimedSource {
         super(container, name);
 
 	// set the type constraints.
-	output.setTypeEquals(DoubleToken.class);
+	output.setTypeEquals(BaseType.DOUBLE);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -81,7 +82,7 @@ public class CurrentTime extends TimedSource {
     public Object clone(Workspace ws) {
         Ramp newobj = (Ramp)super.clone(ws);
 	// set the type constraints.
-	output.setTypeEquals(DoubleToken.class);
+	output.setTypeEquals(BaseType.DOUBLE);
         return newobj;
     }
 

@@ -34,9 +34,7 @@ package ptolemy.data.expr;
 
 import ptolemy.kernel.util.*;
 import ptolemy.data.Token;
-import ptolemy.data.Typeable;
-import ptolemy.data.TypeLattice;
-import ptolemy.data.TypeConstant;
+import ptolemy.data.type.*;
 import ptolemy.graph.*;
 import collections.LinkedList;
 import java.util.Enumeration;
@@ -127,7 +125,7 @@ A variable can also be reset. If the variable was originally set from a
 token, then this token is placed again in the variable, and the type of the
 variable is set to equal that of the token. If the variable
 was originally given an expression, then this expression is placed again
-in the variable (but not evaluated), and the type is reset to null.
+in the variable (but not evaluated), and the type is reset to BaseType.NAT.
 The type will be determined when the expression is evaluated or when
 type resolution is done.
 
@@ -407,20 +405,20 @@ public class Variable extends Attribute implements Typeable {
         return _token;
     }
 
-    /** Get the type of this variable. It is null if the type has not set
-     *  by setTypeEquals(), no token has been set by setToken(), and no
-     *  expression has been set by setExpression().  If an expression has
-     *  been set, then calling this method causes this expression to be
+    /** Get the type of this variable. It is BaseType.NAT if the type has
+     *  not set by setTypeEquals(), no token has been set by setToken(),
+     *  and no expression has been set by setExpression().  If an expression
+     *  has been set, then calling this method causes this expression to be
      *  evaluated, and the type of this variable is derived from the 
      *  resulting token. If the evaluation fails, then this method returns
-     *  null; i.e., the type is undefined.
+     *  BaseType.NAT; i.e., the type is undefined.
      *  @return The type of this variable.
      */
-    public Class getType() {
+    public Type getType() {
         try {
             _evaluate();
         } catch (IllegalActionException ex) {
-            return null;
+            return BaseType.NAT;
         }
         return _varType;
     }
@@ -476,7 +474,7 @@ public class Variable extends Attribute implements Typeable {
      *  in the variable, and the type of the variable is set to equal
      *  that of the token. If the variable was originally given an
      *  expression, then this expression is placed again in the variable
-     *  (but not evaluated), and the type is reset to null.
+     *  (but not evaluated), and the type is reset to BaseType.NAT.
      *  The type will be determined when the expression is evaluated or
      *  when type resolution is done.
      */
@@ -631,33 +629,51 @@ public class Variable extends Attribute implements Typeable {
      *  is checked every time the value of the variable is set by
      *  setToken() or by evaluating an expression.  This type constraint
      *  is also returned by the typeConstraints() methods.
-     *  To remove the type constraint, call this method will a null argument.
+     *  To remove the type constraint, call this method will a BaseType.NAT
+     *  argument.
      *  @exception IllegalActionException If the type of this object
      *   already violates this constraint, or if the argument is not
      *   an instantiable type in the type lattice.
      */
-    public void setTypeAtMost(Class type) throws IllegalActionException {
-        if (type == null) {
-            _typeAtMost = null;
+    public void setTypeAtMost(Type type) throws IllegalActionException {
+        if (type == BaseType.NAT) {
+            _typeAtMost = BaseType.NAT;
             return;
         }
-        if (!TypeLattice.isInstantiableType(type)) {
+        if (!type.isInstantiable()) {
             throw new IllegalActionException(this, "setTypeAtMost(): "
                     + "the argument " + type
                     + " is not an instantiable type in the type lattice.");
         }
 
-        Class currentType = getType();
-        if (currentType != null) {
-            int typeInfo = TypeLattice.compare(currentType, type);
-            if ((typeInfo == CPO.HIGHER) || (typeInfo == CPO.INCOMPARABLE)) {
-                throw new IllegalActionException(this, "setTypeAtMost(): "
-                        + "the current type " + currentType.toString()
-                        + " is not less than the desired bounding type "
-                        + type.toString());
-            }
+        Type currentType = getType();
+        int typeInfo = TypeLattice.compare(currentType, type);
+        if ((typeInfo == CPO.HIGHER) || (typeInfo == CPO.INCOMPARABLE)) {
+            throw new IllegalActionException(this, "setTypeAtMost(): "
+                    + "the current type " + currentType.toString()
+                    + " is not less than the desired bounding type "
+                    + type.toString());
         }
         _typeAtMost = type;
+    }
+
+    /** Set a type constraint that the type of this object equal
+     *  the type corresponding to the specified Class. This is an absolute
+     *  type constraint (not relative to another Typeable object), so it is
+     *  checked every time the value of the variable is set by setToken() or
+     *  by evaluating an expression.  If the variable already has a value,
+     *  then that value is converted to the specified type, if possible, or
+     *  an exception is thrown.
+     *  @param c A Class.
+     *  @exception IllegalActionException If the type of this object
+     *   already violates this constraint, in that the currently contained
+     *   token cannot be converted losslessly to the specified type; or
+     *   the specified Class does not corresponds to a BaseType.
+     *  @deprecated
+     */
+    public void setTypeEquals(Class c) throws IllegalActionException {
+	BaseType type = BaseType.classToBaseType(c);
+	setTypeEquals(type);
     }
 
     /** Set a type constraint that the type of this object equal
@@ -667,27 +683,33 @@ public class Variable extends Attribute implements Typeable {
      *  an expression.  If the variable already has a value, then that
      *  value is converted to the specified type, if possible, or an
      *  exception is thrown.
-     *  To remove the type constraint, call this method will a null argument.
+     *  To remove the type constraint, call this method with the argument
+     *  BaseType.NAT.
+     *  @param type A Type.
      *  @exception IllegalActionException If the type of this object
      *   already violates this constraint, in that the currently contained
-     *   token cannot be converted losslessly to the specified type. Also
-     *   thrown if the argument is not an instantiable type
-     *   in the type lattice.
+     *   token cannot be converted losslessly to the specified type.
      */
-    public void setTypeEquals(Class type) throws IllegalActionException {
-        if (type == null) {
-            _declaredType = null;
+    public void setTypeEquals(Type type) throws IllegalActionException {
+        if (type == BaseType.NAT) {
+	    _varType = BaseType.NAT;
+            _declaredType = BaseType.NAT;
             return;
         }
-        if (!TypeLattice.isInstantiableType(type)) {
-            throw new IllegalActionException(this, "setTypeEquals(): "
-                    + "the argument " + type
-                    + " is not an instantiable type in the type lattice.");
-        }
+
+	// It seems unnecessary to restrict the type to be instantiable,
+	// and we want to allow variable types, which are not instantiable.
+	// so comment out this part for now.
+        // if (!type.isInstantiable()) {
+        //     throw new IllegalActionException(this, "setTypeEquals(): "
+        //             + "the argument " + type
+        //             + " is not an instantiable type in the type lattice.");
+        //  }
+
         // Create an instance of the declared type, to be used to invoke
         // the convert() method.
         if (_token != null) {
-            int typeInfo = TypeLattice.compare(_token.getClass(), type);
+            int typeInfo = TypeLattice.compare(_token.getType(), type);
             if ((typeInfo == CPO.HIGHER)
             || (typeInfo == CPO.INCOMPARABLE)) {
                 throw new IllegalActionException(this, "setTypeEquals(): "
@@ -695,10 +717,39 @@ public class Variable extends Attribute implements Typeable {
                 + " cannot be losslessly converted to the desired type "
                 + type.toString());
             }
-            _token = _convert(_token, type);
+            _token = type.convert(_token);
         }
-        _declaredType = type;
-        _varType = type;
+
+	if (type instanceof BaseType) {
+            _varType = type;
+	} else {
+	    // new type is StructuredType
+	    StructuredType typeStruct = (StructuredType)type;
+
+	    if (typeStruct.isConstant()) {
+            	_varType = type;
+	    } else {
+		// new type is a variable StructuredType.
+		try {
+		    if (typeStruct.getUser() == null) {
+			typeStruct.setUser(this);
+			_varType = type;
+		    } else {
+			// new type already has a user, clone it.
+			StructuredType newType =
+				(StructuredType)typeStruct.clone();
+			newType.setUser(this);
+			_varType = newType;
+		    }
+		} catch (IllegalActionException ex) {
+		    // since the user was null, this should never happen.
+		    throw new InternalErrorException("Variable.setTypeEquals: "
+			+ "Cannot set user on the new type."
+			+ ex.getMessage());
+		}
+	    }
+	}
+	_declaredType = _varType;
     }
 
     /** Constrain the type of this variable to be the same as the
@@ -744,15 +795,15 @@ public class Variable extends Attribute implements Typeable {
 	result.appendElements(_constraints.elements());
 
         // If the variable has a type, add a constraint.
-        Class currentType = getType();
-        if (currentType != null) {
+        Type currentType = getType();
+        if (currentType != BaseType.NAT) {
             TypeConstant current = new TypeConstant(currentType);
             Inequality ineq = new Inequality(current, getTypeTerm());
             result.insertLast(ineq);
         }
 
         // If an upper bound has been specified, add a constraint.
-        if (_typeAtMost != null) {
+        if (_typeAtMost != BaseType.NAT) {
             TypeConstant atMost = new TypeConstant(_typeAtMost);
             Inequality ineq = new Inequality(getTypeTerm(), atMost);
             result.insertLast(ineq);
@@ -976,40 +1027,6 @@ public class Variable extends Attribute implements Typeable {
         }
     }
 
-    /*  Convert the first argument into an instance of the second.
-     *  The second is assumed to be an instantiable type derived from
-     *  Token, or an internal error exception is thrown.  Also, it is
-     *  assumed that the conversion is possible, so check the type
-     *  lattice before calling.
-     */
-    private Token _convert(Token token, Class targetClass) {
-        // NOTE: We have to use the reflection package here because
-        // a simpler method, using a prototype of targetClass, doesn't work
-        // because Java does not do late binding on class-scope methods
-        // like convert.
-        try {
-            Class[] arg1 = new Class[1];
-            arg1[0] = Token.class;
-            Method convertMethod = targetClass.getMethod("convert", arg1);
-            Object[] arg2 = new Object[1];
-            arg2[0] = token;
-            return (Token)(convertMethod.invoke(null, arg2));
-        } catch (NoSuchMethodException ex) {
-            // This should not occur if the type is an instantiable type.
-            throw new InternalErrorException("Class appears to not be"
-            + " derived from Token: " + targetClass.getName());
-        } catch (IllegalAccessException ex) {
-            // This should not occur since convert() is public.
-            throw new InternalErrorException("Can't access convert method"
-            + " of class: " + targetClass.getName());
-        } catch (InvocationTargetException ex) {
-            // This should not occur if type lattice has been checked.
-            throw new InternalErrorException("Convert method failed: "
-            + ex.getTargetException().getMessage() + " "
-            + ex.getTargetException().getClass().getName());
-        }
-    }
-
     /*  Destroy the current parse tree and mark all value dependents
      *  as needing to be evaluated.
      */
@@ -1047,25 +1064,25 @@ public class Variable extends Attribute implements Typeable {
             _needsEvaluation = false;
         } else {
             // Argument is not null
-            Class tokenType = newToken.getClass();
-            if (_declaredType != null) {
+            Type tokenType = newToken.getType();
+            if (_declaredType != BaseType.NAT) {
                 // Type has been set by setTypeEquals().
                 // Check whether new token is instance of this type.
-                if (!_declaredType.isInstance(newToken)) {
+                if (!_declaredType.isEqualTo(newToken.getType())) {
                     // Check to see whether new token can be converted
                     // to this type.
                     int typeInfo
                         = TypeLattice.compare(_declaredType, tokenType);
                     if (typeInfo == CPO.HIGHER) {
                         // Convert newToken to _declaredType.
-                        newToken = _convert(newToken, _declaredType);
+                        newToken = _declaredType.convert(newToken);
                     } else {
                         // Incompatible type!
                         throw new IllegalActionException(this,
                         "Cannot store a token of type "
-                        + tokenType.getName()
+                        + tokenType.toString()
                         + ", which is incompatible with type "
-                        + _varType.getName());
+                        + _varType.toString());
                     }
                 }
             } else {
@@ -1077,9 +1094,9 @@ public class Variable extends Attribute implements Typeable {
             // thereof).
 
             // Check setTypeAtMost constraint.
-            if (_typeAtMost != null) {
+            if (_typeAtMost != BaseType.NAT) {
                 // Recalculate this in case the type has changed.
-                tokenType = newToken.getClass();
+                tokenType = newToken.getType();
                 int comparison
                         = TypeLattice.compare(tokenType, _typeAtMost);
                 if ((comparison == CPO.HIGHER)
@@ -1087,9 +1104,9 @@ public class Variable extends Attribute implements Typeable {
                     // Incompatible type!
                     throw new IllegalActionException(this,
                     "Cannot store a token of type "
-                    + tokenType.getName()
+                    + tokenType.toString()
                     + ", which is not less than or equal to "
-                    + _typeAtMost.getName());
+                    + _typeAtMost.toString());
                     
                 }
             }
@@ -1123,7 +1140,7 @@ public class Variable extends Attribute implements Typeable {
 
         // Save to restore in case the change is rejected.
         Token oldToken = _token;
-        Class oldVarType = _varType;
+        Type oldVarType = _varType;
         boolean oldNoTokenYet = _noTokenYet;
         String oldInitialExpression = _initialExpression;
         Token oldInitialToken = _initialToken;
@@ -1133,7 +1150,7 @@ public class Variable extends Attribute implements Typeable {
             _notifyValueDependents();
             NamedObj container = (NamedObj)getContainer();
             if (container != null) {
-                if(oldVarType != _varType && oldVarType != null) {
+                if(oldVarType != _varType && oldVarType != BaseType.NAT) {
                     container.attributeTypeChanged(this);
                 }
                 container.attributeChanged(this);
@@ -1191,7 +1208,7 @@ public class Variable extends Attribute implements Typeable {
     private NamedList _scopeVariables = null;
 
     // Stores the Class object which represents the type of this variable.
-    private Class _varType;
+    private Type _varType = BaseType.NAT;
 
     // The parser used by this variable to parse expressions.
     private PtParser _parser;
@@ -1206,12 +1223,12 @@ public class Variable extends Attribute implements Typeable {
     // Type constraints.
     private LinkedList _constraints = new LinkedList();
 
-    // The type set by setTypeEquals(). If _declaredType is not null,
+    // The type set by setTypeEquals(). If _declaredType is not BaseType.NAT,
     // the type of this Variable is fixed to that type.
-    private Class _declaredType = null;
+    private Type _declaredType = BaseType.NAT;
 
     // If setTypeAtMost() has been called, then the type bound is stored here.
-    private Class _typeAtMost = null;
+    private Type _typeAtMost = BaseType.NAT;
 
     // Reference to the inner class that implements InequalityTerm.
     TypeTerm _typeTerm = null;
@@ -1251,7 +1268,7 @@ public class Variable extends Attribute implements Typeable {
 	 *  @return An array of InequalityTerm.
          */
         public InequalityTerm[] getVariables() {
-	    if (_declaredType == null) {
+	    if ( !_declaredType.isConstant()) {
 	    	InequalityTerm[] result = new InequalityTerm[1];
 	    	result[0] = this;
 	    	return result;
@@ -1265,7 +1282,7 @@ public class Variable extends Attribute implements Typeable {
 	 *   false otherwise.
          */
         public boolean isSettable() {
-	    if (_declaredType == null) {
+	    if ( !_declaredType.isConstant()) {
 		return true;
 	    }
 	    return false;
@@ -1277,20 +1294,24 @@ public class Variable extends Attribute implements Typeable {
          *  @return True if the current type is acceptable.
          */
         public boolean isValueAcceptable() {
-            if (TypeLattice.isInstantiableType(getType())) {
+            if (getType().isInstantiable()) {
                 return true;
             }
             return false;
         }
 
-        /** Set the type of this variable if it is not set through
-	 *  setTypeEquals().
-         *  @exception IllegalActionException If the type is already set
-	 *   through setTypeEquals().
+        /** Set the type of this variable.
+         *  @exception IllegalActionException If the type is set to a
+	 *   constant through setTypeEquals().
          */
         public void setValue(Object e) throws IllegalActionException {
-	    if (_declaredType == null) {
-		_varType = (Class)e;
+	    if (isSettable()) {
+		if (_declaredType == BaseType.NAT) {
+		    _varType = (Type)e;
+		} else {
+		    // _declaredType is a StructuredType
+		    ((StructuredType)_varType).updateType((StructuredType)e);
+		}
 		return;
 	    }
 

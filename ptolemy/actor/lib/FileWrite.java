@@ -33,6 +33,7 @@ package ptolemy.actor.lib;
 import ptolemy.kernel.util.*;
 import ptolemy.data.Token;
 import ptolemy.data.StringToken;
+import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
 import ptolemy.actor.*;
 import java.awt.*;
@@ -58,10 +59,10 @@ public class FileWrite extends Sink {
         super(container, name);
 
         // Set the type of the input port.
-        input.setTypeEquals(Token.class);
+        input.setTypeEquals(BaseType.GENERAL);
 
         filename = new Parameter(this, "filename", new StringToken(""));
-        filename.setTypeEquals(StringToken.class);
+        filename.setTypeEquals(BaseType.STRING);
     }
 
     ///////////////////////////////////////////////////////////////////

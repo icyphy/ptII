@@ -29,11 +29,12 @@
 
 */
 
-package ptolemy.data;
+package ptolemy.data.type;
 
 import ptolemy.graph.InequalityTerm;
 import ptolemy.graph.Inequality;	/* Needed for javadoc */
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.data.type.Type;
 import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
@@ -52,9 +53,9 @@ public interface Typeable
 {
     /** Return the type of this object. If the type is not
      *  determined, return null.
-     *  @return An instance of Class representing the type.
+     *  @return An instance of Type.
      */
-    public Class getType();
+    public Type getType();
 
     /** Return an InequalityTerm representing this object.
      *  @return An InequalityTerm.
@@ -72,17 +73,29 @@ public interface Typeable
      *  than the argument.  Because the argument is a concrete type,
      *  rather than a Typeable object (which may not yet have a type),
      *  the constraint is immediately enforced.
+     *  @param An instance of Type.
      *  @exception IllegalActionException If the type of this object
      *   already violates this constraint.
      */
-    public void setTypeAtMost(Class type) throws IllegalActionException;
+    public void setTypeAtMost(Type type) throws IllegalActionException;
+
+    /** Set a type constraint that the type of this object equal the type
+     *  corresponding to the specified Class.
+     *  @param c A Class.
+     *  @exception IllegalactionException If the type of this object already
+     *   violates this constraint; or the specified Class does not correspond
+     *   to a BaseType.
+     *  @deprecated
+     */
+    public void setTypeEquals(Class c) throws IllegalActionException;
 
     /** Set a type constraint that the type of this object equal
      *  the specified value.
+     *  @param type An instance of Type.
      *  @exception IllegalActionException If the type of this object
      *   already violates this constraint.
      */
-    public void setTypeEquals(Class type) throws IllegalActionException;
+    public void setTypeEquals(Type type) throws IllegalActionException;
 
     /** Constrain the type of this object to be the same as the
      *  type of the argument.  Notice that this constraint
@@ -98,3 +111,4 @@ public interface Typeable
      */
     public Enumeration typeConstraints();
 }
+

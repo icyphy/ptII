@@ -34,6 +34,7 @@ Created : May 1998
 package ptolemy.data.expr;
 
 import ptolemy.data.*;
+import ptolemy.data.type.*;
 import ptolemy.math.Complex;
 import ptolemy.graph.CPO;
 import ptolemy.kernel.util.IllegalActionException;
@@ -75,9 +76,9 @@ public class ASTPtMatrixConstructNode extends ASTPtRootNode {
         int nChildren = jjtGetNumChildren();
         int i;
         ptolemy.data.Token tok = null;
-        Class mtype = _elementType();
+        Type mtype = _elementType();
         if (_form == 1) {
-            if (mtype == BooleanToken.class) {
+            if (mtype == BaseType.BOOLEAN) {
                 boolean[][] val = new boolean[_nRows][_nColumns];
                 for (i = 0; i < nChildren; ++i) {
                     tok = BooleanToken.convert(childTokens[i]);
@@ -85,7 +86,7 @@ public class ASTPtMatrixConstructNode extends ASTPtRootNode {
                             ((BooleanToken)tok).booleanValue();
                 }
                 _ptToken = new BooleanMatrixToken(val);
-            } else if (mtype == IntToken.class) {
+            } else if (mtype == BaseType.INT) {
                 int[][] val = new int[_nRows][_nColumns];
                 for (i = 0; i < nChildren; ++i) {
                     tok = IntToken.convert(childTokens[i]);
@@ -93,7 +94,7 @@ public class ASTPtMatrixConstructNode extends ASTPtRootNode {
                             ((IntToken)tok).intValue();
                 }
                 _ptToken = new IntMatrixToken(val);
-            } else if (mtype == LongToken.class) {
+            } else if (mtype == BaseType.LONG) {
                 long[][] val = new long[_nRows][_nColumns];
                 for (i = 0; i < nChildren; ++i) {
                     tok = LongToken.convert(childTokens[i]);
@@ -101,7 +102,7 @@ public class ASTPtMatrixConstructNode extends ASTPtRootNode {
                             ((LongToken)tok).longValue();
                 }
                 _ptToken = new LongMatrixToken(val);
-            } else if (mtype == DoubleToken.class) {
+            } else if (mtype == BaseType.DOUBLE) {
                 double[][] val = new double[_nRows][_nColumns];
                 for (i = 0; i < nChildren; ++i) {
                     tok = DoubleToken.convert(childTokens[i]);
@@ -109,7 +110,7 @@ public class ASTPtMatrixConstructNode extends ASTPtRootNode {
                             ((DoubleToken)tok).doubleValue();
                 }
                 _ptToken = new DoubleMatrixToken(val);
-            } else if (mtype == ComplexToken.class) {
+            } else if (mtype == BaseType.COMPLEX) {
                 Complex[][] val = new Complex[_nRows][_nColumns];
                 for (i = 0; i < nChildren; ++i) {
                     tok = ComplexToken.convert(childTokens[i]);
@@ -125,7 +126,7 @@ public class ASTPtMatrixConstructNode extends ASTPtRootNode {
                         + "have a corresponding matrix type.");
             }
         } else if (_form == 2) {
-            if (mtype == IntToken.class) {
+            if (mtype == BaseType.INT) {
                 _nColumns = _numIntColumns(childTokens[0], childTokens[1],
                         childTokens[2]);
                 // Make sure that all following rows have the same number
@@ -144,7 +145,7 @@ public class ASTPtMatrixConstructNode extends ASTPtRootNode {
                             childTokens[3*i+1]);
                 }
                 _ptToken = new IntMatrixToken(val);
-            } else if (mtype == LongToken.class) {
+            } else if (mtype == BaseType.LONG) {
                 _nColumns = _numLongColumns(childTokens[0], childTokens[1],
                         childTokens[2]);
                 // Make sure that all following rows have the same number
@@ -163,7 +164,7 @@ public class ASTPtMatrixConstructNode extends ASTPtRootNode {
                             childTokens[3*i+1]);
                 }
                 _ptToken = new LongMatrixToken(val);
-            } else if (mtype == DoubleToken.class) {
+            } else if (mtype == BaseType.DOUBLE) {
                 _nColumns = _numDoubleColumns(childTokens[0], childTokens[1],
                         childTokens[2]);
             // Make sure that all following rows have the same number
@@ -276,15 +277,16 @@ public class ASTPtMatrixConstructNode extends ASTPtRootNode {
      * @exception IllegalActionException If the element type of the matrix
      *  cannot be resolved.
      */
-    private Class _elementType() throws IllegalActionException {
+    private Type _elementType() throws IllegalActionException {
         int nChildren = jjtGetNumChildren();
         int i;
         Object[] termTypes = new Object[nChildren];
         for (i = 0; i < nChildren; ++i) {
-            termTypes[i] = childTokens[i].getClass();
+            termTypes[i] = childTokens[i].getType();
         }
-        Class mtype = (Class)TypeLattice.lattice().leastUpperBound(termTypes);
-        if (mtype == null || mtype == Void.TYPE) {
+
+        Type mtype = (Type)TypeLattice.lattice().leastUpperBound(termTypes);
+        if (mtype == BaseType.NAT) {
             throw new IllegalActionException("Cannot resolve type for "
                     + "matrix construction: ");
         }

@@ -33,6 +33,7 @@ package ptolemy.actor.lib.conversions;
 import ptolemy.actor.*;
 import ptolemy.actor.lib.*;
 import ptolemy.data.*;
+import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.*;
 
@@ -63,16 +64,16 @@ public class PolarToRectangular extends TypedAtomicActor {
         super(container, name);
 
         magnitudeInput = new TypedIOPort(this, "magnitudeInput", true, false);
-        magnitudeInput.setTypeEquals(DoubleToken.class);
+        magnitudeInput.setTypeEquals(BaseType.DOUBLE);
 
         angleInput = new TypedIOPort(this, "angleInput", true, false);
-        angleInput.setTypeEquals(DoubleToken.class);
+        angleInput.setTypeEquals(BaseType.DOUBLE);
 
         xOutput = new TypedIOPort(this, "xOutput", false, true);
-        xOutput.setTypeEquals(DoubleToken.class);
+        xOutput.setTypeEquals(BaseType.DOUBLE);
 
         yOutput = new TypedIOPort(this, "yOutput", false, true);
-        yOutput.setTypeEquals(DoubleToken.class);
+        yOutput.setTypeEquals(BaseType.DOUBLE);
 
     }
 

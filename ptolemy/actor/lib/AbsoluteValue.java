@@ -33,6 +33,7 @@ package ptolemy.actor.lib;
 import ptolemy.actor.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
+import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
 
 //////////////////////////////////////////////////////////////////////////
@@ -59,8 +60,8 @@ public class AbsoluteValue extends Transformer {
     public AbsoluteValue(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-        input.setTypeEquals(DoubleToken.class);
-        output.setTypeEquals(DoubleToken.class);
+        input.setTypeEquals(BaseType.DOUBLE);
+        output.setTypeEquals(BaseType.DOUBLE);
     }
 
     ///////////////////////////////////////////////////////////////////
