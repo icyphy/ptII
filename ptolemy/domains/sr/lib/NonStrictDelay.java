@@ -106,10 +106,13 @@ public class NonStrictDelay extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** If there is a token on the input port, consume exactly one token
-     *  from the input port, and store it for output on the next iteration.
-     *  If a token was received on the previous iteration, send it to the
-     *  output.
+    /** If the input known and there is a token on the input port, 
+     *  consume the token from the input port, and store it for output 
+     *  on the next iteration. Otherwise, store an AbsentToken for
+     *  output on the next iteration.  
+     *  If a token was received on the previous iteration, output it to the
+     *  recerivers. Otherwise, notify the receivers that there will never be
+     *  any token available in the current iteration. 
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
@@ -127,6 +130,8 @@ public class NonStrictDelay extends Transformer {
             } else {
                 output.send(0, _previousToken);
             }
+        } else {
+            output.sendClear(0);
         }
     }
 

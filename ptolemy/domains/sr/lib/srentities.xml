@@ -62,6 +62,9 @@
 <entity name="NonStrictThreeBitAdder" class="ptolemy.domains.sr.lib.NonStrictThreeBitAdder">
 </entity>
 
+<entity name="NonStrictTokenToExpression" class="ptolemy.domains.sr.lib.NonStrictTokenToExpression">
+</entity>
+
 <entity name="SingleTokenDistributor" class="ptolemy.domains.sr.lib.SingleTokenDistributor">
 </entity>
 <entity name="SingleTokenCommutator" class="ptolemy.domains.sr.lib.SingleTokenCommutator">
