@@ -96,6 +96,7 @@ import java.io.BufferedOutputStream;
 import java.io.DataOutputStream;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.I0Exception;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Enumeration;
@@ -3590,11 +3591,8 @@ public class Main
      *  required: The name of the file to be processed.
      *  @exception IOException If there are problems processing the file.
      */
-    public static void main
-    (
-            String arg[]
-            )
-            throws java.io.IOException
+    public static void main(String arg[])
+            throws IOException
     {
         CLexGen lg;
 
