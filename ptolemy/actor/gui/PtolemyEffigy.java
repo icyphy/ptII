@@ -43,6 +43,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
+import java.util.Iterator;
 import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -380,14 +381,26 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
                         ModelDirectory dir = (ModelDirectory)
                             effigy.topEffigy().getContainer();
                         List effigies = dir.entityList(Effigy.class);
+
+			// We might get to here if we are running a
+			// vergil with a model specified as a command
+			// line argument and the model has an invalid
+			// parameter.
+
+                        // We might have three effigies here:
+                        // 1) .configuration.directory.configuration
+                        // 2) .configuration.directory.user library
+                        // 3) .configuration.directory.effigy
                         // Note that one of the effigies is the configuration
                         // itself, which does not prevent exiting the app.
-                        // Hence, we handle the error if there are 2 or fewer.
-                        if (effigies.size() <= 2) {
+                        // Hence, we handle the error if there are 3 or fewer.
+                        
+                        if (effigies.size() <= 3) {
                             MessageHandler.error("Failed to read " + input, e);
                         } else {
                             // Let the caller handle the error.
                             throw e;
+                    
                         }
                     }
                 } finally {
