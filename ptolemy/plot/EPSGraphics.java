@@ -186,7 +186,7 @@ public class EPSGraphics extends PtolemyGraphics {
     }
 
     public void drawRect(int x, int y, int width, int height) {
-        Point start = _convert(x,y);
+        Point start = _convert(x, y);
         _buffer.append("newpath " + start.x + " " + start.y + " moveto\n");
         _buffer.append("0 " + (-height) + " rlineto\n");
         _buffer.append("" + width + " 0 rlineto\n");
@@ -253,7 +253,7 @@ public class EPSGraphics extends PtolemyGraphics {
      *  @param height The height of the rectangle.
      */
     public void fillRect(int x, int y, int width, int height) {
-        Point start = _convert(x,y);
+        Point start = _convert(x, y);
         _fillPattern();
         _buffer.append("newpath " + start.x + " " + start.y + " moveto\n");
         _buffer.append("0 " + (-height) + " rlineto\n");
@@ -389,7 +389,7 @@ public class EPSGraphics extends PtolemyGraphics {
     private boolean _polygon(int xPoints[], int yPoints[], int nPoints) {
         if (nPoints < 3 || xPoints.length < nPoints
                 || yPoints.length < nPoints) return false;
-        Point start = _convert(xPoints[0],yPoints[0]);
+        Point start = _convert(xPoints[0], yPoints[0]);
         _buffer.append("newpath " + start.x + " " + start.y + " moveto\n");
         for (int i = 1; i < nPoints; i++) {
             Point vertex = _convert(xPoints[i], yPoints[i]);
