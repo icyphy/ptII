@@ -73,8 +73,10 @@ test ConstVariableModelAnalysis-1.1 {Test simple model} {
     set analysis [java::new ptolemy.copernicus.java.ConstVariableModelAnalysis $e0]
     # Use lsort for platform independence
     list [listToObjects [$analysis getConstVariableNames $e0]] \
-	[lsort [listToObjects [$analysis getConstVariableNames $ramp]]]
-} {{} {firingCountLimit init step}}
+	[listToObjects [$analysis getNotConstVariableNames $e0]] \
+	[lsort [listToObjects [$analysis getConstVariableNames $ramp]]] \
+	[lsort [listToObjects [$analysis getNotConstVariableNames $ramp]]]
+} {{} {} {firingCountLimit init step} {}}
 
 
 test ConstVariableModelAnalysis-1.2 {Test hierarchical dependance} {
@@ -89,8 +91,10 @@ test ConstVariableModelAnalysis-1.2 {Test hierarchical dependance} {
 
     set analysis [java::new ptolemy.copernicus.java.ConstVariableModelAnalysis $e0]
     list [listToObjects [$analysis getConstVariableNames $e0]] \
-	[lsort [listToObjects [$analysis getConstVariableNames $ramp]]]
-} {p0 {firingCountLimit init step}}
+	[listToObjects [$analysis getNotConstVariableNames $e0]] \
+	[lsort [listToObjects [$analysis getConstVariableNames $ramp]]] \
+	[lsort [listToObjects [$analysis getNotConstVariableNames $ramp]]]
+} {p0 {} {firingCountLimit init step} {}}
 
 test ConstVariableModelAnalysis-1.3 {Test flat dependance} {
     set e0 [java::new ptolemy.actor.TypedCompositeActor]
@@ -106,8 +110,10 @@ test ConstVariableModelAnalysis-1.3 {Test flat dependance} {
 
     set analysis [java::new ptolemy.copernicus.java.ConstVariableModelAnalysis $e0]
     list [listToObjects [$analysis getConstVariableNames $e0]] \
-	[lsort [listToObjects [$analysis getConstVariableNames $ramp]]]
-} {{p1 p0} {firingCountLimit init step}}
+	[listToObjects [$analysis getNotConstVariableNames $e0]] \
+	[lsort [listToObjects [$analysis getConstVariableNames $ramp]]] \
+	[lsort [listToObjects [$analysis getNotConstVariableNames $ramp]]]
+} {{p1 p0} {} {firingCountLimit init step} {}}
 
 
 test ConstVariableModelAnalysis-1.4 {Test unbound variables} {
@@ -123,9 +129,11 @@ test ConstVariableModelAnalysis-1.4 {Test unbound variables} {
     $step setExpression p0
 
     set analysis [java::new ptolemy.copernicus.java.ConstVariableModelAnalysis $e0]
-    list [listToObjects [$analysis getConstVariableNames $e0]] \
-	[listToObjects [$analysis getConstVariableNames $ramp]]
-} {{} firingCountLimit}
+    list [lsort [listToObjects [$analysis getConstVariableNames $e0]]] \
+	[lsort [listToObjects [$analysis getNotConstVariableNames $e0]]] \
+	[lsort [listToObjects [$analysis getConstVariableNames $ramp]]] \
+	[lsort [listToObjects [$analysis getNotConstVariableNames $ramp]]]
+} {{} {p0 p1} firingCountLimit {init step}}
 
 
 test ConstVariableModelAnalysis-1.5 {Test expressions of unbound variables} {
@@ -137,13 +145,15 @@ test ConstVariableModelAnalysis-1.5 {Test expressions of unbound variables} {
     set ramp [java::new ptolemy.actor.lib.Ramp $e0 Ramp]
     set init [getParameter $ramp init]
     set step [getParameter $ramp step]
-    $init setExpression "p1 + a"
+    $init setExpression "p1 + 1"
     $step setExpression p0
 
     set analysis [java::new ptolemy.copernicus.java.ConstVariableModelAnalysis $e0]
-    list [listToObjects [$analysis getConstVariableNames $e0]] \
-	[listToObjects [$analysis getConstVariableNames $ramp]]
-} {{} firingCountLimit}
+    list [lsort [listToObjects [$analysis getConstVariableNames $e0]]] \
+	[lsort [listToObjects [$analysis getNotConstVariableNames $e0]]] \
+	[lsort [listToObjects [$analysis getConstVariableNames $ramp]]] \
+	[lsort [listToObjects [$analysis getNotConstVariableNames $ramp]]]
+} {{} {p0 p1} firingCountLimit {init step}}
 
 test ConstVariableModelAnalysis-1.6 {Test a model that is not correct (circular dependancy)} {
     set e0 [java::new ptolemy.actor.TypedCompositeActor]
@@ -175,9 +185,11 @@ test ConstVariableModelAnalysis-1.7 {Test unbound variables} {
     $step setExpression 5
 
     set analysis [java::new ptolemy.copernicus.java.ConstVariableModelAnalysis $e0]
-    list [listToObjects [$analysis getConstVariableNames $e0]] \
-	[listToObjects [$analysis getConstVariableNames $ramp]]
-} {{} {firingCountLimit step}}
+    list [lsort [listToObjects [$analysis getConstVariableNames $e0]]] \
+	[lsort [listToObjects [$analysis getNotConstVariableNames $e0]]] \
+	[lsort [listToObjects [$analysis getConstVariableNames $ramp]]] \
+	[lsort [listToObjects [$analysis getNotConstVariableNames $ramp]]]
+} {{} {p0 p1} {firingCountLimit step} init}
 
 test ConstVariableModelAnalysis-1.8 {test scoping} {
     set e0 [java::new ptolemy.actor.TypedCompositeActor]
@@ -192,9 +204,11 @@ test ConstVariableModelAnalysis-1.8 {test scoping} {
     $step setExpression a
 
     set analysis [java::new ptolemy.copernicus.java.ConstVariableModelAnalysis $e0]
-    list [listToObjects [$analysis getConstVariableNames $e0]] \
-	[listToObjects [$analysis getConstVariableNames $ramp]]
-} {step firingCountLimit}
+    list [lsort [listToObjects [$analysis getConstVariableNames $e0]]] \
+	[lsort [listToObjects [$analysis getNotConstVariableNames $e0]]] \
+	[lsort [listToObjects [$analysis getConstVariableNames $ramp]]] \
+	[lsort [listToObjects [$analysis getNotConstVariableNames $ramp]]]
+} {step init firingCountLimit {init step}}
 
 test ConstVariableModelAnalysis-1.9 {test scoping} {
     set e0 [java::new ptolemy.actor.TypedCompositeActor]
@@ -209,9 +223,11 @@ test ConstVariableModelAnalysis-1.9 {test scoping} {
     $step setExpression a
 
     set analysis [java::new ptolemy.copernicus.java.ConstVariableModelAnalysis $e0]
-    list [listToObjects [$analysis getConstVariableNames $e0]] \
-	[lsort [listToObjects [$analysis getConstVariableNames $ramp]]]
-} {init {firingCountLimit init}}
+    list [lsort [listToObjects [$analysis getConstVariableNames $e0]]] \
+	[lsort [listToObjects [$analysis getNotConstVariableNames $e0]]] \
+	[lsort [listToObjects [$analysis getConstVariableNames $ramp]]] \
+	[lsort [listToObjects [$analysis getNotConstVariableNames $ramp]]]
+} {init step {firingCountLimit init} step}
 
 # FSM tests.
 test ConstVariableModelAnalysis-2.0 {test fsms.} {
@@ -247,9 +263,11 @@ test ConstVariableModelAnalysis-2.0 {test fsms.} {
     $t2_action setExpression "p1=2"
 
     set analysis [java::new ptolemy.copernicus.java.ConstVariableModelAnalysis $e0]
-    list [listToObjects [$analysis getConstVariableNames $e0]] \
-	[listToObjects [$analysis getConstVariableNames $fsm]]
-} {init p2}
+    list [lsort [listToObjects [$analysis getConstVariableNames $e0]]] \
+	[lsort [listToObjects [$analysis getNotConstVariableNames $e0]]] \
+	[lsort [listToObjects [$analysis getConstVariableNames $fsm]]] \
+	[lsort [listToObjects [$analysis getNotConstVariableNames $fsm]]]
+} {init step p2 p1}
 
 test ConstVariableModelAnalysis-2.2 {test modal model.} {
     set e0 [java::new ptolemy.actor.TypedCompositeActor]
@@ -301,3 +319,87 @@ test ConstVariableModelAnalysis-2.2 {test modal model.} {
 	[listToObjects [$analysis getConstVariableNames $ramp]] \
 	[listToObjects [$analysis getConstVariableNames $fsm]]
 } {init step {init firingCountLimit} p2}
+
+test ConstVariableModelAnalysis-2.3 {test port parameters} {
+    set e0 [java::new ptolemy.actor.TypedCompositeActor]
+ 
+    set r1 [java::new ptolemy.actor.TypedIORelation $e0 r1]
+   
+    set e1 [java::new ptolemy.actor.TypedCompositeActor $e0 e1]
+    
+    set inport [java::new ptolemy.actor.parameters.PortParameter $e1 inport]
+    [$e1 getPort inport] link $r1
+    
+    set ramp [java::new ptolemy.actor.lib.Ramp $e1 ramp]
+    set init [getParameter $ramp init]
+    set step [getParameter $ramp step]
+    $init setExpression "inport"
+    $step setExpression "1"
+
+    set repeat [java::new ptolemy.domains.sdf.lib.Repeat $e1 repeat]
+    set blockSize [getParameter $repeat blockSize]
+    $blockSize setExpression "inport"
+  
+    set analysis [java::new ptolemy.copernicus.java.ConstVariableModelAnalysis $e0]
+    list [listToObjects [$analysis getNotConstVariableNames $e1]] \
+	[listToObjects [$analysis getNotConstVariableNames $ramp]] \
+	[listToObjects [$analysis getNotConstVariableNames $repeat]] \
+	[listToObjects [$analysis getNotConstVariableNames [$repeat getPort input]]]
+} {inport init blockSize tokenConsumptionRate}
+
+test ConstVariableModelAnalysis-2.4 {test port parameters} {
+    set e0 [java::new ptolemy.actor.TypedCompositeActor]
+ 
+    set e1 [java::new ptolemy.actor.TypedCompositeActor $e0 e1]
+    
+    set inport [java::new ptolemy.actor.parameters.PortParameter $e1 inport]
+    $inport setExpression "3"
+   
+    set ramp [java::new ptolemy.actor.lib.Ramp $e1 ramp]
+    set init [getParameter $ramp init]
+    set step [getParameter $ramp step]
+    $init setExpression "inport"
+    $step setExpression "1"
+
+    set repeat [java::new ptolemy.domains.sdf.lib.Repeat $e1 repeat]
+    set blockSize [getParameter $repeat blockSize]
+    $blockSize setExpression "inport"
+  
+    set analysis [java::new ptolemy.copernicus.java.ConstVariableModelAnalysis $e0]
+    list [listToObjects [$analysis getConstVariableNames $e1]] \
+	[listToObjects [$analysis getNotConstVariableNames $e1]] \
+	[listToObjects [$analysis getConstVariableNames $ramp]] \
+	[listToObjects [$analysis getNotConstVariableNames $ramp]] \
+	[listToObjects [$analysis getConstVariableNames $repeat]] \
+	[listToObjects [$analysis getNotConstVariableNames $repeat]] \
+	[listToObjects [$analysis getConstVariableNames [$repeat getPort input]]] \
+	[listToObjects [$analysis getNotConstVariableNames [$repeat getPort input]]]
+} {inport {} {init firingCountLimit step} {} {blockSize numberOfTimes} {} tokenConsumptionRate {}}
+
+# Test change context
+test ConstVariableModelAnalysis-3.1 {test port parameters} {
+    set e0 [java::new ptolemy.actor.TypedCompositeActor]
+ 
+    set r1 [java::new ptolemy.actor.TypedIORelation $e0 r1]
+   
+    set e1 [java::new ptolemy.actor.TypedCompositeActor $e0 e1]
+    
+    set inport [java::new ptolemy.actor.parameters.PortParameter $e1 inport]
+    [$e1 getPort inport] link $r1
+    
+    set ramp [java::new ptolemy.actor.lib.Ramp $e1 ramp]
+    set init [getParameter $ramp init]
+    set step [getParameter $ramp step]
+    $init setExpression "inport"
+    $step setExpression "1"
+
+    set repeat [java::new ptolemy.domains.sdf.lib.Repeat $e1 repeat]
+    set blockSize [getParameter $repeat blockSize]
+    $blockSize setExpression "inport"
+    
+    set analysis [java::new ptolemy.copernicus.java.ConstVariableModelAnalysis $e0]
+    list [[$analysis getChangeContext $inport] getFullName] \
+	[[$analysis getChangeContext $init] getFullName] \
+	[java::isnull [$analysis getChangeContext $step]]
+
+} {..e1 ..e1 1}

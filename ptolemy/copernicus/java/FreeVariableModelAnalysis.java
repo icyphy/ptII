@@ -86,6 +86,9 @@ public class FreeVariableModelAnalysis {
     }
 
 
+    ///////////////////////////////////////////////////////////////////
+    ////                          private methods                  ////
+
     // Recursively compute the set of free variables for all actors
     // deeply contained in the given model.
     private Set _freeVariables(Entity model) throws IllegalActionException {
@@ -130,6 +133,9 @@ public class FreeVariableModelAnalysis {
         _entityToFreeVariableSet.put(model, set);
         return set;
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     private HashMap _entityToFreeVariableSet;
     private CompositeActor _model;

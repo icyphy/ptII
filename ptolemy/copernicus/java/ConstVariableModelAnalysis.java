@@ -35,7 +35,10 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.Map;
 
+import ptolemy.actor.parameters.PortParameter;
+import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.CompositeActor;
 import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.ModelScope;
@@ -48,6 +51,8 @@ import ptolemy.domains.fsm.kernel.State;
 import ptolemy.domains.fsm.kernel.Transition;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
+import ptolemy.kernel.Port;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 
@@ -86,7 +91,7 @@ public class ConstVariableModelAnalysis {
      */
     public ConstVariableModelAnalysis(Entity model)
             throws IllegalActionException {
-        this(model, new HashSet());
+        this(model, Collections.EMPTY_SET);
     }
 
     /** Analyze the given model to determine which variables must be
@@ -100,98 +105,132 @@ public class ConstVariableModelAnalysis {
      */
     public ConstVariableModelAnalysis(Entity model, Set variableSet)
             throws IllegalActionException {
-        _entityToNotConstVariableSet = new HashMap();
-        _entityToConstVariableSet = new HashMap();
-        _notConstantVariableSet = new HashSet(variableSet);
-        _collectNotConstantVariables(model, _notConstantVariableSet);
-
+        _containerToNotConstVariableSet = new HashMap();
+        _containerToConstVariableSet = new HashMap();
+    
+        _variableToChangeContext = new HashMap();
+        _collectNotConstantVariables(model, _variableToChangeContext);
+  
         _analyzeAllVariables(model);
     }
 
-    /** Return the computed free variables for the given entity.
-     *  @exception RuntimeException If the constant variables for the
-     *  entity have not already been computed.
+    /** Return the change context of the given variable.  This an
+     *  actor containing the variable, such that the variable is
+     *  guaraunteed not to change values during a firing of the actor.
      */
-    public Set getConstVariableNames(Entity entity) {
-        Set constVariables = (Set)_entityToConstVariableSet.get(entity);
+    public Entity getChangeContext(Variable variable) {
+        return (Entity)_variableToChangeContext.get(variable);
+    }
+
+    /** Return the computed free variables for the given container.
+     *  @exception RuntimeException If the constant variables for the
+     *  container have not already been computed.
+     */
+    public Set getConstVariableNames(NamedObj container) {
+        Set constVariables = (Set)_containerToConstVariableSet.get(container);
         if (constVariables == null) {
-            throw new RuntimeException("Entity " + entity.getFullName() +
+            throw new RuntimeException("Container " + container.getFullName() +
                     " has not been analyzed.");
         }
 
         return Collections.unmodifiableSet(constVariables);
     }
 
-    /** Return the computed free variables for the given entity.
+    /** Return the computed free variables for the given container.
      *  @exception RuntimeException If the constant variables for the
-     *  entity have not already been computed.
+     *  container have not already been computed.
      */
-    public Set getConstVariables(Entity entity) {
-        Set constVariables = (Set)_entityToConstVariableSet.get(entity);
+    public Set getConstVariables(NamedObj container) {
+        Set constVariables = (Set)_containerToConstVariableSet.get(container);
         if (constVariables == null) {
-            throw new RuntimeException("Entity " + entity.getFullName() +
+            throw new RuntimeException("Container " + container.getFullName() +
                     " has not been analyzed.");
         }
 
         Set set = new HashSet();
         for (Iterator names = constVariables.iterator();
              names.hasNext();) {
-            set.add(entity.getAttribute((String)names.next()));
+            set.add(container.getAttribute((String)names.next()));
         }
         return Collections.unmodifiableSet(set);
     }
 
-    /** Return the computed free variables for the given entity.
+    /** Return the computed free variables for the given container.
      *  @exception RuntimeException If the constant variables for the
-     *  entity have not already been computed.
+     *  container have not already been computed.
      */
-    public Set getNotConstVariableNames(Entity entity) {
-        Set variables = (Set)_entityToNotConstVariableSet.get(entity);
+    public Set getNotConstVariableNames(NamedObj container) {
+        Set variables = (Set)_containerToNotConstVariableSet.get(container);
         if (variables == null) {
-            throw new RuntimeException("Entity " + entity.getFullName() +
+            throw new RuntimeException("Container " + container.getFullName() +
                     " has not been analyzed.");
         }
 
         return Collections.unmodifiableSet(variables);
     }
 
-    /** Return the computed free variables for the given entity.
+    /** Return the computed free variables for the given container.
      *  @exception RuntimeException If the constant variables for the
-     *  entity have not already been computed.
+     *  container have not already been computed.
      */
-    public Set getNotConstVariables(Entity entity) {
-        Set variables = (Set)_entityToNotConstVariableSet.get(entity);
+    public Set getNotConstVariables(NamedObj container) {
+        Set variables = (Set)_containerToNotConstVariableSet.get(container);
         if (variables == null) {
-            throw new RuntimeException("Entity " + entity.getFullName() +
+            throw new RuntimeException("Container " + container.getFullName() +
                     " has not been analyzed.");
         }
 
         Set set = new HashSet();
         for (Iterator names = variables.iterator();
              names.hasNext();) {
-            set.add(entity.getAttribute((String)names.next()));
+            set.add(container.getAttribute((String)names.next()));
         }
         return Collections.unmodifiableSet(set);
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                          private methods                  ////
+
     private static void _collectNotConstantVariables(
-            AbstractActionsAttribute action, Set set)
+            FSMActor actor,
+            AbstractActionsAttribute action, 
+            Map variableToChangeContext)
             throws IllegalActionException {
         for (Iterator names = action.getDestinationNameList().iterator();
              names.hasNext();) {
             String name = (String)names.next();
             NamedObj object = action.getDestination(name);
             if (object instanceof Variable) {
-                set.add(object);
+                // Note that the context of change is the moal model
+                // container of the FSM.
+                variableToChangeContext.put(object, actor.getContainer());
             }
         }
     }
 
     // Collect the set of variables in the given entity which might
-    // change during execution.
-    private void _collectNotConstantVariables(Entity entity, Set set)
+    // change during execution.  This method adds an entry in the
+    // given map from each dynamic parameter deeply contained in the
+    // given entity to the change context of that parameter.
+    private void _collectNotConstantVariables(Entity entity,
+            Map variableToChangeContext)
             throws IllegalActionException {
+        // All port parameters of an entity that have connections are
+        // dynamic.  Their context of change is the actor that
+        // contains the port parameter
+        for (Iterator portParameters = 
+                 entity.attributeList(PortParameter.class).iterator();
+             portParameters.hasNext();) {
+            PortParameter parameter = (PortParameter)portParameters.next();
+            ParameterPort port = parameter.getPort();
+   
+            if(port.getWidth() > 0) {
+                variableToChangeContext.put(parameter, entity);
+            }
+        }
+      
         if (entity instanceof FSMActor) {
+            // Collect assignments from FSM transitions
             for (Iterator states = ((FSMActor)entity).entityList().iterator();
                  states.hasNext();) {
                 State state = (State)states.next();
@@ -204,29 +243,35 @@ public class ConstVariableModelAnalysis {
                          actions.hasNext();) {
                         AbstractActionsAttribute action =
                             (AbstractActionsAttribute)actions.next();
-                        _collectNotConstantVariables(action, set);
+                        _collectNotConstantVariables(
+                                (FSMActor) entity, action, 
+                                variableToChangeContext);
                     }
                     for (Iterator actions =
                              transition.commitActionList().iterator();
                          actions.hasNext();) {
                         AbstractActionsAttribute action =
                             (AbstractActionsAttribute)actions.next();
-                        _collectNotConstantVariables(action, set);
+                        _collectNotConstantVariables(
+                                (FSMActor) entity, action, 
+                                variableToChangeContext);
                     }
                 }
             }
         } else if (entity instanceof CompositeEntity) {
+            // Recurse through the whole model.
             CompositeEntity composite = (CompositeEntity)entity;
             for (Iterator entities = composite.entityList().iterator();
                  entities.hasNext();) {
-                _collectNotConstantVariables((Entity)entities.next(), set);
+                _collectNotConstantVariables((Entity)entities.next(), 
+                        variableToChangeContext);
             }
         }
     }
 
     // Recursively compute the set of const variables for all actors
     // deeply contained in the given model.
-    private void _analyzeAllVariables(Entity model)
+    private void _analyzeAllVariables(NamedObj container)
             throws IllegalActionException {
         // Sets of variables used to track the fixed point iteration.
         Set notTestedSet = new HashSet();
@@ -234,8 +279,8 @@ public class ConstVariableModelAnalysis {
         // Set of the names of constant attributes that we are computing.
         Set notConstants = new HashSet();
 
-        // initialize the work list to the set of attributes.
-        List variableList = model.attributeList(Variable.class);
+        // Initialize the work list to the set of attributes.
+        List variableList = container.attributeList(Variable.class);
         notTestedSet.addAll(variableList);
 
         PtParser parser = new PtParser();
@@ -252,8 +297,11 @@ public class ConstVariableModelAnalysis {
 
                 // Perform the test.
                 boolean isNotConstant = false;
-                if (_notConstantVariableSet.contains(variable)) {
+                NamedObj changeContext = null;
+                if (_variableToChangeContext.keySet().contains(variable)) {
                     isNotConstant = true;
+                    changeContext = (NamedObj)
+                        _variableToChangeContext.get(variable);
                 } else {
                     // Analyze the expression.
                     String expression = variable.getExpression();
@@ -269,38 +317,44 @@ public class ConstVariableModelAnalysis {
                             Variable scopeVariable =
                                 ModelScope.getScopedVariable(
                                         variable, variable, name);
-                         
-                            if(_assumeParserConstantsAreConstant) {
-                                // Free variables (i.e. methods) bound
-                                // to parser constants are assumed to
-                                // be static.
-                                if (scopeVariable != null &&
-                                        _notConstantVariableSet.contains(scopeVariable)) {
+                            boolean scopeVariableChanges = 
+                                scopeVariable != null && 
+                                _variableToChangeContext.keySet().contains(
+                                        scopeVariable);
+                            if(scopeVariableChanges) {
+                                isNotConstant = true;
+                                changeContext = (NamedObj)
+                                   _variableToChangeContext.get(scopeVariable);
+                            } else if(scopeVariable == null) {
+                                if(_assumeParserConstantsAreConstant) {
+                                    // Free variables (i.e. methods) bound
+                                    // to parser constants are assumed to
+                                    // be static.
+                                    if (ptolemy.data.expr.Constants.get(name) == null) {
+                                        isNotConstant = true;
+                                        changeContext = container.toplevel();
+                                    }
+                                } else {
+                                    // Free variables are assumed to be dynamic
                                     isNotConstant = true;
-                                }
-                                if (scopeVariable == null && 
-                                        ptolemy.data.expr.Constants.get(name) == null) {
-                                    isNotConstant = true;
-                                }
-                            } else {
-                                // Free variables are assumed to be dynamic
-                                if(scopeVariable == null ||
-                                        _notConstantVariableSet.contains(scopeVariable)) {
-                                    isNotConstant = true;
+                                    changeContext = container.toplevel();
                                 }
                             }
-
                         }
                     } catch (IllegalActionException ex) {
                         // Assume that this will be changed later...
-                        // i.e. input_isPresent in FSM.
+                        // i.e. input_isPresent in FSM.  
+
+                        // Note that this also traps expressions that
+                        // have no value as being variable...
                         isNotConstant = true;
+                        changeContext = container;
                     }
                 }
                 if (isNotConstant) {
                     // Then the variable is also not constant.
                     notConstants.add(variable.getName());
-                    _notConstantVariableSet.add(variable);
+                    _variableToChangeContext.put(variable, changeContext);
                     doneSomething = true;
                     isNotConstant = true;
                 } else {
@@ -313,7 +367,7 @@ public class ConstVariableModelAnalysis {
             testedSet.clear();
         }
 
-        _entityToNotConstVariableSet.put(model, notConstants);
+        _containerToNotConstVariableSet.put(container, notConstants);
 
         Set constants = new HashSet();
         for (Iterator variables = variableList.iterator();
@@ -321,23 +375,40 @@ public class ConstVariableModelAnalysis {
             constants.add(((Variable)variables.next()).getName());
             constants.removeAll(notConstants);
         }
-        _entityToConstVariableSet.put(model, constants);
+        _containerToConstVariableSet.put(container, constants);
 
 
         // recurse down.
-        if (model instanceof CompositeEntity) {
+        for (Iterator attributes = container.attributeList().iterator();
+             attributes.hasNext();) {
+            Attribute attribute = (Attribute)attributes.next();
+            _analyzeAllVariables(attribute);
+        }
+        if (container instanceof Entity) {
+            for(Iterator ports = 
+                    ((Entity)container).portList().iterator();
+                ports.hasNext();) {
+                Port port = (Port)ports.next();
+                _analyzeAllVariables(port);
+            }
+        }
+        if (container instanceof CompositeEntity) {
             for (Iterator entities =
-                     ((CompositeEntity)model).entityList().iterator();
+                     ((CompositeEntity)container).entityList().iterator();
                  entities.hasNext();) {
                 Entity entity = (Entity)entities.next();
                 _analyzeAllVariables(entity);
             }
         }
+                     
     }
 
-    private HashSet _notConstantVariableSet;
-    private HashMap _entityToNotConstVariableSet;
-    private HashMap _entityToConstVariableSet;
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    private Map _containerToNotConstVariableSet;
+    private Map _containerToConstVariableSet;
+    private Map _variableToChangeContext;
     private CompositeActor _model;
     private static boolean _assumeParserConstantsAreConstant = true;
 }
