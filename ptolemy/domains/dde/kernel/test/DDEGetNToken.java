@@ -1,4 +1,5 @@
-/* DDEGetNToken
+/* DDEGetNToken is a test class used to test the consumption of tokens
+and check relevant parameters.
 
  Copyright (c) 1998-1999 The Regents of the University of California.
  All rights reserved.
@@ -30,8 +31,8 @@
 
 package ptolemy.domains.dde.kernel.test;
 
-import ptolemy.domains.dde.kernel.*;
 import ptolemy.actor.*;
+import ptolemy.domains.dde.kernel.*;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.data.Token;
@@ -41,6 +42,13 @@ import ptolemy.data.StringToken;
 //////////////////////////////////////////////////////////////////////////
 //// DDEGetNToken
 /**
+DDEGetNToken is a test class used to test the consumption of tokens
+and check relevant parameters. DDEGetNToken can retrieve N tokens
+where 'N' is set in the constructor. For each token retrieved, the
+current time at the time of consumption and the actual consumed
+token can be queried. The queries can take place after the completion
+of Manager.run().
+
 
 @author John S. Davis II
 @version $Id$
@@ -66,12 +74,6 @@ public class DDEGetNToken extends DDEGet {
 
     /**
      */
-    public double getRcvrTime(int cntr) {
-	return _rcvrTimes[cntr];
-    }
-
-    /**
-     */
     public double getThreadTime(int cntr) {
 	return _threadTimes[cntr];
     }
@@ -85,19 +87,6 @@ public class DDEGetNToken extends DDEGet {
     /**
      */
     public void fire() throws IllegalActionException {
-	/*
-	TimeKeeper timeKeeper = null;
-	Receiver[][] rcvrs = inputPort.getReceivers();
-	for( int i = 0; i < rcvrs.length; i++ ) {
-	    for( int j = 0; j < rcvrs[i].length; j++ ) {
-		DDEReceiver rcvr = (DDEReceiver)rcvrs[i][j]; 
-	        timeKeeper = rcvr.getReceivingTimeKeeper();
-		break;
-	    }
-	    break;
-	}
-	*/
-
 	int cnt = 0; 
 	Token token;
 	while(cnt < _numTokens) {
@@ -108,20 +97,6 @@ public class DDEGetNToken extends DDEGet {
 		_threadTimes[cnt] = timeKeeper.getCurrentTime(); 
 		cnt++;
 	    }
-	    /*
-	    Receiver[][] rcvrs = inputPort.getReceivers();
-	    for( int i = 0; i < rcvrs.length; i++ ) {
-		for( int j = 0; j < rcvrs[i].length; j++ ) {
-		    DDEReceiver rcvr = (DDEReceiver)rcvrs[i][j]; 
-		    if( rcvr.hasToken() ) {
-			_rcvrTimes[cnt] = rcvr.getRcvrTime();
-	                _tokens[cnt] = rcvr.get();
-	                DDEThread thread = rcvr.getThread();
-			_threadTimes[cnt] = thread.getCurrentTime();
-		    }
-		}
-	    }
-	    */
 	}
     }
 

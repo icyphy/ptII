@@ -1,4 +1,4 @@
-/* DDEPutToken
+/* DDEPutToken is a test class used for testing the production of tokens.
 
  Copyright (c) 1998-1999 The Regents of the University of California.
  All rights reserved.
@@ -41,6 +41,12 @@ import ptolemy.data.StringToken;
 //////////////////////////////////////////////////////////////////////////
 //// DDEPutToken
 /**
+DDEPutToken is a test class used for testing the production of tokens.
+DDEPutToken has a single, typed, output multiport. A DDEPutToken object
+can output N tokens where 'N' is specified in the constructor. The current 
+time of DDEPutToken at the time a given token is output can be queried 
+after Manager.run() is finished.
+
 
 @author John S. Davis II
 @version $Id$
@@ -73,7 +79,8 @@ public class DDEPutToken extends DDEPut {
 	    for( int i = 0; i < rcvrs.length; i++ ) {
 		for( int j = 0; j < rcvrs[i].length; j++ ) {
 		    DDEReceiver rcvr = (DDEReceiver)rcvrs[i][j];
-		    System.out.println("DDEPutToken receiver["+i+"]["+j+"]; cnt = "+cnt);
+		    // System.out.println("DDEPutToken receiver["+i+"]["+j+
+		    // "]; cnt = "+cnt);
                     if( _oneArg ) {
                         rcvr.put( _tokens[cnt] );
                     } else {
@@ -83,7 +90,7 @@ public class DDEPutToken extends DDEPut {
 	    }
 	    cnt++;
 	}
-	System.out.println("DDEPutToken() ends with cnt = "+cnt);
+	// System.out.println("DDEPutToken() ends with cnt = "+cnt);
     }
 
     /**
