@@ -385,6 +385,28 @@ public class FSMDirector extends Director {
         return super.getNextIterationTime();
     }
 
+    /** Initialize the mode controller and all the refinements. Set the
+     *  current time to 0.0 or the time of the executive director.
+     *  If the container is not an instance of CompositeActor, do nothing.
+     *  This method should typically be invoked once per execution, after
+     *  the preinitialization phase, but before any iteration.  It may be
+     *  invoked in the middle of an execution, if reinitialization is
+     *  desired.  Since type resolution has been completed and the
+     *  current time is set, the initialize() method of a contained
+     *  actor may produce output or schedule events.  If stop() is
+     *  called during this methods execution, then stop initializing
+     *  actors immediately.  This method is
+     *  <i>not</i> synchronized on the workspace, so the caller should
+     *  be.
+     *
+     *  @exception IllegalActionException If the initialize() method of
+     *   one of the associated actors throws it.
+     */
+    public void initialize() throws IllegalActionException {
+       super.initialize();
+       _buildLocalReceiverMaps();
+    }
+
     /** Return a receiver that is a one-place buffer. A token put into the
      *  receiver will override any token already in the receiver.
      *  @return A receiver that is a one-place buffer.
@@ -473,18 +495,6 @@ public class FSMDirector extends Director {
         super.prefire();
         _firstFire = true;
         return getController().prefire();
-    }
-
-    /** Create receivers and invoke the preinitialize() methods of all
-     *  actors deeply contained by the container of this director.
-     *  This method is invoked once per execution, before any iteration,
-     *  and before the initialize() method.
-     *  @exception IllegalActionException If the preinitialize() method of
-     *  one of the associated actors throws it, or there is no controller.
-     */
-    public void preinitialize() throws IllegalActionException {
-        super.preinitialize();
-        _buildLocalReceiverMaps();
     }
 
     /** Set the current time of the model under this director.

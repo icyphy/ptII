@@ -93,6 +93,7 @@ test FSMDirector-3.1 {test getNextIterationTime} {
     set e2 [java::new ptolemy.actor.TypedCompositeActor $e1 e2]
     set dir1 [java::new ptolemy.actor.Director $e2 dir1]
     $dir preinitialize
+    $dir initialize
     $dir1 setCurrentTime 3.0
     $fsmDir setCurrentTime 2.0
     set re0 [$fsmDir getNextIterationTime]
