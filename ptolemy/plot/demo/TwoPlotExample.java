@@ -81,7 +81,7 @@ public class TwoPlotExample extends Frame {
         leftPlot.setImpulses(true);
 
         boolean first = true;
-        for (int i=0; i <= 100; i++) {
+        for (int i = 0; i <= 100; i++) {
             leftPlot.addPoint(0,(double)i,
                     5 * Math.cos(Math.PI * i/20), !first);
             leftPlot.addPoint(1,(double)i,

@@ -59,7 +59,7 @@ public class PtestWorkspace extends PtolemyThread {
     }
 
     public synchronized void run() {
-        for (int i=0; i < 3; i++) {
+        for (int i = 0; i < 3; i++) {
             try {
                 _workspace.getReadAccess();
                 _profile += _name + ".getReadAccess()\n";
