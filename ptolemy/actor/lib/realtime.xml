@@ -10,6 +10,8 @@
                 class="ptolemy.actor.lib.gui.RealTimePlotter"/>
 	<entity name="Sleep"
                 class="ptolemy.actor.lib.Sleep"/>
+	<entity name="VariableSleep"
+                class="ptolemy.actor.lib.VariableSleep"/>
         <entity name="WallClockTime"
                 class="ptolemy.actor.lib.WallClockTime"/>
       </group>
