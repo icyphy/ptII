@@ -1,6 +1,6 @@
 /* An interface for objects storing a location.
 
- Copyright (c) 1998-2003 The Regents of the University of California.
+ Copyright (c) 2002-2003 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
