@@ -235,16 +235,37 @@ public class test1 extends TypedAtomicActor {
 	}
     }
 
-    /** look-up switch expression Control Flow (non-breaks) **/
+    /** look-up switch expression Control Flow (breaks) **/
     public void method22(int b) {
 	int d=0;
 	switch(b) {
 	case 2:
 	    d += 1;
+	    break;
 	case 4:
 	    d += 2;
+	    break;
 	case 1:
 	    d += 3;
+	    break;
+	default:
+	    d += d;
+	    break;
+	}
+    }
+
+    /** tableswitch expression Control Flow (non-breaks) **/
+    public void method23(int b) {
+	int d=0;
+	switch(b) {
+	case 0:
+	    d += 1;
+	case 1:
+	    d += 2;
+	    break;
+	case 2:
+	    d += 3;
+	    break;
 	default:
 	    d += d;
 	    break;
@@ -252,14 +273,14 @@ public class test1 extends TypedAtomicActor {
     }
 
     /** For loop **/
-    public void method23(int b) {
+    public void method33(int b) {
 	int d=0;
 	for (int i=0;i<b;i++)
 	    d++;
     }
 
     /** Used to test serial combining **/
-    public int method24(int a) {
+    public int method34(int a) {
 	int d=0;
 	if (a > 5) {
 	    d = a * 2 + 3;

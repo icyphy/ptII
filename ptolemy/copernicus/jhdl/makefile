@@ -56,12 +56,13 @@ JSRCS = \
 	Predefined.java \
 	RegisterDelay.java \
 	BlockDataFlowGraph.java \
-	BlockControlFlowGraph.java \
 	CircuitGenerator.java \
 	DominatorHashMap.java \
-	Region.java \
-	Interval.java \
-	ConditionalControlCompactor.java
+	ConditionalControlCompactor.java \
+	DirectedAcyclicCFG.java \
+	Dominator.java \
+	DominatorCFG.java \
+	IntervalChain.java
 
 OTHER_FILES_TO_BE_JARED = \
 	compileCommandTemplate.txt \
