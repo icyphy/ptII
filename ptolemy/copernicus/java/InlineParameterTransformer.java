@@ -501,8 +501,15 @@ public class InlineParameterTransformer extends SceneTransformer implements HasP
                                         PtolemyUtilities.toStringMethod));
                                 doneSomething = true;
                                 // FIXME null result => ""
-                            } else if (r.getMethod().getSubSignature().equals(
-                                    PtolemyUtilities.setExpressionMethod.getSubSignature())) {
+                            } else if (false) {//r.getMethod().getSubSignature().equals(
+                                //    PtolemyUtilities.setExpressionMethod.getSubSignature())) {
+                                // Set Expression is problematic
+                                // because the expression might not be
+                                // known.  We used to assume that this
+                                // was part of creation, but now all
+                                // the initialization code is removed
+                                // early on.  Beware variables used to
+                                // evaluate expressions!
                                 if (debug) System.out.println("Replacing setExpression on Variable");
                            
                                 // Call attribute changed AFTER we set the token.
@@ -567,6 +574,9 @@ public class InlineParameterTransformer extends SceneTransformer implements HasP
                             } else if (r.getMethod().getName().equals("validate")) {
                                 // Ignoring...  does it matter?
                                 body.getUnits().remove(stmt);
+                            }  else if (r.getMethod().getName().equals("getClass")) {
+                                // Don't remove. Token unboxing might
+                                // deal with this.
                             } else {
                                 if (!r.getMethod().getDeclaringClass().isApplicationClass()) {
                                     throw new RuntimeException("Found unknown " +
