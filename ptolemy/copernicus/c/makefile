@@ -110,9 +110,32 @@ install: all jars
 depend:
 	@echo "no dependencies in this directory"
 
-# Leave out the demo for now. Tests are in test/.
-# demo: jclass
-# (cd demo/SimpleAdd; $(MAKE) demo)
+# OrthogonalCom
+MODEL =			OrthogonalCom
+MODELPATH =		$(ROOT)/ptolemy/domains/sdf/demo/OrthogonalCom/OrthogonalCom.xml
+
+# Usually, we run code gen on OrthogonalCom, to run on the IIR model, use:
+#  make MODELPATH=../../../ptolemy/actor/lib/test/auto/CommDistDiscard.xml MODEL=CommDistDiscard compileDemo runDemo 
+# To run on ArrayAppend:
+#  make MODELPATH=../../../ptolemy/actor/lib/test/auto/ArrayAppend.xml MODEL=ArrayAppend compileDemo runDemo
+
+OUTPUT_DIR =	cg/$(MODEL)
+demo: compileDemo runDemo
+compileDemo: $(JCLASS)
+	@echo "generate c code for $(MODELPATH)"
+	rm -rf $(OUTPUT_DIR)
+	mkdir -p $(OUTPUT_DIR)
+	"$(JAVA)" \
+	-classpath "$(CLASSPATH)" \
+	ptolemy.copernicus.c.Main \
+		$(MODELPATH) \
+		-d ../../nonexistent/something \
+		--debug \
+		-p wjtp.snapshot1 \
+		outDir:$(OUTPUT_DIR)
+
+runDemo:
+	cd cg/$(MODEL)
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
