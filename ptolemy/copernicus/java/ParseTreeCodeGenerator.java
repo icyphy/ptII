@@ -186,6 +186,13 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
             throws IllegalActionException {
         _debug(node);
 
+        // First check to see if the name references a valid variable.
+        Local local = null;
+        String functionName = node.getFunctionName();
+        if(functionName != null && _isValidName(functionName)) {
+            local = _getLocalForName(node.getFunctionName());
+        }
+
         // Method calls are generally not cached...  They are repeated
         // every time the tree is evaluated.
 
@@ -195,11 +202,17 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
             _generateChild(node, i);
         }
 
-        if (_isValidName(node.getFunctionName())) {
-            Local local = _getLocalForName(node.getFunctionName());
+        if (local != null || functionName == null) {
+           
             Local resultLocal = Jimple.v().newLocal("token",
                     RefType.v(PtolemyUtilities.tokenClass));
             _body.getLocals().add(resultLocal);
+           
+            // Evaluate it, if necessary. 
+            if(local == null) {
+                _generateChild(node, 0);
+                local = (Local)_nodeToLocal.get(node.jjtGetChild(0));   
+            }
 
             ptolemy.data.type.Type type = 
                 ((ASTPtRootNode)node.jjtGetChild(0)).getType();
