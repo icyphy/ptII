@@ -233,5 +233,5 @@ foreach file [lsort [glob compat/*.xml]] {
     #	list {}
     #} {{}}
 }
-doneTests
+#doneTests
 
