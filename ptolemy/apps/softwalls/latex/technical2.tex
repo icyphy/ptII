@@ -139,7 +139,25 @@ safe limits, the responsivity of the aircraft to the pilot
 commands remains normal.
 That is, the pilot's control signal is not attenuated.
 
-\subsection{Softwall Control Signal}
+\subsection{Maintaining Responsivity}
+
+Figure A illustrates how the blending controller maintains responsivity while
+biasing the pilot control. When there is no bias, the aircraft will turn as the
+pilot intends. When there is a bias of $M$ ($= s/r_{min}$, the maximum rate of
+change in heading) to the right, the pilot will not be able to make the
+aircraft turn left -- the aircraft will keep straight as the pilot tries to
+turn the rudder to the left extreme position.
+When the bias increases to $3M/2$ to the right, the aircraft will turn right at
+a rate of at least $M/2$, whatever the pilot tries to do.
+
+\section{Softwall Controller -- A First Design}
+
+Here we present our first attempt at designing a softwall controller.
+Although later analysis and simulation showed that a malicious pilot can defeat
+the controller, the design illuminated the importance of criticality measures
+and inspired our criticality-based controller design.
+
+\subsection{Softwall Controll Signal}
 
 Assume a single, flat soft wall with thickness $d_s$.
 The \textit{inner boundary} delineates the no-fly zone.
@@ -170,14 +188,15 @@ We set the corrective control signal to
 \[
 \dot{\theta}_s = \left \{
 \begin{array}{ll}
-2 \sin(\theta) c s/r_{min}& \mbox{ if } 0 < \theta < \pi\\
+2 \cos(\theta) c s/r_{min}& \mbox{ if } -\pi / 2 < \theta < \pi / 2 \\
 0 & \mbox{ otherwise}
 \end{array}
 \right .
 \]
 This results in zero corrective control if the aircraft is moving
 away from the wall or parallel to the wall, and maximum corrective
-control if the aircraft is approaching head on.  The single point
+control if the aircraft is approaching head on ($\theta = 0$).  
+The single point
 of maximum corrective control is when the aircraft is approaching
 the wall head on and has distance $r_{min}$ from the inner boundary.
 At this point, the corrective control is twice that required to
@@ -186,15 +205,13 @@ when added to the pilot's control we are assured of having
 the maximum turning control, even if the pilot is maximally
 uncooperative in attempting to counteract the control.
 
-\section{Control Model Failure}
-
-We were able to develop a malicious-ilot strategy that, even with the
-control scheme of Section 2, can fly the plane into the no-fly zone.
-This section explains why the strategy was successful.
-
 \subsection{Resistant Pilot}
 
-The resistant pilot is initially heading towards the no fly zone, so
+We were able to develop a malicious-pilot strategy that, even with the
+control scheme of the previous section, can fly the plane into the no-fly zone.
+This section explains why the strategy was successful.
+
+The resistant pilot is initially heading towards the no-fly zone, so
 the initial $\dot{\theta_{p}}$ is $0$.  That is, the pilot intends to
 maintain forward motion and crash into the wall.
 
@@ -213,17 +230,17 @@ larger.
 \subsection{Boundary Penetration}
 
 The resistant pilot succeeds in penetrating the no-fly zone boundray.
-Even though the plane's trajectory is changed, the $\sin{\theta}$ factor
+Even though the plane's trajectory is changed, the $\cos{\!(\theta})$ factor
 in the corrective control signal dampens the strength of the softwalls
 control signal, such that the pilot can fly into the softwall at a
 $\pi/6$ angle from the wall.
 
-If the $\sin{\theta}$ factor is removed from the control signal, this
+If the $\cos{\!(\theta)}$ factor is removed from the control signal, this
 problem disapears.  That is,
 \[
 \dot{\theta}_s = \left \{
 \begin{array}{ll}
-2 c s/r_{min}& \mbox{ if } 0 < \theta < \pi\\
+2 c s/r_{min}& \mbox{ if } -\pi / 2 < \theta < \pi / 2 \\
 0 & \mbox{ otherwise}
 \end{array}
 \right .
@@ -236,44 +253,31 @@ motivated an alternative approach (described in the next section).
 \section{Criticality-Based Control}
 
 A measure of criticality assesses the level of threat that an aircraft poses to
-a no-fly zone. The softwall controller can adjust its bias according to an
-appropriate criticality measure.
-
-\subsection{Maintaining Responsivity}
-
-Figure A illustrates how the softwall controller maintains responsivity while
-biasing the pilot control. When there is no bias, the aircraft will turn as the
-pilot intends. When there is a bias of $M$ (the maximum rate of change in
-heading) to the right, the pilot will not be able to make the aircraft turn 
-left -- the aircraft will keep straight as the pilot tries to turn the rudder
-to the left extreme position. 
-When the bias increases to $3M/2$ to the right, the aircraft will turn right at
-a rate of at least $M/2$, whatever the pilot tries to do.
+a no-fly zone. A general design pattern for softwall controllers is to let their
+bias vary with respect to an appropriate criticality measure.
 
 \subsection{A Measure of Criticality}
 
 Here we propose a criticality measure based on how long it will take the plane
 to reach the no-fly zone in the worst case. Figure B illustrates this measure.
-The worst case trajectories are shown as dotted lines.
+In this figure, the black dots represent the position of an aircraft, and the
+arrows represent its heading. The worst case trajectories are shown as dotted
+lines.
 
 Suppose the no-fly zone is defined by $\{(x,y)|\ x \geq b_{x}\}$. The 
 criticality measure does not depend on the aircraft's $y$-position. The
 equations for calculating $c(x, \theta)$ are:
 \[
 c(x, \theta) = \left\{ \begin{array}{ll}
-\frac{\theta}{M} + \frac{b_{x} - x - r_{min}\sin{\theta}}{v} & \mbox{if $x \leq b_{x} - r_{min}\sin{\theta},\ 0 \leq \theta \leq \pi/2$} \\
-\frac{\theta - \arcsin{\left( \frac{r_{min}\sin{\theta}-(b_{x} - x)}{r_{min}}\right) }}{M} & \mbox{if $x > b_{x} -r_{min}\sin{\theta},\ 0 \leq \theta \leq \pi/2$} \\
+\frac{\theta}{M} + \frac{d - r_{min}\sin{\theta}}{s} & \mbox{if $d \geq r_{min}\sin{\theta},\ 0 \leq \theta \leq \pi/2$} \\
+\frac{\theta - \arcsin{\left( \frac{r_{min}\sin{\theta}- d}{r_{min}}\right) }}{M} & \mbox{if $d < r_{min}\sin{\theta},\ 0 \leq \theta \leq \pi/2$} \\
 \frac{2(\theta - \pi/2)}{M} + c(x, \pi - \theta) & \mbox{if $\pi/2 < \theta \leq \pi$} \\
 c(x, |\theta|) & \mbox{if $-\pi \leq \theta < 0$}
 \end{array}
 \right.
 \]
-Note that $v$, $r_{min}$, and $M$ are related by $M = v/r_{min}$.
-
-\subsection{A Malicious Pilot}
-
-Figure C illustrates the control strategy of a malicious pilot, who tries to
-fly the aircraft into the no-fly zone (maintaining $\theta = 0$).
+where $d = d_{x} - x$ is the distance between the aircraft and the no-fly zone.
+Note that $s$, $r_{min}$, and $M$ are related by $M = s/r_{min}$.
 
 \subsection{Criticality-Based Softwall Controller}
 
@@ -282,11 +286,51 @@ D. The threshold $\pi/M$ is the value of $c(x, \theta)$ when $x = b_{x}$ (the
 aircraft is on the boundary of the no-fly zone), and $\theta = \pi$ (the 
 aircraft is flying straight out of the no-fly zone). No bias is needed here.
 The threshold $2/M$ is equal to $c(b_{x}-2r_{min}, 0)$ -- the aircraft is flying
-head on to the no-fly zone, but still can be safely turned away at half the 
+head on to the no-fly zone, at a distance of $2r_{min}$ from the zone.
+The aircraft can still be safely turned away at half the 
 maximum turning rate. Note that the bias level is at $3M/2$, so the plane will
 be turned at a rate of at least half the maximum, whatever the pilot tries to
 do. The sign (plus -- left, minus -- right) of the bias is chosen to be the
 same as $\theta$.
+
+\subsection{Simulation Results}
+
+The model shown in figure (Simulation Model) is constructed in Ptolemy II to
+simulate the proposed controller. The \emph{aircraft dynamics} component
+contains the
+aircraft model shown in figure \ref{fig2Daircraft}. The \emph{malicious pilot}
+component implements the control strategy shown in figure C. The pilot tries
+to fly the aircraft into the no-fly zone by maintaining the heading $\theta$
+at 0. The \emph{criticality} component calculates $c(x, \theta)$. The
+\emph{bias control} component implements the softwall controller. The output
+from the pilot and the controller are combined and limited to the range
+$[-M, M]$ before fed back to the aircraft model.
+
+The simulation is set up as follows. The aircraft is initially flying parallel
+to the no-fly zone ($\theta = \pi / 2$), at a distance of 2 miles. The speed of
+the aircraft is a constant 360 miles per hour. The maximum turning rate is 
+$2\pi/20$, so that the aircraft can complete a circle in a minimum of 20
+seconds. (Note that these numbers are fictional. We have not tried to look up
+performance characteristics of any real aircraft yet.)
+
+The aircraft trajectory from the simulation is shown in figure (Trajectory).
+Initially, the malicious pilot can freely turn the aircraft toward the no-fly
+zone. When the aircraft reaches within 1 mile from the zone, the controller
+starts to gradually bias the pilot control. Before the pilot control saturates,
+the pilot can mitigate the bias and keep the aircraft heading toward the no-fly
+zone. But the pilot control finally saturates and the softwall controller 
+turns the aircraft around at half the maximum rate. As the criticality
+decreases, the bias from the controller becomes smaller. The pilot can regain
+steerage toward the no-fly zone for a while before the aircraft settles in
+flying parallel to the zone. At this time, the pilot is still trying in vain
+to fly the aircraft into the no-fly zone by placing the control at the right
+maximum.
+
+Our work on this criticality-based control scheme is ongoing. We are working on
+simulating a variety of flight scenarios. We are investigating interactive
+simulation where the output of the pilot component is controlled by 
+experimenters. We are also looking to prove the safety of our control scheme
+and the validity of the criticality measure.
 
 \end{document}
 
