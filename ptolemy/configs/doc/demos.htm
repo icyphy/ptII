@@ -4,13 +4,16 @@
 <!-- demosPtiny.htm is derived from this file. 
 This file contains text that is not present in demosPtiny.htm.
 A makefile rule uses $PTII/doc/javahtml.awk to read in this
-file and generate demosPtiny.html-->
+file and generate demosPtiny.html
+
+-->
 </head>
 <body>
 <!--vergilDocs-->
 <h1>
 Quick Tour
 </h1>
+
 <!--
 Note:  demos should go with in the directory of their respective
 domains.
@@ -33,18 +36,18 @@ The top-level parameters are the model are shown in the run window.
 Edit these to explore the models.  They can be edited while the
 models are running.
 <ul>
-<li> <a href="../../domains/ct/demo/Switch/Switch.xml">Switching Continuous Signals</a>
+<li> <a href="../../domains/de/demo/ModalModel/ModalModel.xml">Modal Models</a>
 (New in Ptolemy II 2.0)
 .
- <br>A modal model is an FSM (finite state machine) combined
-hierarchically with other models. In our visual syntax, the system
-builder directly interacts with this hierarchical view. If you look
-inside the modal model, you will see a visual rendition of the FSM. If
-you create a state in this FSM, then you can create a refinement, and
-also you can look inside the state using the context menu on the state.
+ <br>A model model is one whose behavior depends on its "mode"
+of operation. A modal model in Ptolemy II is an FSM (finite state machine)
+combined hierarchically with other models. A state in the FSM represents
+a mode of operation, and can have a refinement that gives the behavior
+in that model.
 The refinement can be another FSM or some other model using some other
-Ptolemy domain. For example, by using the CT domain (continuous time),
-one can easily build hybrid systems.
+Ptolemy domain. This example combines DE, FSM, and SDF to model a
+system where regularly sampled signals are purturbed by irregular
+events in time.
 </li>
 
 <!--/vergilDocs-->
@@ -80,8 +83,8 @@ for example "1.0 * cm/second".
 <br>The way this is realized is that these unit constants are tokens just
 like other Ptolemy II data, and multiplication and division are
 overloaded in the base classes for numeric valued tokens.
-</li>
 
+</li>
 
 <!--Models that are new in 2.0 go above here.-->
 
@@ -173,6 +176,7 @@ constructed out of tokens with various types. Here, a record
 models a packet in a packet-switched network, where variable
 delays may result in out-of-order arrival of packets.
 </li>
+
 </ul>
 
 
@@ -200,6 +204,7 @@ The list below is organized by domains and includes the demonstrations above.
 <li> <a href="../../domains/ct/demo/SigmaDelta/SigmaDelta.xml">Sigma-Delta A/D Conversion</a>
 <li> <a href="../../domains/ct/demo/SquareWave/SquareWave.xml">Square Wave Response</a>
 <li> <a href="../../domains/ct/demo/StickyMasses/StickyMasses.xml">Sticky Point Masses</a>
+<li> <a href="../../domains/ct/demo/Switch/Switch.xml">Switching Continuous Signals using Modal Models</a> (New in Ptolemy II 2.0)
 <li> <a href="../../domains/ct/demo/Thermostat/Thermostat.xml">Thermostat</a> (Modal version new in Ptolemy II 2.0)
 <li>
 <a href="../../data/unit/demo/Units/Units.xml">Units</a> (New in PtolemyII 2.0)
@@ -239,8 +244,7 @@ The list below is organized by domains and includes the demonstrations above.
 <li> <a href="../../domains/giotto/demo/Composite/Composite.xml">Composite</a> (New in Ptolemy II 2.0)
 <li> <a href="../../domains/giotto/demo/Hierarchy/Hierarchy.xml">Hierarchy</a>
 <!-- Legiotto-->
-<li> <a href="../../domains/giotto/demo/Multimode/Multimode.xml">Multimode</a>
-(Updated in Ptolemy II 2.0)
+<li> <a href="../../domains/giotto/demo/Multimode/Multimode.xml">Multimode</a> (Updated in Ptolemy II 2.0)
 </ul>
 
 <!--/vergilDocs-->
@@ -281,15 +285,14 @@ Requires Java 3D, see the <a href="../../domains/gr/doc/main.htm">GR domain</a>
 <!--vergilDocs-->
 <li><a href="../../actor/lib/javasound/demo/KarplusStrong/KarplusStrong.xml">Karplus-Strong</a>
 <li><a href="../../domains/sdf/demo/LMSAdaptive/LMSAdaptive.xml">LMSAdaptive</a> (New in Ptolemy II 2.0)
-
-<!--OrthogonalCom - Used by codegen -->
-
 <li><a href="../../domains/sdf/demo/OrthogonalCom/OrthogonalCom.xml">OrthogonalCom</a> (New in Ptolemy II 2.0)
 <li><a href="../../domains/sdf/demo/MaximumEntropySpectrum/MaximumEntropySpectrum.xml">MaximumEntropySpectrum</a> (New in Ptolemy II 2.0)
 
 <li><a href="../../matlab/demo/MatlabExpression/MatlabExpression.xml">Matlab</a>
 Windows only, requires that Matlab be installed locally
 (New in Ptolemy II 2.0)
+
+<!--OrthogonalCom - Used by codegen -->
 
 <li><a href="../../moml/demo/Networked/Networked.xml">Network Integration</a>
 
@@ -307,6 +310,9 @@ Windows only, requires that Matlab be installed locally
 <!--/vergilDocs-->
 <h3>Synchronous Reactive</h3>
 <ul>
+<!-- Reflex Game is not really SR
+	../../domains/sr/demo/ReflexGame/ReflexGame.xml --!>
+
 <li><a href="../../domains/sr/demo/TokenRing/TokenRing.xml">TokenRing</a> (New in Ptolemy II 2.0)
 </ul>
 
