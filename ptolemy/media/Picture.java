@@ -47,7 +47,7 @@ of the set methods, and call displayImage().
 
 @author Edward A. Lee
 @version $Id$
- */
+*/
 public class Picture extends Canvas {
 
     /** Create an image with the specified width and height, in pixels.

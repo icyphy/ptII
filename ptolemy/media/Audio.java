@@ -38,47 +38,47 @@ import java.io.IOException;
 //////////////////////////////////////////////////////////////////////////
 //// Audio
 /**
- * Instances of this class represent audio data equivalent to that
- * contained by a Sun/NeXT audio file (.au file).  The class also
- * includes a set of utility static methods for manipulating audio
- * signals.
- * Currently, only an 8kHz sample rate, mu-law encoded, monophonic
- * audio format is supported.
- * <p>
- *  The format of an audio file is:
- *  <CENTER>
- *  <TABLE BORDER = 1>
- *  <TR BGCOLOR = #DFDFA0><TD>byte</TD><TD>type</TD>
- *  <TD>field name   </TD><TD> field value                      </TD></TR>
- *  <TR><TD>0x00</TD><TD>byte </TD><TD>magic[4]        </TD>
- *  <TD> 0x2E736E64 '.snd' in ASCII     </TD></TR>
- *  <TR><TD>0x04</TD><TD>int </TD><TD>offset </TD>
- *  <TD> offset of audio data relative to the start of the stream </TD></TR>
- *  <TR><TD>0x08</TD><TD>int </TD><TD>size     </TD>
- *  <TD> number of bytes of data        </TD></TR>
- *  <TR><TD>0x0C</TD><TD>int </TD><TD>format   </TD>
- *  <TD> format code: 1 for 8-bit u-law </TD></TR>
- *  <TR><TD>0x10</TD><TD>int </TD><TD>samplingRate </TD>
- *  <TD> the sampling rate              </TD></TR>
- *  <TR><TD>0x14</TD><TD>int </TD><TD>numChannels </TD>
- *  <TD> the number of channels         </TD></TR>
- *  <TR><TD>0x18</TD><TD>byte</TD><TD>info[]      </TD>
- *  <TD> optional text information      </TD></TR>
- *  </TABLE>
- *  </CENTER>
- *  <p>
- *  The design of this class is based on the web page of
- *  <a href=mailto:donahu@cooper.edu>Billy Donahue</a>.
- *  <a href=http://www.cooper.edu/~donahu/auformat/auFormat.html>
- *  http://www.cooper.edu/~donahu/auformat/auFormat.html</a>.
- *  Note that this class serves the same role as
- *  the class by the same name in the sun.audio package, but is much
- *  more public about its information.  For example, the Sun version
- *  does not give any access to the audio data itself.
- *
- * @author Edward A. Lee
- * @version $Id$
- */
+Instances of this class represent audio data equivalent to that
+contained by a Sun/NeXT audio file (.au file).  The class also
+includes a set of utility static methods for manipulating audio
+signals.
+Currently, only an 8kHz sample rate, mu-law encoded, monophonic
+audio format is supported.
+<p>
+The format of an audio file is:
+<CENTER>
+<TABLE BORDER = 1>
+<TR BGCOLOR = #DFDFA0><TD>byte</TD><TD>type</TD>
+<TD>field name   </TD><TD> field value                      </TD></TR>
+<TR><TD>0x00</TD><TD>byte </TD><TD>magic[4]        </TD>
+<TD> 0x2E736E64 '.snd' in ASCII     </TD></TR>
+<TR><TD>0x04</TD><TD>int </TD><TD>offset </TD>
+<TD> offset of audio data relative to the start of the stream </TD></TR>
+<TR><TD>0x08</TD><TD>int </TD><TD>size     </TD>
+<TD> number of bytes of data        </TD></TR>
+<TR><TD>0x0C</TD><TD>int </TD><TD>format   </TD>
+<TD> format code: 1 for 8-bit u-law </TD></TR>
+<TR><TD>0x10</TD><TD>int </TD><TD>samplingRate </TD>
+<TD> the sampling rate              </TD></TR>
+<TR><TD>0x14</TD><TD>int </TD><TD>numChannels </TD>
+<TD> the number of channels         </TD></TR>
+<TR><TD>0x18</TD><TD>byte</TD><TD>info[]      </TD>
+<TD> optional text information      </TD></TR>
+</TABLE>
+</CENTER>
+<p>
+The design of this class is based on the web page of
+<a href=mailto:donahu@cooper.edu>Billy Donahue</a>.
+<a href=http://www.cooper.edu/~donahu/auformat/auFormat.html>
+http://www.cooper.edu/~donahu/auformat/auFormat.html</a>.
+Note that this class serves the same role as
+the class by the same name in the sun.audio package, but is much
+more public about its information.  For example, the Sun version
+does not give any access to the audio data itself.
+
+@author Edward A. Lee
+@version $Id$
+*/
 
 public class Audio {
 
