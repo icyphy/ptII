@@ -158,7 +158,9 @@ public class Vergil extends MDIApplication {
 	    (CompositeEntity) ((VergilDocument)d).getGraph();
 	GraphImpl impl = controller.getGraphImpl();
 	Graph graph = impl.createGraph(entity);
-	
+	                
+        // FIXME layout parts of graph that don't have a location.
+
         // Set and draw the new graph
         controller.setGraph(graph);
 
@@ -188,7 +190,8 @@ public class Vergil extends MDIApplication {
 		    model.removeSelection(selection[i]);
 		    Object userObject = 
                         ((Figure)selection[i]).getUserObject();
-		    if(userObject instanceof Node) {			
+		    if(userObject instanceof Node) {	
+                        // FIXME controller should have removeNode
                         Node node = (Node) userObject;
 			controller.clearNode(node);
                         impl.removeNode(node);
@@ -466,7 +469,7 @@ public class Vergil extends MDIApplication {
 
 	String dflt = "";
         // Layout combobox
-	/*        _layoutComboBox = new JComboBox();
+        _layoutComboBox = new JComboBox();
         dflt = "Random layout";
         _layoutComboBox.addItem(dflt);
         _layoutComboBox.addItem("Levelized layout");
@@ -476,13 +479,13 @@ public class Vergil extends MDIApplication {
             public void itemStateChanged (ItemEvent e) {
                 if (e.getStateChange() == ItemEvent.SELECTED) {
                     VergilDocument d = (VergilDocument) getCurrentDocument();
-                    JGraph jg = (JGraph) _contentPanes.get(d);
+                    JGraph jg = (JGraph) getView(d);
                     redoLayout(jg, (String) e.getItem());
                 }
             }
         });
         tb.add(_layoutComboBox);
-	*/
+	
         //tb.addSeparator();
 
 	//FIXME find these names somehow.

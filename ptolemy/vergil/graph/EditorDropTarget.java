@@ -149,8 +149,8 @@ public class EditorDropTarget extends DropTarget {
                             container.workspace());
 		    Icon icon = (Icon) entity.getAttribute("_icon");
                     // FIXME it would be nice if this was not editor specific.
-                    entity.setName(sourceEntity.getName() + 
-                            ((EditorGraphController)gc).createUniqueID()); 
+                    entity.setName(container.uniqueName(
+                            sourceEntity.getName()));
 		    ((EditorGraphController) gc).getEntityController()
                          .addNode(icon, p.x, p.y);
 		}

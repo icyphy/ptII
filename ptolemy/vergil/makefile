@@ -59,7 +59,7 @@ EXTRA_SRCS =	$(JSRCS)
 # want make checkjunk to barf on them.
 MISC_FILES =	$(DIRS) \
 	TODO \
-	Vergil.properties
+	Library.properties
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES

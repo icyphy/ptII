@@ -168,7 +168,7 @@ public class EditorGraphController extends ViewerGraphController {
 		port = new Port();
 	    else { 
 		try {
-		    port = toplevel.newPort(createUniqueName("port"));
+		    port = toplevel.newPort(toplevel.uniqueName("port"));
 		}
 		catch (Exception ex) {
 		    ex.printStackTrace();
@@ -196,9 +196,9 @@ public class EditorGraphController extends ViewerGraphController {
             Vertex vertex = null;
             try {                
                 relation = 
-                    toplevel.newRelation(createUniqueName("relation"));
+                    toplevel.newRelation(toplevel.uniqueName("relation"));
                 vertex = new Vertex(relation, 
-                        createUniqueName("vertex"));
+                        relation.uniqueName("vertex"));
             }
             catch (Exception ex) {
                 ex.printStackTrace();
@@ -261,7 +261,7 @@ public class EditorGraphController extends ViewerGraphController {
 		Vertex vertex = null;
 		try {
 		    vertex = new Vertex(relation, 
-                            createUniqueName("vertex"));
+                            relation.uniqueName("vertex"));
                 }
 		catch (Exception ex) {
 		    ex.printStackTrace();
@@ -287,17 +287,6 @@ public class EditorGraphController extends ViewerGraphController {
 	    }
 	}
     }
-	
-    public String createUniqueName(String root) {
-	String name = root + _uniqueID++;
-	return name;
-    }
-
-    public int createUniqueID() {
-	return _uniqueID++;
-    }
-    
-    private int _uniqueID = 1;
 
     /** The interactor for creating new relations
      */
