@@ -172,8 +172,8 @@ public class RemoteCompositeActor extends CompositeActor {
                         + " invoke fire on a non-opaque actor.");
             }
             super.fire();
-        } catch( org.omg.CORBA.SystemException e ) {
-            throw new IllegalActionException( this, e.getMessage() );
+        } catch( org.omg.CORBA.SystemException ex) {
+            throw new IllegalActionException(this, ex, null);
         }
     }
 
@@ -194,8 +194,8 @@ public class RemoteCompositeActor extends CompositeActor {
                         + " initialize a non-opaque actor.");
             }
             super.initialize();
-        } catch( org.omg.CORBA.SystemException e ) {
-            throw new IllegalActionException( this, e.getMessage() );
+        } catch( org.omg.CORBA.SystemException ex ) {
+            throw new IllegalActionException(this, ex, null);
         }
     }
 
@@ -228,8 +228,8 @@ public class RemoteCompositeActor extends CompositeActor {
                         + " invoke postfire on a non-opaque actor.");
             }
             return super.postfire();
-        } catch( org.omg.CORBA.SystemException e ) {
-            throw new IllegalActionException( this, e.getMessage() );
+        } catch( org.omg.CORBA.SystemException ex ) {
+            throw new IllegalActionException(this, ex, null);
         }
     }
 
@@ -253,8 +253,8 @@ public class RemoteCompositeActor extends CompositeActor {
                         + " invoke prefire on a non-opaque actor.");
             }
             return super.prefire();
-        } catch( org.omg.CORBA.SystemException e ) {
-            throw new IllegalActionException( this, e.getMessage() );
+        } catch( org.omg.CORBA.SystemException ex ) {
+            throw new IllegalActionException(this, ex, null);
         }
     }
 
@@ -291,8 +291,8 @@ public class RemoteCompositeActor extends CompositeActor {
                         + " invoke wrapup on a non-opaque actor.");
             }
             super.wrapup();
-        } catch( org.omg.CORBA.SystemException e ) {
-            throw new IllegalActionException( this, e.getMessage() );
+        } catch( org.omg.CORBA.SystemException ex ) {
+            throw new IllegalActionException(this, ex, null);
         }
     }
 
@@ -318,8 +318,8 @@ public class RemoteCompositeActor extends CompositeActor {
             throws IllegalActionException, NameDuplicationException {
         try {
             super._addEntity(entity);
-        } catch( org.omg.CORBA.SystemException e ) {
-            throw new IllegalActionException( this, e.getMessage() );
+        } catch( org.omg.CORBA.SystemException ex) {
+            throw new IllegalActionException(this, ex, null);
         }
     }
 
@@ -344,8 +344,8 @@ public class RemoteCompositeActor extends CompositeActor {
             throws IllegalActionException, NameDuplicationException {
         try {
             super._addPort(port);
-        } catch( org.omg.CORBA.SystemException e ) {
-            throw new IllegalActionException( this, e.getMessage() );
+        } catch( org.omg.CORBA.SystemException ex ) {
+            throw new IllegalActionException(this, ex, null);
         }
     }
 
@@ -366,17 +366,13 @@ public class RemoteCompositeActor extends CompositeActor {
             throws IllegalActionException, NameDuplicationException {
         try {
             super._addRelation(relation);
-        } catch( org.omg.CORBA.SystemException e ) {
-            throw new IllegalActionException( this, e.getMessage() );
+        } catch( org.omg.CORBA.SystemException ex ) {
+            throw new IllegalActionException(this, ex, null);
         }
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     private boolean _hasLocalDirector = false;
-
 }

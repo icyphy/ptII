@@ -153,9 +153,7 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
         } catch (IllegalActionException ex) {
             // This exception should not occur, so we throw a runtime
             // exception.
-            throw new InternalErrorException(
-                    "TypedAtomicActor.newPort: Internal error: " +
-		    ex.getMessage());
+            throw new InternalErrorException(this, ex, null);
         } finally {
             _workspace.doneWriting();
         }
