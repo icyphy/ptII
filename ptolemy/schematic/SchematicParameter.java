@@ -31,44 +31,39 @@
 package ptolemy.schematic;
 
 import java.util.Enumeration;
-import collections.LinkedList;
+import collections.HashedMap;
 
 //////////////////////////////////////////////////////////////////////////
-//// SchematicParser
+//// SchematicParameter
 /**
+A SchematicParameter encapsulate a parameter that can be set on a 
+SchematicElement.  Every parameter has three pieces of data, the name,
+type and value.
 
 @author Steve Neuendorffer, John Reekie
-@version $W$ $G$
+@version $Id$
 */
 public class SchematicParameter extends XMLElement{
 
     /**
-     * Create a SchematicParameter with empty name, value and type.
+     * Create a SchematicParameter object with empty name,
+     * type and value.
      */
-    SchematicParameter() {
+    public SchematicParameter() {
         super("parameter");
-    }
-
-    /** 
-     * Create a SchematicParamter object with the given name.
-     * The value and type are empty strings.
-     */
-    public SchematicParameter(String name) {
-        super("parameter");
-        setAttribute("name", name);
-        setAttribute("value", "");
-        setAttribute("type", "");
+        setName("");
+        setType("");
+        setValue("");
     }
 
     /**
-     * Create a SchematicParameter object with the given name and type.
-     * The value is set to an empty string
+     * Create a SchematicParameter object with the given attributes
      */
-    public SchematicParameter(String name, String type) {
-        super("parameter");
-        setAttribute("name", name);
-        setAttribute("type", type);
-        setAttribute("value", "");
+    public SchematicParameter(HashedMap attributes) {
+        super("parameter", attributes);
+        if(!hasAttribute("name")) setName("");
+        if(!hasAttribute("type")) setType("");
+        if(!hasAttribute("value")) setValue("");
     }
 
     /**
@@ -81,6 +76,7 @@ public class SchematicParameter extends XMLElement{
         setAttribute("type", type);
         setAttribute("value", value);
     }
+   
 
     /** 
      * Return the name of this parameter.
