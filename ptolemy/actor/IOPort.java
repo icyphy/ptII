@@ -289,6 +289,52 @@ public class IOPort extends ComponentPort {
         }
     }
 
+    /** Set all connected receivers to have no token.
+     *  The transfer is accomplished by calling getRemoteReceivers()
+     *  to determine the number of channels with valid receivers and
+     *  then calling setAbsent on the appropriate receivers.
+     *  If there are no destination receivers, then nothing is sent.
+     *  If the port is not connected to anything, or receivers have not been
+     *  created in the remote port, then just return.
+     *  <p>
+     *  Some of this method is read-synchronized on the workspace.
+     *  Since it is possible for a thread to block while executing a put,
+     *  it is important that the thread does not hold read access on
+     *  the workspace when it is blocked. Thus this method releases
+     *  read access on the workspace before calling put.
+     *
+     *  @exception IllegalActionException If the port is not an output.
+     *  @exception NoRoomException If a send to one of the channels throws
+     *     it.
+     */
+    public void broadcastAbsent()
+	    throws IllegalActionException, NoRoomException {
+        Receiver[][] farReceivers;
+        try {
+            _workspace.getReadAccess();
+            farReceivers = getRemoteReceivers();
+            if (farReceivers == null) {
+                return;
+            }
+        } finally {
+            _workspace.doneReading();
+        }
+        // NOTE: This does not call send() here, because send()
+        // repeats the above on each call.
+        try {
+            for (int i = 0; i < farReceivers.length; i++) {
+                if (farReceivers[i] == null) continue;
+
+                for (int j = 0; j < farReceivers[i].length; j++) {
+                    farReceivers[i][j].setAbsent();
+                }
+            }
+        } catch (ArrayIndexOutOfBoundsException ex) {
+            // NOTE: This may occur if the port is not an output port.
+            // Ignore...
+        }
+    }
+
     /** Clone this port into the specified workspace. The new port is
      *  <i>not</i> added to the directory of that workspace (you must do this
      *  yourself if you want it there).
