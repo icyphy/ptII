@@ -26,8 +26,8 @@ fi
 
 
 # Stars from Ptolemy Classic CGC.  Include only stars and dsp
-#stars=`find $cgc -name "*.pl" | egrep -v "targets|tcltk|contrib|vis"`
-stars="/users/ptolemy/src/domains/cgc/stars/CGCAdd.pl /users/ptolemy/src/domains/cgc/dsp/stars/CGCIIR.pl"
+stars=`find $cgc -name "*.pl" | egrep -v "targets|tcltk|contrib|vis" | head -10`
+#stars="/users/ptolemy/src/domains/cgc/stars/CGCAdd.pl /users/ptolemy/src/domains/cgc/dsp/stars/CGCIIR.pl"
 
 for star in $stars
 do
@@ -189,7 +189,7 @@ include \$(ROOT)/mk/ptcommon.mk
 EOF
 
     # Run make
-    (cd $destinationDirectory; make)
+    (cd $destinationDirectory; make -k)
 done
 
 cat >> $PTII/$destinationSubdir/cgc.xml <<EOF5
