@@ -131,9 +131,11 @@ public class ProcessThread extends PtolemyThread {
             }
         } catch (TerminateProcessException t) {
             // Process was terminated.
-	} catch( InterruptedException e) {
-            _manager.notifyListenersOfException(e);
-        } catch (IllegalActionException e) {
+        } 
+        //catch( InterruptedException e) {
+        // _manager.notifyListenersOfException(e);
+        // } 
+        catch (IllegalActionException e) {
             _manager.notifyListenersOfException(e);
         } finally {
             try {
