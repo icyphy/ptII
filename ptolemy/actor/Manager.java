@@ -54,7 +54,7 @@ model occur in a separate thread.   The Manager is responsible for creating
 and managing the java thread in which execution begins, although some 
 domains may spawn additional threads of their own.  
 
-@author Mudit Goel, Edward A. Lee, Lukito Muliadi, Steve Neuendorffer
+@author Steve Neuendorffer, Mudit Goel, Edward A. Lee, Lukito Muliadi
 @version: $Id$
 */
 public class Manager extends NamedObj implements Runnable {
@@ -292,6 +292,8 @@ public class Manager extends NamedObj implements Runnable {
                 }
             }
             finally {
+                _isRunning = false;
+                _isPaused = false;
                 container.wrapup();
             }
         }
