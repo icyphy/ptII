@@ -89,8 +89,11 @@ tests:: $(EXTRA_SRCS) jclass test_java test_jsimple
 
 test_java: jclass
 
+# Tycho-wide test definitions.
+KERNEL_TESTDEFS = $(ROOT)/kernel/test/testDefs.tcl
+
 # These tests do not require a graphics terminal, but do use TclBlend and Java
-test_jsimple: $(EXTRA_SRCS) jclass alljtests.tcl
+test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl
 	CLASSPATH=$(CLASSPATH)$(AUXCLASSPATH) $(JTCLSH) alljtests.tcl
 
 # To profile the tests using jacl, run
@@ -98,7 +101,7 @@ test_jsimple: $(EXTRA_SRCS) jclass alljtests.tcl
 # then look in java.prof
 
 # These tests do not require a graphics terminal, but do use Jacl and Java
-test_jsimple_jacl: $(EXTRA_SRCS) jclass alljtests.tcl
+test_jsimple_jacl: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl
 	CLASSPATH=$(CLASSPATH)$(AUXCLASSPATH) jacl $(JACLPROFILE) alljtests.tcl
 
 docs: javadocs
