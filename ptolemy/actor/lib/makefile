@@ -86,14 +86,17 @@ JSRCS = \
 	Gaussian.java \
 	IIR.java \
 	Interpolator.java \
+	Latch.java \
 	Lattice.java \
 	LevinsonDurbin.java \
+	LookupTable.java \
 	MathFunction.java \
 	MaxIndex.java \
 	Maximum.java \
 	Minimum.java \
         Multiplexor.java \
 	MultiplyDivide.java \
+	NonStrictActor.java \
 	PhaseUnwrap.java \
 	PoissonClock.java \
 	Pulse.java \
@@ -113,6 +116,7 @@ JSRCS = \
 	Sequencer.java \
 	SequenceSource.java \
 	SequentialClock.java \
+	SingleTokenDistributor.java \
 	Sink.java \
 	Sleep.java \
 	Source.java \
