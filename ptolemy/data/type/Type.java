@@ -48,7 +48,7 @@ public interface Type {
 
     /** Return a deep clone of this type.
      *  @return A Type.
-     *  @exception CloneNotSupportedException Not thrown.
+     *  @exception CloneNotSupportedException If an instance cannot be cloned.
      */
     public Object clone() throws CloneNotSupportedException;
 
@@ -67,6 +67,20 @@ public interface Type {
      *   object; false otherwise.
      */
     public boolean equals(Object object);
+
+    /** Return the cached type comparison result:
+     *  TypeLattice.compare(this, type(index)).
+     *  @param index Other type's node index in the type lattice.
+     *  @return Cached type comparison result.
+     *  @since Ptolemy II 2.1
+     */
+    public int getCachedTypeComparisonResult(int index);
+
+    /** Return this type's node index in the (constant) type lattice.
+     *  @return this type's node index in the (constant) type lattice.
+     *  @since Ptolemy II 2.1
+     */
+    public int getNodeIndex();
 
     /** Return the class for tokens that this type represents.
      */
@@ -105,40 +119,32 @@ public interface Type {
      */
     public boolean isSubstitutionInstance(Type type);
 
+    /** Cache type comparison result.
+     *  Set the cached TypeLattice.compare(this, type) value.
+     *  @param index The other type's node index.
+     *  @param value TypeLattice.compare(this, type) result.
+     *  @since Ptolemy II 2.1
+     */
+    public void setCachedTypeComparisonResult(int index, int value);
+
+    /** Set this type's node index in the (constant) type lattice.
+     *  @param index This type's node index.
+     *  @param value The total number of types in the type lattice.
+     *  @since Ptolemy II 2.1
+     */
+    public void setNodeIndex(int index, int nodeCount);
+
     /** Return the string representation of this type.
      *  @return A String.
      */
     public String toString();
 
 
-    /** Return the cached type comparison result:
-     * TypeLattice.compare(this,type(index)).
-     * @param index Other type's node index in the type lattice.
-     * @return Cached type comparison result.
-     * @since Ptolemy II 2.1
-     */
-    public int getCachedTypeComparisonResult(int index);
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
 
-    /** Return this type's node index in the (constant) type lattice.
-     * @return this type's node index in the (constant) type lattice.
-     * @since Ptolemy II 2.1
+    /** Used to indicate that the type comparison cache is invalid
+     *  @since Ptolemy II 2.1
      */
-    public int getNodeIndex();
-    /** Cache type comparison result:
-        
-    /** Set the cached TypeLattice.compare(this, type) value.
-     * @param index The other type's node index.
-     * @param value TypeLattice.compare(this, type) result.
-     * @since Ptolemy II 2.1
-     */
-    public void setCachedTypeComparisonResult(int index, int value);
-
-    /** Set this type's node index in the (constant) type lattice.
-     * @param index This type's node index.
-     * @param value The total number of types in the type lattice.
-     * @since Ptolemy II 2.1
-     */
-    public void setNodeIndex(int index, int nodeCount);
-
-    public static int CACHE_INVALID = Integer.MIN_VALUE;
+    public static final int CACHE_INVALID = Integer.MIN_VALUE;
 }
