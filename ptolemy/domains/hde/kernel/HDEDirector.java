@@ -32,10 +32,8 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.FiringEvent;
 import ptolemy.actor.Receiver;
 import ptolemy.domains.de.kernel.DEDirector;
-import ptolemy.domains.de.kernel.DEEvent;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.Workspace;
@@ -235,6 +233,9 @@ public class HDEDirector extends DEDirector {
      *  @exception IllegalActionException If the firing actor throws it.
      */
     public void fire() throws IllegalActionException {
+        // FIXME: refactor DE director to simplify this director.
+        // FIXME: comment needs great improvement.
+        
         if (_debugging) {
             _debug("HDE director firing!");
         }
