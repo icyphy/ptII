@@ -407,7 +407,7 @@ else
 	# Subdirectory that contains Java spaces specific code
 	PTJSPACES_DIR=jspaces
     else    
-	JINI_DIR=\$(PTII)/vendors/sun/$JINI_VERSION
+	JINI_DIR='$(PTII)'/vendors/sun/$JINI_VERSION
     fi    
     if test "$JINI_PRESENT" = "no"; then
         AC_MSG_WARN(['Failed to find $JINI_DIR/lib/jini-core.jar
