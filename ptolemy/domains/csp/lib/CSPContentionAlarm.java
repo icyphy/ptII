@@ -72,8 +72,10 @@ public class CSPContentionAlarm extends CSPActor {
     public void fire() throws IllegalActionException {
         
         while(true) {
+	    System.out.println(getName() + " is firing");
             // State 1
             _input.get(0);
+	    System.out.println(getName() + " has received first input");
             
             // State 2
             waitForDeadlock();
