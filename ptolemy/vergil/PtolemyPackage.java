@@ -67,6 +67,9 @@ import javax.swing.event.*;
 
 import ptolemy.domains.sdf.kernel.*;
 import ptolemy.domains.pn.kernel.*;
+import ptolemy.domains.de.kernel.*;
+import ptolemy.domains.dde.kernel.*;
+import ptolemy.domains.csp.kernel.*;
 
 /**
  * A modular package that can be plugged into Vergil that adds support for
@@ -239,6 +242,9 @@ public class PtolemyPackage implements Package {
 	_directorModel = new DefaultComboBoxModel();
 	_directorModel.addElement(new SDFDirector());
 	_directorModel.addElement(new PNDirector());
+	_directorModel.addElement(new DEDirector());
+	_directorModel.addElement(new CSPDirector());
+	_directorModel.addElement(new DDEDirector());
 	//FIXME find these names somehow.
 	_directorComboBox = new JComboBox(_directorModel);
 	_directorComboBox.setRenderer(new DirectorCellRenderer());
@@ -374,7 +380,7 @@ public class PtolemyPackage implements Package {
 	    boolean isSelected, boolean cellHasFocus)
 	{
 	    setText(((NamedObj)value).getClass().getName());
-	    setBackground(isSelected ? Color.red : Color.white);
+	    setBackground(isSelected ? Color.blue : Color.white);
 	    setForeground(isSelected ? Color.white : Color.black);
 	    return this;
 	}

@@ -30,16 +30,10 @@
 
 package ptolemy.vergil;
 
-import ptolemy.actor.*;
-import ptolemy.actor.gui.*;
+import ptolemy.vergil.toolbox.*;
 import ptolemy.kernel.util.*;
 import ptolemy.kernel.*;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.IntToken;
-import ptolemy.gui.*;
 import ptolemy.moml.MoMLParser;
-import ptolemy.vergil.graph.*;
-import ptolemy.vergil.toolbox.*;
 
 import diva.graph.*;
 import diva.gui.*;
@@ -69,16 +63,16 @@ import javax.swing.event.*;
 /**
 Vergil is an extensible high-level graphical interface for component-based
 design tools.  It is primarily aimed at Ptolemy II, although it could
-be used with other tools as well.  The feature of Vergil include:
+be used with other tools as well.  The features of Vergil include:
 <ul>
 <li> Support for multiple types of documents.
-<li> A modular package system to allow for easy extension.
+<li> A module system to allow for easy extension.
 <li> Expandable tool bars and menu bars.
 </ul>
 <p>
 This class is associated with a desktop frame.  This frame contains a palette
 into which packages can place design libraries.  The frame also inherits
-improved Multiple Document handling, a toolbar, status bar and progress bar
+improved support for multiple documents, a toolbar, status bar and progress bar
 from the Diva desktop frame.
 
 @author Steve Neuendorffer
@@ -87,9 +81,12 @@ from the Diva desktop frame.
 */
 public class VergilApplication extends MDIApplication {
     /**
-     * Construct a new Vergil application.
+     * Construct a new Vergil application.  Create a new desktop frame and
+     * initialize it's menu bar and toolbar.  Load all the modular packages
+     * for this application and open a starting document using the default
+     * document factory.
      */
-    public VergilApplication() {
+    protected VergilApplication() {
         super();
 
         // Create local objects
@@ -100,7 +97,7 @@ public class VergilApplication extends MDIApplication {
         // Create and initialize the storage policy
         DefaultStoragePolicy storage = new DefaultStoragePolicy();
         setStoragePolicy(storage);
-	FileFilter ff = new FileFilter() {
+	FileFilter filter = new FileFilter() {
 	    public boolean accept(File file) {
 		if(file.isDirectory()) {
 		    return true;
@@ -114,20 +111,20 @@ public class VergilApplication extends MDIApplication {
 		return "XML files";
 	    }
 	};
-        JFileChooser fc;
-        fc = storage.getOpenFileChooser();
-        fc.addChoosableFileFilter(ff);
-        fc.setFileFilter(ff);
+        JFileChooser chooser;
+        chooser = storage.getOpenFileChooser();
+        chooser.addChoosableFileFilter(filter);
+        chooser.setFileFilter(filter);
 
-        fc = storage.getSaveFileChooser();
-        fc.addChoosableFileFilter(ff);
-        fc.setFileFilter(ff);
+        chooser = storage.getSaveFileChooser();
+        chooser.addChoosableFileFilter(filter);
+        chooser.setFileFilter(filter);
 
         // _incrementalLayout = new LevelLayout();
 
         // Initialize the menubar, toolbar, and palettes
-        initializeMenuBar(frame.getJMenuBar());
-        initializeToolBar(frame.getJToolBar());
+        _initializeMenuBar(frame.getJMenuBar());
+        _initializeToolBar(frame.getJToolBar());
 	JPanel toolBarPane = frame.getToolBarPane();
 	toolBarPane.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
 	SwingUtilities.invokeLater(new PaletteInitializer());
@@ -144,6 +141,9 @@ public class VergilApplication extends MDIApplication {
         // not the system UI.
         SwingUtilities.updateComponentTreeUI(treepane);
 
+	// FIXME read this out of resources somehow.
+	new PtolemyPackage(this);
+
 	// Start with a new document.
 	// This is kindof
 	// bogus, but it is not easy to fire the action manually.
@@ -152,22 +152,23 @@ public class VergilApplication extends MDIApplication {
 	javax.swing.Timer timer = new javax.swing.Timer(200, action);
 	timer.setRepeats(false);
 	timer.start();
-
-	// FIXME read this out of resources somehow.
-	new PtolemyPackage(this);
     }
 
-    /** Add the factory that creates new documents.  Also add create a new
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /**
+     * Add the factory that creates new documents.  Also create a new
      * action and add it to the
-     * file->new menu that will create documents with the given factory.
+     * File->New menu that will create documents with the given factory.
      */
-    protected void addDocumentFactory(VergilDocumentFactory df) {
-	final VergilDocumentFactory factory = df;
+    public void addDocumentFactory(VergilDocumentFactory factory) {
+	final VergilDocumentFactory f = factory;
 	final VergilApplication app = this;
         _documentFactoryList.add(factory);
-	Action action = new AbstractAction (factory.getName()) {
+	Action action = new AbstractAction (f.getName()) {
             public void actionPerformed(ActionEvent e) {
-                Document doc = factory.createDocument(app);
+                Document doc = f.createDocument(app);
                 addDocument(doc);
                 displayDocument(doc);
                 setCurrentDocument(doc);
@@ -186,7 +187,8 @@ public class VergilApplication extends MDIApplication {
 	menuBar.add(menu);
     }
 
-    /** Populate the tree pane with icons for each entity in the given
+    /** 
+     * Populate the tree pane with icons for each entity in the given
      * composite entity.
      * @param pane The tree pane.
      * @param parent The name of the node in the tree to add the icons to.
@@ -218,70 +220,236 @@ public class VergilApplication extends MDIApplication {
         }
     }
 
-    /** Given a document, create a new view which displays that
-     * document. If the document is vergil document then defer to the
-     * document to create the view.
-     * @exception RuntimeException If the document is not a vergil document.
+    /** 
+     * Given a Diva document, create a new view that displays that
+     * document. If the document is an instance of VergilDocument
+     * then defer to the document to create the view.
+     * @exception RuntimeException If the document is not an instance of 
+     * VergilDocument.
+     * @see #VergilDocument
      */
-    public JComponent createView(Document d) {
-	if(!(d instanceof VergilDocument)) {
+    public JComponent createView(Document document) {
+	if(!(document instanceof VergilDocument)) {
 	    throw new RuntimeException("Can only create views " +
-				       "on Vergil documents.");
+				       "on VergilDocuments.");
 	}
-	JComponent view = ((VergilDocument)d).createView();
+	JComponent view = ((VergilDocument)document).createView();
         view.addMouseListener(new MouseFocusMover());
         return view;
     }
 
-    /** Return the list of factories that create new documents.
+    /** 
+     * Return the list of factories that create new documents.
+     * @return An unmodifiable list of DocumentFactories.
      */
-    public List documentFactoryNamesList () {
+    public List documentFactoryList () {
         return Collections.unmodifiableList(_documentFactoryList);
     }
 
-    /** Return the default document factory.  This will be the first
-     *  factory added with the addDocumentFactory method.
+    /** 
+     * Return the default document factory.  If there is no default factory, 
+     * then return null.  
+     * @return The first factory added with the addDocumentFactory method.
      */
-    public DocumentFactory getDocumentFactory() {
-	return (DocumentFactory)_documentFactoryList.get(0);
+    public DocumentFactory getDocumentFactory() { 
+	try {
+	    return (DocumentFactory)_documentFactoryList.get(0);
+	} catch (Exception e) {
+	    return null;
+	}
     }
 
-    /** Return the entity library for this application.
+    /** 
+     * Return the entity library for this application.
      */
     public CompositeEntity getEntityLibrary() {
         return _entityLibrary;
     }
 
-    /** Return the resources for this application.
+    /** 
+     * Return the resources for this application.
      */
     public RelativeBundle getGUIResources() {
         return _guiResources;
     }
 
-    /** Return the icon library associated with this Vergil.
+    /** 
+     * Return the icon library associated with this Vergil.
      */
     public CompositeEntity getIconLibrary() {
 	return _iconLibrary;
     }
 
-    /** Get the title of this application.  Return the string "Vergil".
+    /** 
+     * Get the title of this application.  This class returns
+     * the string "Vergil", although subclasses may override this.
      */
     public String getTitle() {
         return "Vergil";
     }
 
-    /** Initialize the given menubar. Currently, all strings are
-     * hard-wired, but maybe we should be getting them out of the
-     * application resources.
+    /** 
+     * Create a new instance of VergilApplication and make it visible.  
+     * The application object is responsible for creating the persistent user
+     * interface which will remain after this method returns.
      */
-    public void initializeMenuBar(JMenuBar mb) {
+    public static void main(String argv[]) {
+        VergilApplication application = new VergilApplication();
+        application.setVisible(true);
+    }
+
+   /** 
+    * Redisplay a document after it appears on the screen. This method is 
+    * called when a document is set to be the current document.  It is 
+    * intended to allow an application to perform some action at this point,
+    * such as executing a graph layout algorithm.  In this class, do nothing.
+    */
+    public void redisplay(Document document, JComponent view) {
+    }
+
+    /** 
+     * Remove the given factory that creates new documents from
+     * this application.  Remove its entry in the File->New menu.
+     */
+    public void removeDocumentFactory(VergilDocumentFactory factory) {
+	int index = _documentFactoryList.indexOf(factory);
+        _documentFactoryList.remove(factory);
+	_fileNewMenu.remove(_fileNewMenu.getItem(index));
+    }
+
+    /**
+     * Remove the given menu from the menu bar of this application.
+     */
+    public void removeMenu(JMenu menu) {
+	JFrame frame = getApplicationFrame();
+	if(frame == null) return;
+	JMenuBar menuBar = frame.getJMenuBar();
+	menuBar.remove(menu);
+    }
+
+    /** 
+     * Set the given document to be the current document, and raise
+     * the internal window that corresponds to that document.
+     * If given document is not null, then ensure that the "Save" and "Save As"
+     * actions are enabled.  If the given document is null, then disable
+     * those actions.
+     * @param document The document to set as the current document, or
+     * null to set that there is no current document.
+     */
+    public void setCurrentDocument(Document document) {
+        super.setCurrentDocument(document);
+        if(document == null) {
+            Action saveAction = getAction(DefaultActions.SAVE);
+            saveAction.setEnabled(false);
+            Action saveAsAction = getAction(DefaultActions.SAVE_AS);
+            saveAsAction.setEnabled(false);
+        } else {
+            Action saveAction = getAction(DefaultActions.SAVE);
+            saveAction.setEnabled(true);
+            Action saveAsAction = getAction(DefaultActions.SAVE_AS);
+            saveAsAction.setEnabled(true);
+        }
+
+    }
+
+    /** 
+     * Throw an Exception.  Vergil uses a factory list instead of a 
+     * single factory.  
+     * @deprecated Use addDocumentFactory to add a document factory.
+     */
+    public void setDocumentFactory(DocumentFactory factory) {
+	throw new RuntimeException("setDocumentFactory is not allowed, use " + 
+				   "addDocumentFactory instead.");
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                    private inner classes                  ////
+
+    /**
+     * A mouse listener that is attached to the view that is created for
+     * every document.  It ensures that keyboard focus is properly passed
+     * to each view.
+     */
+    private class MouseFocusMover extends MouseAdapter {        
+	/**
+	 * Grab the keyboard focus when the component that this listener is
+	 * attached to is clicked on.
+	 */
+        public void mouseClicked(MouseEvent mouseEvent) {
+            Component component =
+                mouseEvent.getComponent();
+            if (!component.hasFocus()) {
+                component.requestFocus();
+            }
+        }
+    }
+
+    /** 
+     * A Runnable object that is responsible for initializing the 
+     * design palette.  This is done in a separate
+     * thread, because loading the libraries can take quite a while.
+     */
+    private class PaletteInitializer implements Runnable {
+	/** 
+	 * Parse the icon and entity libraries and populate the 
+	 * design palette.
+	 */
+	public void run() {
+	    DesktopFrame frame = ((DesktopFrame) getApplicationFrame());
+	    JTreePane pane = (JTreePane)frame.getPalettePane();
+
+	    JSplitPane splitPane = frame.getSplitPane();
+
+	    // There are differences in the way swing acts in JDK1.2 and 1.3
+	    // The way to get it to work with both is to set
+	    // the preferred size along with the minimum size.   JDK1.2 has a
+	    // bug where the preferred size may be inferred to be less than the
+	    // minimum size when the pane is first created.
+	    pane.setMinimumSize(new Dimension(150, 150));
+	    ((JComponent)pane.getTopComponent()).
+		setMinimumSize(new Dimension(150, 150));
+	    ((JComponent)pane.getTopComponent()).
+		setPreferredSize(new Dimension(150, 150));
+	    _parseLibraries();
+
+	    //System.out.println("Icons = " + _iconLibrary.description());
+
+	    CompositeEntity lib = getEntityLibrary();
+
+	    // We have "" because that is the name that was given in the
+	    // treepane constructor.
+	    //System.out.println("lib = " + lib.description());
+	    createTreeNodes(pane, lib.getFullName(), lib);
+
+	    pane.setMinimumSize(new Dimension(150, 150));
+	    ((JComponent)pane.getTopComponent()).
+	    setMinimumSize(new Dimension(150, 150));
+	    ((JComponent)pane.getTopComponent()).
+		setPreferredSize(new Dimension(150, 150));
+	    splitPane.validate();
+	}
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** 
+     * Initialize the given menubar. Create a new File menu with 
+     * "New", "Open", "Close", "Save", "Save As", and "Exit" items.
+     * The "New" item is a submenu that contains one item for each
+     * document factory contained in this application.  The other items
+     * are actions that defer to the current document for their
+     * functionality.
+     */
+    private void _initializeMenuBar(JMenuBar menuBar) {
         Action action;
         JMenuItem item;
+	// FIXME pull the strings out of resources instead of hardcoding.
 
         // Create the File menu
         JMenu menuFile = new JMenu("File");
         menuFile.setMnemonic('F');
-        mb.add(menuFile);
+        menuBar.add(menuFile);
 
 	menuFile.add(_fileNewMenu);
 
@@ -311,39 +479,33 @@ public class VergilApplication extends MDIApplication {
         addMenuItem(menuFile, action, 'X', "Exit from the graph editor");
     }
 
-    /** Initialize the given toolbar. Image icons will be obtained
-     * from the application resources and added to the
-     * actions. Note that the image icons are not added to the actions
-     * -- if we did that, the icons would appear in the menus, which I
-     * suppose is a neat trick but completely useless.
+    /** 
+     * Initialize the given toolbar.  Create a new buttons that correspond
+     * to the "New", "Open" and "Save" actions in the menu bar.
      */
-    public void initializeToolBar(JToolBar tb) {
+    private void _initializeToolBar(JToolBar toolBar) {
         Action action;
         RelativeBundle resources = getResources();
 
 	// Conventional new/open/save buttons
 	action = DefaultActions.newAction(this);
         addAction(action);
-	addToolBarButton(tb, action, null, resources.getImageIcon("NewImage"));
+	addToolBarButton(toolBar, action, null, 
+			 resources.getImageIcon("NewImage"));
 
         action = getAction(DefaultActions.OPEN);
-        addToolBarButton(tb, action, null, resources.getImageIcon("OpenImage"));
+        addToolBarButton(toolBar, action, null, 
+			 resources.getImageIcon("OpenImage"));
         action = getAction(DefaultActions.SAVE);
-        addToolBarButton(tb, action, null, resources.getImageIcon("SaveImage"));
-        //tb.addSeparator();
+        addToolBarButton(toolBar, action, null, 
+			 resources.getImageIcon("SaveImage"));
     }
 
-    /** Create and run a new graph application.
-     */
-    public static void main(String argv[]) {
-        VergilApplication ge = new VergilApplication();
-        ge.setVisible(true);
-    }
-
-    /** Parse the entity and icon xml libraries.  Set the entity and icon
+    /** 
+     * Parse the entity and icon XML libraries.  Set the entity and icon
      * libraries for this application.
      */
-    public void parseLibraries() {
+    private void _parseLibraries() {
         URL iconlibURL = null;
         URL entitylibURL = null;
         try {
@@ -368,144 +530,44 @@ public class VergilApplication extends MDIApplication {
         }
     }
 
-   /** Redisplay a document after it appears on the screen. In this class,
-    * do nothing.
-    */
-    public void redisplay(Document d, JComponent c) {
-        JGraph jgraph = (JGraph) c;
-        // redoLayout(jgraph, (String) _layoutComboBox.getSelectedItem());
-    }
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
-    /** Remove the given factory that creates new documents from
-     * this application.  Remove its entry in the file->new menu.
-     */
-    protected void removeDocumentFactory(VergilDocumentFactory df) {
-	int index = _documentFactoryList.indexOf(df);
-        _documentFactoryList.remove(df);
-	_fileNewMenu.remove(_fileNewMenu.getItem(index));
-    }
-
-    /**
-     * Remove the given menu from the menu bar of this application.
-     */
-    public void removeMenu(JMenu menu) {
-	JFrame frame = getApplicationFrame();
-	if(frame == null) return;
-	JMenuBar menuBar = frame.getJMenuBar();
-	menuBar.remove(menu);
-    }
-
-    /** Set the given document to be the current document, and raise
-     * the internal window that corresponds to that component.
-     * If there are no documents present, then disable the appropriate
-     * menu entries.
-     */
-    public void setCurrentDocument(Document d) {
-        super.setCurrentDocument(d);
-        if(d == null) {
-            Action saveAction = getAction(DefaultActions.SAVE);
-            saveAction.setEnabled(false);
-            Action saveAsAction = getAction(DefaultActions.SAVE_AS);
-            saveAsAction.setEnabled(false);
-        } else {
-            Action saveAction = getAction(DefaultActions.SAVE);
-            saveAction.setEnabled(true);
-            Action saveAsAction = getAction(DefaultActions.SAVE_AS);
-            saveAsAction.setEnabled(true);
-        }
-
-    }
-
-    /** Throw an Exception.  Vergil uses a factory list instead of a
-     *  single factory.  Use addDocumentFactory to add a document factory.
-     */
-    public void setDocumentFactory(DocumentFactory df) {
-	throw new RuntimeException("setDocumentFactory is not allowed, use " +
-				   "addDocumentFactory instead.");
-    }
-
-    /**
-     * Grab the keyboard focus when the component that this listener is
-     * attached to is clicked on.
-     */
-    public class MouseFocusMover extends MouseAdapter {
-        public void mouseClicked(
-                MouseEvent mouseEvent) {
-            Component component =
-                mouseEvent.getComponent();
-
-            if (!component.hasFocus()) {
-                component.requestFocus();
-            }
-        }
-    }
-
-    /** Initialize the application palette.  This is done in a separate
-     * thread, because loading the libraries can take quite a while.
-     */
-    public class PaletteInitializer implements Runnable {
-	public void run() {
-	    DesktopFrame frame = ((DesktopFrame) getApplicationFrame());
-	    JTreePane pane = (JTreePane)frame.getPalettePane();
-
-	    JSplitPane splitPane = frame.getSplitPane();
-
-	    // There are differences in the way swing acts in JDK1.2 and 1.3
-	    // The way to get it to work with both is to set
-	    // the preferred size along with the minimum size.   JDK1.2 has a
-	    // bug where the preferred size may be inferred to be less than the
-	    // minimum size when the pane is first created.
-	    pane.setMinimumSize(new Dimension(150, 150));
-	    ((JComponent)pane.getTopComponent()).
-		setMinimumSize(new Dimension(150, 150));
-	    ((JComponent)pane.getTopComponent()).
-		setPreferredSize(new Dimension(150, 150));
-
-	    parseLibraries();
-	    //System.out.println("Icons = " + _iconLibrary.description());
-
-	    CompositeEntity lib = getEntityLibrary();
-
-	    // We have "" because that is the name that was given in the
-	    // treepane constructor.
-	    //System.out.println("lib = " + lib.description());
-	    createTreeNodes(pane, lib.getFullName(), lib);
-
-	    pane.setMinimumSize(new Dimension(150, 150));
-	    ((JComponent)pane.getTopComponent()).
-	    setMinimumSize(new Dimension(150, 150));
-	    ((JComponent)pane.getTopComponent()).
-		setPreferredSize(new Dimension(150, 150));
-	    splitPane.validate();
-	}
-    }
-
-    /** The director selection combobox.
-     */
+    // The director selection combobox.
     private JComboBox _directorComboBox;
 
-    /** The layout selection combobox.
-     */
+    // The layout selection combobox.
     private JComboBox _layoutComboBox;
 
-    /** The application specific resources.
-     */
+    // The application specific resources.
     private RelativeBundle _guiResources =
 	new RelativeBundle("ptolemy.vergil.Library", getClass(), null);
 
-    /** The Icon Library.
-     */
+    // The Icon Library.
     private CompositeEntity _iconLibrary;
 
-    /** The Entity Library.
-     */
+    // The Entity Library.
     private CompositeEntity _entityLibrary;
 
-    /** The list of factories that create graph documents.
-     */
+    // The list of factories that create graph documents.
     private List _documentFactoryList = new LinkedList();
 
-    /** The file->new menu.  Each document factory should appear in this menu.
-     */
+    // The File->New menu.  Each document factory will appear in this menu.
     private JMenu _fileNewMenu = new JMenu("New");
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
