@@ -83,13 +83,19 @@ public class ODFSourceActor extends ODFActor {
      * @exception NameDuplicationException If the name coincides with
      *  an entity already in the container.
      */
-    public ODFSourceActor(CompositeActor container, String name)
+    public ODFSourceActor(TypedCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        _reinvokeInPort = new ODFIOPort( this, "reinvokeIn", true, false );
-        _reinvokeOutPort = new ODFIOPort( this, "reinvokeOut", false, true );
-        _reinvokeRelation = new IORelation( container, name + "_innerRel" );
+        _reinvokeInPort = 
+	        new ODFIOPort( this, "reinvokeIn", true, false );
+        _reinvokeOutPort = 
+	        new ODFIOPort( this, "reinvokeOut", false, true );
+        _reinvokeRelation = 
+	        new TypedIORelation( container, name + "_innerRel" );
+
+	_reinvokeInPort.setDeclaredType(Token.class);
+	_reinvokeOutPort.setDeclaredType(Token.class);
 
         _reinvokeInPort.link( _reinvokeRelation );
         _reinvokeOutPort.link( _reinvokeRelation );
@@ -111,7 +117,7 @@ public class ODFSourceActor extends ODFActor {
 	      throw new IllegalActionException( this, "Negative delays "
                       + "are prohibited.");
 	}
-        Token token = new Token();
+        DoubleToken token = new DoubleToken();
 	// setDelay(delay);
         _reinvokeOutPort.send( 0, token, delay );
     }
@@ -121,7 +127,7 @@ public class ODFSourceActor extends ODFActor {
 
     public ODFIOPort _reinvokeInPort;
     public ODFIOPort _reinvokeOutPort;
-    private IORelation _reinvokeRelation;
+    private TypedIORelation _reinvokeRelation;
 
 }
 
