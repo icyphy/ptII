@@ -56,7 +56,12 @@ import java.io.OutputStreamWriter;
 /**
 Execute a subprocess.
 
-The <code>commandLine</code> PortParameter contains the command
+The <code>commandLine</code> PortParameter contains the command to be
+executed.
+
+<p>For information about Runtime.exec(), see:
+<a href="http://jw.itworld.com/javaworld/jw-12-2000/jw-1229-traps.html" target="_top">http://jw.itworld.com/javaworld/jw-12-2000/jw-1229-traps.html" target="_top</a>
+<a href="http://mindprod.com/jgloss/exec.html" target="_top">http://mindprod.com/jgloss/exec.html</a>
 
 @author Christopher Hylands Brooks, Contributor: Edward A. Lee
 @version $Id$
@@ -109,6 +114,7 @@ public class Exec extends TypedAtomicActor {
      * java.util.StringTokenizer into tokens and then executed as a s
      * separate process.
      * The initial default is the string "echo 'Hello, world.'".   
+     * FIXME: Should this be an array of strings instead of a string?
      */  
     public PortParameter command;
 
@@ -148,34 +154,30 @@ public class Exec extends TypedAtomicActor {
 
         try {
             if (_process == null) {
+                // FIXME: What if the portParameter command changes?
                 _exec(command.getExpression());
             }
             if (input.hasToken(0)) {
                 // FIXME: Do we need to append a new line?
                 if ((line = ((StringToken)input.get(0)).stringValue())
                             != null) {
-                    System.out.println("Exec: input: " + line);
+                    System.out.println("Exec: Input: '" + line + "'");
                     if (_inputBufferedWriter != null) { 
                             _inputBufferedWriter.write(line);
                     }
                 }
             }
 
-            if (!_blocking) {
-                if (_errorBufferedReader != null
-                        && _errorBufferedReader.ready()
-                        && (line = _errorBufferedReader.readLine()) != null) {
-                    System.out.println("Exec: error: " + line);
-                    error.send(0, new StringToken(line));
-                }
-
-                if (_outputBufferedReader != null
-                        && _outputBufferedReader.ready()
-                        && (line = _outputBufferedReader.readLine()) != null) {
-                    System.out.println("Exec: output: " + line);
-                    output.send(0, new StringToken(line));
-                }
-            }
+            //if (!_blocking) {
+            // FIXME: Do we need to get the value and if and only if
+            // we have string call send?  What if there is no input?
+            String errorString = _errorGobbler.getAndReset();
+            String outputString = _outputGobbler.getAndReset();
+            System.out.println("Exec: Error: '" + errorString + "'");
+            System.out.println("Exec: Output: '" + outputString + "'");
+            error.send(0, new StringToken(errorString));
+            output.send(0, new StringToken(outputString));
+                //}
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex,
                     "Problem reading or writing '" + line + "'");
@@ -187,7 +189,7 @@ public class Exec extends TypedAtomicActor {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-
+        // FIXME: What if the portParameter command changes?
         _exec(command.getExpression());
     }
 
@@ -199,15 +201,14 @@ public class Exec extends TypedAtomicActor {
      */
     public void wrapup() throws IllegalActionException {
         try {
-            if (_errorBufferedReader != null) {
-                _errorBufferedReader.close();
-            }
             if (_inputBufferedWriter != null) {
                 _inputBufferedWriter.close();
             }
-            if (_outputBufferedReader != null) {
-                _outputBufferedReader.close();
-            }
+            _process.getInputStream().close();
+            _process.getOutputStream().close();
+            _process.getErrorStream().close();
+            // FIXME: kill of the gobblers?
+
         } catch (IOException ex) {
             // ignore
         }
@@ -219,7 +220,8 @@ public class Exec extends TypedAtomicActor {
         //}
     }
 
-    // Execute a command.o
+    // Execute a command, set _process to point to the process
+    // and set up _errorGobbler and _outputGobbler
     private void _exec( String command) throws IllegalActionException {
        try {
             //final String [] commandTokens =
@@ -229,28 +231,74 @@ public class Exec extends TypedAtomicActor {
                 _process.destroy();
             }
             Runtime runtime = Runtime.getRuntime();
+            System.out.println("_exec: about to exec '" + command + "'");
             _process = runtime.exec(command);
-            // The notion of output and input is confusing here.
-            // This actor reads from its input port and writes that data
-            // to the process.
-            InputStreamReader errorStreamReader =
-                new InputStreamReader(_process.getErrorStream());
-            _errorBufferedReader =
-                new BufferedReader(errorStreamReader);
+
+            _errorGobbler = new _StreamReaderThread(_process.getErrorStream(),
+                    "ERROR");
+
+            _outputGobbler = new _StreamReaderThread(_process.getInputStream(),
+                    "OUTPUT");
+
+            _errorGobbler.start();
+            _outputGobbler.start();
+
             
             OutputStreamWriter inputStreamWriter =
                 new OutputStreamWriter(_process.getOutputStream());
             _inputBufferedWriter =
                 new BufferedWriter(inputStreamWriter);
 
-            InputStreamReader outputStreamReader =
-                new InputStreamReader(_process.getInputStream());
-            _outputBufferedReader =
-                new BufferedReader(outputStreamReader);
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex,
                     "Problem setting up command '" + command + "'");
         }
+    }
+
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+
+    // Private class that reads a stream in a thread and updates the
+    // stringBuffer
+    private class _StreamReaderThread extends Thread {
+
+        _StreamReaderThread(InputStream inputStream, String streamType) {
+            _inputStream = inputStream;
+            _streamType = streamType;
+            _stringBuffer = new StringBuffer();
+        }
+
+        public String getAndReset() {
+            String returnValue = _stringBuffer.toString();
+            _stringBuffer = new StringBuffer();
+            return returnValue;
+        }
+
+        // Read lines from the _inputStream and output them to the
+        // JTextArea.
+        public void run() {
+            try {
+                InputStreamReader inputStreamReader =
+                    new InputStreamReader(_inputStream);
+                BufferedReader bufferedReader =
+                    new BufferedReader(inputStreamReader);
+                String line = null;
+                while ( (line = bufferedReader.readLine()) != null)
+                    _stringBuffer.append(/*_streamType + ">" +*/ line);
+            } catch (IOException ioe) {
+                _stringBuffer.append("IOException: " + ioe);
+            }
+        }
+
+        // StringBuffer to update
+        private StringBuffer _stringBuffer;
+
+        // Stream to read from.
+        private InputStream _inputStream;
+        // Description of the Stream that we print, usually "OUTPUT" or "ERROR"
+        private String _streamType;
+
     }
 
 
@@ -260,9 +308,12 @@ public class Exec extends TypedAtomicActor {
     // Whether this actor is blocking.
     private boolean _blocking;
 
-    private BufferedReader _errorBufferedReader;
+    //private BufferedReader _errorBufferedReader;
     private BufferedWriter _inputBufferedWriter;
-    private BufferedReader _outputBufferedReader;
+    //private BufferedReader _outputBufferedReader;
+
+    private _StreamReaderThread _errorGobbler;
+    private _StreamReaderThread _outputGobbler;
 
     // The Process that we are running.
     private Process _process;
