@@ -67,6 +67,12 @@ public class ODPunctuation extends ODStringSource {
         
         _punctuation.insertLast( new StringTime( 3.5, " " ) );
         
+        _punctuation.insertLast( new StringTime( 5.5, " " ) );
+        
+        _punctuation.insertLast( new StringTime( 9.5, " " ) );
+        
+        _punctuation.insertLast( new StringTime( 11.0, " " ) );
+        
         _punctuation.insertLast( new StringTime( 5000.0, ";" ) );
         
         // Up to "Hello!! The"

@@ -67,6 +67,18 @@ public class ODVowels extends ODStringSource {
         
         _vowels.insertLast( new StringTime( 5.0, "e" ) );
         
+        _vowels.insertLast( new StringTime( 7.0, "o" ) );
+        
+        _vowels.insertLast( new StringTime( 8.0, "e" ) );
+        
+        _vowels.insertLast( new StringTime( 10.0, "O" ) );
+        
+        _vowels.insertLast( new StringTime( 12.0, "o" ) );
+        
+        _vowels.insertLast( new StringTime( 13.0, "a" ) );
+        
+        _vowels.insertLast( new StringTime( 13.5, "i" ) );
+        
         _vowels.insertLast( new StringTime( 5000.0, ";" ) );
         
         // Up to "Hello!! The"
