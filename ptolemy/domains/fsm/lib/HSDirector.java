@@ -1,4 +1,5 @@
-/* A HSDirector governs the execution of the discrete dynamics of a hybrid system model.
+/* A HSDirector governs the execution of the discrete dynamics of a
+   hybrid system model.
 
  Copyright (c) 1999-2000 The Regents of the University of California.
  All rights reserved.
@@ -26,7 +27,6 @@
 
 @ProposedRating Red (liuxj@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
-
 */
 
 package ptolemy.domains.fsm.lib;
@@ -49,7 +49,7 @@ import java.util.LinkedList;
 An FSMDirector governs the execution of a *charts model.
 
 @author Xiaojun Liu
-@version: $Id$
+@version $Id$
 */
 public class HSDirector extends FSMDirector implements CTTransparentDirector {
 
@@ -78,8 +78,8 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
      *
      *  @param container Container of the director.
      *  @param name Name of this director.
-     *  @exception It may be thrown in derived classes if the
-     *      director is not compatible with the specified container.
+     *  @exception IllegalActionException If the director is not compatible
+     *  with the specified container.  May be thrown in derived classes.
      */
     public HSDirector(CompositeActor container, String name)
             throws IllegalActionException {
@@ -128,7 +128,8 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
         } else {
             // FIXME: this implementation does not allow hierarchical FSM
             // embedded in CT
-            CTDirector dir = (CTDirector)(((Actor)getContainer()).getExecutiveDirector());
+            CTDirector dir =
+                (CTDirector)(((Actor)getContainer()).getExecutiveDirector());
             return dir.getCurrentStepSize();
         }
     }
