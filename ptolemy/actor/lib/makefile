@@ -77,6 +77,7 @@ PTCLASSALLJARS = \
 	conversions/conversions.jar \
 	gui/gui.jar \
 	hoc/hoc.jar \
+	image/image.jar \
 	io/io.jar \
 	logic/logic.jar \
 	javasound/javasound.jar \
