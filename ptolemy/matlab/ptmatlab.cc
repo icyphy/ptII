@@ -36,6 +36,8 @@ Version $Id$
 typedef long long __int64;
 #endif
 
+#define V5_COMPAT
+
 #include <jni.h>
 #include "ptmatlab.h"
 #include "engine.h"
