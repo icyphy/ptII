@@ -29,12 +29,12 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-DIRS = kernel actors demo
+DIRS = kernel lib demo
 
 # Root of Tycho directory
-ROOT =		../../../..
+ROOT =		../../..
 
-ME = 		java/pt/domains/ct
+ME = 		pt/domains/ct
 # True source directory
 VPATH =		$(ROOT)/$(ME)
 
