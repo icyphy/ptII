@@ -1376,7 +1376,7 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
         _push(code);
     }
 
-    /** Returns the apropriate indentation based on the value of the
+    /** Returns the appropriate indentation based on the value of the
      *  "indentLevel" variable.
      *
      *  @return A String containg 4 spaces for every level of indentation.
