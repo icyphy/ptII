@@ -200,6 +200,9 @@ public class ActorController extends AttributeController {
 
     private BreakpointDialogFactory _breakpointDialogFactory;
 
+    // Set to true if we add the LookInsideAction
+    private boolean _addedLookInsideAction = false;
+
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
@@ -341,12 +344,6 @@ public class ActorController extends AttributeController {
             }
         }
     }
-
-    ///////////////////////////////////////////////////////////////
-    ////                     private variables                 ////
-
-    // Set to true if we add the LookInsideAction
-    private boolean _addedLookInsideAction = false;
 
     // An action to look inside a composite.
     // NOTE: This requires that the configuration be non null, or it
