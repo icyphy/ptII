@@ -227,7 +227,9 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/actor/lib/io/comm/comm.jar \
 	ptolemy/actor/lib/io/comm/demo/demo.jar \
 	ptolemy/actor/lib/jai/jai.jar \
+	ptolemy/actor/lib/jai/demo/demo.jar \
 	ptolemy/actor/lib/jmf/jmf.jar \
+	ptolemy/actor/lib/jmf/demo/demo.jar \
 	ptolemy/actor/lib/joystick/joystick.jar \
 	ptolemy/actor/lib/jxta/jxta.jar \
 	ptolemy/actor/lib/x10/x10.jar \
