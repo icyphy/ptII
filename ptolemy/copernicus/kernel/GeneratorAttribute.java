@@ -134,7 +134,7 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
 
 
     /** If this GeneratorAttribute has not yet been initialized, the
-     *  initialized it by reading the moml file naemd by the
+     *  initialized it by reading the moml file named by the
      *  initialParametersURL and creating Parameters and Variables
      *  accordingly.
      */
