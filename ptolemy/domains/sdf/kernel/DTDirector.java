@@ -142,10 +142,10 @@ public class DTDirector extends SDFDirector {
 	Director ed = c.getExecutiveDirector();
 	boolean iterate;
 	if(ed = null) {
-	    iterate=_advanceTime(_nextFiringTime);
+	    iterate = _advanceTime(_nextFiringTime);
 	    return true;
         } else {
-	    iterate=_advanceTime(ed.getCurrentTime());
+	    iterate = _advanceTime(ed.getCurrentTime());
 	}
         return iterate;
     }
@@ -183,9 +183,9 @@ public class DTDirector extends SDFDirector {
 	    Director ed = container.getExecutiveDirector();
 	    boolean iterate;
 	    if(ed = null)
-		iterate=_advanceTime(_nextFiringTime);
+		iterate = _advanceTime(_nextFiringTime);
 	    else {
-		iterate=_advanceTime(ed.getCurrentTime);
+		iterate = _advanceTime(ed.getCurrentTime);
 	    }
 	    if(!iterate) return;
 
