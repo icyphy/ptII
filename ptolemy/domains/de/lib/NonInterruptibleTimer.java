@@ -32,10 +32,12 @@ package ptolemy.domains.de.lib;
 import java.util.LinkedList;
 
 import ptolemy.actor.util.Time;
+import ptolemy.actor.util.TimedEvent;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.Token;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
@@ -105,10 +107,17 @@ public class NonInterruptibleTimer extends Timer {
         }
         Time currentTime = getDirector().getModelTime();
         _currentOutput = null;
-        if (_delayedTokens.size() > 0) {
-            _currentOutput = (Token)_delayedTokens.get(currentTime);
-            if (_currentOutput != null) {
-                output.send(0, value.getToken());
+        if (_delayedOutputTokens.size() > 0) {
+            if (currentTime.compareTo(_nextTimeFree) == 0) {
+                TimedEvent earliestEvent 
+                    = (TimedEvent)_delayedOutputTokens.get();
+                Time eventTime = earliestEvent.timeStamp;
+                if (!eventTime.equals(currentTime)) {
+                    throw new InternalErrorException("Timer time is " +
+                        "reached, but output is not available.");
+                }
+                _currentOutput = (Token)earliestEvent.contents;
+                output.send(0, _currentOutput);
                 return;
             } else {
                 // no tokens to be produced at the current time.
@@ -141,7 +150,7 @@ public class NonInterruptibleTimer extends Timer {
 
         // Remove the curent output token from _delayedTokens.
         if (_currentOutput != null) {
-            _delayedTokens.remove(currentTime);
+            _delayedOutputTokens.take();
         }
         // If the delayedInputTokensList is not empty, and the delayedTokens
         // is empty (ready to process a new input), get the first input in the
@@ -149,12 +158,14 @@ public class NonInterruptibleTimer extends Timer {
         // processing it. Schedule a refiring to produce the corresponding
         // output at the time: current time + delay specified by the input 
         // being processed.
-        if (_delayedInputTokensList.size() != 0 && _delayedTokens.isEmpty()) {
+        if (_delayedInputTokensList.size() != 0 
+                && _delayedOutputTokens.isEmpty()) {
             // NOTE: the input has a fixed data type as double.
-            DoubleToken delayToken = (DoubleToken)_delayedInputTokensList.removeFirst();
+            DoubleToken delayToken 
+                = (DoubleToken)_delayedInputTokensList.removeFirst();
             double delay = delayToken.doubleValue();
             _nextTimeFree = currentTime.add(delay);
-            _delayedTokens.put(_nextTimeFree, delayToken);
+            _delayedOutputTokens.put(new TimedEvent(_nextTimeFree, delayToken));
             getDirector().fireAt(this, _nextTimeFree);
         }
         return !_stopRequested;

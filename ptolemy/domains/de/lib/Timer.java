@@ -30,7 +30,9 @@ package ptolemy.domains.de.lib;
 
 import java.util.HashMap;
 
+import ptolemy.actor.util.CalendarQueue;
 import ptolemy.actor.util.Time;
+import ptolemy.actor.util.TimedEvent;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.Token;
@@ -140,9 +142,11 @@ public class Timer extends DETransformer {
         }
         Time currentTime = getDirector().getModelTime();
         _currentOutput = null;
-        if (_delayedTokens.size() > 0) {
-            _currentOutput = (Token)_delayedTokens.get(currentTime);
-            if (_currentOutput != null) {
+        if (_delayedOutputTokens.size() > 0) {
+            TimedEvent earliestEvent = (TimedEvent)_delayedOutputTokens.get();
+            Time eventTime = earliestEvent.timeStamp;
+            if (eventTime.equals(currentTime)) {
+                _currentOutput = (Token)earliestEvent.contents;
                 output.send(0, value.getToken());
                 return;
             } else {
@@ -162,7 +166,8 @@ public class Timer extends DETransformer {
         super.initialize();
         _currentInput = null;
         _currentOutput = null;
-        _delayedTokens = new HashMap();
+        _delayedOutputTokens = new CalendarQueue(
+                new TimedEvent.TimeComparator(this.getDirector()));
     }
 
     /** Update the internal states of this actor. If the current input 
@@ -177,14 +182,24 @@ public class Timer extends DETransformer {
        Time currentTime = getDirector().getModelTime();
        Time delayToTime = currentTime.add(_delay);
        // Remove the token that is already sent at the current time.
-       if (_delayedTokens.size() > 0 && 
-           _currentOutput != null) {
-           _delayedTokens.remove(currentTime);
+       if (_delayedOutputTokens.size() > 0) { 
+           if (_currentOutput != null) {
+               _delayedOutputTokens.take();
+           } 
+       }
+       // handle the refiring of the multiple tokens
+       // that are scheduled to produce at the same time.
+       if (_delayedOutputTokens.size() > 0) { 
+           TimedEvent earliestEvent = (TimedEvent)_delayedOutputTokens.get();
+           Time eventTime = earliestEvent.timeStamp;
+           if (eventTime.equals(currentTime)) {
+               getDirector().fireAt(this, currentTime);
+           }
        }
        // If the current input is processed, schedule a future firing
        // to process it.
        if (_currentInput != null) {
-           _delayedTokens.put(delayToTime, _currentInput);
+           _delayedOutputTokens.put(new TimedEvent(delayToTime, _currentInput));
            getDirector().fireAt(this, delayToTime);
        }
        return super.postfire();
@@ -205,9 +220,9 @@ public class Timer extends DETransformer {
      */ 
     protected double _delay;
 
-    /** A hash map to store the delayed tokens.
+    /** A local queue to store the delayed tokens.
     */
-    protected HashMap _delayedTokens;
+    protected CalendarQueue _delayedOutputTokens;
 
     /** Current input.
      */
