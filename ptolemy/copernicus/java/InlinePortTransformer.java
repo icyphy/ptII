@@ -105,12 +105,6 @@ public class InlinePortTransformer extends SceneTransformer {
                             portType, Modifier.PUBLIC);
                     entityClass.addField(field);
                 }
-                
-                /*  for(int i = 0; i < ((IOPort)port).getWidth(); i++) {
-                    SootField field = new SootField("_index_" + port.getName() + "_" + i,
-                            IntType.v(), Modifier.PUBLIC);
-                    entityClass.addField(field);
-                    }*/
 
                 SootField indexArrayField = new SootField("_index_" + port.getName(),
                         ArrayType.v(IntType.v(), 1), Modifier.PUBLIC);
@@ -148,22 +142,6 @@ public class InlinePortTransformer extends SceneTransformer {
                                             indexArrayField),
                                     indexesLocal),
                             insertPoint);
-
-                    // Initialize the index field.
-                    /*
-                    for(int i = 0; i < ((IOPort)port).getWidth(); i++) {
-                         SootField indexField = entityClass.getFieldByName(
-                                "_index_" + port.getName() + "_" + i);
-                                body.getUnits().insertBefore(
-                                Jimple.v().newAssignStmt(
-                                        Jimple.v().newInstanceFieldRef(
-                                                body.getThisLocal(), 
-                                                indexField),
-                                        IntConstant.v(0)),
-                                insertPoint); 
-                       
-                    }
-                    */
 
                     Local bufferLocal = 
                         Jimple.v().newLocal("buffer", 
@@ -313,7 +291,7 @@ public class InlinePortTransformer extends SceneTransformer {
                                     }
                                 }
                                 boolean allArgsAreConstant = (r.getArgCount() == constantArgCount);
-
+                                
                                 if(SootUtilities.derivesFrom(type.getSootClass(), portClass)) {
                                     // if we are invoking a method on a port class, then
                                     // attempt to get the constant value of the port.
@@ -324,26 +302,14 @@ public class InlinePortTransformer extends SceneTransformer {
                                         continue;
                                     }
 
-                                    if(r.getMethod().getName().equals("getType")) {
-                                        try {
-                                            // Replace method calls to getType with the constant type
-                                            // of the parameter.
-                                            Local typeLocal = 
-                                                PtolemyUtilities.buildConstantTypeLocal(body, 
-                                                        unit,
-                                                        ((Typeable)port).getType());
-                                            box.setValue(typeLocal);
-                                        } catch (Exception ex) {
-                                            throw new RuntimeException("Type of " + port.getFullName() + 
-                                                    " could not be determined: " + ex.getMessage());
-                                        }
-                                    } else if(r.getMethod().getName().equals("setTypeEquals")) {
-                                        // remove
-                                        body.getUnits().remove(unit);
-                                    } else if(r.getMethod().getName().equals("setTypeAtLeast")) {
-                                        // remove
-                                        body.getUnits().remove(unit);
-                                    } else if(r.getMethod().getName().equals("hasToken")) {
+                                    if(port instanceof Typeable) {
+                                        PtolemyUtilities.inlineTypeableMethods(body, 
+                                                unit, box, r, (Typeable)port);
+                                       
+                                    }
+
+
+                                    if(r.getMethod().getName().equals("hasToken")) {
                                         // return true.
                                         box.setValue(IntConstant.v(1));
                                     } else if(r.getMethod().getName().equals("hasRoom")) {
@@ -358,115 +324,6 @@ public class InlinePortTransformer extends SceneTransformer {
                                         // replace the method invocation.
                                         box.setValue(constant);
                                     } else if(false) {
-                                        //r.getMethod().getName().equals("send") && 
-                                        //  Evaluator.isValueConstantValued(r.getArg(0))) {
-                                        // FIXME: This is SDF specific and should get pulled out
-                                        // on its own
-                                        // Get the relation that the channel of the port is connected to
-                                        int argChannel = ((IntConstant)argValues[0]).value;
-                                        int channel = 0;
-                                        boolean found = false;
-                                        for(Iterator relations = port.linkedRelationList().iterator();
-                                            !found && relations.hasNext();) {
-                                            IORelation relation = (IORelation)relations.next();
-                                            int bufferSize;
-                                            try {
-                                                Variable bufferSizeVariable = 
-                                                    (Variable)relation.getAttribute("bufferSize");
-                                                bufferSize = 
-                                                    ((IntToken)bufferSizeVariable.getToken()).intValue();
-                                            } catch (Exception ex) {
-                                                System.out.println("No BufferSize parameter for " + 
-                                                        relation);
-                                                continue;
-                                            } 
-                                            for(int i = 0; 
-                                                !found && i < relation.getWidth();
-                                                i++, channel++) {
-                                                if(channel == argChannel) {
-                                                    found = true;
-                                                    // Note: These instructions are NOT added in the order they are 
-                                                    // used!
-                                                    
-                                                    // FIXME: buffersize is only one!
-                                                    //  if(bufsize == 1) {
-                                                    //  } else {
-                                                    // replace the get with circular array ref.
-                                                    SootField indexArrayField = 
-                                                        entityClass.getFieldByName("_index_" + port.getName());
-                                                    //SootField indexField = 
-                                                    //    entityClass.getFieldByName("_index_" + port.getName()
-                                                    //            + "_" + argChannel);
-                                                    SootField arrayField = 
-                                                        Scene.v().getMainClass().getFieldByName(
-                                                                "_" + relation.getName() + "_" + i);
-                                                    // Load the array of indexes.
-                                                    body.getUnits().insertBefore(
-                                                            Jimple.v().newAssignStmt(indexArrayLocal,
-                                                                    Jimple.v().newInstanceFieldRef(
-                                                                            body.getThisLocal(),
-                                                                            indexArrayField)), 
-                                                            unit);
-                                                    // Load the correct index.
-                                                    body.getUnits().insertBefore(
-                                                            Jimple.v().newAssignStmt(indexLocal,
-                                                                    Jimple.v().newArrayRef(indexArrayLocal, 
-                                                                            IntConstant.v(argChannel))),
-                                                            unit); 
-                                                    
-                                                    // Load the index
-                                                    //body.getUnits().insertBefore(
-                                                    //        Jimple.v().newAssignStmt(indexLocal,
-                                                    //                Jimple.v().newInstanceFieldRef(
-                                                    //                        body.getThisLocal(),
-                                                    //                         indexField)), 
-                                                     //       unit);
-                                                    // load the buffer array.
-                                                    body.getUnits().insertBefore(
-                                                             Jimple.v().newAssignStmt(bufferLocal,
-                                                                    Jimple.v().newStaticFieldRef(arrayField)),
-                                                            unit);
-                                                    // Now update the index into the buffer.
-                                                    
-                                                    // store back.
-                                                    body.getUnits().insertAfter(
-                                                            Jimple.v().newAssignStmt(
-                                                                    Jimple.v().newArrayRef(indexArrayLocal, 
-                                                                            IntConstant.v(argChannel)),
-                                                                    indexLocal),
-                                                            unit);
-                                                    //  body.getUnits().insertAfter(
-                                                    //       Jimple.v().newAssignStmt(
-                                                    //                Jimple.v().newInstanceFieldRef(
-                                                    //                       body.getThisLocal(),
-                                                    //                       indexField),
-                                                    //               indexLocal),
-                                                    //        unit);
-
-                                                    // wrap around.
-                                                    body.getUnits().insertAfter(
-                                                            Jimple.v().newAssignStmt(indexLocal,
-                                                                    Jimple.v().newRemExpr(indexLocal,
-                                                                            IntConstant.v(bufferSize))),
-                                                            unit);
-                                                  
-                                                    // increment the position.
-                                                    body.getUnits().insertAfter(
-                                                            Jimple.v().newAssignStmt(indexLocal,
-                                                                    Jimple.v().newAddExpr(indexLocal,
-                                                                            IntConstant.v(1))),
-                                                            unit);
-                                                   
-                                                    // Replace the put() with an array write.
-                                                    body.getUnits().swapWith(unit,
-                                                            Jimple.v().newAssignStmt(
-                                                                    Jimple.v().newArrayRef(bufferLocal, 
-                                                                            indexLocal), r.getArg(1)));
-                                                   
-                                                }
-                                            }
-                                        }
-                                    } else if(r.getMethod().getName().equals("send")) {
                                         // If not constant valued, then use the argument
                                         // as an index into the array of port channels.
                                         SootField indexArrayField = 
@@ -890,7 +747,7 @@ public class InlinePortTransformer extends SceneTransformer {
                                         
                                         }
                                         // If we are calling with just a channel, then read the value.
-                                        if(r.getArgCount() == 1) {
+                                        if(r.getArgCount() == 2) {
                                             // Now update the index into the buffer.
                                             // Note that this is in reverse order from the order they end up in.
                                             // store back.

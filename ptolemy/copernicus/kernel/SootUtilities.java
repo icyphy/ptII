@@ -583,6 +583,32 @@ public class SootUtilities {
         return list;
     }
         
+    /** Create a new local variable in the given body, initialized before the given
+     *  unit that refers to a Runtime exception with the given string message.
+     */
+    public static Local createRuntimeException(Body body, 
+            Unit unit, String string) {
+        SootClass exceptionClass = 
+            Scene.v().getSootClass("java.lang.RuntimeException");
+        RefType exceptionType = RefType.v(exceptionClass);
+        SootMethod initMethod =
+            exceptionClass.getMethod("void <init>(java.lang.String)");
+        
+        Local local = Jimple.v().newLocal("exceptionLocal", exceptionType);
+        body.getLocals().add(local);
+        body.getUnits().insertBefore(
+                Jimple.v().newAssignStmt(local,
+                        Jimple.v().newNewExpr(exceptionType)),
+                unit);
+        body.getUnits().insertBefore(
+                Jimple.v().newInvokeStmt(
+                        Jimple.v().newSpecialInvokeExpr(local,
+                                initMethod, 
+                                StringConstant.v(string))),
+                unit);
+        return local;
+    }
+
     /** Create a new static class that will behave identically to the 
      *  given instance.  Replace all references to the given instance with
      *  references to the static class.
@@ -782,6 +808,21 @@ public class SootUtilities {
         return staticClass;
     }
 
+    /** Return true if the given class derives from the given base class.
+     */
+    public static boolean derivesFrom(SootClass theClass, 
+            SootClass baseClass) {  
+        SootClass objectClass = Scene.v().getSootClass("java.lang.Object");
+        while(theClass != objectClass) {
+            if(baseClass == theClass ||
+               theClass.implementsInterface(baseClass.getName())) {
+                return true;
+            }
+            theClass = theClass.getSuperclass();
+        } 
+        return false;
+    }
+
     /** Merge the given class with its super class.  All of the
      * methods and fields of the super class will be added to the
      * given class, if they do not already exist.  Methods existing in
@@ -974,21 +1015,6 @@ public class SootUtilities {
                 }
             }
         }    
-    }
-
-    /** Return true if the given class derives from the given base class.
-     */
-    public static boolean derivesFrom(SootClass theClass, 
-            SootClass baseClass) {  
-        SootClass objectClass = Scene.v().getSootClass("java.lang.Object");
-        while(theClass != objectClass) {
-            if(baseClass == theClass ||
-               theClass.implementsInterface(baseClass.getName())) {
-                return true;
-            }
-            theClass = theClass.getSuperclass();
-        } 
-        return false;
     }
         
     /** Reflect the given method on the class of the given object.  

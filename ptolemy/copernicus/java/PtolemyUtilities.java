@@ -119,6 +119,7 @@ import ptolemy.moml.*;
 import ptolemy.domains.sdf.kernel.SDFDirector;
 import ptolemy.data.*;
 import ptolemy.data.expr.Variable;
+import ptolemy.data.type.Typeable;
 import ptolemy.copernicus.kernel.SootUtilities;
 
 /*
@@ -272,5 +273,61 @@ public class PtolemyUtilities {
                 Jimple.v().newVirtualInvokeExpr(body.getThisLocal(),
                         attributeChangedMethod, attributeLocal));
         body.getUnits().insertBefore(stmt, insertPoint);
+    }
+
+    /** Inline the given invocation expression, given knowledge that the
+     *  method was invoked on the given Typeable object, and that the 
+     *  typeable object has a final resolved type.  The getType method
+     *  will be replace with code that returns the resolved type as a 
+     *  constant, methods that add type constraints are removed, and 
+     *  other methods that return a value are changed to throw exceptions.
+     *  @param body The body in which the invoke occured.
+     *  @param unit The unit in which the invoke occured.
+     *  @param box The value box containing the invoke expression.
+     *  @param typeable A reference to an object that has the same
+     *  resolve type as the typeable object that the invoke would have
+     *  occured on, has the code actually been executed.
+     */
+    public static void inlineTypeableMethods(JimpleBody body,
+            Unit unit, ValueBox box, InstanceInvokeExpr expr, 
+            Typeable typeable) {
+        String name = expr.getMethod().getName();
+        // FIXME name matching here is rather imprecise.
+        if(name.equals("getType")) {
+            // Replace method calls to getType with the constant type
+            // of the typeable.
+            try {
+                Local typeLocal = PtolemyUtilities.buildConstantTypeLocal(
+                        body, unit, typeable.getType());
+                box.setValue(typeLocal);
+            } catch (Exception ex) {
+                throw new RuntimeException("Type of " + typeable +
+                        " could not be determined: " + ex.getMessage());
+            }
+        } else if(name.equals("getTypeTerm")) {
+            // FIXME: This method should be removed.
+            //Local exceptionLocal = SootUtilities.createRuntimeException(body, unit,
+            //        "Illegal Method Call: getTypeTerm()");
+            //body.getUnits().swapWith(unit, 
+            //        Jimple.v().newThrowStmt(exceptionLocal));
+        } else if(name.equals("setTypeEquals")) {
+            // Remove call.
+            body.getUnits().remove(unit);
+        } else if(name.equals("setTypeAtLeast")) {
+            // Remove call.
+            body.getUnits().remove(unit);
+        } else if(name.equals("setTypeAtMost")) {
+            // Remove call.
+            body.getUnits().remove(unit);
+        } else if(name.equals("setTypeSameAs")) {
+            // Remove call.
+            body.getUnits().remove(unit);
+        } else if(name.equals("typeConstraintList")) {
+            //FIXME This method should be removed.
+            //            Local exceptionLocal = SootUtilities.createRuntimeException(body, unit,
+            //      "Illegal Method Call: typeConstraintList()");
+            //body.getUnits().swapWith(unit, 
+            //        Jimple.v().newThrowStmt(exceptionLocal));
+        }
     }
 }

@@ -27,6 +27,7 @@ import ptolemy.moml.*;
 import ptolemy.domains.sdf.kernel.SDFDirector;
 import ptolemy.data.*;
 import ptolemy.data.expr.Variable;
+import ptolemy.data.type.Typeable;
 import ptolemy.copernicus.kernel.SootUtilities;
 
 
@@ -206,7 +207,9 @@ public class InlineParameterTransformer extends SceneTransformer {
                                         (StringConstant)
                                         Evaluator.getConstantValueOf(nameValue);
                                     String name = nameConstant.value;
-                                    box.setValue(Jimple.v().newInstanceFieldRef(r.getBase(), entityClass.getFieldByName(name)));
+                                    box.setValue(Jimple.v().newInstanceFieldRef(
+                                            r.getBase(),
+                                            entityClass.getFieldByName(name)));
                                 }
                             } else if(r.getBase().getType() instanceof RefType) {
                                 RefType type = (RefType)r.getBase().getType();
@@ -227,25 +230,6 @@ public class InlineParameterTransformer extends SceneTransformer {
                                     }
                                 }
 
-                                /*
-                                if(SootUtilities.derivesFrom(type.getSootClass(), tokenClass)) {
-                                    // if we are invoking a method on a token class, then
-                                    // attempt to get the constant value of the token.
-                                    Token token = getTokenValue(entity, (Local)r.getBase(), unit, localDefs);
-                                    System.out.println("reference to Token with value = " + token);
-                                   
-                                    // If we have a token and all the args are constant valued, then
-                                    if(token != null && argCount == r.getArgCount()) {
-                                        // reflect and invoke the same method on our token
-                                        Constant constant = 
-                                            SootUtilities.reflectAndInvokeMethod(token, r.getMethod(), argValues);
-                                        System.out.println("method result  = " + constant);
-                                        
-                                        // replace the method invocation.
-                                        box.setValue(constant);
-                                    }
-                                } else
-                                */ 
                                 if(SootUtilities.derivesFrom(type.getSootClass(), settableClass)) {
                                     // if we are invoking a method on a variable class, then
                                     // attempt to get the constant value of the variable.
@@ -255,6 +239,12 @@ public class InlineParameterTransformer extends SceneTransformer {
                                     // If the base is not constant, then obviously there is nothing we can do.
                                     if(attribute == null) {
                                         continue;
+                                    }
+                                    
+                                    if(attribute instanceof Typeable) {
+                                        PtolemyUtilities.inlineTypeableMethods(body, 
+                                                unit, box, r, (Typeable)attribute);
+                                       
                                     }
 
                                     if(attribute instanceof Variable) {
@@ -330,17 +320,7 @@ public class InlineParameterTransformer extends SceneTransformer {
                                                     Jimple.v().newAssignStmt(
                                                             Jimple.v().newInstanceFieldRef(thisLocal,
                                                                     tokenField), tokenLocal));
-                                        } else if(r.getMethod().getName().equals("getType")) {
-                                            // Replace method calls to getType with the constant type
-                                            // of the parameter.
-                                            Local typeLocal = PtolemyUtilities.buildConstantTypeLocal(
-                                                    body, unit,
-                                                    ((Variable)attribute).getType());
-                                            box.setValue(typeLocal);
-                                        } else if(r.getMethod().getName().equals("setTypeEquals")) {
-                                            // Remove calls to setTypeEquals.
-                                            body.getUnits().remove(unit);
-                                        }
+                                        } 
                                     } else {
                                         if(r.getMethod().equals(getExpressionMethod)) {
                                             // Call attribute changed AFTER we set the expression
@@ -369,8 +349,7 @@ public class InlineParameterTransformer extends SceneTransformer {
                                    
 
                                     /*
-                                      // FIXME: handle getType, setType separately.
-                                      
+                                    // FIXME what about all the other methods???
                                     // If we have a attribute and all the args are constant valued, then
                                     if(argCount == r.getArgCount()) {
                                         // reflect and invoke the same method on our token
@@ -383,55 +362,7 @@ public class InlineParameterTransformer extends SceneTransformer {
                                     }
                                     */
                                 } 
-                            }
-                                /*    Local parameterLocal = (Local)r.getBase();
-                                System.out.println("getToken on parameter =" + 
-                                        parameterLocal);
-                                
-                                List defList = 
-                                    localDefs.getDefsOfAt(parameterLocal, 
-                                            unit);
-                                if(defList.size() == 1) {
-                                    DefinitionStmt stmt = (DefinitionStmt)defList.get(0);
-                                    Local tokenLocal = (Local)stmt.getLeftOp();
-                                    System.out.println("parameter Def = " + stmt);
-                                    Constant parameterValue;
-                                    if(stmt.getRightOp() instanceof FieldRef) {
-                                        try {
-                                            String name = ((FieldRef)stmt.getRightOp()).getField().getName();
-                                            Variable parameter = (Variable)entity.getAttribute(name);
-                                            parameterValue = getTokenValue(parameter.getToken());
-                                        } catch (IllegalActionException ex) {
-                                            System.out.println("illegal Parameter value = " +
-                                                    stmt.getRightOp());
-                                            continue;
-                                        }
-                                    } else {
-                                        System.out.println("unknown Parameter definition = " +
-                                                stmt.getRightOp());
-                                        continue;
-                                    }
-                                    for(Iterator pairs = localUses.getUsesOf(unit).iterator();
-                                            pairs.hasNext();) {
-                                        UnitValueBoxPair pair = (UnitValueBoxPair)pairs.next();
-                                        Stmt useStmt = (Stmt)pair.getUnit();
-                                        ValueBox useBox = (ValueBox)pair.getValueBox();
-                                        //   if(useBox.getValue().equals(tokenLocal)) {
-                                        // useBox.setValue(parameterValue);
-                                        //}
-                                        System.out.println("used at = " + useStmt);
-                                    }
-                                } else {
-                                    System.out.println("more than one def");
-                                }
-                            } else if(r.getMethod().equals(getExpressionMethod)) {
-                                Value parameterValue = r.getBase();
-                                System.out.println("getExpression on parameter =" + 
-                                        parameterValue);
-                                // Find the settable instance...
-                                //Settable settable = 
-                                //box.setValue(StringConstant.v(settable.getExpression()));
-                            }*/
+                            }                              
                         }
                     }
                 }

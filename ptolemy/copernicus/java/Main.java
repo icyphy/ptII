@@ -98,7 +98,7 @@ public class Main extends KernelMain {
         //        Scene.v().getPack("wjtp").add(new Transform("wjtp.clu",
         //      new TransformerAdapter(ConstantLoopUnroller.v())));
         Scene.v().getPack("wjtp").add(new Transform("wjtp.iportt",
-        InlinePortTransformer.v(_toplevel)));
+                InlinePortTransformer.v(_toplevel)));
         Scene.v().getPack("wjtp").add(new Transform("wjtp.itt",
                 InlineTokenTransformer.v(_toplevel)));
 
@@ -109,7 +109,7 @@ public class Main extends KernelMain {
 
         // When we fold classes, we create extra locals.  These optimizations
         // will remove them.  Unfortunately, -O creates bogus code?
-         Scene.v().getPack("jtp").add(new Transform("jtp.cpaf",
+        Scene.v().getPack("jtp").add(new Transform("jtp.cpaf",
                 ConstantPropagatorAndFolder.v()));
         Scene.v().getPack("jtp").add(new Transform("jtp.cbf",
                 ConditionalBranchFolder.v()));
