@@ -298,6 +298,9 @@ public class MakefileWriter extends SceneTransformer {
             Copernicus.substitute(_templateDirectory + "makefile.in",
                     substituteMap,
                     _outputDirectory + "makefile");
+            Copernicus.substitute(_templateDirectory + "obfuscateScript.jos.in",
+                    substituteMap,
+                    _outputDirectory + "obfuscateScript.jos");
 	} catch (Exception ex) {
 	    // This exception tends to get eaten by soot, so we print as well.
 	    System.err.println("Problem writing makefile:" + ex);
