@@ -72,13 +72,16 @@ JSRCS = \
 	VergilDocumentFactory.java \
 	VisualNotation.java 
 
-EXTRA_SRCS =	$(JSRCS)
+EXTRA_SRCS =	$(JSRCS) \
+	TODO.txt \
+	Vergil.htm \
+	Vergil.properties \
+	img_ptolemy.gif
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	$(DIRS) \
-	TODO \
-	Vergil.htm \
+MISC_FILES =	$(DIRS)
+
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
@@ -90,8 +93,11 @@ OPTIONAL_FILES = \
 	'VergilApplication$$1.class' \
 	'VergilApplication$$2.class' \
 	'VergilApplication$$3.class' \
+	'VergilApplication$$4.class' \
+	'VergilApplication$$ClassReloadingService.class' \
 	'VergilApplication$$MouseFocusMover.class' \
 	'VergilApplication$$TitleChanger.class'
+
 
 JCLASS = $(JSRCS:%.java=%.class)
 
