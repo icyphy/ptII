@@ -59,8 +59,8 @@ the type of the Parameter in a lossless manner. If it cannot an exception
 is thrown.
 <p>
 If another object (e.g. Parameter) wants to notified of changes in this
-Parameter, it must implement the ParameterListner interface and register
-itself as a listner with this Parameter. Since Tokens are immutable, the
+Parameter, it must implement the ParameterListener interface and register
+itself as a listener with this Parameter. Since Tokens are immutable, the
 value contained by this Parameter only changes when a new Token is placed
 in it or it is given a new expression which is evaluated.
 <p>
@@ -75,7 +75,7 @@ FIXME:  synchronization issues
 @see ptolemy.data.expr.PtParser
 @see ptolemy.data.Token
 */
-public class Parameter extends Attribute implements ParameterListner {
+public class Parameter extends Attribute implements ParameterListener {
 
     /** Construct a parameter in the default workspace with an empty string
      *  as its name.
@@ -174,7 +174,7 @@ public class Parameter extends Attribute implements ParameterListner {
         newobj._currentExpression = _currentExpression;
         newobj._dependencyLoop = false;
         newobj._initialExpression = _initialExpression;
-        newobj._listners = null;
+        newobj._listeners = null;
         newobj._needsEvaluation = true;
         newobj._noTokenYet = _noTokenYet;
         newobj._parser = null;
@@ -282,7 +282,7 @@ public class Parameter extends Attribute implements ParameterListner {
                 } else {
                     _checkType(_token);
                 }
-                _notifyListners();
+                _notifyListeners();
             } finally {
                 workspace().doneReading();
             }
@@ -328,7 +328,7 @@ public class Parameter extends Attribute implements ParameterListner {
         } else if ( _parseTree != null) {
             _token = _parseTree.evaluateParseTree();
             _checkType(_token.getClass());
-            _notifyListners();
+            _notifyListeners();
         } else {
             // ERROR: should not get here. What exception should be thrown?
         }
@@ -336,14 +336,14 @@ public class Parameter extends Attribute implements ParameterListner {
     }
 
     /** Register an interest with this Parameter.
-     *  @param newListner The ParamListner that is will be notified whenever
+     *  @param newListener The ParamListener that is will be notified whenever
      *   the token stored in this Parameter changes.
      */
-     public void registerListner(ParameterListner newListner) {
-         if (_listners == null) {
-             _listners = new LinkedList();
+     public void registerListener(ParameterListener newListener) {
+         if (_listeners == null) {
+             _listeners = new LinkedList();
          }
-         _listners.insertLast(newListner);
+         _listeners.insertLast(newListener);
      }
 
     /** Reset the current value of this parameter to the first seen
@@ -406,7 +406,7 @@ public class Parameter extends Attribute implements ParameterListner {
         } else {
             _checkType(_token);
         }
-        _notifyListners();
+        _notifyListeners();
     }
 
     /** Set the types of Tokens that this parameter can contain.
@@ -482,17 +482,17 @@ public class Parameter extends Attribute implements ParameterListner {
         }
     }
 
-    /* Notify any ParameterListners that have registered an
+    /* Notify any ParameterListeners that have registered an
     *  interest/dependency in this parameter.
     */
-    private void _notifyListners() {
-        if (_listners == null) {
-            // No listners to notify.
+    private void _notifyListeners() {
+        if (_listeners == null) {
+            // No listeners to notify.
             return;
         }
-        Enumeration list = _listners.elements();
+        Enumeration list = _listeners.elements();
         while (list.hasMoreElements()) {
-            ((ParameterListner)list.nextElement()).reEvaluate();
+            ((ParameterListener)list.nextElement()).reEvaluate();
         }
     }
 
@@ -513,9 +513,9 @@ public class Parameter extends Attribute implements ParameterListner {
     // the first token placed in the parameter was not parsed from a string.
     private String _initialExpression;
 
-    // Each Parameter stores a linkedlist of the ParameterListners it
+    // Each Parameter stores a linkedlist of the ParameterListeners it
     // needs to notify whenever it changes.
-    private LinkedList _listners;
+    private LinkedList _listeners;
 
     // Indicates if the parameter was last set with an expression and that
     // the expression has not yet been evaluated.
