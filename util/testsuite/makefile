@@ -65,6 +65,7 @@ SCRIPTS = \
 	chkeol \
 	chkextra \
 	chkjava \
+	cvs2cl.pl \
 	deprecated \
 	gcstats \
 	html2ps \
