@@ -1,5 +1,5 @@
 #!/bin/sh
-# -[Thu Apr  1 18:33:46 1999 by cxh]-
+# -[Tue Oct  3 18:08:57 2000 by cxh]-
 # Color the coverage file with the appropriate accepted ratings
 
 
@@ -46,10 +46,10 @@ awk '{if ($0 !~ /</) {
 	rating[$1] = color
      } else {
 	# Reading in the coverage html file
-	if ($0 ~ /Package/) {
+	if ($0 ~ />Package /) {
 	    split($3,p,"<")
 	    package=p[1]
-	    print $0
+	    printf("%s %s <a name=%c%s%c>%s</a></th></TR>\n", $1, $2, 34, package, 34, package)
 	} else {
 	    if ( $0 ~ /<TR><th align="center">/) {
 		if ($0 !~ /TOTAL/) {
@@ -96,6 +96,36 @@ awk '{if ($0 !~ /</) {
 	    }
 	}
     }
-}' $ratingfile $summaryfile > /tmp/coveragerating.out
+}' $ratingfile $summaryfile |
+awk '{
+	if (sawheader==1) {
+	    print $0
+	} else {
+	    if ($0 ~ /<H1> Package Coverage <\/H1>/) {
+		sawheader=1
+	    } 
+	}
+     }' > /tmp/coveragerating.out
+
+# Create a TOC
+awk ' BEGIN {
+	print "<html><head>"
+	print "<title>Ptolemy II Coverage Summary</title>"
+	print "</head><body>"
+	print "<h1>Package Coverage </h1>"
+	print "<menu>"
+    }
+    { if ($0 ~ />Package /) {
+	split($4,p,"\"")
+	package=p[2]
+	printf("<li> <a href=%c#%s%c>%s</a>\n", 34, package, 34, package)
+      }
+    }
+    END {
+        print "</menu>" 
+    }' /tmp/coveragerating.out >/tmp/coveragerating.toc
+
 cp $summaryfile $summaryfile.bak
-mv /tmp/coveragerating.out $summaryfile
+cat /tmp/coveragerating.toc /tmp/coveragerating.out > $summaryfile
+
+rm -f /tmp/coveragerating.toc /tmp/coveragerating.out
