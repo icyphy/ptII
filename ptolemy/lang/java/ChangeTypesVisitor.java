@@ -48,13 +48,26 @@ public class ChangeTypesVisitor extends ReplacementJavaVisitor {
         super(TM_CUSTOM);
     }
         
-    // not doing parameters for now
+    
             
     public Object visitCompileUnitNode(CompileUnitNode node, LinkedList args) {
         _declToTypeMap = (Map) args.get(0);
         _declsLeft = _declToTypeMap.size();
         
         return _defaultVisit(node, null);
+    }
+
+    public Object visitParameterNode(ParameterNode node, LinkedList args) {
+        TypedDecl typedDecl = (TypedDecl) JavaDecl.getDecl((NamedNode) node);
+        
+        TypeNameNode typeNode = (TypeNameNode) _declToTypeMap.get(typedDecl);
+        
+        if (typeNode != null) {
+           node.setDefType(typeNode);
+           _declsLeft--;
+        }
+        
+        return node;
     }
 
     public Object visitFieldDeclNode(FieldDeclNode node, LinkedList args) {

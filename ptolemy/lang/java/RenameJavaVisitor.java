@@ -1,4 +1,4 @@
-/* A Java AST visitor that removes the traces of visitors from nodes.
+/* A Java AST visitor that does renaming.
 
  Copyright (c) 2000 The Regents of the University of California.
  All rights reserved.
@@ -30,34 +30,54 @@
 
 package ptolemy.lang.java;
 
-import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Map;
 
-import ptolemy.lang.*;
 import ptolemy.lang.java.nodetypes.*;
 
 //////////////////////////////////////////////////////////////////////////
-//// RemoveTrackVisitor
-/** A Java AST visitor that removes traces of visitors from nodes.
- *  The argument to each node is a LinkedList consisting to Class objects
- *  corresponding to the visitor traces to be removed.
+//// RenameJavaVisitor
+/** A Java AST visitor that does renaming. The argument to each visitation 
+ *  method should be a LinkedList containing a Map of old name strings to
+ *  new name strings. The renaming is done in place, i.e. no new nodes
+ *  are allocated.
  *
  *  @author Jeff Tsay
  */
-public class RemoveTrackVisitor extends JavaVisitor {
-    
-    public RemoveTrackVisitor() {
-        super(TM_SELF_FIRST);
+public class RenameJavaVisitor extends ResolveVisitorBase {
+
+    public RenameJavaVisitor() {
+        super(TM_CUSTOM);
     }
 
-    public Object _defaultVisit(TreeNode node, LinkedList args) {
-        Iterator argsItr = args.iterator();
+    public Object visitNameNode(NameNode node, LinkedList args) {
+        node.getQualifier().accept(this, args);              
         
-        while (argsItr.hasNext()) {
-           Class visitorClass = (Class) argsItr.next();
-           
-           node.removeVisitor(visitorClass);
-        }        
-        return null;        
+        String ident = node.getIdent();
+        
+        Map nameToNewNameMap = (Map) args.get(0);
+        
+        String newName = (String) nameToNewNameMap.get(ident);    
+        
+        if (newName != null) {
+           node.setIdent(newName);
+        }
+    
+        return null;
+    }    
+
+    // make sure we override the following methods because they may (deeply) 
+    // contain NameNodes.
+
+    public Object visitArrayTypeNode(ArrayTypeNode node, LinkedList args) {
+        return _defaultVisit(node, args);
+    }
+
+    public Object visitTypeNameNode(TypeNameNode node, LinkedList args) {
+        return _defaultVisit(node, args);
+    }
+            
+    public Object visitObjectNode(ObjectNode node, LinkedList args) {
+        return _defaultVisit(node, args);
     }    
 }

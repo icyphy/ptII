@@ -409,10 +409,12 @@ null,null,null,null,null,null,null,null,null,"ABSTRACT","BOOLEAN","BREAK",
 final static String yyrule[] = read_string_table("yyrule.tbl", NRULES - 2);
 //#line 1495 "jparser.y"
 
-protected void init(String filename) throws IOException {
+public void init(String filename) throws IOException {
   _filename = filename;
   _lexer = new Yylex(new FileInputStream(_filename));
 }
+
+public int parse() { return yyparse(); }
 
 protected int yylex()
 {
@@ -473,7 +475,7 @@ protected void yyerror(String msg)
 
 protected String _filename = null;
 protected Yylex _lexer = null;
-//#line 2013 "JavaParser.java"
+//#line 2015 "JavaParser.java"
 //###############################################################
 // method: yylexdebug : check lexer state
 //###############################################################
@@ -1819,7 +1821,7 @@ case 287:
 //#line 1479 "jparser.y"
 { yyval.obj = new BitOrAssignNode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
 break;
-//#line 3356 "JavaParser.java"
+//#line 3358 "JavaParser.java"
 //########## END OF USER-SUPPLIED ACTIONS ##########
     }//switch
     //#### Now let's reduce... ####

@@ -34,7 +34,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 import ptolemy.lang.*;
-import ptolemy.lang.java.nodetypes;
+import ptolemy.lang.java.nodetypes.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// RemovePropertyVisitor

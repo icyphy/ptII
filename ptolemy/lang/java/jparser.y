@@ -1493,10 +1493,12 @@ empty :
 
 %%
 
-protected void init(String filename) throws IOException {
+public void init(String filename) throws IOException {
   _filename = filename;
   _lexer = new Yylex(new FileInputStream(_filename));
 }
+
+public int parse() { return yyparse(); }
 
 protected int yylex()
 {
