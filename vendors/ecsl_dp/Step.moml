@@ -1,0 +1,12 @@
+<class name="Step" extends="ptolemy.domains.ct.lib.ContinuousClock">
+    <property name="finalValue" class="ptolemy.data.expr.Parameter" value="60/3600.0"/>
+    <property name="values" class="ptolemy.data.expr.Parameter" value="{0.0, finalValue}">
+	<property name="_expertMode" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+
+    </property>
+    <property name="numberOfCycles" class="ptolemy.data.expr.Parameter" value="1">
+    </property>
+    <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 120.0]">
+    </property>
+</entity>
