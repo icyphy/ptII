@@ -358,6 +358,11 @@ public class TypeLattice {
 	    StructuredType arrayRep =
 		(new ArrayType(BaseType.NAT))._getRepresentative();
 
+	    String[] labels = new String[0];
+	    Type[] types = new Type[0];
+	    StructuredType recordRep =
+	        (new RecordType(labels, types))._getRepresentative();
+
 	    _basicLattice.add(BaseType.BOOLEAN);
 	    _basicLattice.add(BaseType.BOOLEAN_MATRIX);
 	    _basicLattice.add(BaseType.COMPLEX);
@@ -379,6 +384,7 @@ public class TypeLattice {
 	    _basicLattice.add(BaseType.GENERAL);
 
 	    _basicLattice.add(arrayRep);
+	    _basicLattice.add(recordRep);
 
 	    _basicLattice.addEdge(BaseType.OBJECT, BaseType.GENERAL);
 	    _basicLattice.addEdge(BaseType.NAT, BaseType.OBJECT);
@@ -417,6 +423,9 @@ public class TypeLattice {
 
 	    _basicLattice.addEdge(arrayRep, BaseType.GENERAL);
 	    _basicLattice.addEdge(BaseType.NAT, arrayRep);
+
+	    _basicLattice.addEdge(recordRep, BaseType.GENERAL);
+	    _basicLattice.addEdge(BaseType.NAT, recordRep);
 
 	    if ( !_basicLattice.isLattice()) {
 		throw new InternalErrorException("TheTypeLattice: The " +
