@@ -41,6 +41,8 @@ package ptolemy.backtrack.ast;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
@@ -476,6 +478,23 @@ public class ASTFormatter extends ASTVisitor {
      * @see ASTVisitor#visit(CompilationUnit)
      */
     public boolean visit(CompilationUnit node) {
+        // Sort all the importations.
+        List imports = node.imports();
+        int length = imports.size();
+        AST ast = node.getAST();
+        for (int i = 0; i < length - 1; i++)
+            for (int j = i + 1; j < length; j++) {
+                ImportDeclaration import1 = (ImportDeclaration)imports.get(i);
+                ImportDeclaration import2 = (ImportDeclaration)imports.get(j);
+                if (import1.toString().compareTo(import2.toString()) > 0) {
+                    // Swap.
+                    imports.remove(j);
+                    imports.remove(i);
+                    imports.add(i, ASTNode.copySubtree(ast, import2));
+                    imports.add(j, ASTNode.copySubtree(ast, import1));
+                }
+            }
+        
         if (node.getPackage() != null) {
             node.getPackage().accept(this);
         }
@@ -1127,7 +1146,7 @@ public class ASTFormatter extends ASTVisitor {
             _output(_indent);
         _output("package ");
         node.getName().accept(this);
-        _output(";\n");
+        _output(";\n\n");
         return false;
     }
 
