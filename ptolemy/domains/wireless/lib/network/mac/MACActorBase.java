@@ -53,9 +53,10 @@ This actor also defines a set of constant that are widely used in
 the OMNET c++ classes.
 
 Based on this, it is relativly easy to translate a OMNET class
-to a actor here (I hope...). 
+to a actor here. 
 @author Yang Zhao
-@version $ $
+@version $Id$
+@since Ptolemy II 2.1
 */
 
 public class MACActorBase extends NetworkActorBase {
@@ -404,6 +405,7 @@ public class MACActorBase extends NetworkActorBase {
 
     // message formats
     protected static final String[] RxStartMsgFields ={"kind", "rxRate"};
+    protected static final String[] TxStartMsgFields = {"kind", "length", "rate"};
     protected static final String[] RtsTimeoutMsgFields ={"kind"};
     protected static final String[] RxMpduMsgFields ={"kind", "pdu","endRx","rxRate"};
     protected static final String[] UseIfsMsgFields ={"kind", "tRxEnd"};
@@ -416,6 +418,16 @@ public class MACActorBase extends NetworkActorBase {
             {"kind", "tRef", "dNav", "src"};
   
     protected static final String[] CSMsgFields={"kind"};
+    
+    // the value for the pdu field is a record with fields as DataPacket's fields.
+    protected static final String[] TxRequestMsgFields = {"kind", "pdu", "rate", "channel"};
+    protected static final String[] TxConfirmMsgFields = {"kind"}; 
+    
+    protected static final String[] DataPacketFields = {"kind", "name", "protocolVer", "Type", "Subtype",
+            "toDs", "frDs", "moreFrag", "retryBit", "pwrMgt", "moreData", "wepBit", 
+            "orderBit", "FCS", "durId", "Addr1", "Addr2", "Addr3", "SeqNum", "FragNum", "Addr4"};
+    
+
   
     // message types  
     protected static final int  NeedAck        = 1;

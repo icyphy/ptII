@@ -52,7 +52,7 @@ that are widely used in the OMNET c++ classes.
 
 
 @author Yang Zhao, Charlie Zhong
-@version $ $
+@version $Id$
 */
 
 public class NetworkActorBase extends TypedAtomicActor {

@@ -53,7 +53,8 @@ in 802.11 are not generated here.
 
 
 @author Yang Zhao
-@version $ $
+@version $Id$
+@since Ptolemy II 2.1
 */
 public class ChannelState extends MACActorBase {
 
