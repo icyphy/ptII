@@ -268,6 +268,15 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
             }
         }
 
+        // Format Control-M properly, avoid gcc warnings like:
+        // 'warning: multi-line string literals are deprecated'
+        for(int i = 0; i < stringConst.length(); i++) {
+            if (stringConst.charAt(i) == '\r') {
+                stringConst.replace(i,i+1, "\\r");
+                i++;
+            }
+        }
+
         _push("charArrayToString(\"" + stringConst + "\")" );
     }
 
