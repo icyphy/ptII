@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (davisj@eecs.berkeley.edu)
+@ProposedRating Yellow (davisj@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 
 */
@@ -89,11 +89,6 @@ public class ODFThread extends ProcessThread {
      */
     public synchronized void noticeOfTermination() { 
         Actor actor = (Actor)getActor();
-	/*
-        ODFActor actor = (ODFActor)getActor();
-	System.out.println(((NamedObj)actor).getName()+
-                ": calling noticeOfTermination()");
-	*/
 	Enumeration outputPorts = actor.outputPorts();
 	if( outputPorts != null ) {
 	    while( outputPorts.hasMoreElements() ) {

@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (davisj@eecs.berkeley.edu)
+@ProposedRating Yellow (davisj@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 
 */
@@ -43,21 +43,25 @@ A FIFO queue-based receiver for storing tokens with time stamps. A "time
 stamp" is a time value that is associated with a token and is used to order
 the consumption of a token with respect to other time stamped tokens. To
 help organize the tokens contained by this queue, two flags are maintained:
-"_lastTime" and "_rcvrTime." The _lastTime flag is defined to be equivalent
-to the time stamp of the token that was most recently placed in the queue.
-The _rcvrTime flag is defined as the time stamp of the oldest token in the
-queue or the last token to be removed from the queue if the queue is empty.
-Both of these flags must have monotonically, non-decreasing values. At the 
-conclusion of a simulation run the receiver time is set to INACTIVE.
+<I>last time</I> and <I>receiver time</I>. The last time flag is defined to 
+be equivalent to the time stamp of the token that was most recently placed 
+in the queue. The receiver time flag is defined as the time stamp of the 
+oldest token in the queue or the last token to be removed from the queue if 
+the queue is empty. Both of these flags must have monotonically, 
+non-decreasing values. At the conclusion of a simulation run the receiver 
+time is set to INACTIVE.
 <P>
-To facilitate the transfer of local time information in a manner that
-is amenable to polymorphic actors, it is necessary to have a reference
-to a TimeKeeper for both the sending and receiving actors associated with
-this receiver.
+A TimeKeeper object is assigned to each actor that operates according to
+an ODF model of computation. The TimeKeeper manages each of the receivers
+that are contained by an actor by keeping track of the receiver times of
+each receiver. As information flows through a TimedQueueReceiver, the 
+TimeKeeper must be kept up to date with respect to the receiver times. 
+
 
 @author John S. Davis II
 @version $Id$
 @see ptolemy.domains.odf.kernel.ODFReceiver
+@see ptolemy.domains.odf.kernel.TimeKeeper
 */
 
 public class TimedQueueReceiver {
@@ -82,15 +86,13 @@ public class TimedQueueReceiver {
     /** Take the the oldest token off of the queue and return it.
      *  If the queue is empty, throw a NoTokenException. If there are
      *  other tokens left on the queue after this removal, then set
-     *  the _rcvrTime of this receiver to equal that of the next oldest
-     *  token. Update the RcvrTimeTriple entry in the TimeKeeper that 
-     *  manages this receiver.
+     *  the receiver time of this receiver to equal that of the next 
+     *  oldest token. Update the TimeKeeper that manages this 
+     *  TimedQueueReceiver.
      * @exception NoTokenException If the queue is empty.
-     * @see ptolemy.domains.odf.kernel.RcvrTimeTriple
      */
     public Token get() {
 	Thread thread = Thread.currentThread();
-	// TimeKeeper timeKeeper = getReceivingTimeKeeper();
 	Token token = null;
 	synchronized( this ) {
             Event event = (Event)_queue.take();
@@ -127,11 +129,11 @@ public class TimedQueueReceiver {
         return _container;
     }
 
-    /** Return the _lastTime value of this receiver. The _lastTime is
+    /** Return the last time of this receiver. The last time is
      *  the time associated with the token that was most recently
      *  placed in the queue. If no tokens have been placed on the
-     *  queue, then _lastTime equals 0.0.
-     * @return double The value of the _lastTime flag.
+     *  queue, then the last time equals 0.0.
+     * @return double The last time of this TimedQueueReceiver.
      */
     public double getLastTime() {
         return _lastTime;
@@ -144,33 +146,15 @@ public class TimedQueueReceiver {
         return _priority;
     }
 
-    /** Return the _rcvrTime value of this receiver. The _rcvrTime is
-     *  the time associated with the oldest token that is currently
-     *  on the queue. If the queue is empty, then the _rcvrTime value
-     *  is equal to the _lastTime value.
-     * @return double The value of the _rcvrTime flag.
+    /** Return the receiver time of this receiver. The receiver
+     *  time is the time stamp associated with the oldest token that 
+     *  is currently on the queue. If the queue is empty, then the 
+     *  receiver time value is equal to the "last time."
+     * @return double The receiver time of this TimedQueueReceiver.
      */
     public double getRcvrTime() {
         return _rcvrTime;
     }
-
-    /** Return the time keeper that maintains time for the actor that
-     *  contains this receiver.
-     * @return The time keeper that maintains time for the actor that
-     *  contains this receiver.
-    public TimeKeeper getReceivingTimeKeeper() {
-        return _rcvingTimeKeeper;
-    }
-     */
-
-    /** Return the time keeper that maintains time for the actor that
-     *  sends through this receiver.
-     * @return The time keeper that maintains time for the actor 
-     *  that sends through this receiver.
-    public TimeKeeper getSendingTimeKeeper() {
-        return _sendingTimeKeeper;
-    }
-     */
 
     /** Return true if the number of tokens stored in the queue is
      *  less than the capacity of the queue. Return false otherwise.
@@ -191,26 +175,22 @@ public class TimedQueueReceiver {
     }
 
     /** Put a token on the queue with the specified time stamp and set
-     *  the value of the _lastTime flag to be equal to this time stamp.
-     *  If the queue is empty immediately prior to putting the token on
-     *  the queue, then set the _rcvrTime flag value to be equal to the
-     *  _lastTime flag value. If the queue is full, throw a NoRoomException.
-     *  Update the RcvrTimeTriple entry in the ODFThread which manages
-     *  this receiver.
+     *  the last time value to be equal to this time stamp. If the 
+     *  queue is empty immediately prior to putting the token on
+     *  the queue, then set the receiver time value to be equal to the
+     *  last time value. If the queue is full, throw a NoRoomException.
      * @param token The token to put on the queue.
      * @param time The time stamp of the token.
      * @exception NoRoomException If the queue is full.
      */
     public void put(Token token, double time) throws NoRoomException {
 	if( time < _lastTime && time != INACTIVE ) {
-	    // if( time < _lastTime && time != -1.0 ) {
 	    IOPort port = (IOPort)getContainer(); 
 	    NamedObj actor = (NamedObj)port.getContainer(); 
 	    throw new IllegalArgumentException(actor.getName() + 
 		    " - Attempt to set current time in the past.");
 	}
         Event event;
-	// TimeKeeper timeKeeper = getReceivingTimeKeeper();
         synchronized(this) {
             _lastTime = time;
             event = new Event(token, _lastTime);
@@ -239,24 +219,6 @@ public class TimedQueueReceiver {
     public void setContainer(IOPort port) {
         _container = port;
     }
-
-    /** Set the time keeper that maintains time for the actor that
-     *  contains this receiver.
-     * @param timeKeeper The time keeper that maintains time for 
-     *  the actor that contains this receiver.
-    public void setReceivingTimeKeeper(TimeKeeper timeKeeper) {
-        _rcvingTimeKeeper = timeKeeper;
-    }
-     */
-
-    /** Set the time keeper that maintains time for the actor that
-     *  sends through this receiver.
-     * @param timeKeeper The time keeper that maintains time for 
-     *  the actor that sends through this receiver.
-    public void setSendingTimeKeeper(TimeKeeper timeKeeper) {
-        _sendingTimeKeeper = timeKeeper;
-    }
-     */
 
     ///////////////////////////////////////////////////////////////////
     ////                   package friendly methods                ////
