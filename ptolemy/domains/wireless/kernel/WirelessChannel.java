@@ -34,6 +34,7 @@ import java.util.List;
 
 import ptolemy.data.RecordToken;
 import ptolemy.data.Token;
+import ptolemy.domains.wireless.kernel.PropertyTransformer;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Nameable;
 
@@ -80,6 +81,10 @@ public interface WirelessChannel extends Nameable {
      */
     public List listeningOutputPorts() throws IllegalActionException;
 
+    /** Register a PropertyTransformer for a wirelessIOPort.
+     */
+    public void registerPropertyTransformer(WirelessIOPort port, 
+            PropertyTransformer transformer);
     /** Return a list of input ports that can potentially send data
      *  to this channel.  This must include input ports contained by
      *  the container of this channel that

@@ -158,6 +158,13 @@ public class AtomicWirelessChannel extends TypedAtomicActor
         return _channelPort;
     }
 
+    /** Initialize the _portPropertyTransformer set.
+     */
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+        _portPropertyTransformer = new HashMap();
+    }
+    
     /** Return a list of input ports that can potentially receive data
      *  from this channel.  This includes input ports contained by
      *  entities contained by the container of this channel that
@@ -253,6 +260,13 @@ public class AtomicWirelessChannel extends TypedAtomicActor
      */
     public void removeDependencies() {
         removeDependency(_channelPort, _channelPort);
+    }
+    
+    /** Register a PropertyTransformer for a wirelessIOPort.
+     */
+    public void registerPropertyTransformer(WirelessIOPort port, 
+            PropertyTransformer transformer) {
+        _portPropertyTransformer.put(port, transformer);
     }
 
     /** Return a list of input ports that can potentially send data
@@ -665,6 +679,10 @@ public class AtomicWirelessChannel extends TypedAtomicActor
      */
     protected boolean _receiversInRangeCacheValid = false;
 
+    protected HashMap _portPropertyTransformer;
+
+    //protected boolean _portPropertyTransformerInitialized = false;
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -676,7 +694,7 @@ public class AtomicWirelessChannel extends TypedAtomicActor
 
     private HashMap _receiversInRangeCache;
     private HashMap _receiversInRangeCacheVersion;
-
+    
     private List _sendingInputPorts;
     private long _sendingInputPortsVersion = -1L;
     private List _sendingOutputPorts;
