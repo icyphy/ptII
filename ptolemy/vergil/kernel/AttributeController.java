@@ -30,6 +30,7 @@ package ptolemy.vergil.kernel;
 
 import ptolemy.vergil.basic.IconController;
 import ptolemy.vergil.toolbox.MenuActionFactory;
+import ptolemy.vergil.toolbox.MoveAction;
 import diva.graph.GraphController;
 
 //////////////////////////////////////////////////////////////////////////
@@ -73,6 +74,18 @@ public class AttributeController extends IconController {
                     new RenameDialogFactory());
             _menuFactory.addMenuItemFactory(
                     new MenuActionFactory(new GetDocumentationAction()));
+            _menuFactory.addMenuItemFactory(
+                    new MenuActionFactory(
+                    new MoveAction("Move to first", MoveAction.TO_FIRST)));
+            _menuFactory.addMenuItemFactory(
+                    new MenuActionFactory(
+                    new MoveAction("Move towards first", MoveAction.UP)));
+            _menuFactory.addMenuItemFactory(
+                    new MenuActionFactory(
+                    new MoveAction("Move to last", MoveAction.TO_LAST)));
+            _menuFactory.addMenuItemFactory(
+                    new MenuActionFactory(
+                    new MoveAction("Move towards last", MoveAction.DOWN)));
         }
     }
 
