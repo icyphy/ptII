@@ -47,9 +47,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	ImageReconstruction.xml \
-	bridge.png \
-	camera.png
+	ImageReconstruction.xml
 
 EXTRA_SRCS = \
 	$(JSRCS) \
