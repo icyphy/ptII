@@ -82,27 +82,27 @@ import ptolemy.kernel.util.Workspace;
    Select and Switch, which consume or produce tokens on different channels
    based on the token received from the control port.
    <p>
-   The dynamic scheduler implemented in this director fires all enabled and
-   non-deferrable actors once in a basic iteration. A deferrable actor is
-   one which will not help one of the downstream actors become enabled
-   because that actor either already has enough data on the channel connecting
-   those two actors or is waiting for data on another channel. If no actor
-   fires, then among all deferrable actors, fire those which have the smallest
-   maximum number of tokens on their output channels which satisfy the
-   demand of destination actors. A user can treat several such basic
-   iterations as a single iteration by adding a parameter with name
+   The dynamic scheduler implemented in this director fires all enabled and 
+   non-deferrable actors once in a basic iteration. A deferrable actor is 
+   one which will not help one of the downstream actors become enabled 
+   because that actor either already has enough data on the channel connecting 
+   those two actors or is waiting for data on another channel. If no actor 
+   fires, then among all deferrable actors, fire those which have the smallest 
+   maximum number of tokens on their output channels which satisfy the 
+   demand of destination actors. A user can treat several such basic 
+   iterations as a single iteration by adding a parameter with name 
    <i>requiredFiringsPerIteration</i> to an actor (which is often a sink
-   actor or an actor directly connected to output port of the composite actor)
-   and specifying the number of times this actor must be fired in a single
+   actor or an actor directly connected to output port of the composite actor) 
+   and specifying the number of times this actor must be fired in a single 
    iteration. If the value of the parameter <i>runUntilDeadlockInOneIteration</i>
-   is a BooleanToken with value true, one single iteration consists of repeating
-   the basic iteration until deadlock is reached, which is the status of
-   the model where all active actors under the control of this director are
-   unable to fire because their firing rules are not satisfied. However,
-   they may be able to fire again during next iteration when tokens are
+   is a BooleanToken with value true, one single iteration consists of repeating 
+   the basic iteration until deadlock is reached, which is the status of 
+   the model where all active actors under the control of this director are 
+   unable to fire because their firing rules are not satisfied. However, 
+   they may be able to fire again during next iteration when tokens are 
    transferred in from outside domain. Note <i>runUntilDeadlockInOneIteration</i>
    can be set to true only when this director is not on the top level.
-   <p>
+   <p> 
    The algorithm implementing one basic iteration goes like this:
    <pre>
    E = set of enabled actors
@@ -112,21 +112,21 @@ import ptolemy.kernel.util.Workspace;
    <pre>
    if (E-D != 0) {
        fire (E-D)
-   } else if (D != 0) {
+   } else if (D != 0) { 
        fire minimax(D)
    } else {
        declare deadlock
    }
    </pre>
-   The function "minimax(D)" returns a subset of D with the smallest
-   maximum number of tokens on their output channels which satisfy the
+   The function "minimax(D)" returns a subset of D with the smallest  
+   maximum number of tokens on their output channels which satisfy the 
    demand of destination actors.
    <p>
-   Note that any SDF model can be run with a DDF Director. However, the
-   notion of iteration is different. One could try to imitate the SDF
+   Note that any SDF model can be run with a DDF Director. However, the 
+   notion of iteration is different. One could try to imitate the SDF 
    iteration in DDF domain by controlling the number of firings in one
    iteration for some actors, such as requiring a plotter to plot a fixed
-   number of points in each iteration. Whichever notion of iteration is
+   number of points in each iteration. Whichever notion of iteration is 
    used, a model will have the same behavior in the sense that any
    execution is a finite approximation to its denotational semantics.
    <p>
@@ -137,10 +137,10 @@ import ptolemy.kernel.util.Workspace;
    ports after each firing. For multiports, an array token could be used
    to specify different rates for different channels connected to the same
    multiport. Note that in SDF, all channels connected to the same multiport
-   have the same rate.
+   have the same rate.  
    <p>
-   Based on DDFSimpleSched in Ptolemy Classic, by Edward Lee.
-   See E. A. Lee etal, "The Almagest," documentation for Ptolemy Classic,
+   Based on DDFSimpleSched in Ptolemy Classic, by Edward Lee. 
+   See E. A. Lee etal, "The Almagest," documentation for Ptolemy Classic, 
    Vol. 1, Chapter 7, 1997.
 
    @author Gang Zhou
@@ -204,7 +204,7 @@ public class DDFDirector extends Director {
     /** A Parameter representing the number of times that postfire may be
      *  called before it returns false.  If the value is less than or
      *  equal to zero, then the execution will never return false in
-     *  postfire, and thus the execution can continue forever or until
+     *  postfire, and thus the execution can continue forever or until 
      *  the model is deadlocked.
      *  The default value is an IntToken with the value zero.
      */
@@ -220,8 +220,8 @@ public class DDFDirector extends Director {
     /** A parameter representing whether one iteration consists of
      *  repeated basic iteration until deadlock. If this parameter is
      *  true, the model will be executed until deadlock in one iteration.
-     *  The default value is a BooleanToken with the value false. It
-     *  cannot be set to true if this director is at top level.
+     *  The default value is a BooleanToken with the value false. It 
+     *  cannot be set to true if this director is at top level. 
      */
     public Parameter runUntilDeadlockInOneIteration;
 
@@ -229,7 +229,7 @@ public class DDFDirector extends Director {
     ////                         public methods                    ////
 
     /** If the attribute being changed is <i>runUntilDeadlockInOneIteration</i>
-     *  and it is set to be true, then verify this director is not at
+     *  and it is set to be true, then verify this director is not at 
      *  top level.
      *  @param attribute The changed parameter.
      *  @exception IllegalActionException If this director is at top
@@ -248,8 +248,8 @@ public class DDFDirector extends Director {
                 // by setting the parameter iterations to zero anyway.
                 throw new IllegalActionException(this,
                         "Cannot set runUntilDeadlockInOneIteration to be "
-                        + "true if this DDFDirector is at top level. "
-                        + "Instead you should set the parameter iterations "
+                        + "true if this DDFDirector is at top level. " 
+                        + "Instead you should set the parameter iterations " 
                         + "to be zero to achieve the same effect.");
             }
         } else {
@@ -257,8 +257,8 @@ public class DDFDirector extends Director {
         }
     }
 
-    /** Execute the model for one iteration. First scan all active actors
-     *  to put all enabled and non-deferrable actors in a list and find the
+    /** Execute the model for one iteration. First scan all active actors 
+     *  to put all enabled and non-deferrable actors in a list and find the 
      *  minimax actors. Fire all actors once in the list. If no actor has been
      *  fired, fire the minimax actors. If still no actor has been fired,
      *  a deadlock has been detected. This concludes one basic iteration,
@@ -267,9 +267,9 @@ public class DDFDirector extends Director {
      *  defined, continue to execute basic iterations until the actor has
      *  been fired at least the number of times given in that parameter. If
      *  more than one actor has such a parameter, then the iteration will
-     *  continue until all are satisfied. If the parameter
-     *  <i>runUntilDeadlockInOneIteration</i> has value true, one iteration
-     *  consists of repeatedly executing basic iterations until the actors
+     *  continue until all are satisfied. If the parameter 
+     *  <i>runUntilDeadlockInOneIteration</i> has value true, one iteration 
+     *  consists of repeatedly executing basic iterations until the actors 
      *  under control of this director reach a deadlock.
      *  @exception IllegalActionException If any actor executed by this
      *   actor returns false in prefire().
@@ -296,7 +296,7 @@ public class DDFDirector extends Director {
                 // Scan all actors to find all enabled and not
                 // deferrable actors.
                 Actor actor = (Actor) actors.next();
-
+                
                 if (_disabledActors.contains(actor)) {
                     continue;
                 }
@@ -339,12 +339,12 @@ public class DDFDirector extends Director {
                     Actor minimaxActor = (Actor) minimaxActorsIterator.next();
                     _fireActor(minimaxActor);
                 }
-            }
-
+            }            
+                       
             if (_runUntilDeadlock) {
                 // Repeat basic iteration if at lease one actor
                 // has been fired.
-                repeatBasicIteration = _firedOne;
+                repeatBasicIteration = _firedOne;  
             } else if (_firedOne) {
                 // Check to see if we need to repeat basic iteration to
                 // satisfy requiredFiringsPerIteration for some actors.
@@ -358,7 +358,7 @@ public class DDFDirector extends Director {
                         actors.remove();
                         continue;
                     }
-
+                        
                     int[] flags = (int[]) _actorsFlags.get(actor);
                     int requiredFirings = flags[_REQUIRED_FIRINGS_PER_ITERATION];
                     int firingsDone = flags[_NUMBER_OF_FIRINGS];
@@ -367,40 +367,37 @@ public class DDFDirector extends Director {
                         repeatBasicIteration = true;
                         break;
                     }
-                }
+                } 
             } else {
                  // If no actor has been fired, declare deadlock
-                 _isDeadlocked = true;
                  if (_debugging) {
                      _debug("deadlock detected");
-                 }
-                 // Remember repeatBasicIteration is still false if we get here,
-                 // so we jump out of while loop and return from this method.
+                 } 
+                 repeatBasicIteration = false;
             }
         }
     }
 
-    /** Initialize the model controlled by this director. Initialize the
-     *  actors associated with this director. set all the state variables
-     *  to the their initial values.  The order in which the actors are
-     *  initialized is arbitrary. If actors connected directly to output
-     *  ports have initial production, then copy that initial production
+    /** Initialize the model controlled by this director. Initialize the 
+     *  actors associated with this director. set all the state variables 
+     *  to the their initial values.  The order in which the actors are 
+     *  initialized is arbitrary. If actors connected directly to output 
+     *  ports have initial production, then copy that initial production 
      *  to the outside of the composite actor.
      *  @exception IllegalActionException If the initialize() method of
      *   one of the associated actors throws it.
      */
     public void initialize() throws IllegalActionException {
-
+        
         _iterationCount = 0;
         _runUntilDeadlock = ((BooleanToken) runUntilDeadlockInOneIteration
-                .getToken()).booleanValue();
-        _isDeadlocked = false;
+                .getToken()).booleanValue();    
         _actorsToCheckNumberOfFirings.clear();
         _disabledActors.clear();
-
+        
         super.initialize();
-
-        Iterator outputPorts
+        
+        Iterator outputPorts 
                 = ((Actor) getContainer()).outputPortList().iterator();
         while (outputPorts.hasNext()) {
             IOPort outputPort = (IOPort) outputPorts.next();
@@ -413,37 +410,37 @@ public class DDFDirector extends Director {
                                 + outputPort.getFullName());
                     }
 
-                    outputPort.send(i, token);
+                    outputPort.send(i, token); 
                 }
             }
         }
     }
-
-    /** Initialize the given actor. This method is called by the
-     *  initialize() method of the director, and by the manager whenever
-     *  an actor is added to the executing model as a mutation. It first
-     *  calls the actor's initialize() method which may emit initial tokens.
-     *  Then update the enabling status of the actor and all actors connected
+    
+    /** Initialize the given actor. This method is called by the 
+     *  initialize() method of the director, and by the manager whenever 
+     *  an actor is added to the executing model as a mutation. It first 
+     *  calls the actor's initialize() method which may emit initial tokens. 
+     *  Then update the enabling status of the actor and all actors connected 
      *  to this actor. Finally record the value given by
-     *  <i>requiredFiringsPerIteration</i> if the actor has such a parameter.
+     *  <i>requiredFiringsPerIteration</i> if the actor has such a parameter. 
      *  Any change to this parameter during execution will be ignored.
      *  @param actor The actor to be initialized.
-     *  @exception IllegalActionException If the
-     *   <i>requiredFiringsPerIteration</i> parameter does not contain
-     *   an IntToken.
+     *  @exception IllegalActionException If the 
+     *   <i>requiredFiringsPerIteration</i> parameter does not contain 
+     *   an IntToken.  
      */
     public void initialize(Actor actor) throws IllegalActionException {
         super.initialize(actor);
-        // The reason to check capacity here is that the actor may
+        // The reason to check capacity here is that the actor may 
         // emit tokens during initialization.
         int maximumCapacity = ((IntToken) maximumReceiverCapacity.getToken())
             .intValue();
-        if (maximumCapacity > 0) {
+        if (maximumCapacity > 0) {           
             _checkDownstreamReceiversCapacity(actor, maximumCapacity);
         }
-
+     
         _updateConnectedActorsStatus(actor);
-
+        
         // Determine requiredFiringsPerIteration for this actor.
         // The default value 0 means no requirement on this actor.
         int[] flags = (int[]) _actorsFlags.get(actor);
@@ -498,12 +495,12 @@ public class DDFDirector extends Director {
     /** Return a new SDFReceiver.
      *  @return A new SDFReceiver.
      */
-    public Receiver newReceiver() {
+    public Receiver newReceiver() {       
         return new SDFReceiver();
     }
 
     /** Increment the number of iterations. Return false if the system
-     *  has finished executing by reaching the iteration limit, or the system
+     *  has finished executing by reaching the iteration limit, or the system 
      *  is deadlocked.
      *  @return True if the Director wants to be fired again in the future.
      *  @exception IllegalActionException If the <i>iterations</i> parameter
@@ -519,8 +516,40 @@ public class DDFDirector extends Director {
             }
             return false;
         }
-
-        return !_isDeadlocked && super.postfire();
+        
+        // The DDF domain is deadlocked if no actor is fired in the last 
+        // basic iteration. However, if the DDF domain is embedded inside
+        // another domain, then we have to check whether transferring
+        // more tokens into the DDF domain will solve the deadlock.
+        boolean isDeadlocked = !_firedOne;        
+        if (isDeadlocked && _isEmbedded()) {
+            Iterator inputPorts 
+                    = ((Actor) getContainer()).inputPortList().iterator();
+            while (inputPorts.hasNext()) {
+                IOPort inputPort = (IOPort) inputPorts.next();
+                Receiver deepReceivers[][] = inputPort.deepGetReceivers();
+                foundNotSatisfiedReceiver:   
+                for (int i = 0; i < deepReceivers.length; i++) {
+                    for (int j = 0; j < deepReceivers[i].length; j++) {
+                        SDFReceiver deepReceiver 
+                                = (SDFReceiver) deepReceivers[i][j];
+                        IOPort port = deepReceiver.getContainer();
+                        // We don't consider the weird case where the input
+                        // port is directly connected to an output port
+                        // of the container.
+                        if (port.getContainer() != getContainer()) {
+                            int tokenConsumptionRate = 
+                                    _getTokenConsumptionRate(deepReceiver);
+                            if (deepReceiver.size() < tokenConsumptionRate) {
+                                isDeadlocked = false;
+                                break foundNotSatisfiedReceiver;
+                            }    
+                        }
+                    }    
+                }
+            }
+        }    
+        return !isDeadlocked && super.postfire();
     }
 
     /** Check the input ports of the container composite actor (if there
@@ -678,7 +707,9 @@ public class DDFDirector extends Director {
 
     /** Override the base class method to transfer enough tokens to
      *  fulfill the output production rate. If there are not enough
-     *  tokens, then throw an exception.
+     *  tokens, then throw an exception. If the token production rate  
+     *  is not defined for the port, transfer all tokens contained
+     *  by the port.
      *  @exception IllegalActionException If the port is not an opaque
      *   output port, or if there are not enough output tokens available.
      *  @param port The port to transfer tokens from.
@@ -701,23 +732,38 @@ public class DDFDirector extends Director {
 
         for (int i = 0; i < port.getWidthInside(); i++) {
             try {
-                for (int k = 0; k < rate[i]; k++) {
-                    if (port.hasTokenInside(i)) {
-                        Token t = port.getInside(i);
+                if (rate[i] >= 0) { 
+                    for (int k = 0; k < rate[i]; k++) {
+                        if (port.hasTokenInside(i)) {
+                            Token token = port.getInside(i);
 
+                            if (_debugging) {
+                                _debug(getName(),
+                                        "transferring output from channel " + i
+                                        + " of port " + port.getName());
+                            }
+
+                            port.send(i, token);
+                            wasTransferred = true;
+                        } else {
+                            throw new IllegalActionException(this, port,
+                                    "Channel " + i + " should produce " + rate[i]
+                                    + " tokens, but there were only " + k
+                                    + " tokens available.");
+                        }
+                    }         
+                } else {
+                    while (port.hasTokenInside(i)) {
+                        Token token = port.getInside(i);
+                        
                         if (_debugging) {
                             _debug(getName(),
                                     "transferring output from channel " + i
                                     + " of port " + port.getName());
                         }
 
-                        port.send(i, t);
+                        port.send(i, token);
                         wasTransferred = true;
-                    } else {
-                        throw new IllegalActionException(this, port,
-                                "Channel " + i + " should produce " + rate[i]
-                                + " tokens, but there were only " + k
-                                + " tokens available.");
                     }
                 }
             } catch (NoTokenException ex) {
@@ -761,7 +807,7 @@ public class DDFDirector extends Director {
      */
     protected void _checkDownstreamReceiversCapacity(Actor actor, int capacity)
             throws IllegalActionException {
-
+ 
         if (capacity > 0) {
             Iterator outputPorts = actor.outputPortList().iterator();
 
@@ -784,7 +830,7 @@ public class DDFDirector extends Director {
             }
         }
     }
-
+    
     /** Iterate the actor once. Increment the firing number for it.
      *  Update the enabling status for each connected actor as well
      *  as itself.
@@ -797,18 +843,18 @@ public class DDFDirector extends Director {
         if (_debugging) {
             _debug(new FiringEvent(this, actor, FiringEvent.BEFORE_ITERATE));
         }
-
+       
         // Iterate once.
         int returnValue = actor.iterate(1);
-
+        
+        if (_debugging) {
+            _debug(new FiringEvent(this, actor, FiringEvent.AFTER_ITERATE));
+        }
+        
         int maximumCapacity = ((IntToken) maximumReceiverCapacity.getToken())
             .intValue();
         if (maximumCapacity > 0) {
             _checkDownstreamReceiversCapacity(actor, maximumCapacity);
-        }
-
-        if (_debugging) {
-            _debug(new FiringEvent(this, actor, FiringEvent.AFTER_ITERATE));
         }
 
         if (returnValue == STOP_ITERATING) {
@@ -819,28 +865,38 @@ public class DDFDirector extends Director {
 
             _disabledActors.add(actor);
             _actorsToCheckNumberOfFirings.remove(actor);
-        } else if (returnValue == NOT_READY) {
-            // Should not reach here if the scheduler and actors are
-            // correctly designed. Only enabled actors are fired.
-            throw new IllegalActionException(this, (ComponentEntity) actor,
-                    "Actor " + "is not ready to fire.");
+            
+        // If the returnValue is NOT_READY, it silently returns. This runs
+        // the risk of neglecting the promise the actor makes to the director
+        // because the director only fires enabled actors. If an actor is
+        // enabled, then its prefire() method should not return false? Notice
+        // this is different from DE where the director tries to fire an actor
+        // whenever there is an event destined to the actor at the current time,
+        // and calls its prefire() method to check if it is ready.
+        //} else if (returnValue == NOT_READY) {
+            // Should not reach here if the scheduler and actors are 
+            // correctly designed. Only enabled actors are fired. 
+        //    throw new IllegalActionException(this, (ComponentEntity) actor,
+        //            "Actor " + "is not ready to fire.");
         }
 
-        // At least one actor has been fired in this basic iteration.
-        _firedOne = true;
+        if (returnValue != NOT_READY) {
+            // At least one actor has been fired in this basic iteration.
+            _firedOne = true;
 
-        // Increment the firing number.
-        int[] flags = (int[]) _actorsFlags.get(actor);
-        flags[_NUMBER_OF_FIRINGS]++;
-
-        _updateConnectedActorsStatus(actor);
-
+            // Increment the firing number.
+            int[] flags = (int[]) _actorsFlags.get(actor);
+            flags[_NUMBER_OF_FIRINGS]++;
+        
+            _updateConnectedActorsStatus(actor);
+        }    
+            
         return returnValue;
     }
 
-    /** Check each remote receiver to see whether the number of tokens in
-     *  the receiver is greater than or equal to the tokenConsumptionRate
-     *  of the containing port. The actor is deferrable if the above test
+    /** Check each remote receiver to see whether the number of tokens in 
+     *  the receiver is greater than or equal to the tokenConsumptionRate 
+     *  of the containing port. The actor is deferrable if the above test 
      *  is true for any receiver. At the same time, find the maximum number
      *  of tokens in all receivers, which is used to find minimax actors
      *  later on.
@@ -869,52 +925,11 @@ public class DDFDirector extends Director {
                         continue;
                     }
 
-                    // The default value for tokenConsumptionRate is 1.
-                    int tokenConsumptionRate = 1;
-                    Variable rate = null;
+                    int tokenConsumptionRate = 
+                            _getTokenConsumptionRate(farReceiver);
 
-                    if (port.isInput()) {
-                        rate = DFUtilities.getRateVariable(port,
-                                "tokenConsumptionRate");
-                    }
-
-                    // If DDF domain is inside another domain and the
-                    // farReceiver is contained by an opaque output port...
-                    if (port.isOutput()) {
-                        rate = DFUtilities.getRateVariable(port,
-                                "tokenProductionRate");
-                    }
-
-                    if (rate != null) {
-                        Token token = rate.getToken();
-                        if (token != null) {
-                            if (token instanceof ArrayToken) {
-                                Token[] tokens = ((ArrayToken) token).arrayValue();
-
-                                // Scan the contained receivers of the remote
-                                // port to find out channel index.
-                                Receiver[][] portReceivers = port.getReceivers();
-                                int channelIndex = 0;
-                                foundChannelIndex:
-                                for (int m = 0; m < portReceivers.length; m++) {
-                                    for (int n = 0; n < portReceivers[m].length;
-                                         n++) {
-                                        if (farReceiver == portReceivers[m][n]) {
-                                            channelIndex = m;
-                                            break foundChannelIndex;
-                                        }
-                                    }
-                                }
-
-                                tokenConsumptionRate = ((IntToken) tokens[channelIndex])
-                                    .intValue();
-                            } else {
-                                tokenConsumptionRate = ((IntToken) token).intValue();
-                            }
-                        }
-                    }
-
-                    if (farReceiver.size() >= tokenConsumptionRate) {
+                    if (tokenConsumptionRate >= 0 
+                            && farReceiver.size() >= tokenConsumptionRate) {
                         deferrable = true;
 
                         // Here we find the maximum of the token numbers for
@@ -933,7 +948,7 @@ public class DDFDirector extends Director {
                         if (farReceiver.size() > maxSize) {
                             maxSize = farReceiver.size();
                         }
-                    }
+                    } 
                 }
             }
         }
@@ -970,17 +985,17 @@ public class DDFDirector extends Director {
 
         return true;
     }
-
-    /** Update the enabling status of the given actor and all actors
+    
+    /** Update the enabling status of the given actor and all actors 
      *  connected to this actor. This method gets called after the given
-     *  actor gets initialized or fired.
+     *  actor gets initialized or fired. 
      * @param actor The actor to te checked.
-     * @throws IllegalActionException If _getActorStatus(Actor) throws
-     *  IllegalActionException.
+     * @throws IllegalActionException If _getActorStatus(Actor) throws 
+     *  IllegalActionException. 
      */
     protected void _updateConnectedActorsStatus(Actor actor)
             throws IllegalActionException {
-
+        
         // Update enabling status for each connected actor.
         Iterator ports = ((Entity) actor).portList().iterator();
 
@@ -995,7 +1010,7 @@ public class DDFDirector extends Director {
                 // Skip it if the connectedActor to be checked contains
                 // this director.
                 if (getContainer() != connectedActor) {
-
+                    
                     // Get an array of actor flags from HashMap.
                     // Create it if none found.
                     int[] flags;
@@ -1005,7 +1020,7 @@ public class DDFDirector extends Director {
                         flags = new int[4];
                         _actorsFlags.put(connectedActor, flags);
                     }
-
+  
                     flags[_ENABLING_STATUS] = _getActorStatus(connectedActor);
                 }
             }
@@ -1036,11 +1051,11 @@ public class DDFDirector extends Director {
         int[] rate = new int[port.getWidth()];
         Arrays.fill(rate, 1);
 
-        Variable parameter = DFUtilities.getRateVariable(port,
+        Variable rateVariable = DFUtilities.getRateVariable(port,
                 "tokenConsumptionRate");
 
-        if (parameter != null) {
-            Token token = parameter.getToken();
+        if (rateVariable != null) {
+            Token token = rateVariable.getToken();
 
             if (token != null) {
                 // If token is ArrayToken, then each channel has a
@@ -1062,13 +1077,97 @@ public class DDFDirector extends Director {
                          // tokenConsumptionRate.
                     Arrays.fill(rate, ((IntToken) token).intValue());
                 }
-            }
+            }    
         }
 
         return rate;
     }
+    
+    /** Get token consumption rate for the given receiver. The port
+     *  containing the receiver can be an opaque output port. In that
+     *  case, it actually returns the production rate for that receiver.
+     *  @param receiver The receiver to get token consumption rate.
+     *  @return The token consumption rate of the given receiver.
+     *  @throws IllegalActionException If any called method throws
+     *   IllegalActionException. 
+     */
+    private int _getTokenConsumptionRate(Receiver receiver) 
+            throws IllegalActionException {
+        
+        int tokenConsumptionRate;
+        
+        IOPort port = receiver.getContainer();
+        Variable rateVariable = null;
+        Token token = null;
+        Receiver[][] portReceivers = null;
+        
+        // If DDF domain is inside another domain and the
+        // receiver is contained by an opaque output port...
+        // The default production rate is -1 which means all 
+        // tokens in the receiver are transferred to the outside.
+        if (port.isOutput()) {
+            rateVariable = DFUtilities.getRateVariable(port,
+                    "tokenProductionRate");
+            portReceivers = port.getInsideReceivers();
+            if (rateVariable == null) {
+                tokenConsumptionRate = -1; 
+                return tokenConsumptionRate;
+            } else {
+                token = rateVariable.getToken();
+                if (token == null) {
+                    tokenConsumptionRate = -1;
+                    return tokenConsumptionRate;
+                }    
+            } 
+        }
+                
+        if (port.isInput()) {
+            rateVariable = DFUtilities.getRateVariable(port,
+                    "tokenConsumptionRate");
+            portReceivers = port.getReceivers();
+            if (rateVariable == null) {
+                tokenConsumptionRate = 1; 
+                return tokenConsumptionRate;
+            } else {
+                token = rateVariable.getToken();
+                if (token == null) {
+                    tokenConsumptionRate = 1;
+                    return tokenConsumptionRate;
+                }    
+            } 
+        }
+   
+        if (token instanceof ArrayToken) {
+            Token[] tokens = ((ArrayToken) token).arrayValue();
 
-    /** Get token production rate for the given port.
+            // Scan the contained receivers of the port to find 
+            // out channel index.
+            int channelIndex = 0;
+            foundChannelIndex: 
+            for (int m = 0; m < portReceivers.length; m++) {
+                for (int n = 0; n < portReceivers[m].length;
+                    n++) {
+                    if (receiver == portReceivers[m][n]) {
+                        channelIndex = m;
+                        break foundChannelIndex;
+                    }
+                }
+            }
+            tokenConsumptionRate = ((IntToken) tokens[channelIndex])
+                    .intValue();
+        } else {
+            tokenConsumptionRate = ((IntToken) token).intValue();
+        }
+        
+        return tokenConsumptionRate;
+    }
+
+    /** Get token production rate for the given port. The convention 
+     *  is that if a parameter named <i>tokenproductionRate</i> is 
+     *  defined, return the value in that parameter. Otherwise, return
+     *  an array of -1 which means the director should transfer all
+     *  tokens contained in the port to the outside. Note the difference
+     *  from SDF domain.
      *  @param port The port to get token production rate.
      *  @return An int array of token production rate.
      *  @exception IllegalActionException If parameter throws it
@@ -1077,14 +1176,13 @@ public class DDFDirector extends Director {
      */
     private int[] _getTokenProductionRate(IOPort port)
             throws IllegalActionException {
+        
         int[] rate = new int[port.getWidthInside()];
-        Arrays.fill(rate, 1);
-
-        Variable parameter = DFUtilities.getRateVariable(port,
+        Arrays.fill(rate, -1);
+        Variable rateVariable = DFUtilities.getRateVariable(port,
                 "tokenProductionRate");
-
-        if (parameter != null) {
-            Token token = parameter.getToken();
+        if (rateVariable != null) {
+            Token token = rateVariable.getToken();
 
             if (token != null) {
                 // If token is ArrayToken, then each channel has a
@@ -1106,7 +1204,7 @@ public class DDFDirector extends Director {
                          // tokenProductionRate.
                     Arrays.fill(rate, ((IntToken) token).intValue());
                 }
-            }
+            }    
         }
 
         return rate;
@@ -1115,7 +1213,7 @@ public class DDFDirector extends Director {
     /** Initialize the object. In this case, we give the DDFDirector
      *  an <i>iterations</i> parameter with default value zero,
      *  a <i>maximumReceiverCapacity</i> parameter with default value zero
-     *  and a <i>runUntilDeadlockInOneIteration</i> parameter with default
+     *  and a <i>runUntilDeadlockInOneIteration</i> parameter with default 
      *  value false.
      */
     private void _init()
@@ -1124,12 +1222,12 @@ public class DDFDirector extends Director {
         iterations.setTypeEquals(BaseType.INT);
         iterations.setToken(new IntToken(0));
 
-        maximumReceiverCapacity
+        maximumReceiverCapacity 
                 = new Parameter(this, "maximumReceiverCapacity");
         maximumReceiverCapacity.setTypeEquals(BaseType.INT);
         maximumReceiverCapacity.setToken(new IntToken(0));
 
-        runUntilDeadlockInOneIteration
+        runUntilDeadlockInOneIteration 
                 = new Parameter(this, "runUntilDeadlockInOneIteration");
         runUntilDeadlockInOneIteration.setTypeEquals(BaseType.BOOLEAN);
         runUntilDeadlockInOneIteration.setToken(new BooleanToken(false));
@@ -1146,10 +1244,7 @@ public class DDFDirector extends Director {
     // The number of iterations.
     private int _iterationCount = 0;
 
-    // The value that indicates the system is deadlocked or not.
-    private boolean _isDeadlocked;
-
-    // A boolean initialized with value in the parameter
+    // A boolean initialized with value in the parameter 
     // runUntilDeadlockInOneIteration.
     private boolean _runUntilDeadlock;
 
@@ -1164,7 +1259,7 @@ public class DDFDirector extends Director {
     // requiredFiringsPerIteration and numberOfFirings in this
     // variable instead of in _actorsFlags.
     private LinkedList _actorsToCheckNumberOfFirings = new LinkedList();
-
+    
     // The set of actors that have returned false in their postfire()
     // methods and therefore become disabled.
     private Set _disabledActors = new HashSet();
