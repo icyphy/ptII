@@ -1082,7 +1082,7 @@ public class HDFFSMController  extends FSMController implements TypedActor {
     protected void _updateInputTokenConsumptionRates(TypedCompositeActor actor) 
 	throws IllegalActionException {
 	// Get all of its input ports.
-	Enumeration refineInPorts = actor.inputPorts();
+	Enumeration refineInPorts = Collections.enumeration(actor.inputPortList());
 	// Get the current refinement's container.
 	ComponentEntity refineInPortContainer =
 	    (ComponentEntity) actor.getContainer();
@@ -1098,7 +1098,7 @@ public class HDFFSMController  extends FSMController implements TypedActor {
 	    // linked to on the outside (should only consist
 	    // of 1 port).
 	    Enumeration inPortsOutside = 
-		refineInPort.deepConnectedInPorts();
+		Collections.enumeration(refineInPort.deepConnectedInPortList());
 	    if (!inPortsOutside.hasMoreElements()) {
 		throw new IllegalActionException("Current " +
 			  "state's refining actor has an input " +
@@ -1163,7 +1163,7 @@ public class HDFFSMController  extends FSMController implements TypedActor {
     protected void _updateOutputTokenProductionRates(TypedCompositeActor actor) 
 	throws IllegalActionException {
 	// Get all of its input ports.
-	Enumeration refineOutPorts = actor.outputPorts();
+	Enumeration refineOutPorts = Collections.enumeration(actor.outputPortList());
 	// Get the current refinement's container.
 	ComponentEntity refineOutPortContainer =
 	    (ComponentEntity) actor.getContainer();
@@ -1179,7 +1179,7 @@ public class HDFFSMController  extends FSMController implements TypedActor {
 	    // linked to on the outside (should only consist
 	    // of 1 port).
 	    Enumeration outPortsOutside = 
-		refineOutPort.deepConnectedOutPorts();
+		Collections.enumeration(refineOutPort.deepConnectedOutPortList());
 	    if (!outPortsOutside.hasMoreElements()) {
 		throw new IllegalActionException("Current " +
 			  "state's refining actor has an output " +
