@@ -244,7 +244,19 @@ proc sootCodeGeneration {modelPath {codeGenType Shallow} \
 	    set containedActor [$deepEntityList get $i]
 	    if [java::instanceof $containedActor \
 		    ptolemy.actor.TypedCompositeActor] {
-		puts "$modelPath:  Deep codegen only works on flat models"
+		puts "$modelPath:  Deep codegen does not work on models with opaque hierarchy"
+		return
+	    }
+
+	}
+
+	# check for transparent hierarchy
+	set entityList [$compositeActor entityList]
+	for {set i 0} {$i < [$entityList size]} {incr i} {
+	    set containedActor [$entityList get $i]
+	    if [java::instanceof $containedActor \
+		    ptolemy.actor.TypedCompositeActor] {
+		puts "$modelPath:  Deep codegen does not work on models with transparent hierarchy"
 		return
 	    }
 
