@@ -1,4 +1,4 @@
-/* CSPBuffer atomic actor.
+/* A single channel buffer.
 
  Copyright (c) 1998-1999 The Regents of the University of California.
  All rights reserved.
@@ -46,8 +46,8 @@ import ptolemy.data.expr.Parameter;
 A single channel buffer. This actor is the canonical example of how
 to use a CDO construct. It is parameterized by the Parameter "depth",
 which controls how many Tokens can be stored in this buffer.
-The default depth of the buffer is 1. The buffer depth is set upon calling
-the fire method. The fire() method does not return until a
+The default depth of the buffer is 1. The buffer depth is set upon 
+calling the fire method. The fire() method does not return until a
 TerminateProcessException is thrown.
 <p>
 @author Neil Smyth
@@ -56,79 +56,97 @@ TerminateProcessException is thrown.
 
 public class CSPBuffer extends CSPActor {
 
-    /** Construct a CSPBuffer in the default workspace with an empty string
-     *  as its name. The actor is parameterized by its depth, which must
-     *  be an integer. The default depth of the buffer is one.
-     *  The actor is created with a single input port and a single output
-     *  port, both of width one. The input port is called "input", and
-     *  similarly, the output port is called "output".
-     *  The object is added to the workspace directory.
-     *  Increment the version number of the workspace.
-     *  @exception IllegalActionException If the port or parameter cannot
-     *   be contained by this actor.
-     *  @exception NameDuplicationException If the port name coincides with
-     *   a port already in this actor, or if the parameter name coincides with
-     *   a parameter already in this actor
+    /** Construct a CSPBuffer in the default workspace with an empty 
+     *  string as its name. The actor is parameterized by its depth, 
+     *  which must be an integer. The default depth of the buffer is 
+     *  one. The actor is created with a single input port and a single 
+     *  output port, both of width one. The input port is called "input", 
+     *  and similarly, the output port is called "output". The object is 
+     *  added to the workspace directory. Increment the version number of 
+     *  the workspace.
+     *  @exception IllegalActionException If the port or parameter 
+     *   cannot be contained by this actor.
+     *  @exception NameDuplicationException If the port name coincides 
+     *   with a port already in this actor, or if the parameter name 
+     *   coincides with a parameter already in this actor.
      */
-    public CSPBuffer() throws IllegalActionException, NameDuplicationException{
+    public CSPBuffer() throws IllegalActionException, 
+    	    NameDuplicationException {
         super();
-        _depth = new Parameter(this, "depth", (new IntToken(1)) );
-        _output = new TypedIOPort(this, "output", false, true);
-        _input = new TypedIOPort(this, "input", true, false);
+        depth = new Parameter(this, "depth", (new IntToken(1)) );
+        output = new TypedIOPort(this, "output", false, true);
+        input = new TypedIOPort(this, "input", true, false);
 
-	_output.setTypeEquals(BaseType.GENERAL);
-	_input.setTypeEquals(BaseType.GENERAL);
+	output.setTypeEquals(BaseType.GENERAL);
+	input.setTypeEquals(BaseType.GENERAL);
     }
 
-    /** Construct a CSPBuffer in the specified container with the specified
-     *  name.  The name must be unique within the container or an exception
-     *  is thrown. The container argument must not be null, or a
-     *  NullPointerException will be thrown. The actor is parameterized by
-     *  its depth, which must be an integer. The default depth of the buffer
-     *  is one. The actor is created with a single input
-     *  port and a single output port, both of width one.Tthe input port
-     *  is called "input", and similarly, the output port is called "output".
+    /** Construct a CSPBuffer in the specified container with the 
+     *  specified name. The name must be unique within the container 
+     *  or an exception is thrown. The container argument must not be 
+     *  null, or a NullPointerException will be thrown. The actor is 
+     *  parameterized by its depth, which must be an integer. The default 
+     *  depth of the buffer is one. The actor is created with a single 
+     *  input port and a single output port, both of width one. The input 
+     *  port is called "input", and similarly, the output port is called 
+     *  "output". 
      *  <p>
-     *  @param container The TypedCompositeActor that contains this actor.
+     *  @param container The TypedCompositeActor that contains this 
+     *   actor. 
      *  @param name The actor's name.
-     *  @exception IllegalActionException If the entity cannot be contained
-     *   by the proposed container.
-     *  @exception NameDuplicationException If the name argument coincides with
-     *   an entity already in the container.
+     *  @exception IllegalActionException If the entity cannot be 
+     *   contained by the proposed container.
+     *  @exception NameDuplicationException If the name argument 
+     *   coincides with an entity already in the container.
      */
     public CSPBuffer(TypedCompositeActor cont, String name)
             throws IllegalActionException, NameDuplicationException {
         this(cont, name, 1);
     }
 
-    /** Construct a CSPBuffer in the specified container with the specified
-     *  name.  The name must be unique within the container or an exception
-     *  is thrown. The container argument must not be null, or a
-     *  NullPointerException will be thrown. The actor is parameterized by
-     *  its depth, which must be an integer. The buffer depth is assigned to
-     *  the value passed in. The actor is created with a
-     *  single input port and a single output port, both of width one. The
-     *  input port is called "input", and similarly, the output port is
-     *  called "output".
+    /** Construct a CSPBuffer in the specified container with the 
+     *  specified name.  The name must be unique within the container 
+     *  or an exception is thrown. The container argument must not be 
+     *  null, or a NullPointerException will be thrown. The actor is 
+     *  parameterized by its depth, which must be an integer. The buffer 
+     *  depth is assigned to the value passed in. The actor is created 
+     *  with a single input port and a single output port, both of width 
+     *  one. The input port is called "input", and similarly, the output 
+     *  port is called "output".
      *  <p>
      *  @param container The TypedCompositeActor that contains this actor.
      *  @param name The actor's name.
      *  @exception IllegalActionException If the entity cannot be contained
      *   by the proposed container.
-     *  @param depth The depth of this buffer.
-     *  @exception NameDuplicationException If the name argument coincides with
-     *   an entity already in the container.
+     *  @param theDepth The depth of this buffer.
+     *  @exception NameDuplicationException If the name argument coincides 
+     *   with an entity already in the container.
      */
-    public CSPBuffer(TypedCompositeActor cont, String name, int depth)
+    public CSPBuffer(TypedCompositeActor cont, String name, int theDepth)
             throws IllegalActionException, NameDuplicationException {
         super(cont, name);
-	_depth = new Parameter(this, "depth", (new IntToken(depth)) );
-	_output = new TypedIOPort(this, "output", false, true);
-	_input = new TypedIOPort(this, "input", true, false);
+	depth = new Parameter(this, "depth", (new IntToken(theDepth)) );
+	output = new TypedIOPort(this, "output", false, true);
+	input = new TypedIOPort(this, "input", true, false);
 
-	_output.setTypeEquals(BaseType.GENERAL);
-	_input.setTypeEquals(BaseType.GENERAL);
+	output.setTypeEquals(BaseType.GENERAL);
+	input.setTypeEquals(BaseType.GENERAL);
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     ports and parameters                  ////
+
+    /** The input port for this actor.
+     */
+    public TypedIOPort input;
+
+    /** The output port for this actor.
+     */
+    public TypedIOPort output;
+
+    /** The Parameter storing the depth of the buffer.
+     */
+    public Parameter depth;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -143,19 +161,19 @@ public class CSPBuffer extends CSPActor {
      */
     public void fire() throws IllegalActionException {
         try {
-            int depth = ((IntToken)_depth.getToken()).intValue();
-            _buffer = new Token[depth];
+            int iDepth = ((IntToken)depth.getToken()).intValue();
+            _buffer = new Token[iDepth];
             int count = 0;
             boolean guard = false;
             boolean continueCDO = true;
             ConditionalBranch[] branches = new ConditionalBranch[2];
             while (continueCDO) {
                 // step 1
-                guard = (_size < depth);
-                branches[0] = new ConditionalReceive(guard, _input, 0, 0);
+                guard = (_size < iDepth);
+                branches[0] = new ConditionalReceive(guard, input, 0, 0);
 
                 guard = (_size > 0);
-                branches[1] = new ConditionalSend(guard, _output, 0, 1,
+                branches[1] = new ConditionalSend(guard, output, 0, 1,
                         _buffer[_readFrom]);
 
                 // step 2
@@ -165,23 +183,17 @@ public class CSPBuffer extends CSPActor {
                 if (successfulBranch == 0) {
                     _size++;
                     _buffer[_writeTo] = branches[0].getToken();
-                    System.out.println(getName() + " got Token: " +
-                            _buffer[_writeTo].toString() + ", size is: " +
-                            _size);
-                    _writeTo = ++_writeTo % depth;
+                    _writeTo = ++_writeTo % iDepth;
                 } else if (successfulBranch == 1) {
                     _size--;
-                    System.out.println(getName() + " sent Token: " +
-                            _buffer[_readFrom].toString() + ", size is: " +
-                            _size);
-                    _readFrom = ++_readFrom % depth;
+                    _readFrom = ++_readFrom % iDepth;
                 } else if (successfulBranch == -1) {
                     // all guards false so exit CDO
                     continueCDO = false;
                 } else {
                     throw new IllegalActionException(getName() + ": " +
-                            "invalid branch id returned during execution " +
-                            "of CDO.");
+                            "invalid branch id returned during " +
+                            "execution of CDO.");
                 }
 
                 count++;
@@ -197,15 +209,6 @@ public class CSPBuffer extends CSPActor {
 
     // The array storing the buffered Tokens.
     private Token[] _buffer;
-
-    // The Parameter storing the depth of the buffer.
-    private Parameter _depth;
-
-    // The input port for this actor.
-    private TypedIOPort _input;
-
-    // the output port for this actor.
-    private TypedIOPort _output;
 
     // The number of Tokens currently stored in the buffer.
     private int _size = 0;

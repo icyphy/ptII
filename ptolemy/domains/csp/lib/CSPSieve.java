@@ -64,13 +64,24 @@ public class CSPSieve extends CSPActor {
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
         _prime = prime;
-        _input = new TypedIOPort(this, "input", true, false);
-        _output = new TypedIOPort(this, "output", false, true);
+        input = new TypedIOPort(this, "input", true, false);
+        output = new TypedIOPort(this, "output", false, true);
 
-	_input.setTypeEquals(BaseType.GENERAL);
-	_output.setTypeEquals(BaseType.GENERAL);
+	input.setTypeEquals(BaseType.GENERAL);
+	output.setTypeEquals(BaseType.GENERAL);
     }
 
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     ports and parameters                  ////
+
+    /** The input port
+     */
+    public TypedIOPort input;
+
+    /** The output port
+     */
+    public TypedIOPort output;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -88,7 +99,7 @@ public class CSPSieve extends CSPActor {
         int limit = 100;
 	while (true) {
 	    //System.out.println("Sieve getting data");
-	    data = _input.get(0);
+	    data = input.get(0);
             lastSeen = ((IntToken)data).intValue();
 	    //System.out.println("Sieve got data:" + data.toString());
 	    if (lastSeen % _prime != 0) {
@@ -105,7 +116,7 @@ public class CSPSieve extends CSPActor {
 		    islargestprime = false;
 		}
 		else {
-		    _output.send(0, data);
+		    output.send(0, data);
                 }
 	    }
 	}
@@ -140,24 +151,22 @@ public class CSPSieve extends CSPActor {
 
              queueEntityAddedEvent(container, newSieve);
              queueRelationAddedEvent(container, newRel);
-             queuePortLinkedEvent(newRel, _output);
+             queuePortLinkedEvent(newRel, output);
              queuePortLinkedEvent(newRel, newSieve.getPort("input"));
              }
              };
              return request;
              }
-            */
+    */
 
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // The input port
-    private TypedIOPort _input;
-
-    // The output port
-    private TypedIOPort _output;
-
     // The prime this sieve is filtering out.
     private int _prime;
 }
+
+
+
+

@@ -1,4 +1,5 @@
-/* Accepts a Token from any channel connected to its port.
+/* An actor that accepts a token from any channel connected to 
+its input.
 
  Copyright (c) 1998-1999 The Regents of the University of California.
  All rights reserved.
@@ -41,19 +42,40 @@ import ptolemy.data.type.BaseType;
 //////////////////////////////////////////////////////////////////////////
 //// CSPMultiSink
 /**
-Accepts a Token from any channel connected to its port. It uses a
-CDO construct to always be ready to accept a new Token.
-The channels it can accept from are set at the start of each firing.
-<p>
+A CSPMultiSink actor accepts a token from any channel connected to 
+its input. It uses a conditional do (CDO) construct to always be 
+ready to accept a new token. The channels it can accept from are set 
+at the start of each firing.
+
 @author Neil Smyth
 @version $Id$
 @see ptolemy.domains.csp.kernel.CSPActor
 */
 public class CSPMultiSink extends CSPActor {
+
+    /** Construct a CSPMultiSink in the default workspace with an 
+     *  empty string as its name. The actor is created with a single 
+     *  input port named "input". 
+     *  @exception IllegalActionException If the port cannot be 
+     *   contained by this actor.
+     *  @exception NameDuplicationException If the port name coincides 
+     *   with a port already in this actor.
+     */
     public CSPMultiSink() {
         super();
     }
 
+    /** Construct a CSPMultiSink with the specified container and
+     *  name. The actor is created with a single input port named 
+     *  "input". The name of the actor must be unique within the 
+     *  container or a NameDuplicationException is thrown. The 
+     *  container argument must not be null, or a NullPointerException 
+     *  will be thrown.
+     *  @exception IllegalActionException If the port cannot be 
+     *   contained by this actor.
+     *  @exception NameDuplicationException If the port name coincides 
+     *   with a port already in this actor.
+     */
     public CSPMultiSink(TypedCompositeActor cont, String name)
             throws IllegalActionException, NameDuplicationException {
         super(cont, name);
@@ -63,8 +85,19 @@ public class CSPMultiSink extends CSPActor {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                     ports and parameters                  ////
+
+    /** This actor's input port.
+     */
+    public TypedIOPort input;
+
+    ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Execute this actor by consuming tokens through the input
+     *  port. Use a conditional do (CDO) construct for token
+     *  consumption.
+     */
     public void fire() {
         try {
             int count = 0;
@@ -113,10 +146,17 @@ public class CSPMultiSink extends CSPActor {
         return;
     }
 
+    /** Return false indicating that iteration of this actor should
+     *  not continue.
+     * @return false Indicating that iteration of this actor should
+     *  should not continue.
+     */
     public boolean postfire() {
         return false;
     }
 
+    /** Discontinue the execution of this actor.  
+     */
     public void wrapup() {
         System.out.println(Thread.currentThread().getName() +
                 ":Invoking wrapup of CSPMultiSink...\n");
@@ -126,8 +166,6 @@ public class CSPMultiSink extends CSPActor {
                     " times.");
         }
     }
-
-    public TypedIOPort input;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
