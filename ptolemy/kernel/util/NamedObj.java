@@ -1351,12 +1351,11 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
             // an external URL source for the text, which is again null.
             icon.configure(null, null, text);
         } catch (Exception ex) {
-            ex.printStackTrace();
-            throw new InternalErrorException(
+            throw new InternalErrorException(this, ex,
                     "Error creating singleton attribute named "
                     + name
                     + " for "
-                    + getFullName() + ":" + ex);
+                    + getFullName());
         }
     }
 
