@@ -105,8 +105,8 @@ public class RadioController extends AtomicActor {
                 try {
                     PNPlot newplot = new PNPlot (container, _count + "_radio");
 		    queueEntityAddedEvent(container, newplot);
-		    IOPort radioport = newplot.getPort("input");
-		    queuePortLinkedEvent(_relation, port);
+		    IOPort radioport = (IOPort)newplot.getPort("input");
+		    queuePortLinkedEvent(_relation, radioport);
                 } catch (NameDuplicationException ex) {
                     throw new InvalidStateException("Cannot create " +
                             "new sieve.");
