@@ -36,10 +36,6 @@ public class AcousticChannel extends DelayChannel {
     public AcousticChannel(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        propagationSpeed = new Parameter(this, "propagationSpeed");
-        propagationSpeed.setTypeEquals(BaseType.DOUBLE);
-        propagationSpeed.setExpression("340.0");
+        // FIXME: Implement this.
     }
-
-    public Parameter propagationSpeed;
 }

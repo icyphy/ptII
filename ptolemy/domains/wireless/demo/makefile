@@ -31,7 +31,8 @@
 ME =		ptolemy/domains/wireless/demo
 
 # Keep these alphabetical please.
-DIRS = 		WirelessSoundDetection
+DIRS = 		CircularRange\
+	WirelessSoundDetection
 
 # Root of Ptolemy II directory
 ROOT =		../../../..

@@ -31,7 +31,10 @@
 package ptolemy.domains.wireless.lib;
 
 import ptolemy.data.DoubleToken;
+import ptolemy.data.ScalarToken;
 import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
 import ptolemy.domains.wireless.kernel.WirelessChannel;
 import ptolemy.domains.wireless.kernel.WirelessIOPort;
 import ptolemy.kernel.CompositeEntity;
@@ -42,10 +45,25 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// CircularRangeChannel
 
 /**
-Model of a wireless channel.
-FIXME: More details.
+Model of a wireless channel with a specified transmission range.
+The transmission range can be specified in one of two ways.
+Either it is the value of the <i>defaultRange</i> parameter of this
+channel, or it is provided by the tranmitter on each call to
+transmit() as a property argument.  To use the latter mechanism,
+it is necessary that the property token be an instance of ScalarToken
+that can be converted to a double (i.e., it can be a double, an int,
+or a byte).
+<p>
+Any receiver that is within the specified range when transmit()
+is called will receive the transmission.  The distance between
+the transmitter and receiver is determined by the protected
+method _distanceBetween().  In this base class, that method uses
+the _location attribute of the transmit and receive actors,
+which corresponds to the position of the icon in the Vergil
+visual editor.  Subclasses may override this protected method
+to provide some other notion of distance.
 
-@author Philip Baldwin, Xiaojun Liu, and Edward A. Lee
+@author Edward A. Lee
 @version $Id$
 */
 public class CircularRangeChannel extends WirelessChannel {
@@ -63,7 +81,20 @@ public class CircularRangeChannel extends WirelessChannel {
     public CircularRangeChannel(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+        
+        defaultRange = new Parameter(this, "defaultRange");
+        defaultRange.setTypeEquals(BaseType.DOUBLE);
+        defaultRange.setExpression("100.0");
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         parameters                        ////
+
+    /** The default transmission range of this channel, for use when
+     *  the transmitter gives no properties argument to transmit().
+     *  This is a double that defaults to 100.0. 
+     */
+    public Parameter defaultRange;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -87,11 +118,15 @@ public class CircularRangeChannel extends WirelessChannel {
     protected boolean _isInRange(
             WirelessIOPort source, WirelessIOPort destination, Token properties)
             throws IllegalActionException {
-        // FIXME: Or convertible to DoubleToken
-        if (properties instanceof DoubleToken) {
-            double range = ((DoubleToken)properties).doubleValue();
-            return (_distanceBetween(source, destination) <= range);
+        double range;
+        if (properties instanceof ScalarToken) {
+            // NOTE: This may throw a NotConvertibleException, if,
+            // example, a Complex or a Long is given.
+            range = ((ScalarToken)properties).doubleValue();
+        } else {
+            range = ((DoubleToken)defaultRange.getToken()).doubleValue();
         }
-        return super._isInRange(source, destination, properties);
+        boolean result = (_distanceBetween(source, destination) <= range);
+        return result;
     }
 }

@@ -120,8 +120,20 @@ public class WirelessChannel extends TypedAtomicActor {
         try {
             workspace().getReadAccess();
             Iterator receivers = _receiversInRange(port, properties).iterator();
+            if (_debugging) {
+                _debug("----\nTransmitting from port: " + port.getFullName());
+                _debug("Token value: " + token.toString());
+                if (receivers.hasNext()) {
+                    _debug("Receivers in range:");
+                } else {
+                    _debug("No receivers in range.");
+                }
+            }
             while (receivers.hasNext()) {
                 Receiver receiver = (Receiver)receivers.next();
+                if (_debugging) {
+                    _debug(" * " + receiver.getContainer().getFullName());
+                }
                 // FIXME: Check types?
                 receiver.put(token);
             }

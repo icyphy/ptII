@@ -25,7 +25,7 @@
   <property name="WirelessChannel" class="ptolemy.domains.wireless.kernel.WirelessChannel">
   </property>
   
-  <entity name="SoundSensor" class="ptolemy.apps.superb.sensor.demo.WirelessSoundDetection.SoundSensor">
+  <entity name="SoundSensor" class="ptolemy.domains.wireless.demo.WirelessSoundDetection.SoundSensor">
   </entity>
   
   <entity name="WirelessComposite" class="ptolemy.domains.wireless.kernel.WirelessComposite">

@@ -30,9 +30,6 @@
 
 package ptolemy.domains.wireless.demo.WirelessSoundDetection;
 
-import java.awt.Polygon;
-import java.awt.Shape;
-
 import ptolemy.actor.Director;
 import ptolemy.actor.TypeAttribute;
 import ptolemy.actor.TypedAtomicActor;
@@ -50,30 +47,16 @@ import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.vergil.icon.EditorIcon;
 import ptolemy.vergil.kernel.attributes.EllipseAttribute;
-import ptolemy.vergil.kernel.attributes.FilledShapeAttribute;
+import ptolemy.vergil.kernel.attributes.PolygonAttribute;
 
 //////////////////////////////////////////////////////////////////////////
 //// SoundSensor
 
 /**
-This class represents a general primarary wireless sensor node. The sensor node
-is directed by a sensor director.  The node is able to broadcast and receive 
-messages from other sensor nodes that are in reach.  The sensor node has three
-modes, BROADCAST, RECEIVE, and SLEEP. 
+This class is an example of a wireless sensor node defined in Java.
+FIXME: more details.
 
-In BROADCAST mode the sensor node sends or passes on the data(token)to all 
-nodes in reach.  When broadcast is done by the sensor node, the battery power
-of that node is reduced.  After 5 broadcast the signal radius is updated based
-on how much battery power is left.
-
-In RECEIVE mode the sensor interprets the data(token) at it's wirless IO port.
-A confimation message is then sent to the sensor director.
-
-In SLEEP mode the sensor saves battery power, and wait for message to receive.
-Must go to RECEIVE mode before it can go to BROADCAST mode.  Also, in SLEEP
-mode the battery power is slightly restored if it broadcasted last.
-
-@author Philip Baldwin
+@author Philip Baldwin and Edward A. Lee
 @version $Id$
 */
 public class SoundSensor extends TypedAtomicActor {
@@ -137,17 +120,15 @@ public class SoundSensor extends TypedAtomicActor {
         _circle.lineColor.setToken("{0.0, 0.5, 0.5, 1.0}");
 
         // Create the green antenna shape.
-        FilledShapeAttribute  antenna
-                = new FilledShapeAttribute(node_icon, "antenna2") {
-            protected Shape _newShape() {
-                int[] xpoints = {0, -5, 5, 0, 0};
-                int[] ypoints = {-5, -15, -15, -5, 15};
-                return new Polygon(xpoints, ypoints, 5);
-            }
-        };
+        PolygonAttribute  antenna = new PolygonAttribute(node_icon, "antenna2");
+        antenna.vertices.setToken("{0, -5, -5, -15, 5, -15, 0, -5, 0, 15}");        
         // Set the color to green.
         antenna.fillColor.setToken("{0.0, 1.0, 0.0, 1.0}");
-        antenna.width.setToken("10");
+        
+        // Make the icon non-persistent, since it gets created
+        // in java code.
+        // FIXME
+        // node_icon.setPersistent(false);
         
         // Hide the name of this sensor node. 
         new Attribute(this, "_hideName");

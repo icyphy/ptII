@@ -13,11 +13,9 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-/**
+/** FIXME
+ * 
  * @author liuxj
- *
- * To change the template for this generated type comment go to
- * Window>Preferences>Java>Code Generation>Code and Comments
  */
 public class DelayChannel extends WirelessChannel {
 
@@ -41,6 +39,9 @@ public class DelayChannel extends WirelessChannel {
         propagationSpeed.setTypeEquals(BaseType.DOUBLE);
         propagationSpeed.setExpression("340.0");
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         parameters                        ////
 
     public Parameter propagationSpeed;
 }
