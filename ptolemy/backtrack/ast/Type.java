@@ -29,7 +29,11 @@ COPYRIGHTENDKEY
 package ptolemy.backtrack.ast;
 
 import java.util.Enumeration;
+import java.util.HashSet;
 import java.util.Hashtable;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 
 import net.sourceforge.jrefactory.ast.Node;
 
@@ -145,6 +149,12 @@ public class Type {
                         return 2;
                     else if (formalType._primitiveNum == DOUBLE_NUM)
                         return 3;
+                    // We make the type checking less strict then Java to
+                    // allow for declarations like "byte b = 1;".
+                    else if (formalType._primitiveNum == BYTE_NUM)
+                        return 4;   // The same as short.
+                    else if (formalType._primitiveNum == SHORT_NUM)
+                        return 4;   // The same as byte.
                     else
                         return -1;
                 else if (_primitiveNum == LONG_NUM)
@@ -197,21 +207,18 @@ public class Type {
             Class class2 = formalType.toClass(loader);
             int i = 0;
             while (class1 != null) {
-                if (class1.getName().equals(class2.getName()))
-                    return i;
-                Class[] interfaces = class1.getInterfaces();
-                for (int j=0; j<interfaces.length; j++) {
-                    Class superInterface = interfaces[j];
-                    Class[] superInterfaces = superInterface.getInterfaces();
-                    for (int k=0; k<=superInterfaces.length; k++) {
-                        Class currentInterface;
-                        if (k == 0)
-                            currentInterface = superInterface;
-                        else
-                            currentInterface = superInterfaces[k - 1];
-                        if (currentInterface.getName().equals(class2.getName()))
-                            return i;
-                    }
+                List workList = new LinkedList();
+                Set handledSet = new HashSet();
+                workList.add(class1);
+                while (!workList.isEmpty()) {
+                    Class c = (Class)workList.remove(0);
+                    if (c.getName().equals(class2.getName()))
+                        return i;
+                    handledSet.add(c);
+                    Class[] interfaces = c.getInterfaces();
+                    for (int k=0; k<interfaces.length; k++)
+                        if (!handledSet.contains(interfaces[k]))
+                            workList.add(interfaces[k]);
                 }
                 i++;
                 class1 = class1.getSuperclass();
@@ -280,9 +287,11 @@ public class Type {
     /** Get the common type of two types when they appear in an
      *  expression. The following rules are followed:
      *  <ol>
+     *    <li>
      *    <li>Two object types cannot be computed in an expression,
      *      unless one of them is {@link String}, in which case the
-     *      result type is {@link String}.
+     *      result type is {@link String}, or they are the same
+     *      type.
      *    </li>
      *    <li>Primitive types can be computed (+) with only one
      *      object type, which is {@link String}. The result is also
@@ -301,7 +310,9 @@ public class Type {
      */
     public static Type getCommonType(Type type1, Type type2) {
         try {
-            if (type1.getName().equals("java.lang.String"))
+            if (type1.equals(type2))
+                return type1;
+            else if (type1.getName().equals("java.lang.String"))
                 return type1;
             else if (type2.getName().equals("java.lang.String"))
                 return type2;
@@ -584,7 +595,7 @@ public class Type {
     /** The type object of <tt>int</tt> type.
      */
     public static final Type INT     = new Type(INT_NUM, "int");
-
+    
     /** The type object of <tt>long</tt> type.
      */
     public static final Type LONG    = new Type(LONG_NUM, "long");
