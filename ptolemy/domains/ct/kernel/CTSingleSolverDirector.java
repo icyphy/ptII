@@ -138,10 +138,9 @@ public class CTSingleSolverDirector extends CTDirector {
         if(_defaultSolver == null) {
             _defaultSolver = _instantiateODESolver(_solverclass);
         }
-         setCurrentODESolver(_defaultSolver);
         // set time
         setCurrentTime(getStartTime());
-        setCurrentStepSize(getInitialStepSize());
+        setSuggestedNextStepSize(getInitialStepSize());
         sch.setValid(false);
         _first = true;
         if (VERBOSE) {
@@ -185,6 +184,7 @@ public class CTSingleSolverDirector extends CTDirector {
         }
         updateParameters();
         setCurrentODESolver(_defaultSolver);
+        setCurrentStepSize(getSuggestedNextStepSize());
         // prefire all the actors.
         boolean ready = true;
         CompositeActor ca = (CompositeActor) getContainer();
