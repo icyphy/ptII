@@ -92,6 +92,13 @@ public class DEXORGate extends DEActor {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                     ports and parameters                  ////
+
+    public DEIOPort output;
+    public DEIOPort input1;
+    public DEIOPort input2;
+
+    ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** Transfer the input tokens to the outputs with the specified delay.
@@ -118,13 +125,6 @@ public class DEXORGate extends DEActor {
         output.broadcast(outToken,
                 ((DoubleToken)_delay.getToken()).doubleValue());
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                     ports and parameters                  ////
-
-    public DEIOPort output;
-    public DEIOPort input1;
-    public DEIOPort input2;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
