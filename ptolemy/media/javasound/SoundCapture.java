@@ -137,7 +137,7 @@ public class SoundCapture {
     /** Begin capturing audio. This method must be invoked prior
      *  to the first invocation of <i>getSamples</i>. This method
      *  must not be called more than once between invocations of
-     *  <i>stopAudio()</i>.
+     *  <i>stopCapture()</i>.
      */
     public void startCapture() {
 	
@@ -302,7 +302,7 @@ public class SoundCapture {
 	// Array of audio samples in byte format.
 	_data = new byte[_productionRate*_frameSizeInBytes];
 
-	// start the target data line
+	// Start the target data line
 	_targetLine.start();
 
     }
@@ -431,7 +431,6 @@ public class SoundCapture {
     private AudioInputStream _audioInputStream;
 
     private int _productionRate;
-
 
     // Array of audio samples in double format.
     private double[] _audioInDoubleArray;

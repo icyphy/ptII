@@ -42,7 +42,8 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 JSRCS = \
-	SoundCapture.java
+	SoundCapture.java \
+	SoundPlayback.java
 
 EXTRA_SRCS =	$(JSRCS) \
 
