@@ -95,7 +95,7 @@ test_java: jclass
 	$(JAVAHOME)/bin/java -classpath ../../..:$(JAVAHOME)/lib/classes.zip pt.kernel.test.StatusArrayTest
 
 # These tests do not require a graphics terminal, but do use TclBlend and Java
-test_jsimple: $(TCL_SRCS) $(ITCL_SRCS) alljtests.tcl
+test_jsimple: $(EXTRA_SRCS) alljtests.tcl
 	CLASSPATH=$(CLASSPATH) $(JTCLSH) alljtests.tcl
 
 docs: javadocs
