@@ -58,7 +58,8 @@ UI_FILES_TO_BE_JARED = \
 	authors.htm \
 	codegen.htm \
 	webStartHelp.htm \
-	whatsnew.htm
+	whatsnew.htm \
+	whatsnewVergil.htm
 
 EXTRA_SRCS = \
 	$(UI_FILES_TO_BE_JARED) \
@@ -87,7 +88,8 @@ EXTRA_SRCS = \
 	toc.css \
 	toc.htm \
 	troubleshooting.htm \
-	types.htm
+	types.htm \
+	whatsnew.awk
 
 # Derived files that are preprocessed for use within vergil.
 VERGIL_DOCS = \
@@ -228,7 +230,7 @@ ALLPACKAGES =		$(COMMPACKAGES) \
 			ptolemy.vergil.tree
 
 
-all: suball whatsnew.htm codeDoc/tree.html
+all: suball whatsnew.htm whatsnewVergil.htm codeDoc/tree.html
 install: all jars codeDoc.jar
 
 codeDoc.jar:
@@ -259,6 +261,11 @@ troubleshootingVergil.htm: troubleshooting.htm
 # <!--whatsnew--> ... <!--/whatsnew--> blocks
 whatsnew.htm: ptII$(PTVERSION).release.htm
 	awk -f whatsnew.awk ptII$(PTVERSION).release.htm > $@  
+
+whatsnewVergil.htm: whatsnew.htm
+	sed 's@\(demo/[^/]*/[^/]*\).htm@\1.xml@g' \
+		< whatsnew.htm > whatsnewVergil.htm
+	diff whatsnew.htm whatsnewVergil.htm
 
 update: ptII$(PTVERSION).releaseVergil.htm troubleshootingVergil.htm \
 		whatsnew.htm
