@@ -123,8 +123,6 @@ import java.util.Enumeration;
 // currently supported.
 public class DECQDirector extends DEDirector {
 
-    private static final boolean DEBUG = false;
-
     /** Construct a director with empty string as name in the
      *  default workspace.
      */
@@ -943,6 +941,8 @@ public class DECQDirector extends DEDirector {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
+    private static final boolean DEBUG = false;
 
     //_cQueue: an instance of CalendarQueue is used for sorting.
     private CalendarQueue _cQueue = new CalendarQueue(new DECQComparator());
