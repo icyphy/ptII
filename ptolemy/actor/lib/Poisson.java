@@ -110,6 +110,7 @@ public class Poisson extends TimedSource {
         super(container, name);
 
         meanTime = new Parameter(this, "meanTime", new DoubleToken(1.0));
+        meanTime.setTypeEquals(DoubleToken.class);
 
         int defaultValues[][] = {{1, 0}};
         IntMatrixToken defaultValueToken = new IntMatrixToken(defaultValues);
