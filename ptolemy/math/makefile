@@ -49,34 +49,34 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = ArrayStringFormat.java \
 	Complex.java \
+	ComplexArrayMath.java \
+        ComplexBinaryOperation.java \
+        ComplexMatrixMath.java \
+        ComplexUnaryOperation.java \
+	DoubleArrayMath.java \
+	DoubleArrayStat.java \
+	DoubleBinaryOperation.java \
+	DoubleMatrixMath.java \
+	DoubleUnaryOperation.java \
+	ExtendedMath.java \
 	FixPoint.java \
+	FloatArrayMath.java \
+	FloatBinaryOperation.java \
+	FloatMatrixMath.java \
+	FloatUnaryOperation.java \
+	Fraction.java \
+	IntegerArrayMath.java \
+	IntegerBinaryOperation.java \
+	IntegerMatrixMath.java \
+	IntegerUnaryOperation.java \
+	Interpolation.java \
+	LongArrayMath.java \
+	LongBinaryOperation.java \
+	LongMatrixMath.java \
+	LongUnaryOperation.java \
 	Precision.java \
 	Quantizer.java \
-	ExtendedMath.java \
-	Fraction.java \
-	Interpolation.java \
-	SignalProcessing.java \
-	FloatArrayMath.java \
-	DoubleArrayMath.java \
-	IntegerArrayMath.java \
-	LongArrayMath.java \
-	ComplexArrayMath.java \
-	DoubleArrayStat.java \
-	FloatMatrixMath.java \
-	DoubleMatrixMath.java \
-	IntegerMatrixMath.java \
-	LongMatrixMath.java \
-        ComplexMatrixMath.java \
-	FloatUnaryOperation.java \
-	DoubleUnaryOperation.java \
-	IntegerUnaryOperation.java \
-	LongUnaryOperation.java \
-        ComplexUnaryOperation.java \
-	FloatBinaryOperation.java \
-	DoubleBinaryOperation.java \
-	IntegerBinaryOperation.java \
-	LongBinaryOperation.java \
-        ComplexBinaryOperation.java
+	SignalProcessing.java
 
 EXTRA_SRCS =	$(JSRCS)
 
