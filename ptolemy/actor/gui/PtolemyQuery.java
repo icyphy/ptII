@@ -43,9 +43,12 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 import ptolemy.actor.gui.style.ParameterEditorStyle;
+import ptolemy.actor.parameters.DoubleRangeParameter;
 import ptolemy.actor.parameters.FilePortParameter;
 import ptolemy.actor.parameters.IntRangeParameter;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.DoubleToken;
+import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
@@ -186,6 +189,26 @@ public class PtolemyQuery extends Query
                     int max = ((IntRangeParameter)attribute).getMaxValue();
 
                     addSlider(name, name, current, min, max);
+                    attachParameter(attribute, name);
+                    foundStyle = true;
+                } else if (attribute instanceof DoubleRangeParameter) {
+                    double current = ((DoubleToken)
+                    		((DoubleRangeParameter)attribute)
+							.getToken()).doubleValue();
+                    double max = ((DoubleToken)
+                    		((DoubleRangeParameter)attribute)
+							.max.getToken()).doubleValue();
+                    double min = ((DoubleToken)
+                    		((DoubleRangeParameter)attribute)
+							.min.getToken()).doubleValue();
+                    int precision = ((IntToken)
+                    		((DoubleRangeParameter)attribute)
+                    		.precision.getToken()).intValue();
+
+                    // Get the quantized integer for the current value.
+                    int quantized = ((int)Math.round((current - min)*precision
+                    		/(max - min)));
+                    addSlider(name, name, quantized, 0, precision);
                     attachParameter(attribute, name);
                     foundStyle = true;
                 } else if (attribute instanceof ColorAttribute) {
@@ -329,7 +352,9 @@ public class PtolemyQuery extends Query
 
         // Make a record of the attribute value prior to the change,
         // in case a change fails and the user chooses to revert.
-        _revertValue.put(entryName, attribute.getExpression());
+        // Use the translated expression in case the attribute
+        // is a DoubleRangeParameter.
+        _revertValue.put(entryName, _getTranslatedExpression(attribute));
 
         // Attach the entry to the attribute by registering a listener.
         attribute.addValueListener(this);
@@ -399,7 +424,9 @@ public class PtolemyQuery extends Query
                 // Make a record of the successful attribute value change
                 // in case some future change fails and the user
                 // chooses to revert.
-                _revertValue.put(name, attribute.getExpression());
+                // Use the translated expression in case the attribute
+                // is a DoubleRangeParameter.
+                _revertValue.put(name, _getTranslatedExpression(attribute));
             }
         }
     }
@@ -569,6 +596,30 @@ public class PtolemyQuery extends Query
                 // using this one as a class.  This is only an issue if
                 // attribute is a NamedObj.
                 NamedObj castAttribute = (NamedObj)attribute;
+                
+                String stringValue = getStringValue(name);
+                // If the attribute is a DoubleRangeParameter, then we
+                // have to translate the integer value returned by the
+                // JSlider into a double.
+                if (attribute instanceof DoubleRangeParameter) {
+                    try {
+                    	int newValue = Integer.parseInt(stringValue);
+    					int precision = ((IntToken)
+    							((DoubleRangeParameter)attribute)
+    							.precision.getToken()).intValue();
+    					double max = ((DoubleToken)
+    							((DoubleRangeParameter)attribute)
+    							.max.getToken()).doubleValue();
+    					double min = ((DoubleToken)
+    							((DoubleRangeParameter)attribute)
+    							.min.getToken()).doubleValue();
+    					double newValueAsDouble
+    							= min + ((max - min)*newValue)/precision;
+    					stringValue = "" + newValueAsDouble;
+    				} catch (IllegalActionException e) {
+    					throw new InternalErrorException(e);
+    				}                	
+                }
 
                 // The context for the MoML should be the first container
                 // above this attribute in the hierarchy that defers its
@@ -577,7 +628,7 @@ public class PtolemyQuery extends Query
                 String moml = "<property name=\""
                     + castAttribute.getName()
                     + "\" value=\""
-                    + StringUtilities.escapeForXML(getStringValue(name))
+                    + StringUtilities.escapeForXML(stringValue)
                     + "\"/>";
                 request = new MoMLChangeRequest(
                         this,         // originator
@@ -719,9 +770,10 @@ public class PtolemyQuery extends Query
                         // value with the value of attribute
                         Iterator entryNames = entryNameList.iterator();
 
+                        String newValue = _getTranslatedExpression(attribute);
+                        
                         while (entryNames.hasNext()) {
                             String name = (String)entryNames.next();
-                            String newValue = attribute.getExpression();
 
                             // Compare value against what is in
                             // already to avoid changing it again.
@@ -761,6 +813,49 @@ public class PtolemyQuery extends Query
             Settable attribute = (Settable)attributes.next();
             attribute.removeValueListener(this);
         }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** Return the expression for the specified Settable, unless it
+     *  is an instance of DoubleRangeParameter, in which case, return
+     *  the expression mapped into a integer suitable for use by
+     *  JSlider. 
+     *  @param attribute The Settable whose expression we want.
+     *  @return The expression.
+     */
+    private String _getTranslatedExpression(Settable attribute) {
+        String newValue = attribute.getExpression();
+        
+        // If the attribute is DoubleRangeParameter,
+        // then we have to translate the value from a
+        // double in the range to an int for the
+        // JSlider.
+        if (attribute instanceof DoubleRangeParameter) {
+        	try {
+				double current = Double.parseDouble(newValue);
+				double max = ((DoubleToken)
+						((DoubleRangeParameter)attribute)
+						.max.getToken()).doubleValue();
+				double min = ((DoubleToken)
+						((DoubleRangeParameter)attribute)
+						.min.getToken()).doubleValue();
+				int precision = ((IntToken)
+						((DoubleRangeParameter)attribute)
+						.precision.getToken()).intValue();
+
+				// Get the quantized integer for the current value.
+				int quantized = ((int)Math.round(
+						(current - min)*precision
+						/(max - min)));
+				
+				newValue = "" + quantized;
+			} catch (IllegalActionException e) {
+				throw new InternalErrorException(e);
+			}
+        }
+        return newValue;
     }
 
     ///////////////////////////////////////////////////////////////////
