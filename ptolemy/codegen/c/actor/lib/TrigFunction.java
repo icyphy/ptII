@@ -16,12 +16,12 @@ import ptolemy.kernel.util.NamedObj;
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-public class AbsoluteValue extends CCodeGeneratorHelper {
+public class TrigFunction extends CCodeGeneratorHelper {
 
 	/**
 	 * @param component
 	 */
-    public AbsoluteValue(ptolemy.actor.lib.AbsoluteValue actor) {
+    public TrigFunction(ptolemy.actor.lib.TrigFunction actor) {
         super(actor);
     }
 
@@ -31,7 +31,13 @@ public class AbsoluteValue extends CCodeGeneratorHelper {
         ptolemy.actor.lib.AddSubtract actor = 
             (ptolemy.actor.lib.AddSubtract)getComponent();
         StringBuffer tmpStream = new StringBuffer();
-        tmpStream.append("$val(output) = ($val(input) < 0)? -$val(input) : $val(input);\n");
+        tmpStream.append(
+              "$val(output) = (!strcmp($ref(function), \"sin\")) ? sin($val(input)) : \n"
+                + "           (!strcmp($ref(function), \"cos\")) ? cos($val(input)) : \n"
+                + "           (!strcmp($ref(function), \"tan\")) ? tan($val(input)) : \n"
+                + "           (!strcmp($ref(function), \"asin\")) ? asin($val(input)) : \n"
+                + "           (!strcmp($ref(function), \"acos\")) ? acos($val(input)) : \n"
+                + "           atan($val(input));\n");
     }
 
     ///////////////////////////////////////////////////////////////////
