@@ -60,7 +60,7 @@ public class StatePair {
      *  states as this one.
      *  @param object An object to compare with this one.
      *  @return True if the specified object is an instance of StatePair
-     *   and this one contatin the same states, false otherwise.
+     *   and this one contains the same states, false otherwise.
      */
     public boolean equals(Object object) {
         if (object instanceof StatePair) {
