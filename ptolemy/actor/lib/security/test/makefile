@@ -85,9 +85,20 @@ test_java: jclass
 KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
 
 # These tests do not require a graphics terminal, but do use Jacl and Java
-test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl \
-		$(ROOT)/ptKeystore test_auto
+test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) \
+		$(ROOT)/ptKeystore alljtests.tcl \
+		initialize_key test_auto
 	$(JTCLSH) alljtests.tcl
+
+initialize_key:
+	rm -f auto/foo.keystore
+	@echo "creating auto/foo.keystore"
+	$(ROOT)/bin/ptinvoke ptolemy.actor.gui.MoMLSimpleApplication auto/KeyWriter.xml 
+	@echo "Note that the key is of type JCEKS, which is not the default"
+	keytool -list -keystore auto/foo.keystore \
+		-storepass this.is.not.secure,it.is.for.testing.only \
+		-storetype JCEKS
+	ls -l auto/foo.keystore
 
 # The default keystore is $(PTII)/ptKeystore
 $(ROOT)/ptKeystore:

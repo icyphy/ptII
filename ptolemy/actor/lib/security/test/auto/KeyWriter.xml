@@ -1,0 +1,69 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="KeyWriter" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+        </property>
+        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="allowRateChanges" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="135.0, 55.0">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 129, 815, 509}}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <entity name="KeyWriter" class="ptolemy.actor.lib.security.KeyWriter">
+        <property name="alias" class="ptolemy.data.expr.StringParameter" value="foo">
+        </property>
+        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="foo.keystore">
+        </property>
+        <property name="keyPassword" class="ptolemy.data.expr.StringParameter" value="this.is.not.secure,it.is.for.testing.only">
+        </property>
+        <property name="keyStoreType" class="ptolemy.data.expr.StringParameter" value="JCEKS">
+        </property>
+        <property name="provider" class="ptolemy.data.expr.StringParameter" value="SystemDefault">
+        </property>
+        <property name="storePassword" class="ptolemy.data.expr.StringParameter" value="this.is.not.secure,it.is.for.testing.only">
+        </property>
+        <doc>Read a secret key or public key and write it to a key store.
+	   </doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="325.0, 95.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="SecretKey" class="ptolemy.actor.lib.security.SecretKey">
+        <property name="algorithm" class="ptolemy.data.expr.StringParameter" value="DES">
+        </property>
+        <property name="provider" class="ptolemy.data.expr.StringParameter" value="SystemDefault">
+        </property>
+        <property name="keySize" class="ptolemy.data.expr.Parameter" value="56">
+        </property>
+        <doc>Create a key and output it.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="125.0, 135.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="KeyWriter.input" relation="relation"/>
+    <link port="SecretKey.output" relation="relation"/>
+</entity>

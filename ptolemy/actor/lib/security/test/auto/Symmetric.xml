@@ -224,15 +224,53 @@ using the Key actor.
             <property name="input"/>
         </port>
     </entity>
-    <entity name="Key" class="ptolemy.actor.lib.security.Key">
-        <property name="algorithm" class="ptolemy.data.expr.StringParameter" value="$algorithm">
+    <entity name="PrivateKeyReader" class="ptolemy.actor.lib.security.PrivateKeyReader">
+        <property name="alias" class="ptolemy.data.expr.StringParameter" value="foo">
+        </property>
+        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="foo6.ks">
+        </property>
+        <property name="keyPassword" class="ptolemy.data.expr.StringParameter" value="this.is.not.secure,it.is.for.testing.only">
+        </property>
+        <property name="keyStoreType" class="ptolemy.data.expr.StringParameter" value="JCEKS">
         </property>
         <property name="provider" class="ptolemy.data.expr.StringParameter" value="SystemDefault">
         </property>
-        <property name="keySize" class="ptolemy.data.expr.Parameter" value="keySize">
+        <property name="storePassword" class="ptolemy.data.expr.StringParameter" value="this.is.not.secure,it.is.for.testing.only">
         </property>
-        <doc>Create a Key and output it.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 200.0">
+        <property name="getPublicKey" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="verifyCertificate" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <doc>Read a private key from a key store and output it.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 190.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="PrivateKeyReader2" class="ptolemy.actor.lib.security.PrivateKeyReader">
+        <property name="alias" class="ptolemy.data.expr.StringParameter" value="foo">
+        </property>
+        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="foo6.ks">
+        </property>
+        <property name="keyPassword" class="ptolemy.data.expr.StringParameter" value="this.is.not.secure,it.is.for.testing.only">
+        </property>
+        <property name="keyStoreType" class="ptolemy.data.expr.StringParameter" value="JCEKS">
+        </property>
+        <property name="provider" class="ptolemy.data.expr.StringParameter" value="SystemDefault">
+        </property>
+        <property name="storePassword" class="ptolemy.data.expr.StringParameter" value="this.is.not.secure,it.is.for.testing.only">
+        </property>
+        <property name="getPublicKey" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="verifyCertificate" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <doc>Read a private key from a key store and output it.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="400.0, 325.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -244,10 +282,6 @@ using the Key actor.
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="185.0, 200.0">
-        </vertex>
-    </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -255,6 +289,10 @@ using the Key actor.
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="Ramp.output" relation="relation"/>
     <link port="SequenceToArray.input" relation="relation"/>
@@ -264,9 +302,10 @@ using the Key actor.
     <link port="Test.input" relation="relation7"/>
     <link port="SymmetricDecryption.input" relation="relation9"/>
     <link port="SymmetricDecryption.output" relation="relation2"/>
-    <link port="SymmetricDecryption.key" relation="relation3"/>
+    <link port="SymmetricDecryption.key" relation="relation4"/>
     <link port="SymmetricEncryption.input" relation="relation6"/>
     <link port="SymmetricEncryption.output" relation="relation9"/>
     <link port="SymmetricEncryption.key" relation="relation3"/>
-    <link port="Key.output" relation="relation3"/>
+    <link port="PrivateKeyReader.output" relation="relation3"/>
+    <link port="PrivateKeyReader2.output" relation="relation4"/>
 </entity>

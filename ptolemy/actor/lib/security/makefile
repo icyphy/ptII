@@ -50,13 +50,14 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = \
 	CipherActor.java \
 	CryptographyActor.java \
-	Key.java \
 	KeyReader.java \
 	KeyStoreActor.java \
 	KeyToken.java \
 	KeyWriter.java \
 	PrivateKeyReader.java \
 	PublicKeyReader.java \
+	SecretKey.java \
+	SecretKeyReader.java \
 	SignatureActor.java \
 	SignatureSigner.java \
 	SignatureVerifier.java \

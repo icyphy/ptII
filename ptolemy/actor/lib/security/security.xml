@@ -5,11 +5,6 @@
   <configure>
     <?moml
       <group>
-	<entity name="Key"
-	        class="ptolemy.actor.lib.security.Key">
-	  <doc>Create a key and output it.</doc>
-	</entity>  	  
-
 	<entity name="KeyWriter"
 	        class="ptolemy.actor.lib.security.KeyWriter">
 	  <doc>Read a secret key or public key and write it to a key store.
@@ -24,6 +19,16 @@
 	<entity name="PrivateKeyReader"
 	        class="ptolemy.actor.lib.security.PrivateKeyReader">
 	  <doc>Read a private key from a key store and output it.</doc>
+	</entity>  	  
+
+	<entity name="SecretKey"
+	        class="ptolemy.actor.lib.security.SecretKey">
+	  <doc>Create a secret key and output it.</doc>
+	</entity>  	  
+
+	<entity name="SecretKeyReader"
+	        class="ptolemy.actor.lib.security.SecretKeyReader">
+	  <doc>Read a secret key from a key store and output it.</doc>
 	</entity>  	  
 
         <entity name="SignatureSigner"

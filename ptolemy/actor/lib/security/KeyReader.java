@@ -171,11 +171,11 @@ public class KeyReader extends KeyStoreActor {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == getPublicKey) {
-            _updateKeyStoreNeeded = true;
+            _updateKeyNeeded = true;
             _getPublicKey =
                 ((BooleanToken)getPublicKey.getToken()).booleanValue();
         } else if (attribute == verifyCertificate) {
-            _updateKeyStoreNeeded = true;
+            _updateKeyNeeded = true;
             _verifyCertificate = 
                 ((BooleanToken)verifyCertificate.getToken()).booleanValue();
         } else {
@@ -194,6 +194,7 @@ public class KeyReader extends KeyStoreActor {
      */
     public void fire() throws IllegalActionException {
         super.fire();
+        _updateKey();
         for (int i = 0; i < trigger.getWidth(); i++) {
             if (trigger.hasToken(i)) {
                 trigger.get(i);
@@ -209,6 +210,24 @@ public class KeyReader extends KeyStoreActor {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
+        // We do this in initialize so that derived classes can
+        // access _keyStore.
+        _updateKey();
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** If necessary, update _key by using the values of the 
+     *  alias, fileOrURL and getPublicKey parameters. 
+     *  @exception IllegalActionException If the parent class throws it
+     *  or if there is a problem with the cryptographic configuration.
+     */
+    protected void _updateKey() throws IllegalActionException {
+        // We do this in initialize so that derived classes can
+        // access _keyStore.
+        if (_updateKeyNeeded) {
+        _updateAliases();
         try {
             if (!_verifyCertificate) {
                 if (_getPublicKey) {
@@ -251,6 +270,7 @@ public class KeyReader extends KeyStoreActor {
                     "Failed to get key store alias '" + _alias 
                     + "' or certificate from " + fileOrURL.asURL());
         }
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -262,6 +282,10 @@ public class KeyReader extends KeyStoreActor {
 
     // The PublicKey, PrivateKey or SecretKey located in the keyStore
     private java.security.Key _key;
+
+    // Set to true if fileOrURL has changed and the keyStore needs to be
+    // read in again and the aliases updated.
+    private boolean _updateKeyNeeded = true;
 
     // True if we should verify the certificate
     private boolean _verifyCertificate;

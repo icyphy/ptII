@@ -70,12 +70,16 @@ which will create a keystore store password and key password is
 <br>The alias of the certificate will be <code>ptClaudius</code>
 
 <p>The input is of type Object and is expected to contain object
-of type java.security.Key.
+of type java.security.Key.  
+This actor does not support writing PublicKeys because
+PublicKeys require certificates.  To write a PublicKey to a keystore,
+use the <code>keytool</code> executable.
+Currently, this actor only support writing SecretKeys and PrivateKeys
+with out certificates.
 
-<p>For more information, see
+<p>For more information about keystores, see
 <a href="http://java.sun.com/docs/books/tutorial/security1.2/summary/tools.html">Security Tools Summary</a>
 
-http://www.cs.ttu.edu/~cs5331/ns/modules/secretkeyCrypt/secretkeyCrypt.html
 @author  Christopher Brooks
 @version $Id$
 @since Ptolemy II 3.1
@@ -97,7 +101,6 @@ public class KeyWriter extends KeyStoreActor {
         input = new TypedIOPort(this, "input", true, false);
         input.setTypeEquals(BaseType.OBJECT);
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
