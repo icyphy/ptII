@@ -28,15 +28,8 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-
-########################################################
-# Convert the Ptolemy II Design Doc to HTML
-#
-# To convert design.fm, do the following:
-# 1. As yourself, do xhost carson
-# 2. Become ptuser on carson
-# 3. As ptuser, set your DISPLAY to carson:0
-# 4. As ptuser, run cd ~ptdesign/public_html/java; make
+# See the README file for information on how to convert the
+# Ptolemy II Design Doc to HTML
 
 
 ME =		ptII/doc/design/src
