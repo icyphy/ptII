@@ -369,7 +369,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
             double r;
             do {
                 r = _random.nextDouble();
-            } while (r != 0.0);
+            } while (r == 0.0);
 
             returnValue[i] = -Math.log(r) / lambda;
         }
