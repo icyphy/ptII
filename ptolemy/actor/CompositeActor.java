@@ -398,38 +398,61 @@ public class CompositeActor extends CompositeEntity implements Actor {
         return _director != null;
     }
 
-    /** Invoke a specified number of iterations of this actor. An
-     *  iteration has the effect of invoking prefire(), fire(), and 
-     *  postfire(), in that order. If prefire() returns true, then
-     *  fire() will be called once, followed by postfire(). Otherwise,
-     *  fire() and postfire() are not invoked, and this method will
-     *  return a value of false. This method will return true if 
-     *  the actor was successfully iterated the specified number of 
-     *  times. Otherwise, a value of false will be returned.
+    /** If this actor is opaque, transfer input data, invoke the 
+     *  iterate() method of its local director, and transfer output 
+     *  data. Specifically, transfer any data from the input ports of 
+     *  this composite to the ports connected on the inside. The transfer 
+     *  is accomplished by calling the transferInputs() method of the 
+     *  local director (the exact behavior of which depends on the
+     *  domain). Then invoke the iterate() method of its local director to
+     *  carry out the the specified number of iterations. Finally, 
+     *  transfer any data from the output ports of this composite
+     *  to the ports connected on the outside. The transfer is accomplished
+     *  by calling the transferOutputs() method of the executive director.
+     *  If this actor is not opaque, then throw an exception.
      *  <p>
-     *  This base class method actually invokes prefire(), fire(), 
-     *  and postfire(), as described above. 
+     *  This method is read-synchronized on the workspace, so the
+     *  iterate() method of the director need not be (assuming it is only
+     *  called from here).
      *  
      *  @param count The number of iterations to perform.
-     *  @return True if the actor was successfully iterated the
-     *   specified number of times. Otherwise, return false.
-     *  @exception IllegalActionException If one of the Executable
-     *   methods throws it.
+     *  @return Null, if the specified number of iterations could not be
+     *   carried out. Return false if the specified number of iterations
+     *   were successfully executed, but no more iterations can be carried 
+     *   out. Otherwise, return true.
+     *  @exception IllegalActionException If there is no director, or if
+     *   the director's iterate() method throws it, or if the actor is not
+     *   opaque.
      */
     public boolean iterate(int count) throws IllegalActionException {
-	int n = 0;
-	while (n < count) {
-	    if (prefire()) {
-		fire();
-		postfire();
-	    } else break;
-	    count++;
-	}
-	if (count == n) {
-	    return (true);
-	} else {
-	    return (false);
-	}
+        try {
+            _workspace.getReadAccess();
+            if (!isOpaque()) {
+                throw new IllegalActionException(this,
+			    "Cannot iterate a non-opaque actor.");
+            }
+            // Use the local director to transfer inputs.
+            Iterator inports = inputPortList().iterator();
+            while(inports.hasNext()) {
+                IOPort p = (IOPort)inports.next();
+                _director.transferInputs(p);
+            }
+            // Note that this is assured of iterating the local director,
+            // not the executive director, because this is opaque.
+            boolean returnVal =  getDirector().iterate(count);
+            // Use the executive director to transfer outputs.
+            Director edir = getExecutiveDirector();
+            if (edir != null) {
+                Iterator outports = outputPortList().iterator();
+                while(outports.hasNext()) {
+                    IOPort p = (IOPort)outports.next();
+                    edir.transferOutputs(p);
+                }
+            }
+	    return  returnVal;
+        } finally {
+            _workspace.doneReading();
+        }
     }
 
     /** Return a new receiver of a type compatible with the local director.
