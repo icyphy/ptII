@@ -163,11 +163,7 @@ public class ClassDecl extends TypeDecl implements JavaStaticSemanticConstants {
            _environ = new Environ(StaticResolution.SYSTEM_PACKAGE.getEnviron());
 
            setSuperClass(StaticResolution.OBJECT_DECL);
-        }
-        
-        // this is a hack but ...
-        // set the environment property of the source node
-        // _source.setProperty(ENVIRON_KEY, _environ);
+        }        
     }
 
     protected static TypeNameNode _invalidType(ClassDecl self, String name) {

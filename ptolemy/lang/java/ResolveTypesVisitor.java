@@ -71,10 +71,8 @@ public class ResolveTypesVisitor extends ResolveVisitorBase
     public Object visitCompileUnitNode(CompileUnitNode node, LinkedList args) {
         _currentPackage = (PackageDecl) node.getDefinedProperty(PACKAGE_KEY);
 
-        LinkedList childArgs = new LinkedList();
-        childArgs.add(node.getDefinedProperty(ENVIRON_KEY)); // file environment
-
-        TNLManip.traverseList(this, node, childArgs, node.getDefTypes());
+        TNLManip.traverseList(this, node, 
+         TNLManip.cons(node.getDefinedProperty(ENVIRON_KEY)), node.getDefTypes());
 
         return null;
     }
@@ -92,20 +90,8 @@ public class ResolveTypesVisitor extends ResolveVisitorBase
         return _visitUserTypeNode(node, args);
     }
 
-    public Object visitMethodDeclNode(MethodDeclNode node, LinkedList args) {
-        return _visitNodeWithEnviron(node);
-    }
-
-    public Object visitConstructorDeclNode(ConstructorDeclNode node, LinkedList args) {
-        return _visitNodeWithEnviron(node);
-    }
-
     public Object visitBlockNode(BlockNode node, LinkedList args) {
         return _visitNodeWithEnviron(node);    
-    }
-
-    public Object visitForNode(ForNode node, LinkedList args) {
-        return _visitNodeWithEnviron(node);
     }
 
     public Object visitAllocateAnonymousClassNode(AllocateAnonymousClassNode node, LinkedList args) {        

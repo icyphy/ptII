@@ -75,49 +75,16 @@ public class ResolvePackageVisitor extends ResolveVisitorBase
         return _visitUserTypeDeclNode(node, args, true);
     }
 
-    public Object visitMethodDeclNode(MethodDeclNode node, LinkedList args) {
-        Environ env = _makeEnviron(node, args);
-
-        _visitNode(node.getBody(), env);
-        return null;
-    }
-
-    public Object visitConstructorDeclNode(ConstructorDeclNode node, LinkedList args) {
-        Environ env = _makeEnviron(node, args);
-
-        _visitNode(node.getBody(), env);
-        return null;
-    }
-
     public Object visitInterfaceDeclNode(InterfaceDeclNode node, LinkedList args) {
         return _visitUserTypeDeclNode(node, args, false);
     }
 
     public Object visitBlockNode(BlockNode node, LinkedList args) {
+        // make a new environment for inner class declarations
+        
         Environ env = _makeEnviron(node, args);
 
         _visitList(node.getStmts(), env);
-        return null;
-    }
-
-    public Object visitLabeledStmtNode(LabeledStmtNode node, LinkedList args) {
-        Environ env = _makeEnviron(node, args);
-
-        _visitNode(node.getStmt(), env);
-        return null;
-    }
-
-    public Object visitCatchNode(CatchNode node, LinkedList args) {
-        Environ env = _makeEnviron(node, args);
-
-        _visitNode(node.getBlock(), env);
-        return null;
-    }
-
-    public Object visitForNode(ForNode node, LinkedList args) {
-        Environ env = _makeEnviron(node, args);
-
-        _visitNode(node.getStmt(), env);
         return null;
     }
 
@@ -234,6 +201,7 @@ public class ResolvePackageVisitor extends ResolveVisitorBase
         Environ env = new Environ(encEnv);
         node.setProperty(ENVIRON_KEY, env);
 
+        // JUST TRY THIS
         ocl.setEnviron(env);
         encEnv.add(ocl);
 
