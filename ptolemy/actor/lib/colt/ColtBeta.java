@@ -79,7 +79,8 @@ beta</h3>
 </blockquote>
    The above description of beta() is
    <a href="doc-files/colt-copyright.htm">copyrighted</a>. 
-
+   <br>In this actor, <i>alpha</i> corresponds with <i>a</i> 
+   <i>beta</i> corresponds with <i>b</i>.
 
 
    @author David Bauer and Kostas Oikonomou
