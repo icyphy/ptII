@@ -147,7 +147,7 @@ CHIC_DIR = @CHIC_DIR@
 # Directory that contains colt.jar
 # Colt is a "Open Source Libraries for High Performance Scientific
 # and Technical Computing in Java" used in bin/ptinvoke.in
-COLT_JAR = @COLT_JAR@
+COLT_DIR = @COLT_DIR@
 
 # Directory that contains the CaffeineMark Java Benchmark kit
 # used by C code generation in copernicus/c
