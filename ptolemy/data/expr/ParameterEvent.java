@@ -99,14 +99,14 @@ public class ParameterEvent {
      *  @return The integer ID.
      */
     public int getID() {
-        return _id;
+        return id;
     }
-q
+
     /** Get the Parameter associated with this event. 
      *
      *  @return The Parameter which changed or was removed.
      */
-    public int getParameter() {
+    public Parameter getParameter() {
         return _parameter;
     }
 
