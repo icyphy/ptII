@@ -753,7 +753,7 @@ public class Variable extends Attribute implements Typeable {
      *   already violates this constraint, in that the currently contained
      *   token cannot be converted losslessly to the specified type; or
      *   the specified Class does not corresponds to a BaseType.
-     *  @deprecated
+     *  @deprecated Use the method with a Type argument instead.
      */
     public void setTypeEquals(Class c) throws IllegalActionException {
 	BaseType type = BaseType.classToBaseType(c);
