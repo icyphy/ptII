@@ -63,6 +63,9 @@ proc generateC {className {commandLineArgs {}}} {
 	set VERBOSE 0
     }
 
+    if {$VERBOSE} {
+	puts "Entering: [pwd]: generateC $className $commandLineArgs"
+    }
     set outputDir testOutput/$className
     set lib testOutput/$className/j2c_lib
     set ptII ../../../..
@@ -108,12 +111,6 @@ proc generateC {className {commandLineArgs {}}} {
     # like java.lang.Object.
     generateCExec javac $javaFile
     
-    global VERBOSE
-
-    if ![info exists VERBOSE] {
-	set VERBOSE 0
-    }
-
     set javaToCVerboseOption false
     if {$VERBOSE} {
 	set javaToCVerboseOption true
@@ -127,12 +124,19 @@ proc generateC {className {commandLineArgs {}}} {
 	    $className
     #exec -stderrok [generateCExec make -s -f $mkFile] 1>$outputDir/out.txt 2>$outputDir/err.txt
     set error ""
-    catch {generateCExec make -s -f $makeFile} error
+    if [catch {generateCExec make -s -f $makeFile} error] {
+	puts "make -s -f $makeFile failed:\n$error\n[jdkStackTrace]" 
+    }
     
     # Move all generated files to the output directory.
     file rename -force $cFile $mainCFile $oFile $mainOFile $hFile \
-	    $iFile $makeFile $classFile $outputDir
+	    $iFile $makeFile $outputDir
     
+    # Solaris: life is better if we copy the classFile rather than move it.
+    # Most tests call java on the class after calling generateC, so
+    # the .class file better still be there.
+    file copy -force $classFile $outputDir
+
     # exefile may not have been created due to compilation errors.
     if [file exists $exeFile] {
         file rename -force $exeFile $outputDir
@@ -140,6 +144,10 @@ proc generateC {className {commandLineArgs {}}} {
 
         # Run the automatically generated executable.
         cd $outputDir
+
+	if {$VERBOSE} {
+	    puts "Changed to [pwd], $exeFile exists!"
+	}
 
         # The nightly build does not have . in the path, so we use ./ here.
         set exeFile ".[java::call System getProperty file.separator]$exeFile"
@@ -157,6 +165,11 @@ proc generateC {className {commandLineArgs {}}} {
         return $output 
     }
     #else
+
+    if {$VERBOSE} {
+	puts "Exiting: [pwd]: generateC $className $commandLineArgs"
+    }
+
     return $error
 }
 
@@ -184,7 +197,7 @@ proc generateCExec {args} {
     set results [eval exec -stderrok $args]  
 
     if {$VERBOSE} {
-	puts "exec: $results"
+	puts "exec returned '$results'"
     }
     return $results
 } 
