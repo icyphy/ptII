@@ -1,0 +1,143 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="HierarchyTest" class="ptolemy.actor.TypedCompositeActor">
+    <property name="GiottoDirector" class="ptolemy.domains.giotto.kernel.GiottoDirector">
+        <property name="Scheduler" class="ptolemy.domains.giotto.kernel.GiottoScheduler">
+        </property>
+        <property name="period" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="10">
+            <doc>Number of iterations in an execution.</doc>
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="80.0, 46.0">
+        </property>
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[583, 350]">
+    </property>
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[113, 152]">
+    </property>
+    <entity name="Source" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="82.0, 164.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="Upper Composite" class="ptolemy.domains.giotto.demo.Hierarchy.composite">
+        <property name="GiottoDirector" class="ptolemy.domains.giotto.kernel.GiottoDirector">
+            <property name="Scheduler" class="ptolemy.domains.giotto.kernel.GiottoScheduler">
+            </property>
+            <property name="period" class="ptolemy.data.expr.Parameter" value="0.1">
+            </property>
+            <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="_location" class="ptolemy.moml.Location" value="68.0, 35.0">
+            </property>
+        </property>
+        <property name="internalFrequency" class="ptolemy.data.expr.Parameter" value="3">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
+        </property>
+        <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[177, 222]">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="225.5, 123.5">
+        </property>
+    </entity>
+    <entity name="Lower Composite" class="ptolemy.domains.giotto.demo.Hierarchy.composite">
+        <property name="GiottoDirector" class="ptolemy.domains.giotto.kernel.GiottoDirector">
+            <property name="Scheduler" class="ptolemy.domains.giotto.kernel.GiottoScheduler">
+            </property>
+            <property name="period" class="ptolemy.data.expr.Parameter" value="0.1">
+            </property>
+            <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="_location" class="ptolemy.moml.Location" value="68.0, 35.0">
+            </property>
+        </property>
+        <property name="internalFrequency" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
+        </property>
+        <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[177, 222]">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="234.0, 198.0">
+        </property>
+        <property name="frequency" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+    </entity>
+    <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{3,6,9,12,15,18,21,24,27}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="450.5, 69.5">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="NonStrictTest5" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{4,8,12,16,20,24,28,32}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="455.0, 200.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="NonStrictTest6" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0,1.0,2.0,3.0,4.0,5.0,6.0,7.0,8.0}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="420.0, 275.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="225.0, 275.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <relation name="r1" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex0" class="ptolemy.moml.Vertex" value="165.0, 169.0">
+        </vertex>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Source.output" relation="r1"/>
+    <link port="Upper Composite.input" relation="r1"/>
+    <link port="Upper Composite.output" relation="relation4"/>
+    <link port="Lower Composite.input" relation="r1"/>
+    <link port="Lower Composite.output" relation="relation"/>
+    <link port="NonStrictTest.input" relation="relation4"/>
+    <link port="NonStrictTest5.input" relation="relation"/>
+    <link port="NonStrictTest6.input" relation="relation7"/>
+    <link port="CurrentTime.output" relation="relation7"/>
+</entity>
