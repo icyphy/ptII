@@ -87,6 +87,8 @@ test ArrayToSequence-2.1 {test double array} {
     $e0 connect $rampOut $s2aIn
     $e0 connect $s2aOut $a2sIn
     $e0 connect $a2sOut $recIn
+# FIXME: Why is this needed?
+# $e0 validateSettables
     [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
 } {-2.0 -1.0 0.0 1.0 2.0 3.0}

@@ -112,7 +112,7 @@ radians per second, centered at zero frequency.</text></svg></configure>
         </port>
     </entity>
     <entity name="DB" class="ptolemy.actor.lib.DB">
-        <property name="inputIsPower" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="inputIsPower" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="min" class="ptolemy.data.expr.Parameter" value="-100.0">
         </property>
