@@ -58,7 +58,6 @@ UI_FILES_TO_BE_JARED = \
 	authors.htm \
 	codegen.htm \
 	default.css \
-	expression.htm \
 	webStartHelp.htm \
 	whatsnew.htm \
 	whatsnewVergil.htm
