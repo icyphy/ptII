@@ -94,7 +94,7 @@ public class TimeKeeper {
      *  while setting the receiver priorities.
      */
     public TimeKeeper(Actor anActor) throws IllegalActionException {
-	actor = anActor;
+	_actor = anActor;
         _rcvrTimeList = new LinkedList();
 
         setRcvrPriorities(); 
@@ -218,7 +218,7 @@ public class TimeKeeper {
      *  NullToken that is equal to the current time of this thread.
      */
     public synchronized void sendOutNullTokens() {
-	Enumeration ports = actor.outputPorts();
+	Enumeration ports = _actor.outputPorts();
         double time = getCurrentTime();
         while( ports.hasMoreElements() ) {
             IOPort port = (IOPort)ports.nextElement();
@@ -263,7 +263,7 @@ public class TimeKeeper {
 	if( time < _currentTime && 
 		time != TimedQueueReceiver.INACTIVE ) {
 	    throw new IllegalArgumentException(
-		    ((NamedObj)actor).getName() + " - Attempt to "
+		    ((NamedObj)_actor).getName() + " - Attempt to "
 		    + "set current time in the past.");
 	}
         _currentTime = time;
@@ -283,7 +283,7 @@ public class TimeKeeper {
     public synchronized void setRcvrPriorities() 
             throws IllegalActionException {
         LinkedList listOfPorts = new LinkedList();
-	Enumeration enum = actor.inputPorts();
+	Enumeration enum = _actor.inputPorts();
 	if( !enum.hasMoreElements() ) {
             return;
 	}
@@ -338,7 +338,7 @@ public class TimeKeeper {
 	     throws IllegalActionException { 
 	if( delay < 0.0 ) {
 	    throw new IllegalActionException(
-		    ((NamedObj)actor).getName() + " - Attempt to "
+		    ((NamedObj)_actor).getName() + " - Attempt to "
 		    + "set negative delay time.");
 	}
 	_delayTime = delay;
@@ -370,7 +370,7 @@ public class TimeKeeper {
      * @deprecated
      */
     synchronized void printRcvrList() {
-	String name = ((NamedObj)actor).getName();
+	String name = ((NamedObj)_actor).getName();
         System.out.println("\n***Print "+name+"'s RcvrList.");
         System.out.println("   Number of Receivers in RcvrList = "
                 + _rcvrTimeList.size() );
@@ -459,11 +459,11 @@ public class TimeKeeper {
     ///////////////////////////////////////////////////////////////////
     ////                       public variables                    ////
 
-    // The actor that is managed by this time keeper.
-    public final Actor actor;
-
     ///////////////////////////////////////////////////////////////////
     ////                        private variables                  ////
+
+    // The actor that is managed by this time keeper.
+    private Actor _actor;
 
     // The _rcvrTimeList stores RcvrTimeTriples and is used to
     // order the receivers according to time and priority.
