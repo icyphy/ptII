@@ -241,11 +241,12 @@ do
 	# 13) Check for @exception tags that are not worded properly
 	# Added a . to this regex so that we find things like
 	#  @exception java.util.NoSuchElementException If the enumeration is
-	results=`egrep '@exception' $file | egrep -v '@exception [A-Za-z0-9.]* If' | grep -v 'Not thrown in this base class'`
+	results=`egrep '@exception' $file | egrep -v '@exception [A-Za-z0-9.]* If' | grep -v 'Not thrown in this base class' | grep -v 'Always thrown'`
 	if [ "x$results" != "x" ]; then
 	    echo "$file: @exception tags should either be"
 	    echo "      '@exception MyException If such and such occurs'"
 	    echo " or   '@exception MyException Not thrown in this base class'"
+	    echo " or   '@exception MyException Always thrown'"
 	    echo "$results"
 	fi
 done
