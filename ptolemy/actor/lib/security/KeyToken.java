@@ -128,7 +128,7 @@ public class KeyToken extends Token {
         return result.toString();
     }
 
-    /** The cryptographic key type */
+    /** The cryptographic key type. */
     public static class KeyType implements Type, Serializable {
 
         ///////////////////////////////////////////////////////////////////
@@ -229,7 +229,7 @@ public class KeyToken extends Token {
     }
 
     /** The Key type: the least upper bound of all the cryptographic 
-     *  key types
+     *  key types.
      */   
     public static final Type KEY = new KeyType();
 
