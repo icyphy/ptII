@@ -236,7 +236,7 @@ public abstract class TreeNode extends TrackedPropertyMap
         Class c = getClass();
         String className = StringManip.unqualifiedPart(c.getName());
 
-        sb.append(className);
+        sb.append(" {" + className);
 
         // If the number property is defined, print the number.
         if (hasProperty(NUMBER_KEY)) {
@@ -260,7 +260,7 @@ public abstract class TreeNode extends TrackedPropertyMap
 
                 matchingMethods++;
                 if (matchingMethods == 1) {
-                    sb.append('\n');
+                    sb.append(" { \n");
                 }
 
                 String methodLabel = methodName.substring(3);
@@ -268,7 +268,7 @@ public abstract class TreeNode extends TrackedPropertyMap
                 String totalprefix = nextprefix +
                     _makeSpaceString(methodLabel.length()) + "  ";
 
-                sb.append(nextprefix + methodLabel + ": ");
+                sb.append(nextprefix + " {" + methodLabel);
 
                 Object retval = null;
                 try {
@@ -280,28 +280,26 @@ public abstract class TreeNode extends TrackedPropertyMap
 
                 if (retval instanceof TreeNode) {
                     TreeNode node = (TreeNode) retval;
-                    sb.append(node.toString(totalprefix));
+                    sb.append(node.toString(totalprefix) + "} \n");
                 } else if (retval instanceof List) {
-                    sb.append(TNLManip.toString((List) retval, nextprefix));
+                    sb.append(" " + TNLManip.toString((List) retval, nextprefix) + "} \n");
                 } else {
 		    if (retval == null) {
-			sb.append("null\n");
+			sb.append(" null}\n");
 		    } else {
-			sb.append(retval.toString() + '\n');
+			sb.append(" " + retval.toString() + "} \n");
 		    }
                 }
-
             } // if (methodName.startsWith("get") ...
         } // for
 
         if (matchingMethods < 1) {
-            sb.append(" (leaf)"); // Node has no children
+            sb.append(" {leaf}"); // Node has no children
         } else {
-            sb.append(prefix + "END " + className);
+            sb.append(prefix + "}") ;
         }
 
-        sb.append('\n');
-
+        sb.append("}");
         return sb.toString();
     }
 

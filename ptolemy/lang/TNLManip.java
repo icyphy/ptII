@@ -148,15 +148,6 @@ public class TNLManip {
         }
     }
 
-    /** Return a string representation of the list. This method simply calls
-     *  toString(list, "").
-     *  @param list The list of nodes to represent.
-     *  @return A string representation.
-     */
-    public static final String toString(List list) {
-        return toString(list, "");
-    }
-
     /** Return a string representation of the list. The string representation
      *  is prefixed by the argument string.
      *  @param list The list of nodes to print.
@@ -165,11 +156,11 @@ public class TNLManip {
      */
     public static final String toString(List list, String prefix) {
         if (list.isEmpty()) {
-            return "<empty list>\n";
+            return " {}";
         }
         String nextprefix = prefix + " ";
         StringBuffer sb = new StringBuffer();
-        sb.append("list\n");
+        sb.append("{ \n");
 
         Iterator itr = list.iterator();
         while (itr.hasNext()) {
@@ -188,8 +179,7 @@ public class TNLManip {
 					   child.getClass());
             }
         }
-        sb.append(prefix);
-        sb.append("END list\n");
+        sb.append("}");
         return sb.toString();
     }
 

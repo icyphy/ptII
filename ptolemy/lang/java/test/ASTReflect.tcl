@@ -55,6 +55,74 @@ if {[info procs jdkCapture] == "" } then {
 # Check for necessary classes and adjust the auto_path accordingly.
 #
 
+# Sort a list by sorting each sublist as well.
+# Given a nested list like
+#                    {a c b {{f {n m} p} {d e} g} z}  
+# return             {a b c z {{d e} {f {m n} p} g}}
+# lsort would return {a b c z {{f {n m} p} {d e} g}}
+proc deeplsort {list} {
+    puts "deeplsort($list)"
+    # If all the elements in a list are leaves [llength <= 1], then
+    # call lsort on the list
+    set allLeaves 1
+    foreach element $list {
+	if {[llength $element] > 1} {
+	    set allLeaves 0
+	    break
+	}
+    }
+    if {$allLeaves == 1} {
+	puts "calling lsort $list"
+	return [lsort $list]
+    }
+    
+    # If any elements have a length greather than 1, then call deepsort on
+    # each element that has a length greater than 1 and create a new list
+    # and then call lsort on the new list
+    foreach element $list {
+	if {[llength $element] > 1} {
+	    lappend newlist [deeplsort $element]
+	} else {
+	    lappend newlist $element
+	}
+    }
+    return [lsort $newlist] 
+}
+
+
+
+# Compare two deeply sorted lists
+# If the lists are the same return 1
+# If the lists are not the same, try returning a useful message
+proc deeplcompare {lista listb {indent ""}} {
+    if {[llength $lista] != [llength $listb]} {
+	return "The two lists are not the same length '[llength $lista]' != '[llength $listb]'\n$lista\n$listb"} {
+    }
+    for {set i 0} {$i< [llength $lista]} {incr i} {
+	if { [lindex $lista $i ] != [lindex $listb $i ]} {
+	    set a [lindex $lista $i]
+	    set b [lindex $listb $i]
+	    append indent " "
+	    if {[llength $a] > 1 ||  [llength $b] > 1} {
+		return "$indent checking '$a' '$b' \n [deeplcompare $a $b $indent]"
+	    } else {
+		return "$indent $a is not equal to $b"
+	    }
+	}
+    }
+}
+
+proc lcompare {lista listb} {
+    if {$lista == $listb } {
+	return 1
+    }
+    return [deeplcompare [deeplsort $lista] [deeplsort $listb]]
+}
+#set a {a c b {{f {n m} p} {d e} g} z}  
+#set b {a c b {{f {n m} q} {d e} g} z}  
+#
+#puts [lcompare $a $b]
+
 ######################################################################
 ####
 #
@@ -62,22 +130,21 @@ test ASTReflect-2.1 {check out constructor in Object} {
     set class [ java::call Class forName "java.lang.Object"]
     set astList [java::call ptolemy.lang.java.ASTReflect constructorsASTList $class]
     list [listToStrings $astList]
-} {{{ConstructorDeclNode
- Modifiers: 1
- Name: NameNode
-        Ident: Object
-        Qualifier: AbsentTreeNode (leaf)
-       END NameNode
- Params: <empty list>
- ThrowsList: <empty list>
- Body: BlockNode
-        Stmts: <empty list>
-       END BlockNode
- ConstructorCall: SuperConstructorCallNode
-                   Args: <empty list>
-                  END SuperConstructorCallNode
-END ConstructorDeclNode
-}}}
+} {{{ {ConstructorDeclNode { 
+  {Name {NameNode { 
+         {Qualifier {AbsentTreeNode {leaf}}} 
+         {Ident Object} 
+       }}} 
+  {Modifiers 1} 
+  {Params  {}} 
+  {ThrowsList  {}} 
+  {Body {BlockNode { 
+         {Stmts  {}} 
+       }}} 
+  {ConstructorCall {SuperConstructorCallNode { 
+                    {Args  {}} 
+                  }}} 
+}}}}}
 
 ######################################################################
 ####
@@ -86,74 +153,69 @@ test ASTReflect-2.2 {check out constructors} {
     set class [ java::call Class forName "ptolemy.lang.java.test.ReflectTest"]
     set astList [java::call ptolemy.lang.java.ASTReflect constructorsASTList $class]
     list [listToStrings $astList]
-} {{{ConstructorDeclNode
- Modifiers: 0
- Name: NameNode
-        Ident: ReflectTest
-        Qualifier: AbsentTreeNode (leaf)
-       END NameNode
- Params: <empty list>
- ThrowsList: <empty list>
- Body: BlockNode
-        Stmts: <empty list>
-       END BlockNode
- ConstructorCall: SuperConstructorCallNode
-                   Args: <empty list>
-                  END SuperConstructorCallNode
-END ConstructorDeclNode
-} {ConstructorDeclNode
- Modifiers: 0
- Name: NameNode
-        Ident: ReflectTest
-        Qualifier: AbsentTreeNode (leaf)
-       END NameNode
- Params: list
-  ParameterNode
-   DefType: IntTypeNode (leaf)
-   Modifiers: 25
-   Name: NameNode
-          Ident: 
-          Qualifier: AbsentTreeNode (leaf)
-         END NameNode
-  END ParameterNode
- END list
- ThrowsList: <empty list>
- Body: BlockNode
-        Stmts: <empty list>
-       END BlockNode
- ConstructorCall: SuperConstructorCallNode
-                   Args: <empty list>
-                  END SuperConstructorCallNode
-END ConstructorDeclNode
-} {ConstructorDeclNode
- Modifiers: 0
- Name: NameNode
-        Ident: ReflectTest
-        Qualifier: AbsentTreeNode (leaf)
-       END NameNode
- Params: list
-  ParameterNode
-   DefType: ArrayTypeNode
-             BaseType: ArrayTypeNode
-                        BaseType: IntTypeNode (leaf)
-                       END ArrayTypeNode
-            END ArrayTypeNode
-   Modifiers: 25
-   Name: NameNode
-          Ident: 
-          Qualifier: AbsentTreeNode (leaf)
-         END NameNode
-  END ParameterNode
- END list
- ThrowsList: <empty list>
- Body: BlockNode
-        Stmts: <empty list>
-       END BlockNode
- ConstructorCall: SuperConstructorCallNode
-                   Args: <empty list>
-                  END SuperConstructorCallNode
-END ConstructorDeclNode
-}}}
+} {{{ {ConstructorDeclNode { 
+  {Name {NameNode { 
+         {Qualifier {AbsentTreeNode {leaf}}} 
+         {Ident ReflectTest} 
+       }}} 
+  {Modifiers 0} 
+  {Params { 
+   {ParameterNode { 
+    {Name {NameNode { 
+           {Qualifier {AbsentTreeNode {leaf}}} 
+           {Ident } 
+         }}} 
+    {Modifiers 25} 
+    {DefType {IntTypeNode {leaf}}} 
+  }}}} 
+  {ThrowsList  {}} 
+  {Body {BlockNode { 
+         {Stmts  {}} 
+       }}} 
+  {ConstructorCall {SuperConstructorCallNode { 
+                    {Args  {}} 
+                  }}} 
+}}} { {ConstructorDeclNode { 
+  {Name {NameNode { 
+         {Qualifier {AbsentTreeNode {leaf}}} 
+         {Ident ReflectTest} 
+       }}} 
+  {Modifiers 0} 
+  {Params { 
+   {ParameterNode { 
+    {Name {NameNode { 
+           {Qualifier {AbsentTreeNode {leaf}}} 
+           {Ident } 
+         }}} 
+    {Modifiers 25} 
+    {DefType {ArrayTypeNode { 
+              {BaseType {ArrayTypeNode { 
+                         {BaseType {IntTypeNode {leaf}}} 
+                       }}} 
+            }}} 
+  }}}} 
+  {ThrowsList  {}} 
+  {Body {BlockNode { 
+         {Stmts  {}} 
+       }}} 
+  {ConstructorCall {SuperConstructorCallNode { 
+                    {Args  {}} 
+                  }}} 
+}}} { {ConstructorDeclNode { 
+  {Name {NameNode { 
+         {Qualifier {AbsentTreeNode {leaf}}} 
+         {Ident ReflectTest} 
+       }}} 
+  {Modifiers 0} 
+  {Params  {}} 
+  {ThrowsList  {}} 
+  {Body {BlockNode { 
+         {Stmts  {}} 
+       }}} 
+  {ConstructorCall {SuperConstructorCallNode { 
+                    {Args  {}} 
+                  }}} 
+}}}}}
 
 ######################################################################
 ####
@@ -162,191 +224,175 @@ test ASTReflect-3.1 {check out fields} {
     set class [ java::call Class forName "ptolemy.lang.java.test.ReflectTestFields"]
     set astList [java::call ptolemy.lang.java.ASTReflect fieldsASTList $class]
     list [listToStrings $astList]
-} {{{FieldDeclNode
- DefType: TypeNameNode
-           Name: NameNode
-                  Ident: Boolean
-                  Qualifier: AbsentTreeNode (leaf)
-                 END NameNode
-          END TypeNameNode
- Modifiers: 1
- Name: NameNode
-        Ident: myBoolean
-        Qualifier: AbsentTreeNode (leaf)
-       END NameNode
- InitExpr: AbsentTreeNode (leaf)
-END FieldDeclNode
-} {FieldDeclNode
- DefType: TypeNameNode
-           Name: NameNode
-                  Ident: Character
-                  Qualifier: AbsentTreeNode (leaf)
-                 END NameNode
-          END TypeNameNode
- Modifiers: 1
- Name: NameNode
-        Ident: myCharacter
-        Qualifier: AbsentTreeNode (leaf)
-       END NameNode
- InitExpr: AbsentTreeNode (leaf)
-END FieldDeclNode
-} {FieldDeclNode
- DefType: TypeNameNode
-           Name: NameNode
-                  Ident: Byte
-                  Qualifier: AbsentTreeNode (leaf)
-                 END NameNode
-          END TypeNameNode
- Modifiers: 1
- Name: NameNode
-        Ident: myByte
-        Qualifier: AbsentTreeNode (leaf)
-       END NameNode
- InitExpr: AbsentTreeNode (leaf)
-END FieldDeclNode
-} {FieldDeclNode
- DefType: TypeNameNode
-           Name: NameNode
-                  Ident: Short
-                  Qualifier: AbsentTreeNode (leaf)
-                 END NameNode
-          END TypeNameNode
- Modifiers: 1
- Name: NameNode
-        Ident: myShort
-        Qualifier: AbsentTreeNode (leaf)
-       END NameNode
- InitExpr: AbsentTreeNode (leaf)
-END FieldDeclNode
-} {FieldDeclNode
- DefType: TypeNameNode
-           Name: NameNode
-                  Ident: Integer
-                  Qualifier: AbsentTreeNode (leaf)
-                 END NameNode
-          END TypeNameNode
- Modifiers: 1
- Name: NameNode
-        Ident: myInteger
-        Qualifier: AbsentTreeNode (leaf)
-       END NameNode
- InitExpr: AbsentTreeNode (leaf)
-END FieldDeclNode
-} {FieldDeclNode
- DefType: TypeNameNode
-           Name: NameNode
-                  Ident: Long
-                  Qualifier: AbsentTreeNode (leaf)
-                 END NameNode
-          END TypeNameNode
- Modifiers: 1
- Name: NameNode
-        Ident: myLong
-        Qualifier: AbsentTreeNode (leaf)
-       END NameNode
- InitExpr: AbsentTreeNode (leaf)
-END FieldDeclNode
-} {FieldDeclNode
- DefType: TypeNameNode
-           Name: NameNode
-                  Ident: Float
-                  Qualifier: AbsentTreeNode (leaf)
-                 END NameNode
-          END TypeNameNode
- Modifiers: 1
- Name: NameNode
-        Ident: myFloat
-        Qualifier: AbsentTreeNode (leaf)
-       END NameNode
- InitExpr: AbsentTreeNode (leaf)
-END FieldDeclNode
-} {FieldDeclNode
- DefType: TypeNameNode
-           Name: NameNode
-                  Ident: Double
-                  Qualifier: AbsentTreeNode (leaf)
-                 END NameNode
-          END TypeNameNode
- Modifiers: 1
- Name: NameNode
-        Ident: myDouble
-        Qualifier: AbsentTreeNode (leaf)
-       END NameNode
- InitExpr: AbsentTreeNode (leaf)
-END FieldDeclNode
-} {FieldDeclNode
- DefType: BoolTypeNode (leaf)
- Modifiers: 2
- Name: NameNode
-        Ident: _myBoolean
-        Qualifier: AbsentTreeNode (leaf)
-       END NameNode
- InitExpr: AbsentTreeNode (leaf)
-END FieldDeclNode
-} {FieldDeclNode
- DefType: CharTypeNode (leaf)
- Modifiers: 2
- Name: NameNode
-        Ident: _myCharacter
-        Qualifier: AbsentTreeNode (leaf)
-       END NameNode
- InitExpr: AbsentTreeNode (leaf)
-END FieldDeclNode
-} {FieldDeclNode
- DefType: ByteTypeNode (leaf)
- Modifiers: 2
- Name: NameNode
-        Ident: _myByte
-        Qualifier: AbsentTreeNode (leaf)
-       END NameNode
- InitExpr: AbsentTreeNode (leaf)
-END FieldDeclNode
-} {FieldDeclNode
- DefType: ShortTypeNode (leaf)
- Modifiers: 2
- Name: NameNode
-        Ident: _myShort
-        Qualifier: AbsentTreeNode (leaf)
-       END NameNode
- InitExpr: AbsentTreeNode (leaf)
-END FieldDeclNode
-} {FieldDeclNode
- DefType: IntTypeNode (leaf)
- Modifiers: 2
- Name: NameNode
-        Ident: _myInteger
-        Qualifier: AbsentTreeNode (leaf)
-       END NameNode
- InitExpr: AbsentTreeNode (leaf)
-END FieldDeclNode
-} {FieldDeclNode
- DefType: LongTypeNode (leaf)
- Modifiers: 2
- Name: NameNode
-        Ident: _myLong
-        Qualifier: AbsentTreeNode (leaf)
-       END NameNode
- InitExpr: AbsentTreeNode (leaf)
-END FieldDeclNode
-} {FieldDeclNode
- DefType: FloatTypeNode (leaf)
- Modifiers: 2
- Name: NameNode
-        Ident: _myFloat
-        Qualifier: AbsentTreeNode (leaf)
-       END NameNode
- InitExpr: AbsentTreeNode (leaf)
-END FieldDeclNode
-} {FieldDeclNode
- DefType: DoubleTypeNode (leaf)
- Modifiers: 2
- Name: NameNode
-        Ident: _myDouble
-        Qualifier: AbsentTreeNode (leaf)
-       END NameNode
- InitExpr: AbsentTreeNode (leaf)
-END FieldDeclNode
-}}}
+} {{{ {FieldDeclNode { 
+  {Name {NameNode { 
+         {Qualifier {AbsentTreeNode {leaf}}} 
+         {Ident myBoolean} 
+       }}} 
+  {Modifiers 1} 
+  {DefType {TypeNameNode { 
+            {Name {NameNode { 
+                   {Qualifier {AbsentTreeNode {leaf}}} 
+                   {Ident Boolean} 
+                 }}} 
+          }}} 
+  {InitExpr {AbsentTreeNode {leaf}}} 
+}}} { {FieldDeclNode { 
+  {Name {NameNode { 
+         {Qualifier {AbsentTreeNode {leaf}}} 
+         {Ident myCharacter} 
+       }}} 
+  {Modifiers 1} 
+  {DefType {TypeNameNode { 
+            {Name {NameNode { 
+                   {Qualifier {AbsentTreeNode {leaf}}} 
+                   {Ident Character} 
+                 }}} 
+          }}} 
+  {InitExpr {AbsentTreeNode {leaf}}} 
+}}} { {FieldDeclNode { 
+  {Name {NameNode { 
+         {Qualifier {AbsentTreeNode {leaf}}} 
+         {Ident myByte} 
+       }}} 
+  {Modifiers 1} 
+  {DefType {TypeNameNode { 
+            {Name {NameNode { 
+                   {Qualifier {AbsentTreeNode {leaf}}} 
+                   {Ident Byte} 
+                 }}} 
+          }}} 
+  {InitExpr {AbsentTreeNode {leaf}}} 
+}}} { {FieldDeclNode { 
+  {Name {NameNode { 
+         {Qualifier {AbsentTreeNode {leaf}}} 
+         {Ident myShort} 
+       }}} 
+  {Modifiers 1} 
+  {DefType {TypeNameNode { 
+            {Name {NameNode { 
+                   {Qualifier {AbsentTreeNode {leaf}}} 
+                   {Ident Short} 
+                 }}} 
+          }}} 
+  {InitExpr {AbsentTreeNode {leaf}}} 
+}}} { {FieldDeclNode { 
+  {Name {NameNode { 
+         {Qualifier {AbsentTreeNode {leaf}}} 
+         {Ident myInteger} 
+       }}} 
+  {Modifiers 1} 
+  {DefType {TypeNameNode { 
+            {Name {NameNode { 
+                   {Qualifier {AbsentTreeNode {leaf}}} 
+                   {Ident Integer} 
+                 }}} 
+          }}} 
+  {InitExpr {AbsentTreeNode {leaf}}} 
+}}} { {FieldDeclNode { 
+  {Name {NameNode { 
+         {Qualifier {AbsentTreeNode {leaf}}} 
+         {Ident myLong} 
+       }}} 
+  {Modifiers 1} 
+  {DefType {TypeNameNode { 
+            {Name {NameNode { 
+                   {Qualifier {AbsentTreeNode {leaf}}} 
+                   {Ident Long} 
+                 }}} 
+          }}} 
+  {InitExpr {AbsentTreeNode {leaf}}} 
+}}} { {FieldDeclNode { 
+  {Name {NameNode { 
+         {Qualifier {AbsentTreeNode {leaf}}} 
+         {Ident myFloat} 
+       }}} 
+  {Modifiers 1} 
+  {DefType {TypeNameNode { 
+            {Name {NameNode { 
+                   {Qualifier {AbsentTreeNode {leaf}}} 
+                   {Ident Float} 
+                 }}} 
+          }}} 
+  {InitExpr {AbsentTreeNode {leaf}}} 
+}}} { {FieldDeclNode { 
+  {Name {NameNode { 
+         {Qualifier {AbsentTreeNode {leaf}}} 
+         {Ident myDouble} 
+       }}} 
+  {Modifiers 1} 
+  {DefType {TypeNameNode { 
+            {Name {NameNode { 
+                   {Qualifier {AbsentTreeNode {leaf}}} 
+                   {Ident Double} 
+                 }}} 
+          }}} 
+  {InitExpr {AbsentTreeNode {leaf}}} 
+}}} { {FieldDeclNode { 
+  {Name {NameNode { 
+         {Qualifier {AbsentTreeNode {leaf}}} 
+         {Ident _myBoolean} 
+       }}} 
+  {Modifiers 2} 
+  {DefType {BoolTypeNode {leaf}}} 
+  {InitExpr {AbsentTreeNode {leaf}}} 
+}}} { {FieldDeclNode { 
+  {Name {NameNode { 
+         {Qualifier {AbsentTreeNode {leaf}}} 
+         {Ident _myCharacter} 
+       }}} 
+  {Modifiers 2} 
+  {DefType {CharTypeNode {leaf}}} 
+  {InitExpr {AbsentTreeNode {leaf}}} 
+}}} { {FieldDeclNode { 
+  {Name {NameNode { 
+         {Qualifier {AbsentTreeNode {leaf}}} 
+         {Ident _myByte} 
+       }}} 
+  {Modifiers 2} 
+  {DefType {ByteTypeNode {leaf}}} 
+  {InitExpr {AbsentTreeNode {leaf}}} 
+}}} { {FieldDeclNode { 
+  {Name {NameNode { 
+         {Qualifier {AbsentTreeNode {leaf}}} 
+         {Ident _myShort} 
+       }}} 
+  {Modifiers 2} 
+  {DefType {ShortTypeNode {leaf}}} 
+  {InitExpr {AbsentTreeNode {leaf}}} 
+}}} { {FieldDeclNode { 
+  {Name {NameNode { 
+         {Qualifier {AbsentTreeNode {leaf}}} 
+         {Ident _myInteger} 
+       }}} 
+  {Modifiers 2} 
+  {DefType {IntTypeNode {leaf}}} 
+  {InitExpr {AbsentTreeNode {leaf}}} 
+}}} { {FieldDeclNode { 
+  {Name {NameNode { 
+         {Qualifier {AbsentTreeNode {leaf}}} 
+         {Ident _myLong} 
+       }}} 
+  {Modifiers 2} 
+  {DefType {LongTypeNode {leaf}}} 
+  {InitExpr {AbsentTreeNode {leaf}}} 
+}}} { {FieldDeclNode { 
+  {Name {NameNode { 
+         {Qualifier {AbsentTreeNode {leaf}}} 
+         {Ident _myFloat} 
+       }}} 
+  {Modifiers 2} 
+  {DefType {FloatTypeNode {leaf}}} 
+  {InitExpr {AbsentTreeNode {leaf}}} 
+}}} { {FieldDeclNode { 
+  {Name {NameNode { 
+         {Qualifier {AbsentTreeNode {leaf}}} 
+         {Ident _myDouble} 
+       }}} 
+  {Modifiers 2} 
+  {DefType {DoubleTypeNode {leaf}}} 
+  {InitExpr {AbsentTreeNode {leaf}}} 
+}}}}}
 
 ######################################################################
 ####
@@ -355,95 +401,95 @@ test ASTReflect-4.1 {check out innerclasses} {
     set class [ java::call Class forName "ptolemy.lang.java.test.ReflectTest"]
     set astList [java::call ptolemy.lang.java.ASTReflect innerClassesASTList $class]
     list [listToStrings $astList]
-} {{{ClassDeclNode
- Interfaces: <empty list>
- Members: list
-  ConstructorDeclNode
-   Modifiers: 0
-   Name: NameNode
-          Ident: ReflectTest$innerPublicClass
-          Qualifier: AbsentTreeNode (leaf)
-         END NameNode
-   Params: list
-    ParameterNode
-     DefType: TypeNameNode
-               Name: NameNode
-                      Ident: ReflectTest
-                      Qualifier: AbsentTreeNode (leaf)
-                     END NameNode
-              END TypeNameNode
-     Modifiers: 1
-     Name: NameNode
-            Ident: 
-            Qualifier: AbsentTreeNode (leaf)
-           END NameNode
-    END ParameterNode
-   END list
-   ThrowsList: <empty list>
-   Body: BlockNode
-          Stmts: <empty list>
-         END BlockNode
-   ConstructorCall: SuperConstructorCallNode
-                     Args: <empty list>
-                    END SuperConstructorCallNode
-  END ConstructorDeclNode
-  MethodDeclNode
-   Modifiers: 1
-   Name: NameNode
-          Ident: innerPublicClassPublicMethod
-          Qualifier: AbsentTreeNode (leaf)
-         END NameNode
-   Params: list
-    ParameterNode
-     DefType: TypeNameNode
-               Name: NameNode
-                      Ident: NamedObj
-                      Qualifier: AbsentTreeNode (leaf)
-                     END NameNode
-              END TypeNameNode
-     Modifiers: 1
-     Name: NameNode
-            Ident: 
-            Qualifier: AbsentTreeNode (leaf)
-           END NameNode
-    END ParameterNode
-   END list
-   ThrowsList: <empty list>
-   Body: AbsentTreeNode (leaf)
-   ReturnType: ArrayTypeNode
-                BaseType: ArrayTypeNode
-                           BaseType: ArrayTypeNode
-                                      BaseType: IntTypeNode (leaf)
-                                     END ArrayTypeNode
-                          END ArrayTypeNode
-               END ArrayTypeNode
-  END MethodDeclNode
-  FieldDeclNode
-   DefType: TypeNameNode
-             Name: NameNode
-                    Ident: ReflectTest
-                    Qualifier: AbsentTreeNode (leaf)
-                   END NameNode
-            END TypeNameNode
-   Modifiers: 20
-   Name: NameNode
-          Ident: this$0
-          Qualifier: AbsentTreeNode (leaf)
-         END NameNode
-   InitExpr: AbsentTreeNode (leaf)
-  END FieldDeclNode
- END list
- Modifiers: 1
- Name: NameNode
-        Ident: ReflectTest$innerPublicClass
-        Qualifier: AbsentTreeNode (leaf)
-       END NameNode
- SuperClass: NameNode
-              Ident: Object
-              Qualifier: AbsentTreeNode (leaf)
-             END NameNode
-END ClassDeclNode
-}}}
+} {{{ {ClassDeclNode { 
+  {Name {NameNode { 
+         {Qualifier {AbsentTreeNode {leaf}}} 
+         {Ident ReflectTest$innerPublicClass} 
+       }}} 
+  {Interfaces  {}} 
+  {Modifiers 1} 
+  {Members { 
+   {ConstructorDeclNode { 
+    {Name {NameNode { 
+           {Qualifier {AbsentTreeNode {leaf}}} 
+           {Ident ReflectTest$innerPublicClass} 
+         }}} 
+    {Modifiers 0} 
+    {Params { 
+     {ParameterNode { 
+      {Name {NameNode { 
+             {Qualifier {AbsentTreeNode {leaf}}} 
+             {Ident } 
+           }}} 
+      {Modifiers 1} 
+      {DefType {TypeNameNode { 
+                {Name {NameNode { 
+                       {Qualifier {AbsentTreeNode {leaf}}} 
+                       {Ident ReflectTest} 
+                     }}} 
+              }}} 
+    }}}} 
+    {ThrowsList  {}} 
+    {Body {BlockNode { 
+           {Stmts  {}} 
+         }}} 
+    {ConstructorCall {SuperConstructorCallNode { 
+                      {Args  {}} 
+                    }}} 
+  }}   {MethodDeclNode { 
+    {Name {NameNode { 
+           {Qualifier {AbsentTreeNode {leaf}}} 
+           {Ident innerPublicClassPublicMethod} 
+         }}} 
+    {Modifiers 1} 
+    {Params { 
+     {ParameterNode { 
+      {Name {NameNode { 
+             {Qualifier {AbsentTreeNode {leaf}}} 
+             {Ident } 
+           }}} 
+      {Modifiers 1} 
+      {DefType {TypeNameNode { 
+                {Name {NameNode { 
+                       {Qualifier {AbsentTreeNode {leaf}}} 
+                       {Ident NamedObj} 
+                     }}} 
+              }}} 
+    }}}} 
+    {ThrowsList  {}} 
+    {ReturnType {ArrayTypeNode { 
+                 {BaseType {ArrayTypeNode { 
+                            {BaseType {ArrayTypeNode { 
+                                       {BaseType {IntTypeNode {leaf}}} 
+                                     }}} 
+                          }}} 
+               }}} 
+    {Body {AbsentTreeNode {leaf}}} 
+  }}   {FieldDeclNode { 
+    {Name {NameNode { 
+           {Qualifier {AbsentTreeNode {leaf}}} 
+           {Ident this$0} 
+         }}} 
+    {Modifiers 20} 
+    {DefType {TypeNameNode { 
+              {Name {NameNode { 
+                     {Qualifier {AbsentTreeNode {leaf}}} 
+                     {Ident ReflectTest} 
+                   }}} 
+            }}} 
+    {InitExpr {AbsentTreeNode {leaf}}} 
+  }}}} 
+  {SuperClass {NameNode { 
+               {Qualifier {NameNode { 
+                           {Qualifier {NameNode { 
+                                       {Qualifier {AbsentTreeNode {leaf}}} 
+                                       {Ident java} 
+                                     }}} 
+                           {Ident lang} 
+                         }}} 
+               {Ident Object} 
+             }}} 
+}}}}}
 
 ######################################################################
 ####
@@ -452,141 +498,84 @@ test ASTReflect-5.1 {check out methods} {
     set class [ java::call Class forName "ptolemy.lang.java.test.ReflectTest"]
     set astList [java::call ptolemy.lang.java.ASTReflect methodsASTList $class]
     list [listToStrings $astList]
-} {{{MethodDeclNode
- Modifiers: 513
- Name: NameNode
-        Ident: publicMethod1
-        Qualifier: AbsentTreeNode (leaf)
-       END NameNode
- Params: <empty list>
- ThrowsList: <empty list>
- Body: AbsentTreeNode (leaf)
- ReturnType: VoidTypeNode (leaf)
-END MethodDeclNode
-} {MethodDeclNode
- Modifiers: 1
- Name: NameNode
-        Ident: publicMethod2
-        Qualifier: AbsentTreeNode (leaf)
-       END NameNode
- Params: list
-  ParameterNode
-   DefType: IntTypeNode (leaf)
-   Modifiers: 25
-   Name: NameNode
-          Ident: 
-          Qualifier: AbsentTreeNode (leaf)
-         END NameNode
-  END ParameterNode
- END list
- ThrowsList: <empty list>
- Body: AbsentTreeNode (leaf)
- ReturnType: VoidTypeNode (leaf)
-END MethodDeclNode
-} {MethodDeclNode
- Modifiers: 1
- Name: NameNode
-        Ident: publicMethod2
-        Qualifier: AbsentTreeNode (leaf)
-       END NameNode
- Params: list
-  ParameterNode
-   DefType: ArrayTypeNode
-             BaseType: TypeNameNode
-                        Name: NameNode
-                               Ident: NamedObj
-                               Qualifier: AbsentTreeNode (leaf)
-                              END NameNode
-                       END TypeNameNode
-            END ArrayTypeNode
-   Modifiers: 25
-   Name: NameNode
-          Ident: 
-          Qualifier: AbsentTreeNode (leaf)
-         END NameNode
-  END ParameterNode
- END list
- ThrowsList: <empty list>
- Body: AbsentTreeNode (leaf)
- ReturnType: VoidTypeNode (leaf)
-END MethodDeclNode
-} {MethodDeclNode
- Modifiers: 1
- Name: NameNode
-        Ident: publicMethod2
-        Qualifier: AbsentTreeNode (leaf)
-       END NameNode
- Params: list
-  ParameterNode
-   DefType: ArrayTypeNode
-             BaseType: ArrayTypeNode
-                        BaseType: TypeNameNode
-                                   Name: NameNode
-                                          Ident: NamedObj
-                                          Qualifier: AbsentTreeNode (leaf)
-                                         END NameNode
-                                  END TypeNameNode
-                       END ArrayTypeNode
-            END ArrayTypeNode
-   Modifiers: 25
-   Name: NameNode
-          Ident: 
-          Qualifier: AbsentTreeNode (leaf)
-         END NameNode
-  END ParameterNode
- END list
- ThrowsList: <empty list>
- Body: AbsentTreeNode (leaf)
- ReturnType: VoidTypeNode (leaf)
-END MethodDeclNode
-}}}
-
-######################################################################
-####
-#
-test ASTReflect-6.1 {Check out CompileUnitNode after we try out the methods that CompileUnitNode calls} {
-    set class [ java::call Class forName "ptolemy.lang.java.test.ReflectTestInterface"]
-    set ast [java::call ptolemy.lang.java.ASTReflect ASTCompileUnitNode $class]
-    list [$ast toString]
-} {{CompileUnitNode
- DefTypes: list
-  ClassDeclNode
-   Interfaces: list
-    TypeNameNode
-     Name: NameNode
-            Ident: Debuggable
-            Qualifier: AbsentTreeNode (leaf)
-           END NameNode
-    END TypeNameNode
-   END list
-   Members: list
-    MethodDeclNode
-     Modifiers: 9
-     Name: NameNode
-            Ident: interfaceMethod
-            Qualifier: AbsentTreeNode (leaf)
-           END NameNode
-     Params: <empty list>
-     ThrowsList: <empty list>
-     Body: AbsentTreeNode (leaf)
-     ReturnType: VoidTypeNode (leaf)
-    END MethodDeclNode
-   END list
-   Modifiers: 9
-   Name: NameNode
-          Ident: ReflectTestInterface
-          Qualifier: AbsentTreeNode (leaf)
-         END NameNode
-   SuperClass: NameNode
-                Ident: Object
-                Qualifier: AbsentTreeNode (leaf)
-               END NameNode
-  END ClassDeclNode
- END list
- Imports: <empty list>
- Pkg: NameNode
-       Ident: 
-       Qualifier: AbsentTreeNode (leaf)
-      END NameNode
-END CompileUnitNode
-}}
+} {{{ {MethodDeclNode { 
+  {Name {NameNode { 
+         {Qualifier {AbsentTreeNode {leaf}}} 
+         {Ident publicMethod1} 
+       }}} 
+  {Modifiers 513} 
+  {Params  {}} 
+  {ThrowsList  {}} 
+  {ReturnType {VoidTypeNode {leaf}}} 
+  {Body {AbsentTreeNode {leaf}}} 
+}}} { {MethodDeclNode { 
+  {Name {NameNode { 
+         {Qualifier {AbsentTreeNode {leaf}}} 
+         {Ident publicMethod2} 
+       }}} 
+  {Modifiers 1} 
+  {Params { 
+   {ParameterNode { 
+    {Name {NameNode { 
+           {Qualifier {AbsentTreeNode {leaf}}} 
+           {Ident } 
+         }}} 
+    {Modifiers 25} 
+    {DefType {ArrayTypeNode { 
+              {BaseType {TypeNameNode { 
+                         {Name {NameNode { 
+                                {Qualifier {AbsentTreeNode {leaf}}} 
+                                {Ident NamedObj} 
+                              }}} 
+                       }}} 
+            }}} 
+  }}}} 
+  {ThrowsList  {}} 
+  {ReturnType {VoidTypeNode {leaf}}} 
+  {Body {AbsentTreeNode {leaf}}} 
+}}} { {MethodDeclNode { 
+  {Name {NameNode { 
+         {Qualifier {AbsentTreeNode {leaf}}} 
+         {Ident publicMethod2} 
+       }}} 
+  {Modifiers 1} 
+  {Params { 
+   {ParameterNode { 
+    {Name {NameNode { 
+           {Qualifier {AbsentTreeNode {leaf}}} 
+           {Ident } 
+         }}} 
+    {Modifiers 25} 
+    {DefType {ArrayTypeNode { 
+              {BaseType {ArrayTypeNode { 
+                         {BaseType {TypeNameNode { 
+                                    {Name {NameNode { 
+                                           {Qualifier {AbsentTreeNode {leaf}}} 
+                                           {Ident NamedObj} 
+                                         }}} 
+                                  }}} 
+                       }}} 
+            }}} 
+  }}}} 
+  {ThrowsList  {}} 
+  {ReturnType {VoidTypeNode {leaf}}} 
+  {Body {AbsentTreeNode {leaf}}} 
+}}} { {MethodDeclNode { 
+  {Name {NameNode { 
+         {Qualifier {AbsentTreeNode {leaf}}} 
+         {Ident publicMethod2} 
+       }}} 
+  {Modifiers 1} 
+  {Params { 
+   {ParameterNode { 
+    {Name {NameNode { 
+           {Qualifier {AbsentTreeNode {leaf}}} 
+           {Ident } 
+         }}} 
+    {Modifiers 25} 
+    {DefType {IntTypeNode {leaf}}} 
+  }}}} 
+  {ThrowsList  {}} 
+  {ReturnType {VoidTypeNode {leaf}}} 
+  {Body {AbsentTreeNode {leaf}}} 
+}}}}}

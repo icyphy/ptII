@@ -68,84 +68,79 @@ test FindExtraImportsVisitor-1.1 {} {
 #    set iVisitor [java::cast ptolemy.lang.IVisitor $findExtraImportsVisitor]
 #    $ast accept $iVisitor [java::null]
     list [$ast toString]
-} {{CompileUnitNode
- DefTypes: list
-  ClassDeclNode
-   Interfaces: <empty list>
-   Members: list
-    ConstructorDeclNode
-     Modifiers: 0
-     Name: NameNode
-            Ident: FindExtraImportsVisitorTest
-            Qualifier: AbsentTreeNode (leaf)
-           END NameNode
-     Params: <empty list>
-     ThrowsList: <empty list>
-     Body: BlockNode
-            Stmts: <empty list>
-           END BlockNode
-     ConstructorCall: SuperConstructorCallNode
-                       Args: <empty list>
-                      END SuperConstructorCallNode
-    END ConstructorDeclNode
-   END list
-   Modifiers: 1
-   Name: NameNode
-          Ident: FindExtraImportsVisitorTest
-          Qualifier: AbsentTreeNode (leaf)
-         END NameNode
-   SuperClass: TypeNameNode
-                Name: NameNode
-                       Ident: NamedObj
-                       Qualifier: AbsentTreeNode (leaf)
-                      END NameNode
-               END TypeNameNode
-  END ClassDeclNode
- END list
- Imports: list
-  ImportNode
-   Name: NameNode
-          Ident: NamedObj
-          Qualifier: NameNode
-                      Ident: util
-                      Qualifier: NameNode
-                                  Ident: kernel
-                                  Qualifier: NameNode
-                                              Ident: ptolemy
-                                              Qualifier: AbsentTreeNode (leaf)
-                                             END NameNode
-                                 END NameNode
-                     END NameNode
-         END NameNode
-  END ImportNode
-  ImportNode
-   Name: NameNode
-          Ident: Debuggable
-          Qualifier: NameNode
-                      Ident: util
-                      Qualifier: NameNode
-                                  Ident: kernel
-                                  Qualifier: NameNode
-                                              Ident: ptolemy
-                                              Qualifier: AbsentTreeNode (leaf)
-                                             END NameNode
-                                 END NameNode
-                     END NameNode
-         END NameNode
-  END ImportNode
- END list
- Pkg: NameNode
-       Ident: test
-       Qualifier: NameNode
-                   Ident: java
-                   Qualifier: NameNode
-                               Ident: lang
-                               Qualifier: NameNode
-                                           Ident: ptolemy
-                                           Qualifier: AbsentTreeNode (leaf)
-                                          END NameNode
-                              END NameNode
-                  END NameNode
-      END NameNode
-END CompileUnitNode
-}}
+} {{ {CompileUnitNode { 
+  {Pkg {NameNode { 
+        {Qualifier {NameNode { 
+                    {Qualifier {NameNode { 
+                                {Qualifier {NameNode { 
+                                            {Qualifier {AbsentTreeNode {leaf}}} 
+                                            {Ident ptolemy} 
+                                          }}} 
+                                {Ident lang} 
+                              }}} 
+                    {Ident java} 
+                  }}} 
+        {Ident test} 
+      }}} 
+  {Imports { 
+   {ImportNode { 
+    {Name {NameNode { 
+           {Qualifier {NameNode { 
+                       {Qualifier {NameNode { 
+                                   {Qualifier {NameNode { 
+                                               {Qualifier {AbsentTreeNode {leaf}}} 
+                                               {Ident ptolemy} 
+                                             }}} 
+                                   {Ident kernel} 
+                                 }}} 
+                       {Ident util} 
+                     }}} 
+           {Ident NamedObj} 
+         }}} 
+  }}   {ImportNode { 
+    {Name {NameNode { 
+           {Qualifier {NameNode { 
+                       {Qualifier {NameNode { 
+                                   {Qualifier {NameNode { 
+                                               {Qualifier {AbsentTreeNode {leaf}}} 
+                                               {Ident ptolemy} 
+                                             }}} 
+                                   {Ident kernel} 
+                                 }}} 
+                       {Ident util} 
+                     }}} 
+           {Ident Debuggable} 
+         }}} 
+  }}}} 
+  {DefTypes { 
+   {ClassDeclNode { 
+    {Name {NameNode { 
+           {Qualifier {AbsentTreeNode {leaf}}} 
+           {Ident FindExtraImportsVisitorTest} 
+         }}} 
+    {Interfaces  {}} 
+    {Modifiers 1} 
+    {Members { 
+     {ConstructorDeclNode { 
+      {Name {NameNode { 
+             {Qualifier {AbsentTreeNode {leaf}}} 
+             {Ident FindExtraImportsVisitorTest} 
+           }}} 
+      {Modifiers 0} 
+      {Params  {}} 
+      {ThrowsList  {}} 
+      {Body {BlockNode { 
+             {Stmts  {}} 
+           }}} 
+      {ConstructorCall {SuperConstructorCallNode { 
+                        {Args  {}} 
+                      }}} 
+    }}}} 
+    {SuperClass {TypeNameNode { 
+                 {Name {NameNode { 
+                        {Qualifier {AbsentTreeNode {leaf}}} 
+                        {Ident NamedObj} 
+                      }}} 
+               }}} 
+  }}}} 
+}}}}
