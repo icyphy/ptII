@@ -217,7 +217,7 @@ public class EntityController extends LocatableNodeController {
         _menuCreator.setMenuFactory(factory);
     }
 
-    public static class EntityRenderer implements NodeRenderer {
+    public class EntityRenderer implements NodeRenderer {
 	public Figure render(Object n) {
 	    Location location = (Location)n;
 	    NamedObj object = (NamedObj) location.getContainer();
@@ -238,7 +238,9 @@ public class EntityController extends LocatableNodeController {
 	    }
 
 	    Figure figure = icon.createFigure();
-            figure.setToolTipText(object.getName());
+            PtolemyGraphModel model = 
+                (PtolemyGraphModel)getController().getGraphModel();
+            figure.setToolTipText(object.getName(model.getToplevel()));
 	    return figure;
 	}
     }

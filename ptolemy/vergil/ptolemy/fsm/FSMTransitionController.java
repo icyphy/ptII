@@ -32,6 +32,7 @@ package ptolemy.vergil.ptolemy.fsm;
 
 import ptolemy.actor.*;
 import ptolemy.actor.gui.*;
+import ptolemy.domains.fsm.kernel.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.gui.*;
@@ -114,23 +115,17 @@ public class FSMTransitionController extends EdgeController {
     }
 
     public class LinkTarget extends PerimeterTarget {
-        public boolean accept(Figure f) {
+        public boolean acceptHead(Connector c, Figure f) {
             Object object = f.getUserObject();
-	    if(object instanceof Location) return true;
+   	    if(object instanceof Location) return super.acceptHead(c, f);
 	    return false;
         }
 
-        public Site getHeadSite(Connector c, Figure f, double x, double y) {
+        public boolean acceptTail(Connector c, Figure f) {
             Object object = f.getUserObject();
-	    Site site = new PerimeterSite(f, 0);
-	    return site;
-	}  
-        
-        public Site getTailSite(Connector c, Figure f, double x, double y) {
-            Object object = f.getUserObject();
-	    Site site = new PerimeterSite(f, 0);
-	    return site;
-	}
+     	    if(object instanceof Location) return super.acceptTail(c, f);
+	    return false;
+        }
     }
 
     public class LinkRenderer implements EdgeRenderer {
@@ -142,6 +137,17 @@ public class FSMTransitionController extends EdgeController {
             c.setHeadEnd(new Arrowhead());
             c.setLineWidth((float)2.0);
             c.setUserObject(edge);
+            Arc arc = (Arc) edge;
+            Transition transition = (Transition)arc.getRelation();
+	    if(transition != null) {
+		c.setToolTipText(transition.getName());
+                StringBuffer buffer = new StringBuffer();
+                if(transition.guardExpression != null) {
+                    buffer.append(transition.guardExpression.getExpression());
+                }
+                // FIXME what about the trigger and actions?
+                c.setLabelFigure(new LabelFigure(buffer.toString()));
+            }
             return c;
         }
     }
@@ -169,8 +175,15 @@ public class FSMTransitionController extends EdgeController {
 		break;
 	    default:
 		throw new IllegalStateException(
-						"Cannot handle both ends of an edge being dragged.");
+						"Cannot handle both ends of an edge being dragged.");                
 	    }
+            // rerender the edge.  This is necessary for several reasons.
+            // First, the edge is only associated with a relation after it
+            // is fully connected.  Second, edges that aren't 
+            // connected should be erased (which this will rather 
+            // conveniently take care of for us
+            // There is a bug in this I need to track down first.
+            //  getController().rerenderEdge(edge);
         }
     }
     private MenuCreator _menuCreator;

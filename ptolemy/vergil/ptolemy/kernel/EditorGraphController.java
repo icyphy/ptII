@@ -146,7 +146,7 @@ public class EditorGraphController extends ViewerGraphController {
 	    String dflt = "";
 	    // Creating the renderers this way is rather nasty..
 	    // Standard toolbar icons are 25x25 pixels.
-	    NodeRenderer renderer = new PortController.PortRenderer();
+	    NodeRenderer renderer = getPortController().getNodeRenderer();
 	    Figure figure = renderer.render(null);
 	    
 	    FigureIcon icon = new FigureIcon(figure, 25, 25, 1, true);
@@ -230,7 +230,7 @@ public class EditorGraphController extends ViewerGraphController {
 	    String dflt = "";
 	    // Creating the renderers this way is rather nasty..
 	    // Standard toolbar icons are 25x25 pixels.
-	    NodeRenderer renderer = new RelationController.RelationRenderer();
+	    NodeRenderer renderer = getRelationController().getNodeRenderer();
 	    Figure figure = renderer.render(null);
 	    
 	    FigureIcon icon = new FigureIcon(figure, 25, 25, 1, true);

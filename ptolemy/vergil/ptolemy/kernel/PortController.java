@@ -101,7 +101,7 @@ public class PortController extends LocatableNodeController {
      *  Multiports are rendered hollow, 
      *  while single ports are rendered filled.
      */
-    public static class PortRenderer implements NodeRenderer {
+    public class PortRenderer implements NodeRenderer {
 	public Figure render(Object n) {
 	    Polygon2D.Double polygon = new Polygon2D.Double();
 
@@ -152,7 +152,10 @@ public class PortController extends LocatableNodeController {
 		    fill = Color.black;
 		}
 		figure = new BasicFigure(polygon, fill, (float)1.5);
-		figure.setToolTipText(port.getName());
+                PtolemyGraphModel model = 
+                    (PtolemyGraphModel)getController().getGraphModel();
+                figure.setToolTipText(port.getName(model.getToplevel()));
+
 		if(!(port instanceof IOPort)) {
 		    direction = SwingUtilities.NORTH;
 		} else {

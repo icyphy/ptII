@@ -181,63 +181,12 @@ public class FSMGraphFrame extends GraphFrame {
 	
 	GraphPane pane = new GraphPane(_controller, graphModel);
 	_newStateAction = _controller.getNewStateAction();
-	return pane;
-    }
-
-    /** Initialize the actions for this graph frame.  
-     */
-    protected void _initializeActions() {
-	// FIXME make a service.
-	_directorModel = new DefaultComboBoxModel();
-	try {
-	    // FIXME MoMLize
-	    Director dir;
-	    dir = new ptolemy.domains.fsm.kernel.FSMDirector();
-	    dir.setName("FSM");
-	    _directorModel.addElement(dir);
-	}
-	catch (Exception ex) {
-	    MessageHandler.error("Director combobox creation failed", ex);
-	}
-	//FIXME find these names somehow.
-	_directorComboBox = new JComboBox(_directorModel);
-	_directorComboBox.setRenderer(new PtolemyListCellRenderer());
-	_directorComboBox.setMaximumSize(_directorComboBox.getMinimumSize());
-        _directorComboBox.addItemListener(new ItemListener() {
-            public void itemStateChanged(ItemEvent e) {
-                if (e.getStateChange() == ItemEvent.SELECTED) {
-		    // When a director is selected, update the 
-		    // director of the model in the current document.
-		    final Director director = (Director) e.getItem();
-		    PtolemyEffigy effigy = 
-			(PtolemyEffigy)getTableau().getContainer();
-		    if(effigy == null) return;
-		    CompositeEntity entity = 
-			(CompositeEntity)effigy.getModel();
-		    if(entity instanceof CompositeActor) {
-			final CompositeActor actor = (CompositeActor) entity;
-			final Director oldDirector = actor.getDirector();
-                        if((oldDirector == null) || (director.getClass()
-                                != oldDirector.getClass())) {
-                            actor.requestChange(new ChangeRequest(
-                                   this, "Set Director") {
-                                protected void _execute() throws Exception {
-                                    Director clone = (Director)
-                                            director.clone(actor.workspace());
-                                    actor.setDirector(clone);
-                                }
-                            });
-                        }					      
-		    }
-                }
-            }
-        });
-        _toolbar.add(_directorComboBox);
 
 	_editIconAction = new EditIconAction();
 	_getDocumentationAction = new GetDocumentationAction();
 	_controller.getStateController().setMenuFactory(new StateContextMenuFactory(_controller));
 	_controller.getTransitionController().setMenuFactory(new TransitionContextMenuFactory(_controller));
+        return pane;
     }
 
     ///////////////////////////////////////////////////////////////////

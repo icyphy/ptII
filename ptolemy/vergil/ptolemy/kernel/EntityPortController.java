@@ -103,7 +103,7 @@ public class EntityPortController extends NodeController {
     /** Render the ports of components as triangles.  Multiports are
      *  rendered hollow, while single ports are rendered filled.
      */
-    public static class EntityPortRenderer implements NodeRenderer {
+    public class EntityPortRenderer implements NodeRenderer {
 	public Figure render(Object n) {
 	    Port port = (Port)n;
 	    Polygon2D.Double polygon = new Polygon2D.Double();
@@ -118,7 +118,10 @@ public class EntityPortController extends NodeController {
                 fill = Color.black;
             }
 	    Figure figure = new BasicFigure(polygon, fill, (float)1.5);
-	    figure.setToolTipText(port.getName());
+
+            PtolemyGraphModel model = 
+                (PtolemyGraphModel)getController().getGraphModel();
+            figure.setToolTipText(port.getName(model.getToplevel()));
 	    
 	    // Wrap the figure in a TerminalFigure to set the direction that
 	    // connectors exit the port.  Note that this direction is the
