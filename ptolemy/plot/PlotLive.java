@@ -73,6 +73,8 @@ public abstract class PlotLive extends Plot implements Runnable {
      * Handle button presses to enable or disable plotting.
      */
     public boolean action (Event evt, Object arg) {
+	// FIXME: action() is deprecated in JDK1.1, but we need to compile
+	// under 1.0.2 for netscape3.x compatibility.
         if (evt.target == __startButton) {
             __running = true;
             return true;
