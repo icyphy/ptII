@@ -85,8 +85,9 @@ public class PtolemyApplet extends Applet {
      *  or applet viewer to inform this applet that it has been
      *  loaded into the system. It is always called before
      *  the first time that the start method is called.
-     *  In this base class, this method creates a manager and
-     *  a top-level composite actor, both of which are accessible
+     *  In this base class, this method creates a new workspace,
+     *  and creates a manager and a top-level composite actor
+     *  in the workspace, both of which are accessible
      *  to derived classes via protected members.
      *  It also processes a background color parameter.
      *  If the background color parameter has not been set, then the
@@ -105,9 +106,10 @@ public class PtolemyApplet extends Applet {
         }
         setBackground(_background);
 
+        _workspace = new Workspace(getClass().getName());
         try {
-            _manager = new Manager();
-            _toplevel = new TypedCompositeActor();
+            _manager = new Manager(_workspace, "manager");
+            _toplevel = new TypedCompositeActor(_workspace);
             _toplevel.setName("topLevel");
             _toplevel.setManager(_manager);
         } catch (Exception ex) {
@@ -157,10 +159,12 @@ public class PtolemyApplet extends Applet {
      *  that contains this applet has been replaced by another page,
      *  and also just before the applet is to be destroyed.
      *  In this base class, this method calls the finish() method
-     *  of the manager.
+     *  of the manager. If there is no maneger, do nothing.
      */
     public void stop() {
-	_manager.finish();
+        if(_manager != null) {
+            _manager.finish();
+        }
     }
 
     ////////////////////////////////////////////////////////////////////////
@@ -224,6 +228,11 @@ public class PtolemyApplet extends Applet {
     /** The background color set as a parameter.
      */
     protected Color _background;
+
+    /** The workspace that the applet is built in. Each applet has 
+     *  it own workspace.
+     */
+    protected Workspace _workspace;
 
     /** The manager, created in the init() method. */
     protected Manager _manager;
