@@ -215,23 +215,6 @@ public class Plot extends PlotBox {
     }
 
     /**
-     * Get the minimum size of this component.
-     */
-    public Dimension getMinimumSize() {
-        if (_debug > 8) System.out.println("Plot: getMinimumSize");
-        return new Dimension(_width, _height);
-    }
-
-
-    /**
-     * Get the preferred size of this component.
-     */
-    public Dimension getPreferredSize() {
-        if (_debug > 8) System.out.println("Plot: getPreferredSize");
-        return new Dimension(_width, _height);
-    }
-
-    /**
      * Initialize the plotter, parse any data files.
      */
     public synchronized void init() {
@@ -524,8 +507,8 @@ public class Plot extends PlotBox {
         return argsread;
     }
 
-    /**
-     * Resize this component. 
+    /** 
+     * Resize the plot.
      * @deprecated As of JDK1.1 in java.awt.component, but we need 
      * to compile under 1.0.2 for netscape3.x compatibility.
      */
@@ -534,7 +517,7 @@ public class Plot extends PlotBox {
             System.out.println("Plot: resize"+width+" "+height);
         _width = width;
         _height = height;
-        super.resize(_width,_height); // FIXME: resize() is deprecated.
+        super.resize(width,height); // FIXME: resize() is deprecated.
     }
 
     /**
@@ -1463,8 +1446,6 @@ public class Plot extends PlotBox {
 
     // Information about the previously plotted point.
     private long _prevx[], _prevy[];
-
-    private int _width = 400, _height = 400;
 
     // Maximum number of _datasets.
     private static final int _MAX_DATASETS = 63;
