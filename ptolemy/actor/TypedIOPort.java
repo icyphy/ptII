@@ -547,7 +547,7 @@ public class TypedIOPort extends IOPort implements Typeable {
                 // Note that the getRemoteReceivers() method doesn't throw
                 // any non-runtime exception.
                 farReceivers = getRemoteReceivers();
-                if (farReceivers == null ||
+                if (farReceivers == null || farReceivers.length == 0 ||
                         farReceivers[channelIndex] == null) {
                     return;
                 }
