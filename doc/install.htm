@@ -62,9 +62,11 @@ rm -f config.*
 $PTII/bin/scripts needs to be updated.  The safest thing to do is 
 to run make install on the entire tree:
 <pre>
-make install
+make fast install
 </pre>
-
+The <CODE>fast</CODE> rule runs <CODE>javac .. *.java</CODE>
+in the various directories
+and the <CODE>install</CODE> rule updates scripts and builds jar files.
 
 <li> Start vergil
 <pre>
@@ -86,7 +88,8 @@ sections below.
 <h3><a name="java">Java</a></h3>
 Ptolemy II has been developed under JDK1.3.1, which is available from
 <a href="http://java.sun.com/j2se/1.3/" target="_top"><CODE>http://java.sun.com/j2se/1.3/</CODE></a>
-
+ <p>All versions of Ptolemy II 2.0 require Java 1.3 or later.
+Java 1.3 is preferred, the code generator will not work with JDK 1.4
 
 <p>The Java download is available in several formats.
 <dl>
@@ -109,10 +112,10 @@ The applet tags have been configured to require JDK1.3, so to run the applets
 in Netscape 4.7 or Internet Explorer 5.0 under Windows, you will need to use
 the Java Plug-in from
 <a href="http://java.sun.com/products/plugin/" target="_top"><CODE>http://java.sun.com/products/plugin/</CODE></a>
-<a href="http://www.javasoft.com/products/plugin/" target="_top">JavaSoft</a>.
 
- <p>Currently, the Java Plug-in 1.4 is included in the JDK1.4 download for
+ <p>Currently, the Java Plug-in 1.3 is included in the JDK 1.3 download for
 Windows.
+
  <p>If you are running under Solaris 2.6 or 2.7, you can
 <a href="http://www.sun.com/solaris/netscape/" target="_top">download</a>
 a separate plug-in or a complete Netscape installation.
@@ -158,8 +161,11 @@ Diva is a visualization package used by some of the demos.
 <h2>Optional packages not shipped with Ptolemy</h2>
 
 <h3>make</h3>
-Ptolemy II has been built with GNU make 3.77, but does not use GNU make extensions, so GNU make is not requires.  Ptolemy II has also been built
-with Solaris 2.5.1 <CODE>/usr/ccs/bin/make</CODE>.
+
+Ptolemy II has been built with GNU make 3.77, but does not use GNU
+make extensions, so GNU make is not required.  Ptolemy II has also
+been built with Solaris 2.8 <CODE>/usr/ccs/bin/make</CODE>.
+
  <p>It seems that the make that is included with SGI Irix 6.5 may have
 problems, the workaround is to installed GNU make.
  
@@ -306,7 +312,7 @@ argument.  For more information, run <CODE>configure -help</CODE>.
 
  <p>To build:
 <pre>
-make fast all
+make fast install
 </pre>
 
 <h3><a name="Windows">Windows</a></h3>
@@ -490,12 +496,12 @@ to your path.
 <li> Run <CODE>rm -f config.*</CODE>
 <li> Run <CODE>./configure</CODE>
 
-<li> Run <CODE>make fast all</CODE>
+<li> Run <CODE>make fast install</CODE>
+
 <li> Now type <CODE>vergil</CODE> (or
 <CODE>$PTII/bin/vergil</CODE> if you did not set your path) in the C
 shell or cygwin Bash window and the Ptolemy II GUI should start up
 </ol>
-
 
  <p>Currently, Ptolemy II does not support building via Microsoft
 Visual Studio <CODE>nmake</CODE> under Windows.  Also, we have not
