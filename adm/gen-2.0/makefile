@@ -147,10 +147,10 @@ $(PTIIDIST):
 	@echo "#"
 	@echo "$@ `date`"
 	mkdir $@
-	@echo "Be sure that ptolemy/media/javasound/javasound.jar exists"
-	(cd $(PTIIHOME)/ptolemy/media/javasound; make jars)
-	@echo "Be sure that ptolemy/actor/lib/javasound/javasound.jar exists"
-	(cd $(PTIIHOME)/ptolemy/actor/lib/javasound; make jars)
+	#@echo "Be sure that ptolemy/media/javasound/javasound.jar exists"
+	#(cd $(PTIIHOME)/ptolemy/media/javasound; make jars)
+	#@echo "Be sure that ptolemy/actor/lib/javasound/javasound.jar exists"
+	#(cd $(PTIIHOME)/ptolemy/actor/lib/javasound; make jars)
 	(cd $(PTIIHOME); \
 		$(TAR) -c -X $(GENDIR)/src.ex  -X $(GENDIR)/src1.ex \
 		$ -f - $(PTII_TOPDIR) )| \
@@ -159,9 +159,9 @@ $(PTIIDIST):
 	@echo "  tar -X does not seem to work under Cygwin"
 	-find $(PTIIDIST) -name codeDoc -exec rm -rf {} \;
 	-find $(PTIIDIST) -name CVS -exec rm -rf {} \;
-	@echo "Regenerate the documentation with gr and javasound"
+	@echo "Regenerate the documentation with gr and comm"
 	@echo "  This requires JDK1.3, so run it on doppler"
-	(cd $(PTIIDIST)/doc; make JAVADOC=javadoc JDOCFLAGS="-author -version -J-Xmx132m" GRJSRCS="ptolemy.domains.gr.kernel ptolemy.domains.gr.lib" JAVASOUNDJSRCS="ptolemy.actor.lib.javasound ptolemy.media.javasound")
+	(cd $(PTIIDIST)/doc; make JAVADOC=javadoc JDOCFLAGS="-author -version -J-Xmx132m" GRPACKAGES="ptolemy.domains.gr.kernel ptolemy.domains.gr.lib" COMMPACKAGES="ptolemy.actor.lib.comm")
 	#@echo "Do make realclean to clean up any trash"
 	#cd $(PTIIDIST); make clean
 	#cd $(PTIIDIST); make
@@ -444,6 +444,7 @@ remote1distjavadocs:
 # Kernel first, then data, then actor, then alphabetical
 # If you edit JSALLDIRS, then you should probably add the directory to
 # $PTII/doc/makefile in two places so that we automatically generate docs.
+# data/expr uses math.ExtendedMath
 # Tests in actor/lib use DE, so actor/lib should be after de/lib
 # Tests in actor/lib/auto use vergil and moml
 # de/test should be run after sdf
@@ -461,6 +462,7 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/kernel/util \
 	$(REMOTE1PTIIDIST)/ptolemy/data \
+	$(REMOTE1PTIIDIST)/ptolemy/math \
 	$(REMOTE1PTIIDIST)/ptolemy/data/expr \
 	$(REMOTE1PTIIDIST)/ptolemy/data/type \
 	$(REMOTE1PTIIDIST)/ptolemy/actor \
@@ -500,7 +502,6 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/tm/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/tm/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/graph \
-	$(REMOTE1PTIIDIST)/ptolemy/math \
 	$(REMOTE1PTIIDIST)/ptolemy/media \
 	$(REMOTE1PTIIDIST)/ptolemy/media/javasound \
 	$(REMOTE1PTIIDIST)/ptolemy/moml \
