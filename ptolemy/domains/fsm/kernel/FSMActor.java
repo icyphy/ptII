@@ -41,13 +41,9 @@ import ptolemy.actor.TypedActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
-import ptolemy.data.IntToken;
 import ptolemy.data.Token;
-//import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.Typeable;
-//import ptolemy.domains.hdf.kernel.HDFFSMDirector;
-//import ptolemy.domains.sdf.kernel.SDFIOPort;
 import ptolemy.domains.sdf.kernel.SDFScheduler;
 import ptolemy.graph.Inequality;
 import ptolemy.kernel.ComponentEntity;
@@ -98,17 +94,22 @@ initial state is specified by the <i>initialStateName</i> string attribute.
 <p>
 An FSMActor contains a set of variables for the input ports that can be
 referenced in the guard and trigger expressions of transitions. If an input
-port is a single port, two variables are created: one is an input status
-variable with name "<i>portName</i>_isPresent";
-the other is input value variable
-with name "<i>portName</i>". The input status variable always contains a
-BooleanToken. When this actor is fired, the status variable is set to true
-if the port has a token, false otherwise. The input value variable always
-contains the latest token received from the port.
-If the given port is a multiport, a status variable and a value variable are
-created for each channel. The status variable is named
+port is a single port, three variables are created: one is an input status
+variable with name "<i>portName</i>_isPresent"; the second is input value 
+variable with name "<i>portName</i>"; the third is input array variable
+with name "<i>portName</i>Array".
+The input status variable always contains 
+a BooleanToken. When this actor is fired, the status variable is set to true
+if the port has token(s), false otherwise. The input value variable always
+contains the latest token received from the port. The input array variable
+contains an ArrayToken, which contains an array of tokens if the port rate 
+is greater than one. By default, its last token is the latest token, and 
+hence is the same token in input value variable.
+If the given port is a multiport, a status variable, a value variable and
+a array variable are created for each channel. The status variable is named
 "<i>portName</i>_<i>channelIndex</i>_isPresent". The value variable is named
-"<i>portName</i>_<i>channelIndex</i>".
+"<i>portName</i>_<i>channelIndex</i>". The array variable is named
+"<i>portName</i>_<i>channelIndex</i>Array".
 <p>
 An FSMActor can be used in a modal model to represent the mode control logic.
 A state can have a TypedActor refinement. A transition in an FSMActor can be
@@ -180,12 +181,6 @@ public class FSMActor extends CompositeEntity implements TypedActor {
      *  actor.
      */
     public StringAttribute initialStateName = null;
-    
-    /** A parameter representing the number of most recently read tokens
-     *  that are available for use in a state transition guard expression.
-     *  The default value for this parameter is 1.
-     */
-    //public Parameter tokenHistorySize;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -425,10 +420,9 @@ public class FSMActor extends CompositeEntity implements TypedActor {
     public Port newPort(String name) throws NameDuplicationException {
         try {
             _workspace.getWriteAccess();
-            //SDFIOPort p = new SDFIOPort(this, name);
-            TypedIOPort p = new TypedIOPort(this, name);
-            return p;
-            //return new TypedIOPort(this, name);
+            //TypedIOPort p = new TypedIOPort(this, name);
+            //return p;
+            return new TypedIOPort(this, name);
         } catch (IllegalActionException ex) {
             // This exception should not occur.
             throw new InternalErrorException(
@@ -822,18 +816,25 @@ public class FSMActor extends CompositeEntity implements TypedActor {
      *  so the guard and trigger transitions should also be lazy.
      *  <p>
      *  If the given port is not a multiport, but is connected to
-     *  something, then two variables are created:
+     *  something, then three variables are created:
      *  one is input status variable with name "<i>portName</i>_isPresent";
-     *  the other is input value variable with name "<i>portName</i>". The
-     *  input status variable always contains a BooleanToken. When this
+     *  the second is input value variable with name "<i>portName</i>";
+     *  The third is input array variable with name "<i>portName</i>Array".
+     *  The input status variable always contains a BooleanToken. When this
      *  actor is fired, the status variable is set to <i>true</i> if the port
      *  has a token, and to <i>false</i> otherwise. The input value variable
-     *  always contains the latest token received from the port.
+     *  always contains the latest token received from the port. The input
+     *  array variable contains an ArrayToken, which contains an array of
+     *  tokens when the port rate is greater than one. By default, its last
+     *  token is the latest token, and  hence is the same token in input 
+     *  value variable.
      *  <p>
-     *  If the given port is a multiport, a status variable and a value
-     *  variable are created for each channel. The status variable is
-     *  named "<i>portName</i>_<i>channelIndex</i>_isPresent".
+     *  If the given port is a multiport, a status variable, a value
+     *  variable, and an array variable are created for each channel. 
+     *  The status variable is named 
+     *  "<i>portName</i>_<i>channelIndex</i>_isPresent".
      *  The value variable is named "<i>portName</i>_<i>channelIndex</i>".
+     *  The array variable is named "<i>portName</i>_<i>channelIndex</i>Array".
      *  <p>
      *  If a variable to be created has the same name as an attribute
      *  already contained by this actor, that attribute will be removed
@@ -864,12 +865,6 @@ public class FSMActor extends CompositeEntity implements TypedActor {
         // Array in which to store the shadow variables.
         //Variable[][] shadowVariables = new Variable[width][2];
         Variable[][] shadowVariables = new Variable[width][3];
-
-        //int historySize = ((IntToken)(tokenHistorySize.getToken())).intValue();
-        //if (_debug_info) {
-        //    System.out.println("this.getName()" + ":tokenHistorySize =" + 
-        //        historySize);
-        //}
 
         String portName = port.getName();
         for (int channelIndex = 0; channelIndex < width; ++channelIndex) {
@@ -911,8 +906,6 @@ public class FSMActor extends CompositeEntity implements TypedActor {
                 }
                 shadowVariables[channelIndex][1]
                     = new Variable(this, shadowName);
-                
-
                 // Make the variable lazy since it will often have
                 // an expression that cannot be evaluated.
                 shadowVariables[channelIndex][1].setLazy(true);
@@ -930,6 +923,8 @@ public class FSMActor extends CompositeEntity implements TypedActor {
                 }
                 shadowVariables[channelIndex][2]
                     = new Variable(this, shadowArrayName);
+                // Make the variable lazy since it will often have
+                // an expression that cannot be evaluated.
                 shadowVariables[channelIndex][2].setLazy(true);
             } catch (NameDuplicationException ex) {
                 throw new InvalidStateException(this,
@@ -1027,7 +1022,6 @@ public class FSMActor extends CompositeEntity implements TypedActor {
         Iterator inPorts = inputPortList().iterator();
         while (inPorts.hasNext() && !_stopRequested) {
             IOPort p = (IOPort)inPorts.next();
-            //Parameter pRate = new Parameter(p, "tokenConsumptionRate", new IntToken(1));
             int width = p.getWidth();
             for (int channel = 0; channel < width; ++channel) {
                 _setInputVariables(p, channel);
@@ -1065,39 +1059,31 @@ public class FSMActor extends CompositeEntity implements TypedActor {
         }
         if (port.isKnown(channel)) {
             int portRate = SDFScheduler.getTokenConsumptionRate(port);
-            //int portSDFRate = ((SDFIOPort)port).getTokenConsumptionRate();
             if (_debug_info) {
                 System.out.println(port.getName() + " port rate = " + portRate);
             }
-            //if (portRate < 1) portRate = 1;
-            //System.out.println(port.getName() + " port rate = " + portSDFRate);
-            //portRate = 3;
-            //pRate.setToken(new IntToken(portRate));
-            //int historySize = ((IntToken)(tokenHistorySize.getToken())).intValue();
-            //Token[] hdfArray = new Token[historySize];
-            Token[] hdfArray = new Token[portRate]; 
-            for (int i = 0; i < portRate; i++) {
-                hdfArray[i] = new IntToken(0); 
-            }
+            Token[] hdfArray = new Token[portRate];
             int index = 0;
-            // Update the value variable if there is a token in the channel.
-            //while (port.hasToken(channel)) { 
-            while (index < portRate && port.hasToken(channel)) {
+            // Update the value variable if there is/are token(s) in the channel.
+            // FIXME: What if there are not enough tokens?
+            // In HDF(SDF) this shouldn't happen.
+            while (port.hasToken(channel)) {
                 shadowVariables[channel][0].setToken(BooleanToken.TRUE);
                 Token token = port.get(channel);
-                if (_debugging) {
-                    _debug("---", port.getName(),"("+channel+
+                if (index < portRate) {
+                    if (_debugging) {
+                        _debug("---", port.getName(),"("+channel+
                                 ") has ", token.toString());
-                }
-                // Set the value of tokens here.
-                //shadowVariables[channel][1].setToken(token);
-                // if (index < portRate) {
-                hdfArray[index] = token;
-                if (_debug_info) {
-                   System.out.println("hdfArray index = " + index + 
+                    }
+                    // Set the value of tokens here.
+                    //shadowVariables[channel][1].setToken(token);
+                    hdfArray[index] = token;
+                    if (_debug_info) {
+                    System.out.println("hdfArray index = " + index + 
                        " value = " + hdfArray[index].toString());
+                    }
+                    index ++;
                 }
-                index ++;
             }
             if (index > 0) {
                 shadowVariables[channel][1].setToken(hdfArray[index - 1]);
