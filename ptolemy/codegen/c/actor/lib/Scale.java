@@ -32,7 +32,7 @@ import ptolemy.codegen.kernel.CCodeGeneratorHelper;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
-////Scale
+//// Scale
 
 /**
    A helper class for ptolemy.actor.lib.Scale
@@ -41,8 +41,7 @@ import ptolemy.kernel.util.IllegalActionException;
    @version $Id$
    @since Ptolemy II 4.1
    @Pt.ProposedRating Red (eal)
-   @Pt.AcceptedRating Red (eal)
-   
+   @Pt.AcceptedRating Red (eal)  
 */
 public class Scale extends CCodeGeneratorHelper {
 
@@ -64,5 +63,6 @@ public class Scale extends CCodeGeneratorHelper {
     ///////////////////////////////////////////////////////////////////
     ////                         protected variable                ////
 
-    protected String _codeBlock = "$ref(output) = $val(factor) * $ref(input); \n";
+    protected String _codeBlock = "$ref(output)"
+            + " = $val(factor) * $ref(input); \n";
 }

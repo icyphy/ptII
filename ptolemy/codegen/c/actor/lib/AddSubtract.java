@@ -1,100 +1,86 @@
+/* A helper class for ptolemy.actor.lib.AddSubtract
 
-/* WaveForm, CGC domain: CGCWaveForm.java file generated from /users/ptolemy/src/domains/cgc/stars/CGCWaveForm.pl by ptlang
- */
-/*
-  Copyright (c) 1990-1996 The Regents of the University of California.
-  All rights reserved.
-  See the file $PTOLEMY/copyright for copyright notice,
-  limitation of liability, and disclaimer of warranty provisions.
+Copyright (c) 1997-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
+
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
+
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
+
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
+
 */
+
 package ptolemy.codegen.c.actor.lib;
 
 import ptolemy.codegen.kernel.CCodeGeneratorHelper;
-import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
-//// CGCSequence
+//// AddSubtract
 /**
-   Output a the result of subtracting or adding the values of the input ports
+   A helper class for ptolemy.actor.lib.AddSubtract
 
-
-   <p>
-   This star may be used to read a file by simply setting "value" to
-   something of the form "&lt; filename".  The file will be read completely
-   and its contents stored in an array.  The size of the array is currently
-   limited to 20,000 samples.  To read longer files, use the 
-   <tt>ReadFile</tt>
-   star.  This latter star reads one sample at a time, and hence also
-   uses less storage.
-
-   @author Man-Kit (Jackie) Leung
-   @since Ptolemy II 5.0 and at least Ptolemy Classic 0.7.1, possibly earlier.
+   @author Man-Kit (Jackie) Leung, Gang Zhou
+   @version $Id$
+   @since Ptolemy II 5.0
+   @Pt.ProposedRating Red (eal)
+   @Pt.AcceptedRating Red (eal)
 */
 public class AddSubtract extends CCodeGeneratorHelper {
-    /** Construct an actor in the specified container with the specified
-     *  name.
-     *  @param container The container.
-     *  @param name The name of this adder within the container.
-     *  @exception IllegalActionException If the actor cannot be contained
-     *   by the proposed container.
-     *  @exception NameDuplicationException If the name coincides with
-     *   an actor already in the container.
-     */
     
+    /** FIXME
+     */
     
     public AddSubtract(ptolemy.actor.lib.AddSubtract actor) {
         super(actor);
-        _actor = actor;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     public methods                        ////
-    public void  generateFireCode(StringBuffer stream) throws IllegalActionException {
-        _generateCodeblocks();
-        stream.append(_codeBlock);
+    
+    public void  generateFireCode(StringBuffer stream) 
+            throws IllegalActionException {
+        
+        ptolemy.actor.lib.AddSubtract actor = 
+                (ptolemy.actor.lib.AddSubtract)getComponent();
+        StringBuffer tmpStream = new StringBuffer();
+        tmpStream.append("$ref(output) = ");
+        for (int i = 0; i < actor.plus.getWidth(); i++) {
+            tmpStream.append("$ref(plus#" + i + ")");
+            if (i < actor.plus.getWidth() - 1)
+                tmpStream.append(" + ");
+            else if (actor.minus.getWidth() > 0)
+                tmpStream.append(" - ");
+        }
+        for (int i = 0; i < actor.minus.getWidth(); i++) {
+            tmpStream.append("$ref(minus#" + i + ")");
+            if (i < actor.minus.getWidth() - 1)
+                tmpStream.append(" - ");
+            else
+                tmpStream.append(";\n");
+        }
+        _codeBlock = tmpStream.toString();  
+        stream.append(processCode(_codeBlock));
     }
     
     ///////////////////////////////////////////////////////////////////
-    ////                     Codeblocks                     ////
-    /*
-     * This function is called to generate the codeblock
-     */
-    private void _generateCodeblocks() throws IllegalActionException {
-        StringBuffer tmpStream = new StringBuffer();
-        tmpStream.append("$ref(output) = ");
-        Token sum = null;
-        for (int i = 0; i < _actor.plus.getWidth(); i++) {
-            if (_actor.plus.hasToken(i)) {
-                if (sum == null) {
-                    tmpStream.append("input#" + i);
-                }
-                else { 
-                    tmpStream.append(" + input#" + i);
-                }
-            }
-        }
-        for (int i = 0; i < _actor.minus.getWidth(); i++) {
-            if (_actor.minus.hasToken(i)) {
-                Token in = _actor.minus.get(i);
-                if (sum == null) {
-                    tmpStream.append("0");
-                }
-                tmpStream.append(" - input#" + i);
-            }
-        }
-        _codeBlock = tmpStream.toString() + "\n";        
-    }
-
-    
-    /*
-     * This is a temporary holder to store the actor,
-     * so we can use it to generate the codeblock from
-     * information contained in the actor
-     */
-    private ptolemy.actor.lib.AddSubtract _actor;
-
-    
+    ////                         protected variable                ////
+     
     protected String _codeBlock;
 }
