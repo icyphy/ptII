@@ -44,6 +44,8 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.media.javasound.LiveSound;
 import ptolemy.media.javasound.LiveSoundEvent;
 import ptolemy.media.javasound.LiveSoundListener;
+import ptolemy.media.javasound.SoundReader; // For javadoc
+import ptolemy.media.javasound.SoundWriter; // For javadoc
 
 import java.io.IOException;
 

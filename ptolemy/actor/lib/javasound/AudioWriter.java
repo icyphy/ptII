@@ -41,6 +41,8 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
+import ptolemy.media.javasound.SoundPlayback; // For javadoc
+import ptolemy.media.javasound.SoundReader; // For javadoc
 import ptolemy.media.javasound.SoundWriter;
 
 import java.io.IOException;
