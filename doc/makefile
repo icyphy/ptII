@@ -55,8 +55,9 @@ PTCLASSJAR =
 #
 UI_FILES_TO_BE_JARED = \
 	acks.htm \
-	codegen.htm \
 	authors.htm \
+	codegen.htm \
+	expression.htm \
 	webStartHelp.htm \
 	whatsnew.htm \
 	whatsnewVergil.htm
@@ -74,7 +75,6 @@ EXTRA_SRCS = \
 	docs.htm \
 	doctoc.htm \
 	domains.htm \
-	expression.htm \
 	footer.htm \
 	help.htm \
 	index.htm \
