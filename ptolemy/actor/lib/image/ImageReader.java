@@ -43,6 +43,9 @@ import ptolemy.data.expr.Parameter;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+
 import javax.swing.ImageIcon;
 
 //////////////////////////////////////////////////////////////////////////
@@ -157,11 +160,22 @@ public class ImageReader extends Source {
      *  @exception IllegalActionException If an IO error occurs.
      */
     public boolean prefire() throws IllegalActionException {
-        StringToken URLToken = (StringToken)sourceURL.getToken();
-        if (URLToken == null) {
+        StringToken sourceURLToken = (StringToken)sourceURL.getToken();
+        if (sourceURLToken == null) {
             throw new IllegalActionException("sourceURL was null");
         }
-        _image = new ImageIcon(URLToken.stringValue()).getImage();
+
+	// Note that sourceURLValue might be a filepath or a URL 
+	String sourceURLValue = sourceURLToken.stringValue();
+		
+        _image = new ImageIcon(sourceURLValue).getImage();
+
+	if (_image.getWidth(null) == -1
+	    && _image.getHeight(null) == -1) {
+	    throw new IllegalActionException(this,
+		"Image size is -1 x -1.  Failed to open '"
+                + sourceURLValue + "'");
+	}
         return super.prefire();
     }
 
