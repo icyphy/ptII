@@ -32,12 +32,12 @@
 #  ptII/adm/bin/ptIInightly-mail
 #  ptII/adm/bin/ptIInightly
 #  buildmaster/web/adm/makefile
-MAJOR_VERSION = 	2.1
+MAJOR_VERSION = 	3.0
 MINOR_VERSION =		devel
 
 VERSION=	$(MAJOR_VERSION)$(MINOR_VERSION)
 # Version string for lame filesystems that don't like more than one .
-WINDOWS_VERSION =	2.1$(MINOR_VERSION)
+WINDOWS_VERSION =	3.0$(MINOR_VERSION)
 
 # Even if you are building tar files from ptdesign, this should probably
 # still say ptolemy
@@ -560,7 +560,6 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/plot \
 	$(REMOTE1PTIIDIST)/ptolemy/copernicus/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/copernicus/gui \
-	$(REMOTE1PTIIDIST)/ptolemy/copernicus/applet \
 	$(REMOTE1PTIIDIST)/ptolemy/copernicus/jhdl \
 	$(REMOTE1PTIIDIST)/ptolemy/copernicus/c \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil/toolbox \
@@ -586,6 +585,7 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/tm \
 	$(REMOTE1PTIIDIST)/ptolemy/gui \
 	$(REMOTE1PTIIDIST)/jni \
+	$(REMOTE1PTIIDIST)/ptolemy/copernicus/applet \
 	$(REMOTE1PTIIDIST)/ptolemy/configs 
 
 
