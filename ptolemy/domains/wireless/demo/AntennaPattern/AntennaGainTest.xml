@@ -295,6 +295,7 @@
             </property>
             <property name="_configurer" class="ptolemy.actor.gui.InsideEntityEditorPaneFactory">
             </property>
+            <property name="_tableauFactory" class="ptolemy.actor.gui.LevelSkippingTableauFactory"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 200.0]">
             </property>
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {104, 125, 815, 516}, maximized = false}">

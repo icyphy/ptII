@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="TransmitAntennaPattern" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.0-alpha">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.0-beta">
     </property>
     <property name="WirelessDirector" class="ptolemy.domains.wireless.kernel.WirelessDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -332,7 +332,7 @@ of this actor relative to the position of the Sender.</text></svg></configure>
             <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 40.0">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {72, 273, 699, 518}, maximized = false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {72, 273, 699, 516}, maximized = false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[484, 400]">
         </property>
@@ -410,7 +410,7 @@ of this actor relative to the position of the Sender.</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="90.0, 50.0">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {274, 152, 965, 570}, maximized = false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {24, 149, 965, 568}, maximized = false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[750, 452]">
             </property>
@@ -734,6 +734,8 @@ of this actor relative to the position of the Sender.</text></svg></configure>
                     </property>
                     <property name="_configurer" class="ptolemy.actor.gui.InsideEntityEditorPaneFactory">
                     </property>
+                    <property name="_tableauFactory" class="ptolemy.actor.gui.LevelSkippingTableauFactory">
+                    </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 200.0]">
                     </property>
                     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {104, 125, 815, 516}, maximized = false}">
@@ -962,6 +964,8 @@ of this actor relative to the position of the Sender.</text></svg></configure>
                     <property name="_icon" class="ptolemy.vergil.icon.CopyCatIcon">
                     </property>
                     <property name="_configurer" class="ptolemy.actor.gui.InsideEntityEditorPaneFactory">
+                    </property>
+                    <property name="_tableauFactory" class="ptolemy.actor.gui.LevelSkippingTableauFactory">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[565.0, 210.0]">
                     </property>
