@@ -112,7 +112,7 @@ proc speedComparison  {xmlFile \
 	    puts "Running builtin $codeGenType codegen $repeat times"
 	    set timeout 1200
 
-	    puts "codegen.tcl: Setting watchdog for [expr {$timeout / 1000}] \
+	    puts "codegen.tcl: Setting watchdog for [expr {$timeout / 1000}]\
                   seconds at [clock format [clock seconds]]"
 	    set watchDog [java::new util.testsuite.WatchDog $timeout]
 
@@ -440,7 +440,7 @@ proc sootCodeGeneration {{PTII} modelPath {codeGenType Shallow} \
 	#    	java::new ptolemy.copernicus.kernel.Copernicus $args
 	
 	set timeout 2600000
-	puts "codegen.tcl: Setting watchdog for [expr {$timeout / 1000}] \
+	puts "codegen.tcl: Setting watchdog for [expr {$timeout / 1000}]\
 	      seconds at [clock format [clock seconds]]"
 	set watchDog [java::new util.testsuite.WatchDog $timeout]
 
@@ -479,7 +479,7 @@ proc sootCodeGeneration {{PTII} modelPath {codeGenType Shallow} \
     } else {
 
 	set timeout 1200000
-	puts "codegen.tcl: Setting watchdog for [expr {$timeout / 1000}] \
+	puts "codegen.tcl: Setting watchdog for [expr {$timeout / 1000}]\
 	      seconds at [clock format [clock seconds]]"
 	set watchDog [java::new util.testsuite.WatchDog $timeout]
 
