@@ -100,10 +100,10 @@ function ptplot(theform) {
     document.write("<title>Plot</title>");
     document.write("<body bgcolor=\"#faf0e6\">");
     document.write("<H1>Plot</H1>");
-    document.write("<applet name=\"JSPlot\" code=\"ptplot.PlotApplet\"");
+    document.write("<applet name=\"JSPlot\" code=\"pt.plot.PlotApplet\"");
     document.write("   width=" + parseInt(width));
     document.write("   height=" + parseInt(height));
-    document.write("   codebase=\"../..\"\n");
+    document.write("   codebase=\"../../..\"\n");
     document.write("   alt=\"If you had a java-enabled browser you would see an applet here.\">\n");
     if ( background != "" )
         document.write("<param name=\"background\" value=\"" +
