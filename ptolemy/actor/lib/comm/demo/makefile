@@ -33,6 +33,8 @@ ME =		ptolemy/actor/lib/comm/demo
 
 # If you add to DIRS, add the jar file to PTCLASSALLJARS
 DIRS =		ConvolutionalCoder \
+		Scrambler \
+		TrellisDecoder \
 		ViterbiDecoder
 
 # Root of the Ptolemy II directory
@@ -51,6 +53,8 @@ PTCLASSJAR =
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
 	ConvolutionalCoder/ConvolutionalCoder.jar \
+	Scrambler/Scrambler.jar \
+	TrellisDecoder/TrellisDecoder.jar \
 	ViterbiDecoder/ViterbiDecoder.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar

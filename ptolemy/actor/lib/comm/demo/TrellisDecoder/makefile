@@ -1,10 +1,10 @@
-# Makefile for Ptolemy II Comm ConvolutionalCoder
+# Makefile for Ptolemy II Comm TrellisDecoder
 #
 # @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2003-2004 The Regents of the University of California.
+# @Copyright (c) 2004 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/actor/lib/comm/demo/ConvolutionalCoder
+ME =		ptolemy/actor/lib/comm/demo/TrellisDecoder
 
 DIRS =
 
@@ -43,20 +43,19 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE =	ConvolutionalCoder
+PTPACKAGE =	TrellisDecoder
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	ConvolutionalCoder.xml
+	TrellisDecoder.xml
 
 EXTRA_SRCS = \
 	$(JSRCS) \
 	$(OTHER_FILES_TO_BE_JARED) \
-	ConvolutionalCoder.htm \
-	ConvolutionalCoderVergil.htm
+	TrellisDecoder.htm
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -74,8 +73,13 @@ all: jclass
 
 install: jclass jars
 
-demo:
-	vergil ConvolutionalCoder.xml
+demo: demo_applet demo_vergil
+
+demo_applet: $(PTCLASSJAR)
+	CLASSPATH="$(CLASSPATH)" appletviewer TrellisDecoder.htm
+
+demo_vergil:
+	"$(PTII)/bin/vergil" TrellisDecoder.htm
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
