@@ -49,7 +49,7 @@ to the composite, they will be instances of WirelessIOPort.
 @version $Id$
 */
 public class WirelessComposite extends TypedCompositeActor {
-    
+
     /** Construct a composite actor with a name and a container.
      *  The container argument must not be null, or a
      *  NullPointerException will be thrown.  This actor will use the
@@ -77,7 +77,7 @@ public class WirelessComposite extends TypedCompositeActor {
         // derived class Java definition. Thus, we force the class name
         // here to be WirelessComposite.
         getMoMLInfo().className = "ptolemy.domains.wireless.kernel.WirelessComposite";
-        
+
         _attachText("_iconDescription", "<svg>\n" +
                 "<ellipse cx=\"0\" cy=\"0\" " +
                 "rx=\"27\" ry=\"27\" " +
@@ -97,7 +97,7 @@ public class WirelessComposite extends TypedCompositeActor {
                 "<line x1=\"0\" y1=\"0\" x2=\"5\" y2=\"0\"/>" +
                 "</svg>\n");
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -121,4 +121,3 @@ public class WirelessComposite extends TypedCompositeActor {
             workspace().doneWriting();
         }
     }
-}

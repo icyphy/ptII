@@ -93,12 +93,12 @@ public class WirelessDirector extends DEDirector {
         randomizeLocations = new Parameter(this, "randomizeLocations",
                 new BooleanToken(false));
         randomizeLocations.setTypeEquals(BaseType.BOOLEAN);
-        
+
         range = new Parameter(this, "range");
         Type rangeType = new ArrayType(new ArrayType(BaseType.DOUBLE));
         range.setTypeEquals(rangeType);
         range.setExpression("{{0.0, 500.0}, {0.0, 500.0}}");
-        
+
         seed = new Parameter(this, "seed", new LongToken(0));
         seed.setTypeEquals(BaseType.LONG);
     }
@@ -118,7 +118,7 @@ public class WirelessDirector extends DEDirector {
      *  between 0.0 and 500.0.
      */
     public Parameter range;
-    
+
     /** The seed that controls the random number generation to use when
      *  <i>randomizeLocations</i> is true.
      *  A seed of zero is interpreted to mean that no seed is specified,
@@ -156,7 +156,7 @@ public class WirelessDirector extends DEDirector {
             _randomizeLocations();
         }
     }
-    
+
     /** Return a new receiver of a type WirelessReceiver.
      *  @return A new WirelessReceiver.
      */
@@ -183,11 +183,11 @@ public class WirelessDirector extends DEDirector {
         int dimensions = rangeValue.length();
         double[] randomLocation = new double[dimensions];
 
-        Iterator actors 
+        Iterator actors
                 = ((CompositeActor)getContainer()).deepEntityList().iterator();
         while (actors.hasNext()) {
             Entity node = (Entity)actors.next();
-            
+
             // Skip channels.
             if (node instanceof WirelessMedia) {
                 continue;
@@ -212,7 +212,7 @@ public class WirelessDirector extends DEDirector {
 
     /** Set the location of the specified node.  This sets the _location
      *  attribute, which is the location as used in Vergil, the visual editor.
-     *  Derived classes may override this to set the location differently.     * 
+     *  Derived classes may override this to set the location differently.     *
      *  @param location The specified location.
      *  @param node The node for which to set the location.
      *  @throws IllegalActionException If the location attribute

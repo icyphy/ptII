@@ -41,7 +41,7 @@ import ptolemy.kernel.util.IllegalActionException;
 /**
 Define an interface for (Atomic)WirelessChannel and CompositeWirelessChannel.
 
-FIXME: It might be prefered to use "WirelessChannle" for this and change 
+FIXME: It might be prefered to use "WirelessChannle" for this and change
 WirelessChannel to AtomicWirelessChannel. I decided to use this name so that
 I need to change fewer classes at this stage...
 @author Yang
@@ -55,14 +55,14 @@ public interface WirelessMedia {
 
     public String getName();
     public List listeningInputPorts() throws IllegalActionException;
-    
+
     public List listeningOutputPorts() throws IllegalActionException;
-    
+
     public List sendingOutputPorts() throws IllegalActionException;
-    
+
     public List sendingInputPorts() throws IllegalActionException;
-    
+
     public void transmit(Token token, WirelessIOPort port, RecordToken properties)
                 throws IllegalActionException;
-    
+
 }

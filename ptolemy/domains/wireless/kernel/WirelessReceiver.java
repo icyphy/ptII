@@ -52,7 +52,7 @@ record token, and then unbundling at the corresponding get() methods.
 */
 
 public class WirelessReceiver extends DEReceiver {
-    
+
     /** Construct an empty WirelessReceiver with no container.
      */
     public WirelessReceiver() {
@@ -67,7 +67,7 @@ public class WirelessReceiver extends DEReceiver {
     public WirelessReceiver(IOPort container) throws IllegalActionException {
         super(container);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -85,7 +85,7 @@ public class WirelessReceiver extends DEReceiver {
         _properties = bundled.get("properties");
         return bundled.get("value");
     }
-    
+
     /** Return the properties token associated with the most recent
      *  call to get(), or null if there was none.
      *  @return A properties token or null.
@@ -123,7 +123,7 @@ public class WirelessReceiver extends DEReceiver {
     public synchronized void put(Token token) {
         put(token, null);
     }
-    
+
     /** Put the specified token bundled with the specified properties.
      *  @param token The token to put.
      *  @param properties The associated properties, or null to not
@@ -154,13 +154,12 @@ public class WirelessReceiver extends DEReceiver {
         }
         super.put(result);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     // Dummy token used when no properties are sent.
     private Token _dummy = new Token();
-    
+
     // Most recently seen properties.
     private Token _properties;
-}

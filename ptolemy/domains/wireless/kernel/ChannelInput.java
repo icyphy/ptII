@@ -46,7 +46,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// ChannelInput
 /**
 This Actor transmit the input of the composite wireless channel to
-the model inside the channel. 
+the model inside the channel.
 
 @author Yang Zhao
 @version $$
@@ -79,9 +79,9 @@ public class ChannelInput extends TypedAtomicActor {
     /** The out port.
      */
     public TypedIOPort reception;
-    
+
     //public TypedIOPort sender;
-    
+
     //public TypedIOPort properties;
 
 
@@ -118,7 +118,7 @@ public class ChannelInput extends TypedAtomicActor {
             throws IllegalActionException {
         if (_receptions == null) {
             _receptions = new LinkedList();
-        }        
+        }
         Reception reception = new Reception();
         reception.token = token;
         reception.sender = port;
@@ -135,5 +135,5 @@ public class ChannelInput extends TypedAtomicActor {
     ////                         private members                   ////
     private LinkedList _receptions;
     //private boolean _getInput = false;
-      
+
 }

@@ -1,4 +1,4 @@
-/* This actor puts a token to corresponding receivers. 
+/* This actor puts a token to corresponding receivers.
 
  Copyright (c) 2003 The Regents of the University of California.
  All rights reserved.
@@ -44,7 +44,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// ChannelOutput
 /**
-This actor puts a token to corresponding receivers. 
+This actor puts a token to corresponding receivers.
 
 @author Yang
 @version $Id$
@@ -74,12 +74,12 @@ public class ChannelOutput extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    
+
 
     /** The input port.
      */
     public TypedIOPort reception;
-    
+
     //public TypedIOPort receivers;
 
     ///////////////////////////////////////////////////////////////////
@@ -97,7 +97,7 @@ public class ChannelOutput extends TypedAtomicActor {
                 Reception rec = (Reception)t.getValue();
                 LinkedList recvs = (LinkedList) rec.receivers;
                 for(int i =0; i < recvs.size(); i++) {
-                    WirelessReceiver r = (WirelessReceiver)recvs.removeFirst(); 
+                    WirelessReceiver r = (WirelessReceiver)recvs.removeFirst();
                     _transmitTo(rec.token, r, rec.properties);
                 }
             }
@@ -106,7 +106,7 @@ public class ChannelOutput extends TypedAtomicActor {
 
     /** Transmit the specified token to the specified receiver.
      *  If necessary, the token will be converted to the resolved
-     *  type of the port containing the specified receiver. 
+     *  type of the port containing the specified receiver.
      *  @param token The token to transmit, or null to clear
      *   the specified receiver.
      *  @param receiver The receiver to which to transmit.
@@ -117,7 +117,7 @@ public class ChannelOutput extends TypedAtomicActor {
      */
     protected void _transmitTo(
             Token token,
-            WirelessReceiver receiver, 
+            WirelessReceiver receiver,
             Token properties)
             throws IllegalActionException {
         if (_debugging) {

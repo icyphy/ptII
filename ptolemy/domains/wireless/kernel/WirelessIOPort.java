@@ -85,7 +85,7 @@ a receiver may be out of range of a transmitter).
 @version $Id$
 */
 
-public class WirelessIOPort 
+public class WirelessIOPort
         extends TypedIOPort implements ChangeListener {
 
     /** Construct a port with the specified container and name
@@ -122,17 +122,17 @@ public class WirelessIOPort
             boolean isInput, boolean isOutput)
             throws IllegalActionException, NameDuplicationException {
         super(container, name, isInput, isOutput);
-        
+
         outsideChannel = new StringParameter(this, "outsideChannel");
         outsideChannel.setExpression("");
-        
+
         outsideTransmitProperties = new Parameter(this, "outsideTransmitProperties");
-        
+
         insideChannel = new StringParameter(this, "insideChannel");
         insideChannel.setExpression("");
-        
+
         insideTransmitProperties = new Parameter(this, "insideTransmitProperties");
-        
+
         // Since the channel parameters affect connectivity, we should
         // treat changes to their values as changes to the topology.
         // To do that, we listen for changes and increment the version
@@ -156,12 +156,12 @@ public class WirelessIOPort
      *  it is required to be a record type.
      */
     public Parameter insideTransmitProperties;
-    
+
     /** The name of the outside channel.  This is a string that defaults to
      *  the empty string, indicating that communication is not wireless.
      */
     public StringParameter outsideChannel;
-    
+
     /** The transmit properties of this port for outside transmissions.
      *  This field may be used by the channel to determine transmission
      *  range or other properties of the transmission. By default, this
@@ -195,7 +195,7 @@ public class WirelessIOPort
                 throw new IllegalActionException(this,
                 "Expected a record for outsideTransmitProperties but got: "
                 + value);
-            }            
+            }
         } else {
             super.attributeChanged(attribute);
         }
@@ -220,7 +220,7 @@ public class WirelessIOPort
             super.broadcast(token);
         }
     }
-    
+
     /** Override the base class to delegate to the channel if there is
      *  one. If there is not outside channel, then send as in the base
      *  class to connected ports.
@@ -233,7 +233,7 @@ public class WirelessIOPort
      */
     public void broadcast(Token[] tokenArray, int vectorLength)
             throws IllegalActionException, NoRoomException {
-            
+
         WirelessMedia channel = getOutsideChannel();
         if (channel != null) {
             if (_debugging) {
@@ -269,7 +269,7 @@ public class WirelessIOPort
             super.broadcastClear();
         }
     }
-    
+
     /** Increment the workspace version. This is because we are listening
      *  for changes in channel identifiers, and these need to be treated
      *  as if they were topology changes. Normally, changing a parameter
@@ -287,7 +287,7 @@ public class WirelessIOPort
      */
     public void changeFailed(ChangeRequest change, Exception exception) {
     }
-    
+
     /** Override the base class to create a single receiver if
      *  @exception IllegalActionException If this port is not
      *   an opaque input port or if there is no director.
@@ -350,7 +350,7 @@ public class WirelessIOPort
             return super.hasRoomInside(channelIndex);
         }
     }
-    
+
     /** Get the channel specified by the <i>insideChannel</i> parameter.
      *  The channel is contained by the container of this  port.
      *  @return A channel, or null if there is none.
@@ -374,7 +374,7 @@ public class WirelessIOPort
         _insideChannelVersion = workspace().getVersion();
         return _insideChannel;
     }
-    
+
     /** Override the base class to return the inside receiver for wireless
      *  communication if wireless communication is being used. Otherwise,
      *  defer to the base class.
@@ -423,7 +423,7 @@ public class WirelessIOPort
         _outsideChannelVersion = workspace().getVersion();
         return _outsideChannel;
     }
-    
+
     /** Get the properties token associated with the data token most
      *  recently retrieved using get().
      *  @param channelIndex The channel index.
@@ -451,7 +451,7 @@ public class WirelessIOPort
             _workspace.doneReading();
         }
     }
-    
+
     /** Get the properties token associated with the data token most
      *  recently retrieved using getInside().
      *  @param channelIndex The channel index.
@@ -497,7 +497,7 @@ public class WirelessIOPort
             throw new InternalErrorException(e);
         }
     }
-    
+
     /** Get the width of the port. If the outside is wireless, then
      *  the width is always 1. Otherwise, it depends on the number of
      *  links to the port.
@@ -577,11 +577,11 @@ public class WirelessIOPort
             throw new InternalErrorException(e);
         }
     }
-    
+
     // FIXME: numberOfInsideSinks?
     // FIXME: numberOfInsideSources?
     // Apparently, these are not implemented in the base class.
-    
+
     /** Return the number of sink ports that can potentially receive data
      *  sent by this one on the outside. If there is a wireless channel,
      *  this is the number of ports that are listening to this channel.
@@ -623,7 +623,7 @@ public class WirelessIOPort
             throw new InternalErrorException(e);
         }
     }
-    
+
     /** Override the base class to delegate to the channel if there is
      *  one. If there is not outside channel, then send as in the base
      *  class to connected ports.  If there is an outside channel, then
@@ -650,7 +650,7 @@ public class WirelessIOPort
             super.send(channelIndex, token);
         }
     }
-    
+
     /** Override the base class to delegate to the channel if there is
      *  one. If there is not outside channel, then send as in the base
      *  class to connected ports.
@@ -682,7 +682,7 @@ public class WirelessIOPort
             super.send(channelIndex, tokenArray, vectorLength);
         }
     }
-    
+
     /** Override the base class to delegate to the channel if there is
      *  one. If there is not outside channel, then clear as in the base
      *  class.
@@ -723,7 +723,7 @@ public class WirelessIOPort
             super.sendClearInside(channelIndex);
         }
     }
-    
+
     // FIXME: Where is the sendInside vector version?
 
     /** Override the base class so that if the inside is wireless, then
@@ -748,7 +748,7 @@ public class WirelessIOPort
             super.sendInside(channelIndex, token);
         }
     }
-    
+
     /** Return a list of the ports that can potentially accept data from
      *  this port when it sends on the outside.  If there is an outside
      *  channel, then this includes all input ports that use that channel
@@ -836,13 +836,13 @@ public class WirelessIOPort
 
     // To ensure that getReceivers() and variants never return null.
     private static Receiver[][] _EMPTY_RECEIVERS = new Receiver[0][0];
-    
+
     // Receivers for this port for outside wireless connections.
     private Receiver[][] _receivers;
-    
+
     // Receivers for this port for inside wireless connections.
     private Receiver[][] _insideReceivers;
-    
+
     // Cached versions.
     private WirelessMedia _insideChannel;
     private long _insideChannelVersion = -1L;

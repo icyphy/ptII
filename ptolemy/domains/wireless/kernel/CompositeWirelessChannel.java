@@ -79,7 +79,7 @@ public class CompositeWirelessChannel extends TypedCompositeActor
     public CompositeWirelessChannel(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         _attachText("_iconDescription", "<svg>\n" +
                     "<polygon points=\"-25,0 8,-8 2,2 25,0 -8,8 -2,-2 -25,0\" " +
                     "style=\"fill:blue\"/>\n" +
@@ -96,7 +96,7 @@ public class CompositeWirelessChannel extends TypedCompositeActor
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    
+
     /** Transmit the specified token from the specified port with the
      *  specified properties. This method call the put() method of
      *  the contained ChannelInput actor to transfer the token to the
@@ -120,7 +120,7 @@ public class CompositeWirelessChannel extends TypedCompositeActor
         } finally {
             workspace().doneReading();
         }
-    }    
+    }
 
      ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -155,7 +155,7 @@ public class CompositeWirelessChannel extends TypedCompositeActor
             return ModelTopology.listeningInputPorts(container, this.getName());
         } finally {
             workspace().doneReading();
-        }        
+        }
     }
 
     /* (non-Javadoc)

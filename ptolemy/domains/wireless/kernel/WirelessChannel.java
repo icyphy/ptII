@@ -80,7 +80,7 @@ or the transmit() public method.
 @version $Id$
 @since Ptolemy II 2.1
 */
-public class WirelessChannel extends TypedAtomicActor 
+public class WirelessChannel extends TypedAtomicActor
         implements WirelessMedia, ValueListener {
 
     /** Construct a relation with the given name contained by the specified
@@ -99,7 +99,7 @@ public class WirelessChannel extends TypedAtomicActor
     public WirelessChannel(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         defaultProperties = new Parameter(this, "defaultProperties");
         // Force this to be a record type without specifying the fields.
         // NOTE: This doesn't actually work because the type remains
@@ -107,16 +107,16 @@ public class WirelessChannel extends TypedAtomicActor
         // the type in attributeChanged().
         // defaultProperties.setTypeAtMost(
         //      new RecordType(new String[0], new Type[0]));
-                
+
         _attachText("_iconDescription", "<svg>\n" +
                 "<polygon points=\"-25,0 8,-8 2,2 25,0 -8,8 -2,-2 -25,0\" " +
                 "style=\"fill:red\"/>\n" +
-                "</svg>\n");        
+                "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
-    
+
     /** The default properties for transmission. In this base class,
      *  the type and contents are left undefined.  Derived classes
      *  will define this to be a record.  The fields of the record
@@ -128,7 +128,7 @@ public class WirelessChannel extends TypedAtomicActor
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** If the attribute is defaultProperties, make sure
      *  its value is a record token.
      *  @param attribute The attribute that changed.
@@ -279,7 +279,7 @@ public class WirelessChannel extends TypedAtomicActor
             workspace().doneReading();
         }
     }
-    
+
     /** Return a list of output ports that can potentially send data
      *  to this channel.  This includes output ports contained by
      *  entities contained by the container of this channel that
@@ -326,7 +326,7 @@ public class WirelessChannel extends TypedAtomicActor
             workspace().doneReading();
         }
     }
-    
+
     /** Transmit the specified token from the specified port with the
      *  specified properties.  All ports that are in range will receive
      *  the token if they have room in their receiver.
@@ -410,7 +410,7 @@ public class WirelessChannel extends TypedAtomicActor
         return Math.sqrt((p1[0] - p2[0])*(p1[0] - p2[0])
                 + (p1[1] - p2[1])*(p1[1] - p2[1]));
     }
-    
+
     /** Return true if the specified port is in range of the
      *  specified source port, assuming the source port transmits with
      *  the specified properties.  In this base class, this method returns
@@ -472,7 +472,7 @@ public class WirelessChannel extends TypedAtomicActor
         location.addValueListener(this);
         return location.getLocation();
     }
-    
+
     /** Return the list of receivers that can receive from the specified
      *  port with the specified transmit properties. Ports that are contained
      *  by the same container as the specified <i>sourcePort</i> are
@@ -519,10 +519,10 @@ public class WirelessChannel extends TypedAtomicActor
         Iterator ports = listeningInputPorts().iterator();
         while (ports.hasNext()) {
             WirelessIOPort port = (WirelessIOPort)ports.next();
-            
+
             // Skip ports contained by the same container as the source.
             if (port.getContainer() == sourcePort.getContainer()) continue;
-            
+
             if (_isInRange(sourcePort, port, properties)) {
                 Receiver[][] receivers = port.getReceivers();
                 for (int i = 0; i < receivers.length; i++) {
@@ -535,7 +535,7 @@ public class WirelessChannel extends TypedAtomicActor
         ports = listeningOutputPorts().iterator();
         while (ports.hasNext()) {
             WirelessIOPort port = (WirelessIOPort)ports.next();
-                        
+
             if (_isInRange(sourcePort, port, properties)) {
                 Receiver[][] receivers = port.getInsideReceivers();
                 for (int i = 0; i < receivers.length; i++) {
@@ -555,7 +555,7 @@ public class WirelessChannel extends TypedAtomicActor
         _receiversInRangeCacheValid = true;
         return receiversInRangeList;
     }
-    
+
     /** Transform the properties to take into account channel losses,
      *  noise, etc., for transmission between the specified sender
      *  and the specified receiver.  In this base class, the
@@ -571,7 +571,7 @@ public class WirelessChannel extends TypedAtomicActor
      */
     protected RecordToken _transformProperties(
             RecordToken properties,
-            WirelessIOPort sender, 
+            WirelessIOPort sender,
             WirelessReceiver receiver)
             throws IllegalActionException {
         RecordToken result = properties;
@@ -588,10 +588,10 @@ public class WirelessChannel extends TypedAtomicActor
         }
         return result;
     }
-    
+
     /** Transmit the specified token to the specified receiver.
      *  If necessary, the token will be converted to the resolved
-     *  type of the port containing the specified receiver. 
+     *  type of the port containing the specified receiver.
      *  @param token The token to transmit, or null to clear
      *   the specified receiver.
      *  @param sender The sending port.
@@ -603,8 +603,8 @@ public class WirelessChannel extends TypedAtomicActor
      */
     protected void _transmitTo(
             Token token,
-            WirelessIOPort sender, 
-            WirelessReceiver receiver, 
+            WirelessIOPort sender,
+            WirelessReceiver receiver,
             RecordToken properties)
             throws IllegalActionException {
         if (_debugging) {
@@ -641,19 +641,19 @@ public class WirelessChannel extends TypedAtomicActor
      *  properties of a port).
      */
     protected boolean _receiversInRangeCacheValid = false;
-        
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     // Caches of port lists.
     private List _listeningInputPorts;
     private long _listeningInputPortsVersion = -1L;
     private List _listeningOutputPorts;
     private long _listeningOutputPortsVersion = -1L;
-    
+
     private HashMap _receiversInRangeCache;
     private HashMap _receiversInRangeCacheVersion;
-    
+
     private List _sendingInputPorts;
     private long _sendingInputPortsVersion = -1L;
     private List _sendingOutputPorts;

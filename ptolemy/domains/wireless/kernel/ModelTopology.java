@@ -45,7 +45,7 @@ import ptolemy.kernel.util.Locatable;
 /**
 Define the mothods that deal with the model topology here statically for the
 convenience to build a set of actors to be used for a composite wireless channel.
- 
+
 
 @author Yang Zhao and Edward A. Lee
 @version $Id$
@@ -67,10 +67,10 @@ public class ModelTopology {
      *   a relation already in the container.
      */
     private ModelTopology() {}
-     
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Return a list of input ports that can potentially receive data
      *  from this channel.  This includes input ports contained by
      *  entities contained by the container of this channel that
@@ -85,7 +85,7 @@ public class ModelTopology {
      *  @exception IllegalActionException If a port is encountered
      *   whose <i>outsideChannel</i> parameter cannot be evaluated.
      */
-    public static List listeningInputPorts(CompositeEntity container, 
+    public static List listeningInputPorts(CompositeEntity container,
             String theChannelName) throws IllegalActionException {
         List result = new LinkedList();
         Iterator entities = container.entityList().iterator();
@@ -107,7 +107,7 @@ public class ModelTopology {
                 }
             }
             return result;
-        
+
     }
 
     /** Return a list of output ports that can potentially receive data
@@ -140,7 +140,7 @@ public class ModelTopology {
             }
             return result;
     }
-    
+
     /** Return a list of output ports that can potentially send data
      *  to this channel.  This includes output ports contained by
      *  entities contained by the container of this channel that
@@ -153,7 +153,7 @@ public class ModelTopology {
      *  @exception IllegalActionException If a port is encountered
      *   whose <i>outsideChannel</i> parameter cannot be evaluated.
      */
-    public static List sendingOutputPorts(CompositeEntity container, 
+    public static List sendingOutputPorts(CompositeEntity container,
             String theChannelName) throws IllegalActionException {
         List result = new LinkedList();
         Iterator entities = container.entityList().iterator();
@@ -189,7 +189,7 @@ public class ModelTopology {
      *  @exception IllegalActionException If a port is encountered
      *   whose <i>insideChannel</i> parameter cannot be evaluated.
      */
-    public static List sendingInputPorts(CompositeEntity container, 
+    public static List sendingInputPorts(CompositeEntity container,
             String theChannelName) throws IllegalActionException {
         List result = new LinkedList();
         Iterator ports = container.portList().iterator();
@@ -207,7 +207,7 @@ public class ModelTopology {
             }
             return result;
     }
-    
+
 
 
     ///////////////////////////////////////////////////////////////////
@@ -230,7 +230,7 @@ public class ModelTopology {
         return Math.sqrt((p1[0] - p2[0])*(p1[0] - p2[0])
                 + (p1[1] - p2[1])*(p1[1] - p2[1]));
     }
-    
+
     /** Return the location of the given port. If the container of the
      *  port is the container of this channel, then use the
      *  "_location" attribute of the port.  Otherwise, use the
@@ -242,11 +242,11 @@ public class ModelTopology {
      *  @throws IllegalActionException If a valid location attribute cannot
      *   be found.
      */
-    public static double[] locationOf( 
+    public static double[] locationOf(
             IOPort port) throws IllegalActionException {
         Entity portContainer = (Entity)port.getContainer();
         Locatable location = null;
-       
+
         //FIXME: What should I do here...
         //if (portContainer == container) {
         //    location = (Locatable)port.getAttribute(LOCATION_ATTRIBUTE_NAME,
@@ -263,11 +263,11 @@ public class ModelTopology {
         }
         return location.getLocation();
     }
-    
 
-    
 
-        
+
+
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
