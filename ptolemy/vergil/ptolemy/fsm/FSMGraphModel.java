@@ -732,7 +732,7 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
      *  executed.  In this class the internal set of link objects is 
      *  verified to be correct.
      */
-    protected void _update() {
+    protected boolean _update() {
      	// Go through all the links that currently exist, and remove 
         // any that don't have both ends in the model.
 	Iterator links = _linkSet.iterator();
@@ -765,6 +765,7 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
                         + relation.getName(container)
                         + "\"/>\n");
                 container.requestChange(request);
+                return false;
             }
         }
 
@@ -773,6 +774,7 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
         while(relations.hasNext()) {
             _updateLinks((ComponentRelation)relations.next());
         }
+        return true;
     }
     
     ///////////////////////////////////////////////////////////////////
