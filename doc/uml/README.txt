@@ -37,7 +37,8 @@ The easiest way to update the Visio files is to:
 
    * Classes do not inherit from interfaces, they extend interfaces,
      so the line between a class and an interface should be dashed,
-     not solid.
+     not solid.  If an interface extends another interface, the
+     line is usually solid?
 
 3. Mark up the printed copy
 4. Run Visio and update the file
