@@ -955,7 +955,7 @@ public class LongMatrixMath {
 
         if ((rows != _rows(matrix2)) || (columns != _columns(matrix2))) {
             throw new IllegalArgumentException(
-                    "ptolemy.math.longMatrixMath." + caller + "() : one matrix " +
+                    "ptolemy.math.LongMatrixMath." + caller + "() : one matrix " +
                     _dimensionString(matrix1) +
                     " is not the same size as another matrix " +
                     _dimensionString(matrix2) + ".");

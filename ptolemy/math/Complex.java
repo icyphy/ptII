@@ -1,4 +1,4 @@
-/* A complex data type.
+/* A data type representing a complex number.
 
 Copyright (c) 1998-2000 The Regents of the University of California.
 All rights reserved.
@@ -34,7 +34,7 @@ package ptolemy.math;
 import  java.io.Serializable;
 
 /** This class provides a complex data type and a library of functions that
- *  operate on and return complex data.  An instance of the class is
+ *  operate on and return complex numbers.  An instance of the class is
  *  immutable, meaning that its value is set in the constructor and
  *  cannot then be modified.  This is similar to the Java built-in classes
  *  like Double, Integer, etc.
@@ -83,8 +83,6 @@ public class Complex implements Cloneable, Serializable {
         this.real = real;
         this.imag = imag;
     }
-
-
 
     // NOTE: There is no need for a constructor that takes a Complex
     // argument because instances of this class are immutable.  There
@@ -205,7 +203,8 @@ public class Complex implements Cloneable, Serializable {
     public final Complex conjugate() {
         // Avoid negative zero.
         if (imag != 0.0) return new Complex(real, -imag);
-        else return new Complex(real, imag);
+        
+        return new Complex(real, imag);
     }
 
     /** Return a new complex number with value equal to the cosine
@@ -271,7 +270,7 @@ public class Complex implements Cloneable, Serializable {
      */
     public final Complex divide(Complex divisor) {
         // This algorithm results from writing a/b as (ab*)/magSquared(b).
-        double denom = divisor.magSquared();
+        double denom = divisor.magnitudeSquared();
         return new Complex((real*divisor.real+imag*divisor.imag)/denom,
                 (imag*divisor.real-real*divisor.imag)/denom);
     }
@@ -329,28 +328,9 @@ public class Complex implements Cloneable, Serializable {
 
     /** Return the magnitude or absolute value of this complex number.
      *  @return A non-negative number.
-     *  @deprecated
-     */
-    public final double mag() {
-        return magnitude();
-    }
-
-    /** Return the magnitude or absolute value of this complex number.
-     *  @return A non-negative number.
      */
     public final double magnitude() {
         return Math.sqrt(magnitudeSquared());
-    }
-
-    /** Return the square of the magnitude of this complex number.
-     *  This is provided for efficiency, since it is considerably easier
-     *  to compute than the magnitude (which is the square root of this
-     *  result).
-     *  @return A non-negative number.
-     *  @deprecated
-     */
-    public final double magSquared() {
-        return magnitudeSquared();
     }
 
     /** Return the square of the magnitude of this complex number.
@@ -362,7 +342,6 @@ public class Complex implements Cloneable, Serializable {
     public double magnitudeSquared() {
         return (real*real) + (imag*imag);
     }
-
 
     /** Return a new complex number that is formed by multiplying this
      *  complex number by the specified complex number.
@@ -397,7 +376,7 @@ public class Complex implements Cloneable, Serializable {
             angle +=  Math.PI;
             magnitude = -magnitude;
         }
-        if (magnitude == 0.0) return new Complex(0.0, 0.0);
+        if (magnitude == 0.0) return Complex.ZERO;
         return  new Complex(magnitude * Math.cos(angle),
                 magnitude * Math.sin(angle));
     }
@@ -441,10 +420,44 @@ public class Complex implements Cloneable, Serializable {
      *  @return A new complex number.
      */
     public final Complex reciprocal() {
-        // This algorithm results from writing 1/a as (a*)/magSquared(a).
-        double magSquared = magSquared();
+        // This algorithm results from writing 1/a as (a*)/|a|^2.
+        double magSquared = magnitudeSquared();
         return new Complex(real/magSquared, -imag/magSquared);
     }
+
+    /** Return the nth roots of this complex number in an array. There are
+     *  n of them, computed by :
+     *  <p>
+     *  r<sup>1/n</sup>(cos((theta + 2kPI) / n + i sin((theta + 2kPI)/n)
+     *  </p>
+     *  where k is the index of the returned array. If n is not greater than or
+     *  equal to one, throw a IllegalArgumentException.
+     *  @param n An integer that must be greater than or equal to one.
+     *  @return An array of Complex numbers, of length n.
+     */
+    public final Complex[] roots(int n) {
+        if (n < 1) {
+           throw new IllegalArgumentException("Complex.roots() : n must be greater " +
+            "than or equal to one.");
+        }
+        
+        Complex[] retval = new Complex[n];
+        
+        double oneOverN = 1.0 / (double) n;
+        double twoPIOverN = 2.0 * Math.PI * oneOverN;
+        double thetaOverN = angle() * oneOverN;
+        double twoPIkOverN = 0.0;
+        
+        // r^(1/n) = (r^2)^(0.5 / n)
+        double retMag = Math.pow(magnitudeSquared(), 0.5 * oneOverN);
+        
+        for (int k = 0; k < n; k++) {
+            retval[k] = polarToComplex(retMag, thetaOverN + twoPIkOverN);
+            twoPIkOverN += twoPIOverN;
+        }
+        
+        return retval;
+    }                        
 
     /** Return a new complex number with value equal to the product
      *  of this complex number and the real argument.
@@ -550,9 +563,9 @@ public class Complex implements Cloneable, Serializable {
      */
     public final String toString() {
         if (imag >= 0) {
-            return "" + real + " + " + imag + "i";
+            return Double.toString(real) + " + " + Double.toString(imag) + "i";
         } else {
-            return "" + real + " - " + (-imag) + "i";
+            return Double.toString(real) + " - " + Double.toString(-imag) + "i";
         }
     }
 
@@ -570,17 +583,17 @@ public class Complex implements Cloneable, Serializable {
     public final double imag;
 
     /** A Complex number representing zero. Reference this to save
-     *  memory usage.
+     *  memory usage and construction overhead.
      */
     public static final Complex ZERO = new Complex(0.0, 0.0);
 
     /** A Complex number representing one. Reference this to save
-     *  memory usage.
+     *  memory usage and construction overhead.
      */
     public static final Complex ONE = new Complex(1.0, 0.0);
 
     /** A Complex number representing <i>i</i>. Reference this to save
-     *  memory usage.
+     *  memory usage and construction overhead.
      */
     public static final Complex I = new Complex(0.0, 1.0);
 }

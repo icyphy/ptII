@@ -620,6 +620,7 @@ public class IntegerArrayMath {
     }
 
     /** Return the sum of the squares of all of the elements in the array.
+     *  This is equivalent to the square of the L2-norm of the array.    
      *  Return 0 if the length of the array is 0.
      */
     public static final int sumOfSquares(int[] array) {

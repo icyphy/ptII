@@ -1004,7 +1004,7 @@ public class DoubleMatrixMath {
 
         if ((rows != _rows(matrix2)) || (columns != _columns(matrix2))) {
             throw new IllegalArgumentException(
-                    "ptolemy.math.doubleMatrixMath." + caller + "() : one matrix " +
+                    "ptolemy.math.DoubleMatrixMath." + caller + "() : one matrix " +
                     _dimensionString(matrix1) +
                     " is not the same size as another matrix " +
                     _dimensionString(matrix2) + ".");

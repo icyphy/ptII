@@ -620,6 +620,7 @@ public class LongArrayMath {
     }
 
     /** Return the sum of the squares of all of the elements in the array.
+     *  This is equivalent to the square of the L2-norm of the array.    
      *  Return 0L if the length of the array is 0.
      */
     public static final long sumOfSquares(long[] array) {
