@@ -158,16 +158,16 @@ public class Interpolation {
 	int numRefPoints = _indexes.length;
 	if (numRefPoints != _values.length) {
 	    throw new IllegalStateException("Interpolation.interpolate(): "
-					    + "The index and value arrays do "
-					    + "not have the same length.");
+                    + "The index and value arrays do "
+                    + "not have the same length.");
 	}
 
 	int largestIndex = _indexes[numRefPoints-1];
 	if (_period != 0 && _period <= largestIndex) {
 	    throw new IllegalStateException("Interpolation.interpolate(): "
-					    + "The period is not 0 and not "
-					    + "greater than the "
-					    + "largest index.");
+                    + "The period is not 0 and not "
+                    + "greater than the "
+                    + "largest index.");
 	}
 
 	if (index < 0 || index > largestIndex) {

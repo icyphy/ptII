@@ -1166,8 +1166,8 @@ public class DoubleMatrixMath {
             }
         }
         return new Object[] { orthogonalMatrix, dotProductMatrix,
-                                  oneOverNormSquaredArray,
-                                  new Integer(nullity) };
+                              oneOverNormSquaredArray,
+                              new Integer(nullity) };
     }
 
 

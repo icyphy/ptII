@@ -210,7 +210,7 @@ public class IntegerArrayMath {
     public static final int[] bitwiseAnd(final int[] array1,
             final int[] array2) {
         int length = _commonLength(array1, array2,
-				   "IntegerArrayMath.bitwiseAnd");
+                "IntegerArrayMath.bitwiseAnd");
         int[] returnValue = new int[length];
         for (int i = 0; i < length; i++) {
             returnValue[i] = array1[i] & array2[i];

@@ -1134,8 +1134,8 @@ public class FloatMatrixMath {
             }
         }
         return new Object[] { orthogonalMatrix, dotProductMatrix,
-                                  oneOverNormSquaredArray,
-                                  new Integer(nullity) };
+                              oneOverNormSquaredArray,
+                              new Integer(nullity) };
     }
 
     /** Return the number of rows of a matrix. */

@@ -105,7 +105,7 @@ public class LongMatrixMath {
      *  as the right operands (op.operate(z, matrix[i][j])).
      */
     public static final long[][] applyBinaryOperation(
-	      LongBinaryOperation op, final long z, final long[][] matrix) {
+            LongBinaryOperation op, final long z, final long[][] matrix) {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
 
@@ -183,7 +183,7 @@ public class LongMatrixMath {
      *  with each element of the input matrix (matrix[i][j] & z).
      */
     public static final long[][] bitwiseAnd(final long[][] matrix,
-					    final long z) {
+            final long z) {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
 
@@ -241,7 +241,7 @@ public class LongMatrixMath {
      *  each element of the input matrix (matrix[i][j] | z).
      */
     public static final long[][] bitwiseOr(final long[][] matrix,
-					   final long z) {
+            final long z) {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
 
@@ -282,7 +282,7 @@ public class LongMatrixMath {
      *  with each element of the input matrix (matrix[i][j] ^ z).
      */
     public static final long[][] bitwiseXor(final long[][] matrix,
-					    final long z) {
+            final long z) {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
 
@@ -454,7 +454,7 @@ public class LongMatrixMath {
      *  remainders between each element in the matrix and z.
      */
     public static final long[][] moduloElements(final long[][] matrix,
-						final long z) {
+            final long z) {
         long[][] returnValue = new long[_rows(matrix)][_columns(matrix)];
         for (int i = 0; i < _rows(matrix); i++) {
             for (int j = 0; j < _columns(matrix); j++) {
