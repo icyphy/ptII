@@ -63,8 +63,8 @@ OTHER_FILES_TO_BE_JARED = \
 	configuration.xml \
 	docs.htm \
 	help.htm \
+	hyvisualPlanet.gif \
 	intro.htm \
-	planet.gif \
 	welcomeWindow.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
