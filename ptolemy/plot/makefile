@@ -401,12 +401,9 @@ fixtmpdist:
 	@echo "Copy over bin"
 	mkdir -p $(PTTMPDIR)/$(PTDIST)/bin
 	cp -r   "$(PTII)/bin/ptinvoke.in" \
-		"$(PTII)/bin/histogram.bat" \
-		"$(PTII)/bin/ptplot.bat" \
-		"$(PTII)/bin/pxgraph.bat" \
 		$(PTTMPDIR)/$(PTDIST)/bin
 	@echo "Create bin/makefile"
-	echo "ME =		bin" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
+	echo "ME =		bin" > $(PTTMPDIR)/$(PTDIST)/bin/makefile
 	echo "ROOT =		.." >> 	$(PTTMPDIR)/$(PTDIST)/bin/makefile
 	# Use awk here so that make variables don't get substituted
 	echo "foo" | \
@@ -426,10 +423,8 @@ fixtmpdist:
 	echo "EXTRA_SRCS = \\" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
 	echo "	ptinvoke.in \\" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
 	echo "foo" | \
-		awk '{	 printf("\t%c%s\n", 36, "(BAT_FILES)")}' \
-		>> $(PTTMPDIR)/$(PTDIST)/bin/makefile
-	echo '	$(BAT_FILES)' >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
-	echo "all: ptinvoke" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
+		awk '{ printf("\nall: ptinvoke %c%s\n", 36, "(BAT_FILES)"); \
+		}' >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
 	echo "	-chmod a+x ptinvoke" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
 	echo "	rm -f histogram" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
 	echo "	ln -s ptinvoke histogram" >> \
@@ -455,10 +450,17 @@ fixtmpdist:
 	echo "	(cd ..; /bin/sh ./configure)" >> \
 		$(PTTMPDIR)/$(PTDIST)/bin/makefile
 	echo "" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
-	echo "# Get the rest of the rules" >> \
+	echo "makebat: ptinvoke.in"  >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
+	echo "	rm -f makebat" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
+	echo "	ln -s ptinvoke makebat" >> \
 		$(PTTMPDIR)/$(PTDIST)/bin/makefile
+	echo "" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
 	echo "foo" | \
-		awk '{	 printf("include %c%s/mk/ptcommon.mk\n", 36, "(ROOT)")}' >> \
+		awk '{	printf("%c%s: makebat\n", 36, "(BAT_FILES)");\
+			printf("\trm -f %c@\n", 36); \
+			printf("\tmakebat -q %c%cbasename %c@ .bat%c%c\n\n", 34,96 ,36, 96, 34); \
+			printf("include %c%s/mk/ptcommon.mk\n", 36, "(ROOT)");\
+		}' >> \
 		$(PTTMPDIR)/$(PTDIST)/bin/makefile
 	@echo "Copy over gui stuff"
 	cp -r "$(PTII)/ptolemy/gui" $(PTTMPDIR)/$(PTDIST)/ptolemy
