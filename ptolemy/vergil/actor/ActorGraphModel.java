@@ -325,8 +325,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
                 links.remove();
                 if (headObj instanceof Port && tailObj instanceof Port &&
                         relation.getContainer() != null) {
-                    NamedObj container =
-                        _getChangeRequestParent(getPtolemyModel());
+                    NamedObj container = getPtolemyModel();
                     // remove the relation  This should trigger removing the
                     // other link.  This avoids turning a direct connection
                     // into a half connection with a diamond.
@@ -807,8 +806,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
             StringBuffer moml = new StringBuffer();
             // Make the request in the context of the container.
             // JDK1.2.2 fails to compile the next line.
-            NamedObj container =
-                (CompositeEntity)_getChangeRequestParent(getPtolemyModel());
+            NamedObj container = getPtolemyModel();
 
             // create moml to unlink any existing.
             try {
@@ -1024,9 +1022,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
             moml.append("<group>\n");
             failmoml.append("<group>\n");
             // Make the request in the context of the container.
-            // JDK1.2.2 fails to compile the next line.
-            final CompositeEntity container =
-                (CompositeEntity)_getChangeRequestParent(getPtolemyModel());
+            final CompositeEntity container = (CompositeEntity)getPtolemyModel();
 
             String relationName = "";
 
@@ -1125,8 +1121,8 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
 
             // Make the request in the context of the container.
             // JDK1.2.2 fails to compile the next line.
-            final CompositeEntity container =
-                (CompositeEntity)_getChangeRequestParent(getPtolemyModel());
+            final CompositeEntity container
+                    = (CompositeEntity)getPtolemyModel();
 
             String relationName = "";
 

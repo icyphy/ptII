@@ -14,7 +14,7 @@
   <!-- Default director library. -->
   <!-- This uses configure so that directors are not instantiated -->
   <!-- until (and unless) the library is opened. -->
-  <class name="director library" extends="ptolemy.moml.EntityLibrary">
+  <entity name="director library" class="ptolemy.moml.EntityLibrary">
     <configure>
       <?moml
         <group>
@@ -22,10 +22,10 @@
         </group>
       ?>
     </configure>
-  </class>
+  </entity>
 
   <!-- Default actor library. -->
-  <class name="actor library" extends="ptolemy.moml.EntityLibrary">
+  <entity name="actor library" class="ptolemy.moml.EntityLibrary">
     <configure>
       <?moml
         <group>
@@ -33,5 +33,5 @@
         </group>
       ?>
     </configure>
-  </class>
+  </entity>
 </entity>

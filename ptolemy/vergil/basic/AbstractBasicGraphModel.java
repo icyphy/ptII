@@ -243,24 +243,6 @@ public abstract class AbstractBasicGraphModel extends ModularGraphModel {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Return the context for which a change request concerning the given
-     *  object should be made.  This is the first container
-     *  above the object in the hierarchy that defers its
-     *  MoML definition, or the immediate parent if there is none.
-     *  @param object The object to change.
-     *  @return The context for a change request.
-     */
-    protected static NamedObj _getChangeRequestParent(NamedObj object) {
-        NamedObj container = MoMLChangeRequest.getDeferredToParent(object);
-        if (container == null) {
-            container = (NamedObj)object.getContainer();
-        }
-        if (container == null) {
-            return object;
-        }
-        return container;
-    }
-
     /** Return the location attribute contained in the given object, or
      *  a new location contained in the given object if there was no location.
      *  @param object The object for which a location is needed.
@@ -272,7 +254,22 @@ public abstract class AbstractBasicGraphModel extends ModularGraphModel {
             return (Locatable)locations.get(0);
         } else {
             try {
+                // NOTE: We need the location right away, so we go ahead
+                // and create it. However, we also issue a MoMLChangeRequest
+                // so that the change propagates, and any models that defer
+                // to this one (e.g. subclasses) also have locations.
+                // This is necessary so that if the location later moves,
+                // then the move can be duplicated in the deferrers.
                 Locatable location = new Location(object, "_location");
+                
+                // To ensure propagation.
+                MoMLChangeRequest request = new MoMLChangeRequest(
+                        this,
+                        object,
+                        "<property name=\"_location\" " +
+                        "class=\"ptolemy.kernel.util.Location\"/>");
+                object.requestChange(request);
+                
                 return location;
             }
             catch (Exception e) {

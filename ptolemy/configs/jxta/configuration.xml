@@ -5,8 +5,8 @@
   <doc>Configuration to edit and run Ptolemy II models</doc>
   <input source="ptolemy/configs/defaultFullConfiguration.xml"/>
   <entity name="actor library" class="ptolemy.kernel.CompositeEntity">
-    <class name ="p2p actors" extends="ptolemy.moml.jxta.JXTALibrary"> 
+    <entity name ="p2p actors" class="ptolemy.moml.jxta.JXTALibrary"> 
       <input source="ptolemy/moml/jxta/demo/EPtolemyA/discoveredActors.xml"/>
-    </class>
+    </entity>
   </entity>
 </entity>

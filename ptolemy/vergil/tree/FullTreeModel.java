@@ -30,12 +30,11 @@
 
 package ptolemy.vergil.tree;
 
+import java.util.List;
+
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.NamedObj;
-
-import java.util.LinkedList;
-import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 //// FullTreeModel
@@ -46,6 +45,7 @@ the following child elements, in this order:
 <li> attributes
 <li> ports
 <li> relations
+<li> class definitions
 <li> contained entities
 </ul>
 The indexes of the attributes are 0 to a-1, where a is the
@@ -59,7 +59,7 @@ contained objects.
 @version $Id$
 @since Ptolemy II 1.0
 */
-public class FullTreeModel extends EntityTreeModel {
+public class FullTreeModel extends ClassAndEntityTreeModel {
 
     /** Create a new tree model with the specified root.
      *  @param root The root of the tree.
@@ -210,10 +210,4 @@ public class FullTreeModel extends EntityTreeModel {
         if (!(object instanceof CompositeEntity)) return _emptyList;
         return ((CompositeEntity)object).relationList();
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected members                 ////
-
-    /** Empty list. */
-    protected static List _emptyList = new LinkedList();
 }

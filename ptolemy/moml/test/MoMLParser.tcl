@@ -2972,10 +2972,10 @@ test MoMLParser-20.2 {Make sure the derived class doesn't export the added entit
 ####
 #
 test MoMLParser-20.2 {Test adding an entity in the subclass} {
-    set change [java::new ptolemy.moml.MoMLChangeRequest $toplevel $toplevel {
-        <entity name="DerivedClass">
-            <entity name="C" class="ptolemy.actor.TypedAtomicActor"/>
-        </entity>
+    set derivedClass [$toplevel getEntity {DerivedClass}]
+    # NOTE: Have to have the class definition as the context.
+    set change [java::new ptolemy.moml.MoMLChangeRequest $derivedClass $derivedClass {
+        <entity name="C" class="ptolemy.actor.TypedAtomicActor"/>
     }]
     # NOTE: Request is filled immediately because the model is not running.
     $toplevel requestChange $change
@@ -3007,12 +3007,10 @@ test MoMLParser-20.2 {Test adding an entity in the subclass} {
 ####
 #
 test MoMLParser-20.3 {Test adding an entity in the subclass that is already there in the base class} {
-    set change [java::new ptolemy.moml.MoMLChangeRequest $toplevel $toplevel {
-        <entity name="DerivedClass">
-            <entity name="B" class="ptolemy.actor.TypedAtomicActor"/>
-        </entity>
+    set derivedClass [$toplevel getEntity {DerivedClass}]
+    set change [java::new ptolemy.moml.MoMLChangeRequest $derivedClass $derivedClass {
+        <entity name="B" class="ptolemy.actor.TypedAtomicActor"/>
     }]
-    # NOTE: Request is filled immediately because the model is not running.
     $toplevel requestChange $change
     $toplevel exportMoML
 } {<?xml version="1.0" standalone="no"?>
@@ -3035,5 +3033,85 @@ test MoMLParser-20.3 {Test adding an entity in the subclass that is already ther
     </entity>
     <entity name="InstanceOfDerivedClass" class="DerivedClass">
     </entity>
+</entity>
+}
+
+######################################################################
+####
+#
+test MoMLParser-20.4 {Test deleting an entity from the base class} {
+    set baseClass [$toplevel getEntity {BaseClass}]
+    # NOTE: Have to have the class definition as the context.
+    set change [java::new ptolemy.moml.MoMLChangeRequest $baseClass $baseClass {
+        <deleteEntity name="B"/>
+    }]
+    $toplevel requestChange $change
+    equals [[java::cast ptolemy.kernel.CompositeEntity \
+            [$toplevel getEntity {DerivedClass}]] getEntity {B}] \
+            [java::null]
+} {
+}
+
+######################################################################
+####
+#
+set body {
+<entity name="top" class="ptolemy.actor.CompositeActor">
+    <class name="master" extends="ptolemy.actor.CompositeActor">
+    </class>
+    <entity name="derived" class="master">
+        <property name="dir" class="ptolemy.actor.Director"/>
+    </entity>
+</entity>
+}
+
+set moml "$header $body"
+
+test MoMLParser-20.5 {test relative class name} {
+    $parser reset
+    set toplevel [$parser parse $moml]
+    $toplevel exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="top" class="ptolemy.actor.CompositeActor">
+    <class name="master" extends="ptolemy.actor.CompositeActor">
+    </class>
+    <entity name="derived" class="master">
+        <property name="dir" class="ptolemy.actor.Director">
+        </property>
+    </entity>
+</entity>
+}
+
+######################################################################
+####
+#
+set body {
+<entity name="top" class="ptolemy.actor.CompositeActor">
+    <class name="master" extends="ptolemy.actor.CompositeActor">
+    </class>
+    <class name="derived" extends="master">
+        <property name="dir" class="ptolemy.actor.Director"/>
+    </class>
+</entity>
+}
+
+set moml "$header $body"
+
+test MoMLParser-20.6 {test relative class name for inner class} {
+    $parser reset
+    set toplevel [$parser parse $moml]
+    $toplevel exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="top" class="ptolemy.actor.CompositeActor">
+    <class name="master" extends="ptolemy.actor.CompositeActor">
+    </class>
+    <class name="derived" extends="master">
+        <property name="dir" class="ptolemy.actor.Director">
+        </property>
+    </class>
 </entity>
 }

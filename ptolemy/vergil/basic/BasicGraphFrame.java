@@ -459,7 +459,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame
                 NamedObj element = (NamedObj)elements.next();
                 // first level to avoid obnoxiousness with
                 // toplevel translations.
-                element.exportMoML(buffer, 1);
+                // FIXME: Does it work to use 0 here?
+                element.exportMoML(buffer, 0);
             }
             NamedObj container = (NamedObj)graphModel.getRoot();
             if (container instanceof CompositeEntity) {
@@ -789,45 +790,43 @@ public abstract class BasicGraphFrame extends PtolemyFrame
         // and handing that MoML to the parser
 
         GraphPane graphPane = _jgraph.getGraphPane();
-        GraphController controller =
-            (GraphController)graphPane.getGraphController();
+        GraphController controller
+                = (GraphController)graphPane.getGraphController();
         SelectionModel model = controller.getSelectionModel();
 
-        AbstractBasicGraphModel graphModel =
-            (AbstractBasicGraphModel)controller.getGraphModel();
+        AbstractBasicGraphModel graphModel
+                = (AbstractBasicGraphModel)controller.getGraphModel();
         Object selection[] = model.getSelectionAsArray();
-
+        
+        // First collect selected objects into the userObjects array
+        // and deselect them.
         Object userObjects[] = new Object[selection.length];
-        // First remove the selection.
         for (int i = 0; i < selection.length; i++) {
             userObjects[i] = ((Figure)selection[i]).getUserObject();
             model.removeSelection(selection[i]);
         }
 
-        // Holds a set of those elements whose deletion goes through MoML.
-        // This is the large majority of deleted objects.
-        // Currently the only exception are links from a port to nowhere.
-        HashSet namedObjNodeSet = new HashSet();
-        HashSet namedObjEdgeSet = new HashSet();
-        // Holds those elements whose deletion does not go through MoML. This
-        // is only links which are no connected to another port or a relation.
+        // Create a set to hold those elements whose deletion
+        // does not go through MoML. This is only links that
+        // are not connected to another port or a relation.
         HashSet edgeSet = new HashSet();
 
         // Generate the MoML to carry out the deletion
-        StringBuffer moml = new StringBuffer();
-        moml.append("<group>\n");
+        StringBuffer moml = new StringBuffer("<group>\n");
 
         // Delete edges then nodes, since deleting relations may
         // result in deleting links to that relation.
         for (int i = 0; i < selection.length; i++) {
             Object userObject = userObjects[i];
             if (graphModel.isEdge(userObject)) {
-                NamedObj actual =
-                    (NamedObj)graphModel.getSemanticObject(userObject);
-                if (actual != null) {
-                    moml.append(graphModel.getDeleteEdgeMoML(userObject));
-                } else {
+                NamedObj actual
+                        = (NamedObj)graphModel.getSemanticObject(userObject);
+                // If there is no semantic object, then this edge is
+                // not fully connected, so we can't go through MoML.
+                if (actual == null) {
                     edgeSet.add(userObject);
+                } else {
+                    moml.append(graphModel.getDeleteEdgeMoML(userObject));
                 }
             }
         }
@@ -866,20 +865,11 @@ public abstract class BasicGraphFrame extends PtolemyFrame
         // of most deletions.
         try {
             // Finally create and request the change
-            NamedObj object = (NamedObj)graphModel.getRoot();
-            NamedObj container = MoMLChangeRequest.getDeferredToParent(object);
-            if (container == null) {
-                container = (NamedObj)object.getContainer();
-            }
-            if (container == null) {
-                container = object;
-            }
-
-            NamedObj toplevel = (NamedObj)container;
-            MoMLChangeRequest change =
-                new MoMLChangeRequest(this, toplevel, moml.toString());
+            NamedObj container = graphModel.getPtolemyModel();
+            MoMLChangeRequest change
+                    = new MoMLChangeRequest(this, container, moml.toString());
             change.setUndoable(true);
-            toplevel.requestChange(change);
+            container.requestChange(change);
         }
         catch (Exception ex) {
             MessageHandler.error("Delete failed, changeRequest was:" + moml,

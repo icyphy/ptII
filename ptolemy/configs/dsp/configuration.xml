@@ -65,7 +65,7 @@
               class="ptolemy.kernel.util.SingletonAttribute"/>
 
     <!-- Default utilities library. -->
-    <class name="utilities" extends="ptolemy.moml.EntityLibrary">
+    <entity name="utilities" class="ptolemy.moml.EntityLibrary">
       <configure>
         <?moml
           <group>
@@ -76,10 +76,10 @@
           </group>
         ?>
       </configure>
-    </class>
+    </entity>
 
     <!-- Default entity library to appear in the library browser. -->
-    <class name="actor library" extends="ptolemy.moml.EntityLibrary">
+    <entity name="actor library" class="ptolemy.moml.EntityLibrary">
       <configure>
         <?moml
           <group>
@@ -130,6 +130,6 @@
           </group>
         ?>
       </configure>
-    </class>
+    </entity>
   </entity>
 </entity>

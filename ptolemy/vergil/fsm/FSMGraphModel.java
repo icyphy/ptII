@@ -252,8 +252,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
                 link.setTail(null);
                 link.setRelation(null);
                 links.remove();
-                NamedObj container =
-                    (NamedObj)_getChangeRequestParent(getPtolemyModel());
+                NamedObj container = getPtolemyModel();
                 // remove the relation  This should trigger removing the
                 // other link. This will only happen when we've deleted
                 // the state at one end of the model.
@@ -401,8 +400,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
             StringBuffer moml = new StringBuffer();
             // Make the request in the context of the container.
             // JDK1.2.2 fails to compile the next line.
-            NamedObj container =
-                (CompositeEntity)_getChangeRequestParent(getPtolemyModel());
+            NamedObj container = getPtolemyModel();
 
             moml.append(_deleteRelation(container, linkRelation));
 
@@ -508,8 +506,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
             // This moml is parsed to execute the change
             final StringBuffer moml = new StringBuffer();
             // Make the request in the context of the container.
-            final CompositeEntity container =
-                (CompositeEntity)_getChangeRequestParent(getPtolemyModel());
+            final NamedObj container = getPtolemyModel();
             moml.append(_deleteRelation(container, linkRelation));
             MoMLChangeRequest request =
                 new MoMLChangeRequest(FSMGraphModel.this,
@@ -560,8 +557,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
             failmoml.append("<group>\n");
 
             // Make the request in the context of the container.
-            final NamedObj container =
-                (CompositeEntity)_getChangeRequestParent(getPtolemyModel());
+            final NamedObj container = getPtolemyModel();
 
             // If there is a previous connection, remove it.
             if (linkRelation != null) {
@@ -658,8 +654,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
             failmoml.append("<group>\n");
 
             // Make the request in the context of the container.
-            final NamedObj container =
-                (CompositeEntity)_getChangeRequestParent(getPtolemyModel());
+            final NamedObj container = getPtolemyModel();
 
             // If there is a previous connection, remove it.
             if (linkRelation != null) {

@@ -48,6 +48,7 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
+	ClassAndEntityTreeModel.java \
 	EntityTreeModel.java \
 	FullTreeModel.java \
 	PTree.java \

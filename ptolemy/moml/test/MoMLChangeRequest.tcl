@@ -202,7 +202,7 @@ test MoMLChangeRequest-1.6a {Test deleting a relation} {
 ######################################################################
 ####
 #
-test MoMLChangeRequest-1.6b{Test deleting a port, using a new parser and context} {
+test MoMLChangeRequest-1.6b {Test deleting a port, using a new parser and context} {
     set change1 [java::new ptolemy.moml.MoMLChangeRequest $toplevel $toplevel {
         <port name="input" class="ptolemy.actor.TypedIOPort"/>
     }]
@@ -217,6 +217,8 @@ test MoMLChangeRequest-1.6b{Test deleting a port, using a new parser and context
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
+    </property>
     <property name="dir" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="2">
         </property>
@@ -232,7 +234,10 @@ test MoMLChangeRequest-1.6b{Test deleting a port, using a new parser and context
 test MoMLChangeRequest-1.7 {Test deleting a property using a lower context} {
     set rec [$toplevel getEntity "rec"]
     set change [java::new ptolemy.moml.MoMLChangeRequest $toplevel $rec {
-        <deleteProperty name="capacity"/>
+        <group>
+        <property name="foo" class="ptolemy.kernel.util.Attribute"/>
+        <deleteProperty name="foo"/>
+        </group>
     }]
     $manager requestChange $change
     $toplevel exportMoML
@@ -240,16 +245,10 @@ test MoMLChangeRequest-1.7 {Test deleting a property using a lower context} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
+    </property>
     <property name="dir" class="ptolemy.domains.sdf.kernel.SDFDirector">
-        <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
-        </property>
-        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="allowRateChanges" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="2">
-        </property>
-        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
     </property>
     <entity name="rec" class="ptolemy.actor.lib.Recorder">
@@ -313,11 +312,12 @@ test MoMLChangeRequest-2.2 {Test propagation} {
     {ptolemy.moml.ParserAttribute {.top._parser} attributes {
     }}
 } ports {
-} entities {
+} classes {
     {ptolemy.kernel.CompositeEntity {.top.gen} attributes {
         {ptolemy.kernel.util.SingletonConfigurableAttribute {.top.gen._iconDescription} attributes {
         }}
     } ports {
+    } classes {
     } entities {
         {ptolemy.kernel.ComponentEntity {.top.gen.new} attributes {
             {ptolemy.kernel.util.SingletonConfigurableAttribute {.top.gen.new._iconDescription} attributes {
@@ -326,10 +326,12 @@ test MoMLChangeRequest-2.2 {Test propagation} {
         }}
     } relations {
     }}
+} entities {
     {ptolemy.kernel.CompositeEntity {.top.der} attributes {
         {ptolemy.kernel.util.SingletonConfigurableAttribute {.top.der._iconDescription} attributes {
         }}
     } ports {
+    } classes {
     } entities {
         {ptolemy.kernel.ComponentEntity {.top.der.new} attributes {
             {ptolemy.kernel.util.SingletonConfigurableAttribute {.top.der.new._iconDescription} attributes {
@@ -398,11 +400,12 @@ test MoMLChangeRequest-3.2 {Test propagation} {
     {ptolemy.moml.ParserAttribute {.top._parser} attributes {
     }}
 } ports {
-} entities {
+} classes {
     {ptolemy.kernel.CompositeEntity {.top.gen} attributes {
         {ptolemy.kernel.util.SingletonConfigurableAttribute {.top.gen._iconDescription} attributes {
         }}
     } ports {
+    } classes {
     } entities {
         {ptolemy.kernel.ComponentEntity {.top.gen.new} attributes {
             {ptolemy.kernel.util.SingletonConfigurableAttribute {.top.gen.new._iconDescription} attributes {
@@ -415,6 +418,7 @@ test MoMLChangeRequest-3.2 {Test propagation} {
         {ptolemy.kernel.util.SingletonConfigurableAttribute {.top.intClass._iconDescription} attributes {
         }}
     } ports {
+    } classes {
     } entities {
         {ptolemy.kernel.ComponentEntity {.top.intClass.new} attributes {
             {ptolemy.kernel.util.SingletonConfigurableAttribute {.top.intClass.new._iconDescription} attributes {
@@ -423,10 +427,12 @@ test MoMLChangeRequest-3.2 {Test propagation} {
         }}
     } relations {
     }}
+} entities {
     {ptolemy.kernel.CompositeEntity {.top.der} attributes {
         {ptolemy.kernel.util.SingletonConfigurableAttribute {.top.der._iconDescription} attributes {
         }}
     } ports {
+    } classes {
     } entities {
         {ptolemy.kernel.ComponentEntity {.top.der.new} attributes {
             {ptolemy.kernel.util.SingletonConfigurableAttribute {.top.der.new._iconDescription} attributes {
@@ -624,3 +630,166 @@ Caused by:
 
 # Restore the original MoMLParser Error Handler
 $parser setErrorHandler $originalParserErrorHandler
+
+######################################################################
+####
+# Sequence of tests for inner classes.
+
+set header {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">}
+
+set body {
+<entity name="top" class="ptolemy.actor.CompositeActor">
+    <class name="master" extends="ptolemy.actor.CompositeActor">
+        <class name="inner" extends="ptolemy.actor.CompositeActor">
+            <property name="foo" class="ptolemy.data.expr.Parameter" value="1"/>
+        </class>
+        <entity name="A" class="inner"/>
+    </class>
+    <entity name="instance" class="master"/>
+</entity>
+}
+
+set moml "$header $body"
+test MoMLChangeRequest-7.1 {test construction of inner class} {
+    $parser reset
+    set toplevel [$parser parse $moml]
+    $toplevel description
+} {ptolemy.actor.CompositeActor {.top} attributes {
+    {ptolemy.kernel.util.SingletonConfigurableAttribute {.top._iconDescription} attributes {
+    }}
+    {ptolemy.kernel.attributes.URIAttribute {.top._uri} attributes {
+    }}
+    {ptolemy.moml.ParserAttribute {.top._parser} attributes {
+    }}
+} ports {
+} classes {
+    {ptolemy.actor.CompositeActor {.top.master} attributes {
+        {ptolemy.kernel.util.SingletonConfigurableAttribute {.top.master._iconDescription} attributes {
+        }}
+    } ports {
+    } classes {
+        {ptolemy.actor.CompositeActor {.top.master.inner} attributes {
+            {ptolemy.kernel.util.SingletonConfigurableAttribute {.top.master.inner._iconDescription} attributes {
+            }}
+            {ptolemy.data.expr.Parameter {.top.master.inner.foo} 1}
+        } ports {
+        } classes {
+        } entities {
+        } relations {
+        }}
+    } entities {
+        {ptolemy.actor.CompositeActor {.top.master.A} attributes {
+            {ptolemy.kernel.util.SingletonConfigurableAttribute {.top.master.A._iconDescription} attributes {
+            }}
+            {ptolemy.data.expr.Parameter {.top.master.A.foo} 1}
+        } ports {
+        } classes {
+        } entities {
+        } relations {
+        }}
+    } relations {
+    }}
+} entities {
+    {ptolemy.actor.CompositeActor {.top.instance} attributes {
+        {ptolemy.kernel.util.SingletonConfigurableAttribute {.top.instance._iconDescription} attributes {
+        }}
+    } ports {
+    } classes {
+        {ptolemy.actor.CompositeActor {.top.instance.inner} attributes {
+            {ptolemy.kernel.util.SingletonConfigurableAttribute {.top.instance.inner._iconDescription} attributes {
+            }}
+            {ptolemy.data.expr.Parameter {.top.instance.inner.foo} 1}
+        } ports {
+        } classes {
+        } entities {
+        } relations {
+        }}
+    } entities {
+        {ptolemy.actor.CompositeActor {.top.instance.A} attributes {
+            {ptolemy.kernel.util.SingletonConfigurableAttribute {.top.instance.A._iconDescription} attributes {
+            }}
+            {ptolemy.data.expr.Parameter {.top.instance.A.foo} 1}
+        } ports {
+        } classes {
+        } entities {
+        } relations {
+        }}
+    } relations {
+    }}
+} relations {
+}}
+
+test MoMLChangeRequest-7.2 {test propagation of changes} {
+    set toplevel [java::cast ptolemy.actor.CompositeActor $toplevel]
+    set context [java::cast ptolemy.actor.CompositeActor [$toplevel getEntity "master.inner"]]
+    set change [java::new ptolemy.moml.MoMLChangeRequest $context $context {
+        <property name="foo" class="ptolemy.data.expr.Parameter" value="2"/>
+    }]
+    $context requestChange $change
+    $toplevel description
+} {ptolemy.actor.CompositeActor {.top} attributes {
+    {ptolemy.kernel.util.SingletonConfigurableAttribute {.top._iconDescription} attributes {
+    }}
+    {ptolemy.kernel.attributes.URIAttribute {.top._uri} attributes {
+    }}
+    {ptolemy.moml.ParserAttribute {.top._parser} attributes {
+    }}
+} ports {
+} classes {
+    {ptolemy.actor.CompositeActor {.top.master} attributes {
+        {ptolemy.kernel.util.SingletonConfigurableAttribute {.top.master._iconDescription} attributes {
+        }}
+    } ports {
+    } classes {
+        {ptolemy.actor.CompositeActor {.top.master.inner} attributes {
+            {ptolemy.kernel.util.SingletonConfigurableAttribute {.top.master.inner._iconDescription} attributes {
+            }}
+            {ptolemy.data.expr.Parameter {.top.master.inner.foo} 2}
+        } ports {
+        } classes {
+        } entities {
+        } relations {
+        }}
+    } entities {
+        {ptolemy.actor.CompositeActor {.top.master.A} attributes {
+            {ptolemy.kernel.util.SingletonConfigurableAttribute {.top.master.A._iconDescription} attributes {
+            }}
+            {ptolemy.data.expr.Parameter {.top.master.A.foo} 2}
+        } ports {
+        } classes {
+        } entities {
+        } relations {
+        }}
+    } relations {
+    }}
+} entities {
+    {ptolemy.actor.CompositeActor {.top.instance} attributes {
+        {ptolemy.kernel.util.SingletonConfigurableAttribute {.top.instance._iconDescription} attributes {
+        }}
+    } ports {
+    } classes {
+        {ptolemy.actor.CompositeActor {.top.instance.inner} attributes {
+            {ptolemy.kernel.util.SingletonConfigurableAttribute {.top.instance.inner._iconDescription} attributes {
+            }}
+            {ptolemy.data.expr.Parameter {.top.instance.inner.foo} 2}
+        } ports {
+        } classes {
+        } entities {
+        } relations {
+        }}
+        {ptolemy.actor.CompositeActor {.top.instance.A} attributes {
+            {ptolemy.kernel.util.SingletonConfigurableAttribute {.top.instance.A._iconDescription} attributes {
+            }}
+            {ptolemy.data.expr.Parameter {.top.instance.A.foo} 2}
+        } ports {
+        } classes {
+        } entities {
+        } relations {
+        }}
+    } entities {
+    } relations {
+    }}
+} relations {
+}}

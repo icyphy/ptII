@@ -83,13 +83,13 @@ public class UndoContext {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /**
-     *  Append some MoML to be appended after the undo MoML for child nodes
-     *
+    /** Append some MoML to be appended after the undo MoML for child nodes.
+     *  Note that these will appear in the reverse order in which this method
+     *  is called, which makes sense since generally these are nested calls.
      *  @param undoMoML The MoMl to be appended after any child nodes
      */
     public void appendClosingUndoMoML(String undoMoML) {
-        _closingUndoMoML.append(undoMoML);
+        _closingUndoMoML.insert(0, undoMoML);
         return;
     }
 

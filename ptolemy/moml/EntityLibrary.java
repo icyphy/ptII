@@ -278,6 +278,22 @@ public class EntityLibrary
         _configureDone = false;
     }
 
+    /** List the contained class definitions in the order they were added
+     *  (using their setContainer() method).
+     *  The returned list is static in the sense
+     *  that it is not affected by any subsequent additions or removals
+     *  of entities.  This overrides the base class
+     *  to first populate the library, if necessary, by calling populate().
+     *  Note that this may result in a runtime exception being thrown
+     *  (if there is an error evaluating the MoML).
+     *  This method is read-synchronized on the workspace.
+     *  @return An unmodifiable list of ComponentEntity objects.
+     */
+    public List classDefinitionList() {
+        populate();
+        return super.classDefinitionList();
+    }
+
     /** Return true if this object contains the specified object,
      *  directly or indirectly.  That is, return true if the specified
      *  object is contained by an object that this contains, or by an
@@ -385,6 +401,11 @@ public class EntityLibrary
         try {
             StringWriter stringWriter = new StringWriter();
             stringWriter.write("<group>\n");
+            Iterator classes = classDefinitionList().iterator();
+            while (classes.hasNext()) {
+                ComponentEntity entity = (ComponentEntity)classes.next();
+                entity.exportMoML(stringWriter, 1);
+            }
             Iterator entities = entityList().iterator();
             while (entities.hasNext()) {
                 ComponentEntity entity = (ComponentEntity)entities.next();
@@ -396,6 +417,19 @@ public class EntityLibrary
             return "";
         }
         //    return _text;
+    }
+
+    /** Return the number of contained class definitions. This overrides
+     *  the base class to first populate the library, if necessary,
+     *  by calling populate().
+     *  Note that this may result in a runtime exception being thrown
+     *  (if there is an error evaluating the MoML).
+     *  This method is read-synchronized on the workspace.
+     *  @return The number of class definitions.
+     */
+    public int numClassDefinitions() {
+        populate();
+        return super.numClassDefinitions();
     }
 
     /** Return the number of contained entities. This overrides the base class

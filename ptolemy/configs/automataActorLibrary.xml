@@ -2,7 +2,7 @@
 <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <!-- Library of actors that are automata. -->
-<class name="automata" extends="ptolemy.moml.EntityLibrary">
+<entity name="automata" class="ptolemy.moml.EntityLibrary">
   <configure>
     <?moml
       <group>
@@ -15,5 +15,5 @@
       </group>
     ?>
   </configure>
-</class>
+</entity>
 

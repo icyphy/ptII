@@ -14,7 +14,7 @@ import javax.swing.tree.TreePath;
 
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.vergil.tree.EntityTreeModel;
+import ptolemy.vergil.tree.ClassAndEntityTreeModel;
 
 /**
  * <p>Titre : NavigationTreeModel</p>
@@ -42,7 +42,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  * @author Jérôme Blanc & Benoit Masson
  * 01 sept. 2003
  */
-public class NavigationTreeModel extends EntityTreeModel {
+public class NavigationTreeModel extends ClassAndEntityTreeModel {
 
     public NavigationTreeModel(NamedObj root) {
         super(root);

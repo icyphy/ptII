@@ -135,6 +135,15 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
         // Add an item that adds new relations.
         diva.gui.GUIUtilities.addMenuItem(menu, _newRelationAction);
         diva.gui.GUIUtilities.addToolBarButton(toolbar, _newRelationAction);
+        
+        // Add hot key for create instance action.
+        diva.gui.GUIUtilities.addHotKey(getFrame().getJGraph(),
+                ((ClassDefinitionController)_classDefinitionController)
+                ._createInstanceAction);
+        // Add hot key for create subclass action.
+        diva.gui.GUIUtilities.addHotKey(getFrame().getJGraph(),
+                ((ClassDefinitionController)_classDefinitionController)
+                ._createSubclassAction);
     }
 
     /** Set the configuration.  The configuration is used when
@@ -164,8 +173,10 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
     protected void _createControllers() {
         _attributeController = new AttributeController(this,
                 AttributeController.FULL);
-        _entityController = new ActorController(this,
-                AttributeController.FULL);
+        _classDefinitionController
+                = new ClassDefinitionController(this);
+        _entityController
+                = new ActorInstanceController(this);
         _entityPortController = new IOPortController(this,
                 AttributeController.FULL);
         _portController = new ExternalIOPortController(this,
@@ -207,9 +218,6 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
         pane.getBackgroundEventLayer().addInteractor(_relationCreator);
         // Note that shift-click is already bound to the dragSelection
         // interactor when adding things to a selection.
-//     _relationCreator2 = new RelationCreator();
-//         _relationCreator2.setMouseFilter(_shiftFilter);
-//         pane.getBackgroundEventLayer().addInteractor(_relationCreator2);
 
         // Create the interactor that drags new edges.
         _linkCreator = new LinkCreator();
@@ -220,8 +228,6 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
         } else {
             _linkCreator.setMouseFilter(_controlFilter);
         }
-//         _linkCreator2 = new LinkCreator();
-//         _linkCreator2.setMouseFilter(_shiftFilter);
         // NOTE: Do not use _initializeInteraction() because we are
         // still in the constructor, and that method is overloaded in
         // derived classes.
@@ -231,12 +237,6 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
             .addInteractor(_linkCreator);
         ((CompositeInteractor)_relationController.getNodeInteractor())
             .addInteractor(_linkCreator);
- //        ((CompositeInteractor)_portController.getNodeInteractor())
-//             .addInteractor(_linkCreator2);
-//         ((CompositeInteractor)_entityPortController.getNodeInteractor())
-//             .addInteractor(_linkCreator2);
-//         ((CompositeInteractor)_relationController.getNodeInteractor())
-//             .addInteractor(_linkCreator2);
 
         LinkCreator linkCreator2 = new LinkCreator();
         linkCreator2.setMouseFilter(

@@ -30,7 +30,9 @@
 
 package ptolemy.vergil.kernel;
 
-import diva.graph.modular.CompositeModel;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 import ptolemy.actor.Director;
 import ptolemy.kernel.ComponentEntity;
@@ -43,11 +45,9 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.Locatable;
 import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.Vertex;
-
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
+import diva.graph.modular.CompositeModel;
 
 //////////////////////////////////////////////////////////////////////////
 //// CompositePtolemyModel
@@ -133,10 +133,24 @@ public class CompositePtolemyModel implements CompositeModel {
             return (Locatable)locations.get(0);
         } else {
             try {
+                // NOTE: We need the location right away, so we go ahead
+                // and create it. However, we also issue a MoMLChangeRequest
+                // so that the change propagates, and any models that defer
+                // to this one (e.g. subclasses) also have locations.
+                // This is necessary so that if the location later moves,
+                // then the move can be duplicated in the deferrers.
                 Locatable location = new Location(object, "_location");
+                
+                // To ensure propagation.
+                MoMLChangeRequest request = new MoMLChangeRequest(
+                        this,
+                        object,
+                        "<property name=\"_location\" " +
+                        "class=\"ptolemy.kernel.util.Location\"/>");
+                object.requestChange(request);
+                
                 return location;
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 throw new InternalErrorException("Failed to create " +
                         "location, even though one does not exist:" +
                         e.getMessage());
@@ -157,6 +171,15 @@ public class CompositePtolemyModel implements CompositeModel {
         List nodes = new LinkedList();
 
         if (composite instanceof CompositeEntity) {
+            // Add a graph node for every class definition.
+            // The node is actually the location contained by the entity.
+            // If the entity does not contain a location, then create one.
+            Iterator classes = ((CompositeEntity)composite)
+                    .classDefinitionList().iterator();
+            while (classes.hasNext()) {
+                ComponentEntity entity = (ComponentEntity)classes.next();
+                nodes.add(_getLocation(entity));
+            }
             // Add a graph node for every entity.
             // The node is actually the location contained by the entity.
             // If the entity does not contain a location, then create one.

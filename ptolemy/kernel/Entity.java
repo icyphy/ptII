@@ -244,6 +244,16 @@ public class Entity extends NamedObj {
     public void connectionsChanged(Port port) {
     }
 
+    /** Return an iterator over contained objects. In this class,
+     *  this is simply an iterator over attributes and ports.  In derived classes,
+     *  the iterator will also traverse classes, entities, and relations.
+     *  @return An iterator over instances of NamedObj contained by this
+     *   object.
+     */
+    public Iterator containedObjectsIterator() {
+        return new ContainedObjectsIterator();
+    }
+
     /** Get the attribute with the given name. The name may be compound,
      *  with fields separated by periods, in which case the attribute
      *  returned is (deeply) contained by a contained attribute or port.

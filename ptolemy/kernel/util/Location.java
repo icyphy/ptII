@@ -139,7 +139,7 @@ public class Location extends SingletonAttribute
      */
     public void exportMoML(Writer output, int depth, String name)
             throws IOException {
-        if (_suppressMoML()) {
+        if (_suppressMoML(depth)) {
             return;
         }
         String value = getExpression();
@@ -236,6 +236,7 @@ public class Location extends SingletonAttribute
         boolean changed = _setLocation(location);
         if (changed) {
             // Make sure the new value is exported in MoML.  EAL 12/03.
+            // FIXME NOW: We never get here when dragging objects... Why?
             setModifiedFromClass(true);
         }
     }
@@ -320,11 +321,13 @@ public class Location extends SingletonAttribute
                 return false;
             }
         }
+        
+        // FIXME NOW: We never get here when dragging!  The location is getting set
+        // some other way! (or not getting set????)
 
-        // Copying location array into member array _location
+        // Copy location array into member array _location.
         // Just referencing _location to location isn't enough, we need
         // to maintain a local copy of the double array.
-        _location = new double[location.length];
         for(int i = 0; i < location.length; i++) {
             _location[i] = location[i];
         }

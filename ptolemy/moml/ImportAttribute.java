@@ -84,7 +84,7 @@ public class ImportAttribute extends Attribute {
      */
     public void exportMoML(Writer output, int depth, String name)
             throws IOException {
-        if (_suppressMoML()) {
+        if (_suppressMoML(depth)) {
             return;
         }
         String moml = "<import source=\""

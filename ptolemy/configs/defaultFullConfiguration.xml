@@ -60,7 +60,7 @@
   <!-- Modifications to the library. -->
   <entity name="actor library" class="ptolemy.kernel.CompositeEntity">
     <!-- First, additional directors. -->
-    <class name="director library" extends="ptolemy.moml.EntityLibrary">
+    <entity name="director library" class="ptolemy.moml.EntityLibrary">
       <configure>
         <?moml
           <group>
@@ -71,11 +71,11 @@
           </group>
         ?>
       </configure>
-    </class>
+    </entity>
 
     <!-- Optional packages that may or may not be present  -->
     <!-- Alphabetize these  -->
-    <class name="more libraries" extends="ptolemy.moml.EntityLibrary">
+    <entity name="more libraries" class="ptolemy.moml.EntityLibrary">
       <configure>
         <?moml
           <group>
@@ -112,7 +112,7 @@
           </group>
         ?>
       </configure>
-    </class>
+    </entity>
 
   </entity>
 </group>

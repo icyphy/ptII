@@ -48,19 +48,18 @@ To use it, create an instance of this class, specifying MoML code as
 an argument to the constructor.  Then queue the instance of this class
 with a composite entity by calling its requestChange() method.
 <p>
-There is one significant subtlety with using this class.
-If you create a MoMLChangeRequest with a specified context,
-then the change will be executed in that context.  Moreover, if
-that context has other objects deferring their MoML definitions to
-it, then the change will be replicated in those other objects.
-This is the principal mechanism in MoML for an object to serve
-as a class definition, and others to serve as instances.  A change
-to the class propagates to the instances.  However, it means that
-when you make a change request, you have to be sure to pick the
-right context.  The getDeferredToParent() method returns the first
-parent in the containment hierarchy of its argument that has other
-objects deferring their MoML definitions to it.  That is the correct
-context to use for a change request.
+If a context is given to the constructor, then the MoML will
+be executed in that context.  If that context has other objects
+that defer their MoML definitions to it (i.e., it is a class
+definition and there are instances of the class), then the
+MoML will also be executed in the context of those objects
+that defer to it.  Thus, the change to a class will propagate
+to instances.  If the context is (deeply) contained by another
+object that has objects that defer their MoML definitions to
+it, then the changes are also propagated to those objects.
+Thus, even when class definitions are nested within class
+definitions, a change within a class definition will
+propagate to all instances of the class(es).
 <p>
 The parser used to implement the change will be the parser contained
 by a ParserAttribute of the top-level element of the context.  If no
@@ -68,13 +67,12 @@ context is given, or there is no ParserAttribute in its top level,
 then a new parser is created, and a new ParserAttribute is placed
 in the top level.
 <p>
-NOTE: A significant subtlety remains.  If the parent
-returned by getDeferredToParent() itself has a parent that
-is deferred to, then changes will <i>not</i> propagate to the
-objects that defer to it.  That is, if a MoML class contains
-a MoML class, and a change is made to the inner class, then
-instances of the outer class are unaffected.
-Perhaps MoML should not permit inner classes.
+Note that if a context is specified that is above a class
+definition, and a change within the class definition is made
+by referencing the contents of the class definition using dotted
+names, then the change will not propagate. Thus, changes should be
+made in the most specific context (lowest level in the hierarchy)
+possible.
 
 @author  Edward A. Lee
 @version $Id$
@@ -170,7 +168,13 @@ public class MoMLChangeRequest extends ChangeRequest {
      *  are other objects that defer their MoML definitions to it.
      *  If there is no such container, then return null. If the specified
      *  object has other objects deferring to it, then return the specified
-     *  object.
+     *  object.  NOTE: It used to be that the returned value of this method
+     *  was the recommended context to specify to a constructor. This is
+     *  no longer necessary.  Propagation is automatically taken care of
+     *  if the context is contained by a deferred-to parent. Thus, you
+     *  should give the most immediate container that makes sense for
+     *  the context.  It is harmless, however, to use this method to
+     *  get the context, so older code will work fine.
      *  @return An object that deeply contains this one, or null.
      */
     public static NamedObj getDeferredToParent(NamedObj object) {
@@ -293,33 +297,52 @@ public class MoMLChangeRequest extends ChangeRequest {
         if (context == null) {
             context = _parser.getToplevel();
         }
-        List othersList = context.getMoMLInfo().deferredFrom;
-        if (othersList != null) {
 
-            Iterator others = othersList.iterator();
-            while (others.hasNext()) {
-                WeakReference reference = (WeakReference)others.next();
-                NamedObj other = (NamedObj)reference.get();
-                if (other != null) {
-                    // Make the request by queueing a new change request.
-                    // This needs to be done because we have no assurance
-                    // that just because this change request is being
-                    // executed now that the propagated one is safe to
-                    // execute.
-                    MoMLChangeRequest newChange = new MoMLChangeRequest(
-                            getSource(),
-                            other,              // context
-                            getDescription(),   // MoML code
-                            _base);
-                    // Let the parser know that we are propagating
-                    // changes, so that it does not need to record them
-                    // using MoMLAttribute.
-                    newChange._propagating = true;
-                    newChange._undoable = _undoable;
-                    newChange._mergeWithPreviousUndo = _mergeWithPreviousUndo;
-                    other.requestChange(newChange);
+        while(context != null) {
+            List othersList = context.getMoMLInfo().deferredFrom;
+            if (othersList != null) {
+
+                Iterator others = othersList.iterator();
+                while (others.hasNext()) {
+                    WeakReference reference = (WeakReference)others.next();
+                    NamedObj other = (NamedObj)reference.get();
+                    if (other != null) {
+                        // Create new MoML for the new context, if it is different.
+                        String moml = getDescription();
+                        if (context != _context) {
+                            // Surround the MoML with an appropriate context.
+                            moml = "<"
+                                    + _context.getMoMLInfo().elementName
+                                    + " name=\""
+                                    + _context.getName(context)
+                                    + "\">"
+                                    + getDescription()
+                                    + "</"
+                                    + _context.getMoMLInfo().elementName
+                                    + ">";
+                        }
+                        // Make the request by queueing a new change request.
+                        // This needs to be done because we have no assurance
+                        // that just because this change request is being
+                        // executed now that the propagated one is safe to
+                        // execute.
+                        MoMLChangeRequest newChange = new MoMLChangeRequest(
+                                getSource(),
+                                other,              // context
+                                moml,               // MoML code
+                                _base);
+                        // Let the parser know that we are propagating
+                        // changes, so that it does not need to record them
+                        // using MoMLAttribute.
+                        newChange._propagating = true;
+                        newChange._undoable = _undoable;
+                        newChange._mergeWithPreviousUndo = _mergeWithPreviousUndo;
+                        other.requestChange(newChange);
+                    }
                 }
             }
+
+            context = (NamedObj)context.getContainer();        
         }
     }
 
@@ -333,7 +356,7 @@ public class MoMLChangeRequest extends ChangeRequest {
     private URL _base;
     
     // Flag to print out information about what's being done.
-    private static boolean _DEBUG = false;
+    private static boolean _DEBUG = true;
     
     // Flag indicating whether propagation is enabled.
     private boolean _enablePropagation = true;

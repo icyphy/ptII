@@ -98,6 +98,8 @@ public class ActorViewerGraphController extends RunnableGraphController {
         super.addToMenuAndToolbar(menu, toolbar);
         GUIUtilities.addHotKey(getFrame().getJGraph(),
                 _entityController._lookInsideAction);
+        GUIUtilities.addHotKey(getFrame().getJGraph(),
+                _classDefinitionController._lookInsideAction);
     }
 
     /** React to an event by highlighting the actor being iterated.
@@ -197,7 +199,11 @@ public class ActorViewerGraphController extends RunnableGraphController {
         } else if (object instanceof Locatable) {
             Object semanticObject = getGraphModel().getSemanticObject(object);
             if (semanticObject instanceof Entity) {
-                return _entityController;
+                if (((Entity)semanticObject).isClassDefinition()) {
+                    return _classDefinitionController;
+                } else {
+                    return _entityController;
+                }
             } else if (semanticObject instanceof Attribute) {
                 return _attributeController;
             } else if (semanticObject instanceof Port) {
@@ -220,6 +226,7 @@ public class ActorViewerGraphController extends RunnableGraphController {
     public void setConfiguration(Configuration configuration) {
         super.setConfiguration(configuration);
         _attributeController.setConfiguration(configuration);
+        _classDefinitionController.setConfiguration(configuration);
         _entityController.setConfiguration(configuration);
         _entityPortController.setConfiguration(configuration);
         _relationController.setConfiguration(configuration);
@@ -239,6 +246,10 @@ public class ActorViewerGraphController extends RunnableGraphController {
     protected void _createControllers() {
         super._createControllers();
         _attributeController = new AttributeController(this,
+                AttributeController.PARTIAL);
+        // NOTE: Use an ordinary ActorController rather than
+        // ClassDefinitionController because access is only PARTIAL.
+        _classDefinitionController = new ActorController(this,
                 AttributeController.PARTIAL);
         _entityController = new ActorController(this,
                 AttributeController.PARTIAL);
@@ -269,6 +280,9 @@ public class ActorViewerGraphController extends RunnableGraphController {
 
     /** The attribute controller. */
     protected NamedObjController _attributeController;
+
+    /** The class definition controller. */
+    protected ActorController _classDefinitionController;
 
     /** The entity controller. */
     protected ActorController _entityController;

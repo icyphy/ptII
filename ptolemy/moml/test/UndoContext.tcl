@@ -103,8 +103,8 @@ undo 2
 undoMoML: undo 1
 undo 2
 
-closingUndoMoML: closing 1
-closing 2
+closingUndoMoML: closing 2
+closing 1
 
 }}
 

@@ -38,7 +38,7 @@ import java.util.List;
 
 import ptolemy.kernel.undo.UndoStackAttribute;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.Location;
+import ptolemy.kernel.util.Locatable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.MoMLUndoEntry;
@@ -115,9 +115,6 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
         transform[1] = _dragStart[1] - dragEnd[1];
         
         if (transform[0] == 0.0 && transform[1] == 0.0) return;
-
-        // Note that this now goes through the MoML parser so it is
-        // undoable.
         
         BasicGraphController graphController
                 = (BasicGraphController)_controller.getController();
@@ -160,26 +157,48 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
                 }
             }
         }
+        
+        // Generate the MoML to carry out move.
+        // Note that the location has already been set by the mouseMoved()
+        // call, but we need to do this so that the undo is generated and
+        // so that the change propagates.
+        
+        // The toplevel is the container being edited.
+        NamedObj toplevel = (NamedObj)graphModel.getRoot();
+        
+        // The context for the change.
+        NamedObj context = MoMLChangeRequest.getDeferredToParent(toplevel);
+        if (context == null) {
+            context = toplevel;
+        }
 
-        // Generate the MoML to carry out undo.
         StringBuffer moml = new StringBuffer();
+        StringBuffer undoMoml = new StringBuffer();
         moml.append("<group>\n");
+        undoMoml.append("<group>\n");
+        
+        if (context != toplevel) {
+            String bracket = "<" + toplevel.getMoMLInfo().elementName
+                    + " name=\"" + toplevel.getName(context) + "\">";
+            moml.append(bracket);
+            undoMoml.append(bracket);
+        }
         Iterator elements = namedObjSet.iterator();
         while (elements.hasNext()) {
             NamedObj element = (NamedObj)elements.next();
-            List locationList = element.attributeList(Location.class);
+            List locationList = element.attributeList(Locatable.class);
             if (locationList.isEmpty()) {
                 // Nothing to do as there was no previous location
                 // attribute (applies to "unseen" relations)
                 continue;
             }
             // Set the new location attribute.
-            Location newLoc = (Location)locationList.get(0);
+            Locatable locatable = (Locatable)locationList.get(0);
             // Give default values in case the previous locations value
             // has not yet been set
             double[] newLocation = new double[]{0, 0};
-            if (newLoc.getLocation() != null) {
-                newLocation = newLoc.getLocation();
+            if (locatable.getLocation() != null) {
+                newLocation = locatable.getLocation();
             }
             // NOTE: we use the transform worked out for the drag to
             // set the original MoML location
@@ -189,34 +208,49 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
             // Create the MoML, wrapping the new location attribute
             // in an element refering to the container
             String containingElementName = element.getMoMLInfo().elementName;
-            moml.append("<" + containingElementName + " name=\"" +
-                    element.getName() + "\" >\n");
+            String elementToMove = "<" + containingElementName + " name=\"" +
+                    element.getName() + "\" >\n";
+            moml.append(elementToMove);
+            undoMoml.append(elementToMove);
+            
             // NOTE: use the moml info element name here in case the
             // location is a vertex
-            moml.append("<" + newLoc.getMoMLInfo().elementName + " name=\"" +
-                    newLoc.getName() + "\" value=\"" + oldLocation[0] + ", " +
+            String momlInfo = ((NamedObj)locatable).getMoMLInfo().elementName;
+            moml.append("<" + momlInfo + " name=\"" +
+                    locatable.getName() + "\" value=\"" + newLocation[0] + ", " +
+                    newLocation[1] + "\" />\n");
+            undoMoml.append("<" + momlInfo + " name=\"" +
+                    locatable.getName() + "\" value=\"" + oldLocation[0] + ", " +
                     oldLocation[1] + "\" />\n");
             moml.append("</" + containingElementName + ">\n");
+            undoMoml.append("</" + containingElementName + ">\n");
+        }
+        if (context != toplevel) {
+            String bracket = "</" + toplevel.getMoMLInfo().elementName + ">";
+            moml.append(bracket);
+            undoMoml.append(bracket);
         }
         moml.append("</group>\n");
+        undoMoml.append("</group>\n");
+
+        // Request the change.
+        MoMLChangeRequest request = new MoMLChangeRequest(
+                this, context, moml.toString());
+        context.requestChange(request);
 
         // Next create and register the undo entry;
-        NamedObj toplevel = (NamedObj)graphModel.getRoot();
-        MoMLUndoEntry newEntry = new MoMLUndoEntry(toplevel, moml.toString());
+        MoMLUndoEntry newEntry = new MoMLUndoEntry(
+                toplevel, undoMoml.toString());
         UndoStackAttribute undoInfo = UndoStackAttribute.getUndoInfo(toplevel);
         undoInfo.push(newEntry);
+        // FIXME: Doesn't the above MoMLChangeRequest also result in an undo?
+        // Maybe not, since the value isn't changing.
         
         if (frame != null) {
             // NOTE: Use changeExecuted rather than directly calling
             // setModified() so that the panner is also updated.
             frame.changeExecuted(null);
         }
-        
-        // Finally to notify to get other views to update.
-        // FIXME: Hack: Surely there is a better way to do this
-        // than to create an empty change request!
-        toplevel.requestChange(new MoMLChangeRequest(
-                this, toplevel, "<group/>"));
     }
 
     /** Drag all selected nodes and move any attached edges.

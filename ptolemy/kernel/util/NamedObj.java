@@ -460,7 +460,11 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
                 // another object, then so will the clone.
                 // So we have to add the clone to the list of objects
                 // in the object deferred to.
+                // FIXME: This is only correct if the defered to object
+                // is referenced absolutely.  If it's a relative reference,
+                // then the deferral should might be to a new object.
                 if (_MoMLInfo.deferTo != null) {
+                    newObject._MoMLInfo.deferTo = _MoMLInfo.deferTo;
                     _MoMLInfo.deferTo._MoMLInfo.getDeferredFrom().add(
                             new WeakReference(newObject));
                 }
@@ -495,6 +499,16 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
         } finally {
             _workspace.doneReading();
         }
+    }
+
+    /** Return an iterator over contained objects. In this base class,
+     *  this is simply an iterator over attributes.  In derived classes,
+     *  the iterator will also traverse ports, entities, and relations.
+     *  @return An iterator over instances of NamedObj contained by this
+     *   object.
+     */
+    public Iterator containedObjectsIterator() {
+        return new ContainedObjectsIterator();
     }
 
     /** Return true if this object contains the specified object,
@@ -651,9 +665,6 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
     public final String exportMoML() {
         try {
             StringWriter buffer = new StringWriter();
-            // ptolemy.moml.MoMLWriter writer =
-            //    new ptolemy.moml.MoMLWriter(buffer);
-            //writer.write(this);
             exportMoML(buffer, 0);
             return buffer.toString();
         } catch (IOException ex) {
@@ -676,10 +687,6 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
      */
     public final String exportMoML(String name) {
         try {
-            // If the object is not persistent, return null.
-            if (_suppressMoML()) {
-                return "";
-            }
             StringWriter buffer = new StringWriter();
             exportMoML(buffer, 0, name);
             return buffer.toString();
@@ -707,10 +714,6 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
      *  @see #isClassElement()
      */
     public final void exportMoML(Writer output) throws IOException {
-        // If the object is not persistent, do nothing.
-        if (_suppressMoML()) {
-            return;
-        }
         exportMoML(output, 0);
     }
 
@@ -730,10 +733,6 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
      *  @see #isClassElement()
      */
     public final void exportMoML(Writer output, int depth) throws IOException {
-        // If the object is not persistent, do nothing.
-        if (_suppressMoML()) {
-            return;
-        }
         exportMoML(output, depth, getName());
     }
 
@@ -804,8 +803,9 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
      */
     public void exportMoML(Writer output, int depth, String name)
             throws IOException {
-        // If the object is not persistent, do nothing.
-        if (_suppressMoML()) {
+        // If the object is not persistent, and we are not
+        // at level 0, do nothing.
+        if (_suppressMoML(depth)) {
             return;
         }
         String momlElement = getMoMLInfo().elementName;
@@ -1119,6 +1119,14 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
             return container.handleModelError(context, exception);
         }
         return false;
+    }
+    
+    /** Return true if this object is a class definition. An object
+     *  is a class definition if its MoML element name is "class".
+     *  @return True if this object is a class definition.
+     */
+    public final boolean isClassDefinition() {
+        return getMoMLInfo().elementName.equals("class");
     }
 
     /** Return true if this object is a class element.  An object
@@ -1649,17 +1657,7 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
             }
         }
     }
-    
-    /** Return an iterator over contained objects. In this base class,
-     *  this is simply an iterator over attributes.  In derived classes,
-     *  the iterator will also traverse ports, entities, and relations.
-     *  @return An iterator over instances of NamedObj contained by this
-     *   object.
-     */
-    protected Iterator _containedObjectsIterator() {
-        return new ContainedObjectsIterator();
-    }
-    
+        
     /** Send a debug event to all debug listeners that have registered.
      *  @param event The event.
      */
@@ -1920,10 +1918,16 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
      *  with argument false, or it is a class element that has not
      *  been modified and all of the objects it contains return true
      *  on this same method (indicating that none of them needs to
-     *  export MoML).
+     *  export MoML). It will always return false if the depth argument
+     *  is equal to zero, since this indicates that MoML is being requested
+     *  at the top level.
+     *  @param depth The depth of the requested MoML.
      *  @return Return true to suppress MoML export.
      */
-    protected boolean _suppressMoML() {
+    protected boolean _suppressMoML(int depth) {
+        if (depth == 0) {
+            return false;
+        }
         if (!isPersistent()) {
             return true;
         } else {
@@ -1935,10 +1939,10 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
                 if (_modifiedFromClass) {
                     return false;
                 }
-                Iterator objects = _containedObjectsIterator();
+                Iterator objects = containedObjectsIterator();
                 while (objects.hasNext()) {
                     NamedObj object = (NamedObj)objects.next();
-                    if (!object._suppressMoML()) {
+                    if (!object._suppressMoML(depth + 1)) {
                         return false;
                     }
                 }

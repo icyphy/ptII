@@ -550,16 +550,32 @@ public class EditorDropTarget extends DropTarget {
             // Constrain point to snap to grid.
             Point2D newPoint = SnapConstraint.constrainPoint(point);
 
+            double coords[] = new double[2];
+            coords[0] = ((int)newPoint.getX());
+            coords[1] = ((int)newPoint.getY());
+
+            /** NOTE: This used to set the location directly using the
+             *  following code, but then the change did not propagate.
             Locatable location = (Locatable)newObject.getAttribute("_location");
             // If there is no location, then manufacture one.
             if (location == null) {
                 location = new Location(newObject, "_location");
             }
-
-            double coords[] = new double[2];
-            coords[0] = ((int)newPoint.getX());
-            coords[1] = ((int)newPoint.getY());
             location.setLocation(coords);
+            */
+
+            // To ensure propagation.
+            MoMLChangeRequest request = new MoMLChangeRequest(
+                    this,
+                    newObject,
+                    "<property name=\"_location\" " +
+                    "class=\"ptolemy.kernel.util.Location\" " +
+                    "value=\"" +
+                    coords[0] +
+                    ", " +
+                    coords[1] +
+                    "\"/>");
+            newObject.requestChange(request);
         }
         
         ///////////////////////////////////////////////////////////////

@@ -192,6 +192,20 @@ public class ActorController extends AttributeController {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** If access is FULL, then add the jni.ArgumentDailogFactory() to
+     *  _menuFactory.  If access is not FULL, then do nothing.
+     *  @param menuItemFactory  The MenuItemFactory to be added.
+     */
+    public void addMenuItemFactory(MenuItemFactory menuItemFactory) {
+        // This method is called by jni.ThalesGraphFrame to add a context
+        // menu.
+
+        if (_access == FULL) {
+            _menuFactory
+                .addMenuItemFactory(menuItemFactory);
+        }
+    }
+
     /** Set the configuration.  This is used to open documentation files.
      *  @param configuration The configuration.
      */
@@ -219,23 +233,9 @@ public class ActorController extends AttributeController {
         }
     }
 
-    /** If access is FULL, then add the jni.ArgumentDailogFactory() to
-     *  _menuFactory.  If access is not FULL, then do nothing.
-     *  @param menuItemFactory  The MenuItemFactory to be added.
-     */
-    public void addMenuItemFactory(MenuItemFactory menuItemFactory) {
-        // This method is called by jni.ThalesGraphFrame to add a context
-        // menu.
-
-        if (_access == FULL) {
-            _menuFactory
-                .addMenuItemFactory(menuItemFactory);
-        }
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-
+    
     /** The action that handles edit custom icon.
      */
     protected EditIconAction _editIconAction = new EditIconAction();
@@ -262,7 +262,10 @@ public class ActorController extends AttributeController {
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-    
+
+    /////////////////////////////////////////////////////////////////////
+    //// EntityLayout
+
     /** This layout algorithm is responsible for laying out the ports
      *  within an entity.
      */
@@ -481,6 +484,9 @@ public class ActorController extends AttributeController {
         }
     }
 
+    /////////////////////////////////////////////////////////////////////
+    //// ListenToActorAction
+    
     /** An action to listen to debug messages in the actor.
      *  This is static so that other classes can use it.
      */
@@ -546,6 +552,9 @@ public class ActorController extends AttributeController {
         private BasicGraphController _controller;
         private NamedObj _target;
     }
+    
+    /////////////////////////////////////////////////////////////////////
+    //// LookInsideAction
 
     // An action to look inside a composite.
     private class LookInsideAction extends FigureAction {
@@ -586,11 +595,7 @@ public class ActorController extends AttributeController {
     /////////////////////////////////////////////////////////////////////
     //// SaveInLibraryAction
 
-    /**
-     *  An action to save this actor in the library.
-     *
-     * @author     Administrator
-     * @created    25 January 2002
+    /** An action to save this actor in the library.
      */
     private class SaveInLibraryAction extends FigureAction {
 
@@ -621,10 +626,10 @@ public class ActorController extends AttributeController {
 
     // Error message used when we can't find the inside definition.
     private static String _CANNOT_FIND_MESSAGE
-    = "Cannot find inside definition. "
-    + "Perhaps source code is not installed? "
-    + "You can obtain source code for Berkeley actors at: "
-    + "http://ptolemy.eecs.berkeley.edu/ptolemyII";
+            = "Cannot find inside definition. "
+            + "Perhaps source code is not installed? "
+            + "You can obtain source code for Berkeley actors at: "
+            + "http://ptolemy.eecs.berkeley.edu/ptolemyII";
 
     private Access _access;
 

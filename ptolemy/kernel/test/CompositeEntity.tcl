@@ -511,6 +511,7 @@ test CompositeEntity-11.6 {Test full description} {
     {ptolemy.kernel.util.SingletonConfigurableAttribute {.E0._iconDescription} attributes {
     }}
 } ports {
+} classes {
 } entities {
     {ptolemy.kernel.CompositeEntity {.E0.E3} attributes {
         {ptolemy.kernel.util.SingletonConfigurableAttribute {.E0.E3._iconDescription} attributes {
@@ -524,6 +525,7 @@ test CompositeEntity-11.6 {Test full description} {
             {ptolemy.kernel.ComponentRelation {.E0.E3.R4} attributes {
             }}
         }}
+    } classes {
     } entities {
         {ptolemy.kernel.CompositeEntity {.E0.E3.E4} attributes {
             {ptolemy.kernel.util.SingletonConfigurableAttribute {.E0.E3.E4._iconDescription} attributes {
@@ -545,6 +547,7 @@ test CompositeEntity-11.6 {Test full description} {
                 {ptolemy.kernel.ComponentRelation {.E0.E3.E4.R2} attributes {
                 }}
             }}
+        } classes {
         } entities {
             {ptolemy.kernel.ComponentEntity {.E0.E3.E4.E1} attributes {
                 {ptolemy.kernel.util.SingletonConfigurableAttribute {.E0.E3.E4.E1._iconDescription} attributes {
@@ -670,6 +673,7 @@ test CompositeEntity-11.6 {Test full description} {
             {ptolemy.kernel.ComponentRelation {.E0.E7.R9} attributes {
             }}
         }}
+    } classes {
     } entities {
         {ptolemy.kernel.ComponentEntity {.E0.E7.E8} attributes {
             {ptolemy.kernel.util.SingletonConfigurableAttribute {.E0.E7.E8._iconDescription} attributes {
@@ -726,6 +730,7 @@ test CompositeEntity-11.6 {Test full description} {
             {ptolemy.kernel.ComponentRelation {.E0.E10.R12} attributes {
             }}
         }}
+    } classes {
     } entities {
         {ptolemy.kernel.ComponentEntity {.E0.E10.E9} attributes {
             {ptolemy.kernel.util.SingletonConfigurableAttribute {.E0.E10.E9._iconDescription} attributes {
@@ -812,6 +817,7 @@ test CompositeEntity-11.9 {Test clone} {
     } insidelinks {
         {ptolemy.kernel.ComponentRelation {.E7.R9}}
     }}
+} classes {
 } entities {
     {ptolemy.kernel.ComponentEntity {.E7.E8} ports {
         {ptolemy.kernel.ComponentPort {.E7.E8.P9} links {

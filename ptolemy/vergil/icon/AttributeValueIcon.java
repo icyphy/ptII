@@ -146,7 +146,7 @@ public class AttributeValueIcon extends XMLIcon {
     public void exportMoML(Writer output, int depth, String name)
             throws IOException {
 
-        if (!isPersistent()) {
+        if (!isPersistent() && depth != 0) {
             return;
         }
         output.write(_getIndentPrefix(depth)

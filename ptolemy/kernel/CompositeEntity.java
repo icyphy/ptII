@@ -37,6 +37,7 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedList;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
@@ -187,6 +188,42 @@ public class CompositeEntity extends ComponentEntity {
         _levelCrossingConnectAllowed = boole;
     }
 
+    /** List the contained class definitions in the order they were added
+     *  (using their setContainer() method). The returned list does
+     *  not include any entities that are not class definitions.
+     *  The returned list is static in the sense
+     *  that it is not affected by any subsequent additions or removals
+     *  of class definitions.
+     *  This method is read-synchronized on the workspace.
+     *  @return A new list of ComponentEntity objects.
+     *  @see #entityList()
+     */
+    public List classDefinitionList() {
+        try {
+            _workspace.getReadAccess();
+            if (_workspace.getVersion() == _classDefinitionListVersion) {
+                return _classDefinitionListCache;
+            }
+            List result = new LinkedList();
+            // This might be called from within a superclass constructor,
+            // in which case there are no contained entities yet.
+            if (_containedEntities != null) {
+                Iterator entities = _containedEntities.elementList().iterator();
+                while (entities.hasNext()) {
+                    NamedObj entity = (NamedObj)entities.next();
+                    if (entity.isClassDefinition()) {
+                        result.add(entity);
+                    }
+                }
+                _classDefinitionListCache = result;
+                _classDefinitionListVersion = _workspace.getVersion();
+            }
+            return result;
+        } finally {
+            _workspace.doneReading();
+        }
+    }
+    
     /** Clone the object into the specified workspace. The new object is
      *  <i>not</i> added to the directory of that workspace (you must do this
      *  yourself if you want it there).
@@ -227,12 +264,31 @@ public class CompositeEntity extends ComponentEntity {
                         ex.getMessage());
             }
         }
+        
+        // Clone the contained classes.
+        Iterator classes = classDefinitionList().iterator();
+        while (classes.hasNext()) {
+            ComponentEntity classDefinition
+                    = (ComponentEntity)classes.next();
+            ComponentEntity newSubentity = (ComponentEntity)classDefinition
+                    .clone(workspace);
+            // Assume that since we are dealing with clones,
+            // exceptions won't occur normally.  If they do, throw a
+            // CloneNotSupportedException.
+            try {
+                newSubentity.setContainer(newEntity);
+            } catch (KernelException ex) {
+                throw new CloneNotSupportedException(
+                        "Failed to clone a CompositeEntity: " +
+                        KernelException.stackTraceToString(ex));
+            }
+        }
 
         // Clone the contained entities.
         Iterator entities = entityList().iterator();
         while (entities.hasNext()) {
-            ComponentEntity entity =
-                (ComponentEntity)entities.next();
+            ComponentEntity entity
+                    = (ComponentEntity)entities.next();
             ComponentEntity newSubentity = (ComponentEntity)entity
                 .clone(workspace);
             // Assume that since we are dealing with clones,
@@ -388,11 +444,23 @@ public class CompositeEntity extends ComponentEntity {
         }
     }
 
+    /** Return an iterator over contained objects. In this class,
+     *  this is an iterator over attributes, ports, classes,
+     *  entities, and relations.
+     *  @return An iterator over instances of NamedObj contained by this
+     *   object.
+     */
+    public Iterator containedObjectsIterator() {
+        return new ContainedObjectsIterator();
+    }
+
     /** List the opaque entities that are directly or indirectly
      *  contained by this entity.  The list will be empty if there
-     *  are no such contained entities.
+     *  are no such contained entities. This list does not include
+     *  class definitions nor anything contained by them.
      *  This method is read-synchronized on the workspace.
      *  @return A list of opaque ComponentEntity objects.
+     *  @see #classDefinitionList()
      */
     public List deepEntityList() {
         try {
@@ -403,10 +471,12 @@ public class CompositeEntity extends ComponentEntity {
 
             while (entities.hasNext()) {
                 ComponentEntity entity = (ComponentEntity)entities.next();
-                if (entity.isOpaque()) {
-                    result.add(entity);
-                } else {
-                    result.addAll(((CompositeEntity)entity).deepEntityList());
+                if (!entity.isClassDefinition()) {
+                    if (entity.isOpaque()) {
+                        result.add(entity);
+                    } else {
+                        result.addAll(((CompositeEntity)entity).deepEntityList());
+                    }
                 }
             }
             return result;
@@ -427,19 +497,36 @@ public class CompositeEntity extends ComponentEntity {
     }
 
     /** List the contained entities in the order they were added
-     *  (using their setContainer() method).
+     *  (using their setContainer() method). The returned list does
+     *  not include any class definitions.
      *  The returned list is static in the sense
      *  that it is not affected by any subsequent additions or removals
      *  of entities.
      *  This method is read-synchronized on the workspace.
-     *  @return An unmodifiable list of ComponentEntity objects.
+     *  @return A new list of ComponentEntity objects.
+     *  @see #classDefinitionList()
      */
     public List entityList() {
         try {
             _workspace.getReadAccess();
-            // Copy the list so we can create a static enumeration.
-            NamedList entitiesCopy = new NamedList(_containedEntities);
-            return entitiesCopy.elementList();
+            if (_workspace.getVersion() == _entityListVersion) {
+                return _entityListCache;
+            }
+            List result = new LinkedList();
+            // This might be called from within a superclass constructor,
+            // in which case there are no contained entities yet.
+            if (_containedEntities != null) {
+                Iterator entities = _containedEntities.elementList().iterator();
+                while (entities.hasNext()) {
+                    NamedObj entity = (NamedObj)entities.next();
+                    if (!entity.isClassDefinition()) {
+                        result.add(entity);
+                    }
+                }
+                _entityListCache = result;
+                _entityListVersion = _workspace.getVersion();
+            }
+            return result;
         } finally {
             _workspace.doneReading();
         }
@@ -447,10 +534,12 @@ public class CompositeEntity extends ComponentEntity {
 
     /** Return a list of the component entities contained by this object that
      *  are instances of the specified class.  If there are no such
-     *  instances, then return an empty list.
+     *  instances, then return an empty list. The returned list does not
+     *  include class definitions.
      *  This method is read-synchronized on the workspace.
      *  @param filter The class of ComponentEntity of interest.
      *  @return A list of instances of specified class.
+     *  @see #classDefinitionList()
      */
     public List entityList(Class filter) {
         try {
@@ -458,8 +547,8 @@ public class CompositeEntity extends ComponentEntity {
             List result = new LinkedList();
             Iterator entities = _containedEntities.elementList().iterator();
             while (entities.hasNext()) {
-                Object entity = entities.next();
-                if (filter.isInstance(entity)) {
+                NamedObj entity = (NamedObj)entities.next();
+                if (filter.isInstance(entity) && !entity.isClassDefinition()) {
                     result.add(entity);
                 }
             }
@@ -678,6 +767,7 @@ public class CompositeEntity extends ComponentEntity {
     /** Get a contained entity by name. The name may be compound,
      *  with fields separated by periods, in which case the entity
      *  returned is contained by a (deeply) contained entity.
+     *  This method will return class definitions and ordinary entities.
      *  This method is read-synchronized on the workspace.
      *  @param name The name of the desired entity.
      *  @return An entity with the specified name, or null if none exists.
@@ -719,8 +809,7 @@ public class CompositeEntity extends ComponentEntity {
             if (subnames[1] == null) {
                 return super.getPort(name);
             } else {
-                ComponentEntity match =
-                    (ComponentEntity)_containedEntities.get(subnames[0]);
+                ComponentEntity match = getEntity(subnames[0]);
                 if (match == null) {
                     return null;
                 } else {
@@ -746,7 +835,7 @@ public class CompositeEntity extends ComponentEntity {
             if (subnames[1] == null) {
                 return (ComponentRelation)_containedRelations.get(name);
             } else {
-                Object match = _containedEntities.get(subnames[0]);
+                ComponentEntity match = getEntity(subnames[0]);
                 if (match == null) {
                     return null;
                 } else {
@@ -816,14 +905,30 @@ public class CompositeEntity extends ComponentEntity {
         }
     }
 
-    /** Return the number of contained entities.
+    /** Return the number of contained class definitions.
+     *  This method is read-synchronized on the workspace.
+     *  @return The number of class definitions.
+     *  @see #numEntities()
+     */
+    public int numClassDefinitions() {
+        try {
+            _workspace.getReadAccess();
+            return classDefinitionList().size();
+        } finally {
+            _workspace.doneReading();
+        }
+    }
+
+    /** Return the number of contained entities, not including
+     *  class definitions.
      *  This method is read-synchronized on the workspace.
      *  @return The number of entities.
+     *  @see #numClassDefinitions()
      */
     public int numEntities() {
         try {
             _workspace.getReadAccess();
-            return _containedEntities.size();
+            return entityList().size();
         } finally {
             _workspace.doneReading();
         }
@@ -951,6 +1056,18 @@ public class CompositeEntity extends ComponentEntity {
     public void validateSettables() throws IllegalActionException {
         super.validateSettables();
 
+        Iterator classes = classDefinitionList().iterator();
+        while (classes.hasNext()) {
+            Entity entity = (Entity)classes.next();
+            if (entity instanceof Settable) {
+                try {
+                    ((Settable)entity).validate();
+                } catch (IllegalActionException ex) {
+                    handleModelError(this, ex);
+                }
+            }
+            entity.validateSettables();
+        }
         Iterator entities = entityList().iterator();
         while (entities.hasNext()) {
             Entity entity = (Entity)entities.next();
@@ -980,9 +1097,9 @@ public class CompositeEntity extends ComponentEntity {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Add an entity to this container. This method should not be used
-     *  directly.  Call the setContainer() method of the entity instead.
-     *  This method does not set
+    /** Add an entity or class definition to this container. This method
+     *  should not be used directly.  Call the setContainer() method of
+     *  the entity instead. This method does not set
      *  the container of the entity to point to this composite entity.
      *  It assumes that the entity is in the same workspace as this
      *  container, but does not check.  The caller should check.
@@ -1070,7 +1187,15 @@ public class CompositeEntity extends ComponentEntity {
                 if (result.trim().length() > 0) {
                     result += " ";
                 }
-                result += "entities {\n";
+                result += "classes {\n";
+                Iterator classes = classDefinitionList().iterator();
+                while (classes.hasNext()) {
+                    ComponentEntity entity =
+                        (ComponentEntity)classes.next();
+                    result +=
+                        entity._description(detail, indent+1, 2) + "\n";
+                }
+                result += _getIndentPrefix(indent) + "} entities {\n";
                 Iterator entities = entityList().iterator();
                 while (entities.hasNext()) {
                     ComponentEntity entity =
@@ -1130,6 +1255,11 @@ public class CompositeEntity extends ComponentEntity {
         }
         super._exportMoMLContents(output, depth);
 
+        Iterator classes = classDefinitionList().iterator();
+        while (classes.hasNext()) {
+            ComponentEntity entity = (ComponentEntity)classes.next();
+            entity.exportMoML(output, depth);
+        }
         Iterator entities = entityList().iterator();
         while (entities.hasNext()) {
             ComponentEntity entity = (ComponentEntity)entities.next();
@@ -1179,8 +1309,9 @@ public class CompositeEntity extends ComponentEntity {
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
-    /** @serial List of contained entities. */
-    protected NamedList _containedEntities = new NamedList(this);
+    /** List of contained entities. */
+    // FIXME: This used to be protected... Why?
+    private NamedList _containedEntities = new NamedList(this);
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -1209,6 +1340,18 @@ public class CompositeEntity extends ComponentEntity {
 
     /** @serial List of contained ports. */
     private NamedList _containedRelations = new NamedList(this);
+    
+    /** Cache of class definition list. */
+    private transient List _classDefinitionListCache;
+    
+    /** Workspace version for cache. */
+    private transient long _classDefinitionListVersion = -1L;
+
+    /** Cache of entity list. */
+    private transient List _entityListCache;
+    
+    /** Workspace version for cache. */
+    private transient long _entityListVersion = -1L;
 
     /** @serial Flag indicating whether level-crossing connect is permitted. */
     private boolean _levelCrossingConnectAllowed = false;
@@ -1233,6 +1376,12 @@ public class CompositeEntity extends ComponentEntity {
             if (super.hasNext()) {
                 return true;
             }
+            if (_classListIterator == null) {
+                _classListIterator = classDefinitionList().iterator();
+            }
+            if (_classListIterator.hasNext()) {
+                return true;
+            }
             if (_entityListIterator == null) {
                 _entityListIterator = entityList().iterator();
             }
@@ -1253,6 +1402,13 @@ public class CompositeEntity extends ComponentEntity {
             if (super.hasNext()) {
                 return super.next();
             }
+            if (_classListIterator == null) {
+                _classListIterator = classDefinitionList().iterator();
+            }
+            if (_classListIterator.hasNext()) {
+                _lastElementWasClass= true;
+                return _classListIterator.next();
+            }
             if (_entityListIterator == null) {
                 _entityListIterator = entityList().iterator();
             }
@@ -1271,7 +1427,9 @@ public class CompositeEntity extends ComponentEntity {
          *  returned by the iterator. 
          */
         public void remove() {
-            if (_lastElementWasEntity) {
+            if (_lastElementWasClass) {
+                _entityListIterator.remove();
+            } else if (_lastElementWasEntity) {
                 _entityListIterator.remove();
             } else if (_lastElementWasRelation) {
                 _relationListIterator.remove();
@@ -1280,6 +1438,8 @@ public class CompositeEntity extends ComponentEntity {
             }
         }
 
+        private Iterator _classListIterator = null;
+        private boolean _lastElementWasClass= false;
         private Iterator _entityListIterator = null;
         private boolean _lastElementWasEntity = false;
         private boolean _lastElementWasRelation = false;

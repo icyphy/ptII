@@ -3,12 +3,14 @@
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 
 <!-- Full utilities library. -->
-<class name="utilities" extends="ptolemy.moml.EntityLibrary">
+<entity name="utilities" class="ptolemy.moml.EntityLibrary">
   <configure>
     <?moml
       <group>
         <input source="ptolemy/configs/utilityIDAttribute.xml"/>
         <input source="ptolemy/configs/utilityCompositeActor.xml"/>
+        <class name="composite class definition"
+		extends="ptolemy.actor.TypedCompositeActor"/>
         <input source="ptolemy/configs/utilityModalModel.xml"/>
         <input source="ptolemy/configs/utilityRunCompositeActor.xml"/>
         <input source="ptolemy/configs/utilityModelReference.xml"/>
@@ -20,4 +22,4 @@
       </group>
     ?>
   </configure>
-</class>
+</entity>
