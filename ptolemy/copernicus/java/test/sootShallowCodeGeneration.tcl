@@ -45,8 +45,45 @@ if {[info procs jdkClassPathSeparator] == "" } then {
     source [file join $PTII util testsuite jdktools.tcl]
 }
 
-# Read in a model, generate code and run it
-proc sootShallowCodeGeneration {model} {
+# Read in a model, generate code and run it in separate processes
+proc sootShallowCodeGeneration {modelPath} {
+    global relativePathToPTII
+
+    if {[file extension $modelPath] == ""} {
+	set model [file tail $modelPath]
+    } else {
+	set modelWithExtension [file tail $modelPath]
+	set model [string range $modelWithExtension \
+		0 [expr {[string length $modelWithExtension] - \
+			[string length [file extension $modelWithExtension]] \
+			- 1}]]
+    }
+
+    if { ! [file exists $modelPath ] } {
+	error "'$modelPath does not exist"
+    }
+    if {[string range $modelPath 0 2] == "../"} {
+	# Ugh.  Strip off the first ../ because we are cd'ing up one level.
+	set modelPath [string range $modelPath 3 end]
+    }
+
+    puts "adjusted modelPath: $modelPath"
+    puts "Now running make, this could take 60 seconds or so"
+
+    set results ""
+    # make -C is a GNU make extension that changes to a directory
+    if [catch {set results [exec make -C .. MODEL=$model \
+	    SOURCECLASS=$modelPath compileShallowDemo]} errMsg] {
+	puts $results
+	error $errMsg
+    }
+    set results [exec make -C .. MODEL=$model \
+	    SOURCECLASS=$modelPath runShallowDemo]
+    puts $results
+}
+
+# Read in a model, generate code and run it in the current jvm
+proc sootShallowCodeGenerationBuiltin {model} {
     global relativePathToPTII
 
     # We need to get the classpath so that we can run if we are running
@@ -136,13 +173,14 @@ proc sootShallowCodeGeneration {model} {
 # Generate code for all the xml files in a directory.
 proc autoShallowCG {autoDirectory} {
     foreach file [glob $autoDirectory/*.xml] {
-	puts "------------------ testing $file"
-	set time [java::call System currentTimeMillis]
+	puts "---- testing $file"
+	#set time [java::new Long [java::call System currentTimeMillis]]
 	test "Auto" "Automatic test in file $file" {
-	    sootShallowCodeGeneration $file
+	    set elapsedTime [time {sootShallowCodeGeneration $file}]
+	    puts "soot took [expr {[lindex $elapsedTime 0] / 1000000.0}] seconds"
 	    list {}
 	} {{}}
 	java::call System gc
-	puts "[java::call ptolemy.actor.Manager timeAndMemory $time]"
+	#puts "[java::call ptolemy.actor.Manager timeAndMemory [$time longValue]]"
     }
 }
