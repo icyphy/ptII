@@ -78,11 +78,16 @@ Figure	UML file		Page within that file
 
 5.9	moml.uml		Logical View
 
-7.2	???					key classes in kernel
+6.2	actor.gui.vsd		Applets
+
+7.2	kernel.vsd		key-kernel	key classes in kernel
+						Note that the vsd page is a
+						a copy of the 
+						page.  Update kernel.vsd:kernel
+						instead of updating this page.
 7.3	kernel.util.vsd		kernel.util				
 7.4	kernel.vsd		kernel
-7.13	???					kernel.util.vsd:mutation
-						does not contain roles	
+7.13	kernel.vsd		mutations
 
 8.2	actor.vsd		ports
 8.10    actor.util.vsd		actor.util
@@ -121,3 +126,15 @@ Figure	UML file		Page within that file
 19.6	ddeDeadlock.vsd		Logical View
 
 20.1	pn.kernel.vsd		Logical View
+
+
+Visio Hints
+      * To resize the page or drawing area, hold down the control button
+        and drag the edge.  You can also use File->Page Setup
+      * Sometimes, when one copies the drawing the bottom line or
+        the left most line is missing.  The workaround is to draw
+	a very short line segment in the bottom right corner so that
+	the very short line segment is missing instead of the bottom edge.
+	I usually zoom up to 400% or 1600% to draw the shortest possible
+	line segment
+      

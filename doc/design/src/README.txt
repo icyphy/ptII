@@ -169,9 +169,11 @@ http://ptolemy/~cxh/sa/quadralay.html covers the details, but basically
 
 Visio
 -----
+    See ptII/doc/uml/README.txt for details
+    Common mistakes:
       + No private fields, no methods from parent classes
       + When all done, generate wmf files, Don't import by reference.
-
+      
 
 Hardcopy
 --------
