@@ -94,9 +94,9 @@ public class Icon extends PTMLObject {
     }
 
     /**
-     * Get a figure from this icon.
+     * Create a figure based on this icon.
      */
-    public Figure getFigure() {
+    public Figure createFigure() {
         Enumeration graphics = graphicElements();
         PaintedFigure figure = new PaintedFigure();
         while(graphics.hasMoreElements()) {

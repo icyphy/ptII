@@ -67,3 +67,13 @@ SaveImage(
 ....textbox(alignX=center,alignY=top,points=0 0 100 100)
 ....image(format=gif,compression=zip,file=icon.gif,points=0 0 100 100))})}
 
+######################################################################
+####
+#
+test PTMLObjectFactory-2.2 {Constructor tests} {
+    set parser [java::new ptolemy.schematic.xml.PTMLParser]
+    set xmllib [$parser parse "file:/users/neuendor/ptII/ptolemy/schematic/util/test/exampleEntityLibrary.ptml"]   
+    set entitylib [java::call ptolemy.schematic.util.PTMLObjectFactory \
+	    createEntityLibrary $xmllib $iconlib]
+    $entitylib toString
+} {}

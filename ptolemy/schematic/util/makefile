@@ -48,9 +48,6 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
-	Editor.java \
-	EditorGraphController.java \
-	EditorNodeRenderer.java \
 	EntityLibrary.java \
 	EntityTemplate.java \
 	EnumerationIterator.java \
@@ -89,6 +86,8 @@ install: jclass $(PTCLASSJAR)
 
 editor:
 	$(JAVA) -classpath $(ROOT) ptolemy.schematic.util.Editor
+grapheditor:
+	$(JAVA) -classpath $(ROOT) ptolemy.schematic.util.GraphEditor
 
 
 depend:

@@ -86,7 +86,8 @@ public class SchematicGraphImpl implements GraphImpl {
      * semantic object.
      */
     public CompositeNode createCompositeNode(Object semanticObject) {
-	CompositeNode n = new SchematicEntity("entity" + _entityNumber++, null);
+	CompositeNode n = new SchematicEntity("entity" + _entityNumber++, 
+					      (EntityTemplate) semanticObject);
         n.setSemanticObject(semanticObject);
         return n;
     }
