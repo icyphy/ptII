@@ -49,13 +49,6 @@ PTCLASSJAR =	#$(PTPACKAGE).jar
 
 JSRCS = \
 	PNInterleavingExample.java \
-	PNPrimeExample.java \
-	RLEncoding.java \
-	RLEncodingApplet.java \
-	TimedPrimeExample.java \
-	TicTacToe.java \
-	TTTApplet.java \
-	PNPrimeGalaxy.java \
 	PNWavepacket.java
 
 EXTRA_SRCS =	$(JSRCS)
