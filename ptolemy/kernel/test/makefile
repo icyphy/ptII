@@ -44,7 +44,8 @@ include $(CONFIG)
 CLASSPATH = ../../..
 
 TCL_SRCS = \
-	testDefs.tcl
+	testDefs.tcl \
+	testEnums.tcl
 
 JSRCS = \
 	ParamTest.java \
