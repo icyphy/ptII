@@ -1,4 +1,5 @@
-/* Mulitple Instance Composite
+/* A TypedCompositeActor that creates multiple instances of itself
+ during the preinitialize phase of model execution.
 
  Copyright (c) 1998-2003 The Regents of the University of California and
  Research in Motion Limited.
