@@ -156,16 +156,20 @@ public abstract class ScheduleElement {
 	}
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
+    /** The parent schedule of this schedule. Null means this schedule
+     *  has no parent.
+     */
+    protected ScheduleElement _parent = null;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     // The iteration count for this schedule element.
     private int _iterationCount = 1;
-    // The parent schedule of this schedule. Null means this schedule
-    // has no parent.
-    protected ScheduleElement _parent = null;
+
     // The current version of this schedule.
     private long _scheduleVersion;
 }
