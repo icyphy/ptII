@@ -95,6 +95,71 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /**
+     */
+    public synchronized void prepareToBlock(Branch branch) 
+            throws TerminateBranchException {
+        if( branch != null ) {
+            branch.registerRcvrBlocked(this);
+            _otherBranch = branch;
+        } else {
+            BasePNDirector director = ((BasePNDirector)((Actor)
+        	    (getContainer().getContainer())).getDirector());
+            director._actorBlocked(this);
+            _otherBranch = branch;
+        }
+    }
+            
+    /**
+     */
+    public synchronized void prepareToWakeBlockedPartner() {
+        if( _otherBranch != null ) {
+            _otherBranch.registerRcvrUnBlocked(this);
+        } else {
+            BasePNDirector director = ((BasePNDirector)((Actor)
+        	    (getContainer().getContainer())).getDirector());
+            director._actorUnBlocked(this);
+            
+        }
+        notifyAll();
+    }
+    
+    /**
+     */
+    public synchronized void waitForBranchPermission(Branch branch) 
+    	    throws TerminateBranchException {
+        if( branch == null ) {
+            return;
+        }
+        
+        Workspace workspace = getContainer().workspace();
+        while( !branch.isBranchPermitted() && !branch.isIterationOver() ) {
+            branch.registerRcvrBlocked(this);
+            workspace.wait(this);
+        }
+        branch.registerRcvrUnBlocked(this);
+        
+        checkIfBranchIterationIsOver(branch);
+    }
+            
+    /**
+     */
+    public synchronized void checkIfBranchIterationIsOver(Branch branch) 
+    	    throws TerminateBranchException {
+        if( branch != null ) {
+            if( branch.isIterationOver() ) {
+                throw new TerminateBranchException("The current "
+                        + "iteration has ended.");
+            }
+        }
+    }
+    
+    /**
+     */
+    public Token get() {
+        return get(null);
+    }
+    
     /** Remove and return the oldest token from the FIFO queue contained
      *  in the receiver. Terminate the calling process by throwing a
      *  TerminateProcessException if requested.
@@ -110,7 +175,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      *  Otherwise return.
      *  @return The oldest Token read from the queue
      */
-    public Token get() {
+    public Token get(Branch branch) {
 	Workspace workspace = getContainer().workspace();
 	BasePNDirector director = ((BasePNDirector)
                 ((Actor)(getContainer().getContainer())).getDirector());
@@ -118,18 +183,24 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
         synchronized (this) {
             while (!_terminate && !super.hasToken()) {
                 _readBlocked = true;
-                director._actorBlocked(this);
+                prepareToBlock(branch);
+                // director._actorBlocked(this);
                 while (_readBlocked && !_terminate) {
+                    checkIfBranchIterationIsOver(branch);
                     workspace.wait(this);
                 }
             }
             if (_terminate) {
                 throw new TerminateProcessException("");
             } else {
+                checkIfBranchIterationIsOver(branch);
+                waitForBranchPermission(branch);
+                
                 result = super.get();
                 //Check if pending write to the Queue;
                 if (_writeBlocked) {
-                    director._actorUnBlocked(this);
+                    // director._actorUnBlocked(this);
+                    prepareToWakeBlockedPartner();
                     _writeBlocked = false;
                     notifyAll(); // Wake up threads waiting on a write;
                 }
@@ -152,7 +223,6 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      *  process, and inform the director of the same. 
      *  Otherwise return.
      *  @return The oldest Token read from the queue
-     */
     public Token get(Branch branch) {
 	if( isInsideBoundary() ) {
 	    if( isConnectedToBoundary() ) {
@@ -170,6 +240,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
 	return get();
 
     }
+     */
 
     /** Return true since a channel in the Kahn process networks
      *  model of computation is of infinite capacity and always has room.
@@ -237,7 +308,6 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
     /** Associated with Atomic Get/Composite Put
      *  @param branch The invoking branch.
      *  @return The oldest Token read from the queue
-     */
     public Token consumerGet(Branch branch) {
 	Workspace workspace = getContainer().workspace();
 	BasePNDirector director = ((BasePNDirector)
@@ -268,11 +338,11 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
             return result;
         }
     }
+     */
     
     /** Associated with Composite Get/Composite Put
      *  @param branch The invoking branch.
      *  @return The oldest Token read from the queue
-     */
     public Token consumerProducerGet(Branch branch) {
 	Workspace workspace = getContainer().workspace();
 	BasePNDirector director = ((BasePNDirector)
@@ -303,11 +373,11 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
             return result;
         }
     }
+     */
     
     /** Associated with Composite Get/Atomic Put
      *  @param branch The invoking branch.
      *  @return The oldest Token read from the queue
-     */
     public Token producerGet(Branch branch) {
 	Workspace workspace = getContainer().workspace();
 	BasePNDirector director = ((BasePNDirector)
@@ -337,6 +407,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
             return result;
         }
     }
+     */
 
     /** Return a true or false to indicate whether there is a read block
      *  on this receiver or not, respectively.
@@ -368,11 +439,8 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      *  unblock the process, and inform the director of the same.
      *  @param token The token to be put in the receiver.
      */
-    public void put(Token token, Branch branch) {
-    	if( isOutsideBoundary() ) {
-        } else if( isConnectedToBoundary() ) {
-        }
-        put(token);
+    public void put(Token token) {
+        put(token, null);
     }
     
     /** Put a token on the queue contained in this receiver.
@@ -381,34 +449,42 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      *  detecting room in the queue.
      *  If a termination is requested, then initiate the termination of the
      *  calling process by throwing a TerminateProcessException.
-     *  On detecting a room in the queue, put a token in the queue.
+     *  On detecting room in the queue, put a token in the queue.
      *  Check whether any process is blocked
      *  on a read from this receiver. If a process is indeed blocked, then
      *  unblock the process, and inform the director of the same.
      *  @param token The token to be put in the receiver.
      */
-    public void put(Token token) {
+    public void put(Token token, Branch branch) {
 	Workspace workspace = getContainer().workspace();
 	BasePNDirector director = (BasePNDirector)
             ((Actor)(getContainer().getContainer())).getDirector();
         synchronized(this) {
-            if (!super.hasRoom()) {
+            // if (!super.hasRoom()) {
+            while (!_terminate && !super.hasRoom()) {
                 _writeBlocked = true;
-                director._actorBlocked(this);
-                while (!_terminate && !super.hasRoom()) {
-                    while(_writeBlocked) {
-                        workspace.wait(this);
-                    }
+                prepareToBlock(branch);
+                // director._actorBlocked(this);
+                while (_writeBlocked && !_terminate ) {
+                    // while (!_terminate && !super.hasRoom()) {
+                    // while(_writeBlocked) {
+                    checkIfBranchIterationIsOver(branch);
+                    workspace.wait(this);
+                    // }
                 }
             }
             if (_terminate) {
                 throw new TerminateProcessException("");
             } else {
+                checkIfBranchIterationIsOver(branch);
+                waitForBranchPermission(branch);
+                
                 //token can be put in the queue;
                 super.put(token);
                 //Check if pending write to the Queue;
                 if (_readBlocked) {
-                    director._actorUnBlocked(this);
+                    prepareToWakeBlockedPartner();
+                    // director._actorUnBlocked(this);
                     _readBlocked = false;
                     notifyAll();
                     //Wake up all threads waiting on a write to this receiver;
