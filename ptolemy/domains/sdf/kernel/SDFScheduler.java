@@ -85,43 +85,46 @@ public class SDFScheduler extends Scheduler{
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Return the firing vector, which is a HashedMap associating an Actor
+     *  with the number of times that it will fire during an SDF iteration.
+     *  Some entries may be zero, if the Actor has not yet been scheduled.
+     *  
+     *  @return A HashedMap from ComponentEntity to Integer.
+     */
     public HashedMap getFiringVector() {
         return _firingvector;
     }
     
+    /** Set the firing vector, which is a HashedMap associating an Actor
+     *  with the number of times that it will fire during an SDF iteration. 
+     *  Every object that this Scheduler is responsible for should have an 
+     *  entry, even if it is zero indicating that the Actor has not yet had
+     *  its firings determined.
+     *
+     *  @param A HashedMap from ComponentEntity to Integer.
+     */
     public void setFiringVector(HashedMap newfiringvector) {
         _firingvector = newfiringvector;
         _firingvectorvalid = true;
     }
 
+    /** Return the number of firings associated with the Actor.   This is 
+     *  equivalent to indexing into the Map returned by getFiringVector and 
+     *  casting the result to an integer.
+     */
     public int getFiringCount(ComponentEntity entity) {
-        //        try {
             Debug.println(_firingvector.toString());
             return ((Integer) _firingvector.at(entity)).intValue();
-            /*        }
-        catch (NoSuchElementException e) {
-            return 0;
-        }*/
     }
 
+    /** Set the number of firings associated with the Actor.   This is 
+     *  equivalent to changing the entry in the FiringVector associated with
+     *  with the entity to have a value count.
+     */
     public void setFiringCount(ComponentEntity entity, int count) {
         _firingvector = (HashedMap)
             _firingvector.puttingAt(entity, new Integer(count));
     }
-
-    /*    public Fraction getFractionalFiringCount(ComponentEntity entity) {
-        try {
-            return (Fraction) _firingvector.at(entity);
-        }
-        catch (NoSuchElementException e) {
-            return Fraction.ZERO;
-        }
-    }
-
-    public setFractionalFiringCount(ComponentEntity entity, Fraction count) {
-        _firingvector.putAt(entity, count);
-    }
-    */
     
  
     ///////////////////////////////////////////////////////////////////
@@ -183,6 +186,19 @@ public class SDFScheduler extends Scheduler{
         return result.elements();
     }
 
+    /** Solve the Balance Equations for the list of connected Actors.
+     *  For each actor, determine the ratio that determines the rate at
+     *  which it should fire relative to the other actors for the graph to
+     *  be live and operate within bounded memory.   This ratio is known as the
+     *  fractional firing of the actor.   
+     *
+     *  @param Actors The actors that we are interested in
+     *  @return A HashedMap that associates each actor with its fractional 
+     *  firing.
+     *  @exception NotScheduleableExecption If the graph is not consistant 
+     *  under the synchronous dataflow model.
+     *  @exception NotScheduleableException If the graph is not connected.
+     */
     protected HashedMap _solveBalanceEquations(Enumeration Actors) 
             throws NotSchedulableException {        
             
@@ -266,7 +282,20 @@ public class SDFScheduler extends Scheduler{
         return Firings;
     }
 
-
+    /** Propagate the number of fractional firing decided for this actor 
+     *  through the specified output port.   Set or verify the fractional 
+     *  firing for each Actor that is connected through this output port.
+     *  Any actors that we calculate their firing vector for the first time
+     *  are moved from RemainingActors to PendingActors.
+     *
+     *  @param currentPort The port that we are propagating from.
+     *  @param Firings The current HashedMap of fractional firings for each
+     *  Actor
+     *  @param RemainingActors The set of actors that have not had their
+     *  fractional firing set.
+     *  @param PendingActors The set of actors that have had their rate
+     *  set, but have not been propagated onwards.
+     */
     protected void _propagateOutputPort(IOPort currentPort, 
             HashedMap Firings, 
             HashedSet RemainingActors, 
@@ -356,8 +385,20 @@ public class SDFScheduler extends Scheduler{
     }
 
 
-    // FIXME: currentActor and connectedActor should really be SDFActor, not SDFAtomicActor
-
+    /** Propagate the number of fractional firing decided for this actor 
+     *  through the specified input port.   Set and verify the fractional 
+     *  firing for each Actor that is connected through this input port.
+     *  Any actors that we calculate their firing vector for the first time
+     *  are moved from RemainingActors to PendingActors.
+     *
+     *  @param currentPort The port that we are propagating from.
+     *  @param Firings The current HashedMap of fractional firings for each
+     *  Actor
+     *  @param RemainingActors The set of actors that have not had their
+     *  fractional firing set.
+     *  @param PendingActors The set of actors that have had their rate
+     *  set, but have not been propagated onwards.
+     */
     protected void _propagateInputPort(IOPort currentPort, 
             HashedMap Firings, 
             HashedSet RemainingActors, 
@@ -491,15 +532,24 @@ public class SDFScheduler extends Scheduler{
         return Firings; 
     }
 
-    protected int _internalInputCount(Actor a, HashedSet unscheduledactors) {
+    /** Count the number of inputports in the Actor that must be 
+     *  fulfilled before the actor can fire.   Ports
+     *  that are connected to actors that we are not scheduling right now are
+     *  assumed to be fulfilled.   Ports that have more tokens waiting than
+     *  their input consumption rate are also already fulfilled. 
+     * 
+     *  @param a The actor 
+     *  @param unscheduledactors The set of actors that we are scheduling.
+     *  @param waitingTokens The Map of tokens currently waiting on all the
+     *  input ports.
+     *  @return The number of unfulfilled inputs of a.
+     *  @exception IllegalActionException if any called method throws it.
+     */
+    protected int _countUnfulfilledInputs(Actor a, 
+            HashedSet unscheduledactors, HashedMap waitingTokens) 
+            throws IllegalActionException {
                Enumeration ainputPorts = a.inputPorts();
 
-
-            // Also initialize all actors as having the appropriate 
-            // number of unfulfilled inputs. Notice that an inputport that is 
-            // connected only to ports that are external to UnscheduledActors
-            // are always considered to be fulfilled.
-       
             int InputCount = 0;
             while(ainputPorts.hasMoreElements()) {                
                 IOPort ainputPort = (IOPort) ainputPorts.nextElement();
@@ -511,21 +561,45 @@ public class SDFScheduler extends Scheduler{
                     if(unscheduledactors.includes(cport.getContainer()))
                         isonlyexternalport = false;
                 }
-                if(!isonlyexternalport)
+                
+                boolean isalreadyfulfilled = false;
+                int threshold 
+                    = ((DataflowActor) a).getTokenConsumptionRate(ainputPort);
+                int tokens 
+                    = ((Integer) waitingTokens.at(ainputPort)).intValue();
+                if(tokens >= threshold) 
+                    isalreadyfulfilled = true;
+
+                if(!isonlyexternalport && !isalreadyfulfilled)
                     InputCount++;
             }
             return InputCount;
     }
 
+    /** Simulate the consumption of tokens by the actor during an execution.
+     *  The entries in HashedMap will be modified to reflect the number of 
+     *  tokens still waiting after the actor has consumed tokens for a firing.
+     *  Also determine if enough tokens still remain at the inputs of the actor
+     *  for it to fire again immediately.
+     *
+     *  @param currentActor The actor that is being simulated
+     *  @param waitingTokens A Map between each input IOPort and the number of
+     *  tokens in the queue for that port.
+     *  @return boolean Whether or not the actor can fire again right away 
+     *  after it has consumed tokens.
+     *  @exception IllegalActionException if any called method throws it.
+     */
     protected boolean _simulateInputConsumption(ComponentEntity currentActor,
             HashedMap waitingTokens) 
         throws IllegalActionException {
+
         boolean stillReadyToSchedule = true;
         // update tokensWaiting on the actor's input ports.
+
         Enumeration inputPorts = ((Actor) currentActor).inputPorts();
-        while(inputPorts.hasMoreElements()) {
-                    IOPort inputPort = (IOPort) inputPorts.nextElement();
-                    int tokens = 
+        while(inputPorts.hasMoreElements()) { 
+            IOPort inputPort = (IOPort) inputPorts.nextElement();
+            int tokens = 
                         ((Integer) waitingTokens.at(inputPort)).intValue();
                     int tokenrate = 
                         ((DataflowActor) currentActor)
@@ -539,24 +613,26 @@ public class SDFScheduler extends Scheduler{
                     // update the number of pseudo-tokens waiting on each input
                     waitingTokens.putAt(inputPort, new Integer(tokens));
                 }
-return stillReadyToSchedule;
-}
+        return stillReadyToSchedule;
+     }
 
 
-    /** Create a schedule for a set of UnscheduledActors.
-     *
-     *  @param UnscheduledActors The Actors that need to be scheduled.  
-     *  @return A LinkedList of the Actors in the order they should fire.  
-     *  Each Actor will appear in the list exactly the number of times that
+    /** Create a schedule for a set of UnscheduledActors.  Given a valid
+     *  firing vector, simulate the scheduling of the actors until the 
+     *  end of one synchronous dataflow iteration.   
+     *  Each actor will appear in the schedule exactly the number of times that
      *  minimally solves the balance equations and in an order where each
      *  actor has sufficient tokens on its inputs to fire.   Note that no
      *  claim is made that this is an optimal solution in any other sense.
+     *  FIXME: This method destroys the firing vector.  This is not nice.
+     *
+     *  @param UnscheduledActors The Actors that need to be scheduled.  
+     *  @return A LinkedList of the Actors in the order they should fire.  
      *  @exception InvalidStateException If the algorithm encounters an SDF
      *  graph that is not consistant with the firing vector, or detects an
      *  inconsistant internal state.
      */  
 
-                
     protected LinkedList _scheduleConnectedActors(
             HashedSet UnscheduledActors) {
 
@@ -578,6 +654,8 @@ return stillReadyToSchedule;
         HashedMap waitingTokens = new HashedMap();
 
         Enumeration SchedulableEntities = UnscheduledActors.elements();
+
+        try {
         // Fill ReadyToScheduleActors with all the actors that have 
         // no unfulfilled input ports, and are thus ready to fire.
         while(SchedulableEntities.hasMoreElements()) {
@@ -588,10 +666,27 @@ return stillReadyToSchedule;
                 IOPort ainputport = (IOPort) ainputports.nextElement();
                 // Initialize the waitingTokens at all the inputports to zero
                 waitingTokens.putAt(ainputport,new Integer(0));
+
+                Enumeration cports = ainputport.deepConnectedOutPorts();
+                
+                while(cports.hasMoreElements()) {
+                    IOPort cport = (IOPort) cports.nextElement();
+                    ComponentEntity cactor 
+                        = (ComponentEntity) cport.getContainer();
+                    int rate = ((DataflowActor) cactor)
+                         .getTokenInitProduction(cport);
+                    if(rate > 0) {
+                        int tokens = ((Integer) waitingTokens.at(ainputport))
+                            .intValue();
+                        waitingTokens.putAt(ainputport, 
+                            new Integer(tokens +rate));
+                    }
+                }
             }
+            
 
-
-            int inputcount = _internalInputCount(a, UnscheduledActors);
+            int inputcount = _countUnfulfilledInputs(a, UnscheduledActors, 
+                waitingTokens);
             if(inputcount == 0)
                 ReadyToScheduleActors.insertFirst((ComponentEntity) a);
             // map a->InputCount  
@@ -605,7 +700,6 @@ return stillReadyToSchedule;
         }
 
         while(!Done) {
-            try {
                 Debug.print("waitingTokens: ");
                 Debug.println(waitingTokens.toString());
 
@@ -623,8 +717,8 @@ return stillReadyToSchedule;
                     _simulateInputConsumption(currentActor,waitingTokens);
 
                 // Reset the number of unfulfilled inputs.
-                int inputcount = _internalInputCount((Actor)currentActor, 
-                    UnscheduledActors);
+                int inputcount = _countUnfulfilledInputs((Actor)currentActor, 
+                    UnscheduledActors, waitingTokens);
                 unfulfilledInputs.putAt(currentActor, new Integer(inputcount));
                 
                 // Update the firingCount for this actor.
@@ -737,6 +831,7 @@ return stillReadyToSchedule;
                     }
                 }
             }
+        }
                 // This will get thrown by the removeFirst 
                 // call if we've run out of things to schedule.
                 // FIXME: This should probably throw another exception if 
@@ -757,7 +852,7 @@ return stillReadyToSchedule;
             finally {
                 Debug.println("finishing loop");
             }
-        }
+        
         Enumeration eschedule = newSchedule.elements();
         Debug.println("Schedule is:");
         while(eschedule.hasMoreElements())
@@ -778,6 +873,7 @@ return stillReadyToSchedule;
     protected boolean _firingvectorvalid;
 
 }
+
 
 
 
