@@ -52,7 +52,7 @@ Run-time C code generation functionality for translation of arrays.
  *
  * Caution: the ordering of field declarations in this structure is important. 
  * It must be consistent with the format of class instances in the
- * generated code. Specifically, the sequence of fields that precede
+ * generated code. Specifically, the sequence of fields that precede fields
  * specific to array instances must be identical to the sequence of
  * fields that occurs at the beginning of class instance (object) descriptors.
  *

@@ -67,8 +67,7 @@ public class CWriter extends SceneTransformer {
      *  <code>outdir</code> option to specify where the .jimple
      *  file should be written
      */
-    protected void internalTransform(String phaseName, Map options)
-    {
+    protected void internalTransform(String phaseName, Map options) {
         System.out.println("CWriter.internalTransform("
                 + phaseName + ", " + options + ")");
 
