@@ -49,13 +49,14 @@ import java.util.Set;
 //// RecordToken
 /**
 A token that contains a set of label/token pairs. Operations on record
-tokens function like a database merge, but where the operation specifies
-what to do with common fields.  Thus, for example, if two record tokens
+tokens result in new record tokens containing only the common fields,
+where the operation specifies how to combine the data in the common
+fields.  Thus, for example, if two record tokens
 are added or subtracted, then common records
 (those with the same labels) will be added or subtracted,
-and the disjoint records will simply be copied into the result.
+and the disjoint records will not appear in the result.
 
-@author Yuhong Xiong, Steve Neuendorffer, Elaine Cheong
+@author Yuhong Xiong, Steve Neuendorffer, Elaine Cheong, Edward Lee
 @version $Id$
 @since Ptolemy II 1.0
 */
@@ -164,7 +165,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
 
         for (int i = 0; i < size; i++) {
             labels[i] = (String)labelsObjects[i];
-            types[i] = this.get(labels[i]).getType();
+            types[i] = get(labels[i]).getType();
         }
 
         return new RecordType(labels, types);
@@ -180,7 +181,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
         Iterator iterator = labelSet.iterator();
         while (iterator.hasNext()) {
             String label = (String)iterator.next();
-            Token token = this.get(label);
+            Token token = get(label);
             code += token.hashCode();
         }
 
@@ -252,7 +253,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
 
         for (int i = 0; i < size; i++) {
             labels[i] = (String)labelsObjects[i];
-            values[i] = this.get(labels[i]).one();
+            values[i] = get(labels[i]).one();
         }
         return new RecordToken(labels, values);
     }
@@ -310,7 +311,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
 
         for (int i = 0; i < size; i++) {
             labels[i] = (String)labelsObjects[i];
-            values[i] = this.get(labels[i]).zero();
+            values[i] = get(labels[i]).zero();
         }
         return new RecordToken(labels, values);
     }
@@ -408,7 +409,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
         Iterator iterator = myLabelSet.iterator();
         while (iterator.hasNext()) {
             String label = (String)iterator.next();
-            Token token1 = this.get(label);
+            Token token1 = get(label);
             Token token2 = recordToken.get(label);
             BooleanToken result = token1.isCloseTo(token2, epsilon);
             if (result.booleanValue() == false) {
@@ -442,7 +443,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
         Iterator iterator = myLabelSet.iterator();
         while (iterator.hasNext()) {
             String label = (String)iterator.next();
-            Token token1 = this.get(label);
+            Token token1 = get(label);
             Token token2 = recordToken.get(label);
             BooleanToken result = token1.isEqualTo(token2);
             if (result.booleanValue() == false) {
