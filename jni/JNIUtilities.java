@@ -49,6 +49,8 @@ import java.util.Vector;
 /**
 A collection of utilities for generating Java Native Interface classes
 
+http://cygwin.com/cygwin-ug-net/dll.html
+
 @author Vincent Arnould (vincent.arnould@thalesgroup.com), contributor Christopher Hylands
 @version $Id$
 @since Ptolemy II 2.2
@@ -199,7 +201,7 @@ public class JNIUtilities {
             "jni" + nativeFuncName.substring(
                     1, nativeFuncName.length() - 1);
 
-        List argList = actor.argList();
+        List argList = actor.argumentsList();
         Iterator ite = argList.iterator();
         while (ite.hasNext()) {
             Argument arg = (Argument) ite.next();
@@ -429,7 +431,7 @@ public class JNIUtilities {
         String interFuncName =
             "jni" + nativeFuncName.substring(1,
                     nativeFuncName.length() - 1);
-        List argList = actor.argList();
+        List argList = actor.argumentsList();
         Iterator ite = argList.iterator();
         while (ite.hasNext()) {
             Argument arg = (Argument) ite.next();
@@ -915,7 +917,7 @@ public class JNIUtilities {
             boolean isOutput,
             boolean isReturn) {
         Vector ret = new Vector();
-        List inArgs = actor.argList();
+        List inArgs = actor.argumentsList();
         Iterator ite = inArgs.iterator();
         while (ite.hasNext()) {
             Argument arg = (Argument) ite.next();

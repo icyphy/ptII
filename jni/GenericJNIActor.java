@@ -1,4 +1,5 @@
 /** An actor able to call a C function
+
  Copyright (c) 2003 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -60,20 +61,25 @@ import java.lang.reflect.Method;
 import java.net.URLClassLoader;
 import java.net.URL;
 
+//////////////////////////////////////////////////////////////////////////
 ///// JNIActor
 /**
- * This actor must have been configured before to be execute.
- * After have set the Arguments of an existing native method,
- * it is necessary to generate the interface thanks to the JNI Menu in Vergil.
- * Once the interface has been generated, it is necessary to open the
- * Visual Project generated to compile the interface dll. Then the actor is
- * ready to
- * warning : the existing dll, the h file and the lib file must be
- * in the $(PTII)/jni/dll/ directory.
+Use the Java Native Interface to execute a native mathod.
+This actor must have been configured before to be execute.
+After setting the arguments of an existing native method,
+it is necessary to generate the interface thanks to the JNI Menu in Vergil.
+Once the interface has been generated, it is necessary to open the
+Visual Project generated to compile the interface dll. Then the actor is
+ready to be run.
 
- * @author Vincent Arnould (vincent.arnould@thalesgroup.com)
- * @version $Id$
- */
+<p>Note that under Windows, your path needs to include $PTII/jni/dll
+and that the dll, the h file and the lib file must be
+in the $(PTII)/jni/dll/ directory.
+
+@author Vincent Arnould (vincent.arnould@thalesgroup.com), Contributor: Christopher Hylands
+@version $Id$
+@since Ptolemy II 2.2
+*/
 public class GenericJNIActor extends TypedAtomicActor {
     /** Construct an entity in the default workspace with an empty string
      *  as its name.
@@ -82,7 +88,7 @@ public class GenericJNIActor extends TypedAtomicActor {
      */
     public GenericJNIActor() {
         super();
-        _argList = new NamedList(this);
+        _argumentsList = new NamedList(this);
     }
 
     /** Construct an entity in the given workspace with an empty string
@@ -95,7 +101,7 @@ public class GenericJNIActor extends TypedAtomicActor {
      */
     public GenericJNIActor(Workspace workspace) {
         super(workspace);
-        _argList = new NamedList(this);
+        _argumentsList = new NamedList(this);
     }
 
     /** Construct an entity in the given workspace with the given name.
@@ -112,7 +118,18 @@ public class GenericJNIActor extends TypedAtomicActor {
     public GenericJNIActor(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        _argList = new NamedList(this);
+        _argumentsList = new NamedList(this);
+
+	// FIXME: these parameters should have names like
+	// nativeFunction, library and libraryDirectory.
+	// The names should be complete words with embedded capitalization.
+
+	// FIXME: Also, the code might work on platforms other than Windows
+	// so there is no need to mention dlls
+
+	// FIXME: The Ptolemy standard is to have the second argument should
+	// be the same as the name of the parameter.
+
         nativeFunc = new Parameter(this, "Native Function Name",
                 (Token) new StringToken("unknownFunc"));
         lib = new Parameter(this, "Native Library Name",
@@ -165,18 +182,18 @@ public class GenericJNIActor extends TypedAtomicActor {
     public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
         GenericJNIActor newEntity = (GenericJNIActor) super.clone(workspace);
-        newEntity._argList = new NamedList(newEntity);
+        newEntity._argumentsList = new NamedList(newEntity);
         // Clone the ports.
-        Iterator args = argList().iterator();
-        while (args.hasNext()) {
-            Argument arg = (Argument) args.next();
-            Argument newArg = (Argument) arg.clone(workspace);
+        Iterator arguments = argumentsList().iterator();
+        while (arguments.hasNext()) {
+            Argument argument = (Argument) arguments.next();
+            Argument newArgument = (Argument) argument.clone(workspace);
             // Assume that since we are dealing with clones,
             // exceptions won't occur normally (the original was successfully
             // incorporated, so this one should be too).  If they do, throw an
             // InvalidStateException.
             try {
-                newArg.setContainer(newEntity);
+                newArgument.setContainer(newEntity);
             } catch (KernelException ex) {
                 workspace.remove(newEntity);
                 throw new InvalidStateException(
@@ -201,17 +218,17 @@ public class GenericJNIActor extends TypedAtomicActor {
         return newEntity;
     }
 
-    /**  If attributes change.
+    /** If the getDirector() returns something other than null, then
+     *  invalidate the resolved types.
      *  @param attribute The attribute that has changed.
      *  @exception IllegalActionException If the parameters are out of range.
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if (attribute == null) {
-        }
-        Director dir = getDirector();
-        if (dir != null) {
-            dir.invalidateResolvedTypes();
+        Director director = getDirector();
+        if (director != null) {
+	    // FIXME: should this happen every time we call attribute changed?
+            director.invalidateResolvedTypes();
         }
     }
 
@@ -220,10 +237,10 @@ public class GenericJNIActor extends TypedAtomicActor {
      *  This method is read-synchronized on the workspace.
      *  @return An unmodifiable list of Port objects.
      */
-    public List argList() {
+    public List argumentsList() {
         try {
             _workspace.getReadAccess();
-            return _argList.elementList();
+            return _argumentsList.elementList();
         } finally {
             _workspace.doneReading();
         }
@@ -234,59 +251,57 @@ public class GenericJNIActor extends TypedAtomicActor {
      *  @return void
      */
     public void createPorts() {
-        Iterator ite = this.argList().iterator();
-        Iterator ito = this.portList().iterator();
+        Iterator arguments = argumentsList().iterator();
         TypedIOPort port;
         boolean exist = false;
-        while (ite.hasNext()) {
-            Argument arg = (Argument) ite.next();
-            port = (TypedIOPort) this.getPort(arg.getName());
+        while (arguments.hasNext()) {
+            Argument argument = (Argument) arguments.next();
+            port = (TypedIOPort) this.getPort(argument.getName());
             if (port == null) {
-                if (arg.isReturn())
+                if (argument.isReturn())
                     try {
-                        port = (TypedIOPort) this.newPort(arg.getName());
+                        port = (TypedIOPort) this.newPort(argument.getName());
                         port.setInput(false);
                         port.setOutput(true);
                         port.setTypeEquals(BaseType.GENERAL);
                     } catch (Exception ex) {
                         MessageHandler.error("Unable to construct port", ex);
-                    } finally {
-                    } else if (arg.isInput() && arg.isOutput()) {
-                        try {
-                            port = (TypedIOPort) this.newPort(arg.getName()
-                                    + "in");
-                            port.setInput(arg.isInput());
-                            port.setTypeEquals(BaseType.GENERAL);
-                            port = (TypedIOPort) this.newPort(arg.getName()
-                                    + "out");
-                            port.setOutput(arg.isOutput());
-                            port.setTypeEquals(BaseType.GENERAL);
-                        } catch (Exception ex) {
-                            MessageHandler.error("Unable to construct port",
-                                    ex);
-                        }
-                    } else {
-                        try {
-                            port = (TypedIOPort) this.newPort(arg.getName());
-                            port.setInput(arg.isInput());
-                            port.setOutput(arg.isOutput());
-                            port.setTypeEquals(BaseType.GENERAL);
-                        } catch (Exception ex) {
-                            MessageHandler.error("Unable to construct port",
-                                    ex);
-                        }
-                    }
-            }
-            //end if port == nul
-            // synchronized the arguments and the ports
-            else {
-                if (arg.isReturn()) {
+                    } 
+		else if (argument.isInput() && argument.isOutput()) {
+		    try {
+			port = (TypedIOPort) this.newPort(argument.getName()
+							  + "in");
+			port.setInput(argument.isInput());
+			port.setTypeEquals(BaseType.GENERAL);
+			port = (TypedIOPort) this.newPort(argument.getName()
+							  + "out");
+			port.setOutput(argument.isOutput());
+			port.setTypeEquals(BaseType.GENERAL);
+		    } catch (Exception ex) {
+			MessageHandler.error("Unable to construct port",
+					     ex);
+		    }
+		} else {
+		    try {
+			port = (TypedIOPort) this.newPort(argument.getName());
+			port.setInput(argument.isInput());
+			port.setOutput(argument.isOutput());
+			port.setTypeEquals(BaseType.GENERAL);
+		    } catch (Exception ex) {
+			MessageHandler.error("Unable to construct port",
+					     ex);
+		    }
+		}
+            } else {
+		//end if port == nul
+		// synchronized the arguments and the ports
+                if (argument.isReturn()) {
                     port.setInput(false);
                     port.setOutput(true);
                     port.setTypeEquals(BaseType.GENERAL);
                 } else {
-                    port.setInput(arg.isInput());
-                    port.setOutput(arg.isOutput());
+                    port.setInput(argument.isInput());
+                    port.setOutput(argument.isOutput());
                     port.setTypeEquals(BaseType.GENERAL);
                 }
             }
@@ -302,7 +317,7 @@ public class GenericJNIActor extends TypedAtomicActor {
     public Argument getArgument(String name) {
         try {
             _workspace.getReadAccess();
-            return (Argument) _argList.get(name);
+            return (Argument) _argumentsList.get(name);
         } finally {
             _workspace.doneReading();
         }
@@ -316,16 +331,15 @@ public class GenericJNIActor extends TypedAtomicActor {
     public Argument getArgumentReturn() {
         try {
             _workspace.getReadAccess();
-            List Args = this.argList();
-            Iterator ite = Args.iterator();
-            Argument ret = (Argument) null;
-            while (ite.hasNext()) {
-                Argument arg = (Argument) ite.next();
-                if (arg != null && arg.isReturn()) {
-                    ret = arg;
+            Iterator arguments = argumentsList().iterator();
+            Argument returnValue = null;
+            while (arguments.hasNext()) {
+                Argument argument = (Argument) arguments.next();
+                if (argument != null && argument.isReturn()) {
+		    return (Argument) argument;
                 }
             }
-            return (Argument) ret;
+            return (Argument) returnValue;
         } finally {
             _workspace.doneReading();
         }
@@ -336,7 +350,7 @@ public class GenericJNIActor extends TypedAtomicActor {
      */
     protected void _addArgument(Argument arg)
             throws IllegalActionException, NameDuplicationException {
-        _argList.append((Nameable) arg);
+        _argumentsList.append((Nameable) arg);
     }
 
     /** Add a return argument to this entity
@@ -359,7 +373,7 @@ public class GenericJNIActor extends TypedAtomicActor {
      */
     protected void _removeArgument(Argument arg)
             throws IllegalActionException {
-        _argList.remove(((Nameable) arg));
+        _argumentsList.remove(((Nameable) arg));
     }
 
     /** Load the generated class and search for its fire method.
@@ -401,7 +415,7 @@ public class GenericJNIActor extends TypedAtomicActor {
             URL[] tab = new URL[1];
             tab[0] = new URL("File://" + System.getProperty("users.dir"));
             ClassLoader cl = new URLClassLoader(tab);
-            _clas = cl.loadClass("jni." + interlibName + ".Jni"
+            _class = cl.loadClass("jni." + interlibName + ".Jni"
                     + this.getName());
         } catch (Exception ex) {
             MessageHandler.error("Interface C class not found : ", ex);
@@ -421,17 +435,18 @@ public class GenericJNIActor extends TypedAtomicActor {
                 + dllDirValue
                 + File.pathSeparator
                 + System.getProperty("java.library.path"));
-        meth = null;
+        _methods = null;
         try {
-            meth = _clas.getMethods();
+            _methods = _class.getMethods();
         } catch (Exception ex) {
-            MessageHandler.error("Interface C method not found : ", ex);
+            MessageHandler.error("Interface C _methods not found : ", ex);
         }
-        //getting the fire method
-        ind = -1;
-        for (int i = 0; i < meth.length; i++) {
-            if (meth[i].getName().equals("fire"))
-                ind = i;
+
+        //getting the fire _method
+        _methodIndex = -1;
+        for (int i = 0; i < _methods.length; i++) {
+            if (_methods[i].getName().equals("fire"))
+                _methodIndex = i;
             break;
         }
     }
@@ -444,15 +459,15 @@ public class GenericJNIActor extends TypedAtomicActor {
     public void fire() throws IllegalActionException {
 
         //getting the in/inout parameters
-        Iterator ite = this.portList().iterator();
+        Iterator arguments = argumentsList().iterator();
         Vector args = new Vector();
-        while (ite.hasNext()) {
-            TypedIOPort port = (TypedIOPort) ite.next();
+        while (arguments.hasNext()) {
+            TypedIOPort port = (TypedIOPort) arguments.next();
             if (port.isInput() && port.hasToken(0) &&
                     !(port.isOutput()&&!port.isInput())) {
                 Token tok = (Token) port.get(0);
 
-                String typ = (String) meth[ind]
+                String typ = (String) _methods[_methodIndex]
                     .getParameterTypes()[args.size()].toString();
                 if (typ.equals("boolean")) {
                     args.add(new Boolean((boolean)
@@ -486,7 +501,7 @@ public class GenericJNIActor extends TypedAtomicActor {
         Object ret = null;
         try {
             try {
-                obj = _clas.newInstance();
+                obj = _class.newInstance();
             } catch (Error error) {
                 // Using JNI to link in a native library
                 // can result in a java.lang.UnsatistifiedLineError
@@ -495,7 +510,7 @@ public class GenericJNIActor extends TypedAtomicActor {
                 String libraryPath =
                     StringUtilities.getProperty("java.library.path");
 			
-                throw new Exception("Class '" + _clas
+                throw new Exception("Class '" + _class
                         + "' cannot be instantiated.\n"
                         + "Be sure that the library "
                         + "is in your PATH.\n"
@@ -523,22 +538,22 @@ public class GenericJNIActor extends TypedAtomicActor {
         }
 
         try {
-            ret = meth[ind].invoke(obj, args.toArray());
+            ret = _methods[_methodIndex].invoke(obj, args.toArray());
         } catch (Exception ex) {
             MessageHandler.error("Native operation call failed : ",
                     ex);
         }
 
-        ite = this.portList().iterator();
-        while (ite.hasNext()) {
-            TypedIOPort port = (TypedIOPort) ite.next();
+        arguments = argumentsList().iterator();
+        while (arguments.hasNext()) {
+            TypedIOPort port = (TypedIOPort) arguments.next();
             //if the argument is return
             if (port.getName().equals(this.getArgumentReturn().getName())) {
                 String typ = "";
                 Field field = null;
 
                 try {
-                    field = _clas.getDeclaredField("_" + port.getName());
+                    field = _class.getDeclaredField("_" + port.getName());
                     typ = (String) field.getType().toString();
                 } catch (NoSuchFieldException e) {
                     try {
@@ -574,11 +589,11 @@ public class GenericJNIActor extends TypedAtomicActor {
                 Field field = null;
 
                 try {
-                    field = _clas.getDeclaredField("_" + port.getName());
+                    field = _class.getDeclaredField("_" + port.getName());
                     typ = (String) field.getType().toString();
                 } catch (NoSuchFieldException ex) {
                     try {
-                        field = _clas.getDeclaredField("_"
+                        field = _class.getDeclaredField("_"
                                 + port.getName().substring(0,
                                         port.getName().length() - 3));
                         typ = (String) field.getType().toString();
@@ -637,20 +652,20 @@ public class GenericJNIActor extends TypedAtomicActor {
         }
     }
 
-    /** A list of Ports owned by this Entity.
-     */
-    private NamedList _argList;
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
-    /** A private class dynamicly loaded for the JNI interface.
-     */
-    private Class _clas;
+    // A list of Ports, which correspond to arguments of the native function,
+    // owned by this Entity.
+    private NamedList _argumentsList;
 
-    /** A indicator
-     */
-    private int ind;
+    // A private class dynamicly loaded for the JNI interface.
+    private Class _class;
 
-    /** A private array that contains the methods
-     *  of the generated interface class.
-     */
-    private Method[] meth;
+    // The index of the method we want to invoke in the _methods array.
+    private int _methodIndex;
+
+    // A private array that contains the methods of the generated
+    // interface class.
+    private Method[] _methods;
 }
