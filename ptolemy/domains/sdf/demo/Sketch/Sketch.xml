@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Sketch" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel">
     </property>
     <property name="annotation1" class="ptolemy.kernel.util.Attribute">
         <property name="_location" class="ptolemy.kernel.util.Location" value="20.0, 210.0">
@@ -33,7 +33,7 @@ The signal is multiplied by a sine wave.
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 152]">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={86, 2, 819, 463}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={86, 2, 819, 466}}">
     </property>
     <entity name="Multiplier" class="ptolemy.actor.lib.MultiplyDivide">
         <property name="_location" class="ptolemy.kernel.util.Location" value="303.0, 155.0">
@@ -51,7 +51,7 @@ The signal is multiplied by a sine wave.
         </port>
     </entity>
     <entity name="Sinewave Generator" class="ptolemy.actor.lib.Sinewave">
-        <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
+        <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel">
         </property>
         <property name="samplingFrequency" class="ptolemy.data.expr.Parameter" value="1.0">
             <doc>The sampling frequency, in the same units as the frequency.</doc>
@@ -149,7 +149,7 @@ The signal is multiplied by a sine wave.
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={129, 442, 508, 350}}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={129, 442, 508, 355}}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
