@@ -165,7 +165,7 @@ public class Director extends Attribute implements Executable {
         Nameable container = getContainer();
         if (container instanceof CompositeActor) {
             Iterator actors = ((CompositeActor)container)
-                    .deepEntityList().iterator();
+                .deepEntityList().iterator();
             while (actors.hasNext()) {
                 Actor actor = (Actor)actors.next();
                 if(actor.prefire()) {
@@ -243,7 +243,7 @@ public class Director extends Attribute implements Executable {
         Nameable container = getContainer();
         if (container instanceof CompositeActor) {
             Iterator actors = ((CompositeActor)container)
-                    .deepEntityList().iterator();
+                .deepEntityList().iterator();
             while (actors.hasNext()) {
                 Actor actor = (Actor)actors.next();
                 if (_debugging) _debug("Invoking initialize(): ",
@@ -358,7 +358,7 @@ public class Director extends Attribute implements Executable {
         Nameable container = getContainer();
         if (container instanceof CompositeActor) {
             Iterator actors = ((CompositeActor)container)
-                    .deepEntityList().iterator();
+                .deepEntityList().iterator();
             while (actors.hasNext()) {
                 Actor actor = (Actor)actors.next();
                 // find out which of those actors has a local director.
@@ -442,13 +442,13 @@ public class Director extends Attribute implements Executable {
 	    Nameable containersContainer = container.getContainer();
 	    if(containersContainer instanceof CompositeActor) {
 		double time = ((CompositeActor)containersContainer)
-                       .getDirector().getCurrentTime();
+                    .getDirector().getCurrentTime();
                 _currentTime = time;
 	    } else {
                 _currentTime = 0.0;
 	    }
             Iterator actors = ((CompositeActor)container)
-                   .deepEntityList().iterator();
+                .deepEntityList().iterator();
             while (actors.hasNext()) {
                 Actor actor = (Actor)actors.next();
                 if (_debugging) _debug("Invoking preinitialize(): ",
@@ -528,7 +528,7 @@ public class Director extends Attribute implements Executable {
                 Director previous = null;
                 CompositeActor castContainer = (CompositeActor)oldContainer;
                 Iterator directors =
-                       castContainer.attributeList(Director.class).iterator();
+                    castContainer.attributeList(Director.class).iterator();
                 while (directors.hasNext()) {
                     Director altDirector = (Director)directors.next();
                     // Since we haven't yet removed this director, we have
@@ -573,7 +573,7 @@ public class Director extends Attribute implements Executable {
         Nameable container = getContainer();
         if (container instanceof CompositeActor) {
             Iterator actors = ((CompositeActor)container)
-                   .deepEntityList().iterator();
+                .deepEntityList().iterator();
             while (actors.hasNext()) {
                 Actor actor = (Actor)actors.next();
                 actor.stopFire();
@@ -621,7 +621,7 @@ public class Director extends Attribute implements Executable {
         Nameable container = getContainer();
         if (container instanceof CompositeActor) {
             Iterator actors = ((CompositeActor)container)
-                    .deepEntityList().iterator();
+                .deepEntityList().iterator();
             while (actors.hasNext()) {
                 Actor actor = (Actor)actors.next();
                 actor.terminate();
@@ -733,7 +733,7 @@ public class Director extends Attribute implements Executable {
         Nameable container = getContainer();
         if (container instanceof CompositeActor) {
             Iterator actors = ((CompositeActor)container)
-                    .deepEntityList().iterator();
+                .deepEntityList().iterator();
             while (actors.hasNext()) {
                 Actor actor = (Actor)actors.next();
                 actor.wrapup();

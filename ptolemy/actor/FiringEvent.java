@@ -83,15 +83,15 @@ public class FiringEvent implements DebugEvent {
     ////                         public variables                  ////
 
     public static final FiringEventType PREFIRE =
-	new FiringEventType("prefire");
+    new FiringEventType("prefire");
     public static final FiringEventType FIRE =
-	new FiringEventType("fire");
+    new FiringEventType("fire");
     public static final FiringEventType POSTFIRE =
-	new FiringEventType("postfire");
+    new FiringEventType("postfire");
     public static final FiringEventType POSTPOSTFIRE =
-	new FiringEventType("postpostfire");
+    new FiringEventType("postpostfire");
     public static final FiringEventType ITERATE =
-	new FiringEventType("iterate");
+    new FiringEventType("iterate");
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
