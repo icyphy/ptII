@@ -155,7 +155,7 @@ public class ArrayType extends StructuredType {
 	    return _fromMatrixToken(tok, 0);
 	} else {
 	    Token[] tokArray = new Token[rows];
-	    for (int i=0; i<rows; i++) {
+	    for (int i = 0; i < rows; i++) {
 		tokArray[i] = _fromMatrixToken(tok, i);
 	    }
 	    return new ArrayToken(tokArray);
@@ -465,7 +465,7 @@ public class ArrayType extends StructuredType {
     private static ArrayToken _fromMatrixToken(MatrixToken tok, int row) {
 	int cols = tok.getColumnCount();
 	Token[] tokArray = new Token[cols];
-	for (int i=0; i<cols; i++) {
+	for (int i = 0; i < cols; i++) {
 	    tokArray[i] = tok.getElementAsToken(row, i);
 	}
 	return new ArrayToken(tokArray);
