@@ -395,7 +395,6 @@ public class Histogram extends PlotBox {
         if (super._parseLine(line)) {
             return true;
         } else {
-System.out.println("Parsing: " + line);
             // We convert the line to lower case so that the command
             // names are case insensitive
             String lcLine = new String(line.toLowerCase());
