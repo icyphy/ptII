@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="DEE_FSM_DEE2" class="ptolemy.actor.TypedCompositeActor">
+<entity name="DEE_FSM_DEE" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
     </property>
     <property name="DEE Director" class="ptolemy.domains.de.kernel.DEEDirector">
@@ -10,7 +10,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="90.0, 55.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {-4, -4, 1032, 746}, maximized = true}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 1032, 746}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 628]">
     </property>
@@ -19,17 +19,23 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{408.5, 314.0}">
     </property>
     <property name="annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model has a feedback loop. In the loop, there are two modal models. &#10;Each one has two states, one state has a TimedDelay inserted, the other &#10;one has nothing but a wire. Except that these two modal models can not &#10;stay at the same state, their behaviors are exactly the same. &#10;&#10;For this model, the DEE director can find a schedule for correct &#10;execution based on the analysis of the input-output dependency &#10;relations.">
-        </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,0.2,1.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model has a feedback loop. In the loop, there are two modal models. &#10;Each one has two states, one state has a TimedDelay inserted, the other &#10;one has nothing but a wire. Except that these two modal models can not &#10;stay at the same state, their behaviors are exactly the same. &#10;&#10;For this model, the DEE director can find a schedule for correct &#10;execution based on the analysis of the input-output dependency &#10;relations.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 290.0">
         </property>
     </property>
     <entity name="modal model" class="ptolemy.domains.fsm.modal.ModalModel">
+        <property name="directorClass" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.FSMDirector">
+        </property>
         <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="230.0, 160.0">
+        </property>
+        <property name="_Director" class="ptolemy.domains.fsm.kernel.FSMDirector">
+            <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="_Controller">
+            </property>
         </property>
         <port name="input" class="ptolemy.domains.fsm.modal.ModalPort">
             <property name="input"/>
@@ -104,8 +110,6 @@ to another. Then delete this annotation.</text>
             <entity name="delay" class="ptolemy.domains.fsm.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="state">
                 </property>
-                <property name="_centerName" class="ptolemy.kernel.util.Attribute">
-                </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="235.0, 185.0">
@@ -113,8 +117,6 @@ to another. Then delete this annotation.</text>
             </entity>
             <entity name="noDelay" class="ptolemy.domains.fsm.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="noDelay">
-                </property>
-                <property name="_centerName" class="ptolemy.kernel.util.Attribute">
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
@@ -224,9 +226,15 @@ to another. Then delete this annotation.</text>
         <link port="noDelay.trigger" relation="triggerRelation"/>
     </entity>
     <entity name="opposite" class="ptolemy.domains.fsm.modal.ModalModel">
+        <property name="directorClass" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.FSMDirector">
+        </property>
         <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="385.0, 235.0">
+        </property>
+        <property name="_Director" class="ptolemy.domains.fsm.kernel.FSMDirector">
+            <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="_Controller">
+            </property>
         </property>
         <port name="input" class="ptolemy.domains.fsm.modal.ModalPort">
             <property name="input"/>
@@ -301,8 +309,6 @@ to another. Then delete this annotation.</text>
             <entity name="delay" class="ptolemy.domains.fsm.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="state">
                 </property>
-                <property name="_centerName" class="ptolemy.kernel.util.Attribute">
-                </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="235.0, 185.0">
@@ -310,8 +316,6 @@ to another. Then delete this annotation.</text>
             </entity>
             <entity name="noDelay" class="ptolemy.domains.fsm.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="noDelay">
-                </property>
-                <property name="_centerName" class="ptolemy.kernel.util.Attribute">
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
