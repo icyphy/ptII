@@ -89,8 +89,8 @@ public class ComplexArrayMath {
     }
 
     /** Return a new array that is the result of appending length2 elements
-     *  of array2, starting from the array1[idx2] to length1 elements of array1,
-     *  starting from array1[idx1].
+     *  of array2, starting from the array1[idx2] to length1 elements of 
+     *  array1, starting from array1[idx1].
      *  Appending empty arrays is supported. In that case, the corresponding
      *  idx may be any number. Allow System.arraycopy() to throw array access
      *  exceptions if idx .. idx + length - 1 are not all valid array indices,
@@ -119,9 +119,10 @@ public class ComplexArrayMath {
     }
 
 
-    /** Return a new array that is the complex-conjugate of the argument.
-     *  If the argument has length 0, return a new array of Complex's, with
-     *  length 0.
+    /** Return a new array of complex numbers that is formed by taking the 
+     *  complex-conjugate of each element in the argument array.
+     *  If the argument has length 0, return a new array of complex numbers, 
+     *  with length 0.
      */
     public static final Complex[] conjugate(Complex[] array) {
         Complex[] result = new Complex[array.length];
@@ -136,9 +137,9 @@ public class ComplexArrayMath {
      *  If the sizes of both arrays are 0, return a new array of size 0.
      *  If the two arrays do not have the same length, throw an
      *  IllegalArgumentException.
-     *  @param array1 The first array of Complex's.
-     *  @param array2 The second array of Complex's.
-     *  @return A new array of Complex's.
+     *  @param array1 The first array of complex numbers.
+     *  @param array2 The second array of complex numbers.
+     *  @return A new array of complex numbers.
      */
     public static final Complex[] divide(Complex[] array1, Complex[] array2) {
         int length = _commonLength(array1, array2, "ComplexArrayMath.divide");
@@ -149,7 +150,7 @@ public class ComplexArrayMath {
         return retval;
     }
 
-    /** Return a new array of Complex's with the values in imagArray for
+    /** Return a new array of complex numbers with the values in imagArray for
      *  the imaginary parts, and 0 for the real parts.
      *  If imagArray has length 0, return a new Complex array of length 0.
      */
@@ -166,7 +167,7 @@ public class ComplexArrayMath {
         }
 
     /** Return a new array of doubles with the imaginary parts of the array of
-     *  Complex's.
+     *  complex numbers.
      */
     public static final double[] imagParts(Complex[] x) {
         int size = x.length;
@@ -180,12 +181,12 @@ public class ComplexArrayMath {
         return retval;
     }
 
-    /** Return a new array of Complex's using two arrays for the real and
+    /** Return a new array of complex numbers using two arrays for the real and
      *  imaginary parts. If both arrays are of length 0, return a new
-     *  array of Complex's with length 0.
+     *  array of complex numbers with length 0.
      *  @param realPart An array of doubles, used for the real parts.
      *  @param imagPart An array of doubles, used for the imaginary parts.
-     *  @return A new array of Complex's.
+     *  @return A new array of complex numbers.
      */
     public static final Complex[] formComplexArray(double[] realPart,
             double[] imagPart) {
@@ -202,7 +203,7 @@ public class ComplexArrayMath {
     }
 
     /** Return a new array of doubles containing the magnitudes of the elements
-     *  of the specified array of Complex's.
+     *  of the specified array of complex numbers.
      */
     public static final double[] magnitude(Complex[] array) {
         double[] mags = new double[array.length];
@@ -233,9 +234,9 @@ public class ComplexArrayMath {
      *  multiplying each element in the array by the second argument, which is
      *  a complex number.
      *  If the sizes of the array is 0, return a new array of size 0.
-     *  @param array An array of Complex's.
+     *  @param array An array of complex numbers.
      *  @param factor A Complex.
-     *  @return A new array of Complex's.
+     *  @return A new array of complex numbers.
      */
     public static final Complex[] multiply(Complex[] array, Complex factor) {
         int length = array.length;
@@ -248,10 +249,47 @@ public class ComplexArrayMath {
         return retval;
     }
 
+    /** Return a new array of Complex numbers that is formed by padding the
+     *  middle of the array with 0's. If either the length of the
+     *  input array is odd, the sample with index ceil(L/2) will be 
+     *  repeated in the output array, where L is the length of the input array.
+     *  If the length of the input and output arrays are equal, return
+     *  a copy of the input array.
+     *  This method is useful for preparing data for an IFFT.
+     *  @param array An array of complex numbers.
+     *  @param newLength The desired length of the returned array.
+     *  @return A new array of complex numbers.
+     */    
+    public static final Complex[] padMiddle(final Complex[] array, 
+     final int newLength) {
+        int length = array.length;
+
+        int entriesNeeded = newLength - length;
+
+        if (entriesNeeded < 0) {
+           throw new IllegalArgumentException("ptolemy.math." +
+            "ComplexArrayMath.padMiddle() : newLength must be >= length of " +
+            "array.");
+        } else if (entriesNeeded == 0) {
+           return resize(array, newLength); // allocates a new array
+        }
+
+        double halfLength   = ((double) length) * 0.5;
+        int halfLengthFloor = (int) Math.floor(halfLength);
+        int halfLengthCeil  = (int) Math.ceil(halfLength);
+        Complex[] retval = new Complex[newLength];
+
+        System.arraycopy(array, 0, retval, 0, halfLengthCeil);
+
+        System.arraycopy(array,  halfLengthFloor, retval, 
+         newLength - halfLengthCeil, halfLengthCeil); 
+        
+        return retval;
+    }
 
     /** Return a new array containing the angles of the elements of the
      *  specified complex array.
-     *  @param array A array of Complex's.
+     *  @param array A array of complex numbers.
      *  @return An array of angles in the range of
      *  <em>-pi</em> to <em>pi</em>.
      */
@@ -305,7 +343,7 @@ public class ComplexArrayMath {
         return result;
     }
 
-    /** Return a new array of Complex's that is formed by raising each
+    /** Return a new array of complex numbers that is formed by raising each
      *  element to the specified exponent, a double.
      *  If the size of the array is 0, return a new array of size 0.
      */
@@ -319,7 +357,7 @@ public class ComplexArrayMath {
         return retval;
     }
 
-    /** Return a new array of Complex's that is formed by raising each
+    /** Return a new array of complex numbers that is formed by raising each
      *  element to the specified exponent, a complex number.
      *  If the size of the array is 0, return a new array of size 0.
      */
@@ -336,7 +374,7 @@ public class ComplexArrayMath {
     /** Return the product of the elements in the array.
      *  If there are no elements in the array, return a Complex number
      *  with value zero.
-     *  @param array An array of Complex's.
+     *  @param array An array of complex numbers.
      *  @return A new complex number.
      */
     public static final Complex product(Complex[] array) {
@@ -352,7 +390,7 @@ public class ComplexArrayMath {
     }
 
     /** Return true iff all the elements in the array are purely imaginary.
-     *  @param array An array of Complex's
+     *  @param array An array of complex numbers
      *  @return A boolean.
      */
     public static final boolean pureImag(Complex[] array) {
@@ -365,7 +403,7 @@ public class ComplexArrayMath {
     }
 
     /** Return true iff all the elements in the array are purely real.
-     *  @param array An array of Complex's
+     *  @param array An array of complex numbers
      *  @return A boolean.
      */
     public static final boolean pureReal(Complex[] array) {
@@ -377,7 +415,7 @@ public class ComplexArrayMath {
         return true;
     }
 
-    /** Return a new array of Complex's with the values in realArray for
+    /** Return a new array of complex numbers with the values in realArray for
      *  the real parts, and 0 for the imaginary parts. If the argument is
      *  of length 0, return a new array of length 0.
      */
@@ -393,7 +431,7 @@ public class ComplexArrayMath {
     }
 
     /** Return a new array of doubles with the real parts of the array of
-     *  Complex's.
+     *  complex numbers.
      */
     public static final double[] realParts(Complex[] x) {
         int size = x.length;
@@ -411,7 +449,7 @@ public class ComplexArrayMath {
      *  either truncating or padding the input array.
      *  This method simply calls :
      *  resize(array, newLength, 0)
-     *  @param array An array of Complex's.
+     *  @param array An array of complex numbers.
      *  @param newLength The desired size of the output array.
      */
     public static final Complex[] resize(Complex[] array, int newLength) {
@@ -428,11 +466,11 @@ public class ComplexArrayMath {
      *  startIdx must index a valid entry in array unless the input array
      *  is of zero length or the output array is of zero length.
      *  If case 1) is met, the remainder of the output array is filled with
-     *  new Complex's with value 0.
+     *  new complex numbers with value 0.
      *  Copying here means shallow copying, i.e. pointers to Complex objects
      *  are copied instead of allocation of new copies. This works because
      *  Complex objects are immutable.
-     *  @param array An array of Complex's.
+     *  @param array An array of complex numbers.
      *  @param newLength The desired size of the output array.
      *  @param startIdx The starting index for the input array.
      */
@@ -493,9 +531,9 @@ public class ComplexArrayMath {
      *  If the sizes of both arrays are 0, return a new array of size 0.
      *  If the two arrays do not have the same length, throw an
      *  IllegalArgumentException.
-     *  @param array1 An array of Complex's from which to subtract.
-     *  @param array2 An array of Complex's to subtract.
-     *  @return A new array of Complex's.
+     *  @param array1 An array of complex numbers from which to subtract.
+     *  @param array2 An array of complex numbers to subtract.
+     *  @return A new array of complex numbers.
      */
     public static final Complex[] subtract(Complex[] array1,
             Complex[] array2) {

@@ -169,7 +169,7 @@ public class SignalProcessing {
      */
     public static final double[] DCT(double[] x, int order, int type) {
 
-        _checkTransformArgs(x, order);
+        _checkTransformArgs(x, order, FORWARD_TRANSFORM);
 
         if (type >= DCT_TYPES) {
             throw new IllegalArgumentException(
@@ -220,6 +220,46 @@ public class SignalProcessing {
         }
         return result;
     }
+
+    /** Return a new array that is formed by taking every nth sample
+     *  starting with the 0th sample, and discarding the rest.
+     *  This method calls :
+     *  downsample(x, n, 0)
+     *  @param x An array of doubles.
+     *  @param n An integer sepcifying the downsampling factor.
+     *  @return A new array of doubles of length = floor(L / n), where
+     *  L is the size of the input array. 
+     */
+    public static final double[] downsample(double[] x, int n) {
+        return downsample(x, n, 0);
+    }
+   
+    /** Return a new array that is formed by taking every nth sample
+     *  starting at startIndex, and discarding the samples in between.
+     *  @param x An array of doubles.
+     *  @param n An integer specifying the downsampling factor.
+     *  @param startIndex An integer specifying the index of sample at 
+     *  which to start downsampling. This integer must be between 0 and 
+     *  L - 1, where L is the size of the input array.
+     *  @return A new array of doubles of length = 
+     *  floor((L - startIndex) / n), 
+     *  where L is the size of the input array. 
+     */
+    public static final double[] downsample(double[] x, int n, 
+     int startIndex) {
+        int length = (x.length - startIndex) / n;
+        double[] retval = new double[length];
+        
+        int destIndex;
+        int srcIndex = startIndex;
+
+        for (destIndex = 0; destIndex < length; destIndex++) {
+            retval[destIndex] = x[srcIndex];
+            srcIndex += n;
+        }
+
+        return retval;
+    }   
 
     /** Return a new array of doubles that is the inverse, normalized
      *  DCT of the input array of doubles.
@@ -324,7 +364,7 @@ public class SignalProcessing {
      */
     public static final Complex[] IFFTComplexOut(Complex[] x, int order) {
 
-        x = _checkTransformArgs(x, order);
+        x = _checkTransformArgs(x, order, INVERSE_TRANSFORM);
 
         Complex[] conjX = ComplexArrayMath.conjugate(x);
         Complex[] yConj = FFTComplexOut(conjX, order);
@@ -360,7 +400,7 @@ public class SignalProcessing {
      */
     public static final double[] IFFTRealOut(Complex[] x, int order) {
 
-        x = _checkTransformArgs(x, order);
+        x = _checkTransformArgs(x, order, INVERSE_TRANSFORM);
 
         double[] realx = ComplexArrayMath.realParts(x);
         double[] realrealX = FFTRealOut(realx, order);
@@ -423,7 +463,7 @@ public class SignalProcessing {
      *  @return A new array of Complex's.
      */
     public static final Complex[] FFTComplexOut(Complex[] x, int order) {
-        x = _checkTransformArgs(x, order);
+        x = _checkTransformArgs(x, order, FORWARD_TRANSFORM);
 
         double[] realx = ComplexArrayMath.realParts(x);
         double[] realrealX = FFTRealOut(realx, order);
@@ -490,7 +530,7 @@ public class SignalProcessing {
      *  @return A new array of doubles.
      */
     public static final double[] FFTImagOut(Complex[] x, int order) {
-        x = _checkTransformArgs(x, order);
+        x = _checkTransformArgs(x, order, FORWARD_TRANSFORM);
 
         double[] realx = ComplexArrayMath.realParts(x);
         double[] imagrealX = FFTImagOut(realx, order);
@@ -526,7 +566,7 @@ public class SignalProcessing {
      *  @return A new array of doubles.
      */
     public static final double[] FFTImagOut(double[] x, int order) {
-        x = _checkTransformArgs(x, order);
+        x = _checkTransformArgs(x, order, FORWARD_TRANSFORM);
 
         int size = 1 << order;
         int halfN = size >> 1;
@@ -576,7 +616,7 @@ public class SignalProcessing {
      *  @return A new array of doubles.
      */
     public static final double[] FFTRealOut(Complex[] x, int order) {
-        x = _checkTransformArgs(x, order);
+        x = _checkTransformArgs(x, order, FORWARD_TRANSFORM);
 
         double[] realx = ComplexArrayMath.realParts(x);
         double[] realrealX = FFTRealOut(realx, order);
@@ -609,7 +649,7 @@ public class SignalProcessing {
      *  @return A new array of doubles.
      */
     public static final double[] FFTRealOut(double[] x, int order) {
-        x = _checkTransformArgs(x, order);
+        x = _checkTransformArgs(x, order, FORWARD_TRANSFORM);
 
         int size = 1 << order;
         int halfN = size >> 1;
@@ -747,7 +787,7 @@ public class SignalProcessing {
      *  @see ptolemy.math.SampleGenerator
      */
     public static final double[] sampleWave(int length,
-            double startTime, double interval, SampleGenerator sampleGen) {
+     double startTime, double interval, SampleGenerator sampleGen) {
         double time = startTime;
 
         double[] retval = new double[length];
@@ -952,6 +992,29 @@ public class SignalProcessing {
         double point = ((time/period)+phase+0.25)%1.0;
         return (point < 0.5)?(4.0*point-1.0):(((1.0-point)*4.0)-1.0);
     }
+
+   
+    /** Return a new array that is the result of inserting (n-1) zeroes 
+     *  between each successive sample in the input array, resulting in an 
+     *  array of length n * L, where L is the length of the original array.
+     *  @param x The input array of doubles.
+     *  @param n An integer specifying the upsampling factor.
+     *  @return A new array of doubles.
+     */
+    public static final double[] upsample(double[] x, int n) {
+        int length = x.length * n;
+        double[] retval = new double[length];
+        int srcIndex = 0;
+        int destIndex;
+
+        // Assume retval has been zeroed out
+        for (destIndex = 0; destIndex < length; destIndex += n) {
+            retval[destIndex] = x[srcIndex];
+            srcIndex++;
+        }
+
+        return retval;
+    } 
 
     /** Modify the specified array to unwrap the angles.
      *  That is, if the difference between successive values is greater than
@@ -1419,14 +1482,17 @@ public class SignalProcessing {
     // Check the arguments for a transform on an array of doubles, using
     // _checkTransformInput() and _checkTransformOrder(). Return an
     // appropriately padded array on which to perform the transform.
-    private static double[] _checkTransformArgs(double[] x, int order) {
+    private static double[] _checkTransformArgs(double[] x, int order,
+     boolean inverse) {
         _checkTransformOrder(order);
 
         int size = 1 << order;
 
         // Zero pad the array if necessary
-        if (x.length < size) {
-            x = DoubleArrayMath.resize(x, size);
+
+        if (x.length < size) {           
+           x = inverse ? DoubleArrayMath.padMiddle(x, size) :
+                         DoubleArrayMath.resize(x, size);           
         }
         return x;
     }
@@ -1434,15 +1500,19 @@ public class SignalProcessing {
     // Check the arguments for a transform on an array of Complex's, using
     // _checkTransformInput() and _checkTransformOrder(). Return an
     // appropriately padded array on which to perform the transform.
-    private static Complex[] _checkTransformArgs(Complex[] x, int order) {
+    private static Complex[] _checkTransformArgs(Complex[] x, int order,
+     boolean inverse) {
         _checkTransformOrder(order);
 
         int size = 1 << order;
 
         // Zero pad the array if necessary
-        if (x.length < size) {
-            x = ComplexArrayMath.resize(x, size);
+        if (x.length < size) {           
+           x = (inverse == INVERSE_TRANSFORM) ? 
+               ComplexArrayMath.padMiddle(x, size) :
+               ComplexArrayMath.resize(x, size);           
         }
+
         return x;
     }
 
@@ -1658,9 +1728,13 @@ public class SignalProcessing {
 
     // Table of scalefactors for the IDCT.
     private static final Complex _IDCTfactors[][][] =
-    new Complex[DCT_TYPES][32][];
+     new Complex[DCT_TYPES][32][];
 
     // Various constants
     private static final double _LOG10SCALE = 1.0 / Math.log(10.0);
     private static final double _LOG2SCALE  = 1.0 / Math.log(2.0);
+
+    // Indicates an forward/inverse transform for checking arguments
+    private static final boolean FORWARD_TRANSFORM = false;
+    private static final boolean INVERSE_TRANSFORM = true;
 }
