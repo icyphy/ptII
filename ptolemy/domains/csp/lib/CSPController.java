@@ -89,6 +89,8 @@ public class CSPController extends CSPActor {
             //
             ConditionalBranch[] reqBrchs = 
                     new ConditionalBranch[_numRequestInChannels];
+            System.out.println("There are "+_numRequestInChannels+
+                    " request input channels for "+getName());
             for( int i=0; i<_numRequestInChannels; i++ ) {
                 reqBrchs[i] = new 
                         ConditionalReceive(true, _requestIn, i, i);
