@@ -114,11 +114,11 @@ public class ClassChanges implements MoMLFilter {
     }
 
     /** Return a string that describes what the filter does.
-     *  @return the description of the filter that ends with a newline. 
+     *  @return the description of the filter that ends with a newline.
      */
     public String toString() {
 	StringBuffer results =
-	    new StringBuffer(getClass().getName() 
+	    new StringBuffer(getClass().getName()
                     + ": change any class names that have been "
                     + "renamed\n"
                     + "Below are original class names followed by "

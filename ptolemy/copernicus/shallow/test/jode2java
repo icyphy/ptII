@@ -10,7 +10,7 @@
 # To
 #	parameter = new Parameter(editablechoicestyle_30_,
 #					     "choice1");
-#	 
+#
 awk ' { if ($0 ~ /UNCONSTRUCTED/) {
 	    # In the lastline, Replace the trailing; with a (
 	    print substr(lastline, 1, length(lastline) -1) "("
@@ -41,9 +41,9 @@ awk ' { if ($0 ~ /UNCONSTRUCTED/) {
 		print lastline
 		lastline = $0
 	    }
-	} 
+	}
       }
-   END {print lastline}  
+   END {print lastline}
 ' $1 |
 awk '{if ($0 ~ /public void __CGInit/) {
 	    # Skip the trailing {
@@ -73,23 +73,23 @@ awk '{ if ($0 ~ /__CGInit\(\);/) {
 	    print $0
 	}
     }' |
-awk '{ if ( $0 ~ /CompositeEntity compositeentity, String s\)$/ ) { 
+awk '{ if ( $0 ~ /CompositeEntity compositeentity, String s\)$/ ) {
 	    print $0, "throws IllegalActionException, NameDuplicationException"
 	} else {
 	    if ( $0 ~ /String string\) {/ ) {
-		print substr($0, 1, length($0)-1), "throws IllegalActionException, NameDuplicationException {" 
+		print substr($0, 1, length($0)-1), "throws IllegalActionException, NameDuplicationException {"
 	    } else {
 		print $0
 	    }
 	}
-    '}  |  
+    '}  |
 awk '{  if (match($0, "; *") > 0) {
 	    lastsemi = sawtrailingsemicolon;
 	    sawtrailingsemicolon = NR
          }
 	    if ( $1 ~ /"/) {
 		stringRecord = NR
-		print "         String tmp" stringRecord " = " $0 
+		print "         String tmp" stringRecord " = " $0
 	        dontprint = 1
             }
             if ( NR - stringRecord < 10 \
@@ -99,7 +99,7 @@ awk '{  if (match($0, "; *") > 0) {
 		dontprint = 1
 		stringRecord = 0
 	     } else {
-	        if (dontprint == 1) {     
+	        if (dontprint == 1) {
 		    dontprint = 0
 		} else {
 		    print $0
