@@ -62,7 +62,7 @@ test CSPReceiver-2.1 {Constructors and Containers} {
     list [expr {$val1 == [java::null]}] \
 	    [$val2 equals $port] \
 	    [$val3 equals $port]
-} {1 { 1} { 1}}
+} {1 1 1}
 
 ######################################################################
 ####
