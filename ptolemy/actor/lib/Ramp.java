@@ -68,6 +68,7 @@ public class Ramp extends TypedAtomicActor {
 
     /** Evaluate the value and step size parameters and set the
      *  declared type.
+     *  @exception IllegalActionException Not thrown in this class.
      */
     // FIXME: this might not work if user change the parameter during
     // simulation.

@@ -38,7 +38,7 @@ import ptolemy.data.expr.Parameter;
 An actor that produces a constant output. The type and value of the
 output is determined by a parameter set by the user.
 
-@author Yuhong Xion
+@author Yuhong Xiong
 @version $Id$
 */
 
@@ -65,6 +65,7 @@ public class Const extends TypedAtomicActor {
 
     /** Evaluate the Parameter containing the value of this constant
      *  source and set the declared type.
+     *   @exception IllegalActionException Not thrown in this class.
      */
     // FIXME: this might not work if user change the parameter during
     // simulation.
