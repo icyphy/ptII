@@ -90,8 +90,9 @@ test SimpleDelay-4.1 {test a self loop with the zero delay} {
     [java::field $add plus] link $r
     catch {[$e0 getManager] execute} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: Zero delay self-loop on actor: .top.add
-  in .top.DEDirector}}
+} {{ptolemy.graph.GraphConstructionException: Cannot add a self loop in an acyclic graph.
+A self loop was attempted on the following node.
+ptolemy.actor.lib.AddSubtract {.top.add}}
 
 test SimpleDelay-5.1 {test a more complex loop with the zero delay} {
     set e0 [deModel 3.0]
