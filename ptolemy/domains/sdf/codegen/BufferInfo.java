@@ -33,10 +33,12 @@ package ptolemy.domains.sdf.codegen;
 
 import ptolemy.data.type.Type;
 
-/** An object that hold information on a buffer used in the
- *  generated code.
- *
- *  @author Jeff Tsay
+/**
+An object that hold information on a buffer used in the
+generated code.
+
+@author Jeff Tsay
+@version $Id$   
  */
 public class BufferInfo implements Cloneable {
 
