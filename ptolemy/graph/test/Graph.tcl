@@ -381,3 +381,64 @@ test Graph-5.5 {Test self-loop edges ofindividual nodes} {
     set loops3 [java::cast java.lang.Object [$p4 selfLoopEdges $v1]]
     list [$loops1 toString]  [$loops2 toString] [$loops3 toString]  
 } {{[(v5, v5), (v5, v5, e5), (v5, v5, e5)]} {[(v8, v8)]} {[]}}
+
+
+######################################################################
+####
+# 
+test DirectedGraph-5.6 { neighbors } {
+    set p [java::new ptolemy.graph.DirectedGraph]
+    set n1 [java::new {java.lang.String String} node1]
+    set n2 [java::new {java.lang.String String} node2]
+    set n3 [java::new {java.lang.String String} node3]
+    set n4 [java::new {java.lang.String String} node4]
+    set n5 [java::new {java.lang.String String} node5]
+    set z [$p add $n1]
+    $p add $n2
+    $p add $n3
+    $p add $n4
+    $p add $n5
+    $p addEdge $n1 $n2
+    $p addEdge $n1 $n2
+    $p addEdge $n1 $n4
+    $p addEdge $n4 $n1
+    $p addEdge $n4 $n1
+    $p addEdge $n4 $n1
+    $p addEdge $n1 $n1
+    $p addEdge $n1 $n1
+    $p addEdge $n3 $n2
+    $p addEdge $n3 $n5
+    set s [$p neighbors $z]
+    set result [java::call ptolemy.graph.test.Utilities toSortedString $s 1]
+    list $result
+} {{[node1, node2, node4]}}
+
+######################################################################
+####
+# 
+test DirectedGraph-5.7 { neighbors with duplicate node weights} {
+    set p [java::new ptolemy.graph.DirectedGraph]
+    set n1 [java::new {java.lang.String String} node1]
+    set n2 [java::new {java.lang.String String} node2]
+    set n3 [java::new {java.lang.String String} node3]
+    set n4 [java::new {java.lang.String String} node4]
+    set n5 [java::new {java.lang.String String} node4]
+    set z [$p add $n1]
+    $p add $n2
+    $p add $n3
+    $p add $n4
+    $p add $n5
+    $p addEdge $n1 $n2
+    $p addEdge $n1 $n2
+# The following addEdge adds two edges (to the two nodes that have weight 
+# node4).
+    $p addEdge $n1 $n4
+    $p addEdge $n1 $n1
+    $p addEdge $n1 $n1
+    $p addEdge $n3 $n2
+    $p addEdge $n3 $n5
+    set s [$p neighbors $z]
+    set result [java::call ptolemy.graph.test.Utilities toSortedString $s 1]
+    list $result
+} {{[node1, node2, node4, node4]}}
+

@@ -613,6 +613,36 @@ public class Graph {
         return Collections.unmodifiableList(_incidentEdgeList(node));
     }
 
+    /** Return all of the neighbors of a given node in the form of a
+     *  a collection. Each element of the collection is a Node.
+     *  A neighbor of a node X is a node that is the sink
+     *  of an edge whose source is X, or the source of a node whose sink
+     *  is node X. In other words, a neighbor of X is a node that is adjacent
+     *  to X. All elements in the returned collection are unique nodes.
+     *  @param node The node whose neighbors are to be returned.
+     *  @return the neighbors of the node.
+     */
+    public Collection neighbors(Node node) {
+        Collection incidentEdgeCollection = incidentEdges(node);
+        Iterator incidentEdges = incidentEdgeCollection.iterator();
+        ArrayList result = new ArrayList(incidentEdgeCollection.size());
+        while (incidentEdges.hasNext()) {
+            Edge edge = (Edge)(incidentEdges.next());
+            Node sink = edge.sink();
+            Node source = edge.source();
+            if (source == node) {
+                if (!result.contains(sink)) {
+                    result.add(sink);
+                }
+            } else if (sink == node) {
+                if (!result.contains(source)) {
+                    result.add(source);
+                }
+            }
+        }
+        return result;
+    }
+
     /** Return a node that has a specified weight. If multiple
      *  nodes have the specified weight, then return one of them
      *  arbitrarily.
