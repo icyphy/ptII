@@ -61,7 +61,7 @@ public class ImagePartition extends SDFAtomicActor {
      *  @exception NameDuplicationException If the name coincides with
      *   an actor already in the container.
      */
-    public ImagePartition(TypedCompositeActor container, String name)
+    public ImagePartition(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
 
         super(container, name);

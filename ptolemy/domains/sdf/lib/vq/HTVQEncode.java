@@ -119,7 +119,7 @@ public final class HTVQEncode extends SDFAtomicActor {
      *  @exception NameDuplicationException If the name coincides with
      *   an actor already in the container.
      */
-    public HTVQEncode(TypedCompositeActor container, String name)
+    public HTVQEncode(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
 
         super(container, name);

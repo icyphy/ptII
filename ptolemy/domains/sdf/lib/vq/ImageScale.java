@@ -53,7 +53,7 @@ to. Default values are 255 for outmax and 0 for outmin.
 */
 
 public final class ImageScale extends SDFAtomicActor {
-    public ImageScale(TypedCompositeActor container, String name)
+    public ImageScale(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
 
         super(container, name);

@@ -76,7 +76,7 @@ public final class ImageDisplay extends Sink implements Placeable {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public ImageDisplay(TypedCompositeActor container, String name)
+    public ImageDisplay(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
 
         super(container, name);

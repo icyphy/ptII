@@ -61,7 +61,7 @@ public final class VQDecode extends SDFAtomicActor {
      *  @exception NameDuplicationException If the name coincides with
      *   an actor already in the container.
      */
-    public VQDecode(TypedCompositeActor container, String name)
+    public VQDecode(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
 
         super(container, name);

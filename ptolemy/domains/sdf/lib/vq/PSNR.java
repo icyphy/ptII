@@ -60,7 +60,7 @@ public class PSNR extends SDFAtomicActor {
      *  @exception NameDuplicationException If the name coincides with
      *   an actor already in the container.
      */
-    public PSNR(TypedCompositeActor container, String name)
+    public PSNR(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
 
         super(container, name);
