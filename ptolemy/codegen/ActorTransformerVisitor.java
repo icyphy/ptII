@@ -71,12 +71,17 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
         if (!_typeID.isSupportedTokenKind(kind)) {
            return node;
         }
+        
+        // leave Token declarations alone for now
+        if (kind == PtolemyTypeIdentifier.TYPE_KIND_TOKEN) {
+           return node;
+        }
     
         return _typeID.encapsulatedDataType(kind);        
     }
                               
     public Object visitCompileUnitNode(CompileUnitNode node, LinkedList args) {            
-        // bring in imports for Complex and FixPoint (remove unnecessary ones later)
+        // add import of ptolemy.math.* (remove if necessary later)
         List importList = node.getImports();
         
         importList.add(new ImportOnDemandNode((NameNode)
@@ -492,6 +497,9 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
            } else if (methodName.equals("toString")) {
 
               switch (accessedObjKind) {              
+                case PtolemyTypeIdentifier.TYPE_KIND_TOKEN:
+                return new StringLitNode("bad token"); 
+              
                 case PtolemyTypeIdentifier.TYPE_KIND_BOOLEAN_TOKEN:
                 case PtolemyTypeIdentifier.TYPE_KIND_INT_TOKEN:
                 case PtolemyTypeIdentifier.TYPE_KIND_DOUBLE_TOKEN:
@@ -1201,18 +1209,17 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
           case PtolemyTypeIdentifier.TYPE_KIND_LONG_MATRIX_TOKEN:    
           case PtolemyTypeIdentifier.TYPE_KIND_COMPLEX_MATRIX_TOKEN:                 
           case PtolemyTypeIdentifier.TYPE_KIND_FIX_MATRIX_TOKEN:                   
-          // remove this later        
-          case PtolemyTypeIdentifier.TYPE_KIND_MATRIX_TOKEN:                                                   
-          return new NullPntrNode();           
+          return new NullPntrNode();                              
           
           // remove this later
           case PtolemyTypeIdentifier.TYPE_KIND_TOKEN:
           case PtolemyTypeIdentifier.TYPE_KIND_SCALAR_TOKEN:                                         
-          return new IntLitNode("-777777");                    
-          
+          case PtolemyTypeIdentifier.TYPE_KIND_MATRIX_TOKEN:
+          return new NullPntrNode();                                                                                           
+                    
           // needed for default port behavior
           case PtolemyTypeIdentifier.TYPE_KIND_DUMMY_TOKEN:
-          return new IntLitNode("-777777");
+          return new IntLitNode("-777777");          
         }
 
         ApplicationUtility.error("unexpected type for _dummyValue() : " + type);        
@@ -1335,6 +1342,9 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
         switch (accessedObjKind) {
           case PtolemyTypeIdentifier.TYPE_KIND_TOKEN:      
           case PtolemyTypeIdentifier.TYPE_KIND_SCALAR_TOKEN:          
+          case PtolemyTypeIdentifier.TYPE_KIND_MATRIX_TOKEN:          
+          return new NullPntrNode();          
+          
           case PtolemyTypeIdentifier.TYPE_KIND_INT_TOKEN:
           return new IntLitNode("1");
                                         
@@ -1358,7 +1368,6 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
           return null;                                 
                     
           case PtolemyTypeIdentifier.TYPE_KIND_FIX_TOKEN:          
-          case PtolemyTypeIdentifier.TYPE_KIND_MATRIX_TOKEN:
           case PtolemyTypeIdentifier.TYPE_KIND_BOOLEAN_MATRIX_TOKEN:              
           case PtolemyTypeIdentifier.TYPE_KIND_INT_MATRIX_TOKEN:          
           case PtolemyTypeIdentifier.TYPE_KIND_DOUBLE_MATRIX_TOKEN: 
@@ -1506,6 +1515,9 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
         switch (accessedObjKind) {
           case PtolemyTypeIdentifier.TYPE_KIND_TOKEN:      
           case PtolemyTypeIdentifier.TYPE_KIND_SCALAR_TOKEN:          
+          case PtolemyTypeIdentifier.TYPE_KIND_MATRIX_TOKEN:          
+          return new NullPntrNode();          
+                    
           case PtolemyTypeIdentifier.TYPE_KIND_INT_TOKEN:
           return new IntLitNode("0");
                                         
@@ -1530,7 +1542,6 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
           return new StringLitNode("");                  
           
           case PtolemyTypeIdentifier.TYPE_KIND_FIX_TOKEN:          
-          case PtolemyTypeIdentifier.TYPE_KIND_MATRIX_TOKEN:
           case PtolemyTypeIdentifier.TYPE_KIND_BOOLEAN_MATRIX_TOKEN:             
           case PtolemyTypeIdentifier.TYPE_KIND_INT_MATRIX_TOKEN:          
           case PtolemyTypeIdentifier.TYPE_KIND_DOUBLE_MATRIX_TOKEN: 

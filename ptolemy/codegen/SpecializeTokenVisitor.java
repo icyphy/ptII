@@ -123,20 +123,23 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
            ClassDecl value = (ClassDecl) term.getValue();
            
            TypedDecl typedDecl = (TypedDecl) term.getAssociatedObject();
-           
-           if (value != PtolemyTypeIdentifier.DUMMY_LOWER_BOUND) {
-           
-              TypeNameNode typeNode = (TypeNameNode) value.getDefType().clone();
                       
-              declToTokenTypeMap.put(typedDecl, typeNode);        
-           } else {
+           if ((value == PtolemyTypeIdentifier.DUMMY_LOWER_BOUND) ||
+               (value == PtolemyTypeIdentifier.TOKEN_DECL) ||          
+               (value == PtolemyTypeIdentifier.SCALAR_TOKEN_DECL) ||          
+               (value == PtolemyTypeIdentifier.MATRIX_TOKEN_DECL)) {               
               ApplicationUtility.warn("could not solve for specific token type for " +
               "declaration " + typedDecl.getName() + " in " + actorInfo.actor.getName());
              
-              // replace the declaration type with "IntToken" as a fix
+              // replace the declaration type with "Token" as an indication for
+              // later passes
               declToTokenTypeMap.put(typedDecl, 
-               PtolemyTypeIdentifier.INT_TOKEN_TYPE.clone());   
-           }
+               PtolemyTypeIdentifier.TOKEN_TYPE.clone());   
+           } else { 
+              TypeNameNode typeNode = (TypeNameNode) value.getDefType().clone();
+                      
+              declToTokenTypeMap.put(typedDecl, typeNode);        
+           } 
         }
         
         return declToTokenTypeMap;        
@@ -562,12 +565,6 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
         public boolean isSettable() { return true; }
 
         public boolean isValueAcceptable() { 
-            /*
-            if ((_classDecl == PtolemyTypeIdentifier.TOKEN_DECL) ||
-                (_classDecl == PtolemyTypeIdentifier.MATRIX_TOKEN_DECL) ||
-                (_classDecl == PtolemyTypeIdentifier.SCALAR_TOKEN_DECL)) {                
-               return false;
-            } */
             return true;
         }
         

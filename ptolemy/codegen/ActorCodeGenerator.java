@@ -60,7 +60,7 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
         _typeID = factory.createPtolemyTypeIdentifier();                
     }
     
-    public String generateCode(ActorCodeGeneratorInfo actorInfo) {
+    public String pass1(ActorCodeGeneratorInfo actorInfo) {
              
         // finish filling in fields of actorInfo
         
@@ -82,7 +82,7 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
         
         String filename = sourceFile.toString();
 
-        System.out.println("pass1() : filename = " + filename);
+        ApplicationUtility.trace("pass1() : filename = " + filename);
                         
         // make a list of the compile unit node and compile unit nodes that 
         // contain superclasses
@@ -115,11 +115,9 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
            unitNode.getImports().add(new ImportOnDemandNode((NameNode)
             StaticResolution.makeNameNode("ptolemy.data")));         
         }
-                         
-        String actorName = actor.getName();        
-        
+                                 
         LinkedList renamedClassNameList = 
-         _renameUnitList(unitList, classNameList, actorName);
+         _renameUnitList(unitList, classNameList, actor.getName());
         
         _movePackage(unitList);
         
@@ -223,7 +221,7 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
         
         // assume the references to the compile unit nodes are still valid
         // rewrite the transformed source code
-        //_rewriteSources(unitList, classNameList);      
+        _rewriteSources(unitList, classNameList);      
         
         // clear the compile unit nodes from the cache to free memory
         _invalidateSources(classNameList);
@@ -238,13 +236,16 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
            String filename = "C:\\users\\ctsay\\ptII\\codegen\\" +  
             (String) classNameItr.next() + ".java";
             
-           System.out.println("invalidating source filename: "  + filename);
+           ApplicationUtility.trace("invalidating source filename: "  + filename);
                 
            if (!StaticResolution.invalidateCompileUnit(filename, 2)) {
-              System.out.println("failed to invalidate source filename: "  
+              ApplicationUtility.warn("failed to invalidate source filename: "  
                + filename);          
            }
         }    
+        
+        // there should be memory to reclaim now
+        System.gc();
     }     
     
     protected static void _makePortNameToPortMap(ActorCodeGeneratorInfo actorInfo) {
@@ -277,24 +278,7 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
            }        
         }
     }
-         
-    /*   
-    protected CompileUnitNode parse(String filename) {
-        JavaParser p = new JavaParser();
-
-        try {
-          p.init(filename);
-        } catch (Exception e) {
-          ApplicationUtility.error("error opening " + filename + " : " + e);
-        }
-
-        System.out.println("parsing  " + filename);        
-
-        p.parse();
-    
-        return p.getAST();    
-    } */
-    
+             
     /** Make a list of CompileUnitNodes that contain the superclasses of
      *  the given className, while is found in the given fileName.
      *  The list should start from the argument class and go to 
@@ -388,9 +372,7 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
         HashMap renameMap = new HashMap();
         Iterator classNameItr = classNameList.iterator();
         LinkedList renamedClassNameList = new LinkedList();
-        
-        //Iterator unitItr = unitList.iterator();
-        
+                
         while (classNameItr.hasNext()) {           
             String className = (String) classNameItr.next();                                                    
             String newClassName = "CG_" +  className + "_" + actorName;
