@@ -112,6 +112,9 @@ public class DDEGetNToken extends DDEGet {
 		    for( int j = 0; j < rcvrs[i].length; j++ ) {
 			DDEReceiver rcvr = (DDEReceiver)rcvrs[i][j];
 			if( rcvr.hasToken() ) {
+                            // System.out.println("#####");
+                            // System.out.println("#####Past DDEGetNToken.rcvr.hasToken()");
+                            // System.out.println("#####");
 			    _tokens[cnt] = rcvr.get();
 			    _afterTimes[cnt] = timeKeeper.getCurrentTime();
 		            cnt++;
