@@ -55,6 +55,9 @@ JSRCS = \
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
+	BoundaryDetector.tcl \
+ 	CompositeProcessDirector.tcl \
+ 	ProcessDirector.tcl \
 	ProcessThread.tcl 
 	
 # 	ProcessDirector.tcl  
