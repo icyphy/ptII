@@ -47,6 +47,41 @@ import cern.jet.random.NegativeBinomial;
    deviation given by parameters.  In addition, the seed can be
    specified as a parameter to control the sequence that is generated.
 
+   <p> This actor instantiates a 
+   <a href="http://hoschek.home.cern.ch/hoschek/colt/V1.0.3/doc/cern/jet/random/NegativeBinomial.html">cern.jet.random.NegativeBinomial</a> object with
+    n, the number of trials set to 1 and p, the probability of success, set
+    to 0.5.
+
+    A definition of NegativeBinomial by Wolfgang Hoschek can be found at
+    <a href="http://hoschek.home.cern.ch/hoschek/colt/V1.0.3/doc/cern/jet/stat/Probability.html#negativeBinomial(int,%20int,%20double)"><code>http://hoschek.home.cern.ch/hoschek/colt/V1.0.3/doc/cern/jet/stat/Probability.html#negativeBinomial(int,%20int,%20double)</code></a>:
+<blockquote>
+<h3>
+negativeBinomial</h3>
+<pre>public static double <b>negativeBinomial</b>(int&nbsp;k,
+                                      int&nbsp;n,
+                                      double&nbsp;p)</pre>
+
+
+Returns the sum of the terms <tt>0</tt> through <tt>k</tt> of the Negative Binomial Distribution.
+ <pre>   k
+   --  ( n+j-1 )   n      j
+   &gt;   (       )  p  (1-p)
+   --  (   j   )
+  j=0
+ </pre>
+ In a sequence of Bernoulli trials, this is the probability
+ that <tt>k</tt> or fewer failures precede the <tt>n</tt>-th success.
+ <p>
+
+ The terms are not computed individually; instead the incomplete
+ beta integral is employed, according to the formula
+ </p><p>
+ <tt>y = negativeBinomial( k, n, p ) = Gamma.incompleteBeta( n, k+1, p )</tt>.
+
+ All arguments must be positive,</p></dd><dd><dl>
+<dt><b>Parameters:</b></dt><dd><code>k</code> - end term.</dd><dd><code>n</code> - the number of trials.</dd><dd><code>p</code> - the probability of success (must be in <tt>(0.0,1.0)</tt>).</dd>
+</blockquote>
+
    @author David Bauer and Kostas Oikonomou
    @version $Id$
    @since Ptolemy II 4.1
