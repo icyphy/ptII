@@ -129,6 +129,22 @@ import ptolemy.kernel.util.StringAttribute;
 //////////////////////////////////////////////////////////////////////////
 //// Wormhole
 
+/**
+This actor generates an additional frame.  This may look like a new
+window in Windows.  This frame detects copy (control-c) and paste
+(control-v) keystrokes provided it has the focus at the time.  When it
+is clicked on, it will acquire said focus.  This actor additionally
+accesses the system clipboard.  When fired, it copies the input token,
+if there is one, to the system clipboard and pastes the system
+clipboard to its output, sending a token there.  If both paste and
+copy occur, paste is performed first.  The frame and clipboard
+portions of this actor are coupled through the director.  The frame
+portion, specified by this actor's inner class, calls the director's
+fireAtCurrentTime() method.  This causes the director to call fire()
+on the clipboard portion. <p>
+
+@author Winthrop Williams
+*/
 public class Wormhole extends TypedAtomicActor {
 
     public Wormhole(CompositeEntity container, String name)
@@ -188,7 +204,7 @@ public class Wormhole extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                     private inner classes                 ////
 
-    public class MyFrame extends JFrame
+    private class MyFrame extends JFrame
         implements ClipboardOwner {
 
         /** Construct a frame associated with the specified Ptolemy II
@@ -203,7 +219,9 @@ public class Wormhole extends TypedAtomicActor {
             if (_debugging) _debug("frame constructor called");
             ActionListener myPasteListener = new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
-                    pasteFromBufferToPasteOutput(); } };
+			pasteFromBufferToPasteOutput(); 
+		    } 
+	    };
             getContentPane().setLayout(new BorderLayout());
             JLabel label = new JLabel("Paste here!");
             getContentPane().add(label);
