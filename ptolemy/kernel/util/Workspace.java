@@ -252,7 +252,6 @@ public final class Workspace implements Nameable, Serializable {
         } else {
             // The current thread is not a PtolemyThread.
             ReadDepth depth = (ReadDepth)_readers.get(current);
-            //System.out.println("Thread returning a read access");
             if (depth == null) {
                 throw new InvalidStateException(this,
                         "Workspace: doneReading() called without a prior "
@@ -264,7 +263,6 @@ public final class Workspace implements Nameable, Serializable {
                 if (_writer != current) {
                     notifyAll();
                 }
-                //System.out.println("This thread gave up all @@@@@@@@@@@@@@");
             }
         }
     }
@@ -294,7 +292,6 @@ public final class Workspace implements Nameable, Serializable {
                     "Workspace: doneWriting called without a prior "
                     + "matching call to getWriteAccess().");
         }
-	//System.out.println("!!!!!!!!!!!!!Done writing: "+_writeReq);
     }
 
 
@@ -388,7 +385,6 @@ public final class Workspace implements Nameable, Serializable {
                             _readers.put(current, depth);
                         }
                         depth.incr();
-                        //System.out.println("Incrementing read access");
                         return;
                     }
                 }
