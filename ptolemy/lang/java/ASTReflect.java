@@ -294,22 +294,29 @@ public final class ASTReflect {
     }
 
     /** Given a CompileUnitNode, return the complete package name.
+     *  If no package name is associated with the CompileUnitNode,
+     *  then return the default package name for code generation. 
      *  @param loadedAST The CompileUnitNode of the class
      *  @return The full package name of the class
      */
     public static String getPackageName(CompileUnitNode loadedAST) {
-	// FIXME: This get(0) worries me.
+	    // FIXME: This get(0) worries me.
         StringBuffer packageBuffer =
 	    new StringBuffer(((UserTypeDeclNode) loadedAST.
                     getDefTypes().get(0)).getName().getIdent());
 
-	NameNode packageNode = (NameNode) loadedAST.getPkg();
-	while (packageNode.getQualifier() != AbsentTreeNode.instance) {
-	    packageBuffer.insert(0, packageNode.getIdent() + '.');
-	    packageNode = (NameNode) packageNode.getQualifier();
-	}
-	packageBuffer.insert(0, packageNode.getIdent() + '.');
-	return packageBuffer.toString();
+        Object packageReturnValue = loadedAST.getPkg();
+        if (!(packageReturnValue instanceof NameNode))
+            return (JavaStaticSemanticConstants.DEFAULT_PACKAGE_NAME);
+        else {
+	        NameNode packageNode = (NameNode) packageReturnValue;
+	        while (packageNode.getQualifier() != AbsentTreeNode.instance) {
+	            packageBuffer.insert(0, packageNode.getIdent() + '.');
+	            packageNode = (NameNode) packageNode.getQualifier();
+	        }
+	        packageBuffer.insert(0, packageNode.getIdent() + '.');
+	        return packageBuffer.toString();
+        }
     }
 
 
