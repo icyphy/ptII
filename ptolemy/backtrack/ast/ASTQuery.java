@@ -28,6 +28,7 @@ COPYRIGHTENDKEY
 
 package ptolemy.backtrack.ast;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
@@ -35,7 +36,13 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+import net.sourceforge.jrefactory.ast.ASTCompilationUnit;
 import net.sourceforge.jrefactory.ast.Node;
+import net.sourceforge.jrefactory.parser.JavaParserVisitor;
+
+import org.acm.seguin.summary.FileSummary;
+import org.acm.seguin.summary.SummaryLoadVisitor;
+import org.acm.seguin.summary.SummaryLoaderState;
 
 //////////////////////////////////////////////////////////////////////////
 //// ASTQuery
@@ -82,6 +89,69 @@ public class ASTQuery {
         writer.flush();
     }
 
+    /** Return a given amount of white spaces as a string.
+     * 
+     *  @param indent The indent amount in the number of spaces.
+     */
+    public static String getIndentString(int indent) {
+        StringBuffer buffer = new StringBuffer(indent);
+        for (int i=0; i<indent; i++)
+            buffer.append(' ');
+        return buffer.toString();
+    }
+    
+    /** Summarize an AST from by traversing it from the root.
+     *  It is the same as calling <tt>summarize(root, null)</tt>.
+     *  
+     *  @param root Root of an AST.
+     *  @return The summary.
+     */
+    public static FileSummary summarize(ASTCompilationUnit root) {
+        return summarize(root, null);
+    }
+    
+    /** Summarize an AST from by traversing it from the root. If
+     *  the file name given is not <tt>null</tt>, it is set to be
+     *  the source file name of the resulting summary.
+     *  
+     *  @param root Root of an AST.
+     *  @param fileName The name of the source file from which the
+     *   AST is built.
+     *  @return The summary.
+     */
+    public static FileSummary summarize(ASTCompilationUnit root, String fileName) {
+        SummaryLoaderState state = new SummaryLoaderState();
+        if (fileName != null)
+            state.setFile(new File(fileName));
+        SummaryLoadVisitor visitor = new SummaryLoadVisitor();
+        root.jjtAccept(visitor, state);
+        return (FileSummary)state.getCurrentSummary();
+    }
+    
+    /** Summarize an AST from by traversing it from the root with
+     *  a user specified visitor as the summary builder. If
+     *  the file name given is not <tt>null</tt>, it is set to be
+     *  the source file name of the resulting summary.
+     *  <p>
+     *  
+     *  @param root Root of an AST.
+     *  @param fileName The name of the source file from which the
+     *   AST is built.
+     *  @param visitor The customized visitor, usually of a subclass
+     *   of {@link TraversalVisitor}.
+     *  @return The summary.
+     */
+    public static FileSummary summarize(ASTCompilationUnit root, String fileName, JavaParserVisitor visitor) {
+        SummaryLoaderState state = new SummaryLoaderState();
+        if (fileName != null)
+            state.setFile(new File(fileName));
+        root.jjtAccept(visitor, state);
+        return (FileSummary)state.getCurrentSummary();
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                       public fields                       ////
+
     /** Whether to dump the <tt>image</tt> property of AST nodes.
      */
     public static boolean DUMP_IMAGE = true;
@@ -97,19 +167,8 @@ public class ASTQuery {
      */
     public static boolean DUMP_TYPE = true;
 
-    /** Return a given amount of white spaces as a string.
-     * 
-     *  @param indent The indent amount in the number of spaces.
-     */
-    public static String getIndentString(int indent) {
-        StringBuffer buffer = new StringBuffer(indent);
-        for (int i=0; i<indent; i++)
-            buffer.append(' ');
-        return buffer.toString();
-    }
-    
     ///////////////////////////////////////////////////////////////////
-    ////                       private methods                     ////
+    ////                         constructor                       ////
 
     /** Construct an object. This class should not be instantiated.
      *  Users should directly call its static functions. This constructor
@@ -117,6 +176,9 @@ public class ASTQuery {
      */
     private ASTQuery() {
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                       private methods                     ////
 
     /** Recusive function for {@link #dumpAST(Node, Writer)}.
      * 
