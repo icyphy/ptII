@@ -68,6 +68,8 @@ MISC_FILES =
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
+	'ExecEvent$$1.class' \
+	'ExecEvent$$ExecEventType.class' \
 	'LocalZenoApplet$$1.class' \
 	'LocalZenoApplet$$2.class' \
 	'LocalZenoApplet$$3.class' \

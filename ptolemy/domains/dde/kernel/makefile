@@ -71,7 +71,7 @@ OPTIONAL_FILES = \
 	doc \
 	$(PTCLASSJAR) \
 	'DDEDirector$$CapacityComparator.class' \
-	'DDEDirector$$RcvrCapacityComparator.class' \
+	'DDEDirector$$ReceiverCapacityComparator.class' \
 	'PrioritizedTimedQueue$$Event.class'
 
 JCLASS = $(JSRCS:%.java=%.class)

@@ -63,7 +63,11 @@ MISC_FILES =	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
-OPTIONAL_FILES = 
+OPTIONAL_FILES = \
+	'GRDirector$$DD3DIOPort.class' \
+	'GRDirector$$_DD3DActor.class' \
+	'GRScheduler$$_NamedObjComparator.class'
+
 JCLASS = $(JSRCS:%.java=%.class)
 
 
