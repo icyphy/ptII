@@ -60,7 +60,7 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 # Keep this list alphabetized.
 JSRCS = \
 	Publisher.java \
-	StockPrice.java \
+	StockQuote.java \
 	Subscriber.java \
 	TokenEntry.java
 
