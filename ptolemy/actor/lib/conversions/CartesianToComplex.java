@@ -116,7 +116,9 @@ public class CartesianToComplex extends TypedAtomicActor {
      *  @exception IllegalActionException If there is no director.
      */
     public boolean prefire() throws IllegalActionException {
-        if ( (!real.hasToken(0)) || (!imag.hasToken(0)) ) return false;
+        if ( !real.hasToken(0) || !imag.hasToken(0) ) {
+            return false;
+        }
         return super.prefire();
     }
 }

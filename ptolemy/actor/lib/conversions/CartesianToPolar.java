@@ -125,7 +125,9 @@ public class CartesianToPolar extends TypedAtomicActor {
      *  @exception IllegalActionException If there is no director.
      */
     public boolean prefire() throws IllegalActionException {
-        if ( (!x.hasToken(0)) || (!y.hasToken(0)) ) return false;
+        if ( !x.hasToken(0) || !y.hasToken(0) ) {
+            return false;
+        }
         return super.prefire();
     }
 }

@@ -188,7 +188,9 @@ public class FixToFix extends Transformer {
      *  @exception IllegalActionException If there is no director.
      */
     public boolean prefire() throws IllegalActionException {
-        if (!input.hasToken(0)) return false;
+        if (!input.hasToken(0)) {
+            return false;
+        }
         return super.prefire();
     }
 
