@@ -255,49 +255,47 @@ public class ExampleSystem implements Serializable {
     ////                         private variables                        ////
     
     // Components of the system.
-    // We violate the naming convention here so that the program
-    // matches the graph better.
 
-    private CompositeEntity e0;
-    private CompositeEntity e3;
-    private CompositeEntity e4;
-    private CompositeEntity e7;
-    private CompositeEntity e10;
+    public CompositeEntity e0;
+    public CompositeEntity e3;
+    public CompositeEntity e4;
+    public CompositeEntity e7;
+    public CompositeEntity e10;
     
-    private ComponentEntity e1;
-    private ComponentEntity e2;
-    private ComponentEntity e5;
-    private ComponentEntity e6;
-    private ComponentEntity e8;
-    private ComponentEntity e9;
+    public ComponentEntity e1;
+    public ComponentEntity e2;
+    public ComponentEntity e5;
+    public ComponentEntity e6;
+    public ComponentEntity e8;
+    public ComponentEntity e9;
     
-    private ComponentPort p0;
-    private ComponentPort p1;
-    private ComponentPort p2;
-    private ComponentPort p3;
-    private ComponentPort p4;
-    private ComponentPort p5;
-    private ComponentPort p6;
-    private ComponentPort p7;
-    private ComponentPort p8;
-    private ComponentPort p9;
-    private ComponentPort p10;
-    private ComponentPort p11;
-    private ComponentPort p12;
-    private ComponentPort p13;
-    private ComponentPort p14;
+    public ComponentPort p0;
+    public ComponentPort p1;
+    public ComponentPort p2;
+    public ComponentPort p3;
+    public ComponentPort p4;
+    public ComponentPort p5;
+    public ComponentPort p6;
+    public ComponentPort p7;
+    public ComponentPort p8;
+    public ComponentPort p9;
+    public ComponentPort p10;
+    public ComponentPort p11;
+    public ComponentPort p12;
+    public ComponentPort p13;
+    public ComponentPort p14;
     
-    private ComponentRelation r1;
-    private ComponentRelation r2;
-    private ComponentRelation r3;
-    private ComponentRelation r4;
-    private ComponentRelation r5;
-    private ComponentRelation r6;
-    private ComponentRelation r7;
-    private ComponentRelation r8;
-    private ComponentRelation r9;
-    private ComponentRelation r10;
-    private ComponentRelation r11;
-    private ComponentRelation r12;    
+    public ComponentRelation r1;
+    public ComponentRelation r2;
+    public ComponentRelation r3;
+    public ComponentRelation r4;
+    public ComponentRelation r5;
+    public ComponentRelation r6;
+    public ComponentRelation r7;
+    public ComponentRelation r8;
+    public ComponentRelation r9;
+    public ComponentRelation r10;
+    public ComponentRelation r11;
+    public ComponentRelation r12;    
 }
 
