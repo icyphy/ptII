@@ -32,9 +32,10 @@ design/code reviewed at the same time.
 
 package ptolemy.actor.lib;
 
-import ptolemy.actor.*;
-import ptolemy.data.*;
-import ptolemy.data.type.*;
+import ptolemy.actor.TypedAtomicActor;
+import ptolemy.actor.TypedIOPort;
+import ptolemy.data.BooleanToken;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 
