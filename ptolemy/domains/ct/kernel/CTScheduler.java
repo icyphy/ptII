@@ -187,13 +187,15 @@ public class CTScheduler extends Scheduler {
     ///////////////////////////////////////////////////////////////////
     ////                       public variables                    ////
 
-    // Signal type: continuous
+    // FIXME: These should be static enumeration, see kernel.util.Settable 
+
+    /** Signal type: continuous */
     public static Integer CONTINUOUS = new Integer(1);
 
-    // Signal type: discrete
+    /** Signal type: discrete */
     public static Integer DISCRETE = new Integer(-1);
 
-    // Signal type: unknown
+    /** Signal type: unknown */
     public static Integer UNKNOWN = new Integer(0);
 
     ///////////////////////////////////////////////////////////////////
@@ -287,7 +289,7 @@ public class CTScheduler extends Scheduler {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Return the CTSchedule. Caching of the schedule is done
+    /** Return the CTSchedule. Cacheing of the schedule is done
      *  in the director class, so this method does not test
      *  for the validation of the schedule.
      */
@@ -336,7 +338,7 @@ public class CTScheduler extends Scheduler {
 
             // Now classify actors by their interfaces.
             // Event generators are treated as sinks, and
-            // waveform genterators are treated as sources.
+            // waveform generators are treated as sources.
             // Note that this breaks some causality loops.
 
             if(a instanceof CTStatefulActor) {
@@ -460,7 +462,7 @@ public class CTScheduler extends Scheduler {
         // So, we can start with the arithmetic actors only.
 
         Object[] sortedArithmeticActors = arithmeticGraph.topologicalSort();
-        // Examine and propagete signal types.
+        // Examine and propagate signal types.
         for (int i = 0; i < sortedArithmeticActors.length; i++ ) {
             Actor actor = (Actor)sortedArithmeticActors[i];
             // Note that the signal type of the input ports should be set
@@ -597,7 +599,7 @@ public class CTScheduler extends Scheduler {
             }
         }
 
-        // Now schedule dynamic actors and state transtion actors.
+        // Now schedule dynamic actors and state transition actors.
         // Manipulate on the arithmeticGraph and the dynamicGraph within
         // the continuous actors.
 
@@ -759,7 +761,7 @@ public class CTScheduler extends Scheduler {
 
     // Inner class for signal type table. This wraps a HashMap, but
     // the put() method will check for conflicts. That is, if there
-    // exist a map port --> CONTINUOUS, but a nother map port --> DISCRETE
+    // exist a map port --> CONTINUOUS, but another map port --> DISCRETE
     // is trying to be inserted, then a NotSchedulableException will be
     // thrown.
 
@@ -785,7 +787,7 @@ public class CTScheduler extends Scheduler {
         }
 
 
-        // Return the sigal type of the specified port.
+        // Return the signal type of the specified port.
         // @return CONTINUOUS, DISCRETE, or UNKNOWN
 
         public Integer getType(IOPort port)
@@ -849,10 +851,10 @@ public class CTScheduler extends Scheduler {
                 } else if (!getType(port).equals(getType(nextPort))) {
                     throw new NotSchedulableException(
                             "Signal type conflict: "
-                            + port.getFullName() + " ( of type " 
+                            + port.getFullName() + " (of type " 
 			    + signalTypeToString(getType(port))
 			    + ") and "
-                            + nextPort.getFullName() + " ( of type "
+                            + nextPort.getFullName() + " (of type "
 			    + signalTypeToString(getType(nextPort)) + ")");
                 }
             }
