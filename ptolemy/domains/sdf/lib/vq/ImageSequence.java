@@ -169,7 +169,7 @@ public final class ImageSequence extends SDFAtomicActor {
 
     public void fire() throws IllegalActionException {
         int i, j, n;
-        workspace().setReadOnly(true);
+        //        workspace().setReadOnly(true);
 
         System.out.println("frame " + framenumber);
         // This is necessary to convert from bytes to ints
@@ -186,7 +186,7 @@ public final class ImageSequence extends SDFAtomicActor {
     }
 
     public void wrapup() throws IllegalActionException {
-        workspace().setReadOnly(false);
+        //        workspace().setReadOnly(false);
     }
 
     int _fullread(InputStream s, byte b[]) throws IOException {
