@@ -28,7 +28,7 @@
 @AcceptedRating
 */
 
-package ptolemy.domains.sdf.lib;
+package ptolemy.domains.sdf.lib.javasound;
 
 import ptolemy.actor.*;
 import ptolemy.actor.lib.*;
