@@ -395,7 +395,7 @@ public class InterfaceAutomaton extends FSMActor {
      *  is defined in Definition 11 of the interface automaton paper. It
      *  is the set of states that can be reached from the specified state
      *  by taking only internal transitions.
-     *  @param state The state from which the espilon-closure is computed.
+     *  @param state The state from which the epsilon-closure is computed.
      *  @return A set of instances of State.
      */
     public Set epsilonClosure(State state) {
