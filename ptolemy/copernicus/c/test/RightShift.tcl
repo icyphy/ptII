@@ -131,7 +131,8 @@ test RightShift-1.1 {Generate all required files for RightShift.java} {
     set output [exec $exeFile]
     
     # Check if the output is correct.
-    set template [exec java $className]
+    # Solaris needs the -classpath .
+    set template [exec java -classpath . $className]
     
     string first $template $output
     

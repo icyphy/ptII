@@ -131,7 +131,7 @@ test CommandLine-1.1 {Generate all required files for CommandLine.java} {
     set output [exec $exeFile]
     
     # Check if the output is correct.
-    set template [exec java $className "a b c d"]
+    set template [exec java -classpath . $className "a b c d"]
     
     string first $template $output
     
