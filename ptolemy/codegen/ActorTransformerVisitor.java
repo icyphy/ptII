@@ -1080,7 +1080,7 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
      *  yet. This method should be overloaded in subclasses.
      */
     protected Object _actorClassDeclNode(ClassDeclNode node, LinkedList args) {
-        // if the class derives from TypedAtomicActor or SDFAtomicActor,
+        // if the class derives from TypedAtomicActor
         // replace the superclass with Object
 
         TypeNameNode superTypeNode = (TypeNameNode) node.getSuperClass();
