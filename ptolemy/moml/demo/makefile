@@ -51,6 +51,7 @@ EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JGRAPHICAL_TESTS) \
 	example.xml \
 	modulation.htm \
 	modulation.xml \
+	modulationShow.htm \
 	moml.dtd \
 	plotConfigure.xml \
 	sinewave.xml
