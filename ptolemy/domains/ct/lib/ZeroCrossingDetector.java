@@ -42,13 +42,13 @@ import ptolemy.actor.lib.Transformer;
 //////////////////////////////////////////////////////////////////////////
 //// ZeroCrossingDetector
 /**
-This is an event detector that monitors the signal coming in from the
-trigger input. If the trigger is zero (within an accuracy), then output
-the token from the "input" port when emitCurrentEvent() is called.
-This actor controls the integration step size to accurately resolve
-the time that the zero crossing happens.
-It has a parameter "errorTolerance," which controls how accurate the
-zero crossing is defined.
+A event detector that converts continuous signals to discrete events.
+When the <i>trigger</i> is zero (within the specified
+<i>errorTolerance</i>), this actor outputs the value from the
+<i>input</i> port as a discrete event. This actor controls
+the integration step size to accurately resolve the time
+at which the zero crossing occurs.
+
 @author Jie Liu
 @version $Id$
 */

@@ -41,14 +41,17 @@ import ptolemy.actor.lib.TimedActor;
 //////////////////////////////////////////////////////////////////////////
 //// ThresholdMonitor
 /**
-Monitor integration steps so that a threshold is never crossed in one step.
-The threshold is defined as a <i>thresholdCenter</i> and a
-<i>thresholdWidth</i>. The actor monitors the input
-value and controls the integration step size such that the input does
-not cross the threshold in one step. In stead, the input will be in the
-threshold at at least one time instance. When ever the input is in
-the threshold, it outputs a true token, otherwise, it output
-a false token.This actor refines step sizes by bisection.
+Output <i>true</i> if the input value is in the interval
+[<i>a</i>, <i>b</i>], which is centered at <i>thresholdCenter</i>
+and has width <i>thresholdWidth</i>.  This actor controls the
+the integration step size so that the input does
+not cross the threshold without producing at least one
+<i>true</i> output. The output can be used as a pure event
+to trigger other events or state transitions. 
+When the input crosses the interval in 
+one step, this actor will report that the integration step is
+not accurate and refines the new step size by bisecting the 
+old step size.
 
 @author  Jie Liu
 @version $Id$
