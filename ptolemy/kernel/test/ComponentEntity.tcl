@@ -34,12 +34,12 @@
 
 # Load up the test definitions.
 if {[string compare test [info procs test]] == 1} then { 
-    source ../util/test/testDefs.tcl
+    source ../../../util/testsuite/testDefs.tcl
 } {}
 
 # Load up Tcl procs to print out enums
 if {[info procs _testEntityGetPorts] == "" } then { 
-    source ../util/test/testEnums.tcl
+    source ../../../util/testsuite/testEnums.tcl
 }
 
 # Uncomment this to get a full report, or set in your Tcl shell window.

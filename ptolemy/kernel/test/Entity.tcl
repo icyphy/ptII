@@ -34,16 +34,16 @@
 
 # Load up the test definitions.
 if {[string compare test [info procs test]] == 1} then { 
-    source ../util/test/testDefs.tcl
+    source ../../../util/testsuite/testDefs.tcl
 } {}
 
 # Load up Tcl procs to print out enums
 if {[info procs _testEntityLinkedRelations] == "" } then { 
-    source ../util/test/testEnums.tcl
+    source ../../../util/testsuite/testEnums.tcl
 }
 
 if {[info procs enumToFullNames] == "" } then { 
-    source ../util/test/enums.tcl
+    source ../../../util/testsuite/enums.tcl
 }
 
 
