@@ -7,28 +7,69 @@
 </head>
 <body>
 <h1>Eclipse</h1>
-Eclipse is an Integrated Development Environment available
-from
-<a href="http://www.eclipse.org" target="_top"><CODE>http://www.eclipse.org</CODE></a>
+<h2>Contents</h2>
+<menu>
+<li><a href="#Installing">Downloading, and installing Eclipse</a>
+<li><a href="#SettingUp">Setting up Eclipse to manage your Ptolemy II development environment</a>
+<menu>
+<li><a href="#NoCVS">If you <em>don't</em> want CVS</a>
+<li><a href="#YesCVS">If you <em>do</em> want CVS</a>
+<li><a href="#dotFileSetup">Creating the .classpath and .project files</a>
+<li><a href="#PtolemyPreferences">Importing the Ptolemy II specific preferences</a>
+<li><a href="#ByHand">Setting up for Ptolemy II By Hand<a>
+<li><a href="#tabs">Don't use tabs in the editor</a>
+</menu>
+<li><a href="#UsingEclipse">Using Eclipse</a>
+<menu>
+<li><a href="#RunningEclipse">Running Eclipse</a>
+<li><a href="#simpleDebug">Simple Debugging Session</a>
+<li><a href="#UsingCVS">Using CVS</a>
+<li><a href="#troubleshooting">Troubleshooting</a>
+</menu>
+</menu>
 
-<h2>Getting Started with Eclipse</h2>
-The instructions below cover how to get started using Eclipse
-with Ptolemy II
+<hr>
+<h1><a name="Installing">Downloading, and installing Eclipse</a></h1>
+<ol>
+<li>Download version 2.1 from <a href="http://www.eclipse.org" target="_top"><CODE>http://www.eclipse.org</CODE></a>. For Windows it will be the file eclipse-SDK-2.1-win32.zip and for Linux it will be either eclipse-SDK-2.1-linux-motif.zip, or eclipse-SDK-2.1-linux-gtk.zip.
+<li>The download file is a zip file that contains the eclipse directory. Unzip the download file into an appropriate place (such as c:\Program Files, or c:\InstalledStuff).
+<li>Finish the installation by running eclipse/eclipse.exe. The first time this is run it will complete the installation process. After the first run, normal start-up will occur whenever it is started.
+<li>As an option, You may want to make a shortcut to eclipse.exe.
+</ol>
 
-<h2><a name="cvs_repository">Using the ptII CVS repository in Eclipse</a></h2>
-Eclipse has an extensive CVS capability. However, Eclipse assumes that
+<hr>
+<h1><a name="SettingUp">Setting up Eclipse to manage your Ptolemy II development environment</a></h1>
+Eclipse will manage your ptII code tree as a <em>project</em> called the ptII project.
+There are two ways to set up the ptII project, either aware of the CVS aspects, on unaware of the CVS aspects..
+Without CVS, you'll need to manage the CVS aspects in the usual way, i.e. with CVS commands being submitted to a bash shell.
+With CVS, Eclipse will do all sorts of things to "help" you. Most of these things are good, but there is a learning curve.
+<p>
+Once the ptII project has been set up there seems to be no way to switch between using CVS and not using CVS.
+I.E., the only way to switch is to re-create the ptII project.
+(Actually, this isn't too hard after you,ve done it a couple of times :-)).
+Therefore, you'll need to decide if you want Eclipse to be aware of, and manage the CVS aspects of the ptII project.
+<h3><a name="NoCVS">If you <em>don't</em> want CVS</a></h3>
+You must already have a ptII development tree. All you want to do is
+<ol>
+<li>Configure the .classpath and .project files. See <a href="#dotFileSetup">Creating the .classpath and .project files</a>.
+<li>Create the ptII project
+<ul>
+ <li> File-&gt;New-&gt;Project. Select 'Java project'. Name it ptII.
+Deselect 'Use default' and browse to the PTII directory. Finish.
+<li>When asked if you want to shift to the Java perspective, click on Yes.
+</ul>
+</ol>
+<h3><a name ="YesCVS">If you <em>do</em> want CVS</a></h3>
+You must start fresh and allow Eclipse to perform the CVS checkout.
+<p>
+Eclipse assumes that
 an Eclipse project (including the .classpath, and .project) are under CVS control.
 Therefore, creating the ptII project in Eclipse under CVS control requires an unusual procedure.
 In brief, the CVS ptII module must be checked out of CVS into an Eclipse project that doesn't work "correctly" until
 the .classpath is created by manually running configure.
-
 <ol>
-
-<li> See <a href="http://www.gigascale.org/ptexternal"><CODE>http://www.gigascale.org/ptexternal</CODE></a> for information about how to get a
-login for cvs access.
-
-<li> You must be using Eclipse 2.1. If necessary, obtain from
-       <a href="http://www.eclipse.org" target="_top"><CODE>http://www.eclipse.org</CODE></a>
+<li>Determine where the ptII tree will be put. If you currently have a ptII tree at that location, it must be removed.
+<li>Start Eclipse
 <li> Set up the CVS connection:
 
 <ol>
@@ -51,7 +92,7 @@ a login for cvs access
 	<li> <CODE>extssh</CODE> is not recommended because it
 	uses version 1 of the SSH protocol which is implemented
 	by a version of ssh that is built in to Eclipse.
-	 <b>SSH V1 is not as likely to be supported as SSH V2.
+	 <b>SSH V1 is not as likely to be supported as SSH V2.</b>
 	</ul>
 
 
@@ -71,33 +112,31 @@ HEAD until you see the ptII Head and right click on this
 
 <li> Click OK. And, wait for the checkout to finish
 <li> The result should be the ptII project. There will probably be several errors reported that are due to the .classpath that was just created as part of the checkout/project creation process.
-<li> Now run configure in the ptII directory outside of Eclipse. This will create the "correct" .classpath.
+<li> Now run configure in the ptII directory outside of Eclipse. This will create the "correct" .classpath. See <a href="#dotFileSetup">Creating the .classpath and .project files</a>.
 <li> In Eclipse, perform a Refresh on the ptII project. This will cause Eclipse to see the new .classpath
 </ol>
-     
 
+<h2><a name="dotFileSetup">Creating the .classpath and .project files</a></h2>
 
-
-<h2><a name="dotFileSetup">Using dot files in $PTII to set up</a></h2>
-
-Eclipse uses projects to manage source trees.
-
-<p> Eclipse uses <code>.project</code> to manage the project
-and <code>.classpath</code> to set the classpath and exclude files.
-
-<p> When <code>$PTII/configure</code> is run, it 
+There are parts of the ptII tree that are not meant to be
+compiled, or are meant to be compiled only in certain situations.
+However, without specific instructions to exclude parts of the ptII tree, 
+Eclipse will attempt to compile every .java in the project
+which typically leads to many, many error messages.
+These exclusion instructions are generated by running <code>$PTII/configure</code>.
+When <code>$PTII/configure</code> is run, it 
 reads in <code>$PTII/.classpath.in</code> substitutes in variables
 that are surrounded with <code>@</code> and generates
 <code>$PTII/.classpath</code>, which will contain the
-proper classpath and directories to exclude
+proper classpath and directories to exclude.
 
 <ol>
-<li>You may find that running <code>make clean</code>
-in your ptII tree speeds things up.
+<li>  Exit Eclipse if it is running
+<li> In the PTII directory run configure. This will create the "correct" .classpath.
+<li> Restart Eclipse.
+</ol>  
 
-<li> If necessary download Eclipse from
-<a href="http://www.eclipse.org" target="_top"><CODE>http://www.eclipse.org</CODE></a>
-
+<h2><a name="PtolemyPreferences">Importing the Ptolemy II specific preferences</a></h2>
 <li> If you have already used Eclipse and you would like to start
 over with new settings,
 remove the <code>workspace</code> directory in the Eclipse directory.
@@ -105,7 +144,7 @@ remove the <code>workspace</code> directory in the Eclipse directory.
 
 <li> Start eclipse by clicking on the <code>eclipse.exe</code> icon.
 
-<li> <a name="importPreferences">Import the Ptolemy II specific preferences</a>:
+<li> Import the Ptolemy II specific preferences:
 Window -&gt; Preferences -&gt; Import, and then browse
 to <code>$PTII/.eclipse.epf</code>.
 <li> Unfortunately, not all the preferences are set, you will need
@@ -120,11 +159,11 @@ instructions in
 <li> File -&gt; Import -&gt Existing Project into Workspace
 <li> Browse to the <code>ptII</code> directory (Folder: should say <code>ptII</code>). Hit OK, then Finish.
 <li> Project -&gt; Rebuild All <i>Probably not necessary</i>
-<li> Proceed with the <a name="simpleDebug">Simple Debugging Session</a>. 
+<li> Proceed with the <a href="#simpleDebug">Simple Debugging Session</a>. 
 </ol>
 See <a href="#troubleshooting">Troubleshooting</a> for hints
 
-<h2>Setting up for Ptolemy II By Hand</h2>
+<h2><a name="ByHand">Setting up for Ptolemy II By Hand<a></h2>
 Below are instructions on how to set up a project by hand.
 Note that the Ptolemy II tree includes <code>.classpath</code>
 and <code>.project</code> files, so rather than
@@ -169,45 +208,8 @@ then click on the Exclusion Filter and hit Edit.
  <li> In the top level Eclipse window: Project-&gt; Rebuild All.
 </ol>
 
-<h2><a name="simpleDebug">Simple Debugging Session</a></h2>
-Before editing any files, follow the steps in
-<a href="#tabs">Don't use tabs in the editor</a> below
-
-<ol>
- <li> Locate ptolemy/vergil/VergilApplication in the Explorer and
-double click. Place a breakpoint on the first line of main()
-<I>[with Run-&gt;Add/Remove Breakpoint]</I>
- <li> Run-&gt;Run. On the Main tab, select the Ptolemy II package and
-enter ptolemy.vergil.VergilApplication as Main class.
- <li> Press the Run button...
- <li> To debug, quit Vergil, and place a breakpoint in, say, the fire() method
-of ptolemy.domains.ct.kernel.CTBaseIntegrator. Then Run-&gt;Debug, and
-as above. Open the Lorenz CT demo from the Quick Tour and run it.
-</ol>
-
-<h2>Compiling just what's necessary</h2>
 
 
-There are parts of the CVS ptII tree that are not meant to be
-compiled, or are meant to be compiled only in certain situations.
-However, Eclipse will attempt to compile every .java in the project
-which typically leads to many, many error messages. If you want to use
-the CVS capability see <a href="#cvs_repository">Using the ptII CVS repository in Eclipse</a>.
-If you dont want the CVS capability and want to restrict
-Eclipse to compile just the appropriate .javas
-
-<ol>
-<li> You must be using Eclipse 2.1. If necessary, obtain from
-       <a href="http://www.eclipse.org" target="_top"><CODE>http://www.eclipse.org</CODE></a>
-
-<li>  Exit Eclipse if it is running
-
-<li> In the PTII directory run configure. This will create the "correct" .classpath.
-<li> Restart Eclipse.
-
-
-
-</ol>  
 
 <h2><a name="tabs">Don't use tabs in the editor</a></h2>
 This setting is in the <code>$PTII/.eclipse.epf</code> file.
@@ -251,32 +253,9 @@ it tries to execute it.
 and select the Text editor, then hit OK.
 </ol>
 
-
-<h2><a name="troubleshooting">Troubleshooting</a></h2>
-
-<h3>Rebuilding Briefly flashes a window</h3> 
-<p>If you have problems where clicking on build briefly flashes up
-a window, look in <code>$PTII/.classpath</code> for and empty
-exclusion that looks like <code>||</code>
-
-<p>If you have problems with the classpath, look in the 
-<code>workspace/.metadata/log</code> file that is in
-the directory where eclipse is installed. For more information
-about the <code>.metadata</code> directory, see
-<a href="#metadata">below</a>.
-
-
-<h3>Eclipse takes a long time to start up</h3>
-
-If Eclipse takes a long time to start up, then the problem could be that
-
- <p>Basically, when eclipse starts up, it might try to update
-<a name="metadata"><CODE>H:/workspace/.metadata</CODE></a>
-.  The solution is covered in
-<a href="http://www.eclipse.org/documentation/html/plugins/org.eclipse.platform.doc.user/doc/tasks/running_eclipse.htm" target="_top"><CODE>http://www.eclipse.org/documentation/html/plugins/org.eclipse.platform.doc.user/doc/tasks/running_eclipse.htm</CODE></a>:
-
-<BLOCKQUOTE>
-<B>Running Eclipse</B>
+<hr>
+<h1><a name="UsingEclipse">Using Eclipse</a></h1>
+<h2><a name="RunningEclipse">Running Eclipse</a></h2>
 
 After installing (unzipping) the Eclipse install into a directory
 (e.g., c:\eclipse), the workbench is started by running the Eclipse
@@ -310,8 +289,57 @@ to create a shortcut using the following steps:
  <p>Of course you can get the same effect using a command prompt by changing directory to your workspace directory and then running eclipse.exe.
 
  <p>To use the -data command line argument, simply add -data &lt;your workspace location&gt; (e.g., -data c:\myworkspace) to the "Target:" line in the shortcut or include it explicitly on your command prompt command line. 
-Advanced topics in running Eclipse 
-</BLOCKQUOTE>
+
+<h2><a name="simpleDebug">Simple Debugging Session</a></h2>
+Before editing any files, follow the steps in
+<a href="#tabs">Don't use tabs in the editor</a> below
+
+<ol>
+ <li> Locate ptolemy/vergil/VergilApplication in the Explorer and
+double click. Place a breakpoint on the first line of main()
+<I>[with Run-&gt;Add/Remove Breakpoint]</I>
+ <li> Run-&gt;Run. On the Main tab, select the Ptolemy II package and
+enter ptolemy.vergil.VergilApplication as Main class.
+ <li> Press the Run button...
+ <li> To debug, quit Vergil, and place a breakpoint in, say, the fire() method
+of ptolemy.domains.ct.kernel.CTBaseIntegrator. Then Run-&gt;Debug, and
+as above. Open the Lorenz CT demo from the Quick Tour and run it.
+</ol>
+
+<h2><a name="UsingCVS">Using CVS</a></h2>
+<h3>Syncronizing with the repository</h3>
+In the Navigator view scroll/open until you see the resource (directory or file) to be synchronized.
+Right click that resource and select Team->Synchronize With Repository...
+The Synchronize view should then be visible.
+Select the Incoming, Outgoing, or Incoming/Outgoing menu bar icon as appropriate
+<h3>Restoring a file from the repository</h3>
+In the Navigator view scroll/open until you see the resource (directory or file) to be restored.
+Right click that resource and select Replace With->Latest From Head.
+
+
+<h2><a name="troubleshooting">Troubleshooting</a></h2>
+
+<h3>Rebuilding Briefly flashes a window</h3> 
+<p>If you have problems where clicking on build briefly flashes up
+a window, look in <code>$PTII/.classpath</code> for and empty
+exclusion that looks like <code>||</code>
+
+<p>If you have problems with the classpath, look in the 
+<code>workspace/.metadata/log</code> file that is in
+the directory where eclipse is installed. For more information
+about the <code>.metadata</code> directory, see
+<a href="#metadata">below</a>.
+
+
+<h3>Eclipse takes a long time to start up</h3>
+
+If Eclipse takes a long time to start up, then the problem could be that
+
+ <p>Basically, when eclipse starts up, it might try to update
+<a name="metadata"><CODE>H:/workspace/.metadata</CODE></a>
+.  The solution is covered in
+<a href="http://www.eclipse.org/documentation/html/plugins/org.eclipse.platform.doc.user/doc/tasks/running_eclipse.htm" target="_top"><CODE>http://www.eclipse.org/documentation/html/plugins/org.eclipse.platform.doc.user/doc/tasks/running_eclipse.htm</CODE></a>:
+
 
 
 The way I figured this out was by running Norton Antivirus and
