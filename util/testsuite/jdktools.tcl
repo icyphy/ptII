@@ -90,14 +90,17 @@ proc ::jdk::init { {version 1.0}} {
 # Print information about the Java and Tcl interpreters.
 #
 proc ::jdk::version {} {
-    global env tcl_version
-    puts "env(CLASSPATH):   $env(CLASSPATH)\n
+    global env tcl_version tcl_patchLevel
+    puts "env(CLASSPATH):   $env(CLASSPATH)\n\
             java.class.path property:\
             [java::call System getProperty "java.class.path"]\n"
     puts "jdk version: [java::call System getProperty "java.version"] \
-            tcl version: $tcl_version \
-            java package: [package versions java]"
-    puts "info loaded: [info loaded]"   
+	    Tcl Blend patch level: $::java::patchLevel"
+    puts "tcl version: $tcl_version \
+	    tcl patch level: $tcl_patchLevel"
+
+    puts "java package: [package versions java] \
+	    info loaded: [info loaded]"   
 }
 
 
