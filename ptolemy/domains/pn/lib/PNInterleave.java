@@ -27,6 +27,7 @@
 
 package pt.domains.pn.kernel;
 import pt.kernel.*;
+import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
 //// PNInterleave
@@ -54,8 +55,7 @@ public class PNInterleave extends PNStar{
 
     public void initialize(PNExecutive myExecutive) 
             throws NameDuplicationException, GraphException {
-        _input1 = addInPort(this, "input1");
-        _input2 = addInPort(this, "input2");
+        _input = addInPort(this, "input");
         _output = addOutPort(this, "output");
         _myExecutive = myExecutive;
         _myExecutive.registerStar(this);
@@ -64,16 +64,17 @@ public class PNInterleave extends PNStar{
     /** Description
      */	
     public void run() {
-        int i;
         int data;
+        int i;
         try {
             for (i=0; _noOfCycles < 0 || i < _noOfCycles; i++) {
-                data = readFrom(_input1);
-                writeTo(_output, data);
-                System.out.println(this.getName()+" writes "+data+" to "+_output.getName());
-                data = readFrom(_input2);
-                writeTo(_output, data);
-                System.out.println(this.getName()+" writes "+data+" to "+_output.getName());
+	 	Enumeration relations = _input.enumRelations();
+		while (relations.hasMoreElements()) {
+		    PNFifoRelation nextQueue = (PNFifoRelation)relations.nextElement();
+                    data = readFrom(_input, nextQueue);
+                    writeTo(_output, data);
+                    System.out.println(this.getName()+" writes "+data+" to "+_output.getName());
+		}
             }
             _myExecutive.processStopped();
         } catch(TerminationException e) {
@@ -85,8 +86,7 @@ public class PNInterleave extends PNStar{
     //////////////////////////////////////////////////////////////////////////
     ////                         private variables                        ////
 
-    private PNInPort _input1;
-    private PNInPort _input2;
+    private PNInPort _input;
     private PNOutPort _output;
 
 }

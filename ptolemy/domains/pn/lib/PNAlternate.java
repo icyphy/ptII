@@ -27,6 +27,7 @@
 
 package pt.domains.pn.kernel;
 import pt.kernel.*;
+import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
 //// PNAlternate
@@ -56,8 +57,7 @@ public class PNAlternate extends PNStar {
     public void initialize(PNExecutive myExecutive)
             throws NameDuplicationException, GraphException {
         _input = addInPort(this, "input");
-        _output1 = addOutPort(this, "output1");
-        _output2 = addOutPort(this, "output2");
+        _output = addOutPort(this, "output");
         _myExecutive = myExecutive;
         _myExecutive.registerStar(this);
     }
@@ -65,13 +65,17 @@ public class PNAlternate extends PNStar {
     public void run() {
         int data;
         try {
-            while (true) {
-                data =  readFrom(_input);
-                writeTo(_output1, data);
-                System.out.println(this.getName()+" writes "+data+" to "+_output1.getName());
-                data =  readFrom(_input);
-                writeTo(_output2, data);
-                System.out.println(this.getName()+" writes "+data+" to "+_output2.getName());
+	    int i;
+	    for (i=0; _noOfCycles < 0 || i < _noOfCycles; i++) {
+            //while (true) {
+		Enumeration relations = _output.enumRelations();
+                while (relations.hasMoreElements()) {
+                    PNFifoRelation nextQueue = (PNFifoRelation)relations.nextElement();
+                    data = readFrom(_input);
+                    writeTo(_output, data, nextQueue);
+                    System.out.println(this.getName()+" writes "+data+
+                            " to "+ nextQueue.getName());
+                }
             }
         } catch (TerminationException e) {
 	    System.out.println("Terminating "+ this.getName());
@@ -83,6 +87,5 @@ public class PNAlternate extends PNStar {
     ////                         private variables                        ////
 
     private PNInPort _input;
-    private PNOutPort _output1;
-    private PNOutPort _output2;
+    private PNOutPort _output;
 }
