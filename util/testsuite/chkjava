@@ -180,7 +180,7 @@ do
 	fi
 
 	# Check for problems with equals signs
-	results=`egrep '[^-*/ ><+&=\!]=' $file | \
+	results=`egrep '[^-|*/ ><+&=\!]=' $file | \
 	    egrep -iv 'HREF=|NAME=|=WxH|"="' `
 	if [ "x$results" != "x" ]; then
 	    echo "$file: contains an equal sign without a leading space"
