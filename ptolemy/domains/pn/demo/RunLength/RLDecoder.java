@@ -78,9 +78,9 @@ public class RLDecoder extends AtomicActor {
 	    int value = 0;
 	    if (inval < 0) value = 1;
 	    //int value = (unsigned)((128 & inval)>>7);
-            //send the first occurence of the value
+            //send the first occurrence of the value
             //_output.broadcast(new IntToken(value));
-            //Obtain the number of occurences
+            //Obtain the number of occurrences
             //token = (IntToken)_input.get(0);
             //int count = token.intValue();
 	    int count = (127 & inval) + 1;
