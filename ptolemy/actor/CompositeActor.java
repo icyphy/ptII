@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (eal@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu) - because of allAtomicEntityList()
+@ProposedRating Green (cxh@eecs.berkeley.edu)
+@AcceptedRating Green (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.actor;
@@ -174,6 +174,11 @@ public class CompositeActor extends CompositeEntity implements Actor {
     public List allAtomicEntityList() {
         // We don't use an Iterator here so that we can modify the list
         // rather than having both an Iterator and a result list.
+        //
+        // Note: 
+        // deepEntityList() should be renamed to deepOpaqueEntityList()
+        // allAtomicEntityList() to deepAtomicEntityList()
+        // However, the change would require a fair amount of work.
         LinkedList entities = (LinkedList)deepEntityList();
         for(int i = 0; i < entities.size(); i++) {
             Object actor = entities.get(i);
