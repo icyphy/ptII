@@ -75,6 +75,7 @@ foreach i $configs {
     # Alphabetical please
     $inputFileNamesToSkip add "/apps/apps.xml"
     $inputFileNamesToSkip add "/apps/superb/superb.xml"
+    $inputFileNamesToSkip add "/attributes/decorative.xml"
     $inputFileNamesToSkip add "/configs/ellipse.xml"
     $inputFileNamesToSkip add "/io/comm/comm.xml"
     $inputFileNamesToSkip add "/image.xml"
@@ -86,6 +87,7 @@ foreach i $configs {
     $inputFileNamesToSkip add "/joystick/jstick.xml"
     $inputFileNamesToSkip add "/jxta/jxta.xml"
     $inputFileNamesToSkip add "/rectangle.xml"
+    $inputFileNamesToSkip add "/quicktime.xml"
     $inputFileNamesToSkip add "/matlab.xml"
 
     # Tell the parser to skip inputting the above files
