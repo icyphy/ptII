@@ -830,7 +830,7 @@ echo $ac_n "checking for the proper CLASSPATH separator""... $ac_c" 1>&6
 echo "configure:831: checking for the proper CLASSPATH separator" >&5
 
 case "`uname -s`" in
-    CYGWIN_NT-) CLASSPATHSEPARATOR=";";;
+    CYGWIN_NT-*) CLASSPATHSEPARATOR=";";;
     *) CLASSPATHSEPARATOR=":";;
 esac
 echo "$ac_t""'$CLASSPATHSEPARATOR'" 1>&6
