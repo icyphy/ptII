@@ -38,6 +38,7 @@ import ptolemy.kernel.util.*;
 import ptolemy.domains.ct.kernel.CTBaseIntegrator;
 import ptolemy.automata.util.*;
 import ptolemy.data.DoubleToken;
+import ptolemy.data.expr.Parameter;
 import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
@@ -97,7 +98,7 @@ public class HSInit extends NamedObj implements TransitionAction {
 
     /** Execute the action.
      */
-    public void execute() {
+    public void execute() throws IllegalActionException {
         _valueVar.evaluate();
         SCState dest = _container.destinationState();
         CompositeActor nref = (CompositeActor)dest.getRefinement();
@@ -110,9 +111,14 @@ public class HSInit extends NamedObj implements TransitionAction {
         }
         CTBaseIntegrator intgr = (CTBaseIntegrator)nref.getEntity(_integratorName);
 
-        System.out.println("Executing transition action: " + this.getFullName());
+        
 
-        intgr.setPotentialState(((DoubleToken)_valueVar.getToken()).doubleValue());
+        //intgr.setPotentialState(((DoubleToken)_valueVar.getToken()).doubleValue());
+        Parameter init = (Parameter)intgr.getAttribute("InitialState");
+        init.setToken(_valueVar.getToken());
+        
+        System.out.println("Executing transition action: " + this.getFullName() + " " + ((DoubleToken)_valueVar.getToken()).doubleValue());
+
         // set the input of dest ref
         // SCState src = _container.sourceState();
         // CompositeActor cref = (CompositeActor)src.getRefinement();
@@ -134,6 +140,7 @@ public class HSInit extends NamedObj implements TransitionAction {
                 }
             }
         }
+        nref.initialize();
     }
 
     public Nameable getContainer() {
