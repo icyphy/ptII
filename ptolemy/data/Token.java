@@ -33,6 +33,8 @@ package ptolemy.data;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.data.type.*;
 
+import java.io.Serializable;
+
 //////////////////////////////////////////////////////////////////////////
 //// Token
 /**
@@ -54,7 +56,7 @@ method returns the String "present".
 @version $Id$
 
 */
-public class Token {
+public class Token implements Serializable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
