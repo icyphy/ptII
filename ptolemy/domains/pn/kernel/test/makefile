@@ -46,7 +46,6 @@ TCL_SRCS = \
 	testDefs.tcl
 
 JSRCS = \
-	StringPNListener.java \
 	TestSink.java \
 	TestDirector.java
 
