@@ -213,6 +213,8 @@ ALLPACKAGES =		$(COMMPACKAGES) \
 			ptolemy.actor.lib.net \
 			ptolemy.actor.sched \
 			ptolemy.actor.util \
+			ptolemy.domains.ci.kernel \
+			ptolemy.domains.ci.lib \
 			ptolemy.domains.csp.kernel \
 			ptolemy.domains.csp.lib \
 			ptolemy.domains.dde.kernel \
@@ -339,6 +341,8 @@ codeDoc/tree.html:	../ptolemy/plot/*.java \
 			../ptolemy/actor/process/*.java \
 			../ptolemy/actor/sched/*.java \
 			../ptolemy/actor/util/*.java \
+			../ptolemy/domains/ci/kernel/*.java \
+			../ptolemy/domains/ci/lib/*.java \
 			../ptolemy/domains/csp/kernel/*.java \
 			../ptolemy/domains/csp/lib/*.java \
 			../ptolemy/domains/ct/kernel/*.java \
