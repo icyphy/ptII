@@ -66,7 +66,7 @@ test Parameter-2.0 {Check constructors} {
     set name3 [$param3 getFullName]
     set name4 [$param4 getFullName]
     set value3 [[$param3 getToken] stringValue]
-    list $name1 $name2 $name3 $name4 $value3
+    list $name1 $name2 $name3 $name4 $value3 
 } {. workspace. .entity.id2 .entity.id1 4.5}
 
 #################################
@@ -128,8 +128,8 @@ test Parameter-3.3 {Check type constriants: ok to put int in a double} {
     set name2 [$param1 getFullName]
     set value2 [[$param1 getToken] stringValue]
 
-    list $name1 $value1 $name2 $value2
-} {.entity.id1 4.4 .entity.id1 7}
+    list $name1 $value1 $name2 $value2 
+} {.entity.id1 4.4 .entity.id1 7.0}
 
 #################################
 ####
@@ -251,7 +251,7 @@ test Parameter-6.0 {Check updating of Parameters that refer to other Params} {
     set value5 [[$param3 getToken] stringValue]
 
     list $name1 $value1 $name2 $value2 $name3 $value3 $name4 $value4 $name5 $value5 
-} {.parent.id1 1.1 .parent.id2 9.9 .parent.id3 11 .parent.id1 5.5 .parent.id3 15.4}
+} {.parent.id1 1.1 .parent.id2 9.9 .parent.id3 11.0 .parent.id1 5.5 .parent.id3 15.4}
 
 #################################
 ####
@@ -275,7 +275,7 @@ test Parameter-7.0 {Check that dependency cycles are flagged as an error} {
     catch {$param1 evaluate} errmsg
 
     list $value1 $value2 $value3 $errmsg
-} {1.1 9.9 11 {java.lang.IllegalArgumentException: Found dependency loop in .parent.id1: id3}}
+} {1.1 9.9 11.0 {java.lang.IllegalArgumentException: Found dependency loop in .parent.id1: id3}}
 #################################
 ####
 # 
@@ -331,3 +331,30 @@ test Parameter-9.0 {Check that notification works properly when a Parameter is r
 
     list $res1 $res2
 } {ptolemy.data.IntToken(6600) ptolemy.data.IntToken(1100)}
+#################################
+####
+# 
+test Parameter10.0 {Check that the type of the Token returned by getToken is the same type as the type of the Parameter. Compare with the token obtained by calling getContainedToken.} {
+    set e [java::new {ptolemy.kernel.Entity String} entity]
+    set tok1 [java::new  {ptolemy.data.DoubleToken double} 4.4]
+
+    set param1 [java::new ptolemy.data.expr.Parameter $e id1 $tok1]
+    set name1 [$param1 getFullName]
+    set value1 [[$param1 getToken] stringValue]
+
+    # Now put a new token into the Param
+    set tok2 [java::new  {ptolemy.data.IntToken int} 7]
+    catch {$param1 setToken $tok2} errmsg
+    
+    set tok2  [$param1 getToken]
+    set class2 [[$tok2 getClass] getName]
+    set value2 [$tok2 stringValue]
+
+    set tok3 [$param1 getContainedToken]
+    set class3 [[$tok3 getClass] getName]
+    set value3 [$tok3 stringValue]
+
+    list $name1 $value1 $class2 $value2 $class3 $value3
+} {.entity.id1 4.4 ptolemy.data.DoubleToken 7.0 ptolemy.data.IntToken 7}
+
+ 
