@@ -741,6 +741,9 @@ public class PortConfigurerDialog
                     updates[updateNum] = true;
                 }
                 updates[PortTableModel.COL_NAME] = false;
+                updates[PortTableModel.COL_SHOW_NAME] =
+                    ((Boolean) (portInfo[PortTableModel.COL_SHOW_NAME]))
+                        .booleanValue();
                 if (((String) (portInfo[PortTableModel.COL_DIRECTION]))
                     .equals("")) {
                     String _direction;
@@ -911,7 +914,7 @@ public class PortConfigurerDialog
             "Direction",
             "Show Name",
             "Units" };
-            
+
     // The Listener that is sensitive to selection changes in the table.
     // When a row is selected change the label in the Remove button to
     // show that the associated port is the one that will be removed when
@@ -970,7 +973,7 @@ public class PortConfigurerDialog
             _portTable.getColumnModel().getColumn(PortTableModel.COL_SHOW_NAME);
         column.setPreferredWidth(50);
     }
-    
+
     private void _populateActualPorts() {
         for (int i = 0; i < _ports.size(); i++) {
             Object portInfo[] = (Object[]) (_ports.elementAt(i));
@@ -1066,11 +1069,11 @@ public class PortConfigurerDialog
     JTable _portTable;
     // Port TableModel
     PortTableModel _portTableModel = null;
-	JTableHeader _jth;
+    JTableHeader _jth;
     // Each element of _ports is a row in the table that PortTableModel is based
     // on.
     Vector _ports = null;
-    
+
     private int _selectedRow = -1;
     private boolean _showAllNames = false;
     // The various buttons.
