@@ -32,6 +32,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.lang.java;
 
+
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -154,7 +156,7 @@ public abstract class ReplacementJavaVisitor extends JavaVisitor {
            node.setChildren(TNLManip.traverseList(this, node, args, node.children()));
         } else {
            // traversalMethod == TM_CHILDREN_FIRST
-           node.setChildren((List) node.getDefinedProperty(
+           node.setChildren((ArrayList) node.getDefinedProperty(
             PropertyMap.CHILD_RETURN_VALUES_KEY));           
         }
         return node;

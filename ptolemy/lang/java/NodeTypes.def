@@ -49,6 +49,7 @@ import ptolemy.lang.java.nodetypes.*;
 <nheader>
 package ptolemy.lang.java.nodetypes;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
