@@ -246,7 +246,7 @@ public class PlotBox extends Panel {
 
     /** Export an EPS description of the plot.
      */
-    public void exportEPS (FileWriter file) {
+    public void exportEPS (OutputStream file) {
         EPSGraphics g = new EPSGraphics(file, _width, _height);
         _drawPlot(g, false);
         g.showpage();
