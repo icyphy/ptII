@@ -94,11 +94,10 @@ public interface ProcessReceiver extends Receiver {
     ////                         public methods                    ////
 
 
-    /** Initialize the receiver by resetting local flags. This method
-     *  is useful in clone() methods as well as when restarting
-     *  execution.
+    /** Reset the local flags of this receiver. Use this method when
+     *  restarting execution.
      */
-    public void initialize();
+    public void reset();
 
     /** Set a local flag that requests that the simulation be paused
      *  or resumed.

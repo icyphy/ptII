@@ -176,7 +176,7 @@ public class ODFConservativeRcvr extends TimedQueueReceiver
 
     /** Reset local flags.
      */
-    public void initialize() {
+    public void reset() {
         _simulIgnoreFlag = false; 
 	_terminate = false;
     }

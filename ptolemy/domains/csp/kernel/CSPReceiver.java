@@ -134,7 +134,7 @@ public class CSPReceiver implements ProcessReceiver {
 
     /** Reset local flags.
      */
-    public void initialize() {
+    public void reset() {
 	_getWaiting = false;
 	_putWaiting = false;
 	_conditionalReceiveWaiting = false;
