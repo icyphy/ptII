@@ -47,7 +47,6 @@ A class that keeps track of Exceptions and Traps.
 @since Ptolemy II 2.0
 */
 
-
 public class ExceptionTracker {
 
     /** A dummy initializer method
@@ -57,64 +56,64 @@ public class ExceptionTracker {
 
     }
 
-        /** checks if unit u is the beginUnit for any Trap in the body.
-         *  @param u The Unit to be checked.
-         *  @return True if u is a beginUnit.
-         */
+    /** Checks if unit u is the beginUnit for any Trap in the body.
+     *  @param u The Unit to be checked.
+     *  @return True if u is a beginUnit.
+     */
     public boolean isBeginUnit(Unit u) {
         return(_beginUnitList.contains(u));
     }
 
-        /** checks if unit u is the endUnit for any Trap in the body.
-         *  @param u The Unit to be checked.
-         *  @return True if u is an endUnit.
-         */
+    /** Checks if unit u is the endUnit for any Trap in the body.
+     *  @param u The Unit to be checked.
+     *  @return True if u is an endUnit.
+     */
     public boolean isEndUnit(Unit u) {
         return(_endUnitList.contains(u));
     }
 
-        /** checks if unit u is the handlerUnit for any Trap in the body.
-         *  @param u The Unit to be checked.
-         *  @return True if u is a handlerUnit.
-         */
+    /** Checks if unit u is the handlerUnit for any Trap in the body.
+     *  @param u The Unit to be checked.
+     *  @return True if u is a handlerUnit.
+     */
     public boolean isHandlerUnit(Unit u) {
         return(_handlerUnitList.contains(u));
     }
 
 
-    /** gives the index of the first incidence of Unit u in the list of
-         *  beginUnits.
-         *  @param u The Unit.
-         *  @return The index of Unit u in the list.
-         */
-        public int beginIndexOf(Unit u)    {
+    /** Gives the index of the first incidence of Unit u in the list of
+     *  beginUnits.
+     *  @param u The Unit.
+     *  @return The index of Unit u in the list.
+     */
+    public int beginIndexOf(Unit u) {
        return(_beginUnitList.indexOf(u));
-        }
+    }
 
-    /** gives the index of the first incidence of Unit u in the list of
-         *  endUnits.
-         *  @param u The Unit.
-         *  @return The index of Unit u in the list.
-         */
-        public int endIndexOf(Unit u) {
+    /** Gives the index of the first incidence of Unit u in the list of
+     *  endUnits.
+     *  @param u The Unit.
+     *  @return The index of Unit u in the list.
+     */
+    public int endIndexOf(Unit u) {
             return(_endUnitList.indexOf(u));
-        }
+    }
 
-    /** gives the index of the first incidence of Unit u in the list of
-         *  handlerUnits.
-         *  @param u The Unit.
-         *  @return The index of Unit u in the list.
-         */
-        public int handlerIndexOf(Unit u) {
+    /** Gives the index of the first incidence of Unit u in the list of
+     *  handlerUnits.
+     *  @param u The Unit.
+     *  @return The index of Unit u in the list.
+     */
+    public int handlerIndexOf(Unit u) {
             return(_handlerUnitList.indexOf(u));
-        }
+    }
 
 
-        /**
-         * Initializes the class with a given body. This method must be called
-         * before calling any of the other methods.
-         * @param body The Body for which exceptions are to be tracked.
-         */
+    /**
+     * Initializes the class with a given body. This method must be called
+     * before calling any of the other methods.
+     * @param body The Body for which exceptions are to be tracked.
+     */
     public void init(Body body) {
         _trapChain = body.getTraps();
         Iterator i = _trapChain.iterator();
@@ -143,109 +142,109 @@ public class ExceptionTracker {
     }
 
 
-        /**
-         * @return True if any traps exist in the body.
-         */
+    /**
+     * @return True if any traps exist in the body.
+     */
     public boolean trapsExist() {
         return(_beginUnitList.size() != 0);
     }
 
-        /**
-         * @return The number of traps in the body.
-         */
+    /**
+     * @return The number of traps in the body.
+     */
     public int numberOfTraps() {
         return(_beginUnitList.size());
     }
 
-        /**
-         * @return The current Exceptional PC
-         */
+    /**
+     * @return The current Exceptional PC
+     */
     public int getEpc() {
        return _epc;
-        }
-
-        /**
-         * record that this beginUnit has been encountered and perform the
-         * appropriate housekeeping functions.
-         * @param u The Unit.
-         */
-    public void beginUnitEncountered(Unit u) {
-           _storeState();
-
-           _epc++;
-           Iterator i = _trapChain.iterator();
-
-           //record all traps beginning here as active
-           while (i.hasNext()) {
-               Trap ThisTrap = (Trap)i.next();
-               if (ThisTrap.getBeginUnit() == u)
-                   _currently_active_traps.addFirst(ThisTrap);
-                   //so that traps are stored in the reverse order in which they
-                   //are encountered. Most recent trap first.
-           }
     }
 
-        /**
-         * record that this endUnit has been encountered and perform the
-         * appropriate housekeeping functions.
-         * @param u The Unit.
-         */
-        public void endUnitEncountered(Unit u) {
-            _storeState();
+    /**
+     * Record that this beginUnit has been encountered and perform the
+     * appropriate housekeeping functions.
+     * @param u The Unit.
+     */
+    public void beginUnitEncountered(Unit u) {
+        _storeState();
 
-            _epc++;
-            Iterator i = _trapChain.iterator();
+        _epc++;
+        Iterator i = _trapChain.iterator();
 
-            //record all traps ending here as inactive
-            while (i.hasNext()) {
-                Trap ThisTrap = (Trap)i.next();
-                if (ThisTrap.getEndUnit() == u)
-                   _currently_active_traps.remove(ThisTrap);
-            }
-
+        //record all traps beginning here as active
+        while (i.hasNext()) {
+            Trap ThisTrap = (Trap)i.next();
+            if (ThisTrap.getBeginUnit() == u)
+                _currently_active_traps.addFirst(ThisTrap);
+                //so that traps are stored in the reverse order in which they
+                //are encountered. Most recent trap first.
         }
+    }
+
+   /**
+    * Record that this endUnit has been encountered and perform the
+    * appropriate housekeeping functions.
+    * @param u The Unit.
+    */
+   public void endUnitEncountered(Unit u) {
+       _storeState();
+
+       _epc++;
+       Iterator i = _trapChain.iterator();
+
+       //record all traps ending here as inactive
+       while (i.hasNext()) {
+           Trap ThisTrap = (Trap)i.next();
+           if (ThisTrap.getEndUnit() == u)
+              _currently_active_traps.remove(ThisTrap);
+       }
+
+   }
 
 
-        /**
-         * @param epc The exceptional pc.
-         * @return A list of all handlerUnits associated with
-         * the given epc.
-         */
-        public LinkedList getHandlerUnitList(int epc) {
-            LinkedList ListOfTraps = (LinkedList)_trapsForEachEpc.get(epc);
-            LinkedList ListOfHandlers = new LinkedList();
-            Iterator i = ListOfTraps.listIterator();
+   /**
+    * @param epc The exceptional pc.
+    * @return A list of all handlerUnits associated with
+    * the given epc.
+    */
+   public LinkedList getHandlerUnitList(int epc) {
+       LinkedList ListOfTraps = (LinkedList)_trapsForEachEpc.get(epc);
+       LinkedList ListOfHandlers = new LinkedList();
+       Iterator i = ListOfTraps.listIterator();
 
-            while (i.hasNext()) {
-                Trap t = (Trap)i.next();
-                ListOfHandlers.add(t.getHandlerUnit());
-            }
+       while (i.hasNext()) {
+           Trap t = (Trap)i.next();
+           ListOfHandlers.add(t.getHandlerUnit());
+       }
 
-            return ListOfHandlers;
-        }
+       return ListOfHandlers;
+   }
 
-        /**
-         * @param epc The exceptional pc
-         * @return A list of all Traps for the given epc.
-         */
-        public LinkedList getTrapsForEpc(int epc) {
-            return (LinkedList)_trapsForEachEpc.get(epc);
-        }
+    /**
+     * @param epc The exceptional pc
+     * @return A list of all Traps for the given epc.
+     */
+    public LinkedList getTrapsForEpc(int epc) {
+        return (LinkedList)_trapsForEachEpc.get(epc);
+    }
 
-        /**
-         * @return A chain of all the Traps in the body.
-         */
-        public Chain getTrapChain() {
-            return _trapChain;
-        }
+    /**
+     * @return A chain of all the Traps in the body.
+     */
+    public Chain getTrapChain() {
+        return _trapChain;
+    }
 
-        /**
-         * store the current state of the ExceptionTracker.
-         */
-        protected void _storeState() {
-            _trapsForEachEpc.add(_currently_active_traps.clone());
-            //yes, this is a list of lists
-        }
+    /**
+     * Store the current state of the ExceptionTracker.
+     */
+    protected void _storeState() {
+        _trapsForEachEpc.add(_currently_active_traps.clone());
+        //Yes, this is a list of lists.
+    }
 
 
 
@@ -260,7 +259,7 @@ public class ExceptionTracker {
     protected LinkedList _currently_active_traps;
 
     /**
-     * list containing the list of traps for each epc
+     * List containing the lists of traps for each epc
      * the index in this list is the epc, so the
      * epc is not explicitly stored in this data
      * structure.

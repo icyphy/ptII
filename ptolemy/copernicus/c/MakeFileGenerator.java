@@ -32,6 +32,7 @@ package ptolemy.copernicus.c;
 
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Collection;
 
 import soot.Scene;
 import soot.SootClass;
@@ -55,26 +56,29 @@ public class MakeFileGenerator {
      * @param classPath The classPath
      * @param className The class for which the Makefile is to be generated.
      */
-    public static void generateMakeFile(String classPath, String className) {
+    public static void generateMakeFile(String classPath, String className,
+        Collection requiredClasses) {
         StringBuffer code = new StringBuffer();
 
         code.append("#Standard variables\n");
         code.append("RUNTIME = ../runtime\n");
-        code.append("LIB = "+System.getProperty("j2c_lib","/j2c_lib")+"\n");
+        code.append("LIB = " + System.getProperty("j2c_lib","/j2c_lib")
+                + "\n");
         code.append("CFLAGS = -Wall -pedantic\n");
         code.append("DEPEND = gcc -MM -I $(RUNTIME) -I $(LIB)\n\n");
 
-        code.append("THIS = "+className+".make\n");
+        code.append("THIS = " + className + ".make\n");
 
 
         //get names of all .c files in the transitive closure
-        Iterator i = _classNameList(classPath, className).iterator();
+        Iterator i = requiredClasses.iterator();
         code.append("SOURCES = $(RUNTIME)/pccg_runtime.c "
-            +"$(RUNTIME)/pccg_array.c $(RUNTIME)/strings.c\\\n");
+                + "$(RUNTIME)/pccg_array.c $(RUNTIME)/strings.c\\\n");
 
         while (i.hasNext()) {
-            String name = _classNameToMakeFileName((String)i.next());
-            code.append("\t"+name+".c\\\n");
+            String name = _classNameToMakeFileName(
+                ((SootClass)i.next()).getName());
+            code.append("\t" + name + ".c\\\n");
         }
 
         code.append("\n");//takes care of blank line for last "\"
@@ -84,7 +88,7 @@ public class MakeFileGenerator {
         code.append(  "HEADERS = $(SOURCES:.c=.h)\n");
         code.append( "IHEADERS = $(SOURCES:.c=_i.h)\n");
 
-        code.append(className+".exe : $(OBJECTS)\n");
+        code.append(className + ".exe : $(OBJECTS)\n");
         code.append("\tgcc $(OBJECTS)\n");
 
         code.append(".c.o:\n");
@@ -103,33 +107,9 @@ public class MakeFileGenerator {
         code.append("# DO NOT DELETE THIS LINE "
                     + " -- make depend depends on it.\n\n");
 
-        FileHandler.write(className+".make",code.toString());
+        FileHandler.write(className + ".make", code.toString());
 
     }
-
-    /**
-     * @param classPath The classPath
-     * @param className The name of the class.
-     * @return A list of the names of all classses in the transitive closure of
-     * the given class.
-     */
-    protected static LinkedList _classNameList
-                        (String classPath, String className) {
-        LinkedList names = new LinkedList();
-
-        Scene.v().setSootClassPath(classPath);
-        Scene.v().loadClassAndSupport(className);
-
-        Iterator i = Scene.v().getClasses().iterator();
-        while (i.hasNext()) {
-            SootClass thisClass = (SootClass)i.next();
-            names.add(thisClass.getName());
-        }
-
-        return names;
-
-    }
-
 
     /**
      * finds filename corrseponding to class and replaces

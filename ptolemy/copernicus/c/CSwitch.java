@@ -806,10 +806,10 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
             // by the calling method with the appropriate dimension
             // and size.
             return CNames.arrayAllocateFunction + "((PCCG_CLASS_PTR)"
-                + " malloc(sizeof(" + elementClass + "))"
-                + ", sizeof(" + elementSizeType + "), "
-                + dimensionsToFill + ", " + emptyDimensions + ", " +
-                    sizeCode + ")";
+                    + " malloc(sizeof(" + elementClass + "))"
+                    + ", sizeof(" + elementSizeType + "), "
+                    + dimensionsToFill + ", " + emptyDimensions
+                    + ", " + sizeCode + ")";
         }
     }
 
@@ -867,9 +867,9 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
         if (true) {
             //expression.getBase().getType() instanceof ArrayType)
             cast = "("
-                + CNames.instanceNameOf(
-                    expression.getMethod().getDeclaringClass())
-                + ")";
+                    + CNames.instanceNameOf(
+                        expression.getMethod().getDeclaringClass())
+                    + ")";
         }
 
         code.append("("

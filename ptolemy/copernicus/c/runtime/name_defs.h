@@ -1,5 +1,5 @@
 /*******************************************************************
-Definitions of names of objects, and limits of variables.
+Definitions of Names of Objects, and limits of variables
 
 Copyright (c) 2001-2002 The University of Maryland.
 
@@ -24,7 +24,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 ********************************************************************/
 
 /*
-Definitions of names of objects, and limits of variables.
+Definitions of Names of Objects, and limits of variables
 @author Ankush Varma 
 @version $Id$
 */

@@ -116,7 +116,9 @@ public class CodeFileGenerator extends CodeGenerator {
         while (methods.hasNext()) {
             String methodCode = _generateMethod((SootMethod)(methods.next()));
             bodyCode.append(methodCode);
-            if (methodCode.length() != 0) bodyCode.append("\n");
+            if (methodCode.length() != 0) {
+                bodyCode.append("\n");
+            }
         }
 
         // Declare the run-time structure that is to contain class information.
@@ -131,7 +133,7 @@ public class CodeFileGenerator extends CodeGenerator {
 
         headerCode.append(_declareConstants() + "\n");
 
-        //generate the typedefs for the array instances
+        // Generate the typedefs for the array instances.
         headerCode.append(_generateArrayInstanceDeclarations());
 
         return (headerCode.append(bodyCode)).toString();
@@ -148,6 +150,7 @@ public class CodeFileGenerator extends CodeGenerator {
         String typeName = CNames.instanceNameOf(Scene.v().
                 getSootClass("java.lang.String"));
         Iterator stringConstants = _context.getStringConstants();
+
         if (stringConstants.hasNext()) {
             code.append(_comment("Pointers to string constants"));
             while (stringConstants.hasNext()) {
@@ -194,6 +197,7 @@ public class CodeFileGenerator extends CodeGenerator {
                 argumentReference));
 
         Iterator stringConstants = _context.getStringConstants();
+
         if (stringConstants.hasNext()) {
             SootClass stringClass = Scene.v().getSootClass("java.lang.String");
             String stringType = CNames.instanceNameOf(stringClass);
@@ -202,7 +206,7 @@ public class CodeFileGenerator extends CodeGenerator {
                     stringClass.getMethod("void <init>(char[])"));
             code.append("\n" + _indent(1) +
                     _comment("Initialization of string constants"));
-            while (stringConstants.hasNext()){
+            while (stringConstants.hasNext()) {
                 StringBuffer value = new StringBuffer(
                                         stringConstants.next().toString());
                 //replace all incidences of " with \" to prevent bad characters
@@ -274,7 +278,7 @@ public class CodeFileGenerator extends CodeGenerator {
             // Generate the method header.
             Type returnType = method.getReturnType();
 
-            // set the visitor to this return type too
+            // Set the visitor to this return type too.
             visitor.returnType = returnType;
 
             code.append(CNames.typeNameOf(returnType));
@@ -319,7 +323,7 @@ public class CodeFileGenerator extends CodeGenerator {
                 }
             }
 
-            //for catching exceptions
+            // For catching exceptions.
             ExceptionTracker tracker = new ExceptionTracker();
             tracker.init(body);
 
@@ -344,7 +348,7 @@ public class CodeFileGenerator extends CodeGenerator {
             if (thisLocalName != null) visitor.setThisLocalName(thisLocalName);
             units = body.getUnits().iterator();
 
-            //prologue
+            // Prologue
             code.append(_indent(1) + "extern jmp_buf env;\n");
             code.append(_indent(1) + "extern int epc;\n");
             code.append(_indent(1) + "jmp_buf caller_env;\n");
@@ -383,14 +387,14 @@ public class CodeFileGenerator extends CodeGenerator {
 
             visitor.indentLevel = indentLevel;
 
-            //exception-catching in body
+            //Exception-catching in the body.
             while (units.hasNext()) {
                 Unit unit = (Unit)(units.next());
                 if (visitor.isTarget(unit)) {
                     code.append(visitor.getLabel(unit) + ":\n");
                 }
 
-                //code for begin Unit in exceptions
+                //Code for begin Unit in exceptions.
                 if (tracker.trapsExist()&&tracker.isBeginUnit(unit)) {
                     tracker.beginUnitEncountered(unit);
                     code.append(_indent(2)+"epc = "+ tracker.getEpc()+";\n");
@@ -399,7 +403,7 @@ public class CodeFileGenerator extends CodeGenerator {
                 }
 
 
-                //actual unit code
+                //Actual unit code.
                 unit.apply(visitor);
                 StringBuffer newCode = visitor.getCode();
                 if (newCode.length() > 0) {
@@ -407,7 +411,7 @@ public class CodeFileGenerator extends CodeGenerator {
                             append(";\n");
                 }
 
-                //code for end unit in exceptions
+                //Code for end unit in exceptions.
                 if(tracker.trapsExist()&&tracker.isEndUnit(unit)) {
                     code.append(_indent(2)+"/* That was end unit for trap "+
                                 tracker.endIndexOf(unit)+" */\n");
@@ -416,7 +420,7 @@ public class CodeFileGenerator extends CodeGenerator {
 
                 }
 
-                //code for handler unit in exceptions
+                //Code for handler unit in exceptions.
                 if(tracker.trapsExist()&&tracker.isHandlerUnit(unit)) {
                     code.append(_indent(2)+"/* Handler Unit for Trap "+
                                 tracker.handlerIndexOf(unit)+" */\n");
@@ -424,21 +428,21 @@ public class CodeFileGenerator extends CodeGenerator {
 
             }
 
-            //epilogue
+            //Epilogue
             if(tracker.trapsExist()) {
                 code.append(_indent(1)+"}\n");
 
                 code.append(_indent(1)+"else\n");
                 code.append(_indent(1)+"{\n");
 
-                //code for mapping a trap name to an exception
+                //Code for mapping a trap name to an exception.
                 code.append(_indent(2)+
                             "/* Map exception_id to exception_type */\n");
                 code.append(_indent(2)+
                             "strcpy(exception_type, (char *) exception_id);\n");
-                //FIXME: This is not the correct mapping
+                //FIXME: This is not the correct mapping.
 
-                //code for mapping an exception type to its handler
+                //Code for mapping an exception type to its handler.
                 code.append("\n"+_indent(2)+
                             "/* Map exception_type to handler */\n");
                 code.append(_indent(2)+"switch (epc)\n");
@@ -461,7 +465,7 @@ public class CodeFileGenerator extends CodeGenerator {
                                 code.append(_indent(4)+"else ");
                             }
 
-                        //for the last else
+                        // For the last else.
                         code.append("\n"+_indent(4)+"{\n");
                         code.append(_indent(5)+
                             "longjmp(caller_env, caller_epc);\n");

@@ -41,8 +41,9 @@ import java.io.*;
 
 /**
 A transformer that writes C source code.
-@author Shuvra S. Bhattacharyya 
+@author Shuvra S. Bhattacharyya
 @version $Id$
+@since Ptolemy II 2.0
 */
 public class CWriter extends SceneTransformer {
     private static CWriter instance = new CWriter();
@@ -77,11 +78,10 @@ public class CWriter extends SceneTransformer {
         // modification exception.
         ArrayList classList = new ArrayList();
         for (Iterator classes = Scene.v().getApplicationClasses().iterator();
-             classes.hasNext(); classList.add(classes.next())); 
+             classes.hasNext(); classList.add(classes.next()));
 
-        // Generate C code for each class.       
-        for (Iterator sootClasses = classList.iterator(); 
-                sootClasses.hasNext(); ) { 
+        for (Iterator sootClasses = classList.iterator();
+                sootClasses.hasNext(); ) {
             SootClass sootClass = (SootClass)sootClasses.next();
 
             // Determine the base of the source code file names.
@@ -105,7 +105,7 @@ public class CWriter extends SceneTransformer {
             CNames.setup();
 
             //generate the .i.h, .h, and .c files
-            System.out.println("Generating C code files for " + fileName); 
+            System.out.println("Generating C code files for " + fileName);
             String code = null;
             code = iGenerator.generate(sootClass);
             FileHandler.write(fileName + ".i.h", code);
@@ -113,7 +113,7 @@ public class CWriter extends SceneTransformer {
             FileHandler.write(fileName + ".h", code);
             code = cGenerator.generate(sootClass);
             FileHandler.write(fileName + ".c", code);
-            System.out.println("Done generating C code files for " + fileName); 
+            System.out.println("Done generating C code files for " + fileName);
         }
     }
 

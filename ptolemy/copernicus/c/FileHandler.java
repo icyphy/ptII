@@ -35,7 +35,7 @@ import java.io.FileOutputStream;
 import java.io.File;
 import java.io.IOException;
 
-/** A class that takes care of common File I/O functions
+/** A class that takes care of common File I/O functions.
 
    @author Ankush Varma
    @version $Id$
@@ -54,7 +54,7 @@ public class FileHandler {
     }
 
     /**
-     * write out a given string to a file.
+     * Write out the given string to a file.
      * @param fileName The file to write to.
      * @param code The String to write.
      */

@@ -350,7 +350,8 @@ public class HeaderFileGenerator extends CodeGenerator {
         fields = source.getFields().iterator();
         while (fields.hasNext()) {
             SootField field = (SootField)(fields.next());
-            if (field.isPrivate() &&!(Modifier.isStatic(field.getModifiers()))) {
+            if (field.isPrivate() && !(Modifier.isStatic(field.
+                        getModifiers()))) {
                 if (insertedFields == 0) fieldCode.append(header);
                 fieldCode.append(_generateField(field));
                 insertedFields++;
@@ -378,10 +379,6 @@ public class HeaderFileGenerator extends CodeGenerator {
         while (fields.hasNext()) {
             SootField field = (SootField)(fields.next());
 
-            /*
-            if ((field.isPublic() || field.isProtected()) &&
-                    !(Modifier.isStatic(field.getModifiers())))
-            */
             boolean stat = Modifier.isStatic(field.getModifiers());
             boolean priv = field.isPrivate();
             boolean pub  = field.isPublic();
@@ -393,7 +390,6 @@ public class HeaderFileGenerator extends CodeGenerator {
             boolean visible = (!stat)
                 && (pub || prot || (friendly && samePack)) ;
 
-            // FIXME: Is this correct for static fields?
             if (visible) {
                 if (insertedFields == 0) fieldCode.append(header);
                 fieldCode.append(_generateField(field));

@@ -158,7 +158,7 @@ public abstract class CodeGenerator {
 
     /** Generate code for typedef declaring array instances
      * @param void
-     * @return A newline character (\n) separated string of typdefs for 
+     * @return A newline character (\n) separated string of typdefs for
      * the arrays needed.
      */
     protected String _generateArrayInstanceDeclarations() {

@@ -102,11 +102,14 @@ public class JavaToC {
         FileHandler.write(className+".c", code);
 
         // generate other required files
-        RequiredFileGenerator.generateTransitiveClosureOf(classPath,
+        RequiredFileGenerator RFG = new RequiredFileGenerator();
+
+        RFG.generateTransitiveClosureOf(classPath,
                         className, compileMode, verbose);
 
         // Generate the makefile
-        MakeFileGenerator.generateMakeFile(classPath, className);
+        MakeFileGenerator.generateMakeFile(classPath, className,
+            RFG.getRequiredClasses(classPath, className));
 
 
     }
@@ -117,16 +120,15 @@ public class JavaToC {
      */
     public static void showHelp() {
         System.out.println( "USAGE: java "
-            +" javatoc classPath [flags] [-lib <library>] className1"
-            +" [flags][className2]...\n");
-        System.out.println( "Compile mode flags: "+
-            "[-singleClass], [-headersOnly], [-full]");
-        System.out.println( "Verbose mode flags: "+
-            "[-v] for verbose, [-q] for quiet.");
+                + " javatoc classPath [flags] [-lib <library>] className1"
+                + " [flags][className2]...\n");
+        System.out.println( "Compile mode flags: "
+                + "[-singleClass], [-headersOnly], [-full]");
+        System.out.println( "Verbose mode flags: "
+                + "[-v] for verbose, [-q] for quiet.");
 
         System.out.println( "help flags        : [-h] to see this message");
-        System.out.println( "\nLater flags are given precedence over "+
-            "earlier ones.");
+        System.out.println( "\nLater flags override earlier ones.");
     }
 
     /** Entry point for the JavaToC application. See {@link JavaToC} for
@@ -134,14 +136,6 @@ public class JavaToC {
      *  @param args Application arguments.
      */
     public static void main(String[] args) throws IOException {
-        /*
-        String usage =
-                "Usage: java ptolemy.lang.copernicus.c.JavaToC classpath "
-                + " classname [-singleClass][-headersOnly]";
-        if ((args.length < 2) || (args.length > 3)) {
-            throw new RuntimeException(usage);
-        }
-        */
 
         String classPath = new String(args[0]);
         String className = new String();
