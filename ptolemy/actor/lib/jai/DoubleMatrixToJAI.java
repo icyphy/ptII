@@ -124,7 +124,7 @@ public class DoubleMatrixToJAI extends Transformer {
             new ComponentSampleModelJAI(DataBuffer.TYPE_DOUBLE,
                     width, height, 1, width, bandOffset);
 
-        // Create a new raster that has its origin at (0,0).
+        // Create a new raster that has its origin at (0, 0).
         Raster raster =
             Raster.createWritableRaster(sampleModel, dataBuffer, new Point());
 
@@ -136,7 +136,7 @@ public class DoubleMatrixToJAI extends Transformer {
                     false, false,
                     ComponentColorModel.OPAQUE, DataBuffer.TYPE_DOUBLE);
         TiledImage tiledImage =
-            new TiledImage(0,0,width,height,0,0,sampleModel, colorModel);
+            new TiledImage(0, 0, width, height, 0, 0, sampleModel, colorModel);
         tiledImage.setData(raster);
         ParameterBlock parameters = new ParameterBlock();
         parameters.addSource(tiledImage);
