@@ -94,6 +94,7 @@ file is augmented by the MoML file ptolemy/configs/vergilWelcomeWindow.xml.
 @since Ptolemy II 1.0
 @see ptolemy.actor.gui.ModelFrame
 @see ptolemy.actor.gui.RunTableau
+@see ptolemy.actor.gui.PtExecuteApplication
 */
 public class VergilApplication extends MoMLApplication {
 
@@ -371,91 +372,12 @@ public class VergilApplication extends MoMLApplication {
      *  @return A usage string.
      */
     protected String _usage() {
-        String result = "Usage: " + _commandTemplate + "\n\n"
-            + "Options that take values:\n";
-        int i;
-        for (i = 0; i < super._commandOptions.length; i++) {
-            result += " " + super._commandOptions[i][0] +
-                " " + super._commandOptions[i][1] + "\n";
-        }
-
-        for (i = 0; i < _commandOptions.length; i++) {
-            result += " " + _commandOptions[i][0] +
-                " " + _commandOptions[i][1] + "\n";
-        }
-
-        result += "\nBoolean flags:\n";
-        for (i = 0; i < super._commandFlags.length; i++) {
-            result += " " + super._commandFlags[i];
-        }
-
-        try {
-            // Look for configuration directories in ptolemy/configs
-            // This will likely fail if ptolemy/configs is in a jar file
-            // We use a URI here so that we cause call File(URI).
-            URI configurationURI =
-                new URI(specToURL("ptolemy/configs").toExternalForm());
-            File configurationDirectory = new File(configurationURI);
-            ConfigurationFilenameFilter filter =
-                new ConfigurationFilenameFilter();
-            File [] configurationDirectories =
-                configurationDirectory.listFiles(filter);
-            System.out.println("ConfigurationDirectory = "
-                    + configurationDirectory + " configurationDirectories = "
-                    + configurationDirectories);
-            if (configurationDirectories != null) {
-                result += "\nThe following Boolean flags start vergil using "
-                    + "different configurations:\n";
-                for (i = 0; i < configurationDirectories.length; i++) {
-                    result += " -" + configurationDirectories[i].getName();
-                    String configurationFileName = configurationDirectories[i]
-                        + File.separator
-                        + "configuration.xml";
-                    boolean printDefaultConfigurationMessage = true;
-                    try {
-                        // Read the configuration and get the top level docs
-
-                        // FIXME: this will not work if the configs are
-                        // in jar files.
-
-                        // FIXME: Skip jxta, since it starts up the jxta config
-                        // tools.
-                        if (!configurationDirectories[i]
-                                .getName().equals("jxta")) {
-                            URL specificationURL =
-                                specToURL(configurationFileName);
-                            Configuration configuration =
-                                _readConfiguration(specificationURL);
-                            if (configuration != null
-                                    && configuration.getAttribute("_doc")
-                                    != null
-                                    && configuration.getAttribute("_doc")
-                                    instanceof Documentation
-                                ) {
-                                Documentation doc =
-                                    (Documentation)configuration
-                                    .getAttribute("_doc");
-                                result += "\t" + doc.getValue() + "\n";
-                                printDefaultConfigurationMessage = false;
-                            }
-                        }
-                    } catch (Exception ex) {
-                        //result += "\tCould not read configuration"
-                        //    + "\n" + ex;
-                        //ex.printStackTrace();
-                    }
-                    if (printDefaultConfigurationMessage) {
-                        result += "\tuses "
-                            + configurationFileName + "\n";
-                    }
-                }
-            }
-        } catch (Exception ex) {
-            result += "Warning: Failed to find configuration(s) in "
-                + "ptolemy/configs" + ex;
-        }
-        return result;
+        return _configurationUsage(_commandTemplate,
+                _commandOptions, new String [] {} );
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
 
     // _commandOptions is static because
     // _usage() may be called from the constructor of the parent class,
@@ -575,42 +497,4 @@ public class VergilApplication extends MoMLApplication {
 
     // Flag indicating that the previous argument was -conf
     private boolean _expectingConfiguration = false;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         inner classes                     ////
-
-    /** Look for directories that contain files named configuration.xml
-     *  and intro.htm.
-     */
-    class ConfigurationFilenameFilter implements FilenameFilter {
-
-        /** Return true if the specified file names a directory
-         *  that contains a file named configuration.xml
-         *  and a file named intro.htm
-         *  @param directory the directory in which the potential
-         *  directory was found.
-         *  @param name the name of the directory or file.
-         *  @return true if the file is a directory that
-         *  contains a file called configuration.xml
-         */
-        public boolean accept(File directory, String name ) {
-            try {
-                File configurationDirectory = new File(directory, name);
-                if (!configurationDirectory.isDirectory()) {
-                    return false;
-                }
-                File configurationFile = new File(configurationDirectory,
-                        "configuration.xml");
-                File introFile = new File(configurationDirectory,
-                        "intro.htm");
-                if (configurationFile.isFile()
-                        && introFile.isFile()) {
-                    return true;
-                }
-            } catch (Exception ex) {
-                return false;
-            }
-            return false;
-        }
-    }
 }
