@@ -54,7 +54,7 @@
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Demonstration of a unit system:
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Demonstration of a dynamically checked unit system:
 Simulation of RC decay for 1000 ohms in contact with 0.001 farad.
 The integrator has been set to an initial charge of 5.0 volts.
 The voltage and current are sampled every 0.2 seconds.</text></svg></configure>
@@ -348,7 +348,7 @@ voltage, etc.) and then divides by its argument.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="350.0, 120.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {-4, 5, 1032, 748}, maximized = false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {-4, 5, 1032, 755}, maximized = false}">
     </property>
     <property name="annotation4" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -400,7 +400,7 @@ voltage, etc.) and then divides by its argument.</text></svg></configure>
     <entity name="Display1" class="ptolemy.actor.lib.gui.Display">
         <property name="title" class="ptolemy.kernel.util.StringAttribute" value="Voltage">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={130, 403, 290, 227}}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {130, 403, 292, 229}, maximized = false}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="635.0, 375.0">
         </property>
@@ -430,7 +430,7 @@ voltage, etc.) and then divides by its argument.</text></svg></configure>
     <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
         <property name="title" class="ptolemy.kernel.util.StringAttribute" value="Current">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={726, 404, 290, 227}}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {726, 404, 292, 229}, maximized = false}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="635.0, 435.0">
         </property>
@@ -488,7 +488,7 @@ voltage, etc.) and then divides by its argument.</text></svg></configure>
     <entity name="Display3" class="ptolemy.actor.lib.gui.Display">
         <property name="title" class="ptolemy.kernel.util.StringAttribute" value="Current in units of Amps">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={430, 404, 290, 227}}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {430, 404, 292, 229}, maximized = false}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="720.0, 495.0">
         </property>

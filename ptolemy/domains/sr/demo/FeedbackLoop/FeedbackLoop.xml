@@ -17,21 +17,21 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 45.0]">
         </property>
-        <property name="Scheduler" class="ptolemy.domains.sr.kernel.SROptimizedScheduler">
+        <property name="Scheduler" class="ptolemy.domains.sr.kernel.SRRandomizedScheduler">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {17, 29, 815, 352}, maximized = false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {17, 29, 815, 466}, maximized = false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 243]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 350]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 121.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 175.0}">
     </property>
     <property name="annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model demonstrates that a NonStrictDelay actor &#10;breaks a feedback loop in a SR model.&#10;&#10;Author: Haiyang Zheng">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 165.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 190.0]">
         </property>
     </property>
     <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
@@ -41,7 +41,7 @@
     <entity name="NonStrictDisplay2" class="ptolemy.domains.sr.lib.NonStrictDisplay">
         <property name="title" class="ptolemy.kernel.util.StringAttribute" value="output from AddSubtract">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={555, 411, 290, 227}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {555, 411, 292, 229}, maximized = false}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 45.0]">
         </property>
@@ -53,7 +53,7 @@
     <entity name="NonStrictDisplay" class="ptolemy.domains.sr.lib.NonStrictDisplay">
         <property name="title" class="ptolemy.kernel.util.StringAttribute" value="output from NonStrictDelay">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={555, 411, 290, 227}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {555, 411, 292, 229}, maximized = false}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 155.0]">
         </property>
