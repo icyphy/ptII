@@ -287,9 +287,17 @@ public class TextEffigy extends Effigy {
                 CompositeEntity container, URL base, URL in)
                 throws Exception {
             // Create a new effigy.
-            return (Effigy) _newTextEffigyURL.invoke
-                (null, new Object[]{container, base, in});
-	}
+            try {
+                return (Effigy) _newTextEffigyURL.invoke
+                    (null, new Object[]{container, base, in});
+            } catch (java.lang.reflect.InvocationTargetException ex) {
+                throw new java.lang.reflect.InvocationTargetException(ex, 
+                        " Invocation of method failed!. Method was: "
+                        + _newTextEffigyURL 
+                        + "\nwith arguments( container = " + container
+                        + " base = " + base + " in = " + in + ")");
+            }
+        }
 
         private Method _newTextEffigyURL;
     }
