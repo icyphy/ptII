@@ -1321,7 +1321,7 @@ public class Graph implements Cloneable {
             Edge edge = (Edge)(edges.next());
             if (!containsEdge(edge)) {
                 throw new IllegalArgumentException("Attempt to form a "
-                        + "subgraph \ncontaining a edge that is not in "
+                        + "subgraph \ncontaining an edge that is not in "
                         + "the 'parent' graph.\n" + _edgeDump(edge));
             }
         }
@@ -1561,16 +1561,7 @@ public class Graph implements Cloneable {
         if (!edge.isSelfLoop()) {
             _connect(edge, edge.sink());
         }
-        if (edge.hasWeight()) {
-            ArrayList sameWeightList;
-            try {
-                sameWeightList = _sameWeightEdges(edge.getWeight());
-            } catch (Exception exception) {
-                sameWeightList = new ArrayList();
-                _edgeWeightMap.put(edge.getWeight(), sameWeightList);
-            }
-            sameWeightList.add(edge);
-        }
+        _registerWeight(edge);
         _registerChange();
     }
 
@@ -1789,6 +1780,21 @@ public class Graph implements Cloneable {
         return "\nDumps of the offending node and graph follow.\n"
             + "The offending node:\n" + nodeString
             + "\nThe offending graph:\n" + this.description() + "\n";
+    }
+
+    // Associate an edge to its weight in the internal mapping of edge
+    // weights to edges.
+    // @param edge The edge.
+    private void _registerWeight(Edge edge) {
+        if (edge.hasWeight()) {
+            Object weight = edge.getWeight();
+            ArrayList sameWeightList = (ArrayList)(_edgeWeightMap.get(weight));
+            if (sameWeightList == null) {
+                sameWeightList = new ArrayList();
+                _edgeWeightMap.put(weight, sameWeightList);
+            }
+            sameWeightList.add(edge);
+        }
     }
 
     // Associate a node to its weight in the internal mapping of node
