@@ -395,8 +395,12 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
                 return null; // return type is void
             } else if (methodName.equals("get")) {
                 return _makeConstantTerm(portTypeNode, null);
-            } else if (methodName.equals("send")) {
-                // second argument is a token, constrain it
+            } else if (methodName.equals("send") && argTerms.size() == 2) {
+                // Handle a two arg send().
+                // FIXME: iterate() uses a three arg send(), we should
+                // consider dealing with that.
+                //
+                // Second argument is a token, constrain it.
                 InequalityTerm secondArgTerm =
                     (InequalityTerm) argTerms.get(1);
                 _solver.addInequality(new Inequality(secondArgTerm,
