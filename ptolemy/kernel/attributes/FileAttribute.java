@@ -326,8 +326,8 @@ public class FileAttribute extends StringAttribute {
     public BufferedReader openForReading() throws IllegalActionException {
         try {
             _reader = FileUtilities.openForReading(
-                    getExpression(), 
-                    getBaseDirectory(), 
+                    getExpression(),
+                    getBaseDirectory(),
                     getClass().getClassLoader());
             return _reader;
         } catch (IOException ex) {
@@ -372,8 +372,8 @@ public class FileAttribute extends StringAttribute {
     public Writer openForWriting(boolean append) throws IllegalActionException {
         try {
             _writer = FileUtilities.openForWriting(
-                    getExpression(), 
-                    getBaseDirectory(), 
+                    getExpression(),
+                    getBaseDirectory(),
                     append);
             return _writer;
         } catch (IOException ex) {
@@ -386,7 +386,7 @@ public class FileAttribute extends StringAttribute {
      *  If this is not called, then the default is the directory
      *  containing the file returned by URIAttribute.getModelURI().
      *  @param directory The base directory.
-     *  @see #getBaseDirectory()   
+     *  @see #getBaseDirectory()
      *  @see URIAttribute#getModelURI(NamedObj)
      */
     public void setBaseDirectory(URI directory) {

@@ -87,18 +87,18 @@ import ptolemy.kernel.util.Workspace;
    to do from Vergil, the ports and parameters of this actor
    should not be changed using Vergil during execution.
    <p>
-   The subclass of this may need to call a method, for example prefire(), 
-   of  the superclass of this when execute the inside model. Since Java 
-   doesn't supported super.super.prefire(), this class uses a boolean 
+   The subclass of this may need to call a method, for example prefire(),
+   of  the superclass of this when execute the inside model. Since Java
+   doesn't supported super.super.prefire(), this class uses a boolean
    variable <i>_isSubclassOfRunCompositeActor</i> to provide a mechanism to
    call the method of the superclass of this. To to so, Subclass of this can
    set the <i>_isSubclassOfRunCompositeActor</i> to be true.
    <p>
-   This actor also overrides the requestChange() method and the 
+   This actor also overrides the requestChange() method and the
    executeChangerRequests() method to execute the given change. It does not
-   delegate the change request to the container, but executes the request 
+   delegate the change request to the container, but executes the request
    immediately or records it, depending on whether setDeferringChangeRequests()
-   has been called with a true argument. 
+   has been called with a true argument.
 
    @author Edward A. Lee, Yang Zhao
    @version $Id$
@@ -183,7 +183,7 @@ public class RunCompositeActor extends LifeCycleManager {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Run a complete execution of the contained model.  A complete
      *  execution consists of invocation of super.initialize(), repeated
      *  invocations of super.prefire(), super.fire(), and super.postfire(),
@@ -206,7 +206,7 @@ public class RunCompositeActor extends LifeCycleManager {
         // FIXME: Return result should be used to set what postfire() returns?
         _executeInsideModel();
     }
-    
+
     /** Initialize this actor, which in this case, does nothing.
      *  The initialization of the submodel is accomplished in fire().
      *  The subclass of this can set the <i>_isSubclassOfRunCompositeActor<i> to
@@ -243,7 +243,7 @@ public class RunCompositeActor extends LifeCycleManager {
         }
         return true;
     }
-    
+
     /** Override the base class to set type constraints between the
      *  output ports and parameters of this actor whose name matches
      *  the output port. If there is no such parameter, then create
@@ -257,11 +257,11 @@ public class RunCompositeActor extends LifeCycleManager {
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
-        
+
         Iterator ports = outputPortList().iterator();
         while (ports.hasNext()) {
             TypedIOPort port = (TypedIOPort) ports.next();
-            
+
             // Ensure that the production rate is one.
             // FIXME: This may not be right if there is no
             // actual source of data for this port (e.g. no
@@ -275,7 +275,7 @@ public class RunCompositeActor extends LifeCycleManager {
                 }
             }
             rate.setToken(new IntToken(1));
-            
+
             String portName = port.getName();
             Attribute attribute = getAttribute(portName);
             if (attribute == null) {
@@ -297,7 +297,7 @@ public class RunCompositeActor extends LifeCycleManager {
             }
         }
     }
-    
+
     /** Override the base class to do nothing.
      *  @exception IllegalActionException Not thrown in this base class,
      *  but declared so the subclasses can throw it.

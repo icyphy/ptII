@@ -25,7 +25,7 @@ This star computes the square root of its input.
 <a name="square root"></a>
 
  @Author E. A. Lee
- @Version $Id$, based on version 1.7 of /users/ptolemy/src/domains/cgc/stars/CGCSqrt.pl, from Ptolemy Classic 
+ @Version $Id$, based on version 1.7 of /users/ptolemy/src/domains/cgc/stars/CGCSqrt.pl, from Ptolemy Classic
  @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCSqrt extends ClassicCGCActor {
@@ -46,7 +46,7 @@ public class CGCSqrt extends ClassicCGCActor {
         output = new ClassicPort(this, "output", false, true);
         output.setTypeEquals(BaseType.DOUBLE);
 
-/*     
+/*
 noInternalState();
 */
     }
@@ -69,26 +69,26 @@ noInternalState();
     /**
      */
     public int  myExecTime() {
-        
+
 return 165;	/* value taken from CG96Sqrt */
      }
 
     /**
      */
     public void  generatePreinitializeCode() {
-        
+
 addInclude("<math.h>");
      }
 
     /**
      */
     public void  generateFireCode() {
-        
-addCode(ln); 
+
+addCode(ln);
      }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
-    public String ln = 
+    public String ln =
         "	$ref(output) = sqrt($ref(input));\n";
 }

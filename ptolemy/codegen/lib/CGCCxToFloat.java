@@ -23,7 +23,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 type conversion from complex to float/int
 
  @Author S. Ha
- @Version $Id$, based on version 1.5 of /users/ptolemy/src/domains/cgc/stars/CGCCxToFloat.pl, from Ptolemy Classic 
+ @Version $Id$, based on version 1.5 of /users/ptolemy/src/domains/cgc/stars/CGCCxToFloat.pl, from Ptolemy Classic
  @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCCxToFloat extends ClassicCGCActor {
@@ -48,7 +48,7 @@ public class CGCCxToFloat extends ClassicCGCActor {
         numSample = new Parameter(this, "numSample");
         numSample.setExpression("1");
 
-/*     
+/*
 noInternalState();
 */
     }
@@ -76,14 +76,14 @@ noInternalState();
     /**
      */
     public int  myExecTime() {
-        
+
 return ((IntToken)((numSample).getToken())).intValue() * 200;
      }
 
     /**
      */
     public void  generatePreinitializeCode() {
-        
+
 numSample = output.numXfer();
 		addInclude("<math.h>");
      }
@@ -91,7 +91,7 @@ numSample = output.numXfer();
     /**
      */
     public void  generateInitializeCode() throws IllegalActionException {
-        
+
 if (((IntToken)((numSample).getToken())).intValue() > 1) {
 			input.setSDFParams(((IntToken)((numSample).getToken())).intValue());
 			output.setSDFParams(((IntToken)((numSample).getToken())).intValue());
@@ -101,13 +101,13 @@ if (((IntToken)((numSample).getToken())).intValue() > 1) {
     /**
      */
     public void  generateFireCode() {
-        
-addCode(body); 
+
+addCode(body);
      }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
-    public String body = 
+    public String body =
         "	int i = 0;\n"
         + "	double p, q;\n"
         + "	for ( ; i < $val(numSample); i++) {\n"

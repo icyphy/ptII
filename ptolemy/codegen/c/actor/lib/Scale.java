@@ -36,17 +36,17 @@ import ptolemy.kernel.util.IllegalActionException;
 
 /**
    A helper class for ptolemy.actor.lib.Scale
-   
+
    @author Gang Zhou
    @version $Id$
    @since Ptolemy II 4.1
    @Pt.ProposedRating Red (eal)
-   @Pt.AcceptedRating Red (eal)  
+   @Pt.AcceptedRating Red (eal)
 */
 public class Scale extends CCodeGeneratorHelper {
 
 	/** FIXME
-	 * 
+	 *
 	 */
 	public Scale(ptolemy.actor.lib.Scale actor) {
         super(actor);
@@ -59,7 +59,7 @@ public class Scale extends CCodeGeneratorHelper {
                 throws IllegalActionException {
         stream.append(processCode(_codeBlock));
 	}
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected variable                ////
 

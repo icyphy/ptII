@@ -20,13 +20,13 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// CGCRectFix
 /**
-Generate a fixed-point rectangular pulse of height "height" 
+Generate a fixed-point rectangular pulse of height "height"
 (default 1.0) and width "width" (default 8).
 If "period" is greater than zero, then the pulse is repeated with the
 given period.
 
  @Author Juergen Weiss
- @Version $Id$, based on version 1.6 of /users/ptolemy/src/domains/cgc/stars/CGCRectFix.pl, from Ptolemy Classic 
+ @Version $Id$, based on version 1.6 of /users/ptolemy/src/domains/cgc/stars/CGCRectFix.pl, from Ptolemy Classic
  @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCRectFix extends CGCFix {
@@ -65,7 +65,7 @@ public class CGCRectFix extends CGCFix {
         OutputPrecision = new Parameter(this, "OutputPrecision");
         OutputPrecision.setExpression("2.14");
 
-/* 
+/*
 */
     }
     ///////////////////////////////////////////////////////////////////
@@ -110,7 +110,7 @@ the output is set to its maximum value (or minimum for negative magnitudes). par
     /**
      */
     public void  generateInitializeCode() throws IllegalActionException {
-        
+
 super.generateInitializeCode();
 		// if the user specified an invalid precision string, the error
 		// will be automatically reported in the initialize method of
@@ -121,21 +121,21 @@ super.generateInitializeCode();
     /**
      */
     public void  generateFireCode() {
-        
+
 { StringBuffer _str_ = new StringBuffer(); _str_.append(
 "	FIX_SetToZero($ref(output));\n"
 
-); 	 addCode(_str_);  } 
+); 	 addCode(_str_);  }
 
 { StringBuffer _str_ = new StringBuffer(); _str_.append(
 "	if ($ref(count) < $ref(width)) {\n"
 
-); 	 addCode(_str_);  } 
+); 	 addCode(_str_);  }
 		super.clearOverflow();
 { StringBuffer _str_ = new StringBuffer(); _str_.append(
 "		FIX_Assign($ref(output),$ref(height));\n"
 
-); 	 addCode(_str_);  } 
+); 	 addCode(_str_);  }
 		super.checkOverflow();
 { StringBuffer _str_ = new StringBuffer(); _str_.append(
 "	}\n"
@@ -143,7 +143,7 @@ super.generateInitializeCode();
 "	if ($ref(period) > 0 && $ref(count) > $ref(period))\n"
 "		$ref(count) = 0;"
 
-); 	 addCode(_str_);  } 
+); 	 addCode(_str_);  }
 
      }
 }

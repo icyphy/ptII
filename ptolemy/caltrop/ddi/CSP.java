@@ -66,7 +66,7 @@ import java.util.Map;
 //////////////////////////////////////////////////////////////////////////
 //// CSP
 /**
-   @author Christopher Chang 
+   @author Christopher Chang
    @version $Id$
    @since Ptolemy II 4.0
    @Pt.ProposedRating Red (cxh)

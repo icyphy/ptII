@@ -278,7 +278,7 @@ public class Effigy extends CompositeEntity {
     public boolean isSystemEffigy() {
         return _isSystemEffigy;
     }
-    
+
     /** Return the effigy that is "in charge" of this effigy.
      *  In this base class, this is the same as calling topEffigy().
      *  But in derived classes, particularly PtolemyEffigy, it will

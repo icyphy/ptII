@@ -42,9 +42,9 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
 //// Lempel-Ziv decoder.
-/** 
+/**
    Lempel-Ziv decoder.
-   
+
    @see LempelZivCoder
    @author Rachel Zhou
    @version $Id$
@@ -101,9 +101,9 @@ public class LempelZivDecoder extends Transformer {
                 output.send(0, new BooleanToken(true));
             }
         }
-            
+
     }
-    
+
     /** initialize the actor by creating a decode book that only
      *  contains one empty string "".
      */
@@ -114,10 +114,10 @@ public class LempelZivDecoder extends Transformer {
 
     ////////////////////////////////////////////////////////////
     ////                   private variables                ////
-    
+
     // The Lempel-Ziv decode book.
     private LinkedList _decodeBook;
-    
+
     // The consumption rate of the input port.
-    private Parameter _inputRate; 
+    private Parameter _inputRate;
 }

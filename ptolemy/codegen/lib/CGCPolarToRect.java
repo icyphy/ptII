@@ -23,7 +23,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 Convert magnitude and phase to rectangular form.
 
  @Author S. Ha
- @Version $Id$, based on version 1.7 of /users/ptolemy/src/domains/cgc/stars/CGCPolarToRect.pl, from Ptolemy Classic 
+ @Version $Id$, based on version 1.7 of /users/ptolemy/src/domains/cgc/stars/CGCPolarToRect.pl, from Ptolemy Classic
  @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCPolarToRect extends ClassicCGCActor {
@@ -48,7 +48,7 @@ public class CGCPolarToRect extends ClassicCGCActor {
         y = new ClassicPort(this, "y", false, true);
         y.setTypeEquals(BaseType.DOUBLE);
 
-/*     
+/*
 noInternalState();
 */
     }
@@ -81,27 +81,27 @@ noInternalState();
     /**
      */
     public int  myExecTime() {
-        
+
 return 50;
      }
 
     /**
      */
     public void  generatePreinitializeCode() {
-        
+
 addInclude("<math.h>");
      }
 
     /**
      */
     public void  generateFireCode() {
-        
-addCode(body); 
+
+addCode(body);
      }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
-    public String body = 
+    public String body =
         "	double m,p;\n"
         + "	m = $ref(magnitude);\n"
         + "	p = $ref(phase);\n"

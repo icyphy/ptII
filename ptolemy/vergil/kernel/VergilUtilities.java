@@ -66,7 +66,7 @@ public class VergilUtilities {
      *
      *  @return True if the look and feel starts with "Mac OS" or the
      *  ptolemy.ptII.MacOS property is set to true.
-     */   
+     */
     public static boolean macOSLookAndFeel() {
         // Dan Higgins writes:
         // "Apple suggests in their tech note 2042 (http://developer.apple.com/

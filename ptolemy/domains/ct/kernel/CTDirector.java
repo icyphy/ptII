@@ -563,9 +563,9 @@ public abstract class CTDirector extends StaticSchedulingDirector
     }
 
     /** If the stop() method has not been called and all the actors return
-     *  true at postfire, return true. Otherwise, return false. 
+     *  true at postfire, return true. Otherwise, return false.
      *  If this director is not at the top level and the breakpoint table
-     *  is not empty, request a refiring at the first breakpoint. 
+     *  is not empty, request a refiring at the first breakpoint.
      *  @return True if the Director wants to be fired again in the future.
      *  @exception IllegalActionException If refiring can not be granted.
      */
@@ -592,7 +592,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
     /** Invoke prefire() on all DYNAMIC_ACTORS, such as integrators,
      *  and emit their current states.
      *  Return true if all the prefire() methods return true and stop()
-     *  is not called. Otherwise, return false.  
+     *  is not called. Otherwise, return false.
      *  @return True if all dynamic actors return true from their prefire()
      *  methods and stop() is called.
      *  @exception IllegalActionException If scheduler throws it, or dynamic
@@ -659,12 +659,12 @@ public abstract class CTDirector extends StaticSchedulingDirector
     }
 
     /** Preinitialize the model for an execution. This method is
-     *  called only once for each simulation. The schedule is invalidated, 
-     *  statistical variables and the breakpoint table are cleared, all actors 
-     *  are preinitialized. 
-     *  If this director does not have a container and a scheduler, or the 
-     *  director does not fit in this level of hierarchy, an 
-     *  IllegalActionException will be thrown. 
+     *  called only once for each simulation. The schedule is invalidated,
+     *  statistical variables and the breakpoint table are cleared, all actors
+     *  are preinitialized.
+     *  If this director does not have a container and a scheduler, or the
+     *  director does not fit in this level of hierarchy, an
+     *  IllegalActionException will be thrown.
      *  <p>
      *  Note, however, time does not have a meaning when actors are
      *  preinitialized. So actors must not use a notion of time in their
@@ -770,14 +770,14 @@ public abstract class CTDirector extends StaticSchedulingDirector
      */
     public String[] suggestedModalModelDirectors() {
         // This method does not call the method defined in the super class,
-        // because this method provides complete new information. 
+        // because this method provides complete new information.
         // Default is a HSDirector, while FSMDirector is also in the array.
         String[] defaultSuggestions = new String[2];
         defaultSuggestions[0] = "ptolemy.domains.fsm.kernel.HSDirector";
         defaultSuggestions[1] = "ptolemy.domains.fsm.kernel.FSMDirector";
         return defaultSuggestions;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 

@@ -80,7 +80,7 @@ public class DoubleRangeParameter extends Parameter {
         min = new Parameter(this, "min");
         min.setExpression("0.0");
         min.setTypeEquals(BaseType.DOUBLE);
-        
+
         max = new Parameter(this, "max");
         max.setExpression("1.0");
         max.setTypeEquals(BaseType.DOUBLE);
@@ -94,7 +94,7 @@ public class DoubleRangeParameter extends Parameter {
         // but this may be out of range for a particular
         // application.
         // setExpression("0.5");
-        
+
         setTypeEquals(BaseType.DOUBLE);
 
         _attachText("_iconDescription", "<svg>\n"
@@ -158,7 +158,7 @@ public class DoubleRangeParameter extends Parameter {
             super.attributeChanged(attribute);
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                       protected methods                   ////
 

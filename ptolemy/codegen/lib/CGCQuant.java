@@ -28,7 +28,7 @@ specified, there must be one more level than thresholds; the default
 value for level is 0, 1, 2, ... N.
 
  @Author E. A. Lee and J. Buck
- @Version $Id$, based on version 1.7 of /users/ptolemy/src/domains/cgc/stars/CGCQuant.pl, from Ptolemy Classic 
+ @Version $Id$, based on version 1.7 of /users/ptolemy/src/domains/cgc/stars/CGCQuant.pl, from Ptolemy Classic
  @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCQuant extends ClassicCGCActor {
@@ -57,7 +57,7 @@ public class CGCQuant extends ClassicCGCActor {
         levels = new Parameter(this, "levels");
         levels.setExpression("{}");
 
-/* 
+/*
 */
     }
     ///////////////////////////////////////////////////////////////////
@@ -89,7 +89,7 @@ public class CGCQuant extends ClassicCGCActor {
     /**
      */
     public int  myExecTime() {
-        
+
 double x = log(thresholds.size()) / log(2.0);
 		return 8 + 5 * int(x-0.01);
      }
@@ -97,14 +97,14 @@ double x = log(thresholds.size()) / log(2.0);
     /**
      */
     public void  generatePreinitializeCode() {
-        
+
 addDeclaration(declarations);
      }
 
     /**
      */
     public void  generateInitializeCode() throws IllegalActionException {
-        
+
 int n = thresholds.size();
 		if (levels.size() == 0) {
 			// default: 0, 1, 2...
@@ -122,25 +122,25 @@ int n = thresholds.size();
     /**
      */
     public void  generateFireCode() {
-        
-addCode (maindecl); 
+
+addCode (maindecl);
 StringBuffer st = new StringBuffer("\t\t$starSymbol(siz) = ");
 	    st.append(thresholds.size());
 	    st.append(";\n");
-	    addCode((String)st); 
-	    addCode (main); 
+	    addCode((String)st);
+	    addCode (main);
      }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
-    public String declarations = 
+    public String declarations =
         "	    int $starSymbol(siz);\n";
 
-    public String maindecl = 
+    public String maindecl =
         "		float in;\n"
         + "		int lo, hi, mid;\n";
 
-    public String main = 
+    public String main =
         "		in = $ref(input);\n"
         + "		lo = 0;\n"
         + "		hi = $starSymbol(siz);\n"

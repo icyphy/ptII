@@ -54,10 +54,10 @@ import ptolemy.kernel.util.NameDuplicationException;
    one at t_plus phase. The time does not advance at these two phases.
    For example, with the default settings, at time 1.0, the actor
    produces 0 at t_minus phase and 1 at t_plus phase. Note, at
-   time t, which is between t_minus and t_plus, the possible output of 
+   time t, which is between t_minus and t_plus, the possible output of
    this actor can be any value between 0 and 1.
    <p>
-   The clock has a stopTime parameter and a numberOfCycles parameter. 
+   The clock has a stopTime parameter and a numberOfCycles parameter.
    The whole model will stop execution when the
    stop time is reached. If the numberOfCycles is set to a positive integer,
    the clock will continue outputting the value of the defaultValue parameter
@@ -117,7 +117,7 @@ public class ContinuousClock extends Clock {
         _updateTentativeValues();
         output.send(0, _tentativeCurrentValue);
         if (_debugging) {
-            _debug("Output: " + _currentValue + " at " + 
+            _debug("Output: " + _currentValue + " at " +
             getDirector().getModelTime() + ".");
         }
     }
@@ -157,7 +157,7 @@ public class ContinuousClock extends Clock {
         // If the current execution is not a discrete phase execution,
         // simply returns true.
         if (!((CTDirector)getDirector()).isDiscretePhase()) {
-            // Unlike what is defined in the super.postfire, continuous clock 
+            // Unlike what is defined in the super.postfire, continuous clock
             // requires that the current time passes the stop time.
             // That is, not only discrete phase execution, but also the continuous
             // phase execution is performed.
@@ -173,7 +173,7 @@ public class ContinuousClock extends Clock {
                 return true;
             }
         }
-        
+
         // Get the current time and period.
         Time currentTime = getDirector().getModelTime();
         double periodValue = ((DoubleToken)period.getToken()).doubleValue();
@@ -198,7 +198,7 @@ public class ContinuousClock extends Clock {
         if (_tentativeCycleCount > 0) {
             while (_tentativeCycleStartTime.add(periodValue).compareTo(
                 currentTime) <= 0) {
-                _tentativeCycleStartTime 
+                _tentativeCycleStartTime
                     = _tentativeCycleStartTime.add(periodValue);
             }
 
@@ -211,7 +211,7 @@ public class ContinuousClock extends Clock {
             // expected break point, it should be treated as a break point
             // as what the director does in processBreakPoints method.
 
-           Time currentPhaseTime = 
+           Time currentPhaseTime =
                _tentativeCycleStartTime.add(_offsets[_tentativePhase]);
            // Adjust the phase if time has moved beyond the current phase.
            if (currentTime.compareTo(currentPhaseTime) == 0) {
@@ -226,7 +226,7 @@ public class ContinuousClock extends Clock {
                     if (_tentativePhase >= _offsets.length) {
                         _tentativePhase = 0;
                         // Schedule the first firing in the next period.
-                        _tentativeCycleStartTime = 
+                        _tentativeCycleStartTime =
                             _tentativeCycleStartTime.add(periodValue);
                         // Indicate that the cycle count should increase.
                         _tentativeCycleCountIncrement++;
@@ -279,7 +279,7 @@ public class ContinuousClock extends Clock {
         // its components. So, the following code does not get called.
 
         int cycleLimit  = ((IntToken)numberOfCycles.getToken()).intValue();
-        
+
         Time stopTime = _tentativeStartTime.add(cycleLimit * periodValue);
         if ((cycleLimit > 0 && currentTime.compareTo(stopTime) >= 0)
                 || _tentativeDone) {
@@ -288,17 +288,17 @@ public class ContinuousClock extends Clock {
 
         _updateStates();
 
-        // Unlike what is defined in the super.postfire, continuous clock 
+        // Unlike what is defined in the super.postfire, continuous clock
         // requires that the current time passes the stop time.
         // That is, not only discrete phase execution, but also the continuous
         // phase execution is performed.
         if (currentTime.compareTo(getModelStopTime()) > 0) {
-            if (_debugging) 
+            if (_debugging)
                 _debug(" --- Postfire returns false.");
             return false;
         }
 
-        if (_debugging) 
+        if (_debugging)
             _debug(" --- Postfire returns true.");
         return true;
     }

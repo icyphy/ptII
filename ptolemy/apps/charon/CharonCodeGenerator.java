@@ -123,7 +123,7 @@ public class CharonCodeGenerator extends Attribute {
                 + "style=\"font-size:12; font-family:SansSerif; fill:white\">"
                 + "Double click to\ngenerate code.</text></svg>");
         new CharonEditorFactory(this, "_editorFactory");
-        
+
         SingletonParameter hide = new SingletonParameter(this, "_hideName");
         hide.setToken(BooleanToken.TRUE);
         hide.setVisibility(Settable.EXPERT);

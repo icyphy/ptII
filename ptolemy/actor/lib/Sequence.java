@@ -55,7 +55,7 @@ import ptolemy.kernel.util.Workspace;
  * Compared with the Pulse actor, this actor can be enabled or disabled
  * on each firing by providing a true or false input on the <i>enable</i>
  * port.
- * 
+ *
  * @author Edward A. Lee
  * @version $Id$
  * @see Pulse
@@ -86,12 +86,12 @@ public class Sequence extends TypedAtomicActor {
         // Set the Repeat Flag.
         repeat = new Parameter(this, "repeat", new BooleanToken(false));
         repeat.setTypeEquals(BaseType.BOOLEAN);
-        
+
         enable = new TypedIOPort(this, "enable", true, false);
         enable.setTypeEquals(BaseType.BOOLEAN);
-        
+
         output = new TypedIOPort(this, "output", false, true);
-        
+
         // set type constraint
         ArrayType valuesArrayType = (ArrayType)values.getType();
         InequalityTerm elementTerm = valuesArrayType.getElementTypeTerm();
@@ -111,7 +111,7 @@ public class Sequence extends TypedAtomicActor {
      *  types of the two input ports.
      */
     public TypedIOPort output;
-    
+
     /** The flag that indicates whether the sequence needs to be
      *  repeated. This is a boolean, and defaults to false.
      */
@@ -158,7 +158,7 @@ public class Sequence extends TypedAtomicActor {
             }
         }
     }
-    
+
     /** Initialize the actor by resetting to the first output value.
      *  @exception IllegalActionException If there is no director.
      */
@@ -168,7 +168,7 @@ public class Sequence extends TypedAtomicActor {
         _outputProduced = false;
         super.initialize();
     }
-    
+
     /** Update the state of the actor by moving to the next value
      *  in the <i>values</i> array.
      *  @exception IllegalActionException If there is no director.
@@ -190,13 +190,13 @@ public class Sequence extends TypedAtomicActor {
         }
         return super.postfire();
     }
-        
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     // The index of the next value to be produced.
     private int _currentIndex;
-    
+
     // Indicator that an output was produced.
     private boolean _outputProduced;
 }

@@ -209,7 +209,7 @@ public class KeyStoreActor extends TypedAtomicActor {
 
                 fileOrURL = new FileParameter(this, "fileOrURL");
                 // To create the initial default KeyStore, do
-                // cd $PTII; make ptKeystore 
+                // cd $PTII; make ptKeystore
                 // or set createFileOrURLIfNecessary to true.
                 fileOrURL.setExpression("$PTII/ptKeystore");
 
@@ -381,25 +381,25 @@ public class KeyStoreActor extends TypedAtomicActor {
                 + " -storepass \"" + _storePassword + "\""
                 + " -keypass \"" + _keyPassword + "\"";
 
-        String command1 = keytoolPath 
+        String command1 = keytoolPath
                 + " -genkey"
                 + " -dname \"CN=Claudius Ptolemaus, OU=Your Project, O=Your University, L=Your Town, S=Your State, C=US\""
                 + commonCommand;
-        
-        String command2 = keytoolPath 
+
+        String command2 = keytoolPath
                 + " -selfcert"
                 + commonCommand;
 
-        String command3 = keytoolPath 
+        String command3 = keytoolPath
                 + " -list"
                 + " -keystore " + keystoreFilename
                 + " -storepass \"" + _storePassword + "\"";
 
-        
+
         _exec(command1);
         _exec(command2);
         _exec(command3);
-        
+
 
         if (! (new File(keystoreFilename)).exists()) {
             throw new IllegalActionException(this,
@@ -618,7 +618,7 @@ public class KeyStoreActor extends TypedAtomicActor {
         } catch(Exception ex) {
             name = ": " + fileOrURL.toString();
         }
-        results.append(name); 
+        results.append(name);
 
 
         String exists = ", which does not exist";
@@ -630,7 +630,7 @@ public class KeyStoreActor extends TypedAtomicActor {
                 } else {
                     exists = ", which exists and is not readable";
                 }
-            } 
+            }
         } catch (Exception ex) {
             // Ignore
         }
@@ -665,7 +665,7 @@ public class KeyStoreActor extends TypedAtomicActor {
         String errorString = "";
         try {
             _stopFireRequested = false;
-            
+
             System.out.println("Keystore Command: " + command);
 
             if (_process != null) {
@@ -713,7 +713,7 @@ public class KeyStoreActor extends TypedAtomicActor {
             }
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex,
-                    "Problem setting up command '" + command + "'\n" 
+                    "Problem setting up command '" + command + "'\n"
                                              + outputString + "\n"
                                              + errorString);
         }

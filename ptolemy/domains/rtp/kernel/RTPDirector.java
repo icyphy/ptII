@@ -56,7 +56,7 @@ FIXME: How to stop a model???
 @author  Jie Liu
 @version $Id$
 */
-public class RTPDirector extends ProcessDirector 
+public class RTPDirector extends ProcessDirector
     implements TimedDirector {
 
     /** Construct a director in the default workspace with an empty string
@@ -129,7 +129,7 @@ public class RTPDirector extends ProcessDirector
      *  @return The current computer time.
      */
     public Time getModelTime() {
-        double currentTime = 
+        double currentTime =
             (double)(System.currentTimeMillis()-_realStartTime);
         return new Time(this, currentTime);
     }

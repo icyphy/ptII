@@ -45,7 +45,7 @@ import ptolemy.copernicus.java.*;
    @Pt.AcceptedRating Red (cxh)
 */
 public class TestUnboxingMain extends KernelMain {
-    
+
     /** First argument is the output directory.
      *  Second argument is the class name.
      */
@@ -73,15 +73,15 @@ public class TestUnboxingMain extends KernelMain {
     public static void addStandardTransforms(CompositeActor model)
     {
         Pack pack = PackManager.v().getPack("wjtp");
-        addTransform(pack, "wjtp.watchDog", 
+        addTransform(pack, "wjtp.watchDog",
                 WatchDogTimer.v(), "time:" + _watchDogTimeout);
         addTransform(pack, "wjtp.ttn",
                 TokenToNativeTransformer.v(model));// "debug:true level:1");
 
         addStandardOptimizations(pack, 8);
-        
+
         addTransform(pack, "wjtp.ufr",
-                UnusedFieldRemover.v());        
+                UnusedFieldRemover.v());
         addStandardOptimizations(pack, 10);
     }
 
@@ -92,11 +92,11 @@ public class TestUnboxingMain extends KernelMain {
 
         addStandardTransforms(_toplevel);
         addTransform(pack, "wjtp.gt", GrimpTransformer.v());
-        addTransform(pack, "wjtp.finalSnapshotJimple", 
+        addTransform(pack, "wjtp.finalSnapshotJimple",
                 JimpleWriter.v(), "outDir:" + _outputDirectory);
-        addTransform(pack, "wjtp.finalSnapshot", 
+        addTransform(pack, "wjtp.finalSnapshot",
                 ClassWriter.v(), "outDir:" + _outputDirectory);
-        addTransform(pack, "wjtp.watchDogCancel", 
+        addTransform(pack, "wjtp.watchDogCancel",
                 WatchDogTimer.v(), "cancel:true");
     }
 
@@ -111,7 +111,7 @@ public class TestUnboxingMain extends KernelMain {
     public void setOutputDirectory(String string) {
         _outputDirectory = string;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private fields                    ////
 

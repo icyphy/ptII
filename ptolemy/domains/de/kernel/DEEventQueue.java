@@ -49,7 +49,7 @@ import ptolemy.kernel.util.InvalidStateException;
    adding a new event into the queue, getting the earliest event of the queue.
    A correct implementation of this interface should not allow identical
    events. In particular, when adding a new event, the event is not added if
-   the event is already in the queue. Also note that calling the get() method 
+   the event is already in the queue. Also note that calling the get() method
    does not delete events from event queue but calling the take() method does.
 
    @author Lukito Muliadi, Jie Liu, Haiyang Zheng

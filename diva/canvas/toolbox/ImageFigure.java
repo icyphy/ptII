@@ -44,7 +44,7 @@ import diva.canvas.CanvasUtilities;
  */
 public class ImageFigure extends AbstractFigure
         implements ImageObserver {
-            
+
     /** Indicator of whether this figure should be centered on its origin.
      *  By default, this class is not centered.
      */
@@ -59,7 +59,7 @@ public class ImageFigure extends AbstractFigure
      * The image of this figure.
      */
     private Image _image;
-    
+
     /**
      * The width of the figure.
      */
@@ -161,7 +161,7 @@ public class ImageFigure extends AbstractFigure
             int height) {
         // FIXME: This should probably create some default error
         // image if the infoflags argument contains ERROR or ABORT.
-        
+
         if ((infoflags & (ImageObserver.HEIGHT | ImageObserver.WIDTH)) != 0) {
             // NOTE: Incredibly stupidly, when Java calls this method
             // with a new width and height, it hasn't set those fields

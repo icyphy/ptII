@@ -49,7 +49,7 @@ import java.util.*;
 //// ApplyFunctionOverSequence
 
 /**
-  
+
    @author Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 0.4
@@ -113,7 +113,7 @@ public class ApplyFunctionOverSequence extends TypedAtomicActor {
             if (_rate[i] == -1) {
                 arguments[i] = port.get(0);
             } else {
-                Token[] tokens = port.get(0, _rate[i]); 
+                Token[] tokens = port.get(0, _rate[i]);
                 arguments[i] = new ArrayToken(tokens);
             }
             i++;
@@ -142,7 +142,7 @@ public class ApplyFunctionOverSequence extends TypedAtomicActor {
             if (_rate[i] == -1) {
                 if (!port.hasToken(0)) {
                     return false;
-                } 
+                }
             } else {
                 if (!port.hasToken(0, _rate[i])) {
                     return false;
@@ -181,11 +181,11 @@ public class ApplyFunctionOverSequence extends TypedAtomicActor {
             } else {
                 port.setTypeEquals(portType);
                 _rate[i] = -1;
-            }                    
+            }
             i++;
         }
     }
-   
+
     private int _outputRate;
     private int _rate[];
 }

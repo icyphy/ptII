@@ -23,7 +23,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 type conversion from int to float
 
  @Author Jose Luis Pino
- @Version $Id$, based on version 1.3 of /users/ptolemy/src/domains/cgc/stars/CGCIntToFloat.pl, from Ptolemy Classic 
+ @Version $Id$, based on version 1.3 of /users/ptolemy/src/domains/cgc/stars/CGCIntToFloat.pl, from Ptolemy Classic
  @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCIntToFloat extends ClassicCGCActor {
@@ -48,7 +48,7 @@ public class CGCIntToFloat extends ClassicCGCActor {
         numSample = new Parameter(this, "numSample");
         numSample.setExpression("1");
 
-/*     
+/*
 noInternalState();
 */
     }
@@ -76,21 +76,21 @@ noInternalState();
     /**
      */
     public int  myExecTime() {
-        
+
 return ((IntToken)((numSample).getToken())).intValue();
      }
 
     /**
      */
     public void  generatePreinitializeCode() {
-        
+
 numSample = output.numXfer();
      }
 
     /**
      */
     public void  generateInitializeCode() throws IllegalActionException {
-        
+
 if (((IntToken)((numSample).getToken())).intValue() > 1) {
 			input.setSDFParams(((IntToken)((numSample).getToken())).intValue());
 			output.setSDFParams(((IntToken)((numSample).getToken())).intValue());
@@ -100,13 +100,13 @@ if (((IntToken)((numSample).getToken())).intValue() > 1) {
     /**
      */
     public void  generateFireCode() {
-        
-addCode(body); 
+
+addCode(body);
      }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
-    public String body = 
+    public String body =
         "	int i = 0;\n"
         + "	for (; i < $val(numSample); i++) {\n"
         + "		$ref(output, i) = $ref(input, i);\n"

@@ -161,7 +161,7 @@ import ptolemy.moml.HandlesInternalLinks;
    Another is for this class to somehow refuse to accept
    the new object in a subclass. But it is not obvious how
    to do this.
-   <li>     
+   <li>
    FIXME: If an instance of IterateOverArray in a derived class has
    overridden values of parameters, those are lost if contained
    entity of the instance in the base class is replaced and
@@ -175,7 +175,7 @@ import ptolemy.moml.HandlesInternalLinks;
         Parallel Digital Signal Processing," Ph.D. Thesis,
         University of Technology, Sydney, Sydney, Australia, 1992.
    </ol>
-   
+
    @author Edward A. Lee, Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 4.0
@@ -255,7 +255,7 @@ public class IterateOverArray extends TypedCompositeActor
         result._cloning = false;
         return result;
     }
-    
+
     /** Override the base class to return a specialized port.
      *  This port is specified to always be derived,
      *  so it can only be deleted via kernel calls (not via the
@@ -342,10 +342,10 @@ public class IterateOverArray extends TypedCompositeActor
                 synchronized(this) {
                     try {
                         workspace().getWriteAccess();
-                        
+
                         // Entity most recently added.
                         ComponentEntity entity = null;
-    
+
                         // Delete any previously contained entities.
                         // The strategy here is a bit tricky if this IterateOverArray
                         // is within a class definition (that is, if it has derived objects).
@@ -375,12 +375,12 @@ public class IterateOverArray extends TypedCompositeActor
                                 entity = prior;
                             }
                         }
-    
+
                         if (entity == null) {
                             // Nothing to do.
                             return;
                         }
-    
+
                         // Set up the inside connections.
                         // First, create all the ports.
                         // The above execute() will have deleted all ports
@@ -396,14 +396,14 @@ public class IterateOverArray extends TypedCompositeActor
                             IteratePort newPort = (IteratePort)getPort(name);
                             if (newPort == null) {
                                 newPort = (IteratePort)newPort(name);
-                            } 
+                            }
                             if (insidePort instanceof IOPort) {
                                 IOPort castPort = (IOPort)insidePort;
                                 newPort.setMultiport(castPort.isMultiport());
                                 newPort.setInput(castPort.isInput());
                                 newPort.setOutput(castPort.isOutput());
                             }
-    
+
                             // Set up inside connections.
                             // Do this only if they are not already connected.
                             List connectedPorts = insidePort.connectedPortList();
@@ -440,7 +440,7 @@ public class IterateOverArray extends TypedCompositeActor
             "instances of IteratePort");
         }
         super._addPort(port);
-        
+
         // Create and connect a matching inside port on contained entities.
         // Do this as a change request to ensure that the action of
         // creating the port passed in as an argument is complete by
@@ -465,13 +465,13 @@ public class IterateOverArray extends TypedCompositeActor
 
                 synchronized(this) {
                     // Create and connect a matching inside port on contained entities.
-                    
+
                     // NOTE: We assume this propagates to derived objects
                     // because _addPort is called when MoML is parsed to add
                     // a port to IterateOverArray. Even the IterateComposite
                     // uses MoML to add this port, so this will result
                     // in propagation.
-                    
+
                     try {
                         workspace().getWriteAccess();
                         _inAddPort = true;
@@ -622,7 +622,7 @@ public class IterateOverArray extends TypedCompositeActor
             entity.exportMoML(output, depth);
         }
     }
-    
+
     /** Override the base class to remove the ports and inside relations
      *  of this actor. This method assumes the caller has write access
      *  on the workspace.
@@ -630,7 +630,7 @@ public class IterateOverArray extends TypedCompositeActor
      */
     protected void _removeEntity(ComponentEntity entity) {
         super._removeEntity(entity);
-        
+
         // Remove all inside relations. This will have the
         // side effect of removing connections on the inside.
         Iterator relations = relationList().iterator();
@@ -666,7 +666,7 @@ public class IterateOverArray extends TypedCompositeActor
      */
     protected void _removePort(final Port port) {
         super._removePort(port);
-        
+
         // NOTE: Do not use MoML here because we do not want to generate
         // undo actions to recreate the inside relation and port.
         // This is because _addPort() will take care of that.
@@ -785,7 +785,7 @@ public class IterateOverArray extends TypedCompositeActor
 
     // Flag indicating that we are executing _addPort().
     private boolean _inAddPort = false;
-    
+
     // Flag indicating that we are executing _removeEntity().
     private boolean _inRemoveEntity = false;
 
@@ -798,7 +798,7 @@ public class IterateOverArray extends TypedCompositeActor
 
     ///////////////////////////////////////////////////////////////////
     //// IterateComposite
-    
+
     /** This is a specialized composite actor for use in IterateOverArray.
      *  In particular, it ensures that if ports are added or deleted
      *  locally, then corresponding ports will be added or deleted
@@ -808,7 +808,7 @@ public class IterateOverArray extends TypedCompositeActor
     public static class IterateComposite extends TypedCompositeActor {
         // NOTE: This has to be a static class so that MoML can
         // instantiate it.
-        
+
         /** Construct an actor with a name and a container.
          *  @param container The container.
          *  @param name The name of this actor.
@@ -852,7 +852,7 @@ public class IterateOverArray extends TypedCompositeActor
                 "Ports in IterateOverArray$IterateComposite must be MirrorPort.");
             }
             super._addPort(port);
-            
+
             final IterateOverArray container = (IterateOverArray)getContainer();
 
             if (container._inAddPort) {
@@ -872,7 +872,7 @@ public class IterateOverArray extends TypedCompositeActor
                 protected void _execute() throws Exception {
                     try {
                         workspace().getWriteAccess();
-                        
+
                         // The port may already exist (if we are
                         // inside a clone() call).
                         IteratePort newPort
@@ -893,7 +893,7 @@ public class IterateOverArray extends TypedCompositeActor
             container.requestChange(request);
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     //// IterateDirector
 

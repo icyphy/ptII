@@ -112,7 +112,7 @@ import ptolemy.kernel.util.Workspace;
    @Pt.AcceptedRating Green (kienhuis)
    @see ptolemy.actor.Director
 */
-public class CSPDirector extends CompositeProcessDirector 
+public class CSPDirector extends CompositeProcessDirector
     implements TimedDirector {
 
     /** Construct a director in the default workspace with an empty string
@@ -209,7 +209,7 @@ public class CSPDirector extends CompositeProcessDirector
         }
     }
 
-    /** Set a new value to the current model time, when no delayed 
+    /** Set a new value to the current model time, when no delayed
      *  processes exist. It is intended for use when composing
      *  CSP with other timed domains.
      *  <P>
@@ -238,16 +238,16 @@ public class CSPDirector extends CompositeProcessDirector
      */
     public String[] suggestedModalModelDirectors() {
         // This method does not call the method defined in the super class,
-        // because this method provides complete new information. 
-        // Default is a NonStrictFSMDirector, while FSMDirector is also 
+        // because this method provides complete new information.
+        // Default is a NonStrictFSMDirector, while FSMDirector is also
         // in the array.
         String[] defaultSuggestions = new String[2];
-        defaultSuggestions[1] = 
+        defaultSuggestions[1] =
             "ptolemy.domains.fsm.kernel.NonStrictFSMDirector";
         defaultSuggestions[0] = "ptolemy.domains.fsm.kernel.FSMDirector";
         return defaultSuggestions;
     }
-    
+
     /** Override the base class to stop any actors that might be stalled
      *  in a call to delay().
      *  @exception IllegalActionException If the parent class throws it.
@@ -357,7 +357,7 @@ public class CSPDirector extends CompositeProcessDirector
      *  end of executing the model.
      *  @return False if real deadlock occurred, true otherwise.
      */
-    protected synchronized boolean _resolveInternalDeadlock() 
+    protected synchronized boolean _resolveInternalDeadlock()
         throws IllegalActionException {
         if (_actorsDelayed > 0) {
             // Time deadlock.

@@ -31,7 +31,7 @@ output integer will always be non-negative.
 
 
  @Author Jose Luis Pino
- @Version $Id$, based on version 1.6 of /users/ptolemy/src/domains/cgc/stars/CGCBitsToInt.pl, from Ptolemy Classic 
+ @Version $Id$, based on version 1.6 of /users/ptolemy/src/domains/cgc/stars/CGCBitsToInt.pl, from Ptolemy Classic
  @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCBitsToInt extends ClassicCGCActor {
@@ -56,7 +56,7 @@ public class CGCBitsToInt extends ClassicCGCActor {
         nBits = new Parameter(this, "nBits");
         nBits.setExpression("4");
 
-/*     
+/*
 noInternalState();
 */
     }
@@ -84,14 +84,14 @@ noInternalState();
     /**
      */
     public int  myExecTime() {
-        
+
 return ((IntToken)((nBits).getToken())).intValue()*2;
      }
 
     /**
      */
     public void  generateInitializeCode() throws IllegalActionException {
-        
+
 /* Need (int) cast on sizeof to eliminate gcc warning */
 	if (((IntToken)((nBits).getToken())).intValue() > /*sizeof(int)*/ 16 *8) {
 StringBuffer message = new StringBuffer("nBits needs to be less than");
@@ -109,13 +109,13 @@ StringBuffer message = new StringBuffer("nBits needs to be less than");
     /**
      */
     public void  generateFireCode() {
-        
-addCode(readNwrite); 
+
+addCode(readNwrite);
      }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
-    public String readNwrite = 
+    public String readNwrite =
         "	int i;\n"
         + "	int word = 0;\n"
         + "	for (i=$val(nBits)-1;i>=0;i--) {\n"

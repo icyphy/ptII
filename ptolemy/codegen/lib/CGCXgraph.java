@@ -36,7 +36,7 @@ for a complete explanation of the options.
 <a name="graph, X window"></a>
 
  @Author S. Ha
- @Version $Id$, based on version 1.14 of /users/ptolemy/src/domains/cgc/stars/CGCXgraph.pl, from Ptolemy Classic 
+ @Version $Id$, based on version 1.14 of /users/ptolemy/src/domains/cgc/stars/CGCXgraph.pl, from Ptolemy Classic
  @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCXgraph extends ClassicCGCActor {
@@ -91,7 +91,7 @@ public class CGCXgraph extends ClassicCGCActor {
         count = new Parameter(this, "count");
         count.setExpression("0");
 
-/* 
+/*
 */
     }
     ///////////////////////////////////////////////////////////////////
@@ -153,16 +153,16 @@ public class CGCXgraph extends ClassicCGCActor {
     /**
      */
     public int  myExecTime() {
-        
+
 return 7;
      }
 
     /**
      */
     public void  wrapup() {
-        
+
 // close the files
-		addCode(closeFile); 
+		addCode(closeFile);
 
 		StringBuffer cmd = new StringBuffer();
 		cmd.append("( ");
@@ -171,7 +171,7 @@ return 7;
 		String sf = saveFile;
 		if (sf != null && *sf != 0) {
 			cmd.append("/bin/cat ");
-			cmd << target()->name(); 
+			cmd << target()->name();
 			cmd.append("_$starSymbol(temp)" + " >> ");
 			cmd.append(sf  + "; /bin/echo \"\" >> " + sf  + "; ");
 		}
@@ -208,46 +208,46 @@ return 7;
 		cmd.append(") &");
 StringBuffer out = new StringBuffer("    system(\"");
 		out.append(sanitizeString(cmd)  + "\");\n");
-		addCode(out); 
+		addCode(out);
      }
 
     /**
      */
     public void  generatePreinitializeCode() {
-        
+
 addDeclaration("    FILE* $starSymbol(fp);");
                 addInclude("<stdio.h>");
 StringBuffer w = new StringBuffer("    if (!($starSymbol(fp) = fopen(\"");
 		w.append(target()->name()  + "_$starSymbol(temp)");
 		w.append("\",\"w\")))");
-		addCode(w); 
-		addCode(err); 
+		addCode(w);
+		addCode(err);
      }
 
     /**
      */
     public void  generateInitializeCode() throws IllegalActionException {
-        
+
 index = xInit;
      }
 
     /**
      */
     public void  generateFireCode() {
-        
+
 { StringBuffer _str_ = new StringBuffer(); _str_.append(
 "	if (++$ref(count) >= $val(ignore)) \n"
 "		fprintf($starSymbol(fp),\"%g %g\\n\",$ref(index),$ref(input));\n"
 "	$ref(index) += $val(xUnits);"
 
-); 	 addCode(_str_);  } 
+); 	 addCode(_str_);  }
 
      }
 
     /**
      */
     protected String sanitizeString (StringList s) {
-        
+
 // quick implementation of a string buffer
 			static class Buffer {
 			   public:
@@ -282,7 +282,7 @@ index = xInit;
 			} buffer;
 
 			buffer.initialize();
-				
+
 			for (String sp=s; *sp; sp++) {
 			    if (*sp == '\"')
 				    buffer.append('\\');
@@ -294,12 +294,12 @@ index = xInit;
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
-    public String err = 
+    public String err =
         "    {\n"
         + "        fprintf(stderr,\"ERROR: cannot open output file for Xgraph star.\\n\");\n"
         + "	exit(1);\n"
         + "    }\n";
 
-    public String closeFile = 
+    public String closeFile =
         "    fclose($starSymbol(fp));\n";
 }

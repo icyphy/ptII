@@ -46,7 +46,7 @@ import ptolemy.kernel.util.Settable;
 /**
    An Interpolator source for use with ECSL.
 
-   <p>This is an interpolator for use with SDF. 
+   <p>This is an interpolator for use with SDF.
    {@link ECSLStep} is for use with CT.
 
    @author Christopher Brooks.
@@ -72,7 +72,7 @@ public class ECSLInterpolator extends Interpolator {
         super(container, name);
 
         After = new Parameter(this, "After");
- 
+
         // Hide the SampleTime port.
         SampleTime = new Parameter(this, "SampleTime");
         SampleTime.setVisibility(Settable.EXPERT);

@@ -23,7 +23,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 Takes two inputs and outputs the greater and lesser of the two integers.
 
  @Author Brian L. Evans
- @Version $Id$, based on version 1.1 of /users/ptolemy/src/domains/cgc/stars/CGCOrderTwoInt.pl, from Ptolemy Classic 
+ @Version $Id$, based on version 1.1 of /users/ptolemy/src/domains/cgc/stars/CGCOrderTwoInt.pl, from Ptolemy Classic
  @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCOrderTwoInt extends ClassicCGCActor {
@@ -48,7 +48,7 @@ public class CGCOrderTwoInt extends ClassicCGCActor {
         lesser = new ClassicPort(this, "lesser", false, true);
         lesser.setTypeEquals(BaseType.INT);
 
-/* 
+/*
 */
     }
     ///////////////////////////////////////////////////////////////////
@@ -80,13 +80,13 @@ public class CGCOrderTwoInt extends ClassicCGCActor {
     /**
      */
     public void  generateFireCode() {
-        
-addCode(ordertwoint); 
+
+addCode(ordertwoint);
      }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
-    public String ordertwoint = 
+    public String ordertwoint =
         "		int greaterValue = (int)$ref(upper);\n"
         + "		int lesserValue = (int) $ref(lower);\n"
         + "\n"

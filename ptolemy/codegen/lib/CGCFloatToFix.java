@@ -27,7 +27,7 @@ If the output precision is not specified, the precision is determined at
 runtime according to the incoming float value.
 
  @Author J.Weiss
- @Version $Id$, based on version 1.7 of /users/ptolemy/src/domains/cgc/stars/CGCFloatToFix.pl, from Ptolemy Classic 
+ @Version $Id$, based on version 1.7 of /users/ptolemy/src/domains/cgc/stars/CGCFloatToFix.pl, from Ptolemy Classic
  @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCFloatToFix extends CGCFix {
@@ -52,7 +52,7 @@ public class CGCFloatToFix extends CGCFix {
         OutputPrecision = new Parameter(this, "OutputPrecision");
         OutputPrecision.setExpression("");
 
-/* 
+/*
 */
     }
     ///////////////////////////////////////////////////////////////////
@@ -82,7 +82,7 @@ value (or minimum for negative magnitudes). parameter with initial value "".
     /**
      */
     public void  begin() {
-        
+
 // if the precision for the output port is not defined
 		// - neither by this nor the successor star -, the actual
 		// precision is determined at runtime
@@ -94,7 +94,7 @@ value (or minimum for negative magnitudes). parameter with initial value "".
     /**
      */
     public void  generateInitializeCode() throws IllegalActionException {
-        
+
 super.generateInitializeCode();
 		output.setPrecision(OutputPrecision);
      }
@@ -102,7 +102,7 @@ super.generateInitializeCode();
     /**
      */
     public void  generateFireCode() {
-        
+
 // insert code to clear overflow flag
 		super.clearOverflow();
 
@@ -110,12 +110,12 @@ super.generateInitializeCode();
 { StringBuffer _str_ = new StringBuffer(); _str_.append(
 "	FIX_SetPrecisionFromDouble($precision(output),$ref(input));\n"
 
-); 	 addCode(_str_);  } 
+); 	 addCode(_str_);  }
 
 { StringBuffer _str_ = new StringBuffer(); _str_.append(
 "	FIX_DoubleAssign($ref(output),$ref(input));\n"
 
-); 	 addCode(_str_);  } 
+); 	 addCode(_str_);  }
 
 		// insert code to test overflow flag
 		super.checkOverflow();

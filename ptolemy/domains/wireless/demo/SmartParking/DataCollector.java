@@ -25,27 +25,27 @@ public class DataCollector extends TypedAtomicActor{
         Type[] types = {BaseType.STRING, BaseType.INT};
         RecordType recordType = new RecordType(labels, types);
         update.setTypeEquals(recordType);
-        
+
         debug = new TypedIOPort(this, "debug", false, true);
         debug.setTypeEquals(recordType);
-        
+
         isFull = new TypedIOPort(this, "isFull", false, true);
         isFull.setTypeEquals(BaseType.BOOLEAN);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
     /** Port that receives parking lot updates.
      */
     public TypedIOPort update;
-    
-    /** Output port for sending out the received message just for 
-     *  debugging. 
+
+    /** Output port for sending out the received message just for
+     *  debugging.
      */
     public TypedIOPort debug;
-    
-    /** Output port for seting a signal light to tell people 
+
+    /** Output port for seting a signal light to tell people
      *  whehter the parking lot is full.
      */
     public TypedIOPort isFull;
@@ -84,8 +84,8 @@ public class DataCollector extends TypedAtomicActor{
                 }
             }
         }
-    }    
-    
+    }
+
     /** Initialize the private varialbles.
      *  @exception IllegalActionException If thrown by the base class.
      */
@@ -94,12 +94,12 @@ public class DataCollector extends TypedAtomicActor{
         _parkingManager = new ParkingManager();
         _isFull = false;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                       private variables                   ////
 
     private ParkingManager _parkingManager;
-    
+
     private boolean _isFull = false;
-    
+
 }

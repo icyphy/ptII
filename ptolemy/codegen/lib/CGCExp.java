@@ -26,7 +26,7 @@ Outputs the exponential function of the input.
 <a name="exponential"></a>
 
  @Author E. A. Lee
- @Version $Id$, based on version 1.9 of /users/ptolemy/src/domains/cgc/stars/CGCExp.pl, from Ptolemy Classic 
+ @Version $Id$, based on version 1.9 of /users/ptolemy/src/domains/cgc/stars/CGCExp.pl, from Ptolemy Classic
  @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCExp extends ClassicCGCActor {
@@ -47,7 +47,7 @@ public class CGCExp extends ClassicCGCActor {
         output = new ClassicPort(this, "output", false, true);
         output.setTypeEquals(BaseType.DOUBLE);
 
-/*     
+/*
 noInternalState();
 */
     }
@@ -70,26 +70,26 @@ noInternalState();
     /**
      */
     public int  myExecTime() {
-        
+
 return 33;  /* use the same value as log */
      }
 
     /**
      */
     public void  generatePreinitializeCode() {
-        
+
 addInclude("<math.h>");
      }
 
     /**
      */
     public void  generateFireCode() {
-        
-addCode(exp); 
+
+addCode(exp);
      }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
-    public String exp = 
+    public String exp =
         "	$ref(output) = exp($ref(input));\n";
 }

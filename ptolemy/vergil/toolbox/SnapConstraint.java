@@ -43,8 +43,8 @@ import diva.canvas.interactor.PointConstraint;
    @author Edward A. Lee
 */
 public class SnapConstraint implements PointConstraint {
-    
-    /** Construct a new instance of a snap constraint. 
+
+    /** Construct a new instance of a snap constraint.
      */
     public SnapConstraint() {
         super();
@@ -62,7 +62,7 @@ public class SnapConstraint implements PointConstraint {
         double y = Math.round(point.getY()/_resolution)*_resolution;
         point.setLocation(x, y);
     }
-    
+
     /** Modify the specified point to snap to grid using the local
      *  resolution.
      *  @param point The point to modify (a dimension 2 array).

@@ -88,13 +88,13 @@ public class BreakpointConfigurerDialog extends ComponentDialog {
      */
     protected void _handleClosing() {
         super._handleClosing();
-        if (!buttonPressed().equals("Cancel") 
+        if (!buttonPressed().equals("Cancel")
                 && !buttonPressed().equals("Help")) {
             try {
                 ((BreakpointConfigurer)contents).apply();
             } catch (Throwable throwable) {
                 MessageHandler.error("Failed to handle closing of breakpoint "
-                        + "dialog.", throwable); 
+                        + "dialog.", throwable);
             }
         }
     }

@@ -43,7 +43,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    One period of samples are produced on every firing.
 
    @Author Brian L. Evans Contributor(s): Jose Luis Pino and Kennard White
-   @Version $Id$, based on version 1.5 of /users/ptolemy/src/domains/cgc/dsp/stars/CGCWindow.pl, from Ptolemy Classic 
+   @Version $Id$, based on version 1.5 of /users/ptolemy/src/domains/cgc/dsp/stars/CGCWindow.pl, from Ptolemy Classic
    @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCWindow extends CGCWaveForm {

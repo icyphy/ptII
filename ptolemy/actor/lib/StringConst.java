@@ -66,13 +66,13 @@ public class StringConst extends Const {
     public StringConst(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-        
+
         value.setExpression("");
         value.setStringMode(true);
 
         // Set the type constraint.
         output.setTypeEquals(BaseType.STRING);
-        
+
         _attachText("_iconDescription", "<svg>\n" +
                 "<rect x=\"0\" y=\"0\" "
                 + "width=\"60\" height=\"20\" "

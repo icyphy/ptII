@@ -34,12 +34,12 @@ import ptolemy.kernel.util.NameDuplicationException;
    discrete-time Fourier transform (DTFT) of a sampled pulse function.
    The parameter <i>N</i> is the length of the pulse [1].
    <h3>References</h3>
-   <p>[1]  
+   <p>[1]
    A. V. Oppenheim and R. W. Schafer, <i>Discrete-Time Signal Processing</i>,
    Prentice-Hall: Englewood Cliffs, NJ, 1989.
 
    @Author Brian Evans
-   @Version $Id$, based on version 1.4 of /users/ptolemy/src/domains/cgc/dsp/stars/CGCDirichlet.pl, from Ptolemy Classic 
+   @Version $Id$, based on version 1.4 of /users/ptolemy/src/domains/cgc/dsp/stars/CGCDirichlet.pl, from Ptolemy Classic
    @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCDirichlet extends ClassicCGCActor {
@@ -64,7 +64,7 @@ public class CGCDirichlet extends ClassicCGCActor {
         N = new Parameter(this, "N");
         N.setExpression("10");
 
-        /* 
+        /*
          */
     }
     ///////////////////////////////////////////////////////////////////
@@ -104,7 +104,7 @@ public class CGCDirichlet extends ClassicCGCActor {
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
-    public String dirichlet = 
+    public String dirichlet =
     "		const double DELTA = 1.0e-9;\n"
     + "		double x = $ref(input);\n"
     + "    		double sinInDenom = sin(x/2);\n"

@@ -27,7 +27,7 @@ either Quant or LinQuantIdx.  The absolute value of the difference
 is used as a distance measure.
 
  @Author Bilung Lee, Yu Kee Lim
- @Version $Id$, based on version 1.2 of /users/ptolemy/src/domains/cgc/stars/CGCQuantizer.pl, from Ptolemy Classic 
+ @Version $Id$, based on version 1.2 of /users/ptolemy/src/domains/cgc/stars/CGCQuantizer.pl, from Ptolemy Classic
  @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCQuantizer extends ClassicCGCActor {
@@ -54,7 +54,7 @@ public class CGCQuantizer extends ClassicCGCActor {
         floatCodebook = new Parameter(this, "floatCodebook");
         floatCodebook.setExpression("{0.0 1.0 2.0 3.0 4.0 5.0 6.0 7.0 8.0 9.0}");
 
-/* 
+/*
 */
     }
     ///////////////////////////////////////////////////////////////////
@@ -86,20 +86,20 @@ Index of the closest value in the codebook
     /**
      */
     public void  generatePreinitializeCode() {
-        
+
 addInclude("<math.h>");
      }
 
     /**
      */
     public void  generateFireCode() {
-        
-addCode(quantizer); 
+
+addCode(quantizer);
      }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
-    public String quantizer = 
+    public String quantizer =
         "    double in = (double) $ref(input);\n"
         + "    int size = $size(floatCodebook);\n"
         + "\n"

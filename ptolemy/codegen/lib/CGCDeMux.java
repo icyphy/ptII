@@ -33,7 +33,7 @@ outside this range, all outputs get zero.
 <a name="demultiplex"></a>
 
  @Author S. Ha
- @Version $Id$, based on version 1.9 of /users/ptolemy/src/domains/cgc/stars/CGCDeMux.pl, from Ptolemy Classic 
+ @Version $Id$, based on version 1.9 of /users/ptolemy/src/domains/cgc/stars/CGCDeMux.pl, from Ptolemy Classic
  @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCDeMux extends ClassicCGCActor {
@@ -59,7 +59,7 @@ public class CGCDeMux extends ClassicCGCActor {
         blockSize = new Parameter(this, "blockSize");
         blockSize.setExpression("1");
 
-/*     
+/*
 noInternalState();
 */
     }
@@ -92,14 +92,14 @@ noInternalState();
     /**
      */
     public int  myExecTime() {
-        
+
 return 1 + (output.numberPorts() + 1) * ((IntToken)((blockSize).getToken())).intValue();
      }
 
     /**
      */
     public void  generateInitializeCode() throws IllegalActionException {
-        
+
 if ( ((IntToken)((blockSize).getToken())).intValue() < 1 ) {
 			throw new IllegalActionException(this, "blockSize must be positive");
 			return;
@@ -111,23 +111,23 @@ if ( ((IntToken)((blockSize).getToken())).intValue() < 1 ) {
     /**
      */
     public void  generateFireCode() {
-        
-addCode(init); 
-		addCode(blockIterator); 
-		addCode("\t{\n"); 
+
+addCode(init);
+		addCode(blockIterator);
+		addCode("\t{\n");
 		// control value i means port number i+1
 		for (int i = 0; i < output.numberPorts(); i++) {
-		  if (input.resolvedType() == COMPLEX) 
-		    addCode(complexCopyData(i,i+1)); 
+		  if (input.resolvedType() == COMPLEX)
+		    addCode(complexCopyData(i,i+1));
 		  else
-		    addCode(nonComplexCopyData(i,i+1)); 
+		    addCode(nonComplexCopyData(i,i+1));
 		}
-		addCode("\t}\n"); 
+		addCode("\t}\n");
      }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
-    public String init = 
+    public String init =
         "	int n = $ref(control);\n"
         + "	int j = $val(blockSize);\n";
 
@@ -148,6 +148,6 @@ addCode(init);
         + "		else $ref(output#" + portnum + ",j) = $ref(input,j);\n";
     }
 
-    public String blockIterator = 
+    public String blockIterator =
         "	while (j--)\n";
 }

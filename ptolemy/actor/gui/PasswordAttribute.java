@@ -38,12 +38,12 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// PasswordAttribute
 /**
-An attribute that represents a password. The value of this attribute is 
+An attribute that represents a password. The value of this attribute is
 a string that represents the password in an encrypted form. To access the
 password in unencrypted form, call the getPassword() method. To set the
 password in unencrypted form, call the setPassword() method.
 
-FIXME: we need to support the persistence and encryption. 
+FIXME: we need to support the persistence and encryption.
 
 @author Edward Lee, Yang Zhao
 @version $Id$
@@ -63,10 +63,10 @@ public class PasswordAttribute extends StringParameter {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Get the password contained by this attribute. If the password
      *  hasn't been set, then open a dialog and wait for the user to
      *  set the password.
@@ -76,19 +76,19 @@ public class PasswordAttribute extends StringParameter {
         if (_password == null) {
             //FIXME: this need to be done in the swing thread...
             new EditParametersDialog(null, this);
-        } 
+        }
         return _password;
     }
 
-    /** Set the password contained by this attribute. 
-     *  @param password The password.  
+    /** Set the password contained by this attribute.
+     *  @param password The password.
      */
     public void setPassword(char[] password) {
         _password = password;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                        private members                    ////
-    
+
     private char[] _password = null;
 }

@@ -47,7 +47,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    will be stored there after the run has completed.
 
    @Author Soonhoi Ha
-   @Version $Id$, based on version 1.15 of /users/ptolemy/src/domains/cgc/dsp/stars/CGCLMS.pl, from Ptolemy Classic 
+   @Version $Id$, based on version 1.15 of /users/ptolemy/src/domains/cgc/dsp/stars/CGCLMS.pl, from Ptolemy Classic
    @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCLMS extends CGCFIR {
@@ -158,7 +158,7 @@ public class CGCLMS extends CGCFIR {
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
-    public String update = 
+    public String update =
     "	int ix;\n"
     + "	/* First update the taps */\n"
     + "	double e = $ref(error);\n"
@@ -170,7 +170,7 @@ public class CGCLMS extends CGCFIR {
     + "		index++;\n"
     + "	}\n";
 
-    public String save = 
+    public String save =
     "    FILE* fp;\n"
     + "    int i;\n"
     + "    if (!(fp = fopen(saveFileName,\"w\"))) {\n"

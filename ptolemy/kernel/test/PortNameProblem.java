@@ -34,10 +34,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-/** 
+/**
  *  Illustrates a problem with port naming and cloning.
  *  <p> In this actor, the Java variable of the port is named
- *  "badlyNamedInput" but the constructor uses the wrong name. 
+ *  "badlyNamedInput" but the constructor uses the wrong name.
  *  This used to result in a NullPointerException.
  *  Now, we test for this in Entity.clone().
  *  @author Christopher Brooks, based on code from Xiaowen Xin and Ilkay Altintas
@@ -56,7 +56,7 @@ public class PortNameProblem extends Entity {
         // The name of the port should passed to the constructor should
         // match the name of the variable.  Entity.clone() assumes
         // that the names match.
-        // Right:  
+        // Right:
         // poorlyNamedInput = new Port(this, "poorlyNamedInput");
         // Wrong:
         poorlyNamedInput = new Port(this, "input");

@@ -24,7 +24,7 @@ This is an amplifier; the fixed-point output is the fixed-point input
 multiplied by the "gain" (default 1.0).  The precision of "gain", the
 input, and the output can be specified in bits.
 <p>
-The value of the "gain" parameter and its precision in bits can currently 
+The value of the "gain" parameter and its precision in bits can currently
 be specified using two different notations.
 Specifying only a value by itself in the dialog box would create a
 fixed-point number with the default precision which has a total length
@@ -39,7 +39,7 @@ object formed by casting the double-precision floating-point number
 2.546 to a fixed-point number with a precision of 3.5.
 
  @Author Juergen Weiss
- @Version $Id$, based on version 1.6 of /users/ptolemy/src/domains/cgc/stars/CGCGainFix.pl, from Ptolemy Classic 
+ @Version $Id$, based on version 1.6 of /users/ptolemy/src/domains/cgc/stars/CGCGainFix.pl, from Ptolemy Classic
  @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCGainFix extends CGCFix {
@@ -76,7 +76,7 @@ public class CGCGainFix extends CGCFix {
         OutputPrecision = new Parameter(this, "OutputPrecision");
         OutputPrecision.setExpression("2.14");
 
-/*     
+/*
 noInternalState();
 */
     }
@@ -126,7 +126,7 @@ the output is set to its maximum value (or minimum for negative magnitudes). par
     /**
      */
     public void  generateInitializeCode() throws IllegalActionException {
-        
+
 super.generateInitializeCode();
 
                 if (!((IntToken)((ArrivingPrecision).getToken())).intValue())
@@ -137,14 +137,14 @@ super.generateInitializeCode();
     /**
      */
     public void  generateFireCode() {
-        
+
 // insert code to clear overflow flag
 		super.clearOverflow();
 
 { StringBuffer _str_ = new StringBuffer(); _str_.append(
 "	FIX_Mul($ref(output),$ref(input),$ref(gain));\n"
 
-); 	 addCode(_str_);  } 
+); 	 addCode(_str_);  }
 
 		// insert code to test overflow flag
 		super.checkOverflow();

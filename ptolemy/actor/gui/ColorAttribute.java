@@ -88,7 +88,7 @@ public class ColorAttribute extends Parameter {
             int length = 0;
             if (spec != null) {
                 length = spec.length();
-            } 
+            }
 
             // Default values allow us to tolerate incomplement specs.
             float red = 0f;

@@ -23,7 +23,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 Output the product of the inputs, as a fixed-point value.
 
  @Author Jyergen Weiss
- @Version $Id$, based on version 1.5 of /users/ptolemy/src/domains/cgc/stars/CGCMpyFix.pl, from Ptolemy Classic 
+ @Version $Id$, based on version 1.5 of /users/ptolemy/src/domains/cgc/stars/CGCMpyFix.pl, from Ptolemy Classic
  @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCMpyFix extends CGCFix {
@@ -61,7 +61,7 @@ public class CGCMpyFix extends CGCFix {
         index = new Parameter(this, "index");
         index.setExpression("1");
 
-/*     
+/*
 noInternalState();
 */
     }
@@ -111,7 +111,7 @@ the output is set to its maximum value (or minimum for negative magnitudes). par
     /**
      */
     public void  generateInitializeCode() throws IllegalActionException {
-        
+
 super.generateInitializeCode();
 
                 if (!((IntToken)((ArrivingPrecision).getToken())).intValue())
@@ -122,7 +122,7 @@ super.generateInitializeCode();
     /**
      */
     public void  generateFireCode() {
-        
+
 // insert code to clear overflow flag
 		super.clearOverflow();
 
@@ -131,21 +131,21 @@ super.generateInitializeCode();
 { StringBuffer _str_ = new StringBuffer(); _str_.append(
 "	FIX_Mul($ref(output), $ref(input#1),$ref(input#2));\n"
 
-); 	 addCode(_str_);  } 
+); 	 addCode(_str_);  }
 
 		else {
 			// initialize the product
 { StringBuffer _str_ = new StringBuffer(); _str_.append(
 "	FIX_Assign($ref(output),$ref(input#1));\n"
 
-); 	 addCode(_str_);  } 
+); 	 addCode(_str_);  }
 
 			for (int i=2; i <= input.numberPorts(); i++) {
 			    index = i;
 { StringBuffer _str_ = new StringBuffer(); _str_.append(
 "	FIX_Mul($ref(output), $ref(output),$ref(input#index));\n"
 
-); 	 addCode(_str_);  } 
+); 	 addCode(_str_);  }
 			}
 		}
 

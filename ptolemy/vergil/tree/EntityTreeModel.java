@@ -170,7 +170,7 @@ public class EntityTreeModel implements TreeModel {
     ////                         inner classes                     ////
 
     public class TreeUpdateListener implements ChangeListener {
-        
+
         /** Trigger an update of the tree.  If the change
          *  request indicates that it is localized, then only
          *  the relevant portion of the tree is updated.
@@ -205,7 +205,7 @@ public class EntityTreeModel implements TreeModel {
                             container = container.getContainer();
                         }
                     }
-                    
+
                     valueForPathChanged(
                             new TreePath(path.toArray()), locality);
                 }

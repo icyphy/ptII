@@ -69,7 +69,7 @@ public class ECSLStep extends ContinuousClock {
         super(container, name);
 
         After = new Parameter(this, "After");
- 
+
         // Hide the SampleTime port.
         SampleTime = new Parameter(this, "SampleTime");
         SampleTime.setVisibility(Settable.EXPERT);

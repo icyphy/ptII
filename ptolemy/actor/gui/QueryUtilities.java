@@ -55,7 +55,7 @@ public class QueryUtilities {
     /** Open a HTML resource in the current configuration if possible.
      *  @param urlName A string naming the url of the file to be opened
      *  as a resource.  For example "doc/expressions.htm".
-     *  @param owner The frame that owns the HTMLViewer to be created. 
+     *  @param owner The frame that owns the HTMLViewer to be created.
      */
     public static void openHTMLResource(String urlName, Frame owner) {
         // Note: This method is necessary so that we avoid some code
@@ -63,7 +63,7 @@ public class QueryUtilities {
         // the configuration to open up a help file.  ptolemy.gui.Query
         // knows nothing about configuration and PtolemyQuery is
         // misnamed, it is really a ParameterQuery.  We could make
-        // this class extend Query and have other classes extend it 
+        // this class extend Query and have other classes extend it
 
         try {
             // Note: call Thread.currentThread() so this works in Web Start
@@ -96,4 +96,4 @@ public class QueryUtilities {
         }
     }
 }
-            
+

@@ -40,8 +40,8 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// FunctionDependencyOfAtomicActor
 /**
    An instance of FunctionDependencyOfAtomicActor describes the function
-   dependency between the inputs and outputs of an atomic actor. 
-   By default, each output port of an atomic actor depends on all input 
+   dependency between the inputs and outputs of an atomic actor.
+   By default, each output port of an atomic actor depends on all input
    ports of the actor, meaning that the token sent through an output
    depends on all the tokens received from the input ports.
    For some atomic actors, such as the TimedDelay actor, an output in
@@ -79,7 +79,7 @@ public class FunctionDependencyOfAtomicActor extends FunctionDependency {
      *  @exception NameDuplicationException If the container already contains
      *   an entity with the specified name.
      */
-    public FunctionDependencyOfAtomicActor(AtomicActor atomicActor, String name) 
+    public FunctionDependencyOfAtomicActor(AtomicActor atomicActor, String name)
         throws IllegalActionException, NameDuplicationException {
         super(atomicActor, name);
     }
@@ -100,11 +100,11 @@ public class FunctionDependencyOfAtomicActor extends FunctionDependency {
      *  @see ptolemy.actor.AtomicActor#pruneDependencies()
      */
     public void removeDependency(IOPort inputPort, IOPort outputPort) {
-        // We do not need the validity checking because this method is 
-        // only called from the _constructDependencyGraph() method, which 
-        // again can only be accessed from the _validate() method. 
-        // The _validate() method does the validity checking already 
-        // and gets the read access of workspace. 
+        // We do not need the validity checking because this method is
+        // only called from the _constructDependencyGraph() method, which
+        // again can only be accessed from the _validate() method.
+        // The _validate() method does the validity checking already
+        // and gets the read access of workspace.
 
         DirectedGraph dependencyGraph = _dependencyGraph;
 
@@ -116,7 +116,7 @@ public class FunctionDependencyOfAtomicActor extends FunctionDependency {
             Edge edge = (Edge) edges[i];
             if (edge.source().getWeight().equals(inputPort) &&
                 edge.sink().getWeight().equals(outputPort)) {
-                dependencyGraph.removeEdge(edge); 
+                dependencyGraph.removeEdge(edge);
             }
         }
     }
@@ -126,7 +126,7 @@ public class FunctionDependencyOfAtomicActor extends FunctionDependency {
 
     /** Construct a dependency graph. This method first constructs
      *  the default dependency graph, which asserts that each output
-     *  depends on all inputs, and then calls the 
+     *  depends on all inputs, and then calls the
      *  {@link ptolemy.actor.AtomicActor#pruneDependencies()} method.
      */
     protected void _constructDependencyGraph() {

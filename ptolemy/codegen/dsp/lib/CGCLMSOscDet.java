@@ -53,7 +53,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    <p>
    In this implementation the taps are scaled by 1/2 to make the
    star behave like the CG56 version.  Thus the output of the filter is also
-   scaled by 1/2. 
+   scaled by 1/2.
    This filter outputs the current value of <i>a</i><sub>1</sub> on the <i>cosOmega</i>
    output port.  The initial value is <i>a</i><sub>1</sub> = 1, that is, zero frequency,
    so the initial value of the second tap is -1(because of the 1/2 scaling).
@@ -63,7 +63,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    <a name="Direct Adaptive Frequency Estimation"></a>
 
    @Author Brian L. Evans
-   @Version $Id$, based on version 1.11 of /users/ptolemy/src/domains/cgc/dsp/stars/CGCLMSOscDet.pl, from Ptolemy Classic 
+   @Version $Id$, based on version 1.11 of /users/ptolemy/src/domains/cgc/dsp/stars/CGCLMSOscDet.pl, from Ptolemy Classic
    @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCLMSOscDet extends CGCLMS {
@@ -145,13 +145,13 @@ public class CGCLMSOscDet extends CGCLMS {
         addCode(outputSecondTap);
 
         // 3. Run the FIR filter
-	{ StringList _str_; _str_ << 
+	{ StringList _str_; _str_ <<
                                 "/* run FIR FILTER */\n"
                                 "{\n"
 
                                 addCode(_str_); }
         CGCFIR :: go();
-	{ StringList _str_; _str_ << 
+	{ StringList _str_; _str_ <<
                                 "}"
 
                                 addCode(_str_); }
@@ -173,6 +173,6 @@ public class CGCLMSOscDet extends CGCLMS {
             + "	$ref(taps,1) = newSecondTap;\n";
     }
 
-    public String outputSecondTap = 
+    public String outputSecondTap =
     "	$ref(cosOmega) = -newSecondTap;\n";
 }

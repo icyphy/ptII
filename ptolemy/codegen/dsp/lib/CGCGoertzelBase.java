@@ -23,7 +23,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    Base class for Goertzel algorithm stars.
 
    @Author Brian L. Evans
-   @Version $Id$, based on version 1.4 of /users/ptolemy/src/domains/cgc/dsp/stars/CGCGoertzelBase.pl, from Ptolemy Classic 
+   @Version $Id$, based on version 1.4 of /users/ptolemy/src/domains/cgc/dsp/stars/CGCGoertzelBase.pl, from Ptolemy Classic
    @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCGoertzelBase extends ClassicCGCActor {
@@ -179,12 +179,12 @@ public class CGCGoertzelBase extends ClassicCGCActor {
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
-    public String decl = 
+    public String decl =
     "		double acc = 0.0;\n"
     + "		double d1val = $ref(d1);\n"
     + "		int i;\n";
 
-    public String filter = 
+    public String filter =
     "		/* Run all-pole section of Goertzel's algorithm N iterations.\n"
     + "		   Only one multiplier (d1) in iteration.\n"
     + "		   Zero the IIR state for each DFT calculation; otherwise,\n"

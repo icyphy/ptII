@@ -245,7 +245,7 @@ public class TMDirector extends Director implements TimedDirector {
         if (_debugging) _debug("Updating TMDirector parameter",
                 attribute.getName());
         if (attribute == stopTime) {
-            double stopTimeValue = 
+            double stopTimeValue =
                 ((DoubleToken)stopTime.getToken()).doubleValue();
             if (stopTimeValue < 0.0) {
                 throw new IllegalActionException(this,
@@ -253,7 +253,7 @@ public class TMDirector extends Director implements TimedDirector {
             }
             _stopTime = new Time(this, stopTimeValue);
         } else if (attribute == startTime) {
-            double startTimeValue = 
+            double startTimeValue =
                 ((DoubleToken)startTime.getToken()).doubleValue();
             _startTime = new Time(this, startTimeValue);
         } else if (attribute == defaultTaskExecutionTime) {
@@ -435,7 +435,7 @@ public class TMDirector extends Director implements TimedDirector {
             }
 
         }
-        if (_isEmbedded() && 
+        if (_isEmbedded() &&
             _nextIterationTime.compareTo(Time.POSITIVE_INFINITY) < 0) {
             _requestFiringAt(_nextIterationTime);
         }
@@ -796,7 +796,7 @@ public class TMDirector extends Director implements TimedDirector {
             _startTime = new Time(this);
             _stopTime = new Time(this, Double.POSITIVE_INFINITY);
 
-            startTime = new Parameter(this, "startTime", 
+            startTime = new Parameter(this, "startTime",
                     new DoubleToken(_startTime.getDoubleValue()));
             startTime.setTypeEquals(BaseType.DOUBLE);
             stopTime = new Parameter(this, "stopTime",

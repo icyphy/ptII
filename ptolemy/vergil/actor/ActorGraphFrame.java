@@ -518,7 +518,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
                 Rectangle2D bounds = getVisibleCanvasRectangle();
                 double x = bounds.getWidth()/2.0;
                 double y = bounds.getHeight()/2.0;
-                
+
                 // Use the "auto" namespace group so that name collisions
                 // are automatically avoided by appending a suffix to the name.
                 String moml = "<group name=\"auto\"><property name=\""
@@ -583,7 +583,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
                 Rectangle2D bounds = getVisibleCanvasRectangle();
                 double x = bounds.getWidth()/2.0;
                 double y = bounds.getHeight()/2.0;
-                
+
                 // If a location is given, construct MoML to
                 // specify a "source".
                 String source = "";
@@ -622,7 +622,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
             super("Automatic Layout");
             putValue("tooltip", "Layout the Graph (Ctrl+T)");
             putValue(GUIUtilities.ACCELERATOR_KEY,
-                    KeyStroke.getKeyStroke(KeyEvent.VK_T, 
+                    KeyStroke.getKeyStroke(KeyEvent.VK_T,
                             Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
             putValue(GUIUtilities.MNEMONIC_KEY,
                     new Integer(KeyEvent.VK_L));

@@ -72,7 +72,7 @@ import ptolemy.util.StringUtilities;
    clicking on it), displays a dialog box asking the user to select a
    directory. Once the user selects and has clicked on the "Generate Files"
    button, the attribute does two things<DL>
-   <DT>1. Generates the Giotto code for the model and stores it in 
+   <DT>1. Generates the Giotto code for the model and stores it in
       "selected_directory/model_name/model_name.giotto".</DT>
    <DT>2. Generates the Emachine framework code files and stores them in
       "selected_directory/model_name/c_functionality/fcode". This particular
@@ -88,7 +88,7 @@ import ptolemy.util.StringUtilities;
                     this is simply provided as a convenience to the user as he
                     does not need to worry about the exact syntax of the
                     functions, and can simply copy them from here.</DD></DT></DL>
-                    
+
    @author Edward A. Lee, Vinay Krishnan
    @version $Id$
    @since Ptolemy II 4.0
@@ -119,8 +119,8 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
      *  @param model The model for which the Giotto code is to be generated
      *  @param directory The directory into which the generated file
      *                   (model_name.giotto) is to be written
-     *  @exception IllegalActionException If the file 
-     *              "directory"/"model_name"/model_name.giotto cannot be opened 
+     *  @exception IllegalActionException If the file
+     *              "directory"/"model_name"/model_name.giotto cannot be opened
      *  @exception NameDuplicationException If any actor name coincides with
      *   the name of another actor already in the model.
      */
@@ -129,12 +129,12 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
 
         String modelName = StringUtilities.sanitizeName(model.getName());
         String giottoDirectoryName = directory.getAbsolutePath() + "/" + modelName + "/";
-    
+
         File outDirFile = new File(giottoDirectoryName);
         if (!outDirFile.isDirectory()) {
             outDirFile.mkdirs();
         }
-    
+
         File writeGiottoFile = new File(giottoDirectoryName, modelName + ".giotto");
         try {
             FileWriter giottoWriter = new FileWriter(writeGiottoFile);
@@ -145,39 +145,39 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
                     "Failed to open file " + modelName + ".giotto" + " for writing.");
         }
     }
-    
+
     /** Generate the Framework code for the given model. It creates the
      *  directory "directory"/"model_name"/c_functionality/fcode with the
      * files f_code.c, f_code.h and task_code.h in it.
      *  @param model The model for which the Framework code is to be generated
      *  @param directory The directory into which the generated files
      *                   are to be written
-     *  @exception IllegalActionException If any of the files cannot be opened 
+     *  @exception IllegalActionException If any of the files cannot be opened
      *  @exception NameDuplicationException If any actor name coincides with
      *   the name of another actor already in the model.
      */
     public void writeFrameworkCode(TypedCompositeActor model, File directory)
                     throws IllegalActionException, NameDuplicationException {
-    
+
         dataTypes = new HashSet(); // Creating a set of all the unique types used
-            
+
         FHfuncVarDeclString = "";  // Contains the declaration of functions defined in the C file
         FCoutDriversImplString = ""; // Contains the code for the initialization of output drivers
         FCinDriversImplString = ""; // Contains functions to implement the input drivers
         THfuncDeclString = ""; // Contains the declaration of the task functions
         TCfuncImplString = ""; // Contains the skeleton code for the task functions
         FCVarInitString = ""; // Contains the initialization function f_code_init
-            
+
         _generateCodeStrings(model);
-    
+
         String fcodeDirectoryName =  directory.getAbsolutePath() + "/"
         + StringUtilities.sanitizeName(model.getName()) + "/c_functionality/fcode/";
-                
+
         File outDirFile = new File(fcodeDirectoryName);
         if (!outDirFile.isDirectory()) {
             outDirFile.mkdirs();
         }
-    
+
         File writeFCFile = new File(fcodeDirectoryName, "f_code.c");
         File writeFHFile = new File(fcodeDirectoryName, "f_code.h");
         //File writeTCFile = new File(directoryName, "task_code.c"); // This file is unneeded once we have the function declarations in the header file
@@ -186,15 +186,15 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
             FileWriter FCwriter = new FileWriter(writeFCFile);
             FCwriter.write(_generateFrameworkImplementationCode(model));
             FCwriter.close();
-    
+
             FileWriter FHwriter = new FileWriter(writeFHFile);
             FHwriter.write(_generateFrameworkHeaderCode(model));
             FHwriter.close();
-                
+
             //FileWriter TCwriter = new FileWriter(writeTCFile);
             //TCwriter.write(_generateTaskImplementationCode(model));
             //TCwriter.close();
-    
+
             FileWriter THwriter = new FileWriter(writeTHFile);
             THwriter.write(_generateTaskHeaderCode(model));
             THwriter.close();
@@ -203,7 +203,7 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
                     "Failed to open file for writing.");
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -215,17 +215,17 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
         throws IllegalActionException, NameDuplicationException {
         new CEmachineFrameworkEditorFactory(this, "_editorFactory");
     }
-    
+
     /** The Giotto Code Generator has been changed from the earlier generator
      * implemented by Haiyang and Steve in the following respects :-
-     * 
+     *
      * _getTypeString has been modified from the earlier function
      *    implemented by Haiyang and Steve to actually return the type
-     *    instead of Token_Port. Also, the type returned has been 
-     *    modified to fit the giotto compiler restrictions, namely the 
+     *    instead of Token_Port. Also, the type returned has been
+     *    modified to fit the giotto compiler restrictions, namely the
      *    exclusion of the data_type * format. Instead, a new data type
      *    is created and used in the giotto code, and defined in f_code.h
-     * 
+     *
      */
     protected String _getTypeString(TypedIOPort port) {
         String type = port.getType().toString();
@@ -299,14 +299,14 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
         codeString += "\ninline unsigned constant_true( void ) {" + _endLine;
         codeString += _tabChar + "return ( (unsigned)1 );" + _endLine;
         codeString += "}" + _endLine + _endLine;
-        
+
         codeString += FCVarInitString;
         codeString += FCoutDriversImplString;
         codeString += FCinDriversImplString;
-        
+
     return codeString;
     }
-    
+
     /** Generate code for the H file f_code.h.
      *  This function generates the function and variable declarations for
      *  the implementation in f_code.c
@@ -315,11 +315,11 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
     protected String _generateFrameworkHeaderCode(TypedCompositeActor model)
         throws IllegalActionException {
         String codeString = "";
-        
+
         codeString += copyrightString;
         codeString += "/* This file was automatically generated by the Ptolemy-II C-Emachine Framework Generator */" + _endLine;
         codeString +=  _endLine;
-        
+
         // Writing code to prevent multiple inclusion of the file
         codeString += "#ifndef _F_CODE_" + _endLine;
         codeString += "#define _F_CODE_" + _endLine;
@@ -347,13 +347,13 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
                 actorFreq = ((IntToken) actorFreqPara.
                         getToken()).intValue();
             }
-    
+
             codeString += "#define " + actorName + "_FREQ"
                         + _tabChar + _tabChar
                         + "(" + actorFreq + ")" + _endLine;
         }
         codeString += _endLine;
-            
+
         codeString += "// Datatype Declarations" + _endLine;
         Iterator dataType = dataTypes.iterator();
         while (dataType.hasNext()) {
@@ -364,7 +364,7 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
             }
         }
         codeString += "typedef unsigned char boolean;" + _endLine + _endLine;
-        
+
         codeString += "// Legacy Emachine function declarations" + _endLine;
         codeString += "void giotto_timer_enable_code(e_machine_type, int);" +  _endLine;
         codeString += _endLine;
@@ -379,10 +379,10 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
         codeString += FHfuncVarDeclString;
         codeString += _endLine;
         codeString += "#endif" +  _endLine;
-        
+
         return codeString;
     }
-    
+
     /** Generate the Task Implementation C code for the given model.
      *  @return The Task Implementation C code.
      */
@@ -395,7 +395,7 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
     protected String _generateTaskImplementationCode(TypedCompositeActor model)
         throws IllegalActionException {
         String codeString = "";
-        
+
         codeString += copyrightString;
         codeString += "/* This file was automatically generated by the Ptolemy-II C-Emachine Framework Generator */" + _endLine;
         codeString += "\n#include \"task_code.h\"" + _endLine + _endLine;
@@ -407,7 +407,7 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
 
         return codeString;
     }
-    
+
     /** Generate code for the H file task_code.h.
      *  This function generates the function and variable declarations for
      *  the implementation in f_code.c
@@ -416,11 +416,11 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
     protected String _generateTaskHeaderCode(TypedCompositeActor model)
         throws IllegalActionException {
         String codeString = "";
-            
+
         codeString += copyrightString;
         codeString += "/* This file was automatically generated by the Ptolemy-II C-Emachine Framework Generator */" + _endLine;
         codeString +=  _endLine;
-            
+
         // Writing code to prevent multiple inclusion of the file
         codeString += "#ifndef _TASK_CODE_" + _endLine;
         codeString += "#define _TASK_CODE_" + _endLine;
@@ -430,22 +430,22 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
         codeString +=  _endLine;
         codeString += THfuncDeclString;
         codeString += "#endif" +  _endLine;
-        
+
         return codeString;
     }
-    
+
     /** Generate the various code strings for the framework C & Header code,
      *  as well as the strings for the task C and Header code.
      */
     protected void _generateCodeStrings(TypedCompositeActor model)
         throws IllegalActionException {
-            
+
             _outputInitializationCode(model);
             _arrayVariablesAllocationCode(model);
             _driversImplementationCode(model);
             _taskCodeSkeleton(model);
     }
-        
+
     /** Generate Initialization code for the output drivers.
      *  @return The initialization code.
      */
@@ -495,7 +495,7 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
             }
         }
     }
-    
+
     /** Generate the memory allocation code for
      *  the output ports that are of type array.
      *  The order of ports in model has effect
@@ -508,7 +508,7 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
         FCVarInitString += "// Initialization function containing the global and local array variables"
                          + _endLine
                          + "void f_code_init ( void ) {" + _endLine;
-                         
+
         Iterator actors = model.entityList().iterator();
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
@@ -526,7 +526,7 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
                     StringUtilities.sanitizeName(
                                 port.getName(model));
                     String arrayLength = _getArrayLength(port);
-                       
+
                     FHfuncVarDeclString += portType.substring(0, portType.length()-5/* Length of "array" */)
                                          + " array" + sanitizedPortName + "_1"
                                          + "[" + arrayLength + "]" + ";" + _endLine;
@@ -548,7 +548,7 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
                                      + " = array" + sanitizedPortName + "_2;" + _endLine;
                 }
             }
-    
+
             for (Iterator ports = actor.inputPortList().iterator();
                  ports.hasNext();) {
                 TypedIOPort port = (TypedIOPort) ports.next();
@@ -566,12 +566,12 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
                     }
                     TypedIOPort sport = (TypedIOPort)port.sourcePortList().get(0);
                     String arrayLength = _getArrayLength(sport);
-                       
+
                     FHfuncVarDeclString += portType.substring(0, portType.length()-5/* Length of "array" */)
                                          + " array" + sanitizedPortName
                                          + "[" + arrayLength + "]" + ";" + _endLine;
                     FHfuncVarDeclString += _endLine;
-                     
+
 		    FHfuncVarDeclString += "extern " + portType
 			                 + " " + actorName + "_" + sanitizedPortName + ";" + _endLine;
                     FHfuncVarDeclString += _endLine;
@@ -589,16 +589,16 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
      *  The order of ports in model has effect
      *  on the order of driver input parameters
      *  @return The drivers code.
-     * 
+     *
      */
-            
+
     protected void _driversImplementationCode(TypedCompositeActor model)
             throws IllegalActionException {
 
         _outputDriversImplementationCode(model);
         _inputDriversImplementationCode(model);
     }
-    
+
     /** Generate code which will copy the output local
      *  data to the global data. This has to generate
      *  one function for each data type present.
@@ -608,7 +608,7 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
      */
     protected void _outputDriversImplementationCode(TypedCompositeActor model)
             throws IllegalActionException {
-                
+
         FCoutDriversImplString += "// Output drivers to copy values from the local to the global stage"
                     + _endLine;
         Iterator dataType = dataTypes.iterator();
@@ -635,7 +635,7 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
 
     protected void _inputDriversImplementationCode(TypedCompositeActor model)
             throws IllegalActionException {
-             
+
         String assgtStmtString = "";
         String initStmtString = "";
         Actor actor;
@@ -644,7 +644,7 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
         FCinDriversImplString += "// Input Drivers for all the Tasks requiring one" + _endLine + _endLine;
         initStmtString += _tabChar + "static int counter = 0;" + _endLine;
         initStmtString += _endLine;
-        
+
         // generate "Driver functions" for common actors.
         Iterator actors = model.entityList().iterator();
         while (actors.hasNext()) {
@@ -654,12 +654,12 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
             }
 
             actorName = StringUtilities.sanitizeName(((NamedObj) actor).getName());
-            
+
             FCinDriversImplString += "inline void " + actorName + "_inputdriver( ";
             FHfuncVarDeclString      += "inline void " + actorName + "_inputdriver( ";
 
     	    assgtStmtString = "";
-    
+
             Map driverIOMap = new LinkedHashMap();
             boolean firstParameter = true;
     	    boolean firstArray = true;
@@ -682,7 +682,7 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
                         outPort.getName(model));
                 String arrayLength = _getArrayLength(outPort);
                 String sourceActorName = StringUtilities.sanitizeName((outPort.getContainer()).getName());
-                       
+
                 if (firstParameter) {
                     firstParameter = false;
                 }
@@ -723,7 +723,7 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
         }
         // TODO : Generate driver code for the actuators.
     }
-    
+
     /** Generate code for the task.
      *  @return The task code.
      */
@@ -736,7 +736,7 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
             TypedActor actor = (TypedActor)actors.next();
             String taskName = StringUtilities.sanitizeName(
                     ((NamedObj)actor).getName());
-    
+
             // Write the input port specification of the task
             first = true;
             String inputPorts = "";
@@ -761,11 +761,11 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
                     TypedIOPort sport = (TypedIOPort)port.sourcePortList().get(0);
                     String sanitizedSourceActorName = StringUtilities.sanitizeName(
                             sport.getContainer().getName());
-        
+
                     inputPorts += portTypeID + " *" + sanitizedSourceActorName + "_" + portID;
                 }
             }
-    
+
             // write the output port specification of the task.
             first = true;
             String outputPorts = "";
@@ -782,7 +782,7 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
                     String portID = StringUtilities.sanitizeName(
                             port.getName());
                      String portTypeID = _getTypeString(port);
-        
+
                     outputPorts += portTypeID + " *" + portID;
                  }
             }
@@ -840,8 +840,8 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
         " ENHANCEMENTS, OR MODIFICATIONS." + _endLine +
         "" + _endLine +
         "*/" + _endLine;
- 
-    
+
+
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
@@ -873,12 +873,12 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
 
                     Configuration configuration
                         = ((TableauFrame)parent).getConfiguration();
-    
+
                     // NamedObj container = (NamedObj)object.getContainer();
-    
+
                     TypedCompositeActor model = (TypedCompositeActor)
                         GiottoCEmachineFrameworkGenerator.this.getContainer();
-    
+
                     // Preinitialize and resolve types.
                     CompositeActor toplevel = (CompositeActor)model.toplevel();
                     Manager manager = toplevel.getManager();
@@ -887,17 +887,17 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
                                 toplevel.workspace(), "manager");
                         toplevel.setManager(manager);
                     }
-    
+
                     manager.preinitializeAndResolveTypes();
-                    
+
                     // Generate the Giotto Code and write it into the
                     // corresponding files.
                     writeGiottoCode(model, directory);
-                    
+
                     // Generate the Framework code and write it into the
                     // corresponding files.
                     writeFrameworkCode(model, directory);
-    
+
                     // end the model execution.
                     manager.stop();
                     manager.wrapup();

@@ -121,9 +121,9 @@ public class ConfigurableAttribute
      */
     public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
-        ConfigurableAttribute newObject = 
+        ConfigurableAttribute newObject =
             (ConfigurableAttribute)super.clone(workspace);
-        
+
         // The clone has new value listeners.
         newObject._valueListeners = null;
 
@@ -180,7 +180,7 @@ public class ConfigurableAttribute
     public String getConfigureText() {
         return _configureText;
     }
-    
+
     /** Return the default value of this Settable,
      *  if there is one.  If this is a derived object, then the default
      *  is the value of the object from which this is derived (the

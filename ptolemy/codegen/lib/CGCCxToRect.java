@@ -23,7 +23,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 Convert complex data to real and imaginary parts.
 
  @Author S. Ha
- @Version $Id$, based on version 1.6 of /users/ptolemy/src/domains/cgc/stars/CGCCxToRect.pl, from Ptolemy Classic 
+ @Version $Id$, based on version 1.6 of /users/ptolemy/src/domains/cgc/stars/CGCCxToRect.pl, from Ptolemy Classic
  @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCCxToRect extends ClassicCGCActor {
@@ -46,7 +46,7 @@ public class CGCCxToRect extends ClassicCGCActor {
         imag = new ClassicPort(this, "imag", false, true);
         imag.setTypeEquals(BaseType.DOUBLE);
 
-/*     
+/*
 noInternalState();
 */
     }
@@ -74,20 +74,20 @@ noInternalState();
     /**
      */
     public int  myExecTime() {
-        
+
 return 2;
      }
 
     /**
      */
     public void  generateFireCode() {
-        
-addCode(body); 
+
+addCode(body);
      }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
-    public String body = 
+    public String body =
         "	$ref(real) = $ref(input).real;\n"
         + "	$ref(imag) = $ref(input).imag;\n";
 }

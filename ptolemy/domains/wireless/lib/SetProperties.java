@@ -50,13 +50,13 @@ import ptolemy.kernel.util.Workspace;
    On each firing, this actor reads at most one token from the <i>payload</i>
    and <i>properties</i> input ports, outputs the payload on the
    <i>output</i> port, and set the <i>outsideTransmitProperties</i> of the
-   wireless output port connected to the <i>output</i> port with the specified 
-   transmit properties received from the <i>properties</i> input port. If 
+   wireless output port connected to the <i>output</i> port with the specified
+   transmit properties received from the <i>properties</i> input port. If
    there is no token received on the <i>properties</i> input port, this actor
    will not modify the <i>outsideTransmitProperties</i> of the connected
    wirelessIOPort, i.e. the payload will be transmited with the previous
    transmit properties.
-   
+
    @author Yang Zhao, Edward A. Lee
    @version $Id$
    @since Ptolemy II 4.0
@@ -111,7 +111,7 @@ public class SetProperties extends TypedAtomicActor {
     public TypedIOPort output;
 
     /** Input port that receives the properties to be used for transmission
-     *  on the connected wireless output port. The type of this port 
+     *  on the connected wireless output port. The type of this port
      *  is a record type.
      */
     public TypedIOPort properties;
@@ -134,18 +134,18 @@ public class SetProperties extends TypedAtomicActor {
         newObject.output.setTypeSameAs(newObject.payload);
         return newObject;
     }
-    
+
     /** reads one token from the <i>payload</i> input port, and simply output
      *  the token on the output port. If there is token at the <i>properties</i>
-     *  input port, read the properties value and use it to set the 
-     *  <i>outsideTransmitProperties</i> of the connected wireless output port. 
+     *  input port, read the properties value and use it to set the
+     *  <i>outsideTransmitProperties</i> of the connected wireless output port.
      *  @exception IllegalActionException If the specified port is not
      *   an instance of WirelessIOPort, or if there is no such port.
      */
     public void fire() throws IllegalActionException {
 
         super.fire();
-        
+
         if (properties.hasToken(0)) {
             Token propertiesValue = properties.get(0);
             // The following will throw an exception if the value is
@@ -157,7 +157,7 @@ public class SetProperties extends TypedAtomicActor {
                     // Found the port.
                     ((WirelessIOPort)port).outsideTransmitProperties.
                             setToken(propertiesValue);
-                    
+
                 }
             }
         }

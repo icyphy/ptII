@@ -168,13 +168,13 @@ public class OutputActionsAttribute
                         // get the local receivers of the destination port.
                         // Note that if the destination port is an output port,
                         // an _EMPTY_RECEIVER_ARRAY is returned.
-                        Receiver[][] localReceivers 
+                        Receiver[][] localReceivers
                             = destination.getReceivers();
                         if (channel != null) {
                             int chanelValue = channel.intValue();
                             destination.send(chanelValue, token);
                             if (isInput) {
-                                // If the destination is both input and output, 
+                                // If the destination is both input and output,
                                 // also send the tokens to local receivers.
                                 localReceivers[chanelValue][0].put(token);
                             }
@@ -187,7 +187,7 @@ public class OutputActionsAttribute
                         } else {
                             destination.broadcast(token);
                             if (isInput) {
-                                // If the destination is both input and output, 
+                                // If the destination is both input and output,
                                 // also send the tokens to local receivers.
                                 for (int i = 0; i < localReceivers.length; i++) {
                                     localReceivers[i][0].put(token);

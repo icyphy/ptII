@@ -90,7 +90,7 @@ public class TextString3D extends GRShadedShape {
         text = new PortParameter(this, "text");
         text.setStringMode(true);
         text.setExpression("Ptolemy");
-        
+
         fontFamily = new StringParameter(this, "fontFamily");
         fontFamily.setExpression("SansSerif");
         // Get font family names from the Font class in Java.
@@ -102,7 +102,7 @@ public class TextString3D extends GRShadedShape {
         for (int i = 0; i < families.length; i++) {
         	fontFamily.addChoice(families[i]);
         }
-        
+
         extrusionDepth = new Parameter(this, "extrusionDepth");
         extrusionDepth.setTypeEquals(BaseType.DOUBLE);
         extrusionDepth.setExpression("0.2");
@@ -141,19 +141,19 @@ public class TextString3D extends GRShadedShape {
      *  defaults to 0.2.
      */
     public Parameter extrusionDepth;
-    
+
     /** The font family. This is a string that defaults to "SansSerif",
      *  a font that is guaranteed by Java to always be present.
      */
     public StringParameter fontFamily;
-    
+
     /** The font size. This is a double that defaults to 1.0.
      */
     public Parameter fontSize;
 
     /** The text to display. */
     public PortParameter text;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -166,17 +166,17 @@ public class TextString3D extends GRShadedShape {
     	if (attribute == text && _textGeometry != null) {
             String textValue = ((StringToken) text.getToken()).stringValue();
             _textGeometry.setString(textValue);
-        } else if ((attribute == fontFamily 
+        } else if ((attribute == fontFamily
                 || attribute == extrusionDepth)
-                && _textGeometry != null 
+                && _textGeometry != null
                 && _changesAllowedNow) {
             String fontFamilyValue = fontFamily.stringValue();
-            
+
             // NOTE: The extrusion can, in principle, follow a more complicated
             // path. However, it's not clear what user interface to provide for this.
             double depth = ((DoubleToken)extrusionDepth.getToken()).doubleValue();
             FontExtrusion extrusion = new FontExtrusion(new Line2D.Double(0.0, 0.0, depth, 0.0));
-            
+
             Font3D font3D = new Font3D(new Font(fontFamilyValue, Font.PLAIN, 1), extrusion);
             _textGeometry.setFont3D(font3D);
         } else if (attribute == alignment && _textGeometry != null && _changesAllowedNow) {
@@ -201,7 +201,7 @@ public class TextString3D extends GRShadedShape {
         	super.attributeChanged(attribute);
         }
     }
-    
+
     /** Override the base class to update the <i>text</i> parameter
      *  from the value given at the port, if any.
      *  @return False if the scene graph has already been
@@ -213,7 +213,7 @@ public class TextString3D extends GRShadedShape {
         text.update();
         return super.prefire();
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -229,12 +229,12 @@ public class TextString3D extends GRShadedShape {
         // path. However, it's not clear what user interface to provide for this.
         double depth = ((DoubleToken)extrusionDepth.getToken()).doubleValue();
         FontExtrusion extrusion = new FontExtrusion(new Line2D.Double(0.0, 0.0, depth, 0.0));
-        
+
         Font3D font3D = new Font3D(new Font(fontFamilyValue, Font.PLAIN, 1), extrusion);
 
         _textGeometry = new Text3D(font3D, new String(textValue));
         _textGeometry.setCapability(Text3D.ALLOW_STRING_WRITE);
- 
+
         String alignmentValue = alignment.stringValue();
         int align = Text3D.ALIGN_CENTER;
         if (alignmentValue.equals("first")) {
@@ -247,7 +247,7 @@ public class TextString3D extends GRShadedShape {
         Shape3D shape = new Shape3D();
         shape.setGeometry(_textGeometry);
         shape.setAppearance(_appearance);
-        
+
         TransformGroup scaler = new TransformGroup();
         scaler.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
         _scaleTransform = new Transform3D();
@@ -257,7 +257,7 @@ public class TextString3D extends GRShadedShape {
                 new Vector3d(size, size, 1.0f));
         scaler.setTransform(_scaleTransform);
         scaler.addChild(shape);
-        _containedNode = scaler;            
+        _containedNode = scaler;
 
         if (_changesAllowedNow) {
             _textGeometry.setCapability(Text3D.ALLOW_FONT3D_WRITE);
@@ -279,8 +279,8 @@ public class TextString3D extends GRShadedShape {
 
     /** The node. */
     private Node _containedNode;
-    
-    /** If changes to the font size are allowed, this is the transform 
+
+    /** If changes to the font size are allowed, this is the transform
      *  that applies them.
      */
     private Transform3D _scaleTransform;

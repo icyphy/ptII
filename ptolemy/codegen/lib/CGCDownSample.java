@@ -26,7 +26,7 @@ phase = factor-1 the oldest sample is the output.  Phase = 0 is the
 default.
 
  @Author Soonhoi Ha
- @Version $Id$, based on version 1.9 of /users/ptolemy/src/domains/cgc/stars/CGCDownSample.pl, from Ptolemy Classic 
+ @Version $Id$, based on version 1.9 of /users/ptolemy/src/domains/cgc/stars/CGCDownSample.pl, from Ptolemy Classic
  @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCDownSample extends ClassicCGCActor {
@@ -55,7 +55,7 @@ public class CGCDownSample extends ClassicCGCActor {
         phase = new Parameter(this, "phase");
         phase.setExpression("0");
 
-/*     
+/*
 noInternalState();
 */
     }
@@ -88,14 +88,14 @@ noInternalState();
     /**
      */
     public int  myExecTime() {
-        
+
 return 1;
      }
 
     /**
      */
     public void  generateInitializeCode() throws IllegalActionException {
-        
+
 input.setSDFParams(((IntToken)((factor).getToken())).intValue(),((IntToken)((factor).getToken())).intValue()-1);
 		if (((IntToken)((phase).getToken())).intValue() >= ((IntToken)((factor).getToken())).intValue())
 			throw new IllegalActionException(this, ": phase must be < factor");
@@ -104,12 +104,12 @@ input.setSDFParams(((IntToken)((factor).getToken())).intValue(),((IntToken)((fac
     /**
      */
     public void  generateFireCode() {
-        
-addCode(sendsample); 
+
+addCode(sendsample);
      }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
-    public String sendsample = 
+    public String sendsample =
         "	$ref(output) = $ref2(input,phase);\n";
 }

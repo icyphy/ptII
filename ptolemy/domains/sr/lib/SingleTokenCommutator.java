@@ -110,16 +110,16 @@ public class  SingleTokenCommutator   extends Transformer
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-    
-    /** Get the current input position. 
-     *  @return Current input position.  
+
+    /** Get the current input position.
+     *  @return Current input position.
      */
-    // This method is Added by Gang Zhou so that DDFSingleTokenCommutator 
+    // This method is Added by Gang Zhou so that DDFSingleTokenCommutator
     // can inherit this class.
     protected int _getCurrentInputPosition() {
         return _currentInputPosition;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

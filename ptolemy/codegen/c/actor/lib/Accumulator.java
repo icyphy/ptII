@@ -24,14 +24,14 @@ public class Accumulator extends CCodeGeneratorHelper {
         super(actor);
     }
 
-    public void  generateFireCode(StringBuffer stream) 
+    public void  generateFireCode(StringBuffer stream)
             throws IllegalActionException {
 
-    	ptolemy.actor.lib.Sequence actor = 
+    	ptolemy.actor.lib.Sequence actor =
     		(ptolemy.actor.lib.Sequence)getComponent();
 
-    	StringBuffer tmpStream = new StringBuffer();    	
-    	
+    	StringBuffer tmpStream = new StringBuffer();
+
     	tmpStream.append(
     			  "if ($val(reset)) {\n"
     			+ "    sum = $val(init);\n"
@@ -39,8 +39,8 @@ public class Accumulator extends CCodeGeneratorHelper {
 				+ "    sum += $val(input);\n"
 				+ "    $val(output) = sum;\n"
                 + "}\n");
-        
-        
+
+
     	_codeBlock = tmpStream.toString();
         stream.append(processCode(_codeBlock));
     }
@@ -55,7 +55,7 @@ public class Accumulator extends CCodeGeneratorHelper {
 ////                     protected variables                   ////
 
     protected String _codeBlock;
-    
-    protected String _initBlock = 
+
+    protected String _initBlock =
           "int sum = 0;\n";
 }

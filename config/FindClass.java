@@ -90,7 +90,7 @@ public class FindClass {
             File javaHomeFile = new File(javaHome);
 
             File directory = jarFileURLFile.getCanonicalFile();
-            while ((directory = directory.getParentFile()) != null 
+            while ((directory = directory.getParentFile()) != null
                    && foundInJavaHome == false) {
                 if (directory.compareTo(javaHomeFile) == 0) {
                     foundInJavaHome = true;
@@ -110,7 +110,7 @@ public class FindClass {
             } else {
                 System.out.println(jarFileURLFileName);
             }
-            
+
         } else if (entryURL.getProtocol().equals("file")) {
             // Test this with
             // java -classpath "$PTII;." FindClass ptolemy.kernel.util.NamedObj

@@ -126,7 +126,7 @@ import soot.util.Chain;
    @Pt.ProposedRating Red (cxh)
    @Pt.AcceptedRating Red (cxh)
 */
-public class ModelTransformer extends SceneTransformer 
+public class ModelTransformer extends SceneTransformer
     implements HasPhaseOptions {
     /** Construct a new transformer
      */
@@ -340,7 +340,7 @@ public class ModelTransformer extends SceneTransformer
                         (Attribute)_findDeferredInstance(attribute);
                     updateCreatedSet(namedObj.getFullName() + "."
                             + attribute.getName(),
-                            classAttribute, classAttribute, 
+                            classAttribute, classAttribute,
                             objectNameToCreatorName);
                 } catch (Exception ex) {
                     String name = namedObj.getFullName() + "."
@@ -384,7 +384,7 @@ public class ModelTransformer extends SceneTransformer
      */
     public static void createPorts(JimpleBody body, Local contextLocal,
             Entity context, Local entityLocal,
-            Entity entity, EntitySootClass theClass, 
+            Entity entity, EntitySootClass theClass,
             HashMap objectNameToCreatorName) {
         Entity classObject = (Entity)_findDeferredInstance(entity);
 
@@ -547,16 +547,16 @@ public class ModelTransformer extends SceneTransformer
             NamedObj context, NamedObj namedObj, SootClass theClass,
             ConstVariableModelAnalysis constAnalysis) {
 
-//         System.out.println("creatingParameterComputationFunctions for " 
+//         System.out.println("creatingParameterComputationFunctions for "
 //                 + namedObj);
 
         // Check to see if we have anything to do.
         if (namedObj.attributeList().size() == 0) return;
-        
+
         for (Iterator attributes = namedObj.attributeList().iterator();
              attributes.hasNext();) {
             Attribute attribute = (Attribute)attributes.next();
-            
+
             if (_isIgnorableAttribute(attribute)) {
                 continue;
             }
@@ -571,10 +571,10 @@ public class ModelTransformer extends SceneTransformer
             body.insertIdentityStmts();
             Stmt insertPoint = Jimple.v().newReturnVoidStmt();
             body.getUnits().add(insertPoint);
-            
+
             if (_constAnalysis.getConstVariables(namedObj).contains(attribute)) {
                 Local local = SootUtilities.createRuntimeException(
-                        body, insertPoint, 
+                        body, insertPoint,
                       "Parameter is constant and should not be re-evaluated");
                 body.getUnits().insertBefore(
                         Jimple.v().newThrowStmt(local),
@@ -589,7 +589,7 @@ public class ModelTransformer extends SceneTransformer
             Local settableLocal = Jimple.v().newLocal("settable",
                     PtolemyUtilities.settableType);
             body.getLocals().add(settableLocal);
-            
+
             String className = attribute.getClass().getName();
             Type attributeType = RefType.v(className);
             String attributeName = attribute.getName(context);
@@ -661,8 +661,8 @@ public class ModelTransformer extends SceneTransformer
                                 Jimple.v().newInterfaceInvokeExpr(
                                         variableLocal,
                                         PtolemyUtilities.validateMethod)),
-                        insertPoint);         
-                
+                        insertPoint);
+
             } else if (attribute instanceof Settable) {
                 // If the attribute is settable, then set its
                 // expression.
@@ -703,7 +703,7 @@ public class ModelTransformer extends SceneTransformer
             for (Iterator ports = entity.portList().iterator();
                  ports.hasNext();) {
                 Port port = (Port)ports.next();
-               
+
                 // recurse so that we get all parameters deeply.
                 createAttributeComputationFunctions(
                         context, port, theClass, constAnalysis);
@@ -1302,13 +1302,13 @@ public class ModelTransformer extends SceneTransformer
             for (Iterator entities = composite.deepEntityList().iterator();
                  entities.hasNext();) {
                 Entity entity = (Entity)entities.next();
-                updateCreatedSet(prefix, context, entity, 
+                updateCreatedSet(prefix, context, entity,
                         objectNameToCreatorName);
             }
             for (Iterator relations = composite.relationList().iterator();
                  relations.hasNext();) {
                 Relation relation = (Relation) relations.next();
-                updateCreatedSet(prefix, context, relation, 
+                updateCreatedSet(prefix, context, relation,
                         objectNameToCreatorName);
             }
         }
@@ -1317,14 +1317,14 @@ public class ModelTransformer extends SceneTransformer
             for (Iterator ports = entity.portList().iterator();
                  ports.hasNext();) {
                 Port port = (Port)ports.next();
-                updateCreatedSet(prefix, context, port, 
+                updateCreatedSet(prefix, context, port,
                         objectNameToCreatorName);
             }
         }
         for (Iterator attributes = object.attributeList().iterator();
              attributes.hasNext();) {
             Attribute attribute = (Attribute)attributes.next();
-            updateCreatedSet(prefix, context, attribute, 
+            updateCreatedSet(prefix, context, attribute,
                     objectNameToCreatorName);
         }
     }
@@ -1445,7 +1445,7 @@ public class ModelTransformer extends SceneTransformer
                 field.addTag(new ValueTag(entity));
 
                 _ports(body, containerLocal, container,
-                        local, entity, modelClass, 
+                        local, entity, modelClass,
                         objectNameToCreatorName, false);
                 //   }
             }
@@ -1886,7 +1886,7 @@ public class ModelTransformer extends SceneTransformer
     }
 
     private static void _createActorsIn(
-            CompositeActor model, HashMap objectNameToCreatorName, 
+            CompositeActor model, HashMap objectNameToCreatorName,
             String phaseName,
             ConstVariableModelAnalysis constAnalysis, Map options) {
         // Create an instance class for every actor.
@@ -1980,7 +1980,7 @@ public class ModelTransformer extends SceneTransformer
     private static EntitySootClass _createCompositeActor(
             CompositeActor entity, String newClassName, Map options) {
         SootClass entityClass = PtolemyUtilities.compositeActorClass;
-        
+
         // create a class for the entity instance.
         EntitySootClass entityInstanceClass =
             new EntitySootClass(entityClass, newClassName,
@@ -2044,9 +2044,9 @@ public class ModelTransformer extends SceneTransformer
         // Reinitialize the hierarchy, since we've added classes.
         Scene.v().setActiveHierarchy(new Hierarchy());
         Scene.v().setFastHierarchy(new FastHierarchy());
-        
+
         {
-            Set locallyModifiedAttributeSet = 
+            Set locallyModifiedAttributeSet =
                 _constAnalysis.getVariablesWithChangeContext(entity);
             // Filter out any attribute that is independent (and might
             // be modified).
@@ -2069,7 +2069,7 @@ public class ModelTransformer extends SceneTransformer
             } catch (Exception ex) {
                 throw new RuntimeException(ex);
             }
-            System.out.println("locallyModifiedAttributeList of " + entity 
+            System.out.println("locallyModifiedAttributeList of " + entity
                     + " = " + locallyModifiedAttributeList);
             // Add code to the beginning of the prefire method that
             // computes the attribute values of anything that is not a
@@ -2081,15 +2081,15 @@ public class ModelTransformer extends SceneTransformer
             Local containerLocal = Jimple.v().newLocal("entity",
                     PtolemyUtilities.componentEntityType);
             body.getLocals().add(containerLocal);
-                            
+
             // Invoke the method to compute each attribute, in order.
             for (Iterator attributes = locallyModifiedAttributeList.iterator();
                 attributes.hasNext();) {
                 Attribute attribute = (Attribute)attributes.next();
-                Entity attributeContainer = 
+                Entity attributeContainer =
                     FieldsForEntitiesTransformer.getEntityContainerOfObject(
-                            attribute);           
-                SootClass containerClass = 
+                            attribute);
+                SootClass containerClass =
                     (SootClass)_objectToClassMap.get(attributeContainer);
                 SootMethod computeMethod = containerClass.getMethodByName(
                         getAttributeComputationFunctionName(
@@ -2108,7 +2108,7 @@ public class ModelTransformer extends SceneTransformer
                                 Jimple.v().newCastExpr(containerLocal,
                                         RefType.v(containerClass))),
                         insertPoint);
-                
+
                 body.getUnits().insertBefore(
                         Jimple.v().newInvokeStmt(
                                 Jimple.v().newVirtualInvokeExpr(containerLocal,

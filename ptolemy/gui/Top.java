@@ -762,10 +762,10 @@ public abstract class Top extends JFrame {
         // Use the strategy pattern here to create the actual
         // dialog so that subclasses can customize this dialog.
         JFileChooser fileDialog = _saveAsFileDialog();
-        
+
         // Show the dialog.
         int returnVal = fileDialog.showSaveDialog(this);
-        
+
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             _file = fileDialog.getSelectedFile();
             if (_file.exists()) {

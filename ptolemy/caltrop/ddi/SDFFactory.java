@@ -41,7 +41,7 @@ import caltrop.interpreter.environment.Environment;
 /**
    A factory that creates {@link SDF SDF}s.
 
-   @author Christopher Chang 
+   @author Christopher Chang
    @version $Id$
    @since Ptolemy II 4.0
    @Pt.ProposedRating Red (cxh)

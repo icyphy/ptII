@@ -40,7 +40,7 @@ package ptolemy.caltrop;
    @Pt.ProposedRating Yellow (neuendor)
    @Pt.AcceptedRating Red (cxh)
 */
-public class FunctionCallException 
+public class FunctionCallException
     extends caltrop.interpreter.InterpreterException {
     /**
      * Create a FunctionCallException for an exception
@@ -74,7 +74,7 @@ public class FunctionCallException
      */
     public FunctionCallException(
             String name, Object arg1, Object arg2, Throwable cause) {
-        super("Failed to apply function '" + name + "' to " + 
+        super("Failed to apply function '" + name + "' to " +
                 arg1 + " and " + arg2, cause);
     }
 }

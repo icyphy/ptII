@@ -30,7 +30,7 @@ For example, the precision "2.22" would represent a 24-bit fixed-point
 number with 1 sign bit, 1 integer bit, and 22 fractional bits.
 
  @Author Y. K. Lim
- @Version $Id$, based on version 1.2 of /users/ptolemy/src/domains/cgc/stars/CGCConstFix.pl, from Ptolemy Classic 
+ @Version $Id$, based on version 1.2 of /users/ptolemy/src/domains/cgc/stars/CGCConstFix.pl, from Ptolemy Classic
  @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCConstFix extends CGCFix {
@@ -57,7 +57,7 @@ public class CGCConstFix extends CGCFix {
         OutputPrecision = new Parameter(this, "OutputPrecision");
         OutputPrecision.setExpression("2.14");
 
-/* 
+/*
 */
     }
     ///////////////////////////////////////////////////////////////////
@@ -84,7 +84,7 @@ public class CGCConstFix extends CGCFix {
     /**
      */
     public void  generateInitializeCode() throws IllegalActionException {
-        
+
 super.generateInitializeCode();
 
 		output.setPrecision(OutputPrecision);
@@ -93,12 +93,12 @@ super.generateInitializeCode();
     /**
      */
     public void  generateFireCode() {
-        
+
 super.clearOverflow();
 { StringBuffer _str_ = new StringBuffer(); _str_.append(
 "               FIX_Assign($ref(output), $ref(level));\n"
 
-); 	 addCode(_str_);  } 
+); 	 addCode(_str_);  }
                 super.checkOverflow();
      }
 }

@@ -27,7 +27,7 @@ If the input is zero or negative, the constant -100.0 is produced.
 <a name="logarithm"></a>
 
  @Author E. A. Lee
- @Version $Id$, based on version 1.7 of /users/ptolemy/src/domains/cgc/stars/CGCLog.pl, from Ptolemy Classic 
+ @Version $Id$, based on version 1.7 of /users/ptolemy/src/domains/cgc/stars/CGCLog.pl, from Ptolemy Classic
  @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCLog extends ClassicCGCActor {
@@ -48,7 +48,7 @@ public class CGCLog extends ClassicCGCActor {
         output = new ClassicPort(this, "output", false, true);
         output.setTypeEquals(BaseType.DOUBLE);
 
-/*     
+/*
 noInternalState();
 */
     }
@@ -71,27 +71,27 @@ noInternalState();
     /**
      */
     public int  myExecTime() {
-        
+
 return 33;  /* based on CG96Log */
      }
 
     /**
      */
     public void  generatePreinitializeCode() {
-        
+
 addInclude("<math.h>");
      }
 
     /**
      */
     public void  generateFireCode() {
-        
-addCode(ln); 
+
+addCode(ln);
      }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
-    public String ln = 
+    public String ln =
         "	if ($ref(input) <= 0) $ref(output) = -100.0;\n"
         + "	else $ref(output) = log($ref(input));\n";
 }

@@ -242,7 +242,7 @@ public class InlinePortTransformer extends SceneTransformer implements HasPhaseO
                 boolean moreToDo = true;
                 while (moreToDo) {
                     moreToDo = _inlineMethodCalls(
-                            entityClass, entity, 
+                            entityClass, entity,
                             method, body,
                             inliner, _debug);
                     LocalNameStandardizer.v().transform(body,
@@ -251,7 +251,7 @@ public class InlinePortTransformer extends SceneTransformer implements HasPhaseO
             }
         }
     }
-    
+
     private boolean _inlineMethodCalls(
             SootClass entityClass, ComponentEntity entity,
             SootMethod method, JimpleBody body,
@@ -445,7 +445,7 @@ public class InlinePortTransformer extends SceneTransformer implements HasPhaseO
                                 box.setValue(IntConstant.v(0));
                             }
                         } else if (r.getMethod().getName().equals("getWidth") ||
-                                   r.getMethod().getName().equals("numberOfSources") || 
+                                   r.getMethod().getName().equals("numberOfSources") ||
                                    r.getMethod().getName().equals("numberOfSinks")) {
                             if (debug) {
                                 System.out.println("replacing getWidth at "
@@ -541,7 +541,7 @@ public class InlinePortTransformer extends SceneTransformer implements HasPhaseO
 
         // System.out.println("portToIndexArrayField = " + portToIndexArrayField);
         //System.out.println("portToInsideIndexArrayField = " + portToInsideIndexArrayField);
-        NamedObjAnalysis analysis = new NamedObjAnalysis(method, model); 
+        NamedObjAnalysis analysis = new NamedObjAnalysis(method, model);
 
 //         CompleteUnitGraph unitGraph =
 //             new CompleteUnitGraph(body);

@@ -28,7 +28,7 @@ change, and hence affects the number of invocations of downstream
 stars.
 
  @Author S. Ha
- @Version $Id$, based on version 1.6 of /users/ptolemy/src/domains/cgc/stars/CGCRepeat.pl, from Ptolemy Classic 
+ @Version $Id$, based on version 1.6 of /users/ptolemy/src/domains/cgc/stars/CGCRepeat.pl, from Ptolemy Classic
  @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCRepeat extends ClassicCGCActor {
@@ -51,7 +51,7 @@ public class CGCRepeat extends ClassicCGCActor {
         numTimes = new Parameter(this, "numTimes");
         numTimes.setExpression("2");
 
-/*     
+/*
 noInternalState();
 */
     }
@@ -79,27 +79,27 @@ noInternalState();
     /**
      */
     public int  myExecTime() {
-        
+
 return ((IntToken)((numTimes).getToken())).intValue();
      }
 
     /**
      */
     public void  generateInitializeCode() throws IllegalActionException {
-        
+
 output.setSDFParams(((IntToken)((numTimes).getToken())).intValue(),((IntToken)((numTimes).getToken())).intValue()-1);
      }
 
     /**
      */
     public void  generateFireCode() {
-        
-addCode(out); 
+
+addCode(out);
      }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
-    public String out = 
+    public String out =
         "	int i;\n"
         + "	for (i = 0; i < $val(numTimes); i++) {\n"
         + "		$ref(output, i) = $ref(input);\n"

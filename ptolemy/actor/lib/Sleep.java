@@ -64,7 +64,7 @@ import ptolemy.kernel.util.Workspace;
    @author Jie Liu, Christopher Hylands, Edward A. Lee
    @version $Id$
    @since Ptolemy II 1.0
-   
+
    @Pt.ProposedRating Green (eal)
    @Pt.AcceptedRating Yellow (cxh)
 */
@@ -84,12 +84,12 @@ public class Sleep extends Transformer {
         sleepTime = new PortParameter(this, "sleepTime");
         sleepTime.setExpression("0L");
         sleepTime.setTypeEquals(BaseType.LONG);
-        
+
         Port sleepPort = sleepTime.getPort();
         StringAttribute sleepCardinal
                 = new StringAttribute(sleepPort, "_cardinal");
         sleepCardinal.setExpression("SOUTH");
-        
+
         // Data type polymorphic, multiports.
         input.setMultiport(true);
         output.setMultiport(true);
@@ -120,7 +120,7 @@ public class Sleep extends Transformer {
         newObject.output.setTypeAtLeast(newObject.input);
         return newObject;
     }
-    
+
     /** Read input tokens, call Thread.sleep(), and then
      *  transfer tokens from inputs to outputs, at most one token from each
      *  channel.  If fire() is called twice in a row without an

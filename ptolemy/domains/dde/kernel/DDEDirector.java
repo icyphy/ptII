@@ -116,7 +116,7 @@ import ptolemy.kernel.util.Workspace;
    @see ptolemy.domains.dde.kernel.FeedBackDelay
    @see ptolemy.domains.dde.kernel.NullToken
 */
-public class DDEDirector extends CompositeProcessDirector 
+public class DDEDirector extends CompositeProcessDirector
     implements TimedDirector {
 
     /** Construct a DDEDirector in the default workspace with
@@ -245,7 +245,7 @@ public class DDEDirector extends CompositeProcessDirector
             return;
         }
 
-        if (_completionTime.getDoubleValue() != ETERNITY && 
+        if (_completionTime.getDoubleValue() != ETERNITY &&
             time.compareTo(_completionTime) > 0) {
             return;
         }
@@ -479,7 +479,7 @@ public class DDEDirector extends CompositeProcessDirector
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // Since the completionTime is a constant, we do not convert it 
+    // Since the completionTime is a constant, we do not convert it
     // to a time object.
     private Time _completionTime;
     private boolean _pendingMutations = false;

@@ -154,7 +154,7 @@ abstract public class GRShadedShape extends GRActor3D {
         flat = new Parameter(this,"flat");
         flat.setExpression("false");
         flat.setTypeEquals(BaseType.BOOLEAN);
-        
+
         allowRuntimeChanges = new Parameter(this, "allowRuntimeChanges");
         allowRuntimeChanges.setExpression("false");
         allowRuntimeChanges.setTypeEquals(BaseType.BOOLEAN);
@@ -167,7 +167,7 @@ abstract public class GRShadedShape extends GRActor3D {
      *  execution of the model. This is a boolean that defaults to false.
      */
     public Parameter allowRuntimeChanges;
-    
+
     /** The diffuse color, which is the color of the object reflecting
      *  illumination. Note that the alpha value (the fourth
      *  element of the array), which would normally specify transparency,
@@ -226,9 +226,9 @@ abstract public class GRShadedShape extends GRActor3D {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Adjust the appearance when an attribute changes if such
-     *  an update is supported by the <i>allowRuntimeChanges</i> parameter. 
+     *  an update is supported by the <i>allowRuntimeChanges</i> parameter.
      */
     public void attributeChanged(Attribute attribute)
     		throws IllegalActionException {
@@ -283,7 +283,7 @@ abstract public class GRShadedShape extends GRActor3D {
 			            if (loadedTexture != null) {
 			                _appearance.setTexture(loadedTexture);
 			            }
-			        }					
+			        }
 				}
 				if (attribute == wireFrame && _polygonAttributes != null) {
 			        int mode = PolygonAttributes.POLYGON_FILL;
@@ -296,8 +296,8 @@ abstract public class GRShadedShape extends GRActor3D {
     	}
     	super.attributeChanged(attribute);
     }
-    
-    /** Override the base class to null out private variables. 
+
+    /** Override the base class to null out private variables.
      */
     public Object clone(Workspace workspace)
     		throws CloneNotSupportedException {
@@ -391,7 +391,7 @@ abstract public class GRShadedShape extends GRActor3D {
         if (shine > 1.0) {
             _material.setShininess(shine);
         }
-        
+
         _appearance.setMaterial(_material);
 
         // Deal with transparent attributes.
@@ -415,7 +415,7 @@ abstract public class GRShadedShape extends GRActor3D {
             _appearance.setColoringAttributes(_coloringAttributes);
         } else if (allowChanges) {
             _coloringAttributes = new ColoringAttributes();
-            _appearance.setColoringAttributes(_coloringAttributes);        	
+            _appearance.setColoringAttributes(_coloringAttributes);
         }
 
         // Deal with wireFrame attribute.
@@ -496,7 +496,7 @@ abstract public class GRShadedShape extends GRActor3D {
         }
         // If runtime changes are allowed, then we need to set texture
         // attributes even if not needed now.
-        if (attributes == null 
+        if (attributes == null
         		&& ((BooleanToken)allowRuntimeChanges.getToken()).booleanValue()) {
             attributes = new TextureAttributes();
             attributes.setTextureMode(TextureAttributes.MODULATE);
@@ -509,19 +509,19 @@ abstract public class GRShadedShape extends GRActor3D {
 
     /** The appearance of this 3D object. */
     protected Appearance _appearance;
-    
+
     /** Indicator that changes are currently allowed. */
     protected boolean _changesAllowedNow = false;
-    
+
     /** The coloring attributes, or null if not created. */
     protected ColoringAttributes _coloringAttributes;
 
     /** The material of this 3D object. */
     protected Material _material;
-    
+
     /** Polygon attributes. */
     protected PolygonAttributes _polygonAttributes;
-    
+
     /** The transparency attributes, or null if not created. */
     protected TransparencyAttributes _transparencyAttributes;
 }

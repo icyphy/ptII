@@ -23,7 +23,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 Output the greatest integer less than or equal to the input.
 
  @Author J. T. Buck
- @Version $Id$, based on version 1.1 of /users/ptolemy/src/domains/cgc/stars/CGCFloor.pl, from Ptolemy Classic 
+ @Version $Id$, based on version 1.1 of /users/ptolemy/src/domains/cgc/stars/CGCFloor.pl, from Ptolemy Classic
  @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCFloor extends ClassicCGCActor {
@@ -44,7 +44,7 @@ public class CGCFloor extends ClassicCGCActor {
         output = new ClassicPort(this, "output", false, true);
         output.setTypeEquals(BaseType.INT);
 
-/* 
+/*
 */
     }
     ///////////////////////////////////////////////////////////////////
@@ -66,13 +66,13 @@ public class CGCFloor extends ClassicCGCActor {
     /**
      */
     public void  generateFireCode() {
-        
-addCode(floor); 
+
+addCode(floor);
      }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
-    public String floor = 
+    public String floor =
         "		double t = (double)$ref(input);\n"
         + "		int it = (int)t;\n"
         + "		// handle rounding towards 0 on some processors\n"

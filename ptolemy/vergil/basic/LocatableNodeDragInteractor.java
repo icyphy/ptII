@@ -210,15 +210,15 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
         }
         moml.append("</group>\n");
         undoMoml.append("</group>\n");
-        
-        final String finalUndoMoML = undoMoml.toString(); 
+
+        final String finalUndoMoML = undoMoml.toString();
 
         // Request the change.
         MoMLChangeRequest request = new MoMLChangeRequest(
                 this, toplevel, moml.toString()) {
         	protected void _execute() throws Exception {
         		super._execute();
-                
+
                 // Next create and register the undo entry;
                 // The MoML by itself will not cause an undo
                 // to register because the value is not changing.
@@ -243,7 +243,7 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
             frame.changeExecuted(null);
         }
     }
-    
+
     /** Specify the snap resolution. The default snap resolution is 5.0.
      *  @param resolution The snap resolution.
      */
@@ -370,7 +370,7 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
 
     // Used to undo a locatable node movement
     private double[] _dragStart;
-    
+
     // Locally defined snap constraint.
     private SnapConstraint _snapConstraint;
 }

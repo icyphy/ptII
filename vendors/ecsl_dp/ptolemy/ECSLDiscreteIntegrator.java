@@ -84,7 +84,7 @@ public class ECSLDiscreteIntegrator extends IIR {
     ////                     ports and parameters                  ////
 
     /** Names the external reset.  A common value is "none"
-     *  FIXME: this value is currently ignored.   
+     *  FIXME: this value is currently ignored.
      */
     public StringParameter ExternalReset;
 
@@ -96,7 +96,7 @@ public class ECSLDiscreteIntegrator extends IIR {
 
     /** The name of the initial condition source.
      *  A common value is the string "internal".
-     *  FIXME: this value is currently ignored.   
+     *  FIXME: this value is currently ignored.
      */
     public StringParameter InitialConditionSource;
 

@@ -316,7 +316,7 @@ public class GiottoDirector extends StaticSchedulingDirector
      */
     public double getPeriod() {
 
-        // In ptolemy models, for simulation, time is double with seconds 
+        // In ptolemy models, for simulation, time is double with seconds
         // unit; however, for giotto code, we need integer and its
         // unit is milliSecond.
 
@@ -477,7 +477,7 @@ public class GiottoDirector extends StaticSchedulingDirector
                 _readyToFire = false;
             } else if (outsideCurrentTime
                     .compareTo(_expectedNextIterationTime) > 0) {
-                // FIXME: the outside time should be equal to the expected 
+                // FIXME: the outside time should be equal to the expected
                 // next iteration time...
                 // FIXME: the following catch up is too early!
                 // catch up with the outside time.
@@ -536,16 +536,16 @@ public class GiottoDirector extends StaticSchedulingDirector
      */
     public String[] suggestedModalModelDirectors() {
         // This method does not call the method defined in the super class,
-        // because this method provides complete new information. 
-        // Default is a NonStrictFSMDirector, while FSMDirector is also 
+        // because this method provides complete new information.
+        // Default is a NonStrictFSMDirector, while FSMDirector is also
         // in the array.
         String[] defaultSuggestions = new String[2];
-        defaultSuggestions[0] = 
+        defaultSuggestions[0] =
             "ptolemy.domains.fsm.kernel.NonStrictFSMDirector";
         defaultSuggestions[1] = "ptolemy.domains.fsm.kernel.FSMDirector";
         return defaultSuggestions;
     }
-    
+
     /** Transfer data from an input port of the container to the ports
      *  it is connected to on the inside. The port argument must be an
      *  opaque input port. If any channel of the input port has no data,

@@ -132,7 +132,7 @@ public class WatchDog {
     /** Determine whether the JVM will exit when the time interval
      *  has passed.  This method is used for testing this class.
      *  @param exitOnTimeOut True if the JVM will exit when
-     *  the time interval has passed.   
+     *  the time interval has passed.
      */
     public void setExitOnTimeOut(boolean exitOnTimeOut) {
         _exitOnTimeOut = exitOnTimeOut;

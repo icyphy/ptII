@@ -1290,7 +1290,7 @@ public class SootUtilities {
 
     public static SootMethod resolveSpecialInvokationForInlining(
             SpecialInvokeExpr expr, SootMethod callingMethod) {
-        SootMethod inlinee = 
+        SootMethod inlinee =
             Scene.v().getActiveHierarchy().resolveSpecialDispatch(
                     (SpecialInvokeExpr)expr, callingMethod);
         // Make sure we can access the body of the method that is
@@ -1312,7 +1312,7 @@ public class SootUtilities {
             // inline the method.
             inlinee = (SootMethod)methodList.get(0);
         } else {
-            String string = "Can't resolve " + targetMethod 
+            String string = "Can't resolve " + targetMethod
                 + " on baseClass " + baseClass + "\n";
             for (int i = 0; i < methodList.size(); i++) {
                 string += "target = " + methodList.get(i) + "\n";
@@ -1326,7 +1326,7 @@ public class SootUtilities {
         }
         inlinee.retrieveActiveBody();
         return inlinee;
-    }        
+    }
 
     /** Inline all calls to the given method that occur within the given class.
      *  Note that this alone will really only increase the size of the

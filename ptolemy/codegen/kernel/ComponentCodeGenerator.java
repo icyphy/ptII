@@ -39,7 +39,7 @@ import ptolemy.kernel.util.NamedObj;
  *  Classes that implement this interface are helper classes, closely associated
  *  with a specific Ptolemy II component (such as an actor), and able to generate
  *  code in some language to implement the functionality of that component.
- * 
+ *
  *  @author Christopher Brooks, Edward Lee, Jackie Leung, Gang Zhou, Rachel Zhou
  *  @version $Id$
  *  @since Ptolemy II 5.0
@@ -57,7 +57,7 @@ public interface ComponentCodeGenerator {
      *  @exception IllegalActionException If something goes wrong.
      */
     public String generateInitializeCode()
-            throws IllegalActionException; 
+            throws IllegalActionException;
 
     /** Generate into the specified code stream the code associated
      *  with wrapping up the container composite actor.
@@ -65,8 +65,8 @@ public interface ComponentCodeGenerator {
      *  @exception IllegalActionException If something goes wrong.
      */
     public void generateWrapupCode(StringBuffer code)
-            throws IllegalActionException; 
-    
+            throws IllegalActionException;
+
     /** Return the associated component.
      *  @return The component for which this is a helper to generate code.
      */

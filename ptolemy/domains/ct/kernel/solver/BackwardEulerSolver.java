@@ -95,7 +95,7 @@ public class BackwardEulerSolver extends FixedStepSolver {
     ////                         public methods                    ////
 
     /** Fire the integrator to resolve states. Vote false for convergence if
-     *  a fixed-point solution is not found. 
+     *  a fixed-point solution is not found.
      *
      *  @param integrator The integrator to be fired.
      *  @exception IllegalActionException If there is no director, or can not
@@ -123,8 +123,8 @@ public class BackwardEulerSolver extends FixedStepSolver {
                 Math.abs(tentativeState-integrator.getTentativeState());
             if (error < director.getValueResolution()) {
                 integrator.setTentativeDerivative(f);
-                // Note that the FixedStepSolver sets converged to true for 
-                // each round by default. Therefore, we do not need to set it 
+                // Note that the FixedStepSolver sets converged to true for
+                // each round by default. Therefore, we do not need to set it
                 // to true again.
             } else {
                 _voteForConverged(false);
@@ -154,5 +154,5 @@ public class BackwardEulerSolver extends FixedStepSolver {
     ////                         private variables                 ////
 
     /** Name of this Solver. */
-    private static final String _DEFAULT_NAME = "CT_Backward_Euler_Solver"; 
+    private static final String _DEFAULT_NAME = "CT_Backward_Euler_Solver";
 }

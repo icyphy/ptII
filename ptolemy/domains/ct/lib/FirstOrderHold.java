@@ -134,8 +134,8 @@ public class FirstOrderHold extends Transformer
                         ", " + _derivative + ").");
             }
         }
-        double timeInterval = 
-            director.getModelTime().subtract(_time).getDoubleValue(); 
+        double timeInterval =
+            director.getModelTime().subtract(_time).getDoubleValue();
         output.send(0, new DoubleToken(_value + timeInterval * _derivative));
     }
 

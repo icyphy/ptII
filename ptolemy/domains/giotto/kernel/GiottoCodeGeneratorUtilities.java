@@ -588,7 +588,7 @@ public class GiottoCodeGeneratorUtilities {
      *  @param actor The actor we are generating code for.
      *  @return The task code.
      *  @exception IllegalActionException If there is a problem iterating
-     *  over the ports of the actor 
+     *  over the ports of the actor
      */
     protected static String _taskCode(TypedCompositeActor model, Actor actor)
             throws IllegalActionException {

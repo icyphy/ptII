@@ -102,12 +102,12 @@ public class PtolemyPlatform implements Platform {
                 public void call(Object[] args) {
                     System.out.println(args[0]);
                 }
-                
+
                 public int arity() {
                     return 1;
                 }
             }));
-        
+
         env.bind("SOP", _theContext.createFunction(new Function() {
                 public Object apply(Object[] args) {
                     try {
@@ -117,12 +117,12 @@ public class PtolemyPlatform implements Platform {
                         throw new FunctionCallException("$not", args[0], ex);
                     }
                 }
-                
+
                 public int arity() {
                     return 1;
                 }
             }));
-        
+
         env.bind("Integers", _theContext.createFunction(new Function() {
                 public Object apply(Object[] args) {
                     try {
@@ -136,12 +136,12 @@ public class PtolemyPlatform implements Platform {
                                 "Integers", args[0], args[1], ex);
                     }
                 }
-                
+
                 public int arity() {
                     return 2;
                 }
             }));
-        
+
         env.bind("$not", _theContext.createFunction(new Function() {
                 public Object apply(Object[] args) {
                     try {
@@ -253,7 +253,7 @@ public class PtolemyPlatform implements Platform {
                                 "$le", args[0], args[1], ex);
                     }
                 }
-                
+
                 public int arity() {
                     return 2;
                 }
@@ -318,12 +318,12 @@ public class PtolemyPlatform implements Platform {
                     try {
                         Token a = (Token) args[0];
                         Token b = (Token) args[1];
-                        
-                        if (a instanceof ObjectToken && 
+
+                        if (a instanceof ObjectToken &&
                                 b instanceof ObjectToken) {
                             Object oa = ((ObjectToken) a).getValue();
                             Object ob = ((ObjectToken) b).getValue();
-                            if (oa instanceof Collection && 
+                            if (oa instanceof Collection &&
                                     ob instanceof Collection) {
                                 Collection result;
                                 if (oa instanceof Set) {
@@ -393,11 +393,11 @@ public class PtolemyPlatform implements Platform {
                         Token a = (Token) args[0];
                         Token b = (Token) args[1];
 
-                        if (a instanceof ObjectToken && 
+                        if (a instanceof ObjectToken &&
                                 b instanceof ObjectToken) {
                             Object oa = ((ObjectToken) a).getValue();
                             Object ob = ((ObjectToken) b).getValue();
-                            if (oa instanceof Collection && 
+                            if (oa instanceof Collection &&
                                     ob instanceof Collection) {
                                 Collection result;
                                 if (oa instanceof Set) {
@@ -501,7 +501,7 @@ public class PtolemyPlatform implements Platform {
                         List res = new ArrayList();
                         for (Iterator i = c.iterator(); i.hasNext(); ) {
                             argument[0] = i.next();
-                            Object listFragment = 
+                            Object listFragment =
                                 _theContext.applyFunction(f, argument);
                             res.addAll(_theContext.getCollection(listFragment));
                         }
@@ -621,9 +621,9 @@ public class PtolemyPlatform implements Platform {
                     return 1;
                 }
             }));
-        
+
         //
-        // Xilinx SystemBuilder 
+        // Xilinx SystemBuilder
         //
         //        constant YSCALE:   INT19 := conv_signed( integer( 1.164 * 256), 19 );
         //        constant RSCALE:   INT19 := conv_signed( integer( 1.596 * 256), 19 );
@@ -632,11 +632,11 @@ public class PtolemyPlatform implements Platform {
         //        constant BSCALE:   INT19 := conv_signed( integer( 2.017 * 256), 19 );
         //        constant YOFFSET:  INT19 := conv_signed(                    16, 19 );
         //        constant UVOFFSET: INT19 := conv_signed(                   128, 19 );
-        //        
+        //
         //        constant UINT9_zero: UINT9 := (others => '0' );
         //
         //        function INT19_mul( a: INT19; b: INT19 ) return INT19;
-        //        function RGBCLIP( a: INT19 ) return UINT8;        
+        //        function RGBCLIP( a: INT19 ) return UINT8;
 
         env.bind("UINT9_zero", _theContext.createInteger(0));
         env.bind("YSCALE", _theContext.createInteger((int)(1.164 * 256)));
@@ -644,10 +644,10 @@ public class PtolemyPlatform implements Platform {
         env.bind("GUSCALE", _theContext.createInteger((int)(-0.392 * 256)));
         env.bind("GVSCALE", _theContext.createInteger((int)(-0.813 * 256)));
         env.bind("BSCALE", _theContext.createInteger((int)(2.017 * 256)));
-        
+
         env.bind("YOFFSET", _theContext.createInteger(16));
         env.bind("UVOFFSET", _theContext.createInteger(128));
-        
+
         env.bind("INT19_mul", _theContext.createFunction(new Function () {
         	public Object apply(Object[] args) {
                     try {
@@ -664,7 +664,7 @@ public class PtolemyPlatform implements Platform {
                     return 2;
         	}
             }));
-        
+
         env.bind("RGBCLIP", _theContext.createFunction(new Function () {
         	public Object apply(Object[] args) {
                     try {
@@ -685,7 +685,7 @@ public class PtolemyPlatform implements Platform {
                     return 1;
         	}
             }));
-        
+
         env.bind("readByte", _theContext.createFunction(new Function () {
         	public Object apply(Object[] args) {
                     try {
@@ -705,7 +705,7 @@ public class PtolemyPlatform implements Platform {
                     return 1;
         	}
             }));
-        
+
         env.bind("openFile", _theContext.createFunction(new Function () {
         	public Object apply(Object[] args) {
                     try {
@@ -725,8 +725,8 @@ public class PtolemyPlatform implements Platform {
                     return 1;
         	}
             }));
-        
-        
+
+
         // END SystemBuilder
 
         return env;
@@ -747,9 +747,9 @@ public class PtolemyPlatform implements Platform {
      * @see caltrop.interpreter.ExprEvaluator
      * @see caltrop.interpreter.StmtEvaluator
      */
-    private static final Context _theContext = 
+    private static final Context _theContext =
     new Context() {
-        
+
         public Object createNull() {
             try {
                 return new ObjectToken(null);
@@ -758,21 +758,21 @@ public class PtolemyPlatform implements Platform {
                         "Failed to create null.", ex);
             }
         }
-    	
+
         public boolean isNull(Object o) {
             return o instanceof ObjectToken &&
                 ((ObjectToken)o).getValue() == null;
         }
 
-    	
+
         public Object createBoolean(boolean b) {
             return b ? BooleanToken.TRUE : BooleanToken.FALSE;
         }
-    	
+
         public boolean isBoolean(Object o) {
             return o instanceof BooleanToken;
         }
-    	
+
         public boolean booleanValue(Object b) {
             try {
                 return ((BooleanToken) b).booleanValue();
@@ -782,7 +782,7 @@ public class PtolemyPlatform implements Platform {
             }
         }
 
-    	
+
         public Object createCharacter(char c) {
             try {
                 return new ObjectToken(new Character(c));
@@ -791,17 +791,17 @@ public class PtolemyPlatform implements Platform {
                         "Failed to create character value.");
             }
         }
-    	
+
         public boolean isCharacter(Object o) {
             return o instanceof ObjectToken &&
                 ((ObjectToken)o).getValue() instanceof Character;
         }
-    	
+
         public char charValue(Object o) {
             return ((Character)((ObjectToken)o).getValue()).charValue();
         }
 
-    	
+
         public Object createInteger(String s) {
             try {
                 return new IntToken(s);
@@ -811,15 +811,15 @@ public class PtolemyPlatform implements Platform {
                         + s + "'.", ex);
             }
         }
-    	
+
         public Object createInteger(int n) {
             return new IntToken(n);
         }
-    	
+
         public boolean isInteger(Object o) {
             return o instanceof IntToken;
         }
-        
+
         public int intValue(Object o) {
             try {
                 return ((IntToken) o).intValue();
@@ -829,11 +829,11 @@ public class PtolemyPlatform implements Platform {
             }
         }
 
-            
+
         public Object createReal(double d) {
             return new DoubleToken(d);
         }
- 
+
         public Object createReal(String s) {
             try {
                 return new DoubleToken(s);
@@ -843,11 +843,11 @@ public class PtolemyPlatform implements Platform {
                         + s + "'.", ex);
             }
         }
-            
+
         public boolean isReal(Object o) {
             return o instanceof DoubleToken;
         }
-            
+
         public double realValue(Object o) {
             try {
                 return ((DoubleToken) o).doubleValue();
@@ -856,16 +856,16 @@ public class PtolemyPlatform implements Platform {
                         "Failed to retrieve real value.", ex);
             }
         }
-    	
-    	
+
+
         public Object createString(String s) {
             return new StringToken(s);
         }
-    	
+
         public boolean isString(Object o) {
             return o instanceof StringToken;
         }
-    	
+
         public String stringValue(Object o) {
             try {
                 return ((StringToken) o).stringValue();
@@ -874,8 +874,8 @@ public class PtolemyPlatform implements Platform {
                         "Failed to retrieve string value.", ex);
             }
         }
-    	
-    	
+
+
         ///////// Collections
         public Object createList(List a) {
             try {
@@ -885,13 +885,13 @@ public class PtolemyPlatform implements Platform {
                         "Failed to create list value.", ex);
             }
         }
-    	
+
         public boolean isList(Object o) {
             return (o instanceof PtArrayList) ||
                 (o instanceof ObjectToken &&
                         ((ObjectToken)o).getValue() instanceof List);
         }
-    	
+
         public List getList(Object o) {
             if (o instanceof ArrayToken) {
                 return new PtArrayList((ArrayToken) o);
@@ -905,7 +905,7 @@ public class PtolemyPlatform implements Platform {
             }
         }
 
-    	
+
         public Object createSet(Set s) {
             try {
                 return new ObjectToken(s);
@@ -914,16 +914,16 @@ public class PtolemyPlatform implements Platform {
                         "Failed to create set value.", ex);
             }
         }
-    	
+
         public boolean isSet(Object o) {
             return o instanceof ObjectToken &&
                 ((ObjectToken)o).getValue() instanceof Set;
         }
-    	
+
         public Set getSet(Object o) {
             return (Set)((ObjectToken)o).getValue();
         }
-    	
+
 
         public Object createMap(Map m) {
             try {
@@ -933,12 +933,12 @@ public class PtolemyPlatform implements Platform {
                         "Failed to create map value.", ex);
             }
         }
-    	
+
         public boolean isMap(Object o) {
             return o instanceof ObjectToken &&
                 ((ObjectToken)o).getValue() instanceof Map;
         }
-    	
+
         public Map getMap(Object a) {
             try {
                 return (Map)((ObjectToken)a).getValue();
@@ -948,19 +948,19 @@ public class PtolemyPlatform implements Platform {
                         "Failed to retrieve map value", ex);
             }
         }
-    	
+
 
         public Object applyMap(Object map, Object arg) {
             Map m = getMap(map);
             return m.get(arg);
         }
 
-    	
+
         public boolean isCollection(Object o) {
             return o instanceof ObjectToken &&
                 ((ObjectToken)o).getValue() instanceof Collection;
         }
-    	
+
         public Collection getCollection(Object a) {
             try {
                 return (Collection)((ObjectToken)a).getValue();
@@ -970,7 +970,7 @@ public class PtolemyPlatform implements Platform {
                         "Failed to retrieve collection value.", ex);
             }
         }
-    	
+
         ///////// Functional and procedural closures
         public Object createFunction(Function f) {
             Type[] argTypes = new Type[f.arity()];
@@ -979,13 +979,13 @@ public class PtolemyPlatform implements Platform {
             return new FunctionToken(new PtCalFunction(f),
                     new FunctionType(argTypes, BaseType.UNKNOWN));
         }
-    	
+
         public boolean isFunction(Object a) {
             return (a instanceof FunctionToken) ||
                 (a instanceof ObjectToken &&
                         ((ObjectToken)a).getValue() instanceof Function);
         }
-    	
+
         public Object applyFunction(Object function, Object[] args) {
             // TODO: perhaps need to optimize array creation
             try {
@@ -1000,10 +1000,10 @@ public class PtolemyPlatform implements Platform {
                 throw new InterpreterException("Function application failed.",
                         ex);
             }
-    		
-        } 
 
-    	
+        }
+
+
         public Object createProcedure(Procedure p) {
             try {
                 return new ObjectToken(p);
@@ -1012,12 +1012,12 @@ public class PtolemyPlatform implements Platform {
                         "Failed to create procedure.", ex);
             }
         }
-    	
+
         public boolean isProcedure(Object a) {
-            return a instanceof ObjectToken && 
+            return a instanceof ObjectToken &&
                 ((ObjectToken) a).getValue() instanceof Procedure;
         }
-    	
+
         public void callProcedure(Object procedure, Object[] args) {
             try {
                 ObjectToken pToken = (ObjectToken) procedure;
@@ -1028,7 +1028,7 @@ public class PtolemyPlatform implements Platform {
                         ex);
             }
         }
-    	
+
         ///////// Class
         public Object createClass(Class c) {
             try {
@@ -1038,12 +1038,12 @@ public class PtolemyPlatform implements Platform {
                         "Cannot create class token.", ex);
             }
         }
-    	
+
         public boolean isClass(Object o) {
-            return o instanceof ObjectToken && 
+            return o instanceof ObjectToken &&
                 ((ObjectToken)o).getValue() instanceof ClassObject;
         }
-            
+
         public Class getJavaClass(Object o) {
             try {
                 return ((ClassObject)((ObjectToken)o).getValue()).getClassObject();
@@ -1051,7 +1051,7 @@ public class PtolemyPlatform implements Platform {
             catch (ClassCastException e) {
                 if (o instanceof ObjectToken) {
                     throw new RuntimeException(
-                            "Expected ClassObject, got instance of '" + 
+                            "Expected ClassObject, got instance of '" +
                             ((ObjectToken)o).getValue().getClass().getName() +
                             "'.", e);
                 } else {
@@ -1060,23 +1060,23 @@ public class PtolemyPlatform implements Platform {
                 }
             }
         }
-    	
+
         ///////// Misc.
         public Object getLocation(Object structure, Object[] location) {
             // FIXME
             return null;
         }
-    	
+
         public void setLocation(Object structure,
                 Object[] location, Object value) {
             // FIXME
         }
-    	
+
         public Class getJavaClassOfObject(Object o) {
             // FIXME very preliminary. what about FunctionToken?
             // also, how will reflection work on methods that
             // need bytes, etc.
-    		
+
             if (o == null) {
                 return Object.class;
             } else if (o instanceof BooleanToken) {
@@ -1099,7 +1099,7 @@ public class PtolemyPlatform implements Platform {
                     "Unrecognized Token type in toClass:"
                     + o.getClass().toString());
         }
-    	
+
         public Object toJavaObject(Object o) {
             if (o instanceof BooleanToken) {
                 return new Boolean(booleanValue(o));
@@ -1121,7 +1121,7 @@ public class PtolemyPlatform implements Platform {
                     "Unrecognized Token type in toClass:"
                     + o.getClass().toString());
         }
-    	
+
         public Object fromJavaObject(Object o) {
             try {
                 if (o instanceof Token) {
@@ -1135,7 +1135,7 @@ public class PtolemyPlatform implements Platform {
                 } else if (o instanceof String) {
                     return new StringToken((String) o);
                 } else if (o instanceof Class) {
-                    return new ObjectToken(new ClassObject((Class)o, this)); 
+                    return new ObjectToken(new ClassObject((Class)o, this));
                 } else {
                     return new ObjectToken(o);
                 }
@@ -1145,7 +1145,7 @@ public class PtolemyPlatform implements Platform {
                         + o.toString(), ex);
             }
         }
-    	
+
         public Object selectField(Object composite, String fieldName) {
             Class c = getJavaClassOfObject(composite);
             Field f;

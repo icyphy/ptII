@@ -46,17 +46,17 @@ import ptolemy.kernel.util.IllegalActionException;
 */
 
 public class TupleToken extends Token {
-    
+
     /** Construct a TupleToken with the specified token array as its value.
      *  @param value The value.
      */
     public TupleToken(Token[] value) {
         _initialize(value);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Return an array of tokens populated with the contents of this
      *  array token.  The returned array is a copy so the caller is
      *  free to modify it.
@@ -116,7 +116,7 @@ public class TupleToken extends Token {
     public Token getElement(int index) {
         return _value[index];
     }
-    
+
     /** Return the element type at the specified index.
      *  @param index The index of the desired element.
      *  @return The type of the token contained in this array token at the
@@ -146,7 +146,7 @@ public class TupleToken extends Token {
     public int length() {
         return _value.length;
     }
-    
+
     /** Merge two tuple tokens into one by concatenating their tokens.
      *  @param first The first tuple token.
      *  @param second The second tuple token.
@@ -222,7 +222,7 @@ public class TupleToken extends Token {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                 ////
-    
+
     /** An empty tuple token. */
     public static TupleToken VOID = new TupleToken(new Token[0]);
 

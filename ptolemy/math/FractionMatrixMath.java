@@ -258,9 +258,9 @@ public class FractionMatrixMath {
      *  of columns of the matrix.
      *  @param array The array of Fractions.
      *  @param matrix The matrix of Fractions.
-     *  @return The resulting matrix of Fractions.     
+     *  @return The resulting matrix of Fractions.
      */
-    public static final Fraction[] multiply(final Fraction[] array, 
+    public static final Fraction[] multiply(final Fraction[] array,
             final Fraction[][] matrix) {
 
         int rows = _rows(matrix);
@@ -291,7 +291,7 @@ public class FractionMatrixMath {
      *  of rows of the matrix.
      *  @param matrix The matrix of Fractions.
      *  @param array The array of Fractions.
-     *  @return The resulting matrix of Fractions.     
+     *  @return The resulting matrix of Fractions.
      */
     public static final Fraction[] multiply(final Fraction[][] matrix,
             final Fraction[] array) {
@@ -337,7 +337,7 @@ public class FractionMatrixMath {
     public static final Fraction[][] multiply(Fraction[][] matrix1,
             Fraction[][] matrix2) throws ArithmeticException {
         if (_columns(matrix1) != _rows(matrix2)) {
-            throw new ArithmeticException("Number of columns (" + 
+            throw new ArithmeticException("Number of columns (" +
                     _columns(matrix1) + ") of matrix1 does note equal number of rows (" +
                     _rows(matrix2) + ") of matrix2.");
         }

@@ -29,7 +29,7 @@ There may be multiple inputs: all inputs are printed together on
 the same line, separated by tabs.
 
  @Author E. A. Lee, Kennard
- @Version $Id$, based on version 1.18 of /users/ptolemy/src/domains/cgc/stars/CGCPrinter.pl, from Ptolemy Classic 
+ @Version $Id$, based on version 1.18 of /users/ptolemy/src/domains/cgc/stars/CGCPrinter.pl, from Ptolemy Classic
  @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCPrinter extends ClassicCGCActor {
@@ -57,7 +57,7 @@ public class CGCPrinter extends ClassicCGCActor {
         index = new Parameter(this, "index");
         index.setExpression("1");
 
-/* 
+/*
 */
     }
     ///////////////////////////////////////////////////////////////////
@@ -84,14 +84,14 @@ public class CGCPrinter extends ClassicCGCActor {
     /**
      */
     public int  myExecTime() {
-        
+
 return 6;	/* unreliable data */
      }
 
     /**
      */
     public void  wrapup() {
-        
+
 if (fileOutput)
 		addCode("\tfclose($starSymbol(fp)); \n");
      }
@@ -99,7 +99,7 @@ if (fileOutput)
     /**
      */
     public void  generatePreinitializeCode() {
-        
+
 Stringfn = fileName;
 	    fileOutput = ! ( fn==null
 	      || strcmp(fn, "cout")==0 || strcmp(fn, "stdout")==0
@@ -109,21 +109,21 @@ Stringfn = fileName;
 		s.append("    FILE* $starSymbol(fp);");
 		addDeclaration(s);
 		addInclude("<stdio.h>");
-		addCode(openfile); 
+		addCode(openfile);
 	    }
      }
 
     /**
      */
     public void  generateFireCode() {
-        
+
 for (int i = 1; i <= input.numberPorts(); i++) {
 		index = i;
 		if (fileOutput) {
 			addCode(
 "\tfprintf($starSymbol(fp),\"%f\\t\", (double) ($ref(input#index)));\n");
 		} else {
-			addCode( 
+			addCode(
 "\tprintf(\"%f\\t\", (double) ($ref(input#index)));\n");
 		}
 	    }
@@ -136,7 +136,7 @@ for (int i = 1; i <= input.numberPorts(); i++) {
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
-    public String openfile = 
+    public String openfile =
         "    if (!($starSymbol(fp)=fopen(\"$val(fileName)\",\"w\"))) {\n"
         + "	fprintf(stderr,\"ERROR: cannot open output file for Printer star.\\n\");\n"
         + "    	exit(1);\n"

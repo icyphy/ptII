@@ -57,7 +57,7 @@ import ptolemy.kernel.util.NamedObj;
    A DE event also has a depth, which is the topology information of its
    destinations. For a pure event, the depth is that of its destination actor.
    For a trigger event, the depth is that of its destination IO port. A larger
-   value of depth indicates a lower priority when the simulator processes 
+   value of depth indicates a lower priority when the simulator processes
    events with the same tag.
    <p>
    Two DE events can be compared to see which one happens first. The order
@@ -65,9 +65,9 @@ import ptolemy.kernel.util.NamedObj;
    depths. See {@link DEEventQueue} for more details. DE events can be compared
    by using the compareTo() method.
    <p>
-   This class is final to improve the simulation performance because new 
-   events get created and discarded through the whole simulation.   
-   
+   This class is final to improve the simulation performance because new
+   events get created and discarded through the whole simulation.
+
    @author Lukito Muliadi, Edward A. Lee, Haiyang Zheng
    @version $Id$
    @since Ptolemy II 0.2
@@ -133,8 +133,8 @@ public final class DEEvent implements Comparable {
      *  <p>
      *  Their timestamps are compared first. If the two timestamps are not
      *  the same, their order defines the events' order. Otherwise, the
-     *  microsteps of events are compared for the order, where an event with 
-     *  the smaller microstep happens earlier. If the events have the same 
+     *  microsteps of events are compared for the order, where an event with
+     *  the smaller microstep happens earlier. If the events have the same
      *  microstep, their depths are compared. The event with a smaller depth
      *  happens earlier. If the two events have the same tag and depth, then
      *  they happen at the same time.

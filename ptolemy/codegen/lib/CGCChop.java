@@ -38,7 +38,7 @@ Hence, if <i>nwrite  &gt;  nread</i>, <i>offset</i> must be negative,
 and the output consists of overlapping blocks input particles.
 
  @Author S. Ha
- @Version $Id$, based on version 1.9 of /users/ptolemy/src/domains/cgc/stars/CGCChop.pl, from Ptolemy Classic 
+ @Version $Id$, based on version 1.9 of /users/ptolemy/src/domains/cgc/stars/CGCChop.pl, from Ptolemy Classic
  @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCChop extends ClassicCGCActor {
@@ -85,7 +85,7 @@ public class CGCChop extends ClassicCGCActor {
         loLim = new Parameter(this, "loLim");
         loLim.setExpression("0");
 
-/*     
+/*
 noInternalState();
 */
     }
@@ -144,7 +144,7 @@ noInternalState();
     /**
      */
     public int  myExecTime() {
-        
+
 computeRange();
 		return ((IntToken)((nwrite).getToken())).intValue() + 2 * (((IntToken)((hiLim).getToken())).intValue() - ((IntToken)((loLim).getToken())).intValue());
      }
@@ -152,7 +152,7 @@ computeRange();
     /**
      */
     public void  generateInitializeCode() throws IllegalActionException {
-        
+
 if (((IntToken)((nread).getToken())).intValue() <= 0) {
                     throw new IllegalActionException(this, "The number of samples to read ",
                                     "must be positive");
@@ -176,24 +176,24 @@ if (((IntToken)((nread).getToken())).intValue() <= 0) {
     /**
      */
     public void  generateFireCode() {
-        
+
 StringBuffer moreDeclarations = new StringBuffer("\tint ");
 		moreDeclarations  + "hiLim = " + ((IntToken)((hiLim).getToken())).intValue()  + ", "
 				  + "inputIndex = " + ((IntToken)((inidx).getToken())).intValue()  + ", "
 				.append("loLim = " + ((IntToken)((loLim).getToken())).intValue()  + ";\n");
 
-		addCode(decl); 
-		addCode(moreDeclarations); 
-		if (input.resolvedType() == COMPLEX) 
-		  addCode(complexOut); 
+		addCode(decl);
+		addCode(moreDeclarations);
+		if (input.resolvedType() == COMPLEX)
+		  addCode(complexOut);
 		else
-		  addCode(nonComplexOut); 
+		  addCode(nonComplexOut);
      }
 
     /**
      */
     protected void computeRange () {
-        
+
 // Compute the range of output indexes that come from inputs
                 // This method is called in the setup() method for the Chop
                 // star, and in the go method for ChopVarOffset because
@@ -212,10 +212,10 @@ StringBuffer moreDeclarations = new StringBuffer("\tint ");
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
-    public String decl = 
+    public String decl =
         "	int i;\n";
 
-    public String nonComplexOut = 
+    public String nonComplexOut =
         "	for (i = 0; i < $val(nwrite); i++) {\n"
         + "	    if (i > hiLim || i < loLim) {\n"
         + "		$ref(output,i) = 0;\n"
@@ -226,7 +226,7 @@ StringBuffer moreDeclarations = new StringBuffer("\tint ");
         + "            }\n"
         + "        }\n";
 
-    public String complexOut = 
+    public String complexOut =
         "	for (i = 0; i < $val(nwrite); i++) {\n"
         + "	    if (i > hiLim || i < loLim) {\n"
         + "		$ref(output,i).real = 0;\n"

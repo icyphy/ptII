@@ -97,7 +97,7 @@ public class TimedDelay extends DETransformer {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         // NOTE: The _init method is used to allow classes that extend
-        // this class to reconfig their settings. This may not be a 
+        // this class to reconfig their settings. This may not be a
         // good pattern.
         _init();
         output.setTypeSameAs(input);
@@ -109,7 +109,7 @@ public class TimedDelay extends DETransformer {
     /** The amount of delay. The default for this parameter is 1.0.
      *  This parameter must contain a DoubleToken
      *  with a non-negative value, or an exception will be thrown when
-     *  it is set. 
+     *  it is set.
      */
     public Parameter delay;
 
@@ -140,7 +140,7 @@ public class TimedDelay extends DETransformer {
         }
     }
 
-    /** Clone the actor into the specified workspace. Set a type 
+    /** Clone the actor into the specified workspace. Set a type
      *  constraint that the output type is the same as the that of input.
      *  @param workspace The workspace for the new object.
      *  @return A new actor.
@@ -154,27 +154,27 @@ public class TimedDelay extends DETransformer {
         return newObject;
     }
 
-    /** Read one token from the input. Send out a token that is scheduled 
+    /** Read one token from the input. Send out a token that is scheduled
      *  to produce at the current time to the output.
      *  @exception IllegalActionException If there is no director, or the
      *  input can not be read, or the output can not be sent.
      */
     public void fire() throws IllegalActionException {
-        
+
         super.fire();
-        
+
         // consume input
         if (input.hasToken(0)) {
             _currentInput = input.get(0);
         } else {
             _currentInput = null;
         }
-        
+
         // produce output
-        // NOTE: The amount of delay may be zero. 
-        // In this case, if there is already some token scheduled to 
-        // be produced at the current time before the current input 
-        // arrives, that token is produced. While the current input 
+        // NOTE: The amount of delay may be zero.
+        // In this case, if there is already some token scheduled to
+        // be produced at the current time before the current input
+        // arrives, that token is produced. While the current input
         // is delayed to the next available firing at the current time.
         Time currentTime = getDirector().getModelTime();
         _currentOutput = null;
@@ -205,8 +205,8 @@ public class TimedDelay extends DETransformer {
                 new TimedEvent.TimeComparator(this.getDirector()));
     }
 
-    /** Process the current input if it has not been processed. Schedule 
-     *  a firing to produce the earliest output token. 
+    /** Process the current input if it has not been processed. Schedule
+     *  a firing to produce the earliest output token.
      *  @exception IllegalActionException If scheduling to refire cannot
      *  be performed or the superclass throws it.
      */

@@ -65,7 +65,7 @@ import java.util.Collections;
 //////////////////////////////////////////////////////////////////////////
 //// Dataflow
 /**
-   @author J&#246;rn W. Janneck 
+   @author J&#246;rn W. Janneck
    @version $Id$
    @since Ptolemy II 4.0
    @Pt.ProposedRating Red (cxh)
@@ -220,7 +220,7 @@ public class Dataflow extends AbstractDDI implements DDI {
             _currentStateSet = Collections.singleton(
                     _actor.getScheduleFSM().getInitialState());
     	}
-    	
+
         try {
             _selectInitializer();
         } catch (Exception ex) {
@@ -267,7 +267,7 @@ public class Dataflow extends AbstractDDI implements DDI {
      * Postfire this actor.
      */
     public boolean postfire() throws IllegalActionException {
-    	_currentStateSet = 
+    	_currentStateSet =
             computeNextStateSet(_currentStateSet, _lastFiredAction);
     	_commitInputChannels();
     	_lastFiredAction = null;
@@ -306,7 +306,7 @@ public class Dataflow extends AbstractDDI implements DDI {
     			Transition t = ts[i];
     			if (_currentStateSet.contains(t.getSourceState())
     			    && isPrefixedByTagList(tag, t.getActionTags())) {
-    				
+
     				return true;
     			}
     		}
@@ -317,17 +317,17 @@ public class Dataflow extends AbstractDDI implements DDI {
     }
 
     private Set  computeNextStateSet(Set s, Action a) {
-    	if (s == null) 
+    	if (s == null)
     		return null;
     	if (a == null || a.getTag() == null)
     		return s;
-    	
+
     	Set ns = new HashSet();
     	QID tag = a.getTag();
     	Transition [] ts = _actor.getScheduleFSM().getTransitions();
     	for (int i = 0; i < ts.length; i++) {
     		Transition t = ts[i];
-    		if (s.contains(t.getSourceState()) 
+    		if (s.contains(t.getSourceState())
     		    && isPrefixedByTagList(tag, t.getActionTags())) {
 
 				ns.add(t.getDestinationState());
@@ -335,7 +335,7 @@ public class Dataflow extends AbstractDDI implements DDI {
     	}
     	return ns;
     }
-    
+
     private boolean  isPrefixedByTagList(QID tag, QID [] tags) {
     	for (int j = 0; j < tags.length; j++) {
     		if (tags[j].isPrefixOf(tag)) {

@@ -24,7 +24,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    with step size "step" (default 1).
 
    @Author E. A. Lee
-   @Version $Id$, based on version 1.9 of /users/ptolemy/src/domains/cgc/stars/CGCRamp.pl, from Ptolemy Classic 
+   @Version $Id$, based on version 1.9 of /users/ptolemy/src/domains/cgc/stars/CGCRamp.pl, from Ptolemy Classic
    @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCRamp extends ClassicCGCActor implements CodeGeneratingActor {
@@ -51,7 +51,7 @@ public class CGCRamp extends ClassicCGCActor implements CodeGeneratingActor {
         value = new Parameter(this, "value");
         value.setExpression("0.0");
 
-        /* 
+        /*
          */
     }
     ///////////////////////////////////////////////////////////////////
@@ -78,20 +78,20 @@ public class CGCRamp extends ClassicCGCActor implements CodeGeneratingActor {
     /**
      */
     public int  myExecTime() {
-        
+
         return 2;
     }
 
     /**
      */
     public void  generateFireCode() {
-        
-        addCode(std); 
+
+        addCode(std);
     }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
-    public String std = 
+    public String std =
     "	$ref(output) = $ref(value);\n"
     + "	$ref(value) += $val(step);\n";
 }

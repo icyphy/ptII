@@ -31,7 +31,7 @@ this range, an error is signaled.
 <a name="multiplex"></a>
 
  @Author S. Ha
- @Version $Id$, based on version 1.7 of /users/ptolemy/src/domains/cgc/stars/CGCMux.pl, from Ptolemy Classic 
+ @Version $Id$, based on version 1.7 of /users/ptolemy/src/domains/cgc/stars/CGCMux.pl, from Ptolemy Classic
  @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCMux extends ClassicCGCActor {
@@ -57,7 +57,7 @@ public class CGCMux extends ClassicCGCActor {
         blockSize = new Parameter(this, "blockSize");
         blockSize.setExpression("1");
 
-/*     
+/*
 noInternalState();
 */
     }
@@ -90,21 +90,21 @@ noInternalState();
     /**
      */
     public int  myExecTime() {
-        
+
 return ((IntToken)((blockSize).getToken())).intValue() + 3;
      }
 
     /**
      */
     public void  generatePreinitializeCode() {
-        
+
 addInclude("<stdio.h>");
      }
 
     /**
      */
     public void  generateInitializeCode() throws IllegalActionException {
-        
+
 if ( ((IntToken)((blockSize).getToken())).intValue() < 1 ) {
 		 	throw new IllegalActionException(this, "blockSize must be positive");
 			return;
@@ -116,25 +116,25 @@ if ( ((IntToken)((blockSize).getToken())).intValue() < 1 ) {
     /**
      */
     public void  generateFireCode() {
-        
-addCode(init); 
-		addCode(switchStatement); 
-		addCode("\t{\n"); 
+
+addCode(init);
+		addCode(switchStatement);
+		addCode("\t{\n");
 		// control value i means port number i+1
 		for (int i = 0; i < input.numberPorts(); i++) {
-			addCode(copydata(i,i+1)); 
+			addCode(copydata(i,i+1));
 		}
-		addCode(badPortNum); 
-		addCode("\t}\n"); 
+		addCode(badPortNum);
+		addCode("\t}\n");
      }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
-    public String init = 
+    public String init =
         "	int n = $ref(control);\n"
         + "	int j = $val(blockSize);\n";
 
-    public String switchStatement = 
+    public String switchStatement =
         "	switch(n)\n";
 
     public String copydata (int i, int portnum) {
@@ -146,7 +146,7 @@ addCode(init);
         + "		break;\n";
     }
 
-    public String badPortNum = 
+    public String badPortNum =
         "	    default:\n"
         + "		fprintf(stderr, \"invalid control input %d\", n);\n";
 }

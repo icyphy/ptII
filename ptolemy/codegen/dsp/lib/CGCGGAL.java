@@ -23,7 +23,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    Ganged Gradient Adaptive Lattice filters.
 
    @Author T. M. Parks
-   @Version $Id$, based on version 1.5 of /users/ptolemy/src/domains/cgc/dsp/stars/CGCGGAL.pl, from Ptolemy Classic 
+   @Version $Id$, based on version 1.5 of /users/ptolemy/src/domains/cgc/dsp/stars/CGCGGAL.pl, from Ptolemy Classic
    @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCGGAL extends CGCGAL {
@@ -48,7 +48,7 @@ public class CGCGGAL extends CGCGAL {
         B = new Parameter(this, "B");
         B.setExpression("{0.0 0.0}");
 
-        /* 
+        /*
          */
     }
     ///////////////////////////////////////////////////////////////////
@@ -90,7 +90,7 @@ public class CGCGGAL extends CGCGAL {
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
-    public String main = 
+    public String main =
     "	{\n"
     + "	    double F;\n"
     + "	    int m;\n"

@@ -1,6 +1,6 @@
 /* An actor that talks to the Physical layer to get permission of
  sending data.
- 
+
  Copyright (c) 2004 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -257,7 +257,7 @@ public class DataPump extends MACActorBase {
         _messageType = UNKNOWN;
         _pdu = null;
     }
-    
+
     /** Override the base class to declare that the <i>TXTXConfirm</i>
      *  and <i>RXTXConfirm</i> output ports do not
      *  depend on the <i>TXTXRequest</i> and <i>RXTXRequest</i>

@@ -223,7 +223,7 @@ public class PSDFScheduler extends BaseSDFScheduler {
                 ((PSDFDirector)director).vectorizationFactor.getName(model);
             vectorizationFactorExpression = name.replaceAll("\\.", "::");
         }
-        
+
         PSDFGraphReader graphReader = new PSDFGraphReader();
         PSDFGraph graph = (PSDFGraph)graphReader.convert(model);
         _debug("PSDF graph = \n" + graph.toString());
@@ -288,7 +288,7 @@ public class PSDFScheduler extends BaseSDFScheduler {
                     String identifier = name.replaceAll("\\.", "::");
 
                     String sinkExpression;
-                    Variable sinkRateVariable = 
+                    Variable sinkRateVariable =
                         DFUtilities.getRateVariable(
                                 connectedPort, "tokenConsumptionRate");
                     if (sinkRateVariable == null) {
@@ -297,7 +297,7 @@ public class PSDFScheduler extends BaseSDFScheduler {
                         sinkExpression = identifier + "::"
                             + sinkRateVariable.getName();
                     }
-                    String expression = sinkExpression + " * " 
+                    String expression = sinkExpression + " * "
                         + entity.getName() + "::firingsPerIteration";
 
                     DFUtilities.setExpressionIfNotDefined(
@@ -316,17 +316,17 @@ public class PSDFScheduler extends BaseSDFScheduler {
                     Entity entity = (Entity)connectedPort.getContainer();
                     String name = connectedPort.getName(model);
                     String identifier = name.replaceAll("\\.", "::");
-                    Variable sourceRateVariable = 
+                    Variable sourceRateVariable =
                         DFUtilities.getRateVariable(
                                 connectedPort, "tokenProductionRate");
                     String sourceExpression;
                     if (sourceRateVariable == null) {
                         sourceExpression = "1";
                     } else {
-                        sourceExpression = identifier + "::" 
+                        sourceExpression = identifier + "::"
                             + sourceRateVariable.getName();
                     }
-                    String expression = sourceExpression + " * " 
+                    String expression = sourceExpression + " * "
                         + entity.getName() + "::firingsPerIteration";
 
                     DFUtilities.setExpressionIfNotDefined(

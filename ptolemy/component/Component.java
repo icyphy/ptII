@@ -69,7 +69,7 @@ public interface Component {
      *   cannot be completed.
      */
     public void preinitialize() throws IllegalActionException;
-    
+
     /** Execute the component. This is invoked after preinitialize()
      *  and initialize(), and may be invoked repeatedly.
      * @exception IllegalActionException If the run cannot be completed.

@@ -122,7 +122,7 @@ public class Sphere3D extends GRShadedShape {
                 ((TransformGroup)_containedNode).setTransform(_scaleTransform);
             }
         } else {
-            super.attributeChanged(attribute);            
+            super.attributeChanged(attribute);
         }
     }
 
@@ -139,7 +139,7 @@ public class Sphere3D extends GRShadedShape {
         int primitiveFlags = Primitive.GENERATE_NORMALS;
         URL textureURL = texture.asURL();
         if (textureURL != null || _changesAllowedNow) {
-            primitiveFlags = primitiveFlags 
+            primitiveFlags = primitiveFlags
                     | Primitive.GENERATE_TEXTURE_COORDS;
         }
 
@@ -151,7 +151,7 @@ public class Sphere3D extends GRShadedShape {
 
         int divisionsValue = ((IntToken)divisions.getToken()).intValue();
         double radiusValue = ((DoubleToken) radius.getToken()).doubleValue();
-        
+
         // If changes are not allowed, set the radius of the sphere once
         // and for all. Otherwise, use a transform.
         double scale = radiusValue;
@@ -162,7 +162,7 @@ public class Sphere3D extends GRShadedShape {
                 primitiveFlags,
                 divisionsValue,
                 _appearance);
-        
+
         if (_changesAllowedNow) {
             TransformGroup scaler = new TransformGroup();
             scaler.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
@@ -171,7 +171,7 @@ public class Sphere3D extends GRShadedShape {
                     new Vector3d(radiusValue, radiusValue, radiusValue));
             scaler.setTransform(_scaleTransform);
             scaler.addChild(_containedNode);
-            _containedNode = scaler;            
+            _containedNode = scaler;
         } else {
         	_scaleTransform = null;
         }
@@ -189,11 +189,11 @@ public class Sphere3D extends GRShadedShape {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /** If changes to the radius are allowed, this is the transform 
+    /** If changes to the radius are allowed, this is the transform
      *  that applies them.
      */
     private Transform3D _scaleTransform;
-    
+
     /** The sphere. */
     private Node _containedNode;
 }

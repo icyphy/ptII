@@ -116,7 +116,7 @@ public class Exec extends TypedAtomicActor {
     public Exec(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-        
+
         // Uncomment the next line to see debugging statements
         //addDebugListener(new ptolemy.kernel.util.StreamListener());
 
@@ -316,7 +316,7 @@ public class Exec extends TypedAtomicActor {
         error.send(0, new StringToken(errorString));
         output.send(0, new StringToken(outputString));
     }
-    
+
     /** Override the base class and terminate the process.
      */
     public void stop() {
@@ -589,7 +589,7 @@ public class Exec extends TypedAtomicActor {
 
         // Stream from which to read.
         private InputStreamReader _inputStreamReader;
-        
+
         // Indicator that the stream has been closed.
         private boolean _inputStreamReaderClosed = false;
 

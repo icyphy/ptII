@@ -381,7 +381,7 @@ public class StringUtilities {
     }
 
     /** Return the name of the properties file.
-     *  The properties file is a file of a format suitable for 
+     *  The properties file is a file of a format suitable for
      *  java.util.properties.load(InputStream).
      *  The file is named "ptII.properties" and is found in the
      *  {@link #PREFERENCES_DIRECTORY} directory that is returned

@@ -134,10 +134,10 @@ public class CTRateLimiter extends Transformer {
                 // If the current time is the same as the last time,
                 // output the last token, because any change of the
                 // output from the last time indicates an infinite
-                // rate change. 
+                // rate change.
                 // The only exception is that in the first firing,
                 // where the last token is null, the new token is always
-                // accepted. 
+                // accepted.
                 if (_lastToken != null) {
                     _newToken = _lastToken;
                 }
@@ -145,7 +145,7 @@ public class CTRateLimiter extends Transformer {
             } else {
                 double valueDifference = ((DoubleToken)_newToken.subtract(
                                                   _lastToken)).doubleValue();
-                double timeDifference = 
+                double timeDifference =
                     currentTime.subtract(_lastTime).getDoubleValue();
                 double rate = valueDifference / timeDifference;
                 double risingRate = ((DoubleToken)risingSlewRate.getToken())
@@ -194,7 +194,7 @@ public class CTRateLimiter extends Transformer {
 
     // New value.
     private Token _newToken;
-    
+
     // Stored token.
     private Token _storedToken;
 

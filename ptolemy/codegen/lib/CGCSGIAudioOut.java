@@ -23,7 +23,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 Put samples into audio output port.
 
  @Author T. M. Parks
- @Version $Id$, based on version 1.4 of /users/ptolemy/src/domains/cgc/stars/CGCSGIAudioOut.pl, from Ptolemy Classic 
+ @Version $Id$, based on version 1.4 of /users/ptolemy/src/domains/cgc/stars/CGCSGIAudioOut.pl, from Ptolemy Classic
  @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCSGIAudioOut extends CGCSGIAudio {
@@ -44,7 +44,7 @@ public class CGCSGIAudioOut extends CGCSGIAudio {
         right = new ClassicPort(this, "right", true, false);
         right.setTypeEquals(BaseType.DOUBLE);
 
-/* 
+/*
 */
     }
     ///////////////////////////////////////////////////////////////////
@@ -66,24 +66,24 @@ Right channel.
     /**
      */
     public void  generatePreinitializeCode() {
-        
+
 super.initCode();
-	addCode(open); 
+	addCode(open);
      }
 
     /**
      */
     public void  generateFireCode() {
-        
-addCode(write); 
+
+addCode(write);
      }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
-    public String open = 
+    public String open =
         "	$starSymbol(port) = ALopenport(\"$starSymbol(port)\", \"w\", $starSymbol(config));\n";
 
-    public String write = 
+    public String write =
         "	{\n"
         + "	    short buffer[2];\n"
         + "\n"

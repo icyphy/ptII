@@ -400,7 +400,7 @@ public class SmallWorldRouter extends TypedAtomicActor {
         } else {
             if (_receptions != null) {
                 // We may be getting fired because of an impending event.
-                double currentTimeValue = 
+                double currentTimeValue =
                     getDirector().getModelTime().getDoubleValue();
                 Double timeDouble = new Double(currentTimeValue);
                 RecordToken reception = (RecordToken)_receptions.get(timeDouble);

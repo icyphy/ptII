@@ -1,5 +1,5 @@
 /* A template actor that is associated with a block of C-code. This
-   actor is for use only with the Giotto code domain. 
+   actor is for use only with the Giotto code domain.
 
 
 Copyright (c) 1998-2004 The Regents of the University of California.
@@ -52,7 +52,7 @@ import ptolemy.kernel.util.Workspace;
    used to identify the C source file that provides the functionality
    of the actor. The
    .c file along with the generated code  can then be compiled with emachine
-   files for a specific platform to generate an executable that runs on 
+   files for a specific platform to generate an executable that runs on
    that platform. This actor also has a second parameter
    <i>frequency</i> that is Giotto specific, and is used to specify the number of
    times the C task associated with this class is executed in a Giotto
@@ -98,7 +98,7 @@ public class CActorBase extends TypedAtomicActor {
     /* Two separate constructors are used because I'm not sure if
      * one is redundant. Edward tried removing the constructor above
      * but that created anexception when being tha class was being
-     * instantiated from CActor.xml. Therefore I put it back. 
+     * instantiated from CActor.xml. Therefore I put it back.
      */
     public CActorBase(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
@@ -111,7 +111,7 @@ public class CActorBase extends TypedAtomicActor {
 
     /** The source code file or URL. */
     public FileParameter source;
-    
+
     /** The number of times this actor gets executed in one super-period
      *  time frame specified by the Giotto director
      */
@@ -174,13 +174,13 @@ public class CActorBase extends TypedAtomicActor {
         }
         super._addPort(port);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
     private void _init()
             throws IllegalActionException, NameDuplicationException {
-                
+
         source = new FileParameter(this, "source");
         source.setExpression("$PTII/ptolemy/domains/giotto/cgc/demo/task_code.c");
         // Should this be visible?

@@ -24,7 +24,7 @@ public class Unboxing11 {
     public Token token;
     public Token token_4_;
     public Token[] tokens_6_;
-    
+
     public void fire() throws IllegalActionException {
 	int i = _numberOfInputs;
         int i_0_;
@@ -63,7 +63,7 @@ public class Unboxing11 {
 	ArrayToken arraytoken = new ArrayToken(_outputs);
         System.out.println("token = " + arraytoken.toString());
     }
-    
+
     public Unboxing11() throws IllegalActionException {
 	IntToken inttoken = new IntToken(10);
 	BaseType.IntType inttype = BaseType.INT;

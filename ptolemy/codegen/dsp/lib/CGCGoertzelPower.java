@@ -48,12 +48,12 @@ import ptolemy.kernel.util.NameDuplicationException;
    It is implemented in direct form II, and requires three additions and
    one multiply.
    <h3>References</h3>
-   <p>[1]  
+   <p>[1]
    A. V. Oppenheim and R. W. Schafer, <i>Discrete-Time Signal Processing</i>,
    Prentice-Hall: Englewood Cliffs, NJ, 1989.
 
    @Author Brian L. Evans
-   @Version $Id$, based on version 1.5 of /users/ptolemy/src/domains/cgc/dsp/stars/CGCGoertzelPower.pl, from Ptolemy Classic 
+   @Version $Id$, based on version 1.5 of /users/ptolemy/src/domains/cgc/dsp/stars/CGCGoertzelPower.pl, from Ptolemy Classic
    @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCGoertzelPower extends CGCGoertzelBase {
@@ -72,7 +72,7 @@ public class CGCGoertzelPower extends CGCGoertzelBase {
         output = new ClassicPort(this, "output", false, true);
         output.setTypeEquals(BaseType.DOUBLE);
 
-        /* 
+        /*
          */
     }
     ///////////////////////////////////////////////////////////////////
@@ -112,7 +112,7 @@ public class CGCGoertzelPower extends CGCGoertzelBase {
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
-    public String finalValue = 
+    public String finalValue =
     "		/* Compute z z* where z is the last ouput of Goertzel filter */\n"
     + "		$ref(output) = $ref(state1)*$ref(state1) -\n"
     + "			       $ref(state1)*$ref(state2)*$ref(d1) +\n"

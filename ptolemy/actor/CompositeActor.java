@@ -374,11 +374,11 @@ public class CompositeActor extends CompositeEntity
      *  @see ptolemy.actor.util.FunctionDependency
      */
     public FunctionDependency getFunctionDependency() {
-        FunctionDependency functionDependency 
+        FunctionDependency functionDependency
             = (FunctionDependency) getAttribute(FunctionDependency.UniqueName);
         if (functionDependency == null) {
             try {
-                functionDependency 
+                functionDependency
                     = new FunctionDependencyOfCompositeActor(
                     	this, FunctionDependency.UniqueName);
             } catch (NameDuplicationException e) {

@@ -110,7 +110,7 @@ public class MatrixToDouble extends SDFConverter {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Ensure that the rows and columns parameters are both positive. 
+    /** Ensure that the rows and columns parameters are both positive.
      *  @param attribute The attribute that has changed.
      *  @exception IllegalActionException If the parameters are out of range.
      */

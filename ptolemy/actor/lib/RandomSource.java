@@ -125,6 +125,6 @@ public abstract class RandomSource extends Source {
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
-    /** The Random object. */ 
+    /** The Random object. */
     protected Random _random = new Random();
 }

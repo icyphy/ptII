@@ -56,7 +56,7 @@ import ptolemy.util.MessageHandler;
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Red (johnr)
 */
-    
+
 public class MoveAction extends FigureAction {
 
     /** Construct a new action. The type of move is specified by
@@ -77,7 +77,7 @@ public class MoveAction extends FigureAction {
 
     /** Indicator for move to first. */
     public static MoveType TO_FIRST = new MoveType();
-    
+
     /** Indicator for move to last. */
     public static MoveType TO_LAST = new MoveType();
 
@@ -112,7 +112,7 @@ public class MoveAction extends FigureAction {
         };
         target.requestChange(request);
     }
-    
+
     /** Move the objects in the specified list up or down in the list
      *  of similar objects in their container, as specified by the move type.
      *  If the type is TO_FIRST or UP, then
@@ -179,7 +179,7 @@ public class MoveAction extends FigureAction {
             // possible.
 			throw new InternalErrorException(e);
 		}
-        
+
         if (!movedOne) {
             // Do not generate any undo action if no move happened.
             return;
@@ -229,10 +229,10 @@ public class MoveAction extends FigureAction {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** The type of move. */
     private MoveType _type;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 

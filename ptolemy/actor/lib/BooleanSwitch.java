@@ -84,7 +84,7 @@ public class BooleanSwitch extends TypedAtomicActor {
         falseOutput = new TypedIOPort(this, "falseOutput", false, true);
         trueOutput.setTypeAtLeast(input);
         falseOutput.setTypeAtLeast(input);
-        
+
         // Put the control input on the bottom of the actor.
         StringAttribute controlCardinal
                 = new StringAttribute(control, "_cardinal");

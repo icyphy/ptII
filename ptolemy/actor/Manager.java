@@ -363,9 +363,9 @@ public class Manager extends NamedObj implements Runnable {
                         // KernelException, if we have one, we throw it.
                         throw (KernelException)initialThrowable;
                     } else {
-                        // Ok, it is not a KernelException, so we 
+                        // Ok, it is not a KernelException, so we
                         // rethrow it as the cause of a KernelException
-                        throw new IllegalActionException(this, 
+                        throw new IllegalActionException(this,
                                 initialThrowable, null);
                     }
                 }
@@ -419,7 +419,7 @@ public class Manager extends NamedObj implements Runnable {
         // threaded domains will not know that a stop has been requested
         // (vs. a pause).
         ((CompositeActor)container).stop();
-        
+
         Thread unpauser = new Thread() {
                 public void run() {
                     // NOTE: The execute() method used to be synchronized,

@@ -148,7 +148,7 @@ public class Box3D extends GRShadedShape {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-    
+
     /** Create the shape and appearance of the box.
      *  @exception IllegalActionException If the value of some
      *   parameters can't be obtained.
@@ -165,7 +165,7 @@ public class Box3D extends GRShadedShape {
     protected Node _getNodeObject() {
         return _containedNode;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -183,7 +183,7 @@ public class Box3D extends GRShadedShape {
         	// are made at run time.
         	primitiveFlags = primitiveFlags | Primitive.GEOMETRY_NOT_SHARED;
         }
-        
+
         // Although it is completely undocument in Java3D, the "dimension"
         // parameters of the box are more like radii than like width,
         // length, and height. So we have to divide by two.
@@ -207,7 +207,7 @@ public class Box3D extends GRShadedShape {
                     new Vector3d(length, height, width));
             scaler.setTransform(_scaleTransform);
             scaler.addChild(box);
-            _containedNode = scaler;            
+            _containedNode = scaler;
         } else {
             _containedNode = new Box(length, height, width,
                     primitiveFlags, _appearance);
@@ -218,7 +218,7 @@ public class Box3D extends GRShadedShape {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /** If changes to the dimensions are allowed, this is the transform 
+    /** If changes to the dimensions are allowed, this is the transform
      *  that applies them.
      */
     private Transform3D _scaleTransform;

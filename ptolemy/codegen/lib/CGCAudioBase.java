@@ -23,7 +23,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 Base star for reading and writing audio data.
 
  @Author Sunil Bhave
- @Version $Id$, based on version 1.36 of /users/ptolemy/src/domains/cgc/stars/CGCAudioBase.pl, from Ptolemy Classic 
+ @Version $Id$, based on version 1.36 of /users/ptolemy/src/domains/cgc/stars/CGCAudioBase.pl, from Ptolemy Classic
  @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCAudioBase extends ClassicCGCActor {
@@ -72,17 +72,17 @@ public class CGCAudioBase extends ClassicCGCActor {
         channels = new Parameter(this, "channels");
         channels.setExpression("2");
 
-/* 
+/*
 */
     }
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
     /**
-     *  File for reading/writing data. If the file is 
-	     something other than /dev/audio, the file should 
+     *  File for reading/writing data. If the file is
+	     something other than /dev/audio, the file should
 	     be in Sun audio format. If the file is in another
-             format, use conversion program available on web eg. 
+             format, use conversion program available on web eg.
              SOX - Sound Exchange http://www.spies.com/sox parameter with initial value "/dev/audio".
      */
      public Parameter fileName;
@@ -129,14 +129,14 @@ public class CGCAudioBase extends ClassicCGCActor {
     /**
      */
     public void  wrapup() {
-        
-addCode(closeFile); 
+
+addCode(closeFile);
      }
 
     /**
      */
     public void  generatePreinitializeCode() {
-        
+
 addInclude("<stdio.h>");
       /* Define strcmp function */
       addInclude("<string.h>");
@@ -161,7 +161,7 @@ addInclude("<stdio.h>");
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
-    public String globalDec = 
+    public String globalDec =
         "      /* Struct that contains the header information */\n"
         + "      /* for Sun audio files */\n"
         + "      typedef struct sound_struct {\n"
@@ -174,7 +174,7 @@ addInclude("<stdio.h>");
         + "	char info[4];            /* optional text information */\n"
         + "      } SndSoundStruct;\n";
 
-    public String globals = 
+    public String globals =
         "      int $starSymbol(file);      \n";
 
     public String declarations (String      datatype, int size) {
@@ -185,7 +185,7 @@ addInclude("<stdio.h>");
         + "      int $starSymbol(counter);\n";
     }
 
-    public String openFileForReading = 
+    public String openFileForReading =
         "      /* Open file for reading */\n"
         + "      /* If the file is something other than /dev/audio, open the  */\n"
         + "      /* file and strip of the header */\n"
@@ -215,7 +215,7 @@ addInclude("<stdio.h>");
         + "	  $ref(channels) = $starSymbol(header).channelCount;\n"
         + "	}\n";
 
-    public String openFileForWriting = 
+    public String openFileForWriting =
         "      /* Open file for writing */\n"
         + "      /* If the file is something other than /dev/audio, open the */\n"
         + "      /* and add in the header at the top */\n"
@@ -249,7 +249,7 @@ addInclude("<stdio.h>");
         + "	  write($starSymbol(file),(&$starSymbol(header)), 28);\n"
         + "	}\n";
 
-    public String read = 
+    public String read =
         "      /* Read blockSize bytes of data from the file. If it returns\n"
         + "	 zero, assume end of file and break - this will break out\n"
         + " 	 of the execution loop in with the TclTkTarget and the TychoTarget\n"
@@ -259,7 +259,7 @@ addInclude("<stdio.h>");
         + "	    break;\n"
         + "	}\n";
 
-    public String write = 
+    public String write =
         "      /* Write blockSize bytes to file */\n"
         + "      if (write($starSymbol(file), $starSymbol(bufferptr), $val(blockSize)) != $val(blockSize))\n"
         + "	{\n"
@@ -267,14 +267,14 @@ addInclude("<stdio.h>");
         + "	  exit(1);\n"
         + "	}\n";
 
-    public String closeFile = 
+    public String closeFile =
         "      /* Close file */\n"
         + "      if (close($starSymbol(file)) != 0) {\n"
         + "	perror(\"$val(fileName): Error closing file. exiting. . . \");\n"
         + "	exit(1);\n"
         + "      }\n";
 
-    public String audio_setupDef = 
+    public String audio_setupDef =
         "      /*\n"
         + "	Set the encoding parameters of the audio device.\n"
         + "\n"
@@ -328,7 +328,7 @@ addInclude("<stdio.h>");
         + "\n"
         + "      }\n";
 
-    public String audio_controlDef = 
+    public String audio_controlDef =
         "      /*\n"
         + "	Set the audio device controls like gain and balance.\n"
         + "	These parameters can be set once the audio is already running.\n"
@@ -376,7 +376,7 @@ addInclude("<stdio.h>");
         + "	ioctl(fd, AUDIO_SETINFO, (caddr_t)(&info));\n"
         + "      }\n";
 
-    public String audio_gainDef = 
+    public String audio_gainDef =
         "      /*\n"
         + "	Set the audio gain. Faster than audio_control if just setting\n"
         + "	gain.\n"
@@ -399,7 +399,7 @@ addInclude("<stdio.h>");
         + "	ioctl(fd, AUDIO_SETINFO, (caddr_t)(&info));\n"
         + "      }\n";
 
-    public String audio_balanceDef = 
+    public String audio_balanceDef =
         "      /*\n"
         + "	Set the audio balance. Faster than audio_control if just setting\n"
         + "	gain.\n"
@@ -418,11 +418,11 @@ addInclude("<stdio.h>");
         + "	ioctl(fd, AUDIO_SETINFO, (caddr_t)(&info));\n"
         + "      }\n";
 
-    public String syncCounter = 
+    public String syncCounter =
         "      /* Hack for Sun only */\n"
         + "      unsigned $starSymbol(count);\n";
 
-    public String syncUlaw = 
+    public String syncUlaw =
         "      {\n"
         + "	/* Hack for Sun only */\n"
         + "	/* Wait for samples to drain */\n"
@@ -436,7 +436,7 @@ addInclude("<stdio.h>");
         + "        $starSymbol(count) += $val(blockSize);\n"
         + "      }\n";
 
-    public String syncLinear16 = 
+    public String syncLinear16 =
         "      {\n"
         + "	/* Hack for Sun only */\n"
         + "	/* Wait for samples to drain */\n"

@@ -76,7 +76,7 @@ public class VariableDelay extends TimedDelay {
     ////                         public methods                    ////
 
     /** Update the delay parameter from the delay port and ensure the delay
-     *  is not negative. Call the fire method of super class to consume 
+     *  is not negative. Call the fire method of super class to consume
      *  inputs and generate outputs.
      *  @exception IllegalActionException If the super class throws it,
      *  or a negative delay is received.

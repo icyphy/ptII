@@ -1,4 +1,4 @@
-/* Read from a file and create a function of three variables. 
+/* Read from a file and create a function of three variables.
 
  Copyright (c) 2003-2004 The Regents of the University of California.
  All rights reserved.
@@ -66,7 +66,7 @@ subset of R^3 for which the dataset is defined.
 public class ThreeDFunction implements Serializable {
     /** Construct the functional representation of the 3D dataset by
      *  reading a compressed file.
-     *  
+     *
      *  @param fileName name of file storing the dataset.
      *  @exception IllegalActionException If any exception is
      *     is generated during file I/O.
@@ -76,7 +76,7 @@ public class ThreeDFunction implements Serializable {
 //         try {
 //             new BufferedReader(new FileReader(fileName));
 //         } catch (IOException ex) {
-//             throw new IllegalActionException(null, ex, 
+//             throw new IllegalActionException(null, ex,
 //                     "Failed to open '" + fileName + "'");
 //         }
 
@@ -90,7 +90,7 @@ public class ThreeDFunction implements Serializable {
 
     /** Construct the functional representation of the 3D dataset by
      *  reading a compressed file.
-     *  
+     *
      *  @param fileName name of file storing the dataset.
      *  @exception IllegalActionException If any exception is
      *     is generated during file I/O.
@@ -104,7 +104,7 @@ public class ThreeDFunction implements Serializable {
         //this(fileParameter, true, false);
     }
 
-    /** 
+    /**
      *  Constructs the functional representation of the 3D dataset by
      *  reading a compressed or uncompressed file.
      *
@@ -112,7 +112,7 @@ public class ThreeDFunction implements Serializable {
      *
      *  <p>The first line is the integer dimension of the state space, which is
      *  should be 3, but is currently ignored
-     *  
+     *
      *  <p>The second line consists of three doubles that define the
      *  x grid information.  The first field is the lower bound, the second
      *  is the step size, the third is the upper bound
@@ -126,13 +126,13 @@ public class ThreeDFunction implements Serializable {
      *  information.
      *
      *  <p> The fifth and successive lines consist of the array.
-     *  Each line is one double.  
+     *  Each line is one double.
 
      *  <p> The data can be stored in two formats, uncompressed and
      *  compressed.  In the uncompressed format, a 101 x 101 x 101
      *  array will be about 10Mb.  In compressed format, the same
-     *  array will be about 3Mb.  
-     *  
+     *  array will be about 3Mb.
+     *
      *  <p>In the compressed format, the 5th line is the initial
      *  value of the [0, 0, 0]th element of the array, and each
      *  successive line is the difference from the previous element.
@@ -140,7 +140,7 @@ public class ThreeDFunction implements Serializable {
      *  digits of precision as integers, so there are likely to be
      *  rounding errors.  However, usually this level of precision
      *  is sufficient for our needs.
-     *  
+     *
      *  @param fileParameter FileParameter that names the file to be read
      *  @param compressed True if the input data is compressed
      *  @param writeOutData If true, then write out a version of the
@@ -177,7 +177,7 @@ public class ThreeDFunction implements Serializable {
                         "Cannot find file '" + fileParameter +
                         "'. Also looked in classpath for '"
                         + fileParameter.stringValue() + "'");
-                
+
             }
             try {
                 reader = new BufferedReader(
@@ -241,7 +241,7 @@ public class ThreeDFunction implements Serializable {
                                 _values[x][y][t] = last/1000.0;
                             } else {
                                 last = last - _readInteger(reader);
-                                _values[x][y][t] = last/1000.0; 
+                                _values[x][y][t] = last/1000.0;
                             }
                         } else {
                             _values[x][y][t] = _readDouble(reader);
@@ -437,7 +437,7 @@ public class ThreeDFunction implements Serializable {
         output.write(_thetaLowerBound
                 + "   " + _thetaStepSize
                 + "   " + _thetaUpperBound + "\n");
-        
+
         // FIXME: we assume the array is regular, that is that
         // all the rows have the same length.
 
@@ -486,7 +486,7 @@ public class ThreeDFunction implements Serializable {
     ///////////////////////////////////////////////////////////////////
     ////                       private methods                     ////
 
-    /** 
+    /**
      *  Takes in an angular value and returns the equivalant value in
      *  the range [0, 2*Pi).
      *

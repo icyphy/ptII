@@ -40,12 +40,12 @@ import ptolemy.kernel.util.NameDuplicationException;
    To minimize this distortion, it is often desirable to expand the filter
    into a parallel or cascade form.
    <h3>References</h3>
-   <p>[1]  
+   <p>[1]
    A. V. Oppenheim and R. W. Schafer, <i>Discrete-Time Signal Processing</i>,
    Prentice-Hall: Englewood Cliffs, NJ, 1989.
 
    @Author Kennard White, Yu Kee Lim
-   @Version $Id$, based on version 1.9 of /users/ptolemy/src/domains/cgc/dsp/stars/CGCIIR.pl, from Ptolemy Classic 
+   @Version $Id$, based on version 1.9 of /users/ptolemy/src/domains/cgc/dsp/stars/CGCIIR.pl, from Ptolemy Classic
    @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCIIR extends ClassicCGCActor {
@@ -129,7 +129,7 @@ public class CGCIIR extends ClassicCGCActor {
         int numNumer = numerator.size();
 	int numDenom = denominator.size();
 	double b0, scaleDenom, scaleNumer;
-	numState = max(numNumer,numDenom); 
+	numState = max(numNumer,numDenom);
 
 	// Set up scaling to distribute the gain through the numerator,
 	// and scale both numer and denom to make b0=1
@@ -139,7 +139,7 @@ public class CGCIIR extends ClassicCGCActor {
 	    if ( (b0 = denominator[0]) == 0.0 ) {
 		// FIXME: should sanity-check b0 more thoroughly
 		// (e.g., shouldn't even be close to zero)
-		Error::abortRun(*this, 
+		Error::abortRun(*this,
                         "Must have non-zero leading coefficient in the denominator");
 		return;
 	    }
@@ -170,11 +170,11 @@ public class CGCIIR extends ClassicCGCActor {
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
-    public String feedThrough = 
+    public String feedThrough =
     "	/* No state for the IIR filter: just scale the input */\n"
     + "	$ref(signalOut) = $ref(state,1) * $ref(signalIn);\n";
 
-    public String iir = 
+    public String iir =
     "	/*\n"
     + "	   v[0] is the current state variable, v[1] is the current numerator\n"
     + "	   coefficient, and v[2] is the currrent denominator coefficient\n"

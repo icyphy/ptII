@@ -146,7 +146,7 @@ public abstract class AbstractReceiver implements Receiver {
      *   getCurrentTime() method.  In DT, there is a local time
      *   associated with every receiver.
      *   @return The current time associated with this receiver.
-     *   @deprecated As of Ptolemy II 4.1, replaced by 
+     *   @deprecated As of Ptolemy II 4.1, replaced by
      *   {@link #getModelTime()}
      */
     public double getCurrentTime() {

@@ -232,7 +232,7 @@ public class ClassChanges implements MoMLFilter {
 
         // NotEditableParameter
         _classesToRemove.add("ptolemy.data.expr.NotEditableParameter");
-        
+
         //DEIOPort
         _classesToRemove.add("ptolemy.domains.de.kernel.DEIOPort");
     }

@@ -228,7 +228,7 @@ public class PortClassChanges implements MoMLFilter {
         _actorsWithPortClassChanges
             .put("ptolemy.domains.de.lib.Server",
             serverPortChanges);
-        
+
         // ImagePartition input and output are now TypedIOPort
         HashMap sdfPortChanges = new HashMap();
         sdfPortChanges.put(
@@ -243,7 +243,7 @@ public class PortClassChanges implements MoMLFilter {
         _actorsWithPortClassChanges
                 .put("ptolemy.domains.sdf.lib.vq.ImagePartition",
                 inputOutputTypedIOPortClassChanges);
-        
+
         // ImageUnpartition
         _actorsWithPortClassChanges
                 .put("ptolemy.domains.sdf.lib.vq.ImageUnpartition",

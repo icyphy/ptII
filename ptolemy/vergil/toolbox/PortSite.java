@@ -147,7 +147,7 @@ public class PortSite extends AbstractSite {
         double y = 0.0;
 
         if (_cardinal == null ) {
-            if ((_port instanceof IOPort) && 
+            if ((_port instanceof IOPort) &&
                     (((IOPort)_port).isInput()
                     != ((IOPort)_port).isOutput())) {
                 // Port is an input or output only.

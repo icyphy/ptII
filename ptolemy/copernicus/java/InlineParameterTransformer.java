@@ -278,7 +278,7 @@ public class InlineParameterTransformer extends SceneTransformer implements HasP
                                 SootMethod inlinee = null;
                                 if (r instanceof VirtualInvokeExpr) {
                                     inlinee = SootUtilities.resolveVirtualInvokationForInlining(
-                                            type.getSootClass(), 
+                                            type.getSootClass(),
                                             PtolemyUtilities.attributeChangedMethod);
                                 } else if (r instanceof SpecialInvokeExpr) {
                                     inlinee = SootUtilities.resolveSpecialInvokationForInlining((SpecialInvokeExpr)r, method);
@@ -329,7 +329,7 @@ public class InlineParameterTransformer extends SceneTransformer implements HasP
                         // constant value of the variable.
                         Attribute attribute = (Attribute)
                             namedObjAnalysis.getObject((Local)r.getBase());
-                  
+
                         if (debug) System.out.println("Settable base = " + attribute);
 
                         // If the attribute resolves to null, then
@@ -592,7 +592,7 @@ public class InlineParameterTransformer extends SceneTransformer implements HasP
                                 SootMethod inlinee = null;
                                 if (r instanceof VirtualInvokeExpr) {
                                     inlinee = SootUtilities.resolveVirtualInvokationForInlining(
-                                            type.getSootClass(), 
+                                            type.getSootClass(),
                                             PtolemyUtilities.portParameterUpdateMethod);
                                 } else if (r instanceof SpecialInvokeExpr) {
                                     inlinee = SootUtilities.resolveSpecialInvokationForInlining((SpecialInvokeExpr)r, method);

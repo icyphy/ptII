@@ -23,7 +23,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 Output the complex product of the inputs.
 
  @Author Jose Luis Pino
- @Version $Id$, based on version 1.4 of /users/ptolemy/src/domains/cgc/stars/CGCAddCx.pl, from Ptolemy Classic 
+ @Version $Id$, based on version 1.4 of /users/ptolemy/src/domains/cgc/stars/CGCAddCx.pl, from Ptolemy Classic
  @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCAddCx extends ClassicCGCActor {
@@ -45,7 +45,7 @@ public class CGCAddCx extends ClassicCGCActor {
         output = new ClassicPort(this, "output", false, true);
         output.setTypeEquals(BaseType.COMPLEX);
 
-/*     
+/*
 noInternalState();
 */
     }
@@ -68,23 +68,23 @@ noInternalState();
     /**
      */
     public int  myExecTime() {
-        
+
 return 2*input.numberPorts();
      }
 
     /**
      */
     public void  generateFireCode() {
-        
-addCode(startOp); 
+
+addCode(startOp);
 	int i;
-	for (i=2;i<=input.numberPorts();i++) 
-	    addCode(doOp(i)); 
+	for (i=2;i<=input.numberPorts();i++)
+	    addCode(doOp(i));
      }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
-    public String startOp = 
+    public String startOp =
         "	$ref(output).real = $ref(input#1).real;\n"
         + "	$ref(output).imag = $ref(input#1).imag;\n";
 

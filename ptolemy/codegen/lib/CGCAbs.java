@@ -26,7 +26,7 @@ Outputs absolute value of the input.
 <a name="absolute value"></a>
 
  @Author William Chen
- @Version $Id$, based on version 1.2 of /users/ptolemy/src/domains/cgc/stars/CGCAbs.pl, from Ptolemy Classic 
+ @Version $Id$, based on version 1.2 of /users/ptolemy/src/domains/cgc/stars/CGCAbs.pl, from Ptolemy Classic
  @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCAbs extends ClassicCGCActor {
@@ -47,7 +47,7 @@ public class CGCAbs extends ClassicCGCActor {
         output = new ClassicPort(this, "output", false, true);
         output.setTypeEquals(BaseType.DOUBLE);
 
-/* 
+/*
 */
     }
     ///////////////////////////////////////////////////////////////////
@@ -69,13 +69,13 @@ public class CGCAbs extends ClassicCGCActor {
     /**
      */
     public void  generateFireCode() {
-        
-addCode(abs); 
+
+addCode(abs);
      }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
-    public String abs = 
+    public String abs =
         "		double t = $ref(input);\n"
         + "		if (t < 0.0) t = -t;\n"
         + "		$ref(output) = t;\n";

@@ -49,8 +49,8 @@ import ptolemy.kernel.util.NameDuplicationException;
    parameter.  This parameter has a value between 0 and <i>factor</i>-1.
    If it is 0, then the input token is the first output token, followed
    by zeros. If it is <i>factor</i>-1, then it is the last output.
-   Thus, if this actor is followed by the DownSample actor with the same 
-   <i>factor</i>, and the two <i>phase</i> parameters have a sum of 
+   Thus, if this actor is followed by the DownSample actor with the same
+   <i>factor</i>, and the two <i>phase</i> parameters have a sum of
    <i>factor</i>-1, the combination has no effect.
    <p>
    By default, <i>factor</i> is 2, and <i>phase</i> is the expression

@@ -77,7 +77,7 @@ public class BoxedValuesIcon extends XMLIcon {
         displayWidth = new Parameter(this, "displayWidth");
         displayWidth.setExpression("80");
         displayWidth.setTypeEquals(BaseType.INT);
-        
+
         setPersistent(false);
     }
 

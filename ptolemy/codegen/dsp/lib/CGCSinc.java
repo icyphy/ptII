@@ -23,25 +23,25 @@ import ptolemy.kernel.util.NameDuplicationException;
    This star computes the sinc of its input given in radians.
    The sinc function is defined as sin(x)/x, with value 1.0 when x = 0.
    <p>
-   The discrete-time Fourier transform (DTFT) of a sampled sinc function is 
+   The discrete-time Fourier transform (DTFT) of a sampled sinc function is
    an ideal lowpass filter [1-2].
    Modulating a sampled sinc function by a cosine function gives an
    ideal bandpass signal.
    This star defines the sinc function <i>without</i> using <i>pi</i>,
    as is the convention in [2-3].
    <h3>References</h3>
-   <p>[1]  
+   <p>[1]
    A. V. Oppenheim and R. W. Schafer, <i>Discrete-Time Signal Processing</i>,
    Prentice-Hall: Englewood Cliffs, NJ, 1989.
-   <p>[2]  
+   <p>[2]
    A. V. Oppenheim and A. Willsky, <i>Signals and Systems</i>,
    Prentice-Hall: Englewood Cliffs, NJ, 1983.
-   <p>[3]  
+   <p>[3]
    R. N. Bracewell, <i>The Fourier Transform and Its Applications</i>,
    McGraw-Hill: New York, 1986.
 
    @Author Brian L. Evans
-   @Version $Id$, based on version 1.5 of /users/ptolemy/src/domains/cgc/dsp/stars/CGCSinc.pl, from Ptolemy Classic 
+   @Version $Id$, based on version 1.5 of /users/ptolemy/src/domains/cgc/dsp/stars/CGCSinc.pl, from Ptolemy Classic
    @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCSinc extends ClassicCGCActor {
@@ -62,7 +62,7 @@ public class CGCSinc extends ClassicCGCActor {
         output = new ClassicPort(this, "output", false, true);
         output.setTypeEquals(BaseType.DOUBLE);
 
-        /* 
+        /*
          */
     }
     ///////////////////////////////////////////////////////////////////
@@ -97,6 +97,6 @@ public class CGCSinc extends ClassicCGCActor {
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
-    public String sinc = 
+    public String sinc =
     "	        $ref(output) = Ptdsp_Sinc((double)$ref(input));\n";
 }

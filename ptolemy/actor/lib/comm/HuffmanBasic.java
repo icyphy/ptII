@@ -46,14 +46,14 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
 //// HuffmanBasic
-/** 
+/**
    Given a probability distribution, generate the Huffman code book.
-   The probability distribution is given by the <i>pmf</i> parameter. 
+   The probability distribution is given by the <i>pmf</i> parameter.
    The corresponding alphabet is given by the <i>alphabet</i> parameter.
    The code book is in a format of an array of strings, each string
-   consists of '0' and '1's. The code book is sent to the 
+   consists of '0' and '1's. The code book is sent to the
    <i>huffmanCodeBook</i> output port.
-    
+
    @author Rachel Zhou
    @version $Id$
    @since Ptolemy II 4.1
@@ -78,13 +78,13 @@ public class HuffmanBasic extends Transformer {
         pmf = new Parameter(this, "pmf");
         pmf.setExpression("{0.5, 0.5}");
         pmf.setTypeEquals(new ArrayType(BaseType.DOUBLE));
-        
+
         alphabet = new Parameter(this, "alphabet");
         alphabet.setExpression("{0, 1}");
         alphabet.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
-        
+
         // Declare port types.
-        huffmanCodeBook = 
+        huffmanCodeBook =
             new TypedIOPort(this, "huffmanCodeBook", false, true);
         huffmanCodeBook.setTypeEquals(new ArrayType(BaseType.STRING));
     }
@@ -102,21 +102,21 @@ public class HuffmanBasic extends Transformer {
      *  Its default value is {0, 1}.
      */
     public Parameter alphabet;
-    
+
     /** A port that produces the Huffman code book generated
      *  based on the probability mass function. It is an array
      *  of strings.
      */
     public TypedIOPort huffmanCodeBook;
-    
+
     ////////////////////////////////////////////////////////////////////
     ////                  public inner classes                      ////
-    
+
     /** A class that defines the node in binary tree that is used
      *  to construct the codebook of Huffman code.
      */
     public class Node {
-        
+
         /** Construct the node with the given probability value
          *  and its index in the <i>pmf</i> array.
          * @param prob The given probability value.
@@ -129,7 +129,7 @@ public class HuffmanBasic extends Transformer {
             rightChild = null;
             huffmanCode = "";
         }
-        
+
         /** Construct the parent node given the left child
          *  and the right child.
          * @param left The left child.
@@ -142,21 +142,21 @@ public class HuffmanBasic extends Transformer {
             rightChild  = right;
             huffmanCode = "";
         }
-        
+
         // The probability of the node.
         public double probability;
-        
+
         // The corresponding index in the pmf array of this node.
         // If the value is -1, then this node is constructed by
         // combining at least two probabilities.
         public int indexInArray;
-        
+
         // The left child of the node.
         public Node leftChild;
-        
+
         // The right child of the node.
         public Node rightChild;
-        
+
         // The huffman code of this node.
         public String huffmanCode;
     }
@@ -218,7 +218,7 @@ public class HuffmanBasic extends Transformer {
             huffmanCodeBook.send(0, new ArrayToken(codeBookTokens));
         }
     }
-    
+
     /** Generate the Huffman code book given the probability
      *  mass function.
      * @param pmf The probability mass function.
@@ -232,7 +232,7 @@ public class HuffmanBasic extends Transformer {
         for (int i = 0; i < _pmf.length; i ++) {
         // Create a list of nodes;
             Node node = new Node(_pmf[i], i);
-            list.add(node);   
+            list.add(node);
         }
         // Construct the binary tree.
         while (list.size() > 1) {
@@ -265,23 +265,23 @@ public class HuffmanBasic extends Transformer {
     //////////////////////////////////////////////////////////////
     ////                     protected variables                ////
 
-    // The huffman code book.    
+    // The huffman code book.
     protected String[] _codeBook;
-    
+
     // Flag that indicates if the parameters are invalid. If it is
     // true, then a new code book needs to be generated.
     protected boolean _parametersInvalid;
-    
+
     // The probability mass function.
     protected double[] _pmf;
 
 
     ////////////////////////////////////////////////////////////
     ////                   private methods                  ////
-    
+
     /** Find the node with the minimum probability value in the
      *  given linked list.
-     *  @param list The given linked list. 
+     *  @param list The given linked list.
      *  @return The node with the minimum probability value.
      */
     private Node _findMinNode(LinkedList list) {
@@ -295,7 +295,7 @@ public class HuffmanBasic extends Transformer {
         }
         return (Node)list.get(index);
     }
-    
+
     /** Set the Huffman codeword for the given node and all its children.
      * @param node The given node.
      * @param codeBook The code book to be generated.
@@ -307,7 +307,7 @@ public class HuffmanBasic extends Transformer {
             String leftCode = parentCode + "0";
             left.huffmanCode = leftCode;
             if (left.indexInArray >= 0) {
-                codeBook[left.indexInArray] = leftCode; 
+                codeBook[left.indexInArray] = leftCode;
             } else {
                 _setCode(left, codeBook);
             }
@@ -322,5 +322,5 @@ public class HuffmanBasic extends Transformer {
             }
         }
     }
-    
+
 }

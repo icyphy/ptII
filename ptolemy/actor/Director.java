@@ -95,10 +95,10 @@ import ptolemy.kernel.util.Workspace;
    which will result in faster execution.
    <p>
    This class also specifies a parameter <code>timePrecisionInDigits</code>: The
-   number of the digits to the right of the decimal point (the fractional part) 
-   of values of the model time. Its default value is 10. The corresponding time 
-   resolution is 10^(-10). If two time values differ less than this value, they 
-   are considered equivalent. This parameter can only be changed when a model is 
+   number of the digits to the right of the decimal point (the fractional part)
+   of values of the model time. Its default value is 10. The corresponding time
+   resolution is 10^(-10). If two time values differ less than this value, they
+   are considered equivalent. This parameter can only be changed when a model is
    not running in order to keep consitency of the time objects. A model only has
    one time resolution, which is decided by the timePrecisionInDigits parameter
    of the top-level director.
@@ -130,7 +130,7 @@ public class Director extends Attribute implements Executable {
         super(workspace);
         _addIcon();
         _initializeParameters();
-        
+
     }
 
     /** Construct a director in the given container with the given name.
@@ -157,11 +157,11 @@ public class Director extends Attribute implements Executable {
     ///////////////////////////////////////////////////////////////////
     ////                         public parameters                 ////
 
-    /** The number of digits of the fractional part of the model time 
-     *  (in decimal format). This parameter defines the time resolution 
+    /** The number of digits of the fractional part of the model time
+     *  (in decimal format). This parameter defines the time resolution
      *  used by this director, which is 10<sup>-timePrecisionInDigits.
-     *  The default value of this parameter is 10, and the corresponding 
-     *  time resolution is 10<sup>-10. 
+     *  The default value of this parameter is 10, and the corresponding
+     *  time resolution is 10<sup>-10.
      *  The data type for this parameter is int.
      */
     public Parameter timePrecisionInDigits;
@@ -169,9 +169,9 @@ public class Director extends Attribute implements Executable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-//    /** Check the status of the manager before update the timePrecisionInDigits 
-//     *  parameter. If the status of the manager is running, 
-//     *  throws an illegalActionException. 
+//    /** Check the status of the manager before update the timePrecisionInDigits
+//     *  parameter. If the status of the manager is running,
+//     *  throws an illegalActionException.
 //     *  @param attribute The changed parameter.
 //     *  @exception IllegalActionException If the status of manager is running.
 //     */
@@ -181,9 +181,9 @@ public class Director extends Attribute implements Executable {
 //            Nameable container = getContainer();
 //            if (container instanceof CompositeActor) {
 //                Manager manager = ((CompositeActor)container).getManager();
-//                if (manager != null 
+//                if (manager != null
 //                        && manager.getState() != Manager.ITERATING) {
-//                    throw new IllegalActionException("Can not change the " + 
+//                    throw new IllegalActionException("Can not change the " +
 //                        "timePrecisionInDigits parameter when model runs.");
 //                }
 //            }
@@ -341,13 +341,13 @@ public class Director extends Attribute implements Executable {
      *  method to schedule firings.
      *
      *  This method calls {@link #fireAt(Actor,Time)} method.
-     * 
+     *
      *  @param actor The actor scheduled to be fired.
      *  @param time The scheduled time.
      *  @exception IllegalActionException If the operation is not
      *    permissible (e.g. the given time is in the past).
-     *  @deprecated Instead of using double as time argument, use a 
-     *  time object instead. As of Ptolemy 4.1, replaced by 
+     *  @deprecated Instead of using double as time argument, use a
+     *  time object instead. As of Ptolemy 4.1, replaced by
      *  {@link #fireAt(Actor,Time)}
      */
     public void fireAt(Actor actor, double time)
@@ -412,20 +412,20 @@ public class Director extends Attribute implements Executable {
         }
     }
 
-    /** Return the current time value of the model being executed by this 
-     *  director. This time can be set with the setCurrentTime method. 
-     *  In this base class, time never passes, and there are no restrictions 
+    /** Return the current time value of the model being executed by this
+     *  director. This time can be set with the setCurrentTime method.
+     *  In this base class, time never passes, and there are no restrictions
      *  on valid times.
      *
      *  @return The current time value.
-     *  @deprecated As of Ptolemy II 4.1, replaced by 
+     *  @deprecated As of Ptolemy II 4.1, replaced by
      *  {@link #getModelTime()}
      */
     public double getCurrentTime() {
         return getModelTime().getDoubleValue();
     }
 
-    /** Return the current time object of the model being executed by this 
+    /** Return the current time object of the model being executed by this
      *  director.
      *  This time can be set with the setModelTime method. In this base
      *  class, time never passes, and there are no restrictions on valid
@@ -450,7 +450,7 @@ public class Director extends Attribute implements Executable {
      *  Note that this method is not made abstract to facilitate the use
      *  of the test suite.
      *  @return The time of the next iteration.
-     *  @deprecated As of Ptolemy II 4.1, replaced by 
+     *  @deprecated As of Ptolemy II 4.1, replaced by
      *  {@link #getModelNextIterationTime}
      */
     public double getNextIterationTime() {
@@ -477,19 +477,19 @@ public class Director extends Attribute implements Executable {
 
     /** Get the time resolution of the model. The time resoultion is
      *  double with a value of 10^(-1*timePrecisionInDigits), which is the
-     *  smallest time unit for the model. 
+     *  smallest time unit for the model.
      *  @return The time resolution of the model.
      */
     public final double getTimeResolution() {
         return Math.pow(10, -1*getTimePrecisionInDigits());
     }
 
-    /** Get the time precision in digits, the number of digits of the fractional 
+    /** Get the time precision in digits, the number of digits of the fractional
      *  part of the time value used in this model.
      *  @return The number of digits.
      */
     public final int getTimePrecisionInDigits() {
-        // NOTE: The current design enforces that there is only one time 
+        // NOTE: The current design enforces that there is only one time
         // precision (that of the top level director) associated with a model.
         if (_isEmbedded()) {
             NamedObj container = getContainer();
@@ -500,36 +500,36 @@ public class Director extends Attribute implements Executable {
         }
         int numberOfDigits = 10;
         try {
-            numberOfDigits = 
+            numberOfDigits =
                 ((IntToken)timePrecisionInDigits.getToken()).intValue();
         } catch (IllegalActionException e) {
             throw new InternalErrorException("Can not evaluate the " +
-                    "timePrecisionInDigits parameter into a valid integer: " 
+                    "timePrecisionInDigits parameter into a valid integer: "
                     + e.toString());
         }
         return numberOfDigits;
     }
-    
-    /** Get the start time of the model. This base class returns 
-     *  a Time object with 0.0 as the value of the start time. 
-     *  Subclasses need to override this method to get a different 
-     *  start time. 
-     *  For example, CT director and DE director use the value of 
-     *  the startTime parameter to specify the real start time. 
+
+    /** Get the start time of the model. This base class returns
+     *  a Time object with 0.0 as the value of the start time.
+     *  Subclasses need to override this method to get a different
+     *  start time.
+     *  For example, CT director and DE director use the value of
+     *  the startTime parameter to specify the real start time.
      *  @return The start time of the model.
-     *  @deprecated As of Ptolemy II 4.1, replaced by 
+     *  @deprecated As of Ptolemy II 4.1, replaced by
      *  {@link #getModelStartTime}
      */
     public double getStartTime() {
         return 0.0;
     }
 
-    /** Get the start time of the model. This base class returns 
-     *  a Time object with 0.0 as the value of the start time. 
-     *  Subclasses need to override this method to get a different 
-     *  start time. 
-     *  For example, CT director and DE director use the value of 
-     *  the startTime parameter to specify the real start time. 
+    /** Get the start time of the model. This base class returns
+     *  a Time object with 0.0 as the value of the start time.
+     *  Subclasses need to override this method to get a different
+     *  start time.
+     *  For example, CT director and DE director use the value of
+     *  the startTime parameter to specify the real start time.
      *  @return The start time of the model.
      */
     public Time getModelStartTime() {
@@ -537,14 +537,14 @@ public class Director extends Attribute implements Executable {
     }
 
     /** Get the stop time of the model. This base class returns
-     *  a new Time object with Double.MAX_VALUE as the value of the 
-     *  stop time. 
-     *  Subclasses need to override this method to get a different 
+     *  a new Time object with Double.MAX_VALUE as the value of the
      *  stop time.
-     *  For example, CT director and DE director use the value of 
-     *  the stopTime parameter to specify the real stop time. 
+     *  Subclasses need to override this method to get a different
+     *  stop time.
+     *  For example, CT director and DE director use the value of
+     *  the stopTime parameter to specify the real stop time.
      *  @return The stop time of the model.
-     *  @deprecated As of Ptolemy II 4.1, replaced by 
+     *  @deprecated As of Ptolemy II 4.1, replaced by
      *  {@link #getModelStopTime}
      */
     public double getStopTime() {
@@ -552,12 +552,12 @@ public class Director extends Attribute implements Executable {
     }
 
     /** Get the stop time of the model. This base class returns
-     *  a new Time object with Double.POSITIVE_INFINITY as the value of the 
-     *  stop time. 
-     *  Subclasses need to override this method to get a different 
+     *  a new Time object with Double.POSITIVE_INFINITY as the value of the
      *  stop time.
-     *  For example, CT director and DE director use the value of 
-     *  the stopTime parameter to specify the real stop time. 
+     *  Subclasses need to override this method to get a different
+     *  stop time.
+     *  For example, CT director and DE director use the value of
+     *  the stopTime parameter to specify the real stop time.
      *  @return The stop time of the model.
      */
     public Time getModelStopTime() {
@@ -565,11 +565,11 @@ public class Director extends Attribute implements Executable {
     }
 
     /** Initialize the model controlled by this director.  Set the
-     *  current time to the start time or the current time of the 
-     *  executive director, and then invoke the initialize() method 
-     *  of this director on each actor that is controlled by this director.  
-     *  If the container is not an instance of CompositeActor, do nothing.  
-     *  
+     *  current time to the start time or the current time of the
+     *  executive director, and then invoke the initialize() method
+     *  of this director on each actor that is controlled by this director.
+     *  If the container is not an instance of CompositeActor, do nothing.
+     *
      *  This method should typically be invoked once per execution, after the
      *  preinitialization phase, but before any iteration.  It may be
      *  invoked in the middle of an execution, if reinitialization is
@@ -577,9 +577,9 @@ public class Director extends Attribute implements Executable {
      *  current time is set, the initialize() method of a contained
      *  actor may produce output or schedule events.  If stop() is
      *  called during this methods execution, then stop initializing
-     *  actors immediately.  
-     * 
-     *  This method is <i>not</i> synchronized on the workspace, 
+     *  actors immediately.
+     *
+     *  This method is <i>not</i> synchronized on the workspace,
      *  so the caller should be.
      *
      *  @exception IllegalActionException If the initialize() method of
@@ -601,7 +601,7 @@ public class Director extends Attribute implements Executable {
             } else {
                 // The container is at the top level.
                 // There is no reason to set the current time to 0.0.
-                // Instead, it has to be set to start time of a model. 
+                // Instead, it has to be set to start time of a model.
                 // FIXME: simplify the initilize method of DE director
                 _currentTime = getModelStartTime();
             }
@@ -611,7 +611,7 @@ public class Director extends Attribute implements Executable {
             while (actors.hasNext() && !_stopRequested) {
                 Actor actor = (Actor)actors.next();
                 if (_debugging) {
-                    _debug("Invoking initialize(): ", 
+                    _debug("Invoking initialize(): ",
                             ((NamedObj)actor).getFullName());
                 }
                 initialize(actor);
@@ -636,7 +636,7 @@ public class Director extends Attribute implements Executable {
      */
     public void initialize(Actor actor) throws IllegalActionException {
         if (_debugging) {
-        	_debug("Initializing actor: " 
+        	_debug("Initializing actor: "
                     + ((Nameable)actor).getFullName()
                     + ".");
         }
@@ -848,18 +848,18 @@ public class Director extends Attribute implements Executable {
      */
     public void preinitialize() throws IllegalActionException {
         if (_debugging && _verbose) _debug("Preinitializing ...");
-        // preinitialize protected variables. 
+        // preinitialize protected variables.
         // FIXME: a duplicate operation also appears in the initialize method.
         _currentTime = getModelStartTime();
         _stopRequested = false;
-        
+
         // validate all settable attributes.
         Iterator attributes = attributeList(Settable.class).iterator();
         while (attributes.hasNext()) {
             Settable attribute = (Settable)attributes.next();
             attribute.validate();
         }
-        
+
         // preinitialize all the contained actors.
         Nameable container = getContainer();
         if (container instanceof CompositeActor) {
@@ -872,7 +872,7 @@ public class Director extends Attribute implements Executable {
                 actor.preinitialize();
             }
         }
-        
+
         if (_debugging) _debug("Finished preinitialize().");
     }
 
@@ -969,7 +969,7 @@ public class Director extends Attribute implements Executable {
         }
     }
 
-    /** Set a new value to the current time of the model, where 
+    /** Set a new value to the current time of the model, where
      *  the new time must be no earlier than the current time.
      *  Derived classes will likely override this method to ensure that
      *  the time is valid.
@@ -977,14 +977,14 @@ public class Director extends Attribute implements Executable {
      *  @exception IllegalActionException If the new time is less than
      *   the current time returned by getCurrentTime().
      *  @param newTime The new current simulation time.
-     *  @deprecated As of Ptolemy 4.1, replaced by 
+     *  @deprecated As of Ptolemy 4.1, replaced by
      *  {@link #setModelTime}
      */
     public void setCurrentTime(double newTime) throws IllegalActionException {
         setModelTime(new Time(this, newTime));
     }
 
-    /** Set a new value to the current time of the model, where 
+    /** Set a new value to the current time of the model, where
      *  the new time must be no earlier than the current time.
      *  Derived classes will likely override this method to ensure that
      *  the time is valid.
@@ -1213,10 +1213,10 @@ public class Director extends Attribute implements Executable {
      */
     protected boolean _isTopLevel() {
         NamedObj container = getContainer();
-        // NOTE: the container may not be a composite actor. 
+        // NOTE: the container may not be a composite actor.
         // For example, the container may be an entity as a library,
         // where the director is already at the top level.
-        // FIXME: can the container be any other types? 
+        // FIXME: can the container be any other types?
         if (container instanceof CompositeActor) {
             if (((CompositeActor)container).getExecutiveDirector() == null) {
                 return true;
@@ -1252,7 +1252,7 @@ public class Director extends Attribute implements Executable {
 
     /** Indicator that a stop has been requested by a call to stop(). */
     protected boolean _stopRequested = false;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -1264,17 +1264,17 @@ public class Director extends Attribute implements Executable {
                 + "style=\"fill:green\"/>\n" +
                 "</svg>\n");
     }
-    
+
     // Initialize parameters.
     private void _initializeParameters() {
         // This must happen first before any time objects get created.
         try {
             // create parameters
-            timePrecisionInDigits = new Parameter(this, 
+            timePrecisionInDigits = new Parameter(this,
                 "timePrecisionInDigits", new IntToken(10));
             timePrecisionInDigits.setVisibility(Settable.NONE);
         } catch (Exception e) {
-            // This is the only place to create 
+            // This is the only place to create
             // the timePrecisionInDigits parameter, no exception should ever
             // be thrown.
             throw new InternalErrorException(

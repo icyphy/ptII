@@ -57,7 +57,7 @@ import ptolemy.util.MessageHandler;
 /**
    Set the value of a variable contained by the container.  The result
    may occur at two different times, depending on the value of the
-   delayed parameter. 
+   delayed parameter.
 
    <p> If <it>delayed</it> is true, then the change to
    the value of the variable is implemented in a change request, and
@@ -227,7 +227,7 @@ public class SetVariable extends TypedAtomicActor
                             _setValue(value);
                         }
                     };
-                
+
                 // To prevent prompting for saving the model, mark this
                 // change as non-persistent.
                 request.setPersistent(false);

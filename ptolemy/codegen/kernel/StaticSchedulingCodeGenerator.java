@@ -51,7 +51,7 @@ import ptolemy.kernel.util.NamedObj;
 //// StaticSchedulingCodeGenerator
 
 /** Base class for code generators for static scheduling models of computation.
- * 
+ *
  *  @author Christopher Brooks, Edward Lee, Jackie Leung, Gang Zhou, Rachel Zhou
  *  @version $Id$
  *  @since Ptolemy II 5.0
@@ -71,7 +71,7 @@ public class StaticSchedulingCodeGenerator
 			throws IllegalActionException, NameDuplicationException {
 		super(container, name);
 	}
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     parameters                            ////
 
@@ -119,41 +119,41 @@ public class StaticSchedulingCodeGenerator
      *  director of the container.
      *  @param code The code stream into which to generate the code.
      */
-    public void generateFireCode(StringBuffer code) 
+    public void generateFireCode(StringBuffer code)
             throws IllegalActionException {
-        
+
         CompositeEntity model = (CompositeEntity)getContainer();
-        
+
         // NOTE: The cast is safe because setContainer ensures
         // the container is an Actor.
         Director director = ((Actor)model).getDirector();
-         
+
         if (director == null) {
-            throw new IllegalActionException(this, 
+            throw new IllegalActionException(this,
                     "The model " + model.getName()
-                    + " does not have a director.");   
+                    + " does not have a director.");
         }
-        
+
         if (!(director instanceof StaticSchedulingDirector)) {
-            throw new IllegalActionException(this, 
+            throw new IllegalActionException(this,
                     "The director of the model " + model.getName()
-                    + " is not a StaticSchedulingDirector.");        
+                    + " is not a StaticSchedulingDirector.");
         }
-        
-        StaticSchedulingDirector castDirector = 
+
+        StaticSchedulingDirector castDirector =
                 (StaticSchedulingDirector)director;
         Schedule schedule = castDirector.getScheduler().getSchedule();
-        
+
         Iterator actorsToFire = schedule.iterator();
         while (actorsToFire.hasNext()) {
             Firing firing = (Firing)actorsToFire.next();
             Actor actor = firing.getActor();
-            
+
             // FIXME: Before looking for a helper class, we should
             // check to see whether the actor contains a code generator
             // attribute. If it does, we should use that as the helper.
-                        
-            //ActorCodeGenerator helperObject 
+
+            //ActorCodeGenerator helperObject
               //      = (ActorCodeGenerator)_getHelper((NamedObj)actor);
             CodeGeneratorHelper helperObject
                     = (CodeGeneratorHelper)_getHelper((NamedObj)actor);
@@ -168,7 +168,7 @@ public class StaticSchedulingCodeGenerator
             }
         }
     }
-    
+
     /** Return the buffer capacity associated with the given port,
      *  This method overides the base class by computing the total
      *  number of tokens transferred in one iteration.
@@ -178,7 +178,7 @@ public class StaticSchedulingCodeGenerator
     public int getBufferCapacity(TypedIOPort port)
             throws IllegalActionException {
         int bufferCapacity = 1;
-        Variable firings = 
+        Variable firings =
             (Variable)port.getContainer().getAttribute("firingsPerIteration");
         int firingsPerIteration = 1;
         if (firings != null) {
@@ -187,10 +187,10 @@ public class StaticSchedulingCodeGenerator
         if (port.isInput()) {
             bufferCapacity = firingsPerIteration
                 * DFUtilities.getTokenConsumptionRate(port);
-        } 
+        }
         return bufferCapacity;
     }
-    
+
     /** Set the container of this object to be the given container.
      *  This method overrides the base class to ensure that that the
      *  container is an Actor.
@@ -198,16 +198,16 @@ public class StaticSchedulingCodeGenerator
      *  @exception IllegalActionException if the given container
      *   is not null and not an instance of CompositeActor.
      */
-    public void setContainer(NamedObj container) 
+    public void setContainer(NamedObj container)
             throws IllegalActionException, NameDuplicationException {
         if (container != null && !(container instanceof CompositeActor)) {
             throw new IllegalActionException(this, container,
-                    "StaticSchedulingCodeGenerator can only be contained " 
+                    "StaticSchedulingCodeGenerator can only be contained "
                     + " by CompositeActor");
-        }  
+        }
         super.setContainer(container);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     protected methods                     ////
 
@@ -227,5 +227,5 @@ public class StaticSchedulingCodeGenerator
         }
         return helperObject;
     }
-    
+
 }

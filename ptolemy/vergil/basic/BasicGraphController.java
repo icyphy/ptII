@@ -358,7 +358,7 @@ public abstract class BasicGraphController
         _menuFactory = new SchematicContextMenuFactory(this);
         _menuCreator = new MenuCreator(_menuFactory);
         _menuCreator.setMouseFilter(new PopupMouseFilter());
-            
+
         // Note that the menuCreator cannot be an interactor, because
         // it accepts all events.
         // NOTE: The above is a very strange comment, since
@@ -546,7 +546,7 @@ public abstract class BasicGraphController
             // EAL 2/5/05.
         	if (source != null) {
                 Object object = source.getUserObject();
-                return (NamedObj)getController().getGraphModel().getSemanticObject(object);      
+                return (NamedObj)getController().getGraphModel().getSemanticObject(object);
             } else {
                 return (NamedObj) getController().getGraphModel().getRoot();
             }

@@ -191,7 +191,7 @@ public class DDEIOPort extends TypedIOPort {
         DDEThread ddeThread = null;
         if ( thread instanceof DDEThread ) {
             ddeThread = (DDEThread)thread;
-            currentTimeValue = 
+            currentTimeValue =
                 ddeThread.getTimeKeeper().getCurrentTime();
         }
         if ( sentTimeValue < currentTimeValue &&

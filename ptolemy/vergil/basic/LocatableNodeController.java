@@ -234,7 +234,7 @@ public class LocatableNodeController extends BasicNodeController {
             } else {
                 cf = null;
             }
-            if (object instanceof NamedObj 
+            if (object instanceof NamedObj
                     && ((NamedObj)object).getDerivedLevel() < Integer.MAX_VALUE
                     && cf != null) {
                 float[] dash = {2.0f, 5.0f};
@@ -251,7 +251,7 @@ public class LocatableNodeController extends BasicNodeController {
                 bf.setStrokePaint(CLASS_ELEMENT_HIGHLIGHT_COLOR);
                 cf.add(bf);
             }
-            
+
             return nf;
         }
     }
@@ -275,7 +275,7 @@ public class LocatableNodeController extends BasicNodeController {
         }
         return false;
     }
-        
+
     /** Return true if the property of the specified name is set for
      *  the specified object. A property is specified if the specified
      *  object contains an attribute with the specified name and that
@@ -308,7 +308,7 @@ public class LocatableNodeController extends BasicNodeController {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     // The drag interactor, which is remembered so we can change the
     // snap resolution.
     private LocatableNodeDragInteractor _dragInteractor;

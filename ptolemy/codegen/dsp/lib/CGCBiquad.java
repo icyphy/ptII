@@ -25,7 +25,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    A two-pole, two-zero IIR filter.
 
    @Author J. T. Buck and William Chen
-   @Version $Id$, based on version 1.6 of /users/ptolemy/src/domains/cgc/dsp/stars/CGCBiquad.pl, from Ptolemy Classic 
+   @Version $Id$, based on version 1.6 of /users/ptolemy/src/domains/cgc/dsp/stars/CGCBiquad.pl, from Ptolemy Classic
    @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCBiquad extends ClassicCGCActor {
@@ -74,7 +74,7 @@ public class CGCBiquad extends ClassicCGCActor {
         state2 = new Parameter(this, "state2");
         state2.setExpression("0.0");
 
-        /* 
+        /*
          */
     }
     ///////////////////////////////////////////////////////////////////
@@ -147,20 +147,20 @@ public class CGCBiquad extends ClassicCGCActor {
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
-    public String mainDecl = 
+    public String mainDecl =
     "	  double $starSymbol(filtertaps)[5];\n";
 
-    public String settapDef = 
+    public String settapDef =
     "	  $starSymbol(filtertaps)[0]=$val(d1);\n"
     + "	  $starSymbol(filtertaps)[1]=$val(d2);\n"
     + "	  $starSymbol(filtertaps)[2]=$val(n0);\n"
     + "	  $starSymbol(filtertaps)[3]=$val(n1);\n"
     + "	  $starSymbol(filtertaps)[4]=$val(n2);\n";
 
-    public String localDecl = 
+    public String localDecl =
     "	  double nextstate,out;\n";
 
-    public String iirfilter = 
+    public String iirfilter =
     "	  nextstate = $ref(input) - $starSymbol(filtertaps)[0] *\n"
     + "	    (double)$ref(state1) - $starSymbol(filtertaps)[1] *\n"
     + "	    (double)$ref(state2);\n"

@@ -385,7 +385,7 @@ public abstract class CanvasPane implements EventAcceptor, CanvasComponent {
         repaint();
         updateRangeModel();
     }
-    
+
     /** Translate this pane the given distance. The translation is
      * done such that it works "correctly" in the presence of scaling.
      */
@@ -447,10 +447,10 @@ public abstract class CanvasPane implements EventAcceptor, CanvasComponent {
         }
         l._containingPane = null;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                       private methods                   ////
-    
+
     /**
      * set the model params for the range models.  This sets the min, max
      * value and extent which can be used by a panner or scrollbars
@@ -459,13 +459,13 @@ public abstract class CanvasPane implements EventAcceptor, CanvasComponent {
     {
       if (_canvas.getCanvasPane() == this)
       { //make sure this pane is the top one.
-        DefaultBoundedRangeModel _horizontalRangeModel = 
+        DefaultBoundedRangeModel _horizontalRangeModel =
             (DefaultBoundedRangeModel)_canvas.getHorizontalRangeModel();
-        DefaultBoundedRangeModel _verticalRangeModel = 
+        DefaultBoundedRangeModel _verticalRangeModel =
             (DefaultBoundedRangeModel)_canvas.getVerticalRangeModel();
         Rectangle2D viewsize = _canvas.getViewSize();
         Rectangle2D vissize = _canvas.getVisibleSize();
-        
+
         int visWidth = (int)vissize.getWidth();
         int visHeight = (int)vissize.getHeight();
         int visX = (int)vissize.getX();
@@ -474,16 +474,16 @@ public abstract class CanvasPane implements EventAcceptor, CanvasComponent {
         int viewHeight = (int)viewsize.getHeight();
         int viewX = (int)viewsize.getX();
         int viewY = (int)viewsize.getY();
-        
+
         _verticalRangeModel.setMinimum(-viewHeight);
         _horizontalRangeModel.setMinimum(-viewWidth);
-              
+
         _verticalRangeModel.setMaximum(viewY+2*viewHeight);
         _horizontalRangeModel.setMaximum(viewX+2*viewWidth);
-       
+
         _verticalRangeModel.setExtent(visHeight);
         _horizontalRangeModel.setExtent(visWidth);
-  
+
         _verticalRangeModel.setValue(visY);
         _horizontalRangeModel.setValue(visX);
       }

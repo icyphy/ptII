@@ -39,8 +39,8 @@ import ptolemy.kernel.util.NameDuplicationException;
 /**
  * At each tick of the clock, this actor outputs the most recently received
  * non-absent input. If no input has been received, then the output is absent.
- * This implements the Lustre "current" operator. 
- * 
+ * This implements the Lustre "current" operator.
+ *
  * @author Paul Whitaker, Christopher Hylands, Edward A. Lee
  * @version $Id$
  * @Pt.ProposedRating Yellow (cxh)

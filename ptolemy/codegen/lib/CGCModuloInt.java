@@ -20,12 +20,12 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// CGCModuloInt
 /**
-The output of this star is the input modulo the 
+The output of this star is the input modulo the
 		"modulo" parameter. The input, output, and modulo
 		are all integers.
 
  @Author Siamak Modjtahedi
- @Version $Id$, based on version 1.2 of /users/ptolemy/src/domains/cgc/stars/CGCModuloInt.pl, from Ptolemy Classic 
+ @Version $Id$, based on version 1.2 of /users/ptolemy/src/domains/cgc/stars/CGCModuloInt.pl, from Ptolemy Classic
  @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCModuloInt extends ClassicCGCActor {
@@ -50,7 +50,7 @@ public class CGCModuloInt extends ClassicCGCActor {
         modulo = new Parameter(this, "modulo");
         modulo.setExpression("1");
 
-/*     
+/*
 noInternalState();
 */
     }
@@ -78,21 +78,21 @@ noInternalState();
     /**
      */
     public int  myExecTime() {
-        
+
 return 1;
      }
 
     /**
      */
     public void  generatePreinitializeCode() {
-        
+
 addInclude("<math.h>");
      }
 
     /**
      */
     public void  generateInitializeCode() throws IllegalActionException {
-        
+
 if ( ((IntToken)((modulo).getToken())).intValue() == 0 ) {
 		    throw new IllegalActionException(this,
 				    "The modulo parameter cannot be zero");
@@ -103,12 +103,12 @@ if ( ((IntToken)((modulo).getToken())).intValue() == 0 ) {
     /**
      */
     public void  generateFireCode() {
-        
-addCode(out); 
+
+addCode(out);
      }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
-    public String out = 
+    public String out =
         "	$ref(output) = $ref(input) % $ref(modulo);\n";
 }

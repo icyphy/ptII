@@ -26,11 +26,11 @@ import ptolemy.kernel.util.NameDuplicationException;
    filter. To read coefficients from a file, replace the default
    coefficients with "fileName".
    <p>
-   This FIR filter produces fast code by eliminating the need for a 
+   This FIR filter produces fast code by eliminating the need for a
    Circular buffer.
 
    @Author Soonhoi Ha, Bill Chen, and John Reekie
-   @Version $Id$, based on version 1.6 of /users/ptolemy/src/domains/cgc/dsp/stars/CGCFastFIR.pl, from Ptolemy Classic 
+   @Version $Id$, based on version 1.6 of /users/ptolemy/src/domains/cgc/dsp/stars/CGCFastFIR.pl, from Ptolemy Classic
    @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCFastFIR extends ClassicCGCActor {
@@ -59,7 +59,7 @@ public class CGCFastFIR extends ClassicCGCActor {
         tapSize = new Parameter(this, "tapSize");
         tapSize.setExpression("0");
 
-        /* 
+        /*
          */
     }
     ///////////////////////////////////////////////////////////////////
@@ -115,22 +115,22 @@ public class CGCFastFIR extends ClassicCGCActor {
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
-    public String mainDecl = 
+    public String mainDecl =
     "	  int currentValue,i;\n"
     + "	  double src[$val(tapSize)], fir[$val(tapSize)];\n";
 
-    public String initialize = 
+    public String initialize =
     "	  currentValue = 0;\n"
     + "	  for (i=0;i<$val(tapSize);i++){\n"
     + "	    fir[i]=$ref2(taps,i);\n"
     + "	    src[i] = 0.0;\n"
     + "	  }\n";
 
-    public String bodyDecl = 
+    public String bodyDecl =
     "	  double accum;\n"
     + "	  int nminusk,k;\n";
 
-    public String body = 
+    public String body =
     "\n"
     + "	  if (currentValue > $val(tapSize)-1){\n"
     + "	    currentValue -= $val(tapSize);\n"

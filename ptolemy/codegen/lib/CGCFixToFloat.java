@@ -23,7 +23,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 Convert a fixed-point input to a floating-point output.
 
  @Author J. Weiss
- @Version $Id$, based on version 1.5 of /users/ptolemy/src/domains/cgc/stars/CGCFixToFloat.pl, from Ptolemy Classic 
+ @Version $Id$, based on version 1.5 of /users/ptolemy/src/domains/cgc/stars/CGCFixToFloat.pl, from Ptolemy Classic
  @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCFixToFloat extends CGCFix {
@@ -44,7 +44,7 @@ public class CGCFixToFloat extends CGCFix {
         output = new ClassicPort(this, "output", false, true);
         output.setTypeEquals(BaseType.DOUBLE);
 
-/* 
+/*
 */
     }
     ///////////////////////////////////////////////////////////////////
@@ -66,11 +66,11 @@ Output float type
     /**
      */
     public void  generateFireCode() {
-        
+
 { StringBuffer _str_ = new StringBuffer(); _str_.append(
 "	$ref(output) = FIX_Fix2Double($ref(input));"
 
-); 	 addCode(_str_);  } 
+); 	 addCode(_str_);  }
 
      }
 }

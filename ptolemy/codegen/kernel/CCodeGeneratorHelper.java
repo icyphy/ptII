@@ -44,7 +44,7 @@ import ptolemy.kernel.util.NamedObj;
 */
 
 public class CCodeGeneratorHelper extends CodeGeneratorHelper {
-    
+
     /** FIXME
      */
     public CCodeGeneratorHelper(NamedObj component) {

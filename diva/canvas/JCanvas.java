@@ -75,7 +75,7 @@ import diva.canvas.event.LayerEvent;
  * @Pt.AcceptedRating Yellow
  */
 public class JCanvas extends JComponent implements Printable {
-    
+
     /** The off-screen image.
      * @serial
      */
@@ -85,17 +85,17 @@ public class JCanvas extends JComponent implements Printable {
      * @serial
      */
     private CanvasPane _canvasPane = null;
-    
+
     /** range model to control the horizontal movement of the model
      */
-    private DefaultBoundedRangeModel _horizontalRangeModel = 
-      new DefaultBoundedRangeModel(); 
+    private DefaultBoundedRangeModel _horizontalRangeModel =
+      new DefaultBoundedRangeModel();
 
       /** range model to control the vertical movement of the model
      */
-    private DefaultBoundedRangeModel _verticalRangeModel = 
+    private DefaultBoundedRangeModel _verticalRangeModel =
       new DefaultBoundedRangeModel();
-      
+
     /** A flag to tell us whether to work around the
      * clearRect bug in beta4
      */
@@ -347,7 +347,7 @@ public class JCanvas extends JComponent implements Printable {
             _canvasPane.setSize(s);
         }
     }
-    
+
     /**
      * return the horizontal range model for this canvas
      */
@@ -355,7 +355,7 @@ public class JCanvas extends JComponent implements Printable {
     {
       return _horizontalRangeModel;
     }
-    
+
     /**
      * return the vertical range model for this canvas
      */
@@ -363,8 +363,8 @@ public class JCanvas extends JComponent implements Printable {
     {
       return _verticalRangeModel;
     }
-    
-    /** 
+
+    /**
      * Return the total size of everything in the canvas, in canvas
      *  coordinates.
      */
@@ -391,7 +391,7 @@ public class JCanvas extends JComponent implements Printable {
         }
     }
 
-    /** 
+    /**
      * Return the size of the visible part of the canvas, in canvas
      *  coordinates.
      */
@@ -474,7 +474,7 @@ public class JCanvas extends JComponent implements Printable {
     private boolean _checkForClearRectBug() {
         return System.getProperty("java.version").equals("1.2beta4");
     }
-    
+
 }
 
 

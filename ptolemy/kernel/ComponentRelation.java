@@ -209,7 +209,7 @@ public class ComponentRelation extends Relation {
         try {
             _workspace.getWriteAccess();
             int result = container._containedRelations.moveDown(this);
-            
+
             // Propagate.
             Iterator derivedObjects = getDerivedList().iterator();
             while (derivedObjects.hasNext()) {
@@ -217,13 +217,13 @@ public class ComponentRelation extends Relation {
                 container = (CompositeEntity)derived.getContainer();
                 container._containedRelations.moveDown(derived);
             }
-            
+
             return result;
         } finally {
             _workspace.doneWriting();
         }
     }
-    
+
     /** Move this object to the first position in the list
      *  of attributes of the container. If this object is already first,
      *  do nothing. Increment the version of the workspace.
@@ -240,7 +240,7 @@ public class ComponentRelation extends Relation {
         try {
             _workspace.getWriteAccess();
             int result = container._containedRelations.moveToFirst(this);
-            
+
             // Propagate.
             Iterator derivedObjects = getDerivedList().iterator();
             while (derivedObjects.hasNext()) {
@@ -248,7 +248,7 @@ public class ComponentRelation extends Relation {
                 container = (CompositeEntity)derived.getContainer();
                 container._containedRelations.moveToFirst(derived);
             }
-            
+
             return result;
         } finally {
             _workspace.doneWriting();
@@ -273,7 +273,7 @@ public class ComponentRelation extends Relation {
         try {
             _workspace.getWriteAccess();
             int result = container._containedRelations.moveToIndex(this, index);
-            
+
             // Propagate.
             Iterator derivedObjects = getDerivedList().iterator();
             while (derivedObjects.hasNext()) {
@@ -281,7 +281,7 @@ public class ComponentRelation extends Relation {
                 container = (CompositeEntity)derived.getContainer();
                 container._containedRelations.moveToIndex(derived, index);
             }
-            
+
             return result;
         } finally {
             _workspace.doneWriting();
@@ -304,7 +304,7 @@ public class ComponentRelation extends Relation {
         try {
             _workspace.getWriteAccess();
             int result = container._containedRelations.moveToLast(this);
-            
+
             // Propagate.
             Iterator derivedObjects = getDerivedList().iterator();
             while (derivedObjects.hasNext()) {
@@ -312,7 +312,7 @@ public class ComponentRelation extends Relation {
                 container = (CompositeEntity)derived.getContainer();
                 container._containedRelations.moveToLast(derived);
             }
-            
+
             return result;
         } finally {
             _workspace.doneWriting();
@@ -335,7 +335,7 @@ public class ComponentRelation extends Relation {
         try {
             _workspace.getWriteAccess();
             int result = container._containedRelations.moveUp(this);
-            
+
             // Propagate.
             Iterator derivedObjects = getDerivedList().iterator();
             while (derivedObjects.hasNext()) {
@@ -343,7 +343,7 @@ public class ComponentRelation extends Relation {
                 container = (CompositeEntity)derived.getContainer();
                 container._containedRelations.moveUp(derived);
             }
-            
+
             return result;
         } finally {
             _workspace.doneWriting();
@@ -377,7 +377,7 @@ public class ComponentRelation extends Relation {
      *   throws it.
      *  @exception NameDuplicationException If the name collides with a name
      *   already on the contents list of the container.
-     *  @see #getContainer() 
+     *  @see #getContainer()
      */
     public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
@@ -409,7 +409,7 @@ public class ComponentRelation extends Relation {
                 // object. Mark it modified to ensure MoML export.
                 // FIXME: Inappropriate?
                 // setOverrideDepth(0);
-                
+
                 // Transfer any queued change requests to the
                 // new container.  There could be queued change
                 // requests if this component is deferring change
@@ -511,7 +511,7 @@ public class ComponentRelation extends Relation {
                     "ComponentRelation can only link to a ComponentPort.");
         }
     }
-    
+
     /** Propagate existence of this object to the
      *  specified object. This overrides the base class
      *  to set the container.

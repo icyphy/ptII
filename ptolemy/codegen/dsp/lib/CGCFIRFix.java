@@ -90,11 +90,11 @@ import ptolemy.kernel.util.NameDuplicationException;
    <a name="Harris, F. J."></a>
    <a name="Vaidyanathan, P. P."></a>
    <h3>References</h3>
-   <p>[1]  
+   <p>[1]
    F. J. Harris,
    ``Multirate FIR Filters for Interpolating and Desampling'', in
    <i>Handbook of Digital Signal Processing</i>, Academic Press, 1987.
-   <p>[2]  
+   <p>[2]
    P. P. Vaidyanathan,
    ``Multirate Digital Filters, Filter Banks, Polyphase
    Networks, and Applications: A Tutorial'',
@@ -105,7 +105,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @see ptolemy.domains.cgc.stars.DownSample
 
    @Author Edward A. Lee, Alireza Khazeni, J.Weiss
-   @Version $Id$, based on version 1.12 of /users/ptolemy/src/domains/cgc/dsp/stars/CGCFIRFix.pl, from Ptolemy Classic 
+   @Version $Id$, based on version 1.12 of /users/ptolemy/src/domains/cgc/dsp/stars/CGCFIRFix.pl, from Ptolemy Classic
    @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCFIRFix extends CGCFix {
@@ -178,7 +178,7 @@ public class CGCFIRFix extends CGCFix {
         Accum = new Parameter(this, "Accum");
         Accum.setExpression("0.0");
 
-        /* 
+        /*
          */
     }
     ///////////////////////////////////////////////////////////////////
@@ -304,33 +304,33 @@ public class CGCFIRFix extends CGCFix {
         //# line 234 "/users/ptolemy/src/domains/cgc/dsp/stars/CGCFIRFix.pl"
         addCode(bodyDecl);
         CGCFix::clearOverflow();
- 
-	{ StringList _str_; _str_ << 
+
+	{ StringList _str_; _str_ <<
                                 "	/* phase keeps track of which phase of the filter coefficients is used.\n"
                                 "	   Starting phase depends on the decimationPhase state. */\n"
                                 "	phase = $val(decimation) - $val(decimationPhase) - 1;   \n"
 
                                 addCode(_str_); }
-	
-	{ StringList _str_; _str_ << 
+
+	{ StringList _str_; _str_ <<
                                 "	/* Iterate once for each input consumed */\n"
                                 "	for (inC = 1; inC <= $val(decimation) ; inC++) {\n"
 
                                 addCode(_str_); }
 
-	{ StringList _str_; _str_ << 
+	{ StringList _str_; _str_ <<
                                 "		/* Produce however many outputs are required for each \n"
                                 "		   input consumed */\n"
                                 "		while (phase < $val(interpolation)) {\n"
 
                                 addCode(_str_); }
 
-	{ StringList _str_; _str_ << 
+	{ StringList _str_; _str_ <<
                                 "			FIX_SetToZero($ref(Accum));\n"
 
                                 addCode(_str_); }
 
-	{ StringList _str_; _str_ << 
+	{ StringList _str_; _str_ <<
                                 "			/* Compute the inner product. */\n"
                                 "			for (i = 0; i < $val(phaseLength); i++) {\n"
                                 "				tapsIndex = i * $val(interpolation) + phase;\n"
@@ -341,27 +341,27 @@ public class CGCFIRFix extends CGCFix {
 
                                 addCode(_str_); }
 
-	{ StringList _str_; _str_ << 
+	{ StringList _str_; _str_ <<
                                 "				inPos = $val(decimation) - inC + i;\n"
 
                                 addCode(_str_); }
         CGCFix::clearOverflow();
-	{ StringList _str_; _str_ << 
+	{ StringList _str_; _str_ <<
                                 "				FIX_MulAdd($ref(Accum), $ref(tap),$ref(signalIn,inPos));\n"
 
                                 addCode(_str_); }
         CGCFix::checkOverflow();
-	{ StringList _str_; _str_ << 
+	{ StringList _str_; _str_ <<
                                 "			}\n"
 
                                 addCode(_str_); }
         CGCFix::clearOverflow();
-	{ StringList _str_; _str_ << 
+	{ StringList _str_; _str_ <<
                                 "			FIX_Assign($ref(signalOut,outCount),$ref(Accum));\n"
 
                                 addCode(_str_); }
         CGCFix::checkOverflow();
-	{ StringList _str_; _str_ << 
+	{ StringList _str_; _str_ <<
                                 "			outCount--;;\n"
                                 "			phase += $val(decimation);\n"
                                 "		}\n"
@@ -374,7 +374,7 @@ public class CGCFIRFix extends CGCFix {
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
-    public String bodyDecl = 
+    public String bodyDecl =
     "                int phase, tapsIndex, inC, i;\n"
     + "                int outCount = $val(interpolation) - 1;\n"
     + "	        int inPos;\n";

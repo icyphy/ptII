@@ -281,9 +281,9 @@ public class ExternalIOPortController extends AttributeController {
                     // Shift the label slightly right so it doesn't
                     // collide with ports.
                     label.translateTo(
-                            backBounds.getX(), 
+                            backBounds.getX(),
                             backBounds.getY());
-                    ((CompositeFigure)figure).add(label);   
+                    ((CompositeFigure)figure).add(label);
                 }
                 figure = new TerminalFigure(figure, tsite)  {
                         // Override this because the tooltip may

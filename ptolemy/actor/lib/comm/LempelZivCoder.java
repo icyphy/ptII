@@ -40,9 +40,9 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
 //// LempelZivCoder
-/** 
+/**
    Lempel-Ziv encoder.
-   
+
    @author Rachel Zhou
    @version $Id$
    @since Ptolemy II 4.1
@@ -75,7 +75,7 @@ public class LempelZivCoder extends Transformer {
      */
     public void fire() throws IllegalActionException {
         if (input.hasToken(0)) {
-            boolean inputValue 
+            boolean inputValue
                 = ((BooleanToken)input.get(0)).booleanValue();
             _current = _current + (inputValue ? "1" : "0");
             int index = _codeBook.indexOf(_current);
@@ -106,9 +106,9 @@ public class LempelZivCoder extends Transformer {
             }
         }*/
     }
-    
+
     /** Initialize the actor by creating the code book containing
-     *  only one empty string "". 
+     *  only one empty string "".
      */
     public void initialize() {
         _codeBook = new LinkedList();
@@ -119,13 +119,13 @@ public class LempelZivCoder extends Transformer {
 
     ////////////////////////////////////////////////////////////
     ////                   private variables                ////
-    
+
     // The Lempel-Ziv code book.
     private LinkedList _codeBook;
-    
+
     // The current string, concatenated by the inputs.
     private String _current;
-    
+
     // The index of the previous string in the code book.
     // current string is previous string appended by "1" or "0",
     // depending on whether the current input is true or false.

@@ -26,7 +26,7 @@ Each input is copied to every output.  This is done by the way the buffers
 are laid out; no code is required.
 
  @Author E. A. Lee
- @Version $Id$, based on version 1.12 of /users/ptolemy/src/domains/cgc/stars/CGCFork.pl, from Ptolemy Classic 
+ @Version $Id$, based on version 1.12 of /users/ptolemy/src/domains/cgc/stars/CGCFork.pl, from Ptolemy Classic
  @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCFork extends ClassicCGCActor {
@@ -46,7 +46,7 @@ public class CGCFork extends ClassicCGCActor {
         output = new ClassicPort(this, "output", false, true);
         output.setMultiport(true);
 
-/*     
+/*
 noInternalState();
 */
     }
@@ -69,14 +69,14 @@ noInternalState();
     /**
      */
     public int  myExecTime() {
-        
+
 return 0;
      }
 
     /**
      */
     public void  generateInitializeCode() throws IllegalActionException {
-        
+
 forkInit(input,output);
      }
 }

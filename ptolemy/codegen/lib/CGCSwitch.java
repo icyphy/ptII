@@ -27,7 +27,7 @@ value is written to trueOutput; otherwise it is written to
 falseOutput.
 
  @Author J. T. Buck
- @Version $Id$, based on version 1.4 of /users/ptolemy/src/domains/cgc/stars/CGCSwitch.pl, from Ptolemy Classic 
+ @Version $Id$, based on version 1.4 of /users/ptolemy/src/domains/cgc/stars/CGCSwitch.pl, from Ptolemy Classic
  @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCSwitch extends ClassicCGCActor {
@@ -49,7 +49,7 @@ public class CGCSwitch extends ClassicCGCActor {
         trueOutput = new ClassicPort(this, "trueOutput", false, true);
         falseOutput = new ClassicPort(this, "falseOutput", false, true);
 
-/*     
+/*
 trueOutput.setRelation(DF_true, &control);
 		falseOutput.setRelation(DF_false, &control);
 */
@@ -83,14 +83,14 @@ trueOutput.setRelation(DF_true, &control);
     /**
      */
     public int  myExecTime() {
-        
+
 return 0;
      }
 
     /**
      */
     public void  generateInitializeCode() throws IllegalActionException {
-        
+
 // all connected buffers must be size 1, for now.
 		// need to check this.
 		// FIXME: we can permit input to be > 1 by generating
@@ -111,7 +111,7 @@ return 0;
     /**
      */
     protected int notone (CGCPortHole& port) {
-        
+
 return (port.numInitDelays() > 1 ||
 				port.far()->numXfer() > 1);
     }

@@ -69,7 +69,7 @@ import ptolemy.kernel.util.ChangeRequest;
    @since Ptolemy II 4.1
    @Pt.ProposedRating Red (cxh)
    @Pt.AcceptedRating Red (cxh)
- */ 
+ */
 public abstract class ColtRandomSource extends RandomSource
     implements ChangeListener {
 
@@ -143,7 +143,7 @@ public abstract class ColtRandomSource extends RandomSource
                 _seed = ((LongToken) (seed.getToken())).longValue();
             } catch (IllegalActionException ex) {
                 throw new InternalErrorException(this, ex,
-                        "Failed to get Colt seed"); 
+                        "Failed to get Colt seed");
             }
             return;
         }
@@ -219,7 +219,7 @@ public abstract class ColtRandomSource extends RandomSource
      * @exception IllegalActionException If there is a problem getting the
      * randomNumberGenerator or seed attribute
      * @exception NameDuplicationException If there is a problem adding the
-     * randomNumberGenerator or seed attribute. 
+     * randomNumberGenerator or seed attribute.
      */
     protected Parameter _getRandomNumberGeneratorClass(
             CompositeEntity container)

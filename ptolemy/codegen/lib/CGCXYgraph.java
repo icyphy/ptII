@@ -32,7 +32,7 @@ input interpreted as the x-axis data, and the other input as y-axis data.
 <a href="$PTOLEMY/src/pxgraph/pxgraph.htm">$PTOLEMY/src/pxgraph/pxgraph.htm</a>@see ptolemy.domains.cgc.stars.Xhistogram
 
  @Author S. Ha
- @Version $Id$, based on version 1.11 of /users/ptolemy/src/domains/cgc/stars/CGCXYgraph.pl, from Ptolemy Classic 
+ @Version $Id$, based on version 1.11 of /users/ptolemy/src/domains/cgc/stars/CGCXYgraph.pl, from Ptolemy Classic
  @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCXYgraph extends CGCXgraph {
@@ -50,7 +50,7 @@ public class CGCXYgraph extends CGCXgraph {
         super(container, name);
         xInput = new ClassicPort(this, "xInput", true, false);
 
-/*     
+/*
 // make xInit and xUnits invisible
 		xUnits.setAttributes(A_NONSETTABLE);
 		xInit.setAttributes(A_NONSETTABLE);
@@ -70,19 +70,19 @@ public class CGCXYgraph extends CGCXgraph {
     /**
      */
     public int  myExecTime() {
-        
+
 return 6;
      }
 
     /**
      */
     public void  generateFireCode() {
-        
+
 { StringBuffer _str_ = new StringBuffer(); _str_.append(
 "	if (++$ref(count) >= $val(ignore)) \n"
 "		fprintf($starSymbol(fp),\"%g %g\\n\",$ref(xInput),$ref(input));"
 
-); 	 addCode(_str_);  } 
+); 	 addCode(_str_);  }
 
      }
 }

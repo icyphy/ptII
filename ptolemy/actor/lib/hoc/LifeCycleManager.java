@@ -53,7 +53,7 @@ import ptolemy.kernel.util.Workspace;
 //// LifeCycleManager
 /**
    This is a composite actor with some services for life-cycle management.
-   
+
    FIXME: More.
 
    @author Edward A. Lee, Yang Zhao
@@ -194,7 +194,7 @@ public class LifeCycleManager extends TypedCompositeActor {
         // FIXME: Override getDirector() to ensure that there is always a director.
         return true;
     }
-    
+
     /** Request that given change be executed.   In this class,
      *  do not delegate the change request to the container, but
      *  execute the request immediately or record it, depending on
@@ -252,7 +252,7 @@ public class LifeCycleManager extends TypedCompositeActor {
             // Make sure that change requests are not executed when requested,
             // but rather only executed when executeChangeRequests() is called.
             setDeferringChangeRequests(true);
-            
+
             _readInputs();
             if (_stopRequested) return COMPLETED;
 
@@ -280,7 +280,7 @@ public class LifeCycleManager extends TypedCompositeActor {
                     break;
                 }
             }
-            return lastIterateResult;           
+            return lastIterateResult;
         } finally {
             try {
                 executeChangeRequests();

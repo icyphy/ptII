@@ -23,7 +23,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 Based star for the fixed-point stars in the CGC domain.
 
  @Author Juergen Weiss
- @Version $Id$, based on version 1.8 of /users/ptolemy/src/domains/cgc/stars/CGCFix.pl, from Ptolemy Classic 
+ @Version $Id$, based on version 1.8 of /users/ptolemy/src/domains/cgc/stars/CGCFix.pl, from Ptolemy Classic
  @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCFix extends ClassicCGCActor {
@@ -84,19 +84,19 @@ public class CGCFix extends ClassicCGCActor {
     /**
      */
     public void  wrapup() {
-        
+
         if (((IntToken)((ReportOverflow).getToken())).intValue() == 1)
             // FIXME ReportOverflow should be a Boolean
             {
                 StringBuffer s = new StringBuffer(this.getFullName());
-                addCode(report_overflow(s.toString())); 
+                addCode(report_overflow(s.toString()));
             }
      }
 
     /**
      */
     public void  generatePreinitializeCode() {
-        // No need to add addInclude("<stdio.h>") here, 
+        // No need to add addInclude("<stdio.h>") here,
         // addFixedPointSupport includes CGCrtlib.c,
         // which includes stdio.h
         addFixedPointSupport();
@@ -121,11 +121,11 @@ public class CGCFix extends ClassicCGCActor {
     /**
      */
     protected void checkOverflow () {
-        
+
         if (((IntToken)((ReportOverflow).getToken())).intValue() == 1)
             // FIXME ReportOverflow should be a Boolean
             {
-                addCode("\tif ($ref(ck_cnt)++, fix_overflow)\n"); 
+                addCode("\tif ($ref(ck_cnt)++, fix_overflow)\n");
                 addCode("\t\t$ref(ov_cnt)++; \n");
             }
     }

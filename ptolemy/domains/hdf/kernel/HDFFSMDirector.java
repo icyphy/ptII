@@ -68,11 +68,11 @@ import ptolemy.kernel.util.Workspace;
 /**
    This director extends FSMDirector by supporting production and
    consumption of multiple tokens on a port in a firing and by
-   restricting the 
-   
+   restricting the
+
    FIXME: Refactor into two directors, with the base class
    MultirateFSMDirector supporting multirate.
-   
+
    An HDFFSMDirector governs the execution of a finite state machine
    (FSM) in a heterochronous dataflow (HDF) or synchronous dataflow
    (SDF) model according to the *charts [1] semantics. *charts is a
@@ -181,7 +181,7 @@ public class HDFFSMDirector extends MultirateFSMDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** FIXME: comment is wrong.  
+    /** FIXME: comment is wrong.
      *  Examine the transitions from the given state.
      *  If there is more than one transition enabled, an exception is
      *  thrown. If there is exactly one non-preemptive transition
@@ -197,7 +197,7 @@ public class HDFFSMDirector extends MultirateFSMDirector {
         FSMActor controller = getController();
         State destinationState;
         Transition transition = null;
-        if (state.getRefinement() != null 
+        if (state.getRefinement() != null
                 && state.preemptiveTransitionList().size() != 0) {
             throw new IllegalActionException(this,
                     state.getName() + " cannot have outgoing preemptive " +
@@ -237,7 +237,7 @@ public class HDFFSMDirector extends MultirateFSMDirector {
     * @exception IllegalActionException If a transient state is reached
     *  but no further transition is enabled.
     */
-    public void chooseTransitions(State currentState) 
+    public void chooseTransitions(State currentState)
             throws IllegalActionException {
         State state = chooseStateTransition(currentState);
         Actor[] actors = state.getRefinement();
@@ -271,7 +271,7 @@ public class HDFFSMDirector extends MultirateFSMDirector {
         State currentState = controller.currentState();
         //_lastIntransientState = currentState;
         Actor[] actors = currentState.getRefinement();
-        
+
         // NOTE: Paranoid coding.
         if (actors == null || actors.length != 1) {
         	throw new IllegalActionException(this,
@@ -294,7 +294,7 @@ public class HDFFSMDirector extends MultirateFSMDirector {
         } else if (_sendRequest) {
             ChangeRequest request =
                 new ChangeRequest(this, "choose a transition") {
-                    protected void _execute() throws KernelException, 
+                    protected void _execute() throws KernelException,
                             IllegalActionException{
                         FSMActor controller = getController();
                         State currentState = controller.currentState();
@@ -401,8 +401,8 @@ public class HDFFSMDirector extends MultirateFSMDirector {
      *  rates is detected between refinement actors.
      */
     public boolean makeStateTransition() throws IllegalActionException {
-        // Note: This method is called in postfire() method. We have checked 
-        // that the current state is not null in initialize() method or 
+        // Note: This method is called in postfire() method. We have checked
+        // that the current state is not null in initialize() method or
         // in the fire() method.
         FSMActor controller = getController();
         State currentState = controller.currentState();
@@ -420,7 +420,7 @@ public class HDFFSMDirector extends MultirateFSMDirector {
             }
             actor  = (TypedCompositeActor)(actors[0]);
             superPostfire = super.postfire();
-            
+
         } else {
             // Make a state transition.
             superPostfire = super.postfire();
@@ -464,11 +464,11 @@ public class HDFFSMDirector extends MultirateFSMDirector {
      *  if there is no controller.
      */
     public boolean postfire() throws IllegalActionException {
-        
+
         FSMActor controller = getController();
         CompositeActor container = (CompositeActor)getContainer();
         /*TypedActor[] currentRefinement = _lastIntransientState.getRefinement();
-        
+
         if (currentRefinement == null || currentRefinement.length != 1) {
             throw new IllegalActionException(this,
                     "Current state is required to have exactly one refinement: "
@@ -520,7 +520,7 @@ public class HDFFSMDirector extends MultirateFSMDirector {
         FSMActor controller = getController();
         State initialState = controller.getInitialState();
         _setCurrentState(initialState);
-        
+
         // NOTE: The following will throw an exception if
         // the state does not have a refinement, so after
         // this call, we can assume the state has a refinement.
@@ -534,14 +534,14 @@ public class HDFFSMDirector extends MultirateFSMDirector {
                     "Current state is required to have exactly one refinement: "
                     + controller.currentState().getName());
         }
-        
+
         TypedCompositeActor curRefinement
                 = (TypedCompositeActor)(currentRefinements[0]);
         Director refinementDir = curRefinement.getDirector();
-        
+
         _updateInputTokenConsumptionRates(curRefinement);
         _updateOutputTokenProductionRates(curRefinement);
-           
+
         // Declare reconfiguration constraints on the ports of the
         // actor.  The constraints indicate that the ports are
         // reconfigured whenever any refinement rate parameter of
@@ -561,18 +561,18 @@ public class HDFFSMDirector extends MultirateFSMDirector {
             if (!(port instanceof ParameterPort)) {
                 if (port.isInput()) {
                     _declareReconfigurationDependencyForRefinementRateVariables(
-                            analysis, port, "tokenConsumptionRate");                   
+                            analysis, port, "tokenConsumptionRate");
                 }
                 if (port.isOutput()) {
                     _declareReconfigurationDependencyForRefinementRateVariables(
-                            analysis, port, "tokenProductionRate"); 
+                            analysis, port, "tokenProductionRate");
                     _declareReconfigurationDependencyForRefinementRateVariables(
-                            analysis, port, "tokenInitProduction"); 
+                            analysis, port, "tokenInitProduction");
                 }
             }
         }
     }
-    
+
     /** Get the current state. If it does not have any refinement,
      *  consider it as a transient state and make a state transition
      *  until a state with a refinement is
@@ -601,12 +601,12 @@ public class HDFFSMDirector extends MultirateFSMDirector {
                 currentRefinements = currentState.getRefinement();
             }
         }
-        return currentState;            
+        return currentState;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
+
     /** Add a DependencyDeclaration (with the name
      * "_HDFFSMRateDependencyDeclaration") to the variable with the given
      * name in the given port that declares the variable is dependent
@@ -644,9 +644,9 @@ public class HDFFSMDirector extends MultirateFSMDirector {
      */
     private void _declareReconfigurationDependencyForRefinementRateVariables(
             ConstVariableModelAnalysis analysis,
-            IOPort port, 
+            IOPort port,
             String parameterName) throws IllegalActionException {
-        List refinementRateVariables = 
+        List refinementRateVariables =
             _getRefinementRateVariables(port, parameterName);
         _declareDependency(
                 analysis, port, parameterName,
@@ -673,7 +673,7 @@ public class HDFFSMDirector extends MultirateFSMDirector {
             // System.out.println("Found rate parameter " + parameterName + " of port " + port.getFullName() + " that changes.");
             // FIXME: Declare this somehow so that we can check it.
         }
-    }        
+    }
 
     /** Return the set of variables with the given name that are
      * contained by ports connected to the given port on the inside.
@@ -911,14 +911,14 @@ public class HDFFSMDirector extends MultirateFSMDirector {
     // A flag indicating whether the initialize method is
     // called due to reinitialization.
     private boolean _reinitialize;
-    
+
     // The next intransient state found after making transition
     // from transient states.
     private State _nextIntransientState;
-    
+
     // The last intransient state reached. This referes to the
     // current state if it is intransient.
     //private State _lastIntransientState;
-    
+
     private boolean _refinementPostfire;
 }

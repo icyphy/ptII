@@ -23,7 +23,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 Output the complex constant.
 
  @Author Jose Luis Pino
- @Version $Id$, based on version 1.1 of /users/ptolemy/src/domains/cgc/stars/CGCConstCx.pl, from Ptolemy Classic 
+ @Version $Id$, based on version 1.1 of /users/ptolemy/src/domains/cgc/stars/CGCConstCx.pl, from Ptolemy Classic
  @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCConstCx extends ClassicCGCActor {
@@ -50,7 +50,7 @@ public class CGCConstCx extends ClassicCGCActor {
         imag = new Parameter(this, "imag");
         imag.setExpression("0.0");
 
-/*     
+/*
 noInternalState();
 */
     }
@@ -78,19 +78,19 @@ noInternalState();
     /**
      */
     public int  myExecTime() {
-        
+
 return 0;
      }
 
     /**
      */
     public void  generateFireCode() {
-        
+
 { StringBuffer _str_ = new StringBuffer(); _str_.append(
 "	$ref(output).real = $val(real);\n"
 "	$ref(output).imag = $val(imag);"
 
-); 	 addCode(_str_);  } 
+); 	 addCode(_str_);  }
 
      }
 }

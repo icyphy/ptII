@@ -100,7 +100,7 @@ public class ExperimentalActor extends SDFTransformer {
                 throw new IllegalActionException(this,
                         "Invalid codeSize: " + codeSizeValue);
             }
-        } 
+        }
         else {
             super.attributeChanged(attribute);
         }

@@ -91,7 +91,7 @@ public class EditIconAction extends FigureAction {
                         // this icon and replace it.
                         icon.setContainer(null);
                         icon = new EditorIcon(object, "_icon");
-                        
+
                         // Propagate this to derived objects, being
                         // careful to not trash their custom icons
                         // if they have them.  However, there is a trickiness.
@@ -102,7 +102,7 @@ public class EditIconAction extends FigureAction {
                                 = object.getDerivedList().iterator();
                         while (derivedObjects.hasNext()) {
                             NamedObj derived = (NamedObj)derivedObjects.next();
-                            
+
                             // See whether it has an icon.
                             EditorIcon derivedIcon = null;
                             List derivedIconList

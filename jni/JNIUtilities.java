@@ -1077,7 +1077,7 @@ public class JNIUtilities {
         libraryPath = "../..";
         String ptIIDirWithoutSpaces = StringUtilities.substitute(
                 StringUtilities.getProperty("ptolemy.ptII.dir"),
-                " ", "\\ "); 
+                " ", "\\ ");
         results
             .append("# Makefile automatically generated for JNI\n"
                     + "ROOT =\t\t"

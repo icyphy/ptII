@@ -25,10 +25,10 @@ public class AbsoluteValue extends CCodeGeneratorHelper {
         super(actor);
     }
 
-    public void  generateFireCode(StringBuffer stream) 
+    public void  generateFireCode(StringBuffer stream)
         throws IllegalActionException {
-    
-        ptolemy.actor.lib.AddSubtract actor = 
+
+        ptolemy.actor.lib.AddSubtract actor =
             (ptolemy.actor.lib.AddSubtract)getComponent();
         StringBuffer tmpStream = new StringBuffer();
         tmpStream.append("$val(output) = ($val(input) < 0)? -$val(input) : $val(input);\n");

@@ -294,19 +294,19 @@ public class GeneratorAttribute extends SingletonAttribute
             if (!ptIIUserDirectoryFile.isDirectory()) {
                 System.out.println(
                         "AppletWriter: WARNING: ptIIUserDirectory = '"
-                        + ptIIUserDirectory 
+                        + ptIIUserDirectory
                         + "', but there is no directory there?");
             } else {
                 if (!ptIIUserDirectoryFile.canWrite()) {
                     System.out.println(
                             "AppletWriter: WARNING: ptIIUserDirectory = '"
-                            + ptIIUserDirectory 
+                            + ptIIUserDirectory
                             + "', but it is not writable");
                 } else {
                     System.out.println("AppletWriter: ptIIUserDirectory = "
                             + ptIIUserDirectory
                             + " isDirectory: "
-                            + ptIIUserDirectoryFile.isDirectory()  
+                            + ptIIUserDirectoryFile.isDirectory()
                             + " canWrite: "
                             + ptIIUserDirectoryFile.canWrite()
                             + " WebStart: "

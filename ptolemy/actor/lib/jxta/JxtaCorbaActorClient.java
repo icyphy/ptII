@@ -123,7 +123,7 @@ public class JxtaCorbaActorClient extends TypedAtomicActor implements QueryHandl
             _properties.load(configProperties);
         } catch( IOException e) {
                 System.out.println( "Warning: Can't find configuration propertiees file. ' " + e.getMessage() + "'");
-        } finally { 
+        } finally {
             if (configProperties != null) {
                 try {
                     configProperties.close();

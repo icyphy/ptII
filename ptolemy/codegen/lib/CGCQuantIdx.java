@@ -25,7 +25,7 @@ N thresholds, and output both the quantized result and the
 quantization level.  See the Quant star for more information.
 
  @Author Edward A. Lee, Joseph T. Buck, and Brian L. Evans
- @Version $Id$, based on version 1.1 of /users/ptolemy/src/domains/cgc/stars/CGCQuantIdx.pl, from Ptolemy Classic 
+ @Version $Id$, based on version 1.1 of /users/ptolemy/src/domains/cgc/stars/CGCQuantIdx.pl, from Ptolemy Classic
  @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCQuantIdx extends CGCQuant {
@@ -44,7 +44,7 @@ public class CGCQuantIdx extends CGCQuant {
         stepNumber = new ClassicPort(this, "stepNumber", false, true);
         stepNumber.setTypeEquals(BaseType.INT);
 
-/* 
+/*
 */
     }
     ///////////////////////////////////////////////////////////////////
@@ -61,13 +61,13 @@ Level of the quantization from 0 to N-1
     /**
      */
     public void  generateFireCode() {
-        
+
 CGCQuant.go();
-		addCode(writeStep); 
+		addCode(writeStep);
      }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
-    public String writeStep = 
+    public String writeStep =
         "	$ref(stepNumber) = mid;\n";
 }

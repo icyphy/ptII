@@ -39,7 +39,7 @@ import caltrop.interpreter.OutputChannel;
 //////////////////////////////////////////////////////////////////////////
 //// DFOutputChannel
 /**
-   @author J&#246;rn W. Janneck 
+   @author J&#246;rn W. Janneck
    @version $Id$
    @since Ptolemy II 4.0
    @Pt.ProposedRating Yellow (neuendor)

@@ -25,13 +25,13 @@ with step size "step" (default 1.0).
 A precision and an initial value can be specified for a parameter by using
 the notation ("initial_value","precision").
 <p>
-The value of the "step" and "value" parameters and their precision 
-in bits can currently be specified using two different notations. 
-Specifying only a value by itself in the dialog box would create a 
+The value of the "step" and "value" parameters and their precision
+in bits can currently be specified using two different notations.
+Specifying only a value by itself in the dialog box would create a
 fixed-point number with the default precision, which has a total length
 of 24 bits with the number of range bits set as required by the value
 of the parameter.
-For example, the default value 1.0 creates a fixed-point object with 
+For example, the default value 1.0 creates a fixed-point object with
 precision 2.22, and a value like 0.5 would create one with precision 1.23.
 An alternate way of specifying the value and the precision of this parameter
 is to use the parenthesis notation which will be interpreted as
@@ -41,7 +41,7 @@ create a fixed-point object by casting the double-precision floating-point
 number 2.546 to a fixed-point precision of 3.5.
 
  @Author Juergen Weiss
- @Version $Id$, based on version 1.9 of /users/ptolemy/src/domains/cgc/stars/CGCRampFix.pl, from Ptolemy Classic 
+ @Version $Id$, based on version 1.9 of /users/ptolemy/src/domains/cgc/stars/CGCRampFix.pl, from Ptolemy Classic
  @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCRampFix extends CGCFix {
@@ -80,7 +80,7 @@ public class CGCRampFix extends CGCFix {
         ValuePrecision = new Parameter(this, "ValuePrecision");
         ValuePrecision.setExpression("2.14");
 
-/* 
+/*
 */
     }
     ///////////////////////////////////////////////////////////////////
@@ -127,7 +127,7 @@ The precision of this state is the precision of the accumulation. parameter with
     /**
      */
     public void  generateInitializeCode() throws IllegalActionException {
-        
+
 super.generateInitializeCode();
 		// if the user specified an invalid precision string, the error
 		// will be automatically reported in the initialize method of
@@ -140,7 +140,7 @@ super.generateInitializeCode();
     /**
      */
     public void  generateFireCode() {
-        
+
 // insert code to clear overflow flag
 		super.clearOverflow();
 
@@ -148,7 +148,7 @@ super.generateInitializeCode();
 "	FIX_Assign($ref(output), $ref(value));\n"
 "	FIX_Add($ref(value), $ref(value),$ref(step));\n"
 
-); 	 addCode(_str_);  } 
+); 	 addCode(_str_);  }
 
 		// insert code to test overflow flag
 		super.checkOverflow();

@@ -83,7 +83,7 @@ public class Default extends TypedAtomicActor {
         StringAttribute controlCardinal
                 = new StringAttribute(alternate, "_cardinal");
         controlCardinal.setExpression("SOUTH");
-        
+
         output = new TypedIOPort(this, "output", false, true);
         // Default type constraints are the right ones, so we need not
         // explicitly declare them here.
@@ -130,7 +130,7 @@ public class Default extends TypedAtomicActor {
                     } else {
                         output.sendClear(0);
                     }
-                }                
+                }
             }
         }
     }

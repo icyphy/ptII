@@ -181,12 +181,12 @@ public class Cone3D extends GRShadedShape {
                 = ((IntToken)circleDivisions.getToken()).intValue();
         int sideDivisionsValue
                 = ((IntToken)sideDivisions.getToken()).intValue();
-        
-        float heightValue 
+
+        float heightValue
                 = (float)((DoubleToken) height.getToken()).doubleValue();
         float radiusValue
                 = (float)((DoubleToken) radius.getToken()).doubleValue();
-                
+
         if (_changesAllowedNow) {
             Cone cone = new Cone(1.0f, 1.0f,
                     primitiveFlags, circleDivisionsValue,
@@ -199,7 +199,7 @@ public class Cone3D extends GRShadedShape {
                     new Vector3d(radiusValue, heightValue, radiusValue));
             scaler.setTransform(_scaleTransform);
             scaler.addChild(cone);
-            _containedNode = scaler;            
+            _containedNode = scaler;
         } else {
             _containedNode = new Cone(radiusValue, heightValue,
                     primitiveFlags, circleDivisionsValue,
@@ -219,7 +219,7 @@ public class Cone3D extends GRShadedShape {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /** If changes to the dimensions are allowed, this is the transform 
+    /** If changes to the dimensions are allowed, this is the transform
      *  that applies them.
      */
     private Transform3D _scaleTransform;

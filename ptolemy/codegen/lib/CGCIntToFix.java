@@ -27,7 +27,7 @@ If the output precision is not specified, the precision is determined at
 runtime according to the incoming int value.
 
  @Author J.Weiss
- @Version $Id$, based on version 1.4 of /users/ptolemy/src/domains/cgc/stars/CGCIntToFix.pl, from Ptolemy Classic 
+ @Version $Id$, based on version 1.4 of /users/ptolemy/src/domains/cgc/stars/CGCIntToFix.pl, from Ptolemy Classic
  @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCIntToFix extends CGCFix {
@@ -52,7 +52,7 @@ public class CGCIntToFix extends CGCFix {
         OutputPrecision = new Parameter(this, "OutputPrecision");
         OutputPrecision.setExpression("");
 
-/* 
+/*
 */
     }
     ///////////////////////////////////////////////////////////////////
@@ -82,7 +82,7 @@ value (or minimum for negative magnitudes). parameter with initial value "".
     /**
      */
     public void  begin() {
-        
+
 // if the precision for the output port is not defined
 		// - neither by this nor the successor star -, the actual
 		// precision is determined at runtime
@@ -94,7 +94,7 @@ value (or minimum for negative magnitudes). parameter with initial value "".
     /**
      */
     public void  generateInitializeCode() throws IllegalActionException {
-        
+
 super.generateInitializeCode();
 		output.setPrecision(OutputPrecision);
      }
@@ -102,14 +102,14 @@ super.generateInitializeCode();
     /**
      */
     public void  generateFireCode() {
-        
+
 // insert code to clear overflow flag
 		super.clearOverflow();
 
 		if (output.attributes() & AB_VARPREC)
-		     addCode(setprec); 
+		     addCode(setprec);
 
-		addCode(assign); 
+		addCode(assign);
 
 		// insert code to test overflow flag
 		super.checkOverflow();
@@ -117,9 +117,9 @@ super.generateInitializeCode();
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
-    public String setprec = 
+    public String setprec =
         "	        FIX_SetPrecisionFromDouble($precision(output),(double)((int)$ref(input)));\n";
 
-    public String assign = 
+    public String assign =
         "	        FIX_DoubleAssign($ref(output),(double)((int)$ref(input)));\n";
 }

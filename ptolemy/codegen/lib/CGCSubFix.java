@@ -23,7 +23,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 Output as a fixed-point number the "pos" input minus all "neg" inputs.
 
  @Author Juergen Weiss
- @Version $Id$, based on version 1.5 of /users/ptolemy/src/domains/cgc/stars/CGCSubFix.pl, from Ptolemy Classic 
+ @Version $Id$, based on version 1.5 of /users/ptolemy/src/domains/cgc/stars/CGCSubFix.pl, from Ptolemy Classic
  @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCSubFix extends CGCFix {
@@ -63,7 +63,7 @@ public class CGCSubFix extends CGCFix {
         index = new Parameter(this, "index");
         index.setExpression("1");
 
-/*     
+/*
 noInternalState();
 */
     }
@@ -121,7 +121,7 @@ magnitudes). parameter with initial value "2.14".
     /**
      */
     public void  generateInitializeCode() throws IllegalActionException {
-        
+
 super.generateInitializeCode();
                 if (((IntToken)((ArrivingPrecision).getToken())).intValue() == 0) // FIXME ArrivingPrecision should be a Boolean{
 		    pos.setPrecision(InputPrecision);
@@ -133,7 +133,7 @@ super.generateInitializeCode();
     /**
      */
     public void  generateFireCode() {
-        
+
 // insert code to clear overflow flag
 		super.clearOverflow();
 
@@ -142,21 +142,21 @@ super.generateInitializeCode();
 { StringBuffer _str_ = new StringBuffer(); _str_.append(
 "	FIX_Sub($ref(output), $ref(pos),$ref(neg#1));\n"
 
-); 	 addCode(_str_);  } 
+); 	 addCode(_str_);  }
 
 		else {
 			// initialize sum
 { StringBuffer _str_ = new StringBuffer(); _str_.append(
 "	FIX_Assign($ref(output),$ref(pos));\n"
 
-); 	 addCode(_str_);  } 
+); 	 addCode(_str_);  }
 
 			for (int i=1; i <= neg.numberPorts(); i++) {
 			    index = i;
 { StringBuffer _str_ = new StringBuffer(); _str_.append(
 "	FIX_Sub($ref(output), $ref(output),$ref(neg#index));\n"
 
-); 	 addCode(_str_);  } 
+); 	 addCode(_str_);  }
 			}
 		}
 

@@ -173,7 +173,7 @@ public abstract class ActorController extends AttributeController {
 
             // FIXME: does this work outside of SDF?  Should
             // we check to see if the director is an SDF director?
-            // We should use reflection to check this so that 
+            // We should use reflection to check this so that
             // this class does not require SDFDirector.
             // See $PTII/doc/coding/debugging.htm
 
@@ -277,7 +277,7 @@ public abstract class ActorController extends AttributeController {
             label = new LabelFigure(
                     string, font, 1.0, SwingConstants.SOUTH_WEST);
             // Shift the label right so it doesn't
-            // collide with ports.  It will probably 
+            // collide with ports.  It will probably
             // collide with the actor name.
             label.translateTo(x, y - 5);
             // Rotate the label.
@@ -305,7 +305,7 @@ public abstract class ActorController extends AttributeController {
     private PortDialogFactory _portDialogFactory;
 
     private static Font _portLabelFont = new Font("SansSerif", Font.PLAIN, 10);
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
@@ -489,20 +489,20 @@ public abstract class ActorController extends AttributeController {
                         String rateString = "";
                         Variable rateParameter = null;
                         if (((IOPort)port).isInput()) {
-                            rateParameter = 
+                            rateParameter =
                                 (Variable)port.getAttribute("tokenConsumptionRate");
                             if (rateParameter == null) {
                                 String altName = "_tokenConsumptionRate";
                                 rateParameter = (Variable)port.getAttribute(altName);
                             }
                         } else if (((IOPort)port).isOutput()) {
-                            rateParameter = 
+                            rateParameter =
                                 (Variable)port.getAttribute("tokenProductionRate");
                             if (rateParameter == null) {
                                 String altName = "_tokenProductionRate";
                                 rateParameter = (Variable)port.getAttribute(altName);
-                            }  
-                        } 
+                            }
+                        }
                         if (rateParameter != null) {
                             try {
                                 rateString = rateParameter.getToken().toString();
@@ -510,8 +510,8 @@ public abstract class ActorController extends AttributeController {
                                 // Ignore.
                             }
                         }
-                        LabelFigure labelFigure = 
-                            _createPortLabelFigure(rateString, 
+                        LabelFigure labelFigure =
+                            _createPortLabelFigure(rateString,
                                     _portLabelFont, x, y, direction);
                         labelFigure.setFillPaint(Color.BLUE);
                         figure.add(labelFigure);
@@ -535,7 +535,7 @@ public abstract class ActorController extends AttributeController {
                         }
                     }
                     if (show) {
-                        LabelFigure labelFigure = 
+                        LabelFigure labelFigure =
                             _createPortLabelFigure(port.getName(),
                                     _portLabelFont, x, y, direction);
                         figure.add(labelFigure);
@@ -625,7 +625,7 @@ public abstract class ActorController extends AttributeController {
             // For some inexplicable reason, the I key doesn't work here.
             // Use L, which used to be used for layout.
             putValue(GUIUtilities.ACCELERATOR_KEY,
-                    KeyStroke.getKeyStroke(KeyEvent.VK_L, 
+                    KeyStroke.getKeyStroke(KeyEvent.VK_L,
                             Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
         }
 
@@ -653,7 +653,7 @@ public abstract class ActorController extends AttributeController {
             }
         }
     }
-    
+
     /////////////////////////////////////////////////////////////////////
     //// SaveInFileAction
 
@@ -677,7 +677,7 @@ public abstract class ActorController extends AttributeController {
             NamedObj object = getTarget();
             if (object instanceof Entity) {
                 Entity entity = (Entity)object;
-                
+
                 BasicGraphController controller = (BasicGraphController)getController();
                 BasicGraphFrame frame = controller.getFrame();
 

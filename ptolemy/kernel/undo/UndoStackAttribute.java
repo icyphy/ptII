@@ -123,7 +123,7 @@ public class UndoStackAttribute extends SingletonAttribute {
                 return new UndoStackAttribute(topLevel, "_undoInfo");
             } catch (KernelException e) {
                 throw new InternalErrorException(e);
-            }           
+            }
         } finally {
 	    object.workspace().doneReading();
         }

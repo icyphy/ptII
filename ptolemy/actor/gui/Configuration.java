@@ -528,7 +528,7 @@ public class Configuration extends CompositeEntity {
             return effigy.getFullName();
         }
         Effigy parentEffigy = (Effigy) parent;
-        
+
         // Note that we add a # the first time, and
         // then add . after that.  So
         // file:/c:/foo.xml#bar.bif is ok, but

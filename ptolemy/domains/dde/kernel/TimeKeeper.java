@@ -116,7 +116,7 @@ public class TimeKeeper {
      *  equal to the time stamp associated with the token most recently
      *  consumed by one of the receivers managed by this TimeKeeper.
      *  @return The current time of this TimeKeeper.
-     *  @deprecated As of Ptolemy II 4.1, replaced by 
+     *  @deprecated As of Ptolemy II 4.1, replaced by
      *  {@link #getModelTime()}
      */
     public double getCurrentTime() {
@@ -239,7 +239,7 @@ public class TimeKeeper {
      *  decrease the value of current time to a nonnegative number.
      */
     public synchronized void setCurrentTime(Time time) {
-        if ( time.compareTo(_currentTime) < 0 
+        if ( time.compareTo(_currentTime) < 0
                 && time.getDoubleValue() != PrioritizedTimedQueue.INACTIVE
                 && time.getDoubleValue() != PrioritizedTimedQueue.IGNORE ) {
             throw new IllegalArgumentException(

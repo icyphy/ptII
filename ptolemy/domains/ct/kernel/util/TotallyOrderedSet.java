@@ -38,9 +38,9 @@ import java.util.List;
 //////////////////////////////////////////////////////////////////////////
 //// TotallyOrderedSet
 /**
-   An object of this class is a totally ordered set with an increasing order. 
-   The order between any two elements in the set can be checked by calling the 
-   compare method of a comparator associated with this object. An element, a, 
+   An object of this class is a totally ordered set with an increasing order.
+   The order between any two elements in the set can be checked by calling the
+   compare method of a comparator associated with this object. An element, a,
    in this set is said to preceed another one, b, if compare(a, b) returns -1.
    <p>
    The set does not containt repeated elements, which means comparing any two
@@ -69,7 +69,7 @@ public class TotallyOrderedSet {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return the element with the given index. 
+    /** Return the element with the given index.
      *  @param index The index of the element to return.
      *  @return The requested element.
      */
@@ -85,7 +85,7 @@ public class TotallyOrderedSet {
 
     /** Return true if the given element is contained in this set.
      *  The equivalence relation is defined by the comparator.
-     *  If the type of given element is not comparable by the comparator, 
+     *  If the type of given element is not comparable by the comparator,
      *  then a ClassCastException will be thrown.
      *  @param object The object to check for containment.
      *  @return True If the elements is contained in this set.
@@ -152,7 +152,7 @@ public class TotallyOrderedSet {
     /** Insert the given element, keeping the set sorted. If the set
      *  contains an element "equals" the given element, then do nothing.
      *  The equivalence relation is defined by the comparator.
-     *  If the type of given element is not comparable, then a 
+     *  If the type of given element is not comparable, then a
      *  ClassCastException will be thrown.
      *  @param obj The element to be inserted.
      */
@@ -211,7 +211,7 @@ public class TotallyOrderedSet {
     }
 
     /** Remove and return the first element, ie. the <i>smallest</i>
-     *  element in the set. 
+     *  element in the set.
      *  @return The removed element.
      */
     public Object removeFirst() {

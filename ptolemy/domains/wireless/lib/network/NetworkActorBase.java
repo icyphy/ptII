@@ -1,4 +1,4 @@
-/* An actor that provides the common functions to all wireless 
+/* An actor that provides the common functions to all wireless
 network models.
 
 Copyright (c) 2004 The Regents of the University of California.
@@ -80,22 +80,22 @@ public class NetworkActorBase extends TypedAtomicActor {
     }
 
     // messages between the layers
-    protected static final String[] PCRequestMsgFields 
-            = {"kind", "fromMACAddr", "toMACAddr", "range", "angle", 
+    protected static final String[] PCRequestMsgFields
+            = {"kind", "fromMACAddr", "toMACAddr", "range", "angle",
                "num_nb", "xpos","ypos", "Length"};
 
-    protected static final String[] PCResponseMsgFields 
+    protected static final String[] PCResponseMsgFields
             = {"kind", "fromMACAddr", "toMACAddr", "xpos","ypos",
                "range","Length"};
 
     protected static final String[] StartRspMsgFields = {"kind","range"};
 
-    protected static final String[] cNetwInterestMessageFields 
+    protected static final String[] cNetwInterestMessageFields
             = {"kind","cost", "hop_distance","fromMACAddr","toMACAddr",
                "hopcount","arrivalTime", "Length"};
 
-    protected static final String[] cNetwDataMessageFields 
-            = {"kind", "fromMACAddr", "toMACAddr", "hopcount", 
+    protected static final String[] cNetwDataMessageFields
+            = {"kind", "fromMACAddr", "toMACAddr", "hopcount",
                "arrivalTime","payload","Length"};
 
     // message types

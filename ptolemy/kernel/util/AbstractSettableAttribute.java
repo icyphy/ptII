@@ -93,7 +93,7 @@ public abstract class AbstractSettableAttribute
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Return the default value of this Settable, or null if no default
      *  has been set.  If this object is derived (in the actor-oriented
      *  class mechanism, see the Instantiable interface), then the default

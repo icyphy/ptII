@@ -85,7 +85,7 @@ import ptolemy.util.StringUtilities;
    the appropriate method to use by using reflection, matching the
    types of the arguments.
 
-   @author Christopher Hylands Brooks, Tobin Fricke, Bart Kienhuis, Edward A. Lee, 
+   @author Christopher Hylands Brooks, Tobin Fricke, Bart Kienhuis, Edward A. Lee,
    Steve Neuendorffer, Neil Smyth, Yang Zhao
    @version $Id$
    @since Ptolemy II 0.2
@@ -122,7 +122,7 @@ public class UtilityFunctions {
         return token1.getType().convert(token2);
     }
 
-    /** Concatenate two arrays.  
+    /** Concatenate two arrays.
      *  The arrays must have the same type.
      *  Example: concatenate({1,2,3},{4,5,6}) == {1,2,3,4,5,6}.
      *  @param token1 First array from which tokens are copied to the result.
@@ -130,11 +130,11 @@ public class UtilityFunctions {
      *  @return An array containing all of the elements of the first argument
      *   (in order), followed by all of the arguments of the second argument
      *   (in order).
-     *  @exception IllegalActionException If the arrays do not have 
+     *  @exception IllegalActionException If the arrays do not have
      *   compatible types.
      *  @since Ptolemy II 4.1
      */
-    public static ArrayToken concatenate(ArrayToken token1, ArrayToken token2) 
+    public static ArrayToken concatenate(ArrayToken token1, ArrayToken token2)
             throws IllegalActionException {
        Token array1[] = token1.arrayValue();
        Token array2[] = token2.arrayValue();
@@ -144,11 +144,11 @@ public class UtilityFunctions {
 
        System.arraycopy(array1, 0, resultArray, 0,             array1.length);
        System.arraycopy(array2, 0, resultArray, array1.length, array2.length);
-    
-       return new ArrayToken(resultArray);    
+
+       return new ArrayToken(resultArray);
     }
 
-    /** Concatenate an array of arrays into a single array.  
+    /** Concatenate an array of arrays into a single array.
      *  Example: concatenate({{1,2,3},{4,5},{6,7}}) == {1,2,3,4,5,6,7}.
      *  @param token Array of arrays which are to be concatenated.
      *  @exception IllegalActionException If the argument is not an array of
@@ -167,15 +167,15 @@ public class UtilityFunctions {
         for (int i = 0; i < token.length(); i++) {
              nElements += ((ArrayToken)(token.getElement(i))).length();
         }
-        
+
         Token result[] = new Token[nElements];
         int cursor = 0;
         for (int i = 0; i < token.length(); i++) {
             Token array[] = ((ArrayToken)(token.getElement(i))).arrayValue();
             System.arraycopy(array, 0, result, cursor, array.length);
-            cursor += array.length;            
+            cursor += array.length;
         }
-        
+
         return new ArrayToken(result);
     }
 
@@ -188,7 +188,7 @@ public class UtilityFunctions {
     public static RecordToken constants() {
         return Constants.constants();
     }
-    
+
     /** Return an empty array with its element type matching
      *  the specified token.
      *  @param prototype A token specifying the element type.
@@ -217,7 +217,7 @@ public class UtilityFunctions {
      *   element type that matches the specified array.
      *  @exception IllegalActionException If applying the function
      *   triggers an exception.
-     *  @since Ptolemy II 4.1 
+     *  @since Ptolemy II 4.1
      */
     public static ArrayToken filter(FunctionToken predicate, ArrayToken array)
             throws IllegalActionException {
@@ -245,7 +245,7 @@ public class UtilityFunctions {
      *   element type that matches the specified array.
      *  @exception IllegalActionException If applying the function
      *   triggers an exception.
-     *  @since Ptolemy II 4.1 
+     *  @since Ptolemy II 4.1
      */
     public static ArrayToken filter(
             FunctionToken predicate, ArrayToken array, IntToken sizeLimit)
@@ -279,7 +279,7 @@ public class UtilityFunctions {
             return new ArrayToken(prototype);
         }
     }
-    
+
     /** Return the return type of the filter method, given the types
      *  of the argument.
      *  @param predicateType The type of the predicate function.
@@ -1514,13 +1514,13 @@ public class UtilityFunctions {
             Type arrayType, Type indexType, Type countType) {
         return arrayType;
     }
-    
+
     /** Return the sum of the elements in the specified array.
      *  This method is polymorphic in that it can sum any array
      *  whose elements support addition.
      *  There is special support for strings, which are added
      *  not via their add method (which concatenates two strings),
-     *  but are accumulated in a StringBuffer, which is much more 
+     *  but are accumulated in a StringBuffer, which is much more
      *  efficient.
      *  @param array An array.
      *  @return The sum of the elements of the array.
@@ -1546,7 +1546,7 @@ public class UtilityFunctions {
                         .stringValue());
             }
             return new StringToken(buffer.toString());
-        }  
+        }
         Token result = array.getElement(0);
         for (int i = 1; i < array.length(); i++) {
             result = result.add(array.getElement(i));

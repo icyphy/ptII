@@ -54,7 +54,7 @@ import ptolemy.util.StringUtilities;
    @Pt.AcceptedRating Red (rowland)
 */
 public class UnitAttribute extends AbstractSettableAttribute {
-    
+
     /** Construct a UnitsAttribute with no specific name, or container.
      *  @exception IllegalActionException If the attribute is not of an
      *  acceptable class for the container, or if the name contains a period.
@@ -81,7 +81,7 @@ public class UnitAttribute extends AbstractSettableAttribute {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Add a listener to be notified when the value of this attribute changes.
      *  If the listener is already on the list of listeners, then do nothing.
      *  @param listener The listener to add.
@@ -110,7 +110,7 @@ public class UnitAttribute extends AbstractSettableAttribute {
         if (value != null && !value.equals("")) {
             valueTerm =
                 " value=\"" + StringUtilities.escapeForXML(value) + "\"";
-        
+
             output.write(
                     _getIndentPrefix(depth)
                     + "<"
@@ -268,7 +268,7 @@ public class UnitAttribute extends AbstractSettableAttribute {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     Visibility _visibility = Settable.NONE;
     // Listeners for changes in value.
     private List _valueListeners;

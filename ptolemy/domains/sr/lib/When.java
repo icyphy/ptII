@@ -73,7 +73,7 @@ public class When extends Transformer {
         StringAttribute controlCardinal
                 = new StringAttribute(control, "_cardinal");
         controlCardinal.setExpression("SOUTH");
-        
+
         output.setTypeAtLeast(input);
     }
 

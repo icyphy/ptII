@@ -4,7 +4,7 @@
 Copyright (c) 1990-1997 The Regents of the University of California.
 All rights reserved.
 See the file $PTOLEMY/copyright for copyright notice,
-limitation of liability, and disclaimer of warranty 
+limitation of liability, and disclaimer of warranty
 provisions.
  */
 package ptolemy.codegen.lib;
@@ -31,7 +31,7 @@ The ulaw algorithm is based on the description of the T1 system found
 in: Simon Haykin, "Communication Systems," section 8.2 (Wiley 1983).
 
  @Author T. M. Parks and Sunil Bhave
- @Version $Id$, based on version 1.16 of /users/ptolemy/src/domains/cgc/stars/CGCMonoOut.pl, from Ptolemy Classic 
+ @Version $Id$, based on version 1.16 of /users/ptolemy/src/domains/cgc/stars/CGCMonoOut.pl, from Ptolemy Classic
  @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCMonoOut extends CGCAudioBase {
@@ -54,7 +54,7 @@ public class CGCMonoOut extends CGCAudioBase {
         aheadLimit = new Parameter(this, "aheadLimit");
         aheadLimit.setExpression("-1");
 
-/*     
+/*
 channels.setAttributes(A_NONCONSTANT|A_NONSETTABLE);
     channels.setInitValue(1);
     balance.setAttributes(A_NONCONSTANT|A_NONSETTABLE);
@@ -83,25 +83,25 @@ Input ranges from -1.0 to 1.0
     /**
      */
     public int  myExecTime() {
-        
+
 return ((IntToken)((blockSize).getToken())).intValue()*14;
      }
 
     /**
      */
     public void  wrapup() {
-        
+
 super.wrapup();
      }
 
     /**
      */
     public void  generatePreinitializeCode() {
-        
+
 super.initCode();
 
     /* variable for the sync codeblock below and its initialization */
-    if ((int)aheadLimit >= 0 ) 
+    if ((int)aheadLimit >= 0 )
        {
 	addDeclaration(syncCounter);
 	addCode("$starSymbol(count) = 0; ");
@@ -114,7 +114,7 @@ super.initCode();
       addModuleFromLibrary("ptdspMuLaw", "src/utils/libptdsp", "ptdsp");
     }
     /* Open file for writing data */
-    addCode(openFileForWriting); 	
+    addCode(openFileForWriting);
     /* Setting the audio driver if the output file is /dev/audio */
     if (strcasecmp(fileName, "/dev/audio") == 0)
       {
@@ -129,7 +129,7 @@ super.initCode();
     /**
      */
     public void  generateInitializeCode() throws IllegalActionException {
-        
+
 if (encodingType.equalsIgnoreCase("linear16")) {
       input.setSDFParams(int(blockSize/2), int(blockSize/2)-1);
     } else {
@@ -140,29 +140,29 @@ if (encodingType.equalsIgnoreCase("linear16")) {
     /**
      */
     public void  generateFireCode() {
-        
+
 if (encodingType.equalsIgnoreCase("linear16")) {
-	addCode(convertLinear); 
+	addCode(convertLinear);
     } else {
-	addCode(convertUlaw); 
+	addCode(convertUlaw);
     }
     if ((int)aheadLimit >= 0 ) {
 	if (encodingType.equalsIgnoreCase("linear16")) {
-	    addCode(syncLinear16); 
+	    addCode(syncLinear16);
     	} else {
-	    addCode(syncUlaw); 
+	    addCode(syncUlaw);
     	}
 	}
-    addCode(setbufptr); 
-    addCode(write); 
+    addCode(setbufptr);
+    addCode(write);
      }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
-    public String setbufptr = 
+    public String setbufptr =
         "    $starSymbol(bufferptr) = $starSymbol(buffer);\n";
 
-    public String convertLinear = 
+    public String convertLinear =
         "{\n"
         + "    /* convert floating-point to 16-bit linear */\n"
         + "    int i;\n"
@@ -173,7 +173,7 @@ if (encodingType.equalsIgnoreCase("linear16")) {
         + "    }\n"
         + "  }";
 
-    public String convertUlaw = 
+    public String convertUlaw =
         "{\n"
         + "    /* convert floating-point to 8-bit u-law encoding */\n"
         + "    int i;\n"

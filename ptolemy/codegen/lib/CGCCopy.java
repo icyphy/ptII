@@ -27,7 +27,7 @@ PortHole and the buffer size is greater than the number of Particles
 transferred."
 
  @Author Soonhoi Ha
- @Version $Id$, based on version 1.4 of /users/ptolemy/src/domains/cgc/stars/CGCCopy.pl, from Ptolemy Classic 
+ @Version $Id$, based on version 1.4 of /users/ptolemy/src/domains/cgc/stars/CGCCopy.pl, from Ptolemy Classic
  @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCCopy extends ClassicCGCActor {
@@ -50,7 +50,7 @@ public class CGCCopy extends ClassicCGCActor {
         numSample = new Parameter(this, "numSample");
         numSample.setExpression("1");
 
-/*     
+/*
 noInternalState();
 */
     }
@@ -78,8 +78,8 @@ noInternalState();
     /**
      */
     public int  myExecTime() {
-        
-if (input.resolvedType() == COMPLEX) 
+
+if (input.resolvedType() == COMPLEX)
 			return 2 * ((IntToken)((numSample).getToken())).intValue();
 		else
 			return ((IntToken)((numSample).getToken())).intValue();
@@ -88,14 +88,14 @@ if (input.resolvedType() == COMPLEX)
     /**
      */
     public void  generatePreinitializeCode() {
-        
+
 numSample = output.numXfer();
      }
 
     /**
      */
     public void  generateInitializeCode() throws IllegalActionException {
-        
+
 if (((IntToken)((numSample).getToken())).intValue() > 1) {
 			input.setSDFParams(((IntToken)((numSample).getToken())).intValue());
 			output.setSDFParams(((IntToken)((numSample).getToken())).intValue());
@@ -105,22 +105,22 @@ if (((IntToken)((numSample).getToken())).intValue() > 1) {
     /**
      */
     public void  generateFireCode() {
-        
-if (input.resolvedType() == COMPLEX) 
-			addCode(complexBody); 
+
+if (input.resolvedType() == COMPLEX)
+			addCode(complexBody);
 		else
-			addCode(floatBody); 
+			addCode(floatBody);
      }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
-    public String floatBody = 
+    public String floatBody =
         "	int i;\n"
         + "	for (i = 0; i < $val(numSample); i++) {\n"
         + "		$ref(output, i) = $ref(input, i);\n"
         + "	}\n";
 
-    public String complexBody = 
+    public String complexBody =
         "	int i;\n"
         + "	for (i = 0; i < $val(numSample); i++) {\n"
         + "		$ref(output, i).real = $ref(input, i).real;\n"

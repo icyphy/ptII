@@ -33,14 +33,14 @@ import ptolemy.kernel.util.NameDuplicationException;
    First, it filters redundant hits so that only one is reported.
    Second, it improves robustness against noisy DTMF signals and speech input.
    <h3>References</h3>
-   <p>[1]  
+   <p>[1]
    Pat Mock, "Add DTMF Generation and Decoding to DSP-uP Designs,"
    Electronic Data News, March 21, 1985.  Reprinted in
    <i>Digital Signal Processing Applications with the TMS320 Family</i>,
    Texas Instruments, 1986.
 
    @Author Brian L. Evans
-   @Version $Id$, based on version 1.5 of /users/ptolemy/src/domains/cgc/dsp/stars/CGCDTMFPostTest.pl, from Ptolemy Classic 
+   @Version $Id$, based on version 1.5 of /users/ptolemy/src/domains/cgc/dsp/stars/CGCDTMFPostTest.pl, from Ptolemy Classic
    @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCDTMFPostTest extends ClassicCGCActor {
@@ -75,7 +75,7 @@ public class CGCDTMFPostTest extends ClassicCGCActor {
         secondToLast = new Parameter(this, "secondToLast");
         secondToLast.setExpression("-1");
 
-        /* 
+        /*
          */
     }
     ///////////////////////////////////////////////////////////////////
@@ -135,13 +135,13 @@ public class CGCDTMFPostTest extends ClassicCGCActor {
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
-    public String decl = 
+    public String decl =
     "		int retval = 0;\n"
     + "		int inputValue = $val(initialLastInput);\n"
     + "		int lastValue = $ref(last);\n"
     + "\n";
 
-    public String test = 
+    public String test =
     "		/* if the current input is valid, then compare it with the\n"
     + "		   last and second-to-last valid inputs; else, return FALSE */\n"
     + "		if ( $ref(valid) ) {\n"
@@ -154,7 +154,7 @@ public class CGCDTMFPostTest extends ClassicCGCActor {
     + "		$ref(secondToLast) = lastValue;\n"
     + "		$ref(last) = inputValue;\n";
 
-    public String sendOutput = 
+    public String sendOutput =
     "\n"
     + "		$ref(output) = retval;\n";
 }

@@ -110,12 +110,12 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
         directoryOrURL = new FilePortParameter(this, "directoryOrURL");
         new Parameter(directoryOrURL, "allowFiles", BooleanToken.FALSE);
         new Parameter(directoryOrURL, "allowDirectories", BooleanToken.TRUE);
- 
+
         output.setTypeEquals(new ArrayType(BaseType.STRING));
 
         pattern = new StringParameter(this, "pattern");
         pattern.setExpression("");
-        
+
         listOnlyDirectories = new Parameter(this, "listOnlyDirectories");
         listOnlyDirectories.setTypeEquals(BaseType.BOOLEAN);
         listOnlyDirectories.setExpression("false");
@@ -202,7 +202,7 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        
+
         directoryOrURL.update();
 
         URL sourceURL = directoryOrURL.asURL();
@@ -242,7 +242,7 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
                 }
                 if (result.size() == 0) {
                     throw new IllegalActionException(this,
-                            "No files or directories that match the pattern.");                    
+                            "No files or directories that match the pattern.");
                 }
                 StringToken[] resultArray = new StringToken[result.size()];
                 for (int i = 0; i < resultArray.length; i++) {

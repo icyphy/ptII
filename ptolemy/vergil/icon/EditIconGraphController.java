@@ -176,7 +176,7 @@ public class EditIconGraphController extends BasicGraphController {
 
     // The selection interactor for drag-selecting nodes
     private SelectionDragger _selectionDragger;
-    
+
     // Default snap resolution.
     private static double _SNAP_RESOLUTION = 1.0;
 }

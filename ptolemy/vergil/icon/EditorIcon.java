@@ -128,7 +128,7 @@ public class EditorIcon extends Attribute {
             setName(name);
             // Create a tableau factory so that an instance
             // of this class is opened using the EditIconTableau.
-            Attribute tableauFactory = 
+            Attribute tableauFactory =
                 new EditIconTableau.Factory(this, "_tableauFactory");
             tableauFactory.setPersistent(false);
         } catch (NameDuplicationException ex) {
@@ -149,7 +149,7 @@ public class EditorIcon extends Attribute {
         super(container, name);
         // Create a tableau factory so that an instance
         // of this class is opened using the EditIconTableau.
-        Attribute tableauFactory = 
+        Attribute tableauFactory =
             new EditIconTableau.Factory(this, "_tableauFactory");
         tableauFactory.setPersistent(false);
     }

@@ -83,7 +83,7 @@ public class WirelessComposite extends TypedCompositeActor {
         super(container, name);
         _initialize();
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -121,7 +121,7 @@ public class WirelessComposite extends TypedCompositeActor {
         // derived class Java definition. Thus, we force the class name
         // here to be WirelessComposite.
         setClassName("ptolemy.domains.wireless.kernel.WirelessComposite");
-        
+
         _attachText("_iconDescription", "<svg>\n" +
                 "<ellipse cx=\"0\" cy=\"0\" " +
                 "rx=\"27\" ry=\"27\" " +

@@ -120,7 +120,7 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
         return false;
     }
 
-    /** Emit the current states of the dynamic actors executed by this 
+    /** Emit the current states of the dynamic actors executed by this
      *  director.
      */
     public void emitCurrentStates() {

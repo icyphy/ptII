@@ -47,7 +47,7 @@ import ptolemy.kernel.util.Workspace;
 public class MultirateFSMDirector extends FSMDirector {
 
     /**
-     * 
+     *
      */
     public MultirateFSMDirector() {
         super();
@@ -73,10 +73,10 @@ public class MultirateFSMDirector extends FSMDirector {
         super(container, name);
         // TODO Auto-generated constructor stub
     }
-    
+
     /////////////////////////////////////////////////////////////////////
     ////                    public methods                           ////
-    
+
     /** Return a new receiver of a type compatible with this director.
      *  This returns an instance of SDFReceiver.
      *  @return A new SDFReceiver.
@@ -84,7 +84,7 @@ public class MultirateFSMDirector extends FSMDirector {
     public Receiver newReceiver() {
         return new SDFReceiver();
     }
-    
+
     /** Return true if data are transferred from the input port of
      *  the container to the connected ports of the controller and
      *  of the current refinement actor.
@@ -110,7 +110,7 @@ public class MultirateFSMDirector extends FSMDirector {
         // The receivers of the current refinement that receive data
         // from "port."
         Receiver[][] insideReceivers = _currentLocalReceivers(port);
-        
+
         int rate = DFUtilities.getTokenConsumptionRate(port);
         for (int i = 0; i < port.getWidth(); i++) {
             // For each channel
@@ -139,7 +139,7 @@ public class MultirateFSMDirector extends FSMDirector {
                     for (int k = 0; k < rate; k++) {
                         if (port.hasToken(i)) {
                             ptolemy.data.Token t = port.get(i);
-                            port.sendInside(i, t); 
+                            port.sendInside(i, t);
                         }
                     }
                     // Successfully transferred data, so return true.
@@ -156,7 +156,7 @@ public class MultirateFSMDirector extends FSMDirector {
 
     /** Transfer data from an output port of the current refinement actor
      *  to the ports it is connected to on the outside. This method differs
-     *  from the base class method in that this method will transfer <i>k</i> 
+     *  from the base class method in that this method will transfer <i>k</i>
      *  tokens in the receivers, where <i>k</i> is the port rate if it is
      *  declared by the port. If the port rate is not declared, this method
      *  behaves like the base class method and will transfer at most one token.
@@ -190,7 +190,7 @@ public class MultirateFSMDirector extends FSMDirector {
                     } catch (NoTokenException ex) {
                         throw new InternalErrorException(
                                 "Director.transferOutputs: " +
-                                "Not enough tokens for port " 
+                                "Not enough tokens for port "
                                 + port.getName() + " " + ex);
                     }
                 }

@@ -151,7 +151,7 @@ public class ModalModel extends CTCompositeActor implements ChangeListener {
      *  director, then the default is "ptolemy.domains.fsm.kernel.FSMDirector".
      */
     public StringParameter directorClass;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -159,7 +159,7 @@ public class ModalModel extends CTCompositeActor implements ChangeListener {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == directorClass) {
-            
+
             // We should change the director only if the current
             // director is not of the right class.
             Director director = getDirector();
@@ -174,7 +174,7 @@ public class ModalModel extends CTCompositeActor implements ChangeListener {
                     throw new IllegalActionException(this, null, e,
                             "Invalid directorClass.");
                 }
-                
+
                 // NOTE: Creating a new director has to be done in a
                 // change request.
                 ChangeRequest request = new ChangeRequest(this, "Create a new director") {
@@ -190,14 +190,14 @@ public class ModalModel extends CTCompositeActor implements ChangeListener {
                         // The director should not be persistent.
                         newDirector.setPersistent(false);
                         newDirector.controllerName.setExpression("_Controller");
-                        if (director != null 
+                        if (director != null
                                 && director.getContainer() == ModalModel.this) {
                             // Delete the old director.
                             director.setContainer(null);
                         }
                     }
                 };
-                requestChange(request);                
+                requestChange(request);
             }
         }
     }
@@ -236,7 +236,7 @@ public class ModalModel extends CTCompositeActor implements ChangeListener {
             throws CloneNotSupportedException {
         ModalModel newModel = (ModalModel)super.clone(workspace);
         newModel._controller = (FSMActor)newModel.getEntity("_Controller");
-        
+
         try {
 			// Validate the directorClass parameter so that the director
 			// gets created in the clone.
@@ -261,7 +261,7 @@ public class ModalModel extends CTCompositeActor implements ChangeListener {
             (FunctionDependency) getAttribute(FunctionDependency.UniqueName);
         if (functionDependency == null) {
             try {
-                functionDependency 
+                functionDependency
                     = new FunctionDependencyOfModalModel(
                         this, FunctionDependency.UniqueName);
             } catch (NameDuplicationException e) {
@@ -386,23 +386,23 @@ public class ModalModel extends CTCompositeActor implements ChangeListener {
         if (executiveDirector != null) {
             // FIXME: Better solution is to override the returned
             // list of choices in the parameter class.
-            String[] suggestions = 
+            String[] suggestions =
                 executiveDirector.suggestedModalModelDirectors();
             for (int i = 0; i < suggestions.length; i++) {
-                directorClass.addChoice(suggestions[i]); 
+                directorClass.addChoice(suggestions[i]);
                 if (i == 0) {
                     directorClass.setExpression(suggestions[i]);
                 }
             }
         } else {
             // If there is no executive director. Use the default director.
-            // This happens when vergil starts, and when a modal model is 
+            // This happens when vergil starts, and when a modal model is
             // dropped into a blank editor. Model designers need to configure
             // it if FSMDirector is not the desired director.
             directorClass.setExpression(
                     "ptolemy.domains.fsm.kernel.FSMDirector");
         }
-        
+
         // Create a more reasonable default icon.
         _attachText("_iconDescription", "<svg>\n" +
                 "<rect x=\"-30\" y=\"-20\" width=\"60\" " +

@@ -12,11 +12,11 @@ public class Unboxing10
     ArrayToken arraytoken;
     ArrayToken arraytoken2;
     public final ArrayToken initialOutputs_CGToken;
-    
+
     public static void main(String[] strings) throws IllegalActionException {
 	new Unboxing10().initialize();
     }
-    
+
     public Unboxing10() throws IllegalActionException {
 	IntToken[] inttokens = new IntToken[1];
 	inttokens[0] = new IntToken(0);
@@ -31,7 +31,7 @@ public class Unboxing10
 	initialOutputs_CGToken = ((Unboxing10) this).arraytoken2;
 	System.out.println("token = " + initialOutputs_CGToken.toString());
     }
-    
+
     public void initialize() throws IllegalActionException {
 	ptolemy.data.Token[] tokens = initialOutputs_CGToken.arrayValue();
 	int i = initialOutputs_CGToken.length();

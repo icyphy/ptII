@@ -45,12 +45,12 @@ import ptolemy.kernel.util.NameDuplicationException;
    into account, and computes n<sub>1</sub> and d<sub>1</sub> from the parameters k and N.
    It is implemented in direct form II.
    <h3>References</h3>
-   <p>[1]  
+   <p>[1]
    A. V. Oppenheim and R. W. Schafer, <i>Discrete-Time Signal Processing</i>,
    Prentice-Hall: Englewood Cliffs, NJ, 1989.
 
    @Author Brian L. Evans
-   @Version $Id$, based on version 1.5 of /users/ptolemy/src/domains/cgc/dsp/stars/CGCGoertzel.pl, from Ptolemy Classic 
+   @Version $Id$, based on version 1.5 of /users/ptolemy/src/domains/cgc/dsp/stars/CGCGoertzel.pl, from Ptolemy Classic
    @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCGoertzel extends CGCGoertzelBase {
@@ -77,7 +77,7 @@ public class CGCGoertzel extends CGCGoertzelBase {
         negWnImag = new Parameter(this, "negWnImag");
         negWnImag.setExpression("0.0");
 
-        /* 
+        /*
          */
     }
     ///////////////////////////////////////////////////////////////////
@@ -127,7 +127,7 @@ public class CGCGoertzel extends CGCGoertzelBase {
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
-    public String finalValue = 
+    public String finalValue =
     "		$ref(output).real = $ref(state1) +\n"
     + "				    $ref(state2) * $ref(negWnReal);\n"
     + "		$ref(output).imag = $ref(state2) * $ref(negWnImag);\n";

@@ -43,10 +43,10 @@ import ptolemy.util.MessageHandler;
 //// FunctionDependencyOfModalModel
 /** An instance of FunctionDependencyOfModalModel describes the function
     dependency information between the outputs and inputs of a modal model.
-    
+
     FIXME: two design choices can be chosen here. 1. dynamic configuration.
     2. conservation approximation.
-    
+
     FIXME: FSMAtomicActor needs a better design.
 
     @see ptolemy.actor.util.FunctionDependencyOfCompositeActor
@@ -56,15 +56,15 @@ import ptolemy.util.MessageHandler;
     @Pt.ProposedRating Red (hyzheng)
     @Pt.AcceptedRating Red (hyzheng)
 */
-public class FunctionDependencyOfModalModel 
+public class FunctionDependencyOfModalModel
     extends FunctionDependencyOfCompositeActor {
 
     /** Construct a FunctionDependency in the given actor.
      *  @param compositeActor The associated actor.
      *  @param name The name of the FunctionDependency.
-     *  @exception NameDuplicationException If the container already contains 
+     *  @exception NameDuplicationException If the container already contains
      *  an entity with the specified name.
-     *  @exception IllegalActionException If the name has a period in it, or 
+     *  @exception IllegalActionException If the name has a period in it, or
      *  the attribute is not compatible with the specified container.
      */
     public FunctionDependencyOfModalModel(CompositeActor compositeActor,
@@ -76,7 +76,7 @@ public class FunctionDependencyOfModalModel
     ////                      protected methods                    ////
 
     /** Get a list of refinements of the current state for function
-     *  dependency calculation. 
+     *  dependency calculation.
      *  @return A list of refinements associated with the current state.
      */
     protected List _getEntities() {

@@ -45,7 +45,7 @@ import java.util.*;
    @Pt.AcceptedRating Red (cxh)
 */
 public class TestSpecializeTypesMain {
-    
+
     /** First argument is the output directory.
      *  Second argument is the class name.
      */
@@ -53,7 +53,7 @@ public class TestSpecializeTypesMain {
         PtolemyUtilities.loadSootReferences();
         SootClass theClass = Scene.v().loadClassAndSupport(args[0]);
         theClass.setApplicationClass();
-        TypeSpecializerAnalysis analysis = 
+        TypeSpecializerAnalysis analysis =
             new TypeSpecializerAnalysis(theClass, new HashSet());
         for (Iterator variables = analysis.getSolverVariables();
             variables.hasNext();) {

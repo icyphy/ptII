@@ -23,7 +23,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 Output the product of the inputs, as a float value.
 
  @Author S. Ha
- @Version $Id$, based on version 1.7 of /users/ptolemy/src/domains/cgc/stars/CGCMpy.pl, from Ptolemy Classic 
+ @Version $Id$, based on version 1.7 of /users/ptolemy/src/domains/cgc/stars/CGCMpy.pl, from Ptolemy Classic
  @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCMpy extends ClassicCGCActor {
@@ -45,7 +45,7 @@ public class CGCMpy extends ClassicCGCActor {
         output = new ClassicPort(this, "output", false, true);
         output.setTypeEquals(BaseType.DOUBLE);
 
-/*     
+/*
 noInternalState();
 */
     }
@@ -68,14 +68,14 @@ noInternalState();
     /**
      */
     public int  myExecTime() {
-        
+
 return input.numberPorts();
      }
 
     /**
      */
     public void  generateFireCode() {
-        
+
 StringBuffer out = new StringBuffer();
 		out.append("\t$ref(output) = ");
 		for (int i = 1; i <= input.numberPorts(); i++) {
@@ -83,6 +83,6 @@ StringBuffer out = new StringBuffer();
 			if (i < input.numberPorts()) out.append(" * ");
 			else out.append(";\n");
 		}
-		addCode((String)out); 
+		addCode((String)out);
      }
 }

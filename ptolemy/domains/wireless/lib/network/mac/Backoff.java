@@ -49,9 +49,9 @@ import ptolemy.kernel.util.Workspace;
 //////////////////////////////////////////////////////////////////////////
 //// Backoff
 
-/**  
-   This actor does the back off after a frame transmission. It randomly 
-   choose a slot from the back off window and wait for that amount of 
+/**
+   This actor does the back off after a frame transmission. It randomly
+   choose a slot from the back off window and wait for that amount of
    time before trying to access the medium.
    @author Yang Zhao
    @version Backoff.java,v 1.14 2004/04/22 19:46:18 ellen_zh Exp
@@ -254,7 +254,7 @@ public class Backoff extends MACActorBase {
         _status = Busy;
         _state = No_Backoff;
         _backoffStartTime = new Time(getDirector());
-        
+
         NamedObj macComposite = getContainer().getContainer();
         if (macComposite.getAttribute("mBkIP") != null) {
             _mBkIP = macComposite.getAttribute("mBkIP");
@@ -265,7 +265,7 @@ public class Backoff extends MACActorBase {
         }
 
     }
-    
+
     /** Override the base class to declare that the <i>BKDone</i>
      *  output port does not depend on the <i>getBackoff</i>
      *  of <i>fromDataPump</i> input ports in a firing.
@@ -292,7 +292,7 @@ public class Backoff extends MACActorBase {
 
     private void _startBackoff() throws IllegalActionException {
         _backoffStartTime = _currentTime;
-        _BackoffTimer = setTimer(BackoffTimeOut, 
+        _BackoffTimer = setTimer(BackoffTimeOut,
             _currentTime.add(_slotCnt*_aSlotTime*1e-6));
         _state = Channel_Idle;
         _status=Idle;

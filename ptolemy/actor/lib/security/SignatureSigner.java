@@ -64,7 +64,7 @@ actor on the <i>signature</i> port as an unsigned byte array.
 on the <i>output</i> port.
 
 <p>This actor relies on the Java Cryptography Architecture (JCA) and Java
-Cryptography Extension (JCE).  
+Cryptography Extension (JCE).
 See the {@link ptolemy.actor.lib.security.CryptographyActor} documentation for
 resources about JCA and JCE.
 

@@ -27,7 +27,7 @@ fancy tricks performed by the regular fork star to avoid runtime overhead.
 The data values are simply copied at runtime.
 
  @Author E. A. Lee
- @Version $Id$, based on version 1.6 of /users/ptolemy/src/domains/cgc/stars/CGCBusFork.pl, from Ptolemy Classic 
+ @Version $Id$, based on version 1.6 of /users/ptolemy/src/domains/cgc/stars/CGCBusFork.pl, from Ptolemy Classic
  @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCBusFork extends ClassicCGCActor {
@@ -50,7 +50,7 @@ public class CGCBusFork extends ClassicCGCActor {
         outputB = new ClassicPort(this, "outputB", false, true);
         outputB.setMultiport(true);
 
-/*     
+/*
 noInternalState();
 */
     }
@@ -78,7 +78,7 @@ noInternalState();
     /**
      */
     public int  myExecTime() {
-        
+
 // Alert: rough estimate
 	  return input.numberPorts();
      }
@@ -86,7 +86,7 @@ noInternalState();
     /**
      */
     public void  begin() {
-        
+
 if (input.numberPorts() != outputA.numberPorts() ||
 	      input.numberPorts() != outputB.numberPorts()) {
 	    throw new IllegalActionException(this, "Bus widths don't match");
@@ -97,7 +97,7 @@ if (input.numberPorts() != outputA.numberPorts() ||
     /**
      */
     public void  generateFireCode() {
-        
+
 MPHIter nextin(input), nextoutA(outputA), nextoutB(outputB);
 	  PortHole *in, *outA, *outB;
 	  int port = 0;
@@ -108,7 +108,7 @@ MPHIter nextin(input), nextoutA(outputA), nextoutB(outputB);
 { StringBuffer _str_ = new StringBuffer(); _str_.append(
 "	$ref(outputA#" + port + ") = $ref(outputB#" + port + ") = $ref(input#" + port + ");\n"
 
-); 	 addCode(_str_);  } 
+); 	 addCode(_str_);  }
 	  }
      }
 }

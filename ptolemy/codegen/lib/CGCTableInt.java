@@ -27,7 +27,7 @@ an out of bounds value is received.
 <a name="table lookup"></a>
 
  @Author Joseph T. Buck
- @Version $Id$, based on version 1.4 of /users/ptolemy/src/domains/cgc/stars/CGCTableInt.pl, from Ptolemy Classic 
+ @Version $Id$, based on version 1.4 of /users/ptolemy/src/domains/cgc/stars/CGCTableInt.pl, from Ptolemy Classic
  @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCTableInt extends ClassicCGCActor {
@@ -56,7 +56,7 @@ public class CGCTableInt extends ClassicCGCActor {
         runTimeCheck = new Parameter(this, "runTimeCheck");
         runTimeCheck.setExpression("YES");
 
-/*     
+/*
 noInternalState();
 */
     }
@@ -89,30 +89,30 @@ noInternalState();
     /**
      */
     public void  generatePreinitializeCode() {
-        
+
 addInclude("<stdio.h>");
      }
 
     /**
      */
     public void  generateFireCode() {
-        
-addCode(readIdx); 
-		if (((IntToken)((runTimeCheck).getToken())).intValue() == 1) // FIXME runTimeCheck should be a Boolean addCode(check); 
-		addCode(lookup); 
+
+addCode(readIdx);
+		if (((IntToken)((runTimeCheck).getToken())).intValue() == 1) // FIXME runTimeCheck should be a Boolean addCode(check);
+		addCode(lookup);
      }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
-    public String readIdx = 
+    public String readIdx =
         "		int idx = $ref(input);\n";
 
-    public String check = 
+    public String check =
         "		if (idx < 0 || idx >= $size(values)) {\n"
         + "			fprintf(stderr, \"ERROR: input to CGCTable out of range\\n\");\n"
         + "			exit(1);\n"
         + "		}\n";
 
-    public String lookup = 
+    public String lookup =
         "		$ref(output) = $ref2(values,idx);\n";
 }

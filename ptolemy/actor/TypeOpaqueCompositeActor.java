@@ -55,7 +55,7 @@ import ptolemy.kernel.util.Workspace;
  * define a component that will be translated into executable code by a code
  * generator. A subclass of this actor would typically include the code
  * generator an a mechanism for executing the generating code.
- * 
+ *
  * @author Elaine Cheong and Edward A. Lee
  * @version $Id: TypeOpaqueCompositeActor.java,v 1.73 2004/04/13 05:12:39 cxh
  *          Exp $

@@ -23,7 +23,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 Amplifier: output is input times "gain" (default 1).
 
  @Author Brian L. Evans Contributor(s): S. Ha
- @Version $Id$, based on version 1.3 of /users/ptolemy/src/domains/cgc/stars/CGCGainInt.pl, from Ptolemy Classic 
+ @Version $Id$, based on version 1.3 of /users/ptolemy/src/domains/cgc/stars/CGCGainInt.pl, from Ptolemy Classic
  @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCGainInt extends ClassicCGCActor {
@@ -48,7 +48,7 @@ public class CGCGainInt extends ClassicCGCActor {
         gain = new Parameter(this, "gain");
         gain.setExpression("1");
 
-/*     
+/*
 noInternalState();
 */
     }
@@ -76,7 +76,7 @@ noInternalState();
     /**
      */
     public int  myExecTime() {
-        
+
 int time = 1;
 		if ( ((IntToken)((gain).getToken())).intValue() == 1 ) time = 0;
 		return time;
@@ -85,7 +85,7 @@ int time = 1;
     /**
      */
     public void  generateFireCode() {
-        
+
 // Check for simple multiple of 2
 		int reg = 0x01;
 		int found = false;
@@ -108,6 +108,6 @@ StringBuffer code = new StringBuffer("\t$ref(output) = ");
 			code.append("$val(gain) * $ref(input)");
 		}
 		code.append(";\n");
-		addCode(code); 
+		addCode(code);
      }
 }

@@ -23,7 +23,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 This star computes the sine of its input, in radians.
 
  @Author Soonhoi Ha
- @Version $Id$, based on version 1.8 of /users/ptolemy/src/domains/cgc/stars/CGCSin.pl, from Ptolemy Classic 
+ @Version $Id$, based on version 1.8 of /users/ptolemy/src/domains/cgc/stars/CGCSin.pl, from Ptolemy Classic
  @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCSin extends ClassicCGCActor {
@@ -44,7 +44,7 @@ public class CGCSin extends ClassicCGCActor {
         output = new ClassicPort(this, "output", false, true);
         output.setTypeEquals(BaseType.DOUBLE);
 
-/*     
+/*
 noInternalState();
 */
     }
@@ -67,26 +67,26 @@ noInternalState();
     /**
      */
     public int  myExecTime() {
-        
+
 return 23;	/* value taken from CG96Sin */
      }
 
     /**
      */
     public void  generatePreinitializeCode() {
-        
+
 addInclude("<math.h>");
      }
 
     /**
      */
     public void  generateFireCode() {
-        
-addCode(singen); 
+
+addCode(singen);
      }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
-    public String singen = 
+    public String singen =
         "	$ref(output) = sin($ref(input));\n";
 }

@@ -49,5 +49,5 @@ public interface Method {
     /** Call the method associated with this port with the specified
      *  arguments.
      */
-    public TupleToken call(TupleToken arguments); 
+    public TupleToken call(TupleToken arguments);
 }

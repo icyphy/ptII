@@ -23,7 +23,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 Output the "pos" input minus all "neg" inputs.
 
  @Author Jose Luis Pino
- @Version $Id$, based on version 1.1 of /users/ptolemy/src/domains/cgc/stars/CGCSubCx.pl, from Ptolemy Classic 
+ @Version $Id$, based on version 1.1 of /users/ptolemy/src/domains/cgc/stars/CGCSubCx.pl, from Ptolemy Classic
  @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCSubCx extends ClassicCGCActor {
@@ -47,7 +47,7 @@ public class CGCSubCx extends ClassicCGCActor {
         output = new ClassicPort(this, "output", false, true);
         output.setTypeEquals(BaseType.COMPLEX);
 
-/*     
+/*
 noInternalState();
 */
     }
@@ -75,22 +75,22 @@ noInternalState();
     /**
      */
     public int  myExecTime() {
-        
+
 return 2*(1 + neg.numberPorts());
      }
 
     /**
      */
     public void  generateFireCode() {
-        
-addCode(startOp); 
-	for (int i = 1; i <= neg.numberPorts(); i++) 
-	    addCode(doOp(i)); 
+
+addCode(startOp);
+	for (int i = 1; i <= neg.numberPorts(); i++)
+	    addCode(doOp(i));
      }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
-    public String startOp = 
+    public String startOp =
         "	$ref(output).real = $ref(pos).real;\n"
         + "	$ref(output).imag = $ref(pos).imag;\n";
 

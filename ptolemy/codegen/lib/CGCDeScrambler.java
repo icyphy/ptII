@@ -36,7 +36,7 @@ pp 595-603.
 <a name="maximal length feedback shift register"></a>
 
  @Author E. A. Lee
- @Version $Id$, based on version 1.5 of /users/ptolemy/src/domains/cgc/stars/CGCDeScrambler.pl, from Ptolemy Classic 
+ @Version $Id$, based on version 1.5 of /users/ptolemy/src/domains/cgc/stars/CGCDeScrambler.pl, from Ptolemy Classic
  @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCDeScrambler extends ClassicCGCActor {
@@ -65,7 +65,7 @@ public class CGCDeScrambler extends ClassicCGCActor {
         shiftReg = new Parameter(this, "shiftReg");
         shiftReg.setExpression("0");
 
-/* 
+/*
 */
     }
     ///////////////////////////////////////////////////////////////////
@@ -97,7 +97,7 @@ bit sequence out (zero or one)
     /**
      */
     public void  generateInitializeCode() throws IllegalActionException {
-        
+
 // Should check that generator polynomial does not exceed 31 bits. How?
 	  // To avoid sign extension problems, the hob must be zero
 	  if (((IntToken)((polynomial).getToken())).intValue() < 0) {
@@ -112,13 +112,13 @@ bit sequence out (zero or one)
     /**
      */
     public void  generateFireCode() {
-        
-addCode(descramble); 
+
+addCode(descramble);
      }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
-    public String descramble = 
+    public String descramble =
         "	  int reg, masked, parity;\n"
         + "	  reg = $ref(shiftReg) << 1;\n"
         + "	  /* put the input in the low order bit */\n"

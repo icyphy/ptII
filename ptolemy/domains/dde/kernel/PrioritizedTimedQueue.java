@@ -118,7 +118,7 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
     /** Construct an empty queue with no container.
      */
     public PrioritizedTimedQueue() {
-        // because the container is not specified, we can not 
+        // because the container is not specified, we can not
         // call the _initializeTimeVariables() method.
         // The caller of this constructor is responsible to
         // initialize the time variables.
@@ -303,13 +303,13 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
      */
     public void put(Token token, Time time) throws NoRoomException {
         double timeValue = time.getDoubleValue();
-        if ( time.compareTo(_lastTime) < 0 && timeValue != INACTIVE 
+        if ( time.compareTo(_lastTime) < 0 && timeValue != INACTIVE
             && timeValue != IGNORE ) {
             NamedObj actor = (NamedObj)getContainer().getContainer();
             throw new IllegalArgumentException(actor.getName() +
                     " - Attempt to set current time to the past; time = "
                     + time + ". The _lastTime was " + _lastTime);
-        } else if ( timeValue < 0.0 && timeValue != INACTIVE 
+        } else if ( timeValue < 0.0 && timeValue != INACTIVE
             && timeValue != IGNORE ) {
             NamedObj actor = (NamedObj)getContainer().getContainer();
             throw new IllegalArgumentException(actor.getName() +
@@ -364,7 +364,7 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
      */
     public synchronized void removeIgnoredToken() {
 
-        if ( getReceiverTime().getDoubleValue() 
+        if ( getReceiverTime().getDoubleValue()
             != PrioritizedTimedQueue.IGNORE ) {
             return;
         }

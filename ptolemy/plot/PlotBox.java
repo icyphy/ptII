@@ -1101,7 +1101,7 @@ public class PlotBox extends JPanel implements Printable {
         }
     }
 
-    /** Rename a legend.  
+    /** Rename a legend.
      *  @param dataset The dataset of the legend to be renamed.
      *  If there is no dataset with this value, then nothing happens.
      *  @param newName  The new name of legend.

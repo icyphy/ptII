@@ -88,7 +88,7 @@ public class DTReceiver extends SDFReceiver {
     public DTReceiver(IOPort container) throws IllegalActionException {
         super(container);
         _init();
-        Time localTime = 
+        Time localTime =
             new Time(((Actor)container.getContainer()).getDirector());
         initializeLocalTime(localTime);
     }
@@ -104,7 +104,7 @@ public class DTReceiver extends SDFReceiver {
             throws IllegalActionException {
         super(container, size);
         _init();
-        Time localTime = 
+        Time localTime =
             new Time(((Actor)container.getContainer()).getDirector());
         initializeLocalTime(localTime);
     }
@@ -273,7 +273,7 @@ public class DTReceiver extends SDFReceiver {
     /**  Return the local time associated with this receiver.
      *
      *   @return The local time associated with this receiver.
-     *   @deprecated As of Ptolemy II 4.1, replaced by 
+     *   @deprecated As of Ptolemy II 4.1, replaced by
      *   {@link #getModelTime()}
      */
     public double getCurrentTime() {
@@ -379,9 +379,9 @@ public class DTReceiver extends SDFReceiver {
     //    _debug(fromString + " " + toString + " " + _deltaTime);
     }
 
-    /** Initialize the local time to the given time whose time value is 0.0. 
-     *  This method is designed for the newReceiver method of DTDirector only.   
-     * 
+    /** Initialize the local time to the given time whose time value is 0.0.
+     *  This method is designed for the newReceiver method of DTDirector only.
+     *
      *  @param time The desired local time.
      */
     void initializeLocalTime(Time time) {

@@ -52,14 +52,14 @@ import ptolemy.kernel.util.NameDuplicationException;
    The inputs can be of any token type, but the <i>output</i> port
    is constrained to be of a type at least that of the <i>input</i>
    port and the <i>initialValue</i> parameter.
-   <p> 
+   <p>
    This class extends Sampler. Unlike its base class, this actor
    can be used to break dependencies in a feedback loop in that
    the input tokens are consumed from the input ports after the outputs
    are generated. Another difference is that the Register actor can be
    fired when either the trigger port or the input port has a token, while
    the Sampler can only be fired when the trigger port receives a token.
-   <p> 
+   <p>
    Both the <i>input</i> port and the <i>output</i> port are multiports.
    Generally, their widths should match. Otherwise, if the width of the
    <i>input</i> is greater than the width of the <i>output</i>, the extra
@@ -67,7 +67,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    consumed from the input port. If the width of the <i>output</i> is
    greater than that of the <i>input</i>, then the last few channels of
    the <i>output</i> will never emit tokens.
-   <p> 
+   <p>
    Note: If the width of the input changes during execution, then the
    most recent inputs are forgotten, as if the execution of the model
    were starting over.

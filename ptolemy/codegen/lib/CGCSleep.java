@@ -24,7 +24,7 @@ Suspend execution for an interval (in milliseconds).
 The input is passed to the output when the process resumes.
 
  @Author E. A. Lee
- @Version $Id$, based on version 1.6 of /users/ptolemy/src/domains/cgc/stars/CGCSleep.pl, from Ptolemy Classic 
+ @Version $Id$, based on version 1.6 of /users/ptolemy/src/domains/cgc/stars/CGCSleep.pl, from Ptolemy Classic
  @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCSleep extends ClassicCGCActor {
@@ -49,7 +49,7 @@ public class CGCSleep extends ClassicCGCActor {
         interval = new Parameter(this, "interval");
         interval.setExpression("10");
 
-/*     
+/*
 noInternalState();
 */
     }
@@ -77,7 +77,7 @@ noInternalState();
     /**
      */
     public void  generatePreinitializeCode() {
-        
+
 addInclude("<sys/types.h>");
 		addInclude("<sys/time.h>");
      }
@@ -85,13 +85,13 @@ addInclude("<sys/types.h>");
     /**
      */
     public void  generateFireCode() {
-        
-addCode(std); 
+
+addCode(std);
      }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
-    public String std = 
+    public String std =
         "	    {\n"
         + "	    static struct timeval delay;\n"
         + "	    delay.tv_sec = $val(interval)/1000;\n"

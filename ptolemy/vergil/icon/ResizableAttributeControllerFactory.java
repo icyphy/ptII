@@ -116,7 +116,7 @@ public class ResizableAttributeControllerFactory
 
             interactor.setPrototypeDecorator(_manipulator);
         }
-        
+
         /** Specify the snap resolution. The default snap resolution is 5.0.
          *  This overrides the base class to set the snap resolution on the
          *  bounds manipulator as well as the drag interactor.
@@ -126,7 +126,7 @@ public class ResizableAttributeControllerFactory
             super.setSnapResolution(resolution);
             _manipulator.setSnapResolution(resolution);
         }
-        
+
         private AttributeBoundsManipulator _manipulator;
     }
 }

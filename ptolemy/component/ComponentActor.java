@@ -58,8 +58,8 @@ import ptolemy.kernel.util.Workspace;
 //////////////////////////////////////////////////////////////////////////
 //// ComponentActor
 /**
-   A Component is outside compatable with components and inside compatable 
-   with actors. 
+   A Component is outside compatable with components and inside compatable
+   with actors.
 
    @author Yang Zhao
    @version $Id$
@@ -67,7 +67,7 @@ import ptolemy.kernel.util.Workspace;
    @Pt.ProposedRating yellow (ellen_zh)
    @Pt.AcceptedRating red (cxh)
 */
-public class ComponentActor extends TypedCompositeActor 
+public class ComponentActor extends TypedCompositeActor
         implements Component {
 
     /** Construct an entity with the given name contained by the specified
@@ -89,17 +89,17 @@ public class ComponentActor extends TypedCompositeActor
         super(container, name);
         setContainer(container);
         input = new IOMethodPort(this, "input", true, false);
-        
+
         output = new IOMethodPort(this, "output", false, true);
         _addIcon();
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     ports and parameters                  ////    
+    ////                     ports and parameters                  ////
     public IOMethodPort input;
-    
+
     public IOMethodPort output;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -137,8 +137,8 @@ public class ComponentActor extends TypedCompositeActor
      *  @param port The port that has connection changes.
      */
     //FIXME: the reason that i need overwrite this method is because
-    // it checked whether the container is compositeActor to avoid 
-    // infinite loop. But here it should be componentActor. We should change 
+    // it checked whether the container is compositeActor to avoid
+    // infinite loop. But here it should be componentActor. We should change
     // the check to refer to a super interface of this two...
     public void connectionsChanged(Port port) {
         if (_debugging) {
@@ -239,7 +239,7 @@ public class ComponentActor extends TypedCompositeActor
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
     }
-    
+
     /** Execute the component, which in this base class means doing
      *  nothing and returning immediately.
      *  This is invoked after preinitialize()
@@ -255,7 +255,7 @@ public class ComponentActor extends TypedCompositeActor
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        
+
     }
 
     /* (non-Javadoc)
@@ -263,7 +263,7 @@ public class ComponentActor extends TypedCompositeActor
      */
     public void wrapup() throws IllegalActionException {
         // TODO Auto-generated method stub
-       super.wrapup(); 
+       super.wrapup();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -276,14 +276,14 @@ public class ComponentActor extends TypedCompositeActor
         }
         System.out.println("call execute inside");
         try {
-            
+
             int iter = iterate(1);
             //System.out.println("the iterate return is: " + iter);
             if (iter == Executable.COMPLETED) {
                 return output.call();
             } else {
                 return TupleToken.VOID;
-            } 
+            }
         } catch (Exception ex) {
             // this shouldn't happen.
             throw new InternalErrorException(this, ex, null);
@@ -310,7 +310,7 @@ public class ComponentActor extends TypedCompositeActor
             onePort.createReceivers();
         }
     }
-    
+
     protected void _addRelation(ComponentRelation relation)
             throws IllegalActionException, NameDuplicationException {
     }
@@ -325,7 +325,7 @@ public class ComponentActor extends TypedCompositeActor
     private transient List _cachedOutputPorts;
 
     // Cached FunctionDependency object.
-    //private FunctionDependencyOfCompositeActor _functionDependency;    
+    //private FunctionDependencyOfCompositeActor _functionDependency;
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -343,7 +343,7 @@ public class ComponentActor extends TypedCompositeActor
                 "style=\"fill:blue\"/>\n" +
                 "</svg>\n");
     }
-    
+
 
 
     ///////////////////////////////////////////////////////////////////
@@ -351,7 +351,7 @@ public class ComponentActor extends TypedCompositeActor
 
     /** The container. */
     private CompositeEntity _container;
-    
+
     private HashMap _methods;
     ///////////////////////////////////////////////////////////////////
     ////                         inner class                       ////
@@ -396,7 +396,7 @@ public class ComponentActor extends TypedCompositeActor
                 throws IllegalActionException, NameDuplicationException {
             super(container, name);
         }
-    
+
         /** Construct an IOPort with a container and a name that is
          *  either an input, an output, or both, depending on the third
          *  and fourth arguments. The specified container must implement
@@ -455,9 +455,9 @@ public class ComponentActor extends TypedCompositeActor
                 return TupleToken.VOID;
             }
             return TupleToken.VOID;
-        
+
         }
-        
+
         public synchronized TupleToken call(TupleToken token) {
             if (isInput()) {
                 int l = token.length();
@@ -475,7 +475,7 @@ public class ComponentActor extends TypedCompositeActor
                 return TupleToken.VOID;
             }
         }
-        
+
         /** Create new receivers for this port, replacing any that may
          *  previously exist, and validate any instances of Settable that
          *  this port may contain. This method should only be called on
@@ -498,7 +498,7 @@ public class ComponentActor extends TypedCompositeActor
          *   an opaque input port or if there is no director.
          */
         public void createReceivers() throws IllegalActionException {
-            
+
             boolean output = isOutput();
             if (output) {
                 Iterator insideRelations = insideRelationList().iterator();
@@ -508,7 +508,7 @@ public class ComponentActor extends TypedCompositeActor
                 }
             }
         }
-        
+
         /** Override the base class to return the inside receiver.
          *  @return The local inside receivers, or an empty array if there are
          *   none.
@@ -516,11 +516,11 @@ public class ComponentActor extends TypedCompositeActor
         public Receiver[][] getInsideReceivers() {
             return _insideReceivers;
         }
-        
+
         public Receiver[][] getReceivers() {
             return _insideReceivers;
         }
-        
+
         /** FIXME... see IORelation.deepReceivers().
          *
          *  @param relation Relations that are linked on the outside or inside.
@@ -532,13 +532,13 @@ public class ComponentActor extends TypedCompositeActor
          */
         public Receiver[][] getReceivers(IORelation relation, int occurrence)
                 throws IllegalActionException {
-            return _insideReceivers;        
+            return _insideReceivers;
         }
-        
+
         public boolean isProvided() {
             return _isProviedPort;
         }
-        
+
         /** Override parent method to ensure compatibility of the relation
          *  and validity of the width of the port.
          *  If this port is not a multiport, then the width of the

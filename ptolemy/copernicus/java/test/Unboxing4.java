@@ -12,7 +12,7 @@ public class Unboxing4
     static Token[] tokens;
     static Token token;
     static ArrayToken arraytoken;
-    
+
     public static void main(String args[]) throws IllegalActionException {
 	tokens = new Token[1];
 	tokens[0] = intToken;

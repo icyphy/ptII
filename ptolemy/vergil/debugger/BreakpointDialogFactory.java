@@ -117,10 +117,10 @@ public class BreakpointDialogFactory implements MenuItemFactory {
                         }
                     } catch (Throwable throwable) {
                         // If we don't have a SDFDirector, then the error
-                        // message will appear on stderr instead of in a 
+                        // message will appear on stderr instead of in a
                         // dialog unless we catch the error here.
                         MessageHandler.error("Failed to create Breakpoint "
-                                + "dialog.", throwable); 
+                                + "dialog.", throwable);
                     }
                 }
             };

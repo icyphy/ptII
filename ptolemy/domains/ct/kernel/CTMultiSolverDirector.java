@@ -843,7 +843,7 @@ public class CTMultiSolverDirector extends CTDirector {
                     ": propagating the resolved states through " +
                     "continuous actors");
             }
-            // Establish the initial states for discrete phase of execution. 
+            // Establish the initial states for discrete phase of execution.
             _propagateResolvedStates();
 
             if (_debugging) {
@@ -870,19 +870,19 @@ public class CTMultiSolverDirector extends CTDirector {
                     "continuous actors");
             }
             // Update continuous actors. Two subtleties are:
-            // 1. If there is a modal model that generates an event at the 
-            // current sub-iteration (within the loop), the enabled transition 
-            // is reset. See the postfire() method of the HSDirector for the 
+            // 1. If there is a modal model that generates an event at the
+            // current sub-iteration (within the loop), the enabled transition
+            // is reset. See the postfire() method of the HSDirector for the
             // reason.
             // 2. Because the modal model produces nothing when an enabled
             // transition is found in this sub-iteration, the output from the
-            // enabled transition can be caught by the poltters (such as 
+            // enabled transition can be caught by the poltters (such as
             // the TimedPlotter) that only change the display at its postfire()
             // method.
             _propagateResolvedStates();
         }
 
-        // When we jump out of the previous loop, the _propagateResolvedStates() 
+        // When we jump out of the previous loop, the _propagateResolvedStates()
         // method already created the final states at the current model time, or
         // the starting states for the immediately following continuous
         // phase of execution.
@@ -1202,7 +1202,7 @@ public class CTMultiSolverDirector extends CTDirector {
                 Time time = (Time) breakPoints.removeFirst();
                 if (time.compareTo(now) < 0) {
                     // This should not happen for CTMultisolverDirector,
-                    // but it is possible for CTEmbeddedDirector. 
+                    // but it is possible for CTEmbeddedDirector.
                     // When a CT refinement is made inactive for a long time
                     // and reentered, the previously stored breakpoints may
                     // be in the past... The same thing happens in the

@@ -27,7 +27,7 @@ of (<i>bottom, top</i>).
 <a name="hard limiter"></a>
 
  @Author Kennard White Contributor(s): SDF version by E. A. Lee
- @Version $Id$, based on version 1.6 of /users/ptolemy/src/domains/cgc/stars/CGCLimit.pl, from Ptolemy Classic 
+ @Version $Id$, based on version 1.6 of /users/ptolemy/src/domains/cgc/stars/CGCLimit.pl, from Ptolemy Classic
  @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCLimit extends ClassicCGCActor {
@@ -56,7 +56,7 @@ public class CGCLimit extends ClassicCGCActor {
         top = new Parameter(this, "top");
         top.setExpression("1.0");
 
-/* 
+/*
 */
     }
     ///////////////////////////////////////////////////////////////////
@@ -88,13 +88,13 @@ public class CGCLimit extends ClassicCGCActor {
     /**
      */
     public void  generateFireCode() {
-        
-addCode(cbBody); 
+
+addCode(cbBody);
      }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
-    public String cbBody = 
+    public String cbBody =
         "	    /*IF*/ if ( $ref(input) > $val(top) ) {\n"
         + "		$ref(output) = $val(top);\n"
         + "	    } else if ( $ref(input) < $val(bottom) ) {\n"

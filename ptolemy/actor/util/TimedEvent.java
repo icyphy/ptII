@@ -78,7 +78,7 @@ public class TimedEvent {
      * If this is violated, ClassCastException will be thrown.
      */
     public static class TimeComparator implements CQComparator {
-        
+
         /** Construct a TimeComparator object for the given director.
          *  @param director The director this comparator is associated with.
          */
@@ -203,12 +203,12 @@ public class TimedEvent {
 
         ///////////////////////////////////////////////////////////////////
         ////                         private members                   ////
-        
+
         // The director that contains this comparator.
         private Director _director;
 
         // The bin width.
-        private TimedEvent _binWidth; 
+        private TimedEvent _binWidth;
 
         // The zero reference.
         private TimedEvent _zeroReference;

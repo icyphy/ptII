@@ -47,7 +47,7 @@ import ptolemy.kernel.util.Workspace;
 //////////////////////////////////////////////////////////////////////////
 //// MCApplication
 /** An application for testing the component domain.
-   //FIXME: 
+   //FIXME:
    @author  Yang Zhao
    @version $Id$
 */
@@ -60,7 +60,7 @@ public class MCApplication {
      */
     public static void main(String[] args) {
         CompositeEntity _toplevel;
-        
+
         try {
             Workspace workspace = new Workspace("NC");
             _toplevel = new CompositeEntity(workspace);
@@ -69,7 +69,7 @@ public class MCApplication {
             Leds leds = new Leds(_toplevel, "Leds");
             Relation r1 = (Relation)
                 _toplevel.connect(counter.output, leds.display, "R1");
-            
+
             //generate moml file to be tested in vergil
             StringWriter buffer = new StringWriter();
             _toplevel.exportMoML(buffer);

@@ -82,7 +82,7 @@ public class PTreeMenuCreator extends MouseAdapter {
     public void mousePressed(MouseEvent e) {
         _doEvent(e);
     }
-    
+
     /** Create an instance of the menu associated with this factory.
      *  @param e The mouse event.  If the mouse event is
      *  a popup event, then menu is created and shown.
@@ -90,7 +90,7 @@ public class PTreeMenuCreator extends MouseAdapter {
     public void mouseReleased(MouseEvent e) {
         _doEvent(e);
     }
-    
+
     /** Return the list of menu item factories.
      * @return An unmodifiable list.
      */

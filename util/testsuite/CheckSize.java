@@ -60,7 +60,7 @@ public class CheckSize {
      *  @param args An array of Strings naming the models to be checked.
      *  @exception Exception If there is a problem reading a model.
      *
-     */   
+     */
     public CheckSize(String[] args) throws Exception {
         int width, height;
         double x, y, zoom;
@@ -131,7 +131,7 @@ public class CheckSize {
                             analysis.append(KernelException
                                     .stackTraceToString(ex));
                         }
-                        
+
                         if (vergilZoom != null) {
                             try {
                                 DoubleToken vergilZoomToken =
@@ -171,7 +171,7 @@ public class CheckSize {
      *  @param args An array of Strings naming the models to be checked.
      *  @exception Exception If there is a problem reading a model.
      *
-     */   
+     */
     public static void main(String[] args) {
         try {
             new CheckSize(args);

@@ -86,7 +86,7 @@ public class ModalPort extends TypedIOPort {
         super(container, name);
     }
 
-    /** Set the connected relation to a bus if this port is a multiport. 
+    /** Set the connected relation to a bus if this port is a multiport.
      */
     public void link(Relation relation) throws IllegalActionException {
         super.link(relation);
@@ -138,7 +138,7 @@ public class ModalPort extends TypedIOPort {
             _workspace.doneWriting();
         }
     }
-    
+
     /** Move this object to the first position in the list
      *  of attributes of the container. If  this object is already first,
      *  do nothing. Increment the version of the workspace.

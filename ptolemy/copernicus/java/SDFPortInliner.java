@@ -158,7 +158,7 @@ public class SDFPortInliner implements PortInliner {
             Jimple.v().newLocal("return", PtolemyUtilities.tokenType);
         body.getLocals().add(returnLocal);
 
-        SootField indexArrayField = 
+        SootField indexArrayField =
             (SootField)_portToIndexArrayField.get(port);
 
         if (indexArrayField == null) {
@@ -202,11 +202,11 @@ public class SDFPortInliner implements PortInliner {
                     _modelClass.getFieldByName(
                             InlinePortTransformer.getBufferFieldName(relation,
                                     i, port.getType()));
-                Local containerLocal = 
+                Local containerLocal =
                     FieldsForEntitiesTransformer.getLocalReferenceForEntity(
                             _model, theClass, body.getThisLocal(),
                             body, stmt, _options);
-                
+
                 // load the buffer array.
                 body.getUnits().insertBefore(
                         Jimple.v().newAssignStmt(bufferLocal,
@@ -1302,55 +1302,55 @@ public class SDFPortInliner implements PortInliner {
                 continue;
             }
 
-            
-//             <body@insertPoint, 
+
+//             <body@insertPoint,
 //                     $tokenType[] buffer;  // RefType
 //                     $tokenType[][] channelLocal;
 //                     channel = new $tokenType[$(port.getWidth())]; // int expression
 //                     $bufferField = channelLocal;> // SootField
-//             int channel = 0; 
+//             int channel = 0;
 //             for (Iterator relations = port.linkedRelationList().iterator();
 //                 relations.hasNext();) {
 //                 TypedIORelation relation = (TypedIORelation)relations.next();
 //                 for (int i = 0; i < relation.getWidth(); i++, channel++) {
-//                     String fieldName =  
+//                     String fieldName =
 //                         InlinePortTransformer.getBufferFieldName(
 //                                 relation, i, type);
 //                     Local containerLocal =
 //                         FieldsForEntitiesTransformer.getLocalReferenceForEntity(
-//                                 _model, entityClass, body.getThisLocal(), 
+//                                 _model, entityClass, body.getThisLocal(),
 //                                 body, insertPoint, _options);
 
-//                     <body@insertPoint, 
+//                     <body@insertPoint,
 //                             buffer = $containerLocal.$fieldName; // Local, String
 //                             channelLocal[$channel] = buffer; // int
 //                 }
 //             }
 
 //             JavaFragmentParser parser = new StatementParser(body, insertPoint);
-            
+
 //   ANOTHER TRY:
 //             parser.map("$tokenType", tokenType);
 //             parser.map("$width", IntConstant.v(port.getWidth()));
 //             parser.map("$bufferField", bufferField);
-//             parser.parse( 
+//             parser.parse(
 //                     "$tokenType[] buffer;  // RefType \\
 //                         $tokenType[][] channelLocal; \\
 //                         channel = new $tokenType[$width]; // int expression \\
 //                         $bufferField = channelLocal;");// SootField
 
 
-//             int channel = 0; 
+//             int channel = 0;
 //             for (Iterator relations = port.linkedRelationList().iterator();
 //                 relations.hasNext();) {
 //                 TypedIORelation relation = (TypedIORelation)relations.next();
 //                 for (int i = 0; i < relation.getWidth(); i++, channel++) {
-//                     String fieldName =  
+//                     String fieldName =
 //                         InlinePortTransformer.getBufferFieldName(
 //                                 relation, i, type);
 //                     Local containerLocal =
 //                         FieldsForEntitiesTransformer.getLocalReferenceForEntity(
-//                                 _model, entityClass, body.getThisLocal(), 
+//                                 _model, entityClass, body.getThisLocal(),
 //                                 body, insertPoint, _options);
 
 //                     parser.map("$containerLocal", containerLocal);
@@ -1402,12 +1402,12 @@ public class SDFPortInliner implements PortInliner {
                                 InlinePortTransformer.getBufferFieldName(
                                         relation,
                                         i, type));
-               
+
                     Local containerLocal =
                         FieldsForEntitiesTransformer.getLocalReferenceForEntity(
-                                _model, entityClass, body.getThisLocal(), 
+                                _model, entityClass, body.getThisLocal(),
                                 body, insertPoint, _options);
-               
+
                     // Load the buffer array.
                     body.getUnits().insertBefore(
                             Jimple.v().newAssignStmt(bufferLocal,
@@ -1593,11 +1593,11 @@ public class SDFPortInliner implements PortInliner {
                                         relation,
                                         i, type));
 
-                    Local containerLocal = 
+                    Local containerLocal =
                         FieldsForEntitiesTransformer.getLocalReferenceForEntity(
-                            _model, modelClass, body.getThisLocal(), 
+                            _model, modelClass, body.getThisLocal(),
                             body, insertPoint, _options);
-               
+
                     // Load the buffer array.
                     body.getUnits().insertBefore(
                             Jimple.v().newAssignStmt(bufferLocal,
@@ -1735,7 +1735,7 @@ public class SDFPortInliner implements PortInliner {
                             getLocalReferenceForEntity(
                                     _model, theClass, body.getThisLocal(),
                                     body, stmt, _options);
-                      
+
                         // load the buffer array.
                         body.getUnits().insertBefore(
                                 Jimple.v().newAssignStmt(bufferLocal,

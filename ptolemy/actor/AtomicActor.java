@@ -189,7 +189,7 @@ public class AtomicActor extends ComponentEntity implements Actor {
     public FunctionDependency getFunctionDependency() {
         // If the functionDependency object is not constructed,
         // construct a FunctionDependencyOfAtomicActor object.
-        FunctionDependency functionDependency 
+        FunctionDependency functionDependency
             = (FunctionDependency) getAttribute(FunctionDependency.UniqueName);
         if (functionDependency == null) {
             try {
@@ -464,7 +464,7 @@ public class AtomicActor extends ComponentEntity implements Actor {
      *  @see ptolemy.actor.util.FunctionDependencyOfAtomicActor
      */
     public void removeDependency(IOPort input, IOPort output) {
-        FunctionDependencyOfAtomicActor functionDependency 
+        FunctionDependencyOfAtomicActor functionDependency
             = (FunctionDependencyOfAtomicActor) getFunctionDependency();
         functionDependency.removeDependency(input, output);
     }

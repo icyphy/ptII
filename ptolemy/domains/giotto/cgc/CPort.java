@@ -79,7 +79,7 @@ public class CPort extends TypedIOPort {
         super(container, name);
         initialOutputValue = new Parameter(this, "initialOutputValue");
         initialOutputValue.setExpression("0");
-    
+
         arrayLength = new Parameter(this, "arrayLength");
         arrayLength.setExpression("1");
 
@@ -116,7 +116,7 @@ public class CPort extends TypedIOPort {
 
     /** The initial value of the port */
     public Parameter initialOutputValue = null;
-    
+
     /** The length of the array if the type is an array */
     public Parameter arrayLength = null;
 
@@ -124,8 +124,8 @@ public class CPort extends TypedIOPort {
     ////                         public methods                    ////
 
     /** Override the base class to add the functionality that if the
-     *  port if made an output port, then make visible the two parameters 
-     *  <i>initialOutputValue</i> and <i>arrayLength</i>. 
+     *  port if made an output port, then make visible the two parameters
+     *  <i>initialOutputValue</i> and <i>arrayLength</i>.
      *  @param isOutput True to make the port an output.
      *  @exception IllegalActionException If changing the port status is
      *   not permitted (not thrown in this base class).
@@ -139,5 +139,5 @@ public class CPort extends TypedIOPort {
             initialOutputValue.setVisibility(Settable.NONE);
             arrayLength.setVisibility(Settable.NONE);
         }
-    }    
+    }
 }

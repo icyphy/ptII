@@ -23,7 +23,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 Convert a fixed-point input to an integer output.
 
  @Author Yu Kee Lim
- @Version $Id$, based on version 1.2 of /users/ptolemy/src/domains/cgc/stars/CGCFixToInt.pl, from Ptolemy Classic 
+ @Version $Id$, based on version 1.2 of /users/ptolemy/src/domains/cgc/stars/CGCFixToInt.pl, from Ptolemy Classic
  @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCFixToInt extends CGCFix {
@@ -44,7 +44,7 @@ public class CGCFixToInt extends CGCFix {
         output = new ClassicPort(this, "output", false, true);
         output.setTypeEquals(BaseType.INT);
 
-/* 
+/*
 */
     }
     ///////////////////////////////////////////////////////////////////
@@ -66,12 +66,12 @@ Output int type
     /**
      */
     public void  generateFireCode() {
-        
-addCode(fixtoint); 
+
+addCode(fixtoint);
      }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
-    public String fixtoint = 
+    public String fixtoint =
         "	        $ref(output) = FIX_Fix2Int($ref(input));\n";
 }

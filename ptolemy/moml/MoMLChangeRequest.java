@@ -288,14 +288,14 @@ public class MoMLChangeRequest extends ChangeRequest {
     // in with the undo MoML from the previos undoable change request if they
     // both have the same context.
     private boolean _mergeWithPreviousUndo = false;
-    
+
     // The parser given in the constructor.
     private MoMLParser _parser;
 
     // Flag indicating whether to report to the handler registered
     // with the parser.
     private boolean _reportToHandler = false;
-   
+
     // Flag indicating if this change is undoable or not
     private boolean _undoable = false;
 }

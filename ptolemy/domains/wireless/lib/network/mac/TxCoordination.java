@@ -185,7 +185,7 @@ public class TxCoordination extends MACActorBase {
                 if (_mBkIP != null && _mBkIP instanceof Variable) {
                     Token token = ((Variable) _mBkIP).getToken();
                     backoff = ((BooleanToken) token).booleanValue();
-                } //FIXME: assume it is instanceof variable.     
+                } //FIXME: assume it is instanceof variable.
                 if (isNetData && !backoff)
                     {
                     _handleData();
@@ -347,8 +347,8 @@ public class TxCoordination extends MACActorBase {
                 else if (GotAck.hasToken(0))
                     {
                         //NOTE: Charlie, you need to get the token here to
-                        //consume it. Otherwise, there is a deadlock at 
-                        //this time. 
+                        //consume it. Otherwise, there is a deadlock at
+                        //this time.
                         GotAck.get(0);
                         _ssrc=0;
                         _slrc=0;
@@ -389,7 +389,7 @@ public class TxCoordination extends MACActorBase {
         _seqNum=0;
         _CTSTimeout=_aSifsTime+_aPreambleLength+_aPlcpHeaderLength+_aSlotTime+
             _sAckCtsLng/_mBrate;
-            
+
         NamedObj macComposite = getContainer().getContainer();
         if (macComposite.getAttribute("mBkIP") != null) {
             _mBkIP = macComposite.getAttribute("mBkIP");
@@ -400,7 +400,7 @@ public class TxCoordination extends MACActorBase {
         }
         // randomize node's time to go to TxC_Idle
         _backoff(_ccw,-1);
-        
+
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -531,7 +531,7 @@ public class TxCoordination extends MACActorBase {
     private void _sendTxRequest() throws IllegalActionException {
         Token[] TxRequestMsgValues={
             new IntToken(TxRequest),
-            _tpdu, 
+            _tpdu,
             new IntToken(_mBrate*(int)1e6)};
 
         RecordToken copyTpdu=new RecordToken(TxRequestMsgFields,TxRequestMsgValues);
@@ -576,11 +576,11 @@ public class TxCoordination extends MACActorBase {
         int durId=3*(_aSifsTime+_aPreambleLength+_aPlcpHeaderLength)+(length+
                 2*_sAckCtsLng)/_mBrate;
         // no RTS is needed for broadcast
-        if (length<= _dotllRTSThreshold || Addr1==mac_broadcast_addr) { 
-            //Note: Charlie, you didn't surround this if with {}, which causes the 
+        if (length<= _dotllRTSThreshold || Addr1==mac_broadcast_addr) {
+            //Note: Charlie, you didn't surround this if with {}, which causes the
             //else block below related to the if below. There are several of this kind
             // of errors...
-        
+
             if (_debugging) {
                 _debug("RTS is not sent.");}
         }    else

@@ -260,7 +260,7 @@ public class MovieWriter extends Sink
             try {
                 _jmfImageToken = (JMFImageToken) token;
             } catch (ClassCastException ex) {
-                throw new IllegalActionException(this, ex, 
+                throw new IllegalActionException(this, ex,
                         "Failed to cast " + token.getClass()
                         + " to a JMFImageToken.\nToken was: " + token);
             }
@@ -323,7 +323,7 @@ public class MovieWriter extends Sink
             }
 
             processor.addControllerListener(this);
-            
+
             processor.configure();
 
             if (!_waitForState(processor, Processor.Configured)) {
@@ -382,7 +382,7 @@ public class MovieWriter extends Sink
             }
 
             dataSink.addDataSinkListener(this);
-            
+
             try {
                 processor.start();
                 dataSink.start();
@@ -390,7 +390,7 @@ public class MovieWriter extends Sink
                 throw new IllegalActionException(this, ex,
                         "Could not start processor and datasink");
             }
-            
+
             if (!_waitForFileDone()) {
                 throw new IllegalActionException("Could not write the file");
             }

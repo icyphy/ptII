@@ -43,7 +43,7 @@ transients die away.
 <a name="graph, X window, multi-trace"></a>
 
  @Author S. Ha
- @Version $Id$, based on version 1.11 of /users/ptolemy/src/domains/cgc/stars/CGCXscope.pl, from Ptolemy Classic 
+ @Version $Id$, based on version 1.11 of /users/ptolemy/src/domains/cgc/stars/CGCXscope.pl, from Ptolemy Classic
  @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCXscope extends CGCXgraph {
@@ -72,7 +72,7 @@ public class CGCXscope extends CGCXgraph {
         nTracesSoFar = new Parameter(this, "nTracesSoFar");
         nTracesSoFar.setExpression("0");
 
-/* 
+/*
 */
     }
     ///////////////////////////////////////////////////////////////////
@@ -99,14 +99,14 @@ public class CGCXscope extends CGCXgraph {
     /**
      */
     public int  myExecTime() {
-        
+
 return 8;
      }
 
     /**
      */
     public void  generateInitializeCode() throws IllegalActionException {
-        
+
 traceCount= 0-(int)ignore;
 	    super.generateInitializeCode();
      }
@@ -114,7 +114,7 @@ traceCount= 0-(int)ignore;
     /**
      */
     public void  generateFireCode() {
-        
+
 if (((IntToken)((traceLength).getToken())).intValue() > 0) {
 { StringBuffer _str_ = new StringBuffer(); _str_.append(
 "	if ($ref(traceCount) >= $val(traceLength)) {\n"
@@ -126,7 +126,7 @@ if (((IntToken)((traceLength).getToken())).intValue() > 0) {
 "	$ref(traceCount)++;\n"
 "	if (!$ref(traceCount)) $ref(index) = 0;\n"
 
-); 	 addCode(_str_);  } 
+); 	 addCode(_str_);  }
 		}
 
 		super.go();

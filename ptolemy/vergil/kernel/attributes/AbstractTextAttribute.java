@@ -190,7 +190,7 @@ public class AbstractTextAttribute extends Attribute {
             super.attributeChanged(attribute);
         }
     }
-    
+
     /** Clone the object into the specified workspace.
      *  @param workspace The workspace for the new object.
      *  @return A new AbstractTextAttribute.
@@ -199,7 +199,7 @@ public class AbstractTextAttribute extends Attribute {
      */
     public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
-        AbstractTextAttribute result = 
+        AbstractTextAttribute result =
             (AbstractTextAttribute)super.clone(workspace);
         result._icon = (TextIcon)result.getAttribute("_icon");
         return result;

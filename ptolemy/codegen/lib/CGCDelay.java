@@ -23,7 +23,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 Bulk delay.
 
  @Author T. M. Parks
- @Version $Id$, based on version 1.6 of /users/ptolemy/src/domains/cgc/stars/CGCDelay.pl, from Ptolemy Classic 
+ @Version $Id$, based on version 1.6 of /users/ptolemy/src/domains/cgc/stars/CGCDelay.pl, from Ptolemy Classic
  @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCDelay extends ClassicCGCActor {
@@ -48,7 +48,7 @@ public class CGCDelay extends ClassicCGCActor {
         delay = new Parameter(this, "delay");
         delay.setExpression("1");
 
-/* 
+/*
 */
     }
     ///////////////////////////////////////////////////////////////////
@@ -75,35 +75,35 @@ public class CGCDelay extends ClassicCGCActor {
     /**
      */
     public void  generatePreinitializeCode() {
-        
+
 if (!(int) delay) return;
 	addDeclaration(declarations);
-	addCode(init); 
+	addCode(init);
      }
 
     /**
      */
     public void  generateInitializeCode() throws IllegalActionException {
-        
+
 if (!(int) delay) forkInit(input,output);
      }
 
     /**
      */
     public void  generateFireCode() {
-        
+
 if (!(int) delay) return;
-	addCode(main); 
+	addCode(main);
      }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
-    public String declarations = 
+    public String declarations =
         "	/* static so that buffer will be initialized to zero */\n"
         + "	double $starSymbol(buffer)[$val(delay)];\n"
         + "	int $starSymbol(index);\n";
 
-    public String init = 
+    public String init =
         "	$starSymbol(index) = 0;\n"
         + "    {\n"
         + "	int i;\n"
@@ -111,7 +111,7 @@ if (!(int) delay) return;
         + "	    $starSymbol(buffer)[i] = 0;\n"
         + "    }\n";
 
-    public String main = 
+    public String main =
         "	$ref(output) = $starSymbol(buffer)[$starSymbol(index)];\n"
         + "	$starSymbol(buffer)[$starSymbol(index)] = $ref(input);\n"
         + "	if ( ++$starSymbol(index) >= $val(delay) )\n"

@@ -40,7 +40,7 @@ import caltrop.interpreter.InputChannel;
 //////////////////////////////////////////////////////////////////////////
 //// DFInputChannel
 /**
-   @author J&#246;rn W. Janneck 
+   @author J&#246;rn W. Janneck
    @version $Id$
    @since Ptolemy II 4.0
    @Pt.ProposedRating Yellow (neuendor)
@@ -54,7 +54,7 @@ class DFInputChannel implements InputChannel {
         this.buffer = new ArrayList();
         this.tokensRead = 0;
     }
-    
+
     /** Get the given token from this input channel.  If necessary,
      * consume tokens from the associated Ptolemy input port to make
      * the given token available.
@@ -95,7 +95,7 @@ class DFInputChannel implements InputChannel {
     	}
     	tokensRead = 0;
     }
-    
+
     /** Rollback any reads from this channel, allowing the tokens to
      * be read again.
      */
@@ -120,7 +120,7 @@ class DFInputChannel implements InputChannel {
                     ex);
         }
     }
-    
+
     public String toString() {
         return "(DFInputChannel " + channel + " at " + port.toString() + ")";
     }

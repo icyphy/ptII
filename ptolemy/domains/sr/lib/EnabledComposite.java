@@ -55,7 +55,7 @@ import ptolemy.kernel.util.StringAttribute;
  * provided by the Lustre and SIGNAL clock calculi, but it
  * circumvents the undecidability of clock signals by requiring
  * the model designer to be explicit about subclocks.
- * 
+ *
  * @author Edward A. Lee
  * @version $Id$
  * @Pt.ProposedRating Yellow (eal)
@@ -87,7 +87,7 @@ public class EnabledComposite extends TypedCompositeActor {
         controlCardinal.setExpression("SOUTH");
         Location location = new Location(enable, "_location");
         location.setExpression("[140.0, 35.0]");
-        
+
         // Create an inside director.
         SRDirector director = new SRDirector(this, "SRDirector");
         location = new Location(director, "_location");

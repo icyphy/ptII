@@ -420,7 +420,7 @@ public class ComponentPort extends Port {
     }
 
     /** Return true if the given relation is linked from inside.
-     *  @param relation The relation that is checked.  
+     *  @param relation The relation that is checked.
      *  @return True if the given relation is linked from inside.
      */
     public boolean isInsideLinked(Relation relation) {

@@ -10,7 +10,7 @@ public class Unboxing6
     static Token[] tokens;
     static Token token;
     static Token castToken;
-    
+
     public static void main(String args[]) throws IllegalActionException {
 	tokens = new Token[1];
 	tokens[0] = intToken;

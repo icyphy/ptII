@@ -101,8 +101,8 @@ public class BreakpointConfigurer extends Query implements ChangeListener{
             throw new InternalErrorException(
                     "No director associated with this actor.");
         } else {
-            // FIXME: Currently, it seems that this facility 
-            // only works in SDF. 
+            // FIXME: Currently, it seems that this facility
+            // only works in SDF.
             // Perhaps this constructor should throw IllegalActionException.
 
             if (_sdfDirectorClass == null) {
@@ -197,9 +197,9 @@ public class BreakpointConfigurer extends Query implements ChangeListener{
                 director.requestChange(request);
             }
         } else {
-            // If BreakpointConfigurerDialog()._handlClosing() 
+            // If BreakpointConfigurerDialog()._handlClosing()
             // calls this in appropriately, then debugController might be
-            // null. 
+            // null.
             if (debugController != null) {
                 // Remove profile if there are no longer any
                 // breakpoints selected for this _actor.

@@ -307,7 +307,7 @@ public class TerrainProperty extends TypedAtomicActor
         double yMax = Double.NEGATIVE_INFINITY;
         double yMin = Double.POSITIVE_INFINITY;
         double[] center = new double[2];
-            
+
         // First, read vertex values and find the bounds.
         for (int j = 0; j < _numberOfPoints; j++) {
             if (_xPoints[j] > xMax) {

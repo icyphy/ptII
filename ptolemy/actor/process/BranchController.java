@@ -184,7 +184,7 @@ public class BranchController implements Runnable {
 
                 branch =
                     new Branch( producerReceiver, consumerReceiver, this );
-                _branches.add(branch);                
+                _branches.add(branch);
             }
         }
     }

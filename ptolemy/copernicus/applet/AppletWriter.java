@@ -310,13 +310,13 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                     throw io;
                 }
                 System.out.println("AppletWriter: removed GeneratorAttribute "
-                        + "while copying '" 
+                        + "while copying '"
                         + modelPathURL + "' to '"
                         + newModelFile + "'");
             } else {
                 System.out.println("AppletWriter: No need to copy the .xml "
-                        + "file,\n the source (" + _modelPath 
-                        + ")\n and destination (" + newModelFile 
+                        + "file,\n the source (" + _modelPath
+                        + ")\n and destination (" + newModelFile
                         + ")\n refer to the same file.");
              }
         } catch (IOException ex) {

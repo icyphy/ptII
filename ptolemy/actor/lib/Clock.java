@@ -47,11 +47,11 @@ import ptolemy.kernel.util.Workspace;
 //////////////////////////////////////////////////////////////////////////
 //// Clock
 /**
-   This actor produces a periodic signal, a sequence of events at 
-   regularly spaced intervals. It can generate finite pulses by specifying 
+   This actor produces a periodic signal, a sequence of events at
+   regularly spaced intervals. It can generate finite pulses by specifying
    a finite <i>numberOfCycles</i>. The numberOfCycles has a default value
-   as -1, indicating infinite length of executions. If numberOfCycles is 
-   a positive number, once the specified number of cycles has been completed, 
+   as -1, indicating infinite length of executions. If numberOfCycles is
+   a positive number, once the specified number of cycles has been completed,
    then this actor returns false from the postfire method. FIXME: is this
    the desired behavior?
    <p>
@@ -74,16 +74,16 @@ import ptolemy.kernel.util.Workspace;
    The actor uses the fireAt() method of the director to request
    firing at the beginning of each period plus each of the offsets.
    <p>
-   The type of the output can be any token type. This type is inferred 
+   The type of the output can be any token type. This type is inferred
    from the element type of the <i>values</i> parameter.
    <p>
-   This actor is a timed source; the untimed version is Pulse. 
-   <p> 
+   This actor is a timed source; the untimed version is Pulse.
+   <p>
    There is another kind of clock called ContinuousClock, which produces
    a square wave instead of a sequence of events. The ContinuousClock
    is a special actor for continuous-time domain. One of their key differences
    is that a Clock outputs a DISCRETE signal while a ContinuousClock outputs
-   a CONTINUOUS signal. 
+   a CONTINUOUS signal.
 
    @see ptolemy.domains.ct.lib.ContinuousClock
    @author Edward A. Lee, Haiyang Zheng
@@ -136,7 +136,7 @@ public class Clock extends TimedSource {
         numberOfCycles.setExpression("-1");
 
         // Set the output signal type as DISCRETE to indicate
-        // that the outputs of this actor are discrete events. 
+        // that the outputs of this actor are discrete events.
         // NOTE: ContinuousClock, a subclass of this class overrides
         // the signal type to CONTINUOUS.
         new Parameter(output, "signalType",
@@ -272,7 +272,7 @@ public class Clock extends TimedSource {
                     _tentativeCycleStartTime.add(periodValue);
             }
 
-            Time currentPhaseTime 
+            Time currentPhaseTime
                 = _tentativeCycleStartTime.add(_offsets[_tentativePhase]);
             // Adjust the phase if time has moved beyond the current phase.
             if (currentTime.compareTo(currentPhaseTime) == 0) {
@@ -286,7 +286,7 @@ public class Clock extends TimedSource {
                 if (_tentativePhase >= _offsets.length) {
                     _tentativePhase = 0;
                     // Schedule the first firing in the next period.
-                    _tentativeCycleStartTime = 
+                    _tentativeCycleStartTime =
                         _tentativeCycleStartTime.add(periodValue);
                     // Indicate that the cycle count should increase.
                     _tentativeCycleCountIncrement++;
@@ -316,7 +316,7 @@ public class Clock extends TimedSource {
                 // FIXME: is this a desired behavior? why not simply stop the firing?
                 // NOTE: This actor is intended to be used in DE domain. If this actor
                 // serves as a source, when the cycle limit is reached, it should stop
-                // producing more events and consequently the model stops. 
+                // producing more events and consequently the model stops.
                 int cycleLimit  = ((IntToken)numberOfCycles.getToken()).intValue();
                 if (cycleLimit > 0 ) {
                     Time stopTime = _tentativeStartTime.add(cycleLimit * periodValue);
@@ -331,7 +331,7 @@ public class Clock extends TimedSource {
                 output.send(0, _tentativeCurrentValue);
                 if (_debugging)_debug("Output: " + _tentativeCurrentValue + ".");
             }
-        } 
+        }
     }
 
     /** Schedule the first firing and initialize local variables.
@@ -349,7 +349,7 @@ public class Clock extends TimedSource {
         _currentValue = _getValue(0).zero();
         _phase = 0;
         _tentativeNextFiringTime = _startTime;
-        
+
         // As in fire(), we use the strategy pattern so that derived classes
         // can do something different here.
         _initializeCycleCount();
@@ -386,7 +386,7 @@ public class Clock extends TimedSource {
      *   <i>offsets</i> parameters do not have the same length.
      */
     public boolean prefire() throws IllegalActionException {
-        
+
         // FIXME: why put the check here???
         ArrayToken val = (ArrayToken)(values.getToken());
         if (_offsets.length != val.length()) {
@@ -399,10 +399,10 @@ public class Clock extends TimedSource {
     ///////////////////////////////////////////////////////////////////
     ////                       protected methods                   ////
 
-    /** Get the specified output value, checking the form of the values 
+    /** Get the specified output value, checking the form of the values
      *  parameter.
      *  @param index The index of the output values.
-     *  @return A token that contains the output value. 
+     *  @return A token that contains the output value.
      *  @exception IllegalActionException If the index is out of the range of
      *  the values parameter.
      */
@@ -443,8 +443,8 @@ public class Clock extends TimedSource {
     }
 
     /** Update the states and request refiring if necessary.
-     *  @exception IllegalActionException If the numberOfCycles parameter does 
-     *  not contain a valid parameter or can not request refiring. 
+     *  @exception IllegalActionException If the numberOfCycles parameter does
+     *  not contain a valid parameter or can not request refiring.
      */
     protected void _updateStates() throws IllegalActionException {
         _cycleStartTime = _tentativeCycleStartTime;
@@ -465,7 +465,7 @@ public class Clock extends TimedSource {
         // that no future firing should be scheduled.
         // Now, we leave it up to the director, unless the value
         // explicitly indicates no firing with Double.NEGATIVE_INFINITY.
-        if (!_done && 
+        if (!_done &&
             _tentativeNextFiringTime.compareTo(Time.NEGATIVE_INFINITY) != 0) {
             getDirector().fireAt(this, _tentativeNextFiringTime);
             if (_debugging)_debug("Requesting firing at: "
@@ -517,26 +517,26 @@ public class Clock extends TimedSource {
     // Following variables recall data from the fire to the postfire method.
     /** The tentative current value of the clock output. */
     protected transient Token _tentativeCurrentValue;
-    
+
     /** The tentative count of cycles executed so far. */
     protected transient int _tentativeCycleCount;
-    
+
     /** The tentative increment for cycle count increment. */
     protected transient int _tentativeCycleCountIncrement;
-    
+
     /** The tentative start time of the most recent cycle. */
     protected transient Time _tentativeCycleStartTime;
-    
-    /** The indicator of whether the specified number of cycles 
+
+    /** The indicator of whether the specified number of cycles
      *  have been completed. */
     protected transient boolean _tentativeDone;
 
     /** The tentative time for next firing. */
     protected transient Time _tentativeNextFiringTime;
-    
+
     /** The tentative phase of the next otuput. */
     protected transient int _tentativePhase;
-    
+
     /** The tentative start time for the clock to produce output. */
     protected transient Time _tentativeStartTime;
 }

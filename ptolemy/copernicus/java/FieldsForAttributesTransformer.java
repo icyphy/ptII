@@ -246,9 +246,9 @@ public class FieldsForAttributesTransformer extends SceneTransformer implements 
             Entity entityContainer =
                 FieldsForEntitiesTransformer.getEntityContainerOfObject(
                         attribute);
-//             NamedObj creatorObject = 
+//             NamedObj creatorObject =
 //                 ModelTransformer.getCreatorObject(attribute);
-           
+
             SootField attributeField = (SootField)
                 _attributeToFieldMap.get(attribute);
             Local local;

@@ -41,7 +41,7 @@ import ptolemy.actor.Executable;
    <p> <b>Note: this interface is likely to grow larger as more domains
    are implemented.</b>
 
-   @author Christopher Chang 
+   @author Christopher Chang
    @version $Id$
    @since Ptolemy II 4.0
    @Pt.ProposedRating Red (cxh)

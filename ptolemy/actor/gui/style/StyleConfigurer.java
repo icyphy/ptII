@@ -196,7 +196,7 @@ public class StyleConfigurer extends Query implements QueryListener {
                 }
             }
         } else {
-                        
+
             // Entry is not expertMode.
             // Figure out which style is being requested.
             ParameterEditorStyle found = null;

@@ -31,7 +31,7 @@ The default is <i>N  </i>=<i>  </i>20.
 For inputs that are zero or negative, the output is <i>min</i>.
 
  @Author Soonhoi Ha
- @Version $Id$, based on version 1.13 of /users/ptolemy/src/domains/cgc/stars/CGCDB.pl, from Ptolemy Classic 
+ @Version $Id$, based on version 1.13 of /users/ptolemy/src/domains/cgc/stars/CGCDB.pl, from Ptolemy Classic
  @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCDB extends ClassicCGCActor {
@@ -64,7 +64,7 @@ public class CGCDB extends ClassicCGCActor {
         gain = new Parameter(this, "gain");
         gain.setExpression("20.0");
 
-/*     
+/*
 noInternalState();
 */
     }
@@ -102,34 +102,34 @@ noInternalState();
     /**
      */
     public int  myExecTime() {
-        
+
 return 37;   /* approximate value from LOG */
      }
 
     /**
      */
     public void  generatePreinitializeCode() {
-        
+
 addInclude("<math.h>");
      }
 
     /**
      */
     public void  generateInitializeCode() throws IllegalActionException {
-        
+
 if (((IntToken)((inputIsPower).getToken())).intValue() == 1) // FIXME inputIsPower should be a Boolean gain=10.0;
      }
 
     /**
      */
     public void  generateFireCode() {
-        
-addCode(body); 
+
+addCode(body);
      }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
-    public String body = 
+    public String body =
         "	double f = $ref(input);\n"
         + "	if (f <= 0.0) $ref(output) = $val(min);\n"
         + "	else {\n"

@@ -101,7 +101,7 @@ public class EditParametersDialog extends ComponentDialog
         if (buttonPressed().equals("Add")) {
             _openAddDialog(null, "", "", "ptolemy.data.expr.Parameter");
             _target.removeChangeListener(this);
-            
+
         } else if (buttonPressed().equals("Remove")) {
             // Create a new dialog to remove a parameter, then open a new
             // EditParametersDialog.
@@ -152,14 +152,14 @@ public class EditParametersDialog extends ComponentDialog
                 request.setUndoable(true);
                 _target.requestChange(request);
             }
-            
+
         } else if (buttonPressed().equals("Restore Defaults")) {
             ((Configurer)contents).restoreToDefaults();
-            
+
             // There is no (visible) change request to listen to,
-            // so we have to 
+            // so we have to
             _reOpen();
-            
+
         } else if (buttonPressed().equals("Preferences")) {
             // Create a dialog for setting parameter styles.
             try {
@@ -173,13 +173,13 @@ public class EditParametersDialog extends ComponentDialog
                     panel.restore();
                 }
                 // There is no (visible) change request to listen to,
-                // so we have to 
+                // so we have to
                 _reOpen();
 
             } catch (IllegalActionException ex) {
                 MessageHandler.error("Edit Parameter Styles failed", ex);
             }
-            
+
         } else if (buttonPressed().equals("Help")) {
             try {
                 URL doc = getClass().getClassLoader().getResource(
@@ -351,7 +351,7 @@ public class EditParametersDialog extends ComponentDialog
         }
         return dialog;
     }
-    
+
     /** Open a new dialog in a change request that defers
      *  to the Swing thread. This ensures no race conditions
      *  when we are re-opening a dialog to display the result

@@ -41,14 +41,14 @@ import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// HuffmanCoder
-/** 
+/**
    Given a probability distribution and alphabet, encode the input using
-   Huffman code and send the result in booleans to the output port. 
+   Huffman code and send the result in booleans to the output port.
    Its base class HuffmanBasic generates the code book.
-   The HuffmanCoder actor simply encode the input into the corresponding 
+   The HuffmanCoder actor simply encode the input into the corresponding
    booleans in the code book.
    @see HuffmanBasic
-    
+
    @author Rachel Zhou
    @version $Id$
    @since Ptolemy II 4.1
@@ -79,7 +79,7 @@ public class HuffmanCoder extends HuffmanBasic {
 
     //////////////////////////////////////////////////////////////////
     ////                   public methods                         ////
-    
+
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then creates new ports and parameters.
      *  @param workspace The workspace for the new object.
@@ -107,7 +107,7 @@ public class HuffmanCoder extends HuffmanBasic {
         }
         // Get the input token. Ready for output.
         Token inputToken = (Token)input.get(0);
-        
+
         // Find the token in the alphabet;
         boolean validInput = false;
         for (int i = 0; i < _pmf.length; i ++) {
@@ -125,11 +125,11 @@ public class HuffmanCoder extends HuffmanBasic {
             //    "Input is not matched to the alphabet");
         //}
     }
-    
+
 
     ////////////////////////////////////////////////////////////
     ////                   private methods                  ////
-    
+
     /** Given a codeword, which should be a string of '0' and '1',
      *  converted it to a sequence of booleans and send them to the
      *  output port.

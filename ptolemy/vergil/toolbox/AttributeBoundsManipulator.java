@@ -193,7 +193,7 @@ public class AttributeBoundsManipulator extends BoundsManipulator {
 
     // Container of the icon to be manipulated.
     private NamedObj _container;
-    
+
     // The local instance of the resizer.
     private Resizer _resizer;
 
@@ -219,7 +219,7 @@ public class AttributeBoundsManipulator extends BoundsManipulator {
             super.mouseReleased(e);
             AttributeBoundsManipulator.this.mouseReleased(e);
         }
-        
+
         /** Set the snap resolution.
          *  @param resolution The snap resolution.
          */
@@ -246,7 +246,7 @@ public class AttributeBoundsManipulator extends BoundsManipulator {
                             parent.getChild().getBounds(),
                             geometry.getBounds()));
         }
-        
+
         private SnapConstraint _snapConstraint;
     }
 }

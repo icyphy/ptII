@@ -93,7 +93,7 @@ public class OrderedMerge extends TypedAtomicActor {
 
         selectedA = new TypedIOPort(this, "selectedA", false, true);
         selectedA.setTypeEquals(BaseType.BOOLEAN);
-        
+
         // Add an attribute to get the port placed on the bottom.
         StringAttribute channelCardinal
                 = new StringAttribute(selectedA, "_cardinal");
@@ -118,7 +118,7 @@ public class OrderedMerge extends TypedAtomicActor {
 
     /** The output port, which has the same type as the input ports. */
     public TypedIOPort output;
-    
+
     /** Output port indicating whether the output token came from
      *  <i>inputA</i>.
      */
@@ -212,17 +212,17 @@ public class OrderedMerge extends TypedAtomicActor {
         _nextPort = _tentativeNextPort;
         return super.postfire();
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-    
+
     /** Return the port that this actor will read from on the next
      *  invocation of the fire() method. This will be null before the
      *  first invocation of initialize().
-     *  @return The next input port.  
+     *  @return The next input port.
      */
     protected TypedIOPort _getNextPort() {
-        // This method is Added by Gang Zhou so that DDFOrderedMerge 
+        // This method is Added by Gang Zhou so that DDFOrderedMerge
         // can extend this class.
         return _nextPort;
     }
@@ -235,10 +235,10 @@ public class OrderedMerge extends TypedAtomicActor {
 
     /** The port from which to read next. */
     private TypedIOPort _nextPort = null;
-    
+
     /** Indicator of whether the _recordedToken was read from A. */
     private boolean _readFromA;
-    
+
     /** Tentative indicator of having read from A. */
     private boolean _tentativeReadFromA;
 

@@ -179,7 +179,7 @@ public abstract class ODESolver extends NamedObj {
      *  Some solvers need history information from each integrator.
      *  The derived class should implement this method to return the
      *  number of history information needed so that the integrator can
-     *  prepare for that in advance. In particular, if a solver needs no 
+     *  prepare for that in advance. In particular, if a solver needs no
      *  history information, this method returns 0.
      *  @return The amount of history information needed.
      */

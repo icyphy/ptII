@@ -228,7 +228,7 @@ public class ComputeHistogram extends TypedAtomicActor {
 
     private void _addPoint(double value) {
         // Calculate the bin number.
-        int bin = 
+        int bin =
             (int)(Math.round(
                 (value - (_minimumValue + _binWidth * 0.5)) / _binWidth));
         if (bin >= 0 && bin < _numberOfBins) {

@@ -12,7 +12,7 @@ public class Unboxing9 {
     ArrayToken arraytoken;
     ArrayToken arraytoken2;
     public final ArrayToken initialOutputs_CGToken;
-  
+
     public void initialize() throws IllegalActionException {
 	Token[] tokens = initialOutputs_CGToken.arrayValue();
 	int i = initialOutputs_CGToken.length();
@@ -24,7 +24,7 @@ public class Unboxing9 {
             System.out.println("token = " + doubletoken.toString());
 	}
     }
-    
+
     public Unboxing9() throws IllegalActionException {
 	IntToken[] inttokens = new IntToken[1];
 	IntToken inttoken = new IntToken(0);

@@ -27,7 +27,7 @@ it will be automatically attached to a porthole if the sources of the porthole
 is more than one. Its role is just opposite to that of Spread star.
 
  @Author S. Ha
- @Version $Id$, based on version 1.10 of /users/ptolemy/src/domains/cgc/stars/CGCCollect.pl, from Ptolemy Classic 
+ @Version $Id$, based on version 1.10 of /users/ptolemy/src/domains/cgc/stars/CGCCollect.pl, from Ptolemy Classic
  @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCCollect extends ClassicCGCActor {
@@ -47,7 +47,7 @@ public class CGCCollect extends ClassicCGCActor {
         input.setMultiport(true);
         output = new ClassicPort(this, "output", false, true);
 
-/* 
+/*
 */
     }
     ///////////////////////////////////////////////////////////////////
@@ -69,7 +69,7 @@ public class CGCCollect extends ClassicCGCActor {
     /**
      */
     public void  generateInitializeCode() throws IllegalActionException {
-        
+
 MPHIter iter(input);
 		CGCPortHole* p;
 		int loc = 0;
@@ -82,13 +82,13 @@ MPHIter iter(input);
     /**
      */
     public void  generateFireCode() {
-        
+
      }
 
     /**
      */
     protected int amISpreadCollect () {
-        
+
 return 1;
     }
 

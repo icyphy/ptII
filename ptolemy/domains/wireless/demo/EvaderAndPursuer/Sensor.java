@@ -167,7 +167,7 @@ public class Sensor extends TypedAtomicActor {
         super.removeDependency(input, output);
         super.removeDependency(signal, output);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 

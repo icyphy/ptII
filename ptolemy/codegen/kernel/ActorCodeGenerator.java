@@ -35,7 +35,7 @@ import ptolemy.kernel.util.IllegalActionException;
 //// ActorCodeGenerator
 
 /** FIXME
- * 
+ *
  *  @author Christopher Brooks, Edward Lee, Jackie Leung, Gang Zhou, Rachel Zhou
  *  @version $Id$
  *  @since Ptolemy II 5.0

@@ -24,7 +24,7 @@ Generates a ramp signal, starting at "value" (default 0)
 with step size "step" (default 1).
 
  @Author Siamak Modjtahedi
- @Version $Id$, based on version 1.1 of /users/ptolemy/src/domains/cgc/stars/CGCRampInt.pl, from Ptolemy Classic 
+ @Version $Id$, based on version 1.1 of /users/ptolemy/src/domains/cgc/stars/CGCRampInt.pl, from Ptolemy Classic
  @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCRampInt extends ClassicCGCActor {
@@ -51,7 +51,7 @@ public class CGCRampInt extends ClassicCGCActor {
         value = new Parameter(this, "value");
         value.setExpression("0");
 
-/* 
+/*
 */
     }
     ///////////////////////////////////////////////////////////////////
@@ -78,20 +78,20 @@ public class CGCRampInt extends ClassicCGCActor {
     /**
      */
     public int  myExecTime() {
-        
+
 return 2;
      }
 
     /**
      */
     public void  generateFireCode() {
-        
-addCode(std); 
+
+addCode(std);
      }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
-    public String std = 
+    public String std =
         "	$ref(output) = $ref(value);\n"
         + "	$ref(value) += $val(step);\n";
 }

@@ -105,10 +105,10 @@ public class ECSLSum extends Transformer {
      */
     public StringParameter Inputs;
 
-    /** The shape of the Icon.  Currently ignored.  The default value  
+    /** The shape of the Icon.  Currently ignored.  The default value
      *  is the string "UNKNOWN";
      */
-    public StringParameter IconShape;        
+    public StringParameter IconShape;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////

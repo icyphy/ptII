@@ -579,12 +579,12 @@ public class DDEReceiver extends PrioritizedTimedQueue
 
         synchronized(this) {
 
-            if ( time.compareTo(_getCompletionTime()) > 0 
-                && _getCompletionTime().getDoubleValue() != ETERNITY 
+            if ( time.compareTo(_getCompletionTime()) > 0
+                && _getCompletionTime().getDoubleValue() != ETERNITY
                 && !_terminate ) {
                 time = new Time(
                         ((Actor)getContainer().getContainer().getContainer())
-                        .getDirector(), 
+                        .getDirector(),
                         INACTIVE);
             }
 

@@ -163,7 +163,7 @@ import ptolemy.util.FileUtilities;
 
    <p>There are a few situations where FilePortParameter might not do what
    you expect:
-   
+
    <ol>
    <li> If it is used in a transparent composite actor, then a token provided
      to a FilePortParameter will never be read.  A transparent composite actor
@@ -243,7 +243,7 @@ public class FilePortParameter extends PortParameter {
 
     // NOTE: This code is duplicated from FileParameter, but without
     // multiple inheritance, I see no way around this.
-    
+
     /** Return the file as a File object.  This method first attempts
      *  to directly use the file name to construct the File. If the
      *  resulting File is not absolute, then it attempts to resolve it
@@ -383,8 +383,8 @@ public class FilePortParameter extends PortParameter {
     public BufferedReader openForReading() throws IllegalActionException {
         try {
             _reader = FileUtilities.openForReading(
-                    stringValue(), 
-                    getBaseDirectory(), 
+                    stringValue(),
+                    getBaseDirectory(),
                     getClass().getClassLoader());
             return _reader;
         } catch (IOException ex) {
@@ -429,8 +429,8 @@ public class FilePortParameter extends PortParameter {
     public Writer openForWriting(boolean append) throws IllegalActionException {
         try {
             _writer = FileUtilities.openForWriting(
-                    stringValue(), 
-                    getBaseDirectory(), 
+                    stringValue(),
+                    getBaseDirectory(),
                     append);
             return _writer;
         } catch (IOException ex) {
@@ -449,7 +449,7 @@ public class FilePortParameter extends PortParameter {
     public void setBaseDirectory(URI directory) {
         _baseDirectory = directory;
     }
-    
+
     /** Return the string value of this parameter.  This is
      *  equivalent to
      *  <pre>

@@ -126,7 +126,7 @@ public class JAIImageReader extends Source {
         try {
             try {
                 inputStream = _fileURL.openStream();
-                // We use a FileCacheSeekableStream here because 
+                // We use a FileCacheSeekableStream here because
                 // we need to have a stream that can go backwards.
                 // If we are running under the windows installer, Web Start
                 // or any other jar based installation, we need to be

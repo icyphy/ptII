@@ -44,36 +44,36 @@ import ptolemy.kernel.util.IllegalActionException;
    @Pt.AcceptedRating Red (eal)
 */
 public class Repeat extends CCodeGeneratorHelper {
-    
+
     /** FIXME
      */
-    
+
     public Repeat(ptolemy.domains.sdf.lib.Repeat actor) {
         super(actor);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     public methods                        ////
-    
-    public void  generateFireCode(StringBuffer stream) 
+
+    public void  generateFireCode(StringBuffer stream)
             throws IllegalActionException {
-        
-        ptolemy.domains.sdf.lib.Repeat actor = 
+
+        ptolemy.domains.sdf.lib.Repeat actor =
                 (ptolemy.domains.sdf.lib.Repeat)getComponent();
         StringBuffer code = new StringBuffer();
         // FIXME: haven't dealt with <i>blockSize</i>. Assumed input
         // consume rate to be 1.
-        for (int i = 0; i < 
+        for (int i = 0; i <
                ((IntToken)actor.numberOfTimes.getToken()).intValue(); i++) {
             code.append("$ref(output," + i + ") = ");
         }
         code.append("$ref(input);\n");
-        _codeBlock = code.toString();  
+        _codeBlock = code.toString();
         stream.append(processCode(_codeBlock));
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected variable                ////
-     
+
     protected String _codeBlock;
 }

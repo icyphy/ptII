@@ -51,11 +51,11 @@ import ptolemy.vergil.icon.BoxedValuesIcon;
 //// IDAttribute
 /**
    This attribute identifies the containing model, showing its name, base
-   class, last modified date, author, and contributors information. 
-   Of these, only the contributors information is editable.  
-   For the others, they are inferred from either the model itself or the 
-   operations on the model.  
-   Unfortunately, the changes will not be shown on the display until the 
+   class, last modified date, author, and contributors information.
+   Of these, only the contributors information is editable.
+   For the others, they are inferred from either the model itself or the
+   operations on the model.
+   Unfortunately, the changes will not be shown on the display until the
    model is saved, closed and re-opened.
    <p>
    @author Edward A. Lee
@@ -96,7 +96,7 @@ public class IDAttribute extends SingletonAttribute {
         // FIXME: Need to listen for changes to the name.
         // How to do that?
         // The current design is also a solution in that the name of this
-        // attribute and model must be consistent with the name of the file. 
+        // attribute and model must be consistent with the name of the file.
 
         boolean isClass = false;
         if (container instanceof InstantiableNamedObj) {
@@ -125,7 +125,7 @@ public class IDAttribute extends SingletonAttribute {
         // The date when this model is created.
         // Actually, it is the date when this attribute is created.
         // We assume that when the model is created, this attribute
-        // is also created. 
+        // is also created.
         // We may force this to happen.:-) Further more, we may force
         // that only the top level contains an model ID.
         created = new StringAttribute(this, "created");
@@ -144,8 +144,8 @@ public class IDAttribute extends SingletonAttribute {
         lastUpdated.setPersistent(true);
 
         // The name of the author who creates the model.
-        // This attribute can not be changed so that the 
-        // intellectual property (IP) is preserved.  
+        // This attribute can not be changed so that the
+        // intellectual property (IP) is preserved.
         author = new StringAttribute(this, "author");
         author.setVisibility(Settable.NOT_EDITABLE);
         String userName = null;
@@ -171,10 +171,10 @@ public class IDAttribute extends SingletonAttribute {
         SingletonParameter hide = new SingletonParameter(this, "_hideName");
         hide.setToken(BooleanToken.TRUE);
         hide.setVisibility(Settable.EXPERT);
-        
+
         BoxedValuesIcon icon = new BoxedValuesIcon(this, "_icon");
         icon.setPersistent(false);
-        
+
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -228,7 +228,7 @@ public class IDAttribute extends SingletonAttribute {
         }
     }
 
-    /** Update the modification date of this attribute. 
+    /** Update the modification date of this attribute.
      */
     public void updateContent() throws InternalErrorException {
         super.updateContent();

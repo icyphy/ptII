@@ -25,7 +25,7 @@ divided by the integer "divisor" (default 1).  Truncated integer
 division is used.
 
  @Author Brian L. Evans
- @Version $Id$, based on version 1.2 of /users/ptolemy/src/domains/cgc/stars/CGCDivByInt.pl, from Ptolemy Classic 
+ @Version $Id$, based on version 1.2 of /users/ptolemy/src/domains/cgc/stars/CGCDivByInt.pl, from Ptolemy Classic
  @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCDivByInt extends ClassicCGCActor {
@@ -50,7 +50,7 @@ public class CGCDivByInt extends ClassicCGCActor {
         divisor = new Parameter(this, "divisor");
         divisor.setExpression("2");
 
-/*     
+/*
 noInternalState();
 */
     }
@@ -78,7 +78,7 @@ noInternalState();
     /**
      */
     public void  generateInitializeCode() throws IllegalActionException {
-        
+
 if ( ((IntToken)((divisor).getToken())).intValue() == 0 ) {
 		     throw new IllegalActionException(this, "divisor cannot be zero");
 		}
@@ -87,12 +87,12 @@ if ( ((IntToken)((divisor).getToken())).intValue() == 0 ) {
     /**
      */
     public void  generateFireCode() {
-        
-addCode(divide); 
+
+addCode(divide);
      }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
-    public String divide = 
+    public String divide =
         "	$ref(output) = $ref(input) / $val(divisor);\n";
 }

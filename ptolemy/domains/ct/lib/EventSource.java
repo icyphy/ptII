@@ -50,13 +50,13 @@ import ptolemy.kernel.util.Workspace;
 /**
    This actor outputs a set of events at a discrete set of time points.
    It can be used to generate impulses in CT models.
-   <p> 
+   <p>
    This actor only generates predictable events and that is why it does not
    implement the CTStepSizeControlActor interface. This actor requests a
    refiring at its initialize method, then only fires at discrete phase of
    execution to produce events. During its postfire method, it requests
    further firings to produce more events if necessary.
-    
+
    @author Jie Liu, Haiyang Zheng
    @version $Id$
    @since Ptolemy II 2.0
@@ -222,11 +222,11 @@ public class EventSource extends TypedAtomicActor {
      */
     public boolean prefire() throws IllegalActionException {
         CTDirector director = (CTDirector)getDirector();
-        boolean result 
+        boolean result
             = (director.getModelTime().compareTo(_nextOutputTime) == 0);
         return result && super.prefire();
     }
-    
+
     /** Update the state of the actor and schedule the next firing,
      *  if the director is in the discrete phase.
      *  @exception IllegalActionException If the director throws it when

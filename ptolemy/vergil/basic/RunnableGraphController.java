@@ -208,7 +208,7 @@ public abstract class RunnableGraphController
             }
             putValue("tooltip", description + " (Ctrl+R)");
             putValue(GUIUtilities.ACCELERATOR_KEY,
-                    KeyStroke.getKeyStroke(KeyEvent.VK_R, 
+                    KeyStroke.getKeyStroke(KeyEvent.VK_R,
                             Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
         }
 
@@ -254,7 +254,7 @@ public abstract class RunnableGraphController
             }
             putValue("tooltip", description + " (Ctrl+U)");
             putValue(GUIUtilities.ACCELERATOR_KEY,
-                    KeyStroke.getKeyStroke(KeyEvent.VK_U, 
+                    KeyStroke.getKeyStroke(KeyEvent.VK_U,
                             Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
         }
 
@@ -295,7 +295,7 @@ public abstract class RunnableGraphController
             }
             putValue("tooltip", description + " (Ctrl+H)");
             putValue(GUIUtilities.ACCELERATOR_KEY,
-                    KeyStroke.getKeyStroke(KeyEvent.VK_H, 
+                    KeyStroke.getKeyStroke(KeyEvent.VK_H,
                             Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
         }
 

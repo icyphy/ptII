@@ -119,7 +119,7 @@ public class AttributeExpressionAttribute extends AbstractTextAttribute {
     protected String _getText() {
         NamedObj container = (NamedObj)getContainer();
         if (container != null) {
-            Attribute associatedAttribute = 
+            Attribute associatedAttribute =
                 ModelScope.getScopedVariable(null, container, _attributeName);
             if (associatedAttribute instanceof Settable) {
                 String value = ((Settable)associatedAttribute).getExpression();

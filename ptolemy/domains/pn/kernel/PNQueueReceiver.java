@@ -121,7 +121,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
             }
         }
     }
-    
+
     /** Set the container. This overrides the base class to record
      *  the director.
      *  @param port The container.
@@ -134,7 +134,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
         Actor actor = (Actor) port.getContainer();
         Director director;
         // For a composite actor,
-        // the receiver type of an inpu port is decided by 
+        // the receiver type of an inpu port is decided by
         // the executive director.
         // While the receiver type of an output is decided by the director.
         // NOTE: getExecutiveDirector and getDirector is of no difference
@@ -498,7 +498,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
 
     /** The director in charge of this receiver. */
     private PNDirector _director;
-    
+
     private boolean _readBlocked = false;
     private boolean _writeBlocked = false;
     private boolean _terminate = false;

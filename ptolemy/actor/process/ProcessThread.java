@@ -66,7 +66,7 @@ import ptolemy.kernel.util.Workspace;
    as well as an instance of Actor. The _increaseActiveCount() of the director
    is called from the constructor of this class, and the _decreaseActiveCount()
    method is called at the end of the run() method, just before the thread terminates.
- 
+
    @author Mudit Goel, Neil Smyth, John S. Davis II
    @version $Id$
    @since Ptolemy II 0.2
@@ -144,7 +144,7 @@ public class ProcessThread extends PtolemyThread {
                         // Tell the director we're stopped (necessary
                         // for deadlock detection).
                         _director._actorHasStopped();
-                       
+
                         while (_director.isStopFireRequested()) {
                             // If a stop has been requested, in addition
                             // to a stopFire, then stop execution
@@ -195,8 +195,8 @@ public class ProcessThread extends PtolemyThread {
                     _debug("-- Thread was interrupted: " + thrownWhenIterate);
                 } else if (
                     thrownWhenIterate instanceof InterruptedIOException
-                    || (thrownWhenIterate != null && 
-                        thrownWhenIterate.getCause() instanceof 
+                    || (thrownWhenIterate != null &&
+                        thrownWhenIterate.getCause() instanceof
                         InterruptedIOException)
                 ) {
                     // PSDF has problems here when run with JavaScope
@@ -216,7 +216,7 @@ public class ProcessThread extends PtolemyThread {
                 } else if (thrownWhenWrapup != null) {
                     // Must be a runtime exception.
                     // Call notifyListenerOfThrowable() here so that
-                    // the stacktrace appears in the UI and not in stderr. 
+                    // the stacktrace appears in the UI and not in stderr.
                     _manager.notifyListenersOfThrowable(thrownWhenWrapup);
                 } else if (rethrow) {
                     _manager.notifyListenersOfThrowable(thrownWhenIterate);

@@ -37,9 +37,9 @@ import java.util.Map;
 //// RatingTaglet
 /**
    A taglet that deals with Ptolemy code rating tags.
-   
+
    This class was based on Sun's example taglets.
-   
+
    @author Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 4.0
@@ -63,7 +63,7 @@ public class RatingTaglet implements Taglet {
     public String getName() {
         return _name;
     }
-    
+
     /**
      * Return true if the tag can annotate a field.
      * @return false.
@@ -79,7 +79,7 @@ public class RatingTaglet implements Taglet {
     public boolean inConstructor() {
         return false;
     }
-    
+
     /**
      * Return true if the tag can annotate a method.
      * @return false.
@@ -87,7 +87,7 @@ public class RatingTaglet implements Taglet {
     public boolean inMethod() {
         return false;
     }
-    
+
     /**
      * Return true if the tag can annotate a class.
      * @return true.
@@ -111,24 +111,24 @@ public class RatingTaglet implements Taglet {
     public boolean inType() {
         return true;
     }
-    
+
     /**
      * Return true if the tag is an inline tag.
      * @return false.
      */
-    
+
     public boolean isInlineTag() {
         return false;
     }
-    
+
     /**
      * Register this Taglet.
      * @param tagletMap  the map to register this tag to.
      */
     public static void register(Map tagletMap) {
-        _register(tagletMap, 
+        _register(tagletMap,
                 new RatingTaglet("Pt.AcceptedRating", "Accepted Rating"));
-        _register(tagletMap, 
+        _register(tagletMap,
                 new RatingTaglet("Pt.ProposedRating", "Proposed Rating"));
     }
 
@@ -147,11 +147,11 @@ public class RatingTaglet implements Taglet {
             color = color.substring(0, spaceIndex);
         }
         return "<DT><B>" + _tagName + ":</B><DD>"
-            + "<table cellpadding=2 cellspacing=0><tr><td bgcolor=\"" 
+            + "<table cellpadding=2 cellspacing=0><tr><td bgcolor=\""
             + color.toLowerCase() + "\">" + tag.text()
             + "</td></tr></table></DD>\n";
     }
-    
+
     /**
      * Given an array of <code>Tag</code>s representing this custom
      * tag, return its string representation.
@@ -170,7 +170,7 @@ public class RatingTaglet implements Taglet {
             color = color.substring(0, spaceIndex);
         }
         String result = "\n<DT><B>" + _tagName + ":</B><DD>";
-        result += "<table cellpadding=2 cellspacing=0><tr><td bgcolor=\"" 
+        result += "<table cellpadding=2 cellspacing=0><tr><td bgcolor=\""
             + color.toLowerCase() + "\">";
         for (int i = 0; i < tags.length; i++) {
             if (i > 0) {

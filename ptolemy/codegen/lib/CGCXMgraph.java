@@ -33,7 +33,7 @@ as command-line options.  See the manual section describing pxgraph
 for a complete explanation of the options.
 
  @Author Soonhoi Ha
- @Version $Id$, based on version 1.27 of /users/ptolemy/src/domains/cgc/stars/CGCXMgraph.pl, from Ptolemy Classic 
+ @Version $Id$, based on version 1.27 of /users/ptolemy/src/domains/cgc/stars/CGCXMgraph.pl, from Ptolemy Classic
  @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCXMgraph extends ClassicCGCActor {
@@ -93,7 +93,7 @@ public class CGCXMgraph extends ClassicCGCActor {
         count = new Parameter(this, "count");
         count.setExpression("0");
 
-/* 
+/*
 */
     }
     ///////////////////////////////////////////////////////////////////
@@ -160,20 +160,20 @@ public class CGCXMgraph extends ClassicCGCActor {
     /**
      */
     public int  myExecTime() {
-        
+
 return 6 * ((IntToken)((numIn).getToken())).intValue() + 1;
      }
 
     /**
      */
     public void  wrapup() {
-        
+
 int i;
-		addCode("{\n"); 
+		addCode("{\n");
 		addCode("int i; \n");
 
 		// close the files
-		addCode(closeFile); 
+		addCode(closeFile);
 
 StringBuffer cmd = new StringBuffer("( ");
 
@@ -182,7 +182,7 @@ StringBuffer cmd = new StringBuffer("( ");
 		if (sf != null && *sf != 0) {
 			for (i = 0; i<((IntToken)((numIn).getToken())).intValue(); i++) {
 				cmd.append("/bin/cat ");
-				cmd << target()->name(); 
+				cmd << target()->name();
 				cmd.append("_$starSymbol(temp)" + i  + " >> ");
 				cmd.append(sf  + "; /bin/echo \"\" >> " + sf);
 				cmd.append("; ");
@@ -226,13 +226,13 @@ StringBuffer cmd = new StringBuffer("( ");
 		cmd.append(") &");
 StringBuffer out = new StringBuffer("system(\"");
 		out.append(sanitizeString(cmd)  + "\");\n}\n");
-		addCode(out); 
+		addCode(out);
      }
 
     /**
      */
     public void  generatePreinitializeCode() {
-        
+
 StringBuffer s = new StringBuffer("FILE* $starSymbol(fp)[");
 		s.append(input.numberPorts()  + "];");
                 addDeclaration(s);
@@ -242,15 +242,15 @@ StringBuffer w = new StringBuffer("if (!($starSymbol(fp)[");
 			w.append(i <<  "] = fopen(\"");
 			w.append(target()->name()  + "_$starSymbol(temp)");
 			w.append(i  + "\",\"w\")))");
-			addCode(w); 
-			addCode(err); 
+			addCode(w);
+			addCode(err);
 		}
      }
 
     /**
      */
     public void  generateInitializeCode() throws IllegalActionException {
-        
+
 index = xInit;
 		numIn = input.numberPorts();
      }
@@ -258,30 +258,30 @@ index = xInit;
     /**
      */
     public void  generateFireCode() {
-        
+
 { StringBuffer _str_ = new StringBuffer(); _str_.append(
 "    if (++$ref(count) >= $val(ignore)) {\n"
 
-); 	 addCode(_str_);  } 
+); 	 addCode(_str_);  }
 	  for (int i = 1; i <= ((IntToken)((numIn).getToken())).intValue(); i++) {
 { StringBuffer _str_ = new StringBuffer(); _str_.append(
 "        fprintf($starSymbol(fp)[" + i-1 + "],\"%g %g\\n\",\n"
 "		 $ref(index),$ref(input#" + i + "));\n"
 
-); 	 addCode(_str_);  } 
+); 	 addCode(_str_);  }
 	  }
 { StringBuffer _str_ = new StringBuffer(); _str_.append(
 "    }\n"
 "    $ref(index) += $val(xUnits);"
 
-); 	 addCode(_str_);  } 
+); 	 addCode(_str_);  }
 
      }
 
     /**
      */
     protected String sanitizeString (StringList s) {
-        
+
 // quick implementation of a string buffer
 			static class Buffer {
 			   public:
@@ -316,7 +316,7 @@ index = xInit;
 			} buffer;
 
 			buffer.initialize();
-				
+
 			for (String sp=s; *sp; sp++) {
 			    if (*sp == '\"')
 				    buffer.append('\\');
@@ -328,12 +328,12 @@ index = xInit;
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
-    public String err = 
+    public String err =
         "{\n"
         + "    fprintf(stderr,\"ERROR: cannot open output file for Xgraph star.\\n\");\n"
         + "    exit(1);\n"
         + "}\n";
 
-    public String closeFile = 
+    public String closeFile =
         "for (i = 0; i < $val(numIn); i++) fclose($starSymbol(fp)[i]);\n";
 }

@@ -169,7 +169,7 @@ public class AngleProcessor extends TypedAtomicActor {
     }
 
     /** Return true of the inputAngle port has a token, otherwise return
-     *  false.   
+     *  false.
      *  @exception IllegalActionException If the hasToken() method
      *  throws exception.
      */

@@ -510,7 +510,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         // If link or delete requests are issued at the top level,
         // then they must be processed here.
         _processPendingRequests();
-        
+
         // Tidy up the undo entry
         if (_undoEnabled && _undoContext != null && _undoContext.hasUndoMoML()) {
             String undoMoML = _undoContext.getUndoMoML();
@@ -579,7 +579,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 // the user for corrected parameter values.
                 try {
                     param.validate();
-                
+
                     // Also validate derived objects.
                     Iterator derivedParams
                             = ((NamedObj)param).getDerivedList().iterator();
@@ -744,7 +744,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                         // a change request, it will be done after
                         // propagation, as it should be.
                         previous.setExpression(newString);
-                   
+
                         // Propagate to derived classes and instances.
                         // If the new string is empty, this will remove
                         // the doc tag from any derived object that has
@@ -759,7 +759,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                             throw ex;
                         }
                     } else {
-                        
+
                         Documentation doc
                             = new Documentation(_current, _currentDocName);
                         doc.setValue(_currentCharData.toString());
@@ -919,7 +919,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             // Error message methods should be very careful to handle
             // exceptions while trying to provide the user with information
             currentExternalEntity = _currentExternalEntity();
-            
+
             // Restore the status of change requests.
             // Execute any change requests that might have been queued
             // as a consequence of this change request.
@@ -1758,7 +1758,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     pushedLinkRequests = true;
                 }
                 _linkRequests = new LinkedList();
-                
+
                 if (_current != null) {
                     _pushContext();
                 } else if (_toplevel == null) {
@@ -1871,7 +1871,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     // context (e.g. via a change request).
                     request.execute();
                 }
-                
+
                 // NOTE: deleteEntity is not supposed to have anything
                 // inside it, so we do not push the context.
 
@@ -1903,7 +1903,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     // context (e.g. via a change request).
                     request.execute();
                 }
-                
+
                 // NOTE: deletePort is not supposed to have anything
                 // inside it, so we do not push the context.
 
@@ -1933,7 +1933,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     // context (e.g. via a change request).
                     request.execute();
                 }
-                
+
                 // NOTE: deleteProperty is not supposed to have anything
                 // inside it, so we do not push the context.
 
@@ -1963,7 +1963,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     // context (e.g. via a change request).
                     request.execute();
                 }
-                
+
                 // NOTE: deleteRelation is not supposed to have anything
                 // inside it, so we do not push the context.
 
@@ -1989,7 +1989,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 arguments[1] = dirName;
                 // NamedObj container = _current;
                 _pushContext();
-                
+
                 Class newClass = Class.forName(className, true, _classLoader);
                 // NOTE: No propagation occurs here... Hopefully, deprecated
                 // elements are not used with class structures.
@@ -2122,7 +2122,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     // Defining a namespace.
                     _namespaces.push(_namespace);
                     _namespaceTranslations.push(_namespaceTranslationTable);
-                    _namespacesPushed = true; 
+                    _namespacesPushed = true;
                     if (groupName.equals("auto")) {
                         _namespace = _AUTO_NAMESPACE;
                         _namespaceTranslationTable = new HashMap();
@@ -2132,7 +2132,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 } else {
                     _namespaces.push(_DEFAULT_NAMESPACE);
                     _namespaceTranslations.push(_namespaceTranslationTable);
-                    _namespacesPushed = true; 
+                    _namespacesPushed = true;
                     _namespace = _DEFAULT_NAMESPACE;
                     _namespaceTranslationTable = new HashMap();
                 }
@@ -2446,7 +2446,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                                 + className);
                     }
                     _pushContext();
-                    
+
                     _current = relation;
                     _namespace = _DEFAULT_NAMESPACE;
                 }
@@ -2698,9 +2698,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 // If value is null or same as before, then there is
                 // nothing to do.
                 if (value != null && !value.equals(previousValue)) {
-                    
+
                     vertex.setExpression(value);
-                    
+
                     // Propagate to derived classes and instances.
                     try {
                         // Propagate. This has the side effect of marking the
@@ -2715,7 +2715,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 }
 
                 _pushContext();
-                
+
                 _current = vertex;
                 _namespace = _DEFAULT_NAMESPACE;
 
@@ -2745,7 +2745,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
         } catch (InvocationTargetException ex) {
             exceptionThrown = true;
-            
+
             // A constructor or method invoked via reflection has
             // triggered an exception.
             if (_handler != null) {
@@ -2814,7 +2814,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 }
             }
             // There is no handler.
-            
+
             // Restore the status of change requests.
             // Execute any change requests that might have been queued
             // as a consequence of this change request.
@@ -2838,7 +2838,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         } finally {
             _attributes.clear();
             _attributeNameList.clear();
-            
+
             // If an exception was thrown, then restore all stacks
             // by popping off them anything that was pushed.
             if (exceptionThrown) {
@@ -2877,7 +2877,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                         // information.
                     }
                 }
-            } 
+            }
         }
     }
 
@@ -3288,7 +3288,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 arguments[0] = _current;
                 arguments[1] = entityName;
                 NamedObj newEntity = _createInstance(newClass, arguments);
-                
+
                 newEntity.propagateExistence();
 
                 _loadIconForClass(className, newEntity);
@@ -3374,13 +3374,13 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             //  But this may not provide enough information to
             // instantiate the class.
             newEntity.setClassName(className);
-            
+
             // Propagate.
             Iterator propagatedInstances
                     = newEntity.propagateExistence().iterator();
             while (propagatedInstances.hasNext()) {
                 ComponentEntity propagatedEntity
-                        = (ComponentEntity)propagatedInstances.next();                
+                        = (ComponentEntity)propagatedInstances.next();
                 // Get rid of URI attribute that may have been cloned.
                 // FIXME: Should that be done in the clone method
                 // for URIAttribute?  Doesn't this violate the
@@ -3430,7 +3430,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 NamedObj newEntity = (NamedObj)constructor.newInstance(arguments);
                 // Mark the contents of the new entity as being derived objects.
                 _markContentsDerived(newEntity, 0);
-                
+
                 // If we are keeping track of objects created...
                 if (_topObjectsCreated != null
                         && arguments[0] == _originalContext) {
@@ -3460,7 +3460,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 _parser.getLineNumber(),
                 _parser.getColumnNumber());
     }
-    
+
     /** Delete the entity after verifying that it is contained (deeply)
      *  by the current environment.  If no object is found, then do
      *  nothing and return null.  This is because deletion of a class
@@ -3939,7 +3939,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
         // Add in the description.
         moml.append(toDelete.exportMoML());
-        
+
         CompositeEntity container = (CompositeEntity)toDelete.getContainer();
         if (container instanceof HandlesInternalLinks) {
             return moml.toString();
@@ -3991,7 +3991,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 filter.addAll(((ComponentPort)toDelete).insideRelationList());
             }
             filter.add(toDelete);
-    
+
             // Generate the undo MoML for the inside links, if there are any.
             if (container instanceof CompositeEntity) {
                 moml.append(((CompositeEntity)container).exportLinks(0, filter));
@@ -4166,7 +4166,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             }
 
             _pushContext();
-            
+
             _current =  (Attribute)
                     _current.getAttribute(propertyName);
             _namespace = _DEFAULT_NAMESPACE;
@@ -4388,7 +4388,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                         property.propagateValue();
                     }
                     createdNew = true;
-                    
+
                 } catch (NameDuplicationException ex) {
                     // Ignore, so we can try to set the value.
                     // The createdNew variable will still be false.
@@ -4422,11 +4422,11 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     // that value even if the base class later changes.
                     // if (!value.equals(previousValue)) {
                     settable.setExpression(value);
-                    
+
                     // Propagate. This has the side effect of marking
                     // the object overridden.
                     property.propagateValue();
-                    
+
                     _paramsToParse.add(property);
                 }
             }
@@ -5134,7 +5134,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         _namespace = _DEFAULT_NAMESPACE;
         _namespaceTranslations.push(_namespaceTranslationTable);
         _namespaceTranslationTable = new HashMap();
-        _namespacesPushed = true; 
+        _namespacesPushed = true;
     }
 
     /** Reset the undo information to give a fresh setup for the next
@@ -5451,13 +5451,13 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
     // The default namespace.
     private static String _DEFAULT_NAMESPACE = "";
-    
+
     // Indentification of what is being deleted for the _delete() method.
     private static int _DELETE_ENTITY = 0;
     private static int _DELETE_PORT = 1;
     private static int _DELETE_PROPERTY = 2;
     private static int _DELETE_RELATION = 3;
-    
+
     // List of delete requests.
     private List _deleteRequests;
 
@@ -5498,7 +5498,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
     // The stack of name spaces.
     private Stack _namespaces = new Stack();
-    
+
     // Indicator that namespaces have been pushed on the stack.
     private boolean _namespacesPushed = false;
 
@@ -5510,7 +5510,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
     // The original context set by setContext().
     private NamedObj _originalContext = null;
-    
+
     // A list of settable parameters specified in property tags.
     private List _paramsToParse = new LinkedList();
 
@@ -5539,7 +5539,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
     // Top-level entity.
     private NamedObj _toplevel = null;
-    
+
     // List of top-level objects created by a parse operation.
     // If this is list is non-null when parse() is called, it will
     // be populated with a list of instance of NamedObj that are

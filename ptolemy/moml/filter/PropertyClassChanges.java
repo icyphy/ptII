@@ -262,7 +262,7 @@ public class PropertyClassChanges implements MoMLFilter {
         _actorsWithPropertyClassChanges
             .put("ptolemy.actor.lib.Expression",
                     expressionClassChanges);
-                    
+
         // _hideName in visible attributes.
         HashMap hideNameClassChanges = new HashMap();
         // Key = property name, Value = new class name
@@ -306,7 +306,7 @@ public class PropertyClassChanges implements MoMLFilter {
         _actorsWithPropertyClassChanges
             .put("ptolemy.matlab.Expression",
                     matlabClassChanges);
-        
+
         // DirectoryListing
         HashMap directoryListingClassChanges = new HashMap();
         // Key = property name, Value = new class name
@@ -344,8 +344,8 @@ public class PropertyClassChanges implements MoMLFilter {
         modalModelClassChanges.put("directorClass",
                 "ptolemy.data.expr.StringParameter");
         // Remove the _Director attribute, which does not help the modal model
-        // to decide which director to choose. This attribugte will be 
-        // automatically created. This attribute will not appear in the MoML 
+        // to decide which director to choose. This attribugte will be
+        // automatically created. This attribute will not appear in the MoML
         // output any more.
         // NOTE: Remove a property by setting the new class to "REMOVED!".
         modalModelClassChanges.put("_Director", "REMOVED!");
@@ -357,7 +357,7 @@ public class PropertyClassChanges implements MoMLFilter {
         // LevelCrossingDetector
         HashMap levelCrossingDetectorClassChanges = new HashMap();
         levelCrossingDetectorClassChanges.put("useEventValue", "REMOVED!");
-        levelCrossingDetectorClassChanges.put("useDefaultEventValue", 
+        levelCrossingDetectorClassChanges.put("useDefaultEventValue",
                 "REMOVED!");
         _actorsWithPropertyClassChanges
         .put("ptolemy.domains.ct.lib.LevelCrossingDetector",

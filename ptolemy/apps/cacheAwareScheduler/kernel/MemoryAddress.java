@@ -29,7 +29,7 @@
 */
 
 package ptolemy.apps.cacheAwareScheduler.kernel;
- 
+
 ///////////////////////////////////////////////////////////////////////////
 //// MemoryAddress
 /**
@@ -38,8 +38,8 @@ package ptolemy.apps.cacheAwareScheduler.kernel;
    SDF actors. It is primarily used by cache aware scheduler during schedule
    generation.
 
-   This class doesn't have any member functions, its simply a collection of 
-   two data items namely the actor id that produced this data and the 
+   This class doesn't have any member functions, its simply a collection of
+   two data items namely the actor id that produced this data and the
    index of the produced token.
 
    @author Sanjeev Kohli
@@ -60,18 +60,18 @@ public class MemoryAddress {
     /** Parameterized constructor.
      *
      *  @param ID The id of the actor that produces this data.
-     *  @param tokenNo The token number of data produced by the associated 
+     *  @param tokenNo The token number of data produced by the associated
      *   actor.
      */
     public MemoryAddress(int ID, int tokenNo) {
         actorID = ID;
         tokenNumber = tokenNo;
     }
- 
+
     ///////////////////////////////////////////////////////////////////
     ////                      public methods                       ////
-    
-    /** Check if the passed object is equal to this memory address 
+
+    /** Check if the passed object is equal to this memory address
      *  object. If the actorId and token number of the passed objects
      *  is same as this object, then its considered to be equal to this
      *  object.
@@ -87,22 +87,22 @@ public class MemoryAddress {
             } else return false;
         } else return false;
     }
-        
+
 
     /** Returns a hashcode for this object. This function overrides the
      *  hashcode function of the Object class.
-     * 
+     *
      *  @return The hascode of this object.
      */
     public int hashCode() {
         return (actorID*1000 + tokenNumber);
     }
-    
+
     /** This method sets the actorId and tokenNumber equal to the specified
      *  parameters.
      *
      *  @param ID The id of the actor that produces this data.
-     *  @param tokenNo The token number of data produced by the associated 
+     *  @param tokenNo The token number of data produced by the associated
      *   actor.
      */
     public void setFields(int ID, int tokenNo) {
@@ -112,10 +112,10 @@ public class MemoryAddress {
 
     ///////////////////////////////////////////////////////////////////
     ////                      public variables                     ////
-    
+
     // ID of the actor that produced this data token
     public int actorID;
     // Index of the produced token
     public int tokenNumber;
 }
-        
+

@@ -129,7 +129,7 @@ public class GiottoDirectorInliner implements DirectorInliner {
         SootField modelField = new SootField("_GiottoModel",
                 RefType.v(modelClass), Modifier.PUBLIC | Modifier.STATIC);
         modelClass.addField(modelField);
-        
+
         SootClass giottoParameterClass = Scene.v().loadClassAndSupport(
                 "giotto.functionality.table.Parameter");
         SootClass giottoTokenPortVariableClass =
@@ -204,7 +204,7 @@ public class GiottoDirectorInliner implements DirectorInliner {
                 Local actorLocal = Jimple.v().newLocal("actor", actorType);
                 body.getLocals().add(actorLocal);
 
-                Local modelLocal = 
+                Local modelLocal =
                     Jimple.v().newLocal("model", RefType.v(modelClass));
                 body.getLocals().add(modelLocal);
 
@@ -413,7 +413,7 @@ public class GiottoDirectorInliner implements DirectorInliner {
                 Local actorLocal = Jimple.v().newLocal("actor", actorType);
                 body.getLocals().add(actorLocal);
 
-                Local modelLocal = 
+                Local modelLocal =
                     Jimple.v().newLocal("model", RefType.v(modelClass));
                 body.getLocals().add(modelLocal);
 
@@ -449,13 +449,13 @@ public class GiottoDirectorInliner implements DirectorInliner {
                 Local initialValueVariableLocal = Jimple.v().newLocal("initialValueVariable",
                         RefType.v(PtolemyUtilities.variableClass));
                 body.getLocals().add(initialValueVariableLocal);
-                
+
                 Parameter initialValueParameter = (Parameter)
                     ((NamedObj) port).getAttribute("initialValue");
                 if (initialValueParameter != null) {
-                    String initialValueNameInContext = 
+                    String initialValueNameInContext =
                         initialValueParameter.getName(entity);
-                    
+
                     body.getUnits().insertBefore(
                             Jimple.v().newAssignStmt(
                                     initialValueLocal,
@@ -463,7 +463,7 @@ public class GiottoDirectorInliner implements DirectorInliner {
                                             PtolemyUtilities.getAttributeMethod,
                                             StringConstant.v(initialValueNameInContext))),
                             insertPoint);
-                    
+
                     // cast to Variable.
                     body.getUnits().insertBefore(
                             Jimple.v().newAssignStmt(
@@ -472,11 +472,11 @@ public class GiottoDirectorInliner implements DirectorInliner {
                                             initialValueLocal,
                                             RefType.v(PtolemyUtilities.variableClass))),
                             insertPoint);
-                    
+
                     Local tokenLocal = Jimple.v().newLocal("initialValueToken",
                             RefType.v(PtolemyUtilities.tokenClass));
                     body.getLocals().add(tokenLocal);
-                    
+
                     // call getToken.
                     body.getUnits().insertBefore(
                             Jimple.v().newAssignStmt(
@@ -485,7 +485,7 @@ public class GiottoDirectorInliner implements DirectorInliner {
                                             initialValueVariableLocal,
                                             PtolemyUtilities.variableGetTokenMethod)),
                             insertPoint);
-                    
+
                     // Get the Parameter argument.
                     units.insertBefore(
                             Jimple.v().newAssignStmt(paramLocal,
@@ -530,21 +530,21 @@ public class GiottoDirectorInliner implements DirectorInliner {
 
             Chain units = body.getUnits();
             Local thisLocal = body.getThisLocal();
-            
+
             // Set the static field pointing to the model.
             units.insertBefore(
                     Jimple.v().newAssignStmt(
                             Jimple.v().newStaticFieldRef(modelField),
                             thisLocal),
                     insertPoint);
-            
+
             // Add code to the beginning of the preinitialize method that
             // initializes the attributes.
 //             ModelTransformer.initializeAttributesBefore(body, insertPoint,
 //                     model, body.getThisLocal(),
 //                     model, body.getThisLocal(),
 //                     modelClass);
-                    
+
             for (Iterator entities = model.deepEntityList().iterator();
                  entities.hasNext();) {
                 Entity entity = (Entity)entities.next();
@@ -792,7 +792,7 @@ public class GiottoDirectorInliner implements DirectorInliner {
                  ports.hasNext();) {
                 IOPort port = (IOPort)ports.next();
                 int rate = DFUtilities.getTokenProductionRate(port);
-               
+
                 String fieldName = ModelTransformer.getFieldNameForPort(
                         port, model);
                 SootField field = modelClass.getFieldByName(fieldName);

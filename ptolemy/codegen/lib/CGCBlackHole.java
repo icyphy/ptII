@@ -24,7 +24,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    them.  It is typically used to discard unwanted outputs from other blocks.
 
    @Author J. T. Buck
-   @Version $Id$, based on version 1.13 of /users/ptolemy/src/domains/cgc/stars/CGCBlackHole.pl, from Ptolemy Classic 
+   @Version $Id$, based on version 1.13 of /users/ptolemy/src/domains/cgc/stars/CGCBlackHole.pl, from Ptolemy Classic
    @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCBlackHole extends ClassicCGCActor implements CodeGeneratingActor {

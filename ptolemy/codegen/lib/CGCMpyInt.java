@@ -23,7 +23,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 Output the complex product of the inputs.
 
  @Author Brian L. Evans and Jose Luis Pino
- @Version $Id$, based on version 1.1 of /users/ptolemy/src/domains/cgc/stars/CGCMpyInt.pl, from Ptolemy Classic 
+ @Version $Id$, based on version 1.1 of /users/ptolemy/src/domains/cgc/stars/CGCMpyInt.pl, from Ptolemy Classic
  @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCMpyInt extends ClassicCGCActor {
@@ -45,7 +45,7 @@ public class CGCMpyInt extends ClassicCGCActor {
         output = new ClassicPort(this, "output", false, true);
         output.setTypeEquals(BaseType.INT);
 
-/*     
+/*
 noInternalState();
 */
     }
@@ -68,23 +68,23 @@ noInternalState();
     /**
      */
     public int  myExecTime() {
-        
+
 return input.numberPorts() + 1;
      }
 
     /**
      */
     public void  generateFireCode() {
-        
-addCode(startOp); 
-	for (int i = 2; i <= input.numberPorts(); i++) 
-	    addCode(doOp(i));  
-	addCode(saveResult); 
+
+addCode(startOp);
+	for (int i = 2; i <= input.numberPorts(); i++)
+	    addCode(doOp(i));
+	addCode(saveResult);
      }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
-    public String startOp = 
+    public String startOp =
         "	int sum = $ref(input#1);\n";
 
     public String doOp (int i) {
@@ -92,6 +92,6 @@ addCode(startOp);
         "	sum *= $ref(input#" + i + ");\n";
     }
 
-    public String saveResult = 
+    public String saveResult =
         "	$ref(output) = sum;\n";
 }

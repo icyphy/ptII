@@ -45,13 +45,13 @@ import ptolemy.kernel.util.Workspace;
 //// Timer
 /**
    A timer actor delays an event with a time delay specified by its input.
-   <p> 
+   <p>
    When a timer actor receives an input, if the input value is
    bigger than 0.0, the timer schedules itself to fire again some time
-   later to generate an output. The amount of delay is specified by the 
+   later to generate an output. The amount of delay is specified by the
    input value. The value of output is specified by the <i>value</i>
-   parameter of this actor. If the input value is 0.0, an output is 
-   produced immediately. If the input is less than 0.0, an exception 
+   parameter of this actor. If the input value is 0.0, an output is
+   produced immediately. If the input is less than 0.0, an exception
    will be thrown. If there is no input token, then no output is produced.
 
    <p> This actor is different from the {@link

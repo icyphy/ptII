@@ -2716,7 +2716,7 @@ public class NamedObj implements
 
     // The following is friendly to support the move* methods of
     // Attribute.
-    
+
     /** The Attributes attached to this object. */
     NamedList _attributes;
 

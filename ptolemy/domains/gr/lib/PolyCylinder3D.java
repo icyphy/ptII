@@ -83,11 +83,11 @@ public class PolyCylinder3D extends GRShadedShape {
         polygon = new Parameter(this, "polygon");
         polygon.setTypeEquals(new ArrayType(BaseType.DOUBLE));
         polygon.setExpression("{0.0, 0.5, -0.433, -0.25, 0.433, -0.25}");
-        
+
         thickness = new Parameter(this, "thickness");
         thickness.setExpression("0.3");
         thickness.setTypeEquals(BaseType.DOUBLE);
-        
+
         thickness.moveToFirst();
         polygon.moveToFirst();
     }
@@ -118,7 +118,7 @@ public class PolyCylinder3D extends GRShadedShape {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (allowRuntimeChanges != null) {
-            if ((attribute == polygon 
+            if ((attribute == polygon
                     || attribute == thickness)
                     && _changesAllowedNow
                     && _containedNode != null) {
@@ -127,7 +127,7 @@ public class PolyCylinder3D extends GRShadedShape {
         }
         super.attributeChanged(attribute);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -141,7 +141,7 @@ public class PolyCylinder3D extends GRShadedShape {
         _containedNode = new Shape3D();
         _containedNode.setAppearance(_appearance);
         _containedNode.setGeometry(_getGeometry());
-        
+
         if (_changesAllowedNow) {
             _containedNode.setCapability(Shape3D.ALLOW_GEOMETRY_WRITE);
         }

@@ -24,7 +24,7 @@ Compares input values to "threshold" (default 0.5).  Output is 0
 if input is greater than or equal to threshold; otherwise, it is 1.
 
  @Author J. Buck
- @Version $Id$, based on version 1.6 of /users/ptolemy/src/domains/cgc/stars/CGCThresh.pl, from Ptolemy Classic 
+ @Version $Id$, based on version 1.6 of /users/ptolemy/src/domains/cgc/stars/CGCThresh.pl, from Ptolemy Classic
  @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCThresh extends ClassicCGCActor {
@@ -49,7 +49,7 @@ public class CGCThresh extends ClassicCGCActor {
         threshold = new Parameter(this, "threshold");
         threshold.setExpression("0.5");
 
-/*     
+/*
 noInternalState();
 */
     }
@@ -77,12 +77,12 @@ noInternalState();
     /**
      */
     public void  generateFireCode() {
-        
-addCode(gen); 
+
+addCode(gen);
      }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
-    public String gen = 
+    public String gen =
         "		$ref(output) = ($ref(input) > $val(threshold)) ? 1 : 0;\n";
 }

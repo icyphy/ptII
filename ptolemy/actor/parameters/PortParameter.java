@@ -91,7 +91,7 @@ import ptolemy.kernel.util.Workspace;
 
    <p>There are a few situations where PortParameter might not do what
    you expect:
-   
+
    <ol>
    <li> If it is used in a transparent composite actor, then a token provided
      to a PortParameter will never be read.  A transparent composite actor

@@ -43,7 +43,7 @@ import ptolemy.kernel.util.PtolemyThread;
 /**
    A base class for threaded DE domain actors.
    <P>
-   NOTE: This actor is very preliminary. It is not developed and maintained 
+   NOTE: This actor is very preliminary. It is not developed and maintained
    for a long time. We do not recommend using it. To try multiple threads under
    DE semantics, use DDE domain, which is another experimental domain.
    <P>

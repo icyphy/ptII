@@ -88,7 +88,7 @@ public class CodeGeneratorGUI extends PtolemyFrame {
     public CodeGeneratorGUI(final CodeGenerator codeGenerator, Tableau tableau)
             throws IllegalActionException, NameDuplicationException {
         super(codeGenerator, tableau);
-        
+
         setTitle(codeGenerator.getName());
 
         if (getEffigy() == null
@@ -222,7 +222,7 @@ public class CodeGeneratorGUI extends PtolemyFrame {
                     StringBuffer code = new StringBuffer();
                     codeGenerator.generateCode(code);
                     exec.updateStatusBar(code.toString());
-                    
+
                     exec.updateStatusBar("Code generation "
                             + "complete.");
                 } catch (Exception ex) {

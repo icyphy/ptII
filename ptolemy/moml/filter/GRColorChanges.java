@@ -43,7 +43,7 @@ import ptolemy.moml.MoMLParser;
    handles the switch to using ColorAttribute for all colors, plus
    some parameter renaming. It also handles some conversions from
    matrix parameters to arrays.
-   
+
    @author Edward A. Lee
    @version $Id$
    @since Ptolemy II 4.1
@@ -51,10 +51,10 @@ import ptolemy.moml.MoMLParser;
    @Pt.AcceptedRating Red (cxh)
 */
 public class GRColorChanges implements MoMLFilter {
-    
+
     //////////////////////////////////////////////////////////////////////
     ////                         public methods                       ////
-    
+
     /** Handle parameter name changes.
      *  @param container  The container for XML element.
      *  @param element The XML element name.
@@ -158,10 +158,10 @@ public class GRColorChanges implements MoMLFilter {
 
     //////////////////////////////////////////////////////////////////////
     ////                         private variables                    ////
-    
+
     /** Set of actors with parameter named "RGB Color" */
     private static HashSet _actorsWithRGBColor = new HashSet();
-    
+
     static {
         GRColorChanges._actorsWithRGBColor.add("ptolemy.domains.gr.lib.Box3D");
         GRColorChanges._actorsWithRGBColor.add("ptolemy.domains.gr.lib.CircularSweep3D");
@@ -173,7 +173,7 @@ public class GRColorChanges implements MoMLFilter {
         GRColorChanges._actorsWithRGBColor.add("ptolemy.domains.gr.lib.TextString3D");
         GRColorChanges._actorsWithRGBColor.add("ptolemy.domains.gr.lib.Torus3D");
     }
-    
+
     /** Flag indicating that we found one whose name needed changing. */
     private boolean _foundOne = false;
 }

@@ -30,7 +30,7 @@ purposes.
 <a name="equalizer, decision feedback, training"></a>
 
  @Author S. Ha
- @Version $Id$, based on version 1.8 of /users/ptolemy/src/domains/cgc/stars/CGCTrainer.pl, from Ptolemy Classic 
+ @Version $Id$, based on version 1.8 of /users/ptolemy/src/domains/cgc/stars/CGCTrainer.pl, from Ptolemy Classic
  @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCTrainer extends CGCFix {
@@ -58,7 +58,7 @@ public class CGCTrainer extends CGCFix {
         count = new Parameter(this, "count");
         count.setExpression("0");
 
-/*     
+/*
 noInternalState();
 */
     }
@@ -96,14 +96,14 @@ noInternalState();
     /**
      */
     public int  myExecTime() {
-        
+
 return 1;
      }
 
     /**
      */
     public void  generatePreinitializeCode() {
-        
+
 if (train.resolvedType() == FIX) {
 			super.initCode();
 		}
@@ -112,7 +112,7 @@ if (train.resolvedType() == FIX) {
     /**
      */
     public void  begin() {
-        
+
 // handle precisions for fix types
 		if (train.resolvedType() == FIX) {
 
@@ -128,14 +128,14 @@ if (train.resolvedType() == FIX) {
     /**
      */
     public void  generateInitializeCode() throws IllegalActionException {
-        
+
 count = 0;
      }
 
     /**
      */
     public void  generateFireCode() {
-        
+
 // check for fix types
 		if (train.resolvedType() == FIX) {
 
@@ -156,7 +156,7 @@ count = 0;
 "		FIX_Assign($ref(output),$ref(decision));\n"
 "	}\n"
 
-); 	 addCode(_str_);  } 
+); 	 addCode(_str_);  }
 
 			} else {
 
@@ -168,7 +168,7 @@ count = 0;
 "		FIX_Assign($ref(output),$ref(decision));\n"
 "	}\n"
 
-); 	 addCode(_str_);  } 
+); 	 addCode(_str_);  }
 
 			}
 
@@ -182,7 +182,7 @@ count = 0;
 "		$ref(output) = $ref(decision);\n"
 "	}\n"
 
-); 	 addCode(_str_);  } 
+); 	 addCode(_str_);  }
 
 		}
      }

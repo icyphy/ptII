@@ -294,8 +294,8 @@ public class FileParameter extends StringParameter {
     public BufferedReader openForReading() throws IllegalActionException {
         try {
             _reader = FileUtilities.openForReading(
-                    stringValue(), 
-                    getBaseDirectory(), 
+                    stringValue(),
+                    getBaseDirectory(),
                     getClass().getClassLoader());
             return _reader;
         } catch (IOException ex) {
@@ -340,8 +340,8 @@ public class FileParameter extends StringParameter {
     public Writer openForWriting(boolean append) throws IllegalActionException {
         try {
             _writer = FileUtilities.openForWriting(
-                    stringValue(), 
-                    getBaseDirectory(), 
+                    stringValue(),
+                    getBaseDirectory(),
                     append);
             return _writer;
         } catch (IOException ex) {

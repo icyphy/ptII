@@ -23,7 +23,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 General expression evaluation.
 
  @Author T. M. Parks
- @Version $Id$, based on version 1.12 of /users/ptolemy/src/domains/cgc/stars/CGCExpr.pl, from Ptolemy Classic 
+ @Version $Id$, based on version 1.12 of /users/ptolemy/src/domains/cgc/stars/CGCExpr.pl, from Ptolemy Classic
  @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCExpr extends ClassicCGCActor {
@@ -65,7 +65,7 @@ public class CGCExpr extends ClassicCGCActor {
         runTime = new Parameter(this, "runTime");
         runTime.setExpression("2");
 
-/* 
+/*
 */
     }
     ///////////////////////////////////////////////////////////////////
@@ -112,14 +112,14 @@ public class CGCExpr extends ClassicCGCActor {
     /**
      */
     public int  myExecTime() {
-        
+
 return ((IntToken)((runTime).getToken())).intValue();
      }
 
     /**
      */
     public void  generatePreinitializeCode() {
-        
+
 for (int i = 0; i < include.size(); i++)
 	    addInclude(include[i]);
      }
@@ -127,16 +127,16 @@ for (int i = 0; i < include.size(); i++)
     /**
      */
     public void  generateFireCode() {
-        
+
 StringBuffer code = new StringBuffer();
 	code.append("$ref(out) = " + expr  + ";\n");
-	addCode(code); 
+	addCode(code);
      }
 
     /**
      */
     public void preinitialize () {
-        
+
 // We must change the porthole types at preinitialize time
 	// so that porthole type resolution works correctly.
 	// That means we have to initialize the states ourselves.

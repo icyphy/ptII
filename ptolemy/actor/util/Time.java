@@ -38,68 +38,68 @@ import ptolemy.kernel.util.InternalErrorException;
 //////////////////////////////////////////////////////////////////////////
 //// Time
 /**
-   An object of the Time class represents model time in a model. It is 
-   different from the real time of the physical world. This object is 
-   immutable. It contains a BigDecimal number to record the time value, 
+   An object of the Time class represents model time in a model. It is
+   different from the real time of the physical world. This object is
+   immutable. It contains a BigDecimal number to record the time value,
    which provides an arbitrary precision and an accuracy as small as 10^(-2^32).
-   There are two time constants specified in this class: NEGATIVE_INFINITY and 
+   There are two time constants specified in this class: NEGATIVE_INFINITY and
    POSITIVE_INFINITY.
-   
+
    <p> The time value contained by a time object is quantized according to
-   the time resolution specified by the <i>timePrecisionInDigits</i> parameter. 
-   The reason for this is that without quantization, it is extremely difficult 
-   to compare two time values with digit-to-digit accuracy because of the 
-   unpredictable numerical errors introduced during computation. 
-   In practice, two time values can only be distinguished if their difference 
-   can be detected by some measuring instrument, which always has a smallest 
-   unit for measurement. This smallest unit measurement gives the physical 
-   meaning of the time resolution used for quantization. The quantization is 
-   performed with the half-even rounding mode by default.        
-   
-   <p> The time value can be retrived in two ways, the {@link #toString()} 
-   method and the {@link #getDoubleValue()} method. The first method returns a 
-   string representation while the second method returns a double value. There 
-   are some limitations on both methods. For the toString method, we can not 
-   directly do numerical operations on strings, in particular the above two 
-   time constants. For the getDoubleValue method, we can not 
-   garantee that the returned double value preserves the time resolution 
+   the time resolution specified by the <i>timePrecisionInDigits</i> parameter.
+   The reason for this is that without quantization, it is extremely difficult
+   to compare two time values with digit-to-digit accuracy because of the
+   unpredictable numerical errors introduced during computation.
+   In practice, two time values can only be distinguished if their difference
+   can be detected by some measuring instrument, which always has a smallest
+   unit for measurement. This smallest unit measurement gives the physical
+   meaning of the time resolution used for quantization. The quantization is
+   performed with the half-even rounding mode by default.
+
+   <p> The time value can be retrived in two ways, the {@link #toString()}
+   method and the {@link #getDoubleValue()} method. The first method returns a
+   string representation while the second method returns a double value. There
+   are some limitations on both methods. For the toString method, we can not
+   directly do numerical operations on strings, in particular the above two
+   time constants. For the getDoubleValue method, we can not
+   garantee that the returned double value preserves the time resolution
    because of the limited digits for double representation. We recommand to
    operate time objects directly instead of the time values of time objects.
-      
-   <p> Two operations, add and subtract, can be performed on a time object, 
-   where the argument can be a double or a time object. If the 
-   argument is not a time object, the argument is quantized before the 
-   operations are performed. These operations return a new time object with a 
-   quantized result. 
-   
+
+   <p> Two operations, add and subtract, can be performed on a time object,
+   where the argument can be a double or a time object. If the
+   argument is not a time object, the argument is quantized before the
+   operations are performed. These operations return a new time object with a
+   quantized result.
+
    <p> The time value of a time object can be infinite. The add and subtract
-   operations on infinite time values follow the rules of the IEEE Standard 754 
-   Floating Point Numbers. In particular, adding two positive/negative 
-   infinities yield a positive/negative infinity; adding a positive infinity 
-   and a negative infinity yields NaN; the negation of a positive/negative 
+   operations on infinite time values follow the rules of the IEEE Standard 754
+   Floating Point Numbers. In particular, adding two positive/negative
+   infinities yield a positive/negative infinity; adding a positive infinity
+   and a negative infinity yields NaN; the negation of a positive/negative
    infinity is a negative/positive infinity.
 
-   <p> This class implements the Comparable interface, where two time 
+   <p> This class implements the Comparable interface, where two time
    objects can be compared in the following way. If any of the two time objects
-   contains an infinite time value, the rules are: a negative infinity is 
-   equal to a negative infinity and less than anything else; a positive 
-   infinity is equal to a positive infinity and bigger than anything else. 
-   If none of the time objects has an infinite time value, the time values of 
-   two time objects are compared. If the time values are the same, the two time 
-   objects are treated equal, or they represent the same model time. 
-   Otherwise, the time object containing a bigger time value is 
-   regared to happen after the time object with a smaller time value. 
-   
+   contains an infinite time value, the rules are: a negative infinity is
+   equal to a negative infinity and less than anything else; a positive
+   infinity is equal to a positive infinity and bigger than anything else.
+   If none of the time objects has an infinite time value, the time values of
+   two time objects are compared. If the time values are the same, the two time
+   objects are treated equal, or they represent the same model time.
+   Otherwise, the time object containing a bigger time value is
+   regared to happen after the time object with a smaller time value.
+
    <p> All time objects share the same time resolution, which is provided by
-   the top-level director. In some domains, such as CT and DE, users can 
-   change the time resolution by configuring the <i>timePrecisionInDigits</i> 
-   parameter. This parameter reprents the number of the digits to the right of 
+   the top-level director. In some domains, such as CT and DE, users can
+   change the time resolution by configuring the <i>timePrecisionInDigits</i>
+   parameter. This parameter reprents the number of the digits to the right of
    the decimal point (the fractional part). The default value for this parameter
-   is 10. The corresponding time resolution is 10^(-1*timePrecisionInDigits). 
-   Note that the only change of timePrecisionInDigits at the top-level director 
-   takes effect. What is more, to preserve the consistency of time values, 
-   timePrecisionInDigits can not be changed when a model is running. 
-   
+   is 10. The corresponding time resolution is 10^(-1*timePrecisionInDigits).
+   Note that the only change of timePrecisionInDigits at the top-level director
+   takes effect. What is more, to preserve the consistency of time values,
+   timePrecisionInDigits can not be changed when a model is running.
+
    @author Haiyang Zheng
    @version $Id$
    @since Ptolemy II 4.1
@@ -107,13 +107,13 @@ import ptolemy.kernel.util.InternalErrorException;
    @Pt.AcceptedRating Red (hyzheng)
 */
 public class Time implements Comparable {
-    
-    // FIXME: added a double representation for time values to compare the 
+
+    // FIXME: added a double representation for time values to compare the
     // performance penalties introduced by using BigDecimal.
-    
+
     /** Construct a Time object with zero as the time value. This object
      *  is associated with the given director, which provides the necessary
-     *  information for quantization. 
+     *  information for quantization.
      *  @param director The director with which this time object is associated.
      */
     public Time(Director director) {
@@ -123,14 +123,14 @@ public class Time implements Comparable {
         } else {
             _timeValue = _quantizeTimeValue(new BigDecimal(0));
         }
-        
+
     }
 
     /** Construct a Time object with the specified double value as its
-     *  time value. The time object is associated with the given director, 
-     *  which provides the necessary information for quantization.  
+     *  time value. The time object is associated with the given director,
+     *  which provides the necessary information for quantization.
      *  The double value can not be NaN, otherwise, a NumberFormatException
-     *  will be thrown.  
+     *  will be thrown.
      *  @param director The director with which this time object is associated.
      *  @param timeValue A double value as the specified time value.
      */
@@ -157,8 +157,8 @@ public class Time implements Comparable {
     ////                         private constructor               ////
 
     /** Construct a Time object with the specified BigDecimal value as its
-     *  time value. The time object is associated with the given director, 
-     *  which provides the necessary information for quantization.  
+     *  time value. The time object is associated with the given director,
+     *  which provides the necessary information for quantization.
      *  @param director The director with which this time object is associated.
      *  @param timeValue A BidDecimal value as the specified time value.
      */
@@ -173,27 +173,27 @@ public class Time implements Comparable {
 
     ///////////////////////////////////////////////////////////////////
     ////                          public  fields                   ////
-    // NOTE: BigDecimal does not support infinity. 
-    // NOTE: For the following constants, the director argument is null 
+    // NOTE: BigDecimal does not support infinity.
+    // NOTE: For the following constants, the director argument is null
     // because these constants are invariant to any time resolution.
-    /** A static and final time constant holding a negative infinity. 
+    /** A static and final time constant holding a negative infinity.
      */
-    public static final Time NEGATIVE_INFINITY 
-        = new Time(null, Double.NEGATIVE_INFINITY); 
-    
+    public static final Time NEGATIVE_INFINITY
+        = new Time(null, Double.NEGATIVE_INFINITY);
+
     /** A static and final time constant holding a positive infinity.
      */
-    public static final Time POSITIVE_INFINITY 
-        = new Time(null, Double.POSITIVE_INFINITY); 
-    
+    public static final Time POSITIVE_INFINITY
+        = new Time(null, Double.POSITIVE_INFINITY);
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return a new time object whose time value is increased by the 
-     *  given double value. Quantization is performed on both the timeValue 
-     *  argument and the result. 
+    /** Return a new time object whose time value is increased by the
+     *  given double value. Quantization is performed on both the timeValue
+     *  argument and the result.
      *  The double value can not be NaN and the result time value can not
-     *  be NaN. 
+     *  be NaN.
      *  @param timeValue The amount of time increment.
      *  @return A new time object with the quantized and incremented time value.
      */
@@ -226,7 +226,7 @@ public class Time implements Comparable {
             if (isInfinite()) {
                 return this;
             } else if (_usingDouble) {
-                double newValue = 
+                double newValue =
                     _quantizeTimeValue(_timeDoubleValue + timeValue);
                 return new Time(_director, newValue);
             } else {
@@ -235,8 +235,8 @@ public class Time implements Comparable {
         }
     }
 
-    /** Return a new time object whose time value is increased by the 
-     *  time value of the time object. Quantization is performed on the result. 
+    /** Return a new time object whose time value is increased by the
+     *  time value of the time object. Quantization is performed on the result.
      *  The result time value can not be NaN.
      *  @param time The time object contains the amount of time increment.
      *  @return A new time object with the quantized and incremented time value.
@@ -271,15 +271,15 @@ public class Time implements Comparable {
         }
     }
 
-    /** Return -1, 0, or 1 if this time object is less than, equal to, or 
-     *  greater than the given argument object. Note that a ClassCastException 
-     *  will be thrown if the argument is not an instance of Time.     
+    /** Return -1, 0, or 1 if this time object is less than, equal to, or
+     *  greater than the given argument object. Note that a ClassCastException
+     *  will be thrown if the argument is not an instance of Time.
      *  @param time A time object to compare to.
      *  @return an integer as -1, 0, or 1.
      */
     public int compareTo(Object time) {
-        // NOTE: a time object may contain infinite time values, which can 
-        // not be quantized. 
+        // NOTE: a time object may contain infinite time values, which can
+        // not be quantized.
         Time castedTime = (Time)time;
         // If at least one of the time objects has an infinite time value,
         if (castedTime.isInfinite() || isInfinite()) {
@@ -317,18 +317,18 @@ public class Time implements Comparable {
     }
 
     /** Return true if this time object has the same time value as
-     *  that of the given time object. 
+     *  that of the given time object.
      *  @param time The time object that this time object is compared to.
      *  @return True if the two time objects have the same time value.
-     */    
+     */
     public boolean equals(Object time) {
-        return (this.compareTo(time) == 0);    
+        return (this.compareTo(time) == 0);
     }
 
     /** Return the double representation of the time value of this time object.
-     *  Note limitations may apply, see BigDecimal.doubleValue(). 
+     *  Note limitations may apply, see BigDecimal.doubleValue().
      *  In particular, due to the fixed and limited number of bits of
-     *  double representation in Java, the returned double value may not 
+     *  double representation in Java, the returned double value may not
      *  have the specified time resoution if it is too big.
      *  @return The double representation of the time value.
      */
@@ -345,25 +345,25 @@ public class Time implements Comparable {
                 // the returned double value loses the specified precisoin.
                 // One example: if timePrecisionInDigits = 12, and time resolution is 1E-12,
                 // any double that is bigger than 8192.0 can distinguish from itself
-                // from a value slighter bigger (with the difference as time 
+                // from a value slighter bigger (with the difference as time
                 // resolution). 8192 is the LUB of the set of double values have
                 // the time resolution.
                 // NOTE: The strategy to find the LUB for a given time resolution r:
                 // find the smallest N such that time resolution r >=  2^(-1*N);
                 // get M = 52 - N, which is the multiplication we can apply on the
                 // significand without loss of time resolution;
-                // the LUB is approximately (1+1)*2^M. 
-                // NOTE: the formula to calculate a decimal value from a binary 
-                // representation is (-1)^(sign)x(1+significand)x2^(exponent-127). 
+                // the LUB is approximately (1+1)*2^M.
+                // NOTE: the formula to calculate a decimal value from a binary
+                // representation is (-1)^(sign)x(1+significand)x2^(exponent-127).
                 return _getBigDecimalValue().doubleValue();
             }
         }
     }
 
     /** Return the hash code for the time object. If two time objects contains
-     *  the same quantized time value, they have the same hash code. 
-     *  Note that the quantization is performed on the time value before 
-     *  calculating the hash code. 
+     *  the same quantized time value, they have the same hash code.
+     *  Note that the quantization is performed on the time value before
+     *  calculating the hash code.
      *  @return The hash code for the time object.
      */
     public int hashCode() {
@@ -379,31 +379,31 @@ public class Time implements Comparable {
             }
         }
     }
-    
+
     /** Return true if the current time value is infinite.
      *  @return true if the current time value is infinite.
-     */ 
+     */
     public boolean isInfinite() {
         return isNegativeInfinite() || isPositiveInfinite();
     }
-    
+
     /** Return true if the current time value is a negative infinity.
      *  @return true if the current time value is a negative infinity.
-     */ 
+     */
     public boolean isNegativeInfinite() {
         return _isNegativeInfinite;
     }
-    
+
     /** Return true if the current time value is a positive infinity.
      *  @return true if the current time value is a positive infinity.
-     */ 
+     */
     public boolean isPositiveInfinite() {
         return _isPositiveInfinite;
     }
-    
-    /** Return a new time object whose time value is decreased by the 
-     *  given double value. Quantization is performed on both the 
-     *  timeValue argument and the result. 
+
+    /** Return a new time object whose time value is decreased by the
+     *  given double value. Quantization is performed on both the
+     *  timeValue argument and the result.
      *  @param timeValue The amount of time decrement.
      *  @return A new time object with time value decremented.
      */
@@ -411,14 +411,14 @@ public class Time implements Comparable {
         return add(-1*timeValue);
     }
 
-    /** Return a new time object whose time value is decreased by the 
-     *  time value of the time object. Quantization 
-     *  is performed on the result. 
+    /** Return a new time object whose time value is decreased by the
+     *  time value of the time object. Quantization
+     *  is performed on the result.
      *  @param time The time object contains the amount of time decrement.
      *  @return A new time object with time value decremented.
      */
     public Time subtract(Time time) {
-        // NOTE: a time value of a time object can be either a 
+        // NOTE: a time value of a time object can be either a
         // positive infinity or a negative infinity.
         if (time.isNegativeInfinite()) {
             // the time object has a negative infinity time value
@@ -468,16 +468,16 @@ public class Time implements Comparable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
-    /** Return a new time object whose time value is increased by the 
+
+    /** Return a new time object whose time value is increased by the
      *  time value of the given BigDecimal. If the time value of this
-     *  time object is infinite, return this time object. Quantization 
-     *  is performed on both the timeValue argument and the result. 
+     *  time object is infinite, return this time object. Quantization
+     *  is performed on both the timeValue argument and the result.
      *  @param timeValue The amount of time increment.
      *  @return A new time object with the quantized and incremented time value.
      */
     private Time _add(BigDecimal timeValue) {
-        // NOTE: A BigDecimal can not have its value being infinite or NaN, 
+        // NOTE: A BigDecimal can not have its value being infinite or NaN,
         // so we only need to check whether this time object is infinite.
         if (isInfinite()) {
             // NOTE: we do not create a new time object since infinities
@@ -491,7 +491,7 @@ public class Time implements Comparable {
 
     /** Return the time value of this time object as a BigDecimal.
      *  The returned value is not quantized. This method can not be applied
-     *  on time objects that have infinite time values. 
+     *  on time objects that have infinite time values.
      *  @return The BigDecimal time value.
      */
     private BigDecimal _getBigDecimalValue() {
@@ -507,7 +507,7 @@ public class Time implements Comparable {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    // Get the timePrecisionInDigits of the container director. 
+    // Get the timePrecisionInDigits of the container director.
     // This method is only called when quantization happens.
     private int _getTimePrecisionInDigits() {
         if (_director == null) {
@@ -519,9 +519,9 @@ public class Time implements Comparable {
         }
     }
 
-    // Return the quantized time value of the original time value. 
-    // This method can not be applied on time objects with infinite 
-    // time values. 
+    // Return the quantized time value of the original time value.
+    // This method can not be applied on time objects with infinite
+    // time values.
     private BigDecimal _quantizeTimeValue(BigDecimal originalTimeValue) {
         if (isInfinite()) {
             // This should not happen. Otherwise, there is a bug of using
@@ -537,18 +537,18 @@ public class Time implements Comparable {
 
     private double _quantizeTimeValue(double originalTimeValue) {
         // NOTE: when the value is too big, e.g. close to the
-        // maximum double value, the following algorithm will 
+        // maximum double value, the following algorithm will
         // get overflow, which gives a wrong answer.
         int precision = _getTimePrecisionInDigits();
-        double newValue = 
+        double newValue =
             Math.round(originalTimeValue * Math.pow(10, precision))
                 / Math.pow(10, precision);
         return newValue;
     }
 
-    /** Return a new time object whose time value is decreased by the 
-     *  time value of the given BigDecimal. Quantization 
-     *  is performed on both the timeValue argument and the result.  
+    /** Return a new time object whose time value is decreased by the
+     *  time value of the given BigDecimal. Quantization
+     *  is performed on both the timeValue argument and the result.
      *  @param timeValue The amount of time decrement.
      *  @return A new time object with time value decremented.
      */
@@ -558,7 +558,7 @@ public class Time implements Comparable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     // The director that this time object is associated with.
     private Director _director;
     // A boolean variable is true if the time value is a positive infinity.

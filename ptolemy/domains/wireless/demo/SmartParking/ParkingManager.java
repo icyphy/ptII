@@ -10,15 +10,15 @@ public class ParkingManager {
 
     public static HashSet AvailableLots = new HashSet();
     public static HashSet ParkedLots= new HashSet();
-      
+
     public ParkingManager() {
     }
-    
+
     public ParkingManager(HashSet availableLots, HashSet parkedLots) {
         AvailableLots = new HashSet(availableLots);
         ParkedLots = new HashSet(parkedLots);
     }
-    
+
     public synchronized void update(RecordToken updateMsg) {
         String lot = ((StringToken) updateMsg.get("lot")).stringValue();
         int state = ((IntToken) updateMsg.get("state")).intValue();
@@ -29,8 +29,8 @@ public class ParkingManager {
             AvailableLots.remove(lot);
             ParkedLots.add(lot);
         }
-    }  
-    
+    }
+
     public HashSet getAvailable() {
          return AvailableLots;
     }

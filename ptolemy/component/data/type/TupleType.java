@@ -99,7 +99,7 @@ public class TupleType extends StructuredType {
             return newObj;
         }
     }
-    
+
     /** Convert the argument token into an ArrayToken having this
      *  type, if losslessly conversion can be done.  The argument must
      *  be an ArrayToken.

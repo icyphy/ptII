@@ -207,7 +207,7 @@ public class SRDirector extends StaticSchedulingDirector {
             _debug(getFullName() + " updating scheduler...");
             String className =
                 ((StringToken)scheduler.getToken()).stringValue();
-            
+
             // For backward compatibility, strip quotation marks that
             // may be left over from when the scheduler parameter was not
             // a StringParameter.
@@ -482,16 +482,16 @@ public class SRDirector extends StaticSchedulingDirector {
      */
     public String[] suggestedModalModelDirectors() {
         // This method does not call the method defined in the super class,
-        // because this method provides complete new information. 
-        // Default is a NonStrictFSMDirector, while FSMDirector is also 
+        // because this method provides complete new information.
+        // Default is a NonStrictFSMDirector, while FSMDirector is also
         // in the array.
         String[] defaultSuggestions = new String[2];
-        defaultSuggestions[1] = 
+        defaultSuggestions[1] =
             "ptolemy.domains.fsm.kernel.NonStrictFSMDirector";
         defaultSuggestions[0] = "ptolemy.domains.fsm.kernel.FSMDirector";
         return defaultSuggestions;
     }
-    
+
     /** Transfer data from the specified input port of the
      *  container to the ports it is connected to on the inside.
      *  If there is no data on the specified input port, then

@@ -155,20 +155,20 @@ public class ReplaceComplexParameters extends SceneTransformer
 //                 copyAttributesOtherThanVariable(port);
 //             }
 //         }
-                      
+
         if (object instanceof Attribute) {
             Attribute attribute = (Attribute)object;
-    
+
             // Ignore attributes that are ignorable.
             if (ModelTransformer._isIgnorableAttribute(attribute)) {
                 return;
             }
-            
+
             // PortParameters are handled specially.
             //  if (attribute instanceof PortParameter) {
             //                 continue;
             //             }
-            
+
             // If we have an attribute that derives from
             // stringAttribute, or Parameter then we need to grab some
             // code for it. (i.e. FileParameter, and FileParameter)
@@ -177,7 +177,7 @@ public class ReplaceComplexParameters extends SceneTransformer
                     (attribute instanceof Parameter &&
                             !attribute.getClass().equals(Parameter.class))) {
                 String className = attribute.getClass().getName();
-                
+
                 if (_debug) {
                     System.out.println("ComplexAttribute = " + attribute
                             + " Class = " + className);
@@ -187,16 +187,16 @@ public class ReplaceComplexParameters extends SceneTransformer
                 attributeClass.setLibraryClass();
                 String newClassName =
                     ModelTransformer.getInstanceClassName(attribute, _options);
-                
+
                 // Create a new class for the attribute.
                 SootClass newClass = SootUtilities.copyClass(
                         attributeClass, newClassName);
                 // Make sure that we generate code for the new class.
                 newClass.setApplicationClass();
-                
+
                 // Associate the new class with the attribute.
                 ModelTransformer.addAttributeForClass(newClass, attribute);
-                
+
                 // Fold the copied class up to StringAttribute, or parameter
                 SootClass superClass = newClass.getSuperclass();
                 while (superClass != PtolemyUtilities.objectClass &&
@@ -206,7 +206,7 @@ public class ReplaceComplexParameters extends SceneTransformer
                     SootUtilities.foldClass(newClass);
                     superClass = newClass.getSuperclass();
                 }
-                
+
                 // Remove problematic methods for PortParameter
                 if (newClass.declaresMethodByName("setContainer")) {
                     SootMethod method =
@@ -229,13 +229,13 @@ public class ReplaceComplexParameters extends SceneTransformer
                     Port port = ((PortParameter)attribute).getPort();
                     field.addTag(new ValueTag(port));
                 }
-                
+
                 // Add a container field to the generated class.
                 // FIXME: this doesn't work for UnitSystems, e.g.,
                 // since their container isn't associated with a class.
                 FieldsForEntitiesTransformer._createContainerField(
                         newClass);
-                
+
                 // Loop over all the methods and replace construction
                 // of the old attribute with construction of the
                 // copied class.
@@ -255,11 +255,11 @@ public class ReplaceComplexParameters extends SceneTransformer
                  object.attributeList(Attribute.class).iterator();
              attributes.hasNext();) {
             Attribute attribute = (Attribute) attributes.next();
-            
+
             copyAttributesOtherThanVariable(attribute);
         }
     }
-        
+
     // This operation is similar to sootUtilities.changeTypesOfFields
     // and SootUtilities.changeTypesInMethods, except that it uses
     // namedObjAnalysis to pick up only references to the given

@@ -4,7 +4,7 @@
 Copyright (c) 1990-1997 The Regents of the University of California.
 All rights reserved.
 See the file $PTOLEMY/copyright for copyright notice,
-limitation of liability, and disclaimer of warranty 
+limitation of liability, and disclaimer of warranty
 provisions.
  */
 package ptolemy.codegen.lib;
@@ -31,7 +31,7 @@ The ulaw algorithm is based on the description of the T1 system found
 in: Simon Haykin, "Communication Systems," section 8.2 (Wiley 1983).
 
  @Author T. M. Parks and Sunil Bhave
- @Version $Id$, based on version 1.10 of /users/ptolemy/src/domains/cgc/stars/CGCMonoIn.pl, from Ptolemy Classic 
+ @Version $Id$, based on version 1.10 of /users/ptolemy/src/domains/cgc/stars/CGCMonoIn.pl, from Ptolemy Classic
  @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCMonoIn extends CGCAudioBase {
@@ -50,7 +50,7 @@ public class CGCMonoIn extends CGCAudioBase {
         output = new ClassicPort(this, "output", false, true);
         output.setTypeEquals(BaseType.DOUBLE);
 
-/*     
+/*
 channels.setAttributes(A_NONCONSTANT|A_NONSETTABLE);
     channels.setInitValue(1);
     balance.setAttributes(A_NONCONSTANT|A_NONSETTABLE);
@@ -73,21 +73,21 @@ Output ranges from -1.0 to 1.0
     /**
      */
     public int  myExecTime() {
-        
+
 return ((IntToken)((blockSize).getToken())).intValue()*14;
      }
 
     /**
      */
     public void  wrapup() {
-        
+
 super.wrapup();
      }
 
     /**
      */
     public void  generatePreinitializeCode() {
-        
+
 super.initCode();
     /* Declare buffer type and size depending on the encoding */
     if (encodingType.equalsIgnoreCase("linear16")) {
@@ -98,7 +98,7 @@ super.initCode();
       addModuleFromLibrary("ptdspMuLaw", "src/utils/libptdsp", "ptdsp");
     }
     /* Open file for reading data */
-    addCode(openFileForReading); 	
+    addCode(openFileForReading);
     if (strcasecmp(fileName, "/dev/audio") == 0)
       {
 	/* audio_setup : to set encodingType, sampleRate and channels */
@@ -112,7 +112,7 @@ super.initCode();
     /**
      */
     public void  generateInitializeCode() throws IllegalActionException {
-        
+
 if (encodingType.equalsIgnoreCase("ulaw8")) {
       output.setSDFParams(((IntToken)((blockSize).getToken())).intValue(), ((IntToken)((blockSize).getToken())).intValue()-1);
     }
@@ -124,19 +124,19 @@ if (encodingType.equalsIgnoreCase("ulaw8")) {
     /**
      */
     public void  generateFireCode() {
-        
-addCode(setbufptr); 
-    addCode(read); 
+
+addCode(setbufptr);
+    addCode(read);
     if (encodingType.equalsIgnoreCase("linear16")) {
-	addCode(convertLinear); 
+	addCode(convertLinear);
     } else {
-	addCode(convertUlaw); 
+	addCode(convertUlaw);
     }
      }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
-    public String convertLinear = 
+    public String convertLinear =
         "{\n"
         + "     /* convert from linear16 to floating point */\n"
         + "     int i;\n"
@@ -146,7 +146,7 @@ addCode(setbufptr);
         + "     }\n"
         + "  }";
 
-    public String convertUlaw = 
+    public String convertUlaw =
         "{\n"
         + "     /* convert from ulaw to floating point */\n"
         + "     for (i = 0; i < $val(blockSize); i++) {\n"
@@ -159,6 +159,6 @@ addCode(setbufptr);
         + "     }\n"
         + "  }";
 
-    public String setbufptr = 
+    public String setbufptr =
         "    $starSymbol(bufferptr) = $starSymbol(buffer);\n";
 }

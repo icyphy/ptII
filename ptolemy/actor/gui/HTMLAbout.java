@@ -300,7 +300,7 @@ public class HTMLAbout {
             // + "\">&nbsp;Run all demos&nbsp;</a></td>\n"
             + "  </tr>\n";
     }
-    
+
     // Return the URL of the file that contains links to .xml files
     private static URL _getDemoURL(String demosFileName) throws IOException {
         // Open the completeDemos.htm file and read the contents into

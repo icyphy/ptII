@@ -31,7 +31,7 @@ integer output is useful for stars that need an integer input, such as
 Thor stars.
 
  @Author Asawaree Kalavade
- @Version $Id$, based on version 1.1 of /users/ptolemy/src/domains/cgc/stars/CGCLinQuantIdx.pl, from Ptolemy Classic 
+ @Version $Id$, based on version 1.1 of /users/ptolemy/src/domains/cgc/stars/CGCLinQuantIdx.pl, from Ptolemy Classic
  @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCLinQuantIdx extends ClassicCGCActor {
@@ -70,7 +70,7 @@ public class CGCLinQuantIdx extends ClassicCGCActor {
         height = new Parameter(this, "height");
         height.setExpression("1.0");
 
-/* 
+/*
 */
     }
     ///////////////////////////////////////////////////////////////////
@@ -118,7 +118,7 @@ high, low, and levels. parameter with initial value "1.0".
     /**
      */
     public void  generateInitializeCode() throws IllegalActionException {
-        
+
 if (((IntToken)((levels).getToken())).intValue() <= 0 ) {
 		    throw new IllegalActionException(this, "levels must be positive");
 		}
@@ -135,13 +135,13 @@ if (((IntToken)((levels).getToken())).intValue() <= 0 ) {
     /**
      */
     public void  generateFireCode() {
-        
-addCode(linquantidx); 
+
+addCode(linquantidx);
      }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
-    public String linquantidx = 
+    public String linquantidx =
         "	    	double in = (double)$ref(input);\n"
         + "		double highvalue = (double)$val(high);\n"
         + "		double lowvalue = (double)$val(low);\n"

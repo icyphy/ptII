@@ -166,7 +166,7 @@ public class ChannelState extends MACActorBase {
             //transition.However the order does not matter here,
             // so we will pick a particular order.
 
-            // UseIfs messages are handled in all states 
+            // UseIfs messages are handled in all states
             if (fromValidateMpdu.hasToken(0)) {
                 _inputMessage = (RecordToken) fromValidateMpdu.get(0);
                 _messageType = ((IntToken)_inputMessage.
@@ -314,7 +314,7 @@ public class ChannelState extends MACActorBase {
         _messageType = UNKNOWN;
         _IfsTimer = null;
         _NavTimer = null;
-        
+
         NamedObj macComposite = getContainer().getContainer();
         if (macComposite.getAttribute("tNavEnd") != null) {
             _tNavEnd = macComposite.getAttribute("tNavEnd");
@@ -336,7 +336,7 @@ public class ChannelState extends MACActorBase {
         switch(_messageType) {
         case SetNav:
             // new NAV
-            Time tNew = new Time(getDirector(), 
+            Time tNew = new Time(getDirector(),
                 ((DoubleToken)_inputMessage.get("tRef")).doubleValue()
                 +((IntToken)_inputMessage.get("dNav")).intValue()*1e-6);
             // if the new NAV is larger than the existing one, use it instead
@@ -354,7 +354,7 @@ public class ChannelState extends MACActorBase {
         case ClearNav:
             // force the state transition to the corresponding noNav states
             _NavTimer.expirationTime = _currentTime;
-            _setAttribute(_tNavEnd, 
+            _setAttribute(_tNavEnd,
                 new DoubleToken(_currentTime.getDoubleValue()));
             _curSrc=nosrc;
             break;
@@ -363,10 +363,10 @@ public class ChannelState extends MACActorBase {
     }
 
     private boolean _setNav() throws IllegalActionException {
-        Time expirationTime =  new Time(getDirector(), 
+        Time expirationTime =  new Time(getDirector(),
             ((DoubleToken)_inputMessage.get("tRef")).doubleValue()
             +((IntToken)_inputMessage.get("dNav")).intValue()*1e-6);
-        _setAttribute(_tNavEnd, 
+        _setAttribute(_tNavEnd,
             new DoubleToken(expirationTime.getDoubleValue()));
         if (expirationTime.compareTo(_currentTime) > 0) {
             if (_NavTimer != null ) cancelTimer(_NavTimer);

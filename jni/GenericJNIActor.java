@@ -449,7 +449,7 @@ public class GenericJNIActor extends TypedAtomicActor {
                 System.err.println("Warning: GenericJNIActor.java: "
                         + "getArgumentReturn() returns null?");
             }
-            if (port != null 
+            if (port != null
                     && port.getName() != null
                     && getArgumentReturn() != null
                     && port.getName().equals(this.getArgumentReturn().getName())) {

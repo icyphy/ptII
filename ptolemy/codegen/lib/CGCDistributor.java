@@ -26,7 +26,7 @@ where B = blockSize, and sends the first B particles to the first output,
 the next B particles to the next output, etc.
 
  @Author E. A. Lee
- @Version $Id$, based on version 1.7 of /users/ptolemy/src/domains/cgc/stars/CGCDistributor.pl, from Ptolemy Classic 
+ @Version $Id$, based on version 1.7 of /users/ptolemy/src/domains/cgc/stars/CGCDistributor.pl, from Ptolemy Classic
  @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCDistributor extends ClassicCGCActor {
@@ -50,7 +50,7 @@ public class CGCDistributor extends ClassicCGCActor {
         blockSize = new Parameter(this, "blockSize");
         blockSize.setExpression("1");
 
-/* 
+/*
 */
     }
     ///////////////////////////////////////////////////////////////////
@@ -77,14 +77,14 @@ public class CGCDistributor extends ClassicCGCActor {
     /**
      */
     public int  myExecTime() {
-        
+
 return ((IntToken)((blockSize).getToken())).intValue()*2*output.numberPorts();
      }
 
     /**
      */
     public void  generateInitializeCode() throws IllegalActionException {
-        
+
 int n = output.numberPorts();
 		input.setSDFParams(n*((IntToken)((blockSize).getToken())).intValue(),n*((IntToken)((blockSize).getToken())).intValue()-1);
 		output.setSDFParams(((IntToken)((blockSize).getToken())).intValue(),((IntToken)((blockSize).getToken())).intValue()-1);
@@ -93,7 +93,7 @@ int n = output.numberPorts();
     /**
      */
     public void  generateFireCode() {
-        
+
 StringBuffer out = new StringBuffer();
 		if (((IntToken)((blockSize).getToken())).intValue() > 1) out.append("\tint j;\n");
 		for (int i = output.numberPorts() - 1; i >= 0; i--) {
@@ -108,6 +108,6 @@ StringBuffer out = new StringBuffer();
 			   .append(",0) = $ref2(input," + i  + ");\n");
 		   }
 		}
-		addCode(out); 
+		addCode(out);
      }
 }

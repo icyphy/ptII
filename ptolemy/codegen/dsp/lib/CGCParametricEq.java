@@ -27,7 +27,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    based on the procedure defined by Shpak.
 
    @Author William Chen and John Reekie
-   @Version $Id$, based on version 1.15 of /users/ptolemy/src/domains/cgc/dsp/stars/CGCParametricEq.pl, from Ptolemy Classic 
+   @Version $Id$, based on version 1.15 of /users/ptolemy/src/domains/cgc/dsp/stars/CGCParametricEq.pl, from Ptolemy Classic
    @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCParametricEq extends CGCBiquad {
@@ -68,7 +68,7 @@ public class CGCParametricEq extends CGCBiquad {
         bandwidth = new Parameter(this, "bandwidth");
         bandwidth.setExpression("1");
 
-        /* 
+        /*
          */
     }
     ///////////////////////////////////////////////////////////////////
@@ -102,7 +102,7 @@ public class CGCParametricEq extends CGCBiquad {
     public Parameter gain;
 
     /**
-     *  Given in Octave and ranges from [0,4]. Not needed for Lowpass 
+     *  Given in Octave and ranges from [0,4]. Not needed for Lowpass
      and Hipass types. parameter with initial value "1".
     */
     public Parameter bandwidth;
@@ -147,7 +147,7 @@ public class CGCParametricEq extends CGCBiquad {
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
-    public String setparams = 
+    public String setparams =
     "	  static void $sharedSymbol(CGCParametricEq,setparams)\n"
     + "	    (parametric_t *parametric, double sampleFreq, double\n"
     + "	     passFreq, double centerFreq, double bandwidth, double gain) {\n"
@@ -171,7 +171,7 @@ public class CGCParametricEq extends CGCBiquad {
     + "	    parametric->lineargain = pow(10.0,gaintmp);\n"
     + "	  }\n";
 
-    public String constbw = 
+    public String constbw =
     "	  /* Newton approximation */\n"
     + "          static double $sharedSymbol(CGCParametricEq,constbw)(int niter,\n"
     + "	     double tol, double bw, double wc, double initial_guess) {\n"
@@ -197,7 +197,7 @@ public class CGCParametricEq extends CGCBiquad {
     + "	      return x1;\n"
     + "            }        \n";
 
-    public String lowpass = 
+    public String lowpass =
     "          static void $sharedSymbol(CGCParametricEq,lowpass)(parametric_t *parametric, double *filtercoeff)\n"
     + "	    {\n"
     + "	      double omegapwarp,omegacwarp;\n"
@@ -234,7 +234,7 @@ public class CGCParametricEq extends CGCBiquad {
     + "	      filtercoeff[4] = a2/b2;\n"
     + "	    }\n";
 
-    public String bandpass = 
+    public String bandpass =
     "          static void $sharedSymbol(CGCParametricEq,bandpass)(parametric_t *parametric, double *filtercoeff) {\n"
     + "	      double omegacwarp,omegacornerwarp,omegacorner_guess,gamma;\n"
     + "	      double Qz,Qp,initial;\n"
@@ -261,7 +261,7 @@ public class CGCParametricEq extends CGCBiquad {
     + "	      filtercoeff[4] = a2/b2;\n"
     + "	    }\n";
 
-    public String hipass = 
+    public String hipass =
     "          static void $sharedSymbol(CGCParametricEq,hipass)(parametric_t *parametric, double *filtercoeff)\n"
     + "	    {\n"
     + "	      double omegapwarp,omegacwarp;\n"
@@ -299,7 +299,7 @@ public class CGCParametricEq extends CGCBiquad {
     + "	      filtercoeff[4] = a2/b2;\n"
     + "	    }\n";
 
-    public String setfiltertaps = 
+    public String setfiltertaps =
     "	  static void $sharedSymbol(CGCParametricEq,setfiltertaps)\n"
     + "	    (parametric_t *parametric, double *filtercoeff, double\n"
     + "	     *filtertaps)\n"
@@ -320,7 +320,7 @@ public class CGCParametricEq extends CGCBiquad {
     + "	    }\n"
     + "	  }\n";
 
-    public String selectFilter = 
+    public String selectFilter =
     "	  /* This procedure is for the Tk star. Its a common	*/\n"
     + "	  /* procedure called to update changes in gain, center */\n"
     + "	  /* freq., bandwidth, and passband freq, in the Tk star*/\n"
@@ -345,7 +345,7 @@ public class CGCParametricEq extends CGCBiquad {
     + "		(parametric, filtercoeff, filtertaps);\n"
     + "	    }\n";
 
-    public String globalDecl = 
+    public String globalDecl =
     "	  typedef struct parametric_band {\n"
     + "	    double omegac;\n"
     + "	    double omegap;\n"
@@ -357,7 +357,7 @@ public class CGCParametricEq extends CGCBiquad {
     + "\n"
     + "#define PI (M_PI)\n";
 
-    public String declarations = 
+    public String declarations =
     "	  parametric_t $starSymbol(parametric);\n"
     + "	  double $starSymbol(filtercoeff)[5]; \n";
 }

@@ -340,7 +340,7 @@ public class ClassDefinitionController extends ActorController {
         public CreateSubclassAction(String commandName) {
             super(commandName);
             putValue(GUIUtilities.ACCELERATOR_KEY,
-                    KeyStroke.getKeyStroke(KeyEvent.VK_U, 
+                    KeyStroke.getKeyStroke(KeyEvent.VK_U,
                             Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
         }
 

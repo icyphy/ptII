@@ -95,8 +95,8 @@ public class ExtendedMouseFilter extends MouseFilter {
      * filter will accept modifier sets that exactly match modifiers.
      */
     public ExtendedMouseFilter (int button, int extendedModifiers) {
-        this(button, 
-                extendedModifiers, 
+        this(button,
+                extendedModifiers,
                 InputEvent.SHIFT_DOWN_MASK
                 | InputEvent.CTRL_DOWN_MASK
                 | InputEvent.ALT_DOWN_MASK
@@ -131,9 +131,9 @@ public class ExtendedMouseFilter extends MouseFilter {
      * or two.  Notice that if you want to react to drag events, they always
      * have a press number of zero.
      */
-    public ExtendedMouseFilter (int button, int extendedModifiers, 
+    public ExtendedMouseFilter (int button, int extendedModifiers,
             int mask, int pressNumber) {
-        // bogus super constructor...  It would have been better if the 
+        // bogus super constructor...  It would have been better if the
         // base class was an interface, but oh well.
         super(0);
         _button = button;

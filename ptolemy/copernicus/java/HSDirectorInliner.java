@@ -126,7 +126,7 @@ public class HSDirectorInliner implements DirectorInliner {
 //                     model, body.getThisLocal(),
 //                     model, body.getThisLocal(),
 //                     modelClass);
-            
+
             for (Iterator entities = model.deepEntityList().iterator();
                  entities.hasNext();) {
                 Entity entity = (Entity)entities.next();
@@ -198,7 +198,7 @@ public class HSDirectorInliner implements DirectorInliner {
             JimpleBody body = (JimpleBody)classMethod.getActiveBody();
             Chain units = body.getUnits();
             Stmt insertPoint = (Stmt)units.getLast();
-            
+
             Local thisLocal = body.getThisLocal();
 
             Local prefireReturnsLocal = Jimple.v().newLocal("preReturns", BooleanType.v());
@@ -356,7 +356,7 @@ public class HSDirectorInliner implements DirectorInliner {
                  ports.hasNext();) {
                 IOPort port = (IOPort)ports.next();
                 int rate = DFUtilities.getTokenProductionRate(port);
-                
+
                 String fieldName = ModelTransformer.getFieldNameForPort(
                         port, model);
                 SootField field = modelClass.getFieldByName(fieldName);

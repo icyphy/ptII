@@ -82,7 +82,7 @@ public class ImageToJMF extends Transformer {
 
     /** The frame rate in frames per second at which the images are
      *  being generated.  If video is being generated, then the frame
-     *  rate is usually between 1 and 60.  The initial default is 
+     *  rate is usually between 1 and 60.  The initial default is
      *  an integer with value 15, meaning 15 frames per second
      */
     public Parameter frameRate;

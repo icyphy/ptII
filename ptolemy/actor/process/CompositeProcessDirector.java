@@ -245,13 +245,13 @@ public class CompositeProcessDirector extends ProcessDirector {
             CompositeActor containersContainer =
                 (CompositeActor)container.getContainer();
             if ( containersContainer == null ) {
-                // Use the overridden setCurrentTime() method 
+                // Use the overridden setCurrentTime() method
                 // to set time backwards.
                 setModelTime(new Time(this));
             } else {
                 Time currentTime =
                     containersContainer.getDirector().getModelTime();
-                // Use the overridden setCurrentTime() method 
+                // Use the overridden setCurrentTime() method
                 // to set time backwards.
                 setModelTime(currentTime);
             }
@@ -318,7 +318,7 @@ public class CompositeProcessDirector extends ProcessDirector {
      *  The new time may be earlier than the current time.
      *  @param newTime The new current simulation time.
      */
-    public void setModelTime(Time newTime) 
+    public void setModelTime(Time newTime)
         throws IllegalActionException {
         if (_debugging) {
             _debug("----- Setting current time to " + newTime);
@@ -477,7 +477,7 @@ public class CompositeProcessDirector extends ProcessDirector {
         if (_debugging) {
             _debug("Checking for deadlock:");
             _debug("There are " + _getBlockedActorsCount()
-                    + " Blocked actors, " + _getStoppedActorsCount() 
+                    + " Blocked actors, " + _getStoppedActorsCount()
                     + " Stopped actors, and " + _getActiveActorsCount()
                     + " active actors.");
         }

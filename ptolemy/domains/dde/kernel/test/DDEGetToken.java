@@ -101,7 +101,7 @@ public class DDEGetToken extends DDEGet {
                 for ( int j = 0; j < receivers[i].length; j++ ) {
                     DDEReceiver receiver = (DDEReceiver)receivers[i][j];
                     if ( receiver.hasToken() ) {
-                        _receiverTimes[cnt] 
+                        _receiverTimes[cnt]
                             = receiver.getReceiverTime().getDoubleValue();
                         _tokens[cnt] = receiver.get();
                         Thread thread = Thread.currentThread();

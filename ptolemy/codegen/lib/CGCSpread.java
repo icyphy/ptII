@@ -28,7 +28,7 @@ outputs are passed to more than one destination (one ordinary block and
 one Send star, more than one Send stars, and so on.)
 
  @Author S. Ha
- @Version $Id$, based on version 1.9 of /users/ptolemy/src/domains/cgc/stars/CGCSpread.pl, from Ptolemy Classic 
+ @Version $Id$, based on version 1.9 of /users/ptolemy/src/domains/cgc/stars/CGCSpread.pl, from Ptolemy Classic
  @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCSpread extends ClassicCGCActor {
@@ -48,7 +48,7 @@ public class CGCSpread extends ClassicCGCActor {
         output = new ClassicPort(this, "output", false, true);
         output.setMultiport(true);
 
-/* 
+/*
 */
     }
     ///////////////////////////////////////////////////////////////////
@@ -70,7 +70,7 @@ public class CGCSpread extends ClassicCGCActor {
     /**
      */
     public void  generateInitializeCode() throws IllegalActionException {
-        
+
 MPHIter iter(output);
 		CGCPortHole* p;
 		int loc = 0;
@@ -83,13 +83,13 @@ MPHIter iter(output);
     /**
      */
     public void  generateFireCode() {
-        
+
      }
 
     /**
      */
     protected int amISpreadCollect () {
-        
+
 return -1;
     }
 

@@ -37,7 +37,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    This star may be used to read a file by simply setting "value" to
    something of the form "&lt; filename".  The file will be read completely
    and its contents stored in an array.  The size of the array is currently
-   limited to 20,000 samples.  To read longer files, use the 
+   limited to 20,000 samples.  To read longer files, use the
    <tt>ReadFile</tt>
    star.  This latter star reads one sample at a time, and hence also
    uses less storage.
@@ -48,7 +48,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    <a name="simulation, halting"></a>
 
    @Author S. Ha
-   @Version $Id$, based on version 1.10 of /users/ptolemy/src/domains/cgc/stars/CGCWaveForm.pl, from Ptolemy Classic 
+   @Version $Id$, based on version 1.10 of /users/ptolemy/src/domains/cgc/stars/CGCWaveForm.pl, from Ptolemy Classic
    @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCWaveForm extends ClassicCGCActor {
@@ -91,7 +91,7 @@ public class CGCWaveForm extends ClassicCGCActor {
         size = new Parameter(this, "size");
         size.setExpression("0");
 
-        /* 
+        /*
          */
     }
     ///////////////////////////////////////////////////////////////////
@@ -138,14 +138,14 @@ public class CGCWaveForm extends ClassicCGCActor {
     /**
      */
     public int  myExecTime() {
-        
+
         return 11;  /* worst case number */
     }
 
     /**
      */
     public void  generateInitializeCode() throws IllegalActionException {
-        
+
         pos = 0;
         size = value.size();
     }
@@ -153,13 +153,13 @@ public class CGCWaveForm extends ClassicCGCActor {
     /**
      */
     public void  generateFireCode() {
-        
-        addCode(body); 
+
+        addCode(body);
     }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
-    public String body = 
+    public String body =
     "	if ($val(haltAtEnd) && ($ref(pos) >= $val(size)))\n"
     + "		break;\n"
     + "	else if ($ref(pos) >= $val(size)) {\n"

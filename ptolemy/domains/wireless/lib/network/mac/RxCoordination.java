@@ -274,7 +274,7 @@ public class RxCoordination extends MACActorBase {
         _dSifsDly=_aSifsTime-_aRxTxTurnaroundTime;
         _dRsp=_aSifsTime+_aPreambleLength+_aPlcpHeaderLength+_sAckCtsLng/_mBrate;
         _currentState = RxC_Idle;
-        
+
         NamedObj macComposite = getContainer().getContainer();
         if (macComposite.getAttribute("tNavEnd") != null) {
             _tNavEnd = macComposite.getAttribute("tNavEnd");

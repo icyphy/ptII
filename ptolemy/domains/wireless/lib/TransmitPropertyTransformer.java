@@ -94,7 +94,7 @@ import ptolemy.kernel.util.Workspace;
 */
 public class TransmitPropertyTransformer extends LifeCycleManager
         implements PropertyTransformer {
-            
+
     /** Construct an actor with the specified container and name.
      *  @param container The container.
      *  @param name The name.
@@ -131,7 +131,7 @@ public class TransmitPropertyTransformer extends LifeCycleManager
                 "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
                 + "style=\"fill:white\"/>\n" +
                 "</svg>\n");
-        
+
         // To ensure that exported MoML does not represent this as
         // an ordinary TypedCompositeActor.
         setClassName("ptolemy.domains.wireless.lib.TransmitPropertyTransformer");
@@ -195,7 +195,7 @@ public class TransmitPropertyTransformer extends LifeCycleManager
             output.send(0, inputValue);
         }
     }
-    
+
     /** Return true, indicating that execution can continue.
      *  @exception IllegalActionException Not thrown in this class,
      *   but declared so the subclasses can throw it.
@@ -269,7 +269,7 @@ public class TransmitPropertyTransformer extends LifeCycleManager
                 }
             }
         }
-        
+
         //register this property transformer for the connected wireless
         //input port. It assumes there is only one.
         Iterator connectedInputPorts = input.sourcePortList().iterator();
@@ -373,7 +373,7 @@ public class TransmitPropertyTransformer extends LifeCycleManager
                     _wirelessInputPort);
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                        protected methods                  ////
 
@@ -384,7 +384,7 @@ public class TransmitPropertyTransformer extends LifeCycleManager
     /** Override the base class to not write any outputs.
      */
     protected void _writeOutputs() {}
-   
+
     ///////////////////////////////////////////////////////////////////
     ////                        private methods                    ////
 
@@ -411,23 +411,23 @@ public class TransmitPropertyTransformer extends LifeCycleManager
 
     ///////////////////////////////////////////////////////////////////
     ////                        private variables                  ////
-    
-    /** The wireless channel for the connected input port found in 
-     *  preinitialize(). 
+
+    /** The wireless channel for the connected input port found in
+     *  preinitialize().
      */
     private WirelessChannel _inputWirelessChannel;
-    
+
     /** The connected wireless input port found in preinitialize(). */
     private WirelessIOPort _wirelessInputPort;
-    
-    /** The wireless channel for the connected output port found in 
-     *  preinitialize(). 
+
+    /** The wireless channel for the connected output port found in
+     *  preinitialize().
      */
     private WirelessChannel _outputWirelessChannel;
-    
+
     /** The connected wireless output port found in preinitialize(). */
     private WirelessIOPort _wirelessOutputPort;
-        
+
     /** Name of the location attribute. */
     private static final String LOCATION_ATTRIBUTE_NAME = "_location";
 }

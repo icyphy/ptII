@@ -91,7 +91,7 @@ import ptolemy.kernel.util.InternalErrorException;
    @Pt.AcceptedRating Green (pwhitake)
    @see ptolemy.domains.sr.kernel.SRDirector
 */
-public class SRReceiver extends AbstractReceiver 
+public class SRReceiver extends AbstractReceiver
     implements StateReceiver {
 
     /** Construct an SRReceiver with unknown state and the given director.
@@ -124,7 +124,7 @@ public class SRReceiver extends AbstractReceiver
         // known. Without that, you can get a nondeterministic
         // behavior.
         if (!isKnown()) {
-            // If we don't check !isKnown(), then we get a hang in 
+            // If we don't check !isKnown(), then we get a hang in
             // sr/lib/test/auto/EnabledComposite.xml
             // If we don't call receiverChanged, then SendClearTest fails.
             _director.receiverChanged(this);

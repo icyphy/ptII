@@ -60,7 +60,7 @@ import ptolemy.kernel.util.Workspace;
 //// Transition
 /**
    A Transition has a source state and a destination state. A
-   transition has a guard expression, which is evaluated to a boolean value. 
+   transition has a guard expression, which is evaluated to a boolean value.
    Whenever a transition is enabled, it must be taken immediately.
 
    <p> A transition can contain actions. The way to specify actions is
@@ -272,7 +272,7 @@ public class Transition extends ComponentRelation {
         if (attribute == outputActions || attribute == setActions) {
             _actionListsVersion = -1;
         }
-        
+
         if (attribute == outputActions && _debugging) {
             outputActions.addDebugListener(new StreamListener());
         }
@@ -771,14 +771,14 @@ public class Transition extends ComponentRelation {
                 ((ParseTreeEvaluatorForGuardExpression) _parseTreeEvaluator)
                     .setConstructionMode(true);
             } else {
-                _parseTreeEvaluator = new ParseTreeEvaluator(); 
+                _parseTreeEvaluator = new ParseTreeEvaluator();
             }
             _guardVersion = workspace().getVersion();
         } finally {
             workspace().doneReading();
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -799,7 +799,7 @@ public class Transition extends ComponentRelation {
 
     // The parse tree for the guard expression.
     private ASTPtRootNode _guardParseTree;
-    
+
     // Version of the cached list of relations of a guard expression
     private long _guardVersion = -1;
 

@@ -63,7 +63,7 @@ public class ScratchpadMemory {
      *   or zero.
      */
     public ScratchpadMemory(int memorySize) throws IllegalActionException{
-        if (memorySize < 0) throw new IllegalActionException("Can't define" 
+        if (memorySize < 0) throw new IllegalActionException("Can't define"
                 + " a negative scratchpad memory size.");
         else if (memorySize == 0) throw new IllegalActionException("Can't"
                 + " define a scratchpad memory of zero size.");
@@ -72,12 +72,12 @@ public class ScratchpadMemory {
         _usedSpace = 0;
         _scratchpadContents = new ArrayList(memorySize);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                       public methods                      ////
-  
+
     /** Adds a new memory address to the scratchpad memory.
-     *  
+     *
      *  @param address The address to be cached in the scratchpad memory.
      *  @exception IllegalActionException If the scratchpad memory is full.
      */
@@ -90,7 +90,7 @@ public class ScratchpadMemory {
             _scratchpadContents.add(address);
             _usedSpace++;
         }
-        else throw new IllegalActionException("Can't add another memory" 
+        else throw new IllegalActionException("Can't add another memory"
                 + " address, the scratchpad memory is full.");
     }
 
@@ -103,9 +103,9 @@ public class ScratchpadMemory {
 
     /** Checks whether a memory address is cached or not in the scratchpad
      *  memory.
-     *  
+     *
      *  @param address The address of the memory location to be searched.
-     *  @return True if the address is present in the scrtachpad memory, 
+     *  @return True if the address is present in the scrtachpad memory,
      *   else False.
      */
     public boolean contains(Object address) {
@@ -141,10 +141,10 @@ public class ScratchpadMemory {
     public int freeSpace() {
         return (_totalSpace - _usedSpace);
     }
-    
+
     /** Checks if the scratchpad memory is full.
      *
-     *  @return True if the scratchpad memory is full else False. 
+     *  @return True if the scratchpad memory is full else False.
      */
     public boolean isFull() throws IllegalActionException {
         if (_usedSpace < _totalSpace) return false;
@@ -190,11 +190,11 @@ public class ScratchpadMemory {
 
     ///////////////////////////////////////////////////////////////////
     ////                       private variables                   ////
-    
+
     // The scratchpad memory space. The addresses present in scratchpad
     // are stored in this array.
     private ArrayList _scratchpadContents;
-    // Total space (or size) in the scratchpad memory. 
+    // Total space (or size) in the scratchpad memory.
     private int _totalSpace;
     // The Occupied size of scratchpad memory.
     private int _usedSpace;

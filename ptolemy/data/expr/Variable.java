@@ -330,7 +330,7 @@ public class Variable extends AbstractSettableAttribute
         // SmoothedPeriodogram actors, which are composite actors
         // in the library), because these are cloned when copied.
         newObject._variablesDependentOn = null;
-        
+
         // The clone has new value listeners.
         newObject._valueListeners = null;
 
@@ -836,7 +836,7 @@ public class Variable extends AbstractSettableAttribute
      *  <br>Note that you can call this with a null argument regardless
      *  of type constraints, unless there are other variables that
      *  depend on its value.
-     *  <br>Note that {@link #setPersistent(boolean) setPersistent(true}} 
+     *  <br>Note that {@link #setPersistent(boolean) setPersistent(true}}
      *  may need to be called so that the change to the token is
      *  marked as persistent and is exported.
      *  to the token is expor

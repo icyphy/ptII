@@ -337,13 +337,13 @@ public class FSMActor extends CompositeEntity
      *  @return A FunctionDependency object of an FSM actor.
      */
     public FunctionDependency getFunctionDependency() {
-        FunctionDependency functionDependency 
+        FunctionDependency functionDependency
             = (FunctionDependency) getAttribute(FunctionDependency.UniqueName);
         if (functionDependency == null) {
             try {
                 TypedActor[] refinements = _currentState.getRefinement();
                 if (refinements == null || refinements.length < 1) {
-                    functionDependency 
+                    functionDependency
                         = new FunctionDependencyOfFSMActor(
                             this, FunctionDependency.UniqueName);
                 } else {

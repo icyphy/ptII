@@ -173,8 +173,8 @@ public class VergilApplication extends MoMLApplication {
     /**
      *  Open the MoML file at the given location as a new library in the
      *  actor library for this application.
-     *  @param configuration The configuration where we look for the 
-     *  actor library.    
+     *  @param configuration The configuration where we look for the
+     *  actor library.
      *  @param file The MoML file to open.
      *  @exception Exception If there is a problem opening the configuration,
      *  opening the MoML file, or opening the MoML file as a new library.
@@ -216,7 +216,7 @@ public class VergilApplication extends MoMLApplication {
 
             final ComponentEntity userLibrary =
                 (ComponentEntity)parser.getToplevel();
-                
+
             // Correct old library name.
             if (userLibrary.getName().equals("user library")) {
                 userLibrary.setName(BasicGraphFrame.VERGIL_USER_LIBRARY_NAME);

@@ -377,7 +377,7 @@ public class DFUtilities {
             }
         }
         variable.setToken(BooleanToken.getInstance(flag));
-    }    
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected classes                   ////

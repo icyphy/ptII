@@ -62,7 +62,7 @@ import thales.vergil.navigable.NavigationTreeModel;
    @Pt.AcceptedRating Red (cxh)
 */
 public class NavigableEffigy extends PtolemyEffigy {
-    
+
     // FIXME: This class has a huge amount of code duplication
     // with PtolemyEffigy.  This makes it very difficult to maintain.
 

@@ -46,12 +46,12 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// CTPeriodicSampler
 /**
    This actor generates discrete events by periodically sampling a CT signal.
-   The events have the values of the input signal at the sampling times. The 
-   sampling rate is given by parameter "samplePeriod", which has default value 
+   The events have the values of the input signal at the sampling times. The
+   sampling rate is given by parameter "samplePeriod", which has default value
    0.1. The actor has a multi-input port and a multi-output port. Signals in
    each input channel are sampled and produced to corresponding output
    channel.
-   
+
    @author Jie Liu, Haiyang Zheng
    @version $Id$
    @since Ptolemy II 0.3
@@ -133,8 +133,8 @@ public class CTPeriodicSampler extends Transformer implements CTEventGenerator {
      */
     public void fire() throws IllegalActionException {
         CTDirector director = (CTDirector)getDirector();
-        if ((director.getExecutionPhase() == 
-                CTExecutionPhase.GENERATING_EVENTS_PHASE) 
+        if ((director.getExecutionPhase() ==
+                CTExecutionPhase.GENERATING_EVENTS_PHASE)
             && hasCurrentEvent()) {
             for (int i = 0;i < Math.min(input.getWidth(), output.getWidth());
                  i++) {
@@ -143,7 +143,7 @@ public class CTPeriodicSampler extends Transformer implements CTEventGenerator {
                     output.send(i, token);
                     if (_debugging) {
                         _debug(getFullName(), " sends event: " + token
-                            + " to channel " + i  
+                            + " to channel " + i
                             + ", at: " + getDirector().getModelTime());
                     }
                 }
@@ -191,8 +191,8 @@ public class CTPeriodicSampler extends Transformer implements CTEventGenerator {
      */
     public boolean postfire() throws IllegalActionException {
         CTDirector director = (CTDirector)getDirector();
-        if ((director.getExecutionPhase() == 
-                CTExecutionPhase.GENERATING_EVENTS_PHASE) 
+        if ((director.getExecutionPhase() ==
+                CTExecutionPhase.GENERATING_EVENTS_PHASE)
             && hasCurrentEvent()) {
             // register for the next event.
             _nextSamplingTime = _nextSamplingTime.add(_samplePeriod);
@@ -207,7 +207,7 @@ public class CTPeriodicSampler extends Transformer implements CTEventGenerator {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // flag indicating if there is a current event. 
+    // flag indicating if there is a current event.
     // NOTE: this variable should be only used inside the hasCurrentEvent
     // method. Other methods can only access the status of this variable
     // via the hasCurrentEvent method.

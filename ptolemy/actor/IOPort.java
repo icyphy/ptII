@@ -76,7 +76,7 @@ import ptolemy.kernel.util.Workspace;
    any attempt to read data or list the receivers will trigger
    an exception.
 
-   <p> 
+   <p>
    If this port is at the boundary of an composite actor, then it
    can have both inside and outside links, with corresponding inside
    and outside receivers if it opaque. The inside links are to
@@ -748,7 +748,7 @@ public class IOPort extends ComponentPort {
      *  representation of the model time.
      *  @param channelIndex The channel index.
      *  @return The current time associated with a certain channel.
-     *  @deprecated As Ptolemy II 4.1, 
+     *  @deprecated As Ptolemy II 4.1,
      *  replaced by {@link #getModelTime}.
      */
     public double getCurrentTime(int channelIndex)

@@ -27,7 +27,7 @@ Note that 0.0 maps to 1.
 <a name="signum"></a>
 
  @Author E. A. Lee
- @Version $Id$, based on version 1.3 of /users/ptolemy/src/domains/cgc/stars/CGCSgn.pl, from Ptolemy Classic 
+ @Version $Id$, based on version 1.3 of /users/ptolemy/src/domains/cgc/stars/CGCSgn.pl, from Ptolemy Classic
  @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCSgn extends ClassicCGCActor {
@@ -48,7 +48,7 @@ public class CGCSgn extends ClassicCGCActor {
         output = new ClassicPort(this, "output", false, true);
         output.setTypeEquals(BaseType.INT);
 
-/* 
+/*
 */
     }
     ///////////////////////////////////////////////////////////////////
@@ -70,13 +70,13 @@ public class CGCSgn extends ClassicCGCActor {
     /**
      */
     public void  generateFireCode() {
-        
-addCode(std); 
+
+addCode(std);
      }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
-    public String std = 
+    public String std =
         "	  double x;\n"
         + "	  int sgn;\n"
         + "	  x = $ref(input);\n"

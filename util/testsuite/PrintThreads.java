@@ -67,7 +67,7 @@ public class PrintThreads {
     /** Get the root ThreadGroup of the Java Virtual Machine. This
      * method assumes that the current Thread is a member of a ThreadGroup
      * which is a descendant of the root ThreadGroup.
-     * @return The root thread group. 
+     * @return The root thread group.
      */
     public static ThreadGroup rootThreadGroup() {
         ThreadGroup parent, rootGroup;
@@ -144,7 +144,7 @@ public class PrintThreads {
 
     /** Return a user friendly description of the thread.
      *  We could use Thread.toString(), but that is hard to read.
-     *  @param thread The thread 
+     *  @param thread The thread
      *  @return A user friendly description of the thread.
      */
     public static String toThreadDescription(Thread thread) {

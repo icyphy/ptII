@@ -41,7 +41,7 @@ will be -1.0.  If the input is +2.0, the output will again be -1.0.
 <a name="linear map"></a>
 
  @Author E. A. Lee
- @Version $Id$, based on version 1.4 of /users/ptolemy/src/domains/cgc/stars/CGCPcwzLinear.pl, from Ptolemy Classic 
+ @Version $Id$, based on version 1.4 of /users/ptolemy/src/domains/cgc/stars/CGCPcwzLinear.pl, from Ptolemy Classic
  @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCPcwzLinear extends ClassicCGCActor {
@@ -66,7 +66,7 @@ public class CGCPcwzLinear extends ClassicCGCActor {
         breakpoints = new Parameter(this, "breakpoints");
         breakpoints.setExpression("(-1.0, -1.0) (0.0, 1.0) (1.0, -1.0)");
 
-/* 
+/*
 */
     }
     ///////////////////////////////////////////////////////////////////
@@ -93,7 +93,7 @@ public class CGCPcwzLinear extends ClassicCGCActor {
     /**
      */
     public void  begin() {
-        
+
 // Check to make sure that x values are increasing
 	  double previous = breakpoints[0].real();
 	  for (int i = 1; i < breakpoints.size(); i++) {
@@ -109,13 +109,13 @@ public class CGCPcwzLinear extends ClassicCGCActor {
     /**
      */
     public void  generateFireCode() {
-        
-addCode(lookup); 
+
+addCode(lookup);
      }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
-    public String lookup = 
+    public String lookup =
         "	  double in, x1, x2, y1, y2;\n"
         + "	  int i, ind, sz;\n"
         + "	  in = $ref(input);\n"

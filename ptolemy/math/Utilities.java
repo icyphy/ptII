@@ -43,7 +43,7 @@ public class Utilities {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Given a double value, return a new double with precision as 
+    /** Given a double value, return a new double with precision as
      *  given.
      *  @param value The double value.
      *  @param precision The precision.
@@ -51,9 +51,9 @@ public class Utilities {
      */
     public static double round(double value, int precision) {
         // NOTE: when the value is too big, e.g. close to the
-        // maximum double value, the following algorithm will 
+        // maximum double value, the following algorithm will
         // get overflow, which gives a wrong answer.
-        double newValue = 
+        double newValue =
             Math.round(value * Math.pow(10, precision))
                 / Math.pow(10, precision);
         return newValue;

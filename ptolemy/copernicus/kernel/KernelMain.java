@@ -73,7 +73,7 @@ import soot.toolkits.scalar.UnusedLocalEliminator;
 
    @author Stephen Neuendorffer, Christopher Hylands
    @version $Id$
-   @since Ptolemy II 2.0 
+   @since Ptolemy II 2.0
    @Pt.ProposedRating Red (cxh)
    @Pt.AcceptedRating Red (cxh)
    */
@@ -185,8 +185,8 @@ public abstract class KernelMain {
 
     /** Read in a MoML class, sanitize the top level name,
      *  initialize the model.  Usually initialize() is called after
-     *  calling readInModel().  
-     *   
+     *  calling readInModel().
+     *
      *  <p>If the director is an SDF director, then the number of
      *  iterations is handled specially.  If the director is an SDF
      *  director and a parameter called "copernicus_iterations" is
@@ -212,7 +212,7 @@ public abstract class KernelMain {
             SDFDirector director = (SDFDirector) topLevelDirector;
             Parameter iterations =
                 (Parameter) director.getAttribute("iterations");
-            Parameter copernicus_iterations = 
+            Parameter copernicus_iterations =
                 (Parameter) director.getAttribute("copernicus_iterations");
 
             // Set to be a large number of iterations, unless
@@ -224,7 +224,7 @@ public abstract class KernelMain {
                     .getProperty("ptolemy.ptII.copernicusIterations");
                 if (copernicusIterations.length() > 0) {
                     System.out.println("KernelMain: "
-                            + "Setting number of iterations to " 
+                            + "Setting number of iterations to "
                             + copernicusIterations);
                     iterations.setToken(new IntToken(copernicusIterations));
                 }

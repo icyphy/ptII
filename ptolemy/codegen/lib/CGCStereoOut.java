@@ -21,14 +21,14 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// CGCStereoOut
 /**
 Writes Compact Disc audio format from a file given by "fileName". The file
-can be the audio port /dev/audio, if supported by the workstation.  
+can be the audio port /dev/audio, if supported by the workstation.
 The data written is linear 16 bit encoded and stereo(2 channel) format.
 <p>
 This code is based on the description of the audio driver which can
 be obtained by looking at the man page for audio.
 
  @Author Sunil Bhave
- @Version $Id$, based on version 1.23 of /users/ptolemy/src/domains/cgc/stars/CGCStereoOut.pl, from Ptolemy Classic 
+ @Version $Id$, based on version 1.23 of /users/ptolemy/src/domains/cgc/stars/CGCStereoOut.pl, from Ptolemy Classic
  @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCStereoOut extends CGCAudioBase {
@@ -57,7 +57,7 @@ public class CGCStereoOut extends CGCAudioBase {
         homogeneous = new Parameter(this, "homogeneous");
         homogeneous.setExpression("0");
 
-/*     
+/*
 encodingType.setAttributes(A_NONCONSTANT|A_NONSETTABLE);
     encodingType.setInitValue("linear16");
     channels.setAttributes(A_NONCONSTANT|A_NONSETTABLE);
@@ -95,21 +95,21 @@ Right channel input Range: -1.0 to 1.0
     /**
      */
     public int  myExecTime() {
-        
+
 return ((IntToken)((blockSize).getToken())).intValue()*28;
      }
 
     /**
      */
     public void  wrapup() {
-        
+
 super.wrapup();
      }
 
     /**
      */
     public void  generatePreinitializeCode() {
-        
+
 super.initCode();
 
     /* variable for the sync codeblock below */
@@ -120,7 +120,7 @@ super.initCode();
     /* Declare "buffer" to be of type short and blockSize/2 bytes */
     addDeclaration(declarations("short", ((IntToken)((blockSize).getToken())).intValue()/2));
     /* Open file for writing data */
-    addCode(openFileForWriting); 	
+    addCode(openFileForWriting);
     /* Set the audio driver if file is "/dev/audio" */
     if (strcasecmp(fileName, "/dev/audio") == 0)
       {
@@ -128,25 +128,25 @@ super.initCode();
 StringBuffer setupParameters = new StringBuffer("$sharedSymbol(CGCAudioBase,audio_setup)");
 	setupParameters   + "($starSymbol(file), "
 			  + "\"" + encodingType  + "\", "
-			 <<  sampleRate  + ", " 
+			 <<  sampleRate  + ", "
 			.append( channels    + ");\n");
 
-	addCode(setupParameters); 
+	addCode(setupParameters);
 	/* audio_control : to set portType, volume and balance */
 StringBuffer controlParameters = new StringBuffer("$sharedSymbol(CGCAudioBase,audio_control)");
 	controlParameters  + "($starSymbol(file), "
 			   + "\"" + portType  + "\", "
-			  <<  volume  + ", " 
+			  <<  volume  + ", "
 			  <<  balance  + ", "
 			 .append("0);\n");
-	addCode(controlParameters); 
+	addCode(controlParameters);
       }
      }
 
     /**
      */
     public void  generateInitializeCode() throws IllegalActionException {
-        
+
 if (homogeneous == 1) {
       left.setSDFParams(1);
       right.setSDFParams(1);
@@ -160,26 +160,26 @@ if (homogeneous == 1) {
     /**
      */
     public void  generateFireCode() {
-        
+
 if (homogeneous == 1) {
-      addCode(homogeneousConvert); 
-      addCode("if ($starSymbol(counter) == ($val(blockSize)/4)) {\n"); 
-      addCode(setbufptr); 
-      addCode(write); 
+      addCode(homogeneousConvert);
+      addCode("if ($starSymbol(counter) == ($val(blockSize)/4)) {\n");
+      addCode(setbufptr);
+      addCode(write);
       addCode("$starSymbol(counter) = 0; \n");
-      addCode("}\n"); 
+      addCode("}\n");
     }
     else {
-      addCode(convert); 
-      if ((int)aheadLimit >= 0 ) addCode(syncLinear16); 
-      addCode(setbufptr); 
-      addCode(write); 
+      addCode(convert);
+      if ((int)aheadLimit >= 0 ) addCode(syncLinear16);
+      addCode(setbufptr);
+      addCode(write);
     }
      }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
-    public String homogeneousConvert = 
+    public String homogeneousConvert =
         "    /* Take data from Input and put it in buffer */\n"
         + "    /* this code writes 2 samples per star firing to the write buffer */\n"
         + "    {\n"
@@ -190,7 +190,7 @@ if (homogeneous == 1) {
         + "      $starSymbol(counter)++;\n"
         + "    }\n";
 
-    public String convert = 
+    public String convert =
         "    /* Take data from Input and put it in buffer */\n"
         + "    /* Data in buffer is alternate left and right channels */\n"
         + "    {\n"
@@ -204,6 +204,6 @@ if (homogeneous == 1) {
         + "      }\n"
         + "    }\n";
 
-    public String setbufptr = 
+    public String setbufptr =
         "    $starSymbol(bufferptr) = $starSymbol(buffer);\n";
 }

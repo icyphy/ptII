@@ -53,11 +53,11 @@ import ptolemy.kernel.util.Workspace;
    <p>
    When the <i>trigger</i> equals to the level threshold (within the specified
    <i>errorTolerance</i>), this actor outputs a discrete event with the value as
-   <i>defaultEventValue</i> if <i>useEventValue</i> is selected. Otherwise, the 
+   <i>defaultEventValue</i> if <i>useEventValue</i> is selected. Otherwise, the
    actor outputs a discrete event with the value as the level threshold.
    <p>
    This actor controls the step size such that level crossings never
-   occur during an integration. So, this actor is only used in Continuous-Time 
+   occur during an integration. So, this actor is only used in Continuous-Time
    domain.
 
    @author Jie Liu, Haiyang Zheng
@@ -85,10 +85,10 @@ public class LevelCrossingDetector extends Transformer
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         new Parameter(input, "signalType", new StringToken("CONTINUOUS"));
-        
+
         output.setTypeAtLeast(input);
         new Parameter(output, "signalType", new StringToken("DISCRETE"));
-        
+
         trigger = new TypedIOPort(this, "trigger", true, false);
         trigger.setMultiport(false);
         trigger.setTypeEquals(BaseType.DOUBLE);
@@ -115,7 +115,7 @@ public class LevelCrossingDetector extends Transformer
     ////                         public variables                  ////
 
     /** A parameter that specifies the value of output events
-     *  if the <i>useEventValue</i> parameter is checked. By default, 
+     *  if the <i>useEventValue</i> parameter is checked. By default,
      *  it contains a DoubleToken of 0.0.
      */
     public Parameter defaultEventValue;
@@ -184,33 +184,33 @@ public class LevelCrossingDetector extends Transformer
         return newObject;
     }
 
-    /** Produce a discrete event if level crossing happens. If the current 
-     *  execution is in a continuous phase, the current trigger is recorded but 
-     *  no event can be produced. If the current execution is in a discrete 
-     *  phase, the current and previous trigger tokens are compared to find 
-     *  whether a level crossing happens. If there is a crossing, a discrete 
-     *  event is generated. 
+    /** Produce a discrete event if level crossing happens. If the current
+     *  execution is in a continuous phase, the current trigger is recorded but
+     *  no event can be produced. If the current execution is in a discrete
+     *  phase, the current and previous trigger tokens are compared to find
+     *  whether a level crossing happens. If there is a crossing, a discrete
+     *  event is generated.
      *  <p>
-     *  The value of this event may be the specified level, or the default 
+     *  The value of this event may be the specified level, or the default
      *  event value if the usingDefaultEventValue is configured true (checked).
-     *  @exception IllegalActionException If can not get token from the trigger 
+     *  @exception IllegalActionException If can not get token from the trigger
      *  port or can not send token through the output port.
      */
     public void fire() throws IllegalActionException {
         super.fire();
         //record the input.
         _thisTrigger = ((DoubleToken) trigger.get(0)).doubleValue();
-        
+
         if (_levelCrossingDetectionDisabled) {
             _lastTrigger = _thisTrigger;
         }
-        
+
         if (_debugging) {
             _debug("Consuming a trigger token: " + _thisTrigger);
         }
 
         CTDirector director = (CTDirector)getDirector();
-        if (director.getExecutionPhase() == 
+        if (director.getExecutionPhase() ==
             CTExecutionPhase.GENERATING_EVENTS_PHASE) {
             if (_debugging && _verbose) {
                 _debug("This is a discrete phase execution.");
@@ -219,19 +219,19 @@ public class LevelCrossingDetector extends Transformer
             // 1. There is a discontinuity at the current time; OR
             // 2. By linear interpolation, an event is located at the current
             // time.
-            if (((_lastTrigger - _level) * (_thisTrigger - _level) < 0.0) 
+            if (((_lastTrigger - _level) * (_thisTrigger - _level) < 0.0)
                 || hasCurrentEvent()) {
                 // Emit an event.
                 if (((BooleanToken)usingDefaultEventValue.getToken()).booleanValue()) {
                     output.send(0, defaultEventValue.getToken());
                     if (_debugging) {
-                        _debug("Emitting an event with a default value: " 
+                        _debug("Emitting an event with a default value: "
                             + defaultEventValue.getToken());
                     }
                 } else {
                     output.send(0, new DoubleToken(_level));
                     if (_debugging) {
-                        _debug("Emitting an event with the level value: " 
+                        _debug("Emitting an event with the level value: "
                             + _level);
                     }
                 }
@@ -277,15 +277,15 @@ public class LevelCrossingDetector extends Transformer
             _eventMissed = false;
             return !_eventMissed;
         }
-        
+
         if (_debugging && _verbose) {
             _debug("The last trigger is " + _lastTrigger);
             _debug("The current trigger is " + _thisTrigger);
         }
         // If the level is crossed and the current trigger is very close
-        // to the level, the current step size is accurate. 
+        // to the level, the current step size is accurate.
         // If the current trigger is equal to the level threshold, the current
-        // step size is accurate. 
+        // step size is accurate.
         // Otherwise, the current step size is too big.
         if ((_lastTrigger - _level) * (_thisTrigger - _level) < 0.0) {
             // Preinitialize method ensures the cast to be safe.
@@ -293,7 +293,7 @@ public class LevelCrossingDetector extends Transformer
             if (Math.abs(_thisTrigger - _level) < _errorTolerance) {
                 // The current time is when the event happens.
                 if (_debugging)
-                    _debug("Event is detected at " 
+                    _debug("Event is detected at "
                             + getDirector().getModelTime());
                 _eventNow = true;
                 _eventMissed = false;
@@ -311,7 +311,7 @@ public class LevelCrossingDetector extends Transformer
         return !_eventMissed;
     }
 
-    /** Always return true because this actor is not involved 
+    /** Always return true because this actor is not involved
      *  in resolving states.
      *  @return true.
      */
@@ -409,10 +409,10 @@ public class LevelCrossingDetector extends Transformer
     // flag indicating if there is an event at the current time.
     private boolean _eventNow = false;
 
-    // flag indicating that level-crossing detection is disabled 
-    // due to the lack of history information 
+    // flag indicating that level-crossing detection is disabled
+    // due to the lack of history information
     private boolean _levelCrossingDetectionDisabled = true;
-    
+
     // last trigger input.
     private double _lastTrigger;
 

@@ -348,7 +348,7 @@ public class Port extends NamedObj {
         try {
             _workspace.getWriteAccess();
             int result = container._portList.moveDown(this);
-            
+
             // Propagate.
             Iterator derivedObjects = getDerivedList().iterator();
             while (derivedObjects.hasNext()) {
@@ -356,13 +356,13 @@ public class Port extends NamedObj {
                 container = (Entity)derived.getContainer();
                 container._portList.moveDown(derived);
             }
-            
+
             return result;
         } finally {
             _workspace.doneWriting();
         }
     }
-    
+
     /** Move this object to the first position in the list
      *  of attributes of the container. If  this object is already first,
      *  do nothing. Increment the version of the workspace.
@@ -379,7 +379,7 @@ public class Port extends NamedObj {
         try {
             _workspace.getWriteAccess();
             int result = container._portList.moveToFirst(this);
-            
+
             // Propagate.
             Iterator derivedObjects = getDerivedList().iterator();
             while (derivedObjects.hasNext()) {
@@ -387,7 +387,7 @@ public class Port extends NamedObj {
                 container = (Entity)derived.getContainer();
                 container._portList.moveToFirst(derived);
             }
-            
+
             return result;
         } finally {
             _workspace.doneWriting();
@@ -412,7 +412,7 @@ public class Port extends NamedObj {
         try {
             _workspace.getWriteAccess();
             int result = container._portList.moveToIndex(this, index);
-            
+
             // Propagate.
             Iterator derivedObjects = getDerivedList().iterator();
             while (derivedObjects.hasNext()) {
@@ -420,7 +420,7 @@ public class Port extends NamedObj {
                 container = (Entity)derived.getContainer();
                 container._portList.moveToIndex(derived, index);
             }
-            
+
             return result;
         } finally {
             _workspace.doneWriting();
@@ -443,7 +443,7 @@ public class Port extends NamedObj {
         try {
             _workspace.getWriteAccess();
             int result = container._portList.moveToLast(this);
-            
+
             // Propagate.
             Iterator derivedObjects = getDerivedList().iterator();
             while (derivedObjects.hasNext()) {
@@ -451,7 +451,7 @@ public class Port extends NamedObj {
                 container = (Entity)derived.getContainer();
                 container._portList.moveToLast(derived);
             }
-            
+
             return result;
         } finally {
             _workspace.doneWriting();
@@ -474,7 +474,7 @@ public class Port extends NamedObj {
         try {
             _workspace.getWriteAccess();
             int result = container._portList.moveUp(this);
-            
+
             // Propagate.
             Iterator derivedObjects = getDerivedList().iterator();
             while (derivedObjects.hasNext()) {
@@ -482,7 +482,7 @@ public class Port extends NamedObj {
                 container = (Entity)derived.getContainer();
                 container._portList.moveUp(derived);
             }
-            
+
             return result;
         } finally {
             _workspace.doneWriting();

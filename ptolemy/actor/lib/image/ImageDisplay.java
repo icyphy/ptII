@@ -151,10 +151,10 @@ public class ImageDisplay extends Sink implements Placeable {
             try {
                 imageToken = (ImageToken) token;
             } catch (ClassCastException ex) {
-                throw new IllegalActionException(this, ex, 
+                throw new IllegalActionException(this, ex,
                         "Failed to cast " + token.getClass()
                         + " to an ImageToken.\nToken was: " + token);
-            }                        
+            }
             // If there is no place to display, we can return after
             // consuming the input token.
             if (_container == null) return;

@@ -40,7 +40,7 @@ is the previous output.
 <a name="filter, integrator"></a>
 
  @Author E. A. Lee
- @Version $Id$, based on version 1.9 of /users/ptolemy/src/domains/cgc/stars/CGCIntegrator.pl, from Ptolemy Classic 
+ @Version $Id$, based on version 1.9 of /users/ptolemy/src/domains/cgc/stars/CGCIntegrator.pl, from Ptolemy Classic
  @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCIntegrator extends ClassicCGCActor {
@@ -83,7 +83,7 @@ public class CGCIntegrator extends ClassicCGCActor {
         state = new Parameter(this, "state");
         state.setExpression("0.0");
 
-/* 
+/*
 */
     }
     ///////////////////////////////////////////////////////////////////
@@ -135,7 +135,7 @@ public class CGCIntegrator extends ClassicCGCActor {
     /**
      */
     public int  myExecTime() {
-        
+
 int x = 0;
 		if (spread > 0.0) {
 			if (((IntToken)((saturate).getToken())).intValue() == 1) // FIXME saturate should be a Boolean x = 3;
@@ -147,36 +147,36 @@ int x = 0;
     /**
      */
     public void  generatePreinitializeCode() {
-        
+
 addDeclaration(declarations);
      }
 
     /**
      */
     public void  generateInitializeCode() throws IllegalActionException {
-        
+
 spread = ((DoubleToken)((top).getToken())).doubleValue() - ((DoubleToken)((bottom).getToken())).doubleValue();
      }
 
     /**
      */
     public void  generateFireCode() {
-        
-addCode(integrate); 
-	    if (spread > 0.0) 
+
+addCode(integrate);
+	    if (spread > 0.0)
 		if (((IntToken)((saturate).getToken())).intValue() == 1) // FIXME saturate should be a Boolean
-		    addCode(limitWithSat); 
+		    addCode(limitWithSat);
 		else
-		    addCode(limitWithoutSat); 
-	    addCode(write); 
+		    addCode(limitWithoutSat);
+	    addCode(write);
      }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
-    public String declarations = 
+    public String declarations =
         "	    double $starSymbol(t);\n";
 
-    public String integrate = 
+    public String integrate =
         "	    if ($ref(reset) != 0) {\n"
         + "		$starSymbol(t) = $ref(data);\n"
         + "	    } else {\n"
@@ -184,14 +184,14 @@ addCode(integrate);
         + "			$val(feedbackGain) * $ref(state);\n"
         + "	    }\n";
 
-    public String limitWithSat = 
+    public String limitWithSat =
         "	    /* Limiting is in effect */\n"
         + "	    /* Take care of the top */\n"
         + "	    if ($starSymbol(t) > $val(top)) $starSymbol(t) = $val(top);\n"
         + "	    /* Take care of the bottom */\n"
         + "	    if ($starSymbol(t) < $val(bottom)) $starSymbol(t) = $val(bottom);\n";
 
-    public String limitWithoutSat = 
+    public String limitWithoutSat =
         "	    /* Limiting is in effect */\n"
         + "	    /* Take care of the top */\n"
         + "	    if ($starSymbol(t) > $val(top))\n"
@@ -202,7 +202,7 @@ addCode(integrate);
         + "		do $starSymbol(t) += ($val(top) - $val(bottom));\n"
         + "		while ($starSymbol(t) < $val(bottom));\n";
 
-    public String write = 
+    public String write =
         "	    $ref(output) = $starSymbol(t);\n"
         + "	    $ref(state) = $starSymbol(t);\n";
 }

@@ -55,7 +55,7 @@ import ptolemy.kernel.util.Workspace;
    @Pt.ProposedRating Red (liuj)
    @Pt.AcceptedRating Red (cxh)
 */
-public class CTTriggeredSampler extends Transformer 
+public class CTTriggeredSampler extends Transformer
     implements CTEventGenerator {
 
     /** Construct an actor in the specified container with the specified
@@ -129,7 +129,7 @@ public class CTTriggeredSampler extends Transformer
      */
     public void fire() throws IllegalActionException {
         CTDirector director = (CTDirector)getDirector();
-        // FIXME: do we need to constraint that the current execution phase is 
+        // FIXME: do we need to constraint that the current execution phase is
         // CTExecutionPhase.GENERATING_EVENTS_PHASE?
         if (director.isDiscretePhase() && hasCurrentEvent()) {
             trigger.get(0);

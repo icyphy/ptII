@@ -105,7 +105,7 @@ public class RefinementPort extends TypedIOPort {
         }
     }
 
-    /** Set the connected relation to a bus if this port is a multiport. 
+    /** Set the connected relation to a bus if this port is a multiport.
      */
     public void link(Relation relation) throws IllegalActionException {
         super.link(relation);
@@ -158,9 +158,9 @@ public class RefinementPort extends TypedIOPort {
         } finally {
             _mirrorDisable = disableStatus;
             _workspace.doneWriting();
-        }        
+        }
     }
-    
+
     /** Move this object to the first position in the list
      *  of attributes of the container. If  this object is already first,
      *  do nothing. Increment the version of the workspace.
@@ -204,7 +204,7 @@ public class RefinementPort extends TypedIOPort {
         } finally {
             _mirrorDisable = disableStatus;
             _workspace.doneWriting();
-        }        
+        }
     }
 
     /** Move this object to the specified position in the list
@@ -252,8 +252,8 @@ public class RefinementPort extends TypedIOPort {
         } finally {
             _mirrorDisable = disableStatus;
             _workspace.doneWriting();
-        }        
-        
+        }
+
     }
 
     /** Move this object to the last position in the list
@@ -295,7 +295,7 @@ public class RefinementPort extends TypedIOPort {
         } finally {
             _mirrorDisable = disableStatus;
             _workspace.doneWriting();
-        }        
+        }
     }
 
     /** Move this object up by one in the list of
@@ -342,7 +342,7 @@ public class RefinementPort extends TypedIOPort {
         } finally {
             _mirrorDisable = disableStatus;
             _workspace.doneWriting();
-        }        
+        }
     }
 
     /** Override the base class so that if the port is being removed
@@ -577,7 +577,7 @@ public class RefinementPort extends TypedIOPort {
      *  available in scope for the guard expressions.
      */
     protected boolean _automaticallyInput = false;
-    
+
     // This is protected to be accessible to ModalPort.
 
     /** If false, then changes the port are mirrored in the container's
@@ -591,7 +591,7 @@ public class RefinementPort extends TypedIOPort {
     /** If the container is a ModalModel and has a mirror port to this
      *  one that is not an input and is an output, then mark this port
      *  so that if it becomes an input, that input property is not
-     *  reflected to the mirror port. 
+     *  reflected to the mirror port.
      */
     private void _checkWhetherMirrorIsInput() {
         // Need to check whether there is a containing ModalModel,
@@ -608,6 +608,6 @@ public class RefinementPort extends TypedIOPort {
                     }
                 }
             }
-        }   
+        }
     }
 }

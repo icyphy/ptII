@@ -46,7 +46,7 @@ import ptolemy.kernel.util.NamedObj;
    @Pt.AcceptedRating Red (cxh)
 */
 public interface MoMLFilter {
-    
+
     /** Given a container, attribute name and attribute value,
      *  return a new attribute value.  Note that "attribute"
      *  means XML attribute, not Ptolemy II attribute. Also,

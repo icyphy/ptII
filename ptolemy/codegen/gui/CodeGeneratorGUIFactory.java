@@ -86,7 +86,7 @@ public class CodeGeneratorGUIFactory extends EditorFactory {
     	// This is always used to configure the container, so
         // we just use that.
         CodeGenerator codeGenerator = (CodeGenerator)getContainer();
-        
+
         if (!(parent instanceof TableauFrame)) {
         	throw new InternalErrorException(
                     "Can't create a CodeGeneratorGUI without a tableau!");
@@ -101,7 +101,7 @@ public class CodeGeneratorGUIFactory extends EditorFactory {
                 throw new InternalErrorException(e);
 			}
         }
-        
+
         Frame frame = tableau.getFrame();
         if (frame == null) {
             try {
@@ -114,6 +114,6 @@ public class CodeGeneratorGUIFactory extends EditorFactory {
         frame.pack();
         frame.setVisible(true);
     }
-    
+
     // FIXME: Check that the container is an instance of CodeGenenerator.
 }

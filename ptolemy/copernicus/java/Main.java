@@ -84,7 +84,7 @@ public class Main extends KernelMain {
         // atomic) used by the model.
         addTransform(pack, "wjtp.mt", ModelTransformer.v(toplevel),
                 "targetPackage:" + _targetPackage);
-        
+
         // Inline director into composite actors.
         addTransform(pack, "wjtp.idt",
                 InlineDirectorTransformer.v(toplevel),
@@ -99,7 +99,7 @@ public class Main extends KernelMain {
         addTransform(pack, "wjtp.ta1",
                 new TransformerAdapter(TypeAssigner.v()));
         addStandardOptimizations(pack, 1);
-        
+
         if (_snapshots) {
             addTransform(pack, "wjtp.snapshot1jimple", JimpleWriter.v(),
                     "outDir:" + _outputDirectory + "/jimple1");
@@ -364,12 +364,12 @@ public class Main extends KernelMain {
                     "outFile:" + _outputDirectory +
                     "/jimple4/jarClassList.txt");
         }
-        
+
         if (_unboxing) {
             addTransform(pack, "wjtp.ttn",
                     TokenToNativeTransformer.v(toplevel));
             //     "debug:true level:1");
-            
+
             addStandardOptimizations(pack, 8);
 
             addTransform(pack, "wjtp.ufr",
@@ -402,12 +402,12 @@ public class Main extends KernelMain {
             addTransform(pack, "wjtp.doe5",
                     new TransformerAdapter(
                             DeadObjectEliminator.v()));
-            addStandardOptimizations(pack, 11);           
+            addStandardOptimizations(pack, 11);
             addTransform(pack, "wjtp.doe6",
                     new TransformerAdapter(
                             DeadObjectEliminator.v()));
             addStandardOptimizations(pack, 12);
-           
+
             // The library usage reporter also pulls in all depended
             // classes for analysis.
             addTransform(pack, "wjtp.lur",
@@ -423,7 +423,7 @@ public class Main extends KernelMain {
             //        addStandardOptimizations(pack, 11);
             //        addTransform(pack, "wjtp.umr5",
             //                UnreachableMethodRemover.v());
-             
+
         }
         /* */
     }

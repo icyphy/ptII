@@ -151,7 +151,7 @@ public class Cylinder3D extends GRShadedShape {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-    
+
     /** Create the shape and appearance of the encapsulated cylinder.
      *  @exception IllegalActionException If the value of some
      *   parameter can't be obtained.
@@ -173,7 +173,7 @@ public class Cylinder3D extends GRShadedShape {
             primitiveFlags = primitiveFlags
                 | Primitive.GENERATE_TEXTURE_COORDS;
         }
-        
+
         if (allowChanges) {
             // Sharing the geometry leads to artifacts when changes
             // are made at run time.
@@ -184,7 +184,7 @@ public class Cylinder3D extends GRShadedShape {
                 = ((IntToken)circleDivisions.getToken()).intValue();
         int sideDivisionsValue
                 = ((IntToken)sideDivisions.getToken()).intValue();
-        
+
         if (allowChanges) {
             Cylinder cylinder = new Cylinder(1.0f, 1.0f,
                     primitiveFlags, circleDivisionsValue,
@@ -197,7 +197,7 @@ public class Cylinder3D extends GRShadedShape {
                     new Vector3d(radiusValue, heightValue, radiusValue));
             scaler.setTransform(_scaleTransform);
             scaler.addChild(cylinder);
-            _containedNode = scaler;            
+            _containedNode = scaler;
         } else {
             _containedNode = new Cylinder(radiusValue, heightValue,
                     primitiveFlags, circleDivisionsValue,
@@ -217,7 +217,7 @@ public class Cylinder3D extends GRShadedShape {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /** If changes to the radius are allowed, this is the transform 
+    /** If changes to the radius are allowed, this is the transform
      *  that applies them.
      */
     private Transform3D _scaleTransform;

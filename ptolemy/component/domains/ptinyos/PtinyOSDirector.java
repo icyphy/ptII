@@ -56,7 +56,7 @@ public class PtinyOSDirector extends ComponentDirector {
     public void initialize() throws IllegalActionException {
         // FIXME
     }
-    
+
     /** Call fireAtRelativeTime() with the specified time interval
      *  and then suspend the calling thread. Make a record so that
      *  when this director gets fired at the requested time, the
@@ -79,7 +79,7 @@ public class PtinyOSDirector extends ComponentDirector {
     public void preinitialize() throws IllegalActionException {
         // FIXME
     }
-    
+
     /** Request that the react() method of the specified component
      *  be invoked at the specified time. The react() method will
      *  be passed a null argument.  This method calls fireAt()
@@ -91,7 +91,7 @@ public class PtinyOSDirector extends ComponentDirector {
     public void reactAt(double time, Component component) {
         // FIXME
     }
-    
+
     /** Execute the component. This is invoked after preinitialize()
      *  and initialize(), and may be invoked repeatedly.
      * @exception IllegalActionException If the run cannot be completed.

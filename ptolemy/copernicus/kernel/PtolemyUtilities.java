@@ -628,7 +628,7 @@ public class PtolemyUtilities {
      *  @param base A local that is assumed to have an attribute type.
      */
     public static void callAttributeChanged(
-            Local base, Local attributeLocal, 
+            Local base, Local attributeLocal,
             SootClass theClass, SootMethod method,
             JimpleBody body, Object insertPoint) {
         // Make sure we have a local of type attribute to pass
@@ -1560,7 +1560,7 @@ public class PtolemyUtilities {
         namedObjClass =
             Scene.v().loadClassAndSupport("ptolemy.kernel.util.NamedObj");
         debuggingField = namedObjClass.getField("boolean _debugging");
-        
+
         atomicActorClass =
             Scene.v().loadClassAndSupport("ptolemy.actor.AtomicActor");
         stopRequestedField =

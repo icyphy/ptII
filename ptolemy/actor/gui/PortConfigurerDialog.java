@@ -157,7 +157,7 @@ public class PortConfigurerDialog
                 owner,
                 target,
                 configuration);
-        
+
         // Listen for changes that may need to be reflected in the table.
         getTarget().addChangeListener(this);
 
@@ -175,8 +175,8 @@ public class PortConfigurerDialog
         _portTable.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent mouseEvent) {
                 if ((VergilUtilities.macOSLookAndFeel()
-                    && (mouseEvent.isPopupTrigger() 
-                    	|| (mouseEvent.getButton() == MouseEvent.BUTTON1 
+                    && (mouseEvent.isPopupTrigger()
+                    	|| (mouseEvent.getButton() == MouseEvent.BUTTON1
                     	    && ((mouseEvent.getModifiersEx() | java.awt.event.InputEvent.CTRL_MASK)
                     	       == java.awt.event.InputEvent.CTRL_MASK))
                     	       ))
@@ -197,10 +197,10 @@ public class PortConfigurerDialog
                 }
             }
         });
-        
+
         // Initialize which columns will be visible for this target.
         _initColumnNames();
-        
+
         // Create the TableModel and set certain cell editors and renderers
         _setupTableModel();
 
@@ -209,7 +209,7 @@ public class PortConfigurerDialog
 
         // Make the contents of the table scrollable
         setScrollableContents(_portTable);
-        
+
         // The following sets up a listener for mouse clicks on the
         // header cell of the Show Name column. A click causes the
         // values in this column to all change.
@@ -247,7 +247,7 @@ public class PortConfigurerDialog
         pack();
         setVisible(true);
     }
-    
+
     // The table model for the table.
     class PortTableModel extends AbstractTableModel {
 
@@ -262,7 +262,7 @@ public class PortConfigurerDialog
             while (ports.hasNext()) {
                 Port p = (Port) ports.next();
                 Hashtable portInfo = new Hashtable();
-                
+
                 if (_columnNames.contains(ColumnNames.COL_NAME)) {
                     portInfo.put(ColumnNames.COL_NAME, p.getName());
                 }
@@ -309,7 +309,7 @@ public class PortConfigurerDialog
                         portInfo.put(ColumnNames.COL_OUTPUT,
                                 Boolean.valueOf(iop.isOutput()));
                     }
-                    
+
                     if (_columnNames.contains(ColumnNames.COL_MULTIPORT)) {
                         portInfo.put(ColumnNames.COL_MULTIPORT,
                                 Boolean.valueOf(iop.isMultiport()));
@@ -375,7 +375,7 @@ public class PortConfigurerDialog
             if (_columnNames.contains(ColumnNames.COL_SHOW_NAME)) {
                  portInfo.put(ColumnNames.COL_SHOW_NAME, Boolean.FALSE);
             }
-            
+
             if (_columnNames.contains(ColumnNames.COL_HIDE)) {
                 portInfo.put(ColumnNames.COL_HIDE, Boolean.FALSE);
             }
@@ -387,15 +387,15 @@ public class PortConfigurerDialog
             if (_columnNames.contains(ColumnNames.COL_OUTPUT)) {
                 portInfo.put(ColumnNames.COL_OUTPUT, Boolean.FALSE);
             }
-            
+
             if (_columnNames.contains(ColumnNames.COL_MULTIPORT)) {
                 portInfo.put(ColumnNames.COL_MULTIPORT, Boolean.FALSE);
             }
-            
+
             if (_columnNames.contains(ColumnNames.COL_TYPE)) {
                 portInfo.put(ColumnNames.COL_TYPE, "");
             }
-            
+
             if (_columnNames.contains(ColumnNames.COL_UNITS)) {
                 portInfo.put(ColumnNames.COL_UNITS, "");
             }
@@ -526,7 +526,7 @@ public class PortConfigurerDialog
                         _columnNames.indexOf(ColumnNames.COL_SHOW_NAME));
             }
         }
-        
+
         /**
          * Make the "Hide" column values be either all true or
          * all false.
@@ -587,7 +587,7 @@ public class PortConfigurerDialog
         }
     }
 
-    /** 
+    /**
      * Default renderer for _portTable
      *
      * see _setupTableModel()
@@ -726,7 +726,7 @@ public class PortConfigurerDialog
 
     ///////////////////////////////////////////////////////////////////
     //// public methods ////
-    
+
     /**
      * Notify the listener that a change has been successfully executed.
      *
@@ -744,7 +744,7 @@ public class PortConfigurerDialog
                 || !(change instanceof UndoChangeRequest)) {
             return;
         }
-        
+
         // The ports of the _target may have changed.
         _setupTableModel();
     }
@@ -860,7 +860,7 @@ public class PortConfigurerDialog
         Vector portsToBeRemoved = new Vector();
         Iterator portIterator = getTarget().portList().iterator();
         Port actualPort = null;
-        
+
         while (portIterator.hasNext()) {
             Object candidate = portIterator.next();
 
@@ -892,7 +892,7 @@ public class PortConfigurerDialog
         while (actualPorts.hasNext()) {
             StringBuffer moml = new StringBuffer();
             actualPort = (Port) (actualPorts.next());
-            
+
             // The context for the MoML should be the first container
             // above this port in the hierarchy that defers its MoML
             // definition, or the immediate parent if there is none.
@@ -911,7 +911,7 @@ public class PortConfigurerDialog
                         + actualPort.getName(container)
                         + "\" />");
             }
-            
+
             // NOTE: the context is the composite entity containing
             // the entity if possible
             MoMLChangeRequest request = null;
@@ -922,7 +922,7 @@ public class PortConfigurerDialog
                 request =
                     new MoMLChangeRequest(this, container, moml.toString());
             }
-            
+
             request.setUndoable(true);
             container.addChangeListener(this);
             if (_debug) {
@@ -931,7 +931,7 @@ public class PortConfigurerDialog
             }
             container.requestChange(request);
         }
-        
+
         // Iterate over the table rows that represent ports.  If a row
         // corresponds to an actual port then look to see if that row
         // is different from the actual port.  If it is, then update
@@ -949,7 +949,7 @@ public class PortConfigurerDialog
             actualPort = (Port) (portInfo.get(ColumnNames.COL_ACTUAL_PORT));
             Hashtable updates = new Hashtable();
             // FIXME is it necessary to add unchanged fields to hashtable ?
-            
+
             if (actualPort != null) {
                 // actualPort is a Port found on the _target. Check to
                 // see if the actualPort is different and needs to be
@@ -1022,7 +1022,7 @@ public class PortConfigurerDialog
 
                         String tableValue =
                             (String) portInfo.get(ColumnNames.COL_TYPE);
-                        
+
                         if ((_type == null && (!tableValue.equals("")))
                                 || ((_type != null)
                                         && (!tableValue.equals(_type)))) {
@@ -1049,7 +1049,7 @@ public class PortConfigurerDialog
                     }
 
                 }
-                
+
                 if (_columnNames.contains(ColumnNames.COL_UNITS)) {
                     String _units = null;
                     UnitAttribute _unitsAttribute =
@@ -1068,7 +1068,7 @@ public class PortConfigurerDialog
                         updates.put(ColumnNames.COL_UNITS, Boolean.TRUE);
                     }
                 }
-                
+
                 if (havePortUpdate) {
                     // The context for the MoML should be the first
                     // container above this port in the hierarchy that
@@ -1081,13 +1081,13 @@ public class PortConfigurerDialog
                         getName();
                     String newPortName =
                         (String) portInfo.get(ColumnNames.COL_NAME);
-                    
+
                     String momlString = _createMoMLUpdate(
                             updates,
                             portInfo,
                             currentPortName,
                             newPortName);
-                            
+
                     moml.append(momlString);
                     haveSomeUpdate = true;
                 }
@@ -1138,7 +1138,7 @@ public class PortConfigurerDialog
                         updates.put(ColumnNames.COL_TYPE, Boolean.FALSE);
                     }
                 }
-                
+
                 // Put this in the MoMLChangeRequest if the value is
                 // not the default.
                 if (_columnNames.contains(ColumnNames.COL_DIRECTION)) {
@@ -1164,14 +1164,14 @@ public class PortConfigurerDialog
                         updates.put(ColumnNames.COL_UNITS, Boolean.FALSE);
                     }
                 }
-                
+
                 moml.append(
                     _createMoMLUpdate(
                         updates,
                         portInfo,
                         (String) portInfo.get(ColumnNames.COL_NAME),
                         null));
-                    
+
                 haveSomeUpdate = true;
             }
         }
@@ -1299,7 +1299,7 @@ public class PortConfigurerDialog
                 }
             }
         }
-        
+
         if (updates.containsKey(ColumnNames.COL_TYPE)) {
             Boolean updateValue = (Boolean) updates.get(ColumnNames.COL_TYPE);
             if (updateValue.booleanValue()) {
@@ -1403,7 +1403,7 @@ public class PortConfigurerDialog
                                 ((String) portInfo.get(ColumnNames.COL_UNITS))));
             }
         }
-        
+
         momlUpdate.append("</port>");
         return momlUpdate.toString();
     }
@@ -1456,12 +1456,12 @@ public class PortConfigurerDialog
         // Store the column names as an ArrayList.
         List columnList = Arrays.asList(tempColumnNames);
         _columnNames = new ArrayList(columnList);
-    }        
-    
+    }
+
     // Initialize the displayed column widths.
     private void _initColumnSizes() {
         TableColumn column = null;
-        
+
         if (_columnNames.contains(ColumnNames.COL_INPUT)) {
             int index = _columnNames.indexOf(ColumnNames.COL_INPUT);
             column = _portTable.getColumnModel().getColumn(index);
@@ -1479,19 +1479,19 @@ public class PortConfigurerDialog
             column = _portTable.getColumnModel().getColumn(index);
             column.setPreferredWidth(40);
         }
-        
+
         if (_columnNames.contains(ColumnNames.COL_TYPE)) {
             int index = _columnNames.indexOf(ColumnNames.COL_TYPE);
             column = _portTable.getColumnModel().getColumn(index);
             column.setPreferredWidth(50);
         }
-        
+
         if (_columnNames.contains(ColumnNames.COL_DIRECTION)) {
             int index = _columnNames.indexOf(ColumnNames.COL_DIRECTION);
             column = _portTable.getColumnModel().getColumn(index);
             column.setPreferredWidth(50);
         }
-        
+
         if (_columnNames.contains(ColumnNames.COL_SHOW_NAME)) {
             int index = _columnNames.indexOf(ColumnNames.COL_SHOW_NAME);
             column = _portTable.getColumnModel().getColumn(index);
@@ -1612,7 +1612,7 @@ public class PortConfigurerDialog
             _removeButton.setEnabled(true);
         }
     }
-        
+
     // Creates and sets the TableModel. Also arranges for some columns
     // to have their particular renderers and/or editors. This method
     // will be invoked when the dialog is created, and every time a
@@ -1660,7 +1660,7 @@ public class PortConfigurerDialog
             _portLocationColumn.setCellEditor(
                     new DefaultCellEditor(_portLocationComboBox));
         }
-        
+
         if (_columnNames.contains(ColumnNames.COL_TYPE)) {
             int col = _columnNames.indexOf(ColumnNames.COL_TYPE);
             TableColumn _portTypeColumn =
@@ -1749,7 +1749,7 @@ public class PortConfigurerDialog
     // When you click on the "Show Name" column header, toggle this value.
     // @see toggleShowAllNames()
     private boolean _showAllNames = false;
-    
+
     private static String _STRING_ATTRIBUTE =
         "ptolemy.kernel.util.StringAttribute";
     static PtParser _typeParser = new PtParser();

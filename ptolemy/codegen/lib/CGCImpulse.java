@@ -27,7 +27,7 @@ period of the impulse train.  The impulse or impulse train is delayed
 by the amount specified by "delay".
 
  @Author J. Weiss Contributor(s): SDF version by J. T. Buck
- @Version $Id$, based on version 1.4 of /users/ptolemy/src/domains/cgc/stars/CGCImpulse.pl, from Ptolemy Classic 
+ @Version $Id$, based on version 1.4 of /users/ptolemy/src/domains/cgc/stars/CGCImpulse.pl, from Ptolemy Classic
  @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCImpulse extends ClassicCGCActor {
@@ -62,7 +62,7 @@ public class CGCImpulse extends ClassicCGCActor {
         count = new Parameter(this, "count");
         count.setExpression("0");
 
-/* 
+/*
 */
     }
     ///////////////////////////////////////////////////////////////////
@@ -99,7 +99,7 @@ public class CGCImpulse extends ClassicCGCActor {
     /**
      */
     public void  generateInitializeCode() throws IllegalActionException {
-        
+
 if (((IntToken)((period).getToken())).intValue() < 0) {
 			throw new IllegalActionException(this, "Period must be non-negative");
 		}
@@ -117,19 +117,19 @@ if (((IntToken)((period).getToken())).intValue() < 0) {
     /**
      */
     public void  generateFireCode() {
-        
-addCode(init); 
-		if (((IntToken)((period).getToken())).intValue() > 0) addCode(periodic); 
+
+addCode(init);
+		if (((IntToken)((period).getToken())).intValue() > 0) addCode(periodic);
      }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
-    public String init = 
+    public String init =
         "	/* If count != 0, then output 0.0 else output \"level\" */\n"
         + "	/* Increment count */\n"
         + "	$ref(output) = ($ref(count)++) ? 0.0 : $val(level);\n";
 
-    public String periodic = 
+    public String periodic =
         "	/* Reset the counter to zero if one period has elapsed */\n"
         + "	if ($ref(count) >= $val(period)) $ref(count) = 0;\n";
 }

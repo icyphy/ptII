@@ -31,7 +31,7 @@ of true values among the inputs.
 The other operations are self-explanatory.
 
  @Author Brian L. Evans and Edward A. Lee
- @Version $Id$, based on version 1.5 of /users/ptolemy/src/domains/cgc/stars/CGCLogic.pl, from Ptolemy Classic 
+ @Version $Id$, based on version 1.5 of /users/ptolemy/src/domains/cgc/stars/CGCLogic.pl, from Ptolemy Classic
  @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCLogic extends ClassicCGCActor {
@@ -57,7 +57,7 @@ public class CGCLogic extends ClassicCGCActor {
         logic = new Parameter(this, "logic");
         logic.setExpression("AND");
 
-/*     
+/*
 noInternalState();
 */
     }
@@ -86,7 +86,7 @@ non-zero integer (not necessarily 1).
     /**
      */
     public void  generateInitializeCode() throws IllegalActionException {
-        
+
 String cn = logic;
 		if ( cn.equalsIgnoreCase("NOT")) {
 		    test = NOTID;
@@ -106,7 +106,7 @@ String cn = logic;
     /**
      */
     public void  generateFireCode() {
-        
+
 // The inverter (not) star is the simplest case
 		if ( test == NOTID ) {
 			addCode("\t$ref(output) = ! $ref(input#1); \n");
@@ -127,30 +127,30 @@ String cn = logic;
 		  case ANDID:
 		  case NANDID:
 			for (i = 1; i <= input.numberPorts(); i++ ) {
-			    addCode(logicAndOp(i)); 
+			    addCode(logicAndOp(i));
 			}
 			break;
 		  case ORID:
 		  case NORID:
 			for (i = 1; i <= input.numberPorts(); i++ ) {
-			    addCode(logicOrOp(i)); 
+			    addCode(logicOrOp(i));
 			}
 			break;
 		  case XORID:
 		  case XNORID:
 			for (i = 1; i <= input.numberPorts(); i++ ) {
-			    addCode(logicXorOp(i)); 
+			    addCode(logicXorOp(i));
 			    break;
 			}
 		}
 
-		// Compute final result 
+		// Compute final result
 		StringBuffer finalCode = new StringBuffer();
 		if (test == NANDID || test == NORID || test == XNORID ) {
 			finalCode.append("\tresult = ! result;\n");
 		}
 		finalCode.append("\t$ref(output) = result;\n");
-		addCode(finalCode); 
+		addCode(finalCode);
      }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////

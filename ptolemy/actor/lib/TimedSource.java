@@ -47,7 +47,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    For some sequence-based domains, such as SDF, actors of this type
    probably do not make sense because current time is not incremented.
    This actor has a parameter, <i>stopTime</i>, that optionally controls
-   the duration for which the actor is fired. When current time reaches 
+   the duration for which the actor is fired. When current time reaches
    the stopTime, postfire() returns false. This indicates
    to the director that this actor should not be invoked again.
    The default value of stopTime is <i>Infinity</i>, which results in postfire
@@ -116,7 +116,7 @@ public class TimedSource extends Source implements TimedActor {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == stopTime) {
-            double newStopTimeValue = 
+            double newStopTimeValue =
                 ((DoubleToken)stopTime.getToken()).doubleValue();
             if (_executing) {
                 Time newStopTime = new Time(getDirector(), newStopTimeValue);
@@ -126,7 +126,7 @@ public class TimedSource extends Source implements TimedActor {
                     if (newStopTime.compareTo(currentTime) > 0) {
                         director.fireAt(this, newStopTime);
                     } else {
-                        throw new IllegalActionException(this, 
+                        throw new IllegalActionException(this,
                             "The stop time " +
                             "is earlier than the current time.");
                     }
@@ -140,20 +140,20 @@ public class TimedSource extends Source implements TimedActor {
 
     /** Get the stop time.
      *  @return The stop time.
-     *  @deprecated As of Ptolemy II 4.1, replaced by 
+     *  @deprecated As of Ptolemy II 4.1, replaced by
      *  {@link #getModelStopTime}
      */
     public double getStopTime() {
         return getModelStopTime().getDoubleValue();
     }
-    
+
     /** Get the stop time.
      *  @return The stop time.
      */
     public Time getModelStopTime() {
         return _stopTime;
     }
-    
+
     /** Initialize the actor. Schedule a refiring of this actor at the
      *  stop time given by the <i>stopTime</i> parameter.
      *  @exception IllegalActionException If there is no director.
@@ -164,14 +164,14 @@ public class TimedSource extends Source implements TimedActor {
         if (director == null) {
             throw new IllegalActionException(this, "No director!");
         }
-        double stopTimeValue = 
+        double stopTimeValue =
             ((DoubleToken)stopTime.getToken()).doubleValue();
-        _stopTime = new Time(getDirector(), stopTimeValue); 
+        _stopTime = new Time(getDirector(), stopTimeValue);
         Time currentTime = director.getModelTime();
         if (_stopTime.compareTo(currentTime) > 0) {
             director.fireAt(this, _stopTime);
             _executing = true;
-        } 
+        }
     }
 
     /** Return false if the current time is greater than or equal to

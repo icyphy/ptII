@@ -102,7 +102,7 @@ import ptolemy.kernel.util.Workspace;
    @Pt.ProposedRating Green (mudit)
    @Pt.AcceptedRating Green (davisj)
 */
-public class TimedPNDirector extends PNDirector 
+public class TimedPNDirector extends PNDirector
     implements TimedDirector {
 
     /** Construct a director in the default workspace with an empty string

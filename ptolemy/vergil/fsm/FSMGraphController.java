@@ -184,7 +184,7 @@ public class FSMGraphController extends FSMViewerGraphController {
         // Create the interactor that drags new edges.
         _linkCreator = new LinkCreator();
         _linkCreator.setMouseFilter(_shortcutFilter);
- 
+
         // NOTE: Do not use _initializeInteraction() because we are
         // still in the constructor, and that method is overloaded in
         // derived classes.
@@ -272,7 +272,7 @@ public class FSMGraphController extends FSMViewerGraphController {
         CompositeEntity container = new CompositeEntity();
         try {
             State state = new State(container, "S");
-            _prototypeState = new Location(state, "_location");            
+            _prototypeState = new Location(state, "_location");
         } catch (KernelException ex) {
             // This should not happen.
             throw new InternalErrorException(null, ex, null);

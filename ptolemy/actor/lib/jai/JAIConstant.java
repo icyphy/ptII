@@ -93,12 +93,12 @@ public class JAIConstant extends Source {
 
     /** The height of the image in pixels.  The default value is
      *  and integer with a value of 0.
-     */   
+     */
     public Parameter height;
 
     /** The width of the image in pixels.  The default value is
      *  and integer with a value of 0.
-     */   
+     */
     public Parameter width;
 
     /** The type to cast the data to.  This is a string valued

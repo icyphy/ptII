@@ -25,7 +25,7 @@ distributed uniform random variables.  The values range from "lower"
 to "upper".
 
  @Author Soonhoi Ha
- @Version $Id$, based on version 1.10 of /users/ptolemy/src/domains/cgc/stars/CGCIIDUniform.pl, from Ptolemy Classic 
+ @Version $Id$, based on version 1.10 of /users/ptolemy/src/domains/cgc/stars/CGCIIDUniform.pl, from Ptolemy Classic
  @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCIIDUniform extends ClassicCGCActor {
@@ -56,7 +56,7 @@ public class CGCIIDUniform extends ClassicCGCActor {
         seed = new Parameter(this, "seed");
         seed.setExpression("1");
 
-/* 
+/*
 */
     }
     ///////////////////////////////////////////////////////////////////
@@ -88,24 +88,24 @@ public class CGCIIDUniform extends ClassicCGCActor {
     /**
      */
     public int  myExecTime() {
-        
+
 return 10 + 5;	/* based on CG96IIDUniform */
      }
 
     /**
      */
     public void  generatePreinitializeCode() {
-        
+
 // Pull in prototypes for srand and rand
 		addInclude("<stdlib.h>");
 		// Initialize the random number generator
-		addCode(initSeed); 
+		addCode(initSeed);
      }
 
     /**
      */
     public void  generateInitializeCode() throws IllegalActionException {
-        
+
 if ( ((DoubleToken)((lower).getToken())).doubleValue() > ((DoubleToken)((upper).getToken())).doubleValue() ) {
 		    throw new IllegalActionException(this, "The upper limit must be greater ",
 				    "than the lower limit");
@@ -116,17 +116,17 @@ if ( ((DoubleToken)((lower).getToken())).doubleValue() > ((DoubleToken)((upper).
     /**
      */
     public void  generateFireCode() {
-        
-addCode(randomGen); 
+
+addCode(randomGen);
      }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
-    public String initSeed = 
+    public String initSeed =
         "/* Initialize the random number generator */\n"
         + "srand($val(seed));\n";
 
-    public String randomGen = 
+    public String randomGen =
         "		/* Generate a random number on the interval [0,1] and */\n"
         + "		/* map it into the interval [$val(lower),$val(upper)] */\n"
         + "		double randomValue = 0.0;\n"

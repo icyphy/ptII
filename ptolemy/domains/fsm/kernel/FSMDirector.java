@@ -77,13 +77,13 @@ import ptolemy.kernel.util.Workspace;
    current state. The preemptive transitions from the current state of the mode
    controller are examined. If there is more than one transition enabled, an
    exception is thrown. If there is exactly one preemptive transition enabled
-   then it is chosen. The choice actions contained by the transition are 
-   executed. Any output token produced by the mode controller is transferred to 
-   both the output ports of the modal model and the input ports of the mode 
+   then it is chosen. The choice actions contained by the transition are
+   executed. Any output token produced by the mode controller is transferred to
+   both the output ports of the modal model and the input ports of the mode
    controller. Then the refinements associated with the enabled transition are
    executed. Any output token produced by the refinements is transferred to
    both the output ports of the modal model and the input ports of the mode
-   controller. The refinements of the current state will not be fired. 
+   controller. The refinements of the current state will not be fired.
    <p>
    If no preemptive transition is enabled, the refinements of the current state
    are fired. Any output token produced by the refinements is transferred to
@@ -94,22 +94,22 @@ import ptolemy.kernel.util.Workspace;
    non-preemptive transition enabled then it is chosen and the choice actions
    contained by the transition are executed. Any output token produced by the
    mode controller is transferred to the output ports of the modal model and
-   the input ports of the mode controller. Then, the refinements of the 
-   enabled transition are executed. Any output token produced by the refinements 
-   is transferred to both the output ports of the modal model and the input 
-   ports of the mode controller. 
+   the input ports of the mode controller. Then, the refinements of the
+   enabled transition are executed. Any output token produced by the refinements
+   is transferred to both the output ports of the modal model and the input
+   ports of the mode controller.
    <p>
    At the end of one firing, the modal model transfer its outputs to outside
    domain. The mode controller does not change state during successive firings
    in one iteration in order to support outside domains that iterate to a fixed
    point.
-   
-   FIXME: this is not content with what was imiplemented.... in particular, 
-   refinements can not be postfired during firing! 
+
+   FIXME: this is not content with what was imiplemented.... in particular,
+   refinements can not be postfired during firing!
    <p>
    When the modal model is postfired, the chosen transition of the latest
-   firing is committed. The commit actions contained by the transition are 
-   executed and the current state of the mode controller is set to the 
+   firing is committed. The commit actions contained by the transition are
+   executed and the current state of the mode controller is set to the
    destination state of the transition.
 
    @author Xiaojun Liu, Haiyang Zheng
@@ -212,9 +212,9 @@ public class FSMDirector extends Director
      *  the preemptive outgoing transitions of its current state. Throw an
      *  exception if there is more than one transition enabled. If there
      *  is exactly one preemptive transition enabled then it is chosen and
-     *  the choice actions and transition refinements contained by the enabled 
-     *  transition are executed. The refinement of the current state of the 
-     *  mode controller is not fired. 
+     *  the choice actions and transition refinements contained by the enabled
+     *  transition are executed. The refinement of the current state of the
+     *  mode controller is not fired.
      *  <p>
      *  If no preemptive transition is enabled and the refinement is ready
      *  to fire in the current iteration, fire the refinement. The
@@ -222,10 +222,10 @@ public class FSMDirector extends Director
      *  controller are examined. If there is more than one transition
      *  enabled, an exception is thrown. If there is exactly one
      *  non-preemptive transition enabled then it is chosen and the choice
-     *  actions and transition refinements contained by the transition are 
+     *  actions and transition refinements contained by the transition are
      *  executed.
-     *  <p> 
-     *  If any tokens are produced during this iteration, they are sent to 
+     *  <p>
+     *  If any tokens are produced during this iteration, they are sent to
      *  both the output ports of the model model but also the input ports of
      *  the mode controller.
      *  @exception IllegalActionException If there is more than one
@@ -301,24 +301,24 @@ public class FSMDirector extends Director
         return;
     }
 
-    /** Schedule a firing of the given actor at the given time. 
-     *  <p> 
-     *  If there exists an executive director, this method delegates to 
-     *  the fireAt() method of the executive director by requesting 
+    /** Schedule a firing of the given actor at the given time.
+     *  <p>
+     *  If there exists an executive director, this method delegates to
+     *  the fireAt() method of the executive director by requesting
      *  a firing of the container of this director at the given time.
      *  The actor should be either the mode controller or the refinement
-     *  of one of its states. For both cases, the actor is only fired 
+     *  of one of its states. For both cases, the actor is only fired
      *  when the container of this director reaches the given time.
      *  In the second case, if the actor is not the refinement of the
      *  current state of the mode controller when the execution reaches the
      *  given time, the firing is ignored.
-     * 
+     *
      *  FIXME: the last sentence does not make sense: how does the upper level
      *  director knows which refinement requests a refiring? I guess what really
-     *  happens is that the modal model gets fired anyway, but there may be 
-     *  nothing interesting... For example, a DE refinement simply returns 
-     *  false in its prefire() method. 
-     * 
+     *  happens is that the modal model gets fired anyway, but there may be
+     *  nothing interesting... For example, a DE refinement simply returns
+     *  false in its prefire() method.
+     *
      *  @param actor The actor scheduled to be fired.
      *  @param time The scheduled time.
      *  @exception IllegalActionException If thrown in scheduling
@@ -329,7 +329,7 @@ public class FSMDirector extends Director
             throws IllegalActionException {
         // FIXME: Changed by liuj, not yet reviewed.
         // Note that the actor parameter is ignored, because it does not
-        // matter which actor requests firing. 
+        // matter which actor requests firing.
         Nameable container = getContainer();
         if (container instanceof Actor) {
             Actor modalModel = (Actor)container;
@@ -448,7 +448,7 @@ public class FSMDirector extends Director
      *  current state of the mode controller. If the refinement does not
      *  provide this, return that given by the superclass.
      *  @return The time of the next iteration.
-     *  @deprecated As of Ptolemy II 4.1, replaced by 
+     *  @deprecated As of Ptolemy II 4.1, replaced by
      *  {@link #getModelNextIterationTime}
      */
     public double getNextIterationTime() {
@@ -483,35 +483,35 @@ public class FSMDirector extends Director
                 return super.getModelNextIterationTime();
             }
         } catch (IllegalActionException ex) {
-            // No mode controller or refinement can be found, 
+            // No mode controller or refinement can be found,
             // return whatever given by the superclass.
             // Ignore the IllegalActionException here.
         }
         return super.getModelNextIterationTime();
     }
 
-    /** Return true if the model errors are handled. Otherwise, return false 
-     *  and the model errors are passed to the higher level in hierarchy. 
+    /** Return true if the model errors are handled. Otherwise, return false
+     *  and the model errors are passed to the higher level in hierarchy.
      *  <p>
-     *  In this method, model errors including 
-     *  multipleEnabledTransitionException and InvariantViolationException 
-     *  are handled.  
-     *  <p> 
+     *  In this method, model errors including
+     *  multipleEnabledTransitionException and InvariantViolationException
+     *  are handled.
+     *  <p>
      *  In the current design, if multiple enabled transitions are detected,
-     *  an exception will be thrown. For future designs, different ways to 
+     *  an exception will be thrown. For future designs, different ways to
      *  handle this situation will be introduced here.
-     *  <p> 
-     *  When an invariant is violated, this method checks whetehr there exits 
+     *  <p>
+     *  When an invariant is violated, this method checks whetehr there exits
      *  an enabled (non-preemptive) transition. If there is one, the model
      *  error is ignored and this director will handle the enabled transition
-     *  later. Otherwise, an exception will be thrown.    
+     *  later. Otherwise, an exception will be thrown.
      *
      *  @param context The context where the model error happens.
      *  @param exception An exception that represents the model error.
      *  @return True if the error has been handled, false if the
      *  model error is passed to the higher level.
-     *  @exception IllegalActionException If multiple enabled transition is 
-     *  detected, or mode controller can not be found, or can not read 
+     *  @exception IllegalActionException If multiple enabled transition is
+     *  detected, or mode controller can not be found, or can not read
      *  outputs from refinements.
      */
     public boolean handleModelError(
@@ -519,7 +519,7 @@ public class FSMDirector extends Director
             IllegalActionException exception)
             throws IllegalActionException {
 
-        // NOTE: Besides throwing exception directly, we can handle 
+        // NOTE: Besides throwing exception directly, we can handle
         // multiple enabled transitions in different ways...
         // For example, try refining the step size.
         if (exception instanceof MultipleEnabledTransitionsException) {
@@ -533,7 +533,7 @@ public class FSMDirector extends Director
             FSMActor controller = getController();
             controller._readOutputsFromRefinement();
             State st = controller.currentState();
-            Transition tr = 
+            Transition tr =
                 controller._checkTransition(st.nonpreemptiveTransitionList());
 
             if (tr == null) {
@@ -557,12 +557,12 @@ public class FSMDirector extends Director
     }
 
     /** Initialize the mode controller and all the refinements by calling the
-     *  initialize() method in the super class. Build the local maps for 
+     *  initialize() method in the super class. Build the local maps for
      *  receivers.
      *
-     *  @exception IllegalActionException If thrown by the initialize() method 
+     *  @exception IllegalActionException If thrown by the initialize() method
      *  of the super class, or can not find mode controller, or can not find
-     *  refinement of the current state. 
+     *  refinement of the current state.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
@@ -611,7 +611,7 @@ public class FSMDirector extends Director
             _debug(getFullName(),
                     "postfire called at time: " + getModelTime());
         }
-        
+
         FSMActor controller = getController();
         boolean result = controller.postfire();
 
@@ -619,9 +619,9 @@ public class FSMDirector extends Director
             (Map)_localReceiverMaps.get(controller.currentState());
 
         // Note, we increment the workspace version such that the
-        // function dependencies will be reconstructed. This design 
-        // is based on that each time one transition happens, the 
-        // new refinement takes place of the modal model for 
+        // function dependencies will be reconstructed. This design
+        // is based on that each time one transition happens, the
+        // new refinement takes place of the modal model for
         // execution, consequently, the model structure changes.
 
         // Note that we also check whether mutation is enabled at
@@ -638,7 +638,7 @@ public class FSMDirector extends Director
             request.setPersistent(false);
             getContainer().requestChange(request);
         }
-        
+
         return result && !_stopRequested;
     }
 
@@ -686,9 +686,9 @@ public class FSMDirector extends Director
      *  error handler.
      *  @param container The proposed container.
      *  @exception IllegalActionException If the action would result in a
-     *  recursive containment structure, or if this entity and container are 
-     *  not in the same workspace, or if the protected method _checkContainer() 
-     *  throws it, or if a contained Settable becomes invalid and the error 
+     *  recursive containment structure, or if this entity and container are
+     *  not in the same workspace, or if the protected method _checkContainer()
+     *  throws it, or if a contained Settable becomes invalid and the error
      *  handler throws it.
      *  @exception NameDuplicationException If the name of this entity
      *  collides with a name already in the container.
@@ -917,7 +917,7 @@ public class FSMDirector extends Director
      *  @return The last chosen transition, or null if there has been none.
      *  @exception IllegalActionException If there is no controller.
      */
-    protected Transition _getLastChosenTransition() 
+    protected Transition _getLastChosenTransition()
         throws IllegalActionException {
         FSMActor controller = getController();
         if (controller != null) {
@@ -984,7 +984,7 @@ public class FSMDirector extends Director
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
-    /** Map from input ports of the modal model to the local receivers 
+    /** Map from input ports of the modal model to the local receivers
      *  for the current state.
      */
     protected Map _currentLocalReceiverMap = null;
@@ -997,12 +997,12 @@ public class FSMDirector extends Director
      */
     protected Transition _enabledTransition = null;
 
-    /** Stores for each state of the mode controller the map from input 
+    /** Stores for each state of the mode controller the map from input
      *  ports of the modal model to the local receivers when the mode
      *  controller is in that state.
-     */ 
+     */
     protected Map _localReceiverMaps = new HashMap();
-    
+
     /** Boolean varialbe indicating whether model change is enabled. The
      *  default value is true.
      */

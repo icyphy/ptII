@@ -23,7 +23,7 @@ public class ParkingClient extends TypedAtomicActor{
         leave = new TypedIOPort(this, "leave", false, true);
         leave.setTypeEquals(BaseType.INT);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
@@ -34,7 +34,7 @@ public class ParkingClient extends TypedAtomicActor{
     /** Port for which lot to park.
      */
     public TypedIOPort parkingTo;
-    
+
     /** Port for leave due to no parking lot available.
      */
     public TypedIOPort leave;
@@ -62,7 +62,7 @@ public class ParkingClient extends TypedAtomicActor{
         if(carArrival.getWidth() >0) {
             if(carArrival.hasToken(0)) {
                 carArrival.get(0);
-                HashSet lots =_parkingManager.getAvailable(); 
+                HashSet lots =_parkingManager.getAvailable();
                 if(lots.size()>0) {
                     Object[] lotsArray = lots.toArray();
                     int index = _getRandom(lots.size());
@@ -72,8 +72,8 @@ public class ParkingClient extends TypedAtomicActor{
                 }
             }
         }
-    }    
-    
+    }
+
     /** Initialize the private varialbles.
      *  @exception IllegalActionException If thrown by the base class.
      */
@@ -82,7 +82,7 @@ public class ParkingClient extends TypedAtomicActor{
         _random = new Random();
         _parkingManager = new ParkingManager();
     }
-    
+
     private int _getRandom(int size) {
         // Generate a double between 0 and 1, uniformly distributed.
         double randomValue = _random.nextDouble();
@@ -97,13 +97,13 @@ public class ParkingClient extends TypedAtomicActor{
         }
         return value;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                       private variables                   ////
 
     private ParkingManager _parkingManager;
-    
+
     private Random _random;
-    
+
     private static int _LEAVE = 1;
 }

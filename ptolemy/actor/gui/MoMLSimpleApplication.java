@@ -186,7 +186,7 @@ public class MoMLSimpleApplication implements ChangeListener, ExecutionListener
     public void executionError(Manager manager, Throwable throwable) {
         _executionFinishedOrError = true;
         _sawThrowable = throwable;
-        throw new RuntimeException("Execution error " 
+        throw new RuntimeException("Execution error "
                 + Thread.currentThread().getName(), throwable);
     }
 
@@ -194,7 +194,7 @@ public class MoMLSimpleApplication implements ChangeListener, ExecutionListener
      *  the wrapup sequence has completed normally. The number of successfully
      *  completed iterations can be obtained by calling getIterationCount()
      *  on the manager.
-     *  In this class, we set a flag indicating that execution has finished. 
+     *  In this class, we set a flag indicating that execution has finished.
      *  @param manager The manager controlling the execution.
      */
     public void executionFinished(Manager manager) {

@@ -156,7 +156,7 @@ public class Entity extends InstantiableNamedObj {
             throws CloneNotSupportedException {
         try {
             workspace().getReadAccess();
-            
+
             Entity newEntity = (Entity)super.clone(workspace);
             newEntity._portList = new NamedList(newEntity);
             // Clone the ports.
@@ -184,14 +184,14 @@ public class Entity extends InstantiableNamedObj {
                     if (fields[i].get(newEntity) instanceof Port) {
                         String fieldName = fields[i].getName();
                         Port port = newEntity.getPort(fieldName);
-                        if (port == null) { 
+                        if (port == null) {
                             // Names that end in Port are ok.
                             if (fieldName.endsWith("Port")) {
                                 port = newEntity.getPort(
                                         fieldName.substring(0,
                                                 fieldName.length() - 4));
                             }
-                            if (port == null) { 
+                            if (port == null) {
                                 throw new IllegalActionException(this,
                                         "Could not find a port named '"
                                         + fieldName + "' or '"
@@ -643,7 +643,7 @@ public class Entity extends InstantiableNamedObj {
     ////                         friendly variables                ////
 
     // The following is package friendly so port can access it.
-    
+
     /** A list of Ports owned by this Entity. */
     NamedList _portList;
 

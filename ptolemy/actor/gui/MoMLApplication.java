@@ -195,7 +195,7 @@ public class MoMLApplication implements ExecutionListener {
 
         try {
             _parseArgs(args);
-            
+
             // Run if -run argument was specified.
             if (_run) {
                 runModels();
@@ -208,7 +208,7 @@ public class MoMLApplication implements ExecutionListener {
                     Thread waitThread = new Thread() {
                     	public void run() {
                             waitForFinish();
-                            System.exit(0);                            
+                            System.exit(0);
                         }
                     };
                     waitThread.start();
@@ -231,7 +231,7 @@ public class MoMLApplication implements ExecutionListener {
                 }
             } catch (Exception ex2) {
                 //Ignored
-            }                
+            }
             String errorMessage = "Failed to parse \""
                 + argsStringBuffer.toString() + "\"";
 
@@ -289,7 +289,7 @@ public class MoMLApplication implements ExecutionListener {
             System.exit(0);
         }
     }
-    
+
     /** Do nothing.
      *  @param manager The manager calling this method.
      */
@@ -710,7 +710,7 @@ public class MoMLApplication implements ExecutionListener {
 
                         // Now defer to the model reader.
                         Tableau tableau = _configuration.openModel(base, inURL, key);
-                        
+
                         // FIXME: If the -run option was given, then start a run.
                         // FIXME: If the -fullscreen option was given, open full screen.
 
@@ -948,13 +948,13 @@ public class MoMLApplication implements ExecutionListener {
 
     /** The configuration model of this application. */
     protected Configuration _configuration;
-    
+
     /** Indicator that -runThenExit was requested. */
     protected boolean _exit = false;
 
     /** The parser used to construct the configuration. */
     protected MoMLParser _parser;
-    
+
     /** If true, then -run was specified on the command line. */
     protected boolean _run = false;
 

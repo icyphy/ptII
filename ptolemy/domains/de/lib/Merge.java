@@ -44,12 +44,12 @@ import ptolemy.kernel.util.NameDuplicationException;
    associated with the events of signals. A tag is a tuple of a timestamp
    (as double) and a microstep or index (as non-negative integer). Tags have a
    lexicographic order.
-   <p> 
+   <p>
    This actor has an input port (a multiport) and an output port
    (a single port). The types of the ports are undeclared and will be
    resolved by the type resolution mechanism, with the constraint that
    the output type must be greater than or equal to the input type.
-   <p> 
+   <p>
    There is a boolean parameter <i>discardEvents</i> associated
    with this actor, which decides how to handle simultaneously
    available inputs.  Each time this actor fires, it reads the first
@@ -57,7 +57,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    port. If the <i>discardEvents</i> parameter is configured to true,
    then this actor discards all the remaining inputs in the rest of
    channels. Otherwise, this actor requests refirings at the current
-   time until no more events are left in the channels. By default, 
+   time until no more events are left in the channels. By default,
    the discardEvents parameter is false.
 
    @author Edward A. Lee, Haiyang Zheng
@@ -108,7 +108,7 @@ public class Merge extends DETransformer  {
      *  is true, consume all the available tokens of the other channels
      *  and discard them. Otherwise, if the other channels have tokens,
      *  request a refiring at the current time to process them.
-     *  @exception IllegalActionException If there is no director, or 
+     *  @exception IllegalActionException If there is no director, or
      *  the input can not be read, or the output can not be sent.
      */
     public void fire() throws IllegalActionException {
@@ -116,8 +116,8 @@ public class Merge extends DETransformer  {
             ((BooleanToken)discardEvents.getToken()).booleanValue();
         Token firstAvailableToken = null;
         // If tokens can be discarded, this actor sends
-        // out the first available tokens only. It discards all 
-        // remaining tokens from other input channels. 
+        // out the first available tokens only. It discards all
+        // remaining tokens from other input channels.
         // Otherwise, this actor handles one channel at each firing
         // and requests refiring at the current time to handle the
         // the remaining channels that have tokens.
@@ -134,7 +134,7 @@ public class Merge extends DETransformer  {
                 } else {
                     if (discard) {
                         // this token is not the first available token
-                        // in this firing, consume and discard all tokens 
+                        // in this firing, consume and discard all tokens
                         // from the input channel
                         while (input.hasToken(i)) {
                             Token token = input.get(i);

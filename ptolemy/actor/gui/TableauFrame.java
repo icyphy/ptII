@@ -456,7 +456,7 @@ public class TableauFrame extends Top {
                 // to mark the model unmodified, so we don't get
                 // asked again if somehow the model is re-opened.
                 setModified(false);
-                
+
                 // Purge any record of the model, since we have
                 // chosen to not save the changes, so the next time
                 // this is opened, it should be read again from the file.
@@ -474,7 +474,7 @@ public class TableauFrame extends Top {
             return true;
         }
     }
-    
+
     /** Confirm that writing the specified model to the specified file is OK.
      *  In particular, if the file exists, ask the user whether it is OK
      *  to overwrited. If there is an open model from the specified file,
@@ -772,7 +772,7 @@ public class TableauFrame extends Top {
 
         // Show the dialog.
         int returnVal = fileDialog.showSaveDialog(this);
-        
+
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = fileDialog.getSelectedFile();
 
@@ -837,7 +837,7 @@ public class TableauFrame extends Top {
 
     /** The initial filename to use in the SaveAs dialog */
     protected String _initialSaveAsFileName = null;
-    
+
     /** The view menu. Note that this is only created if there are multiple
      *  views, so if derived classes use it, they must test to see whether
      *  it is null.

@@ -36,7 +36,7 @@ package ptolemy.gui;
    @see ShellTextArea
    @author Edward A. Lee
    @version $Id$
-   @since Ptolemy II 3.0 
+   @since Ptolemy II 3.0
    @Pt.ProposedRating Red (cxh)
    @Pt.AcceptedRating Red (cxh)
 */

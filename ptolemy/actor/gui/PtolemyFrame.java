@@ -283,13 +283,13 @@ public abstract class PtolemyFrame extends TableauFrame {
      */
     protected JFileChooser _saveAsFileDialog() {
         JFileChooser fileDialog = super._saveAsFileDialog();
-        
+
         if (_model != null && _model.getContainer() != null) {
             _query = new Query();
             _query.addCheckBox("submodel", "Save submodel only", false);
             fileDialog.setAccessory(_query);
         }
-        
+
         return fileDialog;
     }
 
@@ -312,7 +312,7 @@ public abstract class PtolemyFrame extends TableauFrame {
             if (effigy != null) {
                 // Update all the attributes that need updated.
                 if (_model != null) {
-                    Iterator attributes = 
+                    Iterator attributes =
                         _model.attributeList(Attribute.class).iterator();
                     while (attributes.hasNext()) {
                         Attribute attribute = (Attribute)attributes.next();
@@ -322,7 +322,7 @@ public abstract class PtolemyFrame extends TableauFrame {
 
                 // Ensure that if we do ever try to call this method,
                 // that it is the top effigy that is written.
-                
+
                 // If there is no model, delegate to the top effigy.
                 // Otherwise, delegate to the effigy corresponding
                 // to the top-level of the model (which may not be
@@ -350,7 +350,7 @@ public abstract class PtolemyFrame extends TableauFrame {
 
     // The model that this window controls, if any.
     private NamedObj _model;
-    
+
     // The query used to specify save as options.
     private Query _query;
 }

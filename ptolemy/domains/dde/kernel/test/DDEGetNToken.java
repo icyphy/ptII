@@ -135,7 +135,7 @@ public class DDEGetNToken extends DDEGet {
                             System.out.println("#####Past DDEGetNToken.rcvr.hasToken()");
                             // System.out.println("#####");
                             _tokens[cnt] = rcvr.get();
-                            _afterTimes[cnt] 
+                            _afterTimes[cnt]
                                 = timeKeeper.getCurrentTime();
                             cnt++;
                             j = rcvrs[i].length + 1;

@@ -84,7 +84,7 @@ public class ECSLMux extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** Determines how the icon is displayed.  A common value is the 
+    /** Determines how the icon is displayed.  A common value is the
      *  string "bar", which means to display as a bar
      *  <p>FIXME: Currently ignored.
      */

@@ -23,7 +23,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 Convert real and imaginary parts to a complex output.
 
  @Author S. Ha
- @Version $Id$, based on version 1.6 of /users/ptolemy/src/domains/cgc/stars/CGCRectToCx.pl, from Ptolemy Classic 
+ @Version $Id$, based on version 1.6 of /users/ptolemy/src/domains/cgc/stars/CGCRectToCx.pl, from Ptolemy Classic
  @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCRectToCx extends ClassicCGCActor {
@@ -46,7 +46,7 @@ public class CGCRectToCx extends ClassicCGCActor {
         output = new ClassicPort(this, "output", false, true);
         output.setTypeEquals(BaseType.COMPLEX);
 
-/*     
+/*
 noInternalState();
 */
     }
@@ -74,20 +74,20 @@ noInternalState();
     /**
      */
     public int  myExecTime() {
-        
+
 return 2;
      }
 
     /**
      */
     public void  generateFireCode() {
-        
-addCode(body); 
+
+addCode(body);
      }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
-    public String body = 
+    public String body =
         "	$ref(output).real = $ref(real);\n"
         + "	$ref(output).imag = $ref(imag);\n";
 }

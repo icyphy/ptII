@@ -25,7 +25,7 @@ Upsample by a factor (default 2), filling with fill (default 0.0).  The
 is to output it first (phase = 0). The maximum phase is "factor" - 1.
 
  @Author E. A. Lee and S. Ha
- @Version $Id$, based on version 1.12 of /users/ptolemy/src/domains/cgc/stars/CGCUpSample.pl, from Ptolemy Classic 
+ @Version $Id$, based on version 1.12 of /users/ptolemy/src/domains/cgc/stars/CGCUpSample.pl, from Ptolemy Classic
  @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCUpSample extends ClassicCGCActor {
@@ -58,7 +58,7 @@ public class CGCUpSample extends ClassicCGCActor {
         fill = new Parameter(this, "fill");
         fill.setExpression("0.0");
 
-/*     
+/*
 noInternalState();
 */
     }
@@ -96,14 +96,14 @@ noInternalState();
     /**
      */
     public int  myExecTime() {
-        
+
 return 1 + ((IntToken)((factor).getToken())).intValue();
      }
 
     /**
      */
     public void  generateInitializeCode() throws IllegalActionException {
-        
+
 output.setSDFParams(((IntToken)((factor).getToken())).intValue(),((IntToken)((factor).getToken())).intValue()-1);
 		if (((IntToken)((phase).getToken())).intValue() >= ((IntToken)((factor).getToken())).intValue())
 			throw new IllegalActionException(this, ": phase must be < factor");
@@ -112,12 +112,12 @@ output.setSDFParams(((IntToken)((factor).getToken())).intValue(),((IntToken)((fa
     /**
      */
     public void  generateFireCode() {
-        
+
 int index = ((IntToken)((factor).getToken())).intValue() - ((IntToken)((phase).getToken())).intValue() - 1;
 		if (output.staticBuf() && output.linearBuf())
-			addCode(sendOne(index)); 
+			addCode(sendOne(index));
 		else
-			addCode(sendAll(index)); 
+			addCode(sendAll(index));
      }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////

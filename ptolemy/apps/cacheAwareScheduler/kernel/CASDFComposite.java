@@ -48,7 +48,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// TypedCompositeActor
 /**
 This is a composite actor for use in the sdf domain to conduct experiments
-with the cache aware scheudler. 
+with the cache aware scheudler.
 
 @author Sanjeev Kohli
 @version $Id$
@@ -60,7 +60,7 @@ public class CASDFComposite extends TypedCompositeActor {
      *  NullPointerException will be thrown.  This actor will use the
      *  workspace of the container for synchronization and version counts.
      *  If the name argument is null, then the name is set to the empty string.
-     *  Increment the version of the workspace.  This actor will have 
+     *  Increment the version of the workspace.  This actor will have
      *  an SDF Director as its local director and a cache aware scheduler will
      *  be associated with this director.
      *
@@ -95,10 +95,10 @@ public class CASDFComposite extends TypedCompositeActor {
         noOfActors.setExpression("4");
 
         sdfDirector = new SDFDirector(this, "sdfDirector");
-        _cacheAwareScheduler = 
+        _cacheAwareScheduler =
             new CacheAwareScheduler(sdfDirector, "MyScheduler");
 
-        // Randomly generate a vectorization factor for the SDF Director 
+        // Randomly generate a vectorization factor for the SDF Director
         sdfDirector.vectorizationFactor.setExpression("1 + roundToInt(random()*9)");
     }
 
@@ -116,7 +116,7 @@ public class CASDFComposite extends TypedCompositeActor {
      */
     public Parameter noOfActors;
 
- 
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -146,19 +146,19 @@ public class CASDFComposite extends TypedCompositeActor {
         // to change. The scheduler checks it to recompute the schedule
         _version++;
 
-        // Generate Random chain-structured graph and put in 
+        // Generate Random chain-structured graph and put in
         // attributes
         Token token;
         token = noOfActors.getToken();
         int totalActors = ((IntToken)token).intValue();
-        
+
         ExperimentalActor[] actors = new ExperimentalActor[totalActors];
 
         try {
             for (int i = 0; i < totalActors; i++) {
                 // Instantiate a new actor of type ExperimentalActor
                 actors[i] = new ExperimentalActor(this, "actor" + (i+1));
-                
+
                 // Randomly assign production and consumption rates to it
                 if (i == 0) {
                     actors[i].input_tokenConsumptionRate.setToken("0");
@@ -170,12 +170,12 @@ public class CASDFComposite extends TypedCompositeActor {
                 } else {
                     actors[i].output_tokenProductionRate.setToken("1 + roundToInt(random()*9)");
                 }
-                
+
                 // Connect the input and output ports to the previous and next
-                // actor in chain respectively. No connections need to be 
+                // actor in chain respectively. No connections need to be
                 // made to the input of first actor and output of last actor.
                 if (!(i == 0)) {
-                    TypedIORelation relation = 
+                    TypedIORelation relation =
                         new TypedIORelation(this, "actor" + i + "output");
                     actors[i-1].output.link(relation);
                     actors[i].input.link(relation);
@@ -184,16 +184,16 @@ public class CASDFComposite extends TypedCompositeActor {
         } catch (Exception ex) {
             //  System.out.println("Exception Caught while generating the random " + "graph. It is " + ex);
         }
-        
+
         // The schedule gets generated in the super.preinitialize. So, no
         // need to invoke _cacheAwareScheduler.getSchedule() seperately.
         super.preinitialize();
         cacheAwareSchedule = _cacheAwareScheduler.getSchedule();
     }
 
-    /** Return False as this composite actor has to be fired only once 
+    /** Return False as this composite actor has to be fired only once
      *  in every execution to generate the schedule.
-     */ 
+     */
     public boolean postfire() {
         return false;
     }
@@ -202,27 +202,27 @@ public class CASDFComposite extends TypedCompositeActor {
      */
     public void wrapup() throws IllegalActionException {
         // Display the generated Cache Aware Schedule, the associated
-        // data and instruction miss penalties and the associated 
+        // data and instruction miss penalties and the associated
         // penalties for Minimum Activation Schedule.
         System.out.println();
         System.out.println();
         System.out.println(cacheAwareSchedule);
         int imp =  _cacheAwareScheduler.instructionMissPenalty();
         int dmp =  _cacheAwareScheduler.dataMissPenalty();
-        System.out.println("The IMP for Cache Aware Schedule is : " 
+        System.out.println("The IMP for Cache Aware Schedule is : "
                 + imp);
         System.out.println("The DMP for Cache Aware Schedule is : "
                 + dmp);
         System.out.println("The total CMP for Cache Aware Schedule is : "
                 + (imp + dmp));
         _cacheAwareScheduler.calculateMPMBScheduleCMP();
-        _cacheAwareScheduler.calculateSAMAScheduleCMP();   
-        super.wrapup(); 
+        _cacheAwareScheduler.calculateSAMAScheduleCMP();
+        super.wrapup();
    }
 
     ///////////////////////////////////////////////////////////////////
     ////                       public variables                    ////
-    
+
     // The generated Cache Aware Schedule
     public Schedule cacheAwareSchedule;
 
@@ -232,14 +232,14 @@ public class CASDFComposite extends TypedCompositeActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                    protected functions                    ////
-    
+
     protected void _exportMoMLContents(Writer output, int depth) {
 
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                       private variables                    ////
-    
+
     // The cache aware scheduler
     private CacheAwareScheduler _cacheAwareScheduler;
 

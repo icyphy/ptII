@@ -120,7 +120,7 @@ public class InlineDirectorTransformer extends SceneTransformer implements HasPh
 
         try {
             DirectorInliner inliner;
-            if (model.getDirector() instanceof SDFDirector) {      
+            if (model.getDirector() instanceof SDFDirector) {
                 inliner = new SDFDirectorInliner();
             } else if (model.getDirector() instanceof HSDirector ||
                     model.getDirector() instanceof FSMDirector) {
@@ -136,7 +136,7 @@ public class InlineDirectorTransformer extends SceneTransformer implements HasPh
         } catch (Exception ex) {
             throw new RuntimeException("Inlining director failed", ex);
         }
-           
+
         // We're almost always going to be adding methods to classes,
         // so just do this.
         Scene.v().setActiveHierarchy(new Hierarchy());

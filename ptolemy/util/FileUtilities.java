@@ -159,7 +159,7 @@ public class FileUtilities {
         }
         return file;
     }
-    
+
     /** Given a file or URL name, return as a URL.  If the file name
      *  is relative, then it is interpreted as being relative to the
      *  specified base directory. If the name begins with
@@ -327,8 +327,8 @@ public class FileUtilities {
      *  to be relative to the specified base directory.
      *  If permitted, this method will return a Writer that will simply
      *  overwrite the contents of the file. It is up to the user of this
-     *  method to check whether this is OK (by first calling 
-     *  {@link #nameToFile(String, URI)} 
+     *  method to check whether this is OK (by first calling
+     *  {@link #nameToFile(String, URI)}
      *  and calling exists() on the returned value).
      *  @param name File name.
      *  @param base The base URI for relative references.

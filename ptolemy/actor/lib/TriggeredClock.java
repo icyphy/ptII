@@ -120,7 +120,7 @@ public class TriggeredClock extends Clock {
      */
     protected void _updateTentativeValues()
             throws IllegalActionException {
-        
+
         super._updateTentativeValues();
 
         // Check the start input, to see whether everything needs to

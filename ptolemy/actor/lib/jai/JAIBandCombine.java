@@ -126,7 +126,7 @@ public class JAIBandCombine extends Transformer {
         } catch (IllegalArgumentException ex) {
             throw new IllegalActionException(this, ex,
                     "Failed to band combine the image\n"
-                    + ex.getMessage() 
+                    + ex.getMessage()
                     + "\n  Number of bands: " + oldImage.getNumBands()
                     + "\n  Image: " + oldImage.toString());
         }

@@ -116,7 +116,7 @@ public interface Derivable extends Nameable {
      *   which this is called.
      */
     public List getDerivedList();
-    
+
     /** Return a list of prototypes for this object. The list is ordered
      *  so that more local prototypes are listed before more remote
      *  prototypes. A prototype is more local if the parent-child
@@ -128,7 +128,7 @@ public interface Derivable extends Nameable {
      *   name but the wrong class is found.
      */
     public List getPrototypeList() throws IllegalActionException;
-    
+
     /** Propagate the existence of this object.
      *  If this object has a container, then ensure that all
      *  objects derived from the container contain an object

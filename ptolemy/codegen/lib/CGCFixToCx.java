@@ -23,7 +23,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 Convert a fixed-point input to a complex output.
 
  @Author J. Weiss
- @Version $Id$, based on version 1.6 of /users/ptolemy/src/domains/cgc/stars/CGCFixToCx.pl, from Ptolemy Classic 
+ @Version $Id$, based on version 1.6 of /users/ptolemy/src/domains/cgc/stars/CGCFixToCx.pl, from Ptolemy Classic
  @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCFixToCx extends CGCFix {
@@ -48,7 +48,7 @@ public class CGCFixToCx extends CGCFix {
         numSample = new Parameter(this, "numSample");
         numSample.setExpression("1");
 
-/* 
+/*
 */
     }
     ///////////////////////////////////////////////////////////////////
@@ -75,7 +75,7 @@ Output complex type
     /**
      */
     public void  generateInitializeCode() throws IllegalActionException {
-        
+
 if (((IntToken)((numSample).getToken())).intValue() <= 0) {
 			throw new IllegalActionException(this, "numSample must be positive");
 			return;
@@ -87,13 +87,13 @@ if (((IntToken)((numSample).getToken())).intValue() <= 0) {
     /**
      */
     public void  generateFireCode() {
-        
-addCode(body); 
+
+addCode(body);
      }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
-    public String body = 
+    public String body =
         "		int i = 0;\n"
         + "		for (; i < $val(numSample); i++) {\n"
         + "			$ref(output,i).real = FIX_Fix2Double($ref(input,i));\n"

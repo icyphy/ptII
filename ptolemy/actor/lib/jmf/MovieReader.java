@@ -129,7 +129,7 @@ public class MovieReader extends Source implements ControllerListener {
                                         "JMFMovieReader", null, null));
                         _dataSource = Manager.createDataSource(url);
                     } catch (Exception ex2) {
-                        // Ignore this exception, throw the original. 
+                        // Ignore this exception, throw the original.
                         throw new IllegalActionException(this, ex, "Invalid URL");
                     }
                 }
@@ -217,8 +217,8 @@ public class MovieReader extends Source implements ControllerListener {
         if (_framePositioningControl == null) {
             throw new IllegalActionException(this,
                     "Failed to get Frame Positioning Control '"
-                    + framePostioningControlName 
-                    + "' possible controls are:\n" 
+                    + framePostioningControlName
+                    + "' possible controls are:\n"
                     + _controlNames()
                     + "\nThe data source was: "
                     + _dataSource.getLocator().toExternalForm());
@@ -233,7 +233,7 @@ public class MovieReader extends Source implements ControllerListener {
             throw new IllegalActionException(this,
                     "Failed to get Frame Grabbing Control '"
                     + frameGrabbingControlName
-                    + "' possible controls are:\n" 
+                    + "' possible controls are:\n"
                     + _controlNames()
                     + "\nThe data source was: "
                     + _dataSource.getLocator().toExternalForm());

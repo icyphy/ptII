@@ -111,7 +111,7 @@ public class EditIconTableau extends Tableau {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Override the base class to return a more reasonable title.
      *  @return The string "Icon editor for name", where name is the
      *   name of the object whose icon this is editing.

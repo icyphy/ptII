@@ -23,7 +23,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 Output the sum of the fixed-point inputs as a fixed-point value.
 
  @Author Juergen Weiss
- @Version $Id$, based on version 1.5 of /users/ptolemy/src/domains/cgc/stars/CGCAddFix.pl, from Ptolemy Classic 
+ @Version $Id$, based on version 1.5 of /users/ptolemy/src/domains/cgc/stars/CGCAddFix.pl, from Ptolemy Classic
  @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCAddFix extends CGCFix {
@@ -61,7 +61,7 @@ public class CGCAddFix extends CGCFix {
         index = new Parameter(this, "index");
         index.setExpression("1");
 
-/*     
+/*
 noInternalState();
 */
     }
@@ -111,7 +111,7 @@ magnitudes). parameter with initial value "2.14".
     /**
      */
     public void  generateInitializeCode() throws IllegalActionException {
-        
+
 super.generateInitializeCode();
 
                 if (!((IntToken)((ArrivingPrecision).getToken())).intValue())
@@ -123,7 +123,7 @@ super.generateInitializeCode();
     /**
      */
     public void  generateFireCode() {
-        
+
 // insert code to clear overflow flag
 		super.clearOverflow();
 
@@ -132,21 +132,21 @@ super.generateInitializeCode();
 { StringBuffer _str_ = new StringBuffer(); _str_.append(
 "	FIX_Add($ref(output), $ref(input#1),$ref(input#2));\n"
 
-); 	 addCode(_str_);  } 
+); 	 addCode(_str_);  }
 
 		else {
 			// initialize sum
 { StringBuffer _str_ = new StringBuffer(); _str_.append(
 "	FIX_Assign($ref(output),$ref(input#1));\n"
 
-); 	 addCode(_str_);  } 
+); 	 addCode(_str_);  }
 
 			for (int i=2; i <= input.numberPorts(); i++) {
 			    index = i;
 { StringBuffer _str_ = new StringBuffer(); _str_.append(
 "	FIX_Add($ref(output), $ref(output),$ref(input#index));\n"
 
-); 	 addCode(_str_);  } 
+); 	 addCode(_str_);  }
 			}
 		}
 

@@ -29,7 +29,7 @@ The first B particles on the output come from the first input,
 the next B particles from the next input, etc.
 
  @Author E. A. Lee
- @Version $Id$, based on version 1.6 of /users/ptolemy/src/domains/cgc/stars/CGCCommutator.pl, from Ptolemy Classic 
+ @Version $Id$, based on version 1.6 of /users/ptolemy/src/domains/cgc/stars/CGCCommutator.pl, from Ptolemy Classic
  @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCCommutator extends ClassicCGCActor {
@@ -53,7 +53,7 @@ public class CGCCommutator extends ClassicCGCActor {
         blockSize = new Parameter(this, "blockSize");
         blockSize.setExpression("1");
 
-/* 
+/*
 */
     }
     ///////////////////////////////////////////////////////////////////
@@ -80,14 +80,14 @@ public class CGCCommutator extends ClassicCGCActor {
     /**
      */
     public int  myExecTime() {
-        
+
 return ((IntToken)((blockSize).getToken())).intValue()*2*input.numberPorts();
      }
 
     /**
      */
     public void  generateInitializeCode() throws IllegalActionException {
-        
+
 int n = input.numberPorts();
 		input.setSDFParams(((IntToken)((blockSize).getToken())).intValue(),((IntToken)((blockSize).getToken())).intValue()-1);
 		output.setSDFParams(n*((IntToken)((blockSize).getToken())).intValue(),n*((IntToken)((blockSize).getToken())).intValue()-1);
@@ -96,7 +96,7 @@ int n = input.numberPorts();
     /**
      */
     public void  generateFireCode() {
-        
+
 StringBuffer out = new StringBuffer();
 		if (((IntToken)((blockSize).getToken())).intValue() > 1) out.append("\tint j;\n");
 		for (int i = input.numberPorts()-1; i >= 0; i--) {
@@ -114,7 +114,7 @@ StringBuffer out = new StringBuffer();
 			out.append(") = $ref2(input#" + port  + ",0");
 		   }
 		   out.append(");\n");
-		   addCode(out); 
+		   addCode(out);
 		   out.initialize();
 		}
      }

@@ -49,7 +49,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating yellow (ellen_zh)
    @Pt.AcceptedRating red (cxh)
 */
-public class AtomicComponent extends ComponentEntity 
+public class AtomicComponent extends ComponentEntity
         implements Component {
 
     /** Construct an entity with the given name contained by the specified
@@ -72,7 +72,7 @@ public class AtomicComponent extends ComponentEntity
         setContainer(container);
         _addIcon();
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -118,7 +118,7 @@ public class AtomicComponent extends ComponentEntity
      */
     public void preinitialize() throws IllegalActionException {
     }
-    
+
     /** Execute the component, which in this base class means doing
      *  nothing and returning immediately.
      *  This is invoked after preinitialize()
@@ -140,7 +140,7 @@ public class AtomicComponent extends ComponentEntity
      */
     public void wrapup() throws IllegalActionException {
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 

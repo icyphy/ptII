@@ -437,7 +437,7 @@ public class Location extends SingletonAttribute
 
     // The default value.
     private String _default = null;
-        
+
     // The expression given in setExpression().
     private String _expression;
 

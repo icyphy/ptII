@@ -46,7 +46,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    are received simultaneously, then the clock will be stopped.
    <p>
    This <i>start</i> and <i>stop</i> ports can are declared DISCRETE, and they
-   only accept discrete events as inputs.  
+   only accept discrete events as inputs.
    <p>
    @see ptolemy.domains.ct.lib.ContinuousClock
 
@@ -111,7 +111,7 @@ public class TriggeredContinuousClock extends ContinuousClock {
     }
 
     /** Call the _updateTentativeValues method of super class.
-     *  Override the super class 
+     *  Override the super class
      *  to check whether the <i>start</i> or <i>stop</i> inputs have values
      *  and update the affected variables.
      *  @exception IllegalActionException If thrown accessing start or stop
@@ -119,9 +119,9 @@ public class TriggeredContinuousClock extends ContinuousClock {
      */
     protected void _updateTentativeValues()
             throws IllegalActionException {
-        
+
         super._updateTentativeValues();
-        
+
         // Check the start input, to see whether everything needs to
         // be reset.
         if (start.getWidth() > 0) {

@@ -105,14 +105,14 @@ public class MultiportToSinglePort implements MoMLFilter {
             // Save the name of the for later use if we see a "class"
             _lastNameSeen = attributeValue;
             if (_currentlyProcessingActorWithPropertyClassChanges) {
-                if (_portName != null 
+                if (_portName != null
                         && _portName.equals(attributeValue)) {
                     // We will do the above checks only if we found a
                     // class that had property class changes.
                     _foundChange = true;
                 } else {
                     if (attributeValue.equals("multiport")
-                            && container != null 
+                            && container != null
                               && container.getName().equals(_portName)) {
                         // What if the multiport is false?
                         _foundChange = false;

@@ -25,7 +25,7 @@ Chop star except now the offset parameter is
 determined at run time through a control input.
 
  @Author S. Ha
- @Version $Id$, based on version 1.6 of /users/ptolemy/src/domains/cgc/stars/CGCChopVarOffset.pl, from Ptolemy Classic 
+ @Version $Id$, based on version 1.6 of /users/ptolemy/src/domains/cgc/stars/CGCChopVarOffset.pl, from Ptolemy Classic
  @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCChopVarOffset extends CGCChop {
@@ -44,7 +44,7 @@ public class CGCChopVarOffset extends CGCChop {
         offsetCntrl = new ClassicPort(this, "offsetCntrl", true, false);
         offsetCntrl.setTypeEquals(BaseType.INT);
 
-/*     
+/*
 noInternalState();
 		offset.setAttributes(A_NONCONSTANT|A_NONSETTABLE);
 */
@@ -63,18 +63,18 @@ noInternalState();
     /**
      */
     public int  myExecTime() {
-        
+
 return super.myExecTime() + 8;
      }
 
     /**
      */
     public void  generateFireCode() {
-        
+
 addCode(decl); 			// look at CGCChop star
-		addCode(init); 
-		addCode(range); 
-		if (input.resolvedType() == COMPLEX) 
+		addCode(init);
+		addCode(range);
+		if (input.resolvedType() == COMPLEX)
 		  addCode(complexOut); 		// look at CGCChop star
 		else
 		  addCode(nonComplexOut); 	// look at CGCChop star
@@ -82,10 +82,10 @@ addCode(decl); 			// look at CGCChop star
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
-    public String init = 
+    public String init =
         "	$ref(offset) = $ref(offsetCntrl);\n";
 
-    public String range = 
+    public String range =
         "        int hiLim = $val(nwrite) - $ref(offset) - 1;\n"
         + "        if (hiLim >= $val(nwrite)) hiLim = $val(nwrite) - 1;\n"
         + "        else if ($val(use_past_inputs)) hiLim = $val(nwrite) - 1;\n"

@@ -444,7 +444,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
         // normalized to integers, but we still represent them
         // as fractions. After the _normalizeFirings(), they
         // are saved as integers.
-        
+
         //int lcm = 1;
 
         if (_debugging && VERBOSE) {
@@ -465,9 +465,9 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
         if (_debugging && VERBOSE) {
             _debug("lcm = " + (new Integer(lcm)).toString());
         }
-        
+
         */
-        
+
         Fraction lcmFraction = new Fraction(vectorizationFactor);
 
         // Go back through and multiply by the lcm we just found, which
@@ -549,13 +549,13 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
         // The pool of actors that have their firingsPerIteration set,
         // but have not had their ports explored yet.
         LinkedList pendingActors = new LinkedList();
-        
+
         // Set of actors that belong to the same cluster.
         Set clusteredActors = new HashSet();
         // Set of external ports that are conneted to
         // actors of the same cluster.
         Set clusteredExternalPorts = new HashSet();
-        
+
         // Initialize remainingActors to contain all the actors we were given.
         remainingActors.addAll(actorList);
 
@@ -590,7 +590,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
         // on one island before firing actors on another
         // island. However, the order of execution within an
         // island should be correct.
-            
+
 
         while (!remainingActors.isEmpty()) {
             clusteredActors.clear();
@@ -619,12 +619,12 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                             clusteredActors, clusteredExternalPorts);
                 }
             }
-            // Now we have _clusteredActors, which contains actors in 
+            // Now we have _clusteredActors, which contains actors in
             // one cluster (they are connected). Find the LCM of their
-            // denominator and normalize their firings. This means firings 
+            // denominator and normalize their firings. This means firings
             // of actors are only normalized within their cluster.
             int lcm = 1;
-            for (Iterator actors = clusteredActors.iterator(); 
+            for (Iterator actors = clusteredActors.iterator();
                 actors.hasNext();) {
                 Actor currentActor = (Actor)actors.next();
                 Fraction fraction =
@@ -645,7 +645,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                             "Failed to properly perform"
                             + " fraction normalization.");
                 }
-                entityToFiringsPerIteration.put(currentActor, repetitions);     
+                entityToFiringsPerIteration.put(currentActor, repetitions);
             }
             for (Iterator externalPorts = clusteredExternalPorts.iterator();
                     externalPorts.hasNext();) {
@@ -658,14 +658,14 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                             + " fraction normalization.");
                 }
                 externalRates.put(port, rate);
-            } 
+            }
             clusteredActors.clear();
             clusteredExternalPorts.clear();
             if (!allowDisconnectedGraphs) {
                 break;
             }
         }
-        
+
         if (!remainingActors.isEmpty()) {
             // If there are any actors left that we didn't get to, then
             // this is not a connected graph, and we throw an exception.
@@ -898,7 +898,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
             rateVariables.add(variable);
         }
     }
-        
+
     /** Search the given list of actors for one that contains at least
      *  one port that has zero rate.
      *
@@ -1044,7 +1044,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
 
         Director director = (Director)getContainer();
         CompositeActor model = (CompositeActor)director.getContainer();
-        
+
         // Get the rate of this port.
         int currentRate;
         if (currentActor == model) {
@@ -1052,7 +1052,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
         } else {
             currentRate = DFUtilities.getRate(currentPort);
         }
-        
+
         // Port rates of less than zero are not valid.
         if (currentRate < 0) {
             throw new NotSchedulableException(
@@ -1862,9 +1862,9 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
 
     private Map _externalRates =
     new TreeMap(new DFUtilities.NamedObjComparator());
-    
+
     //private Set _clusteredActors = new HashSet();
-    
+
     //private Set _clusteredExternalPorts = new HashSet();
 
     // The list of rate variables that this scheduler is listening to

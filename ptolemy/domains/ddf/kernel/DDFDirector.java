@@ -108,8 +108,8 @@ import ptolemy.kernel.util.Workspace;
    else if (D != 0) fire minimax(D)
    else deadlocked.
    </pre>
-   The function "minimax(D)" returns a subset of D with the smallest maximum 
-   number of tokens on their output channels which satisfy the demand of 
+   The function "minimax(D)" returns a subset of D with the smallest maximum
+   number of tokens on their output channels which satisfy the demand of
    destination actors.
    <p>
    Based on DDFSimpleSched in Ptolemy Classic, by Edward Lee.
@@ -515,20 +515,20 @@ public class DDFDirector extends Director {
      */
     public String[] suggestedModalModelDirectors() {
         // This method does not call the method defined in the super class,
-        // because this method provides complete new information. 
-        // Default is a NonStrictFSMDirector, while FSMDirector is also 
+        // because this method provides complete new information.
+        // Default is a NonStrictFSMDirector, while FSMDirector is also
         // in the array.
-        String[] defaultSuggestions = new String[4]; 
-        defaultSuggestions[0] = 
+        String[] defaultSuggestions = new String[4];
+        defaultSuggestions[0] =
             "ptolemy.domains.fsm.kernel.MultirateFSMDirector";
-        defaultSuggestions[1] = 
+        defaultSuggestions[1] =
             "ptolemy.domains.hdf.kernel.HDFFSMDirector";
         defaultSuggestions[2] = "ptolemy.domains.fsm.kernel.FSMDirector";
-        defaultSuggestions[3] = 
+        defaultSuggestions[3] =
             "ptolemy.domains.fsm.kernel.NonStrictFSMDirector";
         return defaultSuggestions;
     }
-    
+
     /** Override the base class method to transfer enough tokens manually
      *  specified in the tokenConsumptionRate parameter of the port (the
      *  default is 1) to complete an internal iteration.  If there are not
@@ -827,9 +827,9 @@ public class DDFDirector extends Director {
                     }
                     if (farReceiver.size() >= tokenConsumptionRate) {
                         deferrable = true;
-                        
-                        // Here we find the maximum of the token numbers for 
-                        // the actor's output channels which satisfy the demand 
+
+                        // Here we find the maximum of the token numbers for
+                        // the actor's output channels which satisfy the demand
                         // of destination actors while checking deferrability.
                         // The advantage of this is that it only adds a small
                         // additional operation for now. If later on we need
@@ -839,15 +839,15 @@ public class DDFDirector extends Director {
                         // don't perform this additional operation. 2) We will
                         // not need this information if it turns out not all
                         // enabled actors are deferrable. Therefore another
-                        // approach is to perform this operation only when 
+                        // approach is to perform this operation only when
                         // needed, i.e., when all enabled actor are deferrable.
                         if (farReceiver.size() > maxSize) {
                             maxSize = farReceiver.size();
                         }
                     }
 
-                    
-                    
+
+
                 }
         }
 
@@ -871,7 +871,7 @@ public class DDFDirector extends Director {
             throws IllegalActionException {
         Iterator inputPorts = actor.inputPortList().iterator();
         while (inputPorts.hasNext()) {
-            IOPort inputPort = (IOPort)inputPorts.next();            
+            IOPort inputPort = (IOPort)inputPorts.next();
             int[] rate = _getTokenConsumptionRate(inputPort);
             for (int i = 0; i < inputPort.getWidth(); i++) {
                 if (!inputPort.hasToken(i, rate[i])) {

@@ -92,9 +92,9 @@ public class TokenTypeAnalysis extends FastForwardFlowAnalysis {
     public TokenTypeAnalysis(SootMethod method, CompleteUnitGraph g) {
         super(g);
         _method = method;
-        NamedObj thisBinding = 
+        NamedObj thisBinding =
             ModelTransformer.getObjectForClass(method.getDeclaringClass());
-        _namedObjAnalysis = 
+        _namedObjAnalysis =
             new NamedObjAnalysis(method, thisBinding);
         doAnalysis();
         // Ensure that the analysis can get collected.
@@ -479,7 +479,7 @@ public class TokenTypeAnalysis extends FastForwardFlowAnalysis {
         return tokenType != null;
     }
 
-    // Update the type of the locals or values in leftOp according to the 
+    // Update the type of the locals or values in leftOp according to the
     private void _updateTypeInAssignment(
             Value leftOp, Object rightType, Map out) {
         if (leftOp instanceof Local) {

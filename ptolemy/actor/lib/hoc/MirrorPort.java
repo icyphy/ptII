@@ -115,7 +115,7 @@ public class MirrorPort extends TypedIOPort {
         // NOTE: The association is not propagated to derived
         // objects because we explicitly propagate all the changes.
     }
-    
+
     /** Override the base class so that if the container is being
      *  set to null, then the associated port is also deleted
      *  (via a change request).  Note that if the container
@@ -216,7 +216,7 @@ public class MirrorPort extends TypedIOPort {
      *  if there is one.
      */
     public void setName(String name)
-            throws IllegalActionException, NameDuplicationException {        
+            throws IllegalActionException, NameDuplicationException {
         super.setName(name);
         if (_associatedPort != null
                 && !_associatedPort.getName().equals(name)) {
@@ -262,7 +262,7 @@ public class MirrorPort extends TypedIOPort {
 
     /** The associated port, if there is one. */
     private MirrorPort _associatedPort = null;
-    
+
     /** Flag indicating that we are setting the associated port. */
     private boolean _settingAssociatedPort = false;
 }

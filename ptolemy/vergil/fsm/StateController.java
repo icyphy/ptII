@@ -145,7 +145,7 @@ public class StateController extends AttributeController {
             // For some inexplicable reason, the I key doesn't work here.
             // So we use L.
             putValue(GUIUtilities.ACCELERATOR_KEY,
-                    KeyStroke.getKeyStroke(KeyEvent.VK_L, 
+                    KeyStroke.getKeyStroke(KeyEvent.VK_L,
                             Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
         }
         public void actionPerformed(ActionEvent e) {
@@ -205,7 +205,7 @@ public class StateController extends AttributeController {
                 } else {
                     // NOTE: This code is the same as in
                     // IconController.IconRenderer.
-                    
+
                     // NOTE: This used to directly create an XMLIcon within
                     // the container "object". However, this is not cosher,
                     // since we may not be able to get write access on the

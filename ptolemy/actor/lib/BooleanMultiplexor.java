@@ -41,7 +41,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// BooleanMultiplexor
 /**
    A type polymorphic multiplexor with boolean valued select.
-   <p>If any input port has no token, the prefire method returns false and 
+   <p>If any input port has no token, the prefire method returns false and
    the fire method is not called. Tokens are only consumed in the fire method,
    where exactly one token is consumed from each input port, and one
    of the tokens from either <i>trueInput</i> or <i>falseInput</i> is sent
@@ -49,10 +49,10 @@ import ptolemy.kernel.util.NameDuplicationException;
    is determined by the <i>select</i> input, which must be a boolean value.
    Because tokens are immutable, the same Token
    is sent to the output, rather than a copy.
-   The <i>trueInput</i> and <i>falseInput</i> port may receive Tokens of 
+   The <i>trueInput</i> and <i>falseInput</i> port may receive Tokens of
    any type.
    <p> This actor is different from the BooleanSelect actor, which consumes
-   one token from the control input and another token from either the 
+   one token from the control input and another token from either the
    trueInput or the falseInput in each firing.
 
    @author Steve Neuendorffer

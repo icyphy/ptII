@@ -135,7 +135,7 @@ public class AttributeValueAttribute extends AbstractTextAttribute
      */
     public void addValueListener(ValueListener listener) {
     }
-    
+
     /** Return the default value of this attribute, if there is
      *  one, or null if there is none.
      *  @return The default value of this attribute, or null
@@ -171,7 +171,7 @@ public class AttributeValueAttribute extends AbstractTextAttribute
      */
     public void removeValueListener(ValueListener listener) {
     }
-    
+
     /** Set the value of the attribute by giving some expression.
      *  In some implementations, the listeners and the container will
      *  be notified immediately.  However, some implementations may
@@ -208,7 +208,7 @@ public class AttributeValueAttribute extends AbstractTextAttribute
     ///////////////////////////////////////////////////////////////////
     ////                        protected methods                  ////
 
-    protected void _setAttributeName(String attributeName) 
+    protected void _setAttributeName(String attributeName)
             throws IllegalActionException {
         NamedObj container = (NamedObj)getContainer();
         if (container != null) {
@@ -228,7 +228,7 @@ public class AttributeValueAttribute extends AbstractTextAttribute
         }
         _icon.setText(_getText());
     }
-    
+
     /** Return the a new string that contains the expression of the
      *  referred to attribute.
      *  @return A new shape.
@@ -238,7 +238,7 @@ public class AttributeValueAttribute extends AbstractTextAttribute
         try {
             if (container != null) {
                 if (_attribute instanceof Variable) {
-                    String value = 
+                    String value =
                         ((Variable)_attribute).getToken().toString();
                     String truncated = value;
                     int width = _displayWidth;

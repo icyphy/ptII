@@ -41,9 +41,9 @@ import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// HuffmanCoder
-/** 
-   Given a probability distribution and the corresponding alphabet, 
-   decode the input using Huffman code and send the result to the output 
+/**
+   Given a probability distribution and the corresponding alphabet,
+   decode the input using Huffman code and send the result to the output
    port. Its base class HuffmanBasic generates the code book.
    The decoder simply decode the input according to this code book.
 
@@ -79,7 +79,7 @@ public class HuffmanDecoder extends HuffmanBasic {
 
     //////////////////////////////////////////////////////////////////
     ////                   public methods                         ////
-    
+
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then creates new ports and parameters.
      *  @param workspace The workspace for the new object.
@@ -127,7 +127,7 @@ public class HuffmanDecoder extends HuffmanBasic {
             }
         }
     }
-    
+
     /** Initialize the actor. set the current input string to be empty.
      */
     public void initialize() throws IllegalActionException {
@@ -137,7 +137,7 @@ public class HuffmanDecoder extends HuffmanBasic {
 
     ////////////////////////////////////////////////////////////
     ////                   private variables                ////
-    
+
     // The current input string, concatenated by input booleans.
     private String _code = "";
 

@@ -51,13 +51,13 @@ ParseTreeEvaluatorForGuardExpression.  The common usage would be
 like:
 
 <p> <i>Construct a relation list for a transition with the first
-argument of the constructor is a transition.</i> 
-<pre> 
+argument of the constructor is a transition.</i>
+<pre>
 _relationList = new RelationList(this, "relationList");
 </pre>
 
-<p> <i>Associate the relation list with the 
-ParseTreeEvaluatorForGuardExpression</i> 
+<p> <i>Associate the relation list with the
+ParseTreeEvaluatorForGuardExpression</i>
 <pre>
 _parseTreeEvaluator = new ParseTreeEvaluatorForGuardExpression(_relationList);
 </pre>
@@ -143,7 +143,7 @@ public class RelationList extends Attribute {
     }
 
     /** Return true if there is some event caused by some relation
-     *  type change.  
+     *  type change.
      *  @return True If there is some event detected.
      */
     public boolean hasEvent() {

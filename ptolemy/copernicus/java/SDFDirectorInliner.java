@@ -116,7 +116,7 @@ public class SDFDirectorInliner implements DirectorInliner {
                 iterationLimit = token.intValue();
             }
         }
-    
+
         // Inline the director
         {
             // populate the preinitialize method
@@ -141,14 +141,14 @@ public class SDFDirectorInliner implements DirectorInliner {
                             thisLocal, postfireReturnsField),
                     postfireReturnsLocal),
                     insertPoint);
-            
+
             // Add code to the beginning of the preinitialize method that
             // initializes the attributes.
 //             ModelTransformer.initializeAttributesBefore(body, insertPoint,
 //                     model, body.getThisLocal(),
 //                     model, body.getThisLocal(),
 //                     modelClass);
-     
+
             for (Iterator entities = model.deepEntityList().iterator();
                  entities.hasNext();) {
                 Entity entity = (Entity)entities.next();
@@ -177,7 +177,7 @@ public class SDFDirectorInliner implements DirectorInliner {
             //                   insertPoint);
         }
 
-        SootField iterationField = 
+        SootField iterationField =
             new SootField("_iteration", IntType.v());
         modelClass.addField(iterationField);
 
@@ -199,7 +199,7 @@ public class SDFDirectorInliner implements DirectorInliner {
                                         iterationField),
                                 IntConstant.v(0)),
                         insertPoint);
-            }                
+            }
 
             Local actorLocal = Jimple.v().newLocal("actor", actorType);
             body.getLocals().add(actorLocal);
@@ -265,7 +265,7 @@ public class SDFDirectorInliner implements DirectorInliner {
             Local actorLocal = Jimple.v().newLocal("actor", actorType);
             body.getLocals().add(actorLocal);
 
-            Local postfireReturnsLocal = 
+            Local postfireReturnsLocal =
                 Jimple.v().newLocal("postfireReturns", BooleanType.v());
             body.getLocals().add(postfireReturnsLocal);
 
@@ -286,7 +286,7 @@ public class SDFDirectorInliner implements DirectorInliner {
                 Local parameterLocal = Jimple.v().newLocal("parameter",
                         fieldType);
                 SootClass fieldClass = fieldType.getSootClass();
-                
+
                 body.getLocals().add(parameterLocal);
                 // Get a reference to the port parameter.
                 units.insertBefore(
@@ -306,7 +306,7 @@ public class SDFDirectorInliner implements DirectorInliner {
             // FIXME: This is the quiescent point where parameters
             // reconfigured as a result of port parameters should be
             // evaluated.
-            
+
             // Transfer Inputs from input ports.
             for (Iterator ports = model.inputPortList().iterator();
                  ports.hasNext();) {
@@ -316,7 +316,7 @@ public class SDFDirectorInliner implements DirectorInliner {
                 }
                 int rate;
                 rate = DFUtilities.getTokenConsumptionRate(port);
-               
+
                 String fieldName = ModelTransformer.getFieldNameForPort(
                         port, model);
                 SootField field = modelClass.getFieldByName(fieldName);
@@ -512,7 +512,7 @@ public class SDFDirectorInliner implements DirectorInliner {
                 IOPort port = (IOPort)ports.next();
                 int rate;
                 rate = DFUtilities.getTokenProductionRate(port);
-               
+
                 String fieldName = ModelTransformer.getFieldNameForPort(
                         port, model);
                 SootField field = modelClass.getFieldByName(fieldName);
@@ -658,7 +658,7 @@ public class SDFDirectorInliner implements DirectorInliner {
                         insertPoint);
                 units.insertBefore(endStmt, insertPoint);
             }
-            
+
             units.insertBefore(Jimple.v().newReturnStmt(postfireReturnsLocal),
                     insertPoint);
             LocalSplitter.v().transform(body, phaseName + ".lns");

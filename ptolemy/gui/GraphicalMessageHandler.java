@@ -53,9 +53,9 @@ import ptolemy.util.StringUtilities;
    is not specified, then the display window is centered on the screen,
    but iconifying and deiconifying may not work as desired.
    <p>
-   
+
    <p>Note that to display a window with an error message, this graphical
-   handler must be registered by calling 
+   handler must be registered by calling
    {@link ptolemy.gui.MessageHandler#setMessageHandler(MessageHandler)}.
    For example:
    <pre>

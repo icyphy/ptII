@@ -64,24 +64,24 @@ import ptolemy.moml.MoMLParser;
 /**
    This is an atomic actor that filter an array received at its <i>inputArray</i>
    input port via applying a model specified by a file or URL. The specified model
-   evaluated on each input array element should return a boolean value and the 
+   evaluated on each input array element should return a boolean value and the
    output is an array that only contains elements satisfying the specified model
-   (the evaluated result is true).  
+   (the evaluated result is true).
    <p>
    Instead of output all the satisfied elements in the input array, the parameter
-   <i>maxOutputLength</i> can be used to specify how many elements this actor 
-   should only output. If the specified length is larger than the number of 
-   satisfied elements, it will ignore the specified length and only output 
+   <i>maxOutputLength</i> can be used to specify how many elements this actor
+   should only output. If the specified length is larger than the number of
+   satisfied elements, it will ignore the specified length and only output
    all the satisfied elements.
    <p>
    FIXME: what should be the correct behavior if no enough elements to output?
    <p>
    FIXME: make a convention, say when the maxOutputLength is -1, for output
    all the satisfied elements?
-   
+
    FIXME: should add a ModelToken and an input port for receiving the filter
    model. Create a composite actor for providing a ModelToken from its inside
-   model. 
+   model.
    <P>
 
    @author Yang Zhao, Ilkay Altintas
@@ -97,7 +97,7 @@ public class ApplyFilterOverArray
 
     /** Construct a ApplyFilterOverArray with a name and a container.
      *  The container argument must not be null, or a
-     *  NullPointerException will be thrown.  
+     *  NullPointerException will be thrown.
      *  If the name argument is null, then the name is set to the empty string.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -109,7 +109,7 @@ public class ApplyFilterOverArray
     public ApplyFilterOverArray(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         inputArray = new TypedIOPort(this, "inputArray", true, false);
         inputArray.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
         outputArray = new TypedIOPort(this, "outputArray", false, true);
@@ -124,16 +124,16 @@ public class ApplyFilterOverArray
     ///////////////////////////////////////////////////////////////////
     ////                       parameters                          ////
     /** The input port for an input array. It is an ArrayType.
-     * 
+     *
      */
     public TypedIOPort inputArray;
-    
+
     /** The output port for output the filted array. It has the same
      *  type as the inputArray port.
      */
-    public TypedIOPort outputArray;   
-   
-    /** The max amount of elements in the output array. 
+    public TypedIOPort outputArray;
+
+    /** The max amount of elements in the output array.
      */
     public Parameter maxOutputLength;
 
@@ -255,12 +255,12 @@ public class ApplyFilterOverArray
     /** Execute the filter model on each input array element until it gets
      *  as many elements as specified by the <i>maxOutputLength</i> parameter.
      *  If there are no enough elements satisfying the filter model, then
-     *  only output all the satisfied elements. 
+     *  only output all the satisfied elements.
      *  Before running the filter model, this method update the filter model's
      *  <i>inputArrayElement</i> parameter for each array element. After
      *  running the filter model, this method looks for the <evaluatedValue</i>
      *  parameter and keep the input element if the evaluated value is ture,
-     *  otherwise, skip the element. 
+     *  otherwise, skip the element.
      *  @exception IllegalActionException If there is no director, or if
      *   the director's action methods throw it.
      */
@@ -302,14 +302,14 @@ public class ApplyFilterOverArray
                 } catch (KernelException ex) {
                     throw new IllegalActionException(this, ex,
                             "Execution failed.");
-                }       
+                }
                 if (_getResult()) {
                     i++;
                     list.add(t);
                 }
                 j++;
             }
-            
+
             Token[] result = new Token[list.size()];
             for (i = 0; i < list.size(); i++) {
                 result[i] = (Token) list.get(i);
@@ -394,7 +394,7 @@ public class ApplyFilterOverArray
     ///////////////////////////////////////////////////////////////////
     ////                        private methods                    ////
 
-    
+
     private void _updateParameter(Token t) throws IllegalActionException {
 
                 Attribute attribute = _model.getAttribute("inputArrayElement");
@@ -411,7 +411,7 @@ public class ApplyFilterOverArray
                     ((Settable) attribute).setExpression(t.toString());
                 }
     }
-    
+
     private boolean _getResult() throws IllegalActionException {
 
                 Attribute attribute = _model.getAttribute("evaluatedValue");
@@ -421,8 +421,8 @@ public class ApplyFilterOverArray
                 }  else if (attribute instanceof Settable) {
                     BooleanToken t = new BooleanToken(
                             ((Settable) attribute).getExpression());
-                    return t.booleanValue();        
-                }                
+                    return t.booleanValue();
+                }
                 return false;
     }
 
@@ -438,9 +438,9 @@ public class ApplyFilterOverArray
     /** The manager currently managing execution. */
     private Manager _manager = null;
 
-   /** the output array length if there are enough elements satisfying 
+   /** the output array length if there are enough elements satisfying
     * the filter model.
-    */ 
+    */
     private int _outputLength = 1;
 
     // Error from a previous run.

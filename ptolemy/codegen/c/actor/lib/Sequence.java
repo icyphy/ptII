@@ -42,9 +42,9 @@ import ptolemy.kernel.util.IllegalActionException;
    @Pt.AcceptedRating Red (eal)
 */
 public class Sequence extends CCodeGeneratorHelper {
-    
-    /** FIXME 
-     *  
+
+    /** FIXME
+     *
      */
     public Sequence(ptolemy.actor.lib.Sequence actor) {
         super(actor);
@@ -52,15 +52,15 @@ public class Sequence extends CCodeGeneratorHelper {
 
     ///////////////////////////////////////////////////////////////////
     ////                     public methods                        ////
-    
-    public void  generateFireCode(StringBuffer stream) 
+
+    public void  generateFireCode(StringBuffer stream)
             throws IllegalActionException {
-        
-        ptolemy.actor.lib.Sequence actor = 
+
+        ptolemy.actor.lib.Sequence actor =
             (ptolemy.actor.lib.Sequence)getComponent();
-        
+
         StringBuffer tmpStream = new StringBuffer();
-        
+
         if (actor.enable.getWidth() == 0) {
             tmpStream.append(
                       "if (currentIndex < $size(values)) {\n"
@@ -75,7 +75,7 @@ public class Sequence extends CCodeGeneratorHelper {
                     + "    outputProduced = 1;\n"
                     + "}\n");
         }
-        
+
         tmpStream.append(
                   "if (outputProduced) {\n"
                 + "    outputProduced = 0;\n"
@@ -89,27 +89,27 @@ public class Sequence extends CCodeGeneratorHelper {
                 + "        }\n"
                 + "    }\n"
                 + "}\n");
-        
-        
+
+
         _codeBlock = tmpStream.toString();
         stream.append(processCode(_codeBlock));
     }
-    
+
     public String generateInitializeCode()
             throws IllegalActionException {
         return processCode(_initBlock);
 }
 
-   
+
     ///////////////////////////////////////////////////////////////////
     ////                     protected variables                   ////
 
     protected String _codeBlock;
-    
+
     // FIXME: This is not going to work since currentIndex
     // and outputProduced are not defined in java as variables.
     // E.g., $ref(ouput, currentIndex) does not make sense to java.
-    protected String _initBlock = 
+    protected String _initBlock =
               "int currentIndex = 0;\n"
-            + "int outputProduced = 0;\n";    
+            + "int outputProduced = 0;\n";
 }

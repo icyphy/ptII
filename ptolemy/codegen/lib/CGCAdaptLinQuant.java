@@ -36,7 +36,7 @@ value, and the index of the quantization level on the <i>stepLevel</i> port
 as a non-negative integer between 0 and 2^<i>bits</i> - 1, inclusive.
 
  @Author William Chen
- @Version $Id$, based on version 1.5 of /users/ptolemy/src/domains/cgc/stars/CGCAdaptLinQuant.pl, from Ptolemy Classic 
+ @Version $Id$, based on version 1.5 of /users/ptolemy/src/domains/cgc/stars/CGCAdaptLinQuant.pl, from Ptolemy Classic
  @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCAdaptLinQuant extends ClassicCGCActor {
@@ -67,7 +67,7 @@ public class CGCAdaptLinQuant extends ClassicCGCActor {
         bits = new Parameter(this, "bits");
         bits.setExpression("8");
 
-/* 
+/*
 */
     }
     ///////////////////////////////////////////////////////////////////
@@ -109,20 +109,20 @@ public class CGCAdaptLinQuant extends ClassicCGCActor {
     /**
      */
     public void  generatePreinitializeCode() {
-        
+
 addInclude("<stdio.h>");
      }
 
     /**
      */
     public void  generateFireCode() {
-        
-addCode(adaptlinquant); 
+
+addCode(adaptlinquant);
      }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
-    public String adaptlinquant = 
+    public String adaptlinquant =
         "		double stepsize = (double) $ref(inStep);\n"
         + "		int numbits, twoPowerB, quantLevel;\n"
         + "		double high, low, in;\n"

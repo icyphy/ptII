@@ -111,7 +111,7 @@ public class TypeSpecializerAnalysis {
      */
     public TypeSpecializerAnalysis(SootClass theClass, Set unsafeLocals) {
         if (_debug) System.out.println("Starting type specialization");
-        
+
         _unsafeLocals = unsafeLocals;
 
         _solver = new InequalitySolver(new JavaTypeLattice());
@@ -359,7 +359,7 @@ public class TypeSpecializerAnalysis {
 //         System.out.println("type1 = " + type1);
 //         System.out.println("type2 = " + type2);
 //         System.out.println("result = " + TypeLattice.compare(type1, type2));
-        
+
         // Only inline if both are concrete types.
         if (type1.isInstantiable() && type2.isInstantiable()) {
             box.setValue(IntConstant.v(TypeLattice.compare(type1, type2)));
@@ -391,7 +391,7 @@ public class TypeSpecializerAnalysis {
 
     private void _collectConstraints(SootClass entityClass, boolean debug) {
         if (debug) System.out.println("collecting constraints for " + entityClass);
-      
+
         // Loop through all the methods.
         for (Iterator methods = entityClass.getMethods().iterator();
              methods.hasNext();) {
@@ -487,7 +487,7 @@ public class TypeSpecializerAnalysis {
                 // likely not correct.  FIXME: hack to get around the
                 // bogus type lattice.  This should be an exception.
                 System.out.println("Warning! Resolved type of " + object
-                        + " to " + newType 
+                        + " to " + newType
                         + " which is more general than the old type " + type);
                 newType = tokenType;
             }
@@ -587,7 +587,7 @@ public class TypeSpecializerAnalysis {
                                PtolemyUtilities.typeClass)) {
                 if (methodName.equals("convert")) {
                     try {
-                        ptolemy.data.type.Type baseType = 
+                        ptolemy.data.type.Type baseType =
                             PtolemyUtilities.getTypeValue(
                                 method, (Local)r.getBase(),
                                 unit, localDefs, localUses);
@@ -616,7 +616,7 @@ public class TypeSpecializerAnalysis {
                         arrayType.getElementTypeTerm();
                     _addInequality(debug, solver, firstArgTerm,
                             elementTerm);
-                    _addInequality(debug, solver, elementTerm, 
+                    _addInequality(debug, solver, elementTerm,
                             firstArgTerm);
                     return baseTerm;
                 } else if (methodName.equals("one") ||
@@ -658,14 +658,14 @@ public class TypeSpecializerAnalysis {
                     //                     _addInequality(debug, solver, baseTerm,
                     //                             returnValueTerm);
                     InequalityTerm returnValueTerm = new MonotonicFunction() {
-                            public Object getValue() 
+                            public Object getValue()
                                     throws IllegalActionException{
                                 if (firstArgTerm.getValue().equals(
                                            TypeLattice.lattice().bottom()) ||
                                         finalBaseTerm.getValue().equals(
                                                 TypeLattice.lattice().bottom())) {
                                     return TypeLattice.lattice().bottom();
-                                } 
+                                }
                                 return TypeLattice.lattice().leastUpperBound(
                                         firstArgTerm.getValue(),
                                         finalBaseTerm.getValue());
@@ -678,7 +678,7 @@ public class TypeSpecializerAnalysis {
                                 if (finalBaseTerm.isSettable()) {
                                     list.add(finalBaseTerm);
                                 }
-                                InequalityTerm terms[] = 
+                                InequalityTerm terms[] =
                                     (InequalityTerm []) list.toArray(
                                             new InequalityTerm[list.size()]);
                                 return terms;
@@ -849,11 +849,11 @@ public class TypeSpecializerAnalysis {
             // base of the array.
             return (InequalityTerm)objectToInequalityTerm.get(
                     ((ArrayRef)value).getBase());
-            
+
             // If we call getElement or arrayValue on an array
             // token, then the returned type is the element
             // type of the array.
-//             InequalityTerm baseTerm = 
+//             InequalityTerm baseTerm =
 //                 (InequalityTerm)objectToInequalityTerm.get(
 //                         ((ArrayRef)value).getBase());
 //             ptolemy.data.type.ArrayType arrayType =
@@ -1112,9 +1112,9 @@ public class TypeSpecializerAnalysis {
         private boolean _fixed = false;
     }
 
-    public static class JavaTypeLattice 
+    public static class JavaTypeLattice
         implements ptolemy.graph.CPO {
-        
+
         /** Return the bottom element of this CPO.  The bottom element
          *  is the element in the CPO that is lower than all the other
          *  elements.
@@ -1134,7 +1134,7 @@ public class TypeSpecializerAnalysis {
          *   specified Objects is not an element of this CPO.
          */
         public int compare(Object e1, Object e2) {
-            if (e1.equals(e2)) { 
+            if (e1.equals(e2)) {
                 return SAME;
             } else if (((ptolemy.data.type.Type)e1).isInstantiable() &&
                     !((ptolemy.data.type.Type)e1).equals(BaseType.GENERAL) &&
@@ -1145,7 +1145,7 @@ public class TypeSpecializerAnalysis {
                 return TypeLattice.lattice().compare(e1, e2);
             }
         }
-        
+
         /** Compute the down-set of an element in this CPO.
          *  The down-set of an element is the subset consisting of
          *  all the elements lower than or the same as the specified element.
@@ -1158,7 +1158,7 @@ public class TypeSpecializerAnalysis {
         public Object[] downSet(Object e) {
             throw new RuntimeException("not supported");
         }
-        
+
         /** Compute the greatest element of a subset.
          *  The greatest element of a subset is an element in the
          *  subset that is higher than all the other elements in the
@@ -1191,7 +1191,7 @@ public class TypeSpecializerAnalysis {
             return null;
         }
 
-        
+
         /** Compute the greatest lower bound (GLB) of two elements.
          *  The GLB of two elements is the greatest element in the CPO
          *  that is lower than or the same as both of the two elements.
@@ -1203,7 +1203,7 @@ public class TypeSpecializerAnalysis {
          *   specified Objects is not an element of this CPO.
          */
         public Object greatestLowerBound(Object e1, Object e2) {
-            if (e1.equals(e2)) { 
+            if (e1.equals(e2)) {
                 return e1;
             } else if (((ptolemy.data.type.Type)e1).isInstantiable() &&
                     !((ptolemy.data.type.Type)e1).equals(BaseType.GENERAL) &&
@@ -1270,7 +1270,7 @@ public class TypeSpecializerAnalysis {
             }
             return null;
         }
-        
+
         /** Compute the least upper bound (LUB) of two elements.
          *  The LUB of two elements is the least element in the CPO
          *  that is greater than or the same as both of the two elements.
@@ -1282,7 +1282,7 @@ public class TypeSpecializerAnalysis {
          *   specified Objects is not an element of this CPO.
          */
         public Object leastUpperBound(Object e1, Object e2) {
-            if (e1.equals(e2)) { 
+            if (e1.equals(e2)) {
                 return e1;
             } else if (((ptolemy.data.type.Type)e1).isInstantiable() &&
                     !((ptolemy.data.type.Type)e1).equals(BaseType.GENERAL) &&
@@ -1315,7 +1315,7 @@ public class TypeSpecializerAnalysis {
             }
             return returnValue;
         }
-        
+
         /** Return the top element of this CPO.
          *  The top element is the element in the CPO that is higher than
          *  all the other elements.
@@ -1325,7 +1325,7 @@ public class TypeSpecializerAnalysis {
         public Object top() {
             return TypeLattice.lattice().top();
         }
-        
+
         /** Compute the up-set of an element in this CPO.
          *  The up-set of an element is the subset consisting of
          *  all the elements higher than or the same as the specified element.
@@ -1338,7 +1338,7 @@ public class TypeSpecializerAnalysis {
         public Object[] upSet(Object e) {
             throw new RuntimeException("not supported");
         }
-        
+
     }
 
     private InequalitySolver _solver;

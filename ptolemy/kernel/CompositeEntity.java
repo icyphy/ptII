@@ -265,12 +265,12 @@ public class CompositeEntity extends ComponentEntity {
             throws CloneNotSupportedException {
         try {
             workspace().getReadAccess();
-            
+
             CompositeEntity newEntity = (CompositeEntity)super.clone(workspace);
-    
+
             newEntity._containedEntities = new NamedList(newEntity);
             newEntity._containedRelations = new NamedList(newEntity);
-    
+
             // Clone the contained relations.
             Iterator relations = relationList().iterator();
             while (relations.hasNext()) {
@@ -289,7 +289,7 @@ public class CompositeEntity extends ComponentEntity {
                             ex.getMessage());
                 }
             }
-    
+
             // Clone the contained classes.
             Iterator classes = classDefinitionList().iterator();
             while (classes.hasNext()) {
@@ -308,7 +308,7 @@ public class CompositeEntity extends ComponentEntity {
                             KernelException.stackTraceToString(ex));
                 }
             }
-    
+
             // Clone the contained entities.
             Iterator entities = entityList().iterator();
             while (entities.hasNext()) {
@@ -326,7 +326,7 @@ public class CompositeEntity extends ComponentEntity {
                             "Failed to clone a CompositeEntity: " +
                             KernelException.stackTraceToString(ex));
                 }
-    
+
                 // Clone the links of the ports of the cloned entities.
                 Iterator ports = entity.portList().iterator();
                 while (ports.hasNext()) {
@@ -358,7 +358,7 @@ public class CompositeEntity extends ComponentEntity {
                     }
                 }
             }
-    
+
             // Clone the inside links from the ports of this entity.
             Iterator ports = portList().iterator();
             while (ports.hasNext()) {
@@ -379,7 +379,7 @@ public class CompositeEntity extends ComponentEntity {
                     }
                 }
             }
-    
+
             return newEntity;
         } finally {
             workspace().doneReading();
@@ -1108,7 +1108,7 @@ public class CompositeEntity extends ComponentEntity {
             _workspace.doneWriting();
         }
     }
-    
+
     /** Return a name that is guaranteed to not be the name of
      *  any contained attribute, port, class, entity, or relation.
      *  In this implementation, the argument
@@ -1288,7 +1288,7 @@ public class CompositeEntity extends ComponentEntity {
             }
         }
     }
-    
+
     /** Return a description of the object.  The level of detail depends
      *  on the argument, which is an or-ing of the static final constants
      *  defined in the NamedObj class.  Lines are indented according to
@@ -1474,7 +1474,7 @@ public class CompositeEntity extends ComponentEntity {
 
     // The following are friendly to support the move* methods of
     // Relation and ComponentEntity.
-    
+
     /** List of contained entities. */
     NamedList _containedEntities = new NamedList(this);
 

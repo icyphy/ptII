@@ -83,17 +83,17 @@ public class NondeterministicMerge extends TypedCompositeActor  {
     public NondeterministicMerge(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        
+
         input = new TypedIOPort(this, "input", true, false);
         output = new TypedIOPort(this, "output", false, true);
 
         input.setMultiport(true);
         output.setTypeAtLeast(input);
-        
+
         channel = new TypedIOPort(this, "channel");
         channel.setOutput(true);
         channel.setTypeEquals(BaseType.INT);
-        
+
         // Add an attribute to get the port placed on the bottom.
         StringAttribute channelCardinal
                 = new StringAttribute(channel, "_cardinal");
@@ -103,7 +103,7 @@ public class NondeterministicMerge extends TypedCompositeActor  {
                 "<polygon points=\"-10,20 10,10 10,-10, -10,-20\" "
                 + "style=\"fill:red\"/>\n" +
                 "</svg>\n");
-        
+
         PNDirector director = new MergeDirector(this, "director");
     }
 
@@ -125,7 +125,7 @@ public class NondeterministicMerge extends TypedCompositeActor  {
      *  output came from. This has type int.
      */
     public TypedIOPort channel;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -138,7 +138,7 @@ public class NondeterministicMerge extends TypedCompositeActor  {
         if (port == input) {
             List containedActors = entityList();
             int numberOfContainedActors = containedActors.size();
-            
+
             // Create the contained actors to handle the inputs.
             int inputWidth = input.getWidth();
             for (int i = 0; i < inputWidth; i++) {
@@ -159,7 +159,7 @@ public class NondeterministicMerge extends TypedCompositeActor  {
                 } else {
                     try {
                         Actor localActor = new ChannelActor(i, this);
-                        
+
                         // Tell the manager to initialize the actor.
                         // NOTE: If the manager is null, then we can't
                         // possibly be executing, so we don't need to do
@@ -168,7 +168,7 @@ public class NondeterministicMerge extends TypedCompositeActor  {
                         if (manager != null && manager.getState() != Manager.IDLE) {
                             manager.requestInitialization(localActor);
                         }
-    
+
                         // NOTE: Probably don't want this overhead.
                         // ((NamedObj)localActor).addDebugListener(this);
                     } catch (KernelException e) {
@@ -178,7 +178,7 @@ public class NondeterministicMerge extends TypedCompositeActor  {
             }
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
@@ -192,7 +192,7 @@ public class NondeterministicMerge extends TypedCompositeActor  {
             _channelIndex = index;
             _channelValue = new IntToken(_channelIndex);
         }
-        
+
         // Override the base class to not export anything.
         public void exportMoML(Writer output, int depth, String name) {}
 
@@ -217,7 +217,7 @@ public class NondeterministicMerge extends TypedCompositeActor  {
                     // on anything else could cause deadlock.
                     synchronized (getDirector()) {
                         output.send(0, result);
-                        channel.send(0, _channelValue);                        
+                        channel.send(0, _channelValue);
                     }
                     if (_debugging) {
                         NondeterministicMerge.this._debug(
@@ -225,7 +225,7 @@ public class NondeterministicMerge extends TypedCompositeActor  {
                                 + _channelIndex
                                 + " to the output.");
                     }
-                }                
+                }
             } else {
             	// Input channel is no longer connected.
                 // We don't want to spin lock here, so we
@@ -246,7 +246,7 @@ public class NondeterministicMerge extends TypedCompositeActor  {
         private int _channelIndex;
         private IntToken _channelValue;
     }
-    
+
     /** Variant of the PNDirector for the NondeterministicMerge actor.
      */
     private class MergeDirector extends PNDirector {
@@ -324,6 +324,6 @@ public class NondeterministicMerge extends TypedCompositeActor  {
                         "NondeterministicMerge can't deadlock.");
             }
             return true;
-        }   
+        }
     }
 }

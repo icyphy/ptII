@@ -129,7 +129,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
                     + " created from the expression '" + init + "'");
         }
     }
-    
+
     /** Construct an empty ArrayToken with the element type of the
      *  specified token.
      *  @param elementPrototype A token specifying the element type.
@@ -176,7 +176,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
         //                     _value.length);
         if (_value.length > 0) {
             System.arraycopy(_value, 0, result, 0, _value.length);
-        } 
+        }
         return result;
     }
 
@@ -287,7 +287,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
         if (type1 instanceof ArrayType) {
             return new ArrayType(
                     TypeLattice.leastUpperBound(
-                            ((ArrayType)type1).getElementType(), 
+                            ((ArrayType)type1).getElementType(),
                             type2));
         } else {
             return new ArrayType(BaseType.UNKNOWN);
@@ -348,16 +348,16 @@ public class ArrayToken extends AbstractNotConvertibleToken {
     }
 
     /** Extract a non-contiguous subarray either by giving a boolean array
-     *  of the same length of this array describing which elements to 
-     *  include and which to include, or by giving an an array of an 
+     *  of the same length of this array describing which elements to
+     *  include and which to include, or by giving an an array of an
      *  arbitrary length giving the indices of elements from this array
      *  to include in the subarray.  An example of the first form is
      *  {"red","green","blue"}.extract({true,false,true}), which evaluates
      *  to {"red", "blue"}.  An example of the second form is
-     *  {"red","green","blue"}.extract({2,0,1,1}), which evalues to 
+     *  {"red","green","blue"}.extract({2,0,1,1}), which evalues to
      *  {"blue", "red", "green", "green"}.
      *  @param selection An ArrayToken describing the selection of elements
-     *   with which to form the subarray: either an array of integer 
+     *   with which to form the subarray: either an array of integer
      *   indices, or an array of boolean inclusion/exclusion choices.
      *  @return An ArrayToken containing the extracted subarray.
      *  @exception IllegalActionException If the argument type is invalid
@@ -387,10 +387,10 @@ public class ArrayToken extends AbstractNotConvertibleToken {
               // if we wanted to.
               int index = ((IntToken)(selection.getElement(i))).intValue();
               result.add(getElement(index));
-          } 
+          }
       } else {
           throw new IllegalActionException(
-              "The argument must be {boolean} or {int}."); 
+              "The argument must be {boolean} or {int}.");
       }
       if (result.size() > 0) {
           Token[] resultArray = new Token[result.size()];
@@ -478,7 +478,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      *   less than zero.
      *  @since Ptolemy II 4.1
      */
-    public ArrayToken subarray(int index, int count) 
+    public ArrayToken subarray(int index, int count)
             throws IllegalActionException {
         if (index < 0) {
             throw new IllegalActionException(
@@ -494,7 +494,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
         } else {
             return new ArrayToken(getElementPrototype());
         }
-    } 
+    }
 
     /** Return the value of this token as a string that can be parsed
      *  by the expression language to recover a token with the same value.
@@ -766,6 +766,6 @@ public class ArrayToken extends AbstractNotConvertibleToken {
     ////                         private variables                 ////
 
     private Token[] _value;
-    
+
     private Token _elementPrototype;
 }

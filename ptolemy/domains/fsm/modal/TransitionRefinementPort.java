@@ -145,9 +145,9 @@ public class TransitionRefinementPort extends RefinementPort {
         } finally {
             _mirrorDisable = disableStatus;
             _workspace.doneWriting();
-        }        
+        }
     }
-    
+
     /** Move this object to the first position in the list
      *  of attributes of the container. If  this object is already first,
      *  do nothing. Increment the version of the workspace.
@@ -191,7 +191,7 @@ public class TransitionRefinementPort extends RefinementPort {
         } finally {
             _mirrorDisable = disableStatus;
             _workspace.doneWriting();
-        }        
+        }
     }
 
     /** Move this object to the specified position in the list
@@ -239,8 +239,8 @@ public class TransitionRefinementPort extends RefinementPort {
         } finally {
             _mirrorDisable = disableStatus;
             _workspace.doneWriting();
-        }        
-        
+        }
+
     }
 
     /** Move this object to the last position in the list
@@ -282,7 +282,7 @@ public class TransitionRefinementPort extends RefinementPort {
         } finally {
             _mirrorDisable = disableStatus;
             _workspace.doneWriting();
-        }        
+        }
     }
 
     /** Move this object up by one in the list of
@@ -329,7 +329,7 @@ public class TransitionRefinementPort extends RefinementPort {
         } finally {
             _mirrorDisable = disableStatus;
             _workspace.doneWriting();
-        }        
+        }
     }
 
     /** Override the base class so that if the port is being removed

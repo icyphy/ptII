@@ -29,7 +29,7 @@ without causing an floating exception.
 The sign of the output is determined by the sign of the input.
 
  @Author E. A. Lee
- @Version $Id$, based on version 1.10 of /users/ptolemy/src/domains/cgc/stars/CGCReciprocal.pl, from Ptolemy Classic 
+ @Version $Id$, based on version 1.10 of /users/ptolemy/src/domains/cgc/stars/CGCReciprocal.pl, from Ptolemy Classic
  @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCReciprocal extends ClassicCGCActor {
@@ -54,7 +54,7 @@ public class CGCReciprocal extends ClassicCGCActor {
         magLimit = new Parameter(this, "magLimit");
         magLimit.setExpression("0.0");
 
-/*     
+/*
 // Indicate that there is no dynamically changing internal
 		// state, so the star can be parallelized.
 		noInternalState();
@@ -84,7 +84,7 @@ public class CGCReciprocal extends ClassicCGCActor {
     /**
      */
     public int  myExecTime() {
-        
+
 /* based on CG96Reciprocal */
 		if (((DoubleToken)((magLimit).getToken())).doubleValue() == 0.0) return 8;
 		else return 12;
@@ -93,19 +93,19 @@ public class CGCReciprocal extends ClassicCGCActor {
     /**
      */
     public void  generateFireCode() {
-        
+
 if (((DoubleToken)((magLimit).getToken())).doubleValue() == 0.0)
-		addCode(reciprocal); 
+		addCode(reciprocal);
 	    else
-		addCode(satrec); 
+		addCode(satrec);
      }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
-    public String reciprocal = 
+    public String reciprocal =
         "	$ref(output) = 1/$ref(input);\n";
 
-    public String satrec = 
+    public String satrec =
         "	if ($ref(input) == 0.0)\n"
         + "	    $ref(output) = $val(magLimit);\n"
         + "	else {\n"

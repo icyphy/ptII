@@ -85,8 +85,8 @@ public class NonInterruptibleTimer extends Timer {
      *  current input to null, indicating no further processing of the current
      *  input is necessary.
      *
-     *  @exception IllegalActionException If the delay value is negative, or 
-     *  this actor can not send tokens to ports, or this actor can not get 
+     *  @exception IllegalActionException If the delay value is negative, or
+     *  this actor can not send tokens to ports, or this actor can not get
      *  tokens from ports.
      */
     public void fire() throws IllegalActionException {
@@ -150,10 +150,10 @@ public class NonInterruptibleTimer extends Timer {
         if (_currentOutput != null) {
             _delayedOutputTokens.take();
         }
-        // If the delayedInputTokensList is not empty and the 
-        // delayedOutputTokens is empty (meaning the timer is ready to process 
-        // a new input), get the first input in the delayedInputTokensList, 
-        // put it into the delayedOutputTokens, and begin processing it. 
+        // If the delayedInputTokensList is not empty and the
+        // delayedOutputTokens is empty (meaning the timer is ready to process
+        // a new input), get the first input in the delayedInputTokensList,
+        // put it into the delayedOutputTokens, and begin processing it.
         // Schedule a refiring to produce the corresponding
         // output at the time: current time + delay specified by the input
         // being processed.

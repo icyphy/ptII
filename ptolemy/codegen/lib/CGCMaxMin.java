@@ -34,7 +34,7 @@ Also, the index of the output is provided (count starts at 0).
 This star is based on the MaxMin star in the CG56 domain.
 
  @Author Brian L. Evans Contributor(s): Chih-Tsung Huang
- @Version $Id$, based on version 1.7 of /users/ptolemy/src/domains/cgc/stars/CGCMaxMin.pl, from Ptolemy Classic 
+ @Version $Id$, based on version 1.7 of /users/ptolemy/src/domains/cgc/stars/CGCMaxMin.pl, from Ptolemy Classic
  @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCMaxMin extends ClassicCGCActor {
@@ -73,7 +73,7 @@ public class CGCMaxMin extends ClassicCGCActor {
         outputMagnitude = new Parameter(this, "outputMagnitude");
         outputMagnitude.setExpression("NO");
 
-/*     
+/*
 noInternalState();
 */
     }
@@ -121,7 +121,7 @@ noInternalState();
     /**
      */
     public void  generateInitializeCode() throws IllegalActionException {
-        
+
 if ( ((IntToken)((N).getToken())).intValue() <= 0 ) {
 		    throw new IllegalActionException(this,
 				    "Number of samples, N, must be positive.");
@@ -133,25 +133,25 @@ if ( ((IntToken)((N).getToken())).intValue() <= 0 ) {
     /**
      */
     public void  generateFireCode() {
-        
-addCode(macros); 
-		addCode(decl); 
-		addCode(initData); 
-		addCode(compareData); 
-		addCode(outputValue); 
+
+addCode(macros);
+		addCode(decl);
+		addCode(initData);
+		addCode(compareData);
+		addCode(outputValue);
      }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
-    public String macros = 
+    public String macros =
         "#define FABS(a)	( ((a) > 0.0) ? (a) : -(a) )\n";
 
-    public String decl = 
+    public String decl =
         "	double current, currentCmp, value, valueCmp;\n"
         + "	int i, minChangeFlag, valueIndex;\n"
         + "	int cmpMagFlag, maxflag;\n";
 
-    public String initData = 
+    public String initData =
         "	cmpMagFlag = $val(compareMagnitude);\n"
         + "	maxflag = $val(MAX);\n"
         + "	i = $val(N) - 1;\n"
@@ -159,7 +159,7 @@ addCode(macros);
         + "	valueCmp = cmpMagFlag ? FABS(value) : value;\n"
         + "	valueIndex = i;\n";
 
-    public String compareData = 
+    public String compareData =
         "	while ( i-- > 0 ) {\n"
         + "		current = $ref(input,i);\n"
         + "		currentCmp = cmpMagFlag ? FABS(current) : current;\n"
@@ -175,7 +175,7 @@ addCode(macros);
         + "		}\n"
         + "	}\n";
 
-    public String outputValue = 
+    public String outputValue =
         "	/* Output the value or the magnitude of the value */\n"
         + "	if ( $val(outputMagnitude) ) {\n"
         + "		if ( value < 0.0 ) value = -value;\n"

@@ -78,7 +78,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    <i>Handbook of Digital Signal Processing</i>, Academic Press, 1987.
 
    @Author Soonhoi Ha
-   @Version $Id$, based on version 1.14 of /users/ptolemy/src/domains/cgc/dsp/stars/CGCFIR.pl, from Ptolemy Classic 
+   @Version $Id$, based on version 1.14 of /users/ptolemy/src/domains/cgc/dsp/stars/CGCFIR.pl, from Ptolemy Classic
    @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCFIR extends ClassicCGCActor {
@@ -123,7 +123,7 @@ public class CGCFIR extends ClassicCGCActor {
         tapSize = new Parameter(this, "tapSize");
         tapSize.setExpression("0");
 
-        /* 
+        /*
          */
     }
     ///////////////////////////////////////////////////////////////////
@@ -218,13 +218,13 @@ public class CGCFIR extends ClassicCGCActor {
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
-    public String bodyDecl = 
+    public String bodyDecl =
     "	int phase, tapsIndex, inC, i;\n"
     + "	int outCount = $val(interpolation) - 1;\n"
     + "	int inPos;\n"
     + "	double out, tap;\n";
 
-    public String body = 
+    public String body =
     "	/* phase keeps track of which phase of the filter coefficients is used.\n"
     + "	   Starting phase depends on the decimationPhase state. */\n"
     + "	phase = $val(decimation) - $val(decimationPhase) - 1;   \n"

@@ -35,17 +35,17 @@ import ptolemy.kernel.util.IllegalActionException;
 
 /**
    A helper class for ptolemy.actor.lib.Ramp
-   
+
    @author Gang Zhou
    @version $Id$
    @since Ptolemy II 4.1
    @Pt.ProposedRating Red (eal)
-   @Pt.AcceptedRating Red (eal)  
+   @Pt.AcceptedRating Red (eal)
 */
 public class Ramp extends CCodeGeneratorHelper {
 
     /** FIXME
-     * 
+     *
      */
     public Ramp(ptolemy.actor.lib.Ramp actor) {
         super(actor);
@@ -58,12 +58,12 @@ public class Ramp extends CCodeGeneratorHelper {
                 throws IllegalActionException {
         stream.append(processCode(_codeBlock));
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected variable                ////
 
     // FIXME: the input to trigger is ignored.
-    protected String _codeBlock =    
+    protected String _codeBlock =
               "$ref(output) = $ref(init);\n"
             + "$ref(init) += $val(step);\n";
 }

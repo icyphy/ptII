@@ -288,7 +288,7 @@ public class ModelReference
                     if (!asFile.isFile()) {
                         throw new IllegalActionException(this,
                                 "Not a file: " + url);
-                    }                    
+                    }
                 }
                 // By specifying no workspace argument to the parser, we
                 // are asking it to create a new workspace for the referenced
@@ -654,7 +654,7 @@ public class ModelReference
 
     ///////////////////////////////////////////////////////////////////
     ////                        protected variables                ////
-    
+
     /** If a derived class calls modelFileOrURL.update() in its fire()
      *  method prior to calling super.fire(), then it should set this
      *  flag to true.

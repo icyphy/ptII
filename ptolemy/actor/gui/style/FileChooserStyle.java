@@ -159,7 +159,7 @@ public class FileChooserStyle extends ParameterEditorStyle {
             // The given attribute will not have a query in the dialog.
             return;
         }
-        
+
         query.addFileChooser(
                 name,
                 name,

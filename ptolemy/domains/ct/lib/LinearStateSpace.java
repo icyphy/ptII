@@ -253,7 +253,7 @@ public class LinearStateSpace extends TypedCompositeActor {
     }
 
     /** Return the executive director, regardless what isOpaque() returns.
-     *  //FIXME: this is not what this method does!!! 
+     *  //FIXME: this is not what this method does!!!
      *  @return the executive director.
      */
     public Director getDirector() {

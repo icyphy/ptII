@@ -405,9 +405,9 @@ public class MACActorBase extends NetworkActorBase {
     protected int _dot11ShortRetryLimit;
     protected int _dot11LongRetryLimit;
     protected int _dotllRTSThreshold;
-    
-    // the pointers to the remote variables contained by 
-    // the MAC composite. 
+
+    // the pointers to the remote variables contained by
+    // the MAC composite.
     /** The time that NAV ends or reservation ends.
      */
     protected Attribute _tNavEnd = null;
@@ -417,14 +417,14 @@ public class MACActorBase extends NetworkActorBase {
 
 
     // message formats
-    protected static final String[] TxStartMsgFields 
+    protected static final String[] TxStartMsgFields
             = {"kind", "length", "rate"};
-    protected static final String[] TxDataMsgFields 
+    protected static final String[] TxDataMsgFields
             = {"kind", "pdu"};
     protected static final String[] RtsTimeoutMsgFields ={"kind"};
-    protected static final String[] RxMpduMsgFields 
+    protected static final String[] RxMpduMsgFields
             ={"kind", "pdu","endRx","rxRate"};
-    protected static final String[] UseIfsMsgFields 
+    protected static final String[] UseIfsMsgFields
             ={"kind", "tRxEnd"};
     protected static final String[] RxIndicateMessageFields =
             {"kind", "pdu", "endRx", "rxRate"};
@@ -435,38 +435,38 @@ public class MACActorBase extends NetworkActorBase {
 
     protected static final String[] CSMsgFields={"kind"};
 
-    // the value for the pdu field is a record with fields 
+    // the value for the pdu field is a record with fields
     // as DataPacket's fields.
-    protected static final String[] TxRequestMsgFields 
+    protected static final String[] TxRequestMsgFields
             = {"kind", "pdu", "rate"};
     protected static final String[] TxConfirmMsgFields = {"kind"};
 
-    protected static final String[] DataPacket 
+    protected static final String[] DataPacket
             = {"protocolVer", "Type", "Subtype",
-               "toDs", "frDs", "moreFrag", "retryBit", "pwrMgt", 
-               "moreData", "wepBit", "orderBit", "FCS", "durId", 
-               "Addr1", "Addr2", "Addr3", "SeqNum", "FragNum", 
+               "toDs", "frDs", "moreFrag", "retryBit", "pwrMgt",
+               "moreData", "wepBit", "orderBit", "FCS", "durId",
+               "Addr1", "Addr2", "Addr3", "SeqNum", "FragNum",
                "Addr4", "payload","Length"};
 
     // use Addr1 for RA, so FilterMpdu does not need to check packet type
     // before checking Addr1 or RA filed
-    protected static final String[] AckPacket 
-            = {"protocolVer", "Type", "Subtype", "toDs", "frDs", 
+    protected static final String[] AckPacket
+            = {"protocolVer", "Type", "Subtype", "toDs", "frDs",
                "moreFrag", "retryBit", "pwrMgt", "moreData", "wepBit",
                //"orderBit", "FCS", "durId", "RA","Length"};
                "orderBit", "FCS", "durId", "Addr1","Length"};
 
-    protected static final String[] RtsPacket 
-            = {"protocolVer", "Type", "Subtype", "toDs", "frDs", 
-               "moreFrag", "retryBit", "pwrMgt", "moreData", "wepBit", 
+    protected static final String[] RtsPacket
+            = {"protocolVer", "Type", "Subtype", "toDs", "frDs",
+               "moreFrag", "retryBit", "pwrMgt", "moreData", "wepBit",
           //     "orderBit", "FCS", "durId", "RA", "TA","Length"};
                "orderBit", "FCS", "durId", "Addr1", "Addr2","Length"};
 
-    protected static final String[] BackoffDoneMsgFields 
+    protected static final String[] BackoffDoneMsgFields
             = {"kind","cnt"};
-    protected static final String[] getBackoffMsgFields 
+    protected static final String[] getBackoffMsgFields
             = {"kind","ccw", "cnt"};
-    protected static final String[] GotCtsMsgFields 
+    protected static final String[] GotCtsMsgFields
             = {"kind","endRx"};
 
 
@@ -529,7 +529,7 @@ public class MACActorBase extends NetworkActorBase {
                 id = ((IntToken)(idVariable.getToken())).intValue();
             }
         } catch (IllegalActionException ex) {
-            // ignore, use the default id 
+            // ignore, use the default id
         }
         return id;
     }

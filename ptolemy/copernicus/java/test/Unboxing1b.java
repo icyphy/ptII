@@ -9,7 +9,7 @@ public class Unboxing1b
 {
     static IntToken intToken = new IntToken(1);
     static Token[] tokens;
-    
+
     public static void main(String[] strings) throws IllegalActionException {
 	tokens = new Token[1];
 	tokens[0] = intToken;

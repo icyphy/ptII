@@ -266,7 +266,7 @@ public class PtolemyQuery extends Query
                         // The given attribute will not have a query in the dialog.
                         return;
                     }
-                    
+
                     // FIXME: Should remember previous browse location?
                     // Next to last argument is the starting directory.
                     addFileChooser(name,
@@ -589,14 +589,14 @@ public class PtolemyQuery extends Query
                                 derivedPassword.setPassword(password);
                             }
                        }
-                    };                
+                    };
             } else if (attribute instanceof NamedObj) {
                 // NOTE: We must use a MoMLChangeRequest so that changes
                 // propagate to any objects that have been instantiating
                 // using this one as a class.  This is only an issue if
                 // attribute is a NamedObj.
                 NamedObj castAttribute = (NamedObj)attribute;
-                
+
                 String stringValue = getStringValue(name);
                 // If the attribute is a DoubleRangeParameter, then we
                 // have to translate the integer value returned by the
@@ -618,7 +618,7 @@ public class PtolemyQuery extends Query
     					stringValue = "" + newValueAsDouble;
     				} catch (IllegalActionException e) {
     					throw new InternalErrorException(e);
-    				}                	
+    				}
                 }
 
                 // The context for the MoML should be the first container
@@ -771,7 +771,7 @@ public class PtolemyQuery extends Query
                         Iterator entryNames = entryNameList.iterator();
 
                         String newValue = _getTranslatedExpression(attribute);
-                        
+
                         while (entryNames.hasNext()) {
                             String name = (String)entryNames.next();
 
@@ -821,13 +821,13 @@ public class PtolemyQuery extends Query
     /** Return the expression for the specified Settable, unless it
      *  is an instance of DoubleRangeParameter, in which case, return
      *  the expression mapped into a integer suitable for use by
-     *  JSlider. 
+     *  JSlider.
      *  @param attribute The Settable whose expression we want.
      *  @return The expression.
      */
     private String _getTranslatedExpression(Settable attribute) {
         String newValue = attribute.getExpression();
-        
+
         // If the attribute is DoubleRangeParameter,
         // then we have to translate the value from a
         // double in the range to an int for the
@@ -849,7 +849,7 @@ public class PtolemyQuery extends Query
 				int quantized = ((int)Math.round(
 						(current - min)*precision
 						/(max - min)));
-				
+
 				newValue = "" + quantized;
 			} catch (IllegalActionException e) {
 				throw new InternalErrorException(e);
@@ -876,7 +876,7 @@ public class PtolemyQuery extends Query
 
     // Maps an entry name to the attribute that is attached to it.
     private Map _attributes = new HashMap();
-    
+
     // Background color for string mode edit boxes.
     private static Color _NOT_OVERRIDDEN_FOREGROUND_COLOR
             = new Color(200, 10, 10, 255);

@@ -37,8 +37,8 @@ import ptolemy.actor.util.Time;
    That is, logically, all signals observed or produced are tokens placed
    in time. Actors that implement the TimedActor marker interface are allowed
    to be executed by directors that implement this interface.
-   
-   @see TimedActor 
+
+   @see TimedActor
    @author Haiyang Zheng
    @version $Id$
    @since Ptolemy II 4.1
@@ -51,7 +51,7 @@ public interface TimedDirector {
      *  @return A time object that contains the value of the current time.
      */
     public Time getModelTime();
-    
+
     /** Get the number of digits of the fractional part of the
      *  time value used in this model.
      *  @return The number of digits.
@@ -59,8 +59,8 @@ public interface TimedDirector {
     public int getTimePrecisionInDigits();
 
     /** Get the time resolution of the model. The time resoultion is
-     *  double with a value of 10^(-1*timePrecisionInDigits), where the 
-     *  timePrecisionInDigits is the number of the digits for the fractional 
+     *  double with a value of 10^(-1*timePrecisionInDigits), where the
+     *  timePrecisionInDigits is the number of the digits for the fractional
      *  part. See {@link #getTimePrecisionInDigits()}.
      *  @return The time resolution of the model.
      */

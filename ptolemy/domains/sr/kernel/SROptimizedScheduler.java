@@ -144,7 +144,7 @@ public class SROptimizedScheduler extends Scheduler {
             (FunctionDependencyOfCompositeActor)
             compositeActor.getFunctionDependency();
 
-        Object[] cycleNodes = 
+        Object[] cycleNodes =
             ((FunctionDependencyOfCompositeActor)functionDependency)
             .getCycleNodes();
         if (cycleNodes.length != 0) {
@@ -187,7 +187,7 @@ public class SROptimizedScheduler extends Scheduler {
             }
 
             actor = (Actor) ioPort.getContainer();
-            
+
             // If the actor is the container of this director (which
             // can occur if this director is not at the top level),
             // then skip this actor. The container of the director

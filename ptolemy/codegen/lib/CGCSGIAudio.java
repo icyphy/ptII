@@ -23,7 +23,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 Base class for reading and writing SGI audio ports.
 
  @Author T. M. Parks
- @Version $Id$, based on version 1.4 of /users/ptolemy/src/domains/cgc/stars/CGCSGIAudio.pl, from Ptolemy Classic 
+ @Version $Id$, based on version 1.4 of /users/ptolemy/src/domains/cgc/stars/CGCSGIAudio.pl, from Ptolemy Classic
  @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCSGIAudio extends ClassicCGCActor {
@@ -40,7 +40,7 @@ public class CGCSGIAudio extends ClassicCGCActor {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-/* 
+/*
 */
     }
     ///////////////////////////////////////////////////////////////////
@@ -52,32 +52,32 @@ public class CGCSGIAudio extends ClassicCGCActor {
     /**
      */
     public void  wrapup() {
-        
-addCode(close); 
+
+addCode(close);
      }
 
     /**
      */
     public void  generatePreinitializeCode() {
-        
+
 addInclude("<audio.h>");
 	addGlobal(declare);
-	addCode(setup); 
+	addCode(setup);
      }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
-    public String declare = 
+    public String declare =
         "	ALport $starSymbol(port);\n"
         + "	ALconfig $starSymbol(config);\n";
 
-    public String setup = 
+    public String setup =
         "	$starSymbol(config) = ALnewconfig();\n"
         + "	ALsetwidth($starSymbol(config), AL_SAMPLE_16);\n"
         + "	ALsetchannels($starSymbol(config), AL_STEREO);\n"
         + "	ALsetqueuesize($starSymbol(config), 0x1000);\n";
 
-    public String close = 
+    public String close =
         "	ALcloseport($starSymbol(port));\n"
         + "	ALfreeconfig($starSymbol(config));\n";
 }

@@ -208,7 +208,7 @@ public class PNDirector extends CompositeProcessDirector {
         _readBlockCount = 0;
         _writeBlockCount = 0;
         _writeBlockedQueues = new LinkedList();
-        
+
         super.initialize();
     }
 
@@ -265,7 +265,7 @@ public class PNDirector extends CompositeProcessDirector {
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
-        
+
         // Reset the capacities of all the receivers.
         Parameter parameter = (Parameter)getAttribute("initialQueueCapacity");
         int capacity = ((IntToken)parameter.getToken()).intValue();
@@ -297,16 +297,16 @@ public class PNDirector extends CompositeProcessDirector {
      */
     public String[] suggestedModalModelDirectors() {
         // This method does not call the method defined in the super class,
-        // because this method provides complete new information. 
-        // Default is a NonStrictFSMDirector, while FSMDirector is also 
+        // because this method provides complete new information.
+        // Default is a NonStrictFSMDirector, while FSMDirector is also
         // in the array.
         String[] defaultSuggestions = new String[2];
-        defaultSuggestions[0] = 
+        defaultSuggestions[0] =
             "ptolemy.domains.fsm.kernel.MultirateFSMDirector";
         defaultSuggestions[1] = "ptolemy.domains.fsm.kernel.FSMDirector";
         return defaultSuggestions;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -407,7 +407,7 @@ public class PNDirector extends CompositeProcessDirector {
             smallestCapacityQueue.setCapacity(capacity*2);
         }
         if (_debugging) {
-            _debug("increasing the capacity of receiver " 
+            _debug("increasing the capacity of receiver "
                     + smallestCapacityQueue.getContainer() + " to "
                     + smallestCapacityQueue.getCapacity());
         }
@@ -512,7 +512,7 @@ public class PNDirector extends CompositeProcessDirector {
 
     /** The list of receivers blocked on a write to a receiver. */
     protected LinkedList _writeBlockedQueues = new LinkedList();
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -531,7 +531,7 @@ public class PNDirector extends CompositeProcessDirector {
     ////                         private variables                 ////
 
     private LinkedList _processListeners = new LinkedList();
-    
+
     /** The list of all receivers that this director has created. */
     private LinkedList _receivers = new LinkedList();
 }

@@ -24,7 +24,7 @@ On each execution, reads a block of "N" samples (default 64)
 and writes them out backwards.
 
  @Author S. Ha
- @Version $Id$, based on version 1.4 of /users/ptolemy/src/domains/cgc/stars/CGCReverse.pl, from Ptolemy Classic 
+ @Version $Id$, based on version 1.4 of /users/ptolemy/src/domains/cgc/stars/CGCReverse.pl, from Ptolemy Classic
  @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCReverse extends ClassicCGCActor {
@@ -47,7 +47,7 @@ public class CGCReverse extends ClassicCGCActor {
         N = new Parameter(this, "N");
         N.setExpression("64");
 
-/*     
+/*
 noInternalState();
 */
     }
@@ -75,14 +75,14 @@ noInternalState();
     /**
      */
     public int  myExecTime() {
-        
+
 return ((IntToken)((N).getToken())).intValue();
      }
 
     /**
      */
     public void  generateInitializeCode() throws IllegalActionException {
-        
+
 input.setSDFParams(((IntToken)((N).getToken())).intValue(),((IntToken)((N).getToken())).intValue()-1);
 		output.setSDFParams(((IntToken)((N).getToken())).intValue(),((IntToken)((N).getToken())).intValue()-1);
      }
@@ -90,13 +90,13 @@ input.setSDFParams(((IntToken)((N).getToken())).intValue(),((IntToken)((N).getTo
     /**
      */
     public void  generateFireCode() {
-        
-addCode(out); 
+
+addCode(out);
      }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
-    public String out = 
+    public String out =
         "	int i, j;\n"
         + "	for (i = 0, j = $val(N) - 1; j >= 0; i++, j--)\n"
         + "		$ref(output,i) = $ref(input,j);\n";

@@ -89,7 +89,7 @@ public class MethodCallPort extends ComponentPort {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
-    
+
     /** Construct an IOPort with a container and a name that is
      *  either an input, an output, or both, depending on the third
      *  and fourth arguments. The specified container must implement
@@ -169,7 +169,7 @@ public class MethodCallPort extends ComponentPort {
         // The port provided should over write this method.
         return TupleToken.VOID;
     }
-    
+
     /** Return true if this port provides the method,
      *  vs. requires the method.  By default, this method returns
      *  false, meaning that the port requires rather than provides
@@ -196,7 +196,7 @@ public class MethodCallPort extends ComponentPort {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** Indicator of whether this port provides the method. */
     private boolean _isProvider = false;
 }

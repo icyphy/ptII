@@ -103,7 +103,7 @@ public class VideoPlayer extends Sink implements ControllerListener {
         try {
             objectToken = (ObjectToken) token;
         } catch (ClassCastException ex) {
-            throw new IllegalActionException(this, ex, 
+            throw new IllegalActionException(this, ex,
                     "Failed to cast " + token.getClass()
                     + " to an ObjectToken.\n"
                     + "The VideoPlayer actor expects to be connected to "

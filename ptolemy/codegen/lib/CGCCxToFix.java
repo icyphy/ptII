@@ -28,7 +28,7 @@ If the output precision is not specified, the precision is determined at
 runtime according to the incoming float value.
 
  @Author Juergen Weiss
- @Version $Id$, based on version 1.8 of /users/ptolemy/src/domains/cgc/stars/CGCCxToFix.pl, from Ptolemy Classic 
+ @Version $Id$, based on version 1.8 of /users/ptolemy/src/domains/cgc/stars/CGCCxToFix.pl, from Ptolemy Classic
  @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCCxToFix extends CGCFix {
@@ -57,7 +57,7 @@ public class CGCCxToFix extends CGCFix {
         OutputPrecision = new Parameter(this, "OutputPrecision");
         OutputPrecision.setExpression("");
 
-/* 
+/*
 */
     }
     ///////////////////////////////////////////////////////////////////
@@ -94,7 +94,7 @@ minimum for negative magnitudes). parameter with initial value "".
     /**
      */
     public void  generatePreinitializeCode() {
-        
+
 super.initCode();
 		numSample = output.numXfer();
 		addInclude("<math.h>");
@@ -103,7 +103,7 @@ super.initCode();
     /**
      */
     public void  begin() {
-        
+
 // if the precision for the output port is not defined
 		// - neither by this nor the successor star -, the actual
 		// precision is determined at runtime
@@ -115,7 +115,7 @@ super.initCode();
     /**
      */
     public void  generateInitializeCode() throws IllegalActionException {
-        
+
 super.generateInitializeCode();
 
 		if (((IntToken)((numSample).getToken())).intValue() > 1) {
@@ -129,7 +129,7 @@ super.generateInitializeCode();
     /**
      */
     public void  generateFireCode() {
-        
+
 // insert code to clear overflow flag
 		super.clearOverflow();
 
@@ -141,19 +141,19 @@ super.generateInitializeCode();
 "		q = $ref(input, i).imag;\n"
 "		p = sqrt(p*p+q*q);\n"
 
-); 	 addCode(_str_);  } 
+); 	 addCode(_str_);  }
 
 	    if (output.attributes() & AB_VARPREC)
 { StringBuffer _str_ = new StringBuffer(); _str_.append(
 "		FIX_SetPrecisionFromDouble($precision(output),p);\n"
 
-); 	 addCode(_str_);  } 
+); 	 addCode(_str_);  }
 
 { StringBuffer _str_ = new StringBuffer(); _str_.append(
 "		FIX_DoubleAssign($ref(output,i),p);\n"
 "     } }\n"
 
-); 	 addCode(_str_);  } 
+); 	 addCode(_str_);  }
 
 		// insert code to test overflow flag
 		super.checkOverflow();

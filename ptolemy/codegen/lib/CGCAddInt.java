@@ -23,7 +23,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 Output the sum of the inputs, as a floating value.
 
  @Author S. Ha
- @Version $Id$, based on version 1.3 of /users/ptolemy/src/domains/cgc/stars/CGCAddInt.pl, from Ptolemy Classic 
+ @Version $Id$, based on version 1.3 of /users/ptolemy/src/domains/cgc/stars/CGCAddInt.pl, from Ptolemy Classic
  @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCAddInt extends ClassicCGCActor {
@@ -45,7 +45,7 @@ public class CGCAddInt extends ClassicCGCActor {
         output = new ClassicPort(this, "output", false, true);
         output.setTypeEquals(BaseType.INT);
 
-/*     
+/*
 noInternalState();
 */
     }
@@ -68,20 +68,20 @@ noInternalState();
     /**
      */
     public int  myExecTime() {
-        
+
 return input.numberPorts();
      }
 
     /**
      */
     public void  generateFireCode() {
-        
+
 StringBuffer out = new StringBuffer("\t$ref(output) = ");
 		for (int i = 1; i <= input.numberPorts(); i++) {
 			out.append("$ref(input#" + i  + ")");
 			if (i < input.numberPorts()) out.append(" + ");
 			else out.append(";\n");
 		}
-		addCode(out); 
+		addCode(out);
      }
 }

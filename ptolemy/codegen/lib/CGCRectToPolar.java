@@ -24,7 +24,7 @@ Convert two numbers to magnitude and phase.
 The phase output is in the range -PI to PI.
 
  @Author S. Ha
- @Version $Id$, based on version 1.7 of /users/ptolemy/src/domains/cgc/stars/CGCRectToPolar.pl, from Ptolemy Classic 
+ @Version $Id$, based on version 1.7 of /users/ptolemy/src/domains/cgc/stars/CGCRectToPolar.pl, from Ptolemy Classic
  @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCRectToPolar extends ClassicCGCActor {
@@ -49,7 +49,7 @@ public class CGCRectToPolar extends ClassicCGCActor {
         phase = new ClassicPort(this, "phase", false, true);
         phase.setTypeEquals(BaseType.DOUBLE);
 
-/*     
+/*
 noInternalState();
 */
     }
@@ -82,27 +82,27 @@ noInternalState();
     /**
      */
     public int  myExecTime() {
-        
+
 return 200;	/* based on CG96 stars */
      }
 
     /**
      */
     public void  generatePreinitializeCode() {
-        
+
 addInclude("<math.h>");
      }
 
     /**
      */
     public void  generateFireCode() {
-        
-addCode(body); 
+
+addCode(body);
      }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
-    public String body = 
+    public String body =
         "	double xpart, ypart, m;\n"
         + "	xpart = $ref(x);\n"
         + "	ypart = $ref(y);\n"

@@ -27,7 +27,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    See the SDFRaisedCos star.
 
    @Author Joseph T. Buck
-   @Version $Id$, based on version 1.4 of /users/ptolemy/src/domains/cgc/dsp/stars/CGCRaisedCosine.pl, from Ptolemy Classic 
+   @Version $Id$, based on version 1.4 of /users/ptolemy/src/domains/cgc/dsp/stars/CGCRaisedCosine.pl, from Ptolemy Classic
    @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCRaisedCosine extends CGCFIR {

@@ -23,7 +23,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 Output a constant signal with value level (default 0.0).
 
  @Author S. Ha
- @Version $Id$, based on version 1.1 of /users/ptolemy/src/domains/cgc/stars/CGCConstInt.pl, from Ptolemy Classic 
+ @Version $Id$, based on version 1.1 of /users/ptolemy/src/domains/cgc/stars/CGCConstInt.pl, from Ptolemy Classic
  @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCConstInt extends ClassicCGCActor {
@@ -46,7 +46,7 @@ public class CGCConstInt extends ClassicCGCActor {
         level = new Parameter(this, "level");
         level.setExpression("0");
 
-/*     
+/*
 noInternalState();
 */
     }
@@ -69,14 +69,14 @@ noInternalState();
     /**
      */
     public int  myExecTime() {
-        
+
 return 0;
      }
 
     /**
      */
     public void  generateFireCode() {
-        
+
 addCode("\t$ref(output) = $val(level); \n");
      }
 }

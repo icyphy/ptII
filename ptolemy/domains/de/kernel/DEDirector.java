@@ -107,12 +107,12 @@ import ptolemy.kernel.util.Workspace;
    {@link ptolemy.actor.util.CalendarQueue} class is done according to the
    order defined above.
    <p>
-   The complexity of the calendar algorithm is sensitive to the length of the 
-   event queue. When the size of the event queue becomes too long or changes 
+   The complexity of the calendar algorithm is sensitive to the length of the
+   event queue. When the size of the event queue becomes too long or changes
    very often, the simulation performance suffers from the penalties of queuing
    and dequeuing events. A few mechanisms are implemented to reduce such
    penalties by keeping the event queue short. The first mechanism is to only
-   store in the event queue <i>pure</i> events and the <i>trigger</i> events 
+   store in the event queue <i>pure</i> events and the <i>trigger</i> events
    with the same timestamp and microstep as those of the director. See
    {@link DEEvent} for explanation of these two types of events. What is more,
    no duplicate trigger events are allowed in the event queue. Another mechanism
@@ -123,10 +123,10 @@ import ptolemy.kernel.util.Workspace;
    this list are discarded.
    <p>
    In the initialize() method, depths of actors and IO ports are statically
-   analyzed and calculated. They are not calculated in the preinitialize() 
+   analyzed and calculated. They are not calculated in the preinitialize()
    method because hierarchical models may change their structures during their
    preinitialize() method. For example, a modal model does not specify its
-   initial state (and its refinement) until the end of its preinitialize() 
+   initial state (and its refinement) until the end of its preinitialize()
    method. See {@link ptolemy.domains.fsm.kernel.FSMActor}. In order to support
    mutation, this director recalculates the depths at the beginning of its next
    iteration.
@@ -136,7 +136,7 @@ import ptolemy.kernel.util.Workspace;
    actors, which is for pure events. The relationship between the depths of IO
    ports and actors is that the depth of an actor is the smallest of the depths
    of its IO ports. Pure events can only be produced by calling the fireAt()
-   method, and trigger events can only be produced by actors that produce 
+   method, and trigger events can only be produced by actors that produce
    outputs. See {@link ptolemy.domains.de.kernel.DEReceiver#put}.
    <p>
    Directed loops of IO ports with no delay are not permitted because it is
@@ -146,8 +146,8 @@ import ptolemy.kernel.util.Workspace;
    parameter of those actors to zero. This zero-delay actor plays the same
    role as that of delta delay in VHDL. Note that the detection of directed
    loops are based on port connections rather than data dependencies between
-   actors because port connections reflect the data dependencies more 
-   accurately. The information of port connections are stored in the 
+   actors because port connections reflect the data dependencies more
+   accurately. The information of port connections are stored in the
    nonpersistent attribute <i>FunctionDependency</i>.
    <p>
    An input port in a DE model contains an instance of DEReceiver.
@@ -159,8 +159,8 @@ import ptolemy.kernel.util.Workspace;
    whose tags are equal to the current tag of the director (also called the
    model tag). At the beginning of the fire() method, this director dequeues
    a subset of the earliest events (the ones with smallest timestamp, microstep,
-   and depth) from the global event queue. These events have the same 
-   destination actor. Then, this director invokes that actor to iterate. 
+   and depth) from the global event queue. These events have the same
+   destination actor. Then, this director invokes that actor to iterate.
    This actor must consume tokens from its input port(s),
    and usually produces new events on its output port(s). These new events will
    be trigger the receiving actors to fire. It is important that the actor
@@ -169,9 +169,9 @@ import ptolemy.kernel.util.Workspace;
    DE domain. The actor will be fired repeatedly until there are no more tokens
    in its input ports, or the actor returns false in its prefire() method. Then,
    this director keeps dequeuing and processing the earliest events from the
-   event queue until no more events have the same tag as the model tag. 
-   After calling the postfire() method, this director finishes an iteration. 
-   This director is responsible to advance the model tag to perform another 
+   event queue until no more events have the same tag as the model tag.
+   After calling the postfire() method, this director finishes an iteration.
+   This director is responsible to advance the model tag to perform another
    iteration.
    <p>
    A model starts from the time specified by <i>startTime</i>, which
@@ -372,7 +372,7 @@ public class DEDirector extends Director implements TimedDirector {
      *  backwards.
      */
     public void fire() throws IllegalActionException {
-        
+
         // NOTE: This fire method does not call super.fire()
         // because this method is very different from that of the super class.
 
@@ -503,7 +503,7 @@ public class DEDirector extends Director implements TimedDirector {
                         break;
                     }
                 }
-                
+
                 // Check all the input ports of the actor to see whether there
                 // are more input tokens to be processed.
                 Iterator inputPorts = actorToFire.inputPortList().iterator();
@@ -533,10 +533,10 @@ public class DEDirector extends Director implements TimedDirector {
                         // If the next event is in the future time,
                         // jump out of the big while loop and
                         // proceed to postfire().
-                        // NOTE: we reset the microstep to 0 because it is 
+                        // NOTE: we reset the microstep to 0 because it is
                         // the contract that if the event queue has some events
-                        // at a time point, the first event must have the 
-                        // microstep as 0. See the 
+                        // at a time point, the first event must have the
+                        // microstep as 0. See the
                         // _enqueueEvent(Actor actor, Time time) method.
                         _microstep = 0;
                         break;
@@ -563,7 +563,7 @@ public class DEDirector extends Director implements TimedDirector {
                 }
             }
         } // Close the BIG while loop.
-        
+
         if (_debugging) {
             _debug("DE director fired!");
         }
@@ -862,7 +862,7 @@ public class DEDirector extends Director implements TimedDirector {
         // Set the model timestamp to the outside timestamp,
         // if this director is not at the top level.
         boolean result = super.prefire();
-        
+
         if (_debugging) {
             _debug("Current time is: " + getModelTime());
         }
@@ -888,7 +888,7 @@ public class DEDirector extends Director implements TimedDirector {
                 nextEventTime = Time.POSITIVE_INFINITY;
             }
         }
-        
+
         // If the model time is larger (later) than the first event
         // in the queue, then there's a missing firing.
         if (modelTime.compareTo(nextEventTime) > 0) {
@@ -1033,22 +1033,22 @@ public class DEDirector extends Director implements TimedDirector {
      */
     public String[] suggestedModalModelDirectors() {
         // This method does not call the method defined in the super class,
-        // because this method provides complete new information. 
-        // Default is a NonStrictFSMDirector, while FSMDirector is also 
+        // because this method provides complete new information.
+        // Default is a NonStrictFSMDirector, while FSMDirector is also
         // in the array.
         String[] defaultSuggestions = new String[2];
-        defaultSuggestions[0] = 
+        defaultSuggestions[0] =
             "ptolemy.domains.fsm.kernel.MultirateFSMDirector";
         defaultSuggestions[1] = "ptolemy.domains.fsm.kernel.FSMDirector";
         return defaultSuggestions;
     }
-    
+
     // NOTE: Why do we need an overridden transferOutputs method?
-    // This director needs to transfer ALL output tokens at boundary of 
-    // hierarchy to outside. Without this overriden method, only one 
+    // This director needs to transfer ALL output tokens at boundary of
+    // hierarchy to outside. Without this overriden method, only one
     // output token is produced. See de/test/auto/transferInputsandOutputs.xml.
-    // Do we need an overridden transferInputs method? 
-    // No. Because the DEDirector will keep firing an actor until it returns 
+    // Do we need an overridden transferInputs method?
+    // No. Because the DEDirector will keep firing an actor until it returns
     // false from its prefire() method, meaning that the actor has not enough
     // input tokens.
 
@@ -1151,10 +1151,10 @@ public class DEDirector extends Director implements TimedDirector {
         _eventQueue.put(newEvent);
     }
 
-    /** Put a trigger event into the event queue. 
+    /** Put a trigger event into the event queue.
      *  <p>
      *  The trigger event has the same timestamp as that of the director.
-     *  The microstep of this event is always equal to the current microstep 
+     *  The microstep of this event is always equal to the current microstep
      *  of this director. The depth for the queued event is the
      *  depth of the destination IO port.
      *  <p>
@@ -1187,7 +1187,7 @@ public class DEDirector extends Director implements TimedDirector {
         }
 
         // Register this trigger event.
-        DEEvent newEvent = 
+        DEEvent newEvent =
             new DEEvent(ioPort, getModelTime(), _microstep, depth);
         _eventQueue.put(newEvent);
     }
@@ -1319,7 +1319,7 @@ public class DEDirector extends Director implements TimedDirector {
         }
 
         LinkedList actorsWithPortDepthsAdjusted = new LinkedList();
-        
+
         // The rule is simple. If an output depends on several inputs directly,
         // all inputs must have the same depth, the biggest one.
         for (int i = sort.length-1; i >= 0; i--) {
@@ -1330,49 +1330,49 @@ public class DEDirector extends Director implements TimedDirector {
             Attribute strictnessAttribute =
                 ((NamedObj)portContainer).getAttribute(STRICT_ATTRIBUTE_NAME);
             // Normally, we adjust port depths based on output ports.
-            // However, if this input port belongs to a sink actor, and 
+            // However, if this input port belongs to a sink actor, and
             // the sink actor has more than one input ports, adjust the depths
             // of all the input ports to their maximum value.
             // For exmaple, the XYPlotter in the WirelessSoundDetection demo.
 
-            // By default, all composite actors are non-strict. However, if 
+            // By default, all composite actors are non-strict. However, if
             // a composite actor declares its strictness with an attribute,
-            // we adjust its input ports depths to their maximum. One example 
+            // we adjust its input ports depths to their maximum. One example
             // is the ModalModel.
-            
+
             // A third case is that if a composite actor has some of its input
-            // ports as parameter ports and the others as reguler IO ports, 
+            // ports as parameter ports and the others as reguler IO ports,
             // we need to adjust the depths of paramter ports also.
-            
-            // The TimedSinewave (with SDF implementation) is an example. 
+
+            // The TimedSinewave (with SDF implementation) is an example.
             // Since this actor is supposed to be a strict actor, we need to
             // add a strictness marker such that the depths of all its inputs
             // are adjusted to their maximum value.
 
-            // For non-strict composite actors, one solution is to iterate 
-            // each output port and find all the parameter ports that affect 
-            // that output port. Note that a parameter may depend on another 
-            // parameter at the same level of hierarchy, which makes the 
-            // analysis harder. One reference will be the context analysis by 
-            // Steve. 
-            
-            // I prefer to leave the parameter analysis to be independent of the 
+            // For non-strict composite actors, one solution is to iterate
+            // each output port and find all the parameter ports that affect
+            // that output port. Note that a parameter may depend on another
+            // parameter at the same level of hierarchy, which makes the
+            // analysis harder. One reference will be the context analysis by
+            // Steve.
+
+            // I prefer to leave the parameter analysis to be independent of the
             // function dependency analysis. 02/2005 hyzheng
-            
+
             if (ioPort.isInput()) {
                 boolean depthNeedsAdjusted = false;
                 int numberOfOutputPorts = portContainer.outputPortList().size();
-                // If an actor has no output ports, adjustment is necessary. 
+                // If an actor has no output ports, adjustment is necessary.
                 if (numberOfOutputPorts == 0) {
                     depthNeedsAdjusted = true;
                 }
-                // If the actor declares itself as a strict actor, 
+                // If the actor declares itself as a strict actor,
                 // adjustment is necessary.
                 if (strictnessAttribute != null) {
                     depthNeedsAdjusted = true;
-                } 
+                }
                 // If the port is a parameter port, adjustment is necessary.
-                
+
                 // If depth needs adjusted:
                 if (depthNeedsAdjusted) {
                     List inputPorts = portContainer.inputPortList();
@@ -1382,14 +1382,14 @@ public class DEDirector extends Director implements TimedDirector {
                         continue;
                     }
                     if (actorsWithPortDepthsAdjusted.contains(portContainer)) {
-                        // The depths of the input ports of this acotr 
+                        // The depths of the input ports of this acotr
                         // have been adjusted.
                         continue;
                     } else {
                         actorsWithPortDepthsAdjusted.add(portContainer);
                     }
                     Iterator inputsIterator = inputPorts.iterator();
-                    // Iterate all input ports of the sink actor. 
+                    // Iterate all input ports of the sink actor.
                     int maximumPortDepth = -1;
                     while (inputsIterator.hasNext()) {
                         Object object = inputsIterator.next();
@@ -1528,7 +1528,7 @@ public class DEDirector extends Director implements TimedDirector {
      *  is not sorted.
      */
     private int _getDepthOfActor(Actor actor) throws IllegalActionException {
-        if (_sortValid != workspace().getVersion() 
+        if (_sortValid != workspace().getVersion()
                 || _actorToDepth == null) {
             _computePortDepth();
             _computeActorDepth();
@@ -1619,10 +1619,10 @@ public class DEDirector extends Director implements TimedDirector {
                     // TESTIT
                     break;
                 } else {
-                    // For an embedded DE director, the following code prevents 
-                    // the director from reacting to future events with bigger 
-                    // time values in their tags. 
-                    
+                    // For an embedded DE director, the following code prevents
+                    // the director from reacting to future events with bigger
+                    // time values in their tags.
+
                     // For a top-level DE director, there is no such constraint
                     // because the top-level director is responsible to advance
                     // simulation by increasing the model tag.
@@ -1646,25 +1646,25 @@ public class DEDirector extends Director implements TimedDirector {
                     }
                     // If the event is in the future time, it is ignored
                     // and will be processed later.
-                    
-                    // Note that it is fine for the new event to have a bigger 
+
+                    // Note that it is fine for the new event to have a bigger
                     // microstep. This indicates that the embedded director is
                     // going to advance microstep.
                     // Note that conceptually, the outside and inside DE models
-                    // share the same microstep and the current design and 
-                    // implementation assures that. However, the embedded DE 
-                    // director does ask for the microstep of the upper level 
-                    // DE director. They keep their own count of their 
-                    // microsteps. The reason for this is to avoid the 
-                    // difficulties caused by passing information across modal 
+                    // share the same microstep and the current design and
+                    // implementation assures that. However, the embedded DE
+                    // director does ask for the microstep of the upper level
+                    // DE director. They keep their own count of their
+                    // microsteps. The reason for this is to avoid the
+                    // difficulties caused by passing information across modal
                     // model layers.
-                    
+
                     if ((nextEvent.timeStamp().compareTo(getModelTime()) > 0)) {
                         // reset the next event
                         nextEvent = null;
                         // jump out of the loop: LOOPLABEL::GetNextEvent
                         break;
-                    } 
+                    }
                 }
             } else {
                 // If the director is at the top level
@@ -1792,10 +1792,10 @@ public class DEDirector extends Director implements TimedDirector {
                 // obtained here, since a new event could have been enqueued
                 // into the queue while the queue was waiting. For example,
                 // an IO interrupt event.
-                // FIXME: The above statement is misleading. How could the 
-                // newly inserted event happen earlier than the previously 
-                // first event in the queue? It may be possible in the 
-                // distributed DE models, but should not happen in DE models. 
+                // FIXME: The above statement is misleading. How could the
+                // newly inserted event happen earlier than the previously
+                // first event in the queue? It may be possible in the
+                // distributed DE models, but should not happen in DE models.
                 // Will this cause problems, such as setting time backwards?
                 // TESTIT How to??
                 synchronized(_eventQueue) {
@@ -1953,7 +1953,7 @@ public class DEDirector extends Director implements TimedDirector {
      * The current microstep.
      */
     private int _microstep = 0;
-    
+
     /**
      * Set to true when it is time to end the execution.
      */

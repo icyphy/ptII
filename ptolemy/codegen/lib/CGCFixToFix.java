@@ -23,7 +23,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 Convert a fixed-point value into one with a different precision.
 
  @Author J.Weiss
- @Version $Id$, based on version 1.7 of /users/ptolemy/src/domains/cgc/stars/CGCFixToFix.pl, from Ptolemy Classic 
+ @Version $Id$, based on version 1.7 of /users/ptolemy/src/domains/cgc/stars/CGCFixToFix.pl, from Ptolemy Classic
  @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCFixToFix extends CGCFix {
@@ -48,7 +48,7 @@ public class CGCFixToFix extends CGCFix {
         OutputPrecision = new Parameter(this, "OutputPrecision");
         OutputPrecision.setExpression("");
 
-/* 
+/*
 */
     }
     ///////////////////////////////////////////////////////////////////
@@ -78,7 +78,7 @@ minimum for negative magnitudes). parameter with initial value "".
     /**
      */
     public void  begin() {
-        
+
 // if the precision for the output port is not defined
 		// - neither by this nor the successor star -, the actual
 		// precision is determined at runtime
@@ -90,7 +90,7 @@ minimum for negative magnitudes). parameter with initial value "".
     /**
      */
     public void  generateInitializeCode() throws IllegalActionException {
-        
+
 super.generateInitializeCode();
 		output.setPrecision(OutputPrecision);
      }
@@ -98,7 +98,7 @@ super.generateInitializeCode();
     /**
      */
     public void  generateFireCode() {
-        
+
 // insert code to clear overflow flag
 		super.clearOverflow();
 
@@ -106,7 +106,7 @@ super.generateInitializeCode();
 { StringBuffer _str_ = new StringBuffer(); _str_.append(
 "	FIX_Assign($ref(output),$ref(input));\n"
 
-); 	 addCode(_str_);  } 
+); 	 addCode(_str_);  }
 
 		// insert code to test overflow flag
 		super.checkOverflow();

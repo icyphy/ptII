@@ -49,7 +49,7 @@ import ptolemy.kernel.util.Settable;
 //// CodeGeneratorHelper
 /**
  * Base class for code generator helper.
- * 
+ *
  * @author Christopher Brooks, Edward Lee, Jackie Leung, Gang Zhou, Rachel Zhou
  * @version $Id$
  * @since Ptolemy II 5.0
@@ -67,8 +67,8 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
 
     ///////////////////////////////////////////////////////////////////
     ////                      public methods                       ////
-    
-    /** Do nothing. Subclasses may extend this method to generate the fire 
+
+    /** Do nothing. Subclasses may extend this method to generate the fire
      *  code of the associated component and append the code to the given
      *  string buffer.
      * @param stream The given string buffer.
@@ -91,7 +91,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
     }
 
     /** Reset the _firingCount and _firingPerIteration to their default
-     *  values. Subclasses may extend this method to generate 
+     *  values. Subclasses may extend this method to generate
      *  the wrapup code of the associated component and append the
      *  code to the give string buffer.
      * @param stream The given string buffer.
@@ -101,7 +101,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         _firingCount = 0;
         _firingsPerIteration = 1;
     }
-       
+
     /** Get the component associated with this helper.
      * @return The associated component.
      */
@@ -117,7 +117,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
     public int getFiringCount() {
         return _firingCount;
     }
-    
+
     /** Get the number of times that the generateFireCode() method
      *  of this helper is called per iteration.
      * @return The number of times that the generateFireCode() method
@@ -126,11 +126,11 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
     public int getFiringsPerIteration() {
         return _firingsPerIteration;
     }
-    
+
     /** Return the value of the specified parameter of the associated actor.
      * @param parameterName The name of the parameter.
      * @return The value as a string.
-     * @exception IllegalActionException If the parameter does not exist or 
+     * @exception IllegalActionException If the parameter does not exist or
      *  does not have a value.
      */
     public String getParameterValue(String name) throws IllegalActionException {
@@ -152,7 +152,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                 "Attribute does not have a value: " + name);
     }
 
-    
+
     /** Return the reference to the specified parameter or port of the
      *  associated actor. For a parameter, the returned string is in
      *  the form "fullName_parameterName". For a port, the returned string
@@ -165,7 +165,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      *  exist or does not have a value.
      */
     public String getReference(String name) throws IllegalActionException {
-        
+
         StringBuffer result = new StringBuffer();
         Actor actor = (Actor) _component;
         StringTokenizer tokenizer = new StringTokenizer(name, "#,", true);
@@ -174,10 +174,10 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
             throw new IllegalActionException(_component,
                         "Reference not found: " + name);
         }
-            
+
         // Get the referenced name.
         String refName = tokenizer.nextToken().trim();
-            
+
         Iterator inputPorts = actor.inputPortList().iterator();
         while (inputPorts.hasNext()) {
             IOPort port = (IOPort) inputPorts.next();
@@ -190,7 +190,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                     result.append("[" + channelAndOffset[0] + "]");
                 }
                 if (channelAndOffset[1] >= 0) {
-                    int offset = channelAndOffset[1] + 
+                    int offset = channelAndOffset[1] +
                         _firingCount * DFUtilities.getRate(port);
                     result.append("[" + channelAndOffset[1] + "]");
                 } else if (_firingsPerIteration > 1) {
@@ -201,12 +201,12 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                 return result.toString();
             }
         }
-            
+
         Iterator outputPorts = actor.outputPortList().iterator();
         while (outputPorts.hasNext()) {
             IOPort port = (IOPort) outputPorts.next();
             if (port.getName().equals(refName)) {
-                Receiver[][] remoteReceivers 
+                Receiver[][] remoteReceivers
                     = (port.getRemoteReceivers());
                 if (remoteReceivers.length == 0) {
                     // This channel of this output port doesn't have any sink.
@@ -215,7 +215,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                     result.append(port.getName());
                     return result.toString();
                 }
-                    
+
                 int[] channelAndOffset = _getChannelAndOffset(name);
                 if (channelAndOffset[0] < 0) {
                     result.append(getSinkChannels(port, 0));
@@ -232,7 +232,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                 return result.toString();
             }
         }
-            
+
         // Try if the name is a parameter.
         Attribute attribute = _component.getAttribute(refName);
         if (attribute != null) {
@@ -250,19 +250,19 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
             }
             return result.toString();
         }
-        
+
         throw new IllegalActionException(_component, "Reference not found: "
                 + name);
     }
 
-    
+
     /** Return a list that contains the parameters referenced in the code.
      * @return The list.
      */
     public HashSet getReferencedParameter() {
         return _referencedParameters;
     }
-    
+
 
     /** Return a string that contains all the sink input ports
      *  and channels given an output port and a given channel.
@@ -274,16 +274,16 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      * @return The string.
      */
     public String getSinkChannels(IOPort outputPort, int channelNumber) {
-        
-        Receiver[][] remoteReceivers 
+
+        Receiver[][] remoteReceivers
             = (outputPort.getRemoteReceivers());
-       
+
         if (remoteReceivers.length == 0) {
             // This is an escape method. This class will not call this
             // method if the output port does not have a remote receiver.
             return "";
         }
-        
+
         StringBuffer result = new StringBuffer();
         boolean foundIt = false;
         for (int i = 0; i < remoteReceivers[channelNumber].length; i ++) {
@@ -310,12 +310,12 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                         //sinkChannels.add(new Integer(j));
                     }
                 }
-                    
+
             }
         }
         return result.toString();
     }
-    
+
     /** Get the size of a parameter. The size of a parameter
      *  is the length of its array if the parameter's type is array,
      *  and 1 otherwise.
@@ -337,12 +337,12 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                     return ((ArrayToken)token).length();
                 }
                 return 1;
-            } 
+            }
         }
         throw new IllegalActionException(_component,
                 "Attribute not found: " + name);
     }
-    
+
     /** Process the specified code, replacing macros with their values.
      * @param code The code to process.
      * @return The processed code.
@@ -356,7 +356,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
             // No "$" in the string
             return code;
         }
-         
+
         result.append(code.substring(0, currentPos));
         while (currentPos < code.length()) {
             int nextPos = code.indexOf("$", currentPos + 1);
@@ -405,7 +405,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                                 }
                                 name = name.trim();
                                 if (flag == 1) {
-                                    result.append(getReference(name));    
+                                    result.append(getReference(name));
                                 } else if (flag == 2) {
                                     result.append(getParameterValue(name));
                                 } else {
@@ -420,7 +420,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                     }
                 }
             }
-            
+
             if (!foundIt) {
                 result.append("$");
                 result.append(subcode);
@@ -438,7 +438,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
     public void setFiringCount(int firingCount) {
         _firingCount = firingCount;
     }
-    
+
     /** Set the number of times that the generateFireCode() method
      *  of this helper is called per iteration.
      * @param firingsPerIteration The number of times that the
@@ -447,11 +447,11 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
     public void setFiringsPerIteration(int firingsPerIteration) {
         _firingsPerIteration = firingsPerIteration;
     }
-    
-    
+
+
     /////////////////////////////////////////////////////////////
     ////               private methods                       ////
-    
+
     /** Return the channel number and offset given in a string.
      *  The result is an integer array of length 2. The first element
      *  indicates the channel number, the second the offset. If either
@@ -500,8 +500,8 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         }
         return result;
     }
-    
-    
+
+
     ///////////////////////////////////////////////////////////////////
     ////                      private variables                    ////
 

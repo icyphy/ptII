@@ -34,7 +34,7 @@ In this case, the first output is always true.
 To implement the tests "&lt;" or "&lt;=", simply reverse the inputs.
 
  @Author Rolando Diesta, Brian L. Evans, and Edward A. Lee
- @Version $Id$, based on version 1.5 of /users/ptolemy/src/domains/cgc/stars/CGCTest.pl, from Ptolemy Classic 
+ @Version $Id$, based on version 1.5 of /users/ptolemy/src/domains/cgc/stars/CGCTest.pl, from Ptolemy Classic
  @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCTest extends ClassicCGCActor {
@@ -69,7 +69,7 @@ public class CGCTest extends ClassicCGCActor {
         prevResult = new Parameter(this, "prevResult");
         prevResult.setExpression("-1");
 
-/*     
+/*
 noInternalState();
 */
     }
@@ -113,7 +113,7 @@ test.  This ensures that the first test result will always be true. parameter wi
     /**
      */
     public void  generateInitializeCode() throws IllegalActionException {
-        
+
 String cn = condition;
 		if ( cn.equalsIgnoreCase("EQ")) test = EQID;
 		else if ( cn.equalsIgnoreCase("NE") ) test = NEID;
@@ -129,30 +129,30 @@ String cn = condition;
     /**
      */
     public void  generateFireCode() {
-        
+
 StringBuffer compare = new StringBuffer("($ref(upper) ");
 		compare.append(test  + " $ref(lower)) ? 1 : 0;\n");
 
 		if ( ((IntToken)((crossingsOnly).getToken())).intValue() ) {
-			addCode(decl); 
+			addCode(decl);
 StringBuffer setResult = new StringBuffer("result = ");
 			setResult.append(compare);
-			addCode(setResult); 
-			addCode(crossings); 
+			addCode(setResult);
+			addCode(crossings);
 		}
 		else {
 StringBuffer simpleCode = new StringBuffer("$ref(output) = ");
 			simpleCode.append(compare);
-			addCode(simpleCode); 
+			addCode(simpleCode);
 		}
      }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
-    public String decl = 
+    public String decl =
         "		int result;\n";
 
-    public String crossings = 
+    public String crossings =
         "		$ref(output) = ( $ref(prevResult) != result );\n"
         + "		$ref(prevResult) = result;\n";
 }

@@ -25,7 +25,7 @@ and width "width" (default 8).  If "period" is greater than zero,
 then the pulse is repeated with the given period.
 
  @Author Kennard White Contributor(s): SDF version by J. T. Buck
- @Version $Id$, based on version 1.5 of /users/ptolemy/src/domains/cgc/stars/CGCRect.pl, from Ptolemy Classic 
+ @Version $Id$, based on version 1.5 of /users/ptolemy/src/domains/cgc/stars/CGCRect.pl, from Ptolemy Classic
  @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCRect extends ClassicCGCActor {
@@ -60,7 +60,7 @@ public class CGCRect extends ClassicCGCActor {
         count = new Parameter(this, "count");
         count.setExpression("0");
 
-/* 
+/*
 */
     }
     ///////////////////////////////////////////////////////////////////
@@ -97,13 +97,13 @@ public class CGCRect extends ClassicCGCActor {
     /**
      */
     public void  generateFireCode() {
-        
-addCode(cbMain); 
+
+addCode(cbMain);
      }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
-    public String cbMain = 
+    public String cbMain =
         "		$ref(output) = ($ref(count) < $val(width)) ? $val(height) : 0.0;\n"
         + "		++$ref(count);\n"
         + "		if ( $val(period) > 0 && $ref(count) >= $val(period) )\n"

@@ -126,7 +126,7 @@ public class CommandLineTemplate {
                     totalMemory1, freeMemory1, buffer1);
             System.out.println("Spent " + (startTime - _parseStartTime)
                     + " ms. creating the model.");
-            
+
             System.out.println(modelName +
                     ": Stats before execution:    "
                     + buffer1);

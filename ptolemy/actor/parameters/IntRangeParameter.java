@@ -77,7 +77,7 @@ public class IntRangeParameter extends Parameter {
         min = new Parameter(this, "min");
         min.setExpression("0");
         min.setTypeEquals(BaseType.INT);
-        
+
         max = new Parameter(this, "max");
         max.setExpression("100");
         max.setTypeEquals(BaseType.INT);

@@ -39,8 +39,8 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// Counter
 /**
-   This component implements an up-down counter. 
-   
+   This component implements an up-down counter.
+
    @author Yang Zhao
    @version $Id$
    @since Ptolemy II 4.0
@@ -107,7 +107,7 @@ public class Counter extends AtomicComponent {
         _count = 0;
     }
 
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
 

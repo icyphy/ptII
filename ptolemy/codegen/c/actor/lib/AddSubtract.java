@@ -43,21 +43,21 @@ import ptolemy.kernel.util.IllegalActionException;
    @Pt.AcceptedRating Red (eal)
 */
 public class AddSubtract extends CCodeGeneratorHelper {
-    
+
     /** FIXME
      */
-    
+
     public AddSubtract(ptolemy.actor.lib.AddSubtract actor) {
         super(actor);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     public methods                        ////
-    
-    public void  generateFireCode(StringBuffer stream) 
+
+    public void  generateFireCode(StringBuffer stream)
             throws IllegalActionException {
-        
-        ptolemy.actor.lib.AddSubtract actor = 
+
+        ptolemy.actor.lib.AddSubtract actor =
                 (ptolemy.actor.lib.AddSubtract)getComponent();
         StringBuffer tmpStream = new StringBuffer();
         tmpStream.append("$ref(output) = ");
@@ -75,12 +75,12 @@ public class AddSubtract extends CCodeGeneratorHelper {
             else
                 tmpStream.append(";\n");
         }
-        _codeBlock = tmpStream.toString();  
+        _codeBlock = tmpStream.toString();
         stream.append(processCode(_codeBlock));
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected variable                ////
-     
+
     protected String _codeBlock;
 }

@@ -139,13 +139,13 @@ public class InstantiableNamedObj extends NamedObj implements Instantiable {
             throws CloneNotSupportedException {
         try {
             workspace().getReadAccess();
-            
+
             InstantiableNamedObj newObject
                 = (InstantiableNamedObj)super.clone(workspace);
             // The new object does not have any other objects deferring
             // their MoML definitions to it, so we have to reset this.
             newObject._children = null;
-    
+
             // Set the parent using _setParent() rather than the default
             // clone to get the side effects.
             newObject._parent = null;
@@ -286,7 +286,7 @@ public class InstantiableNamedObj extends NamedObj implements Instantiable {
     public Instantiable getParent() {
         return _parent;
     }
-    
+
     /** Return a list of prototypes for this object. The list is ordered
      *  so that more local prototypes are listed before more remote
      *  prototypes. Specifically, if this object has a parent, then the
@@ -371,7 +371,7 @@ public class InstantiableNamedObj extends NamedObj implements Instantiable {
             workspace = container.workspace();
         }
         InstantiableNamedObj clone = (InstantiableNamedObj)clone(workspace);
-        
+
         // The cloning process results an object that defers change
         // requests.  By default, we do not want to defer change
         // requests, but more importantly, we need to execute
@@ -385,7 +385,7 @@ public class InstantiableNamedObj extends NamedObj implements Instantiable {
         clone._setParent(this);
         clone.setClassDefinition(false);
         clone.setClassName(getFullName());
-        
+
         // Mark the contents of the instantiated object as being derived.
         clone._markContentsDerived(0);
 
@@ -401,7 +401,7 @@ public class InstantiableNamedObj extends NamedObj implements Instantiable {
     public final boolean isClassDefinition() {
         return _isClassDefinition;
     }
-    
+
     /** Specify whether this object is a class definition.
      *  This method is write synchronized on the workspace.
      *  @param isClass True to make this object a class definition, false

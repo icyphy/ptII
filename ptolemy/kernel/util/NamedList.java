@@ -250,7 +250,7 @@ public final class NamedList implements Cloneable, Serializable {
             return -1;
         }
     }
-    
+
     /** Move the specified element to the beginning of the list.
      *  If the specified element is not in the list, then throw
      *  an exception.

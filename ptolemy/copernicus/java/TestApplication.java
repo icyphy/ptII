@@ -122,7 +122,7 @@ public class TestApplication implements ChangeListener {
         if (director != null) {
             Parameter iterations =
                 (Parameter) director.getAttribute("iterations");
-            Parameter copernicus_iterations = 
+            Parameter copernicus_iterations =
                 (Parameter) director.getAttribute("copernicus_iterations");
             // Set to be a large number of iterations, unless
             // copernicus_iterations is set.

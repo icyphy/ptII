@@ -101,7 +101,7 @@ public class DirectedGraph extends Graph {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
 
     /** Find all the nodes that can be reached backward from the
      *  specified node.
@@ -595,7 +595,7 @@ public class DirectedGraph extends Graph {
         return (Collection)_sourceNodeAnalysis.nodes();
     }
 
-    /** Return a list of disconnected subgraphs of this graph. 
+    /** Return a list of disconnected subgraphs of this graph.
      */
     public LinkedList subgraphs() {
         LinkedList subgraphList = new LinkedList();
@@ -608,7 +608,7 @@ public class DirectedGraph extends Graph {
         }
         return subgraphList;
     }
-    
+
     /** Return the collection of edges that make a node n2 a successor of a
      *  node n1. In other words, return the collection of edges directed
      *  from n1 to n2.
@@ -754,7 +754,7 @@ public class DirectedGraph extends Graph {
             _inputEdgeList(node).add(edge);
         }
     }
-    
+
     /** Given a node, get all the edges and nodes that are connected
      *  to it directly and/or indirectly. Add them in the given graph.
      *  Remove the nodes from the remainning nodes.
@@ -802,7 +802,7 @@ public class DirectedGraph extends Graph {
             }
         }
     }
-    
+
     /* Disconnect an edge from a node that it is incident to by modifying
      * the adjacency information (incident, input, and output edge sets)
      * that is associated with the node in this graph.

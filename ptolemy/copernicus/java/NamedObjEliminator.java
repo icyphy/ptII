@@ -146,7 +146,7 @@ public class NamedObjEliminator extends SceneTransformer implements HasPhaseOpti
                             } else if (field.getSubSignature().equals(
                                                PtolemyUtilities.stopRequestedField.getSubSignature())) {
                                 // Assume stops are not requested..
-                                if (unit instanceof AssignStmt && 
+                                if (unit instanceof AssignStmt &&
                                         box == ((AssignStmt)unit).getLeftOpBox()) {
                                     body.getUnits().remove(unit);
                                 } else {

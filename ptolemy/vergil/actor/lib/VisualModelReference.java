@@ -267,11 +267,11 @@ public class VisualModelReference
                     // method also creates the right effigy.
                     if (_openOnFiringValue == _OPEN_IN_VERGIL
                             || _openOnFiringValue == _OPEN_IN_VERGIL_FULL_SCREEN) {
-                        
+
                         // NOTE: The opening must occur in the event thread.
                         // Regrettably, we cannot continue with the firing until
                         // the open is complete, so we use the very dangerous
-                        // invokeAndWait() method.                        
+                        // invokeAndWait() method.
                         Runnable doOpen = new Runnable() {
                             public void run() {
                                 Configuration configuration
@@ -405,7 +405,7 @@ public class VisualModelReference
 
     /** The value of the closeOnPostfire parameter. */
     private transient int _closeOnPostfireValue = _DO_NOTHING;
-    
+
     /** Store exception thrown in event thread. */
     private Exception _exception = null;
 

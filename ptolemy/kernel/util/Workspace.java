@@ -255,9 +255,9 @@ public final class Workspace implements Nameable, Serializable {
     /** Indicate that the calling thread is finished writing.
      *  If this thread is completely done writing (it has no other
      *  write access to the workspace), then notify all threads
-     *  that are waiting to get read/write access to this workspace 
+     *  that are waiting to get read/write access to this workspace
      *  so that they may contend for access.
-     *  It also increments the version number of the workspace. 
+     *  It also increments the version number of the workspace.
      *  @exception InvalidStateException If this method is called before
      *   a corresponding call to getWriteAccess() by the same thread.
      */
@@ -272,7 +272,7 @@ public final class Workspace implements Nameable, Serializable {
         }
 
         incrVersion();
-        
+
         if (current != _writer) {
             if (record != null && record.failedWriteAttempts > 0) {
                 record.failedWriteAttempts--;
@@ -333,11 +333,11 @@ public final class Workspace implements Nameable, Serializable {
      *  has been obtained. Read access is granted unless either another
      *  thread has write access, or there are threads that
      *  have requested write access and not gotten it yet. If this thread
-     *  already has read access, then access is granted irrespective of 
+     *  already has read access, then access is granted irrespective of
      *  other write requests.
      *  If the calling thread is interrupted while waiting to get read
      *  access, an InternalErrorException is thrown, and the thread does
-     *  not have read permission to the workspace. 
+     *  not have read permission to the workspace.
      *  It is essential that a call to this method is matched by a call to
      *  doneReading(), regardless of whether this method returns normally or
      *  an exception is thrown. This is to ensure that the workspace is in a
@@ -436,7 +436,7 @@ public final class Workspace implements Nameable, Serializable {
      *  @see #doneWriting()
      */
     public final synchronized void getWriteAccess() {
-        
+
         // This method should throw an InterruptedException when the
         // calling thread is interrupted. InterruptedException is a
         // checked exception, so changing this will lead to changes
@@ -483,8 +483,8 @@ public final class Workspace implements Nameable, Serializable {
                         return;
                     }
                 }
-                
-                wait(); 
+
+                wait();
             }
         } catch (InterruptedException ex) {
             throw new InternalErrorException(current.getName()
@@ -656,7 +656,7 @@ public final class Workspace implements Nameable, Serializable {
 
         //System.out.println("-- look up access record for "
         //   + current.getName());
-        
+
         // If this object has been serialized and deserialized, then
         // _readerRecords could be null.
         if (_readerRecords == null) {

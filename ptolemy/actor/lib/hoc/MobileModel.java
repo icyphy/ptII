@@ -110,7 +110,7 @@ public class MobileModel extends TypedCompositeActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
-    
+
     /** The input port for incoming data to the inside model.
      */
     public TypedIOPort input;
@@ -150,7 +150,7 @@ public class MobileModel extends TypedCompositeActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then sets the value public variable in the new
      *  object to equal the cloned parameter in that new object.
@@ -182,7 +182,7 @@ public class MobileModel extends TypedCompositeActor {
             StringToken str = null;
             try {
                 str = (StringToken) modelString.get(0);
-                
+
                 _parser.reset();
 
                 CompositeActor model = (CompositeActor) _parser.parse(str.stringValue());
@@ -365,7 +365,7 @@ public class MobileModel extends TypedCompositeActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
+
     /** create the inside director of this composite actor according
      * to the <i>director<i> parameter.
      * @exception IllegalActionException If cannot find the director
@@ -397,7 +397,7 @@ public class MobileModel extends TypedCompositeActor {
                     "when create director" + ex);
         }
     }
-    
+
     /** Create the parameters and ports. This method is called by the constructors.
      *  @exception IllegalActionException
      */
@@ -419,7 +419,7 @@ public class MobileModel extends TypedCompositeActor {
             // specified director is not successfully constructed. Even when the
             // specified director is construced successfully, it cannot be removed
             // in wrapup() without this default director.
-            
+
             //The default director may not work when we need multi tokens to fire
             //the inside model because the receiver it creates is an instance of
             //Mailbox, which can only hold one token. In this case, specify a proper
@@ -463,7 +463,7 @@ public class MobileModel extends TypedCompositeActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** The inside director.
      */
     private Director _director;

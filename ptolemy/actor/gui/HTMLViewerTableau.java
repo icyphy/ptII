@@ -240,7 +240,7 @@ public class HTMLViewerTableau extends Tableau {
      *  @exception URISyntaxException If there are problems creating a URI.
      *  @exception MalformedURLException If there are problems creating a URL.
      */
-    public static URL _absolutePTIIURLToJarURL(String urlName) 
+    public static URL _absolutePTIIURLToJarURL(String urlName)
             throws java.net.URISyntaxException,
             java.net.MalformedURLException {
             // Try looking up the URL as a resource relative to $PTII.
@@ -275,14 +275,14 @@ public class HTMLViewerTableau extends Tableau {
             try {
                 ptIIDirAsURI = new URI(ptIIDirAsURLName);
             } catch (java.net.URISyntaxException ex) {
-                // If the ptIIDirAsURLName has a space in it, then it is 
+                // If the ptIIDirAsURLName has a space in it, then it is
                 // not a legitimate URI, so we substitute in %20
                 ptIIDirAsURI =
                     new URI(StringUtilities.substitute(ptIIDirAsURLName,
-                                    " ", "%20")); 
+                                    " ", "%20"));
             }
             URI relativeURI = uri.relativize(ptIIDirAsURI);
-            
+
             if (relativeURI.toURL().sameFile(ptIIDirAsURI.toURL())) {
                 int offset = 0;
                 if (urlName.startsWith("jar:")) {
@@ -303,7 +303,7 @@ public class HTMLViewerTableau extends Tableau {
             URL anotherURL = Thread.currentThread()
                 .getContextClassLoader()
                 .getResource(relativePath);
-            if (anotherURL == null && 
+            if (anotherURL == null &&
                     relativePath.indexOf('#') != -1) {
                 // getResource does not work on paths that look like:
                 // "package-summary.html#package_description"
@@ -328,7 +328,7 @@ public class HTMLViewerTableau extends Tableau {
     // trailing # and then append it.  If the resource cannot be found,
     // we return null
     // @param urlString A string representing a jar URL or a relative URL.
-    private static URL _entryResourceWithoutFragment(String urlString) 
+    private static URL _entryResourceWithoutFragment(String urlString)
             throws IOException, MalformedURLException {
 
         String urlStringBase =

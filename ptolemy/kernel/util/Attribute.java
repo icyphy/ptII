@@ -125,7 +125,7 @@ public class Attribute extends NamedObj {
         try {
             _workspace.getWriteAccess();
             int result = container._attributes.moveDown(this);
-            
+
             // Propagate.
             Iterator derivedObjects = getDerivedList().iterator();
             while (derivedObjects.hasNext()) {
@@ -133,7 +133,7 @@ public class Attribute extends NamedObj {
                 container = derived.getContainer();
                 container._attributes.moveDown(derived);
             }
-            
+
             return result;
         } finally {
             _workspace.doneWriting();
@@ -157,7 +157,7 @@ public class Attribute extends NamedObj {
         try {
             _workspace.getWriteAccess();
             int result = container._attributes.moveToFirst(this);
-            
+
             // Propagate.
             Iterator derivedObjects = getDerivedList().iterator();
             while (derivedObjects.hasNext()) {
@@ -165,7 +165,7 @@ public class Attribute extends NamedObj {
                 container = derived.getContainer();
                 container._attributes.moveToFirst(derived);
             }
-            
+
             return result;
         } finally {
             _workspace.doneWriting();
@@ -190,7 +190,7 @@ public class Attribute extends NamedObj {
         try {
             _workspace.getWriteAccess();
             int result = container._attributes.moveToIndex(this, index);
-            
+
             // Propagate.
             Iterator derivedObjects = getDerivedList().iterator();
             while (derivedObjects.hasNext()) {
@@ -198,7 +198,7 @@ public class Attribute extends NamedObj {
                 container = derived.getContainer();
                 container._attributes.moveToIndex(derived, index);
             }
-            
+
             return result;
         } finally {
             _workspace.doneWriting();
@@ -222,7 +222,7 @@ public class Attribute extends NamedObj {
         try {
             _workspace.getWriteAccess();
             int result = container._attributes.moveToLast(this);
-            
+
             // Propagate.
             Iterator derivedObjects = getDerivedList().iterator();
             while (derivedObjects.hasNext()) {
@@ -230,7 +230,7 @@ public class Attribute extends NamedObj {
                 container = derived.getContainer();
                 container._attributes.moveToLast(derived);
             }
-            
+
             return result;
         } finally {
             _workspace.doneWriting();
@@ -254,7 +254,7 @@ public class Attribute extends NamedObj {
         try {
             _workspace.getWriteAccess();
             int result = container._attributes.moveUp(this);
-            
+
             // Propagate.
             Iterator derivedObjects = getDerivedList().iterator();
             while (derivedObjects.hasNext()) {
@@ -262,7 +262,7 @@ public class Attribute extends NamedObj {
                 container = derived.getContainer();
                 container._attributes.moveUp(derived);
             }
-            
+
             return result;
         } finally {
             _workspace.doneWriting();
@@ -275,7 +275,7 @@ public class Attribute extends NamedObj {
     public NamedObj getContainer() {
         return _container;
     }
-    
+
     /** Specify the container NamedObj, adding this attribute to the
      *  list of attributes in the container.  If the container already
      *  contains an attribute with the same name, then throw an exception
@@ -374,14 +374,14 @@ public class Attribute extends NamedObj {
         }
         super.setName(name);
     }
-    
-    /** Update the content of this attribute. 
+
+    /** Update the content of this attribute.
      *  In this base class, nothing is performed.
      *  Subclasses need to override this class to update the attribute.
      *  @exception InternalErrorException Not thrown in this base class.
      */
     public void updateContent() throws InternalErrorException {}
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 

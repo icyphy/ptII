@@ -236,7 +236,7 @@ public class ParameterNameChanges implements MoMLFilter {
     static {
         ///////////////////////////////////////////////////////////
         // Actors that have properties that have changed class.
-        
+
         _classesWithParameterNameChanges = new HashMap();
 
         // PNDirectory: After 2.2, 'Initial_queue_capacity'

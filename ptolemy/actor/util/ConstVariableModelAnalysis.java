@@ -74,7 +74,7 @@ import ptolemy.kernel.util.NamedObj;
    constant because they depend on other variables which are not
    constant.  This class also recognizes dependence declarations
    represented by the {@link DependencyDeclaration} class.
-   
+
    <p> This class also keeps track of the "change context" of each
    dynamic variable.  The change context of a variable is an actor that
    contains that variable.  During a firing of the actor, the variable's
@@ -177,7 +177,7 @@ public class ConstVariableModelAnalysis {
      *  @exception IllegalActionException If the given parameter is
      *  not a constant parameter, as determined by this analysis.
      */
-    public Token getConstantValue(Variable variable) 
+    public Token getConstantValue(Variable variable)
             throws IllegalActionException {
         if (!isConstant(variable)) {
             throw new IllegalActionException(variable,
@@ -185,7 +185,7 @@ public class ConstVariableModelAnalysis {
         }
         return variable.getToken();
     }
-    
+
     /** Return the computed constant variables for the given container.
      *  @exception RuntimeException If the constant variables for the
      *  container have not already been computed.
@@ -236,7 +236,7 @@ public class ConstVariableModelAnalysis {
     public boolean isConstant(Variable variable) {
         return !_variableToChangeContext.keySet().contains(variable);
     }
-    
+
     /** Return true if the variable has been analyzed by this analysis
      *  and it depends on no other parameters.
      */

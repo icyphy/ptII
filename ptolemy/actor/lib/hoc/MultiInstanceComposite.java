@@ -242,13 +242,13 @@ public class MultiInstanceComposite extends TypedCompositeActor {
                         // relation above to link newPort.
                         Iterator otherPorts =
                             relation.linkedPortList(port).iterator();
-                        
+
                         // Added by Gang Zhou. If a port is connected to
                         // multiple other ports (through a single relation),
                         // only one relation should be created.
                         boolean isRelationCreated = false;
                         boolean isPortLinked = false;
-                        
+
                         while (otherPorts.hasNext()) {
                             TypedIOPort otherPort = (TypedIOPort)
                                 otherPorts.next();
@@ -262,14 +262,14 @@ public class MultiInstanceComposite extends TypedCompositeActor {
                             // Modified by Gang Zhou so that the port can
                             // be connected to the otherPort either from inside
                             // or from outside.
-                            boolean isInsideLinked = 
+                            boolean isInsideLinked =
                                     otherPort.isInsideLinked(oldRelation);
-                            if (port.isInput() && 
-                                    (!isInsideLinked && otherPort.isOutput() 
+                            if (port.isInput() &&
+                                    (!isInsideLinked && otherPort.isOutput()
                                     || isInsideLinked && otherPort.isInput())
                                     ||
-                                    port.isOutput() && 
-                                    (!isInsideLinked && otherPort.isInput() 
+                                    port.isOutput() &&
+                                    (!isInsideLinked && otherPort.isInput()
                                     || isInsideLinked && otherPort.isOutput())) {
                                 if (otherPort.isMultiport()) {
                                     if (!isRelationCreated) {
@@ -281,8 +281,8 @@ public class MultiInstanceComposite extends TypedCompositeActor {
                                             _debug(port.getFullName()+
                                                     ": created relation "+
                                                     relation.getFullName());
-                                    }    
-                                    otherPort.link(relation);                                    
+                                    }
+                                    otherPort.link(relation);
                                 }
                                 if (!isPortLinked) {
                                     newPort.link(relation);
@@ -291,7 +291,7 @@ public class MultiInstanceComposite extends TypedCompositeActor {
                                         _debug(newPort.getFullName()+
                                                 ": linked to "+
                                                 relation.getFullName());
-                                }    
+                                }
                                 // Commented out by Gang Zhou since the method
                                 // connectionsChanged() has already been called
                                 // in the method link()

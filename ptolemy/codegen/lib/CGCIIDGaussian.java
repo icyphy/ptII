@@ -25,7 +25,7 @@ distributed Gaussian random variables.  The values range from "lower"
 to "upper".
 
  @Author Soonhoi Ha
- @Version $Id$, based on version 1.9 of /users/ptolemy/src/domains/cgc/stars/CGCIIDGaussian.pl, from Ptolemy Classic 
+ @Version $Id$, based on version 1.9 of /users/ptolemy/src/domains/cgc/stars/CGCIIDGaussian.pl, from Ptolemy Classic
  @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCIIDGaussian extends ClassicCGCActor {
@@ -56,7 +56,7 @@ public class CGCIIDGaussian extends ClassicCGCActor {
         seed = new Parameter(this, "seed");
         seed.setExpression("1");
 
-/* 
+/*
 */
     }
     ///////////////////////////////////////////////////////////////////
@@ -88,36 +88,36 @@ public class CGCIIDGaussian extends ClassicCGCActor {
     /**
      */
     public int  myExecTime() {
-        
+
 return 300;
      }
 
     /**
      */
     public void  generatePreinitializeCode() {
-        
+
 // Declare prototypes for srand and rand functions
 		addInclude("<stdlib.h>");
 		// Declare prototype for sqrt
 		addInclude("<math.h>");
 		// Initialize the random number generator
-		addCode(initSeed); 
+		addCode(initSeed);
      }
 
     /**
      */
     public void  generateFireCode() {
-        
-addCode(randomGen); 
+
+addCode(randomGen);
      }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
-    public String initSeed = 
+    public String initSeed =
         "/* Initialize the random number generator */\n"
         + "srand($val(seed));\n";
 
-    public String randomGen = 
+    public String randomGen =
         "		int i;\n"
         + "		double sum = 0.0;\n"
         + "		/* Sum a large number of zero-mean random numbers that  */\n"

@@ -78,7 +78,7 @@ public class MovableViewScreen3D extends ViewScreen3D {
                 new ArrayToken("{0.0, 0.0, -1.0}"));
         viewerRotationAngle = new PortParameter(this, "viwerRoationAngle",
                 new DoubleToken("0.0"));
-        
+
         viewerPosition.setTypeEquals(new ArrayType(BaseType.DOUBLE));
         viewerRotationAxis.setTypeEquals(new ArrayType(BaseType.DOUBLE));
         viewerRotationAngle.setTypeEquals(BaseType.DOUBLE);
@@ -88,34 +88,34 @@ public class MovableViewScreen3D extends ViewScreen3D {
     ////                     Ports and Parameters                  ////
 
     /** A double array representing the (x,y,z) position of the view
-     *  frame relative to the virtual universe.  By default, this value 
+     *  frame relative to the virtual universe.  By default, this value
      *  is (0,0,2.4).
      */
     PortParameter viewerPosition;
-    
+
     /** A double array representing an axis of rotation for the view frame.
-     *  By default, when you look at the view screen, you are looking 
-     *  in the (0.0, 0.0, -1.0) direction of the virtual universe.  Your 
-     *  right is the (1.0, 0.0, 0.0) direction, and up is the (0.0, 1.0, 0.0) 
-     *  direction.  In this situtation, the frame describing the viewer has 
-     *  its positive z-axis going from the screen to you.  It's positive 
-     *  x-axis points right, and it's positve y-axis points up.  When the 
-     *  viewerRotationAxis and the viewerRotationAngle are provided, the 
-     *  ViewScreen frame is rotated counterclockwise around the 
+     *  By default, when you look at the view screen, you are looking
+     *  in the (0.0, 0.0, -1.0) direction of the virtual universe.  Your
+     *  right is the (1.0, 0.0, 0.0) direction, and up is the (0.0, 1.0, 0.0)
+     *  direction.  In this situtation, the frame describing the viewer has
+     *  its positive z-axis going from the screen to you.  It's positive
+     *  x-axis points right, and it's positve y-axis points up.  When the
+     *  viewerRotationAxis and the viewerRotationAngle are provided, the
+     *  ViewScreen frame is rotated counterclockwise around the
      *  viewerRotationAxis by the viewerRotationAngle.
-     */   
+     */
     PortParameter viewerRotationAxis;
-    
+
     /** A double value representing the angle, in radians, of rotation
      *  about the viewerRotationAxis.
      */
-    PortParameter viewerRotationAngle;   
-    
+    PortParameter viewerRotationAngle;
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     /** Call the ViewScreen fire() method, and translate and rotate the
      *  image if needed.
-     *  
+     *
      *  @exception IllegalActionException If the input array has the wrong size.
      */
     public void fire() throws IllegalActionException {
@@ -148,15 +148,15 @@ public class MovableViewScreen3D extends ViewScreen3D {
             quaternion.set(new AxisAngle4d(axisX, axisY, axisZ, angle));
             Vector3d vector = new Vector3d(xPosition, yPosition, zPosition);
             Transform3D t = new Transform3D(quaternion, vector, 1.0);
-            TransformGroup group = 
+            TransformGroup group =
                 _simpleUniverse.getViewingPlatform().getViewPlatformTransform();
             group.setTransform(t);
         }
     }
-    
+
     /** Call the ViewScreen initialize() method, and set the correct
-     *  location of the viewer.  
-     * 
+     *  location of the viewer.
+     *
      *  @exception IllegalActionException If the input array has the wrong size.
      */
     public void initialize() throws IllegalActionException {
@@ -182,14 +182,14 @@ public class MovableViewScreen3D extends ViewScreen3D {
         quaternion.set(new AxisAngle4d(axisX, axisY, axisZ, angle));
         Vector3d vector = new Vector3d(xPosition, yPosition, zPosition);
         Transform3D t = new Transform3D(quaternion, vector, 1.0);
-        TransformGroup group = 
+        TransformGroup group =
             _simpleUniverse.getViewingPlatform().getViewPlatformTransform();
         group.setTransform(t);
         _initialPosition = _position;
         _initialAxis = _axis;
         _initialAngle = _angle;
     }
-    
+
     /**Update the input values of the state.
      * @return Returns the value from its super class.
      * @exception IllegalActionException Thrown if super class throws it.
@@ -200,7 +200,7 @@ public class MovableViewScreen3D extends ViewScreen3D {
         _angle = (DoubleToken) viewerRotationAngle.getToken();
         return super.postfire();
     }
-    
+
     /**Reset the state to the initial values.
      * @exception IllegalActionException Thrown if super class throws it.
      */
@@ -208,12 +208,12 @@ public class MovableViewScreen3D extends ViewScreen3D {
         super.wrapup();
         _position = _initialPosition;
         _axis = _initialAxis;
-        _angle = _initialAngle;        
+        _angle = _initialAngle;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                        protected variables                ////
-    
+
     protected ArrayToken _position;
     protected ArrayToken _axis;
     protected DoubleToken _angle;
@@ -221,7 +221,7 @@ public class MovableViewScreen3D extends ViewScreen3D {
     protected ArrayToken _initialPosition;
     protected ArrayToken _initialAxis;
     protected DoubleToken _initialAngle;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 

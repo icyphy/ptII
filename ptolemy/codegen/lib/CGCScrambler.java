@@ -123,7 +123,7 @@ Since many machines today have 32-bit integers, we give the primitive polynomial
 above only up to order 30.
 
  @Author E. A. Lee
- @Version $Id$, based on version 1.7 of /users/ptolemy/src/domains/cgc/stars/CGCScrambler.pl, from Ptolemy Classic 
+ @Version $Id$, based on version 1.7 of /users/ptolemy/src/domains/cgc/stars/CGCScrambler.pl, from Ptolemy Classic
  @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCScrambler extends ClassicCGCActor {
@@ -152,7 +152,7 @@ public class CGCScrambler extends ClassicCGCActor {
         shiftReg = new Parameter(this, "shiftReg");
         shiftReg.setExpression("0");
 
-/* 
+/*
 */
     }
     ///////////////////////////////////////////////////////////////////
@@ -184,7 +184,7 @@ bit sequence out (zero or one)
     /**
      */
     public void  generateInitializeCode() throws IllegalActionException {
-        
+
 // Should check that generator polynomial does not exceed 31 bits. How?
 	  // To avoid sign extension problems, the hob must be zero
 	  if (((IntToken)((polynomial).getToken())).intValue() < 0) {
@@ -196,13 +196,13 @@ bit sequence out (zero or one)
     /**
      */
     public void  generateFireCode() {
-        
-addCode(scramble); 
+
+addCode(scramble);
      }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
-    public String scramble = 
+    public String scramble =
         "	  int reg, masked, parity;\n"
         + "	  reg = $ref(shiftReg) << 1;\n"
         + "	  masked = $val(polynomial) & reg;\n"

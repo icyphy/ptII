@@ -63,7 +63,7 @@ public interface Actor extends Executable, Nameable {
      *  @return The executive director.
      */
     public Director getExecutiveDirector();
-    
+
     /** Return a representation of the function dependencies that output
      *  ports have on input ports.
      *  @return A representation of the function dependencies of the

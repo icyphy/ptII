@@ -66,14 +66,14 @@ public class LevelSkippingTableauFactory extends TableauFactory {
     public LevelSkippingTableauFactory(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         entityName = new StringParameter(this, "entityName");
         entityName.setExpression("");
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
-    
+
     /** The name of the contained entity to open, or an empty string
      *  to just open the first one found.  This is a string that defaults
      *  to empty.

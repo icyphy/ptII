@@ -88,7 +88,7 @@ public class ForwardEulerSolver extends FixedStepSolver {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Fire the integrator to resolve states. 
+    /** Fire the integrator to resolve states.
      *  @param integrator The integrator to be fired.
      *  @exception IllegalActionException If there is no director, or can not
      *  read input, or can not send output.
@@ -109,7 +109,7 @@ public class ForwardEulerSolver extends FixedStepSolver {
             integrator.setTentativeState(tentativeState);
             integrator.output.broadcast(new DoubleToken(tentativeState));
         } else {
-            // During the second round, store the derivative for the next 
+            // During the second round, store the derivative for the next
             // integration. Because the default converged is true, we do not set
             // it to true again here.
             double f = ((DoubleToken)integrator.input.get(0)).doubleValue();

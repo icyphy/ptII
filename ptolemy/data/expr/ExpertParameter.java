@@ -40,7 +40,7 @@ import ptolemy.kernel.util.Settable;
    This class is identical to Parameter except that its visibility
    is set to "expert" by default. The visibility is not represented
    in a MoML file, so if you want "expert" visibility to be persistent,
-   you must use this class. 
+   you must use this class.
 
    @author Edward A. Lee
    @version $Id$

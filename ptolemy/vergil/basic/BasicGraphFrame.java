@@ -238,10 +238,10 @@ public abstract class BasicGraphFrame extends PtolemyFrame
                         }
                     }
                 });
-        
+
         // We used to do this, but it would result in context menus
         // getting lost on the mac.
-        
+
         // _jgraph.addMouseListener(new FocusMouseListener());
         _jgraph.setAlignmentX(1);
         _jgraph.setAlignmentY(1);
@@ -389,7 +389,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
         _cutAction = new CutAction();
         _copyAction = new CopyAction();
         _pasteAction = new PasteAction();
-        
+
         _moveToBackAction = new MoveToBackAction();
         _moveToFrontAction = new MoveToFrontAction();
     }
@@ -1055,7 +1055,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
             MessageHandler.error("Redo failed", ex);
         }
     }
-    
+
     /** Open a file browser and save the given entity in the file specified
      *  by the user.
      *  @param entity The entity to save.
@@ -1088,7 +1088,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
 
         // Show the dialog.
         int returnVal = fileDialog.showSaveDialog(this);
-        
+
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = fileDialog.getSelectedFile();
             if (!_confirmFile(entity, file)) {
@@ -1096,9 +1096,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame
             }
             // Record the selected directory.
             _directory = fileDialog.getCurrentDirectory();
-            
+
             java.io.FileWriter fileWriter = new java.io.FileWriter(file);
-            
+
             // Make sure the entity name saved matches the file name.
             String name = entity.getName();
             String filename = file.getName();
@@ -1283,7 +1283,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
         GUIUtilities.addMenuItem(_editMenu, _pasteAction);
 
         _editMenu.addSeparator();
-        
+
         GUIUtilities.addHotKey(_jgraph, _moveToBackAction);
         GUIUtilities.addMenuItem(_editMenu, _moveToBackAction);
         GUIUtilities.addHotKey(_jgraph, _moveToFrontAction);
@@ -1578,7 +1578,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
 
     /** The cut action. */
     protected Action _cutAction;
-    
+
     /** The copy action. */
     protected Action _copyAction;
 
@@ -1611,10 +1611,10 @@ public abstract class BasicGraphFrame extends PtolemyFrame
 
     /** Action to move to the front. */
     protected MoveToFrontAction _moveToFrontAction;
-    
+
     /** The library display panel. */
     protected JPanel _palettePane;
-    
+
     /** The paste action. */
     protected Action _pasteAction;
 
@@ -1629,7 +1629,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
+
     /** Delete the currently selected objects from this document without
      *  undo
      */
@@ -1794,17 +1794,17 @@ public abstract class BasicGraphFrame extends PtolemyFrame
         }
         public void actionPerformed(ActionEvent e) {
             final NamedObj container = (NamedObj)_getGraphModel().getRoot();
-            
+
             // Get the selection objects.
             // NOTE: The order in the model must be respected.
             HashSet namedObjSet = _getSelectionSet();
             final List elements = container.sortContainedObjects(namedObjSet);
-            
+
             // Return if any is a derived object.
             if (_checkForImplied(elements)) {
                 return;
             }
-            
+
             // Issue a change request, since this requires write access.
             ChangeRequest request
                     = new ChangeRequest(container, "Send to back") {
@@ -1833,17 +1833,17 @@ public abstract class BasicGraphFrame extends PtolemyFrame
         }
         public void actionPerformed(ActionEvent e) {
             final NamedObj container = (NamedObj)_getGraphModel().getRoot();
-            
+
             // Get the selection objects.
             // NOTE: The order in the model must be respected.
             HashSet namedObjSet = _getSelectionSet();
             final List elements = container.sortContainedObjects(namedObjSet);
-            
+
             // Return if any is a derived object.
             if (_checkForImplied(elements)) {
                 return;
             }
-            
+
             // Issue a change request, since this requires write access.
             ChangeRequest request
                     = new ChangeRequest(container, "Bring to front") {

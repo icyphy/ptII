@@ -144,7 +144,7 @@ public class ImplicitSurface extends TypedAtomicActor {
 
     /** Output gradiant value theta.  The type of this
      *  port is double.
-     */   
+     */
     public TypedIOPort dtheta;
 
     /** The location of the dtheta file. */
@@ -166,19 +166,19 @@ public class ImplicitSurface extends TypedAtomicActor {
 
     /** A boolean parameter that determines whether the input data files
      *  are written out in the 'other format'.
-     *  
+     *
      *  <p>This parameter is only visible in expert mode.
      *
      *  <p>The initial value of this parameters is false, which means
-     *  that no action is taken.  
+     *  that no action is taken.
 
      *  <p> This actor reads data files that can be either compressed
      *  or uncompressed, as per the <i>filesAreCompressed</i>
-     *  parameter.  
+     *  parameter.
 
      *  <p>If this parameter is true, and the input files are in uncompressed
      *  format, then the input files are written out in compressed format
-     *  in the current directory with ".out" appended to the base file name 
+     *  in the current directory with ".out" appended to the base file name
      *  of each file.  For example, if <i>dxFile</i> is set to
      *  "surfaces/softwall.final.gradx.data", then the output file will be
      *  called "softwall.final.gradx.data.out".
@@ -186,7 +186,7 @@ public class ImplicitSurface extends TypedAtomicActor {
      *  <p>If this parameter is true, and the input files are in compressed
      *  format, then the input files are written out in compressed format
      *  with a ".out" appended to the base file name of each file.
-     */   
+     */
     public Parameter writeOutData;
 
     /** Input x position.  The type of this port is double. */

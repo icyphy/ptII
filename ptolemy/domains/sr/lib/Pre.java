@@ -52,7 +52,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  * delays by one clock tick, regardless of whether the input is present,
  * this actor delays only present values, and produces an output only when
  * the input is present.
- * 
+ *
  * @see NonStrictDelay
  * @author Edward A. Lee
  * @version $Id$

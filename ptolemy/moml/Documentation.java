@@ -145,7 +145,7 @@ public class Documentation extends StringAttribute {
     public String getValue() {
         return getExpression();
     }
-    
+
     /** Override the base class to remove this instance from
      *  its container if the argument is an empty string.
      *  The removal is done in a change request, so it may

@@ -168,7 +168,7 @@ public class FractionArrayMath {
 
     /** Returns true if the two input arrays have all elements
      *  equal.
-     * 
+     *
      * @param array1 The first input array.
      * @param array2 The second input array.
      * @return True if array1 == array2.
@@ -185,7 +185,7 @@ public class FractionArrayMath {
         }
         return output;
     }
-    
+
     /** Return a new array that is the element-by-element multiplication of
      *  the two input arrays.
      *  If the lengths of both arrays are 0, return a new array of length 0.

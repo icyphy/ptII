@@ -216,7 +216,7 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
         // Create the interactor that drags new edges.
         _linkCreator = new LinkCreator();
         _linkCreator.setMouseFilter(_shortcutFilter);
-        
+
         // NOTE: Do not use _initializeInteraction() because we are
         // still in the constructor, and that method is overloaded in
         // derived classes.
@@ -303,7 +303,7 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
     private PortDialogFactory _portDialogFactory;
 
     /** The interactor for creating new relations. */
-    private RelationCreator _relationCreator; 
+    private RelationCreator _relationCreator;
 
     /** The filter for shortcut operations.  This is used for creation
      *  of relations and creation of links from relations. Under PC,

@@ -182,9 +182,9 @@ public class ComponentEntity extends Entity {
         ComponentEntity clone = (ComponentEntity)
                 super.instantiate(container, name);
         clone.setContainer((CompositeEntity)container);
-        
+
         clone._adjustDeferrals();
-        
+
         // Now that there is a new parent-child relationship,
         // we need to propagate values from the parent to the child.
         // Note that this isn't needed to get the
@@ -237,7 +237,7 @@ public class ComponentEntity extends Entity {
         try {
             _workspace.getWriteAccess();
             int result = container._containedEntities.moveDown(this);
-            
+
             // Propagate.
             Iterator derivedObjects = getDerivedList().iterator();
             while (derivedObjects.hasNext()) {
@@ -245,13 +245,13 @@ public class ComponentEntity extends Entity {
                 container = (CompositeEntity)derived.getContainer();
                 container._containedEntities.moveDown(derived);
             }
-            
+
             return result;
         } finally {
             _workspace.doneWriting();
         }
     }
-    
+
     /** Move this object to the first position in the list
      *  of attributes of the container. If this object is already first,
      *  do nothing. Increment the version of the workspace.
@@ -268,7 +268,7 @@ public class ComponentEntity extends Entity {
         try {
             _workspace.getWriteAccess();
             int result = container._containedEntities.moveToFirst(this);
-            
+
             // Propagate.
             Iterator derivedObjects = getDerivedList().iterator();
             while (derivedObjects.hasNext()) {
@@ -276,7 +276,7 @@ public class ComponentEntity extends Entity {
                 container = (CompositeEntity)derived.getContainer();
                 container._containedEntities.moveToFirst(derived);
             }
-            
+
             return result;
         } finally {
             _workspace.doneWriting();
@@ -301,7 +301,7 @@ public class ComponentEntity extends Entity {
         try {
             _workspace.getWriteAccess();
             int result = container._containedEntities.moveToIndex(this, index);
-            
+
             // Propagate.
             Iterator derivedObjects = getDerivedList().iterator();
             while (derivedObjects.hasNext()) {
@@ -309,7 +309,7 @@ public class ComponentEntity extends Entity {
                 container = (CompositeEntity)derived.getContainer();
                 container._containedEntities.moveToIndex(derived, index);
             }
-            
+
             return result;
         } finally {
             _workspace.doneWriting();
@@ -333,7 +333,7 @@ public class ComponentEntity extends Entity {
         try {
             _workspace.getWriteAccess();
             int result = container._containedEntities.moveToLast(this);
-            
+
             // Propagate.
             Iterator derivedObjects = getDerivedList().iterator();
             while (derivedObjects.hasNext()) {
@@ -341,7 +341,7 @@ public class ComponentEntity extends Entity {
                 container = (CompositeEntity)derived.getContainer();
                 container._containedEntities.moveToLast(derived);
             }
-            
+
             return result;
         } finally {
             _workspace.doneWriting();
@@ -364,7 +364,7 @@ public class ComponentEntity extends Entity {
         try {
             _workspace.getWriteAccess();
             int result = container._containedEntities.moveUp(this);
-            
+
             // Propagate.
             Iterator derivedObjects = getDerivedList().iterator();
             while (derivedObjects.hasNext()) {
@@ -372,7 +372,7 @@ public class ComponentEntity extends Entity {
                 container = (CompositeEntity)derived.getContainer();
                 container._containedEntities.moveUp(derived);
             }
-            
+
             return result;
         } finally {
             _workspace.doneWriting();
@@ -608,7 +608,7 @@ public class ComponentEntity extends Entity {
         NamedObj context = this;
         int levelsToSearch = getDerivedLevel();
         int aboveLevel = 0;
-        ComponentEntity candidate = null;        
+        ComponentEntity candidate = null;
         // Make sure we get a real candidate, which is a
         // class definition. The second term in the if will
         // cause the search to continue up the hierarchy.
@@ -721,7 +721,7 @@ public class ComponentEntity extends Entity {
         }
         return candidate;
     }
-    
+
     /** Propagate existence of this object to the
      *  specified object. This overrides the base class
      *  to set the container.

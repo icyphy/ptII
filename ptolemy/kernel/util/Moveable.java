@@ -88,7 +88,7 @@ public interface Moveable {
      */
     public int moveToLast() throws IllegalActionException;
 
-    /** Move this object up by one in the list of 
+    /** Move this object up by one in the list of
      *  objects in its container.  If the object is already first
      *  on the list, then it is not moved.
      *  @return The index of this object prior to moving it,

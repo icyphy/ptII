@@ -161,10 +161,10 @@ public class ImageIcon extends DynamicEditorIcon implements ImageObserver {
             // Needed to trigger further updates.
             _image.getWidth(this);
             _image.getHeight(this);
-            
+
             return true;
         }
-            
+
         if ((infoflags & ImageObserver.ALLBITS) != 0) {
             // The image is now fully loaded.
             scaleImage(_scalePercentage);
@@ -191,7 +191,7 @@ public class ImageIcon extends DynamicEditorIcon implements ImageObserver {
                     }
                 };
             SwingUtilities.invokeLater(doRepaint);
-            
+
 
             return false;
         }
@@ -249,13 +249,13 @@ public class ImageIcon extends DynamicEditorIcon implements ImageObserver {
                             width * _scalePercentage/100.0);
                     int newHeight = (int) Math.round(
                             height * _scalePercentage/100.0);
-                   
+
                     _scaledImage = _image.getScaledInstance(
                             newWidth, newHeight, Image.SCALE_SMOOTH);
                     // To get notified of updates:
                     _scaledImage.getWidth(ImageIcon.this);
                     _scaledImage.getHeight(ImageIcon.this);
-                    
+
                     Iterator figures = _liveFigureIterator();
                     while (figures.hasNext()) {
                         Object figure = figures.next();
@@ -282,7 +282,7 @@ public class ImageIcon extends DynamicEditorIcon implements ImageObserver {
         // Temporarily set the scaled image to the same image.
         // This will get reset when scaleImage() completes its work.
         _scaledImage = image;
-        
+
         // In order to trigger a notification of completion
         // of the image load, we have to access something
         // about the image.
@@ -311,7 +311,7 @@ public class ImageIcon extends DynamicEditorIcon implements ImageObserver {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-   
+
     // The locally saved height.
     private int _height = -1;
 
@@ -323,7 +323,7 @@ public class ImageIcon extends DynamicEditorIcon implements ImageObserver {
 
     // The scale percentage.
     private double _scalePercentage = 100.0;
-    
+
     // The locally saved width.
     private int _width = -1;
 }

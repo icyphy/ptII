@@ -142,7 +142,7 @@ public class DEReceiver extends AbstractReceiver {
      *  The director will be responsible to dequeue the trigger event at
      *  the correct timestamp and microstep and invoke the corresponding actor
      *  whose input port contains this receiver. This receiver may contain
-     *  more than one events. 
+     *  more than one events.
      *  @param token The token to be put.
      */
     public void put(Token token) {

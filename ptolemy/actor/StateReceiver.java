@@ -32,15 +32,15 @@ package ptolemy.actor;
 //// StateReceiver
 /**
    This is a marker interface for receivers that have <i>state</i> semantics.
-   That is, whenever a get method is called on this receiver, the 
-   current token is always available and returned. Further more, if 
-   no put method is called between get methods, the returned tokens are 
+   That is, whenever a get method is called on this receiver, the
+   current token is always available and returned. Further more, if
+   no put method is called between get methods, the returned tokens are
    always the same. Usually, the receivers that implement this interface
-   have capacity of 1. 
+   have capacity of 1.
    <p>
-   Receivers that do not implement this marker interface have <i>event</i> 
-   semantics, which means that when a get method is called on the receiver, 
-   the current token is returned and it is also removed from the receiver. 
+   Receivers that do not implement this marker interface have <i>event</i>
+   semantics, which means that when a get method is called on the receiver,
+   the current token is returned and it is also removed from the receiver.
 
    @see ptolemy.domains.giotto.kernel.GiottoReceiver
    @see ptolemy.domains.sr.kernel.SRReceiver

@@ -49,7 +49,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    Code is modified from SDFComplexFFT star, which was originated from Gabriel.
 
    @Author S. Ha
-   @Version $Id$, based on version 1.14 of /users/ptolemy/src/domains/cgc/dsp/stars/CGCFFTCx.pl, from Ptolemy Classic 
+   @Version $Id$, based on version 1.14 of /users/ptolemy/src/domains/cgc/dsp/stars/CGCFFTCx.pl, from Ptolemy Classic
    @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCFFTCx extends ClassicCGCActor {
@@ -158,7 +158,7 @@ public class CGCFFTCx extends ClassicCGCActor {
         if (temp < int(size)) {
             Error::abortRun(*this, "2^order must be >= size");
             return;
-        } 
+        }
 
         localData.resize(temp * 2);
         input.setSDFParams (int(size), int(size)-1);
@@ -181,7 +181,7 @@ public class CGCFFTCx extends ClassicCGCActor {
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
-    public String fftRoutine = 
+    public String fftRoutine =
     "\n"
     + "/*\n"
     + " * This fft routine is from ~gabriel/src/filters/fft/fft.c;\n"
@@ -254,7 +254,7 @@ public class CGCFFTCx extends ClassicCGCActor {
     + "}\n"
     + "\n";
 
-    public String loadCode = 
+    public String loadCode =
     "	int i, j = 0;\n"
     + "	for (i = $val(size) - 1; i >= 0; i--) {\n"
     + "		$ref(localData,j++) = $ref(input,i).real;\n"
@@ -266,11 +266,11 @@ public class CGCFFTCx extends ClassicCGCActor {
     + "	}		\n"
     + "	fft_rif ($ref(localData),$val(fftSize), $val(direction));\n";
 
-    public String scaleOut = 
+    public String scaleOut =
     "	for (i = 0; i < 2*$val(fftSize); i++)\n"
     + "		$ref(localData,i) /= $val(fftSize);\n";
 
-    public String outData = 
+    public String outData =
     "	j = 0;\n"
     + "	for (i = $val(fftSize) - 1; i >= 0; i--) {\n"
     + "		$ref(output,i).real = $ref(localData,j++);\n"

@@ -269,7 +269,7 @@ public class LiveSoundActor extends TypedAtomicActor
     /** Initialize the audio system.  Set parameters in the audio system
      *  according to the parameters of this actor.
      *  Derived classes should call this method during initialize().
-     *  @exception IllegalActionException If there is a problem 
+     *  @exception IllegalActionException If there is a problem
      *  reading or setting a parameter.
      *  @exception IOException If there is a problem setting the
      *  bits per sample, channels or buffer size.

@@ -15,19 +15,19 @@ public class Unboxing12 {
     public IntToken firingCountLimit_CGToken;
     public DoubleToken init_CGToken;
     public IntToken step_CGToken;
-    
+
     public void initialize() throws IllegalActionException {
 	_iterationCount = 0;
 	BaseType.DoubleType doubletype = BaseType.DOUBLE;
 	_stateToken = doubletype.convert(init_CGToken);
     }
-    
+
     public void fire() throws IllegalActionException {
 	BaseType.DoubleType doubletype = BaseType.DOUBLE;
 	Token token = doubletype.convert(_stateToken);
         System.out.println("token = " + token.toString());
     }
-    
+
     public Unboxing12() throws IllegalActionException {
 	_stateToken = null;
 	_resultArray = new Token[1];
@@ -47,7 +47,7 @@ public class Unboxing12 {
 	inttoken_0_ = (IntToken) token_1_;
 	step_CGToken = inttoken_0_;
     }
-    
+
     public boolean postfire() throws IllegalActionException {
 	_stateToken = _stateToken.add(step_CGToken);
 	int i = _firingCountLimit;

@@ -288,7 +288,7 @@ public class NonStrictTest extends Sink {
                         "The fire() method of this actor was never called. "
                         + "Usually, this is an error indicating that "
                         + "starvation is occurring.";
-                String fireCompatProperty = 
+                String fireCompatProperty =
                     "ptolemy.actor.lib.NonStrictTest.fire.compat";
                 if (StringUtilities
                         .getProperty(fireCompatProperty).length() > 0) {
@@ -304,7 +304,7 @@ public class NonStrictTest extends Sink {
             }
             if ( _numberOfInputTokensSeen
                      < ((ArrayToken)(correctValues.getToken())).length()) {
-                String errorMessage = 
+                String errorMessage =
                     "The test produced only " + _numberOfInputTokensSeen
                     + " tokens, yet the correctValues parameter was "
                     + "expecting "
@@ -313,7 +313,7 @@ public class NonStrictTest extends Sink {
 
                     System.err.println("Warning: '" + getFullName() + "' "
                              + errorMessage
-					);		
+					);
             }
         }
         _initialized = false;
@@ -384,7 +384,7 @@ public class NonStrictTest extends Sink {
     /** Set to true if fire() is called once.  If fire() is not called at
      *  least once, then throw an exception in wrapup().
      */
-    protected boolean _firedOnce = false; 
+    protected boolean _firedOnce = false;
 
     /** Set to true when initialized() is called.
      */

@@ -1777,7 +1777,7 @@ public class Query extends JPanel {
 
             _name = name;
         }
-        
+
         public void actionPerformed(ActionEvent e) {
             // NOTE: If the last argument is null, then choose a default dir.
             JFileChooser fileChooser = new JFileChooser(_startingDirectory);
