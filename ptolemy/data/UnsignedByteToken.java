@@ -403,7 +403,8 @@ public class UnsignedByteToken extends ScalarToken {
      *  where "close" means that the distance between them is less than
      *  or equal to the second argument.  It is assumed that the argument is
      *         an UnsignedByteToken.
-     *  @param token The token to compare to this token.
+     *  @param rightArgument The token to compare to this token.
+     *  @param epsilon The distance.
      *  @return A true-valued token if the first argument is close to
      *  this token.
      */
