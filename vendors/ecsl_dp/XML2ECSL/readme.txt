@@ -7,11 +7,11 @@ This folder contains the source files for the XML2ECSL translator in
 the ECSL DP tool chain.
 
 Requirements to build XML2ECSL:
-  - Udm 2.19 
+  - Udm 2.19  
   - STLport 4.5.3 (part of UDM 3rdParty source)
   - Xerces-C 2.6.0 (part of UDM 3rdParty source)
   - zlib 1.2.1 (part of UDM 3rdParty source)
-
+  - Microsoft Visual C 6.0 sp 6
 The ECSL_DP toolchain workflow is the following.
 First, the user creates the Matlab SL/SF models to capture the
 signal/state-flow of the system.
@@ -40,7 +40,12 @@ ECSL-DP metamodel in GME.
 
 UDM
 ---
-Download from http://www.isis.vanderbilt.edu/Projects/mobies/downloads.asp#UDM
+Download UDM 2.20 from
+http://www.isis.vanderbilt.edu/Projects/mobies/downloads.asp#UDM
+or http://www.isis.vanderbilt.edu/projects/mobies/downloads.asp
+
+The XSD files are generated with a UDM tool. Udm.exe as part of the
+compilation process in a custom build step.
 
 Don't install Udm in c:/Program Files/ISIS, instead install it in a
 directory that has no spaces in the name.  
