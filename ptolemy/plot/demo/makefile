@@ -46,7 +46,7 @@ TYDIST =	$(TYPACKAGE)$(TYVERSION)
 TYZIP =		$(TYPACKAGE_DIR)/$(TYPACKAGE).zip
 JARFILE = 	$(TYPACKAGE).jar
 
-SRCDIRS =	audio
+SRCDIRS =
 DIRS = 		$(SRCDIRS) #doc test
 
 # Order matters here.
