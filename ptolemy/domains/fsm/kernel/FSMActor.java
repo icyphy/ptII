@@ -806,7 +806,11 @@ public class FSMActor extends CompositeEntity implements TypedActor {
 
         String portName = port.getName();
         for (int channelIndex = 0; channelIndex < width; ++channelIndex) {
-            if (_stopRequested) break;
+            // NOTE: The following check results in a bug because the
+            // _stopRequested flag remains true after a model execution
+            // has halted.  Hence, after a run, changes to connections
+            // fail to result in variables being created.  EAL 7/22/02.
+            // if (_stopRequested) break;
             String shadowName = null;
             // NOTE: This used to add the channel index only if the width
             // was greater than 1.  This doesn't match the documentation,
@@ -840,6 +844,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
                 }
                 shadowVariables[channelIndex][1]
                         = new Variable(this, shadowName);
+
                 // Make the variable lazy since it will often have
                 // an expression that cannot be evaluated.
                 shadowVariables[channelIndex][1].setLazy(true);
