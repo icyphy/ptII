@@ -101,10 +101,12 @@ public class SequenceScope extends SequencePlotter {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if (attribute == width && plot != null) {
-            double xUnitValue = ((DoubleToken)xInit.getToken()).doubleValue();
+        if ((attribute == width || attribute == xUnit || attribute == xInit)
+                && plot != null) {
+            // Ensure that protected variables are set.
+            super.attributeChanged(attribute);
             int widthValue = ((IntToken)width.getToken()).intValue();
-            plot.setXRange(0.0, xUnitValue * widthValue);
+            plot.setXRange(_xInit, _xUnit * widthValue + _xInit);
         } else if (attribute == persistence && plot != null) {
             int persValue = ((IntToken)persistence.getToken()).intValue();
             plot.setPointsPersistence(persValue);
@@ -119,9 +121,8 @@ public class SequenceScope extends SequencePlotter {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        double xUnitValue = ((DoubleToken)xUnit.getToken()).doubleValue();
         int widthValue = ((IntToken)width.getToken()).intValue();
-        plot.setXRange(0.0, xUnitValue * widthValue);
+        plot.setXRange(_xInit, _xUnit * widthValue + _xInit);
         plot.setWrap(true);
         int persValue = ((IntToken)persistence.getToken()).intValue();
         plot.setPointsPersistence(persValue);
