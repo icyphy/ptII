@@ -1,5 +1,4 @@
-/* A Relation serves as a connection class between Entities in 
-a hierarchical graph.
+/* A Relation is an arc in a flat graph.
 
  Copyright (c) 1997 The Regents of the University of California.
  All rights reserved.
@@ -27,23 +26,18 @@ a hierarchical graph.
 */
 
 package pt.kernel;
-import java.util.Hashtable;
+
 import java.util.Enumeration;
-import java.util.NoSuchElementException;
-import pt.kernel.NullReferenceException; 
+import collections.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// Relation
-/** A Relation serves as a connection class between Entities in a 
-hierarchical graph. A Relation connects n links such that each link has 
-access to the other n-1 links. In our case, a "link" is a Port. We say 
-that a Relation is <EM> dangling </EM> if it has only one Port connected 
-to it. We assume Ports may attach themselves to Relations, but the other 
+/** A Relation is an arc in a flat graph. A Relation connects n links such 
+that each link has access to the other n-1 links. In our case, a "link" is 
+a Port. We assume Ports may attach themselves to Relations, but the other 
 direction does not hold.
-FIXME: Eventually we will set a variable in Port for determining if 
-it is connected to a dangling Relation. 
-@author John S. Davis, II
 @author Neil Smyth
+@author John S. Davis II
 @version $Id$
 */
 public abstract class Relation extends NamedObj {
@@ -68,72 +62,54 @@ public abstract class Relation extends NamedObj {
     
 
     /** Return the Ports which are connected to this Relation.
-     * @return Return an Enumeration of Ports; returns null if the
+     * @return Return an Enumeration of Ports; return null if the
      * collection of Ports is null.
      */	
     public Enumeration enumPorts() {
         return new PortEnumeration();
     }
 
+
     /** Return the Ports which are connected to this Relation, except for 
-     * the specified Port
+     *  the specified Port
      * @param exceptPort Do not return this Port in the Enumeration 
      * @return Return an Enumeration of Ports; returns null if the
-     * collection of Ports is null.
+     *  collection of Ports is null.
      */	
     public Enumeration enumPortsExcept(Port exceptPort) {
         return new PortEnumeration(exceptPort);
     }
 
+
     /** Return the Entities which are connected to this Relation.
      * @return Return an Enumeration of Entities; returns null if the
-     * collection of Entities is null.
-     * FIXME : assumes Port has method getEntity()
+     *  collection of Entities is null.
      */	
-    public Enumeration enumEntities() throws NameDuplicationException,
-	NullReferenceException {
+    public Enumeration enumEntities() {
 
         // JFIXME: Enumeration XRefs = _portList.elements();
-        // Should this be: 
+	// Should this not be:
 	Enumeration XRefs = _portList.enumerate();
-        Hashtable storeEntities = new Hashtable();
+        LinkedList storedEntities = new LinkedList();
 
         while( XRefs.hasMoreElements() ) {
             Port tmpPort = (Port)XRefs.nextElement();
-	    // JFIXME: Port currently has no getEntity() method.
-	    /*
-            if( (Entity tmp = tmpPort.getEntity()) != null) {
-                 storeEntities.put(tmp, tmp);
-		 // JFIXME: Shouldn't the above be 
-		 // storeEntities.put( tmp.getName(), tmp );
-            }
-	    */
+	    Entity tmpEntity = tmpPort.getEntity();
+	    storedEntities.insertLast( tmpEntity );
         }
-        return storeEntities.elements();
+
+        return storedEntities.elements();
     }
 
-    /** Determine if the Relation is dangling? By dangling, we mean that the
-     *  Relation has exactly one Port connection.
-     * @return Return true if the Relation is dangling; returns false otherwise.
-     */	
-    public boolean isDangling() {
-	if( _portList == null ) {
-	     return false;
-	}
-	if( _portList.size() == 1 ) {
-	     return true;
-	}
-        return false;
-    }
 
     /** Determine if a given Port is connected to this Relation.
      * @param portName The name of the Port for which we check connectivity.
      * @return Return true if the Port is connected to this Relation. Return 
-     * false otherwise.
+     *  false otherwise.
      */	
     public boolean isPortConnected(String portName) {
         // JFIXME: Enumeration XRefs = _portList.elements();
-        // Should this be: 
+	// Should this not be:
 	Enumeration XRefs = _portList.enumerate();
         while (XRefs.hasMoreElements()) {
             Port nextPort = (Port)XRefs.nextElement();
@@ -141,6 +117,7 @@ public abstract class Relation extends NamedObj {
 	}
 	return false;
     }
+
 
     /** Return the number of Ports connected to the relation.
      */	
