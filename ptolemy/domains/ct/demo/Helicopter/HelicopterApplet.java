@@ -107,9 +107,8 @@ public class HelicopterApplet extends CTApplet {
             // Set up the top level composite actor, director and manager
             _toplevel.setName("HelicopterSystem");
             _dir = new CTMultiSolverDirector(_toplevel, "OuterDirector");
+            //_dir.addDebugListener(new StreamListener());
             _thisManager = _manager;
-            //_dir.setVERBOSE(true);
-            //_dir.setDEBUG(true);
 
             // ---------------------------------
             // Create the composite actors.
@@ -467,39 +466,25 @@ public class HelicopterApplet extends CTApplet {
 
             //_debug("Set parameters");
             // CT Director parameters
-            //Parameter initstep =
-            //   (Parameter)_dir.getAttribute("InitialStepSize");
-            _dir.InitStepSize.setToken(new DoubleToken(0.01));
+            _dir.InitStepSize.setToken(new DoubleToken(0.1));
 
-            //Parameter minstep =
-            //    (Parameter)_dir.getAttribute("MinimumStepSize");
-            _dir.MinStepSize.setToken(new DoubleToken(1e-6));
+            _dir.MinStepSize.setToken(new DoubleToken(1e-3));
 
-            //Parameter maxstep =
-            //    (Parameter)_dir.getAttribute("MaximumStepSize");
             _dir.MaxStepSize.setToken(new DoubleToken(0.5));
 
-            //Parameter solver1 =
-            //    (Parameter)_dir.getAttribute("BreakpointODESolver");
             StringToken token1 = new StringToken(
                     "ptolemy.domains.ct.kernel.solver.BackwardEulerSolver");
             _dir.BreakpointODESolver.setToken(token1);
 
-            //Parameter solver2 =
-            //    (Parameter)_dir.getAttribute("ODESolver");
             StringToken token2 = new StringToken(
                     "ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver");
             _dir.ODESolver.setToken(token2);
 
 
-            // CTActorParameters
-            //Parameter Pxi = (Parameter)Px.getAttribute("InitialState");
             Px.InitialState.setToken(new DoubleToken(0.0));
 
-            //Parameter Pzi = (Parameter)Pz.getAttribute("InitialState");
             Pz.InitialState.setToken(new DoubleToken(-1.5));
 
-            //Parameter Tmi = (Parameter)Tm.getAttribute("InitialState");
             Tm.InitialState.setToken(new DoubleToken(48.02));
 
             MINUS.gain.setToken(new DoubleToken(-1.0));
@@ -695,23 +680,16 @@ public class HelicopterApplet extends CTApplet {
             break;
         }
 
-        // sub dir parameters
-        //Parameter initstep =
-        //        (Parameter)subdir.getAttribute("InitialStepSize");
-        subdir.InitStepSize.setToken(new DoubleToken(0.01));
+        subdir.InitStepSize.setToken(new DoubleToken(0.1));
 
-        //Parameter minstep =
-        //        (Parameter)subdir.getAttribute("MinimumStepSize");
-        subdir.MinStepSize.setToken(new DoubleToken(1e-6));
+        subdir.MinStepSize.setToken(new DoubleToken(1e-3));
 
-        //Parameter solver1 =
-        //        (Parameter)subdir.getAttribute("BreakpointODESolver");
+        subdir.MaxStepSize.setToken(new DoubleToken(0.5));
+
         Token token1 = new StringToken(
                 "ptolemy.domains.ct.kernel.solver.BackwardEulerSolver");
         subdir.BreakpointODESolver.setToken(token1);
 
-        //Parameter solver2 =
-        //        (Parameter)subdir.getAttribute("ODESolver");
         Token token2 = new StringToken(
                 "ptolemy.domains.ct.kernel.solver.ForwardEulerSolver");
         subdir.ODESolver.setToken(token2);
