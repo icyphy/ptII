@@ -11,6 +11,10 @@
 <entity name="ChannelInterface" class="ptolemy.apps.hsif.lib.ChannelInterface">
 <doc></doc>
 </entity>
+
+<entity name="TransitionInterface" class="ptolemy.apps.hsif.lib.TransitionInterface">
+<doc></doc>
+</entity>
       </group>
     ?>
   </configure>
