@@ -44,7 +44,7 @@ the latter of which is a multiport.
 The types of the ports are undeclared and will be resolved by the type
 resolution mechanism, with the constraint that the output type must be
 greater than or equal to the input type. On each call to the fire method, the
-actor reads at most one token from the input, and writes one token to an 
+actor reads at most one token from the input, and writes one token to an
 output channel.  In the next iteration of this actor, it will produce an
 output on the next channel.
 

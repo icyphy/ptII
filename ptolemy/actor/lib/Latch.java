@@ -76,7 +76,7 @@ public class Latch extends Transformer {
         if (input.hasToken(0)) {
             _currentToken = input.get(0);
         }
-        
+
         if (_currentToken != null) {
             output.send(0, _currentToken);
         }
