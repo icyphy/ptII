@@ -30,8 +30,8 @@ Review vectorized methods.
 Review broadcast/get/send/hasRoom/hasToken.
 Review setInput/setOutput/setMultiport.
 Review isKnown/sendAbsent.
-createReceivers creates inside receivers based solely on insideWidth, and 
-   outsideReceivers based solely on outside width.  
+createReceivers creates inside receivers based solely on insideWidth, and
+   outsideReceivers based solely on outside width.
 connectionsChanged: no longer validates the attributes of this port.  This is
    now done in AtomicActor and CompositeActor.preinitialize
 */
@@ -42,6 +42,7 @@ import ptolemy.data.Token;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.ComponentRelation;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.IllegalActionException;
@@ -274,7 +275,7 @@ public class IOPort extends ComponentPort {
         // repeats the above on each call.
         for (int i = 0; i < farReceivers.length; i++) {
             if (farReceivers[i] == null) continue;
-                
+
             for (int j = 0; j < farReceivers[i].length; j++) {
                 farReceivers[i][j].putArray(tokenArray, vectorLength);
             }
@@ -452,6 +453,27 @@ public class IOPort extends ComponentPort {
         }
     }
 
+    /** Return the depth of the director of this object. If the director of
+     *  this object equals to the "topDirector", then return 1, otherwise,
+     *  increase the depth by 1 and get the director of the container of
+     *  its container and check again. Etc.
+     *
+     *  @return The depth of the director in the hierarchy of this object.
+     */
+     public int depthOfDirector(Director topDirector) {
+        int result = 1;
+        Nameable container = getContainer();
+        Director myDirector = ((Actor)container).getDirector();
+        while (myDirector != topDirector) {
+            result++;
+            container = container.getContainer();
+            myDirector = ((Actor)container).getDirector();
+            //director = ((Actor)director.getContainer()).getDirector();
+        }
+        return result;
+    }
+
+
     /** Deeply enumerate the ports connected to this port on the
      *  outside that are input ports.  This method is deprecated and calls
      *  deepConnectedInPortList(). It is read-synchronized on the
@@ -471,21 +493,8 @@ public class IOPort extends ComponentPort {
      *  are higher in the hierarchy to which this port is connected
      *  on the <i>inside</i>.  This can be confusing because such ports
      *  cannot receive data produced by this port.  To get a list of
-     *  the ports that can receive data from this port, use the following:
-     *  <pre>
-     *    LinkedList result = new LinkedList();
-     *    Iterator ports = thisPort.deepConnectedPortList().iterator();
-     *    int thisDepth = depthInHierarchy();
-     *    while(ports.hasNext()) {
-     *        IOPort port = (IOPort)ports.next();
-     *        if (port.isInput() && port.depthInHierarchy() >= myDepth) {
-     *           result.addLast(port);
-     *        } else if (port.isOutput() && port.depthInHierarchy() < myDepth) {
-     *           result.addLast(port);
-     *        }
-     *    }
-     *  <pre>
-     *  This method is read-synchronized on the workspace.
+     *  the ports that can receive data from this port, use the following
+     *  sinkPortList() method:
      *
      *  @see ptolemy.kernel.ComponentPort#deepConnectedPortList
      *  @return A list of IOPort objects.
@@ -509,6 +518,32 @@ public class IOPort extends ComponentPort {
 	}
     }
 
+     /** Return a list of input ports connected to this port on the
+     *  outside.
+     *
+     *  @see ptolemy.kernel.ComponentPort#deepConnectedPortList
+     *  @return A list of IOPort objects.
+     */
+    public List sinkPortList(int thisDepth) {
+      try {
+           _workspace.getReadAccess();
+	    LinkedList result = new LinkedList();
+	    Iterator ports = deepConnectedPortList().iterator();
+            //int directorDepth = depthOfDirector();
+            while(ports.hasNext()) {
+		IOPort port = (IOPort)ports.next();
+                int myDepth = port.depthInHierarchy();
+		if (port.isInput() && myDepth >= thisDepth) {
+		    result.addLast(port);
+                } else if (port.isOutput() && myDepth < thisDepth) {
+                    result.addLast(port);
+                }
+	    }
+	    return result;
+	} finally {
+	    _workspace.doneReading();
+	}
+    }
     /** Deeply enumerate the ports connected to this port on the
      *  outside that are output ports. This method is deprecated and calls
      *  deepConnectedInPortList(). It is read-synchronized on the
@@ -528,21 +563,8 @@ public class IOPort extends ComponentPort {
      *  are higher in the hierarchy to which this port is connected
      *  on the <i>inside</i>.  This can be confusing because such ports
      *  cannot send data to this port.  To get a list of
-     *  the ports that can send data to this port, use the following:
-     *  <pre>
-     *    LinkedList result = new LinkedList();
-     *    Iterator ports = thisPort.deepConnectedPortList().iterator();
-     *    int thisDepth = depthInHierarchy();
-     *    while(ports.hasNext()) {
-     *        IOPort port = (IOPort)ports.next();
-     *        if (port.isOutput() && port.depthInHierarchy() >= myDepth) {
-     *           result.addLast(port);
-     *        } else if (port.isInput() && port.depthInHierarchy() < myDepth) {
-     *           result.addLast(port);
-     *        }
-     *    }
-     *  <pre>
-     *  This method is read-synchronized on the workspace.
+     *  the ports that can send data to this port, use the following
+     *  sourcePortList() method.
      *
      *  @see ptolemy.kernel.ComponentPort#deepConnectedPorts
      *  @return An enumeration of IOPort objects.
@@ -566,6 +588,33 @@ public class IOPort extends ComponentPort {
 	}
     }
 
+    /** Return a list of output ports connected to this port on the
+     *  outside.
+     *
+     *  @see ptolemy.kernel.ComponentPort#deepConnectedPortList
+     *  @return A list of IOPort objects.
+     */
+    public List sourcePortList(int thisDepth) {
+      try {
+           _workspace.getReadAccess();
+	    LinkedList result = new LinkedList();
+	    Iterator ports = deepConnectedPortList().iterator();
+            //int directorDepth = depthOfDirector();
+            //System.out.println("this port's depthofdirector is: " + directorDepth);
+            while(ports.hasNext()) {
+		IOPort port = (IOPort)ports.next();
+                int myDepth = port.depthInHierarchy();
+		if (port.isInput() && myDepth <= thisDepth) {
+		    result.addLast(port);
+                } else if (port.isOutput() && myDepth > thisDepth) {
+                    result.addLast(port);
+                }
+	    }
+	    return result;
+	} finally {
+	    _workspace.doneReading();
+	}
+    }
     /** If the port is an input, return the receivers deeply linked on the
      *  inside.  This method is used to obtain
      *  the receivers that are to receive data at this input port.
@@ -706,16 +755,16 @@ public class IOPort extends ComponentPort {
             // Note that the getReceivers() method might throw an
             // IllegalActionException if there's no director.
             localReceivers = getReceivers();
-            
+
         } finally {
             _workspace.doneReading();
         }
-        
+
         if(channelIndex >= localReceivers.length) {
             // NOTE: This may be thrown if the port is not an input port.
             throw new IllegalActionException(this,
                     "get: channel index is out of range.");
-        } 
+        }
         if (localReceivers[channelIndex] == null) {
             throw new NoTokenException(this,
                     "get: no receiver at index: "
@@ -729,7 +778,7 @@ public class IOPort extends ComponentPort {
         }
         return retArray;
     }
-    
+
     /** Return the current time associated with a certain channel.
      *  In most domains, this is just the current time of the director.
      *  However, in some domains, the current time is a per-channel
@@ -749,7 +798,7 @@ public class IOPort extends ComponentPort {
      *  I.e., getCurrentTime() is called before get().
      *  Currently, only the DT domain uses this per-channel time feature.
      */
-    public double getCurrentTime(int channelIndex) 
+    public double getCurrentTime(int channelIndex)
                                      throws IllegalActionException {
         Receiver[][] localReceivers;
         try {
@@ -766,7 +815,7 @@ public class IOPort extends ComponentPort {
             } finally {
                 _workspace.doneReading();
             }
-            AbstractReceiver receiver = (AbstractReceiver) 
+            AbstractReceiver receiver = (AbstractReceiver)
                                        localReceivers[channelIndex][0];
             return receiver.getCurrentTime();
         } catch (ArrayIndexOutOfBoundsException ex) {
@@ -1395,8 +1444,8 @@ public class IOPort extends ComponentPort {
         return _isInput;
     }
 
-    /** Return true if all channels of this port have known state, that is, 
-     *  the tokens on each channel are known or each channel is known not to 
+    /** Return true if all channels of this port have known state, that is,
+     *  the tokens on each channel are known or each channel is known not to
      *  have any tokens.
      *  <p>
      *  Note that this does not report any tokens in inside receivers
@@ -1417,8 +1466,8 @@ public class IOPort extends ComponentPort {
     }
 
     /** Return true if the specified channel has known state, that is, the
-     *  tokens on this channel are known or this channel is known not to 
-     *  have any tokens.  If the channel index is out of range, then throw 
+     *  tokens on this channel are known or this channel is known not to
+     *  have any tokens.  If the channel index is out of range, then throw
      *  an exception.
      *  <p>
      *  Note that this does not report any tokens in inside receivers
@@ -1630,7 +1679,7 @@ public class IOPort extends ComponentPort {
         }
     }
 
-    /** Set all receivers connected to the specified channel to have no 
+    /** Set all receivers connected to the specified channel to have no
      *  tokens.  Receivers that do not support this action will do nothing.
      *  If the port is not connected to anything, or receivers have not been
      *  created in the remote port, or the channel index is out of
@@ -1818,15 +1867,15 @@ public class IOPort extends ComponentPort {
                         if (this.hasToken(i)) {
                             Token t = this.get(i);
                             if(_debugging) _debug(getName(),
-                                    "transferring input from " 
+                                    "transferring input from "
                                     + this.getName());
-                            for (int j = 0; j < insideReceivers[i].length; 
+                            for (int j = 0; j < insideReceivers[i].length;
                                  j++) {
                                 insideReceivers[i][j].put(t);
                             }
                             wasTransferred = true;
                         } else {
-                            for (int j = 0; j < insideReceivers[i].length; 
+                            for (int j = 0; j < insideReceivers[i].length;
                                  j++) {
                                 insideReceivers[i][j].setAbsent();
                             }
