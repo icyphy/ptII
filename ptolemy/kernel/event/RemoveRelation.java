@@ -1,6 +1,6 @@
 /* A request to remove a relation.
 
- Copyright (c) 1998 The Regents of the University of California.
+ Copyright (c) 1999 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -53,7 +53,7 @@ public class RemoveRelation extends ChangeRequest {
     /** Construct a request with the specified originator and
      *  relation to be removed.
      *  @param originator The source of the change request.
-     *  @param actor The relatoin to remove.
+     *  @param actor The relation to remove.
      */
     public RemoveRelation(Nameable originator, ComponentRelation relation) {
         super(originator, "Remove " + relation.getFullName());
