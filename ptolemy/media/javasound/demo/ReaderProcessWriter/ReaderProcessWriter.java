@@ -26,7 +26,7 @@ and SoundWriter by performing soft clipping on an input sound file.
                                         COPYRIGHTENDKEY
 
 @ProposedRating Red (vogel@eecs.berkeley.edu)
-@AcceptedRating
+@AcceptedRating Red (vogel@eecs.berkeley.edu)
 */
 
 package ptolemy.media.javasound.demo.ReaderProcessWriter;

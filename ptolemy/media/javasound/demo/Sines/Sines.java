@@ -26,7 +26,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Red (vogel@eecs.berkeley.edu)
-@AcceptedRating
+@AcceptedRating Red (vogel@eecs.berkeley.edu)
 */
 
 package ptolemy.media.javasound.demo.Sines;

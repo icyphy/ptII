@@ -26,7 +26,7 @@ and SoundPlayback by performing soft clipping in real-time.
                                         COPYRIGHTENDKEY
 
 @ProposedRating Red (vogel@eecs.berkeley.edu)
-@AcceptedRating
+@AcceptedRating Red (vogel@eecs.berkeley.edu)
 */
 
 package ptolemy.media.javasound.demo.SoftClip;
