@@ -195,7 +195,6 @@ public class DEDirector extends Director {
      */
     public DEDirector() {
 	this(null);
-        _initParameters();
     }
 
     /**  Construct a director in the  workspace with an empty name.
