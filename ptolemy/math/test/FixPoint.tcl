@@ -269,28 +269,28 @@ test FixPoint-4.1 {multiply} {
     set mul_2 [java::new $ctor_double 4.23 $q_5_10]
     set mul_3 [$mul_1 multiply $mul_2]
     list "[$mul_1 toString] [$mul_2 toString] [$mul_3 toString] [$mul_3 toBitString] [[$mul_3 getPrecision] toString]"
-} {{5.5732421875 4.23046875 23.577426910400390625 10111.10010011110100100100 (5.20)}}
+} {{5.5732421875 4.23046875 23.577426910400390625 10111.10010011110100100100 (10.20)}}
 
 test FixPoint-4.2 {multiply} {
     set mul_1 [java::new $ctor_double 7.5734 $q_4_12]
     set mul_2 [java::new $ctor_double -7.23 $q_4_12]
     set mul_3 [$mul_1 multiply $mul_2]
     list "[$mul_1 toString] [$mul_2 toString] [$mul_3 toString] [$mul_3 toBitString] [[$mul_3 getPrecision] toString]"
-} {{7.573486328125 -7.22998046875 -54.75615823268890380859375 -110111.001111100110110001101010 (4.24)}}
+} {{7.573486328125 -7.22998046875 -54.75615823268890380859375 -110111.001111100110110001101010 (8.24)}}
 
 test FixPoint-4.3 {multiply} {
     set mul_1 [java::new $ctor_double 15.5734 $q_5_10]
     set mul_2 [java::new $ctor_double 7.23 $q_4_12]
     set mul_3 [$mul_1 multiply $mul_2]
     list "[$mul_1 toString] [$mul_2 toString] [$mul_3 toString] [$mul_3 toBitString] [[$mul_3 getPrecision] toString]"
-} {{15.5732421875 7.22998046875 112.594236850738525390625 1110000.1001100000011111111010 (5.22)}}
+} {{15.5732421875 7.22998046875 112.594236850738525390625 1110000.1001100000011111111010 (9.22)}}
 
 test FixPoint-4.4 {multiply} {
     set mul_1 [java::new $ctor_double -16 $q_5_10]
     set mul_2 [java::new $ctor_double -16 $q_5_10]
     set mul_3 [$mul_1 multiply $mul_2]
     list "[$mul_1 toString] [$mul_2 toString] [$mul_3 toString] [$mul_3 toBitString] [[$mul_3 getPrecision] toString]"
-} {{-16.0 -16.0 256.0 100000000.00000000000000000000 (5.20)}}
+} {{-16.0 -16.0 256.0 100000000.00000000000000000000 (10.20)}}
 
 ####################################################################
 

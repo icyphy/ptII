@@ -49,13 +49,6 @@ The FixPoint class represents signed numbers in a two's-complement
 format with unlimited dynamic range and a resolution defined by a finite
 number of fractional bits.
 <p>
-[For compatibility with an earlier implementation and in order to
-support the current use of a FixPoint as a type exemplar, a FixPoint
-also maintains a count of the number integer bits and consequently
-the number of bits needed for the representation. This is
-an annotation since it has no effect on the arithmetic results, which
-is important since the annotations fail to account for numeric growth.]
-<p>
 Because a fixed point data type uses a finite number of bits to
 represent a value, a real value is converted to a number that
 can be expressed with a given precision of the fixed point, thereby
@@ -88,6 +81,13 @@ of bits in the representation of a value.
 */
 
 public class FixPoint implements Cloneable, Serializable {
+
+    // For compatibility with an earlier implementation and in order to
+    // support the current use of a FixPoint as a type exemplar, a FixPoint
+    // also maintains a count of the number integer bits and consequently
+    // the number of bits needed for the representation. This is
+    // an annotation since it has no effect on the arithmetic results, which
+    // is important since the annotations fail to account for numeric growth.
 
     /** Construct a FixPoint by converting a double to comply
      *  with a quantization specification.
@@ -338,18 +338,16 @@ public class FixPoint implements Cloneable, Serializable {
      *  The operation is lossless.
      *  <p>
      *  The fractional precision of the result is equal to the sum of the
-     *  fractional precisions of the multiplier and multiplicand.
-     *  <p>
-     *  The integer precision annotation of the result is equal to the
-     *  maximum of the integer precision annotations of the inputs!
+     *  fractional precisions of the inputs.
+     *  The integer precision of the result is equal to the sum of the
+     *  integer precisions of the inputs.
      *
      *  @param arg The FixPoint multiplier.
      *  @return The FixPoint product.
      */
     public FixPoint multiply(FixPoint arg) {
         int fracBits = _frac_bits + arg._frac_bits;
-//        int intBits = _int_bits + arg._int_bits;
-        int intBits = Math.max(_int_bits, arg._int_bits);
+        int intBits = _int_bits + arg._int_bits;
         BigInteger netValue = _value.multiply(arg._value);
         return new FixPoint(netValue, intBits, fracBits);
     }

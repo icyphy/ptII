@@ -803,19 +803,6 @@ test SignalProcessing-17.1 {sampleWave Sinusoid} {
 } {}
 
 ####################################################################
-test SignalProcessing-17.2 {sampleWave Sinusoid negative frequency} {
-    set sinGen [java::new ptolemy.math.SignalProcessing\$SinusoidSampleGenerator \
-            -3.0 -2.0]
-    set sinOut [java::call ptolemy.math.SignalProcessing sampleWave 9 -5.0 \
-            1.25 $sinGen]
-    epsilonDiff [$sinOut getrange 0] \
-            {0.90744678145020 -0.98476517346732 0.70866977429126  \
-            -0.17824605564949 -0.41614683654714 0.86119241716152 \
-            -0.99717215619638 0.77528547012929 -0.27516333805160}
-    # what is a negative frequency?  this is just a copy of the previous test
-} {} {KNOWN_ERROR}
-
-####################################################################
 test SignalProcessing-18.1 {sampleWave Sawtooth holes} {
     set sawGen \
 	    [java::new ptolemy.math.SignalProcessing\$SawtoothSampleGenerator \

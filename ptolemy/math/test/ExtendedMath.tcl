@@ -109,10 +109,9 @@ test ExtendedMath-6.8 {roundToInt} {
 
 ####################################################################
 test ExtendedMath-6.9 {roundToInt with a double larger than an int} {
-    catch {java::call ptolemy.math.ExtendedMath \
-	roundToInt [java::field Double MAX_VALUE]} errorMsg
-    set errorMsg	
-} {java.lang.IllegalArgumentException: double value 1.7976931348623157E308 does not fit into an Integer.}
+    java::call ptolemy.math.ExtendedMath \
+	roundToInt [java::field Double MAX_VALUE]
+} {2147483647}
 
 ####################################################################
 test ExtendedMath-7.0 {sinh} {
