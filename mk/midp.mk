@@ -179,7 +179,7 @@ $(MODEL)/treeshake.jar:
 	@echo "Create the minimal jar file and run it" 
 	@echo "We include .class files from $PTII_MIDP"
 	"$(TREESHAKE)" "$(JAR)" $(TREESHAKE_PREFIX).jar \
-		"$(JAVA)" -Xfuture -classpath "$(PTII_MIDP)$(CLASSPATHSEPARATOR)$(CLASSPATH)" \
+		"$(JAVA)" -Xfuture -classpath "$(PTII_MIDP)$(CLASSPATHSEPARATOR)$(CLASSPATH)$(CLASSPATHSEPARATOR)$(MIDP_CLASSES)" \
 		$(TARGETPACKAGE).Main 
 	ls -l $(TREESHAKE_PREFIX).jar
 
