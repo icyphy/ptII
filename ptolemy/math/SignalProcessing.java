@@ -923,60 +923,6 @@ public class SignalProcessing {
         return (point < period/2.0)?1.0:-1.0;
     }
 
-    /** Return a sample of a square-root raised cosine pulse.
-     *  The function computed is:
-     *  <p>
-     *  <pre>
-     *         4 x(cos((1+x)PI t/T) + T sin((1-x)PI t/T)/(4n x/T))
-     *  h(t) = ---------------------------------------------------
-     *                       PI sqrt(T)(1-(4 x t/T)<sup>2</sup>)
-     *  </pre>
-     *  <p>
-     *  where <i>x</i> is the the excess bandwidth.
-     *  This pulse convolved with itself will, in principle, be equal
-     *  to a raised cosine pulse.  However, because the pulse decays rather
-     *  slowly for low excess bandwidth, this ideal is not
-     *  closely approximated by short finite approximations of the pulse.
-     *  <p>
-     *  This implementation is ported from the Ptolemy 0.x implementation
-     *  by Joe Buck, Brian Evans, and Edward A. Lee.
-     *  Reference: E. A. Lee and D. G. Messerschmitt,
-     *  <i>Digital Communication, Second Edition</i>,
-     *  Kluwer Academic Publishers, Boston, 1994.
-     *
-     *  @param t The time of the sample.
-     *  @param T The time of the first zero crossing of the corresponding
-     *   raised cosine pulse.
-     *  @param excess The excess bandwidth of the corresponding
-     *   raised cosine pulse.
-     */
-    public static double sqrtRaisedCosine(double t, double T, double excess) {
-        double sqrtT = Math.sqrt(T);
-        if (t == 0) {
-            return ((4*excess/Math.PI) + 1 - excess)/sqrtT;
-        }
-
-        double x = t/T;
-        if (excess == 0.0) {
-            return sqrtT*Math.sin(Math.PI * x)/(Math.PI * t);
-        }
-
-        double oneplus = (1.0 + excess)*Math.PI/T;
-        double oneminus = (1.0 - excess)*Math.PI/T;
-        // Check to see whether we will get divide by zero.
-        double denominator = t*t*16*excess*excess - T*T;
-        if (close(denominator, 0.0)) {
-            return (T * sqrtT/(8 * excess * Math.PI * t)) *
-                (oneplus * Math.sin(oneplus * t) -
-                        (oneminus * T/(4 * excess * t)) *
-                        Math.cos(oneminus * t) +
-                        (T/(4 * excess * t * t)) * Math.sin(oneminus * t) );
-        }
-        return (4 * excess / (Math.PI*sqrtT)) *
-            (Math.cos(oneplus * t) + Math.sin(oneminus * t)/(x * 4 * excess)) /
-            (1.0 - 16 * excess * excess * x * x);
-    }
-
     /** Return a sample of a triangle wave with the specified period and
      *  phase at the specified time.  The returned value ranges between
      *  -1.0 and 1.0.  The phase is given as a fraction of a cycle,
@@ -1195,34 +1141,66 @@ public class SignalProcessing {
         private static final double ONE_OVER_SQRT_TWO_PI =
         1.0 / Math.sqrt(2 * Math.PI);
     }
-
-    /** This class generates samples of a line with the specified
-     *  slope and y-intercept.
+  
+    /** This class generates samples of a polynomial.
      *  The function computed is :
      *  <p>
      *  <pre>
-     *  h(t) = slope * t + yIntercept
+     *  h(t) = a<sub>0</sub> + a<sub>1</sub>t + a<sub>2</sub>t<sup>2</sup> + ... + a<sub>n-1</sub>t<sup>n-1</sup>
+     *  or 
+     *  h(t) = a<sub>0</sub> + a<sub>1</sub>t<sup>-1</sup> + a<sub>2</sub>t<sup>-2</sup> + ... + a<sub>n-1</sub>t<sup>-(n-1)</sup>     
+     *  depending on the direction specified.
      *  </pre>
      *  </p>
      */
-    public static class LineSampleGenerator implements SampleGenerator {
+    public static class PolynomialSampleGenerator implements SampleGenerator {
 
-        /** Construct a LineSampleGenerator.
-         *  @param slope The slope of the line.
-         *  @param yIntercept The y-intercept of the line.
+        /** Construct a PolynomialSampleGenerator. The input argument is an array of
+         *  doubles a[0] = a<sub>0</sub> .. a[n-1] = a<sub>n-1</sub> used to compute the formula :
+         *  h(t) = a<sub>0</sub> + a<sub>1</sub>t + ... + a<sub>n-1</sub>t<sup>n-1</sup>
+         *  The array of doubles must be of length 1 or greater.         
+         *  The array of doubles is copied, so the user is free to modify it after construction.
+         *  The exponents on t in the above equation will all be negated if the direction
+         *  parameter is -1; otherwise the direction parameter should be 1.
+         *  @param coefficients An array of double coefficients.
+         *  @param direction 1 for positive exponents, -1 for negative exponents.
          */
-        public LineSampleGenerator(double slope, double yIntercept) {
-            _slope = slope;
-            _yIntercept = yIntercept;
-        }
+        public PolynomialSampleGenerator(double[] coefficients, int direction) {
+            if ((direction != 1) && (direction != -1)) {
+               throw new IllegalArgumentException(
+               "ptolemy.math.SignalProcessing.LineSampleGenerator :  " +
+               "direction must be either 1 or -1");
+            }
 
+            _coeffLength = coefficients.length;
+                        
+            // copy coefficient array            
+            _coefficients = DoubleArrayMath.resize(coefficients, _coeffLength);            
+            _direction = direction;
+        }
+                                                                   
         /** Return a sample of the line, sampled at the specified time.
+         *  Note that at time = 0, with a negative direction, the sample
+         *  will be positive or negative infinity.
          */
         public final double sampleAt(double time) {
-            return _slope * time + _yIntercept;
+            double sum = _coefficients[0];
+            double tn = time;
+            
+            for (int i = 1; i < _coeffLength; i++) {
+                if (_direction == 1) {            
+                   sum += _coefficients[i] * tn;
+                } else {
+                   sum += _coefficients[i] / tn;
+                } 
+                tn *= time;
+            }
+            return sum;
         }
 
-        private final double _slope, _yIntercept;
+        private final double[] _coefficients;
+        private final int _coeffLength;
+        private final int _direction;
     }
 
     /** This class generates samples of a sawtooth wave with the specified
@@ -1259,9 +1237,10 @@ public class SignalProcessing {
      *  <pre>
      *  h(t) = cos(frequency * t + phase)
      *  </pre>
+     *  where the argument is taken to be in radians.
      *  </p>
      *  To use this class to generate a sine wave, simply
-     *  subtract PI/2 from the
+     *  set the phase to -Math.PI*0.5 from the
      *  phase, since sin(t) = cos(t - PI/2).
      */
     public static class SinusoidSampleGenerator implements SampleGenerator {
@@ -1316,7 +1295,8 @@ public class SignalProcessing {
          *  @param firstZeroCrossing The time of the first zero crossing,
          *  after time zero. This would be the symbol interval in a
          *  communications application of this pulse.
-         *  @param excess The excess bandwidth (in the range 0.0 to 1.0).
+         *  @param excess The excess bandwidth (in the range 0.0 to 1.0), also 
+         *  called the rolloff factor.
          */
         public RaisedCosineSampleGenerator(double firstZeroCrossing,
                 double excess) {
@@ -1389,7 +1369,7 @@ public class SignalProcessing {
          *  @param firstZeroCrossing The time of the first zero crossing of
          *  the corresponding raised cosine pulse.
          *  @param excess The excess bandwidth of the corresponding raised
-         *  cosine pulse.
+         *  cosine pulse (also called the rolloff factor).
          */
         public SqrtRaisedCosineSampleGenerator(double firstZeroCrossing,
                 double excess) {

@@ -721,9 +721,10 @@ test SignalProcessing-12.1  {nextPowerOfTwo: check range} {
 } {1 1 4 16}
 
 ####################################################################
-test SignalProcessing-13.1 {sampleWave line} {
-    set lineGen [java::new ptolemy.math.SignalProcessing\$LineSampleGenerator \
-    -3.0 2.0]
+test SignalProcessing-13.1 {sampleWave polynomial - line} {
+    set tin [java::new {double[]} 2 [list 2.0 -3.0]]
+    set lineGen [java::new ptolemy.math.SignalProcessing\$PolynomialSampleGenerator \
+    tin 1]
     set lineOut [java::call ptolemy.math.SignalProcessing sampleWave 6 -5.0 \
     1.5 $lineGen]
     epsilonDiff [$lineOut getrange 0] {17.0 12.5 8.0 3.5 -1.0 -5.5}
@@ -857,11 +858,6 @@ test SignalProcessing-17.3 {square: negative phase} {
     #-1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0
 } {} {KNOWN_ERROR}
 
-
-####################################################################
-test SignalProcessing-18.1 {sqrtRaisedCosine} {
-    list "We need tests for sqrtRaisedCosine with realistic input data"
-} {1} {KNOW_ERROR}
 
 ####################################################################
 test SignalProcessing-19.1 {sqrtRaisedCosinePulse} {
