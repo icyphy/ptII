@@ -84,6 +84,9 @@ import ptolemy.kernel.util.NameDuplicationException;
    @see Remainder
    @see Scale
    @see TrigFunction
+   @deprecated This breaks the class mechanism.  Generally, it is
+   awkward to have the ports of an actor depend on parameter values.
+   Use UnaryMathFunction instead.
 */
 public class MathFunction extends TypedAtomicActor {
 

@@ -41,12 +41,6 @@
   <entity name="LookupTable" class="ptolemy.actor.lib.LookupTable">
   </entity>
 
-  <entity name="MathFunction" class="ptolemy.actor.lib.MathFunction">
-    <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
-        <property name="attributeName" value="function"/>
-    </property>
-  </entity>
-
   <entity name="Maximum" class="ptolemy.actor.lib.Maximum">
   </entity>
 
@@ -72,6 +66,9 @@
     <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
         <property name="attributeName" value="function"/>
     </property>
+  </entity>
+
+  <entity name="UnaryMathFunction" class="ptolemy.actor.lib.UnaryMathFunction">
   </entity>
 
       </group>
