@@ -31,7 +31,7 @@
 
 ME =		ptolemy/vergil
 
-DIRS = 		toolbox graph ptolemy debugger icon
+DIRS = 		toolbox graph ptolemy debugger icon lib
 
 # Root of the Java directory
 ROOT =		../../
@@ -52,6 +52,7 @@ PTCLASSALLJARS = \
 		ptolemy.vergil.jar \
 		debugger/debugger.jar \
 		graph/graph.jar \
+		icon/icon.jar \
 		lib/lib.jar \
 		ptolemy/ptolemy.jar \
 		toolbox/toolbox.jar
@@ -70,22 +71,26 @@ JSRCS = \
 	VergilDocumentFactory.java \
 	VisualNotation.java 
 
-EXTRA_SRCS =	$(JSRCS) \
-		lib/rootEntityLibrary.xml \
-		lib/rootIconLibrary.xml
+EXTRA_SRCS =	$(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 MISC_FILES =	$(DIRS) \
-	TODO
-
+	TODO \
+	Vergil.htm \
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
+	doc \
 	lib \
 	test \
-	$(PTCLASSJAR)
+	$(PTCLASSJAR) \
+	'VergilApplication$$1.class' \
+	'VergilApplication$$2.class' \
+	'VergilApplication$$3.class' \
+	'VergilApplication$$MouseFocusMover.class' \
+	'VergilApplication$$TitleChanger.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
