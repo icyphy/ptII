@@ -45,12 +45,11 @@ import ptolemy.graph.*;
 Produce a pulse with a shape specified by the parameters.
 The <i>values</i> parameter contains an ArrayToken, which specifies
 the sequence of values to produce at the output.  The <i>indexes</i>
-parameter contains an IntMatrixToken, which specifies when those values
-should be produced.  The IntMatrixToken in the <i>indexes</i> parameter
-must be a row vector with the same length as ArrayToken in the
+parameter contains an array of integers, which specifies when those values
+should be produced.  The array in the <i>indexes</i> parameter
+must have the same length as that in the
 <i>values</i> parameter or an exception will be thrown by the fire() method.
-<p>
-The <i>indexes</i> vector must be increasing and non-negative,
+Also, the <i>indexes</i> array must be increasing and non-negative,
 or an exception will be thrown when it is set.
 <p>
 Eventually, this actor will support various kinds of interpolation.
@@ -59,7 +58,7 @@ the iteration count does not match an index in <i>indexes</i>.
 <p>
 The default for the <i>values</i> parameter is
 an integer vector of form {1, 0}.
-The default indexes matrix is [0, 1].
+The default indexes array is {0, 1}.
 Thus, the default output sequence will be 1, 0, 0, ...
 <p>
 However, the Pulse actor has a <I>repeat</i> parameter. When set to
@@ -89,17 +88,14 @@ public class Pulse extends SequenceSource {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-        indexes = new Parameter(this, "indexes", _defaultIndexToken);
-        indexes.setTypeEquals(BaseType.INT_MATRIX);
+        indexes = new Parameter(this, "indexes");
+        indexes.setExpression("{0, 1}");
         // Call this so that we don't have to copy its code here...
         attributeChanged(indexes);
 
 	// set values parameter
-	IntToken[] defaultValues = new IntToken[2];
-	defaultValues[0] = new IntToken(1);
-	defaultValues[1] = new IntToken(0);
-	ArrayToken defaultValueToken = new ArrayToken(defaultValues);
-        values = new Parameter(this, "values", defaultValueToken);
+        values = new Parameter(this, "values");
+        values.setExpression("{1, 0}");
 	values.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
 
         // Set the Repeat Flag.
@@ -121,12 +117,12 @@ public class Pulse extends SequenceSource {
     ////                     ports and parameters                  ////
 
     /** The indexes at which the specified values will be produced.
-     *  This parameter must contain an IntMatrixToken with one row.
+     *  This parameter is an array of integers, with default value {0, 1}.
      */
     public Parameter indexes;
 
     /** The values that will be produced at the specified indexes.
-     *  This parameter must contain an ArrayToken.
+     *  This parameter is an array, with default value {1, 0}.
      */
     public Parameter values;
 
@@ -139,28 +135,25 @@ public class Pulse extends SequenceSource {
     ////                         public methods                    ////
 
     /** If the attribute being changed is <i>indexes</i>, then check
-     *  that it is increasing and nonnegative, and that it has exactly
-     *  one row.
+     *  that it is increasing and nonnegative.
      *  @exception IllegalActionException If the indexes vector is not
      *   increasing and nonnegative, or the indexes is not a row vector.
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == indexes) {
-            int[][] idx =
-                ((IntMatrixToken)indexes.getToken()).intMatrix();
-            if (idx.length != 1) {
-                throw new IllegalActionException(this,
-                        "Cannot set indexes parameter to a non-row vector.");
-            }
-            int previous = -1;
-            for (int j = 0; j < idx[0].length; j++) {
-                if (idx[0][j] <= previous) {
+            ArrayToken indexesValue = (ArrayToken)indexes.getToken();
+            _indexes = new int[indexesValue.length()];
+            int previous = 0;
+            for (int i = 0; i < indexesValue.length(); i++) {
+                _indexes[i] = ((IntToken)indexesValue.getElement(i)).intValue();
+                // Check nondecreasing property.
+                if (_indexes[i] < previous) {
                     throw new IllegalActionException(this,
-                            "Value of indexes must be an array of nonnegative "
-                            + "integers increasing in value.");
+                            "Value of indexes is not nondecreasing " +
+                            "and nonnegative.");
                 }
-                previous = idx[0][j];
+                previous = _indexes[i];
             }
         } else if (attribute == values) {
             try {
@@ -204,20 +197,19 @@ public class Pulse extends SequenceSource {
      *  Otherwise output a zero token with the same type as the values in
      *  the value array.
      *  @exception IllegalActionException If the values and indexes parameters
-     *   do not have the same dimension, or if there is no director.
+     *   do not have the same length, or if there is no director.
      */
     public void fire() throws IllegalActionException {
         super.fire();
         int currentIndex = 0;
         ArrayToken val = (ArrayToken)values.getToken();
-        int[][] idx = ((IntMatrixToken)indexes.getToken()).intMatrix();
-        if (_indexColCount < idx[0].length) {
-            if (val.length() != idx[0].length) {
+        if (_indexColCount < _indexes.length) {
+            if (val.length() != _indexes.length) {
                 throw new IllegalActionException(this,
                         "Parameters values and indexes have " +
                         "different lengths.");
             }
-            currentIndex = idx[0][_indexColCount];
+            currentIndex = _indexes[_indexColCount];
             if (_iterationCount == currentIndex) {
                 // Got a match with an index.
                 output.send(0, val.getElement(_indexColCount));
@@ -231,7 +223,7 @@ public class Pulse extends SequenceSource {
                 _iterationCount = 0;
                 _indexColCount = 0;
 
-                currentIndex = idx[0][_indexColCount];
+                currentIndex = _indexes[_indexColCount];
                 if (_iterationCount == currentIndex) {
                     output.send(0, val.getElement(_indexColCount));
                     _match = true;
@@ -254,15 +246,14 @@ public class Pulse extends SequenceSource {
     }
 
     /** Update the iteration counters until they exceed the values
-     *  in the indexes vector.
+     *  in the indexes array.
      *  @exception IllegalActionException If the expression of indexes
      *   is not valid.
      */
     public boolean postfire() throws IllegalActionException {
-        int[][] idx = ((IntMatrixToken)indexes.getToken()).intMatrix();
         // We stop incrementing after reaching the top of the indexes
         // vector to avoid possibility of overflow.
-        if (_iterationCount <= idx[0][idx[0].length-1]) {
+        if (_iterationCount <= _indexes[_indexes.length-1]) {
             ++_iterationCount;
         }
         if (_match) {
@@ -289,20 +280,14 @@ public class Pulse extends SequenceSource {
     // Index of the next output in the values array.
     private int _indexColCount = 0;
 
+    // Cache of indexes array value.
+    private transient int[] _indexes;
+
     // Zero token of the same type as in the values array.
     private Token _zero;
 
     // Indicator of whether the iterations count matches one of the indexes.
     private boolean _match = false;
-
-    // Default value of the indexes.
-    private int _defaultIndexes[][] = {
-        {0, 1}
-    };
-
-    // Default value of the indexes parameter.
-    private IntMatrixToken _defaultIndexToken =
-    new IntMatrixToken(_defaultIndexes);
 
     // Flag to indicate whether or not to repeat the sequence.
     private boolean _repeatFlag;

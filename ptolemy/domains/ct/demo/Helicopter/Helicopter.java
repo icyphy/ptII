@@ -272,13 +272,8 @@ public class Helicopter extends TypedCompositeActor {
         
         Clock clock = new Clock(this, "Clock");
         clock.period.setToken(new DoubleToken(1e308));
-        double offsets[][] = {{0.0, 20.0}};
-        clock.offsets.setToken(new DoubleMatrixToken(offsets));
-        BooleanToken[] defaultValues = new BooleanToken[2];
-        defaultValues[0] = new BooleanToken(false);
-        defaultValues[1] = new BooleanToken(true);
-        ArrayToken defaultValueToken = new ArrayToken(defaultValues);
-        clock.values.setToken(defaultValueToken);
+        clock.offsets.setExpression("{0.0, 20.0}");
+        clock.values.setExpression("{false, true}");
         connect(clock.output, subinAction);
 
         HelicopterActor heli = new HelicopterActor(this, "Helicopter");

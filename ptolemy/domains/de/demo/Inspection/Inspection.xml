@@ -178,7 +178,7 @@ order.</text>
         </property>
         <property name="period" class="ptolemy.data.expr.Parameter" value="regularBusArrivalRate">
         </property>
-        <property name="offsets" class="ptolemy.data.expr.Parameter" value="[0.0]">
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0}">
         </property>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{3.0}">
         </property>

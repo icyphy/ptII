@@ -52,9 +52,8 @@ test BitsToInt-1.1 {test 1: using the pulse actor as source} {
     $valuesParam setExpression {{false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, true}}
 #    $valuesParam setToken [java::new ptolemy.data.BooleanMatrixToken $values]
 
-    set indexes [java::new {int[][]} {1 32} [list [list 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31]]]
     set indexesParam [getParameter $pulse indexes]
-    $indexesParam setToken [java::new ptolemy.data.IntMatrixToken $indexes]
+    $indexesParam setExpression {{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31}}
 
     $e0 connect \
             [java::field [java::cast ptolemy.actor.lib.Source $pulse] output] \

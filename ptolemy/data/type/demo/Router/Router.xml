@@ -154,7 +154,7 @@ Rayleigh distribution.</text>
         </property>
         <property name="period" class="ptolemy.data.expr.Parameter" value="0.5">
         </property>
-        <property name="offsets" class="ptolemy.data.expr.Parameter" value="[0.0, 0.25]">
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 0.25}">
         </property>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{1, 0}">
         </property>
@@ -172,7 +172,7 @@ Rayleigh distribution.</text>
     <entity name="String Sequence" class="ptolemy.actor.lib.Pulse">
         <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="indexes" class="ptolemy.data.expr.Parameter" value="[0, 1, 2, 3]">
+        <property name="indexes" class="ptolemy.data.expr.Parameter" value="{0, 1, 2, 3}">
         </property>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{&quot;Ptolemy&quot;, &quot;is&quot;, &quot;great&quot;, &quot;&quot;}">
         </property>

@@ -53,10 +53,7 @@ waveforms that cycle through a set of values.
 At the beginning of each time interval of length given by <i>period</i>,
 it initiates a sequence of output events with values given by
 <i>values</i> and offset into the period given by <i>offsets</i>.
-The <i>values</i> parameter must contain an ArrayToken, and the
-<i>offsets</i> must contain a row vector (1 by <i>N</i> matrices) with
-the same length (<i>N</i>) as the <i>values</i>, or an
-exception will be thrown by the fire() method.
+These parameters contain arrays, which are required to have the length.
 The <i>offsets</i> array must be nondecreasing and nonnegative,
 or an exception will be thrown when it is set.
 Moreover, its largest entry must be smaller than <i>period</i>
@@ -64,7 +61,7 @@ or an exception will be thrown by the fire() method.
 <p>
 The <i>values</i> parameter by default
 contains an array of IntTokens with values 1 and 0.  The default
-<i>offsets</i> vector is [0.0, 1.0].  Thus, the default output will be
+<i>offsets</i> array is {0.0, 1.0}.  Thus, the default output will be
 alternating 1 and 0 with 50% duty cycle.  The default period
 is 2.0.
 <p>
@@ -85,7 +82,7 @@ Thus, the output can be viewed as samples of the clock waveform,
 where the time of each sample is the time of the firing that
 produced it.  If the actor fires before the first offset has
 been reached, then a zero token of the same type as those in
-the <i>values</i> matrix is produced.
+the <i>values</i> array is produced.
 <p>
 The clock waveform is a square wave (in the sense that transitions
 between levels are discrete and the signal is piecewise constant),
@@ -93,7 +90,7 @@ with <i>N</i> levels, where <i>N</i> is the length of the <i>values</i>
 parameter.  Changes between levels occur at times
 <i>nP</i> + <i>o<sub>i </sub></i> where <i>n</i> is any nonnegative integer,
 <i>P</i> is the period, and <i>o<sub>i </sub></i> is an entry
-in the <i>offsets</i> vector.
+in the <i>offsets</i> array.
 <p>
 The type of the output can be any token type. This type is inferred from the
 element type of the <i>values</i> parameter.
@@ -121,10 +118,8 @@ public class Clock extends TimedSource {
         period = new Parameter(this, "period", new DoubleToken(2.0));
         period.setTypeEquals(BaseType.DOUBLE);
 
-        double defaultOffsets[][] = {{0.0, 1.0}};
-        offsets = new Parameter(this, "offsets",
-                new DoubleMatrixToken(defaultOffsets));
-        offsets.setTypeEquals(BaseType.DOUBLE_MATRIX);
+        offsets = new Parameter(this, "offsets");
+        offsets.setExpression("{0.0, 1.0}");
         // Call this so that we don't have to copy its code here...
         attributeChanged(offsets);
 
@@ -149,7 +144,7 @@ public class Clock extends TimedSource {
     ////                     ports and parameters                  ////
 
     /** The offsets at which the specified values will be produced.
-     *  This parameter must contain a DoubleMatrixToken.
+     *  This parameter must contain an array of doubles.
      */
     public Parameter offsets;
 
@@ -173,26 +168,24 @@ public class Clock extends TimedSource {
      *  the fire() method.
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the offsets array is not
-     *   nondecreasing and nonnegative, or it is not a row vector.
+     *   nondecreasing and nonnegative.
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == offsets) {
-            // Check nondecreasing property.
-            double[][] offsetsValue =
-                ((DoubleMatrixToken)offsets.getToken()).doubleMatrix();
-            if (offsetsValue.length != 1 || offsetsValue[0].length == 0) {
-                throw new IllegalActionException(this,
-                        "Value of offsets is not a row vector.");
-            }
+            ArrayToken offsetsValue = (ArrayToken)offsets.getToken();
+            _offsets = new double[offsetsValue.length()];
             double previous = 0.0;
-            for (int j = 0; j < offsetsValue[0].length; j++) {
-                if (offsetsValue[0][j] < previous) {
+            for (int i = 0; i < offsetsValue.length(); i++) {
+                _offsets[i] = ((DoubleToken)offsetsValue.getElement(i))
+                        .doubleValue();
+                // Check nondecreasing property.
+                if (_offsets[i] < previous) {
                     throw new IllegalActionException(this,
                             "Value of offsets is not nondecreasing " +
                             "and nonnegative.");
                 }
-                previous = offsetsValue[0][j];
+                previous = _offsets[i];
             }
         } else if (attribute == period) {
             double periodValue =
@@ -227,7 +220,7 @@ public class Clock extends TimedSource {
 
     /** Output the current value of the clock.
      *  @exception IllegalActionException If the <i>values</i> and
-     *   <i>offsets</i> parameters do not have the same dimension, or if
+     *   <i>offsets</i> parameters do not have the same length, or if
      *   the value in the offsets parameter is encountered that is greater
      *   than the period, or if there is no director.
      */
@@ -257,36 +250,34 @@ public class Clock extends TimedSource {
         // event should be scheduled because we aren't at a phase boundary.
         _tentativeNextFiringTime = Double.NEGATIVE_INFINITY;
 
-        double[][] offsetsValue =
-            ((DoubleMatrixToken)offsets.getToken()).doubleMatrix();
         ArrayToken val = (ArrayToken)(values.getToken());
-        if (offsetsValue[0].length != val.length()) {
+        if (_offsets.length != val.length()) {
             throw new IllegalActionException(this,
                     "Values and offsets vectors do not have the same length.");
         }
         // Adjust the phase if time has moved beyond the current phase.
         while (currentTime >=
-                _tentativeCycleStartTime + offsetsValue[0][_tentativePhase]) {
+                _tentativeCycleStartTime + _offsets[_tentativePhase]) {
             // Phase boundary.  Change the current value.
             _tentativeCurrentValue = _getValue(_tentativePhase);
             // Increment to the next phase.
             _tentativePhase++;
-            if (_tentativePhase >= offsetsValue[0].length) {
+            if (_tentativePhase >= _offsets.length) {
                 _tentativePhase = 0;
                 // Schedule the first firing in the next period.
                 _tentativeCycleStartTime += periodValue;
             }
-            if(offsetsValue[0][_tentativePhase] >= periodValue) {
+            if(_offsets[_tentativePhase] >= periodValue) {
                 throw new IllegalActionException(this,
                         "Offset number " + _tentativePhase + " with value "
-                        + offsetsValue[0][_tentativePhase] + " must be less than the "
+                        + _offsets[_tentativePhase] + " must be less than the "
                         + "period, which is " + periodValue);
             }
             // NOTE: In the RTOS domain, this may not occur if we have
             // missed a deadline.  As a consequence, the clock will stop.
             // Schedule the next firing in this period.
             _tentativeNextFiringTime
-                = _tentativeCycleStartTime + offsetsValue[0][_tentativePhase];
+                = _tentativeCycleStartTime + _offsets[_tentativePhase];
         }
 
         output.send(0, _tentativeCurrentValue);
@@ -304,11 +295,9 @@ public class Clock extends TimedSource {
         _currentValue = _getValue(0).zero();
         _phase = 0;
 
-        double[][] offsetsValue =
-            ((DoubleMatrixToken)offsets.getToken()).doubleMatrix();
         // This needs to be the last line, because in threaded domains,
         // it could execute immediately.
-        getDirector().fireAt(this, offsetsValue[0][0] + currentTime);
+        getDirector().fireAt(this, _offsets[0] + currentTime);
     }
 
     /** Update the state of the actor and schedule the next firing,
@@ -357,6 +346,9 @@ public class Clock extends TimedSource {
 
     // The most recent cycle start time.
     private transient double _cycleStartTime;
+
+    // Cache of offsets array value.
+    private transient double[] _offsets;
 
     // The phase of the next output.
     private transient int _phase;

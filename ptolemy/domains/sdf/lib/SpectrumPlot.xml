@@ -51,7 +51,7 @@ centered at zero frequency.</text>
     <entity name="Waveform" class="ptolemy.actor.lib.Pulse">
         <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="indexes" class="ptolemy.data.expr.Parameter" value="[0, 1]">
+        <property name="indexes" class="ptolemy.data.expr.Parameter" value="{0, 1}">
         </property>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{1, -1}">
         </property>

@@ -182,8 +182,7 @@ public class SigmaDelta extends TypedCompositeActor {
          Average accumulator = new Average(this, "accumulator");
          Sampler sampler = new Sampler(this, "sampler");
          Clock clk = new Clock(this, "ADClock");
-         double[][] offs = {{0.0}};
-         clk.offsets.setToken(new DoubleMatrixToken(offs));
+         clk.offsets.setExpression("{0.0}");
          clk.period.setToken(new DoubleToken(1.0));
          clk.values.setExpression("{true}");
 

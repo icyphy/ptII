@@ -78,7 +78,7 @@ test FeedBackDelay-2.1 {Cycle null tokens with actor/lib/clock} {
     set period [java::cast ptolemy.data.expr.Parameter [$clock getAttribute period]]
     $period setToken [java::new ptolemy.data.DoubleToken 20.0]
     set offsets [java::cast ptolemy.data.expr.Parameter [$clock getAttribute offsets]]
-    $offsets setExpression {[5.0, 15.0]}
+    $offsets setExpression {{5.0, 15.0}}
     set stopTime [java::cast ptolemy.data.expr.Parameter [$clock getAttribute stopTime]]
     $stopTime setToken [java::new ptolemy.data.DoubleToken 27.0]
 
@@ -138,7 +138,7 @@ test FeedBackDelay-3.1 {Cycle real tokens with actor/lib/clock} {
     set period [java::cast ptolemy.data.expr.Parameter [$clock getAttribute period]]
     $period setToken [java::new ptolemy.data.DoubleToken 20.0]
     set offsets [java::cast ptolemy.data.expr.Parameter [$clock getAttribute offsets]]
-    $offsets setExpression {[5.0, 15.0]}
+    $offsets setExpression {{5.0, 15.0}}
     set stopTime [java::cast ptolemy.data.expr.Parameter [$clock getAttribute stopTime]]
     $stopTime setToken [java::new ptolemy.data.DoubleToken 27.0]
 
@@ -203,7 +203,7 @@ test FeedBackDelay-4.1 {Dual cycle with 0 delay in lower cycle with actor/lib/cl
     set period [java::cast ptolemy.data.expr.Parameter [$clock getAttribute period]]
     $period setToken [java::new ptolemy.data.DoubleToken 20.0]
     set offsets [java::cast ptolemy.data.expr.Parameter [$clock getAttribute offsets]]
-    $offsets setExpression {[5.0, 15.0]}
+    $offsets setExpression {{5.0, 15.0}}
     set stopTime [java::cast ptolemy.data.expr.Parameter [$clock getAttribute stopTime]]
     $stopTime setToken [java::new ptolemy.data.DoubleToken 27.0]
 
@@ -285,7 +285,7 @@ test FeedBackDelay-4.2 {Dual cycle with very small delay in lower cycle with act
     set period [java::cast ptolemy.data.expr.Parameter [$clock getAttribute period]]
     $period setToken [java::new ptolemy.data.DoubleToken 20.0]
     set offsets [java::cast ptolemy.data.expr.Parameter [$clock getAttribute offsets]]
-    $offsets setExpression {[5.0, 15.0]}
+    $offsets setExpression {{5.0, 15.0}}
     set stopTime [java::cast ptolemy.data.expr.Parameter [$clock getAttribute stopTime]]
     $stopTime setToken [java::new ptolemy.data.DoubleToken 27.0]
 

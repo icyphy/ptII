@@ -120,9 +120,8 @@ test DoubleToFix-3.1 {Test rescaling to other Precision with saturate \
     set valuesParam [getParameter $pulse values]
     $valuesParam setToken $valToken
  
-    set indexes [java::new {int[][]} {1 12} [list [list 0 1 2 3 4 5 6 7 8 9 10 11 ]]]
     set indexesParam [getParameter $pulse indexes]
-    $indexesParam setToken [java::new ptolemy.data.IntMatrixToken $indexes]
+    $indexesParam setExpression {{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11}}
 
     set precision [getParameter $conver precision]
     $precision setExpression "\[3, 2\]"

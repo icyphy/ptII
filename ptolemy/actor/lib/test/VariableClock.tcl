@@ -78,7 +78,7 @@ test VariableClock-2.3 {Connect a second clock to the periodControl input} {
     set p [getParameter $control values]
     $p setExpression {{2.0, 1.0}}
     set p [getParameter $control offsets]
-    $p setExpression {[0.0, 6.0]}
+    $p setExpression {{0.0, 6.0}}
     set p [getParameter $control period]
     $p setExpression {10.0}
 

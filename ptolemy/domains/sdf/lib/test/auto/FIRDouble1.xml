@@ -13,7 +13,7 @@
     <entity name="ramp" class="ptolemy.actor.lib.Pulse">
         <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="indexes" class="ptolemy.data.expr.Parameter" value="[0]">
+        <property name="indexes" class="ptolemy.data.expr.Parameter" value="{0}">
         </property>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{1}">
         </property>
@@ -90,7 +90,7 @@
         <entity name="Waveform" class="ptolemy.actor.lib.Pulse">
             <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
             </property>
-            <property name="indexes" class="ptolemy.data.expr.Parameter" value="[0, 1]">
+            <property name="indexes" class="ptolemy.data.expr.Parameter" value="{0, 1}">
             </property>
             <property name="values" class="ptolemy.data.expr.Parameter" value="{1, -1}">
             </property>
@@ -130,7 +130,7 @@
                 </property>
             </port>
         </entity>
-        <entity name="ComplexToReal" class="ptolemy.actor.lib.conversions.ComplexToReal">
+        <entity name="ComplexToCartesian" class="ptolemy.actor.lib.conversions.ComplexToCartesian">
             <property name="_location" class="ptolemy.moml.Location" value="406.5, 329.5">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -143,7 +143,7 @@
                 <property name="output"/>
             </port>
         </entity>
-        <entity name="RecToPolar" class="ptolemy.actor.lib.conversions.RectangularToPolar">
+        <entity name="RecToPolar" class="ptolemy.actor.lib.conversions.CartesianToPolar">
             <property name="_location" class="ptolemy.moml.Location" value="499.4142857142857, 329.5">
             </property>
             <port name="x" class="ptolemy.actor.TypedIOPort">
@@ -197,9 +197,9 @@
         <link port="Waveform.output" relation="_R1"/>
         <link port="FFT.input" relation="_R2"/>
         <link port="FFT.output" relation="_R3"/>
-        <link port="ComplexToReal.input" relation="_R3"/>
-        <link port="ComplexToReal.real" relation="_R4"/>
-        <link port="ComplexToReal.imag" relation="_R5"/>
+        <link port="ComplexToCartesian.input" relation="_R3"/>
+        <link port="ComplexToCartesian.real" relation="_R4"/>
+        <link port="ComplexToCartesian.imag" relation="_R5"/>
         <link port="RecToPolar.x" relation="_R4"/>
         <link port="RecToPolar.y" relation="_R5"/>
         <link port="RecToPolar.magnitude" relation="_R6"/>

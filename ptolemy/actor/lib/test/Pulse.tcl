@@ -54,7 +54,7 @@ test Pulse-1.1 {test constructor and clone with default values} {
     set indexesVal [[$newIndexes getToken] toString]
 
     list $valuesVal $indexesVal
-} {{{1, 0}} {[0, 1]}}
+} {{{1, 0}} {{0, 1}}}
 
 ######################################################################
 #### Check type of values parameter
@@ -87,9 +87,8 @@ test Pulse-2.2 {test with the non-default output values} {
     set valuesParam [getParameter $pulse values]
     $valuesParam setToken $valToken
  
-    set indexes [java::new {int[][]} {1 3} [list [list 0 2 3]]]
     set indexesParam [getParameter $pulse indexes]
-    $indexesParam setToken [java::new ptolemy.data.IntMatrixToken $indexes]
+    $indexesParam setExpression {{0, 2, 3}}
 
     [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
@@ -126,29 +125,32 @@ test Pulse-2.5 {test string output} {
 #### Test error conditions
 #
 test Pulse-3.1 {test indexes that are out of order} {
-    set indexes [java::new {int[][]} {1 3} [list [list 0 3 2]]]
     set indexesParam [getParameter $pulse indexes]
     catch {
-        $indexesParam setToken [java::new ptolemy.data.IntMatrixToken $indexes]
+        $indexesParam setExpression {{0, 3, 2}}
+        $indexesParam getToken
     } msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: .top.pulse:
-Value of indexes must be an array of nonnegative integers increasing in value.}}
+} {{ptolemy.kernel.util.IllegalActionException: .top.pulse.indexes:
+Error evaluating expression "{0, 3, 2}":
+ptolemy.kernel.util.IllegalActionException: .top.pulse:
+Value of indexes is not nondecreasing and nonnegative.}}
 
 test Pulse-3.2 {test negative indexes} {
-    set indexes [java::new {int[][]} {1 3} [list [list -1 0 1]]]
     set indexesParam [getParameter $pulse indexes]
     catch {
-        $indexesParam setToken [java::new ptolemy.data.IntMatrixToken $indexes]
+        $indexesParam setExpression {{-1, 0, 1}}
+        $indexesParam getToken
     } msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: .top.pulse:
-Value of indexes must be an array of nonnegative integers increasing in value.}}
+} {{ptolemy.kernel.util.IllegalActionException: .top.pulse.indexes:
+Error evaluating expression "{-1, 0, 1}":
+ptolemy.kernel.util.IllegalActionException: .top.pulse:
+Value of indexes is not nondecreasing and nonnegative.}}
 
 test Pulse-3.3 {test values and indexes of different dimensions} {
-    set indexes [java::new {int[][]} {1 3} [list [list 1 2 3]]]
     set indexesParam [getParameter $pulse indexes]
-    $indexesParam setToken [java::new ptolemy.data.IntMatrixToken $indexes]
+    $indexesParam setExpression {{1, 2, 3}}
     set valuesParam [getParameter $pulse values]
     $valuesParam setExpression {{{0, 3}}}
     catch {
@@ -186,9 +188,8 @@ test Pulse-4.2 {test with the non-default output values} {
     set valuesParam [getParameter $pulse values]
     $valuesParam setToken $valToken
  
-    set indexes [java::new {int[][]} {1 3} [list [list 0 2 3]]]
     set indexesParam [getParameter $pulse indexes]
-    $indexesParam setToken [java::new ptolemy.data.IntMatrixToken $indexes]
+    $indexesParam setExpression {{0, 2, 3}}
 
     set repeatParam [getParameter $pulse repeat]
     $repeatParam setToken [java::new ptolemy.data.BooleanToken true]

@@ -32,7 +32,7 @@ using double precision.</text>
     <entity name="Impulse" class="ptolemy.actor.lib.Pulse">
         <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="indexes" class="ptolemy.data.expr.Parameter" value="[0]">
+        <property name="indexes" class="ptolemy.data.expr.Parameter" value="{0}">
         </property>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{1}">
         </property>

@@ -59,7 +59,7 @@ test Maximum-2.1 {test maximum} {
     set values [getParameter $pulse values]
     set indexes [getParameter $pulse indexes]
     $values setExpression {{-2, -1, 0, 1, 2}}
-    $indexes setExpression {[0, 1, 2, 3, 4]}
+    $indexes setExpression {{0, 1, 2, 3, 4}}
     set const [java::new ptolemy.actor.lib.Const $e0 const]
     set value [getParameter $const value]
     $value setExpression {0.0}

@@ -169,7 +169,7 @@ test DDEDirector-4.1 {Composite actor containing a closed feedback cycle} {
     set period [java::cast ptolemy.data.expr.Parameter [$clock getAttribute period]]
     $period setToken [java::new ptolemy.data.DoubleToken 20.0]
     set offsets [java::cast ptolemy.data.expr.Parameter [$clock getAttribute offsets]]
-    $offsets setExpression {[5.0, 15.0]}
+    $offsets setExpression {{5.0, 15.0}}
     set stopTime [java::cast ptolemy.data.expr.Parameter [$clock getAttribute stopTime]]
     $stopTime setToken [java::new ptolemy.data.DoubleToken 27.0]
     # set clock [java::new ptolemy.domains.dde.kernel.test.DDEPutToken $toplevel "actorSend" 3]
@@ -253,7 +253,7 @@ test DDEDirector-4.1 {Composite actor containing a non-closed feedback cycle} {
     set period [java::cast ptolemy.data.expr.Parameter [$clock getAttribute period]]
     $period setToken [java::new ptolemy.data.DoubleToken 20.0]
     set offsets [java::cast ptolemy.data.expr.Parameter [$clock getAttribute offsets]]
-    $offsets setExpression {[5.0, 15.0]}
+    $offsets setExpression {{5.0, 15.0}}
     set stopTime [java::cast ptolemy.data.expr.Parameter [$clock getAttribute stopTime]]
     $stopTime setToken [java::new ptolemy.data.DoubleToken 27.0]
 

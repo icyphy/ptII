@@ -35,11 +35,11 @@ import ptolemy.kernel.util.Workspace;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.data.Token;
-import ptolemy.data.IntToken;
+import ptolemy.data.ArrayToken;
 import ptolemy.data.DoubleToken;
-import ptolemy.data.IntMatrixToken;
-import ptolemy.data.DoubleMatrixToken;
+import ptolemy.data.IntToken;
+import ptolemy.data.Token;
+import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
 import ptolemy.math.Interpolation;
@@ -53,7 +53,7 @@ the interpolation.
 The <i>values</i> parameter specifies a sequence of values
 to produce at the output.  The <i>indexes</i> parameter specifies
 when those values should be produced.
-The values and indexes parameters must both contain one dimensional
+The values and indexes parameters must both contain
 arrays, and have equal lengths or an exception will be thrown.
 The <i>indexes</i> array must be increasing and non-negative.
 The values are periodic if the <i>period</i> parameter contains a
@@ -102,27 +102,24 @@ public class Interpolator extends SequenceSource {
 	// function. But since these parameters are public, other objects
 	// in the system may use them.
 
-	int[][] defaultIndexes = new int[1][];
-	defaultIndexes[0] = _interpolation.getIndexes();
-	IntMatrixToken defaultIndexToken = new IntMatrixToken(defaultIndexes);
-        indexes = new Parameter(this, "indexes", defaultIndexToken);
-        indexes.setTypeEquals(BaseType.INT_MATRIX);
+        indexes = new Parameter(this, "indexes");
+        indexes.setExpression("{0, 1}");
+        // Call this so that we don't have to copy its code here...
+        attributeChanged(indexes);
 
-	double[][] defaultValues = new double[1][];
-	defaultValues[0] = _interpolation.getValues();
-	DoubleMatrixToken defaultValueToken =
-            new DoubleMatrixToken(defaultValues);
-        values = new Parameter(this, "values", defaultValueToken);
-        values.setTypeEquals(BaseType.DOUBLE_MATRIX);
+	// set values parameter
+        values = new Parameter(this, "values");
+        values.setExpression("{1.0, 0.0}");
+	values.setTypeEquals(new ArrayType(BaseType.DOUBLE));
 
-	int defaultOrder = _interpolation.getOrder();
-	IntToken defaultOrderToken = new IntToken(defaultOrder);
-        order = new Parameter(this, "order", defaultOrderToken);
+	int defOrder = _interpolation.getOrder();
+	IntToken defOrderToken = new IntToken(defOrder);
+        order = new Parameter(this, "order", defOrderToken);
         order.setTypeEquals(BaseType.INT);
 
-	int defaultPeriod = _interpolation.getPeriod();
-	IntToken defaultPeriodToken = new IntToken(defaultPeriod);
-	period = new Parameter(this, "period", defaultPeriodToken);
+	int defPeriod = _interpolation.getPeriod();
+	IntToken defPeriodToken = new IntToken(defPeriod);
+	period = new Parameter(this, "period", defPeriodToken);
 	period.setTypeEquals(BaseType.INT);
 
         output.setTypeEquals(BaseType.DOUBLE);
@@ -132,12 +129,12 @@ public class Interpolator extends SequenceSource {
     ////                         public variables                  ////
 
     /** The indexes at which the specified values will be produced.
-     *  This parameter must contain an IntMatrixToken.
+     *  This parameter is an array of integers, with default value {0, 1}.
      */
     public Parameter indexes;
 
     /** The values that will be produced at the specified indexes.
-     *  This parameter can contain any MatrixToken.
+     *  This parameter is an array, with default value {1.0, 0.0}.
      */
     public Parameter values;
 
@@ -165,40 +162,41 @@ public class Interpolator extends SequenceSource {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-	try {
-	    if (attribute == values) {
-	        double[][] valueMatrix =
-                    ((DoubleMatrixToken)values.getToken()).doubleMatrix();
-	        if (valueMatrix.length != 1 || valueMatrix[0].length == 0) {
-		    throw new IllegalActionException(
-                            "Interpolator.attributeChanged: The values " +
-                            "parameter does not contain an one dimensional " +
-                            "array.");
-	    	}
-	    	_interpolation.setValues(valueMatrix[0]);
-	    } else if (attribute == indexes) {
-	        int[][] indexMatrix =
-                    ((IntMatrixToken)indexes.getToken()).intMatrix();
-	    	if (indexMatrix.length != 1 || indexMatrix[0].length == 0) {
-		    throw new IllegalActionException(
-                            "Interpolator.attributeChanged: The " +
-                            "index parameter " +
-                            "does not contain an one dimensional array.");
-	        }
-	        _interpolation.setIndexes(indexMatrix[0]);
-	    } else if (attribute == period) {
-	    	int newPeriod = ((IntToken)period.getToken()).intValue();
-		_interpolation.setPeriod(newPeriod);
-	    } else if (attribute == order) {
-		int newOrder = ((IntToken)order.getToken()).intValue();
-		_interpolation.setOrder(newOrder);
-	    } else {
-		super.attributeChanged(attribute);
-	    }
-	} catch (IllegalArgumentException ex) {
-	    throw new IllegalActionException("Interpolation.attributeChanged: "
-                    + ex.getMessage());
-	}
+        if (attribute == values) {
+            ArrayToken valuesValue = (ArrayToken)values.getToken();
+            _values = new double[valuesValue.length()];
+            double previous = 0.0;
+            for (int i = 0; i < valuesValue.length(); i++) {
+                _values[i] = ((DoubleToken)valuesValue.getElement(i))
+                        .doubleValue();
+                previous = _values[i];
+            }
+            _interpolation.setValues(_values);
+        } else if (attribute == indexes) {
+            ArrayToken indexesValue = (ArrayToken)indexes.getToken();
+            _indexes = new int[indexesValue.length()];
+            int previous = 0;
+            for (int i = 0; i < indexesValue.length(); i++) {
+                _indexes[i] = ((IntToken)indexesValue.getElement(i)).intValue();
+                // Check nondecreasing property.
+                if (_indexes[i] < previous) {
+                    throw new IllegalActionException(this,
+                            "Value of indexes is not nondecreasing " +
+                            "and nonnegative.");
+                }
+                previous = _indexes[i];
+            }
+            _interpolation.setIndexes(_indexes);
+
+        } else if (attribute == period) {
+            int newPeriod = ((IntToken)period.getToken()).intValue();
+            _interpolation.setPeriod(newPeriod);
+        } else if (attribute == order) {
+            int newOrder = ((IntToken)order.getToken()).intValue();
+            _interpolation.setOrder(newOrder);
+        } else {
+            super.attributeChanged(attribute);
+        }
     }
 
     /** Output the value at the current iteration count. The output is
@@ -210,21 +208,8 @@ public class Interpolator extends SequenceSource {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-	try {
-	    // If some parameters are changed by setExpression(), they are not
-	    // evaluated. Force evaluation. This will cause attributeChanged()
-	    // to be called if any parameter is changed.
-	    Token token = values.getToken();
-	    token = indexes.getToken();
-	    token = period.getToken();
-	    token = order.getToken();
-
-	    double result = _interpolation.interpolate(_iterationCount);
-            output.send(0, new DoubleToken(result));
-	} catch (IllegalStateException ex) {
-	    throw new IllegalActionException("Interpolator.fire: " +
-                    ex.getMessage());
-	}
+        double result = _interpolation.interpolate(_iterationCount);
+        output.send(0, new DoubleToken(result));
     }
 
     /** Set the iteration count to zero.
@@ -246,6 +231,12 @@ public class Interpolator extends SequenceSource {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    // Cache of indexes array value.
+    private transient int[] _indexes;
+
     private int _iterationCount = 0;
     private Interpolation _interpolation;
+
+    // Cache of values array value.
+    private transient double[] _values;
 }

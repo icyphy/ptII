@@ -93,7 +93,7 @@
     <entity name="Pulse5" class="ptolemy.actor.lib.Pulse">
         <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="indexes" class="ptolemy.data.expr.Parameter" value="[0:1:9]">
+        <property name="indexes" class="ptolemy.data.expr.Parameter" value="{0,1,2,3,4,5,6,7,8,9}">
         </property>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{0.0,1.2,-3.4,-5.6,7.8,3.14,-3.145,-443.86,2.718,-10.2}">
         </property>

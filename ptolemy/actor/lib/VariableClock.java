@@ -83,8 +83,7 @@ public class VariableClock extends Clock {
         periodControl.setTypeEquals(BaseType.DOUBLE);
 
         // Change default values from the base class.
-        double defaultOffsets[][] = {{0.0}};
-        offsets.setToken(new DoubleMatrixToken(defaultOffsets));
+        offsets.setExpression("{0.0}");
         values.setExpression("{1}");
         period.setToken(new DoubleToken(1.0));
     }

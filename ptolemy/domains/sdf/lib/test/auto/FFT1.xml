@@ -102,7 +102,7 @@
             </property>
         </port>
     </entity>
-    <entity name="ComplexToReal15" class="ptolemy.actor.lib.conversions.ComplexToReal">
+    <entity name="ComplexToCartesian15" class="ptolemy.actor.lib.conversions.ComplexToCartesian">
         <property name="_location" class="ptolemy.moml.Location" value="562.0, 299.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -132,5 +132,5 @@
     <link port="TrigFunction5.output" relation="relation18"/>
     <link port="IFFT12.input" relation="relation14"/>
     <link port="IFFT12.output" relation="relation16"/>
-    <link port="ComplexToReal15.input" relation="relation16"/>
+    <link port="ComplexToCartesian15.input" relation="relation16"/>
 </entity>

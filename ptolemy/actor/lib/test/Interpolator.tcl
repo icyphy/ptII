@@ -70,7 +70,7 @@ test Interpolator-1.1 {test constructor and clone with default values} {
     set orderStr [[$order getToken] toString]
 
     list $valuesStr $indexesStr $periodStr $orderStr
-} {{[1.0, 0.0]} {[0, 1]} 2 0}
+} {{{1.0, 0.0}} {{0, 1}} 2 0}
 
 ######################################################################
 #### Test Interpolator in an SDF model
@@ -122,8 +122,8 @@ test Interpolator-3.1 {test using new values} {
     set iteration [getParameter $dir iterations]
     $iteration setExpression 16
 
-    $values setExpression {[7.0, 5.0, 3.0, 1.0]}
-    $indexes setExpression {[0, 2, 4, 6]}
+    $values setExpression {{7.0, 5.0, 3.0, 1.0}}
+    $indexes setExpression {{0, 2, 4, 6}}
     $period setExpression 0
     $order setExpression 0
     [$e0 getManager] execute

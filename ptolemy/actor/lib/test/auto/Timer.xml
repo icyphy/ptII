@@ -37,7 +37,7 @@
         </property>
         <property name="period" class="ptolemy.data.expr.Parameter" value="2.0">
         </property>
-        <property name="offsets" class="ptolemy.data.expr.Parameter" value="[0.0, 1.0]">
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 1.0}">
         </property>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{1, 0}">
         </property>
@@ -68,7 +68,7 @@
     <entity name="Pulse3" class="ptolemy.actor.lib.Pulse">
         <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="indexes" class="ptolemy.data.expr.Parameter" value="[0, 1, 2, 3, 4]">
+        <property name="indexes" class="ptolemy.data.expr.Parameter" value="{0, 1, 2, 3, 4}">
         </property>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{0.0, 2.0, 2.0, 0.0, 3.0}">
         </property>

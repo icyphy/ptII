@@ -117,9 +117,9 @@
     <entity name="SequentialClock" class="ptolemy.actor.lib.SequentialClock">
         <property name="period" class="ptolemy.data.expr.Parameter" value="2.0">
         </property>
-        <property name="offsets" class="ptolemy.data.expr.Parameter" value="[0.0, 1.0]">
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 1.0}">
         </property>
-        <property name="values" class="ptolemy.data.expr.Parameter" value="[0.5, -0.5]">
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{0.5, -0.5}">
         </property>
         <doc>A clock producing exactly one output per clock tick</doc>
         <property name="_location" class="ptolemy.moml.Location" value="135.0, 158.0">

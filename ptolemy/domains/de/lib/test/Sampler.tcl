@@ -62,7 +62,7 @@ test Sampler-2.1 {test with the default output values} {
     set period [java::field $clock2 period]
     $period setExpression {1.0}
     set offsets [java::field $clock2 offsets]
-    $offsets setExpression {[0.0, 0.5]}
+    $offsets setExpression {{0.0, 0.5}}
     set rec [java::new ptolemy.actor.lib.Recorder $e0 rec]
     set r0 [$e0 connect \
        [java::field [java::cast ptolemy.actor.lib.Source $clock1] output] \

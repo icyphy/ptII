@@ -117,10 +117,8 @@ public class NonlinearClient extends TypedCompositeActor {
         director.minStepSize.setToken(new DoubleToken(1e-6));
 
         sqwv.period.setToken(new DoubleToken(4));
-        double offsets[][] = {{0.0, 2.0}};
-        sqwv.offsets.setToken(new DoubleMatrixToken(offsets));
-        double values[][] = {{2.0, -2.0}};
-        sqwv.values.setToken(new DoubleMatrixToken(values));
+        sqwv.offsets.setExpression("{0.0, 2.0}");
+        sqwv.values.setExpression("{2.0, -2.0}");
 
         gain1.factor.setToken(new DoubleToken(500.0));
 

@@ -129,11 +129,8 @@ public class NonlinearClientApplication {
             _dir.stopTime.setToken(new DoubleToken(6.0));
 
             sqwv.period.setToken(new DoubleToken(4));
-            double offsets[][] = {{0.0, 2.0}};
-            sqwv.offsets.setToken(new DoubleMatrixToken(offsets));
-            double values[][] = {{2.0, -2.0}};
-            sqwv.values.setToken(new DoubleMatrixToken(values));
-
+            sqwv.offsets.setExpression("{0.0, 2.0}");
+            sqwv.values.setExpression("{2.0, -2.0}");
 
             gain1.factor.setToken(new DoubleToken(500.0));
 
