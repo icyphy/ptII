@@ -141,8 +141,8 @@ public class FIR extends TypedAtomicActor {
 
     }
 
-//      ///////////////////////////////////////////////////////////////////
-//      ////                         public variables                  ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
 
     public TypedIOPort input;
 
