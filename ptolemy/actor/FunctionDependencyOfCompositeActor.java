@@ -142,7 +142,7 @@ public class FunctionDependencyOfCompositeActor extends FunctionDependency {
                 */
                 Receiver[][] receivers = outPort.getRemoteReceivers();
                 for (int i = 0; i < receivers.length; i++) {
-                    // FIXME: For PrameterPort, it is possible that
+                    // FIXME: For ParameterPort, it is possible that
                     // the downstream receivers are null. It is a
                     // unresolved issue about the semantics of Parameter
                     // Port considering the lazy evaluation of variables.

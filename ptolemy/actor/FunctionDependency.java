@@ -246,13 +246,11 @@ public abstract class FunctionDependency {
     ///////////////////////////////////////////////////////////////////
     ////                      protected variables                  ////
 
-    // The container of this IODependnecy object.
+    /** The container of this IODependency object. */
     protected Actor _container;
-    // The directed graph of the input and output ports.
-    protected DirectedGraph _directedGraph;
 
-    ///////////////////////////////////////////////////////////////////
-    ////                      private methods                      ////
+    /** The directed graph of the input and output ports. */
+    protected DirectedGraph _directedGraph;
 
     ///////////////////////////////////////////////////////////////////
     ////                      private variables                    ////
