@@ -34,17 +34,18 @@ import java.util.Iterator;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
+import ptolemy.actor.TypedIOPort;
 import ptolemy.codegen.gui.CodeGeneratorGUIFactory;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
-import ptolemy.util.MessageHandler;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.util.MessageHandler;
 
 //////////////////////////////////////////////////////////////////////////
 //// CodeGenerator
@@ -119,6 +120,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      */
     public void generateCode(StringBuffer code) throws IllegalActionException {
         generateInitializeCode(code);
+        generateVariableDeclarations(code);
         generateBodyCode(code);
         generateWrapupCode(code);
         
@@ -170,6 +172,51 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         }
     }
 
+    /** Generate variable declarations for inputs and outputs.
+     */
+    public void generateVariableDeclarations(StringBuffer code)
+            throws IllegalActionException {
+        code.append(comment("Variable Declarations "
+                + getContainer().getFullName()));
+        Iterator actors = ((CompositeActor)getContainer())
+            .deepEntityList().iterator();
+        while (actors.hasNext()) {
+            Actor actor = (Actor)actors.next();
+            Iterator inputPorts = actor.inputPortList().iterator();
+            while (inputPorts.hasNext()) {
+                TypedIOPort inputPort = (TypedIOPort)inputPorts.next();
+                StringBuffer temp = new StringBuffer();
+                temp.append(inputPort.getType().toString());
+                temp.append(" ");
+                temp.append(inputPort.getFullName().replace('.', '_'));
+                if (inputPort.getWidth() <= 1) {
+                    code.append(temp);
+                    code.append(";\n");
+                }
+                else {
+                    temp.append("_");
+                    for (int i = 0; i < inputPort.getWidth(); i ++) {
+                        code.append(temp);
+                        code.append((new Integer(i)).toString());
+                        code.append(";\n");
+                    }
+                }
+            }
+            Iterator outputPorts = actor.outputPortList().iterator();
+            while (outputPorts.hasNext()) {
+                TypedIOPort outputPort = (TypedIOPort)outputPorts.next();
+                // Only generate declarations for those output ports with
+                // port width zero.
+                if (outputPort.getWidth() == 0) {
+                    code.append(outputPort.getType().toString());
+                    code.append(" ");
+                    code.append(outputPort.getFullName().replace('.', '_'));
+                    code.append(";\n");
+                }
+            }
+        }
+    }
+    
     /** Generate into the specified code stream the code associated
      *  with wrapping up the container composite actor. This is
      *  created by stringing together the wrapup code for the actors

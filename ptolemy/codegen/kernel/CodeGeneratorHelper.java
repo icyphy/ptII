@@ -119,11 +119,15 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                 "Attribute does not have a value: " + name);
     }
 
-    /** FIXME
-     * 
-     * @param outputPort
-     * @param channelNumber
-     * @return
+    /** Return a string that contains all the sink input ports
+     *  and channels given an output port and a given channel.
+     *  The returned string is in the form "inputPortName1_channelNumber1
+     *  = inputPortName2_channelNumber2 = ...". If the given output
+     *  channel doesn't have a sink input, the method returns
+     *  the output channel itself.
+     * @param outputPort The given output port.
+     * @param channelNumber The given channel number.
+     * @return The string.
      */
     public String getSinkChannels(IOPort outputPort, int channelNumber) {
         StringBuffer result = new StringBuffer();
@@ -132,7 +136,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         
         if (remoteReceivers.length <= channelNumber) {
             // This channel of this output port doesn't have any sink.
-            result.append(_component.getFullName());
+            result.append(_component.getFullName().replace('.', '_'));
             result.append("_");
             result.append(outputPort.getName());
             if (outputPort.isMultiport() && channelNumber > 0) {
@@ -155,7 +159,8 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                         } else {
                             result.append(" = ");
                         }
-                        result.append(sinkPort.getContainer().getFullName());
+                        result.append(sinkPort.getContainer()
+                                .getFullName().replace('.', '_'));
                         result.append("_");
                         result.append(sinkPort.getName());
                         if (sinkPort.getWidth() > 1) {
@@ -196,12 +201,6 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         // This method needs to generate this name given
         // the input port name.
 
-        // Need to implement a method that return the connected
-        // source port and channel number given an input port
-        // and a channel number. Setting up a look-up table during
-        // initialization when the variables are generated could
-        // make it much easier. zhouye
-
         StringBuffer result = new StringBuffer();
 
         if (_component instanceof Actor) {
@@ -225,7 +224,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                 IOPort port = (IOPort) inputPorts.next();
                 // The channel is specified as $ref(port#channelNumber).
                 if (port.getName().equals(portName)) {
-                    result.append(_component.getFullName());
+                    result.append(_component.getFullName().replace('.', '_'));
                     result.append("_");
                     result.append(portName);
                     if (!tokenizer.hasMoreTokens()) {
