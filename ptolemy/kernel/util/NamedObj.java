@@ -113,17 +113,9 @@ public class NamedObj {
     public void reset() {}
 
     /** Return a description of the object
-     *  this method needed for Tcl Interface class
      */	
     public String toString() {
-        return new String(getFullName() + ": " + getClass().getName());
-    }
-
-    /** Create a NamedObj whose name is a given string
-     *  this method needed for Tcl Interface class
-     */	
-    public static NamedObj valueOf (String newName) {
-        return new NamedObj(newName);
+        return getFullName() + ": " + getClass().getName();
     }
 
 
