@@ -134,7 +134,6 @@ public class GeneralFunctionActor extends TypedAtomicActor {
         Enumeration outvars = _outputVarList.getVariables();
         while (outvars.hasMoreElements()) {
             Variable var = (Variable)outvars.nextElement();
-            var.evaluate();
             IOPort outport = (IOPort)getPort(var.getName());
             outport.broadcast(var.getToken());
 
