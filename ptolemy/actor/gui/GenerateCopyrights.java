@@ -119,7 +119,7 @@ public class GenerateCopyrights {
 
         StringBuffer htmlBuffer = new StringBuffer();
         htmlBuffer.append("<html>\n<head>\n<title>Copyrights</title>\n"
-                + "</head>\n<body>\n<dl>\n" 
+                + "</head>\n<body>\n" 
                 + "<h1>Ptolemy II Copyrights</h1>\n"
                 + "The primary copyright for the Ptolemy II System can be\n"
                 + "found in <a href=\"" + ptIICopyright + "\"><code>"
