@@ -105,21 +105,23 @@ public class DDESourceActor extends DDEActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Invoke this actor after the specified delay. The actor is
-     *  invoked at time equal to the current time of the actor plus
-     *  the specified delay.
-     * @param delay The delay from this actor's current time.
-     * @exception IllegalActionException If the delay is negative.
+    /** Invoke this actor at the specified time. If the wakeTime is
+     *  less than the current time of this actor, then throw an
+     *  IllegalActionException.
+     * @param wakeTime The absolute time when this actor will be 
+     *  reinvoked.
+     * @exception IllegalActionException If the wakeTime is less
+     *  than the current time of this actor.
      */
-    public void reinvokeAfterDelay(double delay)
+    public void reinvokeAfterDelay(double wakeTime)
             throws IllegalActionException {
-	if( delay < 0 ) {
-	      throw new IllegalActionException( this, "Negative delays "
-                      + "are prohibited.");
+	if( wakeTime < getCurrentTime() ) {
+	      throw new IllegalActionException( this, "Setting time "
+                      + "in the past is prohibited.");
 	}
         DoubleToken token = new DoubleToken();
 	// setDelay(delay);
-        _reinvokeOutPort.send( 0, token, delay );
+        _reinvokeOutPort.send( 0, token, wakeTime);
     }
 
     ///////////////////////////////////////////////////////////////////
