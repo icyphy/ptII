@@ -687,13 +687,13 @@ public class Plot extends PlotBox {
     /** Specify the number of data sets to be plotted together.
      *  This method is deprecated, since it is no longer necessary to
      *  specify the number of data sets ahead of time.
-     *  @param numsets The number of data sets.
+     *  @param numSets The number of data sets.
      *  @deprecated
      */
-    public void setNumSets(int numsets) {
-        if (numsets < 1) {
+    public void setNumSets(int numSets) {
+        if (numSets < 1) {
             throw new IllegalArgumentException("Number of data sets ("+
-                    numsets + ") must be greater than 0.");
+                    numSets + ") must be greater than 0.");
 
         }
         _currentdataset = -1;
@@ -701,7 +701,7 @@ public class Plot extends PlotBox {
         _formats.removeAllElements();
         _prevx.removeAllElements();
         _prevy.removeAllElements();
-        for (int i = 0; i < numsets; i++) {
+        for (int i = 0; i < numSets; i++) {
             _points.addElement(new Vector());
             _formats.addElement(new Format());
             _prevx.addElement(new Long(0));
