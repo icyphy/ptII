@@ -44,7 +44,8 @@ import java.lang.reflect.*;
  * <p>
  * Note that in general, these methods do not check that array
  * arguments are not null. Thus, calling them with null arguments will
- * likely result in a null pointer exception.
+ * likely result in a null pointer exception.  Also, some methods
+ * with more than one array argument assume they have the same length.
  *
  * @author Albert Chen, William Wu, Edward A. Lee
  * @version $Id$
@@ -186,6 +187,32 @@ public final class ArrayMath {
             }
         }
         return result;
+    }
+
+    /** Return a new array containing the magnitudes of the elements
+     *  of the specified complex array.
+     *  @param array A complex array.
+     *  @return An array of angles in the range of <em>-pi</em> to <em>pi</em>.
+     */
+    public static double[] mag(Complex[] array) {
+        double[] mags = new double[array.length];
+        for (int i = array.length-1; i >= 0; i--) {
+            mags[i] = array[i].mag();
+        }
+        return mags;
+    }
+
+    /** Return a new array containing the angles of the elements of the
+     *  specified complex array.
+     *  @param array A complex array.
+     *  @return An array of angles in the range of <em>-pi</em> to <em>pi</em>.
+     */
+    public static double[] phase(Complex[] array) {
+        double[] angles = new double[array.length];
+        for (int i = array.length-1; i >= 0; i--) {
+            angles[i] = array[i].angle();
+        }
+        return angles;
     }
 
     /** Given the roots of a polynomial, return a polynomial that has

@@ -25,7 +25,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (cxh@eecs.berkeley.edu)
+@ProposedRating Yellow (eal@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 
 */
@@ -54,11 +54,11 @@ public final class SignalProcessing {
     ////                         public methods                          ////
 
     /** Return true if the first argument is close to the second (within
-     *  EPSILON).
+     *  epsilon, where epsilon is a static public variable of this class).
      */
     public static boolean close(double first, double second) {
         double diff = first-second;
-        return (diff < EPSILON && diff > -EPSILON);
+        return (diff < epsilon && diff > -epsilon);
     }
 
     /** Return the value of the argument <em>z</em>
@@ -67,18 +67,18 @@ public final class SignalProcessing {
      *  magnitude squared, then this should be divided
      *  by two to get 10*log<sub>10</sub>(<em>z</em>).
      */
-    public static double db(double value) {
+    public static double decibel(double value) {
         return 20*Math.log(value)/_LOG10SCALE;
     }
 
     /** Return a new array the value of the argument array
-     *  in decibels, using the previous db() method.
+     *  in decibels, using the previous decibel() method.
      *  You may wish to combine this with ArrayMath.limit()
      */
-    public static double[] db(double[] values) {
+    public static double[] decibel(double[] values) {
         double[] result = new double[values.length];
         for (int i = values.length-1; i >= 0; i--) {
-            result[i] = db(values[i]);
+            result[i] = decibel(values[i]);
         }
         return result;
     }
@@ -394,35 +394,22 @@ public final class SignalProcessing {
         return result;
     }
 
-    /** Return a new array containing the angles of the specified
-     *  complex array.
-     *  @param array A complex array.
-     *  @return An array of angles in the range of <em>-pi</em> to <em>pi</em>.
-     */
-    public static double[] phase(Complex[] array) {
-        double[] angles = new double[array.length];
-        for (int i = array.length-1; i >= 0; i--) {
-            angles[i] = array[i].angle();
-        }
-        return angles;
-    }
-
     /** Given an array of pole locations, an array of zero locations, and a
      *  gain term, return frequency response specified by these.
      *  This is calculated by walking around the unit circle and forming
      *  the product of the distances to the zeros, dividing by the product
      *  of the distances to the poles, and multiplying by the gain.
-     *  The length of the returned array is (int)2*PI/step.
+     *  The length of the returned array is <i>numsteps</i>.
      *
      *  @param poles An array of pole locations.
      *  @param zeros An array of zero locations.
      *  @param gain A complex gain.
-     *  @param step The resolution of the returned frequency response,
-     *   in radians.
+     *  @param numsteps The number of samples in the returned frequency response.
      */
     public static Complex[] poleZeroToFreq(Complex[] poles, Complex[] zeros,
-            Complex gain, double step){
-        Complex[] freq = new Complex[(int)(2*Math.PI/step)];
+            Complex gain, int numsteps){
+        double step = 2*Math.PI/numsteps;
+        Complex[] freq = new Complex[numsteps];
 
         double angle = -Math.PI;
         for (int index = 0; index < freq.length; index++){
@@ -446,6 +433,9 @@ public final class SignalProcessing {
 
     /** Return the next power of two larger than the argument.
      *  @param x A positive real number.
+     *  @exception IllegalArgumentException If the argument is less than
+     *   or equal to zero. This is a runtime exception, so it need not be
+     *   declared by the caller.
      */
     public static int powerOfTwo(double x) {
         if (x <= 0.0) {
@@ -458,20 +448,20 @@ public final class SignalProcessing {
     }
 
     /** Return a sample of a raised cosine pulse, or if the third
-     *  argument is zero, a sin(x)/x function.  The first argument <em>t</em> is
-     *  the time of the sample (the pulse is centered at zero). The second
+     *  argument is zero, a sin(x)/x function.  The argument <em>t</em> is
+     *  the time of the sample (the pulse is centered at zero). The
      *  argument <em>T</em> is the time of the first zero crossing.
      *  This would be the symbol interval in a communications application
-     *  of this pulse. The third argument <em>excess</em> is the excess
+     *  of this pulse. The argument <em>excess</em> is the excess
      *  bandwidth, which is normally in the range of 0.0 to 1.0, corresponding
      *  to 0% to 100% excess bandwidth.
      *  <p>
      *  The function that is computed is:
      *  <p>
      *  <pre>
-     *         sin(pi t/T)   cos(excess pi t/T)
+     *         sin(PI t/T)   cos(excess PI t/T)
      *  h(n) = ----------- * -----------------
-     *          pi t/T      1-(2 excess t/T)<sup>2</sup>
+     *          PI t/T      1-(2 excess t/T)<sup>2</sup>
      *  </pre>
      *  <p>
      *  This is called a "raised cosine pulse" because in the frequency
@@ -479,9 +469,9 @@ public final class SignalProcessing {
      *  <p>
      *  This implementation is ported from the Ptolemy 0.x implementation
      *  by Joe Buck, Brian Evans, and Edward A. Lee.
-     *  Reference: E. A. Lee and D. G. Messerschmitt,
+     *  Reference: <a href=http://www.amazon.com/exec/obidos/ASIN/0792393910/qid%3D910596335/002-4907626-8092437>E. A. Lee and D. G. Messerschmitt,
      *  <i>Digital Communication, Second Edition</i>,
-     *  Kluwer Academic Publishers, Boston, 1994.
+     *  Kluwer Academic Publishers, Boston, 1994.</a>
      *
      *  @param t The sample time.
      *  @param T The time of the first zero crossing.
@@ -588,9 +578,9 @@ public final class SignalProcessing {
      *  The function computed is:
      *  <p>
      *  <pre>
-     *         4 x(cos((1+x)pi t/T) + T sin((1-x)pi t/T)/(4n x/T))
+     *         4 x(cos((1+x)PI t/T) + T sin((1-x)PI t/T)/(4n x/T))
      *  h(n) = ---------------------------------------------------
-     *                       pi sqrt(T)(1-(4 x t/T)<sup>2</sup>)
+     *                       PI sqrt(T)(1-(4 x t/T)<sup>2</sup>)
      *  </pre>
      *  <p>
      *  where <i>x</i> is the the excess bandwidth.
@@ -688,10 +678,10 @@ public final class SignalProcessing {
 
     /** Modify the specified array to unwrap the angles.
      *  That is, if the difference between successive values is greater than
-     *  <em>pi</em> in magnitude, then the second value is modified by
-     *  multiples of 2<em>pi</em> until the difference is less than <em>pi</em>.
+     *  <em>PI</em> in magnitude, then the second value is modified by
+     *  multiples of 2<em>PI</em> until the difference is less than <em>PI</em>.
      *  In addition, the first element is modified so that its difference from
-     *  zero is less than <em>pi</em> in magnitude.  This method is used
+     *  zero is less than <em>PI</em> in magnitude.  This method is used
      *  for generating more meaningful phase plots.
      */
     public void unwrap(double[] angles) {
@@ -710,10 +700,10 @@ public final class SignalProcessing {
     /////////////////////////////////////////////////////////////////////////
     ////                         public variables                        ////
 
-    /** A small number, used by algorithms to detect whether a double is close
-     *  to zero.
+    /** A small number. This number is used by algorithms to
+     *  detect whether a double is close to zero.
      */
-    public static final double EPSILON = 1.0e-9;
+    public static double epsilon = 1.0e-9;
 
     /////////////////////////////////////////////////////////////////////////
     ////                         private methods                         ////
@@ -756,32 +746,35 @@ public final class SignalProcessing {
         double[] twReals = (double[])_twiddleReals.elementAt(order-1);
         double[] twImags;
         if (twReals == null) {
-            // Need to compute the twiddle factors.
-            // First, allocate the memory.
-            int le = size/2;
-            twReals = new double[le];
-            twImags = new double[le];
-            _twiddleReals.setElementAt(twReals, order-1);
-            _twiddleImags.setElementAt(twImags, order-1);
+            // FIXME: How to synchronize this??
+            // synchronized(this) {
+                // Need to compute the twiddle factors.
+                // First, allocate the memory.
+                int le = size/2;
+                twReals = new double[le];
+                twImags = new double[le];
+                _twiddleReals.setElementAt(twReals, order-1);
+                _twiddleImags.setElementAt(twImags, order-1);
 
-            // Next, the angle increment.
-            double arg = 2.0*Math.PI/size;
-            // Then the corresponding vector
-            double rotationReal = Math.cos(arg);
-            double rotationImag = Math.sin(arg);
-            // Then the starting twiddle factor
-            double wrecurReal = rotationReal;
-            double wrecurImag = rotationImag;
-            int index;
-            for (index = 0; index < le - 1; index++) {
+                // Next, the angle increment.
+                double arg = 2.0*Math.PI/size;
+                // Then the corresponding vector
+                double rotationReal = Math.cos(arg);
+                double rotationImag = Math.sin(arg);
+                // Then the starting twiddle factor
+                double wrecurReal = rotationReal;
+                double wrecurImag = rotationImag;
+                int index;
+                for (index = 0; index < le - 1; index++) {
+                    twReals[index] = wrecurReal;
+                    twImags[index] = wrecurImag;
+                    double temp = wrecurReal*rotationReal - wrecurImag*rotationImag;
+                    wrecurImag = wrecurReal*rotationImag + wrecurImag*rotationReal;
+                    wrecurReal = temp;
+                }
                 twReals[index] = wrecurReal;
                 twImags[index] = wrecurImag;
-                double temp = wrecurReal*rotationReal - wrecurImag*rotationImag;
-                wrecurImag = wrecurReal*rotationImag + wrecurImag*rotationReal;
-                wrecurReal = temp;
-            }
-            twReals[index] = wrecurReal;
-            twImags[index] = wrecurImag;
+            // }
         } else {
             twImags = (double[])_twiddleImags.elementAt(order-1);
         }
