@@ -53,8 +53,8 @@ PTPACKAGE = 	cal
 # Keep this list alphabetized.
 JSRCS =
 
-OTHER_FILES_TO_BE_JARED =
-
+OTHER_FILES_TO_BE_JARED = \
+	saxon-copyright.htm
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
