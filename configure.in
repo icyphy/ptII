@@ -1232,8 +1232,9 @@ else
 	       JMF_JARS="$JMF_JAR$CLASSPATHSEPARATOR$JMF_JARS_DIR/sound.jar"
 	    else 
        	       AC_MSG_WARN([Either we could not find 
-    javax.media.CaptureDeviceInfo or else it was already in the JRE:
-    $JMF_JAR
+    javax.media.CaptureDeviceInfo or else it was already in the JRE.
+    Searching for jmf.jar returned:
+      $JMF_JAR
     If the class cannot be found, then Eclipse might not be able to find
     the JMF files.  
     This is only a problem if you are using Eclipse.
