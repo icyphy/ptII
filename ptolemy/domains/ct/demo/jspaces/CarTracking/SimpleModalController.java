@@ -58,7 +58,7 @@ first car, and uses a PI controller to generate the force.
 In the erroneous mode, it uses a Bang-Bang control law.
 The Bang-Bang control is implemented by another two-mode hybrid system.
 In the "acceleration" mode, it outputs a constant maximum force.
-In the "decelaration" mode, it outputs 0.
+In the "deceleration" mode, it outputs 0.
 
 @author Jie Liu
 @version $Id$
