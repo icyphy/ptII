@@ -152,7 +152,10 @@ public class Graph implements Cloneable {
     ////                         public methods                    ////
 
     /** Add an analysis to the list of analyses that this graph is associated
-     *  with.
+     *  with. This method is called by {@link ptolemy.graph.analysis.Analysis}
+     *  when an analysis is created, and normally should not be called
+     *  elsewhere.
+     *
      *  @param analysis The analysis.
      *  @exception IllegalArgumentException If the graph associated with the
      *  analysis is not equal to this graph, or if the graph already contains
