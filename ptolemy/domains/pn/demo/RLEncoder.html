@@ -1,0 +1,83 @@
+<!-- $Id$-->
+<HTML>
+<HEAD>
+<TITLE>Process Networks Simulation Demo</TITLE>
+</HEAD>
+<BODY BGCOLOR="#FAF0E6">
+
+<CENTER>
+<H1>
+Demo of PN simulation applet</H1></CENTER>
+
+<H3>
+PN Simulation:</H3>
+The following applet uses the Ptolemy II Process Networks (PN) domain
+to simulate a simple run length encoder that performs the encoding on a 
+black and white image. 
+<CENTER>
+<IMG SRC="/users/mudit/_PTII/ptolemy/domains/pn/demo/ptII.gif"
+Alt="Image" >
+</CENTER>
+<P>
+This demo reads an image in the portable-bitmap (pbm) format and converts it
+into a integer matrix. This matrix is then converted into a single stream of 
+integers. Runlength encoding is performed on this stream of integers. After 
+compression, the stream is then uncompressed into a single stream of integers
+which is then converted into a matrix and then an image. Both the input and
+the output images are displayed on the screen. <p>
+
+For the purpose of this demo, the scheme choosen for the runlength encoding is
+quite simple. Since the input is a black and white image, it is treated as 
+a binary matrix with every pixel represented as a bit (1 for black and 0 for 
+white, as in the pbm format). The matrix once converted into a stream is then
+treated as a stream of bits. The runlength encoder counts the number of times
+the same bit appears in the stream. It uses 1 byte to indicate the value of 
+the bit and the number of times the bit occured continuously (upto a count of 
+128). If the bit occured more than 128 times, then a new byte is used to 
+indicate the value and the count for the rest of the stream. The decoder does 
+the exact opposite and generates a stream of bits corresponding to the input
+byte stream. <p>
+
+Both the input and the output images are displayed on the screen. <P>
+
+<P>
+<BR>&nbsp;
+<BR>&nbsp;
+<CENTER>
+<P><APPLET name="RunLengthEncodingApplet"
+   bgcolor=#FAF0E6
+   archive="ptolemy/domains/pn/demo/RLEncodingApplet.jar"
+   code=ptolemy.domains.pn.demo.RLEncodingApplet.class
+   codebase=../../../..
+   width=700 height=500>
+<param name="background" value="#faf0e6">
+<BR>
+<BR></APPLET></CENTER>
+
+<P>This applet is implemented by
+<TT><A HREF="RLEncodingApplet.java">RLEncodingApplet.java</A></TT>.
+<P>The simulation consists of a <A HREF="../lib/PNImageSoure.java">PNImageSource</A>
+Actor, a
+<A HREF="../lib/MatrixUnpacker.java">MatrixUnpacker</A> Actor,
+<A HREF="../lib/RLEncoder.java">RLEncoder</A> Actor,
+<A HREF="../lib/RLDecoder.java">RLDecoder</A> Actor,
+<A HREF="../lib/MatrixPacker.java">MatrixPacker</A> Actor,
+<A HREF="../lib/ImageSink.java">PNImageSink</A> Actor and two
+<A HREF="../lib/ImageDisplay.java">ImageDisplay</A>
+Actors.
+<BR>
+
+<CENTER>
+<IMG SRC="RLEncoding.gif"
+Alt="Image" >
+</CENTER>
+<BR>
+<HR>Copyright &copy; 1998 The Regents of the University of California.
+All rights reserved.
+<BR>Last updated: $Date$, comments to:&nbsp;<author>ptII@eecs.berkeley.edu</author>
+</BODY>
+</HTML>
+
+
+
+
