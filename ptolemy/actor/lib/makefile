@@ -83,6 +83,7 @@ JSRCS = \
 	Gaussian.java \
 	IIR.java \
 	Interpolator.java \
+	Lattice.java \
 	LevinsonDurbin.java \
 	MathFunction.java \
 	MaxIndex.java \
@@ -100,6 +101,7 @@ JSRCS = \
 	RecordAssembler.java \
 	RecordDisassembler.java \
 	Recorder.java \
+	RecursiveLattice.java \
 	Remainder.java \
 	Scale.java \
 	Select.java \
