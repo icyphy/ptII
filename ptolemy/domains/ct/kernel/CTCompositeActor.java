@@ -58,7 +58,7 @@ import ptolemy.kernel.util.Workspace;
    a modal model, then by default, refinements of the modes are actors
    like this one that implement the CTStepSizeControlActor interface.
 
-   @author  Jie Liu
+   @author  Jie Liu, Haiyang Zheng
    @version $Id$
    @since Ptolemy II 0.2
    @Pt.ProposedRating Yellow (liuj)
@@ -67,7 +67,8 @@ import ptolemy.kernel.util.Workspace;
    @see CTTransparentDirector
 */
 public class CTCompositeActor extends TypedCompositeActor
-    implements CTEventGenerator, CTStepSizeControlActor {
+    implements CTEventGenerator, CTStatefulActor, 
+    CTStepSizeControlActor, CTWaveformGenerator, CTDynamicActor {
 
     /** Construct a CTCompositeActor in the default workspace with no container
      *  and an empty string as its name. Add the actor to the workspace
@@ -150,11 +151,7 @@ public class CTCompositeActor extends TypedCompositeActor
      *  @return True if this step is accurate.
      */
     public boolean isThisStepAccurate() {
-        Director dir = getDirector();
-        if ((dir != null) && (dir instanceof CTTransparentDirector)) {
-            return ((CTTransparentDirector)dir).isThisStepAccurate();
-        }
-        return true;
+        return isStateAccurate() && isOutputAccurate();
     }
 
     /** This method is delegated to the local director if the local
@@ -182,6 +179,61 @@ public class CTCompositeActor extends TypedCompositeActor
         }
         return ((CTDirector)getExecutiveDirector()).getCurrentStepSize();
     }
+
+    /** Implementations of this method should go to the marked state.
+     *  If there's no marked state, throws
+     *  an exception.
+     *  @exception IllegalActionException If there were no marked state.
+     */
+    public void goToMarkedState() throws IllegalActionException {
+        Director dir = getDirector();
+        if ((dir != null) && (dir instanceof CTTransparentDirector)) {
+            ((CTTransparentDirector)dir).goToMarkedState();
+        }
+    }
+
+    /** Implementations of this method should mark the current state
+     *  of the actor.
+     */
+    public void markState() {
+        Director dir = getDirector();
+        if ((dir != null) && (dir instanceof CTTransparentDirector)) {
+            ((CTTransparentDirector)dir).markState();
+        }
+    }
+
+    /* (non-Javadoc)
+     * @see ptolemy.domains.ct.kernel.CTDynamicActor#emitTentativeOutputs()
+     */
+    public void emitTentativeOutputs() throws IllegalActionException {
+        Director dir = getDirector();
+        if ((dir != null) && (dir instanceof CTTransparentDirector)) {
+            ((CTTransparentDirector)dir).emitTentativeOutputs();
+        }
+    }
+
+    /* (non-Javadoc)
+     * @see ptolemy.domains.ct.kernel.CTStepSizeControlActor#isStateAccurate()
+     */
+    public boolean isStateAccurate() {
+        Director dir = getDirector();
+        if ((dir != null) && (dir instanceof CTTransparentDirector)) {
+            return ((CTTransparentDirector)dir).isStateAccurate();
+        }
+        return true;
+    }
+
+    /* (non-Javadoc)
+     * @see ptolemy.domains.ct.kernel.CTStepSizeControlActor#isOutputAccurate()
+     */
+    public boolean isOutputAccurate() {
+        Director dir = getDirector();
+        if ((dir != null) && (dir instanceof CTTransparentDirector)) {
+            return ((CTTransparentDirector)dir).isOutputAccurate();
+        }
+        return true;
+    }
+
 
     /** Create a new IOPort with the specified name. This port is
      *  created with a parameter <i>signalType</i> with default value

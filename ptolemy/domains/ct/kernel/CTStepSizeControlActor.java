@@ -92,6 +92,9 @@ public interface CTStepSizeControlActor extends Actor{
      */
     public boolean isThisStepAccurate();
 
+    public boolean isStateAccurate();
+    public boolean isOutputAccurate();
+
     /** Implementations of this method should return
      *  the predicted next step size. If the current integration
      *  step is accurate, the actor will be asked for the prediction

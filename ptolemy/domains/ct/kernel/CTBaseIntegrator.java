@@ -312,22 +312,7 @@ public class CTBaseIntegrator extends TypedAtomicActor
      *  @return True if the last integration step is accurate.
      */
     public boolean isThisStepAccurate() {
-        try {
-            // We check the validity of the input
-            // If it is NaN, or Infinity, an exception is thrown.
-            double f_dot = ((DoubleToken)input.get(0)).doubleValue();
-            if (Double.isNaN(f_dot) || Double.isInfinite(f_dot)) {
-                throw new InternalErrorException("The input of " +
-                        getName() + " is not valid because" +
-                        " it is a result of divide-by-zero.");
-            }
-        } catch (IllegalActionException e) {
-            throw new InternalErrorException(getName() +
-                    " can't read input." + e.getMessage());
-        }
-        ODESolver solver = ((CTDirector)getDirector()).getCurrentODESolver();
-        _successful = solver.integratorIsAccurate(this);
-        return _successful;
+        return isStateAccurate() && isOutputAccurate();
     }
 
     /** Mark and remember the current state. This remembered state can be
@@ -739,5 +724,34 @@ public class CTBaseIntegrator extends TypedAtomicActor
 
         // The data as a form of a double array of two elements
         private double[] _data = new double[2];
+    }
+
+    /* (non-Javadoc)
+     * @see ptolemy.domains.ct.kernel.CTStepSizeControlActor#isStateAccurate()
+     */
+    public boolean isStateAccurate() {
+        try {
+            // We check the validity of the input
+            // If it is NaN, or Infinity, an exception is thrown.
+            double f_dot = ((DoubleToken)input.get(0)).doubleValue();
+            if (Double.isNaN(f_dot) || Double.isInfinite(f_dot)) {
+                throw new InternalErrorException("The input of " +
+                        getName() + " is not valid because" +
+                        " it is a result of divide-by-zero.");
+            }
+        } catch (IllegalActionException e) {
+            throw new InternalErrorException(getName() +
+                    " can't read input." + e.getMessage());
+        }
+        ODESolver solver = ((CTDirector)getDirector()).getCurrentODESolver();
+        _successful = solver.integratorIsAccurate(this);
+        return _successful;
+    }
+
+    /* (non-Javadoc)
+     * @see ptolemy.domains.ct.kernel.CTStepSizeControlActor#isOutputAccurate()
+     */
+    public boolean isOutputAccurate() {
+        return true;
     }
 }
