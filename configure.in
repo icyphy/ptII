@@ -651,7 +651,7 @@ if test ! -d "$CAL_USER_DIR"; then
     so we need not find the Cal, the actor language.])
 else
     AC_MSG_CHECKING([for Cal, the actor language])
-    AC_ARG_WITH(CALTROP_DIR, [  --with-cal=DIR       use ptCal.jar from DIR,
+    AC_ARG_WITH(cal, [  --with-cal=DIR       use ptCal.jar from DIR,
                           defaults to \$PTII/lib],
 	CALTROP_DIR=$withval,
 	CALTROP_DIR=$PTII/lib)
@@ -728,7 +728,7 @@ if test ! -d "$CHIC_USER_DIR"; then
     behavioral compatibility checking of software and hardware components.]) 
 else
     AC_MSG_CHECKING([for Chic, the model checker])
-    AC_ARG_WITH(CHIC_DIR, [  --with-chic=DIR       use chic.jar from DIR,
+    AC_ARG_WITH(chic, [  --with-chic=DIR       use chic.jar from DIR,
                           defaults to \$PTII/lib],
 	CHIC_DIR=$withval,
 	CHIC_DIR=$PTII/lib)
@@ -780,7 +780,7 @@ if test ! -d "$COLT_USER_DIR"; then
     Computing in Java.])
 else
     AC_MSG_CHECKING([for Colt, the scientific computing lib])
-    AC_ARG_WITH(COLT_DIR, [  --with-colt=DIR       use colt.jar from DIR,
+    AC_ARG_WITH(colt, [  --with-colt=DIR       use colt.jar from DIR,
                           defaults to \$PTII/vendors/misc/colt],
 	COLT_DIR=$withval,
 	COLT_DIR=$PTII/vendors/misc/colt)
@@ -837,7 +837,7 @@ if test ! -d "$COMMAPI_USER_DIR"; then
     COMMAPI_DIR='${PTII}/vendors/sun/commapi'
 else
     AC_MSG_CHECKING([for commapi directory])
-    AC_ARG_WITH(COMMAPI, [  --with-commapi=DIR       use Java commapi from DIR,
+    AC_ARG_WITH(commapi, [  --with-commapi=DIR       use Java commapi from DIR,
                           defaults to \$PTII/vendors/sun/commapi],
 	COMMAPI_DIR=$withval,
 	COMMAPI_DIR=$PTII/vendors/sun/commapi)
@@ -927,7 +927,7 @@ if test ! -d "$DOCLETS_USER_DIR"; then
     TOOLS_JAR='${PTJAVA_HOME}/../lib/tools.jar'
 else
     AC_MSG_CHECKING([for tools.jar directory])
-    AC_ARG_WITH(DOCLETS, [  --with-tools_jar=DIR    use tools.jar from DIR,
+    AC_ARG_WITH(tools_jar, [  --with-tools_jar=DIR    use tools.jar from DIR,
                           defaults to \$PTJAVA_HOME/../lib/tools.jar],
 	TOOLS_JAR=$withval,
 	TOOLS_JAR=${PTJAVA_HOME}/../lib/tools.jar)
@@ -956,9 +956,9 @@ fi
 #       We use Eclipse for parsing java backtracking.
 #       Eclipse is an integrated development environment, see
 #	http://www.eclipse.org
-#       See if there was a command-line option for where JRefactory interface
+#       See if there was a command-line option for where Eclipse can be found
 #       is
-#       If not, look for for $PTII/lib/jrefactory
+#       If not, look for for $PTII/vendors/eclipse
 #--------------------------------------------------------------------
 
 # PTBACKTRACK_DIR is set to backtrack and used in
@@ -974,8 +974,8 @@ if test ! -d "$PTII/ptolemy/backtrack"; then
     so we need not find Eclipse.])
 else
     AC_MSG_CHECKING([for Eclipse installation])
-    AC_ARG_WITH(jrefactory_jar, [  --with-eclipse=ECLIPSE_DIR     use Eclipse from ECLIPSE_DIR,
-                          defaults to \$PTII/lib/jrefactory.jar],
+    AC_ARG_WITH(eclipse, [  --with-eclipse=ECLIPSE_DIR     use Eclipse from ECLIPSE_DIR,
+                          defaults to c:/Program Files/Eclipse],
 	ECLIPSE_DIR=$withval,
 	ECLIPSE_DIR=c:/Program\ Files/Eclipse)
 
@@ -1010,7 +1010,7 @@ else
 	if test ! -z "$eclipsejarpath"; then 
 	    AC_MSG_RESULT([ok])
 	    # Set to backtrack and used in
-	    # $PTII/ptolemy/make if jrefactory.jar was found
+	    # $PTII/ptolemy/make if Eclipse jar files were found
 	    PTBACKTRACK_DIR=backtrack
    	    # PTBACKTRACK_PACKAGES is used in ptII/doc/makefile
 	    PTBACKTRACK_PACKAGES=ptolemy.backtrack.ast
@@ -1088,7 +1088,7 @@ else
        fi
     fi
    AC_MSG_CHECKING([for gc.h])
-   AC_ARG_WITH(gc_include_dir, [  --with-gc-include=DIR       use gc.h from DIR
+   AC_ARG_WITH(gc-include, [  --with-gc-include=DIR       use gc.h from DIR
                           defaults to \$PTII/vendors/gc/gc/include],
 	GC_INCLUDE_DIR=$withval,
 	GC_INCLUDE_DIR=$PTII/vendors/gc/gc/include)
@@ -1320,7 +1320,7 @@ if test ! -d "$PTII/ptolemy/copernicus/jhdl"; then
     JHDL_JAR='${PTII}/vendors/jhdl/ptjhdllib/JHDL.jar'
 else
     AC_MSG_CHECKING([for jhdl jar file])
-    AC_ARG_WITH(jhdl_jar, [  --with-jhdl-jar=JARFILE       use JHDL from JARFILE,
+    AC_ARG_WITH(jhdl-jar, [  --with-jhdl-jar=JARFILE       use JHDL from JARFILE,
                           defaults to \$PTII/vendors/jhdl/ptjhdllib/JHDL.jar],
 	JHDL_JAR=$withval,
 	JHDL_JAR=$PTII/vendors/jhdl/ptjhdllib/JHDL.jar)
@@ -1459,7 +1459,7 @@ if test ! -d "$PTII/ptolemy/actor/lib/joystick"; then
     so we need not find the Joystick interface.])
 else
     AC_MSG_CHECKING([for joystick jar file])
-    AC_ARG_WITH(joystick_jar, [  --with-joystick-jar=JARFILE       use JOYSTICK from JARFILE,
+    AC_ARG_WITH(joystick-jar, [  --with-joystick-jar=JARFILE       use JOYSTICK from JARFILE,
                           defaults to \$PTII/vendors/misc/joystick/Joystick.jar],
 	JOYSTICK_JAR=$withval,
 	JOYSTICK_JAR=$PTII/vendors/misc/joystick/Joystick.jar)
@@ -1514,7 +1514,7 @@ if test ! -d "$JYTHON_USER_DIR"; then
     so we need not find the Jython, the java implementation of Python.])
 else
     AC_MSG_CHECKING([for Jython, the Java implementation of Jython])
-    AC_ARG_WITH(jython_dir, [  --with-jython=DIR       use jython.jar from DIR,
+    AC_ARG_WITH(jython, [  --with-jython=DIR       use jython.jar from DIR,
                           defaults to \$PTII/vendors/jython],
 	JYTHON_DIR=$withval,
 	JYTHON_DIR=$PTII/lib)
@@ -1578,7 +1578,7 @@ if test ! -d "$JXTA_USER_DIR"; then
     so we need not find JXTA.])
 else
     AC_MSG_CHECKING([for jxta directory that contains jxta.jar])
-    AC_ARG_WITH(jxta_dir, [  --with-jxta=DIR       use jxta.jar from DIR,
+    AC_ARG_WITH(jxta, [  --with-jxta=DIR       use jxta.jar from DIR,
                           defaults to \$PTII/vendors/sun/jxta],
 	JXTA_DIR=$withval,
 	JXTA_DIR=$PTII/vendors/sun/jxta)
@@ -1639,7 +1639,7 @@ else
         AC_MSG_WARN([Lejos requires commapi, which was not found.])
     else 
 	AC_MSG_CHECKING([for lejos directory])
-	AC_ARG_WITH(LEJOS, [  --with-lejos=DIR       use Java lejos from DIR,
+	AC_ARG_WITH(lejos, [  --with-lejos=DIR       use Java lejos from DIR,
                           defaults to \$PTII/vendors/lejos/lejosBeta3],
 		LEJOS_DIR=$withval,
 		LEJOS_DIR=$PTII/vendors/lejos/lejosBeta3)
@@ -2274,7 +2274,7 @@ if test ! -d "$PSDF_USER_DIR"; then
     so we need not find the mapss.jar.])
 else
     AC_MSG_CHECKING([for mapss.jar, used by the PSDF domain])
-    AC_ARG_WITH(PSDF_DIR, [  --with-mapss=DIR       use mapss.jar from DIR,
+    AC_ARG_WITH(mapss, [  --with-mapss=DIR       use mapss.jar from DIR,
                           defaults to \$PTII/lib],
 	PSDF_DIR=$withval,
 	PSDF_DIR=$PTII/lib)
