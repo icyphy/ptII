@@ -47,6 +47,7 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
+import ptolemy.data.UnsignedByteToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
@@ -146,11 +147,11 @@ public class SerialComm extends TypedAtomicActor
 
         dataToSend = new TypedIOPort(this, "dataToSend");
         dataToSend.setInput(true);
-        dataToSend.setTypeEquals(new ArrayType(BaseType.INT));
+        dataToSend.setTypeEquals(new ArrayType(BaseType.UNSIGNED_BYTE));
 
         dataReceived = new TypedIOPort(this, "dataReceived");
         dataReceived.setOutput(true);
-        dataReceived.setTypeEquals(new ArrayType(BaseType.INT));
+        dataReceived.setTypeEquals(new ArrayType(BaseType.UNSIGNED_BYTE));
 
         serialPortName = new Parameter(this, "serialPortName",
                 new StringToken("<UNKNOWN>"));
@@ -313,20 +314,20 @@ public class SerialComm extends TypedAtomicActor
 		}
                 byte[] dataBytes = new byte[bytesAvailable];
                 in.read(dataBytes, 0, bytesAvailable);
-                Token[] dataIntTokens = new Token[bytesAvailable];
+                Token[] dataTokens = new Token[bytesAvailable];
                 for (int j = 0; j < bytesAvailable; j++) {
-                    dataIntTokens[j] = new IntToken(dataBytes[j]);
+                    dataTokens[j] = new UnsignedByteToken(dataBytes[j]);
                 }
-                dataReceived.broadcast(new ArrayToken(dataIntTokens));
+                dataReceived.broadcast(new ArrayToken(dataTokens));
             }
 
             if (dataToSend.getWidth() > 0 && dataToSend.hasToken(0)) {
-                ArrayToken dataIntArrayToken = (ArrayToken) dataToSend.get(0);
+                ArrayToken dataArrayToken = (ArrayToken) dataToSend.get(0);
                 OutputStream out = _serialPort.getOutputStream();
-                for (int j = 0; j < dataIntArrayToken.length(); j++) {
-                    IntToken dataIntOneToken =
-                            (IntToken)dataIntArrayToken.getElement(j);
-                    out.write((byte)dataIntOneToken.intValue());
+                for (int j = 0; j < dataArrayToken.length(); j++) {
+                    UnsignedByteToken dataToken =
+                            (UnsignedByteToken)dataArrayToken.getElement(j);
+                    out.write(dataToken.byteValue());
                 }
                 out.flush();
             }
