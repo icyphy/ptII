@@ -12,67 +12,10 @@ that was first developed Jeff Tsay as part of his Masters project.
 (Jeff Tsay, "<a href="http://ptolemy.eecs.berkeley.edu/publications/papers/00/codegen/" target="_top">A Code Generation Framework for Ptolemy II</a>," ERL Technical Report UCB/ERL No. M00/25, Dept. EECS, University of California, Berkeley, CA  94720, May 19, 2000.)
 Christopher Hylands then further polished Jeff's work.
 
-<p>The codegen facility is not complete, but it is possible
+<p>The code generation facility is not complete, but it is possible
 to generate Java code for SDF systems and run it.
 See the <a href="kvm.htm">Ptolemy II kvm</a> page for information
 about running Ptolemy II code generation systems under the PalmOS.
-
-
-<h2>Initial Setup</h2
-Currently, the following steps are necessary to get codegen running.
-We hope to modify the codegen facility so that these steps are not necessary.
-
-<h3>Skeleton Files</h3>
-Currently, codegen uses skeleton files that include the type
-signature of the Java methods and fields.  The skeleton filenames
-end in <code>.jskel</code>, and can be thought of as a cache of the type signature of the methods and fields for a particular class.
-<p>Skeleton files are used for with the Java runtime and within Ptolemy II.
-
-<h4>Ptolemy II Skeleton Files</h4>
-To generate Ptolemy II skeleton files:
-<pre>
-   cd ptolemy/lang/java
-   make skeleton
-</pre>
-Note that we <b>don't</b> want to run Skeleton in any directory that contain
-actors, like actor/lib or domains/sdf/lib because the code generator
-needs to transform the code contained in actors.
-
-<p>If jskel files are present in actor.lib, then you will end up
-with the intialize() and fire() methods being declared native, which
-will result in errors like:
-<pre>
-cxh@maury 15% java -classpath ../.. cg.orthocom.CG_Main
-Exception in thread "main" java.lang.UnsatisfiedLinkError: initialize
-at cg.orthocom.CG_Main.main(CG_Main.java, Compiled Code)
-</pre>
-<h4>Java Runtime Skeleton Files</h4>
-The codegen facility also needs to read in skeleton files for
-the java.lang and sun packages that are included with the Java runtime.
-Unfortunately, we cannot redistribute these files.  Eventually, we
-hope to use reflection to make these files unnecessary.
-
-<p>Local users can download and install the Java Runtime skeleton files
-with:
-<pre>
-scp carson://users/ptII/vendors/sun/src/javasrc_2.zip
-</pre>
-and then unzip the file in <code>$PTII/vendors/sun/src</code>
-
-<p>Users without local access will need to generate skeleton files
-for all the classes in the java and sun packages. 
-<pre>
-cd $PTII/ptolemy/lang/java
-make javasrc_skeletons
-</pre>
-<b>FIXME:</b>Unfortunately, the above steps are not quite sufficient,
-since the <code>src.jar</code> file that is shipped with jdk1.3
-does not include some of the necessary sun.* packages.
-Probably the thing to do is to get the complete sources from
-sun, or fix the reflections problems.
-
-<h3>Debugging skeleton issues</h3>
-To debug skeleton problems, edit <CODE>$PTII/ptolemy/lang/ApplicationUtility.java</CODE> and set <CODE>enableTrace</CODE> to <CODE>true</CODE>.
 
 <h2>Demonstrations</h2>
 <h3>Print out the AST</h3>
@@ -150,8 +93,8 @@ java -classpath ../.. cg.orthocom.CG_Main
 </pre>
 
 
-<h2>How Codegen Works</h2>
-Codegen parses a Java file that contains a Ptolemy II system and
+<h2>How Code Generation Works</h2>
+Code Generation parses a Java file that contains a Ptolemy II system and
 then generates Java code in a separate directory.
 <h3>Packages and directories</h3>
 <dl>
