@@ -234,6 +234,15 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
 
             // Collect and solve type constraints.
             List constraintList = topLevel.typeConstraintList();
+            
+            // NOTE: To view all type constraints, uncomment these.
+            /*
+            Iterator constraintsIterator = constraintList.iterator();
+            while(constraintsIterator.hasNext()) {
+                System.out.println(constraintsIterator.next().toString());
+            }
+            */
+            
             if (constraintList.size() > 0) {
                 InequalitySolver solver = new InequalitySolver(
                         TypeLattice.lattice());
