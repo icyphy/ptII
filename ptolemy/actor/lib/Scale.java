@@ -38,6 +38,7 @@ import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
+import ptolemy.data.type.MonotonicFunction;
 import ptolemy.data.type.Type;
 import ptolemy.data.type.TypeLattice;
 import ptolemy.graph.CPO;
@@ -203,7 +204,7 @@ public class Scale extends Transformer {
     // function value is also an array. The element type of the function value
     // array is the result of a recursive call to this function. This allows
     // the port type to be an array or array, for example.
-    private class PortParameterFunction implements InequalityTerm {
+    private class PortParameterFunction extends MonotonicFunction {
 
         private PortParameterFunction(TypedIOPort port, Parameter param) {
             _port = port;
@@ -212,13 +213,6 @@ public class Scale extends Transformer {
 
         ///////////////////////////////////////////////////////////////
         ////                       public inner methods            ////
-
-        /** Return null.
-         *  @return null.
-         */
-        public Object getAssociatedObject() {
-            return null;
-        }
 
         /** Return the function result.
          *  @return A Type.
@@ -243,45 +237,6 @@ public class Scale extends Transformer {
                 return variable;
             }
             return (new InequalityTerm[0]);
-        }
-
-        /** Throw an Exception. This method cannot be called on a function
-         *  term.
-         *  @exception IllegalActionException Always thrown.
-         */
-        public void initialize(Object e)
-                throws IllegalActionException {
-            throw new IllegalActionException(getClass().getName()
-                    + ": Cannot initialize a function term.");
-        }
-
-        /** Return false.
-         *  @return false.
-         */
-        public boolean isSettable() {
-            return false;
-        }
-
-        /** Return true.
-         *  @return True.
-         */
-        public boolean isValueAcceptable() {
-            return true;
-        }
-
-        /** Throw an Exception. The value of a function term cannot be set.
-         *  @exception IllegalActionException Always thrown.
-         */
-        public void setValue(Object e) throws IllegalActionException {
-            throw new IllegalActionException(getClass().getName()
-                    + ": The type is not settable.");
-        }
-
-        /** Override the base class to give a description of this term.
-         *  @return A description of this term.
-         */
-        public String toString() {
-            return "(" + getClass().getName() + ", " + getValue() + ")";
         }
 
         ///////////////////////////////////////////////////////////////
