@@ -150,6 +150,7 @@ public class TriggeredClock extends TimedSource {
 
         //set the trigger port to be a multiport
         trigger.setMultiport(false);
+        trigger.setTypeEquals(BaseType.BOOLEAN);
 
         // Call this so that we don't have to copy its code here...
         attributeChanged(values);
