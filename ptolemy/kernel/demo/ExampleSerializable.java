@@ -81,7 +81,7 @@ public class ExampleSerializable {
                             filename + "\n"+
                             newdescription + "\n" +
                             "is NOT the same as the original:\n"+
-                                       olddescription);
+                            olddescription);
                     System.exit(1);
                 }
             } catch (IOException e) {
