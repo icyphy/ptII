@@ -51,6 +51,15 @@ TYZIP =		$(TYPACKAGE_DIR)/$(TYPACKAGE).zip
 JARFILE = 	$(TYPACKAGE).jar
 
 JSRCS = \
+	CTActor.java \
+	CTBaseIntegrator.java \
+	CTDirector.java \
+	CTErrorControlActor.java \
+	CTParameter.java \
+	CTReceiver.java \
+	CTScheduler.java \
+	CTSingleSolverDirector.java \
+	ODESolver.java
 
 EXTRA_SRCS =	$(JSRCS)
 
