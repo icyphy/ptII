@@ -107,7 +107,7 @@ to exit.
 can be used to display the file with applet <code>Plot</code> classes
 (Experimental).
 <p>
-<code>pxgraph</code> accepts a large number of commmand line options.
+<code>pxgraph</code> accepts a large number of command line options.
 A list of these options is given below.
 <p>
 
