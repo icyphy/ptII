@@ -27,7 +27,7 @@
 
 package pt.data;
 
-import pt.kernel.IllegalActionException;
+import pt.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
 //// BooleanToken

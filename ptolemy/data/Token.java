@@ -49,6 +49,8 @@ so the default implementation here triggers an exception.
 package pt.data;
 
 import pt.kernel.*;
+import pt.kernel.util.*;
+
 import java.util.Observable;
 
 public abstract class Token implements Cloneable {

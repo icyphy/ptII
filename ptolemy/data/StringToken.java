@@ -28,7 +28,8 @@
 package pt.data;
 
 import pt.kernel.*;
-import pt.graph.Cpo;
+import pt.kernel.util.IllegalActionException;
+import pt.graph.CPO;
 
 //////////////////////////////////////////////////////////////////////////
 //// StringToken
@@ -76,16 +77,16 @@ public class StringToken extends ObjectToken {
      *  lossless fashion.
      */
     public Token add(Token tok) throws IllegalActionException {
-        int typeInfo = TypeCpo.compare(this, tok);
+        int typeInfo = TypeCPO.compare(this, tok);
         try {
-            if (typeInfo == Cpo.STRICT_LESS) {
+            if (typeInfo == CPO.STRICT_LESS) {
                 StringToken tmp = this.convert(tok);
                 String result = _value + tmp.getValue();
                 return new StringToken(result);
             } else if (tok instanceof StringToken) {
                 String result = _value + ((StringToken)tok).getValue();
                 return new StringToken(result);
-            } else if (typeInfo == Cpo.STRICT_GREATER) {
+            } else if (typeInfo == CPO.STRICT_GREATER) {
                 return tok.addR(this); 
             } else {
                 throw new Exception();

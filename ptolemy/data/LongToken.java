@@ -27,8 +27,8 @@
 
 package pt.data;
 
-import pt.kernel.IllegalActionException;
-import pt.graph.Cpo;
+import pt.kernel.util.IllegalActionException;
+import pt.graph.CPO;
 
 //////////////////////////////////////////////////////////////////////////
 //// LongToken
@@ -65,14 +65,14 @@ public class LongToken extends ScalarToken {
      *   a lossless fashion.
      */
     public Token add(pt.data.Token tok) throws IllegalActionException {
-        long typeInfo = TypeCpo.compare(this, tok);
+        long typeInfo = TypeCPO.compare(this, tok);
         try {
-            if (typeInfo == Cpo.STRICT_GREATER) {
+            if (typeInfo == CPO.STRICT_GREATER) {
                 return tok.addR(this);
             } else if (tok instanceof LongToken) {
                 long result = _value + ((LongToken)tok).getValue();
                 return new LongToken(result);
-            } else if (typeInfo == Cpo.STRICT_LESS) {
+            } else if (typeInfo == CPO.STRICT_LESS) {
                 LongToken tmp = this.convert(tok);
                 long result = _value + tmp.getValue();
                 return new LongToken(result);
@@ -132,16 +132,16 @@ public class LongToken extends ScalarToken {
      *  not of a type that can be compared with this Tokens value.
      */
     public BooleanToken equality(Token tok) throws IllegalActionException {
-        long typeInfo = TypeCpo.compare(this, tok);
+        long typeInfo = TypeCPO.compare(this, tok);
         try {
-            if (typeInfo == Cpo.STRICT_GREATER) {
+            if (typeInfo == CPO.STRICT_GREATER) {
                 return tok.equality(this);
             } else if (tok instanceof LongToken) {
                 if ( _value == ((LongToken)tok).getValue()) {
                     return new BooleanToken(true);
                 }
                 return new BooleanToken(false);
-            } else if (typeInfo == Cpo.STRICT_LESS) {
+            } else if (typeInfo == CPO.STRICT_LESS) {
                 LongToken tmp = this.convert(tok);
                 if ( _value == tmp.getValue()) {
                     return new BooleanToken(true);
@@ -192,14 +192,14 @@ public class LongToken extends ScalarToken {
      *  not of a type that can be  used with modulo in a lossless fashion.
      */
     public Token modulo(Token tok) throws IllegalActionException {
-        long typeInfo = TypeCpo.compare(this, tok);
+        long typeInfo = TypeCPO.compare(this, tok);
         try {
-            if (typeInfo == Cpo.STRICT_GREATER) {
+            if (typeInfo == CPO.STRICT_GREATER) {
                 return tok.moduloR(this);
             } else if (tok instanceof LongToken) {
                 long result = _value % ((LongToken)tok).getValue();
                 return new LongToken(result);
-            } else if (typeInfo == Cpo.STRICT_LESS) {
+            } else if (typeInfo == CPO.STRICT_LESS) {
                 LongToken tmp = this.convert(tok);
                 long result = _value % tmp.getValue();
                 return new LongToken(result);
@@ -237,14 +237,14 @@ public class LongToken extends ScalarToken {
      *  a lossless fashion.
      */
     public Token multiply(Token tok) throws IllegalActionException {
-        long typeInfo = TypeCpo.compare(this, tok);
+        long typeInfo = TypeCPO.compare(this, tok);
         try {
-            if (typeInfo == Cpo.STRICT_GREATER) {
+            if (typeInfo == CPO.STRICT_GREATER) {
                 return tok.multiplyR(this);
             } else if (tok instanceof LongToken) {
                 long result = _value * ((LongToken)tok).getValue();
                 return new LongToken(result);
-            } else if (typeInfo == Cpo.STRICT_LESS){
+            } else if (typeInfo == CPO.STRICT_LESS){
                 LongToken tmp = this.convert(tok);
                 long result = _value * tmp.getValue();
                 return new LongToken(result);
@@ -301,14 +301,14 @@ public class LongToken extends ScalarToken {
      *   a lossless fashion.
      */
     public Token subtract(pt.data.Token tok) throws IllegalActionException {
-        long typeInfo = TypeCpo.compare(this, tok);
+        long typeInfo = TypeCPO.compare(this, tok);
         try {
-            if (typeInfo == Cpo.STRICT_GREATER) {
+            if (typeInfo == CPO.STRICT_GREATER) {
                 return tok.addR(this);
             } else if (tok instanceof LongToken) {
                 long result = _value -  ((LongToken)tok).getValue();
                 return new LongToken(result);
-            } else if (typeInfo == Cpo.STRICT_LESS){
+            } else if (typeInfo == CPO.STRICT_LESS){
                 LongToken tmp = this.convert(tok);
                 long result = _value - tmp.getValue();
                 return new LongToken(result);
