@@ -153,27 +153,27 @@
         </relation>
         <relation name="relation_x2" class="ptolemy.actor.TypedIORelation">
         </relation>
-        <relation name="_R4" class="ptolemy.actor.TypedIORelation">
+        <relation name="_R2" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation_u" class="ptolemy.actor.TypedIORelation">
         </relation>
-        <relation name="_R5" class="ptolemy.actor.TypedIORelation">
+        <relation name="_R3" class="ptolemy.actor.TypedIORelation">
         </relation>
         <link port="u" relation="relation_u"/>
-        <link port="y" relation="_R5"/>
+        <link port="y" relation="_R3"/>
         <link port="x1.input" relation="_R"/>
         <link port="x1.output" relation="relation_x1"/>
         <link port="x1_dot.output" relation="_R"/>
         <link port="x1_dot.x1" relation="relation_x1"/>
         <link port="x1_dot.x2" relation="relation_x2"/>
         <link port="x1_dot.u" relation="relation_u"/>
-        <link port="x2.input" relation="_R4"/>
+        <link port="x2.input" relation="_R2"/>
         <link port="x2.output" relation="relation_x2"/>
-        <link port="x2_dot.output" relation="_R4"/>
+        <link port="x2_dot.output" relation="_R2"/>
         <link port="x2_dot.x1" relation="relation_x1"/>
         <link port="x2_dot.x2" relation="relation_x2"/>
         <link port="x2_dot.u" relation="relation_u"/>
-        <link port="output_y.output" relation="_R5"/>
+        <link port="output_y.output" relation="_R3"/>
         <link port="output_y.x1" relation="relation_x1"/>
         <link port="output_y.x2" relation="relation_x2"/>
         <link port="output_y.u" relation="relation_u"/>
@@ -198,14 +198,12 @@
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0, 1.1886983, 1.3768637, 1.5537528, 1.7245374, 1.8926281, 2.0606199, 2.2312549, 2.4085155, 2.6005658, 2.7040121, 2.753334, 2.7774008, 2.7892869, 2.7951932, 2.7981372, 2.7996069, 2.8003412, 2.8010751}">
         </property>
-        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-6">
         </property>
-        <property name="title" class="ptolemy.kernel.util.StringAttribute">
-        </property>
-        <property name="_location" class="ptolemy.moml.Location" value="425.0, 137.0">
+        <property name="_location" class="ptolemy.moml.Location" value="385.0, 266.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -219,5 +217,5 @@
     <link port="DifferentialSystem0.u" relation="relation2"/>
     <link port="DifferentialSystem0.y" relation="relation"/>
     <link port="Clock1.output" relation="relation2"/>
-    <link port="Display.input" relation="relation"/>
+    <link port="Test.input" relation="relation"/>
 </entity>
