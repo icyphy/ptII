@@ -26,8 +26,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (cxh@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+@ProposedRating Green (cxh@eecs.berkeley.edu)
+@AcceptedRating Green (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.kernel.util;
@@ -37,11 +37,15 @@ package ptolemy.kernel.util;
 /**
 Thrown on an attempt to perform an action that would result in an
 inconsistent or contradictory data structure if it were allowed to
-complete. E.g., attempt to remove a port from an entity when the
-port does not belong to the entity. Another example would be an
-attempt to add an item with no name to a named list.
+complete. 
+<p>Examples include:
+<menu>
+<li> An attempt to remove a port from an entity when the
+port does not belong to the entity.
+<li> An attempt to add an item with no name to a named list.
+<menu>
 
-@author Edward A. Lee
+@author Edward A. Lee, Christopher Hylands
 @version $Id$
 */
 public class IllegalActionException extends KernelException {
@@ -83,7 +87,9 @@ public class IllegalActionException extends KernelException {
     }
 
     /** Construct an exception with a detail message that consists of
-     *  only the names of the object1 and object2 arguments.
+     *  only the names of the object1 and object2 arguments.  If one
+     *  or more of the parameters are null, then the message of the
+     *  exception is adjusted accordingly.
      *  @param object1 The first object.
      *  @param object2 The second object.
      */
@@ -92,7 +98,9 @@ public class IllegalActionException extends KernelException {
     }
 
     /** Construct an exception with a detail message that includes the
-     *  names of the object1 and object2 arguments.
+     *  names of the first two arguments plus the third argument
+     *  string.  If one or more of the parameters are null, then the
+     *  message of the exception is adjusted accordingly.
      *  @param object1 The first object.
      *  @param object2 The second object.
      *  @param detail The message.
@@ -102,8 +110,14 @@ public class IllegalActionException extends KernelException {
         this(object1, object2, null, detail);
     }
 
-    /** Construct an exception with a cause and a detail message that
-     *  includes the names of the object1 and object2 arguments.
+    /** Construct an exception with a detail message that includes the
+     *  names of the first two arguments plus the third argument
+     *  string.  If the cause argument is non-null, then the message
+     *  of this exception will include the message of the cause
+     *  argument.  The stack trace of the cause argument is used when
+     *  we print the stack trace of this exception.  If one or more of
+     *  the parameters are null, then the message of the exception is
+     *  adjusted accordingly.
      *
      *  @param object1 The first object.
      *  @param object2 The second object.

@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (cxh@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+@ProposedRating Green (cxh@eecs.berkeley.edu)
+@AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.kernel.util;
@@ -50,14 +50,14 @@ so occurrence is a bug.
 public class InvalidStateException extends KernelRuntimeException {
 
 
-    /** Constructs an Exception with only a detail message.
+    /** Construct an exception with only a detail message.
      *  @param detail The message.
      */
     public InvalidStateException(String detail) {
         this(null, null, null, detail);
     }
 
-    /** Constructs an Exception with a detail message that includes the
+    /** Construct an exception with a detail message that includes the
      *  name of the first argument, the cause and the third argument string.
      *  @param object The nameable object involved in the exception
      *  @param cause The cause of this exception.
@@ -68,7 +68,7 @@ public class InvalidStateException extends KernelRuntimeException {
         super(object, null, cause, detail);
     }
 
-    /** Constructs an Exception with a detail message that includes the
+    /** Construct an exception with a detail message that includes the
      *  name of the first argument and the second argument string.
      *  @param object The object.
      *  @param detail The message.
@@ -77,7 +77,7 @@ public class InvalidStateException extends KernelRuntimeException {
         this(object, null, null, detail);
     }
 
-    /** Constructs an Exception with a detail message that includes the
+    /** Construct an exception with a detail message that includes the
      *  names of the first two arguments plus the third argument string.
      *  @param object1 The first object.
      *  @param object2 The second object.
@@ -88,7 +88,7 @@ public class InvalidStateException extends KernelRuntimeException {
         this(object1, object2, null, detail);
     }
 
-    /** Constructs an Exception with a detail message that includes the
+    /** Construct an exception with a detail message that includes the
      *  names of the first two arguments plus the third argument string.
      *  @param object1 The first object.
      *  @param object2 The second object.
@@ -126,7 +126,7 @@ public class InvalidStateException extends KernelRuntimeException {
         while(objects.hasMoreElements()) {
             Object object = objects.nextElement();
             if (object instanceof Nameable) {
-                name = KernelException._getFullName((Nameable)object);
+                name = KernelException.getFullName((Nameable)object);
             } else {
                 name = "<Object of class " +
                     object.getClass().getName() + ">";
@@ -138,7 +138,7 @@ public class InvalidStateException extends KernelRuntimeException {
             // last element of the list.
             prefix = prefix.substring(0, prefix.length()-2);
         }
-        _setMessage(KernelException._generateMessage(prefix, cause, detail));
+        _setMessage(KernelException.generateMessage(prefix, cause, detail));
         _setCause(cause);
     }
 

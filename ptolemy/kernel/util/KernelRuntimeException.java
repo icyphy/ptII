@@ -65,13 +65,7 @@ the JDK1.4 implementation.
 @version $Id$ */
 public class KernelRuntimeException extends RuntimeException {
 
-    // NOTE: This class uses package friendly methods defined in
-    // KernelException because this class needs to extend
-    // java.lang.RuntimeException, so that methods that throw this
-    // exception and any derived exceptions need not declare that
-    // they throw this exception.
-
-    /** Constructs an Exception with a no specific detail message. */
+    /** Construct an exception with a no specific detail message. */
     public KernelRuntimeException() {
         // Note: this nullary exception is required.  If it is
         // not present, then the subclasses of this class will not
@@ -79,14 +73,14 @@ public class KernelRuntimeException extends RuntimeException {
         this(null, null, null, null);
     }
 
-    /** Constructs an Exception with only a detail message.
+    /** Construct an exception with only a detail message.
      *  @param detail The message.
      */
     public KernelRuntimeException(String detail) {
         this(null, null, null, detail);
     }
 
-    /** Constructs an Exception with a cause and a detail message.
+    /** Construct an exception with a cause and a detail message.
      *  @param cause The cause of this exception.
      *  @param detail The message.
      */
@@ -94,7 +88,7 @@ public class KernelRuntimeException extends RuntimeException {
         this(null, null, cause, detail);
     }
 
-    /** Constructs an Exception with a detail message that includes the
+    /** Construct an exception with a detail message that includes the
      *  name of the first argument and the second argument string.
      *  @param object The object.
      *  @param detail The message.
@@ -103,7 +97,7 @@ public class KernelRuntimeException extends RuntimeException {
         this(object, null, null, detail);
     }
 
-    /** Constructs an Exception with a detail message that includes
+    /** Construct an exception with a detail message that includes
      *  the names of the first two arguments plus the fourth argument
      *  string.  If the cause argument is non-null, then the message
      *  of this exception will include the message of the cause
@@ -119,7 +113,7 @@ public class KernelRuntimeException extends RuntimeException {
      */
     public KernelRuntimeException(Nameable object1, Nameable object2,
             Throwable cause, String detail) {
-        _setMessage(KernelException._generateMessage(object1, object2,
+        _setMessage(KernelException.generateMessage(object1, object2,
                 cause, detail));
         _setCause(cause);
     }
@@ -163,11 +157,7 @@ public class KernelRuntimeException extends RuntimeException {
         // and call package friendly methods in KernelException,
         // but these methods are so short, so why bother.
 
-        super.printStackTrace();
-        if (_cause != null) {
-            System.err.print("Caused by: ");
-            _cause.printStackTrace();
-        }
+        printStackTrace(new PrintWriter(System.err));
     }
 
     /** Print this exception, its stack trace and if the cause
@@ -176,11 +166,7 @@ public class KernelRuntimeException extends RuntimeException {
      *  @param printStream The PrintStream to write to.
      */
     public void printStackTrace(PrintStream printStream) {
-        super.printStackTrace(printStream);
-        if (_cause != null) {
-            printStream.print("Caused by: ");
-            _cause.printStackTrace(printStream);
-        }
+        printStackTrace(new PrintWriter(printStream));
     }
 
     /** Print this exception, its stack trace and if the cause
@@ -213,6 +199,8 @@ public class KernelRuntimeException extends RuntimeException {
      *  @param message The message.
      */
     protected void _setMessage(String message) {
+        // See KernelException._setMessage() for an explanation
+        // about why we need this message instead of calling super().
         if (message == null) {
             _message = "";
         } else {

@@ -26,8 +26,8 @@ name in the collection.
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (cxh@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+@ProposedRating Green (cxh@eecs.berkeley.edu)
+@AcceptedRating Green (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.kernel.util;
@@ -46,25 +46,29 @@ provide additional information about the error).
 
 <p>This class has no constructors that take a Throwable cause because
 no such constructors have been needed, but in principle, such constructors
-could be added.
+could be added if needed.
 
 @author John S. Davis II, Edward A. Lee, Christopher Hylands
 @version $Id$
 */
 public class NameDuplicationException extends KernelException {
 
-    /** Construct an exception with a detail message that 
-     *  includes the name of the first argument.    
+    /** Construct an exception with a detail message that includes the
+     *  name of the first argument.  If one or more of the parameters
+     *  are null, then the message of the exception is adjusted
+     *  accordingly.
      *  @param container The would be container.
-     *  @param message The message.
+     *  @param detail The message.
      */
     public NameDuplicationException(Nameable container,
-            String message) {
-        super(container, null, message);
+            String detail) {
+        super(container, null, detail);
     }
 
     /** Construct an exception with a message that includes the
      *  name of the would be containee and the would be container.
+     *  If one or more of the parameters are null, then the
+     *  message of the exception is adjusted accordingly.
      *  @param wouldBeContainee The would be containee.
      *  @param container The would be container.
      */
@@ -76,32 +80,34 @@ public class NameDuplicationException extends KernelException {
     /** Construct an exception with a detail message that includes the
      *  name of the would be containee and the would be container plus
      *  the third argument string.
+     *  If one or more of the parameters are null, then the
+     *  message of the exception is adjusted accordingly.
      *  @param wouldBeContainee The would be containee.
      *  @param container The would be container.
-     *  @param message A message.
+     *  @param detail A message.
      */
     public NameDuplicationException(Nameable container,
-            Nameable wouldBeContainee, String message) {
-        if (_getFullName(container).equals("")) {
+            Nameable wouldBeContainee, String detail) {
+        if (getFullName(container).equals("")) {
 
             // Note that if wouldBeContainee is null, then we get
-            // the 'Attempt to insert object named into a container'.
+            // the 'Attempt to insert object named "" into a'.
             // Note that if wouldBeContainee is the empty string, then we get
-            // the 'Attempt to insert object named <Unamed Object> into a'.
+            // the 'Attempt to insert object named "<Unamed Object>" into a'.
             
             _setMessage("Attempt to insert object named \"" +
-                    _getName(wouldBeContainee) +
+                    getName(wouldBeContainee) +
                     "\" into a container that already contains" +
                     " an object with that name." +
-                    (message == null ? "" : (" " + message))
+                    (detail == null ? "" : (" " + detail))
                     );
         } else {
             _setMessage("Attempt to insert object named \"" +
-                    _getName(wouldBeContainee) +
+                    getName(wouldBeContainee) +
                     "\" into container named \"" +
-                    _getFullName(container) +
+                    getFullName(container) +
                     "\", which already contains an object with that name." +
-                    (message == null ? "" : (" " + message))
+                    (detail == null ? "" : (" " + detail))
                         );
 
         }

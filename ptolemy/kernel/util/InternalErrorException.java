@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (cxh@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+@ProposedRating Green (cxh@eecs.berkeley.edu)
+@AcceptedRating Green (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.kernel.util;
@@ -44,14 +44,30 @@ so that it does not have to be declared.
 */
 public class InternalErrorException extends KernelRuntimeException {
 
-    /** Constructs an Exception with a detail message.
+    /** Construct an exception with a detail message.
      *  @param detail The message.
      */
     public InternalErrorException(String detail) {
         super(detail);
     }
 
-    /** Constructs an Exception with a detail message that includes
+    /** Construct an exception with only a cause.
+     *  If the cause argument is non-null, then the detail
+     *  message of this argument will include the detail message of
+     *  the cause argument.  The stack trace of the cause argument is
+     *  used when we print the stack trace of this exception.
+     *
+     *  <p>This constructor is commonly used when we want to
+     *  catch an exception and rethrow it as a RuntimeException
+     *  so that the method where the exception is thrown
+     *  need not declare that this method throws the initial exception. 
+     *  @param cause The cause of this exception.
+     */
+    public InternalErrorException(Throwable cause) {
+        super(null, null, cause, null);
+    }
+
+    /** Construct an exception with a detail message that includes
      *  the names of the first argument plus the third argument
      *  string.  If the cause argument is non-null, then the detail
      *  message of this argument will include the detail message of

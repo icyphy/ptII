@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (cxh@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+@ProposedRating Green (cxh@eecs.berkeley.edu)
+@AcceptedRating Green (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.kernel.util;
@@ -40,14 +40,14 @@ E.g., attempt to remove a port by name and no such port exists.
 @version $Id$
 */
 public class NoSuchItemException extends KernelException {
-    /** Constructs an Exception with a detail message.
+    /** Construct an exception with a detail message.
      *  @param detail A message.
      */
     public NoSuchItemException(String detail) {
         super(null, null, null, detail);
     }
 
-    /** Constructs an Exception with a detail message that includes the
+    /** Construct an exception with a detail message that includes the
      *  name of the argument.
      *  @param object The object in which the item might have been.
      *  @param detail A message.
@@ -56,7 +56,7 @@ public class NoSuchItemException extends KernelException {
         super(object, null, null, detail);
     }
 
-    /** Constructs an Exception with a cause and a detail message that
+    /** Construct an exception with a cause and a detail message that
      *  includes the name of the argument.
      *
      *  @param object The object in which the item might have been.
