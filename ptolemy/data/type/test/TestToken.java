@@ -94,7 +94,7 @@ public class TestToken extends Token {
 
     /** Return the value of this token as a string that can be parsed
      *  by the expression language to recover a token with the same value.
-     *  This method should be overriden by derived classes.
+     *  This method should be overridden by derived classes.
      *  In this base class, return the String "present" to indicate
      *  that an event is present.
      *  @return The String "present".

@@ -239,7 +239,7 @@ public class InvokeGraphPruner {
         SootField field = source.getFieldByName("out");
         compulsoryNodes.add(field);
 
-        // Printstream is required by the force-overriden version of
+        // Printstream is required by the force-overridden version of
         // System.initializeSystemClass(), but it doesn't have a clinit.
         source = Scene.v().getSootClass("java.io.PrintStream");
         method = source.getMethod("void println(int)");
