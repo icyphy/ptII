@@ -60,7 +60,7 @@ import org.w3c.dom.Document;
 /**
 An object that can create a new Effigy from an HSIF file.
 
-@author Haiyang Zheng and Edward A. Lee
+@author Haiyang Zheng, Edward A. Lee, Christopher Hylands
 @version $Id$
 @since Ptolemy II 2.2
 @see Configuration
