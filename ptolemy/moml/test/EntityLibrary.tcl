@@ -76,7 +76,7 @@ test EntityLibrary-1.1 {Test EntityLibrary class with configure element} {
     <entity name="lib" class="ptolemy.moml.EntityLibrary">
         <configure><?moml
             <group>
-                <property name="_libraryMarker" class="ptolemy.kernel.util.LibraryMarkerAttribute">
+                <property name="_library" class="ptolemy.kernel.util.Attribute">
                 </property>
                 <entity name="a" class="ptolemy.actor.AtomicActor">
                 </entity>
@@ -88,7 +88,9 @@ test EntityLibrary-1.1 {Test EntityLibrary class with configure element} {
 </entity>
 }
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 test EntityLibrary-1.2 {Test EntityLibrary at top level} {
     set moml_1 "$header
 <entity name=\"top\" class=\"ptolemy.moml.EntityLibrary\">
@@ -113,7 +115,7 @@ test EntityLibrary-1.2 {Test EntityLibrary at top level} {
 <entity name="top" class="ptolemy.moml.EntityLibrary">
     <configure><?moml
         <group>
-            <property name="_libraryMarker" class="ptolemy.kernel.util.LibraryMarkerAttribute">
+            <property name="_library" class="ptolemy.kernel.util.Attribute">
             </property>
             <entity name="a" class="ptolemy.actor.AtomicActor">
             </entity>
