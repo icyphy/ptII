@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- This script was automatically generated using Zero G's InstallAnywhere 5.0.7 Enterprise, Build 1680
      STATUS: Fully Functional LICENSED Edition
-     DATE:   Fri Jan 31 09:53:45 PST 2003 -->
-<InstallAnywhere_Deployment_Project increments="2082">
+     DATE:   Thu Feb 06 21:25:28 PST 2003 -->
+<InstallAnywhere_Deployment_Project increments="2146">
 	<!-- ** DO NOT EDIT ** Essential authorization and configuration data ** DO NOT EDIT ** -->
 	<essentialScriptInfo>
 		<versionID major="5" minor="0" revision="7"/>
@@ -10,9 +10,9 @@
 		<scriptID>12,42,11,90,88,55,55,51,52,53,56,75,82,69,70,88</scriptID>
 		<buildID>3,13,71,87,105,110,100,111,119,115,32,88,80,44,32,53,46,49,44,32,120,56,54,59,32,74,97,118,97,32,49,46,51,46,49,95,48,52,44,32,83,117,110,32,77,105,99,114,111,115,121,115,116,101,109,115,32,73,110,99,46,44,32,104,116,116,112,58,47,47,106,97,118,97,46,115,117,110,46,99,111,109,47,59,32,101,110,44,32,85,83,59,32,67,112,49,50,53,50</buildID>
 		<!-- The authorizationID may change between project saves and builds.  This does not effect the integrity of the project, nor do changes in this value represent changes in the actual InstallAnywhere project. -->
-		<authorizationID>1,0,0,-16,19,82,96,112,80,112,114,103,83,98,113,97,113,81,49,67,90,65,74,77,72,68,64,69,66,69,48,63,87,5,2,6,1,63,101,3,0,0,0</authorizationID>
+		<authorizationID>1,0,0,-16,51,-74,-48,-32,80,112,114,103,83,98,113,97,113,81,49,67,90,65,74,77,72,68,64,69,66,69,48,63,87,5,2,14,1,62,102,3,0,0,0</authorizationID>
 	</essentialScriptInfo>
-	<installationObjects uniqueObjects="113">
+	<installationObjects uniqueObjects="117">
 		<object class="com.zerog.ia.installer.Installer" objectID="a3d1e30197df">
 			<property name="wizardME">
 				<object class="com.zerog.ia.installer.actions.MakeExecutable" objectID="a3e408bf981b">
@@ -166,9 +166,9 @@ it will search for ones in this list]]></string>
 								</object>
 							</method>
 							<method name="addElement">
-								<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="28e06905a090">
+								<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="4a35deb3a19e">
 									<property name="propertyValue">
-										<string><![CDATA[ptolemy.vergil.VergilApplication]]></string>
+										<string><![CDATA[ptolemy.actor.gui.jnlp.HyVisualApplication]]></string>
 									</property>
 									<property name="propertyName">
 										<string><![CDATA[lax.main.class]]></string>
@@ -230,7 +230,7 @@ and any path to a file to read from that file]]></string>
 						</object>
 					</property>
 					<property name="mainClass">
-						<string><![CDATA[ptolemy.vergil.VergilApplication]]></string>
+						<string><![CDATA[ptolemy.actor.gui.jnlp.HyVisualApplication]]></string>
 					</property>
 				</object>
 			</property>
@@ -257,7 +257,7 @@ and any path to a file to read from that file]]></string>
 								<string><![CDATA[demo.jar]]></string>
 							</property>
 							<property name="fileSize">
-								<long>142729</long>
+								<long>143008</long>
 							</property>
 							<property name="macBinary">
 								<boolean>false</boolean>
@@ -313,7 +313,7 @@ and any path to a file to read from that file]]></string>
 								<string><![CDATA[vergil.jar]]></string>
 							</property>
 							<property name="fileSize">
-								<long>371654</long>
+								<long>372036</long>
 							</property>
 							<property name="macBinary">
 								<boolean>false</boolean>
@@ -341,7 +341,7 @@ and any path to a file to read from that file]]></string>
 								<string><![CDATA[ptsupport.jar]]></string>
 							</property>
 							<property name="fileSize">
-								<long>1533966</long>
+								<long>1537535</long>
 							</property>
 							<property name="macBinary">
 								<boolean>false</boolean>
@@ -677,7 +677,35 @@ and any path to a file to read from that file]]></string>
 								<string><![CDATA[codeDocHyVisual.jar]]></string>
 							</property>
 							<property name="fileSize">
-								<long>1301931</long>
+								<long>1326617</long>
+							</property>
+							<property name="macBinary">
+								<boolean>false</boolean>
+							</property>
+						</object>
+					</method>
+					<method name="addElement">
+						<object class="com.zerog.ia.installer.actions.InstallZipfile" objectID="4a353dd7a19e">
+							<property name="unixPermissions">
+								<string><![CDATA[664]]></string>
+							</property>
+							<property name="sourceName">
+								<string><![CDATA[HyVisualApplication.jar]]></string>
+							</property>
+							<property name="overrideUnixPermissions">
+								<boolean>false</boolean>
+							</property>
+							<property name="sourcePath">
+								<string><![CDATA[C:\cxh\ptII2.2-beta\jar_dist\ptolemy\actor\gui\jnlp\]]></string>
+							</property>
+							<property name="shouldUninstall">
+								<boolean>true</boolean>
+							</property>
+							<property name="destinationName">
+								<string><![CDATA[HyVisualApplication.jar]]></string>
+							</property>
+							<property name="fileSize">
+								<long>3769</long>
 							</property>
 							<property name="macBinary">
 								<boolean>false</boolean>
@@ -690,7 +718,7 @@ and any path to a file to read from that file]]></string>
 				<string><![CDATA[HyViInst]]></string>
 			</property>
 			<property name="productName">
-				<string><![CDATA[HyVisual 2.2-beta-2]]></string>
+				<string><![CDATA[HyVisual 2.2-beta-3]]></string>
 			</property>
 			<property name="rulesFailedMessage">
 				<string><![CDATA[The installer cannot run on your configuration. It will now quit.]]></string>
@@ -900,7 +928,7 @@ You may cancel this installation at any time by clicking the 'Cancel' button.]]>
 								<string><![CDATA[USER_MAGIC_FOLDER_1]]></string>
 							</property>
 							<property name="value">
-								<string><![CDATA[$WIN_COMMON_PROGRAMS_MENU$$/$Ptolemy$\$HyVisual 2.2-beta-2]]></string>
+								<string><![CDATA[$WIN_COMMON_PROGRAMS_MENU$$/$Ptolemy$\$HyVisual 2.2-beta-3]]></string>
 							</property>
 						</object>
 					</method>
@@ -910,7 +938,7 @@ You may cancel this installation at any time by clicking the 'Cancel' button.]]>
 								<string><![CDATA[USER_MAGIC_FOLDER_2]]></string>
 							</property>
 							<property name="value">
-								<string><![CDATA[$PROGRAMS_DIR$$/$Ptolemy$/$HyVisual2.2-beta-2]]></string>
+								<string><![CDATA[$PROGRAMS_DIR$$/$Ptolemy$/$HyVisual2.2-beta-3]]></string>
 							</property>
 						</object>
 					</method>
@@ -1180,7 +1208,7 @@ Please see the installation log for details.  Press ""Done"" to quit the install
 				<object class="java.util.Properties">
 					<method name="put">
 						<string><![CDATA[com.zerog.ia.project.save.last.date]]></string>
-						<string><![CDATA[Fri Jan 31 09:53:45 PST 2003]]></string>
+						<string><![CDATA[Thu Feb 06 21:25:27 PST 2003]]></string>
 					</method>
 					<method name="put">
 						<string><![CDATA[com.zerog.ia.build.options.optimization.platform.merge]]></string>
@@ -1216,7 +1244,7 @@ Please see the installation log for details.  Press ""Done"" to quit the install
 					</method>
 					<method name="put">
 						<string><![CDATA[com.zerog.ia.project.build.last.date]]></string>
-						<string><![CDATA[Fri Jan 31 09:53:45 PST 2003]]></string>
+						<string><![CDATA[Thu Feb 06 21:25:27 PST 2003]]></string>
 					</method>
 					<method name="put">
 						<string><![CDATA[com.zerog.ia.installer.options.stderr.redirect]]></string>
@@ -1398,7 +1426,7 @@ Please see the installation log for details.  Press ""Done"" to quit the install
 			<property name="installerInfoData">
 				<object class="com.zerog.ia.installer.util.InstallerInfoData" objectID="a3d1e30297df">
 					<property name="productName">
-						<string><![CDATA[HyVisual 2.2-beta-2]]></string>
+						<string><![CDATA[HyVisual 2.2-beta-3]]></string>
 					</property>
 					<property name="productID">
 						<object class="com.zerog.registry.UUID">
@@ -2021,7 +2049,7 @@ it will search for ones in this list]]></string>
 														</object>
 													</method>
 													<method name="addElement">
-														<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="28e069b8a0ad">
+														<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="4a067b3ca0ad">
 															<property name="propertyValue">
 																<string><![CDATA[ptolemy.actor.gui.BrowserLauncher]]></string>
 															</property>
@@ -2581,6 +2609,74 @@ This feature will consume roughly 7.5Mb of disk space.]]></string>
 												<object refID="d8ec3feca0d7"/>
 											</visualChildren>
 										</object>
+										<object class="com.zerog.ia.installer.actions.InstallDirectory" objectID="4a2f9779a19e">
+											<property name="unixPermissions">
+												<string><![CDATA[775]]></string>
+											</property>
+											<property name="overrideUnixPermissions">
+												<boolean>false</boolean>
+											</property>
+											<property name="shouldUninstall">
+												<boolean>true</boolean>
+											</property>
+											<property name="destinationName">
+												<string><![CDATA[jnlp]]></string>
+											</property>
+											<property name="removeRecursively">
+												<boolean>false</boolean>
+											</property>
+											<property name="macBinary">
+												<boolean>false</boolean>
+											</property>
+										</object>
+										<object refID="4a353dd7a19e"/>
+										<object class="com.zerog.ia.installer.actions.InstallDirectory" objectID="4a2f6c17a19e">
+											<property name="unixPermissions">
+												<string><![CDATA[775]]></string>
+											</property>
+											<property name="overrideUnixPermissions">
+												<boolean>false</boolean>
+											</property>
+											<property name="shouldUninstall">
+												<boolean>true</boolean>
+											</property>
+											<property name="destinationName">
+												<string><![CDATA[gui]]></string>
+											</property>
+											<property name="removeRecursively">
+												<boolean>false</boolean>
+											</property>
+											<property name="macBinary">
+												<boolean>false</boolean>
+											</property>
+											<visualChildren>
+												<object refID="4a2f9779a19e"/>
+												<object refID="4a353dd7a19e"/>
+											</visualChildren>
+										</object>
+										<object class="com.zerog.ia.installer.actions.InstallDirectory" objectID="4a2ed701a19e">
+											<property name="unixPermissions">
+												<string><![CDATA[775]]></string>
+											</property>
+											<property name="overrideUnixPermissions">
+												<boolean>false</boolean>
+											</property>
+											<property name="shouldUninstall">
+												<boolean>true</boolean>
+											</property>
+											<property name="destinationName">
+												<string><![CDATA[actor]]></string>
+											</property>
+											<property name="removeRecursively">
+												<boolean>false</boolean>
+											</property>
+											<property name="macBinary">
+												<boolean>false</boolean>
+											</property>
+											<visualChildren>
+												<object refID="4a2f6c17a19e"/>
+											</visualChildren>
+										</object>
 										<object class="com.zerog.ia.installer.actions.InstallDirectory" objectID="a488f5c693e1">
 											<property name="unixPermissions">
 												<string><![CDATA[775]]></string>
@@ -2611,6 +2707,7 @@ This feature will consume roughly 7.5Mb of disk space.]]></string>
 												<object refID="a488f6489403"/>
 												<object refID="a488f6479404"/>
 												<object refID="d8e9e7dba0cf"/>
+												<object refID="4a2ed701a19e"/>
 											</visualChildren>
 										</object>
 									</installChildren>
