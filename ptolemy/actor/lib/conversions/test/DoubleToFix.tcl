@@ -50,7 +50,7 @@ test DoubleToFix-1.1 {Test DoubleToFix} {
 
     # Get a clone to test cloning.
     set clone [java::cast ptolemy.actor.lib.conversions.DoubleToFix \
-    [$conver clone]]
+		   [$conver clone [$e0 workspace]]]
     $conver setContainer [java::null]
     $clone setName d2fClone
     $clone setContainer $e0
