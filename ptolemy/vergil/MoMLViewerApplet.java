@@ -129,8 +129,6 @@ public class MoMLViewerApplet extends MoMLApplet {
     /** Read the model from the <i>modelURL</i> applet parameter
      *  and do not filter out any graphical classes.
      *  @param workspace The workspace in which to create the model.
-     *  @param filterGraphicalClasses  If true, then filter out graphical
-     *  classes that might require diva.jar to be in the classpath
      *  @return A model.
      *  @exception Exception If something goes wrong.
      */
