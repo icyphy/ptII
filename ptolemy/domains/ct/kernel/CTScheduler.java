@@ -312,7 +312,7 @@ public class CTScheduler extends Scheduler {
         while(allActors.hasNext()) {
 
             Actor a = (Actor) allActors.next();
-            System.out.println("examine " + ((Nameable)a).getFullName());
+            //System.out.println("examine " + ((Nameable)a).getFullName());
 
             // Now classify actors by their interfaces.
             // Event generators are treated as sinks, and
