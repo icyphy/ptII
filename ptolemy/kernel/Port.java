@@ -101,13 +101,13 @@ public class Port extends GenericPort {
     /** Get the maximum particle count of this port.
      */
     public int getMaxParticleCount() {
-	return maxParticleCount_;
+	return __maxParticleCount;
     }
 
     /** Return the MultiPort which contains this Port.
      */	
     public MultiPort getMultiPortContainer() {
-        return multiPortContainer_;
+        return __multiPortContainer;
     }
 
     /** Return the name of this Port's Relation; return null if
@@ -164,7 +164,7 @@ public class Port extends GenericPort {
     /** Set the maximum number of particles that can reside in this port.
      */
     public void setMaxParticleCount(int count) {
-	maxParticleCount_ = count;
+	__maxParticleCount = count;
     }
 
     /** Set the MuliPort which contains this Port.
@@ -178,7 +178,7 @@ public class Port extends GenericPort {
 	     throw new NullReferenceException( 
 	     "Null Multiport passed to Port.setMultiPortContainer()" );
 	}
-	multiPortContainer_ = multiPort;
+	__multiPortContainer = multiPort;
         return; 
     }
 
@@ -205,9 +205,9 @@ public class Port extends GenericPort {
 
     /* The maximum number of particles that can reside in this port.
      */
-    private int maxParticleCount_ = 1;
+    private int __maxParticleCount = 1;
 
     /* The MultiPort which contains this Port.
      */
-    private MultiPort multiPortContainer_;
+    private MultiPort __multiPortContainer;
 }

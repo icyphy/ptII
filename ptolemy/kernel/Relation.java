@@ -72,13 +72,13 @@ public abstract class Relation extends GraphElement {
      */	
     public void connectPort(Port port) throws NameDuplicationException,
 	NullReferenceException {
-	if( links_ == null ) {
-	     links_ = new Hashtable();
+	if( __links == null ) {
+	     __links = new Hashtable();
 	}
 
-	Port duplicatePort = (Port)links_.put( port.getName(), port );
+	Port duplicatePort = (Port)__links.put( port.getName(), port );
 	if( duplicatePort != null ) {
-	     duplicatePort = (Port)links_.put
+	     duplicatePort = (Port)__links.put
 		( duplicatePort.getName(), duplicatePort );
 	     throw new NameDuplicationException( duplicatePort.getName() );
 	} else if( !(port.isConnectedToRelation(this.getName())) ) {
@@ -92,10 +92,10 @@ public abstract class Relation extends GraphElement {
      * not found.
      */	
     public Port disconnectPort(Port port) {
-	if( links_ == null ) {
+	if( __links == null ) {
 	     return null;
 	}
-	return (Port)links_.remove( port.getName() );
+	return (Port)__links.remove( port.getName() );
     }
 
     /** Get a particle from this relation.
@@ -107,13 +107,13 @@ public abstract class Relation extends GraphElement {
      * collection of Ports is null.
      */	
     public Enumeration getPorts() {
-	if( links_ == null ) {
+	if( __links == null ) {
 	     return null;
 	}
 	if( numberOfConnections() == 0 ) {
 	     return null;
 	}
-        return links_.elements();
+        return __links.elements();
     }
 
     /** Determine if the Relation is dangling? By dangling, we mean that the
@@ -121,10 +121,10 @@ public abstract class Relation extends GraphElement {
      * @return Return true if the Relation is dangling; returns false otherwise.
      */	
     public boolean isDangling() {
-	if( links_ == null ) {
+	if( __links == null ) {
 	     return false;
 	}
-	if( links_.size() == 1 ) {
+	if( __links.size() == 1 ) {
 	     return true;
 	}
         return false;
@@ -136,19 +136,19 @@ public abstract class Relation extends GraphElement {
      * false otherwise.
      */	
     public boolean isPortConnected(String portName) {
-	if( links_ == null ) {
+	if( __links == null ) {
 	     return false;
 	}
-	return links_.containsKey( portName );
+	return __links.containsKey( portName );
     }
 
     /** Return the number of Ports connected to the relation.
      */	
     public int numberOfConnections() {
-	if( links_ == null ) {
+	if( __links == null ) {
 	     return 0;
 	}
-        return links_.size();
+        return __links.size();
     }
 
     /** Return the number of particles stored in this relation. 
@@ -177,7 +177,7 @@ public abstract class Relation extends GraphElement {
 
     /* A hashtable of links which are connected to this Relation.
      */
-    private Hashtable links_;
+    private Hashtable __links;
 
 }
 
