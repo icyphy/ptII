@@ -43,7 +43,7 @@ EXPERIMENTAL_DOMAINS = \
 # PTJAVA3D_DIR is set by configure in $PTII/mk/ptII.mk to gr if
 #   Java 3D was found
 # The tm domain uses java.util.Timer, so it requires JDK 1.3
-DOMAINS =	ci csp ct dde de fsm hde pn sdf dt giotto pbo petrinet \
+DOMAINS =	ci csp ct dde de fsm hde pn sdf dt giotto nc pbo petrinet \
 		$(PTPSDF_DIR) rtp \
 		sr tm $(PTJAVA3D_DIR) wireless
 
@@ -72,6 +72,7 @@ PTAUXALLJARS = \
 		dde/dde.jar \
                 dt/dt.jar \
 		giotto/giotto.jar \
+		nc/nc.jar \
 		$(PTGRDOMAIN_JAR) \
 		petrinet/petrinet.jar \
 		tm/tm.jar \
