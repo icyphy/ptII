@@ -189,7 +189,7 @@ public class DFUtilities {
      *  @exception IllegalActionException If a rate does not contain a
      *  valid expression.
      */
-    protected static int _getRate(IOPort port)
+    public static int _getRate(IOPort port)
             throws NotSchedulableException, IllegalActionException {
         if (port.isInput() && port.isOutput()) {
             throw new NotSchedulableException(port,
@@ -244,7 +244,7 @@ public class DFUtilities {
      *  @param name Name of the variable.
      *  @param value The value.
      */
-    protected static void _setIfNotDefined(Port port, String name, int value)
+    public static void _setIfNotDefined(Port port, String name, int value)
             throws IllegalActionException {
         Variable rateParameter = (Variable)port.getAttribute(name);
         if (rateParameter == null) {
@@ -301,7 +301,7 @@ public class DFUtilities {
      *  @param value The value.
      *  @exception If the variable exists and its value cannot be set.
      */
-    protected static void _setOrCreate(
+    public static void _setOrCreate(
             NamedObj container, String name, int value)
             throws IllegalActionException {
         Variable variable = _getOrCreate(container, name);
@@ -318,7 +318,7 @@ public class DFUtilities {
      *  @param expression The expression.
      *  @exception If the variable exists and its value cannot be set.
      */
-    protected static void _setOrCreate(
+    public static void _setOrCreate(
             NamedObj container, String name, String expression)
             throws IllegalActionException {
         Variable variable = _getOrCreate(container, name);
