@@ -181,7 +181,12 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
                 // director._actorBlocked(this);
                 while (_readBlocked && !_terminate) {
                     // checkIfBranchIterationIsOver(branch);
-                    workspace.wait(this);
+                    try {
+                        workspace.wait(this);
+                    } catch (InterruptedException e) {
+                        _terminate = true;
+                        break;
+                    }
                 }
             }
             if (_terminate) {
@@ -387,7 +392,12 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
                     // while (!_terminate && !super.hasRoom()) {
                     // while (_writeBlocked) {
                     // checkIfBranchIterationIsOver(branch);
-                    workspace.wait(this);
+                    try {
+                        workspace.wait(this);
+                    } catch (InterruptedException e) {
+                        _terminate = true;
+                        break;
+                    }
                     // }
                 }
             }

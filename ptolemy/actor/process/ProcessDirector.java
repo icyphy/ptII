@@ -151,7 +151,13 @@ public class ProcessDirector extends Director {
                 if (_debugging) {
                     _debug("Waiting for actors to stop.");
                 }
-                workspace.wait(this);
+                try {
+                    workspace.wait(this);
+                } catch (InterruptedException e) {
+                    // stop all threads
+                    stop();
+                    return;
+                }
             }
             if (_debugging) {
                 _debug("Actors have stopped.");

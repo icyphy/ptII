@@ -308,7 +308,12 @@ public class DDEReceiver extends PrioritizedTimedQueue
                 _readBlocked = true;
                 prepareToBlock(branch);
                 while ( _readBlocked && !_terminate ) {
-                    workspace.wait( this );
+                    try {
+                        workspace.wait( this );
+                    } catch (InterruptedException e) {
+                        _terminate = true;
+                        break;
+                    }
                 }
             }
 
@@ -591,7 +596,12 @@ public class DDEReceiver extends PrioritizedTimedQueue
                 _writeBlocked = true;
                 wakeUpBlockedPartner();
                 while ( _writeBlocked && !_terminate ) {
-                    workspace.wait( this );
+                    try {
+                        workspace.wait( this );
+                    } catch (InterruptedException e) {
+                        _terminate = true;
+                        break;
+                    }
                 }
             }
 

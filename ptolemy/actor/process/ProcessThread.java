@@ -160,7 +160,12 @@ public class ProcessThread extends PtolemyThread {
                         _director._actorHasStopped();
                         while (_threadStopRequested && !_director.isStopRequested()) {
                             _debug("-- Thread waiting for canceled pause request.");
-                            workspace.wait(_director);
+                            try {
+                                workspace.wait(_director);
+                            } catch (InterruptedException ex) {
+                                _debug("-- Thread interrupted, so cancel iteration.");
+                                break;
+                            }
                         }
                         // NOTE: Do we need to indicate that actor has
                         // restarted, with something like

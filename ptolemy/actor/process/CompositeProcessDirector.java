@@ -329,7 +329,13 @@ public class CompositeProcessDirector extends ProcessDirector {
         }
         _inputBranchController.deactivateBranches();
         while ( !_inputBranchController.isBlocked() ) {
-            workspace.wait(this);
+            try {
+                workspace.wait(this);
+            } catch (InterruptedException e) {
+                //TODO: determine best way to handle the exception
+                throw new InternalErrorException(this.getFullName()
+                        + "interrupted.");
+            }
         }
     }
 
@@ -348,7 +354,13 @@ public class CompositeProcessDirector extends ProcessDirector {
         }
         _outputBranchController.deactivateBranches();
         while ( !_outputBranchController.isBlocked() ) {
-            workspace.wait(this);
+            try {
+                workspace.wait(this);
+            } catch (InterruptedException e) {
+                //TODO: determine best way to handle the exception
+                throw new InternalErrorException(this.getFullName()
+                        + "interrupted.");
+            }
         }
     }
 
@@ -571,7 +583,13 @@ public class CompositeProcessDirector extends ProcessDirector {
             ((CompositeProcessDirector)execDir)._actorBlocked(blockedReceivers);
 
         while ( blockedReceivers.size() >= originalCount ) {
-            workspace.wait(this);
+            try {
+                workspace.wait(this);
+            } catch (InterruptedException e) {
+                //TODO: determine best way to handle the exception
+                throw new InternalErrorException(this.getFullName()
+                        + "interrupted.");
+            }
         }
 
         return true;
@@ -612,7 +630,13 @@ public class CompositeProcessDirector extends ProcessDirector {
         if ( _areActorsExternallyBlocked() && _areActorsDeadlocked() ) {
             if ( _inputBranchController.isBlocked() ) {
                 while ( !_outputBranchController.isBlocked() ) {
-                    workspace.wait(this);
+                    try {
+                        workspace.wait(this);
+                    } catch (InterruptedException e) {
+                        //TODO: determine best way to handle the exception
+                        throw new IllegalActionException(this,
+                                "Interrupted.");
+                    }
                 }
                 stopInputBranchController();
                 stopOutputBranchController();
@@ -651,7 +675,13 @@ public class CompositeProcessDirector extends ProcessDirector {
         if ( !_areActorsExternallyBlocked() && _areActorsDeadlocked() ) {
             if ( _inputBranchController.isBlocked() ) {
                 while ( !_outputBranchController.isBlocked() ) {
-                    workspace.wait(this);
+                    try {
+                        workspace.wait(this);
+                    } catch (InterruptedException e) {
+                        //TODO: determine best way to handle the exception
+                        throw new IllegalActionException(this,
+                                "Interrupted.");
+                    }
                 }
                 stopInputBranchController();
                 stopOutputBranchController();
@@ -662,7 +692,13 @@ public class CompositeProcessDirector extends ProcessDirector {
                 return _resolveInternalDeadlock();
             } else {
                 while ( !_outputBranchController.isBlocked() ) {
-                    workspace.wait(this);
+                    try {
+                        workspace.wait(this);
+                    } catch (InterruptedException e) {
+                        //TODO: determine best way to handle the exception
+                        throw new IllegalActionException(this,
+                                "Interrupted.");
+                    }
                 }
                 stopInputBranchController();
                 stopOutputBranchController();

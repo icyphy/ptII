@@ -217,7 +217,12 @@ public class PBOThreadDirector extends Director {
         Workspace workspace = workspace();
         synchronized (this) {
             while (_areActorsWaiting) {
-                workspace.wait(this);
+                try {
+                    workspace.wait(this);
+                } catch (InterruptedException e) {
+                    //TODO: determine best way to handle the exception
+                    return;
+                }
             }
         }
     }

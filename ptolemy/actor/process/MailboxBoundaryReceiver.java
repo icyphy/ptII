@@ -130,7 +130,12 @@ public class MailboxBoundaryReceiver extends Mailbox
                 _readBlock = true;
                 prepareToBlock(branch);
                 while ( _readBlock && !_terminate ) {
-                    workspace.wait(this);
+                    try {
+                        workspace.wait(this);
+                    } catch (InterruptedException e) {
+                        _terminate = true;
+                        break;
+                    }
                 }
             }
 
@@ -298,7 +303,12 @@ public class MailboxBoundaryReceiver extends Mailbox
                 _writeBlock = true;
                 prepareToBlock(branch);
                 while ( _writeBlock && !_terminate ) {
-                    workspace.wait(this);
+                    try {
+                        workspace.wait(this);
+                    } catch (InterruptedException e) {
+                        _terminate = true;
+                        break;
+                    }
                 }
             }
 
