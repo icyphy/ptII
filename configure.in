@@ -897,8 +897,13 @@ else
     If Matlab is not present, then the Ptolemy II/Matlab interface in
     \$PTII/ptolemy/matlab will not be usable.]);
     else 
-	MATLAB_DIR=${MATLAB%%/bin*}
-	if test -d "$MATLAB_DIR"; then
+	#MATLAB_DIR=${MATLAB%%/bin*}
+	MATLAB_DIR=${MATLAB}/../bin
+	if test ! -d "$MATLAB_DIR"; then
+		AC_MSG_WARN([Failed to find '${MATLAB}/../bin'
+        If Matlab is not present, then the Ptolemy II/Matlab interface in
+    \$PTII/ptolemy/matlab will not be usable.]);
+	else
 	    if test -f "${MATLAB_DIR}/extern/include/libeng.def"; then
 		AC_MSG_RESULT([$MATLAB_DIR])
 		AC_MSG_CHECKING([for gcc])
