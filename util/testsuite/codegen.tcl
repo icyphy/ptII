@@ -80,19 +80,23 @@ proc speedComparison  {xmlFile \
 		[time {exec java -classpath $relativePathToPTII $targetClass} $repeat]
 
     } else {
-	set args [java::new {String[]} 2 \
-		[list \
-		"-class" "$targetClass"]]
-	puts "Running builtin $codeGenType codegen $repeat times"
-	set codegenElapsed [time {java::call \
-		ptolemy.actor.gui.CompositeActorApplication \
-		main $args} $repeat]
+	if {$codeGenType == "Applet"} {
+	    puts "Applet codegen done"
+	} else {
+	    set args [java::new {String[]} 2 \
+			  [list \
+			       "-class" "$targetClass"]]
+	    puts "Running builtin $codeGenType codegen $repeat times"
+	    set codegenElapsed [time {java::call \
+					  ptolemy.actor.gui.CompositeActorApplication \
+					  main $args} $repeat]
 
-	puts "Running exec $codeGenType codegen $repeat times"
-	set codegenExecElapsed \
+	    puts "Running exec $codeGenType codegen $repeat times"
+	    set codegenExecElapsed \
 		[time {exec java -classpath $relativePathToPTII \
 		ptolemy.actor.gui.CompositeActorApplication \
 		-class $targetClass} $repeat]
+	}
     }
 
     set args [java::new {String[]} 1 \
@@ -343,14 +347,26 @@ proc sootCodeGeneration {modelPath {codeGenType Shallow} \
       if { ${codeGenType} == "Deep" } {
 	  set codeGenerator {"java"}
       } else {
-	  set codeGenerator {"shallow"}
+	  if { ${codeGenType} == "Applet" } {
+	      set codeGenerator {"applet"}
+	  } else {
+	      set codeGenerator {"shallow"}
+	  }
       }
       set args [java::new {String[]} 5 \
   	    [list \
   	    $modelPath \
 	    "-iterationsParameter" "\"$iterationsParameter\"" \
 	    "-codeGenerator" $codeGenerator] ]
-	
+
+      if { ${codeGenType} == "Applet" } {
+          set args [java::new {String[]} 7 \
+  	    [list \
+  	    $modelPath \
+		 "-iterationsParameter" "\"$iterationsParameter\"" \
+		 "-codeGenerator" $codeGenerator \
+		 "-run" "false"] ]
+      }
 	java::new ptolemy.copernicus.kernel.Copernicus $args
 
 	#set results [exec $relativePathToPTII/bin/copernicus $modelPath -iterations $iterationsValue]
@@ -363,6 +379,14 @@ proc sootCodeGeneration {modelPath {codeGenType Shallow} \
 	#    puts $results
     }
 
+    if { $codeGenType == "Applet"} {
+	# For Applet just return
+	return "Times Interp/Deep ms $modelName 1 \
+	    builtin: 0/0 \
+	    0 % \
+	    exec: 0/0 \
+	    0 %"
+    }
     # If the model has a different name than the file name, we
     # handle it here.
     set command runDemo
