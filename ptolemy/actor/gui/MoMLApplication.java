@@ -57,6 +57,7 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.VersionAttribute;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.FilterBackwardCompatibility;
 import ptolemy.moml.MoMLParser;
@@ -332,7 +333,7 @@ public class MoMLApplication {
         } else if (arg.equals("-version")) {
             System.out.println("Version "
                     + VersionAttribute.CURRENT_VERSION 
-                    ", Build $Id$");
+                    + ", Build $Id$");
             // NOTE: This means the test suites cannot test -version
             System.exit(0);
         } else if (arg.equals("")) {
