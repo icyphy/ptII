@@ -218,4 +218,5 @@ Review ended: <I>time</I>
 EOF
 
 chmod g+ws .
-chgrp ptolemy .
+chmod -R g+w .
+chgrp -R ptolemy .
