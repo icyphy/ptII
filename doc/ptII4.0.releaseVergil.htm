@@ -6,7 +6,7 @@
 <html>
 <head>
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
-<title>Ptolemy II 4.0-beta Release Notes</title>
+<title>Ptolemy II 4.0 Release Notes</title>
 </head>
 <body>
 <!--vergilDocs-->
@@ -27,8 +27,6 @@ Version 4.0 has the following limitations:
 In the interim, see the
 <a href="design/visualsense.pdf">VisualSense</a> document 
 
-<li> The <a href="expressions.htm">Expressions</a> document
-has not yet been updated
 </menu>
 
 <li> The gzipped tar file that contains the Ptolemy II distribution
@@ -176,6 +174,24 @@ Attempted to find as a moml class, but got:
 	 <br>The workaround is to run the applet by downloading it
 	from the Ptolemy Website:
 <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII4.0/ptII/ptolemy/moml/demo/Networked/Networked.htm"><CODE>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII4.0/ptII/ptolemy/moml/demo/Networked/Networked.htm</CODE></a>
+
+
+	<li> If an icon file is not present, then a Vergil applet might
+	try to download the icon file multiple times.  Ptolemy II
+	uses XML files to store icons.  For example
+<a href="../ptolemy/actor/lib/BooleanSwitchIcon.xml"><CODE>$PTII/ptolemy/actor/lib/BooleanSwitchIcon.xml</CODE></a>
+	is an icon for
+<a href="../ptolemy/actor/lib/BooleanSwitch.java"><CODE>$PTII/ptolemy/actor/lib/BooleanSwitch.java</CODE></a>
+	 <br>The problem is that if an actor does not have an icon file,
+	then the applet may go back to the server multiple times looking
+	for the icon. 
+ <!-- Steve writes:
+      I think the MoMLParser should load Java-defined classes the same way
+      it does xml-defined classes.  It should reflect a prototype and then
+      keep the prototype around and clone it...  This would mean that it
+      only has to grab the icon once...
+ -->
+
 	</ul>
 
 <li> Windows Installer Issues:
