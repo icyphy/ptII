@@ -124,6 +124,33 @@
     </graphic>
 </icon>
 
+<icon name="InterruptibleServer">
+    <entitytype name="InterruptibleServer" ports="2"/>
+    <port name="input" input="true" type="string">
+	<graphic format="tcl">
+	<tclscript>
+		-coords {0 50} -direction w
+                -style arrowtail
+	</tclscript>
+	</graphic>
+    </port>
+
+    <port name="output" input="false" type="string">
+	<graphic format="tcl">
+	<tclscript>
+		-coords {100 50} -direction e
+                -style arrowout
+	</tclscript>
+	</graphic>
+    </port>
+
+    <graphic format="tcl" color="blue">
+    <tclscript>
+	polygon 30 25 30 70 25 75 20 70 15 80 25 85 35 75 35 30 40 25 45 30 50 25 40 15 -fill black -outline yellow
+         text 70 55 -text dx -fill yellow 
+    </tclscript>
+    </graphic>
+</icon>
 
 <icon name="LookupTable">
     <entitytype name="LookupTable" ports="2"/>
@@ -156,34 +183,6 @@
     </graphic>
 </icon>
 
-<icon name="Processor">
-    <entitytype name="Processor" ports="2"/>
-    <port name="input" input="true" type="string">
-	<graphic format="tcl">
-	<tclscript>
-		-coords {0 50} -direction w
-                -style arrowtail
-	</tclscript>
-	</graphic>
-    </port>
-
-    <port name="output" input="false" type="string">
-	<graphic format="tcl">
-	<tclscript>
-		-coords {100 50} -direction e
-                -style arrowout
-	</tclscript>
-	</graphic>
-    </port>
-
-    <graphic format="tcl" color="blue">
-    <tclscript>
-	polygon 30 25 30 70 25 75 20 70 15 80 25 85 35 75 35 30 40 25 45 30 50 25 40 15 -fill black -outline yellow
-         text 70 55 -text dx -fill yellow 
-    </tclscript>
-    </graphic>
-</icon>
-
 <icon name="ZeroOrderHold">
     <entitytype name="ZeroOrderHold" ports="2"/>
     <port name="input" input="true" type="string">
@@ -209,7 +208,30 @@
     </graphic>
 </icon>
 
+<icon name="SDProcessor">
+    <entitytype name="Processor" type="schematic" location="../demo/SDProcessorSchematic.ptml" ports="2"/>
+    <port name="input" input="true" type="string">
+	<graphic format="tcl">
+	<tclscript>
+		-coords {0 50} -direction w
+                -style arrowtail
+	</tclscript>
+	</graphic>
+    </port>
+    <port name="output" input="false" type="string">
+	<graphic format="tcl">
+	<tclscript>
+		-coords {100 50} -direction e
+                -style arrowout
+	</tclscript>
+	</graphic>
+    </port>
 
+    <graphic format="tcl">
+    <tclscript>
+    </tclscript>
+    </graphic>
+</icon>
 
 <icon name="Sampler">
     <entitytype name="PeriodicalSampler" ports="2"/>
