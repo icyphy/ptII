@@ -184,24 +184,16 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                     int[] channelAndOffset = _getChannelAndOffset(name);
                     if (channelAndOffset[0] >= 0) {
                         // Channel number specified. This must be a multiport.
-                        result.append("[");
-                        result.append(new Integer(channelAndOffset[0])
-                                .toString());
-                        result.append("]");
+                        result.append("[" + channelAndOffset[0] + "]");
                     }
                     if (channelAndOffset[1] >= 0) {
-                        result.append("[");
                         int offset = channelAndOffset[1] + 
                             _firingCount * port.getReceivers()[0].length;
-                        result.append(new Integer(channelAndOffset[1])
-                                .toString());
-                        result.append("]");
+                        result.append("[" + channelAndOffset[1] + "]");
                     } else if (_firingsPerIteration > 1) {
                         // Did not specify offset, so the receiver length is 1.
                         // This is multiple firing.
-                        result.append("[");
-                        result.append(new Integer(_firingCount).toString());
-                        result.append("]");
+                        result.append("[" + _firingCount + "]");
                     }
                     return result.toString();
                 }
@@ -229,16 +221,11 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                                 channelAndOffset[0]));
                     }
                     if (channelAndOffset[1] >= 0) {
-                        result.append("[");
-                        result.append(new Integer(channelAndOffset[1])
-                                .toString());
-                        result.append("]");
+                        result.append("[" + channelAndOffset[1] + "]");
                     } else if (_firingsPerIteration > 1) {
                         // Did not specify offset, so the receiver length is 1.
                         // This is multiple firing.
-                        result.append("[");
-                        result.append(new Integer(_firingCount).toString());
-                        result.append("]");
+                        result.append("[" + _firingCount + "]");
                     }
                     return result.toString();
                 }
@@ -308,9 +295,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                         result.append("_");
                         result.append(sinkPort.getName());
                         if (sinkPort.isMultiport()) {
-                            result.append("[");
-                            result.append((new Integer(j)).toString());
-                            result.append("]");
+                            result.append("[" + j + "]");
                         }
                         break;
                         //sinkPorts.add(sinkPort);

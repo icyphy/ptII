@@ -239,16 +239,12 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                 code.append(inputPort.getFullName().replace('.', '_'));
                 
                 if (inputPort.isMultiport()) {
-                    code.append("[");
-                    code.append((new Integer(inputPort.getWidth())).toString());
-                    code.append("]");
+                    code.append("[" + inputPort.getWidth() + "]");
                 }
                 // For multi-rate SDF. 
                 int bufferCapacity = getBufferCapacity(inputPort);
                 if (bufferCapacity > 1) {
-                    code.append("[");
-                    code.append(new Integer(bufferCapacity).toString());
-                    code.append("]");
+                    code.append("[" + bufferCapacity + "]");
                 }
                 code.append(";\n");
             }
