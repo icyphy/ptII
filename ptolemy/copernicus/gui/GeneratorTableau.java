@@ -160,20 +160,23 @@ public class GeneratorTableau extends Tableau {
                 throws IllegalActionException, NameDuplicationException {
 	    super(model, tableau);
             JPanel component = new JPanel();
-            component.setLayout(new BoxLayout(component, BoxLayout.Y_AXIS));
+            component.setLayout(new BoxLayout(component, BoxLayout.X_AXIS));
 
 	    
             // Caveats panel.
             JPanel caveatsPanel = new JPanel();
             caveatsPanel.setBorder(
                     BorderFactory.createEmptyBorder(5, 0, 0, 0));
+            caveatsPanel.setLayout(new BoxLayout(caveatsPanel, BoxLayout.X_AXIS));
             JTextArea messageArea = new JTextArea(
                     "NOTE: This is a highly preliminary "
-                    + "code generator facility, with many\n"
+                    + "code generator facility, with many "
                     + "limitations.  It is best viewed as "
-                    + "a concept demonstration.", 2, 80);
+                    + "a concept demonstration.", 2, 10);
             messageArea.setEditable(false);
             messageArea.setBorder(BorderFactory.createEtchedBorder());
+	    messageArea.setLineWrap(true);
+	    messageArea.setWrapStyleWord(true);
             caveatsPanel.add(messageArea);
 
             JButton moreInfoButton = new JButton("More Info");
@@ -193,15 +196,19 @@ public class GeneratorTableau extends Tableau {
                     }
                 });
             caveatsPanel.add(moreInfoButton);
-            component.add(caveatsPanel);
 
-            JPanel controlPanel = new JPanel();
+            JPanel left = new JPanel();
+            left.setLayout(new BoxLayout(left, BoxLayout.Y_AXIS));
+
+            //component.add(caveatsPanel);
+            left.add(caveatsPanel);
 
             // Panel for push buttons.
             JPanel buttonPanel = new JPanel();
-            buttonPanel.setLayout(new GridLayout(7, 1));
-            buttonPanel.setBorder(
-                    BorderFactory.createEmptyBorder(10, 0, 10, 0));
+            //buttonPanel.setLayout(new GridLayout(7, 1));
+            buttonPanel.setLayout(new GridLayout(1, 4));
+            //buttonPanel.setBorder(
+            //        BorderFactory.createEmptyBorder(2, 0, 2, 0));
 
             // Button panel first.
             JButton parametersButton = new JButton("Parameters");
@@ -209,27 +216,28 @@ public class GeneratorTableau extends Tableau {
 		.setToolTipText("Display a summary of the Parameters");
             buttonPanel.add(parametersButton);
 
-            buttonPanel.add(Box.createVerticalStrut(10));
+            //buttonPanel.add(Box.createVerticalStrut(5));
 
             JButton goButton = new JButton("Generate");
             goButton.setToolTipText("Generate code");
             buttonPanel.add(goButton);
 
-            buttonPanel.add(Box.createVerticalStrut(10));
+            //buttonPanel.add(Box.createVerticalStrut(5));
 
             JButton stopButton = new JButton("Cancel");
             stopButton.setToolTipText("Terminate executing processes");
             buttonPanel.add(stopButton);
 
-            buttonPanel.add(Box.createVerticalStrut(10));
+            //buttonPanel.add(Box.createVerticalStrut(5));
             JButton clearButton = new JButton("Clear");
             clearButton.setToolTipText("Clear Log");
             buttonPanel.add(clearButton);
 
-            controlPanel.add(buttonPanel);
+            //controlPanel.add(buttonPanel);
+	    left.add(buttonPanel);
 
             // Add space right of the buttons
-            controlPanel.add(Box.createHorizontalStrut(20));
+            //controlPanel.add(Box.createHorizontalStrut(20));
 
             // Next, put in a panel to configure the code generator.
             // If the model contains an attribute with tableau
@@ -251,12 +259,17 @@ public class GeneratorTableau extends Tableau {
 
             Configurer configurer = new Configurer(attribute);
             final GeneratorTableauAttribute options = attribute;
-            controlPanel.add(configurer);
 
-            component.add(controlPanel);
+            JPanel controlPanel = new JPanel();
+            controlPanel.add(configurer);
+	    JScrollPane scrollPane = new JScrollPane(controlPanel);
+	    left.add(scrollPane, BorderLayout.CENTER);
+            //component.add(controlPanel);
+	    //left.add(controlPanel);
 
             // Add space under the control panel.
-            component.add(Box.createVerticalStrut(10));
+	    //component.add(Box.createVerticalStrut(10));
+	    component.add(left);
 
 	    // Create a JTextAreaExec without Start and Cancel buttons.
 	    final JTextAreaExec exec =
@@ -464,20 +477,20 @@ public class GeneratorTableau extends Tableau {
 				     .getToken()).stringValue();
 
 				execCommands.add("javap "
-                                        + "-classpath " 
+                                        + "-classpath \"" 
 					+ classPath	 
-                                        + " "
+                                        + "\" "
                                         + className);
 			    }
 
                             if (run && commands != null) {
-				System.println("GeneratorTableau: run"
+				System.out.println("GeneratorTableau: run"
 					       + commands.get(1));
 				execCommands.add(commands.get(1));
                             }
 
                             if (execCommands.size() > 0) {
-				System.println("GeneratorTableau: execCommand"
+				System.out.println("GeneratorTableau: execCommand"
 					       + execCommands.size());
 
 				exec.setCommands(execCommands);
