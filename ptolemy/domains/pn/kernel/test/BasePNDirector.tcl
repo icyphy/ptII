@@ -137,7 +137,7 @@ test BasePNDirector-7.1 {Test finishing methods} {
     set p1 [$t1 getPort input]
     set p2 [$t1 getPort output]
     $e71 connect $p1 $p2
-    set lis [java::new ptolemy.domains.pn.kernel.test.StringPNListener]
+    set lis [java::new ptolemy.domains.pn.kernel.event.test.StringPNListener]
     $d71 addProcessListener $lis
     $manager run
     set prof [$t1 getProfile]
@@ -176,7 +176,7 @@ test BasePNDirector-7.2 {Test artificial deadlock detection} {
     set p1 [$t1 getPort input]
     set p2 [$t1 getPort output]
     $e72 connect $p1 $p2
-    set lis [java::new ptolemy.domains.pn.kernel.test.StringPNListener]
+    set lis [java::new ptolemy.domains.pn.kernel.event.test.StringPNListener]
     $d72 addProcessListener $lis
     $manager run
     list [$t1 getProfile] [$lis getProfile]
