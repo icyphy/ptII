@@ -55,7 +55,8 @@ JSRCS = \
 	PNRamp.java \
 	PNRedirect.java \
 	PNSieve.java \
-	PNSink.java
+	PNSink.java \
+	TimedRamp.java
 
 EXTRA_SRCS =	$(JSRCS)
 
