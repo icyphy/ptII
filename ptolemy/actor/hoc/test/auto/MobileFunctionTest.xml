@@ -54,21 +54,6 @@ this actor MobileFunction.
         <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 285.0">
         </property>
     </property>
-    <entity name="MobileFunction" class="ptolemy.actor.MobileFunction">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="360.0, 150.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="function" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
-            </property>
-        </port>
-    </entity>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
         <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
         </property>
@@ -158,24 +143,38 @@ this actor MobileFunction.
             <property name="output"/>
         </port>
     </entity>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-    </relation>
+    <entity name="MobileFunction2" class="ptolemy.actor.hoc.MobileFunction">
+        <doc>The function it applied to its input data can be dynamically defined.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="355.0, 150.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="function" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="MobileFunction.input" relation="relation2"/>
-    <link port="MobileFunction.function" relation="relation"/>
-    <link port="MobileFunction.output" relation="relation4"/>
-    <link port="Ramp.output" relation="relation2"/>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Ramp.output" relation="relation5"/>
     <link port="Ramp.trigger" relation="relation6"/>
     <link port="Clock.output" relation="relation6"/>
-    <link port="Expression2.output" relation="relation"/>
+    <link port="Expression2.output" relation="relation2"/>
     <link port="Expression2.in" relation="relation3"/>
     <link port="SingleEvent.output" relation="relation3"/>
-    <link port="Test.input" relation="relation4"/>
+    <link port="Test.input" relation="relation"/>
+    <link port="MobileFunction2.input" relation="relation5"/>
+    <link port="MobileFunction2.function" relation="relation2"/>
+    <link port="MobileFunction2.output" relation="relation"/>
 </entity>
