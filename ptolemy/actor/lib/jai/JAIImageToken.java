@@ -31,7 +31,6 @@
 package ptolemy.actor.lib.jai;
 
 import ptolemy.data.ImageToken;
-import ptolemy.data.ScalarToken;
 import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
@@ -90,14 +89,14 @@ public class JAIImageToken extends ImageToken {
         }
     }
 
-    /** Convert a javax.media.jai.RenderedOp to a java.awt.Image and
-     *  return it.
+    /** Convert a javax.media.jai.RenderedOp to a BufferedImage, a 
+     *  subclass of awt.Image, and return it.
+     *
+     * @return A bufferedImage that is a rendering of the internal image.
      */
     public Image asAWTImage() {
-        _planarImage = _renderedOp.getRendering();
-        _bufferedImage = _planarImage.getAsBufferedImage();
-        _awtImage = (Image) _bufferedImage;
-        return _awtImage;
+        _bufferedImage = _renderedOp.getRendering().getAsBufferedImage();
+        return _bufferedImage;
     }
 
     /** Return a new token whose value is the division of this
@@ -121,6 +120,7 @@ public class JAIImageToken extends ImageToken {
         }
     }
 
+    //FIXME: There should be a new type for ImageTokens.
     /** Return the type of this token.
      *  @return BaseType.OBJECT
      */
@@ -183,15 +183,15 @@ public class JAIImageToken extends ImageToken {
 
     // Create a ParameterBlock containing two RenderedOp's, the first
     // being the internal Image, the second being from an ImageToken.
-    private ParameterBlock _parameterize(RenderedOp left, ImageToken right) {
-        ParameterBlock parameters = new ParameterBlock();
-        parameters.addSource(right.asAWTImage());
-        RenderedOp rightOp = JAI.create("awtImage", parameters);
-        parameters = new ParameterBlock();
-        parameters.addSource(left);
-        parameters.addSource(rightOp);
-        return parameters;
-    }
+//     private ParameterBlock _parameterize(RenderedOp left, ImageToken right) {
+//         ParameterBlock parameters = new ParameterBlock();
+//         parameters.addSource(right.asAWTImage());
+//         RenderedOp rightOp = JAI.create("awtImage", parameters);
+//         parameters = new ParameterBlock();
+//         parameters.addSource(left);
+//         parameters.addSource(rightOp);
+//         return parameters;
+//     }
 
     // Create a ParameterBlock containing two RenderedOp's, the first
     // being the internal Image, the second being from a JAIImageToken.
@@ -204,20 +204,20 @@ public class JAIImageToken extends ImageToken {
 
     // Create a ParameterBlock containing one RenderedOp and one double,
     // the first being the internal Image, the second from a ScalarToken.
-    private ParameterBlock _parameterize(RenderedOp left, ScalarToken right)
-            throws IllegalActionException {
-        ParameterBlock parameters = new ParameterBlock();
-        parameters.addSource(left);
-        parameters.add(right.doubleValue());
-        return parameters;
-    }
+//     private ParameterBlock _parameterize(RenderedOp left, ScalarToken right)
+//             throws IllegalActionException {
+//         ParameterBlock parameters = new ParameterBlock();
+//         parameters.addSource(left);
+//         parameters.add(right.doubleValue());
+//         return parameters;
+//     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private Image _awtImage;
+    // A buffered image that contains a rendering of the image.
     private BufferedImage _bufferedImage;
-    private PlanarImage _planarImage;
+    
+    // The internal RenderedOp.
     private RenderedOp _renderedOp;
-
 }

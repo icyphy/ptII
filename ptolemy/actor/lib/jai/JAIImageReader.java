@@ -90,7 +90,8 @@ public class JAIImageReader extends Source {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     
-    /** An attempt is made to acquire the file name..
+    /** An attempt is made to acquire the file name.  If it is 
+     *  successful, create the RenderedOp to be fired.
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the URL is null.
      */
@@ -102,6 +103,12 @@ public class JAIImageReader extends Source {
                 throw new IllegalActionException("URLToken was null");
             } else {
                 _fileRoot = url.getFile();
+                try {
+                    _stream = new FileSeekableStream(_fileRoot);
+                } catch (IOException error) {
+                    throw new IllegalActionException("Unable to load file");
+                }
+                _outputtedImage = JAI.create("stream", _stream);                
             }
         } else {
             super.attributeChanged(attribute);
@@ -113,15 +120,6 @@ public class JAIImageReader extends Source {
      *  or if the attempt to load the file has failed.
      */
     public void fire() throws IllegalActionException {
-        // We want to create the image in fire() simply because
-        // while the name of the file might not be changing, the 
-        // contents could be.
-        try {
-            _stream = new FileSeekableStream(_fileRoot);
-        } catch (IOException error) {
-            throw new IllegalActionException("Unable to load file");
-        }
-        _outputtedImage = JAI.create("stream", _stream);
         super.fire();
         output.send(0, new JAIImageToken(_outputtedImage));
     }
