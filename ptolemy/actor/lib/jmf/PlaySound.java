@@ -38,13 +38,14 @@ import javax.media.ControllerEvent;
 import javax.media.ControllerListener;
 import javax.media.GainControl;
 import javax.media.Manager;
-import javax.media.NoPlayerException;
+import javax.media.MediaException;
 import javax.media.Player;
 import javax.media.Time;
 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
@@ -90,6 +91,8 @@ public class PlaySound extends TypedAtomicActor implements ControllerListener {
         onOff.setTypeEquals(BaseType.BOOLEAN);
 
         percentGain = new SliderParameter(this, "percentGain");
+        // Set the default value to full scale.
+        percentGain.setToken(new IntToken(100));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -120,17 +123,20 @@ public class PlaySound extends TypedAtomicActor implements ControllerListener {
     /** If the attribute is <i>fileNameOrURL</i>, then create a new
      *  player.
      *  @param attribute The attribute that changed.
-     *  @exception IllegalActionException Not thrown in this base class.
+     *  @exception IllegalActionException If the file cannot be opened
+     *   or if the base class throws it.
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == fileNameOrURL) {
             try {
-                if (fileNameOrURL != null && fileNameOrURL.asURL() != null) {
+                if (fileNameOrURL != null
+                        && fileNameOrURL.asURL() != null) {
                     if (_player != null) {
                         _player.removeControllerListener(this);
                     }
-                    _player = Manager.createRealizedPlayer(fileNameOrURL.asURL());
+                    _player = Manager.createRealizedPlayer(
+                            fileNameOrURL.asURL());
                     _player.addControllerListener(this);
                     // Initiate as much preprocessing as possible.
                     // _player.realize();
@@ -141,9 +147,12 @@ public class PlaySound extends TypedAtomicActor implements ControllerListener {
                                 0.01f * percentGain.getCurrentValue());
                     }
                 }
-            } catch (Exception ex) {
+            } catch (IOException ex) {
                 throw new IllegalActionException(this,
                 "Cannot open file: " + ex.toString());
+            } catch (MediaException ex) {
+                throw new IllegalActionException(this,
+                "Exception thrown by media framework: " + ex.toString());
             }
         } else if (attribute == percentGain && _gainControl != null) {
             _gainControl.setLevel(0.01f * percentGain.getCurrentValue());
