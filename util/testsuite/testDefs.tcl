@@ -138,6 +138,33 @@ proc print_verbose {test_name test_description contents_of_test code answer {tes
     }
 }
 
+# This proc is similar to string compare $answer $passing_results
+# but before answer passing_result are compared, any instances
+# of the _createdBy version string as defined in NamedObj.exportMoML()
+# are filtered out.  This make it possible to change the version
+# number but not have to update all the tests
+proc ptFilterOutVersion {answer passing_results} {
+
+    set createdByRegularExpression \
+	    {    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="[0-9].*"/>\n}
+
+
+    regsub -all [java::call System getProperty "line.separator"] \
+	    $answer "\n" answer2
+    # We don't use -all here so that we remove only the first _createdBy
+    regsub $createdByRegularExpression $answer2 {} answer3
+
+    regsub -all [java::call System getProperty "line.separator"] \
+	    $passing_results "\n" passing_results2
+    # We don't use -all here so that we remove only the first _createdBy
+    regsub $createdByRegularExpression $passing_results2 {} passing_results3
+
+    #puts "answer3: $answer3"
+    #puts "passing_results3: $passing_results3"
+    return [string compare $answer3 $passing_results3]
+}
+
+
 proc test {test_name test_description contents_of_test passing_results {testtype "NORMAL"}} {
 
     # puts "======== $test_name"
@@ -179,19 +206,28 @@ proc test {test_name test_description contents_of_test passing_results {testtype
 	incr PASSED
     } else {
 	if {$testtype == "NORMAL"} {
-	    print_verbose $test_name $test_description $contents_of_test \
-		    $code $answer $testtype
-	    puts "---- Result should have been:"
-	    puts "$passing_results"
-	    if { [llength [split $passing_results "\n"]] > 7 } {
-		puts "@@@@@ known results is more than 7 lines long, so we run diff"
-		# If the answer is more than 7 lines, try running diff
-		puts [diffText $passing_results $answer]
-		puts "@@@@@ Done running diffText"
-	    }
+	    # See if the results are different only in version number
+	    if {[ptFilterOutVersion $answer $passing_results] == 0} then {
+		if $VERBOSE then {
+		    print_verbose $test_name $test_description \
+			    $contents_of_test $code $answer
+		    puts "++++ $test_name PASSED, though the _createBy numbers were different"
+		}
+	    } else {
+		print_verbose $test_name $test_description $contents_of_test \
+			$code $answer $testtype
+		puts "---- Result should have been:"
+		puts "$passing_results"
+		if { [llength [split $passing_results "\n"]] > 7 } {
+		    puts "@@@@@ known results is more than 7 lines long, so we run diff"
+		    # If the answer is more than 7 lines, try running diff
+		    puts [diffText $passing_results $answer]
+		    puts "@@@@@ Done running diffText"
+		}
 
-	    puts "---- $test_name FAILED"
-	    incr FAILED
+		puts "---- $test_name FAILED"
+		incr FAILED
+	    }
 	} else {
 	    print_verbose $test_name $test_description $contents_of_test \
 		    $code $answer $testtype
