@@ -74,7 +74,7 @@ public class StickyBallApplet extends CTApplet {
             // the top level CT director
             CTMultiSolverDirector topdir = new CTMultiSolverDirector(
                     _toplevel, "CTTopLevelDirector");
-            topdir.addDebugListener(new StreamListener());
+            //topdir.addDebugListener(new StreamListener());
             // two const sources
             // FIXME: to be replaced by impulse sources
             Const source1 = new Const(_toplevel, "Const1");
@@ -243,13 +243,13 @@ public class StickyBallApplet extends CTApplet {
 
             CTEmbeddedNRDirector ctIncDir = new CTEmbeddedNRDirector(
                     ctInc, "CTIncDir");
-            ctIncDir.addDebugListener(new StreamListener());
+            //ctIncDir.addDebugListener(new StreamListener());
             //System.out.println("Building the dynamics of two balls "
             //        + "sticking together.");
             CTCompositeActor ctDec = new CTCompositeActor(hs, "Together");
 
-            CTIntegrator ctDecV1 = new CTIntegrator(ctDec, "CTDecV1");
-            CTIntegrator ctDecP1 = new CTIntegrator(ctDec, "CTDecP1");
+            CTIntegrator ctDecV1 = new CTIntegrator(ctDec, "V1");
+            CTIntegrator ctDecP1 = new CTIntegrator(ctDec, "P1");
             CTIntegrator ctDecSTI = new CTIntegrator(ctDec, "STI");
             Scale ctGain = new Scale(ctDec, "Gain");
             ctGain.gain.setToken(new DoubleToken(-1.0));
@@ -266,6 +266,7 @@ public class StickyBallApplet extends CTApplet {
             TypedIOPort ctDecE2P1 = (TypedIOPort)ctDecE2.newPort("P1");
             ctDecE2P1.setInput(true);
             ctDecE2P1.setTypeEquals(DoubleToken.class);
+            ctDecE2.output.setTypeEquals(DoubleToken.class);
             // The expression is:
             // (K1*Y1 - K2*Y2 - K1*P1 + K2*P1)
             ctDecE2.expression.setExpression("1.0*1.0 - 2.0*2.0 - (1.0-2.0)*P1");
@@ -322,6 +323,11 @@ public class StickyBallApplet extends CTApplet {
             ctDecOV1.link(hsV1);
             hsout1.link(hsR1);
             hsout2.link(hsR2);
+
+            TypedIORelation hsF = new TypedIORelation(hs, "HSF");
+            ctDecOF.link(hsF);
+            TypedIORelation hsSTI = new TypedIORelation(hs, "HSSTI");
+            ctDecOSTI.link(hsSTI);
 
             // connect the top-level system
             _toplevel.connect(source1.output, hsin1);
