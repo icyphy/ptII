@@ -281,9 +281,12 @@ public class Assertion extends TypedAtomicActor {
         BooleanToken result = (BooleanToken) evaluate();
 
         if (!result.booleanValue()) {
-            throw new IllegalActionException(this,
+	    //            throw new IllegalActionException(this,
+            //        "AssertionModelError "
+            //        + assertion.getExpression());
+	    handleModelError(this, new IllegalActionException(this, 
                     "AssertionModelError "
-                    + assertion.getExpression());
+                    + assertion.getExpression()));
         }
 
         // This actor never requests termination.
