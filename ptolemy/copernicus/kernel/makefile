@@ -46,7 +46,8 @@ DIRS =
 JSRCS = \
 	ActorTransformer.java \
 	KernelMain.java \
-	SootUtilities.java
+	SootUtilities.java \
+	TransformerAdapter.java
 
 EXTRA_SRCS =	$(JSRCS)
 

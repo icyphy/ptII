@@ -52,12 +52,15 @@ import soot.Value;
 import soot.ValueBox;
 import soot.VoidType;
 import soot.jimple.DefinitionStmt;
+import soot.jimple.FieldRef;
 import soot.jimple.IntConstant;
 import soot.jimple.InterfaceInvokeExpr;
 import soot.jimple.InvokeExpr;
-import soot.jimple.FieldRef;
+import soot.jimple.InvokeStmt;
 import soot.jimple.Jimple;
 import soot.jimple.JimpleBody;
+import soot.jimple.NewExpr;
+import soot.jimple.SpecialInvokeExpr;
 import soot.jimple.Stmt;
 import soot.jimple.toolkits.scalar.Evaluator;
 import soot.jimple.toolkits.invoke.SiteInliner;
@@ -282,6 +285,8 @@ public class CommandLineTransformer extends SceneTransformer {
                                 actorMethod)));
             }
             /*
+              // We only need to do this after we have removed the manager and
+              // type resolution.
               for(Iterator entities = _model.entityList().iterator();
               entities.hasNext();) {
               Entity entity = (Entity)entities.next();
@@ -423,8 +428,14 @@ public class CommandLineTransformer extends SceneTransformer {
 
         // Optimizations.
         // We know that we will never parse classes, so throw away that code.
-        SootField field = mainClass.getFieldByName("_expectingClass");
-        SootUtilities.assertFinalField(mainClass, field, IntConstant.v(0));
+        SootUtilities.assertFinalField(mainClass, 
+                mainClass.getFieldByName("_expectingClass"), 
+                IntConstant.v(0));
+
+        // We know that we will never be testing, so throw away that code.
+        SootUtilities.assertFinalField(mainClass, 
+                mainClass.getFieldByName("_test"), 
+                IntConstant.v(0));
 
         // We know that we have exactly one model, so create it.
         // The final field for the model.
@@ -477,15 +488,70 @@ public class CommandLineTransformer extends SceneTransformer {
                 modelsField, modelList);
         
         // inline calls to the startRun and stopRun method.  
-        SootMethod startRunMethod = mainClass.getMethodByName("startRun");
-        SootUtilities.inlineCallsToMethod(startRunMethod, mainClass);
-        SootMethod stopRunMethod = mainClass.getMethodByName("stopRun");
-        SootUtilities.inlineCallsToMethod(stopRunMethod, mainClass);
-
+        SootUtilities.inlineCallsToMethod(
+                mainClass.getMethodByName("startRun"), mainClass);
+        SootUtilities.inlineCallsToMethod(
+                mainClass.getMethodByName("stopRun"), mainClass);
+        
         // unroll places where the model itself is looked at.
         // SootField modelsField = mainClass.getFieldByName("_models");
         // SootUtilities.unrollIteratorInstances(mainClass,
-        //        modelsField, modelList);        
+        //        modelsField, modelList);      
+        
+        // Take the instance of main, and convert it to be a static class.
+        /*
+          // FIXME this is currently broken.  
+        {
+            // First find the constructor statement.
+            SootMethod mainMethod = mainClass.getMethodByName("main");
+            JimpleBody body = (JimpleBody)mainMethod.retrieveActiveBody();
+            Chain units = body.getUnits();
+            for(Iterator stmts = units.iterator(); stmts.hasNext();) {
+                Stmt stmt = (Stmt)stmts.next();
+                // filter out anything that is not a definition.
+                if(!(stmt instanceof DefinitionStmt)) {
+                    continue;
+                }
+                DefinitionStmt newStmt = (DefinitionStmt)stmt;
+                Value value = (newStmt).getRightOp();
+                if(!(value instanceof NewExpr)) {
+                    continue;
+                }
+                RefType type = ((NewExpr)value).getBaseType();
+                if(type.getSootClass() != mainClass) {
+                    continue;
+                }
+                InvokeStmt constructorStmt = null;
+                // Now walk forward and find the constructor.
+                while(stmts.hasNext()) {
+                    stmt = (Stmt)stmts.next();
+                    if(stmt instanceof InvokeStmt &&
+                            ((InvokeStmt)stmt).getInvokeExpr()
+                            instanceof SpecialInvokeExpr) {
+                        constructorStmt = (InvokeStmt)stmt;
+                    }
+                    break;                            
+                }
+
+                // Now we actually have a creation of the main object,
+                // so create a class just for that instance.
+                SootClass staticMainClass = 
+                    SootUtilities.createStaticClassForInstance(
+                            mainClass, body, newStmt, constructorStmt, 
+                            Options.getString(options, "targetPackage")
+                            + ".StaticMain");
+                
+                // Remove the extra Main method that we created in
+                // doing this.
+                SootMethod staticMainMethod = 
+                    staticMainClass.getMethodByName("main");
+                staticMainClass.getMethods().remove(staticMainMethod);
+
+                break;
+            }
+        }
+        */
+        
     }
 
     private String _getFinalName(String dottedName) {

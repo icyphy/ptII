@@ -31,6 +31,7 @@ package ptolemy.copernicus.java;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.IORelation;
 import ptolemy.copernicus.kernel.SootUtilities;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.ComponentEntity;
@@ -40,6 +41,9 @@ import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.*;
+import ptolemy.data.Token;
+import ptolemy.data.IntToken;
+import ptolemy.data.expr.Parameter;
 
 import soot.*;
 import soot.jimple.*;
@@ -194,9 +198,68 @@ public class ModelTransformer extends SceneTransformer {
         _externalPorts(body, thisLocal, modelClass);
         _entities(body, thisLocal, modelClass, options);
         _attributes(body, _model, modelClass);
-        _relations(body, thisLocal);
-        _links(body);
-        _linksOnPortsContainedByContainedEntities(body);
+
+        // handle the communication
+        if(Options.getBoolean(options, "deep")) {
+            SootMethod clinitMethod;
+            Body clinitBody;
+            if(modelClass.declaresMethodByName("<clinit>")) {
+                clinitMethod = modelClass.getMethodByName("<clinit>");
+                clinitBody = clinitMethod.retrieveActiveBody();
+            } else {
+                clinitMethod = new SootMethod("<clinit>", new LinkedList(),
+                        VoidType.v(), Modifier.PUBLIC);
+                modelClass.addMethod(clinitMethod);
+                clinitBody = Jimple.v().newBody(clinitMethod);
+                clinitMethod.setActiveBody(clinitBody);
+                clinitBody.getUnits().add(Jimple.v().newReturnVoidStmt());
+            }
+            Chain clinitUnits = clinitBody.getUnits();
+            
+            // Create a new local variable.
+            BaseType tokenType = RefType.v("ptolemy.data.Token");
+            Type arrayType = ArrayType.v(tokenType, 1);
+            Local arrayLocal = 
+                Jimple.v().newLocal("bufferArray", arrayType);
+            clinitBody.getLocals().add(arrayLocal);
+
+            // If we're doing deep (SDF) codegen, then create a
+            // queue for every channel of every relation.
+            for(Iterator relations = _model.relationList().iterator();
+                relations.hasNext();) {
+                IORelation relation = (IORelation)relations.next();
+                Parameter bufferSizeParameter = 
+                    (Parameter)relation.getAttribute("bufferSize");
+                int bufferSize;
+                try {
+                    bufferSize = 
+                        ((IntToken)bufferSizeParameter.getToken()).intValue();
+                } catch (Exception ex) {
+                    System.out.println("No BufferSize parameter for " + 
+                            relation);
+                    continue;
+                }
+
+                for(int i=0; i < relation.getWidth(); i++) {
+                    SootField field = new SootField("_" + 
+                            relation.getName() + "_" + i, arrayType, Modifier.PUBLIC | Modifier.STATIC);
+                    modelClass.addField(field);
+
+                    // Create the new buffer
+                    clinitUnits.addFirst(Jimple.v().newAssignStmt(
+                            Jimple.v().newStaticFieldRef(field),
+                            arrayLocal));
+                    clinitUnits.addFirst(Jimple.v().newAssignStmt(arrayLocal, 
+                            Jimple.v().newNewArrayExpr(tokenType, 
+                                    IntConstant.v(bufferSize))));
+                    
+                }
+            }
+        } else {
+            _relations(body, thisLocal);
+            _links(body);
+            _linksOnPortsContainedByContainedEntities(body);
+        }
 
         units.add(Jimple.v().newReturnVoidStmt());
 

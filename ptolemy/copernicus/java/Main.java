@@ -32,6 +32,7 @@ package ptolemy.copernicus.java;
 import ptolemy.actor.CompositeActor;
 import ptolemy.copernicus.kernel.ActorTransformer;
 import ptolemy.copernicus.kernel.KernelMain;
+import ptolemy.copernicus.kernel.TransformerAdapter;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
@@ -40,6 +41,7 @@ import soot.*;
 import soot.jimple.*;
 import soot.jimple.toolkits.invoke.SiteInliner;
 import soot.jimple.toolkits.invoke.StaticInliner;
+import soot.jimple.toolkits.invoke.StaticMethodBinder;
 import soot.jimple.toolkits.invoke.InvokeGraphBuilder;
 import soot.jimple.toolkits.scalar.ConditionalBranchFolder;
 import soot.jimple.toolkits.scalar.ConstantPropagatorAndFolder;
@@ -87,6 +89,18 @@ public class Main extends KernelMain {
                 ModelTransformer.v(_toplevel)));
         Scene.v().getPack("wjtp").add(new Transform("wjtp.clt",
                 CommandLineTransformer.v(_toplevel)));
+        Scene.v().getPack("wjtp").add(new Transform("wjtp.ipt",
+                InlineParameterTransformer.v(_toplevel)));
+        Scene.v().getPack("wjtp").add(new Transform("wjtp.itt",
+                InlineTokenTransformer.v(_toplevel)));
+        //    Scene.v().getPack("wjtp").add(new Transform("wjtp.fot",
+        //        FieldOptimizationTransformer.v(_toplevel)));
+        //        Scene.v().getPack("wjtp").add(new Transform("wjtp.clu",
+        //      new TransformerAdapter(ConstantLoopUnroller.v())));
+        Scene.v().getPack("wjtp").add(new Transform("wjtp.iportt",
+        InlinePortTransformer.v(_toplevel)));
+        Scene.v().getPack("wjtp").add(new Transform("wjtp.itt",
+                InlineTokenTransformer.v(_toplevel)));
 
         //    Scene.v().getPack("wjtp").add(new Transform("wjtp.ibg",
         //        InvokeGraphBuilder.v()));
@@ -95,16 +109,16 @@ public class Main extends KernelMain {
 
         // When we fold classes, we create extra locals.  These optimizations
         // will remove them.  Unfortunately, -O creates bogus code?
-        /*   Scene.v().getPack("jtp").add(new Transform("jtp.cpaf",
-             ConstantPropagatorAndFolder.v()));
-             Scene.v().getPack("jtp").add(new Transform("jtp.cbf",
-             ConditionalBranchFolder.v()));
-             Scene.v().getPack("jtp").add(new Transform("jtp.uce",
-             UnreachableCodeEliminator.v()));
-             Scene.v().getPack("jtp").add(new Transform("jtp.cp",
-             CopyPropagator.v()));
-             Scene.v().getPack("jtp").add(new Transform("jtp.dae",
-             DeadAssignmentEliminator.v()));*/
+         Scene.v().getPack("jtp").add(new Transform("jtp.cpaf",
+                ConstantPropagatorAndFolder.v()));
+        Scene.v().getPack("jtp").add(new Transform("jtp.cbf",
+                ConditionalBranchFolder.v()));
+        Scene.v().getPack("jtp").add(new Transform("jtp.uce",
+                UnreachableCodeEliminator.v()));
+        Scene.v().getPack("jtp").add(new Transform("jtp.cp",
+                CopyPropagator.v()));
+        Scene.v().getPack("jtp").add(new Transform("jtp.dae",
+                DeadAssignmentEliminator.v()));
     }
 
     /** Read in a MoML model, generate java files

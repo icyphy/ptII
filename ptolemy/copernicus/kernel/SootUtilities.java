@@ -60,23 +60,43 @@ import soot.Value;
 import soot.ValueBox;
 import soot.VoidType;
 
+import soot.jimple.Expr;
+import soot.jimple.IntConstant;
+import soot.jimple.LongConstant;
+import soot.jimple.StringConstant;
+import soot.jimple.DoubleConstant;
+import soot.jimple.NullConstant;
+import soot.jimple.Constant;
 import soot.jimple.CastExpr;
 import soot.jimple.DefinitionStmt;
 import soot.jimple.FieldRef;
+import soot.jimple.IdentityStmt;
 import soot.jimple.InterfaceInvokeExpr;
+import soot.jimple.InstanceFieldRef;
+import soot.jimple.InstanceInvokeExpr;
 import soot.jimple.InvokeExpr;
+import soot.jimple.InvokeStmt;
 import soot.jimple.Jimple;
 import soot.jimple.JimpleBody;
+import soot.jimple.MonitorStmt;
 import soot.jimple.NewExpr;
 import soot.jimple.ParameterRef;
+import soot.jimple.SpecialInvokeExpr;
+import soot.jimple.StaticFieldRef;
+import soot.jimple.StaticInvokeExpr;
 import soot.jimple.Stmt;
 import soot.jimple.ThisRef;
 import soot.jimple.toolkits.invoke.SiteInliner;
+import soot.jimple.toolkits.invoke.SynchronizerManager;
 import soot.jimple.toolkits.scalar.Evaluator;
 
 import soot.toolkits.graph.Block;
 import soot.toolkits.graph.BlockGraph;
 import soot.toolkits.graph.CompleteBlockGraph;
+import soot.toolkits.graph.CompleteUnitGraph;
+import soot.toolkits.scalar.UnitValueBoxPair;
+import soot.toolkits.scalar.SimpleLocalDefs;
+import soot.toolkits.scalar.SimpleLocalUses;
 
 import soot.util.Chain;
 
@@ -84,6 +104,13 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+
+import java.lang.reflect.Method;
+
+import ptolemy.data.IntToken;
+import ptolemy.data.LongToken;
+import ptolemy.data.DoubleToken;
+import ptolemy.data.StringToken;
 
 /*
 import soot.jimple.toolkits.invoke.StaticInliner;
@@ -103,6 +130,72 @@ public class SootUtilities {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Make the given field final.  Anywhere where the the given
+     *  field is used in the given class, inline the reference with
+     *  the given value.  Anywhere where the given field is illegally
+     *  defined in the given class, inline the definition to throw an
+     *  exception.  This happens unless the given class is the
+     *  defining class for the given field and the definition occurs
+     *  within an initializer (for instance fields) or a static
+     *  initializer (for static fields).  
+     
+    public static void assertFinalField(SootClass theClass,
+            SootField theField) {
+        // First make the field final.
+        theField.setModifiers(theField.getModifiers() | Modifier.FINAL);
+
+        // Find any assignment to the field in the class and convert
+        // them to Exceptions, unless they are in constructors,
+        // in which case ignore them.
+        for(Iterator methods = theClass.getMethods().iterator();
+            methods.hasNext();) {
+            SootMethod method = (SootMethod)methods.next();
+            if(method.getName().equals("<init>")) {
+                continue;
+            }
+            
+            JimpleBody body = (JimpleBody)method.retrieveActiveBody();
+            Chain units = body.getUnits();
+
+            for(Iterator stmts = units.snapshotIterator();
+                stmts.hasNext();) {
+                Stmt stmt = (Stmt)stmts.next();
+                // Remove all the definitions.
+                for(Iterator boxes = stmt.getDefBoxes().iterator();
+                    boxes.hasNext();) {
+                    ValueBox box = (ValueBox)boxes.next();
+                    Value value = box.getValue();
+                    if(value instanceof FieldRef) {
+                        FieldRef ref = (FieldRef)value;
+                        if(ref.getField() == theField) {
+                            System.out.println("removing stmt = " + stmt);
+                            units.remove(stmt);
+                        }
+                    }
+                }
+                // Inline all the uses.
+                if(Evaluator.isValueConstantValued(newValue)) {
+                    for(Iterator boxes = stmt.getUseBoxes().iterator();
+                        boxes.hasNext();) {
+                        ValueBox box = (ValueBox)boxes.next();
+                        Value value = box.getValue();
+                        if(value instanceof FieldRef) {
+                            FieldRef ref = (FieldRef)value;
+                            if(ref.getField() == theField) {
+                                System.out.println("inlining stmt = " + stmt);
+
+                                box.setValue(Evaluator
+                                        .getConstantValueOf(newValue));
+                            }
+                        }
+
+                    }
+                }
+            }
+        }
+    }
+    */
 
     /** Make the given field final.  Anywhere where the the given
      *  field is used in the given class, inline the reference with
@@ -417,6 +510,278 @@ public class SootUtilities {
         }
     }
 
+    /** Return an object that represents the same numeric value as the given value.
+     *  @param value A constant value.
+     */
+    public static Object convertConstantValueToArgument(Value value) {
+        if(value instanceof NullConstant) {
+            return null;
+        } else if(value instanceof IntConstant) {
+            return new Integer(((IntConstant)value).value);
+        } else if(value instanceof LongConstant) {
+            return new Long(((LongConstant)value).value);
+        } else if(value instanceof StringConstant) {
+            return ((StringConstant)value).value;
+        } else if(value instanceof DoubleConstant) {
+            return new Double(((DoubleConstant)value).value);
+        } else {
+            throw new RuntimeException("unrecognized constant value = " 
+                    + value);
+        }            
+    }
+
+    /** Return a constant value that represents the same numeric value as the given object.
+     *  @param object An object that is assumed to be either a Token or a primitive Java object.
+     *  @return A constant value.
+     */
+    public static Constant convertArgumentToConstantValue(Object object) {
+        if(object == null) {
+            return NullConstant.v();
+        } else if(object instanceof IntToken) {
+            return IntConstant.v(((IntToken)object).intValue());
+        } else if(object instanceof LongToken) {
+            return LongConstant.v(((LongToken)object).longValue());
+        } else if(object instanceof StringToken) {
+            return StringConstant.v(((StringToken)object).stringValue());
+        } else if(object instanceof DoubleToken) {
+            return DoubleConstant.v(((DoubleToken)object).doubleValue());
+        } else if(object instanceof Integer) {
+            return IntConstant.v(((Integer)object).intValue());
+        } else if(object instanceof Long) {
+            return LongConstant.v(((Long)object).longValue());
+        } else if(object instanceof String) {
+            return StringConstant.v((String)object);
+        } else if(object instanceof Double) {
+            return DoubleConstant.v(((Double)object).doubleValue());
+        } else {
+            throw new RuntimeException("unrecognized constant value = " + object);
+        }            
+    }
+
+    /** Create statements that correspond to a for loop and return them.
+     *  The returned list will incorporate the statements in the
+     *  given list of initializer and body statements, and execute while the given 
+     *  conditional expression is true.
+     */
+    public static List createForLoopBefore(Body body, Unit insertPoint, List initializerList,
+            List bodyList, Expr conditionalExpr) {
+        List list = new LinkedList();
+        Stmt bodyStart = (Stmt)bodyList.get(0);
+        Stmt conditionalStmt = Jimple.v().newIfStmt(conditionalExpr, bodyStart);
+        body.getUnits().insertBefore(
+                initializerList, 
+                insertPoint);
+        body.getUnits().insertBefore(
+                Jimple.v().newGotoStmt(conditionalStmt),
+                insertPoint);
+        body.getUnits().insertBefore(
+                bodyList,
+                insertPoint);
+        body.getUnits().insertBefore(
+                conditionalStmt,
+                insertPoint);
+        return list;
+    }
+        
+    /** Create a new static class that will behave identically to the 
+     *  given instance.  Replace all references to the given instance with
+     *  references to the static class.
+     *  @param theClass The context in which method calls on the given instance
+     *  will be replaced with method calls to the new static class.
+     *  @param containerBody The body that contains the definition statement.
+     *  @param newStmt The statement where the instance is created.  The right
+     *  hand side of the definition is assumed to be an instance of NewExpr.
+     *  @param constructorStmt The statement where the initializer
+     *  for the instance is called.
+     *  @param className The name of the class that will be created.
+     */
+    public static SootClass createStaticClassForInstance(SootClass theClass,
+            Body containerBody, DefinitionStmt newStmt, 
+            InvokeStmt constructorStmt, String className) {
+        // FIXME: We need to do something if the object is passed to a 
+        // method.  Perhaps we can copy the method and inline the static
+        // methods inside.  Even worse, what if we pass to an
+        // object constructor?  We really need to create a static instance
+        // of that class as well, and recurse.
+
+        // First copy the class.
+        NewExpr newExpr = (NewExpr)newStmt.getRightOp();
+        SootClass instanceClass = newExpr.getBaseType().getSootClass();
+        SootClass staticClass = copyClass(instanceClass, className);
+        staticClass.setApplicationClass();
+
+        // some reason when writing out BAF.
+        // fold the class up to object.
+        SootClass objectClass = Scene.v().getSootClass("java.lang.Object");
+        SootClass superClass = staticClass.getSuperclass();
+        while(superClass != objectClass) {
+            superClass.setLibraryClass();
+            SootUtilities.foldClass(staticClass);
+            superClass = staticClass.getSuperclass();
+        }
+        
+        // Push the constructor code into the <clinit> method.
+        SootMethod constructorMethod = 
+            ((InvokeExpr)constructorStmt.getInvokeExpr()).getMethod();
+        SootMethod staticConstructorMethod =
+            staticClass.getMethod(constructorMethod.getSubSignature());
+        
+        SootMethod clinitMethod;
+        // create a class initializer if one does not already exist.
+        if(staticClass.declaresMethodByName("<clinit>")) {
+            clinitMethod = staticClass.getMethodByName("<clinit>");
+        } else {
+            clinitMethod = new SootMethod("<clinit>", new LinkedList(),
+                    NullType.v(), Modifier.STATIC);
+            staticClass.getMethods().add(clinitMethod);
+        }           
+
+        System.out.println("constructor = " + constructorStmt);
+        
+        constructorMethod.retrieveActiveBody();
+        JimpleBody clinitBody = 
+            (JimpleBody)clinitMethod.retrieveActiveBody();
+        Chain clinitUnits = clinitBody.getUnits();
+        Stmt insertPoint = (Stmt)clinitUnits.getLast();
+        // insert a (static) call to the (non static) 
+        // constructor.
+        // Later we will come back and inline this after we make all the 
+        // method static.
+        InvokeExpr constructorExpr = 
+            (InvokeExpr)constructorStmt.getInvokeExpr();
+        Stmt insertStmt = 
+            Jimple.v().newInvokeStmt(Jimple.v().newStaticInvokeExpr(
+                   staticConstructorMethod, constructorExpr.getArgs()));
+        clinitUnits.insertBefore(insertStmt, insertPoint);
+           
+        // Loop through the class and make all the non-static method static.
+        // Make all reference to this into static references.
+        for(Iterator methods = staticClass.getMethods().snapshotIterator();
+            methods.hasNext();) {
+            SootMethod method = (SootMethod)methods.next();
+            // ignore static methods.
+            if(method.isStatic()) {
+                continue;
+            }
+            System.out.println("method = " + method);
+            
+            JimpleBody body = (JimpleBody)method.retrieveActiveBody();
+            
+            Local thisLocal = body.getThisLocal();
+
+            // If we have an init method, then remove specialinvoke calls.
+            // These are calls to the superclass,
+            // and no longer make sense.
+            if(method.getName().equals("<init>")) {
+                Iterator units = body.getUnits().snapshotIterator();
+                while (units.hasNext()) {
+                    Stmt s = (Stmt)units.next();
+                    if (s instanceof InvokeStmt && 
+                            ((InvokeStmt)s).getInvokeExpr() instanceof SpecialInvokeExpr) {
+                        body.getUnits().remove(s);
+                        break;
+                    }
+                }
+                // and rename the method to something that is not reserved
+                // so we can call it manually.
+                method.setName("_init");
+            }
+
+            // FIXME: checks for equality with thisLocal.  What if
+            // thisLocal is aliased in another local?  Maybe we should
+            // run the CopyPropagator somewhere here?
+            // change method calls to static invocation
+            for(Iterator useBoxes = body.getUseAndDefBoxes().iterator();
+                useBoxes.hasNext();) {
+                ValueBox box = (ValueBox)useBoxes.next();
+                if(box.getValue() instanceof InstanceInvokeExpr) {
+                    InstanceInvokeExpr expr = 
+                        (InstanceInvokeExpr) box.getValue();
+                    Local local = (Local)expr.getBase();
+                    if(local == thisLocal) {
+                        System.out.println("fixing invoke = " + expr);
+                        box.setValue(Jimple.v().newStaticInvokeExpr(
+                                expr.getMethod(), expr.getArgs()));
+                    }
+                } else if(box.getValue() instanceof InstanceFieldRef) {
+                    InstanceFieldRef expr = 
+                        (InstanceFieldRef) box.getValue();
+                    Local local = (Local)expr.getBase();
+                    if(local == thisLocal) {
+                        System.out.println("fixing field = " + expr);
+                        box.setValue(Jimple.v().newStaticFieldRef(
+                                expr.getField()));
+                    }
+                }
+            }
+
+            // Fix synchronization locks.  Anything synchronized on this
+            // should instead be synchronized on the class.
+            for(Iterator stmts = body.getUnits().snapshotIterator();
+                stmts.hasNext();) {
+                Stmt stmt = (Stmt)stmts.next();
+                if(stmt instanceof MonitorStmt) {
+                    MonitorStmt monitorStmt = (MonitorStmt)stmt;
+                    Local lock = (Local)monitorStmt.getOp();
+                    if(lock == thisLocal) {
+                        Local classLocal = 
+                            SynchronizerManager.addStmtsToFetchClassBefore(
+                                    body, stmt);
+                        monitorStmt.setOp(classLocal);
+                    }
+                }                        
+            }
+
+            // remove the this identity statement.
+            Iterator units = body.getUnits().snapshotIterator();
+            while (units.hasNext()) {
+                Stmt s = (Stmt)units.next();
+                if (s instanceof IdentityStmt && 
+                        ((IdentityStmt)s).getRightOp() instanceof ThisRef) {
+                    body.getUnits().remove(s);
+                }
+            }
+
+            // make the method static.
+            method.setModifiers(method.getModifiers() | Modifier.STATIC);
+        }
+ 
+        // Loop through the class and make all the non-static fields static.
+        // Make all reference to this into static references.
+        for(Iterator fields = staticClass.getFields().iterator();
+            fields.hasNext();) {
+            SootField field = (SootField)fields.next();
+            // make the fieldd static.
+            field.setModifiers(field.getModifiers() | Modifier.STATIC);
+        }
+
+        System.out.println("inlining = " + constructorMethod);
+        System.out.println("inlineCall = " + insertStmt);
+        System.out.println("container = " + clinitMethod);
+        SiteInliner.inlineSite(staticConstructorMethod,
+                insertStmt, clinitMethod);
+             
+        // Now loop through all the reachable uses of the new definition
+        // and replace references to the local with references to the 
+        // static class.
+        // FIXME this only traces through locals.  What if we set the 
+        // value to a field?        
+        CompleteUnitGraph unitGraph = new CompleteUnitGraph(containerBody);
+        // this will help us figure out where locals are defined.
+        SimpleLocalDefs localDefs = new SimpleLocalDefs(unitGraph);
+        SimpleLocalUses localUses = new SimpleLocalUses(unitGraph, localDefs);
+        List useList = localUses.getUsesOf(newStmt);
+        for(Iterator pairs = useList.iterator();
+            pairs.hasNext();) {
+            UnitValueBoxPair pair = (UnitValueBoxPair)pairs.next();
+            Stmt useStmt = (Stmt)pair.getUnit();
+            ValueBox useBox = (ValueBox)pair.getValueBox();
+            System.out.println("used at = " + useStmt);
+        }
+        
+        return staticClass;
+    }
+
     /** Merge the given class with its super class.  All of the
      * methods and fields of the super class will be added to the
      * given class, if they do not already exist.  Methods existing in
@@ -611,6 +976,61 @@ public class SootUtilities {
         }    
     }
 
+    /** Return true if the given class derives from the given base class.
+     */
+    public static boolean derivesFrom(SootClass theClass, 
+            SootClass baseClass) {  
+        SootClass objectClass = Scene.v().getSootClass("java.lang.Object");
+        while(theClass != objectClass) {
+            if(baseClass == theClass ||
+               theClass.implementsInterface(baseClass.getName())) {
+                return true;
+            }
+            theClass = theClass.getSuperclass();
+        } 
+        return false;
+    }
+        
+    /** Reflect the given method on the class of the given object.  
+     * Invoke the method and return the returned value as a constant.
+     * If the returned value cannot be represented as a constant, then 
+     * throw an exception.
+     */
+    public static Constant reflectAndInvokeMethod(Object object, 
+            SootMethod sootMethod, Value argValues[]) {
+        Class objectClass = object.getClass();
+        Class[] parameterClasses =
+            new Class[sootMethod.getParameterCount()];
+        int i = 0;
+        Object[] args = new Object[argValues.length];
+        for(Iterator parameterTypes = 
+                sootMethod.getParameterTypes().iterator();
+            parameterTypes.hasNext();) {
+            Type parameterType = (Type)parameterTypes.next();
+            try {
+                args[i] = convertConstantValueToArgument(argValues[i]);
+                parameterClasses[i] = 
+                    Class.forName(parameterType.toString());
+                i++;
+            } catch (Exception ex) {
+                throw new RuntimeException("class not found = " 
+                        + parameterType.toString());
+            }
+        }
+        
+        Object returned;
+        try {
+            Method method = objectClass.getMethod(sootMethod.getName(), 
+                    parameterClasses);
+            
+            returned = method.invoke(object, args);
+        } catch (Exception ex) {
+            throw new RuntimeException("method not found = " 
+                    + sootMethod.getName());
+        }
+        return convertArgumentToConstantValue(returned);
+    }
+
     /** Get the method with the given name in the given class
      *  (or one of its super classes).
      */
@@ -627,13 +1047,15 @@ public class SootUtilities {
                 + theClass);
     }
 
-
     /** Anywhere where the iterator of the given field is referenced
      *  in the given class, unroll the iterator as if it contained the
      *  objects referenced by the given fields.
      */
     public static void unrollIteratorInstances(SootClass theClass, 
             SootField field, List fieldList) {
+        // FIXME: This is currently written using alot of manually searching
+        // of the blocks.  Unfortunately, finding them all is hard.
+        // This should really be done using Dava (when it is finished)
         SootClass iteratorClass = Scene.v().getSootClass("java.util.Iterator");
         SootMethod iteratorNextMethod =
             iteratorClass.getMethod("java.lang.Object next()");
@@ -648,7 +1070,7 @@ public class SootUtilities {
             for(Iterator blocks = graph.iterator();
                 blocks.hasNext();) {
                 Block block = (Block)blocks.next();
-                System.out.println("body = " + block);
+                // System.out.println("body = " + block);
                 // filter out anything that doesn't look like a loop body.
                 if ((block.getPreds().size() != 1) ||
                         (block.getSuccs().size() != 1)) {
@@ -657,7 +1079,7 @@ public class SootUtilities {
                 // filter out anything that isn't attached to something
                 // that looks like a conditional jump.
                 Block whileCond = (Block)block.getSuccs().get(0);
-                System.out.println("cond = " + whileCond);
+                //  System.out.println("cond = " + whileCond);
                 if(whileCond != block.getPreds().get(0) ||
                         whileCond.getPreds().size() != 2 ||
                         whileCond.getSuccs().size() != 2) {
@@ -689,7 +1111,7 @@ public class SootUtilities {
                     whilePredecessor = (Block)whileCond.getPreds().get(1);
                 }
 
-                System.out.println("whilePredecessor = " + whilePredecessor);
+                // System.out.println("whilePredecessor = " + whilePredecessor);
                 Unit unit = whilePredecessor.getTail();
                 boolean found = false;
                 // walk backwards until we find a definition of the iterator.
@@ -703,7 +1125,7 @@ public class SootUtilities {
                     }
                 }
 
-                System.out.println("iterator def = " + unit);
+                //  System.out.println("iterator def = " + unit);
                 DefinitionStmt iteratorDefinition = ((DefinitionStmt)unit);
 
                 if(!(iteratorDefinition.getRightOp()
@@ -716,7 +1138,7 @@ public class SootUtilities {
                 Local collectionLocal =
                     (Local) ((InterfaceInvokeExpr)iteratorDefinition
                             .getRightOp()).getBase();
-                System.out.println("collection Local = " + collectionLocal);
+                //  System.out.println("collection Local = " + collectionLocal);
                 found = false;
 
                 // Walk backward again until we reach the definition
@@ -730,8 +1152,8 @@ public class SootUtilities {
                         unit = whilePredecessor.getPredOf(unit);
                     }
                 }
-                System.out.println("collection def = " + unit);
-                System.out.println("field = " + field);
+                //  System.out.println("collection def = " + unit);
+                // System.out.println("field = " + field);
                 DefinitionStmt collectionDefinition = ((DefinitionStmt)unit);
                 if(!(collectionDefinition.getRightOp() instanceof FieldRef) ||
                         ((FieldRef)collectionDefinition.getRightOp())
@@ -739,7 +1161,7 @@ public class SootUtilities {
                     continue;
                 }
                 // FINALLY we know we've found something we can unroll... :)
-                System.out.println("is unrollable...");
+                // System.out.println("is unrollable...");
 
                 // There should be a jump from the predecessor to the
                 // condition.  Redirect this jump to the body.

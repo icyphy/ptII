@@ -46,9 +46,15 @@ DIRS =		test
 JSRCS = \
 	CommandLineTransformer.java \
 	EntitySootClass.java \
+	FieldOptimizationTransformer.java \
 	InlineParameterTransformer.java \
+	InlinePortTransformer.java \
+	InlineTokenTransformer.java \
 	Main.java \
-	ModelTransformer.java
+	ModelTransformer.java \
+	PtolemyUtilities.java \
+	ConstantLoopUnroller.java \
+	ValueTag.java	
 
 EXTRA_SRCS =	$(JSRCS)
 
@@ -83,7 +89,7 @@ SOURCECLASS = $(SOURCEPACKAGE).$(MODEL)
 DEEPTARGETPACKAGE = ptolemy.copernicus.java.cg.deep
 SHALLOWTARGETPACKAGE = ptolemy.copernicus.java.cg.shallow
 DEEPTARGETCLASS = $(DEEPTARGETPACKAGE).$(MODEL)
-SHALLOWTARGETCLASS = $(SHALLOWTARGETPACKAGE).ToplevelModel
+SHALLOWTARGETCLASS = $(SHALLOWTARGETPACKAGE).$(MODEL)
 
 JVM_SIZE = -Xmx132m
 
@@ -91,7 +97,7 @@ JVM_SIZE = -Xmx132m
 
 # Soot command line arguments for the user.  To list all the arguments, use
 # make SOOT_USER_ARGS=-h
-SOOT_USER_ARGS = 
+SOOT_USER_ARGS =
 
 compileShallowDemo: $(JCLASS)
 	@echo "generate shallow code for $(SOURCEPACKAGE)"
@@ -120,6 +126,10 @@ compileDeepDemo: $(JCLASS)
 		-p wjtp.at deep,targetPackage:$(DEEPTARGETPACKAGE) \
 		-p wjtp.mt deep,targetPackage:$(DEEPTARGETPACKAGE) \
 		-p wjtp.clt deep,targetPackage:$(DEEPTARGETPACKAGE) \
+		-p wjtp.fot deep,targetPackage:$(DEEPTARGETPACKAGE) \
+		-p wjtp.ipt deep,targetPackage:$(DEEPTARGETPACKAGE) \
+		-p wjtp.iportt deep,targetPackage:$(DEEPTARGETPACKAGE) \
+		-p wjtp.itt deep,targetPackage:$(DEEPTARGETPACKAGE) \
 		$(SOOT_USER_ARGS)
 	@echo "Here is that javap output"
 	javap -verbose -l -s -classpath $(ROOT) $(DEEPTARGETCLASS)
@@ -129,6 +139,12 @@ runDeepDemo:
 	$(JAVA) \
 	-Xfuture -classpath "$(CLASSPATH)" \
 	$(DEEPTARGETPACKAGE).Main 
+
+runStaticDeepDemo:
+	@echo "Run the deep model static"
+	$(JAVA) \
+	-Xfuture -classpath "$(CLASSPATH)" \
+	$(DEEPTARGETPACKAGE).StaticMain 
 # -iterations 50
 
 # Get the rest of the rules

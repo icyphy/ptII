@@ -275,7 +275,6 @@ public class ActorTransformer extends SceneTransformer {
                             setExpressionMethod,
                             StringConstant.v(((Settable)attribute)
                                     .getExpression()))));
-
         }
     }
 

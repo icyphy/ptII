@@ -176,9 +176,8 @@ public class KernelMain {
 	// if we are passed in a model directly without running readInModel().
         CompositeActor modelClass = null;
 	try {
-	    MoMLParser parser = new MoMLParser();
 	    modelClass = (CompositeActor)
-                parser._searchForClass(_momlClassName,
+                _parser._searchForClass(_momlClassName,
                         _toplevel.getMoMLInfo().source);
 	} catch (XmlException xml) {
             throw new
@@ -327,18 +326,17 @@ public class KernelMain {
         // Call the MOML parser on the test file to generate a Ptolemy II
         // model.
 	_momlClassName = momlClassName;
-        MoMLParser parser = new MoMLParser();
-	CompositeActor toplevel;
+       	CompositeActor toplevel;
         try {
 	    // First, try it as a top level model
 	    String source = "<entity name=\"ToplevelModel\""
 	        + "class=\"" + momlClassName + "\"/>\n";
-            toplevel = (CompositeActor)parser.parse(source);
+            toplevel = (CompositeActor)_parser.parse(source);
 
         } catch (Exception exception) {
 	    try {
 		// Then try it as an xml file
-		toplevel = (CompositeActor)parser.parseFile(momlClassName);
+		toplevel = (CompositeActor)_parser.parseFile(momlClassName);
 	    } catch (Exception exceptionTwo) {
 		throw new
 		    IllegalActionException("Failed to parse '"
@@ -367,6 +365,10 @@ public class KernelMain {
     /** The CompositeActor we are generating code for.
      */
     protected CompositeActor _toplevel;
+
+    /** The MoMLParser for parsing models.
+     */
+    protected MoMLParser _parser = new MoMLParser();
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
