@@ -63,8 +63,10 @@ public class Mailbox extends AbstractReceiver {
     ////                         public methods                    ////
 
     /** Clear this receiver of any contained token.
+     *  @throws IllegalActionException If a derived class throws it (not
+     *   thrown in this base class).
      */
-    public void clear() {
+    public void clear() throws IllegalActionException {
         _token = null;
     }
 
