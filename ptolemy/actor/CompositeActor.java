@@ -215,6 +215,33 @@ public class CompositeActor extends CompositeEntity implements Actor {
                             "Cannot create receivers");
                 }
             }
+            if (castedPort.isOpaque() && castedPort.isInput()) {
+                if (getExecutiveDirector() != null) {
+                    try {
+                        castedPort.createReceivers();
+                    } catch(IllegalActionException ex) {
+                        // Should never happen.
+                        throw new InternalErrorException
+                            (this, ex, "Cannot create receivers");
+                    }
+                }
+                Iterator insidePorts =
+                    castedPort.deepInsidePortList().iterator();
+                while (insidePorts.hasNext()) {
+                    IOPort p = (IOPort) insidePorts.next();
+                    Nameable portContainer = p.getContainer();
+                    if (portContainer instanceof AtomicActor) {
+                        ((AtomicActor)portContainer).connectionsChanged(p);
+                    } else if (portContainer instanceof CompositeActor) {
+                        ((CompositeActor)portContainer).connectionsChanged(p);
+                    }
+                }
+                // Invalidate the local director schedule and types
+                if (getDirector() != null) {
+                    getDirector().invalidateSchedule();
+                    getDirector().invalidateResolvedTypes();
+                }
+            }
         }
     }
 
