@@ -389,28 +389,39 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
 
     public void visitFunctionDefinitionNode(ASTPtFunctionDefinitionNode node)
             throws IllegalActionException {
-        // collect all free variables in the function definition
-        ParseTreeFreeVariableCollector collector =
-            new ParseTreeFreeVariableCollector();
-        Set freeVariableNames = collector.collectFreeVariables(
-                node, _scope);
-        // construct a NamedConstantsScope that maps the free variables to
-        // their current value in the scope
-        Map map = new HashMap();
-        Iterator variableNameIterator = freeVariableNames.iterator();
-        while (variableNameIterator.hasNext()) {
-            String name = (String)variableNameIterator.next();
-            if(_scope != null) {
-                ptolemy.data.Token value = _scope.get(name);
-                if(value != null) {
-                    map.put(name, value);
-                    continue;
-                }
-            }
-            throw new IllegalActionException(
-                    "The ID " + name + " is undefined.");
+        
+        ASTPtRootNode cloneTree;
+        try {
+            cloneTree = (ASTPtRootNode)node.getExpressionTree().clone();
+        } catch(CloneNotSupportedException ex) {
+            throw new IllegalActionException(null, ex, "Clone failed");
         }
-        NamedConstantsScope constantsScope = new NamedConstantsScope(map);
+        ParseTreeSpecializer specializer = new ParseTreeSpecializer();
+        specializer.specialize(cloneTree,
+                node.getArgumentNameList(), _scope);
+ 
+        // // collect all free variables in the function definition
+//         ParseTreeFreeVariableCollector collector =
+//             new ParseTreeFreeVariableCollector();
+//         Set freeVariableNames = collector.collectFreeVariables(
+//                 node, _scope);
+//         // construct a NamedConstantsScope that maps the free variables to
+//         // their current value in the scope
+//         Map map = new HashMap();
+//         Iterator variableNameIterator = freeVariableNames.iterator();
+//         while (variableNameIterator.hasNext()) {
+//             String name = (String)variableNameIterator.next();
+//             if(_scope != null) {
+//                 ptolemy.data.Token value = _scope.get(name);
+//                 if(value != null) {
+//                     map.put(name, value);
+//                     continue;
+//                 }
+//             }
+//             throw new IllegalActionException(
+//                     "The ID " + name + " is undefined.");
+//         }
+//        NamedConstantsScope constantsScope = new NamedConstantsScope(map);
          // Infer the return type.
         if(_typeInference == null) {
             _typeInference = new ParseTreeTypeInference();
@@ -418,9 +429,9 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
         _typeInference.inferTypes(node, _scope);
         FunctionType type = (FunctionType)node.getType();
         ExpressionFunction definedFunction =
-            new ExpressionFunction(node.getArgumentNameList(),
-                    node.getArgumentTypes(),
-                    (ASTPtRootNode)node.getExpressionTree(), constantsScope);
+            new ExpressionFunction(
+                    node.getArgumentNameList(), node.getArgumentTypes(),
+                    cloneTree);
         FunctionToken result = new FunctionToken(definedFunction, type);
         node.setToken(result);
         return;
@@ -1017,11 +1028,10 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
     private class ExpressionFunction implements FunctionToken.Function {
         
         public ExpressionFunction(List argumentNames, Type[] argumentTypes, 
-                ASTPtRootNode exprRoot, ParserScope freeVariablesScope) {
+                ASTPtRootNode exprRoot) {
             _argumentNames = new ArrayList(argumentNames);
             _argumentTypes = argumentTypes;
             _exprRoot = exprRoot;
-            _freeVariablesScope = freeVariablesScope;
         }
         
         public ptolemy.data.Token apply(List args)
@@ -1038,12 +1048,8 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
                 map.put(name, arg);
             }
             NamedConstantsScope argumentsScope = new NamedConstantsScope(map);
-            ArrayList listOfScopes = new ArrayList(2);
-            listOfScopes.add(0, argumentsScope);
-            listOfScopes.add(1, _freeVariablesScope);
-            ParserScope evaluationScope = new NestedScope(listOfScopes);
             return _parseTreeEvaluator.evaluateParseTree(
-                    _exprRoot, evaluationScope);
+                    _exprRoot, argumentsScope);
         }
         
         public int getNumberOfArguments() {

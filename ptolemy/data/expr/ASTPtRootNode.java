@@ -39,6 +39,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.LinkedList;
 
@@ -90,7 +91,18 @@ public class ASTPtRootNode implements Node, Cloneable {
      *   method throws it.
      */
     public Object clone() throws CloneNotSupportedException {
-        return super.clone();
+        ASTPtRootNode node = (ASTPtRootNode) super.clone();
+        if(_children != null) {
+            node._children = new ArrayList(_children.size());
+            // Deeply clone all the children.
+            for(Iterator i = _children.iterator(); i.hasNext();) {
+                ASTPtRootNode child = (ASTPtRootNode)i.next();
+                ASTPtRootNode clone = (ASTPtRootNode)child.clone();
+                node._children.add(clone);
+                clone._parent = node;
+            }
+        }
+        return node;
     }
 
     /** Override this method if you want to customize how the node dumps
@@ -208,7 +220,18 @@ public class ASTPtRootNode implements Node, Cloneable {
         return (_children == null) ? 0 : _children.size();
     }
 
-    /** Set the value of this node.  This may be set during parsing,
+    /** Set whether this node is a constant.  In almost all cases this
+     *  is statically determined when the parse tree is first parsed,
+     *  and this method is not normally called.  However, it can be
+     *  useful to transform a parse tree, which can make parts of the
+     *  parse tree constant which were not before.  This method is
+     *  provided for those transformations.
+     */
+    public void setConstant(boolean flag) {
+        _isConstant = flag;
+    }
+
+     /** Set the value of this node.  This may be set during parsing,
      *  if the node is a constant node, or during evaluation of the
      *  expression.
      */

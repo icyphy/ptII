@@ -131,4 +131,24 @@ public class AbstractParseTreeVisitor implements ParseTreeVisitor {
                 " cannot be visited by a " + getClass().getName() + ".");
     }
 
+    /** Loop through all of the children of this node,
+     *  visiting each one of them, which will cause their token
+     *  value to be determined.
+     */
+    protected void _visitAllChildren(ASTPtRootNode node)
+            throws IllegalActionException {
+        int numChildren = node.jjtGetNumChildren();
+        for (int i = 0; i < numChildren; i++) {
+            _visitChild(node, i);
+        }
+    }
+
+    /** Visit the child with the given index of the given node.
+     *  This is usually called while visiting the given node.
+     */
+    protected void _visitChild(ASTPtRootNode node, int i)
+            throws IllegalActionException {
+        ASTPtRootNode child = (ASTPtRootNode)node.jjtGetChild(i);
+        child.visit(this);
+    }
 }
