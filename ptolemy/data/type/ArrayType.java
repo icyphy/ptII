@@ -304,6 +304,13 @@ public class ArrayType extends StructuredType {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                       public variables                    ////
+
+    // FIXME: we are using this for codegen, see
+    // codegen/PtolemyTypeIdentifier.java
+    public static final ArrayType INT_ARRAY_TYPE = new ArrayType(BaseType.INT);
+
+    ///////////////////////////////////////////////////////////////////
     ////                       protected methods                   ////
 
     /** Compare this type with the specified type. The specified type
