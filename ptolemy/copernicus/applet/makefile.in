@@ -5,7 +5,7 @@
 #
 
 # Root of the Java directory
-ROOT =		@ptIIDirectory@
+ROOT =		@ptII@
 
 CLASSPATH =	$(ROOT)
 
@@ -14,19 +14,19 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	@sanitizedModelName@
+PTPACKAGE = 	@modelName@
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
-	@sanitizedModelName@.xml
+	@modelName@.xml \
+	@modelName@.htm \
+	@modelName@Vergil.htm
 
 EXTRA_SRCS = \
-	$(OTHER_FILES_TO_BE_JARED) \
-	@sanitizedModelName@.htm \
-	@sanitizedModelName@Vergil.htm
+	$(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -48,16 +48,16 @@ install: all $(PTCLASSJAR)
 
 demo: demo_applet demo_vergil_applet demo_ptolemy demo_vergil
 demo_applet:
-	CLASSPATH="$(CLASSPATH)" appletviewer @sanitizedModelName@.htm
+	CLASSPATH="$(CLASSPATH)" appletviewer @modelName@.htm
 
 demo_vergil_applet:
-	CLASSPATH="$(CLASSPATH)" appletviewer @sanitizedModelName@Vergil.htm
+	CLASSPATH="$(CLASSPATH)" appletviewer @modelName@Vergil.htm
 
 demo_ptolemy:
-	"$(PTII)/bin/ptolemy" @sanitizedModelName@.xml
+	"$(PTII)/bin/ptolemy" @modelName@.xml
 
 demo_vergil:
-	"$(PTII)/bin/vergil" @sanitizedModelName@.xml
+	"$(PTII)/bin/vergil" @modelName@.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
