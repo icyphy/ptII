@@ -309,14 +309,14 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
 
     /** Return the class name and the full name of the object,
      *  with syntax "classname {fullname}".
-     *  @returns The class name and the full name. */ 
+     *  @return The class name and the full name. */ 
     public String toString() {
         return getClass().getName() + " {" + getFullName()+ "}";
     }
 
     /** Get the workspace. This method never returns null, since there
      *  is always a workpace.
-     *  @returns The workspace responsible for this object.
+     *  @return The workspace responsible for this object.
      */	
     public Workspace workspace() {
         return _workspace; 
