@@ -142,7 +142,6 @@ public class PtolemyTransferable implements Transferable {
      * The flavor that requests a local virtual machine
      * reference to the contained object.
      */
-    public static final DataFlavor namedObjFlavor =
     public static final DataFlavor namedObjFlavor;
     static {
         // Under MacOS X 10.2, Java 1.4.1_01 we get a stack trace
