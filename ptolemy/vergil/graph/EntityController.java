@@ -105,7 +105,6 @@ public class EntityController extends LocatableNodeController {
         // Initialize the menu creator. 
 	_menuCreator = new MenuCreator(new EntityContextMenuFactory());
 	interactor.addInteractor(_menuCreator);
-	interactor.addInteractor(new ToolTipInteractor());
     }
 
     /** 
@@ -244,6 +243,8 @@ public class EntityController extends LocatableNodeController {
 	    Figure figure;
 	    EditorIcon icon = (EditorIcon)n.getSemanticObject();
 	    figure = icon.createFigure();
+            NamedObj object = (NamedObj) icon.getContainer();
+            figure.setToolTipText(object.getName());
 	    return figure;
 	}
     }

@@ -64,7 +64,6 @@ JSRCS = \
 	PtolemyTransferable.java \
 	PtolemyTreeCellRenderer.java \
 	PtolemyTreeModel.java \
-	ToolTipInteractor.java \
 	XMLIcon.java
 
 
