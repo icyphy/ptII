@@ -36,7 +36,7 @@ import ptolemy.data.*;
 import ptolemy.data.expr.Parameter;
 import ptolemy.domains.sdf.kernel.*;
 import ptolemy.math.SignalProcessing;
-import ptolemy.math.SampleGenerator;
+import ptolemy.math.DoubleUnaryOperation;
 
 //////////////////////////////////////////////////////////////////////////
 //// RaisedCosine
@@ -194,10 +194,10 @@ public class RaisedCosine extends FIR {
         double [][] tps = new double[1][];
         double center = len * 0.5;
 
-        SampleGenerator rcSg = sqrt ?
-            (SampleGenerator)
+        DoubleUnaryOperation rcSg = sqrt ?
+            (DoubleUnaryOperation)
             new SignalProcessing.SqrtRaisedCosineSampleGenerator(inter, ebw) :
-            (SampleGenerator)
+            (DoubleUnaryOperation)            
             new SignalProcessing.RaisedCosineSampleGenerator(inter, ebw);
 
         tps[0] = SignalProcessing.sampleWave(len, -center, 1.0, rcSg);
