@@ -220,7 +220,7 @@ public class DEReceiver extends AbstractReceiver {
                 dir._enqueueEvent(this, token, dir.getCurrentTime());
             }
         } catch (IllegalActionException ex) {
-            throw new InternalErrorException(ex.toString());
+            throw new InternalErrorException(this, ex, null);
         }
     }
 

@@ -521,7 +521,7 @@ public class DEDirector extends Director {
                 try {
                     _eventQueue.put((DEEvent)events.next());
                 } catch (IllegalActionException ex) {
-                    throw new InternalErrorException(ex.getMessage());
+                    throw new InternalErrorException(this, ex, null);
                 }
             }
             return nextTime;
@@ -957,7 +957,7 @@ public class DEDirector extends Director {
                     setCurrentTime(currentTime);
                 } catch (IllegalActionException ex) {
                     // Thrown if time moves backwards.
-                    throw new InternalErrorException(ex.toString());
+                    throw new InternalErrorException(this, ex, null);
                 }
 
                 currentDepth = currentEvent.depth();

@@ -84,7 +84,7 @@ public class ForwardEulerSolver extends FixedStepSolver {
         try {
             setName(_DEFAULT_NAME);
         } catch (KernelException ex) {
-            throw new InternalErrorException(ex.toString());
+            throw new InternalErrorException(this, ex, null);
         }
     }
 
