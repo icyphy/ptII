@@ -380,6 +380,7 @@ case "$JVERSION" in
 	1.4.*)
 		# If we call the jdk1.4 javadoc without -breakiterator,
 		# then we get lots of warnings
+		JDOCBREAKITERATOR=-breakiterator
         ;;
 	*) AC_MSG_RESULT([ok, you are running $JVERSION])
 	;;
