@@ -132,11 +132,6 @@ public class Interpolator extends SequenceSource {
      */
     public Parameter indexes;
 
-    /** The values that will be produced at the specified indexes.
-     *  This parameter is an array, with default value {1.0, 0.0}.
-     */
-    public Parameter values;
-
     /** The order of interpolation for non-index iterations.
      *  This parameter must contain an IntToken.
      */
@@ -146,6 +141,11 @@ public class Interpolator extends SequenceSource {
      *  This parameter must contain an IntToken.
      */
     public Parameter period;
+
+    /** The values that will be produced at the specified indexes.
+     *  This parameter is an array, with default value {1.0, 0.0}.
+     */
+    public Parameter values;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////

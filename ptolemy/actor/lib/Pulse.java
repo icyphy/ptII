@@ -125,15 +125,15 @@ public class Pulse extends SequenceSource {
      */
     public Parameter indexes;
 
-    /** The values that will be produced at the specified indexes.
-     *  This parameter is an array, with default value {1, 0}.
-     */
-    public Parameter values;
-
     /** The flag that indicates whether the pulse sequence needs to be
      *  repeated. This is a boolean, and defaults to false.
      */
     public Parameter repeat;
+
+    /** The values that will be produced at the specified indexes.
+     *  This parameter is an array, with default value {1, 0}.
+     */
+    public Parameter values;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
