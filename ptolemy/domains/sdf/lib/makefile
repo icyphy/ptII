@@ -87,6 +87,7 @@ JSRCS = \
 	VariableRecursiveLattice.java
 
 OTHER_FILES_TO_BE_JARED = \
+	FIRIcon.xml \
 	MaximumEntropySpectrum.xml \
 	Periodogram.xml \
 	SmoothedPeriodogram.xml \
