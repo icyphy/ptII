@@ -320,7 +320,8 @@ $(KEYSTORE):
 	"$(KEYTOOL)" -selfcert \
 		-keystore $(KEYSTORE) \
 		-alias $(KEYALIAS) \
-		$(STOREPASSWORD)
+		$(STOREPASSWORD) \
+		$(KEYPASSWORD)
 	"$(KEYTOOL)" -list \
 		-keystore $(KEYSTORE) \
 		$(STOREPASSWORD)
