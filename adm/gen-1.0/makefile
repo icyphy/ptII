@@ -230,8 +230,6 @@ htmlchek:
 # runs the ptIInightly-mail script.
 nightly: ptclean ptbuild \
 	clean all \
-	remote1coverage \
-	remote3cvs \
 	glimpse \
 	findchanges
 
