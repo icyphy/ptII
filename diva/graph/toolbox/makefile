@@ -28,7 +28,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		diva/graph/toobox
+ME =		diva/graph/toolbox
 
 DIRS =
 
