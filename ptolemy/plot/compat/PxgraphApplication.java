@@ -54,7 +54,7 @@ An application that can plot data in pxgraph format.
 To compile and run this application, do the following:
 <pre>
     javac -classpath ../../.. PxgraphApplication.java
-    java -classpath ../../.. ptolemy.plot.pxgraph.PxgraphApplication
+    java -classpath ../../.. ptolemy.plot.compat.PxgraphApplication
 </pre>
 <p>
 This class uses the helper class PxgraphParser to parse command-line
@@ -131,7 +131,7 @@ public class PxgraphApplication extends PlotApplication {
                 "Version " + PlotBox.PTPLOT_RELEASE +
                 ", Build: $Id$\n\n"+
                 "For help, type 'pxgraph -help', or see \n" +
-                "the class documentation in the plot.pxgraph package.\n" +
+                "the class documentation in the plot.compat package.\n" +
                 "For more information, see\n" +
                 "http://ptolemy.eecs.berkeley.edu/java/ptplot\n",
                 "About pxgraph", JOptionPane.INFORMATION_MESSAGE);
