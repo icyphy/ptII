@@ -54,6 +54,7 @@ JSRCS = \
 	PNInterleave.java \
 	PNRamp.java \
 	PNRedirect.java \
+	PNSieve.java \
 	PNSink.java
 
 EXTRA_SRCS =	$(JSRCS)
