@@ -63,7 +63,7 @@ attempt to open the specified file.
 <p>
 After invoking the constructor, the getSamples() method should
 be repeatedly invoked to read samples from the specified sound
-file. The getSamples() method takes a multidimenstional array
+file. The getSamples() method takes a multidimensional array
 as a parameter. The first index represents the channel number
 (0 for first channel, 1 for  second channel, etc.). The second
 index represents the sample index within a channel. For each
@@ -95,8 +95,6 @@ Note: Requires Java 2 v1.3.0 or later.
 @version $Id$
 @see ptolemy.media.javasound.SoundWriter
 */
-// FIXME: Consider adding a reset() method to reset to the
-// begining of the sound file.
 public class SoundReader {
 
     /** Construct a sound reader object that reads audio samples
@@ -242,7 +240,7 @@ public class SoundReader {
 		return null;
 	    } else if (numBytesRead != _data.length) {
 		// Read fewer samples than productionRate many samples.
-		// FIXME: There appears to be a java sound bug that
+		// Note: There appears to be a java sound bug that
 		// causes AudioInputStream.read(array) to sometimes
 		// return fewer bytes than requested, even though
 		// the end of the file has not yet been reached.
@@ -413,7 +411,7 @@ public class SoundReader {
 	    maxSampleReciprocal = 0;
 	}
 	// Check if we need to reallocate.
-	// FIXME: This test is really not needed since bytesPerSample
+	// Note: This test is really not needed since bytesPerSample
 	// is set in the constructor. It should never change.
 	if (bytesPerSample != _b.length) {
 	    _b = new byte[bytesPerSample];
