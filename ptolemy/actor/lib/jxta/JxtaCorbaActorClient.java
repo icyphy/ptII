@@ -331,6 +331,7 @@ public class JxtaCorbaActorClient extends TypedAtomicActor implements QueryHandl
             throw new InvalidStateException(this,
                     "Comminication Failiar."+ex.getMessage());
         }
+        // FIXME: why don't we return the value of result?
         return true;
     }
 
