@@ -335,7 +335,10 @@ public class Receiver extends X10Interface {
                     throw new KernelRuntimeException(Receiver.this, null, ex,
                     "fireAtCurrentTime() failed.");
                 }
-            }       
+            }
+            synchronized (Receiver.this) {
+                notifyAll();
+            }
         }    
     }
 }
