@@ -52,22 +52,22 @@ if {[string compare test [info procs test]] == 1} then {
 # 
 test StringToken-1.1 {Get information about the class} {
     # If anything changes, we want to know about it so we can write tests.
-    set n [java::new pt.kernel.StringToken]
+    set n [java::new pt.data.StringToken]
     list [getJavaInfo $n]
 } {{
-  class:         pt.kernel.StringToken
+  class:         pt.data.StringToken
   fields:        
   methods:       clone {equals java.lang.Object} {fromString java.lang.S
     tring} getClass getValue hashCode notify notifyAll {set
     Value java.lang.Object} toString wait {wait long} {wait
      long int}
     
-  constructors:  pt.kernel.StringToken {pt.kernel.StringToken java.lang.
+  constructors:  pt.data.StringToken {pt.data.StringToken java.lang.
     String}
     
   properties:    class value
     
-  superclass:    pt.kernel.ObjectToken
+  superclass:    pt.data.ObjectToken
     
 }}
 
@@ -75,7 +75,7 @@ test StringToken-1.1 {Get information about the class} {
 ####
 # 
 test StringToken-2.1 {Create an empty instance} {
-    set p [java::new pt.kernel.StringToken]
+    set p [java::new pt.data.StringToken]
     $p toString
 } {}
 
@@ -83,7 +83,7 @@ test StringToken-2.1 {Create an empty instance} {
 ####
 # 
 test StringToken-2.2 {Create an empty instance and query its value} {
-    set p [java::new pt.kernel.StringToken]
+    set p [java::new pt.data.StringToken]
     $p getValue
 } {}
 
@@ -91,7 +91,7 @@ test StringToken-2.2 {Create an empty instance and query its value} {
 ####
 # 
 test StringToken-3.1 {Create an empty instance and attempt to init from string} {
-    set p [java::new pt.kernel.StringToken]
+    set p [java::new pt.data.StringToken]
     $p fromString foo
     $p toString
 } {foo}
@@ -100,7 +100,7 @@ test StringToken-3.1 {Create an empty instance and attempt to init from string} 
 ####
 # 
 test StringToken-4.1 {Create an empty instance and clone} {
-    set p [java::new pt.kernel.StringToken]
+    set p [java::new pt.data.StringToken]
     set q [$p clone]
     $q getValue
 } {}
@@ -110,7 +110,7 @@ test StringToken-4.1 {Create an empty instance and clone} {
 # 
 test StringToken-4.2 {Create a non empty instance and clone} {
     set n [java::new {java.lang.String String} foo]
-    set p [java::new pt.kernel.StringToken $n]
+    set p [java::new pt.data.StringToken $n]
     set q [$p clone]
     list [$p toString] [$q toString]
 } {foo foo}
