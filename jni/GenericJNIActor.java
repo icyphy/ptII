@@ -23,6 +23,9 @@ import ptolemy.kernel.util.Workspace;
 
 import ptolemy.gui.MessageHandler;
 
+import ptolemy.util.StringUtilities;
+
+import java.io.File;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.util.Iterator;
@@ -330,22 +333,34 @@ public class GenericJNIActor extends TypedAtomicActor {
                 _argList.remove(((Nameable) arg));
         }
 
-        /** Load the generated class and search for its fire method
+        /** Load the generated class and search for its fire method.
+	 *  The class is searched for in the following locations in
+	 *  order
+	 *  <ol>
+	 *  <li> The directory named by the value 
+	 *  the <i>dllDir</i> parameter relative to the current directory.
+	 *  (The current directory is named by the user.dir property)
+	 *  <li> The directory named by the value 
+	 *  the <i>dllDir</i> parameter relative to $PTII, which is named
+	 *  by the ptolemy.ptII.dir property.
+	 *  <li> Elsewhere in the path named by the the java.library.path
+	 *  property.
+         *  </ol>
          */
         public void initialize() {
                 String libName = "";
-                String dllDir = "";
+                String dllDirValue = "";
                 try {
                         libName =
                                 ((StringToken) ((Parameter) this
                                         .getAttribute("Native Library Name"))
                                         .getToken())
                                         .toString();
-                        dllDir =
+                        dllDirValue =
                                 ((StringToken) ((Parameter) this
                                         .getAttribute("DLLs Directory"))
                                         .getToken())
-                                        .toString();
+                                        .stringValue();
                 } catch (Exception ex) {
                         MessageHandler.error("no dllDir or libName ! : ", ex);
                 }
@@ -357,18 +372,26 @@ public class GenericJNIActor extends TypedAtomicActor {
                         URL[] tab = new URL[1];
                         tab[0] = new URL("File://" + System.getProperty("users.dir"));
                         ClassLoader cl = new URLClassLoader(tab);
-                        _clas =
-                                cl.loadClass("jni." + interlibName + ".Jni" + this.getName());
+                        _clas = cl.loadClass("jni." + interlibName + ".Jni"
+					     + this.getName());
                 } catch (Exception ex) {
                         MessageHandler.error("Interface C class not found : ", ex);
                 }
-                System.setProperty(
-                        "java.library.path",
-                        System.getProperty("user.dir")
-                                + "/"
-                                + dllDir
-                                + ";"
-                                + System.getProperty("java.library.path"));
+
+		// Add the value of dllDir to the java.library.path 
+		// First, look relative to the current directory (user.dir)
+		// Second, look relative to $PTII
+                System.setProperty("java.library.path",
+				   StringUtilities.getProperty("user.dir")
+				   + File.separator
+				   + dllDirValue
+				   + File.pathSeparator
+				   + StringUtilities
+				   .getProperty("ptolemy.ptII.dir")
+				   + File.separator
+				   + dllDirValue
+				   + File.pathSeparator
+				   + System.getProperty("java.library.path"));
                 meth = null;
                 try {
                         meth = _clas.getMethods();
@@ -431,15 +454,48 @@ public class GenericJNIActor extends TypedAtomicActor {
                 Object obj = null;
                 Object ret = null;
                 try {
+		    try {
                         obj = _clas.newInstance();
+		    } catch (Error error) {
+			// Using JNI to link in a native library
+			// can result in a java.lang.UnsatistifiedLineError
+			// which extends Error, not Exception.
+			// FIXME: Rethrow the error as an exception
+			String libraryPath =
+			    StringUtilities.getProperty("java.library.path");
+			
+                        throw new Exception("Class '" + _clas
+					    + "' cannot be instantiated.\n"
+					    + "Be sure that the library "
+					    + "is in your PATH.\n"
+					    + "You may need to exit, set your "
+					    + "path to include the directory "
+					    + "that contains the dll and "
+					    + "restart.\n"
+					    + "For example, under Windows "
+					    + "in a Cygwin bash shell:\n"
+					    + "PATH=c:/ptII/jni/dll\n" 
+					    + "export PATH\n"
+					    + "vergil -jni foo.xml\n"
+					    + "A common error is that "
+					    + "the class cannot be found in "
+					    + "property 'java.library.path' "
+					    + "which is:\n"
+					    + libraryPath
+					    + "\nError message was: "
+					    + error.getMessage(),
+					    error);
+		    }
                 } catch (Exception ex) {
-                        MessageHandler.error("Class cannot be instantiated: ", ex);
+                        MessageHandler.error("Class cannot be instantiated: ",
+					     ex);
                 }
 
                 try {
                         ret = meth[ind].invoke(obj, args.toArray());
                 } catch (Exception ex) {
-                        MessageHandler.error("Native operation call failed : ", ex);
+                        MessageHandler.error("Native operation call failed : ",
+					     ex);
                 }
 
                 ite = this.portList().iterator();
