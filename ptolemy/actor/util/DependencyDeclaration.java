@@ -83,17 +83,19 @@ public class DependencyDeclaration extends Attribute {
     ////                         public methods                    ////
 
     /** Return the list of dependents of the parameter that contains
-     * this attribute.  This attribute declares that the container
-     * depends on at least the given set of parameters.
-     * @return A list of variables.
+     *  this attribute.  This attribute declares that the container
+     *  depends on at least the given set of parameters.
+     *  @return A list of variables.
+     *  @see #setDependents 
      */
     public List getDependents() {
         return _dependents;
     }
 
     /** Set the set of dependents for this declaration.
-     * @param dependents A list of variables.
-     * @exception RuntimeException If the list of dependents is null.
+     *  @param dependents A list of variables.
+     *  @exception RuntimeException If the list of dependents is null.
+     *  @see #getDependents
      */
     public void setDependents(List dependents) {
         if (dependents == null) {

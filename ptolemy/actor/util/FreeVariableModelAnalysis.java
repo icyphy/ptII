@@ -79,6 +79,7 @@ public class FreeVariableModelAnalysis {
     /** Return the computed free variables for the given entity.
      *  @param entity An entity, which must be deeply contained by the
      *  model for which this analysis was created.
+     *  @return The computed free variables for the given entity.
      *  @exception RuntimeException If the free variables for the
      *  entity have not already been computed.
      */

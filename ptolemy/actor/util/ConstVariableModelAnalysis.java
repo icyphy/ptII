@@ -115,6 +115,8 @@ public class ConstVariableModelAnalysis {
      *  change dynamically.  In addition, store the intermediate
      *  results for contained actors so they can be retrieved by the
      *  getConstVariables() method.
+     *  @param model The model to be analyzed.
+     *  @param variableSet The set to be analyzed.
      *  @exception IllegalActionException If an exception occurs
      *  during analysis.
      */
@@ -122,7 +124,8 @@ public class ConstVariableModelAnalysis {
             throws IllegalActionException {
         _variableToChangeContext = new HashMap();
 
-        for (Iterator variables = variableSet.iterator(); variables.hasNext();) {
+        for (Iterator variables = variableSet.iterator(); 
+            variables.hasNext();) {
             Variable variable = (Variable) variables.next();
             _variableToChangeContext.put(variable, model);
         }
@@ -140,6 +143,7 @@ public class ConstVariableModelAnalysis {
      *  dependence graph of this analysis.  This method can be called
      *  by users of this class to update the analysis without
      *  recomputing all of the information from scratch.
+     *  @param declaration The given dependency declaration.
      */
     public void addDependencyDeclaration(DependencyDeclaration declaration)
             throws IllegalActionException {
@@ -148,13 +152,17 @@ public class ConstVariableModelAnalysis {
     }
 
     /** Return the analysis that is active for the given object.
+     *  @param The given object.
+     *  @return The active analysis for the given object.
+     *  @exception If an exception occurs during analysis.
      */
     public static ConstVariableModelAnalysis getAnalysis(NamedObj object)
             throws IllegalActionException {
         CompositeActor toplevel = (CompositeActor) object.toplevel();
         Manager manager = toplevel.getManager();
 
-        ConstVariableModelAnalysis analysis = (ConstVariableModelAnalysis) manager
+        ConstVariableModelAnalysis analysis = 
+            (ConstVariableModelAnalysis) manager
             .getAnalysis("ConstVariableModelAnalysis");
 
         if (analysis == null) {
@@ -168,6 +176,8 @@ public class ConstVariableModelAnalysis {
     /** Return the change context of the given variable.  This an
      *  actor containing the variable, such that the variable is
      *  guaranteed not to change values during a firing of the actor.
+     *  @param The given variable.
+     *  @return The change context of the given variable.
      */
     public Entity getChangeContext(Variable variable) {
         return (Entity) _variableToChangeContext.get(variable);
@@ -175,6 +185,8 @@ public class ConstVariableModelAnalysis {
 
     /** Return the constant value of the given parameter, if the
      *  parameter is actually constant.
+     *  @param The given variable.
+     *  @return The constant value of the given variable.
      *  @exception IllegalActionException If the given parameter is
      *  not a constant parameter, as determined by this analysis.
      */
@@ -189,6 +201,8 @@ public class ConstVariableModelAnalysis {
     }
 
     /** Return the computed constant variables for the given container.
+     *  @param The given container.
+     *  @return The computed constant variables.
      *  @exception RuntimeException If the constant variables for the
      *  container have not already been computed.
      */
@@ -200,12 +214,15 @@ public class ConstVariableModelAnalysis {
 
     /** Return the parameter dependency graph constructed through this
      *  analysis.
+     *  @return The parameter dependency graph.
      */
     public DirectedGraph getDependencyGraph() {
         return _dependencyGraph;
     }
 
     /** Return the computed not constant variables for the given container.
+     *  @param The given container.
+     *  @return The computed not constant variables.
      *  @exception RuntimeException If the constant variables for the
      *  container have not already been computed.
      */
@@ -216,6 +233,9 @@ public class ConstVariableModelAnalysis {
     }
 
     /** Return the set of variables anywhere in the model that have
+     *  the given container as least change context.
+     *  @param The given container.
+     *  @return The set of variables anywhere in the model that have
      *  the given container as least change context.
      */
     public Set getVariablesWithChangeContext(NamedObj container) {
@@ -237,6 +257,7 @@ public class ConstVariableModelAnalysis {
     /** Return true if the given variable is not reconfigured in the
      *  model.  The variable is assumed to be contained by the model
      *  this analysis was created with.
+     *  @return True If the given variable is not reconfigured in the model.
      */
     public boolean isConstant(Variable variable) {
         return !_variableToChangeContext.keySet().contains(variable);
@@ -244,10 +265,12 @@ public class ConstVariableModelAnalysis {
 
     /** Return true if the variable has been analyzed by this analysis
      *  and it depends on no other parameters.
+     *  @return True If the variable has been analyzed by this analysis
+     *  and it depends on no other parameters
      */
     public boolean isIndependent(Variable variable) {
-        if (_dependencyGraph.backwardReachableNodes(_dependencyGraph.node(
-                                                            variable)).size() > 0) {
+        if (_dependencyGraph.backwardReachableNodes(
+                _dependencyGraph.node(variable)).size() > 0) {
             return false;
         } else {
             return true;
@@ -282,7 +305,8 @@ public class ConstVariableModelAnalysis {
         try {
             Set freeIdentifiers = variable.getFreeIdentifiers();
 
-            for (Iterator names = freeIdentifiers.iterator(); names.hasNext();) {
+            for (Iterator names = freeIdentifiers.iterator(); 
+                names.hasNext();) {
                 String name = (String) names.next();
                 Variable dependent = ModelScope.getScopedVariable(variable,
                         variable, name);
@@ -313,7 +337,8 @@ public class ConstVariableModelAnalysis {
         }
 
         if (container instanceof DependencyDeclaration) {
-            DependencyDeclaration declaration = (DependencyDeclaration) container;
+            DependencyDeclaration declaration = 
+                (DependencyDeclaration) container;
             _addDependencyDeclaration(declaration);
         }
 
@@ -367,7 +392,7 @@ public class ConstVariableModelAnalysis {
 
     // Recursively compute the set of constant variables for all actors
     // deeply contained in the given model.
-    private void _analyzeAllVariables() throws IllegalActionException {
+    private void _analyzeAllVariables() {
         // Sets of variables used to track the fixed point iteration.
         LinkedList workList = new LinkedList(_variableToChangeContext.keySet());
 

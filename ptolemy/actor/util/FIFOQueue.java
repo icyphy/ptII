@@ -167,6 +167,7 @@ public class FIFOQueue implements Cloneable {
 
     /** Return the queue capacity, or INFINITE_CAPACITY if it is unbounded.
      *  @return The capacity of the queue.
+     *  @see #setCapacity
      */
     public int getCapacity() {
         return _queueCapacity;
@@ -174,6 +175,7 @@ public class FIFOQueue implements Cloneable {
 
     /** Return the container of the queue, or null if there is none.
      *  @return The container of the queue.
+     *  @see #setContainer
      */
     public Nameable getContainer() {
         return _container;
@@ -183,6 +185,7 @@ public class FIFOQueue implements Cloneable {
      *  This will be zero if the history mechanism is disabled and
      *  INFINITE_CAPACITY if the history capacity is infinite.
      *  @return The capacity of the history queue.
+     *  @see #setHistoryCapacity
      */
     public int getHistoryCapacity() {
         return _historyCapacity;
@@ -249,6 +252,7 @@ public class FIFOQueue implements Cloneable {
      *  @exception IllegalActionException If the queue contains more
      *   objects than the proposed capacity or the proposed capacity
      *   is illegal.
+     *  @see #getCapacity
      */
     public void setCapacity(int capacity) throws IllegalActionException {
         if ((capacity < 0) && (capacity != INFINITE_CAPACITY)) {
@@ -267,6 +271,7 @@ public class FIFOQueue implements Cloneable {
     /** Set the container of the queue. The container is only used
      *  for error reporting.
      *  @param container The container of this queue.
+     *  @see #getContainer
      */
     public void setContainer(Nameable container) {
         _container = container;
@@ -282,6 +287,7 @@ public class FIFOQueue implements Cloneable {
      *  @param capacity The desired capacity of the history queue.
      *  @exception IllegalActionException If the desired capacity
      *   is illegal.
+     *  @see #getHistoryCapacity
      */
     public void setHistoryCapacity(int capacity) throws IllegalActionException {
         if (capacity > 0) {

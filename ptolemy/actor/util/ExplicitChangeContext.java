@@ -60,19 +60,20 @@ public interface ExplicitChangeContext extends Nameable {
     ////                         public methods                    ////
 
     /** Return a list of variables that this entity modifies.  The
-     * variables are assumed to have a change context of the given
-     * entity.
-     * @return A list of variables.
-     * @exception IllegalActionException If the list of modified
-     * variables cannot be returned.
+     *  variables are assumed to have a change context of the given
+     *  entity.
+     *  @return A list of variables.
+     *  @exception IllegalActionException If the list of modified
+     *  variables cannot be returned.
      */
     public List getModifiedVariables() throws IllegalActionException;
 
-    /**
-     * Return the change context being made explicit.  In simple cases, this
-     * will simply be the entity implementing this interface.  However, in
-     * more complex cases, directors may implement this interface, or entities
-     * may modify parameters according to a different change context (i.e. HDF)
+    /** Return the change context being made explicit.  In simple cases, this
+     *  will simply be the entity implementing this interface.  However, in
+     *  more complex cases, directors may implement this interface, or entities
+     *  may modify parameters according to a different change context (i.e. HDF)
+     *  @return The change context being made explicit.
+     *  @exception IllegalActionException If the context is not available.
      */
     public Entity getContext() throws IllegalActionException;
 }
