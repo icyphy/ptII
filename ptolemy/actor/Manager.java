@@ -167,7 +167,7 @@ public final class Manager extends NamedObj implements Runnable {
         if(!listeners.hasMoreElements()) {
             e.printStackTrace();
         }
-        _fireExecutionEvent(ExecutionEventType.EXECUTIONERROR, event);
+        _fireExecutionEvent(_ExecutionEventType.EXECUTIONERROR, event);
     }
 
 
@@ -343,7 +343,7 @@ public final class Manager extends NamedObj implements Runnable {
 
         // Notify all the listeners that execution has started.
         ExecutionEvent event = new ExecutionEvent(this);
-        _fireExecutionEvent(ExecutionEventType.EXECUTIONSTARTED, event);
+        _fireExecutionEvent(_ExecutionEventType.EXECUTIONSTARTED, event);
 
         try {
             try {
@@ -366,7 +366,7 @@ public final class Manager extends NamedObj implements Runnable {
                             event =
                                 new ExecutionEvent(this, _iteration);
                             _fireExecutionEvent(
-                                    ExecutionEventType.EXECUTIONPAUSED, event);
+                                    _ExecutionEventType.EXECUTIONPAUSED, event);
 
                             synchronized (_simulationThread) {
                                 // suspend this thread until
@@ -380,7 +380,7 @@ public final class Manager extends NamedObj implements Runnable {
                             event =
                                 new ExecutionEvent(this, _iteration);
                             _fireExecutionEvent(
-                                    ExecutionEventType.EXECUTIONRESUMED,
+                                    _ExecutionEventType.EXECUTIONRESUMED,
                                     event);
                         }
                     }
@@ -402,7 +402,7 @@ public final class Manager extends NamedObj implements Runnable {
                 // notify all listeners that we have been stopped.
                 event =
                     new ExecutionEvent(this, _iteration);
-                _fireExecutionEvent(ExecutionEventType.EXECUTIONFINISHED,
+                _fireExecutionEvent(_ExecutionEventType.EXECUTIONFINISHED,
                         event);
             }
         } catch (Exception e) {
@@ -478,7 +478,7 @@ public final class Manager extends NamedObj implements Runnable {
 
         // notify all execution listeners that execution was terminated.
         ExecutionEvent event = new ExecutionEvent(this);
-        _fireExecutionEvent(ExecutionEventType.EXECUTIONTERMINATED, event);
+        _fireExecutionEvent(_ExecutionEventType.EXECUTIONTERMINATED, event);
 
         _keepIterating = false;
         _isPaused = false;
@@ -512,25 +512,25 @@ public final class Manager extends NamedObj implements Runnable {
     /**
      * Propagate the execution event to all the execution listeners.
      */
-    private void _fireExecutionEvent(ExecutionEventType type,
+    private void _fireExecutionEvent(_ExecutionEventType type,
             ExecutionEvent event) {
         Enumeration listeners = _ExecutionListeners.elements();
         while(listeners.hasMoreElements()) {
             ExecutionListener l =
                 (ExecutionListener) listeners.nextElement();
-            if(type == ExecutionEventType.EXECUTIONSTARTED)
+            if(type == _ExecutionEventType.EXECUTIONSTARTED)
                 l.executionStarted(event);
-            else if(type == ExecutionEventType.EXECUTIONPAUSED)
+            else if(type == _ExecutionEventType.EXECUTIONPAUSED)
                 l.executionPaused(event);
-            else if(type == ExecutionEventType.EXECUTIONRESUMED)
+            else if(type == _ExecutionEventType.EXECUTIONRESUMED)
                 l.executionResumed(event);
-            else if(type == ExecutionEventType.EXECUTIONERROR)
+            else if(type == _ExecutionEventType.EXECUTIONERROR)
                 l.executionError(event);
-            else if(type == ExecutionEventType.EXECUTIONFINISHED)
+            else if(type == _ExecutionEventType.EXECUTIONFINISHED)
                 l.executionFinished(event);
-            else if(type == ExecutionEventType.EXECUTIONTERMINATED)
+            else if(type == _ExecutionEventType.EXECUTIONTERMINATED)
                 l.executionTerminated(event);
-            else if(type == ExecutionEventType.ITERATIONSTARTED)
+            else if(type == _ExecutionEventType.ITERATIONSTARTED)
                 l.executionIterationStarted(event);
 
         }
@@ -560,7 +560,7 @@ public final class Manager extends NamedObj implements Runnable {
         }
 
         ExecutionEvent event = new ExecutionEvent(this, _iteration);
-        _fireExecutionEvent(ExecutionEventType.ITERATIONSTARTED, event);
+        _fireExecutionEvent(_ExecutionEventType.ITERATIONSTARTED, event);
 
         // Toplevel mutations will occur here.
 
@@ -625,24 +625,24 @@ public final class Manager extends NamedObj implements Runnable {
     ///////////////////////////////////////////////////////////////////
     ////                         Inner Class                       ////
 
-    private static final class ExecutionEventType {
+    private static final class _ExecutionEventType {
 
-        private ExecutionEventType(String name) {this._name = name;}
+        private _ExecutionEventType(String name) {this._name = name;}
 
-        public static final ExecutionEventType EXECUTIONSTARTED =
-        new ExecutionEventType("Execution Started");
-        public static final ExecutionEventType EXECUTIONPAUSED =
-        new ExecutionEventType("Execution Paused");
-        public static final ExecutionEventType EXECUTIONRESUMED =
-        new ExecutionEventType("Execution Resumed");
-        public static final ExecutionEventType EXECUTIONERROR =
-        new ExecutionEventType("Execution Error");
-        public static final ExecutionEventType EXECUTIONFINISHED =
-        new ExecutionEventType("Execution Finished");
-        public static final ExecutionEventType EXECUTIONTERMINATED =
-        new ExecutionEventType("Execution Terminated");
-        public static final ExecutionEventType ITERATIONSTARTED =
-        new ExecutionEventType("Iteration Started");
+        public static final _ExecutionEventType EXECUTIONSTARTED =
+        new _ExecutionEventType("Execution Started");
+        public static final _ExecutionEventType EXECUTIONPAUSED =
+        new _ExecutionEventType("Execution Paused");
+        public static final _ExecutionEventType EXECUTIONRESUMED =
+        new _ExecutionEventType("Execution Resumed");
+        public static final _ExecutionEventType EXECUTIONERROR =
+        new _ExecutionEventType("Execution Error");
+        public static final _ExecutionEventType EXECUTIONFINISHED =
+        new _ExecutionEventType("Execution Finished");
+        public static final _ExecutionEventType EXECUTIONTERMINATED =
+        new _ExecutionEventType("Execution Terminated");
+        public static final _ExecutionEventType ITERATIONSTARTED =
+        new _ExecutionEventType("Iteration Started");
 
         public String toString() {return _name;}
 
