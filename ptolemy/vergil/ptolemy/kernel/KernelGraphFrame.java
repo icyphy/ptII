@@ -72,7 +72,6 @@ import ptolemy.vergil.toolbox.MenuItemFactory;
 import ptolemy.vergil.toolbox.PtolemyListCellRenderer;
 import ptolemy.vergil.toolbox.PtolemyMenuFactory;
 import ptolemy.vergil.toolbox.XMLIcon;
-import ptolemy.vergil.tree.LibraryTreeModel;
 
 import diva.canvas.CanvasUtilities;
 import diva.canvas.Site;
