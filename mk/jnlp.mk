@@ -61,6 +61,7 @@ NATIVE_SIGNED_LIB_JARS = lib/matlabWindows.jar
 SIGNED_LIB_JARS =	$(NATIVE_SIGNED_LIB_JARS) \
 			lib/diva.jar \
 			lib/jasminclasses.jar \
+			lib/jython.jar \
 			lib/matlab.jar \
 			lib/ptjacl.jar \
 			lib/sootclasses.jar
