@@ -350,7 +350,23 @@ install: jclass $(PTCLASSJAR)
 <li> Test your applet under Netscape and Internet Explorer under
 NT and under Netscape under Solaris.
 
+<li> The makefile for each applet should have a demo rule that looks
+like:
+<pre>
+demo:
+	CLASSPATH="$(CLASSPATH)" appletviewer ComSystem.htm
+</pre>
 
+Note that the double quotes around CLASSPATH are necessary for
+demos that use diva under NT because the darn CLASSPATH separator
+is a semicolon.
+
+<li> The makefile for a directory above a set of demos should have
+a rule like:
+<pre>
+demo: subdemo
+</pre>
+so that <CODE>make demo</CODE> will run the demos in the subdirectory
 </menu>
 
 
