@@ -133,7 +133,7 @@ public class FSMTransitionController extends BasicEdgeController {
                 Object object = figure.getUserObject();
                 GraphModel graphModel = controller.getGraphModel();
                 NamedObj target =
-                         (NamedObj)graphModel.getSemanticObject(object);
+                    (NamedObj)graphModel.getSemanticObject(object);
                 // Create a dialog for configuring the object.
                 Component pane = controller.getGraphPane().getCanvas();
                 while (pane.getParent() != null) {
@@ -214,11 +214,11 @@ public class FSMTransitionController extends BasicEdgeController {
                     // Set the new exitAngle parameter value based
                     // on the current arc.
                     String moml = "<property name=\"exitAngle\" value=\""
-                            + ((ArcConnector)c).getAngle()
+                        + ((ArcConnector)c).getAngle()
                             + "\"/>";
-                    MoMLChangeRequest request = new MoMLChangeRequest(
-                            this, transition, moml);
-                    transition.requestChange(request);
+                        MoMLChangeRequest request = new MoMLChangeRequest(
+                                this, transition, moml);
+                        transition.requestChange(request);
                 }
 		break;
 	    default:

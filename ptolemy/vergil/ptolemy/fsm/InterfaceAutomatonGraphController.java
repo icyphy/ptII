@@ -151,16 +151,16 @@ public class InterfaceAutomatonGraphController extends FSMGraphController {
                     // new URL("file", null, _directory.getAbsolutePath()
                     Configuration configuration = getConfiguration();
                     Tableau newAutomatonTableau =
-		       configuration.openModel(url, url, url.toExternalForm());
+                        configuration.openModel(url, url, url.toExternalForm());
 
                     // compose the two interface automata and show result
 		    InterfaceAutomaton model1 =
-		            (InterfaceAutomaton)getFrame().getModel();
+                        (InterfaceAutomaton)getFrame().getModel();
                     InterfaceAutomatonGraphFrame graphFrame2 =
-	                  (InterfaceAutomatonGraphFrame)
-			          newAutomatonTableau.getFrame();
+                        (InterfaceAutomatonGraphFrame)
+                        newAutomatonTableau.getFrame();
                     InterfaceAutomaton model2 =
-  		            (InterfaceAutomaton)graphFrame2.getModel();
+                        (InterfaceAutomaton)graphFrame2.getModel();
 
                     InterfaceAutomaton composition = model1.compose(model2);
                     configuration.openModel(composition);

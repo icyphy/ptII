@@ -59,7 +59,7 @@ public class InterfaceAutomatonGraphFrame extends FSMGraphFrame {
      *  @param tableau The tableau responsible for this frame.
      */
     public InterfaceAutomatonGraphFrame(CompositeEntity entity,
-                                        Tableau tableau) {
+            Tableau tableau) {
 	super(entity, tableau);
     }
 

@@ -377,7 +377,7 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
 	    final StringBuffer moml = new StringBuffer();
             // Make the request in the context of the container.
             final CompositeEntity container =
-                    (CompositeEntity)_getChangeRequestParent(getPtolemyModel());
+                (CompositeEntity)_getChangeRequestParent(getPtolemyModel());
             moml.append(_deleteRelation(container, linkRelation));
 	    ChangeRequest request =
 		new MoMLChangeRequest(FSMGraphModel.this,
@@ -428,7 +428,7 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
 
             // Make the request in the context of the container.
             final CompositeEntity container =
-                    (CompositeEntity)_getChangeRequestParent(getPtolemyModel());
+                (CompositeEntity)_getChangeRequestParent(getPtolemyModel());
 
             // If there is a previous connection, remove it.
             if (linkRelation != null) {
@@ -462,8 +462,8 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
                     link.setHead(newArcHead);
                     if(relationNameToAdd != null) {
                         ComponentRelation relation = (ComponentRelation)
-                                getPtolemyModel().getRelation(
-                                relationNameToAdd);
+                            getPtolemyModel().getRelation(
+                                    relationNameToAdd);
                         link.setRelation(relation);
                     }
                 }
@@ -606,7 +606,7 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
 	 */
 	private String _deleteRelation(NamedObj container, Relation relation) {
             return "<deleteRelation name=\""
-                    + relation.getName(container)
+                + relation.getName(container)
                     + "\"/>\n";
 	}
 
@@ -631,9 +631,9 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
 		    State headState = (State)head;
 		    State tailState = (State)tail;
 		    ComponentPort headPort =
-			    (ComponentPort)headState.incomingPort;
+                        (ComponentPort)headState.incomingPort;
 		    ComponentPort tailPort =
-			    (ComponentPort)tailState.outgoingPort;
+                        (ComponentPort)tailState.outgoingPort;
                     CompositeEntity ptolemyModel = getPtolemyModel();
                     // If the context is not the entity that we're editing,
                     // then we need to set the context correctly.
@@ -657,7 +657,7 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
                         // Count the number of connections between the
                         // headPort and the tailPort.
                         Iterator ports = tailPort.deepConnectedPortList()
-                                .iterator();
+                            .iterator();
                         int count = 0;
                         while (ports.hasNext()) {
                             if (ports.next() == headPort) count++;
@@ -755,18 +755,18 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
 		    State headState = (State)head;
 		    State tailState = (State)tail;
 		    ComponentPort headPort =
-			    (ComponentPort)headState.incomingPort;
+                        (ComponentPort)headState.incomingPort;
 		    ComponentPort tailPort =
-			    (ComponentPort)tailState.outgoingPort;
+                        (ComponentPort)tailState.outgoingPort;
                     CompositeEntity ptolemyModel = getPtolemyModel();
                     // If the context is not the entity that we're editing,
                     // then we need to set the context correctly.
                     if(ptolemyModel != container) {
                         String contextString = "<entity name=\""
-                                + ptolemyModel.getName(container)
+                            + ptolemyModel.getName(container)
                                 + "\">\n";
-                        moml.append(contextString);
-                        failmoml.append(contextString);
+                            moml.append(contextString);
+                            failmoml.append(contextString);
                     }
                     boolean createdNewRelation = false;
                     String relationName = null;
@@ -839,10 +839,10 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
             State headState = (State)head;
             ComponentPort headPort = (ComponentPort)headState.incomingPort;
             return "<unlink port=\""
-                    + headPort.getName(container)
+                + headPort.getName(container)
                     + "\" relation=\""
                     + relation.getName(container)
-                    + "\"/>\n";
+                        + "\"/>\n";
 	}
 
 	/** Return moml to unlink a relation with the given tail in the
@@ -854,10 +854,10 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
             State tailState = (State)tail;
             ComponentPort tailPort = (ComponentPort)tailState.outgoingPort;
             return "<unlink port=\""
-                    + tailPort.getName(container)
+                + tailPort.getName(container)
                     + "\" relation=\""
                     + relation.getName(container)
-                    + "\"/>\n";
+                        + "\"/>\n";
 	}
     }
 
@@ -916,36 +916,36 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
                 elementName = "deletePort";
             } else {
 		throw new InternalErrorException(
-		    "Attempt to remove a node that is not an Entity. " +
-		    "node = " + node);
+                        "Attempt to remove a node that is not an Entity. " +
+                        "node = " + node);
             }
 
             String moml = "<" + elementName + " name=\""
                 + ((NamedObj)deleteObj).getName() + "\"/>\n";
 
-            // Make the request in the context of the container.
-            NamedObj container = (NamedObj)_getChangeRequestParent(deleteObj);
-            ChangeRequest request =
-                new MoMLChangeRequest(
-                        FSMGraphModel.this, container, moml);
-            request.addChangeListener(new ChangeListener() {
-		public void changeFailed(ChangeRequest change,
-                        Exception exception) {
-                    // If we fail, then issue structureChanged.
-                    dispatchGraphEvent(new GraphEvent(eventSource,
-                            GraphEvent.STRUCTURE_CHANGED,
-                            getRoot()));
-		}
+                // Make the request in the context of the container.
+                NamedObj container = (NamedObj)_getChangeRequestParent(deleteObj);
+                ChangeRequest request =
+                    new MoMLChangeRequest(
+                            FSMGraphModel.this, container, moml);
+                request.addChangeListener(new ChangeListener() {
+                    public void changeFailed(ChangeRequest change,
+                            Exception exception) {
+                        // If we fail, then issue structureChanged.
+                        dispatchGraphEvent(new GraphEvent(eventSource,
+                                GraphEvent.STRUCTURE_CHANGED,
+                                getRoot()));
+                    }
 
-		public void changeExecuted(ChangeRequest change) {
-                    // If we succeed, then issue structureChanged, since
-                    // this is likely connected to something.
-                    dispatchGraphEvent(new GraphEvent(eventSource,
-                            GraphEvent.STRUCTURE_CHANGED,
-                            getRoot()));
-                }
-	    });
-            container.requestChange(request);
+                    public void changeExecuted(ChangeRequest change) {
+                        // If we succeed, then issue structureChanged, since
+                        // this is likely connected to something.
+                        dispatchGraphEvent(new GraphEvent(eventSource,
+                                GraphEvent.STRUCTURE_CHANGED,
+                                getRoot()));
+                    }
+                });
+                container.requestChange(request);
 	}
     }
 
@@ -1043,36 +1043,36 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
                 elementName = "deleteEntity";
             } else {
 		throw new InternalErrorException(
-		    "Attempt to remove a node that is not an Entity. " +
-		    "node = " + node);
+                        "Attempt to remove a node that is not an Entity. " +
+                        "node = " + node);
             }
 
             String moml = "<" + elementName + " name=\""
                 + ((NamedObj)deleteObj).getName() + "\"/>\n";
 
-            // Make the request in the context of the container.
-            NamedObj container = (NamedObj)_getChangeRequestParent(deleteObj);
-            ChangeRequest request =
-                new MoMLChangeRequest(
-                        FSMGraphModel.this, container, moml);
-            request.addChangeListener(new ChangeListener() {
-		public void changeFailed(ChangeRequest change,
-                        Exception exception) {
-                    // If we fail, then issue structureChanged.
-                    dispatchGraphEvent(new GraphEvent(eventSource,
-                            GraphEvent.STRUCTURE_CHANGED,
-                            getRoot()));
-		}
+                // Make the request in the context of the container.
+                NamedObj container = (NamedObj)_getChangeRequestParent(deleteObj);
+                ChangeRequest request =
+                    new MoMLChangeRequest(
+                            FSMGraphModel.this, container, moml);
+                request.addChangeListener(new ChangeListener() {
+                    public void changeFailed(ChangeRequest change,
+                            Exception exception) {
+                        // If we fail, then issue structureChanged.
+                        dispatchGraphEvent(new GraphEvent(eventSource,
+                                GraphEvent.STRUCTURE_CHANGED,
+                                getRoot()));
+                    }
 
-		public void changeExecuted(ChangeRequest change) {
-                    // If we succeed, then issue structureChanged, since
-                    // this is likely connected to something.
-                    dispatchGraphEvent(new GraphEvent(eventSource,
-                            GraphEvent.STRUCTURE_CHANGED,
-                            getRoot()));
-                }
-	    });
-            container.requestChange(request);
+                    public void changeExecuted(ChangeRequest change) {
+                        // If we succeed, then issue structureChanged, since
+                        // this is likely connected to something.
+                        dispatchGraphEvent(new GraphEvent(eventSource,
+                                GraphEvent.STRUCTURE_CHANGED,
+                                getRoot()));
+                    }
+                });
+                container.requestChange(request);
 	}
     }
 }

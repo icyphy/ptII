@@ -67,7 +67,7 @@ public class InterfaceAutomatonGraphTableau extends FSMGraphTableau {
      */
     public void createGraphFrame(CompositeEntity model) {
 	InterfaceAutomatonGraphFrame frame =
-	        new InterfaceAutomatonGraphFrame(model, this);
+            new InterfaceAutomatonGraphFrame(model, this);
 	setFrame(frame);
 	frame.setBackground(BACKGROUND_COLOR);
 	frame.pack();

@@ -136,9 +136,9 @@ public class FSMViewerController extends PtolemyGraphController {
     protected void _createControllers() {
         super._createControllers();
 	_attributeController = new AttributeController(this,
-                 AttributeController.PARTIAL);
+                AttributeController.PARTIAL);
 	_stateController = new FSMStateController(this,
-                 AttributeController.PARTIAL);
+                AttributeController.PARTIAL);
 	_transitionController = new FSMTransitionController(this);
     }
 
