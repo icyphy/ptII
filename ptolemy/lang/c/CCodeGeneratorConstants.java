@@ -71,12 +71,30 @@ public interface CCodeGeneratorConstants extends JavaStaticSemanticConstants {
     public static final Integer C_NAME_KEY = 
             new Integer(RESERVED_JAVA_PROPERTIES + 3);
     
+    /** The key that gives the name of the header (.h) file that must
+     *  be included to access C type definitions associated with a
+     *  a given class. C include file properties are String-valued.
+     */
+    public static final Integer C_INCLUDE_FILE_KEY = 
+            new Integer(RESERVED_JAVA_PROPERTIES + 4);
+
+    /** The key that indicates the associated include file for
+     *  TypeNameNodes whose associated declarations are required
+     *  in a generated header (.h) file. This property is set
+     *  if and only if the associated include file should be
+     *  imported (through #include) in the header file generated.
+     *  The property is Boolean-valued, and, if set, always has 
+     *  the value 'true.'
+     */
+    public static final Integer C_IMPORT_INCLUDE_FILE_KEY = 
+            new Integer(RESERVED_JAVA_PROPERTIES + 5);
+
     /** The number of properties reserved for static resolution of Java,
      *  and C Code generation.  This number can be used to 
      *  start numbering extended properties.
      */
     public static final int RESERVED_C_PROPERTIES = 
-            C_NAME_KEY.intValue() + 1;
+            C_IMPORT_INCLUDE_FILE_KEY.intValue() + 1;
     
     /** The number of distinguishable characters in a C identifier. */
     public static final int MAX_IDENTIFIER_CHARACTERS = 32;
