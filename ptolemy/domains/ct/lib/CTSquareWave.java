@@ -62,17 +62,17 @@ public class CTSquareWave extends CTActor {
         output.setOutput(true);
         output.setTypeEquals(DoubleToken.class);
         _maxValue = (double)1.0;
-        paramMaxValue = new Parameter(this, "MaximumValue",
+        MaxValue = new Parameter(this, "MaximumValue",
                 new DoubleToken(_maxValue));
         _minValue = (double)-1.0;
-        paramMinValue = new Parameter(this, "MinimumValue",
+        MinValue = new Parameter(this, "MinimumValue",
                 new DoubleToken(_minValue));
         _frequency = (double)1.0;
         _halfperiod = (double)1.0/((double)2.0*_frequency);
-        paramFrequency = new Parameter(this, "Frequency",
+        Frequency = new Parameter(this, "Frequency",
                 new DoubleToken(_frequency));
         _startFromMin = true;
-        paramStartFromMin = new Parameter(this, "StartFromMinimum",
+        StartFromMin = new Parameter(this, "StartFromMinimum",
                 new BooleanToken(true));
     }
 
@@ -94,7 +94,7 @@ public class CTSquareWave extends CTActor {
             throw new IllegalActionException( this, " Has no director.");
         }
         _lastfliptime = dir.getStartTime();
-        _isMin = ((BooleanToken)paramStartFromMin.getToken()).booleanValue();
+        _isMin = ((BooleanToken)StartFromMin.getToken()).booleanValue();
     }
 
     /** Always returns true. If the currentTime is greate than lastFlipTime
@@ -157,10 +157,10 @@ public class CTSquareWave extends CTActor {
      */
     public synchronized void updateParams() throws IllegalActionException{
         _debug(getFullName() + " updates parameters..");
-        _maxValue = ((DoubleToken)paramMaxValue.getToken()).doubleValue();
-        _minValue = ((DoubleToken)paramMinValue.getToken()).doubleValue();
+        _maxValue = ((DoubleToken)MaxValue.getToken()).doubleValue();
+        _minValue = ((DoubleToken)MinValue.getToken()).doubleValue();
         
-        double f  = ((DoubleToken)paramFrequency.getToken()).doubleValue();
+        double f  = ((DoubleToken)Frequency.getToken()).doubleValue();
         if(f < 0) {
             throw new IllegalActionException (this,
                     "Frequency: "+ f + " is illegal.");
@@ -183,21 +183,21 @@ public class CTSquareWave extends CTActor {
 
     /** Parameter for max value; the type is double; the default value is 1.0
      */
-    public Parameter paramMaxValue;
+    public Parameter MaxValue;
 
     /** Parameter for min value; the type is double; the default value is -1.0
      */
-    public Parameter paramMinValue;
+    public Parameter MinValue;
 
     /** Parameter for the frequency of the squarewave; the type is double;
      *  the default value is 1.0.
      */
-    public Parameter paramFrequency;
+    public Parameter Frequency;
 
     /** Parameter for whether the square wave start from the min value phase;
      *  the type is boolean; the default value is true.
      */
-    public Parameter paramStartFromMin;
+    public Parameter StartFromMin;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
