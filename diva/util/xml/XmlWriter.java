@@ -144,7 +144,7 @@ public class XmlWriter extends LoggableOp {
 
     /**
      * Produce normalised declarations for all notations.
-     * @see #makeExternalIdentifiers(String, String)
+     * @see diva.util.xml#makeExternalIdentifiers(String, String)
      */
     public void writeDTDNotations (Writer out) throws IOException {
         Enumeration notationNames = _parser.declaredNotations();
@@ -166,8 +166,8 @@ public class XmlWriter extends LoggableOp {
 
     /**
      * Produce normalised declarations for all general entities.
-     * @see #makeLiteral(String)
-     * @see #makeExternalIdentifiers(String, String)
+     * @see diva.util.xml#makeLiteral(String)
+     * @see diva.util.xml#makeExternalIdentifiers(String, String)
      */
     public void writeDTDEntities (Writer out) throws IOException {
         Enumeration entityNames = _parser.declaredEntities();
@@ -213,7 +213,7 @@ public class XmlWriter extends LoggableOp {
 
     /**
      * Produce normalised declarations for all elements.
-     * @see #writeDTDAttributes(String, Writer)
+     * @see diva.util.xml#writeDTDAttributes(String, Writer)
      */
     public void writeDTDElements (Writer out) throws IOException {
         Enumeration elementNames = _parser.declaredElements();
@@ -320,7 +320,7 @@ public class XmlWriter extends LoggableOp {
 
     /**
      * Generate a full attribute default value.
-     * @see #makeLiteral(String)
+     * @see #makeLiteral
      */
     String makeAttributeValue (String elname, String aname) {
         // Generate a default value based on the type.
@@ -340,9 +340,9 @@ public class XmlWriter extends LoggableOp {
 
     /**
      * Construct a string equivalent of external identifiers.
-     * @see #makeLiteral(String)
+     * @see #makeLiteral
      */
-    String makeExternalIdentifiers (String pubid, String sysid) {
+    String makeExternalIdentifiers(String pubid, String sysid) {
         String extId = "";
 
         if (pubid != null) {
@@ -359,7 +359,7 @@ public class XmlWriter extends LoggableOp {
     /**
      * Quote a literal, and escape any '"' or non-ASCII characters within it.
      */
-    String makeLiteral (String data) {
+    String makeLiteral(String data) {
         char ch[] = data.toCharArray();
         StringBuffer buf = new StringBuffer();
 
