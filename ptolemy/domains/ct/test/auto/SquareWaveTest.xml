@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="SquareWaveTest" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
     </property>
     <property name="CT" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -47,8 +47,6 @@
         </property>
         <property name="runAheadLength" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
-        <property name="CTScheduler" class="ptolemy.domains.ct.kernel.CTScheduler">
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="114.0, 38.0">
         </property>
     </property>
@@ -64,14 +62,18 @@ which takes the parameters and construct a Ptolemy model for you.</text>
            </svg>
            </configure>
         </property>
-        <property name="_hideName" class="ptolemy.data.expr.Parameter">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={175, 68, 819, 570}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={175, 68, 819, 572}, maximized=false}">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{302.0, 227.0}">
     </property>
     <entity name="ContinuousTransferFunction1" class="ptolemy.domains.ct.lib.ContinuousTransferFunction">
         <property name="numerator" class="ptolemy.data.expr.Parameter" value="{500.0}">
@@ -266,16 +268,9 @@ which takes the parameters and construct a Ptolemy model for you.</text>
         <doc>Create a generalized square wave</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="55.0, 245.0">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
     </entity>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 1.5985861967092, 0.6442999307919, 1.2111074686226, 0.9005005391433, 1.057328772796, 0.9746812509773, 1.009239367163, 0.9975174635908, 1.0003337552912, 0.9999852223474, -2.2029370006388, -0.2793126937473, -1.4296098837663, -0.7462841656998, -1.1467026014651, -0.9161679452598, -1.0392789905482, -0.9824132814461, -1.0053740698175, -0.9979798516423, 2.2017044283934, 0.2800754251181, 1.4291448964757, 0.7465602446384, 1.1465368978998, 0.9162652799983, 1.0392414563347, 0.982426756972, 1.005361994222, 0.9979850294248}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 1.5985861967069, 0.644299930803, 1.2111074686085, 0.9005005391505, 1.0573287727939, 0.9746812509763, 1.0092393671705, 0.9975174635844, 1.0003337552933, 1.0001071615064, -2.2030124482275, -0.2792655099638, -1.4296387343967, -0.746267210888, -1.1467128217121, -0.9161619611642, -1.0392810265778, -0.9824126633219, -1.0053748591137, -0.9988240207399, 2.2022177482816, 0.2797633816462, 1.429334164023, 0.7464459867565, 1.1466049853941, 0.9162250790256, 1.0392599049721, 0.9824188980189, 1.0053664410267, 0.998826626358}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
@@ -283,9 +278,6 @@ which takes the parameters and construct a Ptolemy model for you.</text>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="505.0, 290.0">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
