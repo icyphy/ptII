@@ -431,7 +431,8 @@ proc sootCodeGeneration {{PTII} modelPath {codeGenType Shallow} \
 	#    	java::new ptolemy.copernicus.kernel.Copernicus $args
 	
 	set timeout 2600000
-	puts "Setting watchdog for $timeout milliseconds"
+	puts "codegen.tcl: Setting watchdog for [expr {$timeout / 1000}] seconds\
+	at [clock format [clock seconds]]"
 	set watchDog [java::new util.testsuite.WatchDog $timeout]
 
 	if [catch {set results [eval exec $execCommand]} errMsg] {
