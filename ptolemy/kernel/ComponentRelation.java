@@ -24,7 +24,6 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Green (eal@eecs.berkeley.edu)
 @AcceptedRating Green (johnr@eecs.berkeley.edu)
 */
 
@@ -68,7 +67,6 @@ public class ComponentRelation extends Relation {
 
     /** Construct a relation in the default workspace with an empty string
      *  as its name. Add the relation to the directory of the workspace.
-     *  Increment the version number of the workspace.
      */
     public ComponentRelation() {
         super();
@@ -78,7 +76,7 @@ public class ComponentRelation extends Relation {
      *  string as a name. You can then change the name with setName().
      *  If the workspace argument is null, then use the default workspace.
      *  Add the relation to the workspace directory.
-     *  Increment the version number of the workspace.
+     *
      *  @param workspace The workspace that will list the relation.
      */
     public ComponentRelation(Workspace workspace) {
@@ -90,9 +88,9 @@ public class ComponentRelation extends Relation {
      *  NullPointerException will be thrown.  This relation will use the
      *  workspace of the container for synchronization and version counts.
      *  If the name argument is null, then the name is set to the empty string.
-     *  This constructor write-synchronizes on the workspace and increments
-     *  its version number.
-     *  @param container The parent entity.
+     *  This constructor write-synchronizes on the workspace.
+     *
+     *  @param container The container.
      *  @param name The name of the relation.
      *  @exception IllegalActionException If the container is incompatible
      *   with this relation.
@@ -102,16 +100,7 @@ public class ComponentRelation extends Relation {
     public ComponentRelation(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container.workspace(), name);
-        try {
-            workspace().getWriteAccess();
-            container._addRelation(this);
-            // "super" call above puts this on the workspace list.  Remove it.
-            workspace().remove(this);
-            _container = container;
-            workspace().incrVersion();
-        } finally {
-            workspace().doneWriting();
-        }
+        setContainer(container);
     }
 
     //////////////////////////////////////////////////////////////////////////
