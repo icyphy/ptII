@@ -54,7 +54,7 @@ JSRCS = \
 	MovieViewScreen2D.java
 
 OTHER_FILES_TO_BE_JARED = \
-	grquicktimeentities.xml
+	quicktime.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
