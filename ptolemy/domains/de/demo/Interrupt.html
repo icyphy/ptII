@@ -1,17 +1,26 @@
-<!-- $Id$-->
-<HTML>
-<HEAD>
-<TITLE>Discrete Event Simulation Demo</TITLE>
-</HEAD>
-<BODY BGCOLOR="#FAF0E6">
-
+<!-- $Id$ -->
+<html>
+<head>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<title>Discrete Event Interruptible Processor Simulation</title>
+<link href="../../../../doc/default.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<h1>Discrete Event Interruptible Processor Simulation</h1>
 <CENTER>
-<H1>
-Demo of DE simulation applet</H1></CENTER>
+<APPLET name="InterruptApplet"
+   archive="ptolemy/domains/de/demo/demo.jar,
+	ptolemy/domains/de/de.jar,
+	ptolemy/ptsupport.jar"
+   code=ptolemy.domains.de.demo.InterruptApplet.class
+   codebase=../../../..
+   width=700 height=450>
+<param name="background" value="#faf0e6">
+<BR><I>If you were able to run applets, you would have an interruptible
+processor demo here.</I>
+<BR></APPLET></CENTER>
 
-<H3>
-DE Simulation:</H3>
-The following applet uses Ptolemy II DE domain architecture to simulate
+This applet uses the Ptolemy II DE domain architecture to simulate
 the behaviour of an interruptible processor. Without interrupts, each demand
 takes a fixed minimum service time to serve. With interrupts, the service
 time is increased by the number of interrupt events during the service period
@@ -29,22 +38,6 @@ is no interrupt. IST (Interrupt Service Time) is the amount of time needed
 to process an interrupt. Note that the interrupts preempt the inputs. Lambda
 represents the mean inter-arrival time of the Poisson process modeling the
 interrupt arrival. Lastly, stop time is just the time when simulation stops.
-<P>
-<BR>&nbsp;
-<BR>&nbsp;
-<CENTER>
-<P><APPLET name="InterruptApplet"
-   bgcolor=#FAF0E6
-   archive="ptolemy/domains/de/demo/demo.jar,
-	ptolemy/domains/de/de.jar,
-	ptolemy/ptsupport.jar"
-   code=ptolemy.domains.de.demo.InterruptApplet.class
-   codebase=../../../..
-   width=600 height=400>
-<param name="background" value="#faf0e6">
-<BR><I>If you were able to run applets, you would have a waveform demo
-here.</I>
-<BR></APPLET></CENTER>
 
 <P>This applet is implemented by
 <TT><A HREF="InterruptApplet.java">InterruptApplet.java</A></TT>.
@@ -77,9 +70,7 @@ Actor connected to a <A HREF="../lib/DEPlot.java">Plot</A> Actor.
 <IMG SRC="img/Interrupt.gif"
 Alt="Imagemap" Usemap="#ActorsMap" Ismap>
 </CENTER>
-<BR>
-<HR>Copyright &copy; 1998-1999 The Regents of the University of California.
-All rights reserved.
-<BR>Last updated: $Date$, comments to:&nbsp;<author>ptII@eecs.berkeley.edu</author>
-</BODY>
-</HTML>
+
+<p><font size="2" color="#cc0000">Last Updated: $Date$</font>
+</body>
+</html>
