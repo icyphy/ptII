@@ -1,0 +1,101 @@
+<html>
+  <head>
+    <!-- $Id$ -->
+    
+  </head>
+  <body>
+    <table>
+      <tr>
+        <td>
+          <!-- NOTE: ptIIplanet.gif should be in ../../doc/img, but Web Start
+           has problems pulling in the gif if the gif is in a different jar
+	   so we include it in this jar -->
+          <img align="left" alt="Claudius Ptolemy" vspace="6" src="../../../../../ptolemy/configs/ptIIplanet.gif">
+          
+        </td>
+        <td>
+          <h1>
+            Hybrid System Visual Modeler
+          </h1>
+          <i>Block-diagram editor and simulator for hybrid systems</i>.
+
+          <ul>
+            <!-- FIXME: Need a customized version of the docs here. -->
+            
+
+            <li>
+              <a target="_blank" href="../doc/docs.htm">Documentation</a>
+            </li>
+            <li>
+              <a target="_blank" href="../doc/copyright.htm">Copyright</a>
+            </li>
+          </ul>
+          To start immediately by creating a hybrid system, select File, New, 
+          Graph Editor from the menu bar. Select Help from the Help menu for 
+          instructions on creating a model.
+        </td>
+      </tr>
+    </table>
+    Hybrid systems are systems with continuous-time dynamics, discrete events, 
+    and discrete mode changes. This visual modeler supports construction of 
+    hierarchical hybrid systems. It uses a block-diagram representation of 
+    ordinary differential equations (ODEs) to define continuous dynamics. It 
+    uses a bubble-and-arc diagram representation of finite state machines to 
+    define discrete behavior.
+
+    <p>
+      Below are simple demonstrations of this modeler:
+    </p>
+    <ul>
+      <li>
+        <a href="../../domains/ct/demo/StickyMasses/StickyMasses.xml">Sticky 
+        masses</a>.<br>This example models a physical system consisting of two 
+        point masses on springs that stick together when they collide. It 
+        illustrates how to model systems when different modes of operation 
+        require different ODE models.
+      </li>
+      <li>
+        <a href="../../domains/ct/demo/Thermostat/Thermostat.xml">Thermostat</a>
+.<br>This example models a thermostat in a simple physical environment. It 
+        illustrates how to model systems when a single ODE model has 
+        parameters whose values change discretely.
+      </li>
+      <li>
+        <a href="../../domains/ct/demo/BouncingBall/BouncingBallWithoutGR.xml">
+        Bouncing Ball</a>.<br>This example shows a bouncing ball model. Like 
+        the previous example, it has a single ODE model with parameters whose 
+        values change discretely. Unlike the previous example, however, it 
+        exhibits a so-called &quot;Zeno condition,&quot; where the time between events 
+        gets arbitrarily small.
+      </li>
+      <li>
+        <a href="../../domains/ct/demo/Switch/Switch.xml">Switch</a>.<br>This 
+        example shows a switch that selects from one of two continuous-time 
+        inputs. It illustrates how to model systems where continuous-time 
+        signals are mixed with discrete-event signals. Such systems are called 
+        &quot;mixed-signal&quot; systems.
+      </li>
+      <li>
+        <a href="../../domains/ct/demo/SquareWave/SquareWave.xml">Square Wave 
+        Response</a>.<br>This example shows a linear transfer function given 
+        as a rational Laplace transform, and its response to a square wave 
+        input. This model is not a hybrid system, but a classical 
+        continuous-time dynamical system.
+      </li>
+      <li>
+        <a href="../../domains/ct/demo/Lorenz/Lorenz.xml">Lorenz Attractor</a>.<br>
+This example shows a nonlinear system constructed using integrators and 
+        expression actors in a feedback loop. Because of the nonlinearity, the 
+        system exhibits a form of chaotic behavior known as a strange 
+        attractor. This model is not a hybrid system, but a classical 
+        nonlinear continuous-time dynamical system.
+      </li>
+    </ul>
+    <p>
+      This visual modeler is built using Ptolemy II, which is a software 
+      framework developed as part of the Ptolemy project at the University of 
+      California at Berkeley. See the <a href="http://ptolemy.eecs.berkeley.edu/#in_browser">
+Ptolemy Project web page</a> for more information.
+    </p>
+  </body>
+</html>
