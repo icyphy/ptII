@@ -26,6 +26,8 @@ COPYRIGHTENDKEY
 */
 package ptolemy.plot;
 
+import ptolemy.util.StringUtilities;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
@@ -220,9 +222,21 @@ public class EPSGraphics extends Graphics {
                 "int , int) is not implemented in EPSGraphics");
     }
 
+    /** Draw a string.  "(" is converted to "\(" and
+     *  ")" is converted to "\) so as to avoid EPS Syntax errors.
+     *  @param str The string to draw.
+     *  @param x  The x location of the string.
+     *  @param y  The y location of the string.
+     */
     public void drawString(String str, int x, int y) {
         Point start = _convert(x, y);
         _buffer.append("" + start.x + " " + start.y + " moveto\n");
+        if (str.indexOf("(") > -1 && str.indexOf("\\(") == -1) {
+            str = StringUtilities.substitute(str, "(", "\\(");
+        }
+        if (str.indexOf(")") > -1 && str.indexOf("\\)") == -1) {
+            str = StringUtilities.substitute(str, ")", "\\)");
+        }
         _buffer.append("(" + str + ") show\n");
     }
 
