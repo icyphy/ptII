@@ -462,6 +462,7 @@ bldmastrcoverage:
 		remote1build \
 		remote1distnonjsall \
 		remote1ChangeLog \
+		remote1doccheck \
 		remote1jnlp
 
 # Remove the remote dist
@@ -800,6 +801,15 @@ remote1ChangeLog:
 	(cd $(REMOTE1PTIIDIST);	rm -f ChangeLog; \
 		PTII=$(REMOTE1PTIIDIST) $(MAKE) -k ChangeLog; \
 		rm -f ChangeLog.txt; ln -s ChangeLog ChangeLog.txt)
+
+remote1doccheck:
+	@echo "#"
+	@echo "# Now generating doccheck files in $(REMOTE1PTIIDIST)/doc"
+	@echo "#"
+	@echo "$@ `date`"
+	@echo "`uptime`"
+	(cd $(REMOTE1PTIIDIST)/doc; rm -rf doccheck \
+		PTII=$(REMOTE1PTIIDIST) $(MAKE) -k doccheck)
 
 # Build jnlp installers
 remote1jnlp:
