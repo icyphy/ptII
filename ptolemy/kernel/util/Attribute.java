@@ -50,7 +50,7 @@ public class Attribute extends NamedObj {
      */
     public Attribute() {
 	super();
-        setMoMLElementName("attribute");
+        setMoMLElementName("property");
     }
 
     /** Construct an attribute in the specified workspace with an empty
@@ -63,7 +63,7 @@ public class Attribute extends NamedObj {
      */
     public Attribute(Workspace workspace) {
 	super(workspace);
-        setMoMLElementName("attribute");
+        setMoMLElementName("property");
     }
 
     /** Construct an attribute with the given name contained by the specified
@@ -86,7 +86,7 @@ public class Attribute extends NamedObj {
             throws IllegalActionException, NameDuplicationException {
         super(container.workspace(), name);
         setContainer(container);
-        setMoMLElementName("attribute");
+        setMoMLElementName("property");
     }
 
     ///////////////////////////////////////////////////////////////////
