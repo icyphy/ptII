@@ -4,34 +4,29 @@
 <entitylibrary name="generic" version="1.0">
 <description>Generic domain polymorphic actors</description>
 
-<!-- Sources -->
-<entity name="bernoulli" icon="generic.source" terminalstyle="generic.source" implementation="ptolemy.actor.lib.Bernoulli">
-<description>Create a sequence of gaussian random variables</description>
-<terminalmap ports="output"/>
+<sublibrary url="sources.ptml"/>
+<sublibrary url="sinks.ptml"/>
+
+<!-- Transformers -->
+<entity name="average" icon="generic.transformer" terminalstyle="generic.2in1out" implementation="ptolemy.actor.lib.Average">
+<terminalmap ports="input reset output"/>
 </entity>
 
-<entity name="gaussian" icon="generic.source" terminalstyle="generic.source" implementation="ptolemy.actor.lib.Gaussian">
-<description>Create a sequence of gaussian random variables</description>
-<terminalmap ports="output"/>
+<entity name="minimum" icon="generic.transformer" terminalstyle="generic.transformer" implementation="ptolemy.actor.lib.Minimum">
+<terminalmap ports="input output"/>
 </entity>
-
-<entity name="ramp" icon="generic.source" terminalstyle="generic.source" implementation="ptolemy.actor.lib.Ramp">
-<description>Create a sequence of tokens with increasing value</description>
-<terminalmap ports="output"/>
-</entity>
-
-<!-- Sinks -->
-<entity name="recorder" icon="generic.sink" terminalstyle="generic.sink" implementation="ptolemy.actor.lib.Recorder">
-<terminalmap ports="input"/>
-</entity>
-
-<entity name="sequenceplot" icon="generic.sink" terminalstyle="generic.sink" implementation="ptolemy.actor.gui.SequencePlotter">
-<terminalmap ports="input"/>
+	
+<entity name="maximum" icon="generic.transformer" terminalstyle="generic.transformer" implementation="ptolemy.actor.lib.Maximum">
+<terminalmap ports="input output"/>
 </entity>
 
 <!-- Others -->
 <entity name="addsubtract" icon="generic.transformer" terminalstyle="generic.2in1out" implementation="ptolemy.actor.lib.AddSubtract">
 <terminalmap ports="plus minus output"/>
+</entity>
+
+<entity name="multiplydivide" icon="generic.transformer" terminalstyle="generic.2in1out" implementation="ptolemy.actor.lib.MultiplyDivide">
+<terminalmap ports="multiply divide output"/>
 </entity>
 </entitylibrary>
 

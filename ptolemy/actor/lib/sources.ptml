@@ -1,0 +1,34 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entitylibrary SYSTEM "../../schematic/lib/ptml.dtd">
+
+<entitylibrary name="sources" version="1.0">
+<description>Generic domain polymorphic sources</description>
+
+<!-- Sources -->
+<entity name="bernoulli" icon="generic.source" terminalstyle="generic.source" implementation="ptolemy.actor.lib.Bernoulli">
+<description>Create a sequence of bernoulli random variables</description>
+<terminalmap ports="output"/>
+</entity>
+
+<entity name="clock" icon="generic.source" terminalstyle="generic.source" implementation="ptolemy.actor.lib.Clock">
+<description>Create a generalized square wave</description>
+<terminalmap ports="output"/>
+</entity>
+
+<entity name="const" icon="generic.source" terminalstyle="generic.source" implementation="ptolemy.actor.lib.Const">
+<description>Create a constant sequence</description>
+<terminalmap ports="output"/>
+</entity>
+
+<entity name="gaussian" icon="generic.source" terminalstyle="generic.source" implementation="ptolemy.actor.lib.Gaussian">
+<description>Create a sequence of gaussian random variables</description>
+<terminalmap ports="output"/>
+</entity>
+
+<entity name="ramp" icon="generic.source" terminalstyle="generic.source" implementation="ptolemy.actor.lib.Ramp">
+<description>Create a sequence of tokens with increasing value</description>
+<terminalmap ports="output"/>
+</entity>
+
+</entitylibrary>
+
