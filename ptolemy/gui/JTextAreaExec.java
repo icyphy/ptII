@@ -57,12 +57,12 @@ http://jw.itworld.com/javaworld/jw-12-2000/jw-1229-traps.html
 public class JTextAreaExec extends JPanel {
 
     /** Create the JTextArea, progress bar, status text field and
-     *  optionally Start and Cancel buttons.
+     *  optionally Start, Cancel and Clear buttons.
      *
      *  @param name A String containing the name to label the JTextArea
      *  with.
-     *  @param showButtons True if the Start and Cancel buttons should be
-     *  made visible.
+     *  @param showButtons True if the Start, Cancel and Clear buttons
+     *  should be  made visible.
      */
     public JTextAreaExec(String name, boolean showButtons) {
 	setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -86,12 +86,17 @@ public class JTextAreaExec extends JPanel {
         _cancelButton.addActionListener(_interruptListener);
         _cancelButton.setEnabled(false);
 
+        _clearButton = new JButton("Clear");
+        _clearButton.addActionListener(_clearListener);
+        _clearButton.setEnabled(true);
+
 	Border spaceBelow = BorderFactory.createEmptyBorder(0, 0, 5, 0);
 
 	if (showButtons) {
 	    JComponent buttonBox = new JPanel();
 	    buttonBox.add(_startButton);
 	    buttonBox.add(_cancelButton);
+	    buttonBox.add(_clearButton);
 
 	    setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 	    add(buttonBox);
@@ -133,6 +138,11 @@ public class JTextAreaExec extends JPanel {
     /** Cancel any running commands. */
     public void cancel() {
                 _cancelButton.doClick();
+    }
+
+    /** Clear the text area. */
+    public void clear() {
+                _clearButton.doClick();
     }
 
     /** Main method used for testing.
@@ -191,14 +201,15 @@ public class JTextAreaExec extends JPanel {
 	_startButton.doClick();
     }
 
-    /** Update thet status area with the text message.*/
+    /** Update the status area with the text message.*/
     public void updateStatusBar(final String text) {
-        Runnable doUpdateStatusBar = new Runnable() {
-            public void run() {
-		_statusBar.setText(text);
-            }
-        };
-        SwingUtilities.invokeLater(doUpdateStatusBar);
+	Runnable doUpdateStatusBar = new Runnable() {
+		public void run() {
+		    _statusBar.setText(text);
+		    _jTextArea.append(text + '\n');
+		}
+	    };
+	SwingUtilities.invokeLater(doUpdateStatusBar);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -283,6 +294,19 @@ public class JTextAreaExec extends JPanel {
         }
         return "All Done";         // or this
     }
+
+    // This action listener, called by the Clear button, clears
+    // the text area
+    private ActionListener _clearListener = new ActionListener() {
+        public void actionPerformed(ActionEvent event) {
+	    Runnable doAppendJTextArea = new Runnable() {
+		    public void run() {
+			_jTextArea.setText(null);
+		    }
+		};
+	    SwingUtilities.invokeLater(doAppendJTextArea);
+	}
+    };
 
     // This action listener, called by the Cancel button, interrupts
     // the _worker thread which is running this._executeCommands().
@@ -384,6 +408,9 @@ public class JTextAreaExec extends JPanel {
 
     // The Cancel Button.
     private JButton _cancelButton;
+
+    // The Clear Button.
+    private JButton _clearButton;
 
     // The list of command to be executed.  Each entry in the list is
     // a String.  It might be better to have each element of the list
