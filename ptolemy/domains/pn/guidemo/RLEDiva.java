@@ -101,6 +101,8 @@ public class RLEDiva extends PNApplet implements Runnable {
     ImageDisplay a7;
     ImageDisplay a8;
 
+    Manager manager;
+
     /** Describe the applet parameters.
      *  @return An array describing the applet parameters.
      */
@@ -118,17 +120,32 @@ public class RLEDiva extends PNApplet implements Runnable {
 
         // Process the background parameter.
         super.init();
-	setLayout(new BorderLayout(15, 15));
+	manager = _manager;
 
-	//Add a control panel in the main panel.
-	_goButton = new Button("Go");
+	setLayout(new BorderLayout(15, 15));
 	Panel controlPanel = new Panel();
-	controlPanel.add(_goButton);
-	_goButton.addActionListener(new GoButtonListener());
 
 	Button layout = new Button("Layout");
 	controlPanel.add(layout);
 	layout.addActionListener(new LayoutListener());
+
+	//Add a control panel in the main panel.
+	_goButton = new Button("Go");
+	controlPanel.add(_goButton);
+	_goButton.addActionListener(new GoButtonListener());
+	
+// 	Button pause = new Button("Pause");
+// 	controlPanel.add(pause);
+// 	pause.addActionListener(new PauseListener());
+
+// 	Button resume = new Button("Resume");
+// 	controlPanel.add(resume);
+// 	resume.addActionListener(new ResumeListener());
+
+	Button stop = new Button("Stop");
+	controlPanel.add(stop);
+	stop.addActionListener(new StopListener());
+
 
 	add(controlPanel, BorderLayout.NORTH);
 
@@ -397,6 +414,14 @@ public class RLEDiva extends PNApplet implements Runnable {
 	traceView.setTraceModel(mod);
     }
 
+
+    /** Stop the simulation of the system
+     */
+    public void stop() {
+	_manager.terminate();
+	_isSimulationRunning = false;	
+    }
+
     
     ///////////////////////////////////////////////////////////////////
     //// StateListener
@@ -460,7 +485,14 @@ public class RLEDiva extends PNApplet implements Runnable {
         /** Respond to a state changed event.
          */
         public void processStateChanged(PNProcessEvent event) {
+	    System.out.println("Still processing");
+
             final int state = event.getCurrentState();
+	    int cte = -1;
+	    if (state == PNProcessEvent.PROCESS_BLOCKED) {
+		cte = event.getBlockingCause();
+	    }
+	    final int cause = cte;
             Actor actor = event.getActor();
 
             // Get the corresponding graph node and its figure
@@ -476,7 +508,11 @@ public class RLEDiva extends PNApplet implements Runnable {
                     public void run () {
                         switch (state) {
                         case PNProcessEvent.PROCESS_BLOCKED:
-                            figure.setFillPaint(Color.red);
+			    if (cause == PNProcessEvent.BLOCKED_ON_READ) {
+				figure.setFillPaint(Color.red);
+			    } else {
+				figure.setFillPaint(Color.magenta);
+			    }
                             break;
                         
                         case PNProcessEvent.PROCESS_FINISHED:
@@ -499,7 +535,7 @@ public class RLEDiva extends PNApplet implements Runnable {
             } catch (Exception e) {
 		System.out.println(e.toString());
 	    }
-	    System.out.println("In state changed after initial stuff**8**");
+	    //System.out.println("In state changed after initial stuff**8**");
 
             // Get the trace and element figure
             ComponentEntity ce = (ComponentEntity) actor;
@@ -511,8 +547,12 @@ public class RLEDiva extends PNApplet implements Runnable {
             int colorState = 3;
             switch (state) {
             case PNProcessEvent.PROCESS_BLOCKED:
-                colorState = 0;
-                break;
+		if (cause == PNProcessEvent.BLOCKED_ON_READ) {
+		    colorState = 0;
+		} else {
+		    colorState = 5;
+		}
+		break;
 		
             case PNProcessEvent.PROCESS_FINISHED:
                 colorState = 7;
@@ -638,6 +678,9 @@ public class RLEDiva extends PNApplet implements Runnable {
     Picture _imgout;
     Button _goButton;
 
+    ///////////////////////////////////////////////////////////////////
+    //// GoButtonListener
+
     public class GoButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent evt) {
             
@@ -656,6 +699,7 @@ public class RLEDiva extends PNApplet implements Runnable {
 		    RLEDiva.this.listener.setStartTime(
 			    System.currentTimeMillis());
                     simulationThread.start();
+		    _isSimulationRunning = true;
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -666,6 +710,72 @@ public class RLEDiva extends PNApplet implements Runnable {
         }
     }
 
+    ///////////////////////////////////////////////////////////////////
+    //// PauseListener
+
+
+    public class PauseListener implements ActionListener {
+        public void actionPerformed(ActionEvent evt) {
+            if (!_isSimulationRunning) {
+                System.out.println("Simulation not running.. cannot pause..");
+                return;
+            }
+            try {
+		RLEDiva.this._director.pause();
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw new InternalErrorException("Error in Pause" + 
+                       "Listener class : " + e.getMessage()); 
+            }
+
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    //// ResumeListener
+
+
+    public class ResumeListener implements ActionListener {
+        public void actionPerformed(ActionEvent evt) {
+            try {
+		RLEDiva.this._director.resume();
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw new InternalErrorException("Error in Resume" + 
+                       "Listener class : " + e.getMessage()); 
+            }
+
+        }
+    }
+
+
+    ///////////////////////////////////////////////////////////////////
+    //// StopListener
+
+
+    public class StopListener implements ActionListener {
+        public void actionPerformed(ActionEvent evt) {
+            if (!_isSimulationRunning) {
+                System.out.println("Simulation not running.. cannot pause..");
+                return;
+            }
+            try {
+		RLEDiva.this.stop();
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw new InternalErrorException("Error in Stop" + 
+                       "Listener class : " + e.getMessage() + " and " + 
+			" Exception = " + e.toString()); 
+            }
+
+        }
+    }
+
+
+
+    ///////////////////////////////////////////////////////////////////
+    //// ExecutionListener
+
     private class MyExecutionListener extends DefaultExecutionListener {
         public void executionFinished(ExecutionEvent e) {
             super.executionFinished(e);
@@ -673,6 +783,10 @@ public class RLEDiva extends PNApplet implements Runnable {
         }
 
     }
+
+
+    ///////////////////////////////////////////////////////////////////
+    //// LayoutListener
 
     private class LayoutListener implements ActionListener {
 	public void actionPerformed(ActionEvent evt) {
