@@ -50,7 +50,7 @@ set ctdir [java::new ptolemy.domains.ct.kernel.CTMixedSignalDirector $ctsub CTEm
 # construct the sub system
 set const [java::new ptolemy.actor.lib.Const $ctsub Const]
 set integral [java::new ptolemy.domains.ct.lib.Integrator $ctsub Integrator]
-set print [java::new ptolemy.actor.gui.TimedPlotter $ctsub CTPlot]
+set print [java::new ptolemy.actor.lib.gui.TimedPlotter $ctsub CTPlot]
 set sampler [java::new ptolemy.domains.ct.lib.CTPeriodicSampler $ctsub Sample]
 
 set constout [$const getPort output]
@@ -69,7 +69,7 @@ $sampout link $r3
 $subout link $r3
 
 # construct the DE system
-set deplot [java::new ptolemy.actor.gui.TimedPlotter $sys DEPLOT]
+set deplot [java::new ptolemy.actor.lib.gui.TimedPlotter $sys DEPLOT]
 set depin [$deplot getPort input]
 set r4 [java::new ptolemy.actor.TypedIORelation $sys R4]
 $subout link $r4

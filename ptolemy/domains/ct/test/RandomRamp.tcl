@@ -2,7 +2,7 @@
 #
 # @Author: Jie Liu
 #
-# @Version: %W%  %G%
+# @Version: $Id$
 #
 # @Copyright (c) 1997-2000 The Regents of the University of California.
 # All rights reserved.
@@ -55,7 +55,7 @@ set ctdir [java::new ptolemy.domains.ct.kernel.CTMixedSignalDirector $ctsub CTEm
 # construct the sub system
 set hold [java::new ptolemy.domains.ct.lib.ZeroOrderHold $ctsub Hold]
 set integral [java::new ptolemy.domains.ct.lib.Integrator $ctsub Integrator]
-set print [java::new ptolemy.actor.gui.TimedPlotter $ctsub CTPlot]
+set print [java::new ptolemy.actor.lib.gui.TimedPlotter $ctsub CTPlot]
 set sampler [java::new ptolemy.domains.ct.lib.CTPeriodicalSampler $ctsub Sample]
 
 set holdin [$hold getPort input]

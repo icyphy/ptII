@@ -40,7 +40,7 @@
 	    value="&quot;TooFar&quot;"></property>
 	<port name="input"></port>
     </entity>
-    <entity name="display" class="ptolemy.actor.gui.TimedPlotter">
+    <entity name="display" class="ptolemy.actor.lib.gui.TimedPlotter">
     	<port name="input"></port>
     	<!-- Configure provided in both a referenced file and local data -->
     	<configure source="DEplotConfigure.xml"><![CDATA[

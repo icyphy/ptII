@@ -114,7 +114,7 @@
 	<port name="input"></port>
     </entity>
 
-    <entity name="ctdisp" class="ptolemy.actor.gui.TimedPlotter">
+    <entity name="ctdisp" class="ptolemy.actor.lib.gui.TimedPlotter">
     	<port name="input"></port>
     	<!-- Configure provided in both a referenced file and local data -->
     	<configure source="plotConfigure.xml"><![CDATA[

@@ -71,7 +71,7 @@ test CTRampSystem-4.1 {Ramp with ForwardEulerSolver} {
     set integral [java::new ptolemy.domains.ct.lib.Integrator $sys Integ]
     set print [java::new ptolemy.domains.ct.test.CTTestValueSink\
     	    $sys Sink]
-    #set sink [java::new ptolemy.actor.gui.TimedPlotter $sys pl]
+    #set sink [java::new ptolemy.actor.lib.gui.TimedPlotter $sys pl]
     set constout [$const getPort output]
     set intglin [$integral getPort input]
     set intglout [$integral getPort output]

@@ -47,7 +47,7 @@ TimeAdvance is a simple DDE actor with an input and output multiport.
 When executed, a TimeAdvance will consume a token from its input port
 and then produce a DoubleToken on its output port with a value as
 specified by the 'outputValue' parameter. TimeAdvance is useful in
-conjunction with plotter classes (e.g., actor/gui/TimedPlotter) where
+conjunction with plotter classes (e.g., actor/lib/gui/TimedPlotter) where
 the value to be plotted is not as important as the time axis values.
 
 @author John S. Davis II

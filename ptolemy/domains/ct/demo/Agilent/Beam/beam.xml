@@ -77,7 +77,7 @@
             <property name="output"/>
         </port>
     </entity>
-    <entity name="TimedPlotter7" class="ptolemy.actor.gui.TimedPlotter">
+    <entity name="TimedPlotter7" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">

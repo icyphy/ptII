@@ -212,7 +212,7 @@
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="ctdisp" class="ptolemy.actor.gui.TimedPlotter">
+    <entity name="ctdisp" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
