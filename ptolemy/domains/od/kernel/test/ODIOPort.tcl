@@ -47,11 +47,10 @@ if {[string compare test [info procs test]] == 1} then {
 # Check for necessary classes and adjust the auto_path accordingly.
 #
 
-
 ######################################################################
 ####
 #
-test ODIOPort-2.1 {Send and receive multiple Tokens across one channel} {
+test ODIOPort-2.1 {Send/receive multiple Tokens across one channel} {
     set wspc [java::new ptolemy.kernel.util.Workspace]
     set topLevel [java::new ptolemy.actor.CompositeActor $wspc]
     set dir [java::new ptolemy.domains.od.kernel.ODDirector $wspc "director"]
@@ -89,7 +88,7 @@ test ODIOPort-2.1 {Send and receive multiple Tokens across one channel} {
 ######################################################################
 ####
 #
-test ODIOPort-3.1 {Send/receive tokens at different times along two channels} {
+test ODIOPort-2.2 {Send/receive tokens at different times along two channels} {
     set wspc [java::new ptolemy.kernel.util.Workspace]
     set topLevel [java::new ptolemy.actor.CompositeActor $wspc]
     set dir [java::new ptolemy.domains.od.kernel.ODDirector $wspc "director"]
@@ -115,24 +114,130 @@ test ODIOPort-3.1 {Send/receive tokens at different times along two channels} {
     
     $dir initialize
     
+    $actorC setPriorities
+    
+    set t1 [java::new ptolemy.data.Token]
+    set t2 [java::new ptolemy.data.Token]
+    set t3 [java::new ptolemy.data.Token]
+    set t4 [java::new ptolemy.data.Token]
+    set endToken [java::new ptolemy.data.Token]
+    
+    $portA send 0 $t1 10.0
+    $portB send 0 $t2 5.0
+    $portA send 0 $t3 20.0
+    $portB send 0 $t4 25.0
+    $portA send 0 $endToken 1000.0
+    $portB send 0 $endToken 1000.0
+    
+    set t5 [$actorC getNextToken]
+    set t6 [$actorC getNextToken]
+    set t7 [$actorC getNextToken]
+    set t8 [$actorC getNextToken]
+
+    list [expr {$t5 == $t2} ] [expr {$t6 == $t1} ] [expr {$t7 == $t3} ] [expr {$t8 == $t4} ] 
+} {1 1 1 1}
+
+######################################################################
+####
+#
+test ODIOPort-2.3 {Send/receive tokens at identical times with different priorities along two channels} {
+    set wspc [java::new ptolemy.kernel.util.Workspace]
+    set topLevel [java::new ptolemy.actor.CompositeActor $wspc]
+    set dir [java::new ptolemy.domains.od.kernel.ODDirector $wspc "director"]
+    $topLevel setDirector $dir
+    set actorA [java::new ptolemy.domains.od.kernel.ODActor $topLevel "actorA"] 
+    set actorB [java::new ptolemy.domains.od.kernel.ODActor $topLevel "actorB"] 
+    set actorC [java::new ptolemy.domains.od.kernel.ODActor $topLevel "actorC"] 
+    
+    set portA [java::new ptolemy.domains.od.kernel.ODIOPort $actorA "portA"]
+    $portA setOutput true
+    
+    set portB [java::new ptolemy.domains.od.kernel.ODIOPort $actorB "portB"]
+    $portB setOutput true
+    
+    set portC1 [java::new ptolemy.domains.od.kernel.ODIOPort $actorC "portC1"]
+    $portC1 setInput true
+    
+    set portC2 [java::new ptolemy.domains.od.kernel.ODIOPort $actorC "portC2"]
+    $portC2 setInput true
+    $portC2 setPriority 10
+    
+    set rel1 [$topLevel connect $portA $portC1 "rel1"]
+    set rel2 [$topLevel connect $portB $portC2 "rel2"]
+    
+    $dir initialize
+    
+    $actorC setPriorities
+    
+    set t1 [java::new ptolemy.data.Token]
+    set t2 [java::new ptolemy.data.Token]
+    set t3 [java::new ptolemy.data.Token]
+    set t4 [java::new ptolemy.data.Token]
+    set endToken [java::new ptolemy.data.Token]
+    
+    $portA send 0 $t1 5.0
+    $portB send 0 $t2 5.0
+    $portA send 0 $t3 
+    $portB send 0 $t4 
+    $portA send 0 $endToken 1000.0
+    $portB send 0 $endToken 1000.0
+    
+    set t5 [$actorC getNextToken]
+    set t6 [$actorC getNextToken]
+    set t7 [$actorC getNextToken]
+    set t8 [$actorC getNextToken]
+
+    list [expr {$t5 == $t2} ] [expr {$t6 == $t4} ] [expr {$t7 == $t1} ] [expr {$t8 == $t3} ] 
+} {1 1 1 1}
+
+######################################################################
+####
+#
+test ODIOPort-3.1 {Broadcast tokens to two different actors.} {
+    set wspc [java::new ptolemy.kernel.util.Workspace]
+    set topLevel [java::new ptolemy.actor.CompositeActor $wspc]
+    set dir [java::new ptolemy.domains.od.kernel.ODDirector $wspc "director"]
+    $topLevel setDirector $dir
+    set actorA [java::new ptolemy.domains.od.kernel.ODActor $topLevel "actorA"] 
+    set actorB [java::new ptolemy.domains.od.kernel.ODActor $topLevel "actorB"] 
+    set actorC [java::new ptolemy.domains.od.kernel.ODActor $topLevel "actorC"] 
+    
+    set portA [java::new ptolemy.domains.od.kernel.ODIOPort $actorA "portA"]
+    $portA setOutput true
+    $portA setMultiport true
+    
+    set portB [java::new ptolemy.domains.od.kernel.ODIOPort $actorB "portB"]
+    $portB setInput true
+    
+    set portC [java::new ptolemy.domains.od.kernel.ODIOPort $actorC "portC"]
+    $portC setInput true
+    
+    set rel1 [$topLevel connect $portA $portB "rel1"]
+    set rel2 [$topLevel connect $portA $portC "rel2"]
+    
+    $dir initialize
+    
     $actorB setPriorities
+    $actorC setPriorities
     
     set t1 [java::new ptolemy.data.Token]
     set t2 [java::new ptolemy.data.Token]
     set endToken [java::new ptolemy.data.Token]
     
-    $portA send 0 $t1 10.0
-    $portB send 0 $t2 5.0
-    $portA send 0 $endToken 1000.0
-    $portB send 0 $endToken 1000.0
+    $portA broadcast $t1 5.0
+    $portA broadcast $t2 
+    $portA broadcast $endToken 1000.0
     
-    set t3 [$actorC getNextToken]
-    set t4 [$actorC getNextToken]
+    set t3 [$actorB getNextToken]
+    set t4 [$actorB getNextToken]
+    set t5 [$actorB getNextToken]
+    
+    set t6 [$actorC getNextToken]
+    set t7 [$actorC getNextToken]
+    set t8 [$actorC getNextToken]
 
-    list [expr {$t3 == $t2} ] [expr {$t4 == $t1} ] 
-} {1 1}
-
-
+    list [expr {$t3 == $t1} ] [expr {$t4 == $t2} ] [expr {$t5 == $endToken} ] [expr {$t6 == $t1} ] [expr {$t7 == $t2} ] [expr {$t8 == $endToken} ]
+} {1 1 1 1 1 1}
 
 
 
