@@ -1,0 +1,43 @@
+sensor
+  unknown theta uses theta_device_driver_fire;
+  unknown theta_desired uses theta_desired_device_driver_fire;
+  unknown external mode uses external mode_device_driver_fire;
+actuator
+  unknown port uses port_device_driver_fire;
+output
+  unknown manager_mode := init_function_name_manager_mode;
+  unknown servo_controller_output := init_function_name_servo_controller_output;
+  unknown monitor_isValid := init_function_name_monitor_isValid;
+task manager (isValid, 1:driver mode) output (manager_mode) {
+  schedule manager_fire( isValid, 1:driver mode, manager_mode)
+}
+task servo_controller (theta, theta_desired, mode) output (servo_controller_output) {
+  schedule servo_controller_fire( theta, theta_desired, mode, servo_controller_output)
+}
+task monitor (mode, output) output (monitor_isValid) {
+  schedule monitor_fire( mode, output, monitor_isValid)
+}
+driver manager_driver (monitor_1_Equals_output, external_mode) output (unknown isValid, unknown 1:driver mode) {
+  if manager_guard (monitor_1_Equals_output, external_mode) then
+    manager_transferInputs(monitor_1_Equals_output, external_mode, isValid, 1:driver mode)
+}
+driver servo_controller_driver (theta, theta_desired, manager_Equals_output) output (unknown theta, unknown theta_desired, unknown mode) {
+  if servo_controller_guard (theta, theta_desired, manager_Equals_output) then
+    servo_controller_transferInputs(theta, theta_desired, manager_Equals_output, theta, theta_desired, mode)
+}
+driver monitor_driver (manager_Equals_output, servo_controller_Multiplexor_output) output (unknown mode, unknown output) {
+  if monitor_guard (manager_Equals_output, servo_controller_Multiplexor_output) then
+    monitor_transferInputs(manager_Equals_output, servo_controller_Multiplexor_output, mode, output)
+}
+driver port_driver (servo_controller_output) output (unknown port) {
+  if port_guard (servo_controller_output) then
+    port_transferInputs(servo_controller_output, port)
+}
+start giottoThrottleController_name {
+  mode giottoThrottleController_name () period 60.0 {
+    actfreq 1 do port (port_driver);
+    taskfreq 1 do manager(manager_driver);
+    taskfreq 1 do servo_controller(servo_controller_driver);
+    taskfreq 1 do monitor(monitor_driver);
+  }
+}
