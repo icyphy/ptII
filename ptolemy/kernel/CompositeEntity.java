@@ -1095,8 +1095,9 @@ public class CompositeEntity extends ComponentEntity {
                 // If there is no _createdBy attribute, then add one.
                 output.write(_getIndentPrefix(depth)
                         + "<property name=\"_createdBy\" "
-                        + "class=\"ptolemy.kernel.util.VersionAttribute\" "
-                        + "value=\""
+                        + "class=\""
+                        + VersionAttribute.CURRENT_VERSION.getClass().getName()
+                        + "\" value=\""
                         + VersionAttribute.CURRENT_VERSION.getExpression()
                         + "\">\n");
                 output.write(_getIndentPrefix(depth) + "</property>\n");
