@@ -538,15 +538,19 @@ public class CachedMethod {
                 // Check the number of arguments.
                 if (arguments.length != actualArgCount) continue;
 
+                //      System.out.println("checking method " + methods[i]);
                 // Check the compatability of arguments.
                 boolean match = true;
                 for (int j = 0; j < arguments.length && match; j++) {
                     ArgumentConversion conversion =
                         _getConversion(arguments[j], argTypes[j]);
+                    //   System.out.println("formalType is " + arguments[i] + " " + arguments[i].getName());
+                    // System.out.println("actualType is " + argTypes[i] + " " + argTypes[i].getClass().getName());
                     match = match && (conversion != IMPOSSIBLE);
                     conversions[j] = conversion;
                 }
                 if (match) {
+                    //       System.out.println("found!");
                     return methods[i];
                 }
             }
@@ -572,9 +576,21 @@ public class CachedMethod {
             return ARRAYTOKEN;
         try {
             // Tokens can be converted to native types.
+            Class typeClass = ASTPtFunctionNode.convertTokenTypeToJavaType(actual);
             if(formal.isAssignableFrom(
                        ASTPtFunctionNode.convertTokenTypeToJavaType(actual))) {
                 return NATIVE;
+            }
+            // We have to do this because Java is stupid and doesn't
+            // give us a way to tell if primitive arguments are
+            // acceptable
+            if(formal.isPrimitive()) {
+                Type type = 
+                    ASTPtFunctionNode.convertJavaTypeToTokenType(formal);
+                if(ptolemy.graph.CPO.LOWER ==
+                        TypeLattice.compare(actual, type)) {
+                    return NATIVE;
+                }
             }
         } catch (IllegalActionException ex) {
             // Ignore..
@@ -605,29 +621,33 @@ public class CachedMethod {
         private int _type;
     }
 
-    public static final ArgumentConversion IMPOSSIBLE = new ArgumentConversion(0);
-    public static final ArgumentConversion IDENTITY = new ArgumentConversion(1) {
-            public Object convert(ptolemy.data.Token input)
-                    throws IllegalActionException {
-                // The do nothing conversion.
-                return input;
-            }
-        };
-    public static final ArgumentConversion ARRAYTOKEN = new ArgumentConversion(2) {
-            public Object convert(ptolemy.data.Token input)
-                    throws IllegalActionException {
-                // Convert ArrayToken to Token[]
-                return ((ArrayToken)input).arrayValue();
-            }
-        };
-    public static final ArgumentConversion NATIVE = new ArgumentConversion(3) {
-            public Object convert(ptolemy.data.Token input)
-                    throws IllegalActionException {
-                // Convert tokens to native types.
-                return ASTPtFunctionNode.convertTokenToJavaType(input)[0];
-            }
-        };
-
+    public static final ArgumentConversion IMPOSSIBLE = 
+    new ArgumentConversion(0);
+    public static final ArgumentConversion IDENTITY = 
+    new ArgumentConversion(1) {
+        public Object convert(ptolemy.data.Token input)
+                throws IllegalActionException {
+            // The do nothing conversion.
+            return input;
+        }
+    };
+    public static final ArgumentConversion ARRAYTOKEN = 
+    new ArgumentConversion(2) {
+        public Object convert(ptolemy.data.Token input)
+                throws IllegalActionException {
+            // Convert ArrayToken to Token[]
+            return ((ArrayToken)input).arrayValue();
+        }
+    };
+    public static final ArgumentConversion NATIVE = 
+    new ArgumentConversion(3) {
+        public Object convert(ptolemy.data.Token input)
+                throws IllegalActionException {
+            // Convert tokens to native types.
+            return ASTPtFunctionNode.convertTokenToJavaType(input)[0];
+        }
+    };
+    
     // A cached method that converts the base as well.  This allows us to
     // invoke methods on, e.g. The ptolemy.math.Complex class and the
     // ptolemy.math.FixPoint class that are inside the corresponding tokens.
