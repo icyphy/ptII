@@ -40,16 +40,16 @@ sh ~ptII/adm/copyright/chkcopyright `cat ~/tmp/ff | grep -v .class | grep -v cod
 For more information about CVS, see the
 <a href="http://www.gigascale.org/softdevel/faq/1/" target="_top">Gigascale CVS Pages</a>
 
- <p>To make a branch for 2.2-beta, use the following command:
+ <p>To make a branch for 3.0-beta, use the following command:
 <pre>
 cd $PTII
-cvs tag -b rel-2-2-beta
+cvs tag -b rel-3-0-beta
 </pre>
 Then check out the release branch  with
 <pre>
 cd ~/src
-cvs co -r rel-2-2-beta ptII
-mv ptII ptII2.0
+cvs co -r rel-3-0-beta ptII
+mv ptII ptII3.0-beta
 </pre>
 
 <li> The nightly build uses a makefile in ~ptII/adm (not shipped)
