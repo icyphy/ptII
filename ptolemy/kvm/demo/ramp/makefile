@@ -95,6 +95,10 @@ OUTPKG_DIR =	cg/ramp
 # The relative path from OUTPKG to $PTII.
 OUTPKG_ROOT =	../..
 
+# The class that contains the main() method
+OUTPKG_MAIN_CLASS =	CG_Main
+
+
 # Get rules for KVM
 include $(ROOT)/mk/kvm.mk
 

@@ -74,42 +74,42 @@ OPTIONAL_FILES = \
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-# Override setting in ptII.mk
-# Boot files to use with kvm 
-# If we compile with javac -bootclasspath $(KVM_CLASSES)
-# then we can compile with an environment similar to what is on
-# the Palm running KVM
-#JFLAGS = -bootclasspath $(KVM_CLASSES)
-
 all: jclass Primes.prc PrimesTextField.prc
+	@echo "To run the demos, run 'make demo'"
 
 install: jclass subinstall $(PTCLASSJAR)
 
-Primes.prc: $(JCLASS) $(KVM_DIR)/tools/palm/src/palm/database/MakePalmApp.class
-	$(JAVA) \
-		-classpath $(KVM_DIR)/tools/palm/src \
-		palm.database.MakePalmApp \
-		-bootclasspath $(KVM_CLASSES)  \
-		-classpath $(ROOT) \
-		ptolemy.kvm.demo.primes.Primes
-
-PrimesTextField.prc: $(JCLASS) $(KVM_DIR)/tools/palm/src/palm/database/MakePalmApp.class
-	$(JAVA) \
-		-classpath $(KVM_DIR)/tools/palm/src \
-		palm.database.MakePalmApp \
-		-classpath $(ROOT) \
-		-bootclasspath $(KVM_CLASSES)  \
-		ptolemy.kvm.demo.primes.PrimesTextField
-
 demo: jclass
-	CLASSPATH=$(CLASSPATH) $(JAVA) ptolemy.kvm.primes.PrimesText
+	$(MAKE) compile_kvm preverify build_prc
 
-# Run the kvm
-demokvm: jclass
-	CLASSPATH=$(CLASSPATH) $(JAVA) -Xbootclasspath:$(KVM_DIR)/api/classes.zip -verbose:class ptolemy.kvm.primes.PrimesText
+demo_PrimesText: jclass
+	CLASSPATH="$(CLASSPATH)" $(JAVA) ptolemy.kvm.demo.primes.PrimesText
+
 
 depend:
 	@echo "no dependencies in this directory"
+
+# Makefile variables necessary for KVM
+
+# Classpath to the source system we are generating code for.
+SOURCE_SYSTEM_CLASS =	 ptolemy.kvm.demo.primes.Primes
+
+# Number of iterations.
+ITERATIONS =	10
+
+# Output package name for generated code, which also
+# determines the directory relative to PTII where the
+# code will appear.
+OUTPKG =	ptolemy.kvm.demo.primes
+
+# Location of the OUTPKG directory.
+OUTPKG_DIR =	$(ME)
+
+# The relative path from OUTPKG to $PTII.
+OUTPKG_ROOT =	$(ROOT)
+
+# The class that contains the main() method
+OUTPKG_MAIN_CLASS =	Primes
 
 # Get rules for KVM
 include $(ROOT)/mk/kvm.mk

@@ -88,6 +88,8 @@ Hello.prc: Hello.class \
 depend:
 	@echo "no dependencies in this directory"
 
+# We could use the rules in kvm.mk to build here, but instead we
+# keep it really simple and just do it.
 # Get rules for KVM
 include $(ROOT)/mk/kvm.mk
 
