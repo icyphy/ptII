@@ -1530,6 +1530,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         reset();
         _toplevel = context.toplevel();
         _current = context;
+        _originalContext = context;
     }
 
     /** Set the error handler to handle parsing errors.
@@ -3339,6 +3340,12 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             ComponentEntity newEntity = (ComponentEntity)reference.instantiate(
                     container, entityName);
 
+            // If we are keeping track of objects created...
+            if (_topObjectsCreated != null
+                    && container == _originalContext) {
+                _topObjectsCreated.add(newEntity);
+            }
+
             // The original reference object may have had a URIAttribute,
             // but the new one should not. The clone would have copied
             // it.  The URIAttribute refers to the file in which the
@@ -3420,6 +3427,12 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 NamedObj newEntity = (NamedObj)constructor.newInstance(arguments);
                 // Mark the contents of the new entity as being derived objects.
                 _markContentsDerived(newEntity, 0);
+                
+                // If we are keeping track of objects created...
+                if (_topObjectsCreated != null
+                        && arguments[0] == _originalContext) {
+                    _topObjectsCreated.add(newEntity);
+                }
                 return newEntity;
             }
         }
@@ -4288,53 +4301,58 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
                     // An attribute cannot be a top-level element.
                     if (_current == null) {
-                        throw new IllegalActionException(
-                                "Attempt to create an attribute with no container: "
-                                + propertyName);
-                    }
-
-                    // First check that there will be no name collision
-                    // when this is propagated. Note that we need to
-                    // include all derived objects, irrespective of whether
-                    // they are locally changed.
-                    List derivedList = _current.getDerivedList();
-                    Iterator derivedObjects = derivedList.iterator();
-                    while (derivedObjects.hasNext()) {
-                        NamedObj derived = (NamedObj)derivedObjects.next();
-                        Attribute other = derived.getAttribute(propertyName);
-                        if (other != null && !(other instanceof Singleton)) {
-                            throw new IllegalActionException(_current,
-                                    "Cannot create attribute because a subclass or instance "
-                                    + "contains an attribute with the same name: "
-                                    + derived.getAttribute(propertyName).getFullName());
+                        // If we want to be able to edit icons, we
+                        // have to allow this.
+                        // Invoke the constructor.
+                        Object[] arguments = new Object[2];
+                        arguments[0] = _workspace;
+                        arguments[1] = propertyName;
+                        property = _createInstance(newClass, arguments);
+                        _toplevel = property;
+                    } else {
+                        // First check that there will be no name collision
+                        // when this is propagated. Note that we need to
+                        // include all derived objects, irrespective of whether
+                        // they are locally changed.
+                        List derivedList = _current.getDerivedList();
+                        Iterator derivedObjects = derivedList.iterator();
+                        while (derivedObjects.hasNext()) {
+                            NamedObj derived = (NamedObj)derivedObjects.next();
+                            Attribute other = derived.getAttribute(propertyName);
+                            if (other != null && !(other instanceof Singleton)) {
+                                throw new IllegalActionException(_current,
+                                        "Cannot create attribute because a subclass or instance "
+                                        + "contains an attribute with the same name: "
+                                        + derived.getAttribute(propertyName).getFullName());
+                            }
                         }
-                    }
-                    // Invoke the constructor.
-                    Object[] arguments = new Object[2];
-                    arguments[0] = _current;
-                    arguments[1] = propertyName;
-                    property = _createInstance(newClass, arguments);
+                        // Invoke the constructor.
+                        Object[] arguments = new Object[2];
+                        arguments[0] = _current;
+                        arguments[1] = propertyName;
+                        property = _createInstance(newClass, arguments);
 
-                    // Check that the result is an instance of Attribute.
-                    if (!(property instanceof Attribute)) {
-                        // NOTE: Need to get rid of the object.
-                        // Unfortunately, setContainer() is not defined,
-                        // so we have to find the right class.
-                        if (property instanceof ComponentEntity) {
-                            ((ComponentEntity)property).setContainer(null);
-                        } else if (property instanceof Port) {
-                            ((Port)property).setContainer(null);
-                        } else if (property instanceof ComponentRelation) {
-                            ((ComponentRelation)property).setContainer(null);
+                        // Check that the result is an instance of Attribute.
+                        if (!(property instanceof Attribute)) {
+                            // NOTE: Need to get rid of the object.
+                            // Unfortunately, setContainer() is not defined,
+                            // so we have to find the right class.
+                            if (property instanceof ComponentEntity) {
+                                ((ComponentEntity)property).setContainer(null);
+                            } else if (property instanceof Port) {
+                                ((Port)property).setContainer(null);
+                            } else if (property instanceof ComponentRelation) {
+                                ((ComponentRelation)property).setContainer(null);
+                            }
+                            throw new XmlException("Property is not an "
+                                    + "instance of Attribute. ",
+                                    _currentExternalEntity(),
+                                    _parser.getLineNumber(),
+                                    _parser.getColumnNumber());
                         }
-                        throw new XmlException("Property is not an "
-                                + "instance of Attribute. ",
-                                _currentExternalEntity(),
-                                _parser.getLineNumber(),
-                                _parser.getColumnNumber());
+                        // Propagate.
+                        property.propagateExistence();
                     }
-                    // Propagate.
-                    property.propagateExistence();
 
                     if (value != null) {
                         if (property == null) {
@@ -4540,21 +4558,17 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         // NOTE: Should we keep the parser to re-use?
         MoMLParser newParser = new MoMLParser(_workspace, _classLoader);
         newParser.setContext(context);
+        // Create a list to keep track of objects created.
+        newParser._topObjectsCreated = new LinkedList();
         NamedObj result = newParser.parse(_base, input);
 
         // Have to mark the contents derived objects, so that
         // the icon is not exported with the MoML export.
-        // Unfortunately, we can't be sure what contents
-        // were added to the context, so we just mark the
-        // "_icon" attribute.
-        // FIXME: Instead of doing this, which only work for
-        // attributes named "_icon", we could set a private
-        // variable on the parser to indicate that any new
-        // objects it creates should be marked derived objects.
-        Attribute icon = context.getAttribute("_icon");
-        if (icon != null) {
-            icon.setDerivedLevel(1);
-            _markContentsDerived(icon, 1);
+        Iterator objects = newParser._topObjectsCreated.iterator();
+        while (objects.hasNext()) {
+            NamedObj newObject = (NamedObj)objects.next();
+            newObject.setDerivedLevel(1);
+            _markContentsDerived(newObject, 1);
         }
 
         return true;
@@ -5496,6 +5510,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
     // The stack of maps for name translations.
     private Stack _namespaceTranslations = new Stack();
 
+    // The original context set by setContext().
+    private NamedObj _originalContext = null;
+    
     // A list of settable parameters specified in property tags.
     private List _paramsToParse = new LinkedList();
 
@@ -5524,6 +5541,13 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
     // Top-level entity.
     private NamedObj _toplevel = null;
+    
+    // List of top-level objects created by a parse operation.
+    // If this is list is non-null when parse() is called, it will
+    // be populated with a list of instance of NamedObj that are
+    // created at the top level of the parse.  Note that these
+    // may not be top-level objects.
+    private List _topObjectsCreated = null;
 
     // Holds information needed to generate undo MoML at this level
     private Stack _undoContexts = new Stack();
