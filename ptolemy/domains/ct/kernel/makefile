@@ -31,7 +31,7 @@
 
 ME =		ptolemy/domains/ct/kernel
 
-DIRS = 		util solver test #demo doc
+DIRS = 		util solver test
 
 # Root of the Java directory
 ROOT =		../../../..
@@ -77,11 +77,12 @@ EXTRA_SRCS =	$(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	$(DIRS) doc test #demo
+MISC_FILES =	$(DIRS) test
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES =
+OPTIONAL_FILES = \
+	doc
 
 JCLASS = $(JSRCS:%.java=%.class)
 

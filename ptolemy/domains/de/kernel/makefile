@@ -1,8 +1,8 @@
-# Makefile for the Continuous Time domain kernel
+# Makefile for the Ptolemy Discrete Event domain kernel
 #
 # @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
-# @Version: $Date$		$Id$
+# @Version: $Id$
 #
 # @Copyright (c) 1998-1999 The Regents of the University of California.
 # All rights reserved.
@@ -31,7 +31,7 @@
 
 ME =		ptolemy/domains/de/kernel
 
-DIRS = 		test #demo doc
+DIRS = 		test
 
 # Root of the Java directory
 ROOT =		../../../..
@@ -63,11 +63,12 @@ EXTRA_SRCS =	$(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	 $(DIRS) doc #test demo
+MISC_FILES =	 $(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
+	doc \
 	'DECQEventQueue$$DECQComparator.class'
 
 JCLASS = $(JSRCS:%.java=%.class)

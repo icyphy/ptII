@@ -44,7 +44,7 @@ PTPACKAGE = 	demo
 PTVERSION =	2.0
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
-DIRS = 		#doc test
+DIRS =
 
 # Order matters here.
 JSRCS = \
@@ -75,7 +75,12 @@ EXTRA_SRCS = $(JSRCS) \
 
 # The data directory contains binary plot files that cannot be checked
 # into sccs.
-MISC_FILES = data $(DIRS) doc #test
+MISC_FILES = data $(DIRS)
+
+# make checkjunk will not report OPTIONAL_FILES as trash
+# make distclean removes OPTIONAL_FILES
+OPTIONAL_FILES = \
+	doc \
 
 JCLASS = $(JSRCS:%.java=%.class)
 

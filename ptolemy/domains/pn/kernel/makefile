@@ -40,7 +40,7 @@ CLASSPATH =	$(ROOT)
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-DIRS = 		event test #doc
+DIRS = 		event test
 
 # Used to build jar files
 PTPACKAGE = 	kernel
@@ -63,6 +63,7 @@ MISC_FILES =	$(DIRS) doc test demo
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
+	doc \
 	$(PTCLASSJAR)
 
 JCLASS = $(JSRCS:%.java=%.class)

@@ -41,7 +41,7 @@
 
 ME =		ptolemy/actor
 
-DIRS = 		util sched process lib test # doc
+DIRS = 		util sched process lib test
 
 # Root of the Ptolemy II directory
 ROOT =		../..
@@ -95,11 +95,12 @@ EXTRA_SRCS =	$(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	$(DIRS) doc lib
+MISC_FILES =	$(DIRS) lib
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES =	#codeDoc
+OPTIONAL_FILES = \
+	doc
 
 JCLASS = $(JSRCS:%.java=%.class)
 

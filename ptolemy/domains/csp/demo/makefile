@@ -57,13 +57,14 @@ EXTRA_SRCS =	index.html $(TCL_SRCS) $(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	doc
+MISC_FILES =
 
 PTAUXJAR = diningapplet.jar
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
+	doc \
 	diningapplet.jar
 
 JCLASS = $(JSRCS:%.java=%.class)
@@ -77,7 +78,7 @@ install: all
 
 demo:
 	CLASSPATH=$(CLASSPATH) appletviewer index.html
-	
+
 bus:	
 	CLASSPATH=$(CLASSPATH) $(PTJAVA_DIR)/bin/java ptolemy.domains.csp.demo.BusContentionDemo
 
