@@ -73,10 +73,11 @@ public class ModelFrame extends PtolemyFrame implements ExecutionListener {
     // This might be useful for code generation.
 
     /** Construct a frame to control the specified Ptolemy II model.
-     *  After constructing this, it is necessary
-     *  to call setVisible(true) to make the frame appear.
-     *  This creates an instance of ModelPane and puts it in a top-level window.
-     *  This is typically done by calling show() on the controlling tableau.
+     *  After constructing this, it is necessary to call
+     *  setVisible(true) to make the frame appear.  This creates an
+     *  instance of ModelPane and puts it in a top-level window.  This
+     *  is typically done by calling show() on the controlling
+     *  tableau.
      *  @see ModelPane
      *  @see Tableau#show()
      *  @see ModelPane
@@ -87,19 +88,34 @@ public class ModelFrame extends PtolemyFrame implements ExecutionListener {
     }
 
     /** Construct a frame to control the specified Ptolemy II model.
-     *  After constructing this, it is necessary
-     *  to call setVisible(true) to make the frame appear.
-     *  This creates an instance of ModelPane and puts it in a top-level window.
-     *  This is typically done by calling show() on the controlling tableau.
+     *  After constructing this, it is necessary to call
+     *  setVisible(true) to make the frame appear.  This creates an
+     *  instance of ModelPane and puts it in a top-level window.  This
+     *  is typically done by calling show() on the controlling
+     *  tableau.
      *  @see ModelPane
      *  @see Tableau#show()
      *  @param model The model to put in this frame, or null if none.
      *  @param tableau The tableau responsible for this frame, or null if none.
      */
     public ModelFrame(CompositeActor model, Tableau tableau) {
+        this(model, tableau, new ModelPane(model));
+    }
+
+    /** Construct a frame to control the specified Ptolemy II model.
+     *  After constructing this, it is necessary to call
+     *  setVisible(true) to make the frame appear.  This creates an
+     *  instance of ModelPane and puts it in a top-level window.
+     *  @see ModelPane
+     *  @see Tableau#show()
+     *  @param model The model to put in this frame, or null if none.
+     *  @param tableau The tableau responsible for this frame, or null if none.
+     *  @param pane The model pane to place inside the frame.
+     */
+    public ModelFrame(CompositeActor model, Tableau tableau, ModelPane pane) {
         super(model, tableau);
 
-        _pane = new ModelPane(model);
+        _pane = pane;
         getContentPane().add(_pane, BorderLayout.CENTER);
 
         Manager manager = model.getManager();
