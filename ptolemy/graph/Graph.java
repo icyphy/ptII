@@ -524,6 +524,14 @@ public class Graph implements Cloneable {
         return result.toString();
     }
 
+    /** Disconnect a node from the rest of the graph by hiding its incident
+     *  edges. No
+     */
+    public void hideIncidentEdges(Node node) {
+    //FIXME: complete.
+    }
+        
+
     /** Return an edge in this graph that has a specified weight. If multiple
      *  edges have the specified weight, then return one of them
      *  arbitrarily.
@@ -781,18 +789,24 @@ public class Graph implements Cloneable {
     /** Return the number of edges that are incident to a specified node.
      *  @param node The node.
      *  @return The number of incident edges.
+     *  @exception IllegalArgumentException If the specified node is not in
+     *  the graph.
      */
     public int incidentEdgeCount(Node node) {
+        _checkNode(node);
         return _incidentEdgeList(node).size();
     }
 
     /** Return the set of incident edges for a specified node. Each element in
-     *  the returned set is an {@link Edge}.
+     *  the returned set is an {@link Edge}. 
      *
      *  @param node The specified node.
      *  @return The set of incident edges.
+     *  @exception IllegalArgumentException If the specified node is not in
+     *  the graph.
      */
     public Collection incidentEdges(Node node) {
+        _checkNode(node);
         return Collections.unmodifiableList(_incidentEdgeList(node));
     }
 
@@ -948,9 +962,13 @@ public class Graph implements Cloneable {
      *  @return The collection of edges that make node2 a neighbor of node1.
      *  @see DirectedGraph#predecessorEdges(Node, Node)
      *  @see DirectedGraph#successorEdges(Node, Node)
+     *  @exception IllegalArgumentException if node1 or node2 is not in this
+     *  graph.
      */
     public Collection neighborEdges(Node node1, Node node2) {
-        Collection edgeCollection = this.incidentEdges(node1);
+        // Method incidentEdges will validate existence of node1 in the graph.
+        Collection edgeCollection = incidentEdges(node1);
+        _checkNode(node2);
         Iterator edges = edgeCollection.iterator();
         ArrayList commonEdges = new ArrayList();
         while (edges.hasNext()) {
@@ -974,6 +992,7 @@ public class Graph implements Cloneable {
      *  @return The neighbors of the node as a collection.
      */
     public Collection neighbors(Node node) {
+        // Method incidentEdges will validate existence of node in the graph.
         Collection incidentEdgeCollection = incidentEdges(node);
         Iterator incidentEdges = incidentEdgeCollection.iterator();
         ArrayList result = new ArrayList(incidentEdgeCollection.size());
@@ -1011,7 +1030,7 @@ public class Graph implements Cloneable {
     /** Return a node in this graph given the node label.
      *  @param node The node label.
      *  @return The node.
-     *  @exception IllegalArgumentException If the label is not associated with
+     *  @exception IndexOutOfBoundsException If the label is not associated with
      *  a node in this graph.
      *  @see #nodeLabel(Node).
      */
@@ -1039,7 +1058,7 @@ public class Graph implements Cloneable {
      *  @exception IllegalArgumentException If the specified node is not
      *  a node in this graph.
      */
-    public int nodeLabel(Node node) throws IllegalArgumentException {
+    public int nodeLabel(Node node) {
         return _nodes.label(node);
     }
 
@@ -1053,7 +1072,7 @@ public class Graph implements Cloneable {
      *  a node weight in this graph.
      *  @see #nodeLabel(Node).
      */
-    public int nodeLabel(Object weight) throws IllegalArgumentException {
+    public int nodeLabel(Object weight) {
         return _nodes.label(node(weight));
     }
 
@@ -1135,7 +1154,8 @@ public class Graph implements Cloneable {
     }
 
     /** Remove a node from this graph if it exists in the graph.
-     * All edges incident to the node are also removed. This is an
+     * All edges incident to the node (excluding hidden edges) are also removed.
+     * This is an
      * <em>O(n + ke)</em> operation, where <em>k</em> is the number of
      * incident edges.
      * @param node The node to be removed.
@@ -1145,9 +1165,9 @@ public class Graph implements Cloneable {
         if (!_nodes.contains(node)) {
             return false;
         }
-        _nodes.remove(node);
         // Avoid concurrent modification of the incident edges list.
         Object[] incidentEdgeArray = incidentEdges(node).toArray();
+        _nodes.remove(node);
         for (int i = 0; i < incidentEdgeArray.length; i++) {
             removeEdge((Edge)(incidentEdgeArray[i]));
         }
@@ -1167,6 +1187,8 @@ public class Graph implements Cloneable {
      *  hidden. This is an <em>O(1)</em> operation.
      *  @param edge The edge to restore.
      *  @return true If the edge is in the graph and was hidden.
+     *  @exception IllegalArgumentException if the source node and sink node
+     *  of the given edge are not both in the graph.
      *  @see #hideEdge(Edge).
      */
     public boolean restoreEdge(Edge edge) {
@@ -1174,6 +1196,17 @@ public class Graph implements Cloneable {
             return false;
         }
         if (_hiddenEdgeSet.remove(edge)) {
+            // Make sure the source and sink are still in the graph.
+            if (!containsNode(edge.source())) {
+                throw new IllegalArgumentException("Source node is not in "
+                        + "the graph.\n" + _edgeDump(edge));
+            }
+            if (!containsNode(edge.sink())) {
+                throw new IllegalArgumentException("Sink node is not in "
+                        + "the graph.\n" + _edgeDump(edge));
+            }
+
+            // Re-connect the edge.
             _connectEdge(edge);
             return true;
         } else {
@@ -1193,6 +1226,7 @@ public class Graph implements Cloneable {
     /** Return the number of self loop edges of a specified node.
      *  @param node The node.
      *  @return The number of self loop edges.
+     *  @exception IllegalArgumentException if the node is not in the graph.
      */
     public int selfLoopEdgeCount(Node node) {
         return selfLoopEdges(node).size();
@@ -1213,9 +1247,11 @@ public class Graph implements Cloneable {
      *
      *  @param node The node.
      *  @return The self-loop edges that are incident to the node.
+     *  @exception IllegalArgumentException if the node is not in the graph.
      */
     public Collection selfLoopEdges(Node node) {
         ArrayList result = new ArrayList();
+        // The call to incidentEdges validates existence of the node.
         Iterator edges = incidentEdges(node).iterator();
         while (edges.hasNext()) {
             Edge edge = (Edge)edges.next();
@@ -1445,6 +1481,7 @@ public class Graph implements Cloneable {
 
     /** Connect an edge to a node by appropriately modifying
      * the adjacency information associated with the node.
+     * The node is assumed to be in the graph.
      * @param edge The edge.
      * @param node The node.
      * @exception IllegalArgumentException If the edge has already
@@ -1459,7 +1496,8 @@ public class Graph implements Cloneable {
         }
     }
 
-    /** Connect a given edge in this graph. The edge is assumed to be in
+    /** Connect a given edge in this graph. The edge and its source and sink
+     *  nodes are assumed to be in
      *  the graph. This method performs operations that are common to
      *  the addition of a new edge and the restoration of a hidden edge.
      *  Specifically, this method connects, using {@link #_connect(Edge, Node)},
@@ -1678,6 +1716,16 @@ public class Graph implements Cloneable {
         }
     }
 
+    // Verify that a node is in the graph.
+    // @param The node to verify.
+    // @exception IllegalArgumentException If the node is not in the graph.
+    private void _checkNode(Node node) {
+        if (!containsNode(node)) {
+            throw new IllegalArgumentException("Reference to a node that is "
+                    + "not in the graph.\n" + _nodeDump(node));
+        }
+    }
+
     // Return a dump of an edge and this graph suitable to be appended
     // to an error message.
     private String _edgeDump(Edge edge) {
@@ -1694,6 +1742,7 @@ public class Graph implements Cloneable {
     }
 
     // Return the list of incident edges for a specified node.
+    // Return null if the specified node is not in the graph.
     private ArrayList _incidentEdgeList(Node node) {
         return (ArrayList)_incidentEdgeMap.get(node);
     }
