@@ -55,6 +55,7 @@ import java.awt.print.Printable;
 import java.awt.print.PrinterJob;
 import java.io.*;
 import java.net.URL;
+import javax.swing.filechooser.FileFilter;
 
 //////////////////////////////////////////////////////////////////////////
 //// Top
@@ -428,6 +429,9 @@ public abstract class Top extends JFrame {
      */
     protected void _open() {
         JFileChooser fileDialog = new JFileChooser();
+	if (_fileFilter != null) {
+	    fileDialog.addChoosableFileFilter(_fileFilter);
+	}
         fileDialog.setDialogTitle("Select a model file.");
 
         if (_directory != null) {
@@ -541,6 +545,9 @@ public abstract class Top extends JFrame {
      */
     protected boolean _saveAs() {
         JFileChooser fileDialog = new JFileChooser();
+	if (_fileFilter != null) {
+	    fileDialog.addChoosableFileFilter(_fileFilter);
+	}
         fileDialog.setDialogTitle("Save as...");
         if (_directory != null) {
             fileDialog.setCurrentDirectory(_directory);
@@ -597,6 +604,13 @@ public abstract class Top extends JFrame {
     /** The most recent directory used in a file dialog. */
     protected static File _directory = null;
 
+    /** The FileFilter that determines what files are displayed by
+     *  the Open dialog and the Save As dialog
+     *  The initial default is null, which causes no FileFilter to be
+     *  applied, which results in all files being displayed.
+     */
+    protected FileFilter _fileFilter = null;
+
     /** File menu for this frame. */
     protected JMenu _fileMenu = new JMenu("File");
 
@@ -626,6 +640,7 @@ public abstract class Top extends JFrame {
 
     /** The status bar. */
     protected StatusBar _statusBar = new StatusBar();
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
