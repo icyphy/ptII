@@ -115,7 +115,7 @@ SNAPSHOTS=jimple1 jimple2 jimple3 jimple4
 STATSFILE=runSnapShot.stats
 
 # The prefix for treeshaken jar files.
-TREESHAKE_PREFIX = $(TARGETPATH)/treeshake
+TREESHAKE_PREFIX = $(TARGETPATH)treeshake
 
 # The place where treeshake scripts are.
 TREESHAKE=$(ROOT)/util/testsuite/treeshake
@@ -243,10 +243,10 @@ treeShakeSnapshots:
 	do \
 		echo "Treeshake $$snapshot"; \
 		"$(TREESHAKE)" "$(JAR)" $(TREESHAKE_PREFIX)_$${snapshot}.jar \
-			-c $(TARGETPATH)/$${snapshot}/jarClassList.txt \
+			-c $(TARGETPATH)$${snapshot}/jarClassList.txt \
 			-main $(TARGETPACKAGE).Main \
 			"$(JAVA)" -Xfuture -classpath \
-		"$(TARGETPATH)/$$snapshot$(CLASSPATHSEPARATOR)$(CLASSPATH)" \
+		"$(TARGETPATH)$$snapshot$(CLASSPATHSEPARATOR)$(CLASSPATH)" \
 					$(TARGETPACKAGE).Main | tail -1 ; \
 		ls -l $(TREESHAKE_PREFIX)_$${snapshot}.jar; \
 	done	
@@ -255,7 +255,7 @@ runTreeShakeSnapshots:
 	@echo "Treeshake $(MODEL) snapshots"
 	for snapshot in $(SNAPSHOTS); \
 	do \
-		echo "Run the code from $(TARGETPATH)/$${snapshot}"; \
+		echo "Run the code from $(TARGETPATH)$${snapshot}"; \
 		"$(JAVA)" -classpath $(TREESHAKE_PREFIX)_$${snapshot}.jar \
 			$(TARGETPACKAGE).Main; \
 	done
@@ -264,7 +264,7 @@ profileTreeShakeSnapshots:
 	@echo "Treeshake $(MODEL) snapshots"
 	for snapshot in $(SNAPSHOTS); \
 	do \
-		echo "Profile the code from $(TARGETPATH)/$${snapshot}"; \
+		echo "Profile the code from $(TARGETPATH)$${snapshot}"; \
 		rm -f  $(STATSFILE); \
 		for repeat in 1 2 3 4; \
 		do \
@@ -306,7 +306,7 @@ compareTreeShakeJars:
 # Jode writes to stderr, which causes problem with the test suite because
 # Tcl exec will throw an error if stderr gets written to.
 obfuscate:
-	"$(ROOT)/bin/obfuscate" "\"$(TARGETPATH)/obfuscateScript.jos\"" 2>&1
+	"$(ROOT)/bin/obfuscate" "\"$(TARGETPATH)obfuscateScript.jos\"" 2>&1
 	@ls -l treeshake_codegen_obfuscated.jar
 	@echo "run 'make runObfuscate' to run the obfuscated code"
 
@@ -354,7 +354,7 @@ GCJ_LINK_FLAGS = -v
 #  GCJ only needs one rule now!
 gcj:    
 	@echo "Running GCJ on treeshake_codegen.jar"
-	$(GCJ) $(GCJ_FLAGS) --main=$(TARGETPACKAGE).Main -o $(MODEL)_gcj $(TARGETPATH)/treeshake_codegen.jar
+	$(GCJ) $(GCJ_FLAGS) --main=$(TARGETPACKAGE).Main -o $(MODEL)_gcj $(TREESHAKE_PREFIX)_codegen.jar
 
 
 gcjOld:
@@ -367,8 +367,8 @@ gcjOld:
 gcjSetup:	demo treeShake runTreeShake
 
 
-gcjFix: $(TARGETPATH)/CGoutputBitDisplay.java
-$(TARGETPATH)/CGoutputBitDisplay.java:
+gcjFix: $(TARGETPATH)CGoutputBitDisplay.java
+$(TARGETPATH)CGoutputBitDisplay.java:
 	@echo "gcj fails with stack underflow on CGoutputBitDisplay,"
 	@echo " so we regenerate"
 	cd $(TARGETPATH); \
@@ -376,7 +376,7 @@ $(TARGETPATH)/CGoutputBitDisplay.java:
 		ptolemy.copernicus.java.cg.OrthogonalCom.CGoutputBitDisplay | \
 		awk '{if ($$0 ~ /^package /) {printit=1}; if (printit == 1) { print $$0}} ' | \
 		sed 's@final@/* final */@g' > CGoutputBitDisplay.java
-	@echo "Now edit $(TARGETPATH)/CGoutputBitDisplay.java"
+	@echo "Now edit $(TARGETPATH)CGoutputBitDisplay.java"
 	@echo "and run make gcjFixCompile"
 
 gcjFixCompile:
@@ -392,16 +392,16 @@ gcj1:
 			--main=ptolemy.copernicus.java.cg.$(MODEL).Main \
 			-o ortho *.class;
 
-gcj2: $(TARGETPATH)/gcj gcj2_0 gcj2_1 gcj2_2
+gcj2: $(TARGETPATH)gcj gcj2_0 gcj2_1 gcj2_2
 
 # Unjar the treeshake_codegen jar file for use with gcj
-# Use $(TARGETPATH)/treeshake_codegen.jar insetead of
+# Use $(TREESHAKE_PREFIX)_codegen.jar insetead of
 # $(TREESHAKE_PREFIX)_codegen.jar because of relative path name problems
-unjar_treeshake_codegen: $(TARGETPATH)/gcj
-$(TARGETPATH)/gcj: $(TARGETPATH)/treeshake_codegen.jar
+unjar_treeshake_codegen: $(TARGETPATH)gcj
+$(TARGETPATH)gcj: $(TREESHAKE_PREFIX)_codegen.jar
 	rm -rf $@
 	mkdir $@
-	cd $@; jar -xf "$(TARGETPATH)/treeshake_codegen.jar"
+	cd $@; jar -xf "$(TREESHAKE_PREFIX)_codegen.jar"
 
 # A list of directories that are required to compile the treeshaken directories
 # This is necessary because we treeshake by class, so the .class files
@@ -417,12 +417,12 @@ GCJ_TO_BE_REMOVED = ptolemy/util/XSLTUtilities.class \
 	ptolemy/actor/MobileFunction.class \
 	ptolemy/actor/MobileModel.class
 
-gcj2_0: $(TARGETPATH)/gcj
+gcj2_0: $(TARGETPATH)gcj
 	@echo "For each directory in the treeshaken output,"
 	@echo "Copy all the class files from corresponding directory"
 	@echo "in $PTII"
 	@echo " Ignore any '*.class not found' messages" 
-	cd $(TARGETPATH)/gcj; \
+	cd $(TARGETPATH)gcj; \
 		dirs=`find . -type d -print`; \
 		for dir in $$dirs; \
 		do \
@@ -440,12 +440,12 @@ gcj2_0: $(TARGETPATH)/gcj
 			echo "---Copying aux .class from \$$PTII to $$dir"; \
 			cp $(PTII)/$$dir/*.class $$dir; \
 		done;
-	(cd $(TARGETPATH)/gcj; rm -f $(GCJ_TO_BE_REMOVED))
+	(cd $(TARGETPATH)gcj; rm -f $(GCJ_TO_BE_REMOVED))
 
 
 gcj2_1:
 	@echo "--- Run gcj on all the .class files in the jar file dir"
-	cd $(TARGETPATH)/gcj; \
+	cd $(TARGETPATH)gcj; \
 		dirs=`find . -type d -print`; \
 		for dir in $$dirs; \
 		do \
@@ -455,7 +455,7 @@ gcj2_1:
 				(cd $$dir; CLASSPATH="."; \
 					$(GCJ) -g -c \
 					$(GCJ_FLAGS) \
-					--CLASSPATH=$(TARGETPATH)/gcj \
+					--CLASSPATH=$(TARGETPATH)gcj \
 					*.class); \
 			fi; \
 		done;
@@ -464,17 +464,17 @@ gcj2_2:
 	@echo "--- Run gcj on all the .o files in the jar file dir"
 	@echo "    Note that here, we end up needing .class files other"
 	@echo "    than the ones in the tree shaken jar file"
-	cd $(TARGETPATH)/gcj; \
+	cd $(TARGETPATH)gcj; \
 		objs=`find . -name "*.o" -print | awk -F / '{for (i=1;i<NF;i++) {printf("%s/", $$i) } printf("*.o\n")}' | sort | uniq`; \
 		$(GCJ) -g --main=ptolemy.copernicus.java.cg.$(MODEL).Main \
 			$(GCJ_FLAGS) \
 			$(GCJ_LINK_FLAGS) \
 			-o $(MODEL)_gcj $$objs \
 			$(GCJ_LINK_LIBS);
-	ls -l $(TARGETPATH)/gcj/$(MODEL)_gcj
+	ls -l $(TARGETPATH)gcj/$(MODEL)_gcj
 
 gcjRun:
-	cd $(TARGETPATH)/gcj; \
+	cd $(TARGETPATH)gcj; \
 		./$(MODEL)_gcj
 
 gcjRunStats:
@@ -482,7 +482,7 @@ gcjRunStats:
 	@rm -f  $(STATSFILE)
 	@for repeat in 1 2 3 4; \
 	do \
-		(cd $(TARGETPATH)/gcj; \
+		(cd $(TARGETPATH)gcj; \
 			./$(MODEL)_gcj) | tail -1 | \
 			tee -a $(STATSFILE); \
 	done
@@ -502,23 +502,23 @@ gcjGdb:
 	echo "handle SIGPWR nostop noprint" > .gdbinit
 	echo "handle SIGXCPU nostop noprint" >> .gdbinit
 	echo "directory $(PTII)" >> .gdbinit 
-	$(GDB) $(TARGETPATH)/gcj/$(MODEL)_gcj
+	$(GDB) $(TARGETPATH)gcj/$(MODEL)_gcj
 
 
 
 AR =		ar
 LIBNONSHAREDSUFFIX =	a
 RANLIB =	ranlib
-LIBDIR =	$(TARGETPATH)/gcj/lib
+LIBDIR =	$(TARGETPATH)gcj/lib
 gcj3_1:
 	@echo "--- Determine what directories are in the jar file"
 	@echo "    then create libraries in "
-	@echo "    $(TARGETPATH)/gcj/lib/"
-	if [ ! -d $(TARGETPATH)/gcj/lib ]; then \
-		echo "making $(TARGETPATH)/gcj/lib"; \
-		mkdir $(TARGETPATH)/gcj/lib; \
+	@echo "    $(TARGETPATH)gcj/lib/"
+	if [ ! -d $(TARGETPATH)gcj/lib ]; then \
+		echo "making $(TARGETPATH)gcj/lib"; \
+		mkdir $(TARGETPATH)gcj/lib; \
 	fi
-	cd $(TARGETPATH)/gcj; \
+	cd $(TARGETPATH)gcj; \
 		dirs=`find . -type d -print`; \
 		echo "dirs=$$dirs"; \
 		for dir in $$dirs; \
@@ -544,18 +544,18 @@ gcj3_1:
 
 gcj3_2:
 	@echo "--- Link using the libraries in "
-	@echo "    $(TARGETPATH)/gcj/lib/"
-	cd $(TARGETPATH)/gcj; \
+	@echo "    $(TARGETPATH)gcj/lib/"
+	cd $(TARGETPATH)gcj; \
 		$(GCJ) -g --main=ptolemy.copernicus.java.cg.$(MODEL).Main \
 			$(GCJ_FLAGS) \
 			$(GCJ_LINK_FLAGS) \
 			-o $(MODEL)_lib_gcj  \
-			$(TARGETPATH)/*.o \
+			$(TARGETPATH)*.o \
 			ptolemy/data/Numerical.o \
 			$(GCJ_LINK_LIBS) \
 			-L$(LIBDIR) \
 			-ldata -lexpr -ltype -lunit -lexpr -ldata -lmath -lgraph -lutil;
-	ls -l $(TARGETPATH)/gcj/$(MODEL)_lib_gcj
+	ls -l $(TARGETPATH)gcj/$(MODEL)_lib_gcj
 
 ############################################################################
 # Rules to run the jode as a decompiler
@@ -602,15 +602,15 @@ jodeRunRecompiledDemo:
 
 # Generate .java files from the snapshots
 jadDecompile:
-	$(JAD) -r -o -d $(TARGETPATH)/jad $(TARGETPATH)/*.class; \
-	for file in $(TARGETPATH)/jad/$(TARGETPATH)/*.jad; \
+	$(JAD) -r -o -d $(TARGETPATH)jad $(TARGETPATH)*.class; \
+	for file in $(TARGETPATH)jad/$(TARGETPATH)*.jad; \
 	do \
 		echo "Fixing $$file"; \
 		javafile=`dirname $$file`/`basename $$file .jad`.java;\
 		sh $(ROOT)/ptolemy/copernicus/shallow/test/jad2java $$file \
 				> $$javafile; \
 		echo "Compiling $$javafile"; \
-		$(JAVAC) -classpath "$(TARGETPATH)/jad$(CLASSPATHSEPARATOR)$(ROOT)" \
+		$(JAVAC) -classpath "$(TARGETPATH)jad$(CLASSPATHSEPARATOR)$(ROOT)" \
 			$$javafile; \
 	done; \
 
@@ -618,16 +618,16 @@ jadDecompile:
 recompileSnapshots:
 	for snapshot in $(SNAPSHOTS); \
 	do \
-		echo "Recompiling in $(TARGETPATH)/$$snapshot"; \
-		$(JAD) -r -o -d $(TARGETPATH)/$$snapshot/jad $(TARGETPATH)/$$snapshot/$(TARGETPATH)/*.class; \
-		for file in $(TARGETPATH)/$$snapshot/jad/$(TARGETPATH)/*.jad; \
+		echo "Recompiling in $(TARGETPATH)$$snapshot"; \
+		$(JAD) -r -o -d $(TARGETPATH)$$snapshot/jad $(TARGETPATH)$$snapshot/$(TARGETPATH)*.class; \
+		for file in $(TARGETPATH)$$snapshot/jad/$(TARGETPATH)*.jad; \
 		do \
 			echo "Fixing $$file"; \
 			javafile=`dirname $$file`/`basename $$file .jad`.java;\
 			sh ../shallow/test/jad2java $$file \
 				> $$javafile; \
 			echo "Compiling $$javafile"; \
-			$(JAVAC) -classpath "$(TARGETPATH)/$$snapshot/jad$(CLASSPATHSEPARATOR)$(ROOT)" \
+			$(JAVAC) -classpath "$(TARGETPATH)$$snapshot/jad$(CLASSPATHSEPARATOR)$(ROOT)" \
 				$$javafile; \
 		done; \
 	done
