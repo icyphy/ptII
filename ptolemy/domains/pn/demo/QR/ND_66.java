@@ -1,4 +1,4 @@
-package ptolemy.domains.pn.sbf.lib;
+package ptolemy.domains.pn.demo.QR;
 
 import java.util.*;
 import ptolemy.data.*;

@@ -1,11 +1,11 @@
-package ptolemy.domains.pn.sbf.lib;
+package ptolemy.domains.pn.demo.QR;
 
 import java.lang.*;
 import java.util.*;
 
 public class ArrayIndex extends TreeMap {
 
-    SourceMatrix x_0;
+    SourceMatrix  x_0;
     SourceMatrix1 x_1;
     
     //    private Map _map = Collections.synchronizedMap(new HashMap());

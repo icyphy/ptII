@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 */
 
-package ptolemy.domains.pn.sbf.demo;
+package ptolemy.domains.pn.demo.QR;
 
 import javax.swing.BoxLayout;
 

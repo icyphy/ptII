@@ -42,17 +42,19 @@ include $(CONFIG)
 
 TCL_SRCS = 
 
-JFLAGS= -g
+JFLAGS= -g -deprecation
 JSRCS = \
 	QRcompileApplet.java \
 	StreamToMatrix.java \
+	SourceMatrix.java \
+	SourceMatrix1.java \
+	Pass12.java \
+	ArrayIndex.java \
 	ND_6.java \
 	ND_14.java \
 	ND_36.java \
 	ND_66.java \
-	ND_86.java \
-	Pass12.java \
-	ArrayIndex.java
+	ND_86.java
 
 EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS)
 
@@ -68,23 +70,23 @@ JCLASS = $(JSRCS:%.java=%.class)
 
 # Don't include all or install rules here, we want the user
 # to run 'make demos' to run the tests.
-all: jclass QRplane.jar
+all: jclass QRcompile.jar
 	@echo "To run all the demos, run 'make demo'"
 
 install: all
 
-PTAUXJAR = QRplane.jar
+PTAUXJAR = QRcompile.jar
 
-demo: QRplane.jar
+demo: QRcompile.jar
 	CLASSPATH=$(CLASSPATH) appletviewer QRcompileApplet.html
 
 show: QRcompile.class
-	CLASSPATH=$(CLASSPATH) $(JAVA) ptolemy.domains.pn.sbf.demo.QRcompile
+	CLASSPATH=$(CLASSPATH) $(JAVA) ptolemy.domains.pn.demo.QR.QRcompileApplet.html
 
 docs: javadocs
 
 # 'make clean' removes everything in KRUFT
-KRUFT = QRplane.jar
+KRUFT = QRcompile.jar
 
 # Jar file for the QRplane Applet
 QRplane.jar: $(JSRCS) $(JCLASS) makefile
