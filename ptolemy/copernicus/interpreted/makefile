@@ -53,6 +53,7 @@ JSRCS = \
 
 OTHER_FILES_TO_BE_JARED = \
 	compileCommandTemplate.txt \
+	makefile.in \
 	runCommandTemplate.txt
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
