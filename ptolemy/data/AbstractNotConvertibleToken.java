@@ -76,7 +76,7 @@ public abstract class AbstractNotConvertibleToken extends Token {
      *  operation does not make sense for the given types.
      */
     public Token add(Token rightArgument) throws IllegalActionException {
-        if (!getClass().equals(rightArgument.getClass())) {
+        if (getClass() != (rightArgument.getClass())) {
             throw new IllegalActionException(
                     notSupportedDifferentClassesMessage("add",
                             this, rightArgument));
@@ -106,7 +106,7 @@ public abstract class AbstractNotConvertibleToken extends Token {
      */
     public Token addReverse(ptolemy.data.Token leftArgument)
             throws IllegalActionException {
-        if (!getClass().equals(leftArgument.getClass())) {
+        if (getClass() != (leftArgument.getClass())) {
             throw new IllegalActionException(
                     notSupportedDifferentClassesMessage("addReverse",
                             this, leftArgument));
@@ -135,7 +135,7 @@ public abstract class AbstractNotConvertibleToken extends Token {
      *  operation does not make sense for the given types.
      */
     public Token divide(Token rightArgument) throws IllegalActionException {
-        if (!getClass().equals(rightArgument.getClass())) {
+        if (getClass() != (rightArgument.getClass())) {
             throw new IllegalActionException(
                     notSupportedDifferentClassesMessage("divide",
                             this, rightArgument));
@@ -166,7 +166,7 @@ public abstract class AbstractNotConvertibleToken extends Token {
      */
     public Token divideReverse(Token leftArgument)
             throws IllegalActionException {
-        if (!getClass().equals(leftArgument.getClass())) {
+        if (getClass() != (leftArgument.getClass())) {
             throw new IllegalActionException(
                     notSupportedDifferentClassesMessage("divideReverse",
                             this, leftArgument));
@@ -202,7 +202,7 @@ public abstract class AbstractNotConvertibleToken extends Token {
      */
     public BooleanToken isCloseTo(Token token, double epsilon)
             throws IllegalActionException {
-        if (!getClass().equals(token.getClass())) {
+        if (getClass() != (token.getClass())) {
             throw new IllegalActionException(
                     notSupportedDifferentClassesMessage("isCloseTo",
                             this, token));
@@ -234,7 +234,7 @@ public abstract class AbstractNotConvertibleToken extends Token {
      */
     public BooleanToken isEqualTo(Token rightArgument)
             throws IllegalActionException {
-        if (!getClass().equals(rightArgument.getClass())) {
+        if (getClass() != (rightArgument.getClass())) {
             throw new IllegalActionException(
                     notSupportedDifferentClassesMessage("isEqualTo",
                             this, rightArgument));
@@ -254,7 +254,7 @@ public abstract class AbstractNotConvertibleToken extends Token {
      *  operation does not make sense for the given types.
      */
     public Token modulo(Token rightArgument) throws IllegalActionException {
-        if (!getClass().equals(rightArgument.getClass())) {
+        if (getClass() != (rightArgument.getClass())) {
             throw new IllegalActionException(
                     notSupportedDifferentClassesMessage("modulo",
                             this, rightArgument));
@@ -285,7 +285,7 @@ public abstract class AbstractNotConvertibleToken extends Token {
      */
     public Token moduloReverse(Token leftArgument)
             throws IllegalActionException {
-        if (!getClass().equals(leftArgument.getClass())) {
+        if (getClass() != (leftArgument.getClass())) {
             throw new IllegalActionException(
                     notSupportedDifferentClassesMessage("moduloReverse",
                             this, leftArgument));
@@ -315,7 +315,7 @@ public abstract class AbstractNotConvertibleToken extends Token {
      *  operation does not make sense for the given types.
      */
     public Token multiply(Token rightArgument) throws IllegalActionException {
-        if (!getClass().equals(rightArgument.getClass())) {
+        if (getClass() != (rightArgument.getClass())) {
             throw new IllegalActionException(
                     notSupportedDifferentClassesMessage("multiply",
                             this, rightArgument));
@@ -347,7 +347,7 @@ public abstract class AbstractNotConvertibleToken extends Token {
      */
     public Token multiplyReverse(Token leftArgument)
             throws IllegalActionException {
-        if (!getClass().equals(leftArgument.getClass())) {
+        if (getClass() != (leftArgument.getClass())) {
             throw new IllegalActionException(
                     notSupportedDifferentClassesMessage("multiplyReverse",
                             this, leftArgument));
@@ -400,7 +400,7 @@ public abstract class AbstractNotConvertibleToken extends Token {
      */
     public Token subtract(Token rightArgument)
             throws IllegalActionException {
-        if (!getClass().equals(rightArgument.getClass())) {
+        if (getClass() != (rightArgument.getClass())) {
             throw new IllegalActionException(
                     notSupportedDifferentClassesMessage("subtract",
                             this, rightArgument));
@@ -430,7 +430,7 @@ public abstract class AbstractNotConvertibleToken extends Token {
      */
     public Token subtractReverse(Token leftArgument)
             throws IllegalActionException {
-        if (!getClass().equals(leftArgument.getClass())) {
+        if (getClass() != (leftArgument.getClass())) {
             throw new IllegalActionException(
                     notSupportedDifferentClassesMessage("subtractReverse",
                             this, leftArgument));
