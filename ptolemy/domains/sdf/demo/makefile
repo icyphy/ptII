@@ -52,8 +52,7 @@ JSRCS = \
 	SDFApplet.java \
 	SDFDemo.java \
 	SDFDemo2.java \
-	SDFDemo3.java \
-	TypeApplet.java
+	SDFDemo3.java
 
 EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JGRAPHICAL_TESTS) #$(JSIMPLE_TESTS)
 
