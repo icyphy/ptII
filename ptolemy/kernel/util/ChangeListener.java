@@ -25,12 +25,11 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red
+@ProposedRating Green (neuendor@eecs.berkeley.edu)
+@AcceptedRating Green (neuendor@eecs.berkeley.edu)
 */
 
 package ptolemy.kernel.util;
-
 
 //////////////////////////////////////////////////////////////////////////
 //// ChangeListener
@@ -42,18 +41,23 @@ executed, or when an attempt to execute it results in an exception.
 
 @author Edward A. Lee
 @version $Id$
+@see ChangeRequest
 */
 public interface ChangeListener {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Notify the listener that a change has been successfully executed.
+    /** React to a change request has been successfully executed.
+     *  This method is called after a change request 
+     *  has been executed sucessfully. 
      *  @param change The change that has been executed.
      */
     public void changeExecuted(ChangeRequest change);
 
-    /** Notify the listener that a change has resulted in an exception.
+    /** React to a change request has resulted in an exception.
+     *  This method is called after a change request was executed,
+     *  but during the execution an exception was thrown.
      *  @param change The change that was attempted.
      *  @param exception The exception that resulted.
      */

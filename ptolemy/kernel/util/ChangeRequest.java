@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (reviewmoderator@eecs.berkeley.edu)
+@AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
 
 */
 
@@ -60,18 +60,18 @@ derived class, where the mutation is specified as MoML code.
 */
 public abstract class ChangeRequest {
 
-    /** Construct a request with the specified originator and description.
+    /** Construct a request with the specified source and description.
      *  The description is a string that is used to report the change,
      *  typically to the user in a debugging environment.
-     *  The originator is the source of the change request.
-     *  A listener to changes will probably want to check the originator
+     *  The source is the object that requested this change request.
+     *  A listener to changes will probably want to check the source
      *  so that when it is notified of errors or successful completion
      *  of changes, it can tell whether the change is one it requested.
-     *  @param originator The originator of the change request.
+     *  @param source The source of the change request.
      *  @param description A description of the change request.
      */
-    public ChangeRequest(Object originator, String description) {
-        _originator = originator;
+    public ChangeRequest(Object source, String description) {
+        _source = source;
         _description = description;
         _errorReported = false;
     }
@@ -95,12 +95,28 @@ public abstract class ChangeRequest {
     }
 
     /** Execute the change.  This method invokes the protected method
-     *  _execute(), reports to listeners (if any) that have been
-     *  specified using the setListeners() method, and wakes up any
-     *  threads that might be waiting in a call to waitForCompletion().
+     *  _execute(), takes care of reporting execution to any listeners
+     *  and then wakes up any threads that might be waiting in a call to 
+     *  waitForCompletion().  Listeners that are attached directly to this
+     *  object (using the addChangeListener() and removeChangeListener()
+     *  methods) are notified first of the status of the request, followed
+     *  by global listeners that were set using the setListeners() method.
+     *  If the change failed because an exception was thrown, and the
+     *  exception was not reported to any global listeners, then the
+     *  exception's stack trace is printed to System.err.
+     *  <p>
+     *  This method should be called exactly once, by the object that 
+     *  the change request was queued with.  Attempting to call this
+     *  method more than once will throw an exception.
      */
-    public synchronized void execute() {
+    public final synchronized void execute() {
+        if(!_pending) throw new InternalErrorException("Attempted to " + 
+                "execute a change request that had already been executed.");
         _exception = null;
+        // This flag is set if an exception is caught.  If the exception
+        // is reported to any listeners set with setListeners, then 
+        // the flag is reset to false.  If we get to the end and the
+        // flag is still true, then we write out to standard error.
         boolean needToReport = false;
         try {
             _execute();
@@ -153,11 +169,19 @@ public abstract class ChangeRequest {
         return _description;
     }
 
-    /** Get the originator that was specified in the constructor.
-     *  @return The originator of the change.
+    /** Get the source that was specified in the constructor.
+     *  @return The source of the change.
+     *  @deprecated use getSource() instead.
      */
     public Object getOriginator() {
-        return _originator;
+        return _source;
+    }
+
+    /** Get the source that was specified in the constructor.
+     *  @return The source of the change.
+     */
+    public Object getSource() {
+        return _source;
     }
 
     /** Return true if setErrorReported() has been called with a true
@@ -200,16 +224,20 @@ public abstract class ChangeRequest {
      *  successfully executed, or when an attempt to execute them results
      *  in an exception.  The next time that execute() is called, all
      *  listeners on the specified list will be notified.
-     *  This class has this single method, rather than the usual
+     *  This class has this method, in addition to the usual
      *  addChangeListener() and removeChangeListener() because it is
-     *  assumed that the list of listeners is being maintained in another
-     *  class, specifically the top-level named object in the hierarchy.
-     *  The class copies the list, so that in the process of handling
+     *  assumed that the primary list of listeners is being maintained
+     *  in another class, specifically the top-level named object in the
+     *  hierarchy.  The listeners set with this method are notified
+     *  after the listeners that are attached directly to this object.
+     *  <p>
+     *  The class copies the given list, so that in the process of handling
      *  notifications from this class, more listeners can be added to
      *  the list of listeners in the top-level object.
      *  <p>
      *  Note that an alternative to using listeners is to call
-     *  waitForCompletion().
+     *  waitForCompletion(), although this may cause undesirable 
+     *  synchronization between the different threads.
      *
      *  @param listeners A list of instances of ChangeListener.
      *  @see ChangeListener
@@ -224,15 +252,22 @@ public abstract class ChangeRequest {
     /** Wait for execution (or failure) of this change request.
      *  The calling thread is suspended until the execute() method
      *  completes.  If an exception occurs processing the request,
-     *  then this method will throw that exception.
+     *  then this method will throw that exception.  
+     *  <p>
+     *  Note that using this method may cause the model to deadlock 
+     *  and not be able to proceed.  This is especially true if it
+     *  is called from the Swing thread, and any actors in the 
+     *  model (such as plotters) wait for swing events.
      *  @exception Exception If the execution of the change request
      *   throws it.
      */
-    public synchronized void waitForCompletion() throws Exception {
+    public final synchronized void waitForCompletion() throws Exception {
         while (_pending) {
             wait();
         }
         if (_exception != null) {
+            // Note the use of fillInStackTrace, so that the exception
+            // appears to come from within the change request.
             throw (Exception)(_exception.fillInStackTrace());
         }
     }
@@ -264,8 +299,8 @@ public abstract class ChangeRequest {
     // A flag indicating whether the error has been reported.
     private boolean _errorReported;
 
-    // The originator of the change request.
-    private Object _originator;
+    // The source of the change request.
+    private Object _source;
 
     // A flag indicating that a request is pending.
     private boolean _pending = true;
