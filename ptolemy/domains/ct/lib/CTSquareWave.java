@@ -44,7 +44,7 @@ A square wave source. The actor will regist a discontinuity to the
 director when the jump occurs. Single output source (Output type:double).
 
 @author Jie Liu
-@version: $Id$
+@version $Id$
 */
 public class CTSquareWave extends CTActor {
 
@@ -142,7 +142,7 @@ public class CTSquareWave extends CTActor {
         }
         double now = dir.getCurrentTime();
         double nextfliptime = _lastfliptime + _halfperiod;
-        _debug(getFullName() + "next flip time="+nextfliptime);
+        _debug(getFullName() + "next flip time = " + nextfliptime);
         if ((nextfliptime > now) &&
                 (nextfliptime <(now+dir.getSuggestedNextStepSize()))) {
             dir.fireAt(this, nextfliptime);
@@ -167,10 +167,10 @@ public class CTSquareWave extends CTActor {
         }
         _frequency = f;
         _halfperiod = (double)1.0/((double)2.0*_frequency);
-        _debug("_maxValue=" + _maxValue);
-        _debug("_minValue=" + _minValue);
-        _debug("_Frequency=" + _frequency);
-        _debug("_halfperiod=" + _halfperiod);
+        _debug("_maxValue = " + _maxValue);
+        _debug("_minValue = " + _minValue);
+        _debug("_Frequency = " + _frequency);
+        _debug("_halfperiod = " + _halfperiod);
     }
 
     ///////////////////////////////////////////////////////////////////
