@@ -104,3 +104,34 @@ test LongMatrixMath-0.6.1 {applyUnaryOperation LongUnaryOperation long[][]} {
     epsilonDiff $stmp {{{-3 6 0} {-4862 -236 36}}}
 } {}
 
+
+####################################################################
+test LongMatrixMath-5.8.0 {matrixCopy([][], [][]) } {
+    set m3_tmp [java::new {long[][]} 3 \
+	    [list \
+	    [list 0 0 0] \
+	    [list 0 0 0] \
+	    [list 0 0 0]]]
+
+    java::call ptolemy.math.LongMatrixMath \
+	    matrixCopy $m3 $m3_tmp
+    set s [java::call ptolemy.math.LongMatrixMath toString $m3_tmp]
+    regsub -all {,} $s {} stmp
+    epsilonDiff $stmp {{{3 -6 0} {4862 236 -36} {-56 -26 4}}}
+} {}
+
+####################################################################
+test LongMatrixMath-5.8.1 {matrixCopy long[][] int int long[][] int int int int} {
+    set m3_src [java::new {long[][]} 3 [list [list 0 -1 2] \
+                                       [list 0 -1 -2] \
+                                       [list 0 -1 -2]]]
+    set m3_dest [java::new {long[][]} 3 [list [list 10 -11 12] \
+                                       [list 10 -11 -12] \
+                                       [list 10 -11 -12]]]
+
+    java::call ptolemy.math.LongMatrixMath \
+	    {matrixCopy} $m3_src 1 1 $m3_dest 0 1 1 2
+    set s [java::call ptolemy.math.LongMatrixMath toString $m3_dest]
+    regsub -all {,} $s {} stmp
+    epsilonDiff $stmp {{{10 -1 -2} {10 -11 -12} {10 -11 -12}}}
+} {}

@@ -294,6 +294,20 @@ proc testArrayMathArrayArray {op types {matrixSize 2_2}} {
 	    {[subst $$array]} {[subst $$array]} {} ArrayMath
 }
 
+# Test a *ArrayMath  operation that takes an array, an array and a scalar
+# like boolean within(xxx[], xxx[], xxx[][])
+proc testArrayMathArrayArrayArray {op types {matrixSize 2_2}} {
+    testMatrixMath $op $types $matrixSize {[list $op "$t\[\]" "$t\[\]" "$t\[\]"} \
+	    {[subst $$array]} {[subst $$array]} {[subst $$array} ArrayMath
+}
+
+# Test a *ArrayMath  operation that takes an array, an array and a scalar
+# like boolean within(xxx[], xxx[], scalar)
+proc testArrayMathArrayArrayScalar {op types {matrixSize 2_2}} {
+    testMatrixMath $op $types $matrixSize {[list $op "$t\[\]" "$t\[\]" $t} \
+	    {[subst $$array]} {[subst $$array]} {[subst $${v}1]} ArrayMath
+}
+
 # Test a *ArrayMath  operation that takes an array, and an int
 # like xxx[] shiftArithmetic(xxx[] int)
 proc testArrayMathArrayInt {op types {matrixSize 2_2} {intValue 1}} {
@@ -373,6 +387,26 @@ proc testMatrixIntInt {op types {matrixSize 2_2} {intValue1 1} {intValue2 2}} {
 proc testMatrixMatrix {op types {matrixSize 2_2}} {
     testMatrixMath $op $types $matrixSize {[list $op "$t\[\]\[\]" "$t\[\]\[\]"]} {[subst $$matrix]} {[subst $${v}${matrixSize}]}
 }
+
+
+# Test an operation that takes a matrix, matrix and a matrix
+# like boolean within(xxx[][], xxx[][], xxx[][])
+proc testMatrixMatrixMatrix {op types {matrixSize 2_2}} {
+    testMatrixMath $op $types $matrixSize \
+	    {[list $op "$t\[\]\[\]" "$t\[\]\[\]" "$t\[\]\[\]"]} \
+	    {[subst $$matrix]} {[subst $${v}${matrixSize}]} {[subst $$matrix]}
+}
+
+# Test an operation that takes a matrix, matrix and a scalar
+# like boolean within(xxx[][], xxx[][], xxx)
+proc testMatrixMatrixScalar {op types {matrixSize 2_2}} {
+    testMatrixMath $op $types $matrixSize \
+	    {[list $op "$t\[\]\[\]" "$t\[\]\[\]" $t]} \
+	    {[subst $$matrix]} {[subst $${v}${matrixSize}]} \
+	    {[subst $${v}1]}
+}
+
+
 
 # Test an operation that takes a matrix and a scalar,
 # like add(long[][], long)
@@ -1351,8 +1385,47 @@ testMatrix transpose $types
 
 ######################################################################
 ####
-##  FIXME: boolean within(xxx[][], xxx[][], xxx)
+##  *ArrayMath Test out boolean within(xxx[], xxx[], xxx)
 
+# FIXME: no boolean within(Complex[], Complex[], Complex)
+set types [list \
+	[list Double double double {1}] \
+	[list Float float float {1}] \
+	[list Integer int int {1}] \
+	[list Long long long {1}]]
+
+testArrayMathArrayArrayScalar within $types
+
+######################################################################
+####
+##  *MatrixMath Test out boolean within(xxx[][], xxx[][], xxx)
+
+# FIXME: no boolean within(Complex[][], Complex[][], Complex)
+set types [list \
+	[list Double double double {1}] \
+	[list Float float float {1}] \
+	[list Integer int int {1}] \
+	[list Long long long {1}]]
+
+testMatrixMatrixScalar within $types
+
+######################################################################
+####
+##  *ArrayMath Test out boolean within(xxx[], xxx[], xxx[][])
+
+# FIXME: no boolean within(Complex[], Complex[], Complex[])
+# FIXME: no boolean within(double[], double[], double[])
+# FIXME: no boolean within(float[], float[], float[])
+# FIXME: no boolean within(int[], int[], int[])
+# FIXME: no boolean within(long[], long[], long[])
+
+#  set types [list \
+#  	[list Double double double {1}] \
+#  	[list Float float float {1}] \
+#  	[list Integer int int {1}] \
+#  	[list Long long long {1}]]
+
+#  testArrayMathArrayArrayArray within $types
 
 ######################################################################
 ####

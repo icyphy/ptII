@@ -161,3 +161,18 @@ test ComplexMatrixMath-0.6.1 {applyUnaryOperation ComplexUnaryOperation Complex[
     regsub -all {,} $s {} stmp
     epsilonDiff $stmp {{{4.9 + 6.0i -1.0 - 2.0i -3.0 + 4.0i} {0.25 - 0.4i 7.0 - 8.0i -3.0 + 4.0i}}}
 } {}
+
+####################################################################
+test ComplexMatrixMath-5.8.0 {matrixCopy([][], [][]) } {
+    set m3_tmp [java::new {ptolemy.math.Complex[][]} 3 \
+	    [list \
+	    [list $c1 $c1 $c1] \
+	    [list $c1 $c1 $c1] \
+	    [list $c1 $c1 $c1]]]
+
+    java::call ptolemy.math.ComplexMatrixMath \
+	    matrixCopy $m3 $m3_tmp
+    set s [java::call ptolemy.math.ComplexMatrixMath toString $m3_tmp]
+    regsub -all {,} $s {} stmp
+    epsilonDiff $stmp {{{1.0 + 2.0i 3.0 - 4.0i -4.9 - 6.0i} {-7.0 + 8.0i -0.25 + 0.4i -4.9 - 6.0i} {3.0 - 4.0i 1.0 + 2.0i -0.25 + 0.4i}}}
+} {}

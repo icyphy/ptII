@@ -106,3 +106,34 @@ test FloatMatrixMath-0.6.1 {applyUnaryOperation FloatUnaryOperation float[][]} {
     epsilonDiff $stmp {{{-3.7 6.6 -3.0E-4} {-4862.2 -236.1 36.25}}}
 } {}
 
+####################################################################
+test FloatMatrixMath-5.8.0 {matrixCopy([][], [][]) } {
+    set m3_tmp [java::new {float[][]} 3 \
+	    [list \
+	    [list 0.0 0.0 0.0] \
+	    [list 0.0 0.0 0.0] \
+	    [list 0.0 0.0 0.0]]]
+
+    java::call ptolemy.math.FloatMatrixMath \
+	    matrixCopy $m3 $m3_tmp
+    set s [java::call ptolemy.math.FloatMatrixMath toString $m3_tmp]
+    regsub -all {,} $s {} stmp
+    epsilonDiff $stmp {{{3.7 -6.6 3.0E-4} {4862.2 236.1 -36.25} {-56.4 -26.3 4.9}}}
+} {}
+
+####################################################################
+test FloatMatrixMath-5.8.1 {matrixCopy float[][] int int float[][] int int int int} {
+    set m3_src [java::new {float[][]} 3 [list [list 0.0 -1.0 2.0] \
+                                       [list 0.1 -1.1 -2.1] \
+                                       [list 0.2 -1.2 -2.2]]]
+    set m3_dest [java::new {float[][]} 3 [list [list 10.0 -11.0 12.0] \
+                                       [list 10.1 -11.1 -12.1] \
+                                       [list 10.2 -11.2 -12.2]]]
+
+    java::call ptolemy.math.FloatMatrixMath \
+	    {matrixCopy} $m3_src 1 1 $m3_dest 0 1 1 2
+    set s [java::call ptolemy.math.FloatMatrixMath toString $m3_dest]
+
+    epsilonDiff $s {{{10.0, -1.1, -2.1}, {10.1, -11.1, -12.1}, {10.2, -11.2, -12.2}}}
+} {}
+
