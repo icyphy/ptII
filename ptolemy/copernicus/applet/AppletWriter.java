@@ -32,7 +32,6 @@ package ptolemy.copernicus.applet;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
-import ptolemy.copernicus.kernel.SootUtilities;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.StringUtilities;
 
@@ -232,7 +231,7 @@ public class AppletWriter extends SceneTransformer {
 	    StringUtilities.substitute(directorPackageDomain, ".", "/") 
 	    + "/" + directorDomain + ".jar";
 
-	_sanitizedModelName = SootUtilities.sanitizeName(_model.getName());
+	_sanitizedModelName = StringUtilities.sanitizeName(_model.getName());
 
 	_modelDirectory = _ptIIDirectory + "/" 
 	    + StringUtilities.substitute(_targetPackage, ".", "/")
