@@ -183,8 +183,13 @@ public class SDFReceiver extends AbstractReceiver {
      *  This will be zero if the history mechanism is disabled
      *  and INFINITE_CAPACITY if the history capacity is unbounded.
      *  @return The capacity of the history queue.
+     *  @see #historyElements()
+     *  @see #historySize()
+     *  @see #setHistoryCapacity(int)
      */
     public int getHistoryCapacity() {
+        // As of Ptolemy II 2.0.1, we are not using the SDFReceiver.*History*
+        // methods, but these are here for future use.
         return _queue.getHistoryCapacity();
     }
 
@@ -250,15 +255,25 @@ public class SDFReceiver extends AbstractReceiver {
      *  includes all tokens previously taken from the receiver. If the
      *  history capacity is zero, then return an empty enumeration.
      *  @return An enumeration of tokens.
+     *  @see #getHistoryCapacity()
+     *  @see #historySize()
+     *  @see #setHistoryCapacity(int)
      */
     public Enumeration historyElements() {
+        // As of Ptolemy II 2.0.1, we are not using the SDFReceiver.*History*
+        // methods, but these are here for future use.
         return _queue.historyElements();
     }
 
     /** Return the number of tokens in history.
      *  @return The number of tokens in history.
+     *  @see #getHistoryCapacity()
+     *  @see #historyElements()
+     *  @see #setHistoryCapacity(int)
      */
     public int historySize() {
+        // As of Ptolemy II 2.0.1, we are not using the SDFReceiver.*History*
+        // methods, but these are here for future use.
         return _queue.historySize();
     }
 
@@ -323,9 +338,14 @@ public class SDFReceiver extends AbstractReceiver {
      *  supplying 0 as the argument.
      *  @param capacity The desired history capacity.
      *  @exception IllegalActionException If the desired capacity is illegal.
+     *  @see #getHistoryCapacity()
+     *  @see #historyElements()
+     *  @see #historySize()
      */
     public void setHistoryCapacity(int capacity)
             throws IllegalActionException {
+        // As of Ptolemy II 2.0.1, we are not using the SDFReceiver.*History*
+        // methods, but these are here for future use.
         try {
             _queue.setHistoryCapacity(capacity);
         } catch (IllegalActionException ex) {
