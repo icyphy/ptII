@@ -77,7 +77,7 @@ public class BasicEdgeController implements EdgeController {
 
     /**
      * Create a new edge controller with basic interaction.  Specifically,
-     * this method creates an edge interactor and initializes its menipulator
+     * this method creates an edge interactor and initializes its manipulator
      * so that edges get attached appropriately.  Furthermore, the edge
      * interactor is initialized with the selection model of the graph
      * controller.  The manipulator is activated by either a regular click
