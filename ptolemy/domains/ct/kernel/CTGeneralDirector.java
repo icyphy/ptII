@@ -57,7 +57,6 @@ public interface CTGeneralDirector {
     /** Return the enclosing CT general director of this director, or null if
      *  this director is at the top level or the enclosing director is
      *  not a CT general director.
-     *
      *  @return The enclosing CT general director of this director, if there 
      *  is any.
      */
@@ -68,13 +67,13 @@ public interface CTGeneralDirector {
      */
     public CTExecutionPhase getExecutionPhase();
     
-    /** Return the current time the current iteration starts.
+    /** Return the time the current iteration starts.
      *  @return The time the current iteration starts.
      */
     public Time getIterationBeginTime();
     
-    /** Return the ODE solver.
-     *  @return The ODE solver used by this director.
+    /** Return the ODE solver for normal integration.
+     *  @return The ODE solver for normal integration.
      */
     public ODESolver getODESolver();
     
