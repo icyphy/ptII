@@ -137,6 +137,9 @@ timeOrthoCommDemo:
 		-director.iterations $(TIMEORTHOCOMM_ITERATIONS) | tail 
 
 
+# $PTII/util/testsuite/codegen.tcl calls runDemoTest
+runDemoTest: runDemo
+
 # The tests and the UI use the runDemo rule, so if you
 # change this rule, be sure to run make tests
 SHALLOWTARGETCLASS = $(TARGETPACKAGE).CG$(MODEL)
