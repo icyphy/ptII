@@ -183,11 +183,9 @@ public class EditorGraphController extends ViewerGraphController {
 	    final String locationName = "location1";
 	    // Create the relation.
 	    StringBuffer moml = new StringBuffer();
-	    // FIXME remove class=
-	    moml.append("<port name=\"" + portName + 
-			"\" class=\"ptolemy.actor.TypedIOPort\">\n");
-	    moml.append("<attribute name=\"" + locationName + 
-			"\" class=\"ptolemy.moml.Location\"/>\n");
+	    moml.append("<port name=\"" + portName + "\">\n");
+	    moml.append("<property name=\"" + locationName + 
+	    		"\" class=\"ptolemy.moml.Location\"/>\n");
 	    moml.append("</port>");
 	    
 	    ChangeRequest request = 
@@ -207,7 +205,7 @@ public class EditorGraphController extends ViewerGraphController {
 			toplevel.getPort(portName);
 			Location location = 
 			(Location) newObject.getAttribute(locationName);
-						
+
 			double point[] = new double[2];
 			point[0] = ((int)finalX);
 			point[1] = ((int)finalY);
@@ -218,6 +216,7 @@ public class EditorGraphController extends ViewerGraphController {
 	    try {
 		request.waitForCompletion();
 	    } catch (Exception ex) {
+		ex.printStackTrace();
 		throw new GraphException(ex);
 	    }
 	}
@@ -265,9 +264,7 @@ public class EditorGraphController extends ViewerGraphController {
 	    final String vertexName = "vertex1";
 	    // Create the relation.
 	    StringBuffer moml = new StringBuffer();
-	    // FIXME remove class=
-	    moml.append("<relation name=\"" + relationName + 
-			"\" class=\"ptolemy.actor.TypedIORelation\">\n");
+	    moml.append("<relation name=\"" + relationName + "\">\n");
 	    moml.append("<vertex name=\"" + vertexName + "\"/>\n");
 	    moml.append("</relation>");
 	    
