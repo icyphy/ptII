@@ -166,20 +166,20 @@ public class TNLManip {
         if (list.isEmpty()) {
             return " {}";
         }
-        String nextprefix = prefix + " ";
+        String nextPrefix = prefix + " ";
         StringBuffer sb = new StringBuffer();
         sb.append("{ \n");
 
         Iterator itr = list.iterator();
         while (itr.hasNext()) {
-            sb.append(nextprefix);
+            sb.append(nextPrefix);
             Object child = itr.next();
 
             if (child instanceof TreeNode) {
                 TreeNode childNode = (TreeNode) child;
-                sb.append(childNode.toString(nextprefix));
+                sb.append(childNode.toString(nextPrefix));
             } else if (child instanceof List) {
-                sb.append(toString((List) child, nextprefix));
+                sb.append(toString((List) child, nextPrefix));
             } else {
                 throw new RuntimeException("toString(" + list + ", \"" +
                         prefix +
