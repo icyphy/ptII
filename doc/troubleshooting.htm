@@ -57,9 +57,31 @@ of <CODE>$PTII/mk/ptII.mk.in</CODE>.
 <dl>
 <dt> Under NT, configure fails to run with
 <CODE>bash: ./configure: No such file or directory</CODE>
-<dd> Make sure that <CODE>/bin/sh.exe</CODE> exists.
-See the <a href="install.htm#bin_sh_exe">/bin/sh section of the Installation instructions</a>
+<dd> Make sure that <CODE>/usr/bin/sh.exe</CODE> exists.
+Be sure that you have installed the <CODE>ash</CODE> package
+
+
+<dt> Messages about not being the owner of the directory.
+<dd> Run
+
+<pre>
+cd $PTII
+chmod -R a+w .
+chown -R <I>yourlogin</I>
+</pre>
+If chown fails, be sure that <CODE>/etc/passwd</CODE> exists.
+If it does not
+ Create <CODE>/etc/passwd</CODE> and <CODE>/etc/group</CODE>
+by running
+<pre>
+mkdir /etc
+mkpasswd -l -g > /etc/passwd
+mkgroup  -l > /etc/group
+</pre>
+For more information, type <CODE>mkpasswd</CODE> and <CODE>mkgroup</CODE>
+without any arguments.  The Cygwin faq also covers these programs.
 </dl>
+
 
 
 <H2><a name="applets">Troubleshooting Applets</a></H2>
