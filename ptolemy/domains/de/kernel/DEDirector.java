@@ -1309,8 +1309,47 @@ public class DEDirector extends Director {
                     + " Current time is " + getCurrentTime()
                     + " while event time is " + time);
         }
-        // Get the depth of the actor
+        // Calculate the depth of the pure event
+        // The depth is calculated in the following way:
+        // 1. Find the depth of the actor that requested refirng.
+        // 2. Find the minimun of the depths of the actors that receive
+        //    tokens from the above actor. (The smaller depth, the
+        //    higher priority.)
+        // 3. Choose the smaller one of the above two depths 
+        //    as the depth of the pure event.
+        // Why?
+        // Here is the example: a feedback loop with a non-zero TimedDelay 
+        // in between. When the TimedDelay actor requests a refiring, the
+        // pure event should have a depth no greater than the depths of the
+        // receiver actors such that the receiver actors can fire with 
+        // proper or enough tokens.  
+
+        // step 1.
         int depth = _getDepth(actor);
+        // step 2.
+        Iterator outputs = actor.outputPortList().iterator();
+        while (outputs.hasNext()) {
+            IOPort outPort = (IOPort) outputs.next();
+            Receiver[][] receivers = outPort.getRemoteReceivers();
+            for (int i = 0; i < receivers.length; i++) {
+                // FIXME: For ParameterPort, it is possible that
+                // the downstream receivers are null. It is a
+                // unresolved issue about the semantics of Parameter
+                // Port considering the lazy evaluation of variables.
+                if (receivers[i] != null) {
+                    for (int j = 0; j < receivers[i].length; j++) {
+                        IOPort ioPort =
+                            receivers[i][j].getContainer();
+                        Actor successor = (Actor) ioPort.getContainer();
+                        int successorDepth = _getDepth(successor);
+                        if (successorDepth < depth) {
+                            depth = successorDepth;
+                        }
+                    }
+                }
+            }            
+        }
+        
         if (_debugging) 
             _debug("enqueue a pure event: ", ((NamedObj)actor).getName(),
                 "time = " + time + " microstep = " + microstep + " depth = "
