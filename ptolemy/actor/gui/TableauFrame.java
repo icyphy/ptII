@@ -635,7 +635,9 @@ public class TableauFrame extends Top {
                 URL newURL = file.toURL();
                 String newKey = newURL.toExternalForm();
                 Effigy previousOpen = getDirectory().getEffigy(newKey);
-                if (previousOpen != null) {
+                // If we do save as to the same file, then we will get
+                // the current effigy, and we don't want to close it.
+                if (previousOpen != null && previousOpen != getEffigy()) {
                     // The destination file is already open.
                     if (previousOpen.isModified()) {
                         // Bring any visible tableaux to the foreground,
