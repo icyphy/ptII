@@ -59,7 +59,7 @@ test UnitSystem-1.0 {Construct an empty UnitSystem} {
 	    $e0 "myUnitSystem"]
 
     java::call ptolemy.data.unit.UnitUtilities summarizeUnitCategories
-} {The registered categories are:0[]}
+} {The registered categories are: 0 []}
 
 test UnitSystem-1.1 {Construct a UnitSystem add a UnitCategory twice} {
     set e0 [java::new ptolemy.actor.TypedCompositeActor]
@@ -94,7 +94,7 @@ test UnitSystem-1.1 {Construct a UnitSystem add a UnitCategory twice} {
     list [expr {$index1 == $index2}] $name1 $name2 \
     [java::call ptolemy.data.unit.UnitUtilities summarizeUnitCategories]
 
-} {1 meters meters {The registered categories are:1[meters]}}
+} {1 meters meters {The registered categories are: 1 [meters]}}
 
 
 test UnitSystem-1.2 {Add another UnitCategory twice} {
@@ -118,4 +118,4 @@ test UnitSystem-1.2 {Add another UnitCategory twice} {
   	    ptolemy.data.unit.UnitUtilities getBaseUnitName $index2]
     list [expr {$index1 == $index2}] $name1 $name2 \
 	[java::call ptolemy.data.unit.UnitUtilities summarizeUnitCategories]
-} {1 seconds seconds {The registered categories are:2[meters, seconds]}}
+} {1 seconds seconds {The registered categories are: 2 [meters, seconds]}}
