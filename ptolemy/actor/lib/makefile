@@ -111,6 +111,7 @@ JSRCS = \
 	ClassWrapper.java \
 	Clock.java \
 	Commutator.java \
+	ComputeHistogram.java \
 	Const.java \
 	Counter.java \
 	CurrentTime.java \
@@ -136,7 +137,7 @@ JSRCS = \
 	Maximum.java \
 	Minimum.java \
 	MonitorValue.java \
-    Multiplexor.java \
+	Multiplexor.java \
 	MultiplyDivide.java \
 	NonStrictTest.java \
 	OrderedMerge.java \
