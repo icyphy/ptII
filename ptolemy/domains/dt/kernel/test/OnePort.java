@@ -31,13 +31,13 @@ package ptolemy.domains.dt.kernel.test;
 
 import ptolemy.actor.Director;
 import ptolemy.actor.TypedAtomicActor;
+import ptolemy.actor.TypedIOPort;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntMatrixToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.domains.sdf.kernel.SDFIOPort;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -48,34 +48,35 @@ public class OnePort extends TypedAtomicActor {
     public OnePort(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        input = new SDFIOPort(this,"input");
+        input = new TypedIOPort(this, "input");
         input.setInput(true);
-        input.setTokenConsumptionRate(1);
         input.setTypeEquals(BaseType.DOUBLE);
-        inrate= new Parameter(this, "inrate", new IntToken(1));
+        inrate = new Parameter(this, "inrate", new IntToken(1));
         _inrate = 1;
 
+        input_tokenConsumptionRate = 
+            new Parameter(input, "tokenConsumptionRate");
+        input_tokenConsumptionRate.setExpression("inrate");
+        
 
-        output = new SDFIOPort(this,"output");
+        output = new TypedIOPort(this, "output");
         output.setOutput(true);
-        output.setTokenProductionRate(1);
         output.setTypeSameAs(input);
         outrate = new Parameter(this, "outrate", new IntToken(1));
         _outrate = 1;
-
-
+        
+        output_tokenProductionRate = 
+            new Parameter(input, "tokenProductionRate");
+        output_tokenProductionRate.setExpression("outrate");
 
         initialOutputs = new Parameter(this, "initialOutputs",
                 new IntMatrixToken(defaultValues));
-
-
-        //Parameter tokenInitProduction = new Parameter(output,"tokenInitProduction",
-        //                     new IntMatrixToken(defaultValues));
-
     }
 
-    public SDFIOPort input;
-    public SDFIOPort output;
+    public TypedIOPort input;
+    public Parameter input_tokenConsumptionRate;
+    public TypedIOPort output;
+    public Parameter output_tokenProductionRate;
 
     public Parameter inrate;
     public Parameter outrate;
@@ -84,36 +85,19 @@ public class OnePort extends TypedAtomicActor {
 
     public Parameter value;
     public Parameter step;
-    //public Parameter tokenInitProduction;
-
-    public void attributeChanged(Attribute attribute) throws IllegalActionException {
-        Director dir = getDirector();
-
-        if (dir != null) {
-            if (attribute == inrate) {
-                _inrate = ((IntToken) inrate.getToken()).intValue();
-                input.setTokenConsumptionRate(_inrate);
-                dir.invalidateSchedule();
-            } else if (attribute == outrate) {
-                _outrate = ((IntToken) outrate.getToken()).intValue();
-                output.setTokenProductionRate(_outrate);
-                dir.invalidateSchedule();
-            }
-        }
-    }
 
 
     public final void fire() throws IllegalActionException  {
         int i;
-        DoubleToken token = new DoubleToken(0.0);;
+        DoubleToken token = new DoubleToken(0.0);
+        _inrate = ((IntToken)inrate.getToken()).intValue();
+        _outrate = ((IntToken)outrate.getToken()).intValue();
         _buffer = new Token[_inrate];
 
         _buffer[0] = token;
 
-        //DTDebug debug = new DTDebug(true);
-        //debug.prompt(""+input.getWidth());
         if (input.getWidth() >= 1) {
-            for (i=0;i<_inrate;i++) {
+            for (i=0; i < _inrate; i++) {
                 // FIXME: should consider port widths
                 //if (input.hasToken(0)) {
                 //token = (DoubleToken) (input.get(0));
@@ -125,9 +109,8 @@ public class OnePort extends TypedAtomicActor {
             }
         }
 
-        for (i=0;i<_outrate;i++) {
-            //output.send(0, new DoubleToken(0.0));
-            output.send(0, _buffer[i%_inrate]);
+        for (i=0; i < _outrate; i++) {
+            output.send(0, _buffer[i % _inrate]);
         }
     }
 
