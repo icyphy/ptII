@@ -96,6 +96,11 @@ GNUTAR =	gtar
 # Minimal path for testing.  The path should not include GNU make.
 TESTPATH = 	/opt/jdk1.1.6/bin:/bin:/usr/ccs/bin:.
 
+# InstallShield Java executable
+# See http://www.installshield.com/java
+# Runs on ISJAVA_SRC
+ISJAVA = /users/ptII/vendors/installshield/isjava25/bin/isjava
+
 
 ###############################################################
 # Makefile rules
@@ -105,7 +110,7 @@ TESTPATH = 	/opt/jdk1.1.6/bin:/bin:/usr/ccs/bin:.
 # The fixtmpdist rule should be defined in the calling makefile
 dists: sources install distsfiles
 # We split up the dists rule to aid in debugging
-distsfiles: $(PTTMPDIST) fixtmpdist $(PTDISTS)
+distsfiles: $(PTTMPDIST) fixtmpdist $(PTDISTS) isjavadists
 
 # This name is a little too close to distclean
 distsclean:
@@ -159,12 +164,16 @@ $(PTDIST).zip:
 		(cd $(PTTMPDIR); zip -rq $(RELATIVE_ME)/$@ $(PTDIST) -x \*/adm/\* -x \*/SCCS/\* -x \*/$(PTDIST).tar.gz -x \*/$(PTDIST).zip); \
 	fi
 
+# Use InstallShield's Java installer
+isjavadists:
+	$(ISJAVA) $(ISJAVA_SRC)
+
 # Build sources in a form suitable for releasing
 buildjdist:
 	$(MAKE) sources
 	$(MAKE) distclean
+	$(MAKE) distclean
 	$(MAKE) JFLAGS=-O jclass
-	$(MAKE) jhtml
 	$(MAKE) install
 	$(MAKE) dists
 

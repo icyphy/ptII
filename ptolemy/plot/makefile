@@ -76,14 +76,17 @@ JSRCS = \
 	PtolemyGraphics.java \
 	Pxgraph.java
 
+# Used to build distributions with InstallShield's isjava tool
+ISJAVA_SRC = ptplot.isj
+
 # Files that are not compiled, such as .tcl and .itcl files.
 EXTRA_SRCS = $(JSRCS) \
+	$(ISJAVA_SRC) \
 	PtolemyGraphics1_1.java.in \
 	PtolemyGraphics1_2.java.in \
 	copyright.txt \
 	index.htm \
 	ptplot.in \
-	ptplot.isj \
 	pxgraph.bat
 
 # Non-source files such as README files and subdirectories
@@ -128,11 +131,11 @@ OPTIONAL_FILES = \
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-all: sources jclass $(PTCLASSZIP) $(PTCLASSJAR) $(PTAUXJAR)
+all: sources ptplot jclass $(PTCLASSZIP) $(PTCLASSJAR) $(PTAUXJAR)
 	-chmod a+x ptplot
 	rm -f pxgraph
 	ln -s ptplot pxgraph
-install: sources jclass jars bin_install_dir
+install: all jars bin_install_dir
 	-chmod a+x ptplot
 	rm -f pxgraph
 	ln -s ptplot pxgraph

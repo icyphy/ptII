@@ -1,4 +1,4 @@
-# Test Connect
+# Test SetParameter
 #
 # @Author: Edward A. Lee
 #
@@ -34,6 +34,7 @@
 if {[string compare test [info procs test]] == 1} then {
     source testDefs.tcl
 } {}
+
 # Uncomment this to get a full report, or set in your Tcl shell window.
 # set VERBOSE 1
 
@@ -45,44 +46,72 @@ if {[string compare test [info procs test]] == 1} then {
 #
 
 ######################################################################
-#### Connect
+#### SetParameter
 #
 
-test Connect-1.0 {test adding a new entity and connecting it} {
+test SetParameter-1.0 {test set parameter without queueing} {
     set e0 [sdfModel]
     set const [java::new ptolemy.actor.lib.Const $e0 const]
+    set value [java::field $const value]
     set rec [java::new ptolemy.actor.lib.Recorder $e0 rec]
     $e0 connect \
             [java::field [java::cast ptolemy.actor.lib.Source $const] output] \
             [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
     set m [$e0 getManager]
-    $m addChangeListener \
-            [java::new ptolemy.kernel.event.StandardOutChangeListener]
-    set dir [$e0 getDirector]
-    $dir addDebugListener \
-            [java::new ptolemy.kernel.util.StreamListener]
     $m initialize
     $m iterate
-    set ramp [java::new ptolemy.actor.lib.Ramp $e0 ramp]
-    set c1 [java::new ptolemy.data.expr.SetParameter $e0 \
-            [java::field $ramp step] 0.01]
-    set c2 [java::new ptolemy.actor.event.Connect $e0 \
-            [java::field [java::cast ptolemy.actor.lib.Source $ramp] output] \
-            [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]]
-    set c3 [java::new ptolemy.actor.event.InitializeActor $e0 $ramp]
-    set c4 [java::new ptolemy.data.expr.SetParameter $e0 \
-            [java::field $ramp init] 0.01]
+    set c [java::new ptolemy.data.expr.SetParameter $e0 $value 2]
+    $c execute
+    $m iterate
+    $m wrapup
+    enumToTokenValues [$rec getRecord 0]
+} {1 2}
+
+test SetParameter-2.0 {change parameter type} {
+    $m initialize
+    $m iterate
+    # Notice that this forces type resolution to be redone.
+    set c [java::new ptolemy.data.expr.SetParameter $e0 $value {0.01}]
+    $c execute
+    $m iterate
+    $m wrapup
+    enumToTokenValues [$rec getRecord 0]
+} {2 0.01}
+
+test SetParameter-3.0 {queue change with the manager} {
+    $m initialize
+    $m iterate
+    set c [java::new ptolemy.data.expr.SetParameter $e0 $value {"a"}]
+    $m requestChange $c
+    $m iterate
+    $m wrapup
+    enumToTokenValues [$rec getRecord 0]
+} {0.01 a}
+
+test SetParameter-3.0 {queue erroneous change with the manager} {
+    $m initialize
+    $m iterate
+    set c [java::new ptolemy.data.expr.SetParameter $e0 $value {x}]
+    $m requestChange $c
+    catch {$m iterate} msg
+    $m wrapup
+    list [enumToTokenValues [$rec getRecord 0]] $msg
+} {a {ptolemy.data.expr.IllegalExpressionException: Error parsing expression "x":
+The ID x is undefined.}}
+
+test SetParameter-4.0 {queue a change list} {
+    $value setExpression {"b"}
+    $m initialize
+    $m iterate
+    set listener [java::new ptolemy.kernel.event.StandardOutChangeListener]
+    $m addChangeListener $listener
+    set c1 [java::new ptolemy.data.expr.SetParameter $e0 $value {"x"}]
+    set c2 [java::new ptolemy.data.expr.SetParameter $e0 $value {"y"}]
     set changelist [java::new ptolemy.kernel.event.ChangeList $e0 "list"]
     $m requestChange $changelist
     $changelist add $c1
-    $changelist add $c4
     $changelist add $c2
-    $changelist add $c3
-
-    $m iterate
-    $m iterate
     $m iterate
     $m wrapup
-    list [enumToTokenValues [$rec getRecord 0]] \
-            [enumToTokenValues [$rec getRecord 1]]
-} {{1 1 1 1} {_ 0.01 0.02 0.03}}
+    enumToTokenValues [$rec getRecord 0]
+} {b y}

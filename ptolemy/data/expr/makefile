@@ -69,6 +69,7 @@ JSRCS = \
 	Parameter.java \
 	ParameterEvent.java \
 	ParameterListener.java \
+	SetParameter.java \
 	UtilityFunctions.java \
 	Variable.java \
 	VariableList.java

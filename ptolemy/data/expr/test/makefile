@@ -45,13 +45,13 @@ include $(CONFIG)
 TCL_SRCS = \
 	testDefs.tcl
 
-JSRCS = \
-	
+JSRCS =
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
 	Parameter.tcl \
 	PtParser.tcl \
+	SetParameter.tcl \
 	UtilityFunctions.tcl \
 	Variable.tcl
 

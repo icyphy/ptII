@@ -55,7 +55,6 @@ JSRCS = \
 	ChangeList.java \
 	ChangeListener.java \
 	ChangeRequest.java \
-	SetParameter.java \
 	StandardOutChangeListener.java
 
 EXTRA_SRCS =	$(JSRCS)
