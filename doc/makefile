@@ -159,6 +159,7 @@ HYVISUALPACKAGES = \
 			ptolemy.actor.lib.gui \
 			ptolemy.actor.lib.io \
 			ptolemy.actor.lib.logic \
+			ptolemy.actor.parameters \
 			ptolemy.domains.ct.kernel \
 			ptolemy.domains.ct.kernel.solver \
 			ptolemy.domains.ct.kernel.util \
@@ -208,7 +209,6 @@ ALLPACKAGES =		$(COMMPACKAGES) \
 			ptolemy.actor.process \
 			ptolemy.actor.lib.hoc \
 			ptolemy.actor.lib.net \
-			ptolemy.actor.parameters \
 			ptolemy.actor.sched \
 			ptolemy.actor.util \
 			ptolemy.domains.csp.kernel \
