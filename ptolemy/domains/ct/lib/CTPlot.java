@@ -32,8 +32,10 @@ import ptolemy.domains.ct.kernel.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
+import ptolemy.data.expr.*;
 import ptolemy.plot.*;
 import java.awt.*;
+import java.util.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// CTPlot
@@ -81,8 +83,17 @@ public class  CTPlot extends CTActor {
         _plot = plot;
 
         // FIXME: This is not the right way to handle this...
-        _yMin = (double)-1;
-        _yMax = (double)1;
+        String legends = new String("");
+        _yMin = (double)-1.0;
+        _yMax = (double)1.0;
+        _xMin = (double)-1.0;
+        _xMax = (double)1.0;
+        _paramLegends = new Parameter(this, "Legends", 
+                new StringToken(legends));
+        _paramYMin = new Parameter(this, "Y_Min", new DoubleToken(_yMin));
+        _paramYMax = new Parameter(this, "Y_Max", new DoubleToken(_yMax));
+        _paramXMin = new Parameter(this, "X_Min", new DoubleToken(_xMin));
+        _paramXMax = new Parameter(this, "X_Max", new DoubleToken(_xMax));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -104,9 +115,23 @@ public class  CTPlot extends CTActor {
         _plot.setConnected(true);
         _plot.setTitle(getName());
 
-        // FIXME: This is not the right way to handle this...
-        _yMin = (double)-1;
-        _yMax = (double)1;
+        // parameters
+        _yMin = ((DoubleToken)_paramYMin.getToken()).doubleValue();
+        _yMax = ((DoubleToken)_paramYMax.getToken()).doubleValue();
+        _xMin = ((DoubleToken)_paramXMin.getToken()).doubleValue();
+        _xMax = ((DoubleToken)_paramXMax.getToken()).doubleValue();
+        
+        String legs = ((StringToken)_paramLegends.getToken()).stringValue();
+        System.out.println(legs);
+        if(!legs.equals("")) {
+            StringTokenizer stokens = new StringTokenizer(legs);
+            int index = 0;
+            _legends = new String[stokens.countTokens()];
+            while(stokens.hasMoreTokens()) {
+                 _legends[index++]= stokens.nextToken();
+                 System.out.println(_legends[index-1]);
+            }
+        }
         // Call clear with 'true' argument, so it'll reset the legend...
         _plot.clear(false);
         int width = input.getWidth();
@@ -126,8 +151,7 @@ public class  CTPlot extends CTActor {
         // phase, because the director doesn't know the start time until
         // some stars enqueue an event.
         _rangeInitialized = false;
-        _yMin = -1;
-        _yMax = 1;
+        
     }
 
     /** Add new input data to the plot.
@@ -138,6 +162,7 @@ public class  CTPlot extends CTActor {
         if (!_rangeInitialized) {
             //_plot.setXRange(getStartTime(), getStopTime());
             _plot.setYRange(getYMin(), getYMax());
+            _plot.setXRange(_xMin, _xMax);
             _plot.init();
             _plot.repaint();
             _rangeInitialized = true;
@@ -236,12 +261,21 @@ public class  CTPlot extends CTActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    private String[] _legends;
-//    private Parameter _paramLegends;
+
     private Plot _plot;
 
+    private String[] _legends;
+    private Parameter _paramLegends;
+
     private double _yMin;
+    private Parameter _paramYMin;
     private double _yMax;
+    private Parameter _paramYMax;
+
+    private double _xMin;
+    private Parameter _paramXMin;
+    private double _xMax;
+    private Parameter _paramXMax;
 
     private boolean _rangeInitialized = false;
 

@@ -32,8 +32,10 @@ import ptolemy.domains.de.kernel.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
+import ptolemy.data.expr.Parameter;
 import ptolemy.plot.*;
 import java.awt.*;
+import java.util.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// DEPlot
@@ -79,8 +81,14 @@ public class DEPlot extends DEActor {
         _plot = plot;
         
         // FIXME: This is not the right way to handle this...
-        _yMin = (double)-1;
-        _yMax = (double)1;
+       String legends = new String("");
+        _yMin = (double)-1.0;
+        _yMax = (double)1.0;
+        _paramLegends = new Parameter(this, "Legends", 
+                new StringToken(legends));
+        _paramYMin = new Parameter(this, "Y_Min", new DoubleToken(_yMin));
+        _paramYMax = new Parameter(this, "Y_Max", new DoubleToken(_yMax));
+       
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -101,7 +109,19 @@ public class DEPlot extends DEActor {
         _plot.setImpulses(true);
         _plot.setConnected(false);
         _plot.setTitle(getName());
-
+        // parameters
+        _yMin = ((DoubleToken)_paramYMin.getToken()).doubleValue();
+        _yMax = ((DoubleToken)_paramYMax.getToken()).doubleValue();
+        String legs = ((StringToken)_paramLegends.getToken()).stringValue();
+        if(!legs.equals("")) {
+            StringTokenizer stokens = new StringTokenizer(legs);
+            int index = 0;
+            _legends = new String[stokens.countTokens()];
+            while(stokens.hasMoreTokens()) {
+                 _legends[index++]= stokens.nextToken();
+            }
+        }   
+        
 	for (int i = 0; i < input.getWidth(); i++) {
             if (_legends != null && i < _legends.length && _legends[i].length() != 0) {
                 _plot.addLegend(i, _legends[i]);
@@ -284,12 +304,19 @@ public class DEPlot extends DEActor {
     ////                         private variables                 ////
 
     private String[] _legends;
-
-
-    private Plot _plot;
+    private Parameter _paramLegends;
 
     private double _yMin;
+    private Parameter _paramYMin;
     private double _yMax;
+    private Parameter _paramYMax;
+
+    //private double _xMin;
+    //private Parameter _paramXMin;
+    //private double _xMax;
+    //private Parameter _paramXMax;
+
+    private Plot _plot;
 
     private boolean[] _firstPoint;
 
