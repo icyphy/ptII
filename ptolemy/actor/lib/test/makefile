@@ -124,5 +124,8 @@ cleanFileWriter:
 cleanRunCompositeActor:
 	echo 'if [catch {file delete -force [file join [java::call System getProperty java.io.tmpdir] RunCompositeActor.txt]} errMsg ] {puts $$errMsg}; exit ' | $(JTCLSH)
 
+# 'make clean' removes $(KRUFT)
+KRUFT = Const.txt ReadFile1Output.txt
+
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
