@@ -58,7 +58,8 @@ UI_FILES_TO_BE_JARED = \
 	codegen.htm \
 	authors.htm \
 	webStartHelp.htm \
-	whatsnew.htm
+	whatsnew.htm \
+	whatsnewVergil.htm
 
 EXTRA_SRCS = \
 	$(UI_FILES_TO_BE_JARED) \
@@ -225,7 +226,7 @@ ALLPACKAGES =		$(COMMPACKAGES) \
 			ptolemy.vergil.tree
 
 
-all: suball whatsnew.htm codeDoc/tree.html
+all: suball whatsnew.htm whatsnewVergil.htm codeDoc/tree.html
 install: all jars codeDoc.jar
 
 codeDoc.jar:
@@ -257,12 +258,17 @@ troubleshootingVergil.htm: troubleshooting.htm
 whatsnew.htm: ptII$(PTVERSION).release.htm
 	awk -f whatsnew.awk ptII$(PTVERSION).release.htm > $@  
 
+whatsnewVergil.htm: whatsnew.htm
+	sed 's@\(demo/[^/]*/[^/]*\).htm@\1.xml@g' \
+		< whatsnew.htm > whatsnewVergil.htm
+	diff whatsnew.htm whatsnewVergil.htm
+
 update: ptII$(PTVERSION).releaseVergil.htm troubleshootingVergil.htm \
-		whatsnew.htm
+		whatsnew.htm whatsnewVergil.htm
 	cvs commit -m "Master files changed" \
 		ptII$(PTVERSION).releaseVergil.htm \
 		troubleshootingVergil.htm \
-		whatsnew.htm
+		whatsnew.htm whatsnewVergil.htm
 
 docs: codeDoc/tree.html
 javadocs: codeDoc/tree.html
