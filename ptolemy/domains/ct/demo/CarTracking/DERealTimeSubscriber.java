@@ -196,6 +196,7 @@ public class DERealTimeSubscriber extends DEActor
         return true;
     }  
     
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     
@@ -209,7 +210,7 @@ public class DERealTimeSubscriber extends DEActor
     private boolean _hasNewToken;
  
     // Last set of data. Also serves as the synchronization lock.
-    private ArrayToken _lastToken;
+    private ArrayToken _lastData;
 
     // Current set of data.
     private LinkedList _tokenList;
@@ -263,7 +264,6 @@ public class DERealTimeSubscriber extends DEActor
                         //System.out.println(getName() + 
                         //        " take from space: " 
                         //        + entry.serialNumber + " " + entry.token);
-                       
                         _tokenList.addLast(entry.token); 
                         try {
                             _container.getDirector().fireAt(_container, 
@@ -273,19 +273,6 @@ public class DERealTimeSubscriber extends DEActor
                                     "can't register fireAt with the director."
                                     + ex.getMessage());
                         }
-                        _tokenList.notifyAll();
-                        /**
-                        double delay = 
-                            (double)System.currentTimeMillis()/1000.0 - 
-                            _container.getDirector().getCurrentTime();
-                        try {
-                            ((DEIOPort)((DERealTimeSubscriber)_container)
-                                    .output).send(0, entry.token, delay);
-                        } catch (IllegalActionException ex) {
-                            throw new InvalidStateException(_container,
-                                    "output failed." + ex.getMessage());
-                        }
-                        */
                     }
                 }
                 _notificationSeq =  _event.getSequenceNumber();
