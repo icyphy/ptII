@@ -460,6 +460,8 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/gui
 
 # Run JavaScope Code Coverage tool in the distribution tree 
+# For command line options, see
+#http://www.gigascale.org/pubs/gsrc-downloads/JavaScope/docs/pdf/UGApxTools.pdf
 remote1distjsall:
 	@echo "#"
 	@echo "# Now running make jsall in $(REMOTE1PTIIDIST)"
@@ -482,14 +484,16 @@ remote1distjsall:
 			( cd $$x ; \
 			echo making jsall in $$x ; \
 			$(MAKE) $(MFLAGS) $(MAKEVARS) \
-				jsall JSINSTRFLAGS=;\
+				jsall JSINSTRFLAGS="-IDATABASE=$(JSDATABASE) -RDATABASE=$(JSDATABASE)";\
 			);  \
 		    fi ; \
 		done ; \
 	fi
 	jssummary -HTML -PROGRESS \
+		-IDATABASE=$(JSDATABASE) -RDATABASE=$(JSDATABASE)" \
 		-OUTFILE=$(JSOUTDIR)/coverage.html
 	jsreport -HTML -PROGRESS -RECURSIVE \
+		-IDATABASE=$(JSDATABASE) -RDATABASE=$(JSDATABASE)" \
 		-OUTDIR=$(JSOUTDIR) 
 	# Add links and colorize the coverage.html page
 	sh $(PTIIADM)/bin/coveragerating $(PTII) \
