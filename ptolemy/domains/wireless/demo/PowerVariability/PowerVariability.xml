@@ -391,8 +391,6 @@ power is shown on the plot.</text></svg></configure>
             </port>
         </entity>
         <entity name="GetProperties" class="ptolemy.domains.wireless.lib.GetProperties">
-            <property name="portName" class="ptolemy.data.expr.StringParameter" value="in">
-            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="130.0, 200.0">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">

@@ -1,4 +1,4 @@
-/* An actor that retrieves the received properties of the specified port.
+/* An actor that retrieves the received properties of a connected port.
 
  Copyright (c) 1998-2003 The Regents of the University of California.
  All rights reserved.
@@ -30,17 +30,18 @@
 
 package ptolemy.domains.wireless.lib;
 
+import java.util.Iterator;
+
+import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
-import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.wireless.kernel.WirelessChannel;
 import ptolemy.domains.wireless.kernel.WirelessIOPort;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
-import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
@@ -49,18 +50,18 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 /**
 This actor retrieves the properties most recently received by
-the specified input port, which must be contained by the container
-of this actor.  A typical usage pattern is
-inside an instance of WirelessComposite, to connect the
-trigger input to the port from which you want to read
+an input port that is connected to its trigger port. That port
+must be an instance of WirelessIOPort, and must be contained
+by the container of this actor, or an exception will be thrown.
+A typical usage pattern is inside an instance of WirelessComposite,
+to connect the trigger input to the port from which you want to read
 the properties.
 <p>
 NOTE: The type of the properties port is inferred from the
-<i>defaultProperties</i> field of the channel used by the specified
-port at preinitialize()
-time. If the channel is changed during execution, or this
-field is changed, then the type of the port will not be updated,
-and a run-time type error could occur.
+<i>defaultProperties</i> field of the channel used by the connected
+port at preinitialize() time. If the channel is changed during
+execution, or the connectivity is changed, then the type of the
+port will not be updated, and a run-time type error could occur.
 Thus, this actor assumes that these types do not change.
 If the channel has no default properties (as in the base class
 WirelessChannel), then the type of the properties port will
@@ -86,20 +87,17 @@ public class GetProperties extends TypedAtomicActor {
         super(container, name);
         
         output = new TypedIOPort(this, "output", false, true);
-        // FIXME: lame: disable default type inference.
+        // NOTE: This is lame: disable default type inference.
+        // Without this line, the output type will be inferred
+        // from the type of the trigger input.
         output.setTypeEquals(BaseType.UNKNOWN);
-
-        // Create and configure the parameters.
-        portName = new StringParameter(this, "portName");
-        portName.setExpression("input");
 
         // Create and configure the ports.       
         trigger = new TypedIOPort(this, "trigger", true, false);
 
-        // FIXME: Show the name of the port.        
         _attachText("_iconDescription", "<svg>\n" +
                 "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
-                + "style=\"fill:white\"/>\n" +
+                + "style=\"fill:green\"/>\n" +
                 "</svg>\n");
     }
     
@@ -109,11 +107,6 @@ public class GetProperties extends TypedAtomicActor {
     /** Port that triggers execution.
      */
     public TypedIOPort trigger;
-
-    /** Name of the input port from which to read properties.
-     *  This is a string that defaults to "input".
-     */
-    public StringParameter portName;
 
     /** Port that transmits the properties received on the <i>input</i>
      *  port.
@@ -132,30 +125,29 @@ public class GetProperties extends TypedAtomicActor {
     public void fire() throws IllegalActionException {
 
         super.fire();
-      
+        
+        // Read and discard the input token.
         if (trigger.hasToken(0)) {
             Token inputValue = trigger.get(0);
         }
-        String portNameValue = portName.stringValue();
-        Entity container = (Entity)getContainer();
-        if (container != null) {
-            Port port = container.getPort(portNameValue);
-            if (port == null || !(port instanceof WirelessIOPort)) {
-                throw new IllegalActionException(this,
-                "portName does not specify a WirelessIOPort: "
-                + portNameValue);
-            }
-            Token propertiesValue = ((WirelessIOPort)port).getProperties(0);
+        
+        Iterator connectedPorts = trigger.sourcePortList().iterator();
+        while (connectedPorts.hasNext()) {
+            IOPort port = (IOPort)connectedPorts.next();
+            if (port.isInput() && port instanceof WirelessIOPort && port.getContainer() == getContainer()) {
+                // Found the port.
+                Token propertiesValue = ((WirelessIOPort)port).getProperties(0);
             
-            // Do not send properties if the port has no destinations.
-            // This prevents run-time type errors from occurring.
-            if (propertiesValue == null || output.numberOfSinks() == 0) {
+                // Do not send properties if the port has no destinations.
+                // This prevents run-time type errors from occurring.
+                if (propertiesValue != null && output.numberOfSinks() > 0) {
+                    output.send(0, propertiesValue);
+                }
                 return;
             }
-            if (propertiesValue != null) {
-                output.send(0, propertiesValue);
-            }
         }
+        throw new IllegalActionException(this,
+                "Could not find a port to get properties from.");
     }
 
     /** Create receivers and set up the type constraints on the
@@ -164,37 +156,37 @@ public class GetProperties extends TypedAtomicActor {
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
-
-        // Set the type of the output to match the channel properties.
-        String portNameValue = portName.stringValue();
-        Entity container = (Entity)getContainer();
-        if (container != null) {
-            Port port = container.getPort(portNameValue);
-            if (port == null || !(port instanceof WirelessIOPort)) {
-                throw new IllegalActionException(this,
-                "portName does not specify a WirelessIOPort: "
-                + portNameValue);
-            }
-            String channelName
-                    = ((WirelessIOPort)port).outsideChannel.stringValue();
-            CompositeEntity container2 = (CompositeEntity)container.getContainer();
-            if (container2 == null) {
-                throw new IllegalActionException(this,
-                "The container does not have a container.");         
-            }
-            Entity channel = container2.getEntity(channelName);
-            if (channel instanceof WirelessChannel) {
-                Parameter channelProperties = ((WirelessChannel)channel)
-                        .defaultProperties;
-                // Only set up the type constraint if the type of the
-                // of the properties field is known.
-                if (channelProperties.getType() != BaseType.UNKNOWN) {
-                    output.setTypeSameAs(channelProperties);
+        
+        Iterator connectedPorts = trigger.sourcePortList().iterator();
+        while (connectedPorts.hasNext()) {
+            IOPort port = (IOPort)connectedPorts.next();
+            if (port.isInput() && port instanceof WirelessIOPort && port.getContainer() == getContainer()) {
+                // Found the port.
+                Entity container = (Entity)getContainer();
+                String channelName
+                        = ((WirelessIOPort)port).outsideChannel.stringValue();
+                CompositeEntity container2 = (CompositeEntity)container.getContainer();
+                if (container2 == null) {
+                    throw new IllegalActionException(this,
+                    "The container does not have a container.");         
                 }
-            } else {
-                throw new IllegalActionException(this,
-                "The referenced port does not refer to a valid channel.");
+                Entity channel = container2.getEntity(channelName);
+                if (channel instanceof WirelessChannel) {
+                    Parameter channelProperties = ((WirelessChannel)channel)
+                            .defaultProperties;
+                    // Only set up the type constraint if the type of the
+                    // of the properties field is known.
+                    if (channelProperties.getType() != BaseType.UNKNOWN) {
+                        output.setTypeSameAs(channelProperties);
+                    }
+                } else {
+                    throw new IllegalActionException(this,
+                    "The connected port does not refer to a valid channel.");
+                }
+                return;
             }
         }
+        throw new IllegalActionException(this,
+                "Could not find a port to get the type of the properties from.");
     }
 }
