@@ -28,6 +28,7 @@
 @AcceptedRating 
 */
 
+
 import ptolemy.domains.sdf.lib.*;
 import ptolemy.domains.sdf.lib.javasound.*;
 import java.applet.*;
@@ -46,7 +47,6 @@ import ptolemy.actor.*;
 import ptolemy.actor.lib.*;
 import ptolemy.actor.gui.*;
 import ptolemy.domains.sdf.gui.*;
-import ptolemy.domains.sdf.demo.*;
 import ptolemy.domains.sdf.kernel.*;
 import ptolemy.domains.sdf.lib.*;
 import ptolemy.plot.*;
@@ -74,19 +74,21 @@ public class AudioSourceDemo extends SDFApplet {
 	try {
 	    AudioSource soundData = new AudioSource(_toplevel, "soundData");
 	    // Specify where to get the sound file.
-	    soundData.pathName.setToken(new StringToken("http://ptolemy.eecs.berkeley.edu/~vogel/tempjava/flute+hrn+mrmba.au"));
-	    soundData.isPeriodic.setToken(new BooleanToken(false));
+	    soundData.pathName.setToken(new StringToken("NylonGtrSusB2.aiff"));
+            // Read audio data from a local file instread of a URL.
+            soundData.isURL.setToken(new BooleanToken(false));
+	
 
             // Create and configure plotter
             SequencePlotter myplot = new SequencePlotter(_toplevel, "plot");
             myplot.setPanel(this);
             myplot.plot.setGrid(false);
             myplot.plot.setTitle("Audio Data");
-            myplot.plot.setXRange(0.0, 200.0);
+            myplot.plot.setXRange(0.0, 2000.0);
             myplot.plot.setWrap(true);
             myplot.plot.setYRange(-1.3, 1.3);
             myplot.plot.setMarksStyle("none");
-            myplot.plot.setPointsPersistence(512);
+            myplot.plot.setPointsPersistence(2000);
             myplot.plot.setSize(500, 300);
 
             _toplevel.connect(soundData.output, myplot.input);
