@@ -59,7 +59,7 @@
 
 # Variables used by cleaning rules:
 # KRUFT		Files to be removed by 'make clean'
-# REALCLEAN_STUFF Files to be removed by 'make realclean'
+# DISTCLEAN_STUFF Files to be removed by 'make distclean'
 #
 # Variables used by tests:
 # SIMPLE_TESTS	Itcl tests that don't require a graphical front end
@@ -350,7 +350,7 @@ $(TYDIST).zip:
 # Build sources in a form suitable for releasing
 buildjdist:
 	$(MAKE) sources
-	$(MAKE) realclean
+	$(MAKE) distclean
 	@echo "Compile any classes that require JDK1.1"
 	$(MAKE) JFLAGS=-O jclass1_1 
 	$(MAKE) jhtml
@@ -591,8 +591,8 @@ clean:
 # Remove the stuff in the parent directory after processing
 # the child directories incase something in the child depends on
 # something we will be removing in the parent
-# REALCLEAN_STUFF - Files to be removed by 'make realclean'
-realclean:
+# DISTCLEAN_STUFF - Files to be removed by 'make distclean'
+distclean:
 	@if [ "x$(DIRS)" != "x" ]; then \
 		set $(DIRS); \
 		for x do \
@@ -604,14 +604,14 @@ realclean:
 		    fi ; \
 		done ; \
 	fi
-	rm -f $(CRUD) configure $(REALCLEAN_STUFF) 
+	rm -f $(CRUD) configure $(DISTCLEAN_STUFF) 
 	-rm -f doc/codeDoc/* $(OPTIONAL_FILES) $(HTMLCHEKOUT)*
 
 
 
 # Remove the sources too, so that we can get them back from sccs
 extraclean:
-	rm -f $(CRUD) $(REALCLEAN_STUFF) $(EXTRA_SRCS) $(JSRCS)
+	rm -f $(CRUD) $(DISTCLEAN_STUFF) $(EXTRA_SRCS) $(JSRCS)
 	-rm -f doc/codeDoc/* $(OPTIONAL_FILES) $(HTMLCHEKOUT)*
 	@if [ "x$(DIRS)" != "x" ]; then \
 		set $(DIRS); \

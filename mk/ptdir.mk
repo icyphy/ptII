@@ -30,7 +30,7 @@
 # Date of creation: 10/13/96
 # Author: Christopher Hylands
 
-all makefiles install clean sources depend realclean checkjunk sccsinfo \
+all makefiles install clean sources depend distclean checkjunk sccsinfo \
 sccsclean itcldocs javadocs extraclean tests weblint idocs dists jsall \
 jsrestore:
 	@for x in $(DIRS); do \
