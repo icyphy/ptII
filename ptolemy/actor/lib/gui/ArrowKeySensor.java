@@ -80,7 +80,7 @@ This actor is almost identical to KeystrokeSensor.java.  One
 difference is the different set of keystrokes sensed.  The other
 difference, is that this actor responds to key releases as well as key
 presses.  Upon each key press, the integer 1 is broadcast from the
-coresponding output.  Upon each key release, the integer 0 is
+corresponding output.  Upon each key release, the integer 0 is
 output.<p>
 
 This actor contains a private inner class which generated the JFrame.
