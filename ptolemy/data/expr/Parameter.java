@@ -147,7 +147,9 @@ public class Parameter extends Variable {
         String value = stringRepresentation();
         String valueTerm = "";
         if(value != null && !value.equals("")) {
-            valueTerm = " value=\"" + MoMLUtilities.escapeAttribute(stringRepresentation()) + "\"";
+            valueTerm = " value=\"" + 
+                MoMLUtilities.escapeAttribute(stringRepresentation()) + 
+                "\"";
         }
 
         output.write(_getIndentPrefix(depth)
