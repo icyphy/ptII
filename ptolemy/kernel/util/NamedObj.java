@@ -552,7 +552,7 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
      *  version. It should only be called by setContainer() in Attribute.
      *  @param param The attribute to be removed.
      */
-    protected void _removeAttribute(NamedObj param) {
+    protected void _removeAttribute(Attribute param) {
         try {
             workspace().getWriteAccess();
             _attributes.remove((Nameable)param);
