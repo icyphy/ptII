@@ -1027,7 +1027,7 @@ $(REMOTE5PTIIDIST): $(PTII_FULL)
 	@echo "# Now untaring on `hostname`"
 	@echo "#"
 	@echo "$@ `date`"
-	(cd $(REMOTE5HOME); $(TAR) -zxf $(PTII_SRC)`)
+	(cd $(REMOTE5HOME); $(TAR) -zxf $(PTII_SRC))
 
 remote5configure:
 	@echo "#"
