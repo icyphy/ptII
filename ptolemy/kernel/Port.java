@@ -617,8 +617,8 @@ public class Port extends NamedObj {
      *   and has the wrong class, or if the specified container is not
      *   an instance of CompositeEntity.
      */
-    protected NamedObj _getContainedObject(String relativeName,
-            NamedObj container)
+    protected NamedObj _getContainedObject(
+            NamedObj container, String relativeName)
             throws IllegalActionException {
         if (!(container instanceof Entity)) {
             throw new IllegalActionException(this,

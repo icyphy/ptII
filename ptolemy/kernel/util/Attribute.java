@@ -228,8 +228,8 @@ public class Attribute extends NamedObj {
      *  @exception IllegalActionException If the object exists
      *   and has the wrong class.
      */
-    protected NamedObj _getContainedObject(String relativeName,
-            NamedObj container)
+    protected NamedObj _getContainedObject(
+            NamedObj container, String relativeName)
             throws IllegalActionException {
         Attribute candidate = container.getAttribute(relativeName);
         if (candidate != null && !getClass().isInstance(candidate)) {

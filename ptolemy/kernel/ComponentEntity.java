@@ -341,7 +341,7 @@ public class ComponentEntity extends Entity {
                 }
                 // Since the new container is null, this object is being
                 // deleted. Break deferral references that it may have.
-                setParent(null);
+                _setParent(null);
             } else {
                 // checkContainer() above ensures that this cast is valid.
                 ((CompositeEntity)container)._finishedAddEntity(this);
@@ -451,7 +451,7 @@ public class ComponentEntity extends Entity {
             }
         }
         if (candidate != null) {
-            setParent(candidate);
+            _setParent(candidate);
             _markContentsDerived(0);
             // For every object contained by the new parent,
             // we need to make sure its value is propagated
@@ -521,8 +521,8 @@ public class ComponentEntity extends Entity {
      *   and has the wrong class, or if the specified container is not
      *   an instance of CompositeEntity.
      */
-    protected NamedObj _getContainedObject(String relativeName,
-            NamedObj container)
+    protected NamedObj _getContainedObject(
+            NamedObj container, String relativeName)
             throws IllegalActionException {
         if (!(container instanceof CompositeEntity)) {
             throw new IllegalActionException(this,

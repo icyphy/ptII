@@ -99,8 +99,8 @@ test InstantiableNamedObj-1.3 {instantiate} {
 ######################################################################
 ####
 #
-test InstantiableNamedObj-1.4 {maximumParentDepth} {
-    $e2 maximumParentDepth
+test InstantiableNamedObj-1.4 {getPrototypeList} {
+    [$e2 getPrototypeList] size
 } {1}
 
 

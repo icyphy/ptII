@@ -144,6 +144,8 @@ public class Entity extends InstantiableNamedObj {
      *  yourself if you want it there).
      *  The result is a new entity with clones of the ports of the original
      *  entity.  The ports are set to the ports of the new entity.
+     *  This method gets read access on the workspace associated with
+     *  this object.
      *  @param workspace The workspace for the cloned object.
      *  @exception CloneNotSupportedException If cloned ports cannot have
      *   as their container the cloned entity (this should not occur), or
@@ -152,40 +154,46 @@ public class Entity extends InstantiableNamedObj {
      */
     public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
-        Entity newEntity = (Entity)super.clone(workspace);
-        newEntity._portList = new NamedList(newEntity);
-        // Clone the ports.
-        Iterator ports = portList().iterator();
-        while (ports.hasNext()) {
-            Port port = (Port)ports.next();
-            Port newPort = (Port)port.clone(workspace);
-            // Assume that since we are dealing with clones,
-            // exceptions won't occur normally (the original was successfully
-            // incorporated, so this one should be too).  If they do, throw an
-            // InvalidStateException.
-            try {
-                newPort.setContainer(newEntity);
-            } catch (KernelException ex) {
-                workspace.remove(newEntity);
-                throw new InvalidStateException(this,
-                        "Failed to clone an Entity: " + ex.getMessage());
-            }
-        }
-        Class myClass = getClass();
-        Field fields[] = myClass.getFields();
-        for (int i = 0; i < fields.length; i++) {
-            try {
-                if (fields[i].get(newEntity) instanceof Port) {
-                    fields[i].set(newEntity,
-                            newEntity.getPort(fields[i].getName()));
+        try {
+            workspace().getReadAccess();
+            
+            Entity newEntity = (Entity)super.clone(workspace);
+            newEntity._portList = new NamedList(newEntity);
+            // Clone the ports.
+            Iterator ports = portList().iterator();
+            while (ports.hasNext()) {
+                Port port = (Port)ports.next();
+                Port newPort = (Port)port.clone(workspace);
+                // Assume that since we are dealing with clones,
+                // exceptions won't occur normally (the original was successfully
+                // incorporated, so this one should be too).  If they do, throw an
+                // InvalidStateException.
+                try {
+                    newPort.setContainer(newEntity);
+                } catch (KernelException ex) {
+                    workspace.remove(newEntity);
+                    throw new InvalidStateException(this,
+                            "Failed to clone an Entity: " + ex.getMessage());
                 }
-            } catch (IllegalAccessException e) {
-                throw new CloneNotSupportedException(e.getMessage() +
-                        ": " + fields[i].getName());
             }
+            Class myClass = getClass();
+            Field fields[] = myClass.getFields();
+            for (int i = 0; i < fields.length; i++) {
+                try {
+                    if (fields[i].get(newEntity) instanceof Port) {
+                        fields[i].set(newEntity,
+                                newEntity.getPort(fields[i].getName()));
+                    }
+                } catch (IllegalAccessException e) {
+                    throw new CloneNotSupportedException(e.getMessage() +
+                            ": " + fields[i].getName());
+                }
+            }
+            _cloneFixAttributeFields(newEntity);
+            return newEntity;
+        } finally {
+            workspace().doneReading();
         }
-        _cloneFixAttributeFields(newEntity);
-        return newEntity;
     }
 
     /** Return a list of the ports that are connected to contained ports.

@@ -52,6 +52,18 @@ import ptolemy.kernel.util.Workspace;
    instances are called the "children" of this "parent." Changes
    to the parent propagate automatically to the children as described
    in the {@link Instantiable} interface.
+   <p>
+   Note that the {@link instantiate(NamedObj, String)} permits instantiating
+   an object into a workspace that is different from the one associated with
+   this object.  This means that some care must be exercised when propagating
+   changes from a parent to a child, since they may be in different workspaces.
+   Suppose for example that the change that has to propagate is made via a
+   change request. Although it may be a safe time to execute a change request
+   in the parent, it is not necessarily a safe time to execute a change request
+   in the child.  Classes that restrict these safe times should override
+   the propagateExistence(), propagateValue(), and propagateValues() methods
+   to ensure that the destinations of the propagation are in a state that
+   they can accept changes.
 
    @author Edward A. Lee
    @version $Id$
@@ -117,6 +129,8 @@ public class InstantiableNamedObj extends NamedObj implements Instantiable {
      *  yourself if you want it there). The result is a new instance of
      *  InstantiableNamedObj that is a child of the parent of this object,
      *  if this object has a parent. The new instance has no children.
+     *  This method gets read access on the workspace associated with
+     *  this object.
      *  @param workspace The workspace for the cloned object.
      *  @exception CloneNotSupportedException If one of the attributes
      *   cannot be cloned.
@@ -124,22 +138,29 @@ public class InstantiableNamedObj extends NamedObj implements Instantiable {
      */
     public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
-        InstantiableNamedObj newObject = (InstantiableNamedObj)super.clone(workspace);
-        // The new object does not have any other objects deferring
-        // their MoML definitions to it, so we have to reset this.
-        newObject._children = null;
-
-        // Set the parent using setParent() rather than the default
-        // clone to get the side effects.
-        newObject._parent = null;
-        if (_parent != null) {
-            try {
-                newObject.setParent(_parent);
-            } catch (IllegalActionException ex) {
-                throw new InternalErrorException(ex);
+        try {
+            workspace().getReadAccess();
+            
+            InstantiableNamedObj newObject
+                    = (InstantiableNamedObj)super.clone(workspace);
+            // The new object does not have any other objects deferring
+            // their MoML definitions to it, so we have to reset this.
+            newObject._children = null;
+    
+            // Set the parent using _setParent() rather than the default
+            // clone to get the side effects.
+            newObject._parent = null;
+            if (_parent != null) {
+                try {
+                    newObject._setParent(_parent);
+                } catch (IllegalActionException ex) {
+                    throw new InternalErrorException(ex);
+                }
             }
+            return newObject;
+        } finally {
+            workspace().doneReading();
         }
-        return newObject;
     }
 
     /** Write a MoML description of this object with the specified
@@ -162,8 +183,6 @@ public class InstantiableNamedObj extends NamedObj implements Instantiable {
      *  &lt;!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
      *      "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd"&gt;
      *  </pre>
-     *  If the element has class name "class" instead of "entity",
-     *  then "entity" above is replaced with "class".
      *  <p>
      *  The text that is written is indented according to the specified
      *  depth, with each line (including the last one)
@@ -174,8 +193,10 @@ public class InstantiableNamedObj extends NamedObj implements Instantiable {
      *  contents are described.
      *  <p>
      *  If this object is not persistent, or if there is no MoML
-     *  description of this object, or if this object is a class
-     *  instance, then write nothing.
+     *  description of this object, or if this object is implied
+     *  by a parent-child relationship that less than <i>depth</i>
+     *  levels up in the containment hierarchy and it has not
+     *  been overridden, then write nothing.
      *  @param output The output stream to write to.
      *  @param depth The depth in the hierarchy, to determine indenting.
      *  @param name The name to use in the exported MoML.
@@ -231,6 +252,7 @@ public class InstantiableNamedObj extends NamedObj implements Instantiable {
      *   instances of Instantiable or null if this object
      *   has no children.
      *  @see Instantiable
+     *  @see java.lang.ref.WeakReference
      */
     public List getChildren() {
         if (_children == null) {
@@ -254,7 +276,7 @@ public class InstantiableNamedObj extends NamedObj implements Instantiable {
 
     /** Return the parent of this object, or null if there is none.
      *  @return The parent of this object, or null if there is none.
-     *  @see #setParent(Instantiable)
+     *  @see #_setParent(Instantiable)
      *  @see Instantiable
      */
     public Instantiable getParent() {
@@ -320,7 +342,7 @@ public class InstantiableNamedObj extends NamedObj implements Instantiable {
      *   to instantiate it at the top level.
      *  @param name The name for the instance.
      *  @return A new instance that is a clone of this object
-     *   with adjusted deferral relationships.
+     *   with adjusted parent-child relationships.
      *  @exception CloneNotSupportedException If this object
      *   cannot be cloned.
      *  @exception IllegalActionException If this object is not a
@@ -356,7 +378,7 @@ public class InstantiableNamedObj extends NamedObj implements Instantiable {
         // Set the name before the container to not get
         // spurious name conflicts.
         clone.setName(name);
-        clone.setParent(this);
+        clone._setParent(this);
         clone.setClassDefinition(false);
         clone.setClassName(getFullName());
         
@@ -389,19 +411,25 @@ public class InstantiableNamedObj extends NamedObj implements Instantiable {
             throws IllegalActionException {
         workspace().getWriteAccess();
         try {
-            if (!isClass && _isClassDefinition && getChildren().size() > 0) {
+            if (!isClass && _isClassDefinition
+                    && getChildren() != null && getChildren().size() > 0) {
                 throw new IllegalActionException(this,
                 "Cannot change from a class to an instance because" +
                 " there are subclasses and/or instances.");
             }
             _isClassDefinition = isClass;
+            /*
+            if (isClass) {
+                _elementName = "class";
+            }
+            */
         } finally {
             workspace().doneWriting();
         }
     }
 
-    /** Specify the parent for this object.  This should be called
-     *  to make this object either an an instance or a subclass of
+    /** Specify the parent for this object.  This  method should be called
+     *  to make this object either an instance or a subclass of
      *  the other object. When generating
      *  a MoML description of this object, instead of giving a detailed
      *  description, this object will henceforth refer to the
@@ -413,6 +441,15 @@ public class InstantiableNamedObj extends NamedObj implements Instantiable {
      *  This method is write synchronized on
      *  the workspace because it modifies the object that is the
      *  argument to refer back to this one.
+     *  <p>
+     *  Note that a parent references a child via a weak reference.
+     *  This means that the parent will not prevent the child from
+     *  being garbage collected. However, as long as the child has
+     *  not been garbage collected, changes to the parent will
+     *  propagate to the child even if there are no other live
+     *  references to the child. If there are a large number of
+     *  such dangling children, this could create performance
+     *  problems when making changes to the parent.
      *  @param parent The parent, or null to specify that there is
      *   no parent.
      *  @exception IllegalActionException If the parent is not an
@@ -421,7 +458,7 @@ public class InstantiableNamedObj extends NamedObj implements Instantiable {
      *  @see #getParent()
      *  @see Instantiable
      */
-    public void setParent(Instantiable parent) throws IllegalActionException {
+    protected void _setParent(Instantiable parent) throws IllegalActionException {
         if (parent != null && !(parent instanceof InstantiableNamedObj)) {
             throw new IllegalActionException(this,
                     "Parent of an InstantiableNamedObj must also " +
@@ -432,6 +469,8 @@ public class InstantiableNamedObj extends NamedObj implements Instantiable {
             if (_parent != null) {
                 // Previously existing deferral.
                 // Remove it.
+                // NOTE: If WeakReference overrides equal(),
+                // then this could probably be done more simply.
                 List deferredFromList = _parent._children;
                 if (deferredFromList != null) {
                     // Removing a previous reference.
@@ -448,12 +487,12 @@ public class InstantiableNamedObj extends NamedObj implements Instantiable {
                 }
             }
             _parent = (InstantiableNamedObj)parent;
-            if (parent != null) {
-                if (((InstantiableNamedObj)parent)._children == null) {
-                    ((InstantiableNamedObj)parent)._children = new LinkedList();
+            if (_parent != null) {
+                if (_parent._children == null) {
+                    _parent._children = new LinkedList();
                 }
                 // NOTE: These need to be weak references.
-                ((InstantiableNamedObj)parent)._children.add(new WeakReference(this));
+                _parent._children.add(new WeakReference(this));
             }
         } finally {
             _workspace.doneWriting();
