@@ -36,15 +36,17 @@ ROOT =		../../..
 CONFIG =	$(ROOT)/mk/tycho.mk
 include $(CONFIG)
 
-JPACKAGE = 	ptplot.demo
-JPACKAGE_DIR =	ptplot/demo
-JVERSION =	1.1
-JDIST =		$(JPACKAGE)$(JVERSION)
-JZIP =		ptplot/demo/$(JPACKAGE).zip
+CLASSPATH =	../..
+
+TYPACKAGE = 	ptplot.demo
+TYPACKAGE_ROOTDIR = $(CLASSPATH)
+TYPACKAGE_DIR =	ptplot/demo
+TYVERSION =	1.1
+TYDIST =	$(TYPACKAGE)$(TYVERSION)
+TYZIP =		$(TYPACKAGE_DIR)/$(TYPACKAGE).zip
+JARFILE = 	$(TYPACKAGE).jar
 
 DIRS = 		audio #doc test
-
-CLASSPATH =	../..
 
 # Order matters here.
 JSRCS1_0 = \
