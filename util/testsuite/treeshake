@@ -1,4 +1,4 @@
-#!/bin/sh -x
+#!/bin/sh
 # Tree shake a demo: Build the minimal jar file and then run it
 # Usage treeshake pathToJarExecutable treeshakejarfile java_commands . . .
 #   The first java_command is expected to be the java interpreter
