@@ -37,7 +37,7 @@ by a higher frequency one (the carrier).</doc>
     <port name="multiply"></port>
     <port name="output"></port>
   </entity>
-  <entity name="display" class="ptolemy.actor.gui.SequencePlotter">
+  <entity name="display" class="ptolemy.actor.lib.gui.SequencePlotter">
     <port name="input"></port>
     <!-- Configure provided in both a referenced file and local data -->
     <configure source="plotConfigure.xml"><![CDATA[

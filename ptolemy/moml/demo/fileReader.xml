@@ -12,7 +12,7 @@
       <location value="100, 100"/>
     </rendition>
   </entity>
-  <entity name="display" class="ptolemy.actor.gui.Display">
+  <entity name="display" class="ptolemy.actor.lib.gui.Display">
     <port name="input"></port>
     <rendition class="ptolemy.moml.Icon">
       <location value="200, 100"/>

@@ -14,7 +14,7 @@
       <location value="100, 100"/>
     </rendition>
   </entity>
-  <entity name="display" class="ptolemy.actor.gui.SequencePlotter">
+  <entity name="display" class="ptolemy.actor.lib.gui.SequencePlotter">
     <port name="input"></port>
     <rendition class="ptolemy.moml.Icon">
       <location value="200, 100"/>
