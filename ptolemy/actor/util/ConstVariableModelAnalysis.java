@@ -366,9 +366,9 @@ public class ConstVariableModelAnalysis {
             _variableToChangeContext.get(variable);
         Entity newChangeContext = 
             _computeBound(changeContext, oldChangeContext);
-//         System.out.println("variable = " + variable);
-//         System.out.println("oldChangeContext = " + oldChangeContext);
-//         System.out.println("newChangeContext = " + newChangeContext);
+    //     System.out.println("variable = " + variable);
+//          System.out.println("oldChangeContext = " + oldChangeContext);
+//          System.out.println("newChangeContext = " + newChangeContext);
         if(newChangeContext != oldChangeContext) {
             if(newChangeContext != null) {
                 _variableToChangeContext.put(variable,
@@ -387,11 +387,9 @@ public class ConstVariableModelAnalysis {
         if(entity2 == null) {
             return entity1;
         } 
-        String name1 = entity1.getFullName();
-        String name2 = entity2.getFullName();
-        if(name1.startsWith(name2)) {
+        if(entity2.deepContains(entity1)) {
             return entity1;
-        } else if(name2.startsWith(name1)) {
+        } else if(entity1.deepContains(entity2)) {
             return entity2;
         } else {
             throw new RuntimeException("Illegal change context");
