@@ -66,6 +66,7 @@ public class PNDirector extends Director {
         while (allMyStars.hasMoreElements()) {
             PNActor star = (PNActor)allMyStars.nextElement();     
             Thread temp = new Thread(_processGroup, star);
+            star.setThread(temp);
             temp.start();
         }
 	clearNewActors();
