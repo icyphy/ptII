@@ -104,6 +104,18 @@ public class StaticSchedulingDirector extends Director {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Override the base class to also listen to the scheduler, if there
+     *  is one.
+     *  @param listener The listener to which to send debug messages.
+     */
+    public synchronized void addDebugListener(DebugListener listener) {
+        super.addDebugListener(listener);
+        Scheduler scheduler = getScheduler();
+        if (scheduler != null) {
+            scheduler.addDebugListener(listener);
+        }
+    }
+
     /** Calculate the current schedule, if necessary, and iterate the
      *  contained actors in the order given by the schedule.  No
      *  internal state of the director is updated during fire, so it
@@ -234,6 +246,19 @@ public class StaticSchedulingDirector extends Director {
     public boolean prefire() throws IllegalActionException {
         _postfireReturns = true;
         return super.prefire();
+    }
+
+    /** Override the base class to also remove the listener from the scheduler,
+     *  if there is one.
+     *  @param listener The listener to remove from the list of listeners
+     *   to which debug messages are sent.
+     */
+    public synchronized void removeDebugListener(DebugListener listener) {
+        super.removeDebugListener(listener);
+        Scheduler scheduler = getScheduler();
+        if (scheduler != null) {
+            scheduler.removeDebugListener(listener);
+        }
     }
 
     /** Set the scheduler for this StaticSchedulingDirector.
