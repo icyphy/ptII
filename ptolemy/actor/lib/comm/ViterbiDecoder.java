@@ -192,9 +192,9 @@ public class ViterbiDecoder extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** If the attribute being changed is <i>mode</i>, set input port
-     *  type to be double if <i>mode</i> is true and set it to type boolean
-     *  if it is false.
+    /** If the attribute being changed is <i>softDecoding</i>,set
+     *  input port type to be double if <i>softDecoding</i> is true
+     *  and set it to type boolean if it is false.
      *  If the attribute being changed is <i>uncodedRate</i> or
      *  <i>delay</i> then verify it is a positive integer; if it is
      *  <i>polynomialArray</i>, then verify that each of its elements
