@@ -28,46 +28,41 @@ COPYRIGHTENDKEY
 
 package ptolemy.domains.ddf.lib;
 
-import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.data.ScalarToken;
+import ptolemy.actor.lib.OrderedMerge;
+import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
-import ptolemy.kernel.util.Workspace;
-
-
 
 //////////////////////////////////////////////////////////////////////////
 //// DDFOrderedMerge
 /**
-   This actor merges two monotonically nondecreasing streams of tokens into
-   one monotonically nondecreasing stream. On each firing, it reads data from
-   one of the inputs.  On the first firing, it simply records that token.
-   On the second firing, it reads data from the other input and outputs
-   the smaller of the recorded token and the one it just read.  If they
-   are equal, then it outputs the recorded token. It then
-   records the larger token.  On each subsequent firing, it reads a token
-   from the input port that did not provide the recorded token, and produces
-   at the output the smaller of the recorded token and the one just read.
+   This actor merges two monotonically nondecreasing streams of tokens 
+   into one monotonically nondecreasing stream. On each firing, it reads 
+   data from one of the inputs. On the first firing, it simply records 
+   that token. On the second firing, it reads data from the other input 
+   and outputs the smaller of the recorded token and the one it just read.  
+   If they are equal, then it outputs the recorded token. It then records 
+   the larger token. On each subsequent firing, it reads a token from the 
+   input port that did not provide the recorded token, and produces at the 
+   output the smaller of the recorded token and the one just read.
    <p>
    If both input sequences are nondecreasing, then the output sequence
    will be nondecreasing.
    Note that if the inputs are not nondecreasing, then the output is
-   rather complex.  The key is that in each firing, it produces the smaller
+   rather complex. The key is that in each firing, it produces the smaller
    of the recorded token and the token it is currently reading.
+   This derived class only updates rate parameters to indicate next input 
+   port.
 
-   @author Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 2.0.1
-   @Pt.ProposedRating Red (eal)
-   @Pt.AcceptedRating Red (eal)
+   @author Gang Zhou
 */
 
-public class DDFOrderedMerge extends TypedAtomicActor {
+public class DDFOrderedMerge extends OrderedMerge {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -80,144 +75,61 @@ public class DDFOrderedMerge extends TypedAtomicActor {
     public DDFOrderedMerge(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-
-        inputA = new TypedIOPort(this, "inputA", true, false);
-        inputB = new TypedIOPort(this, "inputB", true, false);
-        inputB.setTypeSameAs(inputA);
-        inputA.setTypeAtMost(BaseType.SCALAR);
         
         inputA_tokenConsumptionRate =
-            new Parameter(inputA, "tokenConsumptionRate");
-        inputA_tokenConsumptionRate.setExpression("1");
+                new Parameter(inputA, "tokenConsumptionRate");
+        inputA_tokenConsumptionRate.setToken(new IntToken(1));
         inputA_tokenConsumptionRate.setVisibility(Settable.NOT_EDITABLE);
         inputA_tokenConsumptionRate.setTypeEquals(BaseType.INT);
-        inputA_tokenConsumptionRate.setPersistent(false);
         
         inputB_tokenConsumptionRate =
-            new Parameter(inputB, "tokenConsumptionRate");
-        inputB_tokenConsumptionRate.setExpression("0");
+                new Parameter(inputB, "tokenConsumptionRate");
+        inputB_tokenConsumptionRate.setToken(new IntToken(0));
         inputB_tokenConsumptionRate.setVisibility(Settable.NOT_EDITABLE);
         inputB_tokenConsumptionRate.setTypeEquals(BaseType.INT);
-        inputB_tokenConsumptionRate.setPersistent(false);
-
-        output = new TypedIOPort(this, "output", false, true);
-        output.setTypeSameAs(inputA);
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     ports and parameters                  ////
+    ////                       parameters                          ////
 
-    /** The first input port, which accepts any scalar token. */
-    public TypedIOPort inputA;
-    
     /** The rate parameter for the input port A.
      */
     public Parameter inputA_tokenConsumptionRate;  
 
-    /** The second input port, which accepts any scalar token with
-     *  the same type as the first input port.
-     */
-    public TypedIOPort inputB;
-
-    /** The rate parameter for the input port A.
+    /** The rate parameter for the input port B.
      */
     public Parameter inputB_tokenConsumptionRate;  
-    
-    /** The output port, which has the same type as the input ports. */
-    public TypedIOPort output;
-
+ 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and then sets the type constraints.
-     *  @param workspace The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class has
-     *   an attribute that cannot be cloned.
-     */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        DDFOrderedMerge newObject = (DDFOrderedMerge)super.clone(workspace);
-        newObject.inputA.setTypeAtMost(BaseType.SCALAR);
-        newObject.inputB.setTypeSameAs(newObject.inputA);
-        newObject.output.setTypeSameAs(newObject.inputA);
-        return newObject;
-    }
-
-    /** Read one token from the port that did not provide the recorded
-     *  token (or <i>inputA</i>, on the first firing), and output the
-     *  smaller of the recorded token or the newly read token.
-     *  If there is no token on the port to be read, then do nothing
-     *  and return.
-     *  @exception IllegalActionException If there is no director.
-     */
-    public void fire() throws IllegalActionException {
-        if (nextPort.hasToken(0)) {
-            ScalarToken readToken = (ScalarToken)nextPort.get(0);
-            if (recordedToken == null) {
-                // First firing.  Just record the token.
-                tentativeRecordedToken = readToken;
-                tentativeNextPort = inputB;
-                inputA_tokenConsumptionRate.setExpression("0");
-                inputB_tokenConsumptionRate.setExpression("1");              
-            } else {
-                if ((readToken.isLessThan(recordedToken)).booleanValue()) {
-                    // Produce the smaller output.
-                    output.send(0, readToken);
-                } else {
-                    // Produce the smaller output.
-                    output.send(0, recordedToken);
-                    tentativeRecordedToken = readToken;
-
-                    // Swap ports.
-                    if (nextPort == inputA) {
-                        tentativeNextPort = inputB;
-                        inputA_tokenConsumptionRate.setExpression("0");
-                        inputB_tokenConsumptionRate.setExpression("1");      
-                    } else {
-                        tentativeNextPort = inputA;
-                        inputA_tokenConsumptionRate.setExpression("1");
-                        inputB_tokenConsumptionRate.setExpression("0");      
-                    }
-                }
-            }
-        }
-    }
-
-    /** Initialize this actor to indicate that no token is recorded.
+    /** Initialize rate parameters to indicate the first token will be 
+     *  read from inputA.
      *  @exception IllegalActionException If a derived class throws it.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        nextPort = inputA;
-        inputA_tokenConsumptionRate.setExpression("1");
-        inputB_tokenConsumptionRate.setExpression("0");
-        recordedToken = null;
+        inputA_tokenConsumptionRate.setToken(new IntToken(1));
+        inputB_tokenConsumptionRate.setToken(new IntToken(0));
     }
 
-    /** Commit the recorded token.
-     *  @return True.
-     *  @exception IllegalActionException Not thrown in this base class.
+    /** Update rate parameters indicating the next input port.
+     *  @return True if execution can continue into the next iteration. 
+     *  @exception IllegalActionException If any called method throws 
+     *   IllegalActionException. 
      */
     public boolean postfire() throws IllegalActionException {
-        recordedToken = tentativeRecordedToken;
-        nextPort = tentativeNextPort;
-        return super.postfire();
+        
+        // Call postfire first so that next input port is updated.
+        boolean postfireReturn = super.postfire();
+        TypedIOPort nextPort = _getNextPort();
+        if (nextPort == inputA) {
+            inputA_tokenConsumptionRate.setToken(new IntToken(1));
+            inputB_tokenConsumptionRate.setToken(new IntToken(0));
+        } else {
+            inputA_tokenConsumptionRate.setToken(new IntToken(0));
+            inputB_tokenConsumptionRate.setToken(new IntToken(1));
+        }
+        return postfireReturn;
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    /** The recorded token. */
-    private ScalarToken recordedToken = null;
-
-    /** The port from which to read next. */
-    private TypedIOPort nextPort = null;
-
-    /** The tentative recorded token. */
-    private ScalarToken tentativeRecordedToken = null;
-
-    /** The tentative port from which to read next. */
-    private TypedIOPort tentativeNextPort = null;
 }
