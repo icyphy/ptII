@@ -358,6 +358,26 @@ public class LongMatrixMath {
         return returnValue;
     }
 
+    /** Return a new matrix that is constructed by placing the
+     *  elements of the input array on the diagonal of the square
+     *  matrix, starting from the top left corner down to the bottom
+     *  right corner. All other elements are zero. The size of of the
+     *  matrix is n x n, where n is the length of the input array.
+     */
+    public static final long[][] diag(final long[] array) {
+        int n = array.length;
+
+        long[][] returnValue = new long[n][n];
+
+        // Assume the matrix is zero-filled.
+
+        for (int i = 0; i < n; i++) {
+            returnValue[i][i] = array[i];
+        }
+
+        return returnValue;
+    }
+
     /** Return a new matrix that is constructed by element by element
      *  division of the two matrix arguments. Each element of the
      *  first matrix is divided by the corresponding element of the

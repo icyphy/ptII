@@ -340,6 +340,26 @@ public class IntegerMatrixMath {
         return returnValue;
     }
 
+    /** Return a new matrix that is constructed by placing the
+     *  elements of the input array on the diagonal of the square
+     *  matrix, starting from the top left corner down to the bottom
+     *  right corner. All other elements are zero. The size of of the
+     *  matrix is n x n, where n is the length of the input array.
+     */
+    public static final int[][] diag(final int[] array) {
+        int n = array.length;
+
+        int[][] returnValue = new int[n][n];
+
+        // Assume the matrix is zero-filled.
+
+        for (int i = 0; i < n; i++) {
+            returnValue[i][i] = array[i];
+        }
+
+        return returnValue;
+    }
+
     /** Return a new matrix that is constructed from the argument by
      *  dividing the second argument to every element.
      *  @param matrix A matrix of ints.
