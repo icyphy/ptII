@@ -85,7 +85,7 @@ an illegal parameter value is used:
 name tells this actor to use live capture mode. The default
 value of this parameter is "".
 <li><i>sampleRate</i> should be set to desired sample rate, in Hz. 
-The default value is 44100.
+The default value is 8000.
 <li><i>sampleSizeInBits</i> should be set to desired bit
 resolution. The default value is 16.
 <li><i>channels</i> should be set to desired number of audio
@@ -148,7 +148,7 @@ public class AudioSource extends Source {
 	output.setMultiport(true);
 	pathName = new Parameter(this, "pathName",
                 new StringToken(""));
-	sampleRate = new Parameter(this, "sampleRate", new IntToken(44100));
+	sampleRate = new Parameter(this, "sampleRate", new IntToken(8000));
 	sampleRate.setTypeEquals(BaseType.INT);
 	sampleSizeInBits = new Parameter(this, "sampleSizeInBits",
                 new IntToken(16));
@@ -191,7 +191,7 @@ public class AudioSource extends Source {
      *  Valid values
      *  are dependent on the audio hardware (sound card), but typically
      *  include at least 8000, 11025, 22050, 44100, and 48000. The 
-     *  default value of the sample rate is 44100 Hz.
+     *  default value of the sample rate is 8000 Hz.
      *  <p>
      *  Note that it is only necessary to set this parameter for the
      *  case where audio is captured in real-time from the microphone

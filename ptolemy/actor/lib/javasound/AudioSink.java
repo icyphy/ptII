@@ -78,7 +78,7 @@ an illegal parameter value is used:
 <ul>
 <li><i>sampleRate</i> should be set to desired sample rate, in Hz. The
 DoubleTokens read in by this actor will be interpreted as having
-this sample rate. The default value is 44100.
+this sample rate. The default value is 8000.
 <li><i>sampleSizeInBits</i> should be set to desired bit
 resolution. The default value is 16.
 <li><i>channels</i> should be set to desired number of audio
@@ -102,7 +102,7 @@ exception is thrown if an illegal parameter value is used:
 channels. Allowable values are 1 and 2. The default value is 1.
 <li><i>sampleRate</i> should be set to desired sample rate, in Hz. The
 DoubleTokens read in by this actor will be interpreted as having
-this sample rate. The default value is 44100.
+this sample rate. The default value is 8000.
 <li><i>sampleSizeInBits</i> should be set to desired bit
 resolution. The default value is 16.
 </ul>
@@ -132,7 +132,7 @@ public class AudioSink extends Sink {
 
 	pathName = new Parameter(this, "pathName",
                 new StringToken(""));
-        sampleRate = new Parameter(this, "sampleRate", new IntToken(44100));
+        sampleRate = new Parameter(this, "sampleRate", new IntToken(8000));
         sampleRate.setTypeEquals(BaseType.INT);
 
         sampleSizeInBits = new Parameter(this, "sampleSizeInBits",
@@ -180,7 +180,7 @@ public class AudioSink extends Sink {
     /** The desired sample rate to use, in Hz. Valid values
      *  are determined by the hardware, but typically at
      *  least include : 8000, 11025, 22050, 44100, and 48000.
-     *  The default value of the sample rate is 44100 Hz. 
+     *  The default value of the sample rate is 8000 Hz. 
      *  <p>
      *  It is safe to change this parameter during execution.
      *  However, doing so in file writing mode will cause all data
