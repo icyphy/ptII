@@ -23,19 +23,12 @@ directory.
 
 <H3>Running the tests</H3>
 The tests themselves are written in Tcl, and use
-<a href="http://www.scriptics.com/software/java.html">Tcl Blend</a>,
-which is an interface between Tcl and Java.
+<a href="http://www.scriptics.com/software/java.html">Jacl</a>,
+which is a 100% Java implementation of a subset of Tcl.
 
- <p>To run the tests, you must have Tcl Blend installed.
+ <p>To run the tests, you must have Jacl installed.
  <p><CODE>make tests</CODE> will run the tests in the current directory
 and any subdirectories.
-
-<h3>Jacl</h3>
-
-Jacl is a 100% Java implementation of a subset of Tcl.  In theory it
-would be possible to use Jacl to run the test suite.  However the GUI
-in Ptolemy 0.1 uses Tcl Blend to communicate with the Ptolemy II Java
-kernel, so Tcl Blend needs to be installed anyway.
 
 
 <H3>Writing your own tests</H3>
@@ -170,33 +163,23 @@ usually are longer and have more complicated return results.
 <HR>
 <H2><A NAME="testing java">Testing Java</A></H2>
 
-Tcl Blend is a Tcl/Java interface.  We use Tcl Blend to test Java
-by writing Tcl code that exercises the Java classes.
+Jacl is a 100% Java implementation of a subset of Tcl.
+We use Jacl to test Java by writing Tcl code that exercises the Java classes. 
 
 <H3>Running the tests</H3>
-If you run <CODE>make</CODE> in a test directory that contains
+To run the all the tests, do <CODE>cd $PTII; make tests</CODE>
+
+<p>If you run <CODE>make</CODE> in a test directory that contains
 tests written in Tcl for testing Java classes, then the 'right thing'
-should just happen.  The Java testbed does have a few differences:
-<DL>
-<DT> The <CODE>make test_jsimple</CODE> rule
-<DD> This rule will run only the Java tests in a <CODE>tclsh</CODE> binary
-that can load the Tcl Blend extension
-
-<DT> The <CODE>alljtests.tcl</CODE> file
-<DD> This file will run all the Java tests that require Tcl Blend.
-The reason we have yet another file is that Tcl Blend will not necessarily
-work on all platforms, and we want to be able to run the non-Tcl Blend
-tests on those platforms.
-
-</DL>
+should just happen.
 
 
 <H3>Writing Tests for Java </H3>
 Below we discuss some of the details of writing tests in Tcl that test
 Java classes.
 <H4>Simple Example</H4>
-<p>Tcl Blend allows us to instantiate objects in a class and call public
-methods.  We use Tcl Blend and the standard Tcl test bed to create tests.
+<p>Jacl allows us to instantiate objects in a class and call public
+methods.  We use Jacl and the standard Tcl test bed to create tests.
 In the example below, we call <CODE>java::new</CODE> to create an
 instance of the Java <CODE>NamedObj</CODE> class.  We can then
 call public methods of <CODE>NamedObj</CODE> by referring to the
