@@ -33,13 +33,15 @@
 # This file sources files that contain methods that are useful
 # from within an Tcl interpreter that has Tcl Blend.
 
-if {[package versions java] != ""} {
-    puts "Sourcing [file join $TYCHO java pt kernel test init.tcl]"
+if {$tcl_interactive} {
+    puts "Sourcing [file join $PTII pt kernel test init.tcl]"
     puts "Type 'helpTclBlend' for a list of Tcl Blend helper procs."
-    source [file join $TYCHO java pt kernel test testDefs.tcl]
-    source [file join $TYCHO java pt kernel test enums.tcl]
-    source [file join $TYCHO java pt kernel test description.tcl]
 }
+source [file join $PTII util testsuite testDefs.tcl]
+source [file join $PTII util testsuite enums.tcl]
+source [file join $PTII util testsuite description.tcl]
+source [file join $PTII util testsuite jdktools.tcl]
+
 
 proc helpTclBlend {} {
     puts "Tcl procs of use:\n\
