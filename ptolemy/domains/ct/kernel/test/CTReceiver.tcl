@@ -1,4 +1,4 @@
-# Tests for the CTParameter class
+# Tests for the CTReceiver
 #
 # @Author: Jie Liu
 #
@@ -58,41 +58,27 @@ if {[string compare test [info procs test]] == 1} then {
 ######################################################################
 ####  Test constructors.
 #
-test CTParameter-1.1 {Construct a CTParameter and get name} {
-    set a1 [java::new ptolemy.domains.ct.kernel.CTActor]
-    set p1 [java::new ptolemy.domains.ct.kernel.CTParameter $a1 P1]
-    list [[$a1 getAttribute P1] getName] 
-} {P1}
+test CTReceiver-1.1 {Construct a CTReceiver, put and get Token} {
+    set re1 [java::new ptolemy.domains.ct.kernel.CTReceiver]
+    set one [java::new {ptolemy.data.DoubleToken double} 1.0]
+    $re1 put $one
+    list [[$re1 get] doubleValue]
+} {1.0}
 
-test CTParameter-1.2 {Construct a CTParameter with a Init Token} {
-    # Note: Use the above setup
-    set t1 [java::new {ptolemy.data.DoubleToken double} 1.0]
-    set p2 [java::new ptolemy.domains.ct.kernel.CTParameter $a1 P2 $t1]
-    list [[$a1 getAttribute P2] getName] \
-	    [[[$a1 getAttribute P2] getToken] doubleValue]
-} {P2 1.0}
+test CTReceiver-1.1 {Construct a CTReceiver with container} {
+    set p1 [java::new ptolemy.actor.TypedIOPort]
+    set re1 [java::new ptolemy.domains.ct.kernel.CTReceiver $p1]
+    set one [java::new {ptolemy.data.DoubleToken double} 1.0]
+    $re1 put $one
+    list [[$re1 get] doubleValue]
+} {1.0}
 
 ######################################################################
-####  Test Exceptions
-#  
-test CTParameter-2.1 {NameDuplicationException} {
-    # Note: Use the above setup
-    catch {[java::new ptolemy.domains.ct.kernel.CTParameter $a1 P1 $t1]} msg
-    list $msg
-} {{ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "P1" into a container that already contains an object with that name.}}
-
-test CTParameter-2.2 {IllegalActionException} {
-    # new set up.
-    set a1 [java::new ptolemy.actor.TypedAtomicActor]
-    catch {[java::new ptolemy.domains.ct.kernel.CTParameter $a1 P1]} msg
-    list $msg
-} {{ptolemy.kernel.util.IllegalActionException: .P1 and .: CTParameter can only be attached to CT actors.}}
-
-test CTParameter-2.3 {IllegalActionException 2} {
-    # Note: Use the above setup
-    catch {[java::new ptolemy.domains.ct.kernel.CTParameter $a1 P2 $t1]} msg
-    list $msg
-} {{ptolemy.kernel.util.IllegalActionException: .P2 and .: CTParameter can only be attached to CT actors.}}
-
-
-
+####  Overwrite tokens.
+#
+test CTReceiver-2.1 {put two tokens} {
+    set zero [java::new {ptolemy.data.DoubleToken double} 0.0]
+    $re1 put $one
+    $re1 put $zero
+    list [[$re1 get] doubleValue]
+} {0.0}

@@ -58,6 +58,7 @@ JSRCS = \
 JSIMPLE_TESTS = \
 		CTActor.tcl \
 		CTParameter.tcl \
+		CTReceiver.tcl \
 		CTScheduler.tcl \
 		CTSingleSolverDirector.tcl
 
