@@ -145,8 +145,6 @@ public class Parameter extends Variable {
      *   acceptable class for the container.
      *  @exception NameDuplicationException If the name coincides with
      *   an parameter already in the container.
-     *  @deprecated  Use the two argument constructor and then call 
-     *  setExpression() so that the "Restore Defaults" button works.
      */
     public Parameter(NamedObj container, String name, ptolemy.data.Token token)
             throws IllegalActionException, NameDuplicationException {
