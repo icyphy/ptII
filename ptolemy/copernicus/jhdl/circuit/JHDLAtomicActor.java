@@ -27,50 +27,51 @@
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
-package ptolemy.copernicus.jhdl.util;
+package ptolemy.copernicus.jhdl.circuit;
+
+import byucc.jhdl.Logic.Logic;
+import byucc.jhdl.base.Cell;
 
 import java.util.*;
 
+import ptolemy.copernicus.jhdl.util.*;
+import ptolemy.copernicus.jhdl.soot.*;
+
+import ptolemy.actor.*;
 import ptolemy.graph.*;
+import ptolemy.kernel.*;
+import ptolemy.kernel.util.*;
 
-import ptolemy.actor.IOPort;
-
-import ptolemy.kernel.Entity;
-import ptolemy.kernel.ComponentEntity;
+import soot.jimple.*;
+import soot.*;
 
 //////////////////////////////////////////////////////////////////////////
-////
+//// 
 /**
-
+ * This class represents an abstract circuit topology. The primary
+ * purpose of this class is to force the use of a bit-width resolve
+ * function and provide the ability to "construct" the JHDL circuit.
+ *
+ * TODO: Provide basic simulation capability?
+ *
 @author Mike Wirthlin
 @version $Id$
 @since Ptolemy II 2.0
 */
-public class ModelGraph extends DirectedGraph {
+public abstract class JHDLAtomicActor extends AtomicActor 
+    implements Resolve, ConstructJHDL {
 
-    public ModelGraph(ComponentEntity entity) {
-        super();
-        _entity = entity;
-        _inputPortNodes = new Vector();
-        _outputPortNodes = new Vector();
+    JHDLAtomicActor(CompositeEntity container, String name) 
+	throws IllegalActionException, NameDuplicationException {
+	super(container,name);
     }
 
-    public ComponentEntity getEntity() { return _entity; }
-
-    public Node addIOPortNode(IOPort port) {
-        Node n = addNodeWeight(port);
-        if (port.isInput())
-            _inputPortNodes.add(n);
-        else
-            _outputPortNodes.add(n);
-        return n;
+    JHDLAtomicActor(CompositeEntity container) 
+	throws IllegalActionException, NameDuplicationException {
+	super(container,container.uniqueName("C"));
     }
 
-    public Collection getInputPortNodes() { return _inputPortNodes; }
-    public Collection getOutputPortNodes() { return _outputPortNodes; }
+    public abstract boolean resolve();
 
-    protected ComponentEntity _entity;
-    protected Collection _inputPortNodes;
-    protected Collection _outputPortNodes;
 
 }

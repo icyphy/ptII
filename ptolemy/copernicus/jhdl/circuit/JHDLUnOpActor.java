@@ -27,50 +27,67 @@
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
-package ptolemy.copernicus.jhdl.util;
+package ptolemy.copernicus.jhdl.circuit;
+
+import byucc.jhdl.base.HWSystem;
+import byucc.jhdl.base.Wire;
+import byucc.jhdl.Logic.Logic;
+import byucc.jhdl.Logic.Modules.arrayMult;
 
 import java.util.*;
 
+import ptolemy.copernicus.jhdl.soot.*;
+import ptolemy.copernicus.jhdl.util.*;
+
+import ptolemy.actor.*;
 import ptolemy.graph.*;
+import ptolemy.kernel.*;
+import ptolemy.kernel.util.*;
 
-import ptolemy.actor.IOPort;
-
-import ptolemy.kernel.Entity;
-import ptolemy.kernel.ComponentEntity;
+import soot.*;
+import soot.jimple.*;
 
 //////////////////////////////////////////////////////////////////////////
-////
+//// 
 /**
-
+ * This class represents a unary operator JHDL circuit. This class
+ * can generate the following JHDL circuits: NOT
 @author Mike Wirthlin
 @version $Id$
 @since Ptolemy II 2.0
 */
-public class ModelGraph extends DirectedGraph {
-
-    public ModelGraph(ComponentEntity entity) {
-        super();
-        _entity = entity;
-        _inputPortNodes = new Vector();
-        _outputPortNodes = new Vector();
+public class JHDLUnOpActor extends JHDLAtomicActor {
+    
+    JHDLUnOpActor(CompositeEntity container, int operation)
+	throws IllegalActionException, NameDuplicationException {
+ 	super(container);
+	input = new JHDLIOPort(this, "input");
+	output = new JHDLIOPort(this, "output");
+	_operation = operation;
     }
 
-    public ComponentEntity getEntity() { return _entity; }
-
-    public Node addIOPortNode(IOPort port) {
-        Node n = addNodeWeight(port);
-        if (port.isInput())
-            _inputPortNodes.add(n);
-        else
-            _outputPortNodes.add(n);
-        return n;
+    public boolean resolve() {
+	if (!input.isResolved())
+	    return false;
+	if (output.isResolved())
+	    return true;
+	output.setSignalWidth(input.getSignalWidth());
+	output.resolveOutside();
+	return true;
     }
 
-    public Collection getInputPortNodes() { return _inputPortNodes; }
-    public Collection getOutputPortNodes() { return _outputPortNodes; }
+    public void build(Logic parent) {
+	// Assume NOT operator for now
+	Wire inputWire = input.getOutsideRelation().getJHDLWire();
+	Wire outputWire = output.getOutsideRelation().getJHDLWire();
+	Wire notWire = parent.not(inputWire);
+	parent.buf_o(notWire,outputWire);
+    }
 
-    protected ComponentEntity _entity;
-    protected Collection _inputPortNodes;
-    protected Collection _outputPortNodes;
+    public JHDLIOPort input;
+    public JHDLIOPort output;
 
+    public static final int NOT = 1;
+
+    protected int _operation;
 }

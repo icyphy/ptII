@@ -27,50 +27,65 @@
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
-package ptolemy.copernicus.jhdl.util;
+package ptolemy.copernicus.jhdl.circuit;
+
+import byucc.jhdl.Logic.Logic;
+import byucc.jhdl.Logic.Modules.arrayMult;
+import byucc.jhdl.base.HWSystem;
+import byucc.jhdl.base.Wire;
+import byucc.jhdl.apps.Viewers.Schematic.SmartSchematicFrame;
 
 import java.util.*;
 
+import ptolemy.copernicus.jhdl.util.*;
+import ptolemy.copernicus.jhdl.soot.*;
+
+import ptolemy.kernel.*;
+import ptolemy.kernel.util.*;
+import ptolemy.actor.*;
 import ptolemy.graph.*;
 
-import ptolemy.actor.IOPort;
-
-import ptolemy.kernel.Entity;
-import ptolemy.kernel.ComponentEntity;
+import soot.jimple.*;
+import soot.*;
 
 //////////////////////////////////////////////////////////////////////////
-////
+//// 
 /**
-
+ * This class represents a JHDL constant circuit. This class will generate
+ * the corresponding JHDL Wire with the given constant.
+ *
 @author Mike Wirthlin
 @version $Id$
 @since Ptolemy II 2.0
 */
-public class ModelGraph extends DirectedGraph {
-
-    public ModelGraph(ComponentEntity entity) {
-        super();
-        _entity = entity;
-        _inputPortNodes = new Vector();
-        _outputPortNodes = new Vector();
+public class JHDLConstantActor extends JHDLAtomicActor {
+    
+    JHDLConstantActor(CompositeEntity container, String name, int constant, 
+		      int width) 
+	throws IllegalActionException, NameDuplicationException {
+	super(container,name);
+	_constant = constant;
     }
 
-    public ComponentEntity getEntity() { return _entity; }
-
-    public Node addIOPortNode(IOPort port) {
-        Node n = addNodeWeight(port);
-        if (port.isInput())
-            _inputPortNodes.add(n);
-        else
-            _outputPortNodes.add(n);
-        return n;
+    JHDLConstantActor(CompositeEntity container, int constant, int width) 
+	throws IllegalActionException, NameDuplicationException {
+	this(container,container.uniqueName("C"),constant,width);
+	output = new JHDLIOPort(this, "output", width);
     }
 
-    public Collection getInputPortNodes() { return _inputPortNodes; }
-    public Collection getOutputPortNodes() { return _outputPortNodes; }
+    public boolean resolve() { 
+	boolean resolve = output.resolveOutside();
+	return resolve;
+    }
 
-    protected ComponentEntity _entity;
-    protected Collection _inputPortNodes;
-    protected Collection _outputPortNodes;
+    public void build(Logic parent) {
+	Wire c = parent.constant(output.getSignalWidth(),_constant);
+	JHDLIORelation r = output.getOutsideRelation();
+	parent.buf_o(c,r.getJHDLWire());
+    }
+
+    protected int _constant;
+
+    public JHDLIOPort output;
 
 }

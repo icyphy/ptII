@@ -584,7 +584,7 @@ public class test1 extends TypedAtomicActor {
     }
 
     // Use a constant
-    public int hwgen1_1(int a, int b) {
+    public int hwgen1_1(int a) {
         int c = a + 1;
         return c;
     }

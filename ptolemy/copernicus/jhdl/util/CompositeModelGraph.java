@@ -53,9 +53,10 @@ import ptolemy.kernel.ComponentEntity;
 public class CompositeModelGraph extends ModelGraph {
 
     public CompositeModelGraph(CompositeActor entity, Map options) {
-        super(entity);
-        _options = options;
-        _build();
+	super(entity);
+	_options = options;
+	_modelGraphNodes = new Vector();
+	_build();
     }
 
     public CompositeActor getCompositeActor() {
@@ -85,8 +86,8 @@ public class CompositeModelGraph extends ModelGraph {
             else
                 entityWeight = new ModelGraph(entity);
 
-            Node entityNode = addNodeWeight(entityWeight);
-
+	    Node entityNode = addNodeWeight(entityWeight);
+	    _modelGraphNodes.add(entityNode);
 
             // iterate over all outPorts and add Node corresponding
             // to port. Also add edge between entity and port
@@ -126,6 +127,7 @@ public class CompositeModelGraph extends ModelGraph {
             for (Iterator insideSinks = port.insideSinkPortList().iterator();
                  insideSinks.hasNext();) {
                 IOPort insideSink = (IOPort)insideSinks.next();
+		//Node insideEntity = portEntityNodeMap.get(insideSink);
                 addEdge(port, insideSink);
             }
         }
@@ -149,5 +151,12 @@ public class CompositeModelGraph extends ModelGraph {
 
     }
 
+    public Collection getModelGraphNodes() {
+	return _modelGraphNodes;
+    }
+
     protected Map _options;
+
+    protected Collection _modelGraphNodes;
+
 }

@@ -29,10 +29,10 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/copernicus/jhdl
+ME =		ptolemy/copernicus/jhdl/circuit
 
 # Root of the Java directory
-ROOT =		../../..
+ROOT =		../../../..
 
 # $PTII/configure looks for Soot and JHDL and sets
 # variables in $PTII/mk/ptII.mk
@@ -42,25 +42,33 @@ CLASSPATH = 	$(ROOT)$(CLASSPATHSEPARATOR)$(SOOT_CLASSES)$(CLASSPATHSEPARATOR)$(J
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-DIRS =		util circuit soot test
+DIRS =		util soot test
 
 # Keep this list alphabetized.
 JSRCS = \
-	ActorDataFlowAnalysis.java \
-	BDFGToJHDLCircuit.java \
-	BlockDataFlowGraph.java \
-	CircuitAnalysis.java \
-	CircuitCreator.java \
-	CircuitTransformer.java \
-	InlinePrimitivePortTransformer.java \
-	Inliner.java \
-	JHDLTransformer.java \
-	Main.java \
-	Predefined.java \
-	RegisterDelay.java \
-	RequiredBlockDataFlowGraph.java \
-	SDFGToJHDLCircuit.java \
+	ActorPortDirectedGraph.java \
+	CompositeActor2JHDLCompositeActor.java \
+	ConstructJHDL.java \
+	JHDLActorTestbench.java \
+	JHDLAtomicActor.java \
+	JHDLBinOpActor.java \
+	JHDLCompositeActor.java \
+	JHDLConstantActor.java \
+	JHDLIOPort.java \
+	JHDLIORelation.java \
+	JHDLUnOpActor.java \
+	ModelGraph2Entity.java \
+	PortDirectedGraph.java \
+	Resolve.java \
+	Signal.java \
+	SimpleSignal.java \
+	SimpleTestbench.java
 
+#	ModelGraph2Circuit.java \
+#	Circuit.java \
+#	Signal.java \
+#	Net.java \
+#	Port.java \
 #	DGToJHDLCircuit.java \
 
 OTHER_FILES_TO_BE_JARED = \

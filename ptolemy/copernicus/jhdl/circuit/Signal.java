@@ -27,50 +27,38 @@
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
-package ptolemy.copernicus.jhdl.util;
+package ptolemy.copernicus.jhdl.circuit;
 
 import java.util.*;
 
+import ptolemy.copernicus.jhdl.util.*;
+import ptolemy.copernicus.jhdl.soot.*;
+
+import ptolemy.actor.*;
 import ptolemy.graph.*;
+import ptolemy.kernel.*;
+import ptolemy.kernel.util.*;
 
-import ptolemy.actor.IOPort;
-
-import ptolemy.kernel.Entity;
-import ptolemy.kernel.ComponentEntity;
+import soot.jimple.*;
+import soot.*;
 
 //////////////////////////////////////////////////////////////////////////
-////
+//// 
 /**
 
 @author Mike Wirthlin
 @version $Id$
 @since Ptolemy II 2.0
 */
-public class ModelGraph extends DirectedGraph {
 
-    public ModelGraph(ComponentEntity entity) {
-        super();
-        _entity = entity;
-        _inputPortNodes = new Vector();
-        _outputPortNodes = new Vector();
-    }
+interface Signal  {
+    
+    public int getSignalWidth();
+    public void setSignalWidth(int width);
+    public boolean isResolved();
+    public String getName();
 
-    public ComponentEntity getEntity() { return _entity; }
-
-    public Node addIOPortNode(IOPort port) {
-        Node n = addNodeWeight(port);
-        if (port.isInput())
-            _inputPortNodes.add(n);
-        else
-            _outputPortNodes.add(n);
-        return n;
-    }
-
-    public Collection getInputPortNodes() { return _inputPortNodes; }
-    public Collection getOutputPortNodes() { return _outputPortNodes; }
-
-    protected ComponentEntity _entity;
-    protected Collection _inputPortNodes;
-    protected Collection _outputPortNodes;
+    public static final int UNRESOLVED = -1;
+    public static final int UNRESOLVABLE = -2;
 
 }

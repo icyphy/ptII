@@ -27,50 +27,40 @@
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
-package ptolemy.copernicus.jhdl.util;
+package ptolemy.copernicus.jhdl.circuit;
+
+import byucc.jhdl.base.Cell;
+import byucc.jhdl.base.HWSystem;
+import byucc.jhdl.base.TestBench;
+import byucc.jhdl.Logic.*;
 
 import java.util.*;
 
+import ptolemy.copernicus.jhdl.soot.*;
+import ptolemy.copernicus.jhdl.util.*;
+
+import ptolemy.actor.*;
 import ptolemy.graph.*;
+import ptolemy.kernel.*;
+import ptolemy.kernel.util.*;
 
-import ptolemy.actor.IOPort;
-
-import ptolemy.kernel.Entity;
-import ptolemy.kernel.ComponentEntity;
+import soot.*;
+import soot.jimple.*;
 
 //////////////////////////////////////////////////////////////////////////
-////
+//// 
 /**
-
+ * A simple empty JHDL Testbench. Will be modified by JHDLActorTestbench.
+ * 
 @author Mike Wirthlin
 @version $Id$
 @since Ptolemy II 2.0
 */
-public class ModelGraph extends DirectedGraph {
 
-    public ModelGraph(ComponentEntity entity) {
-        super();
-        _entity = entity;
-        _inputPortNodes = new Vector();
-        _outputPortNodes = new Vector();
+public class SimpleTestbench extends Logic implements TestBench {
+
+    public SimpleTestbench(HWSystem parent, String name) {
+	super(parent,name);
     }
-
-    public ComponentEntity getEntity() { return _entity; }
-
-    public Node addIOPortNode(IOPort port) {
-        Node n = addNodeWeight(port);
-        if (port.isInput())
-            _inputPortNodes.add(n);
-        else
-            _outputPortNodes.add(n);
-        return n;
-    }
-
-    public Collection getInputPortNodes() { return _inputPortNodes; }
-    public Collection getOutputPortNodes() { return _outputPortNodes; }
-
-    protected ComponentEntity _entity;
-    protected Collection _inputPortNodes;
-    protected Collection _outputPortNodes;
 
 }

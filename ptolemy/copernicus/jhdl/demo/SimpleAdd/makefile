@@ -49,7 +49,9 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 
 JSRCS = \
 	SimpleAdd.java \
-	SimpleAddSystem.java
+	SimpleAddSystem.java \
+	SimpleSub.java \
+	SimpleMult.java
 
 EXTRA_SRCS =	$(JSRCS)
 
