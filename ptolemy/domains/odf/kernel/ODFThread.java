@@ -247,9 +247,10 @@ public class ODFThread extends ProcessThread {
      *  longer be producing tokens. Send events with time stamps of
      *  -1.0 to these "downstream" actors.
      */
-    public synchronized void noticeOfTermination() {
-        ODFActor actor = (ODFActor)getActor();
-	System.out.println(actor.getName()+": calling noticeOfTermination()");
+    public synchronized void noticeOfTermination() { 
+        Actor actor = (Actor)getActor();
+        // ODFActor actor = (ODFActor)getActor();
+	// System.out.println(((NamedObj)actor).getName()+": calling noticeOfTermination()");
 	Enumeration outputPorts = actor.outputPorts();
 	if( outputPorts != null ) {
 	    while( outputPorts.hasMoreElements() ) {
@@ -363,7 +364,8 @@ public class ODFThread extends ProcessThread {
         int cnt = 0;
         int currentPriority = 0;
         while( cnt < listOfPorts.size() ) {
-            ODFIOPort port = (ODFIOPort)listOfPorts.at(cnt);
+            IOPort port = (IOPort)listOfPorts.at(cnt);
+            // ODFIOPort port = (ODFIOPort)listOfPorts.at(cnt);
             Receiver[][] rcvrs = port.getReceivers();
             for( int i = 0; i < rcvrs.length; i++ ) {
                 for( int j = 0; j < rcvrs[i].length; j++ ) {
@@ -537,7 +539,7 @@ public class ODFThread extends ProcessThread {
 
     // The _rcvrTimeList stores RcvrTimeTriples and is used to
     // order the receivers according to time and priority.
-    public LinkedList _rcvrTimeList;
+    private LinkedList _rcvrTimeList;
 
     // The currentTime of the actor that is controlled by this
     // thread is equivalent to the minimum positive rcvrTime of

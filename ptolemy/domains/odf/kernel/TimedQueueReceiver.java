@@ -168,8 +168,9 @@ public class TimedQueueReceiver implements Receiver {
 
     /** Get the queue size.
      * @return Return the size of the queue.
+     * FIXME
      */
-    public int getSize() {
+    private int getSize() {
         return _queue.size();
     }
 
@@ -226,8 +227,7 @@ public class TimedQueueReceiver implements Receiver {
         Event event;
         IOPort port = (IOPort)getContainer();
 	ODFThread thread = getThread();
-        ODFActor actor = (ODFActor)port.getContainer();
-
+        Actor actor = (Actor)port.getContainer();
         synchronized(this) {
             _lastTime = time;
             event = new Event(token, _lastTime);
@@ -237,9 +237,10 @@ public class TimedQueueReceiver implements Receiver {
                 _rcvrTime = _lastTime;
                 triple = new RcvrTimeTriple( this, _rcvrTime, _priority );
 		if( thread instanceof ODFThread ) {
-		    if( actor.getName().equals("printer") ) {
-                        System.out.println("\t\t***" + actor.getName() +
-				" calling update at time " + _rcvrTime);
+		    if( ((NamedObj)actor).getName().equals("printer") ) {
+                        System.out.println("\t\t***" + 
+				((NamedObj)actor).getName() +
+				" calling update at time " + _rcvrTime); 
 		    }
                     ((ODFThread)thread).updateRcvrList( triple );
 		} else {
