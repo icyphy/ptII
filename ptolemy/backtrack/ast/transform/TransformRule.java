@@ -55,10 +55,12 @@ public abstract class TransformRule {
 
     /** Execute actions after the AST is traversed by {@link TypeAnalyzer}.
      * 
+     *  @param analyzer The type analyzer.
      *  @param root The root of the AST.
      *  @see #beforeTraverse(TypeAnalyzer, CompilationUnit)
      */
-    public abstract void afterTraverse(CompilationUnit root);
+    public abstract void afterTraverse(TypeAnalyzer analyzer, 
+            CompilationUnit root);
 
     /** Execute actions before the AST is traversed by {@link TypeAnalyzer}.
      * 

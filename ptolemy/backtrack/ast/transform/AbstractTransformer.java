@@ -59,22 +59,6 @@ import ptolemy.backtrack.ast.LocalClassLoader.ClassImport;
  */
 public abstract class AbstractTransformer {
     
-    /** The name of the checkpoint object.
-     */
-    public static String CHECKPOINT_NAME = "$CHECKPOINT";
-    
-    /** The name of the checkpoint record.
-     */
-    public static String CHECKPOINT_RECORD_NAME = "$RECORD$$CHECKPOINT";
-    
-    /** The name of the method to get the checkpoint.
-     */
-    public static String GET_CHECKPOINT_NAME = "$GET$CHECKPOINT";
-    
-    /** The name of the method to set a checkpoint.
-     */
-    public static String SET_CHECKPOINT_NAME = "$SET$CHECKPOINT";
-    
     /** Given a table of lists, add a value to the list associated with a key.
      *  If the list does not exist, it is created and put into the table.
      * 
@@ -82,7 +66,7 @@ public abstract class AbstractTransformer {
      *  @param key The key.
      *  @param value The value to be added.
      */
-    protected void _addToLists(Hashtable lists, Object key, Object value) {
+    public static void addToLists(Hashtable lists, Object key, Object value) {
         List list = (List)lists.get(key);
         if (list == null) {
             list = new LinkedList();
@@ -98,7 +82,7 @@ public abstract class AbstractTransformer {
      *  @param type The type.
      *  @return The AST type node.
      */
-    protected org.eclipse.jdt.core.dom.Type _createType(AST ast, String type) {
+    public static org.eclipse.jdt.core.dom.Type createType(AST ast, String type) {
         String elementName = Type.getElementType(type);
         
         org.eclipse.jdt.core.dom.Type elementType;
@@ -106,7 +90,7 @@ public abstract class AbstractTransformer {
             elementType = 
                 ast.newPrimitiveType(PrimitiveType.toCode(elementName));
         else {
-            Name element = _createName(ast, elementName);
+            Name element = createName(ast, elementName);
             elementType = ast.newSimpleType(element);
         }
         
@@ -124,11 +108,11 @@ public abstract class AbstractTransformer {
      *  @param name The name.
      *  @return The AST name node.
      */
-    protected Name _createName(AST ast, String name) {
+    public static Name createName(AST ast, String name) {
         int oldPos = 0;
         Name fullName = null;
         while (oldPos != -1) {
-            int pos = _indexOf(name, new char[]{'.', '$'}, oldPos);
+            int pos = indexOf(name, new char[]{'.', '$'}, oldPos);
             String subname = pos == -1 ? name.substring(oldPos) : name.substring(oldPos, pos);
             if (fullName == null)
                 fullName = ast.newSimpleName(subname);
@@ -153,9 +137,9 @@ public abstract class AbstractTransformer {
      *   it.
      *  @return The shortest possible class name.
      */
-    protected String _getClassName(Class c, TypeAnalyzerState state, 
+    public static String getClassName(Class c, TypeAnalyzerState state, 
             CompilationUnit root) {
-        return _getClassName(c.getName(), state, root);
+        return getClassName(c.getName(), state, root);
     }
     
     /** Get the shortest possible name of the a class. If there is no conflict,
@@ -169,13 +153,14 @@ public abstract class AbstractTransformer {
      *   it.
      *  @return The shortest possible class name.
      */
-    protected String _getClassName(String name, TypeAnalyzerState state, 
+    public static String getClassName(String name, TypeAnalyzerState state, 
             CompilationUnit root) {
         LocalClassLoader loader = state.getClassLoader();
         int lastDot = name.lastIndexOf('.');
         String packageName = lastDot == -1 ? "" : name.substring(0, lastDot);
+        String className = name.substring(lastDot + 1);
         String simpleName;
-        int lastSeparator = _lastIndexOf(name, new char[]{'.', '$'});
+        int lastSeparator = lastIndexOf(name, new char[]{'.', '$'});
         if (lastSeparator == -1)
             return name;
         else
@@ -189,13 +174,19 @@ public abstract class AbstractTransformer {
         while (importedClasses.hasNext()) {
             ClassImport importedClass = (ClassImport)importedClasses.next();
             if (importedClass.getPackageName().equals(packageName) &&
-                    importedClass.getClassName().equals(simpleName))
+                    importedClass.getClassName().equals(className))
                 // Already imported.
                 return simpleName;
-            else
-                if (importedClass.getClassName().equals(simpleName))
-                    // Conflict.
+            else {
+                String importedName = importedClass.getClassName();
+                int lastDollar = importedName.lastIndexOf('$');
+                if (lastDollar == -1 && importedName.equals(simpleName))
                     return name;
+                else if (lastDollar >= 0 &&
+                        importedName.substring(lastDollar + 1)
+                            .equals(simpleName))
+                    return name;
+            }
         }
         
         Iterator importedPackages = loader.getImportedPackages().iterator();
@@ -217,7 +208,7 @@ public abstract class AbstractTransformer {
         
         AST ast = root.getAST();
         ImportDeclaration declaration = ast.newImportDeclaration();
-        declaration.setName(_createName(ast, name));
+        declaration.setName(createName(ast, name));
         root.imports().add(declaration);
         loader.importClass(name);
         return simpleName;
@@ -231,7 +222,7 @@ public abstract class AbstractTransformer {
      *  @return The index of the first appearance of any of the given
      *   characters in the string, or -1 if none of them is found.
      */
-    protected int _indexOf(String s, char[] chars, int startPos) {
+    public static int indexOf(String s, char[] chars, int startPos) {
         int pos = -1;
         for (int i = 0; i < chars.length; i++) {
             int newPos = s.indexOf(chars[i], startPos);
@@ -247,7 +238,7 @@ public abstract class AbstractTransformer {
      *  @param fieldName The field name.
      *  @return <tt>true</tt> if the field is already in the class.
      */
-    protected boolean _isFieldDuplicated(Class c, String fieldName) {
+    public static boolean isFieldDuplicated(Class c, String fieldName) {
         // Does NOT check fields inherited from interfaces.
         try {
             c.getDeclaredField(fieldName);
@@ -265,9 +256,9 @@ public abstract class AbstractTransformer {
      *  @param parameters The types of parameters for the method.
      *  @return <tt>true</tt> if the method is already in the class.
      */
-    protected boolean _hasMethod(Class c, String methodName, 
+    public static boolean hasMethod(Class c, String methodName, 
             Class[] parameters) {
-        return _hasMethod(c, methodName, parameters, false);
+        return hasMethod(c, methodName, parameters, false);
     }
     
     /** Test if a method exists in a class.
@@ -279,7 +270,7 @@ public abstract class AbstractTransformer {
      *  @param parameters The types of parameters for the method.
      *  @return <tt>true</tt> if the method is already in the class.
      */
-    protected boolean _hasMethod(Class c, String methodName, 
+    public static boolean hasMethod(Class c, String methodName, 
             Class[] parameters, boolean thisClassOnly) {
         try {
             if (thisClassOnly)
@@ -300,7 +291,7 @@ public abstract class AbstractTransformer {
      *  @return The index of the last appearance of any of the given
      *   characters in the string, or -1 if none of them is found.
      */
-    protected int _lastIndexOf(String s, char[] chars) {
+    public static int lastIndexOf(String s, char[] chars) {
         int pos = -1;
         for (int i = 0; i < chars.length; i++) {
             int newPos = s.lastIndexOf(chars[i]);
@@ -314,7 +305,7 @@ public abstract class AbstractTransformer {
      * 
      *  @param node The node to be removed.
      */
-    protected void _removeNode(ASTNode node) {
+    public static void removeNode(ASTNode node) {
         ASTNode parent = node.getParent();
         StructuralPropertyDescriptor location = node.getLocationInParent();
         if (location.isChildProperty())
@@ -333,7 +324,7 @@ public abstract class AbstractTransformer {
      *  @param node The node to be replace.
      *  @param newNode The new node.
      */
-    protected void _replaceNode(ASTNode node, ASTNode newNode) {
+    public static void replaceNode(ASTNode node, ASTNode newNode) {
         ASTNode parent = node.getParent();
         StructuralPropertyDescriptor location = node.getLocationInParent();
         if (location.isChildProperty())
@@ -345,4 +336,20 @@ public abstract class AbstractTransformer {
             properties.set(position, newNode);
         }
     }
+
+    /** The name of the checkpoint object.
+     */
+    public static String CHECKPOINT_NAME = "$CHECKPOINT";
+    
+    /** The name of the checkpoint record.
+     */
+    public static String CHECKPOINT_RECORD_NAME = "$RECORD$$CHECKPOINT";
+    
+    /** The name of the method to get the checkpoint.
+     */
+    public static String GET_CHECKPOINT_NAME = "$GET$CHECKPOINT";
+    
+    /** The name of the method to set a checkpoint.
+     */
+    public static String SET_CHECKPOINT_NAME = "$SET$CHECKPOINT";
 }

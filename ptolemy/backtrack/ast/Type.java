@@ -383,7 +383,7 @@ public class Type {
         
         // Resolve primitive types.
         String elementType = buffer.toString();
-        if (isPrimitive) {
+        if (isPrimitive && dimensions > 0) {
             Enumeration primitiveEnum = PRIMITIVE_ARRAY_TYPES.keys();
             while (primitiveEnum.hasMoreElements()) {
                 String realName = (String)primitiveEnum.nextElement();

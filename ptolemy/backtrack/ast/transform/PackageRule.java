@@ -28,7 +28,12 @@ COPYRIGHTENDKEY
 
 package ptolemy.backtrack.ast.transform;
 
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+
 import org.eclipse.jdt.core.dom.AST;
+import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.Name;
 import org.eclipse.jdt.core.dom.PackageDeclaration;
@@ -61,42 +66,18 @@ public class PackageRule extends TransformRule {
     /**
      *  @param root
      */
-    public void afterTraverse(CompilationUnit root) {
+    public void afterTraverse(TypeAnalyzer analyzer, CompilationUnit root) {
         PackageDeclaration declaration = root.getPackage();
         AST ast = root.getAST();
-        if (_prefix != null) {
+        if (_prefix != null && _prefix.length() > 0) {
+            // Add the prefix to the package declaration.
             Name name = declaration.getName();
-            while (name != null && name instanceof QualifiedName &&
-                   ! (((QualifiedName)name).getQualifier() instanceof SimpleName))
-                   name = ((QualifiedName)name).getQualifier();
-            int lastPosition = _prefix.length() - 1;
-            while (lastPosition >= 0) {
-                int dotPosition = _prefix.lastIndexOf('.', lastPosition);
-                String part = dotPosition == -1 ?
-                        _prefix.substring(0, lastPosition + 1) :
-                        _prefix.substring(dotPosition + 1, lastPosition + 1);
-                lastPosition = dotPosition - 1;
-                if (name == null) {
-                    name = ast.newSimpleName(part);
-                    declaration.setName(name);
-                } else if (name instanceof SimpleName) {
-                    name = ast.newQualifiedName(
-                            ast.newSimpleName(part), 
-                            ast.newSimpleName(
-                                    ((SimpleName)name).getIdentifier()));
-                    declaration.setName(name);
-                } else {
-                    QualifiedName qualifiedName = (QualifiedName)name;
-                    SimpleName leftPart = 
-                        (SimpleName)qualifiedName.getQualifier();
-                    qualifiedName.setQualifier(
-                            ast.newQualifiedName(
-                                    ast.newSimpleName(part), 
-                                    ast.newSimpleName(
-                                            leftPart.getIdentifier())));
-                    name = qualifiedName.getQualifier();
-                }
-            }
+            Name newName = _addPrefix(ast, name, _prefix);
+            if (newName != null)
+                declaration.setName(newName);
+            
+            // Add a prefix to each name node, if necessary.
+            root.accept(new Renamer(analyzer.getState().getCrossAnalyzedTypes()));
         }
     }
 
@@ -105,6 +86,74 @@ public class PackageRule extends TransformRule {
      *  @param root
      */
     public void beforeTraverse(TypeAnalyzer analyzer, CompilationUnit root) {
+    }
+    
+    private Name _addPrefix(AST ast, Name name, String prefix) {
+        Name newName = null;
+        while (name != null && name instanceof QualifiedName &&
+               ! (((QualifiedName)name).getQualifier() instanceof SimpleName))
+               name = ((QualifiedName)name).getQualifier();
+        int lastPosition = prefix.length() - 1;
+        while (lastPosition >= 0) {
+            int dotPosition = prefix.lastIndexOf('.', lastPosition);
+            String part = dotPosition == -1 ?
+                    prefix.substring(0, lastPosition + 1) :
+                    prefix.substring(dotPosition + 1, lastPosition + 1);
+            lastPosition = dotPosition - 1;
+            if (name == null) {
+                name = ast.newSimpleName(part);
+                newName = name;
+            } else if (name instanceof SimpleName) {
+                name = ast.newQualifiedName(
+                        ast.newSimpleName(part), 
+                        ast.newSimpleName(
+                                ((SimpleName)name).getIdentifier()));
+                newName = name;
+            } else {
+                QualifiedName qualifiedName = (QualifiedName)name;
+                SimpleName leftPart = 
+                    (SimpleName)qualifiedName.getQualifier();
+                qualifiedName.setQualifier(
+                        ast.newQualifiedName(
+                                ast.newSimpleName(part), 
+                                ast.newSimpleName(
+                                        leftPart.getIdentifier())));
+                name = qualifiedName.getQualifier();
+            }
+        }
+        return newName;
+    }
+    
+    private class Renamer extends ASTVisitor {
+        
+        Renamer(Set crossAnalysis) {
+            _crossAnalysis = new HashSet();
+            Iterator crossAnalysisIter = crossAnalysis.iterator();
+            while (crossAnalysisIter.hasNext()) {
+                String className = (String)crossAnalysisIter.next();
+                _crossAnalysis.add(className.replace('$', '.'));
+            }
+        }
+        
+        public void endVisit(SimpleName node) {
+            _handleName(node);
+        }
+        
+        public void endVisit(QualifiedName node) {
+            _handleName(node);
+        }
+        
+        private void _handleName(Name node) {
+            if (node.getParent() != null) {
+                if (_crossAnalysis.contains(node.toString())) {
+                    Name newName = _addPrefix(node.getAST(), node, _prefix);
+                    if (newName != null)
+                        AbstractTransformer.replaceNode(node, newName);
+                }
+            }
+        }
+        
+        private Set _crossAnalysis;
     }
 
     private String _prefix;

@@ -617,43 +617,45 @@ public class TypeAnalyzer extends ASTVisitor {
      *  @param node The node to be visited.
      */
     public void endVisit(QualifiedName node) {
-        Name qualifier = node.getQualifier();
-        SimpleName name = node.getName();
-        Type owner;
+        if (_state.getCurrentClass() != null) {
+            Name qualifier = node.getQualifier();
+            SimpleName name = node.getName();
+            Type owner;
 
-        if (qualifier instanceof SimpleName) {
-            TypeAndOwner ownerTypeAndOwner = 
-                _resolveName(((SimpleName)qualifier).getIdentifier(), null);
-            if (ownerTypeAndOwner == null)
-                owner = null;
-            else {
-                Type.setOwner(qualifier, ownerTypeAndOwner._getOwner());
-                owner = ownerTypeAndOwner._getType();
-                Type.setType(qualifier, owner);
+            if (qualifier instanceof SimpleName) {
+                TypeAndOwner ownerTypeAndOwner = 
+                    _resolveName(((SimpleName)qualifier).getIdentifier(), null);
+                if (ownerTypeAndOwner == null)
+                    owner = null;
+                else {
+                    Type.setOwner(qualifier, ownerTypeAndOwner._getOwner());
+                    owner = ownerTypeAndOwner._getType();
+                    Type.setType(qualifier, owner);
+                }
+            } else
+                owner = Type.getType(qualifier);
+
+            Type nodeType;
+            String resolveName;
+            if (owner == null)
+                resolveName = qualifier.toString() + "." + name.getIdentifier();
+            else
+                resolveName = name.getIdentifier();
+            TypeAndOwner nodeTypeAndOwner = _resolveName(resolveName, owner);
+
+            // FIXME: Check for correctness.
+            if (nodeTypeAndOwner == null) {
+                if (!(node.getParent() instanceof QualifiedName))
+                    throw new ASTResolutionException(
+                            owner == null ? _state.getCurrentClass().getName() :
+                                owner.getName(), 
+                                resolveName);
+            } else {
+                Type.setOwner(node, nodeTypeAndOwner._getOwner());
+                Type.setOwner(name, nodeTypeAndOwner._getOwner());
+                Type.setType(node, nodeTypeAndOwner._getType());
+                Type.setType(name, nodeTypeAndOwner._getType());
             }
-        } else
-            owner = Type.getType(qualifier);
-
-        Type nodeType;
-        String resolveName;
-        if (owner == null)
-            resolveName = qualifier.toString() + "." + name.getIdentifier();
-        else
-            resolveName = name.getIdentifier();
-        TypeAndOwner nodeTypeAndOwner = _resolveName(resolveName, owner);
-
-        // FIXME: Check for correctness.
-        if (nodeTypeAndOwner == null) {
-            if (!(node.getParent() instanceof QualifiedName))
-                throw new ASTResolutionException(
-                        owner == null ? _state.getCurrentClass().getName() :
-                            owner.getName(), 
-                            resolveName);
-        } else {
-            Type.setOwner(node, nodeTypeAndOwner._getOwner());
-            Type.setOwner(name, nodeTypeAndOwner._getOwner());
-            Type.setType(node, nodeTypeAndOwner._getType());
-            Type.setType(name, nodeTypeAndOwner._getType());
         }
     }
 
@@ -664,48 +666,53 @@ public class TypeAnalyzer extends ASTVisitor {
      *  @param node The node to be visited.
      */
     public void endVisit(SimpleName node) {
-        ASTNode parent = node.getParent();
-        Type owner = null;
+        if (_state.getCurrentClass() != null) {
+            ASTNode parent = node.getParent();
+            Type owner = null;
+            boolean handle = true;
 
-        // Do not type check some simple names.
-        if (parent instanceof BodyDeclaration ||
-                parent instanceof QualifiedName)
-            return;
-        else if (parent instanceof BreakStatement &&
-                ((BreakStatement)parent).getLabel() == node)
-            return;
-        else if (parent instanceof ClassInstanceCreation &&
-                ((ClassInstanceCreation)parent).getExpression() != null &&
-                ((ClassInstanceCreation)parent).getName() == node)
-            owner = 
-                Type.getType(((ClassInstanceCreation)parent).getExpression());
-        else if (parent instanceof FieldAccess &&
-                ((FieldAccess)parent).getName() == node)
-            return;
-        else if (parent instanceof LabeledStatement &&
-                ((LabeledStatement)parent).getLabel() == node)
-            return;
-        else if (parent instanceof MethodInvocation &&
-                ((MethodInvocation)parent).getName() == node)
-            return;
-        else if (parent instanceof SuperMethodInvocation &&
-                ((SuperMethodInvocation)parent).getName() == node)
-            return;
-        else if (parent instanceof SuperFieldAccess &&
-                ((SuperFieldAccess)parent).getName() == node)
-            return;
-        else if (parent instanceof VariableDeclaration &&
-                ((VariableDeclaration)parent).getName() == node)
-            return;
+            // Do not type check some simple names.
+            if (parent instanceof BodyDeclaration ||
+                    parent instanceof QualifiedName)
+                handle = false;
+            else if (parent instanceof BreakStatement &&
+                    ((BreakStatement)parent).getLabel() == node)
+                handle = false;
+            else if (parent instanceof ClassInstanceCreation &&
+                    ((ClassInstanceCreation)parent).getExpression() != null &&
+                    ((ClassInstanceCreation)parent).getName() == node)
+                owner = 
+                    Type.getType(((ClassInstanceCreation)parent).getExpression());
+            else if (parent instanceof FieldAccess &&
+                    ((FieldAccess)parent).getName() == node)
+                handle = false;
+            else if (parent instanceof LabeledStatement &&
+                    ((LabeledStatement)parent).getLabel() == node)
+                handle = false;
+            else if (parent instanceof MethodInvocation &&
+                    ((MethodInvocation)parent).getName() == node)
+                handle = false;
+            else if (parent instanceof SuperMethodInvocation &&
+                    ((SuperMethodInvocation)parent).getName() == node)
+                handle = false;
+            else if (parent instanceof SuperFieldAccess &&
+                    ((SuperFieldAccess)parent).getName() == node)
+                handle = false;
+            else if (parent instanceof VariableDeclaration &&
+                    ((VariableDeclaration)parent).getName() == node)
+                handle = false;
 
-        String name = node.getIdentifier();
-        TypeAndOwner typeAndOwner = _resolveName(name, owner);
-        if (typeAndOwner == null) {
-            String currentClassName = _state.getCurrentClass().getName();
-            throw new ASTResolutionException(currentClassName, name);
+            if (handle) {
+                String name = node.getIdentifier();
+                TypeAndOwner typeAndOwner = _resolveName(name, owner);
+                if (typeAndOwner == null) {
+                    String currentClassName = _state.getCurrentClass().getName();
+                    throw new ASTResolutionException(currentClassName, name);
+                }
+                Type.setOwner(node, typeAndOwner._getOwner());
+                Type.setType(node, typeAndOwner._getType());
+            }
         }
-        Type.setOwner(node, typeAndOwner._getOwner());
-        Type.setType(node, typeAndOwner._getType());
     }
 
     /** Visit a single variable declaration and set its type to be the
@@ -911,6 +918,14 @@ public class TypeAnalyzer extends ASTVisitor {
     public HandlerList getHandlers() {
         return _handlers;
     }
+    
+    /** Get the current state of the analyzer.
+     * 
+     *  @return The state.
+     */
+    public TypeAnalyzerState getState() {
+        return _state;
+    }
 
     /** Take a list of Java files as input and type-check all of them.
      *  The result of the type-checking is written to the standard
@@ -1020,14 +1035,12 @@ public class TypeAnalyzer extends ASTVisitor {
     }
 
     /** Override the behavior of visiting an importation declaration.
-     *  Its children (simple names and qualified names) are not visited.
      *
      *  @param node The node to be visited.
-     *  @return Always <tt>false</tt>.
+     *  @return The return value of the overriden function.
      */
     public boolean visit(ImportDeclaration node) {
-        // Do not visit children.
-        return false;
+        return super.visit(node);
     }
 
     /** Visit a method declaration and open a scope for variable
@@ -1050,29 +1063,27 @@ public class TypeAnalyzer extends ASTVisitor {
         return super.visit(node);
     }
 
-    /** Override the behavior of visiting a package declaration. Its
-     *  children (simple names and qualified names) are not visited.
+    /** Override the behavior of visiting a package declaration.
      *
      *  @param node The node to be visited.
-     *  @return Always <tt>false</tt>.
+     *  @return The return value of the overriden function.
      */
     public boolean visit(PackageDeclaration node) {
-        // Do not visit children.
-        return false;
+        return super.visit(node);
     }
     
     /** Visit a simple type node and set its type to be the same as the
      *  type associated with its name.
      *
      *  @param node The node to be visited.
+     *  @return The return value of the overriden function.
      */
     public boolean visit(SimpleType node) {
         Class c = _lookupClass(node.getName().toString());
         Type type = Type.createType(c.getName());
         Type.setType(node, type);
         
-        // Do not visit children.
-        return false;
+        return super.visit(node);
     }
 
     /** Visit an type declaration and set the current class to be the

@@ -209,7 +209,7 @@ public class HandlerList {
      * 
      *  @param handler The method declaration handler to be removed.
      */
-    public void removeMethodDeclarationHandler(CrossAnalysisHandler handler) {
+    public void removeMethodDeclarationHandler(MethodDeclarationHandler handler) {
         _methodDeclarationHandlers.remove(handler);
     }
 

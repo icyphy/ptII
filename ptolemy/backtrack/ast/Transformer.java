@@ -223,7 +223,7 @@ public class Transformer {
      */
     protected void _afterTraverse() {
         for (int i = 0; i < RULES.length; i++)
-            RULES[i].afterTraverse(_ast);
+            RULES[i].afterTraverse(_visitor, _ast);
     }
     
     /** Call the <tt>beforeTraverse</tt> of all the refactoring rules. For

@@ -115,8 +115,8 @@ public class ConstructorTransformer extends AbstractTransformer
         // Add a checkpoint parameter.
         SingleVariableDeclaration checkpoint = 
             ast.newSingleVariableDeclaration();
-        String checkpointType = _getClassName(Checkpoint.class, state, root);
-        checkpoint.setType(_createType(ast, checkpointType));
+        String checkpointType = getClassName(Checkpoint.class, state, root);
+        checkpoint.setType(createType(ast, checkpointType));
         checkpoint.setName(ast.newSimpleName(CHECKPOINT_NAME));
         newConstructor.parameters().add(checkpoint);
         
@@ -160,7 +160,7 @@ public class ConstructorTransformer extends AbstractTransformer
                 // The type needs to be cross-analyzed.
                 _refactor(node);
             else
-                _addToLists(_unhandledNodes, typeName, node);
+                addToLists(_unhandledNodes, typeName, node);
         }
     }
     
