@@ -439,10 +439,10 @@ public class PythonScript extends TypedAtomicActor {
                 _interpreter.exec(pythonScript);
             } catch (Exception ex) {
                 String message = ex.toString();
-                int i = message.indexOf("SyntaxError");
-                if (i >= 0) {
-                    message = message.substring(i);
-                }
+                //              int i = message.indexOf("SyntaxError");
+                //if (i >= 0) {
+                //    message = message.substring(i);
+                //}
                 throw new IllegalActionException(
                     this,
                     ex,
@@ -528,6 +528,44 @@ public class PythonScript extends TypedAtomicActor {
     private static PythonInterpreter _interpreter;
 
     static {
+        try {
+            // If the python.home property is not set, then set it 
+            // so that we can figure out where to write the jython cache.
+            //
+            // Under Webstart python/core/PySystemState.findRoot() first
+            // looks for the python.home property, so if it is
+            // not set we set it.  
+            if (System.getProperty("python.home") == null) {
+                // Look for jython.jar in the classpath
+                // Start of code based on python/core/PySystemState.findRoot() 
+                String classpath
+                    = StringUtilities.getProperty("java.class.path");
+                if (classpath == null) {
+                    System.setProperty("python.home",
+                            StringUtilities.getProperty("user.home"));
+                }
+                int jythonIndex
+                    = classpath.toLowerCase().indexOf("jython.jar");
+                if (jythonIndex == -1) {
+                    // We did not find jython.jar, so set it to user.home.
+                    // WebStart will end up here. 
+                    System.setProperty("python.home",
+                            StringUtilities.getProperty("user.home"));
+                } else {
+                    // We found jython.jar, return the parent directory.
+                    // Under WebStart, jython.jar will not be in the classpath 
+                    int start
+                        = classpath.lastIndexOf(java.io.File.pathSeparator,
+                                jythonIndex) + 1;
+                    System.setProperty("python.home",
+                            classpath.substring(start, jythonIndex));
+
+                }
+                // End of code based on python/core/PySystemState.findRoot() 
+            }
+        } catch (Exception ex) {
+            // Ignore, we are probably under an an applet
+        }
         try {
             _interpreter = new PythonInterpreter();
         } catch (java.security.AccessControlException ex) {
