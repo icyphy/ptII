@@ -291,13 +291,13 @@ public class DDFDirector extends Director {
         boolean repeatBasicIteration = false;
         
         do {
-            // The list to store minimax actors.
-            List minimaxActors = new LinkedList();
-            int minimaxSize = Integer.MAX_VALUE;
-
             // The List to store actors that are enabled and not deferrable.
             List toBeFiredActors = new LinkedList();
 
+            // The list to store minimax actors.
+            List minimaxActors = new LinkedList();
+            int minimaxSize = Integer.MAX_VALUE;
+            
             Iterator actors = ((TypedCompositeActor) getContainer())
                     .deepEntityList().iterator();
 
@@ -309,16 +309,16 @@ public class DDFDirector extends Director {
                 if (_disabledActors.contains(actor)) {
                     continue;
                 }
-                int[] flags = (int[]) _actorsFlags.get(actor);
-                int canFire = flags[_ENABLING_STATUS];
+                ActorInfo actorInfo = (ActorInfo) _actorsInfo.get(actor);
+                ActorEnablingStatus status = actorInfo.status;
 
-                if (canFire == _ENABLED_NOT_DEFERRABLE) {
+                if (status == ActorEnablingStatus.ENABLED_NOT_DEFERRABLE) {
                     toBeFiredActors.add(actor);
                 }
 
                 // Find set of minimax actors.
-                if (canFire == _ENABLED_DEFERRABLE) {
-                    int newSize = flags[_MAX_NUMBER_OF_TOKENS];
+                if (status == ActorEnablingStatus.ENABLED_DEFERRABLE) {
+                    int newSize = actorInfo.maximumNumberOfTokens;
 
                     if (newSize < minimaxSize) {
                         minimaxActors.clear();
@@ -338,8 +338,8 @@ public class DDFDirector extends Director {
             Iterator enabledActors = toBeFiredActors.iterator();
             while (enabledActors.hasNext()) {
                 Actor actor = (Actor) enabledActors.next();
-                boolean amIFired = _fireActor(actor);
-                _firedOne =  amIFired || _firedOne;
+                boolean isActorFired = _fireActor(actor);
+                _firedOne =  isActorFired || _firedOne;
             }
 
             // If no actor has been fired, fire the set of minimax actors.
@@ -347,8 +347,8 @@ public class DDFDirector extends Director {
                 Iterator minimaxActorsIterator = minimaxActors.iterator();
                 while (minimaxActorsIterator.hasNext()) {
                     Actor minimaxActor = (Actor) minimaxActorsIterator.next();
-                    boolean amIFired = _fireActor(minimaxActor);
-                    _firedOne =  amIFired || _firedOne;
+                    boolean isActorFired = _fireActor(minimaxActor);
+                    _firedOne =  isActorFired || _firedOne;
                 }
             }            
             
@@ -371,10 +371,10 @@ public class DDFDirector extends Director {
                         continue;
                     }
                         
-                    int[] flags = (int[]) _actorsFlags.get(actor);
+                    ActorInfo actorInfo = (ActorInfo) _actorsInfo.get(actor);
                     int requiredFirings 
-                            = flags[_REQUIRED_FIRINGS_PER_ITERATION];
-                    int firingsDone = flags[_NUMBER_OF_FIRINGS];
+                            = actorInfo.requiredFiringsPerIteration;
+                    int firingsDone = actorInfo.numberOfFirings;
 
                     if (firingsDone < requiredFirings) {
                         repeatBasicIteration = true;
@@ -459,8 +459,8 @@ public class DDFDirector extends Director {
         
         // Determine requiredFiringsPerIteration for this actor.
         // The default value 0 means no requirement on this actor.
-        int[] flags = (int[]) _actorsFlags.get(actor);
-        flags[_REQUIRED_FIRINGS_PER_ITERATION] = 0;
+        ActorInfo actorInfo = (ActorInfo) _actorsInfo.get(actor);
+        actorInfo.requiredFiringsPerIteration = 0;
 
         Variable requiredFiringsPerIteration = (Variable) ((Entity) actor)
                 .getAttribute("requiredFiringsPerIteration");
@@ -472,7 +472,7 @@ public class DDFDirector extends Director {
                 int value = ((IntToken) token).intValue();
 
                 if (value > 0) {
-                    flags[_REQUIRED_FIRINGS_PER_ITERATION] = value;
+                    actorInfo.requiredFiringsPerIteration = value;
                 }
 
                 _actorsToCheckNumberOfFirings.add(actor);
@@ -512,7 +512,7 @@ public class DDFDirector extends Director {
         _disabledActors.addAll(insideDirector._disabledActors);
         _actorsToCheckNumberOfFirings.
                 addAll(insideDirector._actorsToCheckNumberOfFirings);
-        _actorsFlags.putAll(insideDirector._actorsFlags);
+        _actorsInfo.putAll(insideDirector._actorsInfo);
     }
 
     /** Return a new SDFReceiver.
@@ -628,8 +628,8 @@ public class DDFDirector extends Director {
 
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-            int[] flags = (int[]) _actorsFlags.get(actor);
-            flags[_NUMBER_OF_FIRINGS] = 0;
+            ActorInfo actorInfo = (ActorInfo) _actorsInfo.get(actor);
+            actorInfo.numberOfFirings = 0;
         }
 
         return true;
@@ -730,8 +730,8 @@ public class DDFDirector extends Director {
             // In other words, the data directly go to output port instead
             // of any inside actors.
             if (getContainer() != actor) {
-                int[] flags = (int[]) _actorsFlags.get(actor);
-                flags[_ENABLING_STATUS] = _getActorStatus(actor);
+                ActorInfo actorInfo = (ActorInfo) _actorsInfo.get(actor);
+                actorInfo.status  = _getActorStatus(actor);
             }
         }
 
@@ -903,8 +903,8 @@ public class DDFDirector extends Director {
             fired = true;
 
             // Increment the firing number.
-            int[] flags = (int[]) _actorsFlags.get(actor);
-            flags[_NUMBER_OF_FIRINGS]++;
+            ActorInfo actorInfo = (ActorInfo) _actorsInfo.get(actor);
+            actorInfo.numberOfFirings++;
             
             int maximumCapacity = ((IntToken) maximumReceiverCapacity
                     .getToken()).intValue();
@@ -917,36 +917,37 @@ public class DDFDirector extends Director {
     }
     
     /** Determine actor enabling status. It must be one of the three:
-     *  _NOT_ENABLED, _ENABLED_DEFERRABLE, _ENABLED_NOT_DEFERRABLE.
+     *  NOT_ENABLED, ENABLED_DEFERRABLE, ENABLED_NOT_DEFERRABLE.
      *  @param actor The actor to be checked.
      *  @return An int indicating actor enabling status.
      *  @exception IllegalActionException If any called method throws
      *   IllegalActionException.
      */
-    protected int _getActorStatus(Actor actor) throws IllegalActionException {
+    protected ActorEnablingStatus _getActorStatus(Actor actor) 
+            throws IllegalActionException {
         if (!_isEnabled(actor)) {
             
             if (_debugging)
-                _debug(((NamedObj)actor).getName() 
-                        + " is not enabled.");
+                _debug(((NamedObj)actor).getName() + ": " 
+                        + ActorEnablingStatus.NOT_ENABLED);
             
-            return _NOT_ENABLED;
+            return ActorEnablingStatus.NOT_ENABLED;
         }
 
         if (_isDeferrable(actor)) {
             
             if (_debugging)
-                _debug(((NamedObj)actor).getName() 
-                        + " is enabled and deferrable");
+                _debug(((NamedObj)actor).getName() + ": "
+                        + ActorEnablingStatus.ENABLED_DEFERRABLE);
             
-            return _ENABLED_DEFERRABLE;
+            return ActorEnablingStatus.ENABLED_DEFERRABLE;
         }
         
         if (_debugging)
-            _debug(((NamedObj)actor).getName() 
-                    + " is enabled and not deferrable");
+            _debug(((NamedObj)actor).getName() + ": "
+                    + ActorEnablingStatus.ENABLED_NOT_DEFERRABLE);
 
-        return _ENABLED_NOT_DEFERRABLE;
+        return ActorEnablingStatus.ENABLED_NOT_DEFERRABLE;
     }
 
 
@@ -1010,8 +1011,8 @@ public class DDFDirector extends Director {
         }
 
         if (deferrable) {
-            int[] flags = (int[]) _actorsFlags.get(actor);
-            flags[_MAX_NUMBER_OF_TOKENS] = maxSize;
+            ActorInfo actorInfo = (ActorInfo) _actorsInfo.get(actor);
+            actorInfo.maximumNumberOfTokens = maxSize;
         }
 
         return deferrable;
@@ -1070,28 +1071,28 @@ public class DDFDirector extends Director {
                     
                     // Get an array of actor flags from HashMap.
                     // Create it if none found.
-                    int[] flags;
-                    if (_actorsFlags.containsKey(connectedActor)) {
-                        flags = (int[]) _actorsFlags.get(connectedActor);
+                    ActorInfo actorInfo;
+                    if (_actorsInfo.containsKey(connectedActor)) {
+                        actorInfo = (ActorInfo) _actorsInfo.get(connectedActor);
                     } else {
-                        flags = new int[4];
-                        _actorsFlags.put(connectedActor, flags);
+                        actorInfo = new ActorInfo();
+                        _actorsInfo.put(connectedActor, actorInfo);
                     }
   
-                    flags[_ENABLING_STATUS] = _getActorStatus(connectedActor);
+                    actorInfo.status = _getActorStatus(connectedActor);
                 }
             }
         }
 
         // Update enabling status for this actor.
-        int[] flags;
-        if (_actorsFlags.containsKey(actor)) {
-            flags = (int[]) _actorsFlags.get(actor);
+        ActorInfo actorInfo;
+        if (_actorsInfo.containsKey(actor)) {
+            actorInfo = (ActorInfo) _actorsInfo.get(actor);
         } else {
-            flags = new int[4];
-            _actorsFlags.put(actor, flags);
+            actorInfo = new ActorInfo();
+            _actorsInfo.put(actor, actorInfo);
         }
-        flags[_ENABLING_STATUS] = _getActorStatus(actor);
+        actorInfo.status = _getActorStatus(actor);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -1320,10 +1321,9 @@ public class DDFDirector extends Director {
     // runUntilDeadlockInOneIteration.
     private boolean _runUntilDeadlock;
 
-    // HashMap containing actor flags. Each actor maps to an array of
-    // four integers, representing enablingStatus, numberOfFirings,
-    // maxNumberOfTokens and requiredFiringsPerIteration.
-    private HashMap _actorsFlags = new HashMap();
+    // HashMap containing actors' information. Each actor is mapped to 
+    // an ActorInfo object.
+    private HashMap _actorsInfo = new HashMap();
 
     // To store those actors for which positive requiredFiringsPerIteration
     // has been defined.
@@ -1335,19 +1335,31 @@ public class DDFDirector extends Director {
     // The set of actors that have returned false in their postfire()
     // methods and therefore become disabled.
     private Set _disabledActors = new HashSet();
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
 
-    // An indicator that the actor is enabled and deferrable.
-    private static final int _ENABLED_DEFERRABLE = 2;
+    /** This private class is data structure for recording an actor's 
+     *  information during the execution.
+     */
+    private class ActorInfo {
+         /** This field records the enabling status of the actor. 
+          */
+         public ActorEnablingStatus status;
+         /** This field records the number of firings of the actor. 
+          *  It is reset to 0 at the beginning of each iteration of 
+          *  the model the actor is in.
+          */  
+         public int numberOfFirings;
+         /** This field records the maximum number of tokens on the actor's
+          *  output channels which satisfy the demand of destination actors.
+          *  It is used to find minimax actors.
+          */
+         public int maximumNumberOfTokens;
+         /** This field records the actor's required number of firings 
+          *  per iteration of the model the actor is in.
+          */ 
+         public int requiredFiringsPerIteration;
+    }
 
-    // An indicator that the actor is enabled and not deferrable.
-    private static final int _ENABLED_NOT_DEFERRABLE = 1;
-
-    // An indicator that the actor is not enabled.
-    private static final int _NOT_ENABLED = 0;
-
-    // Indexes into an array of actor flags contained by a HashMap.
-    private static final int _ENABLING_STATUS = 0;
-    private static final int _NUMBER_OF_FIRINGS = 1;
-    private static final int _MAX_NUMBER_OF_TOKENS = 2;
-    private static final int _REQUIRED_FIRINGS_PER_ITERATION = 3;
 }
