@@ -73,7 +73,7 @@ public class ResolveClassVisitor extends ResolveVisitorBase
     }
 
     public Object visitCompileUnitNode(CompileUnitNode node, LinkedList args) {
-        ApplicationUtility.trace("resolveClass for " + node.getProperty(IDENT_KEY));
+        //System.out.println("resolveClass for " + node.getProperty(IDENT_KEY));
 
         _pkgDecl = (PackageDecl) node.getDefinedProperty(PACKAGE_KEY);
 
@@ -83,7 +83,7 @@ public class ResolveClassVisitor extends ResolveVisitorBase
 
         TNLManip.traverseList(this, childArgs, node.getDefTypes());
 
-        ApplicationUtility.trace("finished resolveClass for " +
+        //System.out.println("finished resolveClass for " +
                 node.getProperty(IDENT_KEY));
 
         return null;
@@ -127,7 +127,7 @@ public class ResolveClassVisitor extends ResolveVisitorBase
         } else {
 	    try {
 		//superDecl = (ClassDecl) JavaDecl.getDecl((NamedNode) superClass);
-		ApplicationUtility.trace("ResolveClassVisitor." +
+		//System.out.println("ResolveClassVisitor." +
 					 "visitClassDeclNode():" +
 					 "Calling JavaDecl.getDecl " + 
 					 superClass);
@@ -141,7 +141,7 @@ public class ResolveClassVisitor extends ResolveVisitorBase
 					   ": " + e);
 	    }
         }
-	ApplicationUtility.trace("ResolveClassVisitor.visitClassDeclNode(): " +
+	//System.out.println("ResolveClassVisitor.visitClassDeclNode(): " +
 			   node.getName().getIdent() +
 			   ": " + superDecl + ": " +
 			   superClass + ": " + StaticResolution.OBJECT_DECL );

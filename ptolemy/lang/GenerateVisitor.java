@@ -478,7 +478,7 @@ public class GenerateVisitor {
 
                 className = strTokenizer.nextToken();
 
-                ApplicationUtility.trace("Reading class info for : "
+                //System.out.println("Reading class info for : "
                         + className);
 
                 try {

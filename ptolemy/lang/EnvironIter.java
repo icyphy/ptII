@@ -71,7 +71,7 @@ public class EnvironIter implements Iterator {
     ////                         public methods                    ////
 
     public boolean hasNext() {
-        //ApplicationUtility.trace("EnvironIter : hasNext for " + _name);
+        //System.out.println("EnvironIter : hasNext for " + _name);
 
         try {
             nextDecl();
@@ -79,11 +79,11 @@ public class EnvironIter implements Iterator {
             // Rewind to valid Decl.
             _declIter.previous();
         } catch (NoSuchElementException e) {
-            // ApplicationUtility.trace("EnvironIter : hasNext for " + _name +
+            //System.out.println("EnvironIter : hasNext for " + _name +
             // " = false");
             return false;
         }
-        // ApplicationUtility.trace("EnvironIter : hasNext for " + _name +
+        //System.out.println("EnvironIter : hasNext for " + _name +
         // " = true");
         return true;
     }
@@ -106,21 +106,21 @@ public class EnvironIter implements Iterator {
                 Decl decl = (Decl) _declIter.next();
 
                 if (decl.matches(_name, _mask)) {
-                    //ApplicationUtility.trace("EnvironIter : found match " +
+                    //System.out.println("EnvironIter : found match " +
                     //" for " +  _name);
                     return decl;
                 }
             }
 
             if (_nextEnviron == null) {
-                // ApplicationUtility.trace("EnvironIter : no more elements " +
+                //System.out.println("EnvironIter : no more elements " +
                 //  "looking for " + _name);
 
                 throw new NoSuchElementException(
                         "No more elements in EnvironIter.");
             }
 
-            //ApplicationUtility.trace("EnvironIter : going to next " +
+            //System.out.println("EnvironIter : going to next " +
             // "environment looking for " + _name);
 
             _declIter = _nextEnviron.allProperDecls();
@@ -144,7 +144,7 @@ public class EnvironIter implements Iterator {
      */
     public boolean moreThanOne() {
 
-        // ApplicationUtility.trace("EnvironIter: moreThanOne for " + _name);
+        //System.out.println("EnvironIter: moreThanOne for " + _name);
         if (_declIter == null) {
             // empty list
             return false;
@@ -177,7 +177,7 @@ public class EnvironIter implements Iterator {
             }
 
             if (matches >= 2) {
-                ApplicationUtility.trace("EnvironIter: moreThanOne = true" +
+                //System.out.println("EnvironIter: moreThanOne = true" +
                         " for " + _name);
                 return true;
             }
@@ -207,7 +207,7 @@ public class EnvironIter implements Iterator {
             // no matches
 
             if (_nextEnviron == null) {
-                //ApplicationUtility.trace("EnvironIter: moreThanOne = " +
+                //System.out.println("EnvironIter: moreThanOne = " +
                 // false for " +  _name);
                 return false;
             }

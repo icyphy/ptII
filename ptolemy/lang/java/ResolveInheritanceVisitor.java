@@ -65,12 +65,12 @@ public class ResolveInheritanceVisitor extends ResolveVisitorBase
     }
 
     public Object visitCompileUnitNode(CompileUnitNode node, LinkedList args) {
-        ApplicationUtility.trace("resolveInheritance for " +
+        //System.out.println("resolveInheritance for " +
                 node.getProperty(IDENT_KEY));
 
         TNLManip.traverseList(this, null, node.getDefTypes());
 
-        ApplicationUtility.trace("finished resolveInheritance for " +
+        //System.out.println("finished resolveInheritance for " +
                 node.getProperty(IDENT_KEY));
 
         return null;

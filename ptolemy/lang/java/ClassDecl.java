@@ -82,10 +82,10 @@ public class ClassDecl extends TypeDecl implements JavaStaticSemanticConstants {
 
     public final Environ getEnviron() {
         if (!wasVisitedBy(ResolveClassVisitor.visitorClass())) {
-            // ApplicationUtility.trace("getEnviron() for " + _name + ": building environment");
+            //System.out.println("getEnviron() for " + _name + ": building environment");
             _buildEnviron();
         }
-        // ApplicationUtility.trace("getEnviron() for " + _name + ": environment already in place");
+        //System.out.println("getEnviron() for " + _name + ": environment already in place");
         return _environ;
     }
 
@@ -173,7 +173,7 @@ public class ClassDecl extends TypeDecl implements JavaStaticSemanticConstants {
                             fullName());
                 }
             }
-            ApplicationUtility.trace(">Done reading class " + fullName());
+            //System.out.println(">Done reading class " + fullName());
         }
     }
 
@@ -186,7 +186,7 @@ public class ClassDecl extends TypeDecl implements JavaStaticSemanticConstants {
     }
 
     protected void _buildEnviron() {
-	ApplicationUtility.trace("ClassDecl._buildEnviron(): Building env " +
+	//System.out.println("ClassDecl._buildEnviron(): Building env " +
 				 "for class " + fullName());
         loadSource();
 

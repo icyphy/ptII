@@ -114,7 +114,7 @@ public class ResolveImportsVisitor extends JavaVisitor
 
     protected final void _importOnDemand(PackageDecl importedPackage) {
 
-        ApplicationUtility.trace("ResolveImportsVisitor._importOnDemand : importing " +
+        //System.out.println("ResolveImportsVisitor._importOnDemand : importing " +
                 importedPackage.toString());
 
         // ignore duplicate imports
@@ -134,12 +134,12 @@ public class ResolveImportsVisitor extends JavaVisitor
             JavaDecl type = (JavaDecl) envItr.next();
 
             if (type.category != CG_PACKAGE) {
-                ApplicationUtility.trace("_importOnDemand: adding " + type.toString());
+                //System.out.println("_importOnDemand: adding " + type.toString());
                 _importEnv.add(type); // conflicts appear on use only
             }
         }
 
-        ApplicationUtility.trace("_importOnDemand : finished" +
+        //System.out.println("_importOnDemand : finished" +
                 importedPackage.toString());
     }
 

@@ -83,7 +83,7 @@ public class PackageDecl extends JavaDecl
     }
 
     public final Environ getEnviron() {
-	//ApplicationUtility.trace("PackageDecl.getEnviron()" + getName());
+	//System.out.println("PackageDecl.getEnviron()" + getName());
         if (_environ == null) {
             _initEnviron();
         }
@@ -123,16 +123,16 @@ public class PackageDecl extends JavaDecl
 	 * and set enableTrace to true and the recompile.
 	 */
 
-        ApplicationUtility.trace("PackageDecl._initEnviron("
+        //System.out.println("PackageDecl._initEnviron("
 				 + _container + ")");
 
         boolean empty = true;
 
         if (_container == null) {
-            ApplicationUtility.trace("_initEnviron : no container");
+            //System.out.println("_initEnviron : no container");
             _environ = new Environ(null);
         } else {
-            ApplicationUtility.trace("_initEnviron : has container");
+            //System.out.println("_initEnviron : has container");
             _environ = new Environ(_container.getEnviron());
         }
 
@@ -175,18 +175,18 @@ public class PackageDecl extends JavaDecl
             subdir = subdir + File.separatorChar;
         }
 
-        ApplicationUtility.trace("PackageDecl: subdir = " + subdir);
-	ApplicationUtility.trace("PackageDecl: found " + paths.size() +
+        //System.out.println("PackageDecl: subdir = " + subdir);
+	//System.out.println("PackageDecl: found " + paths.size() +
 				 " class paths" + paths.toString());
 
         for (int i = 0; i < paths.size(); i++) {
             String path = (String) paths.get(i);
 
-            ApplicationUtility.trace("path = " + path);
+            //System.out.println("path = " + path);
 
             String dirName = path + subdir;
 
-            ApplicationUtility.trace("dirName = " + dirName);
+            //System.out.println("dirName = " + dirName);
 
             File dir = new File(dirName);
 
@@ -194,10 +194,10 @@ public class PackageDecl extends JavaDecl
 
                 String[] nameList = dir.list();
 
-                ApplicationUtility.trace("isDirectory = true, length = " + nameList.length);
+                //System.out.println("isDirectory = true, length = " + nameList.length);
 
                 for (int j = 0; j < nameList.length; j++) {
-                    ApplicationUtility.trace("iterating over names, j = " + j);
+                    //System.out.println("iterating over names, j = " + j);
 
                     String name = nameList[j];
                     int length = name.length();
@@ -215,14 +215,14 @@ public class PackageDecl extends JavaDecl
                         // with the same base name, but with different extensions.
                         if (_environ.lookupProper(className, CG_USERTYPE) == null) {
 
-                            ApplicationUtility.trace("adding class/interface " +
+                            //System.out.println("adding class/interface " +
                             className + " from " + dirName);
 
                             _environ.add(new ClassDecl(className, this));
 
                             empty = false;
 
-                            ApplicationUtility.trace(
+                            //System.out.println(
                              getName() + " : found source in " + dirName + name);
                         }
 
@@ -246,8 +246,9 @@ public class PackageDecl extends JavaDecl
         } // for (int i = 0; i < paths.size(); i++)
 
         if (empty && (this != StaticResolution.UNNAMED_PACKAGE)) {
-            ApplicationUtility.warn(
-                    "unable to find any sources or subpackages for " + getName());
+            System.err.println("Warning: " +
+                    "unable to find any sources or subpackages for " +
+                    getName());
         }
     }
 

@@ -208,7 +208,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
 
         // Check to whether or not we have already resolved the name.
         if (name.hasProperty(DECL_KEY)) {
-            //ApplicationUtility.trace("decl already defined");
+            //System.out.println("decl already defined");
             return name;
         }
 
@@ -265,7 +265,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
                     }
                 }
 
-                //ApplicationUtility.trace("resolveAName " + nameString(name) +
+                //System.out.println("resolveAName " + nameString(name) +
                 //        " (user type) ok");
                 return name;
             }
@@ -293,14 +293,14 @@ public class StaticResolution implements JavaStaticSemanticConstants {
                 }
 
                 name.setQualifier(AbsentTreeNode.instance);
-                //ApplicationUtility.trace("resolveAName " + nameString(name) +
+                //System.out.println("resolveAName " + nameString(name) +
                 //        " (field or method) ok");
                 return res;
             }
 
         case CG_LOCALVAR:
         case CG_FORMAL:
-            //ApplicationUtility.trace("resolveAName " + nameString(name) +
+            //System.out.println("resolveAName " + nameString(name) +
             // " (local var or formal param) ok");
             return new ObjectNode(name);
 
@@ -541,9 +541,9 @@ public class StaticResolution implements JavaStaticSemanticConstants {
         System.out.println("StaticResolution<static>: --- Creating UNNAMED_PACKAGE PackageDecl ---" + (System.currentTimeMillis() - startTime) + " ms");
         UNNAMED_PACKAGE = new PackageDecl("", SYSTEM_PACKAGE);
 
-        ApplicationUtility.trace("StaticResolution<static>: " +
+        //System.out.println("StaticResolution<static>: " +
                 "SYSTEM_PACKAGE: " +  SYSTEM_PACKAGE.getEnviron().toString());
-        ApplicationUtility.trace("StaticResolution<static>: " +
+        //System.out.println("StaticResolution<static>: " +
                 "UNNAMED_PACKAGE: " + UNNAMED_PACKAGE.getEnviron().toString());
 
         // dummy environment
@@ -639,7 +639,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
             }
         }
 	
-        ApplicationUtility.trace("StaticResolution._importPackage(" +
+        //System.out.println("StaticResolution._importPackage(" +
                 name.getIdent() + ") :" +
                 env.toString());
         return decl;
@@ -770,7 +770,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
         JavaDecl d = (JavaDecl) possibles.head();
         name.setProperty(DECL_KEY, d);
 
-        // ApplicationUtility.trace("_findPossibles for " + nameString(name) + " ok");
+        //System.out.println("_findPossibles for " + nameString(name) + " ok");
 
         return possibles;
     }

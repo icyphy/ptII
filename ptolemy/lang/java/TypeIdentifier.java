@@ -49,7 +49,7 @@ import ptolemy.lang.java.nodetypes.*;
 public class TypeIdentifier implements JavaStaticSemanticConstants {
 
     public TypeIdentifier() {
-	ApplicationUtility.trace("TypeIdentifier.TypeIdentifier()");
+	//System.out.println("TypeIdentifier.TypeIdentifier()");
 }
 
     /** Return true iff the kind is a class kind. In derived classes, the

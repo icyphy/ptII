@@ -95,7 +95,7 @@ public class JavaParserManip implements JavaStaticSemanticConstants {
 
 	JavaParser p = new JavaParser();
 
-	//ApplicationUtility.trace("JavaParserManip: Calling " +
+	//System.out.println("JavaParserManip: Calling " +
 	//			     "JavaParser.init() " + 
 	//			     StringManip.baseFilename(filename));
 

@@ -69,7 +69,7 @@ public class SearchPath extends Vector {
         if (propertyName != null) {
             String propertyValue = System.getProperty(propertyName, ".");
 
-            ApplicationUtility.trace("propertyValue = " + propertyValue);
+            //System.out.println("propertyValue = " + propertyValue);
 
             if (propertyValue != null) {
                 _addPaths(propertyValue);

@@ -62,7 +62,7 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
     }
 
     public Object visitCompileUnitNode(CompileUnitNode node, LinkedList args) {
-        ApplicationUtility.trace("resolve field on " +
+        //System.out.println("resolve field on " +
                 node.getDefinedProperty(IDENT_KEY));
 
         _currentPackage = (PackageDecl) node.getDefinedProperty(PACKAGE_KEY);
@@ -71,7 +71,7 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
 
         TNLManip.traverseList(this, childArgs, node.getDefTypes());
 
-        ApplicationUtility.trace("finished resolve field on " +
+        //System.out.println("finished resolve field on " +
                 node.getDefinedProperty(IDENT_KEY));
 
         return node;
