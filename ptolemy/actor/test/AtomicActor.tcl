@@ -50,13 +50,15 @@ if {[string compare test [info procs test]] == 1} then {
 # NOTE:  All of the following tests use this director,
 # pretty much as a dummy.
 set director [java::new ptolemy.actor.Director]
+set manager [java::new ptolemy.actor.Manager]
 
 ######################################################################
 ####
 #
 test AtomicActor-2.1 {Constructor tests} {
     set e0 [java::new ptolemy.actor.CompositeActor]
-    $e0 setExecutiveDirector $director
+    $e0 setManager $manager
+    $e0 setDirector $director
     $e0 setName E0
     set w [java::new ptolemy.kernel.util.Workspace W]
     set e1 [java::new ptolemy.actor.AtomicActor]
@@ -106,6 +108,7 @@ test AtomicActor-6.1 {Invoke all the action methods} {
      $e3 fire
      $e3 postfire
      $e3 wrapup
+     $e3 terminate
 } {}
 
 ######################################################################
@@ -181,3 +184,8 @@ test AtomicActor-9.2 {Test remove a AtomicActor} {
     $entity setContainer [java::null]
     list [$e0 deepContains $entity]
 } {0}
+
+
+
+
+

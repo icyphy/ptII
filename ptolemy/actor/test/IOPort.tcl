@@ -61,13 +61,15 @@ if {[string compare test [info procs test]] == 1} then {
 # NOTE:  All of the following tests use this director,
 # pretty much as a dummy.
 set director [java::new ptolemy.actor.Director]
+set manager [java::new ptolemy.actor.Manager]
 
 ######################################################################
 ####
 #
 test IOPort-2.1 {Construct Ports} {
     set e0 [java::new ptolemy.actor.CompositeActor]
-    $e0 setExecutiveDirector $director
+    $e0 setDirector $director
+    $e0 setManager $manager
     set e1 [java::new ptolemy.actor.AtomicActor $e0 E1]
     set p1 [java::new ptolemy.actor.IOPort]
     set p2 [java::new ptolemy.actor.IOPort $e1 P2]
@@ -76,7 +78,8 @@ test IOPort-2.1 {Construct Ports} {
 
 test IOPort-2.2 {Construct Ports} {
     set e0 [java::new ptolemy.actor.CompositeActor]
-    $e0 setExecutiveDirector $director
+    $e0 setDirector $director
+    $e0 setManager $manager
     set e1 [java::new ptolemy.actor.AtomicActor $e0 E1]
     set p1 [java::new ptolemy.actor.IOPort $e1 P1]
     set p2 [java::new ptolemy.actor.IOPort $e1 P2]
@@ -85,7 +88,8 @@ test IOPort-2.2 {Construct Ports} {
 
 test IOPort-2.3 {Attempt to set erroneous container} {
     set e0 [java::new ptolemy.actor.CompositeActor]
-    $e0 setExecutiveDirector $director
+    $e0 setDirector $director
+    $e0 setManager $manager
     set e1 [java::new ptolemy.kernel.CompositeEntity]
     set p1 [java::new ptolemy.actor.IOPort]
     catch {$p1 setContainer $e1} msg
@@ -97,7 +101,8 @@ test IOPort-2.3 {Attempt to set erroneous container} {
 #
 test IOPort-3.1 {Test input/output predicates} {
     set e0 [java::new ptolemy.actor.CompositeActor]
-    $e0 setExecutiveDirector $director
+    $e0 setDirector $director
+    $e0 setManager $manager
     set e1 [java::new ptolemy.actor.AtomicActor $e0 E1]
     set p1 [java::new ptolemy.actor.IOPort $e1 P1]
     set p2 [java::new ptolemy.actor.IOPort $e1 P2 true true]
@@ -106,7 +111,8 @@ test IOPort-3.1 {Test input/output predicates} {
 
 test IOPort-3.2 {Test input/output changes} {
     set e0 [java::new ptolemy.actor.CompositeActor]
-    $e0 setExecutiveDirector $director
+    $e0 setDirector $director
+    $e0 setManager $manager
     set e1 [java::new ptolemy.actor.AtomicActor $e0 E1]
     set p1 [java::new ptolemy.actor.IOPort $e1 P1 true true]
     set result [list [$p1 isInput] [$p1 isOutput]]
@@ -117,22 +123,24 @@ test IOPort-3.2 {Test input/output changes} {
 
 test IOPort-3.3 {Test input/output predicates on transparent ports} {
     set e0 [java::new ptolemy.actor.CompositeActor]
-    $e0 setExecutiveDirector $director
+    $e0 setDirector [java::null]
+    $e0 setManager $manager
     set e1 [java::new ptolemy.actor.AtomicActor $e0 E1]
     set p0 [java::new ptolemy.actor.IOPort $e0 P0]
     set p1 [java::new ptolemy.actor.IOPort $e1 P1 true true]
     set r1 [java::new ptolemy.actor.IORelation $e0 R1]
     $p1 link $r1
     $p0 link $r1
-    list [$p0 isInput] [$p0 isOutput]
-} {1 1}
+    list [$p0 isInput] [$p0 isOutput] [$p1 isInput] [$p1 isOutput]
+} {1 1 1 1}
 
 ######################################################################
 ####
 #
 test IOPort-4.1 {Test multiport predicate} {
     set e0 [java::new ptolemy.actor.CompositeActor]
-    $e0 setExecutiveDirector $director
+    $e0 setDirector $director
+    $e0 setManager $manager
     set e1 [java::new ptolemy.actor.AtomicActor $e0 E1]
     set p0 [java::new ptolemy.actor.IOPort $e0 P0]
     set p1 [java::new ptolemy.actor.IOPort $e1 P1 true true]
@@ -145,7 +153,8 @@ test IOPort-4.1 {Test multiport predicate} {
 
 test IOPort-4.2 {Test multiport predicate on transparent port} {
     set e0 [java::new ptolemy.actor.CompositeActor]
-    $e0 setExecutiveDirector $director
+    $e0 setDirector $director
+    $e0 setManager $manager
     set e1 [java::new ptolemy.actor.AtomicActor $e0 E1]
     set p1 [java::new ptolemy.actor.IOPort $e1 P1 true false]
     set temp [$p1 isMultiport]
@@ -158,7 +167,8 @@ test IOPort-4.2 {Test multiport predicate on transparent port} {
 #
 test IOPort-5.1 {Test getWidth} {
     set e0 [java::new ptolemy.actor.CompositeActor]
-    $e0 setExecutiveDirector $director
+    $e0 setDirector $director
+    $e0 setManager $manager
     set e1 [java::new ptolemy.actor.AtomicActor $e0 E1]
     set p1 [java::new ptolemy.actor.IOPort $e1 P1 true false]
     set r1 [java::new ptolemy.actor.IORelation $e0 R1]
@@ -169,7 +179,8 @@ test IOPort-5.1 {Test getWidth} {
 
 test IOPort-5.2 {Test getWidth} {
     set e0 [java::new ptolemy.actor.CompositeActor]
-    $e0 setExecutiveDirector $director
+    $e0 setDirector $director
+    $e0 setManager $manager
     set e1 [java::new ptolemy.actor.AtomicActor $e0 E1]
     set p1 [java::new ptolemy.actor.IOPort $e1 P1 true true]
     set r1 [java::new ptolemy.actor.IORelation $e0 R1]
@@ -182,7 +193,8 @@ test IOPort-5.2 {Test getWidth} {
 
 test IOPort-5.3 {Test getWidth} {
     set e0 [java::new ptolemy.actor.CompositeActor]
-    $e0 setExecutiveDirector $director
+    $e0 setDirector $director
+    $e0 setManager $manager
     set e1 [java::new ptolemy.actor.AtomicActor $e0 E1]
     set p1 [java::new ptolemy.actor.IOPort $e1 P1 true true]
     set r1 [java::new ptolemy.actor.IORelation $e0 R1]
@@ -197,6 +209,7 @@ test IOPort-5.3 {Test getWidth} {
 test IOPort-5.4 {Test getWidth after unlinking} {
     set e0 [java::new ptolemy.actor.CompositeActor]
     $e0 setDirector $director
+    $e0 setManager $manager
     # sending entity
     set e1 [java::new ptolemy.actor.AtomicActor $e0 E1]
     set p1 [java::new ptolemy.actor.IOPort $e1 P1 false true]
@@ -225,7 +238,8 @@ test IOPort-5.4 {Test getWidth after unlinking} {
 #
 test IOPort-6.1 {Make sure multiple links not allowed on single ports} {
     set e0 [java::new ptolemy.actor.CompositeActor]
-    $e0 setExecutiveDirector $director
+    $e0 setDirector $director
+    $e0 setManager $manager
     set e1 [java::new ptolemy.actor.AtomicActor $e0 E1]
     set p1 [java::new ptolemy.actor.IOPort $e1 P1 true true]
     set r1 [java::new ptolemy.actor.IORelation $e0 R1]
@@ -240,7 +254,8 @@ test IOPort-6.1 {Make sure multiple links not allowed on single ports} {
 #
 test IOPort-7.1 {Check getReceivers on an unlinked port} {
     set e0 [java::new ptolemy.actor.CompositeActor]
-    $e0 setExecutiveDirector $director
+    $e0 setDirector $director
+    $e0 setManager $manager
     set e1 [java::new ptolemy.actor.AtomicActor $e0 E1]
     set p1 [java::new ptolemy.actor.IOPort $e1 P1 true true]
     expr {[$p1 getReceivers] == [java::null]}
@@ -248,7 +263,8 @@ test IOPort-7.1 {Check getReceivers on an unlinked port} {
 
 test IOPort-7.2 {Check getReceivers} {
     set e0 [java::new ptolemy.actor.CompositeActor]
-    $e0 setExecutiveDirector $director
+    $e0 setDirector $director
+    $e0 setManager $manager
     set e1 [java::new ptolemy.actor.AtomicActor $e0 E1]
     set p1 [java::new ptolemy.actor.IOPort $e1 P1 true true]
     set r1 [java::new ptolemy.actor.IORelation $e0 R1]
@@ -261,7 +277,8 @@ test IOPort-7.2 {Check getReceivers} {
 #
 test IOPort-8.1 {Check getRemoteReceivers on a port with no links} {
     set e0 [java::new ptolemy.actor.CompositeActor]
-    $e0 setExecutiveDirector $director
+    $e0 setDirector $director
+    $e0 setManager $manager
     set e1 [java::new ptolemy.actor.AtomicActor $e0 E1]
     set p1 [java::new ptolemy.actor.IOPort $e1 P1 true true]
     expr {[$p1 getRemoteReceivers] == [java::null]}
@@ -270,6 +287,7 @@ test IOPort-8.1 {Check getRemoteReceivers on a port with no links} {
 test IOPort-8.2 {Check getRemoteReceivers on a port after unlinking} {
     set e0 [java::new ptolemy.actor.CompositeActor]
     $e0 setDirector $director
+    $e0 setManager $manager
     # sending entity
     set e1 [java::new ptolemy.actor.AtomicActor $e0 E1]
     set p1 [java::new ptolemy.actor.IOPort $e1 P1 false true]
@@ -299,6 +317,7 @@ test IOPort-8.2 {Check getRemoteReceivers on a port after unlinking} {
 test IOPort-9.1 {Check connectivity via send} {
     set e0 [java::new ptolemy.actor.CompositeActor]
     $e0 setDirector $director
+    $e0 setManager $manager
     # sending entity
     set e1 [java::new ptolemy.actor.AtomicActor $e0 E1]
     set p1 [java::new ptolemy.actor.IOPort $e1 P1 false true]
@@ -340,7 +359,8 @@ test IOPort-9.1.1 {Check hasRoom and hasToken methods} {
 
 test IOPort-9.2 {Check unlink and send to dangling relation} {
     set e0 [java::new ptolemy.actor.CompositeActor]
-    $e0 setExecutiveDirector $director
+    $e0 setDirector $director
+    $e0 setManager $manager
     # sending entity
     set e1 [java::new ptolemy.actor.AtomicActor $e0 E1]
     set p1 [java::new ptolemy.actor.IOPort $e1 P1 false true]
@@ -363,6 +383,7 @@ test IOPort-9.2 {Check unlink and send to dangling relation} {
 test IOPort-9.3 {Check unlink and get from unlinked port} {
     set e0 [java::new ptolemy.actor.CompositeActor]
     $e0 setDirector $director
+    $e0 setManager $manager
     # sending entity
     set e1 [java::new ptolemy.actor.AtomicActor $e0 E1]
     set p1 [java::new ptolemy.actor.IOPort $e1 P1 false true]
@@ -393,6 +414,8 @@ test IOPort-9.3 {Check unlink and get from unlinked port} {
 test IOPort-9.4 {Check loopback send} {
     set e0 [java::new ptolemy.actor.CompositeActor]
     $e0 setDirector $director
+    $e0 setManager $manager
+
     set e1 [java::new ptolemy.actor.AtomicActor $e0 E1]
     # sending port
     set p1 [java::new ptolemy.actor.IOPort $e1 P1 false true]
@@ -428,7 +451,8 @@ test IOPort-10.1 {Check description on a new IOPort} {
 
 test IOPort-10.2 {Check description use test-7.1 topology} {
     set e0 [java::new ptolemy.actor.CompositeActor]
-    $e0 setExecutiveDirector $director
+    $e0 setDirector $director
+    $e0 setManager $manager
     set e1 [java::new ptolemy.actor.AtomicActor $e0 E1]
     set p1 [java::new ptolemy.actor.IOPort $e1 P1 true true]
     $p1 description $detail
@@ -439,6 +463,7 @@ test IOPort-10.2 {Check description use test-7.1 topology} {
 test IOPort-10.3 {Check description use test-9.1 topology} {
     set e0 [java::new ptolemy.actor.CompositeActor]
     $e0 setDirector $director
+    $e0 setManager $manager
     # sending entity
     set e1 [java::new ptolemy.actor.AtomicActor $e0 E1]
     set p1 [java::new ptolemy.actor.IOPort $e1 P1 false true]
@@ -469,6 +494,7 @@ ptolemy.actor.IOPort {..E2.P2} receivers {
 test IOPort-10.4 {Check description use 1 sender 2 destinaton topology} {
     set e0 [java::new ptolemy.actor.CompositeActor]
     $e0 setDirector $director
+    $e0 setManager $manager
     # sender
     set e1 [java::new ptolemy.actor.AtomicActor $e0 E1]
     set p1 [java::new ptolemy.actor.IOPort $e1 P1 false true]
@@ -513,6 +539,7 @@ ptolemy.actor.IOPort {..E3.P3} receivers {
 test IOPort-10.5 {Check description use multi-output port} {
     set e0 [java::new ptolemy.actor.CompositeActor]
     $e0 setDirector $director
+    $e0 setManager $manager
     # sender
     set e1 [java::new ptolemy.actor.AtomicActor $e0 E1]
     set p1 [java::new ptolemy.actor.IOPort $e1 P1 false true]
@@ -562,6 +589,7 @@ ptolemy.actor.IOPort {..E3.P3} receivers {
 test IOPort-10.6 {Check description use the example in design doc} {
     set e0 [java::new ptolemy.actor.CompositeActor]
     $e0 setDirector $director
+    $e0 setManager $manager
     set e1 [java::new ptolemy.actor.CompositeActor $e0 E1]
     set e2 [java::new ptolemy.actor.AtomicActor $e1 E2]
     set p1 [java::new ptolemy.actor.IOPort $e2 P1 false true]
@@ -668,7 +696,8 @@ ptolemy.actor.IOPort {..E7.P10} receivers {
 
 test IOPort-11.1 {Check liberalLink on transparent multiport and inferred width} {
     set ex [java::new ptolemy.actor.CompositeActor]
-    $e0 setExecutiveDirector $director
+    $e0 setDirector $director
+    $e0 setManager $manager
     set e0 [java::new ptolemy.actor.CompositeActor $ex E0]
     # transparent port
     set p0 [java::new ptolemy.actor.IOPort $e0 P0 false true]
@@ -709,7 +738,8 @@ test IOPort-11.15 {Check inferred width} {
 
 test IOPort-11.2 {Check liberalLink: link a linked relation from inside } {
     set e0 [java::new ptolemy.actor.CompositeActor]
-    $e0 setExecutiveDirector $director
+    $e0 setDirector $director
+    $e0 setManager $manager
     set p0 [java::new ptolemy.actor.IOPort $e0 P0 false true]
     $p0 makeMultiport true
     set r1 [java::new ptolemy.actor.IORelation $e0 R1]
@@ -721,7 +751,8 @@ test IOPort-11.2 {Check liberalLink: link a linked relation from inside } {
 
 test IOPort-11.3 {Check liberalLink multi-*-relation from inside } {
     set e0 [java::new ptolemy.actor.CompositeActor]
-    $e0 setExecutiveDirector $director
+    $e0 setDirector $director
+    $e0 setManager $manager
     set p0 [java::new ptolemy.actor.IOPort $e0 P0 false true]
     $p0 makeMultiport true
     set r1 [java::new ptolemy.actor.IORelation $e0 R1]
@@ -735,7 +766,8 @@ test IOPort-11.3 {Check liberalLink multi-*-relation from inside } {
 
 test IOPort-11.4 {Check liberalLink multi-*-relation from outside } {
     set e0 [java::new ptolemy.actor.CompositeActor]
-    $e0 setExecutiveDirector $director
+    $e0 setDirector $director
+    $e0 setManager $manager
     set p0 [java::new ptolemy.actor.IOPort $e0 P0 false true]
     $p0 makeMultiport true
     # inside relation, fixed width
@@ -756,7 +788,8 @@ test IOPort-11.4 {Check liberalLink multi-*-relation from outside } {
 
 test IOPort-11.5 {Check liberalLink *-relation from both inside and outside } {
     set e0 [java::new ptolemy.actor.CompositeActor]
-    $e0 setExecutiveDirector $director
+    $e0 setDirector $director
+    $e0 setManager $manager
     set p0 [java::new ptolemy.actor.IOPort $e0 P0 false true]
     $p0 makeMultiport true
     # inside relation, *
@@ -779,6 +812,7 @@ test IOPOrt-12.1 {deepConnectedIn(out)Ports} {
     # Create objects
     set e0 [java::new ptolemy.actor.CompositeActor]
     $e0 setDirector $director
+    $e0 setManager $manager
     $e0 setName E0
     set e1 [java::new ptolemy.actor.AtomicActor $e0 "E1"]
     set e2 [java::new ptolemy.actor.CompositeActor $e0 "E2"]
@@ -885,6 +919,7 @@ test IOPort-12.3 {deepConnectedIn(Out)Ports} {
 test IOPort-13.1 {test getReceivers()} {
     set e0 [java::new ptolemy.actor.CompositeActor]
     $e0 setDirector $director
+    $e0 setManager $manager
     $e0 setName E0
     set e1 [java::new ptolemy.actor.CompositeActor $e0 "E1"]
     set e2 [java::new ptolemy.actor.CompositeActor $e0 "E2"]

@@ -50,13 +50,15 @@ if {[string compare test [info procs test]] == 1} then {
 # NOTE:  All of the following tests use this director,
 # pretty much as a dummy.
 set director [java::new ptolemy.actor.Director]
+set manager [java::new ptolemy.actor.Manager]
 
 ######################################################################
 ####
 #
 test TypedIOPort-2.1 {Construct Ports} {
     set e0 [java::new ptolemy.actor.TypedCompositeActor]
-    $e0 setExecutiveDirector $director
+    $e0 setDirector $director
+    $e0 setManager $manager
     set e1 [java::new ptolemy.actor.TypedAtomicActor $e0 E1]
     set p1 [java::new ptolemy.actor.TypedIOPort]
     set p2 [java::new ptolemy.actor.TypedIOPort $e1 P2]
@@ -65,7 +67,8 @@ test TypedIOPort-2.1 {Construct Ports} {
 
 test TypedIOPort-2.2 {Construct Ports} {
     set e0 [java::new ptolemy.actor.TypedCompositeActor]
-    $e0 setExecutiveDirector $director
+    $e0 setDirector $director
+    $e0 setManager $manager
     set e1 [java::new ptolemy.actor.TypedAtomicActor $e0 E1]
     set p1 [java::new ptolemy.actor.TypedIOPort $e1 P1]
     set p2 [java::new ptolemy.actor.TypedIOPort $e1 P2]
@@ -74,7 +77,8 @@ test TypedIOPort-2.2 {Construct Ports} {
 
 test TypedIOPort-2.3 {Attempt to set erroneous container} {
     set e0 [java::new ptolemy.actor.CompositeActor]
-    $e0 setExecutiveDirector $director
+    $e0 setDirector $director
+    $e0 setManager $manager
     set e1 [java::new ptolemy.actor.CompositeActor]
     set p1 [java::new ptolemy.actor.TypedIOPort]
     catch {$p1 setContainer $e1} msg
@@ -86,7 +90,8 @@ test TypedIOPort-2.3 {Attempt to set erroneous container} {
 #
 test TypedIOPort-3.1 {set declared/resolved types} {
     set e0 [java::new ptolemy.actor.TypedCompositeActor]
-    $e0 setExecutiveDirector $director
+    $e0 setDirector $director
+    $e0 setManager $manager
     set e1 [java::new ptolemy.actor.TypedAtomicActor $e0 E1]
     set p1 [java::new ptolemy.actor.TypedIOPort $e1 P2]
     set tDouble [[java::new ptolemy.data.DoubleToken] getClass]
@@ -103,7 +108,8 @@ test TypedIOPort-3.1 {set declared/resolved types} {
 #
 test TypedIOPort-3.2 {set resolved types} {
     set e0 [java::new ptolemy.actor.TypedCompositeActor]
-    $e0 setExecutiveDirector $director
+    $e0 setDirector $director
+    $e0 setManager $manager
     set e1 [java::new ptolemy.actor.TypedAtomicActor $e0 E1]
     set p1 [java::new ptolemy.actor.TypedIOPort $e1 P1]
     set tDouble [java::new ptolemy.data.DoubleToken]
@@ -137,7 +143,8 @@ test TypedIOPort-4.1 {Check description on a new TypedIOPort} {
 #
 test TypedIOPort-4.2 {test description} {
     set e0 [java::new ptolemy.actor.TypedCompositeActor]
-    $e0 setExecutiveDirector $director
+    $e0 setDirector $director
+    $e0 setManager $manager
     set e1 [java::new ptolemy.actor.TypedAtomicActor $e0 E1]
     set p1 [java::new ptolemy.actor.TypedIOPort $e1 P1]
     set tDouble [[java::new ptolemy.data.DoubleToken] getClass]

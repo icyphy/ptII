@@ -50,13 +50,15 @@ if {[string compare test [info procs test]] == 1} then {
 # NOTE:  All of the following tests use this director,
 # pretty much as a dummy.
 set director [java::new ptolemy.actor.Director]
+set manager [java::new ptolemy.actor.Manager]
 
 ######################################################################
 ####
 #
 test CompositeActor-2.1 {Constructor tests} {
     set e0 [java::new ptolemy.actor.CompositeActor]
-    $e0 setExecutiveDirector $director
+    $e0 setManager $manager
+    $e0 setDirector $director
     $e0 setName E0
     set w [java::new ptolemy.kernel.util.Workspace W]
     set e1 [java::new ptolemy.actor.CompositeActor]
@@ -83,20 +85,31 @@ test CompositeActor-3.2 {Test getDirector and getExecutiveDirector} {
     list [expr {[$e5 getDirector] == $wormdirect}] \
             [expr {[$e5 getExecutiveDirector] == $director}] \
             [expr {[$e3 getDirector] == $director}] \
-            [expr {[$e3 getExecutiveDirector] == $director}]
-} {1 1 1 1}
+            [expr {[$e3 getExecutiveDirector] == $director}] \
+            [expr {[$e0 getDirector] == $director}] \
+            [expr {[$e0 getExecutiveDirector] == [java::null]}] \
+} {1 1 1 1 1 1}
 
-test CompositeActor-3.3 {Test failure mode of setExecutiveDirector} {
+test CompositeActor-3.3 {Test failure mode of setManager} {
     # NOTE: Uses the setup above
-    set d3 [java::new ptolemy.actor.Director]
-    catch {$e5 setExecutiveDirector $d3} msg
+    set m3 [java::new ptolemy.actor.Manager]
+    catch {$e5 setManager $m3} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: .E0.E3.E5 and .: Cannot set the executive director of an actor with a container.}}
+} {{ptolemy.kernel.util.IllegalActionException: .E0.E3.E5 and .: Cannot set the Manager of an actor with a container.}}
 
 test CompositeActor-3.4 {Test isOpaque} {
     # NOTE: Uses the setup above
     list [$e5 isOpaque] [$e3 isOpaque] [$e2 isOpaque] [$e1 isOpaque] [$e0 isOpaque]
-} {1 0 0 0 0}
+} {1 0 0 0 1}
+
+test CompositeActor-3.5 {Test getManager} {
+    # NOTE: Uses the setup above
+    list    [expr {[$e5 getManager] == $manager}] \
+	    [expr {[$e3 getManager] == $manager}] \
+	    [expr {[$e2 getManager] == [java::null]}] \
+	    [expr {[$e1 getManager] == [java::null]}] \
+	    [expr {[$e0 getManager] == $manager}]
+} {1 1 1 1 1}
 
 ######################################################################
 ####
@@ -129,6 +142,7 @@ test CompositeActor-6.1 {Invoke all the action methods} {
      $e5 fire
      $e5 postfire
      $e5 wrapup
+     $e5 terminate
 } {}
 
 ######################################################################

@@ -50,13 +50,15 @@ if {[string compare test [info procs test]] == 1} then {
 # NOTE:  All of the following tests use this director,
 # pretty much as a dummy.
 set director [java::new ptolemy.actor.Director]
+set manager [java::new ptolemy.actor.Manager]
 
 ######################################################################
 ####
 #
 test IORelation-2.1 {Construct Relations} {
     set e1 [java::new ptolemy.actor.CompositeActor]
-    $e1 setExecutiveDirector $director
+    $e1 setDirector $director
+    $e1 setManager $manager
     set r1 [java::new ptolemy.actor.IORelation]
     set r2 [java::new ptolemy.actor.IORelation $e1 R2]
     list [$r1 getFullName] [$r2 getFullName]
@@ -64,7 +66,8 @@ test IORelation-2.1 {Construct Relations} {
 
 test IORelation-2.2 {Construct Relations} {
     set e1 [java::new ptolemy.actor.CompositeActor]
-    $e1 setExecutiveDirector $director
+    $e1 setDirector $director
+    $e1 setManager $manager
     $e1 setName E1
     set r1 [java::new ptolemy.actor.IORelation $e1 R1]
     set r2 [java::new ptolemy.actor.IORelation $e1 R2]
@@ -79,7 +82,8 @@ test IORelation-2.2 {Construct Relations} {
 #
 test IORelation-3.1 {Test getWidth} {
     set e1 [java::new ptolemy.actor.CompositeActor]
-    $e1 setExecutiveDirector $director
+    $e1 setDirector $director
+    $e1 setManager $manager
     $e1 setName E1
     set r1 [java::new ptolemy.actor.IORelation $e1 R1]
     $r1 getWidth
@@ -87,7 +91,8 @@ test IORelation-3.1 {Test getWidth} {
 
 test IORelation-3.2 {Test getWidth} {
     set e1 [java::new ptolemy.actor.CompositeActor]
-    $e1 setExecutiveDirector $director
+    $e1 setDirector $director
+    $e1 setManager $manager
     $e1 setName E1
     set r1 [java::new ptolemy.actor.IORelation $e1 R1]
     $r1 setWidth 4
@@ -96,7 +101,8 @@ test IORelation-3.2 {Test getWidth} {
 
 test IORelation-3.3 {Test getWidth} {
     set e1 [java::new ptolemy.actor.CompositeActor]
-    $e1 setExecutiveDirector $director
+    $e1 setDirector $director
+    $e1 setManager $manager
     $e1 setName E1
     set r1 [java::new ptolemy.actor.IORelation $e1 R1]
     $r1 setWidth 0
@@ -105,7 +111,8 @@ test IORelation-3.3 {Test getWidth} {
 
 test IORelation-3.4 {Test getWidth of a port} {
     set e1 [java::new ptolemy.actor.CompositeActor]
-    $e1 setExecutiveDirector $director
+    $e1 setDirector $director
+    $e1 setManager $manager
     $e1 setName E1
     set e2 [java::new ptolemy.actor.AtomicActor $e1 E2]
     set r1 [java::new ptolemy.actor.IORelation $e1 R1]
@@ -117,7 +124,8 @@ test IORelation-3.4 {Test getWidth of a port} {
 
 test IORelation-3.4.1 {Test getWidth of a port} {
     set e1 [java::new ptolemy.actor.CompositeActor]
-    $e1 setExecutiveDirector $director
+    $e1 setDirector $director
+    $e1 setManager $manager
     $e1 setName E1
     set e2 [java::new ptolemy.actor.AtomicActor $e1 E2]
     set r1 [java::new ptolemy.actor.IORelation $e1 R1]
@@ -130,7 +138,8 @@ test IORelation-3.4.1 {Test getWidth of a port} {
 
 test IORelation-3.5 {Test getWidth of a port with unspecified relation width} {
     set e1 [java::new ptolemy.actor.CompositeActor]
-    $e1 setExecutiveDirector $director
+    $e1 setDirector $director
+    $e1 setManager $manager
     $e1 setName E1
     set e2 [java::new ptolemy.actor.AtomicActor $e1 E2]
     set r1 [java::new ptolemy.actor.IORelation $e1 R1]
@@ -142,7 +151,8 @@ test IORelation-3.5 {Test getWidth of a port with unspecified relation width} {
 
 test IORelation-3.6 {Test getWidth of a port with unspecified relation width} {
     set e1 [java::new ptolemy.actor.CompositeActor]
-    $e1 setExecutiveDirector $director
+    $e1 setDirector $director
+    $e1 setManager $manager
     $e1 setName E1
     set e2 [java::new ptolemy.actor.AtomicActor $e1 E2]
     set r1 [java::new ptolemy.actor.IORelation $e1 R1]
@@ -155,8 +165,9 @@ test IORelation-3.6 {Test getWidth of a port with unspecified relation width} {
 
 test IORelation-3.7 {Test getWidth of a port with inferred relation width} {
     set e0 [java::new ptolemy.actor.CompositeActor]
-    $e0 setExecutiveDirector $director
-    $e1 setName E0
+    $e0 setDirector $director
+    $e0 setManager $manager
+    $e0 setName E0
     set e1 [java::new ptolemy.actor.CompositeActor $e0 E1]
     set e2 [java::new ptolemy.actor.AtomicActor $e1 E2]
     set r1 [java::new ptolemy.actor.IORelation $e1 R1]
@@ -168,12 +179,13 @@ test IORelation-3.7 {Test getWidth of a port with inferred relation width} {
     $p2 link $r2
     catch {$r1 setWidth 0} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: ..E1.R1 and ..E1.E2.P1: Cannot make bus because the relation is linked to a non-multiport.}}
+} {{ptolemy.kernel.util.IllegalActionException: .E0.E1.R1 and .E0.E1.E2.P1: Cannot make bus because the relation is linked to a non-multiport.}}
 
 test IORelation-3.8 {Test getWidth of a port with inferred relation width} {
     set e0 [java::new ptolemy.actor.CompositeActor]
-    $e0 setExecutiveDirector $director
-    $e1 setName E0
+    $e0 setDirector $director
+    $e0 setManager $manager
+    $e0 setName E0
     set e1 [java::new ptolemy.actor.CompositeActor $e0 E1]
     set e2 [java::new ptolemy.actor.AtomicActor $e1 E2]
     set r1 [java::new ptolemy.actor.IORelation $e1 R1]
@@ -186,12 +198,13 @@ test IORelation-3.8 {Test getWidth of a port with inferred relation width} {
     $p1 makeMultiport true
     catch {$r1 setWidth 0} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: ..E1.R1 and ..E1.P2: Cannot make bus because the relation is linked to a non-multiport.}}
+} {{ptolemy.kernel.util.IllegalActionException: .E0.E1.R1 and .E0.E1.P2: Cannot make bus because the relation is linked to a non-multiport.}}
 
 test IORelation-3.9 {Test getWidth of a port with inferred relation width} {
     set e0 [java::new ptolemy.actor.CompositeActor]
-    $e0 setExecutiveDirector $director
-    $e1 setName E0
+    $e0 setDirector $director
+    $e0 setManager $manager
+    $e0 setName E0
     set e1 [java::new ptolemy.actor.CompositeActor $e0 E1]
     set e2 [java::new ptolemy.actor.AtomicActor $e1 E2]
     set r1 [java::new ptolemy.actor.IORelation $e1 R1]
@@ -221,12 +234,13 @@ test IORelation-3.11 {Test getWidth of a port with inferred relation width} {
     $r4 setWidth 0
     catch {$p2 link $r4} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: ..E1.P2 and ..E1.R4: Attempt to link a second bus relation with unspecified width to the inside of a port.}}
+} {{ptolemy.kernel.util.IllegalActionException: .E0.E1.P2 and .E0.E1.R4: Attempt to link a second bus relation with unspecified width to the inside of a port.}}
 
 test IORelation-3.12 {Test getWidth of a port with inferred relation width} {
     set e0 [java::new ptolemy.actor.CompositeActor]
-    $e0 setExecutiveDirector $director
-    $e1 setName E0
+    $e0 setDirector $director
+    $e0 setManager $manager
+    $e0 setName E0
     set e1 [java::new ptolemy.actor.CompositeActor $e0 E1]
     set e2 [java::new ptolemy.actor.AtomicActor $e0 E2]
     set r1 [java::new ptolemy.actor.IORelation $e0 R1]
@@ -243,8 +257,9 @@ test IORelation-3.12 {Test getWidth of a port with inferred relation width} {
 test IORelation-3.13 {Resolve width through three levels} {
     # E0 contains E1 contains E2
     set e0 [java::new ptolemy.actor.CompositeActor]
-    $e0 setExecutiveDirector $director
-    $e1 setName E0
+    $e0 setDirector $director
+    $e0 setManager $manager
+    $e0 setName E0
     set p0 [java::new ptolemy.actor.IOPort $e0 P0]
     $p0 makeMultiport true
     set e1 [java::new ptolemy.actor.CompositeActor $e0 E1]
@@ -277,7 +292,8 @@ test IORelation-3.13 {Resolve width through three levels} {
 test IORelation-4.1 {Elaborate test system} {
     # Top container
     set e0 [java::new ptolemy.actor.CompositeActor]
-    $e0 setExecutiveDirector $director
+    $e0 setDirector $director
+    $e0 setManager $manager
     $e0 setName E0
     # First level of the hierarchy
     set e1 [java::new ptolemy.actor.CompositeActor $e0 E1]
