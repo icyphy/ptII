@@ -194,12 +194,13 @@ ptplot: ptplot.in ../../config.status
 	(cd ../..; ./configure)
 
 # Jar file consisting of classes used by an applet.  Basically,
-# everything but Message and Pxgraph.
+# everything but PlotApplication and Pxgraph.
 ptolemy.plotapplet.jar: $(JSRCS) $(JCLASS)
 	rm -f ptolemy.plotapplet.jar
 	(cd $(CLASSPATH); $(JAR) cf $(PTPACKAGE_DIR)/ptolemy.plotapplet.jar \
 		$(PTPACKAGE_DIR)/CmdLineArgException.class \
 		$(PTPACKAGE_DIR)/EPSGraphics.class \
+		$(PTPACKAGE_DIR)/Message.class \
 		$(PTPACKAGE_DIR)/Plot.class \
 		$(PTPACKAGE_DIR)/PlotApplet.class \
 		$(PTPACKAGE_DIR)/PlotBox.class \
