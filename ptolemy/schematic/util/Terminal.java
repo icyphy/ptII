@@ -1,4 +1,4 @@
-/* An Icon is the graphical representation of a schematic entity.
+/* An Terminal represents a point that can be connected to.
 
  Copyright (c) 1998-1999 The Regents of the University of California.
  All rights reserved.
@@ -51,10 +51,16 @@ public class Terminal extends PTMLObject {
 
     /**
      * Create a new Terminal with the name "Terminal". 
-     * By default, the Terminal contains no graphic
-     * representations.
      */
     public Terminal () {
+        this("Terminal");
+    }
+
+    /** 
+     * Create a new Terminal with the given name.
+     */
+    public Terminal (String name) {
+        super(name);
         _x = 0;
         _y = 0;
         _input = false;
@@ -132,7 +138,18 @@ public class Terminal extends PTMLObject {
         _multi = multi;
     }
 
-      private double _x, _y;
+    /** 
+     * Return a string representation of the terminal
+     */
+    public String toString() {
+        String str = getName() + "((" + _x + ", " + _y + ")";
+        if(_input) str += ", Input";
+        if(_output) str += ", Output";
+        if(_multi) str += ", Multi";
+        return str + ")";
+    }
+
+    private double _x, _y;
     private boolean _input, _output, _multi;
 }
 

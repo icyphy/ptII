@@ -106,6 +106,24 @@ public class GraphicElement extends Object {
         _attributes.putAt(name, value);
     }
 
+    /**
+     * Return a string this representing Icon.
+     */
+    public String toString() {
+        Enumeration els = attributeNames();
+        String str = getType() + "(";
+        if(els.hasMoreElements()) {
+            String name = (String) els.nextElement();
+            str += name + "=" + getAttribute(name);
+        }
+            
+        while(els.hasMoreElements()) {
+            String name = (String) els.nextElement();
+            str += "," + name + "=" + getAttribute(name);
+        }
+        return str + ")";
+    }
+
     private LLMap _attributes;
     private String _type;
 }

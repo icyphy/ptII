@@ -55,7 +55,7 @@ public class Icon extends PTMLObject {
      * representations.
      */
     public Icon () {
-        this("icon");
+        this("Icon");
     }
 
     /**
@@ -114,6 +114,19 @@ public class Icon extends PTMLObject {
             throw new IllegalActionException("removeGraphicElement:" +
                     "GraphicElement not found in icon.");
         }
+    }
+    
+    /**
+     * Return a string this representing Icon.
+     */
+    public String toString() {
+        Enumeration els = graphicElements();
+        String str = getName() + "(";
+        while(els.hasMoreElements()) {
+            GraphicElement g = (GraphicElement) els.nextElement();
+            str += "\n...." + g.toString();
+        }
+        return str + ")";
     }
 
     CircularList _graphics;

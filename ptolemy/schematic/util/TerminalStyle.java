@@ -1,4 +1,4 @@
-/* An Icon is the graphical representation of a schematic entity.
+/* A TerminalStyle represents a collection of terminals
 
  Copyright (c) 1998-1999 The Regents of the University of California.
  All rights reserved.
@@ -100,7 +100,7 @@ public class TerminalStyle extends PTMLObject {
      * Remove a graphic element from the TerminalStyle. Throw an exception if
      * the graphic element is not contained in this TerminalStyle
      */
-    public void removeTermainal (Terminal t)
+    public void removeTerminal (Terminal t)
             throws IllegalActionException {
         try {
             _terminals.removeOneOf(t);
@@ -109,6 +109,19 @@ public class TerminalStyle extends PTMLObject {
             throw new IllegalActionException("removeTerminal:" +
                     "Terminal not found in TerminalStyle.");
         }
+    }
+
+    /**
+     * Return a string representing this TerminalStyle.
+     */
+    public String toString() {
+        Enumeration terms = terminals();
+        String str = getName() + "(";
+        while(terms.hasMoreElements()) {
+            Terminal term = (Terminal) terms.nextElement();
+            str += term.toString();
+        }
+        return str + ")";
     }
 
     CircularList _terminals;

@@ -52,7 +52,7 @@ public class IconLibrary extends PTMLObject {
      * The library will have an empty string for the description and version.
      */
     public IconLibrary() {
-        this("iconlibrary");
+        this("IconLibrary");
     }
 
     /** 
@@ -156,6 +156,27 @@ public class IconLibrary extends PTMLObject {
      */
     public Enumeration subLibraryNames() {
         return _sublibraries.keys();
+    }
+
+    /**
+     * Return a string this representing Icon.
+     */
+    public String toString() {
+        Enumeration els = subLibraryNames();
+        String str = getName() + "({";
+        while(els.hasMoreElements()) {
+            String name = (String) els.nextElement();
+            IconLibrary il = getSubLibrary(name);
+            str += il.toString();
+        }
+        str += "}{";
+        els = iconNames();
+         while(els.hasMoreElements()) {
+            String name = (String) els.nextElement();
+            Icon icon = getIcon(name);
+            str += "\n" + icon.toString();
+        }        
+        return str + "})";
     }
 
     private String _version;

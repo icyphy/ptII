@@ -97,7 +97,7 @@ public class PTMLObjectFactory {
                 iconlibrary.setDescription(child.getPCData());
             } else if(etype.equals("terminalstyle")) {
             } else {
-                _unknownElementType(e, "iconlibrary");
+                _unknownElementType(child, "iconlibrary");
             }
         }
         Enumeration attributes = e.attributeNames();
@@ -190,7 +190,7 @@ public class PTMLObjectFactory {
                     icon.addGraphicElement(g);
                 }
             } else {
-                _unknownElementType(e, "icon");
+                _unknownElementType(child, "icon");
             }    
         }
         Enumeration attributes = e.attributeNames();
