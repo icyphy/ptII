@@ -200,20 +200,96 @@ RegenerateCode:
 		ptolemy.lang.java.RegenerateCode ./nodetypes/IntLitNode.java
 
 # FIXME: we can't ship these
-JAVASRC_STUBS=$(PTII)/vendors/sun/src
+JAVASRC_SKELETON_DIR=$(PTII)/vendors/sun/src
+
+# List of Java packages to generate skeleton files for
+# Generate this list with:
+# du /jdk1.3/src/java | awk '{print $2}' | sed 's@/jdk1.3/src/@@'
+# and removing java, sun and sun/tools 
+# We need to includ
+JAVASRC_SKELETON_DIRS = \
+	java/applet \
+	java/awt/color \
+	java/awt/datatransfer \
+	java/awt/dnd/peer \
+	java/awt/dnd \
+	java/awt/event \
+	java/awt/font \
+	java/awt/geom \
+	java/awt/im/spi \
+	java/awt/im \
+	java/awt/image/renderable \
+	java/awt/image \
+	java/awt/peer \
+	java/awt/print \
+	java/awt \
+	java/beans/beancontext \
+	java/beans \
+	java/io \
+	java/lang/ref \
+	java/lang/reflect \
+	java/lang \
+	java/math \
+	java/net \
+	java/rmi/activation \
+	java/rmi/dgc \
+	java/rmi/registry \
+	java/rmi/server \
+	java/rmi \
+	java/security/acl \
+	java/security/cert \
+	java/security/interfaces \
+	java/security/spec \
+	java/security \
+	java/sql \
+	java/text/resources \
+	java/text \
+	java/util/jar \
+	java/util/zip \
+	java/util \
+	sun/tools/ttydebug
+
+# Location of the unjarred Java sources
+JAVASRC_DIR = 	$(PTJAVA_DIR)/src
+
+# Unjar the Java sources if necessary
+$(JAVASRC_DIR): $(PTJAVA_DIR)/src.jar
+	(cd $PTJAVA_DIR/src; $(JAR) -xf src.jar)
+
+# Temporary jar file containing Java source skeleton files
+JAVASRCSKEL_JAR =	/tmp/javasrcskel.jar
+
+# Build all the skeleton files for the Java sources in the java package
+javasrc_skeletons: $(JAVASRC_DIR) Skeleton.class
+	@echo "WARNING: this does not yet work, the sun classes are missing"
+	@if [ ! -d $(JAVASRC_SKELETON_DIR) ]; then \
+		echo "creating $(JAVASRC_SKELETON_DIR) directory"; \
+		mkdir -p $(JAVASRC_SKELETON_DIR); \
+	fi
+	for x in $(JAVASRC_SKELETON_DIRS); do \
+		echo running Skeleton in $(JAVASRC_DIR)/$$x; \
+		CLASSPATH=$(PTII) $(JAVA) ptolemy.lang.java.Skeleton \
+			$(JAVASRC_DIR)/$$x/*.java; \
+	done
+	@echo "Copying .jskel files from $(JAVASRC_DIR)"
+	@echo " to $(JAVASRC_SKELETON_DIR)"
+	(cd $(JAVASRC_DIR); $(JAR) -cf $(JAVASRCSKEL_JAR) \
+		 `ls java/*/*.jskel java/*/*/*.jskel java/*/*/*/*.jskel`)
+	(cd $(JAVASRC_SKELETON_DIR); $(JAR) -xf $(JAVASRCSKEL_JAR))
+	rm -f $(JAVASRCSKEL_JAR)
 
 analysis:
 	@echo "Perform static semantic analysis"
 	@echo " (You can ignore ambiguous reference warnings)"
-	CLASSPATH="$(CLASSPATH)$(CLASSPATHSEPARATOR)$(JAVASRC_STUBS)" \
+	CLASSPATH="$(CLASSPATH)$(CLASSPATHSEPARATOR)$(JAVASRC_SKELETON_DIR)" \
 	$(JAVA) ptolemy.lang.java.Main ./nodetypes/IntLitNode.java
 
 codegen: generate_codegen compile_codegen run_codegen 
 generate_codegen:
-	@if [ ! -d $(JAVASRC_STUBS) ]; then \
-		echo "Warning $(JAVASRC_STUBS) does not exist"; \
+	@if [ ! -d $(JAVASRC_SKELETON_DIR) ]; then \
+		echo "Warning $(JAVASRC_SKELETON_DIR) does not exist"; \
 	fi
-	CLASSPATH="$(CLASSPATH)$(CLASSPATHSEPARATOR)$(JAVASRC_STUBS)" \
+	CLASSPATH="$(CLASSPATH)$(CLASSPATHSEPARATOR)$(JAVASRC_SKELETON_DIR)" \
 	$(JAVA) -verbose:class  ptolemy.domains.sdf.codegen.SDFCodeGenerator \
 	-class  ptolemy.domains.sdf.demo.orthocom.OrthogonalComSystem \
 	-iterations 50 \
