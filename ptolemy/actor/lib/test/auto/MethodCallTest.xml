@@ -1,12 +1,12 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="MethodCall2" class="ptolemy.actor.TypedCompositeActor">
+<entity name="MethodCallTest" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[531, 423]">
     </property>
-    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[139, 116]">
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[-1, 101]">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
@@ -80,7 +80,7 @@ Zoltan Kemenczy, Research in Motion Limited</text></svg></configure>
         </port>
     </entity>
     <entity name="Const3" class="ptolemy.actor.lib.Const">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="1.add({1,2,3})">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="1.leftShift({1,2,3})">
         </property>
         <doc>Create a constant sequence</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -100,7 +100,7 @@ Zoltan Kemenczy, Research in Motion Limited</text></svg></configure>
         </port>
     </entity>
     <entity name="Const8" class="ptolemy.actor.lib.Const">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="{x=5}.add({{x=1},{x=2},{x=3}})">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="{{x=5},{x=1},{x=2},{x=3}}.get(&quot;x&quot;)">
         </property>
         <doc>Create a constant sequence</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -109,7 +109,7 @@ Zoltan Kemenczy, Research in Motion Limited</text></svg></configure>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="240.0, 265.0">
+        <property name="_location" class="ptolemy.moml.Location" value="220.0, 265.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -140,7 +140,7 @@ Zoltan Kemenczy, Research in Motion Limited</text></svg></configure>
         </port>
     </entity>
     <entity name="Const" class="ptolemy.actor.lib.Const">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="[0,1,2;10,11,12].add({1,2,3})">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="[0,1,2;10,11,12].add(1)">
         </property>
         <doc>Create a constant sequence</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -149,7 +149,7 @@ Zoltan Kemenczy, Research in Motion Limited</text></svg></configure>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="250.0, 380.0">
+        <property name="_location" class="ptolemy.moml.Location" value="220.0, 385.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -180,7 +180,7 @@ Zoltan Kemenczy, Research in Motion Limited</text></svg></configure>
         </port>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{{2,3,4}}}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{{2,4,8}}}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
@@ -189,6 +189,9 @@ Zoltan Kemenczy, Research in Motion Limited</text></svg></configure>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
         </port>
     </entity>
     <entity name="Test2" class="ptolemy.actor.lib.Test">
@@ -202,9 +205,12 @@ Zoltan Kemenczy, Research in Motion Limited</text></svg></configure>
             <property name="input"/>
             <property name="multiport"/>
         </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
     </entity>
     <entity name="Test6" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{{{x=6}, {x=7}, {x=8}}}}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{{5,1,2,3}}}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
@@ -213,6 +219,9 @@ Zoltan Kemenczy, Research in Motion Limited</text></svg></configure>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
         </port>
     </entity>
     <entity name="Test8" class="ptolemy.actor.lib.Test">
@@ -226,9 +235,12 @@ Zoltan Kemenczy, Research in Motion Limited</text></svg></configure>
             <property name="input"/>
             <property name="multiport"/>
         </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
     </entity>
     <entity name="Test10" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{{[1, 2, 3; 11, 12, 13], [2, 3, 4; 12, 13, 14], [3, 4, 5; 13, 14, 15]}}}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{[1, 2, 3; 11,12,13]}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
@@ -238,9 +250,12 @@ Zoltan Kemenczy, Research in Motion Limited</text></svg></configure>
             <property name="input"/>
             <property name="multiport"/>
         </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
     </entity>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="60.0, 255.0">
+        <vertex name="vertex1" value="60.0, 255.0">
         </vertex>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
