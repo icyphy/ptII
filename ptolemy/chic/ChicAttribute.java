@@ -158,3 +158,4 @@ public class ChicAttribute extends StringAttribute {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+}
