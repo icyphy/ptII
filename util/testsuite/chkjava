@@ -42,6 +42,7 @@
 # 10) Check for bogus spaces around declarations
 # 11) Check for %W% %G%, which are from SCCS
 # 12) Check for // System.out.println 
+# 13) Check for @exception tags that are not worded properly
 
 for file in $@
 do
@@ -234,6 +235,15 @@ do
 	results=`egrep '//' $file | grep System.out.println`
 	if [ "x$results" != "x" ]; then
 	    echo "$file: has commented out println statements"
+	    echo "$results"
+	fi
+
+	# 13) Check for @exception tags that are not worded properly
+	results=`egrep '@exception' $file | egrep -v '@exception [A-Za-z0-9]* If' | grep -v 'Not thrown in this base class'`
+	if [ "x$results" != "x" ]; then
+	    echo "$file: @exception tags should either be"
+	    echo "      '@exception MyException If such and such occurs'"
+	    echo " or   '@exception MyException Not thrown in this base class'"
 	    echo "$results"
 	fi
 done
