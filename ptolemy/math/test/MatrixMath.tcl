@@ -141,7 +141,8 @@ set long2_2powerof2 [java::new {long[][]} {2 2} [list [list 32 16] \
 #                  {[list $op "$t\[\]\[\]" $t]}
 #    arg1 - The first argument to pass to $op, for example: {[subst $$matrix]}
 #
-proc testMatrixMath {op types arraySize opSignature arg1 arg2 {arg3 {}}} {
+proc testMatrixMath {op types arraySize opSignature \
+	arg1 arg2 {arg3 {}} {baseclass MatrixMath}} {
     foreach typeList $types {
 	set m [lindex $typeList 0]
 	set t [lindex $typeList 1]
@@ -154,14 +155,17 @@ proc testMatrixMath {op types arraySize opSignature arg1 arg2 {arg3 {}}} {
 	    set array ${v}[string range $arraySize 0 0]array
 	    global $matrix $array ${v}1
 	    if { $arg2 == {}} {
-		set matrixResults [java::call ptolemy.math.${m}MatrixMath \
+		set matrixResults [java::call \
+			ptolemy.math.${m}${baseclass} \
 			[subst $opSignature] [subst $arg1]]
 	    } else {
 		if { $arg3 == {}} {
-		    set matrixResults [java::call ptolemy.math.${m}MatrixMath \
+		    set matrixResults [java::call \
+			    ptolemy.math.${m}${baseclass} \
 			    [subst $opSignature] [subst $arg1] [subst $arg2]]
 		} else {
-		    set matrixResults [java::call ptolemy.math.${m}MatrixMath \
+		    set matrixResults [java::call \
+			    ptolemy.math.${m}${baseclass} \
 			    [subst $opSignature] [subst $arg1] \
 			    [subst $arg2] [subst $arg3]]
 		}
@@ -197,7 +201,47 @@ proc testMatrixMath {op types arraySize opSignature arg1 arg2 {arg3 {}}} {
     }
 }
 
-# Test an operation that takes a matrix and an array
+
+######################################################################
+#### The methods below are for testing *ArrayMath methods
+
+# Test a *ArrayMath  operation that takes an array
+# like xxx[] bitwiseComplement(xxx[])
+# Arguments:
+#    op - The operation to be tested, for example "multiply"
+#    types - a list of lists of types, where each element of the list
+#            contains four subelements: 
+#              The base matrix type, which would go in 
+#                    ptolemy.math.xxxMatrixMath
+#              The base type, for example double or Complex
+#              The base name of the variable to use, for example double 
+#              The expected results
+#    arraySize - the suffix of the variable name that contains the
+#                the test data. If arraySize is 2_2, then long2_2, int2_2
+#                etc. should exist
+
+proc testArrayMathArray {op types {arraySize 2_2}} {
+    testMatrixMath $op $types $arraySize {[list $op "$t\[\]"} {[subst $$array]} {} {} ArrayMath
+}
+
+# Test a *ArrayMath  operation that takes an array, and a scalar
+# like xxx[] add(xxx[], xxx[])
+proc testArrayMathArrayArray {op types {arraySize 2_2}} {
+    testMatrixMath $op $types $arraySize {[list $op "$t\[\]" "$t\[\]"} {[subst $$array]} {[subst $$array]} {} ArrayMath
+}
+
+# Test a *ArrayMath  operation that takes an array, and a scalar
+# like xxx[] add(xxx[], xxx)
+proc testArrayMathArrayScalar {op types {arraySize 2_2}} {
+    testMatrixMath $op $types $arraySize {[list $op "$t\[\]" $t} {[subst $$array]} {[subst $${v}1]} {} ArrayMath
+}
+
+
+######################################################################
+####
+# The methods below are for testing *MatrixMath methods
+
+# Test a *MatrixMath operation that takes a matrix and an array
 # like multiply(xxx[][], xxx[])
 # Arguments:
 #    op - The operation to be tested, for example "multiply"
@@ -215,7 +259,7 @@ proc testArrayMatrix {op types {arraySize 2_2}} {
     testMatrixMath $op $types $arraySize {[list $op "$t\[\]" "$t\[\]\[\]"} {[subst $$array]} {[subst $$matrix]}
 }
 
-# Test an operation that takes an array, an int and an int
+# Test a *MatrixMath operation that takes an array, an int and an int
 # like xxx[][] toMatrixFromArray(xxx[], int, int)
 proc testArrayIntInt {op types {arraySize 2_2} {intValue1 1} {intValue2 2}} {
     testMatrixMath $op $types $arraySize {[list $op "$t\[\]" int int} {[subst $$array]} [list $intValue1] [list $intValue2]
@@ -238,7 +282,6 @@ proc testMatrix {op types {arraySize 2_2}} {
 proc testMatrixArray {op types {arraySize 2_2}} {
     testMatrixMath $op $types $arraySize {[list $op "$t\[\]\[\]" "$t\[\]"]} {[subst $$matrix]} {[subst $$array]}
 }
-
 
 # Test an operation that takes a matrix and an int
 # like xxx[][] shiftArithmetic(xxx[][], int)
@@ -268,7 +311,22 @@ proc testMatrixScalar {op types {arraySize 2_2}} {
 
 ######################################################################
 ####
-#  Test out: xxx[][] add(xxx[][], xxx)
+#  *ArrayMath Test out: xxx[] add(xxx[], xxx)
+
+set types [list \
+	[list Complex ptolemy.math.Complex complex \
+	{{4.0 - 4.0i 3.0 - 1.0i}}] \
+	[list Double double double {{4.0 1.0}}] \
+	[list Float float float {{4.0 1.0}}] \
+	[list Integer int int {{4 1}}] \
+	[list Long long long {{4 1}}]]
+
+
+testArrayMathArrayScalar add $types
+
+######################################################################
+####
+#  *MatrixMath Test out: xxx[][] add(xxx[][], xxx)
 
 set types [list \
 	[list Complex ptolemy.math.Complex complex \
@@ -278,13 +336,26 @@ set types [list \
 	[list Integer int int {{{4 1} {3 2}}}] \
 	[list Long long long {{{4 1} {3 2}}}]]
 
-
 testMatrixScalar add $types
-
 
 ######################################################################
 ####
-#  Test out: xxx[][] add(xxx[][], xxx[][])
+#  *ArrayMath Test out: xxx[] add(xxx[], xxx)
+
+set types [list \
+	[list Complex ptolemy.math.Complex complex \
+	{{4.0 - 4.0i 2.0 + 2.0i}}] \
+	[list Double double double {{4.0 -2.0}}] \
+	[list Float float float {{4.0 -2.0}}] \
+	[list Integer int int {{4 -2}}] \
+	[list Long long long {{4 -2}}]]
+
+
+testArrayMathArrayArray add $types
+
+######################################################################
+####
+#  *MatrixMath Test out: xxx[][] add(xxx[][], xxx[][])
 
 set types [list \
 	[list Complex ptolemy.math.Complex complex \
@@ -293,7 +364,6 @@ set types [list \
 	[list Float float float {{{4.0 -2.0} {2.0 0.0}}}] \
 	[list Integer int int {{{4 -2} {2 0}}}] \
 	[list Long long long {{{4 -2} {2 0}}}]]
-
 
 testMatrixMatrix add $types
 
@@ -313,6 +383,36 @@ testMatrix allocCopy $types
 
 ######################################################################
 ####
+#  *ArrayMath Test out: xxx[] append(xxx[], xxx[])
+
+set types [list \
+	[list Complex ptolemy.math.Complex complex \
+	{{2.0 - 2.0i 1.0 + 1.0i 2.0 - 2.0i 1.0 + 1.0i}}] \
+	[list Double double double {{2.0 -1.0 2.0 -1.0}}] \
+	[list Float float float {{2.0 -1.0 2.0 -1.0}}] \
+	[list Integer int int {{2 -1 2 -1}}] \
+	[list Long long long {{2 -1 2 -1}}]]
+testArrayMathArrayArray append $types
+
+######################################################################
+####
+#  FIXME: *ArrayMath xxx[] append(xxx[], int, int, xxx[], int, int )
+
+######################################################################
+####
+#  FIXME: *ArrayMath applyBinaryOperation(XXXBinaryOperation, xxx, xxx[])
+
+######################################################################
+####
+#  FIXME: *ArrayMath applyBinaryOperation(XXXBinaryOperation, xxx[], xxx[])
+
+######################################################################
+####
+#  FIXME: *ArrayMath applyUnaryOperation(XXXUnaryOperation, xxx[])
+
+
+######################################################################
+####
 #  FIXME: Test out applyBinaryOperation(XXXBinaryOperation, xxx, xxx[][])
 
 ######################################################################
@@ -329,7 +429,17 @@ testMatrix allocCopy $types
 
 ######################################################################
 ####
-#  Test out: xxx[][] bitwiseAnd(xxx[][], xxx)
+#  *ArrayMath Test out: xxx[] bitwiseAnd(xxx[], xxx)
+
+set types [list \
+	[list Integer int int {{2 2}}] \
+	[list Long long long {{2 2}}]]
+
+testArrayMathArrayScalar bitwiseAnd $types
+
+######################################################################
+####
+#  *MatrixMath Test out: xxx[][] bitwiseAnd(xxx[][], xxx)
 
 set types [list \
 	[list Integer int int {{{2 2} {0 0}}}] \
@@ -339,7 +449,18 @@ testMatrixScalar bitwiseAnd $types
 
 ######################################################################
 ####
-#  Test out: xxx[][] bitwiseAnd(xxx[][], xxx[][])
+#  *ArrayMath Test out: xxx[] bitwiseAnd(xxx[], xxx[])
+
+set types [list \
+	[list Integer int int {{2 -1}}] \
+	[list Long long long {{2 -1}}]]
+
+testArrayMathArrayArray bitwiseAnd $types
+
+
+######################################################################
+####
+#  *MatrixMath Test out: xxx[][] bitwiseAnd(xxx[][], xxx[][])
 
 set types [list \
 	[list Integer int int {{{2 -1} {1 0}}}] \
@@ -349,7 +470,18 @@ testMatrixMatrix bitwiseAnd $types
 
 ######################################################################
 ####
-#  Test out: xxx[][] bitwiseComplement(xxx[][])
+#  *ArrayMath Test out: xxx[] bitwiseComplement(xxx[])
+
+set types [list \
+	[list Integer int int {{-3 0}}] \
+	[list Long long long {{-3 0}}]]
+
+testArrayMathArray bitwiseComplement $types
+
+
+######################################################################
+####
+#  *MatrixMath Test out: xxx[][] bitwiseComplement(xxx[][])
 
 set types [list \
 	[list Integer int int {{{-3 0} {-2 -1}}}] \
@@ -359,7 +491,17 @@ testMatrix bitwiseComplement $types
 
 ######################################################################
 ####
-#  Test out: xxx[][] bitwiseOr(xxx[][], xxx)
+#  *ArrayMath Test out: xxx[] bitwiseOr(xxx[], xxx)
+
+set types [list \
+	[list Integer int int {{2 -1}}] \
+	[list Long long long {{2 -1}}]] 
+
+testArrayMathArrayScalar bitwiseOr $types
+
+######################################################################
+####
+#  *MatrixMath Test out: xxx[][] bitwiseOr(xxx[][], xxx)
 
 set types [list \
 	[list Integer int int {{{2 -1} {3 2}}}] \
@@ -369,7 +511,17 @@ testMatrixScalar bitwiseOr $types
 
 ######################################################################
 ####
-#  Test out: xxx[][] bitwiseOr(xxx[][], xxx[][])
+#  *ArrayMath Test out: xxx[] bitwiseOr(xxx[], xxx[])
+
+set types [list \
+	[list Integer int int {{2 -1}}] \
+	[list Long long long {{2 -1}}]] 
+
+testArrayMathArrayArray bitwiseOr $types
+
+######################################################################
+####
+#  *MatrixMath Test out: xxx[][] bitwiseOr(xxx[][], xxx[][])
 
 set types [list \
 	[list Integer int int {{{2 -1} {1 0}}}] \
@@ -379,13 +531,33 @@ testMatrixMatrix bitwiseOr $types
 
 ######################################################################
 ####
-#  Test out: xxx[][] bitwiseXor(xxx[][], xxx)
+#  *ArrayMath Test out: xxx[] bitwiseXor(xxx[], xxx)
+
+set types [list \
+	[list Integer int int {{0 -3}}] \
+	[list Long long long {{0 -3}}]] 
+
+testArrayMathArrayScalar bitwiseXor $types
+
+######################################################################
+####
+#  *MatrixMath Test out: xxx[][] bitwiseXor(xxx[][], xxx)
 
 set types [list \
 	[list Integer int int {{{0 -3} {3 2}}}] \
 	[list Long long long {{{0 -3} {3 2}}}]]
 
 testMatrixScalar bitwiseXor $types
+
+######################################################################
+####
+#  *ArrayMath Test out: xxx[] bitwiseXor(xxx[], xxx[])
+
+set types [list \
+	[list Integer int int {{0 0}}] \
+	[list Long long long {{0 0}}]] 
+
+testArrayMathArrayArray bitwiseXor $types
 
 ######################################################################
 ####
@@ -405,7 +577,25 @@ testMatrixMatrix bitwiseXor $types
 
 ######################################################################
 ####
-#  Test out: xxx[][] divideElements(xxx[][], xxx[][])
+#  FIXME: *ArrayMath Test out: xxx[] divide(xxx[], xxx)
+
+######################################################################
+####
+#  *ArrayMath Test out: xxx[] divide(xxx[], xxx[])
+
+set types [list \
+	[list Complex ptolemy.math.Complex complex \
+	{{1.0 + 0.0i 1.0 + 0.0i}}] \
+	[list Double double double {{1.0 1.0}}] \
+	[list Float float float {{1.0 1.0}}] \
+	[list Integer int int {{1 1}}] \
+	[list Long long long {{1 1}}]]
+
+testArrayMathArrayArray divide $types
+
+######################################################################
+####
+#  *MatrixMath Test out: xxx[][] divideElements(xxx[][], xxx[][])
 
 set types [list \
 	[list Complex ptolemy.math.Complex complex \
@@ -416,6 +606,21 @@ set types [list \
 	[list Long long long {{{1 1} {1 1}}}]]
 
 testMatrixMatrix divideElements $types 2_2nonzero
+
+######################################################################
+####
+#  *ArrayMath Test out: xxx[] dotProduct(xxx[], xxx[])
+
+set types [list \
+	[list Complex ptolemy.math.Complex complex \
+	{10.0 + 0.0i}] \
+	[list Double double double {5.0}] \
+	[list Float float float {5.0}] \
+	[list Integer int int {5}] \
+	[list Long long long {5}]]
+
+testArrayMathArrayArray dotProduct $types
+
 
 ######################################################################
 ####
@@ -501,6 +706,11 @@ testInt identity $types 2_2 3
 
 ######################################################################
 ####
+#  FIXME: *ArrayMath Test out: xxx[] limit(xxx[], int int)
+
+
+######################################################################
+####
 #  FIXME: void matrixCopy(xxx[][], xxx[][])
 
 
@@ -510,7 +720,17 @@ testInt identity $types 2_2 3
 
 ######################################################################
 ####
-#  Test out: xxx[][] moduloElements(xxx[][], xxx)
+#  *ArrayMath Test out: xxx[] modulo(xxx[], xxx)
+
+set types [list \
+	[list Integer int int {{0 -1}}] \
+	[list Long long long {{0 -1}}]]
+
+testArrayMathArrayScalar modulo $types
+
+######################################################################
+####
+#  *MatrixMath Test out: xxx[][] moduloElements(xxx[][], xxx)
 
 set types [list \
 	[list Integer int int {{{0 -1} {1 1}}} ] \
@@ -522,7 +742,17 @@ testMatrixScalar moduloElements $types 2_2nonzero
 
 ######################################################################
 ####
-#  Test out: xxx[][] modulo(xxx[][], xxx[][])
+#  *ArrayMath Test out: xxx[] modulo(xxx[], xxx[])
+
+set types [list \
+	[list Integer int int {{0 0}}] \
+	[list Long long long {{0 0}}]]
+
+testArrayMathArrayArray modulo $types
+
+######################################################################
+####
+#  *MatrixMath Test out: xxx[][] modulo(xxx[][], xxx[][])
 
 set types [list \
 	[list Integer int int {{{0 0} {0 0}}}] \
