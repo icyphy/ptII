@@ -244,5 +244,8 @@ public class MultiportToSinglePort implements MoMLFilter {
         // In Ptolemy II 3.0.2, SOC_FSM_SR_HDE.xml has a Const with multiport.
         _actorsWithMultiPortToSinglePortChanges
             .put("ptolemy.actor.lib.Const", "output");
+
+        _actorsWithMultiPortToSinglePortChanges
+            .put("ptolemy.actor.lib.gui.MatrixViewer", "input");
     }
 }
