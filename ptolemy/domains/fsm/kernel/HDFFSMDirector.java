@@ -27,7 +27,6 @@
 
 @ProposedRating Red (vogel@eecs.berkeley.edu)
 @AcceptedRating Red (vogel@eecs.berkeley.edu)
-
 */
 
 package ptolemy.domains.fsm.kernel;
@@ -117,8 +116,8 @@ References</H1>
 
 <OL>
 <LI>
-A. Girault, B. Lee, and E. A. Lee, ``<A HREF="http://ptolemy.eecs.berkeley.edu/papers/98/starcharts">Hierarchical
-Finite State Machines with Multiple Concurrency Models</A>,'' April 13,
+A. Girault, B. Lee, and E. A. Lee, "<A HREF="http://ptolemy.eecs.berkeley.edu/papers/98/starcharts">Hierarchical
+Finite State Machines with Multiple Concurrency Models</A>," April 13,
 1998.</LI>
 
 @author Brian K. Vogel
@@ -156,18 +155,13 @@ public class HDFFSMDirector extends FSMDirector {
      *
      *  @param container Container of the director.
      *  @param name Name of this director.
-     *  @exception It may be thrown in derived classes if the
-     *      director is not compatible with the specified container.
+     *  @exception IllegalActionException If the director is not compatible
+     *  with the specified container.  May be thrown in derived classes.
      */
     public HDFFSMDirector(CompositeActor container, String name)
             throws IllegalActionException {
         super(container, name);
-
-
 	// FIXME: Remove this when get something better.
-
-
-
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -251,7 +245,8 @@ public class HDFFSMDirector extends FSMDirector {
 	//if (_debugging) _debug("HDFFSMDirector: initialize()");
         CompositeActor container = (CompositeActor)getContainer();
         if (container != null) {
-            Enumeration allActors = Collections.enumeration(container.deepEntityList());
+            Enumeration allActors =
+                Collections.enumeration(container.deepEntityList());
             while (allActors.hasMoreElements()) {
                 Actor actor = (Actor)allActors.nextElement();
                 if (actor == _controller) {
@@ -286,7 +281,7 @@ public class HDFFSMDirector extends FSMDirector {
      *
      *  @return True if the Director wishes to be scheduled for another
      *  iteration
-     *  @exception IllegalActionException *Deprecate* If the postfire()
+     *  @exception IllegalActionException If the postfire()
      *  method of the container or one of the deeply contained actors
      *  throws it.
      */
@@ -310,7 +305,7 @@ public class HDFFSMDirector extends FSMDirector {
      *
      *  @return True if the Director wishes to be scheduled for another
      *  iteration
-     *  @exception IllegalActionException *Deprecate* If the postfire()
+     *  @exception IllegalActionException If the postfire()
      *  method of the container or one of the deeply contained actors
      *  throws it. Or if the current refinement is null.
      */
@@ -355,10 +350,12 @@ public class HDFFSMDirector extends FSMDirector {
 		_portNameToArrayFIFOQueue = new HashMap();
 	    }
 
-	    Enumeration containPorts = Collections.enumeration(container.portList());
+	    Enumeration containPorts =
+                Collections.enumeration(container.portList());
 	    while (containPorts.hasMoreElements()) {
 		TypedIOPort aPort = (TypedIOPort)containPorts.nextElement();
-		//if (_debugging) _debug("guard: port name:" + aPort.getName());
+		//if (_debugging)
+                //   _debug("guard: port name:" + aPort.getName());
 		// Array to store queue of tokens to be used in evaluating
 		// the state transition guard expression.
 
@@ -382,7 +379,8 @@ public class HDFFSMDirector extends FSMDirector {
 		// Create a mapping from the current port's name to
 		// a queue to be used to store the _guardLength most
 		// recently read in tokens.
-		if (!_portNameToArrayFIFOQueue.containsKey(aPort.getFullName())) {
+		if (!_portNameToArrayFIFOQueue.containsKey(
+                        aPort.getFullName())) {
 		    _portNameToArrayFIFOQueue.put(aPort.getFullName(),
                             guardTokenArray);
 		}
@@ -396,7 +394,8 @@ public class HDFFSMDirector extends FSMDirector {
 	    // End of Initialize guard variables.
 
 
-            Enumeration allactors = Collections.enumeration(container.deepEntityList());
+            Enumeration allactors =
+                Collections.enumeration(container.deepEntityList());
             while (allactors.hasMoreElements()) {
                 Actor actor = (Actor)allactors.nextElement();
                 //if (_debugging) _debug("Invoking preinitialize(): ",
@@ -491,12 +490,12 @@ public class HDFFSMDirector extends FSMDirector {
      * as the input port (of this director's container) to
      * which it is connected.
      */
-    public boolean transferInputs(IOPort port) throws IllegalActionException {
-
-
+    public boolean transferInputs(IOPort port)
+            throws IllegalActionException {
         if (!port.isInput() || !port.isOpaque()) {
             throw new IllegalActionException(this, port,
-                    "transferInputs: port argument is not an opaque input port.");
+                    "transferInputs: port argument is not an " +
+                    "opaque input port.");
         }
         // do not handle multiple channels now
         boolean trans = false;
@@ -505,13 +504,17 @@ public class HDFFSMDirector extends FSMDirector {
             throw new IllegalActionException(this,
                     "transferInputs: current refinement is null.");
 	} else {
-            //if (_debugging) _debug("HDFFSMDirector: transferInputs():Current refinement is not null, full name is: " + refine.getFullName());
+            //if (_debugging)
+            //       _debug("HDFFSMDirector: transferInputs():Current " +
+            //              refinement is not null, full name is: " +
+            //              refine.getFullName());
 	}
 
         IOPort p;
         Receiver rec;
 	// Get token queue associated with "port".
-	ArrayFIFOQueue guardTokenArray = (ArrayFIFOQueue)_portNameToArrayFIFOQueue.get(port.getFullName());
+	ArrayFIFOQueue guardTokenArray =
+            (ArrayFIFOQueue)_portNameToArrayFIFOQueue.get(port.getFullName());
 
 	// Reset the token to null.
 	Token t = null;
@@ -538,8 +541,10 @@ public class HDFFSMDirector extends FSMDirector {
 		guardTokenArray.put(t);
 
 
-		//if (_debugging) _debug("HDFFSMDirector: transferInputs(): Port " + port.getFullName() + " has token.");
-		//if (_debugging) _debug("HDFFSMDirector: transferInputs(): input port's token: " + t.toString());
+		//if (_debugging) _debug("HDFFSMDirector: transferInputs():" +
+                //      " Port " + port.getFullName() + " has token.");
+		//if (_debugging) _debug("HDFFSMDirector: transferInputs():" +
+                //      " input port's token: " + t.toString());
 
 
 		if (_controller == null) {
@@ -549,8 +554,11 @@ public class HDFFSMDirector extends FSMDirector {
 		    throw new IllegalActionException(this,
                             "Current refinement is null.");
 		} else {
-		    //for (Enumeration e = refine.getPorts() ; e.hasMoreElements() ;) {
-		    //System.out.println("HDFFSMDirector: transferInputs(): Next port contained by current refinement: " + e.nextElement());
+		    //for (Enumeration e = refine.getPorts();
+                    // e.hasMoreElements() ;) {
+		    //System.out.println("HDFFSMDirector: transferInputs():" +
+                    //     "Next port contained by current refinement: " +
+                    // e.nextElement());
 		    //}
 		}
 
@@ -568,10 +576,20 @@ public class HDFFSMDirector extends FSMDirector {
                 if (p != null) {
                     rec = (p.getReceivers())[0][0];
 
-		    //if (_debugging) _debug("HDFFSMDirector: transferInputs(): Put a token in the current refining state");
+		    //if (_debugging)
+                    //    _debug("HDFFSMDirector: transferInputs(): " +
+                    //           "Put a token in the current refining state");
                     rec.put(t);
                 } else {
-		    throw new IllegalActionException(this, port, "Director.transferInputs: Can't access input port the current refining state. Note that the name of a refining states port is constrained to be the same as the name of the input port (of the TypedComposite actor that represents an FSM) to which it is connected.");
+
+		    throw new IllegalActionException(this, port,
+                            "Director.transferInputs: Can't access input " +
+                            "port the current refining state. Note that the " +
+                            "name of a refining states port is constrained " +
+                            "to be the same as the name of the input port " +
+                            "(of the TypedComposite actor that represents " +
+                            "an FSM) to which it is connected.");
+
 		}
                 trans = true;
             } catch (NoTokenException ex) {
@@ -585,7 +603,8 @@ public class HDFFSMDirector extends FSMDirector {
 	// FIXME: As a performance optimization, should only do this
 	// on the last firing of an iteration.
 	// Get the array of variables associated with "port".
-	Variable[] guardVarArray = (Variable[])_inputPortNameToVariableArray.get(port.getFullName());
+	Variable[] guardVarArray =
+            (Variable[])_inputPortNameToVariableArray.get(port.getFullName());
 
 	if (guardVarArray == null) {
 	    throw new InternalErrorException("Guard variable array is null " +
@@ -600,14 +619,15 @@ public class HDFFSMDirector extends FSMDirector {
 
 	int i; // loop var.
 	for (i = 0; i < guardVarArray.length; i++) {
-	    (guardVarArray[i]).setToken((Token)guardTokenArray.get(guardVarArray.length -1 - i));
+	    (guardVarArray[i]).setToken(
+                    (Token)guardTokenArray.get(guardVarArray.length -1 - i));
 	}
         return trans;
     }
 
 
 
-    /** Return true if it transfers data from an output port of the
+   /** Return true if it transfers data from an output port of the
      *  current refinement (an opaque composite actor) to the ports it
      *  is connected to on the outside. This method will transfer all
      *  available tokens on channel 0 of the output port.
@@ -634,12 +654,16 @@ public class HDFFSMDirector extends FSMDirector {
      *   refining state of the FSM.
      *  @return True if data are transfered.
      */
-    public boolean transferOutputs(IOPort port) throws IllegalActionException {
+    public boolean transferOutputs(IOPort port)
+            throws IllegalActionException {
 
-	//if (_debugging) _debug("HDFFSMDirector: transferOutputs(): caled on port: " + port.getName());
+	//if (_debugging)
+        //    _debug("HDFFSMDirector: transferOutputs(): called on port: " +
+        //         port.getName());
         if (!port.isOutput() || !port.isOpaque()) {
             throw new IllegalActionException(this, port,
-                    "transferOutputs: port argument is not an opaque output port.");
+                    "transferOutputs: port argument is not an opaque " +
+                    "output port.");
         }
         boolean trans = false;
         // do not handle multiple channels now
@@ -658,7 +682,8 @@ public class HDFFSMDirector extends FSMDirector {
 	// ********************************************************
 
 	// Get token queue associated with "port".
-	ArrayFIFOQueue guardTokenArray = (ArrayFIFOQueue)_portNameToArrayFIFOQueue.get(p.getFullName());
+	ArrayFIFOQueue guardTokenArray =
+            (ArrayFIFOQueue)_portNameToArrayFIFOQueue.get(p.getFullName());
 
         while (insideReceiver.hasToken()) {
             try {
@@ -680,9 +705,20 @@ public class HDFFSMDirector extends FSMDirector {
                 if (p != null) {
                     Receiver rec = (p.getInsideReceivers())[0][0];
                     rec.put(t);
-		    //if (_debugging) _debug("HDFFSMDirector: transferOutputs(): Put a token in the compisite actor's (containing this director) output port");
+		    //if (_debugging)
+                    //    _debug("HDFFSMDirector: transferOutputs(): " +
+                    //         "Put a token in the compisite actor's " +
+                    //         "(containing this director) output port");
                 } else {
-		    throw new IllegalActionException(this, port, "Director.transferOutputs: Can't access an output port (of the container of the current refining state) connected to the currect refining state's output port. Note that the name of a refining states port is constrained to be the same as the name of the output port (of the TypedComposite actor that represents an FSM) to which it is connected.");
+                    throw new IllegalActionException(this, port,
+                            "Director.transferOutputs: Can't access an " +
+                            "output port (of the container of the current " +
+                            "refining state) connected to the current " +
+                            "refining state's output port. Note that the " +
+                            "name of a refining states port is constrained " +
+                            "to be the same as the name of the output port " +
+                            "(of the TypedComposite actor that represents " +
+                            "an FSM) to which it is connected.");
 		}
                 trans = true;
             } catch (NoTokenException ex) {
@@ -696,7 +732,8 @@ public class HDFFSMDirector extends FSMDirector {
 	// FIXME: As a performance optimization, should only do this
 	// on the last firing of an iteration.
 	// Get the array of variables associated with "port".
-	Variable[] guardVarArray = (Variable[])_outputPortNameToVariableArray.get(p.getFullName());
+	Variable[] guardVarArray =
+            (Variable[])_outputPortNameToVariableArray.get(p.getFullName());
 
 	if (guardVarArray == null) {
 	    // This should not happen.
@@ -713,13 +750,48 @@ public class HDFFSMDirector extends FSMDirector {
 
 	int i; // loop var.
 	for (i = 0; i < guardVarArray.length; i++) {
-	    (guardVarArray[i]).setToken((Token)guardTokenArray.get(guardVarArray.length -1 - i));
+	    (guardVarArray[i]).setToken(
+                    (Token)guardTokenArray.get(guardVarArray.length -1 - i));
 	}
         return trans;
     }
 
-    ///////////////////////////////////////////////////////////////
-    //////////        private methods             /////////////////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /* Get an enumeration of all of the variables that can be part
+     * of a transistion's guard expression. This method should
+     * only be called by an instance of HDFFSMTransistion.
+     */
+    protected Enumeration _getTransitionGuardVars() {
+	return _allGuardVars.elements();
+    }
+
+    /** Indicate whether this director would like to have write access
+     *  during its iteration. By default, the return value is true, indicating
+     *  the need for a write access.
+     *
+     *  @return True if this director need write access, false otherwise.
+     */
+    protected boolean _writeAccessRequired() {
+        // should ask the refinements
+        return false;
+    }
+
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    /**  Controller of this director. */
+    protected HDFFSMController _controller = null;
+
+    /* List of all of the variables that can be part
+     * of a transistion's guard expression.
+     */
+    protected ArrayFIFOQueue _allGuardVars = null;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
 
     /** Create the guard variables assiciated with <i>port</i> and
      *  add them to a queue containing all the guard
@@ -753,15 +825,17 @@ public class HDFFSMDirector extends FSMDirector {
 	    // be copied into the variables in the array on the
 	    // last firing of an iteration (Type B firing in the
 	    // reference paper).
-	    if (!_inputPortNameToVariableArray.containsKey(port.getFullName())) {
-		_inputPortNameToVariableArray.put(port.getFullName(), guardVarArray);
+	    if (!_inputPortNameToVariableArray.containsKey(
+                    port.getFullName())) {
+		_inputPortNameToVariableArray.put(
+                        port.getFullName(), guardVarArray);
 		try {
 		    for(int i = 0; i < history; i++) {
-
 			Integer iInt = new Integer(i);
-			String guardName = port.getName() + "$" + iInt.toString();
-
-			//if (_debugging) _debug("guard: with guard name:" + guardName);
+			String guardName =
+                            port.getName() + "$" + iInt.toString();
+			//if (_debugging)
+                        //   _debug("guard: with guard name:" + guardName);
 
 			guardVarArray[i] = new Variable(this, guardName);
 		    }
@@ -793,15 +867,19 @@ public class HDFFSMDirector extends FSMDirector {
 	    // be copied into the variables in the array on the
 	    // last firing of an iteration (Type B firing in the
 	    // reference paper).
-	    if (!_outputPortNameToVariableArray.containsKey(port.getFullName())) {
-		_outputPortNameToVariableArray.put(port.getFullName(), guardVarArray);
+	    if (!_outputPortNameToVariableArray.containsKey(
+                    port.getFullName())) {
+		_outputPortNameToVariableArray.put(
+                        port.getFullName(), guardVarArray);
 		try {
 		    for(int i = 0; i < history; i++) {
 
 			Integer iInt = new Integer(i);
-			String guardName = port.getName() + "$" + iInt.toString();
+			String guardName = port.getName() + "$" +
+                            iInt.toString();
 
-			//if (_debugging) _debug("guard: with guard name:" + guardName);
+			//if (_debugging)
+                        //   _debug("guard: with guard name:" + guardName);
 
 			guardVarArray[i] = new Variable(this, guardName);
 		    }
@@ -828,31 +906,6 @@ public class HDFFSMDirector extends FSMDirector {
 
 
     }
-
-
-    ///////////////////////////////////////////////////////////////
-    //////////        protected methods           /////////////////
-
-
-    /* Get an enumeration of all of the variables that can be part
-     * of a transistion's guard expression. This method should
-     * only be called by an instance of HDFFSMTransistion.
-     */
-    protected Enumeration _getTransitionGuardVars() {
-	return _allGuardVars.elements();
-    }
-
-    /** Indicate whether this director would like to have write access
-     *  during its iteration. By default, the return value is true, indicating
-     *  the need for a write access.
-     *
-     *  @return True if this director need write access, false otherwise.
-     */
-    protected boolean _writeAccessRequired() {
-        // should ask the refinements
-        return false;
-    }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -884,24 +937,4 @@ public class HDFFSMDirector extends FSMDirector {
     // of variables is only updated on the last firing of an
     // iteration.
     private HashMap _outputPortNameToVariableArray;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public variables                  ////
-
-
-
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-
-
-
-    /**  Controller of this director. */
-    protected HDFFSMController _controller = null;
-
-    /* List of all of the variables that can be part
-     * of a transistion's guard expression.
-     */
-    protected ArrayFIFOQueue _allGuardVars = null;
-
 }
