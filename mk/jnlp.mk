@@ -111,7 +111,8 @@ HYBRID_SYSTEMS_ONLY_JNLP_JARS = \
 	ptolemy/domains/ct/ct.jar \
 	ptolemy/domains/fsm/fsm.jar \
 	ptolemy/domains/sdf/lib/lib.jar \
-	ptolemy/domains/sdf/kernel/kernel.jar
+	ptolemy/domains/sdf/kernel/kernel.jar \
+	ptolemy/hsif/demo/demo.jar
 
 HYBRID_SYSTEMS_MAIN_JAR = \
 	ptolemy/actor/gui/jnlp/HyVisualApplication.jar
