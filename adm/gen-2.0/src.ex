@@ -110,6 +110,7 @@ ptolemy/system
 ptolemy/vergil/JModelViewer.java
 ptolemy/vergil/VergilApplet.java
 ptolemy/vergil/graph
+updateMoMLFiles.xml
 devel
 htmlchek*
 fmfilesvisited
