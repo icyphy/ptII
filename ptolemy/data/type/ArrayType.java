@@ -55,15 +55,15 @@ public class ArrayType extends StructuredType {
      */
     public ArrayType(Type elementType) {
         if (elementType == null) {
-            throw new IllegalArgumentException("ArrayType: elementType is"
-                    + " null");
+            throw new IllegalArgumentException("Cannot create ArrayType "
+                    + " with null elementType");
         }
 
         try {
             _declaredElementType = (Type)elementType.clone();
         } catch (CloneNotSupportedException cnse) {
             throw new InternalErrorException("ArrayType: The specified type " +
-                    "cannot be cloned.");
+                    elementType + " cannot be cloned.");
         }
         _elementType = _declaredElementType;
     }
@@ -101,7 +101,8 @@ public class ArrayType extends StructuredType {
     public Token convert(Token token) throws IllegalActionException {
         if ( !isCompatible(token)) {
             throw new IllegalArgumentException("ArrayType.convert: " +
-                    "Cannot convert the argument token to this type.");
+                    "Cannot convert the argument token " + token + 
+                    " to the type " + this + ".");
         }
 
         ArrayToken argumentArrayToken = (ArrayToken)token;
@@ -250,7 +251,8 @@ public class ArrayType extends StructuredType {
 	// This type is a variable.
         if ( !this.isSubstitutionInstance(newType)) {
             throw new IllegalActionException("ArrayType.updateType: "
-                    + "Cannot update the current type to the new type.");
+                    + "The type " + this + " cannot be updated to " 
+                    + newType + ".");
         }
 
         Type newElemType = ((ArrayType)newType).getElementType();
@@ -259,7 +261,8 @@ public class ArrayType extends StructuredType {
                 _elementType = (Type)newElemType.clone();
             } catch (CloneNotSupportedException cnse) {
                 throw new InternalErrorException("ArrayType.updateType: " +
-                        "The specified type cannot be cloned.");
+                        "The specified element type cannot be cloned: " +
+                        _elementType);
             }
         } else {
             // _declaredElementType is a StructuredType. _elementType
@@ -296,7 +299,7 @@ public class ArrayType extends StructuredType {
     protected int _compare(StructuredType type) {
         if ( !(type instanceof ArrayType)) {
             throw new IllegalArgumentException("ArrayType.compare: " +
-                    "The argument is not an ArrayType.");
+                    "The argument " + type + " is not an ArrayType.");
         }
 
         return TypeLattice.compare(_elementType,
@@ -321,7 +324,7 @@ public class ArrayType extends StructuredType {
     protected StructuredType _greatestLowerBound(StructuredType type) {
         if ( !(type instanceof ArrayType)) {
             throw new IllegalArgumentException("ArrayType.greatestLowerBound: "
-                    + "The argument is not an ArrayType.");
+                    + "The argument " + type + " is not an ArrayType.");
         }
 
         Type elementGLB = (Type)TypeLattice.lattice().greatestLowerBound(
@@ -340,7 +343,7 @@ public class ArrayType extends StructuredType {
     protected StructuredType _leastUpperBound(StructuredType type) {
         if ( !(type instanceof ArrayType)) {
             throw new IllegalArgumentException("ArrayType.leastUpperBound: "
-                    + "The argument is not an ArrayType.");
+                    + "The argument " + type + " is not an ArrayType.");
         }
 
         Type elementLUB = (Type)TypeLattice.lattice().leastUpperBound(
@@ -411,13 +414,13 @@ public class ArrayType extends StructuredType {
             if (isConstant()) {
                 throw new IllegalActionException(
 		        "ArrayType$ElementTypeTerm.initialize: " +
-			"This type is not settable.");
+			"This type " + this + " is not settable.");
             }
 
             if ( !(e instanceof Type)) {
                 throw new IllegalActionException(
 		        "ArrayType$ElementTypeTerm.initialize: " +
-                        "The argument is not a Type.");
+                        "The argument " + this + " is not a Type.");
             }
 
             if (_declaredElementType == BaseType.UNKNOWN) {
@@ -452,8 +455,8 @@ public class ArrayType extends StructuredType {
         public void setValue(Object e) throws IllegalActionException {
             if ( !isSettable()) {
                 throw new IllegalActionException(
-                        "ArrayType$ElementTypeTerm.setValue: This type is " +
-			"not settable.");
+                        "ArrayType$ElementTypeTerm.setValue: This type " 
+                        + e + " is not settable.");
             }
 
             if ( !_declaredElementType.isSubstitutionInstance((Type)e)) {
@@ -473,7 +476,7 @@ public class ArrayType extends StructuredType {
                 } catch (CloneNotSupportedException cnse) {
                     throw new InternalErrorException(
                             "ArrayType$ElementTypeTerm.setValue: " +
-                            "The specified type cannot be cloned.");
+                            "The specified type " + e + " cannot be cloned.");
                 }
             } else {
                 ((StructuredType)_elementType).updateType((StructuredType)e);
@@ -484,7 +487,8 @@ public class ArrayType extends StructuredType {
          *  @return A String.
          */
         public String toString() {
-            return "(ArrayElementType, " + getValue() + ")";
+            return "{ArrayElementType(" + getAssociatedObject() 
+                + "), " + getValue() + ")";
         }
 
         ///////////////////////////////////////////////////////////////
