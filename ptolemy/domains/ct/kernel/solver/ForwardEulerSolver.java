@@ -154,18 +154,20 @@ public class ForwardEulerSolver extends FixedStepSolver {
             throw new IllegalActionException( dir,
                     " must have a director to fire.");
         }
+        CTSchedule schedule = (CTSchedule)scheduler.getSchedule();
         resetRound();
         if(dir.STAT) {
             dir.NFUNC++;
         }
-        Iterator actors =
-            scheduler.scheduledStateTransitionActorList().iterator();
+        Iterator actors = schedule.get(
+                CTSchedule.STATE_TRANSITION_ACTORS).actorIterator();
         while(actors.hasNext()) {
             Actor next = (Actor)actors.next();
             _debug(getFullName() + " is firing..."+((Nameable)next).getName());
             next.fire();
         }
-        actors = scheduler.scheduledDynamicActorList().iterator();
+        actors = schedule.get(
+                CTSchedule.DYNAMIC_ACTORS).actorIterator();
         while(actors.hasNext()) {
             Actor next = (Actor)actors.next();
             _debug(getFullName() + " is firing..."+((Nameable)next).getName());

@@ -97,17 +97,31 @@ test CTScheduler-2.1 {schedule a chain of actors} {
     set p3i [$a3 getPort input]
     set r1 [$ca connect $p1o $p2i R1]
     set r2 [$ca connect $p2o $p3i R2]
-    list [enumToFullNames [$sch arithmaticActors]] \
-	 [enumToFullNames [$sch dynamicActors]] \
-	 [enumToFullNames [$sch eventGenerators]] \
-	 [enumToFullNames [$sch eventInterpreters]] \
-	 [enumToFullNames [$sch statefulActors]] \
-	 [enumToFullNames [$sch stateTransitionSSCActors]] \
-	 [enumToFullNames [$sch outputSSCActors]] \
-	 [enumToFullNames [$sch dynamicActorSchedule]] \
-	 [enumToFullNames [$sch stateTransitionSchedule]] \
-	 [enumToFullNames [$sch outputSchedule]]
-} {{.CA.A1 .CA.A2 .CA.A3} {} {} {} {} {} {} {} {} {.CA.A1 .CA.A2 .CA.A3}}
+    list [$sch toString]
+} {{CTSchedule {
+    discreteActors {
+    }
+    dynamicActors {
+    }
+    stateStepSizeControlActors {
+    }
+    outputStepSizeControlActors {
+    }
+    eventGenerators {
+    }
+    waveformGenerators {
+    }
+    statefulActors {
+    }
+    stateTransitionActors {
+    }
+    outputActors {
+	.CA.A1
+	.CA.A2
+	.CA.A3
+    }
+}
+}}
 
 test CTScheduler-2.2 {has one dynamic actor} { 
     #Note: use above setup.
@@ -118,18 +132,32 @@ test CTScheduler-2.2 {has one dynamic actor} {
     $r2 setContainer [java::null]
     set r2 [$ca connect $p2o $pd1i R2]
     set r3 [$ca connect $pd1o $p3i R3]
-    list [enumToFullNames [$sch arithmaticActors]] \
-	 [enumToFullNames [$sch dynamicActors]] \
-	 [enumToFullNames [$sch eventGenerators]] \
-	 [enumToFullNames [$sch eventInterpreters]] \
-	 [enumToFullNames [$sch statefulActors]] \
-	 [enumToFullNames [$sch stateTransitionSSCActors]] \
-	 [enumToFullNames [$sch outputSSCActors]] \
-	 [enumToFullNames [$sch dynamicActorSchedule]] \
-	 [enumToFullNames [$sch stateTransitionSchedule]] \
-	 [enumToFullNames [$sch outputSchedule]]
-} {{.CA.A1 .CA.A2 .CA.A3} .CA.Dyn {} {} {} {} {} .CA.Dyn\
-	{.CA.A1 .CA.A2} .CA.A3}
+    list [$sch toString]
+} {{CTSchedule {
+    discreteActors {
+    }
+    dynamicActors {
+	.CA.Dyn
+    }
+    stateStepSizeControlActors {
+    }
+    outputStepSizeControlActors {
+    }
+    eventGenerators {
+    }
+    waveformGenerators {
+    }
+    statefulActors {
+    }
+    stateTransitionActors {
+	.CA.A1
+	.CA.A2
+    }
+    outputActors {
+	.CA.A3
+    }
+}
+}}
 
 test CTScheduler-2.3 {with one actor in a feedback} { 
     #Note: use above setup.
@@ -139,18 +167,33 @@ test CTScheduler-2.3 {with one actor in a feedback} {
     set p4o [$a4 getPort output]
     $p4i link $r3
     set r4 [$ca connect $p2i $p4o R4]
-    list [enumToFullNames [$sch arithmaticActors]] \
-	 [enumToFullNames [$sch dynamicActors]] \
-	 [enumToFullNames [$sch eventGenerators]] \
-	 [enumToFullNames [$sch eventInterpreters]] \
-	 [enumToFullNames [$sch statefulActors]] \
-	 [enumToFullNames [$sch stateTransitionSSCActors]] \
-	 [enumToFullNames [$sch outputSSCActors]] \
-	 [enumToFullNames [$sch dynamicActorSchedule]] \
-	 [enumToFullNames [$sch stateTransitionSchedule]] \
-	 [enumToFullNames [$sch outputSchedule]]
-} {{.CA.A1 .CA.A2 .CA.A3 .CA.A4} .CA.Dyn {} {} {} {} {} .CA.Dyn\
-	{.CA.A1 .CA.A4 .CA.A2} .CA.A3}
+    list [$sch toString]
+} {{CTSchedule {
+    discreteActors {
+    }
+    dynamicActors {
+	.CA.Dyn
+    }
+    stateStepSizeControlActors {
+    }
+    outputStepSizeControlActors {
+    }
+    eventGenerators {
+    }
+    waveformGenerators {
+    }
+    statefulActors {
+    }
+    stateTransitionActors {
+	.CA.A1
+	.CA.A4
+	.CA.A2
+    }
+    outputActors {
+	.CA.A3
+    }
+}
+}}
 
 test CTScheduler-2.4 {chain of dynamic actors with feedback} { 
     #Note: use above setup.
@@ -161,18 +204,34 @@ test CTScheduler-2.4 {chain of dynamic actors with feedback} {
     set pd2o [$d2 getPort output]
     set rd [$ca connect $pd1o $pd2i RD]
     $pd2o link $r3
-    list [enumToFullNames [$sch arithmaticActors]] \
-	 [enumToFullNames [$sch dynamicActors]] \
-	 [enumToFullNames [$sch eventGenerators]] \
-	 [enumToFullNames [$sch eventInterpreters]] \
-	 [enumToFullNames [$sch statefulActors]] \
-	 [enumToFullNames [$sch stateTransitionSSCActors]] \
-	 [enumToFullNames [$sch outputSSCActors]] \
-	 [enumToFullNames [$sch dynamicActorSchedule]] \
-	 [enumToFullNames [$sch stateTransitionSchedule]] \
-	 [enumToFullNames [$sch outputSchedule]]
-} {{.CA.A1 .CA.A2 .CA.A3 .CA.A4} {.CA.Dyn .CA.D2} {} {} {} {} {}\
- {.CA.D2 .CA.Dyn} {.CA.A1 .CA.A4 .CA.A2} .CA.A3}
+    list [$sch toString]
+} {{CTSchedule {
+    discreteActors {
+    }
+    dynamicActors {
+	.CA.D2
+	.CA.Dyn
+    }
+    stateStepSizeControlActors {
+    }
+    outputStepSizeControlActors {
+    }
+    eventGenerators {
+    }
+    waveformGenerators {
+    }
+    statefulActors {
+    }
+    stateTransitionActors {
+	.CA.A1
+	.CA.A4
+	.CA.A2
+    }
+    outputActors {
+	.CA.A3
+    }
+}
+}}
 
 test CTScheduler-2.5 { longer chain of dynamic actors with feedback} { 
     #Note: use above setup.
@@ -183,19 +242,35 @@ test CTScheduler-2.5 { longer chain of dynamic actors with feedback} {
     set pd3o [$d3 getPort output]
     set rd2 [$ca connect $pd1o $pd3i RD2]
     $pd3o link $rd
-    list [enumToFullNames [$sch arithmaticActors]] \
-	 [enumToFullNames [$sch dynamicActors]] \
-	 [enumToFullNames [$sch eventGenerators]] \
-	 [enumToFullNames [$sch eventInterpreters]] \
-	 [enumToFullNames [$sch statefulActors]] \
-	 [enumToFullNames [$sch stateTransitionSSCActors]] \
-	 [enumToFullNames [$sch outputSSCActors]] \
-	 [enumToFullNames [$sch dynamicActorSchedule]] \
-	 [enumToFullNames [$sch stateTransitionSchedule]] \
-	 [enumToFullNames [$sch outputSchedule]]
-} {{.CA.A1 .CA.A2 .CA.A3 .CA.A4} {.CA.Dyn .CA.D2 .CA.D3} {} {} {} {} {}\
- {.CA.D2 .CA.D3 .CA.Dyn} {.CA.A1 .CA.A4 .CA.A2} .CA.A3}
-
+    list [$sch toString]
+} {{CTSchedule {
+    discreteActors {
+    }
+    dynamicActors {
+	.CA.D2
+	.CA.D3
+	.CA.Dyn
+    }
+    stateStepSizeControlActors {
+    }
+    outputStepSizeControlActors {
+    }
+    eventGenerators {
+    }
+    waveformGenerators {
+    }
+    statefulActors {
+    }
+    stateTransitionActors {
+	.CA.A1
+	.CA.A4
+	.CA.A2
+    }
+    outputActors {
+	.CA.A3
+    }
+}
+}}
 
 test CTScheduler-2.6 {event generators and event interpreters} { 
     #Note: use above setup.
@@ -220,20 +295,42 @@ test CTScheduler-2.6 {event generators and event interpreters} {
     set rg [$ca connect $pego $peii RG]
     set ri [$ca connect $peio $psci RI]
     set r5 [$ca connect $psco $p5i R5]
-    list [enumToFullNames [$sch arithmaticActors]] \
-	 [enumToFullNames [$sch dynamicActors]] \
-	 [enumToFullNames [$sch eventGenerators]] \
-	 [enumToFullNames [$sch eventInterpreters]] \
-	 [enumToFullNames [$sch statefulActors]] \
-	 [enumToFullNames [$sch stateTransitionSSCActors]] \
-	 [enumToFullNames [$sch outputSSCActors]] \
-	 [enumToFullNames [$sch dynamicActorSchedule]] \
-	 [enumToFullNames [$sch stateTransitionSchedule]] \
-	 [enumToFullNames [$sch outputSchedule]]
-} {{.CA.A1 .CA.A2 .CA.A3 .CA.A4 .CA.EG .CA.EI .CA.SSC .CA.A5}\
-	{.CA.Dyn .CA.D2 .CA.D3} .CA.EG .CA.EI {} {} .CA.SSC\
-	{.CA.D2 .CA.D3 .CA.Dyn}\
-	{.CA.A1 .CA.A4 .CA.A2} {.CA.EG .CA.EI .CA.SSC .CA.A3 .CA.A5}}
+    list [$sch toString]
+} {{CTSchedule {
+    discreteActors {
+    }
+    dynamicActors {
+	.CA.D2
+	.CA.D3
+	.CA.Dyn
+    }
+    stateStepSizeControlActors {
+    }
+    outputStepSizeControlActors {
+	.CA.SSC
+    }
+    eventGenerators {
+	.CA.EG
+    }
+    waveformGenerators {
+	.CA.EI
+    }
+    statefulActors {
+    }
+    stateTransitionActors {
+	.CA.A1
+	.CA.A4
+	.CA.A2
+    }
+    outputActors {
+	.CA.EI
+	.CA.SSC
+	.CA.A3
+	.CA.A5
+	.CA.EG
+    }
+}
+}}
 
 test CTScheduler-2.7 {contained in a composite actor} { 
     #Note: use above setup.
@@ -269,21 +366,48 @@ test CTScheduler-2.7 {contained in a composite actor} {
     set rdc [java::new ptolemy.actor.TypedIORelation $ca RDC]
     $pedo link $rdc
     $pco2 link $rdc
-    list [enumToFullNames [$sch arithmaticActors]] \
-	 [enumToFullNames [$sch dynamicActors]] \
-	 [enumToFullNames [$sch eventGenerators]] \
-	 [enumToFullNames [$sch eventInterpreters]] \
-	 [enumToFullNames [$sch statefulActors]] \
-	 [enumToFullNames [$sch stateTransitionSSCActors]] \
-	 [enumToFullNames [$sch outputSSCActors]] \
-	 [enumToFullNames [$sch dynamicActorSchedule]] \
-	 [enumToFullNames [$sch stateTransitionSchedule]] \
-	 [enumToFullNames [$sch outputSchedule]]
-} {{.CA.A1 .CA.A2 .CA.A3 .CA.A4 .CA.EG .CA.EI .CA.SSC .CA.A5 .CA.A6S\
-	.CA.A7S .CA.ED} {.CA.Dyn .CA.D2 .CA.D3} {.CA.EG .CA.ED} .CA.EI\
-	{.CA.A6S .CA.A7S} {} .CA.SSC {.CA.D2 .CA.D3 .CA.Dyn}\
-	{.CA.A1 .CA.A4 .CA.A7S .CA.A2}\
-	{.CA.EG .CA.EI .CA.SSC .CA.A3 .CA.A5 .CA.A6S .CA.ED}}
+    list [$sch toString]
+} {{CTSchedule {
+    discreteActors {
+    }
+    dynamicActors {
+	.CA.D2
+	.CA.D3
+	.CA.Dyn
+    }
+    stateStepSizeControlActors {
+    }
+    outputStepSizeControlActors {
+	.CA.SSC
+    }
+    eventGenerators {
+	.CA.EG
+	.CA.ED
+    }
+    waveformGenerators {
+	.CA.EI
+    }
+    statefulActors {
+	.CA.A6S
+	.CA.A7S
+    }
+    stateTransitionActors {
+	.CA.A1
+	.CA.A4
+	.CA.A7S
+	.CA.A2
+    }
+    outputActors {
+	.CA.EI
+	.CA.SSC
+	.CA.A3
+	.CA.A5
+	.CA.A6S
+	.CA.EG
+	.CA.ED
+    }
+}
+}}
 
 test CTScheduler-2.8 {get the schedule again} {
     #Note: use above set up.
@@ -299,17 +423,49 @@ test CTScheduler-2.8 {get the schedule again} {
     set r8oc [java::new ptolemy.actor.TypedIORelation $ca R8OC]
     $p8o link $r8oc
     $pco3 link $r8oc
-    list [enumToFullNames [$sch arithmaticActors]] \
-	 [enumToFullNames [$sch dynamicActors]] \
-	 [enumToFullNames [$sch eventGenerators]] \
-	 [enumToFullNames [$sch eventInterpreters]] \
-	 [enumToFullNames [$sch statefulActors]] \
-	 [enumToFullNames [$sch stateTransitionSSCActors]] \
-	 [enumToFullNames [$sch outputSSCActors]] \
-	 [enumToFullNames [$sch dynamicActorSchedule]] \
-	 [enumToFullNames [$sch stateTransitionSchedule]] \
-	 [enumToFullNames [$sch outputSchedule]]
-} {{.CA.A1 .CA.A2 .CA.A3 .CA.A4 .CA.EG .CA.EI .CA.SSC .CA.A5 .CA.A6S .CA.A7S .CA.ED .CA.A8} {.CA.Dyn .CA.D2 .CA.D3} {.CA.EG .CA.ED} .CA.EI {.CA.A6S .CA.A7S} {} .CA.SSC {.CA.D2 .CA.D3 .CA.Dyn} {.CA.A1 .CA.A4 .CA.A7S .CA.A2} {.CA.EG .CA.EI .CA.SSC .CA.A3 .CA.A5 .CA.A6S .CA.ED .CA.A8}}
+    list [$sch toString]
+} {{CTSchedule {
+    discreteActors {
+    }
+    dynamicActors {
+	.CA.D2
+	.CA.D3
+	.CA.Dyn
+    }
+    stateStepSizeControlActors {
+    }
+    outputStepSizeControlActors {
+	.CA.SSC
+    }
+    eventGenerators {
+	.CA.EG
+	.CA.ED
+    }
+    waveformGenerators {
+	.CA.EI
+    }
+    statefulActors {
+	.CA.A6S
+	.CA.A7S
+    }
+    stateTransitionActors {
+	.CA.A1
+	.CA.A4
+	.CA.A7S
+	.CA.A2
+    }
+    outputActors {
+	.CA.EI
+	.CA.SSC
+	.CA.A3
+	.CA.A5
+	.CA.A6S
+	.CA.A8
+	.CA.EG
+	.CA.ED
+    }
+}
+}}
 
 ######################################################################
 #### Test toString
@@ -318,70 +474,44 @@ test CTScheduler-3.1 {get the description} {
     #Note: use above set up.
     list [$sch toString]
 } {{CTSchedule {
-    arithmaticActors {
-	.CA.A1
-	.CA.A2
-	.CA.A3
-	.CA.A4
-	.CA.EG
-	.CA.EI
-	.CA.SSC
-	.CA.A5
-	.CA.A6S
-	.CA.A7S
-	.CA.ED
-	.CA.A8
+    discreteActors {
     }
     dynamicActors {
-	.CA.Dyn
 	.CA.D2
 	.CA.D3
+	.CA.Dyn
     }
-    stateTransitionSSCActors {
+    stateStepSizeControlActors {
     }
-    outputSSCActors {
+    outputStepSizeControlActors {
 	.CA.SSC
     }
     eventGenerators {
 	.CA.EG
 	.CA.ED
     }
-    eventInterpreters {
+    waveformGenerators {
 	.CA.EI
     }
     statefulActors {
 	.CA.A6S
 	.CA.A7S
     }
-    sinkActors {
-	.CA.A3
-	.CA.A5
-	.CA.A6S
-	.CA.ED
-	.CA.A8
-    }
-    dynamicActorSchedule {
-	.CA.D2
-	.CA.D3
-	.CA.Dyn
-    }
-    stateTransitionSchedule {
+    stateTransitionActors {
 	.CA.A1
 	.CA.A4
 	.CA.A7S
 	.CA.A2
     }
-    outputSchedule {
-	.CA.EG
+    outputActors {
 	.CA.EI
 	.CA.SSC
 	.CA.A3
 	.CA.A5
 	.CA.A6S
-	.CA.ED
 	.CA.A8
-    }
-    discreteSchedule {
+	.CA.EG
+	.CA.ED
     }
 }
 }}

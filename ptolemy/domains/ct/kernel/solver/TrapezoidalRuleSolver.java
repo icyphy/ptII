@@ -227,7 +227,9 @@ public class TrapezoidalRuleSolver extends ODESolver {
         }
         resetRound();
         // prediction
-        Iterator actors = scheduler.dynamicActorList().iterator();
+        CTSchedule schedule = (CTSchedule)scheduler.getSchedule();
+        Iterator actors = schedule.get(
+                CTSchedule.DYNAMIC_ACTORS).actorIterator();
         while(actors.hasNext()) {
             Actor next = (Actor)actors.next();
             _debug("Guessing..."+((Nameable)next).getName());
@@ -242,14 +244,16 @@ public class TrapezoidalRuleSolver extends ODESolver {
             }
             incrementRound();
             _setConverge(true);
-            actors = scheduler.scheduledStateTransitionActorList().iterator();
+            actors = schedule.get(
+                    CTSchedule.STATE_TRANSITION_ACTORS).actorIterator();
             while(actors.hasNext()) {
                 Actor next = (Actor)actors.next();
                 _debug(getFullName() + "Firing..."+((Nameable)next).getName());
 
                 next.fire();
             }
-            actors = scheduler.scheduledDynamicActorList().iterator();
+            actors = schedule.get(
+                    CTSchedule.DYNAMIC_ACTORS).actorIterator();
             while(actors.hasNext()) {
                 Actor next = (Actor)actors.next();
                 _debug(getFullName() + " refiring..."+
@@ -261,7 +265,8 @@ public class TrapezoidalRuleSolver extends ODESolver {
                 //startOverLastStep();
                 resetRound();
                 // prediction
-                actors = scheduler.scheduledDynamicActorList().iterator();
+                actors = schedule.get(
+                        CTSchedule.DYNAMIC_ACTORS).actorIterator();
                 while(actors.hasNext()) {
                     Actor next = (Actor)actors.next();
                     _debug(getFullName()+" asking..."+

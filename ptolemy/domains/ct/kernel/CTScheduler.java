@@ -29,31 +29,32 @@
 */
 
 package ptolemy.domains.ct.kernel;
-
 import ptolemy.kernel.util.Workspace;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Nameable;
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
-import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
-import ptolemy.actor.lib.SequenceActor;
 import ptolemy.actor.sched.NotSchedulableException;
 import ptolemy.actor.sched.Scheduler;
+import ptolemy.actor.sched.Schedule;
+
+import ptolemy.actor.sched.Firing;
 import ptolemy.actor.sched.StaticSchedulingDirector;
+import ptolemy.actor.lib.SequenceActor;
 import ptolemy.graph.DirectedAcyclicGraph;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Enumeration;
-
-//This need to use the Schedule class.
 
 //////////////////////////////////////////////////////////////////////////
 //// CTScheduler
@@ -133,7 +134,7 @@ will be thrown if schedules are requested.
 @see ptolemy.actor.sched.Scheduler
 */
 
-public class CTScheduler extends Scheduler{
+public class CTScheduler extends Scheduler {
 
     /** Construct a CT scheduler in the default workspace
      *  with the default name "CTScheduler". There is no director
@@ -157,203 +158,13 @@ public class CTScheduler extends Scheduler{
             setName(_STATIC_NAME);
         } catch (KernelException ex) {
             throw new InternalErrorException(
-                    "Internal error when setName to a CTScheduler");
+                    "Internal error when setting name to a CTScheduler");
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    /** Returns a list of arithmatic actors. This list is
-     *  locally cached. If workspace version equals to the cached version,
-     *  then it returns the cached list.
-     *  Otherwise, it will reconstruct, cache and return the
-     *  updated list.
-     *  This method read-synchronizes on the workspace.
-     *  @return A list of arithmetic actors.
-     */
-    public List arithmaticActorList() {
-        try {
-            workspace().getReadAccess();
-            if(_workspaceVersion != workspace().getVersion()) {
-                _schedule();
-                _workspaceVersion = workspace().getVersion();
-            }
-            return _arithmetic;
-        } finally {
-            workspace().doneReading();
-        }
-    }
 
-    /** Returns an enumeration of arithmetic actors.
-     *  @return An enumeration of arithmetic actors.
-     *  @deprecated Use arithmaticActorList() instead.
-     */
-    public Enumeration arithmaticActors() {
-        return Collections.enumeration(arithmaticActorList());
-    }
-
-    /** Clone the scheduler to the specified work space. All cached
-     *  schedules are lost.
-     *  @param The new workspace.
-     *  @exception CloneNotSupportedException If one of the attributes
-     *   cannot be cloned.
-     *  @return The new Scheduler.
-     */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        CTScheduler newObject = (CTScheduler) super.clone(workspace);
-        newObject._workspaceVersion = -1;
-        return newObject;
-    }
-
-    /** Returns a list of discrete actors in their topological order.
-     *  This list is locally
-     *  cached. If workspace version equals to the cached version,
-     *  then it returns the cached list.
-     *  Otherwise, it will reconstruct, cache and return the
-     *  updated list.
-     *  This method read-synchronizes on the workspace.
-     *  @return A list of discrete actors.
-     */
-    public List discreteActorSchedule() {
-        try {
-	    workspace().getReadAccess();
-            if(_workspaceVersion != workspace().getVersion()) {
-                // construct the discrete actor schedule.
-                _schedule();
-                _workspaceVersion = workspace().getVersion();
-            }
-            return _discreteSchedule;
-        } finally {
-            workspace().doneReading();
-        }
-    }
-    
-    /** Returns a list of dynamic actors. This list is locally
-     *  cached. If workspace version equals to the cached version,
-     *  then it returns the cached list.
-     *  Otherwise, it will reconstruct, cache and return the
-     *  updated list.
-     *  This method read-synchronizes on the workspace.
-     *  @return A list of dynamic actors.
-     */
-    public List dynamicActorList() {
-        try {
-	    workspace().getReadAccess();
-            if(_workspaceVersion != workspace().getVersion()) {
-                _schedule();
-                _workspaceVersion = workspace().getVersion();
-            }
-            return _dynamic;
-        } finally {
-            workspace().doneReading();
-        }
-    }
-
-    /** Returns an enumeration of dynamic actors.
-     *  @return An enumeration of dynamic actors.
-     *  @deprecated Use dynamicActorList() in stead.
-     */
-    public Enumeration dynamicActors() {
-        return Collections.enumeration(dynamicActorList());
-    }
-
-    /** Returns an enumeration of the schedule of dynamic actors.
-     *  @return An enumeration of the schedule of dynamic actors.
-     *  @exception IllegalActionException If the scheduler has no container,
-     *      or the container has no container.
-     *  @exception NotSchedulableException If the system is not schedulable.
-     *  @deprecated Use scheduledDynamicActorList() instead.
-     */
-    public Enumeration dynamicActorSchedule()
-            throws NotSchedulableException, IllegalActionException {
-        return Collections.enumeration(scheduledDynamicActorList());
-    }
-
-    /** Return the list of event generators in their creation order.
-     *  This list is locally cached.
-     *  If the workspace version equals to the cached version,
-     *  then it returns the cached list.
-     *  Otherwise, it reconstructs the list, and cache the new version.
-     *  This method read-synchronizes on the workspace.
-     *  @return The list of event generators.
-     */
-    public List eventGeneratorList() {
-        try {
-	    workspace().getReadAccess();
-            if(_workspaceVersion != workspace().getVersion()) {
-                _schedule();
-                _workspaceVersion = workspace().getVersion();
-            }
-            return _eventGenerators;
-        } finally {
-            workspace().doneReading();
-        }
-    }
-
-    /** Return an enumeration of event generators.
-     *  @return An enumeration of event generators.
-     *  @deprecated Use eventGeneratorList() instead.
-     */
-    public Enumeration eventGenerators() {
-        return Collections.enumeration(eventGeneratorList());
-    }
-
-    /** Return an enumeration of event interpreters.
-     *  @return An enumeration of event interpreters.
-     *  @deprecated Use waveformGeneratorList() instead.
-     */
-    public Enumeration eventInterpreters() {
-        return Collections.enumeration(waveformGeneratorList());
-    }
-
-    /** Returns an enumeration of schedule actors that form the output map.
-     *  @return An enumeration of the schedule of the output path.
-     *  @exception IllegalActionException If the scheduler has no container,
-     *      or the container has no container.
-     *  @exception NotSchedulableException If the system is not schedulable.
-     *  @deprecated Use scheduledOutputActorList() instead.
-     */
-    public Enumeration outputSchedule()
-            throws NotSchedulableException, IllegalActionException  {
-        return Collections.enumeration(scheduledOutputActorList());
-    }
-
-    /** Return a list of step size control (SSC) actors in the output
-     *  schedule. These are the step size control actors in the
-     *  y = g(x, u, t) equations.
-     *  These actors are in their creation order.
-     *  The list is locally
-     *  cached. If the workspace version equals to the cached version,
-     *  then it returns the cached version.
-     *  Otherwise, it will reconstruct, cache, and return the new
-     *  version.
-     *  This method read-synchronizes on the workspace.
-     *  @return A list of step size control actors.
-     *  @exception IllegalActionException If topology is not schedulable.
-     */
-    public List outputSSCActorList() throws IllegalActionException {
-        try {
-	    workspace().getReadAccess();
-            if(!isValid()) {
-                schedule();
-            }
-            _workspaceVersion = workspace().getVersion();
-            return _outputSSC;
-        } finally {
-            workspace().doneReading();
-        }
-    }
-
-    /** Return an enumeration of step size control (SSC) actors in the output
-     *  schedule.
-     *  @return An enumeration of step size control actors.
-     *  @exception IllegalActionException If thrown by the schedule() method.
-     *  @deprecated Use outputSSCActorList() instead.
-     */
-    public Enumeration outputSSCActors() throws IllegalActionException {
-        return Collections.enumeration(outputSSCActorList());
-    }
 
     /** Return the predecessors of the given actor in the topology.
      *  If the argument is null, returns null.
@@ -379,210 +190,6 @@ public class CTScheduler extends Scheduler{
             }
         }
         return predecessors;
-    }
-
-    /** Returns a list of scheduled dynamic actors.
-     *  This list is locally cached.
-     *  If workspace version equals to the cached version,
-     *  then it returns the cached list.
-     *  Otherwise, it will reconstruct, cache, and return the
-     *  updated schedule.
-     *  The dynamic actor schedule lists all the
-     *  dynamic actors
-     *  in the reverse topology order. This order can be used
-     *  for both implicit methods and explicit methods. For implicit
-     *  methods, the order is consistent with Gauss-Jacobi iteration.
-     *  For explicit methods,
-     *  it guarantees that the input of the integrator is
-     *  one step earlier than the output.
-     *  This method read-synchronizes on the workspace.
-     *  @return A list of the scheduled dynamic actors.
-     *  @exception IllegalActionException If the scheduler has no container,
-     *      or the container has no container.
-     *  @exception NotSchedulableException If the system is not schedulable.
-     */
-    public List scheduledDynamicActorList()
-            throws NotSchedulableException, IllegalActionException {
-        try {
-            workspace().getReadAccess();
-            if(!isValid()) {
-                schedule();
-            }
-            _workspaceVersion = workspace().getVersion();
-            return _stateSchedule;
-        } finally {
-            workspace().doneReading();
-        }
-    }
-
-    /** Returns a list of scheduled actors that form the output map.
-     *  The output schedule lists all the actors in the computational
-     *  path from
-     *  integrators (or dynamic actors) to sink actors (or composite
-     *  actor's output ports) in the topological order. The firing of
-     *  of the actors in this order corresponds to evaluating the output map
-     *  of the system.
-     *  The list is locally
-     *  cached. If the workspace version equals to the cached version,
-     *  then it returns the cached list.
-     *  Otherwise, it will reconstruct, cache, and return the new
-     *  list.
-     *  This method read-synchronize on the workspace.
-     *  @return A list of the schedule of the output path.
-     *  @exception IllegalActionException If the scheduler has no container,
-     *      or the container has no container.
-     *  @exception NotSchedulableException If the system is not schedulable.
-     */
-    public List scheduledOutputActorList()
-            throws NotSchedulableException, IllegalActionException  {
-        try {
-	    workspace().getReadAccess();
-            if(!isValid()) {
-                schedule();
-            }
-            _workspaceVersion = workspace().getVersion();
-            return _outputSchedule;
-        } finally {
-            workspace().doneReading();
-        }
-    }
-
-    /** Returns a list of scheduled actors that form the state transition map.
-     *  The list is locally
-     *  cached. If the workspace version equals to the cached version,
-     *  then it returns the cached list.
-     *  Otherwise, it will reconstruct, cache, and return the new
-     *  list.
-     *  This method read-synchronize on the workspace.
-     *  @return A list of the scheduled actors of the state transition path.
-     *  @exception IllegalActionException If the scheduler has no container,
-     *      or the container has no container.
-     *  @exception NotSchedulableException If the system is not schedulable.
-     */
-    public List scheduledStateTransitionActorList()
-            throws NotSchedulableException, IllegalActionException {
-        try {
-	    workspace().getReadAccess();
-            if(!isValid()) {
-                schedule();
-            }
-            return _transitionSchedule;
-        } finally {
-            workspace().doneReading();
-        }
-    }
-
-    /** Return a list of sink actors (actors with no outputs).
-     *  The list is locally
-     *  cached. If the workspace version equals to the cached version,
-     *  then it returns the cached list.
-     *  Otherwise, it will reconstruct, cache, and return the new
-     *  list.
-     *  This method read-synchronize on the workspace.
-     *  @return A list of sinks.
-     */
-    public List sinkActorList() {
-        try {
-	    workspace().getReadAccess();
-            if(_workspaceVersion != workspace().getVersion()) {
-                _schedule();
-                _workspaceVersion = workspace().getVersion();
-            }
-            return _sink;
-        } finally {
-            workspace().doneReading();
-        }
-    }
-
-    /** Return an enumeration of sinks.
-     *  @return An enumeration of sinks.
-     *  @deprecated Use sinkActorList() instead.
-     */
-    public Enumeration sinkActors() {
-        return Collections.enumeration(sinkActorList());
-    }
-
-    /** Return a list of stateful actors. Stateful actors are actors
-     *  that has states. They implement the CTStatefulActor interface.
-     *  The list is locally
-     *  cached. If the workspace version equals to the cached version,
-     *  then it returns the cached enumeration.
-     *  Otherwise, it will reconstruct, cache, and return the new
-     *  version.
-     *  This method read-synchronizes on the workspace.
-     *  @return A list of stateful actors.
-     */
-    public List statefulActorList() {
-        try {
-	    workspace().getReadAccess();
-            if(_workspaceVersion != workspace().getVersion()) {
-                _schedule();
-                _workspaceVersion = workspace().getVersion();
-            }
-            return _stateful;
-        } finally {
-            workspace().doneReading();
-        }
-    }
-
-    /** Return an enumeration of stateful actors.
-     *  @return An enumeration of stateful actors.
-     *  @deprecated Use statefulActorList() instead.
-     */
-    public Enumeration statefulActors() {
-        return Collections.enumeration(statefulActorList());
-    }
-
-    /** Return a list of step size control (SSC) actors in the
-     *  dynamic actor and state transition schedule. These are the step size
-     *  control actors in the dx/dt = f(x, u, t) equation.
-     *  The list is locally
-     *  cached. If the workspace version equals to the cached version,
-     *  then it returns the cached enumeration.
-     *  Otherwise, it will reconstruct, cache, and return the new
-     *  version.
-     *  This method read-synchronizes on the workspace.
-     *  @return A list of step size control actors in the dynamic-actor and
-     *       state transition schedule.
-     *  @exception IllegalActionException If the topology is not schedulable..
-     *
-     */
-    public List stateTransitionSSCActorList()
-            throws IllegalActionException {
-        try {
-	    workspace().getReadAccess();
-            if(!isValid()) {
-                schedule();
-            }
-            _workspaceVersion = workspace().getVersion();
-            return _stateSSC;
-        } finally {
-            workspace().doneReading();
-        }
-    }
-
-    /** Return an enumeration of step size control (SSC) actors in the
-     *  state and state transition schedule.
-     *  @return An enumeration of step size control actors.
-     *  @exception IllegalActionException If thrown by the schedule() method.
-     *  @deprecated Use stateTransitionSSCActorList()instead.
-     */
-    public Enumeration stateTransitionSSCActors()
-            throws IllegalActionException {
-        return Collections.enumeration(stateTransitionSSCActorList());
-    }
-
-
-    /** Returns an enumeration of the schedule of the state transition path.
-     *  @return An enumeration of the schedule of the state transition path.
-     *  @exception IllegalActionException If the scheduler has no container,
-     *      or the container has no container.
-     *  @exception NotSchedulableException If the system is not schedulable.
-     *  @deprecated Use scheduledStateTransitionList() instead.
-     */
-    public Enumeration stateTransitionSchedule()
-            throws NotSchedulableException, IllegalActionException {
-        return Collections.enumeration(scheduledStateTransitionActorList());
     }
 
     /** Return the successive actors of the given actor in the topology.
@@ -615,371 +222,303 @@ public class CTScheduler extends Scheduler{
      *  @return All the schedules.
      */
     public String toString() {
-        String result = new String();
-        Iterator iterator;
-        result += "CTSchedule {\n";
-        result += "    arithmaticActors {\n";
-        iterator = arithmaticActorList().iterator();
         try {
-            while(iterator.hasNext()) {
-                result += "\t" +
-                    ((NamedObj)iterator.next()).getFullName() + "\n";
-            }
-            result += "    }\n";
-            result += "    dynamicActors {\n";
-            iterator = dynamicActorList().iterator();
-            while(iterator.hasNext()) {
-                result += "\t" +
-                    ((NamedObj)iterator.next()).getFullName() + "\n";
-            }
-            result += "    }\n";
-            result += "    stateTransitionSSCActors {\n";
-            iterator = stateTransitionSSCActorList().iterator();
-            while(iterator.hasNext()) {
-                result += "\t" +
-                    ((NamedObj)iterator.next()).getFullName() + "\n";
-            }
-            result += "    }\n";
-            result += "    outputSSCActors {\n";
-            iterator = outputSSCActorList().iterator();
-            while(iterator.hasNext()) {
-                result += "\t" +
-                    ((NamedObj)iterator.next()).getFullName() + "\n";
-            }
-            result += "    }\n";
-            result += "    eventGenerators {\n";
-            iterator = eventGeneratorList().iterator();
-            while(iterator.hasNext()) {
-                result += "\t" +
-                    ((NamedObj)iterator.next()).getFullName() + "\n";
-            }
-            result += "    }\n";
-            result += "    eventInterpreters {\n";
-            iterator = waveformGeneratorList().iterator();
-            while(iterator.hasNext()) {
-                result += "\t" +
-                    ((NamedObj)iterator.next()).getFullName() + "\n";
-            }
-            result += "    }\n";
-            result += "    statefulActors {\n";
-            iterator = statefulActorList().iterator();
-            while(iterator.hasNext()) {
-                result += "\t" +
-                    ((NamedObj)iterator.next()).getFullName() + "\n";
-            }
-            result += "    }\n";
-            result += "    sinkActors {\n";
-            iterator = sinkActorList().iterator();
-            while(iterator.hasNext()) {
-                result += "\t" +
-                    ((NamedObj)iterator.next()).getFullName() + "\n";
-            }
-            result += "    }\n";
-            result += "    dynamicActorSchedule {\n";
-            iterator = scheduledDynamicActorList().iterator();
-            while(iterator.hasNext()) {
-                result += "\t" +
-                    ((NamedObj)iterator.next()).getFullName() + "\n";
-            }
-            result += "    }\n";
-            result += "    stateTransitionSchedule {\n";
-            iterator = scheduledStateTransitionActorList().iterator();
-            while(iterator.hasNext()) {
-                result += "\t" +
-                    ((NamedObj)iterator.next()).getFullName() + "\n";
-            }
-            result += "    }\n";
-            result += "    outputSchedule {\n";
-            iterator = scheduledOutputActorList().iterator();
-            while(iterator.hasNext()) {
-                result += "\t" +
-                    ((NamedObj)iterator.next()).getFullName() + "\n";
-            }
-            result += "    }\n";
-            result += "    discreteSchedule {\n";
-            iterator = discreteActorSchedule().iterator();
-            while(iterator.hasNext()) {
-                result += "\t" +
-                    ((NamedObj)iterator.next()).getFullName() + "\n";
-            }
-            result += "    }\n";
-            result += "}\n";
-
-
+            return getSchedule().toString();
         } catch (IllegalActionException ex) {
-            throw new InvalidStateException(this,
-                    "Failed to generate CT schedule.");
-        }
-        return result;
-    }
-
-    /** Return a list of waveform generators in their creation order.
-     *  The list is locally
-     *  cached. If the workspace version equals to the cached version,
-     *  then it returns the cached enumeration.
-     *  Otherwise, it will reconstruct, cache, and return the new
-     *  version.
-     *  This method read-synchronizes on the workspace.
-     *  @return An list of event interpreters.
-     */
-    public List waveformGeneratorList() {
-        try {
-	    workspace().getReadAccess();
-            if(_workspaceVersion != workspace().getVersion()) {
-                _schedule();
-                _workspaceVersion = workspace().getVersion();
-            }
-            return _waveGenerators;
-        } finally {
-            workspace().doneReading();
+            throw new InvalidStateException(ex.getMessage());
         }
     }
-
+   
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Partition the system topology into clusters.
-     *  Find out the arithmetic actors, dynamic actors, sink actors,
-     *  event generators, waveform generators
-     *  and stateful actors in the
-     *  CompositeActor.
-     *  @exception  NotSchedulableException If the system is not
-     *  schedulable.
+    /** Return the CTSchedule. Caching of the schedule is done
+     *  in the director class, so this method does not test
+     *  for the validation of the schedule.
      */
-    protected void _classifyActors() throws NotSchedulableException {
-        if(_workspaceVersion == -1) {
-            _sink = new LinkedList();
-            _dynamic = new LinkedList();
-            _arithmetic = new LinkedList();
-            _eventGenerators = new LinkedList();
-            _waveGenerators = new LinkedList();
-            _stateful = new LinkedList();
-            _discretes = new LinkedList();
-        }else {
-            _sink.clear();
-            _dynamic.clear();
-            _arithmetic.clear();
-            _eventGenerators.clear();
-            _waveGenerators.clear();
-            _stateful.clear();
-            _discretes.clear();
-        }
+    protected Schedule _getSchedule() throws NotSchedulableException {
+        // This implementation creates new Lists every time,
+        // If this hurts performance a lot, consider reuse old lists.
+        // That requires Schedule class to implement clear().
+        CTSchedule ctSchedule = new CTSchedule();
 
-        CompositeActor compositeActor =
+        LinkedList sinkActors = new LinkedList();
+        LinkedList dynamicActors = new LinkedList();
+        LinkedList discreteActors = new LinkedList();
+        LinkedList arithmeticActors = new LinkedList();
+        LinkedList eventGenerators = new LinkedList();
+        LinkedList waveformGenerators = new LinkedList();
+        LinkedList continuousActors = new LinkedList();
+
+        Schedule discreteActorSchedule = new Schedule();
+        Schedule continuousActorSchedule = new Schedule();
+        Schedule dynamicActorSchedule = new Schedule();
+        Schedule eventGeneratorSchedule = new Schedule();
+        Schedule outputSchedule = new Schedule();
+        Schedule outputSSCActors = new Schedule();
+        Schedule stateTransitionSchedule = new Schedule();
+        Schedule statefulActors = new Schedule();
+        Schedule stateSSCActors = new Schedule();
+        Schedule waveformGeneratorSchedule = new Schedule();
+
+        // classify actors and fill in unordered schedules.
+        CompositeActor container =
             (CompositeActor)getContainer().getContainer();
-        Iterator actors = compositeActor.deepEntityList().iterator();
-        while(actors.hasNext()) {
-            Actor a = (Actor) actors.next();
-            if (a instanceof CTStatefulActor) {
-                _stateful.addLast(a);
+        Iterator allActors = container.deepEntityList().iterator();
+        while(allActors.hasNext()) {
+            Actor a = (Actor) allActors.next();
+
+            // Event generators are treated as sinks, and
+            // waveform genterators are treated as sources.
+            // Note that this breaks some causality loops.
+
+            if(a instanceof CTStatefulActor) {
+                statefulActors.add(new Firing(a));
             }
-            if (a instanceof CTEventGenerator) {
-                _eventGenerators.addLast(a);
+            if(a instanceof CTWaveformGenerator) {
+                waveformGenerators.add(a);
             }
-            if (a instanceof CTWaveformGenerator) {
-                _waveGenerators.addLast(a);
+            if(a instanceof CTEventGenerator) {
+                eventGenerators.add(a);
+                // Event generators are also considered sinks.
+                // This is be dealt later.
+            }else if (successorList(a).isEmpty() && 
+                    (!(a instanceof CTDynamicActor))) {
+                // We only add continuous sink actors that are not
+                // dynamic actors here.
+                sinkActors.add(a);
             }
-            if (successorList(a).isEmpty()) {
-                _sink.addLast(a);
-            }
-            if (a instanceof CTDynamicActor) {
-                _dynamic.addLast(a);
-            } else {
-                _arithmetic.addLast(a);
-            }
-            if ((a instanceof TypedCompositeActor) && 
-                    !( a instanceof CTCompositeActor)) {
-                _discretes.addLast(a);
-            }
-            if (a instanceof SequenceActor) {
-                _discretes.addLast(a);
+            if(a instanceof CTDynamicActor) {
+                dynamicActors.addLast(a);
+            }else if (!(a instanceof CTWaveformGenerator)) {
+                arithmeticActors.add(a);
             }
         }
+        // First make sure that there is no causality loop of arithmetic
+        // actor. This makes other graph reachability algorithms terminate.
+        DirectedAcyclicGraph arithmeticGraph = _toGraph(arithmeticActors);
+        if(!arithmeticGraph.isAcyclic()) {
+            throw new NotSchedulableException(
+                    "Arithmetic loops are not allowed in the CT domain.");
+        }
+        DirectedAcyclicGraph dynamicGraph = _toGraph(dynamicActors);
+        if(!dynamicGraph.isAcyclic()) {
+            throw new NotSchedulableException(
+                    "Loops of dynamic actors (e.g. integrators) " + 
+                    "are not allowed in the CT domain. You may insert a " +
+                    "Scale actor with factor 1.");
+        }
 
-        // Step size control (SSC) actors are classified according to
-        // their location in the schedule. So they are created
-        // in the _schedule() method.
-        
-        // For each eventGenerator, its successors should either
-        // be waveformGenerator or a discrete (composite) actor.
-        // For each discrete (composite) actor, its predecessors
-        // should be eventGenerators, and its successors should be
-        // waveformGenerator. Note that all of the tests below are
-        // needed, although they overlap.
-        Iterator generators = _eventGenerators.iterator();
+        // We clone the list of all actors and will remove discrete actors
+        // from them.
+        continuousActors = (LinkedList)
+            ((LinkedList)container.deepEntityList()).clone();
+
+        // Find the discrete actor cluster by looking at the successors
+        // of event generators recursively.
+        Iterator generators = eventGenerators.iterator();
         while(generators.hasNext()) {
             Actor generator = (Actor) generators.next();
             Iterator successors = successorList(generator).iterator();
             while(successors.hasNext()) {
-                Object nextActor = successors.next();
-                if (!_discretes.contains(nextActor) && 
-                    !_waveGenerators.contains(nextActor) &&
-                    !_sink.contains(nextActor)) {
-                    throw new NotSchedulableException(getContainer(),
-                            (NamedObj)nextActor
-                            + " is a successor of an event generator "
-                            + (NamedObj)generator 
-                            + ", but it is not a discrete actor.");
+                Actor successor = (Actor)successors.next();
+                // We know signals here are discrete, so it should not
+                // feed into a dynamic actor.
+                if (successor instanceof CTDynamicActor) {
+                    throw new NotSchedulableException(
+                            ((Nameable)generator).getName() 
+                            + " has discrete outputs, which cannot be"
+                            + " connected to the input of "
+                            + ((Nameable)successor).getName() 
+                            + ", which requires a continuous signal.");
+                }
+                if (!(successor instanceof CTEventGenerator) &&
+                        !(successor instanceof CTWaveformGenerator) &&
+                        !(discreteActors.contains(successor))) {
+                    // Then the successor must be a discrete actor.
+                    discreteActors.addLast(successor);
+                    // Remove it from the continuousActors list.
+                    continuousActors.remove(successor);
+                    // Remove it from sink, if it is there.
+                    sinkActors.remove(successor);
                 }
             }
         }
-        generators = _waveGenerators.iterator();
+        if (!discreteActors.isEmpty()) {
+            // Now we have a first layer of discete actors. Their successors
+            // must be discrete actors, too. So we find the closure.
+            for (int i = 0; i < discreteActors.size(); i++) {
+                // Note that we will extend the length of the linked list.
+                Actor discrete = (Actor)discreteActors.get(i);
+                Iterator successors = successorList(discrete).iterator();
+                while(successors.hasNext()) {
+                    Actor successor = (Actor)successors.next();
+                    // Again, the successor cannot be a dynamic actor.
+                    if (successor instanceof CTDynamicActor) {
+                        throw new NotSchedulableException(
+                                ((Nameable)discrete).getName() 
+                                + " has discrete outputs, which cannot be"
+                                + " connected to the input of "
+                                + ((Nameable)successor).getName() 
+                                + ", which requires a continuous signal.");
+                    }
+                    // The successor of a discrete actor cannot be 
+                    // an event generator either.
+                    if (successor instanceof CTEventGenerator) {
+                        throw new NotSchedulableException(
+                                ((Nameable)discrete).getName() 
+                                + " has discrete outputs, which cannot be"
+                                + " connected to the input of "
+                                + ((Nameable)successor).getName() 
+                                + ", which requires a continuous signal.");
+                    }
+                    // Otherwise, we treat the successor as a discrete actor,
+                    // if it is not a waveform generator.
+                    if (!(successor instanceof CTWaveformGenerator) &&
+                        !discreteActors.contains(successor)) {
+                        discreteActors.addLast(successor);
+                        // Remove it from the continuousActors list.
+                        continuousActors.remove(successor);
+                        // Remove it from sink, if it is there.
+                        sinkActors.remove(successor);
+                    }
+                }
+            }
+            // Notice that by now, we have all the discrete actors, but
+            // they are not necessarily in the topological order.
+            // Now create the discrete schedule.
+            DirectedAcyclicGraph discreteGraph = _toGraph(discreteActors);
+            Object[] discreteSorted = discreteGraph.topologicalSort();
+            for (int i = 0; i < discreteSorted.length; i++) {
+                discreteActorSchedule.add(new 
+                        Firing((Actor)discreteSorted[i]));
+            }
+        }
+
+        // Actors remain in the continuousActors list are real continuous
+        // actor.The normal (CT) scheduling should only apply to them.
+
+        // Now we check whether there are any sequence actors or discrete
+        // composite actors in the continuous part of the system.
+        // Add all continuous actors in the continuous actors schedule.
+        Iterator continuousIterator = continuousActors.iterator();
+        while (continuousIterator.hasNext()) {
+            Actor actor = (Actor)continuousIterator.next();
+            if((actor instanceof SequenceActor) || 
+                    ((actor instanceof CompositeActor) && 
+                            (!(actor instanceof CTCompositeActor)))) {
+                throw new NotSchedulableException((Nameable)actor,
+                        " is in the continuous cluster, but it is a " 
+                        + " sequence or discrete actor.");
+            }
+            continuousActorSchedule.add(new Firing(actor));
+        }
+                 
+        // Check that waveform generators are sources in the continuous 
+        // actor list. And because of that, waveform generators can be
+        // arbitrarily ordered.
+        generators = waveformGenerators.iterator();
         while(generators.hasNext()) {
-            Actor generator = (Actor) generators.next();
+            Actor generator = (Actor)generators.next();
             Iterator predecessors = predecessorList(generator).iterator();
             while(predecessors.hasNext()) {
-                Object nextActor = predecessors.next();
-                if (!_discretes.contains(nextActor) && 
-                    !_eventGenerators.contains(nextActor)) {
-                    throw new NotSchedulableException (getContainer(),
-                            (NamedObj)nextActor
-                            + " is a predecessor of a waveform generator "
-                            + (NamedObj)generator 
-                            + ", but it is not a discrete actor.");
+                Actor predecessor = (Actor)predecessors.next();
+                if(!discreteActors.contains(predecessor) && 
+                   !eventGenerators.contains(predecessor)) {
+                    throw new NotSchedulableException("Waveform generator "
+                            + ((Nameable)generator).getName() 
+                            + " must have a discrete input. But the output of "
+                            + ((Nameable)predecessor).getName() 
+                            + " is discrete.");
                 }
             }
+            waveformGeneratorSchedule.add(new Firing(generator));
         }
-        Iterator discreteActors = _discretes.iterator();
-        while(discreteActors.hasNext()) {
-            Actor actor = (Actor) discreteActors.next();
-            Iterator predecessors = predecessorList(actor).iterator();
-            while(predecessors.hasNext()) {
-                Object nextActor = predecessors.next();
-                if (!_eventGenerators.contains(nextActor)) {
-                    throw new NotSchedulableException (getContainer(),
-                            (NamedObj)nextActor
-                            + " is a predecessor of a discrete actor "
-                            + (NamedObj)actor 
-                            + ", but it is not an event generator.");
-                }
-            }
-            Iterator successors = successorList(actor).iterator();
-            while(successors.hasNext()) {
-                Object nextActor = successors.next();
-                if (!_waveGenerators.contains(nextActor)) {
-                    throw new NotSchedulableException(getContainer(),
-                            (NamedObj)nextActor
-                            + " is a successor of a discrete actor "
-                            + (NamedObj)actor
-                            + ", but it is not a waveform generator.");
-                }
+
+        // Schedule event generators so that they are executed topologically.
+        if (!eventGenerators.isEmpty()) {
+            DirectedAcyclicGraph eventGraph = _toGraph(eventGenerators);
+            Object[] eventSorted = eventGraph.topologicalSort();
+            for (int i = 0; i < eventSorted.length; i++) {
+                eventGeneratorSchedule.add(new Firing((Actor)eventSorted[i]));
+                // Also add them to the sink actor list in topological order.
+                sinkActors.addLast(eventSorted[i]);
             }
         }
-    }
 
-
-
-    /** Return an enumeration of the detail schedules. The first
-     *  element in the Enumeration is the states schedule, then
-     *  transition schedule, then output schedule. Each schedule is
-     *  a list of actors in a certain order.
-     *  Each schedule can also be accessed by individual scheduledXXList
-     *  methods.
-     * @return an Enumeration of sub-schedules.
-     * @exception NotSchedulableException If either the system topology
-     * is wrong or arithmetic loop exists.
-     */
-    protected Enumeration _schedule() throws NotSchedulableException {
-        CTDirector dir = (CTDirector)getContainer();
-        if(dir == null) {
-            return null;
-        }
-        CompositeActor container = (CompositeActor)(dir.getContainer());
-        if(container == null) {
-            return null;
-        }
-        _stateSchedule = new LinkedList();
-        _transitionSchedule = new LinkedList();
-        _outputSchedule = new LinkedList();
-        _stateSSC = new LinkedList();
-        _outputSSC = new LinkedList();
-        _discreteSchedule = new LinkedList();
-        LinkedList _scheduleList = new LinkedList();
-
-        _classifyActors();
-
-        // Topological sort discrete actors.
-        DirectedAcyclicGraph discreteGraph = _toGraph(_discretes);
-        if(!discreteGraph.isAcyclic()) {
-            throw new NotSchedulableException(
-                    "Found a loop of discrete actors.");
-        }
-        Object[] sorted = discreteGraph.topologicalSort();
-        for(int i = 0; i < sorted.length; i++) {
-            _discreteSchedule.addLast(sorted[i]);
-        }
-
-        // Integrators and arithmetic actors.
-        DirectedAcyclicGraph arithmetic
-            = _toArithmeticGraph(container.deepEntityList());
-        DirectedAcyclicGraph dynamic = _toGraph(_dynamic);
-        if(!arithmetic.isAcyclic()) {
-            throw new NotSchedulableException("Arithmetic loop found.");
-        }
-        int dynamicSize = _dynamic.size();
-        if(dynamicSize > 0) {
-            Object[] dynamicActors = _dynamic.toArray();
-            // Dynamic actors are reverse ordered.
-            Object[] xSorted = dynamic.topologicalSort(dynamicActors);
+        // Now schedule dynamic actors and state transtion actors.
+        // Manipulate on the arithmeticGraph and the dynamicGraph.        
+       
+        arithmeticGraph = _toArithmeticGraph(continuousActors);
+        if(!dynamicActors.isEmpty()) {
+            Object[] dynamicArray = dynamicActors.toArray();
+            // Dynamic actors are reverse ordered in the schedule.
+            Object[] xSorted = dynamicGraph.topologicalSort(dynamicArray);
             for(int i = 0; i < xSorted.length; i++) {
                 Actor a = (Actor)xSorted[i];
-                _stateSchedule.addFirst(a);
+                // Looping on add(0, a) will reverse the order.
+                dynamicActorSchedule.add(0, new Firing(a));
                 if (a instanceof CTStepSizeControlActor) {
                     // Note: they are not ordered, but addFirst() is
                     // considered more efficient.
-                    _stateSSC.addFirst(a);
+                    stateSSCActors.add(new Firing(a));
                 }
             }
-            _scheduleList.addLast(_stateSchedule);
-            // State transition map
-            Object[] fx = arithmetic.backwardReachableNodes(dynamicActors);
-            Object[] fxSorted = arithmetic.topologicalSort(fx);
+            
+            // State transition schedule
+            Object[] fx = arithmeticGraph.backwardReachableNodes(dynamicArray);
+            Object[] fxSorted = arithmeticGraph.topologicalSort(fx);
             for(int i = 0; i < fxSorted.length; i++) {
                 Actor a = (Actor)fxSorted[i];
-                if (!_discretes.contains(a)) {
-                    _transitionSchedule.addLast(a);
-                    if (a instanceof CTStepSizeControlActor) {
-                        // Note: they are not ordered, but addFirst() is
-                        // considered more efficient.
-                        _stateSSC.addFirst(a);
-                    }
+                stateTransitionSchedule.add(new Firing(a));
+                if (a instanceof CTStepSizeControlActor) {
+                    // Note: they are not ordered, but we try to keep 
+                    // a topological order anyway.
+                    stateSSCActors.add(new Firing(a));
                 }
             }
-            _scheduleList.addLast(_transitionSchedule);
         }
-
-        // construct an array of sink actors.
-        int sinkSize = _sink.size();
-        if(sinkSize > 0) {
-            Object[] sinkActors =  _sink.toArray();
-            //Output map.
-            Object[] gx = arithmetic.backwardReachableNodes(sinkActors);
-            Object[] gxSorted = arithmetic.topologicalSort(gx);
+        
+        // Construct an array of sink actors.
+        if(!sinkActors.isEmpty()) {
+            Object[] sinkArray = sinkActors.toArray();
+            // Output map.
+            Object[] gx = arithmeticGraph.backwardReachableNodes(sinkArray);
+            Object[] gxSorted = arithmeticGraph.topologicalSort(gx);
             for(int i = 0; i < gxSorted.length; i++) {
                 Actor a = (Actor)gxSorted[i];
-                if (!_discretes.contains(a)) {
-                    _outputSchedule.addLast(a);
-                    if (a instanceof CTStepSizeControlActor) {
-                        _outputSSC.addLast(a);
-                    }
+                outputSchedule.add(new Firing(a));
+                if (a instanceof CTStepSizeControlActor) {
+                    outputSSCActors.add(new Firing(a));
                 }
             }
-            // add sinks to the output schedule
-            for (int i = 0; i < sinkActors.length; i++) {
-                Actor a = (Actor)sinkActors[i];
-                if (!_discretes.contains(a)) {
-                    _outputSchedule.addLast(a);
-                    if (a instanceof CTStepSizeControlActor) {
-                        _outputSSC.addLast(a);
-                    }
+            // Add sinks to the output schedule. Note the ordering among
+            // sink actors since we allow chains of event generators.
+            Iterator sinks = sinkActors.iterator();
+            while(sinks.hasNext()) {
+                Actor a = (Actor)sinks.next();
+                outputSchedule.add(new Firing(a));
+                if (a instanceof CTStepSizeControlActor) {
+                    outputSSCActors.add(new Firing(a));
                 }
             }
-
-            _scheduleList.addLast(_outputSchedule);
+            
         }
+        
+        // Create the CTSchedule. Note it must be done in this order.
+        ctSchedule.add(discreteActorSchedule);
+        ctSchedule.add(continuousActorSchedule);
+        ctSchedule.add(dynamicActorSchedule);
+        ctSchedule.add(eventGeneratorSchedule);
+        ctSchedule.add(outputSchedule);
+        ctSchedule.add(outputSSCActors);
+        ctSchedule.add(stateTransitionSchedule);
+        ctSchedule.add(statefulActors);
+        ctSchedule.add(stateSSCActors);
+        ctSchedule.add(waveformGeneratorSchedule);
 
         setValid(true);
-        return Collections.enumeration(_scheduleList);
+        return ctSchedule;
     }
 
     /** Convert the given list of actors to a directed acyclic graph.
@@ -1006,7 +545,9 @@ public class CTScheduler extends Scheduler{
         actors = list.iterator();
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-            if(!(actor instanceof CTDynamicActor)) {
+            
+            if(!(actor instanceof CTDynamicActor) && 
+               !(actor instanceof CTEventGenerator)) {
                 // Find the successors of the actor
                 Iterator successors = successorList(actor).iterator();
                 while (successors.hasNext()) {
@@ -1059,31 +600,9 @@ public class CTScheduler extends Scheduler{
 
     // The static name of the scheduler.
     private static final String _STATIC_NAME = "CTScheduler";
-    // schedule lists
-    private  transient LinkedList _stateSchedule;
-    private  transient LinkedList _transitionSchedule;
-    private  transient LinkedList _outputSchedule;
-    private  transient LinkedList _discreteSchedule;
-
-    // A LinkedList of the dynamic actors.
-    private transient LinkedList _dynamic;
-    // A LinkedList of discrete actors.
-    private transient LinkedList _discretes;
-    // A LinkedList of the sink actors.
-    private transient LinkedList _sink;
-    // A LinkedList of the arithmetic actors.
-    private transient LinkedList _arithmetic;
-    // A linkedList of SSC actors in the state and transition schedule.
-    private transient LinkedList _stateSSC;
-    // A linkedList of SSC actors in the state and transition schedule.
-    private transient LinkedList _outputSSC;
-    // A linkedList of event generators.
-    private transient LinkedList _eventGenerators;
-    // A linkedList of waveform generators.
-    private transient LinkedList _waveGenerators;
-    // A linkedList of stateful actors.
-    private transient LinkedList _stateful;
-
-    // Version of the lists.
-    private transient long _workspaceVersion = -1;
 }
+
+
+
+
+

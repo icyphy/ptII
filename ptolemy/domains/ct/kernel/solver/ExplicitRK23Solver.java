@@ -246,8 +246,9 @@ public class ExplicitRK23Solver extends ODESolver {
         CTScheduler scheduler = (CTScheduler)dir.getScheduler();
         if (scheduler == null) {
             throw new IllegalActionException( dir,
-                    " must have a director to fire.");
+                    " must have a scheduler to fire.");
         }
+        CTSchedule schedule = (CTSchedule)scheduler.getSchedule();
         resetRound();
         Iterator actors;
         // for the first iteration after a breakpoint, create the history.
@@ -255,14 +256,15 @@ public class ExplicitRK23Solver extends ODESolver {
             if(dir.STAT) {
                 dir.NFUNC ++;
             }
-            actors = scheduler.scheduledDynamicActorList().iterator();
+            actors = schedule.get(CTSchedule.DYNAMIC_ACTORS).actorIterator();
             while(actors.hasNext()) {
                 CTDynamicActor next = (CTDynamicActor)actors.next();
                 _debug(getFullName() + ": Build integrator history"
                         +((Nameable)next).getName());
                 next.emitTentativeOutputs();
             }
-            actors = scheduler.scheduledStateTransitionActorList().iterator();
+            actors = schedule.get(
+                    CTSchedule.STATE_TRANSITION_ACTORS).actorIterator();
             while(actors.hasNext()) {
                 Actor next = (Actor)actors.next();
                 _debug(getFullName() + ": Build integrator history..."
@@ -274,7 +276,7 @@ public class ExplicitRK23Solver extends ODESolver {
             if(dir.STAT) {
                 dir.NFUNC ++;
             }
-            actors = scheduler.scheduledDynamicActorList().iterator();
+            actors = schedule.get(CTSchedule.DYNAMIC_ACTORS).actorIterator();
             while(actors.hasNext()) {
                 Actor next = (Actor)actors.next();
                 _debug(getFullName() + " firing..."+
@@ -283,7 +285,8 @@ public class ExplicitRK23Solver extends ODESolver {
             }
             dir.setCurrentTime(dir.getCurrentTime()+
                     dir.getCurrentStepSize()*_timeInc[i]);
-            actors = scheduler.scheduledStateTransitionActorList().iterator();
+            actors = schedule.get(CTSchedule.STATE_TRANSITION_ACTORS).
+                actorIterator();
             while(actors.hasNext()) {
                 Actor next = (Actor)actors.next();
                 _debug(getFullName(), " firing... ",

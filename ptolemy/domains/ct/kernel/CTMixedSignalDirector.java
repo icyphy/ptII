@@ -218,60 +218,54 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
         }
         CompositeActor container = (CompositeActor) getContainer();
         Director exe = container.getExecutiveDirector();
-        // It must not be null.
-        if (_isEventPhase()) {
-            if(_debugging) _debug(getFullName(),
-                    "In event phase execution.");
-            _eventPhaseExecution();
-            _setEventPhase(false);
-            if(_debugging) _debug(getFullName(),
-                    "Request a refire at the current time." +
-                    exe.getCurrentTime(),
-                    "--END of fire");
-            exe.fireAt(container, exe.getCurrentTime());
-            return;
-        } else {
-            _eventPhaseExecution();
-            while(true) {
-                if(isBreakpointIteration()) {
-                    // Just after a breakpoint iteration. This is the known
-                    // good state. Note that isBreakpointIteration is
-                    // set to false in _processBreakpoints().
-                    _markStates();
+        // Allow waveform generators to consume events if there is any.
+        Iterator waveGenerators = getScheduler().getSchedule().get(
+                CTSchedule.WAVEFORM_GENERATORS).actorIterator();
+        while(waveGenerators.hasNext()) {
+            CTWaveformGenerator generator =
+                (CTWaveformGenerator) waveGenerators.next();
+            generator.consumeCurrentEvents();
+        }
+        while(true) {
+            if(isBreakpointIteration()) {
+                // Just after a breakpoint iteration. This is the known
+                // good state. Note that isBreakpointIteration is
+                // set to false in _processBreakpoints().
+                _markStates();
+            }
+            _setIterationBeginTime(getCurrentTime());
+            // Guarantee to stop at the iteration end time.
+            fireAt(null, getIterationEndTime());
+            // Refine step size.
+            setCurrentStepSize(getSuggestedNextStepSize());
+            _processBreakpoints();
+            if(_debugging) _debug(getName(),
+                    "Resolved stepsize: " + getCurrentStepSize() +
+                    " One iteration from " + getCurrentTime() +
+                    " to " + (getCurrentStepSize()+getCurrentTime()));
+            _fireOneIteration();
+            if (_isStoppedByEvent()) {
+                if(_debugging) {
+                    _debug(getFullName() + " fire stopped by event.",
+                            "at " + getCurrentTime(),
+                            "request refire at " + getCurrentTime(),
+                            "set Event phase to TRUE");
                 }
-                _setIterationBeginTime(getCurrentTime());
-                // Guarantee to stop at the iteration end time.
-                fireAt(null, getIterationEndTime());
-                // Refine step size.
-                setCurrentStepSize(getSuggestedNextStepSize());
-                _processBreakpoints();
-                if(_debugging) _debug(getName(),
-                        "Resolved stepsize: " + getCurrentStepSize() +
-                        " One iteration from " + getCurrentTime() +
-                        " to " + (getCurrentStepSize()+getCurrentTime()));
-                _fireOneIteration();
-                if (_isStoppedByEvent()) {
-                    if(_debugging) {
-                        _debug(getFullName() + " fire stopped by event.",
-                                "at " + getCurrentTime(),
-                                "request refire at " + getCurrentTime(),
-                                "set Event phase to TRUE");
-                    }
-                    exe.fireAt(container, getCurrentTime());
-                    _setEventPhase(true);
-                    return;
-                } else if (Math.abs(getCurrentTime()- getIterationEndTime())
-                        < getTimeResolution()) {
-                    if(_debugging) {
-                        _debug(getFullName() + " fire stopped regularly.",
-                                "at " + getCurrentTime(),
-                                "request refire at " + getIterationEndTime(),
-                                "set Event phase to FALSE");
-                    }
-                    exe.fireAt(container, getIterationEndTime());
-                    _setEventPhase(false);
-                    return;
+                _hasDiscreteEvents = true;
+                //_holdOutputs();
+                exe.fireAt(container, getCurrentTime());
+                return;
+            } else if (Math.abs(getCurrentTime()- getIterationEndTime())
+                    < getTimeResolution()) {
+                if(_debugging) {
+                    _debug(getFullName() + " fire stopped regularly.",
+                            "at " + getCurrentTime(),
+                            "request refire at " + getIterationEndTime(),
+                            "set Event phase to FALSE");
                 }
+                _hasDiscreteEvents = false;
+                exe.fireAt(container, getIterationEndTime());
+                return;
             }
         }
     }
@@ -292,8 +286,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
             Director exe = container.getExecutiveDirector();
             exe.fireAt(container, getCurrentTime());
         }
-        }
-
+    }
 
     /** If this is a top-level director, behave exactly as a
      *  CTMultiSolverDirector, otherwise always return true.
@@ -305,6 +298,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
         if(_isTopLevel()) {
             return super.postfire();
         } else {
+            _secondPrefire = false;
             return true;
         }
     }
@@ -343,7 +337,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
      *       or thrown by a directed actor.
      */
     public boolean prefire() throws IllegalActionException {
-
+        if(_debugging) _debug(getName(), " prefire: ");
         super.prefire(); // always returns true.
         if(!_isTopLevel()) {
             // synchronize time.
@@ -353,49 +347,60 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
             _outsideTime = exe.getCurrentTime();
             double timeResolution = getTimeResolution();
             double nextIterationTime = exe.getNextIterationTime();
-            double aheadLength = nextIterationTime - _outsideTime;
-            if(_debugging) _debug(getName(), "Outside Time = " + _outsideTime,
-                    "NextIterationTime = " + nextIterationTime,
-                    "Inferred run length = " + aheadLength);
-            if(aheadLength < 0 ) {
+
+            if(_debugging) _debug("Outside time is " + _outsideTime, 
+                    "\nNext interation time is " + nextIterationTime,
+                    "\nCurrent local time is " + getCurrentTime());
+            
+            // Now, check the next iteration time.
+            if (nextIterationTime < _outsideTime) {
                 throw new InvalidStateException(this, "Outside domain"
-                        + " time going backward."
-                        + " Current time = " + _outsideTime
+                        + " time is going backward."
+                        + " Current outside time = " + _outsideTime
                         + ", but the next iteration time = "
                         + nextIterationTime);
             }
-            if (aheadLength == 0 ) {
-                // This only happens when the current time of the outside
-                // domain is the stop time. So return false and stop
-                // executing.
-                return false;
-            }
-
-            if(_debugging) _debug( "Current Time " + getCurrentTime()
-                    + "Outside domain current time " + _outsideTime
-                    + " next iteration time " + nextIterationTime
-                    + "run length "+ aheadLength);
-
-            // Synchronization, handle round up error.
-            if(aheadLength < timeResolution) {
-                exe.fireAt(container, nextIterationTime);
-                if(_debugging) _debug("Next iteration is too close" +
-                        " (but not sync). Request a refire at: "
-                        + nextIterationTime);
-                return false;
-            }
-            if(Math.abs(_outsideTime - getCurrentTime()) < timeResolution) {
-                if(_debugging) _debug("Round up current time " +
-                        getCurrentTime() + " to outside time " +_outsideTime);
-                setCurrentTime(_outsideTime);
-            }
-            if (_outsideTime > getCurrentTime()) {
+           
+            // Ideally, the outside time should equal to the current 
+            // local time. If the outside time is less than the local
+            // time, then rollback is needed. If the outside time 
+            // is greater than the local time, we will complain.
+            if (Math.abs(_outsideTime - getCurrentTime()) < 
+                    getTimeResolution()) {
+                // We are woke up as we requested.
+                // Roundup the current time to the outside time
+                if(_debugging) _debug("Outside time is the current time.",
+                        " So we check whether there are outputs.");
+                _currentTime = _outsideTime;
+                // Process local discrete events and emit outputs
+                // if there are any. If there are any outputs emitted,
+                // request for a zero delay refire and return false.
+                if (_hasDiscreteEvents) {
+                    _discretePhaseExecution();
+                    boolean hasOutput = false;
+                    Iterator outports = container.outputPortList().iterator();
+                    while(outports.hasNext()) {
+                        IOPort p = (IOPort)outports.next();
+                        if (exe.transferOutputs(p)) {
+                            hasOutput = true;
+                        }
+                    }
+                    _hasDiscreteEvents = false;
+                    if (hasOutput) {
+                        if(_debugging) _debug(getName(), 
+                                " produces output to the outside domain.",
+                                " Requesting zero delay refiring",
+                                " Prefire() returns false.");
+                        exe.fireAt(container, _outsideTime);
+                        return false;
+                    }
+                }
+            } else if (_outsideTime > getCurrentTime()) {
                 throw new InvalidStateException(this, exe,
                         "Outside time is later than the CT time. " +
                         "This should never happen in mixed-signal modeling");
-            }
-            // Check for rollback.
-            if (_outsideTime < getCurrentTime()) {
+            } else if (_outsideTime < getCurrentTime()) {
+                // Outside time less than the local time. Rollback!
                 if(_debugging) _debug(getName() + " rollback from: " +
                         getCurrentTime() + " to: " +_knownGoodTime +
                         "due to outside time " +_outsideTime );
@@ -407,14 +412,52 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
                 fireAt(null, _outsideTime);
                 _catchUp();
             }
-            if(aheadLength < _runAheadLength) {
-                _setIterationEndTime(nextIterationTime);
+
+            // Now, we have outside time equals to the curren time, 
+            // and there are no discrete events. So we consider 
+            // how far we should run ahead of the outside time.
+            // If outside next iteration time is equal to the outside 
+            // time, then request for a zero delay refire.
+            // Notice that DE will pust this zero delay refire to be the 
+            // last one with the same time stamp. So we expect that
+            // next time we wake up, the next iteration time is not
+            // the same as the current time. 
+            // But there exists an additional subtlety, which is that
+            // we can have two CT composite actors in DE.
+            // So we need to check that after the second time we wake
+            // up at the same outside time, we should proceed anyway.
+
+            // FIXME: need to double check stop time.
+            if ((Math.abs(nextIterationTime - _outsideTime) < timeResolution)
+                    && (_secondPrefire == false)) {
+                exe.fireAt(container, _outsideTime);
+                _secondPrefire = true;
+                return false;
             } else {
-                _setIterationEndTime(_outsideTime + _runAheadLength );
+                // Now, either this the second time that we wake up,
+                // or we have a none zero run-ahead-time.
+                double aheadLength = nextIterationTime - _outsideTime;
+                if(_debugging) _debug(getName(),
+                        "Outside Time = " + _outsideTime,
+                        "NextIterationTime = " + nextIterationTime,
+                        "Inferred run length = " + aheadLength);
+                
+                if (aheadLength < timeResolution ) {
+                    // We should use the runAheadLength paremeter.
+                    _setIterationEndTime(_outsideTime + _runAheadLength);
+                    if(_debugging) _debug( "Outside next iteration length",
+                            " is zero. We proceed any way with length "
+                            + _runAheadLength);
+                } else if(aheadLength < _runAheadLength) {
+                    _setIterationEndTime(nextIterationTime);
+                } else {
+                    // aheadLength > _runAheadLength parameter.
+                    _setIterationEndTime(_outsideTime + _runAheadLength );
+                }
+                // Now it is safe to execute the continuous part.
+                if(_debugging) _debug(getName(), "Iteration end time = " +
+                        getIterationEndTime(), "End of Prefire");
             }
-            // Now it's guaranteed that the current time is the outside time.
-            if(_debugging) _debug(getName(), "Iteration end time = " +
-                    getIterationEndTime(), "End of Prefire");
         }
         return true;
     }
@@ -431,7 +474,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
      *   input port.
      *  @param port The port to transfer tokens from.
      *  @return True if there are data transferred.
-     */
+     *
     public boolean transferInputs(IOPort port)
             throws IllegalActionException {
         boolean transfer = super.transferInputs(port);
@@ -439,7 +482,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
             _setEventPhase(true);
         }
         return transfer;
-    }
+        }*/
 
     /** Show the statistics of the simulation if requested and wrapup
      *  call actors. The statistics,
@@ -503,18 +546,12 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
         }
     }
 
-    /** Return true if the current phase of fire is an event phase.
-     *  @return True if the current phase is an event phase.
-     */
-    protected boolean _isEventPhase() {
-        return _inEventPhase ;
-    }
-
     /** Return true if the current fire phase is stopped due to
      *  the occurrence of events (predictable or unpredictable).
      *  @return True if the current fire phase is stopped by an event.
+     *  @exception IllegalActionException If thrown by the scheduler.
      */
-    protected boolean _isStoppedByEvent() {
+    protected boolean _isStoppedByEvent() throws IllegalActionException {
         // predictable breakpoints
         double breakpoint;
         TotallyOrderedSet table = getBreakPoints();
@@ -535,8 +572,9 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
             }
         }
         // unpredictable breakpoints. Detect current events.
-        CTScheduler scheduler = (CTScheduler)getScheduler();
-        Iterator generators = scheduler.eventGeneratorList().iterator();
+        CTSchedule schedule = (CTSchedule)getScheduler().getSchedule();
+        Iterator generators = schedule.get(
+                CTSchedule.EVENT_GENERATORS).actorIterator();
         while(generators.hasNext()) {
             CTEventGenerator generator = (CTEventGenerator)generators.next();
             if(generator.hasCurrentEvent()) {
@@ -572,10 +610,12 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
     /** Mark the current state as the known good state. Call the
      *  markStates() method on all CTStatefulActors. Save the current time
      *  as the "known good" time.
+     *  @exception IllegalActionException If thrown by the scheduler.
      */
-    protected void _markStates() {
-        CTScheduler scheduler = (CTScheduler) getScheduler();
-        Iterator actors = scheduler.statefulActorList().iterator();
+    protected void _markStates() throws IllegalActionException {
+        CTSchedule schedule = (CTSchedule) getScheduler().getSchedule();
+        Iterator actors = schedule.get(
+                CTSchedule.STATEFUL_ACTORS).actorIterator();
         while(actors.hasNext()) {
             CTStatefulActor actor = (CTStatefulActor)actors.next();
             if(_debugging) _debug("Save State..."+
@@ -593,8 +633,9 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
      *       method of an actor.
      */
     protected void _rollback() throws IllegalActionException{
-        CTScheduler scheduler = (CTScheduler) getScheduler();
-        Iterator actors = scheduler.statefulActorList().iterator();
+        CTSchedule schedule = (CTSchedule) getScheduler().getSchedule();
+        Iterator actors = schedule.get(
+                CTSchedule.STATEFUL_ACTORS).actorIterator();
         while(actors.hasNext()) {
             CTStatefulActor actor = (CTStatefulActor)actors.next();
             if(_debugging) _debug("Restore State..."+
@@ -606,10 +647,10 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
 
     /** True argument sets the phase to be an event phase.
      *  @param eventPhase True to set the current phase to an event phase.
-     */
+     *
     protected void _setEventPhase(boolean eventPhase) {
         _inEventPhase = eventPhase;
-    }
+        }*/
 
     /** Set the end time for this iteration. If the argument is
      *  less than the current time, then an InvalidStateException
@@ -635,6 +676,17 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    // The held output tokens. It maps receivers to the tokens they 
+    // contains.
+    // private HashMap _heldTokens = new HashMap();
+
+    // Indicate whether there are pending discrete events.
+    private boolean _hasDiscreteEvents;
+
+    // Indicate whether this is the second time that prefire has been 
+    // called in a row.
+    private boolean _secondPrefire = false;
+
     // The version of mutation. If this version is not the workspace
     // version then every thing related to mutation need to be updated.
     private long _mutationVersion = -1;
@@ -655,5 +707,5 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
     private double _iterationEndTime;
 
     // Indicate whether this is an event phase;
-    private boolean _inEventPhase = false;
+    //private boolean _inEventPhase = false;
 }

@@ -178,10 +178,12 @@ public class DerivativeResolver extends ODESolver
             throw new IllegalActionException( dir,
                     " must have a director to fire.");
         }
+        CTSchedule schedule = (CTSchedule)scheduler.getSchedule();
         resetRound();
         dir.setCurrentStepSize(0.0);
         dir.setSuggestedNextStepSize(dir.getInitialStepSize());
-        Iterator actors = scheduler.scheduledDynamicActorList().iterator();
+        Iterator actors = schedule.get(CTSchedule.DYNAMIC_ACTORS).
+            actorIterator();
         while(actors.hasNext()) {
             CTDynamicActor next = (CTDynamicActor)actors.next();
             _debug(getFullName() + " Guessing..."+((Nameable)next).getName());
@@ -190,14 +192,15 @@ public class DerivativeResolver extends ODESolver
         if(dir.STAT) {
             dir.NFUNC ++;
         }
-        actors = scheduler.scheduledStateTransitionActorList().iterator();
+        actors = schedule.get(
+                CTSchedule.STATE_TRANSITION_ACTORS).actorIterator();
         while(actors.hasNext()) {
             Actor next = (Actor)actors.next();
             _debug(getFullName() + " Firing..."+
                     ((Nameable)next).getName());
             next.fire();
         }
-        actors = scheduler.scheduledDynamicActorList().iterator();
+        actors = schedule.get(CTSchedule.DYNAMIC_ACTORS).actorIterator();
         while(actors.hasNext()) {
             Actor next = (Actor)actors.next();
             _debug(getFullName() + " Refiring..."+

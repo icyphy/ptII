@@ -36,6 +36,9 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.Director;
+import ptolemy.actor.IOPort;
+
+import java.util.Iterator;
 
 //////////////////////////////////////////////////////////////////////////
 //// CTEmbeddedDirector
@@ -93,6 +96,7 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
     public CTEmbeddedDirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+        //addDebugListener(new StreamListener());
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -125,17 +129,76 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
      *  it during one iteration.
      */
     public void fire() throws IllegalActionException {
-        _eventPhaseExecution();
-        _prefireSystem();
-        ODESolver solver = getCurrentODESolver();
-        if(!solver.resolveStates()) {
-            _stateAcceptable = false;
-            if(_debugging) _debug(getFullName() + "resolve state failed.");
+        // FIXME: Do we consider the first iteration?
+        // Get the inputs if there are any
+        CompositeActor container = (CompositeActor)getContainer();
+        Director exe = container.getExecutiveDirector();
+        _outsideTime = exe.getCurrentTime();
+        if(_debugging) _debug(getName(), "Outside Time = "+ _outsideTime);
+        double nextIterationTime = exe.getNextIterationTime();
+        if(_debugging) _debug(getName(), "Next Iteration Time = "
+                + nextIterationTime);
+        setCurrentTime(getIterationBeginTime());
+        _outsideStepSize = nextIterationTime - getIterationBeginTime();
+        
+        if (_outsideStepSize == 0) {
+            if(_debugging) _debug("outside step size is 0",
+                    "So treat this as a breakpoint.");
+            // it must be a breakpoint now.
+            _setCurrentODESolver(getBreakpointSolver());
+            _setBreakpointIteration(true);
+            setCurrentStepSize(getMinStepSize());
+        } else {
+            _setCurrentODESolver(getODESolver());
+            _setBreakpointIteration(false);
+            setCurrentStepSize(_outsideStepSize);
         }
+        // if break point now, change solver.
+        Double now = new Double(_outsideTime);
+        TotallyOrderedSet breakPoints = getBreakPoints();
+        if(breakPoints != null && !breakPoints.isEmpty()) {
+            breakPoints.removeAllLessThan(now);
+            if(breakPoints.contains(now)) {
+                if(_debugging)
+                    _debug(getName(), 
+                            " Break point now at" + _outsideTime);
+                // Breakpoints iterations are always successful
+                // so remove the breakpoints.
+                breakPoints.removeFirst();
+                // does not adjust step size, 
+                // since the exe-dir should do it.
+                _setCurrentODESolver(getBreakpointSolver());
+                _setBreakpointIteration(true);
+                setCurrentStepSize(getMinStepSize());
+            }
+        }
+        
+        if(_debugging) _debug(getName(), "at" + getCurrentTime(),
+                " step size is " + getCurrentStepSize(),
+                "breakpoint table contains " + getBreakPoints().toString());
 
-        if(_debugging) _debug(getFullName() + " current time after" +
-                " solver.resolveStates() is " + getCurrentTime());
-        produceOutput();
+        Iterator waveGenerators = getScheduler().getSchedule().get(
+                CTSchedule.WAVEFORM_GENERATORS).actorIterator();
+        while(waveGenerators.hasNext()) {
+            CTWaveformGenerator generator =
+                (CTWaveformGenerator) waveGenerators.next();
+            generator.consumeCurrentEvents();
+        }
+        // continuous phase;
+        if(_debugging) _debug("execute the system from "+
+                getCurrentTime() + " step size" + getCurrentStepSize()
+                + " using solver " + getCurrentODESolver().getName());
+        if (_prefireContinuousActors()) {
+            ODESolver solver = getCurrentODESolver();
+            if(!solver.resolveStates()) {
+                _stateAcceptable = false;
+                if(_debugging) _debug(getFullName() + "resolve state failed.");
+            }
+            
+            if(_debugging) _debug(getFullName() + " current time after" +
+                    " solver.resolveStates() is " + getCurrentTime());
+            produceOutput();
+        }
     }
 
     /** Register the break point to this director and to the executive
@@ -152,6 +215,25 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
         Director exeDirector = container.getExecutiveDirector();
         exeDirector.fireAt(container, time);
     }
+
+    /** Set the current time to be the current time of the outside model.
+     *  Both the current time and the stop time are registered
+     *  as a breakpoint.
+     *  It invokes the initialize() method for all the Actors in the
+     *  container.
+     *
+     *  @exception IllegalActionException If the instantiation of the solvers
+     *  does not succeed or one of the directed actors throws it.
+     */
+    public void initialize() throws IllegalActionException {
+        CompositeActor container = (CompositeActor)getContainer();
+        Director exe = container.getExecutiveDirector();
+        setCurrentTime(exe.getCurrentTime());
+        _setIterationBeginTime(getCurrentTime());
+        super.initialize();
+        
+    }
+        
 
     /** Return true if the current integration step
      *  is accurate. This is determined by asking all the
@@ -192,8 +274,10 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
      */
     public boolean postfire() throws IllegalActionException {
         if(_debugging) _debug(getFullName(), " postfire.");
-        _eventPhaseExecution();
-        updateStates();
+        _discretePhaseExecution();
+        updateContinuousStates();
+        // The current time will be the begin time of the next iteration.
+        _setIterationBeginTime(getCurrentTime());
         return true;
     }
 
@@ -224,6 +308,7 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
             NSTEP++;
         }
         CompositeActor ca = (CompositeActor) getContainer();
+        
         if(!isScheduleValid()) {
             // mutation occurred, redo the schedule;
             CTScheduler scheduler = (CTScheduler)getScheduler();
@@ -231,40 +316,10 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
                 throw new IllegalActionException (this,
                         "does not have a Scheduler.");
             }
-            scheduler.schedule();
+            scheduler.getSchedule();
             setScheduleValid(true);
         }
-        Director exe = ca.getExecutiveDirector();
-        _outsideTime = exe.getCurrentTime();
-        if(_debugging) _debug(getName(), "Outside Time = "+ _outsideTime);
-        double nextIterationTime = exe.getNextIterationTime();
-        if(_debugging) _debug(getName(), "Next Iteration Time = "
-                + nextIterationTime);
-        setCurrentTime(_outsideTime);
-        // if break point now, change solver.
-        Double now = new Double(_outsideTime);
-        TotallyOrderedSet breakPoints = getBreakPoints();
-        if(breakPoints != null && !breakPoints.isEmpty()) {
-            breakPoints.removeAllLessThan(now);
-            if(breakPoints.contains(now)) {
-                if(_debugging)
-                    _debug(getName(), " Break point now at" + _outsideTime);
-                // Breakpoints iterations are always successful
-                // so remove the breakpoints.
-                _setCurrentODESolver(getBreakpointSolver());
-                breakPoints.removeFirst();
-                // does not adjust step size, since the exe-dir should do it.
-                _setBreakpointIteration(true);
-            } else {
-                _setCurrentODESolver(getODESolver());
-                _setBreakpointIteration(false);
-            }
-
-        }
-        _outsideStepSize = nextIterationTime - _outsideTime;
-        setCurrentStepSize(_outsideStepSize);
-        if(_debugging) _debug(getName(), "at" + getCurrentTime(),
-                "breakpoint table contains ", getBreakPoints().toString());
+        
         return true;
     }
 

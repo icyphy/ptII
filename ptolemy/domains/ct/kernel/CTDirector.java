@@ -359,6 +359,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
      *  @exception CloneNotSupportedException If one of the attributes
      *   cannot be cloned.
      */
+    // FIXME: Do we need this anymore?
     public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
         CTDirector newObject = (CTDirector)(super.clone(workspace));
@@ -478,6 +479,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
     public final double getStartTime() {
         return _startTime;
     }
+    
     /** Return the stop time. This method is final
      *  for performance reason.
      *  @return the stop time.
@@ -534,23 +536,42 @@ public abstract class CTDirector extends StaticSchedulingDirector {
      */
     public void fireAt(Actor actor, double time)
             throws IllegalActionException{
-        if(time < getCurrentTime()-getTimeResolution()) {
+        if(time < getCurrentTime() - getTimeResolution()) {
             throw new IllegalActionException((Nameable)actor,
                     "Requested fire time: " + time + " is earlier than" +
                     " the current time." + getCurrentTime() );
         }
-        // _breakPoints can never be null.
-        _breakPoints.insert(new Double(time));
+        if(Math.abs(time - getCurrentTime()) < getTimeResolution() &&
+           isDiscretePhase()) {
+            // This is specifc for discrete actors.
+            // Fire it right away.
+            if (actor.prefire()) { 
+                actor.fire();
+                actor.postfire();
+            }
+        } else {
+            // Otherwise, the fireAt request is in the future. So we
+            // insert it to the breakpoint table.
+            // Note that the _breakPoints can never be null.
+            _breakPoints.insert(new Double(time));
+        }
     }
 
     /** Return true if this is the first iteration after a breakpoint.
      *  In a breakpoint iteration, the ODE solver is the breakpoint
-     *  ODE solver, and the step size is the minimum step size.
+     *  ODE solver, and the step size is zero or the minimum step size.
      *  This method is final for performance reason.
      *  @return True if this is a breakpoint iteration.
      */
     public final boolean isBreakpointIteration() {
         return _breakpointIteration;
+    }
+    
+    /** Return true if this is at the discrete phase execution.
+     *  @return True if this is at the discrete phase execution.
+     */
+    public final boolean isDiscretePhase() {
+        return _discretePhase;
     }
 
     /** Return a new CTReceiver.
@@ -598,7 +619,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
         CTScheduler scheduler = (CTScheduler)getScheduler();
         if (scheduler == null) {
             throw new IllegalActionException( this,
-                    "does not have a scheduler.");
+                    "has no scheduler.");
         }
         if(STAT) {
             NSTEP = 0;
@@ -624,10 +645,10 @@ public abstract class CTDirector extends StaticSchedulingDirector {
      *      schedule throws it.
      */
     public void produceOutput() throws IllegalActionException {
-        CTScheduler scheduler = (CTScheduler) getScheduler();
+        CTSchedule schedule = (CTSchedule) getScheduler().getSchedule();
         // Integrators emit output.
         Iterator integrators =
-            scheduler.scheduledDynamicActorList().iterator();
+            schedule.get(CTSchedule.DYNAMIC_ACTORS).actorIterator();
         while(integrators.hasNext()) {
             CTDynamicActor dynamic = (CTDynamicActor)integrators.next();
             if(_debugging) _debug("Emit tentative state: "+
@@ -635,7 +656,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
             dynamic.emitTentativeOutputs();
         }
         Iterator actors =
-            scheduler.scheduledOutputActorList().iterator();
+            schedule.get(CTSchedule.OUTPUT_ACTORS).actorIterator();
         while(actors.hasNext()) {
             Actor actor = (Actor)actors.next();
             if(_debugging) _debug("Fire output actor: "+
@@ -644,22 +665,21 @@ public abstract class CTDirector extends StaticSchedulingDirector {
         }
     }
 
-    /** Call postfire() on all actors. For a correct CT simulation,
+    /** Call postfire() on all actors in the continuous part of the model.
+     *  For a correct CT simulation,
      *  the state of an actor can only change at this stage of an
      *  iteration.
      *  @exception IllegalActionException If any of the actors
      *      throws it.
      */
-    public void updateStates() throws IllegalActionException {
-        CompositeActor container = (CompositeActor) getContainer();
-        Iterator actors = container.deepEntityList().iterator();
-        List discretes = ((CTScheduler)getScheduler()).discreteActorSchedule();
+    public void updateContinuousStates() throws IllegalActionException {
+        CTSchedule schedule = (CTSchedule)getScheduler().getSchedule();
+        Iterator actors = schedule.get(
+                CTSchedule.CONTINUOUS_ACTORS).actorIterator();
         while(actors.hasNext()) {
             Actor actor = (Actor)actors.next();
-            if(!discretes.contains(actor)) {
-                actor.postfire();
-                if(_debugging) _debug("postfire " + (Nameable)actor);
-            }
+            actor.postfire();
+            if(_debugging) _debug("postfire " + (Nameable)actor);
         }
     }
 
@@ -837,6 +857,14 @@ public abstract class CTDirector extends StaticSchedulingDirector {
         _iterationBeginTime = time;
     }
 
+    /** Set the current phase of execution as a discrete phase. The value
+     *  set will be returned by the isDiscretePhase() method.
+     *  @param discrete True if this is the discrete phase.
+     */
+    protected void _setDiscretePhase(boolean discrete) {
+        _discretePhase = discrete;
+    }
+
     /** Returns false always, indicating that this director does not need to
      *  modify the topology during one iteration.
      *
@@ -876,4 +904,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
     // The begin time of a iteration. This value is remembered so that
     // we don't need to resolve it from the iteration end time and step size.
     private double _iterationBeginTime;
+
+    // Indicate that this is the discrete phase.
+    private boolean _discretePhase;
 }
