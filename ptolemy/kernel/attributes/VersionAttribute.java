@@ -279,7 +279,7 @@ public class VersionAttribute
 
     static {
         try {
-            CURRENT_VERSION = new VersionAttribute("3.1-devel");
+            CURRENT_VERSION = new VersionAttribute("4.0-alpha");
         } catch (Exception ex) {
             throw new ExceptionInInitializerError(
                     "Failed to create CURRENT_VERSION: "
