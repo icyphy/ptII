@@ -92,16 +92,14 @@ JSRCS = \
 	PlotFrame.java \
 	PlotLive.java \
 	PlotLiveApplet.java \
-	PlotPoint.java \
-	Render.java \
-	RenderApplication.java
+	PlotPoint.java
 
-# Used to build distributions with InstallShield's isjava tool
-ISJAVA_SRC = ptplot.isj
+# Used to build distributions with Installshield's Multiplatform Installer
+INSTALLSHIELD_PROJECT = ptplot_ismp.xml
 
 # Files that are not compiled, such as .tcl and .itcl files.
 EXTRA_SRCS = $(JSRCS) \
-	$(ISJAVA_SRC) \
+	$(INSTALLSHIELD_PROJECT) \
 	copyright.txt \
 	index.htm \
 	ptplot_ismp.xml
@@ -149,9 +147,7 @@ OPTIONAL_FILES = \
 	'PlotApplication$$1.class' \
 	'PlotFrame$$FileMenuListener.class' \
 	'PlotFrame$$FormatListener.class' \
-	'PlotFrame$$SpecialMenuListener.class' \
-	'Render$$1.class' \
-	'RenderApplication$$1.class'
+	'PlotFrame$$SpecialMenuListener.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
@@ -354,9 +350,10 @@ fixtmpdist:
 		ptolemy.plot \
 		ptolemy.plot.compat \
 		ptolemy.plot.plotml
-	mkdir -p $(PTTMPDIR)/$(PTDIST)/doc/design
 	# Remove files that we don't want to include
+	# GNU Tar under cygwin has problems excluding files
 	rm -rf $(PTTMPME)/adm $(PTTMPME)/*.gz $(PTTMPME)/*.zip
+	-find $(PTTMPME) -name CVS -exec rm -rf {} \;
 	@echo "Fixing up doc/download directory"
 	rm -rf $(PTTMPME)/doc/download
 	mkdir $(PTTMPME)/doc/download
@@ -369,3 +366,13 @@ fixtmpdist:
 	echo 'See <a href="http://ptolemy.eecs.berkeley.edu/java/ptplot" target="_top"><code>http://ptolemy.eecs.berkeley.edu/java/ptplot</code></a>' >> $(PTTMPME)/doc/download/index.htm
 	echo "</body>" >> $(PTTMPME)/doc/download/index.htm
 	echo "</html>" >> $(PTTMPME)/doc/download/index.htm
+
+
+
+ISPMP_PROJECT_DIR= [cC]:\\users\\cxh\\ptII\\adm\\trees\\ptII1.0beta\\ptolemy\\plot\\
+ISPMP_WINDOWS_SRC= $(IPMP_PROJECT_DIR)\\adm\\tmp\\$(PTDIST)
+# Run this on doppler with:
+# rm unixPtiny.xml; make PTIIHOME=/home/eecs/cxh/ptII build_unixPtiny
+unix$(INSTALLSHIELD_PROJECT):  $(INSTALLSHIELD_PROJECT)
+	sed $(TRANSFORM_ISPMP_SEDSCRIPT) \
+		 $< > $@
