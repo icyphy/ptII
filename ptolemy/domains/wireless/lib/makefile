@@ -47,9 +47,11 @@ PTPACKAGE = 	lib
 PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-		network/network.jar \
-		tinyOS/tinyOS.jar
+PTCLASSALLJARS =
+
+# We are not shipping networ
+#		network/network.jar
+#		tinyOS/tinyOS.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
@@ -78,7 +80,9 @@ EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES = 	$(DIRS)
+# Set MISC_FILES to test instead of DIRS because we are not shipping
+# network and tinyOS
+MISC_FILES = 	test
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
