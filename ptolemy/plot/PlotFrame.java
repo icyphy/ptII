@@ -75,11 +75,7 @@ field is set once in the constructor and immutable afterwards.
 @see Plot
 @see PlotBox
 @author Christopher Hylands and Edward A. Lee
-<<<<<<< PlotFrame.java
 @version $Id$
-=======
-@version $Id$
->>>>>>> 1.9
 */
 public class PlotFrame extends Frame {
 
@@ -194,11 +190,7 @@ public class PlotFrame extends Frame {
                 "Ptolemy plot frame\n" +
                 "By: Edward A. Lee, eal@eecs.berkeley.edu\n" +
                 "and Christopher Hylands, cxh@eecs.berkeley.edu\n" +
-<<<<<<< PlotFrame.java
-                "Version 2.0, Build: $Id$\n\n"+
-=======
-                "Version 2.0, Build: $Id$\n\n"+
->>>>>>> 1.9
+                "Version 2.0, Build: $Id$"+
                 "For more information, see\n" +
                 "http://ptolemy.eecs.berkeley.edu/java/ptplot\n");
         message.setTitle("About Ptolemy Plot");
