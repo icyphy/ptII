@@ -46,7 +46,7 @@ import collections.LinkedList;
 Base class of directors for the process oriented domains. It provides
 default implementations for methods that are common across such domains.
 <p>
-In the process orientated domains, the director controlling a model 
+In the process oriented domains, the director controlling a model 
 needs to keep track of the state of the model. In particular it needs 
 to maintain an accurate count of the number of active processes under 
 its control, any processes that are blocked for whatever reason (trying 
@@ -117,53 +117,50 @@ public class ProcessDirector extends Director {
         ProcessDirector newobj = (ProcessDirector)super.clone(ws);
         newobj._actorsActive = 0;
         newobj._actorsPaused = 0;
-        newobj._deadlock = false;
         newobj._notdone = true;
-        newobj._paused = false;
         newobj._pausedReceivers = new LinkedList();
-        newobj._pauseRequested = false;
         newobj._threadList = new LinkedList();
         return newobj;
     }
 
-    /** Decrease by one the count of active processes under the control of 
-     *  this director. Also check whether the model is now paused
-     *  if a pause was requested.
-     *  This method shall be called only when an active thread that was
-     *  registered using increaseActiveCount() is terminated.
-     *
-     *  @deprecated use _decreaseActiveCount instead
-     */
-    public synchronized void decreaseActiveCount() {
-	_actorsActive--;
-	_checkForDeadlock();
-        //If pause requested, then check if paused
-        if (_pauseRequested) {
-            _checkForPause();
-        }
-    }
-
-
-    /** This normally waits till the detection of a deadlock.
-     *  In the base class this waits for all process threads to terminate.
+    /** Waits till the detection of a deadlock. Then handles the deadlock
+     *  and returns.
      *  @exception IllegalActionException If a derived class throws it.
      */
     public void fire()
 	    throws IllegalActionException {
-        while (!_handleDeadlock());
+	Workspace worksp = workspace();
+	synchronized (this) {
+	    while (!_checkForDeadlock()) {
+		worksp.wait(this);
+	    }
+	    _notdone = !_handleDeadlock();
+	}
+        return;
     }
 
-    /** This invokes the initialize() methods of all its deeply contained
-     *  actors. It also creates receivers for all the ports and increases the
-     *  number of active threads for each actor being initialized.
+
+    /** Increases the count of paused threads and checks whether the
+     *  entire model has sucessfully paused.
+     */
+    public synchronized void increasePausedCount() {
+        _actorsPaused++;
+        if (_checkForPause()) {
+	    notifyAll();
+	}
+    }
+
+    /** Invokes the initialize() methods of all the deeply contained
+     *  actors in the container (a composite actor) of this director.
+     *  It creates a new ProcessThread for each actor. It also creates 
+     *  receivers for all the ports.
      *  <p>
-     *  This method should be invoked once per execution, before any
-     *  iteration. It may produce output data.
-     *  This method is <i>not</i> synchronized on the workspace, so the
-     *  caller should be.
+     *  The current time of execution of the container and all the 
+     *  actors contained in it is set.
+     *  <p>
      *
-     *  @exception IllegalActionException If the initialize() method of the
-     *   container or one of the deeply contained actors throws it.
+     *  @exception IllegalActionException If the initialize() method 
+     *   of one of the deeply contained actors throws it.
      */
     public void initialize()
             throws IllegalActionException {
@@ -173,64 +170,42 @@ public class ProcessDirector extends Director {
             //Creating receivers and threads for all actors;
             while (allactors.hasMoreElements()) {
                 Actor actor = (Actor)allactors.nextElement();
-                //increaseActiveCount should be called before createReceivers
-                // as that might increase the count of processes blocked
-                //and deadlocks might get detected even if there are no
-                //deadlocks
-                increaseActiveCount();
+                ProcessThread pnt = new ProcessThread(actor, this);
+                _threadList.insertFirst(pnt);
+		_newthreads.insertFirst(pnt);
                 actor.createReceivers();
                 actor.initialize();
-                String name = ((Nameable)actor).getName();
-                ProcessThread pnt = new ProcessThread(actor, this, name);
-                _threadList.insertFirst(pnt);
             }
-            setCurrentTime(0.0);
+            setCurrentTime(getCurrentTime());
         }
     }
 
-    /** This method should be called when a new thread corresponding
-     *  to an actor is started in the model under the control of this
-     *  director. This method is required for detection of deadlocks.
-     *  The corresponding method decreaseActiveCount should be called
-     *  when the thread is terminated.
-     */
-    public synchronized void increaseActiveCount() {
-	_actorsActive++;
-    }
 
-    /** This method increases the number of paused threads and checks if the
-     *  entire model has sucessfully paused.
-     */
-    public synchronized void increasePausedCount() {
-        _actorsPaused++;
-        _checkForPause();
-    }
-
-    /** This returns false if the model has reached a deadlock and can
-     *  be terminated if desired. This flag is set on detection of a deadlock
-     *  in the fire() method.
-     *  @return false if the director has detected a deadlock and does not
-     *   wish to be scheduled.
+    /** Return false if the model has reached a deadlock and can
+     *  be terminated if desired. Return true otherwise.
+     *  This flag is set on detection of a deadlock in the fire() method.
+     *  @return false if the director has detected a deadlock and can be 
+     *  terminated if desired. 
      *  @exception IllegalActionException If a derived class throws it.
      */
     public boolean postfire() throws IllegalActionException {
 	return _notdone;
     }
 
-
-    /** Return true indicating that the director is ready to be fired. This
-     *  starts the threads, corresponding to all the actors, that were created
-     *  in the initialize() method.
+    /** Return true.
+     *  This starts the threads, corresponding to all the actors, that 
+     *  were created in the initialize() method.
      *  @return true Always returns true.
      *  @exception IllegalActionException If a derived class throws it.
      */
     public boolean prefire() throws IllegalActionException  {
-        Enumeration threads = _threadList.elements();
+        Enumeration threads = _newthreads.elements();
         // Starting threads.
         while (threads.hasMoreElements()) {
             ProcessThread thread = (ProcessThread)threads.nextElement();
             thread.start();
         }
+	_newthreads.clear();
         return true;
     }
 
@@ -239,133 +214,132 @@ public class ProcessDirector extends Director {
      *  the receivers. It also sets the pause flag in all the output
      *  ports of the CompositeActor under control of this director.
      *  <p>
-     *  FIXME: should a pausedEvent be sent when the
-     *  model is fully paused?
      *  @exception IllegalActionException If cannot access all the receivers.
      */
-    public synchronized void setPauseRequested() 
+    //  Note: Should be fixed after Director/Manager define pause, et. al.
+    //  Should a pausedEvent be sent when the model is fully paused?
+    public void pause() 
             throws IllegalActionException {
-        // If already paused do nothing.
-        if (_pauseRequested) {
-            return;
-        }
-        _pauseRequested = true;
-        //workspace.getReadAccess();
+        Workspace worksp = workspace();
+	worksp.getReadAccess();
+	try {
+	    // Obtaining a list of all actors in this compositeActor
+	    CompositeActor cont = (CompositeActor)getContainer();
+	    Enumeration allMyActors = cont.deepGetEntities();
+	    Enumeration actorPorts;
+	    ProcessReceiver nextRec;
+	    
+	    while (allMyActors.hasMoreElements()) {
+		// Obtaining all the ports of each actor
+		Actor actor = (Actor)allMyActors.nextElement();
+		actorPorts = actor.inputPorts();
+		while (actorPorts.hasMoreElements()) {
+		    IOPort port = (IOPort)actorPorts.nextElement();
+		    // Setting paused flag in the receivers..
+		    Receiver[][] receivers = port.getReceivers();
+		    for (int i=0; i<receivers.length; i++) {
+			for (int j=0; j<receivers[i].length; j++) {
+			    nextRec = (ProcessReceiver)receivers[i][j];
+			    nextRec.setPause(true);
+			    _pausedReceivers.insertFirst(receivers[i][j]);
+			}
+		    }
+		}
+	    }
+	    
+	    // If this director is controlling a CompositeActor with
+	    // output ports, need to set the finished flag
+	    // there as well.
+	    // FIXME: is this the best way to set these flags.
+	    actorPorts  = cont.outputPorts();
+	    while (actorPorts.hasMoreElements()) {
+		IOPort port = (IOPort)actorPorts.nextElement();
+		// Terminating the ports and hence the star
+		Receiver[][] receivers = port.getReceivers();
+		for (int i = 0; i<receivers.length; i++) {
+		    for (int j = 0; j<receivers[i].length; j++) {
+			nextRec = (ProcessReceiver)receivers[i][j];
+			nextRec.setPause(true);
+			_pausedReceivers.insertFirst(receivers[i][j]);
+		    }
+		}
+	    }
+	} finally {
+	    worksp.doneReading();
+	}
 	
-        // Obtaining a list of all actors in this compositeActor
-        CompositeActor cont = (CompositeActor)getContainer();
-        Enumeration allMyActors = cont.deepGetEntities();
-        Enumeration actorPorts;
-        
-        ProcessReceiver nextRec;
-        
-        while (allMyActors.hasMoreElements()) {
-            // Obtaining all the ports of each actor
-            Actor actor = (Actor)allMyActors.nextElement();
-            actorPorts = actor.inputPorts();
-            while (actorPorts.hasMoreElements()) {
-                IOPort port = (IOPort)actorPorts.nextElement();
-                // Setting paused flag in the receivers..
-                Receiver[][] receivers = port.getReceivers();
-                for (int i = 0; i<receivers.length; i++) {
-                    for (int j = 0; j<receivers[i].length; j++) {
-                        nextRec = (ProcessReceiver)receivers[i][j];
-                        nextRec.setPause(true);
-                        _pausedReceivers.insertFirst(receivers[i][j]);
-                    }
-                }
-            }
-        }
-        
-        // If this director is controlling a CompositeActor with
-        // output ports, need to set the finished flag
-        // there as well.
-        // FIXME: is this the best way to set these flags.
-        actorPorts  = cont.outputPorts();
-        while (actorPorts.hasMoreElements()) {
-            IOPort port = (IOPort)actorPorts.nextElement();
-            // Terminating the ports and hence the star
-            Receiver[][] receivers = port.getReceivers();
-            for (int i = 0; i<receivers.length; i++) {
-                for (int j = 0; j<receivers[i].length; j++) {
-                    nextRec = (ProcessReceiver)receivers[i][j];
-                    nextRec.setPause(true);
-                    _pausedReceivers.insertFirst(receivers[i][j]);
-                }
-            }
-        }
-        
-        // Now wake up all the receivers.
-        (new NotifyThread(_pausedReceivers)).start();
-        
+	synchronized (this) {
+	    while (!_checkForPause()) {
+		worksp.wait(this);
+	    }
+	}
         return;
     }
     
-    /** Resumes execution of the model. If the model is not paused do nothing.
+    /** Resumes execution of the model. 
      *  All the actors that were paused using setResumePaused are resumed. 
+     *  The pause flag of the receivers is set to false and all the threads
+     *  that are waiting on the receiver are notified.
      */
-    public synchronized void setResumeRequested() {
-        if (!_pauseRequested) {
-            return;
-        }
-
-	Enumeration receivers = _pausedReceivers.elements();
+    public void resume() {
+	LinkedList copy = new LinkedList();
+	synchronized(this) {
+	    copy.appendElements(_pausedReceivers.elements());
+	    _pausedReceivers.clear();
+	    _actorsPaused = 0;
+	}
+	Enumeration receivers = copy.elements();
 	while (receivers.hasMoreElements()) {
 	    ProcessReceiver rec = (ProcessReceiver)receivers.nextElement();
             rec.setPause(false);
 	}
-
         // Now wake up all the receivers.
-        (new NotifyThread(_pausedReceivers)).start();
-
-        _pausedReceivers.clear();
-        _actorsPaused = 0;
-        _pauseRequested = false;
+        (new NotifyThread(copy)).start();
     }
 
-    /** Terminate all threads under control of this director immediately.
+
+    /** Terminates all threads under control of this director immediately.
      *  This abrupt termination will not allow normal cleanup actions
      *  to be performed, and the model should be recreated after calling 
      *  this method.
-     *
-     *  FIXME: for now call Thread.stop() but should change to use
-     *  Thread.destroy() when it is eventually implemented.
      */
-    public synchronized void terminate() {
+    //  Note: for now call Thread.stop() but should change to use
+    //  Thread.destroy() when it is eventually implemented.
+    public void terminate() {
         // First need to invoke terminate on all actors under the
         // control of this director.
         super.terminate();
         // Now stop any threads created by this director.
-        Enumeration threads = _threadList.elements();
+	LinkedList list = new LinkedList();
+	list.appendElements(_threadList.elements());
+	_threadList.clear();
+        Enumeration threads = list.elements();
         while (threads.hasMoreElements()) {
-            Thread next = (Thread)threads.nextElement();
-            if (next.isAlive()) {
-                next.stop();
-            }
+	    ((Thread)threads.nextElement()).stop();
         }
     }
 
 
-    /** End the execution of the model. A flag is set in all the receivers
-     *  which causes each process to terminate the next time it
-     *  reaches a communication point.
+    /** Ends the execution of the model under the control of this 
+     *  director. A flag is set in all the receivers
+     *  which causes each process to terminate at the earliest
+     *  communication point.
      *  <p>
+     *  This method is not synchronized on the workspace, so the caller 
+     *  should be.
      *  Note that the wrapup methods are not invoked on the actors
      *  under control of this director as each actor is executed by a
      *  seperate thread. They are called from the thread itself.
      *  <p>
-     **  @exception IllegalActionException if a method accessing the topology
+     *  @exception IllegalActionException if a method accessing the topology
      *   throws it.
      */
-    public synchronized void wrapup() throws IllegalActionException {
+    public void wrapup() throws IllegalActionException {
 	CompositeActor cont = (CompositeActor)getContainer();
         Enumeration allMyActors = cont.deepGetEntities();
-
         Enumeration actorPorts;
         ProcessReceiver nextRec;
-
         LinkedList recs = new LinkedList();
-
         while (allMyActors.hasMoreElements()) {
             Actor actor = (Actor)allMyActors.nextElement();
             actorPorts = actor.inputPorts();
@@ -408,79 +382,120 @@ public class ProcessDirector extends Director {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    /** Add a thread to the list of threads in the model. 
+     *  This list is used in case of abrupt termination of the model
+     *  @param thr The newly created thread
+     */
+    protected synchronized void _addNewThread(ProcessThread thr) {
+	_threadList.insertFirst(thr);
+    }
+
     /** Checks for deadlock. In the base class implementation it 
      *  notifies the director of a deadlock only if there are no active 
      *  processes.
      */
-    protected synchronized void _checkForDeadlock() {
+    protected synchronized boolean _checkForDeadlock() {
         if (_actorsActive == 0) {
-            _deadlock = true;
-            notifyAll();
-        }
-        return;
-
+	    return true;
+	} else {
+	    return false;
+	}
     }
 
     /** Checks if all active processes are either blocked or paused.
      *  Should be overridden in derived classes. In the base class it 
      *  verifies if all the active actors are paused.
      */
-    protected synchronized void _checkForPause() {
+    protected synchronized boolean _checkForPause() {
         if (_actorsPaused >= _actorsActive) {
-	    _paused = true;
-            notifyAll();
+	     return true;
+	} else {
+	    return false;
 	}
-       	return;
+    }
+
+    /** Decrease by one the count of active processes under the control of 
+     *  this director. Also check whether the model is now paused
+     *  if a pause was requested.
+     *  This method should be called only when an active thread that was
+     *  registered using _increaseActiveCount() is terminated.
+     *  This count is used to detect deadlocks for termination and other
+     *  reasons.
+     */
+    synchronized void _decreaseActiveCount() {
+	_actorsActive--;
+	if (_checkForDeadlock() || _checkForPause()) {
+	    //Wake up the director waiting for a deadlock
+	    notifyAll();
+	}
+    }
+
+    /** Return the number of active processes under the control of this 
+     *  director.
+     *  @return The number of active actors.
+     */
+    protected synchronized long _getActiveActorsCount() {
+	return _actorsActive;
     }
 
 
-    /** Handles and responds to deadlocks. In this base class it 
-     *  returns true when deadlock has been detected. Override this 
-     *  method to obtain domain specific handling of deadlocks.
-     *  @return true If the current model cannot execute without new external
-     *  data..
+    /** Return the number of paused processes under the control of this 
+     *  director.
+     *  @return The number of active actors.
+     */
+    protected synchronized long _getPausedActorsCount() {
+	return _actorsPaused;
+    }
+
+    /** Return true. 
+     *  In derived classes, override this method to obtain domain
+     *  specific handling of deadlocks. It should return true if a 
+     *  real deadlock has occured and the simulation can be ended.
+     *  It should return if the simulation has data to proceed and
+     *  need not be terminated.
+     *
+     *  @return true.
      *  @exception IllegalActionException If a derived class throws it.
      */
     protected boolean _handleDeadlock()
 	    throws IllegalActionException {
-        Workspace worksp = workspace();
-	synchronized (this) {
-	    while (!_deadlock) {
-		worksp.wait(this);
-	    }
-	}
-        _notdone = false;
-        return true;
+	return true;
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-
-    // Count of the number of processes that were started by this 
-    // director but have not yet finished.    
-    protected long _actorsActive = 0;
-
-    // Count of the number of processes that have been paused 
-    // following a request for a pause.
-    protected long _actorsPaused = 0;
-
-    // Flag indicating wheter or not a pause has been requested.
-    protected boolean _pauseRequested = false;
-
-    // Flag indicating if the model has been sucessfully paused.
-    protected boolean _paused = false;
-
-    // The receivers that were paused when a pause was repuested.
-    protected LinkedList _pausedReceivers = new LinkedList();
-
-    // The threads started by this director.
-    protected LinkedList _threadList = new LinkedList();
+    /** Increases the count of active actors in the composite actor 
+     *  corresponding to this director by 1. This method should be 
+     *  called when a new thread corresponding to an actor is started 
+     *  in the model under the control of this director. This method 
+     *  is required for detection of deadlocks.
+     *  The corresponding method _decreaseActiveCount should be called
+     *  when the thread is terminated.
+     */
+    synchronized void _increaseActiveCount() {
+	_actorsActive++;
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private boolean _deadlock = false;
+    // Count of the number of processes that were started by this 
+    // director but have not yet finished.    
+    private long _actorsActive = 0;
+
+    // Count of the number of processes that have been paused 
+    // following a request for a pause.
+    private long _actorsPaused = 0;
+
+    //private boolean _deadlock = false;
     private boolean _notdone = true;
+
+    // The receivers that were paused when a pause was repuested.
+    private LinkedList _pausedReceivers = new LinkedList();
+
+    // The threads started by this director.
+    private LinkedList _threadList = new LinkedList();
+
+    //A copy of threads started by the directors in this iteration.
+    private LinkedList _newthreads = new LinkedList();
 }
 
 
