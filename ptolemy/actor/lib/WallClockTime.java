@@ -37,6 +37,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 /**
 Upon firing, this actor outputs the elapsed real time in seconds
@@ -76,7 +77,7 @@ public class WallClockTime extends Source {
         output.setTypeEquals(BaseType.DOUBLE);
         
         passThrough = new TypedIOPort(this, "passThrough", false, true);
-        passThrough.setTypeSameAs(trigger);
+        passThrough.setTypeAtLeast(trigger);
         passThrough.setMultiport(true);
     }
 
@@ -91,6 +92,19 @@ public class WallClockTime extends Source {
     
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Override the base class to set the type constraints on the ports.
+     *  @return A new instance of WallClockTime.
+     *  @throws CloneNotSupportedException If a derived class includes
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace)
+        throws CloneNotSupportedException {
+
+        WallClockTime newObject = (WallClockTime)super.clone(workspace);
+        newObject.passThrough.setTypeAtLeast(newObject.trigger);
+        return newObject;
+    }
 
     /** Output the elapsed time in seconds since the invocation
      *  of the initialize() method.
