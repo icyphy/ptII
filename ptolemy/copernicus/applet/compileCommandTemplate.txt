@@ -9,5 +9,6 @@
  -classpath "@classPath@"
  "@javaPtIIProperty@"
  ptolemy.copernicus.applet.Main "@modelPath@"  -d "@ptIIUserDirectory@"
- -p wjtp.appletWriter targetPackage:@targetPackage@
+ -p wjtp.appletWriter 
+ targetPackage:@targetPackage@,outDir:@ptIIUserDirectory@/@targetPath@
 

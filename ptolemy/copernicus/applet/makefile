@@ -123,7 +123,7 @@ compileDemo: $(JCLASS)
 		-java            '"$(JAVA)"' \
 		-modelPath       '"$(MODELPATH)"' \
 		-run		 false \
-		-root            '"$(PTII)"' \
+		-ptIIUserDirectory   '"$(PTII)"' \
 		-targetPackage   '"$(TARGETPACKAGE)"' \
 		-targetPath      '"$(TARGETPATH)"'
 
