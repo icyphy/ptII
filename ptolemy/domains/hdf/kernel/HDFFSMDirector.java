@@ -258,6 +258,7 @@ public class HDFFSMDirector extends FSMDirector {
             st = chooseStateTransition(st);
             actors = st.getRefinement();
             while (actors == null) {
+                super.postfire();
                 st = chooseStateTransition(st);
                 tr = _getLastChosenTransition();
                 if (tr == null)
@@ -284,6 +285,8 @@ public class HDFFSMDirector extends FSMDirector {
                         
                         while (actors == null) {
                             //System.out.println("null state, continue to choose.");
+                            //super.postfire();
+                            superPostfire();
                             state = chooseStateTransition(state);
                             tr = _getLastChosenTransition();
                             //System.out.println("next transition : " + tr.getName());
@@ -311,6 +314,10 @@ public class HDFFSMDirector extends FSMDirector {
             container.requestChange(request);
         }
         return;
+    }
+
+    public void superPostfire() throws IllegalActionException {
+        super.postfire();
     }
 
     /**
@@ -349,6 +356,7 @@ public class HDFFSMDirector extends FSMDirector {
         State currentState;
         FSMActor controller = getController();
         currentState = controller.currentState();
+        //System.out.println("HDFFSM director initialize().");
         //System.out.println("before superInit: curState = " 
           //  + currentState.getName());
         if (!_reinitialize) {
@@ -372,7 +380,9 @@ public class HDFFSMDirector extends FSMDirector {
             controller.setNewIteration(_sendRequest);
             //State initialState = controller.getInitialState();
             //_setCurrentState(initialState);
-            transientStateTransition();
+            currentState = transientStateTransition();
+            //super.initialize();
+            //System.out.println("current State: " + currentState.getName());
             currentState = controller.currentState();
             TypedActor[] curRefinements = currentState.getRefinement();
             if (curRefinements != null) {
@@ -421,6 +431,7 @@ public class HDFFSMDirector extends FSMDirector {
      *  rates is detected between refinement actors.
      */
     public boolean makeStateTransition() throws IllegalActionException {
+        //System.out.println("make state transition.");
         FSMActor ctrl = getController();
         State curState = ctrl.currentState();
         //CompositeActor container = (CompositeActor)getContainer();
@@ -479,6 +490,7 @@ public class HDFFSMDirector extends FSMDirector {
         // current state, the schedule may change. This occurs
         // in cases of multi-level HDFFSM model. The sup-mode
         // remains the same but the sub-mode has changed.
+        //System.out.println("postfire: make state transition, update ports");
         _updateInputTokenConsumptionRates(actor);
         _updateOutputTokenProductionRates(actor);
 
@@ -765,7 +777,7 @@ public class HDFFSMDirector extends FSMDirector {
             //System.out.println("transient chooseStateTransition");
             chooseStateTransition(currentState);
             //ctrl.postfire();
-            //System.out.println("FSMActor postfire");
+            //System.out.println("transient FSMDirector postfire");
             super.postfire();
             currentState = ctrl.currentState();
             //System.out.println("after super(FSM).postfire() curstate = "
