@@ -39,7 +39,7 @@ import java.util.NoSuchElementException;
 @author Mudit Goel
 @version $Id$
 */
-public class PNAlternate extends PNStar {
+public class PNAlternate extends PNActor {
     /** Constructor
      */	
     public PNAlternate() {
@@ -57,7 +57,7 @@ public class PNAlternate extends PNStar {
      *  with the same name is added to the star or if another star with an
      *  an identical name already exists.
      */
-    public PNAlternate(CompositeEntity container, String name)
+    public PNAlternate(CompositeActor container, String name)
             throws NameDuplicationException {
         super(container, name);
         _input = newInPort(this, "input");
@@ -86,26 +86,12 @@ public class PNAlternate extends PNStar {
                     data = (IntToken)readFrom(_input, outport);
                     writeTo(_output0, data);
                 }
-                //try {
-                //System.out.println(this.getName()+" writes "+
-                //((IntToken)data).intValue()+" to "+
-                //_output1.getFullName());
-                //} catch (InvalidStateException e) {
-                //System.err.println("Exception: " + e.toString());
-                //}
                 outports = _input.deepConnectedOutputPorts();
                 while (outports.hasMoreElements()) {
                     PNOutPort outport = (PNOutPort)outports.nextElement();
                     data = (IntToken)readFrom(_input, outport);
                     writeTo(_output1, data);
                 }
-                //try {
-                //System.out.println(this.getName()+" writes "+
-                //((IntToken)data).intValue()+" to "+
-                //_output2.getFullName());
-                //} catch (InvalidStateException e) {
-                //System.err.println("Exception: " + e.toString());
-                //}
             }                
         } catch (NoSuchElementException e) {
 	    System.out.println("Terminating "+ this.getName());

@@ -42,7 +42,7 @@ between it's inputs and directing them to the output.
 @author Mudit Goel
 @version $Id$
 */
-public class PNInterleave extends PNStar{
+public class PNInterleave extends PNActor{
 
     /** Constructor Adds ports to the star
      * @param myExecutive is the executive responsible for the simulation
@@ -50,7 +50,7 @@ public class PNInterleave extends PNStar{
      *  two ports with the same name has been made or a star with an 
      *  identical name already exists.
      */ 
-    public PNInterleave(CompositeEntity container, String name)
+    public PNInterleave(CompositeActor container, String name)
              throws NameDuplicationException {
         super(container, name);
         _input0 = newInPort(this, "input0");
@@ -85,7 +85,7 @@ public class PNInterleave extends PNStar{
                     }
                 }
             }
-            executive().processStopped();
+            ((PNDirector)getDirector()).processStopped();
         } catch(NoSuchElementException e) {
             System.out.println("Terminating "+ this.getName());
             return;

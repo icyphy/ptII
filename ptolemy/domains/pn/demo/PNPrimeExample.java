@@ -27,6 +27,8 @@
 
 package pt.domains.pn.demo;
 import pt.kernel.*;
+import pt.data.*;
+import pt.actors.*;
 import pt.domains.pn.kernel.*;
 import pt.domains.pn.stars.*;
 import java.util.Enumeration;
@@ -48,16 +50,18 @@ public class PNPrimeExample {
         myUniverse.setCycles(Integer.parseInt(args[0]));
         PNRamp ramp = new PNRamp(myUniverse, "ramp");
         ramp.setInitState(2);
+        myUniverse.getDirector().registerNewActor(ramp);
         PNSieve sieve = new PNSieve(myUniverse, "2_sieve");
         sieve.setInitState(2);
-
+        myUniverse.getDirector().registerNewActor(sieve);
         //        IORelation queue = new IORelation(myUniverse, "2_queue");
         PNInPort portin = (PNInPort)sieve.getPort("input");
-        portin.getQueue().setCapacity(1);
+        //portin.getQueue().setCapacity(1);
         //port.link(queue);
         PNOutPort portout = (PNOutPort)ramp.getPort("output");
         //port.link(queue);
         myUniverse.connect(portin, portout, "2_queue");
+        portin.getQueue(portout).setCapacity(1);
 
         //System.out.println(myUniverse.description(pt.kernel.Nameable.LIST_PRETTYPRINT));
         //FIXME: Should I use connect() rather than all the above stuff??

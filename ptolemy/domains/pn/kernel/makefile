@@ -52,12 +52,11 @@ TYDIST =	$(TYPACKAGE)$(TYVERSION)
 TYZIP =		$(TYPACKAGE_DIR)/$(TYPACKAGE).zip
 JARFILE = 	$(TYPACKAGE).jar
 
-JSRCS = \
-	PNExecutive.java \
+JSRCS = PNActor.java \
+	PNDirector.java \
 	PNInPort.java \
 	PNOutPort.java \
 	PNPort.java \
-	PNStar.java \
 	PNUniverse.java 
 
 EXTRA_SRCS =	$(JSRCS)

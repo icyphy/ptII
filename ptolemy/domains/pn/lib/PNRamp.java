@@ -28,6 +28,8 @@
 package pt.domains.pn.stars;
 import pt.domains.pn.kernel.*;
 import pt.kernel.*;
+import pt.data.*;
+import pt.actors.*;
 import java.util.NoSuchElementException;
 
 //////////////////////////////////////////////////////////////////////////
@@ -37,7 +39,7 @@ import java.util.NoSuchElementException;
 @author Mudit Goel
 @version $Id$
 */
-public class PNRamp extends PNStar{
+public class PNRamp extends PNActor{
     /** Constructor
      */	
     public PNRamp() {
@@ -55,7 +57,7 @@ public class PNRamp extends PNStar{
      * @exception NameDuplicationException indicates that an attempt to add
      *  two ports with the same name has been made
      */
-    public PNRamp(CompositeEntity container, String name)
+    public PNRamp(CompositeActor container, String name)
              throws NameDuplicationException {
         super(container, name);
         _output = newOutPort(this, "output");

@@ -28,6 +28,8 @@
 package pt.domains.pn.stars;
 import pt.domains.pn.kernel.*;
 import pt.kernel.*;
+import pt.actors.*;
+import pt.data.*;
 import java.util.Enumeration;
 import java.util.NoSuchElementException;
 
@@ -37,7 +39,7 @@ import java.util.NoSuchElementException;
 @author Mudit Goel
 @version $Id$
 */
-public class PNSieve extends PNStar {
+public class PNSieve extends PNActor {
     /** Constructor
      */	
     public PNSieve() {
@@ -54,7 +56,7 @@ public class PNSieve extends PNStar {
      * @exception NameDuplicationException is thrown if more than one port 
      *  with the same name is added to the star
      */
-    public PNSieve(CompositeEntity container, String name)
+    public PNSieve(CompositeActor container, String name)
             throws NameDuplicationException {
         super(container, name);
         _input = newInPort(this, "input");
@@ -81,26 +83,33 @@ public class PNSieve extends PNStar {
         IntToken data;
         try {
             while(true) {
-                data = (IntToken)readFrom(_input);
-                if (data.intValue()%_prime != 0) {
-                    /* is it the next prime? */
-                    if (_output == null) {
-                        /* yes - make the sieve for it */
-                        PNSieve newSieve = new PNSieve((CompositeEntity)
-                                getContainer(), data.intValue() + "_sieve");
-                        newSieve.setInitState(data.intValue());
-                        _output = new PNOutPort(this, "output");
-                        IORelation relation = new IORelation((CompositeEntity)
-                                getContainer(), data.intValue()+"_queue");
-                        _output.link(relation);
-                        PNPort inport = (PNPort)newSieve.getPort("input");
-                        inport.link(relation);
-                        inport.getQueue().setCapacity(1);
-                        Thread temp = new Thread(executive().getProcessGroup(), newSieve);
-                        temp.start();
-                    } 
-                    else {
-                        writeTo(_output, data);
+                Enumeration outports = _input.deepConnectedOutputPorts();
+                while (outports.hasMoreElements()) {
+                    PNOutPort outport = (PNOutPort)outports.nextElement();
+                    data = (IntToken)readFrom(_input, outport);
+                    if (data.intValue()%_prime != 0) {
+                        /* is it the next prime? */
+                        if (_output == null) {
+                            /* yes - make the sieve for it */
+                            PNSieve newSieve = new PNSieve((CompositeActor)
+                                    getContainer(), data.intValue() + "_sieve");
+                            newSieve.setInitState(data.intValue());
+                            _output = new PNOutPort(this, "output");
+                            IORelation relation = new IORelation((CompositeEntity)
+                                    getContainer(), data.intValue()+"_queue");
+                            _output.link(relation);
+                            PNPort inport = (PNPort)newSieve.getPort("input");
+                            inport.link(relation);
+                            inport.getQueue(_output).setCapacity(1);
+                            //Thread temp = new Thread(executive().getProcessGroup(), newSieve);
+                            //temp.start();
+                            getDirector().registerNewActor(newSieve);
+                            ((PNDirector)getDirector()).setMutate(true);
+                            //workspace().notifyAll();
+                        } 
+                        else {
+                            writeTo(_output, data);
+                        }
                     }
                 }
             }

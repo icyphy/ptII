@@ -39,7 +39,7 @@ import java.util.*;
 @author Mudit Goel
 @version $Id$
 */
-public class PNRedirect extends PNStar{
+public class PNRedirect extends PNActor{
     /** Constructor
      */	
     public PNRedirect() {
@@ -59,7 +59,7 @@ public class PNRedirect extends PNStar{
      * @exception IllegalActionException a port with name null is being added
      *  to the star
      */
-    public PNRedirect(CompositeEntity container, String name)
+    public PNRedirect(CompositeActor container, String name)
              throws NameDuplicationException {
         super(container, name);
         _input = newInPort(this, "input");
