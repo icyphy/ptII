@@ -204,6 +204,51 @@ public class LayerEvent extends MouseEvent {
         return result.toString();
     }
 
+     /** Print the string representation of modifier flags
+      */
+     public static String toString (int flags) {
+         StringBuffer result = new StringBuffer();
+         int i = 256;
+         boolean sep = false;
+         while (i > 0) {
+             String s = flagToString(i & flags);
+             if (s != null) {
+                 if (sep) {
+                     result.append("|");
+                 }
+                 result.append(s);
+                 sep = true;
+             }
+             i = i / 2;
+         }
+         return result.toString();
+     }
+
+     /** Print the string representation of a single flag
+      */
+     private static String flagToString(int flag) {
+         switch (flag) {
+         case InputEvent.BUTTON1_MASK:
+             return "BUTTON1_MASK";
+         case InputEvent.BUTTON2_MASK:
+             return "BUTTON2_MASK";
+         case InputEvent.BUTTON3_MASK:
+             return "BUTTON3_MASK";
+
+         case InputEvent.CTRL_MASK:
+             return "CTRL_MASK";
+         case InputEvent.SHIFT_MASK:
+             return "SHIFT_MASK";
+
+             //// AWT is too stupid to handle these properly
+             //case InputEvent.ALT_MASK:
+             //return "ALT_MASK";
+             //case InputEvent.META_MASK:
+             //return "META_MASK";
+         }
+         return null;
+     }
+
     /** Print the string representation of an event ID
      */
     public static String idToString(int id) {
