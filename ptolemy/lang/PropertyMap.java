@@ -84,7 +84,8 @@ public class PropertyMap implements Cloneable {
     public Object getDefinedProperty(Integer property) {
         Object retval = _propertyMap.get(property);
         if (retval == null) {
-            throw new RuntimeException("Property " + property + " not defined");
+            throw new RuntimeException("Property " + property +
+                    " not defined");
         }
         return retval;
     }
@@ -105,7 +106,8 @@ public class PropertyMap implements Cloneable {
         Object retval = _propertyMap.put(property, obj);
 
         if (retval == null) {
-            throw new RuntimeException("Property " + property + " not defined");
+            throw new RuntimeException("Property " + property +
+                    " not defined");
         }
         return retval;
     }
