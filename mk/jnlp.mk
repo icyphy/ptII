@@ -65,7 +65,7 @@ SIGNED_LIB_JARS =	$(NATIVE_SIGNED_LIB_JARS) \
 			lib/jython.jar \
 			lib/matlab.jar \
 			lib/ptCal.jar \
-			lib/saxon.jar \
+			lib/saxon7.jar \
 			lib/sootclasses.jar
 
 # Web Start can load jars either eagerly or lazily.
