@@ -81,6 +81,7 @@ public class DirectedGraph extends Graph {
         super.add(o);
 
         _inDegree.addElement(new Integer(0));
+	_tranClosureValid = false;
     }
         
     /** Adds a directed edge to connect two nodes.  Multiple connections
@@ -100,6 +101,7 @@ public class DirectedGraph extends Graph {
         int id2 = _getNodeId(o2);
         int indeg = ((Integer)(_inDegree.elementAt(id2))).intValue();
         _inDegree.setElementAt(new Integer(indeg+1), id2);
+	_tranClosureValid = false;
     }
 
     /** Test if this graph is directed.
@@ -208,7 +210,7 @@ public class DirectedGraph extends Graph {
      *  transitive closure.
      */ 
     protected boolean[][] _compTranClosure() {
-        if ( !_modified) {
+        if (_tranClosureValid) {
             return _tranClosure;
         }
 
@@ -250,7 +252,7 @@ public class DirectedGraph extends Graph {
             }
         }
         
-        _modified = false;
+        _tranClosureValid = true;
 	return _tranClosure;
     }
 
@@ -269,6 +271,6 @@ public class DirectedGraph extends Graph {
 
     private boolean[][] _tranClosure;
     private boolean _isAcyclic;
-    private boolean _modified = true;
+    private boolean _tranClosureValid = false;
 }
 
