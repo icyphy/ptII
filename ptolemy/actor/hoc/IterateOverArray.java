@@ -159,7 +159,7 @@ public class IterateOverArray extends TypedCompositeActor
         new IterateDirector(this, uniqueName("IterateDirector"));
 
         _iterationCount =
-              new Variable(this, "iterationCount", new IntToken(0));
+             new Variable(this, "iterationCount", new IntToken(0));
         _iterationCount.setTypeEquals(BaseType.INT);
 
         _attachText("_iconDescription", "<svg>\n" +
@@ -486,7 +486,7 @@ public class IterateOverArray extends TypedCompositeActor
     /** Override the base class to return a specialized port and to
      *  create a port on the inside entity, if there is one.
      *  @param name The name of the port to create.
-     *  @param return A new instance of IteratePort, an inner class.
+     *  @return A new instance of IteratePort, an inner class.
      */
     public Port newPort(String name) throws NameDuplicationException {
         try {
