@@ -108,6 +108,10 @@ public class CTSingleSolverDirector extends CTDirector {
         super(container, name);
     }
 
+    // Parameter of the ODE solver.
+    public Parameter ODESolver;
+
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -595,18 +599,18 @@ public class CTSingleSolverDirector extends CTDirector {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    // Indicate the first round of execution.
+    protected boolean _first;
+
+
+    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // parameter of ODE solver
-    public Parameter ODESolver;
-
-    // The classname of the ODE solver
+    // The classname of the ODE solver.
     private String _solverclass;
 
     // The default solver.
     private ODESolver _defaultSolver = null;
-
-    //indicate the first round of execution.
-    protected boolean _first;
-
 }
