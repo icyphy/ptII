@@ -35,6 +35,7 @@ package ptolemy.kernel.util;
 /**
 A collection of utilities for manipulating strings.
 
+@see ptolemy.gui.GUIStringUtilities
 @author Steve Neuendorffer
 @version $Id$
 @since Ptolemy II 1.0
