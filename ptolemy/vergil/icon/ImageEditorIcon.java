@@ -30,9 +30,14 @@
 
 package ptolemy.vergil.icon;
 
-import java.awt.Color;
 import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.image.ImageObserver;
+import java.lang.ref.WeakReference;
+import java.net.URL;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.ListIterator;
 
 import javax.swing.SwingUtilities;
 
@@ -40,11 +45,11 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import diva.canvas.Figure;
-import diva.canvas.toolbox.BasicRectangle;
 import diva.canvas.toolbox.ImageFigure;
 
 //////////////////////////////////////////////////////////////////////////
 //// ImageEditorIcon
+
 /**
 An icon that displays a specified java.awt.Image.
 Note that this icon is not persistent, so an actor that uses
@@ -73,6 +78,42 @@ public class ImageEditorIcon extends EditorIcon implements ImageObserver {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Create a new default background figure, which is the shape set
+     *  by setShape, if it has been called, or a small box if not.
+     *  This must be called in the Swing thread, or a concurrent
+     *  modification exception could occur.
+     *  @return A figure representing the specified shape.
+     */
+    public Figure createBackgroundFigure() {
+        // NOTE: This gets called every time that the graph gets
+        // repainted, which seems excessive to me.  This will happen
+        // every time there is a modification to the model that is
+        // carried out by a MoMLChangeRequest.
+        
+        // The Diva graph package implements a model-view-controller
+        // architecture, which implies that this needs to return a new
+        // figure each time it is called.  The reason is that the figure
+        // may go into a different view, and transformations may be applied
+        // to that figure in that view.  However, this class needs to be
+        // able to update that figure when setShape() is called.  Hence,
+        // this class keeps a list of all the figures it has created.
+        // The references to these figures, however, have to be weak
+        // references, so that this class does not interfere with garbage
+        // collection of the figure when the view is destroyed.
+        if (_scaledImage == null) {
+            // NOTE: This default has to be an ImageFigure, since it
+            // will later have its image set. Create a default image.
+            URL url = getClass().getResource(
+                    "/doc/img/PtolemyIISmall.gif");
+            Toolkit tk = Toolkit.getDefaultToolkit();
+            setImage(tk.getImage(url));
+        }
+        Figure newFigure = new ImageFigure(_scaledImage);
+        _figures.add(new WeakReference(newFigure));
+        
+        return newFigure;
+    }
+    
     /** This method, which is required by the ImageObserver interface,
      *  is called if something has changed in a background loading of
      *  the image.
@@ -93,19 +134,40 @@ public class ImageEditorIcon extends EditorIcon implements ImageObserver {
             int y,
             int width,
             int height) {
+        
         if (((infoflags | ImageObserver.WIDTH) != 0)
-                && ((infoflags | ImageObserver.HEIGHT) != 0)) {
+                || ((infoflags | ImageObserver.HEIGHT) != 0)) {
             // Width and height information is available now.
             scaleImage(_scalePercentage);
+            
+            // If the width and height change, then ports may need to be
+            // laid out again. 
+            // FIXME: Regrettably, the only way to do this is to
+            // trigger a graph listener, which lays out the entire graph.
+            // This is a flaw that needs to fixed. As a major hack,
+            // what we do here is to issue a MoMLChangeRequest, which
+            // will cause the graph to lay out again.  This will also
+            // introduce a bug in that there will be an empty undo action.
+            
             return false;
         }
         if (((infoflags | ImageObserver.ERROR) != 0)
-                && ((infoflags | ImageObserver.ABORT) != 0)) {
+                || ((infoflags | ImageObserver.ABORT) != 0)) {
             // FIXME: Set an error image.
             return false;
         }
         // If this was called for any other reason, repaint.
-        _imageFigure.repaint();
+        ListIterator figures = _figures.listIterator();
+        while (figures.hasNext()) {
+            Object figure = ((WeakReference)figures.next()).get();
+            if (figure == null) {
+                // The figure has been garbage collected, so we
+                // remove it from the list.
+                figures.remove();
+            } else {
+                ((ImageFigure)figure).repaint();
+            }
+        }
         
         // This method returns true to indicate that further
         // updates are needed.  However, I can't begin to understand
@@ -117,12 +179,12 @@ public class ImageEditorIcon extends EditorIcon implements ImageObserver {
     /** Specify a scaling for the image as a percentage.
      *  @param percentage The scaling percentage.
      */
-    public void scaleImage(final double percentage) {
+    public void scaleImage(double percentage) {
+        _scalePercentage = percentage;
+        
+        // This needs to be in the swing thread.
         Runnable doScale = new Runnable() {
-            public void run() {
-                // This needs to be in the swing thread.
-                _scalePercentage = percentage;
-                
+            public void run() {        
                 if (_image == null) {
                     // No image has been set yet, so return.
                     return;
@@ -136,11 +198,28 @@ public class ImageEditorIcon extends EditorIcon implements ImageObserver {
                 int width = _image.getWidth(ImageEditorIcon.this);
                 int height = _image.getHeight(ImageEditorIcon.this);
                 if (width > 0 && height > 0) {
-                    int newWidth = (int) Math.round(width * percentage/100.0);
-                    int newHeight = (int) Math.round(height * percentage/100.0);
-                    Image newImage = _image.getScaledInstance(
-                            newWidth, newHeight, Image.SCALE_SMOOTH);
-                    _imageFigure.setImage(newImage);
+                    int newWidth = (int) Math.round(
+                           width * _scalePercentage/100.0);
+                    int newHeight = (int) Math.round(
+                           height * _scalePercentage/100.0);
+                    _scaledImage = _image.getScaledInstance(
+                           newWidth, newHeight, Image.SCALE_SMOOTH);
+                    ListIterator figures = _figures.listIterator();
+                    while (figures.hasNext()) {
+                        Object figure = ((WeakReference)figures.next()).get();
+                        if (figure == null) {
+                            // The figure has been garbage collected, so we
+                            // remove it from the list.
+                            figures.remove();
+                        } else {
+                            // Repaint twice since the scale has changed
+                            // and we need to cover the damage area prior
+                            // the change as well as after.
+                            ((ImageFigure)figure).repaint();
+                            ((ImageFigure)figure).setImage(_scaledImage);
+                            ((ImageFigure)figure).repaint();
+                        }
+                    }
                 }
             }
         };
@@ -151,13 +230,33 @@ public class ImageEditorIcon extends EditorIcon implements ImageObserver {
      *  in the Swing thread.
      *  @param image The image to display.
      */
-    public void setImage(final Image image) {
+    public void setImage(Image image) {
+        _image = image;
+        // Temporarily set the scaled image to the same image.
+        // This will get reset when scaleImage() completes its work.
+        _scaledImage = image;
+
+        // Update the images of all the figures that this icon has
+        // created (which may be in multiple views). This has to be
+        // done in the Swing thread.  Assuming that createBackgroundFigure()
+        // is also called in the Swing thread, there is no possibility of
+        // conflict here where that method is trying to add to the _figures
+        // list while this method is traversing it.
         Runnable doSet = new Runnable() {
             public void run() {
-                _image = image;
-                _imageFigure.setImage(image);
-                if (_scalePercentage != 100.0) {
-                    scaleImage(_scalePercentage);
+                ListIterator figures = _figures.listIterator();
+                while (figures.hasNext()) {
+                    Object figure = ((WeakReference)figures.next()).get();
+                    if (figure == null) {
+                        // The figure has been garbage collected, so we
+                        // remove it from the list.
+                        figures.remove();
+                    } else {
+                        ((ImageFigure)figure).setImage(_scaledImage);
+                        if (_scalePercentage != 100.0) {
+                            scaleImage(_scalePercentage);
+                        }
+                    }
                 }
             }
         };
@@ -165,38 +264,16 @@ public class ImageEditorIcon extends EditorIcon implements ImageObserver {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-
-    /** Create a new default background figure, which is a white box.
-     *  Subclasses of this class should generally override
-     *  the createBackgroundFigure method instead.  This method is provided
-     *  so that subclasses are always able to create a default figure even if
-     *  an error occurs or the subclass has not been properly initialized.
-     *  NOTE: This 
-     *  @return A figure representing a rectangular white box.
-     */
-    protected Figure _createDefaultBackgroundFigure() {
-        if (_imageFigure != null) {
-            // NOTE: This violates the Diva MVC architecture!
-            // This attribute is part of the model, and should not have
-            // a reference to this figure.  By doing so, it precludes the
-            // possibility of having multiple views on this model.
-            return _imageFigure;
-        } else {
-            // NOTE: center at the origin.
-            return new BasicRectangle(-30, -30, 60, 60, Color.blue, 1);
-        }
-    }
-
-    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // The image that is the master of a possibly scaled version in the
-    // _imageFigure.
+    // A list of weak references to figures that this has created.
+    private List _figures = new LinkedList();
+    
+    // The image that is the master.
     private Image _image;
     
-    // The Diva figure containing the associated image.
-    private ImageFigure _imageFigure = new ImageFigure();
+    // The scaled version of the image that is the master.
+    private Image _scaledImage;
     
     // The scale percentage.
     private double _scalePercentage = 100.0;
