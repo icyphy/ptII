@@ -86,6 +86,9 @@ test RemoveGraphicalClasses-1.1 {This annotation already has a _hideName} {
     # filters were already added.
     $parser setMoMLFilters [java::null]
 
+    $parser addMoMLFilters \
+	    [java::call ptolemy.moml.filter.BackwardCompatibility allFilters]
+
     set filter [java::new ptolemy.moml.filter.RemoveGraphicalClasses]
 
     # ptolemy.copernicus.kernel.KernelMain does this
@@ -174,6 +177,8 @@ RemoveGraphicalClasses.</text></svg></configure>
         </property>
         <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
         </property>
+        <property name="allowRateChanges" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="5">
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
@@ -196,7 +201,7 @@ RemoveGraphicalClasses.</text></svg></configure>
         </port>
     </entity>
     <entity name="TrigFunction" class="ptolemy.actor.lib.TrigFunction">
-        <property name="function" class="ptolemy.kernel.util.StringAttribute" value="sin">
+        <property name="function" class="ptolemy.data.expr.StringParameter" value="sin">
             <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
                 <property name="acos" class="ptolemy.kernel.util.StringAttribute" value="acos">
                 </property>
