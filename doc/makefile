@@ -43,7 +43,6 @@ EXTRA_SRCS = \
 	demos.html \
 	index.html \
 	install.html \
-	javalinks.html \
 	ptII0.1release.html
 
 MISC_FILES =	$(DIRS)
