@@ -2,9 +2,9 @@
 #
 # @Authors: Christopher Hylands
 #
-# @Version: $Id$
+# @Version: @(#)makefile	1.77 08/31/98
 #
-# @Copyright (c) 1997- The Regents of the University of California.
+# @Copyright (c) 1997-1998 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -54,27 +54,28 @@ JARFILE = 	$(TYPACKAGE).jar
 # Classes that are included in the jar file as Java Bean.
 JBEANCLASSES =	ptolemy/plot/Plot.class ptolemy/plot/PlotLive.class
 
-SRCDIRS = 	demo apps
+SRCDIRS = 	demo
 DIRS = 		$(SRCDIRS) doc test
 
 # Java Sources
 JSRCS = \
 	CmdLineArgException.java \
-	PlotBox.java \
 	Plot.java \
 	PlotApplet.java \
+	PlotApplication.java \
+	PlotBox.java \
 	PlotDataException.java \
+	PlotFrame.java \
 	PlotLive.java \
 	PlotLiveApplet.java \
 	PlotPoint.java \
-	Message.java \
-	Pxgraph.java
+	Message.java
 
 # Files that are not compiled, such as .tcl and .itcl files.
 EXTRA_SRCS = $(JSRCS) pxgraph pxgraph.bat ptplot2mif.tcl index.html
 
 # Non-source files such as README files and subdirectories
-MISC_FILES = test apps #bean
+MISC_FILES = test #bean
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
