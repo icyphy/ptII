@@ -102,11 +102,15 @@ Miedrich, and Ron Rabakukk
 public class BrowserLauncher {
 
     /** Launch the browser on the first argument.  If there is
-     *  no first argument, then open http://ptolemy.eecs.berkeley.edu
-     *
-     *  <p> For example, to open the user's default browser on foo.html:
+     *  no first argument, then open http://ptolemy.eecs.berkeley.edu.
+     *  Second and subsequent arguments are ignored.
+     *  It is best if the first argument is an absolute URL
+     *  as opposed to a relative URL.
+     *  
+     *  <p> For example, to open the user's default browser on
+     *  http://www.eecs.berkeley.edu
      *  <pre>
-     *  java -classpath $PTII ptolemy.actor.gui.BrowserLauncher foo.html
+     *  java -classpath $PTII ptolemy.actor.gui.BrowserLauncher http://www.eecs.berkeley.edu
      *  <pre>
      */
     public static void main(String args[]) throws Exception {
@@ -141,7 +145,9 @@ public class BrowserLauncher {
      * <br>If the file cannot be found in the classpath, then pass the
      * original given URL to the browser.
      *
-     * @param url The URL to open
+     * @param url The URL to open.
+     *  It is best if the first argument is an absolute URL
+     *  as opposed to a relative URL.
      * @exception IOException If the web browser could not be located or
      * does not run
      */
