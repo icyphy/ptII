@@ -30,11 +30,6 @@
 
 package ptolemy.domains.sr.kernel;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
@@ -46,15 +41,11 @@ import ptolemy.actor.sched.Schedule;
 import ptolemy.actor.sched.Scheduler;
 import ptolemy.actor.sched.StaticSchedulingDirector;
 import ptolemy.graph.DirectedAcyclicGraph;
-import ptolemy.graph.DirectedGraph;
-import ptolemy.graph.Edge;
-import ptolemy.graph.Node;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.util.MessageHandler;
-
 
 //////////////////////////////////////////////////////////////////////////
 //// SROptimizedScheduler
@@ -169,140 +160,13 @@ public class SROptimizedScheduler extends Scheduler {
                     "randomized scheduler instead.");
         }
 
-        DirectedGraph portsGraph = functionDependency.getDetailedPortsGraph();
-        
-        // The following code tries to find all the disconnected sub graphs.
-        // It can be done simply by Depth First Search. 
-        // I will make the change and add it as a method of the Graph class.
-        Object[] sources = portsGraph.sourceNodes().toArray();
-        DirectedGraph[] subgraphs = new DirectedGraph[sources.length];
-        
-        for (int i= 0; i < sources.length; i++) {
-            Node source = (Node)sources[i];
-            Collection successors = portsGraph.reachableNodes(source);
-            if (!successors.add(source)) System.out.println("why?");
-            subgraphs[i] = (DirectedGraph)portsGraph.subgraph(successors);
-        }
-        
-        LinkedList disconnectedSubgraphs = new LinkedList();
-        for (int i = 0; i < sources.length; i++) {
-            Collection nodes = subgraphs[i].nodes();
-            Iterator iterator = disconnectedSubgraphs.iterator();
-            boolean graphHandled = false;
-            while (iterator.hasNext() && !graphHandled) {
-                DirectedGraph graph = (DirectedGraph) iterator.next();
-                Iterator graphNodes = graph.nodes().iterator();
-                while (graphNodes.hasNext()) {
-                    if (nodes.contains(graphNodes.next())) {
-                        graph.addGraph(subgraphs[i], true);
-                        graphHandled = true;
-                        break;
-                    }
-                }
-            }
-            if (!graphHandled) {
-                disconnectedSubgraphs.add(subgraphs[i]);
-            }
-        }
-        
-        
-        Iterator dependentPrecedence = 
-            ((SRDirector)getContainer()).
-            getPrecedenceOfNonStrictDependentActors().listIterator();
-        
-        Iterator independentPrecedence = 
-            ((SRDirector)getContainer()).
-            getPrecedenceOfNonStrictIndependentActors().listIterator();
-
-        // we combine the disconnected subgraphs with the precedence lists
-        // to construct a schedule.
-        boolean cyclicLoopExisting = false;
-        Object[] cyclesOfDSGs;
-        
-        Iterator iteratorOfDSGs = disconnectedSubgraphs.listIterator();
-        DirectedGraph graphOfDSGs = new DirectedGraph();
-        while (iteratorOfDSGs.hasNext()) {
-            graphOfDSGs.addNodeWeight(iteratorOfDSGs.next());
-        }
-        
-        // handle dependent precedences, such as NonStrictLogicFunction
-        while(dependentPrecedence.hasNext()) {
-            IOPort[] element = (IOPort[])dependentPrecedence.next();
-            IOPort input = element[0];
-            IOPort output = element[1];
-            
-            iteratorOfDSGs = disconnectedSubgraphs.listIterator();
-            while (iteratorOfDSGs.hasNext()) {
-                DirectedGraph subgraph = 
-                    (DirectedGraph) iteratorOfDSGs.next();
-                Node subgraphNode = graphOfDSGs.node(subgraph);
-                if (subgraph.containsNodeWeight(input)) {
-                    Iterator newIteratorOfDSGs = 
-                        disconnectedSubgraphs.listIterator();
-                    while (newIteratorOfDSGs.hasNext()) {
-                        DirectedGraph newSubgraph = 
-                            (DirectedGraph) newIteratorOfDSGs.next();
-                        Node newSubgraphNode = graphOfDSGs.node(newSubgraph);
-                        if (newSubgraph.containsNodeWeight(output)) {
-                            Edge addedEdge = 
-                                graphOfDSGs.addEdge(subgraphNode, newSubgraphNode);
-                            // check cycles
-                            Object[] cycles = graphOfDSGs.cycleNodes();
-                            if (cycles.length > 0) {
-                                cyclesOfDSGs = cycles;
-                                graphOfDSGs.removeEdge(addedEdge);
-                            }
-                        }
-                    }
-                }
-            } 
-        }
-
-        // handle independent precedences, such as NonStrictDelay
-        while(independentPrecedence.hasNext()) {
-            IOPort[] element = (IOPort[])independentPrecedence.next();
-            IOPort input = element[0];
-            IOPort output = element[1];
-            
-            iteratorOfDSGs = disconnectedSubgraphs.listIterator();
-            while (iteratorOfDSGs.hasNext()) {
-                DirectedGraph subgraph = 
-                    (DirectedGraph) iteratorOfDSGs.next();
-                Node subgraphNode = graphOfDSGs.node(subgraph);
-                if (subgraph.containsNodeWeight(input)) {
-                    Iterator newIteratorOfDSGs = 
-                        disconnectedSubgraphs.listIterator();
-                    while (newIteratorOfDSGs.hasNext()) {
-                        DirectedGraph newSubgraph = 
-                            (DirectedGraph) newIteratorOfDSGs.next();
-                        Node newSubgraphNode = graphOfDSGs.node(newSubgraph);
-                        if (newSubgraph.containsNodeWeight(output)) {
-                            Edge addedEdge =
-                                graphOfDSGs.addEdge(subgraphNode, newSubgraphNode);
-                            // check cycles
-                            Object[] cycles = graphOfDSGs.cycleNodes();
-                            if (cycles.length > 0) {
-                                cyclesOfDSGs = cycles;
-                                graphOfDSGs.removeEdge(addedEdge);
-                            }
-                        }
-                    }
-                }
-            } 
-        }
-
-        if (!graphOfDSGs.isAcyclic()) {
-            // record this information
-            // remove one softwire edge to make it acyclic.
-            System.out.println("cyclic loop!");
-        }
-        
-        DirectedAcyclicGraph acyclicDSGs = graphOfDSGs.toDirectedAcyclicGraph();
+        DirectedAcyclicGraph dependencyGraph = 
+            functionDependency.getDetailedPortsGraph().toDirectedAcyclicGraph();
             
         if (_debugging) {
-            _debug("## dependency graph is:" + acyclicDSGs.toString());
+            _debug("## dependency graph is:" + dependencyGraph.toString());
         }
-        Object[] sortOfDSGs = (Object[]) acyclicDSGs.topologicalSort();
+        Object[] sort = (Object[]) dependencyGraph.topologicalSort();
         if (_debugging) {
             _debug("## Result of topological sort (highest depth to lowest):");
         }
@@ -311,48 +175,33 @@ public class SROptimizedScheduler extends Scheduler {
         Actor lastActor = null;
         Actor actor = null;
         
-        for (int i = 0; i < sortOfDSGs.length; i++) {
-            DirectedAcyclicGraph acyclicDSG = 
-                ((DirectedGraph)sortOfDSGs[i]).toDirectedAcyclicGraph();
-            Object[] sort = (Object[]) acyclicDSG.topologicalSort();
-            for (int j = 0; j < sort.length; j++) {
-                IOPort ioPort = (IOPort)sort[j];
-//                // If this ioPort is input but has no connections,
-//                // we ignore it.
-//                if (ioPort.isInput() && ioPort.numLinks() == 0) {
-//                    continue;
-//                }
-                
-                actor = (Actor) ioPort.getContainer();
-                // If this port is an output, but not belongs to a 
-                // nonstrict-independent actor, we ignore it.
-                if (ioPort.isOutput()) {
-                    SRDirector srDirector = (SRDirector) getContainer();
-                    if (!srDirector._isNonStrict(actor) || 
-                        srDirector._isDependent(actor)) {
-                            continue;
-                        }
-                }
-                  
-                // We record the information of last actor.
-                // If some consecutive ports belong to the
-                // same actor, we only schedule that actor once.
-                if (lastActor == null) {
-                    lastActor = actor;
-                } else {
-                    if (lastActor.equals(actor)) {
-                        System.out.println("Never reached!");
-                        continue; 
-                    } else {
-                        lastActor = actor;
-                    }
-                }
-                Firing firing = new Firing(actor);
-                schedule.add(firing);
-                if (_debugging) _debug(((Nameable)actor).getFullName(),
-                        "depth: " + j);
+        for (int i = 0; i < sort.length; i++) {
+            IOPort ioPort = (IOPort)sort[i];
+            // If this ioPort is input but has no connections,
+            // we ignore it.
+            if (ioPort.isInput() && ioPort.numLinks() == 0) {
+                continue;
             }
+            
+            actor = (Actor) ioPort.getContainer();
+            // We record the information of last actor.
+            // If some consecutive ports belong to the
+            // same actor, we only schedule that actor once.
+            if (lastActor == null) {
+                lastActor = actor;
+            } else {
+                if (lastActor.equals(actor)) {
+                   continue; 
+                } else {
+                    lastActor = actor;
+                }
+            }
+            Firing firing = new Firing(actor);
+            schedule.add(firing);
+            if (_debugging) _debug(((Nameable)actor).getFullName(),
+                    "depth: " + i);
         }
+
         if (_debugging) _debug("## End of topological sort.");
 
         return schedule;
