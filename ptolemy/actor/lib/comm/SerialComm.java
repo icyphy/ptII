@@ -65,26 +65,9 @@ Sends and receive bytes via the serial port.  Which serial port and
 baud rate to use are set by parameters.  If the specified serial port
 is not successfully opened, then another one will automatically be
 chosen if available.  
-<p>
-FIXME: Does not find any ports from which to 
-choose!  Find out why & fix.  If problem is that laptop may not have 
-any ports, then find a way to list other kinds of ports with serial 
-ports in the mix.  That way at least, one would know it is working.
-<p>
-Aha!  Was getting (& failing to notice) this error printed to console!  
-This error shows up when the comm library is opened to reveal the 
-SerialComm actor.  Error loading win32com: java.lang.UnsatisfiedLinkError: 
-no win32com in java.library.path
-<p>
-ptII/vendors/sun/commapi/PlatformSpecific.html describes (maybe) how 
-to activate win32com.
-<p>
-Cool!  Problem was resolved when I copied the file win32com.dll to yet 
-another directory, my c:\jdk1.4\bin directory.  Now it DOES choose an 
-available serial port (not necessarily the lowest numbered one!).  And,
-when I start with a silly port name like COM7, listen to the actor, 
-and then run, I get a list of available ports!!
-
+<p>Currently, this actor will only work under Windows, though in
+principle it could be made to work on any platform that supports
+the Java Comm api.
 <p>
 This actor is designed for use in DE.  It can be used in other domains, 
 such as SDF, with interesting behavior.  This actor does not block in 
