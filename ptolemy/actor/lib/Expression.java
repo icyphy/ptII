@@ -399,7 +399,7 @@ public class Expression extends TypedAtomicActor {
                 }
                 Type type = _typeInference.inferTypes(_parseTree, _scope);
                 return type;
-            } catch (IllegalActionException ex) {
+            } catch (Exception ex) {
                 throw new IllegalActionException(Expression.this, ex, 
                         "An error occured during expression type inference");
             }
