@@ -31,7 +31,7 @@
 
 ME =		ptolemy/lang
 
-#DIRS = 		test
+DIRS = 		java
 
 # Root of the Java directory
 ROOT =		../..
@@ -53,6 +53,7 @@ JSRCS = ApplicationUtility.java \
         EnvironIter.java \
         GenerateVisitor.java \
         Interrogator.java \
+	ITreeNode.java \
         IVisitor.java \
         NullValue.java \
         PropertyMap.java \
