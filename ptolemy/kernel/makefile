@@ -70,7 +70,6 @@ JSRCS = \
 	NullReferenceException.java \
 	ObservableParameter.java \
 	Param.java \
-	ParamLinkedList.java \
 	ParamList.java \
 	Parameter.java \
 	Particle.java \
