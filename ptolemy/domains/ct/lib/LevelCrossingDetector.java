@@ -38,6 +38,7 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.ct.kernel.CTDirector;
 import ptolemy.domains.ct.kernel.CTEventGenerator;
+import ptolemy.domains.ct.kernel.CTExecutionPhase;
 import ptolemy.domains.ct.kernel.CTStepSizeControlActor;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
@@ -203,11 +204,27 @@ public class LevelCrossingDetector extends Transformer
             _debug("Consuming trigger Token " + _thisTrigger);
         }
 
+        // This operation is only performed during discrete phase.
+        // NOTE: This way to generate events is different from 
+        // CTPeriodicSampler, where discrete events are generated
+        // at the end of a continuous phase execution. The reason
+        // is the difference between breakpoint and detected event.
+        
+        // A break point is an event that is guaranteed to happen,
+        // while a detected event is not. Therefore, the strategy to
+        // handle detected events is to defer their production into
+        // the discrete phase execution. In continuous phase execution,
+        // we only detect when the possible events can happen and 
+        // choose the earliest one to schedule a discrete phase 
+        // execution.
         if (director.isDiscretePhase()) {
             if (_debugging && _verbose) {
                 _debug("This is a discrete phase execution.");
             }
-            // Check if the discontinuity generates events.
+            // There are two conditions when an event is generated.
+            // 1. There is a discontinuity at the current time.
+            // 2. By linear interpolation, an event is located at the current
+            // time.
             if (((_lastTrigger - _level) * (_thisTrigger - _level) < 0.0) 
                 || hasCurrentEvent()) {
                 // Emit event.

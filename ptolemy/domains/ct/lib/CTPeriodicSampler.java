@@ -36,6 +36,7 @@ import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.domains.ct.kernel.CTDirector;
 import ptolemy.domains.ct.kernel.CTEventGenerator;
+import ptolemy.domains.ct.kernel.CTExecutionPhase;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -135,19 +136,23 @@ public class CTPeriodicSampler extends Transformer
      */
     public void fire() throws IllegalActionException {
         CTDirector director = (CTDirector)getDirector();
-        if (director.isDiscretePhase() && hasCurrentEvent()) {
-            for (int i = 0;
-                 i < Math.min(input.getWidth(), output.getWidth());
-                 i++) {
-                if (input.hasToken(i)) {
-                    Token token = input.get(i);
-                    output.send(i, token);
-                    if (_debugging) 
-                        _debug(getFullName(), " sends event: " + token
-                            + " to channel " + i  
-                            + ", at: " + getDirector().getModelTime());
-                }
-            }
+        if (((director.getExecutionPhase() == 
+            CTExecutionPhase.FIRINGEVENTGENERATORS_PHASE)  
+            || (director.getExecutionPhase() == 
+            CTExecutionPhase.GENERATINGEVENTS_PHASE))
+            && hasCurrentEvent()) {
+//            for (int i = 0;
+//                 i < Math.min(input.getWidth(), output.getWidth());
+//                 i++) {
+//                if (input.hasToken(i)) {
+//                    Token token = input.get(i);
+//                    output.send(i, token);
+//                    if (_debugging) 
+//                        _debug(getFullName(), " sends event: " + token
+//                            + " to channel " + i  
+//                            + ", at: " + getDirector().getModelTime());
+//                }
+//            }
         }
     }
 
@@ -156,6 +161,8 @@ public class CTPeriodicSampler extends Transformer
      */
     public boolean hasCurrentEvent() {
         CTDirector director = (CTDirector)getDirector();
+        // This actor may be fired several times at a discrete phase
+        // execution. By checking whether the 
         if (director.getModelTime().compareTo(_nextSamplingTime) == 0) {
             _hasCurrentEvent = true;
         } else {
@@ -186,20 +193,43 @@ public class CTPeriodicSampler extends Transformer
      */
     public boolean postfire() throws IllegalActionException {
         CTDirector director = (CTDirector)getDirector();
-        if (director.isDiscretePhase() && _hasCurrentEvent) {
+        if (((director.getExecutionPhase() == 
+            CTExecutionPhase.POSTFIRINGEVENTGENERATORS_PHASE)  
+            || (director.getExecutionPhase() == 
+            CTExecutionPhase.GENERATINGEVENTS_PHASE))
+            && hasCurrentEvent()) {
+            // Generate discrete events. 
+            // NOTE: this is unusual since most actors produce
+            // outputs at their fire method. The reason for 
+            // producing output in the postfire method is that
+            // producing an event is a state change. It must
+            // happen when the event should happen.
+            // NOTE: It is arguable to defer the production of
+            // event till the discrete phase execution. However,
+            // if we do so, we lose the desired behavior of this
+            // sampler, which is to only sample values at t_minus
+            // but not any values at t or t_plus.
+            for (int i = 0; i < Math.min(input.getWidth(), output.getWidth()); i++) {
+                if (input.hasToken(i)) {
+                    Token token = input.get(i);
+                    output.send(i, token);
+                    if (_debugging)
+                        _debug(getFullName(), " sends event: " + token
+                                + " to channel " + i + ", at: "
+                                + getDirector().getModelTime());
+                }
+            }
             // discrete events are generated; schedule another
             // discrete phase execution at the current time
             // such that other discrete actors react to the events.
-            director.fireAt(this, director.getModelTime());
+            director.fireAt(null, director.getModelTime());
             // register for the next event.
             _nextSamplingTime = _nextSamplingTime.add(_samplePeriod);
-            if (_debugging) _debug(getFullName(), "request fire at "
-                    + _nextSamplingTime);
-            // The null argument prevents the triple firing that would
-            // otherwise occur.
-            getDirector().fireAt(null, _nextSamplingTime);
+            if (_debugging)
+                _debug(getFullName(), "request fire at "
+                        + _nextSamplingTime);
+            getDirector().fireAt(this, _nextSamplingTime);
         }
-        _hasCurrentEvent = false;
         return true;
     }
 
@@ -209,7 +239,10 @@ public class CTPeriodicSampler extends Transformer
     // the local copy of the sample period.
     private double _samplePeriod;
 
-    // flag indicating if there is a current event.
+    // flag indicating if there is a current event. 
+    // NOTE: this variable should be only used inside the hasCurrentEvent
+    // method. Other methods can only access the status of this variable
+    // via the hasCurrentEvent method.
     private boolean _hasCurrentEvent = false;
 
     // the next sampling time.

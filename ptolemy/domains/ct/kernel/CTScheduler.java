@@ -701,6 +701,13 @@ public class CTScheduler extends Scheduler {
         
         discreteActors = _signalTypeMap.getDiscreteActors();
         continuousActors = _signalTypeMap.getContinuousActors();
+        
+        // NOTE: There is a situation that the signal types of all the input 
+        // and output ports of a CT composite actor are derived as "DISCRETE". 
+        // In such case, we need to include this actor into the continuous
+        // actors cluster. Note, avoid introducing duplication.
+        continuousActors.removeAll(ctSubsystems);
+        continuousActors.addAll(ctSubsystems);
 
         // At this point, all actors have their ports' signal types resolved.
         // A nonCTSubsystem will be clarified based on the signal types of 
@@ -714,7 +721,7 @@ public class CTScheduler extends Scheduler {
                 // For a non-CT composite actor, it can only be a 
                 // waveform generator. If it tries to be an event
                 // generator, it has to extend CTCompositeActor,
-                // which has provides step size control information.
+                // which provides step size control information.
                 waveformGenerators.add(subsystem); 
                 // remove the current subsystem from both the continuous
                 // and discrete actor clusters.
@@ -739,8 +746,10 @@ public class CTScheduler extends Scheduler {
             // inputs and outputs are DISCRETE.
             if (continuousActors.contains(actor)) {
                 if (actor instanceof CTCompositeActor) {
-                    // We add ct composite actors into list.
+                    // We add ct composite actors into list because a 
+                    // CTComposite can be everything.
                     discreteActorSchedule.add(new Firing(actor));
+                    continue;
                 } else {
                     // the following code removes event generators
                     // and waveform generators from continuous actors list.
@@ -774,13 +783,6 @@ public class CTScheduler extends Scheduler {
         // Actors remain in the continuousActors list are purely continuous
         // actor. The normal (CT) scheduling should only apply to them.
 
-        // NOTE: Event generators are sink actors from the 
-        // continuous execution phase point of view. 
-        // NOTE: this will not affect the schedule of dynamic actors and 
-        // state transition actors, but it does affect the output actor
-        // schedule and continuous actor schedule.
-        continuousActors.addAll(eventGenerators);
-        
         // Add all continuous actors in the continuous actors schedule.
         Iterator continuousIterator = continuousActors.iterator();
         while (continuousIterator.hasNext()) {
@@ -856,6 +858,16 @@ public class CTScheduler extends Scheduler {
         sinkActors.removeAll(ctSubsystems); 
         sinkActors.addAll(ctSubsystems); 
 
+        // NOTE: Event generators are sink actors from the 
+        // continuous execution phase point of view. 
+        // NOTE: this will not affect the schedule of dynamic actors and 
+        // state transition actors, but it does affect the output actor
+        // schedule and continuous actor schedule.
+        // NOTE: To avoid duplication of evetnGenerators, here is the trick.
+        sinkActors.removeAll(eventGenerators);
+        sinkActors.addAll(eventGenerators);
+        
+
         // FIXME: do the following comments make sense??
         // The assumption that the CTEventGenerators do not
         // appear in an integration path and they
@@ -876,6 +888,7 @@ public class CTScheduler extends Scheduler {
         // for details.)
 
         if (!sinkActors.isEmpty()) {
+            arithmeticGraph = _toArithmeticGraph(sinkActors);
             // Construct an array of sink actors.
             Object[] sinkArray = sinkActors.toArray();
             // Output map.

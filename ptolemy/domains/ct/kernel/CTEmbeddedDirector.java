@@ -168,6 +168,22 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
             == CTExecutionPhase.FIRINGPURELYDISCRETE_PHASE) {
             super._iteratePurelyDiscreteActors(schedule);
         } else if (executionPhase 
+            == CTExecutionPhase.FIRINGDYNAMICACTORS_PHASE) {
+            getCurrentODESolver().fireDynamicActors();
+        } else if (executionPhase 
+            == CTExecutionPhase.FIRINGEVENTGENERATORS_PHASE) {
+            super.fireEventGenerators();
+        } else if (executionPhase 
+            == CTExecutionPhase.FIRINGSTATETRANSITIONACTORS_PHASE) {
+            getCurrentODESolver().fireStateTransitionActors();
+            // No seperate phase for producing output, because
+            // a CT subsystem needs to produce output if it works
+            // as a state transition actor. 
+            super.produceOutput();
+        } else if (executionPhase 
+            == CTExecutionPhase.GENERATINGEVENTS_PHASE) {
+            super._iterateEventGenerators(schedule);
+        } else if (executionPhase 
             == CTExecutionPhase.GENERATINGWAVEFORMS_PHASE) {
             // NOTE: the time a discrete phase execution (waveform phase) 
             // starts is the same time the iteration time starts.
@@ -185,27 +201,8 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
                 
             super._iterateWaveformGenerators(schedule);
         } else if (executionPhase 
-            == CTExecutionPhase.GENERATINGEVENTS_PHASE) {
-            super._iterateEventGenerators(schedule);
-        } else if (executionPhase 
             == CTExecutionPhase.PREFIRINGDYNAMICACTORS_PHASE) {
             super._prefireDynamicActors();
-        } else if (executionPhase 
-            == CTExecutionPhase.FIRINGDYNAMICACTORS_PHASE) {
-            getCurrentODESolver().fireDynamicActors();
-        } else if (executionPhase 
-            == CTExecutionPhase.FIRINGSTATETRANSITIONACTORS_PHASE) {
-            getCurrentODESolver().fireStateTransitionActors();
-            // No seperate phase for producing output, because
-            // a CT subsystem needs to produce output if it works
-            // as a state transition actor. 
-            super.produceOutput();
-//        } else if (executionPhase 
-//            == CTExecutionPhase.UPDATINGCONTINUOUSSTATES_PHASE) {
-//            super.updateContinuousStates();
-        } else if (executionPhase 
-            == CTExecutionPhase.FIRINGDYNAMICACTORS_PHASE) {
-            super.fireEventGenerators();
         }
     }
 
@@ -293,6 +290,15 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
         }
     }
     
+    /** Call initialize method of super class.
+     *  Remove the first breakpoint, the model start time, from the break 
+     *  point table. 
+     *  @see ptolemy.actor.Executable#initialize()
+     */
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+        getBreakPoints().removeFirst();
+    }
       /** Return true if this is the discrete phase execution.
        *  @return True if this is the discrete phase execution.
        */
@@ -466,8 +472,13 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
         if (getExecutionPhase() 
             == CTExecutionPhase.UPDATINGCONTINUOUSSTATES_PHASE) {
             super.updateContinuousStates();
-            }
-        return _postfireReturns && !_stopRequested;
+        } else if (getExecutionPhase() 
+            == CTExecutionPhase.POSTFIRINGEVENTGENERATORS_PHASE) {
+            super.postfireEventGenerators();
+        }
+        return super.postfire();
+        // FIXME: why I did this before???
+        //return _postfireReturns && !_stopRequested;
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -271,7 +271,7 @@ public class CTMultiSolverDirector extends CTDirector {
 
         // If the current time is the stop time, the fire method 
         // should return because no further execution is necessary.
-        if (getModelTime().equalTo(getModelStopTime()) 
+        if (getModelTime().equals(getModelStopTime()) 
             || !_postfireReturns) {
             return;
         }
@@ -282,6 +282,11 @@ public class CTMultiSolverDirector extends CTDirector {
         if (_debugging && _verbose) _debug(getName(), " end of fire. >>>");
     }
 
+    /** Fire the event generators. This method is called in a continuous
+     *  phase execution only, which prepares to check whether the current 
+     *  step size is accurate according to the output-step-size controllers.
+     *  @throws IllegalActionException If any actor throws it during firing.
+     */
     public void fireEventGenerators() throws IllegalActionException {
             CTSchedule schedule = (CTSchedule)getScheduler().getSchedule();
             Iterator actors =
@@ -289,15 +294,6 @@ public class CTMultiSolverDirector extends CTDirector {
             _setExecutionPhase(CTExecutionPhase.FIRINGEVENTGENERATORS_PHASE);
             while (actors.hasNext() && !_stopRequested) {
                 Actor actor = (Actor)actors.next();
-                // FIXME: can not remember why the following code is here. 
-                // Commented it out.
-    //            if (actor instanceof CTCompositeActor) {
-    //                // CTCompositeActor has been fired during the produceOutput
-    //                // method. It can not be fired twice in continuous phase
-    //                // execution.
-    //                // FIXME: why?
-    //                continue;
-    //            }
                 if (!isPrefireComplete(actor)) {
                     setPrefireComplete(actor);
                     if (_debugging && _verbose) {
@@ -326,6 +322,30 @@ public class CTMultiSolverDirector extends CTDirector {
             }
             _setExecutionPhase(CTExecutionPhase.UNKNOWN_PHASE);
         }
+
+    /** Postfire the event generators. This method is called in a continuous
+     *  phase execution only, after the current step size is proved accurate 
+     *  according to the output-step-size controllers. 
+     *  Discrete events may be generated at this phase. 
+     *  @throws IllegalActionException If any actor throws it during postfiring.
+     */
+    public void postfireEventGenerators() throws IllegalActionException {
+        CTSchedule schedule = (CTSchedule)getScheduler().getSchedule();
+        Iterator actors =
+            schedule.get(CTSchedule.EVENT_GENERATORS).actorIterator();
+        _setExecutionPhase(CTExecutionPhase.POSTFIRINGEVENTGENERATORS_PHASE);
+        while (actors.hasNext() && !_stopRequested) {
+            Actor actor = (Actor)actors.next();
+            if (_debugging) {
+                _debug("Postfire event generator : "
+                        + ((Nameable)actor).getName()
+                        + " at time "
+                        + getModelTime());
+            }
+            _postfireReturns = _postfireReturns && actor.postfire();
+        }
+        _setExecutionPhase(CTExecutionPhase.UNKNOWN_PHASE);
+    }
 
     /** Return the breakpoint ODE solver.
      *  @return The breakpoint ODE solver.
@@ -449,6 +469,7 @@ public class CTMultiSolverDirector extends CTDirector {
         // register two breakpoints, the start time and stop time.
         // NOTE: the null argumenet for fireAt method indicates the director
         // requests the refiring.
+        
         if (_debugging) {
             _debug("Set the start time (the current time) as a break point: "
                     + getModelTime());
@@ -485,7 +506,7 @@ public class CTMultiSolverDirector extends CTDirector {
         // Now, the current time is equal to the stop time. 
         // If the breakpoints table does not contain the current time, 
         // the execution stops by returning false in this postfire method.
-        if (getModelTime().equalTo(getModelStopTime()) &&
+        if (getModelTime().equals(getModelStopTime()) &&
             !getBreakPoints().contains(getModelTime()))  {
             if (_debugging) 
                 _debug("Postfire returns false at: " + getModelTime());
@@ -596,7 +617,7 @@ public class CTMultiSolverDirector extends CTDirector {
             long realTime = System.currentTimeMillis()-_timeBase;
             long simulationTime = 
                 (long)((getModelTime()
-                    .subtract(getModelStartTime()).getTimeValue())*1000);
+                    .subtract(getModelStartTime()).getDoubleValue())*1000);
             if (_debugging) _debug("real time " + realTime,
                     "simulation time " + simulationTime);
             long timeDifference = simulationTime-realTime;
@@ -1277,12 +1298,15 @@ public class CTMultiSolverDirector extends CTDirector {
             // Iterate output actors. 
             produceOutput();
             
-            // NOTE: Event generators are fired byt not iterated.
-            // They will be iterated during discrete phase execution only.
-            // The event generators are fired to check whether there are events
-            // happened during the current iteration.
+            // NOTE: Event generators are fired but not iterated because 
+            // the current step size may not be accurate. 
+            // In fact, some event generators, like LevelCrossingDetector,
+            // refine the current step size to locate the exact time a
+            // possible event can happen.
+            // The event generators will be postfired when the current step
+            // size is accurate. See below: postfireEventGenerators.
             fireEventGenerators();
-            
+
             if (!_isOutputAccurate()) {
                 setModelTime(getIterationBeginTime());
                 setCurrentStepSize(_refinedStepWRTOutput());
@@ -1296,6 +1320,11 @@ public class CTMultiSolverDirector extends CTDirector {
                 break;
             }
         }
+        
+        // postfire all event generators.
+        // NOTE: depending on the implementation of event generators,
+        // discrete events may or may not be generated during this phase.
+        postfireEventGenerators();
         
         // postfire all the continuous actors.
         updateContinuousStates();
@@ -1403,7 +1432,7 @@ public class CTMultiSolverDirector extends CTDirector {
                     + "the next breakpoint:");
                 }
                 currentStepSize 
-                    = point.subtract(getModelTime()).getTimeValue();
+                    = point.subtract(getModelTime()).getDoubleValue();
                 if (_debugging && _verbose) {
                     _debug(
                     "Refining the current step size w.r.t. " 

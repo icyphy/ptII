@@ -242,10 +242,10 @@ public abstract class CTDirector extends StaticSchedulingDirector
      */
     public Parameter synchronizeToRealTime;
 
-    /** The resolution in comparing time.
-     *  The default value is 1e-10, and the type is double.
+    /** The number of digits of the fractional part of the model time.
+     *  The default value is 10, and the type is int.
      */
-    public Parameter timeResolution;
+    public Parameter timeScale;
 
     /** Value resolution in looking for a fixed-point.
      *  The default value is 1e-6, and the type is double.
@@ -311,15 +311,9 @@ public abstract class CTDirector extends StaticSchedulingDirector
                         "Cannot set a negative value resolution.");
             }
             _valueResolution = value;
-        } else if (attribute == timeResolution) {
-            double value = ((DoubleToken)timeResolution.getToken()).
-                doubleValue();
-            if (value <= 0.0) {
-                throw new IllegalActionException(this,
-                        "Cannot set a negative or zero time resolution.");
-            }
-            setTimeResolution(value);
-            TotallyOrderedSet table = getBreakPoints();
+        } else if (attribute == timeScale) {
+            int value = ((IntToken)timeScale.getToken()).intValue();
+            setTimeScale(value);
         } else if (attribute == maxIterations) {
             int value = ((IntToken)maxIterations.getToken()).intValue();
             if (value < 1) {
@@ -540,29 +534,13 @@ public abstract class CTDirector extends StaticSchedulingDirector
      *  @return The iteration begin time plus the current step size.
      */
     public double getNextIterationTime() {
-        return getModelNextIterationTime().getTimeValue();
+        return getModelNextIterationTime().getDoubleValue();
     }
 
     /** Return the ODE solver.
      *  @return The default ODE solver associated with this director.
      */
     public abstract ODESolver getODESolver();
-
-    /** Return the start time parameter value. This method is final
-     *  for performance reason.
-     *  @return the start time.
-     */
-    public final double getStartTime() {
-        return getModelStartTime().getTimeValue();
-    }
-
-    /** Return the stop time. This method is final
-     *  for performance reason.
-     *  @return the stop time.
-     */
-    public final double getStopTime() {
-        return getModelStopTime().getTimeValue();
-    }
 
     /** Return the suggested next step size. The suggested step size is
      *  the minimum step size that the step-size-control actors suggested
@@ -736,19 +714,19 @@ public abstract class CTDirector extends StaticSchedulingDirector
      *  is very import during
      *  the simulation and should NOT be changed in the middle of an
      *  iteration.
-     *  @param stepsize The step size to be set.
+     *  @param stepSize The step size to be set.
      */
-    public void setCurrentStepSize(double stepsize) {
+    public void setCurrentStepSize(double stepSize) {
         // FIXME: we may not need to do this... since a small difference
         // of step size does not matter considering the value error tolerance
         // of the solvers...
         // However, it does affect the stop time of the current iteration.
-        double newStepsize = Utilities.round(stepsize, getTimeResolution());
+        // double newStepsize = Utilities.round(stepsize, getTimeResolution());
         if (_debugging) {
             _debug("----- Setting current step size to (adjusted) " 
-                + newStepsize);
+                + stepSize);
         }
-        _currentStepSize = newStepsize;
+        _currentStepSize = stepSize;
     }
 
     /** Set a new value to the current time of the model, where the new
@@ -833,9 +811,9 @@ public abstract class CTDirector extends StaticSchedulingDirector
             valueResolution.setExpression("1e-6");
             valueResolution.setTypeEquals(BaseType.DOUBLE);
             
-            timeResolution = new Parameter(this, "timeResolution",
-                    new DoubleToken(1e-10));
-            timeResolution.setTypeEquals(BaseType.DOUBLE);
+            timeScale = new Parameter(this, "timeScale",
+                    new IntToken(10));
+            timeScale.setTypeEquals(BaseType.INT);
             
             synchronizeToRealTime = new Parameter(this,
                     "synchronizeToRealTime");
