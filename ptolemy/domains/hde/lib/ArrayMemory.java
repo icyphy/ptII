@@ -56,9 +56,9 @@ Write serial: write the serial data input to the ith element of an internal
 Write parallel: write the parallel  data input to the internal array.
 It is required that the value of the input index be less than or equal to the
 length parameter.
-@see LookupTable
+@see ptolemy.actor.lib.LookupTable
 @see RecordDisassembler
-@authors  Jim Armstrong
+@author  Jim Armstrong
 @version $Id$
 */
 
