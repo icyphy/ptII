@@ -326,16 +326,13 @@ public class KernelException extends Exception {
         } else {
             String name;
             name = object.getName();
-            if (name == null) {
+            if (name == null || name.equals("")) {
                 // If NamedObj.setName() throws an exception, then the
                 // nameable object might be non-null, but the name might
                 // not yet have been set and getName() might return null.
                 // The tcl command:
                 // java::new ptolemy.kernel.util.NamedObj "This.name.has.dots"
                 // will trigger this sort of error.
-                return "";
-            }
-            if (name.equals("")) {
                 return "<Unnamed Object>";
             }
             return name;
