@@ -39,11 +39,13 @@ import ptolemy.actor.IORelation;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.util.DFUtilities;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
+import ptolemy.data.expr.Variable;
 import ptolemy.data.type.Type;
 import ptolemy.domains.ddf.kernel.DDFDirector;
 import ptolemy.domains.sdf.kernel.SDFReceiver;
@@ -70,7 +72,9 @@ import ptolemy.kernel.util.NameDuplicationException;
    ports outside. It finally merges local DDFDirector with its executive
    DDFDirector and then removes local DDFDirector. Thus during execution
    this actor is fired at most once, after which the executive director
-   directly controls all actors inside.
+   directly controls all actors inside. Since there is no type constraint
+   between input ports and output ports of this actor, users have to 
+   manually configure types for all outputs of this actor.
 
    @author Gang Zhou
    @version $Id$
@@ -134,7 +138,8 @@ public class ActorRecursion extends TypedCompositeActor {
         try {
             // Disable redoing type resolution because type compatibility
             // has been guaranteed during initialization.
-            ((DDFDirector) getExecutiveDirector()).setTypeResolutionFlag(true);
+            ((DDFDirector) getExecutiveDirector())
+                    .setTypeResolutionFlag(true);
             ((DDFDirector) getDirector()).setTypeResolutionFlag(true);
 
             try {
@@ -148,7 +153,8 @@ public class ActorRecursion extends TypedCompositeActor {
             _setOutputPortRate();
             getDirector().initialize();
             _transferOutputs();
-            ((DDFDirector) getExecutiveDirector()).merge((DDFDirector) getDirector());
+            ((DDFDirector) getExecutiveDirector())
+                    .merge((DDFDirector) getDirector());
 
             try {
                 getDirector().setContainer(null);
@@ -157,7 +163,8 @@ public class ActorRecursion extends TypedCompositeActor {
                 throw new InternalErrorException(this, ex, null);
             }
         } finally {
-            ((DDFDirector) getExecutiveDirector()).setTypeResolutionFlag(false);
+            ((DDFDirector) getExecutiveDirector())
+                    .setTypeResolutionFlag(false);
         }
     }
 
@@ -179,10 +186,8 @@ public class ActorRecursion extends TypedCompositeActor {
     }
 
     /** Override the base class to return false. Upon seeing the return
-     *  value, its executive director will remove this actor from the
-     *  active actors list so that it won't be invoked again. This is
-     *  important since its local director has been removed and its
-     *  executive director now controls all actors contained by this actor.
+     *  value, its executive director disables this actor and only fires
+     *  all inside actors next time.
      *  @return false.
      *  @exception IllegalActionException Not thrown in this base class.
      */
@@ -344,12 +349,6 @@ public class ActorRecursion extends TypedCompositeActor {
                 }
 
                 // Connect the corresponding ports of both actors.
-                // FIXME: Note that this will invalidate resolved types,
-                // which is really not necessary because the compatibility
-                // is already checked during initialization. In current
-                // implementation, the model will redo type resolution
-                // every time a composite actor is cloned and connected.
-                // It will be more efficient to get around this.
                 IOPort matchingPort = (IOPort) clone.getPort(port.getName());
                 IORelation relation = (IORelation) newRelation("r_" + i++);
                 port.link(relation);
@@ -362,6 +361,85 @@ public class ActorRecursion extends TypedCompositeActor {
         } catch (NameDuplicationException ex) {
             throw new IllegalActionException(this, "name duplication.");
         }
+    }
+    
+    /** Get token consumption rate for the given receiver. The port
+     *  containing the receiver can be an opaque output port. In that
+     *  case, it actually returns the production rate for that receiver.
+     *  @param receiver The receiver to get token consumption rate.
+     *  @return The token consumption rate of the given receiver.
+     *  @throws IllegalActionException If any called method throws
+     *   IllegalActionException. 
+     */
+    private int _getTokenConsumptionRate(Receiver receiver) 
+            throws IllegalActionException {
+        
+        int tokenConsumptionRate;
+        
+        IOPort port = receiver.getContainer();
+        Variable rateVariable = null;
+        Token token = null;
+        Receiver[][] portReceivers = null;
+        
+        // If DDF domain is inside another domain and the
+        // receiver is contained by an opaque output port...
+        // The default production rate is -1 which means all 
+        // tokens in the receiver are transferred to the outside.
+        if (port.isOutput()) {
+            rateVariable = DFUtilities.getRateVariable(port,
+                    "tokenProductionRate");
+            portReceivers = port.getInsideReceivers();
+            if (rateVariable == null) {
+                tokenConsumptionRate = -1; 
+                return tokenConsumptionRate;
+            } else {
+                token = rateVariable.getToken();
+                if (token == null) {
+                    tokenConsumptionRate = -1;
+                    return tokenConsumptionRate;
+                }    
+            } 
+        }
+                
+        if (port.isInput()) {
+            rateVariable = DFUtilities.getRateVariable(port,
+                    "tokenConsumptionRate");
+            portReceivers = port.getReceivers();
+            if (rateVariable == null) {
+                tokenConsumptionRate = 1; 
+                return tokenConsumptionRate;
+            } else {
+                token = rateVariable.getToken();
+                if (token == null) {
+                    tokenConsumptionRate = 1;
+                    return tokenConsumptionRate;
+                }    
+            } 
+        }
+   
+        if (token instanceof ArrayToken) {
+            Token[] tokens = ((ArrayToken) token).arrayValue();
+
+            // Scan the contained receivers of the port to find 
+            // out channel index.
+            int channelIndex = 0;
+            foundChannelIndex: 
+            for (int m = 0; m < portReceivers.length; m++) {
+                for (int n = 0; n < portReceivers[m].length;
+                    n++) {
+                    if (receiver == portReceivers[m][n]) {
+                        channelIndex = m;
+                        break foundChannelIndex;
+                    }
+                }
+            }
+            tokenConsumptionRate = ((IntToken) tokens[channelIndex])
+                    .intValue();
+        } else {
+            tokenConsumptionRate = ((IntToken) token).intValue();
+        }
+        
+        return tokenConsumptionRate;
     }
 
     /** Get the to-be-cloned composite actor's name from StringParameter
@@ -407,92 +485,28 @@ public class ActorRecursion extends TypedCompositeActor {
             int[] productionRate = new int[outputPort.getWidthInside()];
 
             // If there are more inside channels than outside channels,
-            // it sets default rates of these non-connecting inside
-            // channels to be Integer.MAX_VALUE. This will effectively
-            // nullify these non-connecting inside channels while deciding
-            // deferrability of the actors connected to these channels.
-            // After the local director is removed, these channels won't
-            // transfer any data.
-            Arrays.fill(productionRate, Integer.MAX_VALUE);
+            // it sets default rates of these extra inside channels to 
+            // be -1 which then won't cause an upstream actor to be 
+            // deferrable because any tokens on these extra channels
+            // are discarded.
+            Arrays.fill(productionRate, -1);
 
             Receiver[][] farReceivers = outputPort.getRemoteReceivers();
 
-            for (int i = 0; i < outputPort.getWidthInside(); i++) {
-                if (farReceivers[i] != null) {
+            for (int i = 0; i < farReceivers.length; i++) {
+                if (i < outputPort.getWidthInside()) {
                     for (int j = 0; j < farReceivers[i].length; j++) {
                         SDFReceiver farReceiver = (SDFReceiver) farReceivers[i][j];
-                        IOPort port = farReceiver.getContainer();
-
-                        // Having a self-loop doesn't make it deferrable.
-                        if (port.getContainer() == outputPort.getContainer()) {
-                            continue;
-                        }
-
-                        // The default rate for the port containing
-                        // farReceiver is 1.
-                        int portRate = 1;
-                        Parameter rate = null;
-
-                        if (port.isInput()) {
-                            rate = (Parameter) port.getAttribute(
-                                    "tokenConsumptionRate");
-
-                            // Ports of opaque SDF composite actors contain
-                            // parameters named "_tokenConsumptionRate" given
-                            // by inside scheduler.
-                            if (rate == null) {
-                                rate = (Parameter) port.getAttribute(
-                                        "_tokenConsumptionRate");
-                            }
-                        }
-
-                        // If DDF domain is inside another domain and the
-                        // farReceiver is contained by an output port.
-                        if (port.isOutput()) {
-                            rate = (Parameter) port.getAttribute(
-                                    "tokenProductionRate");
-
-                            if (rate == null) {
-                                rate = (Parameter) port.getAttribute(
-                                        "_tokenProductionRate");
-                            }
-                        }
-
-                        if (rate != null) {
-                            Token token = rate.getToken();
-
-                            if (token instanceof ArrayToken) {
-                                Token[] tokens = ((ArrayToken) token)
-                                    .arrayValue();
-
-                                // Scan the contained receivers of the remote
-                                // port to find the channel index.
-                                Receiver[][] portReceivers = port.getReceivers();
-                                int channelIndex = 0;
-                                foundChannelIndex:
-                                for (int m = 0; m < portReceivers.length;
-                                     m++) {
-                                    for (int n = 0;
-                                         n < portReceivers[m].length; n++) {
-                                        if (farReceiver == portReceivers[m][n]) {
-                                            channelIndex = m;
-                                            break foundChannelIndex;
-                                        }
-                                    }
-                                }
-
-                                portRate = ((IntToken) tokens[channelIndex])
-                                    .intValue();
-                            } else {
-                                portRate = ((IntToken) token).intValue();
-                            }
-                        }
-
+                        
+                        int rate = _getTokenConsumptionRate(farReceiver);
                         // According to the definition of deferrability,
                         // we need to find the minimum rate associated with
-                        // this channel.
-                        if (productionRate[i] > portRate) {
-                            productionRate[i] = portRate;
+                        // this channel. -1 is actually the largest rate in
+                        // some sense.
+                        if (productionRate[i] < 0) {
+                            productionRate[i] = rate;
+                        } else if (rate >= 0 && rate < productionRate[i]) {
+                            productionRate[i] = rate;   
                         }
                     }
                 }
@@ -507,17 +521,12 @@ public class ActorRecursion extends TypedCompositeActor {
 
             // Since this is output port, we look for token production rate
             // instead of token consumption rate.
-            Parameter tokenProductionRate = (Parameter) outputPort.getAttribute(
+            Variable rateVariable = DFUtilities.getRateVariable(outputPort,
                     "tokenProductionRate");
 
-            if (tokenProductionRate == null) {
-                tokenProductionRate = (Parameter) outputPort.getAttribute(
-                        "_tokenProductionRate");
-            }
-
-            if (tokenProductionRate == null) {
+            if (rateVariable == null) {
                 try {
-                    tokenProductionRate = new Parameter(outputPort,
+                    rateVariable = new Parameter(outputPort,
                             "tokenProductionRate");
                 } catch (NameDuplicationException ex) {
                     //should not happen.
@@ -525,7 +534,7 @@ public class ActorRecursion extends TypedCompositeActor {
                 }
             }
 
-            tokenProductionRate.setToken(new ArrayToken(productionRateToken));
+            rateVariable.setToken(new ArrayToken(productionRateToken));
         }
     }
 
@@ -555,8 +564,8 @@ public class ActorRecursion extends TypedCompositeActor {
 
     /** Transfer all tokens contained by output ports of this actor to the
      *  connected opaque ports outside.We cannot use transferOutputs(IOPort)
-     *  of the executive director because we have to transfer <i>all</i>
-     *  tokens instead of those specified by rate parameters.
+     *  of the local director because we have to transfer <i>all</i> tokens
+     *  instead of those specified by rate parameters.
      *  @exception IllegalActionException If conversion to the type of
      *   the destination port cannot be done.
      */
