@@ -305,7 +305,7 @@
             </property>
         </entity>
         <entity name="NonStrictTest3" class="ptolemy.actor.lib.NonStrictTest">
-            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.50005, 1.50005}">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 1.50005, 1.50005}">
             </property>
             <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
             </property>
@@ -374,6 +374,8 @@
             </property>
         </property>
         <property name="_Director" class="ptolemy.domains.fsm.kernel.HSDirector">
+            <property name="timePrecisionInDigits" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
             <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="_Controller">
             </property>
         </property>

@@ -291,9 +291,6 @@ test CTDirector-3.1 {register a breakpoint} {
     $stoptime setToken $token
     $dir preinitialize
     $dir initialize
-    # NOTE: Each of these causes two breakpoints to be registered.
-    # One at the specified time, and one at the specified time minus
-    # the time resolution.
     set timeResolution [$dir getTimeResolution]
     set currentTime [$dir getCurrentTime]
     $dir {fireAt ptolemy.actor.Actor double} $sys 0.1
@@ -308,10 +305,8 @@ test CTDirector-3.1 {register a breakpoint} {
     set second [[java::cast ptolemy.actor.util.Time [$bptable first]] getDoubleValue]
     $bptable removeFirst
     set third [[java::cast ptolemy.actor.util.Time [$bptable first]] getDoubleValue]
-    $bptable removeFirst
-    set stoptime [[java::cast ptolemy.actor.util.Time [$bptable first]] getDoubleValue]
-    list $starttime $first $firstAgain $second $third $stoptime
-} {0.0 0.1 0.1 0.2 0.4 1.0}
+    list $starttime $first $firstAgain $second $third
+} {0.1 0.2 0.2 0.4 1.0}
 
 test CTDirector-3.2 {access empty breakpoint table} {     
     #Note: use above set up.

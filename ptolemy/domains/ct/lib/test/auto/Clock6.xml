@@ -136,7 +136,7 @@ at time 5.0, it starts producing its default value.</text></svg></configure>
         </property>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{ 1,2}">
         </property>
-        <property name="numberOfCycles" class="ptolemy.data.expr.Parameter" value="2">
+        <property name="numberOfCycles" class="ptolemy.data.expr.Parameter" value="0">
         </property>
         <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
         </property>

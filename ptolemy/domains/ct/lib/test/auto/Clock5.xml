@@ -27,8 +27,6 @@
         </property>
         <property name="valueResolution" class="ptolemy.data.expr.Parameter" value="1.0E-6">
         </property>
-        <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
-        </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="ODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;">
@@ -52,6 +50,8 @@
             </property>
         </property>
         <property name="runAheadLength" class="ptolemy.data.expr.Parameter" value="0.1">
+        </property>
+        <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 35.0">
         </property>
@@ -115,7 +115,7 @@
         </property>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{ 1,2}">
         </property>
-        <property name="numberOfCycles" class="ptolemy.data.expr.Parameter" value="2">
+        <property name="numberOfCycles" class="ptolemy.data.expr.Parameter" value="0">
         </property>
         <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
         </property>

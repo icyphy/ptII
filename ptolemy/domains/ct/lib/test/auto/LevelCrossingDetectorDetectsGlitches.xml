@@ -146,6 +146,8 @@ by the output actions of the transient states.)
             </property>
         </property>
         <property name="_Director" class="ptolemy.domains.fsm.kernel.HSDirector">
+            <property name="timePrecisionInDigits" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
             <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="_Controller">
             </property>
         </property>
@@ -576,7 +578,7 @@ with their output actions.</text></svg></configure>
         </property>
     </entity>
     <entity name="NonStrictTest3" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.50005, 1.50005}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 1.50005, 1.50005}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
