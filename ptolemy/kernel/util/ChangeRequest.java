@@ -175,14 +175,6 @@ public abstract class ChangeRequest {
 
     /** Get the source that was specified in the constructor.
      *  @return The source of the change.
-     *  @deprecated use getSource() instead.
-     */
-    public Object getOriginator() {
-        return _source;
-    }
-
-    /** Get the source that was specified in the constructor.
-     *  @return The source of the change.
      */
     public Object getSource() {
         return _source;
