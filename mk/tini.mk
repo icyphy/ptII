@@ -134,11 +134,12 @@ build_prc:
 	@echo "# Creating Tini executable from classes in"
 	@echo "# $(PTII)/$(OUTPKG_DIR)"
 	@echo "###################################"
-	(cd $(ROOT)/$(OUTPKG_DIR); \
-	CLASSPATH="$(OUTPKG_ROOT)$(CLASSPATHSEPARATOR)$(TINI_CLASSES)" \
-		$(JAVA) TINIConverter \
-		-f $(OUTPKG_DIR)/$(OUTPKG_MAIN_CLASS) $(OUTPKG_DIR) \
-		-d $(TINI_DIR)/firmware/tini.db \
+	(cd $(ROOT); \
+	CLASSPATH=".$(CLASSPATHSEPARATOR)$(OUTPKG_ROOT)$(CLASSPATHSEPARATOR)$(TINI_CLASSES)" \
+		$(JAVA) TINIConvertor \
+		-f $(OUTPKG_DIR)/$(OUTPKG_MAIN_CLASS).class \
+		-o $(OUTPKG_MAIN_CLASS).tini \
+		-d $(TINI_DIR)/bin/tini.db \
 		)
 
 run_codegen: 	
