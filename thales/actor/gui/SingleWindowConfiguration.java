@@ -103,7 +103,9 @@ public class SingleWindowConfiguration extends Configuration {
                         if (tableau != null) {
                             // The first tableau is a master if the container
                             // of the containing effigy is the model directory.
-                            if (effigy.getContainer() instanceof ModelDirectory) {
+                            // Used to do this:
+                            // if (effigy.getContainer() instanceof ModelDirectory) {
+                            if (effigy.masterEffigy() == effigy) {
                                 tableau.setMaster(true);
                             }
                             tableau.setEditable(effigy.isModifiable());
