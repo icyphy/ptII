@@ -113,6 +113,7 @@ JSRCS = \
 	MaxIndex.java \
 	Maximum.java \
 	Minimum.java \
+	Monitor.java \
         Multiplexor.java \
 	MultiplyDivide.java \
 	NonStrictTest.java \
