@@ -136,11 +136,11 @@ public class Port extends GenericPort {
 	return _relation.getPorts();
     }
 
-    /** Return a reference to the GenericPort alias one level down in the
-     *  hierarchy. Return null if this port is at the bottom of the
+    /** Return a reference to the GenericPort alias one level in in the
+     *  hierarchy. Return null if this port is the innermost port of the
      *  hierarchy.
      */
-    public GenericPort getDownAlias() {
+    public GenericPort getInnerAlias() {
         return innerAlias_;
     }
 
