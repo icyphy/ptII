@@ -69,7 +69,7 @@ public class EventWriter implements diva.util.ModelWriter {
             throws IOException {
         writeHeader(writer);
         writer.write("<" + EventParser.EVENT_STREAM_TAG + ">\n");
-        for(int i = 0; i < events.length; i++) {
+        for (int i = 0; i < events.length; i++) {
             writeEvent(events[i], writer);
         }
         writer.write("</"+ EventParser.EVENT_STREAM_TAG + ">\n");
@@ -82,7 +82,7 @@ public class EventWriter implements diva.util.ModelWriter {
      * character-output stream.
      */
     private void writeEvent(InputEvent event, Writer writer) throws IOException {
-        if(event instanceof MouseEvent) {
+        if (event instanceof MouseEvent) {
             MouseEvent mouse = (MouseEvent)event;
             writer.write("<" + EventParser.MOUSE_EVENT_TAG + " " +
                     EventParser.ID_ATTR_TAG + "=\"" + mouse.getID() + "\" " +
@@ -93,7 +93,7 @@ public class EventWriter implements diva.util.ModelWriter {
                     EventParser.CLICKCOUNT_ATTR_TAG + "=\"" + mouse.getClickCount() + "\" " +
                     EventParser.POPUPTRIGGER_ATTR_TAG + "=\"" + mouse.isPopupTrigger() + "\"/>\n");
         }
-        else if(event instanceof KeyEvent) {
+        else if (event instanceof KeyEvent) {
             KeyEvent key = (KeyEvent)event;
             writer.write("<" + EventParser.KEY_EVENT_TAG + " " +
                     EventParser.ID_ATTR_TAG + "=\"" + key.getID() + "\" " +
@@ -121,7 +121,7 @@ public class EventWriter implements diva.util.ModelWriter {
      * Simple test of this class.
      */
     public static void main (String args[]) throws Exception {
-        if(args.length < 1) {
+        if (args.length < 1) {
             System.err.println("Usage: java EventWriter <outputFile>");
             System.exit(-1);
         }
@@ -143,7 +143,7 @@ public class EventWriter implements diva.util.ModelWriter {
                     try {
                         demo.writeModel(stream, new FileWriter(outputFile));
                     }
-                    catch(Exception ex) {
+                    catch (Exception ex) {
                         System.err.println(e.toString());
                     }
                 }
