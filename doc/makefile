@@ -86,6 +86,7 @@ ALLJSRCS = 		ptolemy.plot \
 			ptolemy.media
 
 all: suball codeDoc/tree.html
+docs: codeDoc/tree.html
 javadocs: codeDoc/tree.html
 codeDoc/tree.html: 	../ptolemy/plot/*.java \
 			../ptolemy/kernel/*.java \

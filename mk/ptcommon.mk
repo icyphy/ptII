@@ -249,6 +249,7 @@ subjclass:
 jclass1_1: $(JSRCS1_1) $(JCLASS1_1)
 
 # Build the Java documentation.
+docs: javadocs
 javadocs: doc/codeDoc/tree.html
 	@if [ "x$(DIRS)" != "x" ]; then \
 		set $(DIRS); \
@@ -391,7 +392,7 @@ jstest_jsimple:
 		test_jsimple
 	@echo "To view code coverage results, run javascope or jsreport"
 	@echo "To get a summary, run jsreport or jsreport -HTML or" 
-	@echo "jsreport -HTML -PROGRESS -RECURSIVE -OUTDIR=\$HOME/public_html/private/js"
+	@echo "jsreport -HTML -PROGRESS -RECURSIVE -OUTDIR=\$$HOME/public_html/private/js"
 
 # Run the test_jsimple rule with the proper classpath  
 jstest_jgraphical:
