@@ -120,7 +120,7 @@ import ptolemy.kernel.util.Workspace;
    '' April 13, 1998.</LI>
    </ol>
 
-   @author Brian K. Vogel and Rachel Zhou
+   @author Rachel Zhou and Brian K. Vogel
    @version $Id$
    @Pt.ProposedRating Red (zhouye)
    @Pt.AcceptedRating Red (cxh)
@@ -213,8 +213,10 @@ public class HDFFSMDirector extends FSMDirector {
             _readOutputsFromRefinement();
             //execute the output actions
             Iterator actions = tr.choiceActionList().iterator();
+            //System.out.println(tr.getName() + " execute action");
             while (actions.hasNext()) {
                 Action action = (Action)actions.next();
+                //System.out.println("execute action " + action.getFullName());
                 action.execute();
             }
             _readOutputsFromRefinement();
@@ -292,7 +294,7 @@ public class HDFFSMDirector extends FSMDirector {
                                 //throw new IllegalActionException(this,
                                   //  "Reached a transient state" +
                                     //"without enabled transition.");
-                                    System.out.println("should throw an exception.");
+                                    //System.out.println("should throw an exception.");
                                     break;
                             }
                             else {
@@ -559,7 +561,7 @@ public class HDFFSMDirector extends FSMDirector {
         _sendRequest = true;
         _reinitialize = false;
         _getHighestFSM();
-        super.preinitialize();
+        //super.preinitialize();
 
         FSMActor ctrl = getController();
         State initialState = ctrl.getInitialState();
@@ -568,8 +570,11 @@ public class HDFFSMDirector extends FSMDirector {
         
         // Make transient state transition in case the initial state
         // does not have a refinement.
-        transientStateTransition();
-
+        //System.out.println("preinit transient transition");
+        currentState = transientStateTransition();
+        super.preinitialize();
+        _setCurrentState(currentState);
+        //super.postfire();
         // Get the current refinement.
         currentState = ctrl.currentState();
         //System.out.println("preinit: curState = " + currentState.getName());
@@ -587,7 +592,7 @@ public class HDFFSMDirector extends FSMDirector {
                         "Only HDF, SDF, or HDFFSM director is "
                         + "allowed in the refinement.");
             }
-
+            //System.out.println("update port rates of " + curRefinement.getName());
             _updateInputTokenConsumptionRates(curRefinement);
             _updateOutputTokenProductionRates(curRefinement);
 
@@ -757,9 +762,10 @@ public class HDFFSMDirector extends FSMDirector {
         State currentState = ctrl.currentState();
         TypedActor[] currentRefinements = currentState.getRefinement();
         while (currentRefinements == null) {
-            //System.out.println("transientStateTransition:");
+            //System.out.println("transient chooseStateTransition");
             chooseStateTransition(currentState);
             //ctrl.postfire();
+            //System.out.println("FSMActor postfire");
             super.postfire();
             currentState = ctrl.currentState();
             //System.out.println("after super(FSM).postfire() curstate = "
@@ -967,9 +973,10 @@ public class HDFFSMDirector extends FSMDirector {
                     // of the refinement.
                     int portRateToSet = SDFUtilities
                         .getTokenConsumptionRate(refineInPort);
+                        //System.out.println("port rate = " + portRateToSet);
                     SDFUtilities.setTokenConsumptionRate
                         (inputPortOutside, portRateToSet);
-                } else {
+                } //else {
                     State curState = ctrl.currentState();
                     List transitionList =
                         curState.nonpreemptiveTransitionList();
@@ -1014,7 +1021,7 @@ public class HDFFSMDirector extends FSMDirector {
                         }
                     }
                 }
-            }
+            //}
         }
     }
 
