@@ -57,7 +57,7 @@ YES       | anything | anything | Stop after outputting the array once |<br>
 */
 public class DEWaveForm extends DEActor {
 
-    /** Contruct a DEWaveForm actor which, by default, produces the 
+    /** Construct a DEWaveForm actor which, by default, produces the 
      *  sequence of zero and one.
      *  @param container The container.
      *  @param name The name of the actor.
@@ -71,7 +71,7 @@ public class DEWaveForm extends DEActor {
         this(container, name, _DEFAULT_VALUE, false, true, 0);
     }
 
-    /** Contruct a DEWaveForm actor.
+    /** Construct a DEWaveForm actor.
      *  @param container The container.
      *  @param name The name of the actor.
      *  @param value The value of the output.
