@@ -363,10 +363,6 @@ public class KernelException extends Exception {
             return "";
         } else {
             String name = getName(object);
-            if (name.equals("<Unnamed Object>")) {
-                return name;
-            }
-
             // First, check for recursive containment by calling getFullName().
             try {
                 object.getFullName();
