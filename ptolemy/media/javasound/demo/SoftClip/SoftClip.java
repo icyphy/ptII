@@ -86,11 +86,14 @@ public class SoftClip {
         // Initialize and begin real-time capture and playback.
         try{
             //soundCapture.startCapture();
+
             // Set up LiveSound parameters for capture/playback
             LiveSound.setSampleRate(sampleRate);
             LiveSound.setBitsPerSample(sampleSizeInBits);
             LiveSound.setChannels(channels);
             LiveSound.setBufferSize(inBufferSize);
+            System.out.println("Attempting to set both buffer sizes: " +
+                    outBufferSize + " samples.");
             LiveSound.setTransferSize(getSamplesSize);
 
             int putSamplesSize = getSamplesSize;
@@ -103,9 +106,13 @@ public class SoftClip {
             System.err.println(ex);
         }
 
-
         double[][] capturedSamplesArray =
             new double[channels][getSamplesSize];
+
+        System.out.println("   Actual audio capture buffer size: " +
+                LiveSound.getBufferSizeCapture() + " samples.");
+        System.out.println("  Actual audio playback buffer size: " +
+                LiveSound.getBufferSizePlayback() + " samples.");
 
         try{
             // Loop forever.
@@ -122,7 +129,6 @@ public class SoftClip {
                 for (int j=0; j< channels; j++) {
                     for (int i=0; i< getSamplesSize; i++) {
                         //  ********** PROCESSING CODE HERE **********
-
                         // Perform soft clipping using the arc tangent.
                         capturedSamplesArray[j][i] =
                             java.lang.Math.atan(capturedSamplesArray[j][i])*0.6;
@@ -142,6 +148,5 @@ public class SoftClip {
         } catch (Exception ex) {
             System.err.println(ex);
         }
-
     }
 }
