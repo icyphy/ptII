@@ -284,11 +284,11 @@ public class BasePNDirector extends CompositeProcessDirector {
 	if (!((((CompositeActor)getContainer()).
 		inputPortList()).isEmpty())
 		&& _getActiveActorsCount() != 0 ){
-            System.out.println("DIRECTOR.POSTFIRE() returning " + _notDone);
+            // System.out.println("DIRECTOR.POSTFIRE() returning " + _notDone);
 	    return _notDone;
 	} else {
-            System.out.println("DIRECTOR.POSTFIRE() returning " + _notDone
-		    + " again.");
+            // System.out.println("DIRECTOR.POSTFIRE() returning " + _notDone
+	    //	    + " again.");
 	    return _notDone;
 	}
     }
@@ -437,7 +437,7 @@ public class BasePNDirector extends CompositeProcessDirector {
             //This is an artificial deadlock. Hence find the input port with
 	    //lowest capacity queue that is blocked on a write and increment
 	    //its capacity;
-            System.out.println("_resolveDeadlock() calling increment capacity");
+            // System.out.println("_resolveDeadlock() calling increment capacity");
             _incrementLowestWriteCapacityPort();
 	    return true;
         }
