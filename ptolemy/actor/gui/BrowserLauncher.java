@@ -240,7 +240,7 @@ public class BrowserLauncher {
                     url +
                     NETSCAPE_OPEN_PARAMETER_END });
             try {
-                int exitCode = process.waitFor();
+                exitCode = process.waitFor();
                 if (exitCode != 0) {	// if Netscape was not open
                     Runtime.getRuntime().exec(new String[] {
                         (String) browser, url });
