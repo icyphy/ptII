@@ -25,7 +25,7 @@ network semantics supporting non-deterministic mutations.
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (cxh@eecs.berkeley.edu)
+@ProposedRating Yellow (mudit@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
@@ -75,23 +75,24 @@ never pause in that model.
 <p>
 A <i>deadlock</i> is when all the active processes are blocked.
 The director is responsible for handling deadlocks during execution.
-This director handles two different sorts of deadlocks, real deadlock and
-artificial deadlock. 
+This director handles two different sorts of deadlocks, <i>real deadlock</i>
+and <i>artificial deadlock</i>. 
 <p>
 A real deadlock is when all the processes are blocked on a read meaning that
 no process can proceed until it receives new data. The execution can be 
 terminated, if desired, in such a situation. If the container of this director
-is the top-level composite actor, then the manager terminates the execution. 
-If the container is not the top-level composite actor, then it is upto the 
+does not have any input ports (as is in the case of a top-level composite 
+actor), then the executive director or manager terminates the execution. 
+If the container has input ports, then it is upto the 
 executive director of the container to decide on the termination of the 
-execution. To terminate the execution, the manager or the executive director
-calls wrapup() on the director.
+execution. To terminate the execution after detection of a real deadlock, the 
+manager or the executive director calls wrapup() on the director.
 <p>
 An artificial deadlock is when all processes are blocked and atleast one 
 process is blocked on a write. In this case the director increases the 
 capacity of the receiver with the smallest capacity amongst all the 
 receivers on which a process is blocked on a write. 
-This breaks the deadlock and the execution can proceed.
+This breaks the deadlock and the execution can resume.
 <p>
 This director is capable of handling dynamic changes to the topology, 
 i.e. mutations of graphs. These mutations can be non-deterministic. In PN, 
@@ -116,7 +117,6 @@ never pause in that model.
 @version $Id$
 */
 public class PNDirector extends BasePNDirector {
-
 
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
@@ -294,7 +294,10 @@ public class PNDirector extends BasePNDirector {
 	}
     }
 
-    /** Return true if the execution has paused. Return false otherwise.
+    /** Return true if the execution has paused or deadlocked. 
+     *  Return false otherwise. This method should be used only to detect
+     *  if the execution has paused. To detect deadlocks, _checkForDeadlock
+     *  should be used.
      *  @return true if the execution has paused.
      */
     protected synchronized boolean _checkForPause() {
@@ -306,8 +309,8 @@ public class PNDirector extends BasePNDirector {
 	}
     }
 
-    /** Pause the execution and process the queued topology change requests. 
-     *  Registered topology
+    /** Process the queued topology change requests after pausing the 
+     *  execution. Registered topology
      *  listeners are informed of each change in a series of calls
      *  after successful completion of each request. If any queued
      *  request fails, the request is undone, and no further requests
@@ -355,6 +358,9 @@ public class PNDirector extends BasePNDirector {
 
     private boolean _urgentMutations = false;
 }
+
+
+
 
 
 

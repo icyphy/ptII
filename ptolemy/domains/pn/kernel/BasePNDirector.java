@@ -25,7 +25,7 @@ Kahn-MacQueen process network semantics.
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (cxh@eecs.berkeley.edu)
+@ProposedRating Yellow (mudit@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
@@ -62,30 +62,31 @@ ProcessThread) representing a Kahn process, for each actor in the model.
 The threads are created in initialize() and started in the prefire() method 
 of the ProcessDirector. A process is considered <i>active</i> from its 
 creation until its termination. An active process can block when trying to 
-read from a channel (read-blocked) or when trying to write to a channel 
-(write-blocked). Derived directors can define additional ways in which active
-processes can block.
+read from a channel (<i>read-blocked</i>) or when trying to write to a channel 
+(<i>write-blocked</i>). Derived directors can define additional ways in which 
+active processes can block.
 <p>
 A <i>deadlock</i> is when all the active processes are blocked.
 The director is responsible for handling deadlocks during execution.
-This director handles two different sorts of deadlocks, real deadlock and
-artificial deadlock. Derived directors might introduce additional forms of 
-deadlock.
+This director handles two different sorts of deadlocks, <i>real deadlock</i> 
+and <i>artificial deadlock</i>. Derived directors might introduce additional 
+forms of deadlock.
 <p>
 A real deadlock is when all the processes are blocked on a read meaning that
 no process can proceed until it receives new data. The execution can be 
 terminated, if desired, in such a situation. If the container of this director
-is the top-level composite actor, then the manager terminates the execution. 
-If the container is not the top-level composite actor, then it is upto the 
+does not have any input ports (as is in the case of a top-level composite 
+actor), then the executive director or manager terminates the execution. 
+If the container has input ports, then it is upto the 
 executive director of the container to decide on the termination of the 
-execution. To terminate the execution, the manager or the executive director
-calls wrapup() on the director.
+execution. To terminate the execution after detection of a real deadlock, the 
+manager or the executive director calls wrapup() on the director.
 <p>
 An artificial deadlock is when all processes are blocked and atleast one 
 process is blocked on a write. In this case the director increases the 
 capacity of the receiver with the smallest capacity amongst all the 
 receivers on which a process is blocked on a write. 
-This breaks the deadlock and the execution can proceed.
+This breaks the deadlock and the execution can resume.
 <p>
 This base director does not support any form of mutations or topology changes
 but provides the basic infrastructure in the form of methods that the derived 
@@ -96,7 +97,7 @@ when all active processes are blocked or paused (atleast one process is
 paused). In case of PN, a process can be paused only when it tries to 
 communicate with other processes. Thus a process can be paused in the get() 
 or put() methods of the receivers alone. If there is a process that does 
-not communicate with other processes in the model, then the simulation can 
+not communicate with other processes in the model, then the execution can 
 never pause in that model.
 <p>
 
@@ -202,9 +203,14 @@ public class BasePNDirector extends ProcessDirector {
         return newobj;
     }
 
-    /** Wait till the detection of a deadlock. Then handle the deadlock
-     *  and return.
-     *  @exception IllegalActionException If a derived class throws it.
+    /** Wait until the detection of a deadlock. If the deadlock is real, then
+     *  return. Else (for an artificial deadlock), handle the deadlock by 
+     *  incrementing the capacity of a receiver with the smallest capacity
+     *  amongst the receivers on which a process is blocked on a write.
+     *  The derived directors can overwrite this method to handle other forms
+     *  of deadlock that they define and perform actions accordingly.
+     *  @exception IllegalActionException Not thrown in this base class. Maybe
+     *  thrown by derived classes.
      */
     public void fire() throws IllegalActionException {
 	Workspace workspace = workspace();
@@ -219,7 +225,10 @@ public class BasePNDirector extends ProcessDirector {
         return;
     }
 
-    /** Initialize and set the state variables to the their initial values
+    /** Invoke the initialize() method of ProcessDirector. Also set all the 
+     *  state variables to the their initial values.
+     *  @exception IllegalActionException If the initialize() method of one
+     *  of the deeply contained actors throws it.
      */
     public void initialize() throws IllegalActionException {
 	super.initialize();
@@ -229,23 +238,6 @@ public class BasePNDirector extends ProcessDirector {
 	_writeblockedQs = new LinkedList();
         //processlisteners is not initialized as we might want to continue
         //with the same listeners.
-	//_processlisteners = new LinkedList();
-	//FIXME: Get all receivers and call initialize() on them.
-	Enumeration allActors = 
-	        ((CompositeActor)getContainer()).deepGetEntities();
-	while (allActors.hasMoreElements()) {
-	    Actor actor = (Actor)allActors.nextElement();
-	    Enumeration ports = actor.inputPorts();
-	    while (ports.hasMoreElements()) {
-		IOPort port = (IOPort)ports.nextElement();
-		Receiver[][] receivers = port.getReceivers();
-		for (int i = 0; i < receivers.length; i++) {
-		    for (int j = 0; j < receivers[i].length; j++) {
-			((PNQueueReceiver)receivers[i][j]).initialize();
-		    }
-		}
-	    }
-	}
     }
 
     /** Return a new receiver compatible with this director. The receiver
@@ -269,21 +261,27 @@ public class BasePNDirector extends ProcessDirector {
         return rec;
     }
 
-    /** Return false if the simulation has reached a real deadlock. Return
-     *  true otherwise.
-     *  @return false if the director has detected a real deadlock.
-     *  @exception IllegalActionException Not thrown in the PN domain.
+    /** Return true if the containing composite actor contains active 
+     *  processes and the compositeactor has input ports. Return
+     *  false otherwise. This method should normally be called only after 
+     *  detecting a real deadlock. True is returned to indicate that the 
+     *  composite actor can start its execution again if it receives data on 
+     *  any of its input ports.
+     *  @return true to indicate that the composite actor can continue 
+     *  executing on receiving additional input on its input ports.
+     *  @exception IllegalActionException Not thrown in this class. Might be
+     *  thrown by derived classes.
      */
     public boolean postfire() throws IllegalActionException {
-	//if (_readBlockCount == _getActiveActorsCount()) {
-	if ((((CompositeActor)getContainer()).inputPorts()).hasMoreElements()) {
-	    return true;
+	if (_getActiveActorsCount() != 0) {
+	    if ((((CompositeActor)getContainer()).inputPorts()).hasMoreElements()){
+		return true;
+	    } else {
+		return false;
+	    }
 	} else {
 	    return false;
 	}
-	//} else {
-	//return true;
-	//}
     }
 
     /** Remove a process listener from this director.
@@ -298,10 +296,11 @@ public class BasePNDirector extends ProcessDirector {
     ///////////////////////////////////////////////////////////////////
     ////                       protected methods                   ////
 
-    /** Return true if a deadlock is detected. The base director detects real
-     *  and artificial deadlocks alone. If derived classes introduce any 
+    /** Return true if a real or artificial deadlock is detected. 
+     *  If derived classes introduce any 
      *  additional forms of deadlocks, they should override this method to 
-     *  return true on detection of the new deadlocks as well. 
+     *  return true on detection of the introduced deadlocks.
+     *  This method is synchronized on this object.
      *  @return true if a real or artificial deadlock is detected.
      */
     protected synchronized boolean _checkForDeadlock() {
@@ -315,7 +314,7 @@ public class BasePNDirector extends ProcessDirector {
     /** Return true if the execution has paused. This base class returns true
      *  if all the active processes are either blocked (on a read or a write) 
      *  or paused. Derived classes should override this method if they 
-     *  introduce any new forms of deadlock.
+     *  introduce any new forms of blocking of processes.
      *  @return true if the execution has paused.
      */
     protected synchronized boolean _checkForPause() {
@@ -327,18 +326,25 @@ public class BasePNDirector extends ProcessDirector {
 	}
     }
 
-    /** Return true on detection of a real deadlock or break the deadlock 
-     *  and return false otherwise. 
-     *  On detection of an artificial deadlock, select the
+    /** Handle/break an artificial deadlock and return false. If the deadlock
+     *  is not an artificial deadlock (it is a real deadlock), then return 
+     *  true. 
+     *  If it is an artificial deadlock, select the
      *  receiver with the smallest queue capacity on which any process is 
      *  blocked on a write and increment the capacity of the contained queue. 
      *  If the capacity is non-negative, then increment the capacity by 1. 
      *  Otherwise set the capacity to 1. Unblock the process blocked on 
      *  this receiver. Notify the thread corresponding to the blocked 
      *  process and return false.
-     *  
-     *  @return true if a real deadlock is detected, false otherwise.
-     *  @exception IllegalActionException Not thrown in PN.
+     *  <pP
+     *  If derived classes introduce new forms of deadlocks, they should 
+     *  override this method to introduce mechanisms of handling those
+     *  deadlocks. This method is called from the fire() method of the director
+     *  alone.
+     *  @return false after handling an artificial deadlock. Otherwise return
+     *  true. 
+     *  @exception IllegalActionException Not thrown in this base class. This
+     *  might be thrown by derived classes.
      */
     protected boolean _handleDeadlock()
 	    throws IllegalActionException {
@@ -358,13 +364,14 @@ public class BasePNDirector extends ProcessDirector {
 
     /** Increment the capacity by 1 of one of the queues with the smallest 
      *  capacity belonging to a receiver on which a process is blocked 
-     *  while attempting to write. Traverse through the list of receivers
+     *  while attempting to write. <p>Traverse through the list of receivers
      *  on which a process is blocked on a write and choose the one containing
      *  the queue with the smallest capacity. Increment the capacity of the
      *  queue by 1 if the capacity is non-negative. In case the capacity is 
      *  negative, set the capacity to 1. 
      *  Unblock the process blocked on a write to this receiver.
-     *  Notify the thread corresponding to the blocked process and return.
+     *  Notify the thread corresponding to the blocked process to resume
+     *  its execution and return.
      */
     protected void _incrementLowestWriteCapacityPort() {
         PNQueueReceiver smallestCapacityQueue = null;
@@ -387,7 +394,8 @@ public class BasePNDirector extends ProcessDirector {
             if (smallestCapacityQueue.getCapacity() <= 0) {
                 smallestCapacityQueue.setCapacity(1);
             } else {
-	        smallestCapacityQueue.setCapacity(smallestCapacityQueue.getCapacity()*2);
+	        smallestCapacityQueue.setCapacity(
+			smallestCapacityQueue.getCapacity()*2);
             }
 	    _informOfWriteUnblock(smallestCapacityQueue);
 	    smallestCapacityQueue.setWritePending(false);
@@ -411,7 +419,7 @@ public class BasePNDirector extends ProcessDirector {
      *  requests for changes to the topology and do not wish to continue
      *  their execution until their requests are processed.
      *  This method is not used by the base director and is provided for
-     *  use by the derived classes.
+     *  use by the deriveed classes.
      */
     synchronized void _informOfMutationBlock() {
 	_mutationBlockCount++;
@@ -421,9 +429,9 @@ public class BasePNDirector extends ProcessDirector {
 	return;
     }
 	
-    /** Decrement the count of actors waiting for the topology change requests
-     *  (mutation requests) to be processed. This method is not used by the
-     *  base director and is provided for use by the derived classes.
+    /** Decrement the count of processes waiting for the topology change
+     *  requests (mutation requests) to be processed. This method is not used 
+     *  by the base director and is provided for use by the derived classes.
      */
     synchronized void _informOfMutationUnblock() {
 	_mutationBlockCount--;
@@ -431,9 +439,10 @@ public class BasePNDirector extends ProcessDirector {
 
 
     /** Increment by 1 the count of processes blocked while reading from a 
-     *  receiver. Check for a resultant deadlock or pausing of the 
-     *  execution. If either of them is detected, then notify the directing
-     *  thread of the same.
+     *  receiver and notify all process listeners of the blocking of the 
+     *  process. Check for a deadlock or pausing of the execution as a result 
+     *  of the process blocking on a read. If either of them is detected, 
+     *  then notify the directing thread of the same.
      */
     synchronized void _informOfReadBlock(PNQueueReceiver receiver) {
 	_readBlockCount++;
@@ -455,7 +464,9 @@ public class BasePNDirector extends ProcessDirector {
     }
 
 
-    /** Decrease by 1 the count of processes blocked on a read.
+    /** Decrease by 1 the count of processes blocked on a read and inform all
+     *  the process listeners that the relevant process has resumed its 
+     *  execution.
      */
     synchronized void _informOfReadUnblock(PNQueueReceiver receiver) {
 	_readBlockCount--;
@@ -474,7 +485,9 @@ public class BasePNDirector extends ProcessDirector {
 
 
     /** Increment by 1 the count of processes blocked while writing to a 
-     *  receiver. Check for a resultant deadlock or a pausing of the 
+     *  receiver and inform all the process listeners that the relevant process
+     *  has blocked on a write. Also check for a resultant deadlock or a 
+     *  pausing of the 
      *  execution. If either of them is detected, then notify the directing
      *  thread of the same.
      *  @param receiver The receiver to which the blocking process was trying
@@ -502,13 +515,11 @@ public class BasePNDirector extends ProcessDirector {
     }
 
 
-    /** Increases the count of active actors in the composite actor 
-     *  corresponding to this director by 1. This method should be 
-     *  called when a new thread corresponding to an actor is started 
-     *  in the model under the control of this director. This method 
-     *  is required for detection of deadlocks.
-     *  The corresponding method _decreaseActiveCount should be called
-     *  when the thread is terminated.
+    /** Decrease by 1 the count of active processes under the control of this
+     *  director. Also check whether this results in the model arriving at a 
+     *  deadlock or a pause. If either of these is detected, then notify
+     *  the directing thread of the same. Inform all the process listeners
+     *  that the relevant process has finished its execution.
      */
     protected synchronized void _decreaseActiveCount() {
 	super._decreaseActiveCount();
@@ -530,10 +541,13 @@ public class BasePNDirector extends ProcessDirector {
 
 
     /** Decrease by 1 the count of processes blocked on a write to a receiver.
+     *  Inform all the process listeners that the relevant process has resumed
+     *  its execution.
+     *  
      *  @param receiver The receiver to which the blocked process was trying
      *  to write.
      */
-    synchronized protected void _informOfWriteUnblock(PNQueueReceiver queue) {
+    protected synchronized void _informOfWriteUnblock(PNQueueReceiver queue) {
 	_writeBlockCount--;
 	_writeblockedQs.removeOneOf(queue);
         if (!_processlisteners.isEmpty()) {
@@ -554,8 +568,8 @@ public class BasePNDirector extends ProcessDirector {
     ///////////////////////////////////////////////////////////////////
     ////                       protected variables                 ////
 
-    //The variables are initialized at declaration, despite having an \
-    //initialize() method so that the 
+    //The variables are initialized at declaration, despite having an 
+    //initialize() method so that the tests can be run.
 
     /** The count of processes blocked on a read from a receiver. */
     protected int _readBlockCount = 0;
@@ -575,7 +589,6 @@ public class BasePNDirector extends ProcessDirector {
     ////                       private variables                   ////
 
     private LinkedList _processlisteners = new LinkedList();
-
 }
 
 

@@ -162,8 +162,6 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      *  @return the blocked actor if any, else null.
      */
     public Actor getReadBlockedActor() {
-        if (_readblockedactor == null) {
-        }
         return _readblockedactor;
     }
 
@@ -172,8 +170,6 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      *  @return the blocked actor if any, else null.
      */
     public Actor getWriteBlockedActor() {
-        if (_writeblockedactor == null) {
-        }
         return _writeblockedactor;
     }
     
@@ -193,7 +189,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
 	return true;
     }
 
-    /** Reset the state variables in the receiver, so that the simulation 
+    /** Reset the state variables in the receiver, so that the execution
      *  can be started again.
      *  @deprecated use reset() instead.
      */
@@ -215,7 +211,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
     }
 
     /** Return a true or false to indicate whether there is a write pending
-     *  on this receiver.
+     *  on this receiver or not.
      *  @return A boolean indicating whether a write is pending on this 
      *  receiver or not. 
      */
@@ -227,8 +223,8 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      *  If the queue is full, then suspend the calling process (blocking 
      *  write) and inform the director of the same. Resume the process on 
      *  detecting room in the queue. 
-     *  If a termination is requested, then terminate the calling process by 
-     *  throwing a TerminateProcessException.
+     *  If a termination is requested, then initiate the termination of the 
+     *  calling process by throwing a TerminateProcessException.
      *  On detecting a room in the queue, put a token in the queue. 
      *  Check whether any process is blocked 
      *  on a read from this receiver. If a process is indeed blocked, then 
@@ -278,8 +274,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
         }
     }
 
-    /** Reset the state variables in the receiver, so that the simulation 
-     *  can be started again.
+    /** Reset the state variables in the receiver. 
      */
     public void reset() {
 	super.reset();
@@ -304,8 +299,8 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
 	}
     }
 
-    /** Set a flag indicating that there is a process blocked while trying
-     *  to read from this receiver.
+    /** Set a state flag indicating that there is a process blocked while 
+     *  trying to read from this receiver.
      *  @param readpending true if the calling process is blocking on a 
      *  read, false otherwise.
      */
@@ -313,8 +308,8 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
 	_readpending = readpending;
     }
 
-    /** Set a flag indicating that there is a process blocked (write-blocked)
-     *  while trying to write to the receiver. 
+    /** Set a state flag indicating that there is a process blocked 
+     *  (write-blocked) while trying to write to the receiver. 
      *  @param writepending true if the calling process is blocking on 
      *  a write, false otherwise.
      */

@@ -25,7 +25,7 @@ network semantics.
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (cxh@eecs.berkeley.edu)
+@ProposedRating Yellow (mudit@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
@@ -85,11 +85,12 @@ deadlock and artificial deadlock.
 A real deadlock is when all the processes are blocked on a read meaning that
 no process can proceed until it receives new data. The execution can be 
 terminated, if desired, in such a situation. If the container of this director
-is the top-level composite actor, then the manager terminates the execution. 
-If the container is not the top-level composite actor, then it is upto the 
+does not have any input ports (as is in the case of a top-level composite 
+actor), then the executive director or manager terminates the execution. 
+If the container has input ports, then it is upto the 
 executive director of the container to decide on the termination of the 
-execution. To terminate the execution, the manager or the executive director
-calls wrapup() on the director.
+execution. To terminate the execution after detection of a real deadlock, the 
+manager or the executive director calls wrapup() on the director.
 <p>
 An artificial deadlock is when all processes are blocked and atleast one 
 process is blocked on a write. In this case the director increases the 
@@ -112,7 +113,7 @@ This director is capable of handling mutations of graphs (dynamic changes to
 topology). These mutations are deterministic and are performed only when a 
 timed deadlock occurs and the mutations are pending (topology changes have been
 requested). On requesting a mutation, the process queues the request 
-and suspends (mutation-blocked) till the request for topology changes is 
+and suspends (mutation-blocked) until the request for topology changes is 
 processed. The directing thread processes these requests on the next occurence
 of a timed-deadlock. After this the directing thread awakens the processes 
 blocked on a mutation (mutation-blocked) and the execution resumes.
@@ -228,7 +229,8 @@ public class TimedPNDirector extends BasePNDirector {
      *  Initialize any new actors created, create receivers for them, 
      *  initialize them and create new threads for them. After all threads
      *  are created, resume the execution and start the threads for the 
-     *  newly created actors.
+     *  newly created actors. This method returns only on occurence of a real
+     *  deadlock.
      *  
      *  <b>This method is synchronized on the director. This method is normally
      *  called by the directing thread. </b>
@@ -291,6 +293,8 @@ public class TimedPNDirector extends BasePNDirector {
 
     /** Return the current time of the simulation.
      *  @return the current time of the simulation
+     *  @deprecate This should be removed after the Director class gets the 
+     *  functionality.
      */
     public synchronized double getCurrentTime() {
         return _currenttime;
@@ -301,8 +305,9 @@ public class TimedPNDirector extends BasePNDirector {
      *  @exception IllegalActionException If time cannot be changed
      *   due to the state of the simulation.
      *  @param newTime The new current simulation time.
+     *  @deprecate This should be removed after the Director class gets the 
+     *  functionality.
      */
-    // FIXME: complete this.
     public synchronized void setCurrentTime(double newTime)
             throws IllegalActionException {
         _currenttime = newTime;
@@ -362,7 +367,10 @@ public class TimedPNDirector extends BasePNDirector {
 	}
     }
 
-    /** Return true if the execution has paused. Return false otherwise.
+    /** Return true if the execution has paused or deadlocked. 
+     *  Return false otherwise. This method should be used only to detect
+     *  if the execution has paused. To detect deadlocks, _checkForDeadlock
+     *  should be used.
      *  @return true if the execution has paused.
      */
     protected synchronized boolean _checkForPause() {
@@ -375,7 +383,7 @@ public class TimedPNDirector extends BasePNDirector {
 	}
     }
 
-    /** Increment the count of actors waiting for the time to advance.
+    /** Increment by 1 the count of actors waiting for the time to advance.
      *  Check for a resultant deadlock or pausing of the 
      *  execution. If either of them is detected, then notify the directing 
      *  thread of the same.
@@ -388,22 +396,23 @@ public class TimedPNDirector extends BasePNDirector {
 	return;
     }
 
-    /** Decrease the count of processes blocked on a delay.
+    /** Decrease by 1 the count of processes blocked on a delay.
      */
     protected synchronized void _informOfDelayUnblock() {
 	_delayBlockCount--;
 	return;
     }
 
-    /** Return true on detection of a real deadlock or break the deadlock 
-     *  and return false otherwise. 
+    /** Return true on detection of a real deadlock. Otherwise break the 
+     *  deadlock and return false otherwise. 
      *  On detection of a timed deadlock, advance time to the earliest
      *  time that a delayed process is waiting for, wake up all the actors
      *  waiting for time to advance to the new time, and remove them from 
      *  the priority queue. 
      *  
      *  @return true if a real deadlock is detected, false otherwise.
-     *  @exception IllegalActionException Not thrown in PN.
+     *  @exception IllegalActionException Not thrown in this base class. This
+     *  might be thrown by derived classes.
      */
     protected boolean _handleDeadlock()
 	    throws IllegalActionException {
@@ -499,11 +508,11 @@ public class TimedPNDirector extends BasePNDirector {
 
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected variables                 ////
+    ////                       private variables                   ////
 
     protected CalendarQueue _eventQueue;
     protected double _currenttime = 0;
-
+    
     private boolean _timedMutations = false;
     protected int _delayBlockCount = 0;
 }
