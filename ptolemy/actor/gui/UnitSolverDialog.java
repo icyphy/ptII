@@ -82,7 +82,7 @@ import diva.graph.JGraph;
    @author Rowland R Johnson
    @version $Id$
    @since Ptolemy II 4.0
-   @Pt.ProposedRating Yellow (rowland)
+   @Pt.ProposedRating Red (rowland)
    @Pt.AcceptedRating Red (rowland)
 */
 public class UnitSolverDialog
@@ -141,7 +141,7 @@ public class UnitSolverDialog
         }
         _selectionModel.clearSelection();
         _selectionInteractor.setSelectionRenderer(tempSelectionRenderer);
-        _showMembers();
+        _showComponents();
         _selectionModel.addSelectionListener(this);
 
         JPanel fullSolverPanel = new JPanel();
@@ -149,7 +149,7 @@ public class UnitSolverDialog
             new BoxLayout(fullSolverPanel, BoxLayout.Y_AXIS));
         fullSolverPanel.setBorder(
             BorderFactory.createCompoundBorder(
-                BorderFactory.createTitledBorder("Full Solver"),
+                BorderFactory.createTitledBorder("Full Solution"),
                 BorderFactory.createEmptyBorder(5, 5, 5, 5)));
         _runFullSolverButton.addActionListener(this);
         fullSolverPanel.add(_runFullSolverButton);
@@ -157,27 +157,28 @@ public class UnitSolverDialog
         _fullSolutionResult.setBackground(Color.white);
         fullSolverPanel.add(_fullSolutionResult);
 
-        JPanel membersPanel = new JPanel();
-        membersPanel.setLayout(new BoxLayout(membersPanel, BoxLayout.Y_AXIS));
-        membersPanel.setBorder(
+        JPanel componentsPanel = new JPanel();
+        componentsPanel.setLayout(
+            new BoxLayout(componentsPanel, BoxLayout.Y_AXIS));
+        componentsPanel.setBorder(
             BorderFactory.createCompoundBorder(
-                BorderFactory.createTitledBorder("Members"),
+                BorderFactory.createTitledBorder("Components"),
                 BorderFactory.createEmptyBorder(5, 5, 5, 5)));
         _setToSelectedButton.setEnabled(false);
-        membersPanel.add(_setToSelectedButton);
+        componentsPanel.add(_setToSelectedButton);
         _setToSelectedButton.addActionListener(this);
-        membersPanel.add(_showMembersButton);
-        _showMembersButton.addActionListener(this);
+        componentsPanel.add(_showComponentsButton);
+        _showComponentsButton.addActionListener(this);
 
         JPanel topPanel = new JPanel();
         topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.X_AXIS));
         topPanel.add(fullSolverPanel);
-        topPanel.add(membersPanel);
+        topPanel.add(componentsPanel);
 
         JPanel minimalSpanPanel = new JPanel(new BorderLayout());
         minimalSpanPanel.setBorder(
             BorderFactory.createCompoundBorder(
-                BorderFactory.createTitledBorder("Minimal Spanning Solver"),
+                BorderFactory.createTitledBorder("Minimal Spanning Solutions"),
                 BorderFactory.createEmptyBorder(5, 5, 5, 5)));
         minimalSpanPanel.add(_runMinimalSpanSolverButton, BorderLayout.NORTH);
         _runMinimalSpanSolverButton.addActionListener(this);
@@ -228,9 +229,9 @@ public class UnitSolverDialog
             }
 
         } else if (aEvent.getSource() == _setToSelectedButton) {
-            _setSelectedMembers();
-        } else if (aEvent.getSource() == _showMembersButton) {
-            _showMembers();
+            _setSelectedComponents();
+        } else if (aEvent.getSource() == _showComponentsButton) {
+            _showComponents();
         } else {
             super.actionPerformed(aEvent);
         }
@@ -309,7 +310,7 @@ public class UnitSolverDialog
             return;
         int index = _solutionsList.getSelectedIndex();
         if (index >= 0) {
-            _showMembers();
+            _showComponents();
             Solution solution = (Solution) (_solutions.elementAt(index));
             solution.annotateGraph();
             //solution.trace();
@@ -340,7 +341,7 @@ public class UnitSolverDialog
         _selectionModel.removeSelectionListener(this);
         _selectionModel.clearSelection();
         _selectionInteractor.setSelectionRenderer(_defaultSelectionRenderer);
-        _showMembers();
+        _showComponents();
         super._cancel();
     }
 
@@ -428,7 +429,7 @@ public class UnitSolverDialog
     /**
      *
      */
-    private void _setSelectedMembers() {
+    private void _setSelectedComponents() {
         Vector entities = _getSelectedNodes();
         Vector relations = _getSelectedRelations();
         _entities = new Vector();
@@ -445,7 +446,7 @@ public class UnitSolverDialog
     /**
      *
      */
-    private void _showMembers() {
+    private void _showComponents() {
         _selectionModel.clearSelection();
         deAnnotateGraph();
         Iterator nodes = _graphModel.nodes(_model);
@@ -477,7 +478,7 @@ public class UnitSolverDialog
     Vector _entities = null;
     JLabel _fullSolutionResult = new JLabel("Not Run");
     JButton _setToSelectedButton = new JButton("Set To Selected");
-    JButton _showMembersButton = new JButton("Show Members");
+    JButton _showComponentsButton = new JButton("Show Components");
     TypedCompositeActor _model = null;
     SelectionModel _selectionModel = null;
     AbstractBasicGraphModel _graphModel = null;
