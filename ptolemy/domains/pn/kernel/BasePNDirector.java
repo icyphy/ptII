@@ -118,13 +118,13 @@ public class BasePNDirector extends CompositeProcessDirector {
         try {
             Parameter param = new Parameter(this,"Initial_queue_capacity",
                     new IntToken(1));
-        } catch (IllegalActionException e) {
+        } catch (IllegalActionException ex) {
             //As parameter is a valid parameter, this exception is not thrown
-            throw new InternalErrorException(e.toString());
-        } catch (NameDuplicationException e) {
+            throw new InternalErrorException(this, ex, null);
+        } catch (NameDuplicationException ex) {
             //As this is being called from the constructor, we cannot have
             //a parameter by the same name already existing in the object
-            throw new InvalidStateException(e.toString());
+            throw new InvalidStateException(this, ex, null);
         }
     }
 
@@ -141,13 +141,13 @@ public class BasePNDirector extends CompositeProcessDirector {
         try {
             Parameter param = new Parameter(this,"Initial_queue_capacity",
                     new IntToken(1));
-        } catch (IllegalActionException e) {
+        } catch (IllegalActionException ex) {
             //As parameter is a valid parameter, this exception is not thrown
-            throw new InternalErrorException(e.toString());
-        } catch (NameDuplicationException e) {
+            throw new InternalErrorException(this, ex, null);
+        } catch (NameDuplicationException ex) {
             //As this is being called from the constructor, we cannot have
             //a parameter by the same name already existing in the object
-            throw new InvalidStateException(e.toString());
+            throw new InvalidStateException(this, ex, null);
         }
     }
 
@@ -173,13 +173,13 @@ public class BasePNDirector extends CompositeProcessDirector {
         try {
             Parameter param = new Parameter(this,"Initial_queue_capacity",
                     new IntToken(1));
-        } catch (IllegalActionException e) {
+        } catch (IllegalActionException ex) {
             //As parameter is a valid parameter, this exception is not thrown
-            throw new InternalErrorException(e.toString());
-        } catch (NameDuplicationException e) {
+            throw new InternalErrorException(this, ex, null);
+        } catch (NameDuplicationException ex) {
             //As this is being called from the constructor, we cannot have
             //a parameter by the same name already existing in the object
-            throw new InvalidStateException(e.toString());
+            throw new InvalidStateException(this, ex, null);
         }
     }
 
