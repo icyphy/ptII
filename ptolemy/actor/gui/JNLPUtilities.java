@@ -194,6 +194,9 @@ public class JNLPUtilities {
         File temporaryFile = File.createTempFile(prefix, suffix, directory);
         temporaryFile.deleteOnExit();
 
+        // The resource pointed to might be a pdf file, which
+        // is binary, so we are careful to read it byte by
+        // byte and not do any conversions of the bytes.
         FileUtilities.binaryCopyURLToFile(jarURL, temporaryFile);
 
         return temporaryFile.toString();
