@@ -52,7 +52,7 @@ public class FixToken extends ScalarToken {
     /** Construct a FixToken with value 0.0 and a precision of (16/16)
      */
     public FixToken() {
-	_value = new FixPoint("16/16","0.0");
+	_value = new FixPoint("16/16","0.0", FixPoint.SATURATE );
     }
 
     /** Construct a FixToken with for the supplied FixPoint value
@@ -72,10 +72,10 @@ public class FixToken extends ScalarToken {
 	@exception IllegalArgumentException If the format of the precision 
 	string is incorrect
     */
-    public FixToken(String precision, String init) 
+    public FixToken(String precision, String init, String mode ) 
 	throws IllegalArgumentException {
 	try {
-	    _value = new FixPoint(precision,init);
+	    _value = new FixPoint(precision, init, _setRounding( mode ) );
 	} catch (NumberFormatException e) {
 	    throw new IllegalArgumentException(e.getMessage());
 	}
@@ -90,10 +90,10 @@ public class FixToken extends ScalarToken {
 	@param value Double value of the FixToken
 	@exception IllegalArgumentException If the format of the
 	precision string is incorrect */
-    public FixToken(String precision, double value)  
+    public FixToken(String precision, double value, String mode )  
 	throws IllegalArgumentException {
 	try {
-	    _value = new FixPoint(precision, value);
+	    _value = new FixPoint(precision, value, _setRounding( mode ) );
 	} catch (NumberFormatException e) {
 	    throw new IllegalArgumentException(e.getMessage());
 	}
@@ -207,7 +207,7 @@ public class FixToken extends ScalarToken {
      *  @return A new Token containing the multiplicative identity.  
      */
     public Token one() {
-        return new FixToken("(4.0)", 1.0);
+        return new FixToken("(4.0)", 1.0, "Saturate" );
     }
 
     /** Return a new FixToken with value equal to the subtraction of this
@@ -247,19 +247,43 @@ public class FixToken extends ScalarToken {
      */
     public Token zero()
     {
-        return new FixToken("(1/1)",0);
+        return new FixToken("(1/1)", 0, "Saturate" );
     }
 
     /** Set the Rounding mode of the FixPoint number. */
-    // FIXME: Currently it is a string, should be come a
+    // fixm: Currently it is a string, should be come a
     // type safe enumerated type
     public void setRoundingMode(String x) {
 	_value.setRounding( (String) x );
     }
 
+    /** Print the content of this FixToken: Debug Function */
+    public void print() {
+        _value.printFix();
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private FixPoint _value;
+
+    /** Set the overflow mode of the Fixpoint using a string. Added to
+     *  make testing easier // FIXME still needed?
+     @param name String describing the overflow mode */
+    private ptolemy.math.FixPoint$Quantize _setRounding(String name) {
+	if ( name.compareTo("Saturate")==0) {
+	    return FixPoint.SATURATE;
+	    //System.out.println(" -- SATURATE --");
+	}
+	if ( name.compareTo("Rounding")==0) {
+	    return FixPoint.ROUND;
+	    //System.out.println(" -- ZERO SATURATE --");
+	}
+	if ( name.compareTo("Truncate")==0) {
+	    return FixPoint.TRUNCATE;
+	    //System.out.println(" -- TRUNCATE --");
+	}
+        return FixPoint.TRUNCATE;
+    }
 
 }
 
