@@ -437,6 +437,7 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/sdf/lib/vq \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/sdf \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/dt/kernel \
+	$(REMOTE1PTIIDIST)/ptolemy/domains/hdf/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/sr/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/sr/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/rtos/kernel \
