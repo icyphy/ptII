@@ -201,12 +201,24 @@ support in the applet will print the applet only, not the rest of the
 browser page.
 </BLOCKQUOTE>
 
-For more information about printing, join the JavaSoft Developer
+Sun's
+<A HREF="http://java.sun.com/products/hotjava/index.html">HotJava</A>
+browser can be used to print pages that contain applets.  However, it
+seems like the Windows version sometimes crashes when printing.  The Solaris
+version of HotJava1.1 works fine.
+
+ <P>For more information about printing, join the JavaSoft Developer
 Connection (it is free) and search for printing.
 
  <P>Note that printing is supported from standalone Pxgraph applications in
 the Pxgraph class.  Note that printing in the Pxgraph class requires
 JDK1.1 and later.
+
+ <P>The 
+<A HREF="../../ptplot2html.tcl"><CODE>ptplot2html.tcl</CODE></A> Tcl
+script can be used to convert the PostScript output of the Pxgraph
+application to Framemaker MIF format.  This script requires Tcl and 
+probably works only with the Sun Solaris JDK.
 
 <DT>  <A NAME="twofiles"><B>3.4 How do I plot two datafiles in an applet? </B></A>
 <DD>The <CODE>pxgraphargs</CODE> applet parameter can be used to pass
