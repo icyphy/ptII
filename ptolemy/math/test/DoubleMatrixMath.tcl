@@ -72,7 +72,6 @@ set m32 [java::new {double[][]} 3 [list [list 3.7 -6.6] \
                                         [list -56.4 -26.3]]]
 set m1 [java::new {double[][]} 1 [list [list 25.0]]]
 
-
 proc javaPrintArray {javaArrayObj} {
     set result {}
     for {set i 0} {$i < [$javaArrayObj length]} {incr i} {
@@ -384,4 +383,50 @@ test DoubleMatrixMath-11.1 {transpose double[][]} {
    set mr [java::call ptolemy.math.DoubleMatrixMath transpose $m23]
    set s [java::call ptolemy.math.DoubleMatrixMath toString $mr]
 } {{{3.7, 4862.2}, {-6.6, 236.1}, {3.0E-4, -36.25}}}
+
+####################################################################
+test DoubleMatrixMath-12.1 {within double[][] double[][] double corner case} {
+   set m12_1 [java::new {double[][]} 1 [list [list 1.0 1.1]]]
+   set m12_2 [java::new {double[][]} 1 [list [list 1.1 1.0]]] 
+   set ok [java::call ptolemy.math.DoubleMatrixMath \
+   {within double[][] double[][] double} $m12_1 $m12_2 0.1]
+} {1}
+
+####################################################################
+test DoubleMatrixMath-12.2 {within double[][] double[][] double corner case} {
+   set m12_1 [java::new {double[][]} 1 [list [list 1.0 1.1]]]
+   set m12_2 [java::new {double[][]} 1 [list [list 1.0 1.1]]] 
+   set ok [java::call ptolemy.math.DoubleMatrixMath \
+   {within double[][] double[][] double} $m12_1 $m12_2 0]
+} {1}
+
+####################################################################
+test DoubleMatrixMath-12.3 {within double[][] double[][] double[][] corner case} {
+   set m13_1 [java::new {double[][]} 1 [list [list 1.0 1.1 2.0]]]
+   set m13_2 [java::new {double[][]} 1 [list [list 1.1 1.0 2.0]]]
+   set me [java::new {double[][]} 1 [list [list 0.1 0.1 0.0]]]
+   set ok [java::call ptolemy.math.DoubleMatrixMath \
+   {within double[][] double[][] double[][]} $m13_1 $m13_2 $me]
+} {1}
+
+####################################################################
+test DoubleMatrixMath-12.4 {within double[][] double[][] double false case} {
+   set m12_1 [java::new {double[][]} 1 [list [list 1.0 1.1]]]
+   set m12_2 [java::new {double[][]} 1 [list [list 1.1 1.0]]] 
+   set ok [java::call ptolemy.math.DoubleMatrixMath \
+   {within double[][] double[][] double} $m12_1 $m12_2 .09]
+} {0}
+
+
+
+
+
+
+
+
+
+
+
+
+
 

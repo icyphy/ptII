@@ -1045,9 +1045,9 @@ public class DoubleMatrixMath {
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                if (Math.abs(matrix1[i][j] - matrix2[i][j]) > distance) {
+                if (matrix1[i][j] > matrix2[i][j] + distance ||
+                    matrix1[i][j] < matrix2[i][j] - distance)
                     return false;
-                }
             }
         }
         return true;
@@ -1058,7 +1058,7 @@ public class DoubleMatrixMath {
 	 *  be non-negative.
 	 *  @param matrix1 The first matrix.
 	 *  @param matrix2 The second matrix.
-	 *  @param distance The distance to use for comparison.
+	 *  @param errorMatrix The distance to use for comparison.
 	 *  @return True if the elements of the two matrices are within the
 	 *   specified distance.
 	 *  @exception IllegalArgumentException If the third argument has negative
@@ -1076,8 +1076,8 @@ public class DoubleMatrixMath {
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                if (Math.abs(matrix1[i][j] - matrix2[i][j]) >
-                        Math.abs(errorMatrix[i][j])) {
+                if (matrix1[i][j] > matrix2[i][j] + errorMatrix[i][j] ||
+                    matrix1[i][j] < matrix2[i][j] - errorMatrix[i][j]) {
                     return false;
                 }
             }

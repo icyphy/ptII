@@ -136,3 +136,38 @@ test IntegerMatrixMath-5.8.1 {matrixCopy int[][] int int int[][] int int int int
     regsub -all {,} $s {} stmp
     epsilonDiff $stmp {{{10 -1 -2} {10 -11 -12} {10 -11 -12}}}
 } {}
+
+####################################################################
+test IntegerMatrixMath-6.1 {within int[][] int[][] int corner case} {
+   set m12_1 [java::new {int[][]} 1 [list [list 2 3]]]
+   set m12_2 [java::new {int[][]} 1 [list [list 3 2]]] 
+   set ok [java::call ptolemy.math.IntegerMatrixMath \
+   {within int[][] int[][] int} $m12_1 $m12_2 1]
+} {1}
+
+####################################################################
+test IntegerMatrixMath-6.2 {within int[][] int[][] int corner case} {
+   set m12_1 [java::new {int[][]} 1 [list [list 2 2]]]
+   set m12_2 [java::new {int[][]} 1 [list [list 2 2]]] 
+   set ok [java::call ptolemy.math.IntegerMatrixMath \
+   {within int[][] int[][] int} $m12_1 $m12_2 0]
+} {1}
+
+####################################################################
+test IntegerMatrixMath-6.3 {within int[][] int[][] int[][] corner case} {
+   set m13_1 [java::new {int[][]} 1 [list [list 2 3 4]]]
+   set m13_2 [java::new {int[][]} 1 [list [list 3 2 4]]]
+   set me [java::new {int[][]} 1 [list [list 1 1 0]]]
+   set ok [java::call ptolemy.math.IntegerMatrixMath \
+   {within int[][] int[][] int[][]} $m13_1 $m13_2 $me]
+} {1}
+
+####################################################################
+test IntegerMatrixMath-6.4 {within int[][] int[][] int false case} {
+   set m12_1 [java::new {int[][]} 1 [list [list 2 4]]]
+   set m12_2 [java::new {int[][]} 1 [list [list 4 2]]] 
+   set ok [java::call ptolemy.math.IntegerMatrixMath \
+   {within int[][] int[][] int} $m12_1 $m12_2 1]
+} {0}
+
+

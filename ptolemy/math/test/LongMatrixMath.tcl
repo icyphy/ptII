@@ -135,3 +135,36 @@ test LongMatrixMath-5.8.1 {matrixCopy long[][] int int long[][] int int int int}
     regsub -all {,} $s {} stmp
     epsilonDiff $stmp {{{10 -1 -2} {10 -11 -12} {10 -11 -12}}}
 } {}
+
+####################################################################
+test LongMatrixMath-6.1 {within long[][] long[][] long corner case} {
+   set m12_1 [java::new {long[][]} 1 [list [list 2 3]]]
+   set m12_2 [java::new {long[][]} 1 [list [list 3 2]]] 
+   set ok [java::call ptolemy.math.LongMatrixMath \
+   {within long[][] long[][] long} $m12_1 $m12_2 1]
+} {1}
+
+####################################################################
+test LongMatrixMath-6.2 {within long[][] long[][] long corner case} {
+   set m12_1 [java::new {long[][]} 1 [list [list 2 2]]]
+   set m12_2 [java::new {long[][]} 1 [list [list 2 2]]] 
+   set ok [java::call ptolemy.math.LongMatrixMath \
+   {within long[][] long[][] long} $m12_1 $m12_2 0]
+} {1}
+
+####################################################################
+test LongMatrixMath-6.3 {within long[][] long[][] long[][] corner case} {
+   set m13_1 [java::new {long[][]} 1 [list [list 2 3 4]]]
+   set m13_2 [java::new {long[][]} 1 [list [list 3 2 4]]]
+   set me [java::new {long[][]} 1 [list [list 1 1 0]]]
+   set ok [java::call ptolemy.math.LongMatrixMath \
+   {within long[][] long[][] long[][]} $m13_1 $m13_2 $me]
+} {1}
+
+####################################################################
+test LongMatrixMath-6.4 {within long[][] long[][] long false case} {
+   set m12_1 [java::new {long[][]} 1 [list [list 2 4]]]
+   set m12_2 [java::new {long[][]} 1 [list [list 4 2]]] 
+   set ok [java::call ptolemy.math.LongMatrixMath \
+   {within long[][] long[][] long} $m12_1 $m12_2 1]
+} {0}
