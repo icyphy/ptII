@@ -412,7 +412,7 @@ public class ViewScreen extends GRActor implements Placeable {
 
     /** Start the internal Java3D renderer
      */
-    protected void startRenderer() {
+    protected void _startRenderer() {
         if (_iterationSynchronized) {
             _canvas.startRenderer();
         }
@@ -421,7 +421,7 @@ public class ViewScreen extends GRActor implements Placeable {
 
     /** Stop the internal Java3D renderer
      */
-    protected void stopRenderer() {
+    protected void _stopRenderer() {
         if (_iterationSynchronized) {
             _canvas.stopRenderer();
         }
@@ -466,7 +466,7 @@ public class ViewScreen extends GRActor implements Placeable {
 
         public void processStimulus(java.util.Enumeration criteria) {
             if (stopped != true) {
-                _viewContainer.startRenderer();
+                _viewContainer._startRenderer();
 
             }
             /* FIXME: experimental code for changing xforms
@@ -483,7 +483,7 @@ public class ViewScreen extends GRActor implements Placeable {
 
 
             if (stopped != true ) {
-                _viewContainer.stopRenderer();
+                _viewContainer._stopRenderer();
             }
         }
 

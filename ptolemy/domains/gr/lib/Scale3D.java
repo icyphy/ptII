@@ -95,7 +95,7 @@ public class Scale3D extends GRTransform {
      *  @return the Java3D TransformGroup
      */
     protected Node _getNodeObject() {
-        return (Node) transformNode;
+        return (Node) _transformNode;
     }
 
     /** Add a scene graph child node to this actor
@@ -103,7 +103,7 @@ public class Scale3D extends GRTransform {
      *  @param node The child node to be attached
      */
     protected void _addChild(Node node) {
-        transformNode.addChild(node);
+        _transformNode.addChild(node);
     }
 
 
@@ -148,13 +148,18 @@ public class Scale3D extends GRTransform {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        transformNode = new TransformGroup();
-        transformNode.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+        _transformNode = new TransformGroup();
+        _transformNode.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
         Transform3D scaleTransform = new Transform3D();
         scaleTransform.setScale(new Vector3d(_getScaleX(),
                 _getScaleY(), _getScaleZ()));
-        transformNode.setTransform(scaleTransform);
+        _transformNode.setTransform(scaleTransform);
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    protected TransformGroup _transformNode;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -191,9 +196,5 @@ public class Scale3D extends GRTransform {
         double zFactor = ((DoubleToken) zScale.getToken()).doubleValue();
         return factor * zFactor;
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-
-    protected TransformGroup transformNode;
 }
+

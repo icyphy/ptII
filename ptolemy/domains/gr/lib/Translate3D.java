@@ -181,7 +181,7 @@ public class Translate3D extends GRTransform {
         if (applyTransform) {
             Transform3D transform = new Transform3D();
     	    transform.setTranslation(new Vector3d(xOffset, yOffset, zOffset));
-    	    transformNode.setTransform(transform);
+    	    _transformNode.setTransform(transform);
         }
 
     }
@@ -199,14 +199,14 @@ public class Translate3D extends GRTransform {
         _initialZTranslation = ((DoubleToken)
                 initialZTranslation.getToken()).doubleValue();
 
-        transformNode = new TransformGroup();
-        transformNode.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+        _transformNode = new TransformGroup();
+        _transformNode.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
 
         Transform3D transform = new Transform3D();
         transform.setTranslation(new Vector3d(_initialXTranslation,
                 _initialYTranslation,
                 _initialZTranslation));
-        transformNode.setTransform(transform);
+        _transformNode.setTransform(transform);
 
         _accumulatedX = 0.0;
         _accumulatedY = 0.0;
@@ -220,7 +220,7 @@ public class Translate3D extends GRTransform {
      *  @return the Java3D TransformGroup
      */
     protected Node _getNodeObject() {
-        return (Node) transformNode;
+        return (Node) _transformNode;
     }
 
 
@@ -230,8 +230,14 @@ public class Translate3D extends GRTransform {
      *  @param node The child Java3D node.
      */
     protected void _addChild(Node node) {
-        transformNode.addChild(node);
+        _transformNode.addChild(node);
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    protected TransformGroup _transformNode;
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -242,10 +248,4 @@ public class Translate3D extends GRTransform {
     private double _accumulatedX;
     private double _accumulatedY;
     private double _accumulatedZ;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-
-    protected TransformGroup transformNode;
-
 }
