@@ -119,6 +119,22 @@ awk ' {
            print indent "    <property name=\"_iconDescription\" class=\"ptolemy.kernel.util.SingletonConfigurableAttribute\">" 
            print indent "        <configure><svg><text x=\"20\" y=\"20\" style=\"font-size:14; font-family:SansSerif; fill:red\">" text "</text></svg></configure>"
            print indent "    </property>"
+           print indent "    <property name=\"_smallIconDescription\" class=\"ptolemy.kernel.util.SingletonConfigurableAttribute\">"
+           print indent "    <configure>"
+           print indent "        <svg>"
+           print indent "        <text x=\"20\" style=\"font-size:14; font-family:SansSerif; fill:blue\" y=\"20\">-A-</text>"
+           print indent "        </svg>"
+           print indent "    </configure>"
+           print indent "    </property>"
+           print indent "    <property name=\"_controllerFactory\" class=\"ptolemy.vergil.basic.NodeControllerFactory\">"
+           print indent "    </property>"
+           print indent "    <property name=\"_editorFactory\" class=\"ptolemy.vergil.toolbox.AnnotationEditorFactory\">"
+           print indent "    </property>"
+           print indent "    <property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"15.0, 275.0\">"
+           print indent "    </property>"
+           print indent "    <property name=\"_icon\" class=\"ptolemy.vergil.icon.XMLIcon\">"
+           print indent "    </property>"
+
            print indent "</property>"
         }
     } else {
@@ -246,9 +262,9 @@ awk 'BEGIN {
 } ' < $tmpfile2 > $tmpfile1
 
 
-# OutputPort
+# Convert OutputPort and InputPort
 awk '
-$1 ~ /<entity/ {
+$0 ~ /<entity/ {
        # Get the value of the name field
        name=""
        nf = split($0, f, "\"")   
@@ -258,7 +274,9 @@ $1 ~ /<entity/ {
                break;
            }
        }
-       container = name
+       containerCount += 1
+       containerStack[containerCount] = name
+
 }
 {
     if ($1 ~ /<OutputPort/ || $1 ~ /<InputPort/ || $1 ~ /<TriggerPort/) {
@@ -267,6 +285,7 @@ $1 ~ /<entity/ {
        nf = split($0, f, "\"")   
        for (i = 1; i <= nf; i++) {
            if ( f[i] ~ /name=$/) {
+
                name = f[i+1]
                break;
            }
@@ -310,13 +329,16 @@ $1 ~ /<entity/ {
        print indent "</port>"
 
  
-       containerName = container "." name
+       containerName = containerStack[containerCount] "." name
        links[containerName] = relation
     } else {
         print $0
     }
 }
 $1 ~ /<\/entity>/ {
+    container = containerStack[containerCount] 
+    containerCount -= 1         
+
     # We need to add the link statements outside the container.
     # Sometimes, containers are nested, getting the links right is tricky.
     indent = substr($0, 0, index($0,"<") - 1)  
