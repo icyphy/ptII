@@ -60,12 +60,13 @@ public class ReceiverActionEvent {
 
     /** Create a new event and set the receiver and its capacity parameters
      *  as specified.
-     *  @param r The receiver corresponding to which this event is generated.
-     *  @param c Current capacity of the receiver.
+     *  @param receiver The receiver corresponding to which this event is
+     *  generated.
+     *  @param capacity Current capacity of the receiver.
      */
-    public ReceiverActionEvent(PNQueueReceiver r, int c) {
-        _receiver = r;
-        _capacity = c;
+    public ReceiverActionEvent(PNQueueReceiver receiver, int capacity) {
+        _receiver = receiver;
+        _capacity = capacity;
     }
 
     //////////////////////////////////////////////////////////////
