@@ -5,26 +5,7 @@
     <doc>This composite actor calculates the spectrum of the input.</doc>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
     </property>
-    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[95, 136]">
-    </property>
-    <property name="3:0:annotation1" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.moml.Location" value="265.0, 91.0">
-        </property>
-        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-           <svg>
-           <text x="20" style="font-size:14; font-family:sanserif; fill:blue" y="20">This composite actor estimates the autocorrelation of an input, and
-then calculates an FFT. For a random input, this produces a
-Blackman-Tukey spectral estimate with a Bartlett window, which is
-equivalent to smoothed (averaged) periodogram. The number of inputs
-required to produce any output is a parameter, and the number of
-outputs produced will be 2^order. The numberOfLags parameter should be
-significantly less than the numberOfInputs in order to get a reasonable
-amount of averaging. The output represents frequencies from -pi to pi
-radians per second, centered at zero frequency.</text>
-           </svg>
-           </configure>
-        </property>
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
     </property>
     <property name="order" class="ptolemy.data.expr.Parameter" value="8">
     </property>
@@ -32,18 +13,46 @@ radians per second, centered at zero frequency.</text>
     </property>
     <property name="numberOfLags" class="ptolemy.data.expr.Parameter" value="32">
     </property>
+    <property name="annotation" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This composite actor estimates the autocorrelation of an input, and
+then calculates an FFT. For a random input, this produces a
+Blackman-Tukey spectral estimate with a Bartlett window, which is
+equivalent to smoothed (averaged) periodogram. The number of inputs
+required to produce any output is a parameter, and the number of
+outputs produced will be 2^order. The numberOfLags parameter should be
+significantly less than the numberOfInputs in order to get a reasonable
+amount of averaging. The output represents frequencies from -pi to pi
+radians per second, centered at zero frequency.</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="5.0, 5.0">
+        </property>
+    </property>
     <port name="input" class="ptolemy.actor.TypedIOPort">
         <property name="input"/>
-        <property name="_location" class="ptolemy.moml.Location" value="56.28571701049805, 199.00000381469727">
+        <property name="_location" class="ptolemy.moml.Location" value="35.0, 235.0">
         </property>
     </port>
     <port name="output" class="ptolemy.actor.TypedIOPort">
         <property name="output"/>
-        <property name="_location" class="ptolemy.moml.Location" value="555.7142791748047, 332.0">
+        <property name="_location" class="ptolemy.moml.Location" value="510.0, 335.0">
         </property>
     </port>
     <entity name="Multiply" class="ptolemy.actor.lib.MultiplyDivide">
-        <property name="_location" class="ptolemy.moml.Location" value="184.8571434020996, 213.0">
+        <property name="_location" class="ptolemy.moml.Location" value="155.0, 245.0">
         </property>
         <port name="multiply" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -66,7 +75,7 @@ radians per second, centered at zero frequency.</text>
         </property>
         <property name="repeat" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="79.28571701049805, 311.0">
+        <property name="_location" class="ptolemy.moml.Location" value="55.0, 315.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -79,7 +88,7 @@ radians per second, centered at zero frequency.</text>
     <entity name="FFT" class="ptolemy.domains.sdf.lib.FFT">
         <property name="order" class="ptolemy.data.expr.Parameter" value="order">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="254.4285659790039, 333.0">
+        <property name="_location" class="ptolemy.moml.Location" value="185.0, 335.0">
         </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
             <property name="input"/>
@@ -105,7 +114,7 @@ radians per second, centered at zero frequency.</text>
         </property>
         <property name="min" class="ptolemy.data.expr.Parameter" value="-100.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="471.1428527832031, 333.0">
+        <property name="_location" class="ptolemy.moml.Location" value="415.0, 335.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -115,7 +124,7 @@ radians per second, centered at zero frequency.</text>
         </port>
     </entity>
     <entity name="AbsoluteValue0" class="ptolemy.actor.lib.AbsoluteValue">
-        <property name="_location" class="ptolemy.moml.Location" value="364.0, 333.0">
+        <property name="_location" class="ptolemy.moml.Location" value="300.0, 335.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -134,7 +143,7 @@ radians per second, centered at zero frequency.</text>
         <property name="symmetricOutput" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <doc>Autocorrelation estimator</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="289.0, 214.0">
+        <property name="_location" class="ptolemy.moml.Location" value="245.0, 245.0">
         </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
             <property name="input"/>
@@ -147,6 +156,7 @@ radians per second, centered at zero frequency.</text>
         </port>
         <port name="output" class="ptolemy.domains.sdf.kernel.SDFIOPort">
             <property name="output"/>
+            <property name="multiport"/>
             <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
             </property>
             <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
@@ -164,7 +174,7 @@ radians per second, centered at zero frequency.</text>
         </property>
         <property name="usePastInputs" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="485.0, 243.0">
+        <property name="_location" class="ptolemy.moml.Location" value="470.0, 245.0">
         </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
             <property name="input"/>
@@ -190,7 +200,7 @@ radians per second, centered at zero frequency.</text>
         </property>
         <property name="enforceArrayLength" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="403.0, 223.0">
+        <property name="_location" class="ptolemy.moml.Location" value="355.0, 245.0">
         </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
             <property name="input"/>

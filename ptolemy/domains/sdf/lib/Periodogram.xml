@@ -3,17 +3,17 @@
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <class name="Periodogram" extends="ptolemy.actor.TypedCompositeActor">
     <doc>This composite actor calculates the spectrum of the input.</doc>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[660, 454]">
     </property>
-    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[19, 173]">
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
     </property>
-    <property name="3:0:annotation1" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.moml.Location" value="391.0, 72.0">
+    <property name="order" class="ptolemy.data.expr.Parameter" value="8">
+    </property>
+    <property name="annotation" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-           <svg>
-           <text x="20" style="font-size:14; font-family:sanserif; fill:blue" y="20">This composite actor produces the periodogram
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This composite actor produces the periodogram
 spectral estimate of the input random process.
 The number of inputs required to produce any
 output is 2^order, and the number of outputs
@@ -22,25 +22,34 @@ frequencies from -pi to pi radians per second,
 centered at zero frequency.  The output is
 1/sqrt(2^order) times the magnitude of the FFT
 of the input, represented in dB and centered at
-frequency zero.</text>
-           </svg>
-           </configure>
+frequency zero.</text></svg></configure>
         </property>
-    </property>
-    <property name="order" class="ptolemy.data.expr.Parameter" value="8">
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="-5.0, 155.0">
+        </property>
     </property>
     <port name="input" class="ptolemy.actor.TypedIOPort">
         <property name="input"/>
-        <property name="_location" class="ptolemy.moml.Location" value="78.28571701049805, 119.00000381469727">
+        <property name="_location" class="ptolemy.moml.Location" value="25.0, 45.0">
         </property>
     </port>
     <port name="output" class="ptolemy.actor.TypedIOPort">
         <property name="output"/>
-        <property name="_location" class="ptolemy.moml.Location" value="550.7142791748047, 188.0">
+        <property name="_location" class="ptolemy.moml.Location" value="595.0, 75.0">
         </property>
     </port>
     <entity name="Multiply" class="ptolemy.actor.lib.MultiplyDivide">
-        <property name="_location" class="ptolemy.moml.Location" value="181.8571434020996, 182.0">
+        <property name="_location" class="ptolemy.moml.Location" value="140.0, 75.0">
         </property>
         <port name="multiply" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -63,7 +72,7 @@ frequency zero.</text>
         </property>
         <property name="repeat" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="67.28571701049805, 209.0">
+        <property name="_location" class="ptolemy.moml.Location" value="50.0, 125.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -76,7 +85,7 @@ frequency zero.</text>
     <entity name="FFT" class="ptolemy.domains.sdf.lib.FFT">
         <property name="order" class="ptolemy.data.expr.Parameter" value="order">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="265.4285659790039, 183.0">
+        <property name="_location" class="ptolemy.moml.Location" value="230.0, 75.0">
         </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
             <property name="input"/>
@@ -102,7 +111,7 @@ frequency zero.</text>
         </property>
         <property name="min" class="ptolemy.data.expr.Parameter" value="-100.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="463.1428527832031, 183.0">
+        <property name="_location" class="ptolemy.moml.Location" value="530.0, 75.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -112,7 +121,7 @@ frequency zero.</text>
         </port>
     </entity>
     <entity name="AbsoluteValue0" class="ptolemy.actor.lib.AbsoluteValue">
-        <property name="_location" class="ptolemy.moml.Location" value="369.0, 183.0">
+        <property name="_location" class="ptolemy.moml.Location" value="320.0, 75.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -124,7 +133,9 @@ frequency zero.</text>
     <entity name="Scale" class="ptolemy.actor.lib.Scale">
         <property name="factor" class="ptolemy.data.expr.Parameter" value="1.0/sqrt(2.0^order)">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="448.0, 269.0">
+        <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="430.0, 75.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
