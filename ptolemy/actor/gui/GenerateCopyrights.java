@@ -94,6 +94,10 @@ public class GenerateCopyrights {
                 "ptolemy/cal/saxon-copyright.htm");
 
         _addIfPresent(copyrightsMap,
+                "caltrop.ptolemy.actors.CalInterpreter",
+                "ptolemy/cal/cup-copyright.htm");
+
+        _addIfPresent(copyrightsMap,
                 "ptolemy.domains.gr.kernel.GRActor",
                 "ptolemy/domains/gr/lib/java3d-copyright.htm");
 
