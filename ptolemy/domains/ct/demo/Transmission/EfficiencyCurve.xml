@@ -72,6 +72,110 @@ engine and a load.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="180.0, 245.0">
         </property>
     </property>
+    <property name="_generator" class="ptolemy.copernicus.kernel.GeneratorAttribute">
+        <property name="initialParametersURL" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy/copernicus/kernel/Generator.xml&quot;">
+        </property>
+        <property name="codeGenerator" class="ptolemy.data.expr.Parameter" value="&quot;applet&quot;">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="java" class="ptolemy.kernel.util.StringAttribute" value="&quot;java&quot;">
+                </property>
+                <property name="applet" class="ptolemy.kernel.util.StringAttribute" value="&quot;applet&quot;">
+                </property>
+                <property name="c" class="ptolemy.kernel.util.StringAttribute" value="&quot;c&quot;">
+                </property>
+                <property name="interpreted" class="ptolemy.kernel.util.StringAttribute" value="&quot;interpreted&quot;">
+                </property>
+                <property name="jhdl" class="ptolemy.kernel.util.StringAttribute" value="&quot;jhdl&quot;">
+                </property>
+                <property name="shallow" class="ptolemy.kernel.util.StringAttribute" value="&quot;shallow&quot;">
+                </property>
+            </property>
+            <doc>The code generator to run.</doc>
+        </property>
+        <property name="compile" class="ptolemy.data.expr.Parameter" value="true">
+            <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
+            </property>
+            <doc>If true, compile the generated code.  The default is true.</doc>
+        </property>
+        <property name="show" class="ptolemy.data.expr.Parameter" value="true">
+            <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
+            </property>
+            <doc> If true, then show the generated code.  The default is true.</doc>
+        </property>
+        <property name="run" class="ptolemy.data.expr.Parameter" value="true">
+            <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
+            </property>
+            <doc> If true, then run the generated code.  The default is true.</doc>
+        </property>
+        <property name="ptII" class="ptolemy.data.expr.Parameter" value="property(&quot;ptolemy.ptII.dir&quot;)">
+            <doc>The location of the Ptolemy II classes.  The default is the value of the ptolemy.ptII.dir java system property</doc>
+        </property>
+        <property name="ptIIUserDirectory" class="ptolemy.data.expr.Parameter" value="ptII">
+            <doc>The top level directory to write the code in. The default is the value of the ptII parameter. The code will appear in 'ptIIUserDirectory/targetPath'.</doc>
+        </property>
+        <property name="targetPackage" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.copernicus.&quot; + codeGenerator + &quot;.cg.&quot; + modelName">
+            <doc>The package to generate code in with the model name appended. Defaults to "ptolemy.copernicus." + codeGenerator + ".cg." + modelName</doc>
+        </property>
+        <property name="targetPath" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy/copernicus/applet/cg/EfficiencyCurve&quot;">
+            <doc>The path relative to the ptIIUserDirectory to generate code in. The default is derived from the value of codeGenerator + targetPackage.</doc>
+        </property>
+        <property name="modelPath" class="ptolemy.data.expr.Parameter" value="&quot;file:/C:/users/neuendor/ptII/ptolemy/domains/ct/demo/Transmission/EfficiencyCurve.xml&quot;">
+            <doc>The path to the model, including the .xml extension.  modelPath is converted to a URL internally before use.</doc>
+        </property>
+        <property name="modelName" class="ptolemy.data.expr.Parameter" value="&quot;EfficiencyCurve&quot;">
+            <doc> The name of the model, read from the .xml file and sanitized.</doc>
+        </property>
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+            <doc>Number of iterations to run the model for. Usually, the model itself contains the number of iterations to run for. Defaults to 1000.</doc>
+        </property>
+        <property name="compileCommandTemplateFile" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy/copernicus/&quot; + codeGenerator + &quot;/compileCommandTemplate.txt&quot;">
+            <doc>The template file that contains the command to run that generates the code.</doc>
+        </property>
+        <property name="compileOptions" class="ptolemy.data.expr.Parameter" value="&quot;&quot;">
+            <doc>User supplied arguments to be passed to the code generator.  Defaults to the empty string.</doc>
+        </property>
+        <property name="classPath" class="ptolemy.data.expr.Parameter" value="ptIIUserDirectory + classPathSeparator + property(&quot;java.class.path&quot;) + classPathSeparator + sootClasses + classPathSeparator + necessaryClassPath">
+            <doc>The class path. Defaults to the value of of the java.class.path property.</doc>
+        </property>
+        <property name="necessaryClasses" class="ptolemy.data.expr.Parameter" value="{&quot;ptolemy.domains.sdf.kernel.SDFScheduler&quot;,&quot;ptolemy.copernicus.java.Main&quot;,&quot;ptolemy.kernel.util.NamedObj&quot;,&quot;soot.gui.ICompilationListener&quot;,&quot;jasmin.Main&quot;,&quot;ptolemy.vergil.MoMLViewerApplet&quot;,&quot;diva.graph.GraphController&quot;}">
+            <doc>An array of Strings, where each element names a class that needs to be present in the classpath </doc>
+        </property>
+        <property name="necessaryClassPath" class="ptolemy.data.expr.Parameter" value="&quot;C:/users/neuendor/ptII;C:/users/neuendor/ptII/lib/sootclasses.jar;C:/users/neuendor/ptII/lib/jasminclasses.jar&quot;">
+            <doc>Class path that refers to necessary classes. Derived from necessaryClasses</doc>
+        </property>
+        <property name="classPathSeparator" class="ptolemy.data.expr.Parameter" value="property(&quot;path.separator&quot;)">
+            <doc>The classpath separator. Under Windows, the default is ';'. Under Unix, the default is ':'</doc>
+        </property>
+        <property name="java" class="ptolemy.data.expr.Parameter" value="property(&quot;java.home&quot;) + &quot;/bin/java&quot;">
+            <doc>Defaults to the value of the java.home property + bin/java, for example: c:/jdk1.3.1/bin/java</doc>
+        </property>
+        <property name="javaSystemJar" class="ptolemy.data.expr.Parameter" value="property(&quot;java.home&quot;) + &quot;/lib/rt.jar&quot;">
+            <doc>Defaults to the value of the java.home property + "/lib/rt.jar"</doc>
+        </property>
+        <property name="jvmSize" class="ptolemy.data.expr.Parameter" value="&quot;-Xmx256m&quot;">
+            <doc>The command line arguments to pass to the java interpreter that control the size.  The default is -Xmx256m</doc>
+        </property>
+        <property name="runCommandTemplateFile" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy/copernicus/&quot; + codeGenerator + &quot;/runCommandTemplate.txt&quot;">
+            <doc>The template file that contains the command to run the generated code.</doc>
+        </property>
+        <property name="runOptions" class="ptolemy.data.expr.Parameter" value="&quot;&quot;">
+            <doc>User supplied arguments to be passed to the command that will run the generated code. Defaults to the empty string.</doc>
+        </property>
+        <property name="sootDir" class="ptolemy.data.expr.Parameter" value="ptII + &quot;/lib&quot;">
+            <doc>The directory that contains the soot jar files. Defaults to the value of the ptII parameter  + "/lib"</doc>
+        </property>
+        <property name="sootClasses" class="ptolemy.data.expr.Parameter" value="sootDir + &quot;/sootclasses.jar&quot; + classPathSeparator + sootDir + &quot;/jasminclasses.jar&quot; + classPathSeparator + javaSystemJar">
+            <doc>The location of sootclasses.jar, jasminclasses.jar and the Java system jar (usually rt.jar).  The necessaryClassPath parameter may end up duplicating some of the elements of this parameter.</doc>
+        </property>
+        <property name="ptIIUserDirectoryAsURL" class="ptolemy.data.expr.Parameter" value="&quot;file:/c:/users/neuendor/ptII&quot;">
+            <doc>The top level directory to write the code in as a URL.  Derived from the value of the ptIIUserDirectory parameter.</doc>
+        </property>
+        <property name="watchDogTimeout" class="ptolemy.data.expr.Parameter" value="6000000">
+            <doc>The number of milliseconds that code generation will run for. Defaults to 600000, which is 10 minutes.</doc>
+        </property>
+        <property name="_generatorAttributeFileName" class="ptolemy.data.expr.Parameter" value="&quot;C:/DOCUME~1/neuendor/LOCALS~1/Temp/ptCopernicus28354.xml&quot;">
+        </property>
+    </property>
     <entity name="Const" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="function(rpm:double, peak:double, spread:int) 1/(1+((rpm-peak)/spread)^2)">
         </property>
@@ -122,7 +226,7 @@ engine and a load.</text></svg></configure>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="370.0, 180.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="360.0, 180.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -163,7 +267,9 @@ engine and a load.</text></svg></configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
-<title>SequencePlotter</title>
+<title>Engine Efficiency</title>
+<xLabel>Engine Speed</xLabel>
+<yLabel>Fraction of maximum power</yLabel>
 <xRange min="0.0" max="999.0"/>
 <yRange min="0.015422554869594585" max="1.0"/>
 </plot>?>
@@ -175,14 +281,10 @@ engine and a load.</text></svg></configure>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <link port="Const.output" relation="relation"/>
     <link port="Ramp.output" relation="relation2"/>
     <link port="Expression.output" relation="relation3"/>
     <link port="Expression.f" relation="relation"/>
     <link port="Expression.rpm" relation="relation2"/>
     <link port="SequencePlotter.input" relation="relation3"/>
-    <link port="SequencePlotter.input" relation="relation4"/>
-    <link port="SequencePlotter.input" relation="relation4"/>
 </entity>
