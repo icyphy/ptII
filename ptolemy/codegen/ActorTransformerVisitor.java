@@ -156,6 +156,7 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
         return node;
     }
 
+
     public Object visitLocalVarDeclNode(LocalVarDeclNode node, LinkedList args) {
         TreeNode initExpr = (TreeNode) node.getInitExpr().accept(this, args);
         node.setInitExpr(initExpr);
@@ -181,9 +182,15 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
         String methodName = node.getName().getIdent();
 
         // get rid of the following methods
-        if (methodName.equals("clone") ||
-                methodName.equals("attributeChanged") ||
-                methodName.equals("attributeTypeChanged")) {
+        if ( methodName.equals("attributeChanged") ||
+                methodName.equals("attributeTypeChanged") ||
+		methodName.equals("clone") ||
+		methodName.equals("iterate")
+	    ) {
+	    System.out.println(
+		       "ActorTransformerVisitor.visitMethodDeclNode(): " +
+		       "removing " + methodName);
+
             return NullValue.instance;
         }
 
@@ -1162,7 +1169,13 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
 
         // eliminate the following method calls no matter what
         if (methodName.equals("attributeTypeChanged") ||
-                methodName.equals("attributeChanged")) {
+                methodName.equals("attributeChanged") ||
+		methodName.equals("_setDefaultIcon")
+	    ) {
+	    System.out.println(
+		       "ActorTransformerVisitor._actorMethodCallNode(): " +
+		       "removing " + methodName);
+
             return NullValue.instance;
         }
 
@@ -1176,8 +1189,10 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
         // eliminate the following method calls if this is the most basic actor class
         // and an invocation of super.XXX() occurs
         if (_isBaseClass && (fieldAccessNode.classID() == SUPERFIELDACCESSNODE_ID)) {
-            if (methodName.equals("initialize") || methodName.equals("fire") ||
-                    methodName.equals("preinitialize") || methodName.equals("wrapup")) {
+            if (methodName.equals("initialize") ||
+		methodName.equals("fire") ||
+		methodName.equals("preinitialize") || 
+		methodName.equals("wrapup")) {
                 return NullValue.instance;
             }
 
