@@ -114,11 +114,8 @@ public class AtomicActor extends ComponentEntity implements Actor {
         return newobj;
     }
 
-    /** Create any neccessary receivers. This method iterates 
-     *  over the input ports of this AtomocActor and calls 
-     *  createReceivers() on each one.
-     *  @exception IllegalActionException thrown if could not create the 
-     *   receivers.
+    /** Create receivers for each input port.
+     *  @exception IllegalActionException If any port throws it.
      */
     public void createReceivers() throws IllegalActionException {
         Enumeration inputPorts = inputPorts();
@@ -165,8 +162,7 @@ public class AtomicActor extends ComponentEntity implements Actor {
      *  internal members of an actor and produces initial output data.
      *
      *  @exception CloneNotSupportedException Not thrown in this base class.
-     *  @exception IllegalActionException Thrown if could not create the 
-     *   receivers.
+     *  @exception IllegalActionException Not thrown in this base class.
      */
     public void initialize()
             throws CloneNotSupportedException, IllegalActionException {

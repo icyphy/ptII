@@ -210,10 +210,11 @@ public class Director extends NamedObj implements Executable {
         return _container;
     }
 
-    /** If this is the local director of its container, invoke the initialize()
+    /** If this is the local director of its container, first create the 
+     *  receivers and then invoke the initialize()
      *  methods of all its deeply contained actors.  If this is the executive
-     *  director of its container, then invoke the initialize() method of the
-     *  container.
+     *  director of its container, first create the receivers and then 
+     *  invoke the initialize() method of the container.
      *  <p>
      *  This method should be invoked once per execution, before any
      *  iteration. It may produce output data.
@@ -334,13 +335,14 @@ public class Director extends NamedObj implements Executable {
      *  If there is no container, return false immediately.  Otherwise,
      *  the first step is to perform any pending mutations, and to initialize
      *  any actors that are added by those mutations.  This sequence is
-     *  repeated until no more mutations are performed.  This way, the
+     *  repeated until no more mutations are performed. This way, the
      *  initialize() method in actors can perform mutations, and the
-     *  mutations will be fully executed before proceeding. Then,
-     *  if this is the local director of its container, invoke the prefire()
-     *  methods of all its deeply contained actors, and return the logical AND
-     *  of what they return.  If this is the executive director of its
-     *  container, then invoke the prefire() method of the container and
+     *  mutations will be fully executed before proceeding.  
+     *  Then, if this is the local director of its container, first create 
+     *  any new receivers if mutations occured. Then invoke the 
+     *  prefire() methods of all its deeply contained actors, and return the 
+     *  logical AND of what they return.  If this is the executive director 
+     *  of its container, then invoke the prefire() method of the container and
      *  return what it returns.  Otherwise, return false.
      *  <p>
      *  This method should be invoked once per iteration, before any

@@ -213,14 +213,14 @@ public class IOPort extends ComponentPort {
 
     /** Create receivers for this port. This method should only be 
      *  called on input ports. It should also normally only be called 
-     *  in the prefire method.
-     *  It is <i>not</i> synchronized on the workspace, so the
-     *  caller should be. This is because obaining write access 
-     *  increases the version number of the workspace, which 
-     *  invalidates any previous cached information in the workspace.
+     *  during the initialize and prefire methods of the director.
+     *  If this port already has the correct number of receivers, then
+     *  no new receivers are created. However if new receivers are created, 
+     *  then any receivers this port previously had will be overwritten.
+     *  It is <i>not</i> write-synchronized on the workspace, so the
+     *  caller should be. 
      *  @exception IllegalActionException Thrown if this port is not 
      *   an opaque input port or if there is no director.
-     *  FIXME: perhaps we need to use writeAccess?
      */
     public void createReceivers() throws IllegalActionException {
         if (!(isInput() && isOpaque())) {
@@ -231,10 +231,8 @@ public class IOPort extends ComponentPort {
         int portWidth = getWidth();
         if (portWidth <= 0) return;
 
-        boolean changed = false;
-
-        // Do this here so that derived classes do not need to have the
-        // hash table if they are not using it.
+        // Create the hashtable of receivers in this port, keyed by 
+        // relation, if it does not already exist.
         if (_localReceiversTable == null) {
             _localReceiversTable = new Hashtable();
         }
@@ -248,13 +246,12 @@ public class IOPort extends ComponentPort {
             Receiver[][] result = null;
             if(_localReceiversTable.containsKey(relation) ) {
                 // There is a list of receivers for this relation.
-                // Check to see that the width is valid, since it's
-                // possible that the width of the port has changed since
-                // this list was constructed.
                 result = (Receiver[][])_localReceiversTable.get(relation);
             }
+            // If there was no list of receivers for this relation, or 
+            // if the width of the relation has changed, we need to 
+            // create new receivers for this relation.
             if ((result == null) || (result.length != width)) {
-                changed = true;
                 result = new Receiver[width][1];
                 if (insideLink) {
                     // Inside links need to have receivers compatible
@@ -385,7 +382,7 @@ public class IOPort extends ComponentPort {
      *  token returned by these calls.
      *  Normally this method is not used on transparent ports.
      *  If there is no token to return, then throw an exception.
-     * 
+     *  <p>
      *  Some of this method is read-synchronized on the workspace.
      *  Since it is possible for a thread to block while executing a get,
      *  it is important that the thread does not hold read access on
@@ -575,8 +572,7 @@ public class IOPort extends ComponentPort {
      *  single relation may represent multiple channels because it may be
      *  a bus.
      *  <p>
-     *  This method is write-synchronized on the workspace so that it
-     *  can add receivers if necessary.
+     *  This method is read-synchronized on the workspace.
      *
      *  @param relation A relation that is linked on the outside or inside.
      *  @return The local receivers.
@@ -610,8 +606,9 @@ public class IOPort extends ComponentPort {
                 // Get the list of receivers for this relation.
                 result = (Receiver[][])_localReceiversTable.get(relation);
                 if ((result == null) || (result.length !=width))  {
-                    throw new InvalidStateException(this, 
-                            "getReceivers(IORelation): cache has changed.");
+                    String s = "getReceivers(IORelation): Invalid receivers.";
+                    s += " Need to call createReceivers().";
+                    throw new InvalidStateException(this, s);
                 }
                 return result;
             } else {
@@ -980,7 +977,7 @@ public class IOPort extends ComponentPort {
      *  while subsequent ones get a clone.  If there are no receivers,
      *  then do nothing. The transfer is accomplished by calling the put()
      *  method of the remote receivers.
-     * 
+     *  <p>
      *  Some of this method is read-synchronized on the workspace.
      *  Since it is possible for a thread to block while executing a put,
      *  it is important that the thread does not hold read access on

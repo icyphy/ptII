@@ -180,11 +180,8 @@ public class CompositeActor extends CompositeEntity implements Actor {
         return newobj;
     }
 
-    /** Create any neccessary receivers. This method iterates 
-     *  over the input ports of this CompositActor and calls 
-     *  createReceivers() on each one.
-     *  @excetion IllegalActionException thrown if could not create the 
-         receivers.
+    /** Create receivers for each input port.
+     *  @exception IllegalActionException If any port throws it.
      */
     public void createReceivers() throws IllegalActionException {
         Enumeration inputPorts = inputPorts();
@@ -270,7 +267,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
      *   multiple destinations, and the token cannot be cloned.
      *  @exception IllegalActionException If there is no director, or if
      *   the director's initialize() method throws it, or if this actor
-     *   is not opaque, or if the receivers could not be created.
+     *   is not opaque.
      */
     public void initialize()
             throws CloneNotSupportedException, IllegalActionException {
