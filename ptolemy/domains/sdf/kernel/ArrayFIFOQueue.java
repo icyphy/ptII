@@ -161,32 +161,31 @@ public final class ArrayFIFOQueue implements Cloneable {
     public Object get(int offset)
             throws NoSuchElementException {
         Object obj = null;
-        try {
-            if (offset >= 0) {
-                int loc = _queueback + offset;
-                if(loc >= _queuearray.length)
-                    loc = loc % _queuearray.length;        
-                if(loc >= _queuefront) {
-                    String str = ".";
-                    if (_container != null) {
-                        str = " contained by " + _container.getFullName();
-                    }
-                    throw new NoSuchElementException("No object at offset "
-                            + offset + " in the FIFOQueue" + str);
+        if (offset >= 0) {
+            if(offset >= size()) {
+                String str = ".";
+                if (_container != null) {
+                    str = " contained by " + _container.getFullName();
                 }
-                else if(loc >= _queuearray.length)
-                    loc = loc % _queuearray.length;                    
-                obj = _queuearray[loc];
-            } else {
+                throw new NoSuchElementException("No object at offset "
+                        + offset + " in the FIFOQueue" + str);
+            }                   
+            int loc = _queueback + offset;
+            if(loc >= _queuearray.length)
+                loc = loc % _queuearray.length;        
+            obj = _queuearray[loc];
+        } else {
+            try {
                 obj = _historylist.at(historySize()+offset);
+                
+            } catch (NoSuchElementException ex) {
+                String str = ".";
+                if (_container != null) {
+                    str = " contained by " + _container.getFullName();
+                }
+                throw new NoSuchElementException("No object at offset "
+                        + offset + " in the FIFOQueue" + str);
             }
-        } catch (NoSuchElementException ex) {
-            String str = ".";
-            if (_container != null) {
-                str = " contained by " + _container.getFullName();
-            }
-            throw new NoSuchElementException("No object at offset "
-                    + offset + " in the FIFOQueue" + str);
         }
         return obj;
     }
@@ -265,12 +264,7 @@ public final class ArrayFIFOQueue implements Cloneable {
             return true;
         } else {
 	    if(_queuemaxcapacity == INFINITE_CAPACITY) {
-		try {
-		    _resizeArray(_queuearray.length * 2);
-		}
-		catch (Exception e) {
-		    e.printStackTrace();
-		}
+                _resizeArray(_queuearray.length * 2);
 		return put(element);
 	    } else
 		return false;
@@ -334,51 +328,19 @@ public final class ArrayFIFOQueue implements Cloneable {
             _queuemaxcapacity = INFINITE_CAPACITY;
             return;
         }
-	_queuemaxcapacity = capacity;
- 	_resizeArray(capacity);
-    }
-
-    /**
-     * Resize the internal circular array to have the given size.
-     * @exception IllegalActionException If the queue contains more 
-     *   objects than the proposed size or the proposed size
-     *   is illegal. 
-     * @exception InternalErrorException If the proposed size is greater than 
-     *   the declared maximum size.
-     */
-    private void _resizeArray(int newsize)
-	throws IllegalActionException {
-	if (newsize < 0) {
+	if (capacity < -1) {
 	    throw new IllegalActionException(_container,
-	        "Cannot set queue capacity to " + newsize);
+                    "Queue Capacity cannot be negative");
         }
-	if (size() > newsize) {
+
+	if (size() > capacity) {
             throw new IllegalActionException(_container, "Queue contains " +
 		"more elements than the proposed capacity.");
         }
-	if((_queuemaxcapacity != INFINITE_CAPACITY)&&
-	    (newsize > _queuemaxcapacity)) { 
-	    throw new InternalErrorException("The proposed" +
-		      " array size exceeds the maximum declared queue size.");
-	}
-
-	Object newarray[] = new Object[newsize];
-        if((_queuefront < _queueback) || isFull()) {
-            System.arraycopy(_queuearray, _queueback,
-                    newarray, 0, _queuearray.length - _queueback);
-            System.arraycopy(_queuearray, 0,
-                    newarray, _queuearray.length - _queueback,
-                    _queuefront);
-            _queuefront = _queuearray.length - _queueback + _queuefront;
-        } else {
-            System.arraycopy(_queuearray, _queueback,
-                    newarray, 0, _queuefront - _queueback);
-            _queuefront = _queuefront - _queueback;
-        }
-        _queuearray = newarray;
-        _queueback = 0;
+        _queuemaxcapacity = capacity;
+ 	_resizeArray(capacity);
     }
-    
+
     /** Set the container of the queue. The container is only used
      *  for error reporting.
      *  @param container The container of this queue.
@@ -467,32 +429,29 @@ public final class ArrayFIFOQueue implements Cloneable {
      */
     public void takeArray(Object obj[]) throws NoSuchElementException {
         int count = obj.length;
-        try {
-            if(_queuesize < count) 
-                throw new NoSuchElementException("Empty Queue");
-            
-            if(count <= (_queuearray.length - _queueback)) {
-                System.arraycopy(_queuearray, _queueback, obj, 0,
-                        count);
-            } else {
-                System.arraycopy(_queuearray, _queueback, obj, 0,
-                        _queuearray.length - _queueback);
-                System.arraycopy(_queuearray, 0,
-                        obj, _queuearray.length - _queueback,
-                        count - (_queuearray.length - _queueback));
-            }
-            _queueback += count;
-            if(_queueback >= _queuearray.length) 
-                _queueback = _queueback % _queuearray.length;
-            _queuesize -= count;
-        } catch (NoSuchElementException ex) {
+        if(size() < count) {
             String str = "";
             if (_container != null) {
                 str = " contained by " + _container.getFullName();
             }
             throw new NoSuchElementException("The FIFOQueue" + str
-                    + " is empty!");
+                    + " does not contain enough elements!");
         }
+        
+        if(count <= (_queuearray.length - _queueback)) {
+            System.arraycopy(_queuearray, _queueback, obj, 0,
+                    count);
+        } else {
+            System.arraycopy(_queuearray, _queueback, obj, 0,
+                    _queuearray.length - _queueback);
+            System.arraycopy(_queuearray, 0,
+                    obj, _queuearray.length - _queueback,
+                    count - (_queuearray.length - _queueback));
+        }
+        _queueback += count;
+        if(_queueback >= _queuearray.length) 
+            _queueback = _queueback % _queuearray.length;
+        _queuesize -= count;
         if (_historycapacity != 0) {
             if (_historycapacity == _historylist.size()) {
                 _historylist.take();
@@ -501,6 +460,47 @@ public final class ArrayFIFOQueue implements Cloneable {
         }
     }
 
+    /**
+     * Resize the internal circular array to have the given size.
+     * @exception InternalErrorException If the proposed size is greater than 
+     *   the declared maximum size, or if the queue contains more 
+     *   objects than the proposed size or the proposed size
+     *   is illegal. .
+     */
+    private void _resizeArray(int newsize) {
+	if (newsize < 0) {
+	    throw new InternalErrorException(
+	        "Buffer size of " + newsize + " is not greater than zero.");
+        }
+
+	if (size() > newsize) {
+            throw new InternalErrorException("Queue contains " +
+		"more elements than the proposed array size.");
+        }
+
+	if((_queuemaxcapacity != INFINITE_CAPACITY)&&
+	    (newsize > _queuemaxcapacity)) { 
+	    throw new InternalErrorException("The proposed" +
+		      " array size exceeds the maximum declared queue size.");
+	}
+
+	Object newarray[] = new Object[newsize];
+        if((_queuefront < _queueback) || isFull()) {
+            System.arraycopy(_queuearray, _queueback,
+                    newarray, 0, _queuearray.length - _queueback);
+            System.arraycopy(_queuearray, 0,
+                    newarray, _queuearray.length - _queueback,
+                    _queuefront);
+            _queuefront = _queuearray.length - _queueback + _queuefront;
+        } else {
+            System.arraycopy(_queuearray, _queueback,
+                    newarray, 0, _queuefront - _queueback);
+            _queuefront = _queuefront - _queueback;
+        }
+        _queuearray = newarray;
+        _queueback = 0;
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 

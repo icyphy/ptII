@@ -224,6 +224,25 @@ test ArrayFIFOQueue-3.6 {Takearray items} {
 ######################################################################
 ####
 #
+test ArrayFIFOQueue-3.7 {Test getting the data in the queue when the data wraps around the circular array.} {
+    set queue [java::new ptolemy.domains.sdf.kernel.ArrayFIFOQueue]
+    set array [java::new {Object[]} {5} {}]
+    $array set 0 $n1
+    $array set 1 $n2
+    $array set 2 $n3
+    $array set 3 $n4
+    $array set 4 $n5
+    $queue putArray $array
+    $queue take
+    $queue take
+    $queue put $n1
+    $queue put $n2
+    _testEnums elements $queue
+} {{n3 n4 n5 n1 n2}}
+
+######################################################################
+####
+#
 test ArrayFIFOQueue-4.1 {Inserting elements into a queue of bounded size} {
     set queue [java::new ptolemy.domains.sdf.kernel.ArrayFIFOQueue]
     $queue setCapacity 3
@@ -270,6 +289,96 @@ test ArrayFIFOQueue-4.3 {resize a bounded capacity queue} {
     list $msg1 $r1 $r2
 } {{ptolemy.kernel.util.IllegalActionException: Queue contains more elements than the proposed capacity.} 1 0}
 
+######################################################################
+####
+#
+test ArrayFIFOQueue-4.4 {Put array of data on a queue of bounded capacity} {
+    set queue [java::new ptolemy.domains.sdf.kernel.ArrayFIFOQueue]
+    $queue setCapacity 4
+    set array0 [java::new {Object[]} {4} {}]
+    set array1 [java::new {Object[]} {5} {}]
+    $array0 set 0 $n1
+    $array0 set 1 $n2
+    $array0 set 2 $n3
+    $array0 set 3 $n4
+    $array1 set 0 $n1
+    $array1 set 1 $n2
+    $array1 set 2 $n3
+    $array1 set 3 $n4
+    $array1 set 4 $n5
+    set r1 [$queue putArray $array1]
+    set r2 [$queue putArray $array0] 
+    set r3 [$queue putArray $array0]
+    set r4 [$queue put $n4] 
+    list $r1 $r2 $r3 $r4 [_testEnums elements $queue]
+} {0 1 0 0 {{n1 n2 n3 n4}}}
+
+######################################################################
+####
+#
+test ArrayFIFOQueue-4.5 {Get individual items from a queue of bounded capacity} {
+    catch {[$queue get -1]} s0
+    set a0 [[java::cast ptolemy.kernel.util.NamedObj [$queue get 0]] \
+            getName] 
+    set a1 [[java::cast ptolemy.kernel.util.NamedObj [$queue get 1]] \
+            getName] 
+    set a2 [[java::cast ptolemy.kernel.util.NamedObj [$queue get 2]] \
+            getName] 
+    set a3 [[java::cast ptolemy.kernel.util.NamedObj [$queue get 3]] \
+            getName] 
+    catch {[$queue get 4]} s1 
+    list $s0 $a0 $a1 $a2 $a3 $s1 [$queue size] [$queue isFull]
+} {{java.util.NoSuchElementException: No object at offset -1 in the FIFOQueue.} n1 n2 n3 n4 {java.util.NoSuchElementException: No object at offset 4 in the FIFOQueue.} 4 1}
+
+######################################################################
+####
+#
+test ArrayFIFOQueue-4.6 {Takearray items} {
+    set array1 [java::new {Object[]} {5} {}]
+    set array2 [java::new {Object[]} {4} {}]
+    catch {[$queue takeArray $array1]} s1
+    $queue takeArray $array2
+    $queue put $n1
+    catch {[$queue takeArray $array1]} s2
+    list $s1 [jdkPrintArray $array2] $s1 [_testEnums elements $queue]
+} {{java.util.NoSuchElementException: The FIFOQueue does not contain enough elements!} {{ptolemy.kernel.util.NamedObj {.n1}} {ptolemy.kernel.util.NamedObj {.n2}} {ptolemy.kernel.util.NamedObj {.n3}} {ptolemy.kernel.util.NamedObj {.n4}}} {java.util.NoSuchElementException: The FIFOQueue does not contain enough elements!} n1}
+
+######################################################################
+####
+#
+test ArrayFIFOQueue-4.7 {Test getting the data in the queue when the data wraps around the circular array.} {
+    set queue [java::new ptolemy.domains.sdf.kernel.ArrayFIFOQueue]
+    set array [java::new {Object[]} {5} {}]
+    $array set 0 $n1
+    $array set 1 $n2
+    $array set 2 $n3
+    $array set 3 $n4
+    $array set 4 $n5
+    $queue putArray $array
+    $queue take
+    $queue take
+    $queue put $n1
+    $queue put $n2
+    _testEnums elements $queue
+} {{n3 n4 n5 n1 n2}}
+
+######################################################################
+####
+#
+test ArrayFIFOQueue-4.8 {resize a queue to less than zero size} {
+    catch {[$queue setCapacity -2]} msg1
+    list $msg1 
+} {{ptolemy.kernel.util.IllegalActionException: Queue Capacity cannot be negative}}
+
+######################################################################
+####
+#
+test ArrayFIFOQueue-4.9 {resize a bounded capacity queue to have infinite capacity} {
+    $queue setCapacity -1
+    set r1 [$queue put $n4]
+    set r2 [$queue put $n4]
+    list $r1 $r2 [_testEnums elements $queue]
+} {1 1 {{n3 n4 n5 n1 n2 n4 n4}}}
 
 ######################################################################
 ####
