@@ -54,12 +54,41 @@ import org.python.util.PythonInterpreter;
 //////////////////////////////////////////////////////////////////////////
 //// PythonScript
 /**
-An actor of this class executes a Python script. Upon creation, the actor
-has no ports, and no parameter other than {@link #script script}, which
-has visibility EXPERT, and therefore does not normally show up in a
-configure dialog for the actor.  To make the script visible and editable,
-a good tactic is to include within the actor an instance of TextEditorFactory
-with its <i>attributeName</i> parameter set to <i>script</i>.
+An actor of this class executes a Python script.  There are two versions
+of this actor provided in the Vergil libraries.  The one called
+"PythonActor" has an input port and an output port; to view or edit
+its Python script, look inside the actor.  The second version is
+called "PythonScript" and has no ports; to view or edit its Python
+script, select Configure (or double click on the icon). 
+<p>
+Upon creation, this actor has no ports, and no parameters other than
+{@link #script script}; The <i>script</i> parameter has visibility
+EXPERT, and therefore does not normally show up in a configure dialog
+for the actor.  To make the script visible and editable, you have two
+options. Including an instance of an attribute of class
+TextEditorConfigureFactory (with its <i>attributeName</i> parameter
+set to <i>script</i>) results in behavior like that of the Vergil
+"PythonScript." That is, to edit the script, you Configure the actor.
+If instead you include an instance of TextEditorTableauFactory,
+then to edit the script you look inside the actor.  Use the latter
+if you wish to add additional attributes to the actor and hide the
+script from the users.  Use the former if the script is the main
+means by which users interact with the actor.
+<p>
+Upon creation, this actor has no ports, and no parameters other than
+{@link #script script}; The <i>script</i> parameter has visibility
+EXPERT, and therefore does not normally show up in a configure dialog
+for the actor.  To make the script visible and editable, you have two
+options. Including an instance of an attribute of class
+TextEditorConfigureFactory (with its <i>attributeName</i> parameter
+set to <i>script</i>) results in behavior like that of the Vergil
+"PythonScript." That is, to edit the script, you Configure the actor.
+If instead you include an instance of TextEditorTableauFactory,
+then to edit the script you look inside the actor.  Use the latter
+if you wish to add additional attributes to the actor and hide the
+script from the users.  Use the former if the script is the main
+means by which users interact with the actor.
+<p>
 The functionality of an actor of this type is given by a Python script.
 As an example, a simplified version of the
 {@link ptolemy.actor.lib.Scale Scale}
