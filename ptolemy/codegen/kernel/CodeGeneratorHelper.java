@@ -136,43 +136,82 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      */
     public String processCode(String code) throws IllegalActionException {
         
-        StringTokenizer tokenizer = new StringTokenizer(code, "$()", true);
         StringBuffer result = new StringBuffer();
-        while (tokenizer.hasMoreTokens()) {
-        	String token = tokenizer.nextToken();
+        int currentPos = code.indexOf("$");
+        if (currentPos < 0) {
+            // No "$" in the string
+            return code.toString();
+        }
+        
+        result.append(code.substring(0, currentPos));
+        while (currentPos < code.length()) {
+            int nextPos = code.indexOf("$", currentPos + 1);
+            if (nextPos < 0) {
+                //currentPos is the last "$"
+                nextPos = code.length();
+            }
+            String subcode = code.substring(currentPos, nextPos);
             boolean foundIt = false;
-            if (token.equals("$") && tokenizer.hasMoreTokens()) {
-                String macroName = tokenizer.nextToken();
-                if (macroName.equals("val") && tokenizer.hasMoreTokens()) {
-                    String openParen = tokenizer.nextToken();
-                    if (openParen.equals("(") && tokenizer.hasMoreTokens()) {
-                        String parameterName = tokenizer.nextToken();
-                        if (tokenizer.hasMoreTokens()) {
-                        	String closeParen = tokenizer.nextToken();
-                            if (closeParen.equals(")")) {
-                            	result.append(getParameterValue(parameterName));
-                                foundIt = true;
-                            }
-                        }
-                    }
-                } else if (macroName.equals("ref") && tokenizer.hasMoreTokens()) {
+            StringTokenizer tokenizer = new StringTokenizer(subcode, "()", true);
+            if (tokenizer.hasMoreTokens()) {
+                String token = tokenizer.nextToken();
+                if (token.equals("$ref") && tokenizer.hasMoreTokens()) {
                     String openParen = tokenizer.nextToken();
                     if (openParen.equals("(") && tokenizer.hasMoreTokens()) {
                         String name = tokenizer.nextToken();
-                        if (tokenizer.hasMoreTokens()) {
+                        if (name.equals(")")) {
+                            foundIt = true;
+                            while (tokenizer.hasMoreTokens()) {
+                                result.append(tokenizer.nextToken());  
+                            }
+                        } else if (tokenizer.hasMoreTokens()) {
                             String closeParen = tokenizer.nextToken();
                             if (closeParen.equals(")")) {
-                                result.append(getReference(name));
                                 foundIt = true;
+                                name = name.trim();
+                                if (name != "") {
+                                    result.append(getReference(name));
+                                }
+                                // attach the rest subcode.
+                                while (tokenizer.hasMoreTokens()) {
+                                    result.append(tokenizer.nextToken());
+                                }
+                            }
+                        }
+                    }
+                } else if (token.equals("$val") && tokenizer.hasMoreTokens()) {
+                    String openParen = tokenizer.nextToken();
+                    if (openParen.equals("(") && tokenizer.hasMoreTokens()) {
+                        String macroName = tokenizer.nextToken();
+                        if (macroName.equals(")")) {
+                            foundIt = true;
+                            while (tokenizer.hasMoreTokens()) {
+                                result.append(tokenizer.nextToken());  
+                            }
+                        }
+                        else if (tokenizer.hasMoreTokens()) {
+                            String closeParen = tokenizer.nextToken();
+                            if (closeParen.equals(")")) {
+                                foundIt = true;
+                                macroName = macroName.trim();
+                                if (macroName != "")  {
+                                    result.append(getParameterValue(macroName));
+                                }
+                                // attach the rest subcode.
+                                while (tokenizer.hasMoreTokens()) {
+                                    result.append(tokenizer.nextToken());
+                                }
                             }
                         }
                     }
                 }
             }
             if (!foundIt) {
-                result.append(token);   
+                result.append(subcode);
             }
+            currentPos = nextPos;
         }
+        
         return result.toString();
     }
 
