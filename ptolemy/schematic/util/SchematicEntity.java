@@ -52,15 +52,24 @@ public class SchematicEntity extends PTMLTemplateObject
     implements diva.graph.model.CompositeNode {
 
     /**
-     * Create a new SchematicEntity object with no set attributes.
+     * Create a new SchematicEntity object with no template and
+     * the name "SchematicEntity".
+     */
+    public SchematicEntity () {
+        this("SchematicEntity", null);
+    }
+
+    /**
+     * Create a new SchematicEntity object with the given entity template and
+     * the name of the template.
      */
     public SchematicEntity (EntityTemplate et) {
         this(et.getName(), et);
     }
 
     /**
-     * Create a new SchematicEntity object with the given attributes and an
-     * unspecified entitytype.
+     * Create a new SchematicEntity object with the given name and entity
+     * template.
      */
     public SchematicEntity (String name, EntityTemplate et) {
         super(name, et);
@@ -87,7 +96,7 @@ public class SchematicEntity extends PTMLTemplateObject
     }
 
     /**
-     * Add a new port to the schematic. The port name must be unique
+     * Add a new terminal to the schematic. The terminal name must be unique
      * within this schematic.
      *
      *  @exception IllegalActionException If the terminal has no name.
@@ -118,7 +127,10 @@ public class SchematicEntity extends PTMLTemplateObject
      * Get the icon of this entity.
      */
     public Icon getIcon () {
-        return ((EntityTemplate) getTemplate()).getIcon();
+        if(hasTemplate()) 
+            return ((EntityTemplate) getTemplate()).getIcon();
+        else
+            return null;
     }
 
     /**

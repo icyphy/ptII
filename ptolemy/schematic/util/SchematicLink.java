@@ -30,6 +30,10 @@
 
 package ptolemy.schematic.util;
 
+import java.util.*;
+import diva.util.*;
+import diva.graph.model.*;
+
 //////////////////////////////////////////////////////////////////////////
 //// SchematicLink
 /**
@@ -41,7 +45,13 @@ This link
 @author Steve Neuendorffer, John Reekie
 @version $Id$
 */
-public class SchematicLink extends Object {
+public class SchematicLink extends BasicPropertyContainer
+    implements diva.graph.model.Edge {
+
+    public SchematicLink () {
+        // FIXME: is this right?
+        this(null, null);
+    }
 
     /**
      * Create a new SchematicLink object connecting the two ports.
@@ -101,8 +111,88 @@ public class SchematicLink extends Object {
         return s;
     }
 
-    SchematicTerminal _to;
-    SchematicTerminal _from;
+    //diva.graph.model.Edge
+    /*    public void attach(BasicNode tail, BasicNode head) {
+        setTail(tail);
+        setHead(head);
+    }
+
+    public void detach() {
+        setTail(null);
+        setHead(null);
+    }
+    */
+
+    public Node getHead() { return getTo(); }
+    
+    public Node getTail() { return getFrom(); }
+    
+    /* Get the visual object of this edge. Generally this
+     * is used when this edge has a visual representation.
+     */
+    public Object getVisualObject() {
+	return _visualObject;
+    }
+    
+    //public double getWeight() { return _weight; }
+    
+    public Object getSemanticObject() { return _semanticObject; }
+
+    public boolean isDirected() { return true; }
+    
+    public void setDirected(boolean val) {
+        // Do nothing.  Edges in ptolemy are always directed.
+    }
+
+    /*
+    public void setHead(BasicNode n) {
+        BasicNode prevHead = (BasicNode)getHead();
+	if(prevHead != null) {
+	    prevHead.getInEdgeSet().remove(this);
+	}
+
+	_head = n;
+        if(_head != null) {
+    	    _head.getInEdgeSet().add(this);
+        }
+    }
+
+    public void setTail(BasicNode n) {
+        BasicNode prevTail = (BasicNode)getTail();
+    	if(prevTail != null) {
+	    prevTail.getOutEdgeSet().remove(this);
+	}
+
+	_tail = n;
+        if(_tail != null) {
+    	    _tail.getOutEdgeSet().add(this);
+        }
+    }
+    */
+
+    /**  Set the visual object of this edge.
+     */
+    public void setVisualObject(Object o) {
+	_visualObject = o;
+    }
+
+    // public void setWeight(double weight ) { _weight = weight; }
+
+    public void setSemanticObject(Object o) { _semanticObject = o;  }
+
+
+    private SchematicTerminal _to;
+    private SchematicTerminal _from;
+
+    /**
+     * The visual representation.
+     */
+    private Object _visualObject = null;
+
+   /**
+     * The underlying semantic object.
+     */
+    private Object _semanticObject = null;
     
 }
 

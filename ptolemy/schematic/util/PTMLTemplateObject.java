@@ -69,7 +69,7 @@ public class PTMLTemplateObject extends PTMLObject {
      * name of the given template.
      */
     public PTMLTemplateObject (PTMLObject template) {
-        this("PTMLTemplateObject", template);
+        this(template.getName(), template);
     }
 
     /**

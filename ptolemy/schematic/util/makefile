@@ -48,6 +48,7 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
+	Editor.java \
 	EntityLibrary.java \
 	EntityTemplate.java \
 	EnumerationIterator.java \
@@ -59,6 +60,7 @@ JSRCS = \
 	PTMLTemplateObject.java \
 	Schematic.java \
 	SchematicEntity.java \
+	SchematicGraphImpl.java \
 	SchematicLink.java \
 	SchematicParameter.java \
 	SchematicPort.java \

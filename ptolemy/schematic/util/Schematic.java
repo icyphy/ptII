@@ -30,9 +30,10 @@
 
 package ptolemy.schematic.util;
 
-import java.util.Enumeration;
-import java.util.NoSuchElementException;
+import java.util.*;
 import ptolemy.kernel.util.*;
+import diva.util.*;
+import diva.graph.model.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// Schematic
@@ -50,7 +51,8 @@ and run a simulation, or to display and edit the visual schematic
 @author Steve Neuendorffer, John Reekie
 @version $Id$
 */
-public class Schematic extends PTMLObject {
+public class Schematic extends PTMLObject 
+    implements diva.graph.model.Graph {
 
     /**
      * Create a new Schematic object.
@@ -64,6 +66,10 @@ public class Schematic extends PTMLObject {
      */
     public Schematic (String name) {
         super(name);
+        _ports = new NamedList();
+        _terminals = new NamedList();
+        _entities = new NamedList();        
+        _relations = new NamedList();        
     }
 
     /**
@@ -106,11 +112,24 @@ public class Schematic extends PTMLObject {
     }
 
     /**
+     * Add a new terminal to the schematic. The terminal name must be unique
+     * within this schematic.
+     *  @exception IllegalActionException If the terminal has no name.
+     *  @exception NameDuplicationException If the name of the terminal
+     *  coincides with the name of another terminal 
+     *  contained in this schematic.
+     */
+    public void addTerminal (SchematicTerminal terminal) 
+            throws IllegalActionException, NameDuplicationException {
+        _terminals.append(terminal);
+    }
+
+    /**
      * Test if there is an entity with the given name in the
      * schematic.
      */
-    public boolean containsEntity (SchematicEntity entities) {
-        return _entities.includes(entities);
+    public boolean containsEntity (SchematicEntity entity) {
+        return _entities.includes(entity);
     }
 
     /**
@@ -129,6 +148,14 @@ public class Schematic extends PTMLObject {
         return _relations.includes(relation);
     }
 
+    /**
+     * Test if this schematic contains a terminal with the
+     * given name.
+     */
+    public boolean containsTerminal (SchematicTerminal terminal) {
+        return _terminals.includes(terminal);
+    }
+    
      /**
      * Return an enumeration over the entities in this
      * schematic.
@@ -180,7 +207,16 @@ public class Schematic extends PTMLObject {
         return _relations.elements();
     }
 
-     /**
+    /**
+     * Return an enumeration over the terminals in this schematic.
+     *
+     * @return an enumeration of SchematicTerminals
+     */
+    public Enumeration terminals() {
+        return _terminals.elements();
+    }
+
+    /**
      * Remove the schemtic entity with the given name.
      * Throw an exception if the entity does not exist
      * in this schematic.
@@ -213,6 +249,15 @@ public class Schematic extends PTMLObject {
     }
 
     /**
+     * Remove the schematic terminal with the given name.
+     * Throw an exception if the terminal does not exist
+     * in this schematic.
+     */
+    public void removeTerminal(SchematicTerminal terminal) {
+        _terminals.remove(terminal);
+    }
+
+    /**
      * Return a string representing this Schematic.
      */
     public String toString() {
@@ -232,16 +277,76 @@ public class Schematic extends PTMLObject {
         str += "}{";
 	Enumeration enumports = ports();
         while(enumports.hasMoreElements()) {
-	    SchematicRelation relation = 
-		(SchematicRelation) enumports.nextElement();
-	    str += "\n..." + relation.toString();
+	    SchematicPort port =
+		(SchematicPort) enumports.nextElement();
+	    str += "\n..." + port.toString();
+	}
+        str += "}{";
+	Enumeration enumterminals = terminals();
+        while(enumterminals.hasMoreElements()) {
+	    SchematicTerminal terminal = 
+		(SchematicTerminal) enumterminals.nextElement();
+	    str += "\n..." + terminal.toString();
 	}
 	str += "})";
 	return str;
     }
 
+    //diva.graph.model.Graph
+    /**
+     * Return true if this graph contains the given node.
+     */
+    public boolean contains(Node n) {
+        if(n instanceof SchematicEntity) 
+            return containsEntity((SchematicEntity) n);
+        else if(n instanceof SchematicTerminal) 
+            return containsTerminal((SchematicTerminal) n);
+        else return false;
+
+    }
+
+    /**
+     * Return the number of nodes contained in
+     * this graph.
+     */
+    public int getNodeCount() {
+        return _entities.size() + _terminals.size(); 
+    }
+
+    /* Get the semantic object of this node. Generally this
+     * is used when this node is a "wrapper" for some other object
+     * or model with deeper meaning.
+     */
+    public Object getSemanticObject() {
+	return _semanticObject;
+    }
+    
+    /**
+     * Provide an iterator over the nodes in this
+     * graph.  This iterator does not support removal
+     * operations.
+     */
+    public Iterator nodes() {
+        return new EnumerationIterator(entities());
+    }
+
+    /**  Set the semantic object of this node. Generally this
+     * is used when this node is a "wrapper" for some other object
+     * or model with deeper meaning.
+     */
+    public void setSemanticObject(Object o) {
+	_semanticObject = o;
+    }
+
+
+    /**
+     * The underlying semantic object.
+     */
+    private Object _semanticObject = null;
+
     private NamedList _entities;
     private NamedList _ports;
+    private NamedList _terminals;
     private NamedList _relations;
 }
 

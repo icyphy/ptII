@@ -54,12 +54,15 @@ In these cases, the terminal is fixed to the position of the template.
 public class SchematicTerminal extends PTMLTemplateObject 
 implements diva.graph.model.Node {
 
+    //FIXME: hack to get unique names.
+    private static int _instance = 0;
     /**
      * Create a new SchematicTerminal with the name "SchematicTerminal",
      * and no template. 
      */
     public SchematicTerminal () {
-        this("SchematicTerminal", null);
+        this("SchematicTerminal" + _instance, null);
+        _instance++;
     }
 
     /** 
