@@ -528,6 +528,24 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
                   
                   if (channel == -1) {
                      // need to do a lookup of buffer for the port
+                     
+                     // assign the channel to a dummy variable to avoid side effects
+                     AssignNode chanAssignNode = new AssignNode(new ObjectNode(
+                      new NameNode(AbsentTreeNode.instance, "_cg_chan_temp")),
+                      firstArg);
+                      
+                     ArrayAccessNode findBufferNode = new ArrayAccessNode(new ObjectNode(
+                      new NameNode(AbsentTreeNode.instance, "_cg_" + varName + "_chan_buffer")), 
+                      chanAssignNode);
+                      
+                     PostIncrNode offsetIncrNode = new PostIncrNode(
+                      new ArrayAccessNode(
+                       new ObjectNode(
+                        new NameNode(AbsentTreeNode.instance, "_cg_" + varName + "_offset")),
+                       new ObjectNode(
+                        new NameNode(AbsentTreeNode.instance, "_cg_chan_temp"))));
+ 
+                     return new ArrayAccessNode(findBufferNode, offsetIncrNode);
                   
                   } else {
                      String bufferName = bufferArray[channel];
@@ -573,6 +591,56 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
                      return new BoolLitNode("true");
                   } else {
                      return new BoolLitNode("false");
+                  }
+               } else if (methodName.equals("send")) {
+                  BufferInfo bufferInfo = (BufferInfo) _actorInfo.outputInfoMap.get(port);
+                  
+                  if (bufferInfo == null) {
+                     // port is not connected
+                     
+                     // DANGER, neither of the method arguments to put() will be evaluated
+                     
+                     return NullValue.instance;
+                  }
+                              
+                  if (port.isMultiport()) {
+                     // assign the channel to a dummy variable to avoid side effects
+                     AssignNode chanAssignNode = new AssignNode(new ObjectNode(
+                      new NameNode(AbsentTreeNode.instance, "_cg_chan_temp")),
+                      firstArg);
+                                    
+                     ObjectNode bufferObjectNode = new ObjectNode(
+                      (NameNode) StaticResolution.makeNameNode(
+                       "CG_Main." + bufferInfo.codeGenName));
+                                    
+                     ArrayAccessNode bufferArrayAccessNode = new ArrayAccessNode(
+                      bufferObjectNode, chanAssignNode);
+                      
+                     PostIncrNode offsetIncrNode = new PostIncrNode(
+                      new ArrayAccessNode(
+                       new ObjectNode(
+                        new NameNode(AbsentTreeNode.instance, "_cg_" + varName + "_offset")),
+                       new ObjectNode(
+                        new NameNode(AbsentTreeNode.instance, "_cg_chan_temp"))));
+                      
+                     return new AssignNode(
+                      new ArrayAccessNode(bufferArrayAccessNode, offsetIncrNode),
+                      (ExprNode) methodArgs.get(1));
+                                                             
+                  } else {
+                     ObjectNode bufferObjectNode = new ObjectNode(
+                      (NameNode) StaticResolution.makeNameNode(
+                       "CG_Main." + bufferInfo.codeGenName));
+                     
+                     PostIncrNode offsetIncrNode = new PostIncrNode(
+                      new ArrayAccessNode(
+                       new ObjectNode(
+                        new NameNode(AbsentTreeNode.instance, "_cg_" + varName + "_offset")),
+                       new IntLitNode("0")));
+                     
+                     return new AssignNode(
+                      new ArrayAccessNode(bufferObjectNode, offsetIncrNode),
+                      (ExprNode) methodArgs.get(1));                                        
                   }
                } else if (methodName.equals("setInput") || 
                           methodName.equals("setMultiport") || 
@@ -1035,11 +1103,8 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
           // remove this later
           case PtolemyTypeVisitor.TYPE_KIND_TOKEN:
           case PtolemyTypeVisitor.TYPE_KIND_SCALAR_TOKEN:                                         
-          return new IntLitNode("0");
-          
-          case PtolemyTypeVisitor.TYPE_KIND_MATRIX_TOKEN:                               
-          return new NullPntrNode();
-                    
+          case PtolemyTypeVisitor.TYPE_KIND_MATRIX_TOKEN:                                         
+          return new IntLitNode("0");                    
         }
 
         ApplicationUtility.error("unexpected type for dummy() : " + type);        

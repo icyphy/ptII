@@ -285,7 +285,7 @@ public class CodeGenerator extends CompositeActorApplication {
               
               bufferInfo.type = port.getType();                                         
                  
-              actorInfo.inputInfoMap.put(port, bufferInfo);
+              actorInfo.outputInfoMap.put(port, bufferInfo);
               
               _bufferInfoMap.put(port, bufferInfo);
            }                 
