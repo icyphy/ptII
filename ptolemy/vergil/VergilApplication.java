@@ -105,7 +105,7 @@ public class VergilApplication extends MDIApplication {
        	
 	DesktopFrame frame = new DesktopFrame(this, new JPanel());
         setApplicationFrame(frame);
-
+    
         // Create and initialize the storage policy
         DefaultStoragePolicy storage = new DefaultStoragePolicy();
         setStoragePolicy(storage);
@@ -147,7 +147,6 @@ public class VergilApplication extends MDIApplication {
         frame.setIconImage(iconImage);
 
         setCurrentDocument(null);
-        addDocumentListener(new MouseFocusMover());
 
 	// FIXME read this out of resources somehow.
 	new ptolemy.vergil.ptolemy.PtolemyModule(this);
@@ -218,10 +217,9 @@ public class VergilApplication extends MDIApplication {
 				       "on VergilDocuments.");
 	}
 	JComponent view = ((VergilDocument)document).createView();
-        view.addMouseListener(new MouseFocusMover());
         return view;
     }
-
+        
     /** 
      * Return the list of factories that create new documents.
      * @return An unmodifiable list of instances of DocumentFactory.
@@ -274,7 +272,7 @@ public class VergilApplication extends MDIApplication {
     * intended to allow an application to perform some action at this point,
     * such as executing a graph layout algorithm.  In this class, do nothing.
     */
-    public void redisplay(Document document, JComponent view) {
+    public void redisplay(Document document, JComponent view) {       
     }
 
     /** 
@@ -372,46 +370,12 @@ public class VergilApplication extends MDIApplication {
 				   "addDocumentFactory instead.");
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                    private inner classes                  ////
-
-    // This class is responsible for keeping the keyboard focus attached to
-    // the active document's component.  It is added (as a mouse listener)
-    // to the view that is created for every document.  
-    // It is also added to this application as a document listener, since
-    // the focus could be changed through a method without a mouse click
-    // occuring.  (This often happens when a document is first created.
-    private class MouseFocusMover extends MouseAdapter 
-	implements ListDataListener {        
-	/**
-	 * Grab the keyboard focus when the component that this listener is
-	 * attached to is clicked on.
-	 */
-        public void mouseClicked(MouseEvent mouseEvent) {
-            Component component =
-                mouseEvent.getComponent();
-            if (!component.hasFocus()) {
-                component.requestFocus();
-            }
-        }
-
-	public void contentsChanged(ListDataEvent e) {
-	    VergilDocument document = (VergilDocument)getCurrentDocument();
-	    if(document == null) return;
-	    JComponent component = getView(document);
-	    if(component == null) return;
-	    if (!component.hasFocus()) {
-                component.requestFocus();
-            }
-	}        
-
-	public void intervalAdded(ListDataEvent e) {
-	}
-
-	public void intervalRemoved(ListDataEvent e) {
-	}
+   /** Show the error without the stack trace by default.
+     */
+    public void showError(String op, Exception e) {
+	GUIUtilities.showException(getApplicationFrame(), e, op);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
