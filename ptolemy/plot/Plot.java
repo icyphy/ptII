@@ -220,7 +220,6 @@ public class Plot extends PlotBox {
      *  fit better than long strings.
      *  @param dataset The dataset index.
      *  @param legend The label for the dataset.
-     *  @see #renameLegend(int, String)
      */
     public synchronized void addLegend(int dataset, String legend) {
         _checkDatasetIndex(dataset);
@@ -492,19 +491,6 @@ public class Plot extends PlotBox {
         _firstInSet = true;
         _sawFirstDataSet = false;
     }
-
-    /** Rename a legend.  
-     *  @param dataset The dataset of the legend to be renamed.
-     *  If there is no dataset with this value, then nothing happens.
-     *  @param newName  The new name of legend.
-     *  @see #addLegend(int, String)
-     */
-    public synchronized void renameLegend (int dataset, String newName) {
-     int index = _legendDatasets.indexOf (new Integer (dataset), 0);
-     if (index != -1) {
-       _legendStrings.setElementAt(newName, index);
-     }
-   }
 
     /** Create a sample plot.  This is not actually done immediately
      *  unless the calling thread is the event dispatch thread.

@@ -270,6 +270,7 @@ public class PlotBox extends JPanel implements Printable {
      *  argument is null, then no legend is added.
      *  @param dataset The dataset index.
      *  @param legend The label for the dataset.
+     *  @see #renameLegend(int, String)
      */
     public synchronized void addLegend(int dataset, String legend) {
         // Changing legend means we need to repaint the offscreen buffer.
@@ -1097,6 +1098,19 @@ public class PlotBox extends JPanel implements Printable {
         if (found) {
             _legendDatasets.remove(foundIndex);
             _legendStrings.remove(foundIndex);
+        }
+    }
+
+    /** Rename a legend.  
+     *  @param dataset The dataset of the legend to be renamed.
+     *  If there is no dataset with this value, then nothing happens.
+     *  @param newName  The new name of legend.
+     *  @see #addLegend(int, String)
+     */
+    public synchronized void renameLegend (int dataset, String newName) {
+        int index = _legendDatasets.indexOf (new Integer (dataset), 0);
+        if (index != -1) {
+            _legendStrings.setElementAt(newName, index);
         }
     }
 
