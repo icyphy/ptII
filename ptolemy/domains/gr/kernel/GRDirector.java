@@ -297,7 +297,7 @@ public class GRDirector extends StaticSchedulingDirector {
         int inputCount = 0;
         while(inputPorts.hasNext()) {
             IOPort inputPort = (IOPort) inputPorts.next();
-            int threshold = GRScheduler.getTokenConsumptionRate(inputPort);
+            int threshold = 1;
             Receiver receivers[][] = inputPort.getReceivers();
 
             int channel;
@@ -506,7 +506,7 @@ public class GRDirector extends StaticSchedulingDirector {
         ListIterator receiverIterator = _receiverTable.listIterator();
         while(receiverIterator.hasNext()) {
             GRReceiver currentReceiver = (GRReceiver) receiverIterator.next();
-            currentReceiver.determineEnds(this);
+            //currentReceiver.determineEnds(this);
         }
 
         receiverIterator = _receiverTable.listIterator();
@@ -565,7 +565,7 @@ public class GRDirector extends StaticSchedulingDirector {
 
         while(receiverIterator.hasNext()) {
             GRReceiver currentReceiver = (GRReceiver) receiverIterator.next();
-            currentReceiver.displayReceiverInfo();
+            debug.println(" receiver "+currentReceiver);
         }
         debug.println("\n");
     }
@@ -657,7 +657,7 @@ public class GRDirector extends StaticSchedulingDirector {
     	    for(int j=0;j<portReceivers[i].length;j++) {
     	        debug.println("  ->"+portReceivers[i][j]);
     	        debug.println("  =>"+portReceivers[i][j].getContainer());
-    	        ((GRReceiver)portReceivers[i][j]).displayReceiverInfo();
+    	        //((GRReceiver)portReceivers[i][j]).displayReceiverInfo();
     	    }
     	}
     }
@@ -688,25 +688,6 @@ public class GRDirector extends StaticSchedulingDirector {
         Director outsideDirector = container.getExecutiveDirector();
 
         return outsideDirector;
-    }
-
-
-    /** Convenience method for getting the token consumption rate of a
-     *  specified port. If the port does not have the attribute
-     *  "tokenConsumptionRate" then return a rate of 1.
-     *  @param ioport The port to be queried
-     *  @returns The token consumption rate of the port.
-     *  @exception IllegalActionException If getting an attribute from
-     *  this port fails.
-     */
-    private int _getTokenConsumptionRate(IOPort ioport) throws IllegalActionException {
-        int rate;
-        Parameter param = (Parameter) ioport.getAttribute("tokenConsumptionRate");
-    	if (param != null) {
-            rate = ((IntToken)param.getToken()).intValue();
-        } else rate = 1;
-
-        return rate;
     }
 
 
