@@ -59,11 +59,98 @@ public class ResolveTypesVisitor extends ResolveVisitorBase
 
         NameNode name = node.getName();
 
-        NameNode newName = (NameNode) StaticResolution.resolveAName(
-                name, scope, null, _currentPackage, CG_USERTYPE);
-
+	try {
+	    NameNode newName =
+		(NameNode) StaticResolution.resolveAName(name, scope, null,
+							 _currentPackage,
+							 CG_USERTYPE);
+	    node.setName(newName);
+	} catch (RuntimeException ex) {
+	    // FIXME?  This is a bit of a problem for type safe
+	    // enumerations where we refer to a public field in a
+	    // public inner class.  
+	    // For example data/expr/Variable has a line:
+	    // private Settable.Visibility _visibility = Settable.NONE;
+	    // which refers to a type safe enum in
+	    // ptolemy/kernel/util.Visibility
+	    NameNode parentName = (NameNode) name.getQualifier();
+  		System.err.println("ResolveTypesVisitor.visitTypeNameNode():" +
+  				   " failed to resolve\n" + node + 
+  				   "\n name = " + name +
+//    				   " node.hashCode() = " + node.hashCode() +
+//    				   " name.hashCode() = " + name.hashCode() +
+  				   "\n Trying potential inner class " +
+//      				   parentName +
+//      				   " parentName.hashCode() = " + parentName.hashCode() +
+//    				   "\n parentName.getIdent()" +
+  				   parentName.getIdent());
+	    if (parentName != null) {
+		try {
+		    NameNode newName =
+			(NameNode) StaticResolution.resolveAName(parentName,
+								 scope, null,
+								 _currentPackage,
+								 CG_USERTYPE);
+//  		    System.err.println("ResolveTypesVisitor." +
+//  				       "visitTypeNameNode():" +
+//  				       "newName = " + newName +
+//  				       "\n newName.hashCode()"+
+//  				       newName.hashCode());
+		newName.setIdent(parentName.getIdent() + '$' +
+				     name.getIdent());
+		newName.removeProperty(DECL_KEY);
+//  		System.err.println("ResolveTypesVisitor.visitTypeNameNode():" +
+//  				   "newName after setIdent = " + newName +
+//  				   "\n newName.hashCode()" + 
+//  				   newName.hashCode() +
+//  				   "newName.getQualifier()" +
+//  				   newName.getQualifier());   
+		    try {
+			NameNode newerName =
+			    (NameNode) StaticResolution.
+			    resolveAName(newName,
+					 scope, null,
+					 _currentPackage,
+					 CG_USERTYPE);
+//  			System.err.println("ResolveTypesVisitor." +
+//  					   "visitTypeNameNode():" +
+//  					   "newerName = " + newerName +
+//  					   "\n newerName.hashCode()" +
+//  					   newerName.hashCode());
+		
+			node.setName(newerName);
+  			System.out.println("ResolveTypesVisitor." +
+  					   "visitTypeNameNode(): substituted "+
+					   node.getName());
+//  			System.out.println("ResolveTypesVisitor." +
+//  					   "visitTypeNameNode(): did " +
+//  					   "subsitution. " +
+//  					   node.isSingleton() + 
+//  					   " node.hashCode = " +
+//  					   node.hashCode() +
+//  					   " node is now" + node +
+//  					   " newerName.hashCode = " +
+//  					   newerName.hashCode() +
+//  					   "\n newerName = " + newerName);
+		    } catch (RuntimeException runtimeException) {
+			System.err.println("ResolveTypesVisitor." +
+					   "visitTypeNameNode(): " +
+					   "failed to resolve newName\n" +
+					   newName + "\n: ");
+			throw runtimeException;
+		    }
+		} catch (RuntimeException runtimeException) {
+		    System.err.println("ResolveTypesVisitor." +
+				       "visitTypeNameNode(): " +
+				       "failed to resolve\n" +
+				       parentName + "\n: ");
+	          throw runtimeException;
+		}
+	    } else {
+		throw ex;
+	    }
+	}
         // this is not necessary, but by convention ...
-        node.setName(newName);
 
         return null;
     }
