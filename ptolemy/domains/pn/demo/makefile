@@ -37,7 +37,7 @@ ME =		java/ptolemy/domains/pn/demo
 # Get configuration info
 CONFIG =	$(ROOT)/mk/tycho.mk
 include $(CONFIG)
-#JAVAHOME =      /optolemy/jdk1.2latest
+#JAVAHOME =      /opt/jdk1.2latest
 
 DIRS = 		# demo test doc
 

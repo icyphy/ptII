@@ -64,7 +64,7 @@ public class PNExampleApplet extends Applet {
     }
 
     /** For use as an application.  Use the following command to run:
-     * java -classpath $PTOLEMY/tycho/java:/optolemy/jdk1.1.4/lib/classes.zip ptolemy.domains.pn.kernel.demo.PNExampleApplet 0 1
+     * java -classpath $PTOLEMY/tycho/java:/opt/jdk1.1.4/lib/classes.zip ptolemy.domains.pn.kernel.demo.PNExampleApplet 0 1
      */
     public static void main(String args[])
     {

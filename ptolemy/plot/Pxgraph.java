@@ -404,10 +404,10 @@ the location of the Ptplot <CODE>.class</CODE> files.
 <MENU>
 <LI> If the <CODE>JAVAHOME</CODE> environment variable is set, then
 it is read and <CODE>$JAVAHOME/lib/classes.zip</CODE> is used in the
-classpath.  For example, if your JDK was at <CODE>/optolemy/jdk1.1.4</CODE>,
+classpath.  For example, if your JDK was at <CODE>/opt/jdk1.1.4</CODE>,
 then you would add the following to your <CODE>.cshrc</CODE>:
 <PRE>
-setenv JAVAHOME /optolemy/jdk1.1.4
+setenv JAVAHOME /opt/jdk1.1.4
 </PRE>
  <BR>If <CODE>JAVAHOME</CODE> is not set, then the script searches
 the path and looks for the <CODE>java</CODE> binary.  If the

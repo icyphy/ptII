@@ -100,7 +100,7 @@ public class PlotLiveDemo extends PlotLive {
    /**
     * Run as an application for testing.  Run with:
     * <pre>
-java -classpath ../../..:/optolemy/jdk1.1.4/lib/classes.zip ptolemy.plot.demo.PlotLiveDemo
+java -classpath ../../..:/opt/jdk1.1.4/lib/classes.zip ptolemy.plot.demo.PlotLiveDemo
     * </pre>
     */
     public static void main(String args[]) {
