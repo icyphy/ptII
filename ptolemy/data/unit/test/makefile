@@ -50,7 +50,8 @@ JSRCS =
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
 	UnitSystem.tcl \
-	UnitUtilities.tcl
+	UnitUtilities.tcl \
+	UParser.tcl
 
 # Graphical Java tests that use Tcl.
 # If there are no tests, we use a dummy file so that the script that builds
