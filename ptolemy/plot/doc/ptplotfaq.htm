@@ -45,7 +45,7 @@ infrastructure.
 	<LI> <A HREF="#mydata"><B>3.1 Plot my own data?</B></A>
 	<LI> <A HREF="#binarydata"><B>3.2 How do I plot binary data?</B></A>
 	<LI> <A HREF="#endian"><B>3.3 How do I handle endian issues in binary data?</B></A>
-	<LI> <A HREF="#appletprinting"><B>3.4 How do I print a plot from a Plot applet?</B></A>
+	<LI> <A HREF="#appletprinting"><B>3.4 How do I print a plot from a Plot applet or application?</B></A>
 	<LI> <A HREF="#twofiles"><B>3.5 How do I plot two datafiles in an applet?</B></A>
 
 	<LI> <A HREF="#twoplots"><B>3.6 How do I have two separate plots?</B></A>
@@ -329,8 +329,8 @@ The
 <a href="http://www.afu.com/javafaq.htm" target="_top">Java Programmer's FAQ</a>
 has more information about endian issues.
 
-<DT>  <A NAME="appletprinting"><B>3.3 How do I print a plot from a Plot applet?</B></A>
-<DD> The JDK1.3 plug-in makes printing easier.  Most applets should
+<DT>  <A NAME="appletprinting"><B>3.4 How do I print a plot from a Plot applet or application?</B></A>
+<DD> The JDK1.3 plug-in makes printing applets easier.  Most applets should
 have a print icon on the upper right corner that will bring up a printer
 dialog.
 
@@ -377,6 +377,15 @@ and save a jpg.
  <p>Under Windows, you may want to try using
 <a href="http://www.techsmith.com/products/snagit/" target="_top">Snagit</a>,
 which is a commercially available program.
+
+
+<a href="http://ptolemy.eecs.berkeley.edu/java/ptplot/exportPNG-0.0.1.patch.gz"><code>http://ptolemy.eecs.berkeley.edu/java/ptplot/exportPNG-0.0.1.patch.gz</code></a>
+is a gzipped patch to Ptplot 5.2 by Bernard Guillot that "allows Easy Export to PNG. This in turn becomes an easy path to export to GIF and JPG.". Portions of the patch are under the GNU Lesser General Public License 2.1, see 
+<a href="http://www.gnu.org/copyleft/lesser.html"><code>http://www.gnu.org/copyleft/lesser.html</code></a>
+
+for details.  This patch has _not_ been tested by the Ptplot pteam at
+UC Berkeley.
+
 
  <p>To generate gifs, the servlet code at 
 <a href="http://ptolemy.eecs.berkeley.edu/java/ptplot/ptolemy-plot-servlet.tar.gz"><CODE>http://ptolemy.eecs.berkeley.edu/java/ptplot/ptolemy-plot-servlet.tar.gz</CODE></a>
