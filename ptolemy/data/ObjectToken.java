@@ -94,7 +94,8 @@ public class ObjectToken extends Token {
 	    return token;
 	}
 
-	// FIXME: token must be user defined. what to do?
+	// Argument type is lower, but don't know how to convert it
+	// to ObjectToken.
 	throw new IllegalActionException("cannot convert from token " +
 		"type: " + token.getClass().getName() + " to a ObjectToken");
     }
