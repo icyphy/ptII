@@ -33,6 +33,7 @@ package ptolemy.domains.fsm.kernel;
 import ptolemy.domains.ct.kernel.CTTransparentDirector;
 
 import ptolemy.domains.ct.kernel.CTDirector;
+import ptolemy.domains.ct.kernel.CTReceiver;
 import ptolemy.domains.ct.kernel.CTStepSizeControlActor;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Workspace;
@@ -141,26 +142,26 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
             ctrl._chooseTransition(st.preemptiveTransitionList());
         if (tr != null) {
 
-	    Actor[] actors = tr.destinationState().getRefinement();
+            Actor[] actors = tr.destinationState().getRefinement();
             if (actors != null) {
                 for (int i = 0; i < actors.length; ++i) {
                     if (actors[i].prefire()) {
                         actors[i].fire();
-			actors[i].postfire();
+                        actors[i].postfire();
                     }
                 }
             }
 
             return;
         }
-	Iterator actors = _enabledRefinements.iterator();
-	while (actors.hasNext()) {
-	    Actor actor = (Actor)actors.next();
+        Iterator actors = _enabledRefinements.iterator();
+        while (actors.hasNext()) {
+            Actor actor = (Actor)actors.next();
             if (_debugging) _debug(getName(), " fire refinement",
                     ((ptolemy.kernel.util.NamedObj)actor).getName());
-	    actor.fire();
-	}
-	ctrl._setInputsFromRefinement();
+            actor.fire();
+        }
+        ctrl._setInputsFromRefinement();
         ctrl._chooseTransition(st.nonpreemptiveTransitionList());
         return;
     }
@@ -216,7 +217,9 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
      *  @return a new CTReceiver.
      */
     public Receiver newReceiver() {
-        return new ptolemy.domains.ct.kernel.CTReceiver();
+        CTReceiver receiver = new CTReceiver();
+        receiver.setSignalType(CTReceiver.DISCRETE);
+        return receiver;
     }
 
     /** Return the smallest next step size predicted by the all the
