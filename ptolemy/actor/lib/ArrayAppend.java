@@ -76,7 +76,7 @@ public class ArrayAppend extends Transformer {
         input.setMultiport(true);
 
 	// set type constraints.
-	input.setTypeEquals(new ArrayType(BaseType.ANY));
+	input.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
         output.setTypeAtLeast(input);
     }
 

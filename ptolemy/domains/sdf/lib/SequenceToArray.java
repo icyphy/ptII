@@ -81,7 +81,7 @@ public class SequenceToArray extends SDFTransformer {
 	output.setTokenProductionRate(1);
 
 	// set the output type to be an ArrayType.
-	output.setTypeEquals(new ArrayType(BaseType.ANY));
+	output.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -119,12 +119,12 @@ test Manager-8.3 {Test run-time type checking} {
 #
 test Manager-8.4 {Test type resolution} {
     # use the setup above
-    $p1 setTypeEquals [java::field ptolemy.data.type.BaseType ANY]
+    $p1 setTypeEquals [java::field ptolemy.data.type.BaseType UNKNOWN]
 
     catch {$manager resolveTypes} msg
     list $msg
 } {{ptolemy.actor.TypeConflictException: Type conflicts occurred in .E0 on the following Typeables:
-  .E0.E1.P1: any
+  .E0.E1.P1: unknown
 }}
 
 ######################################################################
@@ -134,7 +134,7 @@ test Manager-8.5 {Test type resolution} {
     # use the setup above
     set tInt [[java::new ptolemy.data.IntToken] getType]
     $p1 setTypeEquals $tInt
-    $p2 setTypeEquals [java::field ptolemy.data.type.BaseType ANY]
+    $p2 setTypeEquals [java::field ptolemy.data.type.BaseType UNKNOWN]
 
     $manager resolveTypes
     set rt1 [[$p1 getType] toString]

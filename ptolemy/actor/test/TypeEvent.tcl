@@ -65,7 +65,7 @@ test TypeEvent-1.1 {Test type event} {
     $p1 setTypeEquals $ti
 
     $listener getMessage
-} {.E1.P1/any/int}
+} {.E1.P1/unknown/int}
 
 ######################################################################
 ####

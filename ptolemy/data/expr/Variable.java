@@ -140,7 +140,8 @@ A variable can also be reset. If the variable was originally set from a
 token, then this token is placed again in the variable, and the type of the
 variable is set to equal that of the token. If the variable
 was originally given an expression, then this expression is placed again
-in the variable (but not evaluated), and the type is reset to BaseType.ANY.
+in the variable (but not evaluated), and the type is reset to
+BaseType.UNKNOWN.
 The type will be determined when the expression is evaluated or when
 type resolution is done.
 <p>
@@ -481,9 +482,9 @@ public class Variable extends Attribute implements Typeable, Settable {
      *  returned type is the type the evaluation result. If the expression
      *  cannot be evaluated at this time, the returned type is the declared
      *  type of this Variable, which is either set by setTypeEquals(), or
-     *  the default BaseType.ANY; If no token has been set by setToken(),
+     *  the default BaseType.UNKNOWN; If no token has been set by setToken(),
      *  no expression has been set by setExpression(), and setTypeEquals()
-     *  has not been called, the returned type is BaseType.ANY.
+     *  has not been called, the returned type is BaseType.UNKNOWN.
      *  @return The type of this variable.
      */
     public Type getType() {
@@ -591,7 +592,7 @@ public class Variable extends Attribute implements Typeable, Settable {
      *  in the variable, and the type of the variable is set to equal
      *  that of the token. If the variable was originally given an
      *  expression, then this expression is placed again in the variable
-     *  (but not evaluated), and the type is reset to BaseType.ANY.
+     *  (but not evaluated), and the type is reset to BaseType.UNKNOWN.
      *  The type will be determined when the expression is evaluated or
      *  when type resolution is done.
      */
@@ -700,7 +701,7 @@ public class Variable extends Attribute implements Typeable, Settable {
 	    	_varType = _declaredType;
 	    } else {
 		// _varType = _declaredType
-		((StructuredType)_varType).initialize(BaseType.ANY);
+		((StructuredType)_varType).initialize(BaseType.UNKNOWN);
 	    }
         } else {
             _needsEvaluation = true;
@@ -771,15 +772,15 @@ public class Variable extends Attribute implements Typeable, Settable {
      *  is checked every time the value of the variable is set by
      *  setToken() or by evaluating an expression.  This type constraint
      *  is also returned by the typeConstraintList() methods.
-     *  To remove the type constraint, call this method will a BaseType.ANY
-     *  argument.
+     *  To remove the type constraint, call this method with a
+     *  BaseType.UNKNOWN argument.
      *  @exception IllegalActionException If the type of this object
      *   already violates this constraint, or if the argument is not
      *   an instantiable type in the type lattice.
      */
     public void setTypeAtMost(Type type) throws IllegalActionException {
-        if (type == BaseType.ANY) {
-            _typeAtMost = BaseType.ANY;
+        if (type == BaseType.UNKNOWN) {
+            _typeAtMost = BaseType.UNKNOWN;
             return;
         }
         if (!type.isInstantiable()) {
@@ -807,7 +808,7 @@ public class Variable extends Attribute implements Typeable, Settable {
      *  value is converted to the specified type, if possible, or an
      *  exception is thrown.
      *  To remove the type constraint, call this method with the argument
-     *  BaseType.ANY.
+     *  BaseType.UNKNOWN.
      *  @param type A Type.
      *  @exception IllegalActionException If the type of this object
      *   already violates this constraint, in that the currently contained
@@ -925,14 +926,14 @@ public class Variable extends Attribute implements Typeable, Settable {
 
         // If the variable has a type, add a constraint.
         // Type currentType = getType();
-        // if (currentType != BaseType.ANY) {
+        // if (currentType != BaseType.UNKNOWN) {
         //     TypeConstant current = new TypeConstant(currentType);
         //     Inequality ineq = new Inequality(current, getTypeTerm());
         //     result.add(ineq);
         // }
 
         // If an upper bound has been specified, add a constraint.
-        if (_typeAtMost != BaseType.ANY) {
+        if (_typeAtMost != BaseType.UNKNOWN) {
             TypeConstant atMost = new TypeConstant(_typeAtMost);
             Inequality ineq = new Inequality(getTypeTerm(), atMost);
             result.add(ineq);
@@ -1217,7 +1218,7 @@ public class Variable extends Attribute implements Typeable, Settable {
 	    	_varType = _declaredType;
 	    } else {
 		// _varType = _declaredType
-		((StructuredType)_varType).initialize(BaseType.ANY);
+		((StructuredType)_varType).initialize(BaseType.UNKNOWN);
 	    }
         } else {
 	    // newToken is not null, check if it is compatible with
@@ -1234,7 +1235,7 @@ public class Variable extends Attribute implements Typeable, Settable {
 		        "Cannot clone the declared type of this Variable.");
 	    }
 	    if (declaredType instanceof StructuredType) {
-		((StructuredType)declaredType).initialize(BaseType.ANY);
+		((StructuredType)declaredType).initialize(BaseType.UNKNOWN);
 	    }
 	    if (declaredType.isCompatible(newToken)) {
 		newToken = declaredType.convert(newToken);
@@ -1256,7 +1257,7 @@ public class Variable extends Attribute implements Typeable, Settable {
 	    }
 
             // Check setTypeAtMost constraint.
-            if (_typeAtMost != BaseType.ANY) {
+            if (_typeAtMost != BaseType.UNKNOWN) {
                 // Recalculate this in case the type has changed.
                 Type tokenType = newToken.getType();
                 int comparison
@@ -1325,7 +1326,7 @@ public class Variable extends Attribute implements Typeable, Settable {
             NamedObj container = (NamedObj)getContainer();
             if (container != null) {
                 if( !oldVarType.isEqualTo(_varType) &&
-                        oldVarType != BaseType.ANY) {
+                        oldVarType != BaseType.UNKNOWN) {
                     container.attributeTypeChanged(this);
                 }
                 container.attributeChanged(this);
@@ -1395,7 +1396,7 @@ public class Variable extends Attribute implements Typeable, Settable {
     private NamedList _scopeVariables = null;
 
     // Stores the Class object which represents the type of this variable.
-    private Type _varType = BaseType.ANY;
+    private Type _varType = BaseType.UNKNOWN;
 
     // The parser used by this variable to parse expressions.
     private PtParser _parser;
@@ -1410,12 +1411,12 @@ public class Variable extends Attribute implements Typeable, Settable {
     // Type constraints.
     private List _constraints = new LinkedList();
 
-    // The type set by setTypeEquals(). If _declaredType is not BaseType.ANY,
-    // the type of this Variable is fixed to that type.
-    private Type _declaredType = BaseType.ANY;
+    // The type set by setTypeEquals(). If _declaredType is not
+    // BaseType.UNKNOWN, the type of this Variable is fixed to that type.
+    private Type _declaredType = BaseType.UNKNOWN;
 
     // If setTypeAtMost() has been called, then the type bound is stored here.
-    private Type _typeAtMost = BaseType.ANY;
+    private Type _typeAtMost = BaseType.UNKNOWN;
 
     // Reference to the inner class that implements InequalityTerm.
     TypeTerm _typeTerm = null;
@@ -1486,7 +1487,7 @@ public class Variable extends Attribute implements Typeable, Settable {
                         "The argument is not a Type.");
 	    }
 
-	    if (_declaredType == BaseType.ANY) {
+	    if (_declaredType == BaseType.UNKNOWN) {
 		_varType = (Type)e;
 	    } else {
 		// _declaredType is a StructuredType
@@ -1496,8 +1497,8 @@ public class Variable extends Attribute implements Typeable, Settable {
 
         /** Test if the type of this variable is fixed. The type is fixed if
 	 *  setTypeEquals() is called with an argument that is not
-	 *  BaseType.ANY, or the user has set a non-null expression or token
-	 *  into this variable.
+	 *  BaseType.UNKNOWN, or the user has set a non-null expression or
+	 *  token into this variable.
          *  @return True if the type of this variable can be set;
 	 *   false otherwise.
          */
@@ -1537,7 +1538,7 @@ public class Variable extends Attribute implements Typeable, Settable {
 			+ ", New type: " + e.toString());
 	    }
 
-	    if (_declaredType == BaseType.ANY) {
+	    if (_declaredType == BaseType.UNKNOWN) {
 		_varType = (Type)e;
 	    } else {
 		// _declaredType is a StructuredType

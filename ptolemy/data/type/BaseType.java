@@ -83,15 +83,15 @@ public class BaseType implements Type, Serializable {
     }
 
     /** Test if the argument token is compatible with this type. The method
-     *  returns true if this type is ANY, since any type is a substitution
-     *  instance of it. If this type is not ANY, this method returns true
+     *  returns true if this type is UNKNOWN, since any type is a substitution
+     *  instance of it. If this type is not UNKNOWN, this method returns true
      *  if the argument type is less than or equal to this type in the type
      *  lattice, and false otherwise.
      *  @param t A Token.
      *  @return True if the argument token is compatible with this type.
      */
     public boolean isCompatible(Token t) {
-	if (this == ANY) {
+	if (this == UNKNOWN) {
 	    return true;
 	}
 
@@ -99,11 +99,11 @@ public class BaseType implements Type, Serializable {
 	return (typeInfo == CPO.SAME || typeInfo == CPO.HIGHER);
     }
 
-    /** Test if this Type is ANY.
-     *  @return True if this Type is not ANY; false otherwise.
+    /** Test if this Type is UNKNOWN.
+     *  @return True if this Type is not UNKNOWN; false otherwise.
      */
     public boolean isConstant() {
-	return this != ANY;
+	return this != UNKNOWN;
     }
 
     /** Determine if the argument represents the same BaseType as this
@@ -120,11 +120,11 @@ public class BaseType implements Type, Serializable {
 
     /** Determine if this type corresponds to an instantiable token
      *  classes. A BaseType is instantiable if it does not correspond
-     *  to an abstract token class, or an interface, or ANY.
+     *  to an abstract token class, or an interface, or UNKNOWN.
      *  @return True if this type is instantiable.
      */
     public boolean isInstantiable() {
-	if (this == ANY) {
+	if (this == UNKNOWN) {
 	    return false;
 	}
 
@@ -142,10 +142,10 @@ public class BaseType implements Type, Serializable {
 
     /** Return true if the argument is a substitution instance of this type.
      *  @param type A Type.
-     *  @return True if this type is ANY; false otherwise.
+     *  @return True if this type is UNKNOWN; false otherwise.
      */
     public boolean isSubstitutionInstance(Type type) {
-	return (this == ANY) || (this == type);
+	return (this == UNKNOWN) || (this == type);
     }
 
     /** Return the string representation of this type.
@@ -161,10 +161,10 @@ public class BaseType implements Type, Serializable {
     /** The bottom element of the data type lattice. It represents a
      *  type variable.
      */
-    public static final BaseType ANY = new BaseType(Void.TYPE, "any",
+    public static final BaseType UNKNOWN = new BaseType(Void.TYPE, "unknown",
             new ConvertOperator() {
         public Token convert(Token t) throws IllegalActionException {
-            // Since any type is a substitution instance of ANY, just
+            // Since any type is a substitution instance of UNKNOWN, just
             // return the argument.
             return t;
         }

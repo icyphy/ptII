@@ -51,7 +51,7 @@ $Id$
 public class ArrayType extends StructuredType {
 
     /** Construct a new ArrayType with the specified type for the array
-     *  elements. To leave the element type undeclared, use BaseType.ANY.
+     *  elements. To leave the element type undeclared, use BaseType.UNKNOWN.
      *  @exception IllegalArgumentException If the argument is null.
      */
     public ArrayType(Type elementType) {
@@ -162,7 +162,7 @@ public class ArrayType extends StructuredType {
     }
 
 
-    /** Set the elements that have declared type BaseType.ANY (the leaf
+    /** Set the elements that have declared type BaseType.UNKNOWN (the leaf
      *  type variable) to the specified type.
      *  @param t the type to set the leaf type variable to.
      */
@@ -206,7 +206,7 @@ public class ArrayType extends StructuredType {
     }
 
     /** Test if this ArrayType is a constant. An ArrayType is a constant if
-     *  it does not contain BaseType.ANY in any level.
+     *  it does not contain BaseType.UNKNOWN in any level.
      *  @return True if this type is a constant.
      */
     public boolean isConstant() {
@@ -262,7 +262,7 @@ public class ArrayType extends StructuredType {
      *  The specified type must be an ArrayType with the same structure as
      *  this type.
      *  This method will only update the component whose declared type is
-     *  BaseType.ANY, and leave the constant part of this type intact.
+     *  BaseType.UNKNOWN, and leave the constant part of this type intact.
      *  @param newType A StructuredType.
      *  @exception IllegalActionException If the specified type is not an
      *   ArrayType or it does not have the same structure as this one.
@@ -288,7 +288,7 @@ public class ArrayType extends StructuredType {
         }
 
         Type newElemType = ((ArrayType)newType).getElementType();
-        if (_declaredElementType == BaseType.ANY) {
+        if (_declaredElementType == BaseType.UNKNOWN) {
             try {
                 _elementType = (Type)newElemType.clone();
             } catch (CloneNotSupportedException cnse) {
@@ -402,7 +402,7 @@ public class ArrayType extends StructuredType {
 
     private ElementTypeTerm _elemTypeTerm = null;
 
-    private static ArrayType _representative = new ArrayType(BaseType.ANY);
+    private static ArrayType _representative = new ArrayType(BaseType.UNKNOWN);
 
     ///////////////////////////////////////////////////////////////////
     ////                           inner class                     ////
@@ -465,7 +465,7 @@ public class ArrayType extends StructuredType {
                         "The argument is not a Type.");
             }
 
-            if (_declaredElementType == BaseType.ANY) {
+            if (_declaredElementType == BaseType.UNKNOWN) {
                 _elementType = (Type)e;
             } else {
                 // element type is a structured type.
@@ -512,7 +512,7 @@ public class ArrayType extends StructuredType {
 			+ ", New type: " + e.toString());
             }
 
-            if (_declaredElementType == BaseType.ANY) {
+            if (_declaredElementType == BaseType.UNKNOWN) {
                 try {
                     _elementType = (Type)((Type)e).clone();
                 } catch (CloneNotSupportedException cnse) {

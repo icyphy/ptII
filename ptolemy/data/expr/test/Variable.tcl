@@ -438,7 +438,7 @@ test Variable-12.0 {Test exportMoML} {
 #
 test Variable-13.0 {Test setting structured type} {
     set v [java::new ptolemy.data.expr.Variable]
-    set nat [java::field ptolemy.data.type.BaseType ANY]
+    set nat [java::field ptolemy.data.type.BaseType UNKNOWN]
     set natArrayType [java::new ptolemy.data.type.ArrayType $nat]
     $v setTypeEquals $natArrayType
 
@@ -463,7 +463,7 @@ test Variable-13.0 {Test setting structured type} {
 #
 test Variable-13.2 {Test setting structured type} {
     set v [java::new ptolemy.data.expr.Variable]
-    set nat [java::field ptolemy.data.type.BaseType ANY]
+    set nat [java::field ptolemy.data.type.BaseType UNKNOWN]
     set natArrayType [java::new ptolemy.data.type.ArrayType $nat]
     $v setTypeEquals $natArrayType
 

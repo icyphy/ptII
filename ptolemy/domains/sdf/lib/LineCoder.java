@@ -66,7 +66,7 @@ public class LineCoder extends SDFTransformer {
         input.setTypeEquals(BaseType.BOOLEAN);
 
         table = new Parameter(this, "table");
-        table.setTypeEquals(new ArrayType(BaseType.ANY));
+        table.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
         table.setExpression("[-1.0, 1.0]");
         attributeChanged(table);
 

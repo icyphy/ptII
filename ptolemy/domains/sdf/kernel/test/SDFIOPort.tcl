@@ -167,7 +167,7 @@ test SDFIOPort-4.1 {Check description on a new SDFIOPort} {
 
     list [expr {$p0 == [java::null]}]
     $p0 description $detail
-} {ptolemy.domains.sdf.kernel.SDFIOPort {.} type {declared any resolved any}}
+} {ptolemy.domains.sdf.kernel.SDFIOPort {.} type {declared unknown resolved unknown}}
 
 ######################################################################
 ####

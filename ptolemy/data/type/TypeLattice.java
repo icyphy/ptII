@@ -100,8 +100,8 @@ public class TypeLattice {
     // The infinite type lattice
     private static class TheTypeLattice implements CPO {
 
-        /** Return the bottom element of the type lattice, which is ANY.
-         *  @return The Type object representing ANY.
+        /** Return the bottom element of the type lattice, which is UNKNOWN.
+         *  @return The Type object representing UNKNOWN.
          */
         public Object bottom() {
 	    return _basicLattice.bottom();
@@ -193,7 +193,7 @@ public class TypeLattice {
 	    } else if (compareResult == LOWER) {
 		return ct1;
 	    } else {
-		// incomparable, GLB should be ANY.
+		// incomparable, GLB should be UNKNOWN.
 		return _basicLattice.greatestLowerBound(t1Rep, t2Rep);
 	    }
 	}
@@ -325,7 +325,7 @@ public class TypeLattice {
          */
 	public Object leastUpperBound(Object[] subset) {
 	    if (subset.length == 0) {
-		return BaseType.ANY;
+		return BaseType.UNKNOWN;
 	    }
 
 	    Object lub = subset[0];
@@ -363,7 +363,7 @@ public class TypeLattice {
 	private TheTypeLattice() {
 	    _basicLattice = new DirectedAcyclicGraph();
 	    StructuredType arrayRep =
-		(new ArrayType(BaseType.ANY))._getRepresentative();
+		(new ArrayType(BaseType.UNKNOWN))._getRepresentative();
 
 	    String[] labels = new String[0];
 	    Type[] types = new Type[0];
@@ -383,7 +383,7 @@ public class TypeLattice {
 	    _basicLattice.add(BaseType.LONG);
 	    _basicLattice.add(BaseType.LONG_MATRIX);
 	    _basicLattice.add(BaseType.MATRIX);
-	    _basicLattice.add(BaseType.ANY);
+	    _basicLattice.add(BaseType.UNKNOWN);
 	    _basicLattice.add(BaseType.NUMERICAL);
 	    _basicLattice.add(BaseType.OBJECT);
 	    _basicLattice.add(BaseType.SCALAR);
@@ -394,12 +394,12 @@ public class TypeLattice {
 	    _basicLattice.add(recordRep);
 
 	    _basicLattice.addEdge(BaseType.OBJECT, BaseType.GENERAL);
-	    _basicLattice.addEdge(BaseType.ANY, BaseType.OBJECT);
+	    _basicLattice.addEdge(BaseType.UNKNOWN, BaseType.OBJECT);
 	    _basicLattice.addEdge(BaseType.STRING, BaseType.GENERAL);
 	    _basicLattice.addEdge(BaseType.MATRIX, BaseType.STRING);
 	    _basicLattice.addEdge(BaseType.BOOLEAN_MATRIX, BaseType.MATRIX);
 	    _basicLattice.addEdge(BaseType.BOOLEAN, BaseType.BOOLEAN_MATRIX);
-	    _basicLattice.addEdge(BaseType.ANY, BaseType.BOOLEAN);
+	    _basicLattice.addEdge(BaseType.UNKNOWN, BaseType.BOOLEAN);
 
 	    _basicLattice.addEdge(BaseType.NUMERICAL, BaseType.MATRIX);
 	    _basicLattice.addEdge(BaseType.FIX_MATRIX, BaseType.NUMERICAL);
@@ -409,13 +409,13 @@ public class TypeLattice {
 
 	    _basicLattice.addEdge(BaseType.FIX, BaseType.FIX_MATRIX);
 	    _basicLattice.addEdge(BaseType.FIX, BaseType.SCALAR);
-	    _basicLattice.addEdge(BaseType.ANY, BaseType.FIX);
+	    _basicLattice.addEdge(BaseType.UNKNOWN, BaseType.FIX);
 	    _basicLattice.addEdge(BaseType.LONG, BaseType.SCALAR);
 	    _basicLattice.addEdge(BaseType.LONG, BaseType.LONG_MATRIX);
 	    _basicLattice.addEdge(BaseType.INT_MATRIX, BaseType.LONG_MATRIX);
 	    _basicLattice.addEdge(BaseType.INT, BaseType.LONG);
 	    _basicLattice.addEdge(BaseType.INT, BaseType.INT_MATRIX);
-	    _basicLattice.addEdge(BaseType.ANY, BaseType.INT);
+	    _basicLattice.addEdge(BaseType.UNKNOWN, BaseType.INT);
 
 	    _basicLattice.addEdge(BaseType.INT_MATRIX, BaseType.DOUBLE_MATRIX);
 	    _basicLattice.addEdge(BaseType.DOUBLE_MATRIX,
@@ -429,10 +429,10 @@ public class TypeLattice {
 	    _basicLattice.addEdge(BaseType.INT, BaseType.DOUBLE);
 
 	    _basicLattice.addEdge(arrayRep, BaseType.GENERAL);
-	    _basicLattice.addEdge(BaseType.ANY, arrayRep);
+	    _basicLattice.addEdge(BaseType.UNKNOWN, arrayRep);
 
 	    _basicLattice.addEdge(recordRep, BaseType.GENERAL);
-	    _basicLattice.addEdge(BaseType.ANY, recordRep);
+	    _basicLattice.addEdge(BaseType.UNKNOWN, recordRep);
 
 	    if ( !_basicLattice.isLattice()) {
 		throw new InternalErrorException("TheTypeLattice: The " +

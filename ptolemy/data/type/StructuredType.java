@@ -63,7 +63,7 @@ public abstract class StructuredType implements Type {
      */
     abstract public Object clone() throws CloneNotSupportedException;
 
-    /** Set the elements that have declared type BaseType.ANY to the
+    /** Set the elements that have declared type BaseType.UNKNOWN to the
      *  specified type.
      *  @param type A Type.
      */
@@ -71,8 +71,8 @@ public abstract class StructuredType implements Type {
 
     /** Update this StructuredType to the specified Structured Type.
      ** The specified type must have the same structure as this type.
-     *  This method will only update the component type that is BaseType.ANY,
-     *  and leave the constant part of this type intact.
+     *  This method will only update the component type that is
+     *  BaseType.UNKNOWN, and leave the constant part of this type intact.
      *  @param newType A StructuredType.
      *  @exception IllegalActionException If the specified type has a
      *   different structure.

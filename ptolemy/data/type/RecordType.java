@@ -56,7 +56,7 @@ $Id$
 public class RecordType extends StructuredType {
 
     /** Construct a new RecordType with the specified labels and types.
-     *  To leave the types of some fields undeclared, use BaseType.ANY.
+     *  To leave the types of some fields undeclared, use BaseType.UNKNOWN.
      *  The labels and the types are specified in two arrays. These two
      *  arrays must have the same length, and their elements have one to
      *  one correspondence. That is, the i'th entry in the types array is
@@ -198,7 +198,7 @@ public class RecordType extends StructuredType {
     }
 
     /** Test if this RecordType is a constant. A RecordType is a constant if
-     *  it does not contain BaseType.ANY in any level.
+     *  it does not contain BaseType.UNKNOWN in any level.
      *  @return True if this type is a constant.
      */
     public boolean isConstant() {
@@ -332,7 +332,7 @@ public class RecordType extends StructuredType {
         return s + "}";
     }
 
-    /** Set the elements that have declared type BaseType.ANY (the leaf
+    /** Set the elements that have declared type BaseType.UNKNOWN (the leaf
      *  type variable) to the specified type.
      *  @param type the type to set the leaf type variable to.
      */
@@ -357,7 +357,7 @@ public class RecordType extends StructuredType {
      *  The specified type must be a RecordType and have the same structure
      *  as this one.
      *  This method will only update the component whose declared type is
-     *  BaseType.ANY, and leave the constant part of this type intact.
+     *  BaseType.UNKNOWN, and leave the constant part of this type intact.
      *  @param newType A StructuredType.
      *  @exception IllegalActionException If the specified type is not a
      *   RecordType or it does not have the same structure as this one.
@@ -627,7 +627,7 @@ public class RecordType extends StructuredType {
                         + "The argument is not a Type.");
             }
 
-            if (_declaredType == BaseType.ANY) {
+            if (_declaredType == BaseType.UNKNOWN) {
                 _resolvedType = (Type)e;
             } else {
                 // this field type is a structured type.
@@ -671,7 +671,7 @@ public class RecordType extends StructuredType {
 			+ ", New type: " + e.toString());
             }
 
-            if (_declaredType == BaseType.ANY) {
+            if (_declaredType == BaseType.UNKNOWN) {
 	        try {
                     _resolvedType = (Type)((Type)e).clone();
 		} catch (CloneNotSupportedException cnse) {

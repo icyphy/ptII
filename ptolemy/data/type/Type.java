@@ -71,7 +71,7 @@ public interface Type {
     public boolean isCompatible(Token token);
 
     /** Test if this Type is a constant. A Type is a constant if it
-     *  does not contain BaseType.ANY in any level within it.
+     *  does not contain BaseType.UNKNOWN in any level within it.
      *  @return True if this type is a constant.
      */
     public boolean isConstant();
@@ -93,7 +93,7 @@ public interface Type {
     /** Return true if the specified type is a substitution instance of this
      *  type. For the argument to be a substitution instance, it must be
      *  either the same as this type, or it must be a type that can be
-     *  obtained by replacing the BaseType.ANY component of this type by
+     *  obtained by replacing the BaseType.UNKNOWN component of this type by
      *  another type.
      *  @param type A Type.
      *  @return True if the argument is a substitution instance of this type.

@@ -167,7 +167,7 @@ test TypedIOPort-4.1 {Check description on a new TypedIOPort} {
 
     list [expr {$p0 == [java::null]}]
     $p0 description $detail
-} {ptolemy.actor.TypedIOPort {.} type {declared any resolved any}}
+} {ptolemy.actor.TypedIOPort {.} type {declared unknown resolved unknown}}
 
 ######################################################################
 ####

@@ -105,7 +105,7 @@ public class PoissonClock extends TimedSource {
 	defaultValues[1] = new IntToken(0);
 	ArrayToken defaultValueToken = new ArrayToken(defaultValues);
         values = new Parameter(this, "values", defaultValueToken);
-	values.setTypeEquals(new ArrayType(BaseType.ANY));
+	values.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
 
 	// set type constraint
 	ArrayType valuesArrayType = (ArrayType)values.getType();

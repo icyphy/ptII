@@ -129,7 +129,7 @@ public class RecordDisassembler extends TypedAtomicActor {
 	// form the declared type for the output port
 	for (int i = 0; i < size; i++) {
 	    labels[i] = ((Port)portArray[i]).getName();
-	    types[i] = BaseType.ANY;
+	    types[i] = BaseType.UNKNOWN;
 	}
 	RecordType declaredType = new RecordType(labels, types);
 

@@ -102,7 +102,7 @@ public class Type extends MoMLViewerApplet implements ValueListener {
     }
 
     /** Override the base class to avoid executing the model automatically
-     *  when the applet starts.  This way, the initial types (ANY) are
+     *  when the applet starts.  This way, the initial types (UNKNOWN) are
      *  displayed in the animation.
      */
     public void start() {
@@ -239,7 +239,7 @@ public class Type extends MoMLViewerApplet implements ValueListener {
         jgraph.setMaximumSize(new Dimension(400, 290));
 
         // nodes, with user object set to the actor
-        Object nAny = model.createNode(BaseType.ANY);
+        Object nAny = model.createNode(BaseType.UNKNOWN);
         Object nInt = model.createNode(BaseType.INT);
         Object nDouble = model.createNode(BaseType.DOUBLE);
         Object nComplex = model.createNode(BaseType.COMPLEX);
@@ -488,7 +488,7 @@ public class Type extends MoMLViewerApplet implements ValueListener {
             // Get the color and label
             Color color = Color.black;
             String label = "UNKNOWN";
-            if (typeObj == BaseType.ANY) {
+            if (typeObj == BaseType.UNKNOWN) {
                 color = Color.black;
                 label = "Any";
             } else if (typeObj == BaseType.INT) {
@@ -579,7 +579,7 @@ public class Type extends MoMLViewerApplet implements ValueListener {
                 public void run() {
                     ptolemy.data.type.Type typeObj = event.getNewType();
                     int color = 7;
-                    if (typeObj == BaseType.ANY) {
+                    if (typeObj == BaseType.UNKNOWN) {
                         color = 7;
                     } else if (typeObj == BaseType.INT) {
                         color = 4;

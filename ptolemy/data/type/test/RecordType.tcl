@@ -77,17 +77,17 @@ test RecordType-1.1 {Create a non-empty instance} {
 ######################################################################
 ####
 # 
-test RecordType-1.2 {Create an instance with an ANY field} {
+test RecordType-1.2 {Create an instance with an UNKNOWN field} {
     set l [java::new {String[]} {2} {{name} {value}}]
 
     set nt [java::field ptolemy.data.type.BaseType STRING]
-    set vt [java::field ptolemy.data.type.BaseType ANY]
+    set vt [java::field ptolemy.data.type.BaseType UNKNOWN]
     set v [java::new {ptolemy.data.type.Type[]} 2 [list $nt $vt]]
 
     set r [java::new {ptolemy.data.type.RecordType} $l $v]
     set varRT [java::cast ptolemy.data.type.RecordType [$r clone]]
     list [$r toString] [$varRT toString]
-} {{{name:string, value:any}} {{name:string, value:any}}}
+} {{{name:string, value:unknown}} {{name:string, value:unknown}}}
 
 ######################################################################
 ####
@@ -126,7 +126,7 @@ test RecordType-3.1 {Test get} {
 # 
 test RecordType-3.2 {Test get} {
     list [[$varRT get name] toString] [[$varRT get value] toString]
-} {string any}
+} {string unknown}
 
 ######################################################################
 ####
@@ -211,7 +211,7 @@ test RecordType-5.3 {Test isEqualTo} {
     set l [java::new {String[]} {2} {{name} {value}}]
 
     set nt [java::field ptolemy.data.type.BaseType STRING]
-    set vt [java::field ptolemy.data.type.BaseType ANY]
+    set vt [java::field ptolemy.data.type.BaseType UNKNOWN]
     set v [java::new {ptolemy.data.type.Type[]} 2 [list $nt $vt]]
 
     set r [java::new {ptolemy.data.type.RecordType} $l $v]
@@ -241,8 +241,8 @@ test RecordType-7.0 {Test isSubstitutionInstance} {
 ####
 # 
 test RecordType-8.0 {Test initialize} {
-    set ANY [java::field ptolemy.data.type.BaseType ANY]
-    $empRT initialize $ANY
+    set unknown [java::field ptolemy.data.type.BaseType UNKNOWN]
+    $empRT initialize $unknown
     $empRT toString
 } {{}}
 
@@ -250,8 +250,8 @@ test RecordType-8.0 {Test initialize} {
 ####
 # 
 test RecordType-8.1 {Test initialize} {
-    set ANY [java::field ptolemy.data.type.BaseType ANY]
-    $sdRT initialize $ANY
+    set unknown [java::field ptolemy.data.type.BaseType UNKNOWN]
+    $sdRT initialize $unknown
     $sdRT toString
 } {{name:string, value:double}}
 
@@ -259,10 +259,10 @@ test RecordType-8.1 {Test initialize} {
 ####
 # 
 test RecordType-8.2 {Test initialize} {
-    set ANY [java::field ptolemy.data.type.BaseType ANY]
-    $varRT initialize $ANY
+    set unknown [java::field ptolemy.data.type.BaseType UNKNOWN]
+    $varRT initialize $unknown
     $varRT toString
-} {{name:string, value:any}}
+} {{name:string, value:unknown}}
 
 ######################################################################
 ####
@@ -286,7 +286,7 @@ test RecordType-9.1 {Test updateType} {
 test RecordType-9.2 {Test updateType} {
     catch {$sdRT updateType $varRT} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: RecordType.updateType: This type is a constant and the argument is not the same as this type. This type: {name:string, value:double} argument: {name:string, value:any}}}
+} {{ptolemy.kernel.util.IllegalActionException: RecordType.updateType: This type is a constant and the argument is not the same as this type. This type: {name:string, value:double} argument: {name:string, value:unknown}}}
 
 ######################################################################
 ####

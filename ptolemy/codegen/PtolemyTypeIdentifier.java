@@ -225,7 +225,7 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
     }
 
     /** Return a new TypeNameNode corresponding to a token type in Ptolemy.
-     *  If the argument type is BaseType.ANY, return a clone of
+     *  If the argument type is BaseType.UNKNOWN, return a clone of
      *  DUMMY_LOWER_BOUND_TYPE. The argument should not be null.
      */
     public TypeNameNode typeNodeForTokenType(Type type) {
@@ -485,7 +485,7 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
             BaseType.BOOLEAN_MATRIX, BaseType.INT_MATRIX,
             BaseType.DOUBLE_MATRIX, BaseType.LONG_MATRIX,
             BaseType.COMPLEX_MATRIX, BaseType.FIX_MATRIX,
-            BaseType.ANY };
+            BaseType.UNKNOWN };
 
     /** An array indexed by (kind - TYPE_KIND_TOKEN) that indicates whether
      *  or not the token kind is concrete.
