@@ -1,4 +1,4 @@
-# Test RemoveActor
+# Test RemoveRelation
 #
 # @Author: Edward A. Lee
 #
@@ -38,10 +38,10 @@ if {[string compare test [info procs test]] == 1} then {
 # set VERBOSE 1
 
 ######################################################################
-#### RemoveActor
+#### RemoveRelation
 #
 
-test RemoveActor-1.0 {test removing an actor} {
+test RemoveRelation-1.0 {test removing a relation} {
     set e0 [sdfModel]
     set const [java::new ptolemy.actor.lib.Const $e0 const]
     set ramp [java::new ptolemy.actor.lib.Ramp $e0 ramp]
@@ -49,19 +49,16 @@ test RemoveActor-1.0 {test removing an actor} {
     $e0 connect \
             [java::field [java::cast ptolemy.actor.lib.Source $const] output] \
             [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
-    $e0 connect \
+    set relation [$e0 connect \
             [java::field [java::cast ptolemy.actor.lib.Source $ramp] output] \
-            [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
+            [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]]
     set m [$e0 getManager]
-    $m addChangeListener \
-            [java::new ptolemy.kernel.event.StandardOutChangeListener]
-    set dir [$e0 getDirector]
-    $dir addDebugListener \
-            [java::new ptolemy.kernel.util.StreamListener]
     $m initialize
     $m iterate
-    set c1 [java::new ptolemy.kernel.event.RemoveActor $e0 $ramp]
+    set c1 [java::new ptolemy.kernel.event.RemoveRelation $e0 $relation]
+    set c2 [java::new ptolemy.kernel.event.RemoveActor $e0 $ramp]
     $m requestChange $c1
+    $m requestChange $c2
     $m iterate
     $m iterate
     $m wrapup

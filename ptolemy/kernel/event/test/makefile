@@ -52,6 +52,7 @@ JSIMPLE_TESTS = \
 	Connect.tcl \
 	Link.tcl \
 	RemoveActor.tcl \
+	RemoveRelation.tcl \
 	SetParameter.tcl
 
 # Graphical Java tests that use Tcl.

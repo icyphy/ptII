@@ -1,4 +1,4 @@
-/* A request to remove an actor.
+/* A request to remove a relation.
 
  Copyright (c) 1998 The Regents of the University of California.
  All rights reserved.
@@ -36,73 +36,66 @@ import ptolemy.kernel.util.*;
 import ptolemy.kernel.*;
 import ptolemy.actor.Actor;
 import ptolemy.actor.Director;
+import ptolemy.actor.CompositeActor;
 
 //////////////////////////////////////////////////////////////////////////
-//// RemoveActor
+//// RemoveRelation
 /** 
-A request to remove an actor.  The execute() method of this request
-invokes the wrapup() method of the actor, then disconnects it from
-the topology and sets its container to null.
+A request to remove a relation.  The execute() method of this request
+unlinks the relation from all ports and sets its container to null.
 
 @author  Edward A. Lee
 @version $Id$
-@see ptolemy.actor.Actor
+@see ptolemy.kernel.ComponentRelation
 */
-public class RemoveActor extends ChangeRequest {
+public class RemoveRelation extends ChangeRequest {
 
     /** Construct a request with the specified originator and
-     *  actor to be removed. The actor must also implement the
-     *  Nameable interface or a ClassCastException will occur.
+     *  relation to be removed.
      *  @param originator The source of the change request.
-     *  @param actor The actor to remove.
+     *  @param actor The relatoin to remove.
      */	
-    public RemoveActor(Nameable originator, Actor actor) {
-        super(originator, "Remove " + ((Nameable)actor).getFullName());
-        _actor = actor;
+    public RemoveRelation(Nameable originator, ComponentRelation relation) {
+        super(originator, "Remove " + relation.getFullName());
+        _relation = relation;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Execute the change by calling the wrapup() method of the
-     *  actor, then disconnecting all its ports and setting its container
-     *  to null.  This method also notifies the director that the
+    /** Execute the change by calling the unlinkAll() method of the
+     *  relation, then setting its container
+     *  to null.  If the relation is contained by an instance of
+     *  CompositeActor, then this method also notifies its director that the
      *  schedule and type resolution may be invalid.
      *  @exception ChangeFailedException If the wrapup() method throws it,
      *   or if the actor is not an instance of ComponentEntity.
      */	
     public void execute() throws ChangeFailedException {
         try {
-            _actor.wrapup();
-            if (!(_actor instanceof ComponentEntity)) {
-                throw new ChangeFailedException(this,
-                "Cannot remove an actor that is not an Entity.");
+            _relation.unlinkAll();
+            Nameable container = _relation.getContainer();
+            if (container instanceof CompositeActor) {
+                Director director = ((Actor)container).getDirector();
+                director.invalidateSchedule();
+                director.invalidateResolvedTypes();
             }
-            ComponentEntity entity = (ComponentEntity)_actor;
-            Enumeration ports = entity.getPorts();
-            while (ports.hasMoreElements()) {
-                Port port = (Port)ports.nextElement();
-                port.unlinkAll();
-            }
-            Director director = _actor.getDirector();
-            director.invalidateSchedule();
-            director.invalidateResolvedTypes();
-            entity.setContainer(null);
+            _relation.setContainer(null);
         } catch (KernelException ex) {
             throw new ChangeFailedException(this, ex);
         }
     }
 
-    /** Get the actor.
-     *  @return The actor to be removed.
+    /** Get the relation.
+     *  @return The relation to be removed.
      */
-    public Actor getActor() {
-        return _actor;
+    public ComponentRelation getRelation() {
+        return _relation;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // The actor to initialize.
-    private Actor _actor;
+    // The relation to remove.
+    private ComponentRelation _relation;
 }

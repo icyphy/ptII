@@ -59,6 +59,7 @@ JSRCS = \
 	InitializeActor.java \
 	Link.java \
 	RemoveActor.java \
+	RemoveRelation.java \
 	SetParameter.java \
 	StandardOutChangeListener.java
 
