@@ -73,7 +73,7 @@ In SR, each iteration begins with the values on all channels being unknown.
 To ensure that an iteration converges to final values in finite time, it is 
 required that values change only from unknown to known, and never the other 
 way around.  Once a value is known (or known to be absent), it must not 
-change.
+change again in the course of the iteration.
 <p>
 An actor is considered <i>ready to fire</i> if sufficient known inputs are 
 available.  Unless an actor implements the NonStrictActor interface, it is
